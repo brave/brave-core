@@ -20,8 +20,8 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  Network,
-  TokenInfo
+  TokenInfo,
+  EthereumChain
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
@@ -54,6 +54,7 @@ export default {
 
 export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boolean }) => {
   const { onboarding, locked } = args
+  const MainnetChain = { chainId: '0x1', chainName: 'Mainnet', rpcUrls: [] }
   const [view] = React.useState<NavTypes>('crypto')
   const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(onboarding)
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
@@ -65,7 +66,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedTimeline, setSelectedTimeline] = React.useState<AssetPriceTimeframe>(AssetPriceTimeframe.OneDay)
   const [selectedAssetPriceHistory, setSelectedAssetPriceHistory] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
   const [selectedAsset, setSelectedAsset] = React.useState<TokenInfo>()
-  const [selectedNetwork, setSelectedNetwork] = React.useState<Network>(Network.Mainnet)
+  const [selectedNetwork, setSelectedNetwork] = React.useState<EthereumChain>(MainnetChain)
   const [selectedAccount, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
   const [fromAsset, setFromAsset] = React.useState<AssetOptionType>(AssetOptions[0])
@@ -317,7 +318,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setShowAddModal(!showAddModal)
   }
 
-  const onSelectNetwork = (network: Network) => {
+  const onSelectNetwork = (network: EthereumChain) => {
     setSelectedNetwork(network)
   }
 

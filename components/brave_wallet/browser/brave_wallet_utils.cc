@@ -10,20 +10,24 @@
 #include <sstream>
 #include <utility>
 
+#include "base/environment.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "components/prefs/pref_service.h"
 #include "crypto/random.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"
+#include "url/gurl.h"
 
 #if defined(OS_WIN)
 #include <windows.h>
@@ -43,11 +47,94 @@ std::string GenerateMnemonicInternal(uint8_t* entropy, size_t size) {
   wally_free_string(words);
   return result;
 }
+
+std::string GetInfuraProjectID() {
+  std::string project_id(BRAVE_INFURA_PROJECT_ID);
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+
+  if (env->HasVar("BRAVE_INFURA_PROJECT_ID")) {
+    env->GetVar("BRAVE_INFURA_PROJECT_ID", &project_id);
+  }
+
+  return project_id;
+}
+
+bool GetUseStagingInfuraEndpoint() {
+  std::string project_id(BRAVE_INFURA_PROJECT_ID);
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  return env->HasVar("BRAVE_INFURA_STAGING");
+}
+
+// Precompiled networks available in native wallet.
+const brave_wallet::mojom::KnownNetwork kKnownNetworks[] = {
+    {"0x1", "Ethereum Mainnet", "mainnet", "https://etherscan.io"},
+    {"0x4", "Rinkeby Test Network", "rinkeby", "https://rinkeby.etherscan.io"},
+    {"0x3", "Ropsten Test Network", "ropsten", "https://ropsten.etherscan.io"},
+    {"0x5", "Goerli Test Network", "ropsten", "https://goerli.etherscan.io"},
+    {"0x2a", "Kovan Test Network", "kovan", "https://kovan.etherscan.io"},
+    {"localhost", "Localhost", "http://localhost:8545/", ""}};
+
+GURL GetKnownNetworkURL(const std::string& chain_id,
+                        const std::string& subdomain) {
+  if (chain_id == "localhost") {
+    return GURL(subdomain);
+  }
+
+  return GURL(
+      base::StringPrintf(GetUseStagingInfuraEndpoint()
+                             ? "https://%s-staging-infura.bravesoftware.com/%s"
+                             : "https://%s-infura.brave.com/%s",
+                         subdomain.c_str(), GetInfuraProjectID().c_str()));
+}
+
+brave_wallet::EthereumChain GetKnownChain(const std::string& chain_id) {
+  brave_wallet::EthereumChain result;
+  for (const auto& network : kKnownNetworks) {
+    if (network.chain_id != chain_id)
+      continue;
+    result.chain_id = chain_id;
+    result.chain_name = network.chainName;
+    result.rpc_urls.push_back(
+        GetKnownNetworkURL(chain_id, network.subdomain).spec());
+    result.block_explorer_urls.push_back(network.block_tracker_url);
+    return result;
+  }
+  return result;
+}
+
+GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id) {
+  std::vector<brave_wallet::EthereumChain> custom_chains =
+      GetAllCustomChains(prefs);
+  for (const auto& it : custom_chains) {
+    if (it.chain_id != chain_id)
+      continue;
+    if (it.rpc_urls.empty())
+      return GURL();
+    return GURL(it.rpc_urls[0]);
+  }
+  return GURL();
+}
+
 }  // namespace
+
+std::vector<brave_wallet::EthereumChain> GetAllCustomChains(
+    PrefService* prefs) {
+  const base::Value* custom_networks_list =
+      prefs->GetList(kBraveWalletCustomNetworks);
+  if (!custom_networks_list)
+    return std::vector<brave_wallet::EthereumChain>();
+  return brave_wallet::ValueToEthereumChain(*custom_networks_list);
+}
 
 bool IsNativeWalletEnabled() {
   return base::FeatureList::IsEnabled(
       brave_wallet::features::kNativeBraveWalletFeature);
+}
+
+const std::vector<brave_wallet::mojom::KnownNetwork> GetAllKnownNetworks() {
+  std::vector<brave_wallet::mojom::KnownNetwork> result;
+  result.assign(kKnownNetworks, std::end(kKnownNetworks));
+  return result;
 }
 
 std::string ToHex(const std::string& data) {
@@ -396,25 +483,69 @@ void UpdateLastUnlockPref(PrefService* prefs) {
   prefs->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
 }
 
-base::Value EthereumChainToValue(const AddEthereumChainParameter& chainData) {
+std::vector<EthereumChain> ValueToEthereumChain(const base::Value& value) {
+  std::vector<EthereumChain> chains;
+  for (auto& it : value.GetList()) {
+    const base::DictionaryValue* params_dict;
+    it.GetAsDictionary(&params_dict);
+    if (!params_dict)
+      return chains;
+
+    EthereumChain chain;
+    if (!params_dict->GetString("chainId", &chain.chain_id))
+      return chains;
+
+    params_dict->GetString("chainName", &chain.chain_name);
+
+    const base::ListValue* explorerUrlsList;
+    if (params_dict->GetList("blockExplorerUrls", &explorerUrlsList)) {
+      for (const auto& entry : explorerUrlsList->GetList())
+        chain.block_explorer_urls.push_back(entry.GetString());
+    }
+
+    const base::ListValue* iconUrlsList;
+    if (params_dict->GetList("iconUrls", &iconUrlsList)) {
+      for (const auto& entry : iconUrlsList->GetList())
+        chain.icon_urls.push_back(entry.GetString());
+    }
+
+    const base::ListValue* rpcUrlsList;
+    if (params_dict->GetList("rpcUrls", &rpcUrlsList)) {
+      for (const auto& entry : rpcUrlsList->GetList())
+        chain.rpc_urls.push_back(entry.GetString());
+    }
+
+    const base::DictionaryValue* currency_dict;
+    if (params_dict->GetDictionary("nativeCurrency", &currency_dict)) {
+      currency_dict->GetString("name", &chain.currency.name);
+      currency_dict->GetString("symbol", &chain.currency.symbol);
+      chain.currency.decimals =
+          currency_dict->FindIntPath("decimals").value_or(0);
+    }
+    chains.push_back(std::move(chain));
+  }
+  return chains;
+}
+
+base::Value EthereumChainToValue(const EthereumChain& chainData) {
   base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("chainId", chainData.chainId);
-  dict.SetStringKey("chainName", chainData.chainName);
+  dict.SetStringKey("chainId", chainData.chain_id);
+  dict.SetStringKey("chainName", chainData.chain_name);
 
   base::ListValue blockExplorerUrlsValue;
-  for (const auto& url : chainData.blockExplorerUrls) {
+  for (const auto& url : chainData.block_explorer_urls) {
     blockExplorerUrlsValue.AppendString(url);
   }
   dict.SetKey("blockExplorerUrls", std::move(blockExplorerUrlsValue));
 
   base::ListValue iconUrlsValue;
-  for (const auto& url : chainData.iconUrls) {
+  for (const auto& url : chainData.icon_urls) {
     iconUrlsValue.AppendString(url);
   }
   dict.SetKey("iconUrls", std::move(iconUrlsValue));
 
   base::ListValue rpcUrlsValue;
-  for (const auto& url : chainData.rpcUrls) {
+  for (const auto& url : chainData.rpc_urls) {
     rpcUrlsValue.AppendString(url);
   }
   dict.SetKey("rpcUrls", std::move(rpcUrlsValue));
@@ -520,6 +651,31 @@ absl::optional<TransactionReceipt> ValueToTransactionReceipt(
   tx_receipt.status = *status;
 
   return tx_receipt;
+}
+
+std::vector<brave_wallet::EthereumChain> GetAllKnownChains() {
+  std::vector<brave_wallet::EthereumChain> result;
+  for (const auto& network : kKnownNetworks) {
+    result.push_back(GetKnownChain(network.chain_id));
+  }
+  return result;
+}
+
+GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id) {
+  auto known_network = GetKnownChain(chain_id);
+  auto network_url = known_network.rpc_urls.size()
+                         ? GURL(known_network.rpc_urls.front())
+                         : GURL();
+  if (!network_url.is_valid())
+    return GetCustomChainURL(prefs, chain_id);
+  return network_url;
+}
+
+std::vector<EthereumChain> GetAllChains(PrefService* prefs) {
+  std::vector<EthereumChain> networks = GetAllKnownChains();
+  std::vector<EthereumChain> custom_chains = GetAllCustomChains(prefs);
+  networks.insert(networks.end(), custom_chains.begin(), custom_chains.end());
+  return networks;
 }
 
 }  // namespace brave_wallet

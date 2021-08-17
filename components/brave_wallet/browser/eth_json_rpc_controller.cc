@@ -7,14 +7,13 @@
 
 #include <utility>
 
-#include "base/environment.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_call_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/sync_preferences/pref_service_syncable.h"
+#include "components/user_prefs/user_prefs.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
@@ -42,21 +41,14 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-std::string GetInfuraProjectID() {
-  std::string project_id(BRAVE_INFURA_PROJECT_ID);
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-
-  if (env->HasVar("BRAVE_INFURA_PROJECT_ID")) {
-    env->GetVar("BRAVE_INFURA_PROJECT_ID", &project_id);
-  }
-
-  return project_id;
-}
-
-bool GetUseStagingInfuraEndpoint() {
-  std::string project_id(BRAVE_INFURA_PROJECT_ID);
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  return env->HasVar("BRAVE_INFURA_STAGING");
+brave_wallet::mojom::EthereumChainPtr CreateEthereumChainPtr(
+    const brave_wallet::EthereumChain& mainnet) {
+  auto eth_chain_currency = brave_wallet::mojom::NativeCurrency::New(
+      mainnet.currency.symbol, mainnet.currency.name,
+      mainnet.currency.decimals);
+  return brave_wallet::mojom::EthereumChain::New(
+      mainnet.chain_id, mainnet.chain_name, mainnet.block_explorer_urls,
+      mainnet.icon_urls, mainnet.rpc_urls, std::move(eth_chain_currency));
 }
 
 }  // namespace
@@ -64,12 +56,12 @@ bool GetUseStagingInfuraEndpoint() {
 namespace brave_wallet {
 
 EthJsonRpcController::EthJsonRpcController(
-    mojom::Network network,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* prefs)
     : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
-      network_(network),
+      prefs_(prefs),
       weak_ptr_factory_(this) {
-  SetNetwork(network);
+  SetNetwork(GetAllKnownChains().front().chain_id);
 }
 
 EthJsonRpcController::~EthJsonRpcController() {}
@@ -99,65 +91,40 @@ void EthJsonRpcController::Request(const std::string& json_payload,
                               std::move(callback));
 }
 
-void EthJsonRpcController::GetNetwork(
-    mojom::EthJsonRpcController::GetNetworkCallback callback) {
-  std::move(callback).Run(network_);
-}
-
-void EthJsonRpcController::SetNetwork(mojom::Network network) {
-  std::string subdomain;
-  network_ = network;
-  switch (network) {
-    case brave_wallet::mojom::Network::Mainnet:
-      subdomain = "mainnet";
-      break;
-    case brave_wallet::mojom::Network::Rinkeby:
-      subdomain = "rinkeby";
-      break;
-    case brave_wallet::mojom::Network::Ropsten:
-      subdomain = "ropsten";
-      break;
-    case brave_wallet::mojom::Network::Goerli:
-      subdomain = "goerli";
-      break;
-    case brave_wallet::mojom::Network::Kovan:
-      subdomain = "kovan";
-      break;
-    case brave_wallet::mojom::Network::Localhost:
-      network_url_ = GURL("http://localhost:8545");
-      FireNetworkChanged();
-      return;
-    case brave_wallet::mojom::Network::Custom:
-      NOTREACHED();
-  }
-
-  const std::string spec =
-      base::StringPrintf(GetUseStagingInfuraEndpoint()
-                             ? "https://%s-staging-infura.bravesoftware.com/%s"
-                             : "https://%s-infura.brave.com/%s",
-                         subdomain.c_str(), GetInfuraProjectID().c_str());
-  network_url_ = GURL(spec);
+void EthJsonRpcController::SetNetwork(const std::string& chain_id) {
+  auto network_url = GetNetworkURL(prefs_, chain_id);
+  if (!network_url.is_valid())
+    return;
+  chain_id_ = chain_id;
+  network_url_ = network_url;
   FireNetworkChanged();
 }
 
 void EthJsonRpcController::FireNetworkChanged() {
   for (const auto& observer : observers_) {
-    observer->ChainChangedEvent(GetChainIdFromNetwork(network_));
+    observer->ChainChangedEvent(chain_id_);
   }
-}
-
-std::string EthJsonRpcController::GetChainId() const {
-  return GetChainIdFromNetwork(network_);
 }
 
 void EthJsonRpcController::GetChainId(
     mojom::EthJsonRpcController::GetChainIdCallback callback) {
-  std::move(callback).Run(GetChainId());
+  std::move(callback).Run(chain_id_);
 }
 
 void EthJsonRpcController::GetBlockTrackerUrl(
     mojom::EthJsonRpcController::GetBlockTrackerUrlCallback callback) {
-  std::move(callback).Run(GetBlockTrackerUrlFromNetwork(network_).spec());
+  std::move(callback).Run(GetBlockTrackerUrlFromNetwork(chain_id_).spec());
+}
+
+void EthJsonRpcController::GetAllNetworks(
+    mojom::EthJsonRpcController::GetAllNetworksCallback callback) {
+  std::vector<mojom::EthereumChainPtr> all_chains;
+  auto networks = brave_wallet::GetAllChains(prefs_);
+  for (const auto& it : networks) {
+    all_chains.push_back(CreateEthereumChainPtr(it));
+  }
+
+  std::move(callback).Run(std::move(all_chains));
 }
 
 void EthJsonRpcController::GetNetworkUrl(
@@ -165,8 +132,10 @@ void EthJsonRpcController::GetNetworkUrl(
   std::move(callback).Run(network_url_.spec());
 }
 
-void EthJsonRpcController::SetCustomNetwork(const GURL& network_url) {
-  network_ = brave_wallet::mojom::Network::Custom;
+void EthJsonRpcController::SetCustomNetworkForTesting(
+    const std::string& chain_id,
+    const GURL& network_url) {
+  chain_id_ = chain_id;
   network_url_ = network_url;
   FireNetworkChanged();
 }
@@ -455,60 +424,15 @@ void EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany(
   std::move(callback).Run(true, result);
 }
 
-// [static]
-std::string EthJsonRpcController::GetChainIdFromNetwork(
-    mojom::Network network) {
-  std::string chain_id;
-  switch (network) {
-    case brave_wallet::mojom::Network::Mainnet:
-      chain_id = "0x1";
-      break;
-    case brave_wallet::mojom::Network::Rinkeby:
-      chain_id = "0x4";
-      break;
-    case brave_wallet::mojom::Network::Ropsten:
-      chain_id = "0x3";
-      break;
-    case brave_wallet::mojom::Network::Goerli:
-      chain_id = "0x5";
-      break;
-    case brave_wallet::mojom::Network::Kovan:
-      chain_id = "0x2a";
-      break;
-    case brave_wallet::mojom::Network::Localhost:
-      chain_id = "0x539";  // 1337
-      break;
-    case brave_wallet::mojom::Network::Custom:
-      break;
+GURL EthJsonRpcController::GetBlockTrackerUrlFromNetwork(std::string chain_id) {
+  auto networks = brave_wallet::GetAllChains(prefs_);
+  for (const auto& network : networks) {
+    if (network.chain_id != chain_id)
+      continue;
+    if (network.block_explorer_urls.size())
+      return GURL(network.block_explorer_urls.front());
   }
-  return chain_id;
-}
-
-GURL EthJsonRpcController::GetBlockTrackerUrlFromNetwork(
-    mojom::Network network) {
-  GURL url;
-  switch (network) {
-    case brave_wallet::mojom::Network::Mainnet:
-      url = GURL("https://etherscan.io");
-      break;
-    case brave_wallet::mojom::Network::Rinkeby:
-      url = GURL("https://rinkeby.etherscan.io");
-      break;
-    case brave_wallet::mojom::Network::Ropsten:
-      url = GURL("https://ropsten.etherscan.io");
-      break;
-    case brave_wallet::mojom::Network::Goerli:
-      url = GURL("https://goerli.etherscan.io");
-      break;
-    case brave_wallet::mojom::Network::Kovan:
-      url = GURL("https://kovan.etherscan.io");
-      break;
-    case brave_wallet::mojom::Network::Localhost:
-      break;
-    case brave_wallet::mojom::Network::Custom:
-      break;
-  }
-  return url;
+  return GURL();
 }
 
 }  // namespace brave_wallet

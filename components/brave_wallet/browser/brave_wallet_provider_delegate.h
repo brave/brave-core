@@ -8,8 +8,8 @@
 
 #include <string>
 #include <vector>
-
 #include "base/callback.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 
 namespace brave_wallet {
 
@@ -26,13 +26,11 @@ class BraveWalletProviderDelegate {
       delete;
   virtual ~BraveWalletProviderDelegate() = default;
 
-  virtual void RequestUserApproval(const std::string& type,
-      const std::string& requestData,
-      RequestEthereumPermissionsCallback callback) = 0;
+  virtual void RequestUserApproval(const std::string& requestData,
+                                   RequestEthereumChainCallback callback) = 0;
 
   virtual void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) = 0;
-
   virtual void GetAllowedAccounts(GetAllowedAccountsCallback callback) = 0;
 };
 

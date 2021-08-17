@@ -7,20 +7,22 @@
 
 #include <utility>
 
+#include "base/json/json_writer.h"
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
-
-namespace {
-const char kAddEthereumChainMethod[] = "wallet_addEthereumChain";
-}  // namespace
+#include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "components/user_prefs/user_prefs.h"
 
 namespace brave_wallet {
 
 BraveWalletProviderImpl::BraveWalletProviderImpl(
     mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
-    std::unique_ptr<BraveWalletProviderDelegate> delegate)
-    : delegate_(std::move(delegate)), weak_factory_(this) {
+    std::unique_ptr<BraveWalletProviderDelegate> delegate,
+    PrefService* prefs)
+    : delegate_(std::move(delegate)), prefs_(prefs), weak_factory_(this) {
   DCHECK(rpc_controller);
   rpc_controller_.Bind(std::move(rpc_controller));
   DCHECK(rpc_controller_);
@@ -31,16 +33,38 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
 BraveWalletProviderImpl::~BraveWalletProviderImpl() {}
 
 bool BraveWalletProviderImpl::OnAddEthereumChainRequest(
-    const std::string& json_payload, RequestCallback callback) {
-  AddEthereumChainParameter result;
-  if (!ParseAddEthereumChainParameter(json_payload, &result))
-    return false;
+    const std::string& json_payload,
+    RequestCallback callback) {
   if (!delegate_)
     return false;
-  DLOG(INFO) << "json_payload:" << json_payload;
-  delegate_->RequestUserApproval(kAddEthereumChainMethod, json_payload,
+  base::Value payload;
+  if (!ParsePayload(json_payload, "params", &payload))
+    return false;
+  std::vector<EthereumChain> chains = ValueToEthereumChain(payload);
+  if (chains.empty()) {
+    return false;
+  }
+  DCHECK_LT(chains.size(), size_t(2));
+  // TODO(spylogsster): Add support for multiple chains;
+  auto chain = chains[0];
+  if (GetNetworkURL(prefs_, chain.chain_id).is_valid()) {
+    // OnChainAddedResult(std::move(callback), std::string());
+    // return true;
+  }
+  // By https://eips.ethereum.org/EIPS/eip-3085 only chain id is required
+  // we expect chain name and rpc urls as well at this time
+  if (chain.chain_id.empty() || chain.rpc_urls.empty() ||
+      chain.chain_name.empty()) {
+    // return false;
+  }
+  auto valueValue = brave_wallet::EthereumChainToValue(chain);
+  std::string chainJson;
+  if (!base::JSONWriter::Write(valueValue, &chainJson))
+    return false;
+  delegate_->RequestUserApproval(
+      chainJson,
       base::BindOnce(&BraveWalletProviderImpl::OnChainAddedResult,
-                    weak_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
   return true;
 }
 
@@ -116,11 +140,15 @@ void BraveWalletProviderImpl::OnConnectionError() {
   observer_receiver_.reset();
 }
 
-void BraveWalletProviderImpl::OnChainAddedResult(
-    RequestCallback callback,
-                const std::vector<std::string>& accounts) {
+void BraveWalletProviderImpl::OnChainAddedResult(RequestCallback callback,
+                                                 const std::string& error) {
   base::flat_map<std::string, std::string> headers;
-  std::move(callback).Run(200, "{'lalla': 1}", headers);
+  std::string value = R"("result" : null)";
+  if (!error.empty()) {
+    value = error;
+  }
+  std::string response = base::StringPrintf(kJsonResponseF, value.c_str());
+  std::move(callback).Run(200, response, headers);
 }
 
 }  // namespace brave_wallet

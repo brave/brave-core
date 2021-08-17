@@ -6,7 +6,10 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_ANDROID_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_ANDROID_H_
 
+#include <string>
+
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 
 namespace content {
 class RenderFrameHost;
@@ -27,6 +30,8 @@ class BraveWalletProviderDelegateImplAndroid
       const BraveWalletProviderDelegateImplAndroid&) = delete;
   ~BraveWalletProviderDelegateImplAndroid() override = default;
 
+  void RequestUserApproval(const std::string& requestData,
+                           RequestEthereumChainCallback callback) override;
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
   void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;

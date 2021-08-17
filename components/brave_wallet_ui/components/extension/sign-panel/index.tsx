@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
-import { WalletAccountType, Network } from '../../../constants/types'
-import { NetworkOptions } from '../../../options/network-options'
+import { WalletAccountType, EthereumChain } from '../../../constants/types'
 import locale from '../../../constants/locale'
 import { NavButton } from '../'
 // Styled Components
@@ -21,7 +20,7 @@ import {
 
 export interface Props {
   selectedAccount: WalletAccountType
-  selectedNetwork: Network
+  selectedNetwork: EthereumChain
   message: string
   onSign: () => void
   onCancel: () => void
@@ -45,7 +44,7 @@ function SignPanel (props: Props) {
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{NetworkOptions[selectedNetwork].abbr}</NetworkText>
+        <NetworkText>{selectedNetwork.chainName}</NetworkText>
         <MoreButton onClick={onClickMore} />
       </TopRow>
       <AccountCircle orb={orb} />

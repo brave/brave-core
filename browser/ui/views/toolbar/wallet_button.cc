@@ -62,8 +62,8 @@ WalletButton::~WalletButton() = default;
 
 void WalletButton::OnWalletPressed(const ui::Event& event) {
   if (IsShowingBubble()) {
-    //CloseWalletBubble();
-//return;
+    CloseWalletBubble();
+    return;
   }
 
   ShowWalletBubble();

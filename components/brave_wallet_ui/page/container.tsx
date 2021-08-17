@@ -36,8 +36,8 @@ import {
   ExpirationPresetObjectType,
   ToOrFromType,
   WalletAccountType,
-  Network,
-  TokenInfo
+  TokenInfo,
+  EthereumChain
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -72,6 +72,7 @@ function Container (props: Props) {
     isWalletBackedUp,
     hasIncorrectPassword,
     accounts,
+    networkList,
     transactions,
     selectedNetwork,
     selectedAccount,
@@ -168,7 +169,7 @@ function Container (props: Props) {
     props.walletActions.selectAccount(account)
   }
 
-  const onSelectNetwork = (network: Network) => {
+  const onSelectNetwork = (network: EthereumChain) => {
     props.walletActions.selectNetwork(network)
   }
 
@@ -341,7 +342,7 @@ function Container (props: Props) {
   }
 
   const onSubmitBuy = (asset: AssetOptionType) => {
-    const url = BuyAssetUrl(selectedNetwork, asset, selectedAccount, buyAmount)
+    const url = BuyAssetUrl(selectedNetwork.chainId, asset, selectedAccount, buyAmount)
     if (url) {
       window.open(url, '_blank')
     }
@@ -425,6 +426,7 @@ function Container (props: Props) {
                   needsBackup={!isWalletBackedUp}
                   onShowBackup={onShowBackup}
                   accounts={accounts}
+                  networkList={networkList}
                   onChangeTimeline={onChangeTimeline}
                   onSelectAsset={onSelectAsset}
                   portfolioBalance={fullPortfolioBalance}
@@ -495,6 +497,7 @@ function Container (props: Props) {
         <WalletWidgetStandIn>
           <BuySendSwap
             accounts={accounts}
+            networkList={networkList}
             orderType={orderType}
             swapToAsset={toAsset}
             swapFromAsset={fromAsset}

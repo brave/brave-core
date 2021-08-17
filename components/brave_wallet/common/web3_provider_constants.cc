@@ -11,5 +11,13 @@ const char kConnectEvent[] = "connect";
 const char kDisconnectEvent[] = "disconnect";
 const char kChainChangedEvent[] = "chainChanged";
 const char kAccountsChangedEvent[] = "accountsChanged";
+// From https://eips.ethereum.org/EIPS/eip-3085
+const char kAddEthereumChainRejectedResponse[] = R"(
+    "error": {
+    "code": 4001,
+    "message": "%s"
+  })";
+const char kAddEthereumChainMethod[] = "wallet_addEthereumChain";
+const char kJsonResponseF[] = R"({"id":1,"jsonrpc":"2.0",%s})";
 
 }  // namespace brave_wallet

@@ -78,8 +78,8 @@ class EthNonceTrackerUnitTest : public testing::Test {
 };
 
 TEST_F(EthNonceTrackerUnitTest, GetNonce) {
-  EthJsonRpcController controller(brave_wallet::mojom::Network::Localhost,
-                                  shared_url_loader_factory());
+  EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
+  controller.SetNetwork("localhost");
   EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
 
@@ -163,8 +163,8 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
 }
 
 TEST_F(EthNonceTrackerUnitTest, NonceLock) {
-  EthJsonRpcController controller(brave_wallet::mojom::Network::Localhost,
-                                  shared_url_loader_factory());
+  EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
+  controller.SetNetwork("localhost");
   EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
 

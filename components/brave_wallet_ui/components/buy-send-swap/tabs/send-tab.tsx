@@ -4,7 +4,7 @@ import {
   AssetOptionType,
   BuySendSwapViewTypes,
   ToOrFromType,
-  Network
+  EthereumChain
 } from '../../../constants/types'
 import { AssetOptions } from '../../../options/asset-options'
 import {
@@ -15,15 +15,16 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
+  networkList: EthereumChain[]
   selectedAsset: AssetOptionType
-  selectedNetwork: Network
+  selectedNetwork: EthereumChain
   selectedAccount: UserAccountType
   selectedAssetAmount: string
   selectedAssetBalance: string
   toAddress: string
   showHeader?: boolean
   onSubmit: () => void
-  onSelectNetwork: (network: Network) => void
+  onSelectNetwork: (network: EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onSelectAsset: (asset: AssetOptionType, toOrFrom: ToOrFromType) => void
   onSetSendAmount: (value: string) => void
@@ -34,6 +35,7 @@ export interface Props {
 function SendTab (props: Props) {
   const {
     accounts,
+    networkList,
     selectedAsset,
     selectedNetwork,
     selectedAccount,
@@ -55,7 +57,7 @@ function SendTab (props: Props) {
     setSendView(view)
   }
 
-  const onClickSelectNetwork = (network: Network) => () => {
+  const onClickSelectNetwork = (network: EthereumChain) => () => {
     onSelectNetwork(network)
     setSendView('send')
   }
@@ -109,6 +111,7 @@ function SendTab (props: Props) {
       {sendView !== 'send' &&
         <AccountsAssetsNetworks
           accounts={accounts}
+          networkList={networkList}
           goBack={goBack}
           assetOptions={AssetOptions}
           onClickSelectAccount={onClickSelectAccount}

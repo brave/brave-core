@@ -11,12 +11,15 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 namespace base {
 class Value;
 }  // namespace base
+
+class GURL;
 
 namespace brave_wallet {
 
@@ -87,10 +90,20 @@ void SecureZeroData(void* data, size_t size);
 // because we call it both from the old extension and the new wallet when
 // it unlocks.
 void UpdateLastUnlockPref(PrefService* prefs);
-base::Value EthereumChainToValue(const AddEthereumChainParameter& chainData);
+
 base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
 absl::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value& value);
+
+base::Value EthereumChainToValue(const EthereumChain& chainData);
+std::vector<EthereumChain> ValueToEthereumChain(const base::Value& value);
+std::vector<EthereumChain> GetAllKnownChains();
+const std::vector<brave_wallet::mojom::KnownNetwork> GetAllKnownNetworks();
+std::vector<EthereumChain> GetAllCustomChains(PrefService* prefs);
+std::vector<EthereumChain> GetAllChains(PrefService* prefs);
+GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id);
+
+// GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id);
 
 }  // namespace brave_wallet
 

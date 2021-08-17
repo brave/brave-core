@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Network, NetworkOptionsType } from '../../../constants/types'
+import { EthereumChain } from '../../../constants/types'
 import { SelectNetwork } from '../../shared'
 import Header from '../select-header'
 import locale from '../../../constants/locale'
@@ -10,8 +10,8 @@ import {
 } from '../shared-styles'
 
 export interface Props {
-  networks: NetworkOptionsType[]
-  onSelectNetwork: (network: Network) => () => void
+  networks: EthereumChain[]
+  onSelectNetwork: (network: EthereumChain) => () => void
   onBack: () => void
 }
 

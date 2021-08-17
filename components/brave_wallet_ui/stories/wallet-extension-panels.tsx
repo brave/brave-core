@@ -26,10 +26,9 @@ import {
   AppsListType,
   AssetOptionType,
   BuySendSwapViewTypes,
-  Network
+  EthereumChain
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
-import { NetworkOptions } from '../options/network-options'
 import { WyreAssetOptions } from '../options/wyre-asset-options'
 import { filterAppList } from '../utils/filter-app-list'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
@@ -120,7 +119,7 @@ export const _ConfirmTransaction = () => {
   return (
     <StyledExtensionWrapper>
       <ConfirmTransactionPanel
-        selectedNetwork={Network.Mainnet}
+        selectedNetwork={selectedNetwork}
         onConfirm={onConfirmTransaction}
         onReject={onRejectTransaction}
         selectedAccount={accounts[0]}
@@ -158,7 +157,7 @@ export const _AllowAddNetwork = () => {
   return (
     <StyledExtensionWrapper>
       <AllowAddNetworkPanel
-        selectedNetwork={Network.Mainnet}
+        selectedNetwork={selectedNetwork}
         onApprove={onApprove}
         onCancel={onCancel}
         networkPayload={networkPayload}
@@ -191,7 +190,7 @@ export const _AllowSpend = () => {
   return (
     <StyledExtensionWrapper>
       <AllowSpendPanel
-        selectedNetwork={Network.Mainnet}
+        selectedNetwork={selectedNetwork}
         onConfirm={onConfirm}
         onReject={onReject}
         spendPayload={spendPayload}
@@ -222,7 +221,7 @@ export const _SignTransaction = () => {
     <StyledExtensionWrapper>
       <SignPanel
         selectedAccount={accounts[0]}
-        selectedNetwork={Network.Mainnet}
+        selectedNetwork={selectedNetwork}
         message='To avoid digital cat burglars, sign below to authenticate with CryptoKitties.'
         onCancel={onCancel}
         onSign={onSign}
@@ -291,6 +290,7 @@ _ConnectWithSite.story = {
 
 export const _ConnectedPanel = (args: { locked: boolean }) => {
   const { locked } = args
+  const MainnetChain = { chainId: '0x1', chainName: 'Mainnet', rpcUrls: [] }
   const [inputValue, setInputValue] = React.useState<string>('')
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
   const [selectedPanel, setSelectedPanel] = React.useState<PanelTypes>('main')
@@ -304,7 +304,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
-  const [selectedNetwork, setSelectedNetwork] = React.useState<Network>(Network.Mainnet)
+  const [selectedNetwork, setSelectedNetwork] = React.useState<EthereumChain>(MainnetChain)
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AssetOptionType>(WyreAssetOptions[0])
   const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>(AssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
@@ -478,7 +478,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
               {selectedPanel === 'networks' &&
                 <SelectContainer>
                   <SelectNetwork
-                    networks={NetworkOptions}
+                    networks={networkList}
                     onBack={onBack}
                     onSelectNetwork={onSelectNetwork}
                   />

@@ -1,8 +1,7 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
-import { Network, AllowSpendReturnPayload } from '../../../constants/types'
+import { AllowSpendReturnPayload, EthereumChain } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
-import { NetworkOptions } from '../../../options/network-options'
 import locale from '../../../constants/locale'
 import { NavButton } from '../'
 
@@ -35,7 +34,7 @@ import {
 } from '../shared-panel-styles'
 
 export interface Props {
-  selectedNetwork: Network
+  selectedNetwork: EthereumChain
   onConfirm: () => void
   onReject: () => void
   spendPayload: AllowSpendReturnPayload
@@ -56,7 +55,7 @@ function AllowSpendPanel (props: Props) {
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{NetworkOptions[selectedNetwork].abbr}</NetworkText>
+        <NetworkText>{selectedNetwork.chainName}</NetworkText>
         <AddressAndOrb>
           <AddressText>{reduceAddress(spendPayload.contractAddress)}</AddressText>
           <AccountCircle orb={orb} />

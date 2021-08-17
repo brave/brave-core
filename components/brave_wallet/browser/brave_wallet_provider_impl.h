@@ -17,6 +17,8 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
+class PrefService;
+
 namespace brave_wallet {
 
 class BraveWalletProviderDelegate;
@@ -30,7 +32,8 @@ class BraveWalletProviderImpl final
   BraveWalletProviderImpl& operator=(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl(
       mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
-      std::unique_ptr<BraveWalletProviderDelegate> delegate);
+      std::unique_ptr<BraveWalletProviderDelegate> delegate,
+      PrefService* prefs);
   ~BraveWalletProviderImpl() override;
 
   void Request(const std::string& json_payload,
@@ -54,14 +57,14 @@ class BraveWalletProviderImpl final
  private:
   bool OnAddEthereumChainRequest(const std::string& json_payload,
                                  RequestCallback callback);
-  void OnChainAddedResult(RequestCallback callback,
-                const std::vector<std::string>& accounts);
+  void OnChainAddedResult(RequestCallback callback, const std::string& result);
   void OnConnectionError();
 
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
   mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
   mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
+  PrefService* prefs_ = nullptr;
   base::WeakPtrFactory<BraveWalletProviderImpl> weak_factory_;
 };
 

@@ -3,7 +3,7 @@ import {
   UserAccountType,
   AssetOptionType,
   BuySendSwapViewTypes,
-  Network
+  EthereumChain
 } from '../../../constants/types'
 import { WyreAssetOptions } from '../../../options/wyre-asset-options'
 import {
@@ -14,12 +14,13 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
-  selectedNetwork: Network
+  networkList: EthereumChain[]
+  selectedNetwork: EthereumChain
   selectedAccount: UserAccountType
   buyAmount: string
   showHeader?: boolean
   onSubmit: (asset: AssetOptionType) => void
-  onSelectNetwork: (network: Network) => void
+  onSelectNetwork: (network: EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
 }
@@ -27,6 +28,7 @@ export interface Props {
 function BuyTab (props: Props) {
   const {
     accounts,
+    networkList,
     selectedNetwork,
     selectedAccount,
     buyAmount,
@@ -43,7 +45,7 @@ function BuyTab (props: Props) {
     setBuyView(view)
   }
 
-  const onClickSelectNetwork = (network: Network) => () => {
+  const onClickSelectNetwork = (network: EthereumChain) => () => {
     onSelectNetwork(network)
     setBuyView('buy')
   }
@@ -94,6 +96,7 @@ function BuyTab (props: Props) {
       {buyView !== 'buy' &&
         <AccountsAssetsNetworks
           accounts={accounts}
+          networkList={networkList}
           goBack={goBack}
           assetOptions={WyreAssetOptions}
           onClickSelectAccount={onClickSelectAccount}

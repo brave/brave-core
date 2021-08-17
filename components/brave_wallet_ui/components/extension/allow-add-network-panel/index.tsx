@@ -1,8 +1,7 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
-import { Network, AddNetworkReturnPayload } from '../../../constants/types'
+import { EthereumChain } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
-import { NetworkOptions } from '../../../options/network-options'
 import locale from '../../../constants/locale'
 import { NavButton } from '../'
 
@@ -31,46 +30,45 @@ import {
 } from '../shared-panel-styles'
 
 export interface Props {
-  selectedNetwork: Network
+  networkPayload: EthereumChain
   onCancel: () => void
   onApprove: () => void
-  networkPayload: AddNetworkReturnPayload
 }
 
 function AllowAddNetworkPanel (props: Props) {
   const {
-    selectedNetwork,
     networkPayload,
     onCancel,
     onApprove
   } = props
-
+  const rpcUrl = networkPayload.rpcUrls ? (new URL(networkPayload.rpcUrls[0])).hostname : ''
+  const iconUrl = networkPayload.iconUrls ? networkPayload.iconUrls[0] : ''
   const orb = React.useMemo(() => {
-    return create({ seed: networkPayload.contractAddress, size: 8, scale: 16 }).toDataURL()
-  }, [networkPayload.contractAddress])
+    return create({ seed: rpcUrl, size: 8, scale: 16 }).toDataURL()
+  }, [rpcUrl])
 
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{NetworkOptions[selectedNetwork].abbr}</NetworkText>
+        <NetworkText>{networkPayload.chainName}</NetworkText>
         <AddressAndOrb>
-          <AddressText>{reduceAddress(networkPayload.contractAddress)}</AddressText>
+          <AddressText>{reduceAddress(rpcUrl)}</AddressText>
           <AccountCircle orb={orb} />
         </AddressAndOrb>
       </TopRow>
       <CenterColumn>
-        <FavIcon src={`chrome://favicon/size/64@1x/${networkPayload.siteUrl}`} />
-        <URLText>{networkPayload.siteUrl}</URLText>
+        <FavIcon src={iconUrl} />
+        <URLText>{rpcUrl}</URLText>
         <PanelTitle>{locale.allowAddNetworkTitle}</PanelTitle>
         <Description>{locale.allowAddNetworkDescription} <DetailsButton>{locale.allowAddNetworkLearnMoreButton}</DetailsButton></Description>
         <MessageBox>
           <MessageBoxColumn>
             <NetworkTitle>{locale.allowAddNetworkName}</NetworkTitle>
-            <NetworkDetail>{networkPayload.chainInfo.name}</NetworkDetail>
+            <NetworkDetail>{networkPayload.chainName}</NetworkDetail>
           </MessageBoxColumn>
           <MessageBoxColumn>
             <NetworkTitle>{locale.allowAddNetworkUrl}</NetworkTitle>
-            <NetworkDetail>{networkPayload.chainInfo.url}</NetworkDetail>
+            <NetworkDetail>{rpcUrl}</NetworkDetail>
           </MessageBoxColumn>
           <DetailsButton>{locale.allowAddNetworkDetailsButton}</DetailsButton>
         </MessageBox>

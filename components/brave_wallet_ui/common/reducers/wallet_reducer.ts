@@ -8,15 +8,16 @@ import { createReducer } from 'redux-act'
 import {
   WalletAccountType,
   WalletState,
-  Network,
   GetAllTokensReturnInfo,
+  GetAllNetworksList,
   TokenInfo,
   GetETHBalancesPriceReturnInfo,
   GetERC20TokenBalanceAndPriceReturnInfo,
   AccountInfo,
   PortfolioTokenHistoryAndInfo,
   GetPriceHistoryReturnInfo,
-  AssetPriceTimeframe
+  AssetPriceTimeframe,
+  EthereumChain
 } from '../../constants/types'
 import { convertMojoTimeToJS } from '../../utils/mojo-time'
 import * as WalletActions from '../actions/wallet_actions'
@@ -31,7 +32,7 @@ const defaultState: WalletState = {
   isWalletBackedUp: false,
   hasIncorrectPassword: false,
   selectedAccount: {} as WalletAccountType,
-  selectedNetwork: Network.Mainnet,
+  selectedNetwork: { chainId: '0x1' } as EthereumChain,
   accounts: [],
   userVisibleTokens: [],
   userVisibleTokensInfo: [],
@@ -39,7 +40,8 @@ const defaultState: WalletState = {
   fullTokenList: [],
   portfolioPriceHistory: [],
   isFetchingPortfolioPriceHistory: true,
-  selectedPortfolioTimeline: AssetPriceTimeframe.OneDay
+  selectedPortfolioTimeline: AssetPriceTimeframe.OneDay,
+  networkList: []
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -86,7 +88,7 @@ reducer.on(WalletActions.selectAccount, (state: any, payload: WalletAccountType)
   }
 })
 
-reducer.on(WalletActions.setNetwork, (state: any, payload: Network) => {
+reducer.on(WalletActions.setNetwork, (state: any, payload: EthereumChain) => {
   return {
     ...state,
     selectedNetwork: payload
@@ -114,6 +116,13 @@ reducer.on(WalletActions.setVisibleTokens, (state: any, payload: string[]) => {
   return {
     ...state,
     userVisibleTokens: payload
+  }
+})
+
+reducer.on(WalletActions.setAllNetworks, (state: any, payload: GetAllNetworksList) => {
+  return {
+    ...state,
+    networkList: payload.networks
   }
 })
 
