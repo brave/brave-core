@@ -198,15 +198,13 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 
 brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
   if (!ad_block_service_) {
-    base::FilePath user_data_dir;
-    base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-
     ad_block_service_ = std::make_unique<brave_shields::AdBlockService>(
         brave_component_updater_delegate(),
         std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
             brave_component_updater_delegate(),
             AdBlockSubscriptionDownloadManagerGetter(),
-            user_data_dir));
+            profile_manager()->user_data_dir().Append(
+                profile_manager()->GetInitialProfileDir())));
   }
   return ad_block_service_.get();
 }

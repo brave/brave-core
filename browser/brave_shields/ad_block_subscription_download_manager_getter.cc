@@ -12,7 +12,6 @@
 #include "base/callback.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
-#include "base/path_service.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_browser_process.h"
@@ -22,12 +21,9 @@
 #include "chrome/browser/profiles/profile_key.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
-#include "chrome/browser/profiles/profiles_state.h"
-#include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/core/simple_dependency_manager.h"
 #include "components/keyed_service/core/simple_keyed_service_factory.h"
 #include "content/public/browser/browser_context.h"
-
 
 using brave_shields::AdBlockSubscriptionDownloadManager;
 
@@ -79,11 +75,10 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
   AdBlockSubscriptionDownloadManagerGetterImpl(
       base::OnceCallback<void(AdBlockSubscriptionDownloadManager*)> callback)
       : callback_(std::move(callback)) {
-    base::FilePath user_data_dir;
-    base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-    base::FilePath profile_dir = profiles::GetDefaultProfileDir(user_data_dir);
-    auto* profile = g_browser_process->profile_manager()->GetProfileByPath(
-        profile_dir);
+    auto* profile_manager = g_browser_process->profile_manager();
+    auto* profile = profile_manager->GetProfileByPath(
+        profile_manager->user_data_dir().Append(
+            profile_manager->GetInitialProfileDir()));
     if (profile) {
       GetDownloadManager(profile);
     } else {
@@ -93,11 +88,10 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
 
  private:
   void OnProfileAdded(Profile* profile) override {
-    base::FilePath user_data_dir;
-    base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-    base::FilePath profile_dir = profiles::GetDefaultProfileDir(user_data_dir);
-    if (profile->GetPath() == profile_dir) {
-      g_browser_process->profile_manager()->RemoveObserver(this);
+    auto* profile_manager = g_browser_process->profile_manager();
+    if (profile->GetPath() == profile_manager->user_data_dir().Append(
+                                  profile_manager->GetInitialProfileDir())) {
+      profile_manager->RemoveObserver(this);
       GetDownloadManager(profile);
     }
   }
