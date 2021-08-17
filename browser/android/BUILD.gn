@@ -21,11 +21,11 @@ source_set("android_browser_process") {
     "//brave/build/android:jni_headers",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_shields/browser",
-    "//brave/components/l10n/browser",
     "//brave/components/brave_sync",
     "//brave/components/brave_sync:crypto",
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_sync:profile_sync_service_helper",
+    "//brave/components/l10n/browser",
     "//chrome/android:jni_headers",
     "//chrome/common",
     "//components/content_settings/core/browser",
@@ -37,5 +37,4 @@ source_set("android_browser_process") {
     "//third_party/leveldatabase",
     "//url",
   ]
-
 }

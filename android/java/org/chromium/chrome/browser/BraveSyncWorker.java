@@ -32,11 +32,11 @@ public class BraveSyncWorker {
     private static boolean sInitialized;
 
     public static BraveSyncWorker get() {
-      if (!sInitialized) {
-          sBraveSyncWorker = new BraveSyncWorker();
-          sInitialized = true;
-      }
-      return sBraveSyncWorker;
+        if (!sInitialized) {
+            sBraveSyncWorker = new BraveSyncWorker();
+            sInitialized = true;
+        }
+        return sBraveSyncWorker;
     }
 
     @CalledByNative

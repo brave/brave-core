@@ -1137,8 +1137,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
       getActivity().runOnUiThread(new Runnable() {
           @Override
           public void run() {
-              String seedHex =
-                      getBraveSyncWorker().GetSeedHexFromWords(GetCodephrase());
+              String seedHex = getBraveSyncWorker().GetSeedHexFromWords(GetCodephrase());
               if (null == seedHex || seedHex.isEmpty()) {
                   // Give up, seed must be valid
                   Log.e(TAG, "setAddMobileDeviceLayout seedHex is empty");
