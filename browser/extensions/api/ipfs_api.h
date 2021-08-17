@@ -182,6 +182,17 @@ class IpfsResolveIPFSURIFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class IpfsValidateGatewayUrlFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.validateGatewayUrl", UNKNOWN)
+
+ protected:
+  void OnGatewayValidated(bool success);
+
+  ~IpfsValidateGatewayUrlFunction() override {}
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

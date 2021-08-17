@@ -70,7 +70,7 @@ export class BraveIPFSBrowserProxyImpl {
       chrome.ipfs.getResolveMethodList(resolve)
     })
   }
-  
+
   /** @override */
   removeIpfsPeer (id, address) {
     return new Promise(resolve => {
@@ -102,7 +102,7 @@ export class BraveIPFSBrowserProxyImpl {
       chrome.ipfs.addIpfsPeer(value, resolve)
     })
   }
-  
+
   /** @override */
   getIpnsKeysList () {
     return new Promise(resolve => {
@@ -153,6 +153,16 @@ export class BraveIPFSBrowserProxyImpl {
         return
       }
       chrome.ipfs.getIPFSEnabled(resolve)
+    })
+  }
+  /** @override */
+  validateGatewayUrl (url) {
+    return new Promise(resolve => {
+      if (!chrome.ipfs) {
+        resolve(false)
+        return
+      }
+      chrome.ipfs.validateGatewayUrl(url, resolve)
     })
   }
 }
