@@ -6,8 +6,6 @@ source_set("android_browser_process") {
 
   sources = [
     "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
-    "//brave/browser/sync/brave_sync_devices_android.cc",
-    "//brave/browser/sync/brave_sync_devices_android.h",
     "brave_feature_list.cc",
     "brave_relaunch_utils.cc",
     "brave_shields_content_settings.cc",
@@ -34,7 +32,6 @@ source_set("android_browser_process") {
     "//components/flags_ui",
     "//components/ntp_tiles",
     "//components/sync",
-    "//components/sync_device_info",
     "//components/translate/core/browser",
     "//components/unified_consent",
     "//third_party/leveldatabase",
