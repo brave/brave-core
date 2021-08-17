@@ -19,21 +19,21 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
      "payload":{
        "basic-attention-token":{
          "btc":0.00001732,
-         "btc_24h_change":8.021672460190562,
+         "btc_timeframe_change":8.021672460190562,
          "usd":0.55393,
-         "usd_24h_change":9.523443444373276
+         "usd_timeframe_change":9.523443444373276
        },
        "bat":{
           "btc":0.00001732,
-          "btc_24h_change":8.021672460190562,
+          "btc_timeframe_change":8.021672460190562,
           "usd":0.55393,
-          "usd_24h_change":9.523443444373276
+          "usd_timeframe_change":9.523443444373276
         },
         "link":{
           "btc":0.00261901,
-          "btc_24h_change":0.5871625385632929,
+          "btc_timeframe_change":0.5871625385632929,
           "usd":83.77,
-          "usd_24h_change":1.7646208048244043
+          "usd_timeframe_change":1.7646208048244043
         }
       },
       "lastUpdated":"2021-07-16T19:11:28.907Z"
@@ -45,22 +45,22 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
   ASSERT_EQ(prices[0]->from_asset, "bat");
   ASSERT_EQ(prices[0]->to_asset, "btc");
   ASSERT_EQ(prices[0]->price, "0.00001732");
-  ASSERT_EQ(prices[0]->asset_24h_change, "8.021672460190562");
+  ASSERT_EQ(prices[0]->asset_timeframe_change, "8.021672460190562");
 
   ASSERT_EQ(prices[1]->from_asset, "bat");
   ASSERT_EQ(prices[1]->to_asset, "usd");
   ASSERT_EQ(prices[1]->price, "0.55393");
-  ASSERT_EQ(prices[1]->asset_24h_change, "9.523443444373276");
+  ASSERT_EQ(prices[1]->asset_timeframe_change, "9.523443444373276");
 
   ASSERT_EQ(prices[2]->from_asset, "link");
   ASSERT_EQ(prices[2]->to_asset, "btc");
   ASSERT_EQ(prices[2]->price, "0.00261901");
-  ASSERT_EQ(prices[2]->asset_24h_change, "0.5871625385632929");
+  ASSERT_EQ(prices[2]->asset_timeframe_change, "0.5871625385632929");
 
   ASSERT_EQ(prices[3]->from_asset, "link");
   ASSERT_EQ(prices[3]->to_asset, "usd");
   ASSERT_EQ(prices[3]->price, "83.77");
-  ASSERT_EQ(prices[3]->asset_24h_change, "1.7646208048244043");
+  ASSERT_EQ(prices[3]->asset_timeframe_change, "1.7646208048244043");
 
   /*
   ASSERT_EQ(price, "0.694503");

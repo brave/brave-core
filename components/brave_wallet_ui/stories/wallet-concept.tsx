@@ -139,10 +139,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     if (selectedAsset) {
       const data = CurrentPriceMockData.find((coin) => coin.symbol === selectedAsset.symbol)
       const usdValue = data ? data.usd : '0'
-      const usd24hChange = data ? data.usd24hChange : '0'
+      const usdTimeframeChange = data ? data.usdTimeframeChange : '0'
       const response: AssetPriceInfo = {
         price: usdValue,
-        asset24hChange: usd24hChange,
+        assetTimeframeChange: usdTimeframeChange,
         fromAsset: '',
         toAsset: ''
       }
@@ -155,10 +155,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     if (selectedAsset) {
       const data = CurrentPriceMockData.find((coin) => coin.symbol === selectedAsset.symbol)
       const btcValue = data ? data.btc : '0'
-      const btc24hChange = data ? data.btc24hChange : '0'
+      const btcTimeframeChange = data ? data.btcTimeframeChange : '0'
       const response: AssetPriceInfo = {
         price: btcValue,
-        asset24hChange: btc24hChange,
+        assetTimeframeChange: btcTimeframeChange,
         fromAsset: '',
         toAsset: ''
       }

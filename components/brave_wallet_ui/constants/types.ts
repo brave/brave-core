@@ -295,7 +295,7 @@ export interface AssetPriceInfo {
   fromAsset: string
   toAsset: string
   price: string
-  asset24hChange: string
+  assetTimeframeChange: string
 }
 
 export interface GetPriceReturnInfo {
@@ -398,7 +398,7 @@ export interface SwapController {
 }
 
 export interface AssetRatioController {
-  getPrice: (fromAssets: string[], toAssets: string[]) => Promise<GetPriceReturnInfo>
+  getPrice: (fromAssets: string[], toAssets: string[], timeframe: AssetPriceTimeframe) => Promise<GetPriceReturnInfo>
   getPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetPriceHistoryReturnObjectInfo>
 }
 
