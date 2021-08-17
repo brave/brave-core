@@ -37,4 +37,10 @@ static_library("browser") {
     "//ui/base",
     "//url",
   ]
+
+  if (is_android) {
+    # for #include "brave/browser/android/brave_shields_content_settings.h"
+    # in perf_predictor_tab_helper.cc
+    deps += [ "//brave/browser/android:android_browser_process" ]
+  }
 }
