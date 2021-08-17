@@ -31,8 +31,7 @@ void EthPendingTxTracker::UpdatePendingTransactions() {
     return;
 
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
-      EthTxStateManager::TransactionStatus::SUBMITTED,
-      absl::optional<EthAddress>());
+      EthTxStateManager::TransactionStatus::SUBMITTED, absl::nullopt);
   for (const auto& pending_transaction : pending_transactions) {
     if (IsNonceTaken(*pending_transaction)) {
       DropTransaction(pending_transaction.get());
@@ -51,8 +50,7 @@ void EthPendingTxTracker::UpdatePendingTransactions() {
 void EthPendingTxTracker::ResubmitPendingTransactions() {
   // TODO(darkdh): limit the rate of tx publishing
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
-      EthTxStateManager::TransactionStatus::SUBMITTED,
-      absl::optional<EthAddress>());
+      EthTxStateManager::TransactionStatus::SUBMITTED, absl::nullopt);
   for (const auto& pending_transaction : pending_transactions) {
     if (!pending_transaction->tx->IsSigned()) {
       continue;
@@ -104,8 +102,7 @@ void EthPendingTxTracker::OnSendRawTransaction(bool status,
 
 bool EthPendingTxTracker::IsNonceTaken(const EthTxStateManager::TxMeta& meta) {
   auto confirmed_transactions = tx_state_manager_->GetTransactionsByStatus(
-      EthTxStateManager::TransactionStatus::CONFIRMED,
-      absl::optional<EthAddress>());
+      EthTxStateManager::TransactionStatus::CONFIRMED, absl::nullopt);
   for (const auto& confirmed_transaction : confirmed_transactions) {
     if (confirmed_transaction->tx->nonce() == meta.tx->nonce() &&
         confirmed_transaction->id != meta.id)
@@ -146,8 +143,7 @@ bool EthPendingTxTracker::ShouldTxDropped(
 void EthPendingTxTracker::DropTransaction(EthTxStateManager::TxMeta* meta) {
   if (!meta)
     return;
-  meta->status = EthTxStateManager::TransactionStatus::DROPPED;
-  tx_state_manager_->AddOrUpdateTx(*meta);
+  tx_state_manager_->DeleteTx(meta->id);
 }
 
 }  // namespace brave_wallet

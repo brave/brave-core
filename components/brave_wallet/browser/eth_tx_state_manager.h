@@ -13,6 +13,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -24,15 +25,15 @@ class Value;
 
 namespace brave_wallet {
 
-class EthTxStateManager {
+class EthJsonRpcController;
+
+class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
  public:
   enum class TransactionStatus {
     UNAPPROVED,
     APPROVED,
     REJECTED,
     SUBMITTED,
-    FAILED,
-    DROPPED,
     CONFIRMED
   };
 
@@ -55,13 +56,14 @@ class EthTxStateManager {
     std::unique_ptr<EthTransaction> tx;
   };
 
-  explicit EthTxStateManager(PrefService* prefs);
-  ~EthTxStateManager();
+  explicit EthTxStateManager(
+      PrefService* prefs,
+      mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller);
+  ~EthTxStateManager() override;
   EthTxStateManager(const EthTxStateManager&) = delete;
   EthTxStateManager operator=(const EthTxStateManager&) = delete;
 
   static std::string GenerateMetaID();
-  // id will be excluded because it is used as key of dictionary
   static base::Value TxMetaToValue(const TxMeta& meta);
   static std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value);
 
@@ -74,8 +76,24 @@ class EthTxStateManager {
       TransactionStatus status,
       absl::optional<EthAddress> from);
 
+  // mojom::EthJsonRpcControllerObserver
+  void ChainChangedEvent(const std::string& chain_id) override;
+
  private:
+  std::string GetNetworkId() const;
+  // only support REJECTED and CONFIRMED
+  void RetireTxByStatus(TransactionStatus status, size_t max_num);
+
+  void OnConnectionError();
+  void OnGetNetworkUrl(const std::string& url);
+  void OnGetNetwork(mojom::Network network);
+
   PrefService* prefs_;
+  mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
+  mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
+  mojom::Network network_ = brave_wallet::mojom::Network::Mainnet;
+  std::string network_url_;
+  base::WeakPtrFactory<EthTxStateManager> weak_factory_;
 };
 
 }  // namespace brave_wallet
