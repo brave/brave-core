@@ -6,8 +6,8 @@
 #include "base/no_destructor.h"
 // include this header so that setStyle redefine doesn't flow to cc::PaintFlags
 #include "cc/paint/paint_flags.h"
-#include "ui/gfx/skia_util.h"
 #include "ui/gfx/color_palette.h"
+#include "ui/gfx/skia_util.h"
 
 // include header first so that GetNativeTheme redefine doesn't flow to View
 #include "ui/views/controls/focus_ring.h"
