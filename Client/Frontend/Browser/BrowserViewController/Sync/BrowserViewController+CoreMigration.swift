@@ -20,7 +20,7 @@ extension BrowserViewController {
         // We stop ever attempting migration after 3 times.
         if Preferences.Chromium.syncV2ObjectMigrationCount.value < 3 {
             self.migrateToSyncObjects { error in
-                if let error = error {
+                if let error = error, error == .failedBookmarksMigration {
                     DispatchQueue.main.async {
                         let alert = UIAlertController(title: error.failureReason,
                                                       message: error.localizedDescription,
