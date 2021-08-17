@@ -264,9 +264,6 @@
 		2765826A2171266900754B2F /* UrpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582662171266900754B2F /* UrpService.swift */; };
 		2765826B2171266900754B2F /* CustomHeaderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582672171266900754B2F /* CustomHeaderData.swift */; };
 		2765826C2171266900754B2F /* UrpLogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582682171266900754B2F /* UrpLogsViewController.swift */; };
-		27658271217130D900754B2F /* GlobalSign_r1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 2765826E217130D900754B2F /* GlobalSign_r1.cer */; };
-		27658272217130D900754B2F /* GlobalSign_r3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 2765826F217130D900754B2F /* GlobalSign_r3.cer */; };
-		27658273217130D900754B2F /* DigiCertHighAssurance.cer in Resources */ = {isa = PBXBuildFile; fileRef = 27658270217130D900754B2F /* DigiCertHighAssurance.cer */; };
 		27676D472555F34D00BC955A /* BraveRewardsStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27676D462555F34D00BC955A /* BraveRewardsStatusView.swift */; };
 		276A790A244660B100AC9446 /* SpringButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A7909244660B100AC9446 /* SpringButton.swift */; };
 		276A790C244660B500AC9446 /* UICollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A790B244660B500AC9446 /* UICollectionViewExtensions.swift */; };
@@ -672,6 +669,20 @@
 		44331DDC22561F34007E3E93 /* ToolbarUrlActionsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44331DDB22561F34007E3E93 /* ToolbarUrlActionsDelegate.swift */; };
 		4452CAF0255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4452CAEF255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift */; };
 		445E1F5B26B7292B005C56C3 /* leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 445E1F5A26B72923005C56C3 /* leaf.cer */; };
+		4481F22D26CBD1C600658EAC /* AmazonRootCA3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22926CBD1C400658EAC /* AmazonRootCA3.cer */; };
+		4481F22E26CBD1C600658EAC /* AmazonRootCA4.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22A26CBD1C500658EAC /* AmazonRootCA4.cer */; };
+		4481F22F26CBD1C600658EAC /* AmazonRootCA2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22B26CBD1C600658EAC /* AmazonRootCA2.cer */; };
+		4481F23026CBD1C600658EAC /* SFSRootCAG2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22C26CBD1C600658EAC /* SFSRootCAG2.cer */; };
+		4481F23526CBD27B00658EAC /* GlobalSignRootCA_R5.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23126CBD27900658EAC /* GlobalSignRootCA_R5.cer */; };
+		4481F23626CBD27B00658EAC /* GlobalSignRootCA_E46.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23226CBD27900658EAC /* GlobalSignRootCA_E46.cer */; };
+		4481F23726CBD27B00658EAC /* GlobalSignRootCA_R46.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23326CBD27A00658EAC /* GlobalSignRootCA_R46.cer */; };
+		4481F23826CBD27B00658EAC /* GlobalSignRootCA_R6.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23426CBD27A00658EAC /* GlobalSignRootCA_R6.cer */; };
+		4481F23A26CBD30900658EAC /* AmazonRootCA1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23926CBD30800658EAC /* AmazonRootCA1.cer */; };
+		4481F23F26CBD3DC00658EAC /* ISRGRootCA_X1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23D26CBD3DA00658EAC /* ISRGRootCA_X1.cer */; };
+		4481F24026CBD3DC00658EAC /* ISRGRootCA_X2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23E26CBD3DB00658EAC /* ISRGRootCA_X2.cer */; };
+		4481F24326CBD42C00658EAC /* GlobalSignRootCA_R3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F24126CBD42B00658EAC /* GlobalSignRootCA_R3.cer */; };
+		4481F24426CBD42C00658EAC /* GlobalSignRootCA_R1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F24226CBD42C00658EAC /* GlobalSignRootCA_R1.cer */; };
+		4481F24626CBF9C900658EAC /* DSTRootCA_X3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F24526CBF9C900658EAC /* DSTRootCA_X3.cer */; };
 		448DC7D6268A5C3E00F4795C /* BraveSearchDebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DC7D5268A5C3E00F4795C /* BraveSearchDebugMenu.swift */; };
 		448DC7E4268A6A2200F4795C /* BraveSearchLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DC7E3268A6A2200F4795C /* BraveSearchLogEntry.swift */; };
 		44A58CC82693A309005C0879 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A58CC72693A309005C0879 /* ActivityView.swift */; };
@@ -853,7 +864,6 @@
 		C8611C8E1F71904C00C3DE7D /* DiskImageStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF8CBC1B7472FA0007AFE6 /* DiskImageStoreTests.swift */; };
 		C8F457A81F1FD75A000CB895 /* BrowserViewController+WKNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F457A71F1FD75A000CB895 /* BrowserViewController+WKNavigationDelegate.swift */; };
 		C8F457AA1F1FDD9B000CB895 /* BrowserViewController+KeyCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F457A91F1FDD9B000CB895 /* BrowserViewController+KeyCommands.swift */; };
-		CA1659CC25E445FA00A860ED /* BaltimoreCyberTrustRoot.cer in Resources */ = {isa = PBXBuildFile; fileRef = CA1659C025E445EC00A860ED /* BaltimoreCyberTrustRoot.cer */; };
 		CA439A5925E6F29D00FE9150 /* VideoPlayerInfoBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A5825E6F29D00FE9150 /* VideoPlayerInfoBar.swift */; };
 		CA439A7625E8054A00FE9150 /* VideoPlayerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A7525E8054A00FE9150 /* VideoPlayerControlsView.swift */; };
 		CA439A9025E80EE400FE9150 /* VideoPlayerTrackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A8F25E80EE400FE9150 /* VideoPlayerTrackbar.swift */; };
@@ -1665,9 +1675,6 @@
 		276582662171266900754B2F /* UrpService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrpService.swift; sourceTree = "<group>"; };
 		276582672171266900754B2F /* CustomHeaderData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomHeaderData.swift; sourceTree = "<group>"; };
 		276582682171266900754B2F /* UrpLogsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrpLogsViewController.swift; sourceTree = "<group>"; };
-		2765826E217130D900754B2F /* GlobalSign_r1.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSign_r1.cer; sourceTree = "<group>"; };
-		2765826F217130D900754B2F /* GlobalSign_r3.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSign_r3.cer; sourceTree = "<group>"; };
-		27658270217130D900754B2F /* DigiCertHighAssurance.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = DigiCertHighAssurance.cer; sourceTree = "<group>"; };
 		27676D462555F34D00BC955A /* BraveRewardsStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveRewardsStatusView.swift; sourceTree = "<group>"; };
 		276A7909244660B100AC9446 /* SpringButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringButton.swift; sourceTree = "<group>"; };
 		276A790B244660B500AC9446 /* UICollectionViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewExtensions.swift; sourceTree = "<group>"; };
@@ -2180,6 +2187,20 @@
 		4452CA3A2552FD360053EFE6 /* build_in_core.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_in_core.sh; sourceTree = "<group>"; };
 		4452CAEF255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBrowserIntroCalloutViewController.swift; sourceTree = "<group>"; };
 		445E1F5A26B72923005C56C3 /* leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = leaf.cer; sourceTree = "<group>"; };
+		4481F22926CBD1C400658EAC /* AmazonRootCA3.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AmazonRootCA3.cer; sourceTree = "<group>"; };
+		4481F22A26CBD1C500658EAC /* AmazonRootCA4.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AmazonRootCA4.cer; sourceTree = "<group>"; };
+		4481F22B26CBD1C600658EAC /* AmazonRootCA2.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AmazonRootCA2.cer; sourceTree = "<group>"; };
+		4481F22C26CBD1C600658EAC /* SFSRootCAG2.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFSRootCAG2.cer; sourceTree = "<group>"; };
+		4481F23126CBD27900658EAC /* GlobalSignRootCA_R5.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSignRootCA_R5.cer; sourceTree = "<group>"; };
+		4481F23226CBD27900658EAC /* GlobalSignRootCA_E46.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSignRootCA_E46.cer; sourceTree = "<group>"; };
+		4481F23326CBD27A00658EAC /* GlobalSignRootCA_R46.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSignRootCA_R46.cer; sourceTree = "<group>"; };
+		4481F23426CBD27A00658EAC /* GlobalSignRootCA_R6.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSignRootCA_R6.cer; sourceTree = "<group>"; };
+		4481F23926CBD30800658EAC /* AmazonRootCA1.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AmazonRootCA1.cer; sourceTree = "<group>"; };
+		4481F23D26CBD3DA00658EAC /* ISRGRootCA_X1.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = ISRGRootCA_X1.cer; sourceTree = "<group>"; };
+		4481F23E26CBD3DB00658EAC /* ISRGRootCA_X2.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = ISRGRootCA_X2.cer; sourceTree = "<group>"; };
+		4481F24126CBD42B00658EAC /* GlobalSignRootCA_R3.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSignRootCA_R3.cer; sourceTree = "<group>"; };
+		4481F24226CBD42C00658EAC /* GlobalSignRootCA_R1.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSignRootCA_R1.cer; sourceTree = "<group>"; };
+		4481F24526CBF9C900658EAC /* DSTRootCA_X3.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = DSTRootCA_X3.cer; sourceTree = "<group>"; };
 		4484BAE8265422760099A205 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4484BAE9265422770099A205 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4484BAEA265422770099A205 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/BraveShared.strings; sourceTree = "<group>"; };
@@ -2526,7 +2547,6 @@
 		C817B34C1FC609500086018E /* UIScrollViewSwizzled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollViewSwizzled.swift; sourceTree = "<group>"; };
 		C8F457A71F1FD75A000CB895 /* BrowserViewController+WKNavigationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BrowserViewController+WKNavigationDelegate.swift"; sourceTree = "<group>"; };
 		C8F457A91F1FDD9B000CB895 /* BrowserViewController+KeyCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BrowserViewController+KeyCommands.swift"; sourceTree = "<group>"; };
-		CA1659C025E445EC00A860ED /* BaltimoreCyberTrustRoot.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = BaltimoreCyberTrustRoot.cer; sourceTree = "<group>"; };
 		CA439A5825E6F29D00FE9150 /* VideoPlayerInfoBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerInfoBar.swift; sourceTree = "<group>"; };
 		CA439A7525E8054A00FE9150 /* VideoPlayerControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerControlsView.swift; sourceTree = "<group>"; };
 		CA439A8F25E80EE400FE9150 /* VideoPlayerTrackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerTrackbar.swift; sourceTree = "<group>"; };
@@ -3353,10 +3373,20 @@
 		2765826D217130B700754B2F /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
-				CA1659C025E445EC00A860ED /* BaltimoreCyberTrustRoot.cer */,
-				27658270217130D900754B2F /* DigiCertHighAssurance.cer */,
-				2765826E217130D900754B2F /* GlobalSign_r1.cer */,
-				2765826F217130D900754B2F /* GlobalSign_r3.cer */,
+				4481F23926CBD30800658EAC /* AmazonRootCA1.cer */,
+				4481F22B26CBD1C600658EAC /* AmazonRootCA2.cer */,
+				4481F22926CBD1C400658EAC /* AmazonRootCA3.cer */,
+				4481F22A26CBD1C500658EAC /* AmazonRootCA4.cer */,
+				4481F24526CBF9C900658EAC /* DSTRootCA_X3.cer */,
+				4481F23226CBD27900658EAC /* GlobalSignRootCA_E46.cer */,
+				4481F24226CBD42C00658EAC /* GlobalSignRootCA_R1.cer */,
+				4481F24126CBD42B00658EAC /* GlobalSignRootCA_R3.cer */,
+				4481F23126CBD27900658EAC /* GlobalSignRootCA_R5.cer */,
+				4481F23426CBD27A00658EAC /* GlobalSignRootCA_R6.cer */,
+				4481F23326CBD27A00658EAC /* GlobalSignRootCA_R46.cer */,
+				4481F23D26CBD3DA00658EAC /* ISRGRootCA_X1.cer */,
+				4481F23E26CBD3DB00658EAC /* ISRGRootCA_X2.cer */,
+				4481F22C26CBD1C600658EAC /* SFSRootCAG2.cer */,
 			);
 			path = Certificates;
 			sourceTree = "<group>";
@@ -6490,11 +6520,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				F979BE2F25BCC54E009B6ACF /* AllFramesAtDocumentStart.js in Resources */,
+				4481F22F26CBD1C600658EAC /* AmazonRootCA2.cer in Resources */,
 				F979BE3025BCC54E009B6ACF /* AllFramesAtDocumentEnd.js in Resources */,
 				F979BE3125BCC54E009B6ACF /* AllFramesAtDocumentStartSandboxed.js in Resources */,
 				F979BE3225BCC54E009B6ACF /* AllFramesAtDocumentEndSandboxed.js in Resources */,
 				5E0FCD212342526700AC831E /* FullscreenHelper.js in Resources */,
 				D38A1EE01CB458EC0080C842 /* CertError.html in Resources */,
+				4481F24026CBD3DC00658EAC /* ISRGRootCA_X2.cer in Resources */,
 				0BA1E0301B051A07007675AF /* NetError.css in Resources */,
 				59871C1921E4D83900316590 /* block-cookies.json in Resources */,
 				0AB22A90257EADA900126ADC /* corwin-prescott_crestone.jpg in Resources */,
@@ -6502,6 +6534,7 @@
 				3BC659491E5BA4AE006D560F /* TopSites in Resources */,
 				E4B7B77E1A793CF20022C5E0 /* FiraSans-SemiBold.ttf in Resources */,
 				0AB22A93257EADA900126ADC /* corwin-prescott_canyon.jpg in Resources */,
+				4481F23726CBD27B00658EAC /* GlobalSignRootCA_R46.cer in Resources */,
 				F84B220B1A0910F600AAB793 /* Images.xcassets in Resources */,
 				2755AB7D23107BC600F0721F /* AdsReporting.js in Resources */,
 				0AB22A94257EADA900126ADC /* spencer-moore_ocean.jpg in Resources */,
@@ -6512,7 +6545,6 @@
 				5DB474F1237F4CC9007B7652 /* ntp-data.json in Resources */,
 				595E0EDB21CAD97C00813D49 /* CookieControl.js in Resources */,
 				0A0D3D3C21A4BE6400BEE65B /* adblock-list.txt in Resources */,
-				27658272217130D900754B2F /* GlobalSign_r3.cer in Resources */,
 				0A5E04FB23FEB53700E5A3E9 /* LaunchScreen.xcassets in Resources */,
 				0A0D3D3E21A4BE6C00BEE65B /* simple_malware.txt in Resources */,
 				0AA21E4B2302C4CC00358988 /* webauth_insert_key.json in Resources */,
@@ -6523,14 +6555,15 @@
 				F9E0F3A8257739B1003A6A30 /* TrackingProtectionStats.js in Resources */,
 				E4B7B7631A793CF20022C5E0 /* CharisSILI.ttf in Resources */,
 				5E5E6F2925BB61320035B6A0 /* Playlist.js in Resources */,
+				4481F24426CBD42C00658EAC /* GlobalSignRootCA_R1.cer in Resources */,
 				E4CD9F541A71506400318571 /* Reader.html in Resources */,
 				C6345ECB2113B3A000CFB983 /* SearchPlugins in Resources */,
+				4481F24326CBD42C00658EAC /* GlobalSignRootCA_R3.cer in Resources */,
 				F930CDAC227000F200A23FE1 /* U2F.js in Resources */,
 				4422D55921BFFB7F00BF1855 /* unicode.py in Resources */,
 				7B2142FE1E5E055000CDD3FC /* InfoPlist.strings in Resources */,
 				E69922171B94E3EF007C480D /* Licenses.html in Resources */,
 				E4CD9F5B1A71506C00318571 /* Reader.css in Resources */,
-				27658273217130D900754B2F /* DigiCertHighAssurance.cer in Resources */,
 				E4B7B7611A793CF20022C5E0 /* CharisSILB.ttf in Resources */,
 				5EC2C0E525C0B321005EA984 /* PlaylistDetector.js in Resources */,
 				0AB22A96257EADA900126ADC /* sora-sagano.jpg in Resources */,
@@ -6542,17 +6575,21 @@
 				F9F859702533CE52000CEB24 /* LoginsHelper.js in Resources */,
 				0AB22A95257EADA900126ADC /* corwin-prescott_beach.jpg in Resources */,
 				F9488EB32589899800A72C84 /* RewardsReporting.js in Resources */,
-				27658271217130D900754B2F /* GlobalSign_r1.cer in Resources */,
 				39F4C0FA2045D87400746155 /* FocusHelper.js in Resources */,
 				E4B7B7861A793CF20022C5E0 /* FiraSans-UltraLight.ttf in Resources */,
+				4481F23F26CBD3DC00658EAC /* ISRGRootCA_X1.cer in Resources */,
+				4481F22D26CBD1C600658EAC /* AmazonRootCA3.cer in Resources */,
 				0AB22A8D257EADA900126ADC /* alex-plesovskich.jpg in Resources */,
 				E4B7B77D1A793CF20022C5E0 /* FiraSans-Regular.ttf in Resources */,
+				4481F23A26CBD30900658EAC /* AmazonRootCA1.cer in Resources */,
+				4481F23626CBD27B00658EAC /* GlobalSignRootCA_E46.cer in Resources */,
 				4422D55221BFFB7E00BF1855 /* make_unicode_casefold.py in Resources */,
 				5E4E078324A0E4D700B01720 /* YoutubeAdblock.js in Resources */,
 				E4B7B7791A793CF20022C5E0 /* FiraSans-Light.ttf in Resources */,
 				0AB22A8B257EADA900126ADC /* zane-lee.jpg in Resources */,
 				5E3477E922D7771700B0D5F8 /* ResourceDownloader.js in Resources */,
 				F99505FF22937E3900CC6543 /* U2F-low-level.js in Resources */,
+				4481F23826CBD27B00658EAC /* GlobalSignRootCA_R6.cer in Resources */,
 				59D4161B232681080087A6E1 /* Localizable.strings in Resources */,
 				F9F8597C2533CEBC000CEB24 /* DownloadHelper.js in Resources */,
 				0A0D3D5021A5609600BEE65B /* SafeBrowsingError.html in Resources */,
@@ -6566,7 +6603,6 @@
 				5EC0017E260129AC005DDE4A /* PlaylistSwizzler.js in Resources */,
 				0AB22A88257EADA900126ADC /* dylan-malval_sea.jpg in Resources */,
 				D308EE561CBF0BF5006843F2 /* CertError.css in Resources */,
-				CA1659CC25E445FA00A860ED /* BaltimoreCyberTrustRoot.cer in Resources */,
 				4422D4AD21BFFB7600BF1855 /* LICENSE in Resources */,
 				27E0652624CB69C700134946 /* brave-today-welcome-graphic.json in Resources */,
 				E4B7B7641A793CF20022C5E0 /* CharisSILR.ttf in Resources */,
@@ -6578,10 +6614,13 @@
 				0BA1E00E1B03FB0B007675AF /* NetError.html in Resources */,
 				5DE5250E218CE92C000DFAA6 /* block-images.json in Resources */,
 				E4A961381AC06FA50069AD6F /* ReaderViewLoading.html in Resources */,
+				4481F23026CBD1C600658EAC /* SFSRootCAG2.cer in Resources */,
+				4481F22E26CBD1C600658EAC /* AmazonRootCA4.cer in Resources */,
 				0AB22A8E257EADA900126ADC /* spencer-moore_lake.jpg in Resources */,
 				59C8119922D754D4005D5BBC /* BraveShared.strings in Resources */,
 				F9E0F3B4257878C1003A6A30 /* PrintHandler.js in Resources */,
 				5E824A96260BCE0D00127F36 /* MainFrameAtDocumentStart.js in Resources */,
+				4481F23526CBD27B00658EAC /* GlobalSignRootCA_R5.cer in Resources */,
 				F9E0F38B25772E57003A6A30 /* ReaderMode.js in Resources */,
 				E4ECCDAE1AB131770005E717 /* FiraSans-Medium.ttf in Resources */,
 				0AB22A8C257EADA900126ADC /* andre-benz.jpg in Resources */,
@@ -6590,6 +6629,7 @@
 				2F676FAD260BA4860048A1DB /* blocking-summary.json in Resources */,
 				0AA21E4C2302C4CC00358988 /* webauth_touch_key.json in Resources */,
 				0A64384E24FD4E43000E80A3 /* ArchiveIsCompat.js in Resources */,
+				4481F24626CBF9C900658EAC /* DSTRootCA_X3.cer in Resources */,
 				5DE52511218CE92C000DFAA6 /* block-trackers.json in Resources */,
 				39A35AED1C0662A3006B9E87 /* SpotlightHelper.js in Resources */,
 				2F44FB2D1A9D5D8500FD20CC /* FiraSans-BoldItalic.ttf in Resources */,
