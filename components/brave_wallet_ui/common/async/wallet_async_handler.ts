@@ -16,7 +16,8 @@ import {
   APIProxyControllers,
   Network,
   WalletState,
-  WalletPanelState
+  WalletPanelState,
+  AssetPriceTimeframe
 } from '../../constants/types'
 import { InitialVisibleTokenInfo } from '../../options/initial-visible-token-info'
 
@@ -36,6 +37,21 @@ async function getAPIProxy (): Promise<APIProxyControllers> {
 
 function getWalletState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): WalletState {
   return (store.getState() as WalletPanelState).wallet
+}
+
+async function getTokenPriceHistory (store: Store) {
+  const apiProxy = await getAPIProxy()
+  const assetPriceController = apiProxy.assetRatioController
+  const state = getWalletState(store)
+  const result = await Promise.all(state.accounts.map(async (account) => {
+    return Promise.all(account.tokens.map(async (token) => {
+      return {
+        token: token,
+        history: await assetPriceController.getPriceHistory(token.asset.symbol.toLowerCase(), state.selectedPortfolioTimeline)
+      }
+    }))
+  }))
+  store.dispatch(WalletActions.portfolioPriceHistoryUpdated(result))
 }
 
 async function refreshWalletInfo (store: Store) {
@@ -94,6 +110,7 @@ async function refreshWalletInfo (store: Store) {
     prices: getTokenPrices
   }
   store.dispatch(WalletActions.tokenBalancesUpdated(tokenBalancesAndPrices))
+  await getTokenPriceHistory(store)
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {
@@ -175,6 +192,11 @@ handler.on(WalletActions.updateVisibleTokens.getType(), async (store, payload: s
   // to update the users visibleTokens
   store.dispatch(WalletActions.setVisibleTokens(payload))
   await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.selectPortfolioTimeline.getType(), async (store, payload: AssetPriceTimeframe) => {
+  store.dispatch(WalletActions.portfolioTimelineUpdated(payload))
+  await getTokenPriceHistory(store)
 })
 
 export default handler.middleware

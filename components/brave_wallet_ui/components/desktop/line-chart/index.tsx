@@ -27,6 +27,7 @@ export interface Props {
   isAsset: boolean
   isDown: boolean
   isLoading: boolean
+  isDisabled: boolean
 }
 
 const EmptyChartData = [
@@ -45,15 +46,15 @@ const EmptyChartData = [
 ]
 
 function LineChart (props: Props) {
-  const { priceData, onUpdateBalance, isAsset, isDown, isLoading } = props
+  const { priceData, onUpdateBalance, isAsset, isDown, isLoading, isDisabled } = props
   const [position, setPosition] = React.useState<number>(0)
 
   const chartData = React.useMemo(() => {
-    if (priceData.length <= 0) {
+    if (priceData.length <= 0 || isDisabled) {
       return EmptyChartData
     }
     return priceData
-  }, [priceData])
+  }, [priceData, isDisabled])
 
   const lastPoint = chartData.length - 1
 
@@ -121,7 +122,7 @@ function LineChart (props: Props) {
           </defs>
           <YAxis hide={true} domain={['auto', 'auto']} />
           <XAxis hide={true} dataKey='date' />
-          {priceData.length > 0 &&
+          {priceData.length > 0 && !isDisabled &&
             <Tooltip isAnimationActive={false} position={{ x: position, y: 0 }} content={<CustomTooltip />} />
           }
           <Area

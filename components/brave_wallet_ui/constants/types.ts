@@ -161,6 +161,9 @@ export interface WalletState {
   userVisibleTokens: string[]
   userVisibleTokensInfo: TokenInfo[]
   fullTokenList: TokenInfo[]
+  portfolioPriceHistory: PriceDataObjectType[]
+  isFetchingPortfolioPriceHistory: boolean
+  selectedPortfolioTimeline: AssetPriceTimeframe
 }
 
 export interface PanelState {
@@ -356,6 +359,11 @@ export interface GetERC20TokenBalanceReturnInfo {
 export interface GetERC20TokenBalanceAndPriceReturnInfo {
   balances: GetERC20TokenBalanceReturnInfo[][]
   prices: GetPriceReturnInfo
+}
+
+export interface PortfolioTokenHistoryAndInfo {
+  history: GetPriceHistoryReturnObjectInfo
+  token: AccountAssetOptionType
 }
 
 export interface CreateWalletReturnInfo {

@@ -77,7 +77,10 @@ function Container (props: Props) {
     hasInitialized,
     userVisibleTokens,
     userVisibleTokensInfo,
-    fullTokenList
+    fullTokenList,
+    portfolioPriceHistory,
+    selectedPortfolioTimeline,
+    isFetchingPortfolioPriceHistory
   } = props.wallet
 
   // Page Props
@@ -90,7 +93,6 @@ function Container (props: Props) {
     selectedUSDAssetPrice,
     selectedBTCAssetPrice,
     selectedAssetPriceHistory,
-    portfolioPriceHistory,
     setupStillInProgress,
     isFetchingPriceHistory
   } = props.page
@@ -237,12 +239,6 @@ function Container (props: Props) {
 
   const recoveryPhrase = (mnemonic || '').split(' ')
 
-  const onChangeTimeline = (timeline: AssetPriceTimeframe) => {
-    if (selectedAsset) {
-      props.walletPageActions.selectAsset({ asset: selectedAsset, timeFrame: timeline })
-    }
-  }
-
   // This will scrape all of the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = (asset: TokenInfo) => {
     const amounts = accounts.map((account) => {
@@ -304,6 +300,16 @@ function Container (props: Props) {
     }, 0)
     return formatPrices(grandTotal)
   }, [userAssetList])
+
+  const onChangeTimeline = (timeline: AssetPriceTimeframe) => {
+    if (selectedAsset) {
+      props.walletPageActions.selectAsset({ asset: selectedAsset, timeFrame: timeline })
+    } else {
+      if (parseFloat(fullPortfolioBalance) !== 0) {
+        props.walletActions.selectPortfolioTimeline(timeline)
+      }
+    }
+  }
 
   const formatedPriceHistory = React.useMemo(() => {
     const formated = selectedAssetPriceHistory.map((obj) => {
@@ -411,6 +417,7 @@ function Container (props: Props) {
                   selectedAssetPriceHistory={formatedPriceHistory}
                   portfolioPriceHistory={portfolioPriceHistory}
                   selectedTimeline={selectedTimeline}
+                  selectedPortfolioTimeline={selectedPortfolioTimeline}
                   transactions={transactions}
                   userAssetList={userAssetList}
                   fullAssetList={fullTokenList}
@@ -426,6 +433,7 @@ function Container (props: Props) {
                   userWatchList={userVisibleTokens}
                   selectedNetwork={selectedNetwork}
                   onSelectNetwork={onSelectNetwork}
+                  isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
                 />
               )}
             </>
@@ -444,7 +452,9 @@ function Container (props: Props) {
     showRecoveryPhrase,
     userAssetList,
     userVisibleTokens,
-    userVisibleTokensInfo
+    userVisibleTokensInfo,
+    portfolioPriceHistory,
+    isFetchingPortfolioPriceHistory
   ])
 
   return (
