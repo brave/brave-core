@@ -34,6 +34,8 @@
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 
+#include "brave/components/brave_wallet/browser/erc_token_registry.h"
+
 WalletPageUI::WalletPageUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui,
                               true /* Needed for webui browser tests */) {
@@ -78,7 +80,9 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::AssetRatioController>
         asset_ratio_controller_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::KeyringController>
-        keyring_controller_receiver) {
+        keyring_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>
+        erc_token_registry_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -111,5 +115,10 @@ void WalletPageUI::CreatePageHandler(
       brave_wallet::KeyringControllerFactory::GetControllerForContext(profile);
   if (keyring_controller) {
     keyring_controller->Bind(std::move(keyring_controller_receiver));
+  }
+
+  auto* erc_token_registry = brave_wallet::ERCTokenRegistry::GetInstance();
+  if (erc_token_registry) {
+    erc_token_registry->Bind(std::move(erc_token_registry_receiver));
   }
 }

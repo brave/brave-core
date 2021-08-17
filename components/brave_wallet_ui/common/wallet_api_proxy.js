@@ -23,6 +23,9 @@ export default class WalletApiProxy {
     this.assetRatioController = new braveWallet.mojom.AssetRatioControllerRemote();
     /** @type {!braveWallet.mojom.KeyringControllerRemote} */
     this.keyringController = new braveWallet.mojom.KeyringControllerRemote();
+
+    /** @type {!braveWallet.mojom.KeyringControllerRemote} */
+    this.ercTokenRegistry = new braveWallet.mojom.ERCTokenRegistryRemote();
   }
 
   addEthJsonRpcControllerObserver(store) {

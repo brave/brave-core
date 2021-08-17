@@ -29,12 +29,6 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
   // brave_wallet::mojom::WalletHandler:
   void GetWalletInfo(GetWalletInfoCallback) override;
 
-  void GetTokenByContract(const std::string& contract,
-                          GetTokenByContractCallback) override;
-  void GetTokenBySymbol(const std::string& symbol,
-                        GetTokenBySymbolCallback) override;
-  void GetAllTokens(GetAllTokensCallback) override;
-
   void AddFavoriteApp(brave_wallet::mojom::AppItemPtr app_item) override;
   void RemoveFavoriteApp(brave_wallet::mojom::AppItemPtr app_item) override;
 

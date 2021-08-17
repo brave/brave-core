@@ -30,7 +30,8 @@ interface PanelHandlerFactory {
                      pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
                      pending_receiver<SwapController> swap_controller,
                      pending_receiver<AssetRatioController> asset_ratio_controller,
-                     pending_receiver<KeyringController> keyring_controller);
+                     pending_receiver<KeyringController> keyring_controller,
+                     pending_receiver<ERCTokenRegistry> erc_token_registry);
 };
 
 interface PageHandlerFactory {
@@ -41,7 +42,8 @@ interface PageHandlerFactory {
                     pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
                     pending_receiver<SwapController> swap_controller,
                     pending_receiver<AssetRatioController> asset_ratio_controller,
-                    pending_receiver<KeyringController> keyring_controller);
+                    pending_receiver<KeyringController> keyring_controller,
+                    pending_receiver<ERCTokenRegistry> erc_token_registry);
 
 };
 
@@ -141,11 +143,6 @@ interface WalletHandler {
                       array<AppItem> favoriteApps,
                       bool isWalletBackedUp,
                       array<AccountInfo> accountInfos);
-
-  GetTokenByContract(string contract) => (ERCToken? token);
-  GetTokenBySymbol(string symbol) => (ERCToken? token);
-  GetAllTokens() => (array<ERCToken> tokens);
-
   AddFavoriteApp(AppItem appItem);
   RemoveFavoriteApp(AppItem appItem);
 };

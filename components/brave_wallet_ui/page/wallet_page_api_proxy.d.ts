@@ -11,6 +11,7 @@ export default class APIProxy {
   ethJsonRpcController: EthJsonRpcController
   swapController: SwapController
   assetRatioController: AssetRatioController
+  ercTokenRegistry: ERCTokenRegistry
   keyringController: KeyringController
   addEthJsonRpcControllerObserver: (store: any) => void
   addKeyringControllerObserver: (store: any) => void
