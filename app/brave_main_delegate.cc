@@ -18,7 +18,6 @@
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/resource_bundle_helper.h"
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
@@ -30,6 +29,7 @@
 #include "chrome/common/chrome_switches.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/embedder_support/switches.h"
 #include "components/federated_learning/features/features.h"
 #include "components/feed/feed_feature_list.h"
@@ -51,10 +51,6 @@
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/common/features.h"
 #include "ui/base/ui_base_features.h"
-
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-#include "components/dom_distiller/core/dom_distiller_switches.h"
-#endif
 
 #if defined(OS_ANDROID)
 #include "base/android/jni_android.h"
@@ -162,10 +158,8 @@ void BraveMainDelegate::PreSandboxStartup() {
 
 bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   BraveCommandLineHelper command_line(base::CommandLine::ForCurrentProcess());
-#if BUILDFLAG(BRAVE_ADS_ENABLED) || BUILDFLAG(ENABLE_SPEEDREADER)
-  command_line.AppendSwitch(switches::kEnableDomDistiller);
-#endif  // BUILDFLAG(BRAVE_ADS_ENABLED) || BUILDFLAG(ENABLE_SPEEDREADER)
   command_line.AppendSwitch(switches::kDisableDomainReliability);
+  command_line.AppendSwitch(switches::kEnableDomDistiller);
   command_line.AppendSwitch(switches::kNoPings);
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(

@@ -4,7 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/browser/brave_ads/android/java_sources.gni")
-import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
@@ -236,14 +235,11 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/CryptoWidgetTabAdapter.java",
 ]
 
+brave_java_sources += brave_ads_java_sources
 brave_java_sources += brave_rewards_java_sources
 
 if (enable_brave_referrals) {
   brave_java_sources += [ "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java" ]
-}
-
-if (brave_ads_enabled) {
-  brave_java_sources += brave_ads_java_sources
 }
 
 if (enable_brave_sync) {

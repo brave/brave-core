@@ -71,9 +71,7 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
 #endif
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
   brave_ads::ResourceComponent* resource_component() override;
-#endif
 
   // Populate the mock process with services. Consumer is responsible for
   // cleaning these up after completion of a test.

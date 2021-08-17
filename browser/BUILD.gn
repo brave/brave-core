@@ -18,7 +18,6 @@ source_set("browser_process") {
 
   deps = [
     "//brave/browser/ethereum_remote_client/buildflags",
-    "//brave/components/brave_ads/browser/buildflags",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ipfs/buildflags",

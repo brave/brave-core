@@ -22,7 +22,6 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -1161,12 +1160,7 @@ void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
   ads_data.SetBoolean(kShouldAllowAdsSubdivisionTargeting,
       should_allow_subdivision_ad_targeting);
 
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-    auto ads_ui_enabled = true;
-#else
-    auto ads_ui_enabled = false;
-#endif
-  ads_data.SetBoolean("adsUIEnabled", ads_ui_enabled);
+  ads_data.SetBoolean("adsUIEnabled", true);
 
   CallJavascriptFunction("brave_rewards.adsData", ads_data);
 }
