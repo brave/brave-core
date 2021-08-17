@@ -29,6 +29,7 @@ static_library("browser") {
     "rewards_service_impl.cc",
     "rewards_service_impl.h",
     "rewards_service_observer.h",
+    "service_sandbox_type.h",
     "static_values.h",
     "switches.cc",
     "switches.h",
