@@ -66,14 +66,20 @@ class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
         HostContentSettingsMapFactory::GetForProfile(browser()->profile());
 
     // We can't simply create a new BraveShieldsWebContentsObserver for the same
-    // WebContents, as that class will instatiate a WebContentsFrameReceiverSet
-    // and we can't have two at the same time for the same mojo interface. Thus,
-    // we need to remove the one created along with the initialization of the
-    // browser process before creating the one we need for testing.
-    content::RemoveWebContentsReceiverSet(
-        GetWebContents(), brave_shields::mojom::BraveShieldsHost::Name_);
+    // WebContents, as that class will instatiate a RenderFrameHostReceiverSet
+    // and we won't be able to intercept the mojo messages received for the
+    // brave_shields::mojom::BraveShieldsHost interface for testing purposes.
+    // Instead we call SetReceiverImplForTesting() to make sure that the mojo
+    // receiver will be bound to our TestBraveShieldsWebContentsObserver class,
+    // allowing us to intercept any message we are interested in.
     brave_shields_web_contents_observer_ =
         new TestBraveShieldsWebContentsObserver(GetWebContents());
+    BraveShieldsWebContentsObserver::SetReceiverImplForTesting(
+        brave_shields_web_contents_observer_);
+  }
+
+  void TearDownOnMainThread() override {
+    BraveShieldsWebContentsObserver::SetReceiverImplForTesting(nullptr);
   }
 
   content::WebContents* GetWebContents() {

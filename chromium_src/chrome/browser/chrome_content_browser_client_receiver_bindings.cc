@@ -11,13 +11,20 @@
 // ChromeContentBrowserClient::BindAssociatedReceiverFromFrame() overrides
 // a method from content::ContentBrowserClient() so we use a one-line C++
 // patch here to avoid having to override several .cc and .h files.
-#define BRAVE_BIND_ASSOCIATED_RECEIVER_FROM_FRAME                    \
-  if (interface_name == brave_drm::mojom::BraveDRM::Name_) {         \
-    BraveDrmTabHelper::BindBraveDRM(                                 \
-        mojo::PendingAssociatedReceiver<brave_drm::mojom::BraveDRM>( \
-            std::move(*handle)),                                     \
-        render_frame_host);                                          \
-    return true;                                                     \
+#define BRAVE_BIND_ASSOCIATED_RECEIVER_FROM_FRAME                         \
+  if (interface_name == brave_drm::mojom::BraveDRM::Name_) {              \
+    BraveDrmTabHelper::BindBraveDRM(                                      \
+        mojo::PendingAssociatedReceiver<brave_drm::mojom::BraveDRM>(      \
+            std::move(*handle)),                                          \
+        render_frame_host);                                               \
+    return true;                                                          \
+  }                                                                       \
+  if (interface_name == brave_shields::mojom::BraveShieldsHost::Name_) {  \
+    brave_shields::BraveShieldsWebContentsObserver::BindBraveShieldsHost( \
+        mojo::PendingAssociatedReceiver<                                  \
+            brave_shields::mojom::BraveShieldsHost>(std::move(*handle)),  \
+        render_frame_host);                                               \
+    return true;                                                          \
   }
 
 #include "../../../../chrome/browser/chrome_content_browser_client_receiver_bindings.cc"  // NOLINT
