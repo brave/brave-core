@@ -1,5 +1,4 @@
 import("//brave/build/config.gni")
-import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 
 source_set("brave_ads") {
   # Remove when https://github.com/brave/brave-browser/issues/10639 is resolved
@@ -16,7 +15,6 @@ source_set("brave_ads") {
     "//base",
     "//brave/browser/profiles:util",
     "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/browser/buildflags",
     "//components/dom_distiller/content/browser",
     "//components/keyed_service/content",
     "//components/sessions",

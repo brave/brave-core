@@ -8,8 +8,9 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/services/bat_ads/bat_ads_service_impl.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/services/bat_ledger/bat_ledger_service_impl.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -27,11 +28,6 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "brave/components/services/tor/tor_launcher_impl.h"
-#endif
-
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-#include "brave/components/services/bat_ads/bat_ads_service_impl.h"
-#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #endif
 
 namespace {
@@ -61,12 +57,10 @@ auto RunBatLedgerService(
       std::move(receiver));
 }
 
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
 auto RunBatAdsService(
     mojo::PendingReceiver<bat_ads::mojom::BatAdsService> receiver) {
   return std::make_unique<bat_ads::BatAdsServiceImpl>(std::move(receiver));
 }
-#endif
 
 }  // namespace
 
@@ -89,9 +83,7 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
 
   services.Add(RunBatLedgerService);
 
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
   services.Add(RunBatAdsService);
-#endif
 
   return ChromeContentUtilityClient::RegisterMainThreadServices(services);
 }

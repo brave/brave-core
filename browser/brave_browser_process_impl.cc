@@ -19,7 +19,7 @@
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
+#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_federated_learning/brave_federated_learning_service.h"
@@ -84,10 +84,6 @@
 #else
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
-#endif
-
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #endif
 
 using brave_component_updater::BraveComponent;
@@ -181,6 +177,7 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   ad_block_service()->Start();
   https_everywhere_service()->Start();
   brave_federated_learning_service()->Start();
+  resource_component();
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_whitelist_service();
@@ -190,9 +187,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 #endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader_rewriter_service();
-#endif
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-  resource_component();
 #endif
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
@@ -348,6 +342,14 @@ brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   return brave_stats_updater_.get();
 }
 
+brave_ads::ResourceComponent* BraveBrowserProcessImpl::resource_component() {
+  if (!resource_component_) {
+    resource_component_.reset(
+        new brave_ads::ResourceComponent(brave_component_updater_delegate()));
+  }
+  return resource_component_.get();
+}
+
 void BraveBrowserProcessImpl::CreateProfileManager() {
   DCHECK(!created_profile_manager_ && !profile_manager_);
   created_profile_manager_ = true;
@@ -393,17 +395,6 @@ BraveBrowserProcessImpl::speedreader_rewriter_service() {
   return speedreader_rewriter_service_.get();
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
-
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-brave_ads::ResourceComponent* BraveBrowserProcessImpl::resource_component() {
-  if (!resource_component_) {
-    resource_component_.reset(
-        new brave_ads::ResourceComponent(brave_component_updater_delegate()));
-  }
-  return resource_component_.get();
-}
-
-#endif  // BUILDFLAG(BRAVE_ADS_ENABLED)
 
 #if BUILDFLAG(ENABLE_IPFS)
 ipfs::BraveIpfsClientUpdater*

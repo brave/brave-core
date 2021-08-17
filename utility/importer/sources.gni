@@ -1,11 +1,12 @@
-import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 
 brave_utility_importer_sources = []
 brave_utility_importer_deps = []
-brave_utility_importer_public_deps =
-    [ "//brave/components/services/bat_ledger:lib" ]
+brave_utility_importer_public_deps = [
+  "//brave/components/services/bat_ads:lib",
+  "//brave/components/services/bat_ledger:lib",
+]
 
 if (!is_android) {
   brave_utility_importer_sources += [
@@ -34,9 +35,4 @@ if (enable_tor) {
 
 if (enable_ipfs) {
   brave_utility_importer_deps += [ "//brave/components/services/ipfs" ]
-}
-
-if (brave_ads_enabled) {
-  brave_utility_importer_public_deps +=
-      [ "//brave/components/services/bat_ads:lib" ]
 }

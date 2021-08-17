@@ -132,12 +132,10 @@ TestingBraveBrowserProcess::speedreader_rewriter_service() {
 }
 #endif
 
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
 brave_ads::ResourceComponent* TestingBraveBrowserProcess::resource_component() {
   NOTREACHED();
   return nullptr;
 }
-#endif
 
 void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {
