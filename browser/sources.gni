@@ -112,6 +112,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/common",
   "//brave/components/brave_federated_learning",
+  "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_referrals/buildflags",
   "//brave/components/brave_rewards/common/buildflags",
   "//brave/components/brave_search/browser",
@@ -291,11 +292,6 @@ if (enable_widevine) {
     "//brave/browser/widevine",
     "//brave/components/brave_drm",
   ]
-}
-
-if (enable_brave_perf_predictor) {
-  brave_chrome_browser_deps +=
-      [ "//brave/components/brave_perf_predictor/browser" ]
 }
 
 if (enable_ftx) {

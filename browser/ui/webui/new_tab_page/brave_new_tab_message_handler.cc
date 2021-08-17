@@ -23,7 +23,7 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_perf_predictor/browser/buildflags.h"
+#include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -47,10 +47,6 @@ using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
 using ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImage;  // NOLINT
 using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
 using ntp_background_images::ViewCounterServiceFactory;
-
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-#include "brave/components/brave_perf_predictor/common/pref_names.h"
-#endif
 
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
 #include "brave/components/crypto_dot_com/common/pref_names.h"
@@ -81,11 +77,9 @@ base::DictionaryValue GetStatsDictionary(PrefService* prefs) {
   stats_data.SetInteger(
     "fingerprintingBlockedStat",
     prefs->GetUint64(kFingerprintingBlocked));
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   stats_data.SetDouble(
       "bandwidthSavedStat",
       prefs->GetUint64(brave_perf_predictor::prefs::kBandwidthSavedBytes));
-#endif
   return stats_data;
 }
 

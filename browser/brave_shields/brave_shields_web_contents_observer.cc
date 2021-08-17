@@ -11,7 +11,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_perf_predictor/browser/buildflags.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -30,10 +30,6 @@
 #include "ipc/ipc_message_macros.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
-#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/common/extensions/api/brave_shields.h"
@@ -183,10 +179,8 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
       }
     }
   }
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   brave_perf_predictor::PerfPredictorTabHelper::DispatchBlockedEvent(
       request_url.spec(), frame_tree_node_id);
-#endif
 }
 
 #if !defined(OS_ANDROID)
