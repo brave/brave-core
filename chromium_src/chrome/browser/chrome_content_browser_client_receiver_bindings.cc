@@ -5,20 +5,30 @@
 
 #include "chrome/browser/chrome_content_browser_client.h"
 
-#include "brave/browser/brave_drm_tab_helper.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+#include "brave/browser/brave_drm_tab_helper.h"
+#endif  // BUILDFLAG(ENABLE_WIDEVINE)
 
 // ChromeContentBrowserClient::BindAssociatedReceiverFromFrame() overrides
 // a method from content::ContentBrowserClient() so we use a one-line C++
 // patch here to avoid having to override several .cc and .h files.
-#define BRAVE_BIND_ASSOCIATED_RECEIVER_FROM_FRAME                         \
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  #define BRAVE_BIND_ASSOCIATED_RECEIVER_FROM_FRAME_BIND_BRAVE_DRM        \
   if (interface_name == brave_drm::mojom::BraveDRM::Name_) {              \
     BraveDrmTabHelper::BindBraveDRM(                                      \
         mojo::PendingAssociatedReceiver<brave_drm::mojom::BraveDRM>(      \
             std::move(*handle)),                                          \
         render_frame_host);                                               \
     return true;                                                          \
-  }                                                                       \
+  }
+#else
+#define BRAVE_BIND_ASSOCIATED_RECEIVER_FROM_FRAME_BIND_BRAVE_DRM
+#endif  // BUILDFLAG(ENABLE_WIDEVINE)
+#define BRAVE_BIND_ASSOCIATED_RECEIVER_FROM_FRAME                         \
+  BRAVE_BIND_ASSOCIATED_RECEIVER_FROM_FRAME_BIND_BRAVE_DRM                \
   if (interface_name == brave_shields::mojom::BraveShieldsHost::Name_) {  \
     brave_shields::BraveShieldsWebContentsObserver::BindBraveShieldsHost( \
         mojo::PendingAssociatedReceiver<                                  \
