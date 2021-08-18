@@ -36,6 +36,10 @@ type PageProps = {
   showBrandedWallpaper: boolean
 } & HasImageProps
 
+type GridItemWidgetStackProps = {
+  isClockVisible: boolean
+}
+
 function getItemRowCount (p: PageProps): number {
   let right = (p.showClock ? 1 : 0) + (p.showRewards ? 2 : 0)
   let left = (p.showStats ? 1 : 0) + (p.showTopSites ? 1 : 0)
@@ -175,9 +179,14 @@ export const GridItemClock = styled('section')`
   ${singleColumnSmallViewport}
 `
 
-export const GridItemWidgetStack = styled('section')`
+export const GridItemWidgetStack = styled('section')<GridItemWidgetStackProps>`
   grid-column: 3 / span 1;
-  grid-row-end: span 2;
+  grid-row: auto / span 2;
+  ${p => !p.isClockVisible && (
+    css`
+      grid-row: 1 / span 4;
+    `
+  )}
   @media screen and (max-width: ${breakpointLargeBlocks}) {
     max-width: 284px;
   }
@@ -248,11 +257,20 @@ export const GridItemNavigationBraveToday = styled('div')<{}>`
   margin: 0 auto;
 `
 
-export const Footer = styled('footer')<{}>`
+export const Footer = styled('footer')<GridItemWidgetStackProps>`
   /* Child items are primary Grid items and can slot in to free spaces,
      so this element doesn't do anything on wider viewport widths. */
+  --ntp-page-padding: 12px;
   display: contents;
-
+  ${p => !p.isClockVisible && (
+    css`
+      display: block;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      padding: var(--ntp-page-padding);
+    `
+  )}
   @media screen and (max-width: ${breakpointEveryBlock}) {
     width: 100%;
     /* Take up rest of Page height so that footer is always at bottom */

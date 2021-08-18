@@ -798,7 +798,9 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     return (
-      <Page.GridItemWidgetStack>
+      <Page.GridItemWidgetStack
+        isClockVisible={newTabData.showClock}
+      >
         {this.getCryptoContent()}
         {!allWidgetsHidden &&
           <EditCards onEditCards={this.openSettingsEditCards} />
@@ -1126,7 +1128,9 @@ class NewTabPage extends React.Component<Props, State> {
             ) : null
           }
             {cryptoContent}
-          <Page.Footer>
+          <Page.Footer
+            isClockVisible={newTabData.showClock}
+          >
             <Page.FooterContent>
             {isShowingBrandedWallpaper && newTabData.brandedWallpaperData &&
             newTabData.brandedWallpaperData.logo &&
