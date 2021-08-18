@@ -156,7 +156,7 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
     }
 
     fileprivate func normalizeString(_ string: String) -> String {
-        return string.lowercased().stringByTrimmingLeadingCharactersInSet(CharacterSet.whitespaces)
+        return string.stringByTrimmingLeadingCharactersInSet(CharacterSet.whitespaces)
     }
 
     /// Commits the completion by setting the text and removing the highlight.
@@ -197,7 +197,7 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
             return
         }
 
-        let normalized = normalizeString(text)
+        let normalized = normalizeString(text).lowercased()
         guard suggestion.hasPrefix(normalized) && normalized.count < suggestion.count else {
             hideCursor = false
             return

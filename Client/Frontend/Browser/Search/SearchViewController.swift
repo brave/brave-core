@@ -358,13 +358,14 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     private func querySuggestClient() {
         suggestClient?.cancelPendingRequest()
 
-        if searchQuery.isEmpty || searchEngines?.shouldShowSearchSuggestionsOptIn == true || searchQuery.looksLikeAURL() {
+        let localSearchQuery = searchQuery.lowercased()
+        if localSearchQuery.isEmpty || searchEngines?.shouldShowSearchSuggestionsOptIn == true || localSearchQuery.looksLikeAURL() {
             suggestions = []
             tableView.reloadData()
             return
         }
 
-        suggestClient?.query(searchQuery, callback: { [weak self] suggestions, error in
+        suggestClient?.query(localSearchQuery, callback: { [weak self] suggestions, error in
             guard let self = self else { return }
 
             self.tableView.reloadData()
@@ -390,7 +391,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
 
             // If there are no suggestions, just use whatever the user typed.
             if suggestions?.isEmpty ?? true {
-                self.suggestions = [self.searchQuery]
+                self.suggestions = [localSearchQuery]
             }
 
             // Reload the tableView to show the new list of search suggestions.
@@ -414,14 +415,14 @@ class SearchViewController: SiteTableViewController, LoaderListener {
         }
 
         let engine = quickSearchEngines[index - 1]
-
-        guard let url = engine.searchURLForQuery(searchQuery) else {
+        let localSearchQuery = searchQuery.lowercased()
+        guard let url = engine.searchURLForQuery(localSearchQuery) else {
             assertionFailure()
             return
         }
 
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-            RecentSearch.addItem(type: .website, text: searchQuery, websiteUrl: url.absoluteString)
+            RecentSearch.addItem(type: .website, text: localSearchQuery, websiteUrl: url.absoluteString)
         }
         searchDelegate?.searchViewController(self, didSelectURL: url)
     }
@@ -464,7 +465,8 @@ class SearchViewController: SiteTableViewController, LoaderListener {
                 searchDelegate?.searchViewController(self, didSelectURL: url)
             }
         case .findInPage:
-            searchDelegate?.searchViewController(self, shouldFindInPage: searchQuery)
+            let localSearchQuery = searchQuery.lowercased()
+            searchDelegate?.searchViewController(self, shouldFindInPage: localSearchQuery)
         }
     }
 
