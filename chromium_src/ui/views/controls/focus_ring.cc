@@ -47,8 +47,8 @@ FocusRingTheme& GetFocusRingTheme() {
 
 }  // namespace
 
-#define setStyle                                                            \
-  setColor(color_.value_or(                                                 \
+#define setStyle                                                           \
+  setColor(color_.value_or(                                                \
       GetFocusRingTheme().GetSystemColor(ColorIdForValidity(!invalid_)))); \
   paint.setStyle
 
