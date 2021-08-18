@@ -7,6 +7,7 @@ import {
   RecoveryPhraseInput,
   ErrorText,
   CheckboxRow,
+  LegacyCheckboxRow,
   FormWrapper,
   InputColumn,
   FormText
@@ -18,7 +19,7 @@ import { Checkbox } from 'brave-ui'
 
 export interface Props {
   toggleShowRestore: () => void
-  onRestore: (phrase: string, password: string) => void
+  onRestore: (phrase: string, password: string, isLegacy: boolean) => void
   hasRestoreError: boolean
 }
 
@@ -29,6 +30,7 @@ function OnboardingRestore (props: Props) {
     hasRestoreError
   } = props
   const [showRecoveryPhrase, setShowRecoveryPhrase] = React.useState<boolean>(false)
+  const [isLegacyWallet, setIsLegacyWallet] = React.useState<boolean>(false)
   const [password, setPassword] = React.useState<string>('')
   const [confirmedPassword, setConfirmedPassword] = React.useState<string>('')
   const [recoveryPhrase, setRecoveryPhrase] = React.useState<string>('')
@@ -39,7 +41,9 @@ function OnboardingRestore (props: Props) {
   }
 
   const onSubmitRestore = () => {
-    onRestore(recoveryPhrase, password)
+    // added an additional trim here in case the phrase length is
+    // 12, 15, 18 or 21 long and has a space at the end.
+    onRestore(recoveryPhrase.trimEnd(), password, isLegacyWallet)
   }
 
   const handlePasswordChanged = (value: string) => {
@@ -52,19 +56,27 @@ function OnboardingRestore (props: Props) {
 
   const handleRecoveryPhraseChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
+
+    // This prevents there from being a space at the begining of the phrase.
     const removeBegginingWhiteSpace = value.trimStart()
+
+    // This Prevents there from being more than one space between words.
     const removedDoubleSpaces = removeBegginingWhiteSpace.replace(/ +(?= )/g, '')
-    const removedSpecialCharacters = removedDoubleSpaces.replace(/[^a-zA-Z ]/g, '')
-    if (recoveryPhrase.split(' ').length === 12) {
-      setRecoveryPhrase(removedSpecialCharacters.trimEnd())
+
+    // Although the above removes double spaces, it is initialy recognized as a
+    // a double-space before it is removed and macOS automatically replaces double-spaces with a period.
+    const removePeriod = removedDoubleSpaces.replace(/['/.']/g, '')
+
+    // This prevents an extra space at the end of a 24 word phrase.
+    if (recoveryPhrase.split(' ').length === 24) {
+      setRecoveryPhrase(removePeriod.trimEnd())
     } else {
-      setRecoveryPhrase(removedSpecialCharacters)
+      setRecoveryPhrase(removePeriod)
     }
   }
 
   const isValidRecoveryPhrase = React.useMemo(() => {
-    const phrase = recoveryPhrase.split(' ')
-    if (phrase.length === 12 && phrase[11] !== '') {
+    if (recoveryPhrase.trim().split(/\s+/g).length >= 12) {
       return false
     } else {
       return true
@@ -104,6 +116,12 @@ function OnboardingRestore (props: Props) {
     }
   }
 
+  const onSetIsLegacyWallet = (key: string, selected: boolean) => {
+    if (key === 'isLegacy') {
+      setIsLegacyWallet(selected)
+    }
+  }
+
   return (
     <>
       <BackButton onSubmit={onBack} />
@@ -119,6 +137,13 @@ function OnboardingRestore (props: Props) {
             type={showRecoveryPhrase ? 'text' : 'password'}
           />
           {hasRestoreError && <ErrorText>{locale.restoreError}</ErrorText>}
+          {recoveryPhrase.split(' ').length === 24 &&
+            <LegacyCheckboxRow>
+              <Checkbox value={{ isLegacy: isLegacyWallet }} onChange={onSetIsLegacyWallet}>
+                <div data-key='isLegacy'>{locale.restoreLegacyCheckBox}</div>
+              </Checkbox>
+            </LegacyCheckboxRow>
+          }
           <CheckboxRow>
             <Checkbox value={{ showPhrase: showRecoveryPhrase }} onChange={onShowRecoveryPhrase}>
               <div data-key='showPhrase'>{locale.restoreShowPhrase}</div>
