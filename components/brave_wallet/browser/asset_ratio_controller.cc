@@ -49,6 +49,35 @@ std::string VectorToCommaSeparatedList(const std::vector<std::string>& assets) {
   return ss.str();
 }
 
+std::string TimeFrameKeyToString(
+    brave_wallet::mojom::AssetPriceTimeframe timeframe) {
+  std::string timeframe_key;
+  switch (timeframe) {
+    case brave_wallet::mojom::AssetPriceTimeframe::Live:
+      timeframe_key = "live";
+      break;
+    case brave_wallet::mojom::AssetPriceTimeframe::OneDay:
+      timeframe_key = "1d";
+      break;
+    case brave_wallet::mojom::AssetPriceTimeframe::OneWeek:
+      timeframe_key = "1w";
+      break;
+    case brave_wallet::mojom::AssetPriceTimeframe::OneMonth:
+      timeframe_key = "1m";
+      break;
+    case brave_wallet::mojom::AssetPriceTimeframe::ThreeMonths:
+      timeframe_key = "3m";
+      break;
+    case brave_wallet::mojom::AssetPriceTimeframe::OneYear:
+      timeframe_key = "1y";
+      break;
+    case brave_wallet::mojom::AssetPriceTimeframe::All:
+      timeframe_key = "all";
+      break;
+  }
+  return timeframe_key;
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -81,14 +110,15 @@ void AssetRatioController::SetBaseURLForTest(const GURL& base_url_for_test) {
 // static
 GURL AssetRatioController::GetPriceURL(
     const std::vector<std::string>& from_assets,
-    const std::vector<std::string>& to_assets) {
+    const std::vector<std::string>& to_assets,
+    brave_wallet::mojom::AssetPriceTimeframe timeframe) {
   std::string from = VectorToCommaSeparatedList(from_assets);
   std::string to = VectorToCommaSeparatedList(to_assets);
   std::string spec = base::StringPrintf(
-      "%sv2/relative/provider/coingecko/%s/%s",
+      "%sv2/relative/provider/coingecko/%s/%s/%s",
       base_url_for_test_.is_empty() ? kAssetRatioBaseURL
                                     : base_url_for_test_.spec().c_str(),
-      from.c_str(), to.c_str());
+      from.c_str(), to.c_str(), TimeFrameKeyToString(timeframe).c_str());
   return GURL(spec);
 }
 
@@ -96,46 +126,25 @@ GURL AssetRatioController::GetPriceURL(
 GURL AssetRatioController::GetPriceHistoryURL(
     const std::string& asset,
     brave_wallet::mojom::AssetPriceTimeframe timeframe) {
-  std::string timeframe_key;
-  switch (timeframe) {
-    case brave_wallet::mojom::AssetPriceTimeframe::Live:
-      timeframe_key = "live";
-      break;
-    case brave_wallet::mojom::AssetPriceTimeframe::OneDay:
-      timeframe_key = "1d";
-      break;
-    case brave_wallet::mojom::AssetPriceTimeframe::OneWeek:
-      timeframe_key = "1w";
-      break;
-    case brave_wallet::mojom::AssetPriceTimeframe::OneMonth:
-      timeframe_key = "1m";
-      break;
-    case brave_wallet::mojom::AssetPriceTimeframe::ThreeMonths:
-      timeframe_key = "3m";
-      break;
-    case brave_wallet::mojom::AssetPriceTimeframe::OneYear:
-      timeframe_key = "1y";
-      break;
-    case brave_wallet::mojom::AssetPriceTimeframe::All:
-      timeframe_key = "all";
-      break;
-  }
-  std::string spec = base::StringPrintf("%sv2/history/coingecko/%s/usd/%s",
-                                        base_url_for_test_.is_empty()
-                                            ? kAssetRatioBaseURL
-                                            : base_url_for_test_.spec().c_str(),
-                                        asset.c_str(), timeframe_key.c_str());
+  std::string spec = base::StringPrintf(
+      "%sv2/history/coingecko/%s/usd/%s",
+      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
+                                    : base_url_for_test_.spec().c_str(),
+      asset.c_str(), TimeFrameKeyToString(timeframe).c_str());
   return GURL(spec);
 }
 
-void AssetRatioController::GetPrice(const std::vector<std::string>& from_assets,
-                                    const std::vector<std::string>& to_assets,
-                                    GetPriceCallback callback) {
+void AssetRatioController::GetPrice(
+    const std::vector<std::string>& from_assets,
+    const std::vector<std::string>& to_assets,
+    brave_wallet::mojom::AssetPriceTimeframe timeframe,
+    GetPriceCallback callback) {
   auto internal_callback = base::BindOnce(
       &AssetRatioController::OnGetPrice, weak_ptr_factory_.GetWeakPtr(),
       from_assets, to_assets, std::move(callback));
-  api_request_helper_.Request("GET", GetPriceURL(from_assets, to_assets), "",
-                              "", true, std::move(internal_callback));
+  api_request_helper_.Request("GET",
+                              GetPriceURL(from_assets, to_assets, timeframe),
+                              "", "", true, std::move(internal_callback));
 }
 
 void AssetRatioController::OnGetPrice(

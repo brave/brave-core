@@ -82,7 +82,7 @@ async function refreshWalletInfo (store: Store) {
 
   // Update ETH Balances
   const state = getWalletState(store)
-  const getEthPrice = await assetPriceController.getPrice(['eth'], ['usd'])
+  const getEthPrice = await assetPriceController.getPrice(['eth'], ['usd'], state.selectedPortfolioTimeline)
   const ethPrice = getEthPrice.success ? getEthPrice.values.find((i) => i.toAsset === 'usd')?.price ?? '0' : '0'
   const getBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {
     const balanceInfo = await ethJsonRpcController.getBalance(account.address)
@@ -99,7 +99,7 @@ async function refreshWalletInfo (store: Store) {
   const tokenSymbols = tokenInfos.map((token) => {
     return token.symbol.toLowerCase()
   })
-  const getTokenPrices = await assetPriceController.getPrice(tokenSymbols, ['usd'])
+  const getTokenPrices = await assetPriceController.getPrice(tokenSymbols, ['usd'], state.selectedPortfolioTimeline)
   const getERCTokenBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {
     return Promise.all(tokenInfos.map(async (token) => {
       return ethJsonRpcController.getERC20TokenBalance(token.contractAddress, account.address)

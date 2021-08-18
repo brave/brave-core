@@ -71,7 +71,7 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: Updat
   store.dispatch(WalletPageActions.setIsFetchingPriceHistory(true))
   const assetPriceController = (await getAPIProxy()).assetRatioController
   if (payload.asset) {
-    const priceInfo = await assetPriceController.getPrice([payload.asset.symbol.toLowerCase()], ['usd', 'btc'])
+    const priceInfo = await assetPriceController.getPrice([payload.asset.symbol.toLowerCase()], ['usd', 'btc'], payload.timeFrame)
     const priceHistory = await assetPriceController.getPriceHistory(payload.asset.symbol.toLowerCase(), payload.timeFrame)
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, usdPriceInfo: priceInfo.values[0], btcPriceInfo: priceInfo.values[1], timeFrame: payload.timeFrame }))
   } else {

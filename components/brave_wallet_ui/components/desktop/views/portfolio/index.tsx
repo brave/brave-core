@@ -238,16 +238,16 @@ const Portfolio = (props: Props) => {
           <DetailText>{selectedAsset.name} {locale.price} ({selectedAsset.symbol})</DetailText>
           <PriceRow>
             <PriceText>${hoverPrice ? hoverPrice : selectedUSDAssetPrice ? formatPrices(Number(selectedUSDAssetPrice.price)) : 0.00}</PriceText>
-            <PercentBubble isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange) < 0 : false}>
-              <ArrowIcon isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange) < 0 : false} />
-              <PercentText>{selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange).toFixed(2) : 0.00}%</PercentText>
+            <PercentBubble isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false}>
+              <ArrowIcon isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false} />
+              <PercentText>{selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
             </PercentBubble>
           </PriceRow>
           <DetailText>{selectedBTCAssetPrice ? selectedBTCAssetPrice.price : 0} BTC</DetailText>
         </InfoColumn>
       )}
       <LineChart
-        isDown={selectedAsset && selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange) < 0 : false}
+        isDown={selectedAsset && selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false}
         isAsset={!!selectedAsset}
         priceData={selectedAsset ? selectedAssetPriceHistory : portfolioHistory}
         onUpdateBalance={onUpdateBalance}

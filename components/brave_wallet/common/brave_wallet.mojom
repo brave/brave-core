@@ -89,7 +89,7 @@ struct AssetPrice {
   string from_asset;
   string to_asset;
   string price;
-  string asset_24h_change;
+  string asset_timeframe_change;
 };
 
 struct SwapParams {
@@ -191,7 +191,7 @@ interface KeyringController {
 };
 
 interface AssetRatioController {
-  GetPrice(array<string> from_assets, array<string> to_assets) =>
+  GetPrice(array<string> from_assets, array<string> to_assets, AssetPriceTimeframe timeframe) =>
       (bool success, array<AssetPrice> values);
   GetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
       (bool success, array<AssetTimePrice> values);
