@@ -47,6 +47,7 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store, payload: Res
   store.dispatch(WalletActions.setInitialVisibleTokens({ visibleAssets: ['eth', '0x0D8775F648430679A709E98d2b0Cb6250d2887EF'] }))
   await keyringController.notifyWalletBackupComplete()
   await refreshWalletInfo(store)
+  store.dispatch(WalletPageActions.setShowIsRestoring(false))
 })
 
 handler.on(WalletPageActions.addAccount.getType(), async (store, payload: AddAccountPayloadType) => {

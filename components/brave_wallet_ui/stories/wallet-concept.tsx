@@ -5,7 +5,8 @@ import {
   WalletPageLayout,
   WalletSubViewLayout,
   CryptoView,
-  LockScreen
+  LockScreen,
+  OnboardingRestore
 } from '../components/desktop'
 import {
   NavTypes,
@@ -78,6 +79,11 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [sendAmount, setSendAmount] = React.useState('')
   const [fromAmount, setFromAmount] = React.useState('')
   const [toAmount, setToAmount] = React.useState('')
+  const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
+
+  const onToggleRestore = () => {
+    setIsRestoring(!isRestoring)
+  }
 
   // In the future these will be actual paths
   // for example wallet/rewards
@@ -437,79 +443,90 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
         onSubmit={navigateTo}
       /> */}
       <WalletSubViewLayout>
-        {needsOnboarding ?
-          (
-            <Onboarding
-              recoveryPhrase={recoveryPhrase}
-              onSubmit={completeWalletSetup}
-              onPasswordProvided={passwordProvided}
-              onRestore={onRestore}
-              hasRestoreError={hasRestoreError}
-            />
-          ) : (
-            <>
-              {view === 'crypto' ? (
+        {isRestoring ? (
+          <OnboardingRestore
+            hasRestoreError={hasRestoreError}
+            onRestore={onRestore}
+            toggleShowRestore={onToggleRestore}
+          />
+        ) : (
+          <>
+            {needsOnboarding ?
+              (
+                <Onboarding
+                  recoveryPhrase={recoveryPhrase}
+                  onSubmit={completeWalletSetup}
+                  onPasswordProvided={passwordProvided}
+                  onShowRestore={onToggleRestore}
+                />
+              ) : (
                 <>
-                  {walletLocked ? (
-                    <LockScreen
-                      hasPasswordError={hasPasswordError}
-                      onSubmit={unlockWallet}
-                      disabled={inputValue === ''}
-                      onPasswordChanged={handlePasswordChanged}
-                    />
-                  ) : (
+                  {view === 'crypto' ? (
                     <>
-                      {showBackup ? (
-                        <BackupWallet
-                          isOnboarding={false}
-                          onCancel={onHideBackup}
-                          onSubmit={onWalletBackedUp}
-                          recoveryPhrase={recoveryPhrase}
+                      {walletLocked ? (
+                        <LockScreen
+                          hasPasswordError={hasPasswordError}
+                          onSubmit={unlockWallet}
+                          disabled={inputValue === ''}
+                          onPasswordChanged={handlePasswordChanged}
+                          onShowRestore={onToggleRestore}
                         />
                       ) : (
-                        <CryptoView
-                          onLockWallet={lockWallet}
-                          needsBackup={needsBackup}
-                          onShowBackup={onShowBackup}
-                          accounts={accounts}
-                          onChangeTimeline={onChangeTimeline}
-                          selectedAssetPriceHistory={selectedAssetPriceHistory}
-                          selectedTimeline={selectedTimeline}
-                          selectedAsset={selectedAsset}
-                          fullAssetList={NewAssetOptions}
-                          onSelectAsset={onSelectAsset}
-                          portfolioPriceHistory={selectedAssetPriceHistory}
-                          portfolioBalance={scrapedFullPortfolioBalance()}
-                          transactions={transactions}
-                          selectedUSDAssetPrice={selectedUSDAssetPrice}
-                          selectedBTCAssetPrice={selectedBTCAssetPrice}
-                          userAssetList={userAssetList}
-                          onCreateAccount={onCreateAccount}
-                          onImportAccount={onImportAccount}
-                          onConnectHardwareWallet={onConnectHardwareWallet}
-                          isLoading={false}
-                          showAddModal={showAddModal}
-                          onToggleAddModal={onToggleAddModal}
-                          onUpdateAccountName={onUpdateAccountName}
-                          onUpdateVisibleTokens={onUpdateWatchList}
-                          fetchFullTokenList={fetchFullTokenList}
-                          userWatchList={['1']}
-                          selectedNetwork={selectedNetwork}
-                          onSelectNetwork={onSelectNetwork}
-                          isFetchingPortfolioPriceHistory={false}
-                          selectedPortfolioTimeline={selectedTimeline}
-                        />
+                        <>
+                          {showBackup ? (
+                            <BackupWallet
+                              isOnboarding={false}
+                              onCancel={onHideBackup}
+                              onSubmit={onWalletBackedUp}
+                              recoveryPhrase={recoveryPhrase}
+                            />
+                          ) : (
+                            <CryptoView
+                              onLockWallet={lockWallet}
+                              needsBackup={needsBackup}
+                              onShowBackup={onShowBackup}
+                              accounts={accounts}
+                              onChangeTimeline={onChangeTimeline}
+                              selectedAssetPriceHistory={selectedAssetPriceHistory}
+                              selectedTimeline={selectedTimeline}
+                              selectedAsset={selectedAsset}
+                              fullAssetList={NewAssetOptions}
+                              onSelectAsset={onSelectAsset}
+                              portfolioPriceHistory={selectedAssetPriceHistory}
+                              portfolioBalance={scrapedFullPortfolioBalance()}
+                              transactions={transactions}
+                              selectedUSDAssetPrice={selectedUSDAssetPrice}
+                              selectedBTCAssetPrice={selectedBTCAssetPrice}
+                              userAssetList={userAssetList}
+                              onCreateAccount={onCreateAccount}
+                              onImportAccount={onImportAccount}
+                              onConnectHardwareWallet={onConnectHardwareWallet}
+                              isLoading={false}
+                              showAddModal={showAddModal}
+                              onToggleAddModal={onToggleAddModal}
+                              onUpdateAccountName={onUpdateAccountName}
+                              onUpdateVisibleTokens={onUpdateWatchList}
+                              fetchFullTokenList={fetchFullTokenList}
+                              userWatchList={['1']}
+                              selectedNetwork={selectedNetwork}
+                              onSelectNetwork={onSelectNetwork}
+                              isFetchingPortfolioPriceHistory={false}
+                              selectedPortfolioTimeline={selectedTimeline}
+                            />
+                          )}
+                        </>
                       )}
                     </>
+                  ) : (
+                    <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                      <h2>{view} view</h2>
+                    </div>
                   )}
                 </>
-              ) : (
-                <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                  <h2>{view} view</h2>
-                </div>
               )}
-            </>
-          )}
+          </>
+        )}
+
       </WalletSubViewLayout>
       {!needsOnboarding && !walletLocked &&
         <WalletWidgetStandIn>

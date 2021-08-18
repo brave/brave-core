@@ -28,6 +28,7 @@ const defaultState: PageState = {
   selectedAssetPriceHistory: [],
   portfolioPriceHistory: [],
   isFetchingPriceHistory: false,
+  showIsRestoring: false,
   setupStillInProgress: false
 }
 
@@ -101,6 +102,13 @@ reducer.on(Actions.setIsFetchingPriceHistory, (state: PageState, payload: boolea
   return {
     ...state,
     isFetchingPriceHistory: payload
+  }
+})
+
+reducer.on(Actions.setShowIsRestoring, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    showIsRestoring: payload
   }
 })
 

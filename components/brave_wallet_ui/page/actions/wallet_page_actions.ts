@@ -28,3 +28,4 @@ export const updatePriceInfo = createAction<SelectAssetPayloadType>('updatePrice
 export const selectAsset = createAction<UpdateSelectedAssetType>('selectAsset')
 export const updateSelectedAsset = createAction<TokenInfo>('updateSelectedAsset')
 export const setIsFetchingPriceHistory = createAction<boolean>('setIsFetchingPriceHistory')
+export const setShowIsRestoring = createAction<boolean>('setShowIsRestoring')

@@ -92,10 +92,19 @@ export const _Onboarding = () => {
     console.log('Password provided')
   }
 
+  const onShowRestor = () => {
+    console.log('Would Show Restore Page')
+  }
+
   return (
     <WalletPageLayout>
       <WalletSubViewLayout>
-        <Onboarding recoveryPhrase={recoveryPhrase} onSubmit={complete} onPasswordProvided={passwordProvided} hasRestoreError={false} onRestore={complete} />
+        <Onboarding
+          recoveryPhrase={recoveryPhrase}
+          onSubmit={complete}
+          onPasswordProvided={passwordProvided}
+          onShowRestore={onShowRestor}
+        />
       </WalletSubViewLayout>
     </WalletPageLayout>
   )
