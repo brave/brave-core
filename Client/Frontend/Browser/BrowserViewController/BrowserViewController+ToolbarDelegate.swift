@@ -154,7 +154,7 @@ extension BrowserViewController: TopToolbarDelegate {
         } else {
             showSearchController()
             searchController?.searchQuery = text
-            searchLoader?.query = text
+            searchLoader?.query = text.lowercased()
         }
     }
 
