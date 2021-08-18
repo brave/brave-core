@@ -73,7 +73,7 @@ void GeminiTransfer::StartTransactionStatusTimer(
   size_t mins = 3 * new_attempts;
   base::TimeDelta delay = base::TimeDelta::FromMinutes(mins);
   BLOG(1, "Will fetch transaction status after " << mins << " minutes");
-  retry_timer_.Start(
+  retry_timer_[id].Start(
       FROM_HERE, delay,
       base::BindOnce(&GeminiTransfer::FetchTransactionStatus,
                      base::Unretained(this), id, new_attempts, callback));
@@ -100,6 +100,8 @@ void GeminiTransfer::OnTransactionStatus(const type::Result result,
                                          const std::string& id,
                                          const int attempts,
                                          client::TransactionCallback callback) {
+  retry_timer_.erase(id);
+  BLOG(0, "Number of active retry timers: " << retry_timer_.size());
   if (result == type::Result::LEDGER_OK) {
     callback(result, id);
     return;
