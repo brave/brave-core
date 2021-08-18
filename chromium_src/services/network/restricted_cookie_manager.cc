@@ -37,7 +37,7 @@ net::CookieOptions RestrictedCookieManager::MakeOptionsForSet(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const net::IsolationInfo& isolation_info,
-    const CookieSettings* cookie_settings,
+    const CookieSettings& cookie_settings,
     const net::CookieAccessDelegate* cookie_access_delegate) const {
   net::CookieOptions cookie_options =
       ::network::MakeOptionsForSet(role, url, site_for_cookies, isolation_info,
@@ -52,7 +52,7 @@ net::CookieOptions RestrictedCookieManager::MakeOptionsForGet(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const net::IsolationInfo& isolation_info,
-    const CookieSettings* cookie_settings,
+    const CookieSettings& cookie_settings,
     const net::CookieAccessDelegate* cookie_access_delegate) const {
   net::CookieOptions cookie_options =
       ::network::MakeOptionsForGet(role, url, site_for_cookies, isolation_info,
