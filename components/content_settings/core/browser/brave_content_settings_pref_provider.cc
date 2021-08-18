@@ -249,7 +249,9 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
         }
 
         int setting = CONTENT_SETTING_DEFAULT;
-        bool is_integer = j.value().GetAsInteger(&setting);
+        bool is_integer = j.value().is_int();
+        if (is_integer)
+          setting = j.value().GetInt();
         DCHECK(is_integer);
         DCHECK_NE(CONTENT_SETTING_DEFAULT, setting);
 

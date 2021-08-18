@@ -1,20 +1,19 @@
 from hashlib import md5
-from lib.config import get_env_var
-from lib.grd_string_replacements import (generate_braveified_node,
-                                         get_override_file_path,
-                                         write_xml_file_from_tree)
-from xml.sax.saxutils import escape, unescape
 from collections import defaultdict
 import HTMLParser
 import io
 import json
 import os
 import re
-import requests
 import tempfile
-import lxml.etree
+import requests
+from lib.config import get_env_var
+from lib.grd_string_replacements import (generate_braveified_node,
+                                         get_override_file_path)
+import lxml.etree # pylint: disable=import-error
 import FP
 
+# pylint: disable=too-many-locals
 
 transifex_project_name = 'brave'
 base_url = 'https://www.transifex.com/api/2/'
@@ -119,7 +118,7 @@ def get_auth():
 def get_transifex_languages(grd_file_path):
     """Extracts the list of locales supported by the passed in GRD file"""
     xtb_files = get_xtb_files(grd_file_path)
-    return set([lang for (lang, xtb_rel_path) in xtb_files])
+    return set([lang for (lang, _) in xtb_files])
 
 
 def get_transifex_translation_file_content(source_file_path, filename,
@@ -192,12 +191,6 @@ def validate_elements_tags(elements):
         if element.tag not in allowed_html_tags:
             error = ("ERROR: Element <{0}> is not allowed.\n").format(element.tag)
             errors = (errors or '') + error
-        if element.tag == 'a' and element.get('target') == '_blank':
-            rel = element.get('rel') or ''
-            if rel.find('noopener') == -1 or rel.find('noreferrer') == -1:
-                error = ("ERROR: Element <a> with target=\"_blank\" must set "
-                         "rel=\"noopener noreferrer\"\n")
-                errors = (errors or '') + error
         rec_errors = validate_elements_tags(list(element))
         if rec_errors is not None:
             errors = (errors or '') + rec_errors
@@ -245,90 +238,6 @@ def validate_tags_in_transifex_strings(xml_content):
     if errors is not None:
         errors = ("\n") + errors
     return errors
-
-
-def fix_links_with_target_blank_in_ph_text(text):
-    """A <ph> containing a link usually only has part of the <a> element, so
-       we can't convert it to proper xml and instead try to add rel attribute
-       via string search"""
-    target = text.find('target="_blank"')
-    if target == -1:
-        return text
-    target += 15
-    rel = text.find('rel="')
-    if rel == -1:
-        return text[:target] + ' rel="noopener noreferrer"' + text[target:]
-
-    rel += 5
-    rel_end = rel + text[rel:].find('"')
-    rel_value = text[rel:rel_end]
-    rel_add = ''
-    if rel_value.find('noopener') == -1:
-        rel_add = 'noopener '
-    if rel_value.find('noreferrer') == -1:
-        rel_add = rel_add + 'noreferrer '
-    return text[:rel] + rel_add + text[rel:]
-
-
-def fix_links_with_target_blank_in_text(text):
-    """Process element text for embedded <a> elements"""
-    if text.find('target="_blank"') == -1:
-        return text
-    xml_text = (text.replace('&lt;', '<').replace('&gt;', '>'))
-    try:
-        xml_elem = lxml.etree.fromstring('<text>' + xml_text + '</text>')
-    except lxml.etree.XMLSyntaxError as e:
-        print "\n--------------------\n{0}\nERROR: {1}\n".format(xml_text.encode('utf-8'), str(e))
-        cont = raw_input('Enter C to ignore and continue. Enter anything else to exit : ')
-        if cont == 'C' or cont == 'c':
-            return text
-        raise
-    a_tags = xml_elem.findall('.//a')
-    for a_tag in a_tags:
-        if a_tag.get('target') == '_blank':
-            rel = a_tag.get('rel') or ''
-            if rel.find('noopener') == -1:
-                a_tag.set('rel', rel + (' noopener' if len(rel) else 'noopener'))
-            if rel.find('noreferrer') == -1:
-                a_tag.set('rel', a_tag.get('rel') + ' noreferrer')
-    new_text = lxml.etree.tostring(xml_elem, method='xml', encoding='unicode')
-    new_text = new_text[new_text.index('>')+1:new_text.rindex('<')]
-    return new_text
-
-
-def fix_links_with_target_blank_in_element(elem):
-    """Recursively process text, tail and children of an element for embedded
-       <a> elements and process them"""
-    if elem.text:
-        if elem.tag == 'ph':
-            elem.text = fix_links_with_target_blank_in_ph_text(elem.text)
-        else:
-            elem.text = fix_links_with_target_blank_in_text(elem.text)
-    if elem.tail:
-        if elem.tag == 'ph':
-            elem.tail = fix_links_with_target_blank_in_ph_text(elem.tail)
-        else:
-            elem.tail = fix_links_with_target_blank_in_text(elem.tail)
-    for child in elem:
-        if child.tag != 'ex':
-            fix_links_with_target_blank_in_element(child)
-
-
-def fix_links_with_target_blank(source_string_path):
-    """Takes in a grd(p) path, finds all <a> tags with target _blank and makes
-       sure they have rel attribute with noopener and noreferrer values"""
-    source_xml_tree = lxml.etree.parse(source_string_path)
-    for elem in source_xml_tree.xpath('//message'):
-        fix_links_with_target_blank_in_element(elem)
-    write_xml_file_from_tree(source_string_path, source_xml_tree)
-
-
-def fix_links_with_target_blank_in_xtb_tree(xtb_tree):
-    """Takes in an xtb tree, finds all <a> tags with target _blank and makes
-       sure they have rel attribute with noopener and noreferrer values"""
-    for elem in xtb_tree.xpath('//translation'):
-        fix_links_with_target_blank_in_element(elem)
-
 
 def trim_ph_tags_in_xtb_file_content(xml_content):
     """Removes all children of <ph> tags including text inside ph tag"""
@@ -535,7 +444,7 @@ def get_grd_strings(grd_file_path, validate_tags=True):
             assert errors is None, '\n' + errors
         message_desc = message_tag.get('desc') or ''
         message_value = textify(message_tag)
-        assert not not message_name, 'Message name is empty'
+        assert message_name, 'Message name is empty'
         assert (message_name.startswith('IDS_') or
                 message_name.startswith('PRINT_PREVIEW_MEDIA_')), (
                     'Invalid message ID: %s' % message_name)
@@ -564,7 +473,7 @@ def generate_source_strings_xml_from_grd(output_xml_file_handle,
     """Generates a source string xml file from a GRD file"""
     resources_tag = create_android_format_resources_tag()
     all_strings = get_grd_strings(grd_file_path)
-    for (string_name, string_value, fp, desc) in all_strings:
+    for (string_name, string_value, _, _) in all_strings:
         resources_tag.append(
             create_android_format_string_tag(string_name, string_value))
     print 'Generating %d strings for GRD: %s' % (
@@ -579,8 +488,8 @@ def check_plural_string_formatting(grd_string_content, translation_content):
     pattern = re.compile(
         r"\s*{.*,\s*plural,(\s*offset:[0-2])?(\s*(=[0-2]|[zero|one|two|few|many])"
         r"\s*{(.*)})+\s*other\s*{(.*)}\s*}\s*")
-    if (pattern.match(grd_string_content) != None):
-        if (pattern.match(translation_content) == None):
+    if pattern.match(grd_string_content) is not None:
+        if pattern.match(translation_content) is None:
             error = ('Translation of plural string:\n'
                      '-----------\n{0}\n-----------\n'
                      'does not match:\n'
@@ -591,7 +500,7 @@ def check_plural_string_formatting(grd_string_content, translation_content):
     else:
         # This finds plural strings that the pattern above doesn't catch
         leading_pattern = re.compile(r"\s*{.*,\s*plural,.*")
-        if (leading_pattern.match(grd_string_content) != None):
+        if leading_pattern.match(grd_string_content) != None:
             error = ('Uncaught plural pattern:\n'
                      '-----------\n{0}\n-----------\n').format(
                          grd_string_content.encode('utf-8'))
@@ -641,6 +550,7 @@ def get_xtb_files(grd_file_path):
 
 def get_original_grd(src_root, grd_file_path):
     """Obtains the Chromium GRD file for a specified Brave GRD file."""
+    # pylint: disable=fixme
     # TODO: consider passing this mapping into the script from l10nUtil.js
     grd_file_name = os.path.basename(grd_file_path)
     if grd_file_name == 'components_brave_strings.grd':
@@ -729,10 +639,8 @@ def upload_missing_json_translations_to_transifex(source_string_path):
     for lang_code in lang_codes:
         l10n_path = os.path.join(langs_dir_path, lang_code, 'messages.json')
         l10n_strings = get_json_strings(l10n_path)
-        l10n_dict = {string_name: string_value for idx,
-                     (string_name, string_value, desc) in enumerate(l10n_strings)}
-        for idx, (
-                string_name, string_value, desc) in enumerate(source_strings):
+        l10n_dict = {string_name: string_value for (string_name, string_value, _) in l10n_strings}
+        for (string_name, string_value, _) in source_strings:
             if string_name not in l10n_dict:
                 # print 'Skipping string name %s for lang %s, not existing' % (
                 #    string_name, lang_code)
@@ -783,7 +691,6 @@ def check_missing_source_grd_strings_to_transifex(grd_file_path):
     grd_strings_tuple = get_grd_strings(grd_file_path)
     grd_string_names = {string_name for (string_name, message_value,
                                          string_fp, desc) in grd_strings_tuple}
-    filename = os.path.basename(grd_file_path).split('.')[0]
     x_grd_extra_strings = grd_string_names - transifex_string_ids
     assert len(x_grd_extra_strings) == 0, (
         'GRD has extra strings over Transifex %s' %
@@ -803,7 +710,7 @@ def upload_source_files_to_transifex(source_file_path, filename):
         # Generate the intermediate Transifex format for the source
         # translations.
         temp_file = tempfile.mkstemp('.xml')
-        output_xml_file_handle, output_xml_path = temp_file
+        output_xml_file_handle, _ = temp_file
         content = generate_source_strings_xml_from_grd(output_xml_file_handle,
                                                        source_file_path)
         os.close(output_xml_file_handle)
@@ -907,23 +814,20 @@ def upload_source_strings_desc(source_file_path, filename):
     print 'Uploading strings descriptions for ', source_file_path
     if ext == '.json':
         json_strings = get_json_strings(source_file_path)
-        for (string_name, string_value, string_desc) in json_strings:
+        for (string_name, _, string_desc) in json_strings:
             if len(string_desc) > 0:
-                upload_string_desc(source_file_path, filename, string_name,
-                                   string_desc)
+                upload_string_desc(source_file_path, filename, string_name, string_desc)
     else:
         grd_strings = get_grd_strings(source_file_path)
-        for (string_name, string_value, string_fp, string_desc) in grd_strings:
+        for (string_name, _, _, string_desc) in grd_strings:
             if len(string_desc) > 0:
-                upload_string_desc(source_file_path, filename, string_name,
-                                   string_desc)
+                upload_string_desc(source_file_path, filename, string_name, string_desc)
 
 
 def get_chromium_grd_src_with_fallback(grd_file_path, brave_source_root):
     source_root = os.path.dirname(brave_source_root)
     chromium_grd_file_path = get_original_grd(source_root, grd_file_path)
     if not chromium_grd_file_path:
-        filename = os.path.basename(grd_file_path)
         rel_path = os.path.relpath(grd_file_path, brave_source_root)
         chromium_grd_file_path = os.path.join(source_root, rel_path)
     return chromium_grd_file_path
@@ -954,10 +858,10 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
               (idx, grd_string) in enumerate(grd_strings)}
 
     xtb_file_paths = [os.path.join(
-        grd_base_path, path) for (lang, path) in xtb_files]
+        grd_base_path, path) for (_, path) in xtb_files]
     chromium_xtb_file_paths = [
         os.path.join(chromium_grd_base_path, path) for
-        (lang, path) in chromium_xtb_files]
+        (_, path) in chromium_xtb_files]
     for idx, xtb_file in enumerate(xtb_file_paths):
         chromium_xtb_file = chromium_xtb_file_paths[idx]
         if not os.path.exists(chromium_xtb_file):
@@ -978,7 +882,6 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
                     node.attrib['id'] = new_fp
                     # print('fp: {0} -> {1}').format(old_fp, new_fp)
 
-        fix_links_with_target_blank_in_xtb_tree(xml_tree)
         transformed_content = ('<?xml version="1.0" ?>\n' +
                                lxml.etree.tostring(xml_tree, pretty_print=True,
                                                    xml_declaration=False,

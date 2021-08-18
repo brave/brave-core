@@ -17,13 +17,13 @@
 #include "brave/build/android/jni_headers/BraveSyncWorker_jni.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
-#include "brave/components/brave_sync/profile_sync_service_helper.h"
-#include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
+#include "brave/components/brave_sync/sync_service_impl_helper.h"
+#include "brave/components/sync/driver/brave_sync_service_impl.h"
 
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
-#include "chrome/browser/sync/profile_sync_service_factory.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_user_settings.h"
@@ -33,7 +33,7 @@
 
 #include "third_party/leveldatabase/src/include/leveldb/db.h"
 
-// TODO(alexeybarabash): consider use of java ProfileSyncService methods:
+// TODO(alexeybarabash): consider use of java SyncServiceImpl methods:
 //    addSyncStateChangedListener
 //    removeSyncStateChangedListener
 //    requestStart
@@ -116,10 +116,10 @@ void BraveSyncWorker::SaveCodeWords(
   passphrase_ = str_passphrase;
 }
 
-syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
-  return ProfileSyncServiceFactory::IsSyncAllowed(profile_)
-             ? static_cast<syncer::BraveProfileSyncService*>(
-                 ProfileSyncServiceFactory::GetForProfile(profile_))
+syncer::BraveSyncServiceImpl* BraveSyncWorker::GetSyncService() const {
+  return SyncServiceFactory::IsSyncAllowed(profile_)
+             ? static_cast<syncer::BraveSyncServiceImpl*>(
+                   SyncServiceFactory::GetForProfile(profile_))
              : nullptr;
 }
 
@@ -127,8 +127,7 @@ syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
 // bring the logic of enabling / disabling sync from deskop to Android
 
 void BraveSyncWorker::RequestSync(JNIEnv* env) {
-  syncer::SyncService* service =
-      ProfileSyncServiceFactory::GetForProfile(profile_);
+  syncer::SyncService* service = SyncServiceFactory::GetForProfile(profile_);
 
   if (service && !sync_service_observer_.IsObservingSource(service)) {
     sync_service_observer_.AddObservation(service);

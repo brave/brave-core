@@ -180,7 +180,7 @@
   <message name="IDS_BOOKMARK_BUBBLE_PAGE_BOOKMARK" desc="Title of the bubble when re-clicking on a bookmark">
     Edit bookmark
   </message>
-  <message name="IDS_BOOKMARK_BUBBLE_NAME_LABEL" desc="Text preceding the title of the page that was bookmarked">
+  <message name="IDS_BOOKMARK_BUBBLE_NAME_LABEL" desc="Text preceding the title of the page that was bookmarked" meaning="Name of an inanimate object">
     Name
   </message>
   <message name="IDS_BOOKMARK_AX_BUBBLE_NAME_LABEL" desc="Text preceding the title of the page that was bookmarked, read by spoken feedback">
@@ -234,7 +234,7 @@
   <!-- End of Desktop to iOS Promo strings. -->
 
   <!-- Begin of Bookmark Editor strings. -->
-  <message name="IDS_BOOKMARK_EDITOR_NAME_LABEL" desc="Label shown before the title/name of the URL.">
+  <message name="IDS_BOOKMARK_EDITOR_NAME_LABEL" desc="Label shown before the title/name of the URL." meaning="Name of an inanimate object">
     Name
   </message>
   <message name="IDS_BOOKMARK_AX_EDITOR_NAME_LABEL" desc="Spoken text for bookmark name text field in edit folder dialog">
@@ -379,6 +379,12 @@
   </message>
   <message name="IDS_BOOKMARK_MANAGER_MENU_IMPORT" desc="Title of the bookmark toolbar dropdown menu item that imports bookmarks.">
     Import bookmarks
+  </message>
+  <message name="IDS_BOOKMARK_MANAGER_MENU_IMPORT_BEGAN" desc="Accessibility text for after the user selects bookmarks to import.">
+    Importing bookmarks...
+  </message>
+  <message name="IDS_BOOKMARK_MANAGER_MENU_IMPORT_ENDED" desc="Accessibility text for after the bookmarks manager has finished importing bookmarks.">
+    Bookmarks imported.
   </message>
   <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_ALL" desc="Menu title for opening all urls in a bookmark folder">
     Open all

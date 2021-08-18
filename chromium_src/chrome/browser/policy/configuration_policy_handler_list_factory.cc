@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/stl_util.h"
+#include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
+
+#include "base/cxx17_backports.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/pref_names.h"
-#include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 #include "components/policy/policy_constants.h"
 

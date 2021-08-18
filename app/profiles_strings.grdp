@@ -43,16 +43,10 @@
     Error
   </message>
   <message name="IDS_AVATAR_BUTTON_SYNC_ERROR_TOOLTIP" desc="Tooltip for the avatar button when there are sync errors for the current profile.">
-    <ph name="PROFILE_NAME">$1<ex>User</ex></ph>: Sync isn't working
-  </message>
-  <message name="IDS_AVATAR_BUTTON_SYNC_ERROR_PASSWORDS_TOOLTIP" desc="Tooltip for the avatar button when there are sync errors for the current profile affecting passwords sync specifically.">
-    <ph name="PROFILE_NAME">$1<ex>User</ex></ph>: Password sync isn't working
+    <ph name="PROFILE_NAME">$1<ex>User</ex></ph>: <ph name="ERROR_DESCRIPTION">$2<ex>Sync isn't working</ex></ph>
   </message>
   <message name="IDS_AVATAR_BUTTON_SYNC_PAUSED" desc="Short label for the avatar button when sync is paused for the current profile." meaning="Sync is paused">
     Paused
-  </message>
-  <message name="IDS_AVATAR_BUTTON_SYNC_PAUSED_TOOLTIP" desc="Tooltip for the avatar button when sync is paused for the current profile.">
-    <ph name="PROFILE_NAME">$1<ex>User</ex></ph>: Sync paused
   </message>
   <message name="IDS_CHILD_AVATAR_LABEL" desc="Label shown in the new avatar menu for a child user.">
     <ph name="PROFILE_DISPLAY_NAME">$1<ex>Markus</ex></ph> (Account for kids)
@@ -65,9 +59,6 @@
   </message>
 
   <!-- Multi-profile -->
-  <message name="IDS_PROFILES_OPTIONS_GROUP_NAME" desc="The name of the sync group in the options dialog when using the new Profiles UI.">
-    Profiles
-  </message>
   <message name="IDS_PROFILES_MENU_NAME" desc="The name of menu for profiles (Mac and linux) and name for the launcher menu section (Mac).">
     Profiles
   </message>
@@ -139,9 +130,6 @@
     Addresses and more
   </message>
   <if expr="not use_titlecase">
-    <message name="IDS_PROFILES_OTHER_PROFILES_TITLE" desc="Title in the profile menu of the 'other profiles' section.">
-      Other profiles
-    </message>
     <message name="IDS_PROFILES_LIST_PROFILES_TITLE" desc="Title in the profile menu for the list of 'other profiles'.">
       Other profiles
     </message>
@@ -151,14 +139,8 @@
     <message name="IDS_PROFILES_PROFILE_HIDE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to hide the accounts for a profile.">
       Hide accounts
     </message>
-    <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
-      Manage profiles
-    </message>
   </if>
   <if expr="use_titlecase">
-    <message name="IDS_PROFILES_OTHER_PROFILES_TITLE" desc="Title in the profile menu of the 'other profiles' section.">
-      Other Profiles
-    </message>
     <message name="IDS_PROFILES_LIST_PROFILES_TITLE" desc="Title in the profile menu for the list of 'other profiles'.">
       Other Profiles
     </message>
@@ -167,9 +149,6 @@
     </message>
     <message name="IDS_PROFILES_PROFILE_HIDE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to hide the accounts for a profile.">
       Hide Accounts
-    </message>
-    <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
-      Manage Profiles
     </message>
   </if>
   <message name="IDS_PROFILES_MANAGE_PROFILES_BUTTON_TOOLTIP" desc="Button in the avatar menu bubble view for launching the profile picker.">
@@ -585,6 +564,12 @@
     </message>
     <message name="IDS_ENTERPRISE_PROFILE_WELCOME_MANAGED_DESCRIPTION_WITHOUT_SYNC" desc="Disclaimer when creating a profile with a managed account (when sync is disabled by the administrator).">
       You’re adding a managed profile to this browser. Your administrator has control over the profile and can access its data.
+    </message>
+    <message name="IDS_ENTERPRISE_WELCOME_PROFILE_REQUIRED_TITLE" desc="Title of the enteprise profile welcome screen when a profile is required. It is shown after a user signs into a managed account outside of the profile creation flow.">
+      Your organization requires a profile
+    </message>
+    <message name="IDS_ENTERPRISE_PROFILE_WELCOME_CREATE_PROFILE_BUTTON" desc="Label of the proceed button on the enterprise profile welcome screen when a user signed in an enterprise account outside of the profile creation flow. The label informs the user that a profile will be created.">
+      Create
     </message>
 
     <!-- Profile Picker -->

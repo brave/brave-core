@@ -17,6 +17,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/isolation_info.h"
+#include "services/network/public/cpp/resource_request.h"
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"

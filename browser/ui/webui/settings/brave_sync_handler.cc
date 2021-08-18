@@ -13,12 +13,12 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
-#include "brave/components/brave_sync/profile_sync_service_helper.h"
-#include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
+#include "brave/components/brave_sync/sync_service_impl_helper.h"
+#include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
-#include "chrome/browser/sync/profile_sync_service_factory.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 #include "components/sync/driver/sync_user_settings.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
@@ -218,10 +218,10 @@ void BraveSyncHandler::HandleDeleteDevice(const base::ListValue* args) {
   brave_sync::DeleteDevice(sync_service, device_info_sync_service, device_guid);
 }
 
-syncer::BraveProfileSyncService* BraveSyncHandler::GetSyncService() const {
-  return ProfileSyncServiceFactory::IsSyncAllowed(profile_)
-             ? static_cast<syncer::BraveProfileSyncService*>(
-                 ProfileSyncServiceFactory::GetForProfile(profile_))
+syncer::BraveSyncServiceImpl* BraveSyncHandler::GetSyncService() const {
+  return SyncServiceFactory::IsSyncAllowed(profile_)
+             ? static_cast<syncer::BraveSyncServiceImpl*>(
+                   SyncServiceFactory::GetForProfile(profile_))
              : nullptr;
 }
 

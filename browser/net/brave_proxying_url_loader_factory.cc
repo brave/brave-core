@@ -30,6 +30,7 @@
 #include "net/url_request/url_request.h"
 #include "services/network/public/cpp/features.h"
 #include "services/network/public/cpp/parsed_headers.h"
+#include "services/network/public/mojom/early_hints.mojom.h"
 #include "url/origin.h"
 
 namespace {
@@ -577,15 +578,14 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   override_headers_ = nullptr;
   redirect_url_ = GURL();
 
-  net::CompletionRepeatingCallback copyable_callback =
-      base::AdaptCallbackForRepeating(std::move(continuation));
+  auto split_once_callback = base::SplitOnceCallback(std::move(continuation));
   if (request_.url.SchemeIsHTTPOrHTTPS()) {
     ctx_ = brave::BraveRequestInfo::MakeCTX(request_, render_process_id_,
                                             frame_tree_node_id_, request_id_,
                                             browser_context_, ctx_);
     int result = factory_->request_handler_->OnHeadersReceived(
-        ctx_, copyable_callback, current_response_->headers.get(),
-        &override_headers_, &redirect_url_);
+        ctx_, std::move(split_once_callback.first),
+        current_response_->headers.get(), &override_headers_, &redirect_url_);
 
     if (result == net::ERR_BLOCKED_BY_CLIENT) {
       OnRequestError(network::URLLoaderCompletionStatus(result));
@@ -605,7 +605,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     DCHECK_EQ(net::OK, result);
   }
 
-  copyable_callback.Run(net::OK);
+  std::move(split_once_callback.second).Run(net::OK);
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnRequestError(

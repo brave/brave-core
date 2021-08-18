@@ -1,5 +1,0 @@
-include_rules = [
-  "+../../../../../../components/safe_browsing/core/browser",
-  "+components/safe_browsing/core/browser",
-  "+brave/services/network/public/cpp/system_request_handler.h",
-]

@@ -22,7 +22,7 @@ source_set("sync") {
     "//brave/components/brave_sync",
     "//brave/components/brave_sync:crypto",
     "//brave/components/brave_sync:prefs",
-    "//brave/components/brave_sync:profile_sync_service_helper",
+    "//brave/components/brave_sync:sync_service_impl_helper",
     "//components/sync/driver",
     "//components/sync_device_info",
     "//ios/chrome/browser",

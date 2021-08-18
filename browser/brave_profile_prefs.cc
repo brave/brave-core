@@ -38,6 +38,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
+#include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
 #include "components/autofill/core/common/autofill_prefs.h"
 #include "components/content_settings/core/common/pref_names.h"
@@ -236,19 +237,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Hangouts
   registry->RegisterBooleanPref(kHangoutsEnabled, true);
 
-  // Media Router
-  registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(false));
-
-  // 1. We do not want to enable the MediaRouter pref directly, so
-  // using a proxy pref to handle Media Router setting
-  // 2. On upgrade users might have enabled Media Router and the pref should
-  // be set correctly, so we use feature switch to set the initial value
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  registry->RegisterBooleanPref(
-      kBraveEnabledMediaRouter,
-      FeatureSwitch::load_media_router_component_extension()->IsEnabled());
-#endif
-
   // Restore last profile on restart
   registry->SetDefaultPrefValue(
       prefs::kRestoreOnStartup,
@@ -404,7 +392,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if !defined(OS_ANDROID)
   // Turn on most visited mode on NTP by default.
   // We can turn customization mode on when we have add-shortcut feature.
-  registry->SetDefaultPrefValue(prefs::kNtpUseMostVisitedTiles,
+  registry->SetDefaultPrefValue(ntp_prefs::kNtpUseMostVisitedTiles,
                                 base::Value(true));
   RegisterDefaultBraveBrowserPromptPrefs(registry);
 #endif

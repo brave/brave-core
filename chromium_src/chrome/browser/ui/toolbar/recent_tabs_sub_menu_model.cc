@@ -49,9 +49,8 @@ BraveRecentTabsSubMenuModel::~BraveRecentTabsSubMenuModel() {}
 void BraveRecentTabsSubMenuModel::ExecuteCommand(int command_id,
                                                  int event_flags) {
   if (IsTabModelCommandId(command_id)) {
-    TabNavigationItems* tab_items = NULL;
-    int tab_items_idx = CommandIdToTabVectorIndex(command_id, &tab_items);
-    const TabNavigationItem& item = (*tab_items)[tab_items_idx];
+    TabNavigationItems* tab_items = GetTabVectorForCommandId(command_id);
+    const TabNavigationItem& item = (*tab_items)[command_id];
     DCHECK(item.tab_id.is_valid() && item.url.is_valid());
 
     if (item.session_tag == kBraveStubSessionTag) {

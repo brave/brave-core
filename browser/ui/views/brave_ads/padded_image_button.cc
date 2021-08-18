@@ -36,7 +36,8 @@ const float kVisibleOpacity = 0.12f;
 
 PaddedImageButton::PaddedImageButton(PressedCallback callback)
     : views::ImageButton(callback) {
-  views::InkDrop::UseInkDropForSquareRipple(ink_drop(),
+  auto* ink_drop = views::InkDrop::Get(this);
+  views::InkDrop::UseInkDropForSquareRipple(ink_drop,
                                             /*highlight_on_hover=*/false,
                                             /*highlight_on_focus=*/false);
 
@@ -46,8 +47,8 @@ PaddedImageButton::PaddedImageButton(PressedCallback callback)
 
   SetAnimateOnStateChange(false);
 
-  ink_drop()->SetMode(views::InkDropHost::InkDropMode::ON);
-  ink_drop()->SetVisibleOpacity(kVisibleOpacity);
+  ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
+  ink_drop->SetVisibleOpacity(kVisibleOpacity);
   SetHasInkDropActionOnClick(true);
 }
 
@@ -69,7 +70,7 @@ void PaddedImageButton::OnThemeChanged() {
 
   const SkColor background_color = GetNativeTheme()->GetSystemColor(
       ui::NativeTheme::kColorId_WindowBackground);
-  ink_drop()->SetBaseColor(
+  views::InkDrop::Get(this)->SetBaseColor(
       color_utils::GetColorWithMaxContrast(background_color));
 }
 

@@ -88,6 +88,7 @@
       <part file="error_page_strings_override.grdp" />
       <part file="new_or_sad_tab_strings_override.grdp" />
       <part file="omnibox_strings_override.grdp" />
+      <part file="page_info_strings_override.grdp" />
       <part file="payments_strings_override.grdp" />
       <part file="privacy_sandbox_strings_override.grdp" />
       <part file="security_interstitials_strings_override.grdp" />

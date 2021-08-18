@@ -74,11 +74,13 @@
 #include "content/public/common/content_switches.h"
 #include "extensions/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
+#include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using blink::web_pref::WebPreferences;
@@ -137,6 +139,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_FTX)
 #include "brave/browser/ftx/ftx_protocol_handler.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+#include "brave/browser/brave_drm_tab_helper.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -305,6 +311,36 @@ void BraveContentBrowserClient::RenderProcessWillLaunch(
   ChromeContentBrowserClient::RenderProcessWillLaunch(host);
 }
 
+bool BraveContentBrowserClient::BindAssociatedReceiverFromFrame(
+    content::RenderFrameHost* render_frame_host,
+    const std::string& interface_name,
+    mojo::ScopedInterfaceEndpointHandle* handle) {
+  if (ChromeContentBrowserClient::BindAssociatedReceiverFromFrame(
+          render_frame_host, interface_name, handle)) {
+    return true;
+  }
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  if (interface_name == brave_drm::mojom::BraveDRM::Name_) {
+    BraveDrmTabHelper::BindBraveDRM(
+        mojo::PendingAssociatedReceiver<brave_drm::mojom::BraveDRM>(
+            std::move(*handle)),
+        render_frame_host);
+    return true;
+  }
+#endif  // BUILDFLAG(ENABLE_WIDEVINE)
+
+  if (interface_name == brave_shields::mojom::BraveShieldsHost::Name_) {
+    brave_shields::BraveShieldsWebContentsObserver::BindBraveShieldsHost(
+        mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShieldsHost>(
+            std::move(*handle)),
+        render_frame_host);
+    return true;
+  }
+
+  return false;
+}
+
 content::ContentBrowserClient::AllowWebBluetoothResult
 BraveContentBrowserClient::AllowWebBluetooth(
     content::BrowserContext* browser_context,
@@ -351,7 +387,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
     const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
+    content::WebContents::Getter web_contents_getter,
     int child_id,
     int frame_tree_node_id,
     content::NavigationUIData* navigation_data,
@@ -362,49 +398,46 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   if (webtorrent::IsMagnetProtocol(url)) {
-    webtorrent::HandleMagnetProtocol(url, std::move(web_contents_getter),
-                                     page_transition, has_user_gesture,
-                                     initiating_origin);
+    webtorrent::HandleMagnetProtocol(url, web_contents_getter, page_transition,
+                                     has_user_gesture, initiating_origin);
     return true;
   }
 #endif
 
   if (brave_rewards::IsRewardsProtocol(url)) {
-    brave_rewards::HandleRewardsProtocol(url, std::move(web_contents_getter),
+    brave_rewards::HandleRewardsProtocol(url, web_contents_getter,
                                          page_transition, has_user_gesture);
     return true;
   }
 
 #if BUILDFLAG(BINANCE_ENABLED)
   if (binance::IsBinanceProtocol(url)) {
-    binance::HandleBinanceProtocol(url, std::move(web_contents_getter),
-                                   page_transition, has_user_gesture,
-                                   initiating_origin);
+    binance::HandleBinanceProtocol(url, web_contents_getter, page_transition,
+                                   has_user_gesture, initiating_origin);
     return true;
   }
 #endif
 
 #if BUILDFLAG(GEMINI_ENABLED)
   if (gemini::IsGeminiProtocol(url)) {
-    gemini::HandleGeminiProtocol(url, std::move(web_contents_getter),
-                                 page_transition, has_user_gesture,
-                                 initiating_origin);
+    gemini::HandleGeminiProtocol(url, web_contents_getter, page_transition,
+                                 has_user_gesture, initiating_origin);
     return true;
   }
 #endif
 
 #if BUILDFLAG(ENABLE_FTX)
   if (ftx::IsFTXProtocol(url)) {
-    ftx::HandleFTXProtocol(url, std::move(web_contents_getter), page_transition,
+    ftx::HandleFTXProtocol(url, web_contents_getter, page_transition,
                            has_user_gesture, initiating_origin);
     return true;
   }
 #endif
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
-      url, std::move(web_contents_getter), child_id, frame_tree_node_id,
-      navigation_data, is_main_frame, page_transition, has_user_gesture,
-      initiating_origin, out_factory);
+      url, web_contents_getter, child_id, frame_tree_node_id, navigation_data,
+      is_main_frame, page_transition, has_user_gesture, initiating_origin,
+      out_factory);
 }
 
 void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
@@ -417,7 +450,15 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
   if (process_type == switches::kRendererProcess) {
     uint64_t session_token =
         12345;  // the kinda thing an idiot would have on his luggage
-    if (!command_line->HasSwitch(switches::kTestType)) {
+
+    // Command line parameters from the browser process are propagated to the
+    // renderers *after* ContentBrowserClient::AppendExtraCommandLineSwitches()
+    // is called from RenderProcessHostImpl::AppendRendererCommandLine(). This
+    // means we have to inspect the main browser process' parameters for the
+    // |switches::kTestType| as it will be too soon to find it on command_line.
+    const base::CommandLine& browser_command_line =
+        *base::CommandLine::ForCurrentProcess();
+    if (!browser_command_line.HasSwitch(switches::kTestType)) {
       content::RenderProcessHost* process =
           content::RenderProcessHost::FromID(child_process_id);
       Profile* profile =

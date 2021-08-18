@@ -9,7 +9,8 @@
 // where it is not consistant due to "network" responses) and
 // optimized (rollup controls the order in which modules are executed).
 
-import { ContentSettingsTypes } from '../site_settings/constants'
+import './config.js'
+import { ContentSettingsTypes } from '../site_settings/constants.js'
 ContentSettingsTypes.ETHEREUM = 'ethereum'
 import './about_page.js'
 import './appearance_page.js'

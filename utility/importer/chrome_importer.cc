@@ -137,14 +137,13 @@ bool SetEncryptionKey(const base::FilePath& source_path) {
   return true;
 }
 
-std::u16string DecryptedCardFromColumn(const sql::Statement& s,
-                                       int column_index) {
+std::u16string DecryptedCardFromColumn(sql::Statement* s, int column_index) {
   std::u16string credit_card_number;
-  int encrypted_number_len = s.ColumnByteLength(column_index);
+  int encrypted_number_len = s->ColumnByteLength(column_index);
   if (encrypted_number_len) {
     std::string encrypted_number;
     encrypted_number.resize(encrypted_number_len);
-    memcpy(&encrypted_number[0], s.ColumnBlob(column_index),
+    memcpy(&encrypted_number[0], s->ColumnBlob(column_index),
            encrypted_number_len);
     OSCrypt::DecryptString16(encrypted_number, &credit_card_number);
   }
@@ -409,7 +408,8 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
         // Folders are added implicitly on adding children, so we only
         // explicitly add empty folders.
         const base::ListValue* children;
-        if (dict->GetList("children", &children) && children->empty()) {
+        if (dict->GetList("children", &children) &&
+            children->GetList().empty()) {
           entry.in_toolbar = is_in_toolbar;
           entry.is_folder = true;
           entry.url = GURL();
@@ -503,7 +503,7 @@ void ChromeImporter::ImportPayments() {
   auto* brave_bridge =
       static_cast<BraveExternalProcessImporterBridge*>(bridge_.get());
   while (s.Step()) {
-    const std::u16string card_number = DecryptedCardFromColumn(s, 3);
+    const std::u16string card_number = DecryptedCardFromColumn(&s, 3);
     // Empty means decryption is failed. Or chrome's data is invalid.
     // Skip it.
     if (card_number.empty())

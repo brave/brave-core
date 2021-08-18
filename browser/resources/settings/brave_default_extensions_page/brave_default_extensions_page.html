@@ -102,13 +102,6 @@
                                 menu-options="[[ensResolveMethod_]]">
       </div>
     </template>
-    <settings-toggle-button id="mediaRouterEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.enable_media_router}}"
-        label="Media Router"
-        sub-label="$i18n{mediaRouterEnabledDesc}"
-        on-settings-boolean-control-change="onMediaRouterEnabledChange_">
-    </settings-toggle-button>
     <if expr="enable_tor">
     <settings-toggle-button id="torEnabled"
         class="cr-row"

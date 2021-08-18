@@ -144,6 +144,11 @@ const std::string& BraveP3ALogStore::staged_log_signature() const {
   return staged_log_signature_;
 }
 
+absl::optional<uint64_t> BraveP3ALogStore::staged_log_user_id() const {
+  NOTREACHED();
+  return absl::nullopt;
+}
+
 void BraveP3ALogStore::StageNextLog() {
   // Stage the next item.
   DCHECK(has_unsent_logs());

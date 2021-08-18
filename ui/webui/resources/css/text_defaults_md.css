@@ -16,7 +16,7 @@
 
 html {
   /* TODO(dbeam): remove this soon. Prefer dir= in HTML. */
-  direction: $i18n{textDirection};
+  direction: $i18n{textdirection};
 }
 
 body {
