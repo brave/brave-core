@@ -11,11 +11,12 @@
 #include "base/android/jni_weak_ref.h"
 #include "base/scoped_observation.h"
 #include "base/values.h"
-#include "chrome/browser/sync/profile_sync_service_android.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
+class Profile;
+
 namespace syncer {
-class BraveProfileSyncService;
+class BraveSyncServiceImpl;
 }
 
 namespace chrome {
@@ -40,7 +41,7 @@ class BraveSyncDevicesAndroid : public syncer::DeviceInfoTracker::Observer {
 
   base::Value GetSyncDeviceList();
 
-  syncer::BraveProfileSyncService* GetSyncService() const;
+  syncer::BraveSyncServiceImpl* GetSyncService() const;
 
   base::ScopedObservation<syncer::DeviceInfoTracker,
                           syncer::DeviceInfoTracker::Observer>

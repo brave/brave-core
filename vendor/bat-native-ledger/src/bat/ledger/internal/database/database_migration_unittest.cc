@@ -682,7 +682,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_27_UnblindedTokens) {
     unblinded_token.value = sql.ColumnDouble(3);
     unblinded_token.creds_id = sql.ColumnString(4);
     unblinded_token.expires_at = sql.ColumnInt64(5);
-    reserved_at = sql.ColumnInt64(10);
+    reserved_at = sql.ColumnInt64(6);
   }
 
   EXPECT_EQ(unblinded_token.id, 1ull);

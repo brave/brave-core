@@ -19,7 +19,7 @@ import org.chromium.chrome.browser.infobar.InfoBarIdentifier;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.BraveSyncScreensPreference;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
-import org.chromium.chrome.browser.sync.ProfileSyncService;
+import org.chromium.chrome.browser.sync.SyncService;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.messages.infobar.BraveSimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
@@ -44,7 +44,7 @@ public class BraveSyncInformers {
             return;
         }
 
-        boolean isV2User = ProfileSyncService.get() != null && ProfileSyncService.get().isFirstSetupComplete();
+        boolean isV2User = SyncService.get() != null && SyncService.get().isFirstSetupComplete();
         if (isV2User) {
             braveSyncWorker.setSyncV2MigrateNoticeDismissed(true);
             return;

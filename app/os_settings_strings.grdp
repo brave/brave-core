@@ -17,6 +17,9 @@
   <message name="IDS_SETTINGS_DISMISS" desc="Label to dismiss a shortcut reminder.">
     Dismiss
   </message>
+  <message name="IDS_SETTINGS_SHORTCUT_BANNER_DISMISSED" desc="The message spoken aloud by screen readers when the user dismisses a banner showing keyboard shortcuts.">
+    Keyboard shortcut notice dismissed
+  </message>
 
   <!--Main Page-->
   <message name="IDS_SETTINGS_SECONDARY_USER_BANNER" desc="Banner displayed in settings page when the user is secondary in a multi-profile session.">
@@ -24,11 +27,11 @@
   </message>
   <message name="IDS_SETTINGS_UPDATE_REQUIRED_EOL_BANNER_DAYS" desc="Banner displayed in OS settings page in case update is required by policy, but the device has reached end-of-life and the number of days remaining to return the device back to the manager is less than seven. MANAGER can be a domain or an email address.">
     {NUM_DAYS, plural,
-      =1 {<ph name="MANAGER">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> today. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}
-      other {<ph name="MANAGER">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> within {NUM_DAYS} days. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}}
+      =1 {<ph name="MANAGER">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> today. <ph name="LINK_BEGIN">&lt;a target="_blank" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}
+      other {<ph name="MANAGER">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> within {NUM_DAYS} days. <ph name="LINK_BEGIN">&lt;a target="_blank" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}}
   </message>
   <message name="IDS_SETTINGS_UPDATE_REQUIRED_EOL_BANNER_ONE_WEEK" desc="Banner displayed in OS settings page in case update is required by policy, but the device has reached end-of-life and the number of days remaining to return the device back to the manager is equal to seven. MANAGER can be a domain or an email address.">
-    <ph name="MANAGER">$1<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> within 1 week. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$3<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>
+    <ph name="MANAGER">$1<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> within 1 week. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$3<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
 
   <!-- Settings Search Box -->
@@ -188,13 +191,13 @@
     Updates are managed by your administrator
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_MESSAGE_FUTURE" desc="Message used when end of life has not yet past current date in End of Life section on the About Page.">
-    This device will get automatic software and security updates until <ph name="MONTH_AND_YEAR">$1<ex>September 2020</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    This device will get automatic software and security updates until <ph name="MONTH_AND_YEAR">$1<ex>September 2020</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_MESSAGE_PAST" desc="Message used when End of Life is past current date in END OF LIFE section on the About Page.">
-    This device stopped getting automatic software and security updates in <ph name="MONTH_AND_YEAR">$1<ex>September 2020</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    This device stopped getting automatic software and security updates in <ph name="MONTH_AND_YEAR">$1<ex>September 2020</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_LAST_UPDATE_MESSAGE" desc="Message shown on the top level about page to inform the user that this device will no longer receive latest software updates.">
-    This is the last automatic software and security update for this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. To get future updates, upgrade to a newer model. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    This is the last automatic software and security update for this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. To get future updates, upgrade to a newer model. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_DIAGNOSTICS" desc="Text of the button which allows the user to diagnose their device.">
     Diagnostics
@@ -218,7 +221,7 @@
   </message>
   <message name="IDS_OS_SETTINGS_PROFILE_LABEL_V2" desc="Label underneath the profile's real name, listing the number of accounts">
     {COUNT, plural,
-     =1 {1 Brave sync chain added}
+     =1 {1 Brave sync chain}
      other {<ph name="EXTRA_ACCOUNTS">$2<ex>2</ex></ph> Brave sync chains}}
   </message>
   <message name="IDS_OS_SETTINGS_SYNC_PAGE_TITLE" desc="Settings sub-page title for sync.">
@@ -317,7 +320,7 @@
     Change device language
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_DEVICE_LANGUAGE_DIALOG_DESCRIPTION" desc="Description for the dialog to change device language.">
-    You need to restart your Bravebook to change the device language. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    You need to restart your Bravebook to change the device language. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_SELECTED_DEVICE_LANGUAGE_INSTRUCTION" desc="Instruction read by screen reader when users can unselect a language.">
     <ph name="LANGUAGE">$1<ex>English</ex></ph> selected. Press Search plus Space to unselect.
@@ -332,16 +335,19 @@
     Web content languages
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PREFERENCE_DESCRIPTION" desc="Description for section that lets users choose the language for web content. The web content languages will be served in the order of the list.">
-    Web content available in multiple languages will use the first supported language from this list. These preferences are synced with your browser settings. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    Web content available in multiple languages will use the first supported language from this list. These preferences are synced with your browser settings. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_WEBSITE_LANGUAGES_TITLE" desc="Title of section that lets users choose a list of languages for websites. The website languages will be given to websites in the order given by the list.">
     Website languages
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_WEBSITE_LANGUAGES_DESCRIPTION" desc="Description for section that lets users choose a list of languages for websites. The website languages will be given to websites in the order given by the list.">
-    Add and rank your preferred languages. Websites will show in your preferred languages, when possible. These preferences are synced with your browser settings. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    Add and rank your preferred languages. Websites will show in your preferred languages, when possible. These preferences are synced with your browser settings. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_TRANSLATE_TARGET_LABEL" desc="The label of the toggle that enables the prompt to translate a page to users.">
     Language used when translating pages
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_TRANSLATE_TARGET_LABEL_WITH_QUICK_ANSWERS" desc="The label of the section that indicates the target language used for translation and quick answers.">
+    Language used for translating pages and Quick answers
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_OFFER_TO_TRANSLATE_THIS_LANGUAGE" desc="The label of the checkbox that enables the prompt to translate a page in the given language to users.">
     Offer to translate pages in this language
@@ -399,6 +405,12 @@
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_TITLE" desc="Title for the section containing all the options for spell check settings. The options include picking between using the system's spell check or using Brave's web service and a list of the enabled languages which support spell checking.">
     Spell check
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_AND_GRAMMAR_CHECK_TITLE" desc="Title for the section containing all the options for spell and grammar check settings. The options include a list of the enabled languages which support spell checking.">
+    Spelling and grammar check
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_AND_GRAMMAR_CHECK_DESCRIPTION" desc="Description for the spell and grammar check section.">
+    Grammar check currently available for English only
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_LABEL" desc="Label for enhanced spell check toggle, the type of spell check that sends the text the user types to Brave spelling service. It is important that it is communicated that the text the user types will be sent to Brave.">
     Enhanced spell check in Brave browser (text is sent to Brave for spelling suggestions)
@@ -492,6 +504,12 @@
   <message name="IDS_SETTINGS_SUGGESTIONS_EMOJI_SUGGESTION_DESCRIPTION" desc="The description for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
     Get emoji suggestions based on what you're typing
   </message>
+  <message name="IDS_SETTINGS_SUGGESTIONS_PREDICTIVE_WRITING_TITLE" desc="The label for predictive writing suggestions (when a user types a word, some text might be suggested for the user to insert after) section.">
+    Predictive writing
+  </message>
+  <message name="IDS_SETTINGS_SUGGESTIONS_PREDICTIVE_WRITING_DESCRIPTION" desc="The description for predictive writing suggestions (when a user types a word, some text might be suggested for the user to insert after) section.">
+    Show inline writing suggestions that appear as you type
+  </message>
 
   <!-- Input Method Options Section -->
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_BASIC" desc="The label for the section in input method options page containing basic options.">
@@ -530,6 +548,24 @@
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_EDIT_USER_DICT" desc="The label for the input method option to let the users edit their personal dictionary.">
     Edit dictionary entries
   </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ZHUYIN_KEYBOARD_LAYOUT">
+    Physical keyboard layout
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ZHUYIN_SELECT_KEYS">
+    Selection keys
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ZHUYIN_PAGE_SIZE">
+    Number of candidates to display per page
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KOREAN_LAYOUT">
+    Korean keyboard layout
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KOREAN_SYLLABLE_INPUT">
+    Input a syllable at a time
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KOREAN_SHOW_HANGUL_CANDIDATE">
+    Show candidates in Hangul mode
+  </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_PINYIN_CHINESE_PUNCTUATION" desc="The label for the pinyin input method option for whether to output full-width or half-with punctuation.">
     Initial punctuation width is Full
   </message>
@@ -559,6 +595,15 @@
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KEYBOARD_US" desc="The label for the choice to use US keyboard.">
     US
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ZHUYIN_LAYOUT_DEFAULT" desc="The label for the choice to use for Zhuyin keyboard.">
+    Default
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ZHUYIN_LAYOUT_IBM" desc="The label for the choice to use for Zhuyin keyboard.">
+    IBM
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ZHUYIN_LAYOUT_ETEN" desc="The label for the choice to use for Zhuyin keyboard.">
+    Eten
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KEYBOARD_DVORAK" desc="The label for the choice to use Dvorak keyboard.">
     Dvorak
@@ -683,10 +728,10 @@
     Select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> albums
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_GOOGLE_PHOTOS_TITLE" desc="Label for the subpage to select albums of Brave Photos in ambient mode.">
-    Relive your favorite memories. To add or edit albums, go to <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
+    Relive your favorite memories. To add or edit albums, go to <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_GOOGLE_PHOTOS_NO_ALBUM" desc="Text for the subpage to select albums of Brave Photos when there is no album in ambient mode.">
-    No albums. Create an album in <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
+    No albums. Create an album in <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_RECENT_DESC" desc="Description for the Recent highlights album in ambient mode.">
     Your best photos, selected automatically
@@ -717,6 +762,59 @@
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TEMPERATURE_UNIT_CELSIUS" desc="Label for the radio button to choose celsius as the preferred temperature unit.">
     Celsius
+  </message>
+
+  <!-- Dark Mode Page -->
+  <message name="IDS_OS_SETTINGS_DARK_MODE_TITLE" desc="Label for row in settings page that opens the dark mode settings page to schedule enabling and disabling dark mode time and modes.">
+    Dark theme
+  </message>
+  <message name="IDS_OS_SETTINGS_DARK_MODE_ON" desc="Label for the toggle row in dark mode settings page when it is enabled.">
+    On
+  </message>
+  <message name="IDS_OS_SETTINGS_DARK_MODE_OFF" desc="Label for the toggle row in dark mode settings page when it is disabled.">
+    Off
+  </message>
+  <message name="IDS_OS_SETTINGS_DARK_MODE_THEMED_RADIO_GROUP_TITLE" desc="The title of the radio group that allows the user to configure the accent color of the dark mode.">
+    Accent color
+  </message>
+  <message name="IDS_OS_SETTINGS_DARK_MODE_THEMED_RADIO_GROUP_DESCRIPTION" desc="The description of the radio group that allows the user to configure the accent color of the dark mode.">
+    Choose the color theme for Launcher, shelf, Quick Settings, and more
+  </message>
+  <message name="IDS_OS_SETTINGS_DARK_MODE_THEMED_ON" desc="Label for the checkbox which set the color mode is computed based on the user's wallpaper.">
+    Based on your wallpaper
+  </message>
+  <message name="IDS_OS_SETTINGS_DARK_MODE_THEMED_OFF" desc="Label for the checkbox which set the color mode to default color than calculated from the current wallpaper.">
+    Neutral
+  </message>
+    <message name="IDS_SETTINGS_DARK_MODE_ON_AT_SUNSET" desc="The sub label for the automatic schedule which explains that Dark Mode will turn on automatically at sunset.">
+    Dark mode will turn on automatically at sunset
+  </message>
+  <message name="IDS_SETTINGS_DARK_MODE_OFF_AT_SUNRISE" desc="The sub label for the automatic schedule which explains that Dark Mode will turn off automatically at sunrise.">
+    Dark mode will turn off automatically at sunrise
+  </message>
+  <message name="IDS_SETTINGS_DARK_MODE_SCHEDULE_CUSTOM" desc="The label of the option to set a custom schedule of the Dark Mode feature.">
+    Custom
+  </message>
+  <message name="IDS_SETTINGS_DARK_MODE_SCHEDULE_LABEL" desc="The label for the automatic schedule section of the Dark Mode feature.">
+    Schedule
+  </message>
+  <message name="IDS_SETTINGS_DARK_MODE_SCHEDULE_NEVER" desc="The label of the option to turn off the automatic schedule of the Dark Mode feature.">
+    Never
+  </message>
+  <message name="IDS_SETTINGS_DARK_MODE_SCHEDULE_SUNSET_TO_SUNRISE" desc="The label of the option to set the automatic schedule of the Dark Mode feature to turn on at sunset and off at sunrise.">
+    Sunset to sunrise
+  </message>
+  <message name="IDS_SETTINGS_DARK_MODE_SUBLABEL_SUNSET_TO_SUNRISE_OFF" desc="The sub label for row in personalization settings page that indicates that dark mode is off and will be automatically turned on at sunset.">
+    Off / Will turn on automatically at sunset
+  </message>
+  <message name="IDS_SETTINGS_DARK_MODE_SUBLABEL_SUNSET_TO_SUNRISE_ON" desc="The sub label for row in personalization settings page that indicates that dark mode is on and will be automatically turned off at sunrise.">
+    On / Will turn off automatically at sunrise
+  </message>
+  <message name="IDS_SETTINGS_DARK_MODE_SUBLABEL_CUSTOM_OFF" desc="The sub label for row in personalization settings page that indicates that dark mode is off and will be automatically turned on at the user's custom start time.">
+    Off / Will turn on automatically at <ph name="TIME">$1<ex>6:30 PM</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_DARK_MODE_SUBLABEL_CUSTOM_ON" desc="The sub label for row in personalization settings page that indicates dark mode is on and will be automatically turned off at the user's custom end time.">
+    On / Will turn off automatically at <ph name="TIME">$1<ex>10:45 AM</ex></ph>
   </message>
 
   <!-- Search and Assistant section. -->
@@ -757,6 +855,18 @@
   </message>
   <message name="IDS_SETTINGS_QUICK_ANSWERS_ENABLE_DESCRIPTION" desc="Sub label for the Quick Answers toggle.">
     With a right-click or long press, show related info for your text selection
+  </message>
+  <message name="IDS_SETTINGS_QUICK_ANSWERS_DEFINITION_ENABLE" desc="Title for a toggle that controls the Quick Answers definiton feature.">
+    Definition
+  </message>
+  <message name="IDS_SETTINGS_QUICK_ANSWERS_TRANSLATION_ENABLE" desc="Title for a toggle that controls the Quick Answers translation feature.">
+    Translation
+  </message>
+  <message name="IDS_SETTINGS_QUICK_ANSWERS_TRANSLATION_ENABLE_DESCRIPTION" desc="Sub label for the Quick Answers translation toggle.">
+    Add your preferred <ph name="LINK_BEGIN">&lt;a target="_blank" href="#"&gt;</ph>website languages<ph name="LINK_END">&lt;/a&gt;</ph>. The top language from the list will be used for translations.
+  </message>
+  <message name="IDS_SETTINGS_QUICK_ANSWERS_UNIT_CONVERSION_ENABLE" desc="Title for a toggle that controls the Quick Answers unit conversion feature.">
+    Unit Conversion
   </message>
 
   <!-- Files Page (OS settings) -->
@@ -996,6 +1106,15 @@ and Ctrl+Alt+Brightness down to zoom out.
   <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_SUBTITLE_SODA_DOWNLOAD_ERROR" desc="Description explaining that there was an error with the speech recognition library download.">
     Can't download speech files. Dictation will continue to work by sending your voice to Brave.
   </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LOCALE_MENU_LABEL" desc="Description of a drop-down menu to select the language to use for Dictation's speech recognition.">
+    Language
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LOCALE_SUB_LABEL_OFFLINE" desc="Sub-label for a drop-down menu to select the language to use for Dictation. Describes how that language can be processed offline with no network connection.">
+    <ph name="language">$1<ex>English</ex></ph> is processed locally and works offline.
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LOCALE_SUB_LABEL_NETWORK" desc="Sub-label for a drop-down menu to select the language to use for Dictation. Describes how speech will be sent over the network to Brave for processing to create text.">
+    <ph name="language">$1<ex>English</ex></ph> speech is sent to Brave for processing.
+  </message>
   <message name="IDS_SETTINGS_ON_SCREEN_KEYBOARD_LABEL" desc="Label for checkbox which enables an on-screen keyboard.">
     Enable on-screen keyboard
   </message>
@@ -1045,7 +1164,7 @@ and Ctrl+Alt+Brightness down to zoom out.
     Switch Access settings
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_GUIDE_LABEL" desc="Label for the button that opens the setup guide dialog for Switch Access.">
-    Open setup guide
+    Rerun setup guide
   </message>
   <message name="IDS_SETTINGS_SWITCH_ASSIGNMENT_HEADING" desc="Heading for the settings section for Switch Access to assign switches to actions">
     Switch action assignment
@@ -1104,24 +1223,37 @@ and Ctrl+Alt+Brightness down to zoom out.
   <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_TITLE" desc="A title for a dialog to assign a switch key to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Assign switch: <ph name="action">$1<ex>Select</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WAIT_FOR_KEY_PROMPT_NO_SWITCHES" desc="A message shown to ask a user to press a new key to be assigned to an action. No switches are currently assigned to this action. The user can assign multiple switches to this action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    Press a switch to assign “<ph name="action">$1<ex>Select</ex></ph>”. You can assign multiple switches to this action.
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_WAIT_FOR_KEY_PROMPT_NO_SWITCHES" desc="A message shown to ask a user to press a new key to be assigned to an action. No switches are currently assigned to this action. The user can assign multiple switches to this action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Press a switch to assign “<ph name="action">$1<ex>Select</ex></ph>”
+You can assign multiple switches to this action
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WAIT_FOR_KEY_PROMPT_AT_LEAST_ONE_SWITCH" desc="A message shown to ask a user to press a key to be assigned to an action, or press an assigned switch to remove assignment. One or more switches are currently assigned to this action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    Press a new switch to start assignment.
-Press an assigned switch to remove assignment.
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_WAIT_FOR_KEY_PROMPT_NO_SWITCHES_SETUP_GUIDE" desc="A message shown in the setup flow to ask a user to press a new key or external switch to be assigned to an action. No switches are currently assigned to this action. The user can assign multiple switches to this action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Press a switch or key to assign "<ph name="action">$1<ex>Select</ex></ph>"
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WAIT_FOR_CONFIRMATION_PROMPT" desc="A message shown to ask a user to confirm by pressing a switch key to be assigned to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    Press “<ph name="currentKey">$1<ex>backspace</ex></ph>” again to confirm assignment and exit.
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_WAIT_FOR_KEY_PROMPT_AT_LEAST_ONE_SWITCH" desc="A message shown to ask a user to press a key to be assigned to an action, or press an assigned switch to remove assignment. One or more switches are currently assigned to this action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Press a new switch to start assignment
+Press an assigned switch to remove assignment
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WAIT_FOR_CONFIRMATION_REMOVAL_PROMPT" desc="A message to ask a user to confirm, by pressing a switch key, for removal of a switch key assignment. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    Press “<ph name="currentKey">$1<ex>backspace</ex></ph>” again to remove assignment and exit.
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_WAIT_FOR_CONFIRMATION_PROMPT" desc="A message shown to ask a user to confirm by pressing a switch key to be assigned to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+      Press “<ph name="currentKey">$1<ex>backspace</ex></ph>” again to confirm assignment and <ph name="response">$2<ex>exit</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WARN_NOT_CONFIRMED_PROMPT" desc="A message warning the user that the switch key pressed during confirmation did not match the initial switch key pressed. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    Keys do not match. Press any key to exit.
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_EXIT_RESPONSE" desc="A word describing that the dialog will exit after the user follows the preceding instructions.">
+    exit
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WARN_CANNOT_REMOVE_LAST_SELECT_SWITCH" desc="A message warning the user that they cannot remove the last switch for the Select action. The text for the 'Select' action should be the same as the text from IDS_SETTINGS_ASSIGN_SELECT_SWITCH_LABEL. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    Can’t remove the only switch assigned to Select. Press any key to exit.
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_CONTINUE_RESPONSE" desc="A word describing that the setup dialog will continue to the next step after the user follows the preceding instructions.">
+    continue
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_TRY_AGAIN_RESPONSE" desc="A word describing that the setup dialog needs the user to attempt the interaction again.">
+    try again
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_WAIT_FOR_CONFIRMATION_REMOVAL_PROMPT" desc="A message to ask a user to confirm, by pressing a switch key, for removal of a switch key assignment. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+      Press “<ph name="currentKey">$1<ex>backspace</ex></ph>” again to remove assignment and <ph name="response">$2<ex>exit</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_WARN_NOT_CONFIRMED_PROMPT" desc="A message warning the user that the switch key pressed during confirmation did not match the initial switch key pressed. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+      Keys do not match. Press any key to <ph name="response">$1<ex>exit</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_WARN_CANNOT_REMOVE_LAST_SELECT_SWITCH" desc="A message warning the user that they cannot remove the last switch for the Select action. The text for the 'Select' action should be the same as the text from IDS_SETTINGS_ASSIGN_SELECT_SWITCH_LABEL. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+      Can’t remove the only switch assigned to Select. Press any key to <ph name="response">$1<ex>exit</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_SWITCH_AND_DEVICE_TYPE" desc="Label describing a switch key and the type of device where the switch key exists. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     <ph name="SWITCH">$1<ex>backspace</ex></ph> (<ph name="DEVICE_TYPE">$2<ex>USB</ex></ph>)
@@ -1144,23 +1276,44 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_ASSIGN_SWITCH_SUB_LABEL_5_OR_MORE_SWITCHES" desc="A sub-label for the link that brings up a dialog to assign a switch key to an action. Includes listing of three currently assigned switches, and mentions number of other switches assigned. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     <ph name="FIRST_SWITCH">$1<ex>backspace</ex></ph>, <ph name="SECOND_SWITCH">$2<ex>enter</ex></ph>, <ph name="THIRD_SWITCH">$3<ex>escape</ex></ph>, and <ph name="NUMBER_OF_OTHER_SWITCHES">$4<ex>2</ex></ph> more switches
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WARN_ALREADY_ASSIGNED_ACTION_PROMPT" desc="A message warning the user that the switch key pressed is assigned to another action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    '<ph name="currentKey">$1<ex>enter</ex></ph>' is already assigned to the '<ph name="action">$2<ex>Select</ex></ph>' action. Press any key to exit.
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_WARN_ALREADY_ASSIGNED_ACTION_PROMPT" desc="A message warning the user that the switch key pressed is assigned to another action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+      '<ph name="currentKey">$1<ex>enter</ex></ph>' is already assigned to the '<ph name="action">$2<ex>Select</ex></ph>' action. Press any key to <ph name="response">$3<ex>exit</ex></ph>.
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WARN_UNRECOGNIZED_KEY_PROMPT" desc="A message warning the user that the switch key pressed is not recognized. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    Unrecognized key. Press any key to exit.
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_WARN_UNRECOGNIZED_KEY_PROMPT" desc="A message warning the user that the switch key pressed is not recognized. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+      Unrecognized key. Press any key to <ph name="response">$1<ex>exit</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_NO_SWITCHES_ASSIGNED" desc="A label indicating no switches are assigned to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     No switch has been assigned yet
   </message>
+  <message name="IDS_SETTINGS_NO_SWITCHES_ASSIGNED_SETUP_GUIDE" desc="A label indicating no switches are assigned to an action, from within the setup guide. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    No switch or key has been assigned yet
+  </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_DIALOG_EXIT" desc="The label of the button to exit one of the switch access dialogs without making any changes. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Exit
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_GUIDE_WARNING_DIALOG_TITLE" desc="The title for the dialog explaining that re-running the setup guide will clear all switch assignments. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Clear all switch assignments
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_GUIDE_WARNING_DIALOG_MESSAGE" desc="The message explaining that re-running the setup guide will clear all switch assignments. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Re-running the setup guide will clear your assigned switches. Do you want to continue?
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_INTRO_TITLE" desc="The title for the first page of the Switch Access setup guide. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Switch Access setup guide
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_INTRO_BODY" desc="The message displayed on the first page of the Switch Access setup guide, instructing the user to confirm that their external switch is appropriately connected to the chromebook. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     To get started, please make sure your USB or Bluetooth switch is connected to your Bravebook. You can also use keyboard keys.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_ASSIGN_SELECT_TITLE" desc="The title for the page of the Switch Access setup guide where the user assigns a switch to perform the action select, which selects the element onscreen currently surrounded by the focus ring. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Assign switch: Select
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_ENABLED_TITLE" desc="The title for the page of the Switch Access setup guide that informs the user that auto-scan has been enabled, meaning that the focused item will change periodically with no additional input. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Auto-scan enabled
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_ENABLED_EXPLANATION" desc="The message displayed in the Switch Access setup guide explaining how the auto-scan behavior works. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Auto-scan will automatically cycle through and focus on items on the screen. When an item is focused, press the "Select" key you just assigned to activate it.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_ENABLED_DIRECTIONS" desc="The message displayed in the Switch Access setup guide after auto-scan has been enabled, informing them how to proceed. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Activate the Next button to continue the setup or the Previous button to change the "Select" switch assignment.
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_SWITCH_COUNT_TITLE" desc="The title for the page of the Switch Access setup guide where the user selects the number of switches they are going to use. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Do you want to assign additional switches?
@@ -1177,8 +1330,38 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_3_SWITCHES" desc="The label for the option to use three switches (with one already assigned), within the Switch Access setup guide. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Assign two more switches
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_3_SWITCHES_DESCRIPTION" desc="The description for the option to use three switches (with one already assigned), within the Switch Access setup guide. It details that the switches will be 'next' and 'previous', and used for navigating the items onscreen. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) ton control the computer.">
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_3_SWITCHES_DESCRIPTION" desc="The description for the option to use three switches (with one already assigned), within the Switch Access setup guide. It details that the switches will be 'next' and 'previous', and used for navigating the items onscreen. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Assign them to "Next" and "Previous" to move between items on the page
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_SPEED_TITLE" desc="The title for the page of the Switch Access setup guide where the user sets the speed of auto-scan, which automatically advances the focus between elements at a fixed interval. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Auto-scan speed
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_SPEED_DESCRIPTION" desc="The description on the page of the Switch Access setup guide adjusting the auto-scan speed. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Choose how long the highlight should stay on each item
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_ASSIGN_NEXT_TITLE" desc="The title for the page of the Switch Access setup guide where the user assigns a switch to perform the action next, which advances the focus ring to the next element onscreen. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Assign switch: Next
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_ASSIGN_PREVIOUS_TITLE" desc="The title for the page of the Switch Access setup guide where the user assigns a switch to perform the action previous, which moves the focus ring to the previous element onscreen. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Assign switch: Previous
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CLOSING_TITLE" desc="The title for the final page of the Switch Access setup guide, which informs the user that setup is complete and provides some final information. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    You're all set!
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CLOSING_AUTO_SCAN_INSTRUCTIONS" desc="Instructions for how to close the Switch Access setup guide using Switch Access with auto-scan enabled. Switch Access is an alternative input method designed for users with limited mobility where the user has as little as one switch (for example, a button) to control the computer. Auto-scan is a feature of Switch Access where focus moves from one element to the next at a set interval automatically, so the user only has to select the element when it is highlighted.">
+    Press your switch when the focus is on the Done button to close the guide.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CLOSING_MANUAL_SCAN_INSTRUCTIONS" desc="Instructions for how to close the Switch Access setup guide using Switch Access with at least one switch assigned to navigation. Switch Access is an alternative input method designed for users with limited mobility where the user has as little as one switch (for example, a button) to control the computer. Auto-scan is a feature of Switch Access where focus moves from one element to the next at a set interval automatically, so the user only has to select the element when it is highlighted.">
+    Now that you have more switches to navigate, auto-scan has been turned off. Navigate to the Done button and press the Select switch to close the guide.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CLOSING_INFO" desc="Final advice on changing the settings for Switch Access after the Switch Access setup guide has been closed. Switch Access is an alternative input method designed for users with limited mobility where the user has as little as one switch (for example, a button) to control the computer.">
+    You can always change additional settings or open the setup guide again from Switch Access settings.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_SLOWER" desc="The label on the button which slows the speed of Switch Access' auto-scan, which automatically advances the focus between elements at a fixed interval. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Slower
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_AUTO_SCAN_FASTER" desc="The label on the button which increases the speed of Switch Access' auto-scan, which automatically advances the focus between elements at a fixed interval. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Faster
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_PAIR_BLUETOOTH" desc="A button in the Switch Access setup guide that takes the user to a page where they can pair a bluetooth switch device. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Pair Bluetooth switch
@@ -1189,16 +1372,22 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_PREVIOUS" desc="A button in the Switch Access setup guide that takes the user to the previous step in the setup process.">
     Previous
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_ASSIGNED_ICON_LABEL" desc="A label for an icon indicating a switch is assigned to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_START_OVER" desc="A button in the Switch Access setup guide to restart from the beginning, and reconfigure any/all of the settings. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Start over setup
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_DONE" desc="A button in the Switch Access setup guide to confirm that the user has finished configuring their settings and would like to close the dialog. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Done
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_ASSIGNED_ICON_LABEL" desc="A label for an icon indicating a switch is assigned to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Assigned
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_ADD_ASSIGNMENT_ICON_LABEL" desc="A label for an icon indicating a switch is ready to add as an assignment to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_ADD_ASSIGNMENT_ICON_LABEL" desc="A label for an icon indicating a switch is ready to add as an assignment to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Add assignment
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_REMOVE_ASSIGNMENT_ICON_LABEL" desc="A label for an icon indicating a switch is ready to remove as an assignment from an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_REMOVE_ASSIGNMENT_ICON_LABEL" desc="A label for an icon indicating a switch is ready to remove as an assignment from an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Remove assignment
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_ERROR_ICON_LABEL" desc="The label for an icon indicating that there was an error adding or removing a switch assignment. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_ERROR_ICON_LABEL" desc="The label for an icon indicating that there was an error adding or removing a switch assignment. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Error
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_TEXT_TO_SPEECH_HEADING" desc="In the settings tab, the heading for accessibility features that enable the computer to speak text from the computer screen.">
@@ -1402,7 +1591,7 @@ Press an assigned switch to remove assignment.
     Managed by <ph name="DOMAIN">$1<ex>google.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS" desc="Management status label for managed accounts.">
-    This account is managed by <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer"&gt;</ph><ph name="DOMAIN">$1<ex>google.com</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>
+    This account is managed by <ph name="BEGIN_LINK">&lt;a target="_blank"&gt;</ph><ph name="DOMAIN">$1<ex>google.com</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS_CHILD" desc="Management status label for child accounts.">
     Managed by Family Link
@@ -1652,7 +1841,7 @@ Press an assigned switch to remove assignment.
     Reserve size
   </message>
   <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_POWERWASH_REQUIRED_SUBLABEL" desc="Sublabel notifying user of powerwash requirement before enabling ARC ADB sideloading.">
-    A factory reset of this Bravebook is required to enable ADB debugging. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    A factory reset of this Bravebook is required to enable ADB debugging. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_CONFIRMATION_MESSAGE_ENABLE" desc="Describes what will happen if the user enables ADB Sideloading.">
     To enable ADB debugging, a restart of this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is required. Disabling it requires a reset to factory settings.
@@ -1661,7 +1850,7 @@ Press an assigned switch to remove assignment.
     Disabling ADB debugging will reset this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> to factory settings. All user accounts and local data will be erased.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SUBTEXT" desc="Description for the section for enabling and managing Crostini.">
-    Run Linux tools, editors, and IDEs on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Run Linux tools, editors, and IDEs on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_CROSTINI_REMOVE" desc="Label for the row to open a dialog confirming removal of Crostini.">
     Remove Linux development environment
@@ -1785,7 +1974,11 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_REMOVE" desc="Label for removing (unpairing) a paired Bluetooth device">
     Remove from list
-  </message>   <message name="IDS_SETTINGS_BLUETOOTH_PAIR" desc="Label for the settings button to pair a previously paired Bluetooth device.">
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_MANAGED" desc="Tooltip description for icon notifying user that the Bluetooth device is managed by an enterprise policy and may have restricted functionality.">
+    Your administrator has blocked some functionality for this device
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIR" desc="Label for the settings button to pair a previously paired Bluetooth device.">
     Pair
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_ENTER_KEY" desc="Bluetooth pairing dialog: Text for enter key when pairing keyboard devices.">
@@ -1977,8 +2170,23 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_AVAILABLE_PRINTER_COUNT_NONE" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them there are no printers available to save.">
     There are no printers available to save.
   </message>
+  <message name="IDS_SETTINGS_PRINTING_ENTERPRISE_PRINTERS_TITLE" desc="Text for the title of the user's managed printers list.">
+    Managed printers
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_ENTERPRISE_PRINTERS_AVAILABLE_PRINTERS_COUNT_MANY" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them on the number of managed printers showing on the screen.">
+    There are <ph name="PRINTER_COUNT">$1<ex>3</ex></ph> managed printers.
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_ENTERPRISE_PRINTERS_AVAILABLE_PRINTER_COUNT_ONE" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them there is only 1 managed printer.">
+    There is 1 managed printer.
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_ENTERPRISE_PRINTERS_AVAILABLE_PRINTER_COUNT_NONE" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them there are no managed printers.">
+    There are no managed printers.
+  </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_EDIT" desc="Text for the drop down menu which allows the user to edit the printer details.">
     Edit
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_VIEW" desc="Text for the drop down menu which allows the user to view the managed printer details.">
+    View
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_REMOVE" desc="Text for the drop down menu which allows the user to remove the selected printer.">
     Remove
@@ -2046,7 +2254,7 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADVANCED_URI" desc="Label for the CUPS printer URI (uniform resource identifier) in the Advanced section in the printer details page.">
     URI
   </message>
-  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_DETAILS_NAME" desc="Label for the CUPS printer name in the printer details page.">
+  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_DETAILS_NAME" desc="Label for the CUPS printer name in the printer details page." meaning="Name of an inanimate object">
     Name
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_DETAILS_MODEL" desc="Label for the CUPS printer model in the printer details page.">
@@ -2163,6 +2371,9 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_PRINTING_CUPS_EDIT_PRINTER_DIALOG_TITLE" desc="Text for the title of the dialog that is used to edit a CUPS printer's information.">
     Edit printer
   </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_VIEW_PRINTER_DIALOG_TITLE" desc="Text for the title of the dialog that is used to view a CUPS managed printer's information.">
+    View printer
+  </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_EDIT_PRINTER_BUTTON" desc="Text for the button which allows the user to save the modification of a CUPS printer.">
     Save
   </message>
@@ -2276,9 +2487,6 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_JOIN_TYPE" desc="Title for the network configuration dialog for a new network.">
     Join <ph name="TYPE">$1<ex>WiFi</ex></ph> network
   </message>
-  <message name="IDS_SETTINGS_INTERNET_MOBILE_SEARCH" desc="Settings &gt; Internet &gt; Message in Mobile section when searching for mobile networks.">
-    Searching for mobile networks
-  </message>
   <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS" desc="Name of the settings page which displays the list of known networks.">
     Known Networks
   </message>
@@ -2356,9 +2564,6 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_ALWAYS_ON_VPN_SERVICE" desc="Settings &gt; Internet &gt; VPN: Label for the dropdown menu determining which VPN client will be automatically started on login.">
     VPN service
-  </message>
-  <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether to automatically connect to the network.">
-    Automatically connect to this network
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_HIDDEN" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox to set a wi-fi network as hidden.">
     Hidden network
@@ -2526,13 +2731,13 @@ Press an assigned switch to remove assignment.
     This network is shared with you
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_NOT_SYNCED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is not synced to the user's account.">
-    This network is not synced to your account. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    This network is not synced to your account. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SYNCED_DEVICE" desc="Settings &gt; Internet &gt; Network details: Text to show when a shared network is synced to the user's account.  Also notes that changes to the network that are made by other users are not synced.">
-    Synced with other devices on your account. Settings modified by other users will not be synced. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Synced with other devices on your account. Settings modified by other users will not be synced. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SYNCED_USER" desc="Settings &gt; Internet &gt; Network details: Text to show when a user network is synced.">
-    Synced with other devices on your account. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Synced with other devices on your account. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_WIFI_NETWORK_OUT_OF_RANGE" desc="Text shown when viewing the Wi-Fi network detail page when the currently-viewed Wi-Fi network has been lost (e.g., has gone out of range).">
     Network out of range
@@ -2601,7 +2806,7 @@ Press an assigned switch to remove assignment.
     Connect
   </message>
   <message name="IDS_SETTINGS_INTERNET_LOOKING_FOR_MOBILE_NETWORK" desc="Text shown when viewing the Mobile data page when there are no cellular or tether networks available.">
-    Looking for a mobile network. <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    Looking for a mobile network. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_ESIM_LABEL" desc="Label describing list of cellular networks as eSIM networks">
     eSIM
@@ -2619,10 +2824,10 @@ Press an assigned switch to remove assignment.
     No SIM card inserted
   </message>
   <message name="IDS_SETTINGS_INTERNET_TETHER_NOT_SETUP_WITH_LEARN_MORE_LINK" desc="Text shown when viewing the Mobile data page and no instant tether network is available">
-    No device detected. <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    No device detected. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_INTERNET_SHOW_EID_POPUP_BUTTON_LABEL" desc="A11y and tooltop label for EID and QR code popup show button when viewing cellular network list">
-    Show device EID and QR code popup
+  <message name="IDS_SETTINGS_INTERNET_SHOW_EID_POPUP_BUTTON_LABEL" desc="A11y and tooltop label for EID and QR Code popup show button when viewing cellular network list">
+    Show device EID and QR Code popup
   </message>
   <message name="IDS_SETTINGS_INTERNET_ESIM_NO_CONNECTION_ERROR_TOAST" desc="Message in toast displayed when user tries to perform an eSIM operation when not connected to a non-cellular network.">
     Connect to Wi-Fi or Ethernet to set up eSIM
@@ -2698,7 +2903,7 @@ Press an assigned switch to remove assignment.
     Messages
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_ANDROID_MESSAGES_SUMMARY" desc="Description of for the 'Android Messages' setting. This feature lets the user read and reply to text messages from their Bravebook. New text messages will appear as notifications.">
-    Send and receive text messages from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Send and receive text messages from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SECTION_TITLE" desc="The title of the Phone Hub section on the settings page.">
     Phone Hub
@@ -2722,7 +2927,7 @@ Press an assigned switch to remove assignment.
     View recent Brave tabs from your phone
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_DISABLED_SUMMARY" desc="Description of for the 'Phone Hub Task Continuation' setting when Brave sync is not enabled. This feature lets users resume in-app actions and chrome tabs that are open on a connected Android phone from Chrome OS devices.">
-    Turn on <ph name="LINK1_BEGIN">&lt;a id="chromeSyncLink"&gt;</ph>Brave Sync<ph name="LINK1_END">&lt;/a&gt;</ph> to view recent Brave tabs. <ph name="LINK2_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" id="learnMoreLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn More<ph name="LINK2_END">&lt;/a&gt;</ph>
+    Turn on <ph name="LINK1_BEGIN">&lt;a id="chromeSyncLink"&gt;</ph>Brave Sync<ph name="LINK1_END">&lt;/a&gt;</ph> to view recent Brave tabs. <ph name="LINK2_BEGIN">&lt;a target="_blank" id="learnMoreLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn More<ph name="LINK2_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SYNC_LABEL" desc="Accessibility label (used by screen readers, not shown in UI) for a link that leads to the Brave Sync toggle that needs to be enabled as a prerequisite for the 'Phone Hub Task Continuation' feature to be enabled. This feature lets users resume chrome tabs that are open on a connected Android phone from Chrome OS devices.">
     Turn on Brave Sync to view recent Brave tabs from your phone
@@ -2767,7 +2972,7 @@ Press an assigned switch to remove assignment.
     Could not set up notifications syncing
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACCESS_PROHIBITED_SUMMARY" desc="The text of the dialog containing the Phone Hub notification opt-in flow when access to notifications is prohibited because the user's phone has a work profile.">
-    Notification syncing is not supported for phones in a work profile. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Notification syncing is not supported for phones in a work profile. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_PROHIBITED_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub notification syncing feature. The tooltip describes how users with work profiles cannot opt into this feature.">
     Notification syncing is not supported for phones in a work profile
@@ -2782,10 +2987,10 @@ Press an assigned switch to remove assignment.
     Wi-Fi Sync
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_SUMMARY" desc="Description for the 'Wifi Sync' section on the settings page. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone">
-    Sync Wi-Fi networks with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Sync Wi-Fi networks with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_ENABLE_WIFI_SYNC_V1_SUMMARY" desc="Description for the 'Wifi Sync' section on the settings page when the prerequisite 'Brave Sync' setting is not activated. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone. The description contains a link that leads to the toggle where the prerequisite 'Brave Sync' feature can be turned on and a 'Learn More' link to learn more about the 'Wifi Sync' feature.">
-    Turn on <ph name="LINK1_BEGIN">&lt;a id="chromeSyncLink"&gt;</ph>Brave Sync<ph name="LINK1_END">&lt;/a&gt;</ph> to use Wi-Fi Sync. <ph name="LINK2_BEGIN">&lt;a id="learnMoreLink" target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK2_END">&lt;/a&gt;</ph>
+    Turn on <ph name="LINK1_BEGIN">&lt;a id="chromeSyncLink"&gt;</ph>Brave Sync<ph name="LINK1_END">&lt;/a&gt;</ph> to use Wi-Fi Sync. <ph name="LINK2_BEGIN">&lt;a id="learnMoreLink" target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK2_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_CHROME_SYNC_LABEL" desc="Accessibility label (used by screen readers, not shown in UI) for a link that leads to the Brave Sync toggle that needs to be enabled as a prerequisite for the 'Wifi Sync' feature to be enabled. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone.">
     Turn on Brave Sync to use Wi-Fi Sync
@@ -2879,16 +3084,16 @@ Press an assigned switch to remove assignment.
     Disconnect
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_SETUP_SUMMARY" desc="Tells the user to connect their Bravebook to their phone.">
-    Connect your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Connect your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NO_ELIGIBLE_HOSTS" desc="Tells the user that there is no phone with their account on it that can connect to their Bravebook.">
-    No eligible devices. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    No eligible devices. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_VERIFICATION_TEXT" desc="Text to tell user that their Bravebook needs to verify that it can connect with their phone.">
-    Waiting for verification. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Waiting for verification. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_SMART_LOCK_SUMMARY" desc="Description of for the 'Smart Lock' setting. This feature automatically unlocks the user's Bravebook if their phone is nearby and unlocked.">
-    Unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_OPTIONS_LOGIN_LOCK" desc="Text on the lock screen which is the subheader for the screen locking options.">
     Lock screen from sleep mode
@@ -3041,7 +3246,7 @@ Press an assigned switch to remove assignment.
     Valid for <ph name="TICKET_TIME_LEFT">$1<ex>7 hours 12 minutes</ex></ph>
   </message>
   <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_DESCRIPTION" desc="Description of the 'Kerberos tickets' Settings page. Shown just below the title of the page.">
-    Choose a ticket to use for authentication. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Choose a ticket to use for authentication. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_SUBMENU_LABEL" desc="Label of 'Kerberos tickets' submenu in Settings page.">
     Kerberos tickets
@@ -3164,13 +3369,13 @@ Press an assigned switch to remove assignment.
     Brave Assistant
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD" desc="Title for a toggle that lets the assistant detect hotword.">
-    "Ok Brave"
+    "Hey Brave"
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_DESCRIPTION" desc="Sub label for hotword-enable toggle.">
-    Access your Assistant when you say "Ok Brave."
+    Access your Assistant when you say "Hey Brave."
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_DESCRIPTION" desc="Sub label for hotword-enable dropdown without DSP support.">
-    Access your Assistant when you say "Ok Brave." To save battery, choose “On (Recommended.)” Your Assistant will respond only when your device is plugged in or charging.
+    Access your Assistant when you say "Hey Brave." To save battery, choose “On (Recommended.)” Your Assistant will respond only when your device is plugged in or charging.
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_RECOMMENDED" desc="Default label for hotword-enable dropdown without DSP support.">
     On (Recommended)
@@ -3198,6 +3403,9 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_LAUNCH_WITH_MIC_OPEN_DESCRIPTION" desc="Sub label for launch-with-microphone-open toggle.">
     Default to using voice instead of keyboard
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_SCREEN_CONTEXT_DESCRIPTION" desc="Sub label for context-enable toggle.">
+    To get responses that are more tailored to you, let Brave Assistant access a screenshot of what’s on your screen when you ask questions. Your Assistant may also use info about songs or videos that are playing.
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_SETTINGS" desc="Title for a button that opens the Brave Assistant app settings.">
     Brave Assistant settings
@@ -3247,7 +3455,7 @@ Press an assigned switch to remove assignment.
     Never
   </message>
   <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_SCHEDULE_SUNSET_TO_SUNRISE" desc="In Device Settings &gt; Displays, the label of the option to set the automatic schedule of the Night Light feature to turn on at sunset and off at sunrise.">
-    Sunset to Sunrise
+    Sunset to sunrise
   </message>
   <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_START_TIME" desc="In Device Settings &gt; Displays, the label of the start time bubble.">
     Start time
@@ -3575,6 +3783,9 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_APPS_LINK_TEXT" desc="The label for the button which links to the App Management page.">
     Manage your apps
   </message>
+  <message name="IDS_SETTINGS_APP_NOTIFICATIONS_LINK_TEXT" desc="The label for the settings row button in the App section of OS Settings which links to the App Notifications page.">
+    Notifications
+  </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Google Play Store (Arc++ / Android Apps) section.">
     Google Play Store
   </message>
@@ -3582,7 +3793,7 @@ Press an assigned switch to remove assignment.
     Android settings
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_SUBTEXT" desc="Description for the section for enabling and managing Google Play Store (Android) apps.">
-    Install apps and games from Google Play on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Install apps and games from Google Play on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <!-- TODO(jamescook): Use device type instead of "Bravebook", which may
         require changing ArcPlayTermsOfServiceConsent resource id handling. -->
@@ -3675,7 +3886,7 @@ Press an assigned switch to remove assignment.
     External storage preferences
   </message>
   <message name="IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE" desc="Label for the additional note for the subpage for setting preferences for external storage.">
-    Apps from Google Play may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Apps from Google Play may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_EMPTY_LIST_HEADER" desc="Header of the list of external storage devices for the subpage for setting preferences for external storage. This is shown when the list is empty.">
     Available devices will appear here.
@@ -3729,20 +3940,17 @@ Press an assigned switch to remove assignment.
   </message>
 
   <!-- On Startup (OS settings) -->
-  <message name="IDS_OS_SETTINGS_ON_STARTUP" desc="Name of the settings page which displays On Startup preferences, with a radio group to configure the restore apps and pages options">
-    On Startup
+  <message name="IDS_OS_SETTINGS_ON_STARTUP_TITLE" desc="The title of the dropdown menu that allows the user to configure the restore apps and pages options on startup.">
+    Restore apps on startup
   </message>
-  <message name="IDS_OS_SETTINGS_ON_STARTUP_RADIO_GROUP_TITLE" desc="The title of the radio group that allows the user to configure the restore apps and pages options on startup.">
-    Restore apps and pages
+  <message name="IDS_OS_SETTINGS_ON_STARTUP_ALWAYS" desc="Label for the dropdown menu which enables the always restore apps and pages option on startup.">
+    Always restore
   </message>
-  <message name="IDS_OS_SETTINGS_ON_STARTUP_ALWAYS" desc="Label for the checkbox which enables the always restore apps and pages option on startup.">
-    Always
-  </message>
-  <message name="IDS_OS_SETTINGS_ON_STARTUP_ASK_EVERY_TIME" desc="Label for the checkbox which enables the ask every time option to show a notification on startup to give the user a choice for the restoration.">
+  <message name="IDS_OS_SETTINGS_ON_STARTUP_ASK_EVERY_TIME" desc="Label for the dropdown menu which enables the ask every time option to show a notification on startup to give the user a choice for the restoration.">
     Ask every time
   </message>
-  <message name="IDS_OS_SETTINGS_ON_STARTUP_DO_NOT_RESTORE" desc="Label for the checkbox which enables the do not restore option, which means not restore apps or pages on startup.">
-    Do not restore
+  <message name="IDS_OS_SETTINGS_ON_STARTUP_DO_NOT_RESTORE" desc="Label for the dropdown menu which enables the do not restore option, which means not restore apps or pages on startup.">
+    Off
   </message>
 </if>
 </grit-part>

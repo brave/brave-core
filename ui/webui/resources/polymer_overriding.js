@@ -3,9 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {Polymer, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {html as polymerHtml, mixinBehaviors, Polymer, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 // Global overrides
+import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.js';
 import CrButtonStyleTemplate from './overrides/cr_button.js'
 import CrToggleStyleTemplate from './overrides/cr_toggle.js'
 
@@ -20,8 +21,11 @@ if (debug) {
 const allBehaviorsMap = {}
 const allPropertiesMap = {}
 const componentPropertyModifications = {}
+const ignoredComponents = [
+  'cr-toolbar'
+]
 
-function addBraveBehaviors(moduleName, component) {
+function addBraveBehaviorsLegacy(moduleName, component) {
   if (allBehaviorsMap[moduleName]) {
     component.behaviors = component.behaviors || []
     component.behaviors.push(...allBehaviorsMap[moduleName])
@@ -45,7 +49,7 @@ function addBraveProperties(moduleName, component) {
 const allBraveTemplateModificationsMap = {}
 
 function addBraveTemplateModifications(moduleName, component, modifyFn) {
-  const template = component.template || component._template
+  const template = component._template || component.template
   if (template) {
     const templateContent = template.content
     const t0 = debug && performance.now()
@@ -60,9 +64,7 @@ function addBraveTemplateModifications(moduleName, component, modifyFn) {
 
 const styleOverridePrefix = 'brave-override-style-'
 
-function addBraveStyleOverride(moduleName, component) {
-  // does have template style element?
-  const template = component.template || component._template
+function addBraveStyleOverride(moduleName, component, template = component._template || component.template) {
   if (!template) {
     console.error(`No template found for component (${moduleName}) with found style overrides`, component)
     return
@@ -107,15 +109,32 @@ export function RegisterPolymerTemplateModifications(modificationsMap) {
   const awaitingComponentModifications = {}
   for (const componentName in modificationsMap) {
     const modifyFn = modificationsMap[componentName]
-    const existingComponent = window.customElements.get(componentName)
-    if (!existingComponent) {
-      awaitingComponentModifications[componentName] = modificationsMap[componentName]
-      continue
-    }
-    // Component is already defined, modify now.
-    addBraveTemplateModifications(componentName, existingComponent, modifyFn)
+    // const existingComponent = window.customElements.get(componentName)
+    // if (!existingComponent) {
+    awaitingComponentModifications[componentName] = modificationsMap[componentName]
+    // NOTE(petemill): If module has already been defined, it's not ideal as the unmodified
+    // template may already have been cloned for an element. However, we assume PolymerElement._prepareTemplate
+    // has not been called yet for the component.
+    // However, this would be more robust if we moved to a subclassing approach.
   }
   Object.assign(allBraveTemplateModificationsMap, awaitingComponentModifications)
+}
+
+export function RegisterPolymerComponentReplacement(name, component) {
+  if (debug) {
+    console.log(`RegisterPolymerComponentReplacement: ${name}`)
+  }
+  if (!ignoredComponents.includes(name)) {
+    console.warn(`RegisterPolymerComponentReplacement: did not find component '${name}' as being ignored via RegisterPolymerComponentToIgnore`)
+  }
+  define(name, component)
+}
+
+export function RegisterPolymerComponentToIgnore(name) {
+  if (debug) {
+    console.log(`RegisterPolymerComponentToIgnore ${name}`)
+  }
+  ignoredComponents.push(name)
 }
 
 const moduleNamesWithStyleOverrides = []
@@ -137,21 +156,11 @@ export async function RegisterStyleOverride(componentName, styleTemplate) {
   if (debug) {
     console.log(`REGISTERING STYLE OVERRIDE for ${componentName}`, styleTemplate)
   }
-  // If module has already been defined, it's not ideal as the unmodified
-  // template may already have been cloned for an element. However, let's make
-  // an attempt and apply it anyway. Otherwise, we wait until it's defined and
-  // then modify the template as soon as possible.
-  const existingComponent = window.customElements.get(componentName)
-  if (existingComponent) {
-    addBraveStyleOverride(componentName, existingComponent)
-  } else {
-    // Cannot await CustomElementRegistry.whenDefined here
-    // since getting in the async queue will mean this template
-    // mofification happens too late. Instead, save this in a list
-    // so that the template modification can happen inside the
-    // customElements.define hook.
-    moduleNamesWithStyleOverrides.push(componentName)
-  }
+  // NOTE(petemill): If module has already been defined, it's not ideal as the unmodified
+  // template may already have been cloned for an element. However, we assume PolymerElement._prepareTemplate
+  // has not been called yet for the component.
+  // However, this would be more robust if we moved to a subclassing approach.
+  moduleNamesWithStyleOverrides.push(componentName)
 }
 
 export function OverrideIronIcons(iconSetName, overridingIconSetName, iconOverrides) {
@@ -198,32 +207,9 @@ export function OverrideIronIcons(iconSetName, overridingIconSetName, iconOverri
   srcIconSet.getIconNames()
 }
 
-function PerformBraveModifications(name, component) {
-  if (debug) {
-    console.debug(`Polymer component registering: ${name}`, component)
-  }
-  addBraveBehaviors(name, component)
-  addBraveProperties(name, component)
-  const templateModifyFn = allBraveTemplateModificationsMap[name]
-  if (templateModifyFn) {
-    addBraveTemplateModifications(name, component, templateModifyFn)
-    delete allBraveTemplateModificationsMap[name]
-  }
-  if (moduleNamesWithStyleOverrides.includes(name)) {
-    addBraveStyleOverride(name, component)
-  }
-}
-
-// TODO(petemill): Overriding Polymer.Class only works because
-// chromium components at the moment are passing objects rather
-// than classes. If this changes, or for something more robust,
-// we can instead hook in to `window.customElements.define`. This
-// will require changing how we inject behaviors to instead return a
-// subclass of the original component, with the lifecycle methods added.
-// That's because behaviors are a legacy polymer feature,
-// now migrated to subclassing.
-// That should work for any type of Polymer component (class or
-// object-to-generated-class).
+// Overriding Polymer.Class only works for some
+// chromium components which call Polymer() and pass objects rather
+// than classes.
 const oldClass = Polymer.Class
 Polymer.Class = function (info, mixin) {
   if (!info) {
@@ -237,10 +223,97 @@ Polymer.Class = function (info, mixin) {
     return oldClass(info, mixin)
   }
   if (debug) {
-    console.log('defined', name)
+    console.debug(`Polymer component legacy registering: ${name}`, info)
   }
-  PerformBraveModifications(name, info)
+  addBraveBehaviorsLegacy(name, info)
   return oldClass(info, mixin)
+}
+
+// Also override for components which do not call Polymer() but instead
+// inherit from PolymerElement.
+const oldPrepareTemplate = PolymerElement._prepareTemplate;
+PolymerElement._prepareTemplate = function BravePolymer_PrepareTemplate() {
+  oldPrepareTemplate.call(this)
+  const name = this.is
+  if (!name) {
+    if (debug) {
+      console.warn('PolymerElement defined with no name', this, this.prototype)
+    }
+    return
+  }
+  if (debug) {
+    console.log('PolymerElement _prepareTemplate: ', name, this, this.prototype)
+  }
+  // Perform modifications that we want to change the original class / prototype
+  // features, such as editing template or properties.
+  // Other modifications, such as injecting overriden classes (aka behaviors),
+  // will happen at component definition time.
+  addBraveProperties(name, this.prototype)
+  const templateModifyFn = allBraveTemplateModificationsMap[name]
+  if (templateModifyFn) {
+    addBraveTemplateModifications(name, this.prototype, templateModifyFn)
+    // TODO(petemill): delete allBraveTemplateModificationsMap entry when done so that the
+    // function can be collected. We do not delete at the moment since
+    // _prepareTemplate can be called multiple times. We should move template
+    // modification to happen via automatic subclassing and overriding of template
+    // property.
+  }
+  if (moduleNamesWithStyleOverrides.includes(name)) {
+    addBraveStyleOverride(name, this.prototype)
+  }
+}
+
+const oldDefine = window.customElements.define
+
+function BraveDefineCustomElements (name, component, options, useIgnoreList = true) {
+  if (component.polymerElementVersion) {
+    if (debug) {
+      console.log('BraveDefineCustomElements PolymerElement defined', name, component, options)
+    }
+    // Global ignore (likely due to manual replacement)
+    if (useIgnoreList && ignoredComponents.includes(name)) {
+      if (debug) {
+        console.log(`BraveDefineCustomElements ignored ${name}`)
+      }
+      return
+    }
+    // Inject behaviors
+    if (allBehaviorsMap[name]) {
+      if (debug) {
+        console.log('BraveDefineCustomElements added behavior', allBehaviorsMap[name])
+      }
+      component = mixinBehaviors(allBehaviorsMap[name], component)
+      delete allBehaviorsMap[name]
+    }
+  }
+  oldDefine.call(this, name, component, options)
+}
+
+window.customElements.define = BraveDefineCustomElements
+
+export function define (name, component, options) {
+  // We still want style and template overrides
+  BraveDefineCustomElements.call(window.customElements, name, component, options, false)
+}
+
+/**
+ * Allows regular string tagged templating before parsing as html elements.
+ * Differs from polymer's html function only in that it allows strings and
+ * does not allow nested htmlelements.
+ * Named html for syntax highlighting in some IDEs.
+ * @param {*} strings
+ * @param  {...any} values
+ * @returns HTMLTEmplateElement
+ */
+ export function html(strings, ...values) {
+  // Get regular string placeholders first (basic `i am ${'a'} string` parsing)
+  // since Polymer's html tagged template only supports html element
+  // placeholders.
+  const htmlRaw = values.reduce((acc, v, idx) =>
+      acc + v + strings[idx + 1], strings[0])
+  // Utilize polymer's tagged template element creation for no other reason than we are allowed
+  // to call innerHTML there.
+  return polymerHtml([htmlRaw]).content.cloneNode(true)
 }
 
 // Overrides for all pages

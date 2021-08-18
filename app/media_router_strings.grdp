@@ -169,7 +169,7 @@
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_FORM_DESCRIPTION" desc="Text to describe the feedback form.">
     Your feedback helps us to improve Brave Cast and is appreciated.
     For help troubleshooting issues with cast, please refer to the
-    <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>
+    <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>
     help center<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_HEADER" desc="Header of the Media Router feedback page.">
@@ -326,7 +326,7 @@
   <!-- Cast feedback dialog: discovery -->
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_SETUP_VISIBILITY_QUESTION" desc="Text for the question about device visibility through setup flow">
     Are you able to see your Bravecast in the
-    <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>
+    <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>
     Brave Home app<ph name="END_LINK">&lt;/a&gt;</ph>?
   </message>
   <message name="IDS_MEDIA_ROUTER_FEEDBACK_YES" desc="Label for yes option.">

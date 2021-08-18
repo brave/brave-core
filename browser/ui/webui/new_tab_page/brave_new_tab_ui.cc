@@ -10,7 +10,7 @@
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
-#include "brave/browser/ui/webui/new_tab_page/instant_service_message_handler.h"
+#include "brave/browser/ui/webui/new_tab_page/top_sites_message_handler.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
@@ -34,7 +34,7 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     web_ui->AddMessageHandler(
         base::WrapUnique(BraveNewTabMessageHandler::Create(source, profile)));
     web_ui->AddMessageHandler(
-        base::WrapUnique(new InstantServiceMessageHandler(profile)));
+        base::WrapUnique(new TopSitesMessageHandler(profile)));
   }
 
   web_ui->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));

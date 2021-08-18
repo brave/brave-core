@@ -59,7 +59,12 @@
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
+    public <init>(...);
     *** mHasClearedOmniboxForFocus;
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessor {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.sync.settings.ManageSyncSettings {
@@ -132,6 +137,11 @@
 -keep class org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator {
     *** mTabSwitcherModeCoordinatorPhone;
     *** mOptionalButtonController;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTCoordinatorPhone {
@@ -281,7 +291,7 @@
 
 -keep class org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar
 
--keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout
+-keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl
 
 -keep class org.chromium.chrome.browser.toolbar.top.ToolbarPhone
 
@@ -320,5 +330,29 @@
 }
 
 -keep class org.chromium.chrome.browser.omnibox.status.BraveStatusMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
+    *** mScrollViewForPolicy;
+    *** mNtpHeader;
+    *** mRootView;
+    *** isEnhancedProtectionPromoEnabled(...);
+    *** isReliabilityLoggingEnabled(...);
+}
+
+-keep class org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator {
+    *** mScrollViewForPolicy;
+    *** mNtpHeader;
+    *** mRootView;
+    *** isEnhancedProtectionPromoEnabled(...);
+    *** isReliabilityLoggingEnabled(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator {
     public <init>(...);
 }

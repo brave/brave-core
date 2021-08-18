@@ -1,16 +1,16 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index f1cb16bf5c2e81bae7fc71b861492534ae0aacbb..5470138922a183569d4c0df81ae1b1063540ca7c 100644
+index 9c5ae20c878b84912b98ab0647f125665ce27388..60f7acdc66f170b00406bb0e75d27f1fdb69124b 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -168,6 +168,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
- 
-     # Remove unneeded entries from material design values.xml files.
-     resource_values_filter_rules = [ "${_material_package}:[Tt]oolbarLayout" ]
+@@ -149,6 +149,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+       "*ic_file_download_white*",  # Bottom edge seems misaligned.
+       "*ic_lock.*",  # Bottom edge seems misaligned.
+     ]
 +    resource_exclusion_exceptions += brave_resources_exclusion_exceptions
  
-     if (!_is_monochrome) {
-       product_config_java_packages = [ "org.chromium.chrome.browser" ]
-@@ -250,6 +251,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+     # Note most of these, with the exception of resource_exclusion_exceptions,
+     # are currently duplicated in system_webview_apk_tmpl.gni.
+@@ -245,6 +246,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
        if (!defined(proguard_configs)) {
          proguard_configs = []
        }

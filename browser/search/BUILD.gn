@@ -17,6 +17,7 @@ source_set("search") {
       "//brave/common:pref_names",
       "//brave/components/crypto_dot_com/browser/buildflags",
       "//brave/components/crypto_dot_com/common",
+      "//chrome/browser/ui",
       "//chrome/common",
       "//components/pref_registry",
       "//components/prefs",

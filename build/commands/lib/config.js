@@ -409,7 +409,6 @@ Config.prototype.buildArgs = function () {
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
     args.is_component_build = false
-    args.ios_deployment_target = '12.0'
     args.ios_enable_code_signing = false
     args.fatal_linker_warnings = !this.isComponentBuild()
     // DCHECK's crash on Static builds without allowing the debugger to continue

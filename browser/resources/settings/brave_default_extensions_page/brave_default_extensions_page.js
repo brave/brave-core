@@ -101,10 +101,6 @@ Polymer({
     window.open("chrome://restart", "_self");
   },
 
-  onMediaRouterEnabledChange_: function() {
-    this.browserProxy_.setMediaRouterEnabled(this.$.mediaRouterEnabled.checked);
-  },
-
   onTorEnabledChange_: function() {
     this.browserProxy_.setTorEnabled(this.$.torEnabled.checked);
   },

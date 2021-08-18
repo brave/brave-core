@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/resources/bookmarks/api_listener.ts b/chrome/browser/resources/bookmarks/api_listener.ts
+index 67b7187e0c7d98a102797c6cd07df427f9f43a9a..52eec387e2d3d699444719e1fab529ef01204e83 100644
+--- a/chrome/browser/resources/bookmarks/api_listener.ts
++++ b/chrome/browser/resources/bookmarks/api_listener.ts
+@@ -118,6 +118,7 @@ function onChildrenReordered(
+  */
+ function onImportBegan() {
+   chrome.bookmarks.onCreated.removeListener(onBookmarkCreated);
++  chrome.bookmarks.onMoved.removeListener(onBookmarkMoved);
+   document.dispatchEvent(new CustomEvent('import-began'));
+ }
+ 
+@@ -126,6 +127,7 @@ function onImportEnded() {
+     dispatch(refreshNodes(normalizeNodes(results[0]!)));
+   });
+   chrome.bookmarks.onCreated.addListener(onBookmarkCreated);
++  chrome.bookmarks.onMoved.addListener(onBookmarkMoved);
+   document.dispatchEvent(new CustomEvent('import-ended'));
+ }
+ 

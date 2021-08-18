@@ -8,7 +8,12 @@
 
 #include "../../../../chrome/browser/service_sandbox_type.h"
 
+#include "brave/components/brave_ads/browser/service_sandbox_type.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/components/ipfs/service_sandbox_type.h"
+#endif
 
 // brave::mojom::ProfileImport
 namespace brave {
@@ -23,11 +28,6 @@ content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
   return sandbox::policy::SandboxType::kNoSandbox;
 }
 
-#if BUILDFLAG(IPFS_ENABLED)
-#include "brave/components/ipfs/service_sandbox_type.h"
-#endif
-
-#if !defined(OS_ANDROID)  // Android will use default, which is kUtility.
 namespace bat_ledger {
 namespace mojom {
 class BatLedgerService;
@@ -37,8 +37,10 @@ class BatLedgerService;
 template <>
 inline sandbox::policy::SandboxType
 content::GetServiceSandboxType<bat_ledger::mojom::BatLedgerService>() {
+#if !defined(OS_ANDROID)  // Android will use default, which is kUtility.
   return sandbox::policy::SandboxType::kNoSandbox;
-}
+#else
+  return sandbox::policy::SandboxType::kUtility;
 #endif  // !defined(OS_ANDROID)
-
+}
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SERVICE_SANDBOX_TYPE_H_

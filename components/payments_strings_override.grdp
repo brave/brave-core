@@ -32,9 +32,12 @@
   <if expr="not is_android">
     </if>
 
-  <if expr="not is_win">
+  <if expr="not is_win and not is_macosx">
+    </if> <if expr="is_macosx">
+    </if> <if expr="not is_win">
     </if>  <if expr="is_win">
-    </if>  <message name="IDS_PAYMENT_CREDENTIAL_ENROLLMENT_OFF_THE_RECORD_DESCRIPTION" desc="Extra description at the bottom of a dialog that asks for the user's permission to set up device-based sign-in (i.e., using their computer's biometric sensor or screen unlock/PIN) to verify card payments. This is shown only in Private mode and explains that the sign-in data will be stored to the device.">
+    </if>  <message name="IDS_PAYMENT_CREDENTIAL_ENROLLMENT_OFF_THE_RECORD_DESCRIPTION" desc="Extra description at the bottom of a dialog that asks for the user's permission to set up device-based sign-in (i.e., using their computer's biometric sensor or screen unlock/PIN) to verify card payments. This is shown only in Private mode and explains that the sign-in data will be stored to the device." formatter_data="android_java">
     Sign-in data will be stored on this device after you exit Private mode.
   </message>
-  </grit-part>
+  <if expr="is_android">
+    </if>  </grit-part>

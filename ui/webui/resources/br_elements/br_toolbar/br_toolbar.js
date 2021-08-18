@@ -2,6 +2,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import 'chrome://resources/polymer/v3_0/iron-media-query/iron-media-query.js';
+import 'chrome://brave-resources/br_elements/shared_vars_css.m.js';
+import './br_toolbar_search_field.js';
+
 const customCurrentWebUINameMap = {
   extensions: 'settings',
   sync: 'settings',
@@ -9,6 +14,8 @@ const customCurrentWebUINameMap = {
 
 Polymer({
   is: 'cr-toolbar',
+
+  _template: html`{__html_template__}`,
 
   properties: {
     // Name to display in the toolbar, in titlecase.

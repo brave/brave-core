@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.js b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.js
-index e4d18fe19621df0f75394798f602f54ce0d53fed..20c72407d88aa5e58c6ee02a4fc10499c574ffad 100644
+index a2fe0f3717984cb70c1a5f5791fb2391e17f6999..4cc12805525753d4bd2510555450487d7b1689ea 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.js
 +++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.js
-@@ -79,6 +79,7 @@ Polymer({
+@@ -100,6 +100,7 @@ export class ProfilePickerMainViewElement extends
  
      this.manageProfilesBrowserProxy_ =
          ManageProfilesBrowserProxyImpl.getInstance();
 +    this.$$('#addProfile').style.borderRadius = '8px';
-   },
+   }
  
    /** @override */

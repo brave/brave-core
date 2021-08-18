@@ -218,7 +218,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         //favIconURL (or content URL) is still not available, try to read it again
         if (mFaviconUrl == null || mFaviconUrl.isEmpty() || mFaviconUrl.equals("clear")) {
             if (mTab != null) {
-                mFaviconUrl = mTab.getUrlString();
+                mFaviconUrl = mTab.getUrl().getSpec();
             }
 
             mHandler.postDelayed(new Runnable() {

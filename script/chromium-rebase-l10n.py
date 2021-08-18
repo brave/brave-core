@@ -1,18 +1,12 @@
 import argparse
-import io
 import os.path
-from os import walk
-import re
 import sys
-from lxml import etree
-from lib.config import get_env_var
+from lxml import etree # pylint: disable=import-error
 from lib.grd_string_replacements import (write_xml_file_from_tree,
                                          write_braveified_grd_override,
                                          update_braveified_grd_tree_override,
                                          get_override_file_path)
-from lib.transifex import (fix_links_with_target_blank,
-                           pull_source_files_from_transifex,
-                           textify)
+from lib.transifex import textify
 
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -24,7 +18,7 @@ def parse_args():
 
 
 def generate_overrides_and_replace_strings(source_string_path):
-    fix_links_with_target_blank(source_string_path)
+    # pylint: disable=too-many-locals
     original_xml_tree_with_branding_fixes = etree.parse(source_string_path)
     update_braveified_grd_tree_override(original_xml_tree_with_branding_fixes, True)
     write_braveified_grd_override(source_string_path)
@@ -66,8 +60,6 @@ def generate_overrides_and_replace_strings(source_string_path):
 
     # Write out an override file that is a duplicate of the original file but with strings that
     # are shared with Chrome stripped out.
-    filename = os.path.basename(source_string_path)
-    (basename, ext) = filename.split('.')
     override_string_path = get_override_file_path(source_string_path)
     modified_messages = modified_xml_tree.xpath('//message')
     modified_parts = modified_xml_tree.xpath('//part')
@@ -76,13 +68,14 @@ def generate_overrides_and_replace_strings(source_string_path):
 
 
 def main():
+    # pylint: disable=too-many-statements
     args = parse_args()
     # This file path is a string path inside brave/ but just recently copied
     # in from chromium files which need replacements.
     source_string_path = os.path.join(SOURCE_ROOT, args.source_string_path[0])
     filename = os.path.basename(source_string_path)
     extension = os.path.splitext(source_string_path)[1]
-    if (extension != '.grd' and extension != '.grdp'):
+    if extension != '.grd' and extension != '.grdp':
         print 'returning early'
         return
 
@@ -94,7 +87,7 @@ def main():
     # If you modify the translateable attribute then also update
     # is_translateable_string function in brave/script/lib/transifex.py.
     xml_tree = etree.parse(source_string_path)
-    (basename, ext) = filename.split('.')
+    (basename, _) = filename.split('.')
     if basename == 'brave_strings':
         elem1 = xml_tree.xpath('//message[@name="IDS_SXS_SHORTCUT_NAME"]')[0]
         elem1.text = 'Brave Nightly'

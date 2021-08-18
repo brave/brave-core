@@ -7,6 +7,7 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "base/stl_util.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/features.h"
@@ -74,11 +75,6 @@ bool BraveIsAllowedThirdParty(const GURL& url,
   return false;
 }
 
-GURL GetFirstPartyURL(const GURL& site_for_cookies,
-                      const absl::optional<url::Origin>& top_frame_origin) {
-  return top_frame_origin ? top_frame_origin->GetURL() : site_for_cookies;
-}
-
 bool IsFirstPartyAccessAllowed(
     const GURL& first_party_url,
     const CookieSettingsBase* const cookie_settings) {
@@ -105,8 +101,8 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
 
-  const GURL first_party_url =
-      GetFirstPartyURL(site_for_cookies, top_frame_origin);
+  const GURL first_party_url = GetFirstPartyURL(
+      site_for_cookies, base::OptionalOrNullptr(top_frame_origin));
 
   if (!first_party_url.is_valid())
     return false;
@@ -141,16 +137,16 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const absl::optional<url::Origin>& top_frame_origin) const {
   auto scoped_ephemeral_storage_awareness =
       CreateScopedEphemeralStorageAwareness();
-  return IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+  return IsFullCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
 }
 
-bool CookieSettingsBase::IsCookieAccessAllowed(
+bool CookieSettingsBase::IsFullCookieAccessAllowed(
     const GURL& url,
     const GURL& first_party_url) const {
-  return IsCookieAccessAllowed(url, first_party_url, absl::nullopt);
+  return IsFullCookieAccessAllowed(url, first_party_url, absl::nullopt);
 }
 
-bool CookieSettingsBase::IsCookieAccessAllowed(
+bool CookieSettingsBase::IsFullCookieAccessAllowed(
     const GURL& url,
     const GURL& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin) const {
@@ -166,14 +162,14 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
     const GURL& url,
     const GURL& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin) const {
-  bool allow =
-      IsChromiumCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+  bool allow = IsChromiumFullCookieAccessAllowed(url, site_for_cookies,
+                                                 top_frame_origin);
 
   if (allow)
     return true;
 
-  const GURL first_party_url =
-      GetFirstPartyURL(site_for_cookies, top_frame_origin);
+  const GURL first_party_url = GetFirstPartyURL(
+      site_for_cookies, base::OptionalOrNullptr(top_frame_origin));
 
   if (!IsFirstPartyAccessAllowed(first_party_url, this))
     return false;
@@ -186,6 +182,6 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
 
 }  // namespace content_settings
 
-#define IsCookieAccessAllowed IsChromiumCookieAccessAllowed
+#define IsFullCookieAccessAllowed IsChromiumFullCookieAccessAllowed
 #include "../../../../../../components/content_settings/core/common/cookie_settings_base.cc"  // NOLINT
-#undef IsCookieAccessAllowed
+#undef IsFullCookieAccessAllowed

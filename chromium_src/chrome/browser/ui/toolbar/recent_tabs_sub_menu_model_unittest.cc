@@ -18,12 +18,8 @@
 
 // Need to expect more items at that place, because Brave has additional item
 // `More...` which redirects to brave://history/syncedTabs
-// The perfect way is to have
-//     EXPECT_EQ(10, num_items)
-// instead
-//     EXPECT_EQ(9, num_items);
-// But in favor to reduce patch, just decrease num_items:
-#define BRAVE_MAX_TABS_PER_SESSION_AND_RECENCY --num_items;
+#define BRAVE_MAX_TABS_PER_SESSION_AND_RECENCY \
+  EXPECT_EQ(10, model.GetItemCount());
 
 // The case when number of tabs on other device is <=4 so we do not add
 // `More...` item is tested by RecentTabsSubMenuModelTest.MaxSessionsAndRecency

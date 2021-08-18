@@ -94,6 +94,8 @@ are declared in tools/grit/grit_rule.gni.
 
       <part file="profiles_strings_override.grdp" />
 
+      <if expr="not is_android">
+        </if>
       <if expr="is_win or is_macosx or is_linux">
         </if>
 
@@ -116,6 +118,9 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <if expr="not chromeos and not is_android">
+        </if>
+
+      <if expr="not is_android">
         </if>
 
       <if expr="enable_printing">
@@ -326,6 +331,11 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="use_titlecase">
         </if>
 
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+
       <if expr="is_macosx">
         </if>
 
@@ -380,8 +390,14 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_TAB_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private Tab row (may not be visible if Private is not open)">
           Private Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
         </message>
+        <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_INCOGNITO_PREFIX" desc="The prefix for a Private page stored in the Back/Forward Cache">
+          Private Back/Forward Cached Page: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+        </message>
         <message name="IDS_TASK_MANAGER_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for a Private out-of-process-iframe process row in the Task Manager (these processes are created when site isolation is enabled, in Private mode)">
           Private Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_INCOGNITO_SUBFRAME_PREFIX" desc="The prefix for a Private out-of-process-iframe row stored in the Back/Forward Cache">
+          Private Back/Forward Cached Subframe: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in Private mode)">
           Private Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
@@ -425,6 +441,9 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         <if expr="is_macosx">
           </if>
+        </if>
+
+      <if expr="not is_android">
         </if>
 
       <if expr="enable_extensions">
@@ -477,8 +496,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_android or enable_vr">
         </if>
-      <if expr="is_android">
-      </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -652,6 +669,8 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="use_titlecase">
         </if>
+      <if expr="is_android">
+      </if>
 
       <if expr="not use_titlecase">
         </if>
@@ -843,9 +862,6 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="toolkit_views">
         </if>
 
-      <if expr="enable_service_discovery">
-        </if>
-
       <if expr="chromeos">
         </if>
       <if expr="is_macosx">
@@ -919,7 +935,13 @@ are declared in tools/grit/grit_rule.gni.
       Close Private
     </message>
 
-   <if expr="not is_android">
+    <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_PRIMARY_TEXT" desc="The primary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how Private users can clear the browsing data by closing all Private windows.">
+      To clear data, close all Private windows
+    </message>
+    <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_SECONDARY_TEXT" desc="The secondary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how the clear browsing data action affects only the Private windows.">
+      This only affects Private windows
+    </message>
+    <if expr="not is_android">
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
