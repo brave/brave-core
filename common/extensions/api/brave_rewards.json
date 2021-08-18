@@ -1212,12 +1212,7 @@
             "parameters": [
               {
                 "name": "result",
-                "type": "boolean"
-              },
-              {
-                "name": "properties",
                 "type": "object",
-                "optional": true,
                 "properties": {
                   "url": {
                     "type": "string"

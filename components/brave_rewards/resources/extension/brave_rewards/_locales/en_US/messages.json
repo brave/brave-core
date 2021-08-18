@@ -871,16 +871,12 @@
     "message": "Ads and earnings will now resume. Thanks for helping us protect Brave Rewards and privacy-based ads.",
     "description": ""
   },
-  "contactSupport": {
+  "captchaContactSupport": {
     "message": "Contact support",
     "description": ""
   },
-  "dismiss": {
+  "captchaDismiss": {
     "message": "Dismiss",
-    "description": ""
-  },
-  "validating": {
-    "message": "Validating...",
     "description": ""
   }
 }

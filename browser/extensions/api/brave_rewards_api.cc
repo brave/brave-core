@@ -1201,18 +1201,14 @@ BraveRewardsGetScheduledCaptchaInfoFunction::Run() {
   }
 
   std::string url;
-  bool max_attempts_exceeded;
-  bool result =
-      rewards_service->GetScheduledCaptchaInfo(&url, &max_attempts_exceeded);
-  if (!result) {
-    return RespondNow(OneArgument(base::Value(result)));
-  }
+  bool max_attempts_exceeded = false;
+  rewards_service->GetScheduledCaptchaInfo(&url, &max_attempts_exceeded);
 
   base::DictionaryValue dict;
   dict.SetString("url", url);
   dict.SetBoolean("maxAttemptsExceeded", max_attempts_exceeded);
 
-  return RespondNow(TwoArguments(base::Value(result), std::move(dict)));
+  return RespondNow(OneArgument(std::move(dict)));
 }
 
 BraveRewardsUpdateScheduledCaptchaResultFunction::
