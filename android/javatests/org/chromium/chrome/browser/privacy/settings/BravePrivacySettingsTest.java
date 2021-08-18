@@ -41,8 +41,17 @@ public class BravePrivacySettingsTest {
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
     private static final String PREF_PRIVACY_SANDBOX = "privacy_sandbox";
 
-    // Ignore "usage_stats_reporting" and "privacy_sandbox"
-    private static int PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 7;
+    // Ignore usage_stats_reporting and privacy_sandbox
+    // Items counted:
+    // - clear_browsing_data
+    // - safe_browsing
+    // - https_first_mode
+    // - can_make_payment
+    // - preload_pages
+    // - secure_dns
+    // - do_not_track
+    // - sync_and_services_link
+    private static int PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 8;
     private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 20;
 
     @Rule
