@@ -19,7 +19,8 @@ class CrashReportPermissionAskDialogTest : public DialogBrowserTest {
 
   // TestBrowserUi:
   void ShowUi(const std::string& name) override {
-    SessionCrashedBubble::ShowIfNotOffTheRecordProfileBrave(browser());
+    SessionCrashedBubble::ShowIfNotOffTheRecordProfileBrave(
+        browser(), /*skip_tab_checking=*/false);
   }
 };
 
