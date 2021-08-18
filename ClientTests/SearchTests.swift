@@ -33,6 +33,14 @@ class SearchTests: XCTestCase {
         checkValidURL("foo.bar", afterFixup: "http://foo.bar")
         checkValidURL(" foo.bar ", afterFixup: "http://foo.bar")
         checkValidURL("1.2.3", afterFixup: "http://1.2.3")
+        checkValidURL("[::1]:80", afterFixup: "http://[::1]:80")
+        checkValidURL("[2a04:4e42:400::288]", afterFixup: "http://[2a04:4e42:400::288]")
+        checkValidURL("[2a04:4e42:600::288]:80", afterFixup: "http://[2a04:4e42:600::288]:80")
+        checkValidURL("[2605:2700:0:3::4713:93e3]:443", afterFixup: "http://[2605:2700:0:3::4713:93e3]:443")
+        checkValidURL("[::192.9.5.5]", afterFixup: "http://[::192.9.5.5]")
+        checkValidURL("[::192.9.5.5]:80", afterFixup: "http://[::192.9.5.5]:80")
+        checkValidURL("[::192.9.5.5]/png", afterFixup: "http://[::192.9.5.5]/png")
+        checkValidURL("[::192.9.5.5]:80/png", afterFixup: "http://[::192.9.5.5]:80/png")
 
         // Check invalid URLs. These are passed along to the default search engine.
         checkInvalidURL("foobar")
@@ -59,6 +67,9 @@ class SearchTests: XCTestCase {
         checkInvalidURL("\"foo@brave.com\"")
         checkInvalidURL(#""创业咖啡.中国"#)
         checkInvalidURL(#""创业咖啡.中国""#)
+        checkInvalidURL("foo:5000")
+        checkInvalidURL("http://::192.9.5.5")
+        checkInvalidURL("http://::192.9.5.5:8080")
     }
 
     fileprivate func checkValidURL(_ beforeFixup: String, afterFixup: String) {

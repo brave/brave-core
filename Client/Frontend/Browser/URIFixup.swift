@@ -6,6 +6,30 @@ import Foundation
 import Shared
 
 class URIFixup {
+    private static func isValidIPAddress(_ host: String) -> Bool {
+        var buffer = [UInt8](repeating: 0, count: Int(INET6_ADDRSTRLEN))
+        if inet_pton(AF_INET, host, &buffer) != 0 ||
+            inet_pton(AF_INET6, host, &buffer) != 0 {
+            return true
+        }
+        return false
+    }
+    
+    private static func isValidIPAddressURL(_ string: String) -> Bool {
+        // IPv4 addresses MUST have a `.` character delimiting the octets.
+        // RFC-2732 states an IPv6 URL should contain brackets as in: `[IP_ADDRESS_HERE]`
+        if !(string.contains(".") || (string.contains("[") && string.contains("]"))) {
+            return false
+        }
+        
+        // Validate if the HOST is a valid IP address.
+        if let url = URL(string: "https://\(string)"),
+           let host = url.host, !host.isEmpty {
+            return isValidIPAddress(host)
+        } else {
+            return false
+        }
+    }
 
     private static func validateURL(_ url: URL) -> URL? {
         // Validate the domain to make sure it doesn't have any invalid characters
@@ -17,6 +41,19 @@ class URIFixup {
             
             if decodedASCIIURL.rangeOfCharacter(from: CharacterSet.URLAllowed.inverted) != nil {
                 return nil
+            }
+            
+            // `http://::192.9.5.5` will produce an invalid URL
+            // Its host, path, query, fragment, etc.. will all be empty
+            // This prevents bad URLs from being passed to the DNS resolver.
+            // Instead, the bad URL is forwarded to the search-engine (same behaviour as Desktop).
+            if URLComponents(url: url, resolvingAgainstBaseURL: false) == nil {
+                return nil
+            }
+            
+            // The host is a valid IPv4 or IPv6 address
+            if isValidIPAddress(host) {
+                return url
             }
         }
         
@@ -39,15 +76,29 @@ class URIFixup {
         }
 
         // If there's no scheme, we're going to prepend "http://". First,
-        // make sure there's at least one "." in the host. This means
+        // make sure there's at least one "." or ":" in the host. This means
         // we'll allow single-word searches (e.g., "foo") at the expense
         // of breaking single-word hosts without a scheme (e.g., "localhost").
-        if trimmed.range(of: ".") == nil {
+        if trimmed.range(of: ".") == nil && trimmed.range(of: ":") == nil {
             return nil
         }
 
         if trimmed.range(of: " ") != nil {
             return nil
+        }
+        
+        if trimmed.range(of: ":") != nil {
+            // The host is a valid IPv4 or IPv6 address
+            if isValidIPAddressURL(trimmed) {
+                // IP Addresses do NOT require a Scheme.
+                // However, Brave requires that URLs have a scheme.
+                return URL(string: "http://\(escaped)")
+            } else {
+                // If host is NOT an IP-Address, it should never contain a colon
+                // This is because it also doesn't contain a "." so it isn't a domain at all.
+                // IE: foo:5000 & brave:8080 are not valid addresses.
+                return nil
+            }
         }
         
         // Partially canonicalize the URL and check if it has a "user"..
@@ -69,7 +120,7 @@ class URIFixup {
             return nil
         }
 
-        // If there is a ".", prepend "http://" and try again. Since this
+        // If there is a "." or ":", prepend "http://" and try again. Since this
         // is strictly an "http://" URL, we also require a host.
         if let url = URL(string: "http://\(escaped)"), url.host != nil {
             return validateURL(url)
