@@ -291,6 +291,19 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
       ctx->browser_context && !ctx->browser_context->IsTor() &&
       ProxySettingsAllowUncloaking(ctx->browser_context);
 
+  // When default 1p blocking is disabled, first-party requests should not be
+  // CNAME uncloaked unless using aggressive blocking mode.
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveAdblockDefault1pBlocking) &&
+      should_check_uncloaked && !ctx->aggressive_blocking &&
+      SameDomainOrHost(
+          ctx->request_url,
+          url::Origin::CreateFromNormalizedTuple("https",
+                                                 ctx->initiator_url.host(), 80),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    should_check_uncloaked = false;
+  }
+
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&ShouldBlockRequestOnTaskRunner, ctx, EngineFlags(),
