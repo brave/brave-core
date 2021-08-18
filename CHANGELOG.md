@@ -1,5 +1,11 @@
 # Changelog
 
+
+## [1.30.1](https://github.com/brave/brave-ios/releases/tag/v1.30.1)
+
+- Reordered "Pull-to-Refresh" setting position to be above "Set default browser" option for iOS 14 devices. ([#4045](https://github.com/brave/brave-ios/issues/4045))
+- Fixed previously viewed websites from being displayed in the tab webView when opening or closing a tab via the tab tray. ([#4019](https://github.com/brave/brave-ios/issues/4019))
+ 
 ## [1.30](https://github.com/brave/brave-ios/releases/tag/v1.30)
 
 - Implemented History Sync. ([#3227](https://github.com/brave/brave-ios/issues/3227))
