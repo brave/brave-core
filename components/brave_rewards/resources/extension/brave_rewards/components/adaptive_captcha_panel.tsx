@@ -109,6 +109,22 @@ export class AdaptiveCaptchaPanel extends React.PureComponent<Props, State> {
     return (
       <StyledCaptchaFrame
         id='scheduled-captcha'
+        allow='accelerometer "none";
+               ambient-light-sensor "none";
+               camera "none";
+               display-capture "none";
+               document-domain "none";
+               fullscreen "none";
+               geolocation "none";
+               gyroscope "none";
+               magnetometer "none";
+               microphone "none";
+               midi "none";
+               payment "none";
+               usb "none";
+               vibrate "none";
+               vr "none";
+               webauthn "none"'
         src={this.props.rewardsPanelData.scheduledCaptcha.url}
         sandbox='allow-scripts'
         scrolling='no'
