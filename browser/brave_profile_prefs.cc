@@ -49,6 +49,7 @@
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "components/privacy_sandbox/privacy_sandbox_prefs.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/signin/public/base/signin_pref_names.h"
@@ -286,6 +287,14 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Disable default webstore icons in topsites or apps.
   registry->SetDefaultPrefValue(prefs::kHideWebStoreIcon, base::Value(true));
+
+  // Disable Chromium's privacy sandbox
+  registry->SetDefaultPrefValue(prefs::kPrivacySandboxApisEnabled,
+                                base::Value(false));
+
+  // Disable Chromium's privacy sandbox
+  registry->SetDefaultPrefValue(prefs::kPrivacySandboxFlocEnabled,
+                                base::Value(false));
 
   // Importer: selected data types
   registry->RegisterBooleanPref(kImportDialogExtensions, true);
