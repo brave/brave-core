@@ -60,6 +60,23 @@ constexpr char kTestSponsoredImages[] = R"(
         ]
     })";
 
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+constexpr char kTestBackgroundImages[] = R"(
+    {
+      "schemaVersion": 1,
+      "images": [
+        {
+          "name": "ntp-2020/2021-1",
+          "source": "background-image-source.png",
+          "author": "Brave Software",
+          "link": "https://brave.com/",
+          "originalUrl": "Contributor sent the hi-res version through email",
+          "license": "https://brave.com/about/"
+        }
+      ]
+    })";
+#endif
+
 class TestObserver : public NTPBackgroundImagesService::Observer {
  public:
   TestObserver() = default;
@@ -67,19 +84,24 @@ class TestObserver : public NTPBackgroundImagesService::Observer {
 
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   void OnUpdated(NTPBackgroundImagesData* data) override {
-    on_updated_ = true;
+    on_bi_updated_ = true;
+    bi_data_ = data;
   }
 #endif
   void OnUpdated(NTPSponsoredImagesData* data) override {
-    on_updated_ = true;
-    data_ = data;
+    on_si_updated_ = true;
+    si_data_ = data;
   }
   void OnSuperReferralEnded() override {
     on_super_referral_ended_ = true;
   }
 
-  NTPSponsoredImagesData* data_;
-  bool on_updated_ = false;
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  NTPBackgroundImagesData* bi_data_;
+  bool on_bi_updated_ = false;
+#endif
+  NTPSponsoredImagesData* si_data_;
+  bool on_si_updated_ = false;
   bool on_super_referral_ended_ = false;
 };
 
@@ -101,6 +123,13 @@ class TestNTPBackgroundImagesService : public NTPBackgroundImagesService {
     NTPBackgroundImagesService::RegisterSuperReferralComponent();
     super_referral_component_started_ = true;
   }
+
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  void RegisterBackgroundImagesComponent() override {
+    NTPBackgroundImagesService::RegisterBackgroundImagesComponent();
+    background_images_component_started_ = true;
+  }
+#endif
 
   void DownloadSuperReferralMappingTable() override {
     NTPBackgroundImagesService::DownloadSuperReferralMappingTable();
@@ -125,6 +154,9 @@ class TestNTPBackgroundImagesService : public NTPBackgroundImagesService {
   bool super_referral_component_started_ = false;
   bool checked_super_referral_component_ = false;
   bool sponsored_images_component_started_ = false;
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  bool background_images_component_started_ = false;
+#endif
   bool mapping_table_requested_ = false;
   bool referral_promo_code_change_monitored_ = false;
   bool marked_this_install_is_not_super_referral_forever_ = false;
@@ -155,6 +187,10 @@ TEST_F(NTPBackgroundImagesServiceTest, BasicTest) {
   Init();
   // NTP SI Component is registered always at start.
   EXPECT_TRUE(service_->sponsored_images_component_started_);
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  // If ENABLE_NTP_BACKGROUND_IMAGES then BI shall be registered
+  EXPECT_TRUE(service_->background_images_component_started_);
+#endif
 }
 
 TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
@@ -169,44 +205,78 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   service_->si_images_data_.reset();
   service_->OnGetSponsoredComponentJsonData(false, "{}");
   EXPECT_EQ(nullptr, service_->GetBrandedImagesData(false));
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  service_->bi_images_data_.reset();
+  service_->OnGetComponentJsonData("{}");
+  EXPECT_EQ(nullptr, service_->GetBackgroundImagesData());
+#endif
 
   // Check with json file with empty object.
   service_->si_images_data_.reset();
-  observer.on_updated_ = false;
-  observer.data_ = nullptr;
+  observer.on_si_updated_ = false;
+  observer.si_data_ = nullptr;
   service_->OnGetSponsoredComponentJsonData(false, kTestEmptyComponent);
-  auto* data = service_->GetBrandedImagesData(false);
-  EXPECT_EQ(data, nullptr);
-  EXPECT_TRUE(observer.on_updated_);
-  EXPECT_TRUE(observer.data_->default_logo.alt_text.empty());
+  auto* si_data = service_->GetBrandedImagesData(false);
+  EXPECT_EQ(si_data, nullptr);
+  EXPECT_TRUE(observer.on_si_updated_);
+  EXPECT_TRUE(observer.si_data_->default_logo.alt_text.empty());
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  service_->bi_images_data_.reset();
+  observer.on_bi_updated_ = false;
+  observer.bi_data_ = nullptr;
+  service_->OnGetComponentJsonData(kTestEmptyComponent);
+  auto* bi_data = service_->GetBackgroundImagesData();
+  EXPECT_EQ(bi_data, nullptr);
+  EXPECT_TRUE(observer.on_bi_updated_);
+  EXPECT_FALSE(observer.bi_data_->IsValid());
+#endif
 
   service_->si_images_data_.reset();
-  observer.on_updated_ = false;
-  observer.data_ = nullptr;
+  observer.on_si_updated_ = false;
+  observer.si_data_ = nullptr;
   service_->OnGetSponsoredComponentJsonData(false, kTestSponsoredImages);
   // Mark this is not SR to get SI data.
   service_->MarkThisInstallIsNotSuperReferralForever();
-  data = service_->GetBrandedImagesData(false);
-  EXPECT_TRUE(data);
-  EXPECT_TRUE(data->IsValid());
-  EXPECT_FALSE(data->IsSuperReferral());
+  si_data = service_->GetBrandedImagesData(false);
+  EXPECT_TRUE(si_data);
+  EXPECT_TRUE(si_data->IsValid());
+  EXPECT_FALSE(si_data->IsSuperReferral());
   // Above json data has 3 wallpapers.
   const size_t image_count = 3;
-  EXPECT_EQ(image_count, data->backgrounds.size());
-  EXPECT_EQ(696, data->backgrounds[0].focal_point.x());
+  EXPECT_EQ(image_count, si_data->backgrounds.size());
+  EXPECT_EQ(696, si_data->backgrounds[0].focal_point.x());
   // Check default value is set if "focalPoint" is missed.
-  EXPECT_EQ(0, data->backgrounds[1].focal_point.x());
-  EXPECT_EQ(0, data->backgrounds[2].focal_point.x());
-  EXPECT_TRUE(observer.on_updated_);
-  EXPECT_FALSE(observer.data_->default_logo.alt_text.empty());
-  EXPECT_TRUE(*data->GetBackgroundAt(0).FindBoolKey(kIsSponsoredKey));
+  EXPECT_EQ(0, si_data->backgrounds[1].focal_point.x());
+  EXPECT_EQ(0, si_data->backgrounds[2].focal_point.x());
+  EXPECT_TRUE(observer.on_si_updated_);
+  EXPECT_FALSE(observer.si_data_->default_logo.alt_text.empty());
+  EXPECT_TRUE(*si_data->GetBackgroundAt(0).FindBoolKey(kIsSponsoredKey));
+  EXPECT_FALSE(*si_data->GetBackgroundAt(0).FindBoolKey(kIsBackgroundKey));
 
   // Default logo is used for wallpaper at 0.
   EXPECT_EQ("logo.png",
-            *data->GetBackgroundAt(0).FindStringPath(kLogoImagePath));
+            *si_data->GetBackgroundAt(0).FindStringPath(kLogoImagePath));
   // Per wallpaper logo is used for wallpaper at 1.
   EXPECT_EQ("logo-2.png",
-            *data->GetBackgroundAt(1).FindStringPath(kLogoImagePath));
+            *si_data->GetBackgroundAt(1).FindStringPath(kLogoImagePath));
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  // Test BI data loading
+  service_->bi_images_data_.reset();
+  observer.on_bi_updated_ = false;
+  observer.bi_data_ = nullptr;
+  service_->OnGetComponentJsonData(kTestBackgroundImages);
+  bi_data = service_->GetBackgroundImagesData();
+  EXPECT_TRUE(bi_data);
+  EXPECT_TRUE(bi_data->IsValid());
+  // Above json data has 1 wallpapers.
+  const size_t bi_image_count = 1;
+  EXPECT_EQ(bi_image_count, bi_data->backgrounds.size());
+  // Check values are loaded correctly
+  EXPECT_EQ("Brave Software", bi_data->backgrounds[0].author);
+  EXPECT_EQ("https://brave.com/", bi_data->backgrounds[0].link);
+  EXPECT_TRUE(observer.on_bi_updated_);
+  EXPECT_TRUE(*bi_data->GetBackgroundAt(0).FindBoolKey(kIsBackgroundKey));
+#endif
 
   // Invalid schema version
   const std::string test_json_string_higher_schema = R"(
@@ -234,11 +304,33 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
         ]
     })";
   service_->si_images_data_.reset();
-  observer.on_updated_ = false;
-  observer.data_ = nullptr;
+  observer.on_si_updated_ = false;
+  observer.si_data_ = nullptr;
   service_->OnGetSponsoredComponentJsonData(false, test_json_string_higher_schema);
-  data = service_->GetBrandedImagesData(false);
-  EXPECT_FALSE(data);
+  si_data = service_->GetBrandedImagesData(false);
+  EXPECT_FALSE(si_data);
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  constexpr char test_background_json_string_higher_schema[] = R"(
+  {
+    "schemaVersion": 2,
+    "images": [
+      {
+        "name": "ntp-2020/2021-1",
+        "source": "background-image-source.png",
+        "author": "Brave Software",
+        "link": "https://brave.com/",
+        "originalUrl": "Contributor sent the hi-res version through email",
+        "license": "https://brave.com/about/"
+      }
+    ]
+  })";
+  service_->bi_images_data_.reset();
+  observer.on_bi_updated_ = false;
+  observer.bi_data_ = nullptr;
+  service_->OnGetComponentJsonData(test_background_json_string_higher_schema);
+  bi_data = service_->GetBackgroundImagesData();
+  EXPECT_FALSE(bi_data);
+#endif
 
   service_->RemoveObserver(&observer);
 }
@@ -327,8 +419,8 @@ TEST_F(NTPBackgroundImagesServiceTest, BasicSuperReferralTest) {
   service_->AddObserver(&observer);
 
   service_->sr_images_data_.reset();
-  observer.on_updated_ = false;
-  observer.data_ = nullptr;
+  observer.on_si_updated_ = false;
+  observer.si_data_ = nullptr;
   service_->OnGetSponsoredComponentJsonData(true, kTestSuperReferral);
   auto* data = service_->GetBrandedImagesData(true);
   EXPECT_TRUE(data);
@@ -339,7 +431,7 @@ TEST_F(NTPBackgroundImagesServiceTest, BasicSuperReferralTest) {
   EXPECT_EQ(top_site_count, data->top_sites.size());
   EXPECT_TRUE(data->IsSuperReferral());
   EXPECT_FALSE(*data->GetBackgroundAt(0).FindBoolKey(kIsSponsoredKey));
-  EXPECT_TRUE(observer.on_updated_);
+  EXPECT_TRUE(observer.on_si_updated_);
 
   service_->RemoveObserver(&observer);
 }

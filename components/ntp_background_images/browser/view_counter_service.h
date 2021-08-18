@@ -96,9 +96,9 @@ class ViewCounterService : public KeyedService,
 
   friend class NTPBackgroundImagesViewCounterTest;
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           NotActiveInitially);
+                           SINotActiveInitially);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           NotActiveWithBadData);
+                           SINotActiveWithBadData);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveOptedOut);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
@@ -108,6 +108,14 @@ class ViewCounterService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            ActiveOptedInWithNTPBackgoundOption);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           BINotActiveInitially);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           BINotActiveWithBadData);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           BINotActiveWithNTPBackgoundOptionOptedOut);
+#endif
 
   void OnPreferenceChanged(const std::string& pref_name);
 
@@ -127,6 +135,10 @@ class ViewCounterService : public KeyedService,
   // Do we have a sponsored or referral wallpaper to show and has the user
   // opted-in to showing it at some time.
   bool IsBrandedWallpaperActive() const;
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  // Should we show background image.
+  bool IsBackgroundWallpaperActive() const;
+#endif
   // Should we show the branded wallpaper right now, in addition
   // to the result from `IsBrandedWallpaperActive()`.
   bool ShouldShowBrandedWallpaper() const;

@@ -29,7 +29,7 @@
 
 namespace ntp_background_images {
 
-std::unique_ptr<NTPSponsoredImagesData> GetDemoWallpaper(bool super_referral) {
+std::unique_ptr<NTPSponsoredImagesData> GetDemoBrandedWallpaper(bool super_referral) {
   auto demo = std::make_unique<NTPSponsoredImagesData>();
   demo->url_prefix = "chrome://newtab/ntp-dummy-brandedwallpaper/";
   demo->backgrounds = {
@@ -55,6 +55,14 @@ std::unique_ptr<NTPSponsoredImagesData> GetDemoWallpaper(bool super_referral) {
 }
 
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+std::unique_ptr<NTPBackgroundImagesData> GetDemoBackgroundWallpaper() {
+  auto demo = std::make_unique<NTPBackgroundImagesData>();
+  demo->backgrounds = {
+      { base::FilePath(FILE_PATH_LITERAL("wallpaper1.jpg")), "Brave", "https://brave.com/" },
+  };
+
+  return demo;
+}
 #endif
 
 class NTPBackgroundImagesViewCounterTest : public testing::Test {
@@ -108,25 +116,40 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
   std::unique_ptr<NTPBackgroundImagesService> service_;
 };
 
-TEST_F(NTPBackgroundImagesViewCounterTest, NotActiveInitially) {
-  // By default, data is bad and wallpaper is not active.
+TEST_F(NTPBackgroundImagesViewCounterTest, SINotActiveInitially) {
+  // By default, data is bad and SI wallpaper is not active.
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 }
 
-TEST_F(NTPBackgroundImagesViewCounterTest, NotActiveWithBadData) {
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+TEST_F(NTPBackgroundImagesViewCounterTest, BINotActiveInitially) {
+  // By default, data is bad and BI wallpaper is not active.
+  EXPECT_FALSE(view_counter_->IsBackgroundWallpaperActive());
+}
+#endif
+
+TEST_F(NTPBackgroundImagesViewCounterTest, SINotActiveWithBadData) {
   // Set some bad data explicitly.
   service_->si_images_data_.reset(new NTPSponsoredImagesData);
   service_->sr_images_data_.reset(new NTPSponsoredImagesData);
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 }
 
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+TEST_F(NTPBackgroundImagesViewCounterTest, BINotActiveWithBadData) {
+  // Set some bad data explicitly.
+  service_->bi_images_data_.reset(new NTPBackgroundImagesData);
+  EXPECT_FALSE(view_counter_->IsBackgroundWallpaperActive());
+}
+#endif
+
 TEST_F(NTPBackgroundImagesViewCounterTest, NotActiveOptedOut) {
   // Even with good data, wallpaper should not be active if user pref is off.
-  service_->si_images_data_ = GetDemoWallpaper(false);
+  service_->si_images_data_ = GetDemoBrandedWallpaper(false);
   EnableSIPref(false);
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 
-  service_->sr_images_data_ = GetDemoWallpaper(true);
+  service_->sr_images_data_ = GetDemoBrandedWallpaper(true);
   EnableSRPref(false);
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 }
@@ -134,7 +157,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, NotActiveOptedOut) {
 TEST_F(NTPBackgroundImagesViewCounterTest,
        ActiveOptedInWithNTPBackgoundOption) {
   EnableNTPBGImagesPref(false);
-  service_->sr_images_data_ = GetDemoWallpaper(true);
+  service_->sr_images_data_ = GetDemoBrandedWallpaper(true);
 
   // Even with bg images turned off, SR wallpaper should be active.
   EnableSRPref(true);
@@ -148,13 +171,22 @@ TEST_F(NTPBackgroundImagesViewCounterTest,
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 }
 
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+TEST_F(NTPBackgroundImagesViewCounterTest,
+       BINotActiveWithNTPBackgoundOptionOptedOut) {
+  EnableNTPBGImagesPref(false);
+  service_->bi_images_data_ = GetDemoBackgroundWallpaper();
+  EXPECT_FALSE(view_counter_->IsBackgroundWallpaperActive());
+}
+#endif
+
 // Branded wallpaper is active if one of them is available.
 TEST_F(NTPBackgroundImagesViewCounterTest, IsActiveOptedIn) {
-  service_->si_images_data_ = GetDemoWallpaper(false);
+  service_->si_images_data_ = GetDemoBrandedWallpaper(false);
   EnableSIPref(true);
   EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
 
-  service_->sr_images_data_ = GetDemoWallpaper(true);
+  service_->sr_images_data_ = GetDemoBrandedWallpaper(true);
   EnableSRPref(true);
   EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
 
@@ -176,18 +208,18 @@ TEST_F(NTPBackgroundImagesViewCounterTest, ActiveInitiallyOptedIn) {
   // Sanity check that the default is still to be opted-in.
   // If this gets manually changed, then this test should be manually changed
   // too.
-  service_->si_images_data_ = GetDemoWallpaper(false);
+  service_->si_images_data_ = GetDemoBrandedWallpaper(false);
   EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
 
-  service_->sr_images_data_ = GetDemoWallpaper(true);
+  service_->sr_images_data_ = GetDemoBrandedWallpaper(true);
   EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
 }
 
 #if !defined(OS_LINUX)
 // Super referral feature is disabled on linux.
 TEST_F(NTPBackgroundImagesViewCounterTest, ModelTest) {
-  service_->sr_images_data_ = GetDemoWallpaper(true);
-  service_->si_images_data_ = GetDemoWallpaper(false);
+  service_->sr_images_data_ = GetDemoBrandedWallpaper(true);
+  service_->si_images_data_ = GetDemoBrandedWallpaper(false);
   view_counter_->OnUpdated(service_->sr_images_data_.get());
   EXPECT_TRUE(view_counter_->model_.ignore_count_to_branded_wallpaper_);
 

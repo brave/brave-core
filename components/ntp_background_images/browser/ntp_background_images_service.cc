@@ -422,7 +422,9 @@ bool NTPBackgroundImagesService::HasObserver(Observer* observer) {
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 NTPBackgroundImagesData*
 NTPBackgroundImagesService::GetBackgroundImagesData() const {
+  LOG(WARNING) << "NTPBackgroundImagesService::GetBackgroundImagesData";
   if (bi_images_data_ && bi_images_data_->IsValid()) {
+    LOG(WARNING) << "NTPBackgroundImagesService::GetBackgroundImagesData: valid";
     return bi_images_data_.get();
   }
 
@@ -447,7 +449,7 @@ NTPBackgroundImagesService::GetBrandedImagesData(bool super_referral) const {
     if (local_pref_->FindPreference(
           prefs::kNewTabPageCachedSuperReferralComponentInfo)->
               IsDefaultValue()) {
-      LOG(WARNING) << "NTPBackgroundImagesService::GetBackgroundImagesData: kNewTabPageCachedSuperReferralComponentInfo->IsDefaultValue: " << (local_pref_->FindPreference(
+      LOG(WARNING) << "NTPBackgroundImagesService::GetBrandedImagesData: kNewTabPageCachedSuperReferralComponentInfo->IsDefaultValue: " << (local_pref_->FindPreference(
           prefs::kNewTabPageCachedSuperReferralComponentInfo)->
               IsDefaultValue());
       return nullptr;
@@ -479,6 +481,7 @@ void NTPBackgroundImagesService::OnComponentReady(
 }
 
 void NTPBackgroundImagesService::OnGetComponentJsonData(const std::string& json_string) {
+  LOG(WARNING) << "NTPBackgroundImagesService::OnGetComponentJsonData";
   bi_images_data_.reset(new NTPBackgroundImagesData(json_string,
                                                     bi_installed_dir_));
 

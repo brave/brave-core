@@ -54,6 +54,7 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
     const base::FilePath& installed_dir)
     : NTPBackgroundImagesData() {
   absl::optional<base::Value> json_value = base::JSONReader::Read(json_string);
+  LOG(WARNING) << "NTPBackgroundImagesData::NTPBackgroundImagesData: json_string: " << json_string;
   LOG(WARNING) << "NTPBackgroundImagesData::NTPBackgroundImagesData: !json_value: " << (!json_value);
   if (!json_value) {
     DVLOG(2) << "Read json data failed. Invalid JSON data";
@@ -65,6 +66,7 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
       json_value->FindIntKey(kSchemaVersionKey);
   const bool schemaVersionIsValid = incomingSchemaVersion &&
       *incomingSchemaVersion == kExpectedSchemaVersion;
+  LOG(WARNING) << "NTPBackgroundImagesData::NTPBackgroundImagesData: schemaVersionIsValid: " << schemaVersionIsValid;
   if (!schemaVersionIsValid) {
     DVLOG(2) << __func__ << "Incoming NTP background images data was not valid."
             << " Schema version was "
@@ -74,6 +76,7 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
     return;
   }
   LOG(WARNING) << "NTPBackgroundImagesData::NTPBackgroundImagesData: 2";
+  LOG(WARNING) << "NTPBackgroundImagesData::NTPBackgroundImagesData: kImagesKey: " << kImagesKey;
 
   if (auto* images = json_value->FindListKey(kImagesKey)) {
     const int image_count = images->GetList().size();

@@ -133,13 +133,6 @@ ViewCounterService::GetCurrentBrandedWallpaperData() const {
 }
 
 base::Value ViewCounterService::GetCurrentWallpaperForDisplay() const {
-  LOG(WARNING) << "ViewCounterService::GetCurrentWallpaperForDisplay";
-  
-  // We check whether background is enabled for both SI and BI now
-  LOG(WARNING) << "ViewCounterService::GetCurrentWallpaperForDisplay: kNewTabPageShowBackgroundImage: " << prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage);
-  if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage))
-    return base::Value();
-
   if (ShouldShowBrandedWallpaper()) {
     LOG(WARNING) << "ViewCounterService::GetCurrentWallpaperForDisplay: ShouldShowBrandedWallpaper";
     return GetCurrentBrandedWallpaper();
@@ -154,8 +147,8 @@ base::Value ViewCounterService::GetCurrentWallpaperForDisplay() const {
 
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 base::Value ViewCounterService::GetCurrentWallpaper() const {
-  if (auto* data = GetCurrentWallpaperData()) {
-    return data->GetBackgroundAt(model_.current_wallpaper_image_index());
+  if (IsBackgroundWallpaperActive()) {
+    return GetCurrentWallpaperData()->GetBackgroundAt(model_.current_wallpaper_image_index());
   }
 
   return base::Value();
@@ -312,8 +305,21 @@ bool ViewCounterService::IsBrandedWallpaperActive() const {
     return true;
 
   LOG(WARNING) << "ViewCounterService::IsBrandedWallpaperActive: IsSponsoredImagesWallpaperOptedIn: " << IsSponsoredImagesWallpaperOptedIn();
+  // We don't show SI if user disables bg image.
+  if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage))
+    return false;
+
   return IsSponsoredImagesWallpaperOptedIn();
 }
+
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+bool ViewCounterService::IsBackgroundWallpaperActive() const {
+  if (GetCurrentWallpaperData() && prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage)) {
+    return true;
+  }
+  return false;
+}
+#endif
 
 bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
   return prefs_->GetBoolean(
