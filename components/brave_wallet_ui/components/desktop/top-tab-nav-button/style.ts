@@ -26,7 +26,7 @@ export const ButtonText = styled.span<Partial<StyleProps>>`
   line-height: 20px;
   margin-bottom: 10px;
 	background: ${(p) =>
-    p.isSelected ? 'linear-gradient(128.18deg, #A43CE4 13.94%, #A72B6D 84.49%)' : `${p.theme.color.text02}`};
+    p.isSelected ? p.theme.color.text01 : p.theme.color.text02};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `

@@ -54,6 +54,10 @@ export const DropDown = styled.div`
   background-color: ${(p) => p.theme.color.background02};
   border-radius: 8px;
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);
+  @media (prefers-color-scheme: dark) {
+    box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.36);
+  }
+  border: 1px solid ${(p) => p.theme.color.divider01};
   position: absolute;
   top: 30px;
   left: 0px;
