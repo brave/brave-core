@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
-#include "brave/components/brave_sync/buildflags/buildflags.h"
+#include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_talk/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -34,10 +34,6 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/features.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-#include "brave/components/brave_sync/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
@@ -259,16 +255,6 @@ constexpr char kUseDevUpdaterUrlDescription[] =
 #define SPEEDREADER_FEATURE_ENTRIES
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-#define BRAVE_SYNC_FEATURE_ENTRIES                          \
-    {"brave-sync-v2",                                       \
-     flag_descriptions::kBraveSyncName,                     \
-     flag_descriptions::kBraveSyncDescription, kOsDesktop,  \
-     FEATURE_VALUE_TYPE(brave_sync::features::kBraveSync)},
-#else
-#define BRAVE_SYNC_FEATURE_ENTRIES
-#endif
-
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
 #define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                        \
     {"brave-rewards-gemini",                                        \
@@ -390,11 +376,14 @@ constexpr char kUseDevUpdaterUrlDescription[] =
      flag_descriptions::kBraveTalkDescription,                              \
      kOsDesktop,                                                            \
      FEATURE_VALUE_TYPE(brave_talk::features::kBraveTalk)},                 \
+    {"brave-sync-v2",                                                       \
+      flag_descriptions::kBraveSyncName,                                    \
+      flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \
+      FEATURE_VALUE_TYPE(brave_sync::features::kBraveSync)},                \
     BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                                 \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                    \
-    BRAVE_SYNC_FEATURE_ENTRIES                                              \
     BRAVE_VPN_FEATURE_ENTRIES                                               \
     SIDEBAR_FEATURE_ENTRIES                                                 \
     SPEEDREADER_FEATURE_ENTRIES

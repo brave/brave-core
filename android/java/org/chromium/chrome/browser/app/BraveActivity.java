@@ -51,7 +51,8 @@ import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.BraveSyncReflectionUtils;
+import org.chromium.chrome.browser.BraveSyncInformers;
+import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
@@ -317,7 +318,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         if (null != app
                 && BraveReflectionUtil.EqualTypes(this.getClass(), ChromeTabbedActivity.class)) {
             // Trigger BraveSyncWorker CTOR to make migration from sync v1 if sync is enabled
-            BraveSyncReflectionUtils.getSyncWorker();
+            BraveSyncWorker.get();
         }
 
         checkForNotificationData();
@@ -368,7 +369,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
             showCrossPromotionalDialog();
             OnboardingPrefManager.getInstance().setCrossPromoModalShown(true);
         }
-        BraveSyncReflectionUtils.showInformers();
+        BraveSyncInformers.show();
         BraveAndroidSyncDisabledInformer.showInformers();
 
         if (!PackageUtils.isFirstInstall(this)

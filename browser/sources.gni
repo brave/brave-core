@@ -30,7 +30,6 @@ import("//brave/chromium_src/chrome/browser/sources.gni")
 import(
     "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
-import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -119,7 +118,10 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_search/common",
   "//brave/components/brave_search/common:mojom",
   "//brave/components/brave_shields/common",
-  "//brave/components/brave_sync/buildflags:buildflags",
+  "//brave/components/brave_sync",
+  "//brave/components/brave_sync:features",
+  "//brave/components/brave_sync:network_time_helper",
+  "//brave/components/brave_sync:prefs",
   "//brave/components/brave_talk",
   "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/brave_wayback_machine:buildflags",
@@ -216,23 +218,18 @@ if (ethereum_remote_client_enabled) {
       [ "//brave/browser/ethereum_remote_client:browser" ]
 }
 
-if (enable_brave_sync) {
-  brave_chrome_browser_deps += [
-    "//brave/components/brave_sync",
-    "//brave/components/brave_sync:features",
-    "//brave/components/brave_sync:network_time_helper",
-    "//brave/components/brave_sync:prefs",
-  ]
-}
-
 if (is_android) {
-  brave_chrome_browser_sources +=
-      [ "//brave/browser/android/brave_stats_updater_android.cc" ]
+  brave_chrome_browser_sources += [
+    "//brave/browser/android/brave_stats_updater_android.cc",
+    "//brave/browser/sync/brave_sync_devices_android.cc",
+    "//brave/browser/sync/brave_sync_devices_android.h",
+  ]
 
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",
     "//brave/build/android:jni_headers",
     "//chrome/android:jni_headers",
+    "//components/sync_device_info",
   ]
 } else {
   brave_chrome_browser_sources += [

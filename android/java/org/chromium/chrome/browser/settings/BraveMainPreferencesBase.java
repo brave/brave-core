@@ -228,11 +228,6 @@ public class BraveMainPreferencesBase
 
         int order = findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE).getOrder();
 
-        // If gn flag enable_brave_sync is false, hide Sync pref
-        if (BraveConfig.SYNC_ENABLED == false) {
-            removePreferenceIfPresent(PREF_SYNC);
-        }
-
         // We don't have home button on top toolbar at the moment
         if (!DeviceFormFactor.isTablet() && !BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             removePreferenceIfPresent(PREF_HOMEPAGE);

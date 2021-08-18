@@ -13,7 +13,6 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -26,10 +25,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "components/sync/driver/sync_driver_switches.h"
-#endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -125,10 +121,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
     UpdateCommandForBraveWallet();
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
     if (switches::IsSyncAllowedByFlag())
       UpdateCommandForBraveSync();
-#endif
   }
   UpdateCommandForBraveAdblock();
   UpdateCommandForWebcompatReporter();

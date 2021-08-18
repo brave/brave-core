@@ -6,7 +6,6 @@ import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import(
     "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
-import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -119,6 +118,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_shields/browser/cosmetic_merge_unittest.cc",
     "//brave/components/brave_shields/browser/csp_merge_unittest.cc",
     "//brave/components/brave_shields/browser/https_everywhere_recently_used_cache_unittest.cpp",
+    "//brave/components/brave_sync/crypto/crypto_unittest.cc",
     "//brave/components/content_settings/core/browser/brave_content_settings_pref_provider_unittest.cc",
     "//brave/components/content_settings/core/browser/brave_content_settings_utils_unittest.cc",
     "//brave/components/l10n/common/locale_util_unittest.cc",
@@ -137,6 +137,9 @@ test("brave_unit_tests") {
     "//chrome/browser/custom_handlers/test_protocol_handler_registry_delegate.cc",
     "//chrome/browser/custom_handlers/test_protocol_handler_registry_delegate.h",
     "//components/bookmarks/browser/bookmark_model_unittest.cc",
+    "//components/sync/base/model_type_unittest.cc",
+    "//components/sync/driver/sync_auth_manager_unittest.cc",
+    "//components/sync_device_info/device_info_sync_bridge_unittest.cc",
   ]
 
   defines = brave_service_key_defines
@@ -180,6 +183,8 @@ test("brave_unit_tests") {
     "//brave/components/brave_search/common",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
+    "//brave/components/brave_sync:crypto",
+    "//brave/components/brave_sync:network_time_helper",
     "//brave/components/brave_vpn:unit_tests",
     "//brave/components/brave_wallet/browser/test:brave_wallet_unit_tests",
     "//brave/components/brave_wallet/common/buildflags",
@@ -194,6 +199,9 @@ test("brave_unit_tests") {
     "//brave/components/permissions:unit_tests",
     "//brave/components/services/ipfs/test:ipfs_service_unit_tests",
     "//brave/components/sidebar:unit_tests",
+    "//brave/components/signin/public/identity_manager:unit_tests",
+    "//brave/components/sync/driver:unit_tests",
+    "//brave/components/sync/engine:unit_tests",
     "//brave/components/tor:tor_unit_tests",
     "//brave/components/tor/buildflags",
     "//brave/components/weekly_storage",
@@ -220,6 +228,7 @@ test("brave_unit_tests") {
     "//components/prefs:test_support",
     "//components/query_parser",
     "//components/signin/public/base",
+    "//components/signin/public/identity_manager:test_support",
     "//components/sync_preferences",
     "//components/translate/core/browser:test_support",
     "//components/user_prefs",
@@ -441,24 +450,6 @@ test("brave_unit_tests") {
     deps += [
       "//brave/browser/ui",
       "//components/language/core/common",
-    ]
-  }
-
-  if (enable_brave_sync) {
-    sources += [
-      "//brave/components/brave_sync/crypto/crypto_unittest.cc",
-      "//components/sync/base/model_type_unittest.cc",
-      "//components/sync/driver/sync_auth_manager_unittest.cc",
-      "//components/sync_device_info/device_info_sync_bridge_unittest.cc",
-    ]
-
-    deps += [
-      "//brave/components/brave_sync:crypto",
-      "//brave/components/brave_sync:network_time_helper",
-      "//brave/components/signin/public/identity_manager:unit_tests",
-      "//brave/components/sync/driver:unit_tests",
-      "//brave/components/sync/engine:unit_tests",
-      "//components/signin/public/identity_manager:test_support",
     ]
   }
 
@@ -881,7 +872,6 @@ if (!is_android) {
       "//brave/components/brave_shields/browser",
       "//brave/components/brave_shields/common",
       "//brave/components/brave_sync:prefs",
-      "//brave/components/brave_sync/buildflags",
       "//brave/components/brave_wallet/common/buildflags",
       "//brave/components/brave_wayback_machine",
       "//brave/components/brave_wayback_machine:buildflags",
