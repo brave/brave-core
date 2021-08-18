@@ -21,7 +21,8 @@ import {
   WalletPageLayout,
   WalletSubViewLayout,
   CryptoView,
-  LockScreen
+  LockScreen,
+  OnboardingRestore
 } from '../components/desktop'
 import {
   // NavTypes,
@@ -94,7 +95,8 @@ function Container (props: Props) {
     selectedBTCAssetPrice,
     selectedAssetPriceHistory,
     setupStillInProgress,
-    isFetchingPriceHistory
+    isFetchingPriceHistory,
+    showIsRestoring
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
@@ -109,6 +111,11 @@ function Container (props: Props) {
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
   const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
+  // const [showRestore, setShowRestore] = React.useState<boolean>(false)
+
+  const onToggleShowRestore = () => {
+    props.walletPageActions.setShowIsRestoring(!showIsRestoring)
+  }
 
   const onSetToAddress = (value: string) => {
     setToAddress(value)
@@ -373,14 +380,22 @@ function Container (props: Props) {
     if (!hasInitialized) {
       return null
     }
+    if (showIsRestoring) {
+      return (
+        <OnboardingRestore
+          onRestore={restoreWallet}
+          toggleShowRestore={onToggleShowRestore}
+          hasRestoreError={restorError}
+        />
+      )
+    }
     if (!isWalletCreated || setupStillInProgress) {
       return (
         <Onboarding
           recoveryPhrase={recoveryPhrase}
           onPasswordProvided={passwordProvided}
           onSubmit={completeWalletSetup}
-          onRestore={restoreWallet}
-          hasRestoreError={restorError}
+          onShowRestore={onToggleShowRestore}
         />
       )
     } else {
@@ -392,6 +407,7 @@ function Container (props: Props) {
               disabled={inputValue === ''}
               onPasswordChanged={handlePasswordChanged}
               hasPasswordError={hasIncorrectPassword}
+              onShowRestore={onToggleShowRestore}
             />
           ) : (
             <>

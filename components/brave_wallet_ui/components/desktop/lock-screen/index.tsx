@@ -5,7 +5,8 @@ import {
   Title,
   IconBackground,
   PageIcon,
-  InputColumn
+  InputColumn,
+  RestoreButton
 } from './style'
 import { PasswordInput } from '../../shared'
 import { NavButton } from '../../extension'
@@ -14,12 +15,13 @@ import locale from '../../../constants/locale'
 export interface Props {
   onSubmit: () => void
   onPasswordChanged: (value: string) => void
+  onShowRestore: () => void
   hasPasswordError: boolean
   disabled: boolean
 }
 
 function LockScreen (props: Props) {
-  const { onSubmit, onPasswordChanged, disabled, hasPasswordError } = props
+  const { onSubmit, onPasswordChanged, onShowRestore, disabled, hasPasswordError } = props
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && !disabled) {
@@ -49,6 +51,7 @@ function LockScreen (props: Props) {
         onSubmit={onSubmit}
         disabled={disabled}
       />
+      <RestoreButton onClick={onShowRestore}>{locale.welcomeRestoreButton}</RestoreButton>
     </StyledWrapper>
   )
 }
