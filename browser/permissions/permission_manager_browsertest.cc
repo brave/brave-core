@@ -268,9 +268,6 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   browser()->tab_strip_model()->CloseWebContentsAt(0,
                                                    TabStripModel::CLOSE_NONE);
   tab_destroyed_watcher.Wait();
-
-  EXPECT_FALSE(permission_request_manager->IsRequestInProgress());
-  EXPECT_FALSE(observer->IsShowingBubble());
   EXPECT_TRUE(IsPendingGroupedRequestsEmpty());
 }
 
