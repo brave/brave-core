@@ -204,7 +204,8 @@ function Container (props: Props) {
     props.walletPageActions.walletBackupComplete()
   }
 
-  const restoreWallet = (mnemonic: string, password: string) => {
+  const restoreWallet = (mnemonic: string, password: string, isLegacy: boolean) => {
+    // isLegacy prop will be passed into the restoreWallet action once the keyring is setup handle the derivation.
     props.walletPageActions.restoreWallet({ mnemonic, password })
   }
 

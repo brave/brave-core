@@ -56,6 +56,13 @@ export const ErrorText = styled.span`
   margin-bottom: 10px;
 `
 
+export const LegacyCheckboxRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`
+
 export const CheckboxRow = styled.div`
   display: flex;
   align-items: center;

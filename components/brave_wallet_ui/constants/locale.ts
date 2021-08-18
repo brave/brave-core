@@ -135,6 +135,7 @@ const locale = {
   restoreError: 'The recovery phrase entered is invalid.',
   restorePlaceholder: 'Paste recovery phrase from clipboard',
   restoreShowPhrase: 'Show recovery phrase',
+  restoreLegacyCheckBox: 'Import from legacy Brave Crypto Wallet?',
   restoreFormText: 'New Password',
 
   // Tool Tips
