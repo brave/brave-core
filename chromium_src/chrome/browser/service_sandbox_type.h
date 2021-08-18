@@ -8,8 +8,12 @@
 
 #include "../../../../chrome/browser/service_sandbox_type.h"
 
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
+#include "brave/components/brave_ads/browser/service_sandbox_type.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_IPFS)
+#include "brave/components/ipfs/service_sandbox_type.h"
+#endif
 
 // brave::mojom::ProfileImport
 namespace brave {
@@ -23,13 +27,5 @@ inline sandbox::policy::SandboxType
 content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
   return sandbox::policy::SandboxType::kNoSandbox;
 }
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/service_sandbox_type.h"
-#endif
-
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-#include "brave/components/brave_ads/browser/service_sandbox_type.h"
-#endif
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SERVICE_SANDBOX_TYPE_H_
