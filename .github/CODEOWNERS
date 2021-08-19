@@ -1,4 +1,4 @@
-brave/build/commands/ @bridiver
+build/commands/ @bridiver
 patches/ @brave/patch-reviewers
 chromium_src/ @brave/chromium-src-reviewers
 script/build-bisect.py @bsclifton
