@@ -100,6 +100,7 @@ class IpfsService : public KeyedService,
 
   void RestartDaemon();
   void RotateKey(const std::string& oldkey, BoolCallback callback);
+  void ValidateGateway(const GURL& url, BoolCallback callback);
 
   virtual void PreWarmShareableLink(const GURL& url);
 
@@ -179,6 +180,10 @@ class IpfsService : public KeyedService,
                           BoolCallback callback);
 #endif
   base::TimeDelta CalculatePeersRetryTime();
+  void OnGatewayValidationComplete(SimpleURLLoaderList::iterator iter,
+                                   BoolCallback callback,
+                                   const GURL& initial_url,
+                                   std::unique_ptr<std::string> response_body);
 
   void OnGetConnectedPeers(SimpleURLLoaderList::iterator iter,
                            GetConnectedPeersCallback,

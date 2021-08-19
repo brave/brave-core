@@ -386,6 +386,18 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       http_response->set_content("simple.html");
       http_response->AddCustomHeader("x-ipfs-path", "/simple.html");
       http_response->set_code(net::HTTP_OK);
+    } else if (request_path == "/gateway_redirect") {
+      http_response->set_content("Welcome to IPFS :-)");
+      http_response->set_code(net::HTTP_OK);
+    } else if (request_path == "/ipfs/bafkqae2xmvwgg33nmuqhi3zajfiemuzahiwss") {
+      http_response->set_content("Welcome to IPFS :-)");
+      if (request.GetURL().host() == "127.0.0.1") {
+        http_response->set_code(net::HTTP_TEMPORARY_REDIRECT);
+        GURL new_location(
+            GetURL("bafkqae2xmvwgg33nmuqhi3zajfiemuzahiwss.ipfs.a.com",
+                   "/gateway_redirect"));
+        http_response->AddCustomHeader("Location", new_location.spec());
+      }
     } else if (request_path == "/iframe.html") {
       http_response->set_content(
           "<iframe "
@@ -455,6 +467,20 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     }
     EXPECT_TRUE(success);
     EXPECT_EQ(peers, GetExpectedPeers());
+  }
+
+  void OnValidateGatewaySuccess(bool success) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    EXPECT_TRUE(success);
+  }
+
+  void OnValidateGatewayFail(bool success) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    EXPECT_FALSE(success);
   }
 
   void OnGetConnectedPeersFail(bool success,
@@ -1148,6 +1174,31 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
   ASSERT_FALSE(updater->IsRegistered());
   fake_service->OnIpfsLaunched(false, 0);
   ASSERT_TRUE(updater->IsRegistered());
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ValidateGatewayURL) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
+                          base::Unretained(this)));
+  auto weblink = GetURL("a.com", "/");
+  ipfs_service()->ValidateGateway(
+      weblink, base::BindOnce(&IpfsServiceBrowserTest::OnValidateGatewaySuccess,
+                              base::Unretained(this)));
+  WaitForRequest();
+
+  GURL::Replacements replacements;
+  replacements.SetSchemeStr("http");
+  ipfs_service()->ValidateGateway(
+      weblink.ReplaceComponents(replacements),
+      base::BindOnce(&IpfsServiceBrowserTest::OnValidateGatewayFail,
+                     base::Unretained(this)));
+  WaitForRequest();
+
+  ipfs_service()->ValidateGateway(
+      GetURL("ipfs.io", "/"),
+      base::BindOnce(&IpfsServiceBrowserTest::OnValidateGatewayFail,
+                     base::Unretained(this)));
+  WaitForRequest();
 }
 
 }  // namespace ipfs
