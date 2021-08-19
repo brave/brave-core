@@ -177,6 +177,7 @@ export interface PanelState {
   showSignTransaction: boolean
   showAllowSpendERC20Token: boolean
   showAllowAddNetwork: boolean
+  showConfirmTransaction: boolean
 }
 
 export interface PageState {
@@ -495,4 +496,13 @@ export type AddNetworkReturnPayload = {
   siteUrl: string,
   contractAddress: string,
   chainInfo: ChainInformation
+}
+
+export type TransactionPanelPayload = {
+  transactionAmount: string,
+  transactionGas: string,
+  toAddress: string,
+  erc20Token: TokenInfo,
+  ethPrice: string,
+  tokenPrice: string
 }

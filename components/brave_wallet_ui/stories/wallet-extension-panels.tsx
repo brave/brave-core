@@ -8,7 +8,8 @@ import {
   WelcomePanel,
   SignPanel,
   AllowSpendPanel,
-  AllowAddNetworkPanel
+  AllowAddNetworkPanel,
+  ConfirmTransactionPanel
 } from '../components/extension'
 import { AppList } from '../components/shared'
 import {
@@ -83,6 +84,57 @@ const accounts: WalletAccountType[] = [
   }
 ]
 
+const batTokenInfo = {
+  contractAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+  name: 'Basic Attention Token',
+  isErc20: true,
+  isErc721: false,
+  symbol: 'BAT',
+  decimals: 18,
+  icon: ''
+}
+
+export const _ConfirmTransaction = () => {
+
+  const transactionPanelPayload = {
+    transactionAmount: '68000000000000000000',
+    transactionGas: '7548000000000000',
+    toAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+    erc20Token: batTokenInfo,
+    tokenPrice: '0.35',
+    ethPrice: '3058.35'
+  }
+
+  const onConfirmTransaction = () => {
+    alert('Confirmed Transaction')
+  }
+
+  const onRejectTransaction = () => {
+    alert('Rejected Transaction')
+  }
+
+  const onClickMore = () => {
+    alert('Will Show More Modal')
+  }
+
+  return (
+    <StyledExtensionWrapper>
+      <ConfirmTransactionPanel
+        selectedNetwork={Network.Mainnet}
+        onConfirm={onConfirmTransaction}
+        onReject={onRejectTransaction}
+        selectedAccount={accounts[0]}
+        onClickMore={onClickMore}
+        transactionPayload={transactionPanelPayload}
+      />
+    </StyledExtensionWrapper>
+  )
+}
+
+_ConfirmTransaction.story = {
+  name: 'Confirm Transaction'
+}
+
 export const _AllowAddNetwork = () => {
 
   const networkPayload = {
@@ -120,17 +172,6 @@ _AllowAddNetwork.story = {
 }
 
 export const _AllowSpend = () => {
-
-  const batTokenInfo = {
-    contractAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-    name: 'Basic Attention Token',
-    isErc20: true,
-    isErc721: false,
-    symbol: 'BAT',
-    decimals: 18,
-    icon: ''
-  }
-
   const spendPayload = {
     siteUrl: 'https://app.compound.finance',
     contractAddress: '0x3f29A1da97149722eB09c526E4eAd698895b426',

@@ -13,7 +13,8 @@ import {
   WelcomePanel,
   SignPanel,
   AllowSpendPanel,
-  AllowAddNetworkPanel
+  AllowAddNetworkPanel,
+  ConfirmTransactionPanel
 } from '../components/extension'
 import {
   Send,
@@ -92,7 +93,8 @@ function Container (props: Props) {
     selectedPanel,
     showSignTransaction,
     showAllowSpendERC20Token,
-    showAllowAddNetwork
+    showAllowAddNetwork,
+    showConfirmTransaction
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -283,6 +285,14 @@ function Container (props: Props) {
     // Logic Here to Cancel Adding a Network
   }
 
+  const onRejectTransaction = () => {
+    // Logic here to Reject a Transaction
+  }
+
+  const onConfirmTransaction = () => {
+    // Logic here to Confirm a Transaction
+  }
+
   // Example of a ERC20 Spend Payload to be passed to the
   // Allow Spend Panel
   const ERC20SpendPayloadExample = {
@@ -313,6 +323,25 @@ function Container (props: Props) {
     }
   }
 
+  // Example of a Confirm Transaction Payload to be passed to the
+  // Confirm Transaction Panel
+  const transactionPayloadExample = {
+    transactionAmount: '68000000000000000000',
+    transactionGas: '7548000000000000',
+    toAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+    erc20Token: {
+      contractAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+      name: 'Basic Attention Token',
+      isErc20: true,
+      isErc721: false,
+      symbol: 'BAT',
+      decimals: 18,
+      icon: ''
+    },
+    tokenPrice: '0.35',
+    ethPrice: '3058.35'
+  }
+
   if (!hasInitialized || !accounts) {
     return null
   }
@@ -334,6 +363,21 @@ function Container (props: Props) {
           onPasswordChanged={handlePasswordChanged}
         />
       </StyledExtensionWrapper>
+    )
+  }
+
+  if (showConfirmTransaction) {
+    return (
+      <SignContainer>
+        <ConfirmTransactionPanel
+          onConfirm={onConfirmTransaction}
+          onReject={onRejectTransaction}
+          onClickMore={onShowMoreModal}
+          selectedAccount={selectedAccount}
+          selectedNetwork={selectedNetwork}
+          transactionPayload={transactionPayloadExample}
+        />
+      </SignContainer>
     )
   }
 
