@@ -98,8 +98,8 @@ void AdBlockService::ShouldStartRequest(
   }
 
   subscription_service_manager()->ShouldStartRequest(
-      url, resource_type, tab_host, did_match_rule, did_match_exception,
-      did_match_important, mock_data_url);
+      url, resource_type, tab_host, aggressive_blocking, did_match_rule,
+      did_match_exception, did_match_important, mock_data_url);
   if (did_match_important && *did_match_important) {
     return;
   }

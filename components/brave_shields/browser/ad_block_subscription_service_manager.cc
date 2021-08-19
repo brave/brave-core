@@ -353,6 +353,7 @@ void AdBlockSubscriptionServiceManager::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
+    bool aggressive_blocking,
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
@@ -362,8 +363,8 @@ void AdBlockSubscriptionServiceManager::ShouldStartRequest(
     auto info = GetInfo(subscription_service.first);
     if (info && info->enabled) {
       subscription_service.second->ShouldStartRequest(
-          url, resource_type, tab_host, did_match_rule, did_match_exception,
-          did_match_important, mock_data_url);
+          url, resource_type, tab_host, aggressive_blocking, did_match_rule,
+          did_match_exception, did_match_important, mock_data_url);
       if (did_match_important && *did_match_important) {
         return;
       }
