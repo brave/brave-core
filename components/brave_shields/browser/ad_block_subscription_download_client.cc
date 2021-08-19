@@ -94,9 +94,7 @@ void AdBlockSubscriptionDownloadClient::OnDownloadSucceeded(
     return;
   }
 
-  download_manager->OnDownloadSucceeded(
-      guid,
-      completion_info.path);
+  download_manager->OnDownloadSucceeded(guid, completion_info.path);
 }
 
 bool AdBlockSubscriptionDownloadClient::CanServiceRemoveDownloadedFile(

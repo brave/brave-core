@@ -101,9 +101,8 @@ class AdBlockSubscriptionDownloadManager
                          download::DownloadParams::StartResult start_result);
 
   // Invoked when the download as specified by |downloaded_guid| succeeded.
-  void OnDownloadSucceeded(
-      const std::string& downloaded_guid,
-      base::FilePath downloaded_file);
+  void OnDownloadSucceeded(const std::string& downloaded_guid,
+                           base::FilePath downloaded_file);
 
   // Invoked when the download as specified by |failed_download_guid| failed.
   void OnDownloadFailed(const std::string& failed_download_guid);
@@ -114,8 +113,7 @@ class AdBlockSubscriptionDownloadManager
 
   // Invoked after ReplaceFile to report the status of moving the temporary
   // download file to its destination path.
-  void ReplaceFileCallback(const GURL& download_url,
-                           bool success);
+  void ReplaceFileCallback(const GURL& download_url, bool success);
 
   // GUIDs that are still pending download, mapped to the corresponding URLs of
   // their subscription services.
