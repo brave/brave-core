@@ -187,6 +187,13 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     }
     
     func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+        // Make sure History at index path exists,
+        // `frc.object(at:)` crashes otherwise, doesn't fail safely with nil
+        if let objectsCount = historyFRC?.fetchedObjectsCount, indexPath.row >= objectsCount {
+            assertionFailure("History FRC index out of bounds")
+            return
+        }
+        
         guard let cell = cell as? TwoLineTableViewCell else { return }
         
         if !tableView.isEditing {
@@ -208,8 +215,13 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
             $0.imageView?.layer.cornerCurve = .continuous
             $0.imageView?.layer.masksToBounds = true
             
-            if let url = historyItem.domain?.asURL {
-                cell.imageView?.loadFavicon(for: url)
+            if let domain = historyItem.domain, let url = domain.url?.asURL {
+                cell.imageView?.loadFavicon(
+                    for: url,
+                    domain: domain,
+                    fallbackMonogramCharacter: historyItem.title?.first,
+                    shouldClearMonogramFavIcon: false,
+                    cachedOnly: true)
             } else {
                 cell.imageView?.clearMonogramFavicon()
                 cell.imageView?.image = FaviconFetcher.defaultFaviconImage

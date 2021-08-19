@@ -68,8 +68,8 @@ class Historyv2: WebsitePresentable {
         }
     }
     
-    public var domain: String? {
-        historyNode.url.domainURL.absoluteString
+    public var domain: Domain? {
+        return Domain.getOrCreate(forUrl: historyNode.url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
     }
     
     public var sectionID: Section? {
