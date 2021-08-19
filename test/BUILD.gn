@@ -705,6 +705,7 @@ if (!is_android) {
       "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-ledger",
       "//brave/vendor/bat-native-ledger:publishers_proto",
+      "//components/reading_list/features:flags",
       "//components/security_interstitials/content:security_interstitial_page",
       "//components/user_prefs",
       "//media:test_support",
@@ -967,6 +968,7 @@ if (!is_android) {
       "//components/federated_learning",
       "//components/language/core/common",
       "//components/network_time",
+      "//components/reading_list/features:flags",
       "//components/spellcheck/browser",
       "//services/device/public/cpp:device_features",
 
