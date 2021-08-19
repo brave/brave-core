@@ -13,7 +13,7 @@
 #include "brave/browser/brave_stats/brave_stats_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
-#include "brave/components/brave_perf_predictor/browser/buildflags.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
@@ -40,10 +40,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/browser/infobars/brave_wayback_machine_delegate_impl.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -91,10 +87,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   BraveWaybackMachineDelegateImpl::AttachTabHelperIfNeeded(web_contents);
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   brave_perf_predictor::PerfPredictorTabHelper::CreateForWebContents(
       web_contents);
-#endif
 
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
 

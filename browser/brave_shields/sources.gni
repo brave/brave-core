@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import(
-    "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_browser_brave_shields_sources = [
@@ -20,6 +18,7 @@ brave_browser_brave_shields_deps = [
   "//base",
   "//brave/browser:browser_process",
   "//brave/common",
+  "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_shields/browser",
   "//brave/components/brave_shields/common",
   "//chrome/browser/profiles:profile",
@@ -46,9 +45,4 @@ if (enable_extensions) {
     "//chrome/browser/extensions",
     "//extensions/browser",
   ]
-}
-
-if (enable_brave_perf_predictor) {
-  brave_browser_brave_shields_deps +=
-      [ "//brave/components/brave_perf_predictor/browser" ]
 }

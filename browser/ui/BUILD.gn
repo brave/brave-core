@@ -384,7 +384,6 @@ source_set("ui") {
       "//brave/browser/resources/settings:resources",
       "//brave/browser/ui/bookmark",
       "//brave/components/brave_new_tab_ui:generated_resources",
-      "//brave/components/brave_perf_predictor/browser:buildflags",
       "//brave/components/brave_sync",
       "//brave/components/brave_sync:sync_service_impl_helper",
       "//brave/components/brave_welcome_ui:generated_resources",

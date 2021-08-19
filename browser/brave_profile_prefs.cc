@@ -17,7 +17,8 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
-#include "brave/components/brave_perf_predictor/browser/buildflags.h"
+#include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
@@ -79,11 +80,6 @@
 
 #if BUILDFLAG(GEMINI_ENABLED)
 #include "brave/components/gemini/browser/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-#include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
@@ -158,11 +154,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_shields::BraveShieldsWebContentsObserver::RegisterProfilePrefs(
       registry);
 
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   brave_perf_predictor::PerfPredictorTabHelper::RegisterProfilePrefs(registry);
   brave_perf_predictor::P3ABandwidthSavingsTracker::RegisterProfilePrefs(
       registry);
-#endif
 
   // appearance
   registry->RegisterBooleanPref(kLocationBarIsWide, false);

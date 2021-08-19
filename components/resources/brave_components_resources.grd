@@ -57,10 +57,7 @@
       <include name="IDR_BRAVE_PRIVATE_TAB_IMG" file="../img/newtab/private-window.svg" type="BINDATA" />
       <include name="IDR_BRAVE_PRIVATE_TAB_TOR_IMG" file="../img/newtab/private-window-tor.svg" type="BINDATA" />
 
-      <if expr="enable_brave_perf_predictor">
-        <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
-      </if>
-
+      <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
       <part file="brave_blank_page_resources.grdp" />
       <part file="speedreader_resources.grdp" />
       <part file="brave_flags_ui_resources.grdp" />
