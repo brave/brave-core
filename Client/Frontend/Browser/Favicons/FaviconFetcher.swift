@@ -564,9 +564,12 @@ extension UIImageView {
     func loadFavicon(for siteURL: URL,
                      domain: Domain? = nil,
                      fallbackMonogramCharacter: Character? = nil,
+                     shouldClearMonogramFavIcon: Bool = true,
                      cachedOnly: Bool = false,
                      completion: (() -> Void)? = nil) {
-        clearMonogramFavicon()
+        if shouldClearMonogramFavIcon {
+            clearMonogramFavicon()
+        }
         faviconFetcher = FaviconFetcher(siteURL: siteURL, kind: .favicon, domain: domain)
         faviconFetcher?.load(cachedOnly) { [weak self] _, attributes in
             guard let self = self,
@@ -574,6 +577,10 @@ extension UIImageView {
                   !cancellable.isCancelled  else {
                 completion?()
                 return
+            }
+            
+            if !shouldClearMonogramFavIcon {
+                self.clearMonogramFavicon()
             }
             
             if let image = attributes.image {

@@ -110,7 +110,7 @@ class Historyv2Fetcher: NSObject, HistoryV2FetchResultsController {
             totalItemIndex += filteredDetails[safe: sectionIndex]?.value ?? 0
         }
 
-        return fetchedObjects?[totalItemIndex + indexPath.row]
+        return fetchedObjects?[safe: totalItemIndex + indexPath.row]
     }
     
     func objectCount(for section: Int) -> Int {
