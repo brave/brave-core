@@ -54,6 +54,8 @@ import { WyreAssetOptions } from '../options/wyre-asset-options'
 import { NetworkOptions } from '../options/network-options'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 
+import { formatBalance, toWei } from '../utils/format-balances'
+
 type Props = {
   panel: PanelState
   wallet: WalletState
@@ -84,6 +86,7 @@ function Container (props: Props) {
     favoriteApps,
     hasIncorrectPassword,
     hasInitialized,
+    userVisibleTokensInfo,
     isWalletCreated
   } = props.wallet
 
@@ -149,15 +152,30 @@ function Container (props: Props) {
     }
   }
 
+  const selectedAssetBalance = React.useMemo(() => {
+    if (!selectedAccount || !selectedAccount.tokens) {
+      return '0'
+    }
+    const token = selectedAccount.tokens.find((token) => token.asset.symbol === selectedAsset.symbol)
+    return token ? formatBalance(token.assetBalance, token.asset.decimals) : '0'
+  }, [accounts, selectedAccount, selectedAsset])
+
   const onSelectPresetAmount = (percent: number) => {
-    // 0 Will be replaced with selected from asset's Balance
-    // once we are able to get balances
-    const amount = 0 * percent
+    const amount = Number(selectedAssetBalance) * percent
     setSendAmount(amount.toString())
   }
 
   const onSubmitSend = () => {
-    // Logic here to submit send transaction
+    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === selectedAsset.symbol)
+    // TODO: Use real gas price & limit
+    props.walletActions.sendTransaction({
+      from: selectedAccount.address,
+      to: toAddress,
+      value: toWei(sendAmount, asset?.decimals ?? 0),
+      contractAddress: asset?.contractAddress ?? '',
+      gasPrice: '0x20000000000',
+      gasLimit: '0xFDE8'
+    })
   }
 
   const toggleConnected = () => {
@@ -522,7 +540,7 @@ function Container (props: Props) {
               onSubmit={onSubmitSend}
               selectedAsset={selectedAsset}
               selectedAssetAmount={sendAmount}
-              selectedAssetBalance='0'
+              selectedAssetBalance={selectedAssetBalance}
               toAddress={toAddress}
             />
           </SendWrapper>

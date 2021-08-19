@@ -10,3 +10,8 @@ export const formatFiatBalance = (balance: string, decimals: number, price: stri
   const result = new BigNumber(formattedBalance).multipliedBy(price)
   return (result.isNaN()) ? '0x00' : result.toFixed(2, BigNumber.ROUND_UP)
 }
+
+export const toWei = (value: string, decimals: number) => {
+  const result = new BigNumber(value).multipliedBy(10 ** decimals)
+  return (result.isNaN()) ? '0x0' : '0x' + result.toString(16)
+}

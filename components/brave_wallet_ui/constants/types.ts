@@ -368,6 +368,15 @@ export interface PortfolioTokenHistoryAndInfo {
   token: AccountAssetOptionType
 }
 
+export interface SendTransactionParam {
+  from: string
+  to: string
+  value: string
+  contractAddress: string
+  gasPrice: string
+  gasLimit: string
+}
+
 export interface CreateWalletReturnInfo {
   mnemonic: string
 }

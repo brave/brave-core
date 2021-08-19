@@ -376,9 +376,15 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const fromAssetBalance = '26'
   const toAssetBalance = '78'
 
-  const onSelectPresetAmount = (percent: number) => {
+  const onSelectPresetFromAmount = (percent: number) => {
     const amount = Number(fromAssetBalance) * percent
     setFromAmount(amount.toString())
+    calculateToAmount(amount, true)
+  }
+
+  const onSelectPresetSendAmount = (percent: number) => {
+    const amount = Number(fromAssetBalance) * percent
+    setSendAmount(amount.toString())
     calculateToAmount(amount, true)
   }
 
@@ -563,7 +569,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             onSelectExpiration={onSelectExpiration}
             onSetExchangeRate={onSetExchangeRate}
             onSelectSlippageTolerance={onSelectSlippageTolerance}
-            onSelectPresetAmount={onSelectPresetAmount}
+            onSelectPresetFromAmount={onSelectPresetFromAmount}
+            onSelectPresetSendAmount={onSelectPresetSendAmount}
           />
         </WalletWidgetStandIn>
       }
