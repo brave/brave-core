@@ -6,14 +6,21 @@
 #ifndef BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_PARAMS_H_
 #define BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_PARAMS_H_
 
+#include <cstdint>
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/macros.h"
 #include "base/time/time.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 
 class BraveStatsUpdaterTest;
 class PrefService;
+
+FORWARD_DECLARE_TEST(BraveStatsUpdaterTest, UsageBitstringDaily);
+FORWARD_DECLARE_TEST(BraveStatsUpdaterTest, UsageBitstringWeekly);
+FORWARD_DECLARE_TEST(BraveStatsUpdaterTest, UsageBitstringMonthly);
+FORWARD_DECLARE_TEST(BraveStatsUpdaterTest, UsageBitstringInactive);
 
 namespace brave_stats {
 
@@ -39,11 +46,17 @@ class BraveStatsUpdaterParams {
   std::string GetReferralCodeParam() const;
   std::string GetAdsEnabledParam() const;
   std::string GetProcessArchParam() const;
+  std::string GetWalletEnabledParam() const;
 
   void SavePrefs();
 
  private:
   friend class ::BraveStatsUpdaterTest;
+  FRIEND_TEST_ALL_PREFIXES(::BraveStatsUpdaterTest, UsageBitstringDaily);
+  FRIEND_TEST_ALL_PREFIXES(::BraveStatsUpdaterTest, UsageBitstringWeekly);
+  FRIEND_TEST_ALL_PREFIXES(::BraveStatsUpdaterTest, UsageBitstringMonthly);
+  FRIEND_TEST_ALL_PREFIXES(::BraveStatsUpdaterTest, UsageBitstringInactive);
+
   PrefService* stats_pref_service_;
   PrefService* profile_pref_service_;
   ProcessArch arch_;
@@ -64,6 +77,7 @@ class BraveStatsUpdaterParams {
 
   std::string BooleanToString(bool bool_value) const;
 
+  uint8_t UsageBitstringFromTimestamp(const base::Time& time) const;
   std::string GetDateAsYMD(const base::Time& time) const;
   std::string GetCurrentDateAsYMD() const;
   std::string GetLastMondayAsYMD() const;

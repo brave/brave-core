@@ -89,6 +89,8 @@ GURL GetUpdateURL(
       update_url, "adsEnabled", stats_updater_params.GetAdsEnabledParam());
   update_url = net::AppendQueryParameter(
       update_url, "arch", stats_updater_params.GetProcessArchParam());
+  update_url = net::AppendQueryParameter(
+      update_url, "walletActive", stats_updater_params.GetWalletEnabledParam());
   return update_url;
 }
 
