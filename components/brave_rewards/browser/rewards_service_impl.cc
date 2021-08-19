@@ -3499,6 +3499,7 @@ void RewardsServiceImpl::ClearScheduledCaptcha() {
   pref_service->SetInteger(prefs::kScheduledCaptchaSnoozeCount, 0);
   pref_service->SetString(prefs::kScheduledCaptchaPaymentId, "");
   pref_service->SetString(prefs::kScheduledCaptchaId, "");
+  pref_service->SetBoolean(prefs::kScheduledCaptchaPaused, false);
 }
 
 void RewardsServiceImpl::OnStartProcessForSetAdsEnabled() {

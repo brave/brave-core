@@ -253,6 +253,14 @@ void BatAdsClientMojoBridge::RunDBTransaction(
       base::BindOnce(&OnRunDBTransaction, std::move(callback)));
 }
 
+void BatAdsClientMojoBridge::ClearScheduledCaptcha() {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->ClearScheduledCaptcha();
+}
+
 void OnGetScheduledCaptcha(const ads::GetScheduledCaptchaCallback& callback,
                            const std::string& captcha_id) {
   callback(captcha_id);

@@ -202,6 +202,12 @@ void Account::OnDidRetryRedeemingUnblindedPaymentTokens() {
   BLOG(1, "Retry redeeming unblinded payment tokens");
 }
 
+void Account::OnDidRefillUnblindedTokens() {
+  BLOG(1, "Successfully refilled unblinded tokens");
+
+  AdsClientHelper::Get()->ClearScheduledCaptcha();
+}
+
 void Account::OnCaptchaRequiredToRefillUnblindedTokens(
     const std::string& captcha_id) {
   BLOG(1, "Captcha required to refill unblinded tokens");

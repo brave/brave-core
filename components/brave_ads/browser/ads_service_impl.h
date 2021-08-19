@@ -400,6 +400,8 @@ class AdsServiceImpl : public AdsService,
 
   std::string LoadResourceForId(const std::string& id) override;
 
+  void ClearScheduledCaptcha() override;
+
   void GetScheduledCaptcha(const std::string& payment_id,
                            ads::GetScheduledCaptchaCallback callback) override;
 

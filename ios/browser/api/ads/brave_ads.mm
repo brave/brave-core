@@ -1145,12 +1145,19 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   callback(/* success */ false, "");
 }
 
+- (void)clearScheduledCaptcha {
+  // Adaptive captcha not supported on iOS
+}
+
 - (void)getScheduledCaptcha:(const std::string&)payment_id
                    callback:(ads::GetScheduledCaptchaCallback)callback {
+  // Adaptive captcha not supported on iOS
+  callback("");
 }
 
 - (void)showScheduledCaptchaNotification:(const std::string&)payment_id
                                captchaId:(const std::string&)captcha_id {
+  // Adaptive captcha not supported on iOS
 }
 
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback {

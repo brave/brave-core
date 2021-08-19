@@ -72,6 +72,8 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD1(LoadResourceForId, std::string(const std::string& id));
 
+  MOCK_METHOD0(ClearScheduledCaptcha, void());
+
   MOCK_METHOD2(GetScheduledCaptcha,
                void(const std::string& payment_id,
                     GetScheduledCaptchaCallback callback));

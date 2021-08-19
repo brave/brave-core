@@ -107,6 +107,9 @@ class ADS_EXPORT AdsClient {
   // Should return the resource for given |id|
   virtual std::string LoadResourceForId(const std::string& id) = 0;
 
+  // Clears the currently scheduled captcha, if any
+  virtual void ClearScheduledCaptcha() = 0;
+
   // Retrieves the captcha scheduled for the given |payment_id|, if
   // any. If there is a scheduled captcha that the user must solve in
   // order to proceed, |callback| will return the captcha id;

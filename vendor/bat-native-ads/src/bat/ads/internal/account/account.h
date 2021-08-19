@@ -98,6 +98,7 @@ class Account : public AdRewardsDelegate,
   void OnDidRetryRedeemingUnblindedPaymentTokens() override;
 
   // RedeemUnblindedTokensDelegate implementation
+  void OnDidRefillUnblindedTokens() override;
   void OnCaptchaRequiredToRefillUnblindedTokens(
       const std::string& captcha_id) override;
 };

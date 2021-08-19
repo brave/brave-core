@@ -57,6 +57,7 @@ class AdsClientMojoBridge
   void LoadResourceForId(
       const std::string& id,
       LoadResourceForIdCallback callback) override;
+  void ClearScheduledCaptcha() override;
   void GetScheduledCaptcha(const std::string& payment_id,
                            GetScheduledCaptchaCallback callback) override;
   void ShowScheduledCaptchaNotification(const std::string& payment_id,

@@ -95,6 +95,10 @@ std::string AdsClientIOS::LoadResourceForId(const std::string& id) {
   return [bridge_ loadResourceForId:id];
 }
 
+void AdsClientIOS::ClearScheduledCaptcha() {
+  [bridge_ clearScheduledCaptcha];
+}
+
 void AdsClientIOS::GetScheduledCaptcha(
     const std::string& payment_id,
     ads::GetScheduledCaptchaCallback callback) {

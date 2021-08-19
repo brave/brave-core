@@ -115,6 +115,10 @@ void AdsClientMojoBridge::LoadResourceForId(
   std::move(callback).Run(ads_client_->LoadResourceForId(id));
 }
 
+void AdsClientMojoBridge::ClearScheduledCaptcha() {
+  ads_client_->ClearScheduledCaptcha();
+}
+
 // static
 void AdsClientMojoBridge::OnGetScheduledCaptcha(
     CallbackHolder<GetScheduledCaptchaCallback>* holder,
