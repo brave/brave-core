@@ -14,13 +14,13 @@
 // static
 void TestingBrowserProcess::CreateInstance() {
   TestingBrowserProcess_ChromiumImpl::CreateInstance();
-  TestingBraveBrowserProcess::CreateInstance();
+  // TestingBraveBrowserProcess::CreateInstance();
 }
 
 // static
 void TestingBrowserProcess::DeleteInstance() {
   TestingBrowserProcess_ChromiumImpl::DeleteInstance();
-  TestingBraveBrowserProcess::DeleteInstance();
+  // TestingBraveBrowserProcess::DeleteInstance();
 }
 
 // static
