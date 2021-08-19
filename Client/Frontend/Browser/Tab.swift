@@ -69,6 +69,20 @@ class Tab: NSObject {
         }
         return self.url
     }
+    
+    /// The URL that should be shared when requested by the user via the share sheet
+    ///
+    /// If the canonical URL of the page points to a different base domain entirely, this will result in
+    /// sharing the canonical URL. This is to ensure pages such as Google's AMP share the correct URL while
+    /// also ensuring single page applications which don't update their canonical URLs on navigation share
+    /// the current pages URL
+    var shareURL: URL? {
+        guard let url = url else { return nil }
+        if let canonicalURL = canonicalURL, canonicalURL.baseDomain != url.baseDomain {
+            return canonicalURL
+        }
+        return url
+    }
 
     var userActivity: NSUserActivity?
 

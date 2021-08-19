@@ -26,7 +26,7 @@ class ShareExtensionHelper: NSObject {
 //    fileprivate func isFile(url: URL) -> Bool { url.scheme == "file" }
 
     init(url: URL, tab: Tab?) {
-        self.selectedURL = tab?.canonicalURL?.displayURL ?? url
+        self.selectedURL = tab?.shareURL?.displayURL ?? url
         self.selectedTab = tab
     }
 
