@@ -193,6 +193,7 @@ export interface PageState {
   isFetchingPriceHistory: boolean
   setupStillInProgress: boolean
   showIsRestoring: boolean
+  showWelcomeModal: boolean
 }
 
 export interface WalletPageState {

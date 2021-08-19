@@ -249,7 +249,11 @@ const locale = {
   allowAddNetworkName: 'Network Name',
   allowAddNetworkUrl: 'Network URL',
   allowAddNetworkDetailsButton: 'View all details',
-  allowAddNetworkApproveButton: 'Approve'
+  allowAddNetworkApproveButton: 'Approve',
+
+  // Welcome Modal
+  welcomeModalTitle: 'All set!',
+  welcomeModalDescription: 'Buy, trade, or hold crypto. If you have an existing crypto account you may add it now.'
 }
 
 export default locale

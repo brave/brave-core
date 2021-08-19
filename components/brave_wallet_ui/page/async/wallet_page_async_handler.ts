@@ -48,6 +48,7 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store, payload: Res
   await keyringController.notifyWalletBackupComplete()
   await refreshWalletInfo(store)
   store.dispatch(WalletPageActions.setShowIsRestoring(false))
+  store.dispatch(WalletPageActions.setShowWelcomModal(true))
 })
 
 handler.on(WalletPageActions.addAccount.getType(), async (store, payload: AddAccountPayloadType) => {

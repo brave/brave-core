@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 import CloseIcon from '../../extension/assets/close.svg'
 
+interface StyleProps {
+  isFlexible: boolean
+}
+
 export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -16,16 +20,20 @@ export const StyledWrapper = styled.div`
   backdrop-filter: blur(16px);
 `
 
-export const Modal = styled.div`
+export const Modal = styled.div<StyleProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-conent: center;
-  min-width: 580px;
-  max-width: 580px;
+  min-width: ${(p) => p.isFlexible ? 'none' : '580px'};
+  max-width: ${(p) => p.isFlexible ? 'none' : '580px'};
   background-color: ${(p) => p.theme.color.background02};
   border-radius: 8px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  @media (prefers-color-scheme: dark) {
+    border: 1px solid ${(p) => p.theme.color.divider01};
+    box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.56);
+  }
 `
 
 export const Header = styled.div`

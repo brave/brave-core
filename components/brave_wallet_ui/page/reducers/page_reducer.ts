@@ -29,7 +29,8 @@ const defaultState: PageState = {
   portfolioPriceHistory: [],
   isFetchingPriceHistory: false,
   showIsRestoring: false,
-  setupStillInProgress: false
+  setupStillInProgress: false,
+  showWelcomeModal: false
 }
 
 const reducer = createReducer<PageState>({}, defaultState)
@@ -50,7 +51,7 @@ reducer.on(Actions.recoveryWordsAvailable, (state: PageState, payload: RecoveryW
 })
 
 reducer.on(Actions.walletSetupComplete, (state: PageState) => {
-  const newState = { ...state }
+  const newState = { ...state, showWelcomeModal: true }
   delete newState.mnemonic
   delete newState.setupStillInProgress
   return newState
@@ -109,6 +110,13 @@ reducer.on(Actions.setShowIsRestoring, (state: PageState, payload: boolean) => {
   return {
     ...state,
     showIsRestoring: payload
+  }
+})
+
+reducer.on(Actions.setShowWelcomModal, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    showWelcomeModal: payload
   }
 })
 

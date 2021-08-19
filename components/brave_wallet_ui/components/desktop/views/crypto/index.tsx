@@ -15,7 +15,7 @@ import {
   TokenInfo
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
-import { TopTabNav, BackupWarningBanner, AddAccountModal } from '../../'
+import { TopTabNav, BackupWarningBanner, AddAccountModal, WelcomeModal } from '../../'
 import { SearchBar, AppList } from '../../../shared'
 import locale from '../../../../constants/locale'
 import { AppsList } from '../../../../options/apps-list-options'
@@ -40,6 +40,8 @@ export interface Props {
   onUpdateVisibleTokens: (list: string[]) => void
   onSelectNetwork: (network: Network) => void
   fetchFullTokenList: () => void
+  onCloseWelcomeModal: () => void
+  showWelcomeModal: boolean
   fullAssetList: TokenInfo[]
   needsBackup: boolean
   accounts: WalletAccountType[]
@@ -74,6 +76,8 @@ const CryptoView = (props: Props) => {
     fetchFullTokenList,
     onSelectNetwork,
     onToggleAddModal,
+    onCloseWelcomeModal,
+    showWelcomeModal,
     selectedNetwork,
     fullAssetList,
     portfolioPriceHistory,
@@ -139,6 +143,11 @@ const CryptoView = (props: Props) => {
   }
 
   const onCloseAddModal = () => {
+    onToggleAddModal()
+  }
+
+  const onAddAccountFromWelecome = () => {
+    onCloseWelcomeModal()
     onToggleAddModal()
   }
 
@@ -226,6 +235,12 @@ const CryptoView = (props: Props) => {
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}
           onConnectHardwareWallet={onConnectHardwareWallet}
+        />
+      }
+      {showWelcomeModal &&
+        <WelcomeModal
+          onClose={onCloseWelcomeModal}
+          onAddAccount={onAddAccountFromWelecome}
         />
       }
     </StyledWrapper>

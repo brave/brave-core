@@ -96,7 +96,8 @@ function Container (props: Props) {
     selectedAssetPriceHistory,
     setupStillInProgress,
     isFetchingPriceHistory,
-    showIsRestoring
+    showIsRestoring,
+    showWelcomeModal
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
@@ -377,6 +378,10 @@ function Container (props: Props) {
     props.walletActions.getAllTokensList()
   }
 
+  const onCloseWelcomeModal = () => {
+    props.walletPageActions.setShowWelcomModal(false)
+  }
+
   const renderWallet = React.useMemo(() => {
     if (!hasInitialized) {
       return null
@@ -451,6 +456,8 @@ function Container (props: Props) {
                   selectedNetwork={selectedNetwork}
                   onSelectNetwork={onSelectNetwork}
                   isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
+                  onCloseWelcomeModal={onCloseWelcomeModal}
+                  showWelcomeModal={showWelcomeModal}
                 />
               )}
             </>

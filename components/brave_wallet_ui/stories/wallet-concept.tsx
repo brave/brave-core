@@ -80,6 +80,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [fromAmount, setFromAmount] = React.useState('')
   const [toAmount, setToAmount] = React.useState('')
   const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
+  const [showWelcomeModal, setShowWelcomeModal] = React.useState<boolean>(true)
 
   const onToggleRestore = () => {
     setIsRestoring(!isRestoring)
@@ -435,6 +436,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     // Doesnt fetch anything in storybook
   }
 
+  const onCloseWelcomeModal = () => {
+    setShowWelcomeModal(false)
+  }
+
   return (
     <WalletPageLayout>
       {/* <SideNav
@@ -512,6 +517,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onSelectNetwork={onSelectNetwork}
                               isFetchingPortfolioPriceHistory={false}
                               selectedPortfolioTimeline={selectedTimeline}
+                              showWelcomeModal={showWelcomeModal}
+                              onCloseWelcomeModal={onCloseWelcomeModal}
                             />
                           )}
                         </>

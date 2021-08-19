@@ -12,15 +12,16 @@ import {
 export interface Props {
   children?: React.ReactNode
   onClose: () => void
-  title: string
+  title?: string
+  isFlexible?: boolean
 }
 
 const PopupModal = (props: Props) => {
-  const { title, onClose, children } = props
+  const { title, onClose, children, isFlexible } = props
 
   return (
     <StyledWrapper>
-      <Modal>
+      <Modal isFlexible={isFlexible ?? false}>
         <Header>
           <Title>{title}</Title>
           <CloseButton onClick={onClose} />

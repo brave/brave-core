@@ -17,6 +17,7 @@ import BackupWarningBanner from './backup-warning-banner'
 import PopupModal from './popup-modals'
 import AddAccountModal from './popup-modals/add-account-modal'
 import AccountSettingsModal from './popup-modals/account-settings-modal'
+import WelcomeModal from './popup-modals/welcome-modal'
 import AssetWatchlistItem from './asset-watchlist-item'
 import SelectNetworkDropdown from './select-network-dropdown'
 import { CryptoView, PortfolioView } from './views'
@@ -58,5 +59,6 @@ export {
   AddAccountModal,
   AccountSettingsModal,
   AssetWatchlistItem,
-  SelectNetworkDropdown
+  SelectNetworkDropdown,
+  WelcomeModal
 }
