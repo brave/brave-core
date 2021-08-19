@@ -164,12 +164,10 @@ void Bitflyer::DisconnectWallet(const bool manual) {
   }
 
   BLOG(1, "Disconnecting wallet");
-  if (!wallet->address.empty()) {
-    ledger_->database()->SaveEventLog(
-        log::kWalletDisconnected,
-        static_cast<std::string>(constant::kWalletBitflyer) + "/" +
-            wallet->address.substr(0, 5));
-  }
+  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
+                                    std::string(constant::kWalletBitflyer) +
+                                        (!wallet->address.empty() ? "/" : "") +
+                                        wallet->address.substr(0, 5));
 
   wallet = ::ledger::wallet::ResetWallet(std::move(wallet));
   if (manual) {

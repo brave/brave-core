@@ -959,9 +959,11 @@
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_UNVERIFIED" desc="">Verify Wallet</message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_VERIFIED" desc="">Wallet Verified</message>
       <message name="IDS_BRAVE_UI_WALLET_GO_TO_PROVIDER" desc="">Go to my <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account</message>
+      <message name="IDS_BRAVE_UI_WALLET_LOG_IN_WITH_PROVIDER" desc="">Log into your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account</message>
       <message name="IDS_BRAVE_UI_WALLET_GO_TO_VERIFY_PAGE" desc="CTA for completing wallet verification">Complete wallet verification</message>
       <message name="IDS_BRAVE_UI_WALLET_DISCONNECT" desc="">Disconnect from Brave Rewards</message>
       <message name="IDS_BRAVE_UI_WALLET_CONNECTED" desc="">Connected</message>
+      <message name="IDS_BRAVE_UI_WALLET_DISCONNECTED" desc="">Disconnected</message>
       <message name="IDS_BRAVE_UI_WALLET_PENDING" desc="">Pending</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFIED" desc="">Verified</message>
 

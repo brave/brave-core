@@ -555,6 +555,16 @@
       }
     }
   },
+  "walletLogInWithProvider":  {
+    "message": "Log into your $provider$ account",
+    "description": "CTA to log in with a wallet provider",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
   "walletDisconnect":  {
     "message": "Disconnect from Brave Rewards",
     "description": "CTA to disconnect user wallet from rewards"
@@ -652,6 +662,10 @@
   "walletConnected":  {
     "message": "Connected",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Disconnected",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "Pending",
