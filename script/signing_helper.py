@@ -143,6 +143,11 @@ def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
             """ Not chrome branded """
             return False
 
+        @property
+        def distributions(self):
+            """ Brave distribution """
+            return [model.Distribution(channel=brave_channel)]
+
     config_class = ConfigNonChromeBranded
 
     if mac_provisioning_profile is not None:
@@ -168,10 +173,5 @@ def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
         def run_spctl_assess(self):
             """ Run spctl check """
             return True
-
-        @property
-        def distributions(self):
-            """ Brave distribution """
-            return [model.Distribution(channel=brave_channel)]
 
     return ProvisioningProfileCodeSignConfig
