@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -77,18 +78,20 @@ public class PortfolioFragment extends Fragment implements OnWalletListItemClick
         chartES.setData(new float[] {15, 21, 9, 21, 25, 35, 24, 28});
 
         setUpCoinList(view);
+        Button editVisibleAssets = view.findViewById(R.id.edit_visible_assets);
+        editVisibleAssets.setOnClickListener(v -> {
+            EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
+                    EditVisibleAssetsBottomSheetDialogFragment.newInstance();
+            bottomSheetDialogFragment.show(
+                    getFragmentManager(), EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
+        });
     }
 
     private void setUpCoinList(View view) {
         RecyclerView rvCoins = view.findViewById(R.id.rvCoins);
-        WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter();
+        WalletCoinAdapter walletCoinAdapter =
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-        walletListItemModelList.add(new WalletListItemModel(
-                R.drawable.ic_eth, "Ethereum", "ETH", "$872.48", "0.31178 ETH"));
-        walletListItemModelList.add(new WalletListItemModel(
-                R.drawable.ic_eth, "Ethereum", "ETH", "$872.48", "0.31178 ETH"));
-        walletListItemModelList.add(new WalletListItemModel(
-                R.drawable.ic_eth, "Ethereum", "ETH", "$872.48", "0.31178 ETH"));
         walletListItemModelList.add(new WalletListItemModel(
                 R.drawable.ic_eth, "Ethereum", "ETH", "$872.48", "0.31178 ETH"));
         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);

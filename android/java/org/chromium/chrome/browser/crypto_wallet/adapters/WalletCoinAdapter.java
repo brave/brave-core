@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,10 +27,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.ViewHolder> {
+    public enum AdapterType {
+        VISIBLE_ASSETS_LIST,
+        EDIT_VISIBLE_ASSETS_LIST,
+        ACCOUNTS_LIST;
+    }
+
     private Context context;
     private List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+    private List<WalletListItemModel> walletListItemModelListCopy = new ArrayList<>();
+    private List<Integer> mCheckedPositions = new ArrayList<>();
     private OnWalletListItemClick onWalletListItemClick;
     private int walletListItemType;
+    private AdapterType mType;
+
+    public WalletCoinAdapter(AdapterType type) {
+        mType = type;
+    }
+
     @Override
     public @NonNull WalletCoinAdapter.ViewHolder onCreateViewHolder(
             ViewGroup parent, int viewType) {
@@ -64,6 +79,29 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                 onWalletListItemClick.onAccountClick();
             }
         });
+        if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
+            holder.text1Text.setVisibility(View.GONE);
+            holder.text2Text.setVisibility(View.GONE);
+            holder.assetCheck.setVisibility(View.VISIBLE);
+            holder.assetCheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    final boolean isChecked = holder.assetCheck.isChecked();
+                    for (int i = 0; i <= walletListItemModelListCopy.size(); i++) {
+                        WalletListItemModel item = walletListItemModelListCopy.get(i);
+                        if (item.getTitle().contains(holder.titleText.getText())
+                                || item.getSubTitle().contains(holder.subTitleText.getText())) {
+                            if (isChecked) {
+                                mCheckedPositions.add((Integer) i);
+                            } else {
+                                mCheckedPositions.remove((Integer) i);
+                            }
+                            break;
+                        }
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -73,6 +111,23 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
 
     public void setWalletListItemModelList(List<WalletListItemModel> walletListItemModelList) {
         this.walletListItemModelList = walletListItemModelList;
+        if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
+            walletListItemModelListCopy.addAll(walletListItemModelList);
+            mCheckedPositions.clear();
+        }
+    }
+
+    public List<WalletListItemModel> getCheckedAssets() {
+        List<WalletListItemModel> checkedAssets = new ArrayList<>();
+        for (Integer position : mCheckedPositions) {
+            if (position >= walletListItemModelListCopy.size()) {
+                assert false;
+                continue;
+            }
+            checkedAssets.add(walletListItemModelListCopy.get(position));
+        }
+
+        return checkedAssets;
     }
 
     public void setOnWalletListItemClick(OnWalletListItemClick onWalletListItemClick) {
@@ -89,6 +144,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         public TextView subTitleText;
         public TextView text1Text;
         public TextView text2Text;
+        public CheckBox assetCheck;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -97,6 +153,23 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             this.subTitleText = itemView.findViewById(R.id.sub_title);
             this.text1Text = itemView.findViewById(R.id.text1);
             this.text2Text = itemView.findViewById(R.id.text2);
+            this.assetCheck = itemView.findViewById(R.id.assetCheck);
         }
+    }
+
+    public void filter(String text) {
+        walletListItemModelList.clear();
+        if (text.isEmpty()) {
+            walletListItemModelList.addAll(walletListItemModelListCopy);
+        } else {
+            text = text.toLowerCase();
+            for (WalletListItemModel item : walletListItemModelListCopy) {
+                if (item.getTitle().toLowerCase().contains(text)
+                        || item.getSubTitle().toLowerCase().contains(text)) {
+                    walletListItemModelList.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

@@ -57,7 +57,8 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
 
     private void setUpAccountList(View view) {
         RecyclerView rvAccounts = view.findViewById(R.id.rv_accounts);
-        WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter();
+        WalletCoinAdapter walletCoinAdapter =
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         walletListItemModelList.add(new WalletListItemModel(
                 R.drawable.ic_eth, "Account 1", "0xFCdF***DDee", null, null));
@@ -72,7 +73,8 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
 
     private void setUpSecondaryAccountList(View view) {
         RecyclerView rvSecondaryAccounts = view.findViewById(R.id.rv_secondary_accounts);
-        WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter();
+        WalletCoinAdapter walletCoinAdapter =
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         walletListItemModelList.add(new WalletListItemModel(
                 R.drawable.ic_eth, "jamesmudgett.eth", "0xFCdF***DDee", null, null));

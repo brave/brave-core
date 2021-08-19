@@ -51,7 +51,6 @@ public class BuySendSwapActivity extends AsyncInitializationActivity {
             return value;
         }
     }
-    ;
 
     private ActivityType mActivityType;
 
