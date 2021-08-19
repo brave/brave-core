@@ -60,10 +60,6 @@
 #include "chrome/browser/ui/profile_picker.h"
 #endif
 
-#if defined(OS_WIN)
-#include "brave/browser/microsoft_edge_protocol_util.h"
-#endif
-
 namespace {
 // staging "https://sync-v2.bravesoftware.com/v2" can be overriden by
 // switches::kSyncServiceURL manually
@@ -254,14 +250,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #endif
 
   command_line.AppendFeatures(enabled_features, disabled_features);
-
-#if defined(OS_WIN)
-  for (const std::wstring& arg :
-       base::CommandLine::ForCurrentProcess()->GetArgs()) {
-    if (auto url = GetURLFromMSEdgeProtocol(arg))
-      base::CommandLine::ForCurrentProcess()->AppendArg(*url);
-  }
-#endif
 
   bool ret = ChromeMainDelegate::BasicStartupComplete(exit_code);
 
