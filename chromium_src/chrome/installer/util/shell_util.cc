@@ -36,6 +36,7 @@ int GetIconIndexForFileType() {
 
 #define BRAVE_IPFS L"ipfs"
 #define BRAVE_IPNS L"ipns"
+#define MICROSOFT_EDGE L"microsoft-edge"
 
 #define BRAVE_GET_TARGET_FOR_DEFAULT_APP_SETTINGS                         \
   if (base::EqualsCaseInsensitiveASCII(protocol, BRAVE_IPFS))             \
@@ -83,3 +84,4 @@ int GetIconIndexForFileType() {
 #undef BRAVE_GET_TARGET_FOR_DEFAULT_APP_SETTINGS
 #undef BRAVE_IPFS
 #undef BRAVE_IPNS
+#undef MICROSOFT_EDGE
