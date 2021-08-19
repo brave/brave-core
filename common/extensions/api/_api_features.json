@@ -134,7 +134,8 @@
       "chrome://newtab/*",
       "chrome://webcompat/*",
       "chrome://wallet/*",
-      "chrome://wallet-panel.top-chrome/*"
+      "chrome://wallet-panel.top-chrome/*",
+      "chrome://vpn-panel.top-chrome/*"
     ]
   }],
   "greaselion": [{

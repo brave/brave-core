@@ -40,6 +40,13 @@
         <include name="IDR_WALLET_PANEL_HTML" file="../brave_wallet_ui/panel/wallet_panel.html" type="BINDATA" />
       </if>
 
+      <!-- WebUI vpn resources -->
+      <if expr="not is_android">
+        <if expr="enable_brave_vpn">
+          <include name="IDR_VPN_PANEL_HTML" file="../brave_vpn/resources/panel/vpn_panel.html" type="BINDATA" />
+        </if>
+      </if>
+
       <!-- Imagery links -->
       <if expr="not is_android">
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND1" file="../img/newtab/backgrounds/alex-plesovskich.avif" type="BINDATA" />

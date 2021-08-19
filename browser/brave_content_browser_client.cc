@@ -38,6 +38,7 @@
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
@@ -158,6 +159,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #else
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_android.h"
 #endif
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+#include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
+#include "brave/components/brave_vpn/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
@@ -381,6 +388,12 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PageHandlerFactory, WalletPageUI>(map);
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+  if (brave_vpn::IsBraveVPNEnabled()) {
+    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+        brave_vpn::mojom::PanelHandlerFactory, VPNPanelUI>(map);
+  }
+#endif
 #endif
 #endif
 }
