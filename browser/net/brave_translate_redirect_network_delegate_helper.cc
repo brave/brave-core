@@ -10,6 +10,7 @@
 #include <vector>
 #include "brave/common/translate_network_constants.h"
 #include "extensions/common/url_pattern.h"
+#include "net/base/net_errors.h"
 
 namespace {
 const char kTranslateElementLibQuery[] = "client=te_lib";
@@ -74,14 +75,17 @@ int OnBeforeURLRequest_TranslateRedirectWork(
     return net::OK;
   }
 
+  // TODO: decide how to properly process initiator_url value
   // For translate scripts and translate requests, only process them if the
   // initiator is https://translate.googleapis.com so we won't process requests
   // which are not from the translate element library.
-  if (ctx->initiator_url.spec() != kTranslateInitiatorURL) {
-    return net::OK;
-  }
+  // if (ctx->initiator_url.spec() != kTranslateInitiatorURL) {
+  //   return net::OK;
+  // }
 
   if (IsTranslateScriptRequest(ctx->request_url)) {
+    // TODO: remove this return and handle such requests properly
+    return net::OK;
     replacements.SetQueryStr(ctx->request_url.query_piece());
     replacements.SetPathStr(ctx->request_url.path_piece());
     ctx->new_url_spec =
