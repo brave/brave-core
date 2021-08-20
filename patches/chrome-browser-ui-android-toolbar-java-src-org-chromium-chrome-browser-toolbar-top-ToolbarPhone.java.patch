@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 283be0fcc6e5758175c251fc2bcb3d8e9e7e3895..4f711cd1142d9666a3861a384ec2320d1d2030a4 100644
+index 98d17317ec97b063ca2a80e3bc447767c546d85a..6d4da6ed0aab5409ee85fcbd379d493c2c44cd6a 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -403,6 +403,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
-         if (mCurrentLocationBarColor == color) return;
+@@ -408,6 +408,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          mCurrentLocationBarColor = color;
-         mLocationBarBackground.setTint(color);
+         // TODO(https://crbug.com/1239289): Change back to #setTint once our min API level is 23.
+         mLocationBarBackground.setColorFilter(color, PorterDuff.Mode.SRC_IN);
 +        BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
      }
  
      /**
-@@ -520,6 +521,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -525,6 +526,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
                          EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
@@ -18,7 +18,7 @@ index 283be0fcc6e5758175c251fc2bcb3d8e9e7e3895..4f711cd1142d9666a3861a384ec2320d
      }
  
      @Override
-@@ -694,7 +696,8 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -699,7 +701,8 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * @return The right bounds of the location bar after accounting for any visible right buttons.
       */
      private int getBoundsAfterAccountingForRightButtons() {
@@ -28,7 +28,7 @@ index 283be0fcc6e5758175c251fc2bcb3d8e9e7e3895..4f711cd1142d9666a3861a384ec2320d
          return Math.max(mToolbarSidePadding, mToolbarButtonsContainer.getMeasuredWidth());
      }
  
-@@ -2112,6 +2115,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -2117,6 +2120,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }

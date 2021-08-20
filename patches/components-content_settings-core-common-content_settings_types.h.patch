@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 44f58f3d665a726a4bb7b25cbc1e2705bcd16e6a..ea012c04e8e6e015e597ba94798997a3665d8542 100644
+index 1b4cafc35dec68c8e79ed22439f18ad8fd06603e..59c0981ba391efda97f85604b878555151ccb644 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -266,6 +266,7 @@ enum class ContentSettingsType : int32_t {
-   // Whether to use the v8 optimized JIT for running JavaScript on the page.
-   JAVASCRIPT_JIT,
+@@ -273,6 +273,7 @@ enum class ContentSettingsType : int32_t {
+   // separately allowlisted.
+   HTTP_ALLOWED,
  
 +  BRAVE_CONTENT_SETTINGS_TYPES_LIST,
    NUM_TYPES,
