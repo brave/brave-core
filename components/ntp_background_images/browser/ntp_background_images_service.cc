@@ -154,16 +154,12 @@ void NTPBackgroundImagesService::CheckImagesComponentUpdate(
 
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {
-  const auto& data = GetBackgroundImagesComponentData();
-
   DVLOG(2) << __func__ << ": Start NTP BI component";
   LOG(WARNING) << "NTPBackgroundImagesService::RegisterBackgroundImagesComponent" << ": Start NTP BI component";
-  LOG(WARNING) << "NTPBackgroundImagesService::RegisterBackgroundImagesComponent: data->component_base64_public_key" << data->component_base64_public_key;
-  LOG(WARNING) << "NTPBackgroundImagesService::RegisterBackgroundImagesComponent: data->component_id" << data->component_id;
   RegisterNTPBackgroundImagesComponent(
       component_update_service_,
-      data->component_base64_public_key,
-      data->component_id,
+      kNTPBIComponentPublicKey,
+      kNTPBIComponentID,
       base::StringPrintf("NTP Background Images"),
       base::BindRepeating(&NTPBackgroundImagesService::OnComponentReady,
                           weak_factory_.GetWeakPtr()));
@@ -182,7 +178,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   }
 
   DVLOG(2) << __func__ << ": Start NTP SI component";
-  RegisterNTPBackgroundImagesComponent(
+  RegisterNTPSponsoredImagesComponent(
       component_update_service_,
       data->component_base64_public_key,
       data->component_id,

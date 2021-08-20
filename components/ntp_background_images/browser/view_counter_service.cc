@@ -314,10 +314,12 @@ bool ViewCounterService::IsBrandedWallpaperActive() const {
 
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 bool ViewCounterService::IsBackgroundWallpaperActive() const {
-  if (GetCurrentWallpaperData() && prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage)) {
-    return true;
-  }
-  return false;
+#if !defined(OS_ANDROID)
+  if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage))
+    return false;
+#endif
+
+  return !!GetCurrentBrandedWallpaperData();
 }
 #endif
 

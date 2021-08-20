@@ -57,6 +57,9 @@ class ViewCounterModel {
   static const int kRegularCountToBrandedWallpaper = 3;
 
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPSponsoredImagesTest);
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesTest);
+#endif
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
 
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)

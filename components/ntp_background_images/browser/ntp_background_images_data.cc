@@ -107,7 +107,7 @@ bool NTPBackgroundImagesData::IsValid() const {
 
 base::Value NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
   LOG(WARNING) << "NTPBackgroundImagesData::GetBackgroundAt: index: " << index << " IsValid: " << IsValid();
-  DCHECK(index >= 0);
+  DCHECK(index >= 0 && index < backgrounds.size());
 
   base::Value data(base::Value::Type::DICTIONARY);
   if (!IsValid())

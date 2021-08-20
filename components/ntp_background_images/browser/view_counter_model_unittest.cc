@@ -31,11 +31,6 @@ TEST(ViewCounterModelTest, NTPSponsoredImagesTest) {
   // Image at index 0 should be displayed now after loading initial count.
   EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
   EXPECT_EQ(0, model.current_branded_wallpaper_image_index());
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-  // Exact kInitialCountToBrandedWallpaper BI wallpapers should be shown
-  int expected_wallpaper_index = ViewCounterModel::kInitialCountToBrandedWallpaper;
-  EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
-#endif
   model.RegisterPageView();
 
   // Loading regular-count times.
@@ -48,12 +43,6 @@ TEST(ViewCounterModelTest, NTPSponsoredImagesTest) {
   // Image at index 1 should be displayed now because
   EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
   EXPECT_EQ(1, model.current_branded_wallpaper_image_index());
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-  // (kInitialCountToBrandedWallpaper + kRegularCountToBrandedWallpaper) % total_image_count_  BI wallpapers should be shown
-  expected_wallpaper_index = (ViewCounterModel::kInitialCountToBrandedWallpaper + ViewCounterModel::kRegularCountToBrandedWallpaper) 
-    % model.total_image_count_;
-  EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
-#endif
   model.RegisterPageView();
 
   // Loading regular-count times again.
@@ -66,12 +55,6 @@ TEST(ViewCounterModelTest, NTPSponsoredImagesTest) {
   // Image at index 2 should be displayed now.
   EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
   EXPECT_EQ(2, model.current_branded_wallpaper_image_index());
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-  // (kInitialCountToBrandedWallpaper + 2 * kRegularCountToBrandedWallpaper) % total_image_count_  BI wallpapers should be shown
-  expected_wallpaper_index = (ViewCounterModel::kInitialCountToBrandedWallpaper + 2 * ViewCounterModel::kRegularCountToBrandedWallpaper) 
-    % model.total_image_count_;
-  EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
-#endif
   model.RegisterPageView();
 
   // Loading regular-count times again.
@@ -84,14 +67,33 @@ TEST(ViewCounterModelTest, NTPSponsoredImagesTest) {
   // Image at index 0 should be displayed now.
   EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
   EXPECT_EQ(0, model.current_branded_wallpaper_image_index());
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-  // (kInitialCountToBrandedWallpaper + 3 * kRegularCountToBrandedWallpaper) % total_image_count_  BI wallpapers should be shown
-  expected_wallpaper_index = (ViewCounterModel::kInitialCountToBrandedWallpaper + 3 * ViewCounterModel::kRegularCountToBrandedWallpaper) 
-    % model.total_image_count_;
-  EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
-#endif
-  model.RegisterPageView();
 }
+
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+TEST(ViewCounterModelTest, NTPBackgroundImagesTest) {
+  ViewCounterModel model;
+  model.set_total_branded_image_count(kTestImageCount);
+  model.set_total_image_count(kTestImageCount);
+
+  // Loading initial count times.
+  for (int i = 0; i < ViewCounterModel::kInitialCountToBrandedWallpaper; ++i) {
+    EXPECT_EQ(i, model.current_wallpaper_image_index());
+    model.RegisterPageView();
+  }
+
+  // Skip next sponsored image
+  model.RegisterPageView();
+
+  // Loading regular-count times.
+  int expected_wallpaper_index;
+  for (int i = 0; i < ViewCounterModel::kRegularCountToBrandedWallpaper; ++i) {
+    expected_wallpaper_index = (i + ViewCounterModel::kRegularCountToBrandedWallpaper - 1)
+      % model.total_image_count_;
+    EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
+    model.RegisterPageView();
+  }
+}
+#endif
 
 TEST(ViewCounterModelTest, NTPSuperReferralTest) {
   ViewCounterModel model;
