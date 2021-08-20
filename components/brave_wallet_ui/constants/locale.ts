@@ -249,7 +249,13 @@ const locale = {
   allowAddNetworkName: 'Network Name',
   allowAddNetworkUrl: 'Network URL',
   allowAddNetworkDetailsButton: 'View all details',
-  allowAddNetworkApproveButton: 'Approve'
+  allowAddNetworkApproveButton: 'Approve',
+
+  // Confirm Transaction Panel
+  confirmTransactionTotal: 'Total',
+  confirmTransactionGasFee: 'Gas Fee',
+  confrimTransactionBid: 'Bid',
+  confirmTransactionAmountGas: 'Amount + Gas'
 }
 
 export default locale
