@@ -234,13 +234,13 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
   ready_.Signal();
 }
 
-base::Optional<SubscriptionInfo> AdBlockSubscriptionServiceManager::GetInfo(
+absl::optional<SubscriptionInfo> AdBlockSubscriptionServiceManager::GetInfo(
     const GURL& sub_url) {
   auto* list_subscription_dict = subscriptions_->FindKey(sub_url.spec());
   if (!list_subscription_dict)
-    return base::nullopt;
+    return absl::nullopt;
 
-  return base::make_optional<SubscriptionInfo>(
+  return absl::make_optional<SubscriptionInfo>(
       BuildInfoFromDict(sub_url, list_subscription_dict));
 }
 
@@ -388,17 +388,17 @@ void AdBlockSubscriptionServiceManager::AddResources(
   }
 }
 
-base::Optional<base::Value>
+absl::optional<base::Value>
 AdBlockSubscriptionServiceManager::UrlCosmeticResources(
     const std::string& url) {
-  base::Optional<base::Value> first_value = base::nullopt;
+  absl::optional<base::Value> first_value = absl::nullopt;
 
   base::AutoLock lock(subscription_services_lock_);
   for (auto it = subscription_services_.begin();
        it != subscription_services_.end(); it++) {
     auto info = GetInfo(it->first);
     if (info && info->enabled) {
-      base::Optional<base::Value> next_value =
+      absl::optional<base::Value> next_value =
           it->second->UrlCosmeticResources(url);
       if (first_value) {
         if (next_value) {
@@ -413,19 +413,19 @@ AdBlockSubscriptionServiceManager::UrlCosmeticResources(
   return first_value;
 }
 
-base::Optional<base::Value>
+absl::optional<base::Value>
 AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
-  base::Optional<base::Value> first_value = base::nullopt;
+  absl::optional<base::Value> first_value = absl::nullopt;
 
   base::AutoLock lock(subscription_services_lock_);
   for (auto it = subscription_services_.begin();
        it != subscription_services_.end(); it++) {
     auto info = GetInfo(it->first);
     if (info && info->enabled) {
-      base::Optional<base::Value> next_value =
+      absl::optional<base::Value> next_value =
           it->second->HiddenClassIdSelectors(classes, ids, exceptions);
       if (first_value && first_value->is_list()) {
         if (next_value && next_value->is_list()) {

@@ -15,7 +15,6 @@
 #include "base/macros.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
-#include "base/optional.h"
 #include "base/synchronization/lock.h"
 #include "base/threading/thread_checker.h"
 #include "base/values.h"
@@ -23,6 +22,7 @@
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 class PrefService;
@@ -69,8 +69,8 @@ class AdBlockSubscriptionServiceManager {
   void EnableTag(const std::string& tag, bool enabled);
   void AddResources(const std::string& resources);
 
-  base::Optional<base::Value> UrlCosmeticResources(const std::string& url);
-  base::Optional<base::Value> HiddenClassIdSelectors(
+  absl::optional<base::Value> UrlCosmeticResources(const std::string& url);
+  absl::optional<base::Value> HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
@@ -106,7 +106,7 @@ class AdBlockSubscriptionServiceManager {
   void OnGetDownloadManager(
       AdBlockSubscriptionDownloadManager* download_manager);
 
-  base::Optional<SubscriptionInfo> GetInfo(const GURL& sub_url);
+  absl::optional<SubscriptionInfo> GetInfo(const GURL& sub_url);
   void NotifyObserversOfServiceEvent();
 
   brave_component_updater::BraveComponent::Delegate* delegate_;  // NOT OWNED
