@@ -108,6 +108,7 @@ preprocess_if_expr("preprocess") {
     "brave_overrides/privacy_page.js",
     "brave_overrides/reset_profile_dialog.js",
     "brave_overrides/safety_check_passwords_child.js",
+    "brave_overrides/search_engines_section.js",
     "brave_overrides/security_page.js",
     "brave_overrides/settings_menu.js",
     "brave_overrides/settings_section.js",
@@ -117,7 +118,6 @@ preprocess_if_expr("preprocess") {
     "brave_overrides/sync_controls.js",
     "brave_routes.js",
     "brave_sync_page/brave_sync_browser_proxy.js",
-    "brave_overrides/search_engines_section.js",
   ]
 }
 
@@ -154,6 +154,7 @@ preprocess_if_expr("preprocess_generated") {
     "brave_new_tab_page/brave_new_tab_page.m.js",
     "brave_privacy_page/brave_personalization_options.m.js",
     "brave_privacy_page/brave_privacy_page_browser_proxy.m.js",
+    "brave_search_engines_page/brave_search_engines_page.m.js",
     "brave_sync_page/brave_sync_code_dialog.js",
     "brave_sync_page/brave_sync_configure.js",
     "brave_sync_page/brave_sync_page.js",
@@ -165,7 +166,6 @@ preprocess_if_expr("preprocess_generated") {
     "default_brave_shields_page/default_brave_shields_page.m.js",
     "getting_started_page/getting_started.js",
     "social_blocking_page/social_blocking_page.m.js",
-    "brave_search_engines_page/brave_search_engines_page.m.js",
   ]
 }
 
