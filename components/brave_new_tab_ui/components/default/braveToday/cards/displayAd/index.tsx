@@ -11,6 +11,7 @@ import useScrollIntoView from '../../useScrollIntoView'
 import { useVisitDisplayAdClickHandler } from '../../useReadArticleClickHandler'
 import { OnVisitDisplayAd, OnViewedDisplayAd, GetDisplayAdContent } from '../..'
 import CardImage from '../CardImage'
+import useTriggerOnNearViewport from './useTriggerOnNearViewport'
 import * as Styles from './style'
 
 type Props = {
@@ -22,14 +23,11 @@ type Props = {
 
 export default function CardDisplayAd (props: Props) {
   // Content is retrieved when the element is close to the viewport
-  //  - undefined = not fetched yet
-  //  - null = no ad available for this unit
-  //  - DisplayAd = ad for this unit
   const [content, setContent] = React.useState<BraveToday.DisplayAd | undefined | null>(undefined)
   const [cardRef] = useScrollIntoView(props.shouldScrollIntoView || false)
   const onClick = useVisitDisplayAdClickHandler(props.onVisitDisplayAd, content ? { ad: content } : undefined)
   const innerRef = React.useRef<HTMLElement>(null)
-
+  // Setup an observer to track amount of time viewed
   React.useEffect(() => {
     if (!innerRef.current || !content || !props.onViewedDisplayAd) {
       return
@@ -45,36 +43,17 @@ export default function CardDisplayAd (props: Props) {
     }
   }, [innerRef.current, props.onViewedDisplayAd, content?.uuid])
   // Ask for and render the ad only when we're scrolled close to it
-  const contentTrigger = React.useRef<HTMLDivElement>(null)
-  const contentTriggerObserver = React.useRef<IntersectionObserver>()
-  React.useEffect(() => {
-    // Setup observer on first mount
-    contentTriggerObserver.current = new IntersectionObserver(async (entries) => {
-      if (entries.some((entry) => entry.isIntersecting)) {
-        // Get the ad and display it
-        const ad = await props.getContent()
-        // Request may not actually come back with an ad
-        if (ad) {
-          setContent(ad)
-        }
-      }
-    }, {
-      // Trigger ad fetch when the ad unit is 1000px away from the viewport
-      rootMargin: '0px 0px 1000px 0px'
-    })
-  })
-  React.useEffect(() => {
-    // Observe content trigger when it's appropriate.
-    // Don't observe (or disconnect current observer) if there is already content
-    if (content || !contentTrigger.current || !contentTriggerObserver.current) {
-      return
+  const handleOnNearViewport = React.useCallback(async () => {
+    // Get the ad and display it
+    const ad = await props.getContent()
+    // Request may not actually come back with an ad
+    if (ad) {
+      setContent(ad)
     }
-    const observer = contentTriggerObserver.current
-    observer.observe(contentTrigger.current)
-    return () => {
-      observer.disconnect()
-    }
-  }, [content, contentTrigger.current, contentTriggerObserver.current])
+  }, [props.getContent, setContent])
+  const handleOnNearViewportRef = React.useRef<Function>(handleOnNearViewport)
+  handleOnNearViewportRef.current = handleOnNearViewport
+  const [contentTrigger] = useTriggerOnNearViewport(handleOnNearViewportRef)
   // Render content trigger
   if (!content) {
     // verbose ref type conversion due to https://stackoverflow.com/questions/61102101/cannot-assign-refobjecthtmldivelement-to-refobjecthtmlelement-instance
