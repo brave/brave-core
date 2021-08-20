@@ -474,12 +474,27 @@ source_set("ui") {
     ]
   }
 
-  if (enable_brave_vpn && toolkit_views) {
+  if (enable_brave_vpn && !is_android) {
     sources += [
-      "views/toolbar/brave_vpn_button.cc",
-      "views/toolbar/brave_vpn_button.h",
+      "webui/brave_vpn/vpn_panel_handler.cc",
+      "webui/brave_vpn/vpn_panel_handler.h",
+      "webui/brave_vpn/vpn_panel_ui.cc",
+      "webui/brave_vpn/vpn_panel_ui.h",
     ]
-    deps += [ "//brave/components/brave_vpn" ]
+    deps += [
+      "//brave/components/brave_vpn",
+      "//brave/components/brave_vpn:mojom",
+      "//brave/components/brave_vpn/resources/panel:brave_vpn_panel_generated",
+      "//mojo/public/cpp/bindings",
+      "//ui/webui:webui",
+    ]
+
+    if (toolkit_views) {
+      sources += [
+        "views/toolbar/brave_vpn_button.cc",
+        "views/toolbar/brave_vpn_button.h",
+      ]
+    }
   }
 
   if (is_win && is_official_build) {

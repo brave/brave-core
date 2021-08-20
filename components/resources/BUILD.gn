@@ -1,4 +1,5 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
@@ -43,6 +44,7 @@ grit("static_resources") {
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
     "decentralized_dns_enabled=$decentralized_dns_enabled",
     "enable_ftx=$enable_ftx",
+    "enable_brave_vpn=$enable_brave_vpn",
   ]
 
   grit_flags = [
@@ -96,6 +98,13 @@ repack("resources") {
 
     deps += [ "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources" ]
     sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak" ]
+  }
+
+  if (enable_brave_vpn) {
+    deps += [
+      "//brave/components/brave_vpn/resources/panel:brave_vpn_panel_generated",
+    ]
+    sources += [ "$root_gen_dir/brave/components/brave_vpn/resources/panel/brave_vpn_panel_generated.pak" ]
   }
 
   if (ethereum_remote_client_enabled) {

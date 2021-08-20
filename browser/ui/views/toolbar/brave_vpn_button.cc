@@ -10,9 +10,12 @@
 
 #include "base/notreached.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/themes/theme_properties.h"
+#include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
@@ -48,10 +51,11 @@ class BraveVPNButtonHighlightPathGenerator
 
 }  // namespace
 
-BraveVPNButton::BraveVPNButton(BraveVpnService* service)
+BraveVPNButton::BraveVPNButton(Profile* profile)
     : ToolbarButton(base::BindRepeating(&BraveVPNButton::OnButtonPressed,
                                         base::Unretained(this))),
-      service_(service) {
+      service_(BraveVpnServiceFactory::GetForProfile(profile)),
+      webui_bubble_manager_(this, profile, GURL(kVPNPanelURL), 1, true) {
   DCHECK(service_);
   observation_.Observe(service_);
 
@@ -123,7 +127,12 @@ void BraveVPNButton::OnButtonPressed(const ui::Event& event) {
 }
 
 void BraveVPNButton::ShowBraveVPNPanel() {
-  NOTIMPLEMENTED();
+  if (webui_bubble_manager_.GetBubbleWidget()) {
+    webui_bubble_manager_.CloseBubble();
+    return;
+  }
+
+  webui_bubble_manager_.ShowBubble();
 }
 
 BEGIN_METADATA(BraveVPNButton, LabelButton)
