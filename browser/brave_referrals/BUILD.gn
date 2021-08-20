@@ -18,6 +18,7 @@ source_set("brave_referrals") {
       "//base",
       "//brave/common",
       "//brave/components/brave_referrals/common",
+      "//brave/components/brave_rewards/browser",
       "//brave/components/brave_stats/browser",
       "//brave/vendor/brave_base",
       "//chrome/common",

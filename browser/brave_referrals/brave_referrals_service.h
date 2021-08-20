@@ -65,6 +65,10 @@ class BraveReferralsHeaders {
 
 class BraveReferralsService : public ProfileManagerObserver {
  public:
+  enum TriggerType : std::int64_t {
+    DEFAULT,
+    REWARDS,
+  };
   explicit BraveReferralsService(PrefService* pref_service,
                                  const std::string& platform,
                                  const std::string& api_key);

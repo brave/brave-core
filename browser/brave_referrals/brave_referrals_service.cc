@@ -23,10 +23,12 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_referrals/common/referrals_util.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave_base/random.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
@@ -60,9 +62,8 @@ const int kReportInitializationFrequency = 60 * 60 * 24;
 // Maximum size of the referral server response in bytes.
 const int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
 
-// Default promo code, used when no promoCode file exists on first
-// run.
-const char kDefaultPromoCode[] = "BRV001";
+// Referral rewards
+const char kReferralRewardsTrigger[] = "rewards";
 
 namespace brave {
 
@@ -103,7 +104,7 @@ std::string ReadPromoCode(const base::FilePath& promo_code_file) {
   std::string promo_code;
 
   if (!base::PathExists(promo_code_file)) {
-    return kDefaultPromoCode;
+    return brave::GetDefaultReferralCode();
   }
 
   if (!base::ReadFileToString(promo_code_file, &promo_code)) {
@@ -329,6 +330,18 @@ void BraveReferralsService::OnReferralInitLoadComplete(
   const base::Value* download_id = root.value->FindKey("download_id");
   pref_service_->SetString(kReferralDownloadID, download_id->GetString());
 
+  if (const auto* key = root.value->FindStringKey("trigger")) {
+    if (base::CompareCaseInsensitiveASCII(*key, kReferralRewardsTrigger)) {
+      pref_service_->SetInt64(kReferralTrigger, TriggerType::REWARDS);
+      auto* rewards_service =
+          brave_rewards::RewardsServiceFactory::GetInstance()->GetForProfile(
+              ProfileManager::GetPrimaryUserProfile());
+      if (rewards_service) {
+        rewards_service->EnableRewards();
+      }
+    }
+  }
+
   // We have initialized with the promo server. We can kill the retry timer now.
   pref_service_->SetBoolean(kReferralInitialization, true);
   if (initialization_timer_)
@@ -535,6 +548,15 @@ std::string BraveReferralsService::BuildReferralFinalizationCheckPayload()
   root.SetKey("safetynet_status",
               base::Value(pref_service_->GetString(kSafetynetStatus)));
 #endif
+  const auto trigger = pref_service_->GetInt64(kReferralTrigger);
+  if (trigger == TriggerType::REWARDS) {
+    auto* rewards_service =
+        brave_rewards::RewardsServiceFactory::GetInstance()->GetForProfile(
+            ProfileManager::GetPrimaryUserProfile());
+    if (rewards_service && rewards_service->IsRewardsEnabled()) {
+      root.SetKey("trigger", base::Value(kReferralRewardsTrigger));
+    }
+  }
 
   std::string result;
   base::JSONWriter::Write(root, &result);
@@ -686,6 +708,8 @@ void RegisterPrefsForBraveReferralsService(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kReferralAttemptTimestamp, base::Time());
   registry->RegisterIntegerPref(kReferralAttemptCount, 0);
   registry->RegisterListPref(kReferralHeaders);
+  registry->RegisterInt64Pref(kReferralTrigger,
+                              BraveReferralsService::TriggerType::DEFAULT);
 #if defined(OS_ANDROID)
   registry->RegisterTimePref(kReferralAndroidFirstRunTimestamp, base::Time());
   registry->RegisterStringPref(kSafetynetStatus, std::string());
