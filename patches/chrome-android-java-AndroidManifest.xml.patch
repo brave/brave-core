@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 40ed75f8fb70870af212506eb106e29ab19e69f1..3f654716f5b56a86ce040bc977024099ecc6aec0 100644
+index 41dab4870e1bfea2cf7f52af76fa60ee6ef4ca75..3ccd67c8108b45930d0e319781411c28144eb96e 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
-@@ -48,7 +48,9 @@ by a child template that "extends" this file.
+@@ -59,7 +59,9 @@ by a child template that "extends" this file.
      <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_SCAN"
                              android:usesPermissionFlags="neverForLocation"/>
  
@@ -12,7 +12,7 @@ index 40ed75f8fb70870af212506eb106e29ab19e69f1..3f654716f5b56a86ce040bc977024099
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
  
-@@ -56,18 +58,26 @@ by a child template that "extends" this file.
+@@ -67,18 +69,26 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
      <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -39,7 +39,7 @@ index 40ed75f8fb70870af212506eb106e29ab19e69f1..3f654716f5b56a86ce040bc977024099
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
-@@ -113,7 +123,9 @@ by a child template that "extends" this file.
+@@ -124,7 +134,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -49,7 +49,7 @@ index 40ed75f8fb70870af212506eb106e29ab19e69f1..3f654716f5b56a86ce040bc977024099
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -160,6 +172,7 @@ by a child template that "extends" this file.
+@@ -171,6 +183,7 @@ by a child template that "extends" this file.
      <!-- Set android:largeHeap to "true" to allow more than the default
           Java heap limit (32Mb on Nexus S, 48Mb on Xoom). -->
        <application android:name="{% block application_name %}org.chromium.chrome.browser.base.SplitChromeApplication{% endblock %}"
@@ -57,7 +57,7 @@ index 40ed75f8fb70870af212506eb106e29ab19e69f1..3f654716f5b56a86ce040bc977024099
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -328,6 +341,7 @@ by a child template that "extends" this file.
+@@ -331,6 +344,7 @@ by a child template that "extends" this file.
                  <action android:name="android.web.action.APP_ATTRIBUTION" />
                  <category android:name="android.intent.category.DEFAULT" />
              </intent-filter>
@@ -65,7 +65,7 @@ index 40ed75f8fb70870af212506eb106e29ab19e69f1..3f654716f5b56a86ce040bc977024099
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1190,6 +1204,7 @@ by a child template that "extends" this file.
+@@ -1212,6 +1226,7 @@ by a child template that "extends" this file.
              android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" >
          </activity>
  
@@ -73,7 +73,7 @@ index 40ed75f8fb70870af212506eb106e29ab19e69f1..3f654716f5b56a86ce040bc977024099
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1279,6 +1293,7 @@ by a child template that "extends" this file.
+@@ -1290,6 +1305,7 @@ by a child template that "extends" this file.
        <!-- ARCore APK integration -->
        <!-- This tag indicates that this application optionally uses ARCore. -->
        <meta-data android:name="com.google.ar.core" android:value="optional" />

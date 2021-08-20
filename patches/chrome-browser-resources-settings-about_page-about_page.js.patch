@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/about_page/about_page.js b/chrome/browser/resources/settings/about_page/about_page.js
-index 0a0e71d43d63510c31a1b61ad8fdacf4601f4c1f..b1c7410c27865457b93e92990e7886aa8c9f6824 100644
+index ad7ce9c1fbccecc591ffe920fefab524ed7e46d6..871d0db73b7be457670ad2eae5ddabc375ac7977 100644
 --- a/chrome/browser/resources/settings/about_page/about_page.js
 +++ b/chrome/browser/resources/settings/about_page/about_page.js
-@@ -226,7 +226,14 @@ export class SettingsAboutPageElement extends SettingsAboutPageElementBase {
+@@ -215,7 +215,14 @@ export class SettingsAboutPageElement extends SettingsAboutPageElementBase {
  
    /** @private */
    onRelaunchTap_() {
