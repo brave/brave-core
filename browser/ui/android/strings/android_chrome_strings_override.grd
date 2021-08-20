@@ -212,6 +212,17 @@ CHAR_LIMIT guidelines:
           =1 {<ph name="TAB_COUNT_ONE">%1$s</ph> tab}
           other {<ph name="TAB_COUNT_MANY">%2$s<ex>1</ex></ph> tabs, <ph name="TAB_COUNT_INCOGNITO">%1$s</ph> private}}
       </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO" desc="The phrase used in the message for deleting private-only instance.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_COUNT_ONE">%1$s<ex>1</ex></ph> private tab will be closed}
+          other {<ph name="TAB_COUNT_MANY">%1$s<ex>4</ex></ph> private tabs will be closed}}
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO_MIXED" desc="The phrase used in the message for deleting private-selected instance.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>2</ex></ph> private and <ph name="TAB_COUNT_ONE">%2$s<ex>1</ex></ph> more tab will be closed}
+          other {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>4</ex></ph> private and <ph name="TAB_COUNT_MANY">%2$s<ex>4</ex></ph> more tabs will be closed}}
+      </message>
+
       <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_MESSAGE_NO_INCOGNITO" desc="Toast message shown when the user tries to open Private tab which is disabled on the device.">
         Private is not available on this device
       </message>

@@ -6924,6 +6924,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_MOVETOANOTHERNEWWINDOW" desc="The label for the Tab context item to move items to a new window from the 'Move tabs to another window' submenu.">
           New window
         </message>
+        <if expr="chromeos">
+          <message name="IDS_TAB_CXMENU_GROUPED_BY_DESK_MENU_ITEM_A11Y" desc="The a11y message for menu items in 'Move tabs to another window' when grouped by desk.">
+            <ph name="TAB_TITLE">$1<ex>Brave News</ex></ph> belongs to desk <ph name="DESK_TITLE">$2<ex>School</ex></ph>
+          </message>
+          <message name="IDS_TAB_CXMENU_GROUPED_BY_DESK_DESK_HEADING_A11Y" desc="The a11y message for desk headings in 'Move tabs to another window' when grouped by desk.">
+            Desk <ph name="DESK_TITLE">$1<ex>School</ex></ph> has <ph name="NUM_BROWSERS">$2<ex>3</ex></ph> browser windows open
+          </message>
+        </if>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_NEWTABTORIGHT" desc="In Title Case: The label of the 'New Tab to the Right' Tab context menu item.">
@@ -7079,8 +7087,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TAB_SEARCH_TAB_COUNT" desc="Plural form of a message indicating the presence of a number of tabs greater than one.">
         <ph name="NUM">$1<ex>2</ex></ph> Tabs
       </message>
-      <message name="IDS_TAB_SEARCH_EXPAND_RECENTLY_CLOSED_ENTRIES" desc="The label for the button that toggles showing the recently closed entries list section.">
-        Toggle Recently Closed Entries
+      <message name="IDS_TAB_SEARCH_EXPAND_RECENTLY_CLOSED_ITEMS" desc="The label for the button that toggles showing the recently closed items list section.">
+        Toggle Recently Closed Items
       </message>
 
       <!-- Strings for Window Titles in Menus -->
@@ -9222,9 +9230,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_HISTORY_CLOSED_RESTORE_WINDOW_MAC" desc="The Mac menu item for restoring all the tabs of a recently closed window.">
           Restore All Tabs
         </message>
-        <message name="IDS_HISTORY_INCOGNITO_DISCLAIMER_MAC" desc="The Mac menu item for the Private disclaimer text.">
-          History isn’t saved in Private
-        </message>
         <!-- Window menu -->
         <message name="IDS_MINIMIZE_WINDOW_MAC" desc="The Mac menu item for minimize the window menu." meaning="Mac Menubar: The Mac menu item for minimize the window menu.">
           Minimize
@@ -11083,6 +11088,20 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_CLOSE_WINDOWS_BUTTON" desc="The text of the button offering to close all Private windows in the dialog.">
       Close windows
     </message>
+
+<!-- Private History Disclaimer dialog bubble. -->
+      <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode.">
+    Sites you visit aren’t saved in Private
+  </message>
+  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to clear Private browsing history from the device,">
+    To clear Private browsing history from your device, close all Private tabs
+  </message>
+  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action.">
+    Close Private
+  </message>
+  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CANCEL_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close the bubble action.">
+    Got it
+  </message>
 
    <!-- Guest Profile Menu bubble. -->
    <message name="IDS_GUEST_WINDOW_COUNT_MESSAGE" desc="The message showing the number of open guest windows. This is not used for zero windows.[ICU Syntax]">

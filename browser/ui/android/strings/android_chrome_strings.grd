@@ -2029,7 +2029,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <!-- Download progress message UI -->
       <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_IN_PROGRESS_DESCRIPTION" desc="Download message text describing that user can find about their download status from notifications.">
-        You can see the download status in your notifications
+        See notification for download status
       </message>
       <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_COMPLETE_DESCRIPTION" desc="Download message description text about downloaded file name and their size.">
         (<ph name="megabytes">%1$s<ex>100 MB</ex></ph>)\n<ph name="url">%2$s<ex>https://...example.com</ex></ph>
@@ -2693,13 +2693,13 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Signing in...
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_ERROR_TITLE" desc="The title of the account picker bottom sheet when something went wrong in the sign-in process">
-        Something went wrong
+        Can't sign in
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_GENERAL_ERROR_SUBTITLE" desc="The subtitle of the account picker bottom sheet when something went wrong in the sign-in process">
-        Brave couldn’t verify your information
+        Something went wrong during sign-in
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_AUTH_ERROR_SUBTITLE" desc="The subtitle of the account picker bottom sheet when there is an authentication error with the credentials of the account selected.">
-        Sorry, we couldn’t validate your credentials
+        Your stored sign-in info might be out of date
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_DISMISS_BUTTON" desc="Dismiss button text of the account picker bottom sheet">
         Skip
@@ -4064,6 +4064,33 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_TARGET_SELECTOR_MOVE" desc="The message in the button in target selector dialog that starts moving a tab.">
         Move tab
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_HEADER" desc="The header of multi-instance switcher dialog confirming close operation.">
+        Close window?
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_BUTTON" desc="The button text of multi-instance switcher dialog confirming close operation.">
+        Close window
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_ZERO" desc="The phrase used in the message when there is a single tab to delete.">
+        The window will be closed
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_ONE" desc="The phrase used in the message when there is a single tab to delete.">
+        The tab <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> will be closed
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_MANY" desc="The phrase used in the message when there are multiple tabs to delete.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> and <ph name="TAB_COUNT_ONE">%2$s</ph> more tab will be closed}
+          other {<ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> and <ph name="TAB_COUNT_MANY">%2$s</ph> more tabs will be closed}}
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO" desc="The phrase used in the message for deleting private-only instance.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_COUNT_ONE">%1$s<ex>1</ex></ph> private tab will be closed}
+          other {<ph name="TAB_COUNT_MANY">%1$s<ex>4</ex></ph> private tabs will be closed}}
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO_MIXED" desc="The phrase used in the message for deleting private-selected instance.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>2</ex></ph> private and <ph name="TAB_COUNT_ONE">%2$s<ex>1</ex></ph> more tab will be closed}
+          other {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>4</ex></ph> private and <ph name="TAB_COUNT_MANY">%2$s<ex>4</ex></ph> more tabs will be closed}}
       </message>
 
       <!-- In-Product Help strings -->
