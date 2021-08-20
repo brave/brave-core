@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.h b/chrome/browser/ui/views/frame/browser_view.h
-index 820e06d9d7ff13e53ca20e667d3d7810ceb7b836..41b7a4a633684eddc9ca1ddfcc0600ae1cd29bbb 100644
+index 021f04720e56761bcc227b6bd12fb9e23fcbdff1..dd26f1c4f88ebd08658013c7e4b23325d91b3c38 100644
 --- a/chrome/browser/ui/views/frame/browser_view.h
 +++ b/chrome/browser/ui/views/frame/browser_view.h
-@@ -665,6 +665,7 @@ class BrowserView : public BrowserWindow,
+@@ -668,6 +668,7 @@ class BrowserView : public BrowserWindow,
      return accessibility_focus_highlight_.get();
    }
  

@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index f38d3defd2ba668b2d5f1a54894aa476117b5bd2..e3721c0f803309749b3f6fdb9bf61c8b4d027508 100644
+index b4d827ec6b9cacadfe215030b4e6c1946f0a36bd..6c5f3146732b46264400bda626141a713c7680c6 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
-@@ -2390,6 +2390,7 @@ void NavigationRequest::OnRequestRedirected(
+@@ -2405,6 +2405,7 @@ void NavigationRequest::OnRequestRedirected(
    common_params_->url = redirect_info.new_url;
    common_params_->method = redirect_info.new_method;
    common_params_->referrer->url = GURL(redirect_info.new_referrer);
@@ -10,7 +10,7 @@ index f38d3defd2ba668b2d5f1a54894aa476117b5bd2..e3721c0f803309749b3f6fdb9bf61c8b
    common_params_->referrer = Referrer::SanitizeForRequest(
        common_params_->url, *common_params_->referrer);
  
-@@ -3621,6 +3622,7 @@ void NavigationRequest::OnStartChecksComplete(
+@@ -3636,6 +3637,7 @@ void NavigationRequest::OnStartChecksComplete(
    headers.MergeFrom(TakeModifiedRequestHeaders());
    begin_params_->headers = headers.ToString();
  
