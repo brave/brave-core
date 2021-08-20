@@ -1,12 +1,12 @@
 diff --git a/services/network/cookie_settings.cc b/services/network/cookie_settings.cc
-index 3cb2c78b4934db3415e72be8401c1e92e0b678b4..3cd1fdc9a767e6dd1cb06a85e1624f9f526dd7af 100644
+index 8ab818b51d99734c89933be8cedcf766fbf01694..9ce23d9397e869661568935a85560cd82caebdc5 100644
 --- a/services/network/cookie_settings.cc
 +++ b/services/network/cookie_settings.cc
-@@ -130,6 +130,7 @@ ContentSetting CookieSettings::GetCookieSettingInternal(
-     // Site-specific settings override the global "block third-party cookies"
-     // setting.
-     // Note: global settings are implemented as a catch-all (*, *) pattern.
-+    BRAVE_COOKIE_SETTINGS_GET_COOKIE_SETTINGS_INTERNAL
-     if (IsExplicitSetting(*entry))
-       blocked_by_third_party_setting = false;
+@@ -180,6 +180,7 @@ CookieSettings::GetCookieSettingWithMetadata(
+       // Note: global settings are implemented as a catch-all (*, *) pattern.
+       if (IsExplicitSetting(*entry))
+         blocked_by_third_party_setting = false;
++      BRAVE_COOKIE_SETTINGS_GET_COOKIE_SETTINGS_INTERNAL
+     }
    }
+ 

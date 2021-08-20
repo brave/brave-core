@@ -150,6 +150,8 @@ BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync() {
     return ephemeral_storage_origin_it->second;
 
   auto top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
+  // If first party ephemeral storage is enabled, we should always ask the
+  // browser if a frame should use ephemeral storage or not.
   if (!base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage) &&
       net::registry_controlled_domains::SameDomainOrHost(

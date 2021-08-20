@@ -62,3 +62,24 @@ bool RendererContentSettingRules::IsRendererContentSetting(
              content_type) ||
          content_type == ContentSettingsType::AUTOPLAY;
 }
+
+namespace content_settings {
+namespace {
+
+bool IsExplicitSetting(const ContentSettingsPattern& primary_pattern,
+                       const ContentSettingsPattern& secondary_pattern) {
+  return !primary_pattern.MatchesAllHosts() ||
+         !secondary_pattern.MatchesAllHosts();
+}
+
+}  // namespace
+
+bool IsExplicitSetting(const ContentSettingPatternSource& setting) {
+  return IsExplicitSetting(setting.primary_pattern, setting.secondary_pattern);
+}
+
+bool IsExplicitSetting(const SettingInfo& setting) {
+  return IsExplicitSetting(setting.primary_pattern, setting.secondary_pattern);
+}
+
+}  // namespace content_settings

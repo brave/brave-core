@@ -6,6 +6,8 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 
 #include "base/strings/strcat.h"
+#include "base/test/bind.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -14,8 +16,10 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/test/browser_test.h"
 #include "net/base/features.h"
+#include "services/network/public/mojom/cookie_manager.mojom.h"
 
 using content::RenderFrameHost;
 using content::WebContents;
@@ -61,6 +65,29 @@ class EphemeralStorage1pBrowserTest : public EphemeralStorageBrowserTest {
     content::EvalJsResult eval_js_result = content::EvalJs(
         host, "(async () => { await window.idbKeyval.set('a', 'a'); })()");
     return eval_js_result.error.empty();
+  }
+
+  HostContentSettingsMap* content_settings() {
+    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  }
+
+  network::mojom::CookieManager* CookieManager() {
+    return browser()
+        ->profile()
+        ->GetDefaultStoragePartition()
+        ->GetCookieManagerForBrowserProcess();
+  }
+
+  std::vector<net::CanonicalCookie> GetAllCookies() {
+    base::RunLoop run_loop;
+    std::vector<net::CanonicalCookie> cookies_out;
+    CookieManager()->GetAllCookies(base::BindLambdaForTesting(
+        [&](const std::vector<net::CanonicalCookie>& cookies) {
+          cookies_out = cookies;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return cookies_out;
   }
 
  private:
@@ -434,4 +461,51 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
 
   // Cookie values should be empty after a cleanup.
   ExpectValuesFromFramesAreEmpty(FROM_HERE, GetValuesFromFrames(site_a_tab2));
+}
+
+IN_PROC_BROWSER_TEST_F(
+    EphemeralStorage1pBrowserTest,
+    DisabledShieldsAllowsPersistentCookiesFor1PesHostsIn3pFrames) {
+  // Disable shields on a.com.
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false,
+                                        a_site_ephemeral_storage_url_);
+  // Enable 1PES on b.com.
+  SetCookieSetting(b_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
+
+  // Navigate to a.com which includes b.com.
+  WebContents* site_a_tab_network_cookies =
+      LoadURLInNewTab(a_site_ephemeral_storage_with_network_cookies_url_);
+  http_request_monitor_.Clear();
+
+  // Cookies should be stored in persistent storage for the main frame and a
+  // third party frame.
+  EXPECT_EQ(2u, GetAllCookies().size());
+
+  // Navigate to other website and ensure no a.com/b.com cookies are sent (they
+  // are third-party and ephemeral inside c.com).
+  ASSERT_TRUE(content::NavigateToURL(site_a_tab_network_cookies,
+                                     c_site_ephemeral_storage_url_));
+  EXPECT_FALSE(http_request_monitor_.HasHttpRequestWithCookie(
+      a_site_ephemeral_storage_url_, "name=acom_simple"));
+  EXPECT_FALSE(http_request_monitor_.HasHttpRequestWithCookie(
+      b_site_ephemeral_storage_url_, "name=bcom_simple"));
+  WaitForCleanupAfterKeepAlive();
+  http_request_monitor_.Clear();
+
+  // a.com and b.com cookies should be intact.
+  EXPECT_EQ(2u, GetAllCookies().size());
+
+  // Navigate to a.com again and expect a.com and b.com cookies are sent with
+  // headers.
+  WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  EXPECT_TRUE(http_request_monitor_.HasHttpRequestWithCookie(
+      a_site_ephemeral_storage_url_, "name=acom_simple"));
+  EXPECT_TRUE(http_request_monitor_.HasHttpRequestWithCookie(
+      b_site_ephemeral_storage_url_, "name=bcom_simple"));
+
+  // Make sure cookies are also accessible via JS.
+  ValuesFromFrames site_a_tab_values = GetValuesFromFrames(site_a_tab);
+  EXPECT_EQ("name=acom_simple", site_a_tab_values.main_frame.cookies);
+  EXPECT_EQ("name=bcom_simple", site_a_tab_values.iframe_1.cookies);
+  EXPECT_EQ("name=bcom_simple", site_a_tab_values.iframe_2.cookies);
 }

@@ -5,6 +5,7 @@
 
 #include "components/content_settings/core/common/cookie_settings_base.h"
 
+#include "base/auto_reset.h"
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "base/stl_util.h"
@@ -86,6 +87,17 @@ bool IsFirstPartyAccessAllowed(
 
 }  // namespace
 
+CookieSettingWithBraveMetadata::CookieSettingWithBraveMetadata() = default;
+CookieSettingWithBraveMetadata::CookieSettingWithBraveMetadata(
+    const CookieSettingWithBraveMetadata&) = default;
+CookieSettingWithBraveMetadata::CookieSettingWithBraveMetadata(
+    CookieSettingWithBraveMetadata&&) = default;
+CookieSettingWithBraveMetadata& CookieSettingWithBraveMetadata::operator=(
+    const CookieSettingWithBraveMetadata&) = default;
+CookieSettingWithBraveMetadata& CookieSettingWithBraveMetadata::operator=(
+    CookieSettingWithBraveMetadata&&) = default;
+CookieSettingWithBraveMetadata::~CookieSettingWithBraveMetadata() = default;
+
 bool CookieSettingsBase::ShouldUseEphemeralStorage(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
@@ -99,6 +111,8 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
   if (!first_party_url.is_valid())
     return false;
 
+  // SESSION_ONLY cookie setting works as a "1PES enabler" for the website if
+  // a 1PES feature is enabled.
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage) &&
       IsCookieSessionOnly(first_party_url)) {
@@ -167,16 +181,44 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
 
   const bool is_1p_ephemeral_feature_enabled = base::FeatureList::IsEnabled(
       net::features::kBraveFirstPartyEphemeralStorage);
+  // If 1PES feature is enabled, we should do additional checks below.
   if (allow && !is_1p_ephemeral_feature_enabled)
     return true;
 
   const GURL first_party_url = GetFirstPartyURL(
       site_for_cookies, base::OptionalOrNullptr(top_frame_origin));
-  const bool is_1p_ephemeral =
-      is_1p_ephemeral_feature_enabled && IsCookieSessionOnly(first_party_url);
 
-  if (is_1p_ephemeral && allow) {
-    return false;
+  // Determine whether a first party frame is ephemeral or shields are down.
+  enum class FirstPartyFrameMode {
+    kDefault,
+    kEphemeral,
+    kShieldsDown,
+  };
+  FirstPartyFrameMode first_party_frame_mode = FirstPartyFrameMode::kDefault;
+  if (is_1p_ephemeral_feature_enabled) {
+    CookieSettingWithBraveMetadata setting_with_brave_metadata =
+        GetCookieSettingWithBraveMetadata(first_party_url, first_party_url);
+
+    if (setting_with_brave_metadata.setting == CONTENT_SETTING_SESSION_ONLY) {
+      first_party_frame_mode = FirstPartyFrameMode::kEphemeral;
+    } else if (setting_with_brave_metadata.setting == CONTENT_SETTING_ALLOW &&
+               setting_with_brave_metadata.primary_pattern_matches_all_hosts &&
+               !setting_with_brave_metadata
+                    .secondary_pattern_matches_all_hosts) {
+      // Disabled shields mode allows everything in nested frames, so we
+      // determine the fact that shields are disabled by expecting primary and
+      // secondary patterns to be in a specific state.
+      first_party_frame_mode = FirstPartyFrameMode::kShieldsDown;
+    }
+  }
+
+  if (allow) {
+    // Block all non ephemeral-supported activities (service workers, etc.) if
+    // 1p is ephemeral.
+    if (first_party_frame_mode == FirstPartyFrameMode::kEphemeral) {
+      allow = false;
+    }
+    return allow;
   }
 
   if (!IsFirstPartyAccessAllowed(first_party_url, this))
@@ -185,7 +227,46 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
   if (BraveIsAllowedThirdParty(url, first_party_url, this))
     return true;
 
+  if (is_1p_ephemeral_feature_enabled &&
+      first_party_frame_mode == FirstPartyFrameMode::kShieldsDown &&
+      IsCookieSessionOnly(url)) {
+    // Allow 3p session-only frames when shields are disabled.
+    return true;
+  }
+
   return false;
+}
+
+// Determines whether a 3p cookies block should be applied if a requesting URL
+// uses an explicit 1PES setting (CONTENT_SETTING_SESSION_ONLY).
+// By default Chromimum allows all 3p cookies if applied CookieSettingsPatterns
+// for the URL were explicit. We use explicit setting to enable 1PES mode, but
+// in this mode we still want to block 3p frames as usual and not fallback to
+// "allow everything" path.
+bool CookieSettingsBase::ShouldBlockThirdPartyIfSettingIsExplicit(
+    bool block_third_party_cookies,
+    ContentSetting cookie_setting,
+    bool is_explicit_setting,
+    bool is_first_party_allowed_scheme) const {
+  return block_third_party_cookies &&
+         cookie_setting == CONTENT_SETTING_SESSION_ONLY &&
+         is_explicit_setting && !is_first_party_allowed_scheme &&
+         base::FeatureList::IsEnabled(
+             net::features::kBraveFirstPartyEphemeralStorage);
+}
+
+CookieSettingWithBraveMetadata
+CookieSettingsBase::GetCookieSettingWithBraveMetadata(
+    const GURL& url,
+    const GURL& first_party_url) const {
+  CookieSettingWithBraveMetadata setting_brave_metadata;
+  base::AutoReset<CookieSettingWithBraveMetadata*> auto_reset(
+      &cookie_setting_with_brave_metadata_, &setting_brave_metadata);
+  // GetCookieSetting fills metadata structure implicitly (implemented in
+  // GetCookieSettingInternal), the setting value is set explicitly here.
+  setting_brave_metadata.setting =
+      GetCookieSetting(url, first_party_url, nullptr);
+  return setting_brave_metadata;
 }
 
 }  // namespace content_settings

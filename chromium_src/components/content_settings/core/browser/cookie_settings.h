@@ -10,6 +10,7 @@
 
 #include "base/containers/flat_map.h"
 #include "components/content_settings/core/browser/content_settings_provider.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/keyed_service/core/refcounted_keyed_service.h"
 #include "net/cookies/site_for_cookies.h"
 #include "url/origin.h"

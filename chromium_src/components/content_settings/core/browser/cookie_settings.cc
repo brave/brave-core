@@ -8,13 +8,18 @@
 #include "net/base/features.h"
 #include "net/base/url_util.h"
 
-#define BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL      \
-  if (setting == CONTENT_SETTING_SESSION_ONLY && !block_third && \
-      ShouldBlockThirdPartyCookies() &&                          \
-      !first_party_url.SchemeIs(extension_scheme_) &&            \
-      base::FeatureList::IsEnabled(                              \
-          net::features::kBraveFirstPartyEphemeralStorage)) {    \
-    block_third = true;                                          \
+#define BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL               \
+  if (!block && is_third_party_request) {                                 \
+    block = ShouldBlockThirdPartyIfSettingIsExplicit(                     \
+        ShouldBlockThirdPartyCookies(), setting, IsExplicitSetting(info), \
+        first_party_url.SchemeIs(extension_scheme_));                     \
+  }                                                                       \
+  if (auto* setting_with_brave_metadata =                                 \
+          cookie_setting_with_brave_metadata()) {                         \
+    setting_with_brave_metadata->primary_pattern_matches_all_hosts =      \
+        info.primary_pattern.MatchesAllHosts();                           \
+    setting_with_brave_metadata->secondary_pattern_matches_all_hosts =    \
+        info.secondary_pattern.MatchesAllHosts();                         \
   }
 
 #define ShutdownOnUIThread ShutdownOnUIThread_ChromiumImpl
@@ -84,5 +89,3 @@ std::vector<url::Origin> CookieSettings::TakeEphemeralStorageOpaqueOrigins(
 }
 
 }  // namespace content_settings
-
-#undef BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL

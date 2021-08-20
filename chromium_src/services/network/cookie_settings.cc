@@ -8,12 +8,21 @@
 #include "net/base/features.h"
 #include "url/origin.h"
 
-#define BRAVE_COOKIE_SETTINGS_GET_COOKIE_SETTINGS_INTERNAL    \
-  if (cookie_setting == CONTENT_SETTING_SESSION_ONLY &&       \
-      base::FeatureList::IsEnabled(                           \
-          net::features::kBraveFirstPartyEphemeralStorage)) { \
-    /* Do nothing */                                          \
-  } else  // NOLINT
+#define BRAVE_COOKIE_SETTINGS_GET_COOKIE_SETTINGS_INTERNAL                     \
+  if (!blocked_by_third_party_setting && is_third_party_request) {             \
+    blocked_by_third_party_setting = ShouldBlockThirdPartyIfSettingIsExplicit( \
+        block_third_party_cookies_, cookie_setting,                            \
+        content_settings::IsExplicitSetting(*entry),                           \
+        base::Contains(third_party_cookies_allowed_schemes_,                   \
+                       first_party_url.scheme()));                             \
+  }                                                                            \
+  if (auto* setting_with_brave_metadata =                                      \
+          cookie_setting_with_brave_metadata()) {                              \
+    setting_with_brave_metadata->primary_pattern_matches_all_hosts =           \
+        entry->primary_pattern.MatchesAllHosts();                              \
+    setting_with_brave_metadata->secondary_pattern_matches_all_hosts =         \
+        entry->secondary_pattern.MatchesAllHosts();                            \
+  }
 
 #include "../../../../services/network/cookie_settings.cc"
 
