@@ -67,7 +67,8 @@ public class AccountDetailActivity
 
     private void setUpAssetList() {
         RecyclerView rvAssets = findViewById(R.id.rv_assets);
-        WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter();
+        WalletCoinAdapter walletCoinAdapter =
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         walletListItemModelList.add(new WalletListItemModel(R.drawable.ic_eth,
                 "Basic Attention Token", "BAT", "$10,810.03", "10,037.9028 BAT"));
@@ -82,7 +83,8 @@ public class AccountDetailActivity
 
     private void setUpTransactionList() {
         RecyclerView rvTransactions = findViewById(R.id.rv_transactions);
-        WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter();
+        WalletCoinAdapter walletCoinAdapter =
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         walletListItemModelList.add(new WalletListItemModel(
                 R.drawable.ic_eth, "Ledger Nano", "0xA1da***7af1", "$37.92", "0.0009431 ETH"));
