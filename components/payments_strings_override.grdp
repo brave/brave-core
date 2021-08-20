@@ -40,4 +40,9 @@
     Sign-in data will be stored on this device after you exit Private mode.
   </message>
   <if expr="is_android">
+    </if>
+  <if expr="not is_android">
+    </if>
+
+  <if expr="is_android">
     </if>  </grit-part>

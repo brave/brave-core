@@ -602,7 +602,9 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not is_macosx">
         </if>
       <if expr="not use_titlecase">
-        </if>
+        <if expr="chromeos">
+          </if>
+      </if>
       <if expr="use_titlecase">
         </if>
 
@@ -808,9 +810,6 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_BOOKMARK_BAR_ALWAYS_SHOW_MAC" desc="The Mac menu item for having bookmark bar always visible in the view menu.">
           Always Show Bookmarks
         </message>
-        <message name="IDS_HISTORY_INCOGNITO_DISCLAIMER_MAC" desc="The Mac menu item for the Private disclaimer text.">
-          History isn’t saved in Private
-        </message>
         </if> <if expr="is_posix and not is_macosx">
         </if>
 
@@ -945,7 +944,16 @@ are declared in tools/grit/grit_rule.gni.
     <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_SECONDARY_TEXT" desc="The secondary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how the clear browsing data action affects only the Private windows.">
       This only affects Private windows
     </message>
-    <if expr="not is_android">
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode.">
+    Sites you visit aren’t saved in Private
+  </message>
+  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to clear Private browsing history from the device,">
+    To clear Private browsing history from your device, close all Private tabs
+  </message>
+  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action.">
+    Close Private
+  </message>
+  <if expr="not is_android">
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">

@@ -295,6 +295,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
 
       <if expr="not chromeos and not is_android">
+        <if expr="lacros">
+      </if>
+
         </if>
 
       <if expr="chromeos">
