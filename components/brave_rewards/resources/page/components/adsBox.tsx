@@ -313,6 +313,11 @@ class AdsBox extends React.Component<Props, State> {
   }
 
   getAdDetailRow = (adHistory: Rewards.AdHistory) => {
+    let brand = adHistory.adContent.brand
+    if (brand.length > 50) {
+      brand = brand.substring(0, 50) + '...'
+    }
+
     let brandInfo = adHistory.adContent.brandInfo
     if (brandInfo.length > 50) {
       brandInfo = brandInfo.substring(0, 50) + '...'
@@ -321,7 +326,7 @@ class AdsBox extends React.Component<Props, State> {
     const adContent: Rewards.AdContent = {
       creativeInstanceId: adHistory.adContent.creativeInstanceId,
       creativeSetId: adHistory.adContent.creativeSetId,
-      brand: adHistory.adContent.brand,
+      brand: brand,
       brandInfo: brandInfo,
       brandLogo: adHistory.adContent.brandLogo,
       brandDisplayUrl: adHistory.adContent.brandDisplayUrl,
