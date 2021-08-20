@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -83,24 +84,25 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             holder.text1Text.setVisibility(View.GONE);
             holder.text2Text.setVisibility(View.GONE);
             holder.assetCheck.setVisibility(View.VISIBLE);
-            holder.assetCheck.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View arg0) {
-                    final boolean isChecked = holder.assetCheck.isChecked();
-                    for (int i = 0; i <= walletListItemModelListCopy.size(); i++) {
-                        WalletListItemModel item = walletListItemModelListCopy.get(i);
-                        if (item.getTitle().contains(holder.titleText.getText())
-                                || item.getSubTitle().contains(holder.subTitleText.getText())) {
-                            if (isChecked) {
-                                mCheckedPositions.add((Integer) i);
-                            } else {
-                                mCheckedPositions.remove((Integer) i);
+            holder.assetCheck.setOnCheckedChangeListener(
+                    new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            for (int i = 0; i <= walletListItemModelListCopy.size(); i++) {
+                                WalletListItemModel item = walletListItemModelListCopy.get(i);
+                                if (item.getTitle().contains(holder.titleText.getText())
+                                        || item.getSubTitle().contains(
+                                                holder.subTitleText.getText())) {
+                                    if (isChecked) {
+                                        mCheckedPositions.add((Integer) i);
+                                    } else {
+                                        mCheckedPositions.remove((Integer) i);
+                                    }
+                                    break;
+                                }
                             }
-                            break;
                         }
-                    }
-                }
-            });
+                    });
         }
     }
 
