@@ -5,8 +5,8 @@
 
 #include "brave/browser/net/brave_referrals_network_delegate_helper.h"
 
+#include "brave/browser/brave_referrals/brave_referrals_service.h"
 #include "brave/common/network_constants.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "chrome/browser/browser_process.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/common/url_pattern.h"

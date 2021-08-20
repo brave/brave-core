@@ -18,9 +18,9 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/brave_referrals/common/referrals_util.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -241,7 +241,7 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
 
     // This below code is for recover above abnormal situation - Shutdown
     // situation before getting map table or getting initial component.
-    if (brave::BraveReferralsService::IsDefaultReferralCode(code)) {
+    if (brave::IsDefaultReferralCode(code)) {
       MarkThisInstallIsNotSuperReferralForever();
     } else {
       // If current code is not an default one, let's check it after fetching
@@ -272,7 +272,7 @@ void NTPBackgroundImagesService::OnPreferenceChanged(
   DVLOG(2) << __func__ << ": Got referral promo code: "
                        << new_referral_code;
   DCHECK(!new_referral_code.empty());
-  if (brave::BraveReferralsService::IsDefaultReferralCode(new_referral_code)) {
+  if (brave::IsDefaultReferralCode(new_referral_code)) {
     DVLOG(2) << __func__ << ": This has default referral promo code.";
     MarkThisInstallIsNotSuperReferralForever();
     return;

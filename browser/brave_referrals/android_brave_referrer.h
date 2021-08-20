@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_ANDROID_BRAVE_REFERRER_H_
-#define BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_ANDROID_BRAVE_REFERRER_H_
+#ifndef BRAVE_BROWSER_BRAVE_REFERRALS_ANDROID_BRAVE_REFERRER_H_
+#define BRAVE_BROWSER_BRAVE_REFERRALS_ANDROID_BRAVE_REFERRER_H_
 
 #include <jni.h>
 #include <memory>
@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/android/scoped_java_ref.h"
+#include "brave/browser/brave_referrals/android_brave_referrer.h"
 #include "net/base/completion_once_callback.h"
 
 namespace android_brave_referrer {
@@ -20,7 +21,7 @@ using InitReferrerCallback = base::OnceCallback<void()>;
 
 class BraveReferrer {
  public:
-  explicit BraveReferrer();
+  BraveReferrer();
   ~BraveReferrer();
 
   BraveReferrer(const BraveReferrer&) = delete;
@@ -36,4 +37,4 @@ class BraveReferrer {
 
 }  // namespace android_brave_referrer
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_ANDROID_BRAVE_REFERRER_H_
+#endif  // BRAVE_BROWSER_BRAVE_REFERRALS_ANDROID_BRAVE_REFERRER_H_

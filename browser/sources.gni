@@ -274,7 +274,7 @@ if (enable_extensions) {
 }
 
 if (enable_brave_referrals) {
-  brave_chrome_browser_deps += [ "//brave/components/brave_referrals/browser" ]
+  brave_chrome_browser_deps += [ "//brave/browser/brave_referrals" ]
 }
 
 if (enable_brave_wayback_machine) {

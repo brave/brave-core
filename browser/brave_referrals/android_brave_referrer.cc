@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "android_brave_referrer.h"
+#include "brave/browser/brave_referrals/android_brave_referrer.h"
+
+#include <utility>
 
 #include "base/android/jni_android.h"
 #include "brave/components/brave_referrals/browser/jni_headers/BraveReferrer_jni.h"

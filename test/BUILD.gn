@@ -153,6 +153,7 @@ test("brave_unit_tests") {
     "//brave/app/theme:brave_theme_resources_grit",
     "//brave/base:base_unittests",
     "//brave/browser",
+    "//brave/browser/brave_referrals",
     "//brave/browser/content_settings:unit_tests",
     "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/browser/first_run:unit_tests",
@@ -179,7 +180,6 @@ test("brave_unit_tests") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_perf_predictor/browser",
     "//brave/components/brave_private_cdn",
-    "//brave/components/brave_referrals/browser",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_referrals/common",
     "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
@@ -431,8 +431,8 @@ test("brave_unit_tests") {
     ]
 
     deps += [
+      "//brave/browser/brave_referrals",
       "//brave/common:pref_names",
-      "//brave/components/brave_referrals/browser",
     ]
   }
 
@@ -836,6 +836,7 @@ if (!is_android) {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser",
+      "//brave/browser/brave_referrals",
       "//brave/browser/devtools",
       "//brave/browser/ephemeral_storage:ephemeral_storage_tests",
       "//brave/browser/ethereum_remote_client/buildflags",
@@ -850,7 +851,6 @@ if (!is_android) {
       "//brave/common:pref_names",
       "//brave/common:switches",
       "//brave/components/brave_component_updater/browser",
-      "//brave/components/brave_referrals/browser",
       "//brave/components/brave_referrals/common",
       "//brave/components/brave_rewards/common",
       "//brave/components/brave_shields/browser",
@@ -927,12 +927,12 @@ if (!is_android) {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser/brave_ads",
+      "//brave/browser/brave_referrals",
       "//brave/browser/ethereum_remote_client/buildflags",
       "//brave/browser/net",
       "//brave/browser/themes",
       "//brave/common:pref_names",
       "//brave/common:switches",
-      "//brave/components/brave_referrals/browser",
       "//brave/components/brave_referrals/common",
       "//brave/components/brave_rewards/common",
       "//brave/components/brave_shields/browser",

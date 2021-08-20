@@ -99,7 +99,7 @@ source_set("net") {
       "brave_referrals_network_delegate_helper.h",
     ]
 
-    deps += [ "//brave/components/brave_referrals/browser" ]
+    deps += [ "//brave/browser/brave_referrals" ]
   }
 
   if (enable_brave_webtorrent) {

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/browser/brave_referrals/brave_referrals_service.h"
 
 #include <memory>
 #include <utility>
@@ -26,6 +26,7 @@
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/brave_referrals/common/referrals_util.h"
 #include "brave_base/random.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
@@ -275,10 +276,6 @@ void BraveReferralsService::SetReferralInitializedCallbackForTesting(
     ReferralInitializedCallback* referral_initialized_callback) {
   g_testing_referral_initialized_callback = referral_initialized_callback;
 }
-// static
-bool BraveReferralsService::IsDefaultReferralCode(const std::string& code) {
-  return code == kDefaultPromoCode;
-}
 
 void BraveReferralsService::OnFinalizationChecksTimerFired() {
   PerformFinalizationChecks();
@@ -386,7 +383,7 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
 void BraveReferralsService::OnReadPromoCodeComplete(
     const std::string& promo_code) {
   promo_code_ = promo_code;
-  if (!promo_code_.empty() && !IsDefaultReferralCode(promo_code_)) {
+  if (!promo_code_.empty() && !brave::IsDefaultReferralCode(promo_code_)) {
     pref_service_->SetString(kReferralPromoCode, promo_code_);
     DCHECK(!initialization_timer_);
     InitReferral();

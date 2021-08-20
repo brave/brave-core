@@ -26,7 +26,7 @@
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/browser/brave_referrals/brave_referrals_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)

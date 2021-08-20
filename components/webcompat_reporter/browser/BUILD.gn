@@ -19,7 +19,6 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/common",
-    "//brave/components/brave_referrals/browser",
     "//brave/components/brave_stats/browser",
     "//content/public/browser",
     "//net",

@@ -26,7 +26,7 @@ static_library("browser") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/common",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_referrals/browser",
+    "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_referrals/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/l10n/browser",
