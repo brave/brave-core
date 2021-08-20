@@ -16,13 +16,19 @@ def AddBravePolicies(template_file_contents):
             'name': 'TorDisabled',
             'type': 'main',
             'schema': {'type': 'boolean'},
-            'supported_on': ['chrome.win:78-'],
-            'features': {'dynamic_refresh': False, 'per_profile': False},
+            'supported_on': ['chrome.win:78-', 'chrome.mac:93-', 'chrome.linux:93-'],
+            'features': {
+                'dynamic_refresh': False,
+                'per_profile': False,
+                'can_be_recommended': False,
+                'can_be_mandatory': True
+            },
             'example_value': True,
             'id': 0,
             'caption': '''Disables the tor feature.''',
             'tags': [],
-            'desc': '''This policy allows an admin to specify that tor feature must be disabled at startup.''',
+            'desc': '''This policy allows an admin to specify that tor feature must be disabled
+                    at startup.''',
         },
         {
             'name': 'IPFSEnabled',
@@ -30,25 +36,26 @@ def AddBravePolicies(template_file_contents):
             'schema': {'type': 'boolean'},
             'supported_on': ['chrome.*:87-'],
             'features': {
-              'dynamic_refresh': False,
-              'per_profile': True,
-              'can_be_recommended': False,
-              'can_be_mandatory': True
+                'dynamic_refresh': False,
+                'per_profile': True,
+                'can_be_recommended': False,
+                'can_be_mandatory': True
             },
             'example_value': True,
             'id': 1,
             'caption': '''Enable IPFS feature''',
             'tags': [],
-            'desc': '''This policy allows an admin to specify whether IPFS feature can be enabled.''',
+            'desc': '''This policy allows an admin to specify whether IPFS feature can be
+                    enabled.''',
         }
     ]
 
-    """Our new polices are added with highest id"""
+    # Our new polices are added with highest id
     next_id = highest_id
     for policy in policies:
         next_id += 1
         policy['id'] = next_id
         template_file_contents['policy_definitions'].append(policy)
 
-    """Update highest id"""
+    # Update highest id
     template_file_contents['highest_id_currently_used'] = highest_id + len(policies)
