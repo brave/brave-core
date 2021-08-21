@@ -476,7 +476,7 @@ Config.prototype.buildArgs = function () {
 
 Config.prototype.shouldSign = function () {
   if (this.skip_signing ||
-    this.buildConfig !== 'Release' ||
+    this.isComponentBuild() ||
     this.targetOS === 'ios') {
     return false
   }

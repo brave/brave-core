@@ -8,7 +8,7 @@ declare_args() {
   # "nightly" for nightly channel release.
   # "" for stable channel release.
   brave_channel = ""
-  is_release_channel = true
+  is_release_channel = false
   base_sparkle_update_url = ""
   enable_sparkle = is_official_build && is_mac
 

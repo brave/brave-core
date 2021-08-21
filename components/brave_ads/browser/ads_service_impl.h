@@ -337,6 +337,7 @@ class AdsServiceImpl : public AdsService,
 
   bool connected();
 
+  bool IsBraveNewsEnabled() const;
   bool ShouldStart() const;
 
   // AdsClient implementation

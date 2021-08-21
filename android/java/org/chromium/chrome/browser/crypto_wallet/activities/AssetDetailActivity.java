@@ -141,7 +141,8 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
     private void setUpAccountList() {
         RecyclerView rvAccounts = findViewById(R.id.rv_accounts);
-        WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter();
+        WalletCoinAdapter walletCoinAdapter =
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         walletListItemModelList.add(new WalletListItemModel(
                 R.drawable.ic_eth, "Account 1", "0xFCdF***DDee", "$616.47", "0.31178 ETH"));
@@ -156,7 +157,8 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
     private void setUpTransactionList() {
         RecyclerView rvTransactions = findViewById(R.id.rv_transactions);
-        WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter();
+        WalletCoinAdapter walletCoinAdapter =
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         walletListItemModelList.add(new WalletListItemModel(
                 R.drawable.ic_eth, "Ledger Nano", "0xA1da***7af1", "$37.92", "0.0009431 ETH"));

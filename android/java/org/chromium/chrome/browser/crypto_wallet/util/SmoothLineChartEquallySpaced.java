@@ -61,7 +61,7 @@ public class SmoothLineChartEquallySpaced extends View {
 
         float scale = context.getResources().getDisplayMetrics().density;
 
-        mCurrentLineX = 0;
+        mCurrentLineX = -1;
         mCircleSize = scale * CIRCLE_SIZE;
         mStrokeSize = scale * STROKE_SIZE;
         mBorder = mCircleSize;

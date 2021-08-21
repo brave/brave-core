@@ -25,8 +25,10 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter;
@@ -57,6 +59,7 @@ public class BraveWalletActivity
     private ViewPager cryptoWalletOnboardingViewPager;
     private CryptoWalletOnboardingPagerAdapter cryptoWalletOnboardingPagerAdapter;
     private KeyringController mKeyringController;
+    private ErcTokenRegistry mErcTokenRegistry;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -135,6 +138,7 @@ public class BraveWalletActivity
     public void onConnectionError(MojoException e) {
         mKeyringController = null;
         InitKeyringController();
+        InitErcTokenRegistry();
     }
 
     private void InitKeyringController() {
@@ -145,14 +149,27 @@ public class BraveWalletActivity
         mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
     }
 
+    private void InitErcTokenRegistry() {
+        if (mErcTokenRegistry != null) {
+            return;
+        }
+
+        mErcTokenRegistry = ERCTokenRegistryFactory.getInstance().getERCTokenRegistry(this);
+    }
+
     public KeyringController getKeyringController() {
         return mKeyringController;
+    }
+
+    public ErcTokenRegistry getErcTokenRegistry() {
+        return mErcTokenRegistry;
     }
 
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         InitKeyringController();
+        InitErcTokenRegistry();
         if (Utils.shouldShowCryptoOnboarding()) {
             setNavigationFragments(ONBOARDING_ACTION);
         } else if (mKeyringController != null) {
@@ -167,8 +184,8 @@ public class BraveWalletActivity
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         if (mKeyringController != null) {
             mKeyringController.lock();
         }
