@@ -33,7 +33,8 @@ export default class WalletPanelApiProxyImpl extends WalletApiProxy {
         this.swapController.$.bindNewPipeAndPassReceiver(),
         this.assetRatioController.$.bindNewPipeAndPassReceiver(),
         this.keyringController.$.bindNewPipeAndPassReceiver(),
-        this.ercTokenRegistry.$.bindNewPipeAndPassReceiver());
+        this.ercTokenRegistry.$.bindNewPipeAndPassReceiver(),
+        this.ethTxController.$.bindNewPipeAndPassReceiver());
   }
 
   /** @override */

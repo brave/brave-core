@@ -385,6 +385,47 @@ export interface ERCTokenRegistry {
   getAllTokens: () => Promise<GetAllTokensReturnInfo>
 }
 
+export class TxData {
+  nonce: string
+  gasPrice: string
+  gasLimit: string
+  to: string
+  value: string
+  data: Uint8Array
+}
+
+export class TxData1559 {
+  baseData: TxData
+  chainId: string
+  maxPriorityFeePerGas: string
+  maxFeePerGas: string
+}
+
+export interface AddUnapprovedTransactionReturnInfo {
+  success: boolean
+  txMetaId: string
+}
+
+export interface AddUnapproved1559TransactionReturnInfo {
+  success: boolean
+  txMetaId: string
+}
+
+export interface ApproveTransactionReturnInfo {
+  status: boolean
+}
+
+export interface RejectTransactionReturnInfo {
+  status: boolean
+}
+
+export interface EthTxController {
+  addUnapprovedTransaction: (txData: TxData, from: string) => Promise<AddUnapprovedTransactionReturnInfo>
+  addUnapproved1559Transaction: (txData: TxData1559, from: string) => (AddUnapproved1559TransactionReturnInfo)
+  approveTransaction: (txMetaId: string) => Promise<ApproveTransactionReturnInfo>
+  rejectTransaction: (txMetaId: string) => Promise<RejectTransactionReturnInfo>
+}
+
 export interface EthJsonRpcController {
   getNetwork: () => Promise<GetNetworkReturnInfo>
   setNetwork: (netowrk: Network) => Promise<void>
@@ -476,6 +517,7 @@ export interface APIProxyControllers {
   assetRatioController: AssetRatioController
   keyringController: KeyringController
   ercTokenRegistry: ERCTokenRegistry
+  ethTxController: EthTxController
 }
 
 export type AllowSpendReturnPayload = {
