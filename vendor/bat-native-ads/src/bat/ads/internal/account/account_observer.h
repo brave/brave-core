@@ -15,27 +15,21 @@ struct WalletInfo;
 
 class AccountObserver : public base::CheckedObserver {
  public:
-  // Invoked when the wallet has changed
-  virtual void OnWalletChanged(const WalletInfo& wallet) {}
+  // Invoked when the wallet has updated
+  virtual void OnWalletDidUpdate(const WalletInfo& wallet) {}
 
-  // Invoked when a wallet is restored
-  virtual void OnWalletRestored(const WalletInfo& wallet) {}
+  // Invoked when a wallet has changed
+  virtual void OnWalletDidChange(const WalletInfo& wallet) {}
 
   // Invoked if the wallet is invalid
-  virtual void OnWalletInvalid() {}
+  virtual void OnInvalidWallet() {}
 
   // Invoked when the catalog issuers have changed
-  virtual void OnCatalogIssuersChanged(
+  virtual void OnCatalogIssuersDidChange(
       const CatalogIssuersInfo& catalog_issuers) {}
 
-  // Invoked when ad rewards have changed
-  virtual void OnAdRewardsChanged() {}
-
-  // Invoked when transactions have changed
-  virtual void OnTransactionsChanged() {}
-
-  // Invoked when uncleared transactions have been processed
-  virtual void OnUnclearedTransactionsProcessed() {}
+  // Invoked when the statement of accounts has changed
+  virtual void OnStatementOfAccountsDidChange() {}
 
  protected:
   ~AccountObserver() override = default;

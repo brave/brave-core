@@ -384,6 +384,10 @@ AdsHistoryInfo AdsImpl::GetAdsHistory(
     const AdsHistoryInfo::SortType sort_type,
     const uint64_t from_timestamp,
     const uint64_t to_timestamp) {
+  if (!IsInitialized()) {
+    return {};
+  }
+
   return history::Get(filter_type, sort_type, from_timestamp, to_timestamp);
 }
 
@@ -695,7 +699,7 @@ void AdsImpl::MaybeTopUpUnblindedTokens() {
   account_->TopUpUnblindedTokens();
 }
 
-void AdsImpl::OnWalletChanged(const WalletInfo& wallet) {
+void AdsImpl::OnWalletDidUpdate(const WalletInfo& wallet) {
   BLOG(1, "Successfully set wallet");
 
   MaybeTopUpUnblindedTokens();
@@ -703,15 +707,17 @@ void AdsImpl::OnWalletChanged(const WalletInfo& wallet) {
   MaybeServeAdNotificationsAtRegularIntervals();
 }
 
-void AdsImpl::OnWalletInvalid() {
+void AdsImpl::OnWalletDidChange(const WalletInfo& wallet) {
+  BLOG(0, "Wallet changed");
+
+  ReconcileAdRewards();
+}
+
+void AdsImpl::OnInvalidWallet() {
   BLOG(0, "Failed to set wallet");
 }
 
-void AdsImpl::OnAdRewardsChanged() {
-  AdsClientHelper::Get()->OnAdRewardsChanged();
-}
-
-void AdsImpl::OnTransactionsChanged() {
+void AdsImpl::OnStatementOfAccountsDidChange() {
   AdsClientHelper::Get()->OnAdRewardsChanged();
 }
 

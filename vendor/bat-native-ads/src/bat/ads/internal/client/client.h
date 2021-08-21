@@ -49,6 +49,7 @@ class Client {
 
   void AppendAdHistoryToAdsHistory(const AdHistoryInfo& ad_history);
   const std::deque<AdHistoryInfo>& GetAdsHistory() const;
+
   void AppendToPurchaseIntentSignalHistoryForSegment(
       const std::string& segment,
       const PurchaseIntentSignalHistoryInfo& history);
