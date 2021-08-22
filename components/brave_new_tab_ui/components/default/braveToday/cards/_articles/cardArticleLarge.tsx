@@ -33,8 +33,12 @@ type ArticleProps = {
   onItemViewed?: (item: BraveToday.FeedItem) => any
   isPromoted?: boolean
 }
-
-const promotedInfoUrl = 'https://brave.com/brave-today'
+//
+// Promoted Card URL now points to the 'https://brave.com/brave-news' instead of 'https://brave.com/brave-today'
+// Clicking on promoted card opens 'https://brave.com/brave-news' instead of the article URL 
+// Fixed issue #17548
+//
+const promotedInfoUrl = 'https://brave.com/brave-news'
 
 function onClickPromoted (e: React.MouseEvent) {
   const openInNewTab = e.ctrlKey || e.metaKey
@@ -44,6 +48,7 @@ function onClickPromoted (e: React.MouseEvent) {
     window.location.href = promotedInfoUrl
   }
   e.preventDefault()
+  e.stopPropagation()
 }
 
 const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props: ArticleProps, forwardedRef) {
@@ -56,7 +61,7 @@ const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props
 
   const onItemViewedRef = React.useRef(props.onItemViewed)
   onItemViewedRef.current = props.onItemViewed
-
+  
   React.useEffect(() => {
     if (!innerRef.current) {
       return
