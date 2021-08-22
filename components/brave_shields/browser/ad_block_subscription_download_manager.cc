@@ -17,7 +17,7 @@
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "build/build_config.h"
-#include "components/download/public/background_service/download_service.h"
+#include "components/download/public/background_service/background_download_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -57,7 +57,7 @@ const net::NetworkTrafficAnnotationTag
 }  // namespace
 
 AdBlockSubscriptionDownloadManager::AdBlockSubscriptionDownloadManager(
-    download::DownloadService* download_service,
+    download::BackgroundDownloadService* download_service,
     scoped_refptr<base::SequencedTaskRunner> background_task_runner)
     : download_service_(download_service),
       is_available_for_downloads_(true),

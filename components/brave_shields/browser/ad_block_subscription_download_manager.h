@@ -21,7 +21,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace download {
-class DownloadService;
+class BackgroundDownloadService;
 }  // namespace download
 
 namespace brave_shields {
@@ -39,7 +39,7 @@ class AdBlockSubscriptionDownloadManager
       base::OnceCallback<void(AdBlockSubscriptionDownloadManager*)>)>;
 
   AdBlockSubscriptionDownloadManager(
-      download::DownloadService* download_service,
+      download::BackgroundDownloadService* download_service,
       scoped_refptr<base::SequencedTaskRunner> background_task_runner);
   ~AdBlockSubscriptionDownloadManager() override;
   AdBlockSubscriptionDownloadManager(
@@ -122,7 +122,7 @@ class AdBlockSubscriptionDownloadManager
   // The Download Service to schedule list downloads with.
   //
   // Guaranteed to outlive |this|.
-  download::DownloadService* download_service_;
+  download::BackgroundDownloadService* download_service_;
 
   // Whether the download service is available.
   bool is_available_for_downloads_;

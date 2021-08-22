@@ -19,7 +19,7 @@ struct DefaultSingletonTraits;
 }  // namespace base
 
 namespace download {
-class DownloadService;
+class BackgroundDownloadService;
 }  // namespace download
 
 // BraveDownloadServiceFactory is the main client class for interaction with the
@@ -30,7 +30,7 @@ class BraveDownloadServiceFactory : public SimpleKeyedServiceFactory {
   static BraveDownloadServiceFactory* GetInstance();
 
   // Returns the DownloadService associated with |key|.
-  static download::DownloadService* GetForKey(SimpleFactoryKey* key);
+  static download::BackgroundDownloadService* GetForKey(SimpleFactoryKey* key);
 
  private:
   friend struct base::DefaultSingletonTraits<BraveDownloadServiceFactory>;

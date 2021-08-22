@@ -31,15 +31,12 @@
 #include "components/download/content/factory/download_service_factory_helper.h"
 #include "components/download/content/factory/navigation_monitor_factory.h"
 #include "components/download/public/background_service/basic_task_scheduler.h"
+#include "components/download/public/background_service/background_download_service.h"
 #include "components/download/public/background_service/blob_context_getter_factory.h"
 #include "components/download/public/background_service/clients.h"
-#include "components/download/public/background_service/download_service.h"
-#include "components/download/public/background_service/features.h"
 #include "components/download/public/common/simple_download_manager_coordinator.h"
 #include "components/keyed_service/core/simple_dependency_manager.h"
 #include "components/leveldb_proto/public/proto_database_provider.h"
-#include "components/offline_pages/buildflags/buildflags.h"
-#include "components/optimization_guide/core/optimization_guide_features.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -97,14 +94,14 @@ BraveDownloadServiceFactory* BraveDownloadServiceFactory::GetInstance() {
 }
 
 // static
-download::DownloadService* BraveDownloadServiceFactory::GetForKey(
+download::BackgroundDownloadService* BraveDownloadServiceFactory::GetForKey(
     SimpleFactoryKey* key) {
-  return static_cast<download::DownloadService*>(
+  return static_cast<download::BackgroundDownloadService*>(
       GetInstance()->GetServiceForKey(key, true));
 }
 
 BraveDownloadServiceFactory::BraveDownloadServiceFactory()
-    : SimpleKeyedServiceFactory("download::DownloadService",
+    : SimpleKeyedServiceFactory("download::BackgroundDownloadService",
                                 SimpleDependencyManager::GetInstance()) {
   DependsOn(SimpleDownloadManagerCoordinatorFactory::GetInstance());
   DependsOn(download::NavigationMonitorFactory::GetInstance());
@@ -124,8 +121,7 @@ BraveDownloadServiceFactory::BuildServiceInstanceFor(
           base::BindOnce(&CreateAdBlockSubscriptionDownloadClient), key)));
 
   // Build in memory download service for incognito profile.
-  if (key->IsOffTheRecord() &&
-      base::FeatureList::IsEnabled(download::kDownloadServiceIncognito)) {
+  if (key->IsOffTheRecord()) {
     auto blob_context_getter_factory =
         std::make_unique<DownloadBlobContextGetterFactory>(key);
     scoped_refptr<base::SingleThreadTaskRunner> io_task_runner =
