@@ -11,6 +11,8 @@
 
 #include "brave/components/brave_vpn/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
+#include "brave/components/brave_vpn/brave_vpn_connection_info.h"
+#include "brave/components/brave_vpn/brave_vpn_connection_manager.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
@@ -19,7 +21,8 @@ namespace content {
 class WebUI;
 }  // namespace content
 
-class VPNPanelHandler : public brave_vpn::mojom::PanelHandler {
+class VPNPanelHandler : public brave_vpn::mojom::PanelHandler,
+                        public brave_vpn::BraveVPNConnectionManager::Observer {
  public:
   using GetWebContentsForTabCallback =
       base::RepeatingCallback<content::WebContents*(int32_t)>;
@@ -38,10 +41,16 @@ class VPNPanelHandler : public brave_vpn::mojom::PanelHandler {
   void CloseUI() override;
   void GetIsConnected(GetIsConnectedCallback callback) override;
 
+  void OnCreated(const std::string& name) override;
+  void OnRemoved(const std::string& name) override;
+  void OnConnected(const std::string& name) override;
+  void OnDisconnected(const std::string& name) override;
+
  private:
   mojo::Receiver<brave_vpn::mojom::PanelHandler> receiver_;
   ui::MojoBubbleWebUIController* const webui_controller_;
   BraveVpnService* service_;
+  brave_vpn::BraveVPNConnectionInfo conn_info_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_VPN_VPN_PANEL_HANDLER_H_
