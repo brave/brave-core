@@ -56,4 +56,18 @@ class StringExtensionTests: XCTestCase {
         
         XCTAssertEqual(originalString.javaScriptEscapedString, expectedString)
     }
+    
+    func testHTMLEntityEncodedString(){
+        let testString1 = "Sauron & Saruman's Device"
+        let testString2 = " 1 > 2 < 3"
+        let testString3 = "Brave New World`"
+
+        let expectedString1 = "Sauron &amp; Saruman&#39;s Device"
+        let expectedString2 = " 1 &gt; 2 &lt; 3"
+        let expectedString3 = "Brave New World&lsquo;"
+
+        XCTAssertEqual(testString1.htmlEntityEncodedString, expectedString1)
+        XCTAssertEqual(testString2.htmlEntityEncodedString, expectedString2)
+        XCTAssertEqual(testString3.htmlEntityEncodedString, expectedString3)
+    }
 }

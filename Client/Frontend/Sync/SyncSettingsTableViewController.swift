@@ -107,7 +107,7 @@ class SyncSettingsTableViewController: UITableViewController {
         var title: String?
         var message: String?
         var removeButtonName: String?
-        let deviceName = device.name ?? Strings.syncRemoveDeviceDefaultName
+        let deviceName = device.name?.htmlEntityEncodedString ?? Strings.syncRemoveDeviceDefaultName
         
         switch type {
             case .lastDeviceLeft:
