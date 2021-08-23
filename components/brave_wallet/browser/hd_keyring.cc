@@ -64,21 +64,21 @@ std::string HDKeyring::GetAddress(size_t index) {
                                               public_key.end());
   EthAddress addr = EthAddress::FromPublicKey(pubkey_no_header);
 
-  // TODO(darkdh): chain id
+  // TODO(darkdh): chain id op code
   return addr.ToChecksumAddress();
 }
 
 void HDKeyring::SignTransaction(const std::string& address,
-                                EthTransaction* tx) {
+                                EthTransaction* tx,
+                                uint256_t chain_id) {
   HDKey* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key || !tx)
     return;
 
-  // TODO(darkdh): chain id
-  const std::vector<uint8_t> message = tx->GetMessageToSign();
+  const std::vector<uint8_t> message = tx->GetMessageToSign(chain_id);
   int recid;
   const std::vector<uint8_t> signature = hd_key->Sign(message, &recid);
-  tx->ProcessSignature(signature, recid);
+  tx->ProcessSignature(signature, recid, chain_id);
 }
 
 std::vector<uint8_t> HDKeyring::SignMessage(

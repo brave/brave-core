@@ -12,6 +12,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -92,7 +93,8 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   bool IsDefaultKeyringCreated();
 
   void SignTransactionByDefaultKeyring(const std::string& address,
-                                       EthTransaction* tx);
+                                       EthTransaction* tx,
+                                       uint256_t chain_id);
 
   bool IsLocked() const;
 

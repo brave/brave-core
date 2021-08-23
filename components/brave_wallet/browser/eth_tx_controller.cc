@@ -109,14 +109,22 @@ void EthTxController::ApproveTransaction(const std::string& tx_meta_id,
     std::move(callback).Run(false);
     return;
   }
+
+  uint256_t chain_id = 0;
+  if (!HexValueToUint256(rpc_controller_->GetChainId(), &chain_id)) {
+    LOG(ERROR) << "Could not convert chain ID";
+    std::move(callback).Run(false);
+    return;
+  }
+
   if (!meta->last_gas_price) {
     nonce_tracker_->GetNextNonce(
         meta->from,
         base::BindOnce(&EthTxController::OnGetNextNonce,
-                       weak_factory_.GetWeakPtr(), std::move(meta)));
+                       weak_factory_.GetWeakPtr(), std::move(meta), chain_id));
   } else {
     uint256_t nonce = meta->tx->nonce();
-    OnGetNextNonce(std::move(meta), true, nonce);
+    OnGetNextNonce(std::move(meta), chain_id, true, nonce);
   }
 
   std::move(callback).Run(true);
@@ -138,6 +146,7 @@ void EthTxController::RejectTransaction(const std::string& tx_meta_id,
 
 void EthTxController::OnGetNextNonce(
     std::unique_ptr<EthTxStateManager::TxMeta> meta,
+    uint256_t chain_id,
     bool success,
     uint256_t nonce) {
   if (!success) {
@@ -145,16 +154,16 @@ void EthTxController::OnGetNextNonce(
     LOG(ERROR) << "GetNextNonce failed";
     return;
   }
+  meta->tx->set_nonce(nonce);
+  DCHECK(!keyring_controller_->IsLocked());
+  keyring_controller_->SignTransactionByDefaultKeyring(
+      meta->from.ToChecksumAddress(), meta->tx.get(), chain_id);
+  meta->status = EthTxStateManager::TransactionStatus::APPROVED;
+  tx_state_manager_->AddOrUpdateTx(*meta);
   if (!meta->tx->IsSigned()) {
     LOG(ERROR) << "Transaction must be signed first";
     return;
   }
-  meta->tx->set_nonce(nonce);
-  DCHECK(!keyring_controller_->IsLocked());
-  keyring_controller_->SignTransactionByDefaultKeyring(
-      meta->from.ToChecksumAddress(), meta->tx.get());
-  meta->status = EthTxStateManager::TransactionStatus::APPROVED;
-  tx_state_manager_->AddOrUpdateTx(*meta);
   PublishTransaction(meta->id, meta->tx->GetSignedTransaction());
 }
 

@@ -134,7 +134,7 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransaction) {
       "77b35057971e6b4b06dfdf55a6fbed819133a6c1d31e187f1bca938da00be950468ba1c2"
       "5a5cb50e9f6d8aa13c8cd21f24ba909402775b262ac76d374d");
 
-  EXPECT_EQ(tx.v_, 0u);
+  EXPECT_EQ(tx.v_, (uint256_t)0);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.r_)),
             "294ac94077b35057971e6b4b06dfdf55a6fbed819133a6c1d31e187f1bca938d");
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.s_)),

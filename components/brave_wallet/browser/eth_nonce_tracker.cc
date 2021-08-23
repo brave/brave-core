@@ -23,9 +23,9 @@ uint256_t GetHighestLocallyConfirmed(
     const std::vector<std::unique_ptr<EthTxStateManager::TxMeta>>& metas) {
   uint256_t highest = 0;
   for (auto& meta : metas) {
-    highest = std::max(highest, meta->tx->nonce());
+    highest = std::max(highest, meta->tx->nonce() + (uint256_t)1);
   }
-  return ++highest;
+  return highest;
 }
 
 uint256_t GetHighestContinuousFrom(

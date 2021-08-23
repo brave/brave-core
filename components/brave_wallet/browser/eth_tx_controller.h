@@ -71,6 +71,7 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
  private:
   void OnConnectionError();
   void OnGetNextNonce(std::unique_ptr<EthTxStateManager::TxMeta> meta,
+                      uint256_t chain_id,
                       bool success,
                       uint256_t nonce);
   void PublishTransaction(const std::string& tx_meta_id,
