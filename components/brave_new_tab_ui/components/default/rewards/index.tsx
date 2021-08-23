@@ -230,6 +230,12 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     // only show a single notification from any source.
     // For now, this only happens for the branded wallpaper notification.
     promotions = singleOrphaned ? [] : (promotions || [])
+
+    // Do not display the notification wrapper if there are no notifications.
+    if (promotions.length === 0 && !this.props.showBrandedWallpaperNotification) {
+      return null
+    }
+
     const Wrapper = singleOrphaned ? React.Fragment : NotificationsList
     return (
       <Wrapper>
