@@ -103,6 +103,13 @@ public class BraveVpnUtils {
         return sharedPreferences.getString(serverRegionPref, "automatic");
     }
 
+    public static void setServerRegion(String serverRegionPref, String newValue) {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putString(serverRegionPref, newValue);
+        sharedPreferencesEditor.apply();
+    }
+
     public static boolean isBraveVpnFeatureEnable() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             return true;
@@ -196,7 +203,6 @@ public class BraveVpnUtils {
 
     public static void getServerLocations(String jsonServerLocations) {
         vpnServerRegions.clear();
-        vpnServerRegions.add(new VpnServerRegion("automatic", "automatic", "Automatic"));
         jsonServerLocations = "{\"servers\":" + jsonServerLocations + "}";
         try {
             JSONObject result = new JSONObject(jsonServerLocations);

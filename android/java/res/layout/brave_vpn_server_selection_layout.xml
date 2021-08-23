@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/automatic_server_text"
+            android:background="@drawable/rounded_filled_bg_radius_12"
+            layout="@layout/brave_vpn_server_selection_item_layout"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:padding="16dp"
+            android:text="@string/automatic_server_selection_text"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/server_selection_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_filled_bg_radius_12"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

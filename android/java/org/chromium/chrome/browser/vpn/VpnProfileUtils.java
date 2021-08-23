@@ -100,6 +100,10 @@ public class VpnProfileUtils {
         getVpnManager().stopProvisionedVpnProfile();
     }
 
+    public void deleteVpnProfile() {
+        getVpnManager().deleteProvisionedVpnProfile();
+    }
+
     public void createVpnProfile(
             Activity activity, String hostname, String username, String password) {
         Ikev2VpnProfile ikev2VpnProfile = getVpnProfile(hostname, username, password);

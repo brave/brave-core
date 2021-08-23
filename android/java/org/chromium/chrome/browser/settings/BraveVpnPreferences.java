@@ -15,9 +15,11 @@ import android.net.NetworkRequest;
 import android.net.Uri;
 import android.net.VpnManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Pair;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
@@ -66,13 +68,14 @@ public class BraveVpnPreferences
     public static final String PREF_SERVER_LOCATION = "server_location";
     public static final String PREF_SUPPORT_TECHNICAL = "support_technical";
     public static final String PREF_SUPPORT_VPN = "support_vpn";
+    public static final String PREF_SERVER_RESET_CONFIGURATION = "server_reset_configuration";
 
     private ChromeSwitchPreference mVpnSwitch;
     private ChromeBasePreference subscriptionStatus;
     private ChromeBasePreference subscriptionExpires;
     private ChromeBasePreference serverHost;
     private ChromeBasePreference serverLocation;
-    private ListPreference serverLocationPref;
+    // private ListPreference serverLocationPref;
     private boolean isSubscriptionPurchased = false;
     private String subscriberCredential;
     private String hostname;
@@ -116,7 +119,6 @@ public class BraveVpnPreferences
         serverHost = (ChromeBasePreference) findPreference(PREF_SERVER_HOST);
         serverLocation = (ChromeBasePreference) findPreference(PREF_SERVER_LOCATION);
         serverHost.setSummary(BraveVpnUtils.getHostname());
-        serverLocation.setSummary(BraveVpnUtils.getServerRegion(PREF_SERVER_CHANGE_LOCATION));
 
         findPreference(PREF_SUPPORT_TECHNICAL)
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -147,31 +149,42 @@ public class BraveVpnPreferences
                     }
                 });
 
-        serverLocationPref = (ListPreference) findPreference(PREF_SERVER_CHANGE_LOCATION);
-        List<String> regions = new ArrayList<>();
-        List<String> regionNames = new ArrayList<>();
-        Collections.sort(BraveVpnUtils.vpnServerRegions, new Comparator<VpnServerRegion>() {
-            @Override
-            public int compare(VpnServerRegion vpnServerRegion1, VpnServerRegion vpnServerRegion2) {
-                return vpnServerRegion1.getNamePretty().compareToIgnoreCase(
-                        vpnServerRegion2.getNamePretty());
-            }
-        });
-        serverLocationPref.setValue(BraveVpnUtils.getServerRegion(PREF_SERVER_CHANGE_LOCATION));
-        for (VpnServerRegion vpnServerRegion : BraveVpnUtils.vpnServerRegions) {
-            regions.add(vpnServerRegion.getName());
-            regionNames.add(vpnServerRegion.getNamePretty());
-        }
-        serverLocationPref.setEntries(regionNames.toArray(new CharSequence[0]));
-        serverLocationPref.setEntryValues(regions.toArray(new CharSequence[0]));
-        serverLocationPref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Log.e("BraveVPN", "onPreferenceChange : " + (String) newValue);
-                verifyPurchase(false);
-                return true;
-            }
-        });
+        // serverLocationPref = (ListPreference) findPreference(PREF_SERVER_CHANGE_LOCATION);
+        // List<String> regions = new ArrayList<>();
+        // List<String> regionNames = new ArrayList<>();
+        // Collections.sort(BraveVpnUtils.vpnServerRegions, new Comparator<VpnServerRegion>() {
+        //     @Override
+        //     public int compare(VpnServerRegion vpnServerRegion1, VpnServerRegion
+        //     vpnServerRegion2) {
+        //         return vpnServerRegion1.getNamePretty().compareToIgnoreCase(
+        //                 vpnServerRegion2.getNamePretty());
+        //     }
+        // });
+        // serverLocationPref.setValue(BraveVpnUtils.getServerRegion(PREF_SERVER_CHANGE_LOCATION));
+        // for (VpnServerRegion vpnServerRegion : BraveVpnUtils.vpnServerRegions) {
+        //     regions.add(vpnServerRegion.getName());
+        //     regionNames.add(vpnServerRegion.getNamePretty());
+        // }
+        // serverLocationPref.setEntries(regionNames.toArray(new CharSequence[0]));
+        // serverLocationPref.setEntryValues(regions.toArray(new CharSequence[0]));
+        findPreference(PREF_SERVER_CHANGE_LOCATION)
+                .setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                        Log.e("BraveVPN", "onPreferenceChange : " + (String) newValue);
+                        verifyPurchase(false);
+                        return true;
+                    }
+                });
+
+        findPreference(PREF_SERVER_RESET_CONFIGURATION)
+                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        showConfirmDialog();
+                        return true;
+                    }
+                });
     }
 
     @Override
@@ -188,6 +201,35 @@ public class BraveVpnPreferences
         //     connectivityManager.registerNetworkCallback(networkRequest, mNetworkCallback);
 
         verifyPurchase(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Run updateBravePreferences() after fininshing MainPreferences::updatePreferences().
+        // Otherwise, some prefs could be added after finishing updateBravePreferences().
+        new Handler().post(() -> updateSummaries());
+    }
+
+    private void updateSummary(String preferenceString, String summary) {
+        Preference p = findPreference(preferenceString);
+        p.setSummary(summary);
+    }
+
+    private void updateSummaries() {
+        String serverLocation = "";
+        for (VpnServerRegion vpnServerRegion : BraveVpnUtils.vpnServerRegions) {
+            if (BraveVpnUtils.getServerRegion(PREF_SERVER_CHANGE_LOCATION).equals("automatic")) {
+                serverLocation = "Automatic";
+            }
+            if (vpnServerRegion.getName().equals(
+                        BraveVpnUtils.getServerRegion(PREF_SERVER_CHANGE_LOCATION))) {
+                serverLocation = vpnServerRegion.getNamePretty();
+                break;
+            }
+        }
+        updateSummary(PREF_SERVER_LOCATION, serverLocation);
+        updateSummary(PREF_SERVER_CHANGE_LOCATION, serverLocation);
     }
 
     private final ConnectivityManager
@@ -378,5 +420,24 @@ public class BraveVpnPreferences
         BraveVpnNativeWorker.getInstance().removeObserver(this);
         Log.e("BraveVPN", "BraveVpnPref : onStop");
         super.onStop();
+    }
+
+    private void showConfirmDialog() {
+        AlertDialog.Builder confirmDialog = new AlertDialog.Builder(getActivity());
+
+        confirmDialog.setTitle("Reset VPN configuration");
+
+        confirmDialog.setMessage("Are you sure you want to reset vpn configuration?");
+
+        confirmDialog.setPositiveButton("Yes", (dialog, which) -> {
+            if (VpnProfileUtils.getInstance(getActivity()).isVPNConnected()) {
+                VpnProfileUtils.getInstance(getActivity()).stopVpn();
+            }
+            VpnProfileUtils.getInstance(getActivity()).deleteVpnProfile();
+            dialog.dismiss();
+        });
+        confirmDialog.setNegativeButton("No", (dialog, which) -> { dialog.dismiss(); });
+
+        confirmDialog.show();
     }
 }
