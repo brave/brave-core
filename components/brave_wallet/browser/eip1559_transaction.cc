@@ -148,7 +148,7 @@ std::string Eip1559Transaction::GetSignedTransaction() const {
   list.Append(RLPUint256ToBlobValue(value_));
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));
-  list.Append(base::Value(v_));
+  list.Append(RLPUint256ToBlobValue(v_));
   list.Append(base::Value(r_));
   list.Append(base::Value(s_));
 

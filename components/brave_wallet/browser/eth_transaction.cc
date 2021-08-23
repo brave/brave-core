@@ -161,7 +161,7 @@ std::string EthTransaction::GetSignedTransaction() const {
   list.Append(base::Value(to_.bytes()));
   list.Append(RLPUint256ToBlobValue(value_));
   list.Append(base::Value(data_));
-  list.Append(base::Value(v_));
+  list.Append(RLPUint256ToBlobValue(v_));
   list.Append(base::Value(r_));
   list.Append(base::Value(s_));
 
@@ -191,7 +191,7 @@ void EthTransaction::ProcessSignature(const std::vector<uint8_t> signature,
 }
 
 bool EthTransaction::IsSigned() const {
-  return v_ != 0 && r_.size() != 0 && s_.size() != 0;
+  return v_ != (uint256_t)0 && r_.size() != 0 && s_.size() != 0;
 }
 
 base::Value EthTransaction::ToValue() const {

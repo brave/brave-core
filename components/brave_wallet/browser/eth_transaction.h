@@ -49,7 +49,7 @@ class EthTransaction {
   EthAddress to() const { return to_; }
   uint256_t value() const { return value_; }
   std::vector<uint8_t> data() const { return data_; }
-  uint8_t v() const { return v_; }
+  uint256_t v() const { return v_; }
   std::vector<uint8_t> r() const { return r_; }
   std::vector<uint8_t> s() const { return s_; }
 
@@ -96,7 +96,7 @@ class EthTransaction {
   uint256_t value_;
   std::vector<uint8_t> data_;
 
-  uint8_t v_ = 0;
+  uint256_t v_ = 0;
   std::vector<uint8_t> r_;
   std::vector<uint8_t> s_;
 
