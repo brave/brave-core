@@ -178,9 +178,15 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
     url_to_check = ctx->request_url;
   }
 
+  bool force_aggressive = SameDomainOrHost(
+      ctx->initiator_url,
+      url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 80),
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.Adblock.ShouldBlockRequest");
   g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-      url_to_check, ctx->resource_type, source_host, ctx->aggressive_blocking,
+      url_to_check, ctx->resource_type, source_host,
+      ctx->aggressive_blocking || force_aggressive,
       &previous_result.did_match_rule, &previous_result.did_match_exception,
       &previous_result.did_match_important, &ctx->mock_data_url);
 
