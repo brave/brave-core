@@ -7,26 +7,32 @@ import {
   ActionIcon,
   ExpandIcon
 } from './style'
-
-import { PanelTypes } from '../../../constants/types'
+import { WalletMorePopup } from '../../desktop'
+import locale from '../../../constants/locale'
 
 export interface Props {
-  action: (path: PanelTypes) => void
+  onExpand: () => void
+  onClickMore: () => void
+  onClickLock: () => void
+  onClickSetting: () => void
+  showMore: boolean
 }
 
-export default class ConnectedHeader extends React.PureComponent<Props> {
-
-  navigate = (path: PanelTypes) => () => {
-    this.props.action(path)
-  }
-
-  render () {
-    return (
-      <HeaderWrapper>
-        <ExpandIcon onClick={this.navigate('expanded')} />
-        <HeaderTitle>Brave Web 3 Connect</HeaderTitle>
-        <ActionIcon onClick={this.navigate('settings')} />
-      </HeaderWrapper>
-    )
-  }
+const ConnectedHeader = (props: Props) => {
+  const { onClickLock, onClickMore, onClickSetting, onExpand, showMore } = props
+  return (
+    <HeaderWrapper>
+      <ExpandIcon onClick={onExpand} />
+      <HeaderTitle>{locale.panelTitle}</HeaderTitle>
+      <ActionIcon onClick={onClickMore} />
+      {showMore &&
+        <WalletMorePopup
+          onClickLock={onClickLock}
+          onClickSetting={onClickSetting}
+        />
+      }
+    </HeaderWrapper>
+  )
 }
+
+export default ConnectedHeader

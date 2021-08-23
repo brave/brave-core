@@ -121,7 +121,7 @@ const locale = {
 
   // Wallet More Popup
   walletPopupSettings: 'Settings',
-  walletPopupLock: 'Lock Crypto Wallet',
+  walletPopupLock: 'Lock Crypto',
   walletPopupBackup: 'Backup Wallet',
 
   // Backup Warning
@@ -255,7 +255,12 @@ const locale = {
   confirmTransactionTotal: 'Total',
   confirmTransactionGasFee: 'Gas Fee',
   confrimTransactionBid: 'Bid',
-  confirmTransactionAmountGas: 'Amount + Gas'
+  confirmTransactionAmountGas: 'Amount + Gas',
+
+  // Wallet Main Panel
+  panelTitle: 'Crypto',
+  panelConnected: 'Connected',
+  panelNotConnected: 'Not Connected'
 }
 
 export default locale
