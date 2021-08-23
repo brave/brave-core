@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/brave_vpn_connection_manager_mac.h"
+#include "brave/components/brave_vpn/brave_vpn_os_connection_api_mac.h"
 
 #import <Foundation/Foundation.h>
+#import <NetworkExtension/NetworkExtension.h>
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -131,15 +132,15 @@ NEVPNProtocolIKEv2* CreateProtocolConfig(const BraveVPNConnectionInfo& info) {
 }  // namespace
 
 // static
-BraveVPNConnectionManager* BraveVPNConnectionManager::GetInstance() {
-  static base::NoDestructor<BraveVPNConnectionManagerMac> s_manager;
+BraveVPNOSConnectionAPI* BraveVPNOSConnectionAPI::GetInstance() {
+  static base::NoDestructor<BraveVPNOSConnectionAPIMac> s_manager;
   return s_manager.get();
 }
 
-BraveVPNConnectionManagerMac::BraveVPNConnectionManagerMac() = default;
-BraveVPNConnectionManagerMac::~BraveVPNConnectionManagerMac() = default;
+BraveVPNOSConnectionAPIMac::BraveVPNOSConnectionAPIMac() = default;
+BraveVPNOSConnectionAPIMac::~BraveVPNOSConnectionAPIMac() = default;
 
-void BraveVPNConnectionManagerMac::CreateVPNConnection(
+void BraveVPNOSConnectionAPIMac::CreateVPNConnection(
     const BraveVPNConnectionInfo& info) {
   info_ = info;
 
@@ -172,13 +173,12 @@ void BraveVPNConnectionManagerMac::CreateVPNConnection(
   }];
 }
 
-void BraveVPNConnectionManagerMac::UpdateVPNConnection(
+void BraveVPNOSConnectionAPIMac::UpdateVPNConnection(
     const BraveVPNConnectionInfo& info) {
   NOTIMPLEMENTED();
 }
 
-void BraveVPNConnectionManagerMac::RemoveVPNConnection(
-    const std::string& name) {
+void BraveVPNOSConnectionAPIMac::RemoveVPNConnection(const std::string& name) {
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
     if (error) {
@@ -200,7 +200,7 @@ void BraveVPNConnectionManagerMac::RemoveVPNConnection(
   }];
 }
 
-void BraveVPNConnectionManagerMac::Connect(const std::string& name) {
+void BraveVPNOSConnectionAPIMac::Connect(const std::string& name) {
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
     if (error) {
@@ -230,7 +230,7 @@ void BraveVPNConnectionManagerMac::Connect(const std::string& name) {
   }];
 }
 
-void BraveVPNConnectionManagerMac::Disconnect(const std::string& name) {
+void BraveVPNOSConnectionAPIMac::Disconnect(const std::string& name) {
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
     if (error) {

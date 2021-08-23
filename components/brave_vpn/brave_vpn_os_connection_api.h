@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_CONNECTION_MANAGER_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_CONNECTION_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_H_
 
 #include <string>
 
@@ -14,7 +14,7 @@
 namespace brave_vpn {
 
 // Interface for managing OS' vpn connection.
-class BraveVPNConnectionManager {
+class BraveVPNOSConnectionAPI {
  public:
   class Observer : public base::CheckedObserver {
    public:
@@ -29,11 +29,10 @@ class BraveVPNConnectionManager {
     ~Observer() override = default;
   };
 
-  static BraveVPNConnectionManager* GetInstance();
+  static BraveVPNOSConnectionAPI* GetInstance();
 
-  BraveVPNConnectionManager(const BraveVPNConnectionManager&) = delete;
-  BraveVPNConnectionManager& operator=(const BraveVPNConnectionManager&) =
-      delete;
+  BraveVPNOSConnectionAPI(const BraveVPNOSConnectionAPI&) = delete;
+  BraveVPNOSConnectionAPI& operator=(const BraveVPNOSConnectionAPI&) = delete;
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -45,12 +44,12 @@ class BraveVPNConnectionManager {
   virtual void RemoveVPNConnection(const std::string& name) = 0;
 
  protected:
-  BraveVPNConnectionManager();
-  virtual ~BraveVPNConnectionManager();
+  BraveVPNOSConnectionAPI();
+  virtual ~BraveVPNOSConnectionAPI();
 
   base::ObserverList<Observer> observers_;
 };
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_CONNECTION_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_H_

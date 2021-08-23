@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/brave_vpn_connection_manager_win.h"
+#include "brave/components/brave_vpn/brave_vpn_os_connection_api_win.h"
 
 #include "base/logging.h"
 #include "base/notreached.h"
@@ -25,15 +25,15 @@ using brave_vpn::internal::RemoveEntry;
 namespace brave_vpn {
 
 // static
-BraveVPNConnectionManager* BraveVPNConnectionManager::GetInstance() {
-  static base::NoDestructor<BraveVPNConnectionManagerWin> s_manager;
+BraveVPNOSConnectionAPI* BraveVPNOSConnectionAPI::GetInstance() {
+  static base::NoDestructor<BraveVPNOSConnectionAPIWin> s_manager;
   return s_manager.get();
 }
 
-BraveVPNConnectionManagerWin::BraveVPNConnectionManagerWin() = default;
-BraveVPNConnectionManagerWin::~BraveVPNConnectionManagerWin() = default;
+BraveVPNOSConnectionAPIWin::BraveVPNOSConnectionAPIWin() = default;
+BraveVPNOSConnectionAPIWin::~BraveVPNOSConnectionAPIWin() = default;
 
-void BraveVPNConnectionManagerWin::CreateVPNConnection(
+void BraveVPNOSConnectionAPIWin::CreateVPNConnection(
     const BraveVPNConnectionInfo& info) {
   const std::wstring name = base::UTF8ToWide(info.connection_name());
   const std::wstring host = base::UTF8ToWide(info.hostname());
@@ -44,46 +44,45 @@ void BraveVPNConnectionManagerWin::CreateVPNConnection(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&CreateEntry, name.c_str(), host.c_str(), user.c_str(),
                      password.c_str()),
-      base::BindOnce(&BraveVPNConnectionManagerWin::OnCreated,
+      base::BindOnce(&BraveVPNOSConnectionAPIWin::OnCreated,
                      weak_factory_.GetWeakPtr(), info.connection_name()));
 }
 
-void BraveVPNConnectionManagerWin::UpdateVPNConnection(
+void BraveVPNOSConnectionAPIWin::UpdateVPNConnection(
     const BraveVPNConnectionInfo& info) {
   NOTIMPLEMENTED();
 }
 
-void BraveVPNConnectionManagerWin::Connect(const std::string& name) {
+void BraveVPNOSConnectionAPIWin::Connect(const std::string& name) {
   const std::wstring w_name = base::UTF8ToWide(name);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ConnectEntry, w_name.c_str()),
-      base::BindOnce(&BraveVPNConnectionManagerWin::OnConnected,
+      base::BindOnce(&BraveVPNOSConnectionAPIWin::OnConnected,
                      weak_factory_.GetWeakPtr(), name));
 }
 
-void BraveVPNConnectionManagerWin::Disconnect(const std::string& name) {
+void BraveVPNOSConnectionAPIWin::Disconnect(const std::string& name) {
   const std::wstring w_name = base::UTF8ToWide(name);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&DisconnectEntry, w_name.c_str()),
-      base::BindOnce(&BraveVPNConnectionManagerWin::OnDisconnected,
+      base::BindOnce(&BraveVPNOSConnectionAPIWin::OnDisconnected,
                      weak_factory_.GetWeakPtr(), name));
 }
 
-void BraveVPNConnectionManagerWin::RemoveVPNConnection(
-    const std::string& name) {
+void BraveVPNOSConnectionAPIWin::RemoveVPNConnection(const std::string& name) {
   const std::wstring w_name = base::UTF8ToWide(name);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&RemoveEntry, w_name.c_str()),
-      base::BindOnce(&BraveVPNConnectionManagerWin::OnRemoved,
+      base::BindOnce(&BraveVPNOSConnectionAPIWin::OnRemoved,
                      weak_factory_.GetWeakPtr(), name));
   RemoveEntry(w_name.c_str());
 }
 
-void BraveVPNConnectionManagerWin::OnCreated(const std::string& name,
-                                             bool success) {
+void BraveVPNOSConnectionAPIWin::OnCreated(const std::string& name,
+                                           bool success) {
   if (!success)
     return;
 
@@ -91,8 +90,8 @@ void BraveVPNConnectionManagerWin::OnCreated(const std::string& name,
     obs.OnCreated(name);
 }
 
-void BraveVPNConnectionManagerWin::OnConnected(const std::string& name,
-                                               bool success) {
+void BraveVPNOSConnectionAPIWin::OnConnected(const std::string& name,
+                                             bool success) {
   if (!success)
     return;
 
@@ -100,8 +99,8 @@ void BraveVPNConnectionManagerWin::OnConnected(const std::string& name,
     obs.OnConnected(name);
 }
 
-void BraveVPNConnectionManagerWin::OnDisconnected(const std::string& name,
-                                                  bool success) {
+void BraveVPNOSConnectionAPIWin::OnDisconnected(const std::string& name,
+                                                bool success) {
   if (!success)
     return;
 
@@ -109,8 +108,8 @@ void BraveVPNConnectionManagerWin::OnDisconnected(const std::string& name,
     obs.OnDisconnected(name);
 }
 
-void BraveVPNConnectionManagerWin::OnRemoved(const std::string& name,
-                                             bool success) {
+void BraveVPNOSConnectionAPIWin::OnRemoved(const std::string& name,
+                                           bool success) {
   if (!success)
     return;
 

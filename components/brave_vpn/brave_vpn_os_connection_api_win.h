@@ -3,30 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_CONNECTION_MANAGER_WIN_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_CONNECTION_MANAGER_WIN_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_WIN_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_WIN_H_
 
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
-#include "brave/components/brave_vpn/brave_vpn_connection_manager.h"
+#include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 
 namespace brave_vpn {
 
-class BraveVPNConnectionManagerWin : public BraveVPNConnectionManager {
+class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPI {
  public:
-  BraveVPNConnectionManagerWin(const BraveVPNConnectionManagerWin&) = delete;
-  BraveVPNConnectionManagerWin& operator=(const BraveVPNConnectionManagerWin&) =
+  BraveVPNOSConnectionAPIWin(const BraveVPNOSConnectionAPIWin&) = delete;
+  BraveVPNOSConnectionAPIWin& operator=(const BraveVPNOSConnectionAPIWin&) =
       delete;
 
  protected:
-  friend class base::NoDestructor<BraveVPNConnectionManagerWin>;
+  friend class base::NoDestructor<BraveVPNOSConnectionAPIWin>;
 
-  BraveVPNConnectionManagerWin();
-  ~BraveVPNConnectionManagerWin() override;
+  BraveVPNOSConnectionAPIWin();
+  ~BraveVPNOSConnectionAPIWin() override;
 
-  // BraveVPNConnectionManager overrides:
+  // BraveVPNOSConnectionAPI overrides:
   void CreateVPNConnection(const BraveVPNConnectionInfo& info) override;
   void UpdateVPNConnection(const BraveVPNConnectionInfo& info) override;
   void RemoveVPNConnection(const std::string& name) override;
@@ -39,9 +39,9 @@ class BraveVPNConnectionManagerWin : public BraveVPNConnectionManager {
   void OnDisconnected(const std::string& name, bool success);
   void OnRemoved(const std::string& name, bool success);
 
-  base::WeakPtrFactory<BraveVPNConnectionManagerWin> weak_factory_{this};
+  base::WeakPtrFactory<BraveVPNOSConnectionAPIWin> weak_factory_{this};
 };
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_CONNECTION_MANAGER_WIN_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_WIN_H_
