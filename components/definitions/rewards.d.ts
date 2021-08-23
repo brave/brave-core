@@ -72,7 +72,7 @@ declare namespace Rewards {
       disconnectWalletError: boolean
       emptyWallet: boolean
       modalBackup: boolean
-      modalRedirect: 'show' | 'hide' | 'error' | 'notAllowed' | 'batLimit'
+      modalRedirect: 'show' | 'hide' | 'error' | 'notAllowed' | 'batLimit' | 'mismatchedProviderAccountsModal'
       paymentIdCheck: boolean
       promosDismissed?: {
         [key: string]: boolean

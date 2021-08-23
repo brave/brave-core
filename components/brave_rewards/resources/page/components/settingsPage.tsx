@@ -220,6 +220,19 @@ class SettingsPage extends React.Component<Props, State> {
       )
     }
 
+    if (ui.modalRedirect === 'mismatchedProviderAccountsModal') {
+      return (
+        <ModalRedirect
+          id={'redirect-modal-mismatched-provider-accounts'}
+          errorText={getLocale('redirectModalMismatchedProviderAccountsText').replace('$1', getWalletProviderName(externalWallet))}
+          titleText={getLocale('redirectModalMismatchedProviderAccountsTitle')}
+          buttonText={getLocale('redirectModalClose')}
+          walletType={walletType}
+          onClick={this.actions.hideRedirectModal}
+        />
+      )
+    }
+
     if (ui.modalRedirect === 'notAllowed') {
       return (
         <ModalRedirect
