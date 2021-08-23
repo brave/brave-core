@@ -155,6 +155,7 @@ public abstract class BraveVpnParentActivity
         if (isSuccess) {
             Pair<String, String> profileCredentials =
                     BraveVpnUtils.getProfileCredentials(jsonProfileCredentials);
+            BraveVpnUtils.setHostname(hostname);
             VpnProfileUtils.getInstance(BraveVpnParentActivity.this)
                     .createVpnProfile(BraveVpnParentActivity.this, hostname,
                             profileCredentials.first, profileCredentials.second);

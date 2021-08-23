@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -55,6 +56,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     private TextView profileText;
     private Button installVpnButton;
     private Button contactSupportButton;
+    private ProgressBar profileProgress;
 
     @Override
     public void onResumeWithNative() {
@@ -79,6 +81,8 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_close_24);
         actionBar.setTitle(getResources().getString(R.string.install_vpn));
 
+        profileProgress = findViewById(R.id.profile_progress);
+
         profileTitle = findViewById(R.id.brave_vpn_profile_title);
         profileText = findViewById(R.id.brave_vpn_profile_text);
 
@@ -87,6 +91,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
             @Override
             public void onClick(View v) {
                 verifySubscription(false);
+                profileProgress.setVisibility(View.VISIBLE);
             }
         });
 
@@ -129,6 +134,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
             VpnManager vpnManager = (VpnManager) getSystemService(Context.VPN_MANAGEMENT_SERVICE);
             if (vpnManager != null) {
                 vpnManager.startProvisionedVpnProfile();
+                profileProgress.setVisibility(View.GONE);
                 BraveVpnConfirmDialogFragment braveVpnConfirmDialogFragment =
                         new BraveVpnConfirmDialogFragment();
                 braveVpnConfirmDialogFragment.setCancelable(false);
@@ -140,6 +146,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
             profileText.setText(getResources().getString(R.string.some_context_text));
             installVpnButton.setText(getResources().getString(R.string.accept_connection_request));
             contactSupportButton.setVisibility(View.GONE);
+            profileProgress.setVisibility(View.GONE);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

@@ -88,7 +88,7 @@ public class VpnProfileUtils {
                 BraveVpnUtils.openBraveVpnProfileActivity(context);
             }
         } else {
-            stopVpn;
+            stopVpn();
         }
     }
 

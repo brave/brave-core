@@ -53,8 +53,6 @@ import java.util.List;
 
 public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private FirstRunFlowSequencer mFirstRunFlowSequencer;
-    private static final String NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
-    private static final String NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
 
     @Override
     public void onResumeWithNative() {
@@ -96,7 +94,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
             public void onClick(View v) {
                 InAppPurchaseWrapper.getInstance().purchase(BraveVpnPlansActivity.this,
                         InAppPurchaseWrapper.getInstance().getSkuDetails(
-                                NIGHTLY_MONTHLY_SUBSCRIPTION));
+                                InAppPurchaseWrapper.NIGHTLY_MONTHLY_SUBSCRIPTION));
             }
         });
 
@@ -106,7 +104,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
             public void onClick(View v) {
                 InAppPurchaseWrapper.getInstance().purchase(BraveVpnPlansActivity.this,
                         InAppPurchaseWrapper.getInstance().getSkuDetails(
-                                NIGHTLY_YEARLY_SUBSCRIPTION));
+                                InAppPurchaseWrapper.NIGHTLY_YEARLY_SUBSCRIPTION));
             }
         });
     }

@@ -226,6 +226,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnPlanPagerAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnPlansActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnProfileActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnSupportActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/InAppPurchaseWrapper.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/VpnCalloutDialogFragment.java",

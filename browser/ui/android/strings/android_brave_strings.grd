@@ -2131,6 +2131,30 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_VPN_PROFILE_IS_NOT_CREATED" desc="Brave VPN profile error text">
       Vpn profile is not created. Creating a new profile.
     </message>
+    <message name="IDS_VPN_HOSTNAME" desc="Brave Vpn support text">
+      VPN Hostname
+    </message>
+    <message name="IDS_SUBSCRIPTION_TYPE" desc="Brave Vpn support text">
+      Subscription Type
+    </message>
+    <message name="IDS_APP_VERSION" desc="Brave Vpn support text">
+      App Version
+    </message>
+    <message name="IDS_TIMEZONE" desc="Brave Vpn support text">
+      Timezone
+    </message>
+    <message name="IDS_NETWORK_TYPE" desc="Brave Vpn support text">
+      Network Type
+    </message>
+    <message name="IDS_CELLULAR_CARRIER" desc="Brave Vpn support text">
+      Cellular Carrier
+    </message>
+    <message name="IDS_CONTINUE_TO_EMAIL" desc="Brave Vpn support text">
+      Continue to Email
+    </message>
+    <message name="IDS_VPN_SUPPORT_TEXT" desc="Brave Vpn support text">
+      Support provided  with the help of the Guardian team.\n\nPlease select the information you're comfortable sharing with us.\n\nThe more information you initially share with us the easier it will be for our support staff to help you resolve your issue.
+    </message>
     </messages>
   </release>
 </grit>

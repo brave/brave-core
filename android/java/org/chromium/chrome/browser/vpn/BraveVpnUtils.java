@@ -8,6 +8,7 @@
 package org.chromium.chrome.browser.vpn;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,12 +20,16 @@ import android.net.VpnManager;
 import android.os.Build;
 import android.util.Pair;
 
+import androidx.core.app.NotificationCompat;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.VpnServerRegion;
@@ -39,6 +44,9 @@ public class BraveVpnUtils {
     private static final String PREF_BRAVE_VPN_CALLOUT = "brave_vpn_callout";
     private static final String PREF_BRAVE_VPN_CALLOUT_SETTINGS = "brave_vpn_callout_settings";
     private static final String PREF_BRAVE_SUBSCRIPTION_PURCHASE = "brave_subscription_purchase";
+    private static final String PREF_BRAVE_VPN_HOSTNAME = "brave_vpn_hostname";
+
+    public static final int BRAVE_VPN_NOTIFICATION_ID = 36;
 
     public static List<VpnServerRegion> vpnServerRegions = new ArrayList<>();
 
@@ -78,6 +86,18 @@ public class BraveVpnUtils {
         sharedPreferencesEditor.apply();
     }
 
+    public static void setHostname(String hostName) {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_HOSTNAME, hostName);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static String getHostname() {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        return sharedPreferences.getString(PREF_BRAVE_VPN_HOSTNAME, "");
+    }
+
     public static String getServerRegion(String serverRegionPref) {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         return sharedPreferences.getString(serverRegionPref, "automatic");
@@ -100,6 +120,12 @@ public class BraveVpnUtils {
         Intent braveVpnProfileIntent = new Intent(context, BraveVpnProfileActivity.class);
         braveVpnProfileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(braveVpnProfileIntent);
+    }
+
+    public static void openBraveVpnSupportActivity(Context context) {
+        Intent braveVpnSupportIntent = new Intent(context, BraveVpnSupportActivity.class);
+        braveVpnSupportIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(braveVpnSupportIntent);
     }
 
     public static String getRegionForTimeZone(String jsonTimezones, String currentTimezone) {
@@ -158,6 +184,16 @@ public class BraveVpnUtils {
         return false;
     }
 
+    public static String getPurchaseExpiryDate(String json) {
+        try {
+            JSONObject purchase = new JSONObject(json);
+            return purchase.getString("expiryTimeMillis");
+        } catch (JSONException e) {
+            Log.e("BraveVPN", "getProfileCredentials JSONException error " + e);
+        }
+        return "";
+    }
+
     public static void getServerLocations(String jsonServerLocations) {
         vpnServerRegions.clear();
         vpnServerRegions.add(new VpnServerRegion("automatic", "automatic", "Automatic"));
@@ -174,5 +210,29 @@ public class BraveVpnUtils {
         } catch (JSONException e) {
             Log.e("BraveVPN", "getServerLocations JSONException error " + e);
         }
+    }
+
+    public static void showBraveVpnNotification(Context context) {
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(context, BraveActivity.CHANNEL_ID);
+
+        notificationBuilder.setSmallIcon(R.drawable.ic_chrome)
+                .setAutoCancel(false)
+                .setContentTitle(context.getResources().getString(R.string.brave_firewall_vpn))
+                .setContentText(
+                        context.getResources().getString(R.string.brave_vpn_notification_message))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(
+                        context.getResources().getString(R.string.brave_vpn_notification_message)))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(BRAVE_VPN_NOTIFICATION_ID, notificationBuilder.build());
+    }
+
+    public static void cancelBraveVpnNotification(Context context) {
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(BRAVE_VPN_NOTIFICATION_ID);
     }
 }

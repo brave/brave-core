@@ -21,7 +21,6 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.Uri;
-import android.net.VpnManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -179,7 +178,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
     public static final String ANDROID_PACKAGE_NAME = "android";
     public static final String BRAVE_BLOG_URL = "http://www.brave.com/blog";
-    public static final int BRAVE_VPN_NOTIFICATION_ID = 36;
 
     // Explicitly declare this variable to avoid build errors.
     // It will be removed in asm and parent variable will be used instead.
@@ -209,11 +207,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void onResumeWithNative() {
         super.onResumeWithNative();
         BraveActivityJni.get().restartStatsUpdater();
+        InAppPurchaseWrapper.getInstance().startBillingServiceConnection(BraveActivity.this);
+        BraveVpnNativeWorker.getInstance().addObserver(this);
     }
 
     @Override
-    protected void onDestroyInternal() {
+    public void onPauseWithNative() {
         BraveVpnNativeWorker.getInstance().removeObserver(this);
+        Log.e("BraveVPN", "BraveActivity onPauseWithNative");
+        super.onPauseWithNative();
     }
 
     @Override
@@ -377,8 +379,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        InAppPurchaseWrapper.getInstance().startBillingServiceConnection(BraveActivity.this);
-        BraveVpnNativeWorker.getInstance().addObserver(this);
 
         if (SharedPreferencesManager.getInstance().readBoolean(
                     BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false)) {
@@ -548,37 +548,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             new ConnectivityManager.NetworkCallback() {
                 @Override
                 public void onAvailable(Network network) {
-                    showBraveVpnNotification();
+                    BraveVpnUtils.showBraveVpnNotification(BraveActivity.this);
                 }
 
                 @Override
                 public void onLost(Network network) {
-                    cancelBraveVpnNotification();
+                    BraveVpnUtils.cancelBraveVpnNotification(BraveActivity.this);
                 }
             };
-
-    private void showBraveVpnNotification() {
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(BraveActivity.this, CHANNEL_ID);
-
-        notificationBuilder.setSmallIcon(R.drawable.ic_chrome)
-                .setAutoCancel(false)
-                .setContentTitle(getResources().getString(R.string.brave_firewall_vpn))
-                .setContentText(getResources().getString(R.string.brave_vpn_notification_message))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(
-                        getResources().getString(R.string.brave_vpn_notification_message)))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(BRAVE_VPN_NOTIFICATION_ID, notificationBuilder.build());
-    }
-
-    private void cancelBraveVpnNotification() {
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(BRAVE_VPN_NOTIFICATION_ID);
-    }
 
     private void showVpnCalloutDialog() {
         VpnCalloutDialogFragment mVpnCalloutDialogFragment = new VpnCalloutDialogFragment();
@@ -925,8 +902,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (resultCode == RESULT_OK
                 && requestCode == VpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            VpnManager vpnManager = (VpnManager) getSystemService(Context.VPN_MANAGEMENT_SERVICE);
-            vpnManager.startProvisionedVpnProfile();
+            VpnProfileUtils.getInstance(BraveActivity.this).startVpn();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

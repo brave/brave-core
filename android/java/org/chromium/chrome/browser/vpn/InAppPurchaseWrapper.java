@@ -38,6 +38,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class InAppPurchaseWrapper {
+    public static final String NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
+    public static final String NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
     private static InAppPurchaseWrapper inAppPurchaseWrapper = null;
     private BillingClient billingClient;
     private Context context;
@@ -48,8 +50,8 @@ public class InAppPurchaseWrapper {
         return skusWithSkuDetails.get(sku);
     }
 
-    public static final List<String> SUBS_SKUS =
-            new ArrayList<>(Arrays.asList("nightly.bravevpn.monthly", "nightly.bravevpn.yearly"));
+    public static final List<String> SUBS_SKUS = new ArrayList<>(
+            Arrays.asList(NIGHTLY_MONTHLY_SUBSCRIPTION, NIGHTLY_YEARLY_SUBSCRIPTION));
 
     public static InAppPurchaseWrapper getInstance() {
         if (inAppPurchaseWrapper == null) inAppPurchaseWrapper = new InAppPurchaseWrapper();

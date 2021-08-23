@@ -36,7 +36,7 @@
         android:key="brave_vpn"
         android:icon="@drawable/ic_vpn"
         android:order="4"
-        android:title="@string/brave_vpn"/> 
+        android:title="@string/brave_firewall_vpn"/> 
     <PreferenceCategory
         android:key="general_section"
         android:order="5"
