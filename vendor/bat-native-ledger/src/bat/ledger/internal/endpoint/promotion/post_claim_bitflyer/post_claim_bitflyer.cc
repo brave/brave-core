@@ -63,6 +63,11 @@ type::Result PostClaimBitflyer::CheckStatusCode(const int status_code) {
     return type::Result::LEDGER_ERROR;
   }
 
+  if (status_code == net::HTTP_FORBIDDEN) {
+    BLOG(0, "Forbidden");
+    return type::Result::TOO_MANY_RESULTS;
+  }
+
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Not found");
     return type::Result::NOT_FOUND;
