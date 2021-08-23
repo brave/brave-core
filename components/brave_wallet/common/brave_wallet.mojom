@@ -257,4 +257,5 @@ interface EthTxController {
   AddUnapproved1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_meta_id);
   ApproveTransaction(string tx_meta_id) => (bool status);
   RejectTransaction(string tx_meta_id) => (bool status);
+  MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
 };

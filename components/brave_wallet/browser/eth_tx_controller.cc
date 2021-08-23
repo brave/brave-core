@@ -7,12 +7,15 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/logging.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
+#include "brave/components/brave_wallet/browser/eth_call_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 
@@ -192,6 +195,40 @@ void EthTxController::OnPublishTransaction(std::string tx_meta_id,
     tx_state_manager_->AddOrUpdateTx(*meta);
     pending_tx_tracker_->UpdatePendingTransactions();
   }
+}
+
+void EthTxController::MakeERC20TransferData(
+    const std::string& to_address,
+    const std::string& amount,
+    MakeERC20TransferDataCallback callback) {
+  uint256_t amount_uint = 0;
+  if (!HexValueToUint256(amount, &amount_uint)) {
+    LOG(ERROR) << "Could not convert amount";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  std::string data;
+  if (!erc20::Transfer(to_address, amount_uint, &data)) {
+    LOG(ERROR) << "Could not make transfer data";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  if (!base::StartsWith(data, "0x")) {
+    LOG(ERROR) << "Invalid format returned from Transfer";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  std::vector<uint8_t> data_decoded;
+  if (!base::HexStringToBytes(data.data() + 2, &data_decoded)) {
+    LOG(ERROR) << "Could not decode data";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  std::move(callback).Run(true, data_decoded);
 }
 
 }  // namespace brave_wallet

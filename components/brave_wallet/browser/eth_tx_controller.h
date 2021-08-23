@@ -67,6 +67,9 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
                           ApproveTransactionCallback) override;
   void RejectTransaction(const std::string& tx_meta_id,
                          RejectTransactionCallback) override;
+  void MakeERC20TransferData(const std::string& to_address,
+                             const std::string& amount,
+                             MakeERC20TransferDataCallback) override;
 
  private:
   void OnConnectionError();
