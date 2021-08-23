@@ -564,4 +564,15 @@ TEST(BatAdsAdServingFeaturesTest, DisabledMaximumPromotedContentAdsPerDay) {
             maximum_promoted_content_ads_per_day);
 }
 
+TEST(BatAdsAdServingFeaturesTest, DefaultAdServingVersion) {
+  // Arrange
+
+  // Act
+  const int ad_serving_version = features::GetAdServingVersion();
+
+  // Assert
+  const int expected_ad_serving_version = 1;
+  EXPECT_EQ(expected_ad_serving_version, ad_serving_version);
+}
+
 }  // namespace ads

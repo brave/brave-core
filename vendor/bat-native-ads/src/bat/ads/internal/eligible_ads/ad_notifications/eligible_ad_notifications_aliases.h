@@ -16,6 +16,10 @@ namespace ad_notifications {
 using GetEligibleAdsCallback =
     std::function<void(const bool, const CreativeAdNotificationList&)>;
 
+using GetEligibleAdsV2Callback =
+    std::function<void(const bool,
+                       const absl::optional<CreativeAdNotificationInfo>&)>;
+
 }  // namespace ad_notifications
 }  // namespace ads
 

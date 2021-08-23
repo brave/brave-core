@@ -8,6 +8,7 @@
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/database/database_version.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

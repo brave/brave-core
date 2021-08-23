@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -257,7 +258,8 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
       });
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest, GetForSegments) {
+TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+       GetForSegmentsAndDimensions) {
   // Arrange
 
   CreativeInlineContentAdList creative_inline_content_ads;
@@ -465,7 +467,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
 
   const SegmentList segments = {};
 
-  database_table_->GetForSegments(
+  database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
       [&expected_creative_inline_content_ads](
           const bool success, const SegmentList& segments,
@@ -515,7 +517,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
 
   const SegmentList segments = {"technology & computing"};
 
-  database_table_->GetForSegments(
+  database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
       [&expected_creative_inline_content_ads](
           const bool success, const SegmentList& segments,
@@ -616,7 +618,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   const SegmentList segments = {"technology & computing-software",
                                 "food & drink"};
 
-  database_table_->GetForSegments(
+  database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
       [&expected_creative_inline_content_ads](
           const bool success, const SegmentList& segments,
@@ -692,7 +694,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
 
   const SegmentList segments = {"food & drink"};
 
-  database_table_->GetForSegments(
+  database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
       [&expected_creative_inline_content_ads](
           const bool success, const SegmentList& segments,
@@ -767,7 +769,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
 
   const SegmentList segments = {"FoOd & DrInK"};
 
-  database_table_->GetForSegments(
+  database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
       [&expected_creative_inline_content_ads](
           const bool success, const SegmentList& segments,

@@ -13,6 +13,12 @@
 namespace ads {
 
 struct CreativeDaypartInfo final {
+  CreativeDaypartInfo();
+  ~CreativeDaypartInfo();
+
+  bool operator==(const CreativeDaypartInfo& rhs) const;
+  bool operator!=(const CreativeDaypartInfo& rhs) const;
+
   std::string dow = "0123456";
   int start_minute = 0;
   int end_minute = (base::Time::kMinutesPerHour * base::Time::kHoursPerDay) - 1;

@@ -51,6 +51,9 @@ const char kFieldTrialParameterBrowsingHistoryDaysAgo[] =
     "browsing_history_days_ago";
 const int kDefaultBrowsingHistoryDaysAgo = 180;
 
+const char kFieldTrialParameterAdServingVersion[] = "ad_serving_version";
+const int kDefaultAdServingVersion = 1;
+
 }  // namespace
 
 const base::Feature kAdServing{kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT};
@@ -117,6 +120,12 @@ int GetBrowsingHistoryDaysAgo() {
   return GetFieldTrialParamByFeatureAsInt(
       kAdServing, kFieldTrialParameterBrowsingHistoryDaysAgo,
       kDefaultBrowsingHistoryDaysAgo);
+}
+
+int GetAdServingVersion() {
+  return GetFieldTrialParamByFeatureAsInt(kAdServing,
+                                          kFieldTrialParameterAdServingVersion,
+                                          kDefaultAdServingVersion);
 }
 
 }  // namespace features
