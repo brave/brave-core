@@ -790,7 +790,7 @@ void AdsServiceImpl::MaybeStart(const bool should_restart) {
   }
 }
 
-void AdsServiceImpl::Start(uint32_t number_of_start) {
+void AdsServiceImpl::Start(const uint32_t number_of_start) {
   DetectUncertainFuture(number_of_start);
 }
 
@@ -845,13 +845,13 @@ void AdsServiceImpl::OnResetAllState(const bool success) {
   VLOG(1) << "Successfully reset ads state";
 }
 
-void AdsServiceImpl::DetectUncertainFuture(uint32_t number_of_start) {
+void AdsServiceImpl::DetectUncertainFuture(const uint32_t number_of_start) {
   auto callback = base::BindOnce(&AdsServiceImpl::OnDetectUncertainFuture,
                                  AsWeakPtr(), number_of_start);
   brave_rpill::DetectUncertainFuture(base::BindOnce(std::move(callback)));
 }
 
-void AdsServiceImpl::OnDetectUncertainFuture(uint32_t number_of_start,
+void AdsServiceImpl::OnDetectUncertainFuture(const uint32_t number_of_start,
                                              const bool is_uncertain_future) {
   ads::mojom::SysInfoPtr sys_info = ads::mojom::SysInfo::New();
   sys_info->is_uncertain_future = is_uncertain_future;
@@ -860,7 +860,7 @@ void AdsServiceImpl::OnDetectUncertainFuture(uint32_t number_of_start,
   EnsureBaseDirectoryExists(number_of_start);
 }
 
-void AdsServiceImpl::EnsureBaseDirectoryExists(uint32_t number_of_start) {
+void AdsServiceImpl::EnsureBaseDirectoryExists(const uint32_t number_of_start) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&EnsureBaseDirectoryExistsOnFileTaskRunner, base_path_),
@@ -868,7 +868,7 @@ void AdsServiceImpl::EnsureBaseDirectoryExists(uint32_t number_of_start) {
                      number_of_start));
 }
 
-void AdsServiceImpl::OnEnsureBaseDirectoryExists(uint32_t number_of_start,
+void AdsServiceImpl::OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
                                                  const bool success) {
   if (!success) {
     VLOG(0) << "Failed to create base directory";
@@ -888,11 +888,20 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(uint32_t number_of_start,
 
   if (database_) {
     NOTREACHED() << "Ads service shutdown was not initiated prior to start";
+    const uint32_t total_number_of_starts = total_number_of_starts_;
+    base::debug::Alias(&total_number_of_starts);
+    base::debug::Alias(&number_of_start);
     base::debug::DumpWithoutCrashing();
+
+    // TODO(https://github.com/brave/brave-browser/issues/17643):
+    // This is a temporary hack to make sure that all race conditions on
+    // ads service start/shutdown are fixed. Need to craft more reliable
+    // solution for a longer term.
     const bool success =
         file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
     VLOG_IF(1, !success) << "Failed to release database";
   }
+
   database_ = std::make_unique<ads::Database>(
       base_path_.AppendASCII("database.sqlite"));
 

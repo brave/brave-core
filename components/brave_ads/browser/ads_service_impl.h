@@ -208,19 +208,19 @@ class AdsServiceImpl : public AdsService,
   bool StartService();
 
   void MaybeStart(const bool should_restart);
-  void Start(uint32_t number_of_start);
+  void Start(const uint32_t number_of_start);
   void Stop();
 
   void ResetState();
   void OnShutdownAndResetBatAds(const bool success);
   void OnResetAllState(const bool success);
 
-  void DetectUncertainFuture(uint32_t number_of_start);
-  void OnDetectUncertainFuture(uint32_t number_of_start,
+  void DetectUncertainFuture(const uint32_t number_of_start);
+  void OnDetectUncertainFuture(const uint32_t number_of_start,
                                const bool is_uncertain_future);
 
-  void EnsureBaseDirectoryExists(uint32_t number_of_start);
-  void OnEnsureBaseDirectoryExists(uint32_t number_of_start,
+  void EnsureBaseDirectoryExists(const uint32_t number_of_start);
+  void OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
                                    const bool success);
 
   void SetEnvironment();
