@@ -39,7 +39,7 @@ public extension WKWebView {
                 }
             }
             context?.evaluateScript("JSON.parse('\"\($0)\"')")
-            sanitizedArgs.append("'\(String(describing: $0).encodingHTMLEntities())'")
+            sanitizedArgs.append("'\(String(describing: $0).htmlEntityEncodedString)'")
             return
         }
         
@@ -77,17 +77,3 @@ public extension WKWebView {
         }
     }
 }
-
-extension String {
-    /// Encode HTMLStrings
-    fileprivate func encodingHTMLEntities() -> String {
-       return self
-        .replacingOccurrences(of: "&", with: "&amp;", options: .literal)
-        .replacingOccurrences(of: "\"", with: "&quot;", options: .literal)
-        .replacingOccurrences(of: "'", with: "&#39;", options: .literal)
-        .replacingOccurrences(of: "<", with: "&lt;", options: .literal)
-        .replacingOccurrences(of: ">", with: "&gt;", options: .literal)
-        .replacingOccurrences(of: "`", with: "&lsquo;", options: .literal)
-    }
-}
-
