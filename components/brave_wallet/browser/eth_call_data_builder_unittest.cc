@@ -11,6 +11,16 @@ namespace brave_wallet {
 
 namespace erc20 {
 
+TEST(EthCallDataBuilderTest, Transfer) {
+  std::string data;
+  Transfer("0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f", 0xde0b6b3a7640000,
+           &data);
+  ASSERT_EQ(
+      data,
+      "0xa9059cbb000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e6446"
+      "0f0000000000000000000000000000000000000000000000000de0b6b3a7640000");
+}
+
 TEST(EthCallDataBuilderTest, BalanceOf) {
   std::string data;
   BalanceOf("0x4e02f254184E904300e0775E4b8eeCB1", &data);

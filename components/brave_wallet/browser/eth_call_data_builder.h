@@ -9,11 +9,16 @@
 #include <string>
 #include <vector>
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 
 namespace brave_wallet {
 
 namespace erc20 {
 
+// Allows transferring ERC20 tokens
+bool Transfer(const std::string& to_address,
+              uint256_t amount,
+              std::string* data);
 // Returns the balance of an  address
 bool BalanceOf(const std::string& address, std::string* data);
 

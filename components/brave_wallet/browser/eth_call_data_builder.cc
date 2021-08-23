@@ -5,11 +5,30 @@
 
 #include "brave/components/brave_wallet/browser/eth_call_data_builder.h"
 
+#include "base/logging.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 namespace brave_wallet {
 
 namespace erc20 {
+
+bool Transfer(const std::string& to_address,
+              uint256_t amount,
+              std::string* data) {
+  const std::string function_hash =
+      GetFunctionHash("transfer(address,uint256)");
+  std::string padded_address;
+  if (!brave_wallet::PadHexEncodedParameter(to_address, &padded_address)) {
+    return false;
+  }
+  std::string padded_amount;
+  if (!PadHexEncodedParameter(Uint256ValueToHex(amount), &padded_amount)) {
+    return false;
+  }
+  std::vector<std::string> hex_strings = {function_hash, padded_address,
+                                          padded_amount};
+  return ConcatHexStrings(hex_strings, data);
+}
 
 bool BalanceOf(const std::string& address, std::string* data) {
   const std::string function_hash = GetFunctionHash("balanceOf(address)");
