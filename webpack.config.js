@@ -28,6 +28,7 @@ if (path.basename(AllFramesAtDocumentEndSandboxed[0]) !== "__firefox__.js") {
 }
 
 module.exports = {
+  mode: "production",
   entry: {
     AllFramesAtDocumentStart: AllFramesAtDocumentStart,
     AllFramesAtDocumentStartSandboxed: AllFramesAtDocumentStartSandboxed,
@@ -36,31 +37,13 @@ module.exports = {
     MainFrameAtDocumentStart: MainFrameAtDocumentStart,
     MainFrameAtDocumentEnd: MainFrameAtDocumentEnd
   },
+  // optimization: { minimize: false }, // use for debugging
   output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "Client/Assets")
   },
   module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules\/(?!(readability|page-metadata-parser)\/).*/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: [
-              ["env", {
-                targets: {
-                  iOS: "10.3"
-                }
-              }]
-            ]
-          }
-        }
-      }
-    ]
+    rules: []
   },
-  plugins: [
-    new TerserPlugin()
-  ]
+  plugins: []
 };
