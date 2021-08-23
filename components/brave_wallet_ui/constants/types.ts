@@ -419,11 +419,17 @@ export interface RejectTransactionReturnInfo {
   status: boolean
 }
 
+export interface MakeERC20TransferDataReturnInfo {
+  success: boolean
+  data: number[]
+}
+
 export interface EthTxController {
   addUnapprovedTransaction: (txData: TxData, from: string) => Promise<AddUnapprovedTransactionReturnInfo>
   addUnapproved1559Transaction: (txData: TxData1559, from: string) => (AddUnapproved1559TransactionReturnInfo)
   approveTransaction: (txMetaId: string) => Promise<ApproveTransactionReturnInfo>
   rejectTransaction: (txMetaId: string) => Promise<RejectTransactionReturnInfo>
+  makeERC20TransferData: (toAddress: string, amount: string) => Promise<MakeERC20TransferDataReturnInfo>
 }
 
 export interface EthJsonRpcController {
@@ -518,7 +524,7 @@ export interface APIProxyControllers {
   keyringController: KeyringController
   ercTokenRegistry: ERCTokenRegistry
   ethTxController: EthTxController
-  makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string) => any
+  makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string, data: number[]) => any
 }
 
 export type AllowSpendReturnPayload = {
