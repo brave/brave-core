@@ -13,10 +13,6 @@
 #include "brave/components/brave_adaptive_captcha/environment.h"
 #include "brave/components/brave_adaptive_captcha/get_adaptive_captcha_challenge.h"
 
-namespace content {
-class BrowserContext;
-}  // namespace content
-
 namespace brave_adaptive_captcha {
 
 // This manages the adaptive captcha functionality. Adaptive captchas provide a
@@ -24,7 +20,8 @@ namespace brave_adaptive_captcha {
 // client changes.
 class BraveAdaptiveCaptcha {
  public:
-  explicit BraveAdaptiveCaptcha(content::BrowserContext* context);
+  explicit BraveAdaptiveCaptcha(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BraveAdaptiveCaptcha();
 
   BraveAdaptiveCaptcha(const BraveAdaptiveCaptcha&) = delete;
@@ -47,7 +44,6 @@ class BraveAdaptiveCaptcha {
 
  private:
   static Environment environment_;
-  content::BrowserContext* context_;
   api_request_helper::APIRequestHelper api_request_helper_;
   std::unique_ptr<GetAdaptiveCaptchaChallenge> captcha_challenge_;
 };

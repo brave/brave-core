@@ -244,7 +244,8 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile,
       rewards_service_(
           brave_rewards::RewardsServiceFactory::GetForProfile(profile_)),
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-      adaptive_captcha_(profile_),
+      adaptive_captcha_(profile_->GetDefaultStoragePartition()
+                            ->GetURLLoaderFactoryForBrowserProcess()),
       ads_tooltips_controller_(
           std::make_unique<AdsTooltipsController>(profile)),
 #endif

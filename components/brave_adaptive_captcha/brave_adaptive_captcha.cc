@@ -11,8 +11,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_adaptive_captcha/environment.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
-#include "content/public/browser/browser_context.h"
-#include "content/public/browser/storage_partition.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_adaptive_captcha {
 
@@ -38,11 +37,9 @@ net::NetworkTrafficAnnotationTag kAnnotationTag =
             "Not implemented."
         })");
 
-BraveAdaptiveCaptcha::BraveAdaptiveCaptcha(content::BrowserContext* context)
-    : context_(context),
-      api_request_helper_(kAnnotationTag,
-                          context_->GetDefaultStoragePartition()
-                              ->GetURLLoaderFactoryForBrowserProcess()),
+BraveAdaptiveCaptcha::BraveAdaptiveCaptcha(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : api_request_helper_(kAnnotationTag, url_loader_factory),
       captcha_challenge_(
           std::make_unique<GetAdaptiveCaptchaChallenge>(&api_request_helper_)) {
 }

@@ -13,8 +13,6 @@ source_set("brave_adaptive_captcha") {
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
     "//brave/components/brave_adaptive_captcha/buildflags",
-    "//chrome/browser:browser_process",
-    "//content/public/browser",
     "//net",
     "//services/network/public/cpp",
   ]
