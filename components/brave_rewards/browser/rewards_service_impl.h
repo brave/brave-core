@@ -24,6 +24,7 @@
 #include "base/values.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
@@ -347,6 +348,7 @@ class RewardsServiceImpl : public RewardsService,
 
   bool IsRewardsEnabled() const override;
 
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   bool GetScheduledCaptchaInfo(std::string* captcha_url,
                                bool* max_attempts_exceeded) override;
 
@@ -358,6 +360,7 @@ class RewardsServiceImpl : public RewardsService,
   void SnoozeScheduledCaptcha() override;
 
   void ClearScheduledCaptcha() override;
+#endif
 
   // Testing methods
   void SetLedgerEnvForTesting();

@@ -10,12 +10,13 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "base/callback_forward.h"
+#include "base/containers/flat_map.h"
 #include "base/macros.h"
 #include "base/observer_list.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
@@ -363,6 +364,7 @@ class RewardsService : public KeyedService {
 
   virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
 
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   virtual bool GetScheduledCaptchaInfo(std::string* captcha_url,
                                        bool* max_attempts_exceeded) = 0;
 
@@ -374,6 +376,7 @@ class RewardsService : public KeyedService {
   virtual void SnoozeScheduledCaptcha() = 0;
 
   virtual void ClearScheduledCaptcha() = 0;
+#endif
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

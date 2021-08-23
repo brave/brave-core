@@ -111,8 +111,11 @@ namespace {
 constexpr int kDiagnosticLogMaxVerboseLevel = 6;
 constexpr int kDiagnosticLogKeepNumLines = 20000;
 constexpr int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
-constexpr int kScheduledCaptchaMaxFailedAttempts = 10;
 constexpr char pref_prefix[] = "brave.rewards";
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+constexpr int kScheduledCaptchaMaxFailedAttempts = 10;
+#endif
 
 std::string URLMethodToRequestType(ledger::type::UrlMethod method) {
   switch (method) {
@@ -1315,7 +1318,9 @@ void RewardsServiceImpl::OnRecoverWallet(const ledger::type::Result result) {
     observer.OnRecoverWallet(this, result);
   }
 
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   ClearScheduledCaptcha();
+#endif
 }
 
 const std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
@@ -1446,7 +1451,9 @@ void RewardsServiceImpl::OnStopLedgerForCompleteReset(
     SuccessCallback callback,
     const ledger::type::Result result) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   ClearScheduledCaptcha();
+#endif
   profile_->GetPrefs()->ClearPrefsWithPrefixSilently(pref_prefix);
   diagnostic_log_->Delete(base::BindOnce(
       &RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset, AsWeakPtr(),
@@ -3413,6 +3420,7 @@ bool RewardsServiceImpl::IsRewardsEnabled() const {
   return false;
 }
 
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 bool RewardsServiceImpl::GetScheduledCaptchaInfo(std::string* url,
                                                  bool* max_attempts_exceeded) {
   DCHECK(url);
@@ -3429,12 +3437,8 @@ bool RewardsServiceImpl::GetScheduledCaptchaInfo(std::string* url,
   const int failed_attempts =
       profile_->GetPrefs()->GetInteger(prefs::kScheduledCaptchaFailedAttempts);
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   *url = brave_adaptive_captcha::BraveAdaptiveCaptcha::GetScheduledCaptchaUrl(
       payment_id, captcha_id);
-#else
-  *url = "";
-#endif
   *max_attempts_exceeded =
       failed_attempts >= kScheduledCaptchaMaxFailedAttempts;
 
@@ -3500,6 +3504,7 @@ void RewardsServiceImpl::ClearScheduledCaptcha() {
   pref_service->SetString(prefs::kScheduledCaptchaId, "");
   pref_service->SetBoolean(prefs::kScheduledCaptchaPaused, false);
 }
+#endif
 
 void RewardsServiceImpl::OnStartProcessForSetAdsEnabled() {
   SetAdsEnabled(true);

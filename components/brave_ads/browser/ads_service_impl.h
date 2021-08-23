@@ -107,9 +107,11 @@ class AdsServiceImpl : public AdsService,
   void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
 
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;
   void SnoozeScheduledCaptcha() override;
+#endif
 
   void OnShowAdNotification(const std::string& notification_id) override;
   void OnCloseAdNotification(const std::string& notification_id,

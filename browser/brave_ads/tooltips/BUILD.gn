@@ -1,10 +1,17 @@
+import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
+
 source_set("tooltips") {
   sources = [
-    "ads_captcha_tooltip.cc",
-    "ads_captcha_tooltip.h",
     "ads_tooltips_controller.cc",
     "ads_tooltips_controller.h",
   ]
+
+  if (brave_adaptive_captcha_enabled) {
+    sources += [
+      "ads_captcha_tooltip.cc",
+      "ads_captcha_tooltip.h",
+    ]
+  }
 
   deps = [
     "//base",

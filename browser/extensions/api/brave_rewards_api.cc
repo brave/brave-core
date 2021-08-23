@@ -19,6 +19,7 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_rewards.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
@@ -1202,7 +1203,9 @@ BraveRewardsGetScheduledCaptchaInfoFunction::Run() {
 
   std::string url;
   bool max_attempts_exceeded = false;
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   rewards_service->GetScheduledCaptchaInfo(&url, &max_attempts_exceeded);
+#endif
 
   base::DictionaryValue dict;
   dict.SetString("url", url);
@@ -1226,7 +1229,9 @@ BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
     return RespondNow(Error("Rewards service is not initialized"));
   }
 
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   rewards_service->UpdateScheduledCaptchaResult(params->result);
+#endif
   return RespondNow(NoArguments());
 }
 
