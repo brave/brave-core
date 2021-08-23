@@ -49,6 +49,12 @@ Polymer({
   created: function() {
     this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance();
   },
+
+  /** @override */
+  ready: function() {
+    this.$.url.value = this.getPref('brave.ipfs.public_gateway_address').value;
+  },
+
   /** @private */
   urlChanged_: function() {
     const url_ = this.$.url.value
