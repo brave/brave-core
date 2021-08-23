@@ -3,31 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_CONNECTION_MANAGER_MAC_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_CONNECTION_MANAGER_MAC_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_MAC_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_MAC_H_
 
-#import <NetworkExtension/NetworkExtension.h>
 #include <string>
 
 #include "base/no_destructor.h"
-#include "brave/components/brave_vpn/brave_vpn_connection_manager.h"
+#include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 
 namespace brave_vpn {
 
-class BraveVPNConnectionManagerMac : public BraveVPNConnectionManager {
+class BraveVPNOSConnectionAPIMac : public BraveVPNOSConnectionAPI {
  public:
-  BraveVPNConnectionManagerMac(const BraveVPNConnectionManagerMac&) = delete;
-  BraveVPNConnectionManagerMac& operator=(const BraveVPNConnectionManagerMac&) =
+  BraveVPNOSConnectionAPIMac(const BraveVPNOSConnectionAPIMac&) = delete;
+  BraveVPNOSConnectionAPIMac& operator=(const BraveVPNOSConnectionAPIMac&) =
       delete;
 
  protected:
-  friend class base::NoDestructor<BraveVPNConnectionManagerMac>;
+  friend class base::NoDestructor<BraveVPNOSConnectionAPIMac>;
 
-  BraveVPNConnectionManagerMac();
-  ~BraveVPNConnectionManagerMac() override;
+  BraveVPNOSConnectionAPIMac();
+  ~BraveVPNOSConnectionAPIMac() override;
 
  private:
-  // BraveVPNConnectionManager overrides:
+  // BraveVPNOSConnectionAPI overrides:
   void CreateVPNConnection(const BraveVPNConnectionInfo& info) override;
   void UpdateVPNConnection(const BraveVPNConnectionInfo& info) override;
   void RemoveVPNConnection(const std::string& name) override;
@@ -39,4 +38,4 @@ class BraveVPNConnectionManagerMac : public BraveVPNConnectionManager {
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_CONNECTION_MANAGER_MAC_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_MAC_H_
