@@ -38,6 +38,17 @@ export default class WalletApiProxy {
     this.ethJsonRpcController.addObserver(ethJsonRpcControllerObserverReceiver.$.bindNewPipeAndPassRemote());
   }
 
+  makeTxData(nonce, gasPrice, gasLimit, to, value) {
+    const txData = new braveWallet.mojom.TxData()
+    txData.nonce = nonce
+    txData.gasPrice = gasPrice
+    txData.gasLimit = gasLimit
+    txData.to = to
+    txData.value = value
+    txData.data = []
+    return txData
+  }
+
   addKeyringControllerObserver(store) {
     const keyringControllerObserverReceiver = new braveWallet.mojom.KeyringControllerObserverReceiver({
       keyringCreated: function (chainId) {

@@ -518,6 +518,7 @@ export interface APIProxyControllers {
   keyringController: KeyringController
   ercTokenRegistry: ERCTokenRegistry
   ethTxController: EthTxController
+  makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string) => any
 }
 
 export type AllowSpendReturnPayload = {

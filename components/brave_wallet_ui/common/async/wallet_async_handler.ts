@@ -200,3 +200,14 @@ handler.on(WalletActions.selectPortfolioTimeline.getType(), async (store, payloa
 })
 
 export default handler.middleware
+
+// TOOD(bbondy): Remove after we have this hooked up
+// This is for Ganache seedwords of: garage erosion rapid salmon make wine dragon great away drift jewel evoke
+// Don't use this seed with actual funds!
+//   const apiProxy = await getAPIProxy()
+//  const txData = apiProxy.makeTxData('0x1', '0x14', '0x5208', '0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f', '0xde0b6b3a7640000')
+//  const addResult = await apiProxy.ethTxController.addUnapprovedTransaction(txData, '0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7')
+//  console.log('addResult: ', addResult)
+//  const approveResult = await apiProxy.ethTxController.approveTransaction(addResult.txMetaId)
+//  console.log('approveResult: ', approveResult)
+//
