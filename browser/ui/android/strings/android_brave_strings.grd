@@ -2034,7 +2034,7 @@ until they verify, or until 90 days have passed.
       Renews monthly
     </message>
     <message name="IDS_MONTHLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
-      &#36;9.99 / mo.
+      <ph name="MONTHLY_AMOUNT">%1$s</ph> / mo.
     </message>
     <message name="IDS_ONE_YEAR" desc="Brave VPN plan text">
       One Year
@@ -2042,8 +2042,8 @@ until they verify, or until 90 days have passed.
     <message name="IDS_RENEW_MONTHLY_SAVE" desc="Brave VPN plan text">
       Renew annually save 16%
     </message>
-    <message name="IDS_YEAR_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
-      &#36;99.99 / yr.
+    <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
+      <ph name="YEARLY_AMOUNT">%1$s</ph> / yr.
     </message>
     <message name="IDS_YEAR_SUBSCRIPTION_OLD_AMOUNT" desc="Brave VPN plan text">
       &#36;119.88
@@ -2153,7 +2153,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Continue to Email
     </message>
     <message name="IDS_VPN_SUPPORT_TEXT" desc="Brave Vpn support text">
-      Support provided  with the help of the Guardian team.\n\nPlease select the information you're comfortable sharing with us.\n\nThe more information you initially share with us the easier it will be for our support staff to help you resolve your issue.
+      Support provided  with the help of the Guardian team.\n\nPlease select the information you're comfortable sharing with us.\n\nThe more information you initially share with us the easier it will be for our support staff to help you resolve your
     </message>
     </messages>
   </release>

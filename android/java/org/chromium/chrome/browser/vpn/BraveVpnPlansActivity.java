@@ -88,25 +88,40 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         removedValueText.setPaintFlags(
                 removedValueText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
+        SkuDetails monthlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
+                InAppPurchaseWrapper.NIGHTLY_MONTHLY_SUBSCRIPTION);
+
         LinearLayout monthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
         monthlySelectorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InAppPurchaseWrapper.getInstance().purchase(BraveVpnPlansActivity.this,
-                        InAppPurchaseWrapper.getInstance().getSkuDetails(
-                                InAppPurchaseWrapper.NIGHTLY_MONTHLY_SUBSCRIPTION));
+                InAppPurchaseWrapper.getInstance().purchase(
+                        BraveVpnPlansActivity.this, monthlySkuDetails);
             }
         });
+
+        TextView monthlySubscriptionAmountText =
+                findViewById(R.id.monthly_subscription_amount_text);
+        monthlySubscriptionAmountText.setText(
+                String.format(getResources().getString(R.string.monthly_subscription_amount),
+                        monthlySkuDetails.getPrice()));
+
+        SkuDetails yearlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
+                InAppPurchaseWrapper.NIGHTLY_YEARLY_SUBSCRIPTION);
 
         LinearLayout yearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
         yearlySelectorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InAppPurchaseWrapper.getInstance().purchase(BraveVpnPlansActivity.this,
-                        InAppPurchaseWrapper.getInstance().getSkuDetails(
-                                InAppPurchaseWrapper.NIGHTLY_YEARLY_SUBSCRIPTION));
+                InAppPurchaseWrapper.getInstance().purchase(
+                        BraveVpnPlansActivity.this, monthlySkuDetails);
             }
         });
+
+        TextView yearlySubscriptionAmountText = findViewById(R.id.yearly_subscription_amount_text);
+        yearlySubscriptionAmountText.setText(
+                String.format(getResources().getString(R.string.yearly_subscription_amount),
+                        yearlySkuDetails.getPrice()));
     }
 
     @Override
