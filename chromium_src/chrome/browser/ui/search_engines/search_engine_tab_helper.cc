@@ -7,8 +7,9 @@
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 
-// If the current navigation is due to a form submit, a keyword is not generated.
-// When the pref is off, always return true so that a keyword is never generated.
+// If the current navigation is due to a form submit, a keyword is not
+// generated. When the pref is off, always return true so that a keyword is
+// never generated.
 bool SearchEngineTabHelper::IsFormSubmit(NavigationEntry* entry) {
   Profile* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
