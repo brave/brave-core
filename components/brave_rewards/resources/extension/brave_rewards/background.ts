@@ -20,42 +20,51 @@ const iconOn = {
   }
 }
 
-chrome.browserAction.setBadgeBackgroundColor({ color: '#FB542B' }).catch((e) => { console.error(e) })
-chrome.browserAction.setIcon(iconOn)
-
-// We need to set initial state for all active tabs in all windows
-chrome.tabs.query({
-  highlighted: true
-}, (tabs) => {
-  if (!tabs || !tabs.length) {
-    return
+export async function init () {
+  try {
+    await chrome.browserAction.setBadgeBackgroundColor({ color: '#FB542B' })
+  } catch (e) {
+    console.error(e)
   }
 
-  rewardsPanelActions.init(tabs)
-})
+  chrome.browserAction.setIcon(iconOn)
 
-chrome.runtime.onStartup.addListener(function () {
-  chrome.runtime.onConnect.addListener(function (externalPort) {
-    chrome.storage.local.set({
-      'rewards_panel_open': 'true'
-    })
+  // We need to set initial state for all active tabs in all windows
+  chrome.tabs.query({
+    highlighted: true
+  }, (tabs) => {
+    if (!tabs || !tabs.length) {
+      return
+    }
 
-    externalPort.onDisconnect.addListener(function () {
+    rewardsPanelActions.init(tabs)
+  })
+
+  chrome.runtime.onStartup.addListener(function () {
+    chrome.runtime.onConnect.addListener(function (externalPort) {
       chrome.storage.local.set({
-        'rewards_panel_open': 'false'
+        'rewards_panel_open': 'true'
+      })
+
+      externalPort.onDisconnect.addListener(function () {
+        chrome.storage.local.set({
+          'rewards_panel_open': 'false'
+        })
       })
     })
   })
-})
 
-chrome.runtime.onMessageExternal.addListener(
-  function (msg: any, sender: chrome.runtime.MessageSender, sendResponse: any) {
-    if (!msg) {
-      return
-    }
-    switch (msg.type) {
-      case 'OnPublisherData':
-        rewardsPanelActions.onPublisherData(msg.tabId, msg.info)
-        break
-    }
-  })
+  chrome.runtime.onMessageExternal.addListener(
+    function (msg: any, sender: chrome.runtime.MessageSender, sendResponse: any) {
+      if (!msg) {
+        return
+      }
+      switch (msg.type) {
+        case 'OnPublisherData':
+          rewardsPanelActions.onPublisherData(msg.tabId, msg.info)
+          break
+      }
+    })
+}
+
+init()
