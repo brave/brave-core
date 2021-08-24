@@ -24,7 +24,6 @@
 #include "base/values.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
@@ -74,7 +73,6 @@ class RewardsFlagBrowserTest;
 namespace brave_rewards {
 
 class RewardsNotificationServiceImpl;
-class RewardsPanelDelegate;
 class RewardsBrowserTest;
 
 using GetEnvironmentCallback =
@@ -117,8 +115,8 @@ class RewardsServiceImpl : public RewardsService,
   void Init(
       std::unique_ptr<RewardsServiceObserver> extension_observer,
       std::unique_ptr<RewardsServicePrivateObserver> private_observer,
-      std::unique_ptr<RewardsNotificationServiceObserver> notification_observer,
-      std::unique_ptr<RewardsPanelDelegate> panel_delegate);
+      std::unique_ptr<RewardsNotificationServiceObserver>
+          notification_observer);
   void CreateWallet(CreateWalletCallback callback) override;
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
   void FetchPromotions() override;
@@ -347,20 +345,6 @@ class RewardsServiceImpl : public RewardsService,
   void SetAdsEnabled(const bool is_enabled) override;
 
   bool IsRewardsEnabled() const override;
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  bool GetScheduledCaptchaInfo(std::string* captcha_url,
-                               bool* max_attempts_exceeded) override;
-
-  void UpdateScheduledCaptchaResult(bool result) override;
-
-  void ShowScheduledCaptcha(const std::string& payment_id,
-                            const std::string& captcha_id) override;
-
-  void SnoozeScheduledCaptcha() override;
-
-  void ClearScheduledCaptcha() override;
-#endif
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -797,7 +781,6 @@ class RewardsServiceImpl : public RewardsService,
   base::ObserverList<RewardsServicePrivateObserver> private_observers_;
   std::unique_ptr<RewardsServiceObserver> extension_observer_;
   std::unique_ptr<RewardsServicePrivateObserver> private_observer_;
-  std::unique_ptr<RewardsPanelDelegate> panel_delegate_;
 
   std::unique_ptr<base::OneShotEvent> ready_;
   SimpleURLLoaderList url_loaders_;

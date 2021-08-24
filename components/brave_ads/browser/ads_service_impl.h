@@ -42,7 +42,7 @@
 #include "base/task/cancelable_task_tracker.h"
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha.h"
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #endif
 
 using brave_ads::ResourceComponent;
@@ -501,7 +501,8 @@ class AdsServiceImpl : public AdsService,
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  brave_adaptive_captcha::BraveAdaptiveCaptcha adaptive_captcha_;
+  brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+      adaptive_captcha_service_;  // NOT OWNED
   std::unique_ptr<AdsTooltipsController> ads_tooltips_controller_;
 #endif
 

@@ -16,6 +16,7 @@
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
@@ -52,6 +53,10 @@
 #include "components/sync/base/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
@@ -204,6 +209,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // wayback machine
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);
+#endif
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  brave_adaptive_captcha::BraveAdaptiveCaptchaService::RegisterProfilePrefs(
+      registry);
 #endif
 
 #if defined(OS_ANDROID)

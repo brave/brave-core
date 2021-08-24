@@ -364,20 +364,6 @@ class RewardsService : public KeyedService {
 
   virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  virtual bool GetScheduledCaptchaInfo(std::string* captcha_url,
-                                       bool* max_attempts_exceeded) = 0;
-
-  virtual void UpdateScheduledCaptchaResult(bool result) = 0;
-
-  virtual void ShowScheduledCaptcha(const std::string& payment_id,
-                                    const std::string& captcha_id) = 0;
-
-  virtual void SnoozeScheduledCaptcha() = 0;
-
-  virtual void ClearScheduledCaptcha() = 0;
-#endif
-
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
 

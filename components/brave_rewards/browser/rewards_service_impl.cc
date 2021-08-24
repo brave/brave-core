@@ -41,7 +41,6 @@
 #include "bat/ledger/ledger_database.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
@@ -49,7 +48,6 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
-#include "brave/components/brave_rewards/browser/rewards_panel_delegate.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/service_sandbox_type.h"
 #include "brave/components/brave_rewards/browser/static_values.h"
@@ -96,10 +94,6 @@
 #include "brave/components/ipfs/ipfs_utils.h"
 #endif
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha.h"
-#endif
-
 using net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES;
 
 namespace brave_rewards {
@@ -112,10 +106,6 @@ constexpr int kDiagnosticLogMaxVerboseLevel = 6;
 constexpr int kDiagnosticLogKeepNumLines = 20000;
 constexpr int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
 constexpr char pref_prefix[] = "brave.rewards";
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-constexpr int kScheduledCaptchaMaxFailedAttempts = 10;
-#endif
 
 std::string URLMethodToRequestType(ledger::type::UrlMethod method) {
   switch (method) {
@@ -375,8 +365,7 @@ bool RewardsServiceImpl::IsInitialized() {
 void RewardsServiceImpl::Init(
     std::unique_ptr<RewardsServiceObserver> extension_observer,
     std::unique_ptr<RewardsServicePrivateObserver> private_observer,
-    std::unique_ptr<RewardsNotificationServiceObserver> notification_observer,
-    std::unique_ptr<RewardsPanelDelegate> panel_delegate) {
+    std::unique_ptr<RewardsNotificationServiceObserver> notification_observer) {
   notification_service_->Init(std::move(notification_observer));
   AddObserver(notification_service_.get());
 
@@ -388,10 +377,6 @@ void RewardsServiceImpl::Init(
   if (private_observer) {
     private_observer_ = std::move(private_observer);
     private_observers_.AddObserver(private_observer_.get());
-  }
-
-  if (panel_delegate) {
-    panel_delegate_ = std::move(panel_delegate);
   }
 
   CheckPreferences();
@@ -1317,10 +1302,6 @@ void RewardsServiceImpl::OnRecoverWallet(const ledger::type::Result result) {
   for (auto& observer : observers_) {
     observer.OnRecoverWallet(this, result);
   }
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  ClearScheduledCaptcha();
-#endif
 }
 
 const std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
@@ -1451,9 +1432,6 @@ void RewardsServiceImpl::OnStopLedgerForCompleteReset(
     SuccessCallback callback,
     const ledger::type::Result result) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  ClearScheduledCaptcha();
-#endif
   profile_->GetPrefs()->ClearPrefsWithPrefixSilently(pref_prefix);
   diagnostic_log_->Delete(base::BindOnce(
       &RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset, AsWeakPtr(),
@@ -3419,92 +3397,6 @@ bool RewardsServiceImpl::IsRewardsEnabled() const {
 
   return false;
 }
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-bool RewardsServiceImpl::GetScheduledCaptchaInfo(std::string* url,
-                                                 bool* max_attempts_exceeded) {
-  DCHECK(url);
-  DCHECK(max_attempts_exceeded);
-
-  const std::string payment_id =
-      profile_->GetPrefs()->GetString(prefs::kScheduledCaptchaPaymentId);
-  const std::string captcha_id =
-      profile_->GetPrefs()->GetString(prefs::kScheduledCaptchaId);
-  if (payment_id.empty() || captcha_id.empty()) {
-    return false;
-  }
-
-  const int failed_attempts =
-      profile_->GetPrefs()->GetInteger(prefs::kScheduledCaptchaFailedAttempts);
-
-  *url = brave_adaptive_captcha::BraveAdaptiveCaptcha::GetScheduledCaptchaUrl(
-      payment_id, captcha_id);
-  *max_attempts_exceeded =
-      failed_attempts >= kScheduledCaptchaMaxFailedAttempts;
-
-  return true;
-}
-
-void RewardsServiceImpl::UpdateScheduledCaptchaResult(bool result) {
-  if (!result) {
-    PrefService* pref_service = profile_->GetPrefs();
-    const int failed_attempts =
-        pref_service->GetInteger(prefs::kScheduledCaptchaFailedAttempts) + 1;
-    pref_service->SetInteger(
-        prefs::kScheduledCaptchaFailedAttempts,
-        std::min(failed_attempts, kScheduledCaptchaMaxFailedAttempts));
-    if (failed_attempts >= kScheduledCaptchaMaxFailedAttempts) {
-      pref_service->SetBoolean(prefs::kScheduledCaptchaPaused, true);
-    }
-    return;
-  }
-
-  ClearScheduledCaptcha();
-}
-
-void RewardsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
-                                              const std::string& captcha_id) {
-  PrefService* pref_service = profile_->GetPrefs();
-
-  if (pref_service->GetBoolean(prefs::kScheduledCaptchaPaused)) {
-    LOG(ERROR) << "Ads paused; support intervention required";
-    return;
-  }
-
-  pref_service->SetString(prefs::kScheduledCaptchaPaymentId, payment_id);
-  pref_service->SetString(prefs::kScheduledCaptchaId, captcha_id);
-
-  if (panel_delegate_ && !panel_delegate_->ShowAdaptiveCaptchaPanel(profile_)) {
-    LOG(ERROR) << "Could not open adaptive captcha panel";
-    return;
-  }
-}
-
-void RewardsServiceImpl::SnoozeScheduledCaptcha() {
-  PrefService* pref_service = profile_->GetPrefs();
-
-  const int snooze_count =
-      pref_service->GetInteger(prefs::kScheduledCaptchaSnoozeCount);
-  if (snooze_count >= 1) {
-    LOG(ERROR) << "Scheduled captcha can not be snoozed again";
-    return;
-  }
-
-  pref_service->SetString(prefs::kScheduledCaptchaPaymentId, "");
-  pref_service->SetString(prefs::kScheduledCaptchaId, "");
-  pref_service->SetInteger(prefs::kScheduledCaptchaSnoozeCount,
-                           snooze_count + 1);
-}
-
-void RewardsServiceImpl::ClearScheduledCaptcha() {
-  PrefService* pref_service = profile_->GetPrefs();
-  pref_service->SetInteger(prefs::kScheduledCaptchaFailedAttempts, 0);
-  pref_service->SetInteger(prefs::kScheduledCaptchaSnoozeCount, 0);
-  pref_service->SetString(prefs::kScheduledCaptchaPaymentId, "");
-  pref_service->SetString(prefs::kScheduledCaptchaId, "");
-  pref_service->SetBoolean(prefs::kScheduledCaptchaPaused, false);
-}
-#endif
 
 void RewardsServiceImpl::OnStartProcessForSetAdsEnabled() {
   SetAdsEnabled(true);

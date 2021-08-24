@@ -8,11 +8,9 @@
 
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 
-#include "brave/browser/brave_rewards/rewards_panel_delegate_impl.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
-#include "brave/components/brave_rewards/browser/rewards_panel_delegate.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -44,6 +42,17 @@
 namespace brave_rewards {
 
 RewardsService* testing_service_;
+
+// static
+RewardsService* RewardsServiceFactory::GetForBrowserContext(
+    content::BrowserContext* context) {
+  if (testing_service_) {
+    return testing_service_;
+  }
+
+  return static_cast<RewardsService*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+}
 
 // static
 RewardsService* RewardsServiceFactory::GetForProfile(
@@ -83,7 +92,6 @@ KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
   std::unique_ptr<RewardsServicePrivateObserver> private_observer = nullptr;
   std::unique_ptr<RewardsNotificationServiceObserver> notification_observer =
       nullptr;
-  std::unique_ptr<RewardsPanelDelegate> panel_delegate = nullptr;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_observer = std::make_unique<ExtensionRewardsServiceObserver>(
       Profile::FromBrowserContext(context));
@@ -92,7 +100,6 @@ KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
   notification_observer =
       std::make_unique<ExtensionRewardsNotificationServiceObserver>(
           Profile::FromBrowserContext(context));
-  panel_delegate = std::make_unique<RewardsPanelDelegateImpl>();
 #endif
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionService* greaselion_service =
@@ -103,9 +110,9 @@ KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
   std::unique_ptr<RewardsServiceImpl> rewards_service(
       new RewardsServiceImpl(Profile::FromBrowserContext(context)));
 #endif
-  rewards_service->Init(
-      std::move(extension_observer), std::move(private_observer),
-      std::move(notification_observer), std::move(panel_delegate));
+  rewards_service->Init(std::move(extension_observer),
+                        std::move(private_observer),
+                        std::move(notification_observer));
   return rewards_service.release();
 }
 

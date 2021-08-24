@@ -10,6 +10,7 @@
 #include "base/time/time.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -18,6 +19,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
+#endif
 
 namespace brave_ads {
 
@@ -44,6 +49,10 @@ AdsServiceFactory::AdsServiceFactory()
   DependsOn(dom_distiller::DomDistillerServiceFactory::GetInstance());
   DependsOn(brave_rewards::RewardsServiceFactory::GetInstance());
   DependsOn(HistoryServiceFactory::GetInstance());
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  DependsOn(brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::
+                GetInstance());
+#endif
 }
 
 AdsServiceFactory::~AdsServiceFactory() {}

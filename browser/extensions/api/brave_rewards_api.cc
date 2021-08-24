@@ -31,6 +31,11 @@
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#endif
+
 using brave_ads::AdsService;
 using brave_ads::AdsServiceFactory;
 using brave_rewards::RewardsService;
@@ -1195,16 +1200,19 @@ BraveRewardsGetScheduledCaptchaInfoFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsGetScheduledCaptchaInfoFunction::Run() {
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
+  auto* brave_adaptive_captcha_service =
+      brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
+          profile);
+  if (!brave_adaptive_captcha_service) {
+    return RespondNow(Error("Adaptive captcha service is not initialized"));
   }
 
   std::string url;
   bool max_attempts_exceeded = false;
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  rewards_service->GetScheduledCaptchaInfo(&url, &max_attempts_exceeded);
+  brave_adaptive_captcha_service->GetScheduledCaptchaInfo(
+      &url, &max_attempts_exceeded);
 #endif
 
   base::DictionaryValue dict;
@@ -1223,15 +1231,18 @@ BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
       brave_rewards::UpdateScheduledCaptchaResult::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
+  auto* brave_adaptive_captcha_service =
+      brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
+          profile);
+  if (!brave_adaptive_captcha_service) {
+    return RespondNow(Error("Adaptive captcha service is not initialized"));
   }
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  rewards_service->UpdateScheduledCaptchaResult(params->result);
+  brave_adaptive_captcha_service->UpdateScheduledCaptchaResult(params->result);
 #endif
+
   return RespondNow(NoArguments());
 }
 
