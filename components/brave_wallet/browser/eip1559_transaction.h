@@ -16,15 +16,6 @@ namespace brave_wallet {
 class Eip1559Transaction : public Eip2930Transaction {
  public:
   Eip1559Transaction();
-  Eip1559Transaction(uint256_t nonce,
-                     uint256_t gas_price,
-                     uint256_t gas_limit,
-                     const EthAddress& to,
-                     uint256_t value,
-                     const std::vector<uint8_t>& data,
-                     uint256_t chain_id,
-                     uint256_t max_priority_fee_per_gas,
-                     uint256_t max_fee_per_gas);
   Eip1559Transaction(const Eip1559Transaction&);
   ~Eip1559Transaction() override;
   bool operator==(const Eip1559Transaction&) const;
@@ -52,6 +43,16 @@ class Eip1559Transaction : public Eip2930Transaction {
   uint256_t GetUpfrontCost(uint256_t block_base_fee = 0) const override;
 
  protected:
+  Eip1559Transaction(uint256_t nonce,
+                     uint256_t gas_price,
+                     uint256_t gas_limit,
+                     const EthAddress& to,
+                     uint256_t value,
+                     const std::vector<uint8_t>& data,
+                     uint256_t chain_id,
+                     uint256_t max_priority_fee_per_gas,
+                     uint256_t max_fee_per_gas);
+
   uint256_t max_priority_fee_per_gas_;
   uint256_t max_fee_per_gas_;
 };

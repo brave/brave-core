@@ -31,10 +31,10 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
       "00000000000000000000000a00000000000000000000000000000000000000000000"
       "0000000000000000000d",
       &data));
-  EthTransaction tx1(
-      0x06, 0x09184e72a000, 0x0974,
-      EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74c"),
-      0x016345785d8a0000, data);
+  EthTransaction tx1 = *EthTransaction::FromTxData(
+      mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data));
 
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx1.GetMessageToSign(0))),
             "61e1ec33764304dddb55348e7883d4437426f44ab3ef65e6da1e025734c03ff0");
@@ -43,10 +43,9 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
             "9ad82175b6921c5525fc52ebc08b97118cc9709952a16b2249a3f42d44614721");
 
   data.clear();
-  EthTransaction tx2(
-      0x0b, 0x051f4d5c00, 0x5208,
-      EthAddress::FromHex("0x656e929d6fc0cac52d3d9526d288fe02dcd56fbd"),
-      0x2386f26fc10000, data);
+  EthTransaction tx2 = *EthTransaction::FromTxData(mojom::TxData::New(
+      "0x0b", "0x051f4d5c00", "0x5208",
+      "0x656e929d6fc0cac52d3d9526d288fe02dcd56fbd", "0x2386f26fc10000", data));
 
   // with chain id (mainnet)
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx2.GetMessageToSign(1))),
@@ -54,49 +53,49 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
 
   // EIP 155 test vectors
   const struct {
-    uint256_t nonce;
-    uint256_t gas_price;
-    uint256_t gas_limit;
+    const char* nonce;
+    const char* gas_price;
+    const char* gas_limit;
     const char* to;
-    uint256_t value;
+    const char* value;
     const char* hash;
   } cases[] = {
-      {0x00, 0x04a817c800, 0x5208, "0x3535353535353535353535353535353535353535",
-       0x00,
+      {"0x00", "0x04a817c800", "0x5208",
+       "0x3535353535353535353535353535353535353535", "0x00",
        "e0be81f8d506dbe3a5549e720b51eb79492378d6638087740824f168667e5239"},
-      {0x08, 0x04a817c808, 0x02e248,
-       "0x3535353535353535353535353535353535353535", 0x0200,
+      {"0x08", "0x04a817c808", "0x02e248",
+       "0x3535353535353535353535353535353535353535", "0x0200",
        "50b6e7b58320c885ab7b2ee0d0b5813a697268bd2494a06de792790b13668c08"},
-      {0x09, 0x04a817c809, 0x033450,
-       "0x3535353535353535353535353535353535353535", 0x02d9,
+      {"0x09", "0x04a817c809", "0x033450",
+       "0x3535353535353535353535353535353535353535", "0x02d9",
        "24fd18c70146a2b002254810473fa26b744f7899258a1f32924cc73e7a8f4d4f"},
-      {0x01, 0x04a817c801, 0xa410, "0x3535353535353535353535353535353535353535",
-       0x01,
+      {"0x01", "0x04a817c801", "0xa410",
+       "0x3535353535353535353535353535353535353535", "0x01",
        "42973b488dbb3aa237db3d1a3bad18a8d2148af795fb6cdbbbeef5c736df97b9"},
-      {0x02, 0x04a817c802, 0xf618, "0x3535353535353535353535353535353535353535",
-       0x08,
+      {"0x02", "0x04a817c802", "0xf618",
+       "0x3535353535353535353535353535353535353535", "0x08",
        "e68afed5d359c7e60a0408093da23c57b63e84acb2e368ac7c47630518d6f4d9"},
-      {0x03, 0x04a817c803, 0x014820,
-       "0x3535353535353535353535353535353535353535", 0x1b,
+      {"0x03", "0x04a817c803", "0x014820",
+       "0x3535353535353535353535353535353535353535", "0x1b",
        "bcb6f653e06c276a080e9d68e5a967847a896cf52a6dc81917dc2c57ae0a31ef"},
-      {0x04, 0x04a817c804, 0x019a28,
-       "0x3535353535353535353535353535353535353535", 0x40,
+      {"0x04", "0x04a817c804", "0x019a28",
+       "0x3535353535353535353535353535353535353535", "0x40",
        "244e4b57522352c3e9f93ad8ac8a47d1b46c3dcda6da2522caedad009ac9afb7"},
-      {0x05, 0x04a817c805, 0x01ec30,
-       "0x3535353535353535353535353535353535353535", 0x7d,
+      {"0x05", "0x04a817c805", "0x01ec30",
+       "0x3535353535353535353535353535353535353535", "0x7d",
        "581c0b79498b1cf1b8fa4f69bc5f21c0c60371cd08d4682b15c4334aac1cccfd"},
-      {0x06, 0x04a817c806, 0x023e38,
-       "0x3535353535353535353535353535353535353535", 0xd8,
+      {"0x06", "0x04a817c806", "0x023e38",
+       "0x3535353535353535353535353535353535353535", "0xd8",
        "678ae2053a840f5fe550a63d724d1c85420d2955a0ccc4f868dd59e27afdf279"},
-      {0x07, 0x04a817c807, 0x029040,
-       "0x3535353535353535353535353535353535353535", 0x0157,
+      {"0x07", "0x04a817c807", "0x029040",
+       "0x3535353535353535353535353535353535353535", "0x0157",
        "81aa03ada1474ff3ca4b86afb8e8c0f8b22791e156e706231a695ef8c51515ab"},
   };
 
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
-    EthTransaction tx(cases[i].nonce, cases[i].gas_price, cases[i].gas_limit,
-                      EthAddress::FromHex(cases[i].to), cases[i].value,
-                      std::vector<uint8_t>());
+    EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
+        cases[i].nonce, cases[i].gas_price, cases[i].gas_limit, cases[i].to,
+        cases[i].value, std::vector<uint8_t>()));
     // with chain id (mainnet)
     EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetMessageToSign(1))),
               cases[i].hash);
@@ -111,10 +110,10 @@ TEST(EthTransactionUnitTest, GetSignedTransaction) {
 
   HDKey key;
   key.SetPrivateKey(private_key);
-  EthTransaction tx(
-      0x09, 0x4a817c800, 0x5208,
-      EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
-      0x0de0b6b3a7640000, std::vector<uint8_t>());
+  EthTransaction tx = *EthTransaction::FromTxData(
+      mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                         "0x3535353535353535353535353535353535353535",
+                         "0x0de0b6b3a7640000", std::vector<uint8_t>()));
 
   const std::vector<uint8_t> message = tx.GetMessageToSign(1);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message)),
@@ -173,10 +172,10 @@ TEST(EthTransactionUnitTest, GetSignedTransaction) {
 }
 
 TEST(EthTransactionUnitTest, TransactionAndValue) {
-  EthTransaction tx(
-      0x09, 0x4a817c800, 0x5208,
-      EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
-      0x0de0b6b3a7640000, std::vector<uint8_t>());
+  EthTransaction tx = *EthTransaction::FromTxData(
+      mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                         "0x3535353535353535353535353535353535353535",
+                         "0x0de0b6b3a7640000", std::vector<uint8_t>()));
   base::Value tx_value = tx.ToValue();
   auto tx_from_value = EthTransaction::FromValue(tx_value);
   ASSERT_NE(tx_from_value, absl::nullopt);
@@ -206,18 +205,17 @@ TEST(EthTransactionUnitTest, GetDataFee) {
       "0000000000000000000000000000000000000000000000000000000a0000000000000000"
       "00000000000000000000000000000000000000000000000d",
       &data));
-  EthTransaction tx2(
-      0x06, 0x09184e72a000, 0x0974,
-      EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74c"),
-      0x016345785d8a0000, data);
+  EthTransaction tx2 = *EthTransaction::FromTxData(
+      mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data));
   EXPECT_EQ(tx2.GetDataFee(), uint256_t(1716));
 }
 
 TEST(EthTransactionUnitTest, GetUpFrontCost) {
-  EthTransaction tx(
-      0x00, 1000, 10000000,
-      EthAddress::FromHex("0x3535353535353535353535353535353535353535"), 42,
-      std::vector<uint8_t>());
+  EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
+      "0x00", "0x3E8", "0x989680", "0x3535353535353535353535353535353535353535",
+      "0x2A", std::vector<uint8_t>()));
   EXPECT_EQ(tx.GetUpfrontCost(), uint256_t(10000000042));
 }
 
