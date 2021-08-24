@@ -76,8 +76,8 @@ std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input) {
 }
 
 std::string GetFunctionHash(const std::string& input) {
-  auto result = KeccakHash(input);
-  return result.substr(0, std::min(static_cast<size_t>(10), input.length()));
+  std::string result = KeccakHash(input);
+  return result.substr(0, std::min(static_cast<size_t>(10), result.length()));
 }
 
 // Pads a hex encoded parameter to 32-bytes

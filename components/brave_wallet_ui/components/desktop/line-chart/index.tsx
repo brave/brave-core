@@ -11,12 +11,11 @@ import {
 
 import { PriceDataObjectType } from '../../../constants/types'
 import theme from 'brave-ui/theme/colors/'
+import CustomTooltip from './custom-tooltip'
 
 // Styled Components
 import {
   StyledWrapper,
-  LabelWrapper,
-  ChartLabel,
   LoadingOverlay,
   LoadIcon
 } from './style'
@@ -76,30 +75,8 @@ function LineChart (props: Props) {
     onUpdateBalance(undefined)
   }
 
-  const parseDate = (date: Date) => {
-    const formatedDate = new Date(date).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })
-    const formatedTime = new Date(date).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-    return `${formatedDate} ${formatedTime}`
-  }
-
-  // TODO: Need to refactor this to not allow label to go off chart area.
-  const CustomTooltip = (value: any) => {
-    if (value.active && value.payload && value.payload.length) {
-      setPosition(value.coordinate.x)
-      onUpdateBalance(value.payload[0].value)
-      const xLeftCoordinate = Math.trunc(value.coordinate.x)
-      const viewBoxWidth = Math.trunc(value.viewBox.width)
-      const xRightCoordinate = xLeftCoordinate - viewBoxWidth
-      const isEndOrMiddle = xRightCoordinate >= -46 ? 'end' : 'middle'
-      const labelPosition = xLeftCoordinate <= 62 ? 'start' : isEndOrMiddle
-      const middleEndTranslate = xRightCoordinate >= 8 ? 0 : Math.abs(xRightCoordinate) + 8
-      return (
-        <LabelWrapper labelTranslate={labelPosition === 'start' ? xLeftCoordinate : middleEndTranslate} labelPosition={labelPosition}>
-          <ChartLabel>{parseDate(value.label)}</ChartLabel>
-        </LabelWrapper>
-      )
-    }
-    return null
+  const onUpdatePosition = (value: number) => {
+    setPosition(value)
   }
 
   return (
@@ -123,7 +100,11 @@ function LineChart (props: Props) {
           <YAxis hide={true} domain={['auto', 'auto']} />
           <XAxis hide={true} dataKey='date' />
           {priceData.length > 0 && !isDisabled &&
-            <Tooltip isAnimationActive={false} position={{ x: position, y: 0 }} content={<CustomTooltip />} />
+            <Tooltip
+              isAnimationActive={false}
+              position={{ x: position, y: 0 }}
+              content={<CustomTooltip onUpdateBalance={onUpdateBalance} onUpdatePosition={onUpdatePosition} />}
+            />
           }
           <Area
             isAnimationActive={false}

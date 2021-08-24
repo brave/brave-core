@@ -427,10 +427,11 @@ std::vector<mojom::AccountInfoPtr> KeyringController::GetAccountInfosForKeyring(
 
 void KeyringController::SignTransactionByDefaultKeyring(
     const std::string& address,
-    EthTransaction* tx) {
+    EthTransaction* tx,
+    uint256_t chain_id) {
   if (!default_keyring_)
     return;
-  default_keyring_->SignTransaction(address, tx);
+  default_keyring_->SignTransaction(address, tx, chain_id);
 }
 
 bool KeyringController::IsLocked() const {

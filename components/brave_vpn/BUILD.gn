@@ -14,8 +14,8 @@ static_library("brave_vpn") {
   sources = [
     "brave_vpn_connection_info.cc",
     "brave_vpn_connection_info.h",
-    "brave_vpn_connection_manager.cc",
-    "brave_vpn_connection_manager.h",
+    "brave_vpn_os_connection_api.cc",
+    "brave_vpn_os_connection_api.h",
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
     "brave_vpn_utils.cc",
@@ -40,8 +40,8 @@ static_library("brave_vpn") {
 
   if (is_win) {
     sources += [
-      "brave_vpn_connection_manager_win.cc",
-      "brave_vpn_connection_manager_win.h",
+      "brave_vpn_os_connection_api_win.cc",
+      "brave_vpn_os_connection_api_win.h",
     ]
 
     libs += [ "rasapi32.lib" ]
@@ -49,8 +49,8 @@ static_library("brave_vpn") {
 
   if (is_mac) {
     sources += [
-      "brave_vpn_connection_manager_mac.h",
-      "brave_vpn_connection_manager_mac.mm",
+      "brave_vpn_os_connection_api_mac.h",
+      "brave_vpn_os_connection_api_mac.mm",
     ]
 
     frameworks = [ "NetworkExtension.framework" ]

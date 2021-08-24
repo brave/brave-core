@@ -144,9 +144,13 @@ void EthJsonRpcController::FireNetworkChanged() {
   }
 }
 
+std::string EthJsonRpcController::GetChainId() const {
+  return GetChainIdFromNetwork(network_);
+}
+
 void EthJsonRpcController::GetChainId(
     mojom::EthJsonRpcController::GetChainIdCallback callback) {
-  std::move(callback).Run(GetChainIdFromNetwork(network_));
+  std::move(callback).Run(GetChainId());
 }
 
 void EthJsonRpcController::GetBlockTrackerUrl(
@@ -464,6 +468,7 @@ std::string EthJsonRpcController::GetChainIdFromNetwork(
       chain_id = "0x2a";
       break;
     case brave_wallet::mojom::Network::Localhost:
+      chain_id = "0x539";  // 1337
       break;
     case brave_wallet::mojom::Network::Custom:
       break;

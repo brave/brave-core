@@ -94,6 +94,7 @@ class EthJsonRpcController : public KeyedService,
   void GetNetwork(
       mojom::EthJsonRpcController::GetNetworkCallback callback) override;
   void SetNetwork(mojom::Network network) override;
+  std::string GetChainId() const;
   void GetChainId(
       mojom::EthJsonRpcController::GetChainIdCallback callback) override;
   void GetBlockTrackerUrl(
