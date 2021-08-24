@@ -32,6 +32,7 @@ import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.settings.BraveStatsPreferences;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -170,8 +171,10 @@ public class BraveMainPreferencesBase
     private void rearrangePreferenceOrders() {
         int firstSectionOrder = 0;
 
-        if (BraveVpnUtils.shouldShowVpnCalloutSettingsView()
-                && !BraveVpnUtils.isSubscriptionPurchased()) {
+        if (BraveVpnPrefUtils.isBraveVpnBooleanPref(
+                    BraveVpnPrefUtils.PREF_BRAVE_VPN_CALLOUT_SETTINGS, true)
+                && !BraveVpnPrefUtils.isBraveVpnBooleanPref(
+                        BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false)) {
             findPreference(PREF_BRAVE_VPN_CALLOUT).setOrder(firstSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);

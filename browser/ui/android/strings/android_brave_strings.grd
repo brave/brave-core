@@ -2131,6 +2131,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_VPN_PROFILE_IS_NOT_CREATED" desc="Brave VPN profile error text">
       Vpn profile is not created. Creating a new profile.
     </message>
+    <message name="IDS_FAIL_TO_GET_SERVER_LOCATIONS" desc="Brave VPN error text">
+      Fail to get server location. Please try again later.
+    </message>
     <message name="IDS_VPN_HOSTNAME" desc="Brave Vpn support text">
       VPN Hostname
     </message>

@@ -23,6 +23,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.about_settings.AboutChromeSettings;
 import org.chromium.chrome.browser.about_settings.AboutSettingsBridge;
+import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 
 import java.util.TimeZone;
@@ -47,7 +48,9 @@ public class BraveVpnSupportActivity extends AppCompatActivity {
                 StringBuilder bodyText =
                         new StringBuilder("#### Please do not edit any information below ####\n");
                 if (vpnHostnameSwitch.isChecked()) {
-                    bodyText.append("\n\nVPN Hostname : " + BraveVpnUtils.getHostname());
+                    bodyText.append("\n\nVPN Hostname : "
+                            + BraveVpnPrefUtils.getBraveVpnStringPref(
+                                    BraveVpnPrefUtils.PREF_BRAVE_VPN_HOSTNAME));
                 }
                 if (subscriptionTypeSwitch.isChecked()) {
                     bodyText.append("\n\nSubscription Type : Yearly Subscription");

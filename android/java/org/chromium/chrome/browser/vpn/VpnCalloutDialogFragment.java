@@ -23,6 +23,7 @@ import androidx.fragment.app.DialogFragment;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
@@ -64,7 +65,7 @@ public class VpnCalloutDialogFragment extends DialogFragment implements View.OnC
         ImageView btnClose = view.findViewById(R.id.modal_close);
         btnClose.setOnClickListener(this);
 
-        BraveVpnUtils.setShowVpnCalloutView();
+        BraveVpnPrefUtils.setBraveVpnBooleanPref(BraveVpnPrefUtils.PREF_BRAVE_VPN_CALLOUT, false);
     }
 
     @Override

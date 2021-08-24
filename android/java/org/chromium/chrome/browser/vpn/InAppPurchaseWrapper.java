@@ -26,6 +26,7 @@ import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 
 import org.chromium.base.Log;
+import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
 
@@ -121,7 +122,8 @@ public class InAppPurchaseWrapper {
         if (!purchase.isAcknowledged()) {
             billingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
                 if (billingResult.getResponseCode() == OK) {
-                    BraveVpnUtils.setSubscriptionPurchased();
+                    BraveVpnPrefUtils.setBraveVpnBooleanPref(
+                            BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, true);
                     Log.e("BraveVPN", "Subscription consumed");
                     BraveVpnUtils.openBraveVpnProfileActivity(context);
                     Toast.makeText(context, "Subscription successfully consumed", Toast.LENGTH_LONG)
@@ -133,7 +135,8 @@ public class InAppPurchaseWrapper {
                 }
             });
         } else {
-            BraveVpnUtils.setSubscriptionPurchased();
+            BraveVpnPrefUtils.setBraveVpnBooleanPref(
+                    BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, true);
         }
     }
 

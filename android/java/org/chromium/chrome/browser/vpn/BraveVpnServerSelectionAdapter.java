@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BraveVpnServerSelectionPreferences.OnServerRegionSelection;
+import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class BraveVpnServerSelectionAdapter
         final VpnServerRegion vpnServerRegion = vpnServerRegions.get(position);
         if (vpnServerRegion != null) {
             holder.serverText.setText(vpnServerRegion.getNamePretty());
-            if (BraveVpnUtils.getServerRegion(PREF_SERVER_CHANGE_LOCATION)
+            if (BraveVpnPrefUtils.getServerRegion(PREF_SERVER_CHANGE_LOCATION)
                             .equals(vpnServerRegion.getName())) {
                 holder.serverText.setCompoundDrawablesWithIntrinsicBounds(
                         0, 0, R.drawable.ic_server_selection_check, 0);

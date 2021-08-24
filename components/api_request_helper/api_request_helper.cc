@@ -66,6 +66,8 @@ void APIRequestHelper::OnResponse(
     SimpleURLLoaderList::iterator iter,
     ResultCallback callback,
     const std::unique_ptr<std::string> response_body) {
+  LOG(ERROR) << "BraveVPN"
+             << "response_body : " << response_body;
   auto* loader = iter->get();
   auto response_code = -1;
   base::flat_map<std::string, std::string> headers;
@@ -79,6 +81,8 @@ void APIRequestHelper::OnResponse(
       while (headers_list->EnumerateHeaderLines(&iter, &key, &value)) {
         key = base::ToLowerASCII(key);
         headers[key] = value;
+        LOG(ERROR) << "BraveVPN"
+                   << "headers : " << key << " : " << value;
       }
     }
   }

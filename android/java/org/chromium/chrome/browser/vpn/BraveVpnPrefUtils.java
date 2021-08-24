@@ -86,4 +86,11 @@ public class BraveVpnPrefUtils {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         return sharedPreferences.getString(serverRegionPref, "automatic");
     }
+
+    public static void setServerRegion(String serverRegionPref, String newValue) {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putString(serverRegionPref, newValue);
+        sharedPreferencesEditor.apply();
+    }
 }

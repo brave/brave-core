@@ -114,7 +114,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
             @Override
             public void onClick(View v) {
                 InAppPurchaseWrapper.getInstance().purchase(
-                        BraveVpnPlansActivity.this, monthlySkuDetails);
+                        BraveVpnPlansActivity.this, yearlySkuDetails);
             }
         });
 

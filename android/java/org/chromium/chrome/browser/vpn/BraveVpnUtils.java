@@ -11,12 +11,12 @@ import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.Ikev2VpnProfile;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
-import android.net.VpnManager;
+// import android.content.SharedPreferences;
+// import android.net.ConnectivityManager;
+// import android.net.Ikev2VpnProfile;
+// import android.net.NetworkCapabilities;
+// import android.net.NetworkInfo;
+// import android.net.VpnManager;
 import android.os.Build;
 import android.util.Pair;
 
@@ -26,7 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import org.chromium.base.ContextUtils;
+// import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -41,74 +41,76 @@ public class BraveVpnUtils {
     public static final int MONTHLY_SUBSCRIPTION = 1;
     public static final int YEARLY_SUBSCRIPTION = 2;
 
-    private static final String PREF_BRAVE_VPN_CALLOUT = "brave_vpn_callout";
-    private static final String PREF_BRAVE_VPN_CALLOUT_SETTINGS = "brave_vpn_callout_settings";
-    private static final String PREF_BRAVE_SUBSCRIPTION_PURCHASE = "brave_subscription_purchase";
-    private static final String PREF_BRAVE_VPN_HOSTNAME = "brave_vpn_hostname";
+    // private static final String PREF_BRAVE_VPN_CALLOUT = "brave_vpn_callout";
+    // private static final String PREF_BRAVE_VPN_CALLOUT_SETTINGS = "brave_vpn_callout_settings";
+    // private static final String PREF_BRAVE_SUBSCRIPTION_PURCHASE = "brave_subscription_purchase";
+    // private static final String PREF_BRAVE_VPN_HOSTNAME = "brave_vpn_hostname";
 
     public static final int BRAVE_VPN_NOTIFICATION_ID = 36;
 
+    public static boolean isServerLocationChanged = false;
+
     public static List<VpnServerRegion> vpnServerRegions = new ArrayList<>();
 
-    public static boolean shouldShowVpnCalloutView() {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        return sharedPreferences.getBoolean(PREF_BRAVE_VPN_CALLOUT, true);
-    }
+    // public static boolean shouldShowVpnCalloutView() {
+    //     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+    //     return sharedPreferences.getBoolean(PREF_BRAVE_VPN_CALLOUT, true);
+    // }
 
-    public static void setShowVpnCalloutView() {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_CALLOUT, false);
-        sharedPreferencesEditor.apply();
-    }
+    // public static void setShowVpnCalloutView() {
+    //     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+    //     SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+    //     sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_CALLOUT, false);
+    //     sharedPreferencesEditor.apply();
+    // }
 
-    public static boolean isSubscriptionPurchased() {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        return sharedPreferences.getBoolean(PREF_BRAVE_SUBSCRIPTION_PURCHASE, false);
-    }
+    // public static boolean isSubscriptionPurchased() {
+    //     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+    //     return sharedPreferences.getBoolean(PREF_BRAVE_SUBSCRIPTION_PURCHASE, false);
+    // }
 
-    public static void setSubscriptionPurchased() {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_BRAVE_SUBSCRIPTION_PURCHASE, true);
-        sharedPreferencesEditor.apply();
-    }
+    // public static void setSubscriptionPurchased() {
+    //     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+    //     SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+    //     sharedPreferencesEditor.putBoolean(PREF_BRAVE_SUBSCRIPTION_PURCHASE, true);
+    //     sharedPreferencesEditor.apply();
+    // }
 
-    public static boolean shouldShowVpnCalloutSettingsView() {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        return sharedPreferences.getBoolean(PREF_BRAVE_VPN_CALLOUT_SETTINGS, true);
-    }
+    // public static boolean shouldShowVpnCalloutSettingsView() {
+    //     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+    //     return sharedPreferences.getBoolean(PREF_BRAVE_VPN_CALLOUT_SETTINGS, true);
+    // }
 
-    public static void setShowVpnCalloutSettingsView() {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_CALLOUT_SETTINGS, false);
-        sharedPreferencesEditor.apply();
-    }
+    // public static void setShowVpnCalloutSettingsView() {
+    //     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+    //     SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+    //     sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_CALLOUT_SETTINGS, false);
+    //     sharedPreferencesEditor.apply();
+    // }
 
-    public static void setHostname(String hostName) {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_HOSTNAME, hostName);
-        sharedPreferencesEditor.apply();
-    }
+    // public static void setHostname(String hostName) {
+    //     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+    //     SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+    //     sharedPreferencesEditor.putString(PREF_BRAVE_VPN_HOSTNAME, hostName);
+    //     sharedPreferencesEditor.apply();
+    // }
 
-    public static String getHostname() {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        return sharedPreferences.getString(PREF_BRAVE_VPN_HOSTNAME, "");
-    }
+    // public static String getHostname() {
+    //     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+    //     return sharedPreferences.getString(PREF_BRAVE_VPN_HOSTNAME, "");
+    // }
 
-    public static String getServerRegion(String serverRegionPref) {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        return sharedPreferences.getString(serverRegionPref, "automatic");
-    }
+    // public static String getServerRegion(String serverRegionPref) {
+    //     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+    //     return sharedPreferences.getString(serverRegionPref, "automatic");
+    // }
 
-    public static void setServerRegion(String serverRegionPref, String newValue) {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putString(serverRegionPref, newValue);
-        sharedPreferencesEditor.apply();
-    }
+    // public static void setServerRegion(String serverRegionPref, String newValue) {
+    //     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+    //     SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+    //     sharedPreferencesEditor.putString(serverRegionPref, newValue);
+    //     sharedPreferencesEditor.apply();
+    // }
 
     public static boolean isBraveVpnFeatureEnable() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
