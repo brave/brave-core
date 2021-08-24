@@ -253,13 +253,14 @@ std::string EthTxStateManager::GetNetworkId() const {
       continue;
     return network.subdomain;
   }
-  auto custom_chains = GetAllCustomChains(prefs_);
+  std::vector<mojom::EthereumChainPtr> custom_chains;
+  GetAllCustomChains(prefs_, &custom_chains);
   std::string id;
   for (const auto& network : custom_chains) {
-    if (network.chain_id != chain_id_)
+    if (network->chain_id != chain_id_)
       continue;
-    if (network.rpc_urls.size()) {
-      id = GURL(network.rpc_urls.front()).host();
+    if (network->rpc_urls.size()) {
+      id = GURL(network->rpc_urls.front()).host();
     } else {
       id = chain_id_;
     }

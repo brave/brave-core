@@ -13,8 +13,6 @@
 
 namespace brave_wallet {
 
-std::string ParseRequestMethodName(const std::string& json);
-bool ValueToEthereumChain(const base::Value& value, EthereumChain* result);
 bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num);
 // Returns the balance of the account of given address.
 bool ParseEthGetBalance(const std::string& json, std::string* hex_balance);
@@ -26,6 +24,7 @@ bool ParseEthCall(const std::string& json, std::string* result);
 bool ParsePayload(const std::string& json,
                   const std::string& path,
                   base::Value* result);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_RESPONSE_PARSER_H_

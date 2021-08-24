@@ -292,6 +292,11 @@ function Container (props: Props) {
       networkPayload: networkPayload
     })
   }
+  const onNetworkLearnMore = () => {
+    chrome.tabs.create({
+      url: 'https://support.brave.com/'
+    }).catch((e) => { console.error(e) })
+  }
 
   const onRejectTransaction = () => {
     // Logic here to Reject a Transaction
@@ -387,6 +392,7 @@ function Container (props: Props) {
         <AllowAddNetworkPanel
           onApprove={onApproveAddNetwork}
           onCancel={onCancelAddNetwork}
+          onLearnMore={onNetworkLearnMore}
           networkPayload={networkPayload}
         />
       </SignContainer>

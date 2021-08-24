@@ -17,6 +17,7 @@ interface BraveWalletProvider {
   Init(pending_remote<EventsListener> events_listener);
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
   RequestEthereumPermissions() => (bool success, array<string> accounts);
+  AddEthereumChain(array<EthereumChain> chains) => (int32 http_code, string response, map<string, string> headers);
   GetChainId() => (string chain_id);
   GetAllowedAccounts() => (bool success, array<string> accounts);
 };
@@ -58,7 +59,7 @@ interface PanelHandler {
   CloseUI();
 
   AddEthereumChainApproved(string network, int32 tab_id);
-  AddEthereumChainCanceled(string EthereumChain, int32 tab_id);
+  AddEthereumChainCanceled(string chain, int32 tab_id);
 
   ConnectToSite(array<string> accounts, string origin, int32 tab_id);
   CancelConnectToSite(string origin, int32 tab_id);
@@ -211,7 +212,7 @@ interface SwapController {
 
 struct KnownNetwork {
   string chain_id;
-  string chainName;
+  string chain_name;
   string subdomain;
   string block_tracker_url;
 };
@@ -234,7 +235,7 @@ struct TxData1559 {
   string chain_id;
   string max_priority_fee_per_gas;
   string max_fee_per_gas;
-}
+};
 
 struct NativeCurrency {
   string symbol;
@@ -243,20 +244,20 @@ struct NativeCurrency {
 };
 
 struct EthereumChain {
-  string chainId;
-  string chainName;
-  array<string>? blockExplorerUrls;
-  array<string>? iconUrls;
-  array<string> rpcUrls;
+  string chain_id;
+  string chain_name;
+  array<string>? block_explorer_urls;
+  array<string>? icon_urls;
+  array<string> rpc_urls;
   NativeCurrency? currency;
 };
 
 interface EthJsonRpcController {
   SetNetwork(string chain_id);
   GetAllNetworks() => (array<EthereumChain> networks);
-  GetChainId() => (string chainId);
-  GetBlockTrackerUrl() => (string blockTrackerUrl);
-  GetNetworkUrl() => (string networkUrl);
+  GetChainId() => (string chain_id);
+  GetBlockTrackerUrl() => (string block_tracker_url);
+  GetNetworkUrl() => (string network_url);
   GetBalance(string address) => (bool success, string balance);
   GetERC20TokenBalance(string contract,
                        string address) => (bool success, string balance);

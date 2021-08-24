@@ -33,13 +33,15 @@ export interface Props {
   networkPayload: EthereumChain
   onCancel: () => void
   onApprove: () => void
+  onLearnMore: () => void
 }
 
 function AllowAddNetworkPanel (props: Props) {
   const {
     networkPayload,
     onCancel,
-    onApprove
+    onApprove,
+    onLearnMore
   } = props
   const rpcUrl = networkPayload.rpcUrls ? (new URL(networkPayload.rpcUrls[0])).hostname : ''
   const iconUrl = networkPayload.iconUrls ? networkPayload.iconUrls[0] : ''
@@ -60,7 +62,8 @@ function AllowAddNetworkPanel (props: Props) {
         <FavIcon src={iconUrl} />
         <URLText>{rpcUrl}</URLText>
         <PanelTitle>{locale.allowAddNetworkTitle}</PanelTitle>
-        <Description>{locale.allowAddNetworkDescription} <DetailsButton>{locale.allowAddNetworkLearnMoreButton}</DetailsButton></Description>
+        <Description>{locale.allowAddNetworkDescription}
+        <DetailsButton onClick={onLearnMore}>{locale.allowAddNetworkLearnMoreButton}</DetailsButton></Description>
         <MessageBox>
           <MessageBoxColumn>
             <NetworkTitle>{locale.allowAddNetworkName}</NetworkTitle>

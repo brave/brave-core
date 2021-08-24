@@ -324,7 +324,7 @@ TEST_F(EthTxStateManagerUnitTest, SwitchNetwork) {
   EXPECT_EQ(tx_state_manager.GetTx("001"), nullptr);
   tx_state_manager.AddOrUpdateTx(meta);
 
-  rpc_controller_->SetNetwork("localhost");
+  rpc_controller_->SetNetwork("0x539");
   // Wait for network info
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(tx_state_manager.GetTx("001"), nullptr);
