@@ -7,10 +7,12 @@
 
 #include <utility>
 
+#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+
 VPNPanelHandler::VPNPanelHandler(
     mojo::PendingReceiver<brave_vpn::mojom::PanelHandler> receiver,
     ui::MojoBubbleWebUIController* webui_controller,
-    BraveVpnService* service)
+    BraveVpnServiceDesktop* service)
     : receiver_(this, std::move(receiver)),
       webui_controller_(webui_controller),
       service_(service) {}

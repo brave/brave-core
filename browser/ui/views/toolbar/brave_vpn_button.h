@@ -8,11 +8,13 @@
 
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
-#include "brave/components/brave_vpn/brave_vpn_service.h"
+#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "ui/base/metadata/metadata_header_macros.h"
-class BraveVPNButton : public ToolbarButton, public BraveVpnService::Observer {
+
+class BraveVPNButton : public ToolbarButton,
+                       public BraveVpnServiceDesktop::Observer {
  public:
   METADATA_HEADER(BraveVPNButton);
 
@@ -37,8 +39,9 @@ class BraveVPNButton : public ToolbarButton, public BraveVpnService::Observer {
   void OnButtonPressed(const ui::Event& event);
   void ShowBraveVPNPanel();
 
-  BraveVpnService* service_ = nullptr;
-  base::ScopedObservation<BraveVpnService, BraveVpnService::Observer>
+  BraveVpnServiceDesktop* service_ = nullptr;
+  base::ScopedObservation<BraveVpnServiceDesktop,
+                          BraveVpnServiceDesktop::Observer>
       observation_{this};
   WebUIBubbleManagerT<VPNPanelUI> webui_bubble_manager_;
 };

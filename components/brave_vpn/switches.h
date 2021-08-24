@@ -13,7 +13,7 @@ namespace switches {
 // Value should be "connection-name:host-name:user-name:password".
 constexpr char kBraveVPNTestCredentials[] = "brave-vpn-test-credentials";
 // Use for simulation instead of calling os platform apis.
-constexpr char kBraveVPNSimulation[] = "brave-vpn-simulation";
+constexpr char kBraveVPNSimulation[] = "brave-vpn-simulate";
 
 }  // namespace switches
 
