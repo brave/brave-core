@@ -8,7 +8,9 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 
+#include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
 #include "bat/ads/internal/timer.h"
@@ -24,11 +26,12 @@ class AdTransfer {
   void AddObserver(AdTransferObserver* observer);
   void RemoveObserver(AdTransferObserver* observer);
 
-  void MaybeTransferAd(const int32_t tab_id, const std::string& url);
+  void set_last_clicked_ad(const AdInfo& ad) { last_clicked_ad_ = ad; }
+
+  void MaybeTransferAd(const int32_t tab_id,
+                       const std::vector<std::string>& redirect_chain);
 
   void Cancel(const int32_t tab_id);
-
-  void SetLastClickedAd(const AdInfo& ad);
 
  private:
   base::ObserverList<AdTransferObserver> observers_;
@@ -39,15 +42,15 @@ class AdTransfer {
 
   AdInfo last_clicked_ad_;
 
-  void clear_last_clicked_ad();
+  void TransferAd(const int32_t tab_id,
+                  const std::vector<std::string>& redirect_chain);
+  void OnTransferAd(const int32_t tab_id,
+                    const std::vector<std::string>& redirect_chain);
 
-  void TransferAd(const int32_t tab_id, const std::string& url);
-
-  void OnTransferAd(const int32_t tab_id, const std::string& url);
-
-  void NotifyAdTransfer(const AdInfo& ad) const;
-
-  void NotifyAdTransferFailed(const AdInfo& ad) const;
+  void NotifyWillTransferAd(const AdInfo& ad, const base::Time& time) const;
+  void NotifyDidTransferAd(const AdInfo& ad) const;
+  void NotifyCancelledAdTransfer(const AdInfo& ad, const int32_t tab_id) const;
+  void NotifyFailedToTransferAd(const AdInfo& ad) const;
 };
 
 }  // namespace ads

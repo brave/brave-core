@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_URL_UTIL_H_
 
 #include <string>
+#include <vector>
 
 namespace ads {
 
@@ -16,7 +17,10 @@ bool DoesUrlHaveSchemeHTTPOrHTTPS(const std::string& url);
 
 std::string GetHostFromUrl(const std::string& url);
 
-bool SameDomainOrHost(const std::string& url1, const std::string& url2);
+bool SameDomainOrHost(const std::string& lhs, const std::string& rhs);
+
+bool DomainOrHostExists(const std::vector<std::string>& urls,
+                        const std::string& url);
 
 }  // namespace ads
 
