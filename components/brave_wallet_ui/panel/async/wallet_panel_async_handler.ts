@@ -104,4 +104,8 @@ handler.on(PanelActions.restoreWallet.getType(), async (store) => {
   chrome.tabs.create({ url: 'chrome://wallet#restore' }).catch((e) => { console.error(e) })
 })
 
+handler.on(PanelActions.openWalletSettings.getType(), async (store) => {
+  chrome.tabs.create({ url: 'chrome://settings/wallet' }).catch((e) => { console.error(e) })
+})
+
 export default handler.middleware

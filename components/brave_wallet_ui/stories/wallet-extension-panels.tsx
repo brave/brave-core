@@ -412,6 +412,10 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     }
   }
 
+  const onLockWallet = () => {
+    setWalletLocked(true)
+  }
+
   const onSelectPresetAmount = (percent: number) => {
     const amount = Number(selectedAccount.balance) * percent
     setFromAmount(amount.toString())
@@ -424,6 +428,10 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
 
   const onSubmitSend = () => {
     alert('Will submit Send')
+  }
+
+  const onOpenSettings = () => {
+    alert('Will go to Wallet Settings')
   }
 
   return (
@@ -444,6 +452,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
               isConnected={walletConnected}
               connectAction={toggleConnected}
               navAction={navigateTo}
+              onLockWallet={onLockWallet}
+              onOpenSettings={onOpenSettings}
             />
           ) : (
             <>

@@ -207,6 +207,9 @@ function Container (props: Props) {
     props.walletActions.unlockWallet({ password: inputValue })
     setInputValue('')
   }
+  const onLockWallet = () => {
+    props.walletActions.lockWallet()
+  }
   const handlePasswordChanged = (value: string) => {
     setInputValue(value)
     if (hasIncorrectPassword) {
@@ -291,6 +294,10 @@ function Container (props: Props) {
 
   const onConfirmTransaction = () => {
     // Logic here to Confirm a Transaction
+  }
+
+  const onOpenSettings = () => {
+    props.walletPanelActions.openWalletSettings()
   }
 
   // Example of a ERC20 Spend Payload to be passed to the
@@ -553,6 +560,8 @@ function Container (props: Props) {
         isConnected={walletConnected}
         connectAction={toggleConnected}
         navAction={navigateTo}
+        onLockWallet={onLockWallet}
+        onOpenSettings={onOpenSettings}
       />
     </>)
 

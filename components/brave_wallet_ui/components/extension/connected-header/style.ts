@@ -21,6 +21,7 @@ export const HeaderWrapper = styled.div`
   border-bottom: 1px solid rgba(255,255,255,0.2);
   padding: 0px 10px;
   max-width: 300px;
+  position: relative;
 `
 
 export const ExpandIcon = styled.button`

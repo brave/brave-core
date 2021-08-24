@@ -42,13 +42,30 @@ export interface Props {
   isConnected: boolean
   connectAction: () => void
   navAction: (path: PanelTypes) => void
+  onLockWallet: () => void
+  onOpenSettings: () => void
 }
 
 const ConnectedPanel = (props: Props) => {
-  const { connectAction, isConnected, navAction, selectedAccount, selectedNetwork } = props
+  const { onLockWallet, onOpenSettings, connectAction, isConnected, navAction, selectedAccount, selectedNetwork } = props
+  const [showMore, setShowMore] = React.useState<boolean>(false)
 
   const navigate = (path: PanelTypes) => () => {
     navAction(path)
+  }
+
+  const onExpand = () => {
+    navAction('expanded')
+  }
+
+  const onShowMore = () => {
+    setShowMore(true)
+  }
+
+  const onHideMore = () => {
+    if (showMore) {
+      setShowMore(false)
+    }
   }
 
   const onCopyToClipboard = async () => {
@@ -64,13 +81,19 @@ const ConnectedPanel = (props: Props) => {
   }, [selectedAccount.address])
 
   return (
-    <StyledWrapper panelBackground={bg}>
-      <ConnectedHeader action={navAction} />
+    <StyledWrapper onClick={onHideMore} panelBackground={bg}>
+      <ConnectedHeader
+        onExpand={onExpand}
+        onClickLock={onLockWallet}
+        onClickSetting={onOpenSettings}
+        onClickMore={onShowMore}
+        showMore={showMore}
+      />
       <CenterColumn>
         <StatusRow>
           <OvalButton onClick={connectAction}>
             {isConnected ? (<ConnectedIcon />) : (<NotConnectedIcon />)}
-            <OvalButtonText>{isConnected ? 'Connected' : 'Not Connected'}</OvalButtonText>
+            <OvalButtonText>{isConnected ? locale.panelConnected : locale.panelNotConnected}</OvalButtonText>
           </OvalButton>
           <OvalButton onClick={navigate('networks')}>
             <OvalButtonText>{NetworkOptions[selectedNetwork].abbr}</OvalButtonText>
