@@ -34,11 +34,13 @@ import { filterAppList } from '../utils/filter-app-list'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import LockPanel from '../components/extension/lock-panel'
 import {
+  StyledExtensionWrapperLonger,
   StyledExtensionWrapper,
   ScrollContainer,
   SelectContainer
 } from './style'
 import { AssetOptions } from '../options/asset-options'
+import { mockNetworks } from './mock-data/mock-networks'
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -119,7 +121,7 @@ export const _ConfirmTransaction = () => {
   return (
     <StyledExtensionWrapper>
       <ConfirmTransactionPanel
-        selectedNetwork={selectedNetwork}
+        selectedNetwork={mockNetworks[0]}
         onConfirm={onConfirmTransaction}
         onReject={onRejectTransaction}
         selectedAccount={accounts[0]}
@@ -136,16 +138,6 @@ _ConfirmTransaction.story = {
 
 export const _AllowAddNetwork = () => {
 
-  const networkPayload = {
-    siteUrl: 'https://app.compound.finance',
-    contractAddress: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-    chainInfo: {
-      chainId: '',
-      name: 'BSC (Binance Smart Chain)',
-      url: 'https://bsc.binance.com'
-    }
-  }
-
   const onApprove = () => {
     alert('Approved Adding Network')
   }
@@ -154,15 +146,19 @@ export const _AllowAddNetwork = () => {
     alert('Canceled Adding Network')
   }
 
+  const onLearnMore = () => {
+    alert('Will nav to Learn More')
+  }
+
   return (
-    <StyledExtensionWrapper>
+    <StyledExtensionWrapperLonger>
       <AllowAddNetworkPanel
-        selectedNetwork={selectedNetwork}
         onApprove={onApprove}
         onCancel={onCancel}
-        networkPayload={networkPayload}
+        networkPayload={mockNetworks[0]}
+        onLearnMore={onLearnMore}
       />
-    </StyledExtensionWrapper>
+    </StyledExtensionWrapperLonger>
   )
 }
 
@@ -190,7 +186,7 @@ export const _AllowSpend = () => {
   return (
     <StyledExtensionWrapper>
       <AllowSpendPanel
-        selectedNetwork={selectedNetwork}
+        selectedNetwork={mockNetworks[0]}
         onConfirm={onConfirm}
         onReject={onReject}
         spendPayload={spendPayload}
@@ -221,7 +217,7 @@ export const _SignTransaction = () => {
     <StyledExtensionWrapper>
       <SignPanel
         selectedAccount={accounts[0]}
-        selectedNetwork={selectedNetwork}
+        selectedNetwork={mockNetworks[0]}
         message='To avoid digital cat burglars, sign below to authenticate with CryptoKitties.'
         onCancel={onCancel}
         onSign={onSign}
@@ -317,7 +313,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }
 
   const onSubmitBuy = () => {
-    const url = BuyAssetUrl(selectedNetwork, selectedWyreAsset, selectedAccount, buyAmount)
+    const url = BuyAssetUrl(mockNetworks[0].chainId, selectedWyreAsset, selectedAccount, buyAmount)
     if (url) {
       window.open(url, '_blank')
     }
@@ -333,7 +329,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     setSelectedPanel('main')
   }
 
-  const onSelectNetwork = (network: Network) => () => {
+  const onSelectNetwork = (network: EthereumChain) => () => {
     setSelectedNetwork(network)
     setSelectedPanel('main')
   }
@@ -478,7 +474,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
               {selectedPanel === 'networks' &&
                 <SelectContainer>
                   <SelectNetwork
-                    networks={networkList}
+                    networks={mockNetworks}
                     onBack={onBack}
                     onSelectNetwork={onSelectNetwork}
                   />

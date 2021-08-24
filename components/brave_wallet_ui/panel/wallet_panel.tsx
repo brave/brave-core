@@ -20,6 +20,7 @@ function App () {
   React.useEffect(() => {
     chrome.braveTheme.getBraveThemeType(setInitialThemeType)
   }, [])
+  const state = store.getState().panel
   return (
     <Provider store={store}>
       {initialThemeType &&
@@ -28,7 +29,7 @@ function App () {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <PanelWrapper>
+          <PanelWrapper isLonger={state.selectedPanel === 'addEthereumChain'}>
             <Container />
           </PanelWrapper>
         </BraveCoreThemeProvider>

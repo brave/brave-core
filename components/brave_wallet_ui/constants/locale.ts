@@ -250,6 +250,9 @@ const locale = {
   allowAddNetworkUrl: 'Network URL',
   allowAddNetworkDetailsButton: 'View all details',
   allowAddNetworkApproveButton: 'Approve',
+  allowAddNetworkChainID: 'Chain ID',
+  allowAddNetworkCurrencySymbol: 'Currency Symbol',
+  allowAddNetworkExplorer: 'Block Explorer URL',
 
   // Confirm Transaction Panel
   confirmTransactionTotal: 'Total',

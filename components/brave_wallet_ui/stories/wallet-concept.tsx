@@ -44,6 +44,7 @@ import {
   HardwareWalletAccount,
   HardwareWalletConnectOpts
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
+import { mockNetworks } from './mock-data/mock-networks'
 export default {
   title: 'Wallet/Desktop',
   argTypes: {
@@ -340,7 +341,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   }
 
   const onSubmitBuy = (asset: AssetOptionType) => {
-    const url = BuyAssetUrl(selectedNetwork, asset, selectedAccount, buyAmount)
+    const url = BuyAssetUrl(mockNetworks[0].chainId, asset, selectedAccount, buyAmount)
     if (url) {
       window.open(url, '_blank')
     }
@@ -513,6 +514,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onSelectNetwork={onSelectNetwork}
                               isFetchingPortfolioPriceHistory={false}
                               selectedPortfolioTimeline={selectedTimeline}
+                              networkList={mockNetworks}
                             />
                           )}
                         </>
@@ -565,6 +567,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             onSetExchangeRate={onSetExchangeRate}
             onSelectSlippageTolerance={onSelectSlippageTolerance}
             onSelectPresetAmount={onSelectPresetAmount}
+            networkList={mockNetworks}
           />
         </WalletWidgetStandIn>
       }
