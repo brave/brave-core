@@ -60,11 +60,14 @@ export const applyAdblockCosmeticFilters = (tabId: number, frameId: number, url:
       for (const selector in resources.style_selectors) {
         styledStylesheet += selector + '{' + resources.style_selectors[selector].join(';') + ';}\n'
       }
+      // tslint wants a `catch` here, but adding it causes scriptlet injections
+      // to fail, even in the native cosmetic filtering backend.
+      // tslint:disable-next-line
       chrome.tabs.insertCSS(tabId, {
         code: styledStylesheet,
         cssOrigin: 'user',
         runAt: 'document_start'
-      }).catch((e) => { console.error(e) })
+      })
     }
 
     shieldsPanelActions.cosmeticFilterRuleExceptions(tabId, frameId, resources.exceptions, resources.injected_script || '', resources.generichide)
