@@ -9,8 +9,12 @@ export const MessageBox = styled.div`
   box-sizing: border-box;
   border-radius: 4px;
   width: 255px;
+  height: 136px;
   padding: 8px 14px;
   margin-bottom: 14px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
 `
 
 export const NetworkTitle = styled.span`
@@ -81,4 +85,13 @@ export const NetworkDetail = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
+`
+
+export const TabRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  width: 255px;
+  margin-bottom: 10px;
 `

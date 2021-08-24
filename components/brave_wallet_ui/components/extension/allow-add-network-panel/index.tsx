@@ -3,7 +3,7 @@ import { create } from 'ethereum-blockies'
 import { EthereumChain } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import locale from '../../../constants/locale'
-import { NavButton } from '../'
+import { NavButton, PanelTab } from '../'
 
 // Styled Components
 import {
@@ -14,7 +14,8 @@ import {
   ButtonRow,
   FavIcon,
   URLText,
-  NetworkDetail
+  NetworkDetail,
+  TabRow
 } from './style'
 
 import {
@@ -28,6 +29,8 @@ import {
   PanelTitle,
   TopRow
 } from '../shared-panel-styles'
+
+export type tabs = 'network' | 'details'
 
 export interface Props {
   networkPayload: EthereumChain
@@ -45,9 +48,15 @@ function AllowAddNetworkPanel (props: Props) {
   } = props
   const rpcUrl = networkPayload.rpcUrls ? (new URL(networkPayload.rpcUrls[0])).hostname : ''
   const iconUrl = networkPayload.iconUrls ? networkPayload.iconUrls[0] : ''
+  const [selectedTab, setSelectedTab] = React.useState<tabs>('network')
+
   const orb = React.useMemo(() => {
     return create({ seed: rpcUrl, size: 8, scale: 16 }).toDataURL()
   }, [rpcUrl])
+
+  const onSelectTab = (tab: tabs) => () => {
+    setSelectedTab(tab)
+  }
 
   return (
     <StyledWrapper>
@@ -62,8 +71,19 @@ function AllowAddNetworkPanel (props: Props) {
         <FavIcon src={iconUrl} />
         <URLText>{rpcUrl}</URLText>
         <PanelTitle>{locale.allowAddNetworkTitle}</PanelTitle>
-        <Description>{locale.allowAddNetworkDescription}
-        <DetailsButton onClick={onLearnMore}>{locale.allowAddNetworkLearnMoreButton}</DetailsButton></Description>
+        <Description>{locale.allowAddNetworkDescription} <DetailsButton onClick={onLearnMore}>{locale.allowAddNetworkLearnMoreButton}</DetailsButton></Description>
+        <TabRow>
+          <PanelTab
+            isSelected={selectedTab === 'network'}
+            onSubmit={onSelectTab('network')}
+            text='Network'
+          />
+          <PanelTab
+            isSelected={selectedTab === 'details'}
+            onSubmit={onSelectTab('details')}
+            text='Details'
+          />
+        </TabRow>
         <MessageBox>
           <MessageBoxColumn>
             <NetworkTitle>{locale.allowAddNetworkName}</NetworkTitle>
@@ -73,7 +93,22 @@ function AllowAddNetworkPanel (props: Props) {
             <NetworkTitle>{locale.allowAddNetworkUrl}</NetworkTitle>
             <NetworkDetail>{rpcUrl}</NetworkDetail>
           </MessageBoxColumn>
-          <DetailsButton>{locale.allowAddNetworkDetailsButton}</DetailsButton>
+          {selectedTab === 'details' &&
+            <>
+              <MessageBoxColumn>
+                <NetworkTitle>{locale.allowAddNetworkChainID}</NetworkTitle>
+                <NetworkDetail>{Number(networkPayload.chainId)}</NetworkDetail>
+              </MessageBoxColumn>
+              <MessageBoxColumn>
+                <NetworkTitle>{locale.allowAddNetworkCurrencySymbol}</NetworkTitle>
+                <NetworkDetail>{networkPayload.currency?.symbol}</NetworkDetail>
+              </MessageBoxColumn>
+              <MessageBoxColumn>
+                <NetworkTitle>{locale.allowAddNetworkExplorer}</NetworkTitle>
+                <NetworkDetail>{networkPayload.blockExplorerUrls ? networkPayload.blockExplorerUrls[0] : ''}</NetworkDetail>
+              </MessageBoxColumn>
+            </>
+          }
         </MessageBox>
       </CenterColumn>
       <ButtonRow>
