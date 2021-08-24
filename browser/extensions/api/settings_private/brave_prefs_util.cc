@@ -25,6 +25,7 @@
 #include "components/browsing_data/core/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
+#include "components/search_engines/search_engines_pref_names.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
@@ -108,6 +109,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[brave_shields::prefs::kTwitterEmbedControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_shields::prefs::kLinkedInEmbedControlType] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+
+  // Search engine prefs
+  (*s_brave_allowlist)[prefs::kAddOpenSearchEngines] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
   // appearance prefs
