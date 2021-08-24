@@ -32,6 +32,7 @@ void ComponentInstaller::Register(RegisterCallback register_callback,
     "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
     "eeigpngbgcognadeebkilcpcaedhellh",  // Autofill States Data
     "gcmjkmgdlgnkkcocmoeiminaijmmjnii",  // Subresource Filter Rules
+    "imefjhfbkmcmebodilednhmaccmincoa",  // Client Side Phishing Detection
     "llkgjffcdpffmhiakmfcdcblohccpfmo",  // Origin Trials
     "ojhpjlocmbogdgmfpkhlaaeamibhnphh",  // Zxcvbn Data Dictionaries
     "gonpemdgkjcecdgbnaabipppbmgfggbe",  // First Party Sets

@@ -159,6 +159,7 @@ void BraveMainDelegate::PreSandboxStartup() {
 
 bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   BraveCommandLineHelper command_line(base::CommandLine::ForCurrentProcess());
+  command_line.AppendSwitch(switches::kDisableClientSidePhishingDetection);
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kEnableDomDistiller);
   command_line.AppendSwitch(switches::kNoPings);
