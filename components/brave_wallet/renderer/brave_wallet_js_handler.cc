@@ -14,6 +14,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "brave/components/brave_wallet/common/web3_provider_utils.h"
 #include "brave/components/brave_wallet/renderer/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "content/public/renderer/render_frame.h"
@@ -349,6 +350,22 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
     brave_wallet_provider_->RequestEthereumPermissions(base::BindOnce(
         &OnEthereumPermissionRequested, std::move(promise_resolver), isolate,
         std::move(context_old)));
+  } else if (method && *method == kAddEthereumChainMethod) {
+    const base::Value* params = out_dict->FindPath(kParams);
+    if (!params)
+      return v8::Local<v8::Promise>();
+
+    mojom::EthereumChain chain;
+    brave_wallet::ValueToEthereumChain(*params->GetList().begin(), &chain);
+
+    std::vector<mojom::EthereumChainPtr> chains_ptr;
+    chains_ptr.push_back(chain.Clone());
+
+    brave_wallet_provider_->AddEthereumChain(
+        std::move(chains_ptr),
+        base::BindOnce(&BraveWalletJSHandler::OnRequest, base::Unretained(this),
+                       std::move(promise_resolver), isolate,
+                       std::move(context_old)));
   } else {
     std::string formed_input;
     // Hardcode id to 1 as it is unused

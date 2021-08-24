@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
@@ -46,6 +47,8 @@ class BraveWalletProviderImpl final
                                     const std::vector<std::string>& accounts);
   void GetChainId(GetChainIdCallback callback) override;
   void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
+  void AddEthereumChain(std::vector<mojom::EthereumChainPtr> chains,
+                        RequestCallback callback) override;
   void OnGetAllowedAccounts(GetAllowedAccountsCallback callback,
                             bool success,
                             const std::vector<std::string>& accounts);
@@ -55,14 +58,13 @@ class BraveWalletProviderImpl final
   void ChainChangedEvent(const std::string& chain_id) override;
 
  private:
-  bool OnAddEthereumChainRequest(const std::string& json_payload,
-                                 RequestCallback callback);
-  void OnChainAddedResult(RequestCallback callback, const std::string& result);
+  void OnChainApprovalResult(size_t hash, const std::string& error);
   void OnConnectionError();
 
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
   mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
+  std::unordered_map<size_t, AddEthereumChainCallback> chain_callbacks_;
   mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
   PrefService* prefs_ = nullptr;
   base::WeakPtrFactory<BraveWalletProviderImpl> weak_factory_;

@@ -8,8 +8,8 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"

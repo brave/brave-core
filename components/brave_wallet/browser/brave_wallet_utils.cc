@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdlib>
 #include <sstream>
 #include <utility>
 
@@ -22,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/web3_provider_utils.h"
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "components/prefs/pref_service.h"
@@ -72,11 +74,11 @@ const brave_wallet::mojom::KnownNetwork kKnownNetworks[] = {
     {"0x3", "Ropsten Test Network", "ropsten", "https://ropsten.etherscan.io"},
     {"0x5", "Goerli Test Network", "ropsten", "https://goerli.etherscan.io"},
     {"0x2a", "Kovan Test Network", "kovan", "https://kovan.etherscan.io"},
-    {"localhost", "Localhost", "http://localhost:8545/", ""}};
+    {"0x539", "Localhost", "http://localhost:8545/", ""}};
 
 GURL GetKnownNetworkURL(const std::string& chain_id,
                         const std::string& subdomain) {
-  if (chain_id == "localhost") {
+  if (chain_id == "0x539") {
     return GURL(subdomain);
   }
 
@@ -87,43 +89,49 @@ GURL GetKnownNetworkURL(const std::string& chain_id,
                          subdomain.c_str(), GetInfuraProjectID().c_str()));
 }
 
-brave_wallet::EthereumChain GetKnownChain(const std::string& chain_id) {
-  brave_wallet::EthereumChain result;
+brave_wallet::mojom::EthereumChainPtr GetKnownChain(
+    const std::string& chain_id) {
+  brave_wallet::mojom::EthereumChain result;
   for (const auto& network : kKnownNetworks) {
     if (network.chain_id != chain_id)
       continue;
     result.chain_id = chain_id;
-    result.chain_name = network.chainName;
+    result.chain_name = network.chain_name;
     result.rpc_urls.push_back(
         GetKnownNetworkURL(chain_id, network.subdomain).spec());
-    result.block_explorer_urls.push_back(network.block_tracker_url);
-    return result;
+    result.block_explorer_urls =
+        std::vector<std::string>({network.block_tracker_url});
+    return result.Clone();
   }
-  return result;
+  return nullptr;
 }
 
 GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id) {
-  std::vector<brave_wallet::EthereumChain> custom_chains =
-      GetAllCustomChains(prefs);
+  std::vector<brave_wallet::mojom::EthereumChainPtr> custom_chains;
+  brave_wallet::GetAllCustomChains(prefs, &custom_chains);
   for (const auto& it : custom_chains) {
-    if (it.chain_id != chain_id)
+    if (it->chain_id != chain_id)
       continue;
-    if (it.rpc_urls.empty())
+    if (it->rpc_urls.empty())
       return GURL();
-    return GURL(it.rpc_urls[0]);
+    return GURL(it->rpc_urls.front());
   }
   return GURL();
 }
 
 }  // namespace
 
-std::vector<brave_wallet::EthereumChain> GetAllCustomChains(
-    PrefService* prefs) {
+void GetAllCustomChains(PrefService* prefs,
+                        std::vector<mojom::EthereumChainPtr>* result) {
   const base::Value* custom_networks_list =
       prefs->GetList(kBraveWalletCustomNetworks);
   if (!custom_networks_list)
-    return std::vector<brave_wallet::EthereumChain>();
-  return brave_wallet::ValueToEthereumChain(*custom_networks_list);
+    return;
+  for (auto& it : custom_networks_list->GetList()) {
+    mojom::EthereumChain chain;
+    brave_wallet::ValueToEthereumChain(it, &chain);
+    result->push_back(chain.Clone());
+  }
 }
 
 bool IsNativeWalletEnabled() {
@@ -483,78 +491,39 @@ void UpdateLastUnlockPref(PrefService* prefs) {
   prefs->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
 }
 
-std::vector<EthereumChain> ValueToEthereumChain(const base::Value& value) {
-  std::vector<EthereumChain> chains;
-  for (auto& it : value.GetList()) {
-    const base::DictionaryValue* params_dict;
-    it.GetAsDictionary(&params_dict);
-    if (!params_dict)
-      return chains;
-
-    EthereumChain chain;
-    if (!params_dict->GetString("chainId", &chain.chain_id))
-      return chains;
-
-    params_dict->GetString("chainName", &chain.chain_name);
-
-    const base::ListValue* explorerUrlsList;
-    if (params_dict->GetList("blockExplorerUrls", &explorerUrlsList)) {
-      for (const auto& entry : explorerUrlsList->GetList())
-        chain.block_explorer_urls.push_back(entry.GetString());
-    }
-
-    const base::ListValue* iconUrlsList;
-    if (params_dict->GetList("iconUrls", &iconUrlsList)) {
-      for (const auto& entry : iconUrlsList->GetList())
-        chain.icon_urls.push_back(entry.GetString());
-    }
-
-    const base::ListValue* rpcUrlsList;
-    if (params_dict->GetList("rpcUrls", &rpcUrlsList)) {
-      for (const auto& entry : rpcUrlsList->GetList())
-        chain.rpc_urls.push_back(entry.GetString());
-    }
-
-    const base::DictionaryValue* currency_dict;
-    if (params_dict->GetDictionary("nativeCurrency", &currency_dict)) {
-      currency_dict->GetString("name", &chain.currency.name);
-      currency_dict->GetString("symbol", &chain.currency.symbol);
-      chain.currency.decimals =
-          currency_dict->FindIntPath("decimals").value_or(0);
-    }
-    chains.push_back(std::move(chain));
-  }
-  return chains;
-}
-
-base::Value EthereumChainToValue(const EthereumChain& chainData) {
+base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain) {
   base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("chainId", chainData.chain_id);
-  dict.SetStringKey("chainName", chainData.chain_name);
+  dict.SetStringKey("chainId", chain->chain_id);
+  dict.SetStringKey("chainName", chain->chain_name);
 
   base::ListValue blockExplorerUrlsValue;
-  for (const auto& url : chainData.block_explorer_urls) {
-    blockExplorerUrlsValue.AppendString(url);
+  if (chain->block_explorer_urls) {
+    for (const auto& url : *chain->block_explorer_urls) {
+      blockExplorerUrlsValue.AppendString(url);
+    }
   }
   dict.SetKey("blockExplorerUrls", std::move(blockExplorerUrlsValue));
 
   base::ListValue iconUrlsValue;
-  for (const auto& url : chainData.icon_urls) {
-    iconUrlsValue.AppendString(url);
+  if (chain->icon_urls) {
+    for (const auto& url : *chain->icon_urls) {
+      iconUrlsValue.AppendString(url);
+    }
   }
   dict.SetKey("iconUrls", std::move(iconUrlsValue));
 
   base::ListValue rpcUrlsValue;
-  for (const auto& url : chainData.rpc_urls) {
+  for (const auto& url : chain->rpc_urls) {
     rpcUrlsValue.AppendString(url);
   }
   dict.SetKey("rpcUrls", std::move(rpcUrlsValue));
 
   base::DictionaryValue currency;
-  currency.SetString("name", chainData.currency.name);
-  currency.SetString("symbol", chainData.currency.symbol);
-  currency.SetInteger("decimals", chainData.currency.decimals);
-
+  if (chain->currency) {
+    currency.SetString("name", chain->currency->name);
+    currency.SetString("symbol", chain->currency->symbol);
+    currency.SetInteger("decimals", chain->currency->decimals);
+  }
   return dict;
 }
 
@@ -653,29 +622,27 @@ absl::optional<TransactionReceipt> ValueToTransactionReceipt(
   return tx_receipt;
 }
 
-std::vector<brave_wallet::EthereumChain> GetAllKnownChains() {
-  std::vector<brave_wallet::EthereumChain> result;
+void GetAllKnownChains(std::vector<mojom::EthereumChainPtr>* chains) {
   for (const auto& network : kKnownNetworks) {
-    result.push_back(GetKnownChain(network.chain_id));
+    chains->push_back(GetKnownChain(network.chain_id));
   }
-  return result;
 }
 
 GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id) {
-  auto known_network = GetKnownChain(chain_id);
-  auto network_url = known_network.rpc_urls.size()
-                         ? GURL(known_network.rpc_urls.front())
-                         : GURL();
-  if (!network_url.is_valid())
+  mojom::EthereumChainPtr known_network = GetKnownChain(chain_id);
+  if (!known_network)
     return GetCustomChainURL(prefs, chain_id);
-  return network_url;
+
+  if (known_network->rpc_urls.size())
+    return GURL(known_network->rpc_urls.front());
+
+  return GURL();
 }
 
-std::vector<EthereumChain> GetAllChains(PrefService* prefs) {
-  std::vector<EthereumChain> networks = GetAllKnownChains();
-  std::vector<EthereumChain> custom_chains = GetAllCustomChains(prefs);
-  networks.insert(networks.end(), custom_chains.begin(), custom_chains.end());
-  return networks;
+void GetAllChains(PrefService* prefs,
+                  std::vector<mojom::EthereumChainPtr>* result) {
+  GetAllKnownChains(result);
+  GetAllCustomChains(prefs, result);
 }
 
 }  // namespace brave_wallet

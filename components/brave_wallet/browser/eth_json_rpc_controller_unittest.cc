@@ -80,26 +80,27 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
 TEST_F(EthJsonRpcControllerUnitTest, SetNetwork) {
   EthJsonRpcController controller(shared_url_loader_factory(), prefs());
 
-  auto networks = brave_wallet::GetAllKnownChains();
+  std::vector<mojom::EthereumChainPtr> networks;
+  brave_wallet::GetAllKnownChains(&networks);
   for (const auto& network : networks) {
-    controller.SetNetwork(network.chain_id);
+    controller.SetNetwork(network->chain_id);
     controller.GetChainId(base::BindOnce(
         [](const std::string& expected_id, const std::string& chain_id) {
           EXPECT_EQ(chain_id, expected_id);
         },
-        network.chain_id));
+        network->chain_id));
     controller.GetNetworkUrl(base::BindOnce(
         [](const std::string& expected_url, const std::string& spec) {
           EXPECT_EQ(GURL(spec).GetOrigin(), GURL(expected_url).GetOrigin());
         },
-        network.rpc_urls.front()));
+        network->rpc_urls.front()));
   }
   base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(EthJsonRpcControllerUnitTest, ResolveENSDomain) {
   EthJsonRpcController controller(shared_url_loader_factory(), prefs());
-  controller.SetNetwork("localhost");
+  controller.SetNetwork("0x539");
   SetRegistrarResponse();
   base::RunLoop run;
   controller.EnsProxyReaderGetResolverAddress(

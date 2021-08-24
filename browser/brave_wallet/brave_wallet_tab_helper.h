@@ -11,13 +11,13 @@
 #include <unordered_map>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
 
 namespace content {
 class BrowserContext;
 class WebContents;
-
 }  // namespace content
 
 namespace brave_wallet {
@@ -34,8 +34,7 @@ class BraveWalletTabHelper
   void ShowBubble();
   void RequestUserApproval(const std::string& requestData,
                            RequestEthereumChainCallback callback);
-  void UserRequestCompleted(const std::string& requestData,
-                            const std::string& result);
+  void UserRequestCompleted(size_t hash, const std::string& result);
   void CloseBubble();
   bool IsShowingBubble();
   bool IsBubbleClosedForTesting();

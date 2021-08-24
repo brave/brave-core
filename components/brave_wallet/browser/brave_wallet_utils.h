@@ -95,15 +95,14 @@ base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
 absl::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value& value);
 
-base::Value EthereumChainToValue(const EthereumChain& chainData);
-std::vector<EthereumChain> ValueToEthereumChain(const base::Value& value);
-std::vector<EthereumChain> GetAllKnownChains();
-const std::vector<brave_wallet::mojom::KnownNetwork> GetAllKnownNetworks();
-std::vector<EthereumChain> GetAllCustomChains(PrefService* prefs);
-std::vector<EthereumChain> GetAllChains(PrefService* prefs);
+base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain);
+void GetAllKnownChains(std::vector<mojom::EthereumChainPtr>* chains);
+const std::vector<mojom::KnownNetwork> GetAllKnownNetworks();
+void GetAllCustomChains(PrefService* prefs,
+                        std::vector<mojom::EthereumChainPtr>* result);
+void GetAllChains(PrefService* prefs,
+                  std::vector<mojom::EthereumChainPtr>* result);
 GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id);
-
-// GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id);
 
 }  // namespace brave_wallet
 

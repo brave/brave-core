@@ -12,7 +12,8 @@ extern const char kConnectEvent[];
 extern const char kDisconnectEvent[];
 extern const char kChainChangedEvent[];
 extern const char kAccountsChangedEvent[];
-extern const char kAddEthereumChainRejectedResponse[];
+extern const char kJsonResponseAddEthereumChainSuccess[];
+extern const char kJsonResponseAddEthereumChainError[];
 extern const char kAddEthereumChainMethod[];
 extern const char kJsonResponseF[];
 
@@ -33,6 +34,7 @@ enum class ProviderErrors {
 constexpr char kEthAccounts[] = "eth_accounts";
 constexpr char kEthRequestAccounts[] = "eth_requestAccounts";
 constexpr char kMethod[] = "method";
+constexpr char kParams[] = "params";
 
 }  // namespace brave_wallet
 

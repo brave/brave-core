@@ -12,10 +12,13 @@
 #include "base/strings/stringprintf.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
+#include "components/grit/brave_components_strings.h"
+#include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/request_type.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
 #include "brave/browser/ui/brave_wallet/wallet_bubble_manager_delegate.h"
@@ -23,6 +26,7 @@
 
 namespace {
 
+#if !defined(OS_ANDROID) && !defined(OS_IOS)
 GURL GetAddEthereumChainPayloadWebUIURL(const GURL& webui_base_url,
                                         int32_t tab_id,
                                         const std::string& origin,
@@ -35,11 +39,12 @@ GURL GetAddEthereumChainPayloadWebUIURL(const GURL& webui_base_url,
   std::string query_str = base::JoinString(query_parts, "&");
   url::Replacements<char> replacements;
   replacements.SetQuery(query_str.c_str(), url::Component(0, query_str.size()));
-  std::string kConnectWithSite = "addEthereumChain";
-  replacements.SetRef(kConnectWithSite.c_str(),
-                      url::Component(0, kConnectWithSite.size()));
+  std::string kAddEthereumChain = "addEthereumChain";
+  replacements.SetRef(kAddEthereumChain.c_str(),
+                      url::Component(0, kAddEthereumChain.size()));
   return webui_base_url.ReplaceComponents(replacements);
 }
+#endif
 
 }  // namespace
 
@@ -57,9 +62,8 @@ void BraveWalletTabHelper::ShowBubble() {
   wallet_bubble_manager_delegate_->ShowBubble();
 }
 
-void BraveWalletTabHelper::UserRequestCompleted(const std::string& requestData,
+void BraveWalletTabHelper::UserRequestCompleted(size_t hash,
                                                 const std::string& result) {
-  size_t hash = base::FastHash(base::as_bytes(base::make_span(requestData)));
   DCHECK(request_callbacks_.count(hash));
   std::move(request_callbacks_[hash]).Run(result);
   request_callbacks_.erase(hash);
@@ -77,11 +81,10 @@ void BraveWalletTabHelper::RequestUserApproval(
 
   size_t hash = base::FastHash(base::as_bytes(base::make_span(requestData)));
   if (request_callbacks_.count(hash)) {
-    UserRequestCompleted(requestData, std::string());
+    UserRequestCompleted(hash, std::string());
     return;
   }
   request_callbacks_[hash] = std::move(callback);
-
   wallet_bubble_manager_delegate_ =
       WalletBubbleManagerDelegate::Create(web_contents_, webui_url);
   wallet_bubble_manager_delegate_->ShowBubble();

@@ -10,10 +10,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -58,8 +55,9 @@ void WalletPanelHandler::AddEthereumChainApproved(const std::string& payload,
     absl::optional<base::Value> value = base::JSONReader::Read(payload);
     list->Append(std::move(value).value_or(base::Value()));
   }
+  size_t hash = base::FastHash(base::as_bytes(base::make_span(payload)));
   brave_wallet::BraveWalletTabHelper::FromWebContents(contents)
-      ->UserRequestCompleted(payload, std::string());
+      ->UserRequestCompleted(hash, std::string());
 }
 
 void WalletPanelHandler::AddEthereumChainCanceled(const std::string& payload,
@@ -68,10 +66,10 @@ void WalletPanelHandler::AddEthereumChainCanceled(const std::string& payload,
   if (!contents)
     return;
 
-  auto text = l10n_util::GetStringUTF16(IDS_WALLET_USER_REJECTED_REQUEST);
+  size_t hash = base::FastHash(base::as_bytes(base::make_span(payload)));
   brave_wallet::BraveWalletTabHelper::FromWebContents(contents)
-      ->UserRequestCompleted(payload, base::StringPrintf(
-          brave_wallet::kAddEthereumChainRejectedResponse, text.c_str()));
+      ->UserRequestCompleted(
+          hash, l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 }
 
 void WalletPanelHandler::ConnectToSite(const std::vector<std::string>& accounts,

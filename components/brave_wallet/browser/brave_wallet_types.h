@@ -36,25 +36,6 @@ struct TransactionReceipt {
   bool status;
 };
 
-struct NativeCurrency {
-  std::string name;
-  std::string symbol;
-  uint256_t decimals;
-};
-
-struct EthereumChain {
-  EthereumChain();
-  ~EthereumChain();
-  EthereumChain(const EthereumChain&);
-
-  std::string chain_id;
-  std::string chain_name;
-  std::vector<std::string> block_explorer_urls;
-  std::vector<std::string> icon_urls;
-  std::vector<std::string> rpc_urls;
-  NativeCurrency currency;
-};
-
 using RequestEthereumChainCallback =
     base::OnceCallback<void(const std::string&)>;
 

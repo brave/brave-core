@@ -41,16 +41,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-brave_wallet::mojom::EthereumChainPtr CreateEthereumChainPtr(
-    const brave_wallet::EthereumChain& mainnet) {
-  auto eth_chain_currency = brave_wallet::mojom::NativeCurrency::New(
-      mainnet.currency.symbol, mainnet.currency.name,
-      mainnet.currency.decimals);
-  return brave_wallet::mojom::EthereumChain::New(
-      mainnet.chain_id, mainnet.chain_name, mainnet.block_explorer_urls,
-      mainnet.icon_urls, mainnet.rpc_urls, std::move(eth_chain_currency));
-}
-
 }  // namespace
 
 namespace brave_wallet {
@@ -61,7 +51,10 @@ EthJsonRpcController::EthJsonRpcController(
     : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       prefs_(prefs),
       weak_ptr_factory_(this) {
-  SetNetwork(GetAllKnownChains().front().chain_id);
+  std::vector<mojom::EthereumChainPtr> networks;
+  GetAllKnownChains(&networks);
+  DCHECK(!networks.empty());
+  SetNetwork(networks.front()->chain_id);
 }
 
 EthJsonRpcController::~EthJsonRpcController() {}
@@ -106,6 +99,10 @@ void EthJsonRpcController::FireNetworkChanged() {
   }
 }
 
+std::string EthJsonRpcController::GetChainId() const {
+  return chain_id_;
+}
+
 void EthJsonRpcController::GetChainId(
     mojom::EthJsonRpcController::GetChainIdCallback callback) {
   std::move(callback).Run(chain_id_);
@@ -119,11 +116,7 @@ void EthJsonRpcController::GetBlockTrackerUrl(
 void EthJsonRpcController::GetAllNetworks(
     mojom::EthJsonRpcController::GetAllNetworksCallback callback) {
   std::vector<mojom::EthereumChainPtr> all_chains;
-  auto networks = brave_wallet::GetAllChains(prefs_);
-  for (const auto& it : networks) {
-    all_chains.push_back(CreateEthereumChainPtr(it));
-  }
-
+  brave_wallet::GetAllChains(prefs_, &all_chains);
   std::move(callback).Run(std::move(all_chains));
 }
 
@@ -425,12 +418,13 @@ void EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany(
 }
 
 GURL EthJsonRpcController::GetBlockTrackerUrlFromNetwork(std::string chain_id) {
-  auto networks = brave_wallet::GetAllChains(prefs_);
+  std::vector<mojom::EthereumChainPtr> networks;
+  brave_wallet::GetAllChains(prefs_, &networks);
   for (const auto& network : networks) {
-    if (network.chain_id != chain_id)
+    if (network->chain_id != chain_id)
       continue;
-    if (network.block_explorer_urls.size())
-      return GURL(network.block_explorer_urls.front());
+    if (network->block_explorer_urls->size())
+      return GURL(network->block_explorer_urls->front());
   }
   return GURL();
 }

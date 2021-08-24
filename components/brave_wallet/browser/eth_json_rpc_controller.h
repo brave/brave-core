@@ -100,6 +100,7 @@ class EthJsonRpcController : public KeyedService,
       UnstoppableDomainsProxyReaderGetManyCallback callback);
 
   void SetNetwork(const std::string& chain_id) override;
+  std::string GetChainId() const;
   void GetChainId(
       mojom::EthJsonRpcController::GetChainIdCallback callback) override;
   void GetBlockTrackerUrl(
