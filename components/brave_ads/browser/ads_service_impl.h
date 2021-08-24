@@ -208,18 +208,20 @@ class AdsServiceImpl : public AdsService,
   bool StartService();
 
   void MaybeStart(const bool should_restart);
-  void Start();
+  void Start(const uint32_t number_of_start);
   void Stop();
 
   void ResetState();
   void OnShutdownAndResetBatAds(const bool success);
   void OnResetAllState(const bool success);
 
-  void DetectUncertainFuture();
-  void OnDetectUncertainFuture(const bool is_uncertain_future);
+  void DetectUncertainFuture(const uint32_t number_of_start);
+  void OnDetectUncertainFuture(const uint32_t number_of_start,
+                               const bool is_uncertain_future);
 
-  void EnsureBaseDirectoryExists();
-  void OnEnsureBaseDirectoryExists(const bool success);
+  void EnsureBaseDirectoryExists(const uint32_t number_of_start);
+  void OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
+                                   const bool success);
 
   void SetEnvironment();
 
@@ -444,6 +446,10 @@ class AdsServiceImpl : public AdsService,
   bool is_initialized_ = false;
 
   bool is_upgrading_from_pre_brave_ads_build_;
+
+  // This is needed to check if current ads service init become stale as
+  // another ads service start is in progress
+  uint32_t total_number_of_starts_ = 0;
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
