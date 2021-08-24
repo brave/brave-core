@@ -33,13 +33,6 @@ class Eip2930Transaction : public EthTransaction {
   typedef std::vector<AccessListItem> AccessList;
 
   Eip2930Transaction();
-  Eip2930Transaction(uint256_t nonce,
-                     uint256_t gas_price,
-                     uint256_t gas_limit,
-                     const EthAddress& to,
-                     uint256_t value,
-                     const std::vector<uint8_t>& data,
-                     uint256_t chain_id);
   Eip2930Transaction(const Eip2930Transaction&);
   ~Eip2930Transaction() override;
   bool operator==(const Eip2930Transaction&) const;
@@ -74,6 +67,14 @@ class Eip2930Transaction : public EthTransaction {
   uint256_t GetDataFee() const override;
 
  protected:
+  Eip2930Transaction(uint256_t nonce,
+                     uint256_t gas_price,
+                     uint256_t gas_limit,
+                     const EthAddress& to,
+                     uint256_t value,
+                     const std::vector<uint8_t>& data,
+                     uint256_t chain_id);
+
   uint256_t chain_id_;
   AccessList access_list_;
 };

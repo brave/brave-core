@@ -27,12 +27,6 @@ FORWARD_DECLARE_TEST(Eip2930TransactionUnitTest, GetSignedTransaction);
 class EthTransaction {
  public:
   EthTransaction();
-  EthTransaction(uint256_t nonce,
-                 uint256_t gas_price,
-                 uint256_t gas_limit,
-                 const EthAddress& to,
-                 uint256_t value,
-                 const std::vector<uint8_t>& data);
   EthTransaction(const EthTransaction&);
   virtual ~EthTransaction();
   bool operator==(const EthTransaction&) const;
@@ -99,6 +93,14 @@ class EthTransaction {
   uint256_t v_ = 0;
   std::vector<uint8_t> r_;
   std::vector<uint8_t> s_;
+
+ protected:
+  EthTransaction(uint256_t nonce,
+                 uint256_t gas_price,
+                 uint256_t gas_limit,
+                 const EthAddress& to,
+                 uint256_t value,
+                 const std::vector<uint8_t>& data);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthTransactionUnitTest, GetSignedTransaction);

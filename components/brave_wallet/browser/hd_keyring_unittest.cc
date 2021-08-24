@@ -78,10 +78,10 @@ TEST(HDKeyringUnitTest, Accounts) {
 TEST(HDKeyringUnitTest, SignTransaction) {
   // Specific signature check is in eth_transaction_unittest.cc
   HDKeyring keyring;
-  EthTransaction tx(
-      0x09, 0x4a817c800, 0x5208,
-      EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
-      0x0de0b6b3a7640000, std::vector<uint8_t>());
+  EthTransaction tx = *EthTransaction::FromTxData(
+      mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                         "0x3535353535353535353535353535353535353535",
+                         "0x0de0b6b3a7640000", std::vector<uint8_t>()));
   keyring.SignTransaction("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF", &tx, 0);
   EXPECT_FALSE(tx.IsSigned());
 
