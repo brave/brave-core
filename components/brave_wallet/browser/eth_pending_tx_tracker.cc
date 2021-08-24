@@ -77,7 +77,7 @@ void EthPendingTxTracker::OnGetTxReceipt(std::string id,
     nonce_lock->Release();
     return;
   }
-  if (receipt.status == true) {
+  if (receipt.status) {
     meta->tx_receipt = receipt;
     meta->status = EthTxStateManager::TransactionStatus::CONFIRMED;
     meta->confirmed_time = base::Time::Now();

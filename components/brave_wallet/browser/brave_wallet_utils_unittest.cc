@@ -39,6 +39,7 @@ TEST(BraveWalletUtilsUnitTest, KeccakHash) {
 }
 
 TEST(BraveWalletUtilsUnitTest, GetFunctionHash) {
+  ASSERT_EQ(GetFunctionHash("transfer(address,uint256)"), "0xa9059cbb");
   ASSERT_EQ(GetFunctionHash("approve(address,uint256)"), "0x095ea7b3");
   ASSERT_EQ(GetFunctionHash("balanceOf(address)"), "0x70a08231");
 }

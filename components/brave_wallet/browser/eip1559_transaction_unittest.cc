@@ -15,11 +15,10 @@ namespace brave_wallet {
 TEST(Eip1559TransactionUnitTest, GetMessageToSign) {
   std::vector<uint8_t> data;
   EXPECT_TRUE(base::HexStringToBytes("010200", &data));
-  EthTransaction::TxData tx_data(
+  Eip1559Transaction tx(
       0x00, 0x00, 0x00,
       EthAddress::FromHex("0x0101010101010101010101010101010101010101"), 0x00,
-      data);
-  Eip1559Transaction tx(tx_data, 0x04, 0, 0);
+      data, 0x04, 0, 0);
   ASSERT_EQ(tx.type(), 2);
   auto* access_list = tx.access_list();
   Eip2930Transaction::AccessListItem item;
@@ -103,11 +102,11 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransaction) {
     HDKey key;
     key.SetPrivateKey(private_key);
     Eip1559Transaction tx(
-        EthTransaction::TxData(
-            cases[i].nonce, 0x00, cases[i].gas_limit,
-            EthAddress::FromHex("0x000000000000000000000000000000000000aaaa"),
-            cases[i].value, std::vector<uint8_t>()),
-        0x04, cases[i].max_priority_fee_per_gas, cases[i].max_fee_per_gas);
+        cases[i].nonce, 0x00, cases[i].gas_limit,
+        EthAddress::FromHex("0x000000000000000000000000000000000000aaaa"),
+        cases[i].value, std::vector<uint8_t>(), 0x04,
+        cases[i].max_priority_fee_per_gas, cases[i].max_fee_per_gas);
+
     int recid;
     const std::vector<uint8_t> signature =
         key.Sign(tx.GetMessageToSign(), &recid);
@@ -118,11 +117,9 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransaction) {
 
 TEST(Eip1559TransactionUnitTest, GetUpfrontCost) {
   Eip1559Transaction tx(
-      EthTransaction::TxData(
-          0x00, 0x00, 100,
-          EthAddress::FromHex("0x0101010101010101010101010101010101010101"),
-          0x06, std::vector<uint8_t>()),
-      0x04, 8, 10);
+      0x00, 0x00, 100,
+      EthAddress::FromHex("0x0101010101010101010101010101010101010101"), 0x06,
+      std::vector<uint8_t>(), 0x04, 8, 10);
   EXPECT_EQ(tx.GetUpfrontCost(), uint256_t(806));
   EXPECT_EQ(tx.GetUpfrontCost(0), uint256_t(806));
   EXPECT_EQ(tx.GetUpfrontCost(4), uint256_t(1006));
@@ -130,11 +127,9 @@ TEST(Eip1559TransactionUnitTest, GetUpfrontCost) {
 
 TEST(Eip1559TransactionUnitTest, Serialization) {
   Eip1559Transaction tx(
-      EthTransaction::TxData(
-          0x09, 0x4a817c800, 0x5208,
-          EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
-          0x0de0b6b3a7640000, std::vector<uint8_t>()),
-      5566, 123, 456);
+      0x09, 0x4a817c800, 0x5208,
+      EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
+      0xde0b6b3a7640000, std::vector<uint8_t>(), 5566, 123, 456);
   auto* access_list = tx.access_list();
   Eip2930Transaction::AccessListItem item_a;
   item_a.address.fill(0x0a);

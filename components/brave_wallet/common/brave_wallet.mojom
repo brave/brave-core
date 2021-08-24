@@ -31,7 +31,8 @@ interface PanelHandlerFactory {
                      pending_receiver<SwapController> swap_controller,
                      pending_receiver<AssetRatioController> asset_ratio_controller,
                      pending_receiver<KeyringController> keyring_controller,
-                     pending_receiver<ERCTokenRegistry> erc_token_registry);
+                     pending_receiver<ERCTokenRegistry> erc_token_registry,
+                     pending_receiver<EthTxController> eth_tx_controller);
 };
 
 interface PageHandlerFactory {
@@ -43,7 +44,8 @@ interface PageHandlerFactory {
                     pending_receiver<SwapController> swap_controller,
                     pending_receiver<AssetRatioController> asset_ratio_controller,
                     pending_receiver<KeyringController> keyring_controller,
-                    pending_receiver<ERCTokenRegistry> erc_token_registry);
+                    pending_receiver<ERCTokenRegistry> erc_token_registry,
+                     pending_receiver<EthTxController> eth_tx_controller);
 
 };
 
@@ -218,6 +220,22 @@ interface EthJsonRpcControllerObserver {
   ChainChangedEvent(string chain_id);
 };
 
+struct TxData {
+  string nonce;
+  string gas_price;
+  string gas_limit;
+  string to;
+  string value;
+  array<uint8> data;
+};
+
+struct TxData1559 {
+  TxData base_data;
+  string chain_id;
+  string max_priority_fee_per_gas;
+  string max_fee_per_gas;
+};
+
 interface EthJsonRpcController {
   SetNetwork(Network network);
   GetNetwork() => (Network network);
@@ -232,4 +250,12 @@ interface EthJsonRpcController {
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
   AddObserver(pending_remote<EthJsonRpcControllerObserver> observer);
   SetCustomNetwork(url.mojom.Url provider_url);
+};
+
+interface EthTxController {
+  AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id);
+  AddUnapproved1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_meta_id);
+  ApproveTransaction(string tx_meta_id) => (bool status);
+  RejectTransaction(string tx_meta_id) => (bool status);
+  MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
 };

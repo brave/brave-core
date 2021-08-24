@@ -23,9 +23,10 @@ export default class WalletApiProxy {
     this.assetRatioController = new braveWallet.mojom.AssetRatioControllerRemote();
     /** @type {!braveWallet.mojom.KeyringControllerRemote} */
     this.keyringController = new braveWallet.mojom.KeyringControllerRemote();
-
     /** @type {!braveWallet.mojom.KeyringControllerRemote} */
     this.ercTokenRegistry = new braveWallet.mojom.ERCTokenRegistryRemote();
+    /** @type {!braveWallet.mojom.EthTxControllerRemote} */
+    this.ethTxController = new braveWallet.mojom.EthTxControllerRemote();
   }
 
   addEthJsonRpcControllerObserver(store) {
@@ -35,6 +36,17 @@ export default class WalletApiProxy {
       }
     })
     this.ethJsonRpcController.addObserver(ethJsonRpcControllerObserverReceiver.$.bindNewPipeAndPassRemote());
+  }
+
+  makeTxData(nonce, gasPrice, gasLimit, to, value, data) {
+    const txData = new braveWallet.mojom.TxData()
+    txData.nonce = nonce
+    txData.gasPrice = gasPrice
+    txData.gasLimit = gasLimit
+    txData.to = to
+    txData.value = value
+    txData.data = data
+    return txData
   }
 
   addKeyringControllerObserver(store) {

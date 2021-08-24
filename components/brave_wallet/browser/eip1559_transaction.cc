@@ -14,12 +14,26 @@
 
 namespace brave_wallet {
 
-Eip1559Transaction::Eip1559Transaction() = default;
-Eip1559Transaction::Eip1559Transaction(const TxData& tx_data,
-                                       uint64_t chain_id,
+Eip1559Transaction::Eip1559Transaction() {
+  type_ = 2;
+}
+
+Eip1559Transaction::Eip1559Transaction(uint256_t nonce,
+                                       uint256_t gas_price,
+                                       uint256_t gas_limit,
+                                       const EthAddress& to,
+                                       uint256_t value,
+                                       const std::vector<uint8_t>& data,
+                                       uint256_t chain_id,
                                        uint256_t max_priority_fee_per_gas,
                                        uint256_t max_fee_per_gas)
-    : Eip2930Transaction(tx_data, chain_id),
+    : Eip2930Transaction(nonce,
+                         gas_price,
+                         gas_limit,
+                         to,
+                         value,
+                         data,
+                         chain_id),
       max_priority_fee_per_gas_(max_priority_fee_per_gas),
       max_fee_per_gas_(max_fee_per_gas) {
   type_ = 2;
@@ -34,14 +48,39 @@ bool Eip1559Transaction::operator==(const Eip1559Transaction& tx) const {
 }
 
 // static
+absl::optional<Eip1559Transaction> Eip1559Transaction::FromTxData(
+    const mojom::TxData1559Ptr& tx_data1559) {
+  uint256_t chain_id;
+  if (!HexValueToUint256(tx_data1559->chain_id, &chain_id))
+    return absl::nullopt;
+
+  absl::optional<Eip2930Transaction> tx_2930 =
+      Eip2930Transaction::FromTxData(tx_data1559->base_data, chain_id);
+  if (!tx_2930)
+    return absl::nullopt;
+
+  uint256_t max_priority_fee_per_gas;
+  if (!HexValueToUint256(tx_data1559->max_priority_fee_per_gas,
+                         &max_priority_fee_per_gas))
+    return absl::nullopt;
+  uint256_t max_fee_per_gas;
+  if (!HexValueToUint256(tx_data1559->max_fee_per_gas, &max_fee_per_gas))
+    return absl::nullopt;
+
+  Eip1559Transaction tx(tx_2930->nonce(), tx_2930->gas_price(),
+                        tx_2930->gas_limit(), tx_2930->to(), tx_2930->value(),
+                        tx_2930->data(), tx_2930->chain_id(),
+                        max_priority_fee_per_gas, max_fee_per_gas);
+  return tx;
+}
+
+// static
 absl::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
     const base::Value& value) {
   absl::optional<Eip2930Transaction> tx_2930 =
       Eip2930Transaction::FromValue(value);
   if (!tx_2930)
     return absl::nullopt;
-  TxData tx_data(tx_2930->nonce(), tx_2930->gas_price(), tx_2930->gas_limit(),
-                 tx_2930->to(), tx_2930->value(), tx_2930->data());
 
   const std::string* tx_max_priority_fee_per_gas =
       value.FindStringKey("max_priority_fee_per_gas");
@@ -60,8 +99,10 @@ absl::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
   if (!HexValueToUint256(*tx_max_fee_per_gas, &max_fee_per_gas))
     return absl::nullopt;
 
-  Eip1559Transaction tx(tx_data, tx_2930->chain_id(), max_priority_fee_per_gas,
-                        max_fee_per_gas);
+  Eip1559Transaction tx(tx_2930->nonce(), tx_2930->gas_price(),
+                        tx_2930->gas_limit(), tx_2930->to(), tx_2930->value(),
+                        tx_2930->data(), tx_2930->chain_id(),
+                        max_priority_fee_per_gas, max_fee_per_gas);
   tx.v_ = tx_2930->v();
   tx.r_ = tx_2930->r();
   tx.s_ = tx_2930->s();
@@ -70,7 +111,7 @@ absl::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
 }
 
 std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(
-    uint64_t chain_id) const {
+    uint256_t chain_id) const {
   std::vector<uint8_t> result;
   result.push_back(type_);
 
@@ -107,7 +148,7 @@ std::string Eip1559Transaction::GetSignedTransaction() const {
   list.Append(RLPUint256ToBlobValue(value_));
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));
-  list.Append(base::Value(v_));
+  list.Append(RLPUint256ToBlobValue(v_));
   list.Append(base::Value(r_));
   list.Append(base::Value(s_));
 
