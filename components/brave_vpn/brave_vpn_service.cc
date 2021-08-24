@@ -5,9 +5,14 @@
 
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 
+#include <vector>
+
+#include "base/command_line.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
+#include "base/strings/string_split.h"
+#include "brave/components/brave_vpn/switches.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
@@ -68,17 +73,70 @@ std::string GetSubscriberCredentialFromJson(const std::string& json) {
                                           : subscriber_credential->GetString();
 }
 
+bool GetVPNCredentialsFromSwitch(brave_vpn::BraveVPNConnectionInfo* info) {
+  DCHECK(info);
+  auto* cmd = base::CommandLine::ForCurrentProcess();
+  if (!cmd->HasSwitch(brave_vpn::switches::kBraveVPNTestCredentials))
+    return false;
+
+  std::string value =
+      cmd->GetSwitchValueASCII(brave_vpn::switches::kBraveVPNTestCredentials);
+  std::vector<std::string> tokens = base::SplitString(
+      value, ":", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  if (tokens.size() == 4) {
+    info->SetConnectionInfo(tokens[0], tokens[1], tokens[2], tokens[3]);
+    return true;
+  }
+
+  LOG(ERROR) << __func__ << ": Invalid credentials";
+  return false;
+}
+
+brave_vpn::BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI() {
+  auto* cmd = base::CommandLine::ForCurrentProcess();
+  if (cmd->HasSwitch(brave_vpn::switches::kBraveVPNSimulation))
+    return brave_vpn::BraveVPNOSConnectionAPI::GetInstanceForTest();
+  return brave_vpn::BraveVPNOSConnectionAPI::GetInstance();
+}
+
 }  // namespace
 
 BraveVpnService::BraveVpnService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : api_request_helper_(GetNetworkTrafficAnnotationTag(),
-                          url_loader_factory) {}
+                          url_loader_factory) {
+  observed_.Observe(GetBraveVPNConnectionAPI());
+}
 
 BraveVpnService::~BraveVpnService() = default;
 
 void BraveVpnService::Shutdown() {
+  observed_.Reset();
   observers_.Clear();
+}
+
+void BraveVpnService::OnCreated(const std::string& name) {
+  for (Observer& obs : observers_)
+    obs.OnConnectionCreated();
+}
+
+void BraveVpnService::OnRemoved(const std::string& name) {
+  for (Observer& obs : observers_)
+    obs.OnConnectionRemoved();
+}
+
+void BraveVpnService::OnConnected(const std::string& name) {
+  is_connected_ = true;
+
+  for (Observer& obs : observers_)
+    obs.OnConnectionStateChanged(true);
+}
+
+void BraveVpnService::OnDisconnected(const std::string& name) {
+  is_connected_ = false;
+
+  for (Observer& obs : observers_)
+    obs.OnConnectionStateChanged(false);
 }
 
 void BraveVpnService::OAuthRequest(const GURL& url,
@@ -141,26 +199,24 @@ void BraveVpnService::VerifyPurchaseToken(ResponseCallback callback,
                std::move(internal_callback));
 }
 
-void BraveVpnService::Connect() {
-  NOTIMPLEMENTED();
+void BraveVpnService::CreateVPNConnection() {
+  GetBraveVPNConnectionAPI()->CreateVPNConnection(GetConnectionInfo());
+}
 
-  is_connected_ = true;
-  for (Observer& obs : observers_)
-    obs.OnConnectionStateChanged(true);
+void BraveVpnService::RemoveVPNConnnection() {
+  GetBraveVPNConnectionAPI()->RemoveVPNConnection(
+      GetConnectionInfo().connection_name());
+}
+
+void BraveVpnService::Connect() {
+  GetBraveVPNConnectionAPI()->Connect(GetConnectionInfo().connection_name());
 }
 
 void BraveVpnService::Disconnect() {
-  NOTIMPLEMENTED();
-
-  is_connected_ = false;
-  for (Observer& obs : observers_)
-    obs.OnConnectionStateChanged(false);
+  GetBraveVPNConnectionAPI()->Disconnect(GetConnectionInfo().connection_name());
 }
 
 bool BraveVpnService::IsConnected() const {
-  NOTIMPLEMENTED();
-
-  // Just return fake statue now.
   return is_connected_;
 }
 
@@ -217,4 +273,13 @@ void BraveVpnService::OnGetSubscriberCredential(
     subscriber_credential = GetSubscriberCredentialFromJson(body);
   }
   std::move(callback).Run(subscriber_credential, success);
+}
+
+brave_vpn::BraveVPNConnectionInfo BraveVpnService::GetConnectionInfo() {
+  brave_vpn::BraveVPNConnectionInfo info;
+  if (!GetVPNCredentialsFromSwitch(&info)) {
+    // TODO(simonhong): Get real credentials from payment service.
+    NOTIMPLEMENTED();
+  }
+  return info;
 }

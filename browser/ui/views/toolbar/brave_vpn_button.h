@@ -24,6 +24,8 @@ class BraveVPNButton : public ToolbarButton, public BraveVpnService::Observer {
 
   // BraveVpnService::Observer overrides:
   void OnConnectionStateChanged(bool connected) override;
+  void OnConnectionCreated() override;
+  void OnConnectionRemoved() override;
 
  private:
   void UpdateColorsAndInsets() override;

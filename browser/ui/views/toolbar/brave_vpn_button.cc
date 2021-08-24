@@ -83,6 +83,14 @@ void BraveVPNButton::OnConnectionStateChanged(bool connected) {
   UpdateButtonState();
 }
 
+void BraveVPNButton::OnConnectionCreated() {
+  // Do nothing.
+}
+
+void BraveVPNButton::OnConnectionRemoved() {
+  // Do nothing.
+}
+
 void BraveVPNButton::UpdateColorsAndInsets() {
   if (const auto* tp = GetThemeProvider()) {
     const gfx::Insets paint_insets =

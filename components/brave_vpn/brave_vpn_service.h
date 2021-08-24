@@ -15,7 +15,10 @@
 #include "base/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
+#include "base/scoped_observation.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_vpn/brave_vpn_connection_info.h"
+#include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
@@ -24,11 +27,14 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
-class BraveVpnService : public KeyedService {
+class BraveVpnService : public KeyedService,
+                        public brave_vpn::BraveVPNOSConnectionAPI::Observer {
  public:
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnConnectionStateChanged(bool connected) = 0;
+    virtual void OnConnectionCreated() = 0;
+    virtual void OnConnectionRemoved() = 0;
 
    protected:
     ~Observer() override = default;
@@ -64,6 +70,8 @@ class BraveVpnService : public KeyedService {
   void Connect();
   void Disconnect();
   bool IsConnected() const;
+  void CreateVPNConnection();
+  void RemoveVPNConnnection();
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -73,6 +81,12 @@ class BraveVpnService : public KeyedService {
       base::OnceCallback<void(int,
                               const std::string&,
                               const base::flat_map<std::string, std::string>&)>;
+
+  // brave_vpn::BraveVPNOSConnectionAPI::Observer overrides:
+  void OnCreated(const std::string& name) override;
+  void OnRemoved(const std::string& name) override;
+  void OnConnected(const std::string& name) override;
+  void OnDisconnected(const std::string& name) override;
 
   void OAuthRequest(const GURL& url,
                     const std::string& method,
@@ -91,8 +105,13 @@ class BraveVpnService : public KeyedService {
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
+  brave_vpn::BraveVPNConnectionInfo GetConnectionInfo();
+
   bool is_connected_ = false;
   base::ObserverList<Observer> observers_;
+  base::ScopedObservation<brave_vpn::BraveVPNOSConnectionAPI,
+                          brave_vpn::BraveVPNOSConnectionAPI::Observer>
+      observed_{this};
   api_request_helper::APIRequestHelper api_request_helper_;
 };
 

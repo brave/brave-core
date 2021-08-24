@@ -14,7 +14,10 @@ class BraveVPNConnectionInfo {
  public:
   BraveVPNConnectionInfo();
   ~BraveVPNConnectionInfo();
+  BraveVPNConnectionInfo(const BraveVPNConnectionInfo& info);
+  BraveVPNConnectionInfo& operator=(const BraveVPNConnectionInfo& info);
 
+  bool IsValid() const;
   void SetConnectionInfo(const std::string& connection_name,
                          const std::string& hostname,
                          const std::string& username,
