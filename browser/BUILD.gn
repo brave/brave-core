@@ -65,6 +65,7 @@ source_set("unit_tests") {
       "//base",
       "//brave/browser",
       "//testing/gtest",
+      "//url",
     ]
   }
 }

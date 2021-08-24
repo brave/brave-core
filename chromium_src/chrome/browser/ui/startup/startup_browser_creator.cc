@@ -62,14 +62,13 @@ bool BraveStartupBrowserCreatorImpl::Launch(
   std::vector<GURL> revised_urls_to_open = urls_to_open;
 #if defined(OS_WIN)
   for (const std::wstring& arg : command_line_.GetArgs()) {
-    // Fetch url from command line ars if it includes microsoft-edge protocol
+    // Fetch url from command line args if it includes microsoft-edge protocol
     // and url is delivered.
-    absl::optional<std::string> url_str = GetURLFromMSEdgeProtocol(arg);
-    if (!url_str)
+    absl::optional<GURL> url = GetURLFromMSEdgeProtocol(arg);
+    if (!url)
       continue;
-    GURL url = GURL(*url_str);
-    if (url.is_valid())
-      revised_urls_to_open.push_back(url);
+    if (url->is_valid())
+      revised_urls_to_open.push_back(std::move(*url));
   }
 #endif
 

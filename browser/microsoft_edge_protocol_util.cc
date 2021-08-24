@@ -5,15 +5,16 @@
 
 #include "brave/browser/microsoft_edge_protocol_util.h"
 
+#include <string>
+
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "url/url_util.h"
 
 namespace {
 
-std::string DecodeURL(const std::string& url) {
+std::string DecodeURL(base::StringPiece url) {
   url::RawCanonOutputT<char16_t> unescaped;
   url::DecodeURLEscapeSequences(url.data(), url.size(),
                                 url::DecodeURLMode::kUTF8OrIsomorphic,
@@ -26,33 +27,46 @@ std::string DecodeURL(const std::string& url) {
 
 }  // namespace
 
-absl::optional<std::string> GetURLFromMSEdgeProtocol(
-    const std::wstring& command_line_arg) {
-  constexpr wchar_t kMSEdgeProtocol[] = L"microsoft-edge:";
-  if (base::StartsWith(command_line_arg, kMSEdgeProtocol)) {
-    const std::wstring protocol_arg =
-        command_line_arg.substr(wcslen(kMSEdgeProtocol));
-    // Cortana(window search) passes link url in the query.
-    const bool has_query = protocol_arg[0] == '?';
-    if (has_query) {
-      // query stores string after '?'.
-      const std::wstring query = protocol_arg.substr(1);
+absl::optional<GURL> GetURLFromMSEdgeProtocol(
+    base::WStringPiece command_line_arg) {
+  constexpr base::WStringPiece kMSEdgeProtocol = L"microsoft-edge:";
+  if (!base::StartsWith(command_line_arg, kMSEdgeProtocol))
+    return absl::nullopt;
 
-      // Find URL key from cortana query.
-      for (const auto& cur :
-           base::SplitString(base::SysWideToUTF8(query), "&",
-                             base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL)) {
-        constexpr char kCortanaURLKey[] = "url=";
-        if (base::StartsWith(cur, kCortanaURLKey)) {
-          return DecodeURL(cur.substr(strlen(kCortanaURLKey)));
-        }
-      }
-    } else {
-      // If it's not a query string, we assume |protocol_arg| is url.
-      // If it's not a valid url, this url will be ignored at
-      // GetURLsFromCommandLine().
-      return DecodeURL(base::SysWideToUTF8(protocol_arg));
-    }
+  // From now on, it's "microsoft-edge:" protocol args.
+  base::WStringPiece protocol_arg = command_line_arg;
+  protocol_arg.remove_prefix(kMSEdgeProtocol.length());
+  // Handle protocol's arg is empty.
+  if (protocol_arg.empty())
+    return absl::nullopt;
+
+  // query stores string after '?'.
+  const bool has_query = protocol_arg[0] == '?';
+  if (!has_query) {
+    // If it's not a query string, we assume |protocol_arg| is url.
+    GURL url(DecodeURL(base::WideToUTF8(protocol_arg)));
+    if (url.is_valid())
+      return url;
+    return absl::nullopt;
+  }
+
+  // Remove first character '?'.
+  protocol_arg.remove_prefix(1);
+
+  // Windows Search passes link url in the query.
+  // Find URL key from cortana query.
+  for (const auto& cur :
+       base::SplitString(base::WideToUTF8(protocol_arg), "&",
+                         base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL)) {
+    constexpr base::StringPiece kCortanaURLKey = "url=";
+    if (!base::StartsWith(cur, kCortanaURLKey))
+      continue;
+
+    // We assume query includes only one url key.
+    GURL url(DecodeURL(cur.substr(kCortanaURLKey.length())));
+    if (url.is_valid())
+      return url;
+    break;
   }
 
   return absl::nullopt;

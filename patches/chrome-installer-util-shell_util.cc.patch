@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index d897dd98a37eeb005391961d16ad47e4031b7c74..8ddd66b1016e652fa38bcb7e2c0ca4f9e19ea189 100644
+index d897dd98a37eeb005391961d16ad47e4031b7c74..7c92f64769201a4333a874a534551db113bc3245 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
 @@ -358,6 +358,7 @@ void GetChromeProgIdEntries(
@@ -38,7 +38,7 @@ index d897dd98a37eeb005391961d16ad47e4031b7c74..8ddd66b1016e652fa38bcb7e2c0ca4f9
      L".htm", L".html",  L".pdf",  L".shtml", L".svg",
      L".xht", L".xhtml", L".webp", nullptr};
  const wchar_t* ShellUtil::kBrowserProtocolAssociations[] = {L"ftp", L"http",
-+                                                            BRAVE_IPFS, BRAVE_IPNS,
++                                                            BRAVE_BROWSER_PROTOCOL_ASSOCIATIONS
                                                              L"https", nullptr};
  const wchar_t* ShellUtil::kPotentialProtocolAssociations[] = {
 +    BRAVE_POTENTIAL_PROTOCOL_ASSOCIATIONS
