@@ -123,4 +123,60 @@ TEST(HDKeyringUnitTest, SignMessage) {
           .empty());
 }
 
+TEST(HDKeyringUnitTest, ImportedAccounts) {
+  const struct {
+    const char* key;
+    const char* address;
+  } private_keys[] = {
+      {"d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
+       "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976"},
+      {"cca1e9643efc5468789366e4fb682dba57f2e97540981095bc6d9a962309d912",
+       "0x6D59205FADC892333cb945AD563e74F83f3dBA95"},
+      {"ddc33eef7cc4c5170c3ba4021cc22fd888856cf8bf846f48db6d11d15efcd652",
+       "0xeffF78040EdeF86A9be71ce89c74A35C4cd5D2eA"},
+      // Used for Sign Message
+      {"6969696969696969696969696969696969696969696969696969696969696969",
+       "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB"},
+      // Used for Sign Transaction
+      {"8140CEA58E3BEBD6174DBC589A7F70E049556233D32E44969D62E51DD0D1189A",
+       "0x2166fB4e11D44100112B1124ac593081519cA1ec"}};
+  HDKeyring keyring;
+  size_t private_keys_size = sizeof(private_keys) / sizeof(private_keys[0]);
+  for (size_t i = 0; i < private_keys_size; ++i) {
+    std::vector<uint8_t> private_key;
+    EXPECT_TRUE(base::HexStringToBytes(private_keys[i].key, &private_key));
+    EXPECT_EQ(keyring.AddImportedAccount(private_key), private_keys[i].address);
+  }
+  EXPECT_EQ(keyring.GetImportedAccountsNumber(), private_keys_size);
+  // Trying to add a duplicate account
+  std::vector<uint8_t> private_key0;
+  EXPECT_TRUE(base::HexStringToBytes(private_keys[0].key, &private_key0));
+  EXPECT_TRUE(keyring.AddImportedAccount(private_key0).empty());
+
+  // SignMessage
+  std::vector<uint8_t> message;
+  EXPECT_TRUE(base::HexStringToBytes("68656c6c6f20776f726c64", &message));
+  const std::vector<uint8_t> sig = keyring.SignMessage(
+      "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", message);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig)),
+            "ce909e8ea6851bc36c007a0072d0524b07a3ff8d4e623aca4c71ca8e57250c4d0a"
+            "3fc38fa8fbaaa81ead4b9f6bd03356b6f8bf18bccad167d78891636e1d6956");
+  keyring.RemoveImportedAccount("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB");
+  EXPECT_EQ(keyring.GetImportedAccountsNumber(), private_keys_size - 1);
+  EXPECT_TRUE(
+      keyring.SignMessage("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", message)
+          .empty());
+
+  // Sign Transaction
+  EthTransaction tx = *EthTransaction::FromTxData(
+      mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                         "0x3535353535353535353535353535353535353535",
+                         "0x0de0b6b3a7640000", std::vector<uint8_t>()));
+  keyring.SignTransaction("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", &tx, 0);
+  EXPECT_FALSE(tx.IsSigned());
+
+  keyring.SignTransaction("0x2166fB4e11D44100112B1124ac593081519cA1ec", &tx, 0);
+  EXPECT_TRUE(tx.IsSigned());
+}
+
 }  // namespace brave_wallet
