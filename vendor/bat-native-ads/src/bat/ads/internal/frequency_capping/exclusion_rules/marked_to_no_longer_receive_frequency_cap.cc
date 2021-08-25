@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/strings/stringprintf.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/client/preferences/filtered_category_info.h"
@@ -46,17 +47,11 @@ bool MarkedToNoLongerReceiveFrequencyCap::DoesRespectCap(
     return true;
   }
 
-  const auto iter =
-      std::find_if(filtered_categories.begin(), filtered_categories.end(),
-                   [&ad](const FilteredCategoryInfo& filtered_category) {
-                     return filtered_category.name == ad.segment;
-                   });
-
-  if (iter == filtered_categories.end()) {
-    return true;
+  if (ShouldFilterSegment(ad.segment)) {
+    return false;
   }
 
-  return false;
+  return true;
 }
 
 }  // namespace ads

@@ -16,20 +16,19 @@ const char kSegmentSeparator[] = "-";
 }  // namespace
 
 std::vector<std::string> SplitSegment(const std::string& segment) {
+  DCHECK(!segment.empty());
+
   return base::SplitString(segment, kSegmentSeparator, base::KEEP_WHITESPACE,
                            base::SPLIT_WANT_ALL);
 }
 
 std::string GetParentSegment(const std::string& segment) {
-  std::string parent_segment;
-  if (segment.empty()) {
-    return parent_segment;
-  }
+  DCHECK(!segment.empty());
 
   const std::vector<std::string> components = SplitSegment(segment);
-  parent_segment = components.front();
+  DCHECK(!components.empty());
 
-  return parent_segment;
+  return components.front();
 }
 
 SegmentList GetParentSegments(const SegmentList& segments) {
@@ -48,36 +47,57 @@ SegmentList GetParentSegments(const SegmentList& segments) {
   return parent_segments;
 }
 
-bool ShouldFilterSegment(const std::string& segment) {
-  // If passed in segment has a sub segment and the current filter does not,
-  // check if it's a child of the filter. Conversely, if the passed in segment
-  // has no sub segment but the current filter does, it can't be a match at all
-  // so move on to the next filter. Otherwise, perform an exact match to
-  // determine whether or not to filter the segment
+bool HasChildSegment(const std::string& segment) {
+  DCHECK(!segment.empty());
 
-  const std::vector<std::string> segment_components = SplitSegment(segment);
+  const std::vector<std::string> components = SplitSegment(segment);
+  DCHECK(!components.empty());
+
+  if (components.size() == 1) {
+    return false;
+  }
+
+  return true;
+}
+
+bool ParentSegmentsMatch(const std::string& lhs, const std::string& rhs) {
+  DCHECK(!lhs.empty());
+  DCHECK(!rhs.empty());
+
+  const std::vector<std::string> lhs_segment_components = SplitSegment(lhs);
+  DCHECK(!lhs_segment_components.empty());
+  const std::string lhs_parent_segment = lhs_segment_components.front();
+
+  const std::vector<std::string> rhs_segment_components = SplitSegment(rhs);
+  DCHECK(!rhs_segment_components.empty());
+  const std::string rhs_parent_segment = rhs_segment_components.front();
+
+  return lhs_parent_segment == rhs_parent_segment;
+}
+
+bool ShouldFilterSegment(const std::string& segment) {
+  DCHECK(!segment.empty());
 
   const FilteredCategoryList filtered_segments =
       Client::Get()->get_filtered_categories();
 
-  for (const auto& filtered_segment : filtered_segments) {
-    const std::vector<std::string> filtered_segment_components =
-        SplitSegment(filtered_segment.name);
+  const auto iter = std::find_if(
+      filtered_segments.begin(), filtered_segments.end(),
+      [&segment](const FilteredCategoryInfo& filtered_segment) {
+        if (HasChildSegment(filtered_segment.name)) {
+          // Filter against parent-child, i.e. "technology & computing-linux"
+          return segment == filtered_segment.name;
+        } else {
+          // Filter against parent, i.e. "technology & computing"
+          return ParentSegmentsMatch(segment, filtered_segment.name);
+        }
+      });
 
-    if (segment_components.size() > 1 &&
-        filtered_segment_components.size() == 1) {
-      if (segment_components.front() == filtered_segment_components.front()) {
-        return true;
-      }
-    } else if (segment_components.size() == 1 &&
-               filtered_segment_components.size() > 1) {
-      continue;
-    } else if (filtered_segment.name == segment) {
-      return true;
-    }
+  if (iter == filtered_segments.end()) {
+    return false;
   }
 
-  return false;
+  return true;
 }
 
 }  // namespace ads

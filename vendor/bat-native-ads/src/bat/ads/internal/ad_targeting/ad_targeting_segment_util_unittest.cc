@@ -49,19 +49,6 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest, SplitParentSegment) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST_F(BatAdsAdTargetingSegmentUtilTest, SplitEmptySegment) {
-  // Arrange
-  const std::string segment = "";
-
-  // Act
-  const SegmentList segments = SplitSegment(segment);
-
-  // Assert
-  const SegmentList expected_segments = {};
-
-  EXPECT_EQ(expected_segments, segments);
-}
-
 TEST_F(BatAdsAdTargetingSegmentUtilTest, GetParentSegment) {
   // Arrange
   const std::string segment = "technology & computing-software";
@@ -84,19 +71,6 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest, GetParentSegmentFromParentSegment) {
 
   // Assert
   const std::string expected_parent_segment = "technology & computing";
-
-  EXPECT_EQ(expected_parent_segment, parent_segment);
-}
-
-TEST_F(BatAdsAdTargetingSegmentUtilTest, GetParentSegmentFromEmptyString) {
-  // Arrange
-  const std::string segment = "";
-
-  // Act
-  const std::string parent_segment = GetParentSegment(segment);
-
-  // Assert
-  const std::string expected_parent_segment = "";
 
   EXPECT_EQ(expected_parent_segment, parent_segment);
 }
@@ -130,7 +104,8 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest, GetParentSegmentsForEmptyList) {
   EXPECT_EQ(expected_parent_segments, parent_segments);
 }
 
-TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldFilterParentChildSegment) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest,
+       ShouldFilterMatchingParentChildSegment) {
   // Arrange
   Client::Get()->ToggleAdOptOutAction("parent-child",
                                       CategoryContentInfo::OptAction::kNone);
@@ -142,7 +117,8 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldFilterParentChildSegment) {
   EXPECT_TRUE(should_filter_segment);
 }
 
-TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldNotFilterParentChildSegment) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest,
+       ShouldNotFilterNonMatchingParentChildSegment) {
   // Arrange
   Client::Get()->ToggleAdOptOutAction("parent-child",
                                       CategoryContentInfo::OptAction::kNone);
@@ -154,7 +130,7 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldNotFilterParentChildSegment) {
   EXPECT_FALSE(should_filter_segment);
 }
 
-TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldFilterParentSegment) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   // Arrange
   Client::Get()->ToggleAdOptOutAction("parent",
                                       CategoryContentInfo::OptAction::kNone);
@@ -166,7 +142,8 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldFilterParentSegment) {
   EXPECT_TRUE(should_filter_segment);
 }
 
-TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldNotFilterParentSegment) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest,
+       ShouldNotFilterNonMatchingParentSegment) {
   // Arrange
   Client::Get()->ToggleAdOptOutAction("parent",
                                       CategoryContentInfo::OptAction::kNone);
@@ -176,6 +153,75 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldNotFilterParentSegment) {
 
   // Assert
   EXPECT_FALSE(should_filter_segment);
+}
+
+TEST_F(BatAdsAdTargetingSegmentUtilTest,
+       ShouldFilterAgainstParentForMatchingParentSegmentWithChild) {
+  // Arrange
+  Client::Get()->ToggleAdOptOutAction("parent",
+                                      CategoryContentInfo::OptAction::kNone);
+
+  // Act
+  const bool should_filter_segment = ShouldFilterSegment("parent-child");
+
+  // Assert
+  EXPECT_TRUE(should_filter_segment);
+}
+
+TEST_F(BatAdsAdTargetingSegmentUtilTest,
+       ShouldNotFilterAgainstParentForNonMatchingParentSegmentWithChild) {
+  // Arrange
+  Client::Get()->ToggleAdOptOutAction("parent",
+                                      CategoryContentInfo::OptAction::kNone);
+
+  // Act
+  const bool should_filter_segment = ShouldFilterSegment("foo-bar");
+
+  // Assert
+  EXPECT_FALSE(should_filter_segment);
+}
+
+TEST_F(BatAdsAdTargetingSegmentUtilTest, ParentSegmentsMatch) {
+  // Arrange
+
+  // Act
+  const bool does_match = ParentSegmentsMatch("technology & computing-windows",
+                                              "technology & computing-linux");
+
+  // Assert
+  EXPECT_TRUE(does_match);
+}
+
+TEST_F(BatAdsAdTargetingSegmentUtilTest, ParentSegmentsDoNotMatch) {
+  // Arrange
+
+  // Act
+  const bool does_match =
+      ParentSegmentsMatch("business-banking", "technology & computing-linux");
+
+  // Assert
+  EXPECT_FALSE(does_match);
+}
+
+TEST_F(BatAdsAdTargetingSegmentUtilTest, HasChildSegment) {
+  // Arrange
+
+  // Act
+  const bool has_child_segment =
+      HasChildSegment("technology & computing-windows");
+
+  // Assert
+  EXPECT_TRUE(has_child_segment);
+}
+
+TEST_F(BatAdsAdTargetingSegmentUtilTest, DoesNotHaveChildSegment) {
+  // Arrange
+
+  // Act
+  const bool has_child_segment = HasChildSegment("technology & computing");
+
+  // Assert
+  EXPECT_FALSE(has_child_segment);
 }
 
 }  // namespace ad_targeting
