@@ -6,15 +6,22 @@
 package org.chromium.chrome.browser.ui.appmenu;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Rect;
+import android.view.Menu;
 import android.view.View;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.ui.appmenu.internal.R;
 import org.chromium.ui.base.DeviceFormFactor;
 
-class BraveAppMenu {
+class BraveAppMenu extends AppMenu {
     private static final String BRAVE_IS_MENU_FROM_BOTTOM = "brave_is_menu_from_bottom";
+
+    BraveAppMenu(Menu menu, int itemRowHeight, AppMenuHandlerImpl handler, Resources res,
+            boolean iconBeforeItem) {
+        super(menu, itemRowHeight, handler, res, iconBeforeItem);
+    }
 
     public static int[] getPopupPosition(int[] tempLocation, boolean isByPermanentButton,
             int negativeSoftwareVerticalOffset, int negativeVerticalOffsetNotTopAnchored,
@@ -41,5 +48,9 @@ class BraveAppMenu {
     private static boolean isMenuFromBottom() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         return sharedPreferences.getBoolean(BRAVE_IS_MENU_FROM_BOTTOM, false);
+    }
+
+    public void runMenuItemEnterAnimations() {
+        // We do nothing here as we don't want any fancy animation for the menu.
     }
 }
