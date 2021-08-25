@@ -10,6 +10,12 @@ private let log = Logger.browserLogger
 // Taken from: https://github.com/Brandon-T/Jarvis and modified to simplify
 
 public class PinningCertificateEvaluator: NSObject, URLSessionDelegate {
+    struct ExcludedPinningHostUrls {
+        static let urls = ["laptop-updates.brave.com",
+                           "updates.bravesoftware.com",
+                           "updates-cdn.bravesoftware.com"]
+    }
+    
     private let hosts: [String]
     private let certificates: [SecCertificate]
     private let options: PinningOptions
@@ -46,6 +52,10 @@ public class PinningCertificateEvaluator: NSObject, URLSessionDelegate {
             if let serverTrust = challenge.protectionSpace.serverTrust {
                 do {
                     let host = challenge.protectionSpace.host
+                    if ExcludedPinningHostUrls.urls.contains(host) {
+                        return completionHandler(.performDefaultHandling, nil)
+                    }
+                    
                     if !canPinHost(host) {
                         throw error(reason: "Host not specified for pinning: \(host)")
                     }
