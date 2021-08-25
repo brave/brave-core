@@ -362,6 +362,7 @@ class BrowserViewController: UIViewController {
         Preferences.General.tabBarVisibility.observe(from: self)
         Preferences.General.alwaysRequestDesktopSite.observe(from: self)
         Preferences.General.enablePullToRefresh.observe(from: self)
+        Preferences.General.mediaAutoBackgrounding.observe(from: self)
         Preferences.Shields.allShields.forEach { $0.observe(from: self) }
         Preferences.Privacy.blockAllCookies.observe(from: self)
         Preferences.Rewards.hideRewardsIcon.observe(from: self)
@@ -2847,6 +2848,11 @@ extension BrowserViewController: PreferencesObserver {
                     $0.userScriptManager?.isWebCompatibilityMediaSourceAPIEnabled = Preferences.Playlist.webMediaSourceCompatibility.value
                     $0.webView?.reload()
                 }
+            }
+        case Preferences.General.mediaAutoBackgrounding.key:
+            tabManager.allTabs.forEach {
+                $0.userScriptManager?.isMediaBackgroundPlaybackEnabled = Preferences.General.mediaAutoBackgrounding.value
+                $0.webView?.reload()
             }
         default:
             log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")

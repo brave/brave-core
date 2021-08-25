@@ -871,6 +871,7 @@
 		CA9A22FE26A71ADA00923D70 /* PlaylistPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A22FD26A71ADA00923D70 /* PlaylistPopoverView.swift */; };
 		CA9A233426B97B4300923D70 /* PlaylistMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A233326B97B4300923D70 /* PlaylistMenuButton.swift */; };
 		CA9A234126B97B8400923D70 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A234026B97B8400923D70 /* MenuButton.swift */; };
+		CA550490269DED8F00C19917 /* MediaBackgrounding.js in Resources */ = {isa = PBXBuildFile; fileRef = CA55048F269DED8F00C19917 /* MediaBackgrounding.js */; };
 		CAA10597266FE94700A0372D /* RecentSearchQRCodeScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1058B266FE94700A0372D /* RecentSearchQRCodeScannerController.swift */; };
 		CAB127632639F37C00BBFC75 /* RecentSearches.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB127622639F37C00BBFC75 /* RecentSearches.swift */; };
 		CAB127652639FB7000BBFC75 /* RecentSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB127642639FB7000BBFC75 /* RecentSearchCell.swift */; };
@@ -2559,6 +2560,7 @@
 		CA9A22FF26A7370C00923D70 /* FontScaling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontScaling.swift; sourceTree = "<group>"; };
 		CA9A233326B97B4300923D70 /* PlaylistMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistMenuButton.swift; sourceTree = "<group>"; };
 		CA9A234026B97B8400923D70 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
+		CA55048F269DED8F00C19917 /* MediaBackgrounding.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = MediaBackgrounding.js; sourceTree = "<group>"; };
 		CAA1058B266FE94700A0372D /* RecentSearchQRCodeScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentSearchQRCodeScannerController.swift; sourceTree = "<group>"; };
 		CAB127622639F37C00BBFC75 /* RecentSearches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearches.swift; sourceTree = "<group>"; };
 		CAB127642639FB7000BBFC75 /* RecentSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchCell.swift; sourceTree = "<group>"; };
@@ -5013,6 +5015,7 @@
 				5E5E6F2825BB61320035B6A0 /* Playlist.js */,
 				5EC2C0E425C0B321005EA984 /* PlaylistDetector.js */,
 				5EC0017D260129AC005DDE4A /* PlaylistSwizzler.js */,
+				CA55048F269DED8F00C19917 /* MediaBackgrounding.js */,
 			);
 			path = UserScripts;
 			sourceTree = "<group>";
@@ -6542,6 +6545,7 @@
 				5E0FCD212342526700AC831E /* FullscreenHelper.js in Resources */,
 				D38A1EE01CB458EC0080C842 /* CertError.html in Resources */,
 				4481F24026CBD3DC00658EAC /* ISRGRootCA_X2.cer in Resources */,
+				CA550490269DED8F00C19917 /* MediaBackgrounding.js in Resources */,
 				0BA1E0301B051A07007675AF /* NetError.css in Resources */,
 				59871C1921E4D83900316590 /* block-cookies.json in Resources */,
 				0AB22A90257EADA900126ADC /* corwin-prescott_crestone.jpg in Resources */,
