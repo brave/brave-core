@@ -81,7 +81,7 @@ describe('cosmeticFilterEvents events', () => {
             'code': '#test_selector {display: none !important;}',
             'cssOrigin': 'user'
           }
-          expect(insertCssSpy).toBeCalledWith(returnObj)
+          expect(insertCssSpy).toBeCalledWith(returnObj, expect.any(Function))
         })
       })
     })
