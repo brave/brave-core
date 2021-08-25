@@ -19,6 +19,36 @@
 #include "components/sync_preferences/pref_service_syncable.h"
 #include "crypto/random.h"
 
+/* kBraveWalletKeyrings structure
+ *
+ * { "default":
+ *   {  "backup_complete": false,
+ *      "encrypted_mnemonic": [mnemonic],
+ *      "account_metas": {
+ *         "m/44'/60'/0'/0/0": {
+ *               "account_name": "account 1",
+ *               ...
+ *          },
+ *          "m/44'/60'/0'/0/1": {
+ *               "account_name": "account 2",
+ *               ...
+ *          }
+ *      }
+ *      "imported_accounts": [
+ *	  { "address": "0x71f430f5f2a79274c17986ea1a1106596a39ba05",
+ *          "encrypted_private_key": [privatekey],
+ *          "account_name": "Imported account 1"
+ *	  },
+ *	  ...
+ *      ]
+ *      ...
+ *   },
+ *
+ *   [keyringid]: {...}
+ *   ...
+ * }
+ */
+
 namespace brave_wallet {
 namespace {
 const size_t kSaltSize = 32;
@@ -33,6 +63,9 @@ const char kEncryptedMnemonic[] = "encrypted_mnemonic";
 const char kBackupComplete[] = "backup_complete";
 const char kAccountMetas[] = "account_metas";
 const char kAccountName[] = "account_name";
+const char kImportedAccounts[] = "imported_accounts";
+const char kAccountAddress[] = "account_address";
+const char kEncryptedPrivateKey[] = "encrypted_private_key";
 
 static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
   return base::as_bytes(base::make_span(sp));
@@ -225,6 +258,74 @@ std::string KeyringController::GetAccountPathByIndex(size_t index) {
   return std::string(kRootPath) + "/" + base::NumberToString(index);
 }
 
+// static
+void KeyringController::SetImportedAccountForKeyring(
+    PrefService* prefs,
+    const ImportedAccountInfo& info,
+    const std::string& id) {
+  base::Value imported_account(base::Value::Type::DICTIONARY);
+  imported_account.SetStringKey(kAccountName, info.account_name);
+  imported_account.SetStringKey(kAccountAddress, info.account_address);
+  imported_account.SetStringKey(kEncryptedPrivateKey,
+                                info.encrypted_private_key);
+
+  base::Value imported_accounts(base::Value::Type::LIST);
+  const base::Value* value = GetPrefForKeyring(prefs, kImportedAccounts, id);
+  if (value)
+    imported_accounts = value->Clone();
+  imported_accounts.Append(std::move(imported_account));
+
+  SetPrefForKeyring(prefs, kImportedAccounts, std::move(imported_accounts), id);
+}
+
+// static
+std::vector<KeyringController::ImportedAccountInfo>
+KeyringController::GetImportedAccountsForKeyring(PrefService* prefs,
+                                                 const std::string& id) {
+  std::vector<ImportedAccountInfo> result;
+  const base::Value* imported_accounts =
+      GetPrefForKeyring(prefs, kImportedAccounts, id);
+  if (!imported_accounts)
+    return result;
+  for (const auto& imported_account : imported_accounts->GetList()) {
+    const std::string* account_name =
+        imported_account.FindStringKey(kAccountName);
+    const std::string* account_address =
+        imported_account.FindStringKey(kAccountAddress);
+    const std::string* encrypted_private_key =
+        imported_account.FindStringKey(kEncryptedPrivateKey);
+    if (!account_name || !account_address || !encrypted_private_key) {
+      LOG(ERROR) << "Imported accounts corruppted";
+      continue;
+    }
+    result.push_back(ImportedAccountInfo(
+        {*account_name, *account_address, *encrypted_private_key}));
+  }
+  return result;
+}
+// static
+void KeyringController::RemoveImportedAccountForKeyring(
+    PrefService* prefs,
+    const std::string& address,
+    const std::string& id) {
+  base::Value imported_accounts(base::Value::Type::LIST);
+  const base::Value* value = GetPrefForKeyring(prefs, kImportedAccounts, id);
+  if (!value)
+    return;
+  imported_accounts = value->Clone();
+  const auto imported_accounts_list = imported_accounts.GetList();
+  for (const auto& imported_account : imported_accounts_list) {
+    const std::string* account_address =
+        imported_account.FindStringKey(kAccountAddress);
+    if (account_address && *account_address == address) {
+      imported_accounts.EraseListValue(imported_account);
+      break;
+    }
+  }
+
+  SetPrefForKeyring(prefs, kImportedAccounts, std::move(imported_accounts), id);
+}
+
 HDKeyring* KeyringController::CreateDefaultKeyring(
     const std::string& password) {
   if (!CreateEncryptorForKeyring(password, kDefaultKeyringId))
@@ -255,6 +356,21 @@ HDKeyring* KeyringController::ResumeDefaultKeyring(
   size_t account_no = GetAccountMetasNumberForKeyring(kDefaultKeyringId);
   if (account_no)
     default_keyring_->AddAccounts(account_no);
+
+  for (const auto& imported_account_info :
+       GetImportedAccountsForKeyring(prefs_, kDefaultKeyringId)) {
+    std::string private_key_decoded;
+    if (!base::Base64Decode(imported_account_info.encrypted_private_key,
+                            &private_key_decoded))
+      continue;
+    std::vector<uint8_t> private_key;
+    if (!encryptor_->Decrypt(ToSpan(private_key_decoded),
+                             GetOrCreateNonceForKeyring(kDefaultKeyringId),
+                             &private_key)) {
+      continue;
+    }
+    default_keyring_->AddImportedAccount(private_key);
+  }
 
   return default_keyring_.get();
 }
@@ -372,6 +488,92 @@ void KeyringController::AddAccount(const std::string& account_name,
   std::move(callback).Run(keyring);
 }
 
+void KeyringController::AddImportedAccount(
+    const std::string& account_name,
+    const std::string& private_key_hex,
+    AddImportedAccountCallback callback) {
+  if (account_name.empty() || private_key_hex.empty() || !encryptor_) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::vector<uint8_t> private_key;
+  if (!base::HexStringToBytes(private_key_hex, &private_key)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  if (!default_keyring_) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  const std::string address = default_keyring_->AddImportedAccount(private_key);
+  if (address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::vector<uint8_t> encrypted_private_key;
+  if (!encryptor_->Encrypt(private_key,
+                           GetOrCreateNonceForKeyring(kDefaultKeyringId),
+                           &encrypted_private_key)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  ImportedAccountInfo info = {account_name, address,
+                              base::Base64Encode(encrypted_private_key)};
+  SetImportedAccountForKeyring(prefs_, info, kDefaultKeyringId);
+
+  for (const auto& observer : observers_) {
+    observer->AccountsChanged();
+  }
+
+  std::move(callback).Run(true, address);
+}
+
+void KeyringController::GetPrivateKeyForImportedAccount(
+    const std::string& address,
+    GetPrivateKeyForImportedAccountCallback callback) {
+  if (address.empty() || !encryptor_) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  for (const auto& imported_account_info :
+       GetImportedAccountsForKeyring(prefs_, kDefaultKeyringId)) {
+    if (imported_account_info.account_address == address) {
+      std::string private_key_decoded;
+      if (!base::Base64Decode(imported_account_info.encrypted_private_key,
+                              &private_key_decoded))
+        continue;
+      std::vector<uint8_t> private_key;
+      if (!encryptor_->Decrypt(ToSpan(private_key_decoded),
+                               GetOrCreateNonceForKeyring(kDefaultKeyringId),
+                               &private_key)) {
+        continue;
+      }
+      std::move(callback).Run(true,
+                              base::ToLowerASCII(base::HexEncode(private_key)));
+      return;
+    }
+  }
+  std::move(callback).Run(false, "");
+}
+
+void KeyringController::RemoveImportedAccount(
+    const std::string& address,
+    RemoveImportedAccountCallback callback) {
+  if (address.empty() || !default_keyring_) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  default_keyring_->RemoveImportedAccount(address);
+  RemoveImportedAccountForKeyring(prefs_, address, kDefaultKeyringId);
+  for (const auto& observer : observers_) {
+    observer->AccountsChanged();
+  }
+  std::move(callback).Run(true);
+}
+
 void KeyringController::IsWalletBackedUp(IsWalletBackedUpCallback callback) {
   bool backup_complete = false;
   const base::Value* value =
@@ -420,6 +622,16 @@ std::vector<mojom::AccountInfoPtr> KeyringController::GetAccountInfosForKeyring(
     account_info->address = default_keyring_->GetAddress(i);
     account_info->name =
         GetAccountNameForKeyring(prefs_, GetAccountPathByIndex(i), id);
+    account_info->is_imported = false;
+    result.push_back(std::move(account_info));
+  }
+  // append imported account info
+  for (const auto& imported_account_info :
+       GetImportedAccountsForKeyring(prefs_, id)) {
+    mojom::AccountInfoPtr account_info = mojom::AccountInfo::New();
+    account_info->address = imported_account_info.account_address;
+    account_info->name = imported_account_info.account_name;
+    account_info->is_imported = true;
     result.push_back(std::move(account_info));
   }
   return result;

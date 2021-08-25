@@ -130,6 +130,7 @@ struct SwapResponse {
 struct AccountInfo {
   string address;
   string name;
+  bool is_imported;
 };
 
 struct KeyringInfo {
@@ -185,6 +186,11 @@ interface KeyringController {
   Unlock(string password) => (bool success);
   IsLocked() => (bool isLocked);
   AddAccount(string accountName) => (bool success);
+  AddImportedAccount(string accountName, string privateKey)
+    => (bool success, string address);
+  GetPrivateKeyForImportedAccount(string address)
+    => (bool success, string privateKey);
+  RemoveImportedAccount(string address) => (bool success);
   IsWalletBackedUp() => (bool backed_up);
   NotifyWalletBackupComplete();
   GetDefaultKeyringInfo() => (KeyringInfo keyring);
