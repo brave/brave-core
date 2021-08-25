@@ -1313,8 +1313,6 @@ void AdsServiceImpl::OnGetAdsHistory(OnGetAdsHistoryCallback callback,
     ad_content_dictionary.SetKey("brand", base::Value(item.ad_content.brand));
     ad_content_dictionary.SetKey("brandInfo",
                                  base::Value(item.ad_content.brand_info));
-    ad_content_dictionary.SetKey("brandLogo",
-                                 base::Value(item.ad_content.brand_logo));
     ad_content_dictionary.SetKey(
         "brandDisplayUrl", base::Value(item.ad_content.brand_display_url));
     ad_content_dictionary.SetKey("brandUrl",
