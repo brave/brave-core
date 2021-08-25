@@ -175,6 +175,7 @@ test("brave_unit_tests") {
     "//brave/chromium_src/components/autofill_assistant/browser:unit_tests",
     "//brave/common:network_constants",
     "//brave/common:pref_names",
+    "//brave/common:unit_tests",
     "//brave/components/adblock_rust_ffi",
     "//brave/components/brave_ads/test:brave_ads_unit_tests",
     "//brave/components/brave_component_updater/browser",
