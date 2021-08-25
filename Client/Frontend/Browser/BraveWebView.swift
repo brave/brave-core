@@ -4,6 +4,8 @@
 
 import Foundation
 import WebKit
+import Shared
+import BraveShared
 
 class BraveWebView: WKWebView {
     
@@ -26,6 +28,12 @@ class BraveWebView: WKWebView {
             configuration.websiteDataStore = BraveWebView.sharedNonPersistentStore()
         } else {
             configuration.websiteDataStore = WKWebsiteDataStore.default()
+        }
+        
+        if Preferences.General.mediaAutoPlays.value {
+            configuration.mediaTypesRequiringUserActionForPlayback = []
+        } else {
+            configuration.mediaTypesRequiringUserActionForPlayback = .all
         }
         
         super.init(frame: frame, configuration: configuration)

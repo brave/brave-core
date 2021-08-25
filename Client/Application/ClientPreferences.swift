@@ -72,7 +72,7 @@ extension Preferences {
         /// Do not read it directly, prefer to use `UserAgent.shouldUseDesktopMode` instead.
         static let alwaysRequestDesktopSite = Option<Bool>(key: "general.always-request-desktop-site", default: UIDevice.isIpad)
         /// Controls whether or not media auto-plays
-        static let mediaAutoPlays = Option<Bool>(key: "general.media-auto-plays", default: false)
+        static let mediaAutoPlays = Option<Bool>(key: "general.media-auto-plays", default: true)
         /// Controls whether or not to show the last visited bookmarks folder
         static let showLastVisitedBookmarksFolder = Option<Bool>(key: "general.bookmarks-show-last-visited-bookmarks-folder", default: true)
         
