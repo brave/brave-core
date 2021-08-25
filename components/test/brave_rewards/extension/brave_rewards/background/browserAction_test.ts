@@ -22,12 +22,12 @@ describe('Rewards Panel extension - Browser Action', () => {
       spyColor.mockRestore()
     })
 
-    it('publisher is not verified, no pending notifications', async () => {
+    it('publisher is not verified, no pending notifications', () => {
       const state: RewardsExtension.State = {
         notifications: {}
       }
 
-      await setBadgeText(state)
+      setBadgeText(state)
 
       expect(spyText).toHaveBeenCalled()
       expect(spyText.mock.calls[0][0]).toEqual({
@@ -36,7 +36,7 @@ describe('Rewards Panel extension - Browser Action', () => {
       })
     })
 
-    it('publisher is not verified, pending notifications', async () => {
+    it('publisher is not verified, pending notifications', () => {
       const state: RewardsExtension.State = {
         notifications: {
           '1': {
@@ -45,7 +45,7 @@ describe('Rewards Panel extension - Browser Action', () => {
         }
       }
 
-      await setBadgeText(state)
+      setBadgeText(state)
 
       expect(spyText).toHaveBeenCalled()
       expect(spyText.mock.calls[0][0]).toEqual({
@@ -54,12 +54,12 @@ describe('Rewards Panel extension - Browser Action', () => {
       })
     })
 
-    it('publisher is verified, no pending notifications', async () => {
+    it('publisher is verified, no pending notifications', () => {
       const state: RewardsExtension.State = {
         notifications: {}
       }
 
-      await setBadgeText(state, true, 1)
+      setBadgeText(state, true, 1)
 
       expect(spyText).toHaveBeenCalled()
       const data = spyText.mock.calls[0][0]
@@ -73,7 +73,7 @@ describe('Rewards Panel extension - Browser Action', () => {
       })
     })
 
-    it('publisher is verified, pending notifications', async () => {
+    it('publisher is verified, pending notifications', () => {
       const state: RewardsExtension.State = {
         notifications: {
           '1': {
@@ -82,7 +82,7 @@ describe('Rewards Panel extension - Browser Action', () => {
         }
       }
 
-      await setBadgeText(state, true, 1)
+      setBadgeText(state, true, 1)
 
       expect(spyText).toHaveBeenCalled()
       expect(spyText.mock.calls[0][0]).toEqual({
@@ -97,7 +97,7 @@ describe('Rewards Panel extension - Browser Action', () => {
       })
     })
 
-    it('publisher is not verified with tabId, pending notifications', async () => {
+    it('publisher is not verified with tabId, pending notifications', () => {
       const state: RewardsExtension.State = {
         notifications: {
           '1': {
@@ -106,7 +106,7 @@ describe('Rewards Panel extension - Browser Action', () => {
         }
       }
 
-      await setBadgeText(state, false, 1)
+      setBadgeText(state, false, 1)
 
       expect(spyText).toHaveBeenCalled()
       expect(spyText.mock.calls[0][0]).toEqual({

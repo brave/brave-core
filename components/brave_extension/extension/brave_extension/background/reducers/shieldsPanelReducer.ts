@@ -154,7 +154,7 @@ export default function shieldsPanelReducer (
       setAllowHTTPUpgradableResources(tabData.origin, toggleShieldsValue(action.setting))
         .then(() => {
           requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-          reloadTab(tabData.id, true).catch(() => {
+          return reloadTab(tabData.id, true).catch(() => {
             console.error('Tab reload was not successful')
           })
         })
@@ -172,7 +172,7 @@ export default function shieldsPanelReducer (
       setAllowJavaScript(tabData.origin, toggleShieldsValue(tabData.javascript))
         .then(() => {
           requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-          reloadTab(tabData.id, true).catch(() => {
+          return reloadTab(tabData.id, true).catch(() => {
             console.error('Tab reload was not successful')
           })
         })
@@ -223,7 +223,7 @@ export default function shieldsPanelReducer (
           reloadTab(tabId, true).catch(() => {
             console.error('Tab reload was not successful')
           })
-          requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+          return requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
         })
         .catch(() => {
           console.error('Could not set blockers for tracking')
@@ -245,7 +245,7 @@ export default function shieldsPanelReducer (
       setAllowFingerprinting(tabData.origin, action.setting)
         .then(() => {
           requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-          reloadTab(tabData.id, true).catch(() => {
+          return reloadTab(tabData.id, true).catch(() => {
             console.error('Tab reload was not successful')
           })
         })
@@ -266,28 +266,47 @@ export default function shieldsPanelReducer (
             chrome.cookies.getAll({ domain: tabData.origin },
               function (cookies) {
                 cookies.forEach(function (cookie) {
-                  chrome.cookies.remove({ 'url': 'http://' + cookie.domain + cookie.path, 'name': cookie.name }).catch((e) => { console.error(e) })
-                  chrome.cookies.remove({ 'url': 'https://' + cookie.domain + cookie.path, 'name': cookie.name }).catch((e) => { console.error(e) })
+                  const path = cookie.domain + cookie.path
+                  chrome.cookies.remove({ 'url': 'http://' + path, 'name': cookie.name },
+                    () => {
+                      if (chrome.runtime.lastError) {
+                        console.error('cookies.remove failed for cookie http://' + path +
+                                      ', error: ' + chrome.runtime.lastError.message)
+                      }
+                    })
+                  chrome.cookies.remove({ 'url': 'https://' + path, 'name': cookie.name },
+                    () => {
+                      if (chrome.runtime.lastError) {
+                        console.error('cookies.remove failed for cookie https://' + path +
+                                      ', error: ' + chrome.runtime.lastError.message)
+                      }
+                    })
                 })
               }
             )
             chrome.tabs.executeScript(tabData.id, {
               code: 'try { window.sessionStorage.clear(); } catch(e) {}'
-            }).catch((e) => { console.error(e) })
+            }, () => {
+              if (chrome.runtime.lastError) {
+                console.error('Clearing sessionStorage failed: ' + chrome.runtime.lastError.message)
+              }
+            })
             // clearing localStorage may fail with SecurityError if third-
             // party cookies are already blocked, but that's okay
             chrome.tabs.executeScript(tabData.id, {
               code: 'try { window.localStorage.clear(); } catch(e) {}'
-            }).catch((e) => { console.error(e) })
+            }, () => {
+              if (chrome.runtime.lastError) {
+                console.warn('Clearing localStorage failed: ' + chrome.runtime.lastError.message)
+              }
+            })
           }
           requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-          reloadTab(tabData.id, true).catch(() => {
+          return reloadTab(tabData.id, true).catch(() => {
             console.error('Tab reload was not successful')
           })
         })
-        .catch(() => {
-          console.error('Could not set cookies setting')
-        })
+        .catch((error: any) => console.error('Could not set cookies setting. ', error))
       break
     }
     case shieldsPanelTypes.ALLOW_SCRIPT_ORIGINS_ONCE: {
@@ -299,7 +318,7 @@ export default function shieldsPanelReducer (
       setAllowScriptOriginsOnce(getAllowedScriptsOrigins(tabData.noScriptInfo), tabData.id)
         .then(() => {
           requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-          reloadTab(tabData.id, true).catch(() => {
+          return reloadTab(tabData.id, true).catch(() => {
             console.error('Tab reload was not successful')
           })
         })
@@ -410,6 +429,7 @@ export default function shieldsPanelReducer (
           if (doCosmeticBlocking) {
             applyAdblockCosmeticFilters(action.tabId, action.frameId, action.url, hide1pContent)
           }
+          return null
         })
         .catch(() => {
           console.error('Could not apply cosmetic blocking')

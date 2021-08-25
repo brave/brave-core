@@ -7,19 +7,20 @@ export let rule = {
   selector: ''
 }
 
-export const applyCosmeticFilter = async (host: string, selector: string) => {
+export const applyCosmeticFilter = (host: string, selector: string) => {
   if (selector) {
     const s: string = selector.trim()
 
     if (s.length > 0) {
-      try {
-        await chrome.tabs.insertCSS({
-          code: `${s} {display: none !important;}`,
-          cssOrigin: 'user'
-        })
-      } catch (e) {
-        console.error(e)
-      }
+      chrome.tabs.insertCSS({
+        code: `${s} {display: none !important;}`,
+        cssOrigin: 'user'
+      }, () => {
+        if (chrome.runtime.lastError) {
+          console.error('[applyCosmeticFilter] tabs.insertCSS failed: ' +
+            chrome.runtime.lastError.message)
+        }
+      })
 
       addSiteCosmeticFilter(host, s)
     }
@@ -50,7 +51,7 @@ chrome.contextMenus.onClicked.addListener((info: chrome.contextMenus.OnClickData
 })
 
 // content script listener for events from the cosmetic filtering content script
-chrome.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
     case 'contextMenuOpened': {
@@ -91,7 +92,7 @@ chrome.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
     }
     case 'cosmeticFilterCreate': {
       const { host, selector } = msg
-      await applyCosmeticFilter(host, selector)
+      applyCosmeticFilter(host, selector)
       break
     }
   }
