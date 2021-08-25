@@ -684,8 +684,7 @@ class TestAdBlockSubscriptionServiceManagerObserver
 // Make sure a list added as a custom subscription works correctly
 // The download in this test fails intermittently with a network error code,
 // although it doesn't seem to occur in real usage.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
-                       DISABLED_SubscribeToCustomSubscription) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL subscription_url =
       embedded_test_server()->GetURL("lists.com", "/list.txt");

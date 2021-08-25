@@ -60,7 +60,7 @@ AdBlockSubscriptionDownloadManager::AdBlockSubscriptionDownloadManager(
     download::BackgroundDownloadService* download_service,
     scoped_refptr<base::SequencedTaskRunner> background_task_runner)
     : download_service_(download_service),
-      is_available_for_downloads_(true),
+      is_available_for_downloads_(false),
       background_task_runner_(background_task_runner) {}
 
 AdBlockSubscriptionDownloadManager::~AdBlockSubscriptionDownloadManager() =
@@ -68,6 +68,10 @@ AdBlockSubscriptionDownloadManager::~AdBlockSubscriptionDownloadManager() =
 
 void AdBlockSubscriptionDownloadManager::StartDownload(const GURL& download_url,
                                                        bool from_ui) {
+  if (!is_available_for_downloads_) {
+    not_yet_started_downloads_.insert(download_url);
+    return;
+  }
   download::DownloadParams download_params;
   download_params.client = download::DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS;
   download_params.guid = base::GenerateGUID();
@@ -120,9 +124,16 @@ void AdBlockSubscriptionDownloadManager::Shutdown() {
 void AdBlockSubscriptionDownloadManager::OnDownloadServiceReady(
     const std::set<std::string>& pending_download_guids,
     const std::map<std::string, base::FilePath>& successful_downloads) {
+  is_available_for_downloads_ = true;
+
+  for (const GURL& not_yet_started_download : not_yet_started_downloads_) {
+    StartDownload(GURL(not_yet_started_download), true);
+  }
+
+  not_yet_started_downloads_.clear();
+
   // Successful downloads should already be notified via |onDownloadSucceeded|,
   // so we don't do anything with them here.
-  // Pending downloads are also cached externally and not handled here.
 }
 
 void AdBlockSubscriptionDownloadManager::OnDownloadServiceUnavailable() {
@@ -142,7 +153,9 @@ void AdBlockSubscriptionDownloadManager::OnDownloadStarted(
 void AdBlockSubscriptionDownloadManager::OnDownloadFailed(
     const std::string& guid) {
   auto it = pending_download_guids_.find(guid);
-  DCHECK(it != pending_download_guids_.end());
+  if (it == pending_download_guids_.end()) {
+    return;
+  }
   GURL download_url = it->second;
   pending_download_guids_.erase(guid);
 

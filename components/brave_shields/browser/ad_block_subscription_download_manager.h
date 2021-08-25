@@ -77,6 +77,8 @@ class AdBlockSubscriptionDownloadManager
  private:
   friend class AdBlockSubscriptionDownloadClient;
 
+  bool service_ready_;
+
   // KeyedService implementation
   void Shutdown() override;
 
@@ -114,6 +116,8 @@ class AdBlockSubscriptionDownloadManager
   // Invoked after ReplaceFile to report the status of moving the temporary
   // download file to its destination path.
   void ReplaceFileCallback(const GURL& download_url, bool success);
+
+  std::set<GURL> not_yet_started_downloads_;
 
   // GUIDs that are still pending download, mapped to the corresponding URLs of
   // their subscription services.
