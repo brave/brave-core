@@ -7,6 +7,9 @@ import Foundation
 import SwiftUI
 import BraveUI
 import Shared
+import Data
+
+private let log = Logger.browserLogger
 
 extension BrowserViewController {
     func featuresMenuSection(_ menuController: MenuViewController) -> some View {
@@ -43,7 +46,7 @@ extension BrowserViewController {
                 menuController.pushInnerMenu(vc)
             }
             MenuItemButton(icon: #imageLiteral(resourceName: "playlist_menu").template, title: Strings.playlistMenuItem) {
-                let playlistController = (UIApplication.shared.delegate as? AppDelegate)?.playlistRestorationController ?? PlaylistViewController()
+                let playlistController = (UIApplication.shared.delegate as? AppDelegate)?.playlistRestorationController ?? PlaylistViewController(initialItem: nil, initialItemPlaybackOffset: 0.0)
                 playlistController.modalPresentationStyle = .fullScreen
                 self.dismiss(animated: true) {
                     self.present(playlistController, animated: true)
@@ -57,29 +60,70 @@ extension BrowserViewController {
         }
     }
     
-    func activitiesMenuSection(_ menuController: MenuViewController, tabURL: URL, activities: [UIActivity]) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            MenuTabDetailsView(tab: tabManager.selectedTab, url: tabURL)
-            VStack(spacing: 0) {
-                MenuItemButton(icon: #imageLiteral(resourceName: "nav-share").template, title: Strings.shareWithMenuItem) {
-                    self.dismiss(animated: true)
-                    self.tabToolbarDidPressShare()
-                }
-                MenuItemButton(icon: #imageLiteral(resourceName: "menu-add-bookmark").template, title: Strings.addToMenuItem) {
-                    self.dismiss(animated: true) {
-                        self.openAddBookmark()
-                    }
-                }
-                ForEach(activities, id: \.activityTitle) { activity in
-                    MenuItemButton(icon: activity.activityImage?.template ?? UIImage(), title: activity.activityTitle ?? "") {
-                        self.dismiss(animated: true) {
-                            activity.perform()
+    struct PageActionsMenuSection: View {
+            var browserViewController: BrowserViewController
+            var tabURL: URL
+            var activities: [UIActivity]
+            
+            @State private var playlistItemAdded: Bool = false
+            
+            private var playlistActivity: (enabled: Bool, item: PlaylistInfo?)? {
+                browserViewController.addToPlayListActivityItem ??
+                    browserViewController.openInPlaylistActivityItem
+            }
+            
+            private var isPlaylistItemAdded: Bool {
+                browserViewController.openInPlaylistActivityItem != nil
+            }
+            
+            var body: some View {
+                VStack(alignment: .leading, spacing: 0) {
+                    MenuTabDetailsView(tab: browserViewController.tabManager.selectedTab, url: tabURL)
+                    VStack(spacing: 0) {
+                        if let activity = playlistActivity, activity.enabled, let item = activity.item {
+                            PlaylistMenuButton(isAdded: isPlaylistItemAdded) {
+                                if !isPlaylistItemAdded {
+                                    // Add to playlist
+                                    browserViewController.addToPlaylist(item: item) { didAddItem in
+                                        log.debug("Playlist Item Added")
+                                        if didAddItem {
+                                            playlistItemAdded = true
+                                        }
+                                    }
+                                } else {
+                                    browserViewController.dismiss(animated: true) {
+                                        if let webView = browserViewController.tabManager.selectedTab?.webView {
+                                            PlaylistHelper.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak browserViewController] currentTime in
+                                                browserViewController?.openPlaylist(item: item, playbackOffset: currentTime)
+                                            }
+                                        } else {
+                                            browserViewController.openPlaylist(item: item, playbackOffset: 0.0)
+                                        }
+                                    }
+                                }
+                            }
+                            .animation(.default, value: playlistItemAdded)
+                        }
+                        MenuItemButton(icon: #imageLiteral(resourceName: "nav-share").template, title: Strings.shareWithMenuItem) {
+                            browserViewController.dismiss(animated: true)
+                            browserViewController.tabToolbarDidPressShare()
+                        }
+                        MenuItemButton(icon: #imageLiteral(resourceName: "menu-add-bookmark").template, title: Strings.addToMenuItem) {
+                            browserViewController.dismiss(animated: true) {
+                                browserViewController.openAddBookmark()
+                            }
+                        }
+                        ForEach(activities, id: \.activityTitle) { activity in
+                            MenuItemButton(icon: activity.activityImage?.template ?? UIImage(), title: activity.activityTitle ?? "") {
+                                browserViewController.dismiss(animated: true) {
+                                    activity.perform()
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-    }
     
     struct MenuTabDetailsView: View {
         @SwiftUI.Environment(\.colorScheme) var colorScheme: ColorScheme

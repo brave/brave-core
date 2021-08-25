@@ -18,6 +18,7 @@ public struct PlaylistInfo: Codable {
     public let duration: TimeInterval
     public let detected: Bool
     public let dateAdded: Date
+    public let tagId: String
     
     public init(item: PlaylistItem) {
         self.name = item.name ?? ""
@@ -28,9 +29,10 @@ public struct PlaylistInfo: Codable {
         self.duration = item.duration
         self.dateAdded = item.dateAdded ?? Date()
         self.detected = false
+        self.tagId = ""
     }
     
-    public init(name: String, src: String, pageSrc: String, pageTitle: String, mimeType: String, duration: TimeInterval, detected: Bool, dateAdded: Date) {
+    public init(name: String, src: String, pageSrc: String, pageTitle: String, mimeType: String, duration: TimeInterval, detected: Bool, dateAdded: Date, tagId: String) {
         self.name = name
         self.src = src
         self.pageSrc = pageSrc
@@ -39,6 +41,7 @@ public struct PlaylistInfo: Codable {
         self.duration = duration
         self.detected = detected
         self.dateAdded = dateAdded
+        self.tagId = tagId
     }
     
     public init(from decoder: Decoder) throws {
@@ -50,6 +53,7 @@ public struct PlaylistInfo: Codable {
         self.mimeType = try container.decodeIfPresent(String.self, forKey: .mimeType) ?? ""
         self.duration = try container.decodeIfPresent(TimeInterval.self, forKey: .duration) ?? 0.0
         self.detected = try container.decodeIfPresent(Bool.self, forKey: .detected) ?? false
+        self.tagId = try container.decodeIfPresent(String.self, forKey: .tagId) ?? ""
         self.dateAdded = Date()
     }
     
@@ -76,6 +80,7 @@ public struct PlaylistInfo: Codable {
         case mimeType
         case duration
         case detected
+        case tagId
         case dateAdded
     }
 }

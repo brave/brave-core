@@ -33,6 +33,17 @@ class PlaylistViewController: UIViewController {
     private let listController = ListController()
     private let detailController = DetailController()
     
+    init(initialItem: PlaylistInfo?, initialItemPlaybackOffset: Double) {
+        super.init(nibName: nil, bundle: nil)
+        
+        listController.initialItem = initialItem
+        listController.initialItemPlaybackOffset = initialItemPlaybackOffset
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -171,6 +182,8 @@ private class ListController: UIViewController {
      }
 
     // MARK: Properties
+    public var initialItem: PlaylistInfo?
+    public var initialItemPlaybackOffset = 0.0
     
     public let playerView = VideoView()
     private lazy var mediaInfo = PlaylistMediaInfo(playerView: playerView)
@@ -303,16 +316,24 @@ private class ListController: UIViewController {
         playerView.setControlsEnabled(playerView.player.currentItem != nil)
         updateTableBackgroundView()
         
+        let initialItem = self.initialItem
+        let initialItemOffset = self.initialItemPlaybackOffset
+        self.initialItem = nil
+        self.initialItemPlaybackOffset = 0.0
+        
         DispatchQueue.main.async {
             PlaylistManager.shared.reloadData()
             self.tableView.reloadData()
             
-            self.autoPlayEnabled = Preferences.Playlist.firstLoadAutoPlay.value
+            let lastPlayedItemUrl = initialItem?.pageSrc ?? Preferences.Playlist.lastPlayedItemUrl.value
+            let lastPlayedItemTime = initialItem != nil ? initialItemOffset : Preferences.Playlist.lastPlayedItemTime.value
+            
+            self.autoPlayEnabled = initialItem != nil ? true : Preferences.Playlist.firstLoadAutoPlay.value
             
             if PlaylistManager.shared.numberOfAssets > 0 {
                 self.playerView.setControlsEnabled(true)
                 
-                if let lastPlayedItemUrl = Preferences.Playlist.lastPlayedItemUrl.value, let index = PlaylistManager.shared.index(of: lastPlayedItemUrl) {
+                if let lastPlayedItemUrl = lastPlayedItemUrl, let index = PlaylistManager.shared.index(of: lastPlayedItemUrl) {
                     let indexPath = IndexPath(row: index, section: 0)
                     
                     self.playItem(at: indexPath, completion: { [weak self] error in
@@ -329,12 +350,11 @@ private class ListController: UIViewController {
                             let seekLastPlayedItem = { [weak self] in
                                 guard let self = self else { return }
                                 let item = PlaylistManager.shared.itemAtIndex(indexPath.row)
-                                let lastPlayedTime = Preferences.Playlist.lastPlayedItemTime.value
                                 
-                                if item.pageSrc == Preferences.Playlist.lastPlayedItemUrl.value &&
-                                    lastPlayedTime > 0.0 &&
+                                if item.pageSrc == lastPlayedItemUrl &&
+                                    lastPlayedItemTime > 0.0 &&
                                     Preferences.Playlist.playbackLeftOff.value {
-                                    self.playerView.seek(to: Preferences.Playlist.lastPlayedItemTime.value)
+                                    self.playerView.seek(to: lastPlayedItemTime)
                                 }
                                 
                                 self.updateLastPlayedItem(indexPath: indexPath)
@@ -625,7 +645,8 @@ extension ListController: UITableViewDataSource {
                                                mimeType: item.mimeType,
                                                duration: duration.seconds,
                                                detected: item.detected,
-                                               dateAdded: item.dateAdded)
+                                               dateAdded: item.dateAdded,
+                                               tagId: item.tagId)
 
                     PlaylistItem.updateItem(newItem) {
                         completion(duration.seconds, asset)

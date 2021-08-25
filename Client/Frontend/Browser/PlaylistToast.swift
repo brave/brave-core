@@ -98,9 +98,9 @@ class PlaylistToast: Toast {
     private var panState: CGPoint = .zero
     
     private let state: PlaylistItemAddedState
-    var item: PlaylistInfo
+    var item: PlaylistInfo?
 
-    init(item: PlaylistInfo, state: PlaylistItemAddedState, completion: ((_ buttonPressed: Bool) -> Void)?) {
+    init(item: PlaylistInfo?, state: PlaylistItemAddedState, completion: ((_ buttonPressed: Bool) -> Void)?) {
         self.item = item
         self.state = state
         super.init(frame: .zero)
@@ -128,8 +128,8 @@ class PlaylistToast: Toast {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func createView(_ item: PlaylistInfo, _ state: PlaylistItemAddedState) -> UIView {
-        if state == .added || state == .existing {
+    func createView(_ item: PlaylistInfo?, _ state: PlaylistItemAddedState) -> UIView {
+        if state == .newItem || state == .existingItem {
             let horizontalStackView = UIStackView().then {
                 $0.alignment = .center
                 $0.spacing = ButtonToastUX.toastPadding
@@ -147,7 +147,7 @@ class PlaylistToast: Toast {
                 $0.lineBreakMode = .byWordWrapping
                 $0.numberOfLines = 0
                 
-                if state == .added {
+                if state == .newItem {
                     $0.text = Strings.PlayList.toastAddedToPlaylistTitle
                 } else {
                     $0.text = Strings.PlayList.toastExitingItemPlaylistTitle
@@ -229,7 +229,7 @@ class PlaylistToast: Toast {
             $0.width.equalTo(toastView.snp.width).offset(-2 * ButtonToastUX.toastPadding)
         }
         
-        if state == .pendingUserAction {
+        if state == .none {
             button.setImage(#imageLiteral(resourceName: "quick_action_new_tab").template, for: [])
             button.setTitle(Strings.PlayList.toastAddToPlaylistTitle, for: [])
         } else {
@@ -291,7 +291,7 @@ class PlaylistToast: Toast {
     }
 
     private var shadowLayerZOrder: Int {
-        if state == .added || state == .existing {
+        if state == .newItem || state == .existingItem {
             // In this state, the shadow is on the toastView
             let index = toastView.subviews.firstIndex(of: toastShadowView) ?? -1
             return index + 1
@@ -303,7 +303,7 @@ class PlaylistToast: Toast {
     private func updateGradientView() {
         gradientView.removeFromSuperview()
         
-        if state == .added || state == .existing {
+        if state == .newItem || state == .existingItem {
             toastView.insertSubview(gradientView, at: shadowLayerZOrder)
         } else {
             button.insertSubview(gradientView, at: shadowLayerZOrder)

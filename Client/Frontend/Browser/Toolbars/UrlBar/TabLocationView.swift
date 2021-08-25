@@ -15,6 +15,7 @@ protocol TabLocationViewDelegate {
     func tabLocationViewDidLongPressLocation(_ tabLocationView: TabLocationView)
     func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView)
     func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView)
+    func tabLocationViewDidTapPlaylist(_ tabLocationView: TabLocationView)
     func tabLocationViewDidTapReload(_ tabLocationView: TabLocationView)
     func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, from button: UIButton)
     func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView)
@@ -163,6 +164,15 @@ class TabLocationView: UIView {
         return readerModeButton
     }()
     
+    lazy var playlistButton = PlaylistURLBarButton(frame: .zero).then {
+        $0.accessibilityIdentifier = "TabToolbar.playlistButton"
+        $0.isAccessibilityElement = true
+        $0.accessibilityLabel = Strings.tabToolbarPlaylistButtonAccessibilityLabel
+        $0.buttonState = .none
+        $0.tintColor = .white
+        $0.addTarget(self, action: #selector(didClickPlaylistButton), for: .touchUpInside)
+    }
+    
     lazy var reloadButton = ToolbarButton(top: true).then {
         $0.accessibilityIdentifier = "TabToolbar.stopReloadButton"
         $0.isAccessibilityElement = true
@@ -214,7 +224,7 @@ class TabLocationView: UIView {
         addGestureRecognizer(longPressRecognizer)
         addGestureRecognizer(tapRecognizer)
         
-        var optionSubviews = [readerModeButton, reloadButton, separatorLine, shieldsButton]
+        var optionSubviews = [readerModeButton, playlistButton, reloadButton, separatorLine, shieldsButton]
         separatorLine.isUserInteractionEnabled = false
         
         optionSubviews.append(rewardsButton)
@@ -265,7 +275,7 @@ class TabLocationView: UIView {
 
     override var accessibilityElements: [Any]? {
         get {
-            return [lockImageView, urlTextField, readerModeButton, reloadButton, shieldsButton].filter { !$0.isHidden }
+            return [lockImageView, urlTextField, readerModeButton, playlistButton, reloadButton, shieldsButton].filter { !$0.isHidden }
         }
         set {
             super.accessibilityElements = newValue
@@ -280,6 +290,10 @@ class TabLocationView: UIView {
         if recognizer.state == .began {
             delegate?.tabLocationViewDidLongPressReaderMode(self)
         }
+    }
+    
+    @objc func didClickPlaylistButton() {
+        delegate?.tabLocationViewDidTapPlaylist(self)
     }
     
     @objc func didClickStopReload() {

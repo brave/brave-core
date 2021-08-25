@@ -13,17 +13,17 @@ import Shared
 private let log = Logger.browserLogger
 
 enum PlaylistItemAddedState {
-    case added
-    case pendingUserAction
-    case existing
+    case none
+    case newItem
+    case existingItem
 }
 
 protocol PlaylistHelperDelegate: NSObject {
-    func showPlaylistAlert(_ alertController: UIAlertController)
-    func showPlaylistToast(info: PlaylistInfo, itemState: PlaylistItemAddedState)
-    func addToPlayListActivity(info: PlaylistInfo?, itemDetected: Bool)
-    func openInPlayListActivity(info: PlaylistInfo?)
-    func dismissPlaylistToast(animated: Bool)
+    func updatePlaylistURLBar(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?)
+    func showPlaylistPopover(tab: Tab?, state: PlaylistPopoverState)
+    func showPlaylistToast(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?)
+    func showPlaylistAlert(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?)
+    func showPlaylistOnboarding(tab: Tab?)
 }
 
 class PlaylistHelper: NSObject, TabContentScript {
@@ -49,8 +49,7 @@ class PlaylistHelper: NSObject, TabContentScript {
                 self.asset?.cancelLoading()
                 self.asset = nil
                 
-                self.delegate?.dismissPlaylistToast(animated: false)
-                self.delegate?.addToPlayListActivity(info: nil, itemDetected: false)
+                self.delegate?.updatePlaylistURLBar(tab: self.tab, state: .none, item: nil)
             }
         })
         
@@ -61,6 +60,7 @@ class PlaylistHelper: NSObject, TabContentScript {
     
     deinit {
         asset?.cancelLoading()
+        delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
     }
     
     static func name() -> String {
@@ -74,8 +74,7 @@ class PlaylistHelper: NSObject, TabContentScript {
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
         guard let item = PlaylistInfo.from(message: message), !item.src.isEmpty else {
             DispatchQueue.main.async {
-                self.delegate?.openInPlayListActivity(info: nil)
-                self.delegate?.addToPlayListActivity(info: nil, itemDetected: false)
+                self.delegate?.updatePlaylistURLBar(tab: self.tab, state: .none, item: nil)
             }
             return
         }
@@ -85,30 +84,31 @@ class PlaylistHelper: NSObject, TabContentScript {
 
             if item.duration <= 0.0 && !item.detected || item.src.isEmpty || item.src.hasPrefix("data:") || item.src.hasPrefix("blob:") {
                 DispatchQueue.main.async {
-                    self.delegate?.openInPlayListActivity(info: nil)
-                    self.delegate?.addToPlayListActivity(info: nil, itemDetected: false)
+                    self.delegate?.updatePlaylistURLBar(tab: self.tab, state: .none, item: nil)
                 }
                 return
             }
             
             if let url = URL(string: item.src) {
                 self.loadAssetPlayability(url: url) { [weak self] isPlayable in
-                    guard let self = self else { return }
+                    guard let self = self,
+                          let delegate = self.delegate else { return }
                     
                     if !isPlayable {
-                        self.delegate?.openInPlayListActivity(info: nil)
-                        self.delegate?.addToPlayListActivity(info: nil, itemDetected: false)
+                        delegate.updatePlaylistURLBar(tab: self.tab, state: .none, item: nil)
                         return
                     }
                     
                     if PlaylistItem.itemExists(item) {
-                        self.updateItem(item)
+                        // Item already exists, so just update the database with new token or URL.
+                        self.updateItem(item, detected: item.detected)
                     } else if item.detected {
-                        self.delegate?.openInPlayListActivity(info: nil)
-                        self.delegate?.addToPlayListActivity(info: item, itemDetected: true)
-                        self.delegate?.showPlaylistToast(info: item, itemState: .pendingUserAction)
+                        // Automatic Detection
+                        delegate.updatePlaylistURLBar(tab: self.tab, state: .newItem, item: item)
+                        delegate.showPlaylistOnboarding(tab: self.tab)
                     } else {
-                        self.promptUserForAddingItem(item)
+                        // Long-Press
+                        delegate.showPlaylistAlert(tab: self.tab, state: .newItem, item: item)
                     }
                 }
             }
@@ -165,43 +165,28 @@ class PlaylistHelper: NSObject, TabContentScript {
         }
     }
     
-    private func updateItem(_ item: PlaylistInfo) {
-        self.delegate?.openInPlayListActivity(info: item)
-        self.delegate?.addToPlayListActivity(info: nil, itemDetected: false)
+    private func updateItem(_ item: PlaylistInfo, detected: Bool) {
+        if detected {
+            self.delegate?.updatePlaylistURLBar(tab: self.tab, state: .existingItem, item: item)
+        }
         
-        PlaylistItem.updateItem(item) {
+        PlaylistItem.updateItem(item) { [weak self] in
+            guard let self = self else { return }
+            
             log.debug("Playlist Item Updated")
             
             if !self.playlistItems.contains(item.src) {
                 self.playlistItems.insert(item.src)
-                self.delegate?.showPlaylistToast(info: item, itemState: .existing)
+                
+                if let delegate = self.delegate {
+                    if detected {
+                        delegate.updatePlaylistURLBar(tab: self.tab, state: .existingItem, item: item)
+                    } else {
+                        delegate.showPlaylistToast(tab: self.tab, state: .existingItem, item: item)
+                    }
+                }
             }
         }
-    }
-    
-    private func promptUserForAddingItem(_ item: PlaylistInfo) {
-        self.delegate?.openInPlayListActivity(info: nil)
-        self.delegate?.addToPlayListActivity(info: item, itemDetected: true)
-        
-        // Has to be done otherwise it is impossible to play a video after selecting its elements
-        UIMenuController.shared.hideMenu()
-        
-        let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
-        let alert = UIAlertController(
-            title: Strings.PlayList.addToPlayListAlertTitle, message: Strings.PlayList.addToPlayListAlertDescription, preferredStyle: style)
-        
-        alert.addAction(UIAlertAction(title: Strings.PlayList.addToPlayListAlertTitle, style: .default, handler: { _ in
-            // Update playlist with new items..
-            PlaylistItem.addItem(item, cachedData: nil) {
-                PlaylistManager.shared.autoDownload(item: item)
-                
-                log.debug("Playlist Item Added")
-                self.delegate?.showPlaylistToast(info: item, itemState: .added)
-                UIImpactFeedbackGenerator(style: .medium).bzzt()
-            }
-        }))
-        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
-        self.delegate?.showPlaylistAlert(alert)
     }
 }
 
@@ -228,5 +213,27 @@ extension PlaylistHelper: UIGestureRecognizerDelegate {
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return false
+    }
+}
+
+extension PlaylistHelper {
+    static func getCurrentTime(webView: WKWebView, nodeTag: String, completion: @escaping (Double) -> Void) {
+        let token = UserScriptManager.securityTokenString
+        let javascript = String(format: "window.mediaCurrentTimeFromTag_%@('%@')", token, nodeTag)
+
+        // swiftlint:disable:next safe_javascript
+        webView.evaluateJavaScript(javascript, completionHandler: { value, error in
+            if let error = error {
+                log.error("Error Retrieving Playlist Page Media Current Time: \(error)")
+            }
+            
+            DispatchQueue.main.async {
+                if let value = value as? Double {
+                    completion(value)
+                } else {
+                    completion(0.0)
+                }
+            }
+        })
     }
 }

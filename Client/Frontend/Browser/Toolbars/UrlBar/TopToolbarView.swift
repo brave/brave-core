@@ -28,6 +28,7 @@ protocol TopToolbarDelegate: AnyObject {
     func topToolbarDidPressReaderMode(_ topToolbar: TopToolbarView)
     /// - returns: whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
     func topToolbarDidLongPressReaderMode(_ topToolbar: TopToolbarView) -> Bool
+    func topToolbarDidPressPlaylistButton(_ urlBar: TopToolbarView)
     func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView)
     func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView)
     func topToolbarDidLongPressLocation(_ topToolbar: TopToolbarView)
@@ -157,8 +158,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     var addTabButton = ToolbarButton(top: true)
     // Do nothing with this, just required for protocol conformance
     var searchButton = ToolbarButton(top: true)
-    lazy var menuButton = ToolbarButton(top: true).then {
-        $0.contentMode = .center
+    lazy var menuButton = MenuButton(top: true).then {
         $0.accessibilityIdentifier = "topToolbarView-menuButton"
     }
 
@@ -259,6 +259,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
     private let mainStackView = UIStackView().then {
         $0.alignment = .center
         $0.spacing = 8
+        $0.isLayoutMarginsRelativeArrangement = true
+        $0.layoutMargins = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 10.0)
         $0.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -606,6 +608,10 @@ extension TopToolbarView: TabLocationViewDelegate {
 
     func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView) {
         delegate?.topToolbarDidPressReaderMode(self)
+    }
+    
+    func tabLocationViewDidTapPlaylist(_ tabLocationView: TabLocationView) {
+        delegate?.topToolbarDidPressPlaylistButton(self)
     }
 
     func tabLocationViewLocationAccessibilityActions(_ tabLocationView: TabLocationView) -> [UIAccessibilityCustomAction]? {

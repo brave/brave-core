@@ -657,7 +657,7 @@ public class VideoView: UIView, VideoTrackerBarDelegate {
         self.delegate?.onNextTrack(isUserInitiated: false)
     }
     
-    public func load(url: URL, resourceDelegate: AVAssetResourceLoaderDelegate?, autoPlayEnabled: Bool) {
+    public func load(url: URL, resourceDelegate: AVAssetResourceLoaderDelegate?, autoPlayEnabled: Bool, completion: (() -> Void)?) {
         let asset = AVURLAsset(url: url)
         
         if let delegate = resourceDelegate {
@@ -672,6 +672,9 @@ public class VideoView: UIView, VideoTrackerBarDelegate {
                 }
                 
                 self.pendingMediaItem = nil
+                DispatchQueue.main.async {
+                    completion?()
+                }
                 return
             }
         }
@@ -695,11 +698,15 @@ public class VideoView: UIView, VideoTrackerBarDelegate {
                 if autoPlayEnabled {
                     self.play()
                 }
+                
+                DispatchQueue.main.async {
+                    completion?()
+                }
             }
         }
     }
     
-    public func load(asset: AVURLAsset, autoPlayEnabled: Bool) {
+    public func load(asset: AVURLAsset, autoPlayEnabled: Bool, completion: (() -> Void)?) {
         if let currentItem = player.currentItem, currentItem.asset.isKind(of: AVURLAsset.self) && player.status == .readyToPlay {
             if let currentAsset = currentItem.asset as? AVURLAsset, currentAsset.url.absoluteString == asset.url.absoluteString {
                 if isPlaying {
@@ -708,6 +715,9 @@ public class VideoView: UIView, VideoTrackerBarDelegate {
                 }
                 
                 self.pendingMediaItem = nil
+                DispatchQueue.main.async {
+                    completion?()
+                }
                 return
             }
         }
@@ -730,6 +740,10 @@ public class VideoView: UIView, VideoTrackerBarDelegate {
                 
                 if autoPlayEnabled {
                     self.play()
+                }
+                
+                DispatchQueue.main.async {
+                    completion?()
                 }
             }
         }
