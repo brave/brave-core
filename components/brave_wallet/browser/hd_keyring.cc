@@ -59,15 +59,21 @@ void HDKeyring::RemoveAccount() {
 std::string HDKeyring::AddImportedAccount(
     const std::vector<uint8_t>& private_key) {
   std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(private_key);
-  if (hd_key) {
-    const std::string address = GetAddressInternal(hd_key.get());
-    // Account already exists
-    if (imported_accounts_[address])
+  if (!hd_key)
+    return std::string();
+
+  const std::string address = GetAddressInternal(hd_key.get());
+  // Account already exists
+  if (imported_accounts_[address])
+    return std::string();
+  // Check if it is duplicate in derived accounts
+  for (size_t i = 0; i < accounts_.size(); ++i) {
+    if (GetAddress(i) == address)
       return std::string();
-    imported_accounts_[address] = std::move(hd_key);
-    return address;
   }
-  return std::string();
+
+  imported_accounts_[address] = std::move(hd_key);
+  return address;
 }
 
 size_t HDKeyring::GetImportedAccountsNumber() const {
