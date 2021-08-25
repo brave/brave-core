@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index b6a5989bbee666a32b61e0232f5295e9744e3343..a0296d95a271b2363704c5ac7e46299e546abbf1 100644
+index 7e29403699d56081424643bd143d0f255c8e8e73..6d7ed5d35424786b54fe43077205d6653a73d7db 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
 @@ -443,6 +443,7 @@ Browser::CreationStatus Browser::GetCreationStatusForProfile(Profile* profile) {
