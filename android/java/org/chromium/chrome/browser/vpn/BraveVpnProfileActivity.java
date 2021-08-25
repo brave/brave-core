@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -57,6 +58,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     private Button installVpnButton;
     private Button contactSupportButton;
     private ProgressBar profileProgress;
+    private LinearLayout profileLayout;
 
     @Override
     public void onResumeWithNative() {
@@ -82,6 +84,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         actionBar.setTitle(getResources().getString(R.string.install_vpn));
 
         profileProgress = findViewById(R.id.profile_progress);
+        profileLayout = findViewById(R.id.profile_layout);
 
         profileTitle = findViewById(R.id.brave_vpn_profile_title);
         profileText = findViewById(R.id.brave_vpn_profile_text);
@@ -90,8 +93,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         installVpnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verifySubscription(false);
-                profileProgress.setVisibility(View.VISIBLE);
+                verifySubscription();
             }
         });
 
@@ -134,7 +136,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
             VpnManager vpnManager = (VpnManager) getSystemService(Context.VPN_MANAGEMENT_SERVICE);
             if (vpnManager != null) {
                 vpnManager.startProvisionedVpnProfile();
-                profileProgress.setVisibility(View.GONE);
+                hideProgress();
                 BraveVpnConfirmDialogFragment braveVpnConfirmDialogFragment =
                         new BraveVpnConfirmDialogFragment();
                 braveVpnConfirmDialogFragment.setCancelable(false);
@@ -146,8 +148,28 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
             profileText.setText(getResources().getString(R.string.some_context_text));
             installVpnButton.setText(getResources().getString(R.string.accept_connection_request));
             contactSupportButton.setVisibility(View.GONE);
-            profileProgress.setVisibility(View.GONE);
+            hideProgress();
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void showRestoreMenu(boolean shouldShowRestore) {}
+
+    public void showProgress() {
+        if (profileProgress != null) {
+            profileProgress.setVisibility(View.VISIBLE);
+        }
+        if (profileLayout != null) {
+            profileLayout.setAlpha(0.4f);
+        }
+    }
+
+    public void hideProgress() {
+        if (profileProgress != null) {
+            profileProgress.setVisibility(View.GONE);
+        }
+        if (profileLayout != null) {
+            profileLayout.setAlpha(1f);
+        }
     }
 }

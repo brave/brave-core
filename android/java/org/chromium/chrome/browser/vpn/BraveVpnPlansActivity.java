@@ -14,7 +14,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,6 +55,12 @@ import java.util.List;
 
 public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private FirstRunFlowSequencer mFirstRunFlowSequencer;
+    private ProgressBar planProgress;
+    private LinearLayout planLayout;
+    private boolean shouldShowRestoreMenu;
+
+    private LinearLayout monthlySelectorLayout;
+    private LinearLayout yearlySelectorLayout;
 
     @Override
     public void onResumeWithNative() {
@@ -77,6 +85,9 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_close_24);
         actionBar.setTitle(getResources().getString(R.string.brave_vpn));
 
+        planProgress = findViewById(R.id.plan_progress);
+        planLayout = findViewById(R.id.plan_layout);
+
         ViewPager braveRewardsViewPager = findViewById(R.id.brave_rewards_view_pager);
 
         BraveVpnPlanPagerAdapter braveVpnPlanPagerAdapter = new BraveVpnPlanPagerAdapter(this);
@@ -91,10 +102,11 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         SkuDetails monthlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
                 InAppPurchaseWrapper.NIGHTLY_MONTHLY_SUBSCRIPTION);
 
-        LinearLayout monthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
+        monthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
         monthlySelectorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showProgress();
                 InAppPurchaseWrapper.getInstance().purchase(
                         BraveVpnPlansActivity.this, monthlySkuDetails);
             }
@@ -109,10 +121,11 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         SkuDetails yearlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
                 InAppPurchaseWrapper.NIGHTLY_YEARLY_SUBSCRIPTION);
 
-        LinearLayout yearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
+        yearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
         yearlySelectorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showProgress();
                 InAppPurchaseWrapper.getInstance().purchase(
                         BraveVpnPlansActivity.this, yearlySkuDetails);
             }
@@ -122,11 +135,29 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         yearlySubscriptionAmountText.setText(
                 String.format(getResources().getString(R.string.yearly_subscription_amount),
                         yearlySkuDetails.getPrice()));
+        isVerification = true;
+        verifySubscription();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_brave_vpn, menu);
+        MenuItem item = menu.findItem(R.id.restore);
+        if (shouldShowRestoreMenu) {
+            shouldShowRestoreMenu = false;
+            item.setVisible(true);
+            if (monthlySelectorLayout != null) {
+                monthlySelectorLayout.setAlpha(0.4f);
+                monthlySelectorLayout.setOnClickListener(null);
+            }
+
+            if (yearlySelectorLayout != null) {
+                yearlySelectorLayout.setAlpha(0.4f);
+                yearlySelectorLayout.setOnClickListener(null);
+            }
+        } else {
+            item.setVisible(false);
+        }
         return true;
     }
 
@@ -135,7 +166,9 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.restore) {
-            verifySubscription(true);
+            // showProgress();
+            // verifySubscription(true);
+            BraveVpnUtils.openBraveVpnProfileActivity(BraveVpnPlansActivity.this);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -155,5 +188,28 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     @Override
     public boolean shouldStartGpuProcess() {
         return true;
+    }
+
+    public void showRestoreMenu(boolean shouldShowRestore) {
+        this.shouldShowRestoreMenu = shouldShowRestore;
+        invalidateOptionsMenu();
+    }
+
+    public void showProgress() {
+        if (planProgress != null) {
+            planProgress.setVisibility(View.VISIBLE);
+        }
+        if (planLayout != null) {
+            planLayout.setAlpha(0.4f);
+        }
+    }
+
+    public void hideProgress() {
+        if (planProgress != null) {
+            planProgress.setVisibility(View.GONE);
+        }
+        if (planLayout != null) {
+            planLayout.setAlpha(1f);
+        }
     }
 }

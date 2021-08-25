@@ -23,6 +23,7 @@ import android.net.NetworkRequest;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -590,7 +591,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                             && PackageUtils.isFirstInstall(this))) {
                 showVpnCalloutDialog();
             }
-            BraveVpnNativeWorker.getInstance().getAllServerRegions();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    BraveVpnNativeWorker.getInstance().getAllServerRegions();
+                }
+            }, 5000);
+
             if (!TextUtils.isEmpty(BraveVpnPrefUtils.getBraveVpnStringPref(
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN))
                     && !TextUtils.isEmpty(BraveVpnPrefUtils.getBraveVpnStringPref(

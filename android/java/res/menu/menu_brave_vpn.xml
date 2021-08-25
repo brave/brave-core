@@ -9,5 +9,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/restore"
         android:title="@string/restore"
+        android:visible="false"
         app:showAsAction="always" />
 </menu>

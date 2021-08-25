@@ -51,10 +51,15 @@ import java.util.TimeZone;
 
 public abstract class BraveVpnParentActivity
         extends AsyncInitializationActivity implements BraveVpnObserver {
+    public boolean isVerification = false;
     private String subscriberCredential = "";
     private String hostname = "";
     private String purchaseToken = "";
     private String productId = "";
+
+    abstract void showRestoreMenu(boolean shouldShowRestore);
+    abstract void showProgress();
+    abstract void hideProgress();
 
     @Override
     public void finishNativeInitialization() {
@@ -63,14 +68,16 @@ public abstract class BraveVpnParentActivity
                 BraveVpnParentActivity.this);
     }
 
-    protected void verifySubscription(boolean isRestore) {
+    protected void verifySubscription() {
+        showProgress();
         List<Purchase> purchases = InAppPurchaseWrapper.getInstance().queryPurchases();
+        Log.e("BraveVPN", "BraveVpnParentActivity :  purchases.size() : " + purchases.size());
         if (purchases.size() == 1) {
             Purchase purchase = purchases.get(0);
             purchaseToken = purchase.getPurchaseToken();
             productId = purchase.getSkus().get(0).toString();
             Log.e("BraveVPN", "Purchase Token : " + purchaseToken);
-            if (isRestore) {
+            if (isVerification) {
                 BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
                         purchaseToken, productId, "subscription", getPackageName());
             } else {
@@ -78,7 +85,7 @@ public abstract class BraveVpnParentActivity
                         "subscription", productId, "iap-android", purchaseToken, getPackageName());
             }
         } else {
-            if (!isRestore) {
+            if (!isVerification) {
                 BraveVpnPrefUtils.setBraveVpnStringPref(
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN, "");
                 BraveVpnPrefUtils.setBraveVpnStringPref(
@@ -96,6 +103,7 @@ public abstract class BraveVpnParentActivity
                 Toast.makeText(BraveVpnParentActivity.this,
                              R.string.purchase_token_verification_failed, Toast.LENGTH_LONG)
                         .show();
+                hideProgress();
             }
         }
     }
@@ -114,7 +122,13 @@ public abstract class BraveVpnParentActivity
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_EXPIRY, purchaseExpiry);
                 BraveVpnPrefUtils.setBraveVpnBooleanPref(
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, true);
-                VpnProfileUtils.getInstance(BraveVpnParentActivity.this).startStopVpn();
+                if (isVerification) {
+                    isVerification = false;
+                    showRestoreMenu(true);
+                    hideProgress();
+                } else {
+                    VpnProfileUtils.getInstance(BraveVpnParentActivity.this).startStopVpn();
+                }
             } else {
                 BraveVpnPrefUtils.setBraveVpnStringPref(
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN, "");
@@ -131,7 +145,13 @@ public abstract class BraveVpnParentActivity
                 Toast.makeText(BraveVpnParentActivity.this,
                              R.string.purchase_token_verification_failed, Toast.LENGTH_LONG)
                         .show();
-                BraveVpnUtils.openBraveVpnPlansActivity(BraveVpnParentActivity.this);
+                if (isVerification) {
+                    isVerification = false;
+                    showRestoreMenu(false);
+                    hideProgress();
+                } else {
+                    BraveVpnUtils.openBraveVpnPlansActivity(BraveVpnParentActivity.this);
+                }
             }
             purchaseToken = "";
             productId = "";
@@ -151,6 +171,7 @@ public abstract class BraveVpnParentActivity
                          Toast.LENGTH_LONG)
                     .show();
             Log.e("BraveVPN", "onGetSubscriberCredential : failed");
+            hideProgress();
         }
     };
 
@@ -167,6 +188,7 @@ public abstract class BraveVpnParentActivity
                          Toast.LENGTH_LONG)
                     .show();
             Log.e("BraveVPN", "onGetTimezonesForRegions : failed");
+            hideProgress();
         }
     }
 
@@ -184,6 +206,7 @@ public abstract class BraveVpnParentActivity
                     .show();
 
             Log.e("BraveVPN", "onGetHostnamesForRegion : failed");
+            hideProgress();
         }
     }
 
@@ -209,6 +232,7 @@ public abstract class BraveVpnParentActivity
                          Toast.LENGTH_LONG)
                     .show();
             Log.e("BraveVPN", "jsonProfileCredentials : failed");
+            hideProgress();
         }
     }
 }
