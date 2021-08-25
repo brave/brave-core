@@ -57,6 +57,14 @@ index 563055a2311f4ac4888eb18b21bf90b2f1d0358e..5d2ec4d4cd6aeeeb4af390f8d96d2821
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
+@@ -328,6 +341,7 @@ by a child template that "extends" this file.
+                 <action android:name="android.web.action.APP_ATTRIBUTION" />
+                 <category android:name="android.intent.category.DEFAULT" />
+             </intent-filter>
++            <intent-filter><action android:name="android.intent.action.SEND" /><category android:name="android.intent.category.DEFAULT" /><data android:mimeType="text/plain" /><data android:mimeType="multipart/related" /><data android:mimeType="message/rfc822" /></intent-filter>
+             <meta-data android:name="android.app.searchable"
+                 android:resource="@xml/searchable" />
+         </activity-alias>
 @@ -1190,6 +1203,7 @@ by a child template that "extends" this file.
              android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" >
          </activity>
