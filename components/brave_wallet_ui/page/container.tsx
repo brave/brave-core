@@ -55,7 +55,7 @@ import {
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import * as Result from '../common/types/result'
 
-import { formatBalance } from '../utils/format-balances'
+import { formatBalance, toWei } from '../utils/format-balances'
 
 type Props = {
   wallet: WalletState
@@ -113,6 +113,21 @@ function Container (props: Props) {
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   // const [showRestore, setShowRestore] = React.useState<boolean>(false)
 
+  // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
+  const [fromAsset, setFromAsset] = React.useState<AssetOptionType>(AssetOptions[0])
+  const [toAsset, setToAsset] = React.useState<AssetOptionType>(AssetOptions[1])
+  const onSelectTransactAsset = (asset: AssetOptionType, toOrFrom: ToOrFromType) => {
+    if (toOrFrom === 'from') {
+      setFromAsset(asset)
+    } else {
+      setToAsset(asset)
+    }
+  }
+  const flipSwapAssets = () => {
+    setFromAsset(toAsset)
+    setToAsset(fromAsset)
+  }
+
   const onToggleShowRestore = () => {
     props.walletPageActions.setShowIsRestoring(!showIsRestoring)
   }
@@ -149,13 +164,6 @@ function Container (props: Props) {
     setSlippageTolerance(slippage)
   }
 
-  const onSelectPresetAmount = (percent: number) => {
-    // 0 Will be replaced with selected from asset's Balance
-    // once we are able to get balances
-    const amount = 0 * percent
-    setFromAmount(amount.toString())
-  }
-
   const onToggleOrderType = () => {
     if (orderType === 'market') {
       setOrderType('limit')
@@ -170,21 +178,6 @@ function Container (props: Props) {
 
   const onSelectNetwork = (network: Network) => {
     props.walletActions.selectNetwork(network)
-  }
-
-  // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
-  const [fromAsset, setFromAsset] = React.useState<AssetOptionType>(AssetOptions[0])
-  const [toAsset, setToAsset] = React.useState<AssetOptionType>(AssetOptions[1])
-  const onSelectTransactAsset = (asset: AssetOptionType, toOrFrom: ToOrFromType) => {
-    if (toOrFrom === 'from') {
-      setFromAsset(asset)
-    } else {
-      setToAsset(asset)
-    }
-  }
-  const flipSwapAssets = () => {
-    setFromAsset(toAsset)
-    setToAsset(fromAsset)
   }
 
   // In the future these will be actual paths
@@ -329,6 +322,24 @@ function Container (props: Props) {
     return formated
   }, [selectedAssetPriceHistory])
 
+  const fromAssetBalance = React.useMemo(() => {
+    if (!selectedAccount) {
+      return '0'
+    }
+    const token = selectedAccount.tokens.find((token) => token.asset.symbol === fromAsset.symbol)
+    return token ? formatBalance(token.assetBalance, token.asset.decimals) : '0'
+  }, [accounts, selectedAccount, fromAsset])
+
+  const onSelectPresetFromAmount = (percent: number) => {
+    const amount = Number(fromAssetBalance) * percent
+    setSendAmount(amount.toString())
+  }
+
+  const onSelectPresetSendAmount = (percent: number) => {
+    const amount = Number(fromAssetBalance) * percent
+    setSendAmount(amount.toString())
+  }
+
   const onToggleAddModal = () => {
     setShowAddModal(!showAddModal)
   }
@@ -370,7 +381,16 @@ function Container (props: Props) {
   }
 
   const onSubmitSend = () => {
-    // TODO (DOUGLAS): logic Here to submit a send transaction
+    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === fromAsset.symbol)
+    // TODO: Use real gas price & limit
+    props.walletActions.sendTransaction({
+      from: selectedAccount.address,
+      to: toAddress,
+      value: toWei(sendAmount, asset?.decimals ?? 0),
+      contractAddress: asset?.contractAddress ?? '',
+      gasPrice: '0x20000000000',
+      gasLimit: '0xFDE8'
+    })
   }
 
   const fetchFullTokenList = () => {
@@ -504,7 +524,7 @@ function Container (props: Props) {
             buyAmount={buyAmount}
             sendAmount={sendAmount}
             fromAmount={fromAmount}
-            fromAssetBalance='0'
+            fromAssetBalance={fromAssetBalance}
             toAmount={toAmount}
             toAssetBalance='0'
             orderExpiration={orderExpiration}
@@ -513,7 +533,8 @@ function Container (props: Props) {
             onSetBuyAmount={onSetBuyAmount}
             onSetToAddress={onSetToAddress}
             onSelectExpiration={onSelectExpiration}
-            onSelectPresetAmount={onSelectPresetAmount}
+            onSelectPresetFromAmount={onSelectPresetFromAmount}
+            onSelectPresetSendAmount={onSelectPresetSendAmount}
             onSelectSlippageTolerance={onSelectSlippageTolerance}
             onSetExchangeRate={onSetExchangeRate}
             onSetSendAmount={onSetSendAmount}
@@ -527,7 +548,6 @@ function Container (props: Props) {
             onSelectAccount={onSelectAccount}
             onToggleOrderType={onToggleOrderType}
             onSelectAsset={onSelectTransactAsset}
-
           />
         </WalletWidgetStandIn>
       }

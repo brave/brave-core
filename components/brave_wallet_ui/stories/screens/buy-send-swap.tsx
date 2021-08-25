@@ -49,7 +49,8 @@ export interface Props {
   onSetFromAmount: (value: string) => void
   onSetToAddress: (value: string) => void
   onSetToAmount: (value: string) => void
-  onSelectPresetAmount: (percent: number) => void
+  onSelectPresetFromAmount: (percent: number) => void
+  onSelectPresetSendAmount: (percent: number) => void
 }
 
 function BuySendSwap (props: Props) {
@@ -86,7 +87,8 @@ function BuySendSwap (props: Props) {
     onSetFromAmount,
     onSetToAddress,
     onSetToAmount,
-    onSelectPresetAmount
+    onSelectPresetFromAmount,
+    onSelectPresetSendAmount
   } = props
   const [selectedTab, setSelectedTab] = React.useState<BuySendSwapTypes>('buy')
 
@@ -122,7 +124,7 @@ function BuySendSwap (props: Props) {
           onSetExchangeRate={onSetExchangeRate}
           onSetFromAmount={onSetFromAmount}
           onSetToAmount={onSetToAmount}
-          onSelectPresetAmount={onSelectPresetAmount}
+          onSelectPresetAmount={onSelectPresetFromAmount}
         />
       }
       {selectedTab === 'send' &&
@@ -133,7 +135,7 @@ function BuySendSwap (props: Props) {
           toAddress={toAddress}
           onSelectAccount={onSelectAccount}
           onSelectNetwork={onSelectNetwork}
-          onSelectPresetAmount={onSelectPresetAmount}
+          onSelectPresetAmount={onSelectPresetSendAmount}
           onSelectAsset={onSelectAsset}
           onSetSendAmount={onSetSendAmount}
           onSetToAddress={onSetToAddress}
