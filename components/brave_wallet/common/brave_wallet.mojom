@@ -261,6 +261,14 @@ enum TransactionStatus {
   Error
 };
 
+struct TransactionInfo {
+  string id;
+  string from_address;
+  string tx_hash;
+  TxData1559 tx_data;
+  TransactionStatus tx_status;
+};
+
 interface EthTxControllerObserver {
   OnNewUnapprovedTx(string tx_meta_id);
   OnTransactionStatusChanged(string tx_meta_id, TransactionStatus tx_status);

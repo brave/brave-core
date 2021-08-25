@@ -75,6 +75,36 @@ base::Value EthTxStateManager::TxMetaToValue(const TxMeta& meta) {
   return dict;
 }
 
+mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
+    const TxMeta& meta) {
+  std::string chain_id;
+  std::string max_priority_fee_per_gas;
+  std::string max_fee_per_gas;
+  if (meta.tx->type() == 1) {
+    // When type is 1 it's always Eip2930Transaction
+    auto* tx2930 = (Eip2930Transaction*)meta.tx.get();
+    chain_id = Uint256ValueToHex(tx2930->chain_id());
+  } else if (meta.tx->type() == 2) {
+    // When type is 1 it's always Eip1559Transaction
+    auto* tx1559 = (Eip1559Transaction*)meta.tx.get();
+    chain_id = Uint256ValueToHex(tx1559->chain_id());
+    max_priority_fee_per_gas =
+        Uint256ValueToHex(tx1559->max_priority_fee_per_gas());
+    max_fee_per_gas = Uint256ValueToHex(tx1559->max_fee_per_gas());
+  }
+
+  return mojom::TransactionInfo::New(
+      meta.id, meta.from.ToHex(), meta.tx_hash,
+      mojom::TxData1559::New(
+          mojom::TxData::New(
+              Uint256ValueToHex(meta.tx->nonce()),
+              Uint256ValueToHex(meta.tx->gas_price()),
+              Uint256ValueToHex(meta.tx->gas_limit()), meta.tx->to().ToHex(),
+              Uint256ValueToHex(meta.tx->value()), meta.tx->data()),
+          chain_id, max_priority_fee_per_gas, max_fee_per_gas),
+      meta.status);
+}
+
 std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
     const base::Value& value) {
   std::unique_ptr<EthTxStateManager::TxMeta> meta =
