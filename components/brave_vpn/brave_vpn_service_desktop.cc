@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 
+#include <utility>
 #include <vector>
 
 #include "base/command_line.h"
@@ -118,4 +119,13 @@ brave_vpn::BraveVPNConnectionInfo BraveVpnServiceDesktop::GetConnectionInfo() {
     NOTIMPLEMENTED();
   }
   return info;
+}
+
+void BraveVpnServiceDesktop::BindInterface(
+    mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
+void BraveVpnServiceDesktop::GetIsConnected(GetIsConnectedCallback callback) {
+  std::move(callback).Run(IsConnected());
 }
