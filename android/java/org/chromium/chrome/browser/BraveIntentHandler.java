@@ -53,22 +53,21 @@ public class BraveIntentHandler extends IntentHandler {
     protected static String getUrlFromText(Intent intent) {
         if (intent == null) return null;
         String text = IntentUtils.safeGetStringExtra(intent, Intent.EXTRA_TEXT);
-        return (text == null || isJavascriptSchemeOrInvalidUrl(text)) ?
-            null : text;
+        return (text == null || isJavascriptSchemeOrInvalidUrl(text)) ? null : text;
     }
 
     private static String getUrlForCustomTab(Intent intent) {
-        assert(false);
+        assert (false);
         return null;
     }
 
     private static String getUrlForWebapp(Intent intent) {
-        assert(false);
+        assert (false);
         return null;
     }
 
     private static boolean isJavascriptSchemeOrInvalidUrl(String url) {
-        assert(false);
+        assert (false);
         return false;
     }
 }
