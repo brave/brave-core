@@ -72,4 +72,16 @@ export default class WalletApiProxy {
     })
     this.keyringController.addObserver(keyringControllerObserverReceiver.$.bindNewPipeAndPassRemote());
   }
+
+  addEthTxControllerObserverObserver(store) {
+    const ethTxControllerObserverReceiver = new braveWallet.mojom.EthTxControllerObserverReceiver({
+      onNewUnapprovedTx: function (txMetaId) {
+        store.dispatch(WalletActions.newUnapprovedTxAdded({txMetaId}))
+      },
+      onTransactionStatusChanged: function (txMetaId, txStatus) {
+        store.dispatch(WalletActions.transactionStatusChanged({txMetaId, txStatus}))
+      }
+    })
+    this.ethTxController.addObserver(ethTxControllerObserverReceiver.$.bindNewPipeAndPassRemote());
+  }
 }

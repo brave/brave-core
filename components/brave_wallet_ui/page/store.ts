@@ -17,5 +17,6 @@ const store = createStore(
 
 apiProxy.getInstance().addEthJsonRpcControllerObserver(store)
 apiProxy.getInstance().addKeyringControllerObserver(store)
+apiProxy.getInstance().addEthTxControllerObserverObserver(store)
 
 export default store
