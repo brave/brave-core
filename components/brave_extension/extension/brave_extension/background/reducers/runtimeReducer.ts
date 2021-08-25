@@ -7,7 +7,7 @@ type State = { }
 export default function runtimeReducer (state: State = { }, action: Actions): State {
   switch (action.type) {
     case runtimeActions.RUNTIME_DID_STARTUP: {
-      browserActionAPI.init().catch((e) => { console.log(e) })
+      browserActionAPI.init()
       break
     }
   }

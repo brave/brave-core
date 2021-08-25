@@ -89,23 +89,43 @@ handler.on(PanelActions.showConnectToSite.getType(), async (store, payload: Show
 })
 
 handler.on(PanelActions.setupWallet.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet' }).catch((e) => { console.error(e) })
+  chrome.tabs.create({ url: 'chrome://wallet' }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
 })
 
 handler.on(PanelActions.expandWallet.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet' }).catch((e) => { console.error(e) })
+  chrome.tabs.create({ url: 'chrome://wallet' }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
 })
 
 handler.on(PanelActions.openWalletApps.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet#apps' }).catch((e) => { console.error(e) })
+  chrome.tabs.create({ url: 'chrome://wallet#apps' }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
 })
 
 handler.on(PanelActions.restoreWallet.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet#restore' }).catch((e) => { console.error(e) })
+  chrome.tabs.create({ url: 'chrome://wallet#restore' }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
 })
 
 handler.on(PanelActions.openWalletSettings.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://settings/wallet' }).catch((e) => { console.error(e) })
+  chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
 })
 
 export default handler.middleware

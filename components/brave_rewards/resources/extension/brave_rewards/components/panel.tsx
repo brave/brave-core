@@ -192,7 +192,11 @@ export class Panel extends React.Component<Props, State> {
     return (id: string) => {
       chrome.tabs.create({
         url: learnMore
-      }).catch((e) => { console.error(e) })
+      }, () => {
+        if (chrome.runtime.lastError) {
+          console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+        }
+      })
       this.actions.deleteNotification(id)
     }
   }
@@ -281,7 +285,11 @@ export class Panel extends React.Component<Props, State> {
   openRewardsPage (notificationId?: string) {
     chrome.tabs.create({
       url: 'brave://rewards'
-    }).catch((e) => { console.error(e) })
+    }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
 
     if (notificationId) {
       this.onCloseNotification(notificationId)
@@ -302,7 +310,11 @@ export class Panel extends React.Component<Props, State> {
     if (externalWallet.addUrl) {
       chrome.tabs.create({
         url: externalWallet.addUrl
-      }).catch((e) => { console.error(e) })
+      }, () => {
+        if (chrome.runtime.lastError) {
+          console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+        }
+      })
       return
     }
 
@@ -639,7 +651,11 @@ export class Panel extends React.Component<Props, State> {
   onDisconnectClick = () => {
     chrome.tabs.create({
       url: 'chrome://rewards#disconnect-wallet'
-    }).catch((e) => { console.error(e) })
+    }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
   }
 
   shouldShowConnectedMessage = () => {

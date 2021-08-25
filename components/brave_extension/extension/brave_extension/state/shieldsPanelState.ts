@@ -144,7 +144,7 @@ export const updateShieldsIconBadgeText: shieldState.UpdateShieldsIconBadgeText 
       // do not show any badge if there are no blocked items
       ? total > 99 ? '99+' : total > 0 ? total.toString() : ''
       : ''
-    setBadgeText(tabId, text).catch((e) => { console.log(e) })
+    setBadgeText(tabId, text)
   }
 }
 
@@ -154,7 +154,7 @@ export const updateShieldsIconImage: shieldState.UpdateShieldsIconImage = (state
   if (tab) {
     const url: string = tab.url
     const isShieldsActive: boolean = state.tabs[tabId].braveShields !== 'block'
-    setIcon(url, tabId, isShieldsActive).catch((e) => { console.log(e) })
+    setIcon(url, tabId, isShieldsActive)
   }
 }
 
