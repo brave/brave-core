@@ -257,11 +257,13 @@ enum TransactionStatus {
   Approved,
   Rejected,
   Submitted,
-  Confirmed
+  Confirmed,
+  Error
 };
 
 interface EthTxControllerObserver {
   OnNewUnapprovedTx(string tx_meta_id);
+  OnTransactionStatusChanged(string tx_meta_id, TransactionStatus tx_status);
 };
 
 interface EthTxController {

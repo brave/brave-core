@@ -63,6 +63,7 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
       ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) override;
 
  private:
+  void NotifyTransactionStatusChanged(EthTxStateManager::TxMeta* meta);
   void OnConnectionError();
   void OnGetNextNonce(std::unique_ptr<EthTxStateManager::TxMeta> meta,
                       uint256_t chain_id,
