@@ -9,9 +9,6 @@
 #include <cstdint>
 
 #include "bat/ads/ads_history_info.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_day_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/promoted_content_ads_per_day_frequency_cap.h"
 
 namespace ads {
 
