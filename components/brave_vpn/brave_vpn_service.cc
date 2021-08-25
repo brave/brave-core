@@ -5,9 +5,10 @@
 
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 
+#include <utility>
+
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/notreached.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
@@ -77,9 +78,7 @@ BraveVpnService::BraveVpnService(
 
 BraveVpnService::~BraveVpnService() = default;
 
-void BraveVpnService::Shutdown() {
-  observers_.Clear();
-}
+void BraveVpnService::Shutdown() {}
 
 void BraveVpnService::OAuthRequest(const GURL& url,
                                    const std::string& method,
@@ -139,37 +138,6 @@ void BraveVpnService::VerifyPurchaseToken(ResponseCallback callback,
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, true,
                std::move(internal_callback));
-}
-
-void BraveVpnService::Connect() {
-  NOTIMPLEMENTED();
-
-  is_connected_ = true;
-  for (Observer& obs : observers_)
-    obs.OnConnectionStateChanged(true);
-}
-
-void BraveVpnService::Disconnect() {
-  NOTIMPLEMENTED();
-
-  is_connected_ = false;
-  for (Observer& obs : observers_)
-    obs.OnConnectionStateChanged(false);
-}
-
-bool BraveVpnService::IsConnected() const {
-  NOTIMPLEMENTED();
-
-  // Just return fake statue now.
-  return is_connected_;
-}
-
-void BraveVpnService::AddObserver(Observer* observer) {
-  observers_.AddObserver(observer);
-}
-
-void BraveVpnService::RemoveObserver(Observer* observer) {
-  observers_.RemoveObserver(observer);
 }
 
 void BraveVpnService::OnGetResponse(

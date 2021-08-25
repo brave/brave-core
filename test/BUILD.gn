@@ -153,6 +153,7 @@ test("brave_unit_tests") {
     "//brave/app/theme:brave_theme_resources_grit",
     "//brave/base:base_unittests",
     "//brave/browser",
+    "//brave/browser:unit_tests",
     "//brave/browser/content_settings:unit_tests",
     "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/browser/first_run:unit_tests",
@@ -705,6 +706,7 @@ if (!is_android) {
       "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-ledger",
       "//brave/vendor/bat-native-ledger:publishers_proto",
+      "//components/reading_list/features:flags",
       "//components/security_interstitials/content:security_interstitial_page",
       "//components/user_prefs",
       "//media:test_support",
@@ -967,6 +969,7 @@ if (!is_android) {
       "//components/federated_learning",
       "//components/language/core/common",
       "//components/network_time",
+      "//components/reading_list/features:flags",
       "//components/spellcheck/browser",
       "//services/device/public/cpp:device_features",
 

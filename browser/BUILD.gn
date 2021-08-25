@@ -51,3 +51,21 @@ group("browser") {
   # so //brave/browser becomes essentially an alias for //chrome/browser now).
   public_deps = [ "//chrome/browser" ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = []
+  deps = []
+
+  if (is_win) {
+    sources += [ "microsoft_edge_protocol_util_unittest.cc" ]
+
+    deps += [
+      "//base",
+      "//brave/browser",
+      "//testing/gtest",
+      "//url",
+    ]
+  }
+}

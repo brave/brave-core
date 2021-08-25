@@ -37,6 +37,11 @@ int GetIconIndexForFileType() {
 #define BRAVE_IPFS L"ipfs"
 #define BRAVE_IPNS L"ipns"
 
+#define BRAVE_BROWSER_PROTOCOL_ASSOCIATIONS BRAVE_IPFS, BRAVE_IPNS,
+
+#define BRAVE_POTENTIAL_PROTOCOL_ASSOCIATIONS \
+  BRAVE_IPFS, BRAVE_IPNS, L"microsoft-edge",
+
 #define BRAVE_GET_TARGET_FOR_DEFAULT_APP_SETTINGS                         \
   if (base::EqualsCaseInsensitiveASCII(protocol, BRAVE_IPFS))             \
     return base::StringPrintf(kSystemSettingsDefaultAppsFormat, L"IPFS"); \
@@ -83,3 +88,5 @@ int GetIconIndexForFileType() {
 #undef BRAVE_GET_TARGET_FOR_DEFAULT_APP_SETTINGS
 #undef BRAVE_IPFS
 #undef BRAVE_IPNS
+#undef BRAVE_POTENTIAL_PROTOCOL_ASSOCIATIONS
+#undef BRAVE_BROWSER_PROTOCOL_ASSOCIATIONS

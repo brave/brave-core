@@ -12,10 +12,6 @@ preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
 static_library("brave_vpn") {
   sources = [
-    "brave_vpn_connection_info.cc",
-    "brave_vpn_connection_info.h",
-    "brave_vpn_os_connection_api.cc",
-    "brave_vpn_os_connection_api.h",
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
     "brave_vpn_utils.cc",
@@ -25,12 +21,9 @@ static_library("brave_vpn") {
   ]
 
   deps = [
-    ":brave_vpn_internal",
-    ":mojom",
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
     "//components/keyed_service/core",
-    "//net",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//url",
@@ -38,23 +31,42 @@ static_library("brave_vpn") {
 
   libs = []
 
-  if (is_win) {
+  if (is_win || is_mac) {
     sources += [
-      "brave_vpn_os_connection_api_win.cc",
-      "brave_vpn_os_connection_api_win.h",
+      "brave_vpn_connection_info.cc",
+      "brave_vpn_connection_info.h",
+      "brave_vpn_os_connection_api.cc",
+      "brave_vpn_os_connection_api.h",
+      "brave_vpn_os_connection_api_sim.cc",
+      "brave_vpn_os_connection_api_sim.h",
+      "brave_vpn_service_desktop.cc",
+      "brave_vpn_service_desktop.h",
+      "switches.h",
     ]
 
-    libs += [ "rasapi32.lib" ]
-  }
+    if (is_win) {
+      sources += [
+        "brave_vpn_os_connection_api_win.cc",
+        "brave_vpn_os_connection_api_win.h",
+      ]
 
-  if (is_mac) {
-    sources += [
-      "brave_vpn_os_connection_api_mac.h",
-      "brave_vpn_os_connection_api_mac.mm",
+      libs += [ "rasapi32.lib" ]
+    }
+
+    if (is_mac) {
+      sources += [
+        "brave_vpn_os_connection_api_mac.h",
+        "brave_vpn_os_connection_api_mac.mm",
+      ]
+
+      frameworks = [ "NetworkExtension.framework" ]
+      configs += [ "//build/config/compiler:enable_arc" ]
+    }
+
+    deps += [
+      ":brave_vpn_internal",
+      ":mojom",
     ]
-
-    frameworks = [ "NetworkExtension.framework" ]
-    configs += [ "//build/config/compiler:enable_arc" ]
   }
 }
 

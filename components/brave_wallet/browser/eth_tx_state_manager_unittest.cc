@@ -63,10 +63,11 @@ TEST_F(EthTxStateManagerUnitTest, GenerateMetaID) {
 
 TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   // type 0
-  std::unique_ptr<EthTransaction> tx = std::make_unique<EthTransaction>(
-      0x09, 0x4a817c800, 0x5208,
-      EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
-      0x0de0b6b3a7640000, std::vector<uint8_t>());
+  std::unique_ptr<EthTransaction> tx =
+      std::make_unique<EthTransaction>(*EthTransaction::FromTxData(
+          mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                             "0x3535353535353535353535353535353535353535",
+                             "0x0de0b6b3a7640000", std::vector<uint8_t>())));
   EthTxStateManager::TxMeta meta(std::move(tx));
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
@@ -111,10 +112,11 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
 
   // type 1
   std::unique_ptr<Eip2930Transaction> tx1 =
-      std::make_unique<Eip2930Transaction>(
-          0x09, 0x4a817c800, 0x5208,
-          EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
-          0x0de0b6b3a7640000, std::vector<uint8_t>(), 3);
+      std::make_unique<Eip2930Transaction>(*Eip2930Transaction::FromTxData(
+          mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                             "0x3535353535353535353535353535353535353535",
+                             "0x0de0b6b3a7640000", std::vector<uint8_t>()),
+          0x3));
   auto* access_list = tx1->access_list();
   Eip2930Transaction::AccessListItem item_a;
   item_a.address.fill(0x0a);
@@ -135,9 +137,11 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   // type2
   std::unique_ptr<Eip1559Transaction> tx2 =
       std::make_unique<Eip1559Transaction>(
-          0x09, 0x4a817c800, 0x5208,
-          EthAddress::FromHex("0x3535353535353535353535353535353535353535"),
-          0x0de0b6b3a7640000, std::vector<uint8_t>(), 3, 30, 50);
+          *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
+              mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                                 "0x3535353535353535353535353535353535353535",
+                                 "0x0de0b6b3a7640000", std::vector<uint8_t>()),
+              "0x3", "0x1E", "0x32")));
   EthTxStateManager::TxMeta meta2(std::move(tx2));
   base::Value value2 = EthTxStateManager::TxMetaToValue(meta2);
   auto meta_from_value2 = EthTxStateManager::ValueToTxMeta(value2);

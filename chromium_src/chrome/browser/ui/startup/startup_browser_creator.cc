@@ -8,6 +8,10 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 
+#if defined(OS_WIN)
+#include "brave/browser/microsoft_edge_protocol_util.h"
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
 #endif
@@ -55,6 +59,19 @@ bool BraveStartupBrowserCreatorImpl::Launch(
     const std::vector<GURL>& urls_to_open,
     bool process_startup,
     std::unique_ptr<LaunchModeRecorder> launch_mode_recorder) {
+  std::vector<GURL> revised_urls_to_open = urls_to_open;
+#if defined(OS_WIN)
+  for (const std::wstring& arg : command_line_.GetArgs()) {
+    // Fetch url from command line args if it includes microsoft-edge protocol
+    // and url is delivered.
+    absl::optional<GURL> url = GetURLFromMSEdgeProtocol(arg);
+    if (!url)
+      continue;
+    if (url->is_valid())
+      revised_urls_to_open.push_back(std::move(*url));
+  }
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
   if (StartupBrowserCreatorImpl::command_line_.HasSwitch(switches::kTor)) {
     LOG(INFO) << "Switching to Tor profile and starting Tor service.";
@@ -72,8 +89,9 @@ bool BraveStartupBrowserCreatorImpl::Launch(
   }
 #endif
 
-  return StartupBrowserCreatorImpl::Launch(
-      profile, urls_to_open, process_startup, std::move(launch_mode_recorder));
+  return StartupBrowserCreatorImpl::Launch(profile, revised_urls_to_open,
+                                           process_startup,
+                                           std::move(launch_mode_recorder));
 }
 
 #define StartupBrowserCreatorImpl BraveStartupBrowserCreatorImpl

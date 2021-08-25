@@ -5,23 +5,41 @@
 
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 
-#include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 
+#if defined(OS_WIN) || defined(OS_MAC)
+#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#endif
+
+#if defined(OS_ANDROID)
+#include "brave/components/brave_vpn/brave_vpn_service.h"
+#endif
+
 // static
 BraveVpnServiceFactory* BraveVpnServiceFactory::GetInstance() {
   return base::Singleton<BraveVpnServiceFactory>::get();
 }
 
+#if defined(OS_WIN) || defined(OS_MAC)
+// static
+BraveVpnServiceDesktop* BraveVpnServiceFactory::GetForProfile(
+    Profile* profile) {
+  return static_cast<BraveVpnServiceDesktop*>(
+      GetInstance()->GetServiceForBrowserContext(profile, true));
+}
+#endif
+
+#if defined(OS_ANDROID)
 // static
 BraveVpnService* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
   return static_cast<BraveVpnService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
+#endif
 
 BraveVpnServiceFactory::BraveVpnServiceFactory()
     : BrowserContextKeyedServiceFactory(
@@ -35,7 +53,14 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
+
+#if defined(OS_WIN) || defined(OS_MAC)
+  return new BraveVpnServiceDesktop(shared_url_loader_factory);
+#endif
+
+#if defined(OS_ANDROID)
   return new BraveVpnService(shared_url_loader_factory);
+#endif
 }
 
 content::BrowserContext* BraveVpnServiceFactory::GetBrowserContextToUse(

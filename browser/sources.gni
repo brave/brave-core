@@ -296,6 +296,13 @@ if (enable_ftx) {
   brave_chrome_browser_deps += [ "//brave/browser/ftx" ]
 }
 
+if (is_win) {
+  brave_chrome_browser_sources += [
+    "//brave/browser/microsoft_edge_protocol_util.cc",
+    "//brave/browser/microsoft_edge_protocol_util.h",
+  ]
+}
+
 if (is_win && is_official_build) {
   brave_chrome_browser_sources += [
     "//chrome/browser/google/google_update_win.cc",
