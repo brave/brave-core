@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index b83ed2f1004a7bd9e1acca1bc93f81a32f4e514b..12c5842d40147770a8efec12b79c3dc5283be8a5 100644
+index 11f9808ee1e06d51887100ae97f29b3215eb16aa..d56361c0f1381482db9b027061043efbf344e722 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -314,14 +314,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
