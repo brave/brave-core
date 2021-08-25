@@ -22,8 +22,6 @@ class RewardsServiceFactory : public BrowserContextKeyedServiceFactory {
   RewardsServiceFactory(const RewardsServiceFactory&) = delete;
   RewardsServiceFactory& operator=(const RewardsServiceFactory&) = delete;
 
-  static brave_rewards::RewardsService* GetForBrowserContext(
-      content::BrowserContext* context);
   static brave_rewards::RewardsService* GetForProfile(Profile* profile);
 
   static RewardsServiceFactory* GetInstance();

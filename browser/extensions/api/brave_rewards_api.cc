@@ -1206,20 +1206,24 @@ BraveRewardsGetScheduledCaptchaInfoFunction::Run() {
       brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
           profile);
   if (!brave_adaptive_captcha_service) {
-    return RespondNow(Error("Adaptive captcha service is not initialized"));
+    return RespondNow(
+        Error("Adaptive captcha service called from incognito or unsupported "
+              "profile"));
   }
 
   std::string url;
   bool max_attempts_exceeded = false;
   brave_adaptive_captcha_service->GetScheduledCaptchaInfo(
       &url, &max_attempts_exceeded);
-#endif
 
   base::DictionaryValue dict;
   dict.SetString("url", url);
   dict.SetBoolean("maxAttemptsExceeded", max_attempts_exceeded);
 
   return RespondNow(OneArgument(std::move(dict)));
+#else
+  return RespondNow(Error("Adaptive captcha not supported"));
+#endif
 }
 
 BraveRewardsUpdateScheduledCaptchaResultFunction::
@@ -1227,23 +1231,27 @@ BraveRewardsUpdateScheduledCaptchaResultFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   auto params(
       brave_rewards::UpdateScheduledCaptchaResult::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* brave_adaptive_captcha_service =
       brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
           profile);
   if (!brave_adaptive_captcha_service) {
-    return RespondNow(Error("Adaptive captcha service is not initialized"));
+    return RespondNow(
+        Error("Adaptive captcha service called from incognito or unsupported "
+              "profile"));
   }
 
   brave_adaptive_captcha_service->UpdateScheduledCaptchaResult(params->result);
-#endif
 
   return RespondNow(NoArguments());
+#else
+  return RespondNow(Error("Adaptive captcha not supported"));
+#endif
 }
 
 BraveRewardsEnableRewardsFunction::~BraveRewardsEnableRewardsFunction() =

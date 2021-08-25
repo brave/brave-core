@@ -1,9 +1,12 @@
+import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
+
+assert(brave_adaptive_captcha_enabled)
+
 source_set("brave_adaptive_captcha") {
   sources = [
     "brave_adaptive_captcha_delegate.h",
     "brave_adaptive_captcha_service.cc",
     "brave_adaptive_captcha_service.h",
-    "environment.h",
     "get_adaptive_captcha_challenge.cc",
     "get_adaptive_captcha_challenge.h",
     "server_util.cc",
@@ -13,11 +16,10 @@ source_set("brave_adaptive_captcha") {
   deps = [
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
-    "//brave/components/brave_adaptive_captcha/buildflags",
+    "//brave/components/brave_ads/common:common",
     "//brave/components/brave_rewards/browser",
     "//components/keyed_service/core",
     "//components/prefs",
-    "//content/public/browser",
     "//net",
     "//services/network/public/cpp",
   ]

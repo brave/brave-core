@@ -44,17 +44,6 @@ namespace brave_rewards {
 RewardsService* testing_service_;
 
 // static
-RewardsService* RewardsServiceFactory::GetForBrowserContext(
-    content::BrowserContext* context) {
-  if (testing_service_) {
-    return testing_service_;
-  }
-
-  return static_cast<RewardsService*>(
-      GetInstance()->GetServiceForBrowserContext(context, true));
-}
-
-// static
 RewardsService* RewardsServiceFactory::GetForProfile(
     Profile* profile) {
   if (testing_service_) {

@@ -9,6 +9,7 @@
 #include <functional>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/json/json_reader.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
@@ -45,7 +46,7 @@ const int kMaximumUnblindedTokens = 50;
 
 RefillUnblindedTokens::RefillUnblindedTokens(
     privacy::TokenGeneratorInterface* token_generator)
-    : token_generator_(token_generator) {
+    : token_generator_(token_generator), weak_ptr_factory_(this) {
   DCHECK(token_generator_);
 }
 
@@ -123,11 +124,9 @@ void RefillUnblindedTokens::MaybeGetScheduledCaptcha() {
 void RefillUnblindedTokens::GetScheduledCaptcha() {
   BLOG(1, "GetScheduledCaptcha");
 
-  auto captcha_callback =
-      std::bind(&RefillUnblindedTokens::OnGetScheduledCaptcha, this,
-                std::placeholders::_1);
-  AdsClientHelper::Get()->GetScheduledCaptcha(wallet_.id,
-                                              std::move(captcha_callback));
+  AdsClientHelper::Get()->GetScheduledCaptcha(
+      wallet_.id, base::BindOnce(&RefillUnblindedTokens::OnGetScheduledCaptcha,
+                                 weak_ptr_factory_.GetWeakPtr()));
 }
 
 void RefillUnblindedTokens::OnGetScheduledCaptcha(

@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/time/time.h"
+#include "brave/browser/brave_ads/ads_tooltips_delegate_impl.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
@@ -22,6 +23,7 @@
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #endif
 
 namespace brave_ads {
@@ -60,9 +62,19 @@ AdsServiceFactory::~AdsServiceFactory() {}
 KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
-  std::unique_ptr<AdsServiceImpl> ads_service(new AdsServiceImpl(
-      profile, HistoryServiceFactory::GetInstance()->GetForProfile(
-                   profile, ServiceAccessType::EXPLICIT_ACCESS)));
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  auto* brave_adaptive_captcha_service =
+      brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetInstance()
+          ->GetForProfile(profile);
+#endif
+  std::unique_ptr<AdsServiceImpl> ads_service(
+      new AdsServiceImpl(profile,
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+                         brave_adaptive_captcha_service,
+                         std::make_unique<AdsTooltipsDelegateImpl>(profile),
+#endif
+                         HistoryServiceFactory::GetInstance()->GetForProfile(
+                             profile, ServiceAccessType::EXPLICIT_ACCESS)));
   return ads_service.release();
 }
 

@@ -6,12 +6,14 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_TOOLTIPS_ADS_CAPTCHA_TOOLTIP_H_
 #define BRAVE_BROWSER_BRAVE_ADS_TOOLTIPS_ADS_CAPTCHA_TOOLTIP_H_
 
-#include <memory>
 #include <string>
 
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
+#include "brave/browser/ui/brave_tooltips/brave_tooltip_attributes.h"
 
-class Profile;
+namespace brave_adaptive_captcha {
+class BraveAdaptiveCaptchaService;
+}  // namespace brave_adaptive_captcha
 
 namespace brave_ads {
 
@@ -19,7 +21,8 @@ extern const char kScheduledCaptchaTooltipId[];
 
 class AdsCaptchaTooltip : public brave_tooltips::BraveTooltip {
  public:
-  AdsCaptchaTooltip(Profile* profile,
+  AdsCaptchaTooltip(brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+                        adaptive_captcha_service,
                     const brave_tooltips::BraveTooltipAttributes& attributes,
                     const std::string& payment_id,
                     const std::string& captcha_id);
@@ -36,7 +39,8 @@ class AdsCaptchaTooltip : public brave_tooltips::BraveTooltip {
   void PerformCancelButtonAction() override;
 
  private:
-  Profile* profile_;  // NOT OWNED
+  brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+      adaptive_captcha_service_;  // NOT OWNED
   std::string payment_id_;
   std::string captcha_id_;
 };

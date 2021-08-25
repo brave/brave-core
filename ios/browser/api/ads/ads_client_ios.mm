@@ -102,7 +102,7 @@ void AdsClientIOS::ClearScheduledCaptcha() {
 void AdsClientIOS::GetScheduledCaptcha(
     const std::string& payment_id,
     ads::GetScheduledCaptchaCallback callback) {
-  [bridge_ getScheduledCaptcha:payment_id callback:callback];
+  [bridge_ getScheduledCaptcha:payment_id callback:std::move(callback)];
 }
 
 void AdsClientIOS::ShowScheduledCaptchaNotification(

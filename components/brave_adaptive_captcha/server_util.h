@@ -8,12 +8,9 @@
 
 #include <string>
 
-#include "brave/components/brave_adaptive_captcha/environment.h"
-
 namespace brave_adaptive_captcha {
 
-std::string GetServerUrl(brave_adaptive_captcha::Environment environment,
-                         const std::string& path);
+std::string GetServerUrl(const std::string& path);
 
 }  // namespace brave_adaptive_captcha
 

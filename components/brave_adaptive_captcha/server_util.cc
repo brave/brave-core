@@ -8,7 +8,9 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/command_line.h"
 #include "base/notreached.h"
+#include "brave/components/brave_ads/common/switches.h"
 
 namespace {
 
@@ -20,24 +22,18 @@ const char kProduction[] = "https://grant.rewards.brave.com";
 
 namespace brave_adaptive_captcha {
 
-std::string GetServerUrl(brave_adaptive_captcha::Environment environment,
-                         const std::string& path) {
+std::string GetServerUrl(const std::string& path) {
   DCHECK(!path.empty());
 
-  std::string url;
-  switch (environment) {
-    case brave_adaptive_captcha::Environment::DEVELOPMENT:
-      url = kDevelopment;
-      break;
-    case brave_adaptive_captcha::Environment::STAGING:
-      url = kStaging;
-      break;
-    case brave_adaptive_captcha::Environment::PRODUCTION:
-      url = kProduction;
-      break;
-    default:
-      NOTREACHED();
-      break;
+  std::string url = kProduction;
+
+  auto* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(brave_ads::switches::kDevelopment)) {
+    url = kDevelopment;
+  } else if (command_line->HasSwitch(brave_ads::switches::kStaging)) {
+    url = kStaging;
+  } else if (command_line->HasSwitch(brave_ads::switches::kProduction)) {
+    url = kProduction;
   }
 
   return url + path;

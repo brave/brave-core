@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_FACTORY_H_
 
+#include <memory>
+
 #include "base/memory/singleton.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"

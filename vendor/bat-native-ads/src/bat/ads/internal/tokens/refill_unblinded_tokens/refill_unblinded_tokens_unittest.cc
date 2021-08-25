@@ -6,6 +6,7 @@
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens.h"
 
 #include <memory>
+#include <utility>
 
 #include "bat/ads/internal/account/wallet/wallet.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
@@ -156,9 +157,10 @@ class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
   void MaybeExpectCallToGetScheduledCaptcha() {
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
     EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
-        .WillOnce(
-            Invoke([](const std::string& payment_id,
-                      GetScheduledCaptchaCallback callback) { callback(""); }));
+        .WillOnce(Invoke([](const std::string& payment_id,
+                            GetScheduledCaptchaCallback callback) {
+          std::move(callback).Run("");
+        }));
 #endif
   }
 
@@ -241,7 +243,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
   EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
       .WillOnce(Invoke([](const std::string& payment_id,
                           GetScheduledCaptchaCallback callback) {
-        callback("captcha-id");
+        std::move(callback).Run("captcha-id");
       }));
 
   const WalletInfo wallet = GetWallet();

@@ -1152,7 +1152,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (void)getScheduledCaptcha:(const std::string&)payment_id
                    callback:(ads::GetScheduledCaptchaCallback)callback {
   // Adaptive captcha not supported on iOS
-  callback("");
+  std::move(callback).Run("");
 }
 
 - (void)showScheduledCaptchaNotification:(const std::string&)payment_id

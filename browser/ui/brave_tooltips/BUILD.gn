@@ -19,12 +19,13 @@ source_set("brave_tooltips") {
   ]
 
   if (is_win || is_linux || is_mac) {
+    public_deps = [ "//skia" ]
+
     deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/app/vector_icons",
       "//brave/browser/profiles:util",
       "//components/prefs",
-      "//skia",
       "//ui/accessibility",
       "//ui/base",
       "//ui/compositor",

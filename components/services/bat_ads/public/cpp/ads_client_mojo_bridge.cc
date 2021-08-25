@@ -140,7 +140,7 @@ void AdsClientMojoBridge::GetScheduledCaptcha(
       AsWeakPtr(), std::move(callback));
   ads_client_->GetScheduledCaptcha(
       payment_id,
-      std::bind(AdsClientMojoBridge::OnGetScheduledCaptcha, holder, _1));
+      base::BindOnce(AdsClientMojoBridge::OnGetScheduledCaptcha, holder));
 }
 
 void AdsClientMojoBridge::ShowScheduledCaptchaNotification(

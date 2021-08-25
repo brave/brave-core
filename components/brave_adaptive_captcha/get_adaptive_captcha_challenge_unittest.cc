@@ -11,7 +11,6 @@
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_adaptive_captcha/environment.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"

@@ -18,4 +18,4 @@ source_set("brave_adaptive_captcha_unit_tests") {
   ]
 
   data = [ "//brave/vendor/bat-native-ads/data/" ]
-}  # source_set("brave_adaptive_captcha_unit_tests")
+}

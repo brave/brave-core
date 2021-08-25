@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -11,8 +11,8 @@
 
 #include "brave/browser/brave_rewards/rewards_panel_helper.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
@@ -49,7 +49,7 @@ BraveAdaptiveCaptchaServiceFactory::GetInstance() {
 // static
 BraveAdaptiveCaptchaService* BraveAdaptiveCaptchaServiceFactory::GetForProfile(
     Profile* profile) {
-  if (profile->IsIncognitoProfile() || profile->IsGuestSession()) {
+  if (!brave::IsRegularProfile(profile)) {
     return nullptr;
   }
 
@@ -70,18 +70,11 @@ KeyedService* BraveAdaptiveCaptchaServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto url_loader_factory = context->GetDefaultStoragePartition()
                                 ->GetURLLoaderFactoryForBrowserProcess();
-  auto* rewards_service =
-      brave_rewards::RewardsServiceFactory::GetForBrowserContext(context);
   return new BraveAdaptiveCaptchaService(
-      Profile::FromBrowserContext(context), user_prefs::UserPrefs::Get(context),
-      std::move(url_loader_factory), rewards_service,
+      user_prefs::UserPrefs::Get(context), std::move(url_loader_factory),
+      brave_rewards::RewardsServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(context)),
       std::make_unique<CaptchaDelegate>(context));
-}
-
-content::BrowserContext*
-BraveAdaptiveCaptchaServiceFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
 
 }  // namespace brave_adaptive_captcha

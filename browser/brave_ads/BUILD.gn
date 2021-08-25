@@ -10,6 +10,8 @@ source_set("brave_ads") {
     "ads_service_factory.h",
     "ads_tab_helper.cc",
     "ads_tab_helper.h",
+    "ads_tooltips_delegate_impl.cc",
+    "ads_tooltips_delegate_impl.h",
   ]
 
   deps = [
@@ -25,7 +27,9 @@ source_set("brave_ads") {
   ]
 
   if (brave_adaptive_captcha_enabled) {
-    deps +=
-        [ "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha" ]
+    deps += [
+      "//brave/browser/brave_adaptive_captcha",
+      "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha",
+    ]
   }
 }

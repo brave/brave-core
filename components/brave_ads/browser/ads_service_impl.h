@@ -69,7 +69,7 @@ class SimpleURLLoader;
 
 namespace brave_ads {
 
-class AdsTooltipsController;
+class AdsTooltipsDelegate;
 
 class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
@@ -81,8 +81,14 @@ class AdsServiceImpl : public AdsService,
   void OnWalletUpdated();
 
   // AdsService implementation
-  explicit AdsServiceImpl(Profile* profile,
-                          history::HistoryService* history_service);
+  explicit AdsServiceImpl(
+      Profile* profile,
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+      brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+          adaptive_captcha_service,
+      std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
+#endif
+      history::HistoryService* history_service);
   ~AdsServiceImpl() override;
 
   AdsServiceImpl(const AdsServiceImpl&) = delete;
@@ -467,6 +473,12 @@ class AdsServiceImpl : public AdsService,
 
   history::HistoryService* history_service_;  // NOT OWNED
 
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+      adaptive_captcha_service_;  // NOT OWNED
+  std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;
+#endif
+
   bool is_initialized_ = false;
 
   bool is_upgrading_from_pre_brave_ads_build_;
@@ -499,12 +511,6 @@ class AdsServiceImpl : public AdsService,
 
   NotificationDisplayService* display_service_;     // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  brave_adaptive_captcha::BraveAdaptiveCaptchaService*
-      adaptive_captcha_service_;  // NOT OWNED
-  std::unique_ptr<AdsTooltipsController> ads_tooltips_controller_;
-#endif
 
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
       bat_ads_client_receiver_;

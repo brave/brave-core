@@ -40,15 +40,15 @@
 #include "bat/ads/pref_names.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "bat/ads/statement_info.h"
-#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/notifications/ad_notification_platform_bridge.h"
-#include "brave/browser/brave_ads/tooltips/ads_captcha_tooltip.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
+#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
 #include "brave/components/brave_ads/browser/service_sandbox_type.h"
@@ -72,7 +72,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/chrome_paths.h"
-#include "components/grit/brave_components_strings.h"
 #if !defined(OS_ANDROID)
 #include "chrome/browser/fullscreen.h"
 #include "chrome/browser/ui/browser.h"
@@ -110,7 +109,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-#include "brave/browser/brave_ads/tooltips/ads_tooltips_controller.h"
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #endif
 
 using brave_rewards::RewardsNotificationService;
@@ -151,25 +150,6 @@ std::string URLMethodToRequestType(ads::mojom::UrlRequestMethod method) {
     }
   }
 }
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-brave_adaptive_captcha::Environment AdsEnvironmentToAdaptiveCaptchaEnvironment(
-    ads::mojom::Environment environment) {
-  switch (environment) {
-    case ads::mojom::Environment::kDevelopment: {
-      return brave_adaptive_captcha::DEVELOPMENT;
-    }
-
-    case ads::mojom::Environment::kStaging: {
-      return brave_adaptive_captcha::STAGING;
-    }
-
-    case ads::mojom::Environment::kProduction: {
-      return brave_adaptive_captcha::PRODUCTION;
-    }
-  }
-}
-#endif
 
 std::string LoadOnFileTaskRunner(const base::FilePath& path) {
   std::string data;
@@ -231,10 +211,20 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 }  // namespace
 
-AdsServiceImpl::AdsServiceImpl(Profile* profile,
-                               history::HistoryService* history_service)
+AdsServiceImpl::AdsServiceImpl(
+    Profile* profile,
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+    brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+        adaptive_captcha_service,
+    std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
+#endif
+    history::HistoryService* history_service)
     : profile_(profile),
       history_service_(history_service),
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+      adaptive_captcha_service_(adaptive_captcha_service),
+      ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
+#endif
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
@@ -244,15 +234,11 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile,
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
       rewards_service_(
           brave_rewards::RewardsServiceFactory::GetForProfile(profile_)),
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-      adaptive_captcha_service_(
-          brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::
-              GetForProfile(profile_)),
-      ads_tooltips_controller_(
-          std::make_unique<AdsTooltipsController>(profile)),
-#endif
       bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(profile_);
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  DCHECK(adaptive_captcha_service_);
+#endif
   DCHECK(history_service_);
   DCHECK(brave::IsRegularProfile(profile_));
 
@@ -977,10 +963,6 @@ void AdsServiceImpl::SetEnvironment() {
 #endif
 
   bat_ads_service_->SetEnvironment(environment, base::NullCallback());
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  adaptive_captcha_service_->set_environment(
-      AdsEnvironmentToAdaptiveCaptchaEnvironment(environment));
-#endif
 }
 
 void AdsServiceImpl::SetBuildChannel() {
@@ -1888,7 +1870,7 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
         // Close any open captcha tooltip
-        ads_tooltips_controller_->CloseTooltip(kScheduledCaptchaTooltipId);
+        ads_tooltips_delegate_->CloseCaptchaTooltip();
 
         // Clear any scheduled captcha
         adaptive_captcha_service_->ClearScheduledCaptcha();
@@ -2247,7 +2229,7 @@ void AdsServiceImpl::GetScheduledCaptcha(
 void AdsServiceImpl::OnGetScheduledCaptcha(
     ads::GetScheduledCaptchaCallback callback,
     const std::string& captcha_id) {
-  callback(captcha_id);
+  std::move(callback).Run(captcha_id);
 }
 #endif
 
@@ -2265,23 +2247,8 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
   const int snooze_count = pref_service->GetInteger(
       brave_adaptive_captcha::kScheduledCaptchaSnoozeCount);
 
-  const std::u16string title = l10n_util::GetStringUTF16(
-      IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_TITLE);
-  const std::u16string body = l10n_util::GetStringUTF16(
-      IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_BODY);
-  const std::u16string ok_button_text = l10n_util::GetStringUTF16(
-      IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_OK_BUTTON_TEXT);
-
-  const std::u16string cancel_button_text = l10n_util::GetStringUTF16(
-      IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_CANCEL_BUTTON_TEXT);
-
-  brave_tooltips::BraveTooltipAttributes tooltip_attributes(
-      title, body, ok_button_text, cancel_button_text);
-  tooltip_attributes.set_cancel_button_enabled(snooze_count == 0);
-  auto captcha_tooltip = std::make_unique<AdsCaptchaTooltip>(
-      profile_, tooltip_attributes, payment_id, captcha_id);
-
-  ads_tooltips_controller_->ShowTooltip(std::move(captcha_tooltip));
+  ads_tooltips_delegate_->ShowCaptchaTooltip(payment_id, captcha_id,
+                                             snooze_count == 0);
 #endif
 }
 

@@ -15,29 +15,29 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "net/http/http_status_code.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_adaptive_captcha {
 
 GetAdaptiveCaptchaChallenge::GetAdaptiveCaptchaChallenge(
-    api_request_helper::APIRequestHelper* api_request_helper)
-    : api_request_helper_(api_request_helper) {
-  DCHECK(api_request_helper);
+    std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper)
+    : api_request_helper_(std::move(api_request_helper)) {
+  DCHECK(api_request_helper_);
 }
 
 GetAdaptiveCaptchaChallenge::~GetAdaptiveCaptchaChallenge() = default;
 
-std::string GetAdaptiveCaptchaChallenge::GetUrl(Environment environment,
-                                                const std::string& payment_id) {
+std::string GetAdaptiveCaptchaChallenge::GetUrl(const std::string& payment_id) {
   const std::string path =
       base::StringPrintf("/v3/captcha/challenge/%s", payment_id.c_str());
 
-  return GetServerUrl(environment, path);
+  return GetServerUrl(path);
 }
 
 bool GetAdaptiveCaptchaChallenge::CheckStatusCode(int status_code) {
   if (status_code == net::HTTP_NOT_FOUND) {
-    LOG(INFO) << "No captcha scheduled for given payment id";
+    VLOG(1) << "No captcha scheduled for given payment id";
     return false;
   }
 
@@ -82,14 +82,12 @@ bool GetAdaptiveCaptchaChallenge::ParseBody(const std::string& body,
 }
 
 void GetAdaptiveCaptchaChallenge::Request(
-    Environment environment,
     const std::string& payment_id,
     OnGetAdaptiveCaptchaChallenge callback) {
   auto api_request_helper_callback =
       base::BindOnce(&GetAdaptiveCaptchaChallenge::OnResponse,
                      base::Unretained(this), std::move(callback));
-  api_request_helper_->Request("GET", GURL(GetUrl(environment, payment_id)), "",
-                               "", false,
+  api_request_helper_->Request("GET", GURL(GetUrl(payment_id)), "", "", false,
                                std::move(api_request_helper_callback));
 }
 

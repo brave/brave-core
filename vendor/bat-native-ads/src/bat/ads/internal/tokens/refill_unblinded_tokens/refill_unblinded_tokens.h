@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
@@ -71,6 +72,8 @@ class RefillUnblindedTokens {
   privacy::TokenGeneratorInterface* token_generator_;  // NOT OWNED
 
   RefillUnblindedTokensDelegate* delegate_ = nullptr;
+
+  base::WeakPtrFactory<RefillUnblindedTokens> weak_ptr_factory_;
 };
 
 }  // namespace ads

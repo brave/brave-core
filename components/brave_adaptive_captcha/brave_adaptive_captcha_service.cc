@@ -10,17 +10,28 @@
 
 #include "base/strings/stringprintf.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_adaptive_captcha/environment.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
+namespace {
+
+std::string GetScheduledCaptchaUrl(const std::string& payment_id,
+                                   const std::string& captcha_id) {
+  DCHECK(!payment_id.empty());
+  DCHECK(!captcha_id.empty());
+
+  const std::string path = base::StringPrintf(
+      "/v3/captcha/%s/%s", payment_id.c_str(), captcha_id.c_str());
+  return brave_adaptive_captcha::GetServerUrl(path);
+}
+
+}  // namespace
+
 namespace brave_adaptive_captcha {
 
 constexpr int kScheduledCaptchaMaxFailedAttempts = 10;
-
-Environment BraveAdaptiveCaptchaService::environment_ = DEVELOPMENT;
 
 const char kScheduledCaptchaId[] = "brave.rewards.scheduled_captcha.id";
 const char kScheduledCaptchaPaymentId[] =
@@ -52,7 +63,6 @@ net::NetworkTrafficAnnotationTag kAnnotationTag =
         })");
 
 BraveAdaptiveCaptchaService::BraveAdaptiveCaptchaService(
-    content::BrowserContext* context,
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     brave_rewards::RewardsService* rewards_service,
@@ -60,10 +70,10 @@ BraveAdaptiveCaptchaService::BraveAdaptiveCaptchaService(
     : prefs_(prefs),
       rewards_service_(rewards_service),
       delegate_(std::move(delegate)),
-      api_request_helper_(kAnnotationTag, std::move(url_loader_factory)),
-      captcha_challenge_(
-          std::make_unique<GetAdaptiveCaptchaChallenge>(&api_request_helper_)) {
-  DCHECK(context);
+      captcha_challenge_(std::make_unique<GetAdaptiveCaptchaChallenge>(
+          std::make_unique<api_request_helper::APIRequestHelper>(
+              kAnnotationTag,
+              std::move(url_loader_factory)))) {
   DCHECK(prefs);
   DCHECK(rewards_service);
 
@@ -77,7 +87,7 @@ BraveAdaptiveCaptchaService::~BraveAdaptiveCaptchaService() {
 void BraveAdaptiveCaptchaService::GetScheduledCaptcha(
     const std::string& payment_id,
     OnGetAdaptiveCaptchaChallenge callback) {
-  captcha_challenge_->Request(environment_, payment_id, std::move(callback));
+  captcha_challenge_->Request(payment_id, std::move(callback));
 }
 
 bool BraveAdaptiveCaptchaService::GetScheduledCaptchaInfo(
@@ -95,8 +105,7 @@ bool BraveAdaptiveCaptchaService::GetScheduledCaptchaInfo(
   const int failed_attempts =
       prefs_->GetInteger(kScheduledCaptchaFailedAttempts);
 
-  *url = brave_adaptive_captcha::BraveAdaptiveCaptchaService::
-      GetScheduledCaptchaUrl(payment_id, captcha_id);
+  *url = GetScheduledCaptchaUrl(payment_id, captcha_id);
   *max_attempts_exceeded =
       failed_attempts >= kScheduledCaptchaMaxFailedAttempts;
 
@@ -172,18 +181,6 @@ void BraveAdaptiveCaptchaService::RegisterProfilePrefs(
   registry->RegisterIntegerPref(kScheduledCaptchaSnoozeCount, 0);
   registry->RegisterIntegerPref(kScheduledCaptchaFailedAttempts, 0);
   registry->RegisterBooleanPref(kScheduledCaptchaPaused, false);
-}
-
-// static
-std::string BraveAdaptiveCaptchaService::GetScheduledCaptchaUrl(
-    const std::string& payment_id,
-    const std::string& captcha_id) {
-  DCHECK(!payment_id.empty());
-  DCHECK(!captcha_id.empty());
-
-  const std::string path = base::StringPrintf(
-      "/v3/captcha/%s/%s", payment_id.c_str(), captcha_id.c_str());
-  return GetServerUrl(environment_, path);
 }
 
 }  // namespace brave_adaptive_captcha

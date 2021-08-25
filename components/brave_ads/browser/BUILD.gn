@@ -1,4 +1,5 @@
 import("//brave/build/config.gni")
+import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 
 static_library("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10639 is resolved
@@ -13,6 +14,7 @@ static_library("browser") {
     "ads_service_impl.cc",
     "ads_service_impl.h",
     "ads_service_observer.h",
+    "ads_tooltips_delegate.h",
     "background_helper.cc",
     "background_helper.h",
     "component_updater/component_info.cc",
@@ -36,6 +38,7 @@ static_library("browser") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/notifications",
     "//brave/common",
+    "//brave/components/brave_adaptive_captcha/buildflags:buildflags",
     "//brave/components/brave_ads/common",
     "//brave/components/brave_ads/resources",
     "//brave/components/brave_component_updater/browser",
@@ -118,6 +121,11 @@ static_library("browser") {
       "//ui/gfx",
       "//ui/views",
     ]
+  }
+
+  if (brave_adaptive_captcha_enabled) {
+    deps +=
+        [ "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha" ]
   }
 }
 

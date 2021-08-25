@@ -30,7 +30,8 @@ using RunDBTransactionCallback =
 using GetBrowsingHistoryCallback =
     std::function<void(const std::vector<std::string>&)>;
 
-using GetScheduledCaptchaCallback = std::function<void(const std::string&)>;
+using GetScheduledCaptchaCallback =
+    base::OnceCallback<void(const std::string&)>;
 
 class ADS_EXPORT AdsClient {
  public:

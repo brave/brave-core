@@ -9,17 +9,15 @@
 #include <memory>
 #include <string>
 
-#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_delegate.h"
-#include "brave/components/brave_adaptive_captcha/environment.h"
 #include "brave/components/brave_adaptive_captcha/get_adaptive_captcha_challenge.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 
-namespace content {
-class BrowserContext;
-}  // namespace content
+namespace network {
+class SharedURLLoaderFactory;
+}  // namespace network
 
 class PrefRegistrySimple;
 class PrefService;
@@ -40,7 +38,6 @@ class BraveAdaptiveCaptchaService
       public brave_rewards::RewardsServiceObserver {
  public:
   BraveAdaptiveCaptchaService(
-      content::BrowserContext* context,
       PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       brave_rewards::RewardsService* rewards_service,
@@ -52,11 +49,6 @@ class BraveAdaptiveCaptchaService
       delete;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-
-  // Returns the appropriate url for downloading a scheduled captcha with given
-  // |captcha_id| for the given |payment_id|.
-  static std::string GetScheduledCaptchaUrl(const std::string& payment_id,
-                                            const std::string& captcha_id);
 
   // Retrieves the captcha scheduled for the given |payment_id|, if
   // any. If there is a scheduled captcha that the user must solve in
@@ -81,20 +73,15 @@ class BraveAdaptiveCaptchaService
   // Clears the currently scheduled captcha, if any.
   void ClearScheduledCaptcha();
 
-  Environment environment() const { return environment_; }
-  void set_environment(Environment environment) { environment_ = environment; }
-
+ private:
   // brave_rewards::RewardsServiceObserver:
   void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
                        const ledger::type::Result result) override;
   void OnCompleteReset(const bool success) override;
 
- private:
-  static Environment environment_;
   PrefService* prefs_;
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   std::unique_ptr<BraveAdaptiveCaptchaDelegate> delegate_;
-  api_request_helper::APIRequestHelper api_request_helper_;
   std::unique_ptr<GetAdaptiveCaptchaChallenge> captcha_challenge_;
 };
 

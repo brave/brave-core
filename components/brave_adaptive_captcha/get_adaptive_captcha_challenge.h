@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADAPTIVE_CAPTCHA_GET_ADAPTIVE_CAPTCHA_CHALLENGE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADAPTIVE_CAPTCHA_GET_ADAPTIVE_CAPTCHA_CHALLENGE_H_
 
+#include <memory>
 #include <string>
 
 #include "base/callback.h"
 #include "base/containers/flat_map.h"
-#include "brave/components/brave_adaptive_captcha/environment.h"
 
 // GET /v3/captcha/challenge/{payment_id}
 //
@@ -38,15 +38,14 @@ using OnGetAdaptiveCaptchaChallenge =
 class GetAdaptiveCaptchaChallenge {
  public:
   explicit GetAdaptiveCaptchaChallenge(
-      api_request_helper::APIRequestHelper* api_request_helper);
+      std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper);
   ~GetAdaptiveCaptchaChallenge();
 
-  void Request(Environment environment,
-               const std::string& payment_id,
+  void Request(const std::string& payment_id,
                OnGetAdaptiveCaptchaChallenge callback);
 
  private:
-  std::string GetUrl(Environment environment, const std::string& payment_id);
+  std::string GetUrl(const std::string& payment_id);
 
   bool CheckStatusCode(int status_code);
 
@@ -58,7 +57,7 @@ class GetAdaptiveCaptchaChallenge {
       const std::string& response_body,
       const base::flat_map<std::string, std::string>& response_headers);
 
-  api_request_helper::APIRequestHelper* api_request_helper_;
+  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 };
 
 }  // namespace brave_adaptive_captcha
