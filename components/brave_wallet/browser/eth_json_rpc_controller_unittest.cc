@@ -10,6 +10,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -67,53 +68,86 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
 };
 
 TEST_F(EthJsonRpcControllerUnitTest, SetNetwork) {
-  EthJsonRpcController controller(Network::kRinkeby,
+  EthJsonRpcController controller(brave_wallet::mojom::Network::Mainnet,
                                   shared_url_loader_factory());
-  ASSERT_EQ(controller.GetNetwork(), Network::kRinkeby);
-  ASSERT_EQ(controller.GetNetworkURL().GetOrigin(),
-            "https://rinkeby-infura.brave.com/");
 
-  controller.SetNetwork(Network::kMainnet);
-  ASSERT_EQ(controller.GetNetwork(), Network::kMainnet);
-  ASSERT_EQ(controller.GetNetworkURL().GetOrigin(),
-            "https://mainnet-infura.brave.com/");
+  controller.SetNetwork(brave_wallet::mojom::Network::Mainnet);
+  controller.GetNetwork(
+      base::BindOnce([](brave_wallet::mojom::Network network) {
+        EXPECT_EQ(network, brave_wallet::mojom::Network::Mainnet);
+      }));
+  controller.GetNetworkUrl(base::BindOnce([](const std::string& spec) {
+    EXPECT_EQ(GURL(spec).GetOrigin(), "https://mainnet-infura.brave.com/");
+  }));
 
-  controller.SetNetwork(Network::kRinkeby);
-  ASSERT_EQ(controller.GetNetwork(), Network::kRinkeby);
-  ASSERT_EQ(controller.GetNetworkURL().GetOrigin(),
-            "https://rinkeby-infura.brave.com/");
+  controller.SetNetwork(brave_wallet::mojom::Network::Rinkeby);
+  controller.GetNetwork(
+      base::BindOnce([](brave_wallet::mojom::Network network) {
+        EXPECT_EQ(network, brave_wallet::mojom::Network::Rinkeby);
+      }));
+  controller.GetNetworkUrl(base::BindOnce([](const std::string& spec) {
+    EXPECT_EQ(GURL(spec).GetOrigin(), "https://rinkeby-infura.brave.com/");
+  }));
 
-  controller.SetNetwork(Network::kRopsten);
-  ASSERT_EQ(controller.GetNetwork(), Network::kRopsten);
-  ASSERT_EQ(controller.GetNetworkURL().GetOrigin(),
-            "https://ropsten-infura.brave.com/");
+  controller.SetNetwork(brave_wallet::mojom::Network::Ropsten);
+  controller.GetNetwork(
+      base::BindOnce([](brave_wallet::mojom::Network network) {
+        EXPECT_EQ(network, brave_wallet::mojom::Network::Ropsten);
+      }));
+  controller.GetNetworkUrl(base::BindOnce([](const std::string& spec) {
+    EXPECT_EQ(GURL(spec).GetOrigin(), "https://ropsten-infura.brave.com/");
+  }));
 
-  controller.SetNetwork(Network::kGoerli);
-  ASSERT_EQ(controller.GetNetwork(), Network::kGoerli);
-  ASSERT_EQ(controller.GetNetworkURL().GetOrigin(),
-            "https://goerli-infura.brave.com/");
+  controller.SetNetwork(brave_wallet::mojom::Network::Goerli);
+  controller.GetNetwork(
+      base::BindOnce([](brave_wallet::mojom::Network network) {
+        EXPECT_EQ(network, brave_wallet::mojom::Network::Goerli);
+      }));
+  controller.GetNetworkUrl(base::BindOnce([](const std::string& spec) {
+    EXPECT_EQ(GURL(spec).GetOrigin(), "https://goerli-infura.brave.com/");
+  }));
 
-  controller.SetNetwork(Network::kKovan);
-  ASSERT_EQ(controller.GetNetwork(), Network::kKovan);
-  ASSERT_EQ(controller.GetNetworkURL().GetOrigin(),
-            "https://kovan-infura.brave.com/");
+  controller.SetNetwork(brave_wallet::mojom::Network::Kovan);
+  controller.GetNetwork(
+      base::BindOnce([](brave_wallet::mojom::Network network) {
+        EXPECT_EQ(network, brave_wallet::mojom::Network::Kovan);
+      }));
+  controller.GetNetworkUrl(base::BindOnce([](const std::string& spec) {
+    EXPECT_EQ(GURL(spec).GetOrigin(), "https://kovan-infura.brave.com/");
+  }));
 
-  controller.SetNetwork(Network::kLocalhost);
-  ASSERT_EQ(controller.GetNetwork(), Network::kLocalhost);
-  ASSERT_EQ(controller.GetNetworkURL().GetOrigin(), "http://localhost:8545/");
+  controller.SetNetwork(brave_wallet::mojom::Network::Localhost);
+  controller.GetNetwork(
+      base::BindOnce([](brave_wallet::mojom::Network network) {
+        EXPECT_EQ(network, brave_wallet::mojom::Network::Localhost);
+      }));
+  controller.GetNetworkUrl(base::BindOnce([](const std::string& spec) {
+    EXPECT_EQ(GURL(spec).GetOrigin(), "http://localhost:8545/");
+  }));
+  base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(EthJsonRpcControllerUnitTest, SetCustomNetwork) {
-  EthJsonRpcController controller(Network::kMainnet,
+  EthJsonRpcController controller(brave_wallet::mojom::Network::Mainnet,
                                   shared_url_loader_factory());
-  GURL custom_network("http://tesshared_url_loader_factoryt.com/");
-  controller.SetCustomNetwork(custom_network);
-  ASSERT_EQ(controller.GetNetwork(), Network::kCustom);
-  ASSERT_EQ(controller.GetNetworkURL(), custom_network);
+  std::string custom_network("http://tesshared_url_loader_factoryt.com/");
+  controller.SetCustomNetwork(GURL(custom_network));
+
+  controller.GetNetwork(
+      base::BindOnce([](brave_wallet::mojom::Network network) {
+        EXPECT_EQ(network, brave_wallet::mojom::Network::Custom);
+      }));
+  controller.GetNetworkUrl(base::BindOnce(
+      [](std::string custom_network, const std::string& spec) {
+        EXPECT_EQ(GURL(spec).GetOrigin(), custom_network);
+      },
+      custom_network));
+
+  base::RunLoop().RunUntilIdle();
 }
 
 TEST_F(EthJsonRpcControllerUnitTest, ResolveENSDomain) {
-  EthJsonRpcController controller(Network::kLocalhost,
+  EthJsonRpcController controller(brave_wallet::mojom::Network::Localhost,
                                   shared_url_loader_factory());
   SetRegistrarResponse();
   base::RunLoop run;

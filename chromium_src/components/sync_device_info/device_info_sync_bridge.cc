@@ -3,15 +3,22 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include "components/sync_device_info/device_info_sync_bridge.h"
+
 #include "brave/components/sync_device_info/brave_device_info.h"
 
 #define BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS \
   specifics->mutable_brave_fields()->set_is_self_delete_supported(true);
 
+#define RefreshLocalDeviceInfoIfNeeded \
+  RefreshLocalDeviceInfoIfNeeded_ChromiumImpl
+
 #include "../../../../components/sync_device_info/device_info_sync_bridge.cc"
 
+#undef RefreshLocalDeviceInfoIfNeeded
 #undef BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS
 
+#include "base/containers/contains.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 
 namespace syncer {
@@ -87,6 +94,25 @@ DeviceInfoSyncBridge::GetAllBraveDeviceInfo() const {
     list.push_back(BraveSpecificsToModel(*iter->second));
   }
   return list;
+}
+
+void DeviceInfoSyncBridge::RefreshLocalDeviceInfoIfNeeded() {
+  const DeviceInfo* current_info =
+      local_device_info_provider_->GetLocalDeviceInfo();
+  if (!current_info) {
+    return;
+  }
+
+  if (!base::Contains(all_data_, current_info->guid())) {
+    // After initiating leave the sync chain `DeleteSpecifics` cleans
+    // `all_data_` map.
+    // It is possible that user close sync settings page or change the data type
+    // before the confirmation `DeviceInfoSyncBridge::OnDeviceInfoDeleted()`
+    // comes - this leaded to access to the invalid iterator and crash.
+    return;
+  }
+
+  RefreshLocalDeviceInfoIfNeeded_ChromiumImpl();
 }
 
 }  // namespace syncer

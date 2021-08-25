@@ -5,28 +5,16 @@
 
 import { WalletAPIHandler } from '../constants/types'
 
-export interface CreateWalletReturnInfo {
-  mnemonic: string
-}
-
-export interface GetRecoveryWordsReturnInfo {
-  mnemonic: string
-}
-
-export interface RestoreWalletReturnInfo {
-  isValidMnemonic: boolean
-}
-
-export interface AddAccountReturnInfo {
-  success: boolean
-}
-
 export default class APIProxy {
   static getInstance: () => APIProxy
-  getWalletHandler: () => WalletAPIHandler
-  createWallet: (password: string) => Promise<CreateWalletReturnInfo>
-  restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
-  getRecoveryWords: () => Promise<GetRecoveryWordsReturnInfo>
-  addAccountToWallet: () => Promise<AddAccountReturnInfo>
-  notifyWalletBackupComplete: () => Promise<void>
+  walletHandler: WalletAPIHandler
+  ethJsonRpcController: EthJsonRpcController
+  swapController: SwapController
+  assetRatioController: AssetRatioController
+  ercTokenRegistry: ERCTokenRegistry
+  keyringController: KeyringController
+  ethTxController: EthTxController
+  addEthJsonRpcControllerObserver: (store: any) => void
+  addKeyringControllerObserver: (store: any) => void
+  makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string) => any
 }

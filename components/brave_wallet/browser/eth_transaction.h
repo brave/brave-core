@@ -12,6 +12,7 @@
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
@@ -25,29 +26,13 @@ FORWARD_DECLARE_TEST(Eip2930TransactionUnitTest, GetSignedTransaction);
 
 class EthTransaction {
  public:
-  struct TxData {
-    TxData();
-    TxData(const uint256_t& nonce_in,
-           const uint256_t& gas_price_in,
-           const uint256_t& gas_limit_in,
-           const EthAddress& to_in,
-           const uint256_t& value_in,
-           const std::vector<uint8_t>& data_in);
-    ~TxData();
-
-    uint256_t nonce;
-    uint256_t gas_price;
-    uint256_t gas_limit;
-    EthAddress to;
-    uint256_t value;
-    std::vector<uint8_t> data;
-  };
   EthTransaction();
-  explicit EthTransaction(const TxData&);
   EthTransaction(const EthTransaction&);
   virtual ~EthTransaction();
   bool operator==(const EthTransaction&) const;
 
+  static absl::optional<EthTransaction> FromTxData(
+      const mojom::TxDataPtr& tx_data);
   static absl::optional<EthTransaction> FromValue(const base::Value& value);
 
   uint8_t type() const { return type_; }
@@ -58,7 +43,7 @@ class EthTransaction {
   EthAddress to() const { return to_; }
   uint256_t value() const { return value_; }
   std::vector<uint8_t> data() const { return data_; }
-  uint8_t v() const { return v_; }
+  uint256_t v() const { return v_; }
   std::vector<uint8_t> r() const { return r_; }
   std::vector<uint8_t> s() const { return s_; }
 
@@ -66,10 +51,12 @@ class EthTransaction {
   void set_gas_price(uint256_t gas_price) { gas_price_ = gas_price; }
   void set_gas_limit(uint256_t gas_limit) { gas_limit_ = gas_limit; }
 
+  bool IsToCreationAddress() const { return to_.IsEmpty(); }
+
   // return
   // keccack(rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0])
   // Support EIP-155 chain id
-  virtual std::vector<uint8_t> GetMessageToSign(uint64_t chain_id = 0) const;
+  virtual std::vector<uint8_t> GetMessageToSign(uint256_t chain_id) const;
 
   // return rlp([nonce, gasPrice, gasLimit, to, value, data, v, r, s])
   virtual std::string GetSignedTransaction() const;
@@ -78,11 +65,19 @@ class EthTransaction {
   // Support EIP-155 chain id
   virtual void ProcessSignature(const std::vector<uint8_t> signature,
                                 int recid,
-                                uint64_t chain_id = 0);
+                                uint256_t chain_id);
 
   virtual bool IsSigned() const;
 
   virtual base::Value ToValue() const;
+
+  // Minimum gas required (data fee + tx fee + contract creation fee)
+  uint256_t GetBaseFee() const;
+  // Gas paid for the data.
+  virtual uint256_t GetDataFee() const;
+  // The up front amount that an account must have for this transaction to be
+  // valid
+  virtual uint256_t GetUpfrontCost(uint256_t block_base_fee = 0) const;
 
  protected:
   // type 0 would be LegacyTransaction
@@ -95,9 +90,17 @@ class EthTransaction {
   uint256_t value_;
   std::vector<uint8_t> data_;
 
-  uint8_t v_ = 0;
+  uint256_t v_ = 0;
   std::vector<uint8_t> r_;
   std::vector<uint8_t> s_;
+
+ protected:
+  EthTransaction(uint256_t nonce,
+                 uint256_t gas_price,
+                 uint256_t gas_limit,
+                 const EthAddress& to,
+                 uint256_t value,
+                 const std::vector<uint8_t>& data);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthTransactionUnitTest, GetSignedTransaction);

@@ -4,8 +4,24 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createAction } from 'redux-act'
-import { InitializedPayloadType, UnlockWalletPayloadType, SetInitialAccountNamesPayloadType, AddNewAccountNamePayloadType } from '../constants/action_types'
-import { AppObjectType, NetworkOptionsType, WalletAccountType } from '../../constants/types'
+import {
+  InitializedPayloadType,
+  UnlockWalletPayloadType,
+  ChainChangedEventPayloadType,
+  SetInitialVisibleTokensPayloadType
+} from '../constants/action_types'
+import {
+  AppObjectType,
+  WalletAccountType,
+  Network,
+  GetAllTokensReturnInfo,
+  TokenInfo,
+  GetETHBalancesPriceReturnInfo,
+  GetERC20TokenBalanceAndPriceReturnInfo,
+  PortfolioTokenHistoryAndInfo,
+  AssetPriceTimeframe,
+  SendTransactionParam
+} from '../../constants/types'
 
 export const initialize = createAction('initialize')
 export const initialized = createAction<InitializedPayloadType>('initialized')
@@ -14,7 +30,25 @@ export const unlockWallet = createAction<UnlockWalletPayloadType>('unlockWallet'
 export const addFavoriteApp = createAction<AppObjectType>('addFavoriteApp')
 export const removeFavoriteApp = createAction<AppObjectType>('removeFavoriteApp')
 export const hasIncorrectPassword = createAction<boolean>('hasIncorrectPassword')
-export const setInitialAccountNames = createAction<SetInitialAccountNamesPayloadType>('setInitialAccountNames')
-export const addNewAccountName = createAction<AddNewAccountNamePayloadType>('addNewAccountName')
+export const setInitialVisibleTokens = createAction<SetInitialVisibleTokensPayloadType>('setInitialVisibleTokens')
+export const updateVisibleTokens = createAction<string[]>('updateVisibleTokens')
+export const setVisibleTokens = createAction<string[]>('setVisibleTokens')
+export const setVisibleTokensInfo = createAction<TokenInfo[]>('setVisibleTokensInfo')
 export const selectAccount = createAction<WalletAccountType>('selectAccount')
-export const selectNetwork = createAction<NetworkOptionsType>('selectNetwork')
+export const selectNetwork = createAction<Network>('selectNetwork')
+export const setNetwork = createAction<Network>('setNetwork')
+export const chainChangedEvent = createAction<ChainChangedEventPayloadType>('chainChangedEvent')
+export const keyringCreated = createAction('keyringCreated')
+export const keyringRestored = createAction('keyringRestored')
+export const locked = createAction('locked')
+export const unlocked = createAction('unlocked')
+export const backedUp = createAction('backedUp')
+export const accountsChanged = createAction('accountsChanged')
+export const setAllTokensList = createAction<GetAllTokensReturnInfo>('setAllTokensList')
+export const getAllTokensList = createAction('getAllTokensList')
+export const ethBalancesUpdated = createAction<GetETHBalancesPriceReturnInfo>('ethBalancesUpdated')
+export const tokenBalancesUpdated = createAction<GetERC20TokenBalanceAndPriceReturnInfo>('tokenBalancesUpdated')
+export const portfolioPriceHistoryUpdated = createAction<PortfolioTokenHistoryAndInfo[][]>('portfolioPriceHistoryUpdated')
+export const selectPortfolioTimeline = createAction<AssetPriceTimeframe>('selectPortfolioTimeline')
+export const portfolioTimelineUpdated = createAction<AssetPriceTimeframe>('portfolioTimelineUpdated')
+export const sendTransaction = createAction<SendTransactionParam>('sendTransaction')

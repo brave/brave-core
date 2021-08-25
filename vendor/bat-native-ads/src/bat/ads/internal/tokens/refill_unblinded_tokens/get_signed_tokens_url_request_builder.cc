@@ -23,10 +23,10 @@ GetSignedTokensUrlRequestBuilder::~GetSignedTokensUrlRequestBuilder() = default;
 
 // GET /v1/confirmation/token/{payment_id}?nonce={nonce}
 
-UrlRequestPtr GetSignedTokensUrlRequestBuilder::Build() {
-  UrlRequestPtr url_request = UrlRequest::New();
+mojom::UrlRequestPtr GetSignedTokensUrlRequestBuilder::Build() {
+  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
   url_request->url = BuildUrl();
-  url_request->method = UrlRequestMethod::GET;
+  url_request->method = mojom::UrlRequestMethod::kGet;
 
   return url_request;
 }

@@ -12,10 +12,21 @@ namespace brave_wallet {
 
 ERCTokenRegistry::ERCTokenRegistry() = default;
 
-ERCTokenRegistry::~ERCTokenRegistry() = default;
+ERCTokenRegistry::~ERCTokenRegistry() {}
 
 ERCTokenRegistry* ERCTokenRegistry::GetInstance() {
   return base::Singleton<ERCTokenRegistry>::get();
+}
+
+mojo::PendingRemote<mojom::ERCTokenRegistry> ERCTokenRegistry::MakeRemote() {
+  mojo::PendingRemote<mojom::ERCTokenRegistry> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+
+void ERCTokenRegistry::Bind(
+    mojo::PendingReceiver<mojom::ERCTokenRegistry> receiver) {
+  receivers_.Add(this, std::move(receiver));
 }
 
 void ERCTokenRegistry::UpdateTokenList(
@@ -23,34 +34,36 @@ void ERCTokenRegistry::UpdateTokenList(
   erc_tokens_ = std::move(erc_tokens);
 }
 
-mojom::ERCTokenPtr ERCTokenRegistry::GetTokenByContract(
-    const std::string& contract) {
+void ERCTokenRegistry::GetTokenByContract(const std::string& contract,
+                                          GetTokenByContractCallback callback) {
   auto token_it =
       std::find_if(erc_tokens_.begin(), erc_tokens_.end(),
                    [&](const mojom::ERCTokenPtr& current_token) {
                      return current_token->contract_address == contract;
                    });
-
-  if (token_it == erc_tokens_.end())
-    return nullptr;
-
-  return token_it->Clone();
+  if (token_it == erc_tokens_.end()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+  std::move(callback).Run(token_it->Clone());
 }
 
-mojom::ERCTokenPtr ERCTokenRegistry::GetTokenBySymbol(
-    const std::string& symbol) {
+void ERCTokenRegistry::GetTokenBySymbol(const std::string& symbol,
+                                        GetTokenBySymbolCallback callback) {
   auto token_it = std::find_if(erc_tokens_.begin(), erc_tokens_.end(),
                                [&](const mojom::ERCTokenPtr& current_token) {
                                  return current_token->symbol == symbol;
                                });
 
-  if (token_it == erc_tokens_.end())
-    return nullptr;
+  if (token_it == erc_tokens_.end()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
 
-  return token_it->Clone();
+  std::move(callback).Run(token_it->Clone());
 }
 
-std::vector<mojom::ERCTokenPtr> ERCTokenRegistry::GetAllTokens() {
+void ERCTokenRegistry::GetAllTokens(GetAllTokensCallback callback) {
   std::vector<brave_wallet::mojom::ERCTokenPtr> erc_tokens_copy(
       erc_tokens_.size());
   std::transform(erc_tokens_.begin(), erc_tokens_.end(),
@@ -59,7 +72,7 @@ std::vector<mojom::ERCTokenPtr> ERCTokenRegistry::GetAllTokens() {
                      -> brave_wallet::mojom::ERCTokenPtr {
                    return current_token.Clone();
                  });
-  return erc_tokens_copy;
+  std::move(callback).Run(std::move(erc_tokens_copy));
 }
 
 }  // namespace brave_wallet

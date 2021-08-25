@@ -1,6 +1,5 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
@@ -15,13 +14,14 @@ json_features("api_features") {
     "//chrome/common/extensions/api/_api_features.json",
     "//extensions/common/api/_api_features.json",
     "_api_features.json",
+    "_brave_talk_api_features.json",
   ]
 
   if (ethereum_remote_client_enabled) {
     sources += [ "_brave_wallet_api_features.json" ]
   }
 
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     sources += [ "_ipfs_api_features.json" ]
   }
 
@@ -39,10 +39,6 @@ json_features("api_features") {
 
   if (crypto_dot_com_enabled) {
     sources += [ "_crypto_dot_com_features.json" ]
-  }
-
-  if (brave_together_enabled) {
-    sources += [ "_brave_together_api_features.json" ]
   }
 }
 
@@ -75,13 +71,14 @@ json_features("behavior_features") {
 brave_extensions_api_schema_sources = [
   "brave_rewards.json",
   "brave_shields.json",
+  "brave_talk.json",
   "brave_theme.json",
   "brave_today.json",
   "greaselion.json",
   "rewards_notifications.json",
 ]
 
-if (ipfs_enabled) {
+if (enable_ipfs) {
   brave_extensions_api_schema_sources += [ "ipfs.json" ]
 }
 
@@ -103,10 +100,6 @@ if (enable_ftx) {
 
 if (crypto_dot_com_enabled) {
   brave_extensions_api_schema_sources += [ "crypto_dot_com.json" ]
-}
-
-if (brave_together_enabled) {
-  brave_extensions_api_schema_sources += [ "brave_together.json" ]
 }
 
 brave_extensions_api_uncompiled_sources = []

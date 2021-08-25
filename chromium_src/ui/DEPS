@@ -8,5 +8,6 @@ include_rules = [
   "+../../../../../ui/views/controls",
   "+../../../../../ui/views/window",
   "+../../../../../../ui/views/controls/button",
+  "+cc/paint/paint_flags.h",
   "+ui",
 ]

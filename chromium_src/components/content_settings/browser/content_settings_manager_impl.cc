@@ -11,7 +11,6 @@ namespace content_settings {
 
 void ContentSettingsManagerImpl::AllowEphemeralStorageAccess(
     int32_t render_frame_id,
-    StorageType storage_type,
     const url::Origin& origin,
     const GURL& site_for_cookies,
     const url::Origin& top_frame_origin,

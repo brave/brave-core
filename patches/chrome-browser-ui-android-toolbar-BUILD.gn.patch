@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/BUILD.gn b/chrome/browser/ui/android/toolbar/BUILD.gn
-index 133f5c5c4b00c8610b110f5e575a794311ab8720..db35cded0d81624a5adc2b7499520f21fcefd0e7 100644
+index 8e6034ff20a453d31efae3ee24eab91129651ce4..26b97d098294ca0933807851c20311d5c9e8bf71 100644
 --- a/chrome/browser/ui/android/toolbar/BUILD.gn
 +++ b/chrome/browser/ui/android/toolbar/BUILD.gn
-@@ -66,6 +66,7 @@ android_library("java") {
+@@ -95,6 +95,7 @@ android_library("java") {
      "java/src/org/chromium/chrome/browser/toolbar/top/TopToolbarSceneLayer.java",
      "java/src/org/chromium/chrome/browser/toolbar/top/ViewShiftingActionBarDelegate.java",
    ]

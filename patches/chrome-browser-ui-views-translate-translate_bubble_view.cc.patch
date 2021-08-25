@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/translate/translate_bubble_view.cc b/chrome/browser/ui/views/translate/translate_bubble_view.cc
-index 0093e1f88f03fb9ea51fb0bf3dafe084c1118485..1d00980c10275a8dbbbddb91bb021f1b890f9b1a 100644
+index 5afc76b3064ecea23db9c9863128d8a04753e2d1..4a20f6c66ed23500b9fe558f3064fdbfe250f641 100644
 --- a/chrome/browser/ui/views/translate/translate_bubble_view.cc
 +++ b/chrome/browser/ui/views/translate/translate_bubble_view.cc
-@@ -183,7 +183,7 @@ views::Widget* TranslateBubbleView::ShowBubble(
+@@ -184,7 +184,7 @@ views::Widget* TranslateBubbleView::ShowBubble(
            source_language, target_language));
    std::unique_ptr<TranslateBubbleModel> model(
        new TranslateBubbleModelImpl(step, std::move(ui_delegate)));

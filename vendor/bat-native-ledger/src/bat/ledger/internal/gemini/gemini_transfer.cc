@@ -52,12 +52,70 @@ void GeminiTransfer::OnCreateTransaction(const type::Result result,
     return;
   }
 
+  if (result == type::Result::RETRY) {
+    StartTransactionStatusTimer(id, 0, callback);
+    return;
+  }
+
   if (result != type::Result::LEDGER_OK) {
     callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
   callback(type::Result::LEDGER_OK, id);
+}
+
+void GeminiTransfer::StartTransactionStatusTimer(
+    const std::string& id,
+    const int attempts,
+    client::TransactionCallback callback) {
+  size_t new_attempts = attempts + 1;
+  size_t mins = 3 * new_attempts;
+  base::TimeDelta delay = base::TimeDelta::FromMinutes(mins);
+  BLOG(1, "Will fetch transaction status after " << mins << " minutes");
+  retry_timer_[id].Start(
+      FROM_HERE, delay,
+      base::BindOnce(&GeminiTransfer::FetchTransactionStatus,
+                     base::Unretained(this), id, new_attempts, callback));
+}
+
+void GeminiTransfer::FetchTransactionStatus(
+    const std::string& id,
+    const int attempts,
+    client::TransactionCallback callback) {
+  BLOG(1, "Fetching transaction status " << attempts << " time");
+  auto wallet = ledger_->gemini()->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(type::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  auto url_callback = std::bind(&GeminiTransfer::OnTransactionStatus, this, _1,
+                                id, attempts, callback);
+  gemini_server_->get_transaction()->Request(wallet->token, id, url_callback);
+}
+
+void GeminiTransfer::OnTransactionStatus(const type::Result result,
+                                         const std::string& id,
+                                         const int attempts,
+                                         client::TransactionCallback callback) {
+  retry_timer_.erase(id);
+  BLOG(0, "Number of active retry timers: " << retry_timer_.size());
+  if (result == type::Result::LEDGER_OK) {
+    callback(result, id);
+    return;
+  }
+
+  if (result == type::Result::LEDGER_ERROR || attempts > 3) {
+    callback(type::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  if (result == type::Result::RETRY) {
+    StartTransactionStatusTimer(id, attempts, callback);
+    return;
+  }
 }
 
 }  // namespace gemini

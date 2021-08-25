@@ -49,47 +49,7 @@ std::string VectorToCommaSeparatedList(const std::vector<std::string>& assets) {
   return ss.str();
 }
 
-}  // namespace
-
-namespace brave_wallet {
-
-GURL AssetRatioController::base_url_for_test_;
-
-AssetRatioController::AssetRatioController(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
-      weak_ptr_factory_(this) {}
-
-AssetRatioController::~AssetRatioController() {}
-
-mojo::PendingRemote<mojom::AssetRatioController>
-AssetRatioController::MakeRemote() {
-  mojo::PendingRemote<mojom::AssetRatioController> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
-void AssetRatioController::SetBaseURLForTest(const GURL& base_url_for_test) {
-  base_url_for_test_ = base_url_for_test;
-}
-
-// static
-GURL AssetRatioController::GetPriceURL(
-    const std::vector<std::string>& from_assets,
-    const std::vector<std::string>& to_assets) {
-  std::string from = VectorToCommaSeparatedList(from_assets);
-  std::string to = VectorToCommaSeparatedList(to_assets);
-  std::string spec = base::StringPrintf(
-      "%sv2/relative/provider/coingecko/%s/%s",
-      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
-                                    : base_url_for_test_.spec().c_str(),
-      from.c_str(), to.c_str());
-  return GURL(spec);
-}
-
-// static
-GURL AssetRatioController::GetPriceHistoryURL(
-    const std::string& asset,
+std::string TimeFrameKeyToString(
     brave_wallet::mojom::AssetPriceTimeframe timeframe) {
   std::string timeframe_key;
   switch (timeframe) {
@@ -115,22 +75,76 @@ GURL AssetRatioController::GetPriceHistoryURL(
       timeframe_key = "all";
       break;
   }
-  std::string spec = base::StringPrintf("%sv2/history/coingecko/%s/usd/%s",
-                                        base_url_for_test_.is_empty()
-                                            ? kAssetRatioBaseURL
-                                            : base_url_for_test_.spec().c_str(),
-                                        asset.c_str(), timeframe_key.c_str());
+  return timeframe_key;
+}
+
+}  // namespace
+
+namespace brave_wallet {
+
+GURL AssetRatioController::base_url_for_test_;
+
+AssetRatioController::AssetRatioController(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+      weak_ptr_factory_(this) {}
+
+AssetRatioController::~AssetRatioController() {}
+
+mojo::PendingRemote<mojom::AssetRatioController>
+AssetRatioController::MakeRemote() {
+  mojo::PendingRemote<mojom::AssetRatioController> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+
+void AssetRatioController::Bind(
+    mojo::PendingReceiver<mojom::AssetRatioController> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
+void AssetRatioController::SetBaseURLForTest(const GURL& base_url_for_test) {
+  base_url_for_test_ = base_url_for_test;
+}
+
+// static
+GURL AssetRatioController::GetPriceURL(
+    const std::vector<std::string>& from_assets,
+    const std::vector<std::string>& to_assets,
+    brave_wallet::mojom::AssetPriceTimeframe timeframe) {
+  std::string from = VectorToCommaSeparatedList(from_assets);
+  std::string to = VectorToCommaSeparatedList(to_assets);
+  std::string spec = base::StringPrintf(
+      "%sv2/relative/provider/coingecko/%s/%s/%s",
+      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
+                                    : base_url_for_test_.spec().c_str(),
+      from.c_str(), to.c_str(), TimeFrameKeyToString(timeframe).c_str());
   return GURL(spec);
 }
 
-void AssetRatioController::GetPrice(const std::vector<std::string>& from_assets,
-                                    const std::vector<std::string>& to_assets,
-                                    GetPriceCallback callback) {
+// static
+GURL AssetRatioController::GetPriceHistoryURL(
+    const std::string& asset,
+    brave_wallet::mojom::AssetPriceTimeframe timeframe) {
+  std::string spec = base::StringPrintf(
+      "%sv2/history/coingecko/%s/usd/%s",
+      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
+                                    : base_url_for_test_.spec().c_str(),
+      asset.c_str(), TimeFrameKeyToString(timeframe).c_str());
+  return GURL(spec);
+}
+
+void AssetRatioController::GetPrice(
+    const std::vector<std::string>& from_assets,
+    const std::vector<std::string>& to_assets,
+    brave_wallet::mojom::AssetPriceTimeframe timeframe,
+    GetPriceCallback callback) {
   auto internal_callback = base::BindOnce(
       &AssetRatioController::OnGetPrice, weak_ptr_factory_.GetWeakPtr(),
       from_assets, to_assets, std::move(callback));
-  api_request_helper_.Request("GET", GetPriceURL(from_assets, to_assets), "",
-                              "", true, std::move(internal_callback));
+  api_request_helper_.Request("GET",
+                              GetPriceURL(from_assets, to_assets, timeframe),
+                              "", "", true, std::move(internal_callback));
 }
 
 void AssetRatioController::OnGetPrice(
@@ -139,7 +153,7 @@ void AssetRatioController::OnGetPrice(
     GetPriceCallback callback,
     const int status,
     const std::string& body,
-    const std::map<std::string, std::string>& headers) {
+    const base::flat_map<std::string, std::string>& headers) {
   std::vector<brave_wallet::mojom::AssetPricePtr> prices;
   if (status < 200 || status > 299) {
     std::move(callback).Run(false, std::move(prices));
@@ -168,7 +182,7 @@ void AssetRatioController::OnGetPriceHistory(
     GetPriceHistoryCallback callback,
     const int status,
     const std::string& body,
-    const std::map<std::string, std::string>& headers) {
+    const base::flat_map<std::string, std::string>& headers) {
   std::vector<brave_wallet::mojom::AssetTimePricePtr> values;
   if (status < 200 || status > 299) {
     std::move(callback).Run(false, std::move(values));

@@ -72,6 +72,7 @@ const char kRegionalAdBlockComponentTest64PublicKey[] =
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
+using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using content::BrowserThread;
 
 void AdBlockServiceTest::SetUpOnMainThread() {
@@ -1136,6 +1137,90 @@ IN_PROC_BROWSER_TEST_F(CollapseBlockedElementsFlagDisabledTest,
   EXPECT_EQ(true, EvalJs(contents,
                          "let i = document.getElementsByClassName('adFrame');"
                          "i[0].clientHeight !== 0"));
+}
+
+class Default1pBlockingFlagDisabledTest : public AdBlockServiceTest {
+ public:
+  Default1pBlockingFlagDisabledTest() {
+    feature_list_.InitAndDisableFeature(kBraveAdblockDefault1pBlocking);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// Load a page with an image from a first party and a third party, which both
+// match the same filter in the default engine. Ensure the third-party one is
+// blocked while the first-party one is allowed.
+IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Default1pBlocking) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  UpdateAdBlockInstanceWithRules("^ad_banner.png");
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(1, 0, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(1, 1, 0, 0);"
+                         "addImage('https://thirdparty.com/ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+// Load a page with an image from a first party and a third party, which both
+// match the same filter in the default engine. Enable aggressive mode, and
+// ensure that both are blocked.
+IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest,
+                       Aggressive1pBlocking) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  brave_shields::SetCosmeticFilteringControlType(
+      content_settings(), brave_shields::ControlType::BLOCK, GURL());
+  UpdateAdBlockInstanceWithRules("^ad_banner.png");
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(0, 1, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(0, 2, 0, 0);"
+                         "addImage('https://thirdparty.com/ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+}
+
+// Load a page with an image from a first party and a third party, which both
+// match the same filter in the custom filters engine. Ensure that both are
+// blocked.
+IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Custom1pBlocking) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+                  ->UpdateCustomFilters("^ad_banner.png"));
+  WaitForAdBlockServiceThreads();
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(0, 1, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(0, 2, 0, 0);"
+                         "addImage('https://thirdparty.com/ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
 // Load a page with a script which uses a redirect data URL.

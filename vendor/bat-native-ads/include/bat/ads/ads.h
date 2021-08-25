@@ -19,15 +19,14 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/promoted_content_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/result.h"
 #include "bat/ads/statement_info.h"
 
 namespace ads {
 
-using InitializeCallback = std::function<void(const Result)>;
-using ShutdownCallback = std::function<void(const Result)>;
+using InitializeCallback = std::function<void(const bool)>;
+using ShutdownCallback = std::function<void(const bool)>;
 
-using RemoveAllHistoryCallback = std::function<void(const Result)>;
+using RemoveAllHistoryCallback = std::function<void(const bool)>;
 
 using GetInlineContentAdCallback = std::function<
     void(const bool, const std::string&, const InlineContentAdInfo&)>;
@@ -35,15 +34,18 @@ using GetInlineContentAdCallback = std::function<
 using GetAccountStatementCallback =
     std::function<void(const bool, const StatementInfo&)>;
 
+using GetAdDiagnosticsCallback =
+    std::function<void(const bool, const std::string&)>;
+
 // |g_environment| indicates that URL requests should use production, staging or
 // development servers but can be overridden via command-line arguments
-extern Environment g_environment;
+extern mojom::Environment g_environment;
 
 // |g_sys_info| contains the hardware |manufacturer| and |model|
-extern SysInfo g_sys_info;
+extern mojom::SysInfo g_sys_info;
 
 // |g_build_channel| indicates the build channel
-extern BuildChannel g_build_channel;
+extern mojom::BuildChannel g_build_channel;
 
 // |g_is_debug| indicates that the next catalog download should be reduced from
 // ~1 hour to ~25 seconds. This value should be set to false on production
@@ -69,13 +71,13 @@ class ADS_EXPORT Ads {
   static Ads* CreateInstance(AdsClient* ads_client);
 
   // Should be called to initialize ads when launching the browser or when ads
-  // is enabled by a user. The callback takes one argument - |Result| should be
-  // set to |SUCCESS| if successful otherwise should be set to |FAILED|
+  // is enabled by a user. The callback takes one argument - |bool| should be
+  // set to |true| if successful otherwise should be set to |false|
   virtual void Initialize(InitializeCallback callback) = 0;
 
   // Should be called to shutdown ads when a user disables ads. The callback
-  // takes one argument - |Result| should be set to |SUCCESS| if successful
-  // otherwise should be set to |FAILED|
+  // takes one argument - |bool| should be set to |true| if successful
+  // otherwise should be set to |false|
   virtual void Shutdown(ShutdownCallback callback) = 0;
 
   // Should be called when the user changes the locale of their operating
@@ -162,18 +164,19 @@ class ADS_EXPORT Ads {
   // or an ad notification times out
   virtual void OnAdNotificationEvent(
       const std::string& uuid,
-      const AdNotificationEventType event_type) = 0;
+      const mojom::AdNotificationEventType event_type) = 0;
 
   // Should be called when a user views or clicks a new tab page ad
-  virtual void OnNewTabPageAdEvent(const std::string& uuid,
-                                   const std::string& creative_instance_id,
-                                   const NewTabPageAdEventType event_type) = 0;
+  virtual void OnNewTabPageAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const mojom::NewTabPageAdEventType event_type) = 0;
 
   // Should be called when a user views or clicks a promoted content ad
   virtual void OnPromotedContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const PromotedContentAdEventType event_type) = 0;
+      const mojom::PromotedContentAdEventType event_type) = 0;
 
   // Should be called to get an eligible inline content ad for the specified
   // size
@@ -184,15 +187,14 @@ class ADS_EXPORT Ads {
   virtual void OnInlineContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const InlineContentAdEventType event_type) = 0;
+      const mojom::InlineContentAdEventType event_type) = 0;
 
   // Purge orphaned ad events for the specified |ad_type|
-  virtual void PurgeOrphanedAdEventsForType(
-      const mojom::BraveAdsAdType ad_type) = 0;
+  virtual void PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) = 0;
 
   // Should be called to remove all cached history. The callback takes one
-  // argument - |Result| should be set to |SUCCESS| if successful otherwise
-  // should be set to |FAILED|
+  // argument - |bool| should be set to |true| if successful otherwise should be
+  // set to |false|
   virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
 
   // Should be called to reconcile ad rewards with the server, i.e. after an
@@ -212,6 +214,9 @@ class ADS_EXPORT Ads {
   // this month, earnings this month, earnings last month, cleared transactions
   // and uncleared transactions
   virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;
+
+  // Should be called to get ad diagnostics for rewards internals page.
+  virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;
 
   // Should be called to indicate interest in the specified ad. This is a
   // toggle, so calling it again returns the setting to the neutral state

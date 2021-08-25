@@ -3,25 +3,28 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { AppObjectType } from '../../constants/types'
+import {
+  AppObjectType,
+  AccountInfo
+} from '../../constants/types'
 
 export type InitializedPayloadType = {
   isWalletCreated: boolean
   isWalletLocked: boolean
   favoriteApps: AppObjectType[]
-  accounts: string[]
   isWalletBackedUp: boolean
-  walletAccountNames: string[]
+  visibleTokens: string[]
+  accountInfos: AccountInfo[]
 }
 
 export type UnlockWalletPayloadType = {
   password: string
 }
 
-export type SetInitialAccountNamesPayloadType = {
-  accountNames: string[]
+export type SetInitialVisibleTokensPayloadType = {
+  visibleAssets: string[]
 }
 
-export type AddNewAccountNamePayloadType = {
-  accountName: string
+export type ChainChangedEventPayloadType = {
+  chainId: string
 }

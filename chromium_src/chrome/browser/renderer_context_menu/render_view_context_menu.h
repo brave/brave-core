@@ -42,7 +42,7 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
  private:
   // RenderViewContextMenuBase:
   void InitMenu() override;
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   void SeIpfsIconAt(int index);
   void BuildIPFSMenu();
   void ExecuteIPFSCommand(int id, int event_flags);

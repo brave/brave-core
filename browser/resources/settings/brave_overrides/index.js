@@ -9,6 +9,9 @@
 // where it is not consistant due to "network" responses) and
 // optimized (rollup controls the order in which modules are executed).
 
+import './config.js'
+import { ContentSettingsTypes } from '../site_settings/constants.js'
+ContentSettingsTypes.ETHEREUM = 'ethereum'
 import './about_page.js'
 import './appearance_page.js'
 import './basic_page.js'
@@ -23,7 +26,9 @@ import './payments_section.js'
 import './people_page.js'
 import './personalization_options.js'
 import './printing_page.js'
+import './privacy_page.js'
 import './safety_check_passwords_child.js'
+import './search_engines_section.js'
 import './security_page.js'
 import './settings_menu.js'
 import './settings_section.js'

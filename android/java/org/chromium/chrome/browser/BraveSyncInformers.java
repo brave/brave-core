@@ -19,7 +19,7 @@ import org.chromium.chrome.browser.infobar.InfoBarIdentifier;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.BraveSyncScreensPreference;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
-import org.chromium.chrome.browser.sync.ProfileSyncService;
+import org.chromium.chrome.browser.sync.SyncService;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.messages.infobar.BraveSimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
@@ -31,10 +31,9 @@ public class BraveSyncInformers {
     }
 
     private static void showSetupV2IfRequired() {
-        if (null == BraveSyncReflectionUtils.getSyncWorker()) return;
-
-        BraveSyncWorker braveSyncWorker = (BraveSyncWorker)BraveSyncReflectionUtils.getSyncWorker();
+        BraveSyncWorker braveSyncWorker = BraveSyncWorker.get();
         boolean wasV1User = braveSyncWorker.getSyncV1WasEnabled();
+
         if (!wasV1User) {
             return;
         }
@@ -44,7 +43,7 @@ public class BraveSyncInformers {
             return;
         }
 
-        boolean isV2User = ProfileSyncService.get() != null && ProfileSyncService.get().isFirstSetupComplete();
+        boolean isV2User = SyncService.get() != null && SyncService.get().isFirstSetupComplete();
         if (isV2User) {
             braveSyncWorker.setSyncV2MigrateNoticeDismissed(true);
             return;
@@ -92,7 +91,6 @@ public class BraveSyncInformers {
                 activity.getString(R.string.brave_sync_v2_migrate_infobar_message) /* message */,
                 activity.getString(R.string.brave_sync_v2_migrate_infobar_command) /* primaryText */,
                 null /* secondaryText */, null /* linkText */, false /* autoExpire */);
-        BraveSyncWorker braveSyncWorker = (BraveSyncWorker)BraveSyncReflectionUtils.getSyncWorker();
-        braveSyncWorker.setSyncV2MigrateNoticeDismissed(true);
+        BraveSyncWorker.get().setSyncV2MigrateNoticeDismissed(true);
     }
 }

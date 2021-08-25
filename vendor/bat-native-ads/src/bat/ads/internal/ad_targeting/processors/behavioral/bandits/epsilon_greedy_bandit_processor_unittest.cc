@@ -48,6 +48,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, NeverProcessed) {
   std::string json =
       AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
   EpsilonGreedyBanditArmMap arms = EpsilonGreedyBanditArms::FromJson(json);
+
   auto iter = arms.find(segment);
   EpsilonGreedyBanditArmInfo arm = iter->second;
   EpsilonGreedyBanditArmInfo expected_arm;
@@ -66,10 +67,10 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   // Act
   // rewards: [0, 0, 0, 0] => value: 0.0
   std::string segment = "travel";
-  processor.Process({segment, AdNotificationEventType::kDismissed});
-  processor.Process({segment, AdNotificationEventType::kDismissed});
-  processor.Process({segment, AdNotificationEventType::kTimedOut});
-  processor.Process({segment, AdNotificationEventType::kDismissed});
+  processor.Process({segment, mojom::AdNotificationEventType::kDismissed});
+  processor.Process({segment, mojom::AdNotificationEventType::kDismissed});
+  processor.Process({segment, mojom::AdNotificationEventType::kTimedOut});
+  processor.Process({segment, mojom::AdNotificationEventType::kDismissed});
 
   // Assert
   std::string json =
@@ -94,10 +95,10 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   // Act
   // rewards: [1, 0, 1, 0] => value: 0.5
   std::string segment = "travel";
-  processor.Process({segment, AdNotificationEventType::kClicked});
-  processor.Process({segment, AdNotificationEventType::kDismissed});
-  processor.Process({segment, AdNotificationEventType::kClicked});
-  processor.Process({segment, AdNotificationEventType::kTimedOut});
+  processor.Process({segment, mojom::AdNotificationEventType::kClicked});
+  processor.Process({segment, mojom::AdNotificationEventType::kDismissed});
+  processor.Process({segment, mojom::AdNotificationEventType::kClicked});
+  processor.Process({segment, mojom::AdNotificationEventType::kTimedOut});
 
   // Assert
   std::string json =
@@ -122,10 +123,10 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   // Act
   // rewards: [1, 1, 1, 1] => value: 1.0
   std::string segment = "travel";
-  processor.Process({segment, AdNotificationEventType::kClicked});
-  processor.Process({segment, AdNotificationEventType::kClicked});
-  processor.Process({segment, AdNotificationEventType::kClicked});
-  processor.Process({segment, AdNotificationEventType::kClicked});
+  processor.Process({segment, mojom::AdNotificationEventType::kClicked});
+  processor.Process({segment, mojom::AdNotificationEventType::kClicked});
+  processor.Process({segment, mojom::AdNotificationEventType::kClicked});
+  processor.Process({segment, mojom::AdNotificationEventType::kClicked});
 
   // Assert
   std::string json =
@@ -148,7 +149,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
 
   // Act
   std::string segment = "foobar";
-  processor.Process({segment, AdNotificationEventType::kTimedOut});
+  processor.Process({segment, mojom::AdNotificationEventType::kTimedOut});
 
   // Assert
   std::string json =
@@ -166,12 +167,13 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
   // Act
   std::string segment = "travel-child";
   std::string parent_segment = "travel";
-  processor.Process({segment, AdNotificationEventType::kTimedOut});
+  processor.Process({segment, mojom::AdNotificationEventType::kTimedOut});
 
   // Assert
   std::string json =
       AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
   EpsilonGreedyBanditArmMap arms = EpsilonGreedyBanditArms::FromJson(json);
+
   auto iter = arms.find(parent_segment);
   EpsilonGreedyBanditArmInfo arm = iter->second;
   EpsilonGreedyBanditArmInfo expected_arm;

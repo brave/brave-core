@@ -1,7 +1,7 @@
 declare_args() {
-  ipfs_enabled = !is_ios
+  enable_ipfs = !is_ios
 }
 
 declare_args() {
-  ipfs_local_node_enabled = ipfs_enabled && !is_ios
+  enable_ipfs_local_node = enable_ipfs && !is_ios
 }

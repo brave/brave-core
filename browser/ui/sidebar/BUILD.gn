@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/sidebar/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 source_set("sidebar") {
   # Set due to //chrome/browser and //chrome/browser/ui circular dependencies.
@@ -31,17 +32,26 @@ source_set("sidebar") {
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//content/public/browser",
+    "//extensions/buildflags",
     "//skia",
     "//url",
   ]
+
+  if (enable_extensions) {
+    deps += [
+      "//chrome/browser/extensions",
+      "//extensions/browser",
+      "//extensions/common",
+    ]
+  }
 
   # included from chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h
   # see check_includes comment above
   deps += [
     "//chrome/browser/cart:mojo_bindings",
+    "//chrome/browser/new_tab_page/modules/drive:mojo_bindings",
+    "//chrome/browser/new_tab_page/modules/task_module:mojo_bindings",
     "//chrome/browser/promo_browser_command:mojo_bindings",
-    "//chrome/browser/search/drive:mojo_bindings",
-    "//chrome/browser/search/task_module:mojo_bindings",
     "//chrome/browser/ui/webui/new_tab_page:mojo_bindings",
     "//chrome/browser/ui/webui/realbox:mojo_bindings",
   ]

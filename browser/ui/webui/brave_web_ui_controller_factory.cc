@@ -11,11 +11,14 @@
 #include "base/memory/ptr_util.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
+#include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
+#include "brave/browser/ui/webui/brave_rewards_page_ui.h"
+#include "brave/browser/ui/webui/brave_tip_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/common/brave_features.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -32,23 +35,22 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #endif
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#include "brave/browser/ui/webui/brave_tip_ui.h"
-#include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
-#include "brave/browser/ui/webui/brave_rewards_page_ui.h"
-#endif
-
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+#include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
+#endif
+
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ui/webui/ethereum_remote_client/ethereum_remote_client_ui.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ui/webui/ipfs_ui.h"
 #include "brave/components/ipfs/features.h"
@@ -77,11 +79,11 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new BraveAdblockUI(web_ui, url.host());
   } else if (host == kWebcompatReporterHost) {
     return new WebcompatReporterUI(web_ui, url.host());
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   } else if (host == kIPFSWebUIHost &&
              ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) {
     return new IPFSUI(web_ui, url.host());
-#endif  // BUILDFLAG(IPFS_ENABLED)
+#endif  // BUILDFLAG(ENABLE_IPFS)
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
   } else if (host == kWalletPageHost) {
     if (brave_wallet::IsNativeWalletEnabled()) {
@@ -93,7 +95,12 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kWalletPanelHost) {
     return new WalletPanelUI(web_ui);
 #endif  // BUILDFLAG(BRAVE_WALLET_ENABLED)
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+  } else if (host == kVPNPanelHost) {
+    if (brave_vpn::IsBraveVPNEnabled()) {
+      return new VPNPanelUI(web_ui);
+    }
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
   } else if (host == kRewardsPageHost) {
     return new BraveRewardsPageUI(web_ui, url.host());
   } else if (host == kRewardsInternalsHost) {
@@ -102,7 +109,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kTipHost) {
     return new BraveTipUI(web_ui, url.host());
 #endif  // !defined(OS_ANDROID)
-#endif  // BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #if !defined(OS_ANDROID)
   } else if (host == kWelcomeHost) {
     return new BraveWelcomeUI(web_ui, url.host());
@@ -126,19 +132,20 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
   if (url.host_piece() == kAdblockHost ||
       url.host_piece() == kWebcompatReporterHost ||
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
       (url.host_piece() == kIPFSWebUIHost &&
        base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||
-#endif  // BUILDFLAG(IPFS_ENABLED)
+#endif  // BUILDFLAG(ENABLE_IPFS)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+      (url.host_piece() == kVPNPanelHost && brave_vpn::IsBraveVPNEnabled()) ||
+#endif
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
       url.host_piece() == kWalletPanelHost ||
       url.host_piece() == kWalletPageHost ||
 #endif
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost ||
       url.host_piece() == kTipHost ||
-#endif
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||
 #endif

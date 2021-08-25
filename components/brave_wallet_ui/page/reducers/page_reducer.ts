@@ -6,8 +6,16 @@
 
 import { createReducer } from 'redux-act'
 import * as Actions from '../actions/wallet_page_actions'
-import { PageState, AssetOptionType, AssetPriceTimeframe } from '../../constants/types'
-import { WalletCreatedPayloadType, RecoveryWordsAvailablePayloadType, SelectAssetPayloadType } from '../constants/action_types'
+import {
+  PageState,
+  AssetPriceTimeframe,
+  TokenInfo
+} from '../../constants/types'
+import {
+  WalletCreatedPayloadType,
+  RecoveryWordsAvailablePayloadType,
+  SelectAssetPayloadType
+} from '../constants/action_types'
 
 const defaultState: PageState = {
   hasInitialized: false,
@@ -19,8 +27,9 @@ const defaultState: PageState = {
   selectedBTCAssetPrice: undefined,
   selectedAssetPriceHistory: [],
   portfolioPriceHistory: [],
-  userAssets: ['1', '2'],
-  isFetchingPriceHistory: false
+  isFetchingPriceHistory: false,
+  showIsRestoring: false,
+  setupStillInProgress: false
 }
 
 const reducer = createReducer<PageState>({}, defaultState)
@@ -28,7 +37,8 @@ const reducer = createReducer<PageState>({}, defaultState)
 reducer.on(Actions.walletCreated, (state: PageState, payload: WalletCreatedPayloadType) => {
   return {
     ...state,
-    mnemonic: payload.mnemonic
+    mnemonic: payload.mnemonic,
+    setupStillInProgress: true
   }
 })
 
@@ -42,6 +52,7 @@ reducer.on(Actions.recoveryWordsAvailable, (state: PageState, payload: RecoveryW
 reducer.on(Actions.walletSetupComplete, (state: PageState) => {
   const newState = { ...state }
   delete newState.mnemonic
+  delete newState.setupStillInProgress
   return newState
 })
 
@@ -68,7 +79,7 @@ reducer.on(Actions.hasMnemonicError, (state: PageState, payload: boolean) => {
   }
 })
 
-reducer.on(Actions.updateSelectedAsset, (state: PageState, payload: AssetOptionType) => {
+reducer.on(Actions.updateSelectedAsset, (state: PageState, payload: TokenInfo) => {
   return {
     ...state,
     selectedAsset: payload
@@ -91,6 +102,13 @@ reducer.on(Actions.setIsFetchingPriceHistory, (state: PageState, payload: boolea
   return {
     ...state,
     isFetchingPriceHistory: payload
+  }
+})
+
+reducer.on(Actions.setShowIsRestoring, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    showIsRestoring: payload
   }
 })
 

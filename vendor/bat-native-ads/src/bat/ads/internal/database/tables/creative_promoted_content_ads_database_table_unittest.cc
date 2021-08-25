@@ -23,9 +23,8 @@ class BatAdsCreativePromotedContentAdsDatabaseTableTest : public UnitTestBase {
 
   void Save(
       const CreativePromotedContentAdList& creative_promoted_content_ads) {
-    database_table_->Save(
-        creative_promoted_content_ads,
-        [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
+    database_table_->Save(creative_promoted_content_ads,
+                          [](const bool success) { ASSERT_TRUE(success); });
   }
 
   std::unique_ptr<database::table::CreativePromotedContentAds> database_table_;
@@ -103,9 +102,9 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_promoted_content_ads](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativePromotedContentAdList& creative_promoted_content_ads) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_promoted_content_ads,
                                   creative_promoted_content_ads));
       });
@@ -197,9 +196,9 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_promoted_content_ads](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativePromotedContentAdList& creative_promoted_content_ads) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_promoted_content_ads,
                                   creative_promoted_content_ads));
       });
@@ -247,9 +246,9 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_promoted_content_ads](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativePromotedContentAdList& creative_promoted_content_ads) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_promoted_content_ads,
                                   creative_promoted_content_ads));
       });
@@ -318,9 +317,9 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest, GetForSegments) {
   database_table_->GetForSegments(
       segments,
       [&expected_creative_promoted_content_ads](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativePromotedContentAdList& creative_promoted_content_ads) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_promoted_content_ads,
                                   creative_promoted_content_ads));
       });
@@ -368,9 +367,9 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   database_table_->GetForCreativeInstanceId(
       creative_instance_id,
       [&expected_creative_promoted_content_ad](
-          const Result result, const std::string& creative_instance_id,
+          const bool success, const std::string& creative_instance_id,
           const CreativePromotedContentAdInfo& creative_promoted_content_ad) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_EQ(expected_creative_promoted_content_ad,
                   creative_promoted_content_ad);
       });
@@ -414,9 +413,9 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
 
   database_table_->GetForCreativeInstanceId(
       creative_instance_id,
-      [](const Result result, const std::string& creative_instance_id,
+      [](const bool success, const std::string& creative_instance_id,
          const CreativePromotedContentAdInfo& creative_promoted_content_ad) {
-        EXPECT_EQ(Result::FAILED, result);
+        EXPECT_FALSE(success);
       });
 }
 
@@ -461,9 +460,9 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_promoted_content_ads](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativePromotedContentAdList& creative_promoted_content_ads) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_promoted_content_ads,
                                   creative_promoted_content_ads));
       });
@@ -510,9 +509,9 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_promoted_content_ads](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativePromotedContentAdList& creative_promoted_content_ads) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_promoted_content_ads,
                                   creative_promoted_content_ads));
       });
@@ -605,9 +604,9 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_promoted_content_ads](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativePromotedContentAdList& creative_promoted_content_ads) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_promoted_content_ads,
                                   creative_promoted_content_ads));
       });
@@ -677,9 +676,9 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_promoted_content_ads](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativePromotedContentAdList& creative_promoted_content_ads) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_promoted_content_ads,
                                   creative_promoted_content_ads));
       });
@@ -748,9 +747,9 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   database_table_->GetForSegments(
       segments,
       [&expected_creative_promoted_content_ads](
-          const Result result, const SegmentList& segments,
+          const bool success, const SegmentList& segments,
           const CreativePromotedContentAdList& creative_promoted_content_ads) {
-        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(success);
         EXPECT_TRUE(CompareAsSets(expected_creative_promoted_content_ads,
                                   creative_promoted_content_ads));
       });

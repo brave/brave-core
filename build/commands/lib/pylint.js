@@ -298,6 +298,16 @@ const pylint = (options = {}) => {
   if (!result && !options.report) {
     process.exit(1)
   }
+
+  // Make sure report file contails at least EOL, otherwise the Jenkins parsing
+  // plugin will error out.
+  if (options.report) {
+    const stats = fs.statSync(report_file)
+    if (stats.size === 0) {
+      deleteFile(report_file)
+      createEmptyReportFile(report_file)
+    }
+  }
 }
 
 module.exports = pylint

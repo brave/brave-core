@@ -19,18 +19,17 @@
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
-#include "bat/ads/mojom.h"
-#include "bat/ads/result.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 using GetCreativeInlineContentAdCallback =
-    std::function<void(const Result result,
+    std::function<void(const bool success,
                        const std::string& creative_instance_id,
                        const CreativeInlineContentAdInfo& ad)>;
 
 using GetCreativeInlineContentAdsCallback =
-    std::function<void(const Result result,
+    std::function<void(const bool success,
                        const SegmentList& segments,
                        const CreativeInlineContentAdList& ads)>;
 
@@ -61,36 +60,37 @@ class CreativeInlineContentAds : public Table {
 
   std::string get_table_name() const override;
 
-  void Migrate(DBTransaction* transaction, const int to_version) override;
+  void Migrate(mojom::DBTransaction* transaction,
+               const int to_version) override;
 
  private:
   void InsertOrUpdate(
-      DBTransaction* transaction,
+      mojom::DBTransaction* transaction,
       const CreativeInlineContentAdList& creative__inline_content_ads);
 
   int BindParameters(
-      DBCommand* command,
+      mojom::DBCommand* command,
       const CreativeInlineContentAdList& creative__inline_content_ads);
 
   std::string BuildInsertOrUpdateQuery(
-      DBCommand* command,
+      mojom::DBCommand* command,
       const CreativeInlineContentAdList& creative__inline_content_ads);
 
-  void OnGetForCreativeInstanceId(DBCommandResponsePtr response,
+  void OnGetForCreativeInstanceId(mojom::DBCommandResponsePtr response,
                                   const std::string& creative_instance_id,
                                   GetCreativeInlineContentAdCallback callback);
 
-  void OnGetForSegments(DBCommandResponsePtr response,
+  void OnGetForSegments(mojom::DBCommandResponsePtr response,
                         const SegmentList& segments,
                         GetCreativeInlineContentAdsCallback callback);
 
-  void OnGetAll(DBCommandResponsePtr response,
+  void OnGetAll(mojom::DBCommandResponsePtr response,
                 GetCreativeInlineContentAdsCallback callback);
 
-  CreativeInlineContentAdInfo GetFromRecord(DBRecord* record) const;
+  CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecord* record) const;
 
-  void CreateTableV15(DBTransaction* transaction);
-  void MigrateToV15(DBTransaction* transaction);
+  void CreateTableV15(mojom::DBTransaction* transaction);
+  void MigrateToV15(mojom::DBTransaction* transaction);
 
   int batch_size_;
 

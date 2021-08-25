@@ -45,4 +45,7 @@ const char kDisableDnsOverHttps[] = "disable-doh";
 
 // Override update feed url. Only valid on macOS.
 const char kUpdateFeedURL[] = "update-feed-url";
+
+// Starts Brave in Tor mode.
+const char kTor[] = "tor";
 }  // namespace switches

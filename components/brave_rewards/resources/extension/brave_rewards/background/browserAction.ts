@@ -33,14 +33,22 @@ const getText = (verified: boolean, tabId: number, state?: RewardsExtension.Stat
 
 const getTabId = (tabId: number) => tabId !== -1 ? tabId : undefined
 
-export const setBadgeText = (state?: RewardsExtension.State, verified: boolean = false, tabId: number = -1) => {
-  chrome.browserAction.setBadgeBackgroundColor({
-    color: getColor(tabId, verified, state),
-    tabId: getTabId(tabId)
-  })
+export const setBadgeText = async (state?: RewardsExtension.State, verified: boolean = false, tabId: number = -1) => {
+  try {
+    await chrome.browserAction.setBadgeBackgroundColor({
+      color: getColor(tabId, verified, state),
+      tabId: getTabId(tabId)
+    })
+  } catch (e) {
+    console.error(e)
+  }
 
-  chrome.browserAction.setBadgeText({
-    text: getText(verified, tabId, state),
-    tabId: getTabId(tabId)
-  })
+  try {
+    await chrome.browserAction.setBadgeText({
+      text: getText(verified, tabId, state),
+      tabId: getTabId(tabId)
+    })
+  } catch (e) {
+    console.error(e)
+  }
 }

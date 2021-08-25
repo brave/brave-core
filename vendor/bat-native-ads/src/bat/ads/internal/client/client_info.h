@@ -15,7 +15,6 @@
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
 #include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_aliases.h"
 #include "bat/ads/internal/client/preferences/ad_preferences_info.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -27,7 +26,7 @@ struct ClientInfo {
   ~ClientInfo();
 
   std::string ToJson();
-  Result FromJson(const std::string& json);
+  bool FromJson(const std::string& json);
 
   AdPreferencesInfo ad_preferences;
   std::deque<AdHistoryInfo> ads_shown_history;

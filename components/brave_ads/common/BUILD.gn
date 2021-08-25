@@ -1,8 +1,12 @@
 static_library("common") {
   sources = [
+    "features.cc",
+    "features.h",
     "pref_names.cc",
     "pref_names.h",
     "switches.cc",
     "switches.h",
   ]
+
+  deps = [ "//base" ]
 }

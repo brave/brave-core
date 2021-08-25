@@ -86,7 +86,7 @@
     "includes": [43600],
   },
   "<(ROOT_GEN_DIR)/brave/web-ui-ethereum_remote_client_page/ethereum_remote_client_page.grd": {
-    "includes": [43675],
+    "includes": [43700],
   },
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet_panel/brave_wallet_panel.grd": {
     "includes": [43800],
@@ -118,5 +118,8 @@
   },
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet_script/brave_wallet_script.grd": {
     "includes": [46750]
+  },
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_vpn_panel/brave_vpn_panel.grd": {
+    "includes": [47000]
   },
 }

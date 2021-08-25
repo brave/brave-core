@@ -18,7 +18,6 @@ source_set("browser_process") {
 
   deps = [
     "//brave/browser/ethereum_remote_client/buildflags",
-    "//brave/components/brave_ads/browser/buildflags",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ipfs/buildflags",
@@ -51,4 +50,22 @@ group("browser") {
   # dependencies in brave/ (//chrome/browser does not depend on this target
   # so //brave/browser becomes essentially an alias for //chrome/browser now).
   public_deps = [ "//chrome/browser" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = []
+  deps = []
+
+  if (is_win) {
+    sources += [ "microsoft_edge_protocol_util_unittest.cc" ]
+
+    deps += [
+      "//base",
+      "//brave/browser",
+      "//testing/gtest",
+      "//url",
+    ]
+  }
 }

@@ -16,36 +16,7 @@ namespace database {
 namespace table {
 namespace util {
 
-void Drop(DBTransaction* transaction, const std::string& table_name) {
-  DCHECK(transaction);
-  DCHECK(!table_name.empty());
-
-  const std::string query = base::StringPrintf(
-      "PRAGMA foreign_keys = off;"
-      "DROP TABLE IF EXISTS %s;"
-      "PRAGMA foreign_keys = on;",
-      table_name.c_str());
-
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-}
-
-void Delete(DBTransaction* transaction, const std::string& table_name) {
-  DCHECK(transaction);
-  DCHECK(!table_name.empty());
-
-  const std::string query =
-      base::StringPrintf("DELETE FROM %s", table_name.c_str());
-
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-}
+namespace {
 
 std::string BuildInsertQuery(const std::string& from,
                              const std::string& to,
@@ -70,18 +41,69 @@ std::string BuildInsertQuery(const std::string& from,
   const std::string comma_separated_to_columns =
       base::JoinString(to_columns, ", ");
 
-  return base::StringPrintf("INSERT INTO %s (%s) SELECT %s FROM %s %s",
+  return base::StringPrintf("INSERT INTO %s (%s) SELECT %s FROM %s %s;",
                             to.c_str(), comma_separated_to_columns.c_str(),
                             comma_separated_from_columns.c_str(), from.c_str(),
                             group_by.c_str());
 }
 
-void Migrate(DBTransaction* transaction,
-             const std::string& from,
-             const std::string& to,
-             const std::map<std::string, std::string>& columns,
-             const bool should_drop,
-             const std::string& group_by) {
+}  // namespace
+
+void CreateIndex(mojom::DBTransaction* transaction,
+                 const std::string& table_name,
+                 const std::string& key) {
+  DCHECK(transaction);
+  DCHECK(!table_name.empty());
+  DCHECK(!key.empty());
+
+  const std::string query = base::StringPrintf(
+      "CREATE INDEX %s_%s_index ON %s (%s)", table_name.c_str(), key.c_str(),
+      table_name.c_str(), key.c_str());
+
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+}
+
+void Drop(mojom::DBTransaction* transaction, const std::string& table_name) {
+  DCHECK(transaction);
+  DCHECK(!table_name.empty());
+
+  const std::string query = base::StringPrintf(
+      "PRAGMA foreign_keys = off;"
+      "DROP TABLE IF EXISTS %s;"
+      "PRAGMA foreign_keys = on;",
+      table_name.c_str());
+
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+}
+
+void Delete(mojom::DBTransaction* transaction, const std::string& table_name) {
+  DCHECK(transaction);
+  DCHECK(!table_name.empty());
+
+  const std::string query =
+      base::StringPrintf("DELETE FROM %s", table_name.c_str());
+
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+}
+
+void CopyColumns(mojom::DBTransaction* transaction,
+                 const std::string& from,
+                 const std::string& to,
+                 const std::map<std::string, std::string>& columns,
+                 const bool should_drop,
+                 const std::string& group_by) {
   DCHECK(transaction);
   DCHECK(!from.empty());
   DCHECK(!to.empty());
@@ -100,19 +122,19 @@ void Migrate(DBTransaction* transaction,
 
   query.append("PRAGMA foreign_keys = on;");
 
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
 }
 
-void Migrate(DBTransaction* transaction,
-             const std::string& from,
-             const std::string& to,
-             const std::vector<std::string>& columns,
-             const bool should_drop,
-             const std::string& group_by) {
+void CopyColumns(mojom::DBTransaction* transaction,
+                 const std::string& from,
+                 const std::string& to,
+                 const std::vector<std::string>& columns,
+                 const bool should_drop,
+                 const std::string& group_by) {
   DCHECK(transaction);
   DCHECK(!from.empty());
   DCHECK(!to.empty());
@@ -124,10 +146,10 @@ void Migrate(DBTransaction* transaction,
     new_columns[column] = column;
   }
 
-  return Migrate(transaction, from, to, new_columns, should_drop, group_by);
+  return CopyColumns(transaction, from, to, new_columns, should_drop, group_by);
 }
 
-void Rename(DBTransaction* transaction,
+void Rename(mojom::DBTransaction* transaction,
             const std::string& from,
             const std::string& to) {
   DCHECK(transaction);
@@ -138,26 +160,8 @@ void Rename(DBTransaction* transaction,
   const std::string query = base::StringPrintf("ALTER TABLE %s RENAME TO %s",
                                                from.c_str(), to.c_str());
 
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-}
-
-void CreateIndex(DBTransaction* transaction,
-                 const std::string& table_name,
-                 const std::string& key) {
-  DCHECK(transaction);
-  DCHECK(!table_name.empty());
-  DCHECK(!key.empty());
-
-  const std::string query = base::StringPrintf(
-      "CREATE INDEX %s_%s_index ON %s (%s)", table_name.c_str(), key.c_str(),
-      table_name.c_str(), key.c_str());
-
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));

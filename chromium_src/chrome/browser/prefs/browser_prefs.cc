@@ -9,6 +9,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
@@ -25,13 +26,17 @@
 
 #define MigrateObsoleteProfilePrefs MigrateObsoleteProfilePrefs_ChromiumImpl
 #define MigrateObsoleteLocalStatePrefs \
-    MigrateObsoleteLocalStatePrefs_ChromiumImpl
+  MigrateObsoleteLocalStatePrefs_ChromiumImpl
 #include "../../../../../chrome/browser/prefs/browser_prefs.cc"
 #undef MigrateObsoleteProfilePrefs
 #undef MigrateObsoleteLocalStatePrefs
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_utils.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/browser/keyring_controller.h"
 #endif
 
 // This method should be periodically pruned of year+ old migrations.
@@ -57,6 +62,11 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   // Added 9/2020
 #if !defined(OS_ANDROID)
   new_tab_page::MigrateNewTabPagePrefs(profile);
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  brave_wallet::KeyringController::MigrateObsoleteProfilePrefs(
+      profile->GetPrefs());
 #endif
 
   // Added 04/2021

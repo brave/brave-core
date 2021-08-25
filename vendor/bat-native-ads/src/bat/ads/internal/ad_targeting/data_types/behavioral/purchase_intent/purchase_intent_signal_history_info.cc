@@ -39,13 +39,13 @@ std::string PurchaseIntentSignalHistoryInfo::ToJson() const {
   return json;
 }
 
-Result PurchaseIntentSignalHistoryInfo::FromJson(const std::string& json) {
+bool PurchaseIntentSignalHistoryInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   if (document.HasMember("timestamp_in_seconds")) {
@@ -56,7 +56,7 @@ Result PurchaseIntentSignalHistoryInfo::FromJson(const std::string& json) {
     weight = document["weight"].GetUint();
   }
 
-  return SUCCESS;
+  return true;
 }
 
 void SaveToJson(JsonWriter* writer,

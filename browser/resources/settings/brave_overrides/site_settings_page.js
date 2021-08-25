@@ -3,9 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {RegisterPolymerComponentBehaviors} from 'chrome://brave-resources/polymer_overriding.js'
+import {define, RegisterPolymerComponentReplacement} from 'chrome://brave-resources/polymer_overriding.js'
 import {ContentSettingsTypes} from '../site_settings/constants.js'
+import {SettingsSiteSettingsPageElement} from '../site_settings_page/site_settings_page.js'
 import {routes} from '../route.js'
+import './config.js'
 
 const PERMISSIONS_BASIC_REMOVE_IDS = [
   ContentSettingsTypes.BACKGROUND_SYNC,
@@ -14,15 +16,17 @@ const CONTENT_ADVANCED_REMOVE_IDS = [
   ContentSettingsTypes.ADS,
 ]
 
-RegisterPolymerComponentBehaviors({
-  'settings-site-settings-page': [{
-    registered: function() {
-      if (!this.properties || !this.properties.lists_ || !this.properties.lists_.value) {
+RegisterPolymerComponentReplacement(
+  'settings-site-settings-page',
+  class BraveComponent extends SettingsSiteSettingsPageElement {
+    static get properties() {
+      const properties = SettingsSiteSettingsPageElement.properties
+      if (!properties || !properties.lists_ || !properties.lists_.value) {
         console.error('[Brave Settings Overrides] Could not find polymer lists_ property')
         return
       }
-      const oldListsGetter = this.properties.lists_.value
-      this.properties.lists_.value = function () {
+      const oldListsGetter = properties.lists_.value
+      properties.lists_.value = function () {
         const lists_ = oldListsGetter()
         if (!lists_) {
           console.error('[Brave Settings Overrides] did not get lists_ data')
@@ -55,10 +59,24 @@ RegisterPolymerComponentBehaviors({
               disabledLabel: 'siteSettingsBlocked'
             }
             lists_.permissionsAdvanced.splice(indexForAutoplay, 0, autoplayItem)
+            let indexForEthereum = indexForAutoplay + 1
+            const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
+            if (isNativeBraveWalletEnabled) {
+              const ethereumItem = {
+                route: routes.SITE_SETTINGS_ETHEREUM,
+                id: 'ethereum',
+                label: 'siteSettingsEthereum',
+                icon: 'cr:extension',
+                enabledLabel: 'siteSettingsEthereumAsk',
+                disabledLabel: 'siteSettingsEthereumBlock'
+              }
+              lists_.permissionsAdvanced.splice(indexForEthereum, 0, ethereumItem)
+            }
           }
         }
         return lists_
       }
+      return properties
     }
-  }]
-})
+  }
+)

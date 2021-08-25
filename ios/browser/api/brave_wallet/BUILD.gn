@@ -1,0 +1,26 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+config("mojom_header_config") {
+  visibility = [
+    ":*",
+    "//brave/ios/app",
+  ]
+  include_dirs = [ "$target_gen_dir" ]
+}
+
+mojom_wrappers("wallet_mojom_wrappers") {
+  mojom_target = "//brave/components/brave_wallet/common:mojom"
+  mojom_file = "//brave/components/brave_wallet/common/brave_wallet.mojom"
+  exclude_types = [
+    "BraveWalletProvider",
+    "PageHandlerFactory",
+    "PanelHandlerFactory",
+  ]
+}

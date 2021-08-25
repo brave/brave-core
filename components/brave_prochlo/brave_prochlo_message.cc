@@ -8,8 +8,8 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
+#include "base/cxx17_backports.h"
 #include "base/logging.h"
-#include "base/stl_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_prochlo/brave_prochlo_crypto.h"

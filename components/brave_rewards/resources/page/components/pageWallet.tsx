@@ -10,6 +10,7 @@ import {
   ModalActivity,
   ModalBackupRestore,
   ModalPending,
+  ModalQRCode,
   WalletEmpty,
   WalletSummary,
   WalletWrapper
@@ -31,6 +32,7 @@ interface State {
   modalActivity: boolean
   modalPendingContribution: boolean
   modalVerify: boolean
+  modalQRCode: boolean
 }
 
 interface Props extends Rewards.ComponentProps {
@@ -43,7 +45,8 @@ class PageWallet extends React.Component<Props, State> {
       activeTabId: 0,
       modalActivity: false,
       modalPendingContribution: false,
-      modalVerify: false
+      modalVerify: false,
+      modalQRCode: false
     }
   }
 
@@ -213,6 +216,21 @@ class PageWallet extends React.Component<Props, State> {
     }
     this.setState({
       modalVerify: !this.state.modalVerify
+    })
+  }
+
+  toggleQRCodeModal = () => {
+    // If we are opening the QR code panel, then request a payment ID if we do
+    // not already have one and close the backup/restore modal.
+    if (!this.state.modalQRCode) {
+      if (!this.props.rewardsData.paymentId) {
+        this.actions.getPaymentId()
+      }
+      this.actions.onModalBackupClose()
+    }
+
+    this.setState({
+      modalQRCode: !this.state.modalQRCode
     })
   }
 
@@ -619,6 +637,11 @@ class PageWallet extends React.Component<Props, State> {
         text = getLocale('processorBitflyer')
         break
       }
+      case 5: { // Rewards.Processor.GEMINI
+        text = getLocale('processorGemini')
+        break
+      }
+
     }
 
     if (text.length === 0) {
@@ -792,7 +815,8 @@ class PageWallet extends React.Component<Props, State> {
       ui,
       pendingContributionTotal,
       recoveryKey,
-      externalWallet
+      externalWallet,
+      paymentId
     } = this.props.rewardsData
     const { total } = balance
     const { emptyWallet, modalBackup } = ui
@@ -845,6 +869,7 @@ class PageWallet extends React.Component<Props, State> {
               onRestore={this.onModalBackupOnRestore}
               onVerify={this.onVerifyClick}
               onReset={this.onModalBackupOnReset}
+              onShowQRCode={this.toggleQRCodeModal}
               internalFunds={this.getInternalFunds()}
               error={this.getBackupErrorMessage()}
             />
@@ -873,6 +898,14 @@ class PageWallet extends React.Component<Props, State> {
           this.state.modalActivity
             ? this.generateMonthlyReport()
             : null
+        }
+        {
+          this.state.modalQRCode
+          ? <ModalQRCode
+              paymentId={paymentId}
+              onClose={this.toggleQRCodeModal}
+          />
+          : null
         }
       </>
     )

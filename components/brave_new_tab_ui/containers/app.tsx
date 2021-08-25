@@ -59,7 +59,7 @@ function DefaultPage (props: Props) {
         saveShowStats={PreferencesAPI.saveShowStats}
         saveShowToday={PreferencesAPI.saveShowToday}
         saveShowRewards={PreferencesAPI.saveShowRewards}
-        saveShowTogether={PreferencesAPI.saveShowTogether}
+        saveShowBraveTalk={PreferencesAPI.saveShowBraveTalk}
         saveShowBinance={PreferencesAPI.saveShowBinance}
         saveShowGemini={PreferencesAPI.saveShowGemini}
         saveShowCryptoDotCom={PreferencesAPI.saveShowCryptoDotCom}

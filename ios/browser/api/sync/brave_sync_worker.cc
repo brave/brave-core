@@ -14,11 +14,11 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
-#include "brave/components/brave_sync/profile_sync_service_helper.h"
-#include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
+#include "brave/components/brave_sync/sync_service_impl_helper.h"
+#include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
-#include "components/sync/driver/profile_sync_service.h"
 #include "components/sync/driver/sync_service.h"
+#include "components/sync/driver/sync_service_impl.h"
 #include "components/sync/driver/sync_service_observer.h"
 #include "components/sync_device_info/device_info.h"
 #include "components/sync_device_info/device_info_sync_service.h"
@@ -26,7 +26,7 @@
 #include "components/sync_device_info/local_device_info_provider.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/sync/device_info_sync_service_factory.h"
-#include "ios/chrome/browser/sync/profile_sync_service_factory.h"
+#include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_setup_service.h"
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
 #include "ios/web/public/thread/web_thread.h"
@@ -54,11 +54,11 @@ void BraveSyncDeviceTracker::OnDeviceInfoChange() {
 }
 
 BraveSyncServiceTracker::BraveSyncServiceTracker(
-    syncer::ProfileSyncService* profile_sync_service,
+    syncer::SyncServiceImpl* sync_service_impl,
     std::function<void()> on_state_changed_callback)
     : on_state_changed_callback_(on_state_changed_callback) {
-  DCHECK(profile_sync_service);
-  sync_service_observer_.Observe(profile_sync_service);
+  DCHECK(sync_service_impl);
+  sync_service_observer_.Observe(sync_service_impl);
 }
 
 BraveSyncServiceTracker::~BraveSyncServiceTracker() {
@@ -84,8 +84,7 @@ bool BraveSyncWorker::SetSyncEnabled(bool enabled) {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* setup_service =
       SyncSetupServiceFactory::GetForBrowserState(browser_state_);
-  auto* sync_service =
-      ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
+  auto* sync_service = SyncServiceFactory::GetForBrowserState(browser_state_);
 
   if (!setup_service || !sync_service) {
     return false;
@@ -235,10 +234,10 @@ void BraveSyncWorker::DeleteDevice(const std::string& device_guid) {
   brave_sync::DeleteDevice(sync_service, device_info_service, device_guid);
 }
 
-syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
+syncer::BraveSyncServiceImpl* BraveSyncWorker::GetSyncService() const {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  return static_cast<syncer::BraveProfileSyncService*>(
-      ProfileSyncServiceFactory::GetForBrowserState(browser_state_));
+  return static_cast<syncer::BraveSyncServiceImpl*>(
+      SyncServiceFactory::GetForBrowserState(browser_state_));
 }
 
 void BraveSyncWorker::SetEncryptionPassphrase(syncer::SyncService* service) {
@@ -310,7 +309,7 @@ void BraveSyncWorker::OnResetDone() {
   }
 }
 
-bool BraveSyncWorker::IsSyncEnabled() {
+bool BraveSyncWorker::CanSyncFeatureStart() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* setup_service =
       SyncSetupServiceFactory::GetForBrowserState(browser_state_);
@@ -319,13 +318,12 @@ bool BraveSyncWorker::IsSyncEnabled() {
     return false;
   }
 
-  return setup_service->IsSyncEnabled();
+  return setup_service->CanSyncFeatureStart();
 }
 
 bool BraveSyncWorker::IsSyncFeatureActive() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* sync_service =
-      ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
+  auto* sync_service = SyncServiceFactory::GetForBrowserState(browser_state_);
 
   if (!sync_service) {
     return false;

@@ -1,0 +1,48 @@
+{%- macro objc_methods(interface) -%}
+{%-  for method in interface.methods %}
+{%-   set name = method|objc_method_name_formatter %}
+- (void){{name}}
+{%- if method.parameters or method.response_parameters %}:{%- endif -%}
+{%- for param in method.parameters -%}
+{%-   if not loop.first -%}{{param.name|under_to_lower_camel}}:{%- endif -%}
+({{param.kind|objc_wrapper_type}}){{param.name|under_to_lower_camel}}
+{%- if not loop.last -%}{{" "}}{%- endif -%}
+{%- endfor -%}
+{%- if method.response_parameters -%}
+{%- if method.parameters -%}
+{{" "}}completion:
+{%- endif -%}
+(void (^)(
+{%- for param in method.response_parameters -%}
+{{param.kind|objc_wrapper_type}} {{param.name|under_to_lower_camel}}
+{%- if not loop.last -%},{{" "}}{%- endif -%}
+{%- endfor -%}
+))completion
+{%- endif -%}
+;
+{%- endfor -%}
+{%- endmacro -%}
+
+{%- macro cpp_declare_params(parameters) %}
+{%-   for param in parameters -%}
+{{param.kind|expected_cpp_param_type}} {{param.name}}
+{%- if not loop.last %}, {% endif %}
+{%-   endfor %}
+{%- endmacro %}
+
+{%- macro cpp_declare_callback(method) -%}
+base::OnceCallback<void(
+{%-   for param in method.response_parameters -%}
+{{param.kind|expected_cpp_param_type}}
+{%-     if not loop.last %}, {% endif %}
+{%-   endfor -%}
+)>
+{%- endmacro -%}
+
+{%- macro cpp_declare_request_params(method, cpp_namespace) -%}
+{{cpp_declare_params(method.parameters)}}
+{%-   if method.response_parameters != None -%}
+{%-     if method.parameters %}, {% endif -%}
+{{cpp_namespace}}::{{method.name}}Callback callback
+{%-   endif -%}
+{%- endmacro -%}

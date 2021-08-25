@@ -31,13 +31,13 @@ std::string CategoryContentInfo::ToJson() const {
   return json;
 }
 
-Result CategoryContentInfo::FromJson(const std::string& json) {
+bool CategoryContentInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   if (document.HasMember("category")) {
@@ -48,7 +48,7 @@ Result CategoryContentInfo::FromJson(const std::string& json) {
     opt_action = static_cast<OptAction>(document["opt_action"].GetInt());
   }
 
-  return SUCCESS;
+  return true;
 }
 
 void SaveToJson(JsonWriter* writer, const CategoryContentInfo& content) {

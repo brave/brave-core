@@ -1,4 +1,3 @@
-import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
@@ -99,9 +98,12 @@ source_set("browser_tests") {
       "//base",
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser",
+      "//brave/browser/brave_ads",
       "//brave/browser/tor",
       "//brave/browser/ui",
       "//brave/common",
+      "//brave/common:switches",
+      "//brave/components/brave_ads/browser",
       "//brave/components/ipfs/buildflags",
       "//brave/components/tor",
       "//brave/components/tor:pref_names",
@@ -122,13 +124,6 @@ source_set("browser_tests") {
       deps += [
         "//extensions/browser",
         "//extensions/common",
-      ]
-    }
-
-    if (brave_ads_enabled) {
-      deps += [
-        "//brave/browser/brave_ads",
-        "//brave/components/brave_ads/browser",
       ]
     }
 

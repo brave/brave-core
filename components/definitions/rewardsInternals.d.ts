@@ -14,8 +14,9 @@ declare namespace RewardsInternals {
     promotions: Promotion[]
     log: string
     fullLog: string
-    externalWallet: ExternalWallet,
+    externalWallet: ExternalWallet
     eventLogs: EventLog[]
+    adDiagnostics: AdDiagnosticsEntry[]
   }
 
   export interface ContributionInfo {
@@ -76,5 +77,10 @@ declare namespace RewardsInternals {
     key: string
     value: string
     createdAt: number
+  }
+
+  export interface AdDiagnosticsEntry {
+    key: string
+    value: string
   }
 }

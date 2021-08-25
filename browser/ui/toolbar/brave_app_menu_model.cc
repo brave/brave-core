@@ -13,7 +13,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/grit/generated_resources.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/import/ipfs_import_controller.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
@@ -104,7 +104,7 @@ class SidebarMenuModel : public ui::SimpleMenuModel,
 
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 // For convenience, we show the last part of the key in the context menu item.
 // The length of the key is divided to this constant and the last part is taken.
 int kKeyTrimRate = 5;
@@ -136,7 +136,7 @@ BraveAppMenuModel::BraveAppMenuModel(
     Browser* browser,
     AppMenuIconController* app_menu_icon_controller)
     : AppMenuModel(provider, browser, app_menu_icon_controller)
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
       ,
       ipfs_submenu_model_(this)
 #endif
@@ -239,7 +239,7 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
                            IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER,
                            IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER);
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (IsCommandIdEnabled(IDC_APP_MENU_IPFS)) {
     int keys_command_index = IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START;
     keys_command_index += AddIpfsImportMenuItem(
@@ -262,7 +262,7 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
 }
 
 void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (id >= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START &&
       id <= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_END) {
     int ipfs_command = GetSelectedIPFSCommandId(id);
@@ -288,7 +288,7 @@ void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
 }
 
 bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   content::BrowserContext* browser_context =
       static_cast<content::BrowserContext*>(browser()->profile());
   if (id >= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START &&
@@ -313,7 +313,7 @@ bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
   return AppMenuModel::IsCommandIdEnabled(id);
 }
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 int BraveAppMenuModel::AddIpnsKeysToSubMenu(ui::SimpleMenuModel* submenu,
                                             ipfs::IpnsKeysManager* manager,
                                             int key_command_id) {

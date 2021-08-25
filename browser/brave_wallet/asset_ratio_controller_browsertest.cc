@@ -43,21 +43,21 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
          "payload":{
            "basic-attention-token":{
              "btc":0.00001732,
-             "btc_24h_change":8.021672460190562,
+             "btc_timeframe_change":8.021672460190562,
              "usd":0.55393,
-             "usd_24h_change":9.523443444373276
+             "usd_timeframe_change":9.523443444373276
            },
            "bat":{
              "btc":0.00001732,
-             "btc_24h_change":8.021672460190562,
+             "btc_timeframe_change":8.021672460190562,
              "usd":0.55393,
-             "usd_24h_change":9.523443444373276
+             "usd_timeframe_change":9.523443444373276
            },
            "link":{
              "btc":0.00261901,
-             "btc_24h_change":0.5871625385632929,
+             "btc_timeframe_change":0.5871625385632929,
              "usd":83.77,
-             "usd_24h_change":1.7646208048244043
+             "usd_timeframe_change":1.7646208048244043
            }
          },
          "lastUpdated":"2021-07-16T19:11:28.907Z"
@@ -181,6 +181,7 @@ IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPrice) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   auto controller = GetAssetRatioController();
   controller->GetPrice({"bat", "link"}, {"btc", "usd"},
+                       brave_wallet::mojom::AssetPriceTimeframe::OneDay,
                        base::BindOnce(&AssetRatioControllerTest::OnGetPrice,
                                       base::Unretained(this)));
 
@@ -188,28 +189,28 @@ IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPrice) {
   asset_price->from_asset = "bat";
   asset_price->to_asset = "btc";
   asset_price->price = "0.00001732";
-  asset_price->asset_24h_change = "8.021672460190562";
+  asset_price->asset_timeframe_change = "8.021672460190562";
   expected_prices_response.push_back(std::move(asset_price));
 
   asset_price = brave_wallet::mojom::AssetPrice::New();
   asset_price->from_asset = "bat";
   asset_price->to_asset = "usd";
   asset_price->price = "0.55393";
-  asset_price->asset_24h_change = "9.523443444373276";
+  asset_price->asset_timeframe_change = "9.523443444373276";
   expected_prices_response.push_back(std::move(asset_price));
 
   asset_price = brave_wallet::mojom::AssetPrice::New();
   asset_price->from_asset = "link";
   asset_price->to_asset = "btc";
   asset_price->price = "0.00261901";
-  asset_price->asset_24h_change = "0.5871625385632929";
+  asset_price->asset_timeframe_change = "0.5871625385632929";
   expected_prices_response.push_back(std::move(asset_price));
 
   asset_price = brave_wallet::mojom::AssetPrice::New();
   asset_price->from_asset = "link";
   asset_price->to_asset = "usd";
   asset_price->price = "83.77";
-  asset_price->asset_24h_change = "1.7646208048244043";
+  asset_price->asset_timeframe_change = "1.7646208048244043";
   expected_prices_response.push_back(std::move(asset_price));
 
   WaitForPriceResponse(std::move(expected_prices_response), true);
@@ -220,6 +221,7 @@ IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
   auto controller = GetAssetRatioController();
   controller->GetPrice({"bat", "link"}, {"btc", "usd"},
+                       brave_wallet::mojom::AssetPriceTimeframe::OneDay,
                        base::BindOnce(&AssetRatioControllerTest::OnGetPrice,
                                       base::Unretained(this)));
   WaitForPriceResponse(std::move(expected_prices_response), false);
@@ -237,12 +239,12 @@ IN_PROC_BROWSER_TEST_F(AssetRatioControllerTest, GetPriceHistory) {
       expected_price_history_response;
 
   auto asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
-  asset_time_price->date = base::Time::FromJsTime(1622733088498);
+  asset_time_price->date = base::TimeDelta::FromMilliseconds(1622733088498);
   asset_time_price->price = "0.8201346624954003";
   expected_price_history_response.push_back(std::move(asset_time_price));
 
   asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
-  asset_time_price->date = base::Time::FromJsTime(1622737203757);
+  asset_time_price->date = base::TimeDelta::FromMilliseconds(1622737203757);
   asset_time_price->price = "0.8096978545029869";
   expected_price_history_response.push_back(std::move(asset_time_price));
 

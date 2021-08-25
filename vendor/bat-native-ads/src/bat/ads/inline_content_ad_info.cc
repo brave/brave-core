@@ -48,13 +48,13 @@ std::string InlineContentAdInfo::ToJson() const {
   return json;
 }
 
-Result InlineContentAdInfo::FromJson(const std::string& json) {
+bool InlineContentAdInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   if (document.HasMember("type")) {
@@ -109,7 +109,7 @@ Result InlineContentAdInfo::FromJson(const std::string& json) {
     target_url = document["target_url"].GetString();
   }
 
-  return SUCCESS;
+  return true;
 }
 
 void SaveToJson(JsonWriter* writer, const InlineContentAdInfo& info) {

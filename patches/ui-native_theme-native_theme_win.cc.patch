@@ -1,8 +1,8 @@
 diff --git a/ui/native_theme/native_theme_win.cc b/ui/native_theme/native_theme_win.cc
-index 5e1dcf9487470986d771b7777033be2c32677962..3efe1c626715396930de722650f97d09bab6010a 100644
+index 40d441fff4794867f6d3a5bf10d7f6b0d9343716..efa37bbc4db3f1e2d969c17b53b37e08d194ffff 100644
 --- a/ui/native_theme/native_theme_win.cc
 +++ b/ui/native_theme/native_theme_win.cc
-@@ -1689,6 +1689,7 @@ void NativeThemeWin::UpdateDarkModeStatus() {
+@@ -1692,6 +1692,7 @@ void NativeThemeWin::UpdateDarkModeStatus() {
                                      &apps_use_light_theme);
      dark_mode_enabled = (apps_use_light_theme == 0);
    }

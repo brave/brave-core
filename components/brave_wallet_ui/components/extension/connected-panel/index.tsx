@@ -6,6 +6,8 @@ import {
   ConnectedHeader
 } from '../'
 import { Tooltip } from '../../shared'
+import { formatPrices } from '../../../utils/format-prices'
+import { formatBalance } from '../../../utils/format-balances'
 
 // Styled Components
 import {
@@ -29,23 +31,41 @@ import {
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
-import { WalletAccountType, PanelTypes, NetworkOptionsType } from '../../../constants/types'
+import { WalletAccountType, PanelTypes, Network } from '../../../constants/types'
 import { create, background } from 'ethereum-blockies'
 import locale from '../../../constants/locale'
+import { NetworkOptions } from '../../../options/network-options'
 
 export interface Props {
   selectedAccount: WalletAccountType
-  selectedNetwork: NetworkOptionsType
+  selectedNetwork: Network
   isConnected: boolean
   connectAction: () => void
   navAction: (path: PanelTypes) => void
+  onLockWallet: () => void
+  onOpenSettings: () => void
 }
 
 const ConnectedPanel = (props: Props) => {
-  const { connectAction, isConnected, navAction, selectedAccount, selectedNetwork } = props
+  const { onLockWallet, onOpenSettings, connectAction, isConnected, navAction, selectedAccount, selectedNetwork } = props
+  const [showMore, setShowMore] = React.useState<boolean>(false)
 
   const navigate = (path: PanelTypes) => () => {
     navAction(path)
+  }
+
+  const onExpand = () => {
+    navAction('expanded')
+  }
+
+  const onShowMore = () => {
+    setShowMore(true)
+  }
+
+  const onHideMore = () => {
+    if (showMore) {
+      setShowMore(false)
+    }
   }
 
   const onCopyToClipboard = async () => {
@@ -60,18 +80,23 @@ const ConnectedPanel = (props: Props) => {
     return create({ seed: selectedAccount.address, size: 8, scale: 16 }).toDataURL()
   }, [selectedAccount.address])
 
-  const FiatBalance = selectedAccount.balance * 2000
   return (
-    <StyledWrapper panelBackground={bg}>
-      <ConnectedHeader action={navAction} />
+    <StyledWrapper onClick={onHideMore} panelBackground={bg}>
+      <ConnectedHeader
+        onExpand={onExpand}
+        onClickLock={onLockWallet}
+        onClickSetting={onOpenSettings}
+        onClickMore={onShowMore}
+        showMore={showMore}
+      />
       <CenterColumn>
         <StatusRow>
           <OvalButton onClick={connectAction}>
             {isConnected ? (<ConnectedIcon />) : (<NotConnectedIcon />)}
-            <OvalButtonText>{isConnected ? 'Connected' : 'Not Connected'}</OvalButtonText>
+            <OvalButtonText>{isConnected ? locale.panelConnected : locale.panelNotConnected}</OvalButtonText>
           </OvalButton>
           <OvalButton onClick={navigate('networks')}>
-            <OvalButtonText>{selectedNetwork.abbr}</OvalButtonText>
+            <OvalButtonText>{NetworkOptions[selectedNetwork].abbr}</OvalButtonText>
             <CaratDownIcon />
           </OvalButton>
         </StatusRow>
@@ -84,8 +109,8 @@ const ConnectedPanel = (props: Props) => {
         </BalanceColumn>
         <OvalButton onClick={navigate('accounts')}><SwapIcon /></OvalButton>
         <BalanceColumn>
-          <AssetBalanceText>{selectedAccount.balance} {selectedAccount.asset.toUpperCase()}</AssetBalanceText>
-          <FiatBalanceText>${FiatBalance.toFixed(2)}</FiatBalanceText>
+          <AssetBalanceText>{formatBalance(selectedAccount.balance, 18)} {selectedAccount.asset.toUpperCase()}</AssetBalanceText>
+          <FiatBalanceText>${formatPrices(Number(selectedAccount.fiatBalance))}</FiatBalanceText>
         </BalanceColumn>
       </CenterColumn>
       <ConnectedBottomNav action={navAction} />

@@ -20,7 +20,7 @@ import {
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 
 import { ArrivingSoon } from './style'
-import { MoneyBagIcon } from '../../shared/components/icons/money_bag'
+import { MoneyBagIcon } from '../../shared/components/icons/money_bag_icon'
 import { formatMessage } from '../../shared/lib/locale_context'
 import { getDaysUntilRewardsPayment } from '../../shared/lib/pending_rewards'
 
@@ -313,6 +313,11 @@ class AdsBox extends React.Component<Props, State> {
   }
 
   getAdDetailRow = (adHistory: Rewards.AdHistory) => {
+    let brand = adHistory.adContent.brand
+    if (brand.length > 50) {
+      brand = brand.substring(0, 50) + '...'
+    }
+
     let brandInfo = adHistory.adContent.brandInfo
     if (brandInfo.length > 50) {
       brandInfo = brandInfo.substring(0, 50) + '...'
@@ -321,7 +326,7 @@ class AdsBox extends React.Component<Props, State> {
     const adContent: Rewards.AdContent = {
       creativeInstanceId: adHistory.adContent.creativeInstanceId,
       creativeSetId: adHistory.adContent.creativeSetId,
-      brand: adHistory.adContent.brand,
+      brand: brand,
       brandInfo: brandInfo,
       brandLogo: adHistory.adContent.brandLogo,
       brandDisplayUrl: adHistory.adContent.brandDisplayUrl,
@@ -412,7 +417,6 @@ class AdsBox extends React.Component<Props, State> {
 
     const historyEntries = adsHistory || []
     const rows = this.getGroupedAdsHistory(historyEntries, savedOnly)
-    const notEmpty = rows && rows.length !== 0
     const tokenString = getLocale('tokens')
 
     const estimatedPendingDays = getDaysUntilRewardsPayment(nextPaymentDate)
@@ -469,12 +473,9 @@ class AdsBox extends React.Component<Props, State> {
             />
           </List>
           {
-            notEmpty
-            ? <ShowAdsHistory
+            <ShowAdsHistory
                 onAdsHistoryOpen={this.onAdsHistoryToggle}
-                notEmpty={notEmpty}
             />
-            : null
           }
         </Box>
         {

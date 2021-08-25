@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/post_task.h"
 #include "base/threading/thread_task_runner_handle.h"
@@ -40,9 +41,14 @@ bool ShouldBlockDomainOnTaskRunner(
   bool did_match_rule = false;
   bool did_match_important = false;
   std::string mock_data_url;
+  // force aggressive blocking to `true` for domain blocking - these requests
+  // are all "first-party", but the throttle is already only called when
+  // necessary.
+  bool aggressive_blocking = true;
   ad_block_service->ShouldStartRequest(
-      url, blink::mojom::ResourceType::kMainFrame, url.host(), &did_match_rule,
-      &did_match_exception, &did_match_important, &mock_data_url);
+      url, blink::mojom::ResourceType::kMainFrame, url.host(),
+      aggressive_blocking, &did_match_rule, &did_match_exception,
+      &did_match_important, &mock_data_url);
   return (did_match_important || (did_match_rule && !did_match_exception));
 }
 

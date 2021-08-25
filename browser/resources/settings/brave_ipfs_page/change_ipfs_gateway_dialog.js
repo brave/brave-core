@@ -16,6 +16,7 @@ import '../settings_shared_css.js';
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
 import {PrefsBehavior} from '../prefs/prefs_behavior.js';
+import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.m.js';
 
 Polymer({
   is: 'change-ipfs-gateway-dialog',
@@ -42,6 +43,16 @@ Polymer({
      * @private
      */
     gatewayUrl_: String,
+  },
+  browserProxy_: null,
+  /** @override */
+  created: function() {
+    this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance();
+  },
+
+  /** @override */
+  ready: function() {
+    this.$.url.value = this.getPref('brave.ipfs.public_gateway_address').value;
   },
 
   /** @private */
@@ -73,7 +84,13 @@ Polymer({
   },
 
   handleSubmit_: function() {
-    this.setPrefValue('brave.ipfs.public_gateway_address', this.gatewayUrl_);
-    this.fire('close');
+    this.browserProxy_.validateGatewayUrl(
+        this.gatewayUrl_.toString()).then(success => {
+      this.isUrlValid_ = success
+      if (success) {
+        this.setPrefValue('brave.ipfs.public_gateway_address', this.gatewayUrl_);
+        this.fire('close');
+      }
+    });
   },
 });

@@ -29,7 +29,7 @@ Dayparts::Dayparts() = default;
 
 Dayparts::~Dayparts() = default;
 
-void Dayparts::InsertOrUpdate(DBTransaction* transaction,
+void Dayparts::InsertOrUpdate(mojom::DBTransaction* transaction,
                               const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
@@ -37,15 +37,15 @@ void Dayparts::InsertOrUpdate(DBTransaction* transaction,
     return;
   }
 
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::RUN;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
   command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
 
   transaction->commands.push_back(std::move(command));
 }
 
 void Dayparts::Delete(ResultCallback callback) {
-  DBTransactionPtr transaction = DBTransaction::New();
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
   util::Delete(transaction.get(), get_table_name());
 
@@ -58,7 +58,8 @@ std::string Dayparts::get_table_name() const {
   return kTableName;
 }
 
-void Dayparts::Migrate(DBTransaction* transaction, const int to_version) {
+void Dayparts::Migrate(mojom::DBTransaction* transaction,
+                       const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
@@ -75,7 +76,7 @@ void Dayparts::Migrate(DBTransaction* transaction, const int to_version) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int Dayparts::BindParameters(DBCommand* command,
+int Dayparts::BindParameters(mojom::DBCommand* command,
                              const CreativeAdList& creative_ads) {
   DCHECK(command);
 
@@ -97,7 +98,7 @@ int Dayparts::BindParameters(DBCommand* command,
 }
 
 std::string Dayparts::BuildInsertOrUpdateQuery(
-    DBCommand* command,
+    mojom::DBCommand* command,
     const CreativeAdList& creative_ads) {
   const int count = BindParameters(command, creative_ads);
 
@@ -111,7 +112,7 @@ std::string Dayparts::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(4, count).c_str());
 }
 
-void Dayparts::CreateTableV15(DBTransaction* transaction) {
+void Dayparts::CreateTableV15(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -125,14 +126,14 @@ void Dayparts::CreateTableV15(DBTransaction* transaction) {
       "ON CONFLICT REPLACE)",
       get_table_name().c_str());
 
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
 }
 
-void Dayparts::MigrateToV15(DBTransaction* transaction) {
+void Dayparts::MigrateToV15(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());

@@ -11,12 +11,11 @@ import {
 
 import { PriceDataObjectType } from '../../../constants/types'
 import theme from 'brave-ui/theme/colors/'
+import CustomTooltip from './custom-tooltip'
 
 // Styled Components
 import {
   StyledWrapper,
-  LabelWrapper,
-  ChartLabel,
   LoadingOverlay,
   LoadIcon
 } from './style'
@@ -27,6 +26,7 @@ export interface Props {
   isAsset: boolean
   isDown: boolean
   isLoading: boolean
+  isDisabled: boolean
 }
 
 const EmptyChartData = [
@@ -45,15 +45,15 @@ const EmptyChartData = [
 ]
 
 function LineChart (props: Props) {
-  const { priceData, onUpdateBalance, isAsset, isDown, isLoading } = props
+  const { priceData, onUpdateBalance, isAsset, isDown, isLoading, isDisabled } = props
   const [position, setPosition] = React.useState<number>(0)
 
   const chartData = React.useMemo(() => {
-    if (priceData.length <= 0) {
+    if (priceData.length <= 0 || isDisabled) {
       return EmptyChartData
     }
     return priceData
-  }, [priceData])
+  }, [priceData, isDisabled])
 
   const lastPoint = chartData.length - 1
 
@@ -66,7 +66,7 @@ function LineChart (props: Props) {
           <animate attributeName='r' values='3;8;3;3' dur='3s' begin='0s' repeatCount='indefinite' />
           <animate attributeName='opacity' values='1;0;0;0' dur='3s' begin='0s' repeatCount='indefinite' />
         </circle >
-        <circle fill={isAsset ? isDown ? theme.red600 : theme.teal600 : '#BF14A2'} cx={props.cx} r='3' cy={props.cy} />
+        <circle fill={isAsset ? isDown ? '#EE6374' : '#2AC194' : '#BF14A2'} cx={props.cx} r='3' cy={props.cy} />
       </>
     )
   }
@@ -75,30 +75,8 @@ function LineChart (props: Props) {
     onUpdateBalance(undefined)
   }
 
-  const parseDate = (date: Date) => {
-    const formatedDate = new Date(date).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })
-    const formatedTime = new Date(date).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-    return `${formatedDate} ${formatedTime}`
-  }
-
-  // TODO: Need to refactor this to not allow label to go off chart area.
-  const CustomTooltip = (value: any) => {
-    if (value.active && value.payload && value.payload.length) {
-      setPosition(value.coordinate.x)
-      onUpdateBalance(value.payload[0].value)
-      const xLeftCoordinate = Math.trunc(value.coordinate.x)
-      const viewBoxWidth = Math.trunc(value.viewBox.width)
-      const xRightCoordinate = xLeftCoordinate - viewBoxWidth
-      const isEndOrMiddle = xRightCoordinate >= -46 ? 'end' : 'middle'
-      const labelPosition = xLeftCoordinate <= 62 ? 'start' : isEndOrMiddle
-      const middleEndTranslate = xRightCoordinate >= 8 ? 0 : Math.abs(xRightCoordinate) + 8
-      return (
-        <LabelWrapper labelTranslate={labelPosition === 'start' ? xLeftCoordinate : middleEndTranslate} labelPosition={labelPosition}>
-          <ChartLabel>{parseDate(value.label)}</ChartLabel>
-        </LabelWrapper>
-      )
-    }
-    return null
+  const onUpdatePosition = (value: number) => {
+    setPosition(value)
   }
 
   return (
@@ -121,15 +99,19 @@ function LineChart (props: Props) {
           </defs>
           <YAxis hide={true} domain={['auto', 'auto']} />
           <XAxis hide={true} dataKey='date' />
-          {priceData.length > 0 &&
-            <Tooltip isAnimationActive={false} position={{ x: position, y: 0 }} content={<CustomTooltip />} />
+          {priceData.length > 0 && !isDisabled &&
+            <Tooltip
+              isAnimationActive={false}
+              position={{ x: position, y: 0 }}
+              content={<CustomTooltip onUpdateBalance={onUpdateBalance} onUpdatePosition={onUpdatePosition} />}
+            />
           }
           <Area
             isAnimationActive={false}
             type='monotone'
             dataKey='close'
             strokeWidth={2}
-            stroke={isAsset ? isDown ? theme.red600 : theme.teal600 : priceData.length <= 0 ? '#BF14A2' : `url(#lineGradient)`}
+            stroke={isAsset ? isDown ? '#EE6374' : '#2AC194' : priceData.length <= 0 ? '#BF14A2' : `url(#lineGradient)`}
             fill='none'
           />
           <ReferenceDot x={chartData[lastPoint].date.toString()} y={chartData[lastPoint].close} shape={CustomReferenceDot} />

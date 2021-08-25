@@ -11,9 +11,27 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
+#include "extensions/buildflags/buildflags.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "chrome/browser/extensions/tab_helper.h"
+#include "extensions/browser/view_type_utils.h"
+#include "extensions/common/mojom/view_type.mojom.h"
+#endif
+
 namespace sidebar {
+
+namespace {
+
+void AttachTabHelpersForSidebar(content::WebContents* contents) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  extensions::SetViewType(contents, extensions::mojom::ViewType::kTabContents);
+  extensions::TabHelper::CreateForWebContents(contents);
+#endif
+}
+
+}  // namespace
 
 SidebarModelData::SidebarModelData(Profile* profile) : profile_(profile) {}
 
@@ -29,6 +47,8 @@ content::WebContents* SidebarModelData::GetWebContents() {
     contents_ = content::WebContents::Create(params);
     contents_delegate_.reset(new SidebarWebContentsDelegate);
     contents_->SetDelegate(contents_delegate_.get());
+
+    AttachTabHelpersForSidebar(contents_.get());
   }
 
   return contents_.get();

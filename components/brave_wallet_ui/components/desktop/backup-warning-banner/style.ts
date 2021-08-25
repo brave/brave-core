@@ -44,6 +44,9 @@ export const BannerButton = styled.button<StyleProps>`
   font-size: 12px;
   font-weight: 600;
   color: ${(p) => p.buttonType === 'primary' ? p.theme.color.interactive05 : p.theme.color.text02};
+  @media (prefers-color-scheme: dark) {
+    color: ${(p) => p.buttonType === 'primary' ? p.theme.palette.white : p.theme.color.text02};
+  }
   letter-spacing: 0.01em;
   margin-left: 20px;
 `

@@ -16,7 +16,7 @@ class LedgerImpl;
 namespace gemini {
 
 const char kFeeAddressStaging[] = "60edbc1b-eaa7-4aa0-afb8-a87a89634c55";
-const char kFeeAddressProduction[] = "60edbc1b-eaa7-4aa0-afb8-a87a89634c55";
+const char kFeeAddressProduction[] = "6116ad51-b50d-4e54-bb59-9de559beffdd";
 const char kACAddressStaging[] = "60e5e863-8c3d-4341-8b54-23e2695a490c";
 const char kACAddressProduction[] = "60e5e863-8c3d-4341-8b54-23e2695a490c";
 
@@ -31,8 +31,6 @@ std::string GetFeeAddress();
 std::string GetACAddress();
 
 std::string GetAuthorizeUrl(const std::string& state);
-
-std::string GetVerifyUrl();
 
 std::string GetAddUrl();
 

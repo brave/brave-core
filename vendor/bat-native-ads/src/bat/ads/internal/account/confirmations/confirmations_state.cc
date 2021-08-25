@@ -16,7 +16,6 @@
 #include "bat/ads/internal/legacy_migration/legacy_migration_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "wrapper.hpp"
 
 namespace ads {
@@ -69,9 +68,8 @@ void ConfirmationsState::Load() {
   BLOG(3, "Loading confirmations state");
 
   AdsClientHelper::Get()->Load(
-      kConfirmationsFilename,
-      [=](const Result result, const std::string& json) {
-        if (result != SUCCESS) {
+      kConfirmationsFilename, [=](const bool success, const std::string& json) {
+        if (!success) {
           BLOG(3, "Confirmations state does not exist, creating default state");
 
           is_initialized_ = true;
@@ -83,7 +81,7 @@ void ConfirmationsState::Load() {
 
             BLOG(3, "Failed to parse confirmations state: " << json);
 
-            callback_(FAILED);
+            callback_(/* success */ false);
             return;
           }
 
@@ -92,7 +90,7 @@ void ConfirmationsState::Load() {
           is_initialized_ = true;
         }
 
-        callback_(SUCCESS);
+        callback_(/* success */ true);
       });
 }
 
@@ -105,8 +103,8 @@ void ConfirmationsState::Save() {
 
   const std::string json = ToJson();
   AdsClientHelper::Get()->Save(
-      kConfirmationsFilename, json, [](const Result result) {
-        if (result != SUCCESS) {
+      kConfirmationsFilename, json, [](const bool success) {
+        if (!success) {
           BLOG(0, "Failed to save confirmations state");
           return;
         }

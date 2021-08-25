@@ -42,7 +42,6 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/logging.h"
@@ -50,6 +49,7 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/browser/service_sandbox_type.h"
 #include "brave/components/brave_rewards/browser/static_values.h"
 #include "brave/components/brave_rewards/browser/switches.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
@@ -60,10 +60,8 @@
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
-#include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/service_sandbox_type.h"
 #include "components/country_codes/country_codes.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
@@ -78,6 +76,7 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -89,7 +88,7 @@
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #endif
@@ -654,7 +653,7 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
   auto origin = url.GetOrigin().host();
   std::string baseDomain =
       GetDomainAndRegistry(url.host(), INCLUDE_PRIVATE_REGISTRIES);
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (baseDomain.empty()) {
     baseDomain = ipfs::GetRegistryDomainFromIPNS(url);
     if (!baseDomain.empty()) {
@@ -1777,8 +1776,8 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
   auto origin = parsed_url.GetOrigin().spec();
   std::string baseDomain =
       GetDomainAndRegistry(parsed_url.host(), INCLUDE_PRIVATE_REGISTRIES);
-  std::string path = parsed_url.PathForRequest();
-#if BUILDFLAG(IPFS_ENABLED)
+  std::string path = parsed_url.has_path() ? parsed_url.PathForRequest() : "";
+#if BUILDFLAG(ENABLE_IPFS)
   if (baseDomain.empty()) {
     baseDomain = ipfs::GetRegistryDomainFromIPNS(parsed_url);
     if (!baseDomain.empty()) {
@@ -2403,17 +2402,15 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       continue;
     }
 
-    if (name == "short-retries") {
-      std::string lower = base::ToLowerASCII(value);
-      bool short_retries;
+    if (name == "retry-interval") {
+      int retry_interval;
+      bool success = base::StringToInt(value, &retry_interval);
 
-      if (lower == "true" || lower == "1") {
-        short_retries = true;
-      } else {
-        short_retries = false;
+      if (success && retry_interval > 0) {
+        SetRetryInterval(retry_interval);
       }
 
-      SetShortRetries(short_retries);
+      continue;
     }
 
     if (name == "development") {
@@ -2523,7 +2520,7 @@ void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
   }
 
   bat_ledger_service_->SetTesting();
-  SetShortRetries(true);
+  SetRetryInterval(1);
 
   profile_->GetPrefs()->SetInteger(prefs::kMinVisitTime, 1);
 
@@ -2561,8 +2558,8 @@ void RewardsServiceImpl::GetReconcileInterval(
   bat_ledger_service_->GetReconcileInterval(std::move(callback));
 }
 
-void RewardsServiceImpl::GetShortRetries(GetShortRetriesCallback callback) {
-  bat_ledger_service_->GetShortRetries(std::move(callback));
+void RewardsServiceImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
+  bat_ledger_service_->GetRetryInterval(std::move(callback));
 }
 
 void RewardsServiceImpl::SetEnvironment(ledger::type::Environment environment) {
@@ -2577,8 +2574,8 @@ void RewardsServiceImpl::SetReconcileInterval(const int32_t interval) {
   bat_ledger_service_->SetReconcileInterval(interval);
 }
 
-void RewardsServiceImpl::SetShortRetries(bool short_retries) {
-  bat_ledger_service_->SetShortRetries(short_retries);
+void RewardsServiceImpl::SetRetryInterval(int32_t interval) {
+  bat_ledger_service_->SetRetryInterval(interval);
 }
 
 void RewardsServiceImpl::GetPendingContributionsTotal(

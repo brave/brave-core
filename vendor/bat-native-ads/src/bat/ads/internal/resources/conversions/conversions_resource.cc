@@ -10,7 +10,6 @@
 #include "base/json/json_reader.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 namespace resource {
@@ -31,8 +30,8 @@ bool Conversions::IsInitialized() const {
 void Conversions::Load() {
   AdsClientHelper::Get()->LoadAdsResource(
       kResourceId, kVersionId,
-      [=](const Result result, const std::string& json) {
-        if (result != SUCCESS) {
+      [=](const bool success, const std::string& json) {
+        if (!success) {
           BLOG(1, "Failed to load resource " << kResourceId);
           is_initialized_ = false;
           return;

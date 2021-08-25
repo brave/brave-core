@@ -219,6 +219,54 @@
     "message": "कृपया अपने Brave बटुए को बैकअप करें।",
     "description": "Description for backup wallet notification"
   },
+  "upholdBATNotAllowedForUserLearnMore": {
+    "message": "अधिक जानकारी प्राप्त करें",
+    "description": "Notification button text to learn more about why BAT is not allowed for user"
+  },
+  "upholdBATNotAllowedForUserTitle": {
+    "message": "एरर: बैट अनुपलब्ध है",
+    "description": "Title for BAT not allowed for user notification"
+  },
+  "upholdBATNotAllowedForUserNotification": {
+    "message": "आपके क्षेत्र में Uphold पर bAT अभी तक सपोर्टेड नहीं है.",
+    "description": "Description for BAT not allowed for user notification"
+  },
+  "upholdBlockedUserLearnMore": {
+    "message": "अधिक जानकारी प्राप्त करें",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
+  "upholdBlockedUserTitle": {
+    "message": "एरर: ब्लॉक किया गया अकाउंट",
+    "description": "Title for blocked user notification"
+  },
+  "upholdBlockedUserNotification": {
+    "message": "Uphold पर आपका अकाउंट अभी ब्लॉक्ड है.",
+    "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "अधिक जानकारी प्राप्त करें",
+    "description": "Notification button text to learn more about the pending user status"
+  },
+  "upholdPendingUserTitle": {
+    "message": "एरर: पेंडिंग अकाउंट",
+    "description": "Title for pending user notification"
+  },
+  "upholdPendingUserNotification": {
+    "message": "Uphold पर आपका अकाउंट अभी भी पेंडिंग है.",
+    "description": "Description for pending user notification"
+  },
+  "upholdRestrictedUserLearnMore": {
+    "message": "अधिक जानकारी प्राप्त करें",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
+  "upholdRestrictedUserTitle": {
+    "message": "एरर: रोक लगाया हुआ अकाउंट",
+    "description": "Title for restricted user notification"
+  },
+  "upholdRestrictedUserNotification": {
+    "message": "Uphold पर इस समय आपके अकाउंट पर रोक लगी हुई है.",
+    "description": "Description for restricted user notification"
+  },
   "deviceLimitReachedLearnMore": {
     "message": "अधिक जानकारी प्राप्त करें",
     "description": "Notification button text to learn more about device limit"

@@ -15,7 +15,8 @@
           !chrome.ipfs.getIpnsKeysList &&
           !chrome.ipfs.addIpnsKey &&
           !chrome.ipfs.rotateKey &&
-          !chrome.ipfs.removeIpnsKey) {
+          !chrome.ipfs.removeIpnsKey &&
+          !chrome.ipfs.validateGatewayUrl) {
         chrome.test.succeed();
       } else {
         chrome.test.fail();

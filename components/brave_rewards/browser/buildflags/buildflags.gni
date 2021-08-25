@@ -1,3 +1,0 @@
-declare_args() {
-  brave_rewards_enabled = is_mac || is_linux || is_win || is_android
-}

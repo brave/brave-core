@@ -79,7 +79,7 @@ using GetEnvironmentCallback =
     base::OnceCallback<void(ledger::type::Environment)>;
 using GetDebugCallback = base::OnceCallback<void(bool)>;
 using GetReconcileIntervalCallback = base::OnceCallback<void(int32_t)>;
-using GetShortRetriesCallback = base::OnceCallback<void(bool)>;
+using GetRetryIntervalCallback = base::OnceCallback<void(int32_t)>;
 using GetTestResponseCallback = base::RepeatingCallback<void(
     const std::string& url,
     int32_t method,
@@ -204,8 +204,8 @@ class RewardsServiceImpl : public RewardsService,
   void GetDebug(GetDebugCallback callback);
   void SetReconcileInterval(const int32_t interval);
   void GetReconcileInterval(GetReconcileIntervalCallback callback);
-  void SetShortRetries(bool short_retries);
-  void GetShortRetries(GetShortRetriesCallback callback);
+  void SetRetryInterval(int32_t interval);
+  void GetRetryInterval(GetRetryIntervalCallback callback);
 
   void GetAutoContributeProperties(
       GetAutoContributePropertiesCallback callback) override;

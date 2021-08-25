@@ -14,15 +14,12 @@
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/transaction_info.h"
 
 namespace ads {
 
 class AdRewards;
-
-namespace privacy {
-class UnblindedTokens;
-}  // namespace privacy
 
 class ConfirmationsState {
  public:
@@ -45,9 +42,11 @@ class ConfirmationsState {
   ConfirmationList get_failed_confirmations() const;
   void append_failed_confirmation(const ConfirmationInfo& confirmation);
   bool remove_failed_confirmation(const ConfirmationInfo& confirmation);
+  void reset_failed_confirmations() { failed_confirmations_ = {}; }
 
   TransactionList get_transactions() const;
   void add_transaction(const TransactionInfo& transaction);
+  void reset_transactions() { transactions_ = {}; }
 
   base::Time get_next_token_redemption_date() const;
   void set_next_token_redemption_date(

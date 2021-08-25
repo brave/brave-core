@@ -8,10 +8,13 @@
 #include <memory>
 #include <utility>
 
+#include "base/cxx17_backports.h"
 #include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/threading/thread_restrictions.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
@@ -20,7 +23,7 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_perf_predictor/browser/buildflags.h"
+#include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -31,6 +34,7 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/weekly_storage/weekly_storage.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -43,10 +47,6 @@ using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
 using ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImage;  // NOLINT
 using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
 using ntp_background_images::ViewCounterServiceFactory;
-
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-#include "brave/components/brave_perf_predictor/common/pref_names.h"
-#endif
 
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
 #include "brave/components/crypto_dot_com/common/pref_names.h"
@@ -77,54 +77,37 @@ base::DictionaryValue GetStatsDictionary(PrefService* prefs) {
   stats_data.SetInteger(
     "fingerprintingBlockedStat",
     prefs->GetUint64(kFingerprintingBlocked));
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   stats_data.SetDouble(
       "bandwidthSavedStat",
       prefs->GetUint64(brave_perf_predictor::prefs::kBandwidthSavedBytes));
-#endif
   return stats_data;
 }
 
 base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   base::DictionaryValue pref_data;
-  pref_data.SetBoolean(
-      "showBackgroundImage",
-      prefs->GetBoolean(kNewTabPageShowBackgroundImage));
+  pref_data.SetBoolean("showBackgroundImage",
+                       prefs->GetBoolean(kNewTabPageShowBackgroundImage));
   pref_data.SetBoolean(
       "brandedWallpaperOptIn",
       prefs->GetBoolean(kNewTabPageShowSponsoredImagesBackgroundImage));
-  pref_data.SetBoolean(
-      "showClock",
-      prefs->GetBoolean(kNewTabPageShowClock));
-  pref_data.SetString(
-      "clockFormat",
-      prefs->GetString(kNewTabPageClockFormat));
-  pref_data.SetBoolean(
-      "showStats",
-      prefs->GetBoolean(kNewTabPageShowStats));
-  pref_data.SetBoolean(
-      "showToday",
-      prefs->GetBoolean(kNewTabPageShowToday));
-  pref_data.SetBoolean(
-      "showRewards",
-      prefs->GetBoolean(kNewTabPageShowRewards));
+  pref_data.SetBoolean("showClock", prefs->GetBoolean(kNewTabPageShowClock));
+  pref_data.SetString("clockFormat", prefs->GetString(kNewTabPageClockFormat));
+  pref_data.SetBoolean("showStats", prefs->GetBoolean(kNewTabPageShowStats));
+  pref_data.SetBoolean("showToday", prefs->GetBoolean(kNewTabPageShowToday));
+  pref_data.SetBoolean("showRewards",
+                       prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.SetBoolean(
       "isBrandedWallpaperNotificationDismissed",
       prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
   pref_data.SetBoolean("isBraveTodayOptedIn",
                        prefs->GetBoolean(kBraveTodayOptedIn));
-  pref_data.SetBoolean(
-      "hideAllWidgets",
-      prefs->GetBoolean(kNewTabPageHideAllWidgets));
-  pref_data.SetBoolean(
-      "showBinance",
-      prefs->GetBoolean(kNewTabPageShowBinance));
-  pref_data.SetBoolean(
-      "showTogether",
-      prefs->GetBoolean(kNewTabPageShowTogether));
-  pref_data.SetBoolean(
-      "showGemini",
-      prefs->GetBoolean(kNewTabPageShowGemini));
+  pref_data.SetBoolean("hideAllWidgets",
+                       prefs->GetBoolean(kNewTabPageHideAllWidgets));
+  pref_data.SetBoolean("showBinance",
+                       prefs->GetBoolean(kNewTabPageShowBinance));
+  pref_data.SetBoolean("showBraveTalk",
+                       prefs->GetBoolean(kNewTabPageShowBraveTalk));
+  pref_data.SetBoolean("showGemini", prefs->GetBoolean(kNewTabPageShowGemini));
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   pref_data.SetBoolean(
       "showCryptoDotCom",
@@ -180,6 +163,22 @@ void BraveNewTabMessageHandler::RecordInitialP3AValues(
       kNTPCustomizeUsageStatus, local_state);
 }
 
+bool BraveNewTabMessageHandler::CanPromptBraveTalk() {
+  return BraveNewTabMessageHandler::CanPromptBraveTalk(base::Time::Now());
+}
+
+bool BraveNewTabMessageHandler::CanPromptBraveTalk(base::Time now) {
+  // Only show Brave Talk prompt 4 days after first run.
+  // CreateSentinelIfNeeded() is called in chrome_browser_main.cc, making this a
+  // non-blocking read of the cached sentinel value when running from production
+  // code. However tests will never create the sentinel file due to being run
+  // with the switches:kNoFirstRun flag, so we need to allow blocking for that.
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  base::Time time_first_run = first_run::GetFirstRunSentinelCreationTime();
+  base::Time talk_prompt_trigger_time = now - base::TimeDelta::FromDays(3);
+  return (time_first_run <= talk_prompt_trigger_time);
+}
+
 BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
       content::WebUIDataSource* source, Profile* profile) {
   //
@@ -201,6 +200,9 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
       "featureFlagBraveNTPSponsoredImagesWallpaper",
       base::FeatureList::IsEnabled(kBraveNTPBrandedWallpaper) &&
       is_ads_supported_locale_);
+  source->AddBoolean("braveTalkPromptAllowed",
+                     BraveNewTabMessageHandler::CanPromptBraveTalk());
+
   // Private Tab info
   if (IsPrivateNewTab(profile)) {
     source->AddBoolean(
@@ -393,7 +395,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kNewTabPageShowTogether,
+      kNewTabPageShowBraveTalk,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
@@ -528,8 +530,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageHideAllWidgets;
   } else if (settingsKeyInput == "showBinance") {
     settingsKey = kNewTabPageShowBinance;
-  } else if (settingsKeyInput == "showTogether") {
-    settingsKey = kNewTabPageShowTogether;
+  } else if (settingsKeyInput == "showBraveTalk") {
+    settingsKey = kNewTabPageShowBraveTalk;
   } else if (settingsKeyInput == "showGemini") {
     settingsKey = kNewTabPageShowGemini;
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
@@ -668,7 +670,7 @@ void BraveNewTabMessageHandler::HandleTodayOnCardVisit(
     auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
     ads_service_->OnPromotedContentAdEvent(
         item_id, creative_instance_id,
-        ads::mojom::BraveAdsPromotedContentAdEventType::kClicked);
+        ads::mojom::PromotedContentAdEventType::kClicked);
   }
 }
 
@@ -701,7 +703,7 @@ void BraveNewTabMessageHandler::HandleTodayOnPromotedCardView(
     auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
     ads_service_->OnPromotedContentAdEvent(
         item_id, creative_instance_id,
-        ads::mojom::BraveAdsPromotedContentAdEventType::kViewed);
+        ads::mojom::PromotedContentAdEventType::kViewed);
   }
 }
 
@@ -763,7 +765,7 @@ void BraveNewTabMessageHandler::HandleTodayOnDisplayAdVisit(
   }
   ads_service_->OnInlineContentAdEvent(
       item_id, creative_instance_id,
-      ads::mojom::BraveAdsInlineContentAdEventType::kClicked);
+      ads::mojom::InlineContentAdEventType::kClicked);
 }
 
 void BraveNewTabMessageHandler::HandleTodayOnDisplayAdView(
@@ -794,7 +796,7 @@ void BraveNewTabMessageHandler::HandleTodayOnDisplayAdView(
   }
   ads_service_->OnInlineContentAdEvent(
       item_id, creative_instance_id,
-      ads::mojom::BraveAdsInlineContentAdEventType::kViewed);
+      ads::mojom::InlineContentAdEventType::kViewed);
   // Let p3a know an ad was viewed
   WeeklyStorage storage(profile_->GetPrefs(), kBraveTodayWeeklyCardViewsCount);
   storage.AddDelta(1u);

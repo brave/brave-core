@@ -89,8 +89,9 @@ OBJC_EXPORT
 @property(nonatomic, class, getter=isTesting) BOOL testing;
 /// Number of minutes between reconciles override. Defaults to 0 (no override)
 @property(nonatomic, class) int reconcileInterval;
-/// Whether or not to use short contribution retries. Defaults to false
-@property(nonatomic, class) BOOL useShortRetries;
+/// Number of seconds between contribution retries override. Defaults to 0 (no
+/// override)
+@property(nonatomic, class) int retryInterval;
 
 #pragma mark - Wallet
 

@@ -33,13 +33,13 @@ CreateConfirmationUrlRequestBuilder::~CreateConfirmationUrlRequestBuilder() =
 
 // POST /v1/confirmation/{confirmation_id}/{credential}
 
-UrlRequestPtr CreateConfirmationUrlRequestBuilder::Build() {
-  UrlRequestPtr url_request = UrlRequest::New();
+mojom::UrlRequestPtr CreateConfirmationUrlRequestBuilder::Build() {
+  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
   url_request->url = BuildUrl();
   url_request->headers = BuildHeaders();
   url_request->content = BuildBody();
   url_request->content_type = "application/json";
-  url_request->method = UrlRequestMethod::POST;
+  url_request->method = mojom::UrlRequestMethod::kPost;
 
   return url_request;
 }

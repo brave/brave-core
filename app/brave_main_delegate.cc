@@ -18,7 +18,6 @@
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/resource_bundle_helper.h"
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
@@ -30,6 +29,7 @@
 #include "chrome/common/chrome_switches.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/embedder_support/switches.h"
 #include "components/federated_learning/features/features.h"
 #include "components/feed/feed_feature_list.h"
@@ -38,6 +38,7 @@
 #include "components/offline_pages/core/offline_page_feature.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
+#include "components/reading_list/features/reading_list_switches.h"
 #include "components/security_state/core/features.h"
 #include "components/sync/base/sync_base_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
@@ -51,10 +52,6 @@
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/common/features.h"
 #include "ui/base/ui_base_features.h"
-
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-#include "components/dom_distiller/core/dom_distiller_switches.h"
-#endif
 
 #if defined(OS_ANDROID)
 #include "base/android/jni_android.h"
@@ -162,10 +159,9 @@ void BraveMainDelegate::PreSandboxStartup() {
 
 bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   BraveCommandLineHelper command_line(base::CommandLine::ForCurrentProcess());
-#if BUILDFLAG(BRAVE_ADS_ENABLED) || BUILDFLAG(ENABLE_SPEEDREADER)
-  command_line.AppendSwitch(switches::kEnableDomDistiller);
-#endif  // BUILDFLAG(BRAVE_ADS_ENABLED) || BUILDFLAG(ENABLE_SPEEDREADER)
+  command_line.AppendSwitch(switches::kDisableClientSidePhishingDetection);
   command_line.AppendSwitch(switches::kDisableDomainReliability);
+  command_line.AppendSwitch(switches::kEnableDomDistiller);
   command_line.AppendSwitch(switches::kNoPings);
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
@@ -213,7 +209,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     autofill::features::kAutofillServerCommunication.name,
     blink::features::kFledgeInterestGroupAPI.name,
     blink::features::kFledgeInterestGroups.name,
-    blink::features::kHandwritingRecognitionWebPlatformApi.name,
     blink::features::kHandwritingRecognitionWebPlatformApiFinch.name,
     blink::features::kInterestCohortAPIOriginTrial.name,
     blink::features::kInterestCohortFeaturePolicy.name,
@@ -234,6 +229,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     network::features::kTrustTokens.name,
     network_time::kNetworkTimeServiceQuerying.name,
     password_manager::features::kEnablePasswordsAccountStorage.name,
+    reading_list::switches::kReadLater.name,
 #if defined(OS_ANDROID)
     features::kWebNfc.name,
     feed::kInterestFeedContentSuggestions.name,
@@ -241,8 +237,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     offline_pages::kPrefetchingOfflinePagesFeature.name,
     signin::kMobileIdentityConsistency.name,
     translate::kTranslate.name,
-#else
-    kEnableProfilePickerOnStartupFeature.name,
 #endif
   };
 

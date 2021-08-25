@@ -11,7 +11,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -92,7 +91,7 @@ class BraveBrowserProcess {
 #if BUILDFLAG(ENABLE_TOR)
   virtual tor::BraveTorClientUpdater* tor_client_updater() = 0;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   virtual ipfs::BraveIpfsClientUpdater* ipfs_client_updater() = 0;
 #endif
   virtual brave::BraveP3AService* brave_p3a_service() = 0;
@@ -104,9 +103,7 @@ class BraveBrowserProcess {
   virtual speedreader::SpeedreaderRewriterService*
   speedreader_rewriter_service() = 0;
 #endif
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
   virtual brave_ads::ResourceComponent* resource_component() = 0;
-#endif
 };
 
 extern BraveBrowserProcess* g_brave_browser_process;

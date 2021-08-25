@@ -9,7 +9,6 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/result.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
@@ -34,11 +33,11 @@ bool TextClassification::IsInitialized() const {
 void TextClassification::Load() {
   AdsClientHelper::Get()->LoadAdsResource(
       kResourceId, features::GetTextClassificationResourceVersion(),
-      [=](const Result result, const std::string& json) {
+      [=](const bool success, const std::string& json) {
         text_processing_pipeline_.reset(
             ml::pipeline::TextProcessing::CreateInstance());
 
-        if (result != SUCCESS) {
+        if (!success) {
           BLOG(1, "Failed to load " << kResourceId
                                     << " text classification resource");
           return;

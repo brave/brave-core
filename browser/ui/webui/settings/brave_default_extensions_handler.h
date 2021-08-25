@@ -17,7 +17,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
@@ -26,7 +26,7 @@
 class Profile;
 
 class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
     ,
                                       ipfs::IpfsServiceObserver,
                                       public ui::SelectFileDialog::Listener
@@ -69,10 +69,9 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
                        extensions::webstore_install::Result result);
 
   void OnRestartNeededChanged();
-  void OnMediaRouterEnabledChanged();
   bool IsRestartNeeded();
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   void SetIPFSStorageMax(const base::ListValue* args);
   void ImportIpnsKey(const base::ListValue* args);
   void LaunchIPFSService(const base::ListValue* args);
@@ -108,7 +107,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
 #if BUILDFLAG(ENABLE_TOR)
   PrefChangeRegistrar local_state_change_registrar_;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   base::ScopedObservation<ipfs::IpfsService, ipfs::IpfsServiceObserver>
       ipfs_service_observer_{this};
 #endif

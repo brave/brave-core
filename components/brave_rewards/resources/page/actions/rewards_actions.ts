@@ -341,3 +341,5 @@ export const getEnabledInlineTippingPlatforms = () => action(types.GET_ENABLED_I
 export const onEnabledInlineTippingPlatforms = (platforms: string[]) => action(types.ON_ENABLED_INLINE_TIPPING_PLATFORMS, {
   platforms
 })
+
+export const restartBrowser = () => action(types.RESTART_BROWSER)

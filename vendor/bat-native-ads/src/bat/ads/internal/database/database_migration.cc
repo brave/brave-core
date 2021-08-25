@@ -35,11 +35,11 @@ Migration::~Migration() = default;
 void Migration::FromVersion(const int from_version, ResultCallback callback) {
   const int to_version = version();
   if (to_version == from_version) {
-    callback(Result::SUCCESS);
+    callback(/* success */ true);
     return;
   }
 
-  DBTransactionPtr transaction = DBTransaction::New();
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   for (int i = from_version + 1; i <= to_version; i++) {
     ToVersion(transaction.get(), i);
   }
@@ -47,8 +47,8 @@ void Migration::FromVersion(const int from_version, ResultCallback callback) {
   BLOG(1, "Migrated database from version " << from_version << " to version "
                                             << to_version);
 
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::MIGRATE;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::MIGRATE;
 
   transaction->version = to_version;
   transaction->compatible_version = compatible_version();
@@ -59,7 +59,8 @@ void Migration::FromVersion(const int from_version, ResultCallback callback) {
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
-void Migration::ToVersion(DBTransaction* transaction, const int to_version) {
+void Migration::ToVersion(mojom::DBTransaction* transaction,
+                          const int to_version) {
   DCHECK(transaction);
 
   table::Conversions conversions_database_table;

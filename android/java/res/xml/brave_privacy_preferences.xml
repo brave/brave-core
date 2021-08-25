@@ -132,5 +132,11 @@
             android:title="@string/send_p3a_analytics_title"
             android:summary="@string/send_p3a_analytics_summary"
             android:defaultValue="false" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="brave_stats_usage_ping"
+            android:order="25"
+            android:title="@string/brave_stats_usage_ping_title"
+            android:summary="@string/brave_stats_usage_ping_summary"
+            android:defaultValue="true" />
 
 </PreferenceScreen>

@@ -53,7 +53,7 @@ import {
 } from 'brave-ui/components/icons'
 
 import { BitflyerIcon } from '../../../shared/components/icons/bitflyer_icon'
-import { GeminiIcon, GeminiFooterIcon } from '../../../shared/components/icons/gemini_icon'
+import { GeminiIcon } from '../../../shared/components/icons/gemini_icon'
 
 import giftIconUrl from './assets/gift.svg'
 import loveIconUrl from './assets/love.svg'
@@ -97,6 +97,7 @@ export type NotificationType =
   'error' |
   'grant' |
   'insufficientFunds' |
+  'mismatchedProviderAccounts' |
   'pendingContribution' |
   'tipsProcessed' |
   'upholdBATNotAllowedForUser' |
@@ -279,11 +280,12 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         buttonAction = this.onNotificationClick
         break
       case 'deviceLimitReached':
+      case 'mismatchedProviderAccounts':
       case 'upholdBATNotAllowedForUser':
       case 'upholdBlockedUser':
       case 'upholdPendingUser':
       case 'upholdRestrictedUser':
-        buttonText = getLocale(type + 'LearnMore')
+        buttonText = getLocale('learnMore')
         buttonAction = this.onNotificationClick
         break
       default:
@@ -465,6 +467,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       case 'backupWallet':
       case 'deviceLimitReached':
       case 'insufficientFunds':
+      case 'mismatchedProviderAccounts':
       case 'upholdBATNotAllowedForUser':
       case 'upholdBlockedUser':
       case 'upholdPendingUser':
@@ -500,6 +503,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     switch (notification.type) {
       case 'backupWallet':
       case 'deviceLimitReached':
+      case 'mismatchedProviderAccounts':
       case 'pendingContribution':
       case 'upholdBATNotAllowedForUser':
       case 'upholdBlockedUser':
@@ -561,7 +565,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       gradientTop,
       notification,
       isMobile,
-      onVerifyClick,
       onDisconnectClick
     } = this.props
 
@@ -608,11 +611,10 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const connectedVerified = walletState === 'verified'
     const batFormatString = getLocale('bat')
     const rewardsText1 = getLocale('rewardsPanelText1').split(/\$\d/g)
-    const rewardsText2 = getLocale('rewardsPanelText2').split(/\$\d/g)
 
     const walletIcon =
       walletType === 'uphold' ? <UpholdColorIcon /> :
-      walletType === 'gemini' ? <GeminiFooterIcon /> :
+      walletType === 'gemini' ? <GeminiIcon /> :
       null
 
     return (
@@ -697,23 +699,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                         {rewardsText1[1]}
                       </span>
                     </>
-                  : walletType === 'uphold' && <>
-                      <StyledCopyImage>{walletIcon}</StyledCopyImage>
-                      <span>
-                        {rewardsText2[0]}
-                        <b>{walletProvider}</b>
-                        {rewardsText2[1]}
-                      </span>
-                      {
-                        onVerifyClick && <>
-                          {' ('}
-                          <StyledLink onClick={this.onActionClick.bind(this, this.props.onVerifyClick)}>
-                            {getLocale('rewardsPanelTextVerify')}
-                          </StyledLink>
-                          {')'}
-                        </>
-                      }
-                    </>
+                  : null
                 }
               </StyledCopy>
               : null

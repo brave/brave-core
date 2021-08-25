@@ -166,21 +166,42 @@
       <message name="IDS_SHOW_BRAVE_ADBLOCK" desc="The show Brave Ad Block menu in the app menu">
         Brave Ad Block
       </message>
-      <message name="IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER" desc="The menu item to report a broken site in the app menu">
-        Report a broken site
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER" desc="The menu item to report a broken site in the app menu">
+          Report a Broken Site
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER" desc="The menu item to report a broken site in the app menu">
+          Report a broken site
+        </message>
+      </if>
       <message name="IDS_SHOW_BRAVE_SYNC" desc="The show brave sync menu in the app menu">
         Sync
       </message>
       <message name="IDS_SHOW_BRAVE_WALLET" desc="The show Brave Wallet menu item (app menu)">
         Wallet
       </message>
-      <message name="IDS_ADD_NEW_PROFILE" desc="The app menu item to create a new User Profile">
-        Create a new profile
-      </message>
-      <message name="IDS_OPEN_GUEST_PROFILE" desc="The app menu item to create a new User Profile">
-        Open guest window
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_ADD_NEW_PROFILE" desc="The app menu item to create a new User Profile">
+          Create a New Profile
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_ADD_NEW_PROFILE" desc="The app menu item to create a new User Profile">
+          Create a new profile
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_OPEN_GUEST_PROFILE" desc="The app menu item to create a new User Profile">
+          Open Guest Window
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_OPEN_GUEST_PROFILE" desc="The app menu item to create a new User Profile">
+          Open guest window
+        </message>
+      </if>
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
       </message>
@@ -240,6 +261,16 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BLOCKED_AUTOPLAY_NO_ACTION" desc="Radio button choice to continue blocking a site from autoplay media, displayed in bubble when a page tries to autoplay media.">
         Continue blocking autoplay
       </message>
+      <!-- Ethereum -->
+      <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM" desc="Label for ethereum site settings.">
+        Ethereum
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM_ASK" desc="Label for ethereum site settings.">
+        Ask when a site wants to access the Ethereum provider API
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM_BLOCK" desc="Label for ethereum site settings.">
+        Block sites from accessing the Ethereum provider API
+      </message>
       <!-- Extensions -->
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
         Brave does not review extensions for security and safety. Only install this extension if you trust the developer.
@@ -285,6 +316,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES" desc="The label for settings switch controlling whether or not Brave suggested sites show up in autocomplete">
         Show Brave suggested sites in autocomplete suggestions
       </message>
+      <message name="IDS_SETTINGS_TABS_SEARCH_SHOW" desc="The button for searching tabs on the left of tab strip region.">
+        Show tab search button
+      </message>
       <!-- Settings / Safety Check -->
       <message name="IDS_SETTINGS_BRAVE_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD_AVAILABLE_ENHANCED" desc="This text points out that Safe Browsing is enabled as standard protection.">
         Standard protection is on.
@@ -295,6 +329,13 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_NONE_DESC" desc="Description for safe browsing no protection mode">
         Does not protect you against dangerous websites, downloads, and extensions.
+      </message>
+      <!-- Settings / Search Engine -->
+      <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_LABEL" desc="The label for the settings switch controlling the addition of custom search engines">
+        Index other search engines
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_DESC" desc="The description for the settings switch controlling the addition of custom search engines">
+        Automatically indexes websites that follow the OpenSearch spec.
       </message>
       <!-- New Tab Page -->
       <message name="IDS_SETTINGS_NEW_TAB" desc="The text label for the New Tab settings page">
@@ -773,7 +814,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Method to resolve Unstoppable Domains
       </message>
       <message name="IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_SUB_DESC" desc="The sub-description for how to handle Unstoppable Domains">
-        <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph> about DNS over HTTPS and Ethereum privacy considerations.
+        <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph> about DNS over HTTPS and Ethereum privacy considerations.
       </message>
       <message name="IDS_SETTINGS_RESOLVE_ENS_DESC" desc="The description for how to handle ENS">
         Method to resolve Ethereum Name Service (ENS)
@@ -842,7 +883,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Node is not launched
       </message>
       <message name="IDS_SETTINGS_IPFS_START_NODE_ERROR" desc="The error message when node was unable to start on IPFS keys manager page">
-        IPFS service launch error, more information is available on the <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" style="text-decoration: underline;" href="chrome://ipfs-internals/"&gt;</ph>diagnostic page<ph name="END_LINK">&lt;/a&gt;</ph>
+        IPFS service launch error, more information is available on the <ph name="BEGIN_LINK">&lt;a target="_blank" style="text-decoration: underline;" href="chrome://ipfs-internals/"&gt;</ph>diagnostic page<ph name="END_LINK">&lt;/a&gt;</ph>
       </message>
       <message name="IDS_SETTINGS_IPNS_KEYS_IMPORT_ERROR" desc="The error text if ipns keys import failed">
         '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key import failed
@@ -878,7 +919,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         IPFS public gateway address
       </message>
       <message name="IDS_SETTINGS_IPFS_METHOD_DESC" desc="The description of IPFS protocol on settings page">
-        <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_MPL">&lt;/a&gt;</ph> about IPFS local node and gateway privacy considerations.
+        <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_MPL">&lt;/a&gt;</ph> about IPFS local node and gateway privacy considerations.
       </message>
       <message name="IDS_SETTINGS_IPFS_CHANGE_GATEWAY_BUTTON_LABEL" desc="The label of the button for changing IPFS gateway address">
         Change
@@ -918,9 +959,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
      <message name="IDS_SETTINGS_HANGOUTS_ENABLED_DESC" desc="The description for Hangouts switch in settings">
         Uses Hangouts component to enable screen sharing and other features in the browser.
-      </message>
-     <message name="IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC" desc="The description for Media Router switch in settings">
-        Uses Media Router component to enable Chromecast in the browser.
       </message>
      <message name="IDS_SETTINGS_RESTART_NOTICE" desc="Notifies the user that they need to relaunch Brave">
         Your changes will take effect the next time you relaunch Brave.
@@ -1119,6 +1157,28 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_CANCEL_BUTTON_LABEL" desc="The text for default browser dialog cancel button">
           Not now
         </message>
+        <!-- Brave crash report permission ask dialog -->
+        <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_OK_BUTTON_LABEL" desc="The text for ok button">
+          Allow
+        </message>
+        <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_CANCEL_BUTTON_LABEL" desc="The text for cancel button">
+          Block
+        </message>
+        <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_CONTENT_TEXT" desc="The contents for crash report ask dialog">
+          Send crash reports automatically so Brave can prevent this issue from happening again?
+        </message>
+        <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_HEADER_TEXT" desc="The header text for crash report ask dialog">
+          <ph name="BROWSER_NAME">$1<ex>Brave Browser</ex></ph> quit unexpectedly.
+        </message>
+        <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_HEADER_TEXT_BROWSER_NAME_PART" desc="This is used for replacing BROWSER_NAME from above HEADER_TEXT.">
+          Brave Browser
+        </message>
+        <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT" desc="The footnote text for crash report ask dialog.">
+          You can change <ph name="SETTING_TEXT">$1<ex>this setting</ex></ph> again at any time.
+        </message>
+        <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT_SETTING_PART" desc="This is used for replacing SETTING_TEXT from above FOOTNOTE_TEXT.">
+          this setting
+        </message>
       </if>
 
       <!-- Brave Ads -->
@@ -1127,6 +1187,11 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_BRAVE_ADS_AD_NOTIFICATION_ACCESSIBLE_NAME" desc="Text to be spoken when an ad notification is shown">
         Brave Ad Notification
+      </message>
+
+      <!-- Brave Tooltips -->
+      <message name="IDS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_ACCESSIBLE_NAME" desc="Text to be spoken when a tooltip is shown">
+        Brave Tooltip
       </message>
 
       <!-- Sidebar -->
@@ -1271,8 +1336,8 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <!-- Brave's copyright statement -->
       <message name="IDS_BRAVE_VERSION_UI_LICENSE" desc="The label below the copyright message, containing the URLs.">
-        Brave is made available to you under the <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) and includes <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" rel="noopener noreferrer" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under a variety of other licenses.
-        You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" rel="noopener noreferrer" href="$3"&gt;</ph>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" rel="noopener noreferrer" href="$4"&gt;</ph>source code used to create this copy<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.
+        Brave is made available to you under the <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) and includes <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under a variety of other licenses.
+        You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>source code used to create this copy<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.
       </message>
       <if expr="not use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
@@ -1284,6 +1349,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
           Bookmark All Tabs...
         </message>
       </if>
+      <!-- Brave VPN -->
+      <message name="IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT" desc="Text for vpn button in toolbar.">
+        VPN
+      </message>
       <message name="IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST" desc="">
         To add a bookmark, click the bookmark button next to the address bar
       </message>

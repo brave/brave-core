@@ -121,7 +121,7 @@ void RefillUnblindedTokens::RequestSignedTokens() {
 
   RequestSignedTokensUrlRequestBuilder url_request_builder(wallet_,
                                                            blinded_tokens_);
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -131,7 +131,7 @@ void RefillUnblindedTokens::RequestSignedTokens() {
 }
 
 void RefillUnblindedTokens::OnRequestSignedTokens(
-    const UrlResponse& url_response) {
+    const mojom::UrlResponse& url_response) {
   BLOG(1, "OnRequestSignedTokens");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -170,7 +170,7 @@ void RefillUnblindedTokens::GetSignedTokens() {
   BLOG(2, "GET /v1/confirmation/token/{payment_id}?nonce={nonce}");
 
   GetSignedTokensUrlRequestBuilder url_request_builder(wallet_, nonce_);
-  UrlRequestPtr url_request = url_request_builder.Build();
+  mojom::UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -179,7 +179,8 @@ void RefillUnblindedTokens::GetSignedTokens() {
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
-void RefillUnblindedTokens::OnGetSignedTokens(const UrlResponse& url_response) {
+void RefillUnblindedTokens::OnGetSignedTokens(
+    const mojom::UrlResponse& url_response) {
   BLOG(1, "OnGetSignedTokens");
 
   BLOG(6, UrlResponseToString(url_response));

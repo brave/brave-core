@@ -5,7 +5,7 @@
   <div slot="body">
     <cr-input id="url" label="$i18n{changeIpfsGatewayDialogLabel}"
         type="url" placeholder="https://dweb.link"
-        value="{{prefs.brave.ipfs.public_gateway_address.value}}" invalid="[[!isUrlValid_]]"
+        invalid="[[!isUrlValid_]]"
         error-message="$i18n{ipfsErrorInvalidAddress}" spellcheck="false"
         on-input=urlChanged_
         autofocus>

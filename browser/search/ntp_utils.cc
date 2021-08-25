@@ -9,7 +9,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
-#include "chrome/common/pref_names.h"
+#include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -26,13 +26,13 @@ void ClearNewTabPageProfilePrefs(Profile* profile) {
 }
 
 const char* const kWidgetPrefNames[] = {
-  kNewTabPageShowRewards,
-  kNewTabPageShowTogether,
-  kNewTabPageShowBinance,
+    kNewTabPageShowRewards,
+    kNewTabPageShowBraveTalk,
+    kNewTabPageShowBinance,
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  kCryptoDotComNewTabPageShowCryptoDotCom,
+    kCryptoDotComNewTabPageShowCryptoDotCom,
 #endif
-  kNewTabPageShowGemini
+    kNewTabPageShowGemini,
 };
 
 }  // namespace
@@ -46,8 +46,8 @@ void MigrateNewTabPagePrefs(Profile* profile) {
   const PrefService::Preference* top_sites_pref =
       prefs->FindPreference(kNewTabPageShowTopSites);
   if (top_sites_pref->HasUserSetting()) {
-    prefs->SetBoolean(prefs::kNtpShortcutsVisible,
-      prefs->GetBoolean(kNewTabPageShowTopSites));
+    prefs->SetBoolean(ntp_prefs::kNtpShortcutsVisible,
+                      prefs->GetBoolean(kNewTabPageShowTopSites));
   }
 
   // The toggle to turn off all widgets used to simply turn off
@@ -82,7 +82,7 @@ void MigrateNewTabPagePrefs(Profile* profile) {
       // take effect, whereby each widget's show/hide setting is remembered
       // individually.
       prefs->SetBoolean(kNewTabPageShowRewards, true);
-      prefs->SetBoolean(kNewTabPageShowTogether, true);
+      prefs->SetBoolean(kNewTabPageShowBraveTalk, true);
       prefs->SetBoolean(kNewTabPageShowBinance, true);
     #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
       prefs->SetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom, true);

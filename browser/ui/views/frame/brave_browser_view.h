@@ -49,6 +49,7 @@ class BraveBrowserView : public BrowserView {
   void CreateWalletBubble();
   void CloseWalletBubble();
   WalletButton* GetWalletButton();
+  views::View* GetWalletButtonAnchorView();
   void StartTabCycling() override;
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -65,6 +66,8 @@ class BraveBrowserView : public BrowserView {
       const TabStripSelectionChange& selection) override;
 
   void StopTabCycling();
+  void UpdateSearchTabsButtonState();
+  void OnPreferenceChanged(const std::string& pref_name);
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   sidebar::Sidebar* InitSidebar() override;
@@ -81,6 +84,7 @@ class BraveBrowserView : public BrowserView {
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
+  PrefChangeRegistrar pref_change_registrar_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);
 };

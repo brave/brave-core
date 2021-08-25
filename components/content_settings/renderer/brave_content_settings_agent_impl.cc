@@ -11,8 +11,8 @@
 #include <vector>
 
 #include "base/callback_helpers.h"
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
-#include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -134,13 +134,8 @@ void BraveContentSettingsAgentImpl::DidNotAllowScript() {
 }
 
 blink::WebSecurityOrigin
-BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync(
-    StorageType storage_type) {
+BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync() {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
-    return {};
-
-  if (storage_type != StorageType::kLocalStorage &&
-      storage_type != StorageType::kSessionStorage)
     return {};
 
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
@@ -149,9 +144,8 @@ BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync(
     return {};
 
   auto frame_origin = url::Origin(frame->GetSecurityOrigin());
-  StoragePermissionsKey key(frame_origin, storage_type);
   const auto ephemeral_storage_origin_it =
-      cached_ephemeral_storage_origins_.find(key);
+      cached_ephemeral_storage_origins_.find(frame_origin);
   if (ephemeral_storage_origin_it != cached_ephemeral_storage_origins_.end())
     return ephemeral_storage_origin_it->second;
 
@@ -164,23 +158,27 @@ BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync(
 
   absl::optional<url::Origin> optional_ephemeral_storage_origin;
   GetContentSettingsManager().AllowEphemeralStorageAccess(
-      routing_id(), ConvertToMojoStorageType(storage_type), frame_origin,
+      routing_id(), frame_origin,
       frame->GetDocument().SiteForCookies().RepresentativeUrl(), top_origin,
       &optional_ephemeral_storage_origin);
   blink::WebSecurityOrigin ephemeral_storage_origin(
       optional_ephemeral_storage_origin
           ? blink::WebSecurityOrigin(*optional_ephemeral_storage_origin)
           : blink::WebSecurityOrigin());
-  cached_ephemeral_storage_origins_[key] = ephemeral_storage_origin;
+  cached_ephemeral_storage_origins_[frame_origin] = ephemeral_storage_origin;
   return ephemeral_storage_origin;
 }
 
 bool BraveContentSettingsAgentImpl::AllowStorageAccessSync(
     StorageType storage_type) {
   bool result = ContentSettingsAgentImpl::AllowStorageAccessSync(storage_type);
-
-  if (result || !GetEphemeralStorageOriginSync(storage_type).IsNull())
+  if (result)
     return true;
+
+  if (storage_type == StorageType::kLocalStorage ||
+      storage_type == StorageType::kSessionStorage) {
+    return !GetEphemeralStorageOriginSync().IsNull();
+  }
 
   return false;
 }

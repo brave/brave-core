@@ -276,6 +276,7 @@ class PageWallet extends React.Component<Props, State> {
               onSaveFile={doNothing}
               onRestore={doNothing}
               onReset={doNothing}
+              onShowQRCode={doNothing}
               internalFunds={0}
             />
             : null

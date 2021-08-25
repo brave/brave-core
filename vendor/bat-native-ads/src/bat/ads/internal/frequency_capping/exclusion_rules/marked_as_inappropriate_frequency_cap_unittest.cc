@@ -23,8 +23,7 @@ class BatAdsMarkedAsInappropriateFrequencyCapTest : public UnitTestBase {
   ~BatAdsMarkedAsInappropriateFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsMarkedAsInappropriateFrequencyCapTest,
-       AllowAdIfNotMarkedAsInappropriate) {
+TEST_F(BatAdsMarkedAsInappropriateFrequencyCapTest, AllowAd) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -37,8 +36,7 @@ TEST_F(BatAdsMarkedAsInappropriateFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsMarkedAsInappropriateFrequencyCapTest,
-       DoNotAllowAdIfMarkedAsInappropriate) {
+TEST_F(BatAdsMarkedAsInappropriateFrequencyCapTest, DoNotAllowAd) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;

@@ -44,6 +44,8 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
       return kLightToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
       return color_utils::AlphaBlend(kLightToolbarIcon, kLightToolbar, 0.3f);
+    case BraveThemeProperties::COLOR_ICON_BASE:
+      return SkColorSetRGB(0x49, 0x50, 0x57);
 #if BUILDFLAG(ENABLE_SIDEBAR)
     case BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND:
       return SkColorSetRGB(0xF3, 0xF3, 0xF5);
@@ -85,6 +87,14 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
       return SkColorSetRGB(0x4C, 0x54, 0xD2);
     case BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_TRACK:
       return SkColorSetRGB(0xE1, 0xE2, 0xF6);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_BORDER:
+      return SkColorSetRGB(0xE1, 0xE1, 0xE1);
+    case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_CONNECTED:
+      return SkColorSetRGB(0x21, 0x25, 0x29);
+    case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_DISCONNECTED:
+      return SkColorSetRGB(0x86, 0x8E, 0x96);
 #endif
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kLightColorForTest;
@@ -128,6 +138,8 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
       return kDarkToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
       return color_utils::AlphaBlend(kDarkToolbarIcon, kDarkToolbar, 0.3f);
+    case BraveThemeProperties::COLOR_ICON_BASE:
+      return SkColorSetRGB(0xC2, 0xC4, 0xCF);
 #if BUILDFLAG(ENABLE_SIDEBAR)
     case BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND:
       return kDarkToolbar;
@@ -170,6 +182,13 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
       return SkColorSetRGB(0x44, 0x36, 0xE1);
     case BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_TRACK:
       return SkColorSetRGB(0x76, 0x79, 0xB1);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_BORDER:
+      return SkColorSetRGB(0x5E, 0x61, 0x75);
+    case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_CONNECTED:
+    case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_DISCONNECTED:
+      return SkColorSetRGB(0xF0, 0xF2, 0xFF);
 #endif
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kDarkColorForTest;

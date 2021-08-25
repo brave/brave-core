@@ -22,7 +22,7 @@ export const defaultState: NewTab.State = {
   customLinksEnabled: false,
   customLinksNum: 0,
   showRewards: false,
-  showTogether: false,
+  showBraveTalk: false,
   showBinance: false,
   showGemini: false,
   showBitcoinDotCom: false,
@@ -33,7 +33,7 @@ export const defaultState: NewTab.State = {
   isBrandedWallpaperNotificationDismissed: true,
   isBraveTodayOptedIn: false,
   showEmptyPage: false,
-  togetherSupported: false,
+  braveTalkSupported: false,
   geminiSupported: false,
   binanceSupported: false,
   bitcoinDotComSupported: false,
@@ -52,7 +52,9 @@ export const defaultState: NewTab.State = {
     httpsUpgradesStat: 0,
     fingerprintingBlockedStat: 0
   },
-  togetherPromptDismissed: false,
+  braveTalkPromptDismissed: false,
+  braveTalkPromptAutoDismissed: false,
+  braveTalkPromptAllowed: loadTimeData.getBoolean('braveTalkPromptAllowed'),
   rewardsState: {
     adsAccountStatement: {
       nextPaymentDate: 0,
@@ -211,8 +213,8 @@ export const replaceStackWidgets = (state: NewTab.State) => {
   const {
     showBinance,
     showRewards,
-    showTogether,
-    togetherSupported,
+    showBraveTalk,
+    braveTalkSupported,
     binanceSupported
   } = state
   const displayLookup = {
@@ -222,8 +224,8 @@ export const replaceStackWidgets = (state: NewTab.State) => {
     'binance': {
       display: binanceSupported && showBinance
     },
-    'together': {
-      display: togetherSupported && showTogether
+    'braveTalk': {
+      display: braveTalkSupported && showBraveTalk
     }
   }
   for (const key in displayLookup) {
@@ -280,9 +282,13 @@ export const load = (): NewTab.State => {
 
 export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {
+    // TODO(petemill): This should be of type NewTab.PersistantState, and first
+    // fix errors related to properties which shouldn't be defined as persistant
+    // (or are obsolete).
     const dataToSave = {
-      togetherSupported: data.togetherSupported,
-      togetherPromptDismissed: data.togetherPromptDismissed,
+      braveTalkSupported: data.braveTalkSupported,
+      braveTalkPromptDismissed: data.braveTalkPromptDismissed,
+      braveTalkPromptAutoDismissed: data.braveTalkPromptAutoDismissed,
       binanceSupported: data.binanceSupported,
       geminiSupported: data.geminiSupported,
       bitcoinDotComSupported: data.bitcoinDotComSupported,

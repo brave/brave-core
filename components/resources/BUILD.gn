@@ -1,7 +1,5 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
-import(
-    "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
@@ -24,29 +22,29 @@ grit("static_resources") {
     "grit/brave_components_resources.h",
     "brave_components_static.pak",
   ]
-  deps = [ ":strings" ]
+  deps = [
+    ":strings",
+    "//brave/components/brave_rewards/resources",
+  ]
 
   if (enable_extensions) {
-    deps += [ "//brave/components/brave_extension/extension/brave_extension" ]
+    deps += [
+      "//brave/components/brave_extension/extension/brave_extension",
+      "//brave/components/brave_rewards/resources/extension:resources",
+    ]
   }
-  if (brave_rewards_enabled) {
-    deps += [ "//brave/components/brave_rewards/resources" ]
-    if (enable_extensions) {
-      deps +=
-          [ "//brave/components/brave_rewards/resources/extension:resources" ]
-    }
-  }
+
   if (enable_tor) {
     deps += [ "//brave/components/tor/resources" ]
   }
 
   defines = [
-    "enable_brave_perf_predictor=$enable_brave_perf_predictor",
     "enable_speedreader=$enable_speedreader",
-    "ipfs_enabled=$ipfs_enabled",
+    "enable_ipfs=$enable_ipfs",
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
     "decentralized_dns_enabled=$decentralized_dns_enabled",
     "enable_ftx=$enable_ftx",
+    "enable_brave_vpn=$enable_brave_vpn",
   ]
 
   grit_flags = [
@@ -85,7 +83,7 @@ repack("resources") {
     ]
   }
 
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     deps += [ "//brave/components/ipfs_ui:generated_resources" ]
     sources += [
       "$root_gen_dir/brave/components/ipfs_ui/resources/ipfs_generated.pak",
@@ -100,6 +98,13 @@ repack("resources") {
 
     deps += [ "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources" ]
     sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak" ]
+  }
+
+  if (enable_brave_vpn) {
+    deps += [
+      "//brave/components/brave_vpn/resources/panel:brave_vpn_panel_generated",
+    ]
+    sources += [ "$root_gen_dir/brave/components/brave_vpn/resources/panel/brave_vpn_panel_generated.pak" ]
   }
 
   if (ethereum_remote_client_enabled) {
@@ -119,7 +124,7 @@ grit("strings") {
 
   defines = [
     "enable_speedreader=$enable_speedreader",
-    "ipfs_enabled=$ipfs_enabled",
+    "enable_ipfs=$enable_ipfs",
     "brave_wallet_enabled=$brave_wallet_enabled",
     "ethereum_remote_client_enabled=$ethereum_remote_client_enabled",
     "decentralized_dns_enabled=$decentralized_dns_enabled",

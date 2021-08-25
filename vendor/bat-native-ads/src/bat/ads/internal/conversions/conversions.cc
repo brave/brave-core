@@ -205,9 +205,9 @@ void Conversions::MaybeConvert(
 void Conversions::StartTimerIfReady() {
   database::table::ConversionQueue database_table;
   database_table.GetAll(
-      [=](const Result result,
+      [=](const bool success,
           const ConversionQueueItemList& conversion_queue_items) {
-        if (result != Result::SUCCESS) {
+        if (!success) {
           BLOG(1, "Failed to get conversion queue");
           return;
         }
@@ -238,17 +238,17 @@ void Conversions::CheckRedirectChain(
   BLOG(1, "Checking URL for conversions");
 
   database::table::AdEvents ad_events_database_table;
-  ad_events_database_table.GetAll([=](const Result result,
+  ad_events_database_table.GetAll([=](const bool success,
                                       const AdEventList& ad_events) {
-    if (result != Result::SUCCESS) {
+    if (!success) {
       BLOG(1, "Failed to get ad events");
       return;
     }
 
     database::table::Conversions conversions_database_table;
-    conversions_database_table.GetAll([=](const Result result,
+    conversions_database_table.GetAll([=](const bool success,
                                           const ConversionList& conversions) {
-      if (result != SUCCESS) {
+      if (!success) {
         BLOG(1, "Failed to get conversions");
         return;
       }
@@ -366,8 +366,8 @@ void Conversions::AddItemToQueue(
       static_cast<int64_t>(base::Time::Now().ToDoubleT());
   conversion_ad_event.confirmation_type = ConfirmationType::kConversion;
 
-  LogAdEvent(conversion_ad_event, [](const Result result) {
-    if (result != Result::SUCCESS) {
+  LogAdEvent(conversion_ad_event, [](const bool success) {
+    if (!success) {
       BLOG(1, "Failed to log conversion event");
       return;
     }
@@ -389,8 +389,8 @@ void Conversions::AddItemToQueue(
       base::Time::Now() + base::TimeDelta::FromSeconds(rand_delay);
 
   database::table::ConversionQueue database_table;
-  database_table.Save({conversion_queue_item}, [=](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Save({conversion_queue_item}, [=](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to append conversion to queue");
       return;
     }
@@ -404,8 +404,8 @@ void Conversions::AddItemToQueue(
 bool Conversions::RemoveItemFromQueue(
     const ConversionQueueItemInfo& conversion_queue_item) {
   database::table::ConversionQueue database_table;
-  database_table.Delete(conversion_queue_item, [=](const Result result) {
-    if (result != SUCCESS) {
+  database_table.Delete(conversion_queue_item, [=](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to remove conversion from queue");
       return;
     }
@@ -452,9 +452,9 @@ void Conversions::ProcessQueueItem(
 void Conversions::ProcessQueue() {
   database::table::ConversionQueue database_table;
   database_table.GetAll(
-      [=](const Result result,
+      [=](const bool success,
           const ConversionQueueItemList& conversion_queue_items) {
-        if (result != Result::SUCCESS) {
+        if (!success) {
           BLOG(1, "Failed to get conversion queue");
           return;
         }

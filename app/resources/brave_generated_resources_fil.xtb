@@ -3,11 +3,11 @@
 <translationbundle lang="fil">
 <translation id="3333887201479867589">Mga Reward ng Brave</translation>
 <translation id="7942180974165298215">Pag-block ng Ad ng Brave</translation>
-<translation id="4615489450165434530">Mag-ulat ng Sirang Site</translation>
+<translation id="4615489450165434530">Mag-ulat ng sirang site</translation>
 <translation id="6406506848690869874">Mag-sync</translation>
 <translation id="1544192797660353713">Wallet</translation>
-<translation id="2445484935443597917">Gumawa ng Bagong Profile</translation>
-<translation id="2666990579225592931">Buksan ang Window ng Bisita</translation>
+<translation id="2445484935443597917">Gumawa ng bagong profile</translation>
+<translation id="2666990579225592931">Buksan ang guest window</translation>
 <translation id="8275068909952022340">Higit pa…</translation>
 <translation id="120759863357279975">Ang <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ay hindi pinapayagan sa Brave.</translation>
 <translation id="6786747875388722282">Mga Extension</translation>
@@ -28,6 +28,9 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="3218385319396786393">Na-block sa page na ito ang pag-autoplay</translation>
 <translation id="4988333904713528597">Palaging payagan ang autoplay sa <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Patuloy na i-block ang pag-autoplay</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Magtanong kapag gusto ng isang site na i-access ang API ng Ethereum provider</translation>
+<translation id="7017590444693657895">I-block ang mga site na ma-access ang API ng Ethereum provider</translation>
 <translation id="8988939298652262600">Hindi nagsusuri ng mga extension ang Brave para sa seguridad at kaligtasan. I-install lang ang extension na ito kung pinagkakatiwalaan mo ang developer.</translation>
 <translation id="8081858229109418493">Pangalan at icon ng profile</translation>
 <translation id="2044383478723007273">Mga kulay ng brave</translation>
@@ -42,6 +45,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="5802665280774361839">Ipakita ang awtomatikong pagkumpleto sa address bar.</translation>
 <translation id="597020512043916976">Ipakita ang mga nangungunang site sa mga iminumungkahi ng autocomplete</translation>
 <translation id="264150068416846820">Ipakita ang mga iminumungkahing site ng Brave sa mga iminumungkahi ng autocomplete</translation>
+<translation id="5529693968082667490">Ipakita ang Button na Maghanap ng mga Tab</translation>
 <translation id="6414370348346025511">Naka-on ang standard na proteksyon.</translation>
 <translation id="814018970995616154">Nagsusuri ng mga URL sa pamamagitan ng listahan ng mga hindi ligtas na site na naka-store sa Brave.</translation>
 <translation id="1144810021918451336">Hindi ka pinoprotektahan laban sa mga mapanganib na website, pag-download, at extension.</translation>
@@ -93,7 +97,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="6303294677342628402">Mga Shield</translation>
 <translation id="7133511168130368997">I-block ang mga tracker at ad na sumusunod sa iyo sa web.</translation>
 <translation id="2761825942249694703">Ito ang mga default na setting ng Shields. Nalalapat ang mga ito sa lahat ng website maliban kung may babaguhin ka sa Shields panel sa isang partikular na site. Ang pagbago sa mga ito ay hindi makakaapekto sa kasalukuyan mong mga per-site na setting.</translation>
-<translation id="8754605759692119662">Iba-block nito ang karamihan ng mga ad sa mga website, hindi mga pribadong ad ng Brave — nakokontrol ang mga iyon sa</translation>
+<translation id="1485394570478670912">Iba-block nito ang karamihan ng mga ad sa mga website, hindi ang Brave Private Ads — kinokontrol ang mga iyon sa</translation>
 <translation id="6388201778088078932">mga setting.</translation>
 <translation id="9185018653595759199">Pag-block sa social media</translation>
 <translation id="7390783310074170337">Default na view</translation>
@@ -294,6 +298,13 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="1391855377994926460">Patuloy na mag-browse sa web nang mas mabilis - mas mabilis nang hanggang 6x sa mga pangunahing site ng balita.</translation>
 <translation id="9218430445555521422">Itakda bilang default</translation>
 <translation id="3479552764303398839">Hindi ngayon</translation>
+<translation id="5039804452771397117">Payagan</translation>
+<translation id="7053983685419859001">I-block</translation>
+<translation id="7815301689257843278">Awtomatikong mag-send ng mga crash report para awtomatikong mapigilan ng Brave na mangyari ulit ang isyung ito?</translation>
+<translation id="660171790038410175">Hindi inaasahang nag-quit ang <ph name="BROWSER_NAME"/>.</translation>
+<translation id="1324417023773393937">Brave Browser</translation>
+<translation id="1068069727470515940">Puwede mong baguhin ang <ph name="SETTING_TEXT"/> ulit anumang oras.</translation>
+<translation id="6873781976650514089">setting na ito</translation>
 <translation id="6040143037577758943">Isara</translation>
 <translation id="5600566490506283344">Notification ng Brave Ad</translation>
 <translation id="4877147287319222750">Idagdag sa Sidebar</translation>
@@ -345,6 +356,6 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="8487693399751278191">I-import ang mga bookmark ngayon...</translation>
 <translation id="2557899542277210112">Para sa mabilis na access, ilagay dito sa bookmarks bar ang iyong mga bookmark.</translation>
 <translation id="2808630562319398131">I-reset ang data ng Mga Reward ng Brave...</translation>
-<translation id="1224064034972923114">Tumulong na mapahusay ang Brave sa pamamagitan ng awtomatikong pagpapadala ng mga ulat ng pag-crash</translation>
-<translation id="3738833060602717053">Tumulong na mapahusay ang <ph name="PRODUCT_NAME"/> sa pamamagitan ng awtomatikong pagpapadala ng mga ulat ng pag-crash</translation>
+<translation id="2273851479262317744">I-set ang Brave bilang default na browser</translation>
+<translation id="8581710194025054669">Para tiyakin ang pinakamaigting na privacy online, pag-isipang i-set ang Brave bilang default na browser sa iyong computer. Gamit ang Brave bilang default, ang anumang web link na kini-click mo ay magbubukas nang may mga proteksyon sa privacy ng Brave.</translation>
 </translationbundle>

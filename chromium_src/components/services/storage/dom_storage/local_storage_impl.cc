@@ -16,17 +16,14 @@ namespace storage {
 LocalStorageImpl::LocalStorageImpl(
     const base::FilePath& storage_root,
     scoped_refptr<base::SequencedTaskRunner> task_runner,
-    scoped_refptr<base::SequencedTaskRunner> legacy_task_runner,
     mojo::PendingReceiver<mojom::LocalStorageControl> receiver)
     : local_storage_(std::make_unique<LocalStorageImpl_ChromiumImpl>(
           storage_root,
           task_runner,
-          legacy_task_runner,
           mojo::PendingReceiver<mojom::LocalStorageControl>())),
       in_memory_local_storage_(std::make_unique<LocalStorageImpl_ChromiumImpl>(
           base::FilePath(),
           task_runner,
-          legacy_task_runner,
           mojo::PendingReceiver<mojom::LocalStorageControl>())) {
   if (receiver)
     control_receiver_.Bind(std::move(receiver));
@@ -62,6 +59,8 @@ void LocalStorageImpl::DeleteStorage(const url::Origin& origin,
       in_memory_local_storage_->DeleteStorage(*non_opaque_origin,
                                               std::move(callback));
       non_opaque_origins_.erase(origin);
+    } else {
+      std::move(callback).Run();
     }
   } else {
     local_storage_->DeleteStorage(origin, std::move(callback));

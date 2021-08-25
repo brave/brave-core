@@ -2,20 +2,17 @@ import * as React from 'react'
 import {
   UserAccountType,
   AssetOptionType,
-  NetworkOptionsType,
   OrderTypes,
   BuySendSwapViewTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
-  ToOrFromType
+  ToOrFromType,
+  Network
 } from '../../../constants/types'
 import { AssetOptions } from '../../../options/asset-options'
-import { NetworkOptions } from '../../../options/network-options'
 import {
+  AccountsAssetsNetworks,
   Header,
-  SelectAccount,
-  SelectAsset,
-  SelectNetwork,
   Swap
 } from '..'
 
@@ -24,7 +21,7 @@ export interface Props {
   orderType: OrderTypes
   swapToAsset: AssetOptionType
   swapFromAsset: AssetOptionType
-  selectedNetwork: NetworkOptionsType
+  selectedNetwork: Network
   selectedAccount: UserAccountType
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
@@ -35,7 +32,7 @@ export interface Props {
   toAssetBalance: string
   onSubmitSwap: () => void
   flipSwapAssets: () => void
-  onSelectNetwork: (network: NetworkOptionsType) => void
+  onSelectNetwork: (network: Network) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
   onSelectSwapAsset: (asset: AssetOptionType, toOrFrom: ToOrFromType) => void
@@ -88,7 +85,7 @@ function SwapTab (props: Props) {
     }
   }
 
-  const onClickSelectNetwork = (network: NetworkOptionsType) => () => {
+  const onClickSelectNetwork = (network: Network) => () => {
     onSelectNetwork(network)
     setSwapView('swap')
   }
@@ -156,25 +153,15 @@ function SwapTab (props: Props) {
           />
         </>
       }
-      {swapView === 'acounts' &&
-        <SelectAccount
+      {swapView !== 'send' &&
+        <AccountsAssetsNetworks
           accounts={accounts}
-          onSelectAccount={onClickSelectAccount}
-          onBack={goBack}
-        />
-      }
-      {swapView === 'assets' &&
-        <SelectAsset
-          assets={filteredAssetList}
-          onSelectAsset={onSelectAsset}
-          onBack={goBack}
-        />
-      }
-      {swapView === 'networks' &&
-        <SelectNetwork
-          networks={NetworkOptions}
-          onSelectNetwork={onClickSelectNetwork}
-          onBack={goBack}
+          goBack={goBack}
+          assetOptions={filteredAssetList}
+          onClickSelectAccount={onClickSelectAccount}
+          onClickSelectNetwork={onClickSelectNetwork}
+          onSelectedAsset={onSelectAsset}
+          selectedView={swapView}
         />
       }
     </>

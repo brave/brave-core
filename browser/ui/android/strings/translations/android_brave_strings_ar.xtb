@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">فتح بعض مواقع الويب باستحدام اتصال  HTTPS آمن بدلاً من اتصال HTTP عادي.</translation>
 <translation id="94154759592465111">حظر النصوص</translation>
 <translation id="3518266709656143462">يحظر  Javascript (قد يفصل المواقع)</translation>
-<translation id="5709627087332022422">حظر برامج التتبع عبر المواقع</translation>
 <translation id="6052725679982758334">حجب وسائل التواصل الاجتماعي</translation>
 <translation id="7498695072878479744">السماح بأزرار تسجيل الدخول إلى Google على مواقع أطراف خارجية</translation>
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">بوابة IPFS</translation>
 <translation id="2688519859165248360">يسمح بالانتقال إلى موارد IPFS من خلال بوابة IPFS</translation>
 <translation id="7534079972563542000">النطاقات التي لا يمكن إيقافها</translation>
+<translation id="1448289340149908413">إيثريوم</translation>
+<translation id="7822245778264751380">سعر الإيثريوم (ETH)</translation>
 <translation id="6513892817556267573">خدمة اسم إيثريوم</translation>
 <translation id="3894650624018948468">طريقة الحل</translation>
 <translation id="2356070529366658676">طلب</translation>
 <translation id="4176463684765177261">غير مفعّل</translation>
 <translation id="2218918398178303658">بروتوكول DNS عبر HTTPS</translation>
-<translation id="1448289340149908413">إيثريوم</translation>
 <translation id="5787084571334399599">يمنع المتصفح من استخدام البصمة</translation>
 <translation id="7459000603787995422">غلق علامات التبويب عند الخروج</translation>
 <translation id="4448697385961650078">حجب المتتبعات والإعلانات</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">اجعل Brave متصفحك الافتراضي!</translation>
 <translation id="7136694880210472378">تعيين كافتراضي</translation>
 <translation id="4250680216510889253">لا</translation>
-<translation id="4501702055016678577">هل تريد إجراء عملية بحث خاصة بواسطة DuckDuckGo؟</translation>
-<translation id="910419239800579753">مع البحث الخاص، سيقوم متصفح Brave باستخدام DuckDuckGo للرد على عمليات البحث الخاصة بك أثناء وجودك في علامة التبويب الخاصة هذه. DuckDuckGo هو محرك بحث لا يتتبع سجل البحث الخاص بك، مما يتيح لك البحث بشكلٍ خاص.</translation>
-<translation id="1426410128494586442">نعم</translation>
-<translation id="5628466560184522265">تعرف على البحث الخاص مع DuckDuckGo</translation>
 <translation id="8826007068782654809">شكراً لك</translation>
 <translation id="6665366815203065060">تم إرسال إكراميتك للتو إلى:</translation>
 <translation id="5441565662498481293">إنك ترسل الإكراميات تلقائيًا إلى:</translation>
@@ -442,7 +438,7 @@
 <translation id="3477340970981564961">تكافئك Brave Private Ads برموز لدعم منشئي المحتوى على عكس الإعلانات التقليدية، كل ذلك مع الحفاظ على خصوصية معلوماتك الشخصية.</translation>
 <translation id="6973095375773523904">أين تظهر الإعلانات؟</translation>
 <translation id="7556325460112047619">ستظهر Brave Private Ads كإشعار عادي. يمكنك التحكم في عدد المرات التي تشاهد فيها هذه الإعلانات في الإعدادات.</translation>
-<translation id="6897083627729802351">متى تحصل على المكافآت</translation>
+<translation id="6897083627729802351">متى تحصل على المكافآت؟</translation>
 <translation id="310863932297733723">ستصل الرموز المميزة المكتسبة من Brave Private Ads طوال الشهر الحالي في الخامس من الشهر التالي.</translation>
 <translation id="7712287524451429139">أصبح العطاء أمراً هيناً</translation>
 <translation id="105037569026952831">يتلقى منشئو المحتوى مساهماتك الرمزية تلقائياً بناءً على مستويات المشاركة التي نقيسها كـ‘انتباه’.</translation>
@@ -459,7 +455,7 @@
 <translation id="827315274423079662">مرحى، أنت ’ جاهز تماماً!</translation>
 <translation id="3895246934788932488">باستخدام Brave Rewards، فأنت تحمي خصوصيتك وتساعد في جعل الويب مكاناً أفضل للجميع. وهذا الـ’s رائعاً!</translation>
 <translation id="5705882733397021510">العودة</translation>
-<translation id="3985567919248057638">لنقم بجولة سريعة</translation>
+<translation id="3985567919248057638">لنأخذ جولة سريعة</translation>
 <translation id="2434574859640694129">بعد تلقي أول عائد لإعلاناتك، يمكنك العودة ودفع إكرامية لمنشئ المحتوى هذا!</translation>
 <translation id="207242986925259074">جولة تنشيطية سريعة</translation>
 <translation id="8342862030112839977">سوف تصل دفعة المكافآت الأولى الخاصة بك عن طريق:</translation>
@@ -537,11 +533,11 @@
 <translation id="1783870616707290226">يجب أن تتكون كلمة المرور من 7 أحرف أو أكثر</translation>
 <translation id="7383102760859258982">إعادة كتابة كلمة المرور غير متطابقة</translation>
 <translation id="1538774398124896437">مباشر</translation>
-<translation id="8163269366661594721">1D</translation>
-<translation id="7640956400175663828">1W</translation>
-<translation id="9100647964747998533">1M</translation>
-<translation id="6366007539108097840">3M</translation>
-<translation id="6977728312178289892">1Y</translation>
+<translation id="8163269366661594721">1ي</translation>
+<translation id="7640956400175663828">1أ</translation>
+<translation id="9100647964747998533">1ش</translation>
+<translation id="6366007539108097840">3ش</translation>
+<translation id="6977728312178289892">1س</translation>
 <translation id="6895566650974550243">الجميع</translation>
 <translation id="8892168913673237979">اكتمل الإعداد!</translation>
 <translation id="8331501996028380732">قم بشراء العملات المشفرة أو تداولها أو الاحتفاظ بها . إذا كان لديك حساب تشفير حالي، حيث يمكنك إضافته الآن.</translation>
@@ -550,7 +546,7 @@
 <translation id="8100001366858145406">تفعيل إلغاء القفل ببصمة الإصبع</translation>
 <translation id="5493402808936397665">قم بتفعيل خيار الدخول بالبصمة لفتح محفظتك بسرعة دون إدخال كلمة المرور الخاصة بك.</translation>
 <translation id="8488282162676695335">محفظة Brave</translation>
-<translation id="6901810042765869341">أدخل عبارة الاسترداد الخاصة بك لاستعادة حساب التشفير crypto لمحفظة Brave الخاص بك.</translation>
+<translation id="6901810042765869341">أدخل عبارة الاسترداد الخاصة بك لاستعادة حساب التشفير crypto لـ Brave Wallet الخاص بك.</translation>
 <translation id="1970161551843843564">استعادة حساب التشفير Crypto</translation>
 <translation id="4811736040444856406">عرض عبارة الاسترداد</translation>
 <translation id="283071225285270357">أدخِل عبارة الاسترداد</translation>
@@ -566,4 +562,13 @@
 <translation id="745115390910697838">العبارات غير متطابقة، يرجى المحاولة مرة أخرى.</translation>
 <translation id="2360588547830602174">فشل استرداد الحساب، حاول مرة أخرى.</translation>
 <translation id="1530109021798294736">الشبكة Mainnet الرئيسية</translation>
+<translation id="990936698620790924">سعر السوق في ETH</translation>
+<translation id="6748108480210050150">من</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">إلى (مقدرًا)</translation>
+<translation id="59223531494896848">الحد</translation>
+<translation id="3567988240819868195">السوق</translation>
+<translation id="632241521608275119">تحمُّل الانزلاق</translation>
 </translationbundle>

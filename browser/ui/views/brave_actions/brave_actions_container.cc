@@ -20,7 +20,6 @@
 #include "brave/browser/ui/views/rounded_separator.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -232,14 +231,12 @@ void BraveActionsContainer::AddActionStubForRewards() {
   if (actions_[id].view_) {
     return;
   }
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   actions_[id].view_ = std::make_unique<BraveRewardsActionStubView>(
       browser_->profile(), this);
   AttachAction(actions_[id]);
-#endif
 }
 
-void BraveActionsContainer::AttachAction(BraveActionInfo &action) {
+void BraveActionsContainer::AttachAction(const BraveActionInfo& action) {
   // Add extension view after separator view
   // `AddChildView` should be called first, so that changes that modify
   // layout (e.g. preferred size) are forwarded to its parent
@@ -263,12 +260,10 @@ void BraveActionsContainer::AddAction(const std::string& id) {
     AddAction(extension);
     return;
   }
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   if (id == brave_rewards_extension_id) {
     AddActionStubForRewards();
     return;
   }
-#endif
   LOG(ERROR) << "Extension not found for Brave Action: " << id;
 }
 
@@ -358,7 +353,6 @@ bool BraveActionsContainer::CanStartDragForView(View* sender,
 }
 // end ToolbarActionView::Delegate members
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 // BraveRewardsActionStubView::Delegate members
 void BraveActionsContainer::OnRewardsStubButtonClicked() {
   // Keep button state visually pressed until new extension button
@@ -379,7 +373,6 @@ void BraveActionsContainer::OnRewardsStubButtonClicked() {
   }
 }
 // end BraveRewardsActionStubView::Delegate members
-#endif
 
 void BraveActionsContainer::OnExtensionSystemReady() {
   // observe changes in extension system
@@ -388,9 +381,7 @@ void BraveActionsContainer::OnExtensionSystemReady() {
   brave_action_observer_.Observe(brave_action_api_);
   // Check if extensions already loaded
   AddAction(brave_extension_id);
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   AddAction(brave_rewards_extension_id);
-#endif
 }
 
 // ExtensionRegistry::Observer

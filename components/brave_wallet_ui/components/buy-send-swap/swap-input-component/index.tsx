@@ -157,7 +157,7 @@ function SwapInputComponent (props: Props) {
             {componentType === 'exchange' &&
               <MarketLimitButton onClick={onToggleOrderType}>{orderType === 'market' ? locale.swapLimit : locale.swapMarket}</MarketLimitButton>
             }
-            {componentType !== 'exchange' && componentType !== 'toAddress' &&
+            {componentType !== 'exchange' && componentType !== 'toAddress' && componentType !== 'buyAmount' &&
               <FromBalanceText>{locale.balance}: {selectedAssetBalance}</FromBalanceText>
             }
             {componentType === 'toAddress' &&
@@ -167,6 +167,9 @@ function SwapInputComponent (props: Props) {
             }
           </Row>
           <Row componentType={componentType}>
+            {componentType === 'buyAmount' &&
+              <AssetTicker>$</AssetTicker>
+            }
             <Input
               componentType={componentType}
               type={componentType === 'toAddress' ? 'text' : 'number'}

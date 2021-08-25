@@ -590,6 +590,7 @@
 <translation id="1627408615528139100">Već je preuzeto</translation>
 <translation id="1628948239858170093">Želite li da skenirate datoteku pre otvaranja?</translation>
 <translation id="1629314197035607094">Lozinka je istekla</translation>
+<translation id="1947639598318989608">Dozvolićete Brave-u da pronađe personalizovane popuste za vaše korpe?</translation>
 <translation id="1629521517399325891">Korisnički sertifikat nije dostupan za potvrdu identiteta mreže.</translation>
 <translation id="163072119192489970">Dozvoljeno im je da dovršavaju slanje i primanje podataka</translation>
 <translation id="1630768113285622200">Restartuj i nastavi</translation>
@@ -3194,7 +3195,7 @@ a Ctrl+Alt+taster za smanjivanje osvetljenosti da biste umanjili prikaz.</transl
 <translation id="4469762931504673593"><ph name="ORIGIN"/> može da menja datoteke u direktorijumu <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Podešavanja spoljne memorije</translation>
 <translation id="4471354919263203780">Preuzimaju se datoteke za prepoznavanje govora... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Pomozite nam da poboljšamo Brave-ove funkcije i učinak</translation>
+<translation id="918192811481327695">Pomozite nam da poboljšamo Brave-ove funkcije i učinak</translation>
 <translation id="4472575034687746823">Započnimo</translation>
 <translation id="4474155171896946103">Obeleži sve kartice...</translation>
 <translation id="4475552974751346499">Pretražite preuzimanja</translation>
@@ -4434,7 +4435,6 @@ Vodite računa da ne otkrijete nikakve osetljive informacije.</translation>
 <translation id="5864754048328252126">Neaktivnost tokom punjenja</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> će se uskoro pauzirati</translation>
 <translation id="586567932979200359">Pokrećete <ph name="PRODUCT_NAME"/> sa diska. Instalacija na računar omogućava pokretanje bez diska i redovno ažuriranje.</translation>
-<translation id="1224064034972923114">Automatski šalje Brave-u statistiku korišćenja i izveštaje o otkazivanju</translation>
 <translation id="5867841422488265304">Pretražite ili unesite veb-adresu</translation>
 <translation id="5869029295770560994">Važi</translation>
 <translation id="5869522115854928033">Sačuvane lozinke</translation>
@@ -5283,7 +5283,7 @@ Vodite računa da ne otkrijete nikakve osetljive informacije.</translation>
 <translation id="6820143000046097424">serijski portovi</translation>
 <translation id="682123305478866682">Prebacite radnu površinu</translation>
 <translation id="6823174134746916417">Dodirni za klik na tačpedu</translation>
-<translation id="6824564591481349393">Kopiraj adresu &amp;e-pošte</translation>
+<translation id="6824564591481349393">Kopiraj imejl adresu</translation>
 <translation id="6824584962142919697">&amp;Proveri elemente</translation>
 <translation id="6825184156888454064">Sortiraj prema nazivu</translation>
 <translation id="6826872289184051766">Potvrdi pomoću USB-a</translation>
@@ -5452,7 +5452,6 @@ Vodite računa da ne otkrijete nikakve osetljive informacije.</translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – Evidencija aktivnosti</translation>
 <translation id="6997707937646349884">Na uređajima:</translation>
 <translation id="6998793565256476099">Registruj uređaj za video konferencije</translation>
-<translation id="456304305650018221">Želite da dozvolite Brave-u da pronađe popuste na stavke koje dodajete u korpe?</translation>
 <translation id="6999956497249459195">Nova grupa</translation>
 <translation id="7000206553895739324">Štampač <ph name="PRINTER_NAME"/> je povezan, ali treba da se konfiguriše</translation>
 <translation id="7000347579424117903">Koristite Ctrl, Alt ili Search</translation>

@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">使用安全的 HTTPS 连接而不是明文的 HTTP 打开一些站点。</translation>
 <translation id="94154759592465111">拦截脚本</translation>
 <translation id="3518266709656143462">拦截 Javascript (可能导致一些网站无法正常运作)</translation>
-<translation id="5709627087332022422">拦截跨站点跟踪器</translation>
 <translation id="6052725679982758334">社交媒体屏蔽</translation>
 <translation id="7498695072878479744">第三方网站上的 Google 登录按钮可用</translation>
 <translation id="863171915776379000">Facebook 登录和嵌入式帖子可用</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS网关</translation>
 <translation id="2688519859165248360">允许通过 IPFS 网关导航到 IPFS 资源</translation>
 <translation id="7534079972563542000">不可阻挡的域名</translation>
+<translation id="1448289340149908413">以太坊</translation>
+<translation id="7822245778264751380">以太坊价格 (ETH)</translation>
 <translation id="6513892817556267573">以太坊名称服务</translation>
 <translation id="3894650624018948468">解析方法</translation>
 <translation id="2356070529366658676">询问</translation>
 <translation id="4176463684765177261">已停用</translation>
 <translation id="2218918398178303658">通过 HTTPS 的 DNS</translation>
-<translation id="1448289340149908413">以太坊</translation>
 <translation id="5787084571334399599">防止浏览器使用指纹识别</translation>
 <translation id="7459000603787995422">退出时关闭标签页</translation>
 <translation id="4448697385961650078">阻止跟踪器和广告</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">将 Brave 设为您的默认浏览器！</translation>
 <translation id="7136694880210472378">设为默认搜索引擎</translation>
 <translation id="4250680216510889253">否</translation>
-<translation id="4501702055016678577">用 DuckDuckGo 进行私密的搜索？</translation>
-<translation id="910419239800579753">进行私下搜索时，Brave 会当您在私有标签页时使用 DuckDuckGo 进行搜索。DuckDuckGo 是一个不会跟踪您的搜索历史的搜索引擎，让您可以私下搜索。</translation>
-<translation id="1426410128494586442">是</translation>
-<translation id="5628466560184522265">了解有如何使用 DuckDuckGo 进行私密搜索</translation>
 <translation id="8826007068782654809">谢谢</translation>
 <translation id="6665366815203065060">您刚刚已发送打赏至：</translation>
 <translation id="5441565662498481293">您正在自动发送打赏至：</translation>
@@ -441,7 +437,7 @@
 <translation id="3477340970981564961">与传统广告不同的是，Brave Private Ads 会奖励您代币以支持内容创作者，同时还会将您的个人信息保密。</translation>
 <translation id="6973095375773523904">广告在哪里显示？</translation>
 <translation id="7556325460112047619">Brave 的私人广告将以常规通知的形式显示。您可以在设置中控制看到这些广告的频率。</translation>
-<translation id="6897083627729802351">您什么时候获得奖励</translation>
+<translation id="6897083627729802351">您何时得到奖励？</translation>
 <translation id="310863932297733723">您本月从 Brave ads 获得的代币将在下个月的 5 号到账。</translation>
 <translation id="7712287524451429139">给予回馈变得毫不费力了</translation>
 <translation id="105037569026952831">创建者会根据您的参与度（我们将其衡量为“ #Attention”）来自动接收您的代币捐款。</translation>
@@ -458,7 +454,7 @@
 <translation id="827315274423079662">太棒了, 您的设置完成了！</translation>
 <translation id="3895246934788932488">通过使用 Brave Rewards，您可以保护自己的隐私并帮助使网络成为每个人的美好地方。太棒了！</translation>
 <translation id="5705882733397021510">返回</translation>
-<translation id="3985567919248057638">让我们来快速浏览一下</translation>
+<translation id="3985567919248057638">我们一起来快速浏览一下</translation>
 <translation id="2434574859640694129">收到第一笔广告付款后，您可以返回并打赏这位创建者！</translation>
 <translation id="207242986925259074">快速复习教程</translation>
 <translation id="8342862030112839977">您的第一笔奖励将通过以下方式获得：</translation>
@@ -565,4 +561,13 @@
 <translation id="745115390910697838">密语不匹配，请重试。</translation>
 <translation id="2360588547830602174">账户恢复失败。请重试。</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">市场价格 (ETH)</translation>
+<translation id="6748108480210050150">来自</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">到（估计值）</translation>
+<translation id="59223531494896848">限制</translation>
+<translation id="3567988240819868195">市场</translation>
+<translation id="632241521608275119">滑点公差</translation>
 </translationbundle>

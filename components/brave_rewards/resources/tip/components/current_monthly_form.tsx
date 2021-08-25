@@ -7,7 +7,7 @@ import * as React from 'react'
 import { HostContext } from '../lib/host_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
 
-import { TokenAmount } from './token_amount'
+import { TokenAmount } from '../../shared/components/token_amount'
 import { FormSubmitButton } from './form_submit_button'
 
 import * as style from './current_monthly_form.style'

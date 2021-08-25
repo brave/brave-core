@@ -19,28 +19,23 @@ bool ParseAssetPrice(const std::string& json,
                      const std::vector<std::string>& to_assets,
                      std::vector<brave_wallet::mojom::AssetPricePtr>* values) {
   // Parses results like this:
+  // /v2/relative/provider/coingecko/bat,chainlink/btc,usd/1w
   // {
-  //   "payload":{
-  //     "basic-attention-token":{
-  //       "btc":0.00001732,
-  //       "btc_24h_change":8.021672460190562,
-  //       "usd":0.55393,
-  //       "usd_24h_change":9.523443444373276
-  //     },
-  //     "bat":{
-  //       "btc":0.00001732,
-  //       "btc_24h_change":8.021672460190562,
-  //       "usd":0.55393,
-  //       "usd_24h_change":9.523443444373276
-  //     },
-  //     "link":{
-  //       "btc":0.00261901,
-  //       "btc_24h_change":0.5871625385632929,
-  //       "usd":83.77,
-  //       "usd_24h_change":1.7646208048244043
-  //     }
-  //   },
-  //   "lastUpdated":"2021-07-16T19:11:28.907Z"
+  //  "payload": {
+  //    "chainlink": {
+  //      "btc": 0.00063075,
+  //      "usd": 29.17,
+  //      "btc_timeframe_change": -0.9999742658279261,
+  //      "usd_timeframe_change": 0.1901162098990581
+  //    },
+  //    "bat": {
+  //      "btc": 1.715e-05,
+  //      "usd": 0.793188,
+  //      "btc_timeframe_change": -0.9999993002916352,
+  //      "usd_timeframe_change": -0.9676384677306338
+  //    }
+  //  },
+  //  "lastUpdated": "2021-08-16T15:45:11.901Z"
   // }
 
   DCHECK(values);
@@ -88,14 +83,15 @@ bool ParseAssetPrice(const std::string& json,
         return false;
       }
       asset_price->price = base::NumberToString(*to_price);
-      std::string to_asset_24h_key =
-          base::StringPrintf("%s_24h_change", to_asset.c_str());
-      absl::optional<double> to_24h_change =
-          from_asset_dict->FindDoublePath(to_asset_24h_key);
-      if (!to_24h_change) {
+      std::string to_asset_timeframe_key =
+          base::StringPrintf("%s_timeframe_change", to_asset.c_str());
+      absl::optional<double> to_timeframe_change =
+          from_asset_dict->FindDoublePath(to_asset_timeframe_key);
+      if (!to_timeframe_change) {
         return false;
       }
-      asset_price->asset_24h_change = base::NumberToString(*to_24h_change);
+      asset_price->asset_timeframe_change =
+          base::NumberToString(*to_timeframe_change);
 
       values->push_back(std::move(asset_price));
     }
@@ -171,7 +167,8 @@ bool ParseAssetPriceHistory(
 
     base::Time date = base::Time::FromJsTime(date_dbl);
     auto asset_time_price = brave_wallet::mojom::AssetTimePrice::New();
-    asset_time_price->date = date;
+    asset_time_price->date =
+        base::TimeDelta::FromMilliseconds(date.ToJavaTime());
     asset_time_price->price = base::NumberToString(price);
     values->push_back(std::move(asset_time_price));
   }

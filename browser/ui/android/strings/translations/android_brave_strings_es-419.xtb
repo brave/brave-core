@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Abre algunos sitios utilizando una conexión HTTPS segura en lugar de HTTP simple.</translation>
 <translation id="94154759592465111">Bloquear scripts</translation>
 <translation id="3518266709656143462">Bloquea JavaScript (puede averiar los sitios).</translation>
-<translation id="5709627087332022422">Bloquear los rastreadores entre sitios</translation>
 <translation id="6052725679982758334">Bloqueo en redes sociales</translation>
 <translation id="7498695072878479744">Permitir botones de inicio de sesión de Google en sitios externos</translation>
 <translation id="863171915776379000">Permitir publicaciones integradas e inicios de sesión de Facebook</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">Puerta de enlace a IPFS</translation>
 <translation id="2688519859165248360">Permite la navegación a los recursos de IPFS a través de una puerta de enlace de IPFS.</translation>
 <translation id="7534079972563542000">Dominios imparables</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Precio de Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Servicio de DNS de Ethereum</translation>
 <translation id="3894650624018948468">Método de resolución</translation>
 <translation id="2356070529366658676">Preguntar</translation>
 <translation id="4176463684765177261">Deshabilitado</translation>
 <translation id="2218918398178303658">DNS mediante HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">No permite que el navegador use técnicas de huella digital</translation>
 <translation id="7459000603787995422">Cierra las pestañas al salir</translation>
 <translation id="4448697385961650078">Bloquear rastreadores y anuncios</translation>
@@ -83,10 +83,6 @@
 <translation id="2171928016777725844">¿Quieres que Brave sea tu navegador predeterminado?</translation>
 <translation id="7136694880210472378">Configurar como predeterminado</translation>
 <translation id="4250680216510889253">No</translation>
-<translation id="4501702055016678577">¿Quieres probar DuckDuckGo para hacer búsquedas privadas?</translation>
-<translation id="910419239800579753">Con búsqueda privada, Brave usará DuckDuckGo traer las respuestas de tus búsquedas mientras estás en una pestaña privada. DuckDuckGo es un motor de búsqueda privado que no ratrea no historial de búsqueda, permitiéndote realizarlas de forma privada.</translation>
-<translation id="1426410128494586442">Sí</translation>
-<translation id="5628466560184522265">Descubre cómo funciona la búsqueda privada con DuckDuckGo</translation>
 <translation id="8826007068782654809">Gracias</translation>
 <translation id="6665366815203065060">Has enviado una propina a:</translation>
 <translation id="5441565662498481293">Estás enviando automáticamente una propina a:</translation>
@@ -450,7 +446,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="827315274423079662">¡Felicitaciones, has terminado!</translation>
 <translation id="3895246934788932488">Al utilizar Recompensas Brave, estás protegiendo tu privacidad y ayudando a hacer de la web un lugar mejor para todas las personas. ¡Y eso es genial!</translation>
 <translation id="5705882733397021510">Regresar</translation>
-<translation id="3985567919248057638">Hagamos un recorrido rápido</translation>
+<translation id="3985567919248057638">Echemos un vistazo</translation>
 <translation id="2434574859640694129">Después de recibir tu primer pago de anuncios, ¡puedes regresar y darle una propina a este creador!</translation>
 <translation id="207242986925259074">Recorrido rápido de actualización</translation>
 <translation id="8342862030112839977">Recibirás tu primer pago de recompensas el:</translation>
@@ -528,11 +524,11 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="1783870616707290226">La contraseña debe tener 7 caracteres o más</translation>
 <translation id="7383102760859258982">La contraseña reescrita no coincide</translation>
 <translation id="1538774398124896437">En vivo</translation>
-<translation id="8163269366661594721">1D</translation>
-<translation id="7640956400175663828">1S</translation>
-<translation id="9100647964747998533">1M</translation>
-<translation id="6366007539108097840">3M</translation>
-<translation id="6977728312178289892">1A</translation>
+<translation id="8163269366661594721">1 D</translation>
+<translation id="7640956400175663828">1 S</translation>
+<translation id="9100647964747998533">1 M</translation>
+<translation id="6366007539108097840">3 M</translation>
+<translation id="6977728312178289892">1 A</translation>
 <translation id="6895566650974550243">TODO</translation>
 <translation id="8892168913673237979">¡Todo listo!</translation>
 <translation id="8331501996028380732">Compra, intercambia o conserva criptomonedas. Si tienes una cuenta de criptomonedas existente, puedes agregarla ahora.</translation>
@@ -557,4 +553,13 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="745115390910697838">Las frases no coincidieron. Inténtalo de nuevo.</translation>
 <translation id="2360588547830602174">La recuperación de la cuenta ha fallado. Inténtalo de nuevo.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Precio del mercado en ETH</translation>
+<translation id="6748108480210050150">De</translation>
+<translation id="3318280255740629162">25 %</translation>
+<translation id="2636487255623744079">50 %</translation>
+<translation id="8654192805213365413">75 %</translation>
+<translation id="6159566011642056819">Para (estimación)</translation>
+<translation id="59223531494896848">Límite</translation>
+<translation id="3567988240819868195">Mercado</translation>
+<translation id="632241521608275119">Tolerancia de deslizamiento</translation>
 </translationbundle>

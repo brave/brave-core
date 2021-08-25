@@ -593,6 +593,7 @@ I-<ph name="DOMAIN"/> idinga ukuba ugcine ikhadi lakho elimsathi lifakiwe.}}</tr
 <translation id="1627408615528139100">Sekuvele kulandiwe</translation>
 <translation id="1628948239858170093">Skena ifayela ngaphambi kokuvula?</translation>
 <translation id="1629314197035607094">Iphasiwedi iphelelwe isikhathi</translation>
+<translation id="1947639598318989608">Vumela i-Brave ukuthi ithole izaphulelo ezenziwe zaba ngokwakho kubhasikidi wakho?</translation>
 <translation id="1629521517399325891">Isitifiketi somsebenzisi asitholakali ukufakazela ubuqiniso inethiwekhi.</translation>
 <translation id="163072119192489970">Ivumelekile ukuqeda ukuthumela nokwamukela idatha</translation>
 <translation id="1630768113285622200">Qala kabusha uphinde uqhubeke</translation>
@@ -3208,7 +3209,7 @@ I-<ph name="DOMAIN"/> idinga ukuba ugcine ikhadi lakho elimsathi lifakiwe.</tran
 <translation id="4469762931504673593">I-<ph name="ORIGIN"/> ingahlela amafayela ku-<ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Okuncanyelwayo kwesitoreji sangaphandle</translation>
 <translation id="4471354919263203780">Ilanda amafayela okubonwa kwengxoxo... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Siza ukuthuthukisa izici ze-Brave nokusebenza</translation>
+<translation id="918192811481327695">Siza ukuthuthukisa izici ze-Brave nokusebenza</translation>
 <translation id="4472575034687746823">Qalisa</translation>
 <translation id="4474155171896946103">Beka uphawu lokubekisa wonke amathebhu...</translation>
 <translation id="4475552974751346499">Sesha ukulandwa</translation>
@@ -4451,7 +4452,6 @@ Qiniseka ukuthi awuvezi noma yiluphi ulwazi olubucayi.</translation>
 <translation id="5864754048328252126">Isenzo sokungenzi lutho ngenkathi ishaja</translation>
 <translation id="5865508026715185451">I-<ph name="APP_NAME"/> izophumula maduze</translation>
 <translation id="586567932979200359">Usebenzisa i-<ph name="PRODUCT_NAME"/> kusukela kusithombe sayo sediski. Ukuyifaka kukhompyutha yakho kukuvumela ukuthi uyisebenzise ngaphandle kwesithombe sediski, kuphinde kuqiniseke ukuthi izogcinwa isesikhathini samanje.</translation>
-<translation id="1224064034972923114">Ithumela ngokuzenzakalela izibalo zokusetshenziswa nemibiko yokuphahlazeka ku-Brave</translation>
 <translation id="5867841422488265304">Sesha noma thayipha ikheli lewebhu</translation>
 <translation id="5869029295770560994">OK, ngiyezwa</translation>
 <translation id="5869522115854928033">Amaphasiwedi alondoloziwe</translation>
@@ -5472,7 +5472,6 @@ I-<ph name="DOMAIN"/> idinga ukuba ugcine ikhadi lakho elimsathi lifakiwe.</tran
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - Umsebenzi wefayela lokungena</translation>
 <translation id="6997707937646349884">Kumadivayisi akho:</translation>
 <translation id="6998793565256476099">Bhalisela idivayisi ukuze wenze inkomfa ngevidiyo</translation>
-<translation id="456304305650018221">Vumela i-Brave ithole izaphulelo zokuthi yini ongayingeza kumabhasikidi akho?</translation>
 <translation id="6999956497249459195">Iqembu elisha</translation>
 <translation id="7000206553895739324">I-<ph name="PRINTER_NAME"/> ixhunyiwe kodwa idinga ukulungiselelwa</translation>
 <translation id="7000347579424117903">Faka phakathi u-Ctrl, Alt, noma usesho</translation>

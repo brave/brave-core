@@ -7,7 +7,7 @@
 
 #include "base/android/jni_string.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_perf_predictor/browser/buildflags.h"
+#include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -28,15 +28,11 @@
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-#include "brave/components/brave_perf_predictor/common/pref_names.h"
-#endif
-
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
 #include "brave/components/p3a/pref_names.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #endif
@@ -102,7 +98,7 @@ void JNI_BravePrefServiceBridge_SetHTTPSEEnabled(
 
 void JNI_BravePrefServiceBridge_SetIpfsGatewayEnabled(JNIEnv* env,
                                                       jboolean enabled) {
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::IPFSResolveMethodTypes type =
       enabled ? ipfs::IPFSResolveMethodTypes::IPFS_ASK
               : ipfs::IPFSResolveMethodTypes::IPFS_DISABLED;
@@ -334,11 +330,9 @@ jlong JNI_BravePrefServiceBridge_GetAdsBlockedCount(
 jlong JNI_BravePrefServiceBridge_GetDataSaved(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile) {
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
   return profile->GetPrefs()->GetUint64(
       brave_perf_predictor::prefs::kBandwidthSavedBytes);
-#endif
   return 0;
 }
 
@@ -523,6 +517,15 @@ jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(JNIEnv* env) {
   return false;
 }
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
+
+void JNI_BravePrefServiceBridge_SetStatsReportingEnabled(JNIEnv* env,
+                                                         jboolean value) {
+  g_browser_process->local_state()->SetBoolean(kStatsReportingEnabled, value);
+}
+
+jboolean JNI_BravePrefServiceBridge_GetStatsReportingEnabled(JNIEnv* env) {
+  return g_browser_process->local_state()->GetBoolean(kStatsReportingEnabled);
+}
 
 void JNI_BravePrefServiceBridge_SetUnstoppableDomainsResolveMethod(
     JNIEnv* env,

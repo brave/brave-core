@@ -456,10 +456,10 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
                                  reconcileInterval,
                                  setReconcileInterval,
                                  reconcile_interval)
-                BATClassLedgerBridge(BOOL,
-                                     useShortRetries,
-                                     setUseShortRetries,
-                                     short_retries)
+                BATClassLedgerBridge(int,
+                                     retryInterval,
+                                     setRetryInterval,
+                                     retry_interval)
 
     + (LedgerEnvironment)environment {
   return static_cast<LedgerEnvironment>(ledger::_environment);

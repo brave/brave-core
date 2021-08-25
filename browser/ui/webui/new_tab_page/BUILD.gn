@@ -7,10 +7,16 @@ source_set("unit_tests") {
   testonly = true
 
   if (!is_android) {
-    sources = [ "brave_new_tab_ui_unittest.cc" ]
+    sources = [
+      "brave_new_tab_message_handler_unittest.cc",
+      "brave_new_tab_ui_unittest.cc",
+    ]
 
     deps = [
+      "//base",
+      "//base/test:test_support",
       "//brave/browser/ui",
+      "//chrome/browser",
       "//components/history/core/browser",
       "//components/ntp_tiles",
       "//testing/gtest",

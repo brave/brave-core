@@ -48,7 +48,7 @@ FilteredCategoryList::iterator FindFilteredCategory(
   DCHECK(filtered_categories);
 
   return std::find_if(filtered_categories->begin(), filtered_categories->end(),
-                      [&name](const FilteredCategory& category) {
+                      [&name](const FilteredCategoryInfo& category) {
                         return category.name == name;
                       });
 }
@@ -77,14 +77,20 @@ bool Client::HasInstance() {
 }
 
 FilteredAdList Client::get_filtered_ads() const {
+  DCHECK(is_initialized_);
+
   return client_->ad_preferences.filtered_ads;
 }
 
 FilteredCategoryList Client::get_filtered_categories() const {
+  DCHECK(is_initialized_);
+
   return client_->ad_preferences.filtered_categories;
 }
 
 FlaggedAdList Client::get_flagged_ads() const {
+  DCHECK(is_initialized_);
+
   return client_->ad_preferences.flagged_ads;
 }
 
@@ -95,6 +101,8 @@ void Client::Initialize(InitializeCallback callback) {
 }
 
 void Client::AppendAdHistoryToAdsHistory(const AdHistoryInfo& ad_history) {
+  DCHECK(is_initialized_);
+
   client_->ads_shown_history.push_front(ad_history);
 
   const uint64_t timestamp = static_cast<uint64_t>(
@@ -113,12 +121,16 @@ void Client::AppendAdHistoryToAdsHistory(const AdHistoryInfo& ad_history) {
 }
 
 const std::deque<AdHistoryInfo>& Client::GetAdsHistory() const {
+  DCHECK(is_initialized_);
+
   return client_->ads_shown_history;
 }
 
 void Client::AppendToPurchaseIntentSignalHistoryForSegment(
     const std::string& segment,
     const PurchaseIntentSignalHistoryInfo& history) {
+  DCHECK(is_initialized_);
+
   if (client_->purchase_intent_signal_history.find(segment) ==
       client_->purchase_intent_signal_history.end()) {
     client_->purchase_intent_signal_history.insert({segment, {}});
@@ -136,6 +148,8 @@ void Client::AppendToPurchaseIntentSignalHistoryForSegment(
 
 const PurchaseIntentSignalHistoryMap& Client::GetPurchaseIntentSignalHistory()
     const {
+  DCHECK(is_initialized_);
+
   return client_->purchase_intent_signal_history;
 }
 
@@ -143,6 +157,8 @@ AdContentInfo::LikeAction Client::ToggleAdThumbUp(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const AdContentInfo::LikeAction action) {
+  DCHECK(is_initialized_);
+
   AdContentInfo::LikeAction like_action;
   if (action == AdContentInfo::LikeAction::kThumbsUp) {
     like_action = AdContentInfo::LikeAction::kNeutral;
@@ -173,6 +189,8 @@ AdContentInfo::LikeAction Client::ToggleAdThumbDown(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const AdContentInfo::LikeAction action) {
+  DCHECK(is_initialized_);
+
   AdContentInfo::LikeAction like_action;
   if (action == AdContentInfo::LikeAction::kThumbsDown) {
     like_action = AdContentInfo::LikeAction::kNeutral;
@@ -211,6 +229,8 @@ AdContentInfo::LikeAction Client::ToggleAdThumbDown(
 CategoryContentInfo::OptAction Client::ToggleAdOptInAction(
     const std::string& category,
     const CategoryContentInfo::OptAction action) {
+  DCHECK(is_initialized_);
+
   CategoryContentInfo::OptAction opt_action;
   if (action == CategoryContentInfo::OptAction::kOptIn) {
     opt_action = CategoryContentInfo::OptAction::kNone;
@@ -240,11 +260,13 @@ CategoryContentInfo::OptAction Client::ToggleAdOptInAction(
 CategoryContentInfo::OptAction Client::ToggleAdOptOutAction(
     const std::string& category,
     const CategoryContentInfo::OptAction action) {
+  DCHECK(is_initialized_);
+
   CategoryContentInfo::OptAction opt_action;
   if (action == CategoryContentInfo::OptAction::kOptOut) {
     opt_action = CategoryContentInfo::OptAction::kNone;
   } else {
-    opt_action = CategoryContentInfo::CategoryContentInfo::OptAction::kOptOut;
+    opt_action = CategoryContentInfo::OptAction::kOptOut;
   }
 
   // Update this category in the filtered categories list
@@ -256,7 +278,7 @@ CategoryContentInfo::OptAction Client::ToggleAdOptOutAction(
     }
   } else {
     if (it == client_->ad_preferences.filtered_categories.end()) {
-      FilteredCategory filtered_category;
+      FilteredCategoryInfo filtered_category;
       filtered_category.name = category;
       client_->ad_preferences.filtered_categories.push_back(filtered_category);
     }
@@ -277,6 +299,8 @@ CategoryContentInfo::OptAction Client::ToggleAdOptOutAction(
 bool Client::ToggleSaveAd(const std::string& creative_instance_id,
                           const std::string& creative_set_id,
                           const bool saved) {
+  DCHECK(is_initialized_);
+
   const bool saved_ad = !saved;
 
   // Update this ad in the saved ads list
@@ -315,6 +339,8 @@ bool Client::ToggleSaveAd(const std::string& creative_instance_id,
 bool Client::ToggleFlagAd(const std::string& creative_instance_id,
                           const std::string& creative_set_id,
                           const bool flagged) {
+  DCHECK(is_initialized_);
+
   const bool flagged_ad = !flagged;
 
   // Update this ad in the flagged ads list
@@ -351,6 +377,8 @@ bool Client::ToggleFlagAd(const std::string& creative_instance_id,
 }
 
 void Client::UpdateSeenAd(const AdInfo& ad) {
+  DCHECK(is_initialized_);
+
   const std::string type_as_string = std::string(ad.type);
   client_->seen_ads[type_as_string][ad.creative_instance_id] = true;
   client_->seen_advertisers[type_as_string][ad.advertiser_id] = true;
@@ -359,12 +387,16 @@ void Client::UpdateSeenAd(const AdInfo& ad) {
 
 const std::map<std::string, bool>& Client::GetSeenAdsForType(
     const AdType& type) {
+  DCHECK(is_initialized_);
+
   const std::string type_as_string = std::string(type);
   return client_->seen_ads[type_as_string];
 }
 
 void Client::ResetSeenAdsForType(const CreativeAdList& ads,
                                  const AdType& type) {
+  DCHECK(is_initialized_);
+
   const std::string type_as_string = std::string(type);
 
   BLOG(1, "Resetting seen " << type_as_string << "s");
@@ -381,6 +413,8 @@ void Client::ResetSeenAdsForType(const CreativeAdList& ads,
 }
 
 void Client::ResetAllSeenAdsForType(const AdType& type) {
+  DCHECK(is_initialized_);
+
   const std::string type_as_string = std::string(type);
   BLOG(1, "Resetting seen " << type_as_string << "s");
   client_->seen_ads[type_as_string] = {};
@@ -389,12 +423,16 @@ void Client::ResetAllSeenAdsForType(const AdType& type) {
 
 const std::map<std::string, bool>& Client::GetSeenAdvertisersForType(
     const AdType& type) {
+  DCHECK(is_initialized_);
+
   const std::string type_as_string = std::string(type);
   return client_->seen_advertisers[type_as_string];
 }
 
 void Client::ResetSeenAdvertisersForType(const CreativeAdList& ads,
                                          const AdType& type) {
+  DCHECK(is_initialized_);
+
   const std::string type_as_string = std::string(type);
 
   BLOG(1, "Resetting seen " << type_as_string << " advertisers");
@@ -411,6 +449,8 @@ void Client::ResetSeenAdvertisersForType(const CreativeAdList& ads,
 }
 
 void Client::ResetAllSeenAdvertisersForType(const AdType& type) {
+  DCHECK(is_initialized_);
+
   const std::string type_as_string = std::string(type);
   BLOG(1, "Resetting seen " << type_as_string << " advertisers");
   client_->seen_advertisers[type_as_string] = {};
@@ -419,6 +459,8 @@ void Client::ResetAllSeenAdvertisersForType(const AdType& type) {
 
 void Client::SetNextAdServingInterval(
     const base::Time& next_check_serve_ad_date) {
+  DCHECK(is_initialized_);
+
   client_->next_ad_serving_interval_timestamp =
       static_cast<uint64_t>(next_check_serve_ad_date.ToDoubleT());
 
@@ -426,11 +468,15 @@ void Client::SetNextAdServingInterval(
 }
 
 base::Time Client::GetNextAdServingInterval() {
+  DCHECK(is_initialized_);
+
   return base::Time::FromDoubleT(client_->next_ad_serving_interval_timestamp);
 }
 
 void Client::AppendTextClassificationProbabilitiesToHistory(
     const TextClassificationProbabilitiesMap& probabilities) {
+  DCHECK(is_initialized_);
+
   client_->text_classification_probabilities.push_front(probabilities);
 
   const size_t maximum_entries =
@@ -444,10 +490,14 @@ void Client::AppendTextClassificationProbabilitiesToHistory(
 
 const TextClassificationProbabilitiesList&
 Client::GetTextClassificationProbabilitiesHistory() {
+  DCHECK(is_initialized_);
+
   return client_->text_classification_probabilities;
 }
 
 void Client::RemoveAllHistory() {
+  DCHECK(is_initialized_);
+
   BLOG(1, "Successfully reset client state");
 
   client_.reset(new ClientInfo());
@@ -456,10 +506,14 @@ void Client::RemoveAllHistory() {
 }
 
 std::string Client::GetVersionCode() const {
+  DCHECK(is_initialized_);
+
   return client_->version_code;
 }
 
 void Client::SetVersionCode(const std::string& value) {
+  DCHECK(is_initialized_);
+
   client_->version_code = value;
 
   Save();
@@ -479,8 +533,8 @@ void Client::Save() {
   AdsClientHelper::Get()->Save(kClientFilename, json, callback);
 }
 
-void Client::OnSaved(const Result result) {
-  if (result != SUCCESS) {
+void Client::OnSaved(const bool success) {
+  if (!success) {
     BLOG(0, "Failed to save client state");
 
     return;
@@ -497,8 +551,8 @@ void Client::Load() {
   AdsClientHelper::Get()->Load(kClientFilename, callback);
 }
 
-void Client::OnLoaded(const Result result, const std::string& json) {
-  if (result != SUCCESS) {
+void Client::OnLoaded(const bool success, const std::string& json) {
+  if (!success) {
     BLOG(3, "Client state does not exist, creating default state");
 
     is_initialized_ = true;
@@ -511,7 +565,7 @@ void Client::OnLoaded(const Result result, const std::string& json) {
 
       BLOG(3, "Failed to parse client state: " << json);
 
-      callback_(FAILED);
+      callback_(/* success */ false);
       return;
     }
 
@@ -520,13 +574,13 @@ void Client::OnLoaded(const Result result, const std::string& json) {
     is_initialized_ = true;
   }
 
-  callback_(SUCCESS);
+  callback_(/* success  */ true);
 }
 
 bool Client::FromJson(const std::string& json) {
   ClientInfo client;
-  auto result = LoadFromJson(&client, json);
-  if (result != SUCCESS) {
+  const bool success = LoadFromJson(&client, json);
+  if (!success) {
     return false;
   }
 

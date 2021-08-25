@@ -37,7 +37,10 @@ ContentSetting GetDefaultFromContentSettingsType(
                                                         : CONTENT_SETTING_ALLOW;
   } else if (content_type == ContentSettingsType::BRAVE_SPEEDREADER) {
     return CONTENT_SETTING_ALLOW;
+  } else if (content_type == ContentSettingsType::BRAVE_ETHEREUM) {
+    return CONTENT_SETTING_DEFAULT;
   }
+
   return CONTENT_SETTING_BLOCK;
 }
 

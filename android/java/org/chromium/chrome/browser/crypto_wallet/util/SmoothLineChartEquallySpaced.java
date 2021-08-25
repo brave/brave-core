@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,9 +17,18 @@ import android.graphics.PointF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.TextView;
 
+import org.chromium.brave_wallet.mojom.AssetTimePrice;
+import org.chromium.chrome.R;
+
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class SmoothLineChartEquallySpaced extends View {
     private static final int CIRCLE_SIZE = 8;
@@ -32,9 +42,11 @@ public class SmoothLineChartEquallySpaced extends View {
     private final float mBorder;
 
     private float[] mValues;
+    private String[] mDates;
     private float mMaxY;
     private float mCurrentLineX;
     private int[] colors;
+    private TextView mPrice;
 
     public SmoothLineChartEquallySpaced(Context context) {
         this(context, null, 0);
@@ -49,7 +61,7 @@ public class SmoothLineChartEquallySpaced extends View {
 
         float scale = context.getResources().getDisplayMetrics().density;
 
-        mCurrentLineX = 0;
+        mCurrentLineX = -1;
         mCircleSize = scale * CIRCLE_SIZE;
         mStrokeSize = scale * STROKE_SIZE;
         mBorder = mCircleSize;
@@ -61,12 +73,25 @@ public class SmoothLineChartEquallySpaced extends View {
         mPath = new Path();
     }
 
-    public void setData(float[] values) {
-        mValues = values;
+    @Override
+    public boolean performClick() {
+        super.performClick();
+        return true;
+    }
 
-        if (values != null && values.length > 0) {
-            mMaxY = values[0];
-            for (float y : values) {
+    public void setData(AssetTimePrice[] data) {
+        mValues = new float[data.length];
+        mDates = new String[data.length];
+        for (int index = 0; index < data.length; index++) {
+            mValues[index] = Float.parseFloat(data[index].price);
+            Date date = new Date(data[index].date.microseconds / 1000);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+            mDates[index] = dateFormat.format(date);
+        }
+
+        if (mValues != null && mValues.length > 0) {
+            mMaxY = mValues[0];
+            for (float y : mValues) {
                 if (y > mMaxY) mMaxY = y;
             }
         }
@@ -74,7 +99,27 @@ public class SmoothLineChartEquallySpaced extends View {
         invalidate();
     }
 
-    public void drawLine(float x) {
+    public void setData(float[] values) {
+        mValues = values;
+        mDates = new String[values.length];
+
+        if (values != null && values.length > 0) {
+            mMaxY = values[0];
+            for (float y : values) {
+                if (y > mMaxY) mMaxY = y;
+            }
+        }
+        for (int index = 0; index < mValues.length; index++) {
+            Date date = new Date();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+            mDates[index] = dateFormat.format(date);
+        }
+
+        invalidate();
+    }
+
+    public void drawLine(float x, TextView price) {
+        mPrice = price;
         mCurrentLineX = x;
         invalidate();
     }
@@ -84,6 +129,7 @@ public class SmoothLineChartEquallySpaced extends View {
     }
 
     @Override
+    @SuppressLint("SetTextI18n")
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
@@ -155,25 +201,29 @@ public class SmoothLineChartEquallySpaced extends View {
         // Draw vertical lines
         if (mCurrentLineX != -1) {
             Paint paint = new Paint();
-            paint.setARGB(255, 0, 0, 0);
+            paint.setColor(getResources().getColor(R.color.wallet_text_color));
 
             paint.setStrokeWidth(2f);
-            canvas.drawLine(mCurrentLineX, 35, mCurrentLineX, canvas.getHeight() - 10, paint);
+            canvas.drawLine(mCurrentLineX, 35, mCurrentLineX, getHeight() - 10, paint);
             float possibleValue =
                     mValues.length > 1 ? (mCurrentLineX / (width / mValues.length)) : 0;
             if (possibleValue < 0) {
                 possibleValue = 0;
-            } else if (possibleValue >= mValues.length) {
-                possibleValue = mValues.length - 1;
+            } else if (possibleValue >= mDates.length) {
+                possibleValue = mDates.length - 1;
             }
             Paint paintText = new Paint();
-            paintText.setARGB(255, 0, 0, 0);
+            paintText.setColor(getResources().getColor(R.color.wallet_text_color));
             paintText.setTextSize(35);
-            float textX = mCurrentLineX - 20;
+            float textX = mCurrentLineX - 150;
             if (textX < 0) {
                 textX = mCurrentLineX;
             }
-            canvas.drawText(String.valueOf(mValues[(int) possibleValue]), textX, 35, paintText);
+            canvas.drawText(String.valueOf(mDates[(int) possibleValue]), textX, 35, paintText);
+            if (mPrice != null) {
+                DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+                mPrice.setText("$" + decimalFormat.format(mValues[(int) possibleValue]));
+            }
         }
     }
 }

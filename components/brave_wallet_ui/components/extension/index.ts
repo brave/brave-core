@@ -9,6 +9,10 @@ import ConnectedHeader from './connected-header'
 import WelcomePanel from './welcome-panel'
 import Panel from './panel'
 import PanelHeader from './panel-header'
+import SignPanel from './sign-panel'
+import AllowSpendPanel from './allow-spend-panel'
+import AllowAddNetworkPanel from './allow-add-network-panel'
+import ConfirmTransactionPanel from './confirm-transaction-panel'
 import { NavButton } from './buttons'
 
 export {
@@ -23,5 +27,9 @@ export {
   ConnectedHeader,
   Panel,
   PanelHeader,
-  WelcomePanel
+  WelcomePanel,
+  SignPanel,
+  AllowSpendPanel,
+  AllowAddNetworkPanel,
+  ConfirmTransactionPanel
 }

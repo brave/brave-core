@@ -11,6 +11,8 @@ source_set("brave_wallet") {
     "asset_ratio_controller_factory.h",
     "brave_wallet_context_utils.cc",
     "brave_wallet_context_utils.h",
+    "eth_tx_controller_factory.cc",
+    "eth_tx_controller_factory.h",
     "keyring_controller_factory.cc",
     "keyring_controller_factory.h",
     "rpc_controller_factory.cc",
@@ -31,8 +33,9 @@ source_set("brave_wallet") {
   ]
   if (is_android) {
     sources += [
-      "./android/brave_wallet_native_worker.cc",
-      "./android/brave_wallet_native_worker.h",
+      "./android/asset_ratio_controller_factory_android.cc",
+      "./android/erc_token_registry_factory_android.cc",
+      "./android/keyring_controller_factory_android.cc",
     ]
     deps += [ "//brave/build/android:jni_headers" ]
   }
@@ -62,8 +65,30 @@ source_set("brave_wallet_delegate") {
       "brave_wallet_provider_delegate_impl.h",
     ]
     deps += [
-      "//brave/browser/ui",
-      "//chrome/browser/ui",
+      "//brave/browser/brave_wallet",
+      "//brave/components/brave_wallet/common:mojom",
+      "//components/content_settings/core/common",
+      "//components/permissions",
+      "//mojo/public/cpp/bindings",
     ]
+  }
+}
+
+source_set("tab_helper") {
+  sources = [
+    "brave_wallet_tab_helper.cc",
+    "brave_wallet_tab_helper.h",
+  ]
+
+  deps = [
+    "//brave/common",
+    "//brave/components/brave_wallet/browser:ethereum_permission_utils",
+    "//components/permissions",
+    "//components/sessions",
+    "//content/public/browser",
+  ]
+
+  if (!is_android && !is_ios) {
+    deps += [ "//brave/browser/ui/brave_wallet" ]
   }
 }

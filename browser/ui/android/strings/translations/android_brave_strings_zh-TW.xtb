@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">使用安全的 HTTPS 連線而非普通的 HTTP 開啟某些網站。</translation>
 <translation id="94154759592465111">阻擋指令稿</translation>
 <translation id="3518266709656143462">阻止 Javascript（可能會破壞網站）</translation>
-<translation id="5709627087332022422">封鎖跨站追蹤器</translation>
 <translation id="6052725679982758334">阻擋社群媒體</translation>
 <translation id="7498695072878479744">在第三方網站上允許 Google 登入按鈕</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS 閘道器</translation>
 <translation id="2688519859165248360">允許透過 IPFS 閘道器瀏覽至 IPFS 資源</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">以太坊</translation>
+<translation id="7822245778264751380">以太坊價格 (ETH)</translation>
 <translation id="6513892817556267573">以太坊域名服務</translation>
 <translation id="3894650624018948468">解決方法</translation>
 <translation id="2356070529366658676">詢問</translation>
 <translation id="4176463684765177261">已停用</translation>
 <translation id="2218918398178303658">透過 HTTPS 的 DNS</translation>
-<translation id="1448289340149908413">以太坊</translation>
 <translation id="5787084571334399599">防止瀏覽器存取指紋</translation>
 <translation id="7459000603787995422">退出時關閉分頁</translation>
 <translation id="4448697385961650078">封鎖追蹤器與廣告</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">將 Brave 設為預設瀏覽器</translation>
 <translation id="7136694880210472378">設為預設</translation>
 <translation id="4250680216510889253">否</translation>
-<translation id="4501702055016678577">用 DuckDuckGo 進行隱私搜尋？</translation>
-<translation id="910419239800579753">透過使用隱私搜尋功能，每當你在此隱私分頁進行搜尋，Brave 都會使用 DuckDuckGo 搜尋器為你完成操作。DuckDuckGo 並不會儲存任何搜尋記錄，讓你安心以隱藏身份搜尋想要的資訊。</translation>
-<translation id="1426410128494586442">是</translation>
-<translation id="5628466560184522265">瞭解有關 DuckDuckGo 隱私搜尋的詳情</translation>
 <translation id="8826007068782654809">謝謝您</translation>
 <translation id="6665366815203065060">您已經傳送小費給：</translation>
 <translation id="5441565662498481293">您正在自動傳送小費給：</translation>
@@ -442,7 +438,7 @@
 <translation id="3477340970981564961">與傳統廣告不同，Brave 的私人廣告用代幣獎勵您以支持內容創作者，同時為您的個人資訊保密。</translation>
 <translation id="6973095375773523904">廣告會在哪裡顯示？</translation>
 <translation id="7556325460112047619">Brave 的私人廣告會以一般通知顯示。您可以在設定中控制看到這些廣告的頻率。</translation>
-<translation id="6897083627729802351">您何時獲得獎勵</translation>
+<translation id="6897083627729802351">您何時獲得獎勵？</translation>
 <translation id="310863932297733723">本月您從 Brave 的私人廣告賺取的代幣，將在下個月的 5 日抵達。</translation>
 <translation id="7712287524451429139">回饋毫不費力</translation>
 <translation id="105037569026952831">創作者會根據您對我們的參與程度（「關注度」）自動收到您的代幣捐款。</translation>
@@ -459,7 +455,7 @@
 <translation id="827315274423079662">喔耶，您已就緒！</translation>
 <translation id="3895246934788932488">透過使用「Brave Rewards」，您可以保護自己的隱私並讓網路對所有人來說都變成更好的地方。太棒了！</translation>
 <translation id="5705882733397021510">返回</translation>
-<translation id="3985567919248057638">快速瀏覽</translation>
+<translation id="3985567919248057638">讓我們快速瀏覽一下</translation>
 <translation id="2434574859640694129">收到您的第一筆廣告付款後，您可以回來並給這位創作者小費！</translation>
 <translation id="207242986925259074">快速複習</translation>
 <translation id="8342862030112839977">您的第一筆獎勵將抵達：</translation>
@@ -566,4 +562,13 @@
 <translation id="745115390910697838">短語不相符，請再試一次。</translation>
 <translation id="2360588547830602174">帳號復原失敗。請再試一次。</translation>
 <translation id="1530109021798294736">主網</translation>
+<translation id="990936698620790924">市價 (以 ETH 計價)</translation>
+<translation id="6748108480210050150">來源帳戶</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">至 (預估值)</translation>
+<translation id="59223531494896848">上限</translation>
+<translation id="3567988240819868195">市場</translation>
+<translation id="632241521608275119">滑點容許範圍</translation>
 </translationbundle>

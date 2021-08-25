@@ -41,7 +41,7 @@ export const MainContainer = styled.div<Partial<StyleProps>>`
   border: ${(p) => `2px solid ${p.theme.color.divider01}`};
   border-radius: ${(p) =>
     p.selectedTab === 'buy' ? '0px 8px 8px 8px' : p.selectedTab === 'swap' ? '8px 0px 8px 8px' : '8px'};
-  min-height: 295px;
+  // min-height: 220px;
   max-height: 470px;
   overflow: hidden;
 `
@@ -83,7 +83,7 @@ export const TabButtonText = styled.span<Partial<StyleProps>>`
   font-weight: 600;
   letter-spacing: 0.01em;
   background: ${(p) =>
-    p.isSelected ? 'linear-gradient(128.18deg, #A43CE4 13.94%, #A72B6D 84.49%)' : `${p.theme.color.text02}`};
+    p.isSelected ? p.theme.color.text01 : p.theme.color.text02};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `

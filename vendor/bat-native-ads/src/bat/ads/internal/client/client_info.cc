@@ -23,22 +23,21 @@ std::string ClientInfo::ToJson() {
   return json;
 }
 
-Result ClientInfo::FromJson(const std::string& json) {
+bool ClientInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   if (document.HasMember("adPreferences")) {
     rapidjson::StringBuffer buffer;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
     const auto& value = document["adPreferences"];
-    if (!value.Accept(writer) ||
-        ad_preferences.FromJson(buffer.GetString()) != SUCCESS) {
-      return FAILED;
+    if (!value.Accept(writer) || !ad_preferences.FromJson(buffer.GetString())) {
+      return false;
     }
   }
 
@@ -53,8 +52,7 @@ Result ClientInfo::FromJson(const std::string& json) {
       AdHistoryInfo ad_history;
       rapidjson::StringBuffer buffer;
       rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-      if (ad_shown.Accept(writer) &&
-          ad_history.FromJson(buffer.GetString()) == SUCCESS) {
+      if (ad_shown.Accept(writer) && ad_history.FromJson(buffer.GetString())) {
         ads_shown_history.push_back(ad_history);
       }
     }
@@ -71,7 +69,7 @@ Result ClientInfo::FromJson(const std::string& json) {
         rapidjson::StringBuffer buffer;
         rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
         if (segment_history_item.Accept(writer) &&
-            history.FromJson(buffer.GetString()) == SUCCESS) {
+            history.FromJson(buffer.GetString())) {
           histories.push_back(history);
         }
       }
@@ -133,7 +131,7 @@ Result ClientInfo::FromJson(const std::string& json) {
     version_code = document["version_code"].GetString();
   }
 
-  return SUCCESS;
+  return true;
 }
 
 void SaveToJson(JsonWriter* writer, const ClientInfo& state) {

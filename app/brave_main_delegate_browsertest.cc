@@ -15,6 +15,7 @@
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
+#include "components/reading_list/features/reading_list_switches.h"
 #include "components/security_state/core/features.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
@@ -69,34 +70,31 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
-    &autofill::features::kAutofillEnableAccountWalletStorage,
-    &autofill::features::kAutofillServerCommunication,
-    &blink::features::kFledgeInterestGroupAPI,
-    &blink::features::kFledgeInterestGroups,
-    &blink::features::kHandwritingRecognitionWebPlatformApi,
-    &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
-    &blink::features::kInterestCohortAPIOriginTrial,
-    &blink::features::kInterestCohortFeaturePolicy,
-    &blink::features::kTextFragmentAnchor,
-    &features::kDirectSockets,
-    &features::kIdleDetection,
-    &features::kLangClientHintHeader,
-    &features::kNotificationTriggers,
-    &features::kPrivacySandboxSettings,
-    &features::kSignedExchangePrefetchCacheForNavigations,
-    &features::kSignedExchangeSubresourcePrefetch,
-    &features::kSubresourceWebBundles,
-    &features::kWebOTP,
-    &federated_learning::kFederatedLearningOfCohorts,
-    &federated_learning::kFlocIdComputedEventLogging,
-#if !defined(OS_ANDROID)
-    &kEnableProfilePickerOnStartupFeature,
-#endif
-    &media::kLiveCaption,
-    &net::features::kFirstPartySets,
-    &network::features::kTrustTokens,
-    &network_time::kNetworkTimeServiceQuerying,
-    &password_manager::features::kEnablePasswordsAccountStorage,
+      &autofill::features::kAutofillEnableAccountWalletStorage,
+      &autofill::features::kAutofillServerCommunication,
+      &blink::features::kFledgeInterestGroupAPI,
+      &blink::features::kFledgeInterestGroups,
+      &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
+      &blink::features::kInterestCohortAPIOriginTrial,
+      &blink::features::kInterestCohortFeaturePolicy,
+      &blink::features::kTextFragmentAnchor,
+      &features::kDirectSockets,
+      &features::kIdleDetection,
+      &features::kLangClientHintHeader,
+      &features::kNotificationTriggers,
+      &features::kPrivacySandboxSettings,
+      &features::kSignedExchangePrefetchCacheForNavigations,
+      &features::kSignedExchangeSubresourcePrefetch,
+      &features::kSubresourceWebBundles,
+      &features::kWebOTP,
+      &federated_learning::kFederatedLearningOfCohorts,
+      &federated_learning::kFlocIdComputedEventLogging,
+      &media::kLiveCaption,
+      &net::features::kFirstPartySets,
+      &network::features::kTrustTokens,
+      &network_time::kNetworkTimeServiceQuerying,
+      &password_manager::features::kEnablePasswordsAccountStorage,
+      &reading_list::switches::kReadLater,
   };
 
   for (const auto* feature : disabled_features)

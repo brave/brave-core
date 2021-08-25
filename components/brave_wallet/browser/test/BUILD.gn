@@ -14,6 +14,7 @@ source_set("brave_wallet_unit_tests") {
       "//brave/components/brave_wallet/browser/asset_ratio_response_parser_unittest.cc",
       "//brave/components/brave_wallet/browser/brave_wallet_types_unittest.cc",
       "//brave/components/brave_wallet/browser/brave_wallet_utils_unittest.cc",
+      "//brave/components/brave_wallet/browser/eip1559_transaction_unittest.cc",
       "//brave/components/brave_wallet/browser/eip2930_transaction_unittest.cc",
       "//brave/components/brave_wallet/browser/erc_token_list_parser_unittest.cc",
       "//brave/components/brave_wallet/browser/erc_token_registry_unittest.cc",
@@ -27,6 +28,7 @@ source_set("brave_wallet_unit_tests") {
       "//brave/components/brave_wallet/browser/eth_response_parser_unittest.cc",
       "//brave/components/brave_wallet/browser/eth_transaction_unittest.cc",
       "//brave/components/brave_wallet/browser/eth_tx_state_manager_unittest.cc",
+      "//brave/components/brave_wallet/browser/ethereum_permission_utils_unittest.cc",
       "//brave/components/brave_wallet/browser/hd_key_unittest.cc",
       "//brave/components/brave_wallet/browser/hd_keyring_unittest.cc",
       "//brave/components/brave_wallet/browser/keyring_controller_unittest.cc",
@@ -39,6 +41,7 @@ source_set("brave_wallet_unit_tests") {
     deps = [
       "//base/test:test_support",
       "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:ethereum_permission_utils",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet/renderer/test:brave_wallet_response_unit_tests",

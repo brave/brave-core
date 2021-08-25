@@ -1,13 +1,13 @@
 source_set("bookmark") {
-  # Remove when https://github.com/brave/brave-browser/issues/10654 is resolved 
+  # Remove when https://github.com/brave/brave-browser/issues/10654 is resolved.
   check_includes = false
   sources = [
-    "brave_bookmark_tab_helper.cc",
-    "brave_bookmark_tab_helper.h",
     "bookmark_prefs_service.cc",
     "bookmark_prefs_service.h",
     "bookmark_prefs_service_factory.cc",
     "bookmark_prefs_service_factory.h",
+    "brave_bookmark_tab_helper.cc",
+    "brave_bookmark_tab_helper.h",
   ]
 
   deps = [
@@ -16,8 +16,19 @@ source_set("bookmark") {
     "//components/bookmarks/common",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
-    "//components/prefs",
     "//components/pref_registry",
+    "//components/prefs",
     "//content/public/browser",
+  ]
+
+  # Added indirectly required deps from chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h
+  # This can be removed when we can remove above check_includes.
+  deps += [
+    "//chrome/browser/cart:mojo_bindings",
+    "//chrome/browser/new_tab_page/modules/drive:mojo_bindings",
+    "//chrome/browser/new_tab_page/modules/task_module:mojo_bindings",
+    "//chrome/browser/promo_browser_command:mojo_bindings",
+    "//chrome/browser/ui/webui/new_tab_page:mojo_bindings",
+    "//chrome/browser/ui/webui/realbox:mojo_bindings",
   ]
 }

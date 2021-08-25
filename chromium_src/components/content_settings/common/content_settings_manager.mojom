@@ -8,7 +8,6 @@ interface ContentSettingsManager {
   [Sync]
   AllowEphemeralStorageAccess(
       int32 render_frame_id,
-      StorageType storage_type,
       url.mojom.Origin origin,
       url.mojom.Url site_for_cookies,
       url.mojom.Origin top_frame_origin) => (url.mojom.Origin? storage_origin);

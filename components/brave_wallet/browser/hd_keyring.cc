@@ -19,16 +19,6 @@ HDKeyring::Type HDKeyring::type() const {
   return kDefault;
 }
 
-bool HDKeyring::empty() const {
-  return !root_ || !master_key_ || !accounts_.size();
-}
-
-void HDKeyring::ClearData() {
-  root_.reset();
-  master_key_.reset();
-  accounts_.clear();
-}
-
 void HDKeyring::ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                    const std::string& hd_path) {
   if (!seed.empty()) {
@@ -56,12 +46,12 @@ std::vector<std::string> HDKeyring::GetAccounts() {
   return addresses;
 }
 
-void HDKeyring::RemoveAccount(const std::string& address) {
-  for (size_t i = 0; i < accounts_.size(); ++i) {
-    if (GetAddress(i) == address) {
-      accounts_.erase(accounts_.begin() + i);
-    }
-  }
+size_t HDKeyring::GetAccountsNumber() const {
+  return accounts_.size();
+}
+
+void HDKeyring::RemoveAccount() {
+  accounts_.pop_back();
 }
 
 std::string HDKeyring::GetAddress(size_t index) {
@@ -74,21 +64,21 @@ std::string HDKeyring::GetAddress(size_t index) {
                                               public_key.end());
   EthAddress addr = EthAddress::FromPublicKey(pubkey_no_header);
 
-  // TODO(darkdh): chain id
+  // TODO(darkdh): chain id op code
   return addr.ToChecksumAddress();
 }
 
 void HDKeyring::SignTransaction(const std::string& address,
-                                EthTransaction* tx) {
+                                EthTransaction* tx,
+                                uint256_t chain_id) {
   HDKey* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key || !tx)
     return;
 
-  // TODO(darkdh): chain id
-  const std::vector<uint8_t> message = tx->GetMessageToSign();
+  const std::vector<uint8_t> message = tx->GetMessageToSign(chain_id);
   int recid;
   const std::vector<uint8_t> signature = hd_key->Sign(message, &recid);
-  tx->ProcessSignature(signature, recid);
+  tx->ProcessSignature(signature, recid, chain_id);
 }
 
 std::vector<uint8_t> HDKeyring::SignMessage(

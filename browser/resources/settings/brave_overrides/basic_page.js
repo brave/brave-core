@@ -3,21 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {RegisterStyleOverride,RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
-import {Router} from '../router.js'
+import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://brave-resources/polymer_overriding.js'
 import {loadTimeData} from '../i18n_setup.js'
-import {pageVisibility} from './page_visibility.js'
 
-import '../getting_started_page/getting_started.js'
 import '../brave_default_extensions_page/brave_default_extensions_page.m.js'
-import '../default_brave_shields_page/default_brave_shields_page.m.js'
-import '../social_blocking_page/social_blocking_page.m.js'
-import '../brave_ipfs_page/brave_ipfs_page.m.js'
-import '../brave_wallet_page/brave_wallet_page.m.js'
-import '../brave_sync_page/brave_sync_page.js'
 import '../brave_help_tips_page/brave_help_tips_page.m.js'
+import '../brave_ipfs_page/brave_ipfs_page.m.js'
 import '../brave_new_tab_page/brave_new_tab_page.m.js'
+import '../brave_search_engines_page/brave_search_engines_page.m.js'
+import '../brave_sync_page/brave_sync_page.js'
+import '../brave_wallet_page/brave_wallet_page.m.js'
+import '../default_brave_shields_page/default_brave_shields_page.m.js'
+import '../getting_started_page/getting_started.js'
+import '../social_blocking_page/social_blocking_page.m.js'
 
 const isGuest = loadTimeData.getBoolean('isGuest')
 
@@ -39,15 +37,19 @@ export function getSectionElement (templateContent, sectionName) {
  * @returns {Element}
  */
 function createSectionElement (sectionName, titleName, childName, childAttributes) {
-  const el = document.createElement('settings-section')
-  el.setAttribute('page-title', loadTimeData.getString(titleName))
-  el.setAttribute('section', sectionName)
-  const child = document.createElement(childName)
-  for (const attribute in childAttributes) {
-    child.setAttribute(attribute, childAttributes[attribute])
-  }
-  el.appendChild(child)
-  return el
+  const childAttributesString = Object.keys(childAttributes).map(attribute =>
+      `${attribute}="${childAttributes[attribute]}"`)
+    .join(' ')
+  // This needs to be inside a template so that our components do not get created immediately.
+  // Otherwise the polymer bindings won't be setup correctly at first.
+  return html`
+    <settings-section page-title="${loadTimeData.getString(titleName)}" section="${sectionName}">
+      <${childName}
+        ${childAttributesString}
+      >
+      </${childName}>
+    </settings-section>
+  `
 }
 
 RegisterStyleOverride(
@@ -63,52 +65,6 @@ RegisterStyleOverride(
 
 RegisterPolymerTemplateModifications({
   'settings-basic-page': (templateContent) => {
-    // Routes
-    const r = Router.getInstance().routes_
-    if (!r.BASIC) {
-      console.error('[Brave Settings Overrides] Routes: could not find BASIC page')
-    }
-    if (pageVisibility.getStarted) {
-      r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted')
-      // bring back people's /manageProfile (now in getStarted)
-      r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile');
-    }
-    r.SHIELDS = r.BASIC.createSection('/shields', 'shields')
-    r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
-    r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
-    if (pageVisibility.braveSync) {
-      r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
-      r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup');
-    }
-    if (pageVisibility.braveIPFS) {
-      r.BRAVE_IPFS = r.BASIC.createSection('/ipfs', 'ipfs')
-      r.BRAVE_IPFS_KEYS = r.BRAVE_IPFS.createChild('/ipfs/keys');
-      r.BRAVE_IPFS_PEERS = r.BRAVE_IPFS.createChild('/ipfs/peers');
-    }
-    if (pageVisibility.braveWallet) {
-      r.BRAVE_WALLET = r.BASIC.createSection('/wallet', 'wallet')
-    }
-
-    r.BRAVE_HELP_TIPS = r.BASIC.createSection('/braveHelpTips', 'braveHelpTips')
-    r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
-    if (r.SITE_SETTINGS) {
-      r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')
-    } else if (!isGuest) {
-      console.error('[Brave Settings Overrides] Routes: could not find SITE_SETTINGS page')
-    }
-    // Autofill route is moved to advanced,
-    // otherwise its sections won't show up when opened.
-    if (r.AUTOFILL && r.ADVANCED) {
-      r.AUTOFILL.parent = r.ADVANCED
-    } else if (!isGuest) {
-      console.error('[Brave Settings Overrides] Could not move autofill route to advanced route', r)
-    }
-    // Safety check route is moved to advanced.
-    if (r.SAFETY_CHECK && r.ADVANCED) {
-      r.SAFETY_CHECK.parent = r.ADVANCED
-    } else if (!isGuest) {
-      console.error('[Brave Settings Overrides] Could not move safety check route to advanced route', r)
-    }
     // Add 'Getting Started' section
     // Entire content is wrapped in another conditional template
     const actualTemplate = templateContent.querySelector('template')

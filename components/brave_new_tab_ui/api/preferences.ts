@@ -46,8 +46,8 @@ export function saveShowRewards (value: boolean): void {
   sendSavePref('showRewards', value)
 }
 
-export function saveShowTogether (value: boolean): void {
-  sendSavePref('showTogether', value)
+export function saveShowBraveTalk (value: boolean): void {
+  sendSavePref('showBraveTalk', value)
 }
 
 export function saveShowBinance (value: boolean): void {

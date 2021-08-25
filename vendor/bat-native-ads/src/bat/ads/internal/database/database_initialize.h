@@ -9,7 +9,7 @@
 #include <string>
 
 #include "bat/ads/ads_client.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -26,7 +26,8 @@ class Initialize {
   std::string get_last_message() const;
 
  private:
-  void OnCreateOrOpen(DBCommandResponsePtr response, ResultCallback callback);
+  void OnCreateOrOpen(mojom::DBCommandResponsePtr response,
+                      ResultCallback callback);
 
   std::string last_message_;
 };

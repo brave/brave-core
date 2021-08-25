@@ -37,7 +37,7 @@ class EthBlockTrackerUnitTest : public testing::Test {
         shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)),
-        rpc_controller_(Network::kMainnet, shared_url_loader_factory_) {}
+        rpc_controller_(mojom::Network::Mainnet, shared_url_loader_factory_) {}
 
   std::string GetResponseString() const {
     return "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +

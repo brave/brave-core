@@ -16,25 +16,25 @@ namespace ads {
 namespace ad_notifications {
 
 std::unique_ptr<AdEvent<AdNotificationInfo>> AdEventFactory::Build(
-    const AdNotificationEventType event_type) {
+    const mojom::AdNotificationEventType event_type) {
   switch (event_type) {
-    case AdNotificationEventType::kServed: {
+    case mojom::AdNotificationEventType::kServed: {
       return std::make_unique<AdEventServed>();
     }
 
-    case AdNotificationEventType::kViewed: {
+    case mojom::AdNotificationEventType::kViewed: {
       return std::make_unique<AdEventViewed>();
     }
 
-    case AdNotificationEventType::kClicked: {
+    case mojom::AdNotificationEventType::kClicked: {
       return std::make_unique<AdEventClicked>();
     }
 
-    case AdNotificationEventType::kDismissed: {
+    case mojom::AdNotificationEventType::kDismissed: {
       return std::make_unique<AdEventDismissed>();
     }
 
-    case AdNotificationEventType::kTimedOut: {
+    case mojom::AdNotificationEventType::kTimedOut: {
       return std::make_unique<AdEventTimedOut>();
     }
   }

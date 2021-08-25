@@ -84,17 +84,17 @@ class BatAdsImpl :
       GetAdNotificationCallback callback) override;
   void OnAdNotificationEvent(
       const std::string& uuid,
-      const ads::AdNotificationEventType event_type) override;
+      const ads::mojom::AdNotificationEventType event_type) override;
 
   void OnNewTabPageAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::NewTabPageAdEventType event_type) override;
+      const ads::mojom::NewTabPageAdEventType event_type) override;
 
   void OnPromotedContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::PromotedContentAdEventType event_type) override;
+      const ads::mojom::PromotedContentAdEventType event_type) override;
 
   void GetInlineContentAd(const std::string& dimensions,
                           GetInlineContentAdCallback callback) override;
@@ -102,10 +102,9 @@ class BatAdsImpl :
   void OnInlineContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::InlineContentAdEventType event_type) override;
+      const ads::mojom::InlineContentAdEventType event_type) override;
 
-  void PurgeOrphanedAdEventsForType(
-      const ads::mojom::BraveAdsAdType ad_type) override;
+  void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
 
   void RemoveAllHistory(
       RemoveAllHistoryCallback callback) override;
@@ -122,6 +121,8 @@ class BatAdsImpl :
       GetAdsHistoryCallback callback) override;
 
   void GetAccountStatement(GetAccountStatementCallback callback) override;
+
+  void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
 
   void ToggleAdThumbUp(
       const std::string& creative_instance_id,
@@ -177,31 +178,34 @@ class BatAdsImpl :
       Callback callback_;
     };
 
-  static void OnInitialize(
-      CallbackHolder<InitializeCallback>* holder,
-      const int32_t result);
+    static void OnInitialize(CallbackHolder<InitializeCallback>* holder,
+                             const bool success);
 
-  static void OnShutdown(
-      CallbackHolder<ShutdownCallback>* holder,
-      const int32_t result);
+    static void OnShutdown(CallbackHolder<ShutdownCallback>* holder,
+                           const bool success);
 
-  static void OnGetInlineContentAd(
-      CallbackHolder<GetInlineContentAdCallback>* holder,
-      const bool success,
-      const std::string& dimensions,
-      const ads::InlineContentAdInfo& ad);
+    static void OnGetInlineContentAd(
+        CallbackHolder<GetInlineContentAdCallback>* holder,
+        const bool success,
+        const std::string& dimensions,
+        const ads::InlineContentAdInfo& ad);
 
-  static void OnRemoveAllHistory(
-      CallbackHolder<RemoveAllHistoryCallback>* holder,
-      const int32_t result);
+    static void OnRemoveAllHistory(
+        CallbackHolder<RemoveAllHistoryCallback>* holder,
+        const bool success);
 
-  static void OnGetAccountStatement(
-      CallbackHolder<GetAccountStatementCallback>* holder,
-      const bool success,
-      const ads::StatementInfo& statement);
+    static void OnGetAccountStatement(
+        CallbackHolder<GetAccountStatementCallback>* holder,
+        const bool success,
+        const ads::StatementInfo& statement);
 
-  std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
-  std::unique_ptr<ads::Ads> ads_;
+    static void OnGetAdDiagnostics(
+        CallbackHolder<GetAdDiagnosticsCallback>* holder,
+        const bool success,
+        const std::string& json);
+
+    std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
+    std::unique_ptr<ads::Ads> ads_;
 };
 
 }  // namespace bat_ads

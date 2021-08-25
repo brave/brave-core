@@ -12,7 +12,7 @@
 #include "base/win/core_winrt_util.h"
 #include "base/win/scoped_hstring.h"
 #include "base/win/windows_version.h"
-#include "brave/components/brave_ads/browser/features.h"
+#include "brave/components/brave_ads/common/features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/install_static/install_util.h"
 #include "chrome/installer/util/install_util.h"
@@ -65,35 +65,35 @@ NotificationHelperWin::NotificationHelperWin() = default;
 NotificationHelperWin::~NotificationHelperWin() = default;
 
 bool NotificationHelperWin::ShouldShowNotifications() {
-  if (features::ShouldShowCustomAdNotifications()) {
+  if (features::IsCustomAdNotificationsEnabled()) {
     return true;
   }
 
+  if (IsFocusAssistEnabled()) {
+    return false;
+  }
+
+  return CanShowNativeNotifications();
+}
+
+bool NotificationHelperWin::CanShowNativeNotifications() {
   if (base::win::GetVersion() < base::win::Version::WIN10_RS4) {
     // There was a Microsoft bug in Windows 10 prior to build 17134 (i.e.
     // VERSION_WIN10_RS4) causing endless loops in displaying notifications. It
     // significantly amplified the memory and CPU usage. Therefore, Windows 10
     // native notifications in Chromium are only enabled for build 17134 and
     // later
-    LOG(WARNING)
-        << "Native notifications are not supported on Windows prior"
-           " to Windows 10 build 17134 so falling back to Message Center";
-    return true;
+    LOG(WARNING) << "Native notifications are not supported prior to Windows "
+                    "10 build 17134";
+    return false;
   }
 
   if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
-    LOG(WARNING) << "Native notification feature is disabled so falling back to"
-                    " Message Center";
-    return true;
-  }
-
-  if (IsFocusAssistEnabled()) {
-    LOG(INFO) << "Notification not made: Focus assist is enabled";
+    LOG(WARNING) << "Native notifications feature is disabled";
     return false;
   }
 
   if (!IsNotificationsEnabled()) {
-    LOG(INFO) << "Notification not made: Notifications are disabled";
     return false;
   }
 
@@ -175,9 +175,6 @@ bool NotificationHelperWin::IsFocusAssistEnabled() const {
       return true;
     }
   }
-
-  LOG(WARNING) << "Unknown Focus Assist status: " << result;
-  return false;
 }
 
 bool NotificationHelperWin::IsNotificationsEnabled() {

@@ -2,7 +2,6 @@ import("//brave/components/common/typescript.gni")
 import("//build/config/features.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
-import("buildflags/buildflags.gni")
 
 declare_args() {
   brave_sync_endpoint = ""
@@ -41,10 +40,7 @@ source_set("features") {
     "features.h",
   ]
 
-  deps = [
-    "buildflags",
-    "//base",
-  ]
+  deps = [ "//base" ]
 }
 
 static_library("network_time_helper") {
@@ -74,10 +70,10 @@ source_set("prefs") {
   ]
 }
 
-static_library("profile_sync_service_helper") {
+static_library("sync_service_impl_helper") {
   sources = [
-    "profile_sync_service_helper.cc",
-    "profile_sync_service_helper.h",
+    "sync_service_impl_helper.cc",
+    "sync_service_impl_helper.h",
   ]
 
   deps = [
@@ -93,7 +89,6 @@ group("brave_sync") {
     ":features",
     ":network_time_helper",
     ":prefs",
-    "buildflags",
     "//base",
   ]
 }

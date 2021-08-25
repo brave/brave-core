@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { lookupExternalWalletProviderName } from '../shared/lib/external_wallet'
+
 export let actions: any = null
 
 export const getActions = () => actions
@@ -77,10 +79,6 @@ export const getWalletProviderName = (wallet?: Rewards.ExternalWallet | string) 
   if (!wallet) {
     return ''
   }
-  switch (typeof wallet === 'string' ? wallet : wallet.type) {
-    case 'uphold' : return 'Uphold'
-    case 'bitflyer': return 'bitFlyer'
-    case 'gemini': return 'Gemini'
-    default: return ''
-  }
+  return lookupExternalWalletProviderName(
+    typeof wallet === 'string' ? wallet : wallet.type)
 }

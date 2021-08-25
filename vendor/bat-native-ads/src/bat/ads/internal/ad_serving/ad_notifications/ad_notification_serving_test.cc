@@ -47,10 +47,10 @@ class BatAdsAdNotificationServingTest : public UnitTestBase {
   ~BatAdsAdNotificationServingTest() override = default;
 
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/* integration_test */ true);
+    ASSERT_TRUE(CopyFileFromTestPathToTempDir(
+        "confirmations_with_unblinded_tokens.json", "confirmations.json"));
 
-    MockLoad(ads_client_mock_, "confirmations.json",
-             "confirmations_with_unblinded_tokens.json");
+    UnitTestBase::SetUpForTesting(/* integration_test */ true);
 
     const URLEndpoints endpoints = {
         {"/v8/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}}};
@@ -102,9 +102,8 @@ class BatAdsAdNotificationServingTest : public UnitTestBase {
   }
 
   void Save(const CreativeAdNotificationList& creative_ad_notifications) {
-    database_table_->Save(creative_ad_notifications, [](const Result result) {
-      ASSERT_EQ(Result::SUCCESS, result);
-    });
+    database_table_->Save(creative_ad_notifications,
+                          [](const bool success) { ASSERT_TRUE(success); });
   }
 
   std::unique_ptr<database::table::CreativeAdNotifications> database_table_;

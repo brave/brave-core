@@ -49,12 +49,18 @@ template("mojom_wrappers") {
       "//brave/build/ios/mojom/cpp_transformations.h",
       "//brave/build/ios/mojom/mojom_objc_generator.py",
       "//brave/build/ios/mojom/objc_templates/enum.tmpl",
+      "//brave/build/ios/mojom/objc_templates/interface_declaration.tmpl",
+      "//brave/build/ios/mojom/objc_templates/interface_macros.tmpl",
       "//brave/build/ios/mojom/objc_templates/module.h.tmpl",
       "//brave/build/ios/mojom/objc_templates/module+private.h.tmpl",
       "//brave/build/ios/mojom/objc_templates/module.mm.tmpl",
-      "//brave/build/ios/mojom/objc_templates/interface_declaration.tmpl",
+      "//brave/build/ios/mojom/objc_templates/struct_declaration.tmpl",
+      "//brave/build/ios/mojom/objc_templates/private_interface_bridge_declaration.tmpl",
+      "//brave/build/ios/mojom/objc_templates/private_interface_bridge_implementation.tmpl",
       "//brave/build/ios/mojom/objc_templates/private_interface_declaration.tmpl",
       "//brave/build/ios/mojom/objc_templates/private_interface_implementation.tmpl",
+      "//brave/build/ios/mojom/objc_templates/private_struct_declaration.tmpl",
+      "//brave/build/ios/mojom/objc_templates/private_struct_implementation.tmpl",
     ]
     outputs = _generate_wrappers_output
     args = [
@@ -87,6 +93,7 @@ template("mojom_wrappers") {
     public_deps += [
       ":$_generate_wrappers_target",
       "//base",
+      "//net",
       _mojom_target,
     ]
   }

@@ -56,6 +56,13 @@ export const ButtonRow = styled.div`
   margin: 20px 0px;
 `
 
+export const BalanceRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`
+
 export const InfoColumn = styled.div`
   display: flex;
   flex-direction: column;
@@ -101,7 +108,7 @@ export const AssetIcon = styled.div<Partial<StyleProps>>`
   width: 40px;
   height: 40px;
   border-radius: 100%;
-  background: ${(p) => `url(${p.icon})`};
+  background: ${(p) => p.icon ? `url(${p.icon})` : p.theme.color.background01}};
   margin-right: 12px;
 `
 
@@ -129,7 +136,7 @@ export const PercentBubble = styled.div<Partial<StyleProps>>`
   flex-direction: row;
   padding: 4px 8px;
   border-radius: 8px;
-  background-color: ${(p) => p.isDown ? p.theme.palette.red600 : p.theme.palette.teal600};
+  background-color: ${(p) => p.isDown ? '#EE6374' : '#2AC194'};
 `
 
 export const PercentText = styled.span`

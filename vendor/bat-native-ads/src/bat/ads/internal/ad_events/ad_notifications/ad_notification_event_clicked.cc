@@ -29,8 +29,8 @@ void AdEventClicked::FireEvent(const AdNotificationInfo& ad) {
 
   AdsClientHelper::Get()->CloseNotification(ad.uuid);
 
-  LogAdEvent(ad, ConfirmationType::kClicked, [](const Result result) {
-    if (result != Result::SUCCESS) {
+  LogAdEvent(ad, ConfirmationType::kClicked, [](const bool success) {
+    if (!success) {
       BLOG(1, "Failed to log ad notification clicked event");
       return;
     }

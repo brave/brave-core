@@ -14,9 +14,12 @@ aggregate_vector_icons("brave_vector_icons") {
     "brave_ads_close_button.icon",
     "brave_ads_dark_mode_info_button.icon",
     "brave_ads_light_mode_info_button.icon",
+    "brave_sad.icon",
+    "brave_tooltips_stopwatch.icon",
     "download_unlock.icon",
     "open_in_ipfs.icon",
     "open_in_tor.icon",
+    "vpn_indicator.icon",
   ]
 
   if (enable_sidebar) {

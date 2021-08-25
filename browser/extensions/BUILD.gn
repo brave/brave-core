@@ -1,7 +1,5 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/config.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -24,14 +22,20 @@ source_set("extensions") {
     "api/brave_action_api.h",
     "api/brave_extensions_api_client.cc",
     "api/brave_extensions_api_client.h",
+    "api/brave_rewards_api.cc",
+    "api/brave_rewards_api.h",
     "api/brave_shields_api.cc",
     "api/brave_shields_api.h",
+    "api/brave_talk_api.cc",
+    "api/brave_talk_api.h",
     "api/brave_theme_api.cc",
     "api/brave_theme_api.h",
     "api/brave_today_api.cc",
     "api/brave_today_api.h",
     "api/greaselion_api.cc",
     "api/greaselion_api.h",
+    "api/rewards_notifications_api.cc",
+    "api/rewards_notifications_api.h",
     "api/settings_private/brave_prefs_util.cc",
     "api/settings_private/brave_prefs_util.h",
     "brave_component_loader.cc",
@@ -56,22 +60,28 @@ source_set("extensions") {
     ":resources",
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/brave_ads",
     "//brave/browser/component_updater",
     "//brave/browser/profiles",
     "//brave/browser/webcompat_reporter",
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/common/extensions/api",
+    "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_rewards/browser/buildflags",
+    "//brave/components/brave_rewards/browser",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
+    "//brave/components/brave_talk",
     "//brave/components/brave_today/browser",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",
+    "//brave/components/ntp_widget_utils/browser",
     "//brave/components/sidebar/buildflags",
     "//brave/components/tor/buildflags",
+    "//brave/vendor/bat-native-ads:headers",
+    "//brave/vendor/bat-native-ledger:headers",
     "//chrome/browser/extensions",
     "//chrome/common",
     "//components/gcm_driver:gcm_buildflags",
@@ -120,7 +130,7 @@ source_set("extensions") {
     ]
   }
 
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     sources += [
       "api/ipfs_api.cc",
       "api/ipfs_api.h",
@@ -132,22 +142,6 @@ source_set("extensions") {
     deps += [ "//brave/components/decentralized_dns" ]
   }
 
-  if (brave_rewards_enabled) {
-    sources += [
-      "api/brave_rewards_api.cc",
-      "api/brave_rewards_api.h",
-      "api/rewards_notifications_api.cc",
-      "api/rewards_notifications_api.h",
-    ]
-
-    deps += [
-      "//brave/browser/brave_ads",
-      "//brave/components/brave_ads/browser",
-      "//brave/components/brave_rewards/browser",
-      "//brave/vendor/bat-native-ads:headers",
-      "//brave/vendor/bat-native-ledger:headers",
-    ]
-  }
   if (enable_brave_webtorrent) {
     deps += [ "//brave/components/brave_webtorrent/browser" ]
     sources += [
@@ -193,17 +187,6 @@ source_set("extensions") {
     ]
   }
 
-  if (brave_together_enabled) {
-    sources += [
-      "api/brave_together_api.cc",
-      "api/brave_together_api.h",
-    ]
-
-    deps += [
-      "//brave/components/brave_together/browser",
-      "//brave/components/ntp_widget_utils/browser",
-    ]
-  }
   if (crypto_dot_com_enabled) {
     sources += [
       "api/crypto_dot_com_api.cc",
@@ -227,13 +210,9 @@ group("resources") {
   deps = [
     "//brave/components/brave_extension:generated_resources",
     "//brave/components/brave_extension:static_resources",
+    "//brave/components/brave_rewards/resources/extension:extension_generated_resources",
+    "//brave/components/brave_rewards/resources/extension:static_resources",
   ]
-  if (brave_rewards_enabled) {
-    deps += [
-      "//brave/components/brave_rewards/resources/extension:extension_generated_resources",
-      "//brave/components/brave_rewards/resources/extension:static_resources",
-    ]
-  }
   if (enable_brave_webtorrent) {
     deps += [
       "//brave/components/brave_webtorrent:generated_resources",

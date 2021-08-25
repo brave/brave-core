@@ -53,7 +53,6 @@
 <translation id="4546260624932151782">نمایش موارد دلخواه</translation>
 <translation id="3446024864193919737">نشان دادن «پاداش‌های Brave»</translation>
 <translation id="6274899614137380422">نمایش Binance</translation>
-<translation id="5551238871320268996">Brave در کنار هم</translation>
 <translation id="5585019845078534178">کارت‌ها</translation>
 <translation id="3870475560794762985">نمایش تصاویر حمایت‌شده</translation>
 <translation id="2875302873837723333">سایت‌های برتر</translation>
@@ -63,7 +62,7 @@
 <translation id="3159285901314605198">تصویر پس‌زمینه</translation>
 <translation id="385051799172605136">بازگشت</translation>
 <translation id="9024104284526126630">می‌توانید در Brave تماس خصوصی شروع کنید.</translation>
-<translation id="5735801688206890393">در Brave Together، تماس‌های نامحدود با دوستان و همکاران را شروع کنید.</translation>
+<translation id="4903286433687221248">در Brave Talk، با دوستان و همکارانتان تماس‌های نامحدود داشته باشید.</translation>
 <translation id="7115051913071512405">آن را امتحان کنید</translation>
 <translation id="7415602225677446066">داستان‌های برتر امروز در فیدی کاملاً خصوصی، فقط برای شما.</translation>
 <translation id="6903061332999399632">Brave News با آگهی‌های مطابقی که به‌صورت کاملاً خصوصی و ناشناس در دستگاه شما نشان داده می‌شوند پشتیبانی می‌شود. طبق <ph name="LINK_START"/>خط مشی حریم خصوصی<ph name="LINK_END"/> ما، اطلاعات شخصی شما همواره خصوصی باقی می‌ماند.</translation>
@@ -174,8 +173,6 @@
 <translation id="8010081455002666927">شناسایی خودکار</translation>
 <translation id="4394049700291259645">غیر فعال کردن</translation>
 <translation id="4176463684765177261">غیرفعال شد</translation>
-<translation id="4434663852465709809">کد QR برای کاربران iOS Rewards که BAT انتقال می‌دهند</translation>
-<translation id="2175927920773552910">کد QR</translation>
 <translation id="8283001340969131076">متأسفیم، هنگام تلاش برای قطع ارتباط حساب <ph name="PROVIDER"/>، خطایی روی داد. لطفاً کمی دیگر دوباره امتحان کنید.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="3390542282753297856">دستگاه خاموش است، لطفاً بعداً امتحان کنید.</translation>
@@ -240,8 +237,8 @@
 <translation id="2359865110462963929">BAT در حال حاضر در منطقه شما پشتیبانی نمی‌شود لطفاً برای به‌روزرسانی به <ph name="BEGIN_LINK"/>اینجا<ph name="END_LINK"/> مراجعه کنید.</translation>
 <translation id="1737873393693460829">با روشن کردن [[title]]، شما با <ph name="BEGIN_LINK1"/>شرایط خدمات<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>خط‌مشی رازداری<ph name="END_LINK2"/> موافقت می‌کنید.</translation>
 <translation id="2564425876266960486">خطا در ایجاد کارت Brave Browser BAT</translation>
-<translation id="6473583070570450185">برای ورود به سیستم، به کیف پول تأییدشده‌ای نیاز دارید</translation>
-<translation id="5949995321533425416">برای ایجاد کیف پول Uphold، به حداقل <ph name="AMOUNT"/> ‏BAT نیاز دارید. بعد از اینکه کیف پول را با Uphold تأیید نمودید، لطفاً دوباره امتحان کنید.</translation>
+<translation id="8429332714958713413">برای ورود به سیستم به یک کیف پول تأییدشده نیاز دارید</translation>
+<translation id="5881716477679854586">لطفاً پس از تکمیل تأیید شناسه در <ph name="CUSTODIAN"/>، دوباره امتحان کنید.</translation>
 <translation id="4285403731827683059"><ph name="AMOUNT"/> ظرف <ph name="DAYS"/> ارائه می‌شود</translation>
 <translation id="4672975606583962967">انتخاب سرویس کیف پول</translation>
 <translation id="1815503044492647974">یک شریک کیف پول نظارتی را انتخاب کنید. اگر از قبل حسابی دارید، از شما درخواست می‌شود که برای اتصال به سیستم وارد شوید.</translation>
@@ -279,6 +276,8 @@
 <translation id="386483240851194811">پاداش‌ها خاموش شد</translation>
 <translation id="3354337256330577726">کمک خودکار خاموش شد</translation>
 <translation id="6727186931929643711">تلاش مجدد متوقف شد</translation>
+<translation id="8978461348341400550">متولی:</translation>
+<translation id="7220161813676251577">شناسه عضویت متولی:</translation>
 <translation id="680983167891198932">کلید</translation>
 <translation id="7535087603100972091">مقدار</translation>
 <translation id="45591635423975492">ثبت‌شده در</translation>
@@ -376,8 +375,8 @@
 <translation id="2070991379950719711">شروع استفاده از Brave Rewards</translation>
 <translation id="6318696841371191107">گشتی سریع بزنید</translation>
 <translation id="8465790416279415448">با ادامه دادن، با <ph name="TOS_LINK_BEGIN"/>شرایط خدمات<ph name="TOS_LINK_END"/> و <ph name="PP_LINK_BEGIN"/>خط‌مشی رازداری<ph name="PP_LINK_END"/> موافقت می‌کنید.</translation>
-<translation id="2404165674840145940">انعام دادن با Brave rewards</translation>
-<translation id="5820285701794581330">با استفاده از Brave rewards، شروع به کسب BAT می‌کنید که می‌توان از آن برای انعام دادن به سازندگان استفاده کرد.</translation>
+<translation id="8222322431155185238">انعام با «Brave Rewards»</translation>
+<translation id="1895476463085410109">با بازدید از «Brave Private Ads» پاداش کسب کنید و از تولیدکننده‌های محتوا به‌طور خودکار پشتیبانی کنید</translation>
 <translation id="5705882733397021510">برگشتن</translation>
 <translation id="185034574799484512">بیایید گشت سریعی بزنیم</translation>
 <translation id="8281886186245836920">رد شدن</translation>
@@ -530,6 +529,7 @@
 <translation id="8725066075913043281">امتحان مجدد</translation>
 <translation id="2600847485413879104">پاداش‌های BAT</translation>
 <translation id="8006596443377585072">کیف پول bitFlyer</translation>
+<translation id="2770577461149798369">کیف پول Gemini</translation>
 <translation id="8108350286444475334">تأیید کیف پول</translation>
 <translation id="6977372887576114613">BAT سپرده‌شده</translation>
 <translation id="3173528272490482456">برای شروع به کار آماده‌اید؟</translation>
@@ -537,6 +537,7 @@
 <translation id="108052542935515756">با این می‌توانید شروع کنید</translation>
 <translation id="194625454574835815">کلید بازیابی</translation>
 <translation id="6354568176665589146">تکرارشونده</translation>
+<translation id="2799223571221894425">راه‌اندازی مجدد</translation>
 <translation id="1110535155349301542">حذف</translation>
 <translation id="8204292894173669182">حذف از موارد ذخیره شده</translation>
 <translation id="5530851178552343773">[[reservedAmount]] [[currency]] برای پدیدآورندگانی که هنوز برای دریافت کمک ثبت نام نکرده‌اند، درنظر گرفته‌اید. مرورگر تلاش می‌کند تا زمانی که آنها ثبت‌نام کنند یا تا 90 روز به کمک ادامه دهد.</translation>
@@ -568,6 +569,8 @@
 <translation id="3092054349246483285">کیف پول Brave شما توسط <ph name="PROVIDER"/> ارائه می‌شود.</translation>
 <translation id="6401272292123354754">«پاداش‌های Brave» برپایه «توکن توجه پایه» (Basic Attention Token) ساخته شده است. درباره BAT بیشتر بدانید</translation>
 <translation id="7823359893981882407">اینجا</translation>
+<translation id="3034163433136515805">مشاهده کد QR</translation>
+<translation id="1640793619390890218">برای کاربران «Rewards در iOS» که توکن بت منتقل می‌کنند.</translation>
 <translation id="4483635855837696643">بازیابی کیف پول</translation>
 <translation id="459721429458957031">برای بازنشانی کیف پول، از کلید بازیابی استفاده کنید.</translation>
 <translation id="4600052736217630789">کیف پول بازیابی‌شده جایگزین کیف پول فعلی‌تان می‌شود. حتماً قبل از بازیابی، کیف پول فعلی را خالی یا پشتیبان‌گیری کنید.</translation>

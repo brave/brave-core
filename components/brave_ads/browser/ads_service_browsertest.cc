@@ -384,7 +384,7 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
   MOCK_METHOD1(OnGetEnvironment, void(ledger::type::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
-  MOCK_METHOD1(OnGetShortRetries, void(bool));
+  MOCK_METHOD1(OnGetRetryInterval, void(int32_t));
 
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
 

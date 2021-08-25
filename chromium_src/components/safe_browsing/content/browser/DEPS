@@ -1,0 +1,7 @@
+include_rules = [
+  "+../../../../../../components/safe_browsing/content/browser",
+  "+components/safe_browsing/core/browser",
+  "+brave/services/network/public/cpp/system_request_handler.h",
+  "+net/traffic_annotation",
+  "+services/network/public/cpp",
+]

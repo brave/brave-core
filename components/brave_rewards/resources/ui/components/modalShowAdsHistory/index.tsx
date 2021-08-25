@@ -10,8 +10,9 @@ import {
   StyledAdsInfoTextWrapper,
   StyledAdsPerHourText,
   StyledAdsSaveFiltered,
-  StyledNotSelectedLink,
   StyledLink,
+  StyledNoActivity,
+  StyledNotSelectedLink,
   StyledSeparatorText,
   StyledSubTitleText,
   StyledText,
@@ -162,6 +163,13 @@ export default class ModalShowAdsHistory extends React.PureComponent<Props, Stat
             allItems={this.state.filterStatus}
             header={this.headers}
           />
+          {
+            !rows || rows.length === 0 ?
+              <StyledNoActivity>
+                {getLocale('adsHistoryNone').replace('$1', String(totalDays || 0))}
+              </StyledNoActivity>
+            : null
+          }
         </StyledWrapper>
       </Modal>
     )

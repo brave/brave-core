@@ -1,8 +1,8 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index ec09d0836a976ff1c4c005a928e7feb51640a381..7e60fd7ea39dc9e6f37e95dc39ca0b7fc43a2327 100644
+index a512d736c1d603680cc0e5bfb42afbd70a799f9a..1870a96f1f4b00bb68c86962715fbad9fdd60ad5 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -170,6 +170,7 @@ if (!is_android && !is_mac) {
+@@ -163,6 +163,7 @@ if (!is_android && !is_mac) {
          "common/crash_keys.cc",
          "common/crash_keys.h",
        ]
@@ -10,7 +10,7 @@ index ec09d0836a976ff1c4c005a928e7feb51640a381..7e60fd7ea39dc9e6f37e95dc39ca0b7f
  
        deps += [
          ":chrome_dll",
-@@ -439,11 +440,12 @@ if (is_win) {
+@@ -440,11 +441,12 @@ if (is_win) {
        args += [ "--keystone=0" ]
      }
    }
@@ -24,7 +24,7 @@ index ec09d0836a976ff1c4c005a928e7feb51640a381..7e60fd7ea39dc9e6f37e95dc39ca0b7f
      extra_substitutions = [
        "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
        "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -461,6 +463,7 @@ if (is_win) {
+@@ -462,6 +464,7 @@ if (is_win) {
        "//chrome/common:buildflags",
        "//chrome/common:version_header",
      ]
@@ -32,7 +32,7 @@ index ec09d0836a976ff1c4c005a928e7feb51640a381..7e60fd7ea39dc9e6f37e95dc39ca0b7f
  
      if (enable_stripping) {
        # At link time, preserve the global symbols specified in the .exports
-@@ -536,7 +539,7 @@ if (is_win) {
+@@ -534,7 +537,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -41,7 +41,7 @@ index ec09d0836a976ff1c4c005a928e7feb51640a381..7e60fd7ea39dc9e6f37e95dc39ca0b7f
            "-v",
            chrome_version_full,
            "-g",
-@@ -610,6 +613,7 @@ if (is_win) {
+@@ -608,6 +611,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
        public_deps += [ ":chrome_framework_widevine_signature" ]
@@ -49,7 +49,7 @@ index ec09d0836a976ff1c4c005a928e7feb51640a381..7e60fd7ea39dc9e6f37e95dc39ca0b7f
      }
    }
  
-@@ -642,9 +646,11 @@ if (is_win) {
+@@ -640,9 +644,11 @@ if (is_win) {
        "--scm=0",
      ]
    }
@@ -57,11 +57,11 @@ index ec09d0836a976ff1c4c005a928e7feb51640a381..7e60fd7ea39dc9e6f37e95dc39ca0b7f
  
    compile_entitlements("entitlements") {
      entitlements_templates = [ "app/app-entitlements.plist" ]
-+    if (is_official_build) { entitlements_templates += [ "app/app-entitlements-chrome.plist", "//brave/app/app-entitlements-brave.plist" ] }
++    entitlements_templates += brave_entitlements_templates
      if (is_chrome_branded) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
-@@ -671,6 +677,7 @@ if (is_win) {
+@@ -669,6 +675,7 @@ if (is_win) {
          info_plist_target = ":chrome_helper_plist"
        }
  
@@ -69,7 +69,7 @@ index ec09d0836a976ff1c4c005a928e7feb51640a381..7e60fd7ea39dc9e6f37e95dc39ca0b7f
        extra_substitutions = [
          "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
          "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -1146,6 +1153,7 @@ if (is_win) {
+@@ -1142,6 +1149,7 @@ if (is_win) {
      if (is_chrome_branded) {
        bundle_deps += [ ":preinstalled_apps" ]
      }
@@ -77,15 +77,15 @@ index ec09d0836a976ff1c4c005a928e7feb51640a381..7e60fd7ea39dc9e6f37e95dc39ca0b7f
  
      ldflags = [
        "-compatibility_version",
-@@ -1330,6 +1338,7 @@ if (is_win) {
+@@ -1325,6 +1333,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
 +    "//brave:browser_dependencies",
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
-     "//chrome/app:shutdown_signal_handlers",
-@@ -1432,12 +1441,13 @@ group("child_dependencies") {
+     "//chrome/browser",
+@@ -1429,12 +1438,13 @@ group("child_dependencies") {
        # this is OK because all of content is linked into one library.
        "//content/browser",
      ]
@@ -100,7 +100,7 @@ index ec09d0836a976ff1c4c005a928e7feb51640a381..7e60fd7ea39dc9e6f37e95dc39ca0b7f
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1491,6 +1501,7 @@ group("resources") {
+@@ -1488,6 +1498,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",

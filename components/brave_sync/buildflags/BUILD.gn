@@ -1,9 +1,0 @@
-import("buildflags.gni")
-import("//build/buildflag_header.gni")
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [
-    "ENABLE_BRAVE_SYNC=$enable_brave_sync",
-  ]
-}

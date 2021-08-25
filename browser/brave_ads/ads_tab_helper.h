@@ -55,8 +55,6 @@ class AdsTabHelper : public content::WebContentsObserver,
  private:
   friend class content::WebContentsUserData<AdsTabHelper>;
 
-  bool IsAdsEnabled() const;
-
   void TabUpdated();
 
   void RunIsolatedJavaScript(content::RenderFrameHost* render_frame_host);
@@ -88,11 +86,13 @@ class AdsTabHelper : public content::WebContentsObserver,
 #endif
 
   SessionID tab_id_;
-  AdsService* ads_service_;  // NOT OWNED
-  bool is_active_;
-  bool is_browser_active_;
+  AdsService* ads_service_ = nullptr;  // NOT OWNED
+  bool is_active_ = false;
+  bool is_browser_active_ = true;
   std::vector<GURL> redirect_chain_;
-  bool should_process_;
+  bool should_process_ = false;
+  uint32_t html_hash_ = 0;
+  uint32_t text_hash_ = 0;
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_;
   WEB_CONTENTS_USER_DATA_KEY_DECL();

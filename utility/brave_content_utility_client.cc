@@ -8,9 +8,11 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/services/bat_ads/bat_ads_service_impl.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+#include "brave/components/services/bat_ledger/bat_ledger_service_impl.h"
+#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/service_factory.h"
 
@@ -18,7 +20,7 @@
 #include "brave/utility/importer/brave_profile_import_impl.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/services/ipfs/ipfs_service_impl.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #endif
@@ -26,16 +28,6 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "brave/components/services/tor/tor_launcher_impl.h"
-#endif
-
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#include "brave/components/services/bat_ledger/bat_ledger_service_impl.h"
-#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
-#endif
-
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-#include "brave/components/services/bat_ads/bat_ads_service_impl.h"
-#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #endif
 
 namespace {
@@ -47,7 +39,7 @@ auto RunBraveProfileImporter(
 }
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 auto RunIpfsService(mojo::PendingReceiver<ipfs::mojom::IpfsService> receiver) {
   return std::make_unique<ipfs::IpfsServiceImpl>(std::move(receiver));
 }
@@ -59,20 +51,16 @@ auto RunTorLauncher(mojo::PendingReceiver<tor::mojom::TorLauncher> receiver) {
 }
 #endif
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 auto RunBatLedgerService(
     mojo::PendingReceiver<bat_ledger::mojom::BatLedgerService> receiver) {
   return std::make_unique<bat_ledger::BatLedgerServiceImpl>(
       std::move(receiver));
 }
-#endif
 
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
 auto RunBatAdsService(
     mojo::PendingReceiver<bat_ads::mojom::BatAdsService> receiver) {
   return std::make_unique<bat_ads::BatAdsServiceImpl>(std::move(receiver));
 }
-#endif
 
 }  // namespace
 
@@ -85,7 +73,7 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
   services.Add(RunBraveProfileImporter);
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   services.Add(RunIpfsService);
 #endif
 
@@ -93,13 +81,9 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
   services.Add(RunTorLauncher);
 #endif
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   services.Add(RunBatLedgerService);
-#endif
 
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
   services.Add(RunBatAdsService);
-#endif
 
   return ChromeContentUtilityClient::RegisterMainThreadServices(services);
 }

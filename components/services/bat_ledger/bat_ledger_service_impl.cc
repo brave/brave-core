@@ -53,9 +53,9 @@ void BatLedgerServiceImpl::SetReconcileInterval(const int32_t interval) {
   ledger::reconcile_interval = interval;
 }
 
-void BatLedgerServiceImpl::SetShortRetries(bool short_retries) {
+void BatLedgerServiceImpl::SetRetryInterval(int32_t interval) {
   DCHECK(!initialized_ || testing());
-  ledger::short_retries = short_retries;
+  ledger::retry_interval = interval;
 }
 
 void BatLedgerServiceImpl::SetTesting() {
@@ -75,8 +75,8 @@ void BatLedgerServiceImpl::GetReconcileInterval(
   std::move(callback).Run(ledger::reconcile_interval);
 }
 
-void BatLedgerServiceImpl::GetShortRetries(GetShortRetriesCallback callback) {
-  std::move(callback).Run(ledger::short_retries);
+void BatLedgerServiceImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
+  std::move(callback).Run(ledger::retry_interval);
 }
 
 }  // namespace bat_ledger

@@ -72,12 +72,12 @@ static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
 
 namespace {
 
-ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
-    ads::DBTransactionPtr transaction,
+ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
+    ads::mojom::DBTransactionPtr transaction,
     ads::Database* database) {
-  auto response = ads::DBCommandResponse::New();
+  auto response = ads::mojom::DBCommandResponse::New();
   if (!database) {
-    response->status = ads::DBCommandResponse::Status::RESPONSE_ERROR;
+    response->status = ads::mojom::DBCommandResponse::Status::RESPONSE_ERROR;
   } else {
     database->RunTransaction(std::move(transaction), response.get());
   }
@@ -216,34 +216,34 @@ ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
 BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
-    + (AdsBraveAdsEnvironment)environment {
-  return static_cast<AdsBraveAdsEnvironment>(ads::g_environment);
+    + (AdsEnvironment)environment {
+  return static_cast<AdsEnvironment>(ads::g_environment);
 }
 
-+ (void)setEnvironment:(AdsBraveAdsEnvironment)environment {
-  ads::g_environment = static_cast<ads::Environment>(environment);
++ (void)setEnvironment:(AdsEnvironment)environment {
+  ads::g_environment = static_cast<ads::mojom::Environment>(environment);
 }
 
-+ (AdsBraveAdsSysInfo*)sysInfo {
-  auto sys_info = [[AdsBraveAdsSysInfo alloc] init];
++ (AdsSysInfo*)sysInfo {
+  auto sys_info = [[AdsSysInfo alloc] init];
   sys_info.isUncertainFuture = ads::g_sys_info.is_uncertain_future;
 
   return sys_info;
 }
 
-+ (void)setSysInfo:(AdsBraveAdsSysInfo*)sysInfo {
++ (void)setSysInfo:(AdsSysInfo*)sysInfo {
   ads::g_sys_info.is_uncertain_future = sysInfo.isUncertainFuture;
 }
 
-+ (AdsBraveAdsBuildChannel*)buildChannel {
-  auto build_channel = [[AdsBraveAdsBuildChannel alloc] init];
++ (AdsBuildChannel*)buildChannel {
+  auto build_channel = [[AdsBuildChannel alloc] init];
   build_channel.isRelease = ads::g_build_channel.is_release;
   build_channel.name = base::SysUTF8ToNSString(ads::g_build_channel.name);
 
   return build_channel;
 }
 
-+ (void)setBuildChannel:(AdsBraveAdsBuildChannel*)buildChannel {
++ (void)setBuildChannel:(AdsBuildChannel*)buildChannel {
   ads::g_build_channel.is_release = buildChannel.isRelease;
   ads::g_build_channel.name = base::SysNSStringToUTF8(buildChannel.name);
 }
@@ -263,10 +263,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
   adsClient = new AdsClientIOS(self);
   ads = ads::Ads::CreateInstance(adsClient);
-  ads->Initialize(^(ads::Result result) {
+  ads->Initialize(^(const bool success) {
     [self periodicallyCheckForAdsResourceUpdates];
     [self registerAdsResources];
-    completion(result == ads::Result::SUCCESS);
+    completion(success);
   });
 }
 
@@ -585,25 +585,25 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 }
 
 - (void)reportAdNotificationEvent:(NSString*)uuid
-                        eventType:
-                            (AdsBraveAdsAdNotificationEventType)eventType {
+                        eventType:(AdsAdNotificationEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
   ads->OnAdNotificationEvent(
       base::SysNSStringToUTF8(uuid),
-      static_cast<ads::AdNotificationEventType>(eventType));
+      static_cast<ads::mojom::AdNotificationEventType>(eventType));
 }
 
 - (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
              creativeInstanceId:(NSString*)creativeInstanceId
-                      eventType:(AdsBraveAdsNewTabPageAdEventType)eventType {
+                      eventType:(AdsNewTabPageAdEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnNewTabPageAdEvent(base::SysNSStringToUTF8(wallpaperId),
-                           base::SysNSStringToUTF8(creativeInstanceId),
-                           static_cast<ads::NewTabPageAdEventType>(eventType));
+  ads->OnNewTabPageAdEvent(
+      base::SysNSStringToUTF8(wallpaperId),
+      base::SysNSStringToUTF8(creativeInstanceId),
+      static_cast<ads::mojom::NewTabPageAdEventType>(eventType));
 }
 
 - (void)inlineContentAdsWithDimensions:(NSString*)dimensions
@@ -625,36 +625,33 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)reportInlineContentAdEvent:(NSString*)uuid
                 creativeInstanceId:(NSString*)creativeInstanceId
-                         eventType:
-                             (AdsBraveAdsInlineContentAdEventType)eventType {
+                         eventType:(AdsInlineContentAdEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
   ads->OnInlineContentAdEvent(
       base::SysNSStringToUTF8(uuid),
       base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<ads::mojom::BraveAdsInlineContentAdEventType>(eventType));
+      static_cast<ads::mojom::InlineContentAdEventType>(eventType));
 }
 
 - (void)reportPromotedContentAdEvent:(NSString*)uuid
                   creativeInstanceId:(NSString*)creativeInstanceId
-                           eventType:(AdsBraveAdsPromotedContentAdEventType)
-                                         eventType {
+                           eventType:(AdsPromotedContentAdEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
   ads->OnPromotedContentAdEvent(
       base::SysNSStringToUTF8(uuid),
       base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<ads::PromotedContentAdEventType>(eventType));
+      static_cast<ads::mojom::PromotedContentAdEventType>(eventType));
 }
 
-- (void)purgeOrphanedAdEvents:(AdsBraveAdsAdType)adType {
+- (void)purgeOrphanedAdEvents:(AdsAdType)adType {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->PurgeOrphanedAdEventsForType(
-      static_cast<ads::mojom::BraveAdsAdType>(adType));
+  ads->PurgeOrphanedAdEventsForType(static_cast<ads::mojom::AdType>(adType));
 }
 
 - (void)reconcileAdRewards {
@@ -739,12 +736,12 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 #pragma mark - Network
 
-- (void)UrlRequest:(ads::UrlRequestPtr)url_request
+- (void)UrlRequest:(ads::mojom::UrlRequestPtr)url_request
           callback:(ads::UrlRequestCallback)callback {
-  std::map<ads::UrlRequestMethod, std::string> methodMap{
-      {ads::UrlRequestMethod::GET, "GET"},
-      {ads::UrlRequestMethod::POST, "POST"},
-      {ads::UrlRequestMethod::PUT, "PUT"}};
+  std::map<ads::mojom::UrlRequestMethod, std::string> methodMap{
+      {ads::mojom::UrlRequestMethod::kGet, "GET"},
+      {ads::mojom::UrlRequestMethod::kPost, "POST"},
+      {ads::mojom::UrlRequestMethod::kPut, "PUT"}};
 
   const auto copiedURL = base::SysUTF8ToNSString(url_request->url);
 
@@ -763,7 +760,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
               if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
                 return;
               }
-              ads::UrlResponse url_response;
+              ads::mojom::UrlResponse url_response;
               url_response.url = base::SysNSStringToUTF8(copiedURL);
               url_response.status_code = statusCode;
               url_response.body = response;
@@ -969,7 +966,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   };
 
   NSString* baseUrl;
-  if (ads::g_environment == ads::Environment::PRODUCTION) {
+  if (ads::g_environment == ads::mojom::Environment::kProduction) {
     baseUrl = @"https://brave-user-model-installer-input.s3.brave.com";
   } else {
     baseUrl =
@@ -1140,20 +1137,20 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       [self.commonOps loadContentsFromFileWithName:bridgedId.UTF8String];
   if (!contents.empty()) {
     BLOG(1, @"%@ ads resource is cached", bridgedId);
-    callback(ads::Result::SUCCESS, contents);
+    callback(/* success */ true, contents);
     return;
   }
 
   BLOG(1, @"%@ ads resource not found", bridgedId);
-  callback(ads::Result::FAILED, "");
+  callback(/* success */ false, "");
 }
 
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
-    callback(ads::Result::FAILED, "");
+    callback(/* success */ false, "");
   } else {
-    callback(ads::Result::SUCCESS, contents);
+    callback(/* success */ true, contents);
   }
 }
 
@@ -1176,9 +1173,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)reset:(const std::string&)name callback:(ads::ResultCallback)callback {
   if ([self.commonOps removeFileWithName:name]) {
-    callback(ads::Result::SUCCESS);
+    callback(/* success */ true);
   } else {
-    callback(ads::Result::FAILED);
+    callback(/* success */ false);
   }
 }
 
@@ -1186,9 +1183,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
        value:(const std::string&)value
     callback:(ads::ResultCallback)callback {
   if ([self.commonOps saveContents:value name:name]) {
-    callback(ads::Result::SUCCESS);
+    callback(/* success */ true);
   } else {
-    callback(ads::Result::FAILED);
+    callback(/* success */ false);
   }
 }
 
@@ -1290,14 +1287,14 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
                          encoding:[NSString defaultCStringEncoding]];
 }
 
-- (void)runDBTransaction:(ads::DBTransactionPtr)transaction
+- (void)runDBTransaction:(ads::mojom::DBTransactionPtr)transaction
                 callback:(ads::RunDBTransactionCallback)callback {
   __weak BraveAds* weakSelf = self;
   base::PostTaskAndReplyWithResult(
       databaseQueue.get(), FROM_HERE,
       base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
                      adsDatabase),
-      base::BindOnce(^(ads::DBCommandResponsePtr response) {
+      base::BindOnce(^(ads::mojom::DBCommandResponsePtr response) {
         const auto strongSelf = weakSelf;
         if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
           return;
@@ -1837,7 +1834,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 }
 
 - (void)recordP2AEvent:(const std::string&)name
-                  type:(const ads::P2AEventType)type
+                  type:(const ads::mojom::P2AEventType)type
                  value:(const std::string&)value {
   // Not needed on iOS
 }

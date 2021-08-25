@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "base/timer/timer.h"
 #include "bat/ledger/internal/gemini/gemini.h"
 #include "bat/ledger/ledger.h"
 
@@ -36,6 +37,20 @@ class GeminiTransfer {
                            const std::string& id,
                            client::TransactionCallback callback);
 
+  void FetchTransactionStatus(const std::string& id,
+                              const int attempts,
+                              client::TransactionCallback callback);
+
+  void OnTransactionStatus(const type::Result result,
+                           const std::string& id,
+                           const int attempts,
+                           client::TransactionCallback callback);
+
+  void StartTransactionStatusTimer(const std::string& id,
+                                   const int attempts,
+                                   client::TransactionCallback callback);
+
+  std::map<std::string, base::OneShotTimer> retry_timer_;
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::GeminiServer> gemini_server_;
 };

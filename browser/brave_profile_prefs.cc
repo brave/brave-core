@@ -17,7 +17,8 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
-#include "brave/components/brave_perf_predictor/browser/buildflags.h"
+#include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
@@ -38,6 +39,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
+#include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
 #include "components/autofill/core/common/autofill_prefs.h"
 #include "components/content_settings/core/common/pref_names.h"
@@ -72,17 +74,12 @@
 #include "brave/browser/ethereum_remote_client/pref_names.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_service.h"
 #endif
 
 #if BUILDFLAG(GEMINI_ENABLED)
 #include "brave/components/gemini/browser/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-#include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
@@ -138,6 +135,10 @@ void RegisterProfilePrefsForMigration(
   new_tab_page::RegisterNewTabPagePrefsForMigration(registry);
 #endif
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  brave_wallet::KeyringController::RegisterProfilePrefsForMigration(registry);
+#endif
+
   // Restore "Other Bookmarks" migration
   registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
 
@@ -153,16 +154,15 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_shields::BraveShieldsWebContentsObserver::RegisterProfilePrefs(
       registry);
 
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   brave_perf_predictor::PerfPredictorTabHelper::RegisterProfilePrefs(registry);
   brave_perf_predictor::P3ABandwidthSavingsTracker::RegisterProfilePrefs(
       registry);
-#endif
 
   // appearance
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
   registry->RegisterBooleanPref(brave_rewards::prefs::kHideButton, false);
   registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
+  registry->RegisterBooleanPref(kTabsSearchShow, true);
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
 
@@ -192,7 +192,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
                                 false);
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsService::RegisterProfilePrefs(registry);
 #endif
 
@@ -230,19 +230,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Hangouts
   registry->RegisterBooleanPref(kHangoutsEnabled, true);
-
-  // Media Router
-  registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(false));
-
-  // 1. We do not want to enable the MediaRouter pref directly, so
-  // using a proxy pref to handle Media Router setting
-  // 2. On upgrade users might have enabled Media Router and the pref should
-  // be set correctly, so we use feature switch to set the initial value
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  registry->RegisterBooleanPref(
-      kBraveEnabledMediaRouter,
-      FeatureSwitch::load_media_router_component_extension()->IsEnabled());
-#endif
 
   // Restore last profile on restart
   registry->SetDefaultPrefValue(
@@ -305,7 +292,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       brave_today_enabled_default);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBinance, true);
-  registry->RegisterBooleanPref(kNewTabPageShowTogether, false);
+  registry->RegisterBooleanPref(kNewTabPageShowBraveTalk, false);
   registry->RegisterBooleanPref(kNewTabPageShowGemini, true);
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
 
@@ -399,7 +386,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if !defined(OS_ANDROID)
   // Turn on most visited mode on NTP by default.
   // We can turn customization mode on when we have add-shortcut feature.
-  registry->SetDefaultPrefValue(prefs::kNtpUseMostVisitedTiles,
+  registry->SetDefaultPrefValue(ntp_prefs::kNtpUseMostVisitedTiles,
                                 base::Value(true));
   RegisterDefaultBraveBrowserPromptPrefs(registry);
 #endif

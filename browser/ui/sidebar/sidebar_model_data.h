@@ -30,6 +30,10 @@ class SidebarModelData {
   SidebarModelData& operator=(const SidebarModelData&) = delete;
 
   content::WebContents* GetWebContents();
+
+  // nullptr if GetWebContents() is not called yet.
+  content::WebContents* web_contents() const { return contents_.get(); }
+
   void LoadURL(const GURL& url);
   bool IsLoaded() const;
   bool need_favicon_update() const { return need_favicon_update_; }

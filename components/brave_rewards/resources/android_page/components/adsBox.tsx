@@ -17,7 +17,7 @@ import {
   StyledTotalContent
 } from './style'
 
-import { MoneyBagIcon } from '../../shared/components/icons/money_bag'
+import { MoneyBagIcon } from '../../shared/components/icons/money_bag_icon'
 import { formatMessage } from '../../shared/lib/locale_context'
 import { getDaysUntilRewardsPayment } from '../../shared/lib/pending_rewards'
 

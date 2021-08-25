@@ -39,6 +39,7 @@ TEST(BraveWalletUtilsUnitTest, KeccakHash) {
 }
 
 TEST(BraveWalletUtilsUnitTest, GetFunctionHash) {
+  ASSERT_EQ(GetFunctionHash("transfer(address,uint256)"), "0xa9059cbb");
   ASSERT_EQ(GetFunctionHash("approve(address,uint256)"), "0x095ea7b3");
   ASSERT_EQ(GetFunctionHash("balanceOf(address)"), "0x70a08231");
 }
@@ -307,6 +308,17 @@ TEST(BraveWalletUtilsUnitTest, MnemonicToSeed) {
           ""),
       nullptr);
   EXPECT_EQ(MnemonicToSeed("", ""), nullptr);
+}
+
+TEST(BraveWalletUtilsUnitTest, IsValidMnemonic) {
+  EXPECT_TRUE(
+      IsValidMnemonic("kingdom possible coast island six arrow fluid "
+                      "spell chunk loud glue street"));
+  EXPECT_FALSE(
+      IsValidMnemonic("lingdom possible coast island six arrow fluid "
+                      "spell chunk loud glue street"));
+  EXPECT_FALSE(IsValidMnemonic("kingdom possible coast island six arrow"));
+  EXPECT_FALSE(IsValidMnemonic(""));
 }
 
 TEST(BraveWalletUtilsUnitTest, EncodeString) {

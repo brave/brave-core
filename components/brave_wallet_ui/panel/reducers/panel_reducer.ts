@@ -7,6 +7,7 @@
 import { createReducer } from 'redux-act'
 import { PanelState } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
+import { ShowConnectToSitePayload } from '../constants/action_types'
 
 const defaultState: PanelState = {
   // TODO(bbondy): isConnected, connectedSiteOrigin, and accounts is just test
@@ -15,7 +16,13 @@ const defaultState: PanelState = {
   hasInitialized: false,
   connectedSiteOrigin: 'https://app.uniswap.org',
   selectedPanel: 'main',
-  panelTitle: ''
+  panelTitle: '',
+  tabId: -1,
+  connectingAccounts: [],
+  showSignTransaction: false,
+  showAllowSpendERC20Token: false,
+  showAllowAddNetwork: false,
+  showConfirmTransaction: false
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)
@@ -31,6 +38,15 @@ reducer.on(PanelActions.navigateTo, (state: any, selectedPanel: string) => {
     ...state,
     selectedPanel,
     panelTitle
+  }
+})
+
+reducer.on(PanelActions.showConnectToSite, (state: any, payload: ShowConnectToSitePayload) => {
+  return {
+    ...state,
+    tabId: payload.tabId,
+    connectedSiteOrigin: payload.origin,
+    connectingAccounts: payload.accounts
   }
 })
 

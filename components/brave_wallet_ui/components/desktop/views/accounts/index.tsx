@@ -2,15 +2,16 @@ import * as React from 'react'
 
 import {
   WalletAccountType,
-  UserAssetOptionType,
   RPCTransactionType,
-  AccountSettingsNavTypes
+  AccountSettingsNavTypes,
+  TokenInfo,
+  AccountAssetOptionType
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
-import { formatePrices } from '../../../../utils/format-prices'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import { create } from 'ethereum-blockies'
 import locale from '../../../../constants/locale'
+import { formatBalance } from '../../../../utils/format-balances'
 
 // Styled Components
 import {
@@ -52,13 +53,15 @@ import {
 export interface Props {
   userWatchList: string[]
   accounts: WalletAccountType[]
-  userAssetList: UserAssetOptionType[]
+  userAssetList: AccountAssetOptionType[]
   transactions: (RPCTransactionType | undefined)[]
+  fullAssetList: TokenInfo[]
   toggleNav: () => void
   onClickBackup: () => void
   onClickAddAccount: () => void
-  onUpdateWatchList: (list: string[]) => void
+  onUpdateVisibleTokens: (list: string[]) => void
   onUpdateAccountName: (name: string) => void
+  fetchFullTokenList: () => void
 }
 
 function Accounts (props: Props) {
@@ -67,11 +70,13 @@ function Accounts (props: Props) {
     userAssetList,
     transactions,
     userWatchList,
+    fullAssetList,
     toggleNav,
     onClickBackup,
     onClickAddAccount,
-    onUpdateWatchList,
-    onUpdateAccountName
+    onUpdateVisibleTokens,
+    onUpdateAccountName,
+    fetchFullTokenList
   } = props
 
   const primaryAccounts = React.useMemo(() => {
@@ -89,6 +94,13 @@ function Accounts (props: Props) {
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>()
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
   const [editTab, setEditTab] = React.useState<AccountSettingsNavTypes>('details')
+
+  React.useMemo(() => {
+    if (selectedAccount) {
+      const updatedAccount = accounts.find((account) => account.id === selectedAccount.id)
+      setSelectedAccount(updatedAccount)
+    }
+  }, [accounts])
 
   const goBack = () => {
     setSelectedAccount(undefined)
@@ -111,10 +123,16 @@ function Accounts (props: Props) {
   }
 
   const onChangeTab = (id: AccountSettingsNavTypes) => {
+    if (id === 'watchlist') {
+      fetchFullTokenList()
+    }
     setEditTab(id)
   }
 
   const toggleShowEditWatchlist = () => {
+    if (!showEditModal) {
+      fetchFullTokenList()
+    }
     setShowEditModal(!showEditModal)
     setEditTab('watchlist')
   }
@@ -215,14 +233,14 @@ function Accounts (props: Props) {
               <EditIcon />
             </Button>
           </WalletInfoRow>
-          <SubviewSectionTitle>{locale.accountsWatchlist}</SubviewSectionTitle>
+          <SubviewSectionTitle>{locale.accountsAssets}</SubviewSectionTitle>
           <SubDivider />
-          {userAssetList.map((item) =>
+          {selectedAccount.tokens.map((item) =>
             <PortfolioAssetItem
-              key={item.asset.id}
+              key={item.asset.contractAddress}
               name={item.asset.name}
-              assetBalance={item.assetBalance}
-              fiatBalance={formatePrices(item.fiatBalance)}
+              assetBalance={formatBalance(item.assetBalance, item.asset.decimals)}
+              fiatBalance={item.fiatBalance}
               symbol={item.asset.symbol}
               icon={item.asset.icon}
             />
@@ -231,7 +249,7 @@ function Accounts (props: Props) {
             <AddButton
               buttonType='secondary'
               onSubmit={toggleShowEditWatchlist}
-              text={locale.accountsEditWatchList}
+              text={locale.accountsEditVisibleAssets}
               editIcon={true}
             />
           </EditButtonRow>
@@ -256,10 +274,12 @@ function Accounts (props: Props) {
           account={selectedAccount}
           onClose={onCloseEditModal}
           onUpdateAccountName={onUpdateAccountName}
-          onUpdateWatchList={onUpdateWatchList}
+          onUpdateVisibleTokens={onUpdateVisibleTokens}
           onCopyToClipboard={onCopyToClipboard}
           onChangeTab={onChangeTab}
           tab={editTab}
+          hideNav={false}
+          fullAssetList={fullAssetList}
           userWatchList={userWatchList}
         />
       }

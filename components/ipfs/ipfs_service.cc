@@ -15,6 +15,7 @@
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
@@ -41,7 +42,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/ipfs/import/ipfs_import_worker_base.h"
 #include "brave/components/ipfs/import/ipfs_link_import_worker.h"
@@ -56,7 +57,7 @@
 #endif
 
 namespace {
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 // Works similarly to base::AutoReset but checks for access from the wrong
 // thread as well as ensuring that the previous value of the re-entrancy guard
 // variable was false.
@@ -79,6 +80,9 @@ class ReentrancyCheck {
 // (kMinimalPeersRetryIntervalMs, kPeersRetryRate*kMinimalPeersRetryIntervalMs)
 const int kMinimalPeersRetryIntervalMs = 350;
 const int kPeersRetryRate = 3;
+
+const char kGatewayValidationCID[] = "bafkqae2xmvwgg33nmuqhi3zajfiemuzahiwss";
+const char kGatewayValidationResult[] = "Welcome to IPFS :-)";
 
 std::pair<bool, std::string> LoadConfigFileOnFileTaskRunner(
     const base::FilePath& path) {
@@ -123,7 +127,7 @@ IpfsService::IpfsService(
     ipfs_client_updater_->AddObserver(this);
     OnExecutableReady(ipfs_client_updater_->GetExecutablePath());
   }
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   ipns_keys_manager_ = std::make_unique<IpnsKeysManager>(
       blob_context_getter_factory_.get(), url_loader_factory.get(),
       server_endpoint_);
@@ -135,7 +139,7 @@ IpfsService::~IpfsService() {
   if (ipfs_client_updater_) {
     ipfs_client_updater_->RemoveObserver(this);
   }
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   RemoveObserver(ipns_keys_manager_.get());
 #endif
   Shutdown();
@@ -180,7 +184,7 @@ std::string IpfsService::GetStorageSize() {
 }
 
 void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   if (ipfs_service_.is_bound())
     return;
 
@@ -247,7 +251,7 @@ base::FilePath IpfsService::GetConfigFilePath() const {
 
 void IpfsService::NotifyDaemonLaunched(bool result, int64_t pid) {
   bool success = result && pid > 0;
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   if (success && ipns_keys_manager_) {
     ipns_keys_manager_->LoadKeys(base::BindOnce(
         &IpfsService::NotifyIpnsKeysLoaded, weak_factory_.GetWeakPtr()));
@@ -282,7 +286,7 @@ void IpfsService::Shutdown() {
   ipfs_pid_ = -1;
 }
 
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 // static
 bool IpfsService::WaitUntilExecutionFinished(base::Process process) {
   bool exited = false;
@@ -862,6 +866,54 @@ void IpfsService::OnPreWarmComplete(
   url_loaders_.erase(iter);
   if (prewarm_callback_for_testing_)
     std::move(prewarm_callback_for_testing_).Run();
+}
+
+void IpfsService::ValidateGateway(const GURL& url, BoolCallback callback) {
+  GURL::Replacements replacements;
+  std::string path = "/ipfs/";
+  path += kGatewayValidationCID;
+  replacements.SetPathStr(path);
+  GURL validationUrl = url.ReplaceComponents(replacements);
+  auto url_loader = CreateURLLoader(validationUrl, "GET");
+  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
+  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
+      base::BindOnce(&IpfsService::OnGatewayValidationComplete,
+                     base::Unretained(this), std::move(iter),
+                     std::move(callback), url));
+}
+
+void IpfsService::OnGatewayValidationComplete(
+    SimpleURLLoaderList::iterator iter,
+    BoolCallback callback,
+    const GURL& initial_url,
+    std::unique_ptr<std::string> response_body) {
+  auto* url_loader = iter->get();
+  auto final_url = url_loader->GetFinalURL();
+
+  int error_code = url_loader->NetError();
+  int response_code = -1;
+  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
+    response_code = url_loader->ResponseInfo()->headers->response_code();
+  url_loaders_.erase(iter);
+
+  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
+  if (!success) {
+    VLOG(1) << "Fail to validate gateway, error_code = " << error_code
+            << " response_code = " << response_code;
+  }
+
+  if (success) {
+    std::string valid_host = base::StringPrintf(
+        "%s.ipfs.%s", kGatewayValidationCID, initial_url.host().c_str());
+    success = (*response_body == kGatewayValidationResult) &&
+              (initial_url.host() != final_url.host()) &&
+              (initial_url.scheme() == final_url.scheme()) &&
+              (final_url.host() == valid_host);
+  }
+
+  if (callback)
+    std::move(callback).Run(success);
 }
 
 }  // namespace ipfs

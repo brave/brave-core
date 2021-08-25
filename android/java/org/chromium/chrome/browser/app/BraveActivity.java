@@ -51,7 +51,8 @@ import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.BraveSyncReflectionUtils;
+import org.chromium.chrome.browser.BraveSyncInformers;
+import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
@@ -67,7 +68,7 @@ import org.chromium.chrome.browser.compositor.layouts.Layout;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.compositor.layouts.phone.StackLayout;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
@@ -98,7 +99,7 @@ import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
-import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
+import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.BraveReferrer;
 import org.chromium.chrome.browser.util.PackageUtils;
@@ -317,7 +318,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         if (null != app
                 && BraveReflectionUtil.EqualTypes(this.getClass(), ChromeTabbedActivity.class)) {
             // Trigger BraveSyncWorker CTOR to make migration from sync v1 if sync is enabled
-            BraveSyncReflectionUtils.getSyncWorker();
+            BraveSyncWorker.get();
         }
 
         checkForNotificationData();
@@ -368,7 +369,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
             showCrossPromotionalDialog();
             OnboardingPrefManager.getInstance().setCrossPromoModalShown(true);
         }
-        BraveSyncReflectionUtils.showInformers();
+        BraveSyncInformers.show();
         BraveAndroidSyncDisabledInformer.showInformers();
 
         if (!PackageUtils.isFirstInstall(this)
@@ -498,10 +499,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
             case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
             case RetentionNotificationUtil.BRAVE_STATS_DATA:
             case RetentionNotificationUtil.BRAVE_STATS_TIME:
-                if (getActivityTab() != null
-                    && getActivityTab().getUrlString() != null
-                    && !UrlUtilities.isNTPUrl(getActivityTab().getUrlString())) {
-                    getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
+                if (getActivityTab() != null && getActivityTab().getUrl().getSpec() != null
+                        && !UrlUtilities.isNTPUrl(getActivityTab().getUrl().getSpec())) {
+                    getTabCreator(false).launchUrl(
+                            UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
                 }
                 break;
             case RetentionNotificationUtil.DAY_10:
@@ -517,8 +518,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
             BraveStatsUtil.showBraveStats();
         } else {
-            if (getActivityTab() != null && getActivityTab().getUrlString() != null
-                    && !UrlUtilities.isNTPUrl(getActivityTab().getUrlString())) {
+            if (getActivityTab() != null && getActivityTab().getUrl().getSpec() != null
+                    && !UrlUtilities.isNTPUrl(getActivityTab().getUrl().getSpec())) {
                 OnboardingPrefManager.getInstance().setFromNotification(true);
                 if (getTabCreator(false) != null) {
                     getTabCreator(false).launchUrl(
@@ -554,7 +555,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     }
 
     public void hideRewardsOnboardingIcon() {
-        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {
             layout.hideRewardsOnboardingIcon();
@@ -654,7 +655,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     }
 
     public void OnRewardsPanelDismiss() {
-        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {
             layout.onRewardsPanelDismiss();
@@ -662,7 +663,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     }
 
     public void dismissRewardsPanel() {
-        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {
             layout.dismissRewardsPanel();
@@ -670,7 +671,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     }
 
     public void dismissShieldsTooltip() {
-        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {
             layout.dismissShieldsTooltip();
@@ -678,7 +679,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     }
 
     public void openRewardsPanel() {
-        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {
             layout.openRewardsPanel();
@@ -687,7 +688,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
 
     public Tab selectExistingTab(String url) {
         Tab tab = getActivityTab();
-        if (tab != null && tab.getUrlString().equals(url)) {
+        if (tab != null && tab.getUrl().getSpec().equals(url)) {
             return tab;
         }
 

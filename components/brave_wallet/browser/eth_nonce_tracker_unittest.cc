@@ -78,9 +78,9 @@ class EthNonceTrackerUnitTest : public testing::Test {
 };
 
 TEST_F(EthNonceTrackerUnitTest, GetNonce) {
-  EthJsonRpcController controller(Network::kLocalhost,
+  EthJsonRpcController controller(brave_wallet::mojom::Network::Localhost,
                                   shared_url_loader_factory());
-  EthTxStateManager tx_state_manager(GetPrefs());
+  EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
 
   SetTransactionCount(2);
@@ -105,7 +105,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.from = EthAddress::FromHex(addr);
   meta.status = EthTxStateManager::TransactionStatus::CONFIRMED;
-  meta.tx.set_nonce(uint256_t(2));
+  meta.tx->set_nonce(uint256_t(2));
   tx_state_manager.AddOrUpdateTx(meta);
 
   nonce_result = 0;
@@ -124,7 +124,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   // tx count: 2, confirmed: [2, 3], pending: null
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.status = EthTxStateManager::TransactionStatus::CONFIRMED;
-  meta.tx.set_nonce(uint256_t(3));
+  meta.tx->set_nonce(uint256_t(3));
   tx_state_manager.AddOrUpdateTx(meta);
 
   nonce_result = 0;
@@ -142,7 +142,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4]
   meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
-  meta.tx.set_nonce(uint256_t(4));
+  meta.tx->set_nonce(uint256_t(4));
   meta.id = EthTxStateManager::GenerateMetaID();
   tx_state_manager.AddOrUpdateTx(meta);
   meta.id = EthTxStateManager::GenerateMetaID();
@@ -163,9 +163,9 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
 }
 
 TEST_F(EthNonceTrackerUnitTest, NonceLock) {
-  EthJsonRpcController controller(Network::kLocalhost,
+  EthJsonRpcController controller(brave_wallet::mojom::Network::Localhost,
                                   shared_url_loader_factory());
-  EthTxStateManager tx_state_manager(GetPrefs());
+  EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
 
   SetTransactionCount(4);

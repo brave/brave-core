@@ -19,10 +19,12 @@ function rotation (direction: string) {
 
 export function CaretIcon (props: Props) {
   return (
-    <svg viewBox='0 0 32 32' className='icon'>
-      <g transform={`rotate(${rotation(props.direction)} 16 16)`}>
-        <path d='M16 19.047l11.04-9.2a1.5 1.5 0 0 1 1.92 2.305l-12 10a1.5 1.5 0 0 1-1.92 0l-12-10a1.5 1.5 0 1 1 1.92-2.304l11.04 9.2z' />
-      </g>
+    <svg
+      viewBox='0 0 32 32'
+      className='icon'
+      style={{ transform: `rotate(${rotation(props.direction)}deg)` }}
+    >
+      <path d='M16 19.047l11.04-9.2a1.5 1.5 0 0 1 1.92 2.305l-12 10a1.5 1.5 0 0 1-1.92 0l-12-10a1.5 1.5 0 1 1 1.92-2.304l11.04 9.2z' />
     </svg>
   )
 }

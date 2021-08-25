@@ -93,6 +93,7 @@ void TearDownPipeHack() {
 void MonitorChild(base::ProcessHandle p_handle,
                   base::OnceCallback<void(base::ProcessId)> callback) {
   DCHECK(callback);
+  base::ProcessId child_pid = base::GetProcId(p_handle);
 #if defined(OS_POSIX)
   char buf[PIPE_BUF];
 
@@ -101,7 +102,7 @@ void MonitorChild(base::ProcessHandle p_handle,
       pid_t pid;
       int status;
 
-      if ((pid = waitpid(base::GetProcId(p_handle), &status, WNOHANG)) != -1) {
+      if ((pid = waitpid(child_pid, &status, WNOHANG)) != -1) {
         if (WIFSIGNALED(status)) {
           VLOG(0) << "child(" << pid << ") got terminated by signal "
                   << WTERMSIG(status);
@@ -121,7 +122,7 @@ void MonitorChild(base::ProcessHandle p_handle,
   }
 #elif defined(OS_WIN)
   WaitForSingleObject(p_handle, INFINITE);
-  std::move(callback).Run(base::GetProcId(p_handle));
+  std::move(callback).Run(child_pid);
 #else
 #error unsupported platforms
 #endif

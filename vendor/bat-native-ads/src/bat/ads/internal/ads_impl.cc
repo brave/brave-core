@@ -17,6 +17,8 @@
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics.h"
+#include "bat/ads/internal/ad_diagnostics/last_unidle_timestamp_ad_diagnostics_entry.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ad_server/ad_server.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
@@ -69,6 +71,7 @@ namespace ads {
 
 AdsImpl::AdsImpl(AdsClient* ads_client)
     : ads_client_helper_(std::make_unique<AdsClientHelper>(ads_client)),
+      ad_diagnostics_(std::make_unique<AdDiagnostics>()),
       token_generator_(std::make_unique<privacy::TokenGenerator>()) {
   set(token_generator_.get());
 }
@@ -94,13 +97,8 @@ void AdsImpl::set_for_testing(
   set(token_generator);
 }
 
-bool AdsImpl::IsInitialized() {
-  if (!is_initialized_ ||
-      !AdsClientHelper::Get()->GetBooleanPref(prefs::kEnabled)) {
-    return false;
-  }
-
-  return true;
+bool AdsImpl::IsInitialized() const {
+  return is_initialized_;
 }
 
 void AdsImpl::Initialize(InitializeCallback callback) {
@@ -108,7 +106,7 @@ void AdsImpl::Initialize(InitializeCallback callback) {
 
   if (IsInitialized()) {
     BLOG(1, "Already initialized ads");
-    callback(FAILED);
+    callback(/* success */ false);
     return;
   }
 
@@ -121,13 +119,13 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   if (!is_initialized_) {
     BLOG(0, "Shutdown failed as not initialized");
 
-    callback(FAILED);
+    callback(/* success */ false);
     return;
   }
 
   ad_notifications_->CloseAndRemoveAll();
 
-  callback(SUCCESS);
+  callback(/* success */ true);
 }
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
@@ -140,6 +138,8 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
 
 void AdsImpl::OnPrefChanged(const std::string& path) {
   if (path == prefs::kEnabled) {
+    MaybeTopUpUnblindedTokens();
+
     MaybeServeAdNotificationsAtRegularIntervals();
   } else if (path == prefs::kAdsPerHour) {
     ad_notification_serving_->OnAdsPerHourChanged();
@@ -201,6 +201,10 @@ void AdsImpl::OnTextLoaded(const int32_t tab_id,
 }
 
 void AdsImpl::OnUserGesture(const int32_t page_transition_type) {
+  if (!IsInitialized()) {
+    return;
+  }
+
   user_activity_->RecordEventForPageTransitionFromInt(page_transition_type);
 }
 
@@ -213,12 +217,22 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
     return;
   }
 
+  auto unidle_timestamp_diagnostics =
+      std::make_unique<LastUnIdleTimestampAdDiagnosticsEntry>();
+  unidle_timestamp_diagnostics->SetLastUnIdleTimestamp(base::Time::Now());
+  AdDiagnostics::Get()->SetDiagnosticsEntry(
+      std::move(unidle_timestamp_diagnostics));
+
   MaybeUpdateIdleTimeThreshold();
 
   BLOG(1, "Browser state changed to unidle after "
               << base::TimeDelta::FromSeconds(idle_time));
 
   MaybeUpdateCatalog();
+
+  if (!ShouldRewardUser()) {
+    return;
+  }
 
   if (WasLocked(was_locked)) {
     BLOG(1, "Ad notification not served: Screen was locked");
@@ -248,10 +262,18 @@ void AdsImpl::OnBackground() {
 }
 
 void AdsImpl::OnMediaPlaying(const int32_t tab_id) {
+  if (!IsInitialized()) {
+    return;
+  }
+
   TabManager::Get()->OnMediaPlaying(tab_id);
 }
 
 void AdsImpl::OnMediaStopped(const int32_t tab_id) {
+  if (!IsInitialized()) {
+    return;
+  }
+
   TabManager::Get()->OnMediaStopped(tab_id);
 }
 
@@ -260,6 +282,10 @@ void AdsImpl::OnTabUpdated(const int32_t tab_id,
                            const bool is_active,
                            const bool is_browser_active,
                            const bool is_incognito) {
+  if (!IsInitialized()) {
+    return;
+  }
+
   if (is_browser_active) {
     BrowserManager::Get()->OnActive();
   } else {
@@ -271,20 +297,17 @@ void AdsImpl::OnTabUpdated(const int32_t tab_id,
 }
 
 void AdsImpl::OnTabClosed(const int32_t tab_id) {
+  if (!IsInitialized()) {
+    return;
+  }
+
   TabManager::Get()->OnClosed(tab_id);
 
   ad_transfer_->Cancel(tab_id);
 }
 
 void AdsImpl::OnWalletUpdated(const std::string& id, const std::string& seed) {
-  if (!account_->SetWallet(id, seed)) {
-    BLOG(0, "Failed to set wallet");
-    return;
-  }
-
-  BLOG(1, "Successfully set wallet");
-
-  MaybeServeAdNotificationsAtRegularIntervals();
+  account_->SetWallet(id, seed);
 }
 
 void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
@@ -305,35 +328,23 @@ bool AdsImpl::GetAdNotification(const std::string& uuid,
   return ad_notifications_->Get(uuid, notification);
 }
 
-void AdsImpl::OnAdNotificationEvent(const std::string& uuid,
-                                    const AdNotificationEventType event_type) {
+void AdsImpl::OnAdNotificationEvent(
+    const std::string& uuid,
+    const mojom::AdNotificationEventType event_type) {
   ad_notification_->FireEvent(uuid, event_type);
 }
 
-void AdsImpl::OnNewTabPageAdEvent(const std::string& uuid,
-                                  const std::string& creative_instance_id,
-                                  const NewTabPageAdEventType event_type) {
-  if (event_type == NewTabPageAdEventType::kViewed) {
-    // TODO(tmancey): We need to fire an ad served event until new tab page ads
-    // are served by the ads library
-    new_tab_page_ad_->FireEvent(uuid, creative_instance_id,
-                                NewTabPageAdEventType::kServed);
-  }
-
+void AdsImpl::OnNewTabPageAdEvent(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const mojom::NewTabPageAdEventType event_type) {
   new_tab_page_ad_->FireEvent(uuid, creative_instance_id, event_type);
 }
 
 void AdsImpl::OnPromotedContentAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const PromotedContentAdEventType event_type) {
-  if (event_type == PromotedContentAdEventType::kViewed) {
-    // TODO(tmancey): We need to fire an ad served event until promoted content
-    // ads are served by the ads library
-    promoted_content_ad_->FireEvent(uuid, creative_instance_id,
-                                    PromotedContentAdEventType::kServed);
-  }
-
+    const mojom::PromotedContentAdEventType event_type) {
   promoted_content_ad_->FireEvent(uuid, creative_instance_id, event_type);
 }
 
@@ -349,14 +360,13 @@ void AdsImpl::GetInlineContentAd(const std::string& dimensions,
 void AdsImpl::OnInlineContentAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const InlineContentAdEventType event_type) {
+    const mojom::InlineContentAdEventType event_type) {
   inline_content_ad_->FireEvent(uuid, creative_instance_id, event_type);
 }
 
-void AdsImpl::PurgeOrphanedAdEventsForType(
-    const mojom::BraveAdsAdType ad_type) {
-  PurgeOrphanedAdEvents(ad_type, [ad_type](const Result result) {
-    if (result != SUCCESS) {
+void AdsImpl::PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) {
+  PurgeOrphanedAdEvents(ad_type, [ad_type](const bool success) {
+    if (!success) {
       BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
       return;
     }
@@ -368,7 +378,7 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
 void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   Client::Get()->RemoveAllHistory();
 
-  callback(SUCCESS);
+  callback(/* success */ true);
 }
 
 void AdsImpl::ReconcileAdRewards() {
@@ -384,13 +394,17 @@ AdsHistoryInfo AdsImpl::GetAdsHistory(
     const AdsHistoryInfo::SortType sort_type,
     const uint64_t from_timestamp,
     const uint64_t to_timestamp) {
+  if (!IsInitialized()) {
+    return {};
+  }
+
   return history::Get(filter_type, sort_type, from_timestamp, to_timestamp);
 }
 
 void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
   StatementInfo statement;
 
-  if (!IsInitialized()) {
+  if (!IsInitialized() || !ShouldRewardUser()) {
     callback(/* success */ false, statement);
     return;
   }
@@ -401,6 +415,10 @@ void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
   statement = account_->GetStatement(0, to_timestamp);
 
   callback(/* success */ true, statement);
+}
+
+void AdsImpl::GetAdDiagnostics(GetAdDiagnosticsCallback callback) {
+  AdDiagnostics::Get()->GetAdDiagnostics(std::move(callback));
 }
 
 AdContentInfo::LikeAction AdsImpl::ToggleAdThumbUp(
@@ -541,11 +559,11 @@ void AdsImpl::InitializeBrowserManager() {
 }
 
 void AdsImpl::InitializeDatabase(InitializeCallback callback) {
-  database_->CreateOrOpen([=](const Result result) {
-    if (result != SUCCESS) {
+  database_->CreateOrOpen([=](const bool success) {
+    if (!success) {
       BLOG(0,
            "Failed to initialize database: " << database_->get_last_message());
-      callback(FAILED);
+      callback(/* success */ false);
       return;
     }
 
@@ -556,9 +574,9 @@ void AdsImpl::InitializeDatabase(InitializeCallback callback) {
 }
 
 void AdsImpl::MigrateConversions(InitializeCallback callback) {
-  conversions::Migrate([=](const Result result) {
-    if (result != SUCCESS) {
-      callback(FAILED);
+  conversions::Migrate([=](const bool success) {
+    if (!success) {
+      callback(/* success */ false);
       return;
     }
 
@@ -567,9 +585,9 @@ void AdsImpl::MigrateConversions(InitializeCallback callback) {
 }
 
 void AdsImpl::LoadClientState(InitializeCallback callback) {
-  Client::Get()->Initialize([=](const Result result) {
-    if (result != SUCCESS) {
-      callback(FAILED);
+  Client::Get()->Initialize([=](const bool success) {
+    if (!success) {
+      callback(/* success */ false);
       return;
     }
 
@@ -578,9 +596,9 @@ void AdsImpl::LoadClientState(InitializeCallback callback) {
 }
 
 void AdsImpl::LoadConfirmationsState(InitializeCallback callback) {
-  ConfirmationsState::Get()->Initialize([=](const Result result) {
-    if (result != SUCCESS) {
-      callback(FAILED);
+  ConfirmationsState::Get()->Initialize([=](const bool success) {
+    if (!success) {
+      callback(/* success */ false);
       return;
     }
 
@@ -589,9 +607,9 @@ void AdsImpl::LoadConfirmationsState(InitializeCallback callback) {
 }
 
 void AdsImpl::LoadAdNotificationsState(InitializeCallback callback) {
-  ad_notifications_->Initialize([=](const Result result) {
-    if (result != SUCCESS) {
-      callback(FAILED);
+  ad_notifications_->Initialize([=](const bool success) {
+    if (!success) {
+      callback(/* success */ false);
       return;
     }
 
@@ -608,7 +626,7 @@ void AdsImpl::Initialized(InitializeCallback callback) {
 
   MaybeUpdateIdleTimeThreshold();
 
-  callback(SUCCESS);
+  callback(/* success */ true);
 
   Start();
 }
@@ -638,8 +656,8 @@ void AdsImpl::Start() {
 }
 
 void AdsImpl::CleanupAdEvents() {
-  PurgeExpiredAdEvents([](const Result result) {
-    if (result != Result::SUCCESS) {
+  PurgeExpiredAdEvents([](const bool success) {
+    if (!success) {
       BLOG(1, "Failed to purge expired ad events");
       return;
     }
@@ -664,26 +682,56 @@ void AdsImpl::MaybeServeAdNotification() {
   ad_notification_serving_->MaybeServeAd();
 }
 
+bool AdsImpl::ShouldServeAdNotificationsAtRegularIntervals() const {
+  return ShouldRewardUser() &&
+         (BrowserManager::Get()->IsActive() ||
+          AdsClientHelper::Get()->CanShowBackgroundNotifications()) &&
+         settings::GetAdsPerHour() > 0;
+}
+
 void AdsImpl::MaybeServeAdNotificationsAtRegularIntervals() {
+  if (!IsInitialized()) {
+    return;
+  }
+
   if (!PlatformHelper::GetInstance()->IsMobile()) {
     return;
   }
 
-  if (IsInitialized() &&
-      (BrowserManager::Get()->IsActive() ||
-       AdsClientHelper::Get()->CanShowBackgroundNotifications()) &&
-      settings::GetAdsPerHour() > 0) {
+  if (ShouldServeAdNotificationsAtRegularIntervals()) {
     ad_notification_serving_->StartServingAdsAtRegularIntervals();
   } else {
     ad_notification_serving_->StopServingAdsAtRegularIntervals();
   }
 }
 
-void AdsImpl::OnAdRewardsChanged() {
-  AdsClientHelper::Get()->OnAdRewardsChanged();
+void AdsImpl::MaybeTopUpUnblindedTokens() {
+  if (!IsInitialized()) {
+    return;
+  }
+
+  account_->TopUpUnblindedTokens();
 }
 
-void AdsImpl::OnTransactionsChanged() {
+void AdsImpl::OnWalletDidUpdate(const WalletInfo& wallet) {
+  BLOG(1, "Successfully set wallet");
+
+  MaybeTopUpUnblindedTokens();
+
+  MaybeServeAdNotificationsAtRegularIntervals();
+}
+
+void AdsImpl::OnWalletDidChange(const WalletInfo& wallet) {
+  BLOG(0, "Wallet changed");
+
+  ReconcileAdRewards();
+}
+
+void AdsImpl::OnInvalidWallet() {
+  BLOG(0, "Failed to set wallet");
+}
+
+void AdsImpl::OnStatementOfAccountsDidChange() {
   AdsClientHelper::Get()->OnAdRewardsChanged();
 }
 
@@ -695,7 +743,7 @@ void AdsImpl::OnCatalogUpdated(const Catalog& catalog) {
 }
 
 void AdsImpl::OnDidServeAdNotification(const AdNotificationInfo& ad) {
-  ad_notification_->FireEvent(ad.uuid, AdNotificationEventType::kServed);
+  ad_notification_->FireEvent(ad.uuid, mojom::AdNotificationEventType::kServed);
 }
 
 void AdsImpl::OnAdNotificationViewed(const AdNotificationInfo& ad) {
@@ -708,24 +756,24 @@ void AdsImpl::OnAdNotificationClicked(const AdNotificationInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kClicked);
 
   epsilon_greedy_bandit_processor_->Process(
-      {ad.segment, AdNotificationEventType::kClicked});
+      {ad.segment, mojom::AdNotificationEventType::kClicked});
 }
 
 void AdsImpl::OnAdNotificationDismissed(const AdNotificationInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kDismissed);
 
   epsilon_greedy_bandit_processor_->Process(
-      {ad.segment, AdNotificationEventType::kDismissed});
+      {ad.segment, mojom::AdNotificationEventType::kDismissed});
 }
 
 void AdsImpl::OnAdNotificationTimedOut(const AdNotificationInfo& ad) {
   epsilon_greedy_bandit_processor_->Process(
-      {ad.segment, AdNotificationEventType::kTimedOut});
+      {ad.segment, mojom::AdNotificationEventType::kTimedOut});
 }
 
 void AdsImpl::OnAdNotificationEventFailed(
     const std::string& uuid,
-    const AdNotificationEventType event_type) {
+    const mojom::AdNotificationEventType event_type) {
   BLOG(1, "Failed to fire ad notification " << event_type << " event for uuid "
                                             << uuid);
 }
@@ -751,7 +799,7 @@ void AdsImpl::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
 void AdsImpl::OnNewTabPageAdEventFailed(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const NewTabPageAdEventType event_type) {
+    const mojom::NewTabPageAdEventType event_type) {
   BLOG(1, "Failed to fire new tab page ad "
               << event_type << " event for uuid " << uuid
               << " and creative instance id " << creative_instance_id);
@@ -770,7 +818,7 @@ void AdsImpl::OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) {
 void AdsImpl::OnPromotedContentAdEventFailed(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const PromotedContentAdEventType event_type) {
+    const mojom::PromotedContentAdEventType event_type) {
   BLOG(1, "Failed to fire promoted content ad "
               << event_type << " event for uuid " << uuid
               << " and creative instance id " << creative_instance_id);
@@ -778,7 +826,7 @@ void AdsImpl::OnPromotedContentAdEventFailed(
 
 void AdsImpl::OnDidServeInlineContentAd(const InlineContentAdInfo& ad) {
   inline_content_ad_->FireEvent(ad.uuid, ad.creative_instance_id,
-                                InlineContentAdEventType::kServed);
+                                mojom::InlineContentAdEventType::kServed);
 }
 
 void AdsImpl::OnInlineContentAdViewed(const InlineContentAdInfo& ad) {
@@ -794,7 +842,7 @@ void AdsImpl::OnInlineContentAdClicked(const InlineContentAdInfo& ad) {
 void AdsImpl::OnInlineContentAdEventFailed(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const InlineContentAdEventType event_type) {
+    const mojom::InlineContentAdEventType event_type) {
   BLOG(1, "Failed to fire inline content ad "
               << event_type << " event for uuid " << uuid
               << " and creative instance id " << creative_instance_id);

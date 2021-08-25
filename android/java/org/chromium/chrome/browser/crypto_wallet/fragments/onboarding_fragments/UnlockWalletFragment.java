@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,11 +18,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class UnlockWalletFragment extends CryptoOnboardingFragment {
+    private KeyringController getKeyringController() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getKeyringController();
+        }
+
+        return null;
+    }
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,14 +51,18 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
                 return;
             }
 
-            if (BraveWalletNativeWorker.getInstance().unlockWallet(
-                        unlockWalletPassword.getText().toString())) {
-                if (onNextPage != null) {
-                    Utils.hideKeyboard(getActivity());
-                    onNextPage.gotoNextPage(true);
-                }
-            } else {
-                unlockWalletPassword.setError(getString(R.string.password_error));
+            KeyringController keyringController = getKeyringController();
+            if (keyringController != null) {
+                keyringController.unlock(unlockWalletPassword.getText().toString(), result -> {
+                    if (result) {
+                        if (onNextPage != null) {
+                            Utils.hideKeyboard(getActivity());
+                            onNextPage.gotoNextPage(true);
+                        }
+                    } else {
+                        unlockWalletPassword.setError(getString(R.string.password_error));
+                    }
+                });
             }
         });
 

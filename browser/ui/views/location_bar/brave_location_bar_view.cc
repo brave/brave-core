@@ -35,7 +35,7 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ui/views/location_bar/ipfs_location_view.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -79,18 +79,19 @@ void BraveLocationBarView::Init() {
   // base method calls Update and Layout
   LocationBarView::Init();
   // Change focus ring highlight path
-  if (focus_ring_) {
-    focus_ring_->SetPathGenerator(
+  views::FocusRing* focus_ring = views::FocusRing::Get(this);
+  if (focus_ring) {
+    focus_ring->SetPathGenerator(
         std::make_unique<
             BraveLocationBarViewFocusRingHighlightPathGenerator>());
     if (const auto color = GetFocusRingColor(profile()))
-      focus_ring_->SetColor(color.value());
+      focus_ring->SetColor(color.value());
   }
 #if BUILDFLAG(ENABLE_TOR)
   onion_location_view_ = new OnionLocationView(browser_->profile());
   AddChildView(onion_location_view_);
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs_location_view_ = new IPFSLocationView(browser_->profile());
   AddChildView(ipfs_location_view_);
 #endif
@@ -108,7 +109,7 @@ void BraveLocationBarView::Init() {
 }
 
 bool BraveLocationBarView::ShouldShowIPFSLocationView() const {
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   const GURL& url = GetLocationBarModel()->GetURL();
   if (!ipfs::IpfsServiceFactory::IsIpfsEnabled(profile_) ||
       !ipfs::IsIPFSScheme(url) ||
@@ -131,7 +132,7 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
   if (onion_location_view_)
     onion_location_view_->Update(contents);
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (ipfs_location_view_)
     ipfs_location_view_->Update(contents);
 #endif
@@ -171,7 +172,7 @@ void BraveLocationBarView::OnChanged() {
     onion_location_view_->Update(
         browser_->tab_strip_model()->GetActiveWebContents());
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (ipfs_location_view_)
     ipfs_location_view_->Update(
         browser_->tab_strip_model()->GetActiveWebContents());
@@ -187,7 +188,7 @@ std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
   if (onion_location_view_)
     views.push_back(onion_location_view_);
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (ipfs_location_view_)
     views.push_back(ipfs_location_view_);
 #endif
@@ -213,7 +214,7 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
     min_size.Enlarge(extra_width, 0);
   }
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (ipfs_location_view_ && ipfs_location_view_->GetVisible()) {
     const int extra_width = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
                             ipfs_location_view_->GetMinimumSize().width();

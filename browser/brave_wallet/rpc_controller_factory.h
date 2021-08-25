@@ -7,9 +7,11 @@
 #define BRAVE_BROWSER_BRAVE_WALLET_RPC_CONTROLLER_FACTORY_H_
 
 #include "base/memory/singleton.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 
 namespace brave_wallet {
 
@@ -17,7 +19,10 @@ class EthJsonRpcController;
 
 class RpcControllerFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static EthJsonRpcController* GetForContext(content::BrowserContext* context);
+  static mojo::PendingRemote<mojom::EthJsonRpcController> GetForContext(
+      content::BrowserContext* context);
+  static EthJsonRpcController* GetControllerForContext(
+      content::BrowserContext* context);
   static RpcControllerFactory* GetInstance();
 
  private:

@@ -45,11 +45,15 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         brandedWallpaperData: initialDataPayload.brandedWallpaperData,
         ...initialDataPayload.privateTabData,
         ...initialDataPayload.torTabData,
-        togetherSupported: initialDataPayload.togetherSupported,
+        braveTalkSupported: initialDataPayload.braveTalkSupported,
         geminiSupported: initialDataPayload.geminiSupported,
         cryptoDotComSupported: initialDataPayload.cryptoDotComSupported,
         ftxSupported: initialDataPayload.ftxSupported,
-        binanceSupported: initialDataPayload.binanceSupported
+        binanceSupported: initialDataPayload.binanceSupported,
+        // Auto-dismiss of together prompt only
+        // takes effect on the next page view and not the
+        // page view that the action occured on.
+        braveTalkPromptDismissed: state.braveTalkPromptDismissed || state.braveTalkPromptAutoDismissed
       }
       if (state.brandedWallpaperData && !state.brandedWallpaperData.isSponsored) {
         // Update feature flag if this is super referral wallpaper.
@@ -189,10 +193,14 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       break
     }
 
-    case Actions.dismissTogetherPrompt.getType(): {
+    case Actions.dismissBraveTalkPrompt.getType(): {
+      const actionPayload = payload as Actions.DismissBraveTalkPromptPayload
+      const stateChange: Partial<NewTab.State> = actionPayload.isAutomatic
+        ? { braveTalkPromptAutoDismissed: true }
+        : { braveTalkPromptDismissed: true }
       state = {
         ...state,
-        togetherPromptDismissed: true
+        ...stateChange
       }
       break
     }

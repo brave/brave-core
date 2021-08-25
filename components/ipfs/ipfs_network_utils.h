@@ -13,6 +13,7 @@
 #include "base/files/file_enumerator.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
 
@@ -40,7 +41,7 @@ std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(
     const std::string& method,
     std::unique_ptr<network::ResourceRequest> request = nullptr);
 
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 void AddMultipartHeaderForUploadWithFileName(const std::string& value_name,
                                              const std::string& file_name,
                                              const std::string& absolute_path,

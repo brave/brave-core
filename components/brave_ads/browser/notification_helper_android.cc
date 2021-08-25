@@ -14,7 +14,7 @@
 #include "brave/browser/brave_ads/android/jni_headers/BraveAds_jni.h"
 #include "brave/build/android/jni_headers/BraveNotificationSettingsBridge_jni.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
-#include "brave/components/brave_ads/browser/features.h"
+#include "brave/components/brave_ads/common/features.h"
 #include "chrome/browser/notifications/jni_headers/NotificationSystemStatusUtil_jni.h"
 #include "chrome/browser/notifications/notification_channels_provider_android.h"
 
@@ -34,24 +34,36 @@ NotificationHelperAndroid::NotificationHelperAndroid() = default;
 NotificationHelperAndroid::~NotificationHelperAndroid() = default;
 
 bool NotificationHelperAndroid::ShouldShowNotifications() {
-  if (features::ShouldShowCustomAdNotifications()) {
+  if (features::IsCustomAdNotificationsEnabled()) {
     return true;
   }
 
+  return CanShowNativeNotifications();
+}
+
+bool NotificationHelperAndroid::CanShowNativeNotifications() {
   JNIEnv* env = base::android::AttachCurrentThread();
-  int status = Java_NotificationSystemStatusUtil_getAppNotificationStatus(env);
-  bool is_notifications_enabled =
+  const int status =
+      Java_NotificationSystemStatusUtil_getAppNotificationStatus(env);
+
+  const bool is_notifications_enabled =
       (status == kAppNotificationsStatusEnabled ||
        status == kAppNotificationStatusUndeterminable);
 
-  bool is_foreground = BackgroundHelper::GetInstance()->IsForeground();
-  bool is_notification_channel_enabled =
+  const bool is_foreground = BackgroundHelper::GetInstance()->IsForeground();
+
+  const bool is_notification_channel_enabled =
       IsBraveAdsNotificationChannelEnabled(is_foreground);
-  bool result = is_notifications_enabled && is_notification_channel_enabled;
+
+  bool can_show_native_notifications =
+      is_notifications_enabled && is_notification_channel_enabled;
+
   if (!is_foreground) {
-    result = result && CanShowBackgroundNotifications();
+    can_show_native_notifications =
+        can_show_native_notifications && CanShowBackgroundNotifications();
   }
-  return result;
+
+  return can_show_native_notifications;
 }
 
 bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
@@ -60,7 +72,7 @@ bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
   }
 
   const bool should_show_custom_notifications =
-      features::ShouldShowCustomAdNotifications();
+      features::IsCustomAdNotificationsEnabled();
 
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveAdsSignupDialog_enqueueOnboardingNotificationNative(
@@ -70,7 +82,7 @@ bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
 }
 
 bool NotificationHelperAndroid::CanShowBackgroundNotifications() const {
-  if (features::ShouldShowCustomAdNotifications()) {
+  if (features::IsCustomAdNotificationsEnabled()) {
     return true;
   }
 

@@ -594,6 +594,7 @@
 <translation id="1627408615528139100">Er allerede downloadet</translation>
 <translation id="1628948239858170093">Vil du scanne filen, før du åbner den?</translation>
 <translation id="1629314197035607094">Adgangskoden er udløbet</translation>
+<translation id="1947639598318989608">Vil du tillade, at Brave finder personligt tilpassede rabatter til dine indkøbskurve?</translation>
 <translation id="1629521517399325891">Brugercertifikatet kan ikke anvendes til netværksgodkendelse.</translation>
 <translation id="163072119192489970">Har tilladelse til at sende og modtage data</translation>
 <translation id="1630768113285622200">Genstart og fortsæt</translation>
@@ -3203,7 +3204,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="4469762931504673593"><ph name="ORIGIN"/> kan redigere filer i <ph name="FOLDERNAME"/></translation>
 <translation id="4470957202018033307">Præferencer for ekstern lagerplads</translation>
 <translation id="4471354919263203780">Downloader talegenkendelsesfiler... <ph name="PERCENT"/> %</translation>
-<translation id="506314819294271427">Vær med til at forbedre Braves funktioner og ydeevne</translation>
+<translation id="918192811481327695">Vær med til at forbedre Braves funktioner og ydeevne</translation>
 <translation id="4472575034687746823">Kom godt i gang</translation>
 <translation id="4474155171896946103">Tilføj alle faner som bogmærker...</translation>
 <translation id="4475552974751346499">Søg i downloads</translation>
@@ -3874,7 +3875,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="5228579091201413441">Aktivér synkronisering</translation>
 <translation id="5230516054153933099">Vindue</translation>
 <translation id="5233019165164992427">NaCl-fejlretningsport</translation>
-<translation id="5233231016133573565">Behandling af ID</translation>
+<translation id="5233231016133573565">Proces-id</translation>
 <translation id="5233638681132016545">Ny fane</translation>
 <translation id="5233736638227740678">&amp;Indsæt</translation>
 <translation id="5234764350956374838">Luk</translation>
@@ -4433,7 +4434,6 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="5864754048328252126">Handling for inaktivitet under opladning</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> sættes snart på pause</translation>
 <translation id="586567932979200359">Du kører <ph name="PRODUCT_NAME"/> fra dets diskbillede. Hvis du installerer det på din computer, kan du køre det uden diskbilledet, og det vil blive opdateret løbende.</translation>
-<translation id="1224064034972923114">Sender automatisk brugsstatistikker og nedbrudsrapporter til Brave</translation>
 <translation id="5867841422488265304">Søg, eller skriv webadresse</translation>
 <translation id="5869029295770560994">OK</translation>
 <translation id="5869522115854928033">Gemte adgangskoder</translation>
@@ -5449,7 +5449,6 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – Aktivitetshistorik</translation>
 <translation id="6997707937646349884">På dine enheder:</translation>
 <translation id="6998793565256476099">Meld enheden til videomøde</translation>
-<translation id="456304305650018221">Vil du tillade, at Brave finder rabatter på de varer, du lægger i indkøbskurven?</translation>
 <translation id="6999956497249459195">Ny gruppe</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> har forbindelse, men skal konfigureres</translation>
 <translation id="7000347579424117903">Skal indeholde Ctrl, Alt eller søgetasten</translation>

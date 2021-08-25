@@ -1,12 +1,6 @@
-
+{%- import "interface_macros.tmpl" as interface_macros %}
 OBJC_EXPORT
-NS_SWIFT_NAME({{class_prefix}}.{{struct.name}})
-@interface {{class_prefix}}{{struct.name}} : NSObject <NSCopying>
-{#- Class properties #}
-{%-  for field in struct.fields %}
-{%-   set type = field.kind|objc_wrapper_type %}
-{%-   set property_modifiers = field.kind|objc_property_modifiers %}
-{%-   set name = field.name|objc_property_formatter %}
-@property ({{property_modifiers}}) {{type}} {{name}};
-{%- endfor %}
+@protocol {{class_prefix}}{{interface.name}}
+@required
+{{- interface_macros.objc_methods(interface) }}
 @end

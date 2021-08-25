@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">Membuka sejumlah situs dengan menggunakan koneksi HTTPS aman ketimbang HTTP biasa.</translation>
 <translation id="94154759592465111">Blokir Skrip</translation>
 <translation id="3518266709656143462">Memblokir JavaScript (dapat merusak situs)</translation>
-<translation id="5709627087332022422">Blokir pelacak cross-site</translation>
 <translation id="6052725679982758334">Pemblokiran Media Sosial</translation>
 <translation id="7498695072878479744">Izinkan tombol login Google di situs pihak ketiga</translation>
 <translation id="863171915776379000">Izinkan tombol masuk Facebook dan kiriman tersemat</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">Gateway IPFS</translation>
 <translation id="2688519859165248360">Memungkinkan navigasi untuk sumber daya IFFS melalui Gerbang IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">Harga Ethereum (ETH)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Metode Penyelesaian</translation>
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="4176463684765177261">Dinonaktifkan</translation>
 <translation id="2218918398178303658">DNS atas HTTPS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">Mencegah pencatatan sidik-jari-peramban</translation>
 <translation id="7459000603787995422">Tutup tab saat keluar</translation>
 <translation id="4448697385961650078">Blokir pelacak &amp; iklan</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Jadikan Brave peramban baku Anda!</translation>
 <translation id="7136694880210472378">Jadikan baku</translation>
 <translation id="4250680216510889253">Tidak</translation>
-<translation id="4501702055016678577">Pencarian pribadi dengan DuckDuckGo?</translation>
-<translation id="910419239800579753">Dengan pencarian pribadi, Brave akan menggunakan DuckDuckGo untuk menjawab pencarian Anda ketika Anda menggunakan tab pribadi. DuckDuckGo adalah mesin pencari yang tidak melacak riwayat pencarian Anda, memungkinkan Anda untuk mencari secara pribadi.</translation>
-<translation id="1426410128494586442">Ya</translation>
-<translation id="5628466560184522265">Pelajari tentang pencarian pribadi dengan DuckDuckGo</translation>
 <translation id="8826007068782654809">Terima kasih</translation>
 <translation id="6665366815203065060">Anda mengirim tip ke:</translation>
 <translation id="5441565662498481293">Anda secara otomatis mengirim tip ke:</translation>
@@ -443,7 +439,7 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="3477340970981564961">Berbeda dengan iklan tradisional, Iklan Privat Brave menghadiahi Anda token untuk mendukung kreator konten, sembari menjaga informasi personal Anda tetap privat.</translation>
 <translation id="6973095375773523904">Di mana iklan muncul?</translation>
 <translation id="7556325460112047619">Iklan Privat Brave akan muncul sebagai pemberitahuan normal. Anda mengontrol seberapa sering Anda melihat iklan-iklan ini di pengaturan.</translation>
-<translation id="6897083627729802351">Kapan Anda menerima imbalan</translation>
+<translation id="6897083627729802351">Kapan Anda menerima imbalan?</translation>
 <translation id="310863932297733723">Token yang Anda peroleh dari Iklan Privat Brave sepanjang bulan ini akan tiba tanggal 5 bulan berikutnya.</translation>
 <translation id="7712287524451429139">Jadi mudah untuk memberi balik</translation>
 <translation id="105037569026952831">Pencipta menerima kontribusi token Anda secara otomatis berdasarkan tingkat interaksi Anda yang kami ukur sebagai ‘Perhatian’.</translation>
@@ -460,7 +456,7 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="827315274423079662">Cihuy, Anda kini siap!</translation>
 <translation id="3895246934788932488">Dengan menggunakan Brave Rewards, Anda melindungi privasi Anda dan membantu membuat web jadi tempat yang lebih baik bagi semua orang. Dan itu keren!</translation>
 <translation id="5705882733397021510">Kembali</translation>
-<translation id="3985567919248057638">Ayo Mengikuti Tur Cepat</translation>
+<translation id="3985567919248057638">Ayo Ikuti Tur Singkat</translation>
 <translation id="2434574859640694129">Setelah Anda menerima pembayaran iklan pertama kali, Anda dapat kembali dan memberi tip kepada kreator ini!</translation>
 <translation id="207242986925259074">Tur pengingat singkat</translation>
 <translation id="8342862030112839977">Pembayaran imbalan pertama Anda akan diterima pada:</translation>
@@ -551,11 +547,11 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="8100001366858145406">Aktifkan buka kunci sidik jari?</translation>
 <translation id="5493402808936397665">Aktifkan biometrik untuk membuka kunci dompet Anda dengan cepat tanpa memasukkan kata sandi Anda.</translation>
 <translation id="8488282162676695335">Dompet Brave.</translation>
-<translation id="6901810042765869341">Masukkan frasa pemulihan Anda untuk memulihkan akun kripto Dompet Brave Anda.</translation>
+<translation id="6901810042765869341">Masukkan frasa pemulihan Anda untuk memulihkan akun kripto Brave Wallet Anda.</translation>
 <translation id="1970161551843843564">Pulihkan Akun Kripto</translation>
 <translation id="4811736040444856406">Tampilkan frasa pemulihan</translation>
 <translation id="283071225285270357">Masukkan frasa pemulihan Anda</translation>
-<translation id="2339124864228588937">Verifikasikan frasa pemulihan</translation>
+<translation id="2339124864228588937">Verifikasi frasa pemulihan</translation>
 <translation id="6202787708155200390">Ketuk kata-kata agar letaknya saling berdampingan dalam urutan yang benar.</translation>
 <translation id="6518133107902771759">Verifikasi</translation>
 <translation id="3157931365184549694">Pulihkan</translation>
@@ -567,4 +563,13 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="745115390910697838">Frasa tidak sesuai. Silakan coba lagi.</translation>
 <translation id="2360588547830602174">Pemulihan akun gagal. Silakan coba lagi.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
+<translation id="990936698620790924">Harga Pasar ETH</translation>
+<translation id="6748108480210050150">Dari</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">Hingga (estimasi)</translation>
+<translation id="59223531494896848">Limit</translation>
+<translation id="3567988240819868195">Pasar</translation>
+<translation id="632241521608275119">Toleransi selip</translation>
 </translationbundle>

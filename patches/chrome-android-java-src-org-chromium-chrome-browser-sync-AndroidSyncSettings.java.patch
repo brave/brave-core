@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/AndroidSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/AndroidSyncSettings.java
-index efa532570fd5ef0d32c0519a1ef1b1b5e57fff95..4e1401758dd9487888a874123b650211172023ac 100644
+index 44a1e3a27a843837e31639c210dd84923c7b3b26..7c6d013e863628dc26a599e544c1819cbadee012 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/AndroidSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/AndroidSyncSettings.java
 @@ -73,7 +73,7 @@ public class AndroidSyncSettings {

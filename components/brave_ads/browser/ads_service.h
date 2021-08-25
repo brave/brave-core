@@ -59,6 +59,9 @@ using GetAccountStatementCallback = base::OnceCallback<void(const bool,
                                                             const double,
                                                             const double)>;
 
+using GetAdDiagnosticsCallback =
+    base::OnceCallback<void(const bool, const std::string&)>;
+
 class AdsService : public KeyedService {
  public:
   AdsService();
@@ -121,12 +124,12 @@ class AdsService : public KeyedService {
   virtual void OnNewTabPageAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::mojom::BraveAdsNewTabPageAdEventType event_type) = 0;
+      const ads::mojom::NewTabPageAdEventType event_type) = 0;
 
   virtual void OnPromotedContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::mojom::BraveAdsPromotedContentAdEventType event_type) = 0;
+      const ads::mojom::PromotedContentAdEventType event_type) = 0;
 
   virtual void GetInlineContentAd(const std::string& dimensions,
                                   OnGetInlineContentAdCallback callback) = 0;
@@ -134,10 +137,10 @@ class AdsService : public KeyedService {
   virtual void OnInlineContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::mojom::BraveAdsInlineContentAdEventType event_type) = 0;
+      const ads::mojom::InlineContentAdEventType event_type) = 0;
 
   virtual void PurgeOrphanedAdEventsForType(
-      const ads::mojom::BraveAdsAdType ad_type) = 0;
+      const ads::mojom::AdType ad_type) = 0;
 
   virtual void ReconcileAdRewards() = 0;
 
@@ -146,6 +149,8 @@ class AdsService : public KeyedService {
                              OnGetAdsHistoryCallback callback) = 0;
 
   virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;
+
+  virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;
 
   virtual void ToggleAdThumbUp(const std::string& creative_instance_id,
                                const std::string& creative_set_id,

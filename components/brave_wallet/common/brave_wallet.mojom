@@ -7,6 +7,7 @@ module brave_wallet.mojom;
 
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
+import "url/mojom/url.mojom";
 
 interface EventsListener {
   ChainChangedEvent(string chain_id);
@@ -14,10 +15,10 @@ interface EventsListener {
 
 interface BraveWalletProvider {
   Init(pending_remote<EventsListener> events_listener);
-  Request(string json_payload) => (int32 http_code,
-                                   string response);
-  Enable();
+  Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
+  RequestEthereumPermissions() => (bool success, array<string> accounts);
   GetChainId() => (string chain_id);
+  GetAllowedAccounts() => (bool success, array<string> accounts);
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
@@ -25,14 +26,27 @@ interface PanelHandlerFactory {
   // The WebUI calls this method when the page is first initialized.
   CreatePanelHandler(pending_remote<Page> page,
                      pending_receiver<PanelHandler> panel_handler,
-                     pending_receiver<WalletHandler> wallet_handler);
+                     pending_receiver<WalletHandler> wallet_handler,
+                     pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
+                     pending_receiver<SwapController> swap_controller,
+                     pending_receiver<AssetRatioController> asset_ratio_controller,
+                     pending_receiver<KeyringController> keyring_controller,
+                     pending_receiver<ERCTokenRegistry> erc_token_registry,
+                     pending_receiver<EthTxController> eth_tx_controller);
 };
 
 interface PageHandlerFactory {
   // The WebUI calls this method when the page is first initialized.
   CreatePageHandler(pending_remote<Page> page,
                     pending_receiver<PageHandler> page_handler,
-                    pending_receiver<WalletHandler> wallet_handler);
+                    pending_receiver<WalletHandler> wallet_handler,
+                    pending_receiver<EthJsonRpcController> eth_json_rpc_controller,
+                    pending_receiver<SwapController> swap_controller,
+                    pending_receiver<AssetRatioController> asset_ratio_controller,
+                    pending_receiver<KeyringController> keyring_controller,
+                    pending_receiver<ERCTokenRegistry> erc_token_registry,
+                     pending_receiver<EthTxController> eth_tx_controller);
+
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -42,15 +56,13 @@ interface PanelHandler {
 
   // Notify the backend that the dialog should be closed.
   CloseUI();
+
+  ConnectToSite(array<string> accounts, string origin, int32 tab_id);
+  CancelConnectToSite(string origin, int32 tab_id);
 };
 
 // Browser-side handler for requests from WebUI page.
 interface PageHandler {
-  // Create a wallet via the Keyring controller
-  CreateWallet(string password) => (string mnemonic);
-  RestoreWallet(string mnemonic, string password) => (bool isValidMnemonic);
-  GetRecoveryWords() => (string mnemonic);
-  AddAccountToWallet() => (bool success);
 };
 
 struct AppItem {
@@ -71,7 +83,7 @@ enum AssetPriceTimeframe {
 };
 
 struct AssetTimePrice {
-  mojo_base.mojom.Time date;
+  mojo_base.mojom.TimeDelta date;
   string price;
 };
 
@@ -79,7 +91,7 @@ struct AssetPrice {
   string from_asset;
   string to_asset;
   string price;
-  string asset_24h_change;
+  string asset_timeframe_change;
 };
 
 struct SwapParams {
@@ -115,38 +127,26 @@ struct SwapResponse {
   // Note we could also expose "sources" later
 };
 
+struct AccountInfo {
+  string address;
+  string name;
+};
+
 struct KeyringInfo {
   bool is_default_keyring_created;
   bool is_locked;
   bool is_backed_up;
-  array<string> accounts;
-  array<string> account_names;
+  array<AccountInfo> account_infos;
 };
 
 // Browser-side handler for common panel / page things
 interface WalletHandler {
   GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
                       array<AppItem> favoriteApps,
-                      bool isWalletBackedUp, array<string> accounts,
-                      array<string> walletAccountNames);
-  LockWallet();
-  UnlockWallet(string password) => (bool isWalletUnlocked);
-  GetAssetPrice(array<string> from_assets, array<string> to_assets) => (bool success, array<AssetPrice> values);
-  GetAssetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
-      (bool success, array<AssetTimePrice> values);
-  GetPriceQuote(SwapParams params) => (bool success, SwapResponse response);
-  GetTransactionPayload(SwapParams params) =>
-      (bool success, SwapResponse response);
-
-  GetTokenByContract(string contract) => (ERCToken? token);
-  GetTokenBySymbol(string symbol) => (ERCToken? token);
-  GetAllTokens() => (array<ERCToken> tokens);
-
+                      bool isWalletBackedUp,
+                      array<AccountInfo> accountInfos);
   AddFavoriteApp(AppItem appItem);
   RemoveFavoriteApp(AppItem appItem);
-  SetInitialAccountNames(array<string> accountNames);
-  AddNewAccountName(string accountName);
-  NotifyWalletBackupComplete();
 };
 
 struct ERCToken {
@@ -162,23 +162,38 @@ struct ERCToken {
 interface Page {
 };
 
+interface KeyringControllerObserver {
+  KeyringCreated();
+  KeyringRestored();
+  Locked();
+  Unlocked();
+  BackedUp();
+  AccountsChanged();
+};
+
+interface ERCTokenRegistry {
+  GetTokenByContract(string contract) => (ERCToken? token);
+  GetTokenBySymbol(string symbol) => (ERCToken? token);
+  GetAllTokens() => (array<ERCToken> tokens);
+};
+
 interface KeyringController {
   CreateWallet(string password) => (string mnemonic);
   GetMnemonicForDefaultKeyring() => (string mnemonic);
   RestoreWallet(string mnemonic, string password) => (bool isValidMnemonic);
   Lock();
   Unlock(string password) => (bool success);
-  AddAccount() => (bool success);
+  IsLocked() => (bool isLocked);
+  AddAccount(string accountName) => (bool success);
   IsWalletBackedUp() => (bool backed_up);
   NotifyWalletBackupComplete();
-  SetInitialAccountNames(array<string> accountNames);
-  AddNewAccountName(string accountName);
   GetDefaultKeyringInfo() => (KeyringInfo keyring);
   Reset();
+  AddObserver(pending_remote<KeyringControllerObserver> observer);
 };
 
 interface AssetRatioController {
-  GetPrice(array<string> from_assets, array<string> to_assets) =>
+  GetPrice(array<string> from_assets, array<string> to_assets, AssetPriceTimeframe timeframe) =>
       (bool success, array<AssetPrice> values);
   GetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
       (bool success, array<AssetTimePrice> values);
@@ -191,6 +206,56 @@ interface SwapController {
       (bool success, SwapResponse response);
 };
 
-interface EthJsonRpcController {
+enum Network {
+  Mainnet,
+  Rinkeby,
+  Ropsten,
+  Goerli,
+  Kovan,
+  Localhost,
+  Custom
+};
 
+interface EthJsonRpcControllerObserver {
+  ChainChangedEvent(string chain_id);
+};
+
+struct TxData {
+  string nonce;
+  string gas_price;
+  string gas_limit;
+  string to;
+  string value;
+  array<uint8> data;
+};
+
+struct TxData1559 {
+  TxData base_data;
+  string chain_id;
+  string max_priority_fee_per_gas;
+  string max_fee_per_gas;
+};
+
+interface EthJsonRpcController {
+  SetNetwork(Network network);
+  GetNetwork() => (Network network);
+  GetChainId() => (string chainId);
+  GetBlockTrackerUrl() => (string blockTrackerUrl);
+  GetNetworkUrl() => (string networkUrl);
+  GetBalance(string address) => (bool success, string balance);
+  GetERC20TokenBalance(string contract,
+                       string address) => (bool success, string balance);
+  UnstoppableDomainsProxyReaderGetMany(string contract_address, string domain, array<string> keys) => (bool status, string result);
+  EnsProxyReaderGetResolverAddress(string contract_address, string domain) => (bool status, string result);
+  Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
+  AddObserver(pending_remote<EthJsonRpcControllerObserver> observer);
+  SetCustomNetwork(url.mojom.Url provider_url);
+};
+
+interface EthTxController {
+  AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id);
+  AddUnapproved1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_meta_id);
+  ApproveTransaction(string tx_meta_id) => (bool status);
+  RejectTransaction(string tx_meta_id) => (bool status);
+  MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
 };

@@ -1,9 +1,7 @@
 source_set("sync") {
-  check_includes = false
-
   sources = [
-    "brave_profile_sync_service_delegate.cc",
-    "brave_profile_sync_service_delegate.h",
+    "brave_sync_service_impl_delegate.cc",
+    "brave_sync_service_impl_delegate.h",
   ]
 
   deps = [

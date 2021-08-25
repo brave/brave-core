@@ -9,7 +9,7 @@ import("//testing/test.gni")
 
 source_set("ipfs_service_unit_tests") {
   testonly = true
-  if (ipfs_enabled) {
+  if (enable_ipfs) {
     sources =
         [ "//brave/components/services/ipfs/ipfs_service_utils_unittest.cc" ]
 
@@ -19,5 +19,5 @@ source_set("ipfs_service_unit_tests") {
       "//brave/components/services/ipfs/public/mojom",
       "//testing/gtest",
     ]
-  }  # if (ipfs_enabled)
+  }  # if (enable_ipfs)
 }  # source_set("ipfs_service_unit_tests")

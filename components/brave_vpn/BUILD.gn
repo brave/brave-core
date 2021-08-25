@@ -4,25 +4,26 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/grit/preprocess_if_expr.gni")
+
+preprocess_folder = "preprocessed"
+preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
 static_library("brave_vpn") {
   sources = [
-    "brave_vpn_connection_info.cc",
-    "brave_vpn_connection_info.h",
-    "brave_vpn_connection_manager.cc",
-    "brave_vpn_connection_manager.h",
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
+    "brave_vpn_utils.cc",
+    "brave_vpn_utils.h",
     "features.cc",
     "features.h",
   ]
 
   deps = [
-    ":brave_vpn_internal",
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
     "//components/keyed_service/core",
-    "//net",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//url",
@@ -30,23 +31,42 @@ static_library("brave_vpn") {
 
   libs = []
 
-  if (is_win) {
+  if (is_win || is_mac) {
     sources += [
-      "brave_vpn_connection_manager_win.cc",
-      "brave_vpn_connection_manager_win.h",
+      "brave_vpn_connection_info.cc",
+      "brave_vpn_connection_info.h",
+      "brave_vpn_os_connection_api.cc",
+      "brave_vpn_os_connection_api.h",
+      "brave_vpn_os_connection_api_sim.cc",
+      "brave_vpn_os_connection_api_sim.h",
+      "brave_vpn_service_desktop.cc",
+      "brave_vpn_service_desktop.h",
+      "switches.h",
     ]
 
-    libs += [ "rasapi32.lib" ]
-  }
+    if (is_win) {
+      sources += [
+        "brave_vpn_os_connection_api_win.cc",
+        "brave_vpn_os_connection_api_win.h",
+      ]
 
-  if (is_mac) {
-    sources += [
-      "brave_vpn_connection_manager_mac.h",
-      "brave_vpn_connection_manager_mac.mm",
+      libs += [ "rasapi32.lib" ]
+    }
+
+    if (is_mac) {
+      sources += [
+        "brave_vpn_os_connection_api_mac.h",
+        "brave_vpn_os_connection_api_mac.mm",
+      ]
+
+      frameworks = [ "NetworkExtension.framework" ]
+      configs += [ "//build/config/compiler:enable_arc" ]
+    }
+
+    deps += [
+      ":brave_vpn_internal",
+      ":mojom",
     ]
-
-    frameworks = [ "NetworkExtension.framework" ]
-    configs += [ "//build/config/compiler:enable_arc" ]
   }
 }
 
@@ -93,4 +113,21 @@ executable("vpntool") {
   if (is_win) {
     sources += [ "winvpntool.cc" ]
   }
+}
+
+preprocess_if_expr("preprocess_mojo") {
+  deps = [ "//brave/components/brave_vpn:mojom_js" ]
+  in_folder = "$target_gen_dir"
+  out_folder = "$target_gen_dir/$preprocess_folder"
+  out_manifest = "$target_gen_dir/$preprocess_mojo_manifest"
+  in_files = [ "brave_vpn.mojom-lite.js" ]
+}
+
+mojom("mojom") {
+  sources = [ "brave_vpn.mojom" ]
+
+  deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
 }

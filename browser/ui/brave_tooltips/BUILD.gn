@@ -1,0 +1,63 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/features.gni")
+import("//build/config/ui.gni")
+import("//testing/test.gni")
+import("//ui/base/ui_features.gni")
+
+source_set("brave_tooltips") {
+  deps = [ "//base" ]
+
+  sources = [
+    "brave_tooltip.cc",
+    "brave_tooltip.h",
+    "brave_tooltip_attributes.cc",
+    "brave_tooltip_attributes.h",
+  ]
+
+  if (is_win || is_linux || is_mac) {
+    deps += [
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/app/vector_icons",
+      "//brave/browser/profiles:util",
+      "//components/prefs",
+      "//skia",
+      "//ui/accessibility",
+      "//ui/base",
+      "//ui/compositor",
+      "//ui/display",
+      "//ui/gfx",
+      "//ui/native_theme",
+      "//ui/views",
+    ]
+
+    if (is_win) {
+      deps += [
+        "//ui/aura",
+        "//ui/wm/public",
+      ]
+    }
+
+    sources += [
+      "bounds_util.cc",
+      "bounds_util.h",
+      "brave_tooltip_delegate.h",
+      "brave_tooltip_label_button.cc",
+      "brave_tooltip_label_button.h",
+      "brave_tooltip_popup.cc",
+      "brave_tooltip_popup.h",
+      "brave_tooltip_view.cc",
+      "brave_tooltip_view.h",
+    ]
+
+    if (is_mac) {
+      frameworks = [
+        "AppKit.framework",
+        "Foundation.framework",
+      ]
+    }
+  }
+}

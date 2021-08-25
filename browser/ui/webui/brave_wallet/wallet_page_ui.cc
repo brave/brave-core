@@ -22,6 +22,23 @@
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/webui/web_ui_util.h"
 
+#include "brave/browser/brave_wallet/rpc_controller_factory.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+
+#include "brave/browser/brave_wallet/swap_controller_factory.h"
+#include "brave/components/brave_wallet/browser/swap_controller.h"
+
+#include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+
+#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/components/brave_wallet/browser/keyring_controller.h"
+
+#include "brave/components/brave_wallet/browser/erc_token_registry.h"
+
+#include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
+#include "brave/components/brave_wallet/browser/eth_tx_controller.h"
+
 WalletPageUI::WalletPageUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui,
                               true /* Needed for webui browser tests */) {
@@ -58,12 +75,61 @@ void WalletPageUI::BindInterface(
 void WalletPageUI::CreatePageHandler(
     mojo::PendingRemote<brave_wallet::mojom::Page> page,
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver) {
+    mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::EthJsonRpcController>
+        eth_json_rpc_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::SwapController>
+        swap_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::AssetRatioController>
+        asset_ratio_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::KeyringController>
+        keyring_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>
+        erc_token_registry_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::EthTxController>
+        eth_tx_controller_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
+
   page_handler_ =
       std::make_unique<WalletPageHandler>(std::move(page_receiver), profile);
   wallet_handler_ =
       std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
+
+  auto* eth_json_rpc_controller =
+      brave_wallet::RpcControllerFactory::GetControllerForContext(profile);
+  if (eth_json_rpc_controller) {
+    eth_json_rpc_controller->Bind(std::move(eth_json_rpc_controller_receiver));
+  }
+
+  auto* swap_controller =
+      brave_wallet::SwapControllerFactory::GetControllerForContext(profile);
+  if (swap_controller) {
+    swap_controller->Bind(std::move(swap_controller_receiver));
+  }
+
+  auto* asset_ratio_controller =
+      brave_wallet::AssetRatioControllerFactory::GetControllerForContext(
+          profile);
+  if (asset_ratio_controller) {
+    asset_ratio_controller->Bind(std::move(asset_ratio_controller_receiver));
+  }
+
+  auto* keyring_controller =
+      brave_wallet::KeyringControllerFactory::GetControllerForContext(profile);
+  if (keyring_controller) {
+    keyring_controller->Bind(std::move(keyring_controller_receiver));
+  }
+
+  auto* erc_token_registry = brave_wallet::ERCTokenRegistry::GetInstance();
+  if (erc_token_registry) {
+    erc_token_registry->Bind(std::move(erc_token_registry_receiver));
+  }
+
+  auto* eth_tx_controller =
+      brave_wallet::EthTxControllerFactory::GetControllerForContext(profile);
+  if (eth_tx_controller) {
+    eth_tx_controller->Bind(std::move(eth_tx_controller_receiver));
+  }
 }

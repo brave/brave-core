@@ -37,8 +37,7 @@ void GeminiWallet::Generate(ledger::ResultCallback callback) {
   }
 
   if (wallet->token.empty() &&
-      (wallet->status == type::WalletStatus::PENDING ||
-       wallet->status == type::WalletStatus::CONNECTED)) {
+      (wallet->status == type::WalletStatus::PENDING)) {
     wallet->status = type::WalletStatus::NOT_CONNECTED;
   }
 

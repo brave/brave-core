@@ -24,6 +24,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_browser_tests --filter=RewardsStateBrowserTest.*
 
@@ -313,7 +314,7 @@ class UpholdStateMachine : public RewardsStateBrowserTest,
   static std::string from_json(const std::string& json) {
     std::string suffix = "";
 
-    base::Optional<base::Value> value = base::JSONReader::Read(json);
+    absl::optional<base::Value> value = base::JSONReader::Read(json);
     if (value && value->is_dict()) {
       base::DictionaryValue* dictionary = nullptr;
       if (value->GetAsDictionary(&dictionary)) {

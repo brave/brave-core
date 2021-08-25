@@ -7,19 +7,24 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_JSON_RPC_CONTROLLER_H_
 
 #include <list>
-#include <map>
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "base/callback.h"
+#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list_threadsafe.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_provider_events_observer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller_events_observer.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -29,28 +34,26 @@ class SimpleURLLoader;
 
 namespace brave_wallet {
 
-class EthJsonRpcController : public KeyedService {
+class EthJsonRpcController : public KeyedService,
+                             public mojom::EthJsonRpcController {
  public:
   EthJsonRpcController(
-      Network network,
+      mojom::Network network,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~EthJsonRpcController() override;
 
-  using URLRequestCallback =
-      base::OnceCallback<void(const int,
-                              const std::string&,
-                              const std::map<std::string, std::string>&)>;
-  void Request(const std::string& json_payload,
-               URLRequestCallback callback,
-               bool auto_retry_on_network_change);
+  mojo::PendingRemote<mojom::EthJsonRpcController> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::EthJsonRpcController> receiver);
 
   using GetBlockNumberCallback =
       base::OnceCallback<void(bool status, uint256_t result)>;
   void GetBlockNumber(GetBlockNumberCallback callback);
 
-  using GetBallanceCallback =
-      base::OnceCallback<void(bool status, const std::string& balance)>;
-  void GetBalance(const std::string& address, GetBallanceCallback callback);
+  void Request(const std::string& json_payload,
+               bool auto_retry_on_network_change,
+               RequestCallback callback) override;
+  void GetBalance(const std::string& address,
+                  GetBalanceCallback callback) override;
 
   using GetTxCountCallback =
       base::OnceCallback<void(bool status, uint256_t result)>;
@@ -67,97 +70,105 @@ class EthJsonRpcController : public KeyedService {
   void SendRawTransaction(const std::string& signed_tx,
                           SendRawTxCallback callback);
 
-  using GetERC20TokenBalanceCallback =
-      base::OnceCallback<void(bool status, const std::string& balance)>;
-  bool GetERC20TokenBalance(const std::string& conract_address,
+  void GetERC20TokenBalance(const std::string& conract_address,
                             const std::string& address,
-                            GetERC20TokenBalanceCallback callback);
-
-  using UnstoppableDomainsProxyReaderGetManyCallback =
-      base::OnceCallback<void(bool status, const std::string& result)>;
+                            GetERC20TokenBalanceCallback callback) override;
 
   // Call getMany function of ProxyReader contract from Unstoppable Domains.
   void UnstoppableDomainsProxyReaderGetMany(
       const std::string& contract_address,
       const std::string& domain,
       const std::vector<std::string>& keys,
-      UnstoppableDomainsProxyReaderGetManyCallback callback);
+      UnstoppableDomainsProxyReaderGetManyCallback callback) override;
 
   void EnsProxyReaderGetResolverAddress(
       const std::string& contract_address,
       const std::string& domain,
-      UnstoppableDomainsProxyReaderGetManyCallback callback);
+      UnstoppableDomainsProxyReaderGetManyCallback callback) override;
 
   bool EnsProxyReaderResolveAddress(
       const std::string& contract_address,
       const std::string& domain,
       UnstoppableDomainsProxyReaderGetManyCallback callback);
 
-  Network GetNetwork() const;
-  GURL GetNetworkURL() const;
-  void SetNetwork(Network network);
-  void SetCustomNetwork(const GURL& provider_url);
+  void GetNetwork(
+      mojom::EthJsonRpcController::GetNetworkCallback callback) override;
+  void SetNetwork(mojom::Network network) override;
+  std::string GetChainId() const;
+  void GetChainId(
+      mojom::EthJsonRpcController::GetChainIdCallback callback) override;
+  void GetBlockTrackerUrl(
+      mojom::EthJsonRpcController::GetBlockTrackerUrlCallback callback)
+      override;
+  void GetNetworkUrl(
+      mojom::EthJsonRpcController::GetNetworkUrlCallback callback) override;
+  void SetCustomNetwork(const GURL& provider_url) override;
 
-  void AddObserver(BraveWalletProviderEventsObserver* observer);
-  void RemoveObserver(BraveWalletProviderEventsObserver* observer);
+  void AddObserver(::mojo::PendingRemote<mojom::EthJsonRpcControllerObserver>
+                       observer) override;
 
   // Returns the chain ID for a network or an empty string if no standard
   // chain ID is defined for the specified network.
-  static std::string GetChainIDFromNetwork(Network network);
-  static GURL GetBlockTrackerURLFromNetwork(Network network);
+  static std::string GetChainIdFromNetwork(mojom::Network network);
+  static GURL GetBlockTrackerUrlFromNetwork(mojom::Network network);
 
  private:
-  void OnGetBlockNumber(GetBlockNumberCallback callback,
-                        const int status,
-                        const std::string& body,
-                        const std::map<std::string, std::string>& headers);
-  void OnGetBalance(GetBallanceCallback callback,
+  void FireNetworkChanged();
+  void OnGetBlockNumber(
+      GetBlockNumberCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+  void OnGetBalance(GetBalanceCallback callback,
                     const int status,
                     const std::string& body,
-                    const std::map<std::string, std::string>& headers);
-  void OnGetTransactionCount(GetTxCountCallback callback,
-                             const int status,
-                             const std::string& body,
-                             const std::map<std::string, std::string>& headers);
+                    const base::flat_map<std::string, std::string>& headers);
+  void OnGetTransactionCount(
+      GetTxCountCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
   void OnGetTransactionReceipt(
       GetTxReceiptCallback callback,
       const int status,
       const std::string& body,
-      const std::map<std::string, std::string>& headers);
-  void OnSendRawTransaction(SendRawTxCallback callback,
-                            const int status,
-                            const std::string& body,
-                            const std::map<std::string, std::string>& headers);
+      const base::flat_map<std::string, std::string>& headers);
+  void OnSendRawTransaction(
+      SendRawTxCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
   void OnGetERC20TokenBalance(
       GetERC20TokenBalanceCallback callback,
       const int status,
       const std::string& body,
-      const std::map<std::string, std::string>& headers);
+      const base::flat_map<std::string, std::string>& headers);
 
   void OnUnstoppableDomainsProxyReaderGetMany(
       UnstoppableDomainsProxyReaderGetManyCallback callback,
       const int status,
       const std::string& body,
-      const std::map<std::string, std::string>& headers);
+      const base::flat_map<std::string, std::string>& headers);
 
   void OnEnsProxyReaderGetResolverAddress(
       UnstoppableDomainsProxyReaderGetManyCallback callback,
       const std::string& domain,
       int status,
       const std::string& body,
-      const std::map<std::string, std::string>& headers);
+      const base::flat_map<std::string, std::string>& headers);
 
   void OnEnsProxyReaderResolveAddress(
       UnstoppableDomainsProxyReaderGetManyCallback callback,
       int status,
       const std::string& body,
-      const std::map<std::string, std::string>& headers);
+      const base::flat_map<std::string, std::string>& headers);
 
   api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;
-  Network network_;
-  scoped_refptr<base::ObserverListThreadSafe<BraveWalletProviderEventsObserver>>
-      observers_;
+  mojom::Network network_;
+  mojo::RemoteSet<mojom::EthJsonRpcControllerObserver> observers_;
+
+  mojo::ReceiverSet<mojom::EthJsonRpcController> receivers_;
 
   base::WeakPtrFactory<EthJsonRpcController> weak_ptr_factory_;
 };

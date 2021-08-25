@@ -13,8 +13,7 @@
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
-#include "bat/ads/mojom.h"
-#include "bat/ads/result.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "wrapper.hpp"
 
 namespace ads {
@@ -46,10 +45,10 @@ class RefillUnblindedTokens {
   void Refill();
 
   void RequestSignedTokens();
-  void OnRequestSignedTokens(const UrlResponse& url_response);
+  void OnRequestSignedTokens(const mojom::UrlResponse& url_response);
 
   void GetSignedTokens();
-  void OnGetSignedTokens(const UrlResponse& url_response);
+  void OnGetSignedTokens(const mojom::UrlResponse& url_response);
 
   void OnDidRefillUnblindedTokens();
 

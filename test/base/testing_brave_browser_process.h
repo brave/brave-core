@@ -59,7 +59,7 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
 #if BUILDFLAG(ENABLE_TOR)
   tor::BraveTorClientUpdater* tor_client_updater() override;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
 #endif
   brave::BraveP3AService* brave_p3a_service() override;
@@ -71,9 +71,7 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
 #endif
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
   brave_ads::ResourceComponent* resource_component() override;
-#endif
 
   // Populate the mock process with services. Consumer is responsible for
   // cleaning these up after completion of a test.

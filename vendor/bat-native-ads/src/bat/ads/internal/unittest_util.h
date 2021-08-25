@@ -14,10 +14,12 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -86,9 +88,9 @@ base::FilePath GetResourcesPath();
 absl::optional<std::string> ReadFileFromResourcePathToString(
     const std::string& name);
 
-void SetEnvironment(const Environment environment);
+void SetEnvironment(const mojom::Environment environment);
 
-void SetSysInfo(const SysInfo& sys_info);
+void SetSysInfo(const mojom::SysInfo& sys_info);
 
 void SetBuildChannel(const bool is_release, const std::string& name);
 
@@ -121,10 +123,8 @@ void MockResetAdEvents(const std::unique_ptr<AdsClientMock>& mock);
 void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockSave(const std::unique_ptr<AdsClientMock>& mock);
-void MockLoad(const std::unique_ptr<AdsClientMock>& mock);
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
-              const std::string& name,
-              const std::string& filename);
+              const base::ScopedTempDir& temp_dir);
 
 void MockLoadAdsResource(const std::unique_ptr<AdsClientMock>& mock);
 void MockLoadResourceForId(const std::unique_ptr<AdsClientMock>& mock);

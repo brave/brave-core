@@ -19,7 +19,6 @@ import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
 import TipBox from './tipsBox'
 import MonthlyContributionBox from './monthlyContributionBox'
-import QRBox from './qrBox'
 import { SettingsOptInForm, RewardsTourModal, RewardsTourPromo } from '../../shared/components/onboarding'
 import { TourPromoWrapper } from './style'
 
@@ -115,7 +114,7 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   stopRewards () {
-    clearInterval(this.balanceTimerId)
+    window.clearInterval(this.balanceTimerId)
     this.balanceTimerId = -1
   }
 
@@ -126,7 +125,7 @@ class SettingsPage extends React.Component<Props, State> {
     this.actions.getContributionAmount()
     this.actions.getAutoContributeProperties()
     this.actions.getBalance()
-    this.balanceTimerId = setInterval(() => {
+    this.balanceTimerId = window.setInterval(() => {
       this.actions.getBalance()
     }, 60000)
 
@@ -217,6 +216,19 @@ class SettingsPage extends React.Component<Props, State> {
           id={'redirect-modal-show'}
           titleText={getLocale('processingRequest')}
           walletType={walletType}
+        />
+      )
+    }
+
+    if (ui.modalRedirect === 'mismatchedProviderAccountsModal') {
+      return (
+        <ModalRedirect
+          id={'redirect-modal-mismatched-provider-accounts'}
+          errorText={getLocale('redirectModalMismatchedProviderAccountsText').replace('$1', getWalletProviderName(externalWallet))}
+          titleText={getLocale('redirectModalMismatchedProviderAccountsTitle')}
+          buttonText={getLocale('redirectModalClose')}
+          walletType={walletType}
+          onClick={this.actions.hideRedirectModal}
         />
       )
     }
@@ -405,7 +417,6 @@ class SettingsPage extends React.Component<Props, State> {
           onTOSClick={this.openTOS}
           onPrivacyClick={this.openPrivacyPolicy}
         />
-        <QRBox />
         <AdsBox />
         <ContributeBox />
         <MonthlyContributionBox />

@@ -33,38 +33,49 @@ class Eip2930Transaction : public EthTransaction {
   typedef std::vector<AccessListItem> AccessList;
 
   Eip2930Transaction();
-  Eip2930Transaction(const TxData&, uint64_t chain_id);
   Eip2930Transaction(const Eip2930Transaction&);
   ~Eip2930Transaction() override;
   bool operator==(const Eip2930Transaction&) const;
 
+  static absl::optional<Eip2930Transaction> FromTxData(const mojom::TxDataPtr&,
+                                                       uint256_t chain_id);
   static absl::optional<Eip2930Transaction> FromValue(const base::Value& value);
 
   static std::vector<base::Value> AccessListToValue(const AccessList&);
   static absl::optional<AccessList> ValueToAccessList(const base::Value&);
 
-  uint64_t chain_id() const { return chain_id_; }
+  uint256_t chain_id() const { return chain_id_; }
   const AccessList* access_list() const { return &access_list_; }
   AccessList* access_list() { return &access_list_; }
 
   // keccak256(0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
   // accessList]))
-  std::vector<uint8_t> GetMessageToSign(uint64_t chain_id = 0) const override;
+  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id = 0) const override;
 
-  // rlp([chainId, nonce, gasPrice, gasLimit, to, value, data, accessList,
-  // signatureYParity, signatureR, signatureS])
+  // 0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
+  // accessList, signatureYParity, signatureR, signatureS])
   std::string GetSignedTransaction() const override;
 
   void ProcessSignature(const std::vector<uint8_t> signature,
                         int recid,
-                        uint64_t chain_id = 0) override;
+                        uint256_t chain_id = 0) override;
 
   bool IsSigned() const override;
 
   base::Value ToValue() const override;
 
- private:
-  uint64_t chain_id_;
+  uint256_t GetDataFee() const override;
+
+ protected:
+  Eip2930Transaction(uint256_t nonce,
+                     uint256_t gas_price,
+                     uint256_t gas_limit,
+                     const EthAddress& to,
+                     uint256_t value,
+                     const std::vector<uint8_t>& data,
+                     uint256_t chain_id);
+
+  uint256_t chain_id_;
   AccessList access_list_;
 };
 

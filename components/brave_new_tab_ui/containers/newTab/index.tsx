@@ -13,7 +13,7 @@ import SiteRemovalNotification from './notification'
 import {
   ClockWidget as Clock,
   RewardsWidget as Rewards,
-  TogetherWidget as Together,
+  BraveTalkWidget as BraveTalk,
   BinanceWidget as Binance,
   GeminiWidget as Gemini,
   CryptoDotComWidget as CryptoDotCom,
@@ -61,7 +61,7 @@ interface Props {
   saveShowStats: (value: boolean) => void
   saveShowToday: (value: boolean) => any
   saveShowRewards: (value: boolean) => void
-  saveShowTogether: (value: boolean) => void
+  saveShowBraveTalk: (value: boolean) => void
   saveShowBinance: (value: boolean) => void
   saveShowGemini: (value: boolean) => void
   saveShowCryptoDotCom: (value: boolean) => void
@@ -251,8 +251,8 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.saveShowRewards(!this.props.newTabData.showRewards)
   }
 
-  toggleShowTogether = () => {
-    this.props.saveShowTogether(!this.props.newTabData.showTogether)
+  toggleShowBraveTalk = () => {
+    this.props.saveShowBraveTalk(!this.props.newTabData.showBraveTalk)
   }
 
   toggleShowBinance = () => {
@@ -702,10 +702,10 @@ class NewTabPage extends React.Component<Props, State> {
     }
     const {
       widgetStackOrder,
-      togetherSupported,
+      braveTalkSupported,
       showRewards,
       showBinance,
-      showTogether,
+      showBraveTalk,
       showGemini,
       geminiSupported,
       showCryptoDotCom,
@@ -723,9 +723,9 @@ class NewTabPage extends React.Component<Props, State> {
         display: binanceSupported && showBinance,
         render: this.renderBinanceWidget.bind(this)
       },
-      'together': {
-        display: togetherSupported && showTogether,
-        render: this.renderTogetherWidget.bind(this)
+      'braveTalk': {
+        display: braveTalkSupported && showBraveTalk,
+        render: this.renderBraveTalkWidget.bind(this)
       },
       'gemini': {
         display: showGemini && geminiSupported,
@@ -765,10 +765,10 @@ class NewTabPage extends React.Component<Props, State> {
 
   allWidgetsHidden = () => {
     const {
-      togetherSupported,
+      braveTalkSupported,
       showRewards,
       showBinance,
-      showTogether,
+      showBraveTalk,
       geminiSupported,
       showGemini,
       showCryptoDotCom,
@@ -780,7 +780,7 @@ class NewTabPage extends React.Component<Props, State> {
     } = this.props.newTabData
     return hideAllWidgets || [
       showRewards,
-      togetherSupported && showTogether,
+      braveTalkSupported && showBraveTalk,
       binanceSupported && showBinance,
       geminiSupported && showGemini,
       cryptoDotComSupported && showCryptoDotCom,
@@ -850,26 +850,26 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  renderTogetherWidget (showContent: boolean, position: number) {
+  renderBraveTalkWidget (showContent: boolean, position: number) {
     const { newTabData } = this.props
-    const { showTogether, textDirection, togetherSupported } = newTabData
+    const { showBraveTalk, textDirection, braveTalkSupported } = newTabData
 
-    if (!showTogether || !togetherSupported) {
+    if (!showBraveTalk || !braveTalkSupported) {
       return null
     }
 
     return (
-      <Together
+      <BraveTalk
         isCrypto={true}
         paddingType={'none'}
         menuPosition={'left'}
-        widgetTitle={getLocale('togetherWidgetTitle')}
+        widgetTitle={getLocale('braveTalkWidgetTitle')}
         isForeground={showContent}
         stackPosition={position}
         textDirection={textDirection}
-        hideWidget={this.toggleShowTogether}
+        hideWidget={this.toggleShowBraveTalk}
         showContent={showContent}
-        onShowContent={this.setForegroundStackWidget.bind(this, 'together')}
+        onShowContent={this.setForegroundStackWidget.bind(this, 'braveTalk')}
       />
     )
   }
@@ -1067,7 +1067,7 @@ class NewTabPage extends React.Component<Props, State> {
             showClock={newTabData.showClock}
             showStats={newTabData.showStats}
             showRewards={!!cryptoContent}
-            showTogether={newTabData.showTogether && newTabData.togetherSupported}
+            showBraveTalk={newTabData.showBraveTalk && newTabData.braveTalkSupported}
             showBinance={newTabData.showBinance}
             showTopSites={showTopSites}
             showBrandedWallpaper={isShowingBrandedWallpaper}
@@ -1141,12 +1141,12 @@ class NewTabPage extends React.Component<Props, State> {
             </Page.GridItemBrandedLogo>}
             <FooterInfo
               textDirection={newTabData.textDirection}
-              supportsTogether={newTabData.togetherSupported}
-              togetherPromptDismissed={newTabData.togetherPromptDismissed}
+              supportsBraveTalk={newTabData.braveTalkSupported}
+              showBraveTalkPrompt={newTabData.braveTalkPromptAllowed && !newTabData.braveTalkPromptDismissed}
               backgroundImageInfo={newTabData.backgroundImage}
               showPhotoInfo={!isShowingBrandedWallpaper && newTabData.showBackgroundImage}
               onClickSettings={this.openSettings}
-              onDismissTogetherPrompt={this.props.actions.dismissTogetherPrompt}
+              onDismissBraveTalkPrompt={this.props.actions.dismissBraveTalkPrompt}
             />
             </Page.FooterContent>
           </Page.Footer>
@@ -1213,9 +1213,9 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowRewards={this.toggleShowRewards}
           toggleShowBinance={this.toggleShowBinance}
           binanceSupported={newTabData.binanceSupported}
-          togetherSupported={newTabData.togetherSupported}
-          toggleShowTogether={this.toggleShowTogether}
-          showTogether={newTabData.showTogether}
+          braveTalkSupported={newTabData.braveTalkSupported}
+          toggleShowBraveTalk={this.toggleShowBraveTalk}
+          showBraveTalk={newTabData.showBraveTalk}
           geminiSupported={newTabData.geminiSupported}
           toggleShowGemini={this.toggleShowGemini}
           showGemini={newTabData.showGemini}

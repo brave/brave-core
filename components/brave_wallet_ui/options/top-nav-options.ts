@@ -7,11 +7,11 @@ export const TopNavOptions: TopTabNavObjectType[] = [
     name: locale.topNavPortfolio
   },
   {
-    id: 'apps',
-    name: locale.topTabApps
-  },
-  {
     id: 'accounts',
     name: locale.topNavAccounts
+  },
+  {
+    id: 'apps',
+    name: locale.topTabApps
   }
 ]

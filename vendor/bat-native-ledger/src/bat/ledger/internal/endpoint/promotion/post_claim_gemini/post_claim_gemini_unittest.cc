@@ -62,7 +62,7 @@ TEST_F(PostClaimGeminiTest, ServerOK) {
             callback(response);
           }));
 
-  claim_->Request("mock_linking_info", [](const type::Result result) {
+  claim_->Request("mock_linking_info", "id", [](const type::Result result) {
     EXPECT_EQ(result, type::Result::LEDGER_OK);
   });
 }
@@ -78,7 +78,7 @@ TEST_F(PostClaimGeminiTest, ServerError400) {
             callback(response);
           }));
 
-  claim_->Request("mock_linking_info", [](const type::Result result) {
+  claim_->Request("mock_linking_info", "id", [](const type::Result result) {
     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
   });
 }
@@ -94,7 +94,7 @@ TEST_F(PostClaimGeminiTest, ServerError404) {
             callback(response);
           }));
 
-  claim_->Request("mock_linking_info", [](const type::Result result) {
+  claim_->Request("mock_linking_info", "id", [](const type::Result result) {
     EXPECT_EQ(result, type::Result::NOT_FOUND);
   });
 }
@@ -110,7 +110,7 @@ TEST_F(PostClaimGeminiTest, ServerError409) {
             callback(response);
           }));
 
-  claim_->Request("mock_linking_info", [](const type::Result result) {
+  claim_->Request("mock_linking_info", "id", [](const type::Result result) {
     EXPECT_EQ(result, type::Result::ALREADY_EXISTS);
   });
 }
@@ -126,7 +126,7 @@ TEST_F(PostClaimGeminiTest, ServerError500) {
             callback(response);
           }));
 
-  claim_->Request("mock_linking_info", [](const type::Result result) {
+  claim_->Request("mock_linking_info", "id", [](const type::Result result) {
     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
   });
 }
@@ -142,7 +142,7 @@ TEST_F(PostClaimGeminiTest, ServerErrorRandom) {
             callback(response);
           }));
 
-  claim_->Request("mock_linking_info", [](const type::Result result) {
+  claim_->Request("mock_linking_info", "id", [](const type::Result result) {
     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
   });
 }

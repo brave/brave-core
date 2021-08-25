@@ -22,7 +22,8 @@ const defaultState: RewardsInternals.State = {
     status: 0,
     type: ''
   },
-  eventLogs: []
+  eventLogs: [],
+  adDiagnostics: []
 }
 
 export const load = (): RewardsInternals.State => {

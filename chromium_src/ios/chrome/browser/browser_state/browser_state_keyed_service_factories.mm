@@ -5,7 +5,9 @@
 
 #include "ios/chrome/browser/browser_state/browser_state_keyed_service_factories.h"
 
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/ios/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
 #include "ios/chrome/browser/autofill/personal_data_manager_factory.h"
 #include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "ios/chrome/browser/favicon/favicon_service_factory.h"
@@ -20,8 +22,8 @@
 #include "ios/chrome/browser/sync/consent_auditor_factory.h"
 #include "ios/chrome/browser/sync/ios_user_event_service_factory.h"
 #include "ios/chrome/browser/sync/model_type_store_service_factory.h"
-#include "ios/chrome/browser/sync/profile_sync_service_factory.h"
 #include "ios/chrome/browser/sync/session_sync_service_factory.h"
+#include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
 #include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/webdata_services/web_data_service_factory.h"
@@ -30,12 +32,11 @@
 #error "This file requires ARC support."
 #endif
 
-// #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-// #include "brave/ios/browser/api/wallet/brave_wallet_service_factory.h"
-// #endif
-
 void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   autofill::PersonalDataManagerFactory::GetInstance();
+  brave_wallet::KeyringControllerFactory::GetInstance();
+  brave_wallet::AssetRatioControllerFactory::GetInstance();
+  brave_wallet::EthJsonRpcControllerFactory::GetInstance();
   ConsentAuditorFactory::GetInstance();
   ios::AccountConsistencyServiceFactory::GetInstance();
   ios::BookmarkModelFactory::GetInstance();
@@ -50,11 +51,8 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   IOSChromeProfileInvalidationProviderFactory::GetInstance();
   IOSUserEventServiceFactory::GetInstance();
   ModelTypeStoreServiceFactory::GetInstance();
-  ProfileSyncServiceFactory::GetInstance();
+  SyncServiceFactory::GetInstance();
   ReadingListModelFactory::GetInstance();
   SessionSyncServiceFactory::GetInstance();
   SyncSetupServiceFactory::GetInstance();
-  // #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  //   BraveWalletServiceFactory::GetInstance();
-  // #endif
 }

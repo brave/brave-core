@@ -12,7 +12,6 @@
 #include "bat/ads/internal/client/preferences/filtered_category_info.h"
 #include "bat/ads/internal/client/preferences/flagged_ad_info.h"
 #include "bat/ads/internal/client/preferences/saved_ad_info.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -22,7 +21,7 @@ struct AdPreferencesInfo {
   ~AdPreferencesInfo();
 
   std::string ToJson() const;
-  Result FromJson(const std::string& json);
+  bool FromJson(const std::string& json);
 
   FilteredAdList filtered_ads;
   FilteredCategoryList filtered_categories;

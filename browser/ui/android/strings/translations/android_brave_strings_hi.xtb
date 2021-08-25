@@ -6,7 +6,6 @@
 <translation id="2278950434998763147">सामान्य HTTP के बजाय सुरक्षित HTTPS कनेक्शन का उपयोग करके कुछ साइटें खोलता है.</translation>
 <translation id="94154759592465111">स्क्रिप्ट्स को अवरुद्ध करें</translation>
 <translation id="3518266709656143462">जावास्क्रिप्ट को ब्लॉक करता है (साइटों को ब्रेक कर सकता है)</translation>
-<translation id="5709627087332022422">क्रॉस-साइट ट्रैकर्स को ब्लॉक करें</translation>
 <translation id="6052725679982758334">सोशल मीडिया ब्लॉकिंग</translation>
 <translation id="7498695072878479744">अन्य पक्ष के साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
@@ -24,12 +23,13 @@
 <translation id="4022987104439075738">IPFS गेटवे</translation>
 <translation id="2688519859165248360">IPFS संसाधनों के लिए IPFS गेटवे के माध्यम से नेविगेशन की अनुमति देता है</translation>
 <translation id="7534079972563542000">Unstoppable डोमेन</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="7822245778264751380">एथेरियम मूल्य (ETH)</translation>
 <translation id="6513892817556267573">Ethereum नाम सेवा</translation>
 <translation id="3894650624018948468">हल निकालने का तरीका</translation>
 <translation id="2356070529366658676">पूछें</translation>
 <translation id="4176463684765177261">अक्षम</translation>
 <translation id="2218918398178303658">HTTPS के ऊपर DNS</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5787084571334399599">फिंगरप्रिंटिंग से ब्राउज़र को रोकता है</translation>
 <translation id="7459000603787995422">बाहर निकलने पर टैब को बंद करें</translation>
 <translation id="4448697385961650078">ट्रैकर और विज्ञापनों को ब्लॉक करें</translation>
@@ -86,10 +86,6 @@
 <translation id="2171928016777725844">Brave को अपना डिफ़ॉल्ट ब्राउज़र बनाएं!</translation>
 <translation id="7136694880210472378">डिफ़ॉल्ट बनाएं</translation>
 <translation id="4250680216510889253">नहीं</translation>
-<translation id="4501702055016678577">DuckDuckGo के साथ निजी खोज?</translation>
-<translation id="910419239800579753">निजी खोज के साथ, Brave इस निजी टैब में रहते हुए आपकी खोजों का उत्तर देने के लिए DuckDuckGo का उपयोग करेगा।  DuckDuckGo एक खोज इंजन है जो आपके खोज इतिहास को ट्रैक नहीं करता है, जिससे आप निजी रूप से खोज कर सकते हैं।</translation>
-<translation id="1426410128494586442">हां</translation>
-<translation id="5628466560184522265">DuckDuckGo के साथ निजी खोज के बारे में जानें</translation>
 <translation id="8826007068782654809">धन्यवाद</translation>
 <translation id="6665366815203065060">आपने अभी को एक टिप भेजा है:</translation>
 <translation id="5441565662498481293">आप स्वचालित रूप से को एक टिप भेज रहे हैं:</translation>
@@ -442,7 +438,7 @@
 <translation id="3477340970981564961">Brave निजी विज्ञापन आपकी व्यक्तिगत जानकारी को गोपनीय रखते हुए, सामग्री रचनाकारों का समर्थन करने के लिए आपको पारंपरिक विज्ञापनों के विपरीत पुरस्कार के रूप में टोकन प्रदान करते हैं।</translation>
 <translation id="6973095375773523904">विज्ञापन कहाँँ दिखाए जाते हैं?</translation>
 <translation id="7556325460112047619">Brave निजी विज्ञापन एक सामान्य सूचना के रूप में दिखाई देंगे। आप विज्ञापनों को कितनी बार देखें, इसे आप सेटिंग्स से नियंत्रित कर सकते हैं।</translation>
-<translation id="6897083627729802351">आप रिवार्ड्स कब प्राप्त करते हैं</translation>
+<translation id="6897083627729802351">आप रिवार्ड्स कब प्राप्त करते हैं?</translation>
 <translation id="310863932297733723">वर्तमान पूरे महीने में Brave प्राइवेट विज्ञापनों से अर्जित आपके टोकन अगले महीने की 5 तारीख को आ जाएँगे।</translation>
 <translation id="7712287524451429139">वापस देना सरल बना दिया गया है</translation>
 <translation id="105037569026952831">रचनाकारों को आपके इंगेजमेंट के स्तर, जिसे हम आपके ‘ ध्यान ’ के रूप में नापते हैं, के आधार पर आपके टोकन का योगदान स्वचालित रूप से प्राप्त होगा।</translation>
@@ -459,7 +455,7 @@
 <translation id="827315274423079662">वूहू, आप पूरी तरह से तैयार हैं!</translation>
 <translation id="3895246934788932488">ब्रेव रिवार्ड्स का उपयोग करके, आप अपनी गोपनीयता की रक्षा कर रहे हैं और वेब को सभी के लिए बेहतर जगह बनाने में मदद कर रहे हैं। और यह बहुत बढ़िया है!</translation>
 <translation id="5705882733397021510">वापस जाएँ</translation>
-<translation id="3985567919248057638">चलिए एक क्विक टूर लें</translation>
+<translation id="3985567919248057638">आइए जल्दी से देखते हैं</translation>
 <translation id="2434574859640694129">आप अपने विज्ञापन का पहला भुगतान प्राप्त करने के बाद वापस आ सकते हैं और इस निर्माता को टिप दे सकते हैं!</translation>
 <translation id="207242986925259074">क्विक रिफ्रेशर टूर</translation>
 <translation id="8342862030112839977">आपका पहला रिवार्ड्स पेआउट इस तिथि तक आएगा:</translation>
@@ -566,4 +562,13 @@
 <translation id="745115390910697838">वाक्यांश नहीं मेल खा रहे. कृपया दोबारा कोशिश करें.</translation>
 <translation id="2360588547830602174">अकाउंट रिकवरी नहीं हो पाया. कृपया दोबारा कोशिश करें.</translation>
 <translation id="1530109021798294736">मेननेट</translation>
+<translation id="990936698620790924">ETH . में बाजार मूल्य</translation>
+<translation id="6748108480210050150">से\n\n</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="6159566011642056819">(अंदाज़ा) लगाने के लिए</translation>
+<translation id="59223531494896848">सीमा</translation>
+<translation id="3567988240819868195">मार्किट</translation>
+<translation id="632241521608275119">फिसलन सहनशीलता</translation>
 </translationbundle>

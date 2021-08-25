@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 
+#include <utility>
+
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -76,12 +78,14 @@ BraveVpnService::BraveVpnService(
 
 BraveVpnService::~BraveVpnService() = default;
 
+void BraveVpnService::Shutdown() {}
+
 void BraveVpnService::OAuthRequest(const GURL& url,
                                    const std::string& method,
                                    const std::string& post_data,
                                    bool set_app_ident,
                                    URLRequestCallback callback) {
-  std::map<std::string, std::string> headers;
+  base::flat_map<std::string, std::string> headers;
   if (set_app_ident) {
     headers["GRD-App-Ident"] = "Brave-Client";
   }
@@ -140,7 +144,7 @@ void BraveVpnService::OnGetResponse(
     ResponseCallback callback,
     int status,
     const std::string& body,
-    const std::map<std::string, std::string>& headers) {
+    const base::flat_map<std::string, std::string>& headers) {
   std::string json_response;
   bool success = status == 200;
   if (success) {
@@ -173,7 +177,7 @@ void BraveVpnService::OnGetSubscriberCredential(
     ResponseCallback callback,
     int status,
     const std::string& body,
-    const std::map<std::string, std::string>& headers) {
+    const base::flat_map<std::string, std::string>& headers) {
   std::string subscriber_credential;
 
   bool success = status == 200;

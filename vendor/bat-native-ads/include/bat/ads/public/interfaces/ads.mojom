@@ -4,22 +4,22 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 module ads.mojom;
 
-enum BraveAdsEnvironment {
-  STAGING = 0,
-  PRODUCTION,
-  DEVELOPMENT
+enum Environment {
+  kStaging = 0,
+  kProduction,
+  kDevelopment
 };
 
-struct BraveAdsSysInfo {
+struct SysInfo {
   bool is_uncertain_future;
 };
 
-struct BraveAdsBuildChannel {
+struct BuildChannel {
   bool is_release;
   string name;
 };
 
-enum BraveAdsAdType {
+enum AdType {
   kUndefined = 0,
   kAdNotification,
   kNewTabPageAd,
@@ -27,7 +27,7 @@ enum BraveAdsAdType {
   kInlineContentAd
 };
 
-enum BraveAdsAdNotificationEventType {
+enum AdNotificationEventType {
   kServed = 0,
   kViewed,
   kClicked,
@@ -35,45 +35,110 @@ enum BraveAdsAdNotificationEventType {
   kTimedOut
 };
 
-enum BraveAdsNewTabPageAdEventType {
+enum NewTabPageAdEventType {
   kServed = 0,
   kViewed,
   kClicked
 };
 
-enum BraveAdsPromotedContentAdEventType {
+enum PromotedContentAdEventType {
   kServed = 0,
   kViewed,
   kClicked
 };
 
-enum BraveAdsInlineContentAdEventType {
+enum InlineContentAdEventType {
   kServed = 0,
   kViewed,
   kClicked
 };
 
-enum BraveAdsUrlRequestMethod {
-  GET = 0,
-  PUT,
-  POST
+enum UrlRequestMethod {
+  kGet = 0,
+  kPut,
+  kPost
 };
 
-enum BraveAdsP2AEventType {
+enum P2AEventType {
   kListType = 0
 };
 
-struct BraveAdsUrlRequest {
+struct UrlRequest {
   string url;
   array<string> headers;
   string content;
   string content_type;
-  BraveAdsUrlRequestMethod method;
+  UrlRequestMethod method;
 };
 
-struct BraveAdsUrlResponse {
+struct UrlResponse {
   string url;
   int32 status_code;
   string body;
   map<string, string> headers;
+};
+
+union DBValue {
+  int32 int_value;
+  int64 int64_value;
+  double double_value;
+  bool bool_value;
+  string string_value;
+  int8 null_value;
+};
+
+struct DBCommandBinding {
+  int32 index;
+  DBValue value;
+};
+
+struct DBCommand {
+  enum Type {
+    INITIALIZE,
+    READ,
+    RUN,
+    EXECUTE,
+    MIGRATE
+  };
+
+  enum RecordBindingType {
+    STRING_TYPE,
+    INT_TYPE,
+    INT64_TYPE,
+    DOUBLE_TYPE,
+    BOOL_TYPE
+  };
+
+  Type type;
+  string command;
+  array<DBCommandBinding> bindings;
+  array<RecordBindingType> record_bindings;
+};
+
+struct DBTransaction {
+  int32 version;
+  int32 compatible_version;
+  array<DBCommand> commands;
+};
+
+struct DBRecord {
+  array<DBValue> fields;
+};
+
+union DBCommandResult {
+  array<DBRecord> records;
+  DBValue value;
+};
+
+struct DBCommandResponse {
+  enum Status {
+    RESPONSE_OK,
+    INITIALIZATION_ERROR,
+    TRANSACTION_ERROR,
+    COMMAND_ERROR,
+    RESPONSE_ERROR
+  };
+
+  DBCommandResult? result;
+  Status status;
 };

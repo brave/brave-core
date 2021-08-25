@@ -1,0 +1,6138 @@
+{
+  "adPreferences": {
+    "filtered_ads": [],
+    "filtered_categories": [],
+    "saved_ads": [],
+    "flagged_ads": []
+  },
+  "adsShownHistory": [
+    {
+      "timestamp_in_seconds": 1627043191,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "43ea82c8-dea9-408c-a7bc-d51021c07961",
+        "creative_instance_id": "9c0fed46-6dff-40f3-97e0-0a24cee47d18",
+        "creative_set_id": "3ea4637a-1a63-4408-8848-b093324ac2ca",
+        "campaign_id": "efae24c8-843a-4b1d-88a8-f212548a1179",
+        "brand": "BlockFi",
+        "brand_info": "BlockFi - Don't buy bitcoin, earn it. Earn 1.5% back in bitcoin on every purchase. - Get Started",
+        "brand_logo": "",
+        "brand_display_url": "blockfi.com",
+        "brand_url": "https://blockfi.com/credit-card-waitlist/?utm_source=brave&utm_medium=si&utm_campaign=bravenewtabjuly&utm_term=brave_statues&utm_content=7_22",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626993903,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "7ac68dde-8d4b-450d-9e32-faf653599e71",
+        "creative_instance_id": "62ba095f-bfcb-45f6-8f90-36e3c6babbb7",
+        "creative_set_id": "3ea4637a-1a63-4408-8848-b093324ac2ca",
+        "campaign_id": "efae24c8-843a-4b1d-88a8-f212548a1179",
+        "brand": "BlockFi",
+        "brand_info": "BlockFi - Don't buy bitcoin, earn it. Earn 1.5% back in bitcoin on every purchase. - Get Started",
+        "brand_logo": "",
+        "brand_display_url": "blockfi.com",
+        "brand_url": "https://blockfi.com/credit-card-waitlist/?utm_source=brave&utm_medium=si&utm_campaign=bravenewtabjuly&utm_term=brave_statues&utm_content=7_22",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626990012,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "aadf639a-40f8-413c-9519-cb1a4fc8f61e",
+        "creative_instance_id": "9c0fed46-6dff-40f3-97e0-0a24cee47d18",
+        "creative_set_id": "3ea4637a-1a63-4408-8848-b093324ac2ca",
+        "campaign_id": "efae24c8-843a-4b1d-88a8-f212548a1179",
+        "brand": "BlockFi",
+        "brand_info": "BlockFi - Don't buy bitcoin, earn it. Earn 1.5% back in bitcoin on every purchase. - Get Started",
+        "brand_logo": "",
+        "brand_display_url": "blockfi.com",
+        "brand_url": "https://blockfi.com/credit-card-waitlist/?utm_source=brave&utm_medium=si&utm_campaign=bravenewtabjuly&utm_term=brave_statues&utm_content=7_22",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626988762,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "f851deed-5303-47bb-8ead-52e2e97f8e56",
+        "creative_instance_id": "62ba095f-bfcb-45f6-8f90-36e3c6babbb7",
+        "creative_set_id": "3ea4637a-1a63-4408-8848-b093324ac2ca",
+        "campaign_id": "efae24c8-843a-4b1d-88a8-f212548a1179",
+        "brand": "BlockFi",
+        "brand_info": "BlockFi - Don't buy bitcoin, earn it. Earn 1.5% back in bitcoin on every purchase. - Get Started",
+        "brand_logo": "",
+        "brand_display_url": "blockfi.com",
+        "brand_url": "https://blockfi.com/credit-card-waitlist/?utm_source=brave&utm_medium=si&utm_campaign=bravenewtabjuly&utm_term=brave_statues&utm_content=7_22",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626980473,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "91e1ccd0-01f7-41dc-bc3e-c848c4071d26",
+        "creative_instance_id": "9c0fed46-6dff-40f3-97e0-0a24cee47d18",
+        "creative_set_id": "3ea4637a-1a63-4408-8848-b093324ac2ca",
+        "campaign_id": "efae24c8-843a-4b1d-88a8-f212548a1179",
+        "brand": "BlockFi",
+        "brand_info": "BlockFi - Don't buy bitcoin, earn it. Earn 1.5% back in bitcoin on every purchase. - Get Started",
+        "brand_logo": "",
+        "brand_display_url": "blockfi.com",
+        "brand_url": "https://blockfi.com/credit-card-waitlist/?utm_source=brave&utm_medium=si&utm_campaign=bravenewtabjuly&utm_term=brave_statues&utm_content=7_22",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626976957,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "c6dced06-fe1a-4f7e-9aff-3bb4fe3c1610",
+        "creative_instance_id": "62ba095f-bfcb-45f6-8f90-36e3c6babbb7",
+        "creative_set_id": "3ea4637a-1a63-4408-8848-b093324ac2ca",
+        "campaign_id": "efae24c8-843a-4b1d-88a8-f212548a1179",
+        "brand": "BlockFi",
+        "brand_info": "BlockFi - Don't buy bitcoin, earn it. Earn 1.5% back in bitcoin on every purchase. - Get Started",
+        "brand_logo": "",
+        "brand_display_url": "blockfi.com",
+        "brand_url": "https://blockfi.com/credit-card-waitlist/?utm_source=brave&utm_medium=si&utm_campaign=bravenewtabjuly&utm_term=brave_statues&utm_content=7_22",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626973180,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "aa4a5565-d7d4-497e-8962-3da7c95815f5",
+        "creative_instance_id": "9c0fed46-6dff-40f3-97e0-0a24cee47d18",
+        "creative_set_id": "3ea4637a-1a63-4408-8848-b093324ac2ca",
+        "campaign_id": "efae24c8-843a-4b1d-88a8-f212548a1179",
+        "brand": "BlockFi",
+        "brand_info": "BlockFi - Don't buy bitcoin, earn it. Earn 1.5% back in bitcoin on every purchase. - Get Started",
+        "brand_logo": "",
+        "brand_display_url": "blockfi.com",
+        "brand_url": "https://blockfi.com/credit-card-waitlist/?utm_source=brave&utm_medium=si&utm_campaign=bravenewtabjuly&utm_term=brave_statues&utm_content=7_22",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626968123,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "812e1e66-2ab4-42ea-bb29-4d238f86123e",
+        "creative_instance_id": "62ba095f-bfcb-45f6-8f90-36e3c6babbb7",
+        "creative_set_id": "3ea4637a-1a63-4408-8848-b093324ac2ca",
+        "campaign_id": "efae24c8-843a-4b1d-88a8-f212548a1179",
+        "brand": "BlockFi",
+        "brand_info": "BlockFi - Don't buy bitcoin, earn it. Earn 1.5% back in bitcoin on every purchase. - Get Started",
+        "brand_logo": "",
+        "brand_display_url": "blockfi.com",
+        "brand_url": "https://blockfi.com/credit-card-waitlist/?utm_source=brave&utm_medium=si&utm_campaign=bravenewtabjuly&utm_term=brave_statues&utm_content=7_22",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626962894,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "b949cb9f-fa96-4ad1-b3bf-cd7ae4a12d10",
+        "creative_instance_id": "9c0fed46-6dff-40f3-97e0-0a24cee47d18",
+        "creative_set_id": "3ea4637a-1a63-4408-8848-b093324ac2ca",
+        "campaign_id": "efae24c8-843a-4b1d-88a8-f212548a1179",
+        "brand": "BlockFi",
+        "brand_info": "BlockFi - Don't buy bitcoin, earn it. Earn 1.5% back in bitcoin on every purchase. - Get Started",
+        "brand_logo": "",
+        "brand_display_url": "blockfi.com",
+        "brand_url": "https://blockfi.com/credit-card-waitlist/?utm_source=brave&utm_medium=si&utm_campaign=bravenewtabjuly&utm_term=brave_statues&utm_content=7_22",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626959356,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "50a75bdc-81d6-4ede-9d28-5dd06f06a2a8",
+        "creative_instance_id": "62ba095f-bfcb-45f6-8f90-36e3c6babbb7",
+        "creative_set_id": "3ea4637a-1a63-4408-8848-b093324ac2ca",
+        "campaign_id": "efae24c8-843a-4b1d-88a8-f212548a1179",
+        "brand": "BlockFi",
+        "brand_info": "BlockFi - Don't buy bitcoin, earn it. Earn 1.5% back in bitcoin on every purchase. - Get Started",
+        "brand_logo": "",
+        "brand_display_url": "blockfi.com",
+        "brand_url": "https://blockfi.com/credit-card-waitlist/?utm_source=brave&utm_medium=si&utm_campaign=bravenewtabjuly&utm_term=brave_statues&utm_content=7_22",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626904596,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "27f562e5-34c7-415d-9eae-40900e1b649f",
+        "creative_instance_id": "e3a8a39b-153e-4a4a-aac8-0797c0280720",
+        "creative_set_id": "31dbf838-a895-43cd-8602-83a0d506bc17",
+        "campaign_id": "a9d6020c-e485-4f0e-902b-a9852e437b36",
+        "brand": "UPLAND",
+        "brand_info": "UPLAND - THE REAL WORLD AS NFTS - Buy and Sell Virtual Land. Earn crypto and $$$. 6,000 UPX SIGN UP BONUS! - Learn More",
+        "brand_logo": "",
+        "brand_display_url": "www.upland.me",
+        "brand_url": "https://www.upland.me/landing/brave-sponsored-us-7-21-21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626904046,
+      "ad_content": {
+        "type": "ad_notification",
+        "uuid": "914da6ec-5b33-434d-9b04-a258336b9d89",
+        "creative_instance_id": "c7c993fe-cfc4-45cd-847a-7b748e788f72",
+        "creative_set_id": "793a4026-7ec1-4c50-8a55-987a1e6fce41",
+        "campaign_id": "5ec44fef-e36d-4c91-865a-b9cf5f15c9a5",
+        "brand": "Brave Ads Survey",
+        "brand_info": "Your input matters. Participate in our latest Brave Survey.",
+        "brand_logo": "",
+        "brand_display_url": "brave.com",
+        "brand_url": "https://brave.com/wp-content/_iframe-forms/intelvpro-pre-survey.html",
+        "like_action": 0,
+        "ad_action": "dismiss",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "technology & computing",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626904042,
+      "ad_content": {
+        "type": "ad_notification",
+        "uuid": "914da6ec-5b33-434d-9b04-a258336b9d89",
+        "creative_instance_id": "c7c993fe-cfc4-45cd-847a-7b748e788f72",
+        "creative_set_id": "793a4026-7ec1-4c50-8a55-987a1e6fce41",
+        "campaign_id": "5ec44fef-e36d-4c91-865a-b9cf5f15c9a5",
+        "brand": "Brave Ads Survey",
+        "brand_info": "Your input matters. Participate in our latest Brave Survey.",
+        "brand_logo": "",
+        "brand_display_url": "brave.com",
+        "brand_url": "https://brave.com/wp-content/_iframe-forms/intelvpro-pre-survey.html",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "technology & computing",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626900999,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "a3bf8ebc-fd55-4105-9d06-3fd59464278c",
+        "creative_instance_id": "ab81d46f-e86e-4222-965a-e852e734e972",
+        "creative_set_id": "31dbf838-a895-43cd-8602-83a0d506bc17",
+        "campaign_id": "a9d6020c-e485-4f0e-902b-a9852e437b36",
+        "brand": "UPLAND",
+        "brand_info": "UPLAND - THE REAL WORLD AS NFTS - Buy and Sell Virtual Land. Earn crypto and $$$. 6,000 UPX SIGN UP BONUS! - Learn More",
+        "brand_logo": "",
+        "brand_display_url": "www.upland.me",
+        "brand_url": "https://www.upland.me/landing/brave-sponsored-us-7-21-21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626898882,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "3e7f342f-56b4-42e4-823d-70686e2f6620",
+        "creative_instance_id": "bc06f62d-fba4-4d27-af3f-0e9d98397aa6",
+        "creative_set_id": "31dbf838-a895-43cd-8602-83a0d506bc17",
+        "campaign_id": "a9d6020c-e485-4f0e-902b-a9852e437b36",
+        "brand": "UPLAND",
+        "brand_info": "UPLAND - THE REAL WORLD AS NFTS - Buy and Sell Virtual Land. Earn crypto and $$$. 6,000 UPX SIGN UP BONUS! - Learn More",
+        "brand_logo": "",
+        "brand_display_url": "www.upland.me",
+        "brand_url": "https://www.upland.me/landing/brave-sponsored-us-7-21-21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626893608,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "612ed738-8c0c-44c4-b792-d07a854b0f12",
+        "creative_instance_id": "e3a8a39b-153e-4a4a-aac8-0797c0280720",
+        "creative_set_id": "31dbf838-a895-43cd-8602-83a0d506bc17",
+        "campaign_id": "a9d6020c-e485-4f0e-902b-a9852e437b36",
+        "brand": "UPLAND",
+        "brand_info": "UPLAND - THE REAL WORLD AS NFTS - Buy and Sell Virtual Land. Earn crypto and $$$. 6,000 UPX SIGN UP BONUS! - Learn More",
+        "brand_logo": "",
+        "brand_display_url": "www.upland.me",
+        "brand_url": "https://www.upland.me/landing/brave-sponsored-us-7-21-21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626890695,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "5242929f-0b59-4f17-a774-fc905fd447a1",
+        "creative_instance_id": "ab81d46f-e86e-4222-965a-e852e734e972",
+        "creative_set_id": "31dbf838-a895-43cd-8602-83a0d506bc17",
+        "campaign_id": "a9d6020c-e485-4f0e-902b-a9852e437b36",
+        "brand": "UPLAND",
+        "brand_info": "UPLAND - THE REAL WORLD AS NFTS - Buy and Sell Virtual Land. Earn crypto and $$$. 6,000 UPX SIGN UP BONUS! - Learn More",
+        "brand_logo": "",
+        "brand_display_url": "www.upland.me",
+        "brand_url": "https://www.upland.me/landing/brave-sponsored-us-7-21-21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626887871,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "1bdb6a8a-bf43-47ca-8ef6-5d0a6363cbd8",
+        "creative_instance_id": "bc06f62d-fba4-4d27-af3f-0e9d98397aa6",
+        "creative_set_id": "31dbf838-a895-43cd-8602-83a0d506bc17",
+        "campaign_id": "a9d6020c-e485-4f0e-902b-a9852e437b36",
+        "brand": "UPLAND",
+        "brand_info": "UPLAND - THE REAL WORLD AS NFTS - Buy and Sell Virtual Land. Earn crypto and $$$. 6,000 UPX SIGN UP BONUS! - Learn More",
+        "brand_logo": "",
+        "brand_display_url": "www.upland.me",
+        "brand_url": "https://www.upland.me/landing/brave-sponsored-us-7-21-21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626876501,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "19b3e187-68a6-4229-a558-6a774fa252c8",
+        "creative_instance_id": "e3a8a39b-153e-4a4a-aac8-0797c0280720",
+        "creative_set_id": "31dbf838-a895-43cd-8602-83a0d506bc17",
+        "campaign_id": "a9d6020c-e485-4f0e-902b-a9852e437b36",
+        "brand": "UPLAND",
+        "brand_info": "UPLAND - THE REAL WORLD AS NFTS - Buy and Sell Virtual Land. Earn crypto and $$$. 6,000 UPX SIGN UP BONUS! - Learn More",
+        "brand_logo": "",
+        "brand_display_url": "www.upland.me",
+        "brand_url": "https://www.upland.me/landing/brave-sponsored-us-7-21-21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626873728,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "9500cc29-1097-4dcc-ac4e-c58ef9e92795",
+        "creative_instance_id": "ab81d46f-e86e-4222-965a-e852e734e972",
+        "creative_set_id": "31dbf838-a895-43cd-8602-83a0d506bc17",
+        "campaign_id": "a9d6020c-e485-4f0e-902b-a9852e437b36",
+        "brand": "UPLAND",
+        "brand_info": "UPLAND - THE REAL WORLD AS NFTS - Buy and Sell Virtual Land. Earn crypto and $$$. 6,000 UPX SIGN UP BONUS! - Learn More",
+        "brand_logo": "",
+        "brand_display_url": "www.upland.me",
+        "brand_url": "https://www.upland.me/landing/brave-sponsored-us-7-21-21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626871535,
+      "ad_content": {
+        "type": "ad_notification",
+        "uuid": "4bbbb492-13c8-42ea-b951-829bc1eaf060",
+        "creative_instance_id": "894eadff-597c-4a0d-96f4-e34b9a7ca3d4",
+        "creative_set_id": "120a90e4-9273-415f-93d3-3779bc5e4c05",
+        "campaign_id": "ddc0ff88-d867-45b0-b052-3efa07bb6813",
+        "brand": "BitTrust IRA-Crypto Retirement",
+        "brand_info": "Catchup on your retirement goals w/ Bitcoin. Contact us now!",
+        "brand_logo": "",
+        "brand_display_url": "bittrustira.com",
+        "brand_url": "https://bittrustira.com/brave/",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "technology & computing",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626816229,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "f2190c2a-67f2-463f-b32e-0027687e50c3",
+        "creative_instance_id": "aea25f3e-6137-4156-9887-4c458725cd02",
+        "creative_set_id": "36005435-1bfc-4f58-9f1d-a7ecce2532ab",
+        "campaign_id": "448bef38-3336-4252-aa60-265b544d4aac",
+        "brand": "eToro",
+        "brand_info": "Visit eToro.com",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626807460,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "a91c7d91-3f93-4270-937e-24b5fd59f919",
+        "creative_instance_id": "01a33a56-f706-4092-ae6d-fb800e23c31b",
+        "creative_set_id": "36005435-1bfc-4f58-9f1d-a7ecce2532ab",
+        "campaign_id": "448bef38-3336-4252-aa60-265b544d4aac",
+        "brand": "eToro",
+        "brand_info": "Visit eToro.com",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626806904,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "a174af12-0881-49bf-b465-814bfd55e978",
+        "creative_instance_id": "e794e18e-aa72-4b4b-b308-af4fd9634e07",
+        "creative_set_id": "36005435-1bfc-4f58-9f1d-a7ecce2532ab",
+        "campaign_id": "448bef38-3336-4252-aa60-265b544d4aac",
+        "brand": "eToro",
+        "brand_info": "Visit eToro.com",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626804966,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "5ffdee23-644f-4694-be85-74de8eaa9939",
+        "creative_instance_id": "aea25f3e-6137-4156-9887-4c458725cd02",
+        "creative_set_id": "36005435-1bfc-4f58-9f1d-a7ecce2532ab",
+        "campaign_id": "448bef38-3336-4252-aa60-265b544d4aac",
+        "brand": "eToro",
+        "brand_info": "Visit eToro.com",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626801273,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "37f1a306-7810-4ec4-90d0-0a019c0649e3",
+        "creative_instance_id": "01a33a56-f706-4092-ae6d-fb800e23c31b",
+        "creative_set_id": "36005435-1bfc-4f58-9f1d-a7ecce2532ab",
+        "campaign_id": "448bef38-3336-4252-aa60-265b544d4aac",
+        "brand": "eToro",
+        "brand_info": "Visit eToro.com",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626798472,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "335e571a-ef3f-4846-9712-7f1c31d28c9e",
+        "creative_instance_id": "e794e18e-aa72-4b4b-b308-af4fd9634e07",
+        "creative_set_id": "36005435-1bfc-4f58-9f1d-a7ecce2532ab",
+        "campaign_id": "448bef38-3336-4252-aa60-265b544d4aac",
+        "brand": "eToro",
+        "brand_info": "Visit eToro.com",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626796577,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "e0016aad-4b56-4ddc-896f-d0bb820f1c3c",
+        "creative_instance_id": "aea25f3e-6137-4156-9887-4c458725cd02",
+        "creative_set_id": "36005435-1bfc-4f58-9f1d-a7ecce2532ab",
+        "campaign_id": "448bef38-3336-4252-aa60-265b544d4aac",
+        "brand": "eToro",
+        "brand_info": "Visit eToro.com",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626791978,
+      "ad_content": {
+        "type": "ad_notification",
+        "uuid": "89feaeb3-61dd-42b4-962a-ad3bc017d1dd",
+        "creative_instance_id": "24d7103e-a0be-4f64-8f45-455ed563dd32",
+        "creative_set_id": "a917b780-691e-4d8b-b932-2d0b358ba662",
+        "campaign_id": "ffbfb13a-db87-4478-8b83-b124f76d9419",
+        "brand": "Celsius: Earn high, borrow low",
+        "brand_info": "HODL while you earn up to 13.99% APY on your crypto.",
+        "brand_logo": "",
+        "brand_display_url": "celsius.onelink.me",
+        "brand_url": "https://celsius.onelink.me/EyfO/f4276d0",
+        "like_action": 0,
+        "ad_action": "dismiss",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "personal finance",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626791976,
+      "ad_content": {
+        "type": "ad_notification",
+        "uuid": "89feaeb3-61dd-42b4-962a-ad3bc017d1dd",
+        "creative_instance_id": "24d7103e-a0be-4f64-8f45-455ed563dd32",
+        "creative_set_id": "a917b780-691e-4d8b-b932-2d0b358ba662",
+        "campaign_id": "ffbfb13a-db87-4478-8b83-b124f76d9419",
+        "brand": "Celsius: Earn high, borrow low",
+        "brand_info": "HODL while you earn up to 13.99% APY on your crypto.",
+        "brand_logo": "",
+        "brand_display_url": "celsius.onelink.me",
+        "brand_url": "https://celsius.onelink.me/EyfO/f4276d0",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "personal finance",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626789591,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "fb440ec8-ffb3-4a28-a963-8791ef3a74c2",
+        "creative_instance_id": "28eb715e-d425-46cf-80bb-4d563d5f29c4",
+        "creative_set_id": "ca3cbbf0-fc4c-4dbf-b502-a3e0dd3da8c2",
+        "campaign_id": "338c077e-9954-4d1f-a410-c6080c3aeff6",
+        "brand": "Nexo",
+        "brand_info": "Nexo - Unlock the Power of Your Crypto - Get started at nexo.io",
+        "brand_logo": "",
+        "brand_display_url": "nexo.io",
+        "brand_url": "https://nexo.io/?utm_source=brave&utm_medium=fixed&utm_campaign=brave_nts_jul21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626732025,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "ec838da6-f147-4d5c-9e4c-c5ca987e4ba7",
+        "creative_instance_id": "e7b3deb3-36d0-46cf-977d-ee46c5174386",
+        "creative_set_id": "ca3cbbf0-fc4c-4dbf-b502-a3e0dd3da8c2",
+        "campaign_id": "338c077e-9954-4d1f-a410-c6080c3aeff6",
+        "brand": "Nexo",
+        "brand_info": "Nexo - Unlock the Power of Your Crypto - Get started at nexo.io",
+        "brand_logo": "",
+        "brand_display_url": "nexo.io",
+        "brand_url": "https://nexo.io/?utm_source=brave&utm_medium=fixed&utm_campaign=brave_nts_jul21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626730489,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "56d115a0-5b98-4ee2-83f3-ef13fec651a5",
+        "creative_instance_id": "bd838f46-c33e-4001-a9a4-2391cb137140",
+        "creative_set_id": "ca3cbbf0-fc4c-4dbf-b502-a3e0dd3da8c2",
+        "campaign_id": "338c077e-9954-4d1f-a410-c6080c3aeff6",
+        "brand": "Nexo",
+        "brand_info": "Nexo - Unlock the Power of Your Crypto - Get started at nexo.io",
+        "brand_logo": "",
+        "brand_display_url": "nexo.io",
+        "brand_url": "https://nexo.io/?utm_source=brave&utm_medium=fixed&utm_campaign=brave_nts_jul21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626726200,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "3b4cb527-235f-4afd-8930-fa350d0c0570",
+        "creative_instance_id": "28eb715e-d425-46cf-80bb-4d563d5f29c4",
+        "creative_set_id": "ca3cbbf0-fc4c-4dbf-b502-a3e0dd3da8c2",
+        "campaign_id": "338c077e-9954-4d1f-a410-c6080c3aeff6",
+        "brand": "Nexo",
+        "brand_info": "Nexo - Unlock the Power of Your Crypto - Get started at nexo.io",
+        "brand_logo": "",
+        "brand_display_url": "nexo.io",
+        "brand_url": "https://nexo.io/?utm_source=brave&utm_medium=fixed&utm_campaign=brave_nts_jul21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626723693,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "13d9cf5c-08eb-4dcc-8795-b199500dc8a2",
+        "creative_instance_id": "e7b3deb3-36d0-46cf-977d-ee46c5174386",
+        "creative_set_id": "ca3cbbf0-fc4c-4dbf-b502-a3e0dd3da8c2",
+        "campaign_id": "338c077e-9954-4d1f-a410-c6080c3aeff6",
+        "brand": "Nexo",
+        "brand_info": "Nexo - Unlock the Power of Your Crypto - Get started at nexo.io",
+        "brand_logo": "",
+        "brand_display_url": "nexo.io",
+        "brand_url": "https://nexo.io/?utm_source=brave&utm_medium=fixed&utm_campaign=brave_nts_jul21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626715038,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "78bd0c38-35dc-4d19-963d-a1da16fb19cc",
+        "creative_instance_id": "bd838f46-c33e-4001-a9a4-2391cb137140",
+        "creative_set_id": "ca3cbbf0-fc4c-4dbf-b502-a3e0dd3da8c2",
+        "campaign_id": "338c077e-9954-4d1f-a410-c6080c3aeff6",
+        "brand": "Nexo",
+        "brand_info": "Nexo - Unlock the Power of Your Crypto - Get started at nexo.io",
+        "brand_logo": "",
+        "brand_display_url": "nexo.io",
+        "brand_url": "https://nexo.io/?utm_source=brave&utm_medium=fixed&utm_campaign=brave_nts_jul21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626712856,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "89976dd3-1aab-4af0-85be-bb2dcc7d4d50",
+        "creative_instance_id": "28eb715e-d425-46cf-80bb-4d563d5f29c4",
+        "creative_set_id": "ca3cbbf0-fc4c-4dbf-b502-a3e0dd3da8c2",
+        "campaign_id": "338c077e-9954-4d1f-a410-c6080c3aeff6",
+        "brand": "Nexo",
+        "brand_info": "Nexo - Unlock the Power of Your Crypto - Get started at nexo.io",
+        "brand_logo": "",
+        "brand_display_url": "nexo.io",
+        "brand_url": "https://nexo.io/?utm_source=brave&utm_medium=fixed&utm_campaign=brave_nts_jul21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626709158,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "52a247e2-f002-4cc3-ba8e-e09deed6aed8",
+        "creative_instance_id": "e7b3deb3-36d0-46cf-977d-ee46c5174386",
+        "creative_set_id": "ca3cbbf0-fc4c-4dbf-b502-a3e0dd3da8c2",
+        "campaign_id": "338c077e-9954-4d1f-a410-c6080c3aeff6",
+        "brand": "Nexo",
+        "brand_info": "Nexo - Unlock the Power of Your Crypto - Get started at nexo.io",
+        "brand_logo": "",
+        "brand_display_url": "nexo.io",
+        "brand_url": "https://nexo.io/?utm_source=brave&utm_medium=fixed&utm_campaign=brave_nts_jul21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626707035,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "f7ca80f0-0fbc-46a3-8f86-3f1b04c5631d",
+        "creative_instance_id": "bd838f46-c33e-4001-a9a4-2391cb137140",
+        "creative_set_id": "ca3cbbf0-fc4c-4dbf-b502-a3e0dd3da8c2",
+        "campaign_id": "338c077e-9954-4d1f-a410-c6080c3aeff6",
+        "brand": "Nexo",
+        "brand_info": "Nexo - Unlock the Power of Your Crypto - Get started at nexo.io",
+        "brand_logo": "",
+        "brand_display_url": "nexo.io",
+        "brand_url": "https://nexo.io/?utm_source=brave&utm_medium=fixed&utm_campaign=brave_nts_jul21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626706179,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "fed061b1-4ac6-404d-b30c-04a64e6174a5",
+        "creative_instance_id": "28eb715e-d425-46cf-80bb-4d563d5f29c4",
+        "creative_set_id": "ca3cbbf0-fc4c-4dbf-b502-a3e0dd3da8c2",
+        "campaign_id": "338c077e-9954-4d1f-a410-c6080c3aeff6",
+        "brand": "Nexo",
+        "brand_info": "Nexo - Unlock the Power of Your Crypto - Get started at nexo.io",
+        "brand_logo": "",
+        "brand_display_url": "nexo.io",
+        "brand_url": "https://nexo.io/?utm_source=brave&utm_medium=fixed&utm_campaign=brave_nts_jul21",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626705390,
+      "ad_content": {
+        "type": "ad_notification",
+        "uuid": "ac63cbfc-fcac-44ef-9138-f30210a24d9b",
+        "creative_instance_id": "9af63e82-7bb8-4f93-883b-19d0a6bd7224",
+        "creative_set_id": "d440792f-c93d-4790-846a-3522635f00d2",
+        "campaign_id": "646e9471-fa30-48a1-a34a-13f39d0ae1ad",
+        "brand": "Mars Genesis",
+        "brand_info": "The #1 NFT collection about Mars. Only 10,000 unique parcels",
+        "brand_logo": "",
+        "brand_display_url": "marsgenesis.com",
+        "brand_url": "https://marsgenesis.com/?ref=brave2",
+        "like_action": 0,
+        "ad_action": "dismiss",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "technology & computing",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626705388,
+      "ad_content": {
+        "type": "ad_notification",
+        "uuid": "ac63cbfc-fcac-44ef-9138-f30210a24d9b",
+        "creative_instance_id": "9af63e82-7bb8-4f93-883b-19d0a6bd7224",
+        "creative_set_id": "d440792f-c93d-4790-846a-3522635f00d2",
+        "campaign_id": "646e9471-fa30-48a1-a34a-13f39d0ae1ad",
+        "brand": "Mars Genesis",
+        "brand_info": "The #1 NFT collection about Mars. Only 10,000 unique parcels",
+        "brand_logo": "",
+        "brand_display_url": "marsgenesis.com",
+        "brand_url": "https://marsgenesis.com/?ref=brave2",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "technology & computing",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626699396,
+      "ad_content": {
+        "type": "ad_notification",
+        "uuid": "bd2976f8-b145-4389-8731-de3c1d3dabbc",
+        "creative_instance_id": "d0b89619-9e0d-4e89-8a0e-ba0fff6f36ef",
+        "creative_set_id": "230c1cdb-b246-4457-82f2-07f0753ed859",
+        "campaign_id": "5eb4a4be-9c36-457a-b64d-0f3ea1e91b44",
+        "brand": "Milk Bar Treats",
+        "brand_info": "Get the fan favorite birthday cake shipped to your door.",
+        "brand_logo": "",
+        "brand_display_url": "milkbarstore.com",
+        "brand_url": "https://milkbarstore.com/pages/birthday",
+        "like_action": 0,
+        "ad_action": "dismiss",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "arts & entertainment",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626699386,
+      "ad_content": {
+        "type": "ad_notification",
+        "uuid": "bd2976f8-b145-4389-8731-de3c1d3dabbc",
+        "creative_instance_id": "d0b89619-9e0d-4e89-8a0e-ba0fff6f36ef",
+        "creative_set_id": "230c1cdb-b246-4457-82f2-07f0753ed859",
+        "campaign_id": "5eb4a4be-9c36-457a-b64d-0f3ea1e91b44",
+        "brand": "Milk Bar Treats",
+        "brand_info": "Get the fan favorite birthday cake shipped to your door.",
+        "brand_logo": "",
+        "brand_display_url": "milkbarstore.com",
+        "brand_url": "https://milkbarstore.com/pages/birthday",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "arts & entertainment",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626698380,
+      "ad_content": {
+        "type": "ad_notification",
+        "uuid": "4876afe8-d0bd-4b58-9980-8eb3e4172b2d",
+        "creative_instance_id": "99bfd7cb-0543-44d6-94bd-7172a621a42d",
+        "creative_set_id": "ac6b0a87-8862-470f-95b2-52473796cc0b",
+        "campaign_id": "490a247d-630a-42bf-bef3-e5b4c3a932aa",
+        "brand": "RealVision Crypto: NFT Week🔥",
+        "brand_info": "The Most Misunderstood Financial Instrument Ever? Join FREE",
+        "brand_logo": "",
+        "brand_display_url": "www.realvision.com",
+        "brand_url": "https://www.realvision.com/nfts-what-you-need-to-know?utm_source=brave&utm_medium=cpc&utm_campaign=nft_week",
+        "like_action": 0,
+        "ad_action": "dismiss",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "personal finance",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626698377,
+      "ad_content": {
+        "type": "ad_notification",
+        "uuid": "4876afe8-d0bd-4b58-9980-8eb3e4172b2d",
+        "creative_instance_id": "99bfd7cb-0543-44d6-94bd-7172a621a42d",
+        "creative_set_id": "ac6b0a87-8862-470f-95b2-52473796cc0b",
+        "campaign_id": "490a247d-630a-42bf-bef3-e5b4c3a932aa",
+        "brand": "RealVision Crypto: NFT Week🔥",
+        "brand_info": "The Most Misunderstood Financial Instrument Ever? Join FREE",
+        "brand_logo": "",
+        "brand_display_url": "www.realvision.com",
+        "brand_url": "https://www.realvision.com/nfts-what-you-need-to-know?utm_source=brave&utm_medium=cpc&utm_campaign=nft_week",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "personal finance",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626468730,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "36b4c487-af96-44e1-afcb-976959008fe5",
+        "creative_instance_id": "03d8a6b2-b7a7-42a1-8ce9-1ba11c2e310f",
+        "creative_set_id": "6197a2fb-d6ea-418a-a719-36fab230a4bf",
+        "campaign_id": "f25b9475-cc48-4b61-ae7a-d4d357c1b48f",
+        "brand": "eToro",
+        "brand_info": "eToro - Get $50 after completing your first $1,000 trade. Visit us at eToro.com - Disclaimer: Your capital is at risk.",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626464115,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "ed501736-02ad-4e5f-8592-7e27b78eab48",
+        "creative_instance_id": "bcf8ca9d-05a5-4d7e-8f7e-fb59ecb072b3",
+        "creative_set_id": "6197a2fb-d6ea-418a-a719-36fab230a4bf",
+        "campaign_id": "f25b9475-cc48-4b61-ae7a-d4d357c1b48f",
+        "brand": "eToro",
+        "brand_info": "eToro - Get $50 after completing your first $1,000 trade. Visit us at eToro.com - Disclaimer: Your capital is at risk.",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626462343,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "0c4cf113-0001-43fa-b690-5b982eb49905",
+        "creative_instance_id": "79d7400c-b985-4958-8271-4b91a03ca35e",
+        "creative_set_id": "6197a2fb-d6ea-418a-a719-36fab230a4bf",
+        "campaign_id": "f25b9475-cc48-4b61-ae7a-d4d357c1b48f",
+        "brand": "eToro",
+        "brand_info": "eToro - Get $50 after completing your first $1,000 trade. Visit us at eToro.com - Disclaimer: Your capital is at risk.",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626461681,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "49679680-3b53-4fd3-949c-ef00a374362e",
+        "creative_instance_id": "03d8a6b2-b7a7-42a1-8ce9-1ba11c2e310f",
+        "creative_set_id": "6197a2fb-d6ea-418a-a719-36fab230a4bf",
+        "campaign_id": "f25b9475-cc48-4b61-ae7a-d4d357c1b48f",
+        "brand": "eToro",
+        "brand_info": "eToro - Get $50 after completing your first $1,000 trade. Visit us at eToro.com - Disclaimer: Your capital is at risk.",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626459895,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "71c0c093-45ad-4fd7-9776-7e328e7afd63",
+        "creative_instance_id": "bcf8ca9d-05a5-4d7e-8f7e-fb59ecb072b3",
+        "creative_set_id": "6197a2fb-d6ea-418a-a719-36fab230a4bf",
+        "campaign_id": "f25b9475-cc48-4b61-ae7a-d4d357c1b48f",
+        "brand": "eToro",
+        "brand_info": "eToro - Get $50 after completing your first $1,000 trade. Visit us at eToro.com - Disclaimer: Your capital is at risk.",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626453886,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "958ad3ee-ef6a-4d4a-9a9d-324530844462",
+        "creative_instance_id": "79d7400c-b985-4958-8271-4b91a03ca35e",
+        "creative_set_id": "6197a2fb-d6ea-418a-a719-36fab230a4bf",
+        "campaign_id": "f25b9475-cc48-4b61-ae7a-d4d357c1b48f",
+        "brand": "eToro",
+        "brand_info": "eToro - Get $50 after completing your first $1,000 trade. Visit us at eToro.com - Disclaimer: Your capital is at risk.",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626448165,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "b271e7d8-2e2d-48e5-86bc-b32688de9548",
+        "creative_instance_id": "03d8a6b2-b7a7-42a1-8ce9-1ba11c2e310f",
+        "creative_set_id": "6197a2fb-d6ea-418a-a719-36fab230a4bf",
+        "campaign_id": "f25b9475-cc48-4b61-ae7a-d4d357c1b48f",
+        "brand": "eToro",
+        "brand_info": "eToro - Get $50 after completing your first $1,000 trade. Visit us at eToro.com - Disclaimer: Your capital is at risk.",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626444807,
+      "ad_content": {
+        "type": "new_tab_page_ad",
+        "uuid": "cd247e68-da59-4a46-8886-bf46389f2a2c",
+        "creative_instance_id": "bcf8ca9d-05a5-4d7e-8f7e-fb59ecb072b3",
+        "creative_set_id": "6197a2fb-d6ea-418a-a719-36fab230a4bf",
+        "campaign_id": "f25b9475-cc48-4b61-ae7a-d4d357c1b48f",
+        "brand": "eToro",
+        "brand_info": "eToro - Get $50 after completing your first $1,000 trade. Visit us at eToro.com - Disclaimer: Your capital is at risk.",
+        "brand_logo": "",
+        "brand_display_url": "med.etoro.com",
+        "brand_url": "https://med.etoro.com/B15672_A83988_TClick.aspx",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "untargeted",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626442647,
+      "ad_content": {
+        "type": "ad_notification",
+        "uuid": "0a17c292-4859-4403-8e60-e56e94a3448e",
+        "creative_instance_id": "155dc2c4-31bd-4f54-b388-e2c54cf92194",
+        "creative_set_id": "4d49ae1e-34ce-4518-b63b-781fa8baac56",
+        "campaign_id": "42c86d44-5b93-4aaf-9c7e-725a0557b028",
+        "brand": "Brave Crypto Wallet",
+        "brand_info": "Buy, Swap and send crypto with the Brave Crypto Wallet!",
+        "brand_logo": "",
+        "brand_display_url": "wallet",
+        "brand_url": "brave://wallet",
+        "like_action": 0,
+        "ad_action": "dismiss",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "crypto curious",
+        "opt_action": 0
+      }
+    },
+    {
+      "timestamp_in_seconds": 1626442645,
+      "ad_content": {
+        "type": "ad_notification",
+        "uuid": "0a17c292-4859-4403-8e60-e56e94a3448e",
+        "creative_instance_id": "155dc2c4-31bd-4f54-b388-e2c54cf92194",
+        "creative_set_id": "4d49ae1e-34ce-4518-b63b-781fa8baac56",
+        "campaign_id": "42c86d44-5b93-4aaf-9c7e-725a0557b028",
+        "brand": "Brave Crypto Wallet",
+        "brand_info": "Buy, Swap and send crypto with the Brave Crypto Wallet!",
+        "brand_logo": "",
+        "brand_display_url": "wallet",
+        "brand_url": "brave://wallet",
+        "like_action": 0,
+        "ad_action": "view",
+        "saved_ad": false,
+        "flagged_ad": false
+      },
+      "category_content": {
+        "category": "crypto curious",
+        "opt_action": 0
+      }
+    }
+  ],
+  "purchaseIntentSignalHistory": {
+    "AC001": [
+      {
+        "timestamp_in_seconds": 1601303660,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604530950,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604673413,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604678745,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604678797,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604678798,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604678799,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1605107480,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1605208420,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1609962873,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1609964797,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1609965050,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1609965051,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1609965054,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610049209,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610049227,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610049229,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610049230,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611182797,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611256710,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613061038,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1616771149,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623932187,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623932187,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623932189,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623932189,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623937458,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623937460,
+        "weight": 1
+      }
+    ],
+    "BF001": [
+      {
+        "timestamp_in_seconds": 1600878485,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600886145,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600886145,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600962021,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600962021,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601050283,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601411164,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601411209,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601411210,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601465844,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601465844,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601583911,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601583915,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601604748,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601604748,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601646206,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601646206,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601669394,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601669395,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601673556,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601678135,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601949827,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601949828,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601990642,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1601990730,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1602015170,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1602130367,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1602130502,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1602159526,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1602523436,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1602523454,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603118275,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603118275,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603118277,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603118279,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603118283,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603118284,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603204851,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603389482,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603389483,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603487561,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603487562,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603913193,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603933385,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603933386,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603976878,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1603976879,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604007820,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604079070,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604355409,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604355412,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604411261,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604414723,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604423990,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604432338,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604432363,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604437379,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604437393,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604440916,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604497551,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604498532,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604502677,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604514037,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604514137,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604514198,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604514228,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604514242,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604518138,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604522889,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604524456,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604525590,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604525625,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604525626,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604525718,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604527003,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604527024,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604527024,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604527040,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604527097,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604528743,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604528923,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604528924,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604529003,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604529440,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604529444,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604530656,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604530666,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604544030,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604544039,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604544718,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604544770,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604544780,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604545235,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604545240,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604547552,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604547597,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604547597,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604588673,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604588693,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1604588817,
+        "weight": 1
+      }
+    ],
+    "Consumer Crypto": [
+      {
+        "timestamp_in_seconds": 1621016527,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621016531,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621016532,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621016544,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621016570,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621016613,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621016626,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621016635,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621016643,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621016646,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621016650,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621016660,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621434923,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621434933,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621434935,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621434978,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435017,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435024,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435025,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435042,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435051,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435051,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435051,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435052,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435052,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435052,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435068,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435070,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435128,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435128,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435128,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435132,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435134,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435135,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435169,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435171,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435173,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435175,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435175,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435177,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435177,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435177,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435179,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435179,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435179,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435184,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435186,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621435187,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437164,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437167,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437168,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437176,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437211,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437231,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437231,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437231,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437233,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437254,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437259,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437259,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437259,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437264,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437266,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437275,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437275,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437275,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437278,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437280,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437297,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437297,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621437297,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621528477,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621528497,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621528499,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621528515,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621528515,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621528515,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621528518,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1621885235,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622063786,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622063794,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622063796,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622063801,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622071707,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622074174,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622074179,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622074180,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622074185,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933408,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933409,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933414,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933441,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933448,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933448,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933448,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933452,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933453,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933454,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933455,
+        "weight": 1
+      }
+    ],
+    "Crypto Curious": [
+      {
+        "timestamp_in_seconds": 1621885235,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622063786,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622063794,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622063796,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622063801,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622074174,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622074179,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622074180,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622074185,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933408,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933409,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933414,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933441,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933448,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933448,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933448,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933452,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933453,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933454,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933455,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933455,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933458,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933491,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933491,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933491,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933491,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933492,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933494,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933495,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933545,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933546,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623933546,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623939019,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623939019,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623939019,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1624463231,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1624987495,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625768994,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625869930,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625869931,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625869936,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625869936,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626725313,
+        "weight": 1
+      }
+    ],
+    "Crypto Purchase Intent": [
+      {
+        "timestamp_in_seconds": 1610131473,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610131474,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610132050,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610133942,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610133943,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610381269,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610381269,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610476379,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610476379,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610492074,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610492075,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610566098,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610649886,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610649887,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610735585,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1610735585,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611115345,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611158863,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611162036,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611162057,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611162061,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611162073,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611256132,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611256133,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611261060,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611261061,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611266716,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611266717,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611340514,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611340515,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611342145,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611342146,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611347837,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611347838,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611348117,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611348117,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611540641,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611540642,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611540649,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611540649,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611592689,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611592690,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611613716,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611672931,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611672931,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612296261,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612296261,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612306715,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612306715,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612313519,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612363753,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612363755,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612369752,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612369753,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612387998,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612387999,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612408137,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612408138,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612408151,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612408161,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612408200,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612408200,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612408203,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612481380,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612481380,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612557591,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612558198,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612558199,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612791895,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612791896,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612800412,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612800413,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612800934,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612800935,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612800944,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612881976,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612881976,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612998126,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1612998127,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613059137,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613059138,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613059185,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613059185,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613059190,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613059190,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613060911,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613060913,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613061063,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613061064,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613065215,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613065216,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613071683,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613071684,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613516285,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613516286,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613570919,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613570920,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613585017,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613585017,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1613663434,
+        "weight": 1
+      }
+    ],
+    "DeFi": [
+      {
+        "timestamp_in_seconds": 1625068987,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625068987,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625068988,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625068995,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625068995,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625068995,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625155153,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625155153,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625155153,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625155159,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625155159,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625155159,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625155164,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625155164,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625155164,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625231551,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625231551,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625231552,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625263783,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625263783,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625263783,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625593445,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625593445,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625593446,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625599075,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625599075,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625599075,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625608481,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625608481,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625608482,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625625075,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625625075,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625625076,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625771391,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625771391,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625845281,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625845281,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625865215,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625865215,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625865216,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625869936,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625869936,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626110188,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626110188,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626110188,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626196708,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626196708,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626210200,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626210200,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626210200,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626275442,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626275442,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626275443,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626296683,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626296683,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626296684,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626297330,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626297330,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626297331,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626352598,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626352598,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626352599,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626447548,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626447548,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626698908,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626698908,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626698909,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626806794,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626806794,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626806795,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626806800,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626806800,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626806800,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626889565,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626889565,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626889566,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626962905,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626962905,
+        "weight": 1
+      }
+    ],
+    "Mortgage and Refinance": [
+      {
+        "timestamp_in_seconds": 1615838528,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1615838541,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1615838544,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1615838594,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1615839495,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1616791216,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1616791220,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1616791232,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1616791242,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1616791457,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1616791477,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1616791477,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1616793376,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1617626194,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1618573073,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1618573083,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1618573093,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1618573111,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1624990983,
+        "weight": 1
+      }
+    ],
+    "News Digest": [
+      {
+        "timestamp_in_seconds": 1617194120,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009702,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009703,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009705,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009705,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009705,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009706,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009706,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009706,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009706,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009706,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009707,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009708,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009710,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009711,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009714,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009714,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009733,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009733,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009735,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009737,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009737,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009745,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619009745,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619142308,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619799048,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1622652143,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623779948,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623779949,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623932187,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623932187,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623932189,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623932189,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1624378936,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1624979988,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625069955,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625069955,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625069956,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625069956,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625072174,
+        "weight": 1
+      }
+    ],
+    "Privacy Conscious": [
+      {
+        "timestamp_in_seconds": 1623878327,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623878337,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1624058175,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626981578,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626981589,
+        "weight": 1
+      }
+    ],
+    "Private Cloud Storage": [
+      {
+        "timestamp_in_seconds": 1620306045,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620307980,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620307980,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620311218,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620311222,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620311222,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620311224,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620311226,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620311226,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620311324,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620311326,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620311326,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620311326,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620311327,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620311327,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620313253,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314063,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314063,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314064,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314069,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314069,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314071,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314072,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314073,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314818,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314925,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314925,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314934,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620314934,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316832,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316953,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316954,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316954,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316954,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316954,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316954,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316954,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316954,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316954,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316954,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316954,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316954,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316954,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620316954,
+        "weight": 1
+      }
+    ],
+    "Retail Discounts": [
+      {
+        "timestamp_in_seconds": 1611613704,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611613789,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611614440,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611614449,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611614589,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1611614984,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1616531907,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1617588563,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1618324477,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1618887354,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1618887359,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619549600,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619549610,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619614664,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1619614664,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620231937,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620766571,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620766572,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620785846,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1620922501,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1623864647,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1625606797,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1626904035,
+        "weight": 1
+      }
+    ],
+    "gamer-alpha influencers": [
+      {
+        "timestamp_in_seconds": 1600465431,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600465531,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600472499,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600472499,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600700177,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600700178,
+        "weight": 1
+      }
+    ],
+    "gamer-mainstream enthusiasts": [
+      {
+        "timestamp_in_seconds": 1600472499,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600472499,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600700177,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600700178,
+        "weight": 1
+      }
+    ],
+    "gamer-pc purists": [
+      {
+        "timestamp_in_seconds": 1600472499,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600472499,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600700177,
+        "weight": 1
+      },
+      {
+        "timestamp_in_seconds": 1600700178,
+        "weight": 1
+      }
+    ]
+  },
+  "seenAds": {
+    "ad_notification": {
+      "0094c10b-1677-41c8-96b6-a1d7b3c83216": true, 
+      "00a178fb-d807-423d-9048-b47f8c52abd4": true,
+      "012be4d3-fb3f-4506-9457-666568a1759b": true,
+      "015663f8-b84c-4f58-aaad-5180479798ac": true,
+      "01c5e0cf-d3ea-4b91-9cff-faff40449d4a": true,
+      "01ce0d7f-9c94-4957-b2a0-c24b69f7fcfb": true,
+      "0209d823-7207-41bb-b3be-7560e37a37bb": true,
+      "020dbb3b-a8c9-4ad0-a5a9-8079f95a64b0": true,
+      "02b0c52f-86ae-4c90-b677-a649d49f7a94": true,
+      "03a721b8-9185-4d79-bf46-8b85165f8cf6": true,
+      "03ecdb36-a536-4c25-9fed-2b561fba0ba7": true,
+      "03fecaba-2bf2-41bc-be5a-e89164e65e8a": true,
+      "0457aa03-2436-44c9-a4b6-55626a4cbabb": true,
+      "0458602e-00e4-4cbc-8ecc-5b3f74050674": true,
+      "04747ac7-af3a-44f2-abbc-6b1b2be3dfff": true,
+      "04dd9d1b-ba1b-4345-82a4-16f2145b0149": true,
+      "052e8b31-3864-4864-a979-d87171f6040b": true,
+      "05483e3c-b0e5-4cfe-83b9-eb812bd5fc2d": true,
+      "0581f592-beee-4360-8808-b21b8ba60767": true,
+      "05e130ff-e495-40f3-b59c-c048a00dc95a": true,
+      "0644b390-31bb-4381-939b-ec356357911a": true,
+      "0716ae14-a4fa-42b5-b0ec-9e2f17dd152c": true,
+      "0724c2e3-7c14-4f1e-bfbe-be6de995ec02": true,
+      "0766e560-8faf-460b-a51c-142a8a2db537": true,
+      "086eb2fc-f7c9-4867-9530-84494151a755": true,
+      "08eea444-0a8f-44b6-b5a8-757b13ef16e7": true,
+      "08f7fdaa-7db5-44fd-9b44-c43d2e7deb39": true,
+      "092d59d9-c6e4-4a30-9a2e-db81ca66013d": true,
+      "095ad312-95d9-4263-ad6c-e5596465935b": true,
+      "0a34b467-bd02-4b52-a82a-6dd5581245f6": true,
+      "0a670474-d4e3-4a7f-8dee-9e6da237808e": true,
+      "0a9d36e5-4413-4465-9052-d63a64dfa8c2": true,
+      "0aa1b7aa-1732-4ee0-aa30-dda0aa1ba03e": true,
+      "0aaa1327-7d00-4679-99d4-3654ac285cd1": true,
+      "0b491773-c7a2-4c9c-8a19-fc16cd160efd": true,
+      "0b9d906f-205f-410b-b430-e74a39c460bf": true,
+      "0bf111ef-49a9-442d-b860-17fa54831d94": true,
+      "0d634f8b-f931-41fa-a927-1df56bf2e963": true,
+      "0d8ff45e-3719-4634-8fe8-997ac6cab705": true,
+      "0e2cb5be-d9de-4953-889b-751c7000a37f": true,
+      "0fa19578-3f87-4039-91dc-1ecc47d105e4": true,
+      "0fa891af-ee1e-4272-9bbe-cfe429f7f201": true,
+      "0fc1b9e7-9d6d-41bd-9b4a-7bdbd0d85304": true,
+      "0fe81d56-4d63-4e6d-9746-876035514396": true,
+      "101f7de4-7315-4a4d-bb0c-00abb38b8a8b": true,
+      "103f13d8-749a-49b8-9df6-8f6f6c7d4960": true,
+      "107be12a-b1d1-4503-a565-8b4b0ef20b6d": true,
+      "111b1a5e-389a-48c6-b472-b1e0ce1987dc": true,
+      "11385b4b-390e-4c6e-9092-7d96b1580fd2": true,
+      "11d9955f-5568-4994-9284-970ea938ae20": true,
+      "1290bc9d-5c36-4f42-a524-dc7a33b35cf4": true,
+      "1354b1a9-b5cc-49cf-8f4f-846423ba1a63": true,
+      "135b6d6e-4a3f-4023-a43d-3c70b529eab5": true,
+      "1360497c-4076-4bc9-bcc2-35f3f15f2df2": true,
+      "1363b8ab-3467-4338-9f99-f27f69970e61": true,
+      "13b3ec85-77d3-4489-b148-04415dfb17e3": true,
+      "13c30de1-c93a-4ea6-a4b8-248d437549c7": true,
+      "13f29bae-8e88-4d19-b0b9-9cd394e1ea3c": true,
+      "1474fe80-6a56-402d-8485-7ad65ddef831": true,
+      "14cac878-912b-4358-b99d-0b97f509324b": true,
+      "155dc2c4-31bd-4f54-b388-e2c54cf92194": true,
+      "159ef572-974d-4c82-a824-f122cd75da0e": true,
+      "15b43a0d-f175-4b94-a13a-22470e761973": true,
+      "15e1e052-e0db-4629-a4ce-1aeaab6e92f1": true,
+      "165e7ac4-7c25-4ba9-a384-5b1df223e379": true,
+      "1775e7ce-ec05-49b5-8720-3e3ba7cddaef": true,
+      "17b215aa-1af4-4d51-ac1f-7f9b18c713b3": true,
+      "180c7a64-2e8b-44a0-ab57-ddbe6d83c0c8": true,
+      "181ca2d5-1366-4997-b209-c3b27f5c59dd": true,
+      "18443ded-e3ba-4862-9ef4-191613619229": true,
+      "1854566d-2f57-4c07-9ca1-00724a70994a": true,
+      "189ee4c6-a014-4ff5-94c8-96a87c0fa054": true,
+      "18ad66b4-a1ea-42f1-a485-51d03d948e1f": true,
+      "18d491a0-a879-4b7d-86c3-12a178d74e8c": true,
+      "199a37ec-097b-40c8-9ef3-c0b3eb7e3d72": true,
+      "19fa0506-5c7f-472d-b65f-a21971d22c66": true,
+      "1a53c0f7-24ce-4283-91bb-6404a361508d": true,
+      "1a8607e4-a0d4-4d3f-b2e6-fcc1be16dc98": true,
+      "1a9ffdf5-5d0f-4584-939f-8072816ec766": true,
+      "1abb58a9-33b1-40ab-bb89-ed839b6003b4": true,
+      "1ad00d30-f2c9-40c9-bacf-e47af93415ee": true,
+      "1ad3ce89-b621-440d-bbfb-17f632ad64d9": true,
+      "1b12634d-76cf-4531-8c48-6cd873414865": true,
+      "1b74bd02-2562-4f7e-8934-9ac92e45e712": true,
+      "1bc721a3-433a-4793-8793-88e161e83c2f": true,
+      "1bd68cb8-24ba-4e80-b499-ed5147179567": true,
+      "1c7298a8-41da-4b7d-ba73-95d26cb804ed": true,
+      "1c92b6b7-80f2-4c39-a577-654c50dc78de": true,
+      "1d1b5c0a-51a5-4ff2-9f30-1b1826555753": true,
+      "1df54c3a-78fb-4226-b094-cf79316af2f5": true,
+      "1e945c25-98a2-443c-a7f5-e695110d2b84": true,
+      "1edcc3d0-5c31-4f0e-bfbd-657bda0a69a6": true,
+      "1edf3299-ff92-4c52-b506-7779b5d8623a": true,
+      "1edfc45a-3861-480c-a538-9beeca992a18": true,
+      "1f1ca5bb-2dfc-468a-be44-8d8ee12bd9ef": true,
+      "1f20e99f-94a5-4b13-a2c1-1f02b28fc7ac": true,
+      "1f946f5c-fa6e-4254-9073-049e838bafdc": true,
+      "1fc2b3e0-f5e7-4672-b4fa-1a03c9f1fa54": true,
+      "1fe98ef0-7a63-434e-8516-f441cbc6537f": true,
+      "20106506-53ca-4e5c-a2e4-a5aed4aec5c5": true,
+      "2046039f-dd95-496a-b45c-56da3cab24d1": true,
+      "205d2fc4-fff8-43a6-bce5-f97b195b3390": true,
+      "209da550-f537-4bc6-81a1-9c1a802b5482": true,
+      "21fa0329-fb2f-4fc5-8734-7759a00f7a23": true,
+      "22a9375c-80f8-42c1-9360-742db5e62d6c": true,
+      "22ecea40-a518-4dca-90c5-133464cc5f67": true,
+      "230137d3-8150-46e8-a6b6-b26eb2b8e71f": true,
+      "2302f609-d85c-481c-b9bb-b12cd92a8a47": true,
+      "233096e3-592c-4b5b-8718-ca974fddeff4": true,
+      "23826b1f-775f-4d22-82f2-e9d00b8cc04a": true,
+      "23ad56f6-6c5e-4803-81b5-1b0015133883": true,
+      "2463beb3-fab6-47aa-a00d-7a9c46296c7a": true,
+      "246d4239-be3b-4263-904b-ea851a6ada74": true,
+      "24d7103e-a0be-4f64-8f45-455ed563dd32": true,
+      "24fadb66-b8d6-4639-b5f3-43e3ae71de33": true,
+      "25d34421-4294-43f8-ba43-3bd5bacac9bd": true,
+      "26aecc5a-c371-40a5-8c2c-32cf3c037114": true,
+      "27b88aaa-31db-4462-b68c-1bc887b298b0": true,
+      "27f08166-11bc-401e-96bc-d568df43a94c": true,
+      "2850762b-6b84-4a5e-a722-2b5c70d7c34e": true,
+      "28d208ba-1f74-4fe0-9ddc-0c7893364e7f": true,
+      "2913ec99-9db8-492e-a434-82663b2c1ab8": true,
+      "293a2264-64d4-4c71-8fe4-9279d0b561dc": true,
+      "294adec2-8c58-4599-8cc6-ba3eec3fa1b7": true,
+      "29fc0fc3-8324-4273-ba30-91c4d15c25aa": true,
+      "2a088ae0-13e1-43ed-b8c5-6bf3867bc2c2": true,
+      "2a2033bd-24dc-41cf-92e4-47d7e596f1c0": true,
+      "2a2bd75c-02da-4fb0-aa80-f4d8e73c5a3c": true,
+      "2a49e944-c56f-4a13-a2c3-b97f5a8f1fae": true,
+      "2a935844-6c56-4e97-9fef-491e76219e36": true,
+      "2a95098d-f0a5-47ae-8f7b-2434ae6a51dc": true,
+      "2ac04719-54cd-4f77-89fa-d86f5ee2e5aa": true,
+      "2c1f55ab-8181-4226-a471-87b5f8bb0d77": true,
+      "2c3dd065-6014-40e4-8656-12a1decefecd": true,
+      "2cbee85b-0f8f-4dd5-a2ff-2b637042a2c2": true,
+      "2cca4599-7105-4bff-ae6c-b7e7909432bb": true,
+      "2d072c57-f14e-407d-9da5-8b8edbba7c71": true,
+      "2d1ccdaf-4a3a-4678-ade4-54a5bac65f9b": true,
+      "2d8dbed5-d721-45c0-ab53-c9155ec6deb0": true,
+      "2d9627ca-c7f3-4463-a604-964499b90802": true,
+      "2ddd7aa3-28fb-4596-8744-5a260bf7b387": true,
+      "2eda81f4-5e4c-478c-96a7-87905e07ea04": true,
+      "2fc8865c-6048-43b1-a250-9c74b3999671": true,
+      "301aa822-7712-4b9a-a37b-eb1e67c7b1c0": true,
+      "306ce4ba-b159-4d1a-a51e-5512f288407d": true,
+      "30f13b33-d75f-40bb-a435-0dcc4130676f": true,
+      "3106cc8b-2853-4809-b848-2926f28fa54e": true,
+      "31307ef1-6aa3-4fa7-96dc-cce8b550b8f1": true,
+      "32511fb0-1c1e-46dd-bc1e-5319e2287f88": true,
+      "32d31a21-4277-425f-b3b1-355748f2304d": true,
+      "32e6d2b4-df29-447c-96eb-3e0c8f96ae8d": true,
+      "3366b57e-4565-458b-97bf-ddc4505d60ab": true,
+      "33bdcfe7-3023-42be-a944-48f820de357b": true,
+      "34010127-c66a-4e11-b170-f8be9efbc02a": true,
+      "343ed0ae-81d1-49f4-92fe-e2c3f3204b49": true,
+      "34adf745-b398-4025-ade7-ba3779b2c172": true,
+      "359ed28c-d99b-432c-95cd-456369076d85": true,
+      "35eb1c87-3793-430c-ac69-39ca64cb9f15": true,
+      "3644ad01-1ade-4709-ae26-2b3a8138860c": true,
+      "372c5c61-4a5b-4896-a3b3-1dae8b5a764d": true,
+      "373cd256-e548-41c0-86a4-b7fdb01f05d8": true,
+      "37a2d8b1-24eb-46ec-813b-09fd71fd0a31": true,
+      "37bf4592-e3f1-4359-9751-e2dada016747": true,
+      "386868a2-9e52-45b9-8f71-99d2fd572ade": true,
+      "38a4dffa-690e-42e1-a3e2-2a3e8ed39825": true,
+      "38a9f4ef-63a8-41e3-bd79-f8f1e605f3f0": true,
+      "39869921-eda1-4154-8449-21f05fb8d875": true,
+      "3a494636-0847-4e2c-80b2-677440fd1c6b": true,
+      "3a7cd3a3-fe4f-4970-a1ae-b5ca31b25028": true,
+      "3a993bdd-e979-432c-8543-6425a18cebea": true,
+      "3aa0da85-0424-413b-9533-206322e8826e": true,
+      "3aa79546-608d-4f2c-9196-2e942c16d941": true,
+      "3abb31f6-f96d-4b14-83be-35b47ffe79aa": true,
+      "3b0d3bd8-eb20-43a9-8a7c-f032c87a1dd2": true,
+      "3b577d3a-01e7-4feb-ac05-28fc47a7b8e3": true,
+      "3bc77971-a81a-472a-9a2e-6ed137822850": true,
+      "3bd2f368-1ed2-4f5e-bff0-2b41e19c8653": true,
+      "3c54179a-fb24-4425-98ab-8a2d6c93ff20": true,
+      "3cf7476e-c008-49ea-a4d8-547d6aab9dd3": true,
+      "3d03041e-2fb6-4a4c-87ee-4a86e9ae11d6": true,
+      "3d55ed05-64dc-4478-b98e-ffc77e5d93a2": true,
+      "3d860b46-1300-4675-831c-dea0ce7eacec": true,
+      "3e1c28f1-5043-4058-8c36-3eb6dffe8e4e": true,
+      "3e7b0858-919e-47cf-9dd5-b7eacc9559d8": true,
+      "3e92ec69-4d32-4210-9fa8-ac604ed0a3b0": true,
+      "3f3272b7-dd47-4b55-becd-89b10337ee5a": true,
+      "3f419911-9880-4840-98f3-33f1d9c68ee1": true,
+      "3f422e6c-a383-441a-bed5-f2fbcdb76810": true,
+      "3f954915-e598-4c94-b90b-c3fae6e0e94c": true,
+      "3fe30dac-307e-4751-b9d2-e0cbb9d427c9": true,
+      "403a12b2-d268-4999-bc20-b785bb332944": true,
+      "407880c7-4805-4dfb-9455-a8e7e79ce5f9": true,
+      "4079adce-eefc-4d9e-8a14-5050128e09fa": true,
+      "40a16e47-2ee4-44ff-a120-b761e29551b4": true,
+      "40a5f6ef-15f1-4c72-86c7-b4a17adf9b07": true,
+      "4129b773-03c5-4345-acbc-07c1bc949867": true,
+      "412af1c2-4176-449f-baa6-e8ad06b79870": true,
+      "413e343e-846a-4c24-b127-9f187ccd3978": true,
+      "414a4956-7de0-4582-8200-6d50a11435b5": true,
+      "41d049d8-5702-40a6-a5e5-87288a2ea902": true,
+      "421f22cc-c2d0-45c8-9bac-e03a61461ecd": true,
+      "4266e4b7-6db6-4342-a4d8-7900af848fef": true,
+      "427a8e10-2df7-4d2e-8add-e7b1d49dbd2d": true,
+      "42ca3ad3-3852-4a10-9de3-549efee979d6": true,
+      "42d50198-d730-40b3-b382-ef3bf2ba1ccd": true,
+      "42e3dc33-603d-4fcb-b233-000b51b38c6b": true,
+      "432a6224-7d46-4ba6-93fd-3b3d3696ff69": true,
+      "43adc385-9ddf-4ac3-b5ce-4b7f4bc6e7a7": true,
+      "44444d36-ed81-474b-a959-64ed6b604873": true,
+      "449028c9-b2f5-45f4-ae5a-5c394db17fb4": true,
+      "458bdaa5-862f-470a-9ef5-d2f32aa67f0d": true,
+      "45b6cc44-95c1-403f-9862-bea112f7e36f": true,
+      "45b97120-b848-4f64-b133-aa866c378c09": true,
+      "45e839a1-000c-40f7-9a0f-f99620062020": true,
+      "46fd07f1-4edf-4bc9-9dd6-27ccc78f3bed": true,
+      "47b22af7-9a1f-4b37-bc79-424d2ffea6c9": true,
+      "47bd85d4-24b7-43e0-bb9e-4423775561d3": true,
+      "47d3c4e5-ac7a-4c8d-b90b-c704ae5f2401": true,
+      "47ef8606-d919-4562-b529-e3e651befe0d": true,
+      "48350491-f043-4b3b-8414-13fbc6249263": true,
+      "484d7ff6-ac94-4f9d-885c-fbdb9b027ce2": true,
+      "49461da1-4348-4fc8-9da8-18b93393d4f4": true,
+      "49a48de4-5b8a-4d3a-856f-85e8bd4bc2f9": true,
+      "4a8b69cc-6cd9-4501-be9a-59cb8096f4c3": true,
+      "4b644316-4478-489a-b1be-e6e8d633a8c1": true,
+      "4c53344c-098e-472a-9710-517fcd2f13f6": true,
+      "4c91d60a-41f0-4891-bd7f-66ea730b1a32": true,
+      "4d4fa214-c008-4b5a-a50b-1bffef2a7cb9": true,
+      "4e342d82-a1d7-4c92-9d0d-7afbeea5e1d1": true,
+      "4f04ff10-1768-4f88-a7b0-a2a8256a13e5": true,
+      "4fd45b8e-0c0a-4ea9-8132-a138bb89d7fd": true,
+      "504e89f1-399a-48d3-81a0-6b0e6c8e5fcf": true,
+      "50af672f-6a0d-4ff7-bb9c-a40082ec39c2": true,
+      "50b56106-3c80-4ae5-a7eb-c7b721f047af": true,
+      "51978cf6-e634-44a8-952d-6932d7a98255": true,
+      "5228eb7c-0f5e-4324-b8b4-492fa056233c": true,
+      "5261e137-8be0-4e1b-80ed-7a65c33a125d": true,
+      "527c484d-77b4-4d1e-97d5-ab325136e17c": true,
+      "529e4a7c-82ba-4ec0-9550-9c3e00650b28": true,
+      "52fa72ef-3b0d-4de4-841d-b92559def942": true,
+      "53b54d78-d5bd-4c24-94c5-bc6b107bea63": true,
+      "540180f8-4117-4275-a68f-56a5c4384e6c": true,
+      "54c17e8d-ce5c-482e-9fda-c74bef12a8a9": true,
+      "54f92763-b299-4c54-8e8a-9f6b275a5349": true,
+      "56380d15-0a4d-4aae-96e2-a9cc3402802b": true,
+      "56c53f70-7bb9-4a08-85a0-7f89ae0d398c": true,
+      "56e1d9c4-d6c5-4139-b7e9-f8a0e2349ca4": true,
+      "578e62bd-4cf0-4c3d-abb7-4cf865d6064f": true,
+      "57e757b0-3440-4883-a7ed-722a52f70f35": true,
+      "581b53b2-1a39-45e8-9b26-532ad07ffc04": true,
+      "58c5cc2a-8a10-4b9b-882d-4c38f61c49c4": true,
+      "58ff2a11-8e6e-42ba-9d94-f1983dd187f0": true,
+      "590691f8-ada0-4b5d-9df1-f9c6a3649d5e": true,
+      "5a23243b-7435-43f8-9fd7-2a2eb299af6f": true,
+      "5aabeea5-5702-4e4c-bf92-9786b09e43f9": true,
+      "5ab4be73-30f3-4fa6-8722-97f57d99d894": true,
+      "5b23b143-e157-4beb-af0b-3f7f8007b1b9": true,
+      "5b387451-23cb-4805-b17e-549396c73092": true,
+      "5bcf8614-69ff-48d1-9899-92c02702b410": true,
+      "5bd17925-32a7-442c-995a-01497c56ca22": true,
+      "5bfabf67-e968-449d-84ca-08d83df63b83": true,
+      "5c3d1f0a-81aa-4e85-bd23-29a4af776aa6": true,
+      "5c46152b-0e18-4171-8440-0d28a0ef8391": true,
+      "5c5b1d3b-886f-4774-9ee4-c5cd4c64024a": true,
+      "5ccc4e2b-c632-4e59-b35b-fa4eb049b1dc": true,
+      "5e5960a8-fd22-4f03-b66d-48ff2a03947f": true,
+      "5ec802cd-c1d2-41d5-b083-8a821efd1f14": true,
+      "5ed2a95c-b7ed-42f6-bb88-1a23d3077dc1": true,
+      "5ed87c16-253e-4a6f-ae06-2e878d8261c3": true,
+      "5f3b4572-064d-41bb-a539-b31c6ac89ed4": true,
+      "5f9565c0-6605-41e3-8952-77208278c2bd": true,
+      "608af2c2-1c7f-4e63-a580-c3e250a7f71c": true,
+      "60a9494a-5bd1-440c-910f-4016ba6ac530": true,
+      "616875f1-15f6-4fb1-8598-d1fb33c50f7a": true,
+      "617a0aa7-8436-491b-84e6-377ea7511b9f": true,
+      "6195f5ee-96ee-45d6-b2a1-e97f0b86c730": true,
+      "6244c521-22f4-49b7-8731-00c7b55aca37": true,
+      "6269585d-a4ea-46c5-b22e-dd285932df14": true,
+      "62b934ec-bd69-4f9d-957e-53a21cca2a3b": true,
+      "62cb4fde-9a0b-45e8-b907-a46be46d10c1": true,
+      "6318f882-0652-44e4-bf4f-e00da3502a57": true,
+      "6382b554-5ab2-4b6a-988b-791cfbd05f54": true,
+      "63a81984-1032-4051-b3cf-b500c711cad5": true,
+      "63b31db0-c773-4c4c-a218-01494fece265": true,
+      "63eb50b9-15ad-4a77-be2d-b23a0dc9a24e": true,
+      "63fde52f-c796-4d7a-980e-8d07a6871f41": true,
+      "64617c1f-b9fe-43d9-9749-7f5c872ec5b7": true,
+      "64673652-aec2-4599-82b5-187d22713e75": true,
+      "64deff55-7128-4024-b428-8005f49880c6": true,
+      "6507a214-c575-45c3-a7ae-198e4f3acb9f": true,
+      "653bb53c-1980-46e3-91a8-c0256af08ad0": true,
+      "6556f961-8735-4a53-8b89-85ee54b29cd2": true,
+      "65851306-6302-44c7-a982-05c11d8bfad9": true,
+      "6631c3cd-d1a0-4947-b36c-e2d8f2b2b4ea": true,
+      "66425708-9c42-45d8-8b3b-d80d7e7963e8": true,
+      "6682886c-8999-4065-bd3c-14f157d2aaa5": true,
+      "6730e14f-b673-40dc-9e9e-84902011346e": true,
+      "673f934e-3334-4ebf-b37a-1c427460cede": true,
+      "67749e5d-667a-48d3-8c2a-57f54c417498": true,
+      "680e6df5-7dd6-4cbb-8a63-c598fa7c6a89": true,
+      "685cafcf-ae3f-4da0-95e7-7ce4a89432ea": true,
+      "68677ddb-6e8b-4c0a-925f-fd1a1740cb18": true,
+      "6a078ce0-d728-43c1-b4f8-f3cfa91d85d1": true,
+      "6a12cc34-1c7b-4b54-b040-26ee5b724d30": true,
+      "6a1aac02-c7fa-446a-aa1d-2f025a5a0c22": true,
+      "6ac96606-3792-42e5-98e3-b60d46dadb1a": true,
+      "6ad2147d-f236-4749-80b3-a55362a61688": true,
+      "6ad9566b-d2cc-4066-af05-b8070c3c9c1e": true,
+      "6b070487-2e61-44fe-be47-528858e80a14": true,
+      "6b611ea8-8455-45e7-91fa-d09a0f387de3": true,
+      "6d5a7423-ad81-45a8-a81d-e8f93b1c5f9a": true,
+      "6e17421a-032f-456e-b4f7-a92ca675d27c": true,
+      "6e38a233-31a7-4c43-8110-410af3106fb4": true,
+      "6e6548ce-e4af-4a76-8041-638186a98ec3": true,
+      "6e8197bd-a495-47db-bbe2-c3dd809bc911": true,
+      "6e840f53-c8ab-400b-b33d-7250046ab487": true,
+      "6f3ed65b-c0a1-421a-931a-db75fffe88b9": true,
+      "6f853bc6-9db8-43c6-8950-d3e7271ac37e": true,
+      "6fba92c7-2b77-4d07-a155-e42989df154c": true,
+      "6fdc1fb8-d9ce-415f-960c-930e66f41875": true,
+      "70c1499c-8ee0-42fd-a0f3-82d2b954941d": true,
+      "70f1e046-6365-4c3d-bcc1-8addcc561abb": true,
+      "71036317-f5a9-4c8f-bd99-b82458e27ba1": true,
+      "715e2eb0-091d-471c-b9a3-3ea4a71dfd81": true,
+      "716960ee-98ef-4c41-9d40-5101cc7634f9": true,
+      "71962d81-1a27-4860-91cf-808852e8cea6": true,
+      "721fe847-90bb-4d11-a949-2d7692714f5e": true,
+      "72762587-bb7a-4263-a61a-f45e499be43e": true,
+      "72766f95-e2b6-44b2-b20e-c6f4b12a7eb0": true,
+      "72e6ff72-06e5-4c11-b88e-ab3ff7d54eff": true,
+      "7340dc0e-fd5e-4ae7-93a5-d26d1f218cb5": true,
+      "73926f3c-8853-47df-838c-c9c6febac7ca": true,
+      "74502cbf-3369-43a3-96e7-aa987a6a7164": true,
+      "74cb9c79-6659-47e2-a9b2-06c8df0515b7": true,
+      "74dbbd5c-63eb-44de-9695-acc9112ad870": true,
+      "75219e8b-5d62-4bc3-8c0d-692e7da7d789": true,
+      "75967279-7395-4429-8694-fafc08fa1a25": true,
+      "75f93785-3bc5-418b-b63d-ab610ebd83c3": true,
+      "762d704f-523e-46e3-89d5-bb831bdf64d2": true,
+      "7659e287-47d5-4766-b2ed-d133b3742fa0": true,
+      "7697e339-5c01-459e-8b51-8a9f0d7fd95b": true,
+      "77487681-f1bb-4ce3-9491-2b1eaad1fd27": true,
+      "7771198a-fb39-4fa8-8d21-d7afe60c6ceb": true,
+      "77ee2abd-3638-4e97-b085-905de355b277": true,
+      "77fd9bde-48b1-4ceb-a823-d3409579a986": true,
+      "78580e3f-7a73-43c1-9007-184662215a6c": true,
+      "7863ad6c-6c67-43d2-9b6a-2765bfa04b9c": true,
+      "78d1812c-0d91-456a-a642-f6ac5f6daf0f": true,
+      "78d7546d-d579-437f-b0ee-b63ab136121b": true,
+      "795f1dec-f30f-4e3b-aefc-8c5adb42a5c9": true,
+      "797dd86b-619c-4401-9d32-9edb9ff1b331": true,
+      "79ff4892-6ebb-448e-91b2-dfd399a5e059": true,
+      "7a90229e-b580-4b87-b944-d2d17e461291": true,
+      "7ab9ae33-417d-47f4-9abf-5a9fe81eb8ef": true,
+      "7af880bf-2b7e-4194-a1db-de9e300000aa": true,
+      "7b4f9967-8296-46c8-9004-a275ebf8ef8d": true,
+      "7b944ef2-793f-4010-9a97-d7e35b0e17f3": true,
+      "7bb32c6e-fa97-49ff-82ad-297360840a79": true,
+      "7c3e2c61-4a39-46e9-ba72-b4d1915fcfa6": true,
+      "7c4d3b06-f3a6-4fd1-a6bc-9f6cbb8b834d": true,
+      "7c75e6a7-28f3-4206-a0f5-f026113f695a": true,
+      "7c8f5b00-5457-4579-9a94-380a83e92c98": true,
+      "7cd296da-df7b-452e-a30e-2e34e917e586": true,
+      "7d9f637e-38a7-4674-95d1-ec0d02135dd5": true,
+      "7dc1ca9c-c97d-44e1-bc16-0bf199ce89f7": true,
+      "7e0b9b2f-9c4c-4d54-9f62-891535e1d12b": true,
+      "7e0d8e2b-d0fd-4d5b-b5eb-5c0c78759848": true,
+      "7ec95500-06ef-4ec0-90b8-21c568b44e29": true,
+      "7f17afcd-9761-4ec4-aee4-c60e0d51f097": true,
+      "7f58ed0d-9dda-4b09-9e03-db3123fc21ed": true,
+      "7f6f6c70-bd37-43a3-827d-97ec9ad78ea0": true,
+      "7f7bc457-3cf3-4aca-a80d-3d67849d0aa2": true,
+      "7fb33b47-6d89-4773-bb3c-2c352fddd54e": true,
+      "7fb7f3ec-399e-492f-8653-7766bc278d2f": true,
+      "7fce77f0-aca9-4a6c-833a-4458a4fe1043": true,
+      "80a223de-241f-467b-b803-2652629c3bd4": true,
+      "81de5602-642c-479b-9e3b-05c0a727e064": true,
+      "81ec036b-1a1f-418d-b05c-c2ebe4dfafc9": true,
+      "81f1f32f-75f9-4200-9a85-71521db17313": true,
+      "8220575a-2790-4d36-992f-62069fa74841": true,
+      "82477b98-7f36-4b86-8126-417af86e3444": true,
+      "8286f8d5-344c-48c0-82e2-ff5741e45c28": true,
+      "834f2e9e-fb09-4a8c-b290-f351bb05d6c1": true,
+      "83f2fb26-0a2a-4cc4-89b0-c812d6ac076d": true,
+      "8405d225-9e1a-4f49-a95d-06d39c7b509c": true,
+      "840bc1d1-7eb4-4e57-81ed-6b3f3ab3530e": true,
+      "84640d31-30ce-438f-b3d3-dd6ec7bc3bd2": true,
+      "84ea6a2e-62f2-45eb-861c-25c281dd2958": true,
+      "84f85a1c-a3b0-4e09-8b57-2cc945b5afb2": true,
+      "84fcbc27-300d-4d10-a98c-367fcb1896d8": true,
+      "852e1f9f-d7b4-418b-bc61-95e51516c823": true,
+      "85728be7-e287-420e-9515-d76de6028182": true,
+      "8591b174-a3d1-4391-8187-4e433dfce142": true,
+      "85c565b9-c2e1-4725-9129-78b4ee37c47a": true,
+      "87645cd5-c401-48d3-931b-e40fee830b19": true,
+      "87b75e92-9dde-4479-9f41-1926a1366d20": true,
+      "88128dbd-f2f7-41de-9d7b-30ab361f6ab8": true,
+      "882da836-4ab2-4331-a6b6-d590e254bf17": true,
+      "8873b2d3-2b0c-4ff2-89ac-e5d337dd0358": true,
+      "887c160d-923e-4512-85eb-90f2a20eb198": true,
+      "88cd5d3b-c959-4174-9b5b-37f84b80d68e": true,
+      "894eadff-597c-4a0d-96f4-e34b9a7ca3d4": true,
+      "89ccc66b-57a1-490c-8e21-9b3604e38716": true,
+      "8a56593c-072f-4b77-ad6c-0c2c925e5ffc": true,
+      "8b07f62d-7104-4d14-82ee-81236b587f8d": true,
+      "8d7f0dd6-12d3-4673-8b85-2471bf6951d9": true,
+      "8dad89eb-140e-441a-9888-caffa8a95452": true,
+      "8dcbf639-2918-4301-a119-b4b92485ffb7": true,
+      "8e12c2c2-8166-47de-9739-d12aca5a0cca": true,
+      "8e1f15e2-99fa-4c53-bf11-685732e333cb": true,
+      "8e8ff45f-7e5c-4b77-ae34-99d20cdcffa9": true,
+      "8eb7b2b0-1a8a-4beb-862d-cde8e3ee1c2c": true,
+      "8ecb67c9-23e9-420a-bad5-004860101bea": true,
+      "8eea90d3-e2bb-410a-b844-a2ef50553a92": true,
+      "8f2442f9-919b-44bd-a52f-d1d0e5821bf4": true,
+      "8f28b484-4840-44d6-82b1-8dc7583fd2ee": true,
+      "8fee048d-8b9c-49ab-9de3-6f3300ddca87": true,
+      "90012f64-1409-4b77-94b6-df75e9efe12b": true,
+      "900540d0-96e9-4f12-9a1c-0ff03f8210d3": true,
+      "90aebe2a-31b5-4b1a-a3e5-73a24ad80539": true,
+      "91049167-fecb-4445-b49b-231c0313293c": true,
+      "9130b8e3-86a0-4ad1-a1a6-35890adef6b7": true,
+      "9148131b-c81e-4ce7-ad02-d74a36936b4a": true,
+      "91d78955-2f40-41cc-be57-6ec2cd7bdf54": true,
+      "92114b28-2ce3-402c-8b60-19755040b69e": true,
+      "921fadbd-1557-46d9-a336-8315b55b7e7a": true,
+      "927f9bed-b258-48e0-a152-f2b2d6d70ed8": true,
+      "92e43cbd-5d99-416f-b737-3be61bb16650": true,
+      "92e657b3-db47-43b2-964f-060c5831e8f6": true,
+      "92faa113-4089-45a8-8f21-7dcbd41d03f4": true,
+      "941f6ef3-f6a8-408d-8f14-91b9978da59a": true,
+      "9431ba5e-6c9b-41cc-a574-a47b96f3081b": true,
+      "9470dd70-d3cd-4884-8274-a1766cfcc404": true,
+      "9491cac1-1110-4e94-8c53-7bb60b3ab474": true,
+      "95347ed3-3f40-42f6-aaeb-f2c45dad7965": true,
+      "957daa93-402e-4e51-b915-e28ebd83e8fb": true,
+      "958887ad-add0-4214-b6ac-a0327cf998e3": true,
+      "95dcc415-f97c-4cb5-acf8-5257f0162312": true,
+      "95ffb96b-90a5-4ac2-90a8-0478a5e85a90": true,
+      "96e93ff0-6038-41a1-a983-2e66300ef51a": true,
+      "9717b2fb-d57b-4328-9cc4-03c271b2ebd0": true,
+      "9802ab7e-3724-4ba2-8fdd-4cd4842b7d49": true,
+      "9809b4b8-43d6-4a32-ab9b-ffd5d49d5c4e": true,
+      "9852630e-cc35-47d2-a27c-1f667f4ca93e": true,
+      "985f2c26-bbb1-464f-9fb4-b43e215fe609": true,
+      "9867a588-d9f8-4c03-a5db-9434184b018c": true,
+      "98733cc5-1663-459e-bb47-b0285d243896": true,
+      "989e0e0a-f9d3-471f-93b9-27642183267d": true,
+      "98acf8ac-9071-45eb-a161-8d790e73679c": true,
+      "98ff6632-5a0d-4c5d-a3e9-922cffd40aae": true,
+      "993d8b52-30d9-410c-9c2b-40a60441c6f1": true,
+      "99a51cdd-65d6-460b-a9b3-7f742ff68eb9": true,
+      "99bfd7cb-0543-44d6-94bd-7172a621a42d": true,
+      "9a0dad24-6c57-4436-a5fe-17d4cccb2710": true,
+      "9af63e82-7bb8-4f93-883b-19d0a6bd7224": true,
+      "9b5827b9-0dd0-4046-912d-8a7b52c2eba0": true,
+      "9b7e6beb-a7cd-43f0-9cd0-548f59fe096a": true,
+      "9bf5d714-5923-4b1d-820b-fd309133085b": true,
+      "9c15c317-efda-460f-9ee1-58d38d9fa9f6": true,
+      "9ce1d8ef-dfa4-44cb-ba56-edf2f02a9975": true,
+      "9d1dcbf6-0705-47d1-a1df-43d1f550e264": true,
+      "9d5bd11d-ccc5-4d29-b540-2412e9296e4f": true,
+      "9e322f35-3799-4bb8-9000-2e3448d75222": true,
+      "9f39a13a-ca64-48e1-ad34-41cd2c13c6d1": true,
+      "9f513df6-a4ee-4e0c-8698-d70ec038360b": true,
+      "9f5ab5fa-1787-42b2-a8ea-e0f3a6a5674f": true,
+      "9fb9df1c-c90e-4b7c-acf6-a9171d2ba0d1": true,
+      "9fe8495d-1890-4a0c-af48-19ce5605dbac": true,
+      "a0445866-0ee0-41d2-af8f-16c1eab55b98": true,
+      "a06f16f2-7387-4559-a3d3-0957c6c6cdd6": true,
+      "a0942184-eea8-4ae2-a0b3-b3f0c0e5a89c": true,
+      "a0d479d7-6455-4943-8729-941f26d847b1": true,
+      "a11d4e20-0189-4925-b72c-80eb986f7c47": true,
+      "a1360533-b38f-410a-9697-b78c2b2f5f52": true,
+      "a155e8dc-c039-4812-8047-d547e14a69bb": true,
+      "a1fef7a4-96ed-4347-9443-f33953bb2270": true,
+      "a3195b34-eea0-4bd0-aa5c-42cefff3028d": true,
+      "a3745c48-2a1a-4943-9595-542567c27b96": true,
+      "a3a91d32-7e9d-4225-b682-2c4deaf1fa5e": true,
+      "a3b80a0d-3baf-45da-a5c9-74ae0ec1968a": true,
+      "a4007d39-ee23-48be-b9e7-0e6faabac588": true,
+      "a40104d4-0301-4675-b833-7453a28929f4": true,
+      "a4ab6c37-5b66-4250-b97d-853e97e6f0a4": true,
+      "a4c4874c-4406-4d2d-8ebc-2f8022693242": true,
+      "a4fd0e7e-94b1-497a-b31a-3d22a20ab710": true,
+      "a5272d0d-bf01-4753-b7bd-8768c5d38bda": true,
+      "a5527d06-aaad-4a9d-b7e0-c66bc8bff21e": true,
+      "a5b8d417-7005-43d2-b820-812388e2b147": true,
+      "a6125019-66ba-427b-babc-2c1f665406e9": true,
+      "a64b6cf7-d0ee-4100-95a5-4372070aad03": true,
+      "a66721d8-508b-4dcc-b1af-1574d01d1201": true,
+      "a66ee039-a795-4bd9-b238-01a1cb8d2f80": true,
+      "a67ed1a4-65ee-49c4-9146-b66d70a07e5f": true,
+      "a6e39198-2f6d-4e3f-b734-8c6d58aa35dc": true,
+      "a76e125e-aa70-4521-b0e6-87e976014e55": true,
+      "a77ce1ff-bc9a-4d35-9d02-5780419291d7": true,
+      "a7aec56e-1599-4e17-818a-106da459c080": true,
+      "a819324d-f038-46a1-b9e6-7c31d1c3f666": true,
+      "a82cbc9d-1d80-41d6-ae27-f3c6194df292": true,
+      "a8571b5f-94a8-4833-931e-153c4ad5a61e": true,
+      "a862f5ce-8d86-4d55-b5ae-6f0582d92805": true,
+      "a891e4bf-9fb9-409d-b055-8474c568777e": true,
+      "a90728eb-bfc2-40a3-8c04-3f6aec4251c2": true,
+      "a92b8704-59ca-4163-b63d-f6d874bab047": true,
+      "a933652a-abbe-406f-b06d-3a8921cf7b6d": true,
+      "a974e4e3-7c95-4bf6-8a01-39e3edbdc366": true,
+      "a98bf1e2-9c36-4db7-a9b5-662a254e955b": true,
+      "a9adf1e6-44e9-4e49-99d7-b6824b3b938b": true,
+      "aa6faec8-e7a6-4e84-9725-bbbbaed99cad": true,
+      "aad4aecd-5b9b-4262-9eb8-bb403034bb4c": true,
+      "ab3470da-5877-47cf-b97f-293c30b85947": true,
+      "abce9000-1772-4f57-947f-0ded1a0bb0ca": true,
+      "abdd5a72-3510-45f1-9917-dba0869fa27c": true,
+      "abe2d596-357a-4ed1-a15f-ed9c1d06a599": true,
+      "acce6750-56ca-4424-9986-f6e69907c243": true,
+      "ad07d25f-4116-46d5-84e9-7d566ba2f4ba": true,
+      "ad3b1561-17fd-4df9-ac2d-4b318197bea1": true,
+      "ad49b376-09b8-466c-9595-46d159b4e5ae": true,
+      "adf3bd90-aaeb-4a4b-8e20-f860697bc2ab": true,
+      "adfda0bd-8a23-41ca-b282-0e3739fbe54d": true,
+      "ae978744-bddf-4366-a3fa-a32fda3e57e3": true,
+      "aecab2bd-2523-4519-879d-54f25b8fb226": true,
+      "aeee7d89-af81-4c3d-a1a9-255420b47e63": true,
+      "af93d55f-7bdb-47ef-895a-146522e71802": true,
+      "b0d69dff-c02c-4afd-a273-8c67779be363": true,
+      "b175916a-a9ec-4a23-a65f-0890ca747038": true,
+      "b17ba7ce-08e3-4a40-9a91-5a3fdaad65b6": true,
+      "b18543f7-67a8-4e09-9870-e365668216ba": true,
+      "b1aa622a-80f9-4c45-be47-ded1b2517aa6": true,
+      "b228c545-54f7-4cec-a517-0196841dbedd": true,
+      "b31cefb2-5c3a-4f96-94e1-b0a15368e7af": true,
+      "b357e892-4dad-4317-8cd8-f99b0d36bde8": true,
+      "b382ffbd-dddc-4183-94c4-17ad0d942c7c": true,
+      "b46220a0-0e64-40ac-a945-af329398c73c": true,
+      "b48a146c-1fe1-4a93-804d-55b3f334dbf9": true,
+      "b492811b-94d6-4f6b-946a-33524765fc3f": true,
+      "b4f6bf6f-fbe1-4992-8c55-82cf3f5a6382": true,
+      "b5741693-4b7f-4c8e-b218-bfbe0bd3b16a": true,
+      "b59c461e-074b-4596-bbe2-141ad16afcec": true,
+      "b5a39ed7-1881-4d68-9d36-752c7beef643": true,
+      "b62cab50-d008-4098-a369-576e3e625576": true,
+      "b650d9fa-f868-4abd-86dd-5b7045b84fca": true,
+      "b728790e-0087-4633-a8b6-c10926e61e62": true,
+      "b7711486-7bf0-485a-a7e5-e9429b0e933a": true,
+      "b82fe3fd-198e-4433-86fe-2f2013477f70": true,
+      "b831b8d8-554f-4264-88af-91453633e549": true,
+      "b849ad62-3f73-4147-904e-59723bcb2e65": true,
+      "b87f9bbc-6139-4e15-99b2-a72d07aa8dbd": true,
+      "b8f1940a-341e-4840-9da4-978c16d62adb": true,
+      "b9160be7-b682-4af2-9077-bd6821f84159": true,
+      "b91b1acd-5b57-4887-a345-e3a9ded98125": true,
+      "b91b90ee-3738-4ec0-84c0-cf0133dee590": true,
+      "b9559ffc-2fb7-4855-acc6-4560940f000f": true,
+      "b986b678-b801-4ee7-8dee-6aadd8f87c1a": true,
+      "b9b7654f-08a7-4294-8f72-b258ca9a332f": true,
+      "ba2ec779-8b79-4033-9f84-ba763123073c": true,
+      "baea7662-bff8-4b86-9d24-e9322431c1e9": true,
+      "bb2252cd-2d74-4563-9f67-f96f6be6681c": true,
+      "bb9aafd9-bc33-4c90-b978-323181f59251": true,
+      "bbcdfb5f-9ec5-4145-9292-69ca04ab3164": true,
+      "bbe47bca-0a37-4295-8220-37f9d78a4607": true,
+      "bbfdc940-3fb7-4f2f-be1c-71f0fa020e95": true,
+      "bc4890f0-df78-45c8-88f6-9671de7da78a": true,
+      "bc4dd4a9-e1da-40a2-88b4-572b521a9fd4": true,
+      "bc734a2d-f376-4731-8a6d-62e53416fa35": true,
+      "bcd88934-c6b0-4a73-a93a-153e18f59cf0": true,
+      "bd94edc7-7836-459d-ba51-e6a8e7a5b65d": true,
+      "bda8428b-d9be-41f5-a68e-8b057ee512ce": true,
+      "bdb538aa-897b-4ee5-9060-2b132ff7e5af": true,
+      "bdbd1883-a98c-48f7-b126-51324fbb57a9": true,
+      "bde87832-c9ca-4922-9ee8-94a740fa9a20": true,
+      "be5fe0de-3eb5-4e87-97d8-3357f24531d8": true,
+      "be8b1b6c-34aa-46cd-a93b-8dc6630b09ba": true,
+      "be9f7a37-c07f-4028-87de-66139145da58": true,
+      "bea0e334-c231-4e9e-a09a-8d3053e248d5": true,
+      "beb9b2aa-5c1d-461f-89c7-83dca75654b4": true,
+      "bfb6211c-b325-4d7a-8750-1fa8531b6487": true,
+      "bfb72aec-eeb6-47d8-8430-5f744028bc0d": true,
+      "bfc94ebd-1a71-467d-b210-2c34e46d157e": true,
+      "c00a5e67-dcc6-4eb4-893c-fc99a631f045": true,
+      "c075b902-09e0-40d6-a345-1b419112549e": true,
+      "c0968459-caa3-4020-98d6-b028503449f0": true,
+      "c096ec76-0c10-4a38-af10-72fe335796f4": true,
+      "c126f8ee-4946-47ee-9d4f-e914826fff55": true,
+      "c128fd9e-652a-4468-aefa-cc466177d13a": true,
+      "c160a759-7b7d-4b5c-9b73-4a70c0d5afa5": true,
+      "c16fec8f-3604-4616-88ef-ad36684a0ed3": true,
+      "c185ff54-5b8c-4767-9396-a841ae1daeb7": true,
+      "c1b4187f-fe5d-48f3-a57b-8b5cad63fb9b": true,
+      "c220561b-baa8-40c7-867f-fbbb583a0f92": true,
+      "c2231ca8-0bba-49f0-8470-807aa2c0df45": true,
+      "c263d804-c942-4fd6-bc11-9fca4a219bd5": true,
+      "c266c265-2b15-4356-9afd-0190f56231e9": true,
+      "c2684935-9670-432e-9f2d-530d52820b0e": true,
+      "c279ee50-a77b-46b3-ade8-7a1f62f29740": true,
+      "c2e45172-b631-4aa1-8c9a-06fb268c8c25": true,
+      "c2f2c007-25a1-4023-b995-a1a9f9ac633a": true,
+      "c3f1e40e-ead8-4d11-a376-6ff8712f8a49": true,
+      "c3f29367-899c-457b-85fc-9d468adabdfd": true,
+      "c444a435-cd1c-4e55-9166-57cbf5f4a41e": true,
+      "c5025a95-f619-45c3-94bd-9a856288eb67": true,
+      "c5e5d346-029a-4145-86c5-cd24080ed6d9": true,
+      "c6250e8e-95c1-4e52-9094-6160324f2167": true,
+      "c6476e08-1148-4fc3-8870-3d4c6355504b": true,
+      "c72dcd2b-c3c0-4b25-aee2-c569c6ec73aa": true,
+      "c735a47d-7d1a-4910-a520-a8dfae290bce": true,
+      "c7561908-1893-4e88-87cd-754dae44fb6a": true,
+      "c79c3858-ec48-4b4b-a69e-bcdbe0b1af60": true,
+      "c7c993fe-cfc4-45cd-847a-7b748e788f72": true,
+      "c7da25c0-263d-4efe-aa74-601fe951e505": true,
+      "c817b9b9-5f4b-4fa5-96e1-d1434e0233b6": true,
+      "c83f5aea-3f6d-48c6-889e-b120b3ca8a09": true,
+      "c92125dd-de68-4531-a581-e9964c551b25": true,
+      "ca1905e3-6942-493a-afe8-80f6c75d8e20": true,
+      "ca41a1b4-c967-4be3-be6c-9464ae8f153b": true,
+      "ca668618-d154-428a-a7d5-a2a4dd127ab0": true,
+      "ca88feb6-6aff-4960-b415-426424bdaf0a": true,
+      "cb173753-7af1-4300-9d70-8c44fd451264": true,
+      "cb5aa656-01e4-45a5-a467-4180eae253cd": true,
+      "cb9ff2f3-34f8-4f57-b5c3-89ba63da8205": true,
+      "ccb389c4-5387-486e-9d70-f4751ae3bee4": true,
+      "cd456329-ea02-4d8d-8226-f4ff7c4003c0": true,
+      "cd9524ac-30fa-4f2e-b6d9-48eccd90d16b": true,
+      "cdc22e2b-ca34-4d66-aac7-2fc2c88cd182": true,
+      "cdc24ae9-f4b5-4578-a898-11e0cb99ab47": true,
+      "cdf8f771-1e9b-4b9c-bae3-b6d6d4161c19": true,
+      "ce0e5f86-9fe3-4397-b4be-ad34a7760d19": true,
+      "ce236de2-2424-4ec1-8dbc-2ed53b97d55c": true,
+      "ce5586a1-4593-42db-961d-bb7b58563585": true,
+      "ce600931-ce9e-4cba-84f3-d84251ecf51a": true,
+      "ce78b07f-da9c-46df-b678-d0e7d8859be7": true,
+      "ce856bed-e2b5-4678-9da0-0e8669e818dc": true,
+      "cf339523-7e9e-4c18-9581-1450601bdde2": true,
+      "cf632236-6033-4e4c-a686-26d84f63a1ce": true,
+      "cf843f22-c935-4a7b-a504-5cf88e499e21": true,
+      "cf9c59de-a96d-4aa6-9829-7c1021bcb505": true,
+      "cfdd6e3b-0afe-4a26-8d21-94db2799748d": true,
+      "cfdf607f-2fc3-446a-bfdb-cb3bb825d6b6": true,
+      "d03795c5-aa74-41d6-9bb8-a944d2880406": true,
+      "d0b89619-9e0d-4e89-8a0e-ba0fff6f36ef": true,
+      "d1217139-09b3-4cef-8036-b402c3e7260a": true,
+      "d1b68b89-e26e-488d-9a13-23db161629e4": true,
+      "d1c4e53d-b785-4d56-b7bf-88ab49cf44a4": true,
+      "d2030003-8329-4efd-bc54-c936519353fb": true,
+      "d226a3fc-75cb-40c7-9759-c6312909ddba": true,
+      "d231751f-3fea-4a70-b80f-bda4fd837e1b": true,
+      "d23b007e-c0fa-4dc6-83b7-34f8998a5ff8": true,
+      "d2b8051a-9463-4345-8bf9-aa4881a51364": true,
+      "d343049d-d7aa-4b36-b47e-8449ed4d4a54": true,
+      "d3455d7e-ea47-408f-bf90-5cb7df9a03e6": true,
+      "d35a0ff1-42b2-4b21-a115-439422d69a68": true,
+      "d36663ba-303f-455a-9039-7e73ecb8f3cb": true,
+      "d389bccd-a069-4c98-a037-af8916f4cdf0": true,
+      "d3e49517-0ee7-4f89-8323-bea39a2de2c1": true,
+      "d51f0472-5a60-4ee6-9f5a-2a7dffe1200f": true,
+      "d570b4b9-bff8-4da0-a678-71aeea36e751": true,
+      "d5fc0e3d-c635-457a-8778-00f7979bd283": true,
+      "d6038fcd-8906-4038-9901-05a0feadb836": true,
+      "d6100b4f-e7b1-4c06-aefa-51f4d81fa7bc": true,
+      "d69d2391-f0e0-4bab-914d-c8376a216266": true,
+      "d7101322-fcd1-44de-964d-1026021459ca": true,
+      "d711169d-1805-4810-af5f-6df22fe20197": true,
+      "d734c413-7ae4-450f-bb2e-17ea69b518a3": true,
+      "d7857f00-a3f1-43d3-8514-d147d6a86793": true,
+      "d7c044ca-f6e9-4bd1-8749-72c7736bb954": true,
+      "d819f82e-4e1f-444a-a37d-d7c8e3e08431": true,
+      "d8b2ac3e-3c72-4c9c-b32b-244f18b5cdb2": true,
+      "d8be6cb7-746a-47c0-8579-687835d1a648": true,
+      "d940ed02-69f8-4172-9406-c5ccdfda75de": true,
+      "d988925d-46dd-4e10-9e77-73eedce5973e": true,
+      "da0cfed9-d4be-4587-a753-f0bbcd822db0": true,
+      "da39cb87-ca73-4c6d-8b7a-d386bd081726": true,
+      "db6e8c84-4868-4912-a519-41b0d85252e9": true,
+      "dbc03d79-a7b4-4e1f-a7b2-6986582c4884": true,
+      "dbd811c8-021d-4116-9b27-c2a87c32fa4a": true,
+      "dbe01d90-6241-4b45-8e88-67c80161eef5": true,
+      "dd51c1e5-48ee-496d-a52b-82b65651b8d1": true,
+      "de6fc7f8-61dd-4596-b9f8-03fde61e59a4": true,
+      "de803432-745d-49a5-b963-253873e70c02": true,
+      "df5ced16-e569-4361-9f75-6d58785d1249": true,
+      "dfec63cf-aa29-4c3e-8a8b-2d9e467e5cbb": true,
+      "e042df03-ab6d-448e-ab46-dace65bcdff9": true,
+      "e05ba481-a65e-4fe5-a165-8a3975215fdb": true,
+      "e062a963-31e6-444d-9dbc-7a301af9972f": true,
+      "e06cf619-1252-4daa-87ad-4c8adc8e0fe1": true,
+      "e07f2fb0-26e7-4c70-bb62-4fc6b7c451be": true,
+      "e0936eed-2e1f-4e76-aae2-fd95bf3aa76f": true,
+      "e0b08e4a-b7d7-4e25-b53b-c26fba8febbb": true,
+      "e1266b8d-011e-428a-92c8-45e5ce406b28": true,
+      "e12dcaff-eab7-4e9e-b785-b1e8205b8b60": true,
+      "e2436dc7-06f0-49ee-9928-a44dc7bb2759": true,
+      "e28c66bf-c81b-4472-86b8-0b6ccfcda28d": true,
+      "e2d3b5d3-c77b-4ea5-81c2-9110e22bbfdc": true,
+      "e32d62d7-6dc3-4c11-908e-b7d25ae50c04": true,
+      "e34c90d9-948c-45ae-ab62-1b72ddeeb46f": true,
+      "e3e0eced-6cbb-4e7f-8f3a-f35b1dabf40d": true,
+      "e420420c-82e6-480e-a147-079d86886d38": true,
+      "e478667e-f74e-4dc9-b082-37d17582a7c6": true,
+      "e4d3fbe1-fe15-4d95-a37b-d37e40f22315": true,
+      "e4fa8285-7400-4f0a-8c6e-a136266e0cc6": true,
+      "e59e26b1-9e4f-4c4c-b795-d684a3596ad5": true,
+      "e6c8ad52-68fe-4a06-be8a-46737f101b7e": true,
+      "e6e297b1-ab2f-4fc6-ab23-ebd812776961": true,
+      "e7533b7c-d625-48a0-a32b-e919e8cca83d": true,
+      "e776c15b-e878-44c3-b4f3-f3d54dfb9333": true,
+      "e7bd182b-b863-4261-999b-c102c95a1468": true,
+      "e82754bc-6e9a-4622-9f3c-91043782d752": true,
+      "e83b56f4-aaa8-4089-87eb-a1343370085c": true,
+      "e842de07-2d89-46e1-96be-724c3f746524": true,
+      "e86bb05b-f78a-406e-ace6-ac9dd6cfff32": true,
+      "e89f1b98-3442-4ae1-8a8d-95026aab140e": true,
+      "e935797e-f6af-4b93-9b1c-86f00dbce305": true,
+      "e950b9bb-9c8e-4c88-8ca8-41a868cf8f24": true,
+      "e9933422-e882-47c5-99c1-26dd5ae67716": true,
+      "e9bd9c8a-e8fe-45ce-873b-add65b4b8a10": true,
+      "e9d8ab3e-d63a-4e89-bcc9-81dc8b827ab2": true,
+      "ea0b71d5-d6bb-4518-9af5-0ce58b151303": true,
+      "ea2f96e9-3fd5-4f01-83c9-fe7344d8ed61": true,
+      "ea7dd141-ea7d-4736-9f06-540b2dc50083": true,
+      "eb0b611a-02a1-4a14-8a89-071011676bb7": true,
+      "eb46bf06-d51c-4670-a19c-db0032a28e78": true,
+      "eb5cd4fb-06f2-418d-8380-05ab7af09d38": true,
+      "ebc5ca26-e4a3-406b-8309-4293c08410ea": true,
+      "ebdb56ee-1af2-43ac-9a9d-1058810f3bac": true,
+      "ec3f21aa-708b-4009-862b-7eab5277a58a": true,
+      "ec8a8a0c-5fba-4877-82f8-6fc6ee9ce76b": true,
+      "eccd476e-f55a-41d5-8538-b0fb4540ae6e": true,
+      "ed33429e-17c1-458e-8cae-ae3e97a3f8da": true,
+      "ed68029e-efaf-421f-a362-1504cfd629d6": true,
+      "ed6a482a-0821-4b3e-bab2-b530442f9ab1": true,
+      "ed8e10eb-c822-44ff-88ea-daa38ae2e2a9": true,
+      "ee1f65c4-91b4-486c-8b24-b747fa76abdf": true,
+      "ee208551-062a-43a0-8e14-267da62a8284": true,
+      "ee367ee2-f310-493d-94a4-2d1bf2f4f01f": true,
+      "ee388f8c-8832-43c7-b893-035ad2c40249": true,
+      "ee8fdcdd-de30-4f21-8303-b57da7b28127": true,
+      "eeb0007c-760e-4176-a2d9-8c1805723dc5": true,
+      "ef25b175-4084-4078-81f6-1275cca8837d": true,
+      "ef7eb2aa-ce2b-4f88-9c50-ebd5cad3b159": true,
+      "f074b303-9083-48cb-ba82-7838a769a51a": true,
+      "f09cb835-0297-4090-ad02-40819a9e7f5e": true,
+      "f0a9d67a-632f-490e-ab21-2c8327cd29a8": true,
+      "f0c9724f-7ab2-4c15-a9b3-b5853ea64c3f": true,
+      "f17a86dd-3882-4fda-b0df-41a26fc991a5": true,
+      "f1cb6ab4-d9a9-4a24-883a-48a4ba192d1c": true,
+      "f29917b0-f81b-4b2f-b1ab-a0257e051091": true,
+      "f2f21033-cdcc-467c-acdf-a4c95f0ecea5": true,
+      "f3313eec-a9d7-495d-a0fa-cfa6dbee02cb": true,
+      "f3762286-5ecb-45bb-8dd6-ccaf0eb5b7af": true,
+      "f3fe1d6e-c0b6-41d3-98ff-243f4c783129": true,
+      "f4155a56-1f27-495d-8a1c-39b39eda5d4d": true,
+      "f419742f-ef94-4242-bfd5-5e8ccb413afa": true,
+      "f430a588-ce40-47f6-abb5-eb40fae5f9d4": true,
+      "f47a71df-2052-4721-9e5b-afe463163f0e": true,
+      "f4a9384c-1a87-4a9b-aa33-4ca0cc1e83f8": true,
+      "f4e47c54-8246-4263-a5d7-a368e9ae25c2": true,
+      "f50b9f0b-a1f4-42c7-9a65-a60c54bf5f90": true,
+      "f52e2a35-393d-40f3-ad79-f553f8e55d38": true,
+      "f69164c3-d603-4a0c-9302-aa0f5ca1b5a9": true,
+      "f69bb5f9-3749-4914-b9aa-caa2f944488a": true,
+      "f6e314fc-073d-460b-86da-265c935ecfed": true,
+      "f7344b50-9a82-4239-be12-ced0611b63ad": true,
+      "f79fa9e7-60d5-4006-a6c1-0f5c2d7fcfaa": true,
+      "f7edb88e-3afa-4ae3-b0c3-7102257e28f1": true,
+      "f7fa0686-3aa6-4d2e-a5a9-4166b1c18806": true,
+      "f82b8195-b26c-404f-86bc-1c38fb439835": true,
+      "f8aab3ea-e8f4-46d4-90f7-aba9598c4789": true,
+      "f8ca4af4-b3ad-4c6c-bf59-1524edc7fe35": true,
+      "f8cc1081-0a77-41d1-9fbb-b8fb98b2bde2": true,
+      "f923d0d0-b46f-442d-9eb7-8172d8991c24": true,
+      "f942c152-3ad4-4f4d-901e-bab147a16149": true,
+      "f95cc599-bcd4-4808-9150-db7f0e2f6ae6": true,
+      "f9655aed-b49c-435f-b5aa-33f8bb6a4447": true,
+      "f9e2894e-38ac-4658-8d2c-1c933ebd90c9": true,
+      "fa0952a1-46c6-4316-a924-591a6a75cd1e": true,
+      "fab0a078-f6a8-462b-a866-36f33b9969b1": true,
+      "fac2ff72-d798-4110-82b8-90e33779559d": true,
+      "fad1c738-48eb-4548-bb95-b46e86e9caa6": true,
+      "fb035c40-7664-46c0-9849-c06e9b9c0e22": true,
+      "fb2addd4-9d52-4b09-a131-443f41b8b2b9": true,
+      "fb6532af-d792-4ba6-99f9-2d7cfbda723f": true,
+      "fbac94ea-45bb-4b20-8f5a-dc085a0e1124": true,
+      "fbdda193-b37f-4564-b2e3-c95a161b13c2": true,
+      "fbea51a1-5c34-4869-ac63-c367f287b388": true,
+      "fc2c771b-d20a-4118-bbdb-6815691f13a7": true,
+      "fda643ce-de01-4e2d-a625-364c5439e7da": true,
+      "fe00384f-78b5-4881-a714-653dddd28754": true,
+      "fe1ddb16-8379-457d-bd6d-71497800138c": true,
+      "fe3bd2dc-320e-4494-aca9-1c6df9b919ed": true,
+      "fe402817-1d37-4f97-be29-dfa5d8724734": true,
+      "fe78e129-2408-40b0-9717-c76647ec8ae4": true,
+      "fe7d374e-f37d-499c-8674-b2577e7e6627": true,
+      "fe8c8003-acb4-4320-9218-a6eeb8f893fb": true,
+      "fede78fb-e252-42eb-bf3b-9341463a5d72": true,
+      "ff2c6b2c-b456-4a42-8401-472790d79b4f": true,
+      "ff66600c-3018-470f-b5dc-b577afae16d6": true,
+      "fff195d2-969e-4109-9aa1-8d99e2176220": true
+    }
+  },
+  "seenAdvertisers": {
+    "ad_notification": {
+      "00b9a9d0-634f-4275-b616-743fcd9388e6": true,
+      "0275b363-ec5a-4283-9248-a97c2266f0de": true,
+      "06a2f769-f5cf-47f3-8dc2-5d39c64c5e3a": true,
+      "0ba321b8-8969-4b99-987b-191babe94ba9": true,
+      "0e04d30e-0025-4030-ba6b-b82a12af8b99": true,
+      "0e879b9c-51e4-476f-b576-50b5d03a023b": true,
+      "11c7afe6-bf14-4ea4-b235-25a04a5b26bd": true,
+      "11f9b268-b733-4965-819c-0f21dd484055": true,
+      "120b5bd7-1962-4ee3-8a07-25049d65f088": true,
+      "129ec8fc-ba87-41fb-b961-2706b86c5ea6": true,
+      "12fec43b-c1fd-42c0-b793-4605f9a31a60": true,
+      "142ec3bb-a06d-48df-98f3-83bf87dbfb2a": true,
+      "145ef695-45b4-43a6-a92a-fb47a2374c28": true,
+      "149533ae-24c6-49fb-a34a-6520b6b51d49": true,
+      "157e469c-3a5c-442b-ba04-3732c25bb4c8": true,
+      "1605c2b7-671f-4c4b-840e-bd5f0fca9508": true,
+      "19923db9-23f4-4362-b8d1-76b401883cb8": true,
+      "1adefe16-813c-49e5-8c6f-788dfc269b83": true,
+      "1b07b683-c53f-48d6-bc79-807788a006c9": true,
+      "1b630036-6d11-4833-adc3-d31fb8b78bb2": true,
+      "1d283821-00be-4f5a-b7e7-17ebc904f013": true,
+      "1ef9f083-17f5-4a15-aea2-b09566f4c402": true,
+      "1f870d2a-5254-4039-bec8-0d85605fa7e9": true,
+      "1fedc6f4-6675-4749-97aa-b9b26d7d0a9b": true,
+      "214975b4-ee18-4a28-ae7d-3104ba543799": true,
+      "216c5e8c-434d-4c72-a9c5-3a11343dde48": true,
+      "21c07f79-891a-4fb5-930b-ddf762f31fc9": true,
+      "223ac5e8-788c-467b-b490-c1d8d70f7fa9": true,
+      "2400a920-4bbc-4d09-8948-865e1f420469": true,
+      "247767b8-0eef-4349-83fd-a51d0f4d9a55": true,
+      "26517768-6447-44ba-bef4-31ba8a862c11": true,
+      "26a6a7fa-8857-443b-9f40-b5add10b266b": true,
+      "29a3e280-ca2f-4e7a-ad95-cf9a59114039": true,
+      "29c0b89b-752a-4e8f-b99d-dbe00ceef79c": true,
+      "2ade111d-eef8-4ac2-8ea1-19b00db001bd": true,
+      "2c1c26b8-6025-4278-8534-62bd56afa6d6": true,
+      "2e9d96cc-ea48-43cc-b2fe-5e47fd4c792a": true,
+      "2efa3e9e-c0d3-41f0-9959-071cf5ce0118": true,
+      "2fd1602f-2bd4-4f24-8294-7db03d46e997": true,
+      "316a5348-b427-4599-9899-f4d9ec3b76c4": true,
+      "337c6c28-27fb-4c4d-ba9a-04e7cbb23aab": true,
+      "36e875d1-5f09-4caa-a762-c7d87adbef39": true,
+      "394ef972-5794-4609-9271-bf5a25cb44de": true,
+      "3da22ce6-def5-45ba-948d-16b586a31e90": true,
+      "3fe5adce-b835-4948-b733-2adf5ff214cd": true,
+      "401acfad-2cbb-4bfc-b522-ceae781f3045": true,
+      "40a4bc48-e0e1-4c49-9df2-7ad3c5ac61a1": true,
+      "412daa85-fb63-49be-9a74-d4cac3669f7f": true,
+      "416b1884-812f-4b5c-97a2-87b33f5a800e": true,
+      "4177d486-37b4-40b5-9507-9bb667c543ac": true,
+      "4343a15b-04f3-4c4e-9dc6-e7b15c7f0a5b": true,
+      "4605f371-5fda-4c2e-861b-c2c5c8d6e89b": true,
+      "467ab633-7bf3-4a11-b99d-a1256f84a3e7": true,
+      "469191d5-8787-4eab-9a49-690b6a1c0b5b": true,
+      "49b24a26-8df8-4e7b-ab9d-9eede765801f": true,
+      "4b03b6d5-05e6-41de-8721-aa6c2bb56973": true,
+      "4b98a8a3-1813-46f6-be2b-1cadc7d1cc0f": true,
+      "4c5314c3-4a0c-4c34-b76f-31caa4ce5729": true,
+      "4d6148e6-a94c-4539-b94d-7a56332ff9bb": true,
+      "4e458a3f-e8b6-42a9-804e-1a81ca981f1e": true,
+      "4e979fd9-eb6f-44f7-a3f4-0045c080e8ef": true,
+      "4ef643fd-70f5-415f-9012-d604f9519b87": true,
+      "53432cd8-4e5e-494d-87ec-1ca3dabf5ab5": true,
+      "543266eb-6c5c-4999-aa08-411e5dbc43c6": true,
+      "57dba9cf-ec97-4e78-aa97-7bb95c4baaa6": true,
+      "59b613a4-0d12-40b5-89b2-7e2bb6e1c326": true,
+      "5b94c2cb-f50d-417a-8833-453a1f5ba59e": true,
+      "5e4973c3-b184-4de4-aace-cb4add3f34d1": true,
+      "601501d8-2334-4df9-a879-11abfcda3ef6": true,
+      "602b6c48-d465-4530-a78f-4488ab88815d": true,
+      "6093ee20-413e-42d7-8364-08e2d90540a4": true,
+      "613140e2-b55c-4c9c-8199-bf4dad1b8cae": true,
+      "633d6f02-788b-4e95-86a8-ab572287e5f0": true,
+      "638a296d-b9b3-4ee9-9dbd-58f1145abce1": true,
+      "65dc72a5-c2e9-4ac1-98be-343f16d88dff": true,
+      "6679a947-b25c-47e9-bf8a-bf73d5cfe087": true,
+      "68d3dc2a-34e3-4e53-8bc8-72fa4337c10d": true,
+      "6a044a07-59f6-4a45-8edc-dedb8337e572": true,
+      "6d098312-d524-4376-91b5-87aff0c687f4": true,
+      "6fa22766-ce94-44a7-b1f5-b50e8110fec4": true,
+      "6fcf6ec9-92ec-4d2d-9847-2af242b2a64a": true,
+      "71902dba-3cca-45a4-ad78-86274ec4d608": true,
+      "722b0cb3-d745-4c93-b5a4-7b81a1b9140b": true,
+      "72f19537-c612-4468-9f2f-ccca1190513d": true,
+      "73201bd1-1668-4252-9c86-3cd07384f559": true,
+      "740805a5-63eb-4ff6-ba11-0279d9540b7b": true,
+      "7501f68d-70a2-445d-b482-f9a0e7869c3b": true,
+      "755e9e2f-0838-4045-838b-633deee2f416": true,
+      "7770957b-acae-4a6e-96ec-b0239becb298": true,
+      "7849209a-5e95-4a7c-b624-a8364cc75b4f": true,
+      "7d62df64-b5c1-443c-be80-7ee4fd8f0639": true,
+      "7de6b71c-62e4-4f3f-8739-1ceaee3e3467": true,
+      "7e7947f2-f8dd-4cf7-b90a-c8b8b729ea2d": true,
+      "7f4011a3-fe94-43b0-8a34-998aa3850daf": true,
+      "80b2eccb-6942-4e0a-95df-02ad2bf8c296": true,
+      "81a3fb9d-a5db-46d8-88c5-1847849a3bcc": true,
+      "826512b9-352b-4169-b506-981b5da6de89": true,
+      "85b6dfba-55f9-44b3-9a5d-c794a26a4c84": true,
+      "8821b250-704c-4845-ae2d-baa491383129": true,
+      "88e7238b-ae41-4ae3-b604-9f1c30372acc": true,
+      "89748314-3087-48a0-b5e0-631c7a4418df": true,
+      "89e30c74-f512-49d8-894f-6b515eaffc44": true,
+      "8bbe758b-9e20-47e4-a82f-20757aca2277": true,
+      "8cfac071-75f8-46ab-9c7f-4f8420d914d7": true,
+      "8e1681df-4c09-4300-9429-2bd32d1f3647": true,
+      "8e21b97a-cad6-43e0-a113-6a7344b7f62b": true,
+      "8f6c0c1c-43cc-40af-ac31-628d3c451645": true,
+      "8f6df505-5acd-4dff-ad45-500e4f85067c": true,
+      "8fc94bb9-2ab3-49df-a5a7-8ee680384dec": true,
+      "93ae4e2f-7745-4ca0-b7f7-e11823b966c1": true,
+      "98748ceb-e033-4d6d-a4ba-e479cee194d0": true,
+      "9890ae4d-2d0b-4ab2-916d-8b81955e6ea6": true,
+      "98a489be-127b-4ba8-a0fa-de537531ac0b": true,
+      "9a0d9753-9a72-414e-806f-7b1526fcb3e2": true,
+      "9a48cb9c-190d-451f-a0d0-b8756d3fe55c": true,
+      "9a5d8028-16a5-43dd-b4c3-5f1596e79379": true,
+      "9c0632fb-2a88-4a1f-9d49-09e619ab443a": true,
+      "9db2f01d-07d4-409b-a017-8415c80df432": true,
+      "9dc8dcc0-ef71-4be9-8629-cb72e5a993d0": true,
+      "9f26ea20-e3be-40f2-915d-8cb9bfe69d1c": true,
+      "a0999efe-2df6-4cb2-9882-1fe15b3cce0a": true,
+      "a1337b78-c3c8-4989-8a24-2b70a28f5f0c": true,
+      "a1a5d8c3-4225-45de-b7fd-f6f4dbedd93b": true,
+      "a1e69bea-441a-4164-903e-bd6dec5de5bd": true,
+      "a437c7f3-9a48-4fe8-b37b-99321bea93fe": true,
+      "a92ef292-df35-42e7-b989-a6a956315ce9": true,
+      "a984390e-9529-46a9-86f4-78da4313f91b": true,
+      "aabf3bc7-daba-4f2b-8be2-e235198e1ce0": true,
+      "abaff9bc-45ba-452f-9df5-6f2c09c4cbca": true,
+      "ac07b5a7-32d1-4c6a-a8a3-0ec25842008e": true,
+      "acf9d942-71c7-4492-8c47-2388a212f78d": true,
+      "ad195691-dc03-43a3-9c03-368e4cb644f6": true,
+      "ad599cec-255d-472b-9a5f-dc7e7f743206": true,
+      "af9f593b-cfe9-431d-a2af-3d583381eeaf": true,
+      "b13ee737-d640-4e6f-86e9-b9e228ab6fbb": true,
+      "b193c26a-cba3-4872-a1f2-5c2b705e1ee3": true,
+      "b4e788d0-1fdd-4d4f-9b46-b6c186d6404c": true,
+      "b751ed77-e041-41a7-8c1a-9c856ad66a5f": true,
+      "b7a148ac-4cc2-400d-97d0-d66c0d90ea08": true,
+      "ba4cc07f-3942-4912-a1db-947ee365200e": true,
+      "bb344c65-e91d-4e89-a209-8893783df8d3": true,
+      "bc76b0fa-9144-4100-aea8-f82be9ade1b3": true,
+      "bcd02075-dc0c-4bcf-8469-bfd917968985": true,
+      "bf45d3bd-4f0d-480d-b15f-e08561379fb8": true,
+      "bf6685d3-3bd7-4b3b-ba98-687375fb058f": true,
+      "bfac6e60-a86e-44d7-901b-49df77e5cae3": true,
+      "c0c8d902-e04f-4317-ad11-fd84bcfd6555": true,
+      "c2377e03-600d-470e-a4e6-be01f22c7311": true,
+      "c31459ac-62b1-4730-a593-0493ad8708da": true,
+      "c46b4aba-1178-49ef-b2c8-b60a14d0871f": true,
+      "c64e2c1d-a680-451c-8990-a080c8663967": true,
+      "c71f575a-77c5-4a6e-bb5d-40bd3a9935c3": true,
+      "c7fd8b64-cf03-4832-bf6b-608898b86f07": true,
+      "c8cafd76-db18-4813-afbc-32cd83a0db10": true,
+      "c9c99bf6-3723-4783-94a4-aa8f922b1b79": true,
+      "ca5e69fb-ad2b-4ba7-b9ff-1a278004d00a": true,
+      "d146ee2f-5b95-41bb-8ba9-0f3df25c5669": true,
+      "d36f7d11-808e-4e95-a013-0877d69e00e7": true,
+      "d4ce6694-301d-44b9-8fc2-0abffd227e3e": true,
+      "d7805c7f-76c3-4b26-94d3-f1534885ffaf": true,
+      "d9ac92c8-061b-4800-a9b8-ed5e54c0615a": true,
+      "db648ec9-3f22-4eab-8279-5911b2a55ffa": true,
+      "dc7bbb83-05a8-4b47-bd3a-085558737844": true,
+      "de70316f-735b-416c-a1a5-2ffa061607bc": true,
+      "e0196d90-8b30-4436-9dce-0555ddba9578": true,
+      "e0939971-acd9-4f55-a368-3e46f8b1c9d4": true,
+      "e0a3f176-1284-4301-9ad1-c3835c28081c": true,
+      "e12e816b-d68e-4cca-8735-f5c3700dea4a": true,
+      "e1ad8100-0ed9-435c-8809-91058915b47c": true,
+      "e2346ef8-c2c1-4ba8-8ede-2fc157b6b8be": true,
+      "e408dea6-0350-42bd-8d4b-18997a5665d1": true,
+      "e5b6a180-e087-4290-ae84-b8f06a9d7197": true,
+      "e5c8488e-1126-448d-ab6e-49474b1dbd30": true,
+      "e64e1fde-e541-4942-be3a-019e66c5cd3b": true,
+      "e8eb5579-4732-487e-a949-755e69b99d98": true,
+      "e9222cbe-cde8-4cff-82b0-4542904d01ff": true,
+      "f02b211c-cf63-4b54-8188-73dde7e864a7": true,
+      "f1a86e9a-2014-46ec-a1cd-14b809bc966f": true,
+      "f2961af4-6d8e-4874-be1c-8c25314cb617": true,
+      "f4455b0d-2532-439f-a6bc-992da715b3b1": true,
+      "f5fc2e08-41cc-44f7-9293-6eec3d40b185": true,
+      "f9b628da-05d5-4b00-8067-73c0e4afab5d": true,
+      "fbf412e2-53e3-4cd1-ad02-dd86a6a03c32": true,
+      "fdc1a884-f4df-4ce2-9885-6261a56a9569": true,
+      "ff862d4e-3ea8-4d66-b33e-5b4578335e60": true
+    }
+  },
+  "nextCheckServeAd": 0,
+  "textClassificationProbabilitiesHistory": [
+    {
+      "textClassificationProbabilities": [
+        {
+          "segment": "arts & entertainment-animation",
+          "pageScore": 0.007336174399813901
+        },
+        {
+          "segment": "arts & entertainment-arts & entertainment",
+          "pageScore": 0.008042433171474192
+        },
+        {
+          "segment": "arts & entertainment-comics",
+          "pageScore": 0.012351017519584168
+        },
+        {
+          "segment": "arts & entertainment-film",
+          "pageScore": 0.014205706408293908
+        },
+        {
+          "segment": "arts & entertainment-poetry",
+          "pageScore": 0.008587403802732527
+        },
+        {
+          "segment": "arts & entertainment-radio",
+          "pageScore": 0.007595535728491883
+        },
+        {
+          "segment": "automotive-automotive",
+          "pageScore": 0.01269791668405955
+        },
+        {
+          "segment": "business-business",
+          "pageScore": 0.012475276620333733
+        },
+        {
+          "segment": "business-marketing",
+          "pageScore": 0.006800573700331362
+        },
+        {
+          "segment": "careers-careers",
+          "pageScore": 0.008902419665115804
+        },
+        {
+          "segment": "cell phones-cell phones",
+          "pageScore": 0.006874637779869937
+        },
+        {
+          "segment": "education-academia",
+          "pageScore": 0.006886096570993074
+        },
+        {
+          "segment": "education-education",
+          "pageScore": 0.006896318614862188
+        },
+        {
+          "segment": "education-homeschooling",
+          "pageScore": 0.006795380869732648
+        },
+        {
+          "segment": "family & parenting-pregnancy",
+          "pageScore": 0.006935695221880334
+        },
+        {
+          "segment": "fashion-clothing",
+          "pageScore": 0.007389310184745303
+        },
+        {
+          "segment": "folklore-astrology",
+          "pageScore": 0.0068115762677629105
+        },
+        {
+          "segment": "folklore-paranormal phenomena",
+          "pageScore": 0.00834001293417942
+        },
+        {
+          "segment": "food & drink-cooking",
+          "pageScore": 0.006751851373884484
+        },
+        {
+          "segment": "food & drink-tea",
+          "pageScore": 0.006878271969367497
+        },
+        {
+          "segment": "gaming-gaming",
+          "pageScore": 0.010725702099043655
+        },
+        {
+          "segment": "health & fitness-alternative medicine",
+          "pageScore": 0.007049291006932773
+        },
+        {
+          "segment": "health & fitness-bodybuilding",
+          "pageScore": 0.0068392213762204284
+        },
+        {
+          "segment": "history-history",
+          "pageScore": 0.007685558567742002
+        },
+        {
+          "segment": "hobbies & interests-antiques",
+          "pageScore": 0.008432602817137152
+        },
+        {
+          "segment": "hobbies & interests-arts & crafts",
+          "pageScore": 0.0067452876269905185
+        },
+        {
+          "segment": "hobbies & interests-board games",
+          "pageScore": 0.007460403627695284
+        },
+        {
+          "segment": "hobbies & interests-coins",
+          "pageScore": 0.006910053450552642
+        },
+        {
+          "segment": "hobbies & interests-dance",
+          "pageScore": 0.008168458047141336
+        },
+        {
+          "segment": "hobbies & interests-gambling",
+          "pageScore": 0.00852058041389263
+        },
+        {
+          "segment": "hobbies & interests-sci-fi",
+          "pageScore": 0.009039752328308346
+        },
+        {
+          "segment": "hobbies & interests-writing",
+          "pageScore": 0.008093456346274
+        },
+        {
+          "segment": "home-garden",
+          "pageScore": 0.008986953298162067
+        },
+        {
+          "segment": "home-home",
+          "pageScore": 0.009392862289822198
+        },
+        {
+          "segment": "home-interior design",
+          "pageScore": 0.008492435287452426
+        },
+        {
+          "segment": "personal finance-insurance",
+          "pageScore": 0.011199644317806862
+        },
+        {
+          "segment": "personal finance-personal finance",
+          "pageScore": 0.00926274461299174
+        },
+        {
+          "segment": "personal finance-retirement planning",
+          "pageScore": 0.0072009219362638086
+        },
+        {
+          "segment": "pets-aquariums",
+          "pageScore": 0.007906369889025117
+        },
+        {
+          "segment": "pets-birds",
+          "pageScore": 0.007021732242970883
+        },
+        {
+          "segment": "pets-cats",
+          "pageScore": 0.008171578499052918
+        },
+        {
+          "segment": "pets-pets",
+          "pageScore": 0.007222926033783162
+        },
+        {
+          "segment": "real estate-mortgages",
+          "pageScore": 0.008645992036503373
+        },
+        {
+          "segment": "real estate-real estate",
+          "pageScore": 0.007164015495274388
+        },
+        {
+          "segment": "science-astronomy",
+          "pageScore": 0.007667455424400239
+        },
+        {
+          "segment": "science-biology",
+          "pageScore": 0.011306041641792754
+        },
+        {
+          "segment": "science-economics",
+          "pageScore": 0.011784988021639168
+        },
+        {
+          "segment": "science-geography",
+          "pageScore": 0.008614715812857261
+        },
+        {
+          "segment": "science-geology",
+          "pageScore": 0.00712220382585541
+        },
+        {
+          "segment": "science-mathematics",
+          "pageScore": 0.007778997255799188
+        },
+        {
+          "segment": "science-science",
+          "pageScore": 0.01436341655863258
+        },
+        {
+          "segment": "sports-athletics",
+          "pageScore": 0.0067387601887977265
+        },
+        {
+          "segment": "sports-climbing",
+          "pageScore": 0.006984751469472826
+        },
+        {
+          "segment": "sports-hockey",
+          "pageScore": 0.007698198072335594
+        },
+        {
+          "segment": "sports-jogging",
+          "pageScore": 0.011946132367953935
+        },
+        {
+          "segment": "sports-racing",
+          "pageScore": 0.007225556920342092
+        },
+        {
+          "segment": "sports-soccer",
+          "pageScore": 0.00923161497161559
+        },
+        {
+          "segment": "sports-sports",
+          "pageScore": 0.009260235577993374
+        },
+        {
+          "segment": "sports-swimming",
+          "pageScore": 0.007076863644025653
+        },
+        {
+          "segment": "sports-tennis",
+          "pageScore": 0.00935236100437446
+        },
+        {
+          "segment": "sports-volleyball",
+          "pageScore": 0.007912306284762086
+        },
+        {
+          "segment": "sports-wrestling",
+          "pageScore": 0.007030219581561251
+        },
+        {
+          "segment": "technology & computing-apple",
+          "pageScore": 0.007589297694158681
+        },
+        {
+          "segment": "technology & computing-database",
+          "pageScore": 0.01430878873676187
+        },
+        {
+          "segment": "technology & computing-software",
+          "pageScore": 0.016816918995095288
+        },
+        {
+          "segment": "technology & computing-technology & computing",
+          "pageScore": 0.007659015086849262
+        },
+        {
+          "segment": "technology & computing-windows",
+          "pageScore": 0.0072842617744969425
+        }
+      ]
+    },
+    {
+      "textClassificationProbabilities": [
+        {
+          "segment": "arts & entertainment-arts & entertainment",
+          "pageScore": 0.010124694360620948
+        },
+        {
+          "segment": "arts & entertainment-comics",
+          "pageScore": 0.009463427062208386
+        },
+        {
+          "segment": "arts & entertainment-film",
+          "pageScore": 0.011568445734090686
+        },
+        {
+          "segment": "arts & entertainment-opera",
+          "pageScore": 0.006898091077672918
+        },
+        {
+          "segment": "arts & entertainment-poetry",
+          "pageScore": 0.007275386433170898
+        },
+        {
+          "segment": "automotive-automotive",
+          "pageScore": 0.008211705871618718
+        },
+        {
+          "segment": "business-business",
+          "pageScore": 0.012719902023004818
+        },
+        {
+          "segment": "business-energy",
+          "pageScore": 0.007520601304805781
+        },
+        {
+          "segment": "business-marketing",
+          "pageScore": 0.008063654165087527
+        },
+        {
+          "segment": "education-academia",
+          "pageScore": 0.008350657894612696
+        },
+        {
+          "segment": "education-education",
+          "pageScore": 0.008449195477160696
+        },
+        {
+          "segment": "family & parenting-parenting",
+          "pageScore": 0.0077688605787935225
+        },
+        {
+          "segment": "family & parenting-pregnancy",
+          "pageScore": 0.00734252101871066
+        },
+        {
+          "segment": "folklore-paranormal phenomena",
+          "pageScore": 0.007917375934854896
+        },
+        {
+          "segment": "food & drink-baking",
+          "pageScore": 0.006997080002717296
+        },
+        {
+          "segment": "food & drink-cheese",
+          "pageScore": 0.007322507430883834
+        },
+        {
+          "segment": "food & drink-cider",
+          "pageScore": 0.006981808353164345
+        },
+        {
+          "segment": "food & drink-cocktails",
+          "pageScore": 0.006917433786642466
+        },
+        {
+          "segment": "food & drink-coffee",
+          "pageScore": 0.00714911780878112
+        },
+        {
+          "segment": "health & fitness-alternative medicine",
+          "pageScore": 0.008113757514740918
+        },
+        {
+          "segment": "health & fitness-bodybuilding",
+          "pageScore": 0.008097995289236565
+        },
+        {
+          "segment": "health & fitness-dental care",
+          "pageScore": 0.007541742902094602
+        },
+        {
+          "segment": "history-archaeology",
+          "pageScore": 0.007060298406453238
+        },
+        {
+          "segment": "hobbies & interests-antiques",
+          "pageScore": 0.01018551507549652
+        },
+        {
+          "segment": "hobbies & interests-board games",
+          "pageScore": 0.008166135216606476
+        },
+        {
+          "segment": "hobbies & interests-dance",
+          "pageScore": 0.009065452662657915
+        },
+        {
+          "segment": "hobbies & interests-gambling",
+          "pageScore": 0.007080095955626837
+        },
+        {
+          "segment": "hobbies & interests-genealogy",
+          "pageScore": 0.007181290438823511
+        },
+        {
+          "segment": "hobbies & interests-sci-fi",
+          "pageScore": 0.009011957389916296
+        },
+        {
+          "segment": "hobbies & interests-writing",
+          "pageScore": 0.010466462412311228
+        },
+        {
+          "segment": "home-garden",
+          "pageScore": 0.007193182652366856
+        },
+        {
+          "segment": "home-home",
+          "pageScore": 0.0075647089146176245
+        },
+        {
+          "segment": "home-interior design",
+          "pageScore": 0.010173350548255
+        },
+        {
+          "segment": "personal finance-insurance",
+          "pageScore": 0.011568118533660968
+        },
+        {
+          "segment": "personal finance-personal finance",
+          "pageScore": 0.009158814559662457
+        },
+        {
+          "segment": "personal finance-retirement planning",
+          "pageScore": 0.007297128541009557
+        },
+        {
+          "segment": "pets-cats",
+          "pageScore": 0.008364309144431923
+        },
+        {
+          "segment": "pets-pets",
+          "pageScore": 0.009817522344707603
+        },
+        {
+          "segment": "real estate-real estate",
+          "pageScore": 0.009020181557131102
+        },
+        {
+          "segment": "science-biology",
+          "pageScore": 0.008646714970729287
+        },
+        {
+          "segment": "science-economics",
+          "pageScore": 0.013568555073246008
+        },
+        {
+          "segment": "science-geography",
+          "pageScore": 0.007794557226399803
+        },
+        {
+          "segment": "science-geology",
+          "pageScore": 0.007868318349159648
+        },
+        {
+          "segment": "science-science",
+          "pageScore": 0.011366141385456162
+        },
+        {
+          "segment": "sports-american football",
+          "pageScore": 0.010440665092902025
+        },
+        {
+          "segment": "sports-climbing",
+          "pageScore": 0.00754579693265389
+        },
+        {
+          "segment": "sports-jogging",
+          "pageScore": 0.011405268765989664
+        },
+        {
+          "segment": "sports-martial arts",
+          "pageScore": 0.008090440301080465
+        },
+        {
+          "segment": "sports-skateboarding",
+          "pageScore": 0.007049174161097627
+        },
+        {
+          "segment": "sports-skiing",
+          "pageScore": 0.006963418038691386
+        },
+        {
+          "segment": "sports-soccer",
+          "pageScore": 0.007585545389975548
+        },
+        {
+          "segment": "sports-swimming",
+          "pageScore": 0.007180021066232822
+        },
+        {
+          "segment": "sports-tennis",
+          "pageScore": 0.00743536398402312
+        },
+        {
+          "segment": "sports-volleyball",
+          "pageScore": 0.010616057595956937
+        },
+        {
+          "segment": "sports-wrestling",
+          "pageScore": 0.007784477550167907
+        },
+        {
+          "segment": "sports-yoga",
+          "pageScore": 0.007705779014965203
+        },
+        {
+          "segment": "technology & computing-apple",
+          "pageScore": 0.006916797938503667
+        },
+        {
+          "segment": "technology & computing-database",
+          "pageScore": 0.024575746456919536
+        },
+        {
+          "segment": "technology & computing-software",
+          "pageScore": 0.008826292674339849
+        },
+        {
+          "segment": "technology & computing-technology & computing",
+          "pageScore": 0.007324993194144624
+        },
+        {
+          "segment": "travel-travel",
+          "pageScore": 0.011741510146704723
+        }
+      ]
+    },
+    {
+      "textClassificationProbabilities": [
+        {
+          "segment": "arts & entertainment-arts & entertainment",
+          "pageScore": 0.010124694360620948
+        },
+        {
+          "segment": "arts & entertainment-comics",
+          "pageScore": 0.009463427062208386
+        },
+        {
+          "segment": "arts & entertainment-film",
+          "pageScore": 0.011568445734090686
+        },
+        {
+          "segment": "arts & entertainment-opera",
+          "pageScore": 0.006898091077672918
+        },
+        {
+          "segment": "arts & entertainment-poetry",
+          "pageScore": 0.007275386433170898
+        },
+        {
+          "segment": "automotive-automotive",
+          "pageScore": 0.008211705871618718
+        },
+        {
+          "segment": "business-business",
+          "pageScore": 0.012719902023004818
+        },
+        {
+          "segment": "business-energy",
+          "pageScore": 0.007520601304805781
+        },
+        {
+          "segment": "business-marketing",
+          "pageScore": 0.008063654165087527
+        },
+        {
+          "segment": "education-academia",
+          "pageScore": 0.008350657894612696
+        },
+        {
+          "segment": "education-education",
+          "pageScore": 0.008449195477160696
+        },
+        {
+          "segment": "family & parenting-parenting",
+          "pageScore": 0.0077688605787935225
+        },
+        {
+          "segment": "family & parenting-pregnancy",
+          "pageScore": 0.00734252101871066
+        },
+        {
+          "segment": "folklore-paranormal phenomena",
+          "pageScore": 0.007917375934854896
+        },
+        {
+          "segment": "food & drink-baking",
+          "pageScore": 0.006997080002717296
+        },
+        {
+          "segment": "food & drink-cheese",
+          "pageScore": 0.007322507430883834
+        },
+        {
+          "segment": "food & drink-cider",
+          "pageScore": 0.006981808353164345
+        },
+        {
+          "segment": "food & drink-cocktails",
+          "pageScore": 0.006917433786642466
+        },
+        {
+          "segment": "food & drink-coffee",
+          "pageScore": 0.00714911780878112
+        },
+        {
+          "segment": "health & fitness-alternative medicine",
+          "pageScore": 0.008113757514740918
+        },
+        {
+          "segment": "health & fitness-bodybuilding",
+          "pageScore": 0.008097995289236565
+        },
+        {
+          "segment": "health & fitness-dental care",
+          "pageScore": 0.007541742902094602
+        },
+        {
+          "segment": "history-archaeology",
+          "pageScore": 0.007060298406453238
+        },
+        {
+          "segment": "hobbies & interests-antiques",
+          "pageScore": 0.01018551507549652
+        },
+        {
+          "segment": "hobbies & interests-board games",
+          "pageScore": 0.008166135216606476
+        },
+        {
+          "segment": "hobbies & interests-dance",
+          "pageScore": 0.009065452662657915
+        },
+        {
+          "segment": "hobbies & interests-gambling",
+          "pageScore": 0.007080095955626837
+        },
+        {
+          "segment": "hobbies & interests-genealogy",
+          "pageScore": 0.007181290438823511
+        },
+        {
+          "segment": "hobbies & interests-sci-fi",
+          "pageScore": 0.009011957389916296
+        },
+        {
+          "segment": "hobbies & interests-writing",
+          "pageScore": 0.010466462412311228
+        },
+        {
+          "segment": "home-garden",
+          "pageScore": 0.007193182652366856
+        },
+        {
+          "segment": "home-home",
+          "pageScore": 0.0075647089146176245
+        },
+        {
+          "segment": "home-interior design",
+          "pageScore": 0.010173350548255
+        },
+        {
+          "segment": "personal finance-insurance",
+          "pageScore": 0.011568118533660968
+        },
+        {
+          "segment": "personal finance-personal finance",
+          "pageScore": 0.009158814559662457
+        },
+        {
+          "segment": "personal finance-retirement planning",
+          "pageScore": 0.007297128541009557
+        },
+        {
+          "segment": "pets-cats",
+          "pageScore": 0.008364309144431923
+        },
+        {
+          "segment": "pets-pets",
+          "pageScore": 0.009817522344707603
+        },
+        {
+          "segment": "real estate-real estate",
+          "pageScore": 0.009020181557131102
+        },
+        {
+          "segment": "science-biology",
+          "pageScore": 0.008646714970729287
+        },
+        {
+          "segment": "science-economics",
+          "pageScore": 0.013568555073246008
+        },
+        {
+          "segment": "science-geography",
+          "pageScore": 0.007794557226399803
+        },
+        {
+          "segment": "science-geology",
+          "pageScore": 0.007868318349159648
+        },
+        {
+          "segment": "science-science",
+          "pageScore": 0.011366141385456162
+        },
+        {
+          "segment": "sports-american football",
+          "pageScore": 0.010440665092902025
+        },
+        {
+          "segment": "sports-climbing",
+          "pageScore": 0.00754579693265389
+        },
+        {
+          "segment": "sports-jogging",
+          "pageScore": 0.011405268765989664
+        },
+        {
+          "segment": "sports-martial arts",
+          "pageScore": 0.008090440301080465
+        },
+        {
+          "segment": "sports-skateboarding",
+          "pageScore": 0.007049174161097627
+        },
+        {
+          "segment": "sports-skiing",
+          "pageScore": 0.006963418038691386
+        },
+        {
+          "segment": "sports-soccer",
+          "pageScore": 0.007585545389975548
+        },
+        {
+          "segment": "sports-swimming",
+          "pageScore": 0.007180021066232822
+        },
+        {
+          "segment": "sports-tennis",
+          "pageScore": 0.00743536398402312
+        },
+        {
+          "segment": "sports-volleyball",
+          "pageScore": 0.010616057595956937
+        },
+        {
+          "segment": "sports-wrestling",
+          "pageScore": 0.007784477550167907
+        },
+        {
+          "segment": "sports-yoga",
+          "pageScore": 0.007705779014965203
+        },
+        {
+          "segment": "technology & computing-apple",
+          "pageScore": 0.006916797938503667
+        },
+        {
+          "segment": "technology & computing-database",
+          "pageScore": 0.024575746456919536
+        },
+        {
+          "segment": "technology & computing-software",
+          "pageScore": 0.008826292674339849
+        },
+        {
+          "segment": "technology & computing-technology & computing",
+          "pageScore": 0.007324993194144624
+        },
+        {
+          "segment": "travel-travel",
+          "pageScore": 0.011741510146704723
+        }
+      ]
+    },
+    {
+      "textClassificationProbabilities": [
+        {
+          "segment": "architecture-architecture",
+          "pageScore": 0.008343795593900787
+        },
+        {
+          "segment": "arts & entertainment-animation",
+          "pageScore": 0.006851784739360362
+        },
+        {
+          "segment": "arts & entertainment-arts & entertainment",
+          "pageScore": 0.008552724354197521
+        },
+        {
+          "segment": "arts & entertainment-comics",
+          "pageScore": 0.009567209159973427
+        },
+        {
+          "segment": "arts & entertainment-design",
+          "pageScore": 0.007179720281892352
+        },
+        {
+          "segment": "arts & entertainment-music",
+          "pageScore": 0.00913465309103201
+        },
+        {
+          "segment": "arts & entertainment-radio",
+          "pageScore": 0.006870762472483059
+        },
+        {
+          "segment": "business-business",
+          "pageScore": 0.009188129559009254
+        },
+        {
+          "segment": "careers-careers",
+          "pageScore": 0.007297899348776389
+        },
+        {
+          "segment": "cell phones-cell phones",
+          "pageScore": 0.00831850782189944
+        },
+        {
+          "segment": "education-education",
+          "pageScore": 0.01313018587149718
+        },
+        {
+          "segment": "family & parenting-parenting",
+          "pageScore": 0.009243413119811196
+        },
+        {
+          "segment": "fashion-clothing",
+          "pageScore": 0.007978294427255636
+        },
+        {
+          "segment": "food & drink-beer",
+          "pageScore": 0.007383066364133758
+        },
+        {
+          "segment": "food & drink-cheese",
+          "pageScore": 0.007534439536374806
+        },
+        {
+          "segment": "food & drink-cocktails",
+          "pageScore": 0.008490432440643002
+        },
+        {
+          "segment": "food & drink-tea",
+          "pageScore": 0.006758286344775448
+        },
+        {
+          "segment": "gaming-gaming",
+          "pageScore": 0.006746764848278176
+        },
+        {
+          "segment": "health & fitness-dental care",
+          "pageScore": 0.007464265336190471
+        },
+        {
+          "segment": "health & fitness-diet & nutrition",
+          "pageScore": 0.0067236599856036056
+        },
+        {
+          "segment": "history-history",
+          "pageScore": 0.010994267530894775
+        },
+        {
+          "segment": "hobbies & interests-antiques",
+          "pageScore": 0.008671515358101877
+        },
+        {
+          "segment": "hobbies & interests-coins",
+          "pageScore": 0.007481310663590458
+        },
+        {
+          "segment": "hobbies & interests-gambling",
+          "pageScore": 0.007730734884231237
+        },
+        {
+          "segment": "hobbies & interests-genealogy",
+          "pageScore": 0.010388967769098246
+        },
+        {
+          "segment": "hobbies & interests-scouting",
+          "pageScore": 0.007418290125500593
+        },
+        {
+          "segment": "hobbies & interests-writing",
+          "pageScore": 0.007572289275016011
+        },
+        {
+          "segment": "home-garden",
+          "pageScore": 0.010568130084531335
+        },
+        {
+          "segment": "home-interior design",
+          "pageScore": 0.009641383038870436
+        },
+        {
+          "segment": "law-law",
+          "pageScore": 0.008864098885038285
+        },
+        {
+          "segment": "personal finance-credit & debt & loans",
+          "pageScore": 0.009839057915866629
+        },
+        {
+          "segment": "personal finance-insurance",
+          "pageScore": 0.008158852045085289
+        },
+        {
+          "segment": "personal finance-retirement planning",
+          "pageScore": 0.007564541108963124
+        },
+        {
+          "segment": "personal finance-tax",
+          "pageScore": 0.006942959430003353
+        },
+        {
+          "segment": "real estate-real estate",
+          "pageScore": 0.011092447439261265
+        },
+        {
+          "segment": "science-biology",
+          "pageScore": 0.019980906828604976
+        },
+        {
+          "segment": "science-chemistry",
+          "pageScore": 0.008850735838960929
+        },
+        {
+          "segment": "science-economics",
+          "pageScore": 0.011415628683240133
+        },
+        {
+          "segment": "science-geology",
+          "pageScore": 0.009178892878873506
+        },
+        {
+          "segment": "science-physics",
+          "pageScore": 0.006801026146716209
+        },
+        {
+          "segment": "science-science",
+          "pageScore": 0.014665485807993062
+        },
+        {
+          "segment": "sports-archery",
+          "pageScore": 0.006760593004041145
+        },
+        {
+          "segment": "sports-climbing",
+          "pageScore": 0.007589990234614267
+        },
+        {
+          "segment": "sports-jogging",
+          "pageScore": 0.009326460234192962
+        },
+        {
+          "segment": "sports-martial arts",
+          "pageScore": 0.008589670677435754
+        },
+        {
+          "segment": "sports-olympics",
+          "pageScore": 0.006801881250717127
+        },
+        {
+          "segment": "sports-racing",
+          "pageScore": 0.006830650789662923
+        },
+        {
+          "segment": "sports-volleyball",
+          "pageScore": 0.007608689104422591
+        },
+        {
+          "segment": "sports-yoga",
+          "pageScore": 0.00697157435996754
+        },
+        {
+          "segment": "technology & computing-database",
+          "pageScore": 0.01431185862913171
+        },
+        {
+          "segment": "technology & computing-programming",
+          "pageScore": 0.011651982283316863
+        },
+        {
+          "segment": "technology & computing-software",
+          "pageScore": 0.016631697174476916
+        },
+        {
+          "segment": "travel-air travel",
+          "pageScore": 0.006977085917032923
+        },
+        {
+          "segment": "travel-travel",
+          "pageScore": 0.011315604404215331
+        },
+        {
+          "segment": "weather-weather",
+          "pageScore": 0.008112968833431907
+        }
+      ]
+    },
+    {
+      "textClassificationProbabilities": [
+        {
+          "segment": "architecture-architecture",
+          "pageScore": 0.008343795593900787
+        },
+        {
+          "segment": "arts & entertainment-animation",
+          "pageScore": 0.006851784739360362
+        },
+        {
+          "segment": "arts & entertainment-arts & entertainment",
+          "pageScore": 0.008552724354197521
+        },
+        {
+          "segment": "arts & entertainment-comics",
+          "pageScore": 0.009567209159973427
+        },
+        {
+          "segment": "arts & entertainment-design",
+          "pageScore": 0.007179720281892352
+        },
+        {
+          "segment": "arts & entertainment-music",
+          "pageScore": 0.00913465309103201
+        },
+        {
+          "segment": "arts & entertainment-radio",
+          "pageScore": 0.006870762472483059
+        },
+        {
+          "segment": "business-business",
+          "pageScore": 0.009188129559009254
+        },
+        {
+          "segment": "careers-careers",
+          "pageScore": 0.007297899348776389
+        },
+        {
+          "segment": "cell phones-cell phones",
+          "pageScore": 0.00831850782189944
+        },
+        {
+          "segment": "education-education",
+          "pageScore": 0.01313018587149718
+        },
+        {
+          "segment": "family & parenting-parenting",
+          "pageScore": 0.009243413119811196
+        },
+        {
+          "segment": "fashion-clothing",
+          "pageScore": 0.007978294427255636
+        },
+        {
+          "segment": "food & drink-beer",
+          "pageScore": 0.007383066364133758
+        },
+        {
+          "segment": "food & drink-cheese",
+          "pageScore": 0.007534439536374806
+        },
+        {
+          "segment": "food & drink-cocktails",
+          "pageScore": 0.008490432440643002
+        },
+        {
+          "segment": "food & drink-tea",
+          "pageScore": 0.006758286344775448
+        },
+        {
+          "segment": "gaming-gaming",
+          "pageScore": 0.006746764848278176
+        },
+        {
+          "segment": "health & fitness-dental care",
+          "pageScore": 0.007464265336190471
+        },
+        {
+          "segment": "health & fitness-diet & nutrition",
+          "pageScore": 0.0067236599856036056
+        },
+        {
+          "segment": "history-history",
+          "pageScore": 0.010994267530894775
+        },
+        {
+          "segment": "hobbies & interests-antiques",
+          "pageScore": 0.008671515358101877
+        },
+        {
+          "segment": "hobbies & interests-coins",
+          "pageScore": 0.007481310663590458
+        },
+        {
+          "segment": "hobbies & interests-gambling",
+          "pageScore": 0.007730734884231237
+        },
+        {
+          "segment": "hobbies & interests-genealogy",
+          "pageScore": 0.010388967769098246
+        },
+        {
+          "segment": "hobbies & interests-scouting",
+          "pageScore": 0.007418290125500593
+        },
+        {
+          "segment": "hobbies & interests-writing",
+          "pageScore": 0.007572289275016011
+        },
+        {
+          "segment": "home-garden",
+          "pageScore": 0.010568130084531335
+        },
+        {
+          "segment": "home-interior design",
+          "pageScore": 0.009641383038870436
+        },
+        {
+          "segment": "law-law",
+          "pageScore": 0.008864098885038285
+        },
+        {
+          "segment": "personal finance-credit & debt & loans",
+          "pageScore": 0.009839057915866629
+        },
+        {
+          "segment": "personal finance-insurance",
+          "pageScore": 0.008158852045085289
+        },
+        {
+          "segment": "personal finance-retirement planning",
+          "pageScore": 0.007564541108963124
+        },
+        {
+          "segment": "personal finance-tax",
+          "pageScore": 0.006942959430003353
+        },
+        {
+          "segment": "real estate-real estate",
+          "pageScore": 0.011092447439261265
+        },
+        {
+          "segment": "science-biology",
+          "pageScore": 0.019980906828604976
+        },
+        {
+          "segment": "science-chemistry",
+          "pageScore": 0.008850735838960929
+        },
+        {
+          "segment": "science-economics",
+          "pageScore": 0.011415628683240133
+        },
+        {
+          "segment": "science-geology",
+          "pageScore": 0.009178892878873506
+        },
+        {
+          "segment": "science-physics",
+          "pageScore": 0.006801026146716209
+        },
+        {
+          "segment": "science-science",
+          "pageScore": 0.014665485807993062
+        },
+        {
+          "segment": "sports-archery",
+          "pageScore": 0.006760593004041145
+        },
+        {
+          "segment": "sports-climbing",
+          "pageScore": 0.007589990234614267
+        },
+        {
+          "segment": "sports-jogging",
+          "pageScore": 0.009326460234192962
+        },
+        {
+          "segment": "sports-martial arts",
+          "pageScore": 0.008589670677435754
+        },
+        {
+          "segment": "sports-olympics",
+          "pageScore": 0.006801881250717127
+        },
+        {
+          "segment": "sports-racing",
+          "pageScore": 0.006830650789662923
+        },
+        {
+          "segment": "sports-volleyball",
+          "pageScore": 0.007608689104422591
+        },
+        {
+          "segment": "sports-yoga",
+          "pageScore": 0.00697157435996754
+        },
+        {
+          "segment": "technology & computing-database",
+          "pageScore": 0.01431185862913171
+        },
+        {
+          "segment": "technology & computing-programming",
+          "pageScore": 0.011651982283316863
+        },
+        {
+          "segment": "technology & computing-software",
+          "pageScore": 0.016631697174476916
+        },
+        {
+          "segment": "travel-air travel",
+          "pageScore": 0.006977085917032923
+        },
+        {
+          "segment": "travel-travel",
+          "pageScore": 0.011315604404215331
+        },
+        {
+          "segment": "weather-weather",
+          "pageScore": 0.008112968833431907
+        }
+      ]
+    }
+  ],
+  "version_code": ""
+}

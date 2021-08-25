@@ -57,7 +57,7 @@
 #include "brave/components/decentralized_dns/utils.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
@@ -75,7 +75,7 @@ BraveDefaultExtensionsHandler::~BraveDefaultExtensionsHandler() {}
 
 void BraveDefaultExtensionsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsService* service =
       ipfs::IpfsServiceFactory::GetForContext(profile_);
   if (service) {
@@ -122,10 +122,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(
           &BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "setMediaRouterEnabled",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::SetMediaRouterEnabled,
-                          base::Unretained(this)));
   // TODO(petemill): If anything outside this handler is responsible for causing
   // restart-neccessary actions, then this should be moved to a generic handler
   // and the flag should be moved to somewhere more static / singleton-like.
@@ -169,18 +165,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
 }
 
 void BraveDefaultExtensionsHandler::InitializePrefCallbacks() {
-  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
-  pref_change_registrar_.Init(prefs);
-  pref_change_registrar_.Add(
-      kBraveEnabledMediaRouter,
-      base::BindRepeating(
-          &BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged,
-          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      prefs::kEnableMediaRouter,
-      base::BindRepeating(
-          &BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged,
-          base::Unretained(this)));
   local_state_change_registrar_.Init(g_browser_process->local_state());
 #if BUILDFLAG(ENABLE_TOR)
   local_state_change_registrar_.Add(
@@ -198,19 +182,7 @@ void BraveDefaultExtensionsHandler::InitializePrefCallbacks() {
 #endif
 }
 
-void BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged() {
-  OnRestartNeededChanged();
-}
-
 bool BraveDefaultExtensionsHandler::IsRestartNeeded() {
-  bool media_router_current_pref =
-      profile_->GetPrefs()->GetBoolean(prefs::kEnableMediaRouter);
-  bool media_router_new_pref =
-      profile_->GetPrefs()->GetBoolean(kBraveEnabledMediaRouter);
-
-  if (media_router_current_pref != media_router_new_pref)
-    return true;
-
 #if BUILDFLAG(ENABLE_WIDEVINE)
   if (was_widevine_enabled_ != IsWidevineOptedIn())
     return true;
@@ -300,20 +272,6 @@ void BraveDefaultExtensionsHandler::OnRestartNeededChanged() {
     FireWebUIListener("brave-needs-restart-changed",
                       base::Value(IsRestartNeeded()));
   }
-}
-
-void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
-  CHECK(profile_);
-  bool enabled;
-  args->GetBoolean(0, &enabled);
-
-  std::string feature_name(switches::kLoadMediaRouterComponentExtension);
-  enabled ? feature_name += "@1" : feature_name += "@2";
-  flags_ui::PrefServiceFlagsStorage flags_storage(
-      g_browser_process->local_state());
-  about_flags::SetFeatureEntryEnabled(&flags_storage, feature_name, true);
 }
 
 void BraveDefaultExtensionsHandler::SetTorEnabled(const base::ListValue* args) {
@@ -510,7 +468,7 @@ void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
 #endif
 }
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 void BraveDefaultExtensionsHandler::LaunchIPFSService(
     const base::ListValue* args) {
   ipfs::IpfsService* service =

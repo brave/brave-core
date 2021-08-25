@@ -12,7 +12,6 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/common/brave_constants.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/common/chrome_features.h"
@@ -47,9 +46,9 @@
 #include "chrome/browser/browser_process.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_SYNC) && !defined(OS_ANDROID)
+#if !defined(OS_ANDROID)
 #include "brave/browser/infobars/sync_v2_migrate_infobar_delegate.h"
-#include "chrome/browser/sync/profile_sync_service_factory.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_user_settings.h"
 #endif
@@ -115,17 +114,14 @@ void BraveBrowserMainParts::PostBrowserStart() {
       if (infobar_manager) {
         BraveConfirmP3AInfoBarDelegate::Create(
             infobar_manager, g_browser_process->local_state());
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-        auto* sync_service =
-            ProfileSyncServiceFactory::IsSyncAllowed(profile())
-                ? ProfileSyncServiceFactory::GetForProfile(profile())
-                : nullptr;
+        auto* sync_service = SyncServiceFactory::IsSyncAllowed(profile())
+                                 ? SyncServiceFactory::GetForProfile(profile())
+                                 : nullptr;
         const bool is_v2_user =
             sync_service &&
             sync_service->GetUserSettings()->IsFirstSetupComplete();
         SyncV2MigrateInfoBarDelegate::Create(infobar_manager, is_v2_user,
                                              profile(), browser);
-#endif  // BUILDFLAG(ENABLE_BRAVE_SYNC)
       }
     }
   }

@@ -6,10 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_SERVICE_H_
 
-#include <map>
-#include <memory>
 #include <string>
-#include <utility>
 
 #include "base/bind.h"
 #include "base/callback_forward.h"
@@ -32,6 +29,9 @@ class BraveVpnService : public KeyedService {
   BraveVpnService(const BraveVpnService&) = delete;
   BraveVpnService& operator=(const BraveVpnService&) = delete;
 
+  // KeyedService overrides:
+  void Shutdown() override;
+
   using ResponseCallback =
       base::OnceCallback<void(const std::string&, bool success)>;
 
@@ -50,8 +50,10 @@ class BraveVpnService : public KeyedService {
                            const std::string& product_type);
 
  private:
-  using URLRequestCallback = base::OnceCallback<
-      void(int, const std::string&, const std::map<std::string, std::string>&)>;
+  using URLRequestCallback =
+      base::OnceCallback<void(int,
+                              const std::string&,
+                              const base::flat_map<std::string, std::string>&)>;
 
   void OAuthRequest(const GURL& url,
                     const std::string& method,
@@ -62,13 +64,13 @@ class BraveVpnService : public KeyedService {
   void OnGetResponse(ResponseCallback callback,
                      int status,
                      const std::string& body,
-                     const std::map<std::string, std::string>& headers);
+                     const base::flat_map<std::string, std::string>& headers);
 
   void OnGetSubscriberCredential(
       ResponseCallback callback,
       int status,
       const std::string& body,
-      const std::map<std::string, std::string>& headers);
+      const base::flat_map<std::string, std::string>& headers);
 
   api_request_helper::APIRequestHelper api_request_helper_;
 };

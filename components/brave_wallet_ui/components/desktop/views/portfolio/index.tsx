@@ -3,17 +3,19 @@ import * as React from 'react'
 // Constants
 import {
   PriceDataObjectType,
-  AssetOptionType,
   RPCTransactionType,
   AssetPriceInfo,
-  UserAssetOptionType,
   WalletAccountType,
-  AssetPriceTimeframe
+  AssetPriceTimeframe,
+  Network,
+  AccountAssetOptionType,
+  TokenInfo
 } from '../../../../constants/types'
 import locale from '../../../../constants/locale'
 
 // Utils
-import { formatePrices } from '../../../../utils/format-prices'
+import { formatPrices } from '../../../../utils/format-prices'
+import { formatBalance } from '../../../../utils/format-balances'
 
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
@@ -26,7 +28,9 @@ import {
   PortfolioAssetItem,
   AddButton,
   PortfolioAccountItem,
-  PortfolioTransactionItem
+  PortfolioTransactionItem,
+  SelectNetworkDropdown,
+  AccountSettingsModal
 } from '../../'
 
 // Styled Components
@@ -47,18 +51,24 @@ import {
   SubDivider,
   PercentBubble,
   PercentText,
-  ArrowIcon
+  ArrowIcon,
+  BalanceRow
 } from './style'
 
 export interface Props {
   toggleNav: () => void
   onChangeTimeline: (path: AssetPriceTimeframe) => void
-  onSelectAsset: (asset: AssetOptionType | undefined) => void
+  onSelectAsset: (asset: TokenInfo | undefined) => void
   onClickAddAccount: () => void
-  userAssetList: UserAssetOptionType[]
+  onUpdateVisibleTokens: (list: string[]) => void
+  fetchFullTokenList: () => void
+  onSelectNetwork: (network: Network) => void
+  selectedNetwork: Network
+  userAssetList: AccountAssetOptionType[]
   accounts: WalletAccountType[]
   selectedTimeline: AssetPriceTimeframe
-  selectedAsset: AssetOptionType | undefined
+  selectedPortfolioTimeline: AssetPriceTimeframe
+  selectedAsset: TokenInfo | undefined
   selectedUSDAssetPrice: AssetPriceInfo | undefined
   selectedBTCAssetPrice: AssetPriceInfo | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
@@ -66,6 +76,9 @@ export interface Props {
   portfolioBalance: string
   transactions: (RPCTransactionType | undefined)[]
   isLoading: boolean
+  fullAssetList: TokenInfo[]
+  userWatchList: string[]
+  isFetchingPortfolioPriceHistory: boolean
 }
 
 const Portfolio = (props: Props) => {
@@ -74,22 +87,44 @@ const Portfolio = (props: Props) => {
     onChangeTimeline,
     onSelectAsset,
     onClickAddAccount,
+    onSelectNetwork,
+    onUpdateVisibleTokens,
+    fetchFullTokenList,
+    selectedNetwork,
+    fullAssetList,
+    userWatchList,
     portfolioPriceHistory,
     selectedAssetPriceHistory,
     selectedUSDAssetPrice,
     selectedBTCAssetPrice,
     selectedTimeline,
+    selectedPortfolioTimeline,
     accounts,
     selectedAsset,
     portfolioBalance,
     transactions,
     userAssetList,
-    isLoading
+    isLoading,
+    isFetchingPortfolioPriceHistory
   } = props
 
-  const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetOptionType[]>(userAssetList)
+  const [filteredAssetList, setfilteredAssetList] = React.useState<AccountAssetOptionType[]>(userAssetList)
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hoverPrice, setHoverPrice] = React.useState<string>()
+  const [showNetworkDropdown, setShowNetworkDropdown] = React.useState<boolean>(false)
+  const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
+
+  const toggleShowNetworkDropdown = () => {
+    setShowNetworkDropdown(!showNetworkDropdown)
+  }
+
+  React.useMemo(() => {
+    setfilteredAssetList(userAssetList)
+  }, [userAssetList])
+
+  const portfolioHistory = React.useMemo(() => {
+    return portfolioPriceHistory
+  }, [portfolioPriceHistory])
 
   // This filters a list of assets when the user types in search bar
   const filterAssets = (event: any) => {
@@ -109,15 +144,11 @@ const Portfolio = (props: Props) => {
     }
   }
 
-  const addCoin = () => {
-    alert('Will Show New Coins To Add!!')
-  }
-
   const moreDetails = () => {
     alert('Will Show More Details Popover!!')
   }
 
-  const selectAsset = (asset: AssetOptionType) => () => {
+  const selectAsset = (asset: TokenInfo) => () => {
     onSelectAsset(asset)
     toggleNav()
   }
@@ -131,30 +162,66 @@ const Portfolio = (props: Props) => {
   const onUpdateBalance = (value: number | undefined) => {
     if (!selectedAsset) {
       if (value) {
-        setHoverBalance(formatePrices(value))
+        setHoverBalance(formatPrices(value))
       } else {
         setHoverBalance(undefined)
       }
     } else {
       if (value) {
-        setHoverPrice(formatePrices(value))
+        setHoverPrice(formatPrices(value))
       } else {
         setHoverPrice(undefined)
       }
     }
   }
 
+  const onClickSelectNetwork = (network: Network) => () => {
+    onSelectNetwork(network)
+    toggleShowNetworkDropdown()
+  }
+
+  const onHideNetworkDropdown = () => {
+    if (showNetworkDropdown) {
+      setShowNetworkDropdown(false)
+    }
+  }
+
+  const toggleShowVisibleAssetModal = () => {
+    if (!showVisibleAssetsModal) {
+      fetchFullTokenList()
+    }
+    setShowVisibleAssetsModal(!showVisibleAssetsModal)
+  }
+
+  const getFiatBalance = (account: WalletAccountType, asset: TokenInfo) => {
+    const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
+    return (found) ? found.fiatBalance : '0'
+  }
+
+  const getAssetBalance = (account: WalletAccountType, asset: TokenInfo) => {
+    const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
+    return (found) ? formatBalance(found.assetBalance, found.asset.decimals) : '0'
+  }
+
   return (
-    <StyledWrapper>
+    <StyledWrapper onClick={onHideNetworkDropdown}>
       <TopRow>
-        {!selectedAsset ? (
-          <BalanceTitle>{locale.balance}</BalanceTitle>
-        ) : (
-          <BackButton onSubmit={goBack} />
-        )}
+        <BalanceRow>
+          {!selectedAsset ? (
+            <BalanceTitle>{locale.balance}</BalanceTitle>
+          ) : (
+            <BackButton onSubmit={goBack} />
+          )}
+          <SelectNetworkDropdown
+            onClick={toggleShowNetworkDropdown}
+            showNetworkDropDown={showNetworkDropdown}
+            selectedNetwork={selectedNetwork}
+            onSelectNetwork={onClickSelectNetwork}
+          />
+        </BalanceRow>
         <ChartControlBar
           onSubmit={onChangeTimeline}
-          selectedTimeline={selectedTimeline}
+          selectedTimeline={selectedAsset ? selectedTimeline : selectedPortfolioTimeline}
           timelineOptions={ChartTimelineOptions}
         />
       </TopRow>
@@ -170,21 +237,22 @@ const Portfolio = (props: Props) => {
           </AssetRow>
           <DetailText>{selectedAsset.name} {locale.price} ({selectedAsset.symbol})</DetailText>
           <PriceRow>
-            <PriceText>${hoverPrice ? hoverPrice : selectedUSDAssetPrice ? formatePrices(Number(selectedUSDAssetPrice.price)) : 0.00}</PriceText>
-            <PercentBubble isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange) < 0 : false}>
-              <ArrowIcon isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange) < 0 : false} />
-              <PercentText>{selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange).toFixed(2) : 0.00}%</PercentText>
+            <PriceText>${hoverPrice ? hoverPrice : selectedUSDAssetPrice ? formatPrices(Number(selectedUSDAssetPrice.price)) : 0.00}</PriceText>
+            <PercentBubble isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false}>
+              <ArrowIcon isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false} />
+              <PercentText>{selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
             </PercentBubble>
           </PriceRow>
           <DetailText>{selectedBTCAssetPrice ? selectedBTCAssetPrice.price : 0} BTC</DetailText>
         </InfoColumn>
       )}
       <LineChart
-        isDown={selectedAsset && selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.asset24hChange) < 0 : false}
+        isDown={selectedAsset && selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false}
         isAsset={!!selectedAsset}
-        priceData={selectedAsset ? selectedAssetPriceHistory : portfolioPriceHistory}
+        priceData={selectedAsset ? selectedAssetPriceHistory : portfolioHistory}
         onUpdateBalance={onUpdateBalance}
-        isLoading={isLoading}
+        isLoading={selectedAsset ? isLoading : parseFloat(portfolioBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
+        isDisabled={selectedAsset ? false : parseFloat(portfolioBalance) === 0}
       />
       {selectedAsset &&
         <>
@@ -197,8 +265,8 @@ const Portfolio = (props: Props) => {
               assetTicker={selectedAsset.symbol}
               name={account.name}
               address={account.address}
-              fiatBalance={account.fiatBalance}
-              assetBalance={account.balance}
+              fiatBalance={getFiatBalance(account, selectedAsset)}
+              assetBalance={getAssetBalance(account, selectedAsset)}
             />
           )}
           <ButtonRow>
@@ -228,10 +296,10 @@ const Portfolio = (props: Props) => {
           {filteredAssetList.map((item) =>
             <PortfolioAssetItem
               action={selectAsset(item.asset)}
-              key={item.asset.id}
+              key={item.asset.contractAddress}
               name={item.asset.name}
               assetBalance={item.assetBalance}
-              fiatBalance={formatePrices(item.fiatBalance)}
+              fiatBalance={item.fiatBalance}
               symbol={item.asset.symbol}
               icon={item.asset.icon}
             />
@@ -239,11 +307,23 @@ const Portfolio = (props: Props) => {
           <ButtonRow>
             <AddButton
               buttonType='secondary'
-              onSubmit={addCoin}
-              text={locale.addCoin}
+              onSubmit={toggleShowVisibleAssetModal}
+              text={locale.accountsEditVisibleAssets}
             />
           </ButtonRow>
         </>
+      }
+      {showVisibleAssetsModal &&
+        <AccountSettingsModal
+          fullAssetList={fullAssetList}
+          onClose={toggleShowVisibleAssetModal}
+          userWatchList={userWatchList}
+          onUpdateVisibleTokens={onUpdateVisibleTokens}
+          title={locale.accountsEditVisibleAssets}
+          userAssetList={userAssetList}
+          hideNav={true}
+          tab='watchlist'
+        />
       }
     </StyledWrapper>
   )

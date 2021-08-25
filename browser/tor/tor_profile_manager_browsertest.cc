@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "base/path_service.h"
+#include "base/process/launch.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
@@ -11,6 +12,7 @@
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/brave_paths.h"
+#include "brave/common/brave_switches.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/mock_tor_launcher_factory.h"
 #include "brave/components/tor/tor_constants.h"
@@ -19,6 +21,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -40,7 +43,7 @@
 #include "extensions/common/extension_id.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #endif
 
@@ -99,7 +102,35 @@ class TorProfileManagerTest : public InProcessBrowserTest {
   MockTorLauncherFactory* GetTorLauncherFactory() {
     return &MockTorLauncherFactory::GetInstance();
   }
+
+  void Relaunch(const base::CommandLine& new_command_line) {
+    base::LaunchProcess(new_command_line, base::LaunchOptionsForTest());
+  }
 };
+
+// We don't run this test on Mac because the function GetCommandLineForRelaunch
+// isn't defined there.
+#if !defined(OS_MAC)
+IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, LaunchWithTorUrl) {
+  // We should start with one normal window.
+  ASSERT_EQ(1u, chrome::GetTabbedBrowserCount(browser()->profile()));
+
+  // Run with --tor switch and a URL specified.
+  base::FilePath test_file_path = ui_test_utils::GetTestFilePath(
+      base::FilePath(), base::FilePath().AppendASCII("empty.html"));
+  base::CommandLine new_command_line(GetCommandLineForRelaunch());
+  new_command_line.AppendSwitch(switches::kTor);
+  new_command_line.AppendArgPath(test_file_path);
+
+  Relaunch(new_command_line);
+
+  // There should be one normal and one Tor window now.
+  Relaunch(new_command_line);
+  ui_test_utils::WaitForBrowserToOpen();
+  ASSERT_EQ(2u, chrome::GetTotalBrowserCount());
+  ASSERT_EQ(1u, chrome::GetTabbedBrowserCount(browser()->profile()));
+}
+#endif
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
                        SwitchToTorProfileShareBookmarks) {
@@ -166,7 +197,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
   EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(tor_profile),
             nullptr);
   EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(tor_profile), nullptr);
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(tor_profile), nullptr);
 #endif
 }

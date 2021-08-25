@@ -22,18 +22,18 @@ std::string AdPreferencesInfo::ToJson() const {
   return json;
 }
 
-Result AdPreferencesInfo::FromJson(const std::string& json) {
+bool AdPreferencesInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   for (const auto& ad : document["filtered_ads"].GetArray()) {
     if (!ad["uuid"].IsString() || !ad["creative_set_id"].IsString()) {
-      return FAILED;
+      return false;
     }
 
     FilteredAdInfo filtered_ad;
@@ -44,17 +44,17 @@ Result AdPreferencesInfo::FromJson(const std::string& json) {
 
   for (const auto& ad : document["filtered_categories"].GetArray()) {
     if (!ad["name"].IsString()) {
-      return FAILED;
+      return false;
     }
 
-    FilteredCategory filtered_category;
+    FilteredCategoryInfo filtered_category;
     filtered_category.name = ad["name"].GetString();
     filtered_categories.push_back(filtered_category);
   }
 
   for (const auto& ad : document["saved_ads"].GetArray()) {
     if (!ad["uuid"].IsString() || !ad["creative_set_id"].IsString()) {
-      return FAILED;
+      return false;
     }
 
     SavedAdInfo saved_ad;
@@ -65,7 +65,7 @@ Result AdPreferencesInfo::FromJson(const std::string& json) {
 
   for (const auto& ad : document["flagged_ads"].GetArray()) {
     if (!ad["uuid"].IsString() || !ad["creative_set_id"].IsString()) {
-      return FAILED;
+      return false;
     }
 
     FlaggedAdInfo flagged_ad;
@@ -74,7 +74,7 @@ Result AdPreferencesInfo::FromJson(const std::string& json) {
     flagged_ads.push_back(flagged_ad);
   }
 
-  return SUCCESS;
+  return true;
 }
 
 void SaveToJson(JsonWriter* writer, const AdPreferencesInfo& info) {

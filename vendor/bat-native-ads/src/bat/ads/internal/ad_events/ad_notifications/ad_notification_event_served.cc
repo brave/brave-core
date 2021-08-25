@@ -24,8 +24,8 @@ void AdEventServed::FireEvent(const AdNotificationInfo& ad) {
                                               << " and creative instance id "
                                               << ad.creative_instance_id);
 
-  LogAdEvent(ad, ConfirmationType::kServed, [](const Result result) {
-    if (result != Result::SUCCESS) {
+  LogAdEvent(ad, ConfirmationType::kServed, [](const bool success) {
+    if (!success) {
       BLOG(1, "Failed to log ad notification served event");
       return;
     }

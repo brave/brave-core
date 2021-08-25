@@ -19,21 +19,21 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
      "payload":{
        "basic-attention-token":{
          "btc":0.00001732,
-         "btc_24h_change":8.021672460190562,
+         "btc_timeframe_change":8.021672460190562,
          "usd":0.55393,
-         "usd_24h_change":9.523443444373276
+         "usd_timeframe_change":9.523443444373276
        },
        "bat":{
           "btc":0.00001732,
-          "btc_24h_change":8.021672460190562,
+          "btc_timeframe_change":8.021672460190562,
           "usd":0.55393,
-          "usd_24h_change":9.523443444373276
+          "usd_timeframe_change":9.523443444373276
         },
         "link":{
           "btc":0.00261901,
-          "btc_24h_change":0.5871625385632929,
+          "btc_timeframe_change":0.5871625385632929,
           "usd":83.77,
-          "usd_24h_change":1.7646208048244043
+          "usd_timeframe_change":1.7646208048244043
         }
       },
       "lastUpdated":"2021-07-16T19:11:28.907Z"
@@ -45,22 +45,22 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
   ASSERT_EQ(prices[0]->from_asset, "bat");
   ASSERT_EQ(prices[0]->to_asset, "btc");
   ASSERT_EQ(prices[0]->price, "0.00001732");
-  ASSERT_EQ(prices[0]->asset_24h_change, "8.021672460190562");
+  ASSERT_EQ(prices[0]->asset_timeframe_change, "8.021672460190562");
 
   ASSERT_EQ(prices[1]->from_asset, "bat");
   ASSERT_EQ(prices[1]->to_asset, "usd");
   ASSERT_EQ(prices[1]->price, "0.55393");
-  ASSERT_EQ(prices[1]->asset_24h_change, "9.523443444373276");
+  ASSERT_EQ(prices[1]->asset_timeframe_change, "9.523443444373276");
 
   ASSERT_EQ(prices[2]->from_asset, "link");
   ASSERT_EQ(prices[2]->to_asset, "btc");
   ASSERT_EQ(prices[2]->price, "0.00261901");
-  ASSERT_EQ(prices[2]->asset_24h_change, "0.5871625385632929");
+  ASSERT_EQ(prices[2]->asset_timeframe_change, "0.5871625385632929");
 
   ASSERT_EQ(prices[3]->from_asset, "link");
   ASSERT_EQ(prices[3]->to_asset, "usd");
   ASSERT_EQ(prices[3]->price, "83.77");
-  ASSERT_EQ(prices[3]->asset_24h_change, "1.7646208048244043");
+  ASSERT_EQ(prices[3]->asset_timeframe_change, "1.7646208048244043");
 
   /*
   ASSERT_EQ(price, "0.694503");
@@ -98,14 +98,16 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
   ASSERT_TRUE(ParseAssetPriceHistory(json, &values));
   ASSERT_EQ(values.size(), 2UL);
   ASSERT_EQ(values[0]->price, "0.8201346624954003");
+  base::Time date = base::Time::FromJsTime(values[0]->date.InMilliseconds());
   base::Time::Exploded exploded_time;
-  values[0]->date.UTCExplode(&exploded_time);
+  date.UTCExplode(&exploded_time);
   ASSERT_EQ(exploded_time.year, 2021);
   ASSERT_EQ(exploded_time.month, 6);
   ASSERT_EQ(exploded_time.day_of_month, 3);
 
   ASSERT_EQ(values[1]->price, "0.8096978545029869");
-  values[1]->date.UTCExplode(&exploded_time);
+  base::Time date1 = base::Time::FromJsTime(values[1]->date.InMilliseconds());
+  date1.UTCExplode(&exploded_time);
   ASSERT_EQ(exploded_time.year, 2021);
   ASSERT_EQ(exploded_time.month, 6);
   ASSERT_EQ(exploded_time.day_of_month, 3);

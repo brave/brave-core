@@ -178,8 +178,15 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
     url_to_check = ctx->request_url;
   }
 
+  bool force_aggressive = SameDomainOrHost(
+      ctx->initiator_url,
+      url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 80),
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+
+  SCOPED_UMA_HISTOGRAM_TIMER("Brave.Adblock.ShouldBlockRequest");
   g_brave_browser_process->ad_block_service()->ShouldStartRequest(
       url_to_check, ctx->resource_type, source_host,
+      ctx->aggressive_blocking || force_aggressive,
       &previous_result.did_match_rule, &previous_result.did_match_exception,
       &previous_result.did_match_important, &ctx->mock_data_url);
 
@@ -289,6 +296,19 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
           brave_shields::features::kBraveAdblockCnameUncloaking) &&
       ctx->browser_context && !ctx->browser_context->IsTor() &&
       ProxySettingsAllowUncloaking(ctx->browser_context);
+
+  // When default 1p blocking is disabled, first-party requests should not be
+  // CNAME uncloaked unless using aggressive blocking mode.
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveAdblockDefault1pBlocking) &&
+      should_check_uncloaked && !ctx->aggressive_blocking &&
+      SameDomainOrHost(
+          ctx->request_url,
+          url::Origin::CreateFromNormalizedTuple("https",
+                                                 ctx->initiator_url.host(), 80),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    should_check_uncloaked = false;
+  }
 
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,

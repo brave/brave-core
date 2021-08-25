@@ -76,8 +76,8 @@ std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input) {
 }
 
 std::string GetFunctionHash(const std::string& input) {
-  auto result = KeccakHash(input);
-  return result.substr(0, std::min(static_cast<size_t>(10), input.length()));
+  std::string result = KeccakHash(input);
+  return result.substr(0, std::min(static_cast<size_t>(10), result.length()));
 }
 
 // Pads a hex encoded parameter to 32-bytes
@@ -209,7 +209,7 @@ std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy) {
 std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
     const std::string& mnemonic,
     const std::string& passphrase) {
-  if (bip39_mnemonic_validate(nullptr, mnemonic.c_str()) != WALLY_OK) {
+  if (!IsValidMnemonic(mnemonic)) {
     LOG(ERROR) << __func__ << ": Invalid mnemonic: " << mnemonic;
     return nullptr;
   }
@@ -221,6 +221,10 @@ std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
                              salt.length(), 2048, EVP_sha512(), seed->size(),
                              seed->data());
   return rv == 1 ? std::move(seed) : nullptr;
+}
+
+bool IsValidMnemonic(const std::string& mnemonic) {
+  return bip39_mnemonic_validate(nullptr, mnemonic.c_str()) == WALLY_OK;
 }
 
 bool EncodeString(const std::string& input, std::string* output) {

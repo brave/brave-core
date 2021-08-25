@@ -37,6 +37,7 @@ export interface Props {
   onSaveFile?: (key: string) => void
   onRestore: (key: string) => void
   onVerify?: () => void
+  onShowQRCode: () => void
   error?: React.ReactNode
   id?: string
   testId?: string
@@ -232,7 +233,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
   }
 
   getRestore = () => {
-    const { error, onClose, funds } = this.props
+    const { error, onShowQRCode, onClose, funds } = this.props
     const errorShown = error && this.state.errorShown
 
     return (
@@ -283,6 +284,13 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
         <StyledTextWrapper>
           <StyledText>
             {getLocale('rewardsRestoreText3')}
+          </StyledText>
+        </StyledTextWrapper>
+        <StyledTextWrapper>
+          <StyledText>
+            <StyledLink onClick={onShowQRCode}>
+              {getLocale('rewardsViewQRCodeText1')}
+            </StyledLink> {getLocale('rewardsViewQRCodeText2')}
           </StyledText>
         </StyledTextWrapper>
         <StyledActionsWrapper>

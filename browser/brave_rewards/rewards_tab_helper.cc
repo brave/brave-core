@@ -22,7 +22,7 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #endif
 
@@ -62,7 +62,7 @@ void RewardsTabHelper::DidFinishLoad(
   if (!rewards_service_ || render_frame_host->GetParent())
     return;
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   auto ipns_url = web_contents()->GetURL();
   if (ipns_url.SchemeIs(ipfs::kIPNSScheme)) {
     rewards_service_->OnLoad(tab_id_, ipns_url);

@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +20,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.AddAccountOnboardingDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
@@ -42,6 +44,15 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
     private Button recoveryPhraseButton;
     private List<String> recoveryPhrases;
 
+    private KeyringController getKeyringController() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getKeyringController();
+        }
+
+        return null;
+    }
+
     public interface OnRecoveryPhraseSelected {
         void onSelectedRecoveryPhrase(String phrase);
     }
@@ -55,36 +66,47 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recoveryPhrases = Utils.getRecoveryPhraseAsList();
-        Collections.shuffle(recoveryPhrases);
         recoveryPhraseButton = view.findViewById(R.id.btn_verify_recovery_phrase_continue);
         recoveryPhraseButton.setOnClickListener(v -> {
-            if (isRecoveryPhraseVerified()) {
-                onNextPage.gotoNextPage(true);
-                showAddAccountDialog();
+            if (recoveryPhrasesToVerifyAdapter != null
+                    && recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList().size() > 0) {
+                KeyringController keyringController = getKeyringController();
+                if (keyringController != null) {
+                    keyringController.getMnemonicForDefaultKeyring(result -> {
+                        String recoveryPhraseToVerify = Utils.getRecoveryPhraseFromList(
+                                recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList());
+                        if (result.equals(recoveryPhraseToVerify)) {
+                            onNextPage.gotoNextPage(true);
+                            showAddAccountDialog();
+                        } else {
+                            phraseNotMatch();
+                        }
+                    });
+                } else {
+                    phraseNotMatch();
+                }
             } else {
-                resetRecoveryPhrasesViews();
-                assert getActivity() != null;
-                Toast.makeText(getActivity(), R.string.phrases_did_not_match, Toast.LENGTH_SHORT)
-                        .show();
+                phraseNotMatch();
             }
         });
         TextView recoveryPhraseSkipButton = view.findViewById(R.id.btn_verify_recovery_phrase_skip);
         recoveryPhraseSkipButton.setOnClickListener(v -> onNextPage.gotoNextPage(true));
 
-        setupRecoveryPhraseRecyclerView(view);
-        setupSelectedRecoveryPhraseRecyclerView(view);
+        KeyringController keyringController = getKeyringController();
+        if (keyringController != null) {
+            keyringController.getMnemonicForDefaultKeyring(result -> {
+                recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
+                Collections.shuffle(recoveryPhrases);
+                setupRecoveryPhraseRecyclerView(view);
+                setupSelectedRecoveryPhraseRecyclerView(view);
+            });
+        }
     }
 
-    private boolean isRecoveryPhraseVerified() {
-        if (recoveryPhrasesToVerifyAdapter != null
-                && recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList().size() > 0) {
-            String recoveryPhraseToVerify = Utils.getRecoveryPhraseFromList(
-                    recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList());
-            return BraveWalletNativeWorker.getInstance().getRecoveryWords().equals(
-                    recoveryPhraseToVerify);
-        }
-        return false;
+    private void phraseNotMatch() {
+        resetRecoveryPhrasesViews();
+        assert getActivity() != null;
+        Toast.makeText(getActivity(), R.string.phrases_did_not_match, Toast.LENGTH_SHORT).show();
     }
 
     private void resetRecoveryPhrasesViews() {

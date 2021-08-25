@@ -333,6 +333,12 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       chrome.send('brave_rewards.getExternalWallet')
 
+      // TOO_MANY_RESULTS
+      if (data.result === 8) {
+        ui.modalRedirect = 'mismatchedProviderAccountsModal'
+        break
+      }
+
       // NOT_FOUND
       if (data.result === 9) {
         ui.modalRedirect = 'batLimit'
@@ -483,6 +489,10 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         ...state,
         showOnboarding: false
       }
+      break
+    }
+    case types.RESTART_BROWSER: {
+      chrome.send('brave_rewards.restartBrowser')
       break
     }
   }

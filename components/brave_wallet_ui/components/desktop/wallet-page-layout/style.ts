@@ -5,7 +5,7 @@ export const StyledWrapper = styled('div') <{}>`
   align-items: center;
   justify-content: center;
   background-color: ${(p) => p.theme.color.background02};
-  height: 100vh;
+  height: 100%;
   width: 100%;
   min-width: 1200px;
  `
@@ -13,10 +13,12 @@ export const StyledWrapper = styled('div') <{}>`
 export const StyledContent = styled('div') <{}>`
   display: flex;
   align-items: flex-start;
-  justify-conent: flex-start;
+  justify-content: flex-start;
   flex-direction: row;
   width: 100%;
   max-width: 1600px;
-  height: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 32px 68px 0px 68px;
  `

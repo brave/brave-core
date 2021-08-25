@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_CONTROLLER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_CONTROLLER_H_
 
-#include <map>
 #include <string>
 #include <vector>
 
 #include "base/callback.h"
+#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -39,6 +39,7 @@ class SwapController : public KeyedService, public mojom::SwapController {
   SwapController& operator=(const SwapController&) = delete;
 
   mojo::PendingRemote<mojom::SwapController> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::SwapController> receiver);
 
   // Obtians a quote for the specified asset
   void GetPriceQuote(mojom::SwapParamsPtr swap_params,
@@ -55,12 +56,12 @@ class SwapController : public KeyedService, public mojom::SwapController {
   void OnGetPriceQuote(GetPriceQuoteCallback callback,
                        const int status,
                        const std::string& body,
-                       const std::map<std::string, std::string>& headers);
+                       const base::flat_map<std::string, std::string>& headers);
   void OnGetTransactionPayload(
       GetTransactionPayloadCallback callback,
       const int status,
       const std::string& body,
-      const std::map<std::string, std::string>& headers);
+      const base::flat_map<std::string, std::string>& headers);
 
   static GURL base_url_for_test_;
   api_request_helper::APIRequestHelper api_request_helper_;

@@ -25,6 +25,7 @@
 #include "components/browsing_data/core/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
+#include "components/search_engines/search_engines_pref_names.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
@@ -38,7 +39,7 @@
 #include "brave/browser/ethereum_remote_client/pref_names.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/pref_names.h"
 #endif
 
@@ -110,6 +111,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[brave_shields::prefs::kLinkedInEmbedControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
+  // Search engine prefs
+  (*s_brave_allowlist)[prefs::kAddOpenSearchEngines] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+
   // appearance prefs
   (*s_brave_allowlist)[kLocationBarIsWide] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
@@ -125,6 +130,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kNewTabPageSuperReferralThemesOption] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
+  (*s_brave_allowlist)[kTabsSearchShow] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #if BUILDFLAG(ENABLE_SIDEBAR)
   (*s_brave_allowlist)[sidebar::kSidebarShowOption] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
@@ -148,7 +155,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kNewTabPageShowBinance] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[kNewTabPageShowTogether] =
+  (*s_brave_allowlist)[kNewTabPageShowBraveTalk] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kNewTabPageShowGemini] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
@@ -214,7 +221,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // IPFS pref
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   (*s_brave_allowlist)[kIPFSResolveMethod] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_allowlist)[kIPFSAutoFallbackToGateway] =
@@ -228,9 +235,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kIpfsStorageMax] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
 #endif
-  // Media Router Pref
-  (*s_brave_allowlist)[kBraveEnabledMediaRouter] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Push Messaging Pref

@@ -1,17 +1,4 @@
-import("//brave/build/config.gni")
-import("//build/buildflag_header.gni")
-import("buildflags/buildflags.gni")
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [ "ENABLE_BRAVE_PERF_PREDICTOR=$enable_brave_perf_predictor" ]
-}
-
 static_library("browser") {
-  # Remove when https://github.com/brave/brave-browser/issues/10647 is resolved
-  check_includes = false
-  public_deps = [ ":buildflags" ]
-
   sources = [
     "bandwidth_linreg.cc",
     "bandwidth_linreg.h",
@@ -34,10 +21,12 @@ static_library("browser") {
     "//base",
     "//brave/components/brave_perf_predictor/common",
     "//brave/components/resources",
+    "//brave/components/resources:static_resources_grit",
     "//brave/components/weekly_storage",
     "//components/keyed_service/content:content",
     "//components/page_load_metrics/browser",
     "//components/page_load_metrics/common",
+    "//components/page_load_metrics/common:page_load_metrics_mojom",
     "//components/prefs",
     "//components/sessions",
     "//components/user_prefs",
@@ -48,4 +37,10 @@ static_library("browser") {
     "//ui/base",
     "//url",
   ]
+
+  if (is_android) {
+    # for #include "brave/browser/android/brave_shields_content_settings.h"
+    # in perf_predictor_tab_helper.cc
+    deps += [ "//brave/browser/android:android_browser_process" ]
+  }
 }

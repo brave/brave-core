@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wallet_bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/wallet_toolbar_bg_color"
+            android:translationZ="10dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/account_name"
+            android:textColor="@color/wallet_text_color"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/add_account_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/rounded_wallet_edittext"
+            android:hint="@string/add_account"
+            android:importantForAutofill="no"
+            android:paddingEnd="18dp"
+            android:paddingStart="18dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textCursorDrawable="@null"
+            android:textSize="14sp"
+            android:inputType="text"
+            android:textColor="@color/wallet_text_color"
+            android:textColorHint="@color/wallet_edittext_outline_color" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/account_name_text"
+            android:textColor="@color/wallet_text_color"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_wallet_edittext">
+
+            <EditText
+                android:id="@+id/import_account_text"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:gravity="top"
+                android:hint="@string/import_account_text"
+                android:inputType="text"
+                android:importantForAutofill="no"
+                android:paddingEnd="18dp"
+                android:paddingStart="18dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textCursorDrawable="@null"
+                android:backgroundTint="@android:color/transparent"
+                android:textSize="14sp"
+                android:textColor="@color/wallet_text_color"
+                android:textColorHint="@color/wallet_edittext_outline_color" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/wallet_edittext_outline_color"/>
+
+            <TextView
+                android:id="@+id/import_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/import_text"
+                android:padding="16dp"
+                android:textColor="@color/wallet_text_color"
+                android:gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:background="@drawable/crypto_wallet_blue_button"
+            android:text="@string/add"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

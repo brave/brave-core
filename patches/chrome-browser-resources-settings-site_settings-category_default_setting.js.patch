@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings/category_default_setting.js b/chrome/browser/resources/settings/site_settings/category_default_setting.js
-index 3c75f8db1f1ef32aae97cf3eabb1e4319f121d8d..029ee25931a5914ddc05fb2272d994bb7b63769e 100644
+index 8eef615b90f9dd9af4d724fb516a174662765a2c..38f9f150a0e5dc734ca7defe2a081468142364b6 100644
 --- a/chrome/browser/resources/settings/site_settings/category_default_setting.js
 +++ b/chrome/browser/resources/settings/site_settings/category_default_setting.js
-@@ -160,6 +160,7 @@ Polymer({
+@@ -178,6 +178,7 @@ class CategoryDefaultSettingElement extends CategoryDefaultSettingElementBase {
       */
      switch (this.category) {
        case ContentSettingsTypes.ADS:
@@ -10,3 +10,11 @@ index 3c75f8db1f1ef32aae97cf3eabb1e4319f121d8d..029ee25931a5914ddc05fb2272d994bb
        case ContentSettingsTypes.BACKGROUND_SYNC:
        case ContentSettingsTypes.IMAGES:
        case ContentSettingsTypes.JAVASCRIPT:
+@@ -212,6 +213,7 @@ class CategoryDefaultSettingElement extends CategoryDefaultSettingElementBase {
+       case ContentSettingsTypes.USB_DEVICES:
+       case ContentSettingsTypes.VR:
+       case ContentSettingsTypes.WINDOW_PLACEMENT:
++      case ContentSettingsTypes.ETHEREUM:
+         // "Ask" vs "Blocked".
+         this.browserProxy.setDefaultValueForContentType(
+             this.category,

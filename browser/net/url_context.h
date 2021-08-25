@@ -76,6 +76,9 @@ struct BraveRequestInfo {
   // TODO(iefremov): rename to shields_up.
   bool allow_brave_shields = true;
   bool allow_ads = false;
+  // Whether or not Shields "aggressive" mode was enabled where the request was
+  // initiated.
+  bool aggressive_blocking = false;
   bool allow_http_upgradable_resource = false;
   bool allow_referrers = false;
   bool is_webtorrent_disabled = false;

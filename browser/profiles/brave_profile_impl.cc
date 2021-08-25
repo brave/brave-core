@@ -54,5 +54,6 @@ void BraveProfileImpl::OnProfileWillBeDestroyed(Profile* profile) {
   // this only happens when a profile is deleted because the profile manager
   // ensures that session profiles are destroyed before their parents
   // passing false for `success` removes the profile from the info cache
-  g_browser_process->profile_manager()->OnProfileCreated(this, false, false);
+  g_browser_process->profile_manager()->OnProfileCreationFinished(
+      this, Profile::CREATE_MODE_ASYNCHRONOUS, false, false);
 }

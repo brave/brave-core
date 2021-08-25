@@ -16,6 +16,10 @@
   GetAllBraveDeviceInfo() const override;                                    \
   void ForcePulseForTest
 
+#define RefreshLocalDeviceInfoIfNeeded           \
+  RefreshLocalDeviceInfoIfNeeded_ChromiumImpl(); \
+  void RefreshLocalDeviceInfoIfNeeded
+
 // private:
 #define StoreSpecifics                              \
   OnDeviceInfoDeleted(const std::string& client_id, \
@@ -24,6 +28,7 @@
 
 #include "../../../../components/sync_device_info/device_info_sync_bridge.h"
 
+#undef RefreshLocalDeviceInfoIfNeeded
 #undef ForcePulseForTest
 #undef StoreSpecifics
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DEVICE_INFO_DEVICE_INFO_SYNC_BRIDGE_H_

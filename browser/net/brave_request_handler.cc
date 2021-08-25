@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
-#include "base/metrics/histogram_macros.h"
 #include "base/task/post_task.h"
 #include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
@@ -22,7 +22,7 @@
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -39,10 +39,6 @@
 #include "brave/browser/net/brave_referrals_network_delegate_helper.h"
 #endif
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/browser/net/brave_torrent_redirect_network_delegate_helper.h"
 #endif
@@ -51,7 +47,7 @@
 #include "brave/browser/net/brave_translate_redirect_network_delegate_helper.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/net/ipfs_redirect_network_delegate_helper.h"
 #include "brave/components/ipfs/features.h"
 #endif
@@ -94,10 +90,8 @@ void BraveRequestHandler::SetupCallbacks() {
   before_url_request_callbacks_.push_back(callback);
 #endif
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   callback = base::BindRepeating(brave_rewards::OnBeforeURLRequest);
   before_url_request_callbacks_.push_back(callback);
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   callback =
@@ -105,7 +99,7 @@ void BraveRequestHandler::SetupCallbacks() {
   before_url_request_callbacks_.push_back(callback);
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
     callback = base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
     before_url_request_callbacks_.push_back(callback);
@@ -159,7 +153,6 @@ int BraveRequestHandler::OnBeforeURLRequest(
   if (before_url_request_callbacks_.empty() || IsInternalScheme(ctx)) {
     return net::OK;
   }
-  SCOPED_UMA_HISTOGRAM_TIMER("Brave.OnBeforeURLRequest_Handler");
   ctx->new_url = new_url;
   ctx->event_type = brave::kOnBeforeRequest;
   callbacks_[ctx->request_identifier] = std::move(callback);

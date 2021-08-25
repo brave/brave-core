@@ -9,7 +9,6 @@
 #include "bat/ads/internal/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_event_factory.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_builder.h"
-#include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_permission_rules.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
@@ -31,9 +30,10 @@ void InlineContentAd::RemoveObserver(InlineContentAdObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void InlineContentAd::FireEvent(const std::string& uuid,
-                                const std::string& creative_instance_id,
-                                const InlineContentAdEventType event_type) {
+void InlineContentAd::FireEvent(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const mojom::InlineContentAdEventType event_type) {
   if (uuid.empty() || creative_instance_id.empty()) {
     BLOG(1, "Failed to fire inline content ad event due to invalid uuid "
                 << uuid << " or creative instance id " << creative_instance_id);
@@ -41,20 +41,12 @@ void InlineContentAd::FireEvent(const std::string& uuid,
     return;
   }
 
-  inline_content_ads::frequency_capping::PermissionRules permission_rules;
-  if (event_type == InlineContentAdEventType::kViewed &&
-      !permission_rules.HasPermission()) {
-    BLOG(1, "Inline content ad: Not allowed due to permission rules");
-    NotifyInlineContentAdEventFailed(uuid, creative_instance_id, event_type);
-    return;
-  }
-
   database::table::CreativeInlineContentAds database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
-      [=](const Result result, const std::string& creative_instance_id,
+      [=](const bool success, const std::string& creative_instance_id,
           const CreativeInlineContentAdInfo& creative_inline_content_ad) {
-        if (result != SUCCESS) {
+        if (!success) {
           BLOG(1,
                "Failed to fire inline content ad event due to missing creative "
                "instance id "
@@ -73,19 +65,20 @@ void InlineContentAd::FireEvent(const std::string& uuid,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void InlineContentAd::FireEvent(const InlineContentAdInfo& ad,
-                                const std::string& uuid,
-                                const std::string& creative_instance_id,
-                                const InlineContentAdEventType event_type) {
+void InlineContentAd::FireEvent(
+    const InlineContentAdInfo& ad,
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const mojom::InlineContentAdEventType event_type) {
   database::table::AdEvents database_table;
-  database_table.GetAll([=](const Result result, const AdEventList& ad_events) {
-    if (result != Result::SUCCESS) {
+  database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
+    if (!success) {
       BLOG(1, "Inline content ad: Failed to get ad events");
       NotifyInlineContentAdEventFailed(uuid, creative_instance_id, event_type);
       return;
     }
 
-    if (event_type == InlineContentAdEventType::kViewed &&
+    if (event_type == mojom::InlineContentAdEventType::kViewed &&
         HasFiredAdViewedEvent(ad, ad_events)) {
       BLOG(1, "Inline content ad: Not allowed as already viewed uuid " << uuid);
       NotifyInlineContentAdEventFailed(uuid, creative_instance_id, event_type);
@@ -101,19 +94,19 @@ void InlineContentAd::FireEvent(const InlineContentAdInfo& ad,
 
 void InlineContentAd::NotifyInlineContentAdEvent(
     const InlineContentAdInfo& ad,
-    const InlineContentAdEventType event_type) const {
+    const mojom::InlineContentAdEventType event_type) const {
   switch (event_type) {
-    case InlineContentAdEventType::kServed: {
+    case mojom::InlineContentAdEventType::kServed: {
       NotifyInlineContentAdServed(ad);
       break;
     }
 
-    case InlineContentAdEventType::kViewed: {
+    case mojom::InlineContentAdEventType::kViewed: {
       NotifyInlineContentAdViewed(ad);
       break;
     }
 
-    case InlineContentAdEventType::kClicked: {
+    case mojom::InlineContentAdEventType::kClicked: {
       NotifyInlineContentAdClicked(ad);
       break;
     }
@@ -144,7 +137,7 @@ void InlineContentAd::NotifyInlineContentAdClicked(
 void InlineContentAd::NotifyInlineContentAdEventFailed(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const InlineContentAdEventType event_type) const {
+    const mojom::InlineContentAdEventType event_type) const {
   for (InlineContentAdObserver& observer : observers_) {
     observer.OnInlineContentAdEventFailed(uuid, creative_instance_id,
                                           event_type);

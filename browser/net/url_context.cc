@@ -17,8 +17,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/isolation_info.h"
+#include "services/network/public/cpp/resource_request.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -117,7 +118,7 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     ctx->redirect_source = old_ctx->redirect_source;
   }
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   auto* prefs = user_prefs::UserPrefs::Get(browser_context);
   ctx->ipfs_gateway_url =
       ipfs::GetConfiguredBaseGateway(prefs, chrome::GetChannel());
@@ -138,6 +139,11 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
       brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin);
   ctx->allow_ads = brave_shields::GetAdControlType(map, ctx->tab_origin) ==
                    brave_shields::ControlType::ALLOW;
+  // Currently, "aggressive" mode is registered as a cosmetic filtering control
+  // type, even though it can also affect network blocking.
+  ctx->aggressive_blocking =
+      brave_shields::GetCosmeticFilteringControlType(map, ctx->tab_origin) ==
+      brave_shields::ControlType::BLOCK;
   ctx->allow_http_upgradable_resource =
       !brave_shields::GetHTTPSEverywhereEnabled(map, ctx->tab_origin);
 

@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 
 namespace brave_wallet {
 
@@ -28,22 +29,24 @@ class HDKeyring {
   virtual ~HDKeyring();
 
   virtual Type type() const;
-  virtual bool empty() const;
-  virtual void ClearData();
   virtual void ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                   const std::string& hd_path);
 
   virtual void AddAccounts(size_t number = 1);
   // This will return vector of address of all accounts
   virtual std::vector<std::string> GetAccounts();
-  virtual void RemoveAccount(const std::string& address);
+  virtual size_t GetAccountsNumber() const;
+  // Only support removing accounts from the back to prevents gaps
+  virtual void RemoveAccount();
 
   // Bitcoin keyring can override this for different address calculation
   virtual std::string GetAddress(size_t index);
 
   // TODO(darkdh): Abstract Transacation class
   // eth_signTransaction
-  virtual void SignTransaction(const std::string& address, EthTransaction* tx);
+  virtual void SignTransaction(const std::string& address,
+                               EthTransaction* tx,
+                               uint256_t chain_id);
   // eth_sign
   virtual std::vector<uint8_t> SignMessage(const std::string& address,
                                            const std::vector<uint8_t>& message);

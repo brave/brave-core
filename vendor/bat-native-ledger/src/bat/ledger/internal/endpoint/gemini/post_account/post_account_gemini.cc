@@ -32,14 +32,10 @@ std::string PostAccount::GetUrl() {
 }
 
 type::Result PostAccount::ParseBody(const std::string& body,
-                                    std::string* address,
                                     std::string* linking_info,
-                                    std::string* user_name,
-                                    bool* verified) {
-  DCHECK(address);
+                                    std::string* user_name) {
   DCHECK(linking_info);
   DCHECK(user_name);
-  DCHECK(verified);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
@@ -56,12 +52,6 @@ type::Result PostAccount::ParseBody(const std::string& body,
   base::Value* account = dictionary->FindDictKey("account");
   if (!account) {
     BLOG(0, "Missing account info");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  const auto* account_name = account->FindStringKey("accountName");
-  if (!account_name) {
-    BLOG(0, "Missing account name");
     return type::Result::LEDGER_ERROR;
   }
 
@@ -89,16 +79,8 @@ type::Result PostAccount::ParseBody(const std::string& body,
     return type::Result::LEDGER_ERROR;
   }
 
-  absl::optional<bool> is_verified = user_list[0].FindBoolKey("isVerified");
-  if (!verified) {
-    BLOG(0, "Missing isVerified flag");
-    return type::Result::LEDGER_ERROR;
-  }
-
-  *address = *account_name;
   *linking_info = *linking_information;
   *user_name = *name;
-  *verified = *is_verified;
 
   return type::Result::LEDGER_OK;
 }
@@ -120,18 +102,15 @@ void PostAccount::OnRequest(const type::UrlResponse& response,
   type::Result result = CheckStatusCode(response.status_code);
 
   if (result != type::Result::LEDGER_OK) {
-    callback(result, "", "", "", false);
+    callback(result, "", "");
     return;
   }
 
   std::string linking_info;
-  std::string address;
   std::string user_name;
-  bool verified;
 
-  result =
-      ParseBody(response.body, &address, &linking_info, &user_name, &verified);
-  callback(result, address, linking_info, user_name, verified);
+  result = ParseBody(response.body, &linking_info, &user_name);
+  callback(result, linking_info, user_name);
 }
 
 }  // namespace gemini

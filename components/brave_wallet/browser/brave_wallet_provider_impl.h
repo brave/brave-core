@@ -9,9 +9,10 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_provider_events_observer.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller_events_observer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -21,34 +22,42 @@ namespace brave_wallet {
 class BraveWalletProviderDelegate;
 class EthJsonRpcController;
 
-class BraveWalletProviderImpl final : public mojom::BraveWalletProvider,
-                                      public BraveWalletProviderEventsObserver {
+class BraveWalletProviderImpl final
+    : public mojom::BraveWalletProvider,
+      public mojom::EthJsonRpcControllerObserver {
  public:
   BraveWalletProviderImpl(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl& operator=(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl(
-      EthJsonRpcController* rpc_controller,
+      mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
       std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~BraveWalletProviderImpl() override;
 
   void Request(const std::string& json_payload,
+               bool auto_retry_on_network_change,
                RequestCallback callback) override;
-  void OnResponse(RequestCallback callback,
-                  const int http_code,
-                  const std::string& response,
-                  const std::map<std::string, std::string>& headers);
-  void Enable() override;
+  void RequestEthereumPermissions(
+      RequestEthereumPermissionsCallback callback) override;
+  void OnRequestEthereumPermissions(RequestEthereumPermissionsCallback callback,
+                                    bool success,
+                                    const std::vector<std::string>& accounts);
   void GetChainId(GetChainIdCallback callback) override;
+  void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
+  void OnGetAllowedAccounts(GetAllowedAccountsCallback callback,
+                            bool success,
+                            const std::vector<std::string>& accounts);
   void Init(
       mojo::PendingRemote<mojom::EventsListener> events_listener) override;
 
   void ChainChangedEvent(const std::string& chain_id) override;
 
  private:
+  void OnConnectionError();
+
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
-  EthJsonRpcController* rpc_controller_;  // NOT OWNED
-
+  mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
+  mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
   base::WeakPtrFactory<BraveWalletProviderImpl> weak_factory_;
 };
 

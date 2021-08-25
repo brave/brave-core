@@ -16,7 +16,7 @@
 namespace syncer {
 class DeviceInfoTracker;
 class LocalDeviceInfoProvider;
-class BraveProfileSyncService;
+class BraveSyncServiceImpl;
 }  // namespace syncer
 class Profile;
 
@@ -46,7 +46,7 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void OnResetDone(base::Value callback_id);
 
   base::Value GetSyncDeviceList();
-  syncer::BraveProfileSyncService* GetSyncService() const;
+  syncer::BraveSyncServiceImpl* GetSyncService() const;
   syncer::DeviceInfoTracker* GetDeviceInfoTracker() const;
   syncer::LocalDeviceInfoProvider* GetLocalDeviceInfoProvider() const;
 

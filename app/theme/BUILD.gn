@@ -8,7 +8,7 @@ grit("brave_theme_resources") {
   defines = chrome_grit_defines
   defines += [
     "enable_sidebar=$enable_sidebar",
-    "ipfs_enabled=$ipfs_enabled",
+    "enable_ipfs=$enable_ipfs",
   ]
   outputs = [
     "grit/brave_theme_resources.h",

@@ -12,7 +12,11 @@ struct Feature;
 
 namespace brave_vpn {
 
-extern const base::Feature kBraveVPNFeature;
+namespace features {
+
+extern const base::Feature kBraveVPN;
+
+}  // namespace features
 
 }  // namespace brave_vpn
 

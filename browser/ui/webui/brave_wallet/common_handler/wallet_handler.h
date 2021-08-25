@@ -28,32 +28,9 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
 
   // brave_wallet::mojom::WalletHandler:
   void GetWalletInfo(GetWalletInfoCallback) override;
-  void LockWallet() override;
-  void UnlockWallet(const std::string& password, UnlockWalletCallback) override;
-  void GetAssetPrice(const std::vector<std::string>& from_assets,
-                     const std::vector<std::string>& to_assets,
-                     GetAssetPriceCallback) override;
-  void GetAssetPriceHistory(const std::string& asset,
-                            brave_wallet::mojom::AssetPriceTimeframe timeframe,
-                            GetAssetPriceHistoryCallback) override;
-
-  void GetTokenByContract(const std::string& contract,
-                          GetTokenByContractCallback) override;
-  void GetTokenBySymbol(const std::string& symbol,
-                        GetTokenBySymbolCallback) override;
-  void GetAllTokens(GetAllTokensCallback) override;
-
-  void GetPriceQuote(brave_wallet::mojom::SwapParamsPtr params,
-                     GetPriceQuoteCallback) override;
-  void GetTransactionPayload(brave_wallet::mojom::SwapParamsPtr params,
-                             GetTransactionPayloadCallback) override;
 
   void AddFavoriteApp(brave_wallet::mojom::AppItemPtr app_item) override;
   void RemoveFavoriteApp(brave_wallet::mojom::AppItemPtr app_item) override;
-  void NotifyWalletBackupComplete() override;
-  void SetInitialAccountNames(
-      const std::vector<std::string>& account_names) override;
-  void AddNewAccountName(const std::string& account_name) override;
 
  private:
   void EnsureConnected();
@@ -63,9 +40,6 @@ class WalletHandler : public brave_wallet::mojom::WalletHandler {
                        brave_wallet::mojom::KeyringInfoPtr keyring_info);
 
   mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
-  mojo::Remote<brave_wallet::mojom::AssetRatioController>
-      asset_ratio_controller_;
-  mojo::Remote<brave_wallet::mojom::SwapController> swap_controller_;
 
   // TODO(bbondy): This needs to be persisted in prefs
   std::vector<brave_wallet::mojom::AppItemPtr> favorite_apps;

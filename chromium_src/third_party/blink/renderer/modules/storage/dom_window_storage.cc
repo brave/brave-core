@@ -31,20 +31,18 @@ String StringToSessionStorageId(const String& string,
   return String(hash.c_str());
 }
 
-const SecurityOrigin* GetEphemeralStorageOrigin(
-    LocalDOMWindow* window,
-    WebContentSettingsClient::StorageType storage_type) {
+}  // namespace
+
+const SecurityOrigin* GetEphemeralStorageOrigin(LocalDOMWindow* window) {
   auto* frame = window->GetFrame();
   if (!frame)
     return nullptr;
 
   if (auto* settings_client = frame->GetContentSettingsClient())
-    return settings_client->GetEphemeralStorageOriginSync(storage_type).Get();
+    return settings_client->GetEphemeralStorageOriginSync().Get();
 
   return nullptr;
 }
-
-}  // namespace
 
 // EphemeralSessionStorageNamespace manages ephemeral sessionStorage namespace
 // for a particular Page object. The namespace is instantiated on the Page
@@ -153,8 +151,7 @@ StorageArea* BraveDOMWindowStorage::sessionStorage(
   auto* storage =
       DOMWindowStorage::From(*window).sessionStorage(exception_state);
 
-  if (!GetEphemeralStorageOrigin(
-          window, WebContentSettingsClient::StorageType::kSessionStorage))
+  if (!GetEphemeralStorageOrigin(window))
     return storage;
 
   return ephemeralSessionStorage();
@@ -185,8 +182,8 @@ StorageArea* BraveDOMWindowStorage::localStorage(
   LocalDOMWindow* window = GetSupplementable();
   auto* storage = DOMWindowStorage::From(*window).localStorage(exception_state);
 
-  const SecurityOrigin* ephemeral_storage_origin = GetEphemeralStorageOrigin(
-      window, WebContentSettingsClient::StorageType::kLocalStorage);
+  const SecurityOrigin* ephemeral_storage_origin =
+      GetEphemeralStorageOrigin(window);
   if (!ephemeral_storage_origin)
     return storage;
 

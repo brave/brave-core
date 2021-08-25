@@ -33,7 +33,7 @@
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_ADD_FOCUSED" file="brave/sidebar_item_add_focused.png" />
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_SETTINGS_FOCUSED" file="brave/sidebar_settings_focused.png" />
       </if>
-      <if expr="ipfs_enabled">
+      <if expr="enable_ipfs">
         <structure type="chrome_scaled_image" name="IDR_BRAVE_IPFS_LOGO" file="brave/ipfs_logo.png" />
       </if>
 

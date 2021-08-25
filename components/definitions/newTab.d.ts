@@ -60,7 +60,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'binance' | 'together' | 'gemini' | 'bitcoinDotCom' | 'cryptoDotCom' | 'ftx' | ''
+  export type StackWidget = 'rewards' | 'binance' | 'braveTalk' | 'gemini' | 'bitcoinDotCom' | 'cryptoDotCom' | 'ftx' | ''
 
   export interface GridSitesState {
     removedSites: Site[]
@@ -77,8 +77,9 @@ declare namespace NewTab {
   }
 
   export interface PersistentState {
-    togetherPromptDismissed: boolean
-    togetherSupported: boolean
+    braveTalkPromptDismissed: boolean
+    braveTalkSupported: boolean
+    braveTalkPromptAutoDismissed: boolean
     geminiSupported: boolean
     binanceSupported: boolean
     bitcoinDotComSupported: boolean
@@ -104,7 +105,7 @@ declare namespace NewTab {
     clockFormat: string
     showTopSites: boolean
     showRewards: boolean
-    showTogether: boolean
+    showBraveTalk: boolean
     showBinance: boolean
     showGemini: boolean
     showCryptoDotCom: boolean
@@ -132,6 +133,7 @@ declare namespace NewTab {
     showBitcoinDotCom: boolean
     showFTX: boolean,
     stats: Stats,
+    braveTalkPromptAllowed: boolean
     brandedWallpaperData?: BrandedWallpaper
   }
 

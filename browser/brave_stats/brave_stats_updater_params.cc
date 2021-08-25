@@ -8,6 +8,7 @@
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 
+#include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
 #include "base/threading/thread_restrictions.h"
@@ -15,6 +16,7 @@
 #include "bat/ads/pref_names.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
 
@@ -98,6 +100,57 @@ std::string BraveStatsUpdaterParams::GetProcessArchParam() const {
   } else {
     return "virt";
   }
+}
+
+std::string BraveStatsUpdaterParams::GetWalletEnabledParam() const {
+  base::Time wallet_last_unlocked =
+      profile_pref_service_->GetTime(kBraveWalletLastUnlockTime);
+  uint8_t usage_bitset = UsageBitstringFromTimestamp(wallet_last_unlocked);
+  return std::to_string(usage_bitset);
+}
+
+// This is a helper method for dealing with timestamps set by other services in
+// the browser. This method makes the assumption that enabling the service
+// required a user interaction, and thus the uasge ping for the current day has
+// already fired. All calculations for daily, weekly, and monthly are made using
+// yesterday's timestamp as reference.
+//
+// The method returns a bitstring with the following values according to the
+// timestamp. All unannotated fields are unused.
+//
+// 0b00000000
+//        |||
+//        |||_____ Daily
+//        ||______ Weekly
+//        |_______ Monthly
+
+enum : uint8_t {
+  IsInactiveUser = 0,
+  IsDailyUser = (1 << 0),
+  IsWeeklyUser = (1 << 1),
+  IsMonthlyUser = (1 << 2),
+};
+uint8_t BraveStatsUpdaterParams::UsageBitstringFromTimestamp(
+    const base::Time& time) const {
+  base::Time::Exploded target_exploded;
+  time.LocalExplode(&target_exploded);
+  uint8_t enabled_bitset = IsInactiveUser;
+
+  base::Time yesterday = GetCurrentTimeNow() - base::TimeDelta::FromDays(1);
+  base::Time::Exploded yesterday_exploded;
+  yesterday.LocalExplode(&yesterday_exploded);
+  if (yesterday_exploded.year == target_exploded.year) {
+    if (yesterday_exploded.month == target_exploded.month) {
+      enabled_bitset |= IsMonthlyUser;
+      if (GetIsoWeekNumber(time) == GetIsoWeekNumber(yesterday)) {
+        enabled_bitset |= IsWeeklyUser;
+        if (yesterday_exploded.day_of_month == target_exploded.day_of_month) {
+          enabled_bitset |= IsDailyUser;
+        }
+      }
+    }
+  }
+  return enabled_bitset;
 }
 
 void BraveStatsUpdaterParams::LoadPrefs() {

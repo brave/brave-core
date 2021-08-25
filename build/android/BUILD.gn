@@ -173,6 +173,7 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/BraveFeatureList.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveRewardsNativeWorker.java",
+    "//brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationSettingsBridge.java",
@@ -181,6 +182,7 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
     "//brave/android/java/org/chromium/chrome/browser/settings/developer/BraveQAPreferences.java",
     "//brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
+    "//brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
     "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceNativeWorker.java",
   ]
@@ -188,13 +190,10 @@ generate_jni("jni_headers") {
   deps = [ "//brave/android/java/org/chromium/chrome/browser/search_engines/settings:jni_headers" ]
 
   if (brave_wallet_enabled) {
-    sources += [ "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletNativeWorker.java" ]
-  }
-
-  if (enable_brave_sync) {
     sources += [
-      "//brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
-      "//brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
+      "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioControllerFactory.java",
+      "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/ERCTokenRegistryFactory.java",
+      "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/KeyringControllerFactory.java",
     ]
   }
 }

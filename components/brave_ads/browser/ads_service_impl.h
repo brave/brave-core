@@ -21,7 +21,6 @@
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/database.h"
-#include "bat/ads/mojom.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -135,12 +134,12 @@ class AdsServiceImpl : public AdsService,
   void OnNewTabPageAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::NewTabPageAdEventType event_type) override;
+      const ads::mojom::NewTabPageAdEventType event_type) override;
 
   void OnPromotedContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::PromotedContentAdEventType event_type) override;
+      const ads::mojom::PromotedContentAdEventType event_type) override;
 
   void GetInlineContentAd(const std::string& dimensions,
                           OnGetInlineContentAdCallback callback) override;
@@ -148,10 +147,9 @@ class AdsServiceImpl : public AdsService,
   void OnInlineContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::InlineContentAdEventType event_type) override;
+      const ads::mojom::InlineContentAdEventType event_type) override;
 
-  void PurgeOrphanedAdEventsForType(
-      const ads::mojom::BraveAdsAdType ad_type) override;
+  void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
 
   void ReconcileAdRewards() override;
 
@@ -160,6 +158,8 @@ class AdsServiceImpl : public AdsService,
                      OnGetAdsHistoryCallback callback) override;
 
   void GetAccountStatement(GetAccountStatementCallback callback) override;
+
+  void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
 
   void ToggleAdThumbUp(const std::string& creative_instance_id,
                        const std::string& creative_set_id,
@@ -200,26 +200,28 @@ class AdsServiceImpl : public AdsService,
 
   void OnCreate();
 
-  void OnInitialize(const int32_t result);
+  void OnInitialize(const bool success);
 
   void ShutdownBatAds();
-  void OnShutdownBatAds(const int32_t result);
+  void OnShutdownBatAds(const bool success);
 
   bool StartService();
 
   void MaybeStart(const bool should_restart);
-  void Start();
+  void Start(const uint32_t number_of_start);
   void Stop();
 
   void ResetState();
-  void OnShutdownAndResetBatAds(const int32_t result);
+  void OnShutdownAndResetBatAds(const bool success);
   void OnResetAllState(const bool success);
 
-  void DetectUncertainFuture();
-  void OnDetectUncertainFuture(const bool is_uncertain_future);
+  void DetectUncertainFuture(const uint32_t number_of_start);
+  void OnDetectUncertainFuture(const uint32_t number_of_start,
+                               const bool is_uncertain_future);
 
-  void EnsureBaseDirectoryExists();
-  void OnEnsureBaseDirectoryExists(const bool success);
+  void EnsureBaseDirectoryExists(const uint32_t number_of_start);
+  void OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
+                                   const bool success);
 
   void SetEnvironment();
 
@@ -232,6 +234,8 @@ class AdsServiceImpl : public AdsService,
   void CheckIdleState();
   void ProcessIdleState(const ui::IdleState idle_state, const int idle_time);
   int GetIdleTimeThreshold();
+
+  bool ShouldShowCustomAdNotifications();
 
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& uuid);
@@ -266,7 +270,11 @@ class AdsServiceImpl : public AdsService,
                              const bool success,
                              const std::string& json);
 
-  void OnRemoveAllHistory(const int32_t result);
+  void OnGetAdDiagnostics(GetAdDiagnosticsCallback callback,
+                          const bool success,
+                          const std::string& json);
+
+  void OnRemoveAllHistory(const bool success);
 
   void OnToggleAdThumbUp(OnToggleAdThumbUpCallback callback,
                          const std::string& creative_instance_id,
@@ -291,7 +299,7 @@ class AdsServiceImpl : public AdsService,
   void OnSaved(const ads::ResultCallback& callback, const bool success);
 
   void OnRunDBTransaction(ads::RunDBTransactionCallback callback,
-                          ads::DBCommandResponsePtr response);
+                          ads::mojom::DBCommandResponsePtr response);
 
   void MigratePrefs();
   bool MigratePrefs(const int source_version,
@@ -331,6 +339,7 @@ class AdsServiceImpl : public AdsService,
 
   bool connected();
 
+  bool IsBraveNewsEnabled() const;
   bool ShouldStart() const;
 
   // AdsClient implementation
@@ -358,7 +367,7 @@ class AdsServiceImpl : public AdsService,
 
   void ResetAdEvents() const override;
 
-  void UrlRequest(ads::UrlRequestPtr url_request,
+  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
                   ads::UrlRequestCallback callback) override;
 
   void Save(const std::string& name,
@@ -380,13 +389,13 @@ class AdsServiceImpl : public AdsService,
 
   std::string LoadResourceForId(const std::string& id) override;
 
-  void RunDBTransaction(ads::DBTransactionPtr transaction,
+  void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                         ads::RunDBTransactionCallback callback) override;
 
   void OnAdRewardsChanged() override;
 
   void RecordP2AEvent(const std::string& name,
-                      const ads::P2AEventType type,
+                      const ads::mojom::P2AEventType type,
                       const std::string& value) override;
 
   void WriteDiagnosticLog(const std::string& file,
@@ -437,6 +446,10 @@ class AdsServiceImpl : public AdsService,
   bool is_initialized_ = false;
 
   bool is_upgrading_from_pre_brave_ads_build_;
+
+  // This is needed to check if current ads service init become stale as
+  // another ads service start is in progress
+  uint32_t total_number_of_starts_ = 0;
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 

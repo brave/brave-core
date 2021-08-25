@@ -11,11 +11,10 @@
 #include <functional>
 
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
-using AdEventCallback = std::function<void(const Result)>;
+using AdEventCallback = std::function<void(const bool)>;
 
 class AdType;
 class ConfirmationType;
@@ -29,7 +28,7 @@ void LogAdEvent(const AdInfo& ad,
 void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback);
 
 void PurgeExpiredAdEvents(AdEventCallback callback);
-void PurgeOrphanedAdEvents(const mojom::BraveAdsAdType ad_type,
+void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                            AdEventCallback callback);
 
 void RebuildAdEventsFromDatabase();

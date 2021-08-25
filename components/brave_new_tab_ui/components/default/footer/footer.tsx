@@ -24,45 +24,28 @@ import {
   BookmarkBook,
   HistoryIcon
 } from 'brave-ui/components/icons'
-import TogetherTooltip from './togetherTooltip'
-import TogetherIcon from './togetherTooltip/togetherIcon'
+import BraveTalkItem from './braveTalkItem'
 
 // Helpers
 import { getLocale } from '../../../../common/locale'
+import { DismissBraveTalkPromptPayload } from '../../../actions/new_tab_actions'
 
-interface Props {
+export type OnDismissBraveTalkPrompt = (payload: DismissBraveTalkPromptPayload) => unknown
+export interface Props {
   textDirection: string
-  supportsTogether: boolean
-  togetherPromptDismissed: boolean
+  supportsBraveTalk: boolean
+  showBraveTalkPrompt: boolean
   backgroundImageInfo: any
   showPhotoInfo: boolean
   onClickSettings: () => any
-  onDismissTogetherPrompt: () => any
-}
-
-function TogetherItem (props: Props) {
-  if (!props.togetherPromptDismissed) {
-    return (
-      <TogetherTooltip onClose={props.onDismissTogetherPrompt}>
-        <IconLink title={getLocale('togetherPromptTitle')} href='https://talk.brave.com/widget'>
-          <TogetherIcon />
-        </IconLink>
-      </TogetherTooltip>
-    )
-  }
-
-  return (
-    <IconLink title={getLocale('togetherPromptTitle')} href='https://talk.brave.com/widget'>
-      <TogetherIcon />
-    </IconLink>
-  )
+  onDismissBraveTalkPrompt: OnDismissBraveTalkPrompt
 }
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
   render () {
     const {
       textDirection,
-      supportsTogether,
+      supportsBraveTalk,
       backgroundImageInfo,
       showPhotoInfo,
       onClickSettings
@@ -102,8 +85,8 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
             <IconLink title={getLocale('historyPageTitle')} href='chrome://history'>
               <HistoryIcon />
             </IconLink>
-            {supportsTogether &&
-              <TogetherItem {...this.props} />
+            {supportsBraveTalk &&
+              <BraveTalkItem {...this.props} />
             }
           </Navigation>
         </S.GridItemNavigation>

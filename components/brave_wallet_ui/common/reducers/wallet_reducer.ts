@@ -4,11 +4,24 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 /* global window */
 
-import { NetworkOptions } from '../../options/network-options'
 import { createReducer } from 'redux-act'
-import { NetworkOptionsType, WalletAccountType, WalletState } from '../../constants/types'
+import {
+  WalletAccountType,
+  WalletState,
+  Network,
+  GetAllTokensReturnInfo,
+  TokenInfo,
+  GetETHBalancesPriceReturnInfo,
+  GetERC20TokenBalanceAndPriceReturnInfo,
+  AccountInfo,
+  PortfolioTokenHistoryAndInfo,
+  GetPriceHistoryReturnInfo,
+  AssetPriceTimeframe
+} from '../../constants/types'
+import { convertMojoTimeToJS } from '../../utils/mojo-time'
 import * as WalletActions from '../actions/wallet_actions'
 import { InitializedPayloadType } from '../constants/action_types'
+import { formatFiatBalance } from '../../utils/format-balances'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -18,27 +31,34 @@ const defaultState: WalletState = {
   isWalletBackedUp: false,
   hasIncorrectPassword: false,
   selectedAccount: {} as WalletAccountType,
-  selectedNetwork: NetworkOptions[0],
+  selectedNetwork: Network.Mainnet,
   accounts: [],
-  walletAccountNames: [],
-  transactions: []
+  userVisibleTokens: [],
+  userVisibleTokensInfo: [],
+  transactions: [],
+  fullTokenList: [],
+  portfolioPriceHistory: [],
+  isFetchingPortfolioPriceHistory: true,
+  selectedPortfolioTimeline: AssetPriceTimeframe.OneDay
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
 
 reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadType) => {
-  const accounts = payload.accounts.map((address: string, idx: number) => {
+  const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
     return {
       id: `${idx + 1}`,
-      name: payload.walletAccountNames[idx],
-      address,
-      balance: 0,
+      name: info.name,
+      address: info.address,
+      balance: '0',
       fiatBalance: '0',
       asset: 'eth',
-      accountType: 'Primary'
+      accountType: 'Primary',
+      tokens: []
     }
   })
-
+  // VisibleTokens needs to be persited in prefs and returned in
+  // in the initialized payload to be set here.
   return {
     ...state,
     hasInitialized: true,
@@ -47,8 +67,8 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
     favoriteApps: payload.favoriteApps,
     accounts,
     isWalletBackedUp: payload.isWalletBackedUp,
-    walletAccountNames: payload.walletAccountNames,
-    selectedAccount: accounts[0]
+    selectedAccount: accounts[0],
+    userVisibleTokens: ['eth', '0x0D8775F648430679A709E98d2b0Cb6250d2887EF']
   }
 })
 
@@ -66,10 +86,139 @@ reducer.on(WalletActions.selectAccount, (state: any, payload: WalletAccountType)
   }
 })
 
-reducer.on(WalletActions.selectNetwork, (state: any, payload: NetworkOptionsType) => {
+reducer.on(WalletActions.setNetwork, (state: any, payload: Network) => {
   return {
     ...state,
     selectedNetwork: payload
+  }
+})
+
+reducer.on(WalletActions.setVisibleTokensInfo, (state: any, payload: TokenInfo[]) => {
+  const eth = {
+    contractAddress: 'eth',
+    name: 'Ethereum',
+    isErc20: true,
+    isErc721: false,
+    symbol: 'ETH',
+    decimals: 18,
+    icon: ''
+  }
+  const list = [eth, ...payload]
+  return {
+    ...state,
+    userVisibleTokensInfo: list
+  }
+})
+
+reducer.on(WalletActions.setVisibleTokens, (state: any, payload: string[]) => {
+  return {
+    ...state,
+    userVisibleTokens: payload
+  }
+})
+
+reducer.on(WalletActions.setAllTokensList, (state: any, payload: GetAllTokensReturnInfo) => {
+  return {
+    ...state,
+    fullTokenList: payload.tokens
+  }
+})
+
+reducer.on(WalletActions.ethBalancesUpdated, (state: any, payload: GetETHBalancesPriceReturnInfo) => {
+  let accounts: WalletAccountType[] = [...state.accounts]
+
+  accounts.forEach((account, index) => {
+    if (payload.balances[index].success) {
+      accounts[index].balance = payload.balances[index].balance
+      accounts[index].fiatBalance = formatFiatBalance(payload.balances[index].balance, 18, payload.usdPrice).toString()
+    }
+  })
+
+  return {
+    ...state,
+    accounts
+  }
+})
+
+reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20TokenBalanceAndPriceReturnInfo) => {
+  const userVisibleTokensInfo: TokenInfo[] = state.userVisibleTokensInfo
+  const prices = payload.prices
+  const findTokenPrice = (symbol: string) => {
+    if (prices.success) {
+      return prices.values.find((value) => value.fromAsset === symbol.toLowerCase())?.price ?? '0'
+    } else {
+      return '0'
+    }
+  }
+  let accounts: WalletAccountType[] = [...state.accounts]
+  accounts.forEach((account, accountIndex) => {
+    payload.balances[accountIndex].forEach((info, tokenIndex) => {
+      let assetBalance = '0'
+      let fiatBalance = '0'
+
+      if (userVisibleTokensInfo[tokenIndex].contractAddress === 'eth') {
+        assetBalance = account.balance
+        fiatBalance = account.fiatBalance
+      } else if (info.success) {
+        assetBalance = info.balance
+        fiatBalance = formatFiatBalance(info.balance, userVisibleTokensInfo[tokenIndex].decimals, findTokenPrice(userVisibleTokensInfo[tokenIndex].symbol))
+      } else if (account.tokens[tokenIndex]) {
+        assetBalance = account.tokens[tokenIndex].assetBalance
+        fiatBalance = account.tokens[tokenIndex].fiatBalance
+      }
+      account.tokens.splice(tokenIndex, 1, {
+        asset: userVisibleTokensInfo[tokenIndex],
+        assetBalance,
+        fiatBalance
+      })
+    })
+  })
+  return {
+    ...state,
+    accounts
+  }
+})
+
+reducer.on(WalletActions.portfolioPriceHistoryUpdated, (state: any, payload: PortfolioTokenHistoryAndInfo[][]) => {
+  const history = payload.map((account) => {
+    return account.map((token) => {
+      if (Number(token.token.assetBalance) !== 0) {
+        return token.history.values.map((value) => {
+          return {
+            date: value.date,
+            price: Number(formatFiatBalance(token.token.assetBalance, token.token.asset.decimals, value.price))
+          }
+        })
+      } else {
+        return []
+      }
+    })
+  })
+  const jointHistory = [].concat.apply([], [...history]).filter((h: []) => h.length > 1) as GetPriceHistoryReturnInfo[][]
+
+  // Since the Price History API sometimes will return a shorter
+  // array of history, this checks for the shortest array first to
+  // then map and reduce to it length
+  const shortestHistory = jointHistory.length > 0 ? jointHistory.reduce((a, b) => a.length <= b.length ? a : b) : []
+  const sumOfHistory = jointHistory.length > 0 ? shortestHistory.map((token, tokenIndex) => {
+    return {
+      date: convertMojoTimeToJS(token.date),
+      close: jointHistory.map(price => Number(price[tokenIndex].price) || 0).reduce((sum, x) => sum + x, 0)
+    }
+  }) : []
+
+  return {
+    ...state,
+    portfolioPriceHistory: sumOfHistory,
+    isFetchingPortfolioPriceHistory: sumOfHistory.length === 0 ? true : false
+  }
+})
+
+reducer.on(WalletActions.portfolioTimelineUpdated, (state: any, payload: AssetPriceTimeframe) => {
+  return {
+    ...state,
+    isFetchingPortfolioPriceHistory: true,
+    selectedPortfolioTimeline: payload
   }
 })
 

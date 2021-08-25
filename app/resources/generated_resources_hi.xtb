@@ -594,6 +594,7 @@
 <translation id="1627408615528139100">पहले से डाउनलोड की हुई है</translation>
 <translation id="1628948239858170093">क्या आप फ़ाइल को खोलने से पहले स्कैन करना चाहते हैं?</translation>
 <translation id="1629314197035607094">पासवर्ड की समय सीमा खत्म हो गई है</translation>
+<translation id="1947639598318989608">Brave को आपके कार्ट पर आपके हिसाब से छूट खोजने की अनुमति दें?</translation>
 <translation id="1629521517399325891">नेटवर्क की पुष्टि करने के लिए, उपयोगकर्ता प्रमाणपत्र उपलब्ध नहीं है.</translation>
 <translation id="163072119192489970">डेटा भेजने और पाने की अनुमति है</translation>
 <translation id="1630768113285622200">रीस्टार्ट करें और जारी रखें</translation>
@@ -3155,7 +3156,7 @@
 <translation id="4414515549596849729">कुकी और साइट का डेटा</translation>
 <translation id="4415213869328311284">अब आप अपने <ph name="DEVICE_TYPE"/> का इस्तेमाल शुरू कर सकते हैं.</translation>
 <translation id="4415245286584082850">कोई डिवाइस नहीं मिला. नए टैब में सहायता केंद्र लेख खोलें.</translation>
-<translation id="5749788945734786627">अपना Brave खाता प्रबंधित करें</translation>
+<translation id="5749788945734786627">अपना Brave खाता मैनेज करें</translation>
 <translation id="4415748029120993980">SECG अंडाकार वक्र secp384r1 (अर्थात NIST P-384)</translation>
 <translation id="4416450511678320850">इस कॉन्टेंट के लिए कोई भी ऐप्लिकेशन उपलब्ध नहीं है</translation>
 <translation id="4416582610654027550">एक मान्य यूआरएल टाइप करें</translation>
@@ -3201,7 +3202,7 @@
 <translation id="4469762931504673593"><ph name="ORIGIN"/>, <ph name="FOLDERNAME"/> में जाकर फ़ाइलों में बदलाव कर सकती है</translation>
 <translation id="4470957202018033307">बाहरी मेमोरी प्राथमिकताएं</translation>
 <translation id="4471354919263203780">बोली पहचानने वाली फाइलें डाउनलोड हो रही हैं... <ph name="PERCENT"/>%</translation>
-<translation id="506314819294271427">Brave के फ़ीचर और परफ़ॉर्मेंस को बेहतर बनाने में सहायता करें</translation>
+<translation id="918192811481327695">Brave के फ़ीचर और परफ़ॉर्मेंस को बेहतर बनाने में सहायता करें</translation>
 <translation id="4472575034687746823">शुरू करें</translation>
 <translation id="4474155171896946103">सभी टैब बुकमार्क करें...</translation>
 <translation id="4475552974751346499">डाउनलोड खोजें</translation>
@@ -3942,7 +3943,7 @@
 <translation id="5301954838959518834">ठीक है, समझ लिया</translation>
 <translation id="5302048478445481009">भाषा</translation>
 <translation id="5302932258331363306">Show Substitutions</translation>
-<translation id="5305145881844743843">इस खाते को <ph name="BEGIN_LINK"/><ph name="DOMAIN"/><ph name="END_LINK"/> प्रबंधित करता है</translation>
+<translation id="5305145881844743843">इस खाते को <ph name="BEGIN_LINK"/><ph name="DOMAIN"/><ph name="END_LINK"/> मैनेज करता है</translation>
 <translation id="5305688511332277257">कुछ भी इंस्टॉल नहीं है</translation>
 <translation id="5307030433605830021">स्रोत काम नहीं करता है</translation>
 <translation id="5307386115243749078">ब्लूटूथ स्विच को दूसरे डिवाइस से जोड़ें</translation>
@@ -4431,7 +4432,6 @@
 <translation id="5864754048328252126">चार्ज करते समय डिवाइस पर काम नहीं हो रहा है</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> जल्द ही रुक जाएगा</translation>
 <translation id="586567932979200359">आप <ph name="PRODUCT_NAME"/> को उसकी डिस्क इमेज से चला रहे हैं. इसे अपने कंप्यूटर पर इंस्टॉल करने से यह आपको बिना डिस्क इमेज के चलाने देता है और पक्का करता है कि इससे यह 'अप टू डेट' रहेगा.</translation>
-<translation id="1224064034972923114">Brave को इस्तेमाल के आंकड़े और खराबी रिपोर्ट अपने आप भेजती है</translation>
 <translation id="5867841422488265304">वेब पता खोजें या लिखें</translation>
 <translation id="5869029295770560994">ठीक है, समझ लिया</translation>
 <translation id="5869522115854928033">सेव किए गए पासवर्ड</translation>
@@ -5447,7 +5447,6 @@
 <translation id="6997642619627518301"><ph name="NAME_PH"/> - गतिविधि लॉग</translation>
 <translation id="6997707937646349884">आपके इन डिवाइस पर:</translation>
 <translation id="6998793565256476099">डिवाइस को वीडियो कॉन्फ़्रेंसिंग के लिए नामांकित करें</translation>
-<translation id="456304305650018221">क्या आप Brave को यह पता लगाने की अनुमति देना चाहते हैं कि आपके कार्ट में मौजूद आइटम पर छूट उपलब्ध है या नहीं?</translation>
 <translation id="6999956497249459195">नया ग्रुप</translation>
 <translation id="7000206553895739324"><ph name="PRINTER_NAME"/> कनेक्ट है पर उसे कॉन्फ़िगर करने की ज़रूरत है</translation>
 <translation id="7000347579424117903">Ctrl, Alt या Search को शामिल करें</translation>
@@ -7242,7 +7241,7 @@
 <translation id="8962918469425892674">यह साइट गति या रोशनी के सेंसर का इस्तेमाल कर रही है.</translation>
 <translation id="8965037249707889821">पुराना पासवर्ड डालें</translation>
 <translation id="8966870118594285808">अगर आपने गलती से किसी टैब को बंद कर दिया था तो उसे फिर से खोलें</translation>
-<translation id="8967427617812342790">पठन सूची में जोड़ें</translation>
+<translation id="8967427617812342790">रीडिंग लिस्ट में जोड़ें</translation>
 <translation id="8967866634928501045">दिखाने के लिए Alt Shift A दबाएं</translation>
 <translation id="8968766641738584599">कार्ड सेव करें</translation>
 <translation id="89720367119469899">Escape</translation>

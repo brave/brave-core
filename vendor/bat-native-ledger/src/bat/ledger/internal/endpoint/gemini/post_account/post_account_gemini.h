@@ -44,10 +44,8 @@ namespace endpoint {
 namespace gemini {
 
 using PostAccountCallback = std::function<void(const type::Result result,
-                                               const std::string address,
-                                               const std::string linking_info,
-                                               const std::string user_name,
-                                               const bool verified)>;
+                                               const std::string& linking_info,
+                                               const std::string& user_name)>;
 
 class PostAccount {
  public:
@@ -60,10 +58,8 @@ class PostAccount {
   std::string GetUrl();
 
   type::Result ParseBody(const std::string& body,
-                         std::string* address,
                          std::string* linking_info,
-                         std::string* user_name,
-                         bool* verified);
+                         std::string* user_name);
 
   void OnRequest(const type::UrlResponse& response,
                  PostAccountCallback callback);

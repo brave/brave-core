@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="RtlSymmetry"
+    android:background="@color/wallet_bg"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="27dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAssets"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_weight = "9.8"
+        android:layout_height="0dp"/>
+
+    <Button
+        android:id="@+id/saveAssets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_weight = "0.2"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/crypto_wallet_blue_button"
+        android:text="@string/save_account_watchlist"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@android:color/white"
+        style="?android:attr/borderlessButtonStyle"/>
+
+</LinearLayout>

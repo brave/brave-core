@@ -12,14 +12,14 @@ interface BatLedgerService {
          pending_associated_receiver<BatLedger> database) => ();
   SetEnvironment(ledger.mojom.Environment environment);
   SetDebug(bool isDebug);
-  SetReconcileInterval(int32 time);
-  SetShortRetries(bool short_retries);
+  SetReconcileInterval(int32 interval);
+  SetRetryInterval(int32 interval);
   SetTesting();
 
   GetEnvironment() => (ledger.mojom.Environment environment);
   GetDebug() => (bool debug);
   GetReconcileInterval() => (int32 interval);
-  GetShortRetries() => (bool short_retries);
+  GetRetryInterval() => (int32 retry_interval);
 };
 
 interface BatLedger {

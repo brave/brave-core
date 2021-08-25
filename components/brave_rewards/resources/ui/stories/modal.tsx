@@ -58,6 +58,7 @@ storiesOf('Rewards/Modal', module)
           onSaveFile={doNothing}
           onRestore={doNothing}
           onReset={doNothing}
+          onShowQRCode={doNothing}
           internalFunds={0}
         />
       </div>

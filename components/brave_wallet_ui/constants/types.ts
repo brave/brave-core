@@ -2,10 +2,11 @@ export interface WalletAccountType {
   id: string
   name: string
   address: string
-  balance: number
+  balance: string
   fiatBalance: string
   asset: string
   accountType: string
+  tokens: AccountAssetOptionType[]
 }
 
 export interface UserAccountType {
@@ -25,6 +26,12 @@ export interface UserAssetOptionType {
   asset: AssetOptionType
   assetBalance: number
   fiatBalance: number
+}
+
+export interface AccountAssetOptionType {
+  asset: TokenInfo
+  assetBalance: string
+  fiatBalance: string
 }
 
 export interface UserWalletObject {
@@ -148,10 +155,15 @@ export interface WalletState {
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   selectedAccount: WalletAccountType
-  selectedNetwork: NetworkOptionsType
+  selectedNetwork: Network
   accounts: WalletAccountType[]
-  walletAccountNames: string[]
   transactions: RPCTransactionType[]
+  userVisibleTokens: string[]
+  userVisibleTokensInfo: TokenInfo[]
+  fullTokenList: TokenInfo[]
+  portfolioPriceHistory: PriceDataObjectType[]
+  isFetchingPortfolioPriceHistory: boolean
+  selectedPortfolioTimeline: AssetPriceTimeframe
 }
 
 export interface PanelState {
@@ -160,6 +172,12 @@ export interface PanelState {
   connectedSiteOrigin: string
   selectedPanel: string
   panelTitle: string
+  tabId: number
+  connectingAccounts: string[]
+  showSignTransaction: boolean
+  showAllowSpendERC20Token: boolean
+  showAllowAddNetwork: boolean
+  showConfirmTransaction: boolean
 }
 
 export interface PageState {
@@ -167,14 +185,15 @@ export interface PageState {
   showRecoveryPhrase: boolean
   invalidMnemonic: boolean
   selectedTimeline: AssetPriceTimeframe
-  selectedAsset: AssetOptionType | undefined
+  selectedAsset: TokenInfo | undefined
   selectedBTCAssetPrice: AssetPriceInfo | undefined
   selectedUSDAssetPrice: AssetPriceInfo | undefined
-  selectedAssetPriceHistory: GetAssetPriceHistoryReturnInfo[]
+  selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
-  userAssets: string[]
   mnemonic?: string
   isFetchingPriceHistory: boolean
+  setupStillInProgress: boolean
+  showIsRestoring: boolean
 }
 
 export interface WalletPageState {
@@ -187,17 +206,22 @@ export interface WalletPanelState {
   panel: PanelState
 }
 
-export interface WalletInfo {
-  isWalletCreated: boolean,
-  isWalletLocked: boolean,
-  favoriteApps: AppObjectType[],
-  isWalletBackedUp: boolean,
-  walletAccountNames: string[]
-  accounts: string[]
+export interface AccountInfo {
+  address: string[]
+  name: string[]
 }
 
-export interface UnlockWalletReturnInfo {
-  isWalletUnlocked: boolean
+export interface WalletInfo {
+  isWalletCreated: boolean
+  isWalletLocked: boolean
+  favoriteApps: AppObjectType[]
+  isWalletBackedUp: boolean
+  visibleTokens: string[]
+  accountInfos: AccountInfo[]
+}
+
+export interface UnlockReturnInfo {
+  success: boolean
 }
 
 export enum AssetPriceTimeframe {
@@ -208,6 +232,16 @@ export enum AssetPriceTimeframe {
   ThreeMonths = 4,
   OneYear = 5,
   All = 6
+}
+
+export enum Network {
+  Mainnet = 0,
+  Rinkeby = 1,
+  Ropsten = 2,
+  Goerli = 3,
+  Kovan = 4,
+  Localhost = 5,
+  Custom = 6
 }
 
 export interface SwapParams {
@@ -247,33 +281,45 @@ export interface SwapResponseReturnInfo {
   response: SwapResponse
 }
 
+export interface GetNetworkReturnInfo {
+  network: Network
+}
+
+export interface GetBlockTrackerUrlReturnInfo {
+  blockTrackerUrl: string
+}
+
+export interface GetChainIdReturnInfo {
+  chainId: string
+}
+
 export interface AssetPriceInfo {
   fromAsset: string
   toAsset: string
   price: string
-  asset24hChange: string
+  assetTimeframeChange: string
 }
 
-export interface GetAssetPriceReturnInfo {
+export interface GetPriceReturnInfo {
   success: boolean,
   values: AssetPriceInfo[]
 }
 
-export interface GetAssetPriceHistoryReturnInfo {
+export interface GetPriceHistoryReturnInfo {
   price: string
   date: MojoTime
 }
 
-export interface GetAssetPriceHistoryReturnObjectInfo {
+export interface GetPriceHistoryReturnObjectInfo {
   success: boolean,
-  values: GetAssetPriceHistoryReturnInfo[]
+  values: GetPriceHistoryReturnInfo[]
 }
 
 export interface RestoreWalletReturnInfo {
   isValidMnemonic: boolean
 }
 
-export interface AddAccountToWalletReturnInfo {
+export interface AddAccountReturnInfo {
   success: boolean
 }
 
@@ -284,10 +330,11 @@ export interface TokenInfo {
   isErc721: boolean
   symbol: string
   decimals: number
+  icon?: string
 }
 
 export interface GetTokenByContractReturnInfo {
-  value: TokenInfo | undefined
+  token: TokenInfo
 }
 export interface GetTokenBySymbolReturnInfo {
   token: TokenInfo | undefined
@@ -296,23 +343,133 @@ export interface GetAllTokensReturnInfo {
   tokens: TokenInfo[]
 }
 
+export interface GetBalanceReturnInfo {
+  success: boolean
+  balance: string
+}
+
+export interface GetETHBalancesPriceReturnInfo {
+  usdPrice: string
+  balances: GetBalanceReturnInfo[]
+}
+
+export interface GetERC20TokenBalanceReturnInfo {
+  success: boolean
+  balance: string
+}
+
+export interface GetERC20TokenBalanceAndPriceReturnInfo {
+  balances: GetERC20TokenBalanceReturnInfo[][]
+  prices: GetPriceReturnInfo
+}
+
+export interface PortfolioTokenHistoryAndInfo {
+  history: GetPriceHistoryReturnObjectInfo
+  token: AccountAssetOptionType
+}
+
+export interface SendTransactionParam {
+  from: string
+  to: string
+  value: string
+  contractAddress: string
+  gasPrice: string
+  gasLimit: string
+}
+
+export interface CreateWalletReturnInfo {
+  mnemonic: string
+}
+
 export interface WalletAPIHandler {
   getWalletInfo: () => Promise<WalletInfo>
-  lockWallet: () => Promise<void>
-  addAccountToWallet: () => Promise<AddAccountToWalletReturnInfo>
-  unlockWallet: (password: string) => Promise<UnlockWalletReturnInfo>
+  addFavoriteApp: (appItem: AppObjectType) => Promise<void>
+  removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
+  setInitialVisibleTokens: (visibleAssets: string[]) => Promise<void>
+}
+
+export interface ERCTokenRegistry {
   getTokenByContract: (contract: string) => Promise<GetTokenByContractReturnInfo>
   getTokenBySymbol: (symbol: string) => Promise<GetTokenBySymbolReturnInfo>
   getAllTokens: () => Promise<GetAllTokensReturnInfo>
-  getAssetPrice: (fromAssets: string[], toAssets: string[]) => Promise<GetAssetPriceReturnInfo>
-  getAssetPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetAssetPriceHistoryReturnObjectInfo>
-  addFavoriteApp: (appItem: AppObjectType) => Promise<void>
-  removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
-  setInitialAccountNames: (accountNames: string[]) => Promise<void>
-  addNewAccountName: (accountName: string) => Promise<void>
-  restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
+}
+
+export class TxData {
+  nonce: string
+  gasPrice: string
+  gasLimit: string
+  to: string
+  value: string
+  data: Uint8Array
+}
+
+export class TxData1559 {
+  baseData: TxData
+  chainId: string
+  maxPriorityFeePerGas: string
+  maxFeePerGas: string
+}
+
+export interface AddUnapprovedTransactionReturnInfo {
+  success: boolean
+  txMetaId: string
+}
+
+export interface AddUnapproved1559TransactionReturnInfo {
+  success: boolean
+  txMetaId: string
+}
+
+export interface ApproveTransactionReturnInfo {
+  status: boolean
+}
+
+export interface RejectTransactionReturnInfo {
+  status: boolean
+}
+
+export interface MakeERC20TransferDataReturnInfo {
+  success: boolean
+  data: number[]
+}
+
+export interface EthTxController {
+  addUnapprovedTransaction: (txData: TxData, from: string) => Promise<AddUnapprovedTransactionReturnInfo>
+  addUnapproved1559Transaction: (txData: TxData1559, from: string) => (AddUnapproved1559TransactionReturnInfo)
+  approveTransaction: (txMetaId: string) => Promise<ApproveTransactionReturnInfo>
+  rejectTransaction: (txMetaId: string) => Promise<RejectTransactionReturnInfo>
+  makeERC20TransferData: (toAddress: string, amount: string) => Promise<MakeERC20TransferDataReturnInfo>
+}
+
+export interface EthJsonRpcController {
+  getNetwork: () => Promise<GetNetworkReturnInfo>
+  setNetwork: (netowrk: Network) => Promise<void>
+  getChainId: () => Promise<GetChainIdReturnInfo>
+  getBlockTrackerUrl: () => Promise<GetBlockTrackerUrlReturnInfo>
+  getBalance: (address: string) => Promise<GetBalanceReturnInfo>
+  getERC20TokenBalance: (contract: string, address: string) => Promise<GetERC20TokenBalanceReturnInfo>
+}
+
+export interface SwapController {
   getPriceQuote: (swapParams: SwapParams) => Promise<SwapResponseReturnInfo>
   getTransactionPayload: (swapParams: SwapParams) => Promise<SwapResponseReturnInfo>
+}
+
+export interface AssetRatioController {
+  getPrice: (fromAssets: string[], toAssets: string[], timeframe: AssetPriceTimeframe) => Promise<GetPriceReturnInfo>
+  getPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetPriceHistoryReturnObjectInfo>
+}
+
+export interface KeyringController {
+  createWallet: (password: string) => Promise<CreateWalletReturnInfo>
+  restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
+  lock: () => Promise<void>
+  unlock: (password: string) => Promise<UnlockReturnInfo>
+  addAccount: (accountName: string) => Promise<AddAccountReturnInfo>
+}
+
+export interface EthJsonRpcController {
+  getChainId: () => Promise<GetChainIdReturnInfo>
 }
 
 export interface RecoveryObject {
@@ -321,7 +478,7 @@ export interface RecoveryObject {
 }
 
 export interface MojoTime {
-  internalValue: number
+  microseconds: number
 }
 
 export interface NetworkOptionsType {
@@ -367,3 +524,43 @@ export interface AmountPresetObjectType {
 export type ToOrFromType =
   | 'to'
   | 'from'
+
+export interface APIProxyControllers {
+  walletHandler: WalletAPIHandler
+  ethJsonRpcController: EthJsonRpcController
+  swapController: SwapController
+  assetRatioController: AssetRatioController
+  keyringController: KeyringController
+  ercTokenRegistry: ERCTokenRegistry
+  ethTxController: EthTxController
+  makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string, data: number[]) => any
+}
+
+export type AllowSpendReturnPayload = {
+  siteUrl: string,
+  contractAddress: string,
+  erc20Token: TokenInfo,
+  transactionFeeWei: string,
+  transactionFeeFiat: string
+}
+
+export type ChainInformation = {
+  chainId: string,
+  name: string,
+  url: string
+}
+
+export type AddNetworkReturnPayload = {
+  siteUrl: string,
+  contractAddress: string,
+  chainInfo: ChainInformation
+}
+
+export type TransactionPanelPayload = {
+  transactionAmount: string,
+  transactionGas: string,
+  toAddress: string,
+  erc20Token: TokenInfo,
+  ethPrice: string,
+  tokenPrice: string
+}

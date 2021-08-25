@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/logging.h"
@@ -30,16 +31,15 @@ void EthPendingTxTracker::UpdatePendingTransactions() {
     return;
 
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
-      EthTxStateManager::TransactionStatus::SUBMITTED,
-      absl::optional<EthAddress>());
+      EthTxStateManager::TransactionStatus::SUBMITTED, absl::nullopt);
   for (const auto& pending_transaction : pending_transactions) {
-    if (IsNonceTaken(pending_transaction)) {
-      DropTransaction(pending_transaction);
+    if (IsNonceTaken(*pending_transaction)) {
+      DropTransaction(pending_transaction.get());
       continue;
     }
-    std::string id = pending_transaction.id;
+    std::string id = pending_transaction->id;
     rpc_controller_->GetTransactionReceipt(
-        pending_transaction.tx_hash,
+        pending_transaction->tx_hash,
         base::BindOnce(&EthPendingTxTracker::OnGetTxReceipt,
                        weak_factory_.GetWeakPtr(), std::move(id)));
   }
@@ -50,14 +50,13 @@ void EthPendingTxTracker::UpdatePendingTransactions() {
 void EthPendingTxTracker::ResubmitPendingTransactions() {
   // TODO(darkdh): limit the rate of tx publishing
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
-      EthTxStateManager::TransactionStatus::SUBMITTED,
-      absl::optional<EthAddress>());
+      EthTxStateManager::TransactionStatus::SUBMITTED, absl::nullopt);
   for (const auto& pending_transaction : pending_transactions) {
-    if (!pending_transaction.tx.IsSigned()) {
+    if (!pending_transaction->tx->IsSigned()) {
       continue;
     }
     rpc_controller_->SendRawTransaction(
-        pending_transaction.tx.GetSignedTransaction(),
+        pending_transaction->tx->GetSignedTransaction(),
         base::BindOnce(&EthPendingTxTracker::OnSendRawTransaction,
                        weak_factory_.GetWeakPtr()));
   }
@@ -72,18 +71,19 @@ void EthPendingTxTracker::OnGetTxReceipt(std::string id,
   if (!nonce_lock->Try())
     return;
 
-  EthTxStateManager::TxMeta meta;
-  if (!tx_state_manager_->GetTx(id, &meta)) {
+  std::unique_ptr<EthTxStateManager::TxMeta> meta =
+      tx_state_manager_->GetTx(id);
+  if (!meta) {
     nonce_lock->Release();
     return;
   }
-  if (receipt.status == true) {
-    meta.tx_receipt = receipt;
-    meta.status = EthTxStateManager::TransactionStatus::CONFIRMED;
-    meta.confirmed_time = base::Time::Now();
-    tx_state_manager_->AddOrUpdateTx(meta);
-  } else if (ShouldTxDropped(meta)) {
-    DropTransaction(meta);
+  if (receipt.status) {
+    meta->tx_receipt = receipt;
+    meta->status = EthTxStateManager::TransactionStatus::CONFIRMED;
+    meta->confirmed_time = base::Time::Now();
+    tx_state_manager_->AddOrUpdateTx(*meta);
+  } else if (ShouldTxDropped(*meta)) {
+    DropTransaction(meta.get());
   }
 
   nonce_lock->Release();
@@ -102,11 +102,10 @@ void EthPendingTxTracker::OnSendRawTransaction(bool status,
 
 bool EthPendingTxTracker::IsNonceTaken(const EthTxStateManager::TxMeta& meta) {
   auto confirmed_transactions = tx_state_manager_->GetTransactionsByStatus(
-      EthTxStateManager::TransactionStatus::CONFIRMED,
-      absl::optional<EthAddress>());
+      EthTxStateManager::TransactionStatus::CONFIRMED, absl::nullopt);
   for (const auto& confirmed_transaction : confirmed_transactions) {
-    if (confirmed_transaction.tx.nonce() == meta.tx.nonce() &&
-        confirmed_transaction.id != meta.id)
+    if (confirmed_transaction->tx->nonce() == meta.tx->nonce() &&
+        confirmed_transaction->id != meta.id)
       return true;
   }
   return false;
@@ -123,7 +122,7 @@ bool EthPendingTxTracker::ShouldTxDropped(
   } else {
     uint256_t network_nonce = network_nonce_map_[hex_address];
     network_nonce_map_.erase(hex_address);
-    if (meta.tx.nonce() < network_nonce)
+    if (meta.tx->nonce() < network_nonce)
       return true;
   }
 
@@ -141,11 +140,10 @@ bool EthPendingTxTracker::ShouldTxDropped(
   return false;
 }
 
-void EthPendingTxTracker::DropTransaction(
-    const EthTxStateManager::TxMeta& meta) {
-  EthTxStateManager::TxMeta new_meta = meta;
-  new_meta.status = EthTxStateManager::TransactionStatus::DROPPED;
-  tx_state_manager_->AddOrUpdateTx(new_meta);
+void EthPendingTxTracker::DropTransaction(EthTxStateManager::TxMeta* meta) {
+  if (!meta)
+    return;
+  tx_state_manager_->DeleteTx(meta->id);
 }
 
 }  // namespace brave_wallet

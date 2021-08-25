@@ -5,25 +5,19 @@
 
 #include "components/page_info/page_info_ui.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/vector_icons/vector_icons.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/grit/brave_components_strings.h"
-#endif  // BUILDFLAG(IPFS_ENABLED)
+#endif  // BUILDFLAG(ENABLE_IPFS)
 
-#define BRAVE_PAGE_INFO_UI_GET_PERMISSION_ICON \
-  case ContentSettingsType::AUTOPLAY:          \
-    icon = &kAutoplayStatusIcon;               \
-    break;
-
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #define GetSecurityDescription GetSecurityDescription_ChromiumImpl
-#endif  // BUILDFLAG(IPFS_ENABLED)
+#endif  // BUILDFLAG(ENABLE_IPFS)
 
 #include "../../../../components/page_info/page_info_ui.cc"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #undef GetSecurityDescription
 
 std::unique_ptr<PageInfoUI::SecurityDescription>
@@ -34,6 +28,4 @@ PageInfoUI::GetSecurityDescription(const IdentityInfo& identity_info) const {
       SecuritySummaryColor::GREEN, IDS_PAGE_INFO_IPFS_BUBBLE_TITTLE,
       IDS_PAGE_INFO_IPFS_BUBBLE_TEXT, SecurityDescriptionType::CONNECTION);
 }
-#endif  // BUILDFLAG(IPFS_ENABLED)
-
-#undef BRAVE_PAGE_INFO_UI_GET_PERMISSION_ICON
+#endif  // BUILDFLAG(ENABLE_IPFS)

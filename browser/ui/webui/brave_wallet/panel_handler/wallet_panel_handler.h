@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_PANEL_HANDLER_WALLET_PANEL_HANDLER_H_
 
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -19,9 +20,13 @@ class WebUI;
 
 class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
  public:
+  using GetWebContentsForTabCallback =
+      base::RepeatingCallback<content::WebContents*(int32_t)>;
+
   WalletPanelHandler(
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
-      ui::MojoBubbleWebUIController* webui_controller);
+      ui::MojoBubbleWebUIController* webui_controller,
+      GetWebContentsForTabCallback get_web_contents_for_tab);
 
   WalletPanelHandler(const WalletPanelHandler&) = delete;
   WalletPanelHandler& operator=(const WalletPanelHandler&) = delete;
@@ -30,10 +35,15 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
   // brave_wallet::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
+  void ConnectToSite(const std::vector<std::string>& accounts,
+                     const std::string& origin,
+                     int32_t tab_id) override;
+  void CancelConnectToSite(const std::string& origin, int32_t tab_id) override;
 
  private:
   mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
   ui::MojoBubbleWebUIController* const webui_controller_;
+  const GetWebContentsForTabCallback get_web_contents_for_tab_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_PANEL_HANDLER_WALLET_PANEL_HANDLER_H_

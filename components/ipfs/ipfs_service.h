@@ -49,7 +49,7 @@ namespace ipfs {
 class BraveIpfsClientUpdater;
 class IpfsServiceDelegate;
 class IpfsServiceObserver;
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 class IpfsImportWorkerBase;
 class IpnsKeysManager;
 #endif
@@ -100,10 +100,11 @@ class IpfsService : public KeyedService,
 
   void RestartDaemon();
   void RotateKey(const std::string& oldkey, BoolCallback callback);
+  void ValidateGateway(const GURL& url, BoolCallback callback);
 
   virtual void PreWarmShareableLink(const GURL& url);
 
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   virtual void ImportFileToIpfs(const base::FilePath& path,
                                 const std::string& key,
                                 ipfs::ImportCompletedCallback callback);
@@ -146,7 +147,7 @@ class IpfsService : public KeyedService,
   void SetPreWarmCalbackForTesting(base::OnceClosure callback) {
     prewarm_callback_for_testing_ = std::move(callback);
   }
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   IpnsKeysManager* GetIpnsKeysManager() { return ipns_keys_manager_.get(); }
 #endif
  protected:
@@ -172,13 +173,17 @@ class IpfsService : public KeyedService,
   void NotifyIpnsKeysLoaded(bool result);
   // Launches the ipfs service in an utility process.
   void LaunchIfNotRunning(const base::FilePath& executable_path);
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   static bool WaitUntilExecutionFinished(base::Process process);
   void ExecuteNodeCommand(const base::CommandLine& command_line,
                           const base::FilePath& data,
                           BoolCallback callback);
 #endif
   base::TimeDelta CalculatePeersRetryTime();
+  void OnGatewayValidationComplete(SimpleURLLoaderList::iterator iter,
+                                   BoolCallback callback,
+                                   const GURL& initial_url,
+                                   std::unique_ptr<std::string> response_body);
 
   void OnGetConnectedPeers(SimpleURLLoaderList::iterator iter,
                            GetConnectedPeersCallback,
@@ -228,7 +233,7 @@ class IpfsService : public KeyedService,
   base::FilePath user_data_dir_;
   BraveIpfsClientUpdater* ipfs_client_updater_;
   version_info::Channel channel_;
-#if BUILDFLAG(IPFS_LOCAL_NODE_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   std::unordered_map<size_t, std::unique_ptr<IpfsImportWorkerBase>> importers_;
   std::unique_ptr<IpnsKeysManager> ipns_keys_manager_;
 #endif

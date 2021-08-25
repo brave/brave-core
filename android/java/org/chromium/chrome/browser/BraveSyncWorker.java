@@ -28,6 +28,17 @@ public class BraveSyncWorker {
 
     private long mNativeBraveSyncWorker;
 
+    private static BraveSyncWorker sBraveSyncWorker;
+    private static boolean sInitialized;
+
+    public static BraveSyncWorker get() {
+        if (!sInitialized) {
+            sBraveSyncWorker = new BraveSyncWorker();
+            sInitialized = true;
+        }
+        return sBraveSyncWorker;
+    }
+
     @CalledByNative
     private void setNativePtr(long nativePtr) {
         assert mNativeBraveSyncWorker == 0;

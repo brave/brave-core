@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/renderer/content_settings_agent_impl.h b/components/content_settings/renderer/content_settings_agent_impl.h
-index 7abd12a94f5b0655837cd60fe595e5068a8182e5..42055551adab7f63c735c23f73912f44ab03599c 100644
+index b018a8b9149ac4732c06eb95620c283fb60e58cd..0b9a1b3b1522d08cbd6954d1ad331696ec26cbc1 100644
 --- a/components/content_settings/renderer/content_settings_agent_impl.h
 +++ b/components/content_settings/renderer/content_settings_agent_impl.h
-@@ -113,6 +113,7 @@ class ContentSettingsAgentImpl
-       const blink::WebFrame* frame,
-       const blink::WebURL& secondary_url);
+@@ -118,6 +118,7 @@ class ContentSettingsAgentImpl
+     content_settings_manager_ = std::move(manager);
+   }
  
 +  BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
   protected:

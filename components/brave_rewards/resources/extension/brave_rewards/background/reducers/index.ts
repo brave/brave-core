@@ -13,7 +13,7 @@ import { rewardsPanelReducer } from './rewards_panel_reducer'
 const mergeReducers = (state: RewardsExtension.State | undefined, action: any) => {
   if (state === undefined) {
     state = storage.load()
-    setBadgeText(state)
+    setBadgeText(state).catch((e) => { console.log(e) })
   }
 
   state = rewardsPanelReducer(state, action)

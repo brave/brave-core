@@ -22,7 +22,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/features.h"
@@ -75,13 +75,13 @@ std::vector<TestProfileData> GetTestProfileData(
 class BraveProfileManagerTest : public PlatformBrowserTest {
  public:
   BraveProfileManagerTest() {
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
     feature_list_.InitAndEnableFeature(ipfs::features::kIpfsFeature);
 #endif
   }
 
  private:
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   base::test::ScopedFeatureList feature_list_;
 #endif
 };
@@ -178,7 +178,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(otr_profile),
             nullptr);
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   EXPECT_NE(ipfs::IpfsServiceFactory::GetForContext(profile), nullptr);
   EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(otr_profile), nullptr);
 #if !defined(OS_ANDROID)

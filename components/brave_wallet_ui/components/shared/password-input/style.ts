@@ -14,6 +14,7 @@ export const StyledWrapper = styled.div`
 `
 
 export const Input = styled.input<StyleProps>`
+  box-sizing: border-box;
   width: 100%;
   outline: none;
   background-image: none;

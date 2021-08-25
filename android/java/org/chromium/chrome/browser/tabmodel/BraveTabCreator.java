@@ -33,8 +33,8 @@ public class BraveTabCreator extends ChromeTabCreator {
             StartupTabPreloader startupTabPreloader,
             Supplier<TabDelegateFactory> tabDelegateFactory, boolean incognito,
             OverviewNTPCreator overviewNTPCreator, AsyncTabParamsManager asyncTabParamsManager,
-            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            ObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier) {
+            Supplier<TabModelSelector> tabModelSelectorSupplier,
+            Supplier<CompositorViewHolder> compositorViewHolderSupplier) {
         super(activity, nativeWindow, startupTabPreloader, tabDelegateFactory, incognito,
                 overviewNTPCreator, asyncTabParamsManager, tabModelSelectorSupplier,
                 compositorViewHolderSupplier);
@@ -42,7 +42,8 @@ public class BraveTabCreator extends ChromeTabCreator {
 
     @Override
     public Tab launchUrl(String url, @TabLaunchType int type) {
-        if (url.equals(UrlConstants.NTP_URL) && type == TabLaunchType.FROM_CHROME_UI) {
+        if (url.equals(UrlConstants.NTP_URL)
+                && (type == TabLaunchType.FROM_CHROME_UI || type == TabLaunchType.FROM_STARTUP)) {
             registerPageView();
             ChromeTabbedActivity chromeTabbedActivity = BraveActivity.getChromeTabbedActivity();
             if (chromeTabbedActivity != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {

@@ -1,0 +1,55 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("brave_ads") {
+  sources = [
+    "ad_notification_background_painter.cc",
+    "ad_notification_background_painter.h",
+    "ad_notification_control_buttons_view.cc",
+    "ad_notification_control_buttons_view.h",
+    "ad_notification_header_view.cc",
+    "ad_notification_header_view.h",
+    "ad_notification_popup.cc",
+    "ad_notification_popup.h",
+    "ad_notification_popup_handler.cc",
+    "ad_notification_popup_widget.cc",
+    "ad_notification_popup_widget.h",
+    "ad_notification_view.cc",
+    "ad_notification_view.h",
+    "ad_notification_view_factory.cc",
+    "ad_notification_view_factory.h",
+    "bounds_util.cc",
+    "bounds_util.h",
+    "insets_util.cc",
+    "insets_util.h",
+    "padded_image_button.cc",
+    "padded_image_button.h",
+    "padded_image_view.cc",
+    "padded_image_view.h",
+    "spacer_view.cc",
+    "spacer_view.h",
+    "text_ad_notification_view.cc",
+    "text_ad_notification_view.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/app/vector_icons",
+    "//brave/browser/profiles:util",
+    "//brave/browser/ui/brave_ads",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/common",
+    "//components/prefs",
+    "//skia",
+    "//ui/accessibility",
+    "//ui/base",
+    "//ui/compositor",
+    "//ui/display",
+    "//ui/gfx",
+    "//ui/native_theme",
+    "//ui/views",
+  ]
+}

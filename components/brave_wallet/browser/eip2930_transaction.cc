@@ -14,6 +14,11 @@
 
 namespace brave_wallet {
 
+namespace {
+constexpr uint256_t kAccessListStorageKeyCost = 1900;
+constexpr uint256_t kAccessListAddressCost = 2400;
+}  // namespace
+
 Eip2930Transaction::AccessListItem::AccessListItem() = default;
 Eip2930Transaction::AccessListItem::~AccessListItem() = default;
 Eip2930Transaction::AccessListItem::AccessListItem(const AccessListItem&) =
@@ -38,12 +43,21 @@ bool Eip2930Transaction::AccessListItem::operator!=(
   return !operator==(item);
 }
 
-Eip2930Transaction::Eip2930Transaction() = default;
-Eip2930Transaction::Eip2930Transaction(const TxData& tx_data, uint64_t chain_id)
-    : EthTransaction(tx_data), chain_id_(chain_id) {
+Eip2930Transaction::Eip2930Transaction(const Eip2930Transaction&) = default;
+Eip2930Transaction::Eip2930Transaction(uint256_t nonce,
+                                       uint256_t gas_price,
+                                       uint256_t gas_limit,
+                                       const EthAddress& to,
+                                       uint256_t value,
+                                       const std::vector<uint8_t>& data,
+                                       uint256_t chain_id)
+    : EthTransaction(nonce, gas_price, gas_limit, to, value, data),
+      chain_id_(chain_id) {
   type_ = 1;
 }
-Eip2930Transaction::Eip2930Transaction(const Eip2930Transaction&) = default;
+Eip2930Transaction::Eip2930Transaction() {
+  type_ = 1;
+}
 Eip2930Transaction::~Eip2930Transaction() = default;
 
 bool Eip2930Transaction::operator==(const Eip2930Transaction& tx) const {
@@ -53,15 +67,24 @@ bool Eip2930Transaction::operator==(const Eip2930Transaction& tx) const {
 }
 
 // static
+absl::optional<Eip2930Transaction> Eip2930Transaction::FromTxData(
+    const mojom::TxDataPtr& tx_data,
+    uint256_t chain_id) {
+  absl::optional<EthTransaction> legacy_tx =
+      EthTransaction::FromTxData(tx_data);
+  if (!legacy_tx)
+    return absl::nullopt;
+  return Eip2930Transaction(legacy_tx->nonce(), legacy_tx->gas_price(),
+                            legacy_tx->gas_limit(), legacy_tx->to(),
+                            legacy_tx->value(), legacy_tx->data(), chain_id);
+}
+
+// static
 absl::optional<Eip2930Transaction> Eip2930Transaction::FromValue(
     const base::Value& value) {
   absl::optional<EthTransaction> legacy_tx = EthTransaction::FromValue(value);
   if (!legacy_tx)
     return absl::nullopt;
-  TxData tx_data(legacy_tx->nonce(), legacy_tx->gas_price(),
-                 legacy_tx->gas_limit(), legacy_tx->to(), legacy_tx->value(),
-                 legacy_tx->data());
-
   const std::string* tx_chain_id = value.FindStringKey("chain_id");
   if (!tx_chain_id)
     return absl::nullopt;
@@ -69,7 +92,9 @@ absl::optional<Eip2930Transaction> Eip2930Transaction::FromValue(
   if (!HexValueToUint256(*tx_chain_id, &chain_id))
     return absl::nullopt;
 
-  Eip2930Transaction tx(tx_data, static_cast<uint64_t>(chain_id));
+  Eip2930Transaction tx(legacy_tx->nonce(), legacy_tx->gas_price(),
+                        legacy_tx->gas_limit(), legacy_tx->to(),
+                        legacy_tx->value(), legacy_tx->data(), chain_id);
   tx.v_ = legacy_tx->v();
   tx.r_ = legacy_tx->r();
   tx.s_ = legacy_tx->s();
@@ -125,7 +150,7 @@ Eip2930Transaction::ValueToAccessList(const base::Value& value) {
 }
 
 std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(
-    uint64_t chain_id) const {
+    uint256_t chain_id) const {
   std::vector<uint8_t> result;
   result.push_back(type_);
 
@@ -160,7 +185,7 @@ std::string Eip2930Transaction::GetSignedTransaction() const {
   list.Append(RLPUint256ToBlobValue(value_));
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));
-  list.Append(base::Value(v_));
+  list.Append(RLPUint256ToBlobValue(v_));
   list.Append(base::Value(r_));
   list.Append(base::Value(s_));
 
@@ -175,7 +200,7 @@ std::string Eip2930Transaction::GetSignedTransaction() const {
 
 void Eip2930Transaction::ProcessSignature(const std::vector<uint8_t> signature,
                                           int recid,
-                                          uint64_t chain_id) {
+                                          uint256_t chain_id) {
   EthTransaction::ProcessSignature(signature, recid, chain_id_);
   v_ = recid;
 }
@@ -190,6 +215,16 @@ base::Value Eip2930Transaction::ToValue() const {
   tx.SetKey("access_list", base::Value(AccessListToValue(access_list_)));
 
   return tx;
+}
+
+uint256_t Eip2930Transaction::GetDataFee() const {
+  uint256_t fee = EthTransaction::GetDataFee();
+
+  for (const AccessListItem& item : access_list_) {
+    fee += kAccessListAddressCost;
+    fee += uint256_t(item.storage_keys.size()) * kAccessListStorageKeyCost;
+  }
+  return fee;
 }
 
 }  // namespace brave_wallet

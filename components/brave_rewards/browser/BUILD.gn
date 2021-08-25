@@ -1,4 +1,3 @@
-import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/vendor/bat-native-ledger/config.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -6,7 +5,7 @@ import("//extensions/buildflags/buildflags.gni")
 static_library("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10618 is resolved
   check_includes = false
-  public_deps = [ "buildflags" ]
+  public_deps = []
 
   sources = [
     "android_util.cc",
@@ -14,8 +13,12 @@ static_library("browser") {
     "diagnostic_log.cc",
     "diagnostic_log.h",
     "logging.h",
+    "net/network_delegate_helper.cc",
+    "net/network_delegate_helper.h",
     "rewards_notification_service.cc",
     "rewards_notification_service.h",
+    "rewards_notification_service_impl.cc",
+    "rewards_notification_service_impl.h",
     "rewards_notification_service_observer.h",
     "rewards_p3a.cc",
     "rewards_p3a.h",
@@ -23,7 +26,10 @@ static_library("browser") {
     "rewards_protocol_handler.h",
     "rewards_service.cc",
     "rewards_service.h",
+    "rewards_service_impl.cc",
+    "rewards_service_impl.h",
     "rewards_service_observer.h",
+    "service_sandbox_type.h",
     "static_values.h",
     "switches.cc",
     "switches.h",
@@ -31,8 +37,17 @@ static_library("browser") {
 
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/buildflags",
+    "//brave/components/resources",
+    "//brave/components/services/bat_ledger/public/cpp",
+    "//brave/vendor/bat-native-ads",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
+    "//url",
 
     # for profile.h
     "//components/domain_reliability",
@@ -52,38 +67,14 @@ static_library("browser") {
     ]
   }
 
-  if (brave_rewards_enabled) {
-    sources += [
-      "net/network_delegate_helper.cc",
-      "net/network_delegate_helper.h",
-      "rewards_notification_service_impl.cc",
-      "rewards_notification_service_impl.h",
-      "rewards_service_impl.cc",
-      "rewards_service_impl.h",
-    ]
+  if (enable_ipfs) {
+    deps += [ "//brave/components/ipfs" ]
+  }
 
-    deps += [
-      "//brave/app:brave_generated_resources_grit",
-      "//brave/components/brave_ads/browser/buildflags",
-      "//brave/components/resources",
-      "//brave/components/services/bat_ledger/public/cpp",
-      "//brave/vendor/bat-native-ads",
-      "//mojo/public/cpp/bindings",
-      "//net",
-      "//services/network/public/cpp",
-      "//services/service_manager/public/cpp",
-      "//url",
-    ]
+  public_deps += [ "//brave/vendor/bat-native-ledger:headers" ]
 
-    if (ipfs_enabled) {
-      deps += [ "//brave/components/ipfs" ]
-    }
-
-    public_deps += [ "//brave/vendor/bat-native-ledger:headers" ]
-
-    if (is_android) {
-      deps += [ "//brave/components/safetynet:android" ]
-    }
+  if (is_android) {
+    deps += [ "//brave/components/safetynet:android" ]
   }
 }
 

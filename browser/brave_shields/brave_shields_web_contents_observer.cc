@@ -11,7 +11,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_perf_predictor/browser/buildflags.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -31,10 +31,6 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
-#endif
-
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/common/extensions/api/brave_shields.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -48,7 +44,11 @@ using extensions::EventRouter;
 using content::RenderFrameHost;
 using content::WebContents;
 
+namespace brave_shields {
+
 namespace {
+
+BraveShieldsWebContentsObserver* g_receiver_impl_for_testing = nullptr;
 
 // Content Settings are only sent to the main frame currently. Chrome may fix
 // this at some point, but for now we do this as a work-around. You can verify
@@ -78,16 +78,13 @@ void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
 
 }  // namespace
 
-namespace brave_shields {
-
 BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() {
   brave_shields_remotes_.clear();
 }
 
 BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
     WebContents* web_contents)
-    : WebContentsObserver(web_contents),
-      brave_shields_receivers_(web_contents, this) {}
+    : WebContentsObserver(web_contents), receivers_(web_contents, this) {}
 
 void BraveShieldsWebContentsObserver::RenderFrameCreated(RenderFrameHost* rfh) {
   if (rfh && allowed_script_origins_.size()) {
@@ -127,6 +124,27 @@ void BraveShieldsWebContentsObserver::AddBlockedSubresource(
 }
 
 // static
+void BraveShieldsWebContentsObserver::BindBraveShieldsHost(
+    mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShieldsHost>
+        receiver,
+    content::RenderFrameHost* rfh) {
+  if (g_receiver_impl_for_testing) {
+    g_receiver_impl_for_testing->BindReceiver(std::move(receiver), rfh);
+    return;
+  }
+
+  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+  if (!web_contents)
+    return;
+
+  auto* shields_host =
+      BraveShieldsWebContentsObserver::FromWebContents(web_contents);
+  if (!shields_host)
+    return;
+  shields_host->BindReceiver(std::move(receiver), rfh);
+}
+
+// static
 void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
     const GURL& request_url,
     int frame_tree_node_id,
@@ -161,10 +179,8 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
       }
     }
   }
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   brave_perf_predictor::PerfPredictorTabHelper::DispatchBlockedEvent(
       request_url.spec(), frame_tree_node_id);
-#endif
 }
 
 #if !defined(OS_ANDROID)
@@ -196,8 +212,8 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
 
 void BraveShieldsWebContentsObserver::OnJavaScriptBlocked(
     const std::u16string& details) {
-  WebContents* web_contents = WebContents::FromRenderFrameHost(
-      brave_shields_receivers_.GetCurrentTargetFrame());
+  WebContents* web_contents =
+      WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
   if (!web_contents)
     return;
 
@@ -244,6 +260,19 @@ void BraveShieldsWebContentsObserver::AllowScriptsOnce(
     const std::vector<std::string>& origins,
     WebContents* contents) {
   allowed_script_origins_ = std::move(origins);
+}
+
+// static
+void BraveShieldsWebContentsObserver::SetReceiverImplForTesting(
+    BraveShieldsWebContentsObserver* impl) {
+  g_receiver_impl_for_testing = impl;
+}
+
+void BraveShieldsWebContentsObserver::BindReceiver(
+    mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShieldsHost>
+        receiver,
+    content::RenderFrameHost* rfh) {
+  receivers_.Bind(rfh, std::move(receiver));
 }
 
 mojo::AssociatedRemote<brave_shields::mojom::BraveShields>&

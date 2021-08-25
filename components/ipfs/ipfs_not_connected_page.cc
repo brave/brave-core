@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/ipfs_not_connected_page.h"
 
+#include <ostream>
 #include <utility>
 
 #include "base/notreached.h"
@@ -54,29 +55,29 @@ void IPFSNotConnectedPage::CommandReceived(const std::string& command) {
 }
 
 void IPFSNotConnectedPage::PopulateInterstitialStrings(
-    base::DictionaryValue* load_time_data) {
-  load_time_data->SetString(
+    base::Value* load_time_data) {
+  load_time_data->SetStringKey(
       "tabTitle", l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_TITLE));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "heading", l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_HEADING));
 
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "primaryParagraph",
       l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_PRIMARY_PARAGRAPH));
 
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "primaryButtonText",
       l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_PRIMARY_BUTTON));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "openDetails",
       l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_OPEN_DETAILS_BUTTON));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "closeDetails",
       l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_CLOSE_DETAILS_BUTTON));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "explanationParagraph",
       l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_EXPLANATION));
-  load_time_data->SetString("finalParagraph", std::u16string());
+  load_time_data->SetStringKey("finalParagraph", std::u16string());
 }
 
 int IPFSNotConnectedPage::GetHTMLTemplateId() {

@@ -13,7 +13,7 @@ namespace features {
 
 const base::Feature kIpfsFeature{
   "Ipfs",
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
       base::FEATURE_ENABLED_BY_DEFAULT
 #else
       base::FEATURE_DISABLED_BY_DEFAULT

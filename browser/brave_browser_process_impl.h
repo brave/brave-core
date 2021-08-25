@@ -10,7 +10,6 @@
 
 #include "base/memory/ref_counted.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
@@ -103,7 +102,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_TOR)
   tor::BraveTorClientUpdater* tor_client_updater() override;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
 #endif
   brave::BraveFederatedLearningService* brave_federated_learning_service();
@@ -112,12 +111,10 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() override;
+  brave_ads::ResourceComponent* resource_component() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
-#endif
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-  brave_ads::ResourceComponent* resource_component() override;
 #endif
 
  private:
@@ -161,7 +158,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<tor::BraveTorClientUpdater> tor_client_updater_;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   std::unique_ptr<ipfs::BraveIpfsClientUpdater> ipfs_client_updater_;
 #endif
   std::unique_ptr<brave::BraveFederatedLearningService>
@@ -170,14 +167,11 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   scoped_refptr<brave::HistogramsBraveizer> histogram_braveizer_;
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>
       ntp_background_images_service_;
+  std::unique_ptr<brave_ads::ResourceComponent> resource_component_;
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   std::unique_ptr<speedreader::SpeedreaderRewriterService>
       speedreader_rewriter_service_;
-#endif
-
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-  std::unique_ptr<brave_ads::ResourceComponent> resource_component_;
 #endif
 
   SEQUENCE_CHECKER(sequence_checker_);

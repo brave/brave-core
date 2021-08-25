@@ -28,6 +28,9 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="3218385319396786393">Automaattinen toisto on estetty tällä sivulla</translation>
 <translation id="4988333904713528597">Salli aina automaattinen toisto <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Jatka automaattisen toiston estoa</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Kysy, kun sivusto haluaa pääsyn Ethereumin tarjoajan APIin</translation>
+<translation id="7017590444693657895">Estää sivustoja pääsemästä Ethereumin tarjoajan APIin</translation>
 <translation id="8988939298652262600">Brave ei arvioi laajennusten turvallisuutta ja varmuutta. Asenna tämä laajennus vain, jos luotat kehittäjään.</translation>
 <translation id="8081858229109418493">Profiilin nimi ja kuvake</translation>
 <translation id="2044383478723007273">Brave -värit</translation>
@@ -42,6 +45,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="5802665280774361839">Näytä automaattinen täydennys osoiterivillä</translation>
 <translation id="597020512043916976">Näytä suosituimmat sivustot automaattitäydennyksen ehdotuksissa</translation>
 <translation id="264150068416846820">Näytä Braven ehdotetut sivustot automaattitäydennyksen ehdotuksissa</translation>
+<translation id="5529693968082667490">Näytä Hae välilehdistä -painike</translation>
 <translation id="6414370348346025511">Perussuojaus on käytössä.</translation>
 <translation id="814018970995616154">Tarkistaa URL-osoitteet käyttäen Braveen tallennettua luetteloa paikoista, jotka eivät ole turvallisia.</translation>
 <translation id="1144810021918451336">Ei suojele sinua vaarallisilta verkkosivustoilta, latauksilta ja laajennuksilta.</translation>
@@ -93,7 +97,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="6303294677342628402">Shields</translation>
 <translation id="7133511168130368997">Estä seuraimet ja mainokset, jotka seuraavat sinua verkossa.</translation>
 <translation id="2761825942249694703">Nämä ovat oletusarvoiset Shields-asetukset. Ne pätevät kaikilla verkkosivuilla, ellet tee muutoksia jonkin tietyn sivun Shields-ohjauspaneelissa. Näiden muuttaminen ei vaikuta voimassa oleviin sivukohtaisiin asetuksiin.</translation>
-<translation id="8754605759692119662">Tämä estää useimmat verkkosivujen mainokset, mutta ei Braven yksityismainoksia, sillä niiden hallinnoinnin keskus on</translation>
+<translation id="1485394570478670912">Tämä estää useimmat mainokset sivustoilla, mutta ei Brave Private Ads -mainoksia; niitä hallitaan</translation>
 <translation id="6388201778088078932">asetukset.</translation>
 <translation id="9185018653595759199">Sosiaalisen median esto</translation>
 <translation id="7390783310074170337">Oletusnäkymä</translation>
@@ -294,6 +298,13 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="1391855377994926460">Jatka verkon selailua nopeammin – jopa 6x nopeammin suosituilla uutissivustoilla.</translation>
 <translation id="9218430445555521422">Aseta oletusselaimeksi</translation>
 <translation id="3479552764303398839">Ei nyt</translation>
+<translation id="5039804452771397117">Salli</translation>
+<translation id="7053983685419859001">Estä</translation>
+<translation id="7815301689257843278">Lähetä kaatumisraportit automaattisesti niin, että Brave voi estää tämän ongelman ilmenemisen uudelleen?</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> on lopettanut odottamattomasti.</translation>
+<translation id="1324417023773393937">Brave-selain</translation>
+<translation id="1068069727470515940">Voit muuttaa <ph name="SETTING_TEXT"/> taas milloin tahansa.</translation>
+<translation id="6873781976650514089">tämä asetus</translation>
 <translation id="6040143037577758943">Sulje</translation>
 <translation id="5600566490506283344">Brave Ad -ilmoitus</translation>
 <translation id="4877147287319222750">Lisää sivupalkkiin</translation>
@@ -345,6 +356,6 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="8487693399751278191">Tuo kirjanmerkit saman tien...</translation>
 <translation id="2557899542277210112">Aseta kirjanmerkkisi tähän kirjamerkkipalkissa pikakäyttöä varten.</translation>
 <translation id="2808630562319398131">Tyhjennä Brave Rewardsin tiedot...</translation>
-<translation id="1224064034972923114">Auta kehittämään Bravea lähettämällä kaatumisraportit automaattisesti</translation>
-<translation id="3738833060602717053">Auta kehittämään <ph name="PRODUCT_NAME"/> lähettämällä kaatumisraportteja automaattisesti</translation>
+<translation id="2273851479262317744">Aseta Brave oletusselaimeksi</translation>
+<translation id="8581710194025054669">Varmistaaksesi parhaan tietosuojan verkossa, harkitse Braven asettamista tietokoneesi oletusselaimeksi. Kun Brave on oletuksena, kaikki napsauttamasi verkkolinkit avautuvat Braven tietosuoja-asetusten mukaisesti.</translation>
 </translationbundle>

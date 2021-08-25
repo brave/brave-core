@@ -56,7 +56,7 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) const {
       return callback(type::Result::LEDGER_ERROR);
     }
 
-    LogWalletStatusChange(ledger_, {}, uphold_wallet->status);
+    OnWalletStatusChange(ledger_, {}, uphold_wallet->status);
   }
 
   if (uphold_wallet->one_time_string.empty()) {
@@ -108,7 +108,7 @@ void UpholdWallet::OnGetUser(const type::Result result,
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get the user object from Uphold!");
-    return callback(result);
+    return callback(type::Result::CONTINUE);
   }
 
   if (user.bat_not_allowed) {
@@ -170,12 +170,12 @@ void UpholdWallet::OnCreateCard(const type::Result result,
   }
 
   if (result != type::Result::LEDGER_OK) {
-    return callback(result);
+    return callback(type::Result::CONTINUE);
   }
 
   if (id.empty()) {
     BLOG(0, "Card ID is empty!");
-    return callback(type::Result::LEDGER_ERROR);
+    return callback(type::Result::CONTINUE);
   }
 
   GetAnonFunds(
@@ -225,7 +225,7 @@ void UpholdWallet::OnGetAnonFunds(const type::Result result,
 
   if (result != type::Result::LEDGER_OK || !balance) {
     BLOG(0, "Couldn't get anonymous funds!");
-    return callback(type::Result::LEDGER_ERROR);
+    return callback(type::Result::CONTINUE);
   }
 
   if (balance->user_funds == 0.0) {  // == floating-point comparison!
@@ -272,8 +272,20 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
     return callback(type::Result::ALREADY_EXISTS);
   }
 
+  if (result == type::Result::TOO_MANY_RESULTS) {
+    // Entering NOT_CONNECTED.
+    ledger_->uphold()->DisconnectWallet(
+        ledger::notifications::kWalletMismatchedProviderAccounts);
+
+    ledger_->database()->SaveEventLog(
+        log::kMismatchedProviderAccounts,
+        constant::kWalletUphold + std::string("/") + id.substr(0, 5));
+
+    return callback(type::Result::TOO_MANY_RESULTS);
+  }
+
   if (result != type::Result::LEDGER_OK) {
-    return callback(type::Result::LEDGER_ERROR);
+    return callback(type::Result::CONTINUE);
   }
 
   const auto from = uphold_wallet->status;
@@ -285,15 +297,17 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
     return callback(type::Result::LEDGER_ERROR);
   }
 
-  LogWalletStatusChange(ledger_, from, to);
+  OnWalletStatusChange(ledger_, from, to);
 
   ledger_->database()->SaveEventLog(
       log::kWalletVerified,
       constant::kWalletUphold + std::string("/") + id.substr(0, 5));
 
-  ledger_->ledger_client()->ShowNotification(
-      ledger::notifications::kWalletNewVerified, {"Uphold"},
-      [](type::Result) {});
+  if (ShouldShowNewlyVerifiedWallet()) {
+    ledger_->ledger_client()->ShowNotification(
+        ledger::notifications::kWalletNewVerified, {"Uphold"},
+        [](type::Result) {});
+  }
 
   ledger_->promotion()->TransferTokens(
       std::bind(&UpholdWallet::OnTransferTokens, this, _1, _2, callback));

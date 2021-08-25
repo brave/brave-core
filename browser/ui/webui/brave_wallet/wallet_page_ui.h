@@ -39,8 +39,19 @@ class WalletPageUI : public ui::MojoWebUIController,
   void CreatePageHandler(
       mojo::PendingRemote<brave_wallet::mojom::Page> page,
       mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,
-      mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver)
-      override;
+      mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
+      mojo::PendingReceiver<brave_wallet::mojom::EthJsonRpcController>
+          eth_json_rpc_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::SwapController>
+          swap_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::AssetRatioController>
+          asset_ratio_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::KeyringController>
+          keyring_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>
+          erc_token_registry,
+      mojo::PendingReceiver<brave_wallet::mojom::EthTxController>
+          eth_tx_controller) override;
 
   std::unique_ptr<WalletPageHandler> page_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;

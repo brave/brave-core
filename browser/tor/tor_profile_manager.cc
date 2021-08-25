@@ -46,12 +46,6 @@ void TorProfileManager::SwitchToTorProfile(
     ProfileManager::CreateCallback callback) {
   Profile* tor_profile =
       TorProfileManager::GetInstance().GetTorProfile(original_profile);
-  tor::TorProfileService* service =
-      TorProfileServiceFactory::GetForContext(tor_profile);
-  DCHECK(service);
-  // TorLauncherFactory relies on OnExecutableReady to launch tor process so we
-  // need to make sure tor binary is there every time
-  service->RegisterTorClientUpdater();
   profiles::OpenBrowserWindowForProfile(callback, false, false, false,
                                         tor_profile,
                                         Profile::CREATE_STATUS_INITIALIZED);
@@ -73,9 +67,9 @@ TorProfileManager::~TorProfileManager() {
   BrowserList::RemoveObserver(this);
 }
 
-Profile* TorProfileManager::GetTorProfile(Profile* original_profile) {
-  Profile* tor_profile = original_profile->GetOffTheRecordProfile(
-      Profile::OTRProfileID::CreateFromProfileID(tor::kTorProfileID),
+Profile* TorProfileManager::GetTorProfile(Profile* profile) {
+  Profile* tor_profile = profile->GetOriginalProfile()->GetOffTheRecordProfile(
+      Profile::OTRProfileID(tor::kTorProfileID),
       /*create_if_needed=*/true);
 
   const std::string context_id = tor_profile->UniqueId();
@@ -87,6 +81,13 @@ Profile* TorProfileManager::GetTorProfile(Profile* original_profile) {
 
   tor_profile->AddObserver(this);
   tor_profiles_[context_id] = tor_profile;
+
+  tor::TorProfileService* service =
+      TorProfileServiceFactory::GetForContext(tor_profile);
+  DCHECK(service);
+  // TorLauncherFactory relies on OnExecutableReady to launch tor process so we
+  // need to make sure tor binary is there every time
+  service->RegisterTorClientUpdater();
 
   return tor_profile;
 }

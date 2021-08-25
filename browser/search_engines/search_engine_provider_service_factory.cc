@@ -103,4 +103,5 @@ void SearchEngineProviderServiceFactory::RegisterProfilePrefs(
   registry->RegisterBooleanPref(kUseAlternativeSearchEngineProvider, false);
   registry->RegisterBooleanPref(prefs::kDefaultSearchProviderByExtension,
                                 false);
+  registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines, false);
 }

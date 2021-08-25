@@ -313,6 +313,30 @@
             ]
           }
         ]
+      },
+      {
+        "name": "validateGatewayUrl",
+        "type": "function",
+        "description": "Validates gateway url",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "string",
+            "description": "The url to validate"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called when url is validated",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "boolean",
+                "description": "True if gateway is valid otherwise false"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

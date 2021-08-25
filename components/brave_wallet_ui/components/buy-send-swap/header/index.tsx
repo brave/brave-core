@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { UserAccountType, NetworkOptionsType, BuySendSwapViewTypes } from '../../../constants/types'
+import { UserAccountType, BuySendSwapViewTypes, Network } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { create } from 'ethereum-blockies'
+import { NetworkOptions } from '../../../options/network-options'
 // Styled Components
 import {
   StyledWrapper,
@@ -17,7 +18,7 @@ import {
 
 export interface Props {
   selectedAccount: UserAccountType
-  selectedNetwork: NetworkOptionsType
+  selectedNetwork: Network
   onChangeSwapView: (view: BuySendSwapViewTypes) => void
 }
 
@@ -47,7 +48,7 @@ function SwapHeader (props: Props) {
       </NameAndIcon>
 
       <OvalButton onClick={onShowNetworks}>
-        <OvalButtonText>{selectedNetwork.abbr}</OvalButtonText>
+        <OvalButtonText>{NetworkOptions[selectedNetwork].abbr}</OvalButtonText>
         <CaratDownIcon />
       </OvalButton>
     </StyledWrapper >

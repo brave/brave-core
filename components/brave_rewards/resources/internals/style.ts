@@ -81,3 +81,7 @@ export const EventCell = styled('td')<{}>`
   border-bottom: 1px solid ${p => p.theme.palette.blackFade85};
   padding: 10px;
 `
+
+export const DiagnosticsEntry = styled('div')<{}>`
+  margin: 0 20px 10px;
+`

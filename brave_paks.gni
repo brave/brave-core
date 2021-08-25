@@ -2,8 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
@@ -55,6 +53,8 @@ template("brave_extra_paks") {
                            ])
     output = "${invoker.output_dir}/brave_resources.pak"
     sources = [
+      "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_resources.pak",
+      "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak",
       "$root_gen_dir/brave/ui/webui/resources/brave_webui_resources.pak",
       "$root_gen_dir/components/brave_components_resources.pak",
     ]
@@ -68,6 +68,8 @@ template("brave_extra_paks") {
     }
 
     deps = [
+      "//brave/components/brave_ads/resources",
+      "//brave/components/brave_rewards/resources",
       "//brave/components/resources",
       "//brave/ui/webui/resources",
     ]
@@ -79,18 +81,6 @@ template("brave_extra_paks") {
         "//brave/browser/resources/settings:resources",
         "//brave/components/resources:strings",
       ]
-    }
-
-    if (brave_ads_enabled) {
-      sources += [ "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_resources.pak" ]
-
-      deps += [ "//brave/components/brave_ads/resources" ]
-    }
-
-    if (brave_rewards_enabled) {
-      sources += [ "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak" ]
-
-      deps += [ "//brave/components/brave_rewards/resources" ]
     }
 
     if (enable_tor) {
@@ -119,13 +109,11 @@ template("brave_extra_paks") {
       ]
     }
 
-    if (brave_rewards_enabled) {
-      if (enable_extensions) {
-        sources += [ "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_resources.pak" ]
+    if (enable_extensions) {
+      sources += [ "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_resources.pak" ]
 
-        deps +=
-            [ "//brave/components/brave_rewards/resources/extension:resources" ]
-      }
+      deps +=
+          [ "//brave/components/brave_rewards/resources/extension:resources" ]
     }
 
     if (defined(invoker.deps)) {

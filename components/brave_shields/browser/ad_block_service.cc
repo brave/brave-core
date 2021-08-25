@@ -29,6 +29,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "url/origin.h"
 
 #define DAT_FILE "rs-ABPFilterParserData.dat"
 #define REGIONAL_CATALOG "regional_catalog.json"
@@ -44,8 +45,7 @@ void AdBlockServiceDomainResolver(const char* host,
                                   uint32_t* end) {
   const auto host_str = std::string(host);
   const auto domain = net::registry_controlled_domains::GetDomainAndRegistry(
-      host_str,
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+      host_str, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
   const size_t match = host_str.rfind(domain);
   if (match != std::string::npos) {
     *start = match;
@@ -66,27 +66,35 @@ void AdBlockService::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
+    bool aggressive_blocking,
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
     std::string* mock_data_url) {
-  AdBlockBaseService::ShouldStartRequest(
-      url, resource_type, tab_host, did_match_rule, did_match_exception,
-      did_match_important, mock_data_url);
-  if (did_match_important && *did_match_important) {
-    return;
+  if (aggressive_blocking ||
+      base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveAdblockDefault1pBlocking) ||
+      !SameDomainOrHost(
+          url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    AdBlockBaseService::ShouldStartRequest(
+        url, resource_type, tab_host, aggressive_blocking, did_match_rule,
+        did_match_exception, did_match_important, mock_data_url);
+    if (did_match_important && *did_match_important) {
+      return;
+    }
   }
 
   regional_service_manager()->ShouldStartRequest(
-      url, resource_type, tab_host, did_match_rule, did_match_exception,
-      did_match_important, mock_data_url);
+      url, resource_type, tab_host, aggressive_blocking, did_match_rule,
+      did_match_exception, did_match_important, mock_data_url);
   if (did_match_important && *did_match_important) {
     return;
   }
 
   custom_filters_service()->ShouldStartRequest(
-      url, resource_type, tab_host, did_match_rule, did_match_exception,
-      did_match_important, mock_data_url);
+      url, resource_type, tab_host, aggressive_blocking, did_match_rule,
+      did_match_exception, did_match_important, mock_data_url);
 }
 
 absl::optional<std::string> AdBlockService::GetCspDirectives(

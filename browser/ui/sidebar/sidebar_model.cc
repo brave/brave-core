@@ -200,6 +200,16 @@ content::WebContents* SidebarModel::GetWebContentsAt(int index) {
   return data_[index]->GetWebContents();
 }
 
+bool SidebarModel::IsSidebarWebContents(
+    const content::WebContents* web_contents) const {
+  for (const auto& data : data_) {
+    if (data->web_contents() && data->web_contents() == web_contents)
+      return true;
+  }
+
+  return false;
+}
+
 const std::vector<SidebarItem> SidebarModel::GetAllSidebarItems() const {
   return GetSidebarService(profile_)->items();
 }

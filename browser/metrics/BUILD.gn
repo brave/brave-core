@@ -1,0 +1,31 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/build/config.gni")
+import("//testing/test.gni")
+
+source_set("brave_metrics_unit_tests") {
+  testonly = true
+
+  sources = [ "metrics_reporting_util_unittest.cc" ]
+  deps = [
+    "//base/test:test_support",
+    "//brave/browser",
+    "//brave/browser/metrics/buildflags",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+  ]
+
+  if (is_linux) {
+    sources += [ "metrics_reporting_util_unittest_linux.cc" ]
+    configs += [ "//brave/build/linux:linux_channel_names" ]
+
+    deps += [
+      "//chrome/common:channel_info",
+      "//components/version_info:channel",
+    ]
+  }
+}

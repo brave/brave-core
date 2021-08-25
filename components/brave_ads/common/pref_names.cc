@@ -30,11 +30,15 @@ const char kSupportedCountryCodesSchemaVersion[] =
     "brave.brave_ads.supported_regions_schema_version_number";
 const int kSupportedCountryCodesSchemaVersionNumber = 9;
 
-// Stores the ad notifications last screen position
+// Stores the last screen position of custom ad notifications and whether to
+// fallback from native to custom ad notifications if native notifications are
+// disabled
 const char kAdNotificationLastScreenPositionX[] =
     "brave.brave_ads.ad_notification.last_screen_position_x";
 const char kAdNotificationLastScreenPositionY[] =
     "brave.brave_ads.ad_notification.last_screen_position_y";
+const char kAdNotificationDidFallbackToCustom[] =
+    "brave.brave_ads.ad_notification.did_fallback_to_custom";
 
 // Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";

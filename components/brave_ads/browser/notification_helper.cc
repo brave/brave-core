@@ -22,6 +22,10 @@ bool NotificationHelper::ShouldShowNotifications() {
   return true;
 }
 
+bool NotificationHelper::CanShowNativeNotifications() {
+  return true;
+}
+
 bool NotificationHelper::ShowMyFirstAdNotification() {
   return false;
 }

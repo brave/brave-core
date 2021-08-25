@@ -94,7 +94,7 @@ tor::BraveTorClientUpdater* TestingBraveBrowserProcess::tor_client_updater() {
 }
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 ipfs::BraveIpfsClientUpdater*
 TestingBraveBrowserProcess::ipfs_client_updater() {
   return nullptr;
@@ -132,12 +132,10 @@ TestingBraveBrowserProcess::speedreader_rewriter_service() {
 }
 #endif
 
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
 brave_ads::ResourceComponent* TestingBraveBrowserProcess::resource_component() {
   NOTREACHED();
   return nullptr;
 }
-#endif
 
 void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {

@@ -219,6 +219,54 @@
     "message": "Vui lòng sao lưu ví Brave của bạn.",
     "description": "Description for backup wallet notification"
   },
+  "upholdBATNotAllowedForUserLearnMore": {
+    "message": "Tìm hiểu thêm",
+    "description": "Notification button text to learn more about why BAT is not allowed for user"
+  },
+  "upholdBATNotAllowedForUserTitle": {
+    "message": "Lỗi: BAT không khả dụng",
+    "description": "Title for BAT not allowed for user notification"
+  },
+  "upholdBATNotAllowedForUserNotification": {
+    "message": "BAT chưa được hỗ trợ trong khu vực của bạn trên Uphold.",
+    "description": "Description for BAT not allowed for user notification"
+  },
+  "upholdBlockedUserLearnMore": {
+    "message": "Tìm hiểu thêm",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
+  "upholdBlockedUserTitle": {
+    "message": "Lỗi: Tài khoản bị chặn",
+    "description": "Title for blocked user notification"
+  },
+  "upholdBlockedUserNotification": {
+    "message": "Tài khoản của bạn tại Uphold hiện đang bị khóa.",
+    "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "Tìm hiểu thêm",
+    "description": "Notification button text to learn more about the pending user status"
+  },
+  "upholdPendingUserTitle": {
+    "message": "Lỗi: Treo tài khoản",
+    "description": "Title for pending user notification"
+  },
+  "upholdPendingUserNotification": {
+    "message": "Tài khoản của bạn tại Uphold vẫn đang chờ xử lý.",
+    "description": "Description for pending user notification"
+  },
+  "upholdRestrictedUserLearnMore": {
+    "message": "Tìm hiểu thêm",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
+  "upholdRestrictedUserTitle": {
+    "message": "Lỗi: Tài khoản bị hạn chế",
+    "description": "Title for restricted user notification"
+  },
+  "upholdRestrictedUserNotification": {
+    "message": "Tài khoản của bạn tại Uphold hiện đang bị hạn chế.",
+    "description": "Description for restricted user notification"
+  },
   "deviceLimitReachedLearnMore": {
     "message": "Tìm hiểu thêm",
     "description": "Notification button text to learn more about device limit"
@@ -308,7 +356,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Người sáng tạo này hiện không được định cấu hình để nhận mẹo từ ví của bạn. Mọi mẹo bạn tạo sẽ vẫn chờ xử lý trong ví của bạn và tự động thử lại trong 90 ngày.",
+    "message": "Người sáng tạo này hiện không được định cấu hình để nhận tiền thưởng từ ví của bạn. Mọi tiền thưởng bạn trả sẽ vẫn chờ xử lý trong ví của bạn và tự động thử lại trong vòng 90 ngày.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
