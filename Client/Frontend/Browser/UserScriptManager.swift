@@ -281,12 +281,16 @@ class UserScriptManager {
         let replacements = [
             "$<Playlist>": "Playlist_\(token)",
             "$<security_token>": "\(token)",
+            "$<tagNode>": "tagNode_\(token)",
+            "$<tagUUID>": "tagUUID_\(token)",
+            "$<mediaCurrentTimeFromTag>": "mediaCurrentTimeFromTag_\(token)",
             "$<sendMessage>": "playlistHelper_sendMessage_\(token)",
             "$<handler>": "playlistHelper_\(messageHandlerTokenString)",
             "$<notify>": "notify_\(token)",
             "$<onLongPressActivated>": "onLongPressActivated_\(token)",
             "$<setupLongPress>": "setupLongPress_\(token)",
             "$<setupDetector>": "setupDetector_\(token)",
+            "$<setupTagNode>": "setupTagNode_\(token)",
             "$<notifyNodeSource>": "notifyNodeSource_\(token)",
             "$<notifyNode>": "notifyNode_\(token)",
             "$<observeNode>": "observeNode_\(token)",
@@ -295,6 +299,7 @@ class UserScriptManager {
             "$<getAllVideoElements>": "getAllVideoElements_\(token)",
             "$<getAllAudioElements>": "getAllAudioElements_\(token)",
             "$<onReady>": "onReady_\(token)",
+            "$<requestWhenIdleShim>": "requestWhenIdleShim_\(token)",
             "$<observePage>": "observePage_\(token)",
         ]
         

@@ -171,7 +171,8 @@ class PlaylistManager: NSObject {
         downloadManager.cancelDownload(item: item)
     }
     
-    func delete(item: PlaylistInfo) {
+    @discardableResult
+    func delete(item: PlaylistInfo) -> Bool {
         cancelDownload(item: item)
         
         if let cacheItem = PlaylistItem.getItem(pageSrc: item.pageSrc),
@@ -181,10 +182,13 @@ class PlaylistManager: NSObject {
             if deleteCache(item: item) {
                 PlaylistItem.removeItem(item)
                 delegate?.onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
+                return true
             }
+            return false
         } else {
             PlaylistItem.removeItem(item)
             delegate?.onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
+            return true
         }
     }
     
@@ -198,9 +202,11 @@ class PlaylistManager: NSObject {
             
             do {
                 let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
-                try FileManager.default.removeItem(at: url)
-                PlaylistItem.updateCache(pageSrc: item.pageSrc, cachedData: nil)
-                delegate?.onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
+                if FileManager.default.fileExists(atPath: url.path) {
+                    try FileManager.default.removeItem(atPath: url.path)
+                    PlaylistItem.updateCache(pageSrc: item.pageSrc, cachedData: nil)
+                    delegate?.onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
+                }
                 return true
             } catch {
                 log.error("An error occured deleting Playlist Cached Item \(item.name): \(error)")

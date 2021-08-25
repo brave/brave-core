@@ -165,9 +165,18 @@ extension PlaylistMediaInfo: MPPlayableContentDelegate {
                     }
                     
                     if let newItem = newItem, let url = URL(string: newItem.src) {
-                        self.playerView?.load(url: url, resourceDelegate: nil, autoPlayEnabled: autoPlayEnabled)
+                        let group = DispatchGroup()
+                        group.enter()
+                        self.playerView?.load(url: url, resourceDelegate: nil, autoPlayEnabled: autoPlayEnabled) {
+                            group.leave()
+                        }
 
+                        group.enter()
                         PlaylistItem.updateItem(newItem) {
+                            group.leave()
+                        }
+                        
+                        group.notify(queue: .main) {
                             completion(.none)
                         }
                     } else {
@@ -199,7 +208,9 @@ extension PlaylistMediaInfo: MPPlayableContentDelegate {
                     
                     if canStream {
                         self.playerView?.seek(to: 0.0)
-                        self.playerView?.load(url: url, resourceDelegate: nil, autoPlayEnabled: autoPlayEnabled)
+                        self.playerView?.load(url: url, resourceDelegate: nil, autoPlayEnabled: autoPlayEnabled, completion: {
+                            log.debug("Playlist Item Loaded")
+                        })
                         
                         if let player = self.playerView?.player {
                             self.playerStatusObserver = PlaylistPlayerStatusObserver(player: player, onStatusChanged: { status in
@@ -233,8 +244,9 @@ extension PlaylistMediaInfo: MPPlayableContentDelegate {
         } else {
             // Load from the cache since this item was downloaded before..
             let asset = PlaylistManager.shared.assetAtIndex(index)
-            self.playerView?.load(asset: asset, autoPlayEnabled: autoPlayEnabled)
-            completion(.none)
+            self.playerView?.load(asset: asset, autoPlayEnabled: autoPlayEnabled) {
+                completion(.none)
+            }
         }
     }
 }

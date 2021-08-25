@@ -87,6 +87,18 @@ extension BrowserViewController: TopToolbarDelegate {
         // Maybe we want to add something here down the road
         return false
     }
+    
+    func topToolbarDidPressPlaylistButton(_ urlBar: TopToolbarView) {
+        let state = urlBar.locationView.playlistButton.buttonState
+        switch state {
+        case .addToPlaylist:
+            showPlaylistPopover(tab: tabManager.selectedTab, state: .addToPlaylist)
+        case .addedToPlaylist:
+            showPlaylistPopover(tab: tabManager.selectedTab, state: .addedToPlaylist)
+        case .none:
+            break
+        }
+    }
 
     func locationActions(for topToolbar: TopToolbarView) -> [AccessibleAction] {
         if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs {
@@ -534,7 +546,7 @@ extension BrowserViewController: ToolbarDelegate {
         if let url = selectedTabURL, let tab = tabManager.selectedTab {
             activities = shareActivities(for: url, tab: tab, sourceView: view, sourceRect: self.view.convert(self.topToolbar.menuButton.frame, from: self.topToolbar.menuButton.superview), arrowDirection: .up)
         }
-        let initialHeight: CGFloat = selectedTabURL != nil ? 470 : 370
+        let initialHeight: CGFloat = selectedTabURL != nil ? 470 : 420
         let menuController = MenuViewController(initialHeight: initialHeight, content: { menuController in
             VStack(spacing: 6) {
                 featuresMenuSection(menuController)
@@ -542,7 +554,7 @@ extension BrowserViewController: ToolbarDelegate {
                 destinationMenuSection(menuController)
                 if let tabURL = selectedTabURL {
                     Divider()
-                    activitiesMenuSection(menuController, tabURL: tabURL, activities: activities)
+                    PageActionsMenuSection(browserViewController: self, tabURL: tabURL, activities: activities)
                 }
             }
         })

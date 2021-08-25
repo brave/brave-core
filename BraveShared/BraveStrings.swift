@@ -178,6 +178,7 @@ extension Strings {
 // MARK:-  TabLocationView.swift
 extension Strings {
     public static let tabToolbarStopButtonAccessibilityLabel = NSLocalizedString("TabToolbarStopButtonAccessibilityLabel", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Stop", comment: "Accessibility Label for the tab toolbar Stop button")
+    public static let tabToolbarPlaylistButtonAccessibilityLabel = NSLocalizedString("TabToolbarPlaylistButtonAccessibilityLabel", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Playlist", comment: "Accessibility Label for the tab toolbar Playlist button")
     public static let tabToolbarReloadButtonAccessibilityLabel = NSLocalizedString("TabToolbarReloadButtonAccessibilityLabel", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Reload", comment: "Accessibility Label for the tab toolbar Reload button")
     public static let tabToolbarSearchAddressPlaceholderText = NSLocalizedString("TabToolbarSearchAddressPlaceholderText", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Search or enter address", comment: "The text shown in the URL bar on about:home")
     public static let tabToolbarLockImageAccessibilityLabel = NSLocalizedString("TabToolbarLockImageAccessibilityLabel", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Secure connection", comment: "Accessibility label for the lock icon, which is only present if the connection is secure")
@@ -1375,6 +1376,36 @@ extension Strings {
                               bundle: .braveShared,
                               value: "Adding video and audio files for offline use can use a lot of storage on your device. Please remove some files to free up storage space.",
                               comment: "When the user's disk space is almost full")
+        
+        public static let playlistPopoverAddTitle =
+            NSLocalizedString("playlist.popoverAddTitle",
+                              bundle: .braveShared,
+                              value: "Would you like to add this media to your Brave Playlist?",
+                              comment: "Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar")
+        
+        public static let playlistPopoverAddBody =
+            NSLocalizedString("playlist.popoverAddBody",
+                              bundle: .braveShared,
+                              value: "Brave Playlists support Offline Playback, Picture-in-picture, continuous playback and repeat modes.",
+                              comment: "Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar")
+        
+        public static let playlistPopoverAddedTitle =
+            NSLocalizedString("playlist.popoverAddedTitle",
+                              bundle: .braveShared,
+                              value: "This media is in your Brave Playlist",
+                              comment: "Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar")
+        
+        public static let playlistPopoverOpenInBravePlaylist =
+            NSLocalizedString("playlist.popoverOpenInBravePlaylist",
+                              bundle: .braveShared,
+                              value: "Open In Brave Playlist",
+                              comment: "Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar")
+        
+        public static let playlistPopoverRemoveFromBravePlaylist =
+            NSLocalizedString("playlist.popoverRemoveFromBravePlaylist",
+                              bundle: .braveShared,
+                              value: "Remove",
+                              comment: "Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar")
     }
 }
 

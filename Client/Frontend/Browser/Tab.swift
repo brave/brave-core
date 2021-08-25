@@ -100,6 +100,8 @@ class Tab: NSObject {
     var mimeType: String?
     var isEditing: Bool = false
     var shouldClassifyLoadsForAds = true
+    var playlistItem: PlaylistInfo?
+    var playlistItemState: PlaylistItemAddedState = .none
     
     /// The tabs new tab page controller.
     ///
