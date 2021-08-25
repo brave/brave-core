@@ -10,19 +10,82 @@ if (!window.__firefox__) {
     enumerable: false,
     configurable: false,
     writable: false,
-    value: {
-      userScripts: {},
-      includeOnce: function(userScript, initializer) {
-        if (!__firefox__.userScripts[userScript]) {
-          __firefox__.userScripts[userScript] = true;
-          if (typeof initializer === 'function') {
-            initializer();
-          }
-          return false;
-        }
+    value: (function() {
+        'use strict';
+        
+        let userScripts = {};
+        let values = {};
+        let includeOnce = function(userScript, initializer) {
+            if (!userScripts[userScript]) {
+              userScripts[userScript] = true;
+              if (typeof initializer === 'function') {
+                initializer();
+              }
+              return false;
+            }
 
-        return true;
-      }
-    }
+            return true;
+        };
+        
+        let proxy = new Proxy({}, {
+            get(target, property, receiver) {
+                const descriptor = Object.getOwnPropertyDescriptor(target, property);
+                if (descriptor && !descriptor.configurable && !descriptor.writable) {
+                    return Reflect.get(target, property, receiver);
+                }
+                
+                if (property === 'includeOnce') {
+                    return includeOnce;
+                }
+                
+                return Reflect.get(values, property, receiver);
+            },
+            
+            set(target, name, value, receiver) {
+                if (name === 'includeOnce') {
+                    return false;
+                }
+                
+                const descriptor = getOwnPropertyDescriptor(target, property);
+                if (descriptor && !descriptor.configurable && !descriptor.writable) {
+                    return false;
+                }
+                
+                return Reflect.set(values, name, value, receiver);
+            },
+            
+            defineProperty(target, property, descriptor) {
+                if (descriptor && !descriptor.configurable) {
+                    if (descriptor.set && !descriptor.get) {
+                        return false;
+                    }
+
+                    if (!descriptor.writable) {
+                        return Reflect.defineProperty(target, property, descriptor);
+                    }
+                }
+
+                return Reflect.defineProperty(values, property, descriptor);
+            },
+            
+            getOwnPropertyDescriptor(target, property) {
+                const descriptor = Object.getOwnPropertyDescriptor(target, property);
+                if (descriptor && !descriptor.configurable && !descriptor.writable) {
+                    return descriptor;
+                }
+                
+                return Object.getOwnPropertyDescriptor(values, property);
+            },
+            
+            ownKeys(target) {
+                var keys = [];
+                keys = keys.concat(Object.keys(target));
+                keys = keys.concat(Object.getOwnPropertyNames(target));
+                return keys;
+            }
+        });
+        
+        return proxy;
+    })()
   });
 }
