@@ -125,6 +125,16 @@ std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
   return hdkey;
 }
 
+// static
+std::unique_ptr<HDKey> HDKey::GenerateFromPrivateKey(
+    const std::vector<uint8_t>& private_key) {
+  if (private_key.size() != 32)
+    return nullptr;
+  std::unique_ptr<HDKey> hd_key = std::make_unique<HDKey>(0, 0, 0);
+  hd_key->SetPrivateKey(private_key);
+  return hd_key;
+}
+
 void HDKey::SetPrivateKey(const std::vector<uint8_t>& value) {
   if (value.size() != 32) {
     LOG(ERROR) << __func__ << ": pivate key must be 32 bytes";
