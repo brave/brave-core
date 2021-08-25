@@ -30,6 +30,7 @@ class BraveVPNOSConnectionAPI {
   };
 
   static BraveVPNOSConnectionAPI* GetInstance();
+  static BraveVPNOSConnectionAPI* GetInstanceForTest();
 
   BraveVPNOSConnectionAPI(const BraveVPNOSConnectionAPI&) = delete;
   BraveVPNOSConnectionAPI& operator=(const BraveVPNOSConnectionAPI&) = delete;

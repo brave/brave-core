@@ -10,6 +10,16 @@ namespace brave_vpn {
 BraveVPNConnectionInfo::BraveVPNConnectionInfo() = default;
 BraveVPNConnectionInfo::~BraveVPNConnectionInfo() = default;
 
+BraveVPNConnectionInfo::BraveVPNConnectionInfo(
+    const BraveVPNConnectionInfo& info) = default;
+BraveVPNConnectionInfo& BraveVPNConnectionInfo::operator=(
+    const BraveVPNConnectionInfo& info) = default;
+
+bool BraveVPNConnectionInfo::IsValid() const {
+  // TODO(simonhong): Improve credentials validation.
+  return !hostname_.empty() && !username_.empty() && !password_.empty();
+}
+
 void BraveVPNConnectionInfo::SetConnectionInfo(
     const std::string& connection_name,
     const std::string& hostname,
