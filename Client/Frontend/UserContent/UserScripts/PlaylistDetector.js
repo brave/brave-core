@@ -1,25 +1,6 @@
-// The below is needed because the script may not be web-packed into a bundle so it may be missing the run-once code
-
-// MARK: - Include Once
-
-if (!window.__firefox__) {
-    window.__firefox__ = {};
-}
-
-if (!window.__firefox__.includeOnce) {
-    window.__firefox__ = {};
-    window.__firefox__.includeOnce = function(key, func) {
-        var keys = {};
-        if (!keys[key]) {
-            keys[key] = true;
-            func();
-        }
-    };
-}
-
 // MARK: - Media Detection
 
-window.__firefox__.includeOnce("$<PlaylistDetector>", function() {
+window.__firefox__.includeOnce("PlaylistDetector", function() {
     function is_nan(value) {
         return typeof value === "number" && value !== value;
     }
