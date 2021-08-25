@@ -14,29 +14,7 @@
 
 namespace {
 
-bool ParseSingleStringResult(const std::string& json, std::string* result) {
-  DCHECK(result);
-
-  base::Value result_v;
-  if (!brave_wallet::ParsePayload(json, "result", &result_v))
-    return false;
-
-  const std::string* result_str = result_v.GetIfString();
-  if (!result_str)
-    return false;
-
-  *result = *result_str;
-
-  return true;
-}
-
-}  // namespace
-
-namespace brave_wallet {
-
-bool ParsePayload(const std::string& json,
-                  const std::string& path,
-                  base::Value* result) {
+bool ParseResult(const std::string& json, base::Value* result) {
   DCHECK(result);
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
@@ -52,7 +30,7 @@ bool ParsePayload(const std::string& json,
     return false;
   }
 
-  const base::Value* result_v = response_dict->FindPath(path);
+  const base::Value* result_v = response_dict->FindPath("result");
   if (!result_v)
     return false;
 
@@ -60,6 +38,26 @@ bool ParsePayload(const std::string& json,
 
   return true;
 }
+
+bool ParseSingleStringResult(const std::string& json, std::string* result) {
+  DCHECK(result);
+
+  base::Value result_v;
+  if (!ParseResult(json, &result_v))
+    return false;
+
+  const std::string* result_str = result_v.GetIfString();
+  if (!result_str)
+    return false;
+
+  *result = *result_str;
+
+  return true;
+}
+
+}  // namespace
+
+namespace brave_wallet {
 
 bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num) {
   std::string block_num_str;
@@ -87,33 +85,12 @@ bool ParseEthGetTransactionCount(const std::string& json, uint256_t* count) {
   return true;
 }
 
-std::string ParseRequestMethodName(const std::string& json) {
-  std::string method;
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
-  if (!records_v) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return method;
-  }
-
-  const base::DictionaryValue* request_dict;
-  if (!records_v->GetAsDictionary(&request_dict)) {
-    return method;
-  }
-
-  if (!request_dict->GetString("method", &method))
-    return method;
-  return method;
-}
-
 bool ParseEthGetTransactionReceipt(const std::string& json,
                                    TransactionReceipt* receipt) {
   DCHECK(receipt);
 
   base::Value result;
-  if (!ParsePayload(json, "result", &result))
+  if (!ParseResult(json, &result))
     return false;
   const base::DictionaryValue* result_dict = nullptr;
   if (!result.GetAsDictionary(&result_dict))

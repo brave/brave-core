@@ -44,7 +44,8 @@ import {
   WalletPanelState,
   WalletAccountType,
   BuySendSwapViewTypes,
-  AccountAssetOptionType
+  AccountAssetOptionType,
+  EthereumChain
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
@@ -430,7 +431,8 @@ function Container (props: Props) {
             onApprove={onApproveAddNetwork}
             onCancel={onCancelAddNetwork}
             onLearnMore={onNetworkLearnMore}
-            networkPayload={networkPayload}          />
+            networkPayload={networkPayload}
+          />
         </SignContainer>
       </PanelWrapper>
     )

@@ -2,11 +2,11 @@ import { AccountAssetOptionType, UserAccountType } from '../constants/types'
 
 const wyreID = 'AC_MGNVBGHPA9T'
 
-export function BuyAssetUrl (network: Network, asset: AccountAssetOptionType, account: UserAccountType, buyAmount: string) {
-  switch (network) {
-    case "0x1":
+export function BuyAssetUrl (networkChainId: string, asset: AccountAssetOptionType, account: UserAccountType, buyAmount: string) {
+  switch (networkChainId) {
+    case '0x1':
       return `https://pay.sendwyre.com/?dest=ethereum:${account.address}&destCurrency=${asset.asset.symbol}&amount=${buyAmount}&accountId=${wyreID}&paymentMethod=debit-card`
-    case "0x3":
+    case '0x3':
       return 'https://faucet.metamask.io/'
     case '0x2a':
       return 'https://github.com/kovan-testnet/faucet'

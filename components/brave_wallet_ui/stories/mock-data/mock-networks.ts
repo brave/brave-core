@@ -8,11 +8,9 @@ export const mockNetworks: EthereumChain[] = [
     chainName: 'Ethereum Main Net',
     rpcUrls: ['https://mainnet.infura.io/v3/'],
     blockExplorerUrls: ['https://etherscan.io/', 'https://etherchain.org/'],
-    currency: {
-      symbol: 'ETH',
-      name: 'Ethereum',
-      decimals: 18
-    },
+    symbol: 'ETH',
+    name: 'Ethereum',
+    decimals: 18,
     iconUrls: [ETHIconUrl]
   }
 ]

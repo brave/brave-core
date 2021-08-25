@@ -9,9 +9,9 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller_events_observer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -64,7 +64,7 @@ class BraveWalletProviderImpl final
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
   mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
-  std::unordered_map<size_t, AddEthereumChainCallback> chain_callbacks_;
+  base::flat_map<size_t, AddEthereumChainCallback> chain_callbacks_;
   mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
   PrefService* prefs_ = nullptr;
   base::WeakPtrFactory<BraveWalletProviderImpl> weak_factory_;

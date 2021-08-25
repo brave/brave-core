@@ -7,11 +7,16 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/storage_partition.h"
@@ -24,6 +29,20 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+
+namespace {
+
+void UpdateCustomNetworks(PrefService* prefs,
+                          std::vector<base::Value>* values) {
+  ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  base::ListValue* list = update.Get();
+  list->ClearList();
+  for (auto& it : *values) {
+    list->Append(std::move(it));
+  }
+}
+
+}  // namespace
 
 namespace brave_wallet {
 
@@ -38,6 +57,7 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
         &EthJsonRpcControllerUnitTest::ResourceRequest, this);
     url_loader_factory_.SetInterceptor(std::move(resource_request));
     user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
+    prefs_.registry()->RegisterListPref(kBraveWalletCustomNetworks);
   }
 
   ~EthJsonRpcControllerUnitTest() override = default;
@@ -83,18 +103,95 @@ TEST_F(EthJsonRpcControllerUnitTest, SetNetwork) {
   std::vector<mojom::EthereumChainPtr> networks;
   brave_wallet::GetAllKnownChains(&networks);
   for (const auto& network : networks) {
+    bool callback_is_called = false;
     controller.SetNetwork(network->chain_id);
-    controller.GetChainId(base::BindOnce(
-        [](const std::string& expected_id, const std::string& chain_id) {
+    const std::string& expected_id = network->chain_id;
+    controller.GetChainId(base::BindLambdaForTesting(
+        [&callback_is_called, &expected_id](const std::string& chain_id) {
           EXPECT_EQ(chain_id, expected_id);
-        },
-        network->chain_id));
-    controller.GetNetworkUrl(base::BindOnce(
-        [](const std::string& expected_url, const std::string& spec) {
+          callback_is_called = true;
+        }));
+    ASSERT_TRUE(callback_is_called);
+
+    callback_is_called = false;
+    const std::string& expected_url = network->rpc_urls.front();
+    controller.GetNetworkUrl(base::BindLambdaForTesting(
+        [&callback_is_called, &expected_url](const std::string& spec) {
           EXPECT_EQ(GURL(spec).GetOrigin(), GURL(expected_url).GetOrigin());
-        },
-        network->rpc_urls.front()));
+          callback_is_called = true;
+        }));
+    ASSERT_TRUE(callback_is_called);
   }
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, SetCustomNetwork) {
+  std::vector<base::Value> values;
+  brave_wallet::mojom::EthereumChain chain1(
+      "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "symbol_name", "symbol", 11);
+  auto chain_ptr1 = chain1.Clone();
+  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr1));
+
+  brave_wallet::mojom::EthereumChain chain2(
+      "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
+      {"https://url2.com"}, "symbol_name2", "symbol2", 22);
+  auto chain_ptr2 = chain2.Clone();
+  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr2));
+  UpdateCustomNetworks(prefs(), &values);
+
+  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
+
+  bool callback_is_called = false;
+  controller.SetNetwork(chain1.chain_id);
+  const std::string& expected_id = chain1.chain_id;
+  controller.GetChainId(base::BindLambdaForTesting(
+      [&callback_is_called, &expected_id](const std::string& chain_id) {
+        EXPECT_EQ(chain_id, expected_id);
+        callback_is_called = true;
+      }));
+  ASSERT_TRUE(callback_is_called);
+  callback_is_called = false;
+  const std::string& expected_url = chain1.rpc_urls.front();
+  controller.GetNetworkUrl(base::BindLambdaForTesting(
+      [&callback_is_called, &expected_url](const std::string& spec) {
+        EXPECT_EQ(GURL(spec).GetOrigin(), GURL(expected_url).GetOrigin());
+        callback_is_called = true;
+      }));
+  ASSERT_TRUE(callback_is_called);
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, GetAllNetworks) {
+  std::vector<base::Value> values;
+  brave_wallet::mojom::EthereumChain chain1(
+      "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "symbol_name", "symbol", 11);
+  auto chain_ptr1 = chain1.Clone();
+  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr1));
+
+  brave_wallet::mojom::EthereumChain chain2(
+      "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
+      {"https://url2.com"}, "symbol_name2", "symbol2", 22);
+  auto chain_ptr2 = chain2.Clone();
+  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr2));
+  UpdateCustomNetworks(prefs(), &values);
+
+  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
+  std::vector<mojom::EthereumChainPtr> expected_chains;
+  brave_wallet::GetAllChains(prefs(), &expected_chains);
+  bool callback_is_called = false;
+  controller.GetAllNetworks(base::BindLambdaForTesting(
+      [&callback_is_called,
+       &expected_chains](std::vector<mojom::EthereumChainPtr> chains) {
+        EXPECT_EQ(expected_chains.size(), chains.size());
+
+        for (size_t i = 0; i < chains.size(); i++) {
+          ASSERT_TRUE(chains.at(i).Equals(expected_chains.at(i)));
+        }
+        callback_is_called = true;
+      }));
+  ASSERT_TRUE(callback_is_called);
   base::RunLoop().RunUntilIdle();
 }
 

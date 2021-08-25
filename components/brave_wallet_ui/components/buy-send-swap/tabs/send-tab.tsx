@@ -29,6 +29,7 @@ export interface Props {
   onSetSendAmount: (value: string) => void
   onSetToAddress: (value: string) => void
   onSelectPresetAmount: (percent: number) => void
+  networkList: EthereumChain[]
 }
 
 function SendTab (props: Props) {

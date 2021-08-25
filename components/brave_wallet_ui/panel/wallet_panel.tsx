@@ -19,7 +19,6 @@ function App () {
   React.useEffect(() => {
     chrome.braveTheme.getBraveThemeType(setInitialThemeType)
   }, [])
-  const state = store.getState().panel
   return (
     <Provider store={store}>
       {initialThemeType &&

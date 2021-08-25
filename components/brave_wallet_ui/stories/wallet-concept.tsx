@@ -56,7 +56,6 @@ export default {
 
 export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boolean }) => {
   const { onboarding, locked } = args
-  const MainnetChain = { chainId: '0x1', chainName: 'Mainnet', rpcUrls: [] }
   const [view] = React.useState<NavTypes>('crypto')
   const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(onboarding)
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
@@ -68,7 +67,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedTimeline, setSelectedTimeline] = React.useState<AssetPriceTimeframe>(AssetPriceTimeframe.OneDay)
   const [selectedAssetPriceHistory, setSelectedAssetPriceHistory] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
   const [selectedAsset, setSelectedAsset] = React.useState<TokenInfo>()
-  const [selectedNetwork, setSelectedNetwork] = React.useState<EthereumChain>(MainnetChain)
+  const [selectedNetwork, setSelectedNetwork] = React.useState<EthereumChain>(mockNetworks[0])
   const [selectedAccount, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
   const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
@@ -341,9 +340,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setToAsset(fromAsset)
   }
 
-
   const onSubmitBuy = (asset: AccountAssetOptionType) => {
-    const url = BuyAssetUrl(selectedNetwork, asset, selectedAccount, buyAmount)
+    const url = BuyAssetUrl(mockNetworks[0].chainId, asset, selectedAccount, buyAmount)
     if (url) {
       window.open(url, '_blank')
     }

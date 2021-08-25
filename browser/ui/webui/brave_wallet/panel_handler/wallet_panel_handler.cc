@@ -10,7 +10,9 @@
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/web3_provider_utils.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -52,10 +54,13 @@ void WalletPanelHandler::AddEthereumChainApproved(const std::string& payload,
     auto* prefs = user_prefs::UserPrefs::Get(contents->GetBrowserContext());
     ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
     base::ListValue* list = update.Get();
+    DLOG(INFO) << payload;
     absl::optional<base::Value> value = base::JSONReader::Read(payload);
-    list->Append(std::move(value).value_or(base::Value()));
+    if (value && brave_wallet::ValueToEthereumChain(value.value())) {
+      list->Append(std::move(value).value_or(base::Value()));
+    }
   }
-  size_t hash = base::FastHash(base::as_bytes(base::make_span(payload)));
+  size_t hash = base::FastHash(payload);
   brave_wallet::BraveWalletTabHelper::FromWebContents(contents)
       ->UserRequestCompleted(hash, std::string());
 }

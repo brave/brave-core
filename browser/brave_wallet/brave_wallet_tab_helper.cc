@@ -39,7 +39,7 @@ GURL GetAddEthereumChainPayloadWebUIURL(const GURL& webui_base_url,
   std::string query_str = base::JoinString(query_parts, "&");
   url::Replacements<char> replacements;
   replacements.SetQuery(query_str.c_str(), url::Component(0, query_str.size()));
-  std::string kAddEthereumChain = "addEthereumChain";
+  const std::string kAddEthereumChain = "addEthereumChain";
   replacements.SetRef(kAddEthereumChain.c_str(),
                       url::Component(0, kAddEthereumChain.size()));
   return webui_base_url.ReplaceComponents(replacements);
@@ -64,23 +64,23 @@ void BraveWalletTabHelper::ShowBubble() {
 
 void BraveWalletTabHelper::UserRequestCompleted(size_t hash,
                                                 const std::string& result) {
-  DCHECK(request_callbacks_.count(hash));
+  DCHECK(request_callbacks_.contains(hash));
   std::move(request_callbacks_[hash]).Run(result);
   request_callbacks_.erase(hash);
 }
 
 void BraveWalletTabHelper::RequestUserApproval(
-    const std::string& requestData,
+    const std::string& request_data,
     RequestEthereumChainCallback callback) {
   std::string requesting_origin;
   std::vector<std::string> accounts;
   int32_t tab_id = sessions::SessionTabHelper::IdForTab(web_contents_).id();
   GURL webui_url = GetAddEthereumChainPayloadWebUIURL(
-      GURL(kBraveUIWalletPanelURL), tab_id, requesting_origin, requestData);
+      GURL(kBraveUIWalletPanelURL), tab_id, requesting_origin, request_data);
   DCHECK(webui_url.is_valid());
 
-  size_t hash = base::FastHash(base::as_bytes(base::make_span(requestData)));
-  if (request_callbacks_.count(hash)) {
+  size_t hash = base::FastHash(request_data);
+  if (request_callbacks_.contains(hash)) {
     UserRequestCompleted(hash, std::string());
     return;
   }

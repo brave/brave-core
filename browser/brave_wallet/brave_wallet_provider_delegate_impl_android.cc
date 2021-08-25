@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_android.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 
@@ -18,7 +17,7 @@ void BraveWalletProviderDelegateImplAndroid::RequestEthereumPermissions(
     BraveWalletProviderDelegate::RequestEthereumPermissionsCallback callback) {}
 
 void BraveWalletProviderDelegateImplAndroid::RequestUserApproval(
-    const std::string& requestData,
+    const std::string& request_data,
     RequestEthereumChainCallback callback) {}
 
 void BraveWalletProviderDelegateImplAndroid::GetAllowedAccounts(

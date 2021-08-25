@@ -8,8 +8,8 @@
 
 #include <memory>
 #include <string>
-#include <unordered_map>
 
+#include "base/containers/flat_map.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -32,7 +32,7 @@ class BraveWalletTabHelper
 
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
   void ShowBubble();
-  void RequestUserApproval(const std::string& requestData,
+  void RequestUserApproval(const std::string& request_data,
                            RequestEthereumChainCallback callback);
   void UserRequestCompleted(size_t hash, const std::string& result);
   void CloseBubble();
@@ -44,7 +44,7 @@ class BraveWalletTabHelper
   friend class content::WebContentsUserData<BraveWalletTabHelper>;
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
   GURL GetBubbleURL();
-  std::unordered_map<size_t, RequestEthereumChainCallback> request_callbacks_;
+  base::flat_map<size_t, RequestEthereumChainCallback> request_callbacks_;
   std::unique_ptr<WalletBubbleManagerDelegate> wallet_bubble_manager_delegate_;
 #endif
   content::WebContents* web_contents_;

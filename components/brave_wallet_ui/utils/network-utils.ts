@@ -6,17 +6,23 @@ export const GetNetworkInfo = (chainId: string, list: EthereumChain[]) => {
       return it
     }
   }
-  return { chainId: '', chainName: '', rpcUrls: [], blockExplorerUrls: [],
-    iconUrls: [], symbol: '', name: '', decimals: 0 }
+  return {
+    chainId: '', chainName: '', rpcUrls: [], blockExplorerUrls: [],
+    iconUrls: [], symbol: '', name: '', decimals: 0
+  }
 }
 
 export const reduceNetworkDisplayName = (name: string) => {
-  const firstWord = name.split(' ')[0]
-  if (firstWord.length > 9) {
-    const firstEight = firstWord.slice(0, 6)
-    const reduced = firstEight.concat('..')
-    return reduced
+  if (!name) {
+    return ''
   } else {
-    return firstWord
+    const firstWord = name.split(' ')[0]
+    if (firstWord.length > 9) {
+      const firstEight = firstWord.slice(0, 6)
+      const reduced = firstEight.concat('..')
+      return reduced
+    } else {
+      return firstWord
+    }
   }
 }

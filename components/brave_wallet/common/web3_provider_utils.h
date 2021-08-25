@@ -8,11 +8,12 @@
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
-void ValueToEthereumChain(const base::Value& value,
-                          mojom::EthereumChain* chain);
+absl::optional<mojom::EthereumChain> ParameterValueToEthereumChain(
+    const base::Value& value);
 
 }  // namespace brave_wallet
 

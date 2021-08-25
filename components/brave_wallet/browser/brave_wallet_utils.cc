@@ -28,6 +28,7 @@
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "components/prefs/pref_service.h"
 #include "crypto/random.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"
 #include "url/gurl.h"
 
@@ -53,11 +54,9 @@ std::string GenerateMnemonicInternal(uint8_t* entropy, size_t size) {
 std::string GetInfuraProjectID() {
   std::string project_id(BRAVE_INFURA_PROJECT_ID);
   std::unique_ptr<base::Environment> env(base::Environment::Create());
-
   if (env->HasVar("BRAVE_INFURA_PROJECT_ID")) {
     env->GetVar("BRAVE_INFURA_PROJECT_ID", &project_id);
   }
-
   return project_id;
 }
 
@@ -76,17 +75,12 @@ const brave_wallet::mojom::KnownNetwork kKnownNetworks[] = {
     {"0x2a", "Kovan Test Network", "kovan", "https://kovan.etherscan.io"},
     {"0x539", "Localhost", "http://localhost:8545/", ""}};
 
-GURL GetKnownNetworkURL(const std::string& chain_id,
-                        const std::string& subdomain) {
-  if (chain_id == "0x539") {
-    return GURL(subdomain);
-  }
-
-  return GURL(
-      base::StringPrintf(GetUseStagingInfuraEndpoint()
-                             ? "https://%s-staging-infura.bravesoftware.com/%s"
-                             : "https://%s-infura.brave.com/%s",
-                         subdomain.c_str(), GetInfuraProjectID().c_str()));
+std::string GetURLForSubdomain(const std::string& subdomain) {
+  return base::StringPrintf(
+      GetUseStagingInfuraEndpoint()
+          ? "https://%s-staging-infura.bravesoftware.com/%s"
+          : "https://%s-infura.brave.com/%s",
+      subdomain.c_str(), GetInfuraProjectID().c_str());
 }
 
 brave_wallet::mojom::EthereumChainPtr GetKnownChain(
@@ -97,8 +91,9 @@ brave_wallet::mojom::EthereumChainPtr GetKnownChain(
       continue;
     result.chain_id = chain_id;
     result.chain_name = network.chain_name;
-    result.rpc_urls.push_back(
-        GetKnownNetworkURL(chain_id, network.subdomain).spec());
+    auto url = (chain_id == "0x539") ? network.subdomain
+                                     : GetURLForSubdomain(network.subdomain);
+    result.rpc_urls.push_back(url);
     result.block_explorer_urls.push_back(network.block_tracker_url);
     return result.Clone();
   }
@@ -126,10 +121,11 @@ void GetAllCustomChains(PrefService* prefs,
       prefs->GetList(kBraveWalletCustomNetworks);
   if (!custom_networks_list)
     return;
-  for (auto& it : custom_networks_list->GetList()) {
-    mojom::EthereumChain chain;
-    brave_wallet::ValueToEthereumChain(it, &chain);
-    result->push_back(chain.Clone());
+  for (const auto& it : custom_networks_list->GetList()) {
+    absl::optional<mojom::EthereumChain> chain =
+        brave_wallet::ValueToEthereumChain(it);
+    if (chain)
+      result->push_back(chain->Clone());
   }
 }
 
@@ -488,6 +484,57 @@ void SecureZeroData(void* data, size_t size) {
 // it unlocks.
 void UpdateLastUnlockPref(PrefService* prefs) {
   prefs->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+}
+
+absl::optional<mojom::EthereumChain> ValueToEthereumChain(
+    const base::Value& value) {
+  mojom::EthereumChain chain;
+  const base::DictionaryValue* params_dict = nullptr;
+  if (!value.GetAsDictionary(&params_dict) || !params_dict)
+    return absl::nullopt;
+
+  const std::string* chain_id = params_dict->FindStringKey("chainId");
+  if (!chain_id) {
+    return absl::nullopt;
+  }
+  chain.chain_id = *chain_id;
+
+  const std::string* chain_name = params_dict->FindStringKey("chainName");
+  if (chain_name) {
+    chain.chain_name = *chain_name;
+  }
+
+  const base::Value* explorerUrlsListValue =
+      params_dict->FindListKey("blockExplorerUrls");
+  if (explorerUrlsListValue) {
+    for (const auto& entry : explorerUrlsListValue->GetList())
+      chain.block_explorer_urls.push_back(entry.GetString());
+  }
+
+  const base::Value* iconUrlsValue = params_dict->FindListKey("iconUrls");
+  if (iconUrlsValue) {
+    for (const auto& entry : iconUrlsValue->GetList())
+      chain.icon_urls.push_back(entry.GetString());
+  }
+
+  const base::Value* rpcUrlsValue = params_dict->FindListKey("rpcUrls");
+  if (rpcUrlsValue) {
+    for (const auto& entry : rpcUrlsValue->GetList())
+      chain.rpc_urls.push_back(entry.GetString());
+  }
+  const std::string* symbol_name = params_dict->FindStringKey("name");
+  if (symbol_name) {
+    chain.name = *symbol_name;
+  }
+  const std::string* symbol = params_dict->FindStringKey("symbol");
+  if (symbol) {
+    chain.symbol = *symbol;
+  }
+  absl::optional<int> decimals = params_dict->FindIntKey("decimals");
+  if (decimals) {
+    chain.decimals = decimals.value();
+  }
+  return chain;
 }
 
 base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain) {

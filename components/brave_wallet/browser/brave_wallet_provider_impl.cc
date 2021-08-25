@@ -80,15 +80,15 @@ void BraveWalletProviderImpl::AddEthereumChain(
     return;
   }
   auto value = EthereumChainToValue(chain);
-  std::string chainJson;
-  if (!base::JSONWriter::Write(value, &chainJson)) {
+  std::string chain_json;
+  if (!base::JSONWriter::Write(value, &chain_json)) {
     RespondForEthereumChainRequest(
         std::move(callback),
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
-  size_t hash = base::FastHash(base::as_bytes(base::make_span(chainJson)));
-  if (chain_callbacks_.count(hash)) {
+  size_t hash = base::FastHash(chain_json);
+  if (chain_callbacks_.contains(hash)) {
     RespondForEthereumChainRequest(
         std::move(callback),
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
@@ -97,8 +97,9 @@ void BraveWalletProviderImpl::AddEthereumChain(
 
   chain_callbacks_[hash] = std::move(callback);
   delegate_->RequestUserApproval(
-      chainJson, base::BindOnce(&BraveWalletProviderImpl::OnChainApprovalResult,
-                                weak_factory_.GetWeakPtr(), hash));
+      chain_json,
+      base::BindOnce(&BraveWalletProviderImpl::OnChainApprovalResult,
+                     weak_factory_.GetWeakPtr(), hash));
   return;
 }
 
@@ -171,7 +172,7 @@ void BraveWalletProviderImpl::OnConnectionError() {
 
 void BraveWalletProviderImpl::OnChainApprovalResult(size_t hash,
                                                     const std::string& error) {
-  DCHECK(chain_callbacks_.count(hash));
+  DCHECK(chain_callbacks_.contains(hash));
   RespondForEthereumChainRequest(std::move(chain_callbacks_[hash]), error);
   chain_callbacks_.erase(hash);
 }

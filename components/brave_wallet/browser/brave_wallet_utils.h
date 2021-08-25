@@ -96,6 +96,8 @@ absl::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value& value);
 
 base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain);
+absl::optional<mojom::EthereumChain> ValueToEthereumChain(
+    const base::Value& value);
 void GetAllKnownChains(std::vector<mojom::EthereumChainPtr>* chains);
 const std::vector<mojom::KnownNetwork> GetAllKnownNetworks();
 void GetAllCustomChains(PrefService* prefs,

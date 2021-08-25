@@ -12,7 +12,7 @@
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "components/sync_preferences/pref_service_syncable.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/user_prefs/user_prefs.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -242,8 +242,7 @@ void EthJsonRpcController::OnGetTransactionReceipt(
 }
 
 // static
-void EthJsonRpcController::RegisterProfilePrefs(
-    user_prefs::PrefRegistrySyncable* registry) {
+void EthJsonRpcController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kBraveWalletCustomNetworks);
 }
 
