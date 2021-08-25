@@ -16,6 +16,9 @@ public class BraveManageSyncSettingsClassAdapter extends BraveClassVisitor {
     BraveManageSyncSettingsClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
+        deleteField(sBraveManageSyncSettingsClassName, "mTurnOffSync");
+        makeProtectedField(sManageSyncSettingsClassName, "mTurnOffSync");
+
         deleteField(sBraveManageSyncSettingsClassName, "mGoogleActivityControls");
         makeProtectedField(sManageSyncSettingsClassName, "mGoogleActivityControls");
 

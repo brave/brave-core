@@ -15,10 +15,11 @@ import org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPr
 
 // See org.brave.bytecode.BraveManageSyncSettingsClassAdapter
 public class BraveManageSyncSettings extends ManageSyncSettings {
+    private static final String PREF_ADVANCED_CATEGORY = "advanced_category";
+
+    private Preference mTurnOffSync;
     private Preference mGoogleActivityControls;
-
     private Preference mSyncEncryption;
-
     private Preference mManageSyncData;
 
     private CheckBoxPreference mSyncPaymentsIntegration;
@@ -27,9 +28,12 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
 
+        getPreferenceScreen().removePreference(mTurnOffSync);
         getPreferenceScreen().removePreference(mGoogleActivityControls);
         getPreferenceScreen().removePreference(mSyncEncryption);
         getPreferenceScreen().removePreference(mManageSyncData);
+
+        findPreference(PREF_ADVANCED_CATEGORY).setVisible(false);
 
         mSyncPaymentsIntegration.setVisible(false);
     }
