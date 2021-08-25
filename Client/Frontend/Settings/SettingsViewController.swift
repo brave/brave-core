@@ -251,10 +251,14 @@ class SettingsViewController: TableViewController {
             )
         }
         
-        general.rows.append(
-            .boolRow(title: Strings.enablePullToRefresh,
-                     option: Preferences.General.enablePullToRefresh,
-                     image: #imageLiteral(resourceName: "settings-pull-to-refresh").template)
+        general.rows.append(contentsOf: [
+                .boolRow(title: Strings.enablePullToRefresh,
+                         option: Preferences.General.enablePullToRefresh,
+                         image: #imageLiteral(resourceName: "settings-pull-to-refresh").template),
+                .boolRow(title: Strings.mediaAutoPlays,
+                         option: Preferences.General.mediaAutoPlays,
+                         image: #imageLiteral(resourceName: "settings-autoplay").template)
+            ]
         )
         
         if AppConstants.iOSVersionGreaterThanOrEqual(to: 14) && AppConstants.buildChannel == .release {

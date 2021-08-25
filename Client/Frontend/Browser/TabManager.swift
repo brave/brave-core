@@ -164,10 +164,6 @@ class TabManager: NSObject {
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General.blockPopups.value
         configuration.dataDetectorTypes = .all
         
-//        if !Preferences.General.mediaAutoPlays.value {
-//            configuration.mediaTypesRequiringUserActionForPlayback = .all
-//        }
-        
         UserReferralProgram.shared?.insertCookies(intoStore: configuration.websiteDataStore.httpCookieStore)
         return configuration
     }
