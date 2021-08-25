@@ -44,15 +44,11 @@ void ValueToEthereumChain(const base::Value& value,
     for (const auto& entry : rpcUrlsList->GetList())
       chain->rpc_urls.push_back(entry.GetString());
   }
-
   const base::DictionaryValue* currency_dict;
   if (params_dict->GetDictionary("nativeCurrency", &currency_dict)) {
-    if (!chain->currency) {
-      chain->currency = mojom::NativeCurrency::New();
-    }
-    currency_dict->GetString("name", &chain->currency->name);
-    currency_dict->GetString("symbol", &chain->currency->symbol);
-    chain->currency->decimals =
+    currency_dict->GetString("name", &chain->name);
+    currency_dict->GetString("symbol", &chain->symbol);
+    chain->decimals =
         currency_dict->FindIntPath("decimals").value_or(0);
   }
 }

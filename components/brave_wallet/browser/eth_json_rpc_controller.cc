@@ -423,8 +423,8 @@ GURL EthJsonRpcController::GetBlockTrackerUrlFromNetwork(std::string chain_id) {
   for (const auto& network : networks) {
     if (network->chain_id != chain_id)
       continue;
-    if (network->block_explorer_urls->size())
-      return GURL(network->block_explorer_urls->front());
+    if (network->block_explorer_urls.size())
+      return GURL(network->block_explorer_urls.front());
   }
   return GURL();
 }

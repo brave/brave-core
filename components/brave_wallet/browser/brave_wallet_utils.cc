@@ -99,8 +99,7 @@ brave_wallet::mojom::EthereumChainPtr GetKnownChain(
     result.chain_name = network.chain_name;
     result.rpc_urls.push_back(
         GetKnownNetworkURL(chain_id, network.subdomain).spec());
-    result.block_explorer_urls =
-        std::vector<std::string>({network.block_tracker_url});
+    result.block_explorer_urls.push_back(network.block_tracker_url);
     return result.Clone();
   }
   return nullptr;
@@ -497,16 +496,16 @@ base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain) {
   dict.SetStringKey("chainName", chain->chain_name);
 
   base::ListValue blockExplorerUrlsValue;
-  if (chain->block_explorer_urls) {
-    for (const auto& url : *chain->block_explorer_urls) {
+  if (!chain->block_explorer_urls.empty()) {
+    for (const auto& url : chain->block_explorer_urls) {
       blockExplorerUrlsValue.AppendString(url);
     }
   }
   dict.SetKey("blockExplorerUrls", std::move(blockExplorerUrlsValue));
 
   base::ListValue iconUrlsValue;
-  if (chain->icon_urls) {
-    for (const auto& url : *chain->icon_urls) {
+  if (!chain->icon_urls.empty()) {
+    for (const auto& url : chain->icon_urls) {
       iconUrlsValue.AppendString(url);
     }
   }
@@ -518,12 +517,9 @@ base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain) {
   }
   dict.SetKey("rpcUrls", std::move(rpcUrlsValue));
 
-  base::DictionaryValue currency;
-  if (chain->currency) {
-    currency.SetString("name", chain->currency->name);
-    currency.SetString("symbol", chain->currency->symbol);
-    currency.SetInteger("decimals", chain->currency->decimals);
-  }
+  dict.SetStringKey("name", chain->name);
+  dict.SetStringKey("symbol", chain->symbol);
+  dict.SetIntKey("decimals", chain->decimals);
   return dict;
 }
 

@@ -250,19 +250,15 @@ struct TxData1559 {
   string max_fee_per_gas;
 };
 
-struct NativeCurrency {
-  string symbol;
-  string name;
-  int32 decimals;
-};
-
 struct EthereumChain {
   string chain_id;
   string chain_name;
-  array<string>? block_explorer_urls;
-  array<string>? icon_urls;
+  array<string> block_explorer_urls;
+  array<string> icon_urls;
   array<string> rpc_urls;
-  NativeCurrency? currency;
+  string symbol;
+  string name;
+  int32 decimals;
 };
 
 interface EthJsonRpcController {

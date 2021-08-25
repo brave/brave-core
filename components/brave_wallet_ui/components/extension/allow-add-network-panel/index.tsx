@@ -101,11 +101,11 @@ function AllowAddNetworkPanel (props: Props) {
               </MessageBoxColumn>
               <MessageBoxColumn>
                 <NetworkTitle>{locale.allowAddNetworkCurrencySymbol}</NetworkTitle>
-                <NetworkDetail>{networkPayload.currency?.symbol}</NetworkDetail>
+                <NetworkDetail>{networkPayload.symbol}</NetworkDetail>
               </MessageBoxColumn>
               <MessageBoxColumn>
                 <NetworkTitle>{locale.allowAddNetworkExplorer}</NetworkTitle>
-                <NetworkDetail>{networkPayload.blockExplorerUrls ? networkPayload.blockExplorerUrls[0] : ''}</NetworkDetail>
+                <NetworkDetail>{networkPayload.blockExplorerUrls.length ? networkPayload.blockExplorerUrls[0] : ''}</NetworkDetail>
               </MessageBoxColumn>
             </>
           }

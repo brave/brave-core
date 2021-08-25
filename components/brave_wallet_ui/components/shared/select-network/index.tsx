@@ -9,7 +9,7 @@ export interface Props {
 
 function SelectNetwork (props: Props) {
   const { networks, onSelectNetwork } = props
-  return <>{networks.map((network) => <SelectNetworkItem key={network.chainId} network={network} onSelectNetwork={onSelectNetwork({ chainId: network.chainId, chainName: network.chainName, rpcUrls: network.rpcUrls })} />)}</>
+  return <>{networks.map((network) => <SelectNetworkItem key={network.chainId} network={network} onSelectNetwork={onSelectNetwork(network)} />)}</>
 }
 
 export default SelectNetwork
