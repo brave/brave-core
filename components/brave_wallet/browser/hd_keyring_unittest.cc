@@ -161,8 +161,14 @@ TEST(HDKeyringUnitTest, ImportedAccounts) {
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig)),
             "ce909e8ea6851bc36c007a0072d0524b07a3ff8d4e623aca4c71ca8e57250c4d0a"
             "3fc38fa8fbaaa81ead4b9f6bd03356b6f8bf18bccad167d78891636e1d6956");
-  keyring.RemoveImportedAccount("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB");
+  EXPECT_TRUE(keyring.RemoveImportedAccount(
+      "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB"));
   EXPECT_EQ(keyring.GetImportedAccountsNumber(), private_keys_size - 1);
+  // Delete a non existing account
+  EXPECT_FALSE(keyring.RemoveImportedAccount(
+      "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB"));
+  EXPECT_FALSE(keyring.RemoveImportedAccount(""));
+  EXPECT_FALSE(keyring.RemoveImportedAccount("*****0x*****"));
   EXPECT_TRUE(
       keyring.SignMessage("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", message)
           .empty());

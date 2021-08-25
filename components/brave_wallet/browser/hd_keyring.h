@@ -42,7 +42,7 @@ class HDKeyring {
   virtual std::string AddImportedAccount(
       const std::vector<uint8_t>& private_key);
   size_t GetImportedAccountsNumber() const;
-  void RemoveImportedAccount(const std::string& address);
+  bool RemoveImportedAccount(const std::string& address);
 
   // Bitcoin keyring can override this for different address calculation
   virtual std::string GetAddress(size_t index) const;

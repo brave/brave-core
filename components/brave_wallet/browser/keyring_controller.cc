@@ -566,7 +566,10 @@ void KeyringController::RemoveImportedAccount(
     return;
   }
 
-  default_keyring_->RemoveImportedAccount(address);
+  if (!default_keyring_->RemoveImportedAccount(address)) {
+    std::move(callback).Run(false);
+    return;
+  }
   RemoveImportedAccountForKeyring(prefs_, address, kDefaultKeyringId);
   for (const auto& observer : observers_) {
     observer->AccountsChanged();

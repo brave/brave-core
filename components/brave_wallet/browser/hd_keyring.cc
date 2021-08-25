@@ -80,8 +80,8 @@ size_t HDKeyring::GetImportedAccountsNumber() const {
   return imported_accounts_.size();
 }
 
-void HDKeyring::RemoveImportedAccount(const std::string& address) {
-  imported_accounts_.erase(address);
+bool HDKeyring::RemoveImportedAccount(const std::string& address) {
+  return imported_accounts_.erase(address) != 0;
 }
 
 std::string HDKeyring::GetAddress(size_t index) const {

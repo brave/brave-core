@@ -881,6 +881,15 @@ TEST_F(KeyringControllerUnitTest, ImportedAccounts) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
+  // remove invalid address
+  controller.RemoveImportedAccount(
+      "0xxxxxxxxxx0", base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
   callback_called = false;
   controller.GetDefaultKeyringInfo(
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
