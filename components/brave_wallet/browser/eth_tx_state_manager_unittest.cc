@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -70,7 +71,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
                              "0x0de0b6b3a7640000", std::vector<uint8_t>())));
   EthTxStateManager::TxMeta meta(std::move(tx));
   meta.id = EthTxStateManager::GenerateMetaID();
-  meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
+  meta.status = mojom::TransactionStatus::Submitted;
   meta.from = EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   meta.last_gas_price = 0x1234;
   meta.created_time = base::Time::Now();
@@ -254,42 +255,39 @@ TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
     if (i % 2 == 0) {
       if (i % 4 == 0)
         meta.from = addr1;
-      meta.status = EthTxStateManager::TransactionStatus::CONFIRMED;
+      meta.status = mojom::TransactionStatus::Confirmed;
     } else {
       if (i % 5 == 0)
         meta.from = addr2;
-      meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
+      meta.status = mojom::TransactionStatus::Submitted;
     }
     tx_state_manager.AddOrUpdateTx(meta);
   }
 
-  EXPECT_EQ(
-      tx_state_manager
-          .GetTransactionsByStatus(
-              EthTxStateManager::TransactionStatus::APPROVED, absl::nullopt)
-          .size(),
-      0u);
-  EXPECT_EQ(
-      tx_state_manager
-          .GetTransactionsByStatus(
-              EthTxStateManager::TransactionStatus::CONFIRMED, absl::nullopt)
-          .size(),
-      10u);
-  EXPECT_EQ(
-      tx_state_manager
-          .GetTransactionsByStatus(
-              EthTxStateManager::TransactionStatus::SUBMITTED, absl::nullopt)
-          .size(),
-      10u);
-
   EXPECT_EQ(tx_state_manager
-                .GetTransactionsByStatus(
-                    EthTxStateManager::TransactionStatus::APPROVED, addr1)
+                .GetTransactionsByStatus(mojom::TransactionStatus::Approved,
+                                         absl::nullopt)
                 .size(),
             0u);
+  EXPECT_EQ(tx_state_manager
+                .GetTransactionsByStatus(mojom::TransactionStatus::Confirmed,
+                                         absl::nullopt)
+                .size(),
+            10u);
+  EXPECT_EQ(tx_state_manager
+                .GetTransactionsByStatus(mojom::TransactionStatus::Submitted,
+                                         absl::nullopt)
+                .size(),
+            10u);
+
+  EXPECT_EQ(
+      tx_state_manager
+          .GetTransactionsByStatus(mojom::TransactionStatus::Approved, addr1)
+          .size(),
+      0u);
 
   auto confirmed_addr1 = tx_state_manager.GetTransactionsByStatus(
-      EthTxStateManager::TransactionStatus::CONFIRMED, addr1);
+      mojom::TransactionStatus::Confirmed, addr1);
   EXPECT_EQ(confirmed_addr1.size(), 5u);
   for (const auto& meta : confirmed_addr1) {
     unsigned id;
@@ -298,7 +296,7 @@ TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
   }
 
   auto submitted_addr2 = tx_state_manager.GetTransactionsByStatus(
-      EthTxStateManager::TransactionStatus::SUBMITTED, addr2);
+      mojom::TransactionStatus::Submitted, addr2);
   EXPECT_EQ(submitted_addr2.size(), 2u);
   for (const auto& meta : submitted_addr2) {
     unsigned id;
@@ -356,10 +354,10 @@ TEST_F(EthTxStateManagerUnitTest, RetireOldTxMeta) {
     EthTxStateManager::TxMeta meta;
     meta.id = base::NumberToString(i);
     if (i % 2 == 0) {
-      meta.status = EthTxStateManager::TransactionStatus::CONFIRMED;
+      meta.status = mojom::TransactionStatus::Confirmed;
       meta.confirmed_time = base::Time::Now();
     } else {
-      meta.status = EthTxStateManager::TransactionStatus::REJECTED;
+      meta.status = mojom::TransactionStatus::Rejected;
       meta.created_time = base::Time::Now();
     }
     tx_state_manager.AddOrUpdateTx(meta);
@@ -368,7 +366,7 @@ TEST_F(EthTxStateManagerUnitTest, RetireOldTxMeta) {
   EXPECT_TRUE(tx_state_manager.GetTx("0"));
   EthTxStateManager::TxMeta meta21;
   meta21.id = "20";
-  meta21.status = EthTxStateManager::TransactionStatus::CONFIRMED;
+  meta21.status = mojom::TransactionStatus::Confirmed;
   meta21.confirmed_time = base::Time::Now();
   tx_state_manager.AddOrUpdateTx(meta21);
   EXPECT_FALSE(tx_state_manager.GetTx("0"));
@@ -376,7 +374,7 @@ TEST_F(EthTxStateManagerUnitTest, RetireOldTxMeta) {
   EXPECT_TRUE(tx_state_manager.GetTx("1"));
   EthTxStateManager::TxMeta meta22;
   meta22.id = "21";
-  meta22.status = EthTxStateManager::TransactionStatus::REJECTED;
+  meta22.status = mojom::TransactionStatus::Rejected;
   meta22.created_time = base::Time::Now();
   tx_state_manager.AddOrUpdateTx(meta22);
   EXPECT_FALSE(tx_state_manager.GetTx("1"));
@@ -386,7 +384,7 @@ TEST_F(EthTxStateManagerUnitTest, RetireOldTxMeta) {
   EXPECT_TRUE(tx_state_manager.GetTx("3"));
   EthTxStateManager::TxMeta meta23;
   meta23.id = "22";
-  meta23.status = EthTxStateManager::TransactionStatus::SUBMITTED;
+  meta23.status = mojom::TransactionStatus::Submitted;
   meta23.created_time = base::Time::Now();
   tx_state_manager.AddOrUpdateTx(meta23);
   EXPECT_TRUE(tx_state_manager.GetTx("2"));

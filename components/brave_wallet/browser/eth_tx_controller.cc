@@ -72,7 +72,7 @@ void EthTxController::AddUnapprovedTransaction(
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.from = EthAddress::FromHex(from);
   meta.created_time = base::Time::Now();
-  meta.status = EthTxStateManager::TransactionStatus::UNAPPROVED;
+  meta.status = mojom::TransactionStatus::Unapproved;
   tx_state_manager_->AddOrUpdateTx(meta);
 
   for (Observer& observer : observers_)
@@ -94,7 +94,7 @@ void EthTxController::AddUnapproved1559Transaction(
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.from = EthAddress::FromHex(from);
   meta.created_time = base::Time::Now();
-  meta.status = EthTxStateManager::TransactionStatus::UNAPPROVED;
+  meta.status = mojom::TransactionStatus::Unapproved;
   tx_state_manager_->AddOrUpdateTx(meta);
 
   for (Observer& observer : observers_)
@@ -142,7 +142,7 @@ void EthTxController::RejectTransaction(const std::string& tx_meta_id,
     std::move(callback).Run(false);
     return;
   }
-  meta->status = EthTxStateManager::TransactionStatus::REJECTED;
+  meta->status = mojom::TransactionStatus::Rejected;
   tx_state_manager_->AddOrUpdateTx(*meta);
   std::move(callback).Run(true);
 }
@@ -161,7 +161,7 @@ void EthTxController::OnGetNextNonce(
   DCHECK(!keyring_controller_->IsLocked());
   keyring_controller_->SignTransactionByDefaultKeyring(
       meta->from.ToChecksumAddress(), meta->tx.get(), chain_id);
-  meta->status = EthTxStateManager::TransactionStatus::APPROVED;
+  meta->status = mojom::TransactionStatus::Approved;
   tx_state_manager_->AddOrUpdateTx(*meta);
   if (!meta->tx->IsSigned()) {
     LOG(ERROR) << "Transaction must be signed first";
@@ -189,7 +189,7 @@ void EthTxController::OnPublishTransaction(std::string tx_meta_id,
     return;
   }
   if (status) {
-    meta->status = EthTxStateManager::TransactionStatus::SUBMITTED;
+    meta->status = mojom::TransactionStatus::Submitted;
     meta->submitted_time = base::Time::Now();
     meta->tx_hash = tx_hash;
     tx_state_manager_->AddOrUpdateTx(*meta);

@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
@@ -66,13 +67,13 @@ void EthNonceTracker::OnGetNetworkNonce(EthAddress from,
     return;
   }
   auto confirmed_transactions = tx_state_manager_->GetTransactionsByStatus(
-      EthTxStateManager::TransactionStatus::CONFIRMED, from);
+      mojom::TransactionStatus::Confirmed, from);
   uint256_t local_highest = GetHighestLocallyConfirmed(confirmed_transactions);
 
   uint256_t highest_confirmed = std::max(network_nonce, local_highest);
 
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
-      EthTxStateManager::TransactionStatus::SUBMITTED, from);
+      mojom::TransactionStatus::Submitted, from);
 
   uint256_t highest_continuous_from =
       GetHighestContinuousFrom(pending_transactions, highest_confirmed);
