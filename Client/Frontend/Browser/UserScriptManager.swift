@@ -71,6 +71,14 @@ class UserScriptManager {
         }
     }
     
+    /// Whether or not the Media Background Playback is enabled
+    var isMediaBackgroundPlaybackEnabled: Bool {
+        didSet {
+            if oldValue == isMediaBackgroundPlaybackEnabled { return }
+            reloadUserScripts()
+        }
+    }
+    
     /// Stores domain specific scriplet, usually used for webcompat workarounds.
     var domainUserScript: DomainUserScript? {
         didSet {
@@ -110,7 +118,7 @@ class UserScriptManager {
         return false
     }
     
-    init(tab: Tab, isFingerprintingProtectionEnabled: Bool, isCookieBlockingEnabled: Bool, isU2FEnabled: Bool, isPaymentRequestEnabled: Bool, isWebCompatibilityMediaSourceAPIEnabled: Bool) {
+    init(tab: Tab, isFingerprintingProtectionEnabled: Bool, isCookieBlockingEnabled: Bool, isU2FEnabled: Bool, isPaymentRequestEnabled: Bool, isWebCompatibilityMediaSourceAPIEnabled: Bool, isMediaBackgroundPlaybackEnabled: Bool) {
         self.tab = tab
         self.isFingerprintingProtectionEnabled = isFingerprintingProtectionEnabled
         self.isCookieBlockingEnabled = isCookieBlockingEnabled
@@ -118,6 +126,7 @@ class UserScriptManager {
         self.isPaymentRequestEnabled = isPaymentRequestEnabled
         self.isWebCompatibilityMediaSourceAPIEnabled = isWebCompatibilityMediaSourceAPIEnabled
         self.isPlaylistEnabled = true
+        self.isMediaBackgroundPlaybackEnabled = isMediaBackgroundPlaybackEnabled
         reloadUserScripts()
     }
     
@@ -309,6 +318,27 @@ class UserScriptManager {
         
         return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()
+    
+    private let MediaBackgroundingScript: WKUserScript? = {
+        guard let path = Bundle.main.path(forResource: "MediaBackgrounding", ofType: "js"), let source = try? String(contentsOfFile: path) else {
+            log.error("Failed to load MediaBackgrounding.js")
+            return nil
+        }
+        
+        var alteredSource = source
+        let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+        
+        let replacements = [
+            "$<MediaBackgrounding>": "MediaBackgrounding_\(token)",
+            "$<handler>": "mediaBackgrounding_\(messageHandlerTokenString)",
+        ]
+        
+        replacements.forEach({
+            alteredSource = alteredSource.replacingOccurrences(of: $0.key, with: $0.value, options: .literal)
+        })
+        
+        return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }()
 
     private func reloadUserScripts() {
         tab?.webView?.configuration.userContentController.do {
@@ -347,6 +377,10 @@ class UserScriptManager {
             }
             
             if isPlaylistEnabled, let script = PlaylistHelperScript {
+                $0.addUserScript(script)
+            }
+            
+            if isMediaBackgroundPlaybackEnabled, let script = MediaBackgroundingScript {
                 $0.addUserScript(script)
             }
             

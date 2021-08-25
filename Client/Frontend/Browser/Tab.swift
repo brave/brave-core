@@ -243,7 +243,8 @@ class Tab: NSObject {
                 isCookieBlockingEnabled: Preferences.Privacy.blockAllCookies.value,
                 isU2FEnabled: webView.hasOnlySecureContent,
                 isPaymentRequestEnabled: webView.hasOnlySecureContent,
-                isWebCompatibilityMediaSourceAPIEnabled: Preferences.Playlist.webMediaSourceCompatibility.value)
+                isWebCompatibilityMediaSourceAPIEnabled: Preferences.Playlist.webMediaSourceCompatibility.value,
+                isMediaBackgroundPlaybackEnabled: Preferences.General.mediaAutoBackgrounding.value)
             tabDelegate?.tab?(self, didCreateWebView: webView)
         }
     }

@@ -71,6 +71,8 @@ extension Preferences {
         /// Sets Desktop UA for iPad by default (iOS 13+ & iPad only).
         /// Do not read it directly, prefer to use `UserAgent.shouldUseDesktopMode` instead.
         static let alwaysRequestDesktopSite = Option<Bool>(key: "general.always-request-desktop-site", default: UIDevice.isIpad)
+        /// Controls whether or not media should continue playing in the background
+        static let mediaAutoBackgrounding = Option<Bool>(key: "general.media-auto-backgrounding", default: false)
         /// Controls whether or not media auto-plays
         static let mediaAutoPlays = Option<Bool>(key: "general.media-auto-plays", default: true)
         /// Controls whether or not to show the last visited bookmarks folder

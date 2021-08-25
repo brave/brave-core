@@ -252,14 +252,16 @@ class SettingsViewController: TableViewController {
         }
         
         general.rows.append(contentsOf: [
-                .boolRow(title: Strings.enablePullToRefresh,
-                         option: Preferences.General.enablePullToRefresh,
-                         image: #imageLiteral(resourceName: "settings-pull-to-refresh").template),
-                .boolRow(title: Strings.mediaAutoPlays,
-                         option: Preferences.General.mediaAutoPlays,
-                         image: #imageLiteral(resourceName: "settings-autoplay").template)
-            ]
-        )
+            .boolRow(title: Strings.enablePullToRefresh,
+                     option: Preferences.General.enablePullToRefresh,
+                     image: #imageLiteral(resourceName: "settings-pull-to-refresh").template),
+            .boolRow(title: Strings.mediaAutoBackgrounding,
+                     option: Preferences.General.mediaAutoBackgrounding,
+                     image: #imageLiteral(resourceName: "background_play_settings_icon").template),
+            .boolRow(title: Strings.mediaAutoPlays,
+                     option: Preferences.General.mediaAutoPlays,
+                     image: #imageLiteral(resourceName: "settings-autoplay").template)
+        ])
         
         if AppConstants.iOSVersionGreaterThanOrEqual(to: 14) && AppConstants.buildChannel == .release {
             general.rows.append(.init(text: Strings.setDefaultBrowserSettingsCell, selection: { [unowned self] in
