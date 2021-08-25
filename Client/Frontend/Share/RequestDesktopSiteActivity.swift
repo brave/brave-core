@@ -6,7 +6,7 @@ import Foundation
 import Shared
 
 class RequestDesktopSiteActivity: UIActivity {
-    private let tab: Tab?
+    private weak var tab: Tab?
     fileprivate let callback: () -> Void
 
     init(tab: Tab?, callback: @escaping () -> Void) {
