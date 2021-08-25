@@ -18,7 +18,7 @@ public class UserReferralProgram {
     private static let clipboardPrefix = "F83AB73F-9852-4F01-ABA8-7830B8825993"
     
     struct HostUrl {
-        static let staging = "https://laptop-updates-staging.brave.com"
+        static let staging = "https://laptop-updates.bravesoftware.com"
         static let prod = "https://laptop-updates.brave.com"
     }
     
