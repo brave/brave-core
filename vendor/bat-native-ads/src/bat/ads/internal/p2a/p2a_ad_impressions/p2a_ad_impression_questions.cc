@@ -22,7 +22,7 @@ std::vector<std::string> CreateAdImpressionQuestions(
   std::vector<std::string> questions;
 
   if (!segment.empty()) {
-    const std::string parent_segment = SplitSegment(segment).front();
+    const std::string parent_segment = GetParentSegment(segment);
 
     std::string stripped_parent_segment =
         StripNonAlphaNumericCharacters(parent_segment);
