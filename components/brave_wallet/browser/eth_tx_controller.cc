@@ -51,14 +51,6 @@ void EthTxController::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
-void EthTxController::AddObserver(Observer* observer) {
-  observers_.AddObserver(observer);
-}
-
-void EthTxController::RemoveObserver(Observer* observer) {
-  observers_.RemoveObserver(observer);
-}
-
 void EthTxController::AddUnapprovedTransaction(
     mojom::TxDataPtr tx_data,
     const std::string& from,
@@ -75,8 +67,8 @@ void EthTxController::AddUnapprovedTransaction(
   meta.status = mojom::TransactionStatus::Unapproved;
   tx_state_manager_->AddOrUpdateTx(meta);
 
-  for (Observer& observer : observers_)
-    observer.OnNewUnapprovedTx(meta);
+  for (const auto& observer : observers_)
+    observer->OnNewUnapprovedTx(meta.id);
 
   std::move(callback).Run(true, meta.id);
 }
@@ -97,8 +89,8 @@ void EthTxController::AddUnapproved1559Transaction(
   meta.status = mojom::TransactionStatus::Unapproved;
   tx_state_manager_->AddOrUpdateTx(meta);
 
-  for (Observer& observer : observers_)
-    observer.OnNewUnapprovedTx(meta);
+  for (const auto& observer : observers_)
+    observer->OnNewUnapprovedTx(meta.id);
 
   std::move(callback).Run(true, meta.id);
 }
@@ -229,6 +221,11 @@ void EthTxController::MakeERC20TransferData(
   }
 
   std::move(callback).Run(true, data_decoded);
+}
+
+void EthTxController::AddObserver(
+    ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) {
+  observers_.Add(std::move(observer));
 }
 
 }  // namespace brave_wallet

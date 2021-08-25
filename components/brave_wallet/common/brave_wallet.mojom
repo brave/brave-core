@@ -260,10 +260,15 @@ enum TransactionStatus {
   Confirmed
 };
 
+interface EthTxControllerObserver {
+  OnNewUnapprovedTx(string tx_meta_id);
+};
+
 interface EthTxController {
   AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id);
   AddUnapproved1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_meta_id);
   ApproveTransaction(string tx_meta_id) => (bool status);
   RejectTransaction(string tx_meta_id) => (bool status);
   MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
+  AddObserver(pending_remote<EthTxControllerObserver> observer);
 };
