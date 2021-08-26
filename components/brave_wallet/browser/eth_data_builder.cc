@@ -39,6 +39,23 @@ bool BalanceOf(const std::string& address, std::string* data) {
   return brave_wallet::ConcatHexStrings(function_hash, params, data);
 }
 
+bool Approve(const std::string& spender_address,
+             uint256_t amount,
+             std::string* data) {
+  const std::string function_hash = GetFunctionHash("approve(address,uint256)");
+  std::string padded_address;
+  if (!brave_wallet::PadHexEncodedParameter(spender_address, &padded_address)) {
+    return false;
+  }
+  std::string padded_amount;
+  if (!PadHexEncodedParameter(Uint256ValueToHex(amount), &padded_amount)) {
+    return false;
+  }
+  std::vector<std::string> hex_strings = {function_hash, padded_address,
+                                          padded_amount};
+  return ConcatHexStrings(hex_strings, data);
+}
+
 }  // namespace erc20
 
 namespace unstoppable_domains {

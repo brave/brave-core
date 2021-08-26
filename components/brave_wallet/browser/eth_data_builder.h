@@ -21,6 +21,10 @@ bool Transfer(const std::string& to_address,
               std::string* data);
 // Returns the balance of an  address
 bool BalanceOf(const std::string& address, std::string* data);
+// Approves the use of funds to an address
+bool Approve(const std::string& spender_address,
+             uint256_t amount,
+             std::string* data);
 
 }  // namespace erc20
 
