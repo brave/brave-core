@@ -68,6 +68,21 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
 
   static std::string GetAccountPathByIndex(size_t index);
 
+  struct ImportedAccountInfo {
+    std::string account_name;
+    std::string account_address;
+    std::string encrypted_private_key;
+  };
+  static void SetImportedAccountForKeyring(PrefService* prefs,
+                                           const ImportedAccountInfo& info,
+                                           const std::string& id);
+  static std::vector<ImportedAccountInfo> GetImportedAccountsForKeyring(
+      PrefService* prefs,
+      const std::string& id);
+  static void RemoveImportedAccountForKeyring(PrefService* prefs,
+                                              const std::string& address,
+                                              const std::string& id);
+
   mojo::PendingRemote<mojom::KeyringController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::KeyringController> receiver);
 
@@ -85,6 +100,14 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void IsLocked(IsLockedCallback callback) override;
   void AddAccount(const std::string& account_name,
                   AddAccountCallback callback) override;
+  void AddImportedAccount(const std::string& account_name,
+                          const std::string& private_key,
+                          AddImportedAccountCallback callback) override;
+  void GetPrivateKeyForImportedAccount(
+      const std::string& address,
+      GetPrivateKeyForImportedAccountCallback callback) override;
+  void RemoveImportedAccount(const std::string& address,
+                             RemoveImportedAccountCallback callback) override;
   void IsWalletBackedUp(IsWalletBackedUpCallback callback) override;
   void NotifyWalletBackupComplete() override;
   void GetDefaultKeyringInfo(GetDefaultKeyringInfoCallback callback) override;
@@ -126,6 +149,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AccountMetasForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, CreateAndRestoreWallet);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AddAccount);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, ImportedAccounts);
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
 

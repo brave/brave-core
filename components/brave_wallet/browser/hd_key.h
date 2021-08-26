@@ -15,12 +15,6 @@
 
 namespace brave_wallet {
 
-FORWARD_DECLARE_TEST(HDKeyUnitTest, GenerateFromExtendedKey);
-FORWARD_DECLARE_TEST(HDKeyUnitTest, SetPrivateKey);
-FORWARD_DECLARE_TEST(HDKeyUnitTest, SetPublicKey);
-FORWARD_DECLARE_TEST(HDKeyUnitTest, DeriveChildFromPath);
-FORWARD_DECLARE_TEST(HDKeyUnitTest, SignAndVerifyAndRecover);
-
 // This class implement basic functionality of bip32 spec
 class HDKey {
  public:
@@ -32,6 +26,8 @@ class HDKey {
       const std::vector<uint8_t>& seed);
 
   static std::unique_ptr<HDKey> GenerateFromExtendedKey(const std::string& key);
+  static std::unique_ptr<HDKey> GenerateFromPrivateKey(
+      const std::vector<uint8_t>& private_key);
 
   // value must be 32 bytes
   void SetPrivateKey(const std::vector<uint8_t>& value);

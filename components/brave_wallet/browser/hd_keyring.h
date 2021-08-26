@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 
@@ -19,8 +20,6 @@ namespace brave_wallet {
 
 class EthTransaction;
 
-FORWARD_DECLARE_TEST(HDKeyringUnitTest, ConstructRootHDKey);
-FORWARD_DECLARE_TEST(HDKeyringUnitTest, SignMessage);
 class HDKeyring {
  public:
   enum Type { kDefault = 0, kLedger, kTrezor, kBitcoin };
@@ -32,15 +31,21 @@ class HDKeyring {
   virtual void ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                   const std::string& hd_path);
 
-  virtual void AddAccounts(size_t number = 1);
+  void AddAccounts(size_t number = 1);
   // This will return vector of address of all accounts
-  virtual std::vector<std::string> GetAccounts();
-  virtual size_t GetAccountsNumber() const;
+  std::vector<std::string> GetAccounts() const;
+  size_t GetAccountsNumber() const;
   // Only support removing accounts from the back to prevents gaps
-  virtual void RemoveAccount();
+  void RemoveAccount();
+
+  // address will be returned
+  virtual std::string AddImportedAccount(
+      const std::vector<uint8_t>& private_key);
+  size_t GetImportedAccountsNumber() const;
+  bool RemoveImportedAccount(const std::string& address);
 
   // Bitcoin keyring can override this for different address calculation
-  virtual std::string GetAddress(size_t index);
+  virtual std::string GetAddress(size_t index) const;
 
   // TODO(darkdh): Abstract Transacation class
   // eth_signTransaction
@@ -52,11 +57,14 @@ class HDKeyring {
                                            const std::vector<uint8_t>& message);
 
  protected:
+  std::string GetAddressInternal(const HDKey* hd_key) const;
   HDKey* GetHDKeyFromAddress(const std::string& address);
 
   std::unique_ptr<HDKey> root_;
   std::unique_ptr<HDKey> master_key_;
   std::vector<std::unique_ptr<HDKey>> accounts_;
+  // (address, key)
+  base::flat_map<std::string, std::unique_ptr<HDKey>> imported_accounts_;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(HDKeyringUnitTest, ConstructRootHDKey);
