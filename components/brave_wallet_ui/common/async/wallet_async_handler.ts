@@ -243,3 +243,15 @@ export default handler.middleware
 // const apiProxy = await getAPIProxy()
 // const result = await apiProxy.ethTxController.getAllTransactionInfo('0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7')
 // console.log('transactionInfos: ', result.transactionInfos)
+//
+// TODO(bbondy): For swap usage (ERC20 approve)
+//  const apiProxy = await getAPIProxy()
+// const approveDataResult = await apiProxy.ethTxController.makeERC20ApproveData("0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f", "0x0de0b6b3a7640000")
+// const txData = apiProxy.makeTxData('0x1' /* nonce */, '0x20000000000', '0xFDE8', '0x774171b92Ba6e1d57ac08D6b77AbDD0B51660310', '0x0', approveDataResult.data)
+// const addResult = await apiProxy.ethTxController.addUnapprovedTransaction(txData, '0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7')
+// if (!addResult.success) {
+//   console.log('Adding unapproved transaction failed, txData: ', txData)
+//   return
+// }
+// const approveResult = await apiProxy.ethTxController.approveTransaction(addResult.txMetaId)
+// console.log('approveResult: ', approveResult)

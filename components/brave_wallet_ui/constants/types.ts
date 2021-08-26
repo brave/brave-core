@@ -447,6 +447,11 @@ export interface MakeERC20TransferDataReturnInfo {
   data: number[]
 }
 
+export interface MakeERC20ApproveDataReturnInfo {
+  success: boolean
+  data: number[]
+}
+
 export interface TransactionInfo {
   id: string
   fromAddress: string
@@ -465,6 +470,7 @@ export interface EthTxController {
   approveTransaction: (txMetaId: string) => Promise<ApproveTransactionReturnInfo>
   rejectTransaction: (txMetaId: string) => Promise<RejectTransactionReturnInfo>
   makeERC20TransferData: (toAddress: string, amount: string) => Promise<MakeERC20TransferDataReturnInfo>
+  makeERC20ApproveData: (spenderAddress: string, amount: string) => Promise<MakeERC20ApproveDataReturnInfo>
   getAllTransactionInfo: (fromAddress: string) => Promise<GetAllTransactionInfoReturnInfo>
 }
 
