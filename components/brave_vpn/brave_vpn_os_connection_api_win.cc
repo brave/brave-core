@@ -35,15 +35,12 @@ BraveVPNOSConnectionAPIWin::~BraveVPNOSConnectionAPIWin() = default;
 
 void BraveVPNOSConnectionAPIWin::CreateVPNConnection(
     const BraveVPNConnectionInfo& info) {
-  const std::wstring name = base::UTF8ToWide(info.connection_name());
-  const std::wstring host = base::UTF8ToWide(info.hostname());
-  const std::wstring user = base::UTF8ToWide(info.username());
-  const std::wstring password = base::UTF8ToWide(info.password());
-
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&CreateEntry, name.c_str(), host.c_str(), user.c_str(),
-                     password.c_str()),
+      base::BindOnce(&CreateEntry, base::UTF8ToWide(info.connection_name()),
+                     base::UTF8ToWide(info.hostname()),
+                     base::UTF8ToWide(info.username()),
+                     base::UTF8ToWide(info.password())),
       base::BindOnce(&BraveVPNOSConnectionAPIWin::OnCreated,
                      weak_factory_.GetWeakPtr(), info.connection_name()));
 }
@@ -54,31 +51,27 @@ void BraveVPNOSConnectionAPIWin::UpdateVPNConnection(
 }
 
 void BraveVPNOSConnectionAPIWin::Connect(const std::string& name) {
-  const std::wstring w_name = base::UTF8ToWide(name);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&ConnectEntry, w_name.c_str()),
+      base::BindOnce(&ConnectEntry, base::UTF8ToWide(name)),
       base::BindOnce(&BraveVPNOSConnectionAPIWin::OnConnected,
                      weak_factory_.GetWeakPtr(), name));
 }
 
 void BraveVPNOSConnectionAPIWin::Disconnect(const std::string& name) {
-  const std::wstring w_name = base::UTF8ToWide(name);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&DisconnectEntry, w_name.c_str()),
+      base::BindOnce(&DisconnectEntry, base::UTF8ToWide(name)),
       base::BindOnce(&BraveVPNOSConnectionAPIWin::OnDisconnected,
                      weak_factory_.GetWeakPtr(), name));
 }
 
 void BraveVPNOSConnectionAPIWin::RemoveVPNConnection(const std::string& name) {
-  const std::wstring w_name = base::UTF8ToWide(name);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&RemoveEntry, w_name.c_str()),
+      base::BindOnce(&RemoveEntry, base::UTF8ToWide(name)),
       base::BindOnce(&BraveVPNOSConnectionAPIWin::OnRemoved,
                      weak_factory_.GetWeakPtr(), name));
-  RemoveEntry(w_name.c_str());
 }
 
 void BraveVPNOSConnectionAPIWin::OnCreated(const std::string& name,

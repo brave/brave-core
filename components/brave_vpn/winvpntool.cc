@@ -15,7 +15,6 @@
 
 #include "base/command_line.h"
 #include "base/logging.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/utils_win.h"
 
 // Simple Windows VPN configuration tool (using RAS API)
@@ -694,49 +693,48 @@ int main(int argc, char* argv[]) {
     PrintEntries();
 
   if (command_line->HasSwitch(kConnectCommand)) {
-    const std::string vpn_name = command_line->GetSwitchValueASCII(kVPNName);
+    const std::wstring vpn_name = command_line->GetSwitchValueNative(kVPNName);
     if (vpn_name.empty()) {
-      LOG(ERROR) << "missing parameters for remove!";
+      LOG(ERROR) << "missing parameters for connect!";
       LOG(ERROR) << "usage: vpntool.exe --connect --vpn_name=entry_name";
       return 0;
     }
 
-    const std::wstring w_name = base::UTF8ToWide(vpn_name);
-    ConnectEntry(w_name.c_str());
+    ConnectEntry(vpn_name);
     return 0;
   }
 
   if (command_line->HasSwitch(kDisconnectCommand)) {
-    const std::string vpn_name = command_line->GetSwitchValueASCII(kVPNName);
+    const std::wstring vpn_name = command_line->GetSwitchValueNative(kVPNName);
     if (vpn_name.empty()) {
-      LOG(ERROR) << "missing parameters for remove!";
+      LOG(ERROR) << "missing parameters for disconnect!";
       LOG(ERROR) << "usage: vpntool.exe --disconnect --vpn_name=entry_name";
       return 0;
     }
 
-    const std::wstring w_name = base::UTF8ToWide(vpn_name);
-    DisconnectEntry(w_name.c_str());
+    DisconnectEntry(vpn_name);
     return 0;
   }
 
   if (command_line->HasSwitch(kRemoveCommand)) {
-    const std::string vpn_name = command_line->GetSwitchValueASCII(kVPNName);
+    const std::wstring vpn_name = command_line->GetSwitchValueNative(kVPNName);
     if (vpn_name.empty()) {
       LOG(ERROR) << "missing parameters for remove!";
       LOG(ERROR) << "usage: vpntool.exe --remove --vpn_name=entry_name";
       return 0;
     }
 
-    const std::wstring w_name = base::UTF8ToWide(vpn_name);
-    RemoveEntry(w_name.c_str());
+    RemoveEntry(vpn_name);
     return 0;
   }
 
   if (command_line->HasSwitch(kCreateCommand)) {
-    const std::string host_name = command_line->GetSwitchValueASCII(kHostName);
-    const std::string vpn_name = command_line->GetSwitchValueASCII(kVPNName);
-    const std::string user_name = command_line->GetSwitchValueASCII(kUserName);
-    const std::string password = command_line->GetSwitchValueASCII(kPassword);
+    const std::wstring host_name =
+        command_line->GetSwitchValueNative(kHostName);
+    const std::wstring vpn_name = command_line->GetSwitchValueNative(kVPNName);
+    const std::wstring user_name =
+        command_line->GetSwitchValueNative(kUserName);
+    const std::wstring password = command_line->GetSwitchValueNative(kPassword);
     if (host_name.empty() || vpn_name.empty() || user_name.empty() ||
         password.empty()) {
       LOG(ERROR) << "missing parameters for create!";
@@ -745,12 +743,7 @@ int main(int argc, char* argv[]) {
       return 0;
     }
 
-    const std::wstring w_name = base::UTF8ToWide(vpn_name);
-    const std::wstring w_host = base::UTF8ToWide(host_name);
-    const std::wstring w_user = base::UTF8ToWide(user_name);
-    const std::wstring w_password = base::UTF8ToWide(password);
-    CreateEntry(w_name.c_str(), w_host.c_str(), w_user.c_str(),
-                w_password.c_str());
+    CreateEntry(vpn_name, host_name, user_name, password);
     return 0;
   }
 
