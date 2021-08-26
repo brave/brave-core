@@ -26,10 +26,10 @@ const char kUpholdDestinationStaging[] =
 const char kUpholdDestinationProduction[] =
     "5d4be2ad-1c65-4802-bea1-e0f3a3a487cb";
 
-// To-Do(@jumde) - Set the settlement address for production  when available
 const char kGeminiDestinationDev[] = "60e5e863-8c3d-4341-8b54-23e2695a490c";
 const char kGeminiDestinationStaging[] = "60e5e863-8c3d-4341-8b54-23e2695a490c";
-const char kGeminiDestinationProduction[] = "";
+const char kGeminiDestinationProduction[] =
+    "6116adaf-92e6-42fa-bee8-6f749b8eb44e";
 
 std::string GetBraveDestination(const std::string& wallet_type) {
   if (wallet_type == constant::kWalletUphold) {
