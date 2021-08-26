@@ -10,6 +10,7 @@
 
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_handler.h"
 #include "brave/components/brave_vpn/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -31,11 +32,14 @@ class VPNPanelUI : public ui::MojoBubbleWebUIController,
 
  private:
   // brave_vpn::mojom::PanelHandlerFactory:
-  void CreatePanelHandler(mojo::PendingRemote<brave_vpn::mojom::Page> page,
-                          mojo::PendingReceiver<brave_vpn::mojom::PanelHandler>
-                              panel_receiver) override;
+  void CreatePanelHandler(
+      mojo::PendingRemote<brave_vpn::mojom::Page> page,
+      mojo::PendingReceiver<brave_vpn::mojom::PanelHandler> panel_receiver,
+      mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler>
+          vpn_service_receiver) override;
 
   std::unique_ptr<VPNPanelHandler> panel_handler_;
+
   mojo::Receiver<brave_vpn::mojom::PanelHandlerFactory> panel_factory_receiver_{
       this};
 
