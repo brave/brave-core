@@ -14,6 +14,7 @@
 #include "components/flags_ui/pref_service_flags_storage.h"
 #include "components/metrics_services_manager/metrics_services_manager.h"
 #include "components/variations/service/variations_service.h"
+#include "components/variations/variations_ids_provider.h"
 #include "ios/chrome/browser/application_context_impl.h"
 #include "ios/chrome/browser/browser_state/browser_state_keyed_service_factories.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
@@ -68,6 +69,9 @@ void BraveWebMainParts::PreCreateThreads() {
       application_context_->GetLocalState());
   ConvertFlagsToSwitches(&flags_storage,
                          base::CommandLine::ForCurrentProcess());
+
+  variations::VariationsIdsProvider::Create(
+      variations::VariationsIdsProvider::Mode::kUseSignedInState);
 
   SetupFieldTrials();
 
