@@ -57,6 +57,7 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
 
   static std::string GenerateMetaID();
   static base::Value TxMetaToValue(const TxMeta& meta);
+  static mojom::TransactionInfoPtr TxMetaToTransactionInfo(const TxMeta& meta);
   static std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value);
 
   void AddOrUpdateTx(const TxMeta& meta);
@@ -65,7 +66,7 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
   void WipeTxs();
 
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
-      mojom::TransactionStatus status,
+      absl::optional<mojom::TransactionStatus> status,
       absl::optional<EthAddress> from);
 
   // mojom::EthJsonRpcControllerObserver

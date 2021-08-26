@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
 
+#include <algorithm>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -244,6 +245,27 @@ void EthTxController::NotifyTransactionStatusChanged(
     EthTxStateManager::TxMeta* meta) {
   for (const auto& observer : observers_)
     observer->OnTransactionStatusChanged(meta->id, meta->status);
+}
+
+void EthTxController::GetAllTransactionInfo(
+    const std::string& from,
+    GetAllTransactionInfoCallback callback) {
+  auto from_address = EthAddress::FromHex(from);
+  if (from_address.IsEmpty()) {
+    std::move(callback).Run(std::vector<mojom::TransactionInfoPtr>());
+    return;
+  }
+  std::vector<std::unique_ptr<EthTxStateManager::TxMeta>> metas =
+      tx_state_manager_->GetTransactionsByStatus(absl::nullopt, from_address);
+
+  // Convert vector of TxMeta to vector of TransactionInfo
+  std::vector<mojom::TransactionInfoPtr> tis(metas.size());
+  std::transform(metas.begin(), metas.end(), tis.begin(),
+                 [](const std::unique_ptr<EthTxStateManager::TxMeta>& m)
+                     -> mojom::TransactionInfoPtr {
+                   return EthTxStateManager::TxMetaToTransactionInfo(*m);
+                 });
+  std::move(callback).Run(std::move(tis));
 }
 
 }  // namespace brave_wallet

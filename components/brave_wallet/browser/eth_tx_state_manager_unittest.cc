@@ -10,6 +10,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
@@ -286,6 +287,17 @@ TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
           .size(),
       0u);
 
+  EXPECT_EQ(
+      tx_state_manager.GetTransactionsByStatus(absl::nullopt, absl::nullopt)
+          .size(),
+      20u);
+  EXPECT_EQ(
+      tx_state_manager.GetTransactionsByStatus(absl::nullopt, addr1).size(),
+      5u);
+  EXPECT_EQ(
+      tx_state_manager.GetTransactionsByStatus(absl::nullopt, addr2).size(),
+      2u);
+
   auto confirmed_addr1 = tx_state_manager.GetTransactionsByStatus(
       mojom::TransactionStatus::Confirmed, addr1);
   EXPECT_EQ(confirmed_addr1.size(), 5u);
@@ -389,6 +401,101 @@ TEST_F(EthTxStateManagerUnitTest, RetireOldTxMeta) {
   tx_state_manager.AddOrUpdateTx(meta23);
   EXPECT_TRUE(tx_state_manager.GetTx("2"));
   EXPECT_TRUE(tx_state_manager.GetTx("3"));
+}
+
+TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
+  // type 0
+  std::unique_ptr<EthTransaction> tx =
+      std::make_unique<EthTransaction>(*EthTransaction::FromTxData(
+          mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                             "0x3535353535353535353535353535353535353535",
+                             "0x0de0b6b3a7640000", std::vector<uint8_t>())));
+  EthTxStateManager::TxMeta meta(std::move(tx));
+  mojom::TransactionInfoPtr ti =
+      EthTxStateManager::TxMetaToTransactionInfo(meta);
+  ASSERT_EQ(ti->id, meta.id);
+  ASSERT_EQ(ti->from_address, meta.from.ToHex());
+  ASSERT_EQ(ti->tx_hash, meta.tx_hash);
+  ASSERT_EQ(ti->tx_status, meta.status);
+  ASSERT_EQ(ti->tx_data->base_data->nonce, Uint256ValueToHex(meta.tx->nonce()));
+  ASSERT_EQ(ti->tx_data->base_data->gas_price,
+            Uint256ValueToHex(meta.tx->gas_price()));
+  ASSERT_EQ(ti->tx_data->base_data->gas_limit,
+            Uint256ValueToHex(meta.tx->gas_limit()));
+  ASSERT_EQ(ti->tx_data->base_data->to, meta.tx->to().ToHex());
+  ASSERT_EQ(ti->tx_data->base_data->value, Uint256ValueToHex(meta.tx->value()));
+  ASSERT_EQ(ti->tx_data->base_data->data, meta.tx->data());
+  ASSERT_EQ(ti->tx_data->chain_id, "");
+  ASSERT_EQ(ti->tx_data->max_priority_fee_per_gas, "");
+  ASSERT_EQ(ti->tx_data->max_fee_per_gas, "");
+
+  // type 1
+  std::unique_ptr<Eip2930Transaction> tx1 =
+      std::make_unique<Eip2930Transaction>(*Eip2930Transaction::FromTxData(
+          mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                             "0x3535353535353535353535353535353535353535",
+                             "0x0de0b6b3a7640000", std::vector<uint8_t>()),
+          0x3));
+  auto* access_list = tx1->access_list();
+  Eip2930Transaction::AccessListItem item_a;
+  item_a.address.fill(0x0a);
+  Eip2930Transaction::AccessedStorageKey storage_key_0;
+  storage_key_0.fill(0x00);
+  item_a.storage_keys.push_back(storage_key_0);
+  access_list->push_back(item_a);
+  EthTxStateManager::TxMeta meta1(std::move(tx1));
+  mojom::TransactionInfoPtr ti1 =
+      EthTxStateManager::TxMetaToTransactionInfo(meta1);
+  ASSERT_EQ(ti1->id, meta1.id);
+  ASSERT_EQ(ti1->from_address, meta1.from.ToHex());
+  ASSERT_EQ(ti1->tx_hash, meta1.tx_hash);
+  ASSERT_EQ(ti1->tx_status, meta1.status);
+  ASSERT_EQ(ti1->tx_data->base_data->nonce,
+            Uint256ValueToHex(meta1.tx->nonce()));
+  ASSERT_EQ(ti1->tx_data->base_data->gas_price,
+            Uint256ValueToHex(meta1.tx->gas_price()));
+  ASSERT_EQ(ti1->tx_data->base_data->gas_limit,
+            Uint256ValueToHex(meta1.tx->gas_limit()));
+  ASSERT_EQ(ti1->tx_data->base_data->to, meta1.tx->to().ToHex());
+  ASSERT_EQ(ti1->tx_data->base_data->value,
+            Uint256ValueToHex(meta1.tx->value()));
+  ASSERT_EQ(ti1->tx_data->base_data->data, meta1.tx->data());
+  auto* tx2930 = reinterpret_cast<Eip2930Transaction*>(meta1.tx.get());
+  ASSERT_EQ(ti1->tx_data->chain_id, Uint256ValueToHex(tx2930->chain_id()));
+  ASSERT_EQ(ti1->tx_data->max_priority_fee_per_gas, "");
+  ASSERT_EQ(ti1->tx_data->max_fee_per_gas, "");
+
+  // type2
+  std::unique_ptr<Eip1559Transaction> tx2 =
+      std::make_unique<Eip1559Transaction>(
+          *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
+              mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
+                                 "0x3535353535353535353535353535353535353535",
+                                 "0x0de0b6b3a7640000", std::vector<uint8_t>()),
+              "0x3", "0x1E", "0x32")));
+  EthTxStateManager::TxMeta meta2(std::move(tx2));
+  mojom::TransactionInfoPtr ti2 =
+      EthTxStateManager::TxMetaToTransactionInfo(meta2);
+  ASSERT_EQ(ti2->id, meta2.id);
+  ASSERT_EQ(ti2->from_address, meta2.from.ToHex());
+  ASSERT_EQ(ti2->tx_hash, meta2.tx_hash);
+  ASSERT_EQ(ti2->tx_status, meta2.status);
+  ASSERT_EQ(ti2->tx_data->base_data->nonce,
+            Uint256ValueToHex(meta2.tx->nonce()));
+  ASSERT_EQ(ti2->tx_data->base_data->gas_price,
+            Uint256ValueToHex(meta2.tx->gas_price()));
+  ASSERT_EQ(ti2->tx_data->base_data->gas_limit,
+            Uint256ValueToHex(meta2.tx->gas_limit()));
+  ASSERT_EQ(ti2->tx_data->base_data->to, meta2.tx->to().ToHex());
+  ASSERT_EQ(ti2->tx_data->base_data->value,
+            Uint256ValueToHex(meta2.tx->value()));
+  ASSERT_EQ(ti2->tx_data->base_data->data, meta2.tx->data());
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(meta2.tx.get());
+  ASSERT_EQ(ti2->tx_data->chain_id, Uint256ValueToHex(tx1559->chain_id()));
+  ASSERT_EQ(ti2->tx_data->max_priority_fee_per_gas,
+            Uint256ValueToHex(tx1559->max_priority_fee_per_gas()));
+  ASSERT_EQ(ti2->tx_data->max_fee_per_gas,
+            Uint256ValueToHex(tx1559->max_fee_per_gas()));
 }
 
 }  // namespace brave_wallet
