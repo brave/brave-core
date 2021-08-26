@@ -1,0 +1,7 @@
+import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
+import("//build/buildflag_header.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "ENABLE_NTP_BACKGROUND_IMAGES=$enable_ntp_background_images" ]
+}

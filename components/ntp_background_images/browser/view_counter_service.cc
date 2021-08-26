@@ -21,6 +21,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/weekly_storage/weekly_storage.h"
@@ -76,7 +77,11 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
       std::make_unique<WeeklyStorage>(local_state, kSponsoredNewTabsCreated);
 
   if (auto* data = GetCurrentBrandedWallpaperData())
+    model_.set_total_branded_image_count(data->backgrounds.size());
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  if (auto* data = GetCurrentWallpaperData())
     model_.set_total_image_count(data->backgrounds.size());
+#endif
 
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(ads::prefs::kEnabled,
@@ -87,6 +92,9 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
       base::Unretained(this)));
 
   OnUpdated(GetCurrentBrandedWallpaperData());
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  OnUpdated(GetCurrentWallpaperData());
+#endif
 }
 
 ViewCounterService::~ViewCounterService() = default;
@@ -108,27 +116,48 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
   UpdateP3AValues();
 }
 
-NTPBackgroundImagesData*
-ViewCounterService::GetCurrentBrandedWallpaperData() const {
-  auto* sr_data = service_->GetBackgroundImagesData(true /* for_sr */);
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+NTPBackgroundImagesData* ViewCounterService::GetCurrentWallpaperData() const {
+  return service_->GetBackgroundImagesData();
+}
+#endif
+
+NTPSponsoredImagesData* ViewCounterService::GetCurrentBrandedWallpaperData()
+    const {
+  auto* sr_data = service_->GetBrandedImagesData(true /* for_sr */);
   if (sr_data && IsSuperReferralWallpaperOptedIn())
     return sr_data;
 
-  return service_->GetBackgroundImagesData(false);
+  return service_->GetBrandedImagesData(false);
 }
 
 base::Value ViewCounterService::GetCurrentWallpaperForDisplay() const {
   if (ShouldShowBrandedWallpaper()) {
+    return GetCurrentBrandedWallpaper();
+  } else {
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
     return GetCurrentWallpaper();
+#else
+    return base::Value();
+#endif
+  }
+}
+
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+base::Value ViewCounterService::GetCurrentWallpaper() const {
+  if (IsBackgroundWallpaperActive()) {
+    return GetCurrentWallpaperData()->GetBackgroundAt(
+        model_.current_wallpaper_image_index());
   }
 
   return base::Value();
 }
+#endif
 
-base::Value ViewCounterService::GetCurrentWallpaper() const {
+base::Value ViewCounterService::GetCurrentBrandedWallpaper() const {
   if (GetCurrentBrandedWallpaperData()) {
     return GetCurrentBrandedWallpaperData()->GetBackgroundAt(
-        model_.current_wallpaper_image_index());
+        model_.current_branded_wallpaper_image_index());
   }
 
   return base::Value();
@@ -137,7 +166,7 @@ base::Value ViewCounterService::GetCurrentWallpaper() const {
 std::vector<TopSite> ViewCounterService::GetTopSitesVectorForWebUI() const {
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (auto* data = GetCurrentBrandedWallpaperData()) {
-      return GetCurrentBrandedWallpaperData()->GetTopSitesForWebUI();
+    return data->GetTopSitesForWebUI();
   }
 #endif
 
@@ -157,7 +186,19 @@ void ViewCounterService::Shutdown() {
   service_->RemoveObserver(this);
 }
 
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
+  DVLOG(2) << __func__ << ": Active data is updated.";
+
+  // Data is updated, reset any indexes.
+  if (data) {
+    model_.ResetCurrentWallpaperImageIndex();
+    model_.set_total_image_count(data->backgrounds.size());
+  }
+}
+#endif
+
+void ViewCounterService::OnUpdated(NTPSponsoredImagesData* data) {
   // We can get non effective component update because
   // NTPBackgroundImagesService just notifies whenever any component is updated.
   // When SR component is ended, |data| is for SR but
@@ -174,8 +215,8 @@ void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
   // Data is updated, so change our stored data and reset any indexes.
   // But keep view counter until branded content is seen.
   if (data) {
-    model_.ResetCurrentWallpaperImageIndex();
-    model_.set_total_image_count(data->backgrounds.size());
+    model_.ResetCurrentBrandedWallpaperImageIndex();
+    model_.set_total_branded_image_count(data->backgrounds.size());
     model_.set_ignore_count_to_branded_wallpaper(data->IsSuperReferral());
   }
 }
@@ -187,11 +228,17 @@ void ViewCounterService::OnSuperReferralEnded() {
 }
 
 void ViewCounterService::ResetModel() {
+  // SR/SI
   if (auto* data = GetCurrentBrandedWallpaperData()) {
     model_.Reset(false /* use_initial_count */);
-    model_.set_total_image_count(data->backgrounds.size());
+    model_.set_total_branded_image_count(data->backgrounds.size());
     model_.set_ignore_count_to_branded_wallpaper(data->IsSuperReferral());
   }
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  // BI
+  if (auto* data = GetCurrentWallpaperData())
+    model_.set_total_image_count(data->backgrounds.size());
+#endif
 }
 
 void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
@@ -243,8 +290,9 @@ void ViewCounterService::InitializeWebUIDataSource(
 }
 
 bool ViewCounterService::IsBrandedWallpaperActive() const {
-  if (!GetCurrentBrandedWallpaperData())
+  if (!GetCurrentBrandedWallpaperData()) {
     return false;
+  }
 
   // We show SR regardless of ntp background images option because SR works
   // like theme.
@@ -258,6 +306,17 @@ bool ViewCounterService::IsBrandedWallpaperActive() const {
 
   return IsSponsoredImagesWallpaperOptedIn();
 }
+
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+bool ViewCounterService::IsBackgroundWallpaperActive() const {
+#if !defined(OS_ANDROID)
+  if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage))
+    return false;
+#endif
+
+  return !!GetCurrentBrandedWallpaperData();
+}
+#endif
 
 bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
   return prefs_->GetBoolean(

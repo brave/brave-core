@@ -1,15 +1,17 @@
+import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
+
 static_library("browser") {
   sources = [
     "features.cc",
     "features.h",
     "ntp_background_images_component_installer.cc",
     "ntp_background_images_component_installer.h",
-    "ntp_background_images_data.cc",
-    "ntp_background_images_data.h",
     "ntp_background_images_service.cc",
     "ntp_background_images_service.h",
     "ntp_background_images_source.cc",
     "ntp_background_images_source.h",
+    "ntp_sponsored_images_data.cc",
+    "ntp_sponsored_images_data.h",
     "sponsored_images_component_data.cc",
     "sponsored_images_component_data.h",
     "switches.cc",
@@ -21,7 +23,15 @@ static_library("browser") {
     "view_counter_service.h",
   ]
 
+  if (enable_ntp_background_images) {
+    sources += [
+      "ntp_background_images_data.cc",
+      "ntp_background_images_data.h",
+    ]
+  }
+
   deps = [
+    "../buildflags",
     "//base",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/common",
