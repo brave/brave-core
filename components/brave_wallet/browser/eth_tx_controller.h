@@ -59,6 +59,9 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
   void MakeERC20TransferData(const std::string& to_address,
                              const std::string& amount,
                              MakeERC20TransferDataCallback) override;
+  void GetAllTransactionInfo(const std::string& from,
+                             GetAllTransactionInfoCallback) override;
+
   void AddObserver(
       ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) override;
 

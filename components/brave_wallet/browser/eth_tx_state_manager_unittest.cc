@@ -287,6 +287,17 @@ TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
           .size(),
       0u);
 
+  EXPECT_EQ(
+      tx_state_manager.GetTransactionsByStatus(absl::nullopt, absl::nullopt)
+          .size(),
+      20u);
+  EXPECT_EQ(
+      tx_state_manager.GetTransactionsByStatus(absl::nullopt, addr1).size(),
+      5u);
+  EXPECT_EQ(
+      tx_state_manager.GetTransactionsByStatus(absl::nullopt, addr2).size(),
+      2u);
+
   auto confirmed_addr1 = tx_state_manager.GetTransactionsByStatus(
       mojom::TransactionStatus::Confirmed, addr1);
   EXPECT_EQ(confirmed_addr1.size(), 5u);
@@ -449,7 +460,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   ASSERT_EQ(ti1->tx_data->base_data->value,
             Uint256ValueToHex(meta1.tx->value()));
   ASSERT_EQ(ti1->tx_data->base_data->data, meta1.tx->data());
-  auto* tx2930 = (Eip2930Transaction*)meta1.tx.get();
+  auto* tx2930 = reinterpret_cast<Eip2930Transaction*>(meta1.tx.get());
   ASSERT_EQ(ti1->tx_data->chain_id, Uint256ValueToHex(tx2930->chain_id()));
   ASSERT_EQ(ti1->tx_data->max_priority_fee_per_gas, "");
   ASSERT_EQ(ti1->tx_data->max_fee_per_gas, "");
@@ -479,7 +490,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   ASSERT_EQ(ti2->tx_data->base_data->value,
             Uint256ValueToHex(meta2.tx->value()));
   ASSERT_EQ(ti2->tx_data->base_data->data, meta2.tx->data());
-  auto* tx1559 = (Eip1559Transaction*)meta2.tx.get();
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(meta2.tx.get());
   ASSERT_EQ(ti2->tx_data->chain_id, Uint256ValueToHex(tx1559->chain_id()));
   ASSERT_EQ(ti2->tx_data->max_priority_fee_per_gas,
             Uint256ValueToHex(tx1559->max_priority_fee_per_gas()));

@@ -82,11 +82,11 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
   std::string max_fee_per_gas;
   if (meta.tx->type() == 1) {
     // When type is 1 it's always Eip2930Transaction
-    auto* tx2930 = (Eip2930Transaction*)meta.tx.get();
+    auto* tx2930 = reinterpret_cast<Eip2930Transaction*>(meta.tx.get());
     chain_id = Uint256ValueToHex(tx2930->chain_id());
   } else if (meta.tx->type() == 2) {
     // When type is 1 it's always Eip1559Transaction
-    auto* tx1559 = (Eip1559Transaction*)meta.tx.get();
+    auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(meta.tx.get());
     chain_id = Uint256ValueToHex(tx1559->chain_id());
     max_priority_fee_per_gas =
         Uint256ValueToHex(tx1559->max_priority_fee_per_gas());
@@ -249,8 +249,9 @@ void EthTxStateManager::WipeTxs() {
 }
 
 std::vector<std::unique_ptr<EthTxStateManager::TxMeta>>
-EthTxStateManager::GetTransactionsByStatus(mojom::TransactionStatus status,
-                                           absl::optional<EthAddress> from) {
+EthTxStateManager::GetTransactionsByStatus(
+    absl::optional<mojom::TransactionStatus> status,
+    absl::optional<EthAddress> from) {
   std::vector<std::unique_ptr<EthTxStateManager::TxMeta>> result;
   const base::DictionaryValue* dict =
       prefs_->GetDictionary(kBraveWalletTransactions);
@@ -263,7 +264,7 @@ EthTxStateManager::GetTransactionsByStatus(mojom::TransactionStatus status,
     if (!meta) {
       continue;
     }
-    if (meta->status == status) {
+    if (!status.has_value() || meta->status == *status) {
       if (from.has_value() && meta->from != *from)
         continue;
       result.push_back(std::move(meta));

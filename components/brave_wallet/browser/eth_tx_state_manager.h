@@ -66,7 +66,7 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
   void WipeTxs();
 
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
-      mojom::TransactionStatus status,
+      absl::optional<mojom::TransactionStatus> status,
       absl::optional<EthAddress> from);
 
   // mojom::EthJsonRpcControllerObserver

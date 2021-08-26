@@ -280,5 +280,7 @@ interface EthTxController {
   ApproveTransaction(string tx_meta_id) => (bool status);
   RejectTransaction(string tx_meta_id) => (bool status);
   MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
+  // This returns different data depending on which network is currently selected in EthJsonRpcController
+  GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
   AddObserver(pending_remote<EthTxControllerObserver> observer);
 };
