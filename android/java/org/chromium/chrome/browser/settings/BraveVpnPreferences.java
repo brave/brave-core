@@ -14,6 +14,7 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.Uri;
 import android.net.VpnManager;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -87,6 +88,8 @@ public class BraveVpnPreferences
     private String purchaseToken = "";
     private String productId = "";
 
+    private ProgressDialog progressDialog;
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getActivity().setTitle(R.string.brave_firewall_vpn);
@@ -99,6 +102,8 @@ public class BraveVpnPreferences
         mVpnSwitch.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                progressDialog = ProgressDialog.show(getActivity(), "", 
+                    "Loading. Please wait...", true);
                 if (mVpnSwitch != null) {
                     mVpnSwitch.setChecked(
                             VpnProfileUtils.getInstance(getActivity()).isVPNConnected());
@@ -198,6 +203,8 @@ public class BraveVpnPreferences
         super.onResume();
         if (BraveVpnUtils.isServerLocationChanged) {
             BraveVpnUtils.isServerLocationChanged = false;
+            progressDialog = ProgressDialog.show(getActivity(), "", 
+                    "Loading. Please wait...", true);
             verifyPurchase(false);
         }
         new Handler().post(() -> updateSummaries());
@@ -256,6 +263,9 @@ public class BraveVpnPreferences
             .NetworkCallback mNetworkCallback = new ConnectivityManager.NetworkCallback() {
         @Override
         public void onAvailable(Network network) {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
             Log.e("BraveVPN", "BraveVpnPreferences : onAvailable");
             if (getActivity() != null) {
                 BraveVpnUtils.showBraveVpnNotification(getActivity());
@@ -274,6 +284,9 @@ public class BraveVpnPreferences
         @Override
         public void onLost(Network network) {
             Log.e("BraveVPN", "BraveVpnPreferences : onLost");
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
             if (getActivity() != null) {
                 BraveVpnUtils.cancelBraveVpnNotification(getActivity());
                 getActivity().runOnUiThread(new Runnable() {
