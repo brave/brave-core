@@ -104,3 +104,10 @@ export const notEnoughFunds = styled.div`
     color: var(--brave-palette-neutral300);
   }
 `
+
+export const feeNote = styled.div`
+  text-align: center;
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--brave-palette-neutral600);
+`
