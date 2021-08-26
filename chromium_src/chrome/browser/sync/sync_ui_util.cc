@@ -3,11 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#define GetAvatarSyncErrorType GetAvatarSyncErrorType_ChromiumImpl
+#define GetAvatarSyncErrorType GetAvatarSyncErrorType_Unused
 #include "../../../../../chrome/browser/sync/sync_ui_util.cc"
 #undef GetAvatarSyncErrorType
-
-namespace sync_ui_util {
 
 absl::optional<AvatarSyncErrorType> GetAvatarSyncErrorType(Profile* profile) {
   // Brave Sync works differently in that there is no sign-in
@@ -15,5 +13,3 @@ absl::optional<AvatarSyncErrorType> GetAvatarSyncErrorType(Profile* profile) {
   // chain is setup.
   return absl::nullopt;
 }
-
-}  // namespace sync_ui_util

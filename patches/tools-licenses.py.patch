@@ -1,5 +1,5 @@
 diff --git a/tools/licenses.py b/tools/licenses.py
-index 7c2e5044226a25e2d60787a257d8d30c3ab37bba..c2ea9b2c45b2de5f2d707b627c62592244aacb55 100755
+index d6787f6455ec79437a4cd60417da127c891f1c7d..eb6f5910690075659d1883631b09cc6eab1392b9 100755
 --- a/tools/licenses.py
 +++ b/tools/licenses.py
 @@ -35,6 +35,7 @@ else:

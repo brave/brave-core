@@ -14,9 +14,21 @@
 #include "url/gurl.h"
 #include "url/origin.h"
 
-#define IsCookieAccessAllowed IsEphemeralCookieAccessAllowed
+// IsEphemeralCookieAccessible and AnnotateAndMoveUserBlockedCookies declared &
+// defined via a chromium_src override for network/cookie_settings.{h,cc}.
+#define IsCookieAccessible IsEphemeralCookieAccessible
+#define AnnotateAndMoveUserBlockedCookies \
+  AnnotateAndMoveUserBlockedEphemeralCookies
+
+// IsEphemeralCookieAccessAllowed declared & defined via a chromium_src override
+// for components/content_settings/core/common/cookie_settings_base.{h,cc}.
+#define IsFullCookieAccessAllowed IsEphemeralCookieAccessAllowed
+
 #include "../../../../services/network/restricted_cookie_manager.cc"
-#undef IsCookieAccessAllowed
+
+#undef IsFullCookieAccessAllowed
+#undef AnnotateAndMoveUserBlockedCookies
+#undef IsCookieAccessible
 
 namespace network {
 

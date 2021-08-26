@@ -1,5 +1,5 @@
 diff --git a/weblayer/public/java/AndroidManifest.xml b/weblayer/public/java/AndroidManifest.xml
-index df5a0db8ca02d0573fb801bc5ebd6bdc47779345..2e410982b80ab814601bf167dcf63caa5a630269 100644
+index 574dcf6a14e7ae9c99e03cf484528fdc9e9d196a..e2f73eb6453660c69234373e5f7582194f9f4775 100644
 --- a/weblayer/public/java/AndroidManifest.xml
 +++ b/weblayer/public/java/AndroidManifest.xml
 @@ -16,7 +16,9 @@

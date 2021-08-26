@@ -22,6 +22,8 @@ import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
+import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.features.start_surface.StartSurface;
@@ -51,10 +53,12 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<Boolean> homepageManagedByPolicySupplier,
             ObservableSupplier<Boolean> identityDiscStateSupplier,
             Callback<Runnable> invalidatorCallback, Supplier<ButtonData> identityDiscButtonSupplier,
-            OneshotSupplier<StartSurface> startSurfaceSupplier,
-            Supplier<ResourceManager> resourceManagerSupplier, BooleanSupplier isInVrSupplier,
-            boolean isGridTabSwitcherEnabled, boolean isTabToGtsAnimationEnabled,
-            boolean isStartSurfaceEnabled, boolean isTabGroupsAndroidContinuationEnabled) {
+            Supplier<ResourceManager> resourceManagerSupplier,
+            ObservableSupplier<Boolean> isProgressBarVisibleSupplier,
+            BooleanSupplier isIncognitoModeEnabledSupplier, boolean isGridTabSwitcherEnabled,
+            boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled,
+            boolean isTabGroupsAndroidContinuationEnabled, HistoryDelegate historyDelegate,
+            BooleanSupplier partnerHomepageEnabledSupplier, OfflineDownloader offlineDownloader) {
         super(controlContainer, toolbarLayout, toolbarDataProvider, tabController,
                 userEducationHelper, buttonDataProviders, layoutStateProviderSupplier,
                 normalThemeColorProvider, overviewThemeColorProvider,
@@ -62,9 +66,11 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 appMenuButtonHelperSupplier, tabModelSelectorSupplier, homepageEnabledSupplier,
                 startSurfaceAsHomepageSupplier, homepageManagedByPolicySupplier,
                 identityDiscStateSupplier, invalidatorCallback, identityDiscButtonSupplier,
-                startSurfaceSupplier, resourceManagerSupplier, isInVrSupplier,
-                isGridTabSwitcherEnabled, isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
-                isTabGroupsAndroidContinuationEnabled);
+                resourceManagerSupplier, isProgressBarVisibleSupplier,
+                isIncognitoModeEnabledSupplier, isGridTabSwitcherEnabled,
+                isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
+                isTabGroupsAndroidContinuationEnabled, historyDelegate,
+                partnerHomepageEnabledSupplier, offlineDownloader);
 
         mBraveToolbarLayout = toolbarLayout;
 
@@ -73,14 +79,16 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 mTabSwitcherModeCoordinatorPhone = new BraveTabSwitcherModeTTCoordinatorPhone(
                         controlContainer.getRootView().findViewById(R.id.tab_switcher_toolbar_stub),
                         overviewModeMenuButtonCoordinator, isGridTabSwitcherEnabled,
-                        isTabToGtsAnimationEnabled, isStartSurfaceEnabled);
+                        isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
+                        isIncognitoModeEnabledSupplier);
             }
         }
     }
 
     public void onBottomToolbarVisibilityChanged(boolean isVisible) {
         if (mBraveToolbarLayout instanceof BraveToolbarLayout) {
-            ((BraveToolbarLayout) mBraveToolbarLayout).onBottomToolbarVisibilityChanged(isVisible);
+            ((BraveToolbarLayoutImpl) mBraveToolbarLayout)
+                    .onBottomToolbarVisibilityChanged(isVisible);
         }
         if (mTabSwitcherModeCoordinatorPhone instanceof BraveTabSwitcherModeTTCoordinatorPhone) {
             ((BraveTabSwitcherModeTTCoordinatorPhone) mTabSwitcherModeCoordinatorPhone)

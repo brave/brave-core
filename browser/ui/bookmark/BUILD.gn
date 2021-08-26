@@ -1,13 +1,13 @@
 source_set("bookmark") {
-  # Remove when https://github.com/brave/brave-browser/issues/10654 is resolved 
+  # Remove when https://github.com/brave/brave-browser/issues/10654 is resolved.
   check_includes = false
   sources = [
-    "brave_bookmark_tab_helper.cc",
-    "brave_bookmark_tab_helper.h",
     "bookmark_prefs_service.cc",
     "bookmark_prefs_service.h",
     "bookmark_prefs_service_factory.cc",
     "bookmark_prefs_service_factory.h",
+    "brave_bookmark_tab_helper.cc",
+    "brave_bookmark_tab_helper.h",
   ]
 
   deps = [
@@ -16,8 +16,8 @@ source_set("bookmark") {
     "//components/bookmarks/common",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
-    "//components/prefs",
     "//components/pref_registry",
+    "//components/prefs",
     "//content/public/browser",
   ]
 }

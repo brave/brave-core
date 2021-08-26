@@ -195,8 +195,8 @@ CHAR_LIMIT guidelines:
       <if expr="enable_arcore">
         </if>
 
-      <message name="IDS_QR_CODE_SHARE_DESCRIPTION" desc="Text on QR code sharing tab describing how to use the QR code.">
-        To share with profiles nearby, let them scan this QR code
+      <message name="IDS_QR_CODE_SHARE_DESCRIPTION" desc="Text on QR Code sharing tab describing how to use the QR Code.">
+        To share with profiles nearby, let them scan this QR Code
       </message>
 
       </messages>

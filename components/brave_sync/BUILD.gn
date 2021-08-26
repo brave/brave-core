@@ -74,10 +74,10 @@ source_set("prefs") {
   ]
 }
 
-static_library("profile_sync_service_helper") {
+static_library("sync_service_impl_helper") {
   sources = [
-    "profile_sync_service_helper.cc",
-    "profile_sync_service_helper.h",
+    "sync_service_impl_helper.cc",
+    "sync_service_impl_helper.h",
   ]
 
   deps = [

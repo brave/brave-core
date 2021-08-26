@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.ApiCompatibilityUtils;
@@ -21,18 +22,20 @@ import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
 import org.chromium.chrome.browser.ntp.ScrollableContainerDelegate;
 import org.chromium.chrome.browser.ntp.SnapScrollHelper;
 import org.chromium.chrome.browser.ntp.snippets.SectionHeaderView;
+import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.toolbar.top.Toolbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.WindowAndroid;
 
 public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
-    private Activity mActivity;
-    private ScrollView mScrollViewForPolicy;
+    // To delete in bytecode, members from parent class will be used instead.
+    private @Nullable ScrollView mScrollViewForPolicy;
     private View mNtpHeader;
     private FrameLayout mRootView;
 
@@ -44,11 +47,17 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             boolean isPlaceholderShownInitially, BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier,
             @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
-            TabModelSelector tabModelSelector, @NewTabPageLaunchOrigin int launchOrigin) {
+            @NewTabPageLaunchOrigin int launchOrigin,
+            PrivacyPreferencesManagerImpl privacyPreferencesManager,
+            @NonNull Supplier<Toolbar> toolbarSupplier,
+            FeedLaunchReliabilityLoggingState launchReliabilityLoggingState,
+            @Nullable FeedSwipeRefreshLayout swipeRefreshLayout, boolean overScrollDisabled) {
         super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader,
                 sectionHeaderView, showDarkBackground, delegate, pageNavigationDelegate, profile,
                 isPlaceholderShownInitially, bottomSheetController, shareDelegateSupplier,
-                externalScrollableContainerDelegate, tabModelSelector, launchOrigin);
+                externalScrollableContainerDelegate, launchOrigin, privacyPreferencesManager,
+                toolbarSupplier, launchReliabilityLoggingState, swipeRefreshLayout,
+                overScrollDisabled);
     }
 
     @Override
@@ -80,6 +89,10 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     }
 
     public boolean isEnhancedProtectionPromoEnabled() {
+        return false;
+    }
+
+    public boolean isReliabilityLoggingEnabled() {
         return false;
     }
 }

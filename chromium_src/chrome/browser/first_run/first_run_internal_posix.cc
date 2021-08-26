@@ -32,8 +32,10 @@
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
+#define FILE_LOCAL_STATE PATH_END
 #endif
 #include "../../../../../chrome/browser/first_run/first_run_internal_posix.cc"
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
+#undef FILE_LOCAL_STATE
 #endif

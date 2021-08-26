@@ -76,10 +76,11 @@ MdTextButton::MdTextButton(PressedCallback callback,
   SetCornerRadius(100);
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveTextButtonHighlightPathGenerator>());
-  views::InkDrop::UseInkDropForFloodFillRipple(ink_drop(),
+  auto* ink_drop = views::InkDrop::Get(this);
+  views::InkDrop::UseInkDropForFloodFillRipple(ink_drop,
                                                /*highlight_on_hover=*/false,
                                                /*highlight_on_focus=*/true);
-  ink_drop()->SetCreateHighlightCallback(base::BindRepeating(
+  ink_drop->SetCreateHighlightCallback(base::BindRepeating(
       [](Button* host) {
         const SkColor fill_color = SK_ColorTRANSPARENT;
         gfx::RectF boundsF(host->GetLocalBounds());

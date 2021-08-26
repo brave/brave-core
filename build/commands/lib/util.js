@@ -7,21 +7,12 @@ const crypto = require('crypto')
 const l10nUtil = require('./l10nUtil')
 const Log = require('./sync/logging')
 
-const fixPywin32 = (options = {}) => {
-  if (process.platform !== 'win32') {
-    return
-  }
-  console.log("Manually installing pywin32 python module")
-  util.run('python', ['-m', 'pip', 'install', 'pywin32'], options)
-}
-
 const runGClient = (args, options = {}) => {
   if (config.gClientVerbose) args.push('--verbose')
   options.cwd = options.cwd || config.rootDir
   options = mergeWithDefault(options)
   options.env.GCLIENT_FILE = config.gClientFile
   util.run('gclient', args, options)
-  fixPywin32(options)
 }
 
 const mergeWithDefault = (options) => {

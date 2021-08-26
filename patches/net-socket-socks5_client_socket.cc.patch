@@ -1,8 +1,8 @@
 diff --git a/net/socket/socks5_client_socket.cc b/net/socket/socks5_client_socket.cc
-index e22ddb2630bad854c3c0b89a882f8e1447fb3911..13e9f0546ca533372c0e7244e82e0c68dd801d9e 100644
+index 0390ad8c2cf484b9f80e9237259aab8ee2c75642..0286937c6c60c97e9aae6fbc1467347ca59fd115 100644
 --- a/net/socket/socks5_client_socket.cc
 +++ b/net/socket/socks5_client_socket.cc
-@@ -238,6 +238,9 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
+@@ -239,6 +239,9 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
          net_log_.EndEventWithNetErrorCode(NetLogEventType::SOCKS5_GREET_READ,
                                            rv);
          break;
@@ -12,7 +12,7 @@ index e22ddb2630bad854c3c0b89a882f8e1447fb3911..13e9f0546ca533372c0e7244e82e0c68
        case STATE_HANDSHAKE_WRITE:
          DCHECK_EQ(OK, rv);
          net_log_.BeginEvent(NetLogEventType::SOCKS5_HANDSHAKE_WRITE);
-@@ -267,8 +270,6 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
+@@ -268,8 +271,6 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
    return rv;
  }
  
@@ -21,7 +21,7 @@ index e22ddb2630bad854c3c0b89a882f8e1447fb3911..13e9f0546ca533372c0e7244e82e0c68
  int SOCKS5ClientSocket::DoGreetWrite() {
    // Since we only have 1 byte to send the hostname length in, if the
    // URL has a hostname longer than 255 characters we can't send it.
-@@ -278,8 +279,12 @@ int SOCKS5ClientSocket::DoGreetWrite() {
+@@ -279,8 +280,12 @@ int SOCKS5ClientSocket::DoGreetWrite() {
    }
  
    if (buffer_.empty()) {
@@ -30,13 +30,13 @@ index e22ddb2630bad854c3c0b89a882f8e1447fb3911..13e9f0546ca533372c0e7244e82e0c68
 +    const char greeting[] = {
 +      0x05,			// SOCKS version
 +      0x01,			// number of authentication methods
-+      auth_method(),
++      static_cast<char>(auth_method()),
 +    };
 +    buffer_ = std::string(greeting, sizeof(greeting));
      bytes_sent_ = 0;
    }
  
-@@ -338,14 +343,14 @@ int SOCKS5ClientSocket::DoGreetReadComplete(int result) {
+@@ -339,14 +344,14 @@ int SOCKS5ClientSocket::DoGreetReadComplete(int result) {
                                     "version", buffer_[0]);
      return ERR_SOCKS_CONNECTION_FAILED;
    }

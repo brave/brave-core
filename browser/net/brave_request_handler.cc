@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/task/post_task.h"
 #include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"

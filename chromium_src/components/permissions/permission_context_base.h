@@ -32,6 +32,8 @@ class PermissionLifetimeManager;
 #undef PermissionDecided
 #undef PermissionContextBase
 
+#include <map>
+
 namespace permissions {
 
 class PermissionContextBase : public PermissionContextBase_ChromiumImpl {

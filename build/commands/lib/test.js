@@ -28,6 +28,16 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
     '--enable-logging=stderr'
   ]
 
+  // Cr93: browser tests error out on Windows CI with
+  // content/public/test/test_utils.cc(137): error: Failed
+  // RunLoop::Run() timed out. Timeout set at ProxyRunTestOnMainThreadLoop@
+  // content/public/test/browser_test_base.cc:800.
+  // Running with --disable-gpu-sandbox fixes it, but it's unclear ATM what the
+  // issue is.
+  if (suite === 'brave_browser_tests' && process.platform === 'win32' && buildConfig === 'Release') {
+    braveArgs.push('--disable-gpu-sandbox')
+  }
+
   // Android doesn't support --v
   if (config.targetOS !== 'android') {
     braveArgs.push('--v=' + options.v)

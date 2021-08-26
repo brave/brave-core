@@ -164,6 +164,9 @@
   <message name="IDS_POLICY_CLOUD_SOURCE_ONLY_ERROR" desc="The text displayed in the status column when a policy that should only be set in the cloud is set from another source.">
     Ignored because the policy is not set by a cloud source.
   </message>
+  <message name="IDS_POLICY_CLOUD_MANAGEMENT_ENROLLMENT_ONLY_ERROR" desc="The text displayed in the status column when a policy that is effective only when the machine is enrolled with the Brave Browser Cloud Management.">
+    Ignored because the machine is not enrolled with Brave Browser Cloud Management.
+  </message>
   <message name="IDS_POLICY_DEFAULT_SEARCH_DISABLED" desc="The text displayed in the status column when a policy value has been ignored because default search has not been enabled.">
     Ignored because default search is not enabled by policy.
   </message>
@@ -172,6 +175,9 @@
   </message>
   <message name="IDS_POLICY_EXTENSION_SETTINGS_ORIGIN_LIMIT_WARNING" desc="The text displayed in the status column of the 'Extension Settings' policy when more than 100 origins are specified.">
     This field should not have more than <ph name="MAX_ITEMS_LIMIT">$1<ex>100</ex></ph> entries. All further entries will be discarded.
+  </message>
+  <message name="IDS_POLICY_URL_ALLOW_BLOCK_LIST_MAX_FILTERS_LIMIT_WARNING" desc="The text displayed in the status column of the URLAllowlist and URLBlocklist policies when the max number of filters is exceeded.">
+    This field should not have more than <ph name="MAX_ITEMS_LIMIT">$1<ex>1000</ex></ph> entries. All further entries will be ignored.
   </message>
   <message name="IDS_POLICY_SUBKEY_ERROR" desc="The text displayed in the status column for errors in a subkey of a policy.">
     Key "<ph name="SUBKEY">$1<ex>ProxyMode</ex></ph>": <ph name="ERROR">$2<ex>Must be specified.</ex></ph>
@@ -247,6 +253,9 @@
   </message>
   <message name="IDS_POLICY_DEPENDENCY_ERROR" desc="The text displayed in the status column when a policy is ignored as another policies is not set properly.">
     Ignored because <ph name="POLICY_NAME">$1<ex>CloudReportingEnabled</ex></ph> is not set to <ph name="VALUE">$2<ex>Enabled</ex></ph>.
+  </message>
+  <message name="IDS_POLICY_USER_IS_NOT_AFFILIATED_ERROR" desc="The text displayed in the status column when a user cloud policy is ignored due to user is not affiliated to the machine management.">
+    Ignored because user is not affiliated to the machine management or the machine is not managed.
   </message>
   <if expr="chromeos">
     <message name="IDS_POLICY_NETWORK_CONFIG_PARSE_FAILED" desc="The text displayed in the status column when the corresponding network configuration policy failed to parse.">
@@ -486,6 +495,9 @@ Additional details:
   </message>
   <message name="IDS_POLICY_SOURCE_CLOUD_FROM_ASH" desc="Indicates that the policy originates from the cloud in Ash and piped to Lacros.">
     Cloud (system-wide)
+  </message>
+  <message name="IDS_POLICY_SOURCE_RESTRICTED_MANAGED_GUEST_SESSION_OVERRIDE" desc="Indicates that the policy originates from the restricted managed guest session override.">
+    Restricted managed guest session override
   </message>
   <message name="IDS_POLICY_SOURCE_ACTIVE_DIRECTORY" desc="Indicates that the policy originates from a local server, e.g. Samba or Active Directory.">
     <ph name="MICROSOFT_ACTIVE_DIRECTORY">Local Server</ph>

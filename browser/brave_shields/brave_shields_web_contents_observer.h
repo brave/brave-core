@@ -15,8 +15,8 @@
 #include "base/macros.h"
 #include "base/synchronization/lock.h"
 #include "brave/components/brave_shields/common/brave_shields.mojom.h"
+#include "content/public/browser/render_frame_host_receiver_set.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_receiver_set.h"
 #include "content/public/browser/web_contents_user_data.h"
 
 namespace content {
@@ -34,6 +34,11 @@ class BraveShieldsWebContentsObserver
  public:
   explicit BraveShieldsWebContentsObserver(content::WebContents*);
   ~BraveShieldsWebContentsObserver() override;
+
+  static void BindBraveShieldsHost(
+      mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShieldsHost>
+          receiver,
+      content::RenderFrameHost* rfh);
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   static void DispatchBlockedEventForWebContents(
@@ -63,10 +68,22 @@ class BraveShieldsWebContentsObserver
 
  private:
   friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;
+  friend class BraveShieldsWebContentsObserverBrowserTest;
 
   using BraveShieldsRemotesMap = base::flat_map<
       content::RenderFrameHost*,
       mojo::AssociatedRemote<brave_shields::mojom::BraveShields>>;
+
+  // Allows indicating a implementor of brave_shields::mojom::BraveShieldsHost
+  // other than this own class, for testing purposes only.
+  static void SetReceiverImplForTesting(BraveShieldsWebContentsObserver* impl);
+
+  // Only used from the BindBraveShieldsHost() static method, useful to bind the
+  // mojo receiver of brave_shields::mojom::BraveShieldsHost to a different
+  // implementor when needed, for testing purposes.
+  void BindReceiver(mojo::PendingAssociatedReceiver<
+                        brave_shields::mojom::BraveShieldsHost> receiver,
+                    content::RenderFrameHost* rfh);
 
   // Return an already bound remote for the brave_shields::mojom::BraveShields
   // mojo interface. It is an error to call this method with an invalid |rfh|.
@@ -78,8 +95,8 @@ class BraveShieldsWebContentsObserver
   // continually tries to load the same blocked URLs.
   std::set<std::string> blocked_url_paths_;
 
-  content::WebContentsFrameReceiverSet<brave_shields::mojom::BraveShieldsHost>
-      brave_shields_receivers_;
+  content::RenderFrameHostReceiverSet<brave_shields::mojom::BraveShieldsHost>
+      receivers_;
 
   // Map of remote endpoints for the brave_shields::mojom::BraveShields mojo
   // interface, to prevent binding a new remote each time it's used.

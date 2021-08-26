@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-index 9783aef36a0ee9f764c88b120092b201cfa8ba63..14ace4b01219c3c2c6b2ca2912949299dc10d311 100644
+index d710e166a8587eece2fd6e853933c5807e7d414d..875eb2d7ac3641d9280a92cb81dd16e7ab3ffd5a 100644
 --- a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-@@ -75,10 +75,10 @@
+@@ -79,10 +79,10 @@
      void stroke(Path2D path);
      void clip(optional CanvasFillRule winding);
      void clip(Path2D path, optional CanvasFillRule winding);
@@ -17,12 +17,14 @@ index 9783aef36a0ee9f764c88b120092b201cfa8ba63..14ace4b01219c3c2c6b2ca2912949299
  
      // text (see also the CanvasDrawingStyles interface)
      void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
-@@ -93,7 +93,7 @@
-     // pixel manipulation
+@@ -98,8 +98,8 @@
      [RaisesException] ImageData createImageData(ImageData imagedata);
-     [RaisesException] ImageData createImageData(long sw, long sh, optional ImageDataSettings imageDataSettings = {});
--    [HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh, optional ImageDataSettings imageDataSettings = {});
-+    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh, optional ImageDataSettings imageDataSettings = {});
+     [RaisesException] ImageData createImageData(long sw, long sh);
+     [RaisesException, RuntimeEnabled=CanvasColorManagement] ImageData createImageData(long sw, long sh, ImageDataSettings imageDataSettings);
+-    [HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
+-    [HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException, RuntimeEnabled=CanvasColorManagement] ImageData getImageData(long sx, long sy, long sw, long sh, ImageDataSettings imageDataSettings);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException, RuntimeEnabled=CanvasColorManagement] ImageData getImageData(long sx, long sy, long sw, long sh, ImageDataSettings imageDataSettings);
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy);
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy, long dirtyX, long dirtyY, long dirtyWidth, long dirtyHeight);
  

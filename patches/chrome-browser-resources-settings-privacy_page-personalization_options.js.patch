@@ -1,46 +1,46 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.js b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-index 868be6eab0d36ea429d474852aa631a77e14eb1d..26e2be6a3b71ca4ccfad4f2919658f3cd577391c 100644
+index 5a8630b3a7c10fce3b0f69a74c54e1c2a8a79f12..d031c337bd1c58a9bf7e49f0735c14d3d88afe1c 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.js
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-@@ -54,7 +54,7 @@ Polymer({
-     /** @type {SyncStatus} */
-     syncStatus: Object,
+@@ -69,7 +69,7 @@ export class SettingsPersonalizationOptionsElement extends
+       /** @type {SyncStatus} */
+       syncStatus: Object,
  
--    // <if expr="_google_chrome and not chromeos">
-+    // <if expr="_chromium and not chromeos">
-     // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
-     // (but handled differently in C++).
-     /** @private {chrome.settingsPrivate.PrefObject} */
-@@ -105,7 +105,7 @@ Polymer({
+-      // <if expr="_google_chrome and not chromeos">
++      // <if expr="_chromium and not chromeos">
+       // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
+       // (but handled differently in C++).
+       /** @private {chrome.settingsPrivate.PrefObject} */
+@@ -126,7 +126,7 @@ export class SettingsPersonalizationOptionsElement extends
    ready() {
-     this.browserProxy_ = PrivacyPageBrowserProxyImpl.getInstance();
+     super.ready();
  
 -    // <if expr="_google_chrome and not chromeos">
 +    // <if expr="_chromium and not chromeos">
      const setMetricsReportingPref = this.setMetricsReportingPref_.bind(this);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
      this.browserProxy_.getMetricsReporting().then(setMetricsReportingPref);
-@@ -136,7 +136,7 @@ Polymer({
-     return /** @type {?CrToggleElement} */ (this.$$('#driveSuggestControl'));
-   },
+@@ -160,7 +160,7 @@ export class SettingsPersonalizationOptionsElement extends
+         this.shadowRoot.querySelector('#driveSuggestControl'));
+   }
  
 -  // <if expr="_google_chrome and not chromeos">
 +  // <if expr="_chromium and not chromeos">
    /** @private */
    onMetricsReportingChange_() {
      const enabled = this.$.metricsReportingControl.checked;
-@@ -186,6 +186,7 @@ Polymer({
-   },
+@@ -210,6 +210,7 @@ export class SettingsPersonalizationOptionsElement extends
+   }
    // </if>
  
 +  // <if expr="_google_chrome">
    /**
     * @return {boolean}
     * @private
-@@ -234,6 +235,7 @@ Polymer({
+@@ -259,6 +260,7 @@ export class SettingsPersonalizationOptionsElement extends
      }
      this.showSignoutDialog_ = false;
-   },
+   }
 +  // </if>
  
    /**

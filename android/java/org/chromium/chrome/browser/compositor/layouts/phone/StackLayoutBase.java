@@ -1701,8 +1701,6 @@ public abstract class StackLayoutBase extends Layout {
         }
     }
 
-    @Override
-    @VisibleForTesting
     public boolean isLayoutAnimating() {
         for (int i = 0; i < mLayoutAnimations.size(); i++) {
             if (mLayoutAnimations.get(i).first.isRunning()) return true;

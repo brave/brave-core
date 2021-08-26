@@ -5,6 +5,10 @@
 
 #include "brave/browser/brave_tab_helpers.h"
 
+// Include this to make sure we don't unintentionally rename NetErrorTabHelper
+// into NoTabHelper inside WebContentsReceiverSet.
+#include "content/public/browser/web_contents_receiver_set.h"
+
 #define BRAVE_TAB_HELPERS \
   brave::AttachTabHelpers(web_contents);
 

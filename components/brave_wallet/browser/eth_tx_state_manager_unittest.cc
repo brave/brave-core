@@ -234,19 +234,19 @@ TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
   EXPECT_EQ(
       tx_state_manager
           .GetTransactionsByStatus(
-              EthTxStateManager::TransactionStatus::APPROVED, base::nullopt)
+              EthTxStateManager::TransactionStatus::APPROVED, absl::nullopt)
           .size(),
       0u);
   EXPECT_EQ(
       tx_state_manager
           .GetTransactionsByStatus(
-              EthTxStateManager::TransactionStatus::CONFIRMED, base::nullopt)
+              EthTxStateManager::TransactionStatus::CONFIRMED, absl::nullopt)
           .size(),
       10u);
   EXPECT_EQ(
       tx_state_manager
           .GetTransactionsByStatus(
-              EthTxStateManager::TransactionStatus::SUBMITTED, base::nullopt)
+              EthTxStateManager::TransactionStatus::SUBMITTED, absl::nullopt)
           .size(),
       10u);
 

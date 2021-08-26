@@ -4,8 +4,10 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "base/no_destructor.h"
-#include "ui/gfx/skia_util.h"
+// include this header so that setStyle redefine doesn't flow to cc::PaintFlags
+#include "cc/paint/paint_flags.h"
 #include "ui/gfx/color_palette.h"
+#include "ui/gfx/skia_util.h"
 
 // include header first so that GetNativeTheme redefine doesn't flow to View
 #include "ui/views/controls/focus_ring.h"
@@ -38,13 +40,18 @@ class FocusRingTheme {
   }
 };
 
-FocusRingTheme* GetFocusRingTheme() {
-  static base::NoDestructor<FocusRingTheme> instance;
-  return instance.get();
+FocusRingTheme& GetFocusRingTheme() {
+  static FocusRingTheme instance;
+  return instance;
 }
 
 }  // namespace
 
-#define GetNativeTheme GetFocusRingTheme
+#define setStyle                                                           \
+  setColor(color_.value_or(                                                \
+      GetFocusRingTheme().GetSystemColor(ColorIdForValidity(!invalid_)))); \
+  paint.setStyle
+
 #include "../../../../../ui/views/controls/focus_ring.cc"
-#undef GetNativeTheme
+
+#undef setStyle

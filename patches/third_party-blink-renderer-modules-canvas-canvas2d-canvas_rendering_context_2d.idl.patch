@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
-index 8e2b35d1ab1d2987a31ed109594d9e836b4a6f0e..2002e63f0cfdda60a9f07618e8ea613973e73502 100644
+index 1cb922800bef34d2f1940745ed4b847ae176c99f..affb1a45c5fac3c79a3988739eac22868297dd63 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
-@@ -118,9 +118,13 @@ interface CanvasRenderingContext2D {
+@@ -123,9 +123,13 @@ interface CanvasRenderingContext2D {
      [RuntimeEnabled=Canvas2dScrollPathIntoView] void scrollPathIntoView(optional Path2D path);
      void clip(optional CanvasFillRule winding);
      void clip(Path2D path, optional CanvasFillRule winding);
@@ -16,12 +16,14 @@ index 8e2b35d1ab1d2987a31ed109594d9e836b4a6f0e..2002e63f0cfdda60a9f07618e8ea6139
      boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
  
      // text (see also the CanvasDrawingStyles interface)
-@@ -144,7 +148,7 @@ interface CanvasRenderingContext2D {
-     // pixel manipulation
+@@ -150,8 +154,8 @@ interface CanvasRenderingContext2D {
      [RaisesException] ImageData createImageData(ImageData imagedata);
-     [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh, optional ImageDataSettings imageDataSettings = {});
--    [RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh, optional ImageDataSettings imageDataSettings = {});
-+    [CallWith=ScriptState, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh, optional ImageDataSettings imageDataSettings = {});
+     [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh);
+     [RaisesException, RuntimeEnabled=CanvasColorManagement] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
+-    [RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh);
+-    [RaisesException, RuntimeEnabled=CanvasColorManagement] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
++    [CallWith=ScriptState, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh);
++    [CallWith=ScriptState, RaisesException, RuntimeEnabled=CanvasColorManagement] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
      [RaisesException] void putImageData(ImageData imagedata, [EnforceRange] long dx, [EnforceRange] long dy);
      [RaisesException] void putImageData(ImageData imagedata, [EnforceRange] long dx, [EnforceRange] long dy, [EnforceRange] long dirtyX, [EnforceRange] long dirtyY, [EnforceRange] long dirtyWidth, [EnforceRange] long dirtyHeight);
  

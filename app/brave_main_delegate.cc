@@ -38,6 +38,7 @@
 #include "components/offline_pages/core/offline_page_feature.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
+#include "components/reading_list/features/reading_list_switches.h"
 #include "components/security_state/core/features.h"
 #include "components/sync/base/sync_base_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
@@ -213,7 +214,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     autofill::features::kAutofillServerCommunication.name,
     blink::features::kFledgeInterestGroupAPI.name,
     blink::features::kFledgeInterestGroups.name,
-    blink::features::kHandwritingRecognitionWebPlatformApi.name,
     blink::features::kHandwritingRecognitionWebPlatformApiFinch.name,
     blink::features::kInterestCohortAPIOriginTrial.name,
     blink::features::kInterestCohortFeaturePolicy.name,
@@ -233,7 +233,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     net::features::kFirstPartySets.name,
     network::features::kTrustTokens.name,
     network_time::kNetworkTimeServiceQuerying.name,
-    password_manager::features::kEnablePasswordsAccountStorage.name,
+    reading_list::switches::kReadLater.name,
 #if defined(OS_ANDROID)
     features::kWebNfc.name,
     feed::kInterestFeedContentSuggestions.name,
@@ -241,8 +241,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     offline_pages::kPrefetchingOfflinePagesFeature.name,
     signin::kMobileIdentityConsistency.name,
     translate::kTranslate.name,
-#else
-    kEnableProfilePickerOnStartupFeature.name,
 #endif
   };
 

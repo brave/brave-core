@@ -59,6 +59,7 @@ static_library("browser") {
       "frequency_capping_helper.h",
       "notification_helper.cc",
       "notification_helper.h",
+      "service_sandbox_type.h",
     ]
 
     public_deps += [ "//brave/vendor/bat-native-ads" ]
@@ -75,6 +76,7 @@ static_library("browser") {
       "//components/history/core/browser",
       "//components/history/core/common",
       "//components/wifi",
+      "//content/public/browser",
       "//net",
       "//services/network/public/cpp",
       "//services/network/public/mojom",
