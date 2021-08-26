@@ -3,6 +3,9 @@ import { UserAccountType, BuySendSwapViewTypes, Network } from '../../../constan
 import { reduceAddress } from '../../../utils/reduce-address'
 import { create } from 'ethereum-blockies'
 import { NetworkOptions } from '../../../options/network-options'
+import { copyToClipboard } from '../../../utils/copy-to-clipboard'
+import { Tooltip } from '../../shared'
+import locale from '../../../constants/locale'
 // Styled Components
 import {
   StyledWrapper,
@@ -33,6 +36,10 @@ function SwapHeader (props: Props) {
     onChangeSwapView('networks')
   }
 
+  const onCopyToClipboard = async () => {
+    await copyToClipboard(selectedAccount.address)
+  }
+
   const orb = React.useMemo(() => {
     return create({ seed: selectedAccount.address, size: 8, scale: 16 }).toDataURL()
   }, [selectedAccount])
@@ -40,11 +47,13 @@ function SwapHeader (props: Props) {
   return (
     <StyledWrapper>
       <NameAndIcon>
-        <AccountCircle orb={orb} />
-        <AccountAndAddress onClick={onShowAccounts}>
-          <AccountName>{selectedAccount.name}</AccountName>
-          <AccountAddress>{reduceAddress(selectedAccount.address)}</AccountAddress>
-        </AccountAndAddress>
+        <AccountCircle onClick={onShowAccounts} orb={orb} />
+        <Tooltip text={locale.toolTipCopyToClipboard}>
+          <AccountAndAddress onClick={onCopyToClipboard}>
+            <AccountName>{selectedAccount.name}</AccountName>
+            <AccountAddress>{reduceAddress(selectedAccount.address)}</AccountAddress>
+          </AccountAndAddress>
+        </Tooltip>
       </NameAndIcon>
 
       <OvalButton onClick={onShowNetworks}>
