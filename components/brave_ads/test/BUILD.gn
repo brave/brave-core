@@ -36,6 +36,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_client_mock.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_client_mock.h",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_history/ads_history_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_history/ads_history_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_history/filters/ads_history_confirmation_filter_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_history/filters/ads_history_date_range_filter_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_history/sorts/ads_history_sort_unittest.cc",

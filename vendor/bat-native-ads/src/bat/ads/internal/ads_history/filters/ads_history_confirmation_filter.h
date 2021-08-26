@@ -20,9 +20,6 @@ class AdsHistoryConfirmationFilter : public AdsHistoryFilter {
 
   std::deque<AdHistoryInfo> Apply(
       const std::deque<AdHistoryInfo>& history) const override;
-
- private:
-  bool ShouldFilterAction(const ConfirmationType& confirmation_type) const;
 };
 
 }  // namespace ads
