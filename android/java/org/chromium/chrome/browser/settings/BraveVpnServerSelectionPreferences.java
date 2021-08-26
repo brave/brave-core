@@ -12,6 +12,8 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.preference.DialogPreference;
@@ -19,18 +21,29 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
+import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnServerSelectionAdapter;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.VpnServerRegion;
+import org.chromium.ui.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
-public class BraveVpnServerSelectionPreferences extends BravePreferenceFragment {
+public class BraveVpnServerSelectionPreferences
+        extends BravePreferenceFragment implements BraveVpnObserver {
     public static final String PREF_SERVER_CHANGE_LOCATION = "server_change_location";
+    private BraveVpnServerSelectionAdapter braveVpnServerSelectionAdapter;
+    private LinearLayout serverSelectionListLayout;
+    private ProgressBar serverSelectionProgress;
+
     public interface OnServerRegionSelection {
         void onServerRegionClick(VpnServerRegion vpnServerRegion);
     }
@@ -61,6 +74,11 @@ public class BraveVpnServerSelectionPreferences extends BravePreferenceFragment 
             }
         });
 
+        serverSelectionListLayout =
+                (LinearLayout) getView().findViewById(R.id.server_selection_list_layout);
+        serverSelectionProgress =
+                (ProgressBar) getView().findViewById(R.id.server_selection_progress);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         RecyclerView serverRegionList =
                 (RecyclerView) getView().findViewById(R.id.server_selection_list);
@@ -78,16 +96,18 @@ public class BraveVpnServerSelectionPreferences extends BravePreferenceFragment 
                         }
                     }
                 });
-        Collections.sort(BraveVpnUtils.vpnServerRegions, new Comparator<VpnServerRegion>() {
+        List<VpnServerRegion> vpnServerRegions =
+                BraveVpnUtils.getServerLocations(BraveVpnPrefUtils.getBraveVpnStringPref(
+                        BraveVpnPrefUtils.PREF_BRAVE_VPN_SERVER_REGIONS));
+        Collections.sort(vpnServerRegions, new Comparator<VpnServerRegion>() {
             @Override
             public int compare(VpnServerRegion vpnServerRegion1, VpnServerRegion vpnServerRegion2) {
                 return vpnServerRegion1.getNamePretty().compareToIgnoreCase(
                         vpnServerRegion2.getNamePretty());
             }
         });
-        BraveVpnServerSelectionAdapter braveVpnServerSelectionAdapter =
-                new BraveVpnServerSelectionAdapter();
-        braveVpnServerSelectionAdapter.setVpnServerRegions(BraveVpnUtils.vpnServerRegions);
+        braveVpnServerSelectionAdapter = new BraveVpnServerSelectionAdapter();
+        braveVpnServerSelectionAdapter.setVpnServerRegions(vpnServerRegions);
         braveVpnServerSelectionAdapter.setOnServerRegionSelection(onServerRegionSelection);
         serverRegionList.setAdapter(braveVpnServerSelectionAdapter);
         serverRegionList.setLayoutManager(linearLayoutManager);
@@ -104,4 +124,22 @@ public class BraveVpnServerSelectionPreferences extends BravePreferenceFragment 
             getActivity().onBackPressed();
         }
     };
+
+    public void showProgress() {
+        if (serverSelectionProgress != null) {
+            serverSelectionProgress.setVisibility(View.VISIBLE);
+        }
+        if (serverSelectionListLayout != null) {
+            serverSelectionListLayout.setAlpha(0.4f);
+        }
+    }
+
+    public void hideProgress() {
+        if (serverSelectionProgress != null) {
+            serverSelectionProgress.setVisibility(View.GONE);
+        }
+        if (serverSelectionListLayout != null) {
+            serverSelectionListLayout.setAlpha(1f);
+        }
+    }
 }

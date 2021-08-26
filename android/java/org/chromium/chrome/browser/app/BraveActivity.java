@@ -341,18 +341,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     };
 
     @Override
-    public void onGetAllServerRegions(String jsonResponse, boolean isSuccess) {
-        Log.e("BraveVPN", "jsonResponse : " + jsonResponse);
-        if (isSuccess) {
-            BraveVpnUtils.getServerLocations(jsonResponse);
-        } else {
-            Toast.makeText(BraveActivity.this, R.string.fail_to_get_server_locations,
-                         Toast.LENGTH_LONG)
-                    .show();
-        }
-    }
-
-    @Override
     public void initializeState() {
         super.initializeState();
 
@@ -591,13 +579,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                             && PackageUtils.isFirstInstall(this))) {
                 showVpnCalloutDialog();
             }
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    BraveVpnNativeWorker.getInstance().getAllServerRegions();
-                }
-            }, 5000);
 
             if (!TextUtils.isEmpty(BraveVpnPrefUtils.getBraveVpnStringPref(
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN))

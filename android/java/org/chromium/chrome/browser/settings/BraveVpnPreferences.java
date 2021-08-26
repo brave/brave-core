@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -177,6 +177,20 @@ public class BraveVpnPreferences
                             .build();
             connectivityManager.registerNetworkCallback(networkRequest, mNetworkCallback);
         }
+        BraveVpnNativeWorker.getInstance().getAllServerRegions();
+    }
+
+    @Override
+    public void onGetAllServerRegions(String jsonResponse, boolean isSuccess) {
+        Log.e("BraveVPN", "jsonResponse : " + jsonResponse);
+        if (isSuccess) {
+            BraveVpnPrefUtils.setBraveVpnStringPref(
+                    BraveVpnPrefUtils.PREF_BRAVE_VPN_SERVER_REGIONS, jsonResponse);
+            new Handler().post(() -> updateSummaries());
+        } else {
+            Toast.makeText(getActivity(), R.string.fail_to_get_server_locations, Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
@@ -195,8 +209,11 @@ public class BraveVpnPreferences
     }
 
     private void updateSummaries() {
+        List<VpnServerRegion> vpnServerRegions =
+                BraveVpnUtils.getServerLocations(BraveVpnPrefUtils.getBraveVpnStringPref(
+                        BraveVpnPrefUtils.PREF_BRAVE_VPN_SERVER_REGIONS));
         String serverLocation = "";
-        for (VpnServerRegion vpnServerRegion : BraveVpnUtils.vpnServerRegions) {
+        for (VpnServerRegion vpnServerRegion : vpnServerRegions) {
             if (BraveVpnPrefUtils.getServerRegion(PREF_SERVER_CHANGE_LOCATION)
                             .equals("automatic")) {
                 serverLocation = "Automatic";
