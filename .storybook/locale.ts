@@ -298,7 +298,7 @@ let locale: Record<string, string> = {
   walletFailedTitle: 'Wallet creation failed',
   walletFailedText: 'Please check your internet connection.',
   walletGoToVerifyPage: 'Complete wallet verification',
-  walletGoToUphold: 'Go to my Uphold account',
+  walletGoToUphold: 'Go to your Uphold account',
   walletDisconnect: 'Disconnect from Brave Rewards',
   walletVerificationButton: 'Verify wallet',
   walletVerificationFooter: 'Our wallet service is provided by Uphold',

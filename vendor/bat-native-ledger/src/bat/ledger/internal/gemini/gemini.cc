@@ -159,18 +159,15 @@ void Gemini::GenerateWallet(ResultCallback callback) {
 
 void Gemini::DisconnectWallet(const bool manual) {
   auto wallet = GetWallet();
-  const size_t prefix_length = 5;
   if (!wallet) {
     return;
   }
 
   BLOG(1, "Disconnecting wallet");
-  DCHECK_GE(wallet->address.length(), prefix_length);
-  if (!wallet->address.empty()) {
-    ledger_->database()->SaveEventLog(
-        log::kWalletDisconnected, std::string(constant::kWalletGemini) + "/" +
-                                      wallet->address.substr(0, prefix_length));
-  }
+  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
+                                    std::string(constant::kWalletGemini) +
+                                        (!wallet->address.empty() ? "/" : "") +
+                                        wallet->address.substr(0, 5));
 
   wallet = ::ledger::wallet::ResetWallet(std::move(wallet));
   if (manual) {

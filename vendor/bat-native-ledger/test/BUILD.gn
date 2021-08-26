@@ -11,6 +11,7 @@ source_set("bat_native_ledger_tests") {
   testonly = true
 
   sources = [
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/bitflyer/bitflyer_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/bitflyer/bitflyer_util_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/common/brotli_util_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/contribution_monthly_util_unittest.cc",
@@ -90,6 +91,7 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/post_transaction/post_transaction_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/post_transaction_commit/post_transaction_commit_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/uphold_utils_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/gemini/gemini_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/gemini/gemini_util_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/ledger_client_mock.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/ledger_client_mock.h",
