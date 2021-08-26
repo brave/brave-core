@@ -27,8 +27,10 @@ struct TopSite {
 
   TopSite();
   // For unit test.
-  TopSite(const std::string& name, const std::string destination_url,
-          const std::string& image_path, const base::FilePath& image_file);
+  TopSite(const std::string& name,
+          const std::string destination_url,
+          const std::string& image_path,
+          const base::FilePath& image_file);
   TopSite(const TopSite& data);
   TopSite& operator=(const TopSite& data);
   ~TopSite();
@@ -60,7 +62,8 @@ struct SponsoredBackground {
 
   SponsoredBackground();
   // For unit test.
-  SponsoredBackground(const base::FilePath& image_file_path, const gfx::Point& point);
+  SponsoredBackground(const base::FilePath& image_file_path,
+                      const gfx::Point& point);
   SponsoredBackground(const SponsoredBackground&);
 
   ~SponsoredBackground();
@@ -69,7 +72,7 @@ struct SponsoredBackground {
 struct NTPSponsoredImagesData {
   NTPSponsoredImagesData();
   NTPSponsoredImagesData(const std::string& json_string,
-                          const base::FilePath& installed_dir);
+                         const base::FilePath& installed_dir);
   NTPSponsoredImagesData(const NTPSponsoredImagesData& data);
   NTPSponsoredImagesData& operator=(const NTPSponsoredImagesData& data);
   ~NTPSponsoredImagesData();

@@ -142,8 +142,7 @@ NTPBackgroundImagesBridge::CreateWallpaper(base::Value* data) {
   auto* link = data->FindStringKey(ntp_background_images::kImageLinkKey);
 
   return Java_NTPBackgroundImagesBridge_createWallpaper(
-      env,
-      ConvertUTF8ToJavaString(env, *image_path),
+      env, ConvertUTF8ToJavaString(env, *image_path),
       ConvertUTF8ToJavaString(env, author ? *author : ""),
       ConvertUTF8ToJavaString(env, link ? *link : ""));
 }
@@ -163,30 +162,28 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(base::Value* data) {
   if (!image_path || !logo_image_path)
     return base::android::ScopedJavaLocalRef<jobject>();
 
-  auto focal_point_x = data->FindIntKey(
-      ntp_background_images::kWallpaperFocalPointXKey).value_or(0);
-  auto focal_point_y = data->FindIntKey(
-      ntp_background_images::kWallpaperFocalPointYKey).value_or(0);
-  auto* logo_destination_url = data->FindStringPath(
-      ntp_background_images::kLogoDestinationURLPath);
+  auto focal_point_x =
+      data->FindIntKey(ntp_background_images::kWallpaperFocalPointXKey)
+          .value_or(0);
+  auto focal_point_y =
+      data->FindIntKey(ntp_background_images::kWallpaperFocalPointYKey)
+          .value_or(0);
+  auto* logo_destination_url =
+      data->FindStringPath(ntp_background_images::kLogoDestinationURLPath);
   auto* theme_name = data->FindStringKey(ntp_background_images::kThemeNameKey);
-  auto is_sponsored = data->FindBoolKey(
-      ntp_background_images::kIsSponsoredKey).value_or(false);
+  auto is_sponsored =
+      data->FindBoolKey(ntp_background_images::kIsSponsoredKey).value_or(false);
   auto* creative_instance_id =
       data->FindStringKey(ntp_background_images::kCreativeInstanceIDKey);
 
   return Java_NTPBackgroundImagesBridge_createBrandedWallpaper(
-      env,
-      ConvertUTF8ToJavaString(env, *image_path),
-      focal_point_x,
-      focal_point_y,
-      ConvertUTF8ToJavaString(env, *logo_image_path),
-      ConvertUTF8ToJavaString(env, logo_destination_url ? *logo_destination_url
-                                                        : ""),
-      ConvertUTF8ToJavaString(env, *theme_name),
-      is_sponsored,
-      ConvertUTF8ToJavaString(env, creative_instance_id ? *creative_instance_id
-                                                        : ""),
+      env, ConvertUTF8ToJavaString(env, *image_path), focal_point_x,
+      focal_point_y, ConvertUTF8ToJavaString(env, *logo_image_path),
+      ConvertUTF8ToJavaString(
+          env, logo_destination_url ? *logo_destination_url : ""),
+      ConvertUTF8ToJavaString(env, *theme_name), is_sponsored,
+      ConvertUTF8ToJavaString(
+          env, creative_instance_id ? *creative_instance_id : ""),
       ConvertUTF8ToJavaString(env, wallpaper_id));
 }
 
@@ -246,13 +243,13 @@ NTPBackgroundImagesBridge::GetCurrentWallpaper(
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
   auto data = view_counter_service_
-      ? view_counter_service_->GetCurrentWallpaperForDisplay()
-      : base::Value();
+                  ? view_counter_service_->GetCurrentWallpaperForDisplay()
+                  : base::Value();
   if (data.is_none())
     return base::android::ScopedJavaLocalRef<jobject>();
 
-  auto is_background = data.FindBoolKey(
-      ntp_background_images::kIsBackgroundKey).value();
+  auto is_background =
+      data.FindBoolKey(ntp_background_images::kIsBackgroundKey).value();
   if (!is_background) {
     return CreateBrandedWallpaper(&data);
   } else {

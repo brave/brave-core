@@ -79,9 +79,10 @@ Logo GetLogoFromValue(const base::FilePath& installed_dir,
   if (auto* url = value->FindStringKey(kDestinationURLKey))
     logo.destination_url = *url;
 
-  logo.image_url = url_prefix +
-     (index >= 0 ? base::StringPrintf("%s%d.png", kLogoFileNamePrefix, index)
-                 : kDefaultLogoFileName);
+  logo.image_url =
+      url_prefix +
+      (index >= 0 ? base::StringPrintf("%s%d.png", kLogoFileNamePrefix, index)
+                  : kDefaultLogoFileName);
 
   return logo;
 }
@@ -89,11 +90,14 @@ Logo GetLogoFromValue(const base::FilePath& installed_dir,
 }  // namespace
 
 TopSite::TopSite() = default;
-TopSite::TopSite(
-    const std::string& i_name, const std::string i_destination_url,
-    const std::string& i_image_path, const base::FilePath& i_image_file)
-    : name(i_name), destination_url(i_destination_url),
-      image_path(i_image_path), image_file(i_image_file) {}
+TopSite::TopSite(const std::string& i_name,
+                 const std::string i_destination_url,
+                 const std::string& i_image_path,
+                 const base::FilePath& i_image_file)
+    : name(i_name),
+      destination_url(i_destination_url),
+      image_path(i_image_path),
+      image_file(i_image_file) {}
 TopSite& TopSite::operator=(const TopSite& data) = default;
 TopSite::TopSite(const TopSite& data) = default;
 TopSite::~TopSite() = default;
@@ -108,9 +112,8 @@ Logo::~Logo() = default;
 
 SponsoredBackground::SponsoredBackground() = default;
 SponsoredBackground::SponsoredBackground(const base::FilePath& image_file_path,
-                       const gfx::Point& point)
-    : image_file(image_file_path),
-      focal_point(point) {}
+                                         const gfx::Point& point)
+    : image_file(image_file_path), focal_point(point) {}
 SponsoredBackground::SponsoredBackground(const SponsoredBackground&) = default;
 SponsoredBackground::~SponsoredBackground() = default;
 
@@ -131,14 +134,14 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
 
   absl::optional<int> incomingSchemaVersion =
       json_value->FindIntKey(kSchemaVersionKey);
-  const bool schemaVersionIsValid = incomingSchemaVersion &&
-      *incomingSchemaVersion == kExpectedSchemaVersion;
+  const bool schemaVersionIsValid =
+      incomingSchemaVersion && *incomingSchemaVersion == kExpectedSchemaVersion;
   if (!schemaVersionIsValid) {
     DVLOG(2) << __func__ << "Incoming NTP background images data was not valid."
-            << " Schema version was "
-            << (incomingSchemaVersion ? std::to_string(*incomingSchemaVersion)
-                                      : "missing")
-            << ", but we expected " << kExpectedSchemaVersion;
+             << " Schema version was "
+             << (incomingSchemaVersion ? std::to_string(*incomingSchemaVersion)
+                                       : "missing")
+             << ", but we expected " << kExpectedSchemaVersion;
     return;
   }
 
@@ -159,26 +162,26 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
           installed_dir.AppendASCII(*wallpaper.FindStringKey(kImageURLKey));
 
       if (auto* focalPoint = wallpaper.FindDictKey(kWallpaperFocalPointKey)) {
-        background.focal_point = { focalPoint->FindIntKey(kXKey).value_or(0),
-                                  focalPoint->FindIntKey(kYKey).value_or(0) };
+        background.focal_point = {focalPoint->FindIntKey(kXKey).value_or(0),
+                                  focalPoint->FindIntKey(kYKey).value_or(0)};
       }
 
       if (auto* viewbox = wallpaper.FindDictKey(kViewboxKey)) {
         gfx::Rect rect(viewbox->FindIntKey(kXKey).value_or(0),
-                      viewbox->FindIntKey(kYKey).value_or(0),
-                      viewbox->FindIntKey(kWidthKey).value_or(0),
-                      viewbox->FindIntKey(kHeightKey).value_or(0));
+                       viewbox->FindIntKey(kYKey).value_or(0),
+                       viewbox->FindIntKey(kWidthKey).value_or(0),
+                       viewbox->FindIntKey(kHeightKey).value_or(0));
         background.viewbox.emplace(rect);
       }
       if (auto* background_color = wallpaper.FindStringKey(kBackgroundColorKey))
-        background.background_color =  *background_color;
+        background.background_color = *background_color;
       if (auto* creative_instance_id =
               wallpaper.FindStringKey(kCreativeInstanceIDKey)) {
-        background.creative_instance_id =  *creative_instance_id;
+        background.creative_instance_id = *creative_instance_id;
       }
       if (auto* wallpaper_logo = wallpaper.FindDictKey(kLogoKey)) {
-        background.logo.emplace(GetLogoFromValue(
-            installed_dir, GetURLPrefix(), i, wallpaper_logo));
+        background.logo.emplace(
+            GetLogoFromValue(installed_dir, GetURLPrefix(), i, wallpaper_logo));
       }
       backgrounds.push_back(background);
     }
@@ -193,8 +196,7 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
       if (auto* url = top_site_value.FindStringKey(kDestinationURLKey))
         site.destination_url = *url;
 
-      if (auto* color =
-              top_site_value.FindStringKey(kBackgroundColorKey))
+      if (auto* color = top_site_value.FindStringKey(kBackgroundColorKey))
         site.background_color = *color;
 
       if (auto* url = top_site_value.FindStringKey(kTopSiteIconURLKey)) {
@@ -233,8 +235,7 @@ base::Value NTPSponsoredImagesData::GetBackgroundAt(size_t index) {
   data.SetStringKey(kThemeNameKey, theme_name);
   data.SetBoolKey(kIsSponsoredKey, !IsSuperReferral());
   data.SetBoolKey(kIsBackgroundKey, false);
-  data.SetStringKey(kWallpaperImageURLKey,
-                    wallpaper_image_urls()[index]);
+  data.SetStringKey(kWallpaperImageURLKey, wallpaper_image_urls()[index]);
   data.SetStringKey(kWallpaperImagePathKey,
                     backgrounds[index].image_file.AsUTF8Unsafe());
   data.SetIntKey(kWallpaperFocalPointXKey, backgrounds[index].focal_point.x());
@@ -244,8 +245,8 @@ base::Value NTPSponsoredImagesData::GetBackgroundAt(size_t index) {
                     backgrounds[index].creative_instance_id);
 
   base::Value logo_data(base::Value::Type::DICTIONARY);
-  Logo logo = backgrounds[index].logo ? backgrounds[index].logo.value()
-                                      : default_logo;
+  Logo logo =
+      backgrounds[index].logo ? backgrounds[index].logo.value() : default_logo;
   logo_data.SetStringKey(kImageKey, logo.image_url);
   logo_data.SetStringKey(kImagePathKey, logo.image_file.AsUTF8Unsafe());
   logo_data.SetStringKey(kCompanyNameKey, logo.company_name);
@@ -256,15 +257,15 @@ base::Value NTPSponsoredImagesData::GetBackgroundAt(size_t index) {
 }
 
 std::string NTPSponsoredImagesData::GetURLPrefix() const {
-  return url_prefix + (theme_name.empty() ? kSponsoredImagesPath
-                                          : kSuperReferralPath);
+  return url_prefix +
+         (theme_name.empty() ? kSponsoredImagesPath : kSuperReferralPath);
 }
 
 std::vector<TopSite> NTPSponsoredImagesData::GetTopSitesForWebUI() const {
   std::vector<TopSite> top_sites_for_webui;
   for (const auto& top_site : top_sites) {
     TopSite top_site_for_webui = top_site;
-    top_site_for_webui.image_path =  GetURLPrefix() + top_site.image_path;
+    top_site_for_webui.image_path = GetURLPrefix() + top_site.image_path;
     top_sites_for_webui.push_back(top_site_for_webui);
   }
   return top_sites_for_webui;
@@ -273,8 +274,9 @@ std::vector<TopSite> NTPSponsoredImagesData::GetTopSitesForWebUI() const {
 std::vector<std::string> NTPSponsoredImagesData::wallpaper_image_urls() const {
   std::vector<std::string> wallpaper_image_urls;
   for (size_t i = 0; i < backgrounds.size(); i++) {
-    const std::string wallpaper_image_url = GetURLPrefix() + base::StringPrintf(
-        "%s%zu.jpg", kWallpaperPathPrefix, i);
+    const std::string wallpaper_image_url =
+        GetURLPrefix() +
+        base::StringPrintf("%s%zu.jpg", kWallpaperPathPrefix, i);
     wallpaper_image_urls.push_back(wallpaper_image_url);
   }
   return wallpaper_image_urls;

@@ -8,8 +8,8 @@
 
 #include "base/test/task_environment.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
@@ -306,7 +306,8 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   service_->si_images_data_.reset();
   observer.on_si_updated_ = false;
   observer.si_data_ = nullptr;
-  service_->OnGetSponsoredComponentJsonData(false, test_json_string_higher_schema);
+  service_->OnGetSponsoredComponentJsonData(false,
+                                            test_json_string_higher_schema);
   si_data = service_->GetBrandedImagesData(false);
   EXPECT_FALSE(si_data);
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)

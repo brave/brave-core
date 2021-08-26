@@ -26,7 +26,9 @@ struct Background {
 
   Background();
   // For unit test.
-  Background(const base::FilePath& image_file_path, const std::string& author, const std::string& link);
+  Background(const base::FilePath& image_file_path,
+             const std::string& author,
+             const std::string& link);
   Background(const Background&);
 
   ~Background();

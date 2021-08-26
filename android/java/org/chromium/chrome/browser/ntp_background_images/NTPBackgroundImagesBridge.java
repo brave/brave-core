@@ -142,17 +142,14 @@ public class NTPBackgroundImagesBridge {
     }
 
     @CalledByNative
-    public static BackgroundImage createWallpaper(
-            String imagePath, String author, String link) {
+    public static BackgroundImage createWallpaper(String imagePath, String author, String link) {
         return new BackgroundImage(imagePath, 0, 0, new ImageCredit(author, link));
     }
 
     @CalledByNative
-    public static Wallpaper createBrandedWallpaper(
-            String imagePath, int focalPointX, int focalPointY,
-            String logoPath, String logoDestinationUrl,
-            String themeName, boolean isSponsored,
-            String creativeInstanceId, String wallpaperId) {
+    public static Wallpaper createBrandedWallpaper(String imagePath, int focalPointX,
+            int focalPointY, String logoPath, String logoDestinationUrl, String themeName,
+            boolean isSponsored, String creativeInstanceId, String wallpaperId) {
         return new Wallpaper(imagePath, focalPointX, focalPointY,
                              logoPath, logoDestinationUrl,
                              themeName, isSponsored, creativeInstanceId,
@@ -169,8 +166,8 @@ public class NTPBackgroundImagesBridge {
     @NativeMethods
     interface Natives {
         NTPBackgroundImagesBridge getInstance(Profile profile);
-        NTPImage getCurrentWallpaper(long nativeNTPBackgroundImagesBridge,
-                                      NTPBackgroundImagesBridge caller);
+        NTPImage getCurrentWallpaper(
+                long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
         void registerPageView(long nativeNTPBackgroundImagesBridge,
                               NTPBackgroundImagesBridge caller);
         void wallpaperLogoClicked(long nativeNTPBackgroundImagesBridge,

@@ -125,8 +125,10 @@ class NTPBackgroundImagesService {
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest,
                            BasicSuperReferralDataTest);
 
-  void OnSponsoredComponentReady(bool is_super_referral, const base::FilePath& installed_dir);
-  void OnGetSponsoredComponentJsonData(bool is_super_referral, const std::string& json_string);
+  void OnSponsoredComponentReady(bool is_super_referral,
+                                 const base::FilePath& installed_dir);
+  void OnGetSponsoredComponentJsonData(bool is_super_referral,
+                                       const std::string& json_string);
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   void OnComponentReady(const base::FilePath& installed_dir);
   void OnGetComponentJsonData(const std::string& json_string);

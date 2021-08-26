@@ -13,8 +13,8 @@
 #include "base/compiler_specific.h"
 #include "base/macros.h"
 #include "base/memory/singleton.h"
-#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
+#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -76,7 +76,8 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   base::android::ScopedJavaLocalRef<jobject> CreateWallpaper(base::Value* data);
 #endif
-  base::android::ScopedJavaLocalRef<jobject> CreateBrandedWallpaper(base::Value* data);
+  base::android::ScopedJavaLocalRef<jobject> CreateBrandedWallpaper(
+      base::Value* data);
 
   Profile* profile_;
   ViewCounterService* view_counter_service_;

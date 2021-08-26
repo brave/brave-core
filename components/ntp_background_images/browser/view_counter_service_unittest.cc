@@ -29,7 +29,8 @@
 
 namespace ntp_background_images {
 
-std::unique_ptr<NTPSponsoredImagesData> GetDemoBrandedWallpaper(bool super_referral) {
+std::unique_ptr<NTPSponsoredImagesData> GetDemoBrandedWallpaper(
+    bool super_referral) {
   auto demo = std::make_unique<NTPSponsoredImagesData>();
   demo->url_prefix = "chrome://newtab/ntp-dummy-brandedwallpaper/";
   demo->backgrounds = {
@@ -58,7 +59,8 @@ std::unique_ptr<NTPSponsoredImagesData> GetDemoBrandedWallpaper(bool super_refer
 std::unique_ptr<NTPBackgroundImagesData> GetDemoBackgroundWallpaper() {
   auto demo = std::make_unique<NTPBackgroundImagesData>();
   demo->backgrounds = {
-      { base::FilePath(FILE_PATH_LITERAL("wallpaper1.jpg")), "Brave", "https://brave.com/" },
+      {base::FilePath(FILE_PATH_LITERAL("wallpaper1.jpg")), "Brave",
+       "https://brave.com/"},
   };
 
   return demo;

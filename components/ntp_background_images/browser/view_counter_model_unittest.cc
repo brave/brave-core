@@ -17,7 +17,7 @@ TEST(ViewCounterModelTest, NTPSponsoredImagesTest) {
   ViewCounterModel model;
   model.set_total_branded_image_count(kTestImageCount);
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-  model.set_total_image_count(kTestImageCount);   // Otherwise DCHECK will fail
+  model.set_total_image_count(kTestImageCount);  // Otherwise DCHECK will fail
 #endif
 
   EXPECT_FALSE(model.ignore_count_to_branded_wallpaper_);
@@ -87,8 +87,9 @@ TEST(ViewCounterModelTest, NTPBackgroundImagesTest) {
   // Loading regular-count times.
   int expected_wallpaper_index;
   for (int i = 0; i < ViewCounterModel::kRegularCountToBrandedWallpaper; ++i) {
-    expected_wallpaper_index = (i + ViewCounterModel::kInitialCountToBrandedWallpaper)
-      % model.total_image_count_;
+    expected_wallpaper_index =
+        (i + ViewCounterModel::kInitialCountToBrandedWallpaper) %
+        model.total_image_count_;
     EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
     model.RegisterPageView();
   }
@@ -100,14 +101,15 @@ TEST(ViewCounterModelTest, NTPSuperReferralTest) {
   model.set_ignore_count_to_branded_wallpaper(true);
   model.set_total_branded_image_count(kTestImageCount);
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-  model.set_total_image_count(kTestImageCount);   // Otherwise DCHECK will fail
+  model.set_total_image_count(kTestImageCount);  // Otherwise DCHECK will fail
 #endif
 
   // Loading any number of times and check branded wallpaper is visible always
   // with proper index from the start.
   for (int i = 0; i < 10; ++i) {
     EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
-    EXPECT_EQ(i % kTestImageCount, model.current_branded_wallpaper_image_index());
+    EXPECT_EQ(i % kTestImageCount,
+              model.current_branded_wallpaper_image_index());
     model.RegisterPageView();
   }
 }

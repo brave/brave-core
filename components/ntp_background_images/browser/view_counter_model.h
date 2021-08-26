@@ -32,9 +32,7 @@ class ViewCounterModel {
     return current_wallpaper_image_index_;
   }
 
-  void set_total_image_count(int count) {
-    total_image_count_ = count;
-  }
+  void set_total_image_count(int count) { total_image_count_ = count; }
 #endif
 
   void set_ignore_count_to_branded_wallpaper(bool ignore) {

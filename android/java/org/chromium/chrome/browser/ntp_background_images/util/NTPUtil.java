@@ -297,31 +297,37 @@ public class NTPUtil {
         if (ntpImage instanceof Wallpaper) {
             Wallpaper mWallpaper = (Wallpaper) ntpImage;
             imageBitmap = getBitmapFromImagePath(mWallpaper.getImagePath(), options);
-            if (imageBitmap == null)
-                return null;
+            if (imageBitmap == null) return null;
 
-            centerPointX = mWallpaper.getFocalPointX() == 0 ? (imageBitmap.getWidth() / 2) : mWallpaper.getFocalPointX();
-            centerPointY = mWallpaper.getFocalPointY() == 0 ? (imageBitmap.getHeight() / 2) : mWallpaper.getFocalPointY();
+            centerPointX = mWallpaper.getFocalPointX() == 0 ? (imageBitmap.getWidth() / 2)
+                                                            : mWallpaper.getFocalPointX();
+            centerPointY = mWallpaper.getFocalPointY() == 0 ? (imageBitmap.getHeight() / 2)
+                                                            : mWallpaper.getFocalPointY();
         } else {
             BackgroundImage mBackgroundImage = (BackgroundImage) ntpImage;
             String imagePath = mBackgroundImage.getImagePath();
 
             // Bundled Background Images
             if (imagePath == null) {
-                imageBitmap = BitmapFactory.decodeResource(mContext.getResources(), mBackgroundImage.getImageDrawable(), options);
+                imageBitmap = BitmapFactory.decodeResource(
+                        mContext.getResources(), mBackgroundImage.getImageDrawable(), options);
 
                 centerPointX = mBackgroundImage.getCenterPointX();
                 centerPointY = mBackgroundImage.getCenterPointY();
             } else {
                 imageBitmap = getBitmapFromImagePath(imagePath, options);
-                if (imageBitmap == null)
-                    return null;
+                if (imageBitmap == null) return null;
 
-                centerPointX = mBackgroundImage.getCenterPointX() == 0 ? (imageBitmap.getWidth() / 2) : mBackgroundImage.getCenterPointX();
-                centerPointY = mBackgroundImage.getCenterPointY() == 0 ? (imageBitmap.getHeight() / 2) : mBackgroundImage.getCenterPointY();
+                centerPointX = mBackgroundImage.getCenterPointX() == 0
+                        ? (imageBitmap.getWidth() / 2)
+                        : mBackgroundImage.getCenterPointX();
+                centerPointY = mBackgroundImage.getCenterPointY() == 0
+                        ? (imageBitmap.getHeight() / 2)
+                        : mBackgroundImage.getCenterPointY();
             }
         }
-        return getCalculatedBitmap(imageBitmap, centerPointX, centerPointY, layoutWidth, layoutHeight);
+        return getCalculatedBitmap(
+                imageBitmap, centerPointX, centerPointY, layoutWidth, layoutHeight);
     }
 
     private static Bitmap getBitmapFromImagePath(String imagePath, BitmapFactory.Options options) {
@@ -329,25 +335,25 @@ public class NTPUtil {
         Bitmap imageBitmap = null;
         InputStream inputStream = null;
         try {
-                Uri imageFileUri = Uri.parse("file://" + imagePath);
-                inputStream = mContext.getContentResolver().openInputStream(imageFileUri);
-                imageBitmap = BitmapFactory.decodeStream(inputStream, null, options);
-                inputStream.close();
-            } catch (IOException exc) {
-                Log.e("NTP", exc.getMessage());
-            } catch (IllegalArgumentException exc) {
-                Log.e("NTP", exc.getMessage());
-            } finally {
-                try {
-                    if (inputStream != null) {
-                        inputStream.close();
-                    }
-                } catch (IOException exception) {
-                    Log.e("NTP", exception.getMessage());
-                    return null;
+            Uri imageFileUri = Uri.parse("file://" + imagePath);
+            inputStream = mContext.getContentResolver().openInputStream(imageFileUri);
+            imageBitmap = BitmapFactory.decodeStream(inputStream, null, options);
+            inputStream.close();
+        } catch (IOException exc) {
+            Log.e("NTP", exc.getMessage());
+        } catch (IllegalArgumentException exc) {
+            Log.e("NTP", exc.getMessage());
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
                 }
+            } catch (IOException exception) {
+                Log.e("NTP", exception.getMessage());
+                return null;
             }
-            return imageBitmap;
+        }
+        return imageBitmap;
     }
 
     public static Bitmap getCalculatedBitmap(Bitmap imageBitmap, float centerPointX, float centerPointY, int layoutWidth, int layoutHeight) {

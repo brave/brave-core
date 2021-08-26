@@ -26,11 +26,10 @@ public class SponsoredImageUtil {
 
     public static final int MAX_TABS = 10;
 
-    private static List<BackgroundImage> backgroundImages =
-            new ArrayList<BackgroundImage>(Arrays.asList(
-                    new BackgroundImage(R.drawable.spencer_moore_lake, 1300, 720,
-                            new ImageCredit("Spencer M. Moore",
-                                    "https://www.smoorevisuals.com/landscapes"))));
+    private static List<BackgroundImage> backgroundImages = new ArrayList<BackgroundImage>(
+            Arrays.asList(new BackgroundImage(R.drawable.spencer_moore_lake, 1300, 720,
+                    new ImageCredit(
+                            "Spencer M. Moore", "https://www.smoorevisuals.com/landscapes"))));
 
     private static int backgroundImageIndex = getRandomIndex(backgroundImages.size());
 

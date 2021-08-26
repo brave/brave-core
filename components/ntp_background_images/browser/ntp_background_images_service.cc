@@ -174,22 +174,21 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
 
   DVLOG(2) << __func__ << ": Start NTP SI component";
   RegisterNTPSponsoredImagesComponent(
-      component_update_service_,
-      data->component_base64_public_key,
+      component_update_service_, data->component_base64_public_key,
       data->component_id,
       base::StringPrintf("NTP Sponsored Images (%s)", data->region.c_str()),
-      base::BindRepeating(&NTPBackgroundImagesService::OnSponsoredComponentReady,
-                          weak_factory_.GetWeakPtr(),
-                          false));
+      base::BindRepeating(
+          &NTPBackgroundImagesService::OnSponsoredComponentReady,
+          weak_factory_.GetWeakPtr(), false));
   // SI component checks update more frequently than other components.
   // By default, browser check update status every 5 hours.
   // However, this background interval is too long for SI. Use 1 hour interval.
   si_update_check_timer_.Start(
       FROM_HERE,
       base::TimeDelta::FromHours(kSIComponentUpdateCheckIntervalHours),
-      base::BindRepeating(&NTPBackgroundImagesService::CheckImagesComponentUpdate,
-                          base::Unretained(this),
-                          data->component_id));
+      base::BindRepeating(
+          &NTPBackgroundImagesService::CheckImagesComponentUpdate,
+          base::Unretained(this), data->component_id));
 }
 
 void NTPBackgroundImagesService::CheckSuperReferralComponent() {
@@ -319,13 +318,11 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
   }
 
   RegisterNTPSponsoredImagesComponent(
-      component_update_service_,
-      public_key, id,
-      base::StringPrintf("NTP Super Referral (%s)",
-                         theme_name.c_str()),
-      base::BindRepeating(&NTPBackgroundImagesService::OnSponsoredComponentReady,
-                          weak_factory_.GetWeakPtr(),
-                          true));
+      component_update_service_, public_key, id,
+      base::StringPrintf("NTP Super Referral (%s)", theme_name.c_str()),
+      base::BindRepeating(
+          &NTPBackgroundImagesService::OnSponsoredComponentReady,
+          weak_factory_.GetWeakPtr(), true));
 }
 
 void NTPBackgroundImagesService::DownloadSuperReferralMappingTable() {
@@ -335,10 +332,8 @@ void NTPBackgroundImagesService::DownloadSuperReferralMappingTable() {
     return;
 
   RegisterNTPSponsoredImagesComponent(
-      component_update_service_,
-      kNTPSRMappingTableComponentPublicKey,
-      kNTPSRMappingTableComponentID,
-      kNTPSRMappingTableComponentName,
+      component_update_service_, kNTPSRMappingTableComponentPublicKey,
+      kNTPSRMappingTableComponentID, kNTPSRMappingTableComponentName,
       base::BindRepeating(
           &NTPBackgroundImagesService::OnMappingTableComponentReady,
           weak_factory_.GetWeakPtr()));
@@ -411,8 +406,8 @@ bool NTPBackgroundImagesService::HasObserver(Observer* observer) {
 }
 
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-NTPBackgroundImagesData*
-NTPBackgroundImagesService::GetBackgroundImagesData() const {
+NTPBackgroundImagesData* NTPBackgroundImagesService::GetBackgroundImagesData()
+    const {
   if (bi_images_data_ && bi_images_data_->IsValid()) {
     return bi_images_data_.get();
   }
@@ -421,8 +416,8 @@ NTPBackgroundImagesService::GetBackgroundImagesData() const {
 }
 #endif
 
-NTPSponsoredImagesData*
-NTPBackgroundImagesService::GetBrandedImagesData(bool super_referral) const {
+NTPSponsoredImagesData* NTPBackgroundImagesService::GetBrandedImagesData(
+    bool super_referral) const {
   const bool is_sr_enabled =
       base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper);
   if (is_sr_enabled) {
@@ -435,9 +430,9 @@ NTPBackgroundImagesService::GetBrandedImagesData(bool super_referral) const {
     // Don't give SI data until we can confirm this is not SR.
     // W/o this check, NTP could show SI images before getting SR data at first
     // run.
-    if (local_pref_->FindPreference(
-          prefs::kNewTabPageCachedSuperReferralComponentInfo)->
-              IsDefaultValue()) {
+    if (local_pref_
+            ->FindPreference(prefs::kNewTabPageCachedSuperReferralComponentInfo)
+            ->IsDefaultValue()) {
       return nullptr;
     }
   } else {
@@ -465,9 +460,10 @@ void NTPBackgroundImagesService::OnComponentReady(
                      weak_factory_.GetWeakPtr()));
 }
 
-void NTPBackgroundImagesService::OnGetComponentJsonData(const std::string& json_string) {
-  bi_images_data_.reset(new NTPBackgroundImagesData(json_string,
-                                                    bi_installed_dir_));
+void NTPBackgroundImagesService::OnGetComponentJsonData(
+    const std::string& json_string) {
+  bi_images_data_.reset(
+      new NTPBackgroundImagesData(json_string, bi_installed_dir_));
 
   for (auto& observer : observer_list_) {
     observer.OnUpdated(bi_images_data_.get());
@@ -489,8 +485,9 @@ void NTPBackgroundImagesService::OnSponsoredComponentReady(
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&HandleComponentData, installed_dir),
-      base::BindOnce(&NTPBackgroundImagesService::OnGetSponsoredComponentJsonData,
-                     weak_factory_.GetWeakPtr(), is_super_referral));
+      base::BindOnce(
+          &NTPBackgroundImagesService::OnGetSponsoredComponentJsonData,
+          weak_factory_.GetWeakPtr(), is_super_referral));
 }
 
 void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
@@ -512,8 +509,8 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
     local_pref_->SetString(prefs::kNewTabPageCachedSuperReferralComponentData,
                            json_string);
   } else {
-    si_images_data_.reset(new NTPSponsoredImagesData(json_string,
-                                                      si_installed_dir_));
+    si_images_data_.reset(
+        new NTPSponsoredImagesData(json_string, si_installed_dir_));
   }
 
   if (is_super_referral && !sr_images_data_->IsValid()) {

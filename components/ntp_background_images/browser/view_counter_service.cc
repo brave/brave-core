@@ -117,14 +117,13 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
 }
 
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-NTPBackgroundImagesData*
-ViewCounterService::GetCurrentWallpaperData() const {
+NTPBackgroundImagesData* ViewCounterService::GetCurrentWallpaperData() const {
   return service_->GetBackgroundImagesData();
 }
 #endif
 
-NTPSponsoredImagesData*
-ViewCounterService::GetCurrentBrandedWallpaperData() const {
+NTPSponsoredImagesData* ViewCounterService::GetCurrentBrandedWallpaperData()
+    const {
   auto* sr_data = service_->GetBrandedImagesData(true /* for_sr */);
   if (sr_data && IsSuperReferralWallpaperOptedIn())
     return sr_data;
@@ -147,7 +146,8 @@ base::Value ViewCounterService::GetCurrentWallpaperForDisplay() const {
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 base::Value ViewCounterService::GetCurrentWallpaper() const {
   if (IsBackgroundWallpaperActive()) {
-    return GetCurrentWallpaperData()->GetBackgroundAt(model_.current_wallpaper_image_index());
+    return GetCurrentWallpaperData()->GetBackgroundAt(
+        model_.current_wallpaper_image_index());
   }
 
   return base::Value();
@@ -158,7 +158,7 @@ base::Value ViewCounterService::GetCurrentBrandedWallpaper() const {
   if (GetCurrentBrandedWallpaperData()) {
     return GetCurrentBrandedWallpaperData()->GetBackgroundAt(
         model_.current_branded_wallpaper_image_index());
-   }
+  }
 
   return base::Value();
 }
@@ -166,7 +166,7 @@ base::Value ViewCounterService::GetCurrentBrandedWallpaper() const {
 std::vector<TopSite> ViewCounterService::GetTopSitesVectorForWebUI() const {
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (auto* data = GetCurrentBrandedWallpaperData()) {
-      return data->GetTopSitesForWebUI();
+    return data->GetTopSitesForWebUI();
   }
 #endif
 

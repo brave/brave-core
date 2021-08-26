@@ -41,9 +41,7 @@ Background::Background() = default;
 Background::Background(const base::FilePath& image_file_path,
                        const std::string& author_name,
                        const std::string& author_link)
-    : image_file(image_file_path),
-    author(author_name),
-    link(author_link) {}
+    : image_file(image_file_path), author(author_name), link(author_link) {}
 Background::Background(const Background&) = default;
 Background::~Background() = default;
 
