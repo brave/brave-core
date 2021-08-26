@@ -19,6 +19,10 @@ std::string GetParentSegment(const std::string& segment);
 
 SegmentList GetParentSegments(const SegmentList& segments);
 
+bool HasChildSegment(const std::string& segment);
+
+bool ParentSegmentsMatch(const std::string& lhs, const std::string& rhs);
+
 bool ShouldFilterSegment(const std::string& segment);
 
 }  // namespace ads
