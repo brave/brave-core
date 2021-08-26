@@ -73,10 +73,10 @@ class PromotionTest : public testing::Test {
   }
 
   void SetUp() override {
-    const std::string wallet = FakeEncryption::Base64EncryptString(R"({
+    const std::string wallet = R"({
       "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
       "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
-    })");
+    })";
     ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
         .WillByDefault(testing::Return(wallet));
 
