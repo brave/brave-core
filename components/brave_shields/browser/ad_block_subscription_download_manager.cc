@@ -60,7 +60,7 @@ AdBlockSubscriptionDownloadManager::AdBlockSubscriptionDownloadManager(
     download::BackgroundDownloadService* download_service,
     scoped_refptr<base::SequencedTaskRunner> background_task_runner)
     : download_service_(download_service),
-      is_available_for_downloads_(false),
+      is_available_for_downloads_(true),
       background_task_runner_(background_task_runner) {}
 
 AdBlockSubscriptionDownloadManager::~AdBlockSubscriptionDownloadManager() =
@@ -68,10 +68,6 @@ AdBlockSubscriptionDownloadManager::~AdBlockSubscriptionDownloadManager() =
 
 void AdBlockSubscriptionDownloadManager::StartDownload(const GURL& download_url,
                                                        bool from_ui) {
-  if (!is_available_for_downloads_) {
-    not_yet_started_downloads_.insert(download_url);
-    return;
-  }
   download::DownloadParams download_params;
   download_params.client = download::DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS;
   download_params.guid = base::GenerateGUID();
@@ -124,16 +120,8 @@ void AdBlockSubscriptionDownloadManager::Shutdown() {
 void AdBlockSubscriptionDownloadManager::OnDownloadServiceReady(
     const std::set<std::string>& pending_download_guids,
     const std::map<std::string, base::FilePath>& successful_downloads) {
-  is_available_for_downloads_ = true;
-
-  for (const GURL& not_yet_started_download : not_yet_started_downloads_) {
-    StartDownload(GURL(not_yet_started_download), true);
-  }
-
-  not_yet_started_downloads_.clear();
-
-  // Successful downloads should already be notified via |onDownloadSucceeded|,
-  // so we don't do anything with them here.
+  // Ignore any pending guids because they will just retry automatically
+  // and we we don't have the url to map them to
 }
 
 void AdBlockSubscriptionDownloadManager::OnDownloadServiceUnavailable() {

@@ -64,7 +64,6 @@ AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
     : delegate_(delegate),
       subscription_path_(profile_dir.Append(kSubscriptionsDir)),
       subscriptions_(new base::DictionaryValue()) {
-  LoadSubscriptionServices();
   std::move(download_manager_getter)
       .Run(base::BindOnce(
           &AdBlockSubscriptionServiceManager::OnGetDownloadManager,
@@ -115,10 +114,14 @@ void AdBlockSubscriptionServiceManager::OnUpdateTimer(
 void AdBlockSubscriptionServiceManager::StartDownload(const GURL& sub_url,
                                                       bool from_ui) {
   DCHECK(ready_.is_signaled());
-  // The download manager is tied to the lifetime of the system profile, but
+  // The download manager is tied to the lifetime of the profile, but
   // the AdBlockSubscriptionServiceManager lives as long as the browser process
   if (download_manager_) {
-    download_manager_->StartDownload(sub_url, from_ui);
+    bool download_service_available =
+        download_manager_->IsAvailableForDownloads();
+    if (download_service_available) {
+      download_manager_->StartDownload(sub_url, from_ui);
+    }
   }
 }
 
@@ -231,6 +234,9 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
   download_manager_->set_on_download_failed_callback(base::BindRepeating(
       &AdBlockSubscriptionServiceManager::OnSubscriptionDownloadFailure,
       base::Unretained(this)));
+
+  download_manager_->CancelAllPendingDownloads();
+  LoadSubscriptionServices();
   ready_.Signal();
 }
 

@@ -117,8 +117,6 @@ class AdBlockSubscriptionDownloadManager
   // download file to its destination path.
   void ReplaceFileCallback(const GURL& download_url, bool success);
 
-  std::set<GURL> not_yet_started_downloads_;
-
   // GUIDs that are still pending download, mapped to the corresponding URLs of
   // their subscription services.
   std::map<std::string, GURL> pending_download_guids_;
