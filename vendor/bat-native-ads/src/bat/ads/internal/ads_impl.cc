@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_notification_info.h"
@@ -60,6 +59,7 @@
 #include "bat/ads/internal/string_util.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
+#include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/url_util.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
 #include "bat/ads/new_tab_page_ad_info.h"
@@ -157,15 +157,7 @@ void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
     return;
   }
 
-  const std::string url = redirect_chain.back();
-
-  if (!DoesUrlHaveSchemeHTTPOrHTTPS(url)) {
-    BLOG(1, "Visited URL is not supported");
-    return;
-  }
-
-  const std::string original_url = redirect_chain.front();
-  ad_transfer_->MaybeTransferAd(tab_id, original_url);
+  ad_transfer_->MaybeTransferAd(tab_id, redirect_chain);
   conversions_->MaybeConvert(redirect_chain, html,
                              conversions_resource_->get());
 }
@@ -751,7 +743,7 @@ void AdsImpl::OnAdNotificationViewed(const AdNotificationInfo& ad) {
 }
 
 void AdsImpl::OnAdNotificationClicked(const AdNotificationInfo& ad) {
-  ad_transfer_->SetLastClickedAd(ad);
+  ad_transfer_->set_last_clicked_ad(ad);
 
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kClicked);
 
@@ -787,7 +779,7 @@ void AdsImpl::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
 }
 
 void AdsImpl::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
-  ad_transfer_->SetLastClickedAd(ad);
+  ad_transfer_->set_last_clicked_ad(ad);
 
   if (!ShouldRewardUser()) {
     return;
@@ -810,7 +802,7 @@ void AdsImpl::OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) {
 }
 
 void AdsImpl::OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) {
-  ad_transfer_->SetLastClickedAd(ad);
+  ad_transfer_->set_last_clicked_ad(ad);
 
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kClicked);
 }
@@ -834,7 +826,7 @@ void AdsImpl::OnInlineContentAdViewed(const InlineContentAdInfo& ad) {
 }
 
 void AdsImpl::OnInlineContentAdClicked(const InlineContentAdInfo& ad) {
-  ad_transfer_->SetLastClickedAd(ad);
+  ad_transfer_->set_last_clicked_ad(ad);
 
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kClicked);
 }
@@ -848,8 +840,24 @@ void AdsImpl::OnInlineContentAdEventFailed(
               << " and creative instance id " << creative_instance_id);
 }
 
-void AdsImpl::OnAdTransfer(const AdInfo& ad) {
+void AdsImpl::OnWillTransferAd(const AdInfo& ad, const base::Time& time) {
+  BLOG(1,
+       "Transfer ad for " << ad.target_url << " " << FriendlyDateAndTime(time));
+}
+
+void AdsImpl::OnDidTransferAd(const AdInfo& ad) {
+  BLOG(1, "Transferred ad for " << ad.target_url);
+
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kTransferred);
+}
+
+void AdsImpl::OnCancelledAdTransfer(const AdInfo& ad, const int32_t tab_id) {
+  BLOG(1, "Cancelled ad transfer for creative instance id "
+              << ad.creative_instance_id << " with tab id " << tab_id);
+}
+
+void AdsImpl::OnFailedToTransferAd(const AdInfo& ad) {
+  BLOG(1, "Failed to transfer ad for " << ad.target_url);
 }
 
 void AdsImpl::OnConversion(

@@ -48,8 +48,9 @@ class BackoffTimer {
   void FireNow();
 
   // Call this method to stop the timer if running and to reset the exponential
-  // backoff delay
-  void Stop();
+  // backoff delay. Returns |true| if the timer was stopped, otherwise returns
+  // |false|
+  bool Stop();
 
   // Optionally call this method to set the maximum backoff delay to
   // |max_delay|. Default maximum backoff delay is 1 hour

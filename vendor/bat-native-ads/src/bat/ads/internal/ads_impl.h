@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/ad_server/ad_server_observer.h"
@@ -322,7 +323,10 @@ class AdsImpl : public Ads,
       const mojom::InlineContentAdEventType event_type) override;
 
   // AdTransferObserver implementation
-  void OnAdTransfer(const AdInfo& ad) override;
+  void OnWillTransferAd(const AdInfo& ad, const base::Time& time) override;
+  void OnDidTransferAd(const AdInfo& ad) override;
+  void OnCancelledAdTransfer(const AdInfo& ad, const int32_t tab_id) override;
+  void OnFailedToTransferAd(const AdInfo& ad) override;
 
   // ConversionsObserver implementation
   void OnConversion(

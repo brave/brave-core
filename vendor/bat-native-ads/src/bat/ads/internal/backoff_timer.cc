@@ -44,10 +44,10 @@ void BackoffTimer::FireNow() {
   return timer_.FireNow();
 }
 
-void BackoffTimer::Stop() {
-  timer_.Stop();
-
+bool BackoffTimer::Stop() {
   backoff_count_ = 0;
+
+  return timer_.Stop();
 }
 
 void BackoffTimer::set_max_backoff_delay(const base::TimeDelta& max_delay) {
