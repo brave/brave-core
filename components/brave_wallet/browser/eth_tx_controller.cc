@@ -236,6 +236,40 @@ void EthTxController::MakeERC20TransferData(
   std::move(callback).Run(true, data_decoded);
 }
 
+void EthTxController::MakeERC20ApproveData(
+    const std::string& spender_address,
+    const std::string& amount,
+    MakeERC20ApproveDataCallback callback) {
+  uint256_t amount_uint = 0;
+  if (!HexValueToUint256(amount, &amount_uint)) {
+    LOG(ERROR) << "Could not convert amount";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  std::string data;
+  if (!erc20::Approve(spender_address, amount_uint, &data)) {
+    LOG(ERROR) << "Could not make transfer data";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  if (!base::StartsWith(data, "0x")) {
+    LOG(ERROR) << "Invalid format returned from Transfer";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  std::vector<uint8_t> data_decoded;
+  if (!base::HexStringToBytes(data.data() + 2, &data_decoded)) {
+    LOG(ERROR) << "Could not decode data";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  std::move(callback).Run(true, data_decoded);
+}
+
 void EthTxController::AddObserver(
     ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) {
   observers_.Add(std::move(observer));
