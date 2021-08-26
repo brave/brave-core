@@ -43,6 +43,7 @@ class BraveVPNOSConnectionAPI {
   virtual void Connect(const std::string& name) = 0;
   virtual void Disconnect(const std::string& name) = 0;
   virtual void RemoveVPNConnection(const std::string& name) = 0;
+  virtual void CheckConnection(const std::string& name) = 0;
 
  protected:
   BraveVPNOSConnectionAPI();

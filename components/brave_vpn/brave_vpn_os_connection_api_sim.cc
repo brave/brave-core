@@ -51,6 +51,10 @@ void BraveVPNOSConnectionAPISim::RemoveVPNConnection(const std::string& name) {
                                 weak_factory_.GetWeakPtr(), name, true));
 }
 
+void BraveVPNOSConnectionAPISim::CheckConnection(const std::string& name) {
+  // Do nothing.
+}
+
 void BraveVPNOSConnectionAPISim::OnCreated(const std::string& name,
                                            bool success) {
   if (!success)

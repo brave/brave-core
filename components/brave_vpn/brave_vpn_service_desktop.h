@@ -42,12 +42,13 @@ class BraveVpnServiceDesktop
 
   void Connect();
   void Disconnect();
-  bool IsConnected() const;
   void CreateVPNConnection();
   void RemoveVPNConnnection();
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
+
+  bool is_connected() const { return is_connected_; }
 
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);

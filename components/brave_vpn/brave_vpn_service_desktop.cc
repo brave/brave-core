@@ -16,6 +16,8 @@
 
 namespace {
 
+constexpr char kBraveVPNEntryName[] = "BraveVPN";
+
 bool GetVPNCredentialsFromSwitch(brave_vpn::BraveVPNConnectionInfo* info) {
   DCHECK(info);
   auto* cmd = base::CommandLine::ForCurrentProcess();
@@ -48,6 +50,9 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : BraveVpnService(url_loader_factory) {
   observed_.Observe(GetBraveVPNConnectionAPI());
+
+  // If OS has already connected vpn,`OnConnected()` will be called.
+  GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
 }
 
 BraveVpnServiceDesktop::~BraveVpnServiceDesktop() = default;
@@ -70,6 +75,9 @@ void BraveVpnServiceDesktop::OnRemoved(const std::string& name) {
 }
 
 void BraveVpnServiceDesktop::OnConnected(const std::string& name) {
+  if (is_connected_)
+    return;
+
   is_connected_ = true;
 
   for (Observer& obs : observers_)
@@ -77,6 +85,9 @@ void BraveVpnServiceDesktop::OnConnected(const std::string& name) {
 }
 
 void BraveVpnServiceDesktop::OnDisconnected(const std::string& name) {
+  if (!is_connected_)
+    return;
+
   is_connected_ = false;
 
   for (Observer& obs : observers_)
@@ -98,10 +109,6 @@ void BraveVpnServiceDesktop::Connect() {
 
 void BraveVpnServiceDesktop::Disconnect() {
   GetBraveVPNConnectionAPI()->Disconnect(GetConnectionInfo().connection_name());
-}
-
-bool BraveVpnServiceDesktop::IsConnected() const {
-  return is_connected_;
 }
 
 void BraveVpnServiceDesktop::AddObserver(Observer* observer) {
@@ -127,5 +134,5 @@ void BraveVpnServiceDesktop::BindInterface(
 }
 
 void BraveVpnServiceDesktop::GetIsConnected(GetIsConnectedCallback callback) {
-  std::move(callback).Run(IsConnected());
+  std::move(callback).Run(is_connected_);
 }
