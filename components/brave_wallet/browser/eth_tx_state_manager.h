@@ -29,14 +29,6 @@ class EthJsonRpcController;
 
 class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
  public:
-  enum class TransactionStatus {
-    UNAPPROVED,
-    APPROVED,
-    REJECTED,
-    SUBMITTED,
-    CONFIRMED
-  };
-
   struct TxMeta {
     TxMeta();
     explicit TxMeta(std::unique_ptr<EthTransaction> tx);
@@ -45,7 +37,7 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
     bool operator==(const TxMeta&) const;
 
     std::string id;
-    TransactionStatus status = TransactionStatus::UNAPPROVED;
+    mojom::TransactionStatus status = mojom::TransactionStatus::Unapproved;
     EthAddress from;
     uint256_t last_gas_price = 0;
     base::Time created_time;
@@ -73,7 +65,7 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
   void WipeTxs();
 
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
-      TransactionStatus status,
+      mojom::TransactionStatus status,
       absl::optional<EthAddress> from);
 
   // mojom::EthJsonRpcControllerObserver
@@ -82,7 +74,7 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
  private:
   std::string GetNetworkId() const;
   // only support REJECTED and CONFIRMED
-  void RetireTxByStatus(TransactionStatus status, size_t max_num);
+  void RetireTxByStatus(mojom::TransactionStatus status, size_t max_num);
 
   void OnConnectionError();
   void OnGetNetworkUrl(const std::string& url);

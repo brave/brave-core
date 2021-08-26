@@ -16,11 +16,11 @@
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_wallet {
-
 namespace {
 constexpr size_t kMaxConfirmedTxNum = 10;
 constexpr size_t kMaxRejectedTxNum = 10;
@@ -87,7 +87,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
   absl::optional<int> status = value.FindIntKey("status");
   if (!status)
     return nullptr;
-  meta->status = static_cast<EthTxStateManager::TransactionStatus>(*status);
+  meta->status = static_cast<mojom::TransactionStatus>(*status);
 
   const std::string* from = value.FindStringKey("from");
   if (!from)
@@ -191,8 +191,8 @@ void EthTxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   if (!is_add)
     return;
   // We only keep most recent 10 confirmed and rejected tx metas per network
-  RetireTxByStatus(TransactionStatus::CONFIRMED, kMaxConfirmedTxNum);
-  RetireTxByStatus(TransactionStatus::REJECTED, kMaxRejectedTxNum);
+  RetireTxByStatus(mojom::TransactionStatus::Confirmed, kMaxConfirmedTxNum);
+  RetireTxByStatus(mojom::TransactionStatus::Rejected, kMaxRejectedTxNum);
 }
 
 std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::GetTx(
@@ -219,7 +219,7 @@ void EthTxStateManager::WipeTxs() {
 }
 
 std::vector<std::unique_ptr<EthTxStateManager::TxMeta>>
-EthTxStateManager::GetTransactionsByStatus(TransactionStatus status,
+EthTxStateManager::GetTransactionsByStatus(mojom::TransactionStatus status,
                                            absl::optional<EthAddress> from) {
   std::vector<std::unique_ptr<EthTxStateManager::TxMeta>> result;
   const base::DictionaryValue* dict =
@@ -277,10 +277,10 @@ std::string EthTxStateManager::GetNetworkId() const {
   return id;
 }
 
-void EthTxStateManager::RetireTxByStatus(TransactionStatus status,
+void EthTxStateManager::RetireTxByStatus(mojom::TransactionStatus status,
                                          size_t max_num) {
-  if (status != TransactionStatus::CONFIRMED &&
-      status != TransactionStatus::REJECTED)
+  if (status != mojom::TransactionStatus::Confirmed &&
+      status != mojom::TransactionStatus::Rejected)
     return;
   auto tx_metas = GetTransactionsByStatus(status, absl::nullopt);
   if (tx_metas.size() > max_num) {
@@ -289,10 +289,10 @@ void EthTxStateManager::RetireTxByStatus(TransactionStatus status,
       if (!oldest_meta) {
         oldest_meta = tx_meta.get();
       } else {
-        if (tx_meta->status == TransactionStatus::CONFIRMED &&
+        if (tx_meta->status == mojom::TransactionStatus::Confirmed &&
             tx_meta->confirmed_time < oldest_meta->confirmed_time) {
           oldest_meta = tx_meta.get();
-        } else if (tx_meta->status == TransactionStatus::REJECTED &&
+        } else if (tx_meta->status == mojom::TransactionStatus::Rejected &&
                    tx_meta->created_time < oldest_meta->created_time) {
           oldest_meta = tx_meta.get();
         }

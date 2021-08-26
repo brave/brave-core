@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/observer_list.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -32,13 +31,6 @@ class KeyringController;
 
 class EthTxController : public KeyedService, public mojom::EthTxController {
  public:
-  class Observer : public base::CheckedObserver {
-   public:
-    virtual void OnNewUnapprovedTx(const EthTxStateManager::TxMeta&) = 0;
-
-   protected:
-    ~Observer() override = default;
-  };
   explicit EthTxController(
       EthJsonRpcController* eth_json_rpc_controller,
       KeyringController* keyring_controller,
@@ -52,9 +44,6 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
 
   mojo::PendingRemote<mojom::EthTxController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::EthTxController> receiver);
-
-  void AddObserver(Observer* observer);
-  void RemoveObserver(Observer* observer);
 
   void AddUnapprovedTransaction(mojom::TxDataPtr tx_data,
                                 const std::string& from,
@@ -70,8 +59,11 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
   void MakeERC20TransferData(const std::string& to_address,
                              const std::string& amount,
                              MakeERC20TransferDataCallback) override;
+  void AddObserver(
+      ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) override;
 
  private:
+  void NotifyTransactionStatusChanged(EthTxStateManager::TxMeta* meta);
   void OnConnectionError();
   void OnGetNextNonce(std::unique_ptr<EthTxStateManager::TxMeta> meta,
                       uint256_t chain_id,
@@ -89,7 +81,7 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;
 
-  base::ObserverList<Observer> observers_;
+  mojo::RemoteSet<mojom::EthTxControllerObserver> observers_;
   mojo::ReceiverSet<mojom::EthTxController> receivers_;
 
   base::WeakPtrFactory<EthTxController> weak_factory_;

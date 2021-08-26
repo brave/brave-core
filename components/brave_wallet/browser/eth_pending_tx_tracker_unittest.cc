@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
@@ -81,7 +82,7 @@ TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {
 
   EthTxStateManager::TxMeta meta_in_state;
   meta_in_state.id = EthTxStateManager::GenerateMetaID();
-  meta_in_state.status = EthTxStateManager::TransactionStatus::CONFIRMED;
+  meta_in_state.status = mojom::TransactionStatus::Confirmed;
   meta_in_state.from = meta.from;
   meta_in_state.tx->set_nonce(uint256_t(123));
   tx_state_manager.AddOrUpdateTx(meta_in_state);
@@ -130,7 +131,7 @@ TEST_F(EthPendingTxTrackerUnitTest, DropTransaction) {
                                          &nonce_tracker);
   EthTxStateManager::TxMeta meta;
   meta.id = "001";
-  meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
+  meta.status = mojom::TransactionStatus::Submitted;
   tx_state_manager.AddOrUpdateTx(meta);
 
   pending_tx_tracker.DropTransaction(&meta);
@@ -151,22 +152,22 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
   EthTxStateManager::TxMeta meta;
   meta.id = "001";
   meta.from = addr1;
-  meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
+  meta.status = mojom::TransactionStatus::Submitted;
   tx_state_manager.AddOrUpdateTx(meta);
   meta.id = "002";
   meta.from = addr2;
   meta.tx->set_nonce(uint256_t(4));
-  meta.status = EthTxStateManager::TransactionStatus::CONFIRMED;
+  meta.status = mojom::TransactionStatus::Confirmed;
   tx_state_manager.AddOrUpdateTx(meta);
   meta.id = "003";
   meta.from = addr2;
   meta.tx->set_nonce(uint256_t(4));
-  meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
+  meta.status = mojom::TransactionStatus::Submitted;
   tx_state_manager.AddOrUpdateTx(meta);
   meta.id = "004";
   meta.from = addr2;
   meta.tx->set_nonce(uint256_t(5));
-  meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
+  meta.status = mojom::TransactionStatus::Submitted;
   tx_state_manager.AddOrUpdateTx(meta);
 
   test_url_loader_factory()->SetInterceptor(
@@ -195,8 +196,7 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
   WaitForResponse();
   auto meta_from_state = tx_state_manager.GetTx("001");
   ASSERT_NE(meta_from_state, nullptr);
-  EXPECT_EQ(meta_from_state->status,
-            EthTxStateManager::TransactionStatus::CONFIRMED);
+  EXPECT_EQ(meta_from_state->status, mojom::TransactionStatus::Confirmed);
   EXPECT_EQ(meta_from_state->from, addr1);
   EXPECT_EQ(meta_from_state->tx_receipt.contract_address,
             "0xb60e8dd61c5d32be8058bb8eb970870f07233155");
@@ -205,8 +205,7 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
   ASSERT_EQ(meta_from_state, nullptr);
   meta_from_state = tx_state_manager.GetTx("004");
   ASSERT_NE(meta_from_state, nullptr);
-  EXPECT_EQ(meta_from_state->status,
-            EthTxStateManager::TransactionStatus::CONFIRMED);
+  EXPECT_EQ(meta_from_state->status, mojom::TransactionStatus::Confirmed);
   EXPECT_EQ(meta_from_state->tx_receipt.contract_address,
             "0xb60e8dd61c5d32be8058bb8eb970870f07233155");
 }

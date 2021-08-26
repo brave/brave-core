@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile_manager.h"
@@ -104,7 +105,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   EthTxStateManager::TxMeta meta;
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.from = EthAddress::FromHex(addr);
-  meta.status = EthTxStateManager::TransactionStatus::CONFIRMED;
+  meta.status = mojom::TransactionStatus::Confirmed;
   meta.tx->set_nonce(uint256_t(2));
   tx_state_manager.AddOrUpdateTx(meta);
 
@@ -123,7 +124,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
 
   // tx count: 2, confirmed: [2, 3], pending: null
   meta.id = EthTxStateManager::GenerateMetaID();
-  meta.status = EthTxStateManager::TransactionStatus::CONFIRMED;
+  meta.status = mojom::TransactionStatus::Confirmed;
   meta.tx->set_nonce(uint256_t(3));
   tx_state_manager.AddOrUpdateTx(meta);
 
@@ -141,7 +142,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   EXPECT_EQ(nonce_result, uint256_t(4));
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4]
-  meta.status = EthTxStateManager::TransactionStatus::SUBMITTED;
+  meta.status = mojom::TransactionStatus::Submitted;
   meta.tx->set_nonce(uint256_t(4));
   meta.id = EthTxStateManager::GenerateMetaID();
   tx_state_manager.AddOrUpdateTx(meta);

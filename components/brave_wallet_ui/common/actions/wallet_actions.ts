@@ -8,7 +8,9 @@ import {
   InitializedPayloadType,
   UnlockWalletPayloadType,
   ChainChangedEventPayloadType,
-  SetInitialVisibleTokensPayloadType
+  SetInitialVisibleTokensPayloadType,
+  NewUnapprovedTxAdded,
+  TransactionStatusChanged
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -52,3 +54,5 @@ export const portfolioPriceHistoryUpdated = createAction<PortfolioTokenHistoryAn
 export const selectPortfolioTimeline = createAction<AssetPriceTimeframe>('selectPortfolioTimeline')
 export const portfolioTimelineUpdated = createAction<AssetPriceTimeframe>('portfolioTimelineUpdated')
 export const sendTransaction = createAction<SendTransactionParam>('sendTransaction')
+export const newUnapprovedTxAdded = createAction<NewUnapprovedTxAdded>('newUnapprovedTxAdded')
+export const transactionStatusChanged = createAction<TransactionStatusChanged>('transactionStatusChanged')

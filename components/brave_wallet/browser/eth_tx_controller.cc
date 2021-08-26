@@ -51,14 +51,6 @@ void EthTxController::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
-void EthTxController::AddObserver(Observer* observer) {
-  observers_.AddObserver(observer);
-}
-
-void EthTxController::RemoveObserver(Observer* observer) {
-  observers_.RemoveObserver(observer);
-}
-
 void EthTxController::AddUnapprovedTransaction(
     mojom::TxDataPtr tx_data,
     const std::string& from,
@@ -72,11 +64,11 @@ void EthTxController::AddUnapprovedTransaction(
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.from = EthAddress::FromHex(from);
   meta.created_time = base::Time::Now();
-  meta.status = EthTxStateManager::TransactionStatus::UNAPPROVED;
+  meta.status = mojom::TransactionStatus::Unapproved;
   tx_state_manager_->AddOrUpdateTx(meta);
 
-  for (Observer& observer : observers_)
-    observer.OnNewUnapprovedTx(meta);
+  for (const auto& observer : observers_)
+    observer->OnNewUnapprovedTx(meta.id);
 
   std::move(callback).Run(true, meta.id);
 }
@@ -94,11 +86,11 @@ void EthTxController::AddUnapproved1559Transaction(
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.from = EthAddress::FromHex(from);
   meta.created_time = base::Time::Now();
-  meta.status = EthTxStateManager::TransactionStatus::UNAPPROVED;
+  meta.status = mojom::TransactionStatus::Unapproved;
   tx_state_manager_->AddOrUpdateTx(meta);
 
-  for (Observer& observer : observers_)
-    observer.OnNewUnapprovedTx(meta);
+  for (const auto& observer : observers_)
+    observer->OnNewUnapprovedTx(meta.id);
 
   std::move(callback).Run(true, meta.id);
 }
@@ -142,8 +134,9 @@ void EthTxController::RejectTransaction(const std::string& tx_meta_id,
     std::move(callback).Run(false);
     return;
   }
-  meta->status = EthTxStateManager::TransactionStatus::REJECTED;
+  meta->status = mojom::TransactionStatus::Rejected;
   tx_state_manager_->AddOrUpdateTx(*meta);
+  NotifyTransactionStatusChanged(meta.get());
   std::move(callback).Run(true);
 }
 
@@ -153,7 +146,9 @@ void EthTxController::OnGetNextNonce(
     bool success,
     uint256_t nonce) {
   if (!success) {
-    // TODO(darkdh): Notify observers
+    meta->status = mojom::TransactionStatus::Error;
+    tx_state_manager_->AddOrUpdateTx(*meta);
+    NotifyTransactionStatusChanged(meta.get());
     LOG(ERROR) << "GetNextNonce failed";
     return;
   }
@@ -161,8 +156,9 @@ void EthTxController::OnGetNextNonce(
   DCHECK(!keyring_controller_->IsLocked());
   keyring_controller_->SignTransactionByDefaultKeyring(
       meta->from.ToChecksumAddress(), meta->tx.get(), chain_id);
-  meta->status = EthTxStateManager::TransactionStatus::APPROVED;
+  meta->status = mojom::TransactionStatus::Approved;
   tx_state_manager_->AddOrUpdateTx(*meta);
+  NotifyTransactionStatusChanged(meta.get());
   if (!meta->tx->IsSigned()) {
     LOG(ERROR) << "Transaction must be signed first";
     return;
@@ -188,11 +184,19 @@ void EthTxController::OnPublishTransaction(std::string tx_meta_id,
     DCHECK(false) << "Transaction should be found";
     return;
   }
+
   if (status) {
-    meta->status = EthTxStateManager::TransactionStatus::SUBMITTED;
+    meta->status = mojom::TransactionStatus::Submitted;
     meta->submitted_time = base::Time::Now();
     meta->tx_hash = tx_hash;
-    tx_state_manager_->AddOrUpdateTx(*meta);
+  } else {
+    meta->status = mojom::TransactionStatus::Error;
+  }
+
+  tx_state_manager_->AddOrUpdateTx(*meta);
+  NotifyTransactionStatusChanged(meta.get());
+
+  if (status) {
     pending_tx_tracker_->UpdatePendingTransactions();
   }
 }
@@ -229,6 +233,17 @@ void EthTxController::MakeERC20TransferData(
   }
 
   std::move(callback).Run(true, data_decoded);
+}
+
+void EthTxController::AddObserver(
+    ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) {
+  observers_.Add(std::move(observer));
+}
+
+void EthTxController::NotifyTransactionStatusChanged(
+    EthTxStateManager::TxMeta* meta) {
+  for (const auto& observer : observers_)
+    observer->OnTransactionStatusChanged(meta->id, meta->status);
 }
 
 }  // namespace brave_wallet

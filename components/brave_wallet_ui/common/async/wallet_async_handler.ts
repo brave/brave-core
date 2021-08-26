@@ -9,7 +9,9 @@ import * as WalletActions from '../actions/wallet_actions'
 import {
   UnlockWalletPayloadType,
   ChainChangedEventPayloadType,
-  SetInitialVisibleTokensPayloadType
+  SetInitialVisibleTokensPayloadType,
+  NewUnapprovedTxAdded,
+  TransactionStatusChanged
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -225,6 +227,14 @@ handler.on(WalletActions.sendTransaction.getType(), async (store, payload: SendT
   console.log('approveResult: ', approveResult)
 
   await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store, payload: NewUnapprovedTxAdded) => {
+  console.log('new unapproved tx added: ', payload.txMetaId)
+})
+
+handler.on(WalletActions.transactionStatusChanged.getType(), async (store, payload: TransactionStatusChanged) => {
+  console.log('tx status changed: ', payload.txMetaId, payload.txStatus)
 })
 
 export default handler.middleware

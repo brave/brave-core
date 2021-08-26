@@ -224,6 +224,8 @@ export interface UnlockReturnInfo {
   success: boolean
 }
 
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
 export enum AssetPriceTimeframe {
   Live = 0,
   OneDay = 1,
@@ -234,6 +236,8 @@ export enum AssetPriceTimeframe {
   All = 6
 }
 
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
 export enum Network {
   Mainnet = 0,
   Rinkeby = 1,
@@ -242,6 +246,16 @@ export enum Network {
   Kovan = 4,
   Localhost = 5,
   Custom = 6
+}
+
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
+export enum TransactionStatus {
+  Unapproved = 0,
+  Approved = 1,
+  Rejected = 2,
+  Submitted = 3,
+  Confirmed = 4
 }
 
 export interface SwapParams {
