@@ -447,12 +447,25 @@ export interface MakeERC20TransferDataReturnInfo {
   data: number[]
 }
 
+export interface TransactionInfo {
+  id: string
+  fromAddress: string
+  txHash: string
+  txData: TxData1559
+  txStatus: TransactionStatus
+}
+
+export interface GetAllTransactionInfoReturnInfo {
+  transactionInfos: TransactionInfo[]
+}
+
 export interface EthTxController {
   addUnapprovedTransaction: (txData: TxData, from: string) => Promise<AddUnapprovedTransactionReturnInfo>
   addUnapproved1559Transaction: (txData: TxData1559, from: string) => (AddUnapproved1559TransactionReturnInfo)
   approveTransaction: (txMetaId: string) => Promise<ApproveTransactionReturnInfo>
   rejectTransaction: (txMetaId: string) => Promise<RejectTransactionReturnInfo>
   makeERC20TransferData: (toAddress: string, amount: string) => Promise<MakeERC20TransferDataReturnInfo>
+  getAllTransactionInfo: (fromAddress: string) => Promise<GetAllTransactionInfoReturnInfo>
 }
 
 export interface EthJsonRpcController {

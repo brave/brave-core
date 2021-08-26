@@ -238,3 +238,8 @@ handler.on(WalletActions.transactionStatusChanged.getType(), async (store, paylo
 })
 
 export default handler.middleware
+
+// TODO(bbondy): Remove when we implement the transaction info
+// const apiProxy = await getAPIProxy()
+// const result = await apiProxy.ethTxController.getAllTransactionInfo('0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7')
+// console.log('transactionInfos: ', result.transactionInfos)
