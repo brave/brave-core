@@ -109,7 +109,7 @@ std::wstring GetPhonebookPath() {
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasenumconnectionsa
-bool DisconnectEntry(LPCTSTR entry_name) {
+bool DisconnectEntry(const std::wstring& entry_name) {
   DWORD dw_cb = 0;
   DWORD dw_ret = ERROR_SUCCESS;
   DWORD dw_connections = 0;
@@ -165,7 +165,7 @@ bool DisconnectEntry(LPCTSTR entry_name) {
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasdiala
-bool ConnectEntry(LPCTSTR entry_name) {
+bool ConnectEntry(const std::wstring& entry_name) {
   LPRASDIALPARAMS lp_ras_dial_params = NULL;
   DWORD cb = sizeof(RASDIALPARAMS);
 
@@ -176,7 +176,8 @@ bool ConnectEntry(LPCTSTR entry_name) {
     return false;
   }
   lp_ras_dial_params->dwSize = sizeof(RASDIALPARAMS);
-  wcscpy_s(lp_ras_dial_params->szEntryName, RAS_MaxEntryName + 1, entry_name);
+  wcscpy_s(lp_ras_dial_params->szEntryName, RAS_MaxEntryName + 1,
+           entry_name.c_str());
   wcscpy_s(lp_ras_dial_params->szDomain, DNLEN + 1, L"*");
   // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgetcredentialsw
   RASCREDENTIALS credentials;
@@ -185,7 +186,7 @@ bool ConnectEntry(LPCTSTR entry_name) {
   credentials.dwSize = sizeof(RASCREDENTIALS);
   credentials.dwMask = RASCM_UserName | RASCM_Password;
   DWORD dw_ret =
-      RasGetCredentials(DEFAULT_PHONE_BOOK, entry_name, &credentials);
+      RasGetCredentials(DEFAULT_PHONE_BOOK, entry_name.c_str(), &credentials);
   if (dw_ret != ERROR_SUCCESS) {
     HeapFree(GetProcessHeap(), 0, (LPVOID)lp_ras_dial_params);
     PrintRasError(dw_ret);
@@ -210,8 +211,8 @@ bool ConnectEntry(LPCTSTR entry_name) {
   return true;
 }
 
-bool RemoveEntry(LPCTSTR entry_name) {
-  DWORD dw_ret = RasDeleteEntry(DEFAULT_PHONE_BOOK, entry_name);
+bool RemoveEntry(const std::wstring& entry_name) {
+  DWORD dw_ret = RasDeleteEntry(DEFAULT_PHONE_BOOK, entry_name.c_str());
   if (dw_ret != ERROR_SUCCESS) {
     PrintRasError(dw_ret);
     return false;
@@ -220,10 +221,10 @@ bool RemoveEntry(LPCTSTR entry_name) {
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rassetentrypropertiesa
-bool CreateEntry(LPCTSTR entry_name,
-                 LPCTSTR hostname,
-                 LPCTSTR username,
-                 LPCTSTR password) {
+bool CreateEntry(const std::wstring& entry_name,
+                 const std::wstring& hostname,
+                 const std::wstring& username,
+                 const std::wstring& password) {
   RASENTRY entry;
   ZeroMemory(&entry, sizeof(RASENTRY));
   // For descriptions of each field (including valid values) see:
@@ -232,7 +233,7 @@ bool CreateEntry(LPCTSTR entry_name,
   entry.dwfOptions = RASEO_RemoteDefaultGateway | RASEO_RequireEAP |
                      RASEO_PreviewUserPw | RASEO_PreviewDomain |
                      RASEO_ShowDialingProgress;
-  wcscpy_s(entry.szLocalPhoneNumber, RAS_MaxPhoneNumber + 1, hostname);
+  wcscpy_s(entry.szLocalPhoneNumber, RAS_MaxPhoneNumber + 1, hostname.c_str());
   entry.dwfNetProtocols = RASNP_Ip | RASNP_Ipv6;
   entry.dwFramingProtocol = RASFP_Ppp;
   wcscpy_s(entry.szDeviceType, RAS_MaxDeviceType + 1, RASDT_Vpn);
@@ -250,14 +251,15 @@ bool CreateEntry(LPCTSTR entry_name,
   // this maps to "Type of sign-in info" => "User name and password"
   entry.dwCustomAuthKey = 26;
 
-  DWORD dw_ret = RasSetEntryProperties(DEFAULT_PHONE_BOOK, entry_name, &entry,
-                                       entry.dwSize, NULL, NULL);
+  DWORD dw_ret = RasSetEntryProperties(DEFAULT_PHONE_BOOK, entry_name.c_str(),
+                                       &entry, entry.dwSize, NULL, NULL);
   if (dw_ret != ERROR_SUCCESS) {
     PrintRasError(dw_ret);
     return false;
   }
 
-  if (SetCredentials(entry_name, username, password) != ERROR_SUCCESS) {
+  if (SetCredentials(entry_name.c_str(), username.c_str(), password.c_str()) !=
+      ERROR_SUCCESS) {
     return false;
   }
 
@@ -300,7 +302,7 @@ bool CreateEntry(LPCTSTR entry_name,
 
   // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-writeprivateprofilestringw
   BOOL wrote_entry =
-      WritePrivateProfileString(entry_name, L"NumCustomPolicy",
+      WritePrivateProfileString(entry_name.c_str(), L"NumCustomPolicy",
                                 kNumCustomPolicy, phone_book_path.c_str());
   if (!wrote_entry) {
     LOG(ERROR)
@@ -310,7 +312,7 @@ bool CreateEntry(LPCTSTR entry_name,
   }
 
   wrote_entry =
-      WritePrivateProfileString(entry_name, L"CustomIPSecPolicies",
+      WritePrivateProfileString(entry_name.c_str(), L"CustomIPSecPolicies",
                                 kCustomIPSecPolicies, phone_book_path.c_str());
   if (!wrote_entry) {
     LOG(ERROR) << "ERROR: failed to write \"CustomIPSecPolicies\" field to "
