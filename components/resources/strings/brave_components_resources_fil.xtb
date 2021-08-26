@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Na-click</translation>
 <translation id="7119308337584989771">Na-dismiss</translation>
 <translation id="6805660603861526473">Natingnan</translation>
+<translation id="1501075228659004450">Hmm, mukhang na-verify na ang iyong Brave Rewards wallet gamit ang ibang <ph name="PROVIDER"/> account. Pakisubukang mag-verify ulit gamit ang iyong nakaraang account.</translation>
+<translation id="5111921830714291902">Error: Ibang account</translation>
 <translation id="2359865110462963929">Kasalukuyang hindi sinusuportahan ang BAT sa iyong rehiyon. Sumangguni <ph name="BEGIN_LINK"/>rito<ph name="END_LINK"/> para sa mga update.</translation>
 <translation id="1737873393693460829">Sa pamamagitan ng pag-on sa [[title]], sumasang-ayon ka sa <ph name="BEGIN_LINK1"/>Mga Tuntunin ng Serbisyo<ph name="END_LINK1"/> at <ph name="BEGIN_LINK2"/>Patakaran sa Privacy<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Nagka-error sa paggawa ng Brave Browser BAT</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Magpatuloy</translation>
 <translation id="5112354605357157725">Magpatuloy sa pag-log in</translation>
 <translation id="1280764044837262633">Nangangailangan ang <ph name="PROVIDER"/> na minimum na balanse na <ph name="AMOUNT"/> BAT para makagawa ng account. Kung nagkonekta ka na ng account dati,</translation>
+<translation id="752216563428219524">Hindi nasimulan ang mga ad, paki-refresh ang page.</translation>
 <translation id="7422678632904904341">Halaga:</translation>
 <translation id="6969783933307596818">Awtomatikong mag-refresh kada 5 segundo</translation>
 <translation id="5025866799968038247">Impormasyon ng balanse</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Auto Contribute</translation>
 <translation id="2927922949538312364">Isang beses na tip</translation>
 <translation id="3164105678355419142">Umuulit na tip</translation>
+<translation id="916115051162298064">Diagnostics ng ad</translation>
 <translation id="7806880412350961625">Mga log ng event</translation>
 <translation id="4309915981827077375">Pangkalahatang impormasyon</translation>
 <translation id="3662406032239313663">Mga log</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Kategorya</translation>
 <translation id="3080423471207781945">Maximum na mga ad na natatanggap kada oras:</translation>
 <translation id="2631006050119455616">Na-save</translation>
+<translation id="7847825746023377505">Walang tiningnang ad sa nakalipas na <ph name="TOTAL_DAYS"/> (na) araw.</translation>
 <translation id="7902420836933072528">Mga ad na natanggap mo sa nakalipas na [[totalDays]] (na) araw</translation>
 <translation id="8863685593846905344">History ng Mga Ad</translation>
 <translation id="2777306694585938662">Natanggap ang mga reward ng Mga Ad</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">Paminsan-minsan, aalukin ka ng mga libreng grant para sa token mula sa Brave. Tiyaking abangan ang mga alerto!</translation>
 <translation id="1370034647041840967">Makakakuha ka ng mga token para sa pagpansin mo sa mga ad at pagbibigay ng tip upang suportahan ang mga creator ng content na pinapahalagahan mo!</translation>
 <translation id="4919888432594361029">Magdagdag, mag-withdraw, at mamahala ng pondo sa <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Ang iyong Brave wallet ay hatid ng <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Binuo ang Mga Reward sa Brave batay sa Basic Attention Token. Matuto pa tungkol sa BAT</translation>
 <translation id="7823359893981882407">dito</translation>
 <translation id="3034163433136515805">Tingnan ang QR Code</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Ang Halaga ng Iyong Reward</translation>
 <translation id="2151535059686617995">Maswerte ka ngayon!</translation>
 <translation id="6436689611575806470">Paparating na ang iyong grant na [[currency]]</translation>
-<translation id="7512440811010447157">i-verify</translation>
 <translation id="8267327690882073581">I-verify ang Wallet</translation>
 <translation id="543510923939676996">Na-verify ang Wallet</translation>
 <translation id="2659764755126740206">Pumunta sa aking <ph name="PROVIDER"/> account</translation>
 <translation id="3699674790322420653">Kumpletuhin ang pag-verify ng wallet</translation>
 <translation id="9200453331904391567">Idiskonekta mula sa Mga Reward ng Brave</translation>
+<translation id="3656941797339037856">I-link ang Rewards sa Gemini!</translation>
+<translation id="671838195432136371">Sa pamamagitan ng Gemini, magagawa mong walang kahirap-hirap na mag-trade, mag-store, at kumita ng 3.49% APY* sa iyong BAT. Makakatanggap ng 5 libreng BAT ang mga bagong user ng Gemini!</translation>
+<translation id="9136976526700181750">* Kinitang APY sa Gemini mula Ago 15, 2021</translation>
 <translation id="7404779623219601861">I-redeem ang BAT para sa Mga Gift Card</translation>
 <translation id="6215565499749144110">Gamit ang TAP Network, mare-redeem mo ang iyong BAT para sa mga gift card ng mga sikat na tatak.</translation>
 <translation id="6915065518766963119">* Kailangan ng Pag-verify sa Uphold.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Presyo ng Unit</translation>
 <translation id="4763179765154524864">Kabuuang Ginastos</translation>
 <translation id="8851480289992540512">Kabuuang Natanggap</translation>
+<translation id="824449983246282560">Wala kang anumang balanse sa iyong account. Bisitahin ang Gemini para bumili nito.</translation>
 <translation id="8624961452383848703">Gusto kong mag-convert ng…</translation>
 <translation id="616639131065447379">Maligayang pagdating sa Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Nagbibigay-daan sa iyo ang Crypto Wallets na makagamit ng cryptocurrency at mga nauugnay na asset sa Brave. Sinusuportahan ng Crypto Wallets ang mga Ethereum token gaya ng ETH at BAT, pati na rin ang mga collectible, at nagbibigay-daan ito sa iyong makagamit ng Ðmga app at iba pang smart contract. Ang lahat ng ito ay nilayon para sa mga taong pamilyar sa Ethereum at iba pang blockchain system — o nasasabik na matutunan ang mga ito.</translation>

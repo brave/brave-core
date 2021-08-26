@@ -219,9 +219,23 @@
     "message": "Пожалуйста, создайте резервную копию вашего кошелька Brave.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Подробнее…",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Ошибка: неверный аккаунт",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Кажется, кошелек Brave Rewards был подтвержден с помощью другого аккаунта $name$. Войдите в аккаунт, который использовали в тот раз.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Ошибка: баллы BAT недоступны",
@@ -231,10 +245,6 @@
     "message": "Баллы BAT в Uphold еще не поддерживаются в вашем регионе.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "Подробнее…",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "Ошибка: аккаунт заблокирован",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "Ваш аккаунт Uphold сейчас заблокирован.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "Подробнее…",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Ошибка: аккаунт на рассмотрении",
@@ -255,10 +261,6 @@
     "message": "Ваш аккаунт Uphold находится на рассмотрении.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Подробнее…",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Ошибка: доступ к аккаунту ограничен",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Доступ к вашему аккаунту Uphold сейчас ограничен.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Подробнее…",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Достигнуто ограничение на число устройств",
@@ -534,10 +532,6 @@
   "grantFinishTokenTitleAds": {
     "message": "Ваша сумма награды",
     "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "проверить",
-    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Отключен",

@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">已单击</translation>
 <translation id="7119308337584989771">已放弃</translation>
 <translation id="6805660603861526473">已查看</translation>
+<translation id="1501075228659004450">哎呀，看来您的 Brave Rewards 钱包已使用其他 <ph name="PROVIDER"/> 账号验证。请尝试使用您先前的账户验证。</translation>
+<translation id="5111921830714291902">错误：不同的账户</translation>
 <translation id="2359865110462963929">您所在地区目前不支持 BAT。若需更新，请参考 <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>。</translation>
 <translation id="1737873393693460829">开启 [[title]]，即意味着您同意了 <ph name="BEGIN_LINK1"/>服务条款<ph name="END_LINK1"/> 和 <ph name="BEGIN_LINK2"/>隐私政策<ph name="END_LINK2"/>。</translation>
 <translation id="2564425876266960486">创建 Brave 浏览器 BAT 卡出错</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">继续</translation>
 <translation id="5112354605357157725">继续登录</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> 要求最低金额 <ph name="AMOUNT"/> BAT 才能创建账户。如果您先前已创建账户，</translation>
+<translation id="752216563428219524">广告未初始化，请刷新页面。</translation>
 <translation id="7422678632904904341">金额：</translation>
 <translation id="6969783933307596818">每 5 秒自动刷新</translation>
 <translation id="5025866799968038247">余额信息</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">自动捐献</translation>
 <translation id="2927922949538312364">一次性赏金</translation>
 <translation id="3164105678355419142">重复打赏</translation>
+<translation id="916115051162298064">广告诊断</translation>
 <translation id="7806880412350961625">活动记录</translation>
 <translation id="4309915981827077375">基本信息</translation>
 <translation id="3662406032239313663">日志</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">类别</translation>
 <translation id="3080423471207781945">每小时收到的最高广告数：</translation>
 <translation id="2631006050119455616">已保存</translation>
+<translation id="7847825746023377505">过去 <ph name="TOTAL_DAYS"/> 天未查看广告。</translation>
 <translation id="7902420836933072528">您在过去 [[totalDays]] 天中收到的广告</translation>
 <translation id="8863685593846905344">广告历史记录</translation>
 <translation id="2777306694585938662">广告奖励已收到</translation>
@@ -566,11 +571,10 @@
 <translation id="8014425282125849700">偶尔，您将获得 Brave 的免费代币补助金。请务必注意提醒！</translation>
 <translation id="1370034647041840967">通过观看广告赚取代币并付费以支持您喜爱的内容创作者！</translation>
 <translation id="4919888432594361029">以 <ph name="PROVIDER"/>来添加、提取和管理资金。</translation>
-<translation id="3092054349246483285">您的 Brave 钱包的技术支持由 <ph name="PROVIDER"/> 提供。</translation>
 <translation id="6401272292123354754">Brave 奖励建立在注意力币基础上。了解更多有关BAT的信息</translation>
 <translation id="7823359893981882407">此处</translation>
 <translation id="3034163433136515805">查看二维码</translation>
-<translation id="1640793619390890218">适用于转移 BAT 的 iOS Rewards 用户。</translation>
+<translation id="1640793619390890218">（供要转移 BAT 的 iOS Rewards 用户使用）。</translation>
 <translation id="4483635855837696643">恢复您的钱包</translation>
 <translation id="459721429458957031">使用您的恢复密钥还原您的钱包。</translation>
 <translation id="4600052736217630789">使用恢复密钥进行还原将取代您当前的钱包。因此，在您恢复前确保您清空或备份了当前的钱包。</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">您的 Reward 金额</translation>
 <translation id="2151535059686617995">今天真是福星高照！</translation>
 <translation id="6436689611575806470">您的 [[currency]] 补助金已经发放。</translation>
-<translation id="7512440811010447157">验证</translation>
 <translation id="8267327690882073581">验证钱包</translation>
 <translation id="543510923939676996">钱包已验证</translation>
 <translation id="2659764755126740206">前往我的 <ph name="PROVIDER"/> 帐户</translation>
 <translation id="3699674790322420653">完成钱包验证</translation>
 <translation id="9200453331904391567">与 Brave 奖励断开连接</translation>
+<translation id="3656941797339037856">将 Rewards 与 Gemini 关联！</translation>
+<translation id="671838195432136371">Gemini 让您轻松交易、储存和赚取 3.49% APY* 的 BAT。新关联的 Gemini 用户可领取 5 个免费 BAT！</translation>
+<translation id="9136976526700181750">* Gemini 自 2021 年 8 月 15 日赚取 APY</translation>
 <translation id="7404779623219601861">将 BAT 兑换为礼品卡</translation>
 <translation id="6215565499749144110">使用 TAP 网络，您可以将 BAT 兑换成流行的名牌礼品卡。</translation>
 <translation id="6915065518766963119">* 需要维护验证。</translation>
@@ -736,6 +742,7 @@
 <translation id="1833248467354516560">单价</translation>
 <translation id="4763179765154524864">总消费额</translation>
 <translation id="8851480289992540512">收到的总额</translation>
+<translation id="824449983246282560">账户中没有任何余额。访问 Gemini 购买资产。</translation>
 <translation id="8624961452383848703">我想兑换...</translation>
 <translation id="616639131065447379">欢迎使用 Brave 加密钱包</translation>
 <translation id="1740464057879304704">加密钱包可以让您处理加密货币和 Brave 中的相关资产。加密钱包支持以太坊代币，如 ETH 和 BAT，以及收藏品，并允许您使用 Ðapp 和其他智能合约。所有这些都是为那些熟悉以太坊和其他区块链系统—或对学习感到兴奋的人准备的。</translation>

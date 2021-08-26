@@ -219,9 +219,23 @@
     "message": "ウォレットをバックアップしてください。",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "詳しく知る",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "エラー: 異なるアカウント",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "このBrave Rewardsウォレットは、すでに他の$name$アカウントで認証済みのようです。以前のアカウントを使用してもう一度認証をお試しください。",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "エラー: BATの利用不可",
@@ -231,10 +245,6 @@
     "message": "お住まいの地域では、UpholdでBATがサポートされていません。",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "詳しく知る",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "エラー: アカウントのブロック",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "現在、Upholdのアカウントがブロックされています。",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "詳しく知る",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "エラー: アカウントの保留",
@@ -255,10 +261,6 @@
     "message": "Upholdのアカウントが保留中です。",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "詳しく知る",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "エラー: アカウントの制限",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "現在、Upholdのアカウントが制限されています。",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "詳しく知る",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "デバイスの上限に達しました",
@@ -534,10 +532,6 @@
   "grantFinishTokenTitleAds": {
     "message": "あなたの報酬額",
     "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "確認",
-    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "切断されました",

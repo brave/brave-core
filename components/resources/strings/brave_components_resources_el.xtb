@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Θεωρημένο</translation>
 <translation id="7119308337584989771">Απόρριψη</translation>
 <translation id="6805660603861526473">Προβεβλημένη</translation>
+<translation id="1501075228659004450">Φαίνεται ότι το πορτοφόλι σας Brave Rewards έχει επαληθευτεί μέσω άλλου λογαριασμού <ph name="PROVIDER"/>. Παρακαλούμε, προσπαθήστε να το επαληθεύσετε ξανά, χρησιμοποιώντας τον προηγούμενο λογαριασμό σας.</translation>
+<translation id="5111921830714291902">Σφάλμα: Διαφορετικός λογαριασμός</translation>
 <translation id="2359865110462963929">Το BAT δεν υποστηρίζεται προς το παρόν στην περιοχή σας. Παρακαλούμε αναφερθείτε <ph name="BEGIN_LINK"/>εδώ<ph name="END_LINK"/> για ενημερώσεις.</translation>
 <translation id="1737873393693460829">Ενεργοποιώντας [[title]], συμφωνείτε με τους <ph name="BEGIN_LINK1"/>Όρους Υπηρεσίας<ph name="END_LINK1"/> και την <ph name="BEGIN_LINK2"/>Πολιτική Απορρήτου<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Σφάλμα κατά τη δημιουργία της κάρτας Brave Browser BAT</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Συνέχεια</translation>
 <translation id="5112354605357157725">Συνεχίστε για να συνδεθείτε</translation>
 <translation id="1280764044837262633">Ο πάροχος <ph name="PROVIDER"/> απαιτεί υπόλοιπο τουλάχιστον <ph name="AMOUNT"/> BAT για τη δημιουργία ενός λογαριασμού. Αν έχετε ήδη συνδέσει έναν λογαριασμό,</translation>
+<translation id="752216563428219524">Δεν έγινε εκκίνηση διαφημίσεων. Ανανεώστε τη σελίδα.</translation>
 <translation id="7422678632904904341">Ποσό:</translation>
 <translation id="6969783933307596818">Αυτόματη ανανέωση κάθε 5 δευτερόλεπτα</translation>
 <translation id="5025866799968038247">Πληροφορίες υπολοίπου</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Αυτόματη Συνεισφορά</translation>
 <translation id="2927922949538312364">Φιλοδώρημα για μια φορά</translation>
 <translation id="3164105678355419142">Επαναλαμβανόμενο φιλοδώρημα</translation>
+<translation id="916115051162298064">Διαγνωστικά διαφημίσεων</translation>
 <translation id="7806880412350961625">Αρχεία καταγραφής γεγονότων</translation>
 <translation id="4309915981827077375">Γενικές πληροφορίες</translation>
 <translation id="3662406032239313663">Αρχεία καταγραφής</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Κατηγορία</translation>
 <translation id="3080423471207781945">Ο μεγαλύτερος αριθμός διαφημίσεων ανά ώρα:</translation>
 <translation id="2631006050119455616">Αποθηκεύτηκε</translation>
+<translation id="7847825746023377505">Δεν προβλήθηκαν διαφημίσεις τις τελευταίες <ph name="TOTAL_DAYS"/> ημέρες.</translation>
 <translation id="7902420836933072528">Οι Brave Ads που λάβατε τις προηγούμενες [[totalDays]] ημέρες</translation>
 <translation id="8863685593846905344">Ιστορικό διαφημίσεων</translation>
 <translation id="2777306694585938662">Ελήφθησαν ανταμοιβές διαφημίσεων</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">Περιστασιακά θα λαμβάνεις δωρεάν χορηγίες token από το Brave. Βεβαιώσου ότι έχεις το νου σου για την ειδοποίηση!</translation>
 <translation id="1370034647041840967">Κέρδισε μάρκες για την προσοχή που δίνεις σε διαφημίσεις και ανταπόδωσε στηρίζοντας δημιουργούς περιεχομένου που εκτιμάς!</translation>
 <translation id="4919888432594361029">Πρόσθεσε, αποσύρετε και διαχειριστείτε κεφάλαια στο <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Το Brave πορτοφόλι σας τροφοδοτείται από <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Οι ανταμοιβές του Brave στηρίζονται στο Basic Attention Token. Μάθετε περισσότερα για τo ΒΑΤ</translation>
 <translation id="7823359893981882407">εδώ</translation>
 <translation id="3034163433136515805">Δείτε τον κωδικό QR</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Το Ποσό Ανταμοιβής Σας</translation>
 <translation id="2151535059686617995">Είναι η τυχερή σας μέρα!</translation>
 <translation id="6436689611575806470">Σε λίγο θα λάβετε την επιχορήγησή σας ύψους [[currency]].</translation>
-<translation id="7512440811010447157">επαλήθευση</translation>
 <translation id="8267327690882073581">Επαλήθευση Πορτοφολιού</translation>
 <translation id="543510923939676996">Πορτοφόλι Επαληθεύτηκε</translation>
 <translation id="2659764755126740206">Μεταβείτε στον <ph name="PROVIDER"/> λογαριασμό σας</translation>
 <translation id="3699674790322420653">Ολοκλήρωση επαλήθευσης πορτοφολιού</translation>
 <translation id="9200453331904391567">Αποσύνδεση από τις Ανταμοιβές Brave</translation>
+<translation id="3656941797339037856">Συνδέστε τα Rewards με το Gemini!</translation>
+<translation id="671838195432136371">Με το Gemini μπορείτε εύκολα να ανταλλάξετε, να αποθηκεύσετε και να κερδίσετε APY 3,49%* επί των BAT σας. Οι νέοι χρήστες Gemini που συνδέονται, λαμβάνουν 5 δωρεάν BAT!</translation>
+<translation id="9136976526700181750">*APY του Gemini Earn στις 15 Αυγούστου 2021</translation>
 <translation id="7404779623219601861">Εξαργυρώστε BAT με Δωροκάρτες</translation>
 <translation id="6215565499749144110">Με το δίκτυο TAP, μπορείτε να εξαργυρώσετε τα BAT σας με δημοφιλείς επώνυμες δωροκάρτες.</translation>
 <translation id="6915065518766963119">* Απαιτείται Υποστηρικτική Επιβεβαίωση.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Τιμή μονάδας</translation>
 <translation id="4763179765154524864">Ξοδεύτηκαν συνολικά</translation>
 <translation id="8851480289992540512">Σύνολο που ελήφθη</translation>
+<translation id="824449983246282560">Δεν έχετε υπόλοιπο στον λογαριασμό σας. Επισκεφθείτε το Gemini, για να αγοράσετε.</translation>
 <translation id="8624961452383848703">Θέλω να μετατρέψω…</translation>
 <translation id="616639131065447379">Καλώς ήρθατε στο Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Το Crypto Wallets σας επιτρέπει να χρησιμοποιείτε κρυπτονομίσματα και συγγενή επενδυτικά στοιχεία στο Brave. Το Crypto Wallets υποστηρίζει μάρκες Ethereum όπως οι ETH και BAT, καθώς επίσης και συλλεκτικά, ενώ σας επιτρέπει να χειρίζεστε Ðεφαρμογές και άλλα έξυπνα συμβόλαια. Όλα αυτά προορίζονται για άτομα εξοικειωμένα με το Ethereum και άλλα συστήματα blockchain — ή πρόθυμα να τα μάθουν.</translation>

@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Ricompense Brave</translation>
 <translation id="7942180974165298215">Ad Block Brave</translation>
 <translation id="4615489450165434530">Segnala un sito non funzionante</translation>
+<translation id="1209739344687072997">Segnala un sito non funzionante</translation>
 <translation id="6406506848690869874">Sincronizzazione</translation>
 <translation id="1544192797660353713">Portafoglio</translation>
 <translation id="2445484935443597917">Crea un nuovo profilo</translation>
-<translation id="2666990579225592931">Apri finestra dell’ospite</translation>
+<translation id="744341768939279100">Crea un nuovo profilo</translation>
+<translation id="2666990579225592931">Apri finestra Ospite</translation>
+<translation id="4986483413015198747">Apri finestra dell’ospite</translation>
 <translation id="8275068909952022340">Di più…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") non è permessa in Brave.</translation>
 <translation id="6786747875388722282">Estensioni</translation>
@@ -45,10 +48,12 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="5802665280774361839">Mostra i suggerimenti del completamento automatico nella barra dell'indirizzo</translation>
 <translation id="597020512043916976">Mostra i siti migliori nei suggerimenti di completamento automatico</translation>
 <translation id="264150068416846820">Mostra i siti suggeriti da Brave nei suggerimenti di completamento automatico</translation>
-<translation id="5529693968082667490">Mostra il pulsante Cerca schede</translation>
+<translation id="5529693968082667490">Mostra pulsante di ricerca schede</translation>
 <translation id="6414370348346025511">La protezione standard è attiva.</translation>
 <translation id="814018970995616154">Controlla URLs con una lista di siti non sicuri memorizzati in Brave.</translation>
 <translation id="1144810021918451336">Non ti protegge da siti web, download, ed estensioni pericolose.</translation>
+<translation id="6285118765755298263">Indicizza altri motori di ricerca</translation>
+<translation id="919715748352669592">Indicizza automaticamente i siti web che seguono le specifiche OpenSearch.</translation>
 <translation id="7781069478569868053">Nuova pagina</translation>
 <translation id="1988804048511540801">La pagina nuova scheda mostra</translation>
 <translation id="2970343821770026391">Pannello di controllo</translation>
@@ -97,7 +102,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="6303294677342628402">Protezioni</translation>
 <translation id="7133511168130368997">Blocca tracker e annunci che ti seguono sul web.</translation>
 <translation id="2761825942249694703">Queste sono le impostazioni predefinite di Shields. Si applicano a tutti i siti web a meno che tu non modifichi qualcosa nel pannello Shields di un particolare sito. La modifica non influirà sulle tue impostazioni esistenti per sito.</translation>
-<translation id="1485394570478670912">Questo bloccherà la maggior parte degli annunci sui siti web, ma non gli annunci privati di Brave; questi vengono controllati nelle</translation>
+<translation id="1485394570478670912">Gran parte degli annunci sui siti web verranno bloccati, ma non i Brave Private Ads; questi vengono controllati nelle</translation>
 <translation id="6388201778088078932">impostazioni.</translation>
 <translation id="9185018653595759199">Blocco social media</translation>
 <translation id="7390783310074170337">Visualizzazione predefinita</translation>
@@ -191,7 +196,6 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="1834467296210148203">Mostra l’icona del portafoglio Brave nella barra degli strumenti</translation>
 <translation id="6864914031231797928">Consenti l'accesso a Google per le estensioni</translation>
 <translation id="5927916530277631319">Metodo per risolvere Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/> sulla privacy del protocollo DNS over HTTPS e di Ethereum.</translation>
 <translation id="5248318250177143470">Metodo per risolvere Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Imposta le tue chiavi IPNS</translation>
 <translation id="951216659045543447">Firma il contenuto con la chiave privata corrispondente e pubblicalo su IPNS</translation>
@@ -213,7 +217,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="1534091531114892221">Imposta descrizione peer ipfs</translation>
 <translation id="8996633027318264334">Vuoi davvero eliminare <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Il nodo non funziona</translation>
-<translation id="616058968889448209">Errore di avvio del servizio IPFS. Per maggiori informazioni consultare la <ph name="BEGIN_LINK"/>pagina della diagnostica<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">Errore di avvio del servizio IPFS. Per maggiori informazioni consultare la <ph name="BEGIN_LINK"/>pagina di diagnostica<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">L’importazione della chiave “<ph name="KEY_NAME"/>” non è riuscita</translation>
 <translation id="3364053282600191535">L’esportazione della chiave “<ph name="KEY_NAME"/>” non è riuscita</translation>
 <translation id="8275038454117074363">Importa</translation>
@@ -223,7 +227,6 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nodo locale</translation>
 <translation id="4927734062756955434">Indirizzo del gateway pubblico IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Scopri di più<ph name="END_LINK_MPL"/> sulle questioni di privacy del nodo locale e del gateway IPFS.</translation>
 <translation id="8425213833346101688">Cambia</translation>
 <translation id="557281710253742286">Imposta gateway IPFS</translation>
 <translation id="8571837315037233299">Indirizzo gateway</translation>
@@ -237,7 +240,6 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="8655170717758778983">Quando possibile, reindirizza automaticamente alle pagine IPFS tramite DNSLink</translation>
 <translation id="2233724520223030977">Quando possibile, utilizza automaticamente DNSLink per navigare a una versione IPFS di un sito web</translation>
 <translation id="6554397389149987360">Utilizza il componente Hangouts per abilitare la condivisione dello schermo e altre funzioni nel browser.</translation>
-<translation id="1765684547504191670">Utilizza il componente Media Router per abilitare Chromecast nel browser.</translation>
 <translation id="9156965752763025780">Le modifiche verranno applicate al prossimo riavvio di Brave.</translation>
 <translation id="7179921470347911571">Rilancia Ora</translation>
 <translation id="8068526464562249859">Utilizza l'estensione IPFS Companion per un supporto IPFS avanzato in Brave, incluso l'accesso alle attività IPFS comuni dalla barra del tuo browser.</translation>
@@ -307,6 +309,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="6873781976650514089">questa impostazione</translation>
 <translation id="6040143037577758943">Chiudi</translation>
 <translation id="5600566490506283344">Notifica di un annuncio di Brave</translation>
+<translation id="1516554614404600536">Descrizione comando Brave</translation>
 <translation id="4877147287319222750">Aggiungi alla barra laterale</translation>
 <translation id="4233010476457917696">Mostra la barra laterale</translation>
 <translation id="5404213409401164238">Mostra la barra laterale</translation>
@@ -347,6 +350,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
         Puoi consultare <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>le istruzioni per scaricare e compilare direttamente<ph name="END_LINK_BUILD_INSTRUCTIONS"/><ph name="BEGIN_LINK_SOURCE_CODE"/>il codice sorgente specifico usato per creare questa copia<ph name="END_LINK_SOURCE_CODE"/></translation>
 <translation id="4474155171896946103">Aggiungi tutte le schede ai Preferiti...</translation>
 <translation id="2336228925368920074">Aggiungi tutte le schede ai Preferiti...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Per aggiungere un segnalibro, clicca sul pulsante dei segnalibri accanto alla barra degli indirizzi</translation>
 <translation id="4989337484121655457">Richiesto accesso completo al disco</translation>
 <translation id="8025559074845816210">Brave necessita dell'accesso completo al disco per importare i tuoi preferiti da Safari.</translation>

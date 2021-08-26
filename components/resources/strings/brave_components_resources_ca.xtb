@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Clicat</translation>
 <translation id="7119308337584989771">Descartat</translation>
 <translation id="6805660603861526473">Vist</translation>
+<translation id="1501075228659004450">Mmm, sembla que la teva cartera de Brave Rewards ja s'ha verificat amb un altre compte <ph name="PROVIDER"/>. Prova de verificar-la novament utilizant el teu compte anterior.</translation>
+<translation id="5111921830714291902">Error: compte diferent</translation>
 <translation id="2359865110462963929">BAT no està disponible actualment a la vostra regió. Si us plau, Consulteu <ph name="BEGIN_LINK"/>aquí<ph name="END_LINK"/> per a actualitzacions.</translation>
 <translation id="1737873393693460829">En activar [[title]], acceptes les <ph name="BEGIN_LINK1"/>Condicions del servei<ph name="END_LINK1"/> i la <ph name="BEGIN_LINK2"/>Política de privacitat<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Error en crear la targeta Brave Browser BAT</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Continua</translation>
 <translation id="5112354605357157725">Segueix per iniciar sessió</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> requereix un balanç mínim de <ph name="AMOUNT"/> BAT per crear un compte. Si t'has connectat a un compte anteriorment,</translation>
+<translation id="752216563428219524">Brave Ads no s'ha inicialitzat. Actualitza la pàgina.</translation>
 <translation id="7422678632904904341">Quantitat:</translation>
 <translation id="6969783933307596818">Actualitzeu automaticament cada 5 segons</translation>
 <translation id="5025866799968038247">Informació del Saldo</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Contribuir automaticament</translation>
 <translation id="2927922949538312364">Propina d'una sola vegada</translation>
 <translation id="3164105678355419142">Propina recurrent</translation>
+<translation id="916115051162298064">Diagnòstic d'anuncis</translation>
 <translation id="7806880412350961625">Registres d'esdeveniments</translation>
 <translation id="4309915981827077375">Informació general</translation>
 <translation id="3662406032239313663">Registres</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Categoria</translation>
 <translation id="3080423471207781945">Màxim d'anuncis rebuts per hora:</translation>
 <translation id="2631006050119455616">S'ha desat</translation>
+<translation id="7847825746023377505">No s'ha vist cap anunci en els darrers <ph name="TOTAL_DAYS"/> dies.</translation>
 <translation id="7902420836933072528">Anuncis que has rebut en els últims [[totalDays]] dies</translation>
 <translation id="8863685593846905344">Historial d'anuncis</translation>
 <translation id="2777306694585938662">Recompenses d'anuncis rebuts</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">Ocasionalment t'oferirem ajuts de tokens des de Brave. Estigués atent a l'alerta!</translation>
 <translation id="1370034647041840967">Guanya tokens per la teva atenció als anuncis i utilitza'ls per donar suport als creadors de contingut que t'agraden!</translation>
 <translation id="4919888432594361029">Afegeix, retira i gestiona fons a <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">La teva cartera Brave funciona amb <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Els Premis de Brave són creats per Basic Attention Token. Saber més de BAT</translation>
 <translation id="7823359893981882407">aquí</translation>
 <translation id="3034163433136515805">Veure codi QR</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Import guanyat</translation>
 <translation id="2151535059686617995">És’ el teu dia de sort!</translation>
 <translation id="6436689611575806470">La teva subvenció de [[currency]] està en camí.</translation>
-<translation id="7512440811010447157">verificar</translation>
 <translation id="8267327690882073581">Verificar el moneder</translation>
 <translation id="543510923939676996">Moneder Verificat</translation>
 <translation id="2659764755126740206">Anar al meu compte <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Completeu la verificació del moneder</translation>
 <translation id="9200453331904391567">Desconnectar de Gratificacions Brave</translation>
+<translation id="3656941797339037856">Enllaça Brave Rewards amb Gemini!</translation>
+<translation id="671838195432136371">Gemini et permet comercialitzar, conservar i guanyar una taxa de rendiment anual del 3,49 % en els teus BAT fàcilment. Els nous usuaris de Gemini que s'hi enllacin rebran 5 BAT de franc!</translation>
+<translation id="9136976526700181750">* Taxa de rendiment anual de Gemini a partir del 15 d'agost del 2021</translation>
 <translation id="7404779623219601861">Bescanvieu BAT per Targetes Regal</translation>
 <translation id="6215565499749144110">Amb TAP Network, podeu bescanviar els vostres BAT per targetes regal de marques populars.</translation>
 <translation id="6915065518766963119">* Requereix Verificació Uphold.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Preu per unitat</translation>
 <translation id="4763179765154524864">Total Gastat</translation>
 <translation id="8851480289992540512">Total Rebut</translation>
+<translation id="824449983246282560">No disposes de saldo al teu compte. Visita Gemini per comprar criptomoneda.</translation>
 <translation id="8624961452383848703">Vull convertir...</translation>
 <translation id="616639131065447379">Benvinguts a Crypto Monedes Brave</translation>
 <translation id="1740464057879304704">Els Moneders Crypto us permeten treballar amb cryptomoneda i actius relacionats a Brave. Els Moneders Crypto són compatibles amb tokens Ethereum com ETH i BAT, així com col·leccionables, i us permet treballar amb Ð aplicacions i altres contractes intel·ligents. Tot això està pensat per a persones familiars amb Ethereum i altres sistemes de bloqueig en cadena — o que estan impacients per aprendre.</translation>

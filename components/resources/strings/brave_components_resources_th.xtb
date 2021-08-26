@@ -235,6 +235,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3082557070674409251">คลิกแล้ว</translation>
 <translation id="7119308337584989771">ปิด</translation>
 <translation id="6805660603861526473">ดูแล้ว</translation>
+<translation id="1501075228659004450">ดูเหมือนว่ากระเป๋าเงิน Brave Rewards ของคุณจะได้รับการยืนยันด้วยบัญชีผู้ใช้ <ph name="PROVIDER"/> อีกบัญชีหนึ่ง กรุณายืนยันอีกครั้งโดยใช้บัญชีก่อนหน้าของคุณ</translation>
+<translation id="5111921830714291902">ข้อผิดพลาด: บัญชีแตกต่างกัน</translation>
 <translation id="2359865110462963929">BAT ยังไม่รองรับในภูมิภาคของคุณ โปรดดูข่าวสารจาก<ph name="BEGIN_LINK"/>ที่นี่<ph name="END_LINK"/></translation>
 <translation id="1737873393693460829">เมื่อเปิด [[title]] คุณได้ยอมรับ <ph name="BEGIN_LINK1"/>เงื่อนไขการให้บริการ<ph name="END_LINK1"/> และ <ph name="BEGIN_LINK2"/>นโยบายความเป็นส่วนตัว<ph name="END_LINK2"/></translation>
 <translation id="2564425876266960486">เกิดข้อผิดพลาดขณะสร้างบัตร BAT ของ Brave Browser</translation>
@@ -254,6 +256,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2359808026110333948">ดำเนินการต่อ</translation>
 <translation id="5112354605357157725">ดำเนินการต่อเพื่อเข้าสู่ระบบ</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> ต้องมียอดคงเหลือขั้นต่ำที่ <ph name="AMOUNT"/> BAT เพื่อสร้างบัญชี หากคุณเชื่อมต่อบัญชีก่อนหน้านี้</translation>
+<translation id="752216563428219524">โฆษณายังไม่ได้รับกำหนดค่าริ่มต้น กรุณารีเฟรชหน้า</translation>
 <translation id="7422678632904904341">จำนวน:</translation>
 <translation id="6969783933307596818">รีเฟรชอัตโนมัติทุก 5 วินาที</translation>
 <translation id="5025866799968038247">ข้อมูลยอดเงิน</translation>
@@ -314,6 +317,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2152423226436243241">บริจาคอัตโนมัติ</translation>
 <translation id="2927922949538312364">ทิปหนึ่งครั้ง</translation>
 <translation id="3164105678355419142">ทิปที่ให้ประจำ</translation>
+<translation id="916115051162298064">ระบบวินิจฉัยโฆษณา</translation>
 <translation id="7806880412350961625">บันทึกเหตุการณ์</translation>
 <translation id="4309915981827077375">ข้อมูลทั่วไป</translation>
 <translation id="3662406032239313663">บันทึก</translation>
@@ -414,6 +418,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4241224519481557898">หมวดหมู่</translation>
 <translation id="3080423471207781945">โฆษณาสูงสุดที่ได้รับต่อชั่วโมง:</translation>
 <translation id="2631006050119455616">บันทึกแล้ว</translation>
+<translation id="7847825746023377505">ไม่มีโฆษณาที่ดูในช่วง <ph name="TOTAL_DAYS"/> วัน</translation>
 <translation id="7902420836933072528">โฆษณาที่คุณได้รับในช่วง [[totalDays]] วันที่ผ่านมา</translation>
 <translation id="8863685593846905344">ประวัติโฆษณา</translation>
 <translation id="2777306694585938662">ได้รับ Ads Reward แล้ว</translation>
@@ -567,7 +572,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8014425282125849700">ตัวคุณเองจะได้รับการเสนอโทเค็นจาก Brave ในแบบฟรีเป็นครั้งคราว อย่าลืมคอยดูการแจ้งเตือนนั้น!</translation>
 <translation id="1370034647041840967">รับโทเคนสำหรับการดูโฆษณาและจ่ายต่อไปเพื่อสนับสนุนนักสร้างคอนเทนท์ที่คุณให้ค่า!</translation>
 <translation id="4919888432594361029">เติม ถอน และจัดการเงินใน <ph name="PROVIDER"/></translation>
-<translation id="3092054349246483285">บริการ Brave wallet ได้รับการสนับสนุนโดย <ph name="PROVIDER"/></translation>
 <translation id="6401272292123354754">Brave Rewards ถูกสร้างบน  Basic Attention Token. เรียนรู้เพิ่มเติมเกี่ยวกับ BAT</translation>
 <translation id="7823359893981882407">ที่นี่</translation>
 <translation id="3034163433136515805">ดูคิวอาร์โค้ด</translation>
@@ -645,12 +649,14 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="39734939514946950">ปริมาณรางวัลของคุณ</translation>
 <translation id="2151535059686617995">วันนี้คุณมีโชค!</translation>
 <translation id="6436689611575806470">เงินสนับสนุน [[currency]] กำลังจะไปถึงคุณแล้ว</translation>
-<translation id="7512440811010447157">ยืนยัน</translation>
 <translation id="8267327690882073581">ยืนยันวอลเล็ท</translation>
 <translation id="543510923939676996">ยืนยันวอลเล็ตแล้ว</translation>
 <translation id="2659764755126740206">ไปยังบัญชี <ph name="PROVIDER"/> ของฉัน</translation>
 <translation id="3699674790322420653">ยืนยันวอลเล็ตให้เสร็จสิ้น</translation>
 <translation id="9200453331904391567">ยกเลิกการเชื่อมต่อกับ Brave Rewards</translation>
+<translation id="3656941797339037856">เชื่อมโยง Rewards กับ Gemini!</translation>
+<translation id="671838195432136371">Gemini ช่วยให้คุณเทรด จัดเก็บ และได้รับ 3.49% APY* ของ BAT ของคุณได้อย่างง่ายดาย ผู้ใช้ Gemini หน้าใหม่ที่เชื่อมโยงจะได้รับฟรี 5 BAT!</translation>
+<translation id="9136976526700181750">* รับ APY จาก Gemini 15 สิงหาคม 2021</translation>
 <translation id="7404779623219601861">แลก BAT เป็นบัตรของขวัญ</translation>
 <translation id="6215565499749144110">การใช้เครือข่าย TAP จะทำให้คุณแลก BAT เป็นบัตรของขวัญจากสินค้าแบรนด์เนมยอดนิยมได้</translation>
 <translation id="6915065518766963119">* ต้องตรวจสอบความถูกต้องกับ Uphold</translation>
@@ -735,6 +741,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1833248467354516560">ราคาต่อหน่วย</translation>
 <translation id="4763179765154524864">ใช้ไปทั้งหมด</translation>
 <translation id="8851480289992540512">ได้รับทั้งหมด</translation>
+<translation id="824449983246282560">คุณไม่มียอดคงเหลือในบัญชีของคุณ ไปยัง Gemini เพื่อซื้อบางอย่าง</translation>
 <translation id="8624961452383848703">ฉันต้องการแปลง…</translation>
 <translation id="616639131065447379">ขอต้อนรับสู่ Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets ให้คุณทำงานกับสกุลเงินคริปโตและสินทรัพย์ที่เกี่ยวข้องใน Brave Crypto Wallets รองรับโทเคน Ethereum เช่น ETH และ BAT เช่นเดียวกับของสะสม และให้คุณทำงานกับ Ðapps และสัญญาอัจฉริยะอื่น ๆ ทั้งหมดนี้เพื่อคนที่คุ้นเคยกับ Ethereum และระบบบล็อกเชนอื่น ๆ — หรืออยากเรียนรู้</translation>

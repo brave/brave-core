@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Odměny Brave</translation>
 <translation id="7942180974165298215">Blokování reklam Brave</translation>
 <translation id="4615489450165434530">Nahlásit porouchané stránky</translation>
+<translation id="1209739344687072997">Nahlásit porouchané stránky</translation>
 <translation id="6406506848690869874">Synchronizace</translation>
 <translation id="1544192797660353713">Peněženka</translation>
-<translation id="2445484935443597917">Vytvořte si nový profil</translation>
-<translation id="2666990579225592931">Otevřít okno pro hosty</translation>
+<translation id="2445484935443597917">Vytvořit nový profil</translation>
+<translation id="744341768939279100">Vytvořte si nový profil</translation>
+<translation id="2666990579225592931">Otevřít okno hosta</translation>
+<translation id="4986483413015198747">Otevřít okno pro hosty</translation>
 <translation id="8275068909952022340">Další...</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID rozšíření "<ph name="EXTENSION_ID"/>") není v Brave povoleno.</translation>
 <translation id="6786747875388722282">Rozšíření</translation>
@@ -49,6 +52,8 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="6414370348346025511">Je zapnutá standardní ochrana.</translation>
 <translation id="814018970995616154">Kontroluje URL adresy pomocí seznamu nebezpečných webů, který je uložen v Brave.</translation>
 <translation id="1144810021918451336">Nechrání vás před nebezpečnými internetovými stránkami, staženými soubory a rozšířeními.</translation>
+<translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
+<translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
 <translation id="7781069478569868053">Stránka nové karty</translation>
 <translation id="1988804048511540801">Nová karta zobrazuje</translation>
 <translation id="2970343821770026391">Ovládací panel</translation>
@@ -97,7 +102,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="6303294677342628402">Štíty</translation>
 <translation id="7133511168130368997">Blokujte trackery a reklamy, které vás následují na internetu.</translation>
 <translation id="2761825942249694703">Toto jsou výchozí nastavení Štítů. Fungují na všech internetových stránkách, pokud něco nezměníte na panelu Štítů na určité stránce. Jejich změna neovlivní vaše existující nastavení u konkrétních stránek.</translation>
-<translation id="1485394570478670912">Tím zablokujete většinu reklam na webových stránkách, nikoli však soukromé reklamy Brave — ty se ovládají v</translation>
+<translation id="1485394570478670912">Tím zablokujete většinu reklam na webových stránkách, nikoli však Brave Private Ads; ty se ovládají v</translation>
 <translation id="6388201778088078932">nastavení.</translation>
 <translation id="9185018653595759199">Blokování sociálních médií</translation>
 <translation id="7390783310074170337">Výchozí zobrazení</translation>
@@ -191,7 +196,6 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="1834467296210148203">Zobrazit ikonu peněženky Brave na liště nástrojů</translation>
 <translation id="6864914031231797928">Povolit rozšířením přihlášení pomocí Googlu</translation>
 <translation id="5927916530277631319">Způsob řešení služby Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/> o ochraně osobních údajů pomocí protokolu DNS přes HTTPS a Ethereum.</translation>
 <translation id="5248318250177143470">Způsob řešení služby ENS (Ethereum Name Service)</translation>
 <translation id="7024553202001112871">Nastavit vaše klíče IPNS</translation>
 <translation id="951216659045543447">Podepsat obsah odpovídajícím soukromým klíčem a zveřejnit jej na IPNS</translation>
@@ -213,7 +217,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="1534091531114892221">Nastavit popis IPFS peerů</translation>
 <translation id="8996633027318264334">Opravdu chcete odstranit <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Uzel není spuštěn</translation>
-<translation id="616058968889448209">Chyba spuštění služby IPFS, více informací je dostupných na <ph name="BEGIN_LINK"/>stránce diagnostiky<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">Chyba spuštění služby IPFS, více informací je dostupných na <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Import klíče '<ph name="KEY_NAME"/>' se nezdařil</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' export klíče se nezdařil</translation>
 <translation id="8275038454117074363">Nahrát</translation>
@@ -223,7 +227,6 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="1327977588028644528">Brána</translation>
 <translation id="80225669816651290">Lokální uzel</translation>
 <translation id="4927734062756955434">Adresa veřejné brány IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Další informace<ph name="END_LINK_MPL"/> o ochraně osobních údajů místního uzlu IPFS a brány.</translation>
 <translation id="8425213833346101688">Změnit</translation>
 <translation id="557281710253742286">Nastavit bránu IFPS</translation>
 <translation id="8571837315037233299">Adresa brány</translation>
@@ -237,7 +240,6 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="8655170717758778983">Pokud je to možné, automaticky přesměrovávat na stránky využívající protokol IPFS prostřednictvím služby DNSLink</translation>
 <translation id="2233724520223030977">Když je to možné, automaticky používá službu DNSLink k přechodu na verzi webu využívající protokol IPFS</translation>
 <translation id="6554397389149987360">Používá komponentu Hangouts k umožnění sdílení obrazovek a dalších funkcí prohlížeče.</translation>
-<translation id="1765684547504191670">Využívá Media Router komponent umožňující Chromecast v prohlížeči.</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="7179921470347911571">Znovu spustit</translation>
 <translation id="8068526464562249859">Používá rozšíření IPFS Companion pro vylepšenou podporu IPFS v prohlížeči Brave, včetně přístupu k běžným úlohám IPFS z lišty prohlížeče.</translation>
@@ -307,6 +309,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="6873781976650514089">Toto nastavení</translation>
 <translation id="6040143037577758943">Zavřít</translation>
 <translation id="5600566490506283344">Upozornění na reklamu Brave</translation>
+<translation id="1516554614404600536">Popis Brave</translation>
 <translation id="4877147287319222750">Přidat na postranní panel</translation>
 <translation id="4233010476457917696">Zobrazit postranní lištu</translation>
 <translation id="5404213409401164238">Zobrazit postranní panel</translation>
@@ -347,6 +350,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
         Můžete si sami přečíst <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>pokyny ke způsobu stahování a tvorby<ph name="END_LINK_BUILD_INSTRUCTIONS"/> specifického <ph name="BEGIN_LINK_SOURCE_CODE"/>zdrojového kódu používaného k vytváření této kopie<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Přidat do záložek všechny karty...</translation>
 <translation id="2336228925368920074">Přidat do záložek všechny karty...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Chcete-li přidat záložku, klepněte na tlačítko záložky vedle adresního řádku</translation>
 <translation id="4989337484121655457">Vyžadován plný přístup k disku</translation>
 <translation id="8025559074845816210">Pro import záložek ze Safari potřebuje Brave plný přístup k disku.</translation>
