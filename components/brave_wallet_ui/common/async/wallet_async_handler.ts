@@ -230,11 +230,11 @@ handler.on(WalletActions.sendTransaction.getType(), async (store, payload: SendT
 })
 
 handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store, payload: NewUnapprovedTxAdded) => {
-  console.log('new unapproved tx added: ', payload.txMetaId)
+  console.log('new unapproved tx added: ', payload.txInfo)
 })
 
 handler.on(WalletActions.transactionStatusChanged.getType(), async (store, payload: TransactionStatusChanged) => {
-  console.log('tx status changed: ', payload.txMetaId, payload.txStatus)
+  console.log('tx status changed: ', payload.txInfo)
 })
 
 export default handler.middleware

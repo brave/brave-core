@@ -276,8 +276,8 @@ struct TransactionInfo {
 };
 
 interface EthTxControllerObserver {
-  OnNewUnapprovedTx(string tx_meta_id);
-  OnTransactionStatusChanged(string tx_meta_id, TransactionStatus tx_status);
+  OnNewUnapprovedTx(TransactionInfo tx_info);
+  OnTransactionStatusChanged(TransactionInfo tx_info);
 };
 
 interface EthTxController {

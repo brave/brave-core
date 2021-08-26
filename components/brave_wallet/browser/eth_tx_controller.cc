@@ -69,7 +69,8 @@ void EthTxController::AddUnapprovedTransaction(
   tx_state_manager_->AddOrUpdateTx(meta);
 
   for (const auto& observer : observers_)
-    observer->OnNewUnapprovedTx(meta.id);
+    observer->OnNewUnapprovedTx(
+        EthTxStateManager::TxMetaToTransactionInfo(meta));
 
   std::move(callback).Run(true, meta.id);
 }
@@ -91,7 +92,8 @@ void EthTxController::AddUnapproved1559Transaction(
   tx_state_manager_->AddOrUpdateTx(meta);
 
   for (const auto& observer : observers_)
-    observer->OnNewUnapprovedTx(meta.id);
+    observer->OnNewUnapprovedTx(
+        EthTxStateManager::TxMetaToTransactionInfo(meta));
 
   std::move(callback).Run(true, meta.id);
 }
@@ -278,7 +280,8 @@ void EthTxController::AddObserver(
 void EthTxController::NotifyTransactionStatusChanged(
     EthTxStateManager::TxMeta* meta) {
   for (const auto& observer : observers_)
-    observer->OnTransactionStatusChanged(meta->id, meta->status);
+    observer->OnTransactionStatusChanged(
+        EthTxStateManager::TxMetaToTransactionInfo(*meta));
 }
 
 void EthTxController::GetAllTransactionInfo(
