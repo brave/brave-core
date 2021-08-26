@@ -2161,6 +2161,24 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_AUTOMATIC_SERVER_SELECTION_TEXT" desc="Vpn server selection text">
       A server region most proximate to you willl be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds.
     </message>
+    <message name="IDS_OTHER_ISSUES" desc="Brave Vpn support text">
+      Other Issues
+    </message>
+    <message name="IDS_CANNOT_CONNECT_TO_VPN" desc="Brave Vpn support text">
+      Cannot connect to the VPN (Other error)
+    </message>
+    <message name="IDS_NO_INTERNET" desc="Brave Vpn support text">
+      No internet when connected
+    </message>
+    <message name="IDS_SLOW_CONNECTION" desc="Brave Vpn support text">
+      Slow connection
+    </message>
+    <message name="IDS_WEBSITE_DOESNT_WORK" desc="Brave Vpn support text">
+      Website doesn't work
+    </message>
+    <message name="IDS_OTHER" desc="Brave Vpn support text">
+      Other
+    </message>
     </messages>
   </release>
 </grit>

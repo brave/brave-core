@@ -12,7 +12,6 @@ import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
-import android.net.VpnManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,7 +36,6 @@ import org.json.JSONException;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.firstrun.FirstRunFlowSequencer;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnConfirmDialogFragment;
@@ -100,7 +98,9 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         contactSupportButton = findViewById(R.id.btn_contact_supoort);
         contactSupportButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {}
+            public void onClick(View v) {
+                BraveVpnUtils.openBraveVpnSupportActivity(BraveVpnProfileActivity.this);
+            }
         });
     }
 
@@ -133,23 +133,19 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == VpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            VpnManager vpnManager = (VpnManager) getSystemService(Context.VPN_MANAGEMENT_SERVICE);
-            if (vpnManager != null) {
-                vpnManager.startProvisionedVpnProfile();
-                hideProgress();
-                BraveVpnConfirmDialogFragment braveVpnConfirmDialogFragment =
-                        new BraveVpnConfirmDialogFragment();
-                braveVpnConfirmDialogFragment.setCancelable(false);
-                braveVpnConfirmDialogFragment.show(
-                        getSupportFragmentManager(), "BraveVpnConfirmDialogFragment");
-            }
+            VpnProfileUtils.getInstance(BraveVpnProfileActivity.this).startVpn();
+            BraveVpnConfirmDialogFragment braveVpnConfirmDialogFragment =
+                    new BraveVpnConfirmDialogFragment();
+            braveVpnConfirmDialogFragment.setCancelable(false);
+            braveVpnConfirmDialogFragment.show(
+                    getSupportFragmentManager(), "BraveVpnConfirmDialogFragment");
         } else if (resultCode == RESULT_CANCELED) {
             profileTitle.setText(getResources().getString(R.string.some_context));
             profileText.setText(getResources().getString(R.string.some_context_text));
             installVpnButton.setText(getResources().getString(R.string.accept_connection_request));
             contactSupportButton.setVisibility(View.GONE);
-            hideProgress();
         }
+        hideProgress();
         super.onActivityResult(requestCode, resultCode, data);
     }
 

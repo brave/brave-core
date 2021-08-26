@@ -33,6 +33,7 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnConfirmDialogFragment;
@@ -71,12 +72,16 @@ public class BraveVpnPreferences
     public static final String PREF_SUPPORT_VPN = "support_vpn";
     public static final String PREF_SERVER_RESET_CONFIGURATION = "server_reset_configuration";
 
+    private static final String VPN_SUPPORT_PAGE =
+            "https://support.brave.com/hc/en-us/articles/360045045952";
+    private static final String MANAGE_SUBSCRIPTION_PAGE =
+            "https://play.google.com/store/account/subscriptions";
+
     private ChromeSwitchPreference mVpnSwitch;
     private ChromeBasePreference subscriptionStatus;
     private ChromeBasePreference subscriptionExpires;
     private ChromeBasePreference serverHost;
     private ChromeBasePreference serverLocation;
-    // private ListPreference serverLocationPref;
     private String subscriberCredential;
     private String hostname;
     private String purchaseToken = "";
@@ -131,7 +136,9 @@ public class BraveVpnPreferences
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        BraveVpnUtils.openBraveVpnSupportActivity(getActivity());
+                        Intent browserIntent =
+                                new Intent(Intent.ACTION_VIEW, Uri.parse(VPN_SUPPORT_PAGE));
+                        getActivity().startActivity(browserIntent);
                         return true;
                     }
                 });
@@ -140,8 +147,8 @@ public class BraveVpnPreferences
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("https://play.google.com/store/account/subscriptions"));
+                        Intent browserIntent =
+                                new Intent(Intent.ACTION_VIEW, Uri.parse(MANAGE_SUBSCRIPTION_PAGE));
                         getActivity().startActivity(browserIntent);
                         return true;
                     }
@@ -155,13 +162,6 @@ public class BraveVpnPreferences
                         return true;
                     }
                 });
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // verifyPurchase(true);
     }
 
     @Override
