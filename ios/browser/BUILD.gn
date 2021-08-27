@@ -30,6 +30,7 @@ source_set("browser") {
     "//brave/chromium_src/ios/chrome/browser/prefs",
     "//components/flags_ui",
     "//components/metrics_services_manager",
+    "//components/variations",
     "//components/variations/service",
     "//ios/chrome/browser",
     "//ios/chrome/browser:browser_impl",
