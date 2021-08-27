@@ -966,6 +966,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "monthlyText", IDS_BRAVE_UI_MONTHLY_TEXT },
         { "nextContributionDate", IDS_BRAVE_REWARDS_TIP_NEXT_CONTRIBUTION_DATE },  // NOLINT
         { "notEnoughTokens", IDS_BRAVE_REWARDS_TIP_NOT_ENOUGH_TOKENS },
+        { "tippingFeeNote", IDS_BRAVE_REWARDS_TIPPING_FEE_NOTE },
         { "on", IDS_BRAVE_UI_ON },
         { "onboardingMaybeLater", IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER },
         { "onboardingSetupAdsHeader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER },  // NOLINT
