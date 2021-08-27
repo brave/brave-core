@@ -9,6 +9,8 @@
 #include <string>
 
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder_unittest_util.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -51,8 +53,10 @@ TEST_F(BatAdsEligibleAdNotificationsIssue17199Test, GetEligibleAds) {
   ad_notifications::EligibleAds eligible_ads(&subdivision_targeting,
                                              &anti_targeting_resource);
 
-  eligible_ads.GetForSegments(
-      {"technology & computing-computing"},
+  const SegmentList segments = {"technology & computing-computing"};
+
+  eligible_ads.Get(
+      ad_targeting::BuildUserModel(segments),
       [](const bool success,
          const CreativeAdNotificationList& creative_ad_notifications) {
         EXPECT_TRUE(success);

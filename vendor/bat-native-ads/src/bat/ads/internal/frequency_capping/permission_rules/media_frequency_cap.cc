@@ -9,6 +9,7 @@
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

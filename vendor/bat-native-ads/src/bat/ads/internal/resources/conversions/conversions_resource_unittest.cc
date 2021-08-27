@@ -22,7 +22,7 @@ class BatAdsConversionsResourceTest : public UnitTestBase {
 
 TEST_F(BatAdsConversionsResourceTest, Load) {
   // Arrange
-  resource::Conversions resource;
+  Conversions resource;
 
   // Act
   resource.Load();
@@ -34,7 +34,7 @@ TEST_F(BatAdsConversionsResourceTest, Load) {
 
 TEST_F(BatAdsConversionsResourceTest, Get) {
   // Arrange
-  resource::Conversions resource;
+  Conversions resource;
   resource.Load();
 
   // Act

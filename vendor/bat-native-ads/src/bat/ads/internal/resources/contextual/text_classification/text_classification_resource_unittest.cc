@@ -22,7 +22,7 @@ class BatAdsTextClassificationResourceTest : public UnitTestBase {
 
 TEST_F(BatAdsTextClassificationResourceTest, Load) {
   // Arrange
-  resource::TextClassification resource;
+  TextClassification resource;
 
   // Act
   resource.Load();

@@ -39,7 +39,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const std::vector<std::string> segments = {"Technology & Computing"};
+  const std::vector<std::string> segments = {"technology & computing"};
 
   database::table::CreativeInlineContentAds creative_inline_content_ads;
   creative_inline_content_ads.GetForSegments(

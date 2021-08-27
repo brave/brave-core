@@ -9,13 +9,13 @@
 #include <string>
 
 #include "bat/ads/internal/ad_events/ad_event_info.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
 
 namespace ads {
 
 namespace ad_targeting {
+struct UserModelInfo;
 namespace geographic {
 class SubdivisionTargeting;
 }  // namespace geographic
@@ -40,9 +40,9 @@ class EligibleAds {
 
   void SetLastServedAd(const CreativeAdInfo& creative_ad);
 
-  void GetForSegments(const SegmentList& segments,
-                      const std::string& dimensions,
-                      GetEligibleAdsCallback callback);
+  void Get(const ad_targeting::UserModelInfo& user_model,
+           const std::string& dimensions,
+           GetEligibleAdsCallback callback);
 
  private:
   ad_targeting::geographic::SubdivisionTargeting*
@@ -52,13 +52,13 @@ class EligibleAds {
 
   CreativeAdInfo last_served_creative_ad_;
 
-  void GetForParentChildSegments(const SegmentList& segments,
+  void GetForParentChildSegments(const ad_targeting::UserModelInfo& user_model,
                                  const std::string& dimensions,
                                  const AdEventList& ad_events,
                                  const BrowsingHistoryList& browsing_history,
                                  GetEligibleAdsCallback callback) const;
 
-  void GetForParentSegments(const SegmentList& segments,
+  void GetForParentSegments(const ad_targeting::UserModelInfo& user_model,
                             const std::string& dimensions,
                             const AdEventList& ad_events,
                             const BrowsingHistoryList& browsing_history,

@@ -12,6 +12,7 @@
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_segment_keyword_info.h"
 
 namespace ads {
+namespace ad_targeting {
 
 struct PurchaseIntentSiteInfo {
  public:
@@ -30,6 +31,7 @@ struct PurchaseIntentSiteInfo {
   uint16_t weight = 0;
 };
 
+}  // namespace ad_targeting
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SITE_INFO_H_

@@ -13,7 +13,8 @@
 #include "bat/ads/internal/ad_delivery/ad_notifications/ad_notification_delivery.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_builder.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_permission_rules.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
@@ -23,6 +24,8 @@
 #include "bat/ads/internal/p2a/p2a_ad_opportunities/p2a_ad_opportunity.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
+#include "bat/ads/internal/segments/segments_alias.h"
+#include "bat/ads/internal/segments/segments_util.h"
 #include "bat/ads/internal/settings/settings.h"
 #include "bat/ads/internal/time_formatting_util.h"
 
@@ -35,15 +38,12 @@ constexpr base::TimeDelta kRetryServingAdAtNextInterval =
 }  // namespace
 
 AdServing::AdServing(
-    AdTargeting* ad_targeting,
     ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
     resource::AntiTargeting* anti_targeting_resource)
-    : ad_targeting_(ad_targeting),
-      subdivision_targeting_(subdivision_targeting),
+    : subdivision_targeting_(subdivision_targeting),
       anti_targeting_resource_(anti_targeting_resource),
       eligible_ads_(std::make_unique<EligibleAds>(subdivision_targeting,
                                                   anti_targeting_resource)) {
-  DCHECK(ad_targeting_);
   DCHECK(subdivision_targeting_);
   DCHECK(anti_targeting_resource_);
 }
@@ -106,37 +106,37 @@ void AdServing::MaybeServeAd() {
     return;
   }
 
-  const SegmentList segments = ad_targeting_->GetSegments();
+  const ad_targeting::UserModelInfo user_model = ad_targeting::BuildUserModel();
 
   DCHECK(eligible_ads_);
-  eligible_ads_->GetForSegments(
-      segments,
-      [=](const bool was_allowed, const CreativeAdNotificationList& ads) {
-        if (was_allowed) {
-          p2a::RecordAdOpportunityForSegments(AdType::kAdNotification,
-                                              segments);
-        }
+  eligible_ads_->Get(user_model, [=](const bool was_allowed,
+                                     const CreativeAdNotificationList& ads) {
+    if (was_allowed) {
+      const SegmentList segments =
+          ad_targeting::GetTopParentChildSegments(user_model);
+      p2a::RecordAdOpportunityForSegments(AdType::kAdNotification, segments);
+    }
 
-        if (ads.empty()) {
-          BLOG(1, "Ad notification not served: No eligible ads found");
-          FailedToServeAd();
-          return;
-        }
+    if (ads.empty()) {
+      BLOG(1, "Ad notification not served: No eligible ads found");
+      FailedToServeAd();
+      return;
+    }
 
-        BLOG(1, "Found " << ads.size() << " eligible ads");
+    BLOG(1, "Found " << ads.size() << " eligible ads");
 
-        const int rand = base::RandInt(0, ads.size() - 1);
-        const CreativeAdNotificationInfo ad = ads.at(rand);
+    const int rand = base::RandInt(0, ads.size() - 1);
+    const CreativeAdNotificationInfo ad = ads.at(rand);
 
-        if (!ServeAd(ad)) {
-          BLOG(1, "Failed to serve ad notification");
-          FailedToServeAd();
-          return;
-        }
+    if (!ServeAd(ad)) {
+      BLOG(1, "Failed to serve ad notification");
+      FailedToServeAd();
+      return;
+    }
 
-        BLOG(1, "Served ad notification");
-        ServedAd(ad);
-      });
+    BLOG(1, "Served ad notification");
+    ServedAd(ad);
+  });
 }
 
 void AdServing::OnAdsPerHourChanged() {

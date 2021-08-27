@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_info.h"
 
 namespace ads {
+namespace ad_targeting {
 
 PurchaseIntentSignalInfo::PurchaseIntentSignalInfo() = default;
 
@@ -14,4 +15,5 @@ PurchaseIntentSignalInfo::PurchaseIntentSignalInfo(
 
 PurchaseIntentSignalInfo::~PurchaseIntentSignalInfo() = default;
 
+}  // namespace ad_targeting
 }  // namespace ads

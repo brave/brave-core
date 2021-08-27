@@ -10,11 +10,11 @@
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/segments/segments_util.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
