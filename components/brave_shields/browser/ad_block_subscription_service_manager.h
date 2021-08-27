@@ -107,7 +107,9 @@ class AdBlockSubscriptionServiceManager {
   absl::optional<SubscriptionInfo> GetInfo(const GURL& sub_url);
   void NotifyObserversOfServiceEvent();
 
-  void SetUpdateIntervalsForTesting(base::TimeDelta* initial_delay, base::TimeDelta* update_interval, base::TimeDelta* retry_interval);
+  void SetUpdateIntervalsForTesting(base::TimeDelta* initial_delay,
+                                    base::TimeDelta* update_interval,
+                                    base::TimeDelta* retry_interval);
 
   brave_component_updater::BraveComponent::Delegate* delegate_;  // NOT OWNED
   base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_;

@@ -123,8 +123,8 @@ void AdBlockBaseService::ShouldStartRequest(
     bool* did_match_important,
     std::string* mock_data_url) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
-  if (!IsInitialized())
-    return;
+  // if (!IsInitialized())
+  //   return;
 
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs

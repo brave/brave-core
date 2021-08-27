@@ -69,8 +69,8 @@ AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
     : delegate_(delegate),
       subscription_path_(profile_dir.Append(kSubscriptionsDir)),
       subscriptions_(new base::DictionaryValue()),
-      subscription_update_timer_(std::make_unique<component_updater::TimerUpdateScheduler>())
-{
+      subscription_update_timer_(
+          std::make_unique<component_updater::TimerUpdateScheduler>()) {
   std::move(download_manager_getter)
       .Run(base::BindOnce(
           &AdBlockSubscriptionServiceManager::OnGetDownloadManager,
@@ -142,8 +142,7 @@ void AdBlockSubscriptionServiceManager::OnUpdateTimer(
 
       if (info.enabled) {
         base::TimeDelta until_next_refresh =
-            update_interval -
-            (base::Time::Now() - info.last_update_attempt);
+            update_interval - (base::Time::Now() - info.last_update_attempt);
         if (until_next_refresh <= base::TimeDelta()) {
           StartDownload(sub_url, false);
         }
@@ -267,9 +266,11 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
       base::DoNothing());
 }
 
-void AdBlockSubscriptionServiceManager::SetUpdateIntervalsForTesting(base::TimeDelta* initial_delay, base::TimeDelta* update_interval, base::TimeDelta* retry_interval) {
+void AdBlockSubscriptionServiceManager::SetUpdateIntervalsForTesting(
+    base::TimeDelta* initial_delay,
+    base::TimeDelta* update_interval,
+    base::TimeDelta* retry_interval) {
   g_testing_subscription_retry_interval = retry_interval;
-      std::make_unique<component_updater::TimerUpdateScheduler>();
   subscription_update_timer_->Schedule(
       *initial_delay, *update_interval,
       base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer,

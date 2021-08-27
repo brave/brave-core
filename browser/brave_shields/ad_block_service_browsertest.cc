@@ -222,11 +222,13 @@ void AdBlockServiceTest::SetSubscriptionIntervals() {
   auto update_interval = base::TimeDelta::FromSeconds(3);
 
   auto* ad_block_service = g_brave_browser_process->ad_block_service();
-  auto* subscription_service_manager = g_brave_browser_process->ad_block_service()->subscription_service_manager();
+  auto* subscription_service_manager =
+      ad_block_service->subscription_service_manager();
 
   ASSERT_TRUE(ad_block_service->IsInitialized());
 
-  subscription_service_manager->SetUpdateIntervalsForTesting(&initial_delay, &update_interval, &retry_interval);
+  subscription_service_manager->SetUpdateIntervalsForTesting(
+      &initial_delay, &update_interval, &retry_interval);
 }
 
 void AdBlockServiceTest::WaitForAdBlockServiceThreads() {
@@ -743,7 +745,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
     ASSERT_EQ(subscriptions[0].enabled, true);
 
     if (subscriptions[0].last_successful_update_attempt ==
-              subscriptions[0].last_update_attempt) {
+        subscriptions[0].last_update_attempt) {
       first_successful_update = subscriptions[0].last_successful_update_attempt;
     }
   }
