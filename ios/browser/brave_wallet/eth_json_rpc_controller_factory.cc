@@ -21,6 +21,13 @@ mojom::EthJsonRpcController* EthJsonRpcControllerFactory::GetForBrowserState(
 }
 
 // static
+EthJsonRpcController* EthJsonRpcControllerFactory::GetControllerForBrowserState(
+    ChromeBrowserState* browser_state) {
+  return static_cast<EthJsonRpcController*>(
+      GetInstance()->GetServiceForBrowserState(browser_state, true));
+}
+
+// static
 EthJsonRpcControllerFactory* EthJsonRpcControllerFactory::GetInstance() {
   return base::Singleton<EthJsonRpcControllerFactory>::get();
 }
@@ -44,6 +51,11 @@ EthJsonRpcControllerFactory::BuildServiceInstanceFor(
 
 bool EthJsonRpcControllerFactory::ServiceIsNULLWhileTesting() const {
   return true;
+}
+
+web::BrowserState* EthJsonRpcControllerFactory::GetBrowserStateToUse(
+    web::BrowserState* context) const {
+  return GetBrowserStateRedirectedInIncognito(context);
 }
 
 }  // namespace brave_wallet

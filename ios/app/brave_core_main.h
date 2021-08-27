@@ -43,15 +43,14 @@ OBJC_EXPORT
 @property(nonatomic, readonly) id<BraveWalletKeyringController>
     keyringController;
 
-@property(nonatomic, readonly) id<BraveWalletAssetRatioController>
-    assetRatioController;
-
 @property(nonatomic, readonly) id<BraveWalletEthJsonRpcController>
     ethJsonRpcController;
 
 @property(nonatomic, readonly) id<BraveWalletSwapController> swapController;
 
 @property(nonatomic, readonly) id<BraveWalletERCTokenRegistry> ercTokenRegistry;
+
+@property(nonatomic, readonly) id<BraveWalletEthTxController> ethTxController;
 
 @end
 

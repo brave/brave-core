@@ -1,0 +1,27 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+config("external") {
+  include_dirs = [ "." ]
+  visibility = [
+    ":*",
+    "//brave/ios/browser/brave_wallet:*",
+  ]
+}
+
+source_set("keyed_service") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+  sources = [
+    "keyed_service_factory_wrapper+private.h",
+    "keyed_service_factory_wrapper.h",
+    "keyed_service_factory_wrapper.mm",
+  ]
+  deps = [
+    "//base",
+    "//components/keyed_service/ios:ios",
+    "//ios/chrome/browser/browser_state",
+    "//services/network/public/cpp",
+  ]
+}
