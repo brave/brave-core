@@ -10,7 +10,7 @@
 #include "base/environment.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_call_data_builder.h"
+#include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"

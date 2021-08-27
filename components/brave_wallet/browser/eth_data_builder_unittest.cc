@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/eth_call_data_builder.h"
+#include "brave/components/brave_wallet/browser/eth_data_builder.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -27,6 +27,16 @@ TEST(EthCallDataBuilderTest, BalanceOf) {
   ASSERT_EQ(data,
             "0x70a08231000000000000000000000000000000004e02f254184E904300e0775E"
             "4b8eeCB1");
+}
+
+TEST(EthCallDataBuilderTest, Approve) {
+  std::string data;
+  Approve("0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f", 0xde0b6b3a7640000,
+          &data);
+  ASSERT_EQ(
+      data,
+      "0x095ea7b3000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e6446"
+      "0f0000000000000000000000000000000000000000000000000de0b6b3a7640000");
 }
 
 }  // namespace erc20

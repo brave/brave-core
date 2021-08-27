@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/eth_call_data_builder.h"
+#include "brave/components/brave_wallet/browser/eth_data_builder.h"
 
 #include "base/logging.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -37,6 +37,23 @@ bool BalanceOf(const std::string& address, std::string* data) {
     return false;
   }
   return brave_wallet::ConcatHexStrings(function_hash, params, data);
+}
+
+bool Approve(const std::string& spender_address,
+             uint256_t amount,
+             std::string* data) {
+  const std::string function_hash = GetFunctionHash("approve(address,uint256)");
+  std::string padded_address;
+  if (!brave_wallet::PadHexEncodedParameter(spender_address, &padded_address)) {
+    return false;
+  }
+  std::string padded_amount;
+  if (!PadHexEncodedParameter(Uint256ValueToHex(amount), &padded_amount)) {
+    return false;
+  }
+  std::vector<std::string> hex_strings = {function_hash, padded_address,
+                                          padded_amount};
+  return ConcatHexStrings(hex_strings, data);
 }
 
 }  // namespace erc20
