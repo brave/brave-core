@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import ClipboardIcon from '../../../../assets/svg-icons/clipboard-icon.svg'
-import { LoaderIcon } from 'brave-ui/components/icons'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -71,7 +70,6 @@ export const AddressButton = styled.button`
   line-height: 30px;
   letter-spacing: 0.02em;
   color: ${(p) => p.theme.color.text03};
-  margin-bottom: 24px;
   cursor: pointer;
   outline: none;
   background: none;
@@ -83,6 +81,7 @@ export const ButtonRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-top: 24px;
 `
 
 export const CopyIcon = styled.div`
@@ -92,38 +91,6 @@ export const CopyIcon = styled.div`
   -webkit-mask-image: url(${ClipboardIcon});
   mask-image: url(${ClipboardIcon});
   margin-left: 10px;
-`
-
-export const WatchlistScrollContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  position: relative;
-  min-height: 225px;
-  max-height: 225px;
-  margin-bottom: 24px;
-  box-sizing: border-box;
-  padding-right: 4px;
-`
-
-export const LoadingWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-`
-
-export const LoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.interactive08};
-  height: 70px;
-  width: 70px;
-  opacity: .4;
 `
 
 export const PrivateKeyWrapper = styled.div`

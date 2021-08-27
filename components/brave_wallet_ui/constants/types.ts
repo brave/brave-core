@@ -91,7 +91,6 @@ export type AddAccountNavTypes =
 
 export type AccountSettingsNavTypes =
   | 'details'
-  | 'watchlist'
   | 'privateKey'
 
 export type BuySendSwapTypes =

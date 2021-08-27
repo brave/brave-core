@@ -208,15 +208,6 @@ export const EditIcon = styled(EditOIcon)`
   color: ${(p) => p.theme.color.interactive07};
 `
 
-export const EditButtonRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-  margin-bottom: 20px;
-`
-
 export const SubviewSectionTitle = styled.span`
   font-family: Poppins;
   font-size: 15px;

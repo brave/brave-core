@@ -30,7 +30,7 @@ import {
   PortfolioAccountItem,
   PortfolioTransactionItem,
   SelectNetworkDropdown,
-  AccountSettingsModal
+  EditVisibleAssetsModal
 } from '../../'
 
 // Styled Components
@@ -314,15 +314,12 @@ const Portfolio = (props: Props) => {
         </>
       }
       {showVisibleAssetsModal &&
-        <AccountSettingsModal
-          fullAssetList={fullAssetList}
-          onClose={toggleShowVisibleAssetModal}
-          userWatchList={userWatchList}
-          onUpdateVisibleTokens={onUpdateVisibleTokens}
-          title={locale.accountsEditVisibleAssets}
+        <EditVisibleAssetsModal
           userAssetList={userAssetList}
-          hideNav={true}
-          tab='watchlist'
+          onUpdateVisibleTokens={onUpdateVisibleTokens}
+          fullAssetList={fullAssetList}
+          userWatchList={userWatchList}
+          onClose={toggleShowVisibleAssetModal}
         />
       }
     </StyledWrapper>
