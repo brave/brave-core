@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {
-  AssetOptionType,
+  AccountAssetOptionType,
   BuySendSwapViewTypes,
   Network,
   ToOrFromType
@@ -17,7 +17,7 @@ import {
 } from './style'
 
 export interface Props {
-  selectedAsset: AssetOptionType
+  selectedAsset: AccountAssetOptionType
   selectedNetwork: Network
   buyAmount: string
   onSubmit: () => void

@@ -12,7 +12,7 @@ import {
   NavTypes,
   AssetPriceTimeframe,
   PriceDataObjectType,
-  AssetOptionType,
+  AccountAssetOptionType,
   AssetPriceInfo,
   RPCResponseType,
   OrderTypes,
@@ -28,7 +28,8 @@ import BackupWallet from './screens/backup-wallet'
 import * as Result from '../common/types/result'
 
 // import { NavOptions } from '../options/side-nav-options'
-import { AssetOptions, NewAssetOptions } from '../options/asset-options'
+import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
+import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 import BuySendSwap from './screens/buy-send-swap'
@@ -68,8 +69,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedNetwork, setSelectedNetwork] = React.useState<Network>(Network.Mainnet)
   const [selectedAccount, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
-  const [fromAsset, setFromAsset] = React.useState<AssetOptionType>(AssetOptions[0])
-  const [toAsset, setToAsset] = React.useState<AssetOptionType>(AssetOptions[1])
+  const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
+  const [toAsset, setToAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[1])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   const [exchangeRate, setExchangeRate] = React.useState('0.0027533')
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
@@ -325,7 +326,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     alert('Will update Watchlist')
   }
 
-  const onSelectTransactAsset = (asset: AssetOptionType, toOrFrom: ToOrFromType) => {
+  const onSelectTransactAsset = (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {
       setFromAsset(asset)
     } else {
@@ -338,7 +339,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setToAsset(fromAsset)
   }
 
-  const onSubmitBuy = (asset: AssetOptionType) => {
+  const onSubmitBuy = (asset: AccountAssetOptionType) => {
     const url = BuyAssetUrl(selectedNetwork, asset, selectedAccount, buyAmount)
     if (url) {
       window.open(url, '_blank')
@@ -587,6 +588,9 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             onSelectSlippageTolerance={onSelectSlippageTolerance}
             onSelectPresetFromAmount={onSelectPresetFromAmount}
             onSelectPresetSendAmount={onSelectPresetSendAmount}
+            buyAssetOptions={WyreAccountAssetOptions}
+            sendAssetOptions={AccountAssetOptions}
+            swapAssetOptions={AccountAssetOptions}
           />
         </WalletWidgetStandIn>
       }

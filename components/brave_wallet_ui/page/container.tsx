@@ -30,7 +30,7 @@ import {
   PageState,
   WalletPageState,
   AssetPriceTimeframe,
-  AssetOptionType,
+  AccountAssetOptionType,
   OrderTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
@@ -46,7 +46,8 @@ import BackupWallet from '../stories/screens/backup-wallet'
 import { formatPrices } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { convertMojoTimeToJS } from '../utils/mojo-time'
-import { AssetOptions } from '../options/asset-options'
+import { AssetOptions, AccountAssetOptions } from '../options/asset-options'
+import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 import {
@@ -115,9 +116,9 @@ function Container (props: Props) {
   // const [showRestore, setShowRestore] = React.useState<boolean>(false)
 
   // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
-  const [fromAsset, setFromAsset] = React.useState<AssetOptionType>(AssetOptions[0])
-  const [toAsset, setToAsset] = React.useState<AssetOptionType>(AssetOptions[1])
-  const onSelectTransactAsset = (asset: AssetOptionType, toOrFrom: ToOrFromType) => {
+  const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
+  const [toAsset, setToAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[1])
+  const onSelectTransactAsset = (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {
       setFromAsset(asset)
     } else {
@@ -327,17 +328,17 @@ function Container (props: Props) {
     if (!selectedAccount) {
       return '0'
     }
-    const token = selectedAccount.tokens.find((token) => token.asset.symbol === fromAsset.symbol)
+    const token = selectedAccount.tokens.find((token) => token.asset.symbol === fromAsset.asset.symbol)
     return token ? formatBalance(token.assetBalance, token.asset.decimals) : '0'
   }, [accounts, selectedAccount, fromAsset])
 
   const onSelectPresetFromAmount = (percent: number) => {
-    const amount = Number(fromAssetBalance) * percent
+    const amount = Number(fromAsset.assetBalance) * percent
     setSendAmount(amount.toString())
   }
 
   const onSelectPresetSendAmount = (percent: number) => {
-    const amount = Number(fromAssetBalance) * percent
+    const amount = Number(fromAsset.assetBalance) * percent
     setSendAmount(amount.toString())
   }
 
@@ -352,7 +353,7 @@ function Container (props: Props) {
     }
   }
 
-  const onSubmitBuy = (asset: AssetOptionType) => {
+  const onSubmitBuy = (asset: AccountAssetOptionType) => {
     const url = BuyAssetUrl(selectedNetwork, asset, selectedAccount, buyAmount)
     if (url) {
       window.open(url, '_blank')
@@ -389,7 +390,7 @@ function Container (props: Props) {
   }
 
   const onSubmitSend = () => {
-    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === fromAsset.symbol)
+    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === fromAsset.asset.symbol)
     // TODO: Use real gas price & limit
     props.walletActions.sendTransaction({
       from: selectedAccount.address,
@@ -551,6 +552,9 @@ function Container (props: Props) {
             orderExpiration={orderExpiration}
             slippageTolerance={slippageTolerance}
             toAddress={toAddress}
+            buyAssetOptions={WyreAccountAssetOptions}
+            sendAssetOptions={selectedAccount.tokens}
+            swapAssetOptions={AccountAssetOptions}
             onSetBuyAmount={onSetBuyAmount}
             onSetToAddress={onSetToAddress}
             onSelectExpiration={onSelectExpiration}

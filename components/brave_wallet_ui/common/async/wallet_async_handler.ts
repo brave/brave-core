@@ -22,6 +22,7 @@ import {
   AssetPriceTimeframe,
   SendTransactionParam
 } from '../../constants/types'
+import { AssetOptions } from '../../options/asset-options'
 import { InitialVisibleTokenInfo } from '../../options/initial-visible-token-info'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -75,7 +76,8 @@ async function refreshWalletInfo (store: Store) {
   const visibleTokensInfo = await Promise.all(visibleTokensPayload.map(async (i) => {
     const ercTokenRegistry = (await getAPIProxy()).ercTokenRegistry
     const info = await ercTokenRegistry.getTokenByContract(i)
-    return info.token
+    const icon = AssetOptions.find((a) => info.token.symbol === a.symbol)?.icon
+    return { ...info.token, icon: icon }
   }))
   if (visibleTokensInfo[0]) {
     store.dispatch(WalletActions.setVisibleTokensInfo(visibleTokensInfo))

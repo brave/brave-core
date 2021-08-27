@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AssetOptionType } from '../../../constants/types'
+import { AccountAssetOptionType } from '../../../constants/types'
 // Styled Components
 import {
   StyledWrapper,
@@ -9,8 +9,10 @@ import {
   AssetIcon
 } from './style'
 
+import { formatBalance } from '../../../utils/format-balances'
+
 export interface Props {
-  asset: AssetOptionType
+  asset: AccountAssetOptionType
   onSelectAsset: () => void
 }
 
@@ -19,10 +21,10 @@ function SelectAssetItem (props: Props) {
 
   return (
     <StyledWrapper onClick={onSelectAsset}>
-      <AssetIcon icon={asset.icon} />
+      <AssetIcon icon={asset.asset.icon} />
       <AssetAndBalance>
-        <AssetName>{asset.name}</AssetName>
-        <AssetBalance>0 {asset.symbol}</AssetBalance>
+        <AssetName>{asset.asset.name}</AssetName>
+        <AssetBalance>{formatBalance(asset.assetBalance, asset.asset.decimals)} {asset.asset.symbol}</AssetBalance>
       </AssetAndBalance>
     </StyledWrapper>
   )

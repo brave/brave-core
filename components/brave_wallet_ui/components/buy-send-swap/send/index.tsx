@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {
-  AssetOptionType,
+  AccountAssetOptionType,
   BuySendSwapViewTypes,
   ToOrFromType
 } from '../../../constants/types'
@@ -13,7 +13,7 @@ import {
 } from './style'
 
 export interface Props {
-  selectedAsset: AssetOptionType
+  selectedAsset: AccountAssetOptionType
   selectedAssetAmount: string
   selectedAssetBalance: string
   toAddress: string

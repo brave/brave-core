@@ -44,13 +44,13 @@ import {
   WalletPanelState,
   WalletAccountType,
   BuySendSwapViewTypes,
-  AssetOptionType,
+  AccountAssetOptionType,
   Network
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
-import { AssetOptions } from '../options/asset-options'
-import { WyreAssetOptions } from '../options/wyre-asset-options'
+import { AccountAssetOptions } from '../options/asset-options'
+import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { NetworkOptions } from '../options/network-options'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 
@@ -107,8 +107,8 @@ function Container (props: Props) {
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
-  const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>(AssetOptions[0])
-  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AssetOptionType>(WyreAssetOptions[0])
+  const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
+  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [toAddress, setToAddress] = React.useState('')
   const [sendAmount, setSendAmount] = React.useState('')
@@ -139,7 +139,7 @@ function Container (props: Props) {
     setShowSelectAsset(false)
   }
 
-  const onSelectAsset = (asset: AssetOptionType) => () => {
+  const onSelectAsset = (asset: AccountAssetOptionType) => () => {
     if (selectedPanel === 'buy') {
       setSelectedWyreAsset(asset)
     } else {
@@ -160,7 +160,7 @@ function Container (props: Props) {
     if (!selectedAccount || !selectedAccount.tokens) {
       return '0'
     }
-    const token = selectedAccount.tokens.find((token) => token.asset.symbol === selectedAsset.symbol)
+    const token = selectedAccount.tokens.find((token) => token.asset.symbol === selectedAsset.asset.symbol)
     return token ? formatBalance(token.assetBalance, token.asset.decimals) : '0'
   }, [accounts, selectedAccount, selectedAsset])
 
@@ -170,7 +170,7 @@ function Container (props: Props) {
   }
 
   const onSubmitSend = () => {
-    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === selectedAsset.symbol)
+    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === selectedAsset.asset.symbol)
     // TODO: Use real gas price & limit
     props.walletActions.sendTransaction({
       from: selectedAccount.address,
@@ -452,10 +452,18 @@ function Container (props: Props) {
   }
 
   if (showSelectAsset) {
+    let assets: AccountAssetOptionType[]
+    if (selectedPanel === 'buy') {
+      assets = WyreAccountAssetOptions
+    } else if (selectedPanel === 'send') {
+      assets = selectedAccount.tokens
+    } else {  // swap
+      assets = AccountAssetOptions
+    }
     return (
       <SelectContainer>
         <SelectAsset
-          assets={selectedPanel === 'buy' ? WyreAssetOptions : AssetOptions}
+          assets={assets}
           onSelectAsset={onSelectAsset}
           onBack={onHideSelectAsset}
         />

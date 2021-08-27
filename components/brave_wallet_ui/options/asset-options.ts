@@ -1,4 +1,4 @@
-import { AssetOptionType, TokenInfo } from '../constants/types'
+import { AccountAssetOptionType, AssetOptionType, TokenInfo } from '../constants/types'
 import {
   ALGOIconUrl,
   BATIconUrl,
@@ -101,5 +101,86 @@ export const NewAssetOptions: TokenInfo[] = [
     isErc20: true,
     isErc721: false,
     decimals: 8
+  }
+]
+
+export const AccountAssetOptions: AccountAssetOptionType[] = [
+  {
+    asset: {
+      contractAddress: '1',
+      name: 'Ethereum',
+      symbol: 'ETH',
+      icon: ETHIconUrl,
+      isErc20: true,
+      isErc721: false,
+      decimals: 8
+    },
+    assetBalance: '0',
+    fiatBalance: '0'
+  },
+  {
+    asset: {
+      contractAddress: '2',
+      name: 'Basic Attention Token',
+      symbol: 'BAT',
+      icon: BATIconUrl,
+      isErc20: true,
+      isErc721: false,
+      decimals: 8
+    },
+    assetBalance: '0',
+    fiatBalance: '0'
+  },
+  {
+    asset: {
+      contractAddress: '3',
+      name: 'Binance Coin',
+      symbol: 'BNB',
+      icon: BNBIconUrl,
+      isErc20: true,
+      isErc721: false,
+      decimals: 8
+    },
+    assetBalance: '0',
+    fiatBalance: '0'
+  },
+  {
+    asset: {
+      contractAddress: '4',
+      name: 'Bitcoin',
+      symbol: 'BTC',
+      icon: BTCIconUrl,
+      isErc20: true,
+      isErc721: false,
+      decimals: 8
+    },
+    assetBalance: '0',
+    fiatBalance: '0'
+  },
+  {
+    asset: {
+      contractAddress: '5',
+      name: 'Algorand',
+      symbol: 'ALGO',
+      icon: ALGOIconUrl,
+      isErc20: true,
+      isErc721: false,
+      decimals: 8
+    },
+    assetBalance: '0',
+    fiatBalance: '0'
+  },
+  {
+    asset: {
+      contractAddress: '6',
+      name: '0x',
+      symbol: 'ZRX',
+      icon: ZRXIconUrl,
+      isErc20: true,
+      isErc721: false,
+      decimals: 8
+    },
+    assetBalance: '0',
+    fiatBalance: '0'
   }
 ]

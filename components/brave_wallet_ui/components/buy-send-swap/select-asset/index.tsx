@@ -1,6 +1,6 @@
 import * as React from 'react'
 import SelectAssetItem from '../select-asset-item'
-import { AssetOptionType } from '../../../constants/types'
+import { AccountAssetOptionType } from '../../../constants/types'
 import { SearchBar } from '../../shared'
 import Header from '../select-header'
 import locale from '../../../constants/locale'
@@ -11,14 +11,14 @@ import {
 } from '../shared-styles'
 
 export interface Props {
-  assets: AssetOptionType[]
-  onSelectAsset: (asset: AssetOptionType) => () => void
+  assets: AccountAssetOptionType[]
+  onSelectAsset: (asset: AccountAssetOptionType) => () => void
   onBack: () => void
 }
 
 function SelectAsset (props: Props) {
   const { assets, onBack, onSelectAsset } = props
-  const [filteredAssetList, setFilteredAssetList] = React.useState<AssetOptionType[]>(assets)
+  const [filteredAssetList, setFilteredAssetList] = React.useState<AccountAssetOptionType[]>(assets)
 
   const filterAssetList = (event: any) => {
     const search = event.target.value
@@ -27,10 +27,10 @@ function SelectAsset (props: Props) {
     } else {
       const filteredList = assets.filter((item) => {
         return (
-          item.name.toLowerCase() === search.toLowerCase() ||
-          item.name.toLowerCase().startsWith(search.toLowerCase()) ||
-          item.symbol.toLocaleLowerCase() === search.toLowerCase() ||
-          item.symbol.toLowerCase().startsWith(search.toLowerCase())
+          item.asset.name.toLowerCase() === search.toLowerCase() ||
+          item.asset.name.toLowerCase().startsWith(search.toLowerCase()) ||
+          item.asset.symbol.toLocaleLowerCase() === search.toLowerCase() ||
+          item.asset.symbol.toLowerCase().startsWith(search.toLowerCase())
         )
       })
       setFilteredAssetList(filteredList)
@@ -42,7 +42,7 @@ function SelectAsset (props: Props) {
       <Header title={locale.selectAsset} onBack={onBack} />
       <SearchBar placeholder={locale.searchAsset} action={filterAssetList} />
       <SelectScrollSearchContainer>
-        {filteredAssetList.map((asset) => <SelectAssetItem key={asset.id} asset={asset} onSelectAsset={onSelectAsset(asset)} />)}
+        {filteredAssetList.map((asset) => <SelectAssetItem key={asset.asset.contractAddress} asset={asset} onSelectAsset={onSelectAsset(asset)} />)}
       </SelectScrollSearchContainer>
     </SelectWrapper>
   )
