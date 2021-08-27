@@ -47,32 +47,18 @@ extension BrowserViewController {
             }
             MenuItemButton(icon: #imageLiteral(resourceName: "playlist_menu").template, title: Strings.playlistMenuItem) { [weak self] in
                 guard let self = self else { return }
-                
-                let playlistController = (UIApplication.shared.delegate as? AppDelegate)?.playlistRestorationController
-                
+
                 // Present existing playlist controller
-                if let playlistController = playlistController {
+                if let playlistController = PlaylistCarplayManager.shared.playlistController {
                     self.dismiss(animated: true) {
                         self.present(playlistController, animated: true)
                     }
                 } else {
                     // Retrieve the item and offset-time from the current tab's webview.
-                    if let item = self.tabManager.selectedTab?.playlistItem,
-                       let webView = self.tabManager.selectedTab?.webView {
+                    let tab = self.tabManager.selectedTab
+                    PlaylistCarplayManager.shared.getPlaylistController(tab: tab) { [weak self] playlistController in
+                        guard let self = self else { return }
                         
-                        PlaylistHelper.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak self] currentTime in
-                            guard let self = self else { return }
-                            
-                            let playlistController = PlaylistViewController(initialItem: item, initialItemPlaybackOffset: currentTime)
-                            playlistController.modalPresentationStyle = .fullScreen
-                            
-                            self.dismiss(animated: true) {
-                                self.present(playlistController, animated: true)
-                            }
-                        }
-                    } else {
-                        // Otherwise no item to play, so just open the playlist controller.
-                        let playlistController = PlaylistViewController(initialItem: nil, initialItemPlaybackOffset: 0.0)
                         playlistController.modalPresentationStyle = .fullScreen
                         
                         self.dismiss(animated: true) {

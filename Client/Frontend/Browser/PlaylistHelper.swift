@@ -153,7 +153,7 @@ class PlaylistHelper: NSObject, TabContentScript {
                 // We have no other way of knowing the playable status
                 // It is best to assume the item can be played
                 // In the worst case, if it can't be played, it will show an error
-                completion(true)
+                completion(isAssetPlayable())
             }
         case .online:
             // Fetch the playable status asynchronously
@@ -199,7 +199,7 @@ extension PlaylistHelper: UIGestureRecognizerDelegate {
             let touchPoint = gestureRecognizer.location(in: webView)
             
             let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
-            let javascript = String(format: "window.onLongPressActivated_%@(%f, %f)", token, touchPoint.x, touchPoint.y)
+            let javascript = String(format: "window.__firefox__.onLongPressActivated_%@(%f, %f)", token, touchPoint.x, touchPoint.y)
             webView.evaluateJavaScript(javascript) // swiftlint:disable:this safe_javascript
         }
     }
@@ -219,7 +219,7 @@ extension PlaylistHelper: UIGestureRecognizerDelegate {
 extension PlaylistHelper {
     static func getCurrentTime(webView: WKWebView, nodeTag: String, completion: @escaping (Double) -> Void) {
         let token = UserScriptManager.securityTokenString
-        let javascript = String(format: "window.mediaCurrentTimeFromTag_%@('%@')", token, nodeTag)
+        let javascript = String(format: "window.__firefox__.mediaCurrentTimeFromTag_%@('%@')", token, nodeTag)
 
         // swiftlint:disable:next safe_javascript
         webView.evaluateJavaScript(javascript, completionHandler: { value, error in
@@ -233,6 +233,20 @@ extension PlaylistHelper {
                 } else {
                     completion(0.0)
                 }
+            }
+        })
+    }
+    
+    static func stopPlayback(tab: Tab?) {
+        guard let tab = tab else { return }
+        
+        let token = UserScriptManager.securityTokenString
+        let javascript = String(format: "window.__firefox__.stopMediaPlayback_%@()", token)
+
+        // swiftlint:disable:next safe_javascript
+        tab.webView?.evaluateJavaScript(javascript, completionHandler: { value, error in
+            if let error = error {
+                log.error("Error Retrieving Stopping Media Playback: \(error)")
             }
         })
     }

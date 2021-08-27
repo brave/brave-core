@@ -18,5 +18,7 @@
 	<array>
 		<string>group.$(MOZ_BUNDLE_ID)</string>
 	</array>
+	<key>com.apple.developer.playable-content</key>
+	<true/>
 </dict>
 </plist>

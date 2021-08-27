@@ -119,9 +119,9 @@ window.__firefox__.includeOnce("Playlist", function() {
     }
     
     function $<setupLongPress>() {
-        Object.defineProperty(window, '$<onLongPressActivated>', {
+        Object.defineProperty(window.__firefox__, '$<onLongPressActivated>', {
             enumerable: false,
-            configurable: false,
+            configurable: true,
             value:
             function(localX, localY) {
                 function execute(page, offsetX, offsetY) {
@@ -403,9 +403,9 @@ window.__firefox__.includeOnce("Playlist", function() {
     }
     
     function $<setupTagNode>() {
-        Object.defineProperty(window, '$<mediaCurrentTimeFromTag>', {
+        Object.defineProperty(window.__firefox__, '$<mediaCurrentTimeFromTag>', {
             enumerable: false,
-            configurable: false,
+            configurable: true,
             value:
             function(tag) {
                 for (element of document.querySelectorAll('video')) {
@@ -418,6 +418,23 @@ window.__firefox__.includeOnce("Playlist", function() {
                     if (element.$<tagUUID> == tag) {
                         return clamp_duration(element.currentTime);
                     }
+                }
+                
+                return 0.0;
+            }
+        });
+        
+        Object.defineProperty(window.__firefox__, '$<stopMediaPlayback>', {
+            enumerable: false,
+            configurable: true,
+            value:
+            function(tag) {
+                for (element of document.querySelectorAll('video')) {
+                    element.pause();
+                }
+                
+                for (element of document.querySelectorAll('audio')) {
+                    element.pause();
                 }
                 
                 return 0.0;

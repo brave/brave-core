@@ -1407,6 +1407,12 @@ extension Strings {
                               bundle: .braveShared,
                               value: "Remove",
                               comment: "Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar")
+        
+        public static let playlistCarplayTitle =
+            NSLocalizedString("playlist.carplayTitle",
+                              bundle: .braveShared,
+                              value: "Brave Playlist",
+                              comment: "The title of the playlist when in Carplay mode")
     }
 }
 

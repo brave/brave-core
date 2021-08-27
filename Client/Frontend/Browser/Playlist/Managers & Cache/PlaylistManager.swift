@@ -5,8 +5,10 @@
 
 import Foundation
 import AVFoundation
-import Shared
+import Combine
 import CoreData
+
+import Shared
 import Data
 import BraveShared
 
@@ -23,11 +25,25 @@ protocol PlaylistManagerDelegate: AnyObject {
 
 class PlaylistManager: NSObject {
     static let shared = PlaylistManager()
-    weak var delegate: PlaylistManagerDelegate?
     
     private let downloadManager = PlaylistDownloadManager()
     private let frc = PlaylistItem.frc()
     private var didRestoreSession = false
+    
+    // Observers
+    private let onContentWillChange = PassthroughSubject<Void, Never>()
+    private let onContentDidChange = PassthroughSubject<Void, Never>()
+    private let onObjectChange = PassthroughSubject<(object: Any,
+                                                     indexPath: IndexPath?,
+                                                     type: NSFetchedResultsChangeType,
+                                                     newIndexPath: IndexPath?), Never>()
+    
+    private let onDownloadProgressUpdate = PassthroughSubject<(id: String,
+                                                               percentComplete: Double), Never>()
+    private let onDownloadStateChanged = PassthroughSubject<(id: String,
+                                                             state: PlaylistDownloadManager.DownloadState,
+                                                             displayName: String?,
+                                                             error: Error?), Never>()
     
     private override init() {
         super.init()
@@ -36,17 +52,46 @@ class PlaylistManager: NSObject {
         frc.delegate = self
     }
     
+    var contentWillChange: AnyPublisher<Void, Never> {
+        onContentWillChange.eraseToAnyPublisher()
+    }
+    
+    var contentDidChange: AnyPublisher<Void, Never> {
+        onContentDidChange.eraseToAnyPublisher()
+    }
+    
+    var objectDidChange: AnyPublisher<(object: Any, indexPath: IndexPath?, type: NSFetchedResultsChangeType, newIndexPath: IndexPath?), Never> {
+        onObjectChange.eraseToAnyPublisher()
+    }
+    
+    var downloadProgressUpdated: AnyPublisher<(id: String, percentComplete: Double), Never> {
+        onDownloadProgressUpdate.eraseToAnyPublisher()
+    }
+    
+    var downloadStateChanged: AnyPublisher<(id: String, state: PlaylistDownloadManager.DownloadState, displayName: String?, error: Error?), Never> {
+        onDownloadStateChanged.eraseToAnyPublisher()
+    }
+    
+    var allItems: [PlaylistInfo] {
+        frc.fetchedObjects?.map({ PlaylistInfo(item: $0) }) ?? []
+    }
+    
     var numberOfAssets: Int {
         frc.fetchedObjects?.count ?? 0
     }
     
-    func itemAtIndex(_ index: Int) -> PlaylistInfo {
-        PlaylistInfo(item: frc.object(at: IndexPath(row: index, section: 0)))
+    func itemAtIndex(_ index: Int) -> PlaylistInfo? {
+        if index < numberOfAssets {
+            return PlaylistInfo(item: frc.object(at: IndexPath(row: index, section: 0)))
+        }
+        return nil
     }
     
-    func assetAtIndex(_ index: Int) -> AVURLAsset {
-        let item = itemAtIndex(index)
-        return asset(for: item.pageSrc, mediaSrc: item.src)
+    func assetAtIndex(_ index: Int) -> AVURLAsset? {
+        if let item = itemAtIndex(index) {
+            return asset(for: item.pageSrc, mediaSrc: item.src)
+        }
+        return nil
     }
     
     func index(of pageSrc: String) -> Int? {
@@ -152,7 +197,7 @@ class PlaylistManager: NSObject {
     func download(item: PlaylistInfo) {
         guard downloadManager.downloadTask(for: item.pageSrc) == nil, let assetUrl = URL(string: item.src) else { return }
         
-        MediaResourceManager.getMimeType(assetUrl) { [weak self] mimeType in
+        PlaylistMediaStreamer.getMimeType(assetUrl) { [weak self] mimeType in
             guard let self = self, let mimeType = mimeType?.lowercased() else { return }
 
             if mimeType.contains("x-mpegurl") || mimeType.contains("application/vnd.apple.mpegurl") || mimeType.contains("mpegurl") {
@@ -181,13 +226,13 @@ class PlaylistManager: NSObject {
             // That will cause zombie items.
             if deleteCache(item: item) {
                 PlaylistItem.removeItem(item)
-                delegate?.onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
+                onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
                 return true
             }
             return false
         } else {
             PlaylistItem.removeItem(item)
-            delegate?.onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
+            onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
             return true
         }
     }
@@ -205,7 +250,7 @@ class PlaylistManager: NSObject {
                 if FileManager.default.fileExists(atPath: url.path) {
                     try FileManager.default.removeItem(atPath: url.path)
                     PlaylistItem.updateCache(pageSrc: item.pageSrc, cachedData: nil)
-                    delegate?.onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
+                    onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
                 }
                 return true
             } catch {
@@ -223,7 +268,7 @@ class PlaylistManager: NSObject {
         // other than to deallocate the restoration controller.
         // We could also call `AVPictureInPictureController.stopPictureInPicture` BUT we'd still have to deallocate all resources.
         // At least this way, we deallocate both AND pip is stopped in the destructor of `PlaylistViewController->ListController`
-        (UIApplication.shared.delegate as? AppDelegate)?.playlistRestorationController = nil
+        PlaylistCarplayManager.shared.playlistController = nil
  
         guard let playlistItems = frc.fetchedObjects else {
             log.error("An error occured while fetching Playlist Objects")
@@ -306,26 +351,26 @@ extension PlaylistManager {
 
 extension PlaylistManager: PlaylistDownloadManagerDelegate {
     func onDownloadProgressUpdate(id: String, percentComplete: Double) {
-        delegate?.onDownloadProgressUpdate(id: id, percentComplete: percentComplete)
+        onDownloadProgressUpdate.send((id: id, percentComplete: percentComplete))
     }
     
     func onDownloadStateChanged(id: String, state: PlaylistDownloadManager.DownloadState, displayName: String?, error: Error?) {
-        delegate?.onDownloadStateChanged(id: id, state: state, displayName: displayName, error: error)
+        onDownloadStateChanged.send((id: id, state: state, displayName: displayName, error: error))
     }
 }
 
 extension PlaylistManager: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
-        delegate?.controllerDidChange(anObject, at: indexPath, for: type, newIndexPath: newIndexPath)
+        onObjectChange.send((object: anObject, indexPath: indexPath, type: type, newIndexPath: newIndexPath))
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        delegate?.controllerDidChangeContent()
+        onContentDidChange.send(())
     }
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        delegate?.controllerWillChangeContent()
+        onContentWillChange.send(())
     }
 }
 

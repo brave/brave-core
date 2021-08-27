@@ -31,7 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     var window: UIWindow?
     var browserViewController: BrowserViewController!
     var rootViewController: UIViewController!
-    var playlistRestorationController: UIViewController? // When Picture-In-Picture is enabled, we need to store a reference to the controller to keep it alive, otherwise if it deallocates, the system automatically kills Picture-In-Picture.
     weak var profile: Profile?
     var tabManager: TabManager!
     var braveCore: BraveCoreMain?
@@ -51,6 +50,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     
     /// Must be added at launch according to Apple's documentation.
     let iapObserver = IAPObserver()
+    
+    /// A car-play manager instance that will handle when car-play status changes
+    var carPlayManager: PlaylistCarplayManager?
 
     @discardableResult func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Hold references to willFinishLaunching parameters for delayed app launch
@@ -404,6 +406,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         AdblockResourceDownloader.shared.startLoading()
         PlaylistManager.shared.restoreSession()
+        carPlayManager = PlaylistCarplayManager.shared.then {
+            $0.browserController = browserViewController
+        }
       
         return shouldPerformAdditionalDelegateHandling
     }
