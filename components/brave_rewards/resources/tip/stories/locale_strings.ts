@@ -41,6 +41,7 @@ export const localeStrings = {
   sorryToSeeYouGo: 'Sorry to see you go…',
   supportThisCreator: 'Support this creator',
   thanksForTheSupport: 'Thanks for the support!',
+  tipDelayNote: 'Note: Your tip can take several minutes to process',
   tipHasBeenSent: 'Your one-time tip has been sent.',
   tipPostSubtitle: 'for their post',
   tokens: 'tokens',
