@@ -13,6 +13,9 @@
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 
 namespace brave_vpn {
+namespace internal {
+enum class CheckConnectionResult;
+}  // namespace internal
 
 class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPI {
  public:
@@ -32,12 +35,15 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPI {
   void RemoveVPNConnection(const std::string& name) override;
   void Connect(const std::string& name) override;
   void Disconnect(const std::string& name) override;
+  void CheckConnection(const std::string& name) override;
 
  private:
   void OnCreated(const std::string& name, bool success);
   void OnConnected(const std::string& name, bool success);
   void OnDisconnected(const std::string& name, bool success);
   void OnRemoved(const std::string& name, bool success);
+  void OnCheckConnection(const std::string& name,
+                         internal::CheckConnectionResult result);
 
   base::WeakPtrFactory<BraveVPNOSConnectionAPIWin> weak_factory_{this};
 };

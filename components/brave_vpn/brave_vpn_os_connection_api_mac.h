@@ -32,6 +32,7 @@ class BraveVPNOSConnectionAPIMac : public BraveVPNOSConnectionAPI {
   void RemoveVPNConnection(const std::string& name) override;
   void Connect(const std::string& name) override;
   void Disconnect(const std::string& name) override;
+  void CheckConnection(const std::string& name) override;
 
   BraveVPNConnectionInfo info_;
 };

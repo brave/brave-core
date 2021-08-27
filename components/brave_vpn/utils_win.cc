@@ -324,6 +324,54 @@ bool CreateEntry(const std::wstring& entry_name,
   return true;
 }
 
+CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
+  DWORD dw_cb = 0;
+  DWORD dw_ret = dw_cb;
+  DWORD dw_connections = 0;
+  LPRASCONN lp_ras_conn = NULL;
+
+  // Call RasEnumConnections with lp_ras_conn = NULL. dw_cb is returned with the
+  // required buffer size and a return code of ERROR_BUFFER_TOO_SMALL
+  dw_ret = RasEnumConnections(lp_ras_conn, &dw_cb, &dw_connections);
+
+  // Abnormal situation.
+  if (dw_ret != ERROR_BUFFER_TOO_SMALL)
+    return CheckConnectionResult::UNKNOWN;
+
+  // Allocate the memory needed for the array of RAS structure(s).
+  lp_ras_conn = (LPRASCONN)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
+  if (lp_ras_conn == NULL) {
+    LOG(ERROR) << "HeapAlloc failed!";
+    return CheckConnectionResult::UNKNOWN;
+  }
+
+  // The first RASCONN structure in the array must contain the RASCONN
+  // structure size
+  lp_ras_conn[0].dwSize = sizeof(RASCONN);
+
+  // Call RasEnumConnections to enumerate active connections
+  dw_ret = RasEnumConnections(lp_ras_conn, &dw_cb, &dw_connections);
+
+  if (ERROR_SUCCESS != dw_ret) {
+    HeapFree(GetProcessHeap(), 0, lp_ras_conn);
+    lp_ras_conn = NULL;
+    return CheckConnectionResult::UNKNOWN;
+  }
+
+  // If successful, find connection with |entry_name|.
+  CheckConnectionResult result = CheckConnectionResult::NOT_CONNECTED;
+  for (DWORD i = 0; i < dw_connections; i++) {
+    if (entry_name.compare(lp_ras_conn[i].szEntryName) == 0) {
+      result = CheckConnectionResult::CONNECTED;
+      break;
+    }
+  }
+
+  HeapFree(GetProcessHeap(), 0, lp_ras_conn);
+  lp_ras_conn = NULL;
+  return result;
+}
+
 }  // namespace internal
 
 }  // namespace brave_vpn

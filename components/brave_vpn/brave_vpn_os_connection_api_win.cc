@@ -15,6 +15,7 @@
 // Most of Windows implementations are based on Brian Clifton
 // (brian@clifton.me)'s work (https://github.com/bsclifton/winvpntool).
 
+using brave_vpn::internal::CheckConnectionResult;
 using brave_vpn::internal::ConnectEntry;
 using brave_vpn::internal::CreateEntry;
 using brave_vpn::internal::DisconnectEntry;
@@ -72,6 +73,26 @@ void BraveVPNOSConnectionAPIWin::RemoveVPNConnection(const std::string& name) {
       base::BindOnce(&RemoveEntry, base::UTF8ToWide(name)),
       base::BindOnce(&BraveVPNOSConnectionAPIWin::OnRemoved,
                      weak_factory_.GetWeakPtr(), name));
+}
+
+void BraveVPNOSConnectionAPIWin::CheckConnection(const std::string& name) {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&internal::CheckConnection, base::UTF8ToWide(name)),
+      base::BindOnce(&BraveVPNOSConnectionAPIWin::OnCheckConnection,
+                     weak_factory_.GetWeakPtr(), name));
+}
+
+void BraveVPNOSConnectionAPIWin::OnCheckConnection(
+    const std::string& name,
+    CheckConnectionResult result) {
+  if (result == CheckConnectionResult::UNKNOWN)
+    return;
+
+  for (Observer& obs : observers_) {
+    result == CheckConnectionResult::CONNECTED ? obs.OnConnected(name)
+                                               : obs.OnDisconnected(name);
+  }
 }
 
 void BraveVPNOSConnectionAPIWin::OnCreated(const std::string& name,
