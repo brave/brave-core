@@ -108,7 +108,6 @@ class AdBlockSubscriptionServiceManager {
   void NotifyObserversOfServiceEvent();
 
   void SetUpdateIntervalsForTesting(base::TimeDelta* initial_delay,
-                                    base::TimeDelta* update_interval,
                                     base::TimeDelta* retry_interval);
 
   brave_component_updater::BraveComponent::Delegate* delegate_;  // NOT OWNED

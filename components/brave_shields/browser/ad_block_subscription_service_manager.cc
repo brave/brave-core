@@ -39,7 +39,6 @@ namespace {
 
 const base::TimeDelta kListUpdateInterval = base::TimeDelta::FromDays(7);
 const base::TimeDelta kListRetryInterval = base::TimeDelta::FromHours(1);
-const base::TimeDelta kListCheckInterval = base::TimeDelta::FromMinutes(10);
 const base::TimeDelta kListCheckInitialDelay = base::TimeDelta::FromMinutes(1);
 
 SubscriptionInfo BuildInfoFromDict(const GURL& sub_url,
@@ -129,23 +128,13 @@ void AdBlockSubscriptionServiceManager::OnUpdateTimer(
       GURL sub_url(key);
       info = BuildInfoFromDict(sub_url, list_subscription_dict);
 
-      base::TimeDelta update_interval;
-      if (info.last_update_attempt != info.last_successful_update_attempt) {
-        if (g_testing_subscription_retry_interval) {
-          update_interval = *g_testing_subscription_retry_interval;
-        } else {
-          update_interval = kListRetryInterval;
-        }
-      } else {
-        update_interval = kListUpdateInterval;
-      }
+      base::TimeDelta until_next_refresh =
+          kListUpdateInterval - (base::Time::Now() - info.last_update_attempt);
 
-      if (info.enabled) {
-        base::TimeDelta until_next_refresh =
-            update_interval - (base::Time::Now() - info.last_update_attempt);
-        if (until_next_refresh <= base::TimeDelta()) {
-          StartDownload(sub_url, false);
-        }
+      if (info.enabled &&
+          ((info.last_update_attempt != info.last_successful_update_attempt) ||
+           (until_next_refresh <= base::TimeDelta()))) {
+        StartDownload(sub_url, false);
       }
     }
   }
@@ -260,7 +249,7 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
   LoadSubscriptionServices();
 
   subscription_update_timer_->Schedule(
-      kListCheckInitialDelay, kListCheckInterval,
+      kListCheckInitialDelay, kListRetryInterval,
       base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer,
                           weak_ptr_factory_.GetWeakPtr()),
       base::DoNothing());
@@ -268,11 +257,10 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
 
 void AdBlockSubscriptionServiceManager::SetUpdateIntervalsForTesting(
     base::TimeDelta* initial_delay,
-    base::TimeDelta* update_interval,
     base::TimeDelta* retry_interval) {
   g_testing_subscription_retry_interval = retry_interval;
   subscription_update_timer_->Schedule(
-      *initial_delay, *update_interval,
+      *initial_delay, *retry_interval,
       base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer,
                           weak_ptr_factory_.GetWeakPtr()),
       base::DoNothing());
