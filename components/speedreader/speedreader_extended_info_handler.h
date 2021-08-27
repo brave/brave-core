@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_EXTENDED_INFO_HANDLER_H_
-#define BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_EXTENDED_INFO_HANDLER_H_
+#ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_EXTENDED_INFO_HANDLER_H_
+#define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_EXTENDED_INFO_HANDLER_H_
 
 #include <string>
 
+#include "brave/components/speedreader/speedreader_util.h"
 #include "components/sessions/content/extended_info_handler.h"
 
 namespace content {
@@ -24,21 +25,24 @@ class SpeedreaderExtendedInfoHandler : public sessions::ExtendedInfoHandler {
   // Calling this more than once will cause a crash.
   static void Register();
 
-  static void PersistSpeedreaderMode(content::NavigationEntry* entry);
-  static void PersistReaderMode(content::NavigationEntry* entry);
+  // Persist the current speedreader state to NavigationEntry
+  static void PersistMode(content::NavigationEntry* entry, DistillState state);
+
+  // Retrieve cached speedreader state from NavigationEntry. Returns
+  // DistillState::kUnknown if not cached.
+  static DistillState GetCachedMode(content::NavigationEntry* entry);
+
+  // Clear the NavigationEntry speedreader state
   static void ClearPersistedData(content::NavigationEntry* entry);
 
-  static bool IsCachedSpeedreaderMode(content::NavigationEntry* entry);
-  static bool IsCachedReaderMode(content::NavigationEntry* entry);
-
+  SpeedreaderExtendedInfoHandler() = default;
+  ~SpeedreaderExtendedInfoHandler() override = default;
   SpeedreaderExtendedInfoHandler(const SpeedreaderExtendedInfoHandler&) =
       delete;
   SpeedreaderExtendedInfoHandler& operator=(
       const SpeedreaderExtendedInfoHandler&) = delete;
 
-  SpeedreaderExtendedInfoHandler() = default;
-  ~SpeedreaderExtendedInfoHandler() override = default;
-
+  // sessions::ExtendedInfoHandler:
   std::string GetExtendedInfo(content::NavigationEntry* entry) const override;
   void RestoreExtendedInfo(const std::string& info,
                            content::NavigationEntry* entry) override;
@@ -46,4 +50,4 @@ class SpeedreaderExtendedInfoHandler : public sessions::ExtendedInfoHandler {
 
 }  // namespace speedreader
 
-#endif  // BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_EXTENDED_INFO_HANDLER_H_
+#endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_EXTENDED_INFO_HANDLER_H_

@@ -6,12 +6,6 @@
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_RESULT_DELEGATE_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_RESULT_DELEGATE_H_
 
-#include "content/public/browser/web_contents_user_data.h"
-
-namespace content {
-class WebContents;
-}  // namespace content
-
 // SpeedreaderResultDelegate is an interface for the speedreader component to
 // notify a tab_helper that the distillation has completed successufully.
 class SpeedreaderResultDelegate {

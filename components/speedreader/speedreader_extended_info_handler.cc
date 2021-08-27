@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/speedreader/speedreader_extended_info_handler.h"
+#include "brave/components/speedreader/speedreader_extended_info_handler.h"
 
 #include <memory>
+#include <utility>
 
-#include "base/memory/ptr_util.h"
 #include "base/supports_user_data.h"
 #include "components/sessions/content/content_serialized_navigation_driver.h"
 #include "content/public/browser/navigation_entry.h"
@@ -32,53 +32,55 @@ namespace speedreader {
 
 // static
 void SpeedreaderExtendedInfoHandler::Register() {
-  auto* handler = new SpeedreaderExtendedInfoHandler();
   sessions::ContentSerializedNavigationDriver::GetInstance()
-      ->RegisterExtendedInfoHandler(kSpeedreaderKey, base::WrapUnique(handler));
+      ->RegisterExtendedInfoHandler(
+          kSpeedreaderKey, std::make_unique<SpeedreaderExtendedInfoHandler>());
 }
 
 // static
-void SpeedreaderExtendedInfoHandler::PersistSpeedreaderMode(
-    content::NavigationEntry* entry) {
-  entry->SetUserData(
-      kSpeedreaderKey,
-      std::make_unique<SpeedreaderNavigationData>(kPageSavedSpeedreaderMode));
+void SpeedreaderExtendedInfoHandler::PersistMode(
+    content::NavigationEntry* entry,
+    DistillState state) {
+  DCHECK(entry);
+  std::unique_ptr<SpeedreaderNavigationData> data;
+  switch (state) {
+    case DistillState::kReaderMode:
+      data = std::make_unique<SpeedreaderNavigationData>(kPageSavedReaderMode);
+      break;
+    case DistillState::kSpeedreaderMode:
+      data = std::make_unique<SpeedreaderNavigationData>(
+          kPageSavedSpeedreaderMode);
+      break;
+    default:
+      NOTREACHED();
+      return;
+  }
+
+  entry->SetUserData(kSpeedreaderKey, std::move(data));
 }
 
 // static
-void SpeedreaderExtendedInfoHandler::PersistReaderMode(
+DistillState SpeedreaderExtendedInfoHandler::GetCachedMode(
     content::NavigationEntry* entry) {
-  entry->SetUserData(
-      kSpeedreaderKey,
-      std::make_unique<SpeedreaderNavigationData>(kPageSavedReaderMode));
+  DCHECK(entry);
+  auto* data = static_cast<SpeedreaderNavigationData*>(
+      entry->GetUserData(kSpeedreaderKey));
+  if (!data) {
+    return DistillState::kUnknown;
+  }
+  if (data->value == kPageSavedReaderMode) {
+    return DistillState::kReaderMode;
+  } else if (data->value == kPageSavedSpeedreaderMode) {
+    return DistillState::kSpeedreaderMode;
+  } else {
+    return DistillState::kUnknown;
+  }
 }
 
 // static
 void SpeedreaderExtendedInfoHandler::ClearPersistedData(
     content::NavigationEntry* entry) {
   entry->RemoveUserData(kSpeedreaderKey);
-}
-
-// static
-bool SpeedreaderExtendedInfoHandler::IsCachedSpeedreaderMode(
-    content::NavigationEntry* entry) {
-  auto* data = static_cast<SpeedreaderNavigationData*>(
-      entry->GetUserData(kSpeedreaderKey));
-  if (!data) {
-    return false;
-  }
-  return data->value == kPageSavedSpeedreaderMode;
-}
-
-// static
-bool SpeedreaderExtendedInfoHandler::IsCachedReaderMode(
-    content::NavigationEntry* entry) {
-  auto* data = static_cast<SpeedreaderNavigationData*>(
-      entry->GetUserData(kSpeedreaderKey));
-  if (!data) {
-    return false;
-  }
-  return data->value == kPageSavedReaderMode;
 }
 
 std::string SpeedreaderExtendedInfoHandler::GetExtendedInfo(

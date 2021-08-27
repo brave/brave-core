@@ -6,10 +6,10 @@
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/speedreader/speedreader_extended_info_handler.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
+#include "brave/components/speedreader/speedreader_extended_info_handler.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_test_whitelist.h"
@@ -95,14 +95,11 @@ bool SpeedreaderTabHelper::MaybeUpdateCachedState(
   }
 
   bool cached = false;
-  if (SpeedreaderExtendedInfoHandler::IsCachedReaderMode(entry)) {
-    distill_state_ = DistillState::kReaderMode;
+  DistillState state = SpeedreaderExtendedInfoHandler::GetCachedMode(entry);
+  if (state != DistillState::kUnknown) {
     cached = true;
-  } else if (SpeedreaderExtendedInfoHandler::IsCachedSpeedreaderMode(entry)) {
-    distill_state_ = DistillState::kSpeedreaderMode;
-    cached = true;
+    distill_state_ = state;
   }
-
   if (!cached) {
     SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
   }
@@ -205,20 +202,20 @@ void SpeedreaderTabHelper::OnDistillComplete() {
   // Perform a state transition
   auto* entry = web_contents()->GetController().GetLastCommittedEntry();
   DCHECK(entry);
-  if (!entry) {
-    return;  // not possible?
-  }
+
+  // Perform a state transition
   if (distill_state_ == DistillState::kSpeedreaderModePending) {
-    SpeedreaderExtendedInfoHandler::PersistSpeedreaderMode(entry);
     distill_state_ = DistillState::kSpeedreaderMode;
   } else if (distill_state_ == DistillState::kReaderModePending) {
-    SpeedreaderExtendedInfoHandler::PersistReaderMode(entry);
     distill_state_ = DistillState::kReaderMode;
   } else {
     // We got here via an already cached page.
     DCHECK(distill_state_ == DistillState::kSpeedreaderMode ||
            distill_state_ == DistillState::kReaderMode);
   }
+
+  // Save current distill state to navigation entry cache.
+  SpeedreaderExtendedInfoHandler::PersistMode(entry, distill_state_);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderTabHelper)

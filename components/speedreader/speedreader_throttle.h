@@ -12,14 +12,11 @@
 #include "base/memory/weak_ptr.h"
 #include "base/single_thread_task_runner.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
+#include "content/public/browser/web_contents.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
 class HostContentSettingsMap;
-
-namespace content {
-class WebContents;
-}  // namespace content
 
 namespace speedreader {
 
@@ -36,8 +33,8 @@ class SpeedReaderThrottle : public blink::URLLoaderThrottle {
   static std::unique_ptr<SpeedReaderThrottle> MaybeCreateThrottleFor(
       SpeedreaderRewriterService* rewriter_service,
       HostContentSettingsMap* content_settings,
-      content::WebContents* web_contents,
-      ::SpeedreaderResultDelegate* result_delegate,
+      const content::WebContents::Getter& wc_getter,
+      SpeedreaderResultDelegate* result_delegate,
       const GURL& url,
       bool check_disabled_sites,
       scoped_refptr<base::SingleThreadTaskRunner> task_runner);
@@ -46,8 +43,8 @@ class SpeedReaderThrottle : public blink::URLLoaderThrottle {
   // IPC in SpeedReaderLoader. |task_runner| is supposed to be bound to the
   // current sequence.
   SpeedReaderThrottle(SpeedreaderRewriterService* rewriter_service,
-                      content::WebContents* web_contents,
-                      ::SpeedreaderResultDelegate* result_delegate,
+                      const content::WebContents::Getter& wc_getter,
+                      SpeedreaderResultDelegate* result_delegate,
                       scoped_refptr<base::SingleThreadTaskRunner> task_runner);
   ~SpeedReaderThrottle() override;
 
@@ -65,7 +62,8 @@ class SpeedReaderThrottle : public blink::URLLoaderThrottle {
 
  private:
   SpeedreaderRewriterService* rewriter_service_;  // not owned
-  content::WebContents* web_contents_;
+  content::WebContents::Getter wc_getter_;
+  SpeedreaderResultDelegate* result_delegate_;
   scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
   base::WeakPtrFactory<SpeedReaderThrottle> weak_factory_{this};
 };

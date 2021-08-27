@@ -23,7 +23,7 @@
 #include "media/base/media_switches.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/speedreader/speedreader_extended_info_handler.h"
+#include "brave/components/speedreader/speedreader_extended_info_handler.h"
 #include "components/sessions/content/content_serialized_navigation_driver.h"
 #endif
 

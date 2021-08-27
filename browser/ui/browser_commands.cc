@@ -83,7 +83,7 @@ void OpenGuestProfile() {
 
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  using DistillState = speedreader::SpeedreaderTabHelper::DistillState;
+  using DistillState = speedreader::DistillState;
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
   if (contents) {
     auto* tab_helper =
