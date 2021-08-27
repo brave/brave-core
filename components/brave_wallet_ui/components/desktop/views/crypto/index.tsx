@@ -33,13 +33,17 @@ export interface Props {
   onChangeTimeline: (path: AssetPriceTimeframe) => void
   onSelectAsset: (asset: TokenInfo | undefined) => void
   onCreateAccount: (name: string) => void
-  onImportAccount: (name: string, key: string) => void
+  onImportAccount: (accountName: string, privateKey: string) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Result.Type<HardwareWalletAccount[]>
   onUpdateAccountName: (name: string) => void
   onToggleAddModal: () => void
   onUpdateVisibleTokens: (list: string[]) => void
   onSelectNetwork: (network: Network) => void
   fetchFullTokenList: () => void
+  onRemoveAccount: (address: string) => void
+  onViewPrivateKey: (address: string) => void
+  onDoneViewingPrivateKey: () => void
+  privateKey: string
   fullAssetList: TokenInfo[]
   needsBackup: boolean
   accounts: WalletAccountType[]
@@ -74,6 +78,10 @@ const CryptoView = (props: Props) => {
     fetchFullTokenList,
     onSelectNetwork,
     onToggleAddModal,
+    onRemoveAccount,
+    onViewPrivateKey,
+    onDoneViewingPrivateKey,
+    privateKey,
     selectedNetwork,
     fullAssetList,
     portfolioPriceHistory,
@@ -212,6 +220,10 @@ const CryptoView = (props: Props) => {
           onUpdateAccountName={onUpdateAccountName}
           onUpdateVisibleTokens={onUpdateVisibleTokens}
           fetchFullTokenList={fetchFullTokenList}
+          onRemoveAccount={onRemoveAccount}
+          onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+          onViewPrivateKey={onViewPrivateKey}
+          privateKey={privateKey}
           userAssetList={userAssetList}
           userWatchList={userWatchList}
           transactions={transactions}

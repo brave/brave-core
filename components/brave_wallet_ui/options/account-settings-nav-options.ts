@@ -11,3 +11,11 @@ export const AccountSettingsNavOptions: TopTabNavObjectType[] = [
     name: locale.accountSettingsWatchlist
   }
 ]
+
+export const ImportedAccountSettingsNavOptions: TopTabNavObjectType[] = [
+  ...AccountSettingsNavOptions,
+  {
+    id: 'privateKey',
+    name: locale.accountSettingsPrivateKey
+  }
+]

@@ -96,7 +96,8 @@ function Container (props: Props) {
     selectedAssetPriceHistory,
     setupStillInProgress,
     isFetchingPriceHistory,
-    showIsRestoring
+    showIsRestoring,
+    privateKey
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
@@ -364,8 +365,15 @@ function Container (props: Props) {
     return []
   }
 
-  const onImportAccount = () => {
-    // TODO (DOUGLAS): Add logic to import a secondary account
+  const onImportAccount = (accountName: string, privateKey: string) => {
+    const imported = props.walletPageActions.addImportedAccount({ accountName, privateKey })
+    if (imported) {
+      onToggleAddModal()
+    }
+  }
+
+  const onRemoveAccount = (address: string) => {
+    props.walletPageActions.removeImportedAccount({ address })
   }
 
   const onUpdateAccountName = () => {
@@ -395,6 +403,14 @@ function Container (props: Props) {
 
   const fetchFullTokenList = () => {
     props.walletActions.getAllTokensList()
+  }
+
+  const onViewPrivateKey = (address: string) => {
+    props.walletPageActions.viewPrivateKey({ address })
+  }
+
+  const onDoneViewingPrivateKey = () => {
+    props.walletPageActions.doneViewingPrivateKey()
   }
 
   const renderWallet = React.useMemo(() => {
@@ -471,6 +487,10 @@ function Container (props: Props) {
                   selectedNetwork={selectedNetwork}
                   onSelectNetwork={onSelectNetwork}
                   isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
+                  onRemoveAccount={onRemoveAccount}
+                  privateKey={privateKey ?? ''}
+                  onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+                  onViewPrivateKey={onViewPrivateKey}
                 />
               )}
             </>
@@ -479,6 +499,7 @@ function Container (props: Props) {
       )
     }
   }, [
+    privateKey,
     fullTokenList,
     isWalletCreated,
     isWalletLocked,

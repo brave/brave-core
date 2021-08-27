@@ -56,12 +56,16 @@ export interface Props {
   userAssetList: AccountAssetOptionType[]
   transactions: (RPCTransactionType | undefined)[]
   fullAssetList: TokenInfo[]
+  privateKey: string
+  onViewPrivateKey: (address: string) => void
+  onDoneViewingPrivateKey: () => void
   toggleNav: () => void
   onClickBackup: () => void
   onClickAddAccount: () => void
   onUpdateVisibleTokens: (list: string[]) => void
   onUpdateAccountName: (name: string) => void
   fetchFullTokenList: () => void
+  onRemoveAccount: (address: string) => void
 }
 
 function Accounts (props: Props) {
@@ -71,12 +75,16 @@ function Accounts (props: Props) {
     transactions,
     userWatchList,
     fullAssetList,
+    privateKey,
+    onViewPrivateKey,
+    onDoneViewingPrivateKey,
     toggleNav,
     onClickBackup,
     onClickAddAccount,
     onUpdateVisibleTokens,
     onUpdateAccountName,
-    fetchFullTokenList
+    fetchFullTokenList,
+    onRemoveAccount
   } = props
 
   const primaryAccounts = React.useMemo(() => {
@@ -181,6 +189,7 @@ function Accounts (props: Props) {
                 key={account.id}
                 isHardwareWallet={false}
                 onClick={onSelectAccount}
+                onRemoveAccount={onRemoveAccount}
                 account={account}
               />
             )}
@@ -194,6 +203,7 @@ function Accounts (props: Props) {
                 key={account.id}
                 isHardwareWallet={false}
                 onClick={onSelectAccount}
+                onRemoveAccount={onRemoveAccount}
                 account={account}
               />
             )}
@@ -205,6 +215,7 @@ function Accounts (props: Props) {
                   key={account.id}
                   isHardwareWallet={true}
                   onClick={onSelectAccount}
+                  onRemoveAccount={onRemoveAccount}
                   account={account}
                 />
               )}
@@ -277,6 +288,11 @@ function Accounts (props: Props) {
           onUpdateVisibleTokens={onUpdateVisibleTokens}
           onCopyToClipboard={onCopyToClipboard}
           onChangeTab={onChangeTab}
+          onRemoveAccount={onRemoveAccount}
+          onViewPrivateKey={onViewPrivateKey}
+          onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+          onToggleNav={toggleNav}
+          privateKey={privateKey}
           tab={editTab}
           hideNav={false}
           fullAssetList={fullAssetList}

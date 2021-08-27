@@ -17,6 +17,15 @@ export type AddAccountPayloadType = {
   accountName: string
 }
 
+export type AddImportedAccountPayloadType = {
+  accountName: string,
+  privateKey: string
+}
+
+export type RemoveImportedAccountPayloadType = {
+  address: string
+}
+
 export type RestoreWalletPayloadType = {
   mnemonic: string,
   password: string
@@ -26,8 +35,16 @@ export type WalletCreatedPayloadType = {
   mnemonic: string
 }
 
+export type ViewPrivateKeyPayloadType = {
+  address: string
+}
+
 export type RecoveryWordsAvailablePayloadType = {
   mnemonic: string
+}
+
+export type PrivateKeyAvailablePayloadType = {
+  privateKey: string
 }
 
 export type UpdateSelectedAssetType = {
