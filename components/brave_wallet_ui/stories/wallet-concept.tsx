@@ -426,6 +426,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setToAddress(value)
   }
 
+  const onRemoveAccount = () => {
+    alert('Will Remove Account')
+  }
+
   const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Result.Type<HardwareWalletAccount[]> => {
     const makeDerivationPath = (index: number): string => `m/44'/60'/${index}'/0/0`
 
@@ -439,6 +443,14 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const fetchFullTokenList = () => {
     // Doesnt fetch anything in storybook
+  }
+
+  const onViewPrivateKey = () => {
+    // Doesnt do anything in storybook
+  }
+
+  const onDoneViewingPrivateKey = () => {
+    // Doesnt do anything in storybook
   }
 
   return (
@@ -518,6 +530,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onSelectNetwork={onSelectNetwork}
                               isFetchingPortfolioPriceHistory={false}
                               selectedPortfolioTimeline={selectedTimeline}
+                              onRemoveAccount={onRemoveAccount}
+                              privateKey='gf65a4g6a54fg6a54fg6ad4fa5df65a4d6ff54a6sdf'
+                              onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+                              onViewPrivateKey={onViewPrivateKey}
                             />
                           )}
                         </>

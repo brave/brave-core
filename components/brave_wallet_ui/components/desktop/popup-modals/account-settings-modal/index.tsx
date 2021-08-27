@@ -11,8 +11,12 @@ import {
   TopTabNav,
   AssetWatchlistItem
 } from '../..'
-import { AccountSettingsNavOptions } from '../../../../options/account-settings-nav-options'
+import {
+  AccountSettingsNavOptions,
+  ImportedAccountSettingsNavOptions
+} from '../../../../options/account-settings-nav-options'
 import { reduceAddress } from '../../../../utils/reduce-address'
+import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import { NavButton } from '../../../extension'
 import { Tooltip, SearchBar } from '../../../shared'
 import locale from '../../../../constants/locale'
@@ -27,7 +31,12 @@ import {
   CopyIcon,
   WatchlistScrollContainer,
   LoadIcon,
-  LoadingWrapper
+  LoadingWrapper,
+  PrivateKeyWrapper,
+  WarningText,
+  WarningWrapper,
+  PrivateKeyBubble,
+  ButtonWrapper
 } from './style'
 
 export interface Props {
@@ -36,6 +45,11 @@ export interface Props {
   onUpdateVisibleTokens: (list: string[]) => void
   onCopyToClipboard?: () => void
   onChangeTab?: (id: AccountSettingsNavTypes) => void
+  onRemoveAccount?: (address: string) => void
+  onViewPrivateKey?: (address: string) => void
+  onDoneViewingPrivateKey?: () => void
+  onToggleNav?: () => void
+  privateKey?: string
   hideNav: boolean
   fullAssetList: TokenInfo[]
   userAssetList: AccountAssetOptionType[]
@@ -54,11 +68,16 @@ const AddAccountModal = (props: Props) => {
     fullAssetList,
     userAssetList,
     hideNav,
+    privateKey,
+    onToggleNav,
     onClose,
     onUpdateAccountName,
     onUpdateVisibleTokens,
     onCopyToClipboard,
-    onChangeTab
+    onChangeTab,
+    onRemoveAccount,
+    onViewPrivateKey,
+    onDoneViewingPrivateKey
   } = props
   const watchlist = React.useMemo(() => {
     const visibleList = userAssetList.map((item) => { return item.asset })
@@ -69,6 +88,7 @@ const AddAccountModal = (props: Props) => {
   const [accountName, setAccountName] = React.useState<string>(name)
   const [filteredWatchlist, setFilteredWatchlist] = React.useState<TokenInfo[]>([])
   const [selectedWatchlist, setSelectedWatchlist] = React.useState<string[]>(userWatchList)
+  const [showPrivateKey, setShowPrivateKey] = React.useState<boolean>(false)
   const [qrCode, setQRCode] = React.useState<string>('')
 
   React.useMemo(() => {
@@ -143,11 +163,47 @@ const AddAccountModal = (props: Props) => {
     }
   }
 
+  const removeAccount = () => {
+    if (onRemoveAccount && onToggleNav) {
+      onRemoveAccount(account?.address ?? '')
+      onToggleNav()
+    }
+  }
+
+  const onShowPrivateKey = () => {
+    if (onViewPrivateKey) {
+      onViewPrivateKey(account?.address ?? '')
+    }
+    setShowPrivateKey(true)
+  }
+
+  const onHidePrivateKey = () => {
+    if (onDoneViewingPrivateKey) {
+      onDoneViewingPrivateKey()
+    }
+    setShowPrivateKey(false)
+  }
+
+  const onClickClose = () => {
+    onHidePrivateKey()
+    onClose()
+  }
+
+  const onCopyPrivateKey = async () => {
+    if (privateKey) {
+      await copyToClipboard(privateKey)
+    }
+  }
+
+  // const key = React.useMemo(() => {
+  //   return privateKey
+  // }, [privateKey])
+
   return (
-    <PopupModal title={title} onClose={onClose}>
+    <PopupModal title={title} onClose={onClickClose}>
       {!hideNav &&
         <TopTabNav
-          tabList={AccountSettingsNavOptions}
+          tabList={account?.accountType === 'Secondary' ? ImportedAccountSettingsNavOptions : AccountSettingsNavOptions}
           onSubmit={changeTab}
           selectedTab={tab}
         />
@@ -171,11 +227,13 @@ const AddAccountModal = (props: Props) => {
                 text={locale.accountSettingsSave}
                 buttonType='secondary'
               />
-              {/* <NavButton
-                onSubmit={onRemoveAccount}
-                text={locale.accountSettingsRemove}
-                buttonType='danger'
-              /> */}
+              {account?.accountType === 'Secondary' &&
+                <NavButton
+                  onSubmit={removeAccount}
+                  text={locale.accountSettingsRemove}
+                  buttonType='danger'
+                />
+              }
             </ButtonRow>
           </>
         }
@@ -213,6 +271,25 @@ const AddAccountModal = (props: Props) => {
               </>
             )}
           </>
+        }
+        {tab === 'privateKey' &&
+          <PrivateKeyWrapper>
+            <WarningWrapper>
+              <WarningText>Warning: Never disclose this key. Anyone with your private key can steal any assets held in your account.</WarningText>
+            </WarningWrapper>
+            {showPrivateKey &&
+              <Tooltip text={locale.toolTipCopyToClipboard}>
+                <PrivateKeyBubble onClick={onCopyPrivateKey}>{privateKey}</PrivateKeyBubble>
+              </Tooltip>
+            }
+            <ButtonWrapper>
+              <NavButton
+                onSubmit={showPrivateKey === false ? onShowPrivateKey : onHidePrivateKey}
+                text={showPrivateKey === false ? 'Show Key' : 'Hide Key'}
+                buttonType='primary'
+              />
+            </ButtonWrapper>
+          </PrivateKeyWrapper>
         }
       </StyledWrapper>
     </PopupModal>

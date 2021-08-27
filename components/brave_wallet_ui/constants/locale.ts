@@ -182,6 +182,7 @@ const locale = {
   // Account Settings Modal
   accountSettingsDetails: 'Details',
   accountSettingsWatchlist: 'Visible Assets',
+  accountSettingsPrivateKey: 'Private Key',
   accountSettingsSave: 'Save',
   accountSettingsRemove: 'Remove Account',
   watchlistButton: 'Save Account Watchlist',

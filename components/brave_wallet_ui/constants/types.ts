@@ -92,6 +92,7 @@ export type AddAccountNavTypes =
 export type AccountSettingsNavTypes =
   | 'details'
   | 'watchlist'
+  | 'privateKey'
 
 export type BuySendSwapTypes =
   | 'buy'
@@ -191,6 +192,7 @@ export interface PageState {
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
   mnemonic?: string
+  privateKey?: string
   isFetchingPriceHistory: boolean
   setupStillInProgress: boolean
   showIsRestoring: boolean
@@ -209,6 +211,7 @@ export interface WalletPanelState {
 export interface AccountInfo {
   address: string[]
   name: string[]
+  isImported: boolean
 }
 
 export interface WalletInfo {

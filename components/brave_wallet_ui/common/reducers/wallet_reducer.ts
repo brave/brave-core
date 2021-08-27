@@ -53,7 +53,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
       balance: '0',
       fiatBalance: '0',
       asset: 'eth',
-      accountType: 'Primary',
+      accountType: info.isImported ? 'Secondary' : 'Primary',
       tokens: []
     }
   })
