@@ -26,6 +26,7 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_dto_user_data_builder.h"
 #include "net/http/http_status_code.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 
 namespace ads {

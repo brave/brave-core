@@ -19,6 +19,7 @@
 #include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
 #include "bat/ads/internal/ml/transformation/normalization_transformation.h"
 #include "bat/ads/internal/ml/transformation/transformation.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace ml {

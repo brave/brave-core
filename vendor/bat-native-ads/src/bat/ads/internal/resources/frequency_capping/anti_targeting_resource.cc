@@ -13,6 +13,7 @@
 #include "bat/ads/internal/features/anti_targeting/anti_targeting_features.h"
 #include "bat/ads/internal/logging.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace resource {

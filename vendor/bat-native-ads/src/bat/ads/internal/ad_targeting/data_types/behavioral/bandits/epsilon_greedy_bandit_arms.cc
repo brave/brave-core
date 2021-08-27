@@ -12,6 +12,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "bat/ads/internal/logging.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace ad_targeting {
@@ -126,8 +127,6 @@ std::string EpsilonGreedyBanditArms::ToJson(
 
   return json;
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 }  // namespace ad_targeting
 }  // namespace ads

@@ -1,22 +1,23 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
+#include "bat/ads/internal/segments/segments_json_reader.h"
 
 #include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
+#include "base/notreached.h"
 #include "base/values.h"
-#include "bat/ads/internal/logging.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
+namespace JSONReader {
 
-SegmentList DeserializeSegments(const std::string& json) {
+SegmentList ReadSegments(const std::string& json) {
   SegmentList segments;
 
   absl::optional<base::Value> value = base::JSONReader::Read(json);
-  if (!value || !value->is_list()) {
+  if (!value) {
     return segments;
   }
 
@@ -37,17 +38,5 @@ SegmentList DeserializeSegments(const std::string& json) {
   return segments;
 }
 
-std::string SerializeSegments(const SegmentList& segments) {
-  base::Value list(base::Value::Type::LIST);
-
-  for (const auto& segment : segments) {
-    list.Append(segment);
-  }
-
-  std::string json;
-  base::JSONWriter::Write(list, &json);
-
-  return json;
-}
-
+}  // namespace JSONReader
 }  // namespace ads

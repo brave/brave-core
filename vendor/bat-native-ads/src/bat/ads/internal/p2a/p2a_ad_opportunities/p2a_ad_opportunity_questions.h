@@ -9,11 +9,13 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/internal/segments/segments_alias.h"
+
 namespace ads {
 namespace p2a {
 
 std::vector<std::string> CreateAdOpportunityQuestions(
-    const std::vector<std::string>& segments);
+    const SegmentList& segments);
 
 }  // namespace p2a
 }  // namespace ads

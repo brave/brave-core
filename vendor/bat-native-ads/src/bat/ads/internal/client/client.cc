@@ -128,7 +128,7 @@ const std::deque<AdHistoryInfo>& Client::GetAdsHistory() const {
 
 void Client::AppendToPurchaseIntentSignalHistoryForSegment(
     const std::string& segment,
-    const PurchaseIntentSignalHistoryInfo& history) {
+    const ad_targeting::PurchaseIntentSignalHistoryInfo& history) {
   DCHECK(is_initialized_);
 
   if (client_->purchase_intent_signal_history.find(segment) ==
@@ -146,8 +146,8 @@ void Client::AppendToPurchaseIntentSignalHistoryForSegment(
   Save();
 }
 
-const PurchaseIntentSignalHistoryMap& Client::GetPurchaseIntentSignalHistory()
-    const {
+const ad_targeting::PurchaseIntentSignalHistoryMap&
+Client::GetPurchaseIntentSignalHistory() const {
   DCHECK(is_initialized_);
 
   return client_->purchase_intent_signal_history;
@@ -518,7 +518,7 @@ base::Time Client::GetNextAdServingInterval() {
 }
 
 void Client::AppendTextClassificationProbabilitiesToHistory(
-    const TextClassificationProbabilitiesMap& probabilities) {
+    const ad_targeting::TextClassificationProbabilitiesMap& probabilities) {
   DCHECK(is_initialized_);
 
   client_->text_classification_probabilities.push_front(probabilities);
@@ -532,7 +532,7 @@ void Client::AppendTextClassificationProbabilitiesToHistory(
   Save();
 }
 
-const TextClassificationProbabilitiesList&
+const ad_targeting::TextClassificationProbabilitiesList&
 Client::GetTextClassificationProbabilitiesHistory() {
   DCHECK(is_initialized_);
 

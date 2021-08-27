@@ -15,8 +15,6 @@
 
 namespace ads {
 
-class AdTargeting;
-
 namespace ad_targeting {
 namespace geographic {
 class SubdivisionTargeting;
@@ -34,7 +32,6 @@ class EligibleAds;
 class AdServing {
  public:
   AdServing(
-      AdTargeting* ad_targeting,
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource);
 
@@ -47,8 +44,6 @@ class AdServing {
                     GetInlineContentAdCallback callback);
 
  private:
-  AdTargeting* ad_targeting_;  // NOT OWNED
-
   ad_targeting::geographic::SubdivisionTargeting*
       subdivision_targeting_;  // NOT OWNED
 

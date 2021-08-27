@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arm_info.h"
 
 namespace ads {
+namespace ad_targeting {
 
 EpsilonGreedyBanditArmInfo::EpsilonGreedyBanditArmInfo() = default;
 
@@ -32,4 +33,5 @@ bool EpsilonGreedyBanditArmInfo::IsValid() const {
   return true;
 }
 
+}  // namespace ad_targeting
 }  // namespace ads

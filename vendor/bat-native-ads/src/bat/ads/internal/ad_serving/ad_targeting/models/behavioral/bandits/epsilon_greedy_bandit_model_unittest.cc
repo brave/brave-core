@@ -9,33 +9,25 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_unittest_util.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 namespace ad_targeting {
+namespace model {
 
 class BatAdsEpsilonGreedyBanditModelTest : public UnitTestBase {
  protected:
   BatAdsEpsilonGreedyBanditModelTest() = default;
 
   ~BatAdsEpsilonGreedyBanditModelTest() override = default;
-
-  void SaveSegments(const std::vector<std::string>& segments) {
-    const std::string json = SerializeSegments(segments);
-
-    AdsClientHelper::Get()->SetStringPref(
-        prefs::kEpsilonGreedyBanditEligibleSegments, json);
-  }
-
-  void SaveAllSegments() { SaveSegments(kSegments); }
 };
 
 TEST_F(BatAdsEpsilonGreedyBanditModelTest,
@@ -44,7 +36,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest,
   SaveAllSegments();
 
   // Act
-  model::EpsilonGreedyBandit model;
+  EpsilonGreedyBandit model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -62,7 +54,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
   processor::EpsilonGreedyBandit processor;
 
   // Act
-  model::EpsilonGreedyBandit model;
+  EpsilonGreedyBandit model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -85,7 +77,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
   processor.Process({segment_2, mojom::AdNotificationEventType::kClicked});
 
   // Act
-  model::EpsilonGreedyBandit model;
+  EpsilonGreedyBandit model;
   const SegmentList segments = model.GetSegments();
 
   // Exploration is non-deterministic, so can only verify the number of
@@ -124,7 +116,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
   processor.Process({segment_3, mojom::AdNotificationEventType::kClicked});
 
   // Act
-  model::EpsilonGreedyBandit model;
+  EpsilonGreedyBandit model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -167,7 +159,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
   processor.Process({segment_3, mojom::AdNotificationEventType::kClicked});
 
   // Act
-  model::EpsilonGreedyBandit model;
+  EpsilonGreedyBandit model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -176,5 +168,6 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
   EXPECT_EQ(expected_segments, segments);
 }
 
+}  // namespace model
 }  // namespace ad_targeting
 }  // namespace ads

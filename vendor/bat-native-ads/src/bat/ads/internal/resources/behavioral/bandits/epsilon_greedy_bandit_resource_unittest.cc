@@ -41,7 +41,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   ASSERT_TRUE(catalog.FromJson(json));
 
   // Act
-  resource::EpsilonGreedyBandit resource;
+  EpsilonGreedyBandit resource;
   resource.LoadFromCatalog(catalog);
 
   // Assert
@@ -56,7 +56,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   ASSERT_FALSE(catalog.FromJson("INVALID_CATALOG"));
 
   // Act
-  resource::EpsilonGreedyBandit resource;
+  EpsilonGreedyBandit resource;
   resource.LoadFromCatalog(catalog);
 
   // Assert
@@ -69,7 +69,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   // Arrange
 
   // Act
-  resource::EpsilonGreedyBandit resource;
+  EpsilonGreedyBandit resource;
 
   // Assert
   const bool is_initialized = resource.IsInitialized();

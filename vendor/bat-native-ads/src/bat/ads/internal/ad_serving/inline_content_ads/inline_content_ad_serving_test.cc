@@ -7,7 +7,6 @@
 
 #include "base/guid.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_builder.h"
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
@@ -22,12 +21,10 @@ namespace ads {
 class BatAdsInlineContentAdServingTest : public UnitTestBase {
  protected:
   BatAdsInlineContentAdServingTest()
-      : ad_targeting_(std::make_unique<AdTargeting>()),
-        subdivision_targeting_(
+      : subdivision_targeting_(
             std::make_unique<ad_targeting::geographic::SubdivisionTargeting>()),
         anti_targeting_resource_(std::make_unique<resource::AntiTargeting>()),
         ad_serving_(std::make_unique<inline_content_ads::AdServing>(
-            ad_targeting_.get(),
             subdivision_targeting_.get(),
             anti_targeting_resource_.get())),
         database_table_(
@@ -88,7 +85,6 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
                           [](const bool success) { ASSERT_TRUE(success); });
   }
 
-  std::unique_ptr<AdTargeting> ad_targeting_;
   std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
       subdivision_targeting_;
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
