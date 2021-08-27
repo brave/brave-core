@@ -231,7 +231,7 @@ extension BrowserViewController: PlaylistHelperDelegate {
     }
     
     func openPlaylist(item: PlaylistInfo?, playbackOffset: Double) {
-        let playlistController = (UIApplication.shared.delegate as? AppDelegate)?.playlistRestorationController as? PlaylistViewController ?? PlaylistViewController(initialItem: item, initialItemPlaybackOffset: playbackOffset)
+        let playlistController = PlaylistCarplayManager.shared.getPlaylistController(initialItem: item, initialItemPlaybackOffset: playbackOffset)
         playlistController.modalPresentationStyle = .fullScreen
         
         /// Donate Open Playlist Activity for suggestions

@@ -293,6 +293,7 @@ class UserScriptManager {
             "$<tagNode>": "tagNode_\(token)",
             "$<tagUUID>": "tagUUID_\(token)",
             "$<mediaCurrentTimeFromTag>": "mediaCurrentTimeFromTag_\(token)",
+            "$<stopMediaPlayback>": "stopMediaPlayback_\(token)",
             "$<sendMessage>": "playlistHelper_sendMessage_\(token)",
             "$<handler>": "playlistHelper_\(messageHandlerTokenString)",
             "$<notify>": "notify_\(token)",

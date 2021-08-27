@@ -162,10 +162,11 @@ class ActivityShortcutManager: NSObject {
                     bvc.present(container, animated: true)
                 }
             case .openPlayList:
-                let playlistController = (UIApplication.shared.delegate as? AppDelegate)?.playlistRestorationController ?? PlaylistViewController(initialItem: nil, initialItemPlaybackOffset: 0.0)
-                playlistController.modalPresentationStyle = .fullScreen
-                
-                bvc.present(playlistController, animated: true)
+                let tab = bvc.tabManager.selectedTab
+                PlaylistCarplayManager.shared.getPlaylistController(tab: tab) { playlistController in
+                    playlistController.modalPresentationStyle = .fullScreen
+                    bvc.present(playlistController, animated: true)
+                }
         }
     }
     

@@ -40,8 +40,7 @@ class PlaylistResizingThumbnailView: UIImageView {
 }
 
 class PlaylistCell: UITableViewCell {
-    var thumbnailGenerator: HLSThumbnailGenerator?
-    var imageAssetGenerator: AVAssetImageGenerator?
+    let thumbnailGenerator = PlaylistThumbnailRenderer()
     var durationFetcher: PlaylistAssetFetcher?
     
     private let thumbnailMaskView = CAShapeLayer().then {
@@ -97,8 +96,7 @@ class PlaylistCell: UITableViewCell {
     }
     
     func prepareForDisplay() {
-        thumbnailGenerator = nil
-        imageAssetGenerator = nil
+        thumbnailGenerator.cancel()
         thumbnailView.cancelFaviconLoad()
         durationFetcher?.cancelLoading()
         durationFetcher = nil
