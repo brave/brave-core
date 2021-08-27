@@ -38,6 +38,11 @@ class BraveVPNOSConnectionAPI {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  void set_target_vpn_entry_name(const std::string& name) {
+    target_vpn_entry_name_ = name;
+  }
+  std::string target_vpn_entry_name() const { return target_vpn_entry_name_; }
+
   virtual void CreateVPNConnection(const BraveVPNConnectionInfo& info) = 0;
   virtual void UpdateVPNConnection(const BraveVPNConnectionInfo& info) = 0;
   virtual void Connect(const std::string& name) = 0;
@@ -49,6 +54,7 @@ class BraveVPNOSConnectionAPI {
   BraveVPNOSConnectionAPI();
   virtual ~BraveVPNOSConnectionAPI();
 
+  std::string target_vpn_entry_name_;
   base::ObserverList<Observer> observers_;
 };
 

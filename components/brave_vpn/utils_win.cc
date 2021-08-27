@@ -325,6 +325,9 @@ bool CreateEntry(const std::wstring& entry_name,
 }
 
 CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
+  if (entry_name.empty())
+    return CheckConnectionResult::UNKNOWN;
+
   DWORD dw_cb = 0;
   DWORD dw_ret = dw_cb;
   DWORD dw_connections = 0;
@@ -333,6 +336,11 @@ CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
   // Call RasEnumConnections with lp_ras_conn = NULL. dw_cb is returned with the
   // required buffer size and a return code of ERROR_BUFFER_TOO_SMALL
   dw_ret = RasEnumConnections(lp_ras_conn, &dw_cb, &dw_connections);
+
+  // If got success here, it means there is no connected vpn entry.
+  if (dw_ret == ERROR_SUCCESS) {
+    return CheckConnectionResult::NOT_CONNECTED;
+  }
 
   // Abnormal situation.
   if (dw_ret != ERROR_BUFFER_TOO_SMALL)
