@@ -6,7 +6,7 @@
 import {
   AppObjectType,
   AccountInfo,
-  TransactionStatus
+  TransactionInfo
 } from '../../constants/types'
 
 export type InitializedPayloadType = {
@@ -31,10 +31,9 @@ export type ChainChangedEventPayloadType = {
 }
 
 export type NewUnapprovedTxAdded = {
-  txMetaId: string
+  txInfo: TransactionInfo
 }
 
 export type TransactionStatusChanged = {
-  txMetaId: string
-  txStatus: TransactionStatus
+  txInfo: TransactionInfo
 }
