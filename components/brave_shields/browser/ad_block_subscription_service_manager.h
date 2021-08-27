@@ -92,8 +92,6 @@ class AdBlockSubscriptionServiceManager {
   base::FilePath GetSubscriptionPath(const GURL& subscription_url) const;
 
   void OnUpdateTimer(
-      const GURL& sub_url,
-      bool from_ui,
       component_updater::TimerUpdateScheduler::OnFinishedCallback on_finished);
 
   void StartDownload(const GURL& sub_url, bool from_ui);
@@ -109,16 +107,17 @@ class AdBlockSubscriptionServiceManager {
   absl::optional<SubscriptionInfo> GetInfo(const GURL& sub_url);
   void NotifyObserversOfServiceEvent();
 
+  void SetUpdateIntervalsForTesting(base::TimeDelta* initial_delay, base::TimeDelta* update_interval, base::TimeDelta* retry_interval);
+
   brave_component_updater::BraveComponent::Delegate* delegate_;  // NOT OWNED
   base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_;
   base::FilePath subscription_path_;
   std::unique_ptr<base::DictionaryValue> subscriptions_;
-  base::OneShotEvent ready_;
 
   std::map<GURL, std::unique_ptr<AdBlockSubscriptionService>>
       subscription_services_;
-  std::map<GURL, std::unique_ptr<component_updater::TimerUpdateScheduler>>
-      subscription_update_timers_;
+  std::unique_ptr<component_updater::TimerUpdateScheduler>
+      subscription_update_timer_;
 
   base::ObserverList<AdBlockSubscriptionServiceManagerObserver> observers_;
   base::Lock subscription_services_lock_;

@@ -216,6 +216,19 @@ bool AdBlockServiceTest::StartAdBlockRegionalServices() {
   return true;
 }
 
+void AdBlockServiceTest::SetSubscriptionIntervals() {
+  auto initial_delay = base::TimeDelta::FromSeconds(2);
+  auto retry_interval = base::TimeDelta::FromSeconds(2);
+  auto update_interval = base::TimeDelta::FromSeconds(3);
+
+  auto* ad_block_service = g_brave_browser_process->ad_block_service();
+  auto* subscription_service_manager = g_brave_browser_process->ad_block_service()->subscription_service_manager();
+
+  ASSERT_TRUE(ad_block_service->IsInitialized());
+
+  subscription_service_manager->SetUpdateIntervalsForTesting(&initial_delay, &update_interval, &retry_interval);
+}
+
 void AdBlockServiceTest::WaitForAdBlockServiceThreads() {
   scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
       g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
@@ -691,14 +704,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   GURL resource_url = embedded_test_server()->GetURL("b.com", "/logo.png");
 
+  SetSubscriptionIntervals();
+
   auto* sub_service_manager = g_brave_browser_process->ad_block_service()
                                   ->subscription_service_manager();
 
   ASSERT_EQ(sub_service_manager->GetSubscriptions().size(), 0ULL);
-
-  // Register an observer for the subscription service manager
-  TestAdBlockSubscriptionServiceManagerObserver sub_observer(
-      sub_service_manager);
 
   // Create a new subscription
   sub_service_manager->CreateSubscription(subscription_url);
@@ -713,22 +724,28 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
     ASSERT_EQ(subscriptions[0].enabled, true);
   }
 
-  // Wait for the subscription to be updated for the first time
-  sub_observer.Wait();
-  WaitForAdBlockServiceThreads();
+  // Ensure that the subscription gets update attempts, and ultimately is
+  // successfully updated. It may fail initially due to the download service
+  // not being initialized in time, but this is an expected side effect of
+  // using the download service.
+  base::Time first_successful_update = base::Time();
+  while (first_successful_update == base::Time()) {
+    // Wait for the subscription to be updated using an observer
+    TestAdBlockSubscriptionServiceManagerObserver sub_observer(
+        sub_service_manager);
+    sub_observer.Wait();
+    WaitForAdBlockServiceThreads();
 
-  // Ensure that the status of the subscription has been updated accordingly
-  base::Time first_update;
-  {
     const auto subscriptions = sub_service_manager->GetSubscriptions();
     ASSERT_EQ(subscriptions.size(), 1ULL);
     ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
     ASSERT_NE(subscriptions[0].last_update_attempt, base::Time());
-    ASSERT_EQ(subscriptions[0].last_successful_update_attempt,
-              subscriptions[0].last_update_attempt);
     ASSERT_EQ(subscriptions[0].enabled, true);
 
-    first_update = subscriptions[0].last_successful_update_attempt;
+    if (subscriptions[0].last_successful_update_attempt ==
+              subscriptions[0].last_update_attempt) {
+      first_successful_update = subscriptions[0].last_successful_update_attempt;
+    }
   }
 
   // Make sure the list is applied during browsing
@@ -760,15 +777,15 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   // Refresh the subscription and ensure that it gets updated
-  TestAdBlockSubscriptionServiceManagerObserver sub_observer2(
+  TestAdBlockSubscriptionServiceManagerObserver sub_observer(
       sub_service_manager);
   sub_service_manager->RefreshSubscription(subscription_url, true);
-  sub_observer2.Wait();
+  sub_observer.Wait();
   {
     const auto subscriptions = sub_service_manager->GetSubscriptions();
     ASSERT_EQ(subscriptions.size(), 1ULL);
     ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
-    ASSERT_GT(subscriptions[0].last_update_attempt, first_update);
+    ASSERT_GT(subscriptions[0].last_update_attempt, first_successful_update);
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt,
               subscriptions[0].last_update_attempt);
     ASSERT_EQ(subscriptions[0].enabled, false);

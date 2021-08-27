@@ -33,9 +33,14 @@
 
 namespace brave_shields {
 
+base::TimeDelta* g_testing_subscription_retry_interval;
+
 namespace {
 
 const base::TimeDelta kListUpdateInterval = base::TimeDelta::FromDays(7);
+const base::TimeDelta kListRetryInterval = base::TimeDelta::FromHours(1);
+const base::TimeDelta kListCheckInterval = base::TimeDelta::FromMinutes(10);
+const base::TimeDelta kListCheckInitialDelay = base::TimeDelta::FromMinutes(1);
 
 SubscriptionInfo BuildInfoFromDict(const GURL& sub_url,
                                    const base::Value* dict) {
@@ -63,7 +68,9 @@ AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
     const base::FilePath& profile_dir)
     : delegate_(delegate),
       subscription_path_(profile_dir.Append(kSubscriptionsDir)),
-      subscriptions_(new base::DictionaryValue()) {
+      subscriptions_(new base::DictionaryValue()),
+      subscription_update_timer_(std::make_unique<component_updater::TimerUpdateScheduler>())
+{
   std::move(download_manager_getter)
       .Run(base::BindOnce(
           &AdBlockSubscriptionServiceManager::OnGetDownloadManager,
@@ -101,19 +108,54 @@ GURL AdBlockSubscriptionServiceManager::GetListTextFileUrl(
 }
 
 void AdBlockSubscriptionServiceManager::OnUpdateTimer(
-    const GURL& sub_url,
-    bool from_ui,
     component_updater::TimerUpdateScheduler::OnFinishedCallback on_finished) {
-  ready_.Post(FROM_HERE,
-              base::BindOnce(&AdBlockSubscriptionServiceManager::StartDownload,
-                             weak_ptr_factory_.GetWeakPtr(), sub_url, from_ui));
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+
+  PrefService* local_state = delegate_->local_state();
+  if (!local_state)
+    return;
+
+  base::AutoLock lock(subscription_services_lock_);
+  subscriptions_ = base::DictionaryValue::From(base::Value::ToUniquePtrValue(
+      local_state->GetDictionary(prefs::kAdBlockListSubscriptions)->Clone()));
+
+  for (base::DictionaryValue::Iterator it(*subscriptions_); !it.IsAtEnd();
+       it.Advance()) {
+    const std::string key = it.key();
+    SubscriptionInfo info;
+    const base::Value* list_subscription_dict =
+        subscriptions_->FindDictKey(key);
+    if (list_subscription_dict) {
+      GURL sub_url(key);
+      info = BuildInfoFromDict(sub_url, list_subscription_dict);
+
+      base::TimeDelta update_interval;
+      if (info.last_update_attempt != info.last_successful_update_attempt) {
+        if (g_testing_subscription_retry_interval) {
+          update_interval = *g_testing_subscription_retry_interval;
+        } else {
+          update_interval = kListRetryInterval;
+        }
+      } else {
+        update_interval = kListUpdateInterval;
+      }
+
+      if (info.enabled) {
+        base::TimeDelta until_next_refresh =
+            update_interval -
+            (base::Time::Now() - info.last_update_attempt);
+        if (until_next_refresh <= base::TimeDelta()) {
+          StartDownload(sub_url, false);
+        }
+      }
+    }
+  }
 
   std::move(on_finished).Run();
 }
 
 void AdBlockSubscriptionServiceManager::StartDownload(const GURL& sub_url,
                                                       bool from_ui) {
-  DCHECK(ready_.is_signaled());
   // The download manager is tied to the lifetime of the profile, but
   // the AdBlockSubscriptionServiceManager lives as long as the browser process
   if (download_manager_) {
@@ -139,22 +181,14 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
       delegate_);
   UpdateSubscriptionPrefs(sub_url, info);
 
-  std::unique_ptr<component_updater::TimerUpdateScheduler> timer =
-      std::make_unique<component_updater::TimerUpdateScheduler>();
-  timer->Schedule(
-      base::TimeDelta(), kListUpdateInterval,
-      base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer,
-                          weak_ptr_factory_.GetWeakPtr(), sub_url, true),
-      base::DoNothing());
-
   {
     base::AutoLock lock(subscription_services_lock_);
     // this could allow more than one service for a given url
     subscription_services_.insert(
         std::make_pair(sub_url, std::move(subscription_service)));
-    subscription_update_timers_.insert(
-        std::make_pair(sub_url, std::move(timer)));
   }
+
+  StartDownload(sub_url, true);
 }
 
 std::vector<SubscriptionInfo>
@@ -190,10 +224,6 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
     auto it = subscription_services_.find(sub_url);
     DCHECK(it != subscription_services_.end());
     subscription_services_.erase(it);
-
-    auto timer_it = subscription_update_timers_.find(sub_url);
-    DCHECK(timer_it != subscription_update_timers_.end());
-    subscription_update_timers_.erase(timer_it);
   }
   ClearSubscriptionPrefs(sub_url);
 
@@ -208,15 +238,7 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
 void AdBlockSubscriptionServiceManager::RefreshSubscription(const GURL& sub_url,
                                                             bool from_ui) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-
-  auto it = subscription_update_timers_.find(sub_url);
-  DCHECK(it != subscription_update_timers_.end());
-  it->second->Stop();
-  it->second->Schedule(
-      base::TimeDelta(), kListUpdateInterval,
-      base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer,
-                          weak_ptr_factory_.GetWeakPtr(), sub_url, true),
-      base::DoNothing());
+  StartDownload(sub_url, true);
 }
 
 void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
@@ -237,7 +259,22 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
 
   download_manager_->CancelAllPendingDownloads();
   LoadSubscriptionServices();
-  ready_.Signal();
+
+  subscription_update_timer_->Schedule(
+      kListCheckInitialDelay, kListCheckInterval,
+      base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer,
+                          weak_ptr_factory_.GetWeakPtr()),
+      base::DoNothing());
+}
+
+void AdBlockSubscriptionServiceManager::SetUpdateIntervalsForTesting(base::TimeDelta* initial_delay, base::TimeDelta* update_interval, base::TimeDelta* retry_interval) {
+  g_testing_subscription_retry_interval = retry_interval;
+      std::make_unique<component_updater::TimerUpdateScheduler>();
+  subscription_update_timer_->Schedule(
+      *initial_delay, *update_interval,
+      base::BindRepeating(&AdBlockSubscriptionServiceManager::OnUpdateTimer,
+                          weak_ptr_factory_.GetWeakPtr()),
+      base::DoNothing());
 }
 
 absl::optional<SubscriptionInfo> AdBlockSubscriptionServiceManager::GetInfo(
@@ -276,27 +313,8 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
           GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText),
           delegate_);
 
-      std::unique_ptr<component_updater::TimerUpdateScheduler> timer =
-          std::make_unique<component_updater::TimerUpdateScheduler>();
-
-      if (info.enabled) {
-        base::TimeDelta initial_delay =
-            kListUpdateInterval -
-            (base::Time::Now() - info.last_update_attempt);
-        if (initial_delay < base::TimeDelta()) {
-          initial_delay = base::TimeDelta();
-        }
-        timer->Schedule(initial_delay, kListUpdateInterval,
-                        base::BindRepeating(
-                            &AdBlockSubscriptionServiceManager::OnUpdateTimer,
-                            weak_ptr_factory_.GetWeakPtr(), sub_url, false),
-                        base::DoNothing());
-      }
-
       subscription_services_.insert(
           std::make_pair(sub_url, std::move(subscription_service)));
-      subscription_update_timers_.insert(
-          std::make_pair(sub_url, std::move(timer)));
     }
   }
 }

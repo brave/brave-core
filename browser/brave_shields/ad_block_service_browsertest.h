@@ -35,6 +35,7 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
       int expected_change = 1);
   bool InstallRegionalAdBlockExtension(const std::string& uuid);
   bool StartAdBlockRegionalServices();
+  void SetSubscriptionIntervals();
   void WaitForAdBlockServiceThreads();
   void WaitForBraveExtensionShieldsDataReady();
   void ShieldsDown(const GURL& url);
