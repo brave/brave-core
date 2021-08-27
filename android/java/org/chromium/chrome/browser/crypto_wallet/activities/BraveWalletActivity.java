@@ -137,6 +137,7 @@ public class BraveWalletActivity
     @Override
     public void onConnectionError(MojoException e) {
         mKeyringController = null;
+        mErcTokenRegistry = null;
         InitKeyringController();
         InitErcTokenRegistry();
     }

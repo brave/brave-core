@@ -18,13 +18,20 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
+import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
+import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BuySendSwapActivity extends AsyncInitializationActivity {
+public class BuySendSwapActivity
+        extends AsyncInitializationActivity implements ConnectionErrorHandler {
     public enum ActivityType {
         BUY(0),
         SEND(1),
@@ -52,6 +59,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity {
         }
     }
 
+    private ErcTokenRegistry mErcTokenRegistry;
     private ActivityType mActivityType;
 
     @Override
@@ -105,6 +113,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity {
         onInitialLayoutInflationComplete();
 
         adjustControls();
+        InitErcTokenRegistry();
     }
 
     private void adjustControls() {
@@ -117,6 +126,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity {
         Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
         TextView currencySign = findViewById(R.id.currency_sign);
         TextView toEstimateText = findViewById(R.id.to_estimate_text);
+        TextView assetDropDown = findViewById(R.id.from_asset_text);
         if (mActivityType == ActivityType.BUY) {
             TextView fromBuyText = findViewById(R.id.from_buy_text);
             fromBuyText.setText(getText(R.string.buy_wallet));
@@ -130,6 +140,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity {
             btnBuySendSwap.setText(getText(R.string.buy_wallet));
             RadioGroup radioPerPercent = findViewById(R.id.per_percent_radiogroup);
             radioPerPercent.setVisibility(View.GONE);
+            assetDropDown.setOnClickListener(v -> {
+                EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
+                        EditVisibleAssetsBottomSheetDialogFragment.newInstance(
+                                WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST);
+                bottomSheetDialogFragment.show(getSupportFragmentManager(),
+                        EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
+            });
         } else if (mActivityType == ActivityType.SEND) {
             currencySign.setVisibility(View.GONE);
             toEstimateText.setText(getText(R.string.to_address));
@@ -141,6 +158,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity {
             btnBuySendSwap.setText(getText(R.string.send));
             LinearLayout toBalanceSection = findViewById(R.id.to_balance_section);
             toBalanceSection.setVisibility(View.GONE);
+            assetDropDown.setOnClickListener(v -> {
+                EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
+                        EditVisibleAssetsBottomSheetDialogFragment.newInstance(
+                                WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST);
+                bottomSheetDialogFragment.show(getSupportFragmentManager(),
+                        EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
+            });
         } else if (mActivityType == ActivityType.SWAP) {
             currencySign.setVisibility(View.GONE);
             toValueText.setText("");
@@ -178,6 +202,29 @@ public class BuySendSwapActivity extends AsyncInitializationActivity {
                 }
             });
         }
+    }
+
+    public void updateBuySendAsset(String asset) {
+        TextView assetDropDown = findViewById(R.id.from_asset_text);
+        assetDropDown.setText(asset);
+    }
+
+    public ErcTokenRegistry getErcTokenRegistry() {
+        return mErcTokenRegistry;
+    }
+
+    @Override
+    public void onConnectionError(MojoException e) {
+        mErcTokenRegistry = null;
+        InitErcTokenRegistry();
+    }
+
+    private void InitErcTokenRegistry() {
+        if (mErcTokenRegistry != null) {
+            return;
+        }
+
+        mErcTokenRegistry = ERCTokenRegistryFactory.getInstance().getERCTokenRegistry(this);
     }
 
     @Override
