@@ -613,6 +613,7 @@
       <message name="IDS_BRAVE_REWARDS_TIP_MONTHLY_CONTRIBUTION_SET" desc="">Monthly contribution has been set.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_NEXT_CONTRIBUTION_DATE" desc="">Next contribution date:</message>
       <message name="IDS_BRAVE_REWARDS_TIP_NOT_ENOUGH_TOKENS" desc="">Not enough tokens. Please <ph name="LINK_BEGIN">$1</ph>add funds<ph name="LINK_END">$2</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_TIPPING_FEE_NOTE" desc="">Brave collects 5% of the tip amount as a processing fee.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP" desc="">One-Time Tip</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT" desc="">One-time tip amount:</message>
       <message name="IDS_BRAVE_REWARDS_TIP_OPT_IN_REQUIRED" desc="">Hold on, you can’t tip yet</message>
