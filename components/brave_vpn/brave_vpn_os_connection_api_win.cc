@@ -89,9 +89,9 @@ void BraveVPNOSConnectionAPIWin::OnCheckConnection(
   if (result == CheckConnectionResult::UNKNOWN)
     return;
 
+  const bool connected = result == CheckConnectionResult::CONNECTED;
   for (Observer& obs : observers_) {
-    result == CheckConnectionResult::CONNECTED ? obs.OnConnected(name)
-                                               : obs.OnDisconnected(name);
+    connected ? obs.OnConnected(name) : obs.OnDisconnected(name);
   }
 }
 
