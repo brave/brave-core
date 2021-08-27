@@ -1901,6 +1901,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         if(!TextUtils.isEmpty(external_wallet)) {
             try {
                 mExternalWallet = new BraveRewardsExternalWallet(external_wallet);
+                mBraveRewardsNativeWorker.GetRewardsParameters();
                 walletStatus = mExternalWallet.getStatus();
             } catch (JSONException e) {
                 Log.e (TAG, "Error parsing external wallet status");
