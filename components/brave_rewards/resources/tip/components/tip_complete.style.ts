@@ -45,8 +45,21 @@ export const message = styled.div`
   color: var(--brave-palette-neutral900);
 `
 
+export const note = styled.span`
+  font-size: 11px;
+  line-height: 17px;
+  font-weight: 400;
+  padding: 6px;
+  background-color: var(--brave-palette-neutral000);
+  border-radius: 4px;
+
+  strong {
+    font-weight: 600;
+  }
+`
 export const table = styled.div`
   margin-top: 17px;
+  margin-bottom: 23px;
   text-align: left;
   font-size: 14px;
   line-height: 21px;
