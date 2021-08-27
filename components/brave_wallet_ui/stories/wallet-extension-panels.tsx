@@ -24,13 +24,13 @@ import {
   PanelTypes,
   AppObjectType,
   AppsListType,
-  AssetOptionType,
+  AccountAssetOptionType,
   BuySendSwapViewTypes,
   Network
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import { NetworkOptions } from '../options/network-options'
-import { WyreAssetOptions } from '../options/wyre-asset-options'
+import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { filterAppList } from '../utils/filter-app-list'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import LockPanel from '../components/extension/lock-panel'
@@ -39,7 +39,7 @@ import {
   ScrollContainer,
   SelectContainer
 } from './style'
-import { AssetOptions } from '../options/asset-options'
+import { AccountAssetOptions } from '../options/asset-options'
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -305,8 +305,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const [selectedNetwork, setSelectedNetwork] = React.useState<Network>(Network.Mainnet)
-  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AssetOptionType>(WyreAssetOptions[0])
-  const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>(AssetOptions[0])
+  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
+  const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [toAddress, setToAddress] = React.useState('')
   const [fromAmount, setFromAmount] = React.useState('')
@@ -347,7 +347,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     setShowSelectAsset(false)
   }
 
-  const onSelectAsset = (asset: AssetOptionType) => () => {
+  const onSelectAsset = (asset: AccountAssetOptionType) => () => {
     if (selectedPanel === 'buy') {
       setSelectedWyreAsset(asset)
     } else {
@@ -460,7 +460,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
               {showSelectAsset &&
                 <SelectContainer>
                   <SelectAsset
-                    assets={AssetOptions}
+                    assets={AccountAssetOptions}
                     onSelectAsset={onSelectAsset}
                     onBack={onHideSelectAsset}
                   />
