@@ -283,6 +283,8 @@ source_set("ads") {
     "src/bat/ads/internal/ads_client_helper.h",
     "src/bat/ads/internal/ads_history/ads_history.cc",
     "src/bat/ads/internal/ads_history/ads_history.h",
+    "src/bat/ads/internal/ads_history/ads_history_util.cc",
+    "src/bat/ads/internal/ads_history/ads_history_util.h",
     "src/bat/ads/internal/ads_history/filters/ads_history_confirmation_filter.cc",
     "src/bat/ads/internal/ads_history/filters/ads_history_confirmation_filter.h",
     "src/bat/ads/internal/ads_history/filters/ads_history_date_range_filter.cc",
