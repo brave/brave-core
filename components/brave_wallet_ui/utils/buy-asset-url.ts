@@ -1,12 +1,12 @@
-import { Network, AssetOptionType, UserAccountType } from '../constants/types'
+import { Network, AccountAssetOptionType, UserAccountType } from '../constants/types'
 import { NetworkOptions } from '../options/network-options'
 
 const wyreID = 'AC_MGNVBGHPA9T'
 
-export function BuyAssetUrl (network: Network, asset: AssetOptionType, account: UserAccountType, buyAmount: string) {
+export function BuyAssetUrl (network: Network, asset: AccountAssetOptionType, account: UserAccountType, buyAmount: string) {
   switch (network) {
     case Network.Mainnet:
-      return `https://pay.sendwyre.com/?dest=ethereum:${account.address}&destCurrency=${asset.symbol}&amount=${buyAmount}&accountId=${wyreID}&paymentMethod=debit-card`
+      return `https://pay.sendwyre.com/?dest=ethereum:${account.address}&destCurrency=${asset.asset.symbol}&amount=${buyAmount}&accountId=${wyreID}&paymentMethod=debit-card`
     case Network.Ropsten:
       return 'https://faucet.metamask.io/'
     case Network.Kovan:

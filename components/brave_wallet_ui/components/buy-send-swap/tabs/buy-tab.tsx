@@ -1,11 +1,10 @@
 import * as React from 'react'
 import {
   UserAccountType,
-  AssetOptionType,
+  AccountAssetOptionType,
   BuySendSwapViewTypes,
   Network
 } from '../../../constants/types'
-import { WyreAssetOptions } from '../../../options/wyre-asset-options'
 import {
   AccountsAssetsNetworks,
   Header,
@@ -16,9 +15,10 @@ export interface Props {
   accounts: UserAccountType[]
   selectedNetwork: Network
   selectedAccount: UserAccountType
+  assetOptions: AccountAssetOptionType[]
   buyAmount: string
   showHeader?: boolean
-  onSubmit: (asset: AssetOptionType) => void
+  onSubmit: (asset: AccountAssetOptionType) => void
   onSelectNetwork: (network: Network) => void
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
@@ -31,13 +31,14 @@ function BuyTab (props: Props) {
     selectedAccount,
     buyAmount,
     showHeader,
+    assetOptions,
     onSubmit,
     onSelectNetwork,
     onSelectAccount,
     onSetBuyAmount
   } = props
   const [buyView, setBuyView] = React.useState<BuySendSwapViewTypes>('buy')
-  const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>(WyreAssetOptions[0])
+  const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(assetOptions[0])
 
   const onChangeBuyView = (view: BuySendSwapViewTypes) => {
     setBuyView(view)
@@ -53,7 +54,7 @@ function BuyTab (props: Props) {
     setBuyView('buy')
   }
 
-  const onSelectedAsset = (asset: AssetOptionType) => () => {
+  const onSelectedAsset = (asset: AccountAssetOptionType) => () => {
     setSelectedAsset(asset)
     setBuyView('buy')
   }
@@ -95,7 +96,7 @@ function BuyTab (props: Props) {
         <AccountsAssetsNetworks
           accounts={accounts}
           goBack={goBack}
-          assetOptions={WyreAssetOptions}
+          assetOptions={assetOptions}
           onClickSelectAccount={onClickSelectAccount}
           onClickSelectNetwork={onClickSelectNetwork}
           onSelectedAsset={onSelectedAsset}

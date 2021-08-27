@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {
-  AssetOptionType,
+  AccountAssetOptionType,
   OrderTypes,
   BuySendSwapViewTypes,
   SlippagePresetObjectType,
@@ -17,8 +17,8 @@ import {
 } from './style'
 
 export interface Props {
-  toAsset: AssetOptionType
-  fromAsset: AssetOptionType
+  toAsset: AccountAssetOptionType
+  fromAsset: AccountAssetOptionType
   fromAmount: string
   toAmount: string
   exchangeRate: string
@@ -35,7 +35,7 @@ export interface Props {
   onSelectPresetAmount: (percent: number) => void
   onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
   onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
-  onFilterAssetList: (asset: AssetOptionType) => void
+  onFilterAssetList: (asset: AccountAssetOptionType) => void
 }
 
 function Swap (props: Props) {

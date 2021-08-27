@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {
-  AssetOptionType,
+  AccountAssetOptionType,
   BuySendSwapViewTypes,
   Network,
   UserAccountType
@@ -20,10 +20,10 @@ import {
 export interface Props {
   selectedView: BuySendSwapViewTypes
   accounts: UserAccountType[]
-  assetOptions: AssetOptionType[]
+  assetOptions: AccountAssetOptionType[]
   onClickSelectAccount: (account: UserAccountType) => () => void
   onClickSelectNetwork: (network: Network) => () => void
-  onSelectedAsset: (account: AssetOptionType) => () => void
+  onSelectedAsset: (account: AccountAssetOptionType) => () => void
   goBack: () => void
 }
 

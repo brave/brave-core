@@ -2,7 +2,7 @@ import * as React from 'react'
 import {
   BuySendSwapTypes,
   UserAccountType,
-  AssetOptionType,
+  AccountAssetOptionType,
   OrderTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
@@ -19,8 +19,8 @@ import {
 export interface Props {
   accounts: UserAccountType[]
   orderType: OrderTypes
-  swapToAsset: AssetOptionType
-  swapFromAsset: AssetOptionType
+  swapToAsset: AccountAssetOptionType
+  swapFromAsset: AccountAssetOptionType
   selectedNetwork: Network
   selectedAccount: UserAccountType
   exchangeRate: string
@@ -33,14 +33,17 @@ export interface Props {
   fromAssetBalance: string
   toAssetBalance: string
   toAddress: string
-  onSubmitBuy: (asset: AssetOptionType) => void
+  buyAssetOptions: AccountAssetOptionType[]
+  sendAssetOptions: AccountAssetOptionType[]
+  swapAssetOptions: AccountAssetOptionType[]
+  onSubmitBuy: (asset: AccountAssetOptionType) => void
   onSubmitSend: () => void
   onSubmitSwap: () => void
   flipSwapAssets: () => void
   onSelectNetwork: (network: Network) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
-  onSelectAsset: (asset: AssetOptionType, toOrFrom: ToOrFromType) => void
+  onSelectAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
   onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
   onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
   onSetExchangeRate: (value: string) => void
@@ -71,6 +74,9 @@ function BuySendSwap (props: Props) {
     fromAssetBalance,
     toAssetBalance,
     toAddress,
+    buyAssetOptions,
+    sendAssetOptions,
+    swapAssetOptions,
     onSubmitBuy,
     onSubmitSend,
     onSubmitSwap,
@@ -125,6 +131,7 @@ function BuySendSwap (props: Props) {
           onSetFromAmount={onSetFromAmount}
           onSetToAmount={onSetToAmount}
           onSelectPresetAmount={onSelectPresetFromAmount}
+          assetOptions={swapAssetOptions}
         />
       }
       {selectedTab === 'send' &&
@@ -144,6 +151,7 @@ function BuySendSwap (props: Props) {
           selectedNetwork={selectedNetwork}
           selectedAsset={swapFromAsset}
           showHeader={true}
+          assetOptions={sendAssetOptions}
         />
       }
       {selectedTab === 'buy' &&
@@ -157,6 +165,7 @@ function BuySendSwap (props: Props) {
           selectedAccount={selectedAccount}
           selectedNetwork={selectedNetwork}
           showHeader={true}
+          assetOptions={buyAssetOptions}
         />
       }
     </Layout>
