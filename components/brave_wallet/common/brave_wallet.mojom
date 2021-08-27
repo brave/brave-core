@@ -176,6 +176,7 @@ interface ERCTokenRegistry {
   GetTokenByContract(string contract) => (ERCToken? token);
   GetTokenBySymbol(string symbol) => (ERCToken? token);
   GetAllTokens() => (array<ERCToken> tokens);
+  GetBuyTokens() => (array<ERCToken> tokens);
 };
 
 interface KeyringController {

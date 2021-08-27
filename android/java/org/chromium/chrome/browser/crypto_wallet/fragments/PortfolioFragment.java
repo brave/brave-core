@@ -81,7 +81,8 @@ public class PortfolioFragment extends Fragment implements OnWalletListItemClick
         Button editVisibleAssets = view.findViewById(R.id.edit_visible_assets);
         editVisibleAssets.setOnClickListener(v -> {
             EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
-                    EditVisibleAssetsBottomSheetDialogFragment.newInstance();
+                    EditVisibleAssetsBottomSheetDialogFragment.newInstance(
+                            WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST);
             bottomSheetDialogFragment.show(
                     getFragmentManager(), EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
         });

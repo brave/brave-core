@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <utility>
 
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+
 namespace brave_wallet {
 
 ERCTokenRegistry::ERCTokenRegistry() = default;
@@ -73,6 +75,16 @@ void ERCTokenRegistry::GetAllTokens(GetAllTokensCallback callback) {
                    return current_token.Clone();
                  });
   std::move(callback).Run(std::move(erc_tokens_copy));
+}
+
+void ERCTokenRegistry::GetBuyTokens(GetBuyTokensCallback callback) {
+  std::vector<brave_wallet::mojom::ERCTokenPtr> erc_buy_tokens;
+  for (auto token : *kBuyTokens) {
+    auto erc_token = brave_wallet::mojom::ERCToken::New();
+    *erc_token = token;
+    erc_buy_tokens.push_back(std::move(erc_token));
+  }
+  std::move(callback).Run(std::move(erc_buy_tokens));
 }
 
 }  // namespace brave_wallet
