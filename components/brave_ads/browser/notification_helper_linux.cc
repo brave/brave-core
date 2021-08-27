@@ -5,7 +5,10 @@
 
 #include "brave/components/brave_ads/browser/notification_helper_linux.h"
 
+#include "base/feature_list.h"
+#include "base/logging.h"
 #include "brave/components/brave_ads/common/features.h"
+#include "chrome/common/chrome_features.h"
 
 namespace brave_ads {
 
@@ -21,7 +24,12 @@ bool NotificationHelperLinux::CanShowNativeNotifications() {
   // TODO(https://github.com/brave/brave-browser/issues/5542): Investigate how
   // to detect if notifications are enabled within the Linux operating system
 
-  return false;
+  if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
+    LOG(WARNING) << "Native notifications feature is disabled";
+    return false;
+  }
+
+  return true;
 }
 
 bool NotificationHelperLinux::ShowMyFirstAdNotification() {
