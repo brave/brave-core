@@ -3,7 +3,7 @@ import { create } from 'ethereum-blockies'
 import { WalletAccountType, Network } from '../../../constants/types'
 import { NetworkOptions } from '../../../options/network-options'
 import locale from '../../../constants/locale'
-import { NavButton } from '../'
+import { NavButton, PanelTab } from '../'
 // Styled Components
 import {
   StyledWrapper,
@@ -13,11 +13,10 @@ import {
   NetworkText,
   PanelTitle,
   MessageBox,
-  MessageTitle,
   MessageText,
-  ButtonRow,
-  MoreButton
+  ButtonRow
 } from './style'
+import { TabRow } from '../shared-panel-styles'
 
 export interface Props {
   selectedAccount: WalletAccountType
@@ -25,7 +24,6 @@ export interface Props {
   message: string
   onSign: () => void
   onCancel: () => void
-  onClickMore: () => void
 }
 
 function SignPanel (props: Props) {
@@ -34,8 +32,7 @@ function SignPanel (props: Props) {
     selectedNetwork,
     message,
     onSign,
-    onCancel,
-    onClickMore
+    onCancel
   } = props
 
   const orb = React.useMemo(() => {
@@ -46,13 +43,17 @@ function SignPanel (props: Props) {
     <StyledWrapper>
       <TopRow>
         <NetworkText>{NetworkOptions[selectedNetwork].abbr}</NetworkText>
-        <MoreButton onClick={onClickMore} />
       </TopRow>
       <AccountCircle orb={orb} />
       <AccountNameText>{selectedAccount.name}</AccountNameText>
       <PanelTitle>{locale.signTransactionTitle}</PanelTitle>
+      <TabRow>
+        <PanelTab
+          isSelected={true}
+          text={locale.signTransactionMessageTitle}
+        />
+      </TabRow>
       <MessageBox>
-        <MessageTitle>{locale.signTransactionMessageTitle}</MessageTitle>
         <MessageText>{message}</MessageText>
       </MessageBox>
       <ButtonRow>

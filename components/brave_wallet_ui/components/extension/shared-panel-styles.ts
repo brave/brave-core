@@ -85,3 +85,12 @@ export const Description = styled.span`
   color: ${(p) => p.theme.color.text02};
   margin-bottom: 12px;
 `
+
+export const TabRow = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: row;
+  width: 255px;
+  margin-bottom: 10px;
+`

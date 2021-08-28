@@ -261,7 +261,12 @@ const locale = {
   // Wallet Main Panel
   panelTitle: 'Crypto',
   panelConnected: 'Connected',
-  panelNotConnected: 'Not Connected'
+  panelNotConnected: 'Not Connected',
+
+  // Transaction Detail Box
+  transactionDetailBoxFunction: 'FUNCTION TYPE',
+  transactionDetailBoxHex: 'HEX DATA',
+  transactionDetailBoxBytes: 'BYTES'
 }
 
 export default locale

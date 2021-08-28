@@ -1,11 +1,15 @@
 import styled from 'styled-components'
 
-export const PanelWrapper = styled.div`
+interface StyleProps {
+  isLonger: boolean
+}
+
+export const PanelWrapper = styled.div<StyleProps>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 320px;
-  height: 400px;
+  height: ${(p) => p.isLonger ? '475px' : '400px'};
 `
 
 export const SendWrapper = styled.div`

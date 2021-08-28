@@ -13,6 +13,8 @@ import SignPanel from './sign-panel'
 import AllowSpendPanel from './allow-spend-panel'
 import AllowAddNetworkPanel from './allow-add-network-panel'
 import ConfirmTransactionPanel from './confirm-transaction-panel'
+import PanelTab from './panel-tab'
+import TransactionDetailBox from './transaction-box'
 import { NavButton } from './buttons'
 
 export {
@@ -31,5 +33,7 @@ export {
   SignPanel,
   AllowSpendPanel,
   AllowAddNetworkPanel,
-  ConfirmTransactionPanel
+  ConfirmTransactionPanel,
+  PanelTab,
+  TransactionDetailBox
 }
