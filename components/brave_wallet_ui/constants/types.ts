@@ -572,12 +572,20 @@ export interface APIProxyControllers {
   makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string, data: number[]) => any
 }
 
+export type TransactionDataType = {
+  functionName: string
+  parameters: string
+  hexData: string
+  hexSize: string
+}
+
 export type AllowSpendReturnPayload = {
   siteUrl: string,
   contractAddress: string,
   erc20Token: TokenInfo,
   transactionFeeWei: string,
   transactionFeeFiat: string
+  transactionData: TransactionDataType
 }
 
 export type ChainInformation = {
@@ -598,5 +606,6 @@ export type TransactionPanelPayload = {
   toAddress: string,
   erc20Token: TokenInfo,
   ethPrice: string,
-  tokenPrice: string
+  tokenPrice: string,
+  transactionData: TransactionDataType
 }

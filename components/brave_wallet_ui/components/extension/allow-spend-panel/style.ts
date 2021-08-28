@@ -1,14 +1,5 @@
 import styled from 'styled-components'
 
-export const MessageBoxTitle = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
-  font-weight: 600;
-  margin-bottom: 10px;
-`
-
 export const MessageBox = styled.div`
   display: flex;
   align-items: flex-start;
@@ -18,9 +9,12 @@ export const MessageBox = styled.div`
   box-sizing: border-box;
   border-radius: 4px;
   width: 255px;
-  height: 70px;
+  height: 120px;
   padding: 8px 14px;
   margin-bottom: 14px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
 `
 
 export const TransactionText = styled.span`
@@ -73,21 +67,6 @@ export const EditButton = styled.button`
   font-family: Poppins;
   font-style: normal;
   font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
-  background: none;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  margin: 0px;
-  padding: 0px;
-`
-
-export const DetailsButton = styled.button`
-  font-family: Poppins;
-  font-style: normal;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;

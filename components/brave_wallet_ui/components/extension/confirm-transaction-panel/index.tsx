@@ -5,7 +5,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { NetworkOptions } from '../../../options/network-options'
 import locale from '../../../constants/locale'
 import { formatBalance, formatFiatBalance } from '../../../utils/format-balances'
-import { NavButton } from '../'
+import { NavButton, PanelTab, TransactionDetailBox } from '../'
 
 // Styled Components
 import {
@@ -23,7 +23,6 @@ import {
   TransactionTypeText,
   TransactionText,
   ButtonRow,
-  MoreButton,
   AccountCircleWrapper,
   ArrowIcon,
   FromToRow,
@@ -33,13 +32,16 @@ import {
   EditButton
 } from './style'
 
+import { TabRow } from '../shared-panel-styles'
+
+export type confirmPanelTabs = 'transaction' | 'details'
+
 export interface Props {
   selectedAccount: WalletAccountType
   transactionPayload: TransactionPanelPayload
   selectedNetwork: Network
   onConfirm: () => void
   onReject: () => void
-  onClickMore: () => void
 }
 
 function ConfirmTransactionPanel (props: Props) {
@@ -48,10 +50,9 @@ function ConfirmTransactionPanel (props: Props) {
     selectedNetwork,
     transactionPayload,
     onConfirm,
-    onReject,
-    onClickMore
+    onReject
   } = props
-
+  const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
   const fromOrb = React.useMemo(() => {
     return create({ seed: selectedAccount.address, size: 8, scale: 16 }).toDataURL()
   }, [selectedAccount.address])
@@ -75,11 +76,14 @@ function ConfirmTransactionPanel (props: Props) {
     }
   }, [transactionPayload])
 
+  const onSelectTab = (tab: confirmPanelTabs) => () => {
+    setSelectedTab(tab)
+  }
+
   return (
     <StyledWrapper>
       <TopRow>
         <NetworkText>{NetworkOptions[selectedNetwork].abbr}</NetworkText>
-        <MoreButton onClick={onClickMore} />
       </TopRow>
       <AccountCircleWrapper>
         <FromCircle orb={fromOrb} />
@@ -93,24 +97,43 @@ function ConfirmTransactionPanel (props: Props) {
       <TransactionTypeText>{locale.confrimTransactionBid}</TransactionTypeText>
       <TransactionAmmountBig>{formatedAmounts.sendAmount} {transactionPayload.erc20Token.symbol}</TransactionAmmountBig>
       <TransactionFiatAmountBig>${formatedAmounts.sendFiatAmount}</TransactionFiatAmountBig>
-      <MessageBox>
-        <SectionRow>
-          <TransactionTitle>{locale.confirmTransactionGasFee}</TransactionTitle>
-          <SectionRightColumn>
-            <EditButton>{locale.allowSpendEditButton}</EditButton>
-            <TransactionTypeText>{formatedAmounts.gasAmount} ETH</TransactionTypeText>
-            <TransactionText>${formatedAmounts.gasFiatAmount}</TransactionText>
-          </SectionRightColumn>
-        </SectionRow>
-        <Divider />
-        <SectionRow>
-          <TransactionTitle>{locale.confirmTransactionTotal}</TransactionTitle>
-          <SectionRightColumn>
-            <TransactionText>{locale.confirmTransactionAmountGas}</TransactionText>
-            <GrandTotalText>{formatedAmounts.sendAmount} {transactionPayload.erc20Token.symbol} + {formatedAmounts.gasAmount} ETH</GrandTotalText>
-            <TransactionText>${formatedAmounts.grandTotalFiatAmount}</TransactionText>
-          </SectionRightColumn>
-        </SectionRow>
+      <TabRow>
+        <PanelTab
+          isSelected={selectedTab === 'transaction'}
+          onSubmit={onSelectTab('transaction')}
+          text='Transaction'
+        />
+        <PanelTab
+          isSelected={selectedTab === 'details'}
+          onSubmit={onSelectTab('details')}
+          text='Details'
+        />
+      </TabRow>
+      <MessageBox isDetails={selectedTab === 'details'}>
+        {selectedTab === 'transaction' ? (
+          <>
+            <SectionRow>
+              <TransactionTitle>{locale.confirmTransactionGasFee}</TransactionTitle>
+              <SectionRightColumn>
+                <EditButton>{locale.allowSpendEditButton}</EditButton>
+                <TransactionTypeText>{formatedAmounts.gasAmount} ETH</TransactionTypeText>
+                <TransactionText>${formatedAmounts.gasFiatAmount}</TransactionText>
+              </SectionRightColumn>
+            </SectionRow>
+            <Divider />
+            <SectionRow>
+              <TransactionTitle>{locale.confirmTransactionTotal}</TransactionTitle>
+              <SectionRightColumn>
+                <TransactionText>{locale.confirmTransactionAmountGas}</TransactionText>
+                <GrandTotalText>{formatedAmounts.sendAmount} {transactionPayload.erc20Token.symbol} + {formatedAmounts.gasAmount} ETH</GrandTotalText>
+                <TransactionText>${formatedAmounts.grandTotalFiatAmount}</TransactionText>
+              </SectionRightColumn>
+            </SectionRow>
+          </>
+        ) : (
+          <TransactionDetailBox transactionData={transactionPayload.transactionData} />
+        )}
+
       </MessageBox>
       <ButtonRow>
         <NavButton
