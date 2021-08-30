@@ -24,7 +24,7 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Вы просматриваете этот сайт без использования средств приватности и безопасности Brave. Может быть, у вас проблемы с настройкой Защиты?",
+    "message": "Вы просматриваете этот сайт без использования средств приватности и безопасности Brave. Не работает правильно с включенной защитой Brave?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
@@ -84,35 +84,35 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Сторонние cookies заблокированы",
+    "message": "Межсайтовые куки заблокированы",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "Файлы cookies заблокированы",
+    "message": "Файлы куки заблокированы",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "Файлы cookies разрешены",
+    "message": "Все файлы куки разрешены",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "Снятие отпечатков пальцев заблокировано",
+    "message": "Сбор цифровых отпечатков заблокирован",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Фингерпринтинг блокирован (стандарт)",
+    "message": "Сбор цифровых отпечатков заблокирован (стандартно)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Фингерпринтинг заблокирован (строго, может нарушать работу сайтов)",
+    "message": "Сбор цифровых отпечатков заблокирован (строго, может нарушать работу сайтов)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Разрешить все цифровые отпечатки",
+    "message": "Разрешить сбор всех цифровых отпечатков",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Попытки фингерпринтинга",
+    "message": "Попытки сбора цифровых отпечатков",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
@@ -176,7 +176,7 @@
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Block element",
+    "message": "Блокировать элемент",
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
@@ -192,11 +192,11 @@
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Заблокировано глобальных трекеров и других нежелательных элементов",
+    "message": "Заблокированы межсайтовый трекинг и другие нежелательные элементы",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Изменение параметров Shield на этой странице может повлиять на совместимость сайта.",
+    "message": "Изменение параметров Shield на этой странице может повлиять на работу этого сайта.",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {

@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Kliknuté</translation>
 <translation id="7119308337584989771">Zamietnuté</translation>
 <translation id="6805660603861526473">Zobrazené</translation>
+<translation id="1501075228659004450">Hmm, zdá sa, že vaša peňaženka odmien Brave Rewards už bola overená iným účtom <ph name="PROVIDER"/>. Skúste overenie vykonať znova pomocou predošlého účtu.</translation>
+<translation id="5111921830714291902">Chyba: Iný účet</translation>
 <translation id="2359865110462963929">BAT vo vašej oblasti momentálne nie je podporovaná. Pozrite si <ph name="BEGIN_LINK"/>tu<ph name="END_LINK"/> aktualizácie.</translation>
 <translation id="1737873393693460829">Zapnutím [[title]] vyjadrujete súhlas s <ph name="BEGIN_LINK1"/>Podmienkami poskytovaných služieb<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Pravidlami ochrany súkromia<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Pri vytváraní BAT karty Brave Browsera sa vyskytla chyba</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Pokračovať</translation>
 <translation id="5112354605357157725">Pokračovať v prihlasovaní</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> vyžaduje minimálny zostatok <ph name="AMOUNT"/> BAT na vytvorenie účtu. Ak ste si predtým pripojili účet,</translation>
+<translation id="752216563428219524">Reklamy sa nespustili. Obnovte stránku.</translation>
 <translation id="7422678632904904341">Čiastka:</translation>
 <translation id="6969783933307596818">Automatické obnovenie každých 5 sekúnd</translation>
 <translation id="5025866799968038247">Informácia o zostatku</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Automatické prispievanie</translation>
 <translation id="2927922949538312364">Jednorazový príspevok</translation>
 <translation id="3164105678355419142">Opakujúci sa príspevok</translation>
+<translation id="916115051162298064">Diagnostika reklám</translation>
 <translation id="7806880412350961625">Logy udalostí</translation>
 <translation id="4309915981827077375">Všeobecné informácie</translation>
 <translation id="3662406032239313663">Denníky</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Kategória</translation>
 <translation id="3080423471207781945">Maximálny počet reklám za hodinu:</translation>
 <translation id="2631006050119455616">Uložené</translation>
+<translation id="7847825746023377505">Za posledných <ph name="TOTAL_DAYS"/> dní neboli zobrazené žiadne reklamy.</translation>
 <translation id="7902420836933072528">Počet reklám, ktoré ste dostali za posledných [[totalDays]] dní</translation>
 <translation id="8863685593846905344">História reklám</translation>
 <translation id="2777306694585938662">Prijaté odmeny za reklamy</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">Občas vám budú ponúknuté bezplatné kupóny od Brave. Dajte si pozor, aby vám toto upozornenie neuniklo!</translation>
 <translation id="1370034647041840967">Získajte žetóny za sledovanie reklám a pošlite to ďalej - podporte obsah od tvorcov, ktorých si vážite!</translation>
 <translation id="4919888432594361029">Pridajte, vyberte a spravujte finančné prostriedky na <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Vašu peňaženku Brave poháňa <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Odmeny Brave sú postavené na žetóne základnej pozornosti. Zistite viac o BAT</translation>
 <translation id="7823359893981882407">tu</translation>
 <translation id="3034163433136515805">Zobraziť QR kód</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Objem vašich odmien</translation>
 <translation id="2151535059686617995">Toto je váš šťastný deň!</translation>
 <translation id="6436689611575806470">Váš grant [[currency]] je na ceste.</translation>
-<translation id="7512440811010447157">overiť</translation>
 <translation id="8267327690882073581">Overiť peňaženku</translation>
 <translation id="543510923939676996">Peňaženka verifikovaná</translation>
 <translation id="2659764755126740206">Prejsť na môj účet <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Dokončiť verifikáciu peňaženky</translation>
 <translation id="9200453331904391567">Odpojiť od Brave Rewards</translation>
+<translation id="3656941797339037856">Prepojte odmeny s Gemini!</translation>
+<translation id="671838195432136371">Gemini vám umožní jednoducho obchodovať, ukladať a zarábať 3,49 % APY* cez svoj BAT. Noví používatelia Gemini, ktorí pristúpia k prepojeniu, získajú 5 jednotiek BAT zdarma!</translation>
+<translation id="9136976526700181750">* Zárobok APY cez Gemini k 15. augustu 2021</translation>
 <translation id="7404779623219601861">Uplatniť BAT na darčekové karty</translation>
 <translation id="6215565499749144110">So sieťou TAP si môžete uplatniť svoje BAT na populárne značkové darčekové karty.</translation>
 <translation id="6915065518766963119">* Vyžaduje sa potvrdená verifikácia.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Jednotková cena</translation>
 <translation id="4763179765154524864">Minutých celkom</translation>
 <translation id="8851480289992540512">Získaných celkom:</translation>
+<translation id="824449983246282560">Na svojom účte nemáte žiadne zostatky. Navštívte Gemini a niečo si zakúpte.</translation>
 <translation id="8624961452383848703">Chcem zameniť…</translation>
 <translation id="616639131065447379">Vitajte v Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets vám v Brave umožňuje pracovať s kryptomenami a súvisiacimi aktívami. Crypto Wallets podporuje tokeny Ethereum, ako sú ETH a BAT, ako aj zberateľské predmety, a umožňuje vám pracovať s Ðaplikáciami a inými inteligentnými zmluvami. To všetko je určené pre ľudí, ktorí poznajú Ethereum a iné blockchain systémy — alebo sa s nadšením naučia.</translation>

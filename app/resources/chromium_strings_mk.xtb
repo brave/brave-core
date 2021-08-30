@@ -47,7 +47,6 @@
 <translation id="8372880274820509128">За дополнителна безбедност, Brave ќе ги шифрира вашите податоци.</translation>
 <translation id="2770231113462710648">Променете го стандардниот прелистувач во:</translation>
 <translation id="2799223571221894425">Рестартирај</translation>
-<translation id="6811506454451584223">Сакате одделен профил на Brave?</translation>
 <translation id="3783547330001921298">Ова ќе создаде нов профил на Brave за <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Отстрани од Brave</translation>
 <translation id="2885378588091291677">Управник со задачи</translation>
@@ -70,17 +69,19 @@
 <translation id="2339258256897053758">Клучевите Brave API недостасуваат. Некои функции на Brave ќе бидат оневозможени.</translation>
 <translation id="8926637909431618259">Продолжи со извршување на заднинските апликации кога Brave е затворен</translation>
 <translation id="4480040274068703980">Chrome OS не може да ги синхронизира вашите податоци поради грешка при најавување.</translation>
+<translation id="1166275459137851283">Brave препорачува да не ја преземате или отворате датотекава</translation>
 <translation id="2711887072399498551">Веќе постои профил на Brave со оваа сметка</translation>
 <translation id="2297290224191497273">Сакате да се префрлите на постојниот профил на Brave?</translation>
 <translation id="2450003541323895471">Со профилите на Brave може да ги одделите сите ваши работи на Brave. Создајте профили за пријателите и семејството или поделете ги помеѓу работа и забава.</translation>
+<translation id="7275165473619697274">Инсталирањето на Chrome OS е во тек</translation>
 <translation id="9216183508558772570">Brave ќе ве извести ако се најавите со компромитирана лозинка</translation>
 <translation id="5853262807109651878">Ова ќе избрише <ph name="ITEMS_COUNT"/> ставки од уредов. За да ги вратите вашите податоци подоцна, најавете се на Brave како <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Со <ph name="SHORTCUT"/> се менуваат профили на Brave</translation>
 <translation id="8703492925273919597">Затворете ги сите прозорци на Brave и обидете се повторно.</translation>
 <translation id="1384923383737428730">Има штетен софтвер на вашиот компјутер. Brave може да го отстрани, да ги врати вашите поставки и да ги оневозможи екстензиите за да му овозможи на вашиот прелистувач повторно да функционира нормално.</translation>
+<translation id="2409866122341731384">Избриши го хард дискот и инсталирај Chrome OS</translation>
 <translation id="7029305463989165490">За да испратите број од <ph name="ORIGIN"/> до телефонот со Android, најавете се на Brave на двата уреда.</translation>
 <translation id="4304059894777924102">Brave не може да ги провери вашите лозинки. Проверете ја интернет-врската.</translation>
-<translation id="2588634262982826227">Chrome OS може секогаш да ги враќа вашите апликации и страници по рестартирање без да прашува секој пат.</translation>
 <translation id="1807774211756215222">Отвори го линкот во нова &amp;картичка на Brave</translation>
 <translation id="7453070689008684791">Brave ќе пристапува до Drive за да дава предлози во лентата за адреси</translation>
 <translation id="2106568569080763501">Brave ви овозможува да кликнете на телефонски број на интернет и да го повикате со Skype!</translation>
@@ -98,6 +99,7 @@
 <translation id="8923080813984421771"><ph name="MANAGER"/> бара да ги прочитате и да ги прифатите следните „Услови за користење“ пред да го користите уредов. Овие услови не ги прошируваат, менуваат или ограничуваат „Условите на Chrome OS“.</translation>
 <translation id="3262506503470845422">Добијте помош за Brave</translation>
 <translation id="7691786510374174420">Инсталирањето не успеа поради неназначена грешка. Ако Brave моментално работи, затворете го и обидете се повторно.</translation>
+<translation id="429583012151745428">Инсталирањето е во тек. Не исклучувајте го уредот. Инсталирањето не треба да трае повеќе од дваесет минути. Компјутерот автоматски ќе се исклучи по инсталирањето.</translation>
 <translation id="9183662282810237335">Сепак да се излезе од Brave?</translation>
 <translation id="4065288863231444640">Остави го Brave да работи во заднина</translation>
 <translation id="8148611988012584308">Приспособи го и контролирај го Brave</translation>
@@ -132,7 +134,6 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="707769633889902835">ОС на Brave не може да ја отвори страницава.</translation>
 <translation id="696826782632239602">На Brave му треба пристап до вашата локација за да ја сподели со сајтов</translation>
-<translation id="7886919915603831625">Brave препорачува да не ја преземате или отворате датотекава.</translation>
 <translation id="1744365871163268756">Почекајте додека Brave ги инсталира последните системски ажурирања.</translation>
 <translation id="3861679447659630159">Brave се обидува да измени лозинки. Внесете ја својата лозинка за Windows за да го дозволите ова.</translation>
 <translation id="232381795826373334">Отворај PDF-формат во Brave</translation>
@@ -157,6 +158,15 @@
 <translation id="4168372721886011198">Датотеката <ph name="FILE_NAME"/> е опасна, па затоа Brave ја блокираше.</translation>
 <translation id="7006260220514217183">„Безбедното прелистување“ е исклучено. Brave препорачува да го вклучите.</translation>
 <translation id="4060970194201477024">Може да се префрлате помеѓу профилите на Brave тука</translation>
+<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Подготвени сме за инсталирање на Chrome OS! Штом ќе продолжите:
+          <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Датотеките, податоците и моменталниот оперативен систем ќе се избришат.
+          <ph name="LIST_ITEM"/>Ќе се инсталира Chrome OS.
+          <ph name="LIST_ITEM"/>Уредот ќе се исклучи кога ќе заврши инсталацијата.
+          <ph name="END_LIST"/>
+          <ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Еден последен потсетник: инсталацијата ќе го избрише целиот хард диск. Погрижете се дека сте направиле бекап од податоците што ви се важни.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Штом ќе започне инсталирањето нема да може да се откаже.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Проверете дали сте најавени на Brave на <ph name="TARGET_DEVICE_NAME"/> и обидете се да испратите повторно.</translation>
 <translation id="8320964054148936490">Овој компјутер веќе има најнова верзија на Brave. Доколку софтверот не работи, деинсталирајте го Brave и обидете се повторно.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave ќе се рестартира сега}=1{Brave ќе се рестартира по 1 секунда}one{Brave ќе се рестартира по # секунда}other{Brave ќе се рестартира по # секунди}}</translation>
@@ -174,6 +184,7 @@
 <translation id="2644798301485385923">Систем Chrome OS</translation>
 <translation id="1684121725014454063">Добре дојдовте во профили на Brave</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave ќе се рестартира за 1 секунда}one{Brave ќе се рестартира за # секунда}other{Brave ќе се рестартира за # секунди}}</translation>
+<translation id="664235759707825982">Chrome OS е подготвен за инсталирање</translation>
 <translation id="2675662665675552980">Тоа исто така контролира која страница ќе се прикаже кога го стартувате Brave.</translation>
 <translation id="5590013613412457132">Деинсталирај Brave</translation>
 <translation id="8646609321956191980">Секој профил содржи сопствени податоци на Brave, како обележувачи, историја, лозинки и друго</translation>
@@ -188,6 +199,7 @@
 <translation id="6666624454809779082">Brave веќе е инсталиран за сите корисници на вашиот компјутер.</translation>
 <translation id="5360050006043219962">За да пристапувате до вашите работи на Brave на сите уреди, најавете се и вклучете ја синхронизацијата.</translation>
 <translation id="8291513491595858997">Родителот ги исклучил „Дозволите за сајтови, апликации и екстензии“ за Brave. Не е дозволено овозможувањето на оваа<ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
+<translation id="1810203443153428607">Инсталирањето на Chrome OS ќе ги презапише сите податоци на вашиот уред.</translation>
 <translation id="8211837073776713955">Brave ве известува дали вашите лозинки се компромитирани</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (копирана во Brave)</translation>
@@ -221,6 +233,10 @@ Brave не може да ги обнови вашите поставки.</trans
     поставките за Chrome OS<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave ги користи фотоапаратот и микрофонот.</translation>
 <translation id="2827121003398607864">Brave е подобрен</translation>
+<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Пред да започнеме, погрижете се дека имате ажурен бекап од вашите податоци. Инсталирањето на Chrome OS ќе ги презапише сите податоци на вашиот хард диск.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Brave не е одговорен за загуба на податоци и не гарантира дека Chrome OS ќе функционира на несертифицирани модели. Одете на [TBD] за да дознаете повеќе за сертифицираните модели.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Дознајте повеќе за инсталирањето на Chrome OS и бришењето на податоците: [TBD URL]<ph name="END_PARAGRAPH3"/>
+          <ph name="BEGIN_PARAGRAPH4"/>Доколку сте подготвени да продолжите, кликнете „Инсталирај Chrome OS“ и ќе ве водиме низ процесот на инсталирање во само неколку лесни чекори. Ќе имате уште една можност да потврдите пред да извршиме промени на вашиот компјутер.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave не е вашиот стандарден прелистувач</translation>
 <translation id="5477319665405831211">Синхронизирајте го и персонализирајте го Brave на сите ваши уреди</translation>
 <translation id="5419189641394808652">Brave не може да ги синхронизира вашите податоци затоа што Синхронизација не е достапна на вашиот домен.</translation>
@@ -231,7 +247,6 @@ Brave не може да ги обнови вашите поставки.</trans
 <translation id="8462524920674814187">За да добивате идни ажурирања на Brave, потребен ви е OS X 10.11 или понова верзија. Компјутеров користи OS X 10.10.</translation>
 <translation id="7963515534397191222">Brave не може да се ажурира на најновата верзија и поради тоа ги пропуштате новите функции и безбедносни поправки.</translation>
 <translation id="7573289029918943991">За да видите дали уредот ви е ажуриран, одете на <ph name="LINK_BEGIN"/>Поставки за Chrome OS<ph name="LINK_END"/></translation>
-<translation id="6755885556185485672">Chrome OS не се исклучи правилно.</translation>
 <translation id="2925193881330501265">Бевте најавени на Brave како <ph name="USER_EMAIL_ADDRESS"/>. Користете ја истата сметка за повторно да се најавите.</translation>
 <translation id="6915252145142862992">Ова е второстепена инсталација на Brave и затоа не може да биде стандарден прелистувач.</translation>
 <translation id="7685904775439037072">Ако Brave има пристап, тогаш и веб-сајтовите ќе може да ви бараат пристап.</translation>
@@ -263,7 +278,6 @@ Brave не може да ги обнови вашите поставки.</trans
 <translation id="6389268239133412586">Не може да се ажурира Brave</translation>
 <translation id="6368958679917195344">Chrome OS е овозможен со дополнителен <ph name="BEGIN_LINK_CROS_OSS"/>софтвер со отворен код<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8986207147630327271">Додавате работен профил во овој прелистувач и му давате контрола на администраторот само врз тој профил.</translation>
-<translation id="1156157157416773301">Да се премести сметката во нов профил на Brave?</translation>
 <translation id="5173820533850252773">Brave е застарен</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave ќе се рестартира по еден час}one{Brave ќе се рестартира по # час}other{Brave ќе се рестартира по # часа}}</translation>
 <translation id="7863882214613921971">Отвори го линкот во нова &amp;картичка на Brave</translation>

@@ -219,9 +219,23 @@
     "message": "Prosím, zálohujte svoju peňaženku Brave.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Ďalšie informácie",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Chyba: Iný účet",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, zdá sa, že vaša peňaženka odmien Brave Rewards už bola overená iným účtom $name$. Skúste overenie vykonať znova pomocou predošlého účtu.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Chyba: BAT nedostupný",
@@ -231,10 +245,6 @@
     "message": "BAT na Uphold zatiaľ nie je podporovaný vo vašom regióne.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "Ďalšie informácie",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "Chyba: Zablokovaný účet",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "Váš účet na Uphold je momentálne zablokovaný.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "Ďalšie informácie",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Chyba: Čakajúci účet",
@@ -255,10 +261,6 @@
     "message": "O vašom účte na Uphold sa ešte nerozhodlo.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Ďalšie informácie",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Chyba: Obmedzený účet",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Váš účet na Uphold je momentálne obmedzený.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Ďalšie informácie",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Dosiahnutý počet zariadení",
@@ -534,10 +532,6 @@
   "grantFinishTokenTitleAds": {
     "message": "Objem vašich odmien",
     "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "overiť",
-    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Prerušené spojenie",

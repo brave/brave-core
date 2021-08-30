@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave 廣告阻擋</translation>
 <translation id="4615489450165434530">回報壞掉的網站</translation>
+<translation id="1209739344687072997">回報壞掉的網站</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="1544192797660353713">錢包</translation>
-<translation id="2445484935443597917">建立新設定檔</translation>
+<translation id="2445484935443597917">建立新的個人資料</translation>
+<translation id="744341768939279100">建立新設定檔</translation>
 <translation id="2666990579225592931">開啟訪客視窗</translation>
+<translation id="4986483413015198747">開啟訪客視窗</translation>
 <translation id="8275068909952022340">其他…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") 在 Brave 中是不允許的。</translation>
 <translation id="6786747875388722282">擴充功能</translation>
@@ -45,10 +48,12 @@
 <translation id="5802665280774361839">在網址列顯示自動完成</translation>
 <translation id="597020512043916976">在自動完成建議中顯示熱門網站</translation>
 <translation id="264150068416846820">在自動完成建議中顯示 Brave 建議的網站</translation>
-<translation id="5529693968082667490">顯示搜尋分頁按鈕</translation>
+<translation id="5529693968082667490">顯示分頁搜尋按鈕</translation>
 <translation id="6414370348346025511">標準防護已開啟。</translation>
 <translation id="814018970995616154">以 Brave 中儲存的不安全網站清單檢查 URL。</translation>
 <translation id="1144810021918451336">無法協助您防護危險網站、下載和延伸套件。</translation>
+<translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
+<translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
 <translation id="7781069478569868053">新分頁</translation>
 <translation id="1988804048511540801">新的索引標籤頁顯示</translation>
 <translation id="2970343821770026391">儀表板​​</translation>
@@ -192,7 +197,7 @@
 <translation id="1834467296210148203">在工具列上顯示 Brave Wallet 圖示</translation>
 <translation id="6864914031231797928">允許延伸套件登入 Google</translation>
 <translation id="5927916530277631319">處理 Unstoppable Domains 的方式</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/> 關於 DNS over HTTPS 與以太坊的隱私考量。</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/>關於基於 HTTPS 的 DNS  與以太坊隱私注意事項。</translation>
 <translation id="5248318250177143470">處理以太坊域名服務 (ENS) 的方式</translation>
 <translation id="7024553202001112871">設定 IPNS 金鑰</translation>
 <translation id="951216659045543447">透過對應的私鑰簽署內容並將其發佈到 IPNS</translation>
@@ -214,7 +219,7 @@
 <translation id="1534091531114892221">設定 ipfs 對等描述</translation>
 <translation id="8996633027318264334">真的刪除 <ph name="KEY_NAME"/> 嗎？</translation>
 <translation id="910215077892371264">節點未啟動</translation>
-<translation id="616058968889448209">IPFS 服務啟動錯誤，更多資訊已提供於 <ph name="BEGIN_LINK"/>診斷頁面<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">IPFS 服務啟動錯誤，更多資訊請參閱<ph name="BEGIN_LINK"/>診斷頁面<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 金鑰匯入失敗</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' 金鑰匯出失敗</translation>
 <translation id="8275038454117074363">匯入</translation>
@@ -224,7 +229,7 @@
 <translation id="1327977588028644528">閘道</translation>
 <translation id="80225669816651290">本地節點</translation>
 <translation id="4927734062756955434">IPFS 公用閘道器位址</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>進一步了解<ph name="END_LINK_MPL"/> 關於 IPFS 本機節點與閘道的隱私考量。</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>了解更多<ph name="END_LINK_MPL"/>關於 IPFS 本機節點與閘道隱私注意事項。</translation>
 <translation id="8425213833346101688">變更</translation>
 <translation id="557281710253742286">設定 IPFS 閘道器</translation>
 <translation id="8571837315037233299">閘道器位址</translation>
@@ -238,7 +243,6 @@
 <translation id="8655170717758778983">可行時，自動透過 DNSLink 重新導向至 IPFS 頁面</translation>
 <translation id="2233724520223030977">可行時，會自動使用 DNSLink 來導向至網站的 IPFS 版本</translation>
 <translation id="6554397389149987360">使用 Hangouts 元件來啟用畫面分享和其它瀏覽器功能。</translation>
-<translation id="1765684547504191670">使用媒體路由器元件以在瀏覽器中啟用 Chromecast。</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="8068526464562249859">在 Brave 使用 IPFS 隨附擴充功能以增強 IPFS 支援，包括從您的瀏覽器列存取一般的 IPFS 任務。</translation>
@@ -308,6 +312,7 @@
 <translation id="6873781976650514089">這項設定</translation>
 <translation id="6040143037577758943">關閉</translation>
 <translation id="5600566490506283344">Brave 廣告通知</translation>
+<translation id="1516554614404600536">Brave 工具提示</translation>
 <translation id="4877147287319222750">新增到側邊欄</translation>
 <translation id="4233010476457917696">顯示側邊欄</translation>
 <translation id="5404213409401164238">顯示側邊欄</translation>
@@ -348,6 +353,7 @@
         您可以閱讀 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>如何下載並自行建構<ph name="END_LINK_BUILD_INSTRUCTIONS"/> 特定 <ph name="BEGIN_LINK_SOURCE_CODE"/>原始碼來建立此副本<ph name="END_LINK_SOURCE_CODE"/> 的說明。</translation>
 <translation id="4474155171896946103">將所有分頁加入書籤...</translation>
 <translation id="2336228925368920074">將所有分頁加入書籤...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">要新增書籤，點擊網址列旁的書籤按鈕</translation>
 <translation id="4989337484121655457">需要完整的硬碟存取權限</translation>
 <translation id="8025559074845816210">Brave 需要完整的硬碟存取權限，以從 Safari 匯入您的書籤。</translation>

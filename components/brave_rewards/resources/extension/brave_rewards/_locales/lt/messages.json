@@ -219,9 +219,23 @@
     "message": "Sukurkite savo „Brave“ piniginės atsarginę kopiją.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Sužinokite daugiau",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Klaida: kita paskyra",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, atrodo, kad jūsų „Brave Rewards“ piniginė jau patvirtinta su kita $name$ sąskaita. Bandykite patvirtinti dar kartą, naudodami savo ankstesnę sąskaitą.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Klaida: BAT nepasiekiami",
@@ -231,10 +245,6 @@
     "message": "„Uphold“ dar nepalaiko BAT jūsų regione.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "Sužinokite daugiau",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "Klaida: užblokuota paskyra",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "Jūsų „Uphold“ paskyra šiuo metu užblokuota.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "Sužinokite daugiau",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Klaida: laukiama paskyros",
@@ -255,10 +261,6 @@
     "message": "Jūsų „Uphold“ paskyra vis dar laukianti.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Sužinokite daugiau",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Klaida: apribota paskyra",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Jūsų „Uphold“ paskyra šiuo metu apribota.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Sužinokite daugiau",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Pasiektas įrenginių limitas",
@@ -534,10 +532,6 @@
   "grantFinishTokenTitleAds": {
     "message": "Jūsų atlygio suma",
     "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "patvirtinti",
-    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Atsijungta",

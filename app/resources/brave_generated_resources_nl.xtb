@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Advertentieblokkeerder</translation>
 <translation id="4615489450165434530">Meld een gebroken site</translation>
+<translation id="1209739344687072997">Meld een gebroken site</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">Wallet</translation>
 <translation id="2445484935443597917">Een nieuw profiel maken</translation>
+<translation id="744341768939279100">Een nieuw profiel maken</translation>
 <translation id="2666990579225592931">Gastvenster openen</translation>
+<translation id="4986483413015198747">Gastvenster openen</translation>
 <translation id="8275068909952022340">Meer</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") is in Brave niet toegestaan.</translation>
 <translation id="6786747875388722282">Extensies</translation>
@@ -46,10 +49,12 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="597020512043916976">Toon topsites in de 
 suggesties voor automatisch aanvullen</translation>
 <translation id="264150068416846820">Toon door Brave voorgestelde sites in de suggesties voor automatisch aanvullen</translation>
-<translation id="5529693968082667490">Knop voor zoektabbladen tonen</translation>
+<translation id="5529693968082667490">Knop voor het zoeken van tabbladen tonen</translation>
 <translation id="6414370348346025511">Standaardbescherming staat aan.</translation>
 <translation id="814018970995616154">Vergelijkt ULS's met een lijst met onveilige sites die opgeslagen is in Brave.</translation>
 <translation id="1144810021918451336">Beschermt u niet tegen gevaarlijke websites, downloads en extensies.</translation>
+<translation id="6285118765755298263">Overzicht van andere zoekmachines</translation>
+<translation id="919715748352669592">Indexeert automatisch websites die de OpenSearch-specificaties volgen.</translation>
 <translation id="7781069478569868053">Nieuwe tabbladpagina</translation>
 <translation id="1988804048511540801">Nieuw tabblad toont</translation>
 <translation id="2970343821770026391">Dashboard</translation>
@@ -98,7 +103,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="6303294677342628402">Schilden</translation>
 <translation id="7133511168130368997">Blokkeer trackers en advertenties die u op het internet volgen.</translation>
 <translation id="2761825942249694703">Dit zijn de standaard Shields-instellingen. Ze zijn van toepassing op alle websites, tenzij u iets verandert via het Shields-configuratiescherm op een specifieke website. Deze veranderingen hebben geen invloed op uw bestaande instellingen per website.</translation>
-<translation id="1485394570478670912">Hiermee worden de meeste advertenties op websites geblokkeerd, behalve privéadvertenties van Brave; deze worden beheerd vanuit de</translation>
+<translation id="1485394570478670912">Hiermee worden de meeste advertenties op websites geblokkeerd, behalve Brave Private Ads; deze worden beheerd vanuit de</translation>
 <translation id="6388201778088078932">instellingen.</translation>
 <translation id="9185018653595759199">Social media blokkeren</translation>
 <translation id="7390783310074170337">Standaard weergave</translation>
@@ -192,7 +197,6 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1834467296210148203">Brave Wallet-pictogram in werkbalk tonen</translation>
 <translation id="6864914031231797928">Google-login voor extensies toestaan</translation>
 <translation id="5927916530277631319">Methode om Unstoppable Domains op te lossen</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/> over DNS via HTTPS en privacy-overwegingen voor Ethereum.</translation>
 <translation id="5248318250177143470">Methode om Ethereum Name Service (ENS) op te lossen</translation>
 <translation id="7024553202001112871">Je IPNS-sleutels instellen</translation>
 <translation id="951216659045543447">Content tekenen op basis van de bijbehorende privésleutel en publiceren in IPNS</translation>
@@ -214,7 +218,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1534091531114892221">Beschrijving van IPFS-peers instellen</translation>
 <translation id="8996633027318264334">Weet je zeker dat je <ph name="KEY_NAME"/> wilt verwijderen?</translation>
 <translation id="910215077892371264">Knooppunt is niet gestart</translation>
-<translation id="616058968889448209">IPFS-fout bij starten van de service. Meer informatie is beschikbaar op de <ph name="BEGIN_LINK"/>pagina met diagnostische gegevens<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">IPFS-fout bij starten van de service. Meer informatie is beschikbaar op de <ph name="BEGIN_LINK"/>pagina met diagnostiek<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Importeren van sleutel '<ph name="KEY_NAME"/>' is mislukt</translation>
 <translation id="3364053282600191535">Exporteren van sleutel '<ph name="KEY_NAME"/>' is mislukt</translation>
 <translation id="8275038454117074363">Importeren</translation>
@@ -224,7 +228,6 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokale node</translation>
 <translation id="4927734062756955434">Openbaar IPFS-gateway-adres</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Meer informatie<ph name="END_LINK_MPL"/> over het lokale IPFS-knooppunt en privacy-overwegingen voor de gateway.</translation>
 <translation id="8425213833346101688">Wijzigen</translation>
 <translation id="557281710253742286">Stel IPFS-gateway in</translation>
 <translation id="8571837315037233299">Gateway-adres</translation>
@@ -238,7 +241,6 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="8655170717758778983">Indien mogelijk automatisch omleiden naar IPFS-pagina's via DNSLink</translation>
 <translation id="2233724520223030977">Gebruikt automatisch DNSLink om indien mogelijk naar een IPFS-versie van een website te navigeren</translation>
 <translation id="6554397389149987360">Gebruikt een Hangouts-component om het delen van het scherm en andere functies in de browser mogelijk te maken.</translation>
-<translation id="1765684547504191670">Gebruikt Media Router-component om Chromecast in de browser in te schakelen.</translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
 <translation id="7179921470347911571">Nu Opnieuw Opstarten</translation>
 <translation id="8068526464562249859">Gebruikt de IPFS Companion-extensie voor verbeterde IPFS-ondersteuning in Brave, inclusief toegang tot veelvoorkomende IPFS-taken vanuit uw browserbalk.</translation>
@@ -308,6 +310,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="6873781976650514089">deze instelling</translation>
 <translation id="6040143037577758943">Sluit</translation>
 <translation id="5600566490506283344">Brave-advertentiemelding</translation>
+<translation id="1516554614404600536">Tooltip van Brave</translation>
 <translation id="4877147287319222750">Toevoegen aan zijbalk</translation>
 <translation id="4233010476457917696">Zijbalk weergeven</translation>
 <translation id="5404213409401164238">Zijbalk weergeven</translation>
@@ -348,6 +351,7 @@ suggesties voor automatisch aanvullen</translation>
         U kunt <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instructies lezen over het downloaden en zelf bouwen<ph name="END_LINK_BUILD_INSTRUCTIONS"/> de specifieke <ph name="BEGIN_LINK_SOURCE_CODE"/>broncode die wordt gebruikt om deze kopij te maken<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Bladwijzer toevoegen aan alle tabbladen...</translation>
 <translation id="2336228925368920074">Bladwijzer toevoegen aan alle tabbladen...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Om een bladwijzer toe te voegen, klik je op de bladwijzerknop naast de adresbalk</translation>
 <translation id="4989337484121655457">Volledige toegang tot de schijf vereist</translation>
 <translation id="8025559074845816210">Brave heeft volledige schijftoegang nodig om uw bladwijzers uit Safari te importeren.</translation>

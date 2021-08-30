@@ -47,7 +47,6 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="8372880274820509128">Pour une sécurité accrue, Brave va chiffrer vos données.</translation>
 <translation id="2770231113462710648">Remplacer le navigateur par défaut par :</translation>
 <translation id="2799223571221894425">Redémarrer</translation>
-<translation id="6811506454451584223">Profil Brave distinct?</translation>
 <translation id="3783547330001921298">Cette action créera un profil Brave associé au compte <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Supprimer de Brave...</translation>
 <translation id="2885378588091291677">Moniteur d'activité</translation>
@@ -70,17 +69,19 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="2339258256897053758">Les clés d'API Brave sont manquantes. Certaines fonctionnalités de Brave seront désactivées</translation>
 <translation id="8926637909431618259">Continuer l'exécution d'applications en arrière-plan après la fermeture de Brave</translation>
 <translation id="4480040274068703980">Chrome OS ne peut pas synchroniser vos données, car une erreur s'est produite lors de la connexion.</translation>
+<translation id="1166275459137851283">Brave vous recommande de ne pas télécharger ni ouvrir ce fichier.</translation>
 <translation id="2711887072399498551">Un profil Brave associé à ce compte existe déjà</translation>
 <translation id="2297290224191497273">Passer au profil Brave existant?</translation>
 <translation id="2450003541323895471">Utilisez les profils Brave pour dissocier toutes vos données Brave. Créez des profils pour vos amis et votre famille, ou créez un profil pour le travail et un autre pour les divertissements.</translation>
+<translation id="7275165473619697274">Installation de Brave OS en cours…</translation>
 <translation id="9216183508558772570">Brave vous avisera lorsque vous utilisez un mot de passe compromis pour vous connecter</translation>
 <translation id="5853262807109651878">Cette action entraînera la suppression de <ph name="ITEMS_COUNT"/> éléments de cet appareil. Pour récupérer vos données plus tard, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> permet de basculer entre les profils Brave</translation>
 <translation id="8703492925273919597">Veuillez fermer toutes les fenêtres Brave et essayer de nouveau.</translation>
 <translation id="1384923383737428730">Nous avons trouvé un logiciel nuisible sur votre ordinateur. Brave peut le supprimer, restaurer vos paramètres et désactiver les extensions pour que votre navigateur puisse fonctionner normalement de nouveau.</translation>
+<translation id="2409866122341731384">Effacer les données du disque dur et installer Brave OS</translation>
 <translation id="7029305463989165490">Pour envoyer un numéro de <ph name="ORIGIN"/> vers votre téléphone Android, connectez-vous à Brave sur les deux appareils.</translation>
 <translation id="4304059894777924102">Brave ne peut pas vérifier vos mots de passe. Essayez de vérifier votre connexion Internet.</translation>
-<translation id="2588634262982826227">Brave OS peut restaurer vos applications et vos pages ouvertes après un redémarrage sans vous le demander chaque fois.</translation>
 <translation id="1807774211756215222">Ouvrir le lien dans un nouvel ongle&amp;t Brave</translation>
 <translation id="7453070689008684791">Brave accédera à votre Disque pour faire des suggestions dans la barre d'adresse</translation>
 <translation id="2106568569080763501">Brave vous permet de cliquer sur un numéro de téléphone dans une page Web pour faire un appel avec Skype!</translation>
@@ -98,6 +99,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="8923080813984421771"><ph name="MANAGER"/> exige que vous lisiez et acceptiez les conditions d'utilisation suivantes pour utiliser cet appareil. Ces dernières n'étendent pas, ne modifient pas ni ne restreignent les conditions d'utilisation de Brave OS.</translation>
 <translation id="3262506503470845422">Obtenir de l'aide pour Brave</translation>
 <translation id="7691786510374174420">Échec de l'installation suite à une erreur non spécifiée. Si Brave est en cours d'exécution, veuillez le fermer, puis réessayer.</translation>
+<translation id="429583012151745428">L'installation est en cours… N'éteignez pas l'appareil. L'installation ne devrait pas prendre plus de vingt minutes. La machine s'éteindra automatiquement après l'installation.</translation>
 <translation id="9183662282810237335">Quitter Brave quand même?</translation>
 <translation id="4065288863231444640">Laisser Brave s'exécuter en arrière-plan</translation>
 <translation id="8148611988012584308">Personnaliser et commander Brave</translation>
@@ -131,7 +133,6 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave bêta</translation>
 <translation id="707769633889902835">Brave OS ne peut pas ouvrir cette page.</translation>
 <translation id="696826782632239602">Brave a besoin d'accéder à votre position afin de la partager avec ce site</translation>
-<translation id="7886919915603831625">Brave vous recommande de ne pas télécharger ni ouvrir ce fichier.</translation>
 <translation id="1744365871163268756">Veuillez patienter pendant que Brave installe les dernières mises à jour système.</translation>
 <translation id="3861679447659630159">Brave essaie de modifier des mots de passe. Pour autoriser cette action, entrez votre mot de passe Windows.</translation>
 <translation id="232381795826373334">Ouvrir les PDF dans Brave</translation>
@@ -156,6 +157,15 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="4168372721886011198">Brave a bloqué le fichier <ph name="FILE_NAME"/>, car il est dangereux.</translation>
 <translation id="7006260220514217183">La navigation sécurisée est désactivée. Brave vous recommande de l'activer.</translation>
 <translation id="4060970194201477024">Vous pouvez basculer entre les profils Brave ici</translation>
+<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Nous sommes prêts à installer Brave OS! Une fois que vous procédez à l'installation :
+          <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>les fichiers, les données et votre système d'exploitation actuel seront effacés;
+          <ph name="LIST_ITEM"/>Brave OS sera installé;
+          <ph name="LIST_ITEM"/>votre appareil s'éteindra une fois que celle-ci sera terminée.
+          <ph name="END_LIST"/>
+          <ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Un dernier rappel : l'installation effacera l'ensemble des données présentes sur votre disque dur. Veuillez vous assurer que l'ensemble des données auxquelles vous tenez est sauvegardé.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Une fois que l'installation a commencé, elle ne peut pas être annulée.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Assurez-vous d'être connecté à Brave sur votre <ph name="TARGET_DEVICE_NAME"/>, puis essayez de l'envoyer à nouveau.</translation>
 <translation id="8320964054148936490">Cet ordinateur dispose déjà d'une version plus récente de Brave. Si le logiciel ne fonctionne pas, veuillez le désinstaller, puis réessayer.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave va redémarrer maintenant}=1{Brave redémarrera dans 1 seconde}one{Brave redémarrera dans # seconde}other{Brave redémarrera dans # secondes}}</translation>
@@ -173,6 +183,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="2644798301485385923">Système Brave OS</translation>
 <translation id="1684121725014454063">Bienvenue dans les profils Brave</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave redémarrera dans 1 seconde}one{Brave redémarrera dans # seconde}other{Brave redémarrera dans # secondes}}</translation>
+<translation id="664235759707825982">Prêt à installer Brave OS</translation>
 <translation id="2675662665675552980">Elle gère également la page qui s'affiche au démarrage de Brave.</translation>
 <translation id="5590013613412457132">Désinstaller Brave</translation>
 <translation id="8646609321956191980">Chaque profil Brave contient ses propres données, comme les favoris, l'historique, les mots de passe, etc.</translation>
@@ -187,6 +198,7 @@ Certaines fonctionnalités seront peut-être inaccessibles. Veuillez spécifier 
 <translation id="6666624454809779082">Brave est déjà installé pour tous les utilisateurs sur votre ordinateur.</translation>
 <translation id="5360050006043219962">Pour accéder à vos données Brave sur tous vos appareils, connectez-vous et activez la synchronisation.</translation>
 <translation id="8291513491595858997">Ton parent a désactivé le paramètre « Autorisations pour les sites, les applications et les extensions » dans Brave. L'activation de ce <ph name="EXTENSION_TYPE_PARAMETER"/> n'est pas autorisée.</translation>
+<translation id="1810203443153428607">L'installation de Brave OS écrasera l'ensemble des données présentes sur votre appareil.</translation>
 <translation id="8211837073776713955">Brave vous informera si jamais vos mots de passe sont compromis</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (copiée dans Brave)</translation>
@@ -218,6 +230,10 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="5657226924540934362">Si un paramètre ne s'affiche pas sur cette page, consultez les <ph name="LINK_BEGIN"/>paramètres de Brave OS<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave utilise votre caméra et votre microphone</translation>
 <translation id="2827121003398607864">Brave vient de s'améliorer</translation>
+<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Avant de commencer, veuillez vous assurer que vous disposez d'une sauvegarde à jour de vos données. L'installation de Brave OS écrasera l'ensemble des données présentes sur votre disque dur.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Brave n'est pas responsable de toute perte de données et ne garantit pas que Brave OS fonctionnera sur les modèles non certifiés. Veuillez visiter [TBD] pour en savoir plus à propos des modèles certifiés.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>En savoir plus à propos de l'installation de Brave OS et de l'effacement des données : [TBD URL]<ph name="END_PARAGRAPH3"/>
+          <ph name="BEGIN_PARAGRAPH4"/>Si vous êtes prêt à procéder, cliquez sur « Installer Brave OS », et nous vous guiderons à travers l'installation en quelques étapes simples. Vous aurez encore l'occasion de la confirmer avant que nous procédions à des modifications sur votre ordinateur.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave n'est pas votre navigateur par défaut</translation>
 <translation id="5477319665405831211">Synchroniser et personnaliser Brave sur vos appareils</translation>
 <translation id="5419189641394808652">Brave n'a pas pu synchroniser vos données, car la synchronisation n'est pas offerte pour votre nom de domaine.</translation>
@@ -228,7 +244,6 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="8462524920674814187">Vous devez disposer de macOS X 10.11 ou d'une version ultérieure pour recevoir les futures mises à jour de Brave. Or, c'est la version macOS X 10.10 qui est installée sur cet ordinateur.</translation>
 <translation id="7963515534397191222">Brave n'a pas pu installer la nouvelle version, vous ne pouvez donc pas profiter des nouvelles fonctionnalités ni des correctifs relatifs à la sécurité.</translation>
 <translation id="7573289029918943991">Pour voir si votre appareil est à jour, sélectionnez les <ph name="LINK_BEGIN"/>paramètres de Brave OS<ph name="LINK_END"/></translation>
-<translation id="6755885556185485672">Brave OS n'a pas été éteint correctement.</translation>
 <translation id="2925193881330501265">Vous étiez connecté à Brave en tant que <ph name="USER_EMAIL_ADDRESS"/>. Veuillez utiliser le même compte pour vous reconnecter.</translation>
 <translation id="6915252145142862992">Cette installation de Brave est secondaire. Celui-ci ne peut donc pas servir de navigateur par défaut.</translation>
 <translation id="7685904775439037072">Lorsque Brave y aura accès, les sites Web pourront vous demander l'accès.</translation>
@@ -260,7 +275,6 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="6389268239133412586">Impossible de mettre à jour Brave</translation>
 <translation id="6368958679917195344">Brave OS fonctionne grâce à d'autres <ph name="BEGIN_LINK_CROS_OSS"/>logiciels libres<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8986207147630327271">Vous ajoutez un profil professionnel à ce navigateur et vous octroyez uniquement le contrôle de ce profil à votre administrateur.</translation>
-<translation id="1156157157416773301">Déplacer le compte vers un nouveau profil Brave?</translation>
 <translation id="5173820533850252773">Brave n'est pas à jour</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave redémarrera dans une heure}one{Brave redémarrera dans # heure}other{Brave redémarrera dans # heures}}</translation>
 <translation id="7863882214613921971">Ouvrir le lien dans un nouvel ongle&amp;t Brave</translation>
