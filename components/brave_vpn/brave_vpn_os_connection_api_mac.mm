@@ -253,7 +253,20 @@ void BraveVPNOSConnectionAPIMac::Disconnect(const std::string& name) {
 }
 
 void BraveVPNOSConnectionAPIMac::CheckConnection(const std::string& name) {
-  NOTIMPLEMENTED();
+  NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
+  [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
+    if (error) {
+      LOG(ERROR) << "Connect - loadFromPrefs error: "
+                 << base::SysNSStringToUTF8([error localizedDescription]);
+      return;
+    }
+
+    NEVPNStatus current_status = [[vpn_manager connection] status];
+    const bool connected = current_status == NEVPNStatusConnected;
+    VLOG(2) << "CheckConnection: " << connected;
+    for (Observer& obs : observers_)
+      connected ? obs.OnConnected(name) : obs.OnDisconnected(name);
+  }];
 }
 
 }  // namespace brave_vpn
