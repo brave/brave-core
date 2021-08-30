@@ -235,6 +235,8 @@
 <translation id="3082557070674409251">क्लिक किया गया</translation>
 <translation id="7119308337584989771">बरखास्त</translation>
 <translation id="6805660603861526473">देखा गया</translation>
+<translation id="1501075228659004450">हम्म, ऐसा लगता है कि आपका Brave Reward वॉलेट पहले से ही दूसरे के साथ वेरिफ़ाई किया जा चूका है <ph name="PROVIDER"/> अकाउंट. कृपया अपने पिछले अकाउंट का इस्तेमाल करके फिर से वेरिफ़ाई करने की कोशिश करें.</translation>
+<translation id="5111921830714291902">एरर: अलग अकाउंट</translation>
 <translation id="2359865110462963929">वर्तमान में BAT आपके क्षेत्र में समर्थित नहीं है। अपडेट के लिए कृपया <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> को देखें।</translation>
 <translation id="1737873393693460829">[[title]] को चालू करके, आप <ph name="BEGIN_LINK1"/> सेवा की शर्तें <ph name="END_LINK1"/> से सहमत होते हैं। और <ph name="BEGIN_LINK2"/> गोपनीयता नीति <ph name="END_LINK2"/>।</translation>
 <translation id="2564425876266960486">Brave ब्राउज़र BAT कार्ड निर्माण में समस्या हुई है</translation>
@@ -254,6 +256,7 @@
 <translation id="2359808026110333948">जारी रखें</translation>
 <translation id="5112354605357157725">लॉगिन करना जारी रखें</translation>
 <translation id="1280764044837262633">अगर आपने पहले किसी अकाउंट को कनेक्ट किया है. <ph name="PROVIDER"/> को अकॉउंट बनाने के लिए कम से कम <ph name="AMOUNT"/> BAT बैलेंस की आवश्यकता होती है.</translation>
+<translation id="752216563428219524">विज्ञापन शुरू नहीं किए गए, कृपया पेज रेफ़्रेश करें.</translation>
 <translation id="7422678632904904341">मात्रा</translation>
 <translation id="6969783933307596818">हर 5 सेकंड में स्वचालित रूप से रिफ़्रेश करें</translation>
 <translation id="5025866799968038247">शेष की जानकारी</translation>
@@ -314,6 +317,7 @@
 <translation id="2152423226436243241">ऑटो योगदान</translation>
 <translation id="2927922949538312364">एक बार की बख्शीश</translation>
 <translation id="3164105678355419142">आवर्ती बख्शीश</translation>
+<translation id="916115051162298064">विज्ञापन डायग्नोस्टिक्स</translation>
 <translation id="7806880412350961625">इवेंट लॉग</translation>
 <translation id="4309915981827077375">सामान्य जानकारी</translation>
 <translation id="3662406032239313663">लॉग्स</translation>
@@ -414,6 +418,7 @@
 <translation id="4241224519481557898">श्रेणी</translation>
 <translation id="3080423471207781945">प्रति घंटे प्राप्त अधिकतम विज्ञापन:</translation>
 <translation id="2631006050119455616">सेव कर लिया गया है</translation>
+<translation id="7847825746023377505"><ph name="TOTAL_DAYS"/> दिनों में कोई भी विज्ञापन नहीं देखा गया.</translation>
 <translation id="7902420836933072528">आपके द्वारा पिछले {{totalDays}} दिनों में प्राप्त किए गए विज्ञापन</translation>
 <translation id="8863685593846905344">एड्स इतिहास</translation>
 <translation id="2777306694585938662">विज्ञापन के रिवॉर्ड प्राप्त हुए</translation>
@@ -567,7 +572,6 @@
 <translation id="8014425282125849700">कभी-कभी, आपको ब्रेव की ओर से मुफ्त टोकन अनुदान की पेशकश की जाएगी। सूचना के लिए नजर रखना सुनिश्चित करें!</translation>
 <translation id="1370034647041840967">विज्ञापनों पर ध्यान देने के लिए टोकन कमाएं और आपके लिए महत्वपूर्ण सामग्री निर्माताओं का समर्थन करने के लिए इसे आगे भेजें!</translation>
 <translation id="4919888432594361029"><ph name="PROVIDER"/> पर धनराशि जोड़ें, निकालें और प्रबंधित करें।</translation>
-<translation id="3092054349246483285">आपका Brave वॉलेट <ph name="PROVIDER"/> द्वारा संचालित है।</translation>
 <translation id="6401272292123354754">Brave रिवार्ड्स बेसिक अटेंशन टोकन पर बने हैं| BAT के बारे में और जानें</translation>
 <translation id="7823359893981882407">यहाँ</translation>
 <translation id="3034163433136515805">QR कोड देखें</translation>
@@ -645,12 +649,14 @@
 <translation id="39734939514946950">आपकी रिवार्ड राशि</translation>
 <translation id="2151535059686617995">आज आपका भाग्यशाली दिन है!</translation>
 <translation id="6436689611575806470">आपका  [[currency]] अनुदान जल्द ही आने वाला है।</translation>
-<translation id="7512440811010447157">सत्यापित करें</translation>
 <translation id="8267327690882073581">वॉलेट सत्यापित करें</translation>
 <translation id="543510923939676996">वॉलेट सत्यापन पूरा हुआ</translation>
 <translation id="2659764755126740206">मेरे <ph name="PROVIDER"/> अकाउंट पर जाएँ</translation>
 <translation id="3699674790322420653">वॉलेट सत्यापन पूरा करें</translation>
 <translation id="9200453331904391567">Brave Rewards से डिसकनेक्ट करें</translation>
+<translation id="3656941797339037856">रिवॉर्ड को Gemini से लिंक करें!</translation>
+<translation id="671838195432136371">Gemini आपको अपने BAT पर आसानी से व्यापार, स्टोर और 3.49% APY* अर्जित करने देता है. नए Gemini उपयोगकर्ता जो लिंक होते हैं, वो 5 फ़्री BAT प्राप्त करते हैं!</translation>
+<translation id="9136976526700181750">* 15 अगस्त, 2021 तक Gemini Earn APY</translation>
 <translation id="7404779623219601861">उपहार कार्ड के लिए BAT को रिडीम करें</translation>
 <translation id="6215565499749144110">TAP नेटवर्क के साथ, आप अपने BAT को लोकप्रिय नाम-ब्रांड के उपहार कार्ड के लिए रिडीम कर सकते हैं।</translation>
 <translation id="6915065518766963119">* अपहोल्ड सत्यापन की आवश्यकता है।</translation>
@@ -735,6 +741,7 @@
 <translation id="1833248467354516560">यूनिट मूल्य</translation>
 <translation id="4763179765154524864">कुल खर्च किया</translation>
 <translation id="8851480289992540512">कुल प्राप्त हुआ</translation>
+<translation id="824449983246282560">आपके अकाउंट में कोई बैलेंस नहीं है. खरीदने के लिए Gemini पर जाएं.</translation>
 <translation id="8624961452383848703">मैं कन्वर्ट करना चाहता हूं...</translation>
 <translation id="616639131065447379">Brave क्रिप्टो वॉलेट में स्वागत है</translation>
 <translation id="1740464057879304704">क्रिप्टो वॉलेट आपको Brave में क्रिप्टोकरेंसी और संबंधित एसेट के साथ काम करने की सुविधा देता है। क्रिप्टो वॉलेट ETH और BAT जैसे एथेरियम टोकन के समर्थन के साथ ही संग्रहणीय है और आपको ऐप्स और अन्य स्मार्ट अनुबंधों के साथ काम करने की सुविधा देता है। यह सब उन लोगों के लिए है जो एथेरियम और अन्य ब्लॉकचैन सिस्टम से परिचित हैं या सीखने के लिए उत्साहित हैं।</translation>

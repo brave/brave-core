@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Klikattu</translation>
 <translation id="7119308337584989771">Hylätty</translation>
 <translation id="6805660603861526473">Katsottu</translation>
+<translation id="1501075228659004450">Hmm, näyttää siltä, että Brave Rewards -lompakkosi on jo vahvistettu toisella <ph name="PROVIDER"/> tilillä. Vahvista uudelleen käyttämällä edellistä tiliäsi.</translation>
+<translation id="5111921830714291902">Virhe: Eri tili</translation>
 <translation id="2359865110462963929">BAT ei ole tällä hetkellä tuettu alueellasi. Voit löytää päivityksiä <ph name="BEGIN_LINK"/>täältä<ph name="END_LINK"/>.</translation>
 <translation id="1737873393693460829">Käynnistämällä [[title]] hyväksyt <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>yksityisyyskäytännön<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Brave-selaimen BAT-kortin luonnin yhteydessä ilmeni häiriö</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Jatka</translation>
 <translation id="5112354605357157725">Jatka sisäänkirjautumista</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> vaatii minimisaldon, jonka määrä on <ph name="AMOUNT"/> BATia, jotta voit luoda tilin. Jos yhdistit tilin aikaisemmin,</translation>
+<translation id="752216563428219524">Mainoksia ei ole alustettu, päivitä sivu.</translation>
 <translation id="7422678632904904341">Summa:</translation>
 <translation id="6969783933307596818">Päivittyy automaattisesti 5 sekunnin välein</translation>
 <translation id="5025866799968038247">Saldon tiedot</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Automaattilahjoitus</translation>
 <translation id="2927922949538312364">Kertatippi</translation>
 <translation id="3164105678355419142">Toistuva tippi</translation>
+<translation id="916115051162298064">Mainosten diagnostiikka</translation>
 <translation id="7806880412350961625">Tapahtumalokit</translation>
 <translation id="4309915981827077375">Yleistiedot</translation>
 <translation id="3662406032239313663">Lokit</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Kategoria</translation>
 <translation id="3080423471207781945">Mainosten maksimimäärä per tunti:</translation>
 <translation id="2631006050119455616">Tallennettu</translation>
+<translation id="7847825746023377505">Ei katsottuja mainoksia viimeisen <ph name="TOTAL_DAYS"/> päivän aikana.</translation>
 <translation id="7902420836933072528">Viimeisen [[totalDays]] päivän aikana vastaanottamasi mainokset</translation>
 <translation id="8863685593846905344">Mainoshistoria</translation>
 <translation id="2777306694585938662">Vastaanotetut Ads-palkkiot</translation>
@@ -529,7 +534,7 @@
 <translation id="8725066075913043281">Yritä uudelleen</translation>
 <translation id="2600847485413879104">Palkintojen BAT</translation>
 <translation id="8006596443377585072">bitFlyer-lompakko</translation>
-<translation id="2770577461149798369">Gemini Wallet</translation>
+<translation id="2770577461149798369">Gemini-lompakko</translation>
 <translation id="8108350286444475334">Uphold-verkkokukkaro</translation>
 <translation id="6977372887576114613">Talletettu BAT</translation>
 <translation id="3173528272490482456">Oletko valmis aloittamaan?</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">Toisinaan Brave tarjoaa sinulle ilmaisia lahjoituspoletteja. Seuraa ilmoituksiasi!</translation>
 <translation id="1370034647041840967">Ansaitse poletteja huomioidessasi mainoksia ja anna hyvän kiertää tukemalla arvostamiasi sisällöntuottajia!</translation>
 <translation id="4919888432594361029">Lisää, nosta ja hallinnoi varoja <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Brave-lompakkosi tarjoaa <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards perustuu Basic Attention Token-poletteihin. Lue lisää BAT-poleteista</translation>
 <translation id="7823359893981882407">tässä</translation>
 <translation id="3034163433136515805">Näytä ruutukoodi</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Palkintosummasi</translation>
 <translation id="2151535059686617995">On onnenpäiväsi!</translation>
 <translation id="6436689611575806470">[[currency]]-stipendisi on tulossa.</translation>
-<translation id="7512440811010447157">vahvista</translation>
 <translation id="8267327690882073581">Vahvista kukkaro</translation>
 <translation id="543510923939676996">Lompakko vahvistettu</translation>
 <translation id="2659764755126740206">Siirry <ph name="PROVIDER"/> -tililleni</translation>
 <translation id="3699674790322420653">Viimeistele lompakon vahvistus</translation>
 <translation id="9200453331904391567">Katkaise yhteys Brave-palkinnoista</translation>
+<translation id="3656941797339037856">Link Rewards Geminiin!</translation>
+<translation id="671838195432136371">Gemini antaa sinun helposti käydä kauppaa, säilyttää ja ansaita 3.49 % vuotuisen tuoton* BATeistasi. Uudet Gemini-käyttäjät, jotka linkittävät, saavat 5 ilmaista BATtia!</translation>
+<translation id="9136976526700181750">* Geminin ansaitsema vuotuinen tuotto 15. elokuuta 2021</translation>
 <translation id="7404779623219601861">Vaihda BAT-valuuttaa lahjakorteiksi</translation>
 <translation id="6215565499749144110">TAP Networkin avulla voit vaihtaa BAT-valuuttasi suosittujen nimibrändien lahjakorteiksi.</translation>
 <translation id="6915065518766963119">* Vaatii Uphold-vahvistuksen.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Yksikön hinta</translation>
 <translation id="4763179765154524864">Käytetty yhteensä</translation>
 <translation id="8851480289992540512">Vastaanotettu yhteensä</translation>
+<translation id="824449983246282560">Sinulla ei ole yhtään saldoa tililläsi. Käy Geminissä ostaaksesi valuuttoja.</translation>
 <translation id="8624961452383848703">Haluan muuntaa...</translation>
 <translation id="616639131065447379">Tervetuloa Braven Crypto Walletsiin</translation>
 <translation id="1740464057879304704">Crypto Wallets mahdollistaa kryptovaluuttojen ynnä muiden vastaavien varojen käytön Bravessa. Crypto Wallets tukee ETH:n ja BAT:n kaltaisia ethereum-käyttötunnuksia sekä kerättäviä tunnuksia, minkä lisäksi se mahdollistaa Ðsovellusten ynnä muiden älysopimusten käytön. Se on tarkoitettu niille jotka tuntevat ethereumin ynnä muut lohkoketjujärjestelmät — tai tahtovat oppia lisää niistä.</translation>

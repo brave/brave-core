@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">کلیک شده</translation>
 <translation id="7119308337584989771">نادیده گرفته شده</translation>
 <translation id="6805660603861526473">مشاهده شده</translation>
+<translation id="1501075228659004450">هوم، به نظر می‌رسد کیف پول Brave Rewards شما قبلاً با یک حساب <ph name="PROVIDER"/> دیگر تأیید شده است. لطفاً با استفاده از حساب قبلی خود دوباره تأیید کنید.</translation>
+<translation id="5111921830714291902">خطا: حساب متفاوت</translation>
 <translation id="2359865110462963929">BAT در حال حاضر در منطقه شما پشتیبانی نمی‌شود لطفاً برای به‌روزرسانی به <ph name="BEGIN_LINK"/>اینجا<ph name="END_LINK"/> مراجعه کنید.</translation>
 <translation id="1737873393693460829">با روشن کردن [[title]]، شما با <ph name="BEGIN_LINK1"/>شرایط خدمات<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>خط‌مشی رازداری<ph name="END_LINK2"/> موافقت می‌کنید.</translation>
 <translation id="2564425876266960486">خطا در ایجاد کارت Brave Browser BAT</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">ادامه</translation>
 <translation id="5112354605357157725">ادامه برای ورود به سیستم</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> برای ایجاد حساب به حداقل موجودی <ph name="AMOUNT"/> ‏BAT نیاز دارد. اگر قبلاً حسابی را متصل کرده‌اید،</translation>
+<translation id="752216563428219524">مقداردهی اولیه آگهی انجام نشده‌ است، لطفاً صفحه را تازه‌سازی کنید.</translation>
 <translation id="7422678632904904341">مقدار:</translation>
 <translation id="6969783933307596818">تازه‌سازی خودکار در هر 5 ثانیه</translation>
 <translation id="5025866799968038247">اطلاعات موجودی</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">کمک خودکار</translation>
 <translation id="2927922949538312364">انعام یک‌باره</translation>
 <translation id="3164105678355419142">انعام تکرارشونده</translation>
+<translation id="916115051162298064">عیب‌یابی آگهی</translation>
 <translation id="7806880412350961625">گزارش‌های رویداد</translation>
 <translation id="4309915981827077375">اطلاعات عمومی</translation>
 <translation id="3662406032239313663">گزارش‌ها</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">دسته‌بندی</translation>
 <translation id="3080423471207781945">حداکثر تبلیغات دریافتی در هر ساعت:</translation>
 <translation id="2631006050119455616">ذخیره شد</translation>
+<translation id="7847825746023377505">هیچ تبلیغی در <ph name="TOTAL_DAYS"/> روز گذشته مشاهده نشده است.</translation>
 <translation id="7902420836933072528">تبلیغاتی که در [[totalDays]] روز گذشته دریافت کرده‌اید</translation>
 <translation id="8863685593846905344">تاریخچه تبلیغات</translation>
 <translation id="2777306694585938662">پاداش‌های آگهی‌ها دریافت‌شده</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">گاهی اوقات، امتیازهای توکن رایگان از Brave دریافت می‌کنید. حتماً مراقب چنین اعلامی باشید!</translation>
 <translation id="1370034647041840967">بابت توجهتان به آگهی‌ها توکن دریافت کنید و با بازارسال آن (pay it forward) از پدیدآورندگانی که برایتان مهم هستند حمایت کنید!</translation>
 <translation id="4919888432594361029">سرمایه‌ها را در <ph name="PROVIDER"/> اضافه، برداشت و مدیریت کنید.</translation>
-<translation id="3092054349246483285">کیف پول Brave شما توسط <ph name="PROVIDER"/> ارائه می‌شود.</translation>
 <translation id="6401272292123354754">«پاداش‌های Brave» برپایه «توکن توجه پایه» (Basic Attention Token) ساخته شده است. درباره BAT بیشتر بدانید</translation>
 <translation id="7823359893981882407">اینجا</translation>
 <translation id="3034163433136515805">مشاهده کد QR</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">مقدار پاداش شما</translation>
 <translation id="2151535059686617995">It’s روز شانستان است!</translation>
 <translation id="6436689611575806470">هدیه [[currency]] شما در راه است.</translation>
-<translation id="7512440811010447157">تأیید</translation>
 <translation id="8267327690882073581">تأیید کیف پول</translation>
 <translation id="543510923939676996">کیف پول تأیید شد!‍</translation>
 <translation id="2659764755126740206">رفتن به حساب <ph name="PROVIDER"/> من</translation>
 <translation id="3699674790322420653">تکمیل تأیید کیف پول</translation>
 <translation id="9200453331904391567">قطع ارتباط از پاداش‌های Brave</translation>
+<translation id="3656941797339037856">Rewards را به Gemini مرتبط کنید!</translation>
+<translation id="671838195432136371">Gemini به شما این امکان را می‌دهد تا به‌راحتی معامله و ذخیره کنید و 3.49٪ APY* در BAT خود به دست بیاورید. کاربران جدید Gemini که مرتبط کنند، 5 BAT رایگان دریافت می‌کنند!</translation>
+<translation id="9136976526700181750">* Gemini Earn APY از تاریخ 15 اوت 2021</translation>
 <translation id="7404779623219601861">نقد کردن BAT برای کارت‌های هدیه</translation>
 <translation id="6215565499749144110">با شبکه TAP، می‌توانید BAT خود را برای کارت‌های هدیه با برند معروف نقد کنید.</translation>
 <translation id="6915065518766963119">* به تأیید نگهداری نیاز دارد.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">قیمت واحد</translation>
 <translation id="4763179765154524864">کل هزینه</translation>
 <translation id="8851480289992540512">مجموع دریافت‌شده</translation>
+<translation id="824449983246282560">موجودی حساب شما خالی است. برای خرید به Gemini مراجعه کنید.</translation>
 <translation id="8624961452383848703">می‌خواهم تبدیل کنم…</translation>
 <translation id="616639131065447379">به «کیف پول‌های رمزگذاری‌شده Brave» خوش آمدید</translation>
 <translation id="1740464057879304704">«کیف پول‌های رمزگذاری‌شده» به شما امکان می‌دهند با رمزارز و دارایی‌های مربوط به آن در Brave کار کنید. «کیف پول‌های رمزگذاری‌شده» از توکن‌های «اتریم»، مانند ETH و BAT و همچنین از موارد قابل وصول پشتیبانی می‌کنند و به شما امکان می‌دهند با برنامه‌ها و سایر قراردادهای هوشمند کار کنید. همه این قابلیت‌ها برای افرادی طراحی شده‌اند که با «اتریم» و سایر سیستم‌های زنجیره بلوکی آشنا هستند یا برای یادگیری در مورد آنها هیجان‌زده هستند.</translation>

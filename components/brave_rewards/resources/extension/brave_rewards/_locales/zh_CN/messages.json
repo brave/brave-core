@@ -219,9 +219,23 @@
     "message": "请备份您的 Brave 钱包。",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "详细了解",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "错误：不同的账户",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "哎呀，看来您的 Brave Rewards 钱包已使用其他 $name$ 账户验证。请尝试使用您先前的账户验证。",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "错误：BAT 不可用",
@@ -231,10 +245,6 @@
     "message": "您所在地区的 Uphold 尚不支持 BAT。",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "详细了解",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "错误：账户被屏蔽",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "您在 Uphold 的账户目前已被屏蔽。",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "详细了解",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "错误：待处理账户",
@@ -255,10 +261,6 @@
     "message": "您在 Uphold 的账户仍处于待处理状态。",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "详细了解",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "错误：受限账户",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "您在 Uphold 的账户目前受到限制。",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "详细了解",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "已达到设备限量",
@@ -534,10 +532,6 @@
   "grantFinishTokenTitleAds": {
     "message": "您的 Reward 金额",
     "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "验证",
-    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "已断开连接",

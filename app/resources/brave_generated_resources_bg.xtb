@@ -3,11 +3,14 @@
 <translationbundle lang="bg">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Блокер на реклами</translation>
-<translation id="4615489450165434530">Докладвайте нефункциониращ сайт</translation>
+<translation id="4615489450165434530">Подаване на сигнал за нефункциониращ сайт</translation>
+<translation id="1209739344687072997">Докладвайте нефункциониращ сайт</translation>
 <translation id="6406506848690869874">Синхр</translation>
 <translation id="1544192797660353713">Портфейл</translation>
-<translation id="2445484935443597917">Създаване на нов профил</translation>
-<translation id="2666990579225592931">Отваряне на прозорец на гост</translation>
+<translation id="2445484935443597917">Създаване на нов потребителски профил</translation>
+<translation id="744341768939279100">Създаване на нов профил</translation>
+<translation id="2666990579225592931">Отваряне на прозорец в режим на гост</translation>
+<translation id="4986483413015198747">Отваряне на прозорец на гост</translation>
 <translation id="8275068909952022340">Още…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID на разширението "<ph name="EXTENSION_ID"/>") не е разрешено в Brave.</translation>
 <translation id="6786747875388722282">Разширения</translation>
@@ -45,10 +48,12 @@
 <translation id="5802665280774361839">Показване на автоматично довършване в адресната лента</translation>
 <translation id="597020512043916976">Показване на водещите сайтове в предложенията за автоматично довършване</translation>
 <translation id="264150068416846820">Показване на предложени сайтове от Brave в предложенията за автоматично довършване</translation>
-<translation id="5529693968082667490">Показване на бутон за търсене на раздели</translation>
+<translation id="5529693968082667490">Показване на бутона за търсене на раздел</translation>
 <translation id="6414370348346025511">Стандартната защита е включена.</translation>
 <translation id="814018970995616154">Проверява URL адресите със списък с опасни сайтове, съхранявани в Brave.</translation>
 <translation id="1144810021918451336">Не ви предпазва от опасни уебсайтове, изтегляния и разширения.</translation>
+<translation id="6285118765755298263">Индексиране на други търсачки</translation>
+<translation id="919715748352669592">Автоматично индексира уебсайтове, които следват спецификациите на OpenSearch.</translation>
 <translation id="7781069478569868053">Нова страница в раздела</translation>
 <translation id="1988804048511540801">Показва се страница в нов раздел</translation>
 <translation id="2970343821770026391">Табло</translation>
@@ -144,7 +149,7 @@
 <translation id="2569646144216067185">Брой думи: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Копирано!</translation>
 <translation id="8802630444265810662">QR код, който трябва да се сканира с мобилно устройство, за да се предаде вашият код за синхронизиране</translation>
-<translation id="6221331245829088299">При показването на QR кода възникна грешка, моля, опреснете и опитайте отново.</translation>
+<translation id="6221331245829088299">При показването на QR кода възникна грешка, обновете и опитайте отново.</translation>
 <translation id="298546024891487702">За да започнете, трябва да имате инсталиран Brave на всички устройства, които искате да синхронизирате. За да ги свържете, стартирайте верига на синхронизиране, която ще използвате за надеждно свързване на всички ваши устройства.</translation>
 <translation id="6200528822592747640">Стартирайте нова верига на синхронизиране</translation>
 <translation id="5184726904895809379">Имам код за синхронизиране</translation>
@@ -166,7 +171,7 @@
 <translation id="1061533051865606843">Добави ново устройство</translation>
 <translation id="5093410893656857925">Изберете типа устройство</translation>
 <translation id="4581190919849683048">С кой тип устройство искате да синхронизирате?</translation>
-<translation id="4112587618563511470">Невалиден код за синхронизация, моля, проверете и опитайте отново.</translation>
+<translation id="4112587618563511470">Невалиден код за синхронизация, проверете и опитайте отново.</translation>
 <translation id="2339730291919608488">Излизане от веригата за синхронизиране</translation>
 <translation id="115699408012835975">Ако рестартирате синхронизирането, ще трябва да въведете отново код за синхронизиране от друго устройство, за да го синхронизирате. Наистина ли искате да продължите?</translation>
 <translation id="6092564993102418148">Наистина ли желаете да премахнете избраното устройство от веригата за синхронизиране?</translation>
@@ -192,7 +197,6 @@
 <translation id="1834467296210148203">Показване на иконата на Brave портфейла в лентата с инструменти</translation>
 <translation id="6864914031231797928">Разрешаване на вход за Google за разширения</translation>
 <translation id="5927916530277631319">Метод за разрешаване на Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/> за DNS върху HTTPS и съображенията за поверителност на Ethereum .</translation>
 <translation id="5248318250177143470">Метод за разрешаване на Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Настройване на вашите IPNS ключове</translation>
 <translation id="951216659045543447">Подписване на съдържанието чрез съответния частен ключ и публикуването му в IPNS</translation>
@@ -214,7 +218,7 @@
 <translation id="1534091531114892221">Настройване на описание на равноправни устройства в ipfs</translation>
 <translation id="8996633027318264334">Наистина ли искате да изтриете <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Възелът не е стартиран</translation>
-<translation id="616058968889448209">Грешка при стартиране на услугата IPFS, повече информация можете да откриете на <ph name="BEGIN_LINK"/>страницата за диагностика<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">Грешка при стартирането на услугата IPFS, повече информация можете да намерите на <ph name="BEGIN_LINK"/>страницата за диагностика<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' въвеждането на ключа е неуспешно</translation>
 <translation id="3364053282600191535">Неуспешно експортиране на ключа '<ph name="KEY_NAME"/>'</translation>
 <translation id="8275038454117074363">Импортиране</translation>
@@ -224,7 +228,6 @@
 <translation id="1327977588028644528">Шлюз</translation>
 <translation id="80225669816651290">Локален възел</translation>
 <translation id="4927734062756955434">Адрес на публичния IPFS шлюз</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Научете повече<ph name="END_LINK_MPL"/>за локалния IPFS възел и за съображенията за поверителност на портала.</translation>
 <translation id="8425213833346101688">Промяна</translation>
 <translation id="557281710253742286">Задайте IPFS шлюз</translation>
 <translation id="8571837315037233299">Адрес на шлюза</translation>
@@ -238,7 +241,6 @@
 <translation id="8655170717758778983">Автоматично пренасочване към IPFS страници чрез DNSLink, когато е възможно</translation>
 <translation id="2233724520223030977">Използва автоматичен DNSLink за навигация до IPFS версия на уебсайт, когато е възможно</translation>
 <translation id="6554397389149987360">Използвайте "Hangouts" компоненти, за да разрешите споделяне на екрана и други функции в браузъра.</translation>
-<translation id="1765684547504191670">Използва медия рутер компонент, за да разреши Chromecast в браузъра.</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
 <translation id="7179921470347911571">Презареди сега</translation>
 <translation id="8068526464562249859">Използва разширението IPFS Companion за подобрена поддръжка на IPFS в Brave, включително достъп до често срещани IPFS задачи от лентата на вашия браузър.</translation>
@@ -308,6 +310,7 @@
 <translation id="6873781976650514089">тази настройка</translation>
 <translation id="6040143037577758943">Затваряне</translation>
 <translation id="5600566490506283344">Известие за Brave Реклама</translation>
+<translation id="1516554614404600536">Пояснение на Brave</translation>
 <translation id="4877147287319222750">Добавяне към страничната лента</translation>
 <translation id="4233010476457917696">Показване на страничната лента</translation>
 <translation id="5404213409401164238">Показване на страничната лента</translation>
@@ -348,6 +351,7 @@
         Можете да прочетете <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>инструкции как да изтеглите и изградите за себе си<ph name="END_LINK_BUILD_INSTRUCTIONS"/> конкретния <ph name="BEGIN_LINK_SOURCE_CODE"/>изходен код, използван за създаването на това копие<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Запазване на отметки към всички раздели…</translation>
 <translation id="2336228925368920074">Запазване на отметки към всички раздели...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">За да добавите отметка, щракнете върху бутона за отметка до адресната лента</translation>
 <translation id="4989337484121655457">Изисква се пълен достъп до диска</translation>
 <translation id="8025559074845816210">Brave има нужда от пълен достъп до дискове, за да импортира отметките ви от Safari.</translation>

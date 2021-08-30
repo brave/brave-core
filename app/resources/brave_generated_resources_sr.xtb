@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brejv blokiranje oglasa</translation>
 <translation id="4615489450165434530">Prijavite raskinutu vezu sa sajtom</translation>
+<translation id="1209739344687072997">Prijavite raskinutu vezu sa sajtom</translation>
 <translation id="6406506848690869874">Sinhronizuj</translation>
 <translation id="1544192797660353713">Novčanik</translation>
-<translation id="2445484935443597917">Kreiraj nov profil</translation>
-<translation id="2666990579225592931">Otvori prozor gosta</translation>
+<translation id="2445484935443597917">Направи нов профил</translation>
+<translation id="744341768939279100">Kreiraj nov profil</translation>
+<translation id="2666990579225592931">Отвори прозор госта</translation>
+<translation id="4986483413015198747">Otvori prozor gosta</translation>
 <translation id="8275068909952022340">Više…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nije dozvoljeno u Brejvu</translation>
 <translation id="6786747875388722282">Proširenja</translation>
@@ -45,10 +48,12 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="5802665280774361839">Na traci sa adresama prikaži automatsko dovršavanje</translation>
 <translation id="597020512043916976">Prikaži najpopularnije veb stranice u predlozima za automatsko dovršavanje</translation>
 <translation id="264150068416846820">Prikažite Brave predložene veb stranice u automatskom dovršavanju</translation>
-<translation id="5529693968082667490">Prikaži dugme kartica za pretragu</translation>
+<translation id="5529693968082667490">Prikaži dugme kartice za pretragu</translation>
 <translation id="6414370348346025511">Uključena je standardna zaštita.</translation>
 <translation id="814018970995616154">Proverava URL adrese sa listom nebezbednih veb lokacija uskladištenih u Brave-u.</translation>
 <translation id="1144810021918451336">Ne štiti vas od opasnih veb lokacija, preuzimanja i proširenja.</translation>
+<translation id="6285118765755298263">Indeksirajte ostale pretraživače</translation>
+<translation id="919715748352669592">Automatski indeksira veb-sajtove koji slede OpenSearch specifikacije.</translation>
 <translation id="7781069478569868053">Stranica nove kartice</translation>
 <translation id="1988804048511540801">Prikazi stranice nove kartice</translation>
 <translation id="2970343821770026391">Kontrolna tabla</translation>
@@ -191,7 +196,6 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="1834467296210148203">Prikazati ikonicu Brave novčanika na traci sa alatkama</translation>
 <translation id="6864914031231797928">Dozvolite Google prijavu za proširenja</translation>
 <translation id="5927916530277631319">Metod za razrešavanje Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/> o razmatranjima privatnosti  DNS-a putem HTTPS-a i Ethereuma.</translation>
 <translation id="5248318250177143470">Metod za razrešavanje Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Postavite vaše IPNS ključeve</translation>
 <translation id="951216659045543447">Potpišite sadržaj odgovarajućim privatnim ključem i objavite ga na IPNS</translation>
@@ -213,7 +217,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="1534091531114892221">Podesiti opis ipfs korisnika</translation>
 <translation id="8996633027318264334">Da li zaista želite da izbrišete <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Čvor nije pokrenut</translation>
-<translation id="616058968889448209">Greška u pokretanju IPFS servisa, više informacija je dostupno na <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">Greška u pokretanju IPFS servisa, više informacija je dostupno na <ph name="BEGIN_LINK"/>dijagnostičkoj stranici<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Uvoz ključa '<ph name="KEY_NAME"/>' nije uspeo</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' uvoz ključa nije uspeo</translation>
 <translation id="8275038454117074363">Uvoz</translation>
@@ -223,7 +227,6 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="1327977588028644528">Мрежни пролаз</translation>
 <translation id="80225669816651290">Lokalni čvor</translation>
 <translation id="4927734062756955434">Adresa IPFS javnog mrežnog prolaza</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Saznajte više<ph name="END_LINK_MPL"/> o razmatranjima privatnosti IPFS lokalnog čvora i mrežnog prolaza.</translation>
 <translation id="8425213833346101688">Промени</translation>
 <translation id="557281710253742286">Postavite IPFS mrežni prolaz</translation>
 <translation id="8571837315037233299">Adresa mrežnog prolaza</translation>
@@ -237,7 +240,6 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="8655170717758778983">Automatsko preusmeravanje na IPFS stranice putem DNSLink-a kada je moguće</translation>
 <translation id="2233724520223030977">Automatski koristi DNSLink za navigaciju na IPFS verziju veb-lokacije, onda kada je to moguće</translation>
 <translation id="6554397389149987360">Koristi komponentu Hangouts da biste omogućili deljenje ekrana i druge funkcije u pregledaču.</translation>
-<translation id="1765684547504191670">Koristi komponentu Media Router-a da bi omogućio Chromecast u pregledaču.</translation>
 <translation id="9156965752763025780">Промене ће ступити на снагу када следећи пут поново покренете Brave.</translation>
 <translation id="7179921470347911571">Ponovo pokreni sada</translation>
 <translation id="8068526464562249859">Koristi IPFS pomoćnik proširenje za poboljšanu IPFS podršku u Brave-u, uključujući pristup uobičajenim IPFS zadacima sa vaše trake pregledača.</translation>
@@ -307,6 +309,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="6873781976650514089">ovo podešavanje</translation>
 <translation id="6040143037577758943">Затвори</translation>
 <translation id="5600566490506283344">Brave Ad obaveštenje</translation>
+<translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4877147287319222750">Dodaj bočnoj traci</translation>
 <translation id="4233010476457917696">Prikazati bočnu traku</translation>
 <translation id="5404213409401164238">Prikaži bočnu traku</translation>
@@ -347,6 +350,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
         Možete da pročitate <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instrukcije kako da preuzmete i izradite za sebe<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>izvorni kôd koji je korišćen za kreiranje ove kopije<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Обележи све картице...</translation>
 <translation id="2336228925368920074">Обележи све картице...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Da biste dodali obeleživač, kliknite dugne za obeleživanje koje se nalazi pored trake adresa</translation>
 <translation id="4989337484121655457">Potreban je pristup celom disku</translation>
 <translation id="8025559074845816210">Brave-u je potreban Pristup celom disku da uveze vaše obeleživače iz Safarija.</translation>

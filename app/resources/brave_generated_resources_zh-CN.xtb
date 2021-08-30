@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Brave 奖励</translation>
 <translation id="7942180974165298215">Brave 广告拦截</translation>
 <translation id="4615489450165434530">报告损坏的网站</translation>
+<translation id="1209739344687072997">报告损坏的网站</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="1544192797660353713">钱包</translation>
-<translation id="2445484935443597917">创建新配置文件</translation>
-<translation id="2666990579225592931">打开访客窗口</translation>
+<translation id="2445484935443597917">创建新的个人资料</translation>
+<translation id="744341768939279100">创建新配置文件</translation>
+<translation id="2666990579225592931">以访客身份打开一个窗口</translation>
+<translation id="4986483413015198747">打开访客窗口</translation>
 <translation id="8275068909952022340">更多…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/>(Brave中不允许使用扩展ID“<ph name="EXTENSION_ID"/>”）。</translation>
 <translation id="6786747875388722282">扩展程序</translation>
@@ -45,10 +48,12 @@
 <translation id="5802665280774361839">在地址栏中显示自动完成</translation>
 <translation id="597020512043916976">在自动完成建议中显示顶级网站</translation>
 <translation id="264150068416846820">在自动完成建议中显示 Brave 的建议站点</translation>
-<translation id="5529693968082667490">显示搜索标签页按钮</translation>
+<translation id="5529693968082667490">显示标签页搜索按钮</translation>
 <translation id="6414370348346025511">标准保护已启用。</translation>
 <translation id="814018970995616154">检查带有保存在 Brave 中的不安全站点列表的 URL。</translation>
 <translation id="1144810021918451336">不能保护您免受危险网站、下载和扩展名的侵害。</translation>
+<translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
+<translation id="919715748352669592">自动对遵循 OpenSearch 规范的网站构建索引</translation>
 <translation id="7781069478569868053">新标签页</translation>
 <translation id="1988804048511540801">新标签页随及会显示</translation>
 <translation id="2970343821770026391">仪表板</translation>
@@ -98,7 +103,7 @@
 <translation id="6303294677342628402">屏蔽</translation>
 <translation id="7133511168130368997">拦截在网络上无所不在的跟踪器和广告。</translation>
 <translation id="2761825942249694703">这些是默认屏蔽设置，适用于所有网站（除非您更改了某特定网站的屏蔽面板中的某些设置）。更改这些设置不会影响您现有的每个站点的设置。</translation>
-<translation id="1485394570478670912">这会拦截网站上的多数广告，但不包括 Brave 私人广告 — 那些由以下设定控制：</translation>
+<translation id="1485394570478670912">这会拦截网站上的多数广告，但不包括 Brave Private Ads。那些广告由以下设定控制：</translation>
 <translation id="6388201778088078932">控制的）。</translation>
 <translation id="9185018653595759199">阻止社交媒体</translation>
 <translation id="7390783310074170337">默认视图</translation>
@@ -192,7 +197,7 @@
 <translation id="1834467296210148203">在工具栏上显示 Brave Wallet 图标</translation>
 <translation id="6864914031231797928">允许 Google 登录以获取扩展程序</translation>
 <translation id="5927916530277631319">解决无法停止域这个问题的方法</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/> 关于DNS over HTTPS和以太坊的隐私考虑。</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/> 关于基于 HTTPS 的 DNS 和以太坊隐私注意事项。</translation>
 <translation id="5248318250177143470">解决以太坊名称服务（ENS）相关问题的方法</translation>
 <translation id="7024553202001112871">设置 IPNS 密钥</translation>
 <translation id="951216659045543447">用对应的私钥对内容进行签名并发布到 IPNS</translation>
@@ -214,7 +219,7 @@
 <translation id="1534091531114892221">设置 ipfs 对等描述</translation>
 <translation id="8996633027318264334">确定要删除 <ph name="KEY_NAME"/> 吗？</translation>
 <translation id="910215077892371264">节点未启动</translation>
-<translation id="616058968889448209">IPFS 服务启动错误，更多信息见 <ph name="BEGIN_LINK"/>诊断页<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">IPFS 服务启动错误，更多信息参见 <ph name="BEGIN_LINK"/>诊断页<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 密钥导入失败</translation>
 <translation id="3364053282600191535"><ph name="KEY_NAME"/>' 密钥导出失败</translation>
 <translation id="8275038454117074363">导入</translation>
@@ -224,7 +229,7 @@
 <translation id="1327977588028644528">网关</translation>
 <translation id="80225669816651290">本地节点</translation>
 <translation id="4927734062756955434">IPFS 公共网关地址</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>了解更多<ph name="END_LINK_MPL"/>关于PFS本地节点和网关的隐私考虑。</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>了解更多<ph name="END_LINK_MPL"/>关于 IPFS 本地节点和网关隐私的注意事项。</translation>
 <translation id="8425213833346101688">更改</translation>
 <translation id="557281710253742286">设置 IPFS 网关</translation>
 <translation id="8571837315037233299">网关地址</translation>
@@ -238,7 +243,6 @@
 <translation id="8655170717758778983">可能时通过 DNSLink 自动重定向到 IPFS 页面</translation>
 <translation id="2233724520223030977">在可能的情况下自动使用 DNSLink 导航到网站的 IPFS 版本</translation>
 <translation id="6554397389149987360">使用环聊组件在浏览器中启用屏幕共享和其他功能。</translation>
-<translation id="1765684547504191670">使用媒体路由器组件在浏览器中启用 Chromecast。</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
 <translation id="8068526464562249859">在 Brave 中使用 IPFS Companion 扩展来增强 IPFS 支持（包括从浏览器栏中访问常见的 IPFS 任务）。</translation>
@@ -308,6 +312,7 @@
 <translation id="6873781976650514089">此设置</translation>
 <translation id="6040143037577758943">关闭</translation>
 <translation id="5600566490506283344">Brave 广告通知</translation>
+<translation id="1516554614404600536">Brave 工具提示</translation>
 <translation id="4877147287319222750">添加到侧边栏</translation>
 <translation id="4233010476457917696">显示侧边栏</translation>
 <translation id="5404213409401164238">显示侧边栏</translation>
@@ -348,6 +353,7 @@
         您可以自己阅读一下 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>有关如何自行下载和构建<ph name="END_LINK_BUILD_INSTRUCTIONS"/>用来创建此副本的特定 <ph name="BEGIN_LINK_SOURCE_CODE"/>源代码的说明<ph name="END_LINK_SOURCE_CODE"/>。</translation>
 <translation id="4474155171896946103">为所有标签页添加书签...</translation>
 <translation id="2336228925368920074">为所有标签页添加书签...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">要添加书签，请点击地址栏旁边的书签按钮</translation>
 <translation id="4989337484121655457">需要完全的磁盘访问权限</translation>
 <translation id="8025559074845816210">Brave  需要完全的磁盘访问权限才能从 Safari 导入书签。</translation>

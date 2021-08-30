@@ -12,7 +12,7 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Получавайте пари, за да гледате реклами, и ги използвайте, за да плащате с цел подкрепа на любимите Ви създатели.",
+    "message": "Получавайте пари, за да гледате реклами, и ги използвайте, за да плащате с цел подкрепа на любимите ви създатели.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
@@ -216,12 +216,26 @@
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Моля, направете архивно копие на вашия Brave портфейл.",
+    "message": "Направете архивно копие на вашия Brave портфейл.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Научете повече",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Грешка: друг акаунт",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Хмм, изглежда, че вашият портфейл Brave Rewards вече е потвърден с друг акаунт за $name$. Опитайте да го потвърдите отново, като използвате предишния си акаунт.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Грешка: BAT не е наличен",
@@ -231,10 +245,6 @@
     "message": "BAT все още не се поддържа във вашия регион в Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "Научете повече",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "Грешка: блокиран акаунт",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "Вашият акаунт в Uphold в момента е блокиран.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "Научете повече",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Грешка: изчакващ акаунт",
@@ -255,10 +261,6 @@
     "message": "Вашият акаунт в Uphold все още е изчакващ.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Научете повече",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Грешка: ограничен акаунт",
     "description": "Title for restricted user notification"
@@ -267,16 +269,12 @@
     "message": "Вашият акаунт в Uphold в момента е ограничен.",
     "description": "Description for restricted user notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "Научете повече",
-    "description": "Notification button text to learn more about device limit"
-  },
   "deviceLimitReachedTitle": {
     "message": "Достигнато ограничение на устройството",
     "description": "Title for device limit reached notification"
   },
   "deviceLimitReachedNotification": {
-    "message": "Портфейлът Ви не може да бъде потвърден, защото сте достигнали максималния лимит за потвърдени устройства.",
+    "message": "Портфейлът ви не може да бъде потвърден, защото сте достигнали максималния лимит за потвърдени устройства.",
     "description": "Description for device limit reached notification"
   },
   "insufficientFundsNotification": {
@@ -292,7 +290,7 @@
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
-    "message": "Възникна проблем при обработката на дарението Ви.",
+    "message": "Възникна проблем при обработката на дарението ви.",
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
@@ -300,7 +298,7 @@
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "Не успяхме да изпратим вашия бакшиш. Моля, опитайте отново по-късно.",
+    "message": "Не успяхме да изпратим вашия бакшиш. Опитайте отново по-късно.",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -340,11 +338,11 @@
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
-    "message": "Brave Rewards има проблеми. Моля, опитайте отново по-късно.",
+    "message": "Brave Rewards има проблеми. Опитайте отново по-късно.",
     "description": "Error text when user is having problems claiming a grant."
   },
   "grantGeneralErrorTitle": {
-    "message": "Упс, нещо се обърка. Моля, опитайте отново по-късно.",
+    "message": "Грешка, нещо се обърка. Опитайте отново по-късно.",
     "description": "Error title when user is having problems claiming a grant."
   },
   "unVerifiedCheck": {
@@ -535,10 +533,6 @@
     "message": "Вашата сума на възнаграждение",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "потвърди",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "Разкачен",
     "description": "CTA status button"
@@ -664,7 +658,7 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Забележка: Вашите транзакции ще бъдат видими за $provider$, след като упълномощите; например, те ще могат да видят получателя и сумата на Вашите бакшиши.",
+    "message": "Забележка: Вашите транзакции ще бъдат видими за $provider$, след като упълномощите; например, те ще могат да видят получателя и сумата на вашите бакшиши.",
     "description": "Displayed in login modal for external wallet providers",
     "placeholders": {
       "provider": {
@@ -694,7 +688,7 @@
     "description": ""
   },
   "onboardingSetupContributeSubheader": {
-    "message": "(от приходите Ви от реклами)",
+    "message": "(от приходите ви от реклами)",
     "description": ""
   },
   "onboardingStartUsingRewards": {
@@ -836,7 +830,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {
-    "message": "$link_begin$Научете повече$link_end$ за това как да свържете Вашия браузър Brave с Вашия профил в bitFlyer.",
+    "message": "$link_begin$Научете повече$link_end$ за това как да свържете вашия браузър Brave с вашия акаунт в bitFlyer.",
     "description": "",
     "placeholders": {
       "link_begin": {

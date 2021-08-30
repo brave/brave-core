@@ -234,6 +234,7 @@
 <translation id="3082557070674409251">Klikket</translation>
 <translation id="7119308337584989771">Afvist</translation>
 <translation id="6805660603861526473">Set</translation>
+<translation id="5111921830714291902">Fejl: En anden konto</translation>
 <translation id="2359865110462963929">BAT understøttes i øjeblikket ikke i din region. Se venligst <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> for updates.</translation>
 <translation id="1737873393693460829">Ved at aktivere [[title]] accepterer du <ph name="BEGIN_LINK1"/>Brugsvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>Databeskyttelsespolitikken<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Fejl ved oprettelse af Brave Browser BAT-kort</translation>
@@ -566,7 +567,6 @@
 <translation id="8014425282125849700">Indimellem vil du få tilbudt gratis token-uddelinger fra Brave. Sørg for at holde udkig efter notifikationen!</translation>
 <translation id="1370034647041840967">Optjen tokens for din opmærksomhed overfor annoncer, og giv den videre for at støtte de indholdsskabere som du værdsætter!</translation>
 <translation id="4919888432594361029">Tilføj, udbetal og administrér midler på <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Din Brave-wallet drives af <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Belønninger er bygget på den Basale Opmærksomhedspolet. Lær mere om BOP</translation>
 <translation id="7823359893981882407">her</translation>
 <translation id="3034163433136515805">Se QR-Kode</translation>
@@ -644,7 +644,6 @@
 <translation id="39734939514946950">Dit præmiebeløb</translation>
 <translation id="2151535059686617995">Det’er din heldige dag!</translation>
 <translation id="6436689611575806470">Din bevilling på [[currency]] er på vej.</translation>
-<translation id="7512440811010447157">verificer</translation>
 <translation id="8267327690882073581">Bekræft Tegnebog</translation>
 <translation id="543510923939676996">Tegnebog verificeret</translation>
 <translation id="2659764755126740206">Gå til min <ph name="PROVIDER"/>-konto</translation>

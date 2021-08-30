@@ -237,12 +237,14 @@
 <translation id="3082557070674409251">クリック済み</translation>
 <translation id="7119308337584989771">却下済み</translation>
 <translation id="6805660603861526473">表示済み</translation>
+<translation id="1501075228659004450">このBrave Rewardsウォレットは、すでに他の<ph name="PROVIDER"/>アカウントで認証済みのようです。以前のアカウントを使用してもう一度認証をお試しください。</translation>
+<translation id="5111921830714291902">エラー: 異なるアカウント</translation>
 <translation id="2359865110462963929">お住まいの地域で、現在BATはサポートされていません。最新の情報につきましては、<ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>をご参照ください。</translation>
 <translation id="1737873393693460829">[[title]]をオンにすることで、<ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/>および<ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意するものとします。</translation>
 <translation id="2564425876266960486">BraveブラウザBATカードの作成エラー</translation>
 <translation id="8429332714958713413">ログインするには認証済みのウォレットが必要です</translation>
 <translation id="5881716477679854586"><ph name="CUSTODIAN"/>でID認証を完了してからもう一度お試しください。</translation>
-<translation id="4285403731827683059"><ph name="AMOUNT"/>が<ph name="DAYS"/>で受け取れます。</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/>が<ph name="DAYS"/>後以降に順次送付されます。</translation>
 <translation id="4672975606583962967">ウォレットサービスを選択</translation>
 <translation id="1815503044492647974">ウォレット管理パートナーを選択します。すでにアカウントをお持ちの場合、ログインして接続するよう求められます。</translation>
 <translation id="2205685774710519016">注: 認証すると、取引は選択したウォレットサービスに公開されます（たとえば、チップの受信者と金額が表示されます）。</translation>
@@ -256,6 +258,7 @@
 <translation id="2359808026110333948">続ける</translation>
 <translation id="5112354605357157725">ログインに進みます</translation>
 <translation id="1280764044837262633">アカウントを作成するには、<ph name="AMOUNT"/> BAT以上の残高が<ph name="PROVIDER"/>により要求されています。以前にアカウントを接続したことがある場合は、</translation>
+<translation id="752216563428219524">広告が初期化されていません。ページを更新してください。</translation>
 <translation id="7422678632904904341">金額：</translation>
 <translation id="6969783933307596818">5秒毎に自動的にリフレッシュします</translation>
 <translation id="5025866799968038247">残高情報</translation>
@@ -316,6 +319,7 @@
 <translation id="2152423226436243241">自動支援</translation>
 <translation id="2927922949538312364">１回限りのチップ</translation>
 <translation id="3164105678355419142">定期的に支払うチップ</translation>
+<translation id="916115051162298064">広告診断</translation>
 <translation id="7806880412350961625">イベントログ</translation>
 <translation id="4309915981827077375">一般情報</translation>
 <translation id="3662406032239313663">ログ</translation>
@@ -379,7 +383,7 @@
 <translation id="6318696841371191107">クイックツアーに参加</translation>
 <translation id="8465790416279415448">続行することで、<ph name="TOS_LINK_BEGIN"/>利用規約<ph name="TOS_LINK_END"/>および<ph name="PP_LINK_BEGIN"/>プライバシーポリシー<ph name="PP_LINK_END"/>に同意するものとします。</translation>
 <translation id="8222322431155185238">Brave Rewardsについて</translation>
-<translation id="1895476463085410109">Brave Private Adsを表示してRewardsを獲得し、コンテンツクリエイターを自動的にサポート</translation>
+<translation id="1895476463085410109">Braveによるプライバシーを尊重した広告を表示することで報酬を獲得し、コンテンツクリエイターを自動的にサポートします。</translation>
 <translation id="5705882733397021510">戻る</translation>
 <translation id="185034574799484512">クイックツアーを見てみましょう</translation>
 <translation id="8281886186245836920">スキップ</translation>
@@ -416,6 +420,7 @@
 <translation id="4241224519481557898">カテゴリー</translation>
 <translation id="3080423471207781945">1時間当たりに受信する最大広告数：</translation>
 <translation id="2631006050119455616">保存されました</translation>
+<translation id="7847825746023377505">過去<ph name="TOTAL_DAYS"/>日間、広告表示がありません。</translation>
 <translation id="7902420836933072528">過去[[totalDays]]日間に受信した広告</translation>
 <translation id="8863685593846905344">広告履歴</translation>
 <translation id="2777306694585938662">受け取った広告報酬</translation>
@@ -569,11 +574,10 @@
 <translation id="8014425282125849700">Braveからの無料トークンを受け取る (通知をお見逃しなく！)</translation>
 <translation id="1370034647041840967">広告を閲覧することでトークンを獲得し、あなたがサポートしたいコンテンツクリエイターに支援しましょう！</translation>
 <translation id="4919888432594361029"><ph name="PROVIDER"/>で資金の追加や引き出し、管理をする</translation>
-<translation id="3092054349246483285">あなたのBraveウォレットは<ph name="PROVIDER"/>が提供しています</translation>
 <translation id="6401272292123354754">Brave RewardsはBasic Attention Token(BAT)で構築されています。BATの詳細をもっと知る</translation>
 <translation id="7823359893981882407">こちら</translation>
 <translation id="3034163433136515805">QR コードを見る</translation>
-<translation id="1640793619390890218">BATを転送するiOS Rewardsユーザー</translation>
+<translation id="1640793619390890218">（BATを転送するiOS Rewardsユーザー）</translation>
 <translation id="4483635855837696643">ウォレットを復元する</translation>
 <translation id="459721429458957031">回復キーを使ってウォレットを復元します。</translation>
 <translation id="4600052736217630789">回復キーで復元すると現在のウォレットと置き換えられます。復元前に現在のウォレットを空にするか、バックアップを確実にしてください。</translation>
@@ -604,7 +608,7 @@
 <translation id="1726566769229204312">トークン付与の通知</translation>
 <translation id="4395099108822007284">画像を読み込み中...</translation>
 <translation id="3535654229833214438">取引</translation>
-<translation id="244362569344671266">プライバシーを尊重したBrave広告を表示することでトークンを獲得し、コンテンツクリエイターを自動的にサポートします。</translation>
+<translation id="244362569344671266">Braveによるプライバシーを尊重した広告を表示することでトークンを獲得し、コンテンツクリエイターを自動的にサポートします。</translation>
 <translation id="3903419925307046908">トークンを獲得して還元する</translation>
 <translation id="8987812599455325915">広告と自動引き落とし機能を有効にします。これらの機能は、いつでも個別に有効化・無効化できます。</translation>
 <translation id="1485484147452131556">Rewardsを有効化する</translation>
@@ -647,12 +651,14 @@
 <translation id="39734939514946950">あなたの報酬額</translation>
 <translation id="2151535059686617995">今日はあなたのラッキーデー!</translation>
 <translation id="6436689611575806470">[[currency]]の付与があります。</translation>
-<translation id="7512440811010447157">確認</translation>
 <translation id="8267327690882073581">ウォレットを認証</translation>
 <translation id="543510923939676996">ウォレットが認証済み</translation>
 <translation id="2659764755126740206">私の<ph name="PROVIDER"/>アカウントに移動する</translation>
 <translation id="3699674790322420653">ウォレットの認証を完了</translation>
 <translation id="9200453331904391567">Brave Rewardとの接続を解除する</translation>
+<translation id="3656941797339037856">RewardsをGeminiにリンク!</translation>
+<translation id="671838195432136371">Geminiでは、BATを簡単に取引、保管し、3.49%のAPY*を得ることができます。Geminiをリンクした新規ユーザーには、5BATを無料で進呈!</translation>
+<translation id="9136976526700181750">* 2021年8月15日現在のGemini APY</translation>
 <translation id="7404779623219601861">BATをギフトカードと交換する</translation>
 <translation id="6215565499749144110">TAPネットワークを使用すると、BATを人気の有名ブランドのギフトカードと交換できます。</translation>
 <translation id="6915065518766963119">*「Uphold検証」が必要です。</translation>
@@ -666,7 +672,7 @@
 <translation id="5235444069025581717">今月のチップと支援実績</translation>
 <translation id="1210965535849006928">報酬を受け取る</translation>
 <translation id="4609518959946843710">このスポンサー背景画像の表示に対する報酬を獲得しましょう。</translation>
-<translation id="5311968438376723685">Braveプライベート広告をオンにして報酬を獲得しましょう。また、<ph name="LINK_BEGIN"/>スポンサー画像を非表示<ph name="LINK_END"/>にすることもできます。</translation>
+<translation id="5311968438376723685">Brave Private Adsをオンにして報酬を獲得しましょう。また、<ph name="LINK_BEGIN"/>スポンサー画像を非表示<ph name="LINK_END"/>にすることもできます。</translation>
 <translation id="8568666589217601917">おめでとうございます！</translation>
 <translation id="764235488372037377">Adsから得た報酬はこちらです！</translation>
 <translation id="7091215606170476659">UGPからポイントが付与されました。</translation>
@@ -675,7 +681,7 @@
 <translation id="6113004497629356998">スポンサー画像を非表示にする</translation>
 <translation id="3787061634640932557">カードを編集</translation>
 <translation id="8511604585939286108">[[title]]をクリックすることで、<ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/>および<ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意するものとします。</translation>
-<translation id="5977237145327845546">友人や同僚とプライベートなビデオ通話を開始する。</translation>
+<translation id="5977237145327845546">友人や同僚とプライバシーが保護されたビデオ通話を開始する。</translation>
 <translation id="5850325887346946383">ビデオ通話を開始</translation>
 <translation id="3651550649176056334">あなたのデータについて</translation>
 <translation id="223536150967420869">購入</translation>
@@ -737,6 +743,7 @@
 <translation id="1833248467354516560">ユニット価格</translation>
 <translation id="4763179765154524864">合計の費やした時間</translation>
 <translation id="8851480289992540512">受け取った合計</translation>
+<translation id="824449983246282560">アカウントに残高がありません。購入するにはGeminiへ移動します。</translation>
 <translation id="8624961452383848703">取引希望数量…</translation>
 <translation id="616639131065447379">Brave クリプトウォレットへようこそ</translation>
 <translation id="1740464057879304704">クリプトウォレットでは仮想通貨や関連する資産を Brave内で取り扱いできます。クリプトウォレットはETHやBATなどのイーサリアムのトークンやコレクティブに対応しており、Ðのアプリやその他のスマートコントラクトにも対応しています。これらは全てイーサリアムやその他のブロックチェーンシステム—を良くご存知の方や、これから学びたい方向けの機能です。</translation>

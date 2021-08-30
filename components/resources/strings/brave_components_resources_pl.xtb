@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Kliknięte</translation>
 <translation id="7119308337584989771">Odrzucone</translation>
 <translation id="6805660603861526473">Wyświetlone</translation>
+<translation id="1501075228659004450">Hmm, wygląda na to, że Twój portfel Brave Rewards został już zweryfikowany przy użyciu innego konta <ph name="PROVIDER"/>. Spróbuj ponownie przeprowadzić weryfikację przy użyciu poprzedniego konta.</translation>
+<translation id="5111921830714291902">Błąd: Inne konto</translation>
 <translation id="2359865110462963929">BAT nie jest obecnie obsługiwany w Twoim regionie. Więcej informacji znajdziesz <ph name="BEGIN_LINK"/>tutaj<ph name="END_LINK"/>.</translation>
 <translation id="1737873393693460829">Włączając [[title]], zgadzasz się na <ph name="BEGIN_LINK1"/>Warunki użytkowania<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politykę prywatności<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Błąd przy tworzeniu karty BAT w przeglądarce Brave.</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Kontynuuj</translation>
 <translation id="5112354605357157725">Przejdź do logowania</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> wymaga minimalnego salda w wysokości <ph name="AMOUNT"/> BAT, aby utworzyć konto. Jeśli konto było już wcześniej podłączone,</translation>
+<translation id="752216563428219524">Reklamy nie zostały uruchomione, prosimy odświeżyć stronę.</translation>
 <translation id="7422678632904904341">Kwota:</translation>
 <translation id="6969783933307596818">Odświeżaj automatycznie co 5 sekund</translation>
 <translation id="5025866799968038247">Dane salda</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Automatyczny datek</translation>
 <translation id="2927922949538312364">Jednorazowy napiwek</translation>
 <translation id="3164105678355419142">Cykliczny napiwek</translation>
+<translation id="916115051162298064">Diagnostyka reklam</translation>
 <translation id="7806880412350961625">Dzienniki zdarzeń</translation>
 <translation id="4309915981827077375">Informacje ogólne</translation>
 <translation id="3662406032239313663">Logi</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Kategoria</translation>
 <translation id="3080423471207781945">Maksymalna liczba wyświetlanych reklam na godzinę:</translation>
 <translation id="2631006050119455616">Zapisano</translation>
+<translation id="7847825746023377505">Nie oglądano żadnych reklam w ciągu ostatnich <ph name="TOTAL_DAYS"/> dni.</translation>
 <translation id="7902420836933072528">Reklamy otrzymane w ciągu [[totalDays]] ostatnich dni</translation>
 <translation id="8863685593846905344">Historia reklam</translation>
 <translation id="2777306694585938662">Otrzymano nagrody za oglądanie reklam</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">Od czasu do czasu będziesz otrzymywać od Brave darmowe tokeny. Bądź zawsze czujny i uważny!</translation>
 <translation id="1370034647041840967">Zarabiaj tokeny za zwracanie uwagi na reklamy i płać nimi, wspierając twórców cenionych przez Ciebie treści!</translation>
 <translation id="4919888432594361029">Dodawaj i wypłacaj środki, a także zarządzaj nimi w <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Twój portfel Brave jest obsługiwany przez <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Nagrody Brave opierają się na Basic Attention Token. Dowiedz się więcej o BAT</translation>
 <translation id="7823359893981882407">tutaj</translation>
 <translation id="3034163433136515805">Pokaż kod QR</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Wysokość Twojej nagrody</translation>
 <translation id="2151535059686617995">To Twój szczęśliwy dzień!</translation>
 <translation id="6436689611575806470">Twoje [[currency]] są już w drodze.</translation>
-<translation id="7512440811010447157">weryfikuj</translation>
 <translation id="8267327690882073581">Weryfikuj portfel</translation>
 <translation id="543510923939676996">Portfel zweryfikowany</translation>
 <translation id="2659764755126740206">Przejdź do mojego konta <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Zakończ weryfikację portfela</translation>
 <translation id="9200453331904391567">Rozłącz Nagrody Brave</translation>
+<translation id="3656941797339037856">Połącz Rewards z Gemini!</translation>
+<translation id="671838195432136371">Gemini pozwala łatwo handlować, przechowywać i zarabiać 3,49% APY* na swoich BAT. Nowi użytkownicy Gemini, którzy połączą konta, otrzymają 5 darmowych BAT!</translation>
+<translation id="9136976526700181750">* Gemini Earn APY na dzień 15 sierpnia 2021 r.</translation>
 <translation id="7404779623219601861">Wymieniaj tokeny BAT na karty upominkowe</translation>
 <translation id="6215565499749144110">Dzięki sieci TAP możesz wymienić swoje tokeny BAT na popularne karty upominkowe znanych marek.</translation>
 <translation id="6915065518766963119">* Wymaga weryfikacji przez Uphold.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Cena jednostkowa</translation>
 <translation id="4763179765154524864">Wydano ogółem</translation>
 <translation id="8851480289992540512">Otrzymano ogółem</translation>
+<translation id="824449983246282560">Nie masz żadnych środków na swoim koncie. Odwiedź Gemini, aby je nabyć.</translation>
 <translation id="8624961452383848703">Chcę przeliczyć...</translation>
 <translation id="616639131065447379">Witamy w portfelach kryptowalut Brave</translation>
 <translation id="1740464057879304704">Portfele kryptowalut pozwalają Ci pracować z kryptowalutą i powiązanymi aktywami w Brave. Portfele kryptowalut obsługują tokeny Ethereum, takie jak ETH i BAT, jak również należności, i umożliwiają pracę z Ðaplikacjami i innymi inteligentnymi kontraktami. Wszystko to przeznaczone jest dla osób, które znają Ethereum i inne systemy blockchain — lub chcą je poznać.</translation>
