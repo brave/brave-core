@@ -31,6 +31,13 @@ const char kAccountMetas[] = "account_metas";
 const char kImportedAccounts[] = "imported_accounts";
 const char kAccountAddress[] = "account_address";
 const char kEncryptedPrivateKey[] = "encrypted_private_key";
+
+const char kMnemonic1[] =
+    "divide cruise upon flag harsh carbon filter merit once advice bright "
+    "drive";
+const char kMnemonic2[] =
+    "misery jeans response tiny nominee civil zoo strong correct taxi chimney "
+    "goat";
 }  // namespace
 
 class KeyringControllerUnitTest : public testing::Test {
@@ -266,29 +273,25 @@ TEST_F(KeyringControllerUnitTest, CreateEncryptorForKeyring) {
 
 TEST_F(KeyringControllerUnitTest, CreateDefaultKeyringInternal) {
   KeyringController controller(GetPrefs());
-  const std::string mnemonic1 =
-      "divide cruise upon flag harsh carbon filter merit once advice bright "
-      "drive";
   // encryptor is nullptr
-  ASSERT_FALSE(controller.CreateDefaultKeyringInternal(mnemonic1));
+  ASSERT_FALSE(controller.CreateDefaultKeyringInternal(kMnemonic1));
 
   EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(mnemonic1));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
   controller.default_keyring_->AddAccounts(1);
   EXPECT_EQ(controller.default_keyring_->GetAddress(0),
             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
   const std::string encrypted_mnemonic1 =
       GetStringPrefForKeyring(kEncryptedMnemonic, "default");
   // The pref is encrypted
-  EXPECT_NE(base::Base64Encode(
-                std::vector<uint8_t>(mnemonic1.begin(), mnemonic1.end())),
-            encrypted_mnemonic1);
+  EXPECT_NE(
+      base::Base64Encode(std::vector<uint8_t>(
+          reinterpret_cast<const uint8_t*>(kMnemonic1),
+          reinterpret_cast<const uint8_t*>(kMnemonic1) + strlen(kMnemonic1))),
+      encrypted_mnemonic1);
 
   // default keyring will be overwritten
-  const std::string mnemonic2 =
-      "misery jeans response tiny nominee civil zoo strong correct taxi "
-      "chimney goat";
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(mnemonic2));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic2));
   controller.default_keyring_->AddAccounts(1);
   EXPECT_EQ(controller.default_keyring_->GetAddress(0),
             "0xf83C3cBfF68086F276DD4f87A82DF73B57b28820");
@@ -385,12 +388,9 @@ TEST_F(KeyringControllerUnitTest, RestoreDefaultKeyring) {
   EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorNonce, "default"), nonce);
   EXPECT_EQ(controller.default_keyring_->GetAccountsNumber(), 0u);
 
-  const std::string mnemonic2 =
-      "divide cruise upon flag harsh carbon filter merit once advice bright "
-      "drive";
   // default keyring will be overwritten by new seed which will be encrypted by
   // new key even though the passphrase is same.
-  EXPECT_NE(controller.RestoreDefaultKeyring(mnemonic2, "brave"), nullptr);
+  EXPECT_NE(controller.RestoreDefaultKeyring(kMnemonic1, "brave"), nullptr);
   EXPECT_NE(GetStringPrefForKeyring(kEncryptedMnemonic, "default"),
             encrypted_mnemonic);
   // salt is regenerated and account num is cleared
@@ -452,9 +452,6 @@ TEST_F(KeyringControllerUnitTest, UnlockResumesDefaultKeyring) {
 }
 
 TEST_F(KeyringControllerUnitTest, GetMnemonicForDefaultKeyring) {
-  const std::string mnemonic =
-      "divide cruise upon flag harsh carbon filter merit once advice bright "
-      "drive";
   KeyringController controller(GetPrefs());
   ASSERT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
 
@@ -464,11 +461,11 @@ TEST_F(KeyringControllerUnitTest, GetMnemonicForDefaultKeyring) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(string_value().empty());
 
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(mnemonic));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
   controller.GetMnemonicForDefaultKeyring(base::BindOnce(
       &KeyringControllerUnitTest::GetStringCallback, base::Unretained(this)));
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(string_value(), mnemonic);
+  EXPECT_EQ(string_value(), kMnemonic1);
 
   // Lock controller
   controller.Lock();
@@ -495,7 +492,7 @@ TEST_F(KeyringControllerUnitTest, GetMnemonicForDefaultKeyring) {
   controller.GetMnemonicForDefaultKeyring(base::BindOnce(
       &KeyringControllerUnitTest::GetStringCallback, base::Unretained(this)));
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(string_value(), mnemonic);
+  EXPECT_EQ(string_value(), kMnemonic1);
 }
 
 TEST_F(KeyringControllerUnitTest, GetDefaultKeyringInfo) {
@@ -651,11 +648,8 @@ TEST_F(KeyringControllerUnitTest, BackupComplete) {
 
 TEST_F(KeyringControllerUnitTest, AccountMetasForKeyring) {
   KeyringController controller(GetPrefs());
-  const std::string mnemonic =
-      "divide cruise upon flag harsh carbon filter merit once advice bright "
-      "drive";
   EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(mnemonic));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
   controller.default_keyring_->AddAccounts(2);
   const std::string address1 = controller.default_keyring_->GetAddress(0);
   const std::string name1 = "Account1";
@@ -987,6 +981,64 @@ TEST_F(KeyringControllerUnitTest, ImportedAccounts) {
   ASSERT_TRUE(
       base::HexStringToBytes(imported_accounts[0].private_key, &private_key0));
   EXPECT_NE(encrypted_private_key, base::Base64Encode(private_key0));
+}
+
+TEST_F(KeyringControllerUnitTest, GetPrivateKeyForDefaultKeyringAccount) {
+  KeyringController controller(GetPrefs());
+  EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
+
+  bool callback_called = false;
+  controller.GetPrivateKeyForDefaultKeyringAccount(
+      "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+      base::BindLambdaForTesting(
+          [&](bool success, const std::string& private_key) {
+            EXPECT_FALSE(success);
+            EXPECT_TRUE(private_key.empty());
+            callback_called = true;
+          }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  controller.default_keyring_->AddAccounts(1);
+  EXPECT_EQ(controller.default_keyring_->GetAddress(0),
+            "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
+
+  callback_called = false;
+  controller.GetPrivateKeyForDefaultKeyringAccount(
+      "", base::BindLambdaForTesting(
+              [&](bool success, const std::string& private_key) {
+                EXPECT_FALSE(success);
+                EXPECT_TRUE(private_key.empty());
+                callback_called = true;
+              }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  controller.GetPrivateKeyForDefaultKeyringAccount(
+      "0x123", base::BindLambdaForTesting(
+                   [&](bool success, const std::string& private_key) {
+                     EXPECT_FALSE(success);
+                     EXPECT_TRUE(private_key.empty());
+                     callback_called = true;
+                   }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  controller.GetPrivateKeyForDefaultKeyringAccount(
+      "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+      base::BindLambdaForTesting([&](bool success,
+                                     const std::string& private_key) {
+        EXPECT_TRUE(success);
+        EXPECT_EQ(
+            "919af8081ce2a02d9650bf3e10ffb6b7cbadbb1dca749122d7d982cdb6cbcc50",
+            private_key);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
 }
 
 }  // namespace brave_wallet

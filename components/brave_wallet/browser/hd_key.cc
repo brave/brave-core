@@ -9,6 +9,7 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h"
@@ -153,6 +154,10 @@ std::string HDKey::GetPrivateExtendedKey() const {
   key.push_back(0x00);
   key.insert(key.end(), private_key_.begin(), private_key_.end());
   return Serialize(MAINNET_PRIVATE, key);
+}
+
+std::string HDKey::GetHexEncodedPrivateKey() const {
+  return base::ToLowerASCII(base::HexEncode(private_key_));
 }
 
 void HDKey::SetPublicKey(const std::vector<uint8_t>& value) {
