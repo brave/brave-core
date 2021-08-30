@@ -3,10 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
-#include "brave/components/speedreader/speedreader_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/test/test_browser_dialog.h"
@@ -24,7 +22,7 @@ class SpeedreaderBubbleBrowserTest : public DialogBrowserTest {
 
   // DialogBrowserTest:
   void ShowUi(const std::string& name) override {
-    if (speedreader_service()->IsEnabled())
+    if (speedreader_bubble_)
       tab_helper()->ShowSpeedreaderBubble();
     else
       tab_helper()->ShowReaderModeBubble();
@@ -47,22 +45,18 @@ class SpeedreaderBubbleBrowserTest : public DialogBrowserTest {
         ActiveWebContents());
   }
 
-  speedreader::SpeedreaderService* speedreader_service() {
-    return speedreader::SpeedreaderServiceFactory::GetForProfile(
-        browser()->profile());
-  }
+  bool speedreader_bubble_ = false;
 };
 
 IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
                        InvokeUi_reader_mode_bubble_basic) {
-  EXPECT_FALSE(speedreader_service()->IsEnabled());
+  speedreader_bubble_ = false;
   ShowAndVerifyUi();
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
                        InvokeUi_speedreader_mode_bubble_basic) {
-  speedreader_service()->ToggleSpeedreader();
-  EXPECT_TRUE(speedreader_service()->IsEnabled());
+  speedreader_bubble_ = true;
   // We need to navigate somewhere so the host is non-empty. For tests the new
   // tab page is fine.
   NavigateToNewTab();
