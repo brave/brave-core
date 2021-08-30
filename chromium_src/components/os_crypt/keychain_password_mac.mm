@@ -21,10 +21,32 @@
     account_name = std::make_unique<std::string>("Chromium");               \
   } else {                                                                  \
     service_name = std::make_unique<std::string>(                           \
-        ::KeychainPassword::service_name->c_str());                         \
+        ::KeychainPassword::GetServiceName().c_str());                      \
     account_name = std::make_unique<std::string>(                           \
-        ::KeychainPassword::account_name->c_str());                         \
+        ::KeychainPassword::GetAccountName().c_str());                      \
   }
 
+#define KeychainPassword KeychainPassword_ChromiumImpl
 #include "../../../../components/os_crypt/keychain_password_mac.mm"
+#undef KeychainPassword
 #undef BRAVE_KEYCHAIN_PASSWORD_GET_PASSWORD
+
+const char kBraveDefaultServiceName[] = "Brave Safe Storage";
+const char kBraveDefaultAccountName[] = "Brave";
+
+// static
+KeychainPassword::KeychainNameType& KeychainPassword::GetServiceName() {
+  static KeychainNameContainerType service_name(kBraveDefaultServiceName);
+  return *service_name;
+}
+
+// static
+KeychainPassword::KeychainNameType& KeychainPassword::GetAccountName() {
+  static KeychainNameContainerType account_name(kBraveDefaultAccountName);
+  return *account_name;
+}
+
+KeychainPassword::KeychainPassword(const AppleKeychain& keychain)
+    : KeychainPassword_ChromiumImpl(keychain) {}
+
+KeychainPassword::~KeychainPassword() = default;
