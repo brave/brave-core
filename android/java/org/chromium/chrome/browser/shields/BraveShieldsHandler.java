@@ -159,8 +159,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
      * @param context Context that is using the BraveShieldsMenu.
      */
     public BraveShieldsHandler(Context context) {
-        mContext = scanForActivity(context);
+        Context contextCandidate = scanForActivity(context);
         mHardwareButtonMenuAnchor = null;
+        mContext = (contextCandidate != null && (contextCandidate instanceof Activity))
+                ? contextCandidate
+                : null;
+
         if (mContext != null) {
             mHardwareButtonMenuAnchor = ((Activity)mContext).findViewById(R.id.menu_anchor_stub);
         }
