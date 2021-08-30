@@ -219,9 +219,23 @@
     "message": "Izradite sigurnosnu kopiju novčanika Brave.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Saznajte više",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Pogreška: drugi račun",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, čini se da se vaš novčanik za uslugu Brave Rewards već potvrdio za drugi račun $name$. Pokušajte ponovno potvrditi upotrebom svog prethodnog računa.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Greška: BAT nije dostupan",
@@ -231,10 +245,6 @@
     "message": "Još se ne podržava BAT u vašoj regiji putem usluge Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "Saznajte više",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "Greška: blokiran račun",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "Vaš račun za uslugu Uphold trenutačno je blokiran.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "Saznajte više",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Greška: račun na čekanju",
@@ -255,10 +261,6 @@
     "message": "Vaš račun za uslugu Uphold još uvijek je na čekanju.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Saznajte više",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Greška: ograničen račun",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Vaš račun za uslugu Uphold trenutačno je ograničen.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Saznajte više",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Dosegnulo se ograničenje uređaja",
@@ -534,10 +532,6 @@
   "grantFinishTokenTitleAds": {
     "message": "Vaš raspoloživi iznos nagrada",
     "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "provjeri",
-    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Prekinuta veza",

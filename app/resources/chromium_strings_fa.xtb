@@ -45,7 +45,6 @@
 <translation id="8372880274820509128">‏برای امنیت بیشتر، Brave داده‌های شما را رمزگذاری می‌کند.</translation>
 <translation id="2770231113462710648">تغییر مرورگر پیش‌فرض به:</translation>
 <translation id="2799223571221894425">راه‌اندازی مجدد</translation>
-<translation id="6811506454451584223">‏نمایه Brave جدا شود؟</translation>
 <translation id="3783547330001921298">‏با این کار، نمایه Brave جدیدی برای <ph name="USER_EMAIL_ADDRESS"/> ایجاد خواهد شد</translation>
 <translation id="777113543093865885">‏حذف از Brave...</translation>
 <translation id="2885378588091291677">مدیر فعالیت‌ها</translation>
@@ -67,17 +66,19 @@
 <translation id="2339258256897053758">‏کلیدهای Brave API وجود ندارند. برخی از عملکردهای Brave از کار خواهند افتاد.</translation>
 <translation id="8926637909431618259">‏ادامه اجرای برنامه‌ها در پس‌زمینه هنگامیکه Brave بسته می‌شود</translation>
 <translation id="4480040274068703980">‏به دلیل وجود خطا در ورود به سیستم، سیستم‌عامل Brave قادر به همگام‌سازی داده‌های شما نبود.</translation>
+<translation id="1166275459137851283">‏Brave توصیه می‌کند این فایل را بارگیری یا باز نکنید</translation>
 <translation id="2711887072399498551">‏درحال‌حاضر یک نمایه Brave با این حساب وجود دارد</translation>
 <translation id="2297290224191497273">‏به نمایه Brave موجود می‌روید؟</translation>
 <translation id="2450003541323895471">‏با نمایه‌های Brave می‌توانید همه چیزتان را در Brave جدا کنید. برای دوستان و اعضای خانواده‌تان نمایه ایجاد کنید، یا کار و سرگرمی را ازهم جدا کنید.</translation>
+<translation id="7275165473619697274">‏نصب Chrome OS درحال انجام است</translation>
 <translation id="9216183508558772570">‏وقتی با گذرواژه‌ای لورفته به سیستم وارد می‌شوید، Brave شما را مطلع می‌کند</translation>
 <translation id="5853262807109651878">‏این کار <ph name="ITEMS_COUNT"/> مورد را از این دستگاه حذف می‌کند. برای بازیابی داده‌هایتان در فرصتی دیگر، با <ph name="USER_EMAIL"/> به سیستم Brave وارد شوید.</translation>
 <translation id="2024972335338126423">‏با <ph name="SHORTCUT"/> می‌توانید بین نمایه‌های Brave جابه‌جا شوید</translation>
 <translation id="8703492925273919597">‏لطفاً همه پنجره‌های Brave را ببندید و دوباره سعی کنید.</translation>
 <translation id="1384923383737428730">‏نرم‌افزار مضری در رایانه‌تان وجود دارد. Brave می‌تواند آن را بردارد، تنظیمات را بازیابی کند و افزونه‌ها را غیرفعال کند تا عملکرد مرورگرتان دوباره عادی شود.</translation>
+<translation id="2409866122341731384">‏پاک کردن دیسک سخت و نصب کردن Chrome OS</translation>
 <translation id="7029305463989165490">‏برای ارسال شماره از <ph name="ORIGIN"/> به تلفن Android خود، در هر دو دستگاه به سیستم Brave وارد شوید.</translation>
 <translation id="4304059894777924102">‏Brave نمی‌تواند گذرواژه‌هایتان را بررسی کند. اتصال اینترنت را بررسی کنید.</translation>
-<translation id="2588634262982826227">‏Chrome OS می‌تواند بدون اینکه هربار بپرسد، همیشه برنامه‌ها و صفحه‌هایتان را پس‌از راه‌اندازی مجدد دوباره بازیابی کند.</translation>
 <translation id="1807774211756215222">‏باز کردن پیوند در &amp;برگه جدید Brave</translation>
 <translation id="7453070689008684791">‏Brave برای ارائه پیشنهاد در نوار نشانی، به Drive شما دسترسی خواهد داشت</translation>
 <translation id="2106568569080763501">‏Brave به شما اجازه می‌دهد بر روی شماره تلفن روی وب کلیک کرده و از طریق Skype تماس بگیرید!</translation>
@@ -95,6 +96,7 @@
 <translation id="8923080813984421771">‏<ph name="MANAGER"/> لازم می‌داند که شما شرایط خدمات زیر را قبل‌از استفاده از دستگاه بخوانید و بپذیرید. این شرایط بسط داده نمی‌شوند، اصلاح نمی‌شوند، و شرایط Chrome OS را محدود نمی‌کنند.</translation>
 <translation id="3262506503470845422">‏دریافت کمک برای Brave</translation>
 <translation id="7691786510374174420">‏به دلیل خطای نامشخص نصب ناموفق بود. اگر Brave در حال اجرا است، لطفاً آن را ببندید و دوباره سعی کنید.</translation>
+<translation id="429583012151745428">نصب درحال انجام است. دستگاه را خاموش نکنید. نصب نباید بیشتر از بیست دقیقه طول بکشد. بعداز نصب، ماشین به‌طور خودکار خاموش می‌شود.</translation>
 <translation id="9183662282810237335">‏درهرصورت از Brave خارج می‌شوید؟</translation>
 <translation id="4065288863231444640">‏اجازه به Brave برای اجرا در پس‌زمینه</translation>
 <translation id="8148611988012584308">‏سفارشی کردن و کنترل Brave</translation>
@@ -128,7 +130,6 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="707769633889902835">‏Chrome OS نمی‌تواند این صفحه را باز کند.</translation>
 <translation id="696826782632239602">‏Brave برای هم‌رسانی مکانتان با این سایت باید به مکان شما دسترسی داشته باشد</translation>
-<translation id="7886919915603831625">‏Brave توصیه می‌کند این فایل را بارگیری یا باز نکنید.</translation>
 <translation id="1744365871163268756">‏وقتی Brave جدیدترین به‌روزرسانی‌های سیستم را نصب می‌کند، لطفاً صبر کنید.</translation>
 <translation id="3861679447659630159">‏Brave می‌خواهد گذرواژه‌ها را ویرایش کند. برای اینکه اجازه دهید این کار انجام شود، گذرواژه Windows خود را تایپ کنید.</translation>
 <translation id="232381795826373334">‏باز کردن فایل‌های PDF در Brave</translation>
@@ -153,6 +154,15 @@
 <translation id="4168372721886011198">‏<ph name="FILE_NAME"/> خطرناک است، بنابراین Brave آن را مسدود کرده است.</translation>
 <translation id="7006260220514217183">‏«مرور ایمن» خاموش است. Brave توصیه می‌کند آن را روشن کنید.</translation>
 <translation id="4060970194201477024">‏می‌توانید در اینجا بین نمایه‌های Brave جابه‌جا شوید</translation>
+<translation id="2417565246123344595">‏<ph name="BEGIN_PARAGRAPH1"/>آماده‌ایم Chrome OS را نصب کنیم! اگر ادامه دهید:
+          <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>فایل‌ها، داده‌ها، و سیستم‌عامل کنونی پاک خواهد شد.
+          <ph name="LIST_ITEM"/>Chrome OS نصب خواهد شد.
+          <ph name="LIST_ITEM"/>وقتی نصب تکمیل شود، دستگاهتان خاموش خواهد شد.
+          <ph name="END_LIST"/>
+          <ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>آخرین یادآوری: درصورت نصب کردن، کل دیسک سخت پاک خواهد شد. لطفاً مطمئن شوید همه داده‌های مهمتان را پشتیبان‌گیری کرده باشید.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>وقتی نصب شروع شود، نمی‌توان آن را لغو کرد.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">‏مطمئن شوید در <ph name="TARGET_DEVICE_NAME"/> به سیستم Brave وارد شده باشید و سپس دوباره ارسال کنید.</translation>
 <translation id="8320964054148936490">‏این رایانه در حال حاضر دارای یک نسخه جدیدتر از Brave است. درصورتی‌که نرم‌افزار کار نمی‌کند، لطفاً Brave را حذف نصب کنید و دوباره سعی کنید.</translation>
 <translation id="3574823187131579180">{0,plural, =0{‏Brave هم‌اکنون راه‌اندازی مجدد می‌شود}=1{‏Brave ‏۱ ثانیه دیگر راه‌اندازی مجدد می‌شود}one{‏Brave ‏# ثانیه دیگر راه‌اندازی مجدد می‌شود}other{‏Brave ‏# ثانیه دیگر راه‌اندازی مجدد می‌شود}}</translation>
@@ -170,6 +180,7 @@
 <translation id="2644798301485385923">‏سیستم سیستم‌عامل Brave</translation>
 <translation id="1684121725014454063">‏به نمایه‌های Brave خوش‌آمدید</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{‏Brave بعد از ۱ ثانیه بازراه‌اندازی می‌شود}one{‏Brave بعد از # ثانیه بازراه‌اندازی می‌شود}other{‏Brave بعد از # ثانیه بازراه‌اندازی می‌شود}}</translation>
+<translation id="664235759707825982">‏آماده برای نصب Chrome OS</translation>
 <translation id="2675662665675552980">‏این برنامه همچنین صفحه‌ای را که هنگام راه‌اندازی Brave نشان داده می‌شود، کنترل می‌کند.</translation>
 <translation id="5590013613412457132">‏حذف نصب Brave </translation>
 <translation id="8646609321956191980">‏هرکدام از نمایه‌ها دارای اطلاعات Brave مختص خودش است (مثلاً نشانک‌ها، سابقه، گذرواژه‌ها، و غیره)</translation>
@@ -184,6 +195,7 @@
 <translation id="6666624454809779082">‏Brave از قبل برای همه کاربران این رایانه نصب شده است.</translation>
 <translation id="5360050006043219962">‏برای دسترسی به چیزهای Brave در همه دستگاه‌هایتان، به سیستم وارد شوید، سپس همگام‌سازی را روشن کنید.</translation>
 <translation id="8291513491595858997">‏ولی‌تان «اجازه‌های مربوط به سایت‌ها، برنامه‌ها، و افزونه‌ها» را برای Brave خاموش کرده است. فعال کردن این <ph name="EXTENSION_TYPE_PARAMETER"/> مجاز نیست.</translation>
+<translation id="1810203443153428607">‏با نصب Chrome OS، همه داده‌های موجود در دستگاه رونویسی خواهد شد.</translation>
 <translation id="8211837073776713955">‏Brave می‌تواند، اگر گذرواژه‌هایتان در معرض خطر باشد، مطلعتان کند</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">‏Brave Pay (در Brave کپی شد)</translation>
@@ -216,6 +228,10 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
       تنظیمات مرورگر Brave<ph name="LINK_END"/> آن را کنید</translation>
 <translation id="3293668930608086049">‏Brave درحال استفاده از دوربین و میکروفون شما است.</translation>
 <translation id="2827121003398607864">‏Brave اکنون بهتر شده است</translation>
+<translation id="1133082137044153811">‏<ph name="BEGIN_PARAGRAPH1"/>قبل‌از شروع کار، لطفاً مطمئن شوید که نسخه پشتیبان به‌روزی از داده‌هایتان داشته باشید. با نصب Chrome OS، همه داده‌های موجود در دیسک سخت رونویسی خواهد شد.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Brave مسئولیت ازدست رفتن داده‌ها را برعهده نمی‌گیرد و تضمین نمی‌کند که Chrome OS در مدل‌های تأییدنشده کار کند. لطفاً برای دریافت اطلاعات بیشتر درباره مدل‌های تأییدشده، به [TBD] مراجعه کنید.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>درباره نصب Chrome OS و پاک شدن داده‌ها بیشتر بدانید: [TBD URL]<ph name="END_PARAGRAPH3"/>
+          <ph name="BEGIN_PARAGRAPH4"/>اگر آماده‌اید ادامه دهید، روی «نصب Chrome OS» کلیک کنید تا تنها در چند مرحله ساده درطول فرایند نصب شما را راهنمایی کنیم. قبل‌از اینکه تغییری در رایانه‌تان ایجاد کنیم، فرصت دیگری برای تأیید خواهید داشت.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">‏Brave مرورگر پیش‌فرض شما نیست</translation>
 <translation id="5477319665405831211">‏Brave را در همه دستگاه‌هایتان همگام‌سازی و شخصی‌سازی کنید</translation>
 <translation id="5419189641394808652">‏Brave قادر به همگام‌سازی داده‌های شما نبود زیرا همگام‌سازی برای دامنه شما قابل دسترسی نیست.</translation>
@@ -226,7 +242,6 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="8462524920674814187">‏برای دریافت به‌روزرسانی‌های آتی Brave، باید OS X نسخه ۱۰.۱۱ یا بالاتر داشته باشید. این رایانه از OS X نسخه ۱۰.۱۰ استفاده می‌کند.</translation>
 <translation id="7963515534397191222">‏Brave به جدیدترین نسخه به‌روزرسانی نشد، بنابراین قابلیت‌های جدید و رفع اشکال‌های امنیتی را ندارید.</translation>
 <translation id="7573289029918943991">‏برای اینکه ببینید دستگاهتان به‌روز است یا نه، به <ph name="LINK_BEGIN"/>تنظیمات سیستم‌عامل Brave<ph name="LINK_END"/> بروید</translation>
-<translation id="6755885556185485672">‏Chrome OS به‌درستی خاموش نشده است.</translation>
 <translation id="2925193881330501265">‏شما بعنوان <ph name="USER_EMAIL_ADDRESS"/> وارد سیستم Brave شده‌اید. لطفاً برای ورود به سیستم مجدد از همان حساب استفاده کنید.</translation>
 <translation id="6915252145142862992">‏این نصب ثانویه Brave است و نمی‌تواند مرورگر پیش‌فرضتان شود.</translation>
 <translation id="7685904775439037072">‏وقتی Brave دسترسی داشته باشد، وب‌سایت‌ها می‌توانند مجوز دسترسی درخواست کنند.</translation>
@@ -258,7 +273,6 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="6389268239133412586">‏به‌روزرسانی Brave امکان‌پذیر نیست</translation>
 <translation id="6368958679917195344">‏سیستم‌عامل Brave با یک <ph name="BEGIN_LINK_CROS_OSS"/>نرم‌افزار منبع آزاد<ph name="END_LINK_CROS_OSS"/> دیگر امکان‌پذیر است.</translation>
 <translation id="8986207147630327271">با این کار، نمایه کاری را به این مرورگر اضافه می‌کنید و فقط کنترل نمایه کاری را دراختیار سرپرست قرار می‌دهید.</translation>
-<translation id="1156157157416773301">‏حساب به نمایه جدیدی از Brave منتقل شود؟</translation>
 <translation id="5173820533850252773">‏نسخه Brave قدیمی است</translation>
 <translation id="310518206836658214">{0,plural, =1{‏Brave یک ساعت دیگر راه‌اندازی مجدد می‌شود}one{‏Brave # ساعت دیگر راه‌اندازی مجدد می‌شود}other{‏Brave # ساعت دیگر راه‌اندازی مجدد می‌شود}}</translation>
 <translation id="7863882214613921971">‏باز کردن پیوند در &amp;برگه جدید Brave</translation>

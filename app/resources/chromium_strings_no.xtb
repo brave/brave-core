@@ -45,7 +45,6 @@
 <translation id="8372880274820509128">Brave krypterer dataene dine for å øke sikkerheten.</translation>
 <translation id="2770231113462710648">Endre standardnettleser til:</translation>
 <translation id="2799223571221894425">Start på nytt</translation>
-<translation id="6811506454451584223">Vil du opprette din egen Brave-profil?</translation>
 <translation id="3783547330001921298">Dette medfører at det blir opprettet en ny Brave-profil for <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Fjern fra Brave</translation>
 <translation id="2885378588091291677">Oppgavebehandling</translation>
@@ -68,17 +67,19 @@
 <translation id="2339258256897053758">API-nøkler for Brave mangler. Noe funksjonalitet i Brave blir deaktivert.</translation>
 <translation id="8926637909431618259">Fortsett å kjøre bakgrunnsprogrammer når Brave er lukket</translation>
 <translation id="4480040274068703980">Chrome OS kunne ikke synkronisere dataene dine på grunn av en feil under pålogging.</translation>
+<translation id="1166275459137851283">Brave fraråder deg å laste ned eller åpne denne filen</translation>
 <translation id="2711887072399498551">Det finnes allerede en Brave-profil med denne kontoen</translation>
 <translation id="2297290224191497273">Vil du bytte til den eksisterende Brave-profilen?</translation>
 <translation id="2450003541323895471">Med Brave-profiler kan du holde alle Brave-tingene dine atskilt. Opprett profiler for venner og familie, eller skill mellom arbeid og fritid.</translation>
+<translation id="7275165473619697274">Installasjonen av Chrome OS pågår</translation>
 <translation id="9216183508558772570">Brave varsler deg når du logger på med passord som er utsatt for sikkerhetsbrudd</translation>
 <translation id="5853262807109651878">Dette sletter <ph name="ITEMS_COUNT"/> elementer fra denne enheten. For å hente dataene dine igjen senere må du logge på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Bruk <ph name="SHORTCUT"/> til å bytte mellom Brave-profiler</translation>
 <translation id="8703492925273919597">Lukk alle Brave-vinduer og prøv på nytt.</translation>
 <translation id="1384923383737428730">Det finnes skadelig programvare på datamaskinen din. Brave kan fjerne den, gjenopprette innstillingene dine og deaktivere utvidelser for å få nettleseren til å fungere som normalt igjen.</translation>
+<translation id="2409866122341731384">Tøm harddisken og installer Chrome OS</translation>
 <translation id="7029305463989165490">For å sende numre fra <ph name="ORIGIN"/> til Android-telefonen din, logg på Brave på begge enhetene.</translation>
 <translation id="4304059894777924102">Brave kan ikke sjekke passordene dine. Prøv å kontrollere internettilkoblingen.</translation>
-<translation id="2588634262982826227">Chrome OS kan alltid gjenopprette apper og sider etter omstart uten å spørre deg hver gang.</translation>
 <translation id="1807774211756215222">Åpne linken i en ny fane i Brave</translation>
 <translation id="7453070689008684791">Brave får tilgang til Disk-lagringen din for å kunne gi deg forslag i adressefeltet</translation>
 <translation id="2106568569080763501">Med Brave kan du klikke på et telefonnummer på nettet og ringe til det med Skype.</translation>
@@ -96,6 +97,7 @@
 <translation id="8923080813984421771"><ph name="MANAGER"/> krever at du leser og godtar følgende vilkår før du bruker denne enheten. Disse vilkårene verken utvider, endrer eller begrenser Chrome OS-vilkårene.</translation>
 <translation id="3262506503470845422">Få hjelp med Brave</translation>
 <translation id="7691786510374174420">Installeringen mislyktes på grunn av en uspesifisert feil. Lukk Brave hvis nettleseren kjører, og prøv på nytt.</translation>
+<translation id="429583012151745428">Installasjonen pågår. Ikke slå av enheten. Installasjonen skal ikke ta mer enn tjue minutter. Maskinen slår seg automatisk av etter at installasjonen er fullført.</translation>
 <translation id="9183662282810237335">Vil du avslutte Brave likevel?</translation>
 <translation id="4065288863231444640">La Brave kjøre i bakgrunnen</translation>
 <translation id="8148611988012584308">Tilpass og kontrollér Brave</translation>
@@ -129,7 +131,6 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – betaversjon av Brave</translation>
 <translation id="707769633889902835">Chrome OS kan ikke åpne denne siden.</translation>
 <translation id="696826782632239602">Brave trenger tilgang til posisjonen din for å kunne dele den med dette nettstedet</translation>
-<translation id="7886919915603831625">Brave fraråder deg å laste ned eller åpne denne filen.</translation>
 <translation id="1744365871163268756">Vent mens Brave installerer de nyeste systemoppdateringene.</translation>
 <translation id="3861679447659630159">Brave prøver å redigere passord. Skriv inn Windows-passordet ditt for å tillate dette.</translation>
 <translation id="232381795826373334">Åpne PDF-filer i Brave</translation>
@@ -154,6 +155,15 @@
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> er farlig, så Brave har blokkert den.</translation>
 <translation id="7006260220514217183">Safe Browsing er slått av. Brave anbefaler at du slår det på.</translation>
 <translation id="4060970194201477024">Du kan bytte mellom Brave-profiler her</translation>
+<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Vi er klare til å installere Chrome OS! Når du fortsetter, skjer følgende:
+          <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Filer, data, og det nåværende operativsystemet ditt blir slettet.
+          <ph name="LIST_ITEM"/>Chrome OS blir installert.
+          <ph name="LIST_ITEM"/>Enheten din slår seg av når installasjonen er fullført.
+          <ph name="END_LIST"/>
+          <ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Én siste påminnelse: Installasjonen kommer til å tømme hele harddisken din. Forsikre deg om at du har sikkerhetskopiert eventuelle data du bryr deg om.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Når installasjonen er startet, kan den ikke avbrytes.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Sørg for at du er logget på Brave på <ph name="TARGET_DEVICE_NAME"/>, og prøv å sende på nytt.</translation>
 <translation id="8320964054148936490">Denne datamaskinen har allerede en nyere versjon av Brave. Hvis programvaren ikke fungerer, må du avinstallere Brave og prøve på nytt.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave startes på nytt nå}=1{Brave startes på nytt om 1 sekund}other{Brave startes på nytt om # sekunder}}</translation>
@@ -171,6 +181,7 @@
 <translation id="2644798301485385923">Chrome OS</translation>
 <translation id="1684121725014454063">Velkommen til Brave-profiler</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave startes på nytt om 1 sekund}other{Brave startes på nytt om # sekunder}}</translation>
+<translation id="664235759707825982">Klar til å installere Chrome OS</translation>
 <translation id="2675662665675552980">Den styrer også hvilken side som vises når du starter Brave.</translation>
 <translation id="5590013613412457132">Avinstaller Brave</translation>
 <translation id="8646609321956191980">Hver profil har sin egen Brave-informasjon, som bokmerker, logg, passord med mer</translation>
@@ -185,6 +196,7 @@ Det er mulig at enkelte funksjoner ikke er tilgjengelige. Angi en annen profilka
 <translation id="6666624454809779082">Brave er allerede installert for alle brukerne på datamaskinen din.</translation>
 <translation id="5360050006043219962">For å få tilgang til Brave-tingene dine på alle enhetene dine, logg på og slå på synkronisering.</translation>
 <translation id="8291513491595858997">Forelderen din har slått av «Tillatelser for nettsteder, apper og utvidelser» for Brave. Du har ikke tillatelse til å slå på denne <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
+<translation id="1810203443153428607">Når Chrome OS installeres, blir alle dataene på enheten din overskrevet.</translation>
 <translation id="8211837073776713955">Med Brave får du beskjed hvis passordene dine noensinne utsettes for sikkerhetsbrudd</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (kopiert til Brave)</translation>
@@ -217,6 +229,10 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
     innstillingene for Chrome OS<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave bruker kameraet og mikrofonen din.</translation>
 <translation id="2827121003398607864">Nå er Brave blitt enda bedre</translation>
+<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Før vi setter i gang, må du forsikre deg om at du har en oppdatert sikkerhetskopi av dataene dine. Når Chrome OS installeres, blir alle dataene på harddisken din overskrevet.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Brave tar intet ansvar for eventuelle tap av data og stiller ingen garanti for at Chrome OS fungerer på ikke-sertifiserte modeller. Gå til [TBD] for å finne ut mer om sertifiserte modeller.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Finn ut mer om installering av Chrome OS og sletting av data: [TBD URL]<ph name="END_PARAGRAPH3"/>
+          <ph name="BEGIN_PARAGRAPH4"/>Hvis du er klar til å fortsette, klikker du på «Installer Chrome OS», så veileder vi deg gjennom installasjonen på bare noen få enkle trinn. Du får en ny mulighet til å bekrefte før vi gjør endringer på datamaskinen din.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave er ikke standardnettleseren din</translation>
 <translation id="5477319665405831211">Synkroniser og gi Brave et personlig preg på alle enhetene dine</translation>
 <translation id="5419189641394808652">Brave kunne ikke synkronisere dataene dine. Dette skyldes at synkronisering ikke er tilgjengelig for domenet ditt.</translation>
@@ -227,7 +243,6 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="8462524920674814187">For å få fremtidige Brave-oppdateringer trenger du OS X 10.11 eller nyere. Denne datamaskinen bruker OS X 10.10.</translation>
 <translation id="7963515534397191222">Brave kunne ikke oppdateres til den nyeste versjonen, så du går glipp av nye funksjoner og sikkerhetsforbedringer.</translation>
 <translation id="7573289029918943991">For å se om enheten er oppdatert, gå til <ph name="LINK_BEGIN"/>Innstillinger for Chrome OS<ph name="LINK_END"/></translation>
-<translation id="6755885556185485672">Chrome OS ble ikke avsluttet på riktig måte.</translation>
 <translation id="2925193881330501265">Du ble logget på Brave som <ph name="USER_EMAIL_ADDRESS"/>. Du må logge deg på igjen med samme konto.</translation>
 <translation id="6915252145142862992">Dette er en sekundær installering av Brave. Den kan ikke brukes som standardnettleser.</translation>
 <translation id="7685904775439037072">Når Brave har fått tilgang, kan nettsteder spørre deg om tilgang.</translation>
@@ -259,7 +274,6 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="6389268239133412586">Kan ikke oppdatere Brave</translation>
 <translation id="6368958679917195344">Chrome OS er gjort mulig av ytterligere <ph name="BEGIN_LINK_CROS_OSS"/>åpen kilde-programvare<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8986207147630327271">Du er i ferd med å legge til en jobbprofil i denne nettleseren og gi administratoren din kontroll over kun jobbprofilen.</translation>
-<translation id="1156157157416773301">Vil du flytte kontoen til en ny Brave-profil?</translation>
 <translation id="5173820533850252773">Brave er utdatert</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave startes på nytt om en time}other{Brave startes på nytt om # timer}}</translation>
 <translation id="7863882214613921971">Åpne linken i en ny &amp;fane i Brave</translation>

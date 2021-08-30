@@ -219,9 +219,23 @@
     "message": "Please backup your Brave wallet.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "കൂടുതലറിയുക",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Error: Different account",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, it looks like your Brave Rewards wallet has already been verified with another $name$ account. Please try verifying again using your previous account.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Error: BAT unavailable",
@@ -231,10 +245,6 @@
     "message": "BAT is not yet supported in your region on Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "കൂടുതലറിയുക",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "Error: Blocked account",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "Your account at Uphold is currently blocked.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "കൂടുതലറിയുക",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Error: Pending account",
@@ -255,10 +261,6 @@
     "message": "Your account at Uphold is still pending.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "കൂടുതലറിയുക",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Error: Restricted account",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Your account at Uphold is currently restricted.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "കൂടുതലറിയുക",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Device Limit Reached",
@@ -534,10 +532,6 @@
   "grantFinishTokenTitleAds": {
     "message": "Your Reward Amount",
     "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "verify",
-    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Disconnected",

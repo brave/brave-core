@@ -219,9 +219,23 @@
     "message": "Faça o backup da sua carteira Brave.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Saiba mais",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Erro: conta diferente",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Parece que sua carteira do Brave Rewards já foi verificada com outra conta do $name$. Tente verificar novamente usando sua conta anterior.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Erro: BAT indisponível",
@@ -231,10 +245,6 @@
     "message": "O uso de BAT ainda não é aceito na sua região no Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "Saiba mais",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "Erro: conta bloqueada",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "Sua conta do Uphold está bloqueada no momento.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "Saiba mais",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Erro: conta pendente",
@@ -255,10 +261,6 @@
     "message": "Sua conta do Uphold ainda está pendente.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Saiba mais",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Erro: conta restrita",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Sua conta do Uphold está restrita no momento.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Saiba mais",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Limite de dispositivos atingido",
@@ -534,10 +532,6 @@
   "grantFinishTokenTitleAds": {
     "message": "Seu total de recompensas",
     "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "verificar",
-    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Desconectado",

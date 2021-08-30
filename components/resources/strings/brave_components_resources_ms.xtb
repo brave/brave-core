@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Diklik</translation>
 <translation id="7119308337584989771">Dibuang</translation>
 <translation id="6805660603861526473">Dilihat</translation>
+<translation id="1501075228659004450">Hmm, nampaknya dompet Brave Rewards anda telah disahkan menggunakan akaun <ph name="PROVIDER"/> lain. Sila cuba mengesahkan sekali lagi menggunakan akaun anda yang sebelum ini.</translation>
+<translation id="5111921830714291902">Ralat: Akaun berbeza</translation>
 <translation id="2359865110462963929">BAT tidak disokong buat masa ini di kawasan anda. Sila rujuk <ph name="BEGIN_LINK"/>di sini<ph name="END_LINK"/> untuk makluman terkini.</translation>
 <translation id="1737873393693460829">Dengan menekan buka pada [[title]], anda bersetuju dengan <ph name="BEGIN_LINK1"/>Terma Perkhidmatan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Polisi Privasi<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Ralat mencipta kad BAT Pelayar Berani</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Teruskan</translation>
 <translation id="5112354605357157725">Teruskan untuk log masuk</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> memerlukan baki minimum sebanyak <ph name="AMOUNT"/> BAT untuk mencipta akaun. Sekiranya anda menyambung akaun sebelum ini,</translation>
+<translation id="752216563428219524">Iklan tidak dimulakan, sila segarkan semula halaman.</translation>
 <translation id="7422678632904904341">Jumlah:</translation>
 <translation id="6969783933307596818">Segarkan semula setiap 5 saat</translation>
 <translation id="5025866799968038247">Maklumat baki</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Sumbangan Automatik</translation>
 <translation id="2927922949538312364">Tip sekali</translation>
 <translation id="3164105678355419142">Tip berulang</translation>
+<translation id="916115051162298064">Diagnostik iklan</translation>
 <translation id="7806880412350961625">Log peristiwa</translation>
 <translation id="4309915981827077375">Maklumat umum</translation>
 <translation id="3662406032239313663">Log</translation>
@@ -376,7 +380,7 @@
 <translation id="6318696841371191107">Jelajah pantas</translation>
 <translation id="8465790416279415448">Dengan meneruskan, anda bersetuju dengan <ph name="TOS_LINK_BEGIN"/>Terma Perkhidmatan<ph name="TOS_LINK_END"/> dan <ph name="PP_LINK_BEGIN"/>Dasar Privasi<ph name="PP_LINK_END"/>.</translation>
 <translation id="8222322431155185238">Beri tip dengan Ganjaran Brave</translation>
-<translation id="1895476463085410109">Dapatkan Ganjaran dengan melihat Iklan Peribadi Brave dan menyokong pencipta kandungan secara automatik</translation>
+<translation id="1895476463085410109">Dapatkan Ganjaran dengan melihat Brave Private Ads dan menyokong pencipta kandungan secara automatik</translation>
 <translation id="5705882733397021510">Kembali</translation>
 <translation id="185034574799484512">Mari terokai dengan pantas</translation>
 <translation id="8281886186245836920">Langkau</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Kategori</translation>
 <translation id="3080423471207781945">Jumlah iklan maksimum yang diterima setiap jam:</translation>
 <translation id="2631006050119455616">Disimpan</translation>
+<translation id="7847825746023377505">Tiada iklan dilihatdalam <ph name="TOTAL_DAYS"/> hari yang lepas.</translation>
 <translation id="7902420836933072528">Iklan yang anda terima sejak [[totalDays]] hari yang lalu</translation>
 <translation id="8863685593846905344">Sejarah Iklan</translation>
 <translation id="2777306694585938662">Ganjaran iklan diterima</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">Kadang-kala anda akan ditawarkan pemberian token percuma daripada Brave. Pastikan anda sentiasa mengawasi amaran itu!</translation>
 <translation id="1370034647041840967">Dapatkan token untuk perhatian anda pada iklan dan balas budi ke hadapan untuk menyokong pencipta kandungan yang anda hargai!</translation>
 <translation id="4919888432594361029">Menambah, mengeluarkan dan menguruskan dana di <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Dompet Brave anda dikuasakan oleh <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards dibentuk dari Token Perhatian Asas (BAT). Ketahui lebih lanjut tentang BAT</translation>
 <translation id="7823359893981882407">di sini</translation>
 <translation id="3034163433136515805">Lihat Kod QR</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Amaun Ganjaran Anda</translation>
 <translation id="2151535059686617995">Ini hari bertuah anda!</translation>
 <translation id="6436689611575806470">Geran [[currency]] anda sedang dalam perjalanan.</translation>
-<translation id="7512440811010447157">sahkan</translation>
 <translation id="8267327690882073581">Sahkan Dompet</translation>
 <translation id="543510923939676996">Dompet Disahkan</translation>
 <translation id="2659764755126740206">Pergi ke akaun <ph name="PROVIDER"/> saya</translation>
 <translation id="3699674790322420653">Lengkapkan pengesahan dompet</translation>
 <translation id="9200453331904391567">Putuskan daripada Brave Rewards</translation>
+<translation id="3656941797339037856">Pautkan Ganjaran ke Gemini!</translation>
+<translation id="671838195432136371">Gemini membolehkan anda memperdagangkan, menyimpan, dan memperoleh 3.49% APY * dengan mudah pada BAT anda. Pengguna Gemini baharu yang membuat pautan menerima 5 BAT percuma!</translation>
+<translation id="9136976526700181750">Gemini Earn APY setakat 15 Ogos 2021</translation>
 <translation id="7404779623219601861">Menebus BAT untuk Kad Hadiah</translation>
 <translation id="6215565499749144110">Dengan Rangkaian TAP, anda boleh menebus BAT anda untuk kad hadiah jenama terkenal.</translation>
 <translation id="6915065518766963119">* Memerlukan Pengesahan Jaminan.</translation>
@@ -735,6 +741,7 @@ Anda juga boleh memilih untuk <ph name="LINK_BEGIN"/>hide sponsored images<ph na
 <translation id="1833248467354516560">Harga Unit</translation>
 <translation id="4763179765154524864">Jumlah Dibelanjakan</translation>
 <translation id="8851480289992540512">Jumlah diterima</translation>
+<translation id="824449983246282560">Anda tidak mempunyai sebarang baki dalam akaun anda. Lawati Gemini untuk membeli beberapa.</translation>
 <translation id="8624961452383848703">Saya mahu menukar…</translation>
 <translation id="616639131065447379">Selamat datang ke Dompet Kripto Brave</translation>
 <translation id="1740464057879304704">Dompet Kripto membolehkan anda bekerja dengan mata wang kripto dan aset-aset yang berkaitan di Brave. Dompet Kripto menyokong token Ethereum seperti ETH dan BAT, dan juga barangan koleksi, dan membolehkan anda bekerja dengan Ðaplikasi dan kontrak-kontrak pintar yang lain. Semua ini adalah untuk mereka yang mengenali Ethereum dan sistem-sistem rangkaian sekatan yang lain — atau teruja untuk belajar.</translation>

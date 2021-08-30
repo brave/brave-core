@@ -92,7 +92,7 @@
     "description": "Month"
   },
   "monthAug": {
-    "message": "August",
+    "message": "ஆகஸ்ட்",
     "description": "Month"
   },
   "monthDec": {
@@ -132,7 +132,7 @@
     "description": "Month"
   },
   "monthSep": {
-    "message": "September",
+    "message": "செப்டம்பர்",
     "description": "Month"
   },
   "tokenGrant": {
@@ -166,7 +166,7 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Monthly Contributions",
+    "message": "மாத பங்களிப்புகள்",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
@@ -182,7 +182,7 @@
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
-    "message": "Brave Ads",
+    "message": "பிரேவ் விளம்பரங்கள்",
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
@@ -219,9 +219,23 @@
     "message": "Please backup your Brave wallet.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "மேலும் அறிக",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Error: Different account",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, it looks like your Brave Rewards wallet has already been verified with another $name$ account. Please try verifying again using your previous account.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Error: BAT unavailable",
@@ -231,10 +245,6 @@
     "message": "BAT is not yet supported in your region on Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "மேலும் அறிக",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "Error: Blocked account",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "Your account at Uphold is currently blocked.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "மேலும் அறிக",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Error: Pending account",
@@ -255,10 +261,6 @@
     "message": "Your account at Uphold is still pending.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "மேலும் அறிக",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Error: Restricted account",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Your account at Uphold is currently restricted.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "மேலும் அறிக",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Device Limit Reached",
@@ -316,7 +314,7 @@
     "description": "Cosmetic text for captcha prompt"
   },
   "captchaTarget": {
-    "message": "target.",
+    "message": "இலக்கு.",
     "description": "Captcha Target"
   },
   "captchaMissedTarget": {
@@ -328,7 +326,7 @@
     "description": "Claim text"
   },
   "newTokenGrant": {
-    "message": "Free Token Grant",
+    "message": "இலவச கிள்ளாக்கு நல்கை",
     "description": "Token grant label"
   },
   "grantExpire": {
@@ -344,7 +342,7 @@
     "description": "Error text when user is having problems claiming a grant."
   },
   "grantGeneralErrorTitle": {
-    "message": "Oops, something is wrong. Please try again later.",
+    "message": "ஐயோ, ஏதோ தவறானது. பின்னர் மீண்டும் முயலவும்.",
     "description": "Error title when user is having problems claiming a grant."
   },
   "unVerifiedCheck": {
@@ -400,7 +398,7 @@
     "description": "Button for adding funds"
   },
   "rewardsSettings": {
-    "message": "Rewards Settings",
+    "message": "வெகுமதிகள் அமைப்புகள்",
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
@@ -468,7 +466,7 @@
     "description": "Hover text for Twitter tips action"
   },
   "twitterTipsIconLabel": {
-    "message": "Tip",
+    "message": "துணுக்குதவி",
     "description": "Icon label for Twitter tips"
   },
   "redditTipsHoverText": {
@@ -476,7 +474,7 @@
     "description": "Hover text for Reddit tips action"
   },
   "redditTipsIconLabel": {
-    "message": "Tip",
+    "message": "துணுக்குதவி",
     "description": "Icon label for Reddit tips"
   },
   "githubTipsHoverText": {
@@ -484,7 +482,7 @@
     "description": "Hover text for GitHub tips action"
   },
   "githubTipsIconLabel": {
-    "message": "Tip",
+    "message": "துணுக்குதவி",
     "description": "Icon label for GitHub tips"
   },
   "verifiedPublisherNotification": {
@@ -520,7 +518,7 @@
     }
   },
   "grantFinishTokenTitleUGP": {
-    "message": "Free Token Grant",
+    "message": "இலவச கிள்ளாக்கு நல்கை",
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
@@ -534,10 +532,6 @@
   "grantFinishTokenTitleAds": {
     "message": "Your Reward Amount",
     "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "verify",
-    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Disconnected",
@@ -596,15 +590,15 @@
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
-    "message": "Complete wallet verification",
+    "message": "முழுமையான பணப்பை சரிபார்ப்பு",
     "description": "CTA for completing wallet verification"
   },
   "set": {
-    "message": "Set...",
+    "message": "அமை...",
     "description": "Button text for setting monthly contribution"
   },
   "tokens":  {
-    "message": "tokens",
+    "message": "கிள்ளாக்குகள்",
     "description": "Standard tokens text"
   },
   "point":  {

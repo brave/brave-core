@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Geklickt</translation>
 <translation id="7119308337584989771">Abgelehnt</translation>
 <translation id="6805660603861526473">Angesehen</translation>
+<translation id="1501075228659004450">Hmm, anscheinend wurde Ihre Brave Rewards-Wallet bereits mit einem anderen <ph name="PROVIDER"/>-Konto verifiziert. Bitte versuchen Sie es erneut mit Ihrem vorherigen Konto.</translation>
+<translation id="5111921830714291902">Fehler: Anderes Konto</translation>
 <translation id="2359865110462963929">BAT wird zurzeit nicht in Ihrer Region unterstützt. Neuigkeiten finden Sie <ph name="BEGIN_LINK"/>hier<ph name="END_LINK"/>.</translation>
 <translation id="1737873393693460829">Durch Aktivieren von [[title]] akzeptieren Sie die <ph name="BEGIN_LINK1"/>Nutzungsbedingungen<ph name="END_LINK1"/> und <ph name="BEGIN_LINK2"/>Datenschutzerklärung<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Fehler beim Erstellen der BAT-Karte des Brave-Browsers</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Fortfahren</translation>
 <translation id="5112354605357157725">Weiter zur Anmeldung</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> erfordert ein Mindestguthaben von <ph name="AMOUNT"/> BAT, um ein Konto zu erstellen. Wenn Sie bereits ein Konto erstellt haben:</translation>
+<translation id="752216563428219524">Anzeigen nicht initialisiert, bitte aktualisieren Sie die Seite.</translation>
 <translation id="7422678632904904341">Betrag:</translation>
 <translation id="6969783933307596818">Automatisch alle 5 Sekunden aktualisieren</translation>
 <translation id="5025866799968038247">Guthabeninfo</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Automatischer Beitrag</translation>
 <translation id="2927922949538312364">Einmaliges Trinkgeld</translation>
 <translation id="3164105678355419142">Wiederkehrendes Trinkgeld</translation>
+<translation id="916115051162298064">Anzeigendiagnose</translation>
 <translation id="7806880412350961625">Ereignisprotokolle</translation>
 <translation id="4309915981827077375">Allgemeine Informationen</translation>
 <translation id="3662406032239313663">Protokolle</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Kategorie</translation>
 <translation id="3080423471207781945">Maximale Anzahl an Anzeigen pro Stunde:</translation>
 <translation id="2631006050119455616">Gespeichert</translation>
+<translation id="7847825746023377505">Keine Anzeigen angezeigt in den letzten <ph name="TOTAL_DAYS"/> Tagen.</translation>
 <translation id="7902420836933072528">Werbung, die Sie in den vergangenen [[totalDays]] Tagen erhalten haben</translation>
 <translation id="8863685593846905344">Werbeverlauf</translation>
 <translation id="2777306694585938662">Brave-Ads-Belohnungen erhalten</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">Hin und wieder bietet Ihnen Brave kostenlose Förderbeträge an. Achten Sie darauf, dass Sie die Alerts nicht verpassen!</translation>
 <translation id="1370034647041840967">Verdienen Sie Token für Ihre Aufmerksamkeit für Werbung und zahlen Sie sie weiter, um Inhaltsersteller zu unterstützen, die Sie schätzen!</translation>
 <translation id="4919888432594361029">Hinzufügen, Abheben und Verwalten von Geldern mit <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Ihr Brave Wallet wird von <ph name="PROVIDER"/> bereitgestellt.</translation>
 <translation id="6401272292123354754">Brave Rewards basiert auf dem Basic Attention Token. Erfahren Sie mehr über BAT</translation>
 <translation id="7823359893981882407">hier</translation>
 <translation id="3034163433136515805">QR-Code anzeigen</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Ihr Belohnungsbetrag</translation>
 <translation id="2151535059686617995">Dies ist Ihr Glückstag!</translation>
 <translation id="6436689611575806470">Ihre [[currency]]-Zuwendung ist unterwegs.</translation>
-<translation id="7512440811010447157">verifiziert</translation>
 <translation id="8267327690882073581">Wallet verifizieren</translation>
 <translation id="543510923939676996">Wallet verifiziert</translation>
 <translation id="2659764755126740206">Wechseln zu meinem <ph name="PROVIDER"/> Konto</translation>
 <translation id="3699674790322420653">Wallet-Verifizierung abschließen</translation>
 <translation id="9200453331904391567">Verbindung zu Brave Rewards trennen</translation>
+<translation id="3656941797339037856">Verknüpfen Sie Belohnungen mit Gemini!</translation>
+<translation id="671838195432136371">Mit Gemini können Sie ganz einfach handeln, speichern und 3,49 % APY* auf Ihre BAT verdienen. Neue Gemini-Benutzer, die verlinken, erhalten 5 kostenlose BAT!</translation>
+<translation id="9136976526700181750">* Gemini verdienen APY ab dem 15. August 2021</translation>
 <translation id="7404779623219601861">BAT gegen Geschenkgutscheine eintauschen</translation>
 <translation id="6215565499749144110">Mithilfe des TAP Network können Sie Ihre BAT gegen Geschenkgutscheine beliebter Marken eintauschen.</translation>
 <translation id="6915065518766963119">* Erfordert Uphold-Verifizierung.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Stückpreis</translation>
 <translation id="4763179765154524864">Ausgegebene Summe</translation>
 <translation id="8851480289992540512">Empfangene Summe</translation>
+<translation id="824449983246282560">Sie haben kein Guthaben auf Ihrem Konto. Besuchen Sie Gemini, um Guthaben zu erwerben.</translation>
 <translation id="8624961452383848703">Ich möchte umtauschen:</translation>
 <translation id="616639131065447379">Willkommen bei Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets lässt Sie mit Kryptowährung und ähnlichen Assets arbeiten. Crypto Wallets unterstützt Ethereum-Tokens wie ETH und BAT sowie Collectibles und lässt Sie mit ÐApps und anderen Smart Contracts arbeiten. All das ist für Leute gedacht, die mit Ethereum und anderen Blockchain-Systemen vertraut sind — oder es gern lernen wollen.</translation>

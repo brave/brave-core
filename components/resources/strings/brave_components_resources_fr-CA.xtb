@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Cliqué</translation>
 <translation id="7119308337584989771">Rejeté</translation>
 <translation id="6805660603861526473">Vu</translation>
+<translation id="1501075228659004450">Hmm, votre portefeuille Brave Rewards semble avoir déjà été vérifié par un autre compte <ph name="PROVIDER"/>. Essayez de le vérifier à nouveau avec votre ancien compte.</translation>
+<translation id="5111921830714291902">Erreur : Autre compte</translation>
 <translation id="2359865110462963929">BAT n'est pas actuellement pris en charge dans votre région. Veuillez cliquer <ph name="BEGIN_LINK"/>ici<ph name="END_LINK"/> afin d'obtenir des mises à jour.</translation>
 <translation id="1737873393693460829">En activant [[title]], vous acceptez les <ph name="BEGIN_LINK1"/>conditions d'utilisation<ph name="END_LINK1"/> et la <ph name="BEGIN_LINK2"/>politique de confidentialité<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Erreur lors de la création de la carte BAT du navigateur Brave</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Continuer</translation>
 <translation id="5112354605357157725">connectez-vous.</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> exige un solde minimum de <ph name="AMOUNT"/> BAT pour créer un compte. Si vous avez déjà associé un compte,</translation>
+<translation id="752216563428219524">Les annonces ne sont pas initialisées, veuillez actualiser la page.</translation>
 <translation id="7422678632904904341">Montant :</translation>
 <translation id="6969783933307596818">Actualisation automatique toutes les 5 secondes</translation>
 <translation id="5025866799968038247">Informations sur le solde</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Contribuer automatiquement</translation>
 <translation id="2927922949538312364">Pourboire unique</translation>
 <translation id="3164105678355419142">Pourboire récurrent</translation>
+<translation id="916115051162298064">Diagnostics des annonces</translation>
 <translation id="7806880412350961625">Journal des événements</translation>
 <translation id="4309915981827077375">Informations générales</translation>
 <translation id="3662406032239313663">Journaux</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Catégorie</translation>
 <translation id="3080423471207781945">Nombre maximum d'annonces reçues par heure :</translation>
 <translation id="2631006050119455616">Enregistrées</translation>
+<translation id="7847825746023377505">Aucune annonce consultée au cours des <ph name="TOTAL_DAYS"/> derniers jours.</translation>
 <translation id="7902420836933072528">Publicités que vous avez reçues au cours des [[totalDays]] derniers jours</translation>
 <translation id="8863685593846905344">Historique des annonces</translation>
 <translation id="2777306694585938662">Récompenses des publicités reçues</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">De temps en temps, Brave vous attribuera gratuitement des jetons. Assurez-vous de garder un œil sur l'alerte !</translation>
 <translation id="1370034647041840967">Gagnez des jetons pour avoir prêter attention aux annonces et donnez au suivant pour aider les créateurs de contenu que vous appréciez!</translation>
 <translation id="4919888432594361029">Ajouter, retirer et gérer des fonds sur <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Votre portefeuille Brave est optimisé par <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Récompenses est construit sur le jeton d'attention de base. En savoir plus sur le BAT (sigle en anglais)</translation>
 <translation id="7823359893981882407">ici</translation>
 <translation id="3034163433136515805">Afficher le code QR</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Le montant de votre récompense</translation>
 <translation id="2151535059686617995">C'est votre jour de chance !</translation>
 <translation id="6436689611575806470">Votre allocation de [[currency]] est en route.</translation>
-<translation id="7512440811010447157">vérifier</translation>
 <translation id="8267327690882073581">Vérifier le porte-monnaie</translation>
 <translation id="543510923939676996">Porte-monnaie vérifié</translation>
 <translation id="2659764755126740206">Accéder à mon compte <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Vérification complète du portefeuille</translation>
 <translation id="9200453331904391567">Se déconnecter des Récompenses de Brave</translation>
+<translation id="3656941797339037856">Associez Rewards à Gemini !</translation>
+<translation id="671838195432136371">Gemini vous permet d'échanger, de stocker et de gagner facilement jusqu'à 3,49 % d'APY* sur votre BAT. Les nouveaux utilisateurs de Gemini qui feront l'association recevront 5 BAT gratuits !</translation>
+<translation id="9136976526700181750">* Gain d'APY Gemini au 15 août 2021</translation>
 <translation id="7404779623219601861">Échange de BAT contre des cartes-cadeaux</translation>
 <translation id="6215565499749144110">Avec le TAP réseau, vous pouvez échanger votre BAT contre des cartes-cadeaux de marques connues.</translation>
 <translation id="6915065518766963119">* Nécessite une vérification de conformité.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Prix unitaire</translation>
 <translation id="4763179765154524864">Total dépensé</translation>
 <translation id="8851480289992540512">Total reçu</translation>
+<translation id="824449983246282560">Le solde de votre compte est nul. Accédez à Gemini pour acheter des devises.</translation>
 <translation id="8624961452383848703">Je souhaite convertir…</translation>
 <translation id="616639131065447379">Bienvenue chez Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets vous permet de travailler avec la crypto-monnaie et les actifs connexes dans Brave. Crypto Wallets prend en charge les jetons Ethereum comme ETH et BAT, ainsi que les objets de collection, et vous permet de travailler avec Ð des applications et d'autres contrats intelligents. Tout cela est destiné aux personnes qui connaissent Ethereum et d'autres systèmes de chaînes de blocs — ou qui sont enthousiastes à l'idée d'apprendre.</translation>

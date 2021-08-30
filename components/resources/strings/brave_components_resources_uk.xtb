@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Натиснуто</translation>
 <translation id="7119308337584989771">Закрито</translation>
 <translation id="6805660603861526473">Переглянуто</translation>
+<translation id="1501075228659004450">Схоже, що ваш гаманець Brave Rewards уже було верифіковано за допомогою іншого акаунту <ph name="PROVIDER"/>. Спробуйте пройти верифікацію знову, використовуючи попередній акаунт.</translation>
+<translation id="5111921830714291902">Помилка: інший акаунт</translation>
 <translation id="2359865110462963929">Наразі BAT не підтримується у вашому регіоні. Будь ласка, слідкуйте за оновленнями <ph name="BEGIN_LINK"/>тут<ph name="END_LINK"/>.</translation>
 <translation id="1737873393693460829">Активуючи [[title]], ви погоджуєтесь із <ph name="BEGIN_LINK1"/>Умовами використання<ph name="END_LINK1"/> та <ph name="BEGIN_LINK2"/>Політикою конфіденційності<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Помилка при створенні картки Brave Browser BAT</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Продовжити</translation>
 <translation id="5112354605357157725">Продовжте, щоб увійти</translation>
 <translation id="1280764044837262633">Постачальник <ph name="PROVIDER"/> вимагає мати мінімальний баланс в розмірі <ph name="AMOUNT"/> BAT для створення облікового запису. Якщо ви підключили обліковий запис раніше,</translation>
+<translation id="752216563428219524">Оголошення не ініціалізовано, оновіть сторінку.</translation>
 <translation id="7422678632904904341">Сума:</translation>
 <translation id="6969783933307596818">Автоматично оновлювати щоп'ять секунд</translation>
 <translation id="5025866799968038247">Інформація про баланс</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Робити внески автоматично</translation>
 <translation id="2927922949538312364">Одноразова винагорода</translation>
 <translation id="3164105678355419142">Постійна винагорода</translation>
+<translation id="916115051162298064">Діагностика рекламних оголошень</translation>
 <translation id="7806880412350961625">Журнали подій</translation>
 <translation id="4309915981827077375">Загальна інформація</translation>
 <translation id="3662406032239313663">Журнали</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Категорія</translation>
 <translation id="3080423471207781945">Максимальна кількість реклами, отриманої за годину:</translation>
 <translation id="2631006050119455616">Збережено</translation>
+<translation id="7847825746023377505">Немає оголошень, переглянутих за останні <ph name="TOTAL_DAYS"/> дн.</translation>
 <translation id="7902420836933072528">Реклама, яку ви отримали за останні кілька днів ([[totalDays]]).</translation>
 <translation id="8863685593846905344">Історія Реклами</translation>
 <translation id="2777306694585938662">Отримана винагорода за рекламу</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">Час від часу Brave пропонуватиме вам безкоштовні токени. Пильнуйте за такими сповіщеннями!</translation>
 <translation id="1370034647041840967">Заробляйте токени за свою увагу до реклами та платіть творцям контенту, які вам подобаються!</translation>
 <translation id="4919888432594361029">Вносьте, виводьте та керуйте коштами на <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Ваш гаманець Brave працює на <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Винагороди Brave створені на базі основного токена уваги. Детальніше про ОТУ</translation>
 <translation id="7823359893981882407">тут</translation>
 <translation id="3034163433136515805">Переглянути QR-код</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Сума вашої винагороди</translation>
 <translation id="2151535059686617995">Це’ ваш щасливий день!</translation>
 <translation id="6436689611575806470">Ваш грант на суму [[currency]] обробляється.</translation>
-<translation id="7512440811010447157">верифікувати</translation>
 <translation id="8267327690882073581">Верифікувати гаманець</translation>
 <translation id="543510923939676996">Гаманець підтверджено</translation>
 <translation id="2659764755126740206">Перейти у мій обліковий запис <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Завершити підтвердження гаманця</translation>
 <translation id="9200453331904391567">Від'єднатись від Винагород Brave</translation>
+<translation id="3656941797339037856">Винагорода за посиланням на Gemini!</translation>
+<translation id="671838195432136371">Gemini дозволяє вам легко продавати, зберігати й заробляти 3,49 % APY* на ваших BAT. Нові користувачі Gemini за посиланням отримують 5 безкоштовних BAT!</translation>
+<translation id="9136976526700181750">* Gemini Earn APY станом на 15 серпня 2021 р.</translation>
 <translation id="7404779623219601861">Отримати BAT за Подарункові картки</translation>
 <translation id="6215565499749144110">З Мережею TAP ви можете отримати свої BAT за подарункові картки популярного іменного бренду.</translation>
 <translation id="6915065518766963119">* Потрібна підтверджувальна верифікація</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Ціна одиниці</translation>
 <translation id="4763179765154524864">Усього витрачено</translation>
 <translation id="8851480289992540512">Усього отримано</translation>
+<translation id="824449983246282560">У вас немає залишків на рахунку. Відвідайте Gemini, щоб поповнити його.</translation>
 <translation id="8624961452383848703">Я хочу обміняти…</translation>
 <translation id="616639131065447379">Ласкаво просимо до Криптогаманців Brave</translation>
 <translation id="1740464057879304704">Криптогаманці дозволяють вам працювати з криптовалютою та відповідними активами в Brave. Криптогаманці підтримують токени Ethereum, такі як ETH та BAT, а також колекційні матеріали, та дозволяють вам працювати з Ðпрограмами та іншими смарт-контрактами. Все це призначене для людей, які знайомі з Ethereum та іншими блокчейн-системами — або хочуть цьому навчитися.</translation>

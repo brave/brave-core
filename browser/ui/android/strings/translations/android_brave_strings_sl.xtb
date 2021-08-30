@@ -18,7 +18,7 @@
 <translation id="5345505584130165588">Zasebnost Brave shields &amp;</translation>
 <translation id="4692623383562244444">Iskalniki</translation>
 <translation id="1468415711258933398">Standardni zavihek</translation>
-<translation id="3377025655491224618">Zavihek brez beleženja zgodovine</translation>
+<translation id="3377025655491224618">Zavihek za način brez beleženja zgodovine</translation>
 <translation id="9148058034647219655">Zapri</translation>
 <translation id="4022987104439075738">Prehod IPFS</translation>
 <translation id="2688519859165248360">Omogoča navigacijo do virov IPFS prek prehoda IPFS</translation>
@@ -79,6 +79,7 @@
 <translation id="2070991379950719711">Začnite uporabljati Brave Rewards</translation>
 <translation id="48520986898237073">Nadaljuj na denarnico</translation>
 <translation id="3570367516044491911">Nastavite kot privzeti brskalnik</translation>
+<translation id="19715420010996093">Izberi brskalnik Brave in tapni 'Vedno'</translation>
 <translation id="3546439402724649282">Brskalnik Brave je že nastavljen kot privzeti brskalnik.</translation>
 <translation id="8389661903259423907">Privzeti brskalnik ste že nastavili. Privzeti brskalnik lahko spremenite v nastavitvah svoje aplikacije.</translation>
 <translation id="7091885296442320770">Brskalnik Brave je neverjetno hiter</translation>
@@ -117,6 +118,7 @@
 <translation id="8428213095426709021">Nastavitve</translation>
 <translation id="8772672608371898774">Preverjena oseba Brave, ki objavlja vsebino</translation>
 <translation id="1397683270551078781">Ni še preverjeno</translation>
+<translation id="880893465294676334">Ta Brave Verified Creator še ni konfiguriral svojega računa za prejemanje prispevkov od uporabnikov Brave. Vsi nasveti, ki jih pošljete, bodo ostali v vaši denarnici, dokler ne dokončajo tega postopka.</translation>
 <translation id="8918760045046434238">Pošlji donacijo ...</translation>
 <translation id="1978261665418056203">Ta mesec še ni bilo
 dejavnosti ...</translation>
@@ -324,6 +326,7 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="5617673581653540121">Vaša povezava je zdaj šifrirana.</translation>
 <translation id="4055107796760496928">Če je na voljo, vas Brave samodejno nadgradi na varno povezavo.</translation>
 <translation id="8869714780588464835">Delite novice z drugimi</translation>
+<translation id="7427391215172269363">Vsak dan shranjujem podatke z brskanjem po spletu z Brave.</translation>
 <translation id="5372054974373489308">Blokirali smo 1000 sledilnikov &amp; oglasov!</translation>
 <translation id="2338952568654182692">Blokirali smo 5000 sledilnikov &amp; oglasov!</translation>
 <translation id="5289711064670408815">Blokirali smo 10,000 sledilnikov &amp; oglasov!</translation>
@@ -562,12 +565,36 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="2360588547830602174">Obnovitev računa ni uspela. Poskusite znova.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Tržna cena v ETH</translation>
+<translation id="5593852897152820572">Cena v ETH</translation>
 <translation id="6748108480210050150">Od</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">Do (ocena)</translation>
+<translation id="6998989275928107238">Za</translation>
+<translation id="6664416064035847539">naslov ali url</translation>
 <translation id="59223531494896848">Meja</translation>
 <translation id="3567988240819868195">Trg</translation>
 <translation id="632241521608275119">Toleranca padca</translation>
+<translation id="4500473291496079954">Poteče čez</translation>
+<translation id="1987317783729300807">Računi</translation>
+<translation id="3535654229833214438">Transakcije</translation>
+<translation id="4636930964841734540">Info</translation>
+<translation id="6284218950354553099">Samodejno pošlji ping o dnevni uporabi Braveu</translation>
+<translation id="5288333155754958121">Zaradi tega anonimnega, zasebnega pinga lahko Brave oceni število aktivnih uporabnikov.</translation>
+<translation id="3819257035322786455">Varnostno kopiranje</translation>
+<translation id="4608713693379664295">Primarni kripto računi</translation>
+<translation id="4003821417160006384">Sekundardni računi</translation>
+<translation id="8094541587800369158">Ti računi se lahko uporabljajo s spletnimi 3 dapps in so lahko prikazani v vašem portfelju, vendar jih ni mogoče obnoviti s frazo za obnovitev iz varnostne kopije primarnega računa. Omogočite račune Brave Sync za samodejno obnovitev sekundarnih računov.</translation>
+<translation id="6725413948756358325">Ime računa</translation>
+<translation id="6062431965141524986">Sekundarni račun lahko ustvarite z uvozom zasebnega ključa.</translation>
+<translation id="3952797765659730604">Vnesite, prilepite ali uvozite svojo datoteko niza zasebnega ključa ali JSON.</translation>
+<translation id="569068482611873351">Uvozi ...</translation>
+<translation id="1940465339426637378">Sredstva</translation>
+<translation id="4522570452068850558">Podrobnosti</translation>
+<translation id="9065203028668620118">Uredi</translation>
+<translation id="3995184924764722477">Podrobnosti računa</translation>
+<translation id="8967036623785635603">Uredi vidna sredstva</translation>
+<translation id="5050890334032852465">Shrani seznam za spremljanje računa</translation>
+<translation id="7755766175599167100">Išči žetone</translation>
 </translationbundle>

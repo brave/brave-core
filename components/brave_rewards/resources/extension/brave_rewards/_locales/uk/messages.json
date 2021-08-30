@@ -219,21 +219,31 @@
     "message": "Будь ласка, зробіть резервну копію гаманця Brave.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Докладніше",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Помилка: інший акаунт",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Схоже, що ваш гаманець Brave Rewards уже було верифіковано за допомогою іншого акаунту $name$. Спробуйте пройти верифікацію знову, використовуючи попередній акаунт.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Помилка: кошти BAT недоступні",
     "description": "Title for BAT not allowed for user notification"
   },
   "upholdBATNotAllowedForUserNotification": {
-    "message": "BAT не підтримується у вашому регіоні в Uphold.",
+    "message": "BAT не підтримується у вашому регіоні в гаманцях Uphold.",
     "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserLearnMore": {
-    "message": "Докладніше",
-    "description": "Notification button text to learn more about the blocked user status"
   },
   "upholdBlockedUserTitle": {
     "message": "Помилка: обліковий запис заблоковано",
@@ -243,10 +253,6 @@
     "message": "Ваш обліковий запис в Uphold наразі заблоковано.",
     "description": "Description for blocked user notification"
   },
-  "upholdPendingUserLearnMore": {
-    "message": "Докладніше",
-    "description": "Notification button text to learn more about the pending user status"
-  },
   "upholdPendingUserTitle": {
     "message": "Помилка: обліковий запис обробляється",
     "description": "Title for pending user notification"
@@ -255,10 +261,6 @@
     "message": "Ваш обліковий запис в Uphold усе ще обробляється.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Докладніше",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Помилка: обліковий запис обмежено",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Ваш обліковий запис в Uphold наразі обмежено.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Докладніше",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Досягнуто ліміт кількості пристроїв",
@@ -534,10 +532,6 @@
   "grantFinishTokenTitleAds": {
     "message": "Сума вашої винагороди",
     "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "верифікувати",
-    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Від'єднано",

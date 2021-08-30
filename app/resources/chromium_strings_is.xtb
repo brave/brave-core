@@ -47,7 +47,6 @@ Sumir eiginleikar kunna að vera óaðgengilegir og breytingar á kjörstillingu
 <translation id="8372880274820509128">Brave dulkóðar gögnin þín til að auka öryggið.</translation>
 <translation id="2770231113462710648">Breyta sjálfgefnum vafra í:</translation>
 <translation id="2799223571221894425">Endurræsa</translation>
-<translation id="6811506454451584223">Aðskilja Brave prófíl?</translation>
 <translation id="3783547330001921298">Þetta mun búa til nýjan Brave prófíl fyrir <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Fjarlægja úr Brave...</translation>
 <translation id="2885378588091291677">Verkstjórn</translation>
@@ -70,17 +69,19 @@ Sumir eiginleikar kunna að vera óaðgengilegir og breytingar á kjörstillingu
 <translation id="2339258256897053758">Lykla vantar fyrir forritaskil Brave. Sumir eiginleikar Brave verða óvirkir.</translation>
 <translation id="8926637909431618259">Halda áfram að keyra bakgrunnsforrit þegar Brave er lokað</translation>
 <translation id="4480040274068703980">Chrome OS gat ekki samstillt gögnin þín vegna innskráningarvillu.</translation>
+<translation id="1166275459137851283">Brave mælir með að þú sækir hvorki né opnir þessa skrá</translation>
 <translation id="2711887072399498551">Brave prófíll með þessum reikningi er þegar til</translation>
 <translation id="2297290224191497273">Skipta yfir í Brave prófíl sem er til?</translation>
 <translation id="2450003541323895471">Þú getur aðskilið allt efnið þitt á Brave með Brave prófílum. Stofnaðu prófíla fyrir vini og fjölskyldu eða skiptu á milli vinnu og afþreyingar.</translation>
+<translation id="7275165473619697274">Uppsetning Chrome OS stendur yfir</translation>
 <translation id="9216183508558772570">Brave lætur þig vita þegar þú skráir þig inn með aðgangsorði sem er í hættu</translation>
 <translation id="5853262807109651878">Þetta mun eyða <ph name="ITEMS_COUNT"/> atriðum úr þessu tæki. Skráðu þig inn í Brave sem <ph name="USER_EMAIL"/> til að endurheimta gögnin síðar.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> getur skipt á milli Brave prófíla</translation>
 <translation id="8703492925273919597">Lokaðu öllum gluggum Brave og reyndu aftur.</translation>
 <translation id="1384923383737428730">Skaðlegur hugbúnaður er á tölvunni þinni. Brave getur fjarlægt hann, endurheimt stillingar þínar og gert viðbætur óvirkar svo vafrinn þinn virki aftur eins og ætla skyldi.</translation>
+<translation id="2409866122341731384">Eyða af harða diskinum og setja upp Chrome OS</translation>
 <translation id="7029305463989165490">Til að senda númer úr <ph name="ORIGIN"/> í Android símann þinn skaltu skrá þig inn á Brave í báðum tækjunum.</translation>
 <translation id="4304059894777924102">Brave getur ekki athugað aðgangsorðin þín. Athugaðu nettenginguna þína.</translation>
-<translation id="2588634262982826227">Brave getur alltaf endurheimt forrit og síður eftir endurræsingu án þess að spyrja í hvert skipti.</translation>
 <translation id="1807774211756215222">Opna &amp;tengil í nýjum Brave flipa</translation>
 <translation id="7453070689008684791">Brave mun fá aðgang að svæðinu þínu á Drive til þess að bjóða upp á tillögur í veffangastikunni</translation>
 <translation id="2106568569080763501">Með Brave geturðu smellt á símanúmer á vefnum og hringt í það með Skype!</translation>
@@ -98,6 +99,7 @@ Sumir eiginleikar kunna að vera óaðgengilegir og breytingar á kjörstillingu
 <translation id="8923080813984421771"><ph name="MANAGER"/> krefst þess að þú lesir og samþykkir eftirfarandi þjónustuskilmála áður en þú notar þetta tæki. Þessir skilmálar auka ekki við, breyta eða takmarka skilmála Chrome OS.</translation>
 <translation id="3262506503470845422">Fá hjálp með Brave</translation>
 <translation id="7691786510374174420">Uppsetning mistókst vegna ótilgreindrar villu. Ef Brave er í gangi eins og er skaltu loka því og reyna aftur.</translation>
+<translation id="429583012151745428">Uppsetning stendur yfir. Ekki slökkva á tækinu. Uppsetningin ætti ekki að taka meira en tuttugu mínútur. Tækið slekkur sjálfkrafa á sér þegar uppsetningu er lokið.</translation>
 <translation id="9183662282810237335">Viltu samt loka Brave?</translation>
 <translation id="4065288863231444640">Leyfa Brave að keyra í bakgrunni</translation>
 <translation id="8148611988012584308">Sérsníða og stjórna Brave</translation>
@@ -132,7 +134,6 @@ Sumir eiginleikar kunna að vera óaðgengilegir og breytingar á kjörstillingu
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - tilraunaútgáfa Brave</translation>
 <translation id="707769633889902835">Stýrikerfi Brave getur ekki opnað þessa síðu.</translation>
 <translation id="696826782632239602">Brave þarf staðsetningaraðgang til að deila staðsetningu þinni með þessu vefsvæði</translation>
-<translation id="7886919915603831625">Brave mælir með að þú sækir hvorki né opnir þessa skrá.</translation>
 <translation id="1744365871163268756">Bíddu á meðan Brave setur upp nýjustu kerfisuppfærslunar.</translation>
 <translation id="3861679447659630159">Brave er að reyna að breyta aðgangsorðum. Sláðu inn Windows-aðgangsorðið þitt til að leyfa það.</translation>
 <translation id="232381795826373334">Opna PDF-skjöl í Brave</translation>
@@ -157,6 +158,15 @@ Sumir eiginleikar kunna að vera óaðgengilegir og breytingar á kjörstillingu
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> er skaðleg skrá og Brave útilokaði hana.</translation>
 <translation id="7006260220514217183">Slökkt er á öruggri vefskoðun. Brave mælir með því að kveikt sé á henni.</translation>
 <translation id="4060970194201477024">Hér geturðu skipt á milli Brave prófíla</translation>
+<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Nú er allt tilbúið fyrir uppsetningu Chrome OS! Þegar þú heldur áfram:
+          <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Verður skrám, gögnum og núverandi stýrikerfi eytt.
+          <ph name="LIST_ITEM"/>Chrome OS verður sett upp.
+          <ph name="LIST_ITEM"/>Slökkt verður á tækinu þegar uppsetningunni lýkur.
+          <ph name="END_LIST"/>
+          <ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Ein lokaáminning: uppsetningin mun eyða öllu af harða disknum. Vertu viss um að hafa tekið afrit af öllum gögnum sem þú vilt geyma.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Þegar uppsetningin hefst er ekki hægt að hætta við hana.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Vertu viss um að þú sért skráð(ur) inn á Brave í <ph name="TARGET_DEVICE_NAME"/> og reyndu svo að senda aftur.</translation>
 <translation id="8320964054148936490">Á þessari tölvu er þegar nýrri útgáfa af Brave. Ef hugbúnaðurinn virkar ekki skaltu fjarlægja Brave og reyna aftur.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave verður endurræst núna}=1{Brave verður endurræst eftir 1 sekúndu}one{Brave verður endurræst eftir # sekúndu}other{Brave verður endurræst eftir # sekúndur}}</translation>
@@ -174,6 +184,7 @@ Sumir eiginleikar kunna að vera óaðgengilegir og breytingar á kjörstillingu
 <translation id="2644798301485385923">Chrome OS kerfi</translation>
 <translation id="1684121725014454063">Velkomin(n) í Brave prófíla</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave verður endurræst eftir eina sekúndu}one{Brave verður endurræst eftir # sekúndu}other{Brave verður endurræst eftir # sekúndur}}</translation>
+<translation id="664235759707825982">Nú er hægt að setja upp Chrome OS</translation>
 <translation id="2675662665675552980">Stýrir því einnig hvaða síða birtist þegar þú ræsir Brave.</translation>
 <translation id="5590013613412457132">Fjarlægja Brave</translation>
 <translation id="8646609321956191980">Á hverjum prófíl eru geymdar Brave upplýsingar á borð við bókamerki, feril, aðgangsorð og fleira</translation>
@@ -188,6 +199,7 @@ Sumir eiginleikar kunna að verða óaðgengilegir. Tilgreindu aðra prófílam�
 <translation id="6666624454809779082">Brave hefur þegar verið sett upp fyrir alla notendur í tölvunni.</translation>
 <translation id="5360050006043219962">Til að fá aðgang að Brave efninu þínu í öllum tækjunum þínum skaltu skrá þig inn og kveikja á samstillingu.</translation>
 <translation id="8291513491595858997">Foreldrar þínir hafa slökkt á „Heimildum fyrir vefsvæði, forrit og viðbætur" fyrir Brave. Ekki er leyfilegt að kveikja á þessu <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
+<translation id="1810203443153428607">Uppsetning Chrome OS skrifar yfir öll gögn í tækinu.</translation>
 <translation id="8211837073776713955">Brave lætur þig vita ef aðgangsorðin þín eru einhvern tímann í hættu</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (afritað í Brave)</translation>
@@ -221,6 +233,10 @@ Brave getur ekki endurheimt stillingarnar þínar.</translation>
       stillingar Chrome OS<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave er að nota myndavélina þína og hljóðnema.</translation>
 <translation id="2827121003398607864">Brave er nú enn betra</translation>
+<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Áður en hafist er handa skaltu tryggja að uppfært öryggisafrit sé til af gögnunum þínum. Uppsetning Chrome OS skrifar yfir öll gögn á harða disknum.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Brave tekur ekki ábyrgð á neinu gagnatapi og getur ekki tryggt að Chrome OS virki í óvottuðum tækjum. Farðu á [TBD] til að fá frekari upplýsingar um vottuð tæki.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Nánar um uppsetningu Chrome OS og eyðingu gagna: [TBD URL]<ph name="END_PARAGRAPH3"/>
+          <ph name="BEGIN_PARAGRAPH4"/>Ef allt er klárt skaltu smella á „Setja upp Chrome OS“ og þér verður leiðbeint í gegnum uppsetninguna á einfaldan hátt. Þú færð annað tækifæri til að staðfesta áður en við breytum nokkru í tölvunni þinni.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave er ekki sjálfgefinn vafri</translation>
 <translation id="5477319665405831211">Samstilltu Brave á milli tækja og gerðu það að þínu</translation>
 <translation id="5419189641394808652">Brave gat ekki samstillt gögnin þín vegna þess að samstilling er ekki í boði fyrir lénið þitt.</translation>
@@ -231,7 +247,6 @@ Brave getur ekki endurheimt stillingarnar þínar.</translation>
 <translation id="8462524920674814187">Til að fá frekari uppfærslur á Brave þarftu stýrikerfi X 10.11 eða nýrra. Þessi tölva notar stýrikerfi X 10.10.</translation>
 <translation id="7963515534397191222">Ekki var hægt að uppfæra Brave í nýjustu útgáfu og þú ferð því á mis við nýja eiginleika og öryggislagfæringar.</translation>
 <translation id="7573289029918943991">Opnaðu <ph name="LINK_BEGIN"/>stillingar Chrome OS<ph name="LINK_END"/> til að athuga hvort tækið sé uppfært</translation>
-<translation id="6755885556185485672">Chrome OS lokaðist ekki á réttan hátt.</translation>
 <translation id="2925193881330501265">Þú varst skráð(ur) inn í Brave sem <ph name="USER_EMAIL_ADDRESS"/>. Notaðu sama reikning til að skrá þig inn aftur.</translation>
 <translation id="6915252145142862992">Þetta er aukaleg uppsetning á Brave sem ekki er hægt að gera að sjálfgefnum vafra.</translation>
 <translation id="7685904775439037072">Þegar Brave hefur aðgang munu vefsvæði geta beðið þig um aðgang.</translation>
@@ -263,7 +278,6 @@ Brave getur ekki endurheimt stillingarnar þínar.</translation>
 <translation id="6389268239133412586">Ekki var hægt að uppfæra Brave</translation>
 <translation id="6368958679917195344">Chrome OS á tilvist sína að þakka öðrum <ph name="BEGIN_LINK_CROS_OSS"/>opnum hugbúnaði<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8986207147630327271">Þú ert að bæta vinnusniði við þennan vafra og veita stjórnanda þínum leyfi til að stjórna vinnusniðinu eingöngu.</translation>
-<translation id="1156157157416773301">Flytja reikning á nýjan Brave prófíl?</translation>
 <translation id="5173820533850252773">Brave er úrelt</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave verður endurræst eftir klukkustund}one{Brave verður endurræst eftir # klukkustund}other{Brave verður endurræst eftir # klukkustundir}}</translation>
 <translation id="7863882214613921971">Opna tengil í nýjum Brave &amp;flipa</translation>

@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Odmeny Brave</translation>
 <translation id="7942180974165298215">Blokovanie reklám Brave</translation>
 <translation id="4615489450165434530">Nahlásiť nefunkčnú stránku</translation>
+<translation id="1209739344687072997">Nahlásiť nefunkčnú stránku</translation>
 <translation id="6406506848690869874">Synchronizovať</translation>
 <translation id="1544192797660353713">Peňaženka</translation>
 <translation id="2445484935443597917">Vytvoriť nový profil</translation>
-<translation id="2666990579225592931">Otvoriť okno návštevníka</translation>
+<translation id="744341768939279100">Vytvoriť nový profil</translation>
+<translation id="2666990579225592931">Otvoriť okno hosťa</translation>
+<translation id="4986483413015198747">Otvoriť okno návštevníka</translation>
 <translation id="8275068909952022340">Viac…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nie je povolené v prehliadači Brave.</translation>
 <translation id="6786747875388722282">Rozšírenia</translation>
@@ -45,10 +48,12 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="5802665280774361839">Zobraziť automatické dopĺňanie na paneli s adresou</translation>
 <translation id="597020512043916976">Zobraziť top stránky v návrhoch na automatické dopĺňanie</translation>
 <translation id="264150068416846820">Zobraziť stránky, ktoré odporúča Brave, v návrhoch na automatické dopĺňanie</translation>
-<translation id="5529693968082667490">Tlačidlo Zobraziť karty vyhľadávania</translation>
+<translation id="5529693968082667490">Tlačidlo zobrazenia karty vyhľadávania</translation>
 <translation id="6414370348346025511">Štandardná ochrana je zapnutá.</translation>
 <translation id="814018970995616154">Kontroluje adresy URL so zoznamom nebezpečných stránok uloženým v Brave.</translation>
 <translation id="1144810021918451336">Nechráni vás pred nebezpečnými webovými stránkami, stiahnutými súbormi a rozšíreniami.</translation>
+<translation id="6285118765755298263">Indexovať ostatné vyhľadávače</translation>
+<translation id="919715748352669592">Automaticky indexované webové lokality, ktoré sa riadia špecifikáciami OpenSearch.</translation>
 <translation id="7781069478569868053">Stránka novej karty</translation>
 <translation id="1988804048511540801">Nová karta zobrazuje</translation>
 <translation id="2970343821770026391">Prehľadový panel</translation>
@@ -97,7 +102,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="6303294677342628402">Ochrana</translation>
 <translation id="7133511168130368997">Blokovať trackery a reklamy, ktoré vás prenasledujú všade na webe.</translation>
 <translation id="2761825942249694703">Toto sú predvolené nastavenia Štítov. Vzťahujú sa na všetky webové stránky, kým niečo nezmeníte v paneli Štíty na konkrétnej stránke. Zmena týchto nastavení neovplyvní vaše existujúce nastavenia stránky.</translation>
-<translation id="1485394570478670912">Zablokuje to väčšinu reklám na webových stránkach, nie Brave Private Ads — tie sú kontrolované v</translation>
+<translation id="1485394570478670912">Zablokuje to väčšinu reklám na webových stránkach, nie Brave Private Ads; tie sú kontrolované v</translation>
 <translation id="6388201778088078932">nastavenia.</translation>
 <translation id="9185018653595759199">Blokovanie sociálnych médií</translation>
 <translation id="7390783310074170337">Štandardné zobrazenie</translation>
@@ -191,7 +196,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="1834467296210148203">Zobraziť ikonu Brave Wallet na paneli s nástrojmi</translation>
 <translation id="6864914031231797928">Povoliť prihlasovanie Google pre rozšírenia</translation>
 <translation id="5927916530277631319">Metóda riešenia nezastaviteľných domén</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/> o DNS prostredníctvom protokolu HTTPS a aspektoch ochrany súkromia Etherea.</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Learn More<ph name="END_LINK"/> informácie o DNS cez HTTPS a podmienky ochrany osobných údajov Ethereum.</translation>
 <translation id="5248318250177143470">Metóda riešenia služby Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Nastavte si svoje kľúče IPNS</translation>
 <translation id="951216659045543447">Podpíšte obsah zodpovedajúcim súkromným kľúčom a zverejnite ho na IPNS</translation>
@@ -213,7 +218,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="1534091531114892221">Nastaviť popis klientov ipfs</translation>
 <translation id="8996633027318264334">Chcete naozaj vymazať <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Uzol nie je spustený</translation>
-<translation id="616058968889448209">Chyba spustenia služby IPFS, viac informácií je k dispozícii na <ph name="BEGIN_LINK"/>diagnostickej stránke<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">Chyba spúšťania služby IPFS. Viac informácií nájdete na <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' importovanie kľúča zlyhalo</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' exportovanie kľúča zlyhalo</translation>
 <translation id="8275038454117074363">Import</translation>
@@ -223,7 +228,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="1327977588028644528">Brána</translation>
 <translation id="80225669816651290">Lokálny uzol</translation>
 <translation id="4927734062756955434">Adresa verejnej brány IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Ďalšie informácie<ph name="END_LINK_MPL"/> o lokálnom uzle IPFS a aspektoch ochrany súkromia brány.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Learn more<ph name="END_LINK_MPL"/> informácie o lokálnom uzle IPFS a podmienkach ochrany osobných údajov brány.</translation>
 <translation id="8425213833346101688">Zmeniť</translation>
 <translation id="557281710253742286">Nastavte bránu IPFS</translation>
 <translation id="8571837315037233299">Adresa brány</translation>
@@ -237,7 +242,6 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="8655170717758778983">Ak je to možné, automaticky presmerovať na stránky IPFS prostredníctvom služby DNSLink</translation>
 <translation id="2233724520223030977">Ak je to možné, automaticky použiť server DNSLink na prechod na verziu webovej stránky s IPFS</translation>
 <translation id="6554397389149987360">Používa komponenty služby Hangouts, ktoré umožňujú zdieľanie obrazovky a ďalšie funkcie v prehliadači.</translation>
-<translation id="1765684547504191670">Používa prvok Media Router na povolenie Chromecastu v prehliadači.</translation>
 <translation id="9156965752763025780">Zmeny sa prejavia pri nasledujúcom reštartovaní prehliadača Brave.</translation>
 <translation id="7179921470347911571">Spustiť ešte raz</translation>
 <translation id="8068526464562249859">Používa rozšírenie Spoločník IPFS na vylepšenú podporu protokolu IPFS v aplikácii Brave vrátane prístupu k bežným úlohám protokolu IPFS z panela prehľadávača.</translation>
@@ -307,6 +311,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="6873781976650514089">toto nastavenie</translation>
 <translation id="6040143037577758943">Zavrieť</translation>
 <translation id="5600566490506283344">Upozornenie na reklamu Brave</translation>
+<translation id="1516554614404600536">Popis Brave</translation>
 <translation id="4877147287319222750">Pridať na bočný panel</translation>
 <translation id="4233010476457917696">Zobraziť bočný panel</translation>
 <translation id="5404213409401164238">Zobraziť bočný panel</translation>
@@ -347,6 +352,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
         Môžete si prečítať <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>pokyny na stiahnutie a buildovanie pre sebaf<ph name="END_LINK_BUILD_INSTRUCTIONS"/> špecifický <ph name="BEGIN_LINK_SOURCE_CODE"/>zdrojový kód použitý na vytvorenie tejto kópie<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Všetky karty uložiť ako záložky...</translation>
 <translation id="2336228925368920074">Všetky karty uložiť ako záložky...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Ak chcete pridať záložku, kliknite na tlačidlo záložky vedľa panela s adresou</translation>
 <translation id="4989337484121655457">Vyžadanie úplného prístupu na disk</translation>
 <translation id="8025559074845816210">Brave potrebuje na import vašich záložiek zo Safari  úplný prístup na disk.</translation>

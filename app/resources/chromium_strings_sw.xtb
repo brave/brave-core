@@ -47,7 +47,6 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="8372880274820509128">Kwa usalama ulioongezwa, Brave itasimba data yako kwa njia fiche.</translation>
 <translation id="2770231113462710648">Badilisha kivinjari chaguomsingi kiwe:</translation>
 <translation id="2799223571221894425">Funga na ufungue</translation>
-<translation id="6811506454451584223">Ungependa kutenganisha wasifu kwenye Brave?</translation>
 <translation id="3783547330001921298">Hatua hii itafungua wasifu mpya wa <ph name="USER_EMAIL_ADDRESS"/> kwenye Brave</translation>
 <translation id="777113543093865885">Ondoa kwenye Brave...</translation>
 <translation id="2885378588091291677">Kidhibiti cha Shughuli</translation>
@@ -70,17 +69,19 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="2339258256897053758">Funguo za Brave API zinakosekana. Utendaji fulani wa Brave utazimwa.</translation>
 <translation id="8926637909431618259">Endelea kuendesha programu za mandharinyuma wakati Brave imefungwa</translation>
 <translation id="4480040274068703980">Mfumo wa Uendeshaji wa Brave haukuweza kusawazisha data yako kutokana na hitilafu wakati wa kuingia katika akaunti.</translation>
+<translation id="1166275459137851283">Brave inapendekeza usipakue wala kufungua faili hii</translation>
 <translation id="2711887072399498551">Tayari kuna wasifu kwenye Brave unaotumia akaunti hii</translation>
 <translation id="2297290224191497273">Ungependa kutumia wasifu uliopo wa Brave?</translation>
 <translation id="2450003541323895471">Ukitumia kipengele cha wasifu kwenye Brave unaweza kutenganisha vitu vyako vyote vya Brave. Tengeneza wasifu wa marafiki na familia au utenganishe kazi na burudani.</translation>
+<translation id="7275165473619697274">Usakinishaji wa Chrome OS unaendelea</translation>
 <translation id="9216183508558772570">Brave itakuarifu ukiingia katika akaunti ukitumia nenosiri lililoathiriwa</translation>
 <translation id="5853262807109651878">Hatua hii itafuta vipengee <ph name="ITEMS_COUNT"/> kwenye kifaa hiki. Ili urejeshe data yako baadaye, ingia katika Brave ukitumia <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Unaweza kubonyeza <ph name="SHORTCUT"/> ili ubadilishe kati ya wasifu mmoja wa Brave na mwingine</translation>
 <translation id="8703492925273919597">Tafadhali funga madirisha yote ya Brave na ujaribu tena.</translation>
 <translation id="1384923383737428730">Kuna programu hatari kwenye kompyuta yako. Brave inaweza kuiondoa, kurejesha mipangilio yako na kuzima viendelezi ili kufanya kivinjari chako kifanye kazi tena kama kawaida.</translation>
+<translation id="2409866122341731384">Futa Data Yote Kwenye Diski Kuu na Usakinishe Chrome OS</translation>
 <translation id="7029305463989165490">Ili uweze kutuma nambari kwa simu yako ya Android kutoka <ph name="ORIGIN"/>, ingia katika akaunti kwenye Brave ukitumia vifaa vyote viwili.</translation>
 <translation id="4304059894777924102">Brave imeshindwa kukagua manenosiri yako. Jaribu kuangalia muunganisho wako wa Intaneti.</translation>
-<translation id="2588634262982826227">Mfumo wa uendeshaji wa Brave unaweza kurejesha programu na kurasa zako ukiwasha kompyuta yako tena, bila kuuliza kila wakati.</translation>
 <translation id="1807774211756215222">Fungua kiungo katika kichupo kipya cha Brave</translation>
 <translation id="7453070689008684791">Brave itafikia Hifadhi yako ili itoe mapendekezo kwenye sehemu ya anwani</translation>
 <translation id="2106568569080763501">Brave hukuruhusu kubofya nambari ya simu kwenye wavuti na kuipiga kwa Skype.</translation>
@@ -98,6 +99,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="8923080813984421771"><ph name="MANAGER"/> inahitaji usome na ukubali Sheria na Masharti yafuatayo kabla ya kutumia kifaa hiki. Masharti haya hayapanui, hayarekebishi wala hayapunguzi Sheria na Masharti ya Mfumo wa Uendeshaji wa Brave.</translation>
 <translation id="3262506503470845422">Pata usaidizi wa kutumia Brave</translation>
 <translation id="7691786510374174420">Usanidi umeshindwa kwa sababu ya hitilafu isiyojulikana. Ikiwa Brave inaendesha sasa, tafadhali ifunge na ujaribu tena.</translation>
+<translation id="429583012151745428">Usakinishaji unaendelea. Usizime kifaa. Usakinishaji haupaswi kuchukua zaidi ya dakika ishirini. Mashine itazimwa kiotomatiki baada ya kusakinisha.</translation>
 <translation id="9183662282810237335">Ungependa kufunga Brave?</translation>
 <translation id="4065288863231444640">Ruhusu Brave itumike Chinichini</translation>
 <translation id="8148611988012584308">Dhibiti na ugeuze Brave ikufae</translation>
@@ -131,7 +133,6 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Beta ya Brave</translation>
 <translation id="707769633889902835">Mfumo wa Uendeshaji wa Brave hauwezi kufungua ukurasa huu.</translation>
 <translation id="696826782632239602">Brave inahitaji kufikia maelezo ya mahali ulipo ili kushiriki mahali ulipo na tovuti hii</translation>
-<translation id="7886919915603831625">Brave inapendekeza usipakue wala kufungua faili hii.</translation>
 <translation id="1744365871163268756">Tafadhali subiri Brave inaposakinisha sasisho mpya ya mfumo.</translation>
 <translation id="3861679447659630159">Brave inajaribu kubadilisha manenosiri. Andika nenosiri lako la Windows ili uiruhusu.</translation>
 <translation id="232381795826373334">Fungua PDF katika Brave</translation>
@@ -156,6 +157,15 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> ni hatari, kwa hivyo Brave imeizuia.</translation>
 <translation id="7006260220514217183">Kipengele cha Kuvinjari Salama kimezimwa. Brave inapendekeza ukiwashe.</translation>
 <translation id="4060970194201477024">Unaweza kubadilisha kati ya wasifu mmoja wa Brave na mwingine hapa</translation>
+<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Tuko tayari kusakinisha Chrome OS! Ukiendelea:
+          <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Faili, data na mfumo wa uendeshaji unaotumia sasa utafutwa.
+          <ph name="LIST_ITEM"/>Chrome OS itasakinishwa.
+          <ph name="LIST_ITEM"/>Kifaa chako kitazimwa usakinishaji ukikamilika.
+          <ph name="END_LIST"/>
+          <ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Kikumbusho cha mwisho: hatua ya usakinishaji itafuta data yote kwenye diski yako kuu. Tafadhali hakikisha kwamba umehifadhi nakala ya data yoyote muhimu.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Usakinishaji ukianza hauwezi kughairiwa.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Hakikisha kwamba umeingia katika akaunti kwenye Brave kwa kutumia <ph name="TARGET_DEVICE_NAME"/> yako kisha ujaribu kutuma tena.</translation>
 <translation id="8320964054148936490">Kompyuta hii tayari ina toleo la hivi punde la Brave. Ikiwa programu haifanyikazi, tafadhali ondoa Brave kisha ujaribu tena.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave itafunguka upya hivi sasa}=1{Brave itafunguka upya ndani ya sekunde 1}other{Brave itafunguka upya ndani ya sekunde #}}</translation>
@@ -173,6 +183,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="2644798301485385923">Mfumo wa Uendeshaji wa Brave</translation>
 <translation id="1684121725014454063">Karibu kwenye kipengele cha wasifu kwenye Brave</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave itazimika na kuwaka tena baada ya sekunde 1}other{Brave itazimika na kuwaka tena baada ya sekunde #}}</translation>
+<translation id="664235759707825982">Tuko tayari kusakinisha Chrome OS</translation>
 <translation id="2675662665675552980">Pia inadhibiti ukurasa unaoonyeshwa unapoanzisha Brave.</translation>
 <translation id="5590013613412457132">Ondoa Brave</translation>
 <translation id="8646609321956191980">Kila wasifu una maelezo yake ya Brave kama vile alamisho, historia, manenosiri na mengine</translation>
@@ -187,6 +198,7 @@ Baadhi ya vipengele huenda visipatikane. Tafadhali bainisha saraka tofauti ya wa
 <translation id="6666624454809779082">Tayari Brave imesakinishwa kwa watumiaji wote kwenye kompyuta yako.</translation>
 <translation id="5360050006043219962">Ili uweze kufikia vitu vyako vya Brave kwenye vifaa vyako vyote, ingia katika akaunti kisha uwashe kipengele cha kusawazisha.</translation>
 <translation id="8291513491595858997">Mzazi wako amezima "Ruhusa za tovuti, programu na viendelezi" kwenye Brave. Huruhusiwi kuwasha <ph name="EXTENSION_TYPE_PARAMETER"/> hii.</translation>
+<translation id="1810203443153428607">Hatua ya kusakinisha Chrome OS itafuta data yote iliyo kwenye kifaa chako.</translation>
 <translation id="8211837073776713955">Brave hukuruhusu ujue iwapo manenosiri yako yameathiriwa</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (imenakiliwa kwenye Brave)</translation>
@@ -220,6 +232,10 @@ Brave haiwezi kufufua mipangilio yako.</translation>
       mipangilio ya mfumo wa uendeshaji wa Brave<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave inatumia kamera na maikrofoni yako.</translation>
 <translation id="2827121003398607864">Brave imeboreshwa</translation>
+<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Kabla hatujaanza, tafadhali hakikisha kwamba una hifadhi ya nakala iliyosasishwa ya data yako. Hatua ya kusakinisha Chrome OS itafuta data yote iliyo kwenye diski yako kuu.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Brave haiwajibikii data yoyote unayopoteza na haitoi hakikisho kwamba Chrome OS itafanya kazi kwenye miundo ambayo haijathibitishwa. Tafadhali tembelea [TBD] ili upate maelezo zaidi kuhusu miundo iliyothibitishwa.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Pata maelezo zaidi kuhusu kusakinisha Chrome OS na ufutaji wa data: [TBD URL]<ph name="END_PARAGRAPH3"/>
+          <ph name="BEGIN_PARAGRAPH4"/>Ikiwa uko tayari kuendelea, bofya “Sakinisha Chrome OS” na tutakuelekeza kwenye mchakato wa kusakinisha kwa hatua chache rahisi. Utakuwa na nafasi nyingine ya kuthibitisha kabla hatujafanya mabadiliko yoyote kwenye kompyuta yako.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave si kivinjari chako chaguomsingi</translation>
 <translation id="5477319665405831211">Sawazisha na uweke mapendeleo kwenye Brave katika vifaa vyako vyote</translation>
 <translation id="5419189641394808652">Brave haikuweza kusawazisha data yako kwa sababu Usawazishaji haupatikani kwa kikoa chako.</translation>
@@ -230,7 +246,6 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="8462524920674814187">Ili uweze kupokea taarifa za Brave wakati ujao, utahitaji toleo la OS X 10.11 au toleo jipya zaidi. Kompyuta hii inatumia OS X 10.10.</translation>
 <translation id="7963515534397191222">Brave imeshindwa kusasisha toleo jipya, kwa hivyo hutapata masasisho ya usalama na vipengele vipya.</translation>
 <translation id="7573289029918943991">Ili uone ikiwa kifaa chako kimesasishwa, nenda kwenye <ph name="LINK_BEGIN"/>Mipanglio ya Mfumo wa Uendeshaji wa Brave<ph name="LINK_END"/></translation>
-<translation id="6755885556185485672">Mfumo wa Uendeshaji wa Brave haukuzima kwa njia sahihi.</translation>
 <translation id="2925193881330501265">Uliingia kwenye Brave kama <ph name="USER_EMAIL_ADDRESS"/>. Tafadhali tumia akaunti hiyo hiyo kuingia tena.</translation>
 <translation id="6915252145142862992">Huu ni usakinishaji wa pili wa Brave, na haiwezi kufanywa kuwa kivinjari chako chaguomsingi.</translation>
 <translation id="7685904775439037072">Brave itakapopata idhini, tovuti zitaweza kukuomba idhini ya kufikia.</translation>
@@ -262,7 +277,6 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="6389268239133412586">Imeshindwa kusasisha Brave</translation>
 <translation id="6368958679917195344">Chrome OS imewezeshwa na programu za ziada za <ph name="BEGIN_LINK_CROS_OSS"/>programu huria<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8986207147630327271">Unaongeza wasifu wa kazini kwenye kivinjari hiki na unampa msimamizi wako uwezo wa kudhibiti wasifu huo wa kazini pekee.</translation>
-<translation id="1156157157416773301">Ungependa kuhamishia akaunti kwenye wasifu mpya kwenye Brave?</translation>
 <translation id="5173820533850252773">Brave imepitwa na wakati</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave itafunguka upya ndani ya saa moja}other{Brave itafunguka upya ndani ya saa #}}</translation>
 <translation id="7863882214613921971">Fungua Kiungo katika kichupo kipya cha Brave</translation>
