@@ -31,7 +31,6 @@
 #include "ui/views/controls/styled_label.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/fill_layout.h"
-#include "ui/views/layout/layout_provider.h"
 
 namespace brave {
 
@@ -207,29 +206,6 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
     footnote_label->AddStyleRange(
         gfx::Range(offset + setting_text.length(), footnote_text.length()),
         footnote_default_style);
-}
-
-std::unique_ptr<views::NonClientFrameView>
-CrashReportPermissionAskDialogView::CreateNonClientFrameView(
-    views::Widget* widget) {
-  if (!use_custom_frame())
-    return DialogDelegateView::CreateNonClientFrameView(widget);
-
-  views::LayoutProvider* provider = views::LayoutProvider::Get();
-  auto frame = std::make_unique<views::BubbleFrameView>(
-      provider->GetInsetsMetric(views::INSETS_DIALOG_TITLE), gfx::Insets());
-
-  const views::BubbleBorder::Shadow kShadow =
-      views::BubbleBorder::DIALOG_SHADOW;
-  std::unique_ptr<views::BubbleBorder> border =
-      std::make_unique<views::BubbleBorder>(views::BubbleBorder::FLOAT, kShadow,
-                                            gfx::kPlaceholderColor);
-  border->set_use_theme_background_color(true);
-  constexpr int kCornerRadius = 16;
-  border->SetCornerRadius(kCornerRadius);
-  frame->SetFootnoteView(DisownFootnoteView());
-  frame->SetBubbleBorder(std::move(border));
-  return frame;
 }
 
 ui::ModalType CrashReportPermissionAskDialogView::GetModalType() const {
