@@ -7,6 +7,7 @@
 
 #include "net/base/features.h"
 #include "third_party/blink/public/common/dom_storage/session_storage_namespace_id.h"
+#include "third_party/blink/public/common/storage_key/storage_key.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/public/web/web_view_client.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
@@ -169,7 +170,7 @@ StorageArea* BraveDOMWindowStorage::ephemeralSessionStorage() {
     return nullptr;
 
   auto storage_area = ephemeral_namespace->session_storage()->GetCachedArea(
-      window->GetSecurityOrigin());
+      window->GetStorageKey());
 
   ephemeral_session_storage_ =
       StorageArea::Create(window, std::move(storage_area),
@@ -198,7 +199,7 @@ StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage(
 
   LocalDOMWindow* window = GetSupplementable();
   auto storage_area = StorageController::GetInstance()->GetLocalStorageArea(
-      ephemeral_storage_origin);
+      blink::BlinkStorageKey(ephemeral_storage_origin));
 
   ephemeral_local_storage_ = StorageArea::Create(
       window, std::move(storage_area), StorageArea::StorageType::kLocalStorage);
