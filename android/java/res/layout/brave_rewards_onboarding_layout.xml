@@ -43,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabBackground="@drawable/brave_rewards_onboarding_selector"
+                android:background="@android:color/transparent"
                 android:layout_gravity="bottom|center"
                 app:tabGravity="center"
                 app:tabIndicatorHeight="0dp"/>
