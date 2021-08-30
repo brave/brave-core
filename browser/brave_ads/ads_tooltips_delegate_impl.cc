@@ -7,12 +7,23 @@
 
 #include <string>
 
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
+#endif
 
 namespace brave_ads {
 
 AdsTooltipsDelegateImpl::AdsTooltipsDelegateImpl(Profile* profile)
-    : ads_tooltips_controller_(profile) {}
+    : ads_tooltips_controller_(
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+          brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::
+              GetForProfile(profile),
+#endif
+          profile) {
+}
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 void AdsTooltipsDelegateImpl::ShowCaptchaTooltip(const std::string& payment_id,

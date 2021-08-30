@@ -14,6 +14,10 @@
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 
+namespace brave_adaptive_captcha {
+class BraveAdaptiveCaptchaService;
+}  // namespace brave_adaptive_captcha
+
 namespace brave_tooltips {
 class BraveTooltipPopup;
 }  // namespace brave_tooltips
@@ -25,7 +29,12 @@ namespace brave_ads {
 class AdsTooltipsController : public AdsTooltipsDelegate,
                               public brave_tooltips::BraveTooltipDelegate {
  public:
-  explicit AdsTooltipsController(Profile* profile);
+  explicit AdsTooltipsController(
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+      brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+          brave_adaptive_captcha_service,
+#endif
+      Profile* profile);
   ~AdsTooltipsController() override;
 
   AdsTooltipsController(const AdsTooltipsController&) = delete;
@@ -43,7 +52,9 @@ class AdsTooltipsController : public AdsTooltipsDelegate,
   // brave_tooltips::BraveTooltipDelegate:
   void OnTooltipWidgetDestroyed(const std::string& tooltip_id) override;
 
-  Profile* profile_ = nullptr;  // NOT OWNED
+  brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+      brave_adaptive_captcha_service_ = nullptr;  // NOT OWNED
+  Profile* profile_ = nullptr;                    // NOT OWNED
   std::map<std::string, brave_tooltips::BraveTooltipPopup* /* NOT OWNED */>
       tooltip_popups_;
 };

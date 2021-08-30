@@ -26,9 +26,7 @@ source_set("tooltips") {
   ]
 
   if (brave_adaptive_captcha_enabled) {
-    deps += [
-      "//brave/browser/brave_adaptive_captcha:brave_adaptive_captcha",
-      "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha",
-    ]
+    deps +=
+        [ "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha" ]
   }
 }
