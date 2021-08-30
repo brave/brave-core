@@ -107,6 +107,8 @@ class BraveSearchManager: NSObject {
             request.setValue($0.value, forHTTPHeaderField: $0.key)
         }
         
+        request.setValue(UserAgent.userAgentForDesktopMode, forHTTPHeaderField: "User-Agent")
+        
         let session = URLSession(configuration: .ephemeral, delegate: self, delegateQueue: .main)
         
         var timer: PerformanceTimer?
