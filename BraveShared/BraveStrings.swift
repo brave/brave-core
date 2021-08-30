@@ -1204,17 +1204,17 @@ extension Strings {
                               value: "This will delete the media from offline storage. Are you sure you want to continue?",
                               comment: "Message for the alert shown when the user tries to remove offline data of an item from playlist")
         
-        public static let playlistToastShowSettingsOptionTitle =
-            NSLocalizedString("playlist.playlistToastShowSettingsOptionTitle",
+        public static let menuBadgeOptionTitle =
+            NSLocalizedString("playlist.menuBadgeOptionTitle",
                               bundle: .braveShared,
-                              value: "Show \"Add to Brave Playlist\"",
-                              comment: "Title for the Playlist Settings Option for Enable/Disable Add Toast")
+                              value: "Show Menu Notification Badge",
+                              comment: "Title for playlist menu badge option")
         
-        public static let playlistToastShowSettingsOptionFooterText =
-            NSLocalizedString("playlist.playlistToastShowSettingsOptionFooterText",
+        public static let menuBadgeOptionFooterText =
+            NSLocalizedString("playlist.menuBadgeOptionFooterText",
                               bundle: .braveShared,
-                              value: "When enabled, a bar will automatically show on most media websites making it easier to add those video/audio files to your Playlist.",
-                              comment: "Footer Text for the Playlist Settings Option for Enable/Disable Add Toast")
+                              value: "When enabled, a badge will be displayed on the main menu icon, indicating media on the page may be added to Brave Playlist.",
+                              comment: "Description footer for playlist menu badge option")
         
         public static let playlistLongPressSettingsOptionTitle =
             NSLocalizedString("playlist.playlistLongPressSettingsOptionTitle",

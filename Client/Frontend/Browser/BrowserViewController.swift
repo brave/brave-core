@@ -367,6 +367,7 @@ class BrowserViewController: UIViewController {
         Preferences.Privacy.blockAllCookies.observe(from: self)
         Preferences.Rewards.hideRewardsIcon.observe(from: self)
         Preferences.Rewards.rewardsToggledOnce.observe(from: self)
+        Preferences.Playlist.enablePlaylistMenuBadge.observe(from: self)
         rewardsEnabledObserveration = rewards.observe(\.isEnabled, options: [.new]) { [weak self] _, _ in
             guard let self = self else { return }
             self.updateRewardsButtonState()
@@ -2854,6 +2855,11 @@ extension BrowserViewController: PreferencesObserver {
                 $0.userScriptManager?.isMediaBackgroundPlaybackEnabled = Preferences.General.mediaAutoBackgrounding.value
                 $0.webView?.reload()
             }
+        case Preferences.Playlist.enablePlaylistMenuBadge.key:
+            let selectedTab = tabManager.selectedTab
+            updatePlaylistURLBar(tab: selectedTab,
+                                 state: selectedTab?.playlistItemState ?? .none,
+                                 item: selectedTab?.playlistItem)
         default:
             log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
             break
