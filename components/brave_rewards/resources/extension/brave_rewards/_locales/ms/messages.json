@@ -219,9 +219,23 @@
     "message": "Sila sandarkan dompet Brave anda.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Ketahui Lebih Lanjut",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Ralat: Akaun berbeza",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, nampaknya dompet Brave Rewards anda telah disahkan menggunakan akaun $name$ lain. Sila cuba mengesahkan sekali lagi menggunakan akaun anda yang sebelum ini.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Ralat: BAT tidak tersedia",
@@ -231,10 +245,6 @@
     "message": "BAT belum lagi disokong di rantau anda di Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "Ketahui Lebih Lanjut",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "Ralat: Akaun disekat",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "Akaun anda di Uphold disekat pada masa ini.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "Ketahui Lebih Lanjut",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Ralat: Akaun belum selesai",
@@ -255,10 +261,6 @@
     "message": "Akaun anda di Uphold masih belum selesai.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Ketahui Lebih Lanjut",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Ralat: Akaun dihadkan",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Akaun anda di Uphold dihad pada masa ini.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Ketahui Lebih Lanjut",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Had Peranti Dicapai",
@@ -534,10 +532,6 @@
   "grantFinishTokenTitleAds": {
     "message": "Amaun Ganjaran Anda",
     "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "sahkan",
-    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Sambungan Terputus",

@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Klickat</translation>
 <translation id="7119308337584989771">Avfärdat</translation>
 <translation id="6805660603861526473">Sett</translation>
+<translation id="1501075228659004450">Hmm, det ser ut som att din Brave Rewards-plånbok redan har verifierats med ett annat <ph name="PROVIDER"/>-konto. Försök verifiera igen med ditt tidigare konto.</translation>
+<translation id="5111921830714291902">Fel: Ett annat konto</translation>
 <translation id="2359865110462963929">BAT stöds för närvarande inte i din region. Se <ph name="BEGIN_LINK"/>här<ph name="END_LINK"/> för uppdateringar.</translation>
 <translation id="1737873393693460829">Genom att aktivera [[title]] godkänner du <ph name="BEGIN_LINK1"/>Användarvillkoren<ph name="END_LINK1"/> och <ph name="BEGIN_LINK2"/>Integritetspolicyn<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Fel vid skapande av BAT-kort för webbläsaren Brave</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Fortsätt</translation>
 <translation id="5112354605357157725">Fortsätta till inloggning</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> kräver ett saldo på minst <ph name="AMOUNT"/> BAT för att skapa ett konto. Om du nyligen har anslutit ett konto</translation>
+<translation id="752216563428219524">Annonser har inte initierats, uppdatera sidan.</translation>
 <translation id="7422678632904904341">Belopp:</translation>
 <translation id="6969783933307596818">Uppdatera automatiskt var 5:e sekund</translation>
 <translation id="5025866799968038247">Info om saldo</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Bidra automatiskt</translation>
 <translation id="2927922949538312364">Engångsdricks</translation>
 <translation id="3164105678355419142">Återkommande dricks</translation>
+<translation id="916115051162298064">Annonsdiagnostik</translation>
 <translation id="7806880412350961625">Händelseloggar</translation>
 <translation id="4309915981827077375">Allmän information</translation>
 <translation id="3662406032239313663">Loggar</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Kategori</translation>
 <translation id="3080423471207781945">Maximalt antal mottagna annonser per timme:</translation>
 <translation id="2631006050119455616">Sparat</translation>
+<translation id="7847825746023377505">Inga annonser visade under de senaste <ph name="TOTAL_DAYS"/> dagarna.</translation>
 <translation id="7902420836933072528">Annonser som du har fått under de senaste [[totalDays]] dagarna</translation>
 <translation id="8863685593846905344">Annonshistorik</translation>
 <translation id="2777306694585938662">Annonsintäkter erhållna</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">Då och då kommer du att erbjudas tilldelning av token från Brave. Så håll utkik efter erbjudandet!</translation>
 <translation id="1370034647041840967">Få token för din uppmärksamhet på annonser och betala vidare för att stödja innehållskreatörer du värdesätter!</translation>
 <translation id="4919888432594361029">Lägg till, ta ut och hantera pengar på <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Din Brave-plånbok drivs av <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards bygger på Basic Attention Token. Läs mer om BAT</translation>
 <translation id="7823359893981882407">här</translation>
 <translation id="3034163433136515805">Visa QR-kod</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Din belöningssumma</translation>
 <translation id="2151535059686617995">Det är din lyckodag!</translation>
 <translation id="6436689611575806470">Din [[currency]]-belöning är på väg.</translation>
-<translation id="7512440811010447157">verifiera</translation>
 <translation id="8267327690882073581">Verifiera plånbok</translation>
 <translation id="543510923939676996">Plånbok verifierad</translation>
 <translation id="2659764755126740206">Gå till mitt <ph name="PROVIDER"/>-konto</translation>
 <translation id="3699674790322420653">Slutför verifiering av plånbok</translation>
 <translation id="9200453331904391567">Frånkoppla Brave Rewards</translation>
+<translation id="3656941797339037856">Länk-belöningar för Gemini!</translation>
+<translation id="671838195432136371">Gemini låter dig enkelt handla, lagra och tjäna 3.49% APY* på din BAT. Nya Gemini-användare som länkar får 5 gratis BAT!</translation>
+<translation id="9136976526700181750">* Gemini ger dig APY från den 15 augusti 2021</translation>
 <translation id="7404779623219601861">Lös in BAT mot presentkort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du lösa in din BAT och få presentkort på populära märken.</translation>
 <translation id="6915065518766963119">* Kräver godkänd verifiering.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Enhetspris</translation>
 <translation id="4763179765154524864">Totalt spenderat</translation>
 <translation id="8851480289992540512">Totalt mottaget</translation>
+<translation id="824449983246282560">Du har inga saldon på ditt konto. Besök Gemini för att köpa lite.</translation>
 <translation id="8624961452383848703">Jag vill konvertera ...</translation>
 <translation id="616639131065447379">Välkommen till Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets låter dig arbeta med kryptovalutor och liknande tillgångar i Brave. Crypto Wallets stödjer Ethereum-polletter som ETH och BAT samt samlarsaker, och låter dig arbeta med Ðappar och andra smarta kontrakt. Allt detta är avsett för dem som är bekanta med Ethereum och andra blockkedjesystem — eller ser fram emot att lära sig.</translation>

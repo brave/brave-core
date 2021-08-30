@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Dat clic</translation>
 <translation id="7119308337584989771">Respins</translation>
 <translation id="6805660603861526473">Vizualizat</translation>
+<translation id="1501075228659004450">Hmm, se pare că portofelul dvs. Brave Rewards a fost confirmat deja cu un alt cont <ph name="PROVIDER"/>. Încercați să realizați confirmarea din nou utilizând celălalt cont.</translation>
+<translation id="5111921830714291902">Eroare: alt cont</translation>
 <translation id="2359865110462963929">BAT nu este acceptat deocamdată în regiunea ta. Te rugăm să consulți <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> pentru actualizări.</translation>
 <translation id="1737873393693460829">Prin activarea [[title]], acceptați <ph name="BEGIN_LINK1"/>Termenii de utilizare<ph name="END_LINK1"/> și <ph name="BEGIN_LINK2"/>Politica de confidențialitate<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">A avut loc o eroare la crearea cardului BAT Brave Browser</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Continuă</translation>
 <translation id="5112354605357157725">Continuați pentru a vă conecta</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> solicită un sold minim de <ph name="AMOUNT"/> BAT pentru crearea unui cont. Dacă ați conectat un cont în prealabil,</translation>
+<translation id="752216563428219524">Anunțurile nu sunt inițializate. Reîmprospătați pagina!</translation>
 <translation id="7422678632904904341">Suma:</translation>
 <translation id="6969783933307596818">Se actualizează automat la fiecare 5 secunde</translation>
 <translation id="5025866799968038247">Informații sold</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Contribuiți automat</translation>
 <translation id="2927922949538312364">Bacșiș unic</translation>
 <translation id="3164105678355419142">Bacșiș periodic</translation>
+<translation id="916115051162298064">Diagnostice anunțuri</translation>
 <translation id="7806880412350961625">Istoric evenimente</translation>
 <translation id="4309915981827077375">Informații generale</translation>
 <translation id="3662406032239313663">Jurnale</translation>
@@ -376,7 +380,7 @@
 <translation id="6318696841371191107">Faceți un tur rapid</translation>
 <translation id="8465790416279415448">Continuând, sunteți de acord cu <ph name="TOS_LINK_BEGIN"/>Termenii de utilizare<ph name="TOS_LINK_END"/> și <ph name="PP_LINK_BEGIN"/>Politica de confidențialitate<ph name="PP_LINK_END"/>.</translation>
 <translation id="8222322431155185238">Contribuiți cu Brave Rewards</translation>
-<translation id="1895476463085410109">Câștigați Brave Rewards prin afișarea de anunțuri private Brave și susțineți automat creatorii de conținut</translation>
+<translation id="1895476463085410109">Câștigați Brave Rewards prin afișarea de Brave Private Ads și susțineți automat creatorii de conținut</translation>
 <translation id="5705882733397021510">Înapoi</translation>
 <translation id="185034574799484512">Să facem un tur rapid</translation>
 <translation id="8281886186245836920">Omite</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Categorie</translation>
 <translation id="3080423471207781945">Maximum de reclame primite pe oră:</translation>
 <translation id="2631006050119455616">S-a salvat</translation>
+<translation id="7847825746023377505">Nu au fost afișate anunțuri în ultimele <ph name="TOTAL_DAYS"/> zile.</translation>
 <translation id="7902420836933072528">Reclamele pe care le-ați primit în ultimele [[totalDays]] zile</translation>
 <translation id="8863685593846905344">Istoric reclame</translation>
 <translation id="2777306694585938662">Au fost primite răsplăți pentru reclame</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">Ocazional, vi se vor oferi token-uri gratuite de la Brave. Fiți atenți la aceste alerte!</translation>
 <translation id="1370034647041840967">Câștigați token-uri pentru atenția oferită reclamelor și plătiți mai departe pentru a susține creatorii de conținut pe care îi apreciați!</translation>
 <translation id="4919888432594361029">Adăugați, retrageți și gestionați fondurile la <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Portofelul dvs. Brave este oferit de <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Recompensele Brave sunt construite pe Token-ul Atenție de Bază. Aflați mai multe despre BAT</translation>
 <translation id="7823359893981882407">aici</translation>
 <translation id="3034163433136515805">Vizualizare Cod QR</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Suma de Recompense</translation>
 <translation id="2151535059686617995">Este’ ziua dumneavoastră norocoasă!</translation>
 <translation id="6436689611575806470">Grantul dvs. în [[currency]] este pe drum.</translation>
-<translation id="7512440811010447157">verifică</translation>
 <translation id="8267327690882073581">Verificare portofel</translation>
 <translation id="543510923939676996">Portofelul a fost verificat</translation>
 <translation id="2659764755126740206">Accesați <ph name="PROVIDER"/> Contul meu</translation>
 <translation id="3699674790322420653">Finalizați verificarea portofelului</translation>
 <translation id="9200453331904391567">Deconectare de la Brave Rewards</translation>
+<translation id="3656941797339037856">Conectați Brave Rewards de Gemini!</translation>
+<translation id="671838195432136371">Gemini oferă un mod simplu de tranzacționare și păstrare a monedelor, precum și un randament anual de 3,49% pentru BAT. Utilizatorii noi care își conectează contul primesc gratuit 5 BAT!</translation>
+<translation id="9136976526700181750">* Randament oferit de Gemini începând cu 15 august 2021</translation>
 <translation id="7404779623219601861">Transformați BAT în carduri cadou</translation>
 <translation id="6215565499749144110">Prin intermediul rețelei TAP, vă puteți transforma BAT-urile în carduri cadou pentru mărci la modă.</translation>
 <translation id="6915065518766963119">* Necesită verificare Uphold.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Preț unitar</translation>
 <translation id="4763179765154524864">Total cheltuit</translation>
 <translation id="8851480289992540512">Total primit</translation>
+<translation id="824449983246282560">Nu aveți fonduri în cont. Accesați Gemini pentru a achiziționa.</translation>
 <translation id="8624961452383848703">Vreau să schimb...</translation>
 <translation id="616639131065447379">Bine ați venit la Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets vă permite să lucrați cu criptomonedă și active asociate în Brave. Crypto Wallets acceptă tokenuri Ethereum, ca ETH și BAT, precum și  obiecte de colecție, și vă permite să lucrați cu aplicațiiÐ și alte contracte inteligente. Toate acestea sunt dedicate celor care sunt familiarizați cu Ethereum și alte sisteme blockchain — sau sunt nerăbdători să învețe.</translation>

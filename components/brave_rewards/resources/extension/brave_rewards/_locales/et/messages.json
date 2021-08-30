@@ -219,9 +219,23 @@
     "message": "Varundage oma Brave'i rahakotti",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Rohkem teavet",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Tõrge: erinev konto",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, paistab, et teie Brave Rewardsi rahakott on juba kinnitatud muu teenusepakkuja $name$ kontoga. Proovige uuesti kinnitada oma eelmise konto abil.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Tõrge: BAT pole saadaval",
@@ -231,10 +245,6 @@
     "message": "Teie piirkonnas Uphold veel BAT-i ei toeta.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "Rohkem teavet",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "Tõrge: blokeeritud konto",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "Teie Upholdi konto on praegu blokeeritud.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "Rohkem teavet",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Tõrge: ootel konto",
@@ -255,10 +261,6 @@
     "message": "Teie Upholdi konto on veel ootel.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Rohkem teavet",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Tõrge: piiratud õigustega konto",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Teie Upholdi konto on praegu piiratud õigustega.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Rohkem teavet",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Jõuti seadmete ülemmäärani",
@@ -534,10 +532,6 @@
   "grantFinishTokenTitleAds": {
     "message": "Teie preemiasumma",
     "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "kinnita",
-    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Ühendus katkestatud",
