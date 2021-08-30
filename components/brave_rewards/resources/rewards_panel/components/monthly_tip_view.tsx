@@ -31,7 +31,13 @@ export function MonthlyTipView (props: Props) {
     return (
       <style.root>
         <style.setBox onClick={cancelLink}>
-          <a href='#' onClick={props.onUpdateClick}>{getString('set')}</a>
+          <a
+            href='#'
+            onClick={props.onUpdateClick}
+            data-test-id='set-monthly-tip-button'
+          >
+            {getString('set')}
+          </a>
         </style.setBox>
       </style.root>
     )
@@ -45,7 +51,10 @@ export function MonthlyTipView (props: Props) {
     <style.root>
       <style.amountBox>
         <style.amount>
-          <button onClick={toggleActionBubble}>
+          <button
+            onClick={toggleActionBubble}
+            data-test-id='monthly-tip-actions-button'
+          >
             <TokenAmount
               amount={monthlyContribution}
               minimumFractionDigits={0}
@@ -57,12 +66,20 @@ export function MonthlyTipView (props: Props) {
             <style.actionBubble onClick={cancelLink}>
               <style.actionBubbleContent>
                 <style.action>
-                  <a href='#' onClick={props.onUpdateClick}>
+                  <a
+                    href='#'
+                    onClick={props.onUpdateClick}
+                    data-test-id='change-monthly-tip-button'
+                  >
                     {getString('changeAmount')}
                   </a>
                 </style.action>
                 <style.action>
-                  <a href='#' onClick={props.onCancelClick}>
+                  <a
+                    href='#'
+                    onClick={props.onCancelClick}
+                    data-test-id='cancel-monthly-tip-button'
+                  >
                     {getString('cancel')}
                   </a>
                 </style.action>

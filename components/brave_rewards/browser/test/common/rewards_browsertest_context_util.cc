@@ -74,58 +74,56 @@ void WaitForElementToEqual(
     const std::string& selector,
     const std::string& expectedValue) {
   DCHECK(context);
-  auto script = kWaitForElementToAppearScript +
-      content::JsReplace(R"(
-          new Promise(async (resolve, reject) => {
-            const TIMEOUT_SECONDS = 5;
-            const selector = $1;
-            const expectedValue = $2;
-            let currentValue = "";
 
-            try {
-              let element = await waitForElementToAppear(selector);
-              currentValue = element.innerText;
-              if (currentValue === expectedValue) {
-                resolve(true);
-                return;
-              }
+  std::string script = R"(
+    new Promise(async (resolve, reject) => {
+      const TIMEOUT_SECONDS = 5;
+      const selector = $1;
+      const expectedValue = $2;
+      let currentValue = "";
 
-              const timerID = window.setTimeout(() => {
-                observer.disconnect();
-                reject(new Error(
-                  "Value not matched for '" + selector + "'.\n" +
-                  "Current: " + currentValue + "\n" +
-                  "Expected: " + expectedValue + ""));
-              }, TIMEOUT_SECONDS * 1000);
+      try {
+        let element = await waitForElementToAppear(selector);
+        currentValue = element.innerText.replace(/\xa0/g, ' ');
+        if (currentValue === expectedValue) {
+          resolve(true);
+          return;
+        }
 
-              const observer = new MutationObserver(({}, observer) => {
-                let element = document.querySelector(selector);
-                if (!element) {
-                  return;
-                }
+        const timerID = window.setTimeout(() => {
+          observer.disconnect();
+          reject(new Error(
+            "Value not matched for '" + selector + "'.\n" +
+            "Current: " + currentValue + "\n" +
+            "Expected: " + expectedValue + ""));
+        }, TIMEOUT_SECONDS * 1000);
 
-                currentValue = element.innerText;
-                if (currentValue === expectedValue) {
-                  clearTimeout(timerID);
-                  observer.disconnect();
-                  resolve(true);
-                }
-              });
-              observer.observe(document.documentElement,
-                { characterData: true, childList: true, subtree: true });
-            } catch(error) {
-              reject(error);
-            }
+        const observer = new MutationObserver(({}, observer) => {
+          let element = document.querySelector(selector);
+          if (!element) {
+            return;
+          }
+
+          currentValue = element.innerText.replace(/\xa0/g, ' ');
+          if (currentValue === expectedValue) {
+            clearTimeout(timerID);
+            observer.disconnect();
+            resolve(true);
+          }
         });
-      )",
-      selector,
-      expectedValue);
+        observer.observe(document.documentElement,
+          { characterData: true, childList: true, subtree: true });
+      } catch(error) {
+        reject(error);
+      }
+    });
+  )";
 
-  auto result = EvalJs(
-      context,
-      script,
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
+  auto result = EvalJs(context,
+                       kWaitForElementToAppearScript +
+                           content::JsReplace(script, selector, expectedValue),
+                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                       content::ISOLATED_WORLD_ID_CONTENT_END);
 
   ASSERT_EQ(true, result);
 }
@@ -437,18 +435,18 @@ std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
 
 double GetRewardsPopupMonthlyTipValue(content::WebContents* context) {
   DCHECK(context);
-  WaitForElementToAppear(context, "[data-test-id=toggle-monthly-actions]");
-  return content::EvalJs(
-      context,
-      R"_(
-        new Promise(resolve => setTimeout(resolve, 0)).then(() => {
-          const elem = document.querySelector(
-            '[data-test-id=toggle-monthly-actions]')
-          return elem && parseFloat(elem.innerText) || 0
-        })
-      )_",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END).ExtractDouble();
+  WaitForElementToAppear(context, "[data-test-id=monthly-tip-actions-button]");
+  std::string script = R"_(
+    new Promise(resolve => setTimeout(resolve, 0)).then(() => {
+      const elem = document.querySelector(
+        '[data-test-id=monthly-tip-actions-button]')
+      return elem && parseFloat(elem.innerText) || 0
+    })
+  )_";
+  return content::EvalJs(context, script,
+                         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                         content::ISOLATED_WORLD_ID_CONTENT_END)
+      .ExtractDouble();
 }
 
 }  // namespace rewards_browsertest_util

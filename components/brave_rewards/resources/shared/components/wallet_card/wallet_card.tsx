@@ -63,7 +63,7 @@ export function WalletCard (props: Props) {
             <style.balanceHeader>
               {getString('walletYourBalance')}
             </style.balanceHeader>
-            <style.batAmount>
+            <style.batAmount data-test-id='rewards-balance-text'>
               <TokenAmount amount={props.balance} />
             </style.batAmount>
             <style.exchangeAmount>
@@ -106,7 +106,10 @@ export function WalletCard (props: Props) {
                 {
                   props.onViewStatement &&
                     <style.viewStatement>
-                      <button onClick={props.onViewStatement}>
+                      <button
+                        onClick={props.onViewStatement}
+                        data-test-id='view-statement-button'
+                      >
                         <WalletInfoIcon />{getString('walletViewStatement')}
                       </button>
                     </style.viewStatement>

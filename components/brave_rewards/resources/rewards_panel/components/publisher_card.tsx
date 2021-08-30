@@ -22,12 +22,14 @@ export function PublisherCard () {
     React.useState(host.state.publisherInfo)
   const [publisherRefreshing, setPublisherRefreshing] =
     React.useState(host.state.publisherRefreshing)
+  const [settings, setSettings] = React.useState(host.state.settings)
 
   const [showPublisherLoading, setShowPublisherLoading] = React.useState(false)
 
   useHostListener(host, (state) => {
     setPublisherInfo(state.publisherInfo)
     setPublisherRefreshing(state.publisherRefreshing)
+    setSettings(host.state.settings)
   })
 
   if (!publisherInfo) {
@@ -96,22 +98,28 @@ export function PublisherCard () {
           </style.status>
         </style.name>
       </style.heading>
-      <style.attention>
-        <div>{getString('attention')}</div>
-        <div className='value'>
-          {(publisherInfo.attentionScore * 100).toFixed(0)}%
-        </div>
-      </style.attention>
+      {
+        settings.autoContributeEnabled &&
+          <style.attention data-test-id='attention-score-text'>
+            <div>{getString('attention')}</div>
+            <div className='value'>
+              {(publisherInfo.attentionScore * 100).toFixed(0)}%
+            </div>
+          </style.attention>
+      }
       <style.contribution>
-        <style.autoContribution>
-          <div>{getString('includeInAutoContribute')}</div>
-          <div>
-            <ToggleButton
-              checked={publisherInfo.autoContributeEnabled}
-              onChange={host.setIncludeInAutoContribute}
-            />
-          </div>
-        </style.autoContribution>
+        {
+          settings.autoContributeEnabled &&
+            <style.autoContribution>
+              <div>{getString('includeInAutoContribute')}</div>
+              <div>
+                <ToggleButton
+                  checked={publisherInfo.autoContributeEnabled}
+                  onChange={host.setIncludeInAutoContribute}
+                />
+              </div>
+            </style.autoContribution>
+        }
         <style.monthlyContribution>
           <div>{getString('monthlyContribution')}</div>
           <div>
@@ -124,7 +132,7 @@ export function PublisherCard () {
         </style.monthlyContribution>
       </style.contribution>
       <style.tipAction>
-        <button onClick={host.sendTip}>
+        <button data-test-id='tip-button' onClick={host.sendTip}>
           {getString('sendTip')}
         </button>
       </style.tipAction>

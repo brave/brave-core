@@ -33,6 +33,7 @@ function createHost (): Host {
     rewardsEnabled: false,
     settings: {
       adsPerHour: 3,
+      autoContributeEnabled: true,
       autoContributeAmount: 5
     },
     options: {
