@@ -221,7 +221,21 @@
   },
   "upholdBATNotAllowedForUserLearnMore": {
     "message": "เรียนรู้เพิ่มเติม",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "ข้อผิดพลาด: บัญชีแตกต่างกัน",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "ดูเหมือนว่ากระเป๋าเงิน Brave Rewards ของคุณจะได้รับการยืนยันด้วยบัญชีผู้ใช้ $name$ อีกบัญชีหนึ่ง กรุณายืนยันอีกครั้งโดยใช้บัญชีก่อนหน้าของคุณ",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "เกิดข้อผิดพลาด: BAT ไม่พร้อมใช้งาน",

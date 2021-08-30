@@ -47,7 +47,6 @@
 <translation id="8372880274820509128">Para obter unha maior seguranza, Brave encriptará os teus datos.</translation>
 <translation id="2770231113462710648">Cambiar o navegador predeterminado a:</translation>
 <translation id="2799223571221894425">Iniciar de novo</translation>
-<translation id="6811506454451584223">Queres utilizar un perfil de Brave independente?</translation>
 <translation id="3783547330001921298">Con esta acción crearase un novo perfil de Brave para <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Eliminar de Brave...</translation>
 <translation id="2885378588091291677">Xestor de tarefas</translation>
@@ -70,17 +69,19 @@
 <translation id="2339258256897053758">Non se atopan as claves da API de Brave. Desactivaranse algunhas funcións de Brave.</translation>
 <translation id="8926637909431618259">Continuar executando aplicacións en segundo plano cando se peche Brave</translation>
 <translation id="4480040274068703980">Chrome OS non puido sincronizar os teus datos debido a un erro ao iniciar sesión.</translation>
+<translation id="1166275459137851283">Brave recomenda que non descargues nin abras este ficheiro</translation>
 <translation id="2711887072399498551">Xa existe un perfil de Brave con esta conta</translation>
 <translation id="2297290224191497273">Queres cambiar ao perfil existente de Brave?</translation>
 <translation id="2450003541323895471">Cos perfís de Brave podes separar todo o contido que teñas neste navegador. Crea perfís para os amigos e a familia ou ben crea un para o traballo e outro para o lecer.</translation>
+<translation id="7275165473619697274">A instalación de Chrome OS está en curso</translation>
 <translation id="9216183508558772570">Brave enviarache unha notificación cando inicies sesión cun contrasinal vulnerado</translation>
 <translation id="5853262807109651878">Esta acción eliminará <ph name="ITEMS_COUNT"/> elementos deste dispositivo. Para recuperar os teus datos máis tarde, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">O atallo <ph name="SHORTCUT"/> permite cambiar entre perfís de Brave</translation>
 <translation id="8703492925273919597">Pecha todas as ventás de Brave e téntao de novo.</translation>
 <translation id="1384923383737428730">O teu ordenador ten software daniño. Brave pode quitalo, restaurar a configuración e desactivar as extensións para que o navegador funcione con normalidade de novo.</translation>
+<translation id="2409866122341731384">Borrar unidade de disco duro e instalar Chrome OS</translation>
 <translation id="7029305463989165490">Para enviar un número desde <ph name="ORIGIN"/> ao teu teléfono Android, inicia sesión en Brave nos dous dispositivos.</translation>
 <translation id="4304059894777924102">Brave non puido comprobar os teus contrasinais. Verifica a conexión a Internet.</translation>
-<translation id="2588634262982826227">Chrome OS pode restablecer as aplicacións e as páxinas cada vez que reinicies o dispositivo sen preguntarche.</translation>
 <translation id="1807774211756215222">Abrir ligazón nunha nova &amp;pestana de Brave</translation>
 <translation id="7453070689008684791">Brave accederá a Drive para facer suxestións na barra de enderezos</translation>
 <translation id="2106568569080763501">Brave permíteche facer clic nun número de teléfono da web e chamar mediante Skype.</translation>
@@ -98,6 +99,7 @@
 <translation id="8923080813984421771"><ph name="MANAGER"/> require que leas e aceptes as seguintes Condicións de servizo antes de utilizar este dispositivo. Estas condicións non amplían, modifican nin limitan as de Chrome OS.</translation>
 <translation id="3262506503470845422">Obter axuda sobre Brave</translation>
 <translation id="7691786510374174420">Non se puido efectuar a instalación debido a un erro non especificado. Se se está executando Brave actualmente, péchao e téntao de novo.</translation>
+<translation id="429583012151745428">A instalación está en curso. Non apagues o dispositivo, xa que o proceso non debería tardar máis de vinte minutos. En canto remate a instalación, o equipo apagarase automaticamente.</translation>
 <translation id="9183662282810237335">Queres saír de Brave de todas formas?</translation>
 <translation id="4065288863231444640">Deixar que Brave se execute en segundo plano</translation>
 <translation id="8148611988012584308">Personaliza e controla Brave</translation>
@@ -131,7 +133,6 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> (versión beta de Brave)</translation>
 <translation id="707769633889902835">Chrome OS non pode abrir esta páxina.</translation>
 <translation id="696826782632239602">Brave necesita acceder á túa localización para compartila con este sitio</translation>
-<translation id="7886919915603831625">Brave recomenda que non descargues nin abras este ficheiro.</translation>
 <translation id="1744365871163268756">Espera a que Brave instale as actualizacións do sistema máis recentes.</translation>
 <translation id="3861679447659630159">Brave está tentando editar os contrasinais. Escribe o teu contrasinal de Windows para permitir esta acción.</translation>
 <translation id="232381795826373334">Abrir PDF en Brave</translation>
@@ -156,6 +157,15 @@
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> é perigoso, así que Brave bloqueouno.</translation>
 <translation id="7006260220514217183">A opción Navegación segura está desactivada. Brave recomenda activala.</translation>
 <translation id="4060970194201477024">Aquí podes cambiar entre perfís de Brave</translation>
+<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Está todo listo para instalar Chrome OS! Ao continuar:
+<ph name="BEGIN_LIST"/>
+<ph name="LIST_ITEM"/>Borraranse os ficheiros, os datos e o teu sistema operativo actual.
+          <ph name="LIST_ITEM"/>Instalarase Chrome OS.
+          <ph name="LIST_ITEM"/>O dispositivo apagarase en canto remate a instalación.
+          <ph name="END_LIST"/>
+<ph name="END_PARAGRAPH1"/>
+<ph name="BEGIN_PARAGRAPH2"/>Non esquezas que coa instalación borrarase toda a unidade de disco duro. Asegúrate de ter unha copia de seguranza dos datos que sexan importantes.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>En canto se inicia a instalación non se pode cancelar.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Asegúrate de iniciar sesión en Brave no teu <ph name="TARGET_DEVICE_NAME"/> e proba a enviar o número de novo.</translation>
 <translation id="8320964054148936490">Este ordenador xa conta cunha versión máis recente de Brave. Se o software non funciona, desinstala Brave e téntao de novo.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave reiniciarase agora}=1{Brave reiniciarase en 1 segundo}other{Brave reiniciarase en # segundos}}</translation>
@@ -173,6 +183,7 @@
 <translation id="2644798301485385923">Sistema Chrome OS</translation>
 <translation id="1684121725014454063">Dámosche a benvida aos perfís de Brave</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave reiniciarase en 1 segundo}other{Brave reiniciarase en # segundos}}</translation>
+<translation id="664235759707825982">Todo listo para instalar Chrome OS</translation>
 <translation id="2675662665675552980">Tamén controla a páxina que se mostra ao iniciar Brave.</translation>
 <translation id="5590013613412457132">Desinstalar Brave</translation>
 <translation id="8646609321956191980">En cada perfil gárdase a información de Brave que lle corresponde (por exemplo, os marcadores, o historial ou os contrasinais)</translation>
@@ -187,6 +198,7 @@
 <translation id="6666624454809779082">Brave xa está instalado para todos os usuarios no teu ordenador.</translation>
 <translation id="5360050006043219962">Se queres acceder ás túas cousas de Brave desde calquera dos teus dispositivos, inicia sesión e activa a sincronización.</translation>
 <translation id="8291513491595858997">O teu pai ou nai desactivou esta opción en Brave: Permisos para sitios, aplicacións e extensións. Non está permitido activar esta <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
+<translation id="1810203443153428607">Ao instalar Chrome OS sobrescribiranse todos os datos que teñas no dispositivo.</translation>
 <translation id="8211837073776713955">Brave permíteche saber se os teus contrasinais están en risco nalgún momento</translation>
 <translation id="7830723774663008396">Brave: <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (copiouse en Brave)</translation>
@@ -219,6 +231,10 @@ Brave non pode recuperar a túa configuración.</translation>
       configuración de Chrome OS<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave está utilizando a túa cámara e micrófono.</translation>
 <translation id="2827121003398607864">Brave introduciu melloras</translation>
+<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Antes de comezar, asegúrate de ter unha copia de seguranza actualizada dos teus datos. Ao instalar Chrome OS sobrescribiranse todos os datos que teñas na unidade de disco duro.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Brave non é responsable das perdas de datos nin tampouco garante que Chrome OS funcione en modelos que non estean aprobados. Visita [TBD] para obter máis información sobre os modelos aprobados.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Máis información sobre como instalar Chrome OS e o borrado de datos: [TBD URL]<ph name="END_PARAGRAPH3"/>
+<ph name="BEGIN_PARAGRAPH4"/>Se tes todo listo para continuar, fai clic en Instalar Chrome OS e recibirás instrucións para realizar a instalación en tan só un par de pasos sinxelos. Terás outra oportunidade de confirmar a acción antes de que fagamos cambios no ordenador.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave non é o teu navegador predeterminado</translation>
 <translation id="5477319665405831211">Sincroniza e personaliza Brave nos teus dispositivos</translation>
 <translation id="5419189641394808652">Brave non puido sincronizar os teus datos debido a que a sincronización non está dispoñible para o teu dominio.</translation>
@@ -229,7 +245,6 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="8462524920674814187">Se queres recibir actualizacións de Brave no futuro, debes instalar o sistema operativo OS X 10.11 ou unha versión posterior. Este ordenador ten instalada a versión OS X 10.10.</translation>
 <translation id="7963515534397191222">Brave non se puido actualizar á última versión, polo que non gozas das novas funcións e solucións de seguranza.</translation>
 <translation id="7573289029918943991">Para ver ser o teu dispositivo está actualizado, accede á <ph name="LINK_BEGIN"/>configuración de Chrome OS<ph name="LINK_END"/></translation>
-<translation id="6755885556185485672">Chrome OS non se pechou correctamente.</translation>
 <translation id="2925193881330501265">Iniciaches sesión en Brave como <ph name="USER_EMAIL_ADDRESS"/>. Utiliza a mesma conta para iniciar sesión de novo.</translation>
 <translation id="6915252145142862992">Esta é unha instalación secundaria de Brave e non se pode converter no teu navegador predeterminado.</translation>
 <translation id="7685904775439037072">Unha vez que Brave teña acceso, os sitios web poderán solicitalo tamén.</translation>
@@ -261,7 +276,6 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="6389268239133412586">Non se puido actualizar Brave</translation>
 <translation id="6368958679917195344">Chrome OS é posible grazas a outros <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8986207147630327271">Estás a piques de engadir un perfil de traballo a este navegador e de permitir que o teu administrador controle só o perfil de traballo.</translation>
-<translation id="1156157157416773301">Queres pasar esta conta a un perfil de Brave novo?</translation>
 <translation id="5173820533850252773">Brave está desactualizado</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave reiniciarase en 1 hora}other{Brave reiniciarase en # horas}}</translation>
 <translation id="7863882214613921971">Abrir ligazón nunha nova &amp;pestana de Brave</translation>

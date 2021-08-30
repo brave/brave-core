@@ -221,7 +221,21 @@
   },
   "upholdBATNotAllowedForUserLearnMore": {
     "message": "详细了解",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "错误：不同的账户",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "哎呀，看来您的 Brave Rewards 钱包已使用其他 $name$ 账户验证。请尝试使用您先前的账户验证。",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "错误：BAT 不可用",

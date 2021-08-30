@@ -221,7 +221,21 @@
   },
   "upholdBATNotAllowedForUserLearnMore": {
     "message": "Få mere at vide",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Fejl: En anden konto",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, det ser ud til, at din Brave Rewards-wallet allerede er blevet bekræftet på en anden $name$-konto. Forsøg at bekræfte den igen med din tidligere konto.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Fejl: BAT ikke tilgængelig",
@@ -236,7 +250,7 @@
     "description": "Notification button text to learn more about the blocked user status"
   },
   "upholdBlockedUserTitle": {
-    "message": "Fejl; Blokeret konto",
+    "message": "Fejl: Blokeret konto",
     "description": "Title for blocked user notification"
   },
   "upholdBlockedUserNotification": {

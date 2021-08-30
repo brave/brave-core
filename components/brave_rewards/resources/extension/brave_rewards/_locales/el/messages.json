@@ -221,7 +221,21 @@
   },
   "upholdBATNotAllowedForUserLearnMore": {
     "message": "Μάθετε περισσότερα",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Σφάλμα: Διαφορετικός λογαριασμός",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Φαίνεται ότι το πορτοφόλι σας Brave Rewards έχει επαληθευτεί μέσω άλλου λογαριασμού $name$. Παρακαλούμε, προσπαθήστε να το επαληθεύσετε ξανά, χρησιμοποιώντας τον προηγούμενο λογαριασμό σας.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Σφάλμα: BAT μη διαθέσιμο",

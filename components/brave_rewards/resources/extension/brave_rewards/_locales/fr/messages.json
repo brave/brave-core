@@ -221,7 +221,21 @@
   },
   "upholdBATNotAllowedForUserLearnMore": {
     "message": "En savoir plus",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Erreur : Autre compte",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, votre portefeuille Brave Rewards semble avoir déjà été vérifié par un autre compte $name$. Essayez de le vérifier à nouveau avec votre ancien compte.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Erreur : BAT indisponible",

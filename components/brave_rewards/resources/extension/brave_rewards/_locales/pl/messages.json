@@ -221,14 +221,28 @@
   },
   "upholdBATNotAllowedForUserLearnMore": {
     "message": "Dowiedz się więcej",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Błąd: Inne konto",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, wygląda na to, że Twój portfel Brave Rewards został już zweryfikowany przy użyciu innego konta $name$. Spróbuj ponownie zweryfikować portfel przy użyciu poprzedniego konta.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Błąd: BAT niedostępny",
     "description": "Title for BAT not allowed for user notification"
   },
   "upholdBATNotAllowedForUserNotification": {
-    "message": "BAT nie jest jeszcze obsługiwany w Twoim regionie w systemie Uphold.",
+    "message": "BAT nie jest jeszcze obsługiwany portfelu Uphold w Twoim regionie.",
     "description": "Description for BAT not allowed for user notification"
   },
   "upholdBlockedUserLearnMore": {
@@ -240,7 +254,7 @@
     "description": "Title for blocked user notification"
   },
   "upholdBlockedUserNotification": {
-    "message": "Twoje konto w Uphold jest obecnie zablokowane.",
+    "message": "Twoje konto w portfelu Uphold jest obecnie zablokowane.",
     "description": "Description for blocked user notification"
   },
   "upholdPendingUserLearnMore": {
@@ -264,7 +278,7 @@
     "description": "Title for restricted user notification"
   },
   "upholdRestrictedUserNotification": {
-    "message": "Twoje konto w Uphold jest obecnie ograniczone.",
+    "message": "Twoje konto w portfelu Uphold jest obecnie ograniczone.",
     "description": "Description for restricted user notification"
   },
   "deviceLimitReachedLearnMore": {

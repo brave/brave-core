@@ -47,7 +47,6 @@
 <translation id="8372880274820509128">অতিৰিক্ত সুৰক্ষাৰ বাবে Braveএ আপোনাৰ ডেটা এনক্ৰিপ্ট কৰিব।</translation>
 <translation id="2770231113462710648">ইয়ালৈ ডিফ’ল্ট ব্ৰাউজাৰ সলনি কৰক:</translation>
 <translation id="2799223571221894425">পুনৰ লঞ্চ কৰক</translation>
-<translation id="6811506454451584223">Brave প্ৰ'ফাইল পৃথক কৰিবনে?</translation>
 <translation id="3783547330001921298">এইটোৱে <ph name="USER_EMAIL_ADDRESS"/>ৰ বাবে এটা নতুন Brave প্ৰ’ফাইল সৃষ্টি কৰিব</translation>
 <translation id="777113543093865885">Braveৰপৰা আঁতৰাওক...</translation>
 <translation id="2885378588091291677">কাৰ্য পৰিচালক</translation>
@@ -70,17 +69,19 @@
 <translation id="2339258256897053758">Brave API চাবিসমূহ নাই। Braveৰ কিছুমান কাৰ্যক্ষতা অক্ষম কৰা হ’ব।</translation>
 <translation id="8926637909431618259">Brave বন্ধ কৰাৰ পিছতো নেপথ্যত এপ্‌সমূহ চলি থাকিবলৈ দিয়ক</translation>
 <translation id="4480040274068703980">ছাইন ইন কৰোঁতে আসোঁৱাহ হোৱাৰ কাৰণে Chrome OSএ আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে।</translation>
+<translation id="1166275459137851283">Braveএ আপোনাক এই ফাইলটো ডাউনল’ড নকৰিবলৈ অথবা নুখুলিবলৈ চুপাৰিছ কৰে</translation>
 <translation id="2711887072399498551">এই প্ৰ'ফাইলটোৰ সৈতে এটা Brave প্ৰ'ফাইল ইতিমধ্যে আছে</translation>
 <translation id="2297290224191497273">পূৰ্বে থকা Brave প্ৰ'ফাইলটোলৈ যাব নেকি?</translation>
 <translation id="2450003541323895471">Braveৰ প্ৰ’ফাইলৰ জৰিয়তে আপুনি নিজৰ আটাইবোৰ Braveৰ বস্তু পৃথক কৰিব পাৰে। বন্ধুবৰ্গ আৰু পৰিয়ালৰ বাবে প্ৰ’ফাইল সৃষ্টি কৰক অথবা কৰ্মস্থান আৰু মনোৰঞ্জনৰ মাজত বিভাজন কৰক।</translation>
+<translation id="7275165473619697274">Chrome OS ইনষ্টল কৰাৰ প্ৰক্ৰিয়াটো চলি আছে</translation>
 <translation id="9216183508558772570">আপুনি কোনো হেক কৰা পাছৱৰ্ডৰ জৰিয়তে ছাইন ইন কৰিলে Braveএ আপোনাক জাননী দিব</translation>
 <translation id="5853262807109651878">ইয়ে এই ডিভাইচটোৰ পৰা <ph name="ITEMS_COUNT"/>টা বস্তু মচিব। আপোনাৰ ডেটা পাছত পুনৰুদ্ধাৰ কৰিবলৈ Braveত <ph name="USER_EMAIL"/> হিচাপে ছাইন ইন কৰক।</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> টিপি Braveৰ প্ৰ’ফাইলসমূহৰ মাজত সালসলনি কৰিব পাৰি</translation>
 <translation id="8703492925273919597">অনুগ্ৰহ কৰি Braveৰ সকলো ৱিণ্ড’ বন্ধ কৰি পুনৰ চেষ্টা কৰক।</translation>
 <translation id="1384923383737428730">আপোনাৰ কম্পিউটাৰত কোনো ক্ষতিকাৰক ছফ্‌টৱেৰ আছে। Braveএ আপোনাৰ ব্ৰাউজাৰে সাধাৰণভাৱে কাম কৰিবলৈ এইটো আঁতৰাব পাৰে, আপোনাৰ ছেটিং পুনঃস্থাপন কৰিব পাৰে আৰু এক্সটেনশ্বন অক্ষম কৰিব পাৰে।</translation>
+<translation id="2409866122341731384">হাৰ্ড ড্ৰাইভটো মচি Chrome OS ইনষ্টল কৰক</translation>
 <translation id="7029305463989165490"><ph name="ORIGIN"/>ৰ পৰা এটা নম্বৰ আপোনাৰ Android ফ’নলৈ পঠিয়াবলৈ দুয়োটা ডিভাইচত Braveত ছাইন ইন কৰক।</translation>
 <translation id="4304059894777924102">Braveএ আপোনাৰ পাছৱর্ডসমূহ পৰীক্ষা কৰিব নোৱাৰে। আপোনাৰ ইণ্টাৰনেট সংযোগ পৰীক্ষা কৰি চাওক।</translation>
-<translation id="2588634262982826227">Chrome OSএ ৰিবুট কৰাৰ পাছত প্ৰতিবাৰে নোসোধাকৈ যিকোনো সময়তে আপোনাৰ এপ্‌ আৰু পৃষ্ঠা পুনঃস্থাপন কৰিব পাৰে।</translation>
 <translation id="1807774211756215222">Braveৰ নতুন &amp;টেবত লিংক খোলক</translation>
 <translation id="7453070689008684791">Braveএ ঠিকনা বাৰত পৰামর্শ দিবলৈ আপোনাৰ Driveত এক্সেছ কৰিব</translation>
 <translation id="2106568569080763501">আপোনাক Braveএ ৱেবত কোনো ফ'ন নম্বৰ ক্লিক কৰি Skypeৰ জৰিয়তে নম্বৰটোলৈ কল কৰাৰ সুবিধা দিয়ে!</translation>
@@ -98,6 +99,7 @@
 <translation id="8923080813984421771"><ph name="MANAGER"/>ৰ বাবে আপুনি এই ডিভাইচটো ব্যৱহাৰ কৰাৰ পূৰ্বে তলত উল্লেখ কৰা সেৱাৰ চৰ্তাৱলী পঢ়ি সন্মত হোৱাৰ আৱশ্যক। এই চৰ্তাৱলীয়ে Chrome OSৰ চৰ্তাৱলী বিস্তাৰ, সংশোধন অথবা সীমিত নকৰে।</translation>
 <translation id="3262506503470845422">Braveৰ ক্ষেত্ৰত সহায় লাভ কৰক</translation>
 <translation id="7691786510374174420">অনির্দিষ্ট আসোঁৱাহৰ বাবে ইনষ্টল কৰিব পৰা নগ’ল। যদি Brave এতিয়া চলি আছে তেন্তে সেইটো বন্ধ কৰি আকৌ চেষ্টা কৰক।</translation>
+<translation id="429583012151745428">ইনষ্টল কৰি থকা হৈছে। ডিভাইচটো বন্ধ নকৰিব। ইনষ্টল হ’বলৈ বিশ মিনিটতকৈ বেছি সময় নালাগিব লাগে। ইনষ্টল হোৱাৰ পাছত মেচিনটো স্বয়ংক্ৰিয়ভাৱে বন্ধ হ’ব।</translation>
 <translation id="9183662282810237335">যিকোনো প্ৰকাৰে Braveৰ পৰা বাহিৰ হ’বনে?</translation>
 <translation id="4065288863231444640">Braveক নেপথ্যত চলিবলৈ দিয়ক</translation>
 <translation id="8148611988012584308">Brave কাষ্টমাইজ আৰু নিয়ন্ত্ৰণ কৰক</translation>
@@ -132,7 +134,6 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave বিটা</translation>
 <translation id="707769633889902835">Chrome OSএ এই পৃষ্ঠাটো খুলিব নোৱাৰে।</translation>
 <translation id="696826782632239602">আপোনাৰ অৱস্থান এই ছাইটটোৰ সৈতে শ্বেয়াৰ কৰিবলৈ Braveএ আপোনাৰ অৱস্থান এক্সেছ কৰাৰ আৱশ্যক</translation>
-<translation id="7886919915603831625">Braveএ আপোনাক এই ফাইলটো ডাউনল’ড নকৰিবলৈ অথবা নুখুলিবলৈ চুপাৰিছ কৰে।</translation>
 <translation id="1744365871163268756">Braveএ শেহতীয়া ছিষ্টেম আপডে’ট ইনষ্টল কৰালৈ কিছুসময় অপেক্ষা কৰক।</translation>
 <translation id="3861679447659630159">Braveএ পাছৱর্ডসমূহ সম্পাদনা কৰিবলৈ চেষ্টা কৰি আছে। এই কার্যৰ বাবে অনুমতি দিবলৈ আপোনাৰ Windowsৰ পাছৱৰ্ডটো টাইপ কৰক।</translation>
 <translation id="232381795826373334">Braveত PDF খোলক</translation>
@@ -157,6 +158,15 @@
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> ক্ষতিকাৰক বাবে Braveএ ইয়াক অৱৰোধ কৰিছে।</translation>
 <translation id="7006260220514217183">সুৰক্ষিত ব্ৰাউজিং অফ আছে। Braveএ ইয়াক অন কৰাটো চুপাৰিছ কৰে।</translation>
 <translation id="4060970194201477024">ইয়াত আপুনি Braveৰ প্ৰ’ফাইলসমূহৰ মাজত সালসলনি কৰিব পাৰে</translation>
+<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>আমি Chrome OS ইনষ্টল কৰিবলৈ সাজু! আপুনি আগবাঢ়িলে:
+          <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>ফাইল, ডেটা আৰু আপোনাৰ বৰ্তমানৰ অপাৰেটিং ছিষ্টেমটো মচা হ’ব।
+          <ph name="LIST_ITEM"/>Chrome OS ইনষ্টল কৰা হ’ব।
+          <ph name="LIST_ITEM"/>ইনষ্টল কৰাটো সম্পূৰ্ণ হ’লে আপোনাৰ ডিভাইচটো শ্বাট ডাউন হ’ব।
+          <ph name="END_LIST"/>
+          <ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>অন্তিম ৰিমাইণ্ডাৰ: ইনষ্টল কৰাটোৱে আপোনাৰ গোটেই হাৰ্ড ড্ৰাইভটো মচিব। অনুগ্ৰহ কৰি আপুনি গুৰুত্বপূৰ্ণ বুলি বিবেচনা কৰা যিকোনো ডেটাৰ বেক আপ লোৱাটো নিশ্চিত কৰক।<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>ইনষ্টল কৰাটো আৰম্ভ হ’লে ইয়াক বাতিল কৰিব নোৱাৰি।<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">আপোনাৰ <ph name="TARGET_DEVICE_NAME"/>ত Braveত আপুনি ছাইন ইন হৈ থকাটো নিশ্চিত কৰক আৰু তাৰ পাছত পুনৰ পঠিয়াবলৈ চেষ্টা কৰক।</translation>
 <translation id="8320964054148936490">এই কম্পিউটাৰটোত ইতিমধ্যে Braveৰ অধিক শেহতীয়া সংস্কৰণ আছে। যদি ছফ্টৱেৰটোৱে কাম কৰা নাই তেন্তে Brave আনইনষ্টল কৰি আকৌ চেষ্টা কৰক।</translation>
 <translation id="3574823187131579180">{0,plural, =0{এতিয়া Brave পুনৰ লঞ্চ হ’ব}=1{১ ছেকেণ্ডত Brave পুনৰ লঞ্চ হ’ব}one{# ছেকেণ্ডত Brave পুনৰ লঞ্চ হ’ব}other{# ছেকেণ্ডত Brave পুনৰ লঞ্চ হ’ব}}</translation>
@@ -174,6 +184,7 @@
 <translation id="2644798301485385923">Chrome OS ছিষ্টেম</translation>
 <translation id="1684121725014454063">Braveৰ প্ৰ’ফাইললৈ স্বাগতম</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave ১ ছেকেণ্ডত ৰিষ্টাৰ্ট হ’ব}one{Brave # ছেকেণ্ডত ৰিষ্টাৰ্ট হ’ব}other{Brave # ছেকেণ্ডত ৰিষ্টাৰ্ট হ’ব}}</translation>
+<translation id="664235759707825982">ইনষ্টল কৰিবলৈ সাজু Chrome OS</translation>
 <translation id="2675662665675552980">আপুনি Brave আৰম্ভ কৰিলে কি পৃষ্ঠা দেখুওৱা হ'ব সেয়াও ই নিয়ন্ত্ৰণ কৰে।</translation>
 <translation id="5590013613412457132">Brave আনইনষ্টল কৰক</translation>
 <translation id="8646609321956191980">প্ৰতিটো প্ৰ'ফাইলে ইয়াৰ নিজৰ Braveৰ তথ্য ৰাখে, যেনে বুকমাৰ্ক, ইতিহাস, পাছৱৰ্ড আৰু অধিক</translation>
@@ -188,6 +199,7 @@
 <translation id="6666624454809779082">Brave আপোনাৰ কম্পিউটাৰত থকা সকলো ব্যৱহাৰকাৰীৰ বাবে ইতিমধ্যেই ইনষ্টল কৰা হৈছে।</translation>
 <translation id="5360050006043219962">আপোনাৰ আটাইবোৰ ডিভাইচত আপোনাৰ Braveৰ বস্তু এক্সেছ কৰিবলৈ, চাইন ইন কৰি তাৰ পাছত ছিংক অন কৰক।</translation>
 <translation id="8291513491595858997">আপোনাৰ অভিভাৱকে Braveত "ছাইট, এপ্ আৰু এক্সটেনশ্বনসমূহৰ বাবে অনুমতি" অফ কৰিছে। এই <ph name="EXTENSION_TYPE_PARAMETER"/>টো সক্ষম কৰাৰ অনুমতি নাই।</translation>
+<translation id="1810203443153428607">Chrome OS ইনষ্টল কৰাটোৱে আপোনাৰ ডিভাইচটোত থকা আটাইবোৰ ডেটা অভাৰৰাইট কৰিব।</translation>
 <translation id="8211837073776713955">Braveএ আপোনাৰ পাছৱৰ্ডসমূহ কেতিয়াবা হেক কৰা হৈছিল নেকি আপোনাক জানিবলৈ দিয়ে</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (Braveলৈ প্ৰতিলিপি কৰা হ’ল)</translation>
@@ -221,6 +233,10 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
     Brave ব্ৰাউজাৰৰ ছেটিংসমূহ<ph name="LINK_END"/>ত চাওক</translation>
 <translation id="3293668930608086049">Braveএ আপোনাৰ কেমেৰা আৰু মাইক্ৰ'ফ'ন ব্যৱহাৰ কৰি আছে।</translation>
 <translation id="2827121003398607864">Brave অধিক উৎকৃষ্ট হৈছে</translation>
+<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>আমি আৰম্ভ কৰাৰ পূৰ্বে, অনুগ্ৰহ কৰি আপোনাৰ ডেটাৰ বাবে এটা আপ-টু-ডে’ট বেকআপ থকাটো নিশ্চিত কৰক। Chrome OS ইনষ্টল কৰাটোৱে আপোনাৰ হাৰ্ড ড্ৰাইভত থকা আটাইবোৰ ডেটা অভাৰৰাইট কৰিব।<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>কোনো ডেটা হেৰুওৱা ঘটনাৰ বাবে Brave দায়বদ্ধ নহয় আৰু Chrome OSএ প্ৰমাণপত্ৰ নথকা মডেলত কাম কৰিব বুলি কোনো নিশ্চিতি প্ৰদান নকৰে। প্ৰমাণপত্ৰ থকা মডেলৰ বিষয়ে অধিক জানিবলৈ অনুগ্ৰহ কৰি [TBD] চাওক।<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Chrome OS ইনষ্টল কৰা আৰু ডেটা মচাৰ বিষয়ে অধিক জানক: [TBD URL]<ph name="END_PARAGRAPH3"/>
+          <ph name="BEGIN_PARAGRAPH4"/>যদি আপুনি আগবাঢ়িবলৈ সাজু, “Chrome OS ইনষ্টল কৰক”ত ক্লিক কৰক আৰু কেইটামান সহজ পদক্ষেপৰ জৰিয়তে ইনষ্টল কৰাৰ সমগ্ৰ প্ৰক্ৰিয়াটোত আমি আপোনাক নিৰ্দেশনা দিম। আমি আপোনাৰ কম্পিউটাৰটোত যিকোনো সালসলনি কৰাৰ পূৰ্বে নিশ্চিত কৰিবলৈ আপোনাৰ ওচৰত অন্য এটা সুযোগ থাকিব।<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave আপোনাৰ ডিফ'ল্ট ব্ৰাউজাৰ নহয়</translation>
 <translation id="5477319665405831211">আপোনাৰ সমগ্ৰ ডিভাইচতে Braveক ছিংক কৰি ব্যক্তিকৃত কৰক</translation>
 <translation id="5419189641394808652">আপোনাৰ ড‘মেইনত ছিংক কৰাৰ সুবিধা নথকাৰ বাবে Braveএ আপোনাৰ ডেটা ছিংক কৰিব নোৱাৰিলে।</translation>
@@ -231,7 +247,6 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
 <translation id="8462524920674814187">Braveৰ ভৱিষ্যতৰ আপডে’টসমূহ পাবলৈ আপোনাক OS X 10.11 অথবা তাৰ পাছৰ সংস্কৰণৰ আৱশ্যক হ’ব। এই কম্পিউটাৰটোৱে OS X 10.10 ব্যৱহাৰ কৰি আছে।</translation>
 <translation id="7963515534397191222">Braveক শেহতীয়া সংস্কৰণলৈ আপডে’ট কৰিব পৰা নগ’ল, গতিকে আপুনি নতুন সুবিধা আৰু সমস্যা সমাধানৰ উপায়সমূহ লাভ কৰা নাই।</translation>
 <translation id="7573289029918943991">আপোনাৰ ডিভাইচটো আপ-টু-ডে’ট হৈ আছেনে নাই সেয়া চাবলৈ <ph name="LINK_BEGIN"/>Chrome OSৰ ছেটিংসমূহ<ph name="LINK_END"/>লৈ যাওক</translation>
-<translation id="6755885556185485672">Chrome OS সঠিককৈ শ্বাট ডাউন কৰা হোৱা নাছিল।</translation>
 <translation id="2925193881330501265">আপুনি Braveত <ph name="USER_EMAIL_ADDRESS"/> হিচাপে ছাইন ইন হৈ আছিল। আকৌ ছাইন ইন কৰিবলৈ অনুগ্ৰহ কৰি সেই একেটা একাউণ্ট ব্যৱহাৰ কৰক।</translation>
 <translation id="6915252145142862992">এয়া Braveৰ এক গৌণ ইনষ্টলেশ্বন আৰু ইয়াক আপোনাৰ ডিফ’ল্ট ব্ৰাউজাৰ কৰিব নোৱাৰি।</translation>
 <translation id="7685904775439037072">Braveএ এক্সেছ পোৱাৰ পাছতেই ৱেবছাইটসমূহে আপোনাক এক্সেছৰ বাবে অনুমতি বিচাৰিব পাৰিব।</translation>
@@ -263,7 +278,6 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
 <translation id="6389268239133412586">Brave আপডে’ট কৰিব নোৱাৰি</translation>
 <translation id="6368958679917195344">অতিৰিক্ত <ph name="BEGIN_LINK_CROS_OSS"/>মুক্ত উৎসৰ ছফ্টৱেৰ<ph name="END_LINK_CROS_OSS"/>ৰ জৰিয়তে Chrome OSক ব্যৱহাৰযোগ্য কৰা হৈছে।</translation>
 <translation id="8986207147630327271">আপুনি এই ব্ৰাউজাৰত এটা কৰ্মস্থানৰ প্ৰ’ফাইল যোগ দিছে আৰু নিজৰ প্ৰশাসকক কেৱল কৰ্মস্থানৰ প্ৰ’ফাইলটোৰ ওপৰত নিয়ন্ত্ৰণ দিছে।</translation>
-<translation id="1156157157416773301">এটা নতুন Brave প্ৰ'ফাইললৈ একাউণ্ট নিবনে?</translation>
 <translation id="5173820533850252773">Braveটো অতি পুৰণি</translation>
 <translation id="310518206836658214">{0,plural, =1{এঘণ্টাৰ Brave ভিতৰত পুনৰ লঞ্চ হ’ব}one{# ঘণ্টাৰ Brave ভিতৰত পুনৰ লঞ্চ হ’ব}other{# ঘণ্টাৰ Brave ভিতৰত পুনৰ লঞ্চ হ’ব}}</translation>
 <translation id="7863882214613921971">Braveৰ &amp;নতুন টেবত লিংক খোলক</translation>

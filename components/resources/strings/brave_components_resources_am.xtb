@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">ጠቅ የተደረገ</translation>
 <translation id="7119308337584989771">የተሰናበተ</translation>
 <translation id="6805660603861526473">የታየ</translation>
+<translation id="1501075228659004450">እምም፣ የ እርሶ Brave Rewards wallet በሌላ <ph name="PROVIDER"/> መለያ የተረጋገጠ ይመስላል። እባክዎን ደግመው በፊት በከፈቱት መለያ ለማረጋገጥ ይሞክሩ።</translation>
+<translation id="5111921830714291902">ስህተት፡ የተለየ መለያ</translation>
 <translation id="2359865110462963929">BAT በአሁኑ ወቅት በእርሶ ክልል ውስጥ አይደገፍም። እባክዎ ለዝመናዎች <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> ን ያጣቅሱ።</translation>
 <translation id="1737873393693460829">[[title]] 'ን በማብራት፣ በ <ph name="BEGIN_LINK1"/>የአገልግሎት ውሎች<ph name="END_LINK1"/> እና በ <ph name="BEGIN_LINK2"/>ግላዊነት ፖሊሲ<ph name="END_LINK2"/> ይስማማሉ።</translation>
 <translation id="2564425876266960486">የBrave አሳሽ BAT ካርድን በመፍጠር ላይ ስህተት</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">ቀጥል</translation>
 <translation id="5112354605357157725">ለመግባት እንዲቀጥሉ</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> አካውንት ለመፍጠር ቢያንስ የ <ph name="AMOUNT"/> BAT ሂሳብ ይጠይቃል። መለያ ከዚህ በፊት ካገናኙ፣</translation>
+<translation id="752216563428219524">ማስታወቂያዎች ኣልጀመሩም፣ እባክዎን ገጹን ደግመው ይክፈቱ።</translation>
 <translation id="7422678632904904341">መጠን፥</translation>
 <translation id="6969783933307596818">በየ 5 ሰከንዶች በራስ-ሰር ያድሱ</translation>
 <translation id="5025866799968038247">የቀሪ ሂሳብ መረጃ</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">ራስ-ማበርከት</translation>
 <translation id="2927922949538312364">የአንድ ጊዜ ጥቆማ</translation>
 <translation id="3164105678355419142">በተደጋጋሚ የተሰጡ ጠቃሚ ምክሮች</translation>
+<translation id="916115051162298064">የማስታወቂያ ግምገማ</translation>
 <translation id="7806880412350961625">የክስተት መመዝገቢያዎች</translation>
 <translation id="4309915981827077375">አጠቃላይ መረጃ</translation>
 <translation id="3662406032239313663">የምዝግብ ማስታወሻዎች</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">ምድብ</translation>
 <translation id="3080423471207781945">በአንድ ሰዓት ውስጥ የደረሱ ከፍተኛ ማስታወቂያዎች፡</translation>
 <translation id="2631006050119455616">የተቀመጡ</translation>
+<translation id="7847825746023377505">በመጨረሻ ምንም ማስታወቂያዎች አልታዩም <ph name="TOTAL_DAYS"/> ቀናት።</translation>
 <translation id="7902420836933072528">ባለፉት [[totalDays]] ቀናት ውስጥ የተቀበሏቸው ማስታወቂያዎች</translation>
 <translation id="8863685593846905344">የማስታወቂያዎች ታሪክ</translation>
 <translation id="2777306694585938662">የማስታወቂያ ሽልማቶች ደርሰዋል</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">አልፎአልፎ ብሬቭ ነፃ የቶክን ብደር የሚሰጥ ይሆናል፡፡ አይኖን  ከማንኛውም ማስታወቅያ አይንቀሉ</translation>
 <translation id="1370034647041840967">ለማስተዋቅያዎች ትኩረትዎ ቶክን ያግኙ እንዲሁመ፣ ትርጉም ለሚሰጡዋቸው የይዘት ፈጣሪዎች ይክፈሉ!</translation>
 <translation id="4919888432594361029">ገንዘቦችን <ph name="PROVIDER"/> ላይ ያስገቡ፣ ያውጡ እና ያስተዳድሩ።</translation>
-<translation id="3092054349246483285">የእርስዎ Brave ዋሌት የጎለበተው በ <ph name="PROVIDER"/> ነው።</translation>
 <translation id="6401272292123354754">የብሬቭ ሽልማት በመሰረታዊ ማስተዋል ቶክን የታነፀ ነው፡፡ ስለ BAT የበለጠ ይወቁ</translation>
 <translation id="7823359893981882407">እዚህ</translation>
 <translation id="3034163433136515805">QR ኮድን ይመልከቱ</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">የሽልማትዎ መጠን</translation>
 <translation id="2151535059686617995">እድለኛ የሆኑበት ቀን ነው!</translation>
 <translation id="6436689611575806470">የእርስዎ [[currency]] ስጦታ በሂደት ላይ ነው።</translation>
-<translation id="7512440811010447157">ትክክለኛነቱን አጣራ</translation>
 <translation id="8267327690882073581">የዋሌትን ትክክለኛነት አጣራ</translation>
 <translation id="543510923939676996">የኪስ ቦርሳዎት ተረጋግጧል</translation>
 <translation id="2659764755126740206">ወደ የእኔ <ph name="PROVIDER"/> መለያ ይሂዱ</translation>
 <translation id="3699674790322420653">የኪስ ቦርሳ ማረጋገጥ ተጠናቋል</translation>
 <translation id="9200453331904391567">ከ Brave ሽልማቶች ጋር ግንኙነትዎን ያቋርጡ</translation>
+<translation id="3656941797339037856">ሽልማቶችን ከ ጄሚኒ ጋር ያያይዙ!</translation>
+<translation id="671838195432136371">ጄሚኒ በቀላሉ እንዲገበያዩ፣ እንዲያስቀምጡ ፣ እና በ እርሶ BAT 3.49% APY* እንዲያገኙ ያስችልዎታል። ያያያዙ ኣዳዲስ የ ጄሚኒ ተጠቃሚዎች 5 ነጻ BAT ያገኛሉ።</translation>
+<translation id="9136976526700181750">ጄሚኒ ከ ኦገስት 15, 2021 ጀምሮ APY ያገኛል።</translation>
 <translation id="7404779623219601861">ለስጦታ ካርዶች BAT መልሰው ያግኙ</translation>
 <translation id="6215565499749144110">በ TAP አውታረ መረብ፣ ታዋቂ ስም ላላቸው የብራንድ ስጦታ ካርዶች BAT መልሰው ማግኘት ይችላሉ።</translation>
 <translation id="6915065518766963119">* የመስቀያ ማረጋገጫ ያስፈልገዋል።</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">የአንዱ ዋጋ</translation>
 <translation id="4763179765154524864">ጠቅላላ ወጪ</translation>
 <translation id="8851480289992540512">ጠቅላላ የተገኘው</translation>
+<translation id="824449983246282560">በ መለያዎት ላይ ምንም ዓይነት ሂሳብ የልዎትም። ጄሚኒን በመጎብኘት የተወሰነ ይግዙ።</translation>
 <translation id="8624961452383848703">መለወጥ እፈልጋለሁ…</translation>
 <translation id="616639131065447379">ወደ Brave Crypto ዋሌቶች እንኳን በደህና መጡ</translation>
 <translation id="1740464057879304704">የ Crypto ዋሌቶች ከ cryptocurrency እና Brave ውስጥ ካሉ ተዛማጅ ሐብቶች ጋር እንዲሰሩ ያስችሉዎታል። የ Crypto ዋሌቶች እንደ ETH እና BAT ያሉ የ Ethereum ቶክኖችን፣ እንደዚሁም ተሰብሳቢ ሂሳቦችን ይደግፋሉ፣ ከ Ðመተግበሪያዎችና ከሌሎች ስማርት ኮንትራቶች ጋርም እንዲሰሩ ያስችልዎታል። ይህ ሁሉ የታሰበው ከ Ethereum እና ሌሎች የእግድ ሰንሰለት ስርዓቶች — ጋር ለሚተዋወቁ ወይም ማወቅ ለሚያስደስታቸው ሰዎች ነው።</translation>

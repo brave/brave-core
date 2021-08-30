@@ -221,14 +221,28 @@
   },
   "upholdBATNotAllowedForUserLearnMore": {
     "message": "Jifunze Zaidi",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Hitilafu: Akaunti tofauti",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, inaonekana pochi yako ya Brave Rewards tayari imethibitishwa na akaunti nyingine ya $name$. Tafadhali jaribu kuthibitisha tena ukitumia akaunti yako ya awali.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Hitilafu: BAT haipatikani",
     "description": "Title for BAT not allowed for user notification"
   },
   "upholdBATNotAllowedForUserNotification": {
-    "message": "BAT bado haitumiki katika eneo lako kwenye Uphold.",
+    "message": "BAT bado haitumiki katika eneo lako kwenye pochi za Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
   "upholdBlockedUserLearnMore": {

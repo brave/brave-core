@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Geklikt</translation>
 <translation id="7119308337584989771">Afgewezen</translation>
 <translation id="6805660603861526473">Bekeken</translation>
+<translation id="1501075228659004450">Het lijkt erop dat je Brave-beloningen-wallet al is geverifieerd met een ander <ph name="PROVIDER"/>-account. Probeer nog eens te verifiëren met je vorige account.</translation>
+<translation id="5111921830714291902">Fout: ander account</translation>
 <translation id="2359865110462963929">BAT wordt momenteel niet ondersteund in uw regio. Zie <ph name="BEGIN_LINK"/>hier<ph name="END_LINK"/> voor updates.</translation>
 <translation id="1737873393693460829">Door [[title]] in the schakelen, ga je akkoord met de <ph name="BEGIN_LINK1"/>Servicevoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>Privacybeleid<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Fout tijdens het aanmaken van de Brave Browser BAT-kaart</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Doorgaan met</translation>
 <translation id="5112354605357157725">Doorgaan met aanmelden</translation>
 <translation id="1280764044837262633">Om een <ph name="PROVIDER"/>-account te maken, is een minimum saldo van <ph name="AMOUNT"/> BAT vereist. Als je eerder een account hebt gekoppeld,</translation>
+<translation id="752216563428219524">Advertenties zijn niet geïnitialiseerd. Vernieuw de pagina.</translation>
 <translation id="7422678632904904341">Bedrag:</translation>
 <translation id="6969783933307596818">Automatisch elke 5 seconden ververst</translation>
 <translation id="5025866799968038247">Saldo info</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Automatische Bijdrage</translation>
 <translation id="2927922949538312364">Eenmalige fooi</translation>
 <translation id="3164105678355419142">Terugkerende fooi</translation>
+<translation id="916115051162298064">Advertentiediagnostiek</translation>
 <translation id="7806880412350961625">Evenementlogboeken</translation>
 <translation id="4309915981827077375">Algemene informatie</translation>
 <translation id="3662406032239313663">Logbestanden</translation>
@@ -376,7 +380,7 @@
 <translation id="6318696841371191107">Een beknopt overzicht bekijken</translation>
 <translation id="8465790416279415448">Door verder te gaan, ga je akkoord met de <ph name="TOS_LINK_BEGIN"/>servicevoorwaarden<ph name="TOS_LINK_END"/> en het <ph name="PP_LINK_BEGIN"/>privacybeleid<ph name="PP_LINK_END"/>.</translation>
 <translation id="8222322431155185238">Geef fooi met Brave-beloningen</translation>
-<translation id="1895476463085410109">Ontvang beloningen door privéadvertenties van Brave te bekijken en steun content creators automatisch</translation>
+<translation id="1895476463085410109">Ontvang beloningen door Brave Private Ads te bekijken en steun content creators automatisch</translation>
 <translation id="5705882733397021510">Terugkeren</translation>
 <translation id="185034574799484512">Laten we een snelle tour nemen</translation>
 <translation id="8281886186245836920">Overslaan</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Categorie</translation>
 <translation id="3080423471207781945">Maximaal aantal ontvangen advertenties per uur:</translation>
 <translation id="2631006050119455616">Opgeslagen</translation>
+<translation id="7847825746023377505">Geen advertenties bekeken in de laatste <ph name="TOTAL_DAYS"/> dagen.</translation>
 <translation id="7902420836933072528">Advertenties die je de afgelopen [[totalDays]] dagen hebt gezien</translation>
 <translation id="8863685593846905344">Advertentiegeschiedenis</translation>
 <translation id="2777306694585938662">Advertentiebeloningen ontvangen</translation>
@@ -529,7 +534,7 @@
 <translation id="8725066075913043281">Opnieuw</translation>
 <translation id="2600847485413879104">BAT-beloningen</translation>
 <translation id="8006596443377585072">bitFlyer-wallet</translation>
-<translation id="2770577461149798369">Gemini Wallet</translation>
+<translation id="2770577461149798369">Gemini-wallet</translation>
 <translation id="8108350286444475334">Portemonnee Handhaven</translation>
 <translation id="6977372887576114613">Gedeponeerde BAT</translation>
 <translation id="3173528272490482456">Klaar om te beginnen?</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">Af en toe krijg je gratis tokens aangeboden door Brave. Houd de meldingen in de gaten!</translation>
 <translation id="1370034647041840967">Verdien tokens met je aandacht voor advertenties en betaal het aan content creators die jij waardeert om hen te ondersteunen!</translation>
 <translation id="4919888432594361029">Geld toevoegen, opnemen en beheren bij <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Uw Brave wallet wordt mogelijk gemaakt door <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards is gebaseerd op Basic Attention Token. Meer informatie over BAT</translation>
 <translation id="7823359893981882407">hier</translation>
 <translation id="3034163433136515805">QR-code bekijken</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Je Rewards-bedrag</translation>
 <translation id="2151535059686617995">Je hebt vandaag geluk!</translation>
 <translation id="6436689611575806470">Je beurs ([[currency]]) is onderweg.</translation>
-<translation id="7512440811010447157">Verifiëren</translation>
 <translation id="8267327690882073581">Verifieer Wallet</translation>
 <translation id="543510923939676996">Wallet geverifieerd</translation>
 <translation id="2659764755126740206">Ga naar mijn <ph name="PROVIDER"/> account</translation>
 <translation id="3699674790322420653">Rond walletverificatie af</translation>
 <translation id="9200453331904391567">Verbreek de verbinding met Brave Rewards</translation>
+<translation id="3656941797339037856">Koppel beloningen aan Gemini!</translation>
+<translation id="671838195432136371">Met Gemini kun je gemakkelijk handelen, winst maken en 3,49% APY* op je BAT verdienen. Nieuwe Gemini-gebruikers die gekoppeld worden, ontvangen 5 gratis BAT!</translation>
+<translation id="9136976526700181750">* Gemini Earn APY vanaf 15 augustus 2021</translation>
 <translation id="7404779623219601861">BAT inwisselen voor cadeaubonnen</translation>
 <translation id="6215565499749144110">Met TAP Network kun je je BAT inwisselen voor populaire cadeaubonnen van bekende merken.</translation>
 <translation id="6915065518766963119">* Vereist verdere verificatie.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Prijs per eenheid</translation>
 <translation id="4763179765154524864">Totaaluitgaven</translation>
 <translation id="8851480289992540512">Totaal ontvangen</translation>
+<translation id="824449983246282560">Je hebt geen saldo in je account. Ga naar Gemini om saldo toe te voegen.</translation>
 <translation id="8624961452383848703">Ik wil deze cryptovaluta converteren…</translation>
 <translation id="616639131065447379">Welkom bij Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Met Crypto Wallets kun je werken met cryptocurrency en aanverwante middelen in Brave. Crypto Wallets ondersteunt Ethereum tokens zoals ETH en BAT, evenals collectibles, en staat je toe om te werken met Ðapps en andere slimme contracten. Dit alles is bedoeld voor mensen die bekend zijn met Ethereum en andere blockchain-systemen — of die het graag willen leren.</translation>

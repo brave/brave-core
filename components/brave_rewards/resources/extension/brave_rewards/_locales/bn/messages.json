@@ -221,7 +221,21 @@
   },
   "upholdBATNotAllowedForUserLearnMore": {
     "message": "আরও জানুন",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "ত্রুটি: ভিন্ন অ্যাকাউন্ট",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "হুম, মনে হচ্ছে আপনার Brave Rewards ওয়ালেট ইতিমধ্যেই যাচাই করা হয়েছে অন্য একটি $name$ অ্যাকাউন্টের সাথে। আপনার আগের অ্যাকাউন্ট ব্যবহার করে আবার যাচাই করার চেষ্টা করুন।",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "ত্রুটি: BAT উপলভ্য নয়",

@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Premis de Brave</translation>
 <translation id="7942180974165298215">Blocatge d'anuncis de Brave</translation>
 <translation id="4615489450165434530">Informa d'una pàgina web inexistent</translation>
+<translation id="1209739344687072997">Informa d'una pàgina web inexistent</translation>
 <translation id="6406506848690869874">Sincronització</translation>
 <translation id="1544192797660353713">Cartera</translation>
-<translation id="2445484935443597917">Crea un perfil nou</translation>
+<translation id="2445484935443597917">Crea un perfil</translation>
+<translation id="744341768939279100">Crea un perfil nou</translation>
 <translation id="2666990579225592931">Obre la finestra de convidat</translation>
+<translation id="4986483413015198747">Obre la finestra de convidat</translation>
 <translation id="8275068909952022340">Més…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (amb identificador d'extensió "<ph name="EXTENSION_ID"/>") no es permet a Brave.</translation>
 <translation id="6786747875388722282">Extensions</translation>
@@ -49,6 +52,8 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="6414370348346025511">La protecció estàndard està activada.</translation>
 <translation id="814018970995616154">Comprova els enllaços amb una llista de llocs no segurs emmagatzemats a Brave.</translation>
 <translation id="1144810021918451336">No us protegeix contra llocs web, descàrregues i extensions perilloses.</translation>
+<translation id="6285118765755298263">Indexa altres cercadors</translation>
+<translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
 <translation id="7781069478569868053">Pàgina de pestanyes nova</translation>
 <translation id="1988804048511540801">La nova pestanya mostra</translation>
 <translation id="2970343821770026391">Panell</translation>
@@ -191,7 +196,6 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="1834467296210148203">Mostra la icona de Brave Wallet a la barra d'eines</translation>
 <translation id="6864914031231797928">Permetre l'accés a Google per obtenir extensions</translation>
 <translation id="5927916530277631319">Mètode per resoldre Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/> sobre DNS mitjançant HTTPS i consideracions de privacitat d'Ethereum.</translation>
 <translation id="5248318250177143470">Mètode per resoldre el servei de noms Ethereum (ENS)</translation>
 <translation id="7024553202001112871">Configura les teves claus IPNS</translation>
 <translation id="951216659045543447">Signa contingut mitjançant la clau privada corresponent i publica'l a IPNS</translation>
@@ -223,7 +227,6 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="1327977588028644528">Passarel·la</translation>
 <translation id="80225669816651290">Node local</translation>
 <translation id="4927734062756955434">Adreça d'entrada IPFS pública</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Més informació<ph name="END_LINK_MPL"/> sobre el node local IPFS i consideracions de privacitat de passarel·les..</translation>
 <translation id="8425213833346101688">Canvia</translation>
 <translation id="557281710253742286">Configureu l'entrada IPFS</translation>
 <translation id="8571837315037233299">Adreça d'entrada</translation>
@@ -237,7 +240,6 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8655170717758778983">Redirigeix automàticament a les pàgines IPFS mitjançant DNSLink quan sigui possible</translation>
 <translation id="2233724520223030977">Utilitza automàticament DNSLink per anar a la versió IPFS d'un lloc web quan sigui possible</translation>
 <translation id="6554397389149987360">Fa servir un component de Hangouts per permetre que es comparteixi la pantalla i altres característiques al navegador.</translation>
-<translation id="1765684547504191670">Fa servir el component Media Router per habilitar Chromecast al navegador.</translation>
 <translation id="9156965752763025780">Els canvis s'aplicaran la propera vegada que reinicieu Brave.</translation>
 <translation id="7179921470347911571">Rellançar Ara</translation>
 <translation id="8068526464562249859">Fa servir l'extensió d'IPFS Companion per a una ajuda millorada a Brave, incloent-hi accés a tasques comunes d'IPFS des de la vostra barra de navegació.</translation>
@@ -307,6 +309,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="6873781976650514089">aquesta configuració</translation>
 <translation id="6040143037577758943">Tanca</translation>
 <translation id="5600566490506283344">Notificació de Brave Ad</translation>
+<translation id="1516554614404600536">Descripció emergent de Brave</translation>
 <translation id="4877147287319222750">Afegeix a la barra lateral</translation>
 <translation id="4233010476457917696">Mostra la barra lateral</translation>
 <translation id="5404213409401164238">Mostra la barra lateral</translation>
@@ -347,6 +350,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
         You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>source code used to create this copy<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Afegeix totes les pestanyes a les adreces d'interès...</translation>
 <translation id="2336228925368920074">Afegeix totes les pestanyes a les adreces d'interès...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Per a afegir un marcador, cliqueu el botó del marcador al costat de la barra d'adreces</translation>
 <translation id="4989337484121655457">Es requereix accés complet al disc</translation>
 <translation id="8025559074845816210">Brave necessita un accés complet al disc per importar les vostres adreces d'interès des de Safari.</translation>

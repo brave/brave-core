@@ -3,11 +3,14 @@
 <translationbundle lang="pt-BR">
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="7942180974165298215">Bloqueador de Anúncios Brave</translation>
-<translation id="4615489450165434530">Relate um site quebrado</translation>
+<translation id="4615489450165434530">Relatar Site Quebrado</translation>
+<translation id="1209739344687072997">Relate um site quebrado</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">Carteira</translation>
 <translation id="2445484935443597917">Criar um novo perfil</translation>
-<translation id="2666990579225592931">Abrir janela de convidado</translation>
+<translation id="744341768939279100">Criar um novo perfil</translation>
+<translation id="2666990579225592931">Abrir janela de visitante</translation>
+<translation id="4986483413015198747">Abrir janela de convidado</translation>
 <translation id="8275068909952022340">Mais…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (a extenção ID "<ph name="EXTENSION_ID"/>") não é permitida na Brave.</translation>
 <translation id="6786747875388722282">Extensões</translation>
@@ -45,10 +48,12 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="5802665280774361839">Exibir preenchimento automático na barra de endereço</translation>
 <translation id="597020512043916976">Exibir os principais sites nas sugestões de autocompletar</translation>
 <translation id="264150068416846820">Exibir sites sugeridos pelo Brave nas sugestões do autocompletar</translation>
-<translation id="5529693968082667490">Mostrar botão para pesquisar abas</translation>
+<translation id="5529693968082667490">Botão para mostrar pesquisa de guias</translation>
 <translation id="6414370348346025511">A proteção padrão está ativa.</translation>
 <translation id="814018970995616154">Verificar URLs a partir de uma lista de sites perigosos armazenada no Brave.</translation>
 <translation id="1144810021918451336">Não o protege contra sites, downloads e extensões nocivos</translation>
+<translation id="6285118765755298263">Indexar outros mecanismos de pesquisa</translation>
+<translation id="919715748352669592">Indexa automaticamente sites que seguem a especificação OpenSearch.</translation>
 <translation id="7781069478569868053">Página Nova guia</translation>
 <translation id="1988804048511540801">Exibição da página de nova aba</translation>
 <translation id="2970343821770026391">Painel</translation>
@@ -98,7 +103,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="6303294677342628402">Proteções</translation>
 <translation id="7133511168130368997">Bloqueia trackers e anúncios que o seguem por toda a internet.</translation>
 <translation id="2761825942249694703">Estas são as configurações padrão do  Shields. Elas aplicam-se a todos os sites, a não ser que você altere algo no painel do Shields em um site específico. Alterar isso não afetará suas atuais configurações por site.</translation>
-<translation id="1485394570478670912">Isso bloqueará a maioria dos anúncios em sites, mas não os anúncios privados do Brave, que são controlados nas</translation>
+<translation id="1485394570478670912">Isso bloqueará a maioria dos anúncios em sites, mas não os Brave Private Ads, que são controlados nas</translation>
 <translation id="6388201778088078932">configurações.</translation>
 <translation id="9185018653595759199">Bloqueio de mídia social</translation>
 <translation id="7390783310074170337">Visualização padrão</translation>
@@ -192,7 +197,6 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="1834467296210148203">Mostrar ícone da Brave Wallet na barra de ferramentas</translation>
 <translation id="6864914031231797928">Permitir a autenticação do Google para as extensões</translation>
 <translation id="5927916530277631319">Método para lidar com Domínios Imparáveis</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/> sobre as considerações relacionadas à privacidade do DNS via HTTPS e do Ethereum.</translation>
 <translation id="5248318250177143470">Método para lidar com o Serviço de Nome Ethereum (ENS)</translation>
 <translation id="7024553202001112871">Configure suas chaves do IPNS</translation>
 <translation id="951216659045543447">Assine conteúdo usando a chave privada correspondente e publique-o no IPNS</translation>
@@ -224,7 +228,6 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nó local</translation>
 <translation id="4927734062756955434">Endereço de gateway público de IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Saiba mais<ph name="END_LINK_MPL"/> sobre o nó local de IPFS e as considerações relacionadas à privacidade de gateway.</translation>
 <translation id="8425213833346101688">Alterar</translation>
 <translation id="557281710253742286">Definir gateway de IPFS</translation>
 <translation id="8571837315037233299">Endereço de gateway</translation>
@@ -238,7 +241,6 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="8655170717758778983">Quando possível, redirecione automaticamente para páginas do IPFS via DNSLink</translation>
 <translation id="2233724520223030977">Quando possível, usa DNSLink automaticamente para navegar para uma versão IPFS de um site</translation>
 <translation id="6554397389149987360">Usa o componente Hangouts para ativar o compartilhamento de tela e outros recursos no navegador.</translation>
-<translation id="1765684547504191670">Usa um componente de Roteador de Mídia para habilitar Chromecast no navegador</translation>
 <translation id="9156965752763025780">As alterações entrarão em vigor na próxima vez que você reiniciar o Brave.</translation>
 <translation id="7179921470347911571">Reiniciar agora</translation>
 <translation id="8068526464562249859">Usa a extensão Complemento de IPFS para um melhor suporte ao IPFS no Brave, incluindo acesso a tarefas de IPFS comuns da barra do seu navegador.</translation>
@@ -308,6 +310,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="6873781976650514089">esta configuração</translation>
 <translation id="6040143037577758943">Fechar</translation>
 <translation id="5600566490506283344">Notificação de anúncio do Brave</translation>
+<translation id="1516554614404600536">Dica do Brave</translation>
 <translation id="4877147287319222750">Adicionar à Barra Lateral</translation>
 <translation id="4233010476457917696">Mostrar barra lateral</translation>
 <translation id="5404213409401164238">Exibir Barra Lateral</translation>
@@ -348,6 +351,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
         Você pode ler <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruções sobre como baixar e criar para você mesmo<ph name="END_LINK_BUILD_INSTRUCTIONS"/> o <ph name="BEGIN_LINK_SOURCE_CODE"/>código fonte específico usado para criar esta cópia<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Adicionar todas as guias aos favoritos...</translation>
 <translation id="2336228925368920074">Adicionar todas as guias aos favoritos...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Para adicionar um marcador, clique no botão do marcador próximo à barra de endereço</translation>
 <translation id="4989337484121655457">É necessário acesso total ao disco</translation>
 <translation id="8025559074845816210">O Brave precisa de acesso total ao disco para importar seus favoritos do Safari.</translation>

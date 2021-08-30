@@ -221,14 +221,28 @@
   },
   "upholdBATNotAllowedForUserLearnMore": {
     "message": "Obter mais informações",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Erro: conta diferente",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Parece que a sua carteira de recompensas Brave já foi verificada com outra conta $name$. Tente verificar novamente com a sua conta anterior.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Erro: BAT indisponível",
     "description": "Title for BAT not allowed for user notification"
   },
   "upholdBATNotAllowedForUserNotification": {
-    "message": "Os token BAT ainda não são suportados em Uphold na sua região.",
+    "message": "Os token BAT ainda não são suportados em carteiras Uphold na sua região.",
     "description": "Description for BAT not allowed for user notification"
   },
   "upholdBlockedUserLearnMore": {

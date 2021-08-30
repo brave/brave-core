@@ -221,7 +221,21 @@
   },
   "upholdBATNotAllowedForUserLearnMore": {
     "message": "अधिक जानकारी प्राप्त करें",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "एरर: अलग अकाउंट",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "हम्म, ऐसा लगता है कि आपका Brave Reward वॉलेट पहले से ही दूसरे अकाउंट $name$के साथ वेरिफ़ाई किया जा चूका है. अपने पिछले अकाउंट का इस्तेमाल करके फिर से वेरिफ़ाई करने की कोशिश करें.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "एरर: बैट अनुपलब्ध है",

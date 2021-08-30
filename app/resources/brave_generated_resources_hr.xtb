@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Blokiranje oglasa u pregledniku Brave</translation>
 <translation id="4615489450165434530">Prijavi nevaljano mrežno mjesto</translation>
+<translation id="1209739344687072997">Prijavi nevaljano mrežno mjesto</translation>
 <translation id="6406506848690869874">Sinkronizacija</translation>
 <translation id="1544192797660353713">Novčanik</translation>
 <translation id="2445484935443597917">Izradi novi profil</translation>
+<translation id="744341768939279100">Izradi novi profil</translation>
 <translation id="2666990579225592931">Otvori prozor u načinu rada za goste</translation>
+<translation id="4986483413015198747">Otvori prozor u načinu rada za goste</translation>
 <translation id="8275068909952022340">Više…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID proširenja <ph name="EXTENSION_ID"/>) nije dopušteno u pregledniku Brave.</translation>
 <translation id="6786747875388722282">Proširenja</translation>
@@ -49,6 +52,8 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="6414370348346025511">Uključena je standardna zaštita.</translation>
 <translation id="814018970995616154">Provjerite URL-ove s popisom nesigurnih mrežnih mjesta pohranjenih u pregledniku Brave.</translation>
 <translation id="1144810021918451336">Ne štiti vas od opasnih mrežnih mjesta, preuzimanja i proširenja.</translation>
+<translation id="6285118765755298263">Indeksiraj ostale tražilice</translation>
+<translation id="919715748352669592">Automatski se indeksiraju mrežna mjesta kojima se zadovoljavaju spec. OpenSearch.</translation>
 <translation id="7781069478569868053">Stranica Nova kartica</translation>
 <translation id="1988804048511540801">Na stranici Nova kartica prikazuje se</translation>
 <translation id="2970343821770026391">Nadzorna ploča</translation>
@@ -191,7 +196,6 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="1834467296210148203">Prikaži ikonu novčanika preglednika Brave na alatnoj traci</translation>
 <translation id="6864914031231797928">Dopusti prijavu uslugom Google za proširenja</translation>
 <translation id="5927916530277631319">Metoda za rješavanje značajke Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Doznajte više<ph name="END_LINK"/> o razmatranjima o privatnosti DNS-a putem HTTPS-a i Ethereuma.</translation>
 <translation id="5248318250177143470">Metoda za rješavanje sustava Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Postavi svoje ključeve IPNS</translation>
 <translation id="951216659045543447">Potpiši sadržaj odgovarajućim privatnim ključem i objavi ga sustavu IPNS</translation>
@@ -213,7 +217,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="1534091531114892221">Postavi opis ravnopravnih članova sustava ipfs</translation>
 <translation id="8996633027318264334">Jeste li sigurni da želite izbrisati <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Nije se pokrenuo čvor</translation>
-<translation id="616058968889448209">Greška pri pokretanju usluge IPFS, više informacija dostupno je na dijagnostičkoj stranici <ph name="BEGIN_LINK"/><ph name="END_LINK"/></translation>
+<translation id="616058968889448209">Nastala je pogreška pri pokretanju usluge IPFS, a više informacija potražite na dijagnostičkoj stranici <ph name="BEGIN_LINK"/><ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">uvoz ključa '<ph name="KEY_NAME"/>' nije uspio</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' izvoz ključa nije uspio</translation>
 <translation id="8275038454117074363">Uvezi</translation>
@@ -223,7 +227,6 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="1327977588028644528">Pristupnik</translation>
 <translation id="80225669816651290">Lokalni čvor</translation>
 <translation id="4927734062756955434">Javna adresa IPFS pristupnika</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Doznajte više<ph name="END_LINK_MPL"/> o razmatranjima o privatnosti lokalnog čvora i pristupnika sustava IPFS.</translation>
 <translation id="8425213833346101688">Promijeni</translation>
 <translation id="557281710253742286">Postavi pristupnik IPFS</translation>
 <translation id="8571837315037233299">Adresa pristupnika</translation>
@@ -237,7 +240,6 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="8655170717758778983">Automatski preusmjeri na stranice sustava IPFS putem poveznice DNSLink kad god je to moguće</translation>
 <translation id="2233724520223030977">Automatski se upotrebljava poveznica DNSLink za navigaciju do inačice mrežnog mjesta sustava IPFS kad god je to moguće</translation>
 <translation id="6554397389149987360">Upotrijebite komponentu Hangouts za omogućavanje dijeljenja zaslona i drugih značajki u pregledniku.</translation>
-<translation id="1765684547504191670">Upotrebljava se komponenta Medijski usmjerivač kako bi se omogućila značajka Chromecast u pregledniku.</translation>
 <translation id="9156965752763025780">Promjene će početi vrijediti sljedeći put kad ponovo pokrenete preglednik Brave.</translation>
 <translation id="7179921470347911571">Ponovno pokreni sad</translation>
 <translation id="8068526464562249859">Upotrebljava se dodatno proširenje IPFS za povećanje podrške IPFS-u u pregledniku Brave, uključujući pristupanje uobičajenim zadatcima IPFS iz trake vašeg preglednika.</translation>
@@ -307,6 +309,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="6873781976650514089">ovu postavku</translation>
 <translation id="6040143037577758943">Zatvori</translation>
 <translation id="5600566490506283344">Obavijest o oglasu u pregledniku Brave</translation>
+<translation id="1516554614404600536">Opis elementa preglednika Brave</translation>
 <translation id="4877147287319222750">Dodaj na bočnu traku</translation>
 <translation id="4233010476457917696">Prikaži bočnu traku</translation>
 <translation id="5404213409401164238">Prikaži bočnu traku</translation>
@@ -343,10 +346,11 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="2609895996619941644">Želite li provjeriti je li spremljena inačica dostupna na stavci Wayback Machine?</translation>
 <translation id="8053093028263274061">Ispričavamo se, ali nema dostupne sačuvane inačice.</translation>
 <translation id="8517321676372639828">Provjera spremljene inačice</translation>
-<translation id="191143826155037518">Preglednik Brave dostupan vam je pod <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) i uključuje <ph name="BEGIN_LINK_OSS"/>otvoreni softver<ph name="END_LINK_OSS"/> pod raznim drugim licencijama.
-        Možete pročitati <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>upute o preuzimanju i samostalno izraditi<ph name="END_LINK_BUILD_INSTRUCTIONS"/> određeni <ph name="BEGIN_LINK_SOURCE_CODE"/>izvorni  kȏd upotrijebljen za stvaranje ove kopije<ph name="END_LINK_SOURCE_CODE"/>.</translation>
+<translation id="191143826155037518">Preglednik vam se Brave pruža pod <ph name="BEGIN_LINK_MPL"/>inačicom javne licencije 2.0. društva Mozille<ph name="END_LINK_MPL"/> (MPL) i uključuje <ph name="BEGIN_LINK_OSS"/>softver otvorenog koda<ph name="END_LINK_OSS"/> pod brojnim drugim licencijama.
+        Možete pročitati <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>upute za preuzimanje i vlastito izgrađivanje<ph name="END_LINK_BUILD_INSTRUCTIONS"/> posebnog <ph name="BEGIN_LINK_SOURCE_CODE"/>izvornog koda koji se upotrebljava za stvaranje ove kopije<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Označi sve kartice...</translation>
 <translation id="2336228925368920074">Označi sve kartice...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Za dodavanje knjižne oznake kliknite na gumb za knjižnu oznaku pokraj adresne trake</translation>
 <translation id="4989337484121655457">Zahtijeva se puni pristup disku</translation>
 <translation id="8025559074845816210">Društvo Brave treba puni pristup disku za uvoženje vaših knjižnih oznaka iz preglednika Safari.</translation>

@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Cliqueado</translation>
 <translation id="7119308337584989771">Descartado</translation>
 <translation id="6805660603861526473">Visto</translation>
+<translation id="1501075228659004450">Parece que tu billetera de Brave Rewards ya se ha verificado con otra cuenta de <ph name="PROVIDER"/>. Prueba a verificar una vez más usando tu cuenta anterior.</translation>
+<translation id="5111921830714291902">Error: cuenta diferente</translation>
 <translation id="2359865110462963929">BAT no está disponible en tu región. Consulta <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> para obtener novedades.</translation>
 <translation id="1737873393693460829">Al activar [[title]], aceptas las <ph name="BEGIN_LINK1"/>condiciones del servicio<ph name="END_LINK1"/> y la <ph name="BEGIN_LINK2"/>política de privacidad<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Error al crear tarjeta de BAT del navegador Brave</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Continuar</translation>
 <translation id="5112354605357157725">Continúa para iniciar sesión</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> requiere un saldo mínimo de <ph name="AMOUNT"/> BAT para crear una cuenta. Si conectaste una cuenta anteriormente,</translation>
+<translation id="752216563428219524">Los anuncios no se han iniciado. Actualiza la página.</translation>
 <translation id="7422678632904904341">Monto:</translation>
 <translation id="6969783933307596818">Se actualizan automáticamente cada 5 segundos</translation>
 <translation id="5025866799968038247">Información de saldo</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Contribución automática</translation>
 <translation id="2927922949538312364">Propina por única vez</translation>
 <translation id="3164105678355419142">Propina recurrente</translation>
+<translation id="916115051162298064">Diagnóstico de anuncios</translation>
 <translation id="7806880412350961625">Registros de eventos</translation>
 <translation id="4309915981827077375">Información general</translation>
 <translation id="3662406032239313663">Registros</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Categoría</translation>
 <translation id="3080423471207781945">Cantidad máxima de anuncios recibidos por hora:</translation>
 <translation id="2631006050119455616">Guardado</translation>
+<translation id="7847825746023377505">No se han visto anuncios en los últimos <ph name="TOTAL_DAYS"/> días.</translation>
 <translation id="7902420836933072528">Anuncios que has recibido en los últimos [[totalDays]] días</translation>
 <translation id="8863685593846905344">Historial de anuncios</translation>
 <translation id="2777306694585938662">Recompensas de anuncios recibidas</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">A veces, te ofrecerán donaciones gratis de tokens de Brave. ¡Asegúrate de estar atento a la alerta!</translation>
 <translation id="1370034647041840967">¡Obtén tokens por la atención que les prestas a las publicidades y paga para apoyar a los creadores de contenido que valoras!</translation>
 <translation id="4919888432594361029">Agrega, retira y administra fondos en <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Tu billetera de Brave cuenta con tecnología de <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Las Recompensas Brave están creadas en función del Basic Attention Token. Obtén más información sobre el BAT</translation>
 <translation id="7823359893981882407">aquí</translation>
 <translation id="3034163433136515805">Ver código QR</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Importe de tus recompensas</translation>
 <translation id="2151535059686617995">¡Es tu día de suerte!</translation>
 <translation id="6436689611575806470">Tu donación de [[currency]] está en camino.</translation>
-<translation id="7512440811010447157">verificar</translation>
 <translation id="8267327690882073581">Verificar billetera</translation>
 <translation id="543510923939676996">Billetera verificada</translation>
 <translation id="2659764755126740206">Ir a mi cuenta de <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Completar verificación de billetera</translation>
 <translation id="9200453331904391567">Desconectar de Recompensas Brave</translation>
+<translation id="3656941797339037856">¡Asocia Rewards con Gemini!</translation>
+<translation id="671838195432136371">Con Gemini puedes operar, conservar y ganar fácilmente hasta un 3,49 % de rendimiento porcentual anual (APY*) en tu BAT. Los nuevos usuarios de Gemini que conecten su cuenta reciben 5 BAT gratis.</translation>
+<translation id="9136976526700181750">* A partir del 15 de agosto de 2021, Gemini gana un porcentaje de rendimiento anual (APY)</translation>
 <translation id="7404779623219601861">Canjea BAT por tarjetas de regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, puedes canjear tus BAT por tarjetas de regalo de marcas populares.</translation>
 <translation id="6915065518766963119">* Requiere la verificación de Uphold.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Precio unitario</translation>
 <translation id="4763179765154524864">Total gastado</translation>
 <translation id="8851480289992540512">Total recibido</translation>
+<translation id="824449983246282560">No tienes saldo en tu cuenta. Visita Gemini para adquirir fondos.</translation>
 <translation id="8624961452383848703">Quiero convertir...</translation>
 <translation id="616639131065447379">Te damos la bienvenida a Crypto Wallets de Brave</translation>
 <translation id="1740464057879304704">Crypto Wallets te permite trabajar con criptomonedas y activos relacionados en Brave. Crypto Wallets admite tokens de Ethereum como ETH y BAT, además de coleccionables, y te permite trabajar con aplicaciones y otros contratos inteligentes. Todo esto está destinado a personas que están familiarizadas con Ethereum y otros sistemas blockchain, o que sientan curiosidad por aprender.</translation>

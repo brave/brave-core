@@ -3,11 +3,14 @@
 <translationbundle lang="fil">
 <translation id="3333887201479867589">Mga Reward ng Brave</translation>
 <translation id="7942180974165298215">Pag-block ng Ad ng Brave</translation>
-<translation id="4615489450165434530">Mag-ulat ng sirang site</translation>
+<translation id="4615489450165434530">Mag-ulat ng Sirang Site</translation>
+<translation id="1209739344687072997">Mag-ulat ng sirang site</translation>
 <translation id="6406506848690869874">Mag-sync</translation>
 <translation id="1544192797660353713">Wallet</translation>
-<translation id="2445484935443597917">Gumawa ng bagong profile</translation>
-<translation id="2666990579225592931">Buksan ang guest window</translation>
+<translation id="2445484935443597917">Gumawa ng Bagong Profile</translation>
+<translation id="744341768939279100">Gumawa ng bagong profile</translation>
+<translation id="2666990579225592931">Buksan ang Window ng Bisita</translation>
+<translation id="4986483413015198747">Buksan ang guest window</translation>
 <translation id="8275068909952022340">Higit pa…</translation>
 <translation id="120759863357279975">Ang <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ay hindi pinapayagan sa Brave.</translation>
 <translation id="6786747875388722282">Mga Extension</translation>
@@ -45,10 +48,12 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="5802665280774361839">Ipakita ang awtomatikong pagkumpleto sa address bar.</translation>
 <translation id="597020512043916976">Ipakita ang mga nangungunang site sa mga iminumungkahi ng autocomplete</translation>
 <translation id="264150068416846820">Ipakita ang mga iminumungkahing site ng Brave sa mga iminumungkahi ng autocomplete</translation>
-<translation id="5529693968082667490">Ipakita ang Button na Maghanap ng mga Tab</translation>
+<translation id="5529693968082667490">Ipakita ang button para sa paghahanap ng tab</translation>
 <translation id="6414370348346025511">Naka-on ang standard na proteksyon.</translation>
 <translation id="814018970995616154">Nagsusuri ng mga URL sa pamamagitan ng listahan ng mga hindi ligtas na site na naka-store sa Brave.</translation>
 <translation id="1144810021918451336">Hindi ka pinoprotektahan laban sa mga mapanganib na website, pag-download, at extension.</translation>
+<translation id="6285118765755298263">I-index ang iba pang search engine</translation>
+<translation id="919715748352669592">Awtomatikong nag-i-index ng mga website na sumusunod sa spec. ng OpenSearch</translation>
 <translation id="7781069478569868053">Page ng Bagong Tab</translation>
 <translation id="1988804048511540801">Nagpapakita ang bagong tab</translation>
 <translation id="2970343821770026391">Dashboard</translation>
@@ -191,7 +196,6 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="1834467296210148203">Ipakita ang icon ng Brave Wallet sa toolbar</translation>
 <translation id="6864914031231797928">Payagan ang mga pag-log in sa Google para sa mga extension</translation>
 <translation id="5927916530277631319">Pamamaraan para lutasin ang Mga Hindi Napipigilang Domain</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Matuto Pa<ph name="END_LINK"/> tungkol sa DNS over HTTPS at mga pagsasaalang-alang sa privacy ng Ethereum.</translation>
 <translation id="5248318250177143470">Pamamaraan para lutasin ang Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">I-set up ang iyong IPNS keys</translation>
 <translation id="951216659045543447">Mag-sign ng content sa pamamagitan ng kaukulang pribadong key at i-publish ito sa IPNS</translation>
@@ -213,7 +217,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="1534091531114892221">I-set up ang paglalarawan ng ipfs peers</translation>
 <translation id="8996633027318264334">Gusto mo ba talagang i-delete ang <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Hindi nailunsad ang node</translation>
-<translation id="616058968889448209">Error sa paglunsad ng serbisyo ng IPFS, available ang higit pang impormasyon sa <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">Error sa paglulunsad ng serbisyo ng IPFS, may higit pang impormasyon sa <ph name="BEGIN_LINK"/>page ng diagnostic<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Hindi na-import ang key na '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">Hindi na-export ang key na '<ph name="KEY_NAME"/>'</translation>
 <translation id="8275038454117074363">I-import</translation>
@@ -223,7 +227,6 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal na node</translation>
 <translation id="4927734062756955434">Pampublikong gateway address ng IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Matuto pa<ph name="END_LINK_MPL"/> tungkol sa lokal na node ng IPFS at mga pagsasaalang-alang sa privacy ng gateway.</translation>
 <translation id="8425213833346101688">Baguhin</translation>
 <translation id="557281710253742286">Itakda ang gateway ng IPFS</translation>
 <translation id="8571837315037233299">Gateway address</translation>
@@ -237,7 +240,6 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="8655170717758778983">Awtomatikong i-redirect sa mga page ng IPFS sa pamamagitan ng DNSLink kapag posible</translation>
 <translation id="2233724520223030977">Awtomatikong ginagamit ang DNSLink para mag-navigate sa isang bersyon ng IPFS ng isang website kapag posible</translation>
 <translation id="6554397389149987360">Ginagamit ang component ng Hangouts upang ma-enable ang pagbabahagi ng screen at iba pang feature sa browser.</translation>
-<translation id="1765684547504191670">Gumagamit ng Media Router na bahagi upang ma-enable ang Chromecast sa browser.</translation>
 <translation id="9156965752763025780">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave.</translation>
 <translation id="7179921470347911571">Muling Ilunsad Ngayon</translation>
 <translation id="8068526464562249859">Ginagamit ang Companion extension ng IPFS para sa pinahusay na suporta sa IPFS sa Brave, kasama ang access sa mga karaniwang gawain ng IPFS mula sa bar ng iyong browser.</translation>
@@ -307,6 +309,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="6873781976650514089">setting na ito</translation>
 <translation id="6040143037577758943">Isara</translation>
 <translation id="5600566490506283344">Notification ng Brave Ad</translation>
+<translation id="1516554614404600536">Tooltip ng Brave</translation>
 <translation id="4877147287319222750">Idagdag sa Sidebar</translation>
 <translation id="4233010476457917696">Ipakita ang sidebar</translation>
 <translation id="5404213409401164238">Ipakita ang Sidebar</translation>
@@ -347,6 +350,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
         Maaari mong basahin ang <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>mga tagubilin sa kung paano i-download at gawin nang mag-isa<ph name="END_LINK_BUILD_INSTRUCTIONS"/> ang partikular na <ph name="BEGIN_LINK_SOURCE_CODE"/>source code na ginamit para gawin ang kopyang ito<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">I-bookmark ang lahat ng tab...</translation>
 <translation id="2336228925368920074">I-bookmark ang Lahat ng Mga Tab...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Para magdagdag ng bookmark, i-click ang button ng bookmark sa tabi ng address bar</translation>
 <translation id="4989337484121655457">Kailangan ng Full Disk Access</translation>
 <translation id="8025559074845816210">Kailangan ng Brave ng Full Disk Access para i-import ang iyong Mga Bookmark mula sa Safari.</translation>

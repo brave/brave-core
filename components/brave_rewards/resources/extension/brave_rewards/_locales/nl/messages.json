@@ -221,14 +221,28 @@
   },
   "upholdBATNotAllowedForUserLearnMore": {
     "message": "Meer informatie",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Fout: ander account",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Het lijkt erop dat je Brave-beloningen-wallet al is geverifieerd met een ander $name$-account. Probeer nog eens te verifiëren met je vorige account.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Fout: BAT niet beschikbaar",
     "description": "Title for BAT not allowed for user notification"
   },
   "upholdBATNotAllowedForUserNotification": {
-    "message": "BAT wordt nog niet ondersteund in jouw regio voor Uphold.",
+    "message": "BAT wordt in Uphold nog niet ondersteund in jouw regio.",
     "description": "Description for BAT not allowed for user notification"
   },
   "upholdBlockedUserLearnMore": {

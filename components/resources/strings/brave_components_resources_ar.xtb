@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">تم النقر عليه</translation>
 <translation id="7119308337584989771">تم رفضه</translation>
 <translation id="6805660603861526473">تمت مشاهدته</translation>
+<translation id="1501075228659004450">حسنًا، يبدو أنه تم التحقق من محفظة Brave Rewards الخاصة بك بالفعل باستخدام اسم <ph name="PROVIDER"/>. يُرجى محاولة التحقق مرة أخرى باستخدام حسابك السابق.</translation>
+<translation id="5111921830714291902">خطأ: حساب مختلف</translation>
 <translation id="2359865110462963929">إنّ عملة BAT الرمزية غير مدعومة حالياً في منطقتك. يُرجى الرجوع إلى <ph name="BEGIN_LINK"/>هنا<ph name="END_LINK"/> للحصول على التحديثات.</translation>
 <translation id="1737873393693460829">بتفعيل [[title]]، فأنت توافق على <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">خطأ في إنشاء بطاقة BAT لمتصفح Brave</translation>
@@ -254,6 +256,7 @@
 <translation id="2359808026110333948">استمرار</translation>
 <translation id="5112354605357157725">المتابعة إلى تسجيل الدخول</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/>يستلزم أقل مقدار من رصيد <ph name="AMOUNT"/> BAT لإنشاء حساب، إذا كنت متصلاً بحساب مسبقًا,</translation>
+<translation id="752216563428219524">لم تتم تهيئة الإعلانات، يرجى تحديث الصفحة.</translation>
 <translation id="7422678632904904341">المقدار:</translation>
 <translation id="6969783933307596818">يتم التحديث تلقائياً كل 5 ثوانٍ</translation>
 <translation id="5025866799968038247">معلومات الرصيد</translation>
@@ -314,6 +317,7 @@
 <translation id="2152423226436243241">المساهمة التلقائية</translation>
 <translation id="2927922949538312364">إكرامية لمرة واحدة</translation>
 <translation id="3164105678355419142">إكرامية دورية</translation>
+<translation id="916115051162298064">تشخيصات الإعلانات</translation>
 <translation id="7806880412350961625">سجلات الأحداث</translation>
 <translation id="4309915981827077375">معلومات عامة</translation>
 <translation id="3662406032239313663">السجلات</translation>
@@ -414,6 +418,7 @@
 <translation id="4241224519481557898">الفئة</translation>
 <translation id="3080423471207781945">الحد الأقصى للإعلانات التي يتم تلقيها في الساعة:</translation>
 <translation id="2631006050119455616">تم الحفظ</translation>
+<translation id="7847825746023377505">لم يتم عرض الإعلانات في <ph name="TOTAL_DAYS"/> من الأيام.</translation>
 <translation id="7902420836933072528">الإعلانات التي تلقيتها في عدد  [[totalDays]]من الأيام الماضية</translation>
 <translation id="8863685593846905344">إضافة إلى السجل</translation>
 <translation id="2777306694585938662">تم استلام مكافآت الإعلانات</translation>
@@ -567,7 +572,6 @@
 <translation id="8014425282125849700">من حين لآخر، ستحصل على منح رمزية مجانية من Brave. تأكد من ترقب التنبيه!</translation>
 <translation id="1370034647041840967">اربح رموزًا مميزة مقابل انتباهك إلى الإعلانات وادفعها لدعم منشئي المحتوى الذين تقدّرهم!</translation>
 <translation id="4919888432594361029">إضافة وسحب وإدارة الأموال على <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">يتم دعم محفظة Brave الخاصة بك من قِبل <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">تم إنشاء مكافآت Brave بناءً على Basic Attention Token. اعرف المزيد حول BAT</translation>
 <translation id="7823359893981882407">هنا</translation>
 <translation id="3034163433136515805">عرض رمز الاستجابة السريعة</translation>
@@ -645,12 +649,14 @@
 <translation id="39734939514946950">مبلغ مكافأتك</translation>
 <translation id="2151535059686617995">إنه يوم سعدك!</translation>
 <translation id="6436689611575806470">منحة [[currency]] الخاصة بك في طريقها إليك.</translation>
-<translation id="7512440811010447157">تحقق</translation>
 <translation id="8267327690882073581">التحقق من المحفظة</translation>
 <translation id="543510923939676996">تمَّ التحقق من المحفظة</translation>
 <translation id="2659764755126740206">انتقل إلى <ph name="PROVIDER"/> حسابي</translation>
 <translation id="3699674790322420653">أكمل التحقق من المحفظة</translation>
 <translation id="9200453331904391567">قطع الاتصال بـ Brave Rewards</translation>
+<translation id="3656941797339037856">ربط المكافآت بـ Gemini!</translation>
+<translation id="671838195432136371">تتيح لك Gemini إمكانية التداول والتخزين وكسب 3.49% من العائد المئوي السنوي* بسهولة على أفضل التقنيات المتاحة لديك. يحصل مستخدمو Gemini الجدد الذين يرتبطون بـ 5 BAT مجانًا!</translation>
+<translation id="9136976526700181750">تربح Gemini  العائد المئوي السنوي اعتبارًا من 15 أغسطس 2021.</translation>
 <translation id="7404779623219601861">تبديل BAT ببطاقات هدايا</translation>
 <translation id="6215565499749144110">مع شبكة TAP فبإمكانك تبديل BAT ببطاقات هدايا ذات علامات تجارية شهيرة.</translation>
 <translation id="6915065518766963119">* يتطلب التحقق من Uphold.</translation>
@@ -735,6 +741,7 @@
 <translation id="1833248467354516560">سعر الوحدة</translation>
 <translation id="4763179765154524864">إجمالي ما أُنفق</translation>
 <translation id="8851480289992540512">إجمالي المستلم</translation>
+<translation id="824449983246282560">ليس لديك أي أرصدة في حسابك. قم بزيارة Gemini لشراء بعضها.</translation>
 <translation id="8624961452383848703">أريد تحويل…</translation>
 <translation id="616639131065447379">أهلاً بك في Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">تتيح لك Crypto Wallets العمل مع العملات المشفرة والأصول ذات الصلة في Brave. تدعم Crypto Wallets رموز Ethereum مثل ETH و BAT بالإضافة إلى المقتنيات، كما تتيح لك العمل مع Ðالتطبيقات والعقود الذكية الأخرى. كل هذا مخصص للأشخاص الذين هم على دراية بـ Ethereum وأنظمة سلسلة الكتل الأخرى — أو في شوقٍ للتعلم.</translation>

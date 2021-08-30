@@ -221,7 +221,21 @@
   },
   "upholdBATNotAllowedForUserLearnMore": {
     "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "ದೋಷ: ಬೇರೆ ಖಾತೆ",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "ಓಹ್, ನಿಮ್ಮ Brave Rewards ವ್ಯಾಲೆಟ್ ಅನ್ನು ಮತ್ತೊಂದು $name$ ಖಾತೆಯೊಂದಿಗೆ ಈಗಾಗಲೇ ಪರಿಶೀಲಿಸಲಾಗಿದೆ ಎಂಬುದಾಗಿ ಕಂಡುಬರುತ್ತಿದೆ. ನಿಮ್ಮ ಹಿಂದಿನ ಖಾತೆಯನ್ನು ಬಳಸಿಕೊಂಡು ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪರಿಶೀಲಿಸಲು ಪ್ರಯತ್ನಿಸಿ.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "ದೋಷ: BAT ಲಭ್ಯವಿಲ್ಲ",

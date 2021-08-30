@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Kliknjeno</translation>
 <translation id="7119308337584989771">Opuščeno</translation>
 <translation id="6805660603861526473">Ogledano</translation>
+<translation id="1501075228659004450">Hmm, izgleda, da je bila vaša denarnica Brave Rewards že preverjena pri drugem <ph name="PROVIDER"/> account. Poskusite znova preveriti s svojim prejšnjim računom.</translation>
+<translation id="5111921830714291902">Napaka: Drugi račun</translation>
 <translation id="2359865110462963929">BAT v vaši regiji trenutno ni podprt. Za posodobitve glejte <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>.</translation>
 <translation id="1737873393693460829">Če vklopite [[title]], se strinjate s <ph name="BEGIN_LINK1"/>pogoji storitve<ph name="END_LINK1"/> in <ph name="BEGIN_LINK2"/>s politiko zasebnosti<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Napaka pri ustvarjanju kartice BAT brskalnika Brave</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Naprej</translation>
 <translation id="5112354605357157725">Nadaljujte s prijavo</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> zahteva minimalno stanje<ph name="AMOUNT"/> BAT za odprtje računa. Če ste račun že povezali,</translation>
+<translation id="752216563428219524">Oglasi niso bili uvedeni, osvežite stran.</translation>
 <translation id="7422678632904904341">Znesek:</translation>
 <translation id="6969783933307596818">Samodejno osveži vsakih 5 sekund</translation>
 <translation id="5025866799968038247">Infromacije o stanju</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Samodejni prispevek</translation>
 <translation id="2927922949538312364">Enkratna donacija</translation>
 <translation id="3164105678355419142">Ponavljajoča se donacija</translation>
+<translation id="916115051162298064">Diagnostika oglasov</translation>
 <translation id="7806880412350961625">Zabeleženi dogodki</translation>
 <translation id="4309915981827077375">Splošni podatki</translation>
 <translation id="3662406032239313663">Dnevniki</translation>
@@ -413,6 +417,7 @@
 <translation id="4241224519481557898">Kategorija</translation>
 <translation id="3080423471207781945">Največje število prejetih oglasov na uro:</translation>
 <translation id="2631006050119455616">Shranjeno</translation>
+<translation id="7847825746023377505">V zadnjih <ph name="TOTAL_DAYS"/> days ni bil ogledan noben oglas.</translation>
 <translation id="7902420836933072528">Oglasi, ki ste jih prejeli v zadnjih [[totalDays]] dneh</translation>
 <translation id="8863685593846905344">Zgodovina oglasov</translation>
 <translation id="2777306694585938662">Prejete nagrade za oglase</translation>
@@ -529,7 +534,7 @@
 <translation id="8725066075913043281">Poskusi znova</translation>
 <translation id="2600847485413879104">Nagrade BAT</translation>
 <translation id="8006596443377585072">BitFlyer Denarnica</translation>
-<translation id="2770577461149798369">Gemini Wallet</translation>
+<translation id="2770577461149798369">Denarnica Gemini</translation>
 <translation id="8108350286444475334">Denarnica Uphold</translation>
 <translation id="6977372887576114613">Vplačani BAT</translation>
 <translation id="3173528272490482456">Ste pripravljeni?</translation>
@@ -566,7 +571,6 @@
 <translation id="8014425282125849700">Občasno vam bo podjetje Brave ponudilo brezplačna sredstva v obliki žetonov, zato bodite pozorni!</translation>
 <translation id="1370034647041840967">Zaslužite žetone za pozornost, ki jo namenjate oglasom, in z njim podprite ustvarjalce vsebine, ki jih cenite!</translation>
 <translation id="4919888432594361029">Dodajajte, dvigujte in nadzorujte sredstva na <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Vašo Brave denarnico poganja <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Storitev Brave Rewards temelji na platformi Basic Attention Token. Več o BAT lahko izveste</translation>
 <translation id="7823359893981882407">tukaj</translation>
 <translation id="3034163433136515805">Ogled kode QR</translation>
@@ -644,12 +648,14 @@
 <translation id="39734939514946950">Vaš znesek nagrade</translation>
 <translation id="2151535059686617995">To je vaš srečni dan!</translation>
 <translation id="6436689611575806470">Vaša donacija [[valuta]] je na poti.</translation>
-<translation id="7512440811010447157">preveri</translation>
 <translation id="8267327690882073581">Preveri denarnico</translation>
 <translation id="543510923939676996">Denarnica preverjena</translation>
 <translation id="2659764755126740206">Pojdi na moj <ph name="PROVIDER"/> račun</translation>
 <translation id="3699674790322420653">Zaključi preverjanje denarnice</translation>
 <translation id="9200453331904391567">Prekinite povezavo z Brave Rewards</translation>
+<translation id="3656941797339037856">Povežite Rewards z Gemini!</translation>
+<translation id="671838195432136371">Gemini vam omogoča enostavno trgovanje, shranjevanje in zaslužek 3,49 % APY* na vašem BAT-u. Novi uporabniki Gemini, ki se povežejo, prejmejo 5 brezplačnih BAT-ov!</translation>
+<translation id="9136976526700181750">* Zaslužek Gemini APY, z dne 15. avgusta 2021</translation>
 <translation id="7404779623219601861">Unovčite BAT za darilne kartice</translation>
 <translation id="6215565499749144110">Z omrežjem TAP Network lahko svoj BAT unovčite za darilne kartice priljubljene blagovne znamke.</translation>
 <translation id="6915065518766963119">* Zahteva preverjanje računa Uphold.</translation>
@@ -734,6 +740,7 @@
 <translation id="1833248467354516560">Cena na enoto</translation>
 <translation id="4763179765154524864">Skupni porabljeni znesek</translation>
 <translation id="8851480289992540512">Skupni pridobljeni znesek</translation>
+<translation id="824449983246282560">Na svojem računu nimate sredstev. Obiščite Gemini, da jih kupite.</translation>
 <translation id="8624961452383848703">Želim pretvoriti…</translation>
 <translation id="616639131065447379">Dobrodošli v kripto denarnicah Brave</translation>
 <translation id="1740464057879304704">Kripto denarnice vam omogočajo upravljanje kripto valut  in povezanih spredstev v brskalniku Brave. Kripto denarnice podpirajo žetone Ethereum, kot sta ETH in BAT, kot tudi zbirateljska sredstva, poleg tega pa vam omogočajo delo z Ðapps in drugimi pametnimi pogodbami. To je namenjeno vsem, ki poznajo Ethereum in druge sisteme veriženja blokov ali pa so se tega pripravljeni naučiti.</translation>
