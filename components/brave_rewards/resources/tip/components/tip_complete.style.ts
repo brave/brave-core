@@ -45,12 +45,11 @@ export const message = styled.div`
   color: var(--brave-palette-neutral900);
 `
 
-export const note = styled.span`
+export const delayNote = styled.span`
   font-size: 11px;
   line-height: 17px;
-  font-weight: 400;
   padding: 6px;
-  background-color: var(--brave-palette-neutral000);
+  background-color: rgba(241, 243, 245, .6);
   border-radius: 4px;
 
   strong {

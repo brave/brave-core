@@ -108,17 +108,18 @@ export function TipComplete (props: Props) {
           <style.table>
             {getSummaryTable()}
           </style.table>
-          <style.note>
           {
-            formatMessage(getString('tipDelayNote'), {
-              tags: {
-                $1: (content) => (
-                  <strong key='label'>{content}</strong>
-                )
-              }
-            })
+            props.tipKind === 'one-time' &&
+              <style.delayNote>
+                {
+                  formatMessage(getString('tipDelayNote'), {
+                    tags: {
+                      $1: (content) => <strong key='label'>{content}</strong>
+                    }
+                  })
+                }
+              </style.delayNote>
           }
-          </style.note>
         </style.main>
         <style.share>
           <button onClick={onShareClick}>
