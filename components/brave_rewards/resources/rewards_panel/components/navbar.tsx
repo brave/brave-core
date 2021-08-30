@@ -10,7 +10,7 @@ import { SettingsIcon } from './icons/settings_icon'
 import { SummaryIcon } from './icons/summary_icon'
 import { TipIcon } from './icons/tip_icon'
 
-import * as styles from './navbar.style'
+import * as style from './navbar.style'
 
 type ActiveView = 'tip' | 'summary'
 
@@ -37,25 +37,22 @@ export function NavBar (props: Props) {
   }
 
   return (
-    <styles.root>
-      {
-        props.canTip &&
-          <styles.tip className={selectedClass('tip')}>
-            <button onClick={clickHandler('tip')}>
-              <TipIcon /> {getString('tip')}
-            </button>
-          </styles.tip>
-      }
-      <styles.summary className={selectedClass('summary')}>
+    <style.root>
+      <style.tip className={selectedClass('tip')}>
+        <button onClick={clickHandler('tip')} disabled={!props.canTip}>
+          <TipIcon /> {getString('tip')}
+        </button>
+      </style.tip>
+      <style.summary className={selectedClass('summary')}>
         <button onClick={clickHandler('summary')}>
           <SummaryIcon /> {getString('summary')}
         </button>
-      </styles.summary>
-      <styles.settings>
+      </style.summary>
+      <style.settings>
         <button onClick={props.onSettingsClick}>
           <SettingsIcon />
         </button>
-      </styles.settings>
-    </styles.root>
+      </style.settings>
+    </style.root>
   )
 }

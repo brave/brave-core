@@ -19,13 +19,11 @@ export function ExternalWalletLinkingFailed (props: NotificationViewProps) {
     switch (reason) {
       case 'device-limit-reached':
         return {
-          title: getString('notificationDeviceLimitReachedTitle'),
           message: getString('notificationDeviceLimitReachedText'),
           url: 'https://support.brave.com/hc/en-us/articles/360056508071'
         }
       case 'mismatched-provider-accounts':
         return {
-          title: getString('notificationMismatchedProviderAccountsTitle'),
           message: formatMessage(
             getString('notificationMismatchedProviderAccountsText'), [
               getExternalWalletProviderName(provider)
@@ -34,37 +32,36 @@ export function ExternalWalletLinkingFailed (props: NotificationViewProps) {
         }
       case 'uphold-bat-not-supported':
         return {
-          title: getString('notificationUpholdBatNotSupportedTitle'),
           message: getString('notificationUpholdBatNotSupportedText'),
           url: 'https://support.uphold.com/hc/en-us/articles/360033020351-Brave-BAT-and-US-availability '
         }
       case 'uphold-user-blocked':
         return {
-          title: getString('notificationUpholdUserBlockedTitle'),
           message: getString('notificationUpholdUserBlockedText'),
           url: 'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'
         }
       case 'uphold-user-pending':
         return {
-          title: getString('notificationUpholdUserPendingTitle'),
           message: getString('notificationUpholdUserPendingText'),
           url: 'https://support.uphold.com/hc/en-us/articles/206695986-How-do-I-sign-up-for-Uphold-Web-'
         }
       case 'uphold-user-restricted':
         return {
-          title: getString('notificationUpholdUserRestrictedTitle'),
           message: getString('notificationUpholdUserRestrictedText'),
           url: 'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'
         }
     }
   }
 
-  const { title, message, url } = getDetails()
+  const { message, url } = getDetails()
   const action: OpenLinkAction = { type: 'open-link', url }
 
   return (
     <div>
-      <Title style='error' text={title} />
+      <Title
+        style='error'
+        text={getString('notificationWalletLinkingFailedTitle')}
+      />
       <Body>{message}</Body>
       <Action
         notification={props.notification}

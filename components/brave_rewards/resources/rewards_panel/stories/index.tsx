@@ -15,6 +15,8 @@ import { NotificationCard } from '../components/notification_card'
 
 import { App } from '../components/app'
 
+import grantCaptchaImageURL from './grant_captcha_image.png'
+
 export default {
   title: 'Rewards/Panel'
 }
@@ -27,7 +29,28 @@ const locale = {
 
 function createHost (): Host {
   const stateManager = createStateManager<HostState>({
-    hidePublisherUnverifiedNote: false,
+    loading: false,
+    rewardsEnabled: false,
+    settings: {
+      adsPerHour: 3,
+      autoContributeAmount: 5
+    },
+    options: {
+      autoContributeAmounts: [1, 5, 10, 15]
+    },
+    grantCaptchaInfo: {
+      id: '123',
+      imageURL: grantCaptchaImageURL,
+      hint: 'square',
+      status: 'pending',
+      grantInfo: {
+        id: 'grant123',
+        expiresAt: Date.now() + 120_000,
+        amount: 10,
+        source: 'ads'
+      }
+    },
+    externalWalletProviders: ['uphold', 'gemini'],
     balance: 10.2,
     exchangeInfo: {
       rate: 0.75,
@@ -36,9 +59,10 @@ function createHost (): Host {
     earningsInfo: {
       earningsThisMonth: 1.2,
       earningsLastMonth: 2.4,
-      nextPaymentDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3)
+      nextPaymentDate: Date.now() + 1000 * 60 * 60 * 24 * 3
     },
     publisherInfo: {
+      id: 'brave.com',
       name: 'brave.com',
       icon: 'https://brave.com/static-assets/images/brave-favicon.png',
       registered: true,
@@ -47,13 +71,14 @@ function createHost (): Host {
       monthlyContribution: 5,
       supportedWalletProviders: []
     },
+    publisherRefreshing: false,
     externalWallet: {
       provider: 'uphold',
       username: 'brave123',
-      status: 'verified'
-    },
+      status: 'verified',
+      links: {}
+    } && null,
     summaryData: {
-      grantClaims: 10,
       adEarnings: 10,
       autoContributions: 10,
       oneTimeTips: -2,
@@ -78,8 +103,7 @@ function createHost (): Host {
         provider: 'uphold',
         reason: 'mismatched-provider-accounts'
       } as any
-    ],
-    notificationsLastViewed: Date.now() - 60_000
+    ]
   })
 
   return {
@@ -91,6 +115,30 @@ function createHost (): Host {
 
     refreshPublisherStatus () {
       console.log('refreshPublisherStatus')
+    },
+
+    enableRewards () {
+      stateManager.update({
+        rewardsEnabled: true
+      })
+    },
+
+    setAutoContributeAmount (amount) {
+      stateManager.update({
+        settings: {
+          ...stateManager.getState().settings,
+          autoContributeAmount: amount
+        }
+      })
+    },
+
+    setAdsPerHour (adsPerHour) {
+      stateManager.update({
+        settings: {
+          ...stateManager.getState().settings,
+          adsPerHour
+        }
+      })
     },
 
     setIncludeInAutoContribute (enabled) {
@@ -105,14 +153,12 @@ function createHost (): Host {
       }
     },
 
-    hidePublisherUnverifiedNote () {
-      stateManager.update({
-        hidePublisherUnverifiedNote: true
-      })
-    },
-
     openRewardsSettings () {
       console.log('openRewardsSettings')
+    },
+
+    sendTip () {
+      console.log('sendTip')
     },
 
     handleMonthlyTipAction (action) {
@@ -152,15 +198,23 @@ function createHost (): Host {
       })
     },
 
-    clearNotifications () {
+    solveGrantCaptcha (solution) {
+      console.log('solveGrantCaptcha', solution)
+      const { grantCaptchaInfo } = stateManager.getState()
+      if (!grantCaptchaInfo) {
+        return
+      }
       stateManager.update({
-        notifications: []
+        grantCaptchaInfo: {
+          ...grantCaptchaInfo,
+          status: 'passed'
+        }
       })
     },
 
-    setNotificationsViewed () {
+    clearGrantCaptcha () {
       stateManager.update({
-        notificationsLastViewed: Date.now()
+        grantCaptchaInfo: null
       })
     }
   }

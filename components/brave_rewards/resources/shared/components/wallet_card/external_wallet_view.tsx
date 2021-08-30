@@ -15,7 +15,7 @@ import { PendingIcon } from './icons/pending_icon'
 import { ArrowCircleIcon } from './icons/arrow_circle_icon'
 import { ExternalWalletBubble } from './external_wallet_bubble'
 
-import * as styles from './external_wallet_view.style'
+import * as style from './external_wallet_view.style'
 
 interface Props {
   externalWallet: ExternalWallet | null
@@ -51,28 +51,22 @@ export function ExternalWalletView (props: Props) {
   function renderButton () {
     if (!externalWallet) {
       return (
-        <styles.verifyWallet>
+        <style.verifyWallet>
           <button className='connect' onClick={actionHandler('verify')} >
             {getString('walletVerify')}<ArrowCircleIcon />
           </button>
-        </styles.verifyWallet>
-      )
-    }
-
-    if (externalWallet.status === 'disconnected') {
-      return (
-        <styles.reconnectWallet>
-          <button className='connect' onClick={actionHandler('reconnect')}>
-            <ProviderIcon />{getString('walletDisconnected')}
-          </button>
-        </styles.reconnectWallet>
+        </style.verifyWallet>
       )
     }
 
     return (
-      <styles.bubbleAction>
+      <style.bubbleAction>
         <button onClick={toggleBubble} className={showBubble ? 'pressed' : ''}>
-          {getString('walletMyWallet')}
+          {
+            getString(externalWallet.status === 'disconnected'
+              ? 'walletDisconnected'
+              : 'walletMyWallet')
+          }
           <span className='provider'><ProviderIcon /></span>
           {
             externalWallet.status === 'pending' &&
@@ -82,7 +76,7 @@ export function ExternalWalletView (props: Props) {
             <CaretIcon direction='down' />
           </span>
         </button>
-      </styles.bubbleAction>
+      </style.bubbleAction>
     )
   }
 
@@ -101,9 +95,9 @@ export function ExternalWalletView (props: Props) {
   }
 
   return (
-    <styles.root>
+    <style.root>
       {renderButton()}
       {renderBubble()}
-    </styles.root>
+    </style.root>
   )
 }
