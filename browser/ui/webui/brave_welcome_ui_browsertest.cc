@@ -26,7 +26,7 @@ Browser* OpenNewBrowser(Profile* profile) {
   base::CommandLine dummy(base::CommandLine::NO_PROGRAM);
   StartupBrowserCreatorImpl creator(base::FilePath(), dummy,
                                     chrome::startup::IS_FIRST_RUN);
-  creator.Launch(profile, std::vector<GURL>(), false, nullptr);
+  creator.Launch(profile, false, nullptr);
   return chrome::FindBrowserWithProfile(profile);
 }
 }
