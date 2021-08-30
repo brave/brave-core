@@ -250,8 +250,6 @@ extension Preferences {
     final class Playlist {
         /// The Option to show video list left or right side
         static let listViewSide = Option<String>(key: "playlist.listViewSide", default: PlayListSide.left.rawValue)
-        /// Whether to show Add to playlist Toast
-        static let showToastForAdd = Option<Bool>(key: "playlist.showToastForAdd", default: true)
         /// The count of how many times  Add to Playlist URL-Bar onboarding has been shown
         static let addToPlaylistURLBarOnboardingCount = Option<Int>(key: "playlist.addToPlaylistURLBarOnboardingCount", default: 0)
         /// The last played item url
@@ -269,6 +267,9 @@ extension Preferences {
         /// The option to disable long-press-to-add-to-playlist gesture.
         static let enableLongPressAddToPlaylist =
             Option<Bool>(key: "playlist.longPressAddToPlaylist", default: true)
+        /// The option to enable or disable the 3-dot menu badge for playlist
+        static let enablePlaylistMenuBadge =
+            Option<Bool>(key: "playlist.enablePlaylistMenuBadge", default: true)
     }
 }
 

@@ -33,8 +33,13 @@ extension BrowserViewController: PlaylistHelperDelegate {
                 toolbar?.menuButton.removeBadge(.playlist, animated: true)
             case .newItem:
                 playlistButton.buttonState = shouldShowPlaylistURLBarButton ? .addToPlaylist : .none
-                topToolbar.menuButton.addBadge(.playlist, animated: true)
-                toolbar?.menuButton.addBadge(.playlist, animated: true)
+                if Preferences.Playlist.enablePlaylistMenuBadge.value {
+                    topToolbar.menuButton.addBadge(.playlist, animated: true)
+                    toolbar?.menuButton.addBadge(.playlist, animated: true)
+                } else {
+                    topToolbar.menuButton.removeBadge(.playlist, animated: true)
+                    toolbar?.menuButton.removeBadge(.playlist, animated: true)
+                }
             case .existingItem:
                 playlistButton.buttonState = shouldShowPlaylistURLBarButton ? .addedToPlaylist : .none
                 topToolbar.menuButton.removeBadge(.playlist, animated: true)
@@ -44,8 +49,7 @@ extension BrowserViewController: PlaylistHelperDelegate {
     }
     
     func showPlaylistPopover(tab: Tab?, state: PlaylistPopoverState) {
-        guard Preferences.Playlist.showToastForAdd.value,
-              let selectedTab = tabManager.selectedTab,
+        guard let selectedTab = tabManager.selectedTab,
               tab == selectedTab else {
             return
         }
