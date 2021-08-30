@@ -116,7 +116,7 @@ ExtensionFunction::ResponseAction
 BraveWalletGetWalletSeedFunction::Run() {
   // make sure the passed in enryption key is 32 bytes.
   std::unique_ptr<brave_wallet::GetWalletSeed::Params> params(
-    brave_wallet::GetWalletSeed::Params::Create(*args_));
+      brave_wallet::GetWalletSeed::Params::Create(args()));
   if (params->key.size() != 32) {
     return RespondNow(Error("Invalid input key size"));
   }
@@ -139,7 +139,7 @@ ExtensionFunction::ResponseAction
 BraveWalletGetBitGoSeedFunction::Run() {
   // make sure the passed in enryption key is 32 bytes.
   std::unique_ptr<brave_wallet::GetBitGoSeed::Params> params(
-    brave_wallet::GetBitGoSeed::Params::Create(*args_));
+      brave_wallet::GetBitGoSeed::Params::Create(args()));
   if (params->key.size() != 32) {
     return RespondNow(Error("Invalid input key size"));
   }
