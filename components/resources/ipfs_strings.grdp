@@ -120,6 +120,24 @@
     <message name="IDS_PAGE_INFO_IPFS_BUBBLE_TEXT" desc="The text for ips page info bubble.">
       InterPlanetary File System (IPFS) is a public network for peer-to-peer data storage and delivery. You can learn more about Brave's integration or configure your IPFS settings at any time.
     </message>
+    <message name="IDS_PAGE_INFO_IPFS_SETTINGS_BUTTON_TEXT" desc="The text for ips page info bubble IPFS Settings button.">
+      IPFS Settings
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_SETTINGS_BUTTON_TOOLTIP_TEXT" desc="The text for ips page info bubble IPFS Settings button tooltip text.">
+      Go to IPFS Settings page
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_DIAGNOSTICS_BUTTON_TEXT" desc="The text for ips page info bubble ipfs diagnostic button text.">
+      IPFS Diagnostics
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_DIAGNOSTICS_BUTTON_TOOLTIP_TEXT" desc="The text for ips page info bubble diagnostic button tooltip text.">
+      Go to IPFS Diagnostics page
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_DOCS_BUTTON_TEXT" desc="The text for ips page info bubble ipfs diagnostic button text.">
+      IPFS Docs
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_DOCS_BUTTON_TEXT_TOOLTIP_TEXT" desc="The text for ips page info bubble docs button tooltip text.">
+      Go to IPFS Docs page
+    </message>
     <message name="IDS_IPFS_IMPORT_NOTIFICATION_TITLE" desc="The title for ips import error notification.">
       IPFS import completed
     </message>
