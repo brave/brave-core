@@ -76,6 +76,7 @@ class BraveVpnServiceDesktop
   void OnIsConnecting(const std::string& name) override;
   void OnConnectFailed(const std::string& name) override;
   void OnDisconnected(const std::string& name) override;
+  void OnIsDisconnecting(const std::string& name) override;
 
   void set_is_purchased_user_for_test(bool purchased) {
     is_purchased_user_ = purchased;

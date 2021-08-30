@@ -51,9 +51,10 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
     : BraveVpnService(url_loader_factory) {
   observed_.Observe(GetBraveVPNConnectionAPI());
 
-  // If OS has already connected vpn,`OnConnected()` will be called.
   GetBraveVPNConnectionAPI()->set_target_vpn_entry_name(kBraveVPNEntryName);
   GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
+
+  CheckPurchasedStatus();
 }
 
 BraveVpnServiceDesktop::~BraveVpnServiceDesktop() = default;
@@ -133,6 +134,19 @@ void BraveVpnServiceDesktop::OnDisconnected(const std::string& name) {
     obs->OnConnectionStateChanged(ConnectionState::DISCONNECTED);
 }
 
+void BraveVpnServiceDesktop::OnIsDisconnecting(const std::string& name) {
+  if (state_ == ConnectionState::DISCONNECTING)
+    return;
+
+  state_ = ConnectionState::DISCONNECTING;
+
+  for (Observer& obs : observers_)
+    obs.OnConnectionStateChanged(ConnectionState::DISCONNECTING);
+
+  for (const auto& obs : mojo_observers_)
+    obs->OnConnectionStateChanged(ConnectionState::DISCONNECTING);
+}
+
 void BraveVpnServiceDesktop::CreateVPNConnection() {
   GetBraveVPNConnectionAPI()->CreateVPNConnection(GetConnectionInfo());
 }
@@ -150,12 +164,22 @@ void BraveVpnServiceDesktop::Connect() {
 }
 
 void BraveVpnServiceDesktop::Disconnect() {
+  if (state_ == ConnectionState::DISCONNECTING)
+    return;
+
   GetBraveVPNConnectionAPI()->Disconnect(GetConnectionInfo().connection_name());
 }
 
 void BraveVpnServiceDesktop::CheckPurchasedStatus() {
   // TODO(simonhong): Should notify to observers when purchased status is
   // changed.
+  brave_vpn::BraveVPNConnectionInfo info;
+  if (GetVPNCredentialsFromSwitch(&info)) {
+    is_purchased_user_ = true;
+    CreateVPNConnection();
+    return;
+  }
+
   NOTIMPLEMENTED();
 }
 
@@ -174,10 +198,11 @@ void BraveVpnServiceDesktop::RemoveObserver(Observer* observer) {
 
 brave_vpn::BraveVPNConnectionInfo BraveVpnServiceDesktop::GetConnectionInfo() {
   brave_vpn::BraveVPNConnectionInfo info;
-  if (!GetVPNCredentialsFromSwitch(&info)) {
-    // TODO(simonhong): Get real credentials from payment service.
-    NOTIMPLEMENTED();
-  }
+  if (GetVPNCredentialsFromSwitch(&info))
+    return info;
+
+  // TODO(simonhong): Get real credentials from payment service.
+  NOTIMPLEMENTED();
   return info;
 }
 

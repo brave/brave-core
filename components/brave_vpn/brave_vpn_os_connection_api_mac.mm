@@ -54,7 +54,7 @@ OSStatus RemoveKeychainItemForAccount() {
   return result;
 }
 
-OSStatus StorePassword(const NSString* password) {
+OSStatus StorePassword(const NSString* password, bool overwrite) {
   if (password == nil || [password length] == 0) {
     LOG(ERROR) << "Error: password is empty";
     return errSecParam;
@@ -70,8 +70,15 @@ OSStatus StorePassword(const NSString* password) {
     (__bridge id)kSecAttrAccount : kBraveVPNKey,
     (__bridge id)kSecValueData : password_data,
   };
+
   OSStatus status = SecItemAdd((__bridge CFDictionaryRef)sec_item, &result);
   if (status == errSecDuplicateItem) {
+    if (!overwrite) {
+      // overwrite could be true when update vpn connection.
+      VLOG(2) << "Treat success if there is duplicated one";
+      return errSecSuccess;
+    }
+
     VLOG(2) << "There is duplicated key in keychain. Update it.";
     NSDictionary* query = @{
       (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
@@ -138,14 +145,23 @@ BraveVPNOSConnectionAPI* BraveVPNOSConnectionAPI::GetInstance() {
   return s_manager.get();
 }
 
-BraveVPNOSConnectionAPIMac::BraveVPNOSConnectionAPIMac() = default;
-BraveVPNOSConnectionAPIMac::~BraveVPNOSConnectionAPIMac() = default;
+BraveVPNOSConnectionAPIMac::BraveVPNOSConnectionAPIMac() {
+  ObserveVPNConnectionChange();
+}
+
+BraveVPNOSConnectionAPIMac::~BraveVPNOSConnectionAPIMac() {
+  if (vpn_observer_) {
+    [[NSNotificationCenter defaultCenter] removeObserver:vpn_observer_];
+    vpn_observer_ = nil;
+  }
+}
 
 void BraveVPNOSConnectionAPIMac::CreateVPNConnection(
     const BraveVPNConnectionInfo& info) {
   info_ = info;
 
-  if (StorePassword(base::SysUTF8ToNSString(info_.password())) != errSecSuccess)
+  if (StorePassword(base::SysUTF8ToNSString(info_.password()), false) !=
+      errSecSuccess)
     return;
 
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
@@ -225,7 +241,6 @@ void BraveVPNOSConnectionAPIMac::Connect(const std::string& name) {
       return;
     }
 
-    VLOG(2) << "Successfully connected";
     for (Observer& obs : observers_)
       obs.OnConnected(std::string());
   }];
@@ -262,11 +277,41 @@ void BraveVPNOSConnectionAPIMac::CheckConnection(const std::string& name) {
     }
 
     NEVPNStatus current_status = [[vpn_manager connection] status];
-    const bool connected = current_status == NEVPNStatusConnected;
-    VLOG(2) << "CheckConnection: " << connected;
-    for (Observer& obs : observers_)
-      connected ? obs.OnConnected(name) : obs.OnDisconnected(name);
+    VLOG(2) << "CheckConnection: " << current_status;
+    switch (current_status) {
+      case NEVPNStatusConnected:
+        for (Observer& obs : observers_)
+          obs.OnConnected(name);
+        break;
+      case NEVPNStatusConnecting:
+      case NEVPNStatusReasserting:
+        for (Observer& obs : observers_)
+          obs.OnIsConnecting(name);
+        break;
+      case NEVPNStatusDisconnected:
+      case NEVPNStatusInvalid:
+        for (Observer& obs : observers_)
+          obs.OnDisconnected(name);
+        break;
+      case NEVPNStatusDisconnecting:
+        for (Observer& obs : observers_)
+          obs.OnIsDisconnecting(name);
+        break;
+      default:
+        break;
+    }
   }];
+}
+
+void BraveVPNOSConnectionAPIMac::ObserveVPNConnectionChange() {
+  vpn_observer_ = [[NSNotificationCenter defaultCenter]
+      addObserverForName:NEVPNStatusDidChangeNotification
+                  object:nil
+                   queue:nil
+              usingBlock:^(NSNotification* notification) {
+                VLOG(2) << "Received VPN connection status change notification";
+                CheckConnection(std::string());
+              }];
 }
 
 }  // namespace brave_vpn
