@@ -219,7 +219,7 @@
     "message": "Παρακαλώ κρατήστε αντίγραφο ασφαλείας του Brave πορτοφολιού σας.",
     "description": "Description for backup wallet notification"
   },
-  "learnMore": {
+  "upholdBATNotAllowedForUserLearnMore": {
     "message": "Μάθετε περισσότερα",
     "description": "Notification button text to learn more about a specific use-case"
   },
@@ -245,6 +245,10 @@
     "message": "Το BAT δεν υποστηρίζεται ακόμα στην περιοχή σας στο Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
+  "upholdBlockedUserLearnMore": {
+    "message": "Μάθετε περισσότερα",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
   "upholdBlockedUserTitle": {
     "message": "Σφάλμα: Αποκλεισμένος λογαριασμός",
     "description": "Title for blocked user notification"
@@ -252,6 +256,10 @@
   "upholdBlockedUserNotification": {
     "message": "Ο λογαριασμός στο Uphold είναι προς το παρόν αποκλεισμένος.",
     "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "Μάθετε περισσότερα",
+    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Σφάλμα: Λογαριασμός σε εκκρεμότητα",
@@ -261,6 +269,10 @@
     "message": "Ο λογαριασμός σας στο Uphold εκκρεμεί ακόμα.",
     "description": "Description for pending user notification"
   },
+  "upholdRestrictedUserLearnMore": {
+    "message": "Μάθετε περισσότερα",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
   "upholdRestrictedUserTitle": {
     "message": "Σφάλμα: Περιορισμένος λογαριασμός",
     "description": "Title for restricted user notification"
@@ -268,6 +280,10 @@
   "upholdRestrictedUserNotification": {
     "message": "Ο λογαριασμός σας στο Uphold είναι προς το παρόν περιορισμένος.",
     "description": "Description for restricted user notification"
+  },
+  "deviceLimitReachedLearnMore": {
+    "message": "Μάθετε περισσότερα",
+    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Φτάσατε το Όριο Συσκευών",
@@ -532,6 +548,10 @@
   "grantFinishTokenTitleAds": {
     "message": "Το Ποσό Ανταμοιβής Σας",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "επαλήθευση",
+    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Αποσυνδέθηκε",

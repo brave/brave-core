@@ -219,7 +219,7 @@
     "message": "Zálohujte, prosím, svoji Brave peněženku.",
     "description": "Description for backup wallet notification"
   },
-  "learnMore": {
+  "upholdBATNotAllowedForUserLearnMore": {
     "message": "Zjistit více",
     "description": "Notification button text to learn more about a specific use-case"
   },
@@ -245,6 +245,10 @@
     "message": "Služba BAT zatím není ve vašem regionu v systému Uphold podporována.",
     "description": "Description for BAT not allowed for user notification"
   },
+  "upholdBlockedUserLearnMore": {
+    "message": "Zjistit více",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
   "upholdBlockedUserTitle": {
     "message": "Chyba: Zablokovaný účet",
     "description": "Title for blocked user notification"
@@ -252,6 +256,10 @@
   "upholdBlockedUserNotification": {
     "message": "Váš účet je v systému Uphold momentálně zablokován.",
     "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "Zjistit více",
+    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Chyba: Nedokončený účet",
@@ -261,6 +269,10 @@
     "message": "Váš účet je v systému Uphold stále nedokončený.",
     "description": "Description for pending user notification"
   },
+  "upholdRestrictedUserLearnMore": {
+    "message": "Zjistit více",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
   "upholdRestrictedUserTitle": {
     "message": "Chyba: Uzavřený účet",
     "description": "Title for restricted user notification"
@@ -268,6 +280,10 @@
   "upholdRestrictedUserNotification": {
     "message": "Váš účet je v systému Uphold momentálně uzavřený. ",
     "description": "Description for restricted user notification"
+  },
+  "deviceLimitReachedLearnMore": {
+    "message": "Zjistit více",
+    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Bylo dosaženo limitu zařízení",
@@ -532,6 +548,10 @@
   "grantFinishTokenTitleAds": {
     "message": "Zůstatek vašich odměn",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "ověřit",
+    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Odpojeno",

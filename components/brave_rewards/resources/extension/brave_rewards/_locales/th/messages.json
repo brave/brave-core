@@ -219,7 +219,7 @@
     "message": "โปรดสำรองข้อมูล Brave วอลเล็ทของคุณ",
     "description": "Description for backup wallet notification"
   },
-  "learnMore": {
+  "upholdBATNotAllowedForUserLearnMore": {
     "message": "เรียนรู้เพิ่มเติม",
     "description": "Notification button text to learn more about a specific use-case"
   },
@@ -245,6 +245,10 @@
     "message": "ยังไม่รองรับ BAT ในภูมิภาคของคุณบน Uphold",
     "description": "Description for BAT not allowed for user notification"
   },
+  "upholdBlockedUserLearnMore": {
+    "message": "เรียนรู้เพิ่มเติม",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
   "upholdBlockedUserTitle": {
     "message": "เกิดข้อผิดพลาด: บัญชีถูกบล็อก",
     "description": "Title for blocked user notification"
@@ -252,6 +256,10 @@
   "upholdBlockedUserNotification": {
     "message": "บัญชีของคุณที่ Uphold ถูกบล็อกอยู่ในขณะนี้",
     "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "เรียนรู้เพิ่มเติม",
+    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "เกิดข้อผิดพลาด: บัญชีอยู่ระหว่างรอดำเนินการ",
@@ -261,6 +269,10 @@
     "message": "บัญชีของคุณที่ Uphold ยังคงรอดำเนินการอยู่",
     "description": "Description for pending user notification"
   },
+  "upholdRestrictedUserLearnMore": {
+    "message": "เรียนรู้เพิ่มเติม",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
   "upholdRestrictedUserTitle": {
     "message": "เกิดข้อผิดพลาด: บัญชีถูกจำกัด",
     "description": "Title for restricted user notification"
@@ -268,6 +280,10 @@
   "upholdRestrictedUserNotification": {
     "message": "บัญชีของคุณที่ Uphold ถูกจำกัดอยู่ในขณะนี้",
     "description": "Description for restricted user notification"
+  },
+  "deviceLimitReachedLearnMore": {
+    "message": "เรียนรู้เพิ่มเติม",
+    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "ถึงขีดจำกัดอุปกรณ์",
@@ -532,6 +548,10 @@
   "grantFinishTokenTitleAds": {
     "message": "ปริมาณรางวัลของคุณ",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "ยืนยัน",
+    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "ไม่ได้เชื่อมต่อ",

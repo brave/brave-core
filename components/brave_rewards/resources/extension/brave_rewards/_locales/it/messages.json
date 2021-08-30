@@ -219,7 +219,7 @@
     "message": "Per favore, effettua il backup del tuo portafoglio Brave.",
     "description": "Description for backup wallet notification"
   },
-  "learnMore": {
+  "upholdBATNotAllowedForUserLearnMore": {
     "message": "Ulteriori informazioni",
     "description": "Notification button text to learn more about a specific use-case"
   },
@@ -245,6 +245,10 @@
     "message": "BAT non è ancora supportato nella tua area geografica su Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
+  "upholdBlockedUserLearnMore": {
+    "message": "Ulteriori informazioni",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
   "upholdBlockedUserTitle": {
     "message": "Errore: account bloccato",
     "description": "Title for blocked user notification"
@@ -252,6 +256,10 @@
   "upholdBlockedUserNotification": {
     "message": "Al momento il tuo account su Uphold è bloccato.",
     "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "Ulteriori informazioni",
+    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Errore: account in sospeso",
@@ -261,6 +269,10 @@
     "message": "Il tuo account su Uphold è ancora in sospeso.",
     "description": "Description for pending user notification"
   },
+  "upholdRestrictedUserLearnMore": {
+    "message": "Ulteriori informazioni",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
   "upholdRestrictedUserTitle": {
     "message": "Errore: account limitato",
     "description": "Title for restricted user notification"
@@ -268,6 +280,10 @@
   "upholdRestrictedUserNotification": {
     "message": "Al momento il tuo account su Uphold è limitato.",
     "description": "Description for restricted user notification"
+  },
+  "deviceLimitReachedLearnMore": {
+    "message": "Ulteriori informazioni",
+    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Limite di dispositivi raggiunto",
@@ -532,6 +548,10 @@
   "grantFinishTokenTitleAds": {
     "message": "Quantità Premio",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "verifica",
+    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Disconnesso",

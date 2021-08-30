@@ -219,7 +219,7 @@
     "message": "귀하의 브레이브 지갑을 백업해 주세요.",
     "description": "Description for backup wallet notification"
   },
-  "learnMore": {
+  "upholdBATNotAllowedForUserLearnMore": {
     "message": "자세히 알아보기",
     "description": "Notification button text to learn more about a specific use-case"
   },
@@ -245,6 +245,10 @@
     "message": "거주하고 계신 지역에서는 Uphold에 BAT가 아직 지원되지 않습니다.",
     "description": "Description for BAT not allowed for user notification"
   },
+  "upholdBlockedUserLearnMore": {
+    "message": "자세히 알아보기",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
   "upholdBlockedUserTitle": {
     "message": "오류: 차단된 계정",
     "description": "Title for blocked user notification"
@@ -252,6 +256,10 @@
   "upholdBlockedUserNotification": {
     "message": "귀하의 Uphold 계정이 현재 차단되어 있습니다.",
     "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "자세히 알아보기",
+    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "오류: 계정 보류 중",
@@ -261,6 +269,10 @@
     "message": "귀하의 Uphold 계정이 아직 보류 중입니다.",
     "description": "Description for pending user notification"
   },
+  "upholdRestrictedUserLearnMore": {
+    "message": "자세히 알아보기",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
   "upholdRestrictedUserTitle": {
     "message": "오류: 이용 제한된 계정",
     "description": "Title for restricted user notification"
@@ -268,6 +280,10 @@
   "upholdRestrictedUserNotification": {
     "message": "귀하의 Uphold 계정이 현재 이용 제한되어 있습니다.",
     "description": "Description for restricted user notification"
+  },
+  "deviceLimitReachedLearnMore": {
+    "message": "자세히 알아보기",
+    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "기기 한도 도달",
@@ -532,6 +548,10 @@
   "grantFinishTokenTitleAds": {
     "message": "귀하의 리워드 금액",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "검증",
+    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "연결 해제됨",

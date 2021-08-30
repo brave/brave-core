@@ -219,7 +219,7 @@
     "message": "Vui lòng sao lưu ví Brave của bạn.",
     "description": "Description for backup wallet notification"
   },
-  "learnMore": {
+  "upholdBATNotAllowedForUserLearnMore": {
     "message": "Tìm hiểu thêm",
     "description": "Notification button text to learn more about a specific use-case"
   },
@@ -245,6 +245,10 @@
     "message": "BAT chưa được hỗ trợ trong khu vực của bạn trên Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
+  "upholdBlockedUserLearnMore": {
+    "message": "Tìm hiểu thêm",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
   "upholdBlockedUserTitle": {
     "message": "Lỗi: Tài khoản bị chặn",
     "description": "Title for blocked user notification"
@@ -252,6 +256,10 @@
   "upholdBlockedUserNotification": {
     "message": "Tài khoản của bạn tại Uphold hiện đang bị khóa.",
     "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "Tìm hiểu thêm",
+    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Lỗi: Treo tài khoản",
@@ -261,6 +269,10 @@
     "message": "Tài khoản của bạn tại Uphold vẫn đang chờ xử lý.",
     "description": "Description for pending user notification"
   },
+  "upholdRestrictedUserLearnMore": {
+    "message": "Tìm hiểu thêm",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
   "upholdRestrictedUserTitle": {
     "message": "Lỗi: Tài khoản bị hạn chế",
     "description": "Title for restricted user notification"
@@ -268,6 +280,10 @@
   "upholdRestrictedUserNotification": {
     "message": "Tài khoản của bạn tại Uphold hiện đang bị hạn chế.",
     "description": "Description for restricted user notification"
+  },
+  "deviceLimitReachedLearnMore": {
+    "message": "Tìm hiểu thêm",
+    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Đã đến Giới hạn về Thiết bị",
@@ -532,6 +548,10 @@
   "grantFinishTokenTitleAds": {
     "message": "Số tiền thưởng của bạn",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "xác thực",
+    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Đã ngắt kết nối",

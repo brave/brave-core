@@ -219,7 +219,7 @@
     "message": "Будь ласка, зробіть резервну копію гаманця Brave.",
     "description": "Description for backup wallet notification"
   },
-  "learnMore": {
+  "upholdBATNotAllowedForUserLearnMore": {
     "message": "Докладніше",
     "description": "Notification button text to learn more about a specific use-case"
   },
@@ -245,6 +245,10 @@
     "message": "BAT не підтримується у вашому регіоні в гаманцях Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
+  "upholdBlockedUserLearnMore": {
+    "message": "Докладніше",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
   "upholdBlockedUserTitle": {
     "message": "Помилка: обліковий запис заблоковано",
     "description": "Title for blocked user notification"
@@ -252,6 +256,10 @@
   "upholdBlockedUserNotification": {
     "message": "Ваш обліковий запис в Uphold наразі заблоковано.",
     "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "Докладніше",
+    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Помилка: обліковий запис обробляється",
@@ -261,6 +269,10 @@
     "message": "Ваш обліковий запис в Uphold усе ще обробляється.",
     "description": "Description for pending user notification"
   },
+  "upholdRestrictedUserLearnMore": {
+    "message": "Докладніше",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
   "upholdRestrictedUserTitle": {
     "message": "Помилка: обліковий запис обмежено",
     "description": "Title for restricted user notification"
@@ -268,6 +280,10 @@
   "upholdRestrictedUserNotification": {
     "message": "Ваш обліковий запис в Uphold наразі обмежено.",
     "description": "Description for restricted user notification"
+  },
+  "deviceLimitReachedLearnMore": {
+    "message": "Докладніше",
+    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Досягнуто ліміт кількості пристроїв",
@@ -532,6 +548,10 @@
   "grantFinishTokenTitleAds": {
     "message": "Сума вашої винагороди",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "верифікувати",
+    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Від'єднано",

@@ -219,7 +219,7 @@
     "message": "Lütfen Brave cüzdanınızı yedekleyin.",
     "description": "Description for backup wallet notification"
   },
-  "learnMore": {
+  "upholdBATNotAllowedForUserLearnMore": {
     "message": "Daha Fazla Bilgi Edinin",
     "description": "Notification button text to learn more about a specific use-case"
   },
@@ -245,6 +245,10 @@
     "message": "Uphold'da BAT henüz sizin bölgenizde desteklenmiyor.",
     "description": "Description for BAT not allowed for user notification"
   },
+  "upholdBlockedUserLearnMore": {
+    "message": "Daha Fazla Bilgi Edinin",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
   "upholdBlockedUserTitle": {
     "message": "Hata: Engelli hesap",
     "description": "Title for blocked user notification"
@@ -252,6 +256,10 @@
   "upholdBlockedUserNotification": {
     "message": "Uphold'daki hesabınız şu anda engelli.",
     "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "Daha Fazla Bilgi Edinin",
+    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Hata: Bekleyen hesap",
@@ -261,6 +269,10 @@
     "message": "Uphold'daki hesabınız hala beklemede.",
     "description": "Description for pending user notification"
   },
+  "upholdRestrictedUserLearnMore": {
+    "message": "Daha Fazla Bilgi Edinin",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
   "upholdRestrictedUserTitle": {
     "message": "Hata: Kısıtlanmış hesap",
     "description": "Title for restricted user notification"
@@ -268,6 +280,10 @@
   "upholdRestrictedUserNotification": {
     "message": "Uphold'daki hesabınız şu anda kısıtlanmış durumdadır.",
     "description": "Description for restricted user notification"
+  },
+  "deviceLimitReachedLearnMore": {
+    "message": "Daha Fazla Bilgi Edinin",
+    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Cihaz Limitine Erişildi",
@@ -532,6 +548,10 @@
   "grantFinishTokenTitleAds": {
     "message": "Ödül Tutarınız",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "doğrula",
+    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "Bağlantı kesildi",

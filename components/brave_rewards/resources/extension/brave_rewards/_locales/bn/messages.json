@@ -219,7 +219,7 @@
     "message": "অনুগ্রহ করে আপনার Brave ওয়ালেটটিতে ব্যাকআপ নিন।",
     "description": "Description for backup wallet notification"
   },
-  "learnMore": {
+  "upholdBATNotAllowedForUserLearnMore": {
     "message": "আরও জানুন",
     "description": "Notification button text to learn more about a specific use-case"
   },
@@ -245,6 +245,10 @@
     "message": "আপনার অঞ্চলে আপহোল্ডে BAT এখনও সমর্থিত নয়।",
     "description": "Description for BAT not allowed for user notification"
   },
+  "upholdBlockedUserLearnMore": {
+    "message": "আরও জানুন",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
   "upholdBlockedUserTitle": {
     "message": "ত্রুটি: ব্লক থাকা অ্যাকাউন্ট",
     "description": "Title for blocked user notification"
@@ -252,6 +256,10 @@
   "upholdBlockedUserNotification": {
     "message": "আপহোল্ডে আপনার অ্যাকাউন্ট বর্তমানে ব্লক রয়েছে।",
     "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "আরও জানুন",
+    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "ত্রুটি: বাকি থাকা অ্যাকাউন্ট",
@@ -261,6 +269,10 @@
     "message": "আপহোল্ডে আপনার অ্যাকাউন্ট এখনও বাকি রয়েছে।",
     "description": "Description for pending user notification"
   },
+  "upholdRestrictedUserLearnMore": {
+    "message": "আরও জানুন",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
   "upholdRestrictedUserTitle": {
     "message": "ত্রুটি: সীমাবদ্ধ অ্যাকাউন্ট",
     "description": "Title for restricted user notification"
@@ -268,6 +280,10 @@
   "upholdRestrictedUserNotification": {
     "message": "আপহোল্ডে আপনার অ্যাকাউন্ট বর্তমানে সীমাবদ্ধ।",
     "description": "Description for restricted user notification"
+  },
+  "deviceLimitReachedLearnMore": {
+    "message": "আরও জানুন",
+    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "ডিভাইসের সীমায় পৌঁছেছে",
@@ -532,6 +548,10 @@
   "grantFinishTokenTitleAds": {
     "message": "আপনার পুরস্কারের অর্থরাশি",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "যাচাই করুন",
+    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "সংযোগবিচ্ছিন্ন",

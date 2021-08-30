@@ -219,7 +219,7 @@
     "message": "אנא גבו את ארנק ה-Brave שלכם.",
     "description": "Description for backup wallet notification"
   },
-  "learnMore": {
+  "upholdBATNotAllowedForUserLearnMore": {
     "message": "למידע נוסף",
     "description": "Notification button text to learn more about a specific use-case"
   },
@@ -245,6 +245,10 @@
     "message": "BAT עדין לא נתמך באזור שלך ב-Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
+  "upholdBlockedUserLearnMore": {
+    "message": "למידע נוסף",
+    "description": "Notification button text to learn more about the blocked user status"
+  },
   "upholdBlockedUserTitle": {
     "message": "שגיאה: חשבון חסום",
     "description": "Title for blocked user notification"
@@ -252,6 +256,10 @@
   "upholdBlockedUserNotification": {
     "message": "החשבון שלך ב-Uphold חסום כעת.",
     "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserLearnMore": {
+    "message": "למידע נוסף",
+    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "שגיאה: חשבון בהשהייה",
@@ -261,6 +269,10 @@
     "message": "החשבון שלך ב-Uphold עדין בהשהייה.",
     "description": "Description for pending user notification"
   },
+  "upholdRestrictedUserLearnMore": {
+    "message": "למידע נוסף",
+    "description": "Notification button text to learn more about the restricted user status"
+  },
   "upholdRestrictedUserTitle": {
     "message": "שגיאה: חשבון מוגבל",
     "description": "Title for restricted user notification"
@@ -268,6 +280,10 @@
   "upholdRestrictedUserNotification": {
     "message": "החשבון שלך ב-Uphold מוגבל כעת.",
     "description": "Description for restricted user notification"
+  },
+  "deviceLimitReachedLearnMore": {
+    "message": "למידע נוסף",
+    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "הגעת למגבלת המכשיר",
@@ -532,6 +548,10 @@
   "grantFinishTokenTitleAds": {
     "message": "סכום התגמול שלך",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "אימות",
+    "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
     "message": "מנותק",
