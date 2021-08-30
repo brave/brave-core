@@ -26,8 +26,6 @@ class CrashReportPermissionAskDialogView : public views::DialogDelegateView {
       const CrashReportPermissionAskDialogView&) = delete;
 
   // views::DialogDelegateView overrides:
-  std::unique_ptr<views::NonClientFrameView> CreateNonClientFrameView(
-      views::Widget* widget) override;
   ui::ModalType GetModalType() const override;
   bool ShouldShowCloseButton() const override;
   bool ShouldShowWindowTitle() const override;
