@@ -33,6 +33,7 @@ class HDKey {
   void SetPrivateKey(const std::vector<uint8_t>& value);
   // base58 encoded of hash160 of private key
   std::string GetPrivateExtendedKey() const;
+  std::string GetHexEncodedPrivateKey() const;
 
   // value must be 33 bytes valid public key (compressed)
   void SetPublicKey(const std::vector<uint8_t>& value);
@@ -75,6 +76,7 @@ class HDKey {
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SetPublicKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, DeriveChildFromPath);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SignAndVerifyAndRecover);
+  FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, GetHexEncodedPrivateKey);
 
   void GeneratePublicKey();
   const std::vector<uint8_t> Hash160(const std::vector<uint8_t>& input);

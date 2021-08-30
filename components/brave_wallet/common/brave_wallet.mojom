@@ -187,6 +187,8 @@ interface KeyringController {
   Unlock(string password) => (bool success);
   IsLocked() => (bool isLocked);
   AddAccount(string accountName) => (bool success);
+  GetPrivateKeyForDefaultKeyringAccount(string address)
+    => (bool success, string privateKey);
   AddImportedAccount(string accountName, string privateKey)
     => (bool success, string address);
   GetPrivateKeyForImportedAccount(string address)

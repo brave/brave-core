@@ -488,6 +488,24 @@ void KeyringController::AddAccount(const std::string& account_name,
   std::move(callback).Run(keyring);
 }
 
+void KeyringController::GetPrivateKeyForDefaultKeyringAccount(
+    const std::string& address,
+    GetPrivateKeyForDefaultKeyringAccountCallback callback) {
+  if (address.empty() || !default_keyring_) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto* hd_key = default_keyring_->GetHDKeyFromAddress(address);
+  if (!hd_key) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string private_key = hd_key->GetHexEncodedPrivateKey();
+  std::move(callback).Run(!private_key.empty(), private_key);
+}
+
 void KeyringController::AddImportedAccount(
     const std::string& account_name,
     const std::string& private_key_hex,

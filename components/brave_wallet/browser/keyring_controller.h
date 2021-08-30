@@ -100,6 +100,9 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void IsLocked(IsLockedCallback callback) override;
   void AddAccount(const std::string& account_name,
                   AddAccountCallback callback) override;
+  void GetPrivateKeyForDefaultKeyringAccount(
+      const std::string& address,
+      GetPrivateKeyForDefaultKeyringAccountCallback callback) override;
   void AddImportedAccount(const std::string& account_name,
                           const std::string& private_key,
                           AddImportedAccountCallback callback) override;
@@ -150,6 +153,8 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, CreateAndRestoreWallet);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AddAccount);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, ImportedAccounts);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
+                           GetPrivateKeyForDefaultKeyringAccount);
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
 

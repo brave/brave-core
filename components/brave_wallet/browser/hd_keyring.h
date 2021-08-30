@@ -56,9 +56,10 @@ class HDKeyring {
   virtual std::vector<uint8_t> SignMessage(const std::string& address,
                                            const std::vector<uint8_t>& message);
 
+  HDKey* GetHDKeyFromAddress(const std::string& address);
+
  protected:
   std::string GetAddressInternal(const HDKey* hd_key) const;
-  HDKey* GetHDKeyFromAddress(const std::string& address);
 
   std::unique_ptr<HDKey> root_;
   std::unique_ptr<HDKey> master_key_;
