@@ -28,12 +28,17 @@ class HDKey {
   static std::unique_ptr<HDKey> GenerateFromExtendedKey(const std::string& key);
   static std::unique_ptr<HDKey> GenerateFromPrivateKey(
       const std::vector<uint8_t>& private_key);
+  // https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition
+  static std::unique_ptr<HDKey> GenerateFromV3UTC(const std::string& password,
+                                                  const std::string& json);
 
   // value must be 32 bytes
   void SetPrivateKey(const std::vector<uint8_t>& value);
   // base58 encoded of hash160 of private key
   std::string GetPrivateExtendedKey() const;
   std::string GetHexEncodedPrivateKey() const;
+  // TODO(darkdh): For exporting private key as keystore file
+  // std::string GetPrivateKeyinV3UTC() const;
 
   // value must be 33 bytes valid public key (compressed)
   void SetPublicKey(const std::vector<uint8_t>& value);

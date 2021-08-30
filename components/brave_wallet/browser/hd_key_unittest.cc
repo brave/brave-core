@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/eth_address.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -369,6 +370,69 @@ TEST(HDKeyUnitTest, GetHexEncodedPrivateKey) {
       "KjXfT7ZWtHzKjTpujMkUd9dDb8msDeAfnJxrgAYhr");
   EXPECT_EQ(key2->GetHexEncodedPrivateKey(),
             "00000055378cf5fafb56c711c674143f9b0ee82ab0ba2924f19b64f5ae7cdbfd");
+}
+
+TEST(HDKeyUnitTest, GenerateFromV3UTC_scrypt) {
+  const std::string json(
+      R"({
+          "address":"b14ab53e38da1c172f877dbc6d65e4a1b0474c3c",
+          "crypto" : {
+              "cipher" : "aes-128-ctr",
+              "cipherparams" : {
+                  "iv" : "cecacd85e9cb89788b5aab2f93361233"
+              },
+              "ciphertext" : "c52682025b1e5d5c06b816791921dbf439afe7a053abb9fac19f38a57499652c",
+              "kdf" : "scrypt",
+              "kdfparams" : {
+                  "dklen" : 32,
+                  "n" : 262144,
+                  "p" : 1,
+                  "r" : 8,
+                  "salt" : "dc9e4a98886738bd8aae134a1f89aaa5a502c3fbd10e336136d4d5fe47448ad6"
+              },
+              "mac" : "27b98c8676dc6619d077453b38db645a4c7c17a3e686ee5adaf53c11ac1b890e"
+          },
+          "id" : "7e59dc02-8d42-409d-b29a-a8a0f862cc81",
+          "version" : 3
+      })");
+  std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromV3UTC("testtest", json);
+  ASSERT_TRUE(hd_key);
+  const std::vector<uint8_t> public_key = hd_key->GetUncompressedPublicKey();
+  // trim the header byte 0x04
+  const std::vector<uint8_t> pubkey_no_header(public_key.begin() + 1,
+                                              public_key.end());
+  EthAddress addr = EthAddress::FromPublicKey(pubkey_no_header);
+  EXPECT_EQ(addr.ToHex(), "0xb14ab53e38da1c172f877dbc6d65e4a1b0474c3c");
+
+  // wrong password
+  EXPECT_FALSE(HDKey::GenerateFromV3UTC("brave1234", json));
+  EXPECT_FALSE(HDKey::GenerateFromV3UTC("", json));
+  EXPECT_FALSE(HDKey::GenerateFromV3UTC("testtest", R"({{})"));
+
+  // |N| > 2^(128 * |r| / 8)
+  const std::string invalid_r(
+      R"({
+        "crypto" : {
+            "cipher" : "aes-128-ctr",
+            "cipherparams" : {
+                "iv" : "83dbcc02d8ccb40e466191a123791e0e"
+            },
+            "ciphertext" : "d172bf743a674da9cdad04534d56926ef8358534d458fffccd4e6ad2fbde479c",
+            "kdf" : "scrypt",
+            "kdfparams" : {
+                "dklen" : 32,
+                "n" : 262144,
+                "p" : 8,
+                "r" : 1,
+                "salt" : "ab0c7876052600dd703518d6fc3fe8984592145b591fc8fb5c6d43190334ba19"
+            },
+            "mac" : "2103ac29920d71da29f15d75b4a16dbe95cfd7ff8faea1056c33131d846e3097"
+        },
+        "id" : "3198bc9c-6672-5ab3-d995-4942343ae5b6",
+        "version" : 3
+      })");
+
+  EXPECT_FALSE(HDKey::GenerateFromV3UTC("testtest", invalid_r));
 }
 
 }  // namespace brave_wallet
