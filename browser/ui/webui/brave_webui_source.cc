@@ -1019,6 +1019,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "sorryToSeeYouGo", IDS_BRAVE_REWARDS_TIP_SORRY_TO_SEE_YOU_GO },
         { "supportThisCreator", IDS_BRAVE_REWARDS_TIP_SUPPORT_THIS_CREATOR },
         { "thanksForTheSupport", IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT },  // NOLINT
+        { "tipDelayNote", IDS_BRAVE_REWARDS_TIP_DELAY_NOTE },
         { "tipHasBeenSent", IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET },
         { "tipPostSubtitle", IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE },
         { "tokens", IDS_BRAVE_UI_TOKENS },
