@@ -43,6 +43,7 @@ export const localeStrings = {
   thanksForTheSupport: 'Thanks for the support!',
   tipDelayNote: 'Note: Your tip can take several minutes to process',
   tipHasBeenSent: 'Your one-time tip has been sent.',
+  tippingFeeNote: 'Brave collects 5% of the tip amount as a processing fee.',
   tipPostSubtitle: 'for their post',
   tokens: 'tokens',
   tweetAboutSupport: 'Tweet about your support',
