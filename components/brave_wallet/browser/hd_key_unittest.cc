@@ -19,6 +19,14 @@ bool IsPublicKeyEmpty(const std::vector<uint8_t> public_key) {
   }
   return true;
 }
+std::string GetHexAddr(const HDKey* key) {
+  const std::vector<uint8_t> public_key = key->GetUncompressedPublicKey();
+  // trim the header byte 0x04
+  const std::vector<uint8_t> pubkey_no_header(public_key.begin() + 1,
+                                              public_key.end());
+  EthAddress addr = EthAddress::FromPublicKey(pubkey_no_header);
+  return addr.ToHex();
+}
 }  // namespace
 
 TEST(HDKeyUnitTest, GenerateFromSeed) {
@@ -372,7 +380,7 @@ TEST(HDKeyUnitTest, GetHexEncodedPrivateKey) {
             "00000055378cf5fafb56c711c674143f9b0ee82ab0ba2924f19b64f5ae7cdbfd");
 }
 
-TEST(HDKeyUnitTest, GenerateFromV3UTC_scrypt) {
+TEST(HDKeyUnitTest, GenerateFromV3UTC) {
   const std::string json(
       R"({
           "address":"b14ab53e38da1c172f877dbc6d65e4a1b0474c3c",
@@ -397,12 +405,8 @@ TEST(HDKeyUnitTest, GenerateFromV3UTC_scrypt) {
       })");
   std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromV3UTC("testtest", json);
   ASSERT_TRUE(hd_key);
-  const std::vector<uint8_t> public_key = hd_key->GetUncompressedPublicKey();
-  // trim the header byte 0x04
-  const std::vector<uint8_t> pubkey_no_header(public_key.begin() + 1,
-                                              public_key.end());
-  EthAddress addr = EthAddress::FromPublicKey(pubkey_no_header);
-  EXPECT_EQ(addr.ToHex(), "0xb14ab53e38da1c172f877dbc6d65e4a1b0474c3c");
+  EXPECT_EQ(GetHexAddr(hd_key.get()),
+            "0xb14ab53e38da1c172f877dbc6d65e4a1b0474c3c");
 
   // wrong password
   EXPECT_FALSE(HDKey::GenerateFromV3UTC("brave1234", json));
@@ -433,6 +437,34 @@ TEST(HDKeyUnitTest, GenerateFromV3UTC_scrypt) {
       })");
 
   EXPECT_FALSE(HDKey::GenerateFromV3UTC("testtest", invalid_r));
+
+  const std::string pbkdf2_json(
+      R"({
+        "address":"b14ab53e38da1c172f877dbc6d65e4a1b0474c3c",
+        "crypto" : {
+            "cipher" : "aes-128-ctr",
+            "cipherparams" : {
+                "iv" : "cecacd85e9cb89788b5aab2f93361233"
+            },
+            "ciphertext" : "01ee7f1a3c8d187ea244c92eea9e332ab0bb2b4c902d89bdd71f80dc384da1be",
+            "kdf" : "pbkdf2",
+            "kdfparams" : {
+                "c" : 262144,
+                "dklen" : 32,
+                "prf" : "hmac-sha256",
+                "salt" : "dc9e4a98886738bd8aae134a1f89aaa5a502c3fbd10e336136d4d5fe47448ad6"
+            },
+            "mac" : "0c02cd0badfebd5e783e0cf41448f84086a96365fc3456716c33641a86ebc7cc"
+        },
+        "id" : "7e59dc02-8d42-409d-b29a-a8a0f862cc81",
+        "version" : 3
+      })");
+
+  std::unique_ptr<HDKey> hd_key2 =
+      HDKey::GenerateFromV3UTC("testtest", pbkdf2_json);
+  ASSERT_TRUE(hd_key2);
+  EXPECT_EQ(GetHexAddr(hd_key2.get()),
+            "0xb14ab53e38da1c172f877dbc6d65e4a1b0474c3c");
 }
 
 }  // namespace brave_wallet

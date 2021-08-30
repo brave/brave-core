@@ -205,12 +205,23 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
       VLOG(0) << __func__ << ": missing c";
       return nullptr;
     }
-    const auto* prf = crypto->FindStringKey("prf");
+    const auto* prf = kdfparams->FindStringKey("prf");
     if (!prf) {
       VLOG(0) << __func__ << ": missing prf";
       return nullptr;
     }
-    // Use PKCS5_PBKDF2_HMAC for SHA256
+    if (*prf != "hmac-sha256") {
+      VLOG(0) << __func__ << ": prf must be hmac-sha256 when using pbkdf2";
+      return nullptr;
+    }
+    derived_key = SymmetricKey::DeriveKeyFromPasswordUsingPbkdf2Sha256(
+        SymmetricKey::AES, password,
+        std::string(salt_bytes.begin(), salt_bytes.end()), (size_t)*c,
+        (size_t)*dklen * 8);
+    if (!derived_key) {
+      VLOG(1) << __func__ << ": pbkdf2 derivation failed";
+      return nullptr;
+    }
   } else if (*kdf == "scrypt") {
     auto n = kdfparams->FindIntKey("n");
     if (!n) {
