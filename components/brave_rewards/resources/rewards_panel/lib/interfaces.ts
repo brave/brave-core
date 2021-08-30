@@ -4,6 +4,7 @@
 
 import { ExternalWallet, ExternalWalletProvider } from '../../shared/lib/external_wallet'
 import { ExternalWalletAction, RewardsSummaryData } from '../../shared/components/wallet_card'
+import { Notification, NotificationAction } from '../../shared/components/notifications'
 
 interface ExchangeInfo {
   currency: string
@@ -33,6 +34,8 @@ export interface HostState {
   publisherInfo: PublisherInfo | null
   externalWallet: ExternalWallet | null
   summaryData: RewardsSummaryData
+  notifications: Notification[]
+  notificationsLastViewed: number
   hidePublisherUnverifiedNote: boolean
 }
 
@@ -50,5 +53,8 @@ export interface Host {
   hidePublisherUnverifiedNote: () => void
   handleMonthlyTipAction: (action: MonthlyTipAction) => void
   handleExternalWalletAction: (action: ExternalWalletAction) => void
-
+  handleNotificationAction: (action: NotificationAction) => void
+  dismissNotification: (notification: Notification) => void
+  clearNotifications: () => void
+  setNotificationsViewed: () => void
 }

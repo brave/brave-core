@@ -7,6 +7,7 @@ import * as React from 'react'
 import { HostContext, useHostListener } from '../lib/host_context'
 import { WalletCard } from '../../shared/components/wallet_card'
 import { NavBar } from './navbar'
+import { NotificationOverlay } from './notification_overlay'
 import { PublisherCard } from './publisher_card'
 
 import * as styles from './panel.style'
@@ -60,6 +61,7 @@ export function Panel () {
         onActiveViewChange={setActiveView}
         onSettingsClick={host.openRewardsSettings}
       />
+      <NotificationOverlay />
     </styles.root>
   )
 }
