@@ -44,8 +44,7 @@ class ViewCounterService : public KeyedService,
   ViewCounterService(NTPBackgroundImagesService* service,
                      brave_ads::AdsService* ads_service,
                      PrefService* prefs,
-                     PrefService* local_state,
-                     bool is_supported_locale);
+                     PrefService* local_state);
   ~ViewCounterService() override;
 
   ViewCounterService(const ViewCounterService&) = delete;
@@ -150,7 +149,6 @@ class ViewCounterService : public KeyedService,
   NTPBackgroundImagesService* service_ = nullptr;  // not owned
   brave_ads::AdsService* ads_service_ = nullptr;  // not owned
   PrefService* prefs_ = nullptr;  // not owned
-  bool is_supported_locale_ = false;
   PrefChangeRegistrar pref_change_registrar_;
   ViewCounterModel model_;
 

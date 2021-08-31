@@ -29,7 +29,6 @@
 #include "brave/components/brave_ads/browser/notification_helper.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "chrome/browser/notifications/notification_handler.h"
 #include "components/history/core/browser/history_service_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
@@ -71,8 +70,6 @@ class AdsServiceImpl : public AdsService,
                        public brave_ads::Observer,
                        public base::SupportsWeakPtr<AdsServiceImpl> {
  public:
-  void OnWalletUpdated();
-
   // AdsService implementation
   explicit AdsServiceImpl(Profile* profile,
                           history::HistoryService* history_service);
@@ -81,24 +78,7 @@ class AdsServiceImpl : public AdsService,
   AdsServiceImpl(const AdsServiceImpl&) = delete;
   AdsServiceImpl& operator=(const AdsServiceImpl&) = delete;
 
-  bool IsSupportedLocale() const override;
-  bool IsNewlySupportedLocale() override;
-
-  bool IsEnabled() const override;
-  void SetEnabled(const bool is_enabled) override;
-
-  void SetAllowConversionTracking(const bool should_allow) override;
-
   int64_t GetAdsPerHour() const override;
-  void SetAdsPerHour(const int64_t ads_per_hour) override;
-
-  bool ShouldAllowAdsSubdivisionTargeting() const override;
-  std::string GetAdsSubdivisionTargetingCode() const override;
-  void SetAdsSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) override;
-  std::string GetAutoDetectedAdsSubdivisionTargetingCode() const override;
-  void SetAutoDetectedAdsSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) override;
 
   void OnShowAdNotification(const std::string& notification_id) override;
   void OnCloseAdNotification(const std::string& notification_id,
@@ -107,16 +87,12 @@ class AdsServiceImpl : public AdsService,
 
   void ChangeLocale(const std::string& locale) override;
 
-  void OnPrefChanged(const std::string& path);
-
   void OnHtmlLoaded(const SessionID& tab_id,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& html) override;
-
   void OnTextLoaded(const SessionID& tab_id,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& text) override;
-
   void OnUserGesture(const int32_t page_transition_type) override;
 
   void OnMediaStart(const SessionID& tab_id) override;
@@ -256,6 +232,7 @@ class AdsServiceImpl : public AdsService,
                             ads::UrlRequestCallback callback,
                             const std::unique_ptr<std::string> response_body);
 
+  void GetBraveWallet();
   void OnGetBraveWallet(ledger::type::BraveWalletPtr wallet);
 
   void OnGetInlineContentAd(OnGetInlineContentAdCallback callback,
@@ -328,7 +305,7 @@ class AdsServiceImpl : public AdsService,
   bool ShouldShowMyFirstAdNotification() const;
 
   bool PrefExists(const std::string& path) const;
-  void OnPrefsChanged(const std::string& pref);
+  void OnPrefsChanged(const std::string& path);
 
   std::string GetLocale() const;
 

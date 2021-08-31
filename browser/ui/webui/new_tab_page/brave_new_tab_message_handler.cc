@@ -16,13 +16,13 @@
 #include "base/threading/thread_restrictions.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "bat/ads/ads_util.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
@@ -185,21 +185,11 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   // Initial Values
   // Should only contain data that is static
   //
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
-  // For safety, default |is_ads_supported_locale_| to true. Better to have
-  // false positive than falsen egative,
-  // in which case we would not show "opt out" toggle.
-  bool is_ads_supported_locale_ = true;
-  if (!ads_service_) {
-    LOG(ERROR) << "Ads service is not initialized!";
-  } else {
-    is_ads_supported_locale_ = ads_service_->IsSupportedLocale();
-  }
-
+  const bool is_supported = ads::IsSupported();
   source->AddBoolean(
       "featureFlagBraveNTPSponsoredImagesWallpaper",
-      base::FeatureList::IsEnabled(kBraveNTPBrandedWallpaper) &&
-      is_ads_supported_locale_);
+      base::FeatureList::IsEnabled(kBraveNTPBrandedWallpaper) && is_supported);
+
   source->AddBoolean("braveTalkPromptAllowed",
                      BraveNewTabMessageHandler::CanPromptBraveTalk());
 

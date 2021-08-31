@@ -67,7 +67,6 @@ source_set("extensions") {
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/common/extensions/api",
-    "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_shields/browser",

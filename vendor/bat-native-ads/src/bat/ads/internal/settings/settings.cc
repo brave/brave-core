@@ -19,7 +19,7 @@ int64_t GetAdsPerHour() {
 
   if (ads_per_hour == -1) {
     ads_per_hour =
-        static_cast<uint64_t>(features::GetDefaultAdNotificationsPerHour());
+        static_cast<int64_t>(features::GetDefaultAdNotificationsPerHour());
   }
 
   return base::ClampToRange(

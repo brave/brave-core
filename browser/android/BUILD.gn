@@ -5,7 +5,6 @@ source_set("android_browser_process") {
   check_includes = false
 
   sources = [
-    "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
     "brave_feature_list.cc",
     "brave_relaunch_utils.cc",
     "brave_shields_content_settings.cc",
@@ -17,9 +16,7 @@ source_set("android_browser_process") {
   deps = [
     "//base",
     "//brave/browser/android/preferences",
-    "//brave/browser/brave_ads/android:jni_headers",
     "//brave/build/android:jni_headers",
-    "//brave/components/brave_ads/browser",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_sync",
     "//brave/components/brave_sync:crypto",

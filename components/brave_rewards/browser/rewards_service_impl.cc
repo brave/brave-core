@@ -36,12 +36,12 @@
 #include "base/task_runner_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
+#include "bat/ads/ads_util.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/ledger_database.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/logging.h"
@@ -1681,17 +1681,14 @@ void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
 }
 
 bool RewardsServiceImpl::ShouldShowOnboarding() const {
-  const bool enabled = profile_->GetPrefs()->GetBoolean(prefs::kEnabled);
+  const bool is_enabled = profile_->GetPrefs()->GetBoolean(prefs::kEnabled);
 
-  bool ads_enabled = false;
-  bool ads_supported = true;
-  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-  if (ads_service) {
-    ads_enabled = ads_service->IsEnabled();
-    ads_supported = ads_service->IsSupportedLocale();
-  }
+  const bool is_ads_enabled =
+      profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled);
 
-  return !enabled && !ads_enabled && ads_supported;
+  const bool is_ads_supported = ads::IsSupported();
+
+  return !is_enabled && !is_ads_enabled && is_ads_supported;
 }
 
 void RewardsServiceImpl::EnableRewards() {
@@ -3365,10 +3362,7 @@ void RewardsServiceImpl::GetWalletPassphrase(
 
 void RewardsServiceImpl::SetAdsEnabled(const bool is_enabled) {
   if (!is_enabled) {
-    auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-    if (ads_service) {
-      ads_service->SetEnabled(is_enabled);
-    }
+    profile_->GetPrefs()->SetBoolean(ads::prefs::kEnabled, is_enabled);
     return;
   }
 
@@ -3407,10 +3401,8 @@ void RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled(
     return;
   }
 
-  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-  if (ads_service) {
-    ads_service->SetEnabled(ads_service->IsSupportedLocale());
-  }
+  const bool is_ads_supported = ads::IsSupported();
+  profile_->GetPrefs()->SetBoolean(ads::prefs::kEnabled, is_ads_supported);
 }
 
 bool RewardsServiceImpl::IsBitFlyerRegion() const {

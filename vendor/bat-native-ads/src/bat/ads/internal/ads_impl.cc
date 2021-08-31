@@ -136,7 +136,7 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
   conversions_resource_->Load();
 }
 
-void AdsImpl::OnPrefChanged(const std::string& path) {
+void AdsImpl::OnPrefsChanged(const std::string& path) {
   if (path == prefs::kEnabled) {
     MaybeTopUpUnblindedTokens();
 

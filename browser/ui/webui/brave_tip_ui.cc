@@ -14,12 +14,12 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "bat/ads/pref_names.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
@@ -28,6 +28,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -377,13 +378,14 @@ void TipMessageHandler::GetAdsPerHour(const base::ListValue* args) {
 
 void TipMessageHandler::SetAdsPerHour(const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
-  const double adsPerHour = args->GetList()[0].GetDouble();
-  if (!ads_service_ || adsPerHour < 0) {
+  const double ads_per_hour = args->GetList()[0].GetDouble();
+  if (!ads_service_ || ads_per_hour < 0) {
     return;
   }
   AllowJavascript();
-  ads_service_->SetAdsPerHour(adsPerHour);
-  FireWebUIListener("adsPerHourUpdated", base::Value(adsPerHour));
+  Profile* profile = Profile::FromWebUI(web_ui());
+  profile->GetPrefs()->SetInt64(ads::prefs::kAdsPerHour, ads_per_hour);
+  FireWebUIListener("adsPerHourUpdated", base::Value(ads_per_hour));
 }
 
 void TipMessageHandler::TweetTip(const base::ListValue* args) {

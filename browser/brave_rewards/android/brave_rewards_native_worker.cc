@@ -16,16 +16,16 @@
 #include "base/containers/flat_map.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
+#include "bat/ads/pref_names.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/build/android/jni_headers/BraveRewardsNativeWorker_jni.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "content/public/browser/url_data_source.h"
 
-#define DEFAULT_ADS_PER_HOUR 2
+#define DEFAULT_ADS_PER_HOUR 5
 #define DEFAULT_AUTO_CONTRIBUTION_AMOUNT 10
 
 namespace chrome {
@@ -587,12 +587,12 @@ int BraveRewardsNativeWorker::GetAdsPerHour(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::SetAdsPerHour(JNIEnv* env, jint value) {
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
-  if (!ads_service_) {
+  Profile* profile = ProfileManager::GetActiveUserProfile();
+  if (!profile) {
     return;
   }
-  ads_service_->SetAdsPerHour(value);
+
+  profile->GetPrefs()->SetInt64(ads::pref::kAdsPerHour, value);
 }
 
 void BraveRewardsNativeWorker::SetAutoContributionAmount(JNIEnv* env,

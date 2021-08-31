@@ -70,7 +70,7 @@ interface BatAds {
   Initialize() => (bool success);
   Shutdown() => (bool success);
   ChangeLocale(string locale);
-  OnPrefChanged(string path);
+  OnPrefsChanged(string path);
   OnHtmlLoaded(int32 tab_id, array<string> redirect_chain, string html);
   OnTextLoaded(int32 tab_id, array<string> redirect_chain, string text);
   OnUserGesture(int32 page_transition_type);

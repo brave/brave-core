@@ -16,12 +16,13 @@
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "bat/ads/ads_util.h"
+#include "bat/ads/pref_names.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -67,6 +68,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RegisterMessages() override;
 
  private:
+  PrefService* GetPrefs();
   void RestartBrowser(const base::ListValue* args);
   void IsInitialized(const base::ListValue* args);
   void GetRewardsParameters(const base::ListValue* args);
@@ -516,6 +518,10 @@ void RewardsDOMHandler::Init() {
   rewards_service_->StartProcess(base::DoNothing());
 
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
+}
+
+PrefService* RewardsDOMHandler::GetPrefs() {
+  return Profile::FromWebUI(web_ui())->GetPrefs();
 }
 
 void RewardsDOMHandler::RestartBrowser(const base::ListValue* args) {
@@ -1137,26 +1143,27 @@ void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
 
   base::DictionaryValue ads_data;
 
-  auto is_supported_locale = ads_service_->IsSupportedLocale();
-  ads_data.SetBoolean("adsIsSupported", is_supported_locale);
+  const bool is_supported = ads::IsSupported();
+  ads_data.SetBoolean("adsIsSupported", is_supported);
 
-  auto is_enabled = ads_service_->IsEnabled();
+  const bool is_enabled = GetPrefs()->GetBoolean(ads::prefs::kEnabled);
   ads_data.SetBoolean("adsEnabled", is_enabled);
 
-  auto ads_per_hour = ads_service_->GetAdsPerHour();
+  const int ads_per_hour = ads_service_->GetAdsPerHour();
   ads_data.SetInteger("adsPerHour", ads_per_hour);
 
   const std::string subdivision_targeting_code =
-      ads_service_->GetAdsSubdivisionTargetingCode();
+      GetPrefs()->GetString(ads::prefs::kAdsSubdivisionTargetingCode);
   ads_data.SetString(kAdsSubdivisionTargeting, subdivision_targeting_code);
 
   const std::string auto_detected_subdivision_targeting_code =
-      ads_service_->GetAutoDetectedAdsSubdivisionTargetingCode();
+      GetPrefs()->GetString(
+          ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode);
   ads_data.SetString(kAutoDetectedAdsSubdivisionTargeting,
       auto_detected_subdivision_targeting_code);
 
   const bool should_allow_subdivision_ad_targeting =
-      ads_service_->ShouldAllowAdsSubdivisionTargeting();
+      GetPrefs()->GetBoolean(ads::prefs::kShouldAllowAdsSubdivisionTargeting);
   ads_data.SetBoolean(kShouldAllowAdsSubdivisionTargeting,
       should_allow_subdivision_ad_targeting);
 
@@ -1378,15 +1385,18 @@ void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
   const std::string value = args->GetList()[1].GetString();
 
   if (key == "adsEnabled") {
-    const auto is_enabled =
-        value == "true" && ads_service_->IsSupportedLocale();
+    const auto is_enabled = value == "true" && ads::IsSupported();
     rewards_service_->SetAdsEnabled(is_enabled);
   } else if (key == "adsPerHour") {
-    ads_service_->SetAdsPerHour(std::stoull(value));
+    int64_t int64_value;
+    const bool success = base::StringToInt64(value, &int64_value);
+    DCHECK(success);
+    GetPrefs()->SetInt64(ads::prefs::kAdsPerHour, int64_value);
   } else if (key == kAdsSubdivisionTargeting) {
-    ads_service_->SetAdsSubdivisionTargetingCode(value);
+    GetPrefs()->SetString(ads::prefs::kAdsSubdivisionTargetingCode, value);
   } else if (key == kAutoDetectedAdsSubdivisionTargeting) {
-    ads_service_->SetAutoDetectedAdsSubdivisionTargetingCode(value);
+    GetPrefs()->SetString(ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode,
+                          value);
   }
 
   base::ListValue* emptyArgs = nullptr;
@@ -1499,18 +1509,18 @@ void RewardsDOMHandler::GetEnabledInlineTippingPlatforms(
     const base::ListValue* args) {
   AllowJavascript();
 
-  // TODO(zenparsing): Consider using a PrefChangeRegistrar to monitor changes
-  // to these values.
-  auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   base::Value list(base::Value::Type::LIST);
 
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipGithubEnabled))
+  // TODO(zenparsing): Consider using a PrefChangeRegistrar to monitor changes
+  // to these values.
+
+  if (GetPrefs()->GetBoolean(brave_rewards::prefs::kInlineTipGithubEnabled))
     list.Append("github");
 
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipRedditEnabled))
+  if (GetPrefs()->GetBoolean(brave_rewards::prefs::kInlineTipRedditEnabled))
     list.Append("reddit");
 
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipTwitterEnabled))
+  if (GetPrefs()->GetBoolean(brave_rewards::prefs::kInlineTipTwitterEnabled))
     list.Append("twitter");
 
   CallJavascriptFunction("brave_rewards.enabledInlineTippingPlatforms",

@@ -14,7 +14,7 @@ LocaleHelperIos::LocaleHelperIos() = default;
 LocaleHelperIos::~LocaleHelperIos() = default;
 
 std::string LocaleHelperIos::GetLocale() const {
-  const auto locale = NSLocale.currentLocale;
+  const auto locale = [NSLocale currentLocale];
   return [NSString stringWithFormat:@"%@_%@",
           locale.languageCode, locale.countryCode].UTF8String;
 }

@@ -5,8 +5,5 @@ include_rules = [
 specific_include_rules = {
   "json_helper.h": [
     "+rapidjson",
-  ],
-  "ad_notifications.cc": [
-    "+brave/common/brave_channel_info.h",
   ]
 }

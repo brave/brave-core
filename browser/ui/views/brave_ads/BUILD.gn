@@ -40,7 +40,6 @@ source_set("brave_ads") {
     "//brave/app/vector_icons",
     "//brave/browser/profiles:util",
     "//brave/browser/ui/brave_ads",
-    "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/common",
     "//components/prefs",
     "//skia",

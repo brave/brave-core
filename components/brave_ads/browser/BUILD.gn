@@ -83,6 +83,7 @@ static_library("browser") {
       "//brave/browser/brave_ads/android:jni_headers",
       "//brave/build/android:jni_headers",
       "//chrome/android:jni_headers",
+      "//chrome/browser/profiles",
     ]
   }
 

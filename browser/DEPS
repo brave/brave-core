@@ -3,6 +3,7 @@ include_rules = [
   "+cc/paint",
   "+cc/test",
 
+  "+bat/ads/ads_util.h",
   "+bat/ads/pref_names.h",
   "+brave/app",
   "+brave/common",

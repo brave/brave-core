@@ -47,7 +47,7 @@ class BatAdsImpl :
   void ChangeLocale(
       const std::string& locale) override;
 
-  void OnPrefChanged(const std::string& path) override;
+  void OnPrefsChanged(const std::string& path) override;
 
   void OnHtmlLoaded(const int32_t tab_id,
                     const std::vector<std::string>& redirect_chain,

@@ -12,6 +12,8 @@
 
 #include "base/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "bat/ads/ads_util.h"
+#include "bat/ads/pref_names.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/tip_dialog.h"
@@ -19,7 +21,6 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_rewards.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/chrome_extension_function_details.h"
@@ -661,15 +662,13 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
 
-  if (!rewards_service || !ads_service) {
+  if (!rewards_service) {
     return RespondNow(Error("Service is not initialized"));
   }
 
   if (params->key == "adsEnabled") {
-    const auto is_enabled =
-        params->value == "true" && ads_service->IsSupportedLocale();
+    const auto is_enabled = params->value == "true" && ads::IsSupported();
     rewards_service->SetAdsEnabled(is_enabled);
   }
 
@@ -1069,15 +1068,10 @@ BraveRewardsGetAdsEnabledFunction::
 ExtensionFunction::ResponseAction
 BraveRewardsGetAdsEnabledFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  AdsService* ads_service =
-      AdsServiceFactory::GetForProfile(profile);
+  DCHECK(profile);
 
-  if (!ads_service) {
-    return RespondNow(Error("Ads service is not initialized"));
-  }
-
-  const bool enabled = ads_service->IsEnabled();
-  return RespondNow(OneArgument(base::Value(enabled)));
+  const bool is_enabled = profile->GetPrefs()->GetBoolean(ads::prefs::kEnabled);
+  return RespondNow(OneArgument(base::Value(is_enabled)));
 }
 
 BraveRewardsGetAdsAccountStatementFunction::
@@ -1128,16 +1122,8 @@ BraveRewardsGetAdsSupportedFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsGetAdsSupportedFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  AdsService* ads_service =
-      AdsServiceFactory::GetForProfile(profile);
-
-  if (!ads_service) {
-    return RespondNow(Error("Ads service is not initialized"));
-  }
-
-  const bool supported = ads_service->IsSupportedLocale();
-  return RespondNow(OneArgument(base::Value(supported)));
+  const bool is_supported = ads::IsSupported();
+  return RespondNow(OneArgument(base::Value(is_supported)));
 }
 
 BraveRewardsGetAnonWalletStatusFunction::
@@ -1221,20 +1207,16 @@ ExtensionFunction::ResponseAction BraveRewardsGetPrefsFunction::Run() {
 void BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback(
     ledger::type::AutoContributePropertiesPtr properties) {
   base::Value prefs(base::Value::Type::DICTIONARY);
+
   prefs.SetBoolKey("autoContributeEnabled", properties->enabled_contribute);
   prefs.SetDoubleKey("autoContributeAmount", properties->amount);
 
-  auto* ads_service = AdsServiceFactory::GetForProfile(
-      Profile::FromBrowserContext(browser_context()));
-
-  if (ads_service) {
-    prefs.SetBoolKey("adsEnabled", ads_service->IsEnabled());
-    prefs.SetDoubleKey("adsPerHour",
-                       static_cast<double>(ads_service->GetAdsPerHour()));
-  } else {
-    prefs.SetBoolKey("adsEnabled", false);
-    prefs.SetDoubleKey("adsPerHour", 0);
-  }
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  const bool is_enabled = profile->GetPrefs()->GetBoolean(ads::prefs::kEnabled);
+  prefs.SetBoolKey("adsEnabled", is_enabled);
+  const int ads_per_hour =
+      profile->GetPrefs()->GetInteger(ads::prefs::kAdsPerHour);
+  prefs.SetDoubleKey("adsPerHour", static_cast<double>(ads_per_hour));
 
   Respond(OneArgument(std::move(prefs)));
 }
@@ -1247,7 +1229,6 @@ ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
 
   auto* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  auto* ads_service = AdsServiceFactory::GetForProfile(profile);
 
   if (rewards_service) {
     bool* ac_enabled = params->prefs.auto_contribute_enabled.get();
@@ -1259,14 +1240,14 @@ ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
       rewards_service->SetAutoContributionAmount(*ac_amount);
   }
 
-  if (ads_service) {
-    bool* ads_enabled = params->prefs.ads_enabled.get();
-    if (ads_enabled)
-      ads_service->SetEnabled(*ads_enabled);
+  bool* ads_enabled = params->prefs.ads_enabled.get();
+  if (ads_enabled) {
+    profile->GetPrefs()->SetBoolean(ads::prefs::kEnabled, *ads_enabled);
+  }
 
-    int* ads_per_hour = params->prefs.ads_per_hour.get();
-    if (ads_per_hour)
-      ads_service->SetAdsPerHour(*ads_per_hour);
+  int* ads_per_hour = params->prefs.ads_per_hour.get();
+  if (ads_per_hour) {
+    profile->GetPrefs()->SetInt64(ads::prefs::kAdsPerHour, *ads_per_hour);
   }
 
   return RespondNow(NoArguments());

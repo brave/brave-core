@@ -15,8 +15,8 @@
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
+#include "bat/ads/ads_util.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -62,12 +62,8 @@ void ViewCounterService::RegisterProfilePrefs(
 ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
                                        brave_ads::AdsService* ads_service,
                                        PrefService* prefs,
-                                       PrefService* local_state,
-                                       bool is_supported_locale)
-    : service_(service),
-      ads_service_(ads_service),
-      prefs_(prefs),
-      is_supported_locale_(is_supported_locale) {
+                                       PrefService* local_state)
+    : service_(service), ads_service_(ads_service), prefs_(prefs) {
   DCHECK(service_);
   service_->AddObserver(this);
 
@@ -320,8 +316,8 @@ bool ViewCounterService::IsBackgroundWallpaperActive() const {
 
 bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
   return prefs_->GetBoolean(
-      prefs::kNewTabPageShowSponsoredImagesBackgroundImage) &&
-        is_supported_locale_;
+             prefs::kNewTabPageShowSponsoredImagesBackgroundImage) &&
+         ads::IsSupported();
 }
 
 bool ViewCounterService::IsSuperReferralWallpaperOptedIn() const {

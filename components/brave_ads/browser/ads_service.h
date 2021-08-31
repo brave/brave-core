@@ -73,24 +73,7 @@ class AdsService : public KeyedService {
   void AddObserver(AdsServiceObserver* observer);
   void RemoveObserver(AdsServiceObserver* observer);
 
-  virtual bool IsSupportedLocale() const = 0;
-  virtual bool IsNewlySupportedLocale() = 0;
-
-  virtual bool IsEnabled() const = 0;
-  virtual void SetEnabled(const bool is_enabled) = 0;
-
-  virtual void SetAllowConversionTracking(const bool should_allow) = 0;
-
   virtual int64_t GetAdsPerHour() const = 0;
-  virtual void SetAdsPerHour(const int64_t ads_per_hour) = 0;
-
-  virtual bool ShouldAllowAdsSubdivisionTargeting() const = 0;
-  virtual std::string GetAdsSubdivisionTargetingCode() const = 0;
-  virtual void SetAdsSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) = 0;
-  virtual std::string GetAutoDetectedAdsSubdivisionTargetingCode() const = 0;
-  virtual void SetAutoDetectedAdsSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) = 0;
 
   virtual void OnShowAdNotification(const std::string& notification_id) = 0;
   virtual void OnCloseAdNotification(const std::string& notification_id,

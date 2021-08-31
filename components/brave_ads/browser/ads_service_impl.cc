@@ -37,6 +37,7 @@
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history_info.h"
+#include "bat/ads/ads_util.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "bat/ads/statement_info.h"
@@ -91,7 +92,6 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "third_party/dom_distiller_js/dom_distiller.pb.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/message_center/public/cpp/notification.h"
@@ -238,59 +238,6 @@ void AdsServiceImpl::OnResourceComponentUpdated(const std::string& id) {
   bat_ads_->OnResourceComponentUpdated(id);
 }
 
-bool AdsServiceImpl::IsSupportedLocale() const {
-  const std::string locale = GetLocale();
-  return ads::IsSupportedLocale(locale);
-}
-
-bool AdsServiceImpl::IsNewlySupportedLocale() {
-  if (!IsSupportedLocale()) {
-    return false;
-  }
-
-  const int schema_version =
-      GetIntegerPref(prefs::kSupportedCountryCodesSchemaVersion);
-  if (schema_version != prefs::kSupportedCountryCodesSchemaVersionNumber) {
-    SetIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion,
-                   schema_version);
-
-    SetIntegerPref(prefs::kSupportedCountryCodesSchemaVersion,
-                   prefs::kSupportedCountryCodesSchemaVersionNumber);
-  }
-
-  const int last_schema_version =
-      GetIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion);
-
-  const std::string locale = GetLocale();
-  return ads::IsNewlySupportedLocale(locale, last_schema_version);
-}
-
-void AdsServiceImpl::SetEnabled(const bool is_enabled) {
-  SetBooleanPref(ads::prefs::kEnabled, is_enabled);
-}
-
-void AdsServiceImpl::SetAllowConversionTracking(const bool should_allow) {
-  SetBooleanPref(ads::prefs::kShouldAllowConversionTracking, should_allow);
-}
-
-void AdsServiceImpl::SetAdsPerHour(const int64_t ads_per_hour) {
-  DCHECK(ads_per_hour >= ads::kMinimumAdNotificationsPerHour &&
-         ads_per_hour <= ads::kMaximumAdNotificationsPerHour);
-  SetInt64Pref(ads::prefs::kAdsPerHour, ads_per_hour);
-}
-
-void AdsServiceImpl::SetAdsSubdivisionTargetingCode(
-    const std::string& subdivision_targeting_code) {
-  SetStringPref(ads::prefs::kAdsSubdivisionTargetingCode,
-                subdivision_targeting_code);
-}
-
-void AdsServiceImpl::SetAutoDetectedAdsSubdivisionTargetingCode(
-    const std::string& subdivision_targeting_code) {
-  SetStringPref(ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode,
-                subdivision_targeting_code);
-}
-
 void AdsServiceImpl::ChangeLocale(const std::string& locale) {
   if (!connected()) {
     return;
@@ -299,14 +246,6 @@ void AdsServiceImpl::ChangeLocale(const std::string& locale) {
   RegisterResourceComponentsForLocale(locale);
 
   bat_ads_->ChangeLocale(locale);
-}
-
-void AdsServiceImpl::OnPrefChanged(const std::string& path) {
-  if (!connected()) {
-    return;
-  }
-
-  bat_ads_->OnPrefChanged(path);
 }
 
 void AdsServiceImpl::OnHtmlLoaded(const SessionID& tab_id,
@@ -385,7 +324,7 @@ void AdsServiceImpl::OnTabClosed(const SessionID& tab_id) {
   bat_ads_->OnTabClosed(tab_id.id());
 }
 
-void AdsServiceImpl::OnWalletUpdated() {
+void AdsServiceImpl::GetBraveWallet() {
   if (!connected()) {
     return;
   }
@@ -525,17 +464,15 @@ void AdsServiceImpl::ToggleFlagAd(const std::string& creative_instance_id,
                                         AsWeakPtr(), std::move(callback)));
 }
 
-bool AdsServiceImpl::IsEnabled() const {
-  return GetBooleanPref(ads::prefs::kEnabled);
-}
-
 bool AdsServiceImpl::IsBraveNewsEnabled() const {
   return GetBooleanPref(kBraveTodayOptedIn) &&
          GetBooleanPref(kNewTabPageShowToday);
 }
 
 bool AdsServiceImpl::ShouldStart() const {
-  return IsEnabled() || IsBraveNewsEnabled();
+  const bool is_enabled = GetBooleanPref(ads::prefs::kEnabled);
+
+  return is_enabled || IsBraveNewsEnabled();
 }
 
 int64_t AdsServiceImpl::GetAdsPerHour() const {
@@ -553,20 +490,6 @@ int64_t AdsServiceImpl::GetAdsPerHour() const {
       ads_per_hour, static_cast<int64_t>(ads::kMinimumAdNotificationsPerHour),
       static_cast<int64_t>(ads::kMaximumAdNotificationsPerHour));
 }
-
-bool AdsServiceImpl::ShouldAllowAdsSubdivisionTargeting() const {
-  return GetBooleanPref(ads::prefs::kShouldAllowAdsSubdivisionTargeting);
-}
-
-std::string AdsServiceImpl::GetAdsSubdivisionTargetingCode() const {
-  return GetStringPref(ads::prefs::kAdsSubdivisionTargetingCode);
-}
-
-std::string AdsServiceImpl::GetAutoDetectedAdsSubdivisionTargetingCode() const {
-  return GetStringPref(ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode);
-}
-
-///////////////////////////////////////////////////////////////////////////////
 
 void AdsServiceImpl::Shutdown() {
   is_initialized_ = false;
@@ -587,8 +510,6 @@ void AdsServiceImpl::Shutdown() {
       file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
   VLOG_IF(1, !success) << "Failed to release database";
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 bool MigrateConfirmationsStateOnFileTaskRunner(const base::FilePath& path) {
   const base::FilePath rewards_service_base_path =
@@ -753,7 +674,7 @@ bool AdsServiceImpl::StartService() {
 }
 
 void AdsServiceImpl::MaybeStart(const bool should_restart) {
-  if (!IsSupportedLocale()) {
+  if (!ads::IsSupported()) {
     VLOG(1) << GetLocale() << " locale does not support ads";
     Shutdown();
     return;
@@ -913,7 +834,7 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
   const std::string locale = GetLocale();
   RegisterResourceComponentsForLocale(locale);
 
-  OnWalletUpdated();
+  GetBraveWallet();
 
   MaybeShowMyFirstAdNotification();
 }
@@ -1705,13 +1626,13 @@ void AdsServiceImpl::MigratePrefsVersion6To7() {
     return;
   }
 
-  SetEnabled(false);
+  SetBooleanPref(ads::prefs::kEnabled, false);
 }
 
 void AdsServiceImpl::MigratePrefsVersion7To8() {
   const bool rewards_enabled = GetBooleanPref(brave_rewards::prefs::kEnabled);
   if (!rewards_enabled) {
-    SetEnabled(false);
+    SetBooleanPref(ads::prefs::kEnabled, false);
   }
 }
 
@@ -1729,7 +1650,7 @@ void AdsServiceImpl::MigratePrefsVersion9To10() {
   if (ads_per_hour == -1 || ads_per_hour == 2) {
     // The user did not change the ads per hour setting from the legacy default
     // value of 2 so we should clear the preference to transition to
-    // |kDefaultAdNotificationsPerHour|
+    // |kDefaultDefaultAdNotificationsPerHour|
     profile_->GetPrefs()->ClearPref(ads::prefs::kAdsPerHour);
   }
 }
@@ -1742,7 +1663,7 @@ void AdsServiceImpl::MigratePrefsVersion10To11() {
   const int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
   if (ads_per_hour == 0 || ads_per_hour == -1) {
     // Clear the ads per hour preference to transition to
-    // |kDefaultAdNotificationsPerHour|
+    // |kDefaultDefaultAdNotificationsPerHour|
     profile_->GetPrefs()->ClearPref(ads::prefs::kAdsPerHour);
   }
 }
@@ -1773,7 +1694,7 @@ void AdsServiceImpl::DisableAdsIfUpgradingFromPreBraveAdsBuild() {
     return;
   }
 
-  SetEnabled(false);
+  SetBooleanPref(ads::prefs::kEnabled, false);
 }
 
 void AdsServiceImpl::DisableAdsForUnsupportedCountryCodes(
@@ -1784,7 +1705,7 @@ void AdsServiceImpl::DisableAdsForUnsupportedCountryCodes(
     return;
   }
 
-  SetEnabled(false);
+  SetBooleanPref(ads::prefs::kEnabled, false);
 }
 
 uint64_t AdsServiceImpl::MigrateTimestampToDoubleT(
@@ -1818,34 +1739,44 @@ void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
 }
 
 bool AdsServiceImpl::ShouldShowMyFirstAdNotification() const {
-  auto should_show = GetBooleanPref(prefs::kShouldShowMyFirstAdNotification);
-  return IsEnabled() && should_show;
+  const bool is_enabled = GetBooleanPref(ads::prefs::kEnabled);
+
+  const bool should_show =
+      GetBooleanPref(prefs::kShouldShowMyFirstAdNotification);
+
+  return is_enabled && should_show;
 }
 
 bool AdsServiceImpl::PrefExists(const std::string& path) const {
   return profile_->GetPrefs()->HasPrefPath(path);
 }
 
-void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
-  if (pref == ads::prefs::kEnabled || pref == kBraveTodayOptedIn ||
-      pref == kNewTabPageShowToday) {
-    if (pref == ads::prefs::kEnabled) {
-      rewards_service_->OnAdsEnabled(IsEnabled());
+void AdsServiceImpl::OnPrefsChanged(const std::string& path) {
+  if (connected()) {
+    bat_ads_->OnPrefsChanged(path);
+  }
 
-      if (!IsEnabled()) {
+  if (path == ads::prefs::kEnabled || path == kBraveTodayOptedIn ||
+      path == kNewTabPageShowToday) {
+    if (path == ads::prefs::kEnabled) {
+      const bool is_enabled = GetBooleanPref(ads::prefs::kEnabled);
+
+      rewards_service_->OnAdsEnabled(is_enabled);
+
+      if (!is_enabled) {
         SuspendP2AHistograms();
         VLOG(1) << "P2A histograms suspended";
       }
 
       brave_rewards::p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
-                                                           pref);
+                                                           path);
     }
 
     MaybeStart(/* should_restart */ false);
-  } else if (pref == ads::prefs::kIdleTimeThreshold) {
+  } else if (path == ads::prefs::kIdleTimeThreshold) {
     StartCheckIdleStateTimer();
-  } else if (pref == brave_rewards::prefs::kWalletBrave) {
-    OnWalletUpdated();
+  } else if (path == brave_rewards::prefs::kWalletBrave) {
+    GetBraveWallet();
   }
 }
 
@@ -2232,7 +2163,6 @@ bool AdsServiceImpl::GetBooleanPref(const std::string& path) const {
 
 void AdsServiceImpl::SetBooleanPref(const std::string& path, const bool value) {
   profile_->GetPrefs()->SetBoolean(path, value);
-  OnPrefChanged(path);
 }
 
 int AdsServiceImpl::GetIntegerPref(const std::string& path) const {
@@ -2241,7 +2171,6 @@ int AdsServiceImpl::GetIntegerPref(const std::string& path) const {
 
 void AdsServiceImpl::SetIntegerPref(const std::string& path, const int value) {
   profile_->GetPrefs()->SetInteger(path, value);
-  OnPrefChanged(path);
 }
 
 double AdsServiceImpl::GetDoublePref(const std::string& path) const {
@@ -2251,7 +2180,6 @@ double AdsServiceImpl::GetDoublePref(const std::string& path) const {
 void AdsServiceImpl::SetDoublePref(const std::string& path,
                                    const double value) {
   profile_->GetPrefs()->SetDouble(path, value);
-  OnPrefChanged(path);
 }
 
 std::string AdsServiceImpl::GetStringPref(const std::string& path) const {
@@ -2261,7 +2189,6 @@ std::string AdsServiceImpl::GetStringPref(const std::string& path) const {
 void AdsServiceImpl::SetStringPref(const std::string& path,
                                    const std::string& value) {
   profile_->GetPrefs()->SetString(path, value);
-  OnPrefChanged(path);
 }
 
 int64_t AdsServiceImpl::GetInt64Pref(const std::string& path) const {
@@ -2276,7 +2203,6 @@ int64_t AdsServiceImpl::GetInt64Pref(const std::string& path) const {
 void AdsServiceImpl::SetInt64Pref(const std::string& path,
                                   const int64_t value) {
   profile_->GetPrefs()->SetInt64(path, value);
-  OnPrefChanged(path);
 }
 
 uint64_t AdsServiceImpl::GetUint64Pref(const std::string& path) const {
@@ -2291,12 +2217,10 @@ uint64_t AdsServiceImpl::GetUint64Pref(const std::string& path) const {
 void AdsServiceImpl::SetUint64Pref(const std::string& path,
                                    const uint64_t value) {
   profile_->GetPrefs()->SetUint64(path, value);
-  OnPrefChanged(path);
 }
 
 void AdsServiceImpl::ClearPref(const std::string& path) {
   profile_->GetPrefs()->ClearPref(path);
-  OnPrefChanged(path);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

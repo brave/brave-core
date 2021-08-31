@@ -19,6 +19,7 @@
 #include "base/task_runner_util.h"
 #include "bat/ads/ad_event_history.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/ads_util.h"
 #include "bat/ads/database.h"
 #include "bat/ads/pref_names.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
@@ -194,24 +195,8 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
 #pragma mark - Global
 
-+ (BOOL)isSupportedLocale:(NSString*)locale {
-  return ads::IsSupportedLocale(base::SysNSStringToUTF8(locale));
-}
-
-+ (BOOL)isNewlySupportedLocale:(NSString*)locale {
-  // TODO(khickinson): Add support for last schema version, however for the MVP
-  // we can safely pass 0 as all locales are newly supported
-  return ads::IsNewlySupportedLocale(base::SysNSStringToUTF8(locale), 0);
-}
-
-+ (BOOL)isCurrentLocaleSupported {
-  return [self isSupportedLocale:[self currentLocaleCode]];
-}
-
-+ (NSString*)currentLocaleCode {
-  const auto locale = NSLocale.currentLocale;
-  return [NSString
-      stringWithFormat:@"%@_%@", locale.languageCode, locale.countryCode];
++ (BOOL)isSupported {
+  return ads::IsSupported();
 }
 
 BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
@@ -386,7 +371,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)savePref:(NSString*)name {
   if ([self isAdsServiceRunning]) {
-    ads->OnPrefChanged(base::SysNSStringToUTF8(name));
+    ads->OnPrefsChanged(base::SysNSStringToUTF8(name));
   }
 
   [self savePrefs];

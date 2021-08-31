@@ -8,10 +8,14 @@
 #include <string>
 
 #include "base/android/jni_string.h"
+#include "bat/ads/ads_util.h"
+#include "bat/ads/pref_names.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_ads/android/jni_headers/BraveAdsNativeHelper_jni.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_ads {
 
@@ -20,12 +24,9 @@ jboolean JNI_BraveAdsNativeHelper_IsBraveAdsEnabled(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-  if (!ads_service) {
-    return false;
-  }
+  DCHECK(profile);
 
-  return ads_service->IsEnabled();
+  return profile->GetPrefs()->GetBoolean(ads::prefs::kEnabled);
 }
 
 // static
@@ -43,29 +44,10 @@ void JNI_BraveAdsNativeHelper_SetAdsEnabled(
 }
 
 // static
-jboolean JNI_BraveAdsNativeHelper_IsNewlySupportedLocale(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-  if (!ads_service) {
-    return false;
-  }
-
-  return ads_service->IsNewlySupportedLocale();
-}
-
-// static
 jboolean JNI_BraveAdsNativeHelper_IsSupportedLocale(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-  if (!ads_service) {
-    return false;
-  }
-
-  return ads_service->IsSupportedLocale();
+  return ads::IsSupported();
 }
 
 // static

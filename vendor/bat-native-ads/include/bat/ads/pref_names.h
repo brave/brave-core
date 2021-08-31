@@ -42,7 +42,6 @@ extern const char kUnreconciledTransactions[];
 extern const char kHasMigratedConversionState[];
 
 }  // namespace prefs
-
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_PREF_NAMES_H_

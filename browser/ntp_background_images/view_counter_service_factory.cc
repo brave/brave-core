@@ -11,7 +11,6 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -56,18 +55,13 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
   if (auto* service =
           g_brave_browser_process->ntp_background_images_service()) {
     Profile* profile = Profile::FromBrowserContext(browser_context);
-    bool is_supported_locale = false;
     auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile);
-    if (ads_service) {
-      is_supported_locale = ads_service->IsSupportedLocale();
-    }
     content::URLDataSource::Add(
         browser_context,
         std::make_unique<NTPBackgroundImagesSource>(service));
 
     return new ViewCounterService(service, ads_service, profile->GetPrefs(),
-                                  g_browser_process->local_state(),
-                                  is_supported_locale);
+                                  g_browser_process->local_state());
   }
 
   return nullptr;

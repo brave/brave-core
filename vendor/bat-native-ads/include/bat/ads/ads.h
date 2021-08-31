@@ -56,13 +56,6 @@ extern bool g_is_debug;
 // Catalog schema resource id
 extern const char g_catalog_schema_resource_id[];
 
-// Returns true if the locale is supported otherwise returns false
-bool IsSupportedLocale(const std::string& locale);
-
-// Returns true if the locale is newly supported otherwise returns false
-bool IsNewlySupportedLocale(const std::string& locale,
-                            const int last_schema_version);
-
 class ADS_EXPORT Ads {
  public:
   Ads() = default;
@@ -87,7 +80,7 @@ class ADS_EXPORT Ads {
   virtual void ChangeLocale(const std::string& locale) = 0;
 
   // Should be called when a pref changes. |path| contains the pref path
-  virtual void OnPrefChanged(const std::string& path) = 0;
+  virtual void OnPrefsChanged(const std::string& path) = 0;
 
   // Should be called when a page has loaded and the content is available for
   // analysis. |redirect_chain| contains the chain of redirects, including
