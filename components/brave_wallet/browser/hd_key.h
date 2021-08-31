@@ -37,6 +37,7 @@ class HDKey {
   // base58 encoded of hash160 of private key
   std::string GetPrivateExtendedKey() const;
   std::string GetHexEncodedPrivateKey() const;
+  const std::vector<uint8_t>& private_key() const { return private_key_; }
   // TODO(darkdh): For exporting private key as keystore file
   // std::string GetPrivateKeyinV3UTC() const;
 
@@ -79,9 +80,7 @@ class HDKey {
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, GenerateFromExtendedKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SetPrivateKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SetPublicKey);
-  FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, DeriveChildFromPath);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SignAndVerifyAndRecover);
-  FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, GetHexEncodedPrivateKey);
 
   void GeneratePublicKey();
   const std::vector<uint8_t> Hash160(const std::vector<uint8_t>& input);

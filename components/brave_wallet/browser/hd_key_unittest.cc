@@ -183,7 +183,7 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(hdkey_from_pri->index_, 2u);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pri->chain_code_)),
             "9452b549be8cea3ecb7a84bec10dcfd94afe4d129ebfd3b3cb58eedf394ed271");
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pri->private_key_)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pri->private_key())),
             "bb7d39bdb83ecf58f2fd82b6d918341cbef428661ef01ab97c28a4842125ac23");
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(hdkey_from_pri->public_key_)),
@@ -200,7 +200,7 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(hdkey_from_pub->index_, 2u);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pub->chain_code_)),
             "9452b549be8cea3ecb7a84bec10dcfd94afe4d129ebfd3b3cb58eedf394ed271");
-  EXPECT_TRUE(hdkey_from_pub->private_key_.empty());
+  EXPECT_TRUE(hdkey_from_pub->private_key().empty());
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(hdkey_from_pub->public_key_)),
       "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c");
@@ -287,11 +287,11 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
 TEST(HDKeyUnitTest, SetPrivateKey) {
   HDKey key;
   key.SetPrivateKey(std::vector<uint8_t>(31));
-  ASSERT_TRUE(key.private_key_.empty());
+  ASSERT_TRUE(key.private_key().empty());
   key.SetPrivateKey(std::vector<uint8_t>(33));
-  ASSERT_TRUE(key.private_key_.empty());
+  ASSERT_TRUE(key.private_key().empty());
   key.SetPrivateKey(std::vector<uint8_t>(32, 0x1));
-  EXPECT_FALSE(key.private_key_.empty());
+  EXPECT_FALSE(key.private_key().empty());
   EXPECT_TRUE(!IsPublicKeyEmpty(key.public_key_));
 }
 
@@ -358,19 +358,19 @@ TEST(HDKeyUnitTest, DeriveChildFromPath) {
         "xprv9s21ZrQH143K3ckY9DgU79uMTJkQRLdbCCVDh81SnxTgPzLLGax6uHeBULTtaEtcAv"
         "KjXfT7ZWtHzKjTpujMkUd9dDb8msDeAfnJxrgAYhr");
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(key->private_key_)),
+        base::ToLowerASCII(base::HexEncode(key->private_key())),
         "00000055378cf5fafb56c711c674143f9b0ee82ab0ba2924f19b64f5ae7cdbfd");
     std::unique_ptr<HDKey> derived_key =
         key->DeriveChildFromPath("m/44'/0'/0'/0/0'");
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(derived_key->private_key_)),
+        base::ToLowerASCII(base::HexEncode(derived_key->private_key())),
         "3348069561d2a0fb925e74bf198762acc47dce7db27372257d2d959a9e6f8aeb");
   }
 }
 
 TEST(HDKeyUnitTest, GetHexEncodedPrivateKey) {
   HDKey key;
-  ASSERT_TRUE(key.private_key_.empty());
+  ASSERT_TRUE(key.private_key().empty());
   EXPECT_EQ("", key.GetHexEncodedPrivateKey());
 
   std::unique_ptr<HDKey> key2 = HDKey::GenerateFromExtendedKey(
@@ -407,6 +407,8 @@ TEST(HDKeyUnitTest, GenerateFromV3UTC) {
   ASSERT_TRUE(hd_key);
   EXPECT_EQ(GetHexAddr(hd_key.get()),
             "0xb14ab53e38da1c172f877dbc6d65e4a1b0474c3c");
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hd_key->private_key())),
+            "efca4cdd31923b50f4214af5d2ae10e7ac45a5019e9431cc195482d707485378");
 
   // wrong password
   EXPECT_FALSE(HDKey::GenerateFromV3UTC("brave1234", json));
