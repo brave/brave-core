@@ -332,7 +332,11 @@ if (target_cpu == "x86") {
 }
 
 action("create_symbols_dist") {
-  output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
+  if (is_android) {
+    output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_android_base-$target_cpu-symbols.zip"
+  } else {
+    output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
+  }
 
   script = "//brave/script/create-dist.py"
 
