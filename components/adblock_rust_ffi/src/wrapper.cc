@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "wrapper.h"
+#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include <iostream>
 
 extern "C" {
-#include "lib.h"
+#include "lib.h"  // NOLINT
 }
 
 namespace adblock {

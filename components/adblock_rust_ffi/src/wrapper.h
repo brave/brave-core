@@ -10,7 +10,7 @@
 #include <vector>
 
 extern "C" {
-#include "lib.h"
+#include "lib.h"  // NOLINT
 }
 
 #if defined(ADBLOCK_SHARED_LIBRARY)
@@ -47,7 +47,7 @@ class ADBLOCK_EXPORT FilterList {
              const std::string& component_id,
              const std::string& base64_public_key,
              const std::string& desc);
-  FilterList(const FilterList& other);
+  explicit FilterList(const FilterList& other);
   ~FilterList();
 
   const std::string uuid;
@@ -67,7 +67,7 @@ class ADBLOCK_EXPORT FilterList {
 class ADBLOCK_EXPORT Engine {
  public:
   Engine();
-  Engine(const std::string& rules);
+  explicit Engine(const std::string& rules);
   Engine(const char* data, size_t data_size);
   void matches(const std::string& url,
                const std::string& host,
