@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.view.inputmethod.InputMethodManager;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.brave_wallet.mojom.Network;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
@@ -126,5 +127,66 @@ public class Utils {
         assert activity != null;
         Intent accountDetailActivityIntent = new Intent(activity, AccountDetailActivity.class);
         activity.startActivity(accountDetailActivityIntent);
+    }
+
+    public static List<String> getNetworksList(Activity activity) {
+        List<String> categories = new ArrayList<String>();
+        categories.add(activity.getText(R.string.mainnet).toString());
+        categories.add(activity.getText(R.string.rinkeby).toString());
+        categories.add(activity.getText(R.string.ropsten).toString());
+        categories.add(activity.getText(R.string.goerli).toString());
+        categories.add(activity.getText(R.string.kovan).toString());
+        categories.add(activity.getText(R.string.localhost).toString());
+        categories.add(activity.getText(R.string.custom).toString());
+
+        return categories;
+    }
+
+    public static CharSequence getNetworkText(Activity activity, int network) {
+        CharSequence strNetwork = activity.getText(R.string.mainnet);
+        switch (network) {
+            case Network.RINKEBY:
+                strNetwork = activity.getText(R.string.rinkeby);
+                break;
+            case Network.ROPSTEN:
+                strNetwork = activity.getText(R.string.ropsten);
+                break;
+            case Network.GOERLI:
+                strNetwork = activity.getText(R.string.goerli);
+                break;
+            case Network.KOVAN:
+                strNetwork = activity.getText(R.string.kovan);
+                break;
+            case Network.LOCALHOST:
+                strNetwork = activity.getText(R.string.localhost);
+                break;
+            case Network.CUSTOM:
+                strNetwork = activity.getText(R.string.custom);
+                break;
+            case Network.MAINNET:
+            default:
+                strNetwork = activity.getText(R.string.mainnet);
+        }
+
+        return strNetwork;
+    }
+
+    public static int getNetworkId(Activity activity, String network) {
+        int networkId = Network.MAINNET;
+        if (network.equals(activity.getText(R.string.rinkeby).toString())) {
+            networkId = Network.RINKEBY;
+        } else if (network.equals(activity.getText(R.string.ropsten).toString())) {
+            networkId = Network.ROPSTEN;
+        } else if (network.equals(activity.getText(R.string.goerli).toString())) {
+            networkId = Network.GOERLI;
+        } else if (network.equals(activity.getText(R.string.kovan).toString())) {
+            networkId = Network.KOVAN;
+        } else if (network.equals(activity.getText(R.string.localhost).toString())) {
+            networkId = Network.LOCALHOST;
+        } else if (network.equals(activity.getText(R.string.custom).toString())) {
+            networkId = Network.CUSTOM;
+        }
+
+        return networkId;
     }
 }

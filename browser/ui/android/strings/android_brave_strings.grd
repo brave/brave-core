@@ -1855,8 +1855,26 @@ until they verify, or until 90 days have passed.
     <message name="IDS_ACCOUNT_RECOVERY_FAILED" desc="Brave Wallet text">
       Account recovery failed. Please try again.
     </message>
-    <message name="IDS_MAINNET" desc="Brave Wallet network selection button text">
+    <message name="IDS_MAINNET" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Mainnet
+    </message>
+    <message name="IDS_RINKEBY" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Rinkeby
+    </message>
+    <message name="IDS_ROPSTEN" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Ropsten
+    </message>
+    <message name="IDS_GOERLI" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Goerli
+    </message>
+    <message name="IDS_KOVAN" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Kovan
+    </message>
+    <message name="IDS_LOCALHOST" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Localhost
+    </message>
+    <message name="IDS_CUSTOM" desc="Brave Wallet network selection button text(network name)">
+      Custom
     </message>
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Market Price in ETH
