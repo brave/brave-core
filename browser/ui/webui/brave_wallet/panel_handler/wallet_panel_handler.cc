@@ -54,7 +54,6 @@ void WalletPanelHandler::AddEthereumChainApproved(const std::string& payload,
     auto* prefs = user_prefs::UserPrefs::Get(contents->GetBrowserContext());
     ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
     base::ListValue* list = update.Get();
-    DLOG(INFO) << payload;
     absl::optional<base::Value> value = base::JSONReader::Read(payload);
     if (value && brave_wallet::ValueToEthereumChain(value.value())) {
       list->Append(std::move(value).value_or(base::Value()));
