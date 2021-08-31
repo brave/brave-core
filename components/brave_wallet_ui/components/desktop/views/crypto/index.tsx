@@ -218,16 +218,11 @@ const CryptoView = (props: Props) => {
           onClickBackup={onShowBackup}
           onClickAddAccount={onClickAddAccount}
           onUpdateAccountName={onUpdateAccountName}
-          onUpdateVisibleTokens={onUpdateVisibleTokens}
-          fetchFullTokenList={fetchFullTokenList}
           onRemoveAccount={onRemoveAccount}
           onDoneViewingPrivateKey={onDoneViewingPrivateKey}
           onViewPrivateKey={onViewPrivateKey}
           privateKey={privateKey}
-          userAssetList={userAssetList}
-          userWatchList={userWatchList}
           transactions={transactions}
-          fullAssetList={fullAssetList}
         />
       }
       {showAddModal &&
