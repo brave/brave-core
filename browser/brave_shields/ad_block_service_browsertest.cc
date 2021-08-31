@@ -164,8 +164,8 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
           kRegionalAdBlockComponentTest64PublicKey);
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
-  const std::vector<adblock::FilterList> regional_catalog = {
-      adblock::FilterList(
+  std::vector<adblock::FilterList> regional_catalog;
+  regional_catalog.push_back(adblock::FilterList(
           uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
           "EasyList Liste FR", {"fr"},
           "https://forums.lanik.us/viewforum.php?f=91",
@@ -181,7 +181,7 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
           "YjrMVUMefKC/ywn/AAdnwM5mGirm1NflQCJQOpTjIhbRIXBlACfV/"
           "hwI1lqfKbFnyr4aP"
           "Odg3JcOZZVoyi+ko3rKG3vH9JPWEy24Ys9A3SYpTwIDAQAB",
-          "Removes advertisements from French websites")};
+          "Removes advertisements from French websites"));
   g_brave_browser_process->ad_block_regional_service_manager()
       ->SetRegionalCatalog(regional_catalog);
   const extensions::Extension* ad_block_extension =
