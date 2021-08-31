@@ -159,8 +159,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
      * @param context Context that is using the BraveShieldsMenu.
      */
     public BraveShieldsHandler(Context context) {
-        mContext = scanForActivity(context);
+        Context contextCandidate = scanForActivity(context);
         mHardwareButtonMenuAnchor = null;
+        mContext = (contextCandidate != null && (contextCandidate instanceof Activity))
+                ? contextCandidate
+                : null;
+
         if (mContext != null) {
             mHardwareButtonMenuAnchor = ((Activity)mContext).findViewById(R.id.menu_anchor_stub);
         }
@@ -215,6 +219,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     }
 
     public PopupWindow showPopupMenu(View anchorView) {
+        if (mContext == null) return null;
+
         int rotation = ((Activity)mContext).getWindowManager().getDefaultDisplay().getRotation();
         // This fixes the bug where the bottom of the menu starts at the top of
         // the keyboard, instead of overlapping the keyboard as it should.
@@ -399,6 +405,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     }
 
     private void setUpMainLayout() {
+        if (mContext == null) return;
+
         String favIconURL = mBraveRewardsNativeWorker.GetPublisherFavIconURL(mTabId);
         Tab currentActiveTab = mIconFetcher.getTab();
         String url = currentActiveTab.getUrl().getSpec();
@@ -491,6 +499,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     }
 
     private void setupDetailsLayouts() {
+        if (mContext == null) return;
+
         ArrayList<String> detailsLayouts = new ArrayList<>();
         detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
         detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
@@ -678,6 +688,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     }
 
     private void setUpMainSwitchLayout(boolean isChecked) {
+        if (mContext == null) return;
+
         TextView mShieldDownText = mMainLayout.findViewById(R.id.shield_down_text);
         Button mReportBrokenSiteButton = mMainLayout.findViewById(R.id.btn_report_broken_site);
         mReportBrokenSiteButton.setOnClickListener(new View.OnClickListener() {
@@ -867,7 +879,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
 
     private void SetFavIcon(Bitmap bmp) {
-        if (bmp != null) {
+        if (bmp != null && mContext != null) {
             ((Activity)mContext).runOnUiThread(
             new Runnable() {
                 @Override
