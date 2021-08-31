@@ -15,8 +15,8 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/download/brave_download_service_factory.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/download/background_download_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_key.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -48,7 +48,7 @@ class AdBlockSubscriptionDownloadManagerFactory
   AdBlockSubscriptionDownloadManagerFactory()
       : SimpleKeyedServiceFactory("AdBlockSubscriptionDownloadManagerFactory",
                                   SimpleDependencyManager::GetInstance()) {
-    DependsOn(BraveDownloadServiceFactory::GetInstance());
+    DependsOn(BackgroundDownloadServiceFactory::GetInstance());
   }
 
   ~AdBlockSubscriptionDownloadManagerFactory() override = default;
@@ -57,7 +57,7 @@ class AdBlockSubscriptionDownloadManagerFactory
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       SimpleFactoryKey* key) const override {
     return std::make_unique<AdBlockSubscriptionDownloadManager>(
-        BraveDownloadServiceFactory::GetForKey(key),
+        BackgroundDownloadServiceFactory::GetForKey(key),
         base::ThreadPool::CreateSequencedTaskRunner(
             {base::MayBlock(), base::TaskPriority::BEST_EFFORT}));
   }
