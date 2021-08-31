@@ -41,9 +41,7 @@ class DynamicFontHelper: NSObject {
      * Device specific
      */
     fileprivate var deviceFontSize: CGFloat
-    var DeviceFontSize: CGFloat {
-        return deviceFontSize
-    }
+    
     var DeviceFont: UIFont {
         return UIFont.systemFont(ofSize: deviceFontSize, weight: UIFont.Weight.medium)
     }
@@ -120,9 +118,7 @@ class DynamicFontHelper: NSObject {
      * Small
      */
     fileprivate var defaultSmallFontSize: CGFloat
-    var DefaultSmallFontSize: CGFloat {
-        return defaultSmallFontSize
-    }
+    
     var DefaultSmallFont: UIFont {
         return UIFont.systemFont(ofSize: defaultSmallFontSize, weight: UIFont.Weight.regular)
     }
@@ -134,9 +130,7 @@ class DynamicFontHelper: NSObject {
      * Medium
      */
     fileprivate var defaultMediumFontSize: CGFloat
-    var DefaultMediumFontSize: CGFloat {
-        return defaultMediumFontSize
-    }
+    
     var DefaultMediumFont: UIFont {
         return UIFont.systemFont(ofSize: defaultMediumFontSize, weight: UIFont.Weight.regular)
     }
@@ -148,9 +142,7 @@ class DynamicFontHelper: NSObject {
      * Standard
      */
     fileprivate var defaultStandardFontSize: CGFloat
-    var DefaultStandardFontSize: CGFloat {
-        return defaultStandardFontSize
-    }
+    
     var DefaultStandardFont: UIFont {
         return UIFont.systemFont(ofSize: defaultStandardFontSize, weight: UIFont.Weight.regular)
     }
