@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
-import { WalletAccountType, EthereumChain, TransactionPanelPayload } from '../../../constants/types'
+import { WalletAccountType, EthereumChain, TransactionInfo } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import locale from '../../../constants/locale'
@@ -37,47 +37,60 @@ import { TabRow } from '../shared-panel-styles'
 export type confirmPanelTabs = 'transaction' | 'details'
 
 export interface Props {
-  selectedAccount: WalletAccountType
-  transactionPayload: TransactionPanelPayload
+  accounts: WalletAccountType[]
+  transactionInfo: TransactionInfo
   selectedNetwork: EthereumChain
+  ethPrice: string
   onConfirm: () => void
   onReject: () => void
 }
 
 function ConfirmTransactionPanel (props: Props) {
   const {
-    selectedAccount,
+    accounts,
     selectedNetwork,
-    transactionPayload,
+    transactionInfo,
+    ethPrice,
     onConfirm,
     onReject
   } = props
   const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
   const fromOrb = React.useMemo(() => {
-    return create({ seed: selectedAccount.address, size: 8, scale: 16 }).toDataURL()
-  }, [selectedAccount.address])
+    return create({ seed: transactionInfo.fromAddress, size: 8, scale: 16 }).toDataURL()
+  }, [transactionInfo])
 
   const toOrb = React.useMemo(() => {
-    return create({ seed: transactionPayload.toAddress, size: 8, scale: 10 }).toDataURL()
-  }, [transactionPayload])
+    return create({ seed: transactionInfo.txData.baseData.to, size: 8, scale: 10 }).toDataURL()
+  }, [transactionInfo])
 
-  const formatedAmounts = React.useMemo(() => {
-    const sendAmount = formatBalance(transactionPayload.transactionAmount, transactionPayload.erc20Token.decimals)
-    const sendFiatAmount = formatFiatBalance(transactionPayload.transactionAmount, transactionPayload.erc20Token.decimals, transactionPayload.tokenPrice)
-    const gasAmount = formatBalance(transactionPayload.transactionGas, 18)
-    const gasFiatAmount = formatFiatBalance(transactionPayload.transactionGas, 18, transactionPayload.ethPrice)
-    const grandTotalFiatAmount = Number(sendFiatAmount) + Number(gasFiatAmount)
-    return {
-      sendAmount,
-      sendFiatAmount,
-      gasAmount,
-      gasFiatAmount,
-      grandTotalFiatAmount
+  const formatedTransaction = React.useMemo(() => {
+    const { baseData } = transactionInfo.txData
+    const { gasPrice, value, data } = baseData
+    if (data.length === 0) {
+      const sendAmount = formatBalance(value, 18)
+      const sendFiatAmount = formatFiatBalance(value, 18, ethPrice)
+      const gasAmount = formatBalance(gasPrice, 18)
+      const gasFiatAmount = formatFiatBalance(gasPrice, 18, ethPrice)
+      const grandTotalFiatAmount = Number(sendFiatAmount) + Number(gasFiatAmount)
+      return {
+        sendAmount,
+        sendFiatAmount,
+        gasAmount,
+        gasFiatAmount,
+        grandTotalFiatAmount,
+        symbol: 'ETH'
+      }
+    } else {
+      return
     }
-  }, [transactionPayload])
+  }, [transactionInfo])
 
   const onSelectTab = (tab: confirmPanelTabs) => () => {
     setSelectedTab(tab)
+  }
+
+  const findAccountName = (address: string) => {
+    return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
   }
 
   return (
@@ -90,13 +103,13 @@ function ConfirmTransactionPanel (props: Props) {
         <ToCircle orb={toOrb} />
       </AccountCircleWrapper>
       <FromToRow>
-        <AccountNameText>{selectedAccount.name}</AccountNameText>
+        <AccountNameText>{findAccountName(transactionInfo.fromAddress)}</AccountNameText>
         <ArrowIcon />
-        <AccountNameText>{reduceAddress(transactionPayload.toAddress)}</AccountNameText>
+        <AccountNameText>{reduceAddress(transactionInfo.txData.baseData.to)}</AccountNameText>
       </FromToRow>
       <TransactionTypeText>{locale.confrimTransactionBid}</TransactionTypeText>
-      <TransactionAmmountBig>{formatedAmounts.sendAmount} {transactionPayload.erc20Token.symbol}</TransactionAmmountBig>
-      <TransactionFiatAmountBig>${formatedAmounts.sendFiatAmount}</TransactionFiatAmountBig>
+      <TransactionAmmountBig>{formatedTransaction?.sendAmount} {formatedTransaction?.symbol}</TransactionAmmountBig>
+      <TransactionFiatAmountBig>${formatedTransaction?.sendFiatAmount}</TransactionFiatAmountBig>
       <TabRow>
         <PanelTab
           isSelected={selectedTab === 'transaction'}
@@ -116,8 +129,8 @@ function ConfirmTransactionPanel (props: Props) {
               <TransactionTitle>{locale.confirmTransactionGasFee}</TransactionTitle>
               <SectionRightColumn>
                 <EditButton>{locale.allowSpendEditButton}</EditButton>
-                <TransactionTypeText>{formatedAmounts.gasAmount} ETH</TransactionTypeText>
-                <TransactionText>${formatedAmounts.gasFiatAmount}</TransactionText>
+                <TransactionTypeText>{formatedTransaction?.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
+                <TransactionText>${formatedTransaction?.gasFiatAmount}</TransactionText>
               </SectionRightColumn>
             </SectionRow>
             <Divider />
@@ -125,13 +138,13 @@ function ConfirmTransactionPanel (props: Props) {
               <TransactionTitle>{locale.confirmTransactionTotal}</TransactionTitle>
               <SectionRightColumn>
                 <TransactionText>{locale.confirmTransactionAmountGas}</TransactionText>
-                <GrandTotalText>{formatedAmounts.sendAmount} {transactionPayload.erc20Token.symbol} + {formatedAmounts.gasAmount} ETH</GrandTotalText>
-                <TransactionText>${formatedAmounts.grandTotalFiatAmount}</TransactionText>
+                <GrandTotalText>{formatedTransaction?.sendAmount} {formatedTransaction?.symbol} + {formatedTransaction?.gasAmount} {selectedNetwork.symbol}</GrandTotalText>
+                <TransactionText>${formatedTransaction?.grandTotalFiatAmount}</TransactionText>
               </SectionRightColumn>
             </SectionRow>
           </>
         ) : (
-          <TransactionDetailBox transactionData={transactionPayload.transactionData} />
+          <TransactionDetailBox transactionData={transactionInfo.txData.baseData.data} />
         )}
 
       </MessageBox>

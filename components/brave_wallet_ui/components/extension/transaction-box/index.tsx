@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { TransactionDataType } from '../../../constants/types'
+// import { TransactionDataType } from '../../../constants/types'
 import locale from '../../../constants/locale'
 // Styled Components
 import {
@@ -12,7 +12,7 @@ import {
 } from './style'
 
 export interface Props {
-  transactionData: TransactionDataType
+  transactionData?: any
 }
 
 const TransactionDetailBox = (props: Props) => {
@@ -21,18 +21,18 @@ const TransactionDetailBox = (props: Props) => {
     <>
       <DetailRow>
         <TransactionText>{locale.transactionDetailBoxFunction}:</TransactionText>
-        <DetailText>{transactionData.functionName}</DetailText>
+        <DetailText>{transactionData?.functionName}</DetailText>
       </DetailRow>
       <CodeSnippet>
         <code>
-          <CodeSnippetText>{transactionData.parameters}</CodeSnippetText>
+          <CodeSnippetText>{transactionData?.parameters}</CodeSnippetText>
         </code>
       </CodeSnippet>
       <DetailRow>
         <TransactionText>{locale.transactionDetailBoxHex}:</TransactionText>
-        <DetailText>{transactionData.hexSize} {locale.transactionDetailBoxBytes}</DetailText>
+        <DetailText>{transactionData?.hexSize} {locale.transactionDetailBoxBytes}</DetailText>
       </DetailRow>
-      <HexBlock>{transactionData.hexData}</HexBlock>
+      <HexBlock>{transactionData?.hexData}</HexBlock>
     </>
   )
 }

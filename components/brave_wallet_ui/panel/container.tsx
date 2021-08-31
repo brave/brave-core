@@ -45,7 +45,8 @@ import {
   WalletAccountType,
   BuySendSwapViewTypes,
   AccountAssetOptionType,
-  EthereumChain
+  EthereumChain,
+  TransactionInfo
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
@@ -352,27 +353,27 @@ function Container (props: Props) {
 
   // Example of a Confirm Transaction Payload to be passed to the
   // Confirm Transaction Panel
-  const transactionPayloadExample = {
-    transactionAmount: '68000000000000000000',
-    transactionGas: '7548000000000000',
-    toAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-    erc20Token: {
-      contractAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-      name: 'Basic Attention Token',
-      isErc20: true,
-      isErc721: false,
-      symbol: 'BAT',
-      decimals: 18,
-      icon: ''
+  const transactionInfoExample: TransactionInfo = {
+    fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+    id: '465a4d6646-kjlwf665',
+    txArgs: [''],
+    txData: {
+      baseData: {
+        nonce: '0x1',
+        gasPrice: '7548000000000000',
+        gasLimit: '7548000000000000',
+        to: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+        value: '98480000000000000',
+        data: new Uint8Array()
+      },
+      chainId: '0x0',
+      maxPriorityFeePerGas: '',
+      maxFeePerGas: ''
     },
-    tokenPrice: '0.35',
-    ethPrice: '3058.35',
-    transactionData: {
-      functionName: 'Atomic Match_',
-      parameters: 'Parameters: [ {"type": "uint256"}, {"type": "address[]"}, {"type": "address"}, {"type": "uint256"} ]',
-      hexData: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc',
-      hexSize: '228'
-    }
+    txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
+    txStatus: 0,
+    txParams: [''],
+    txType: 0
   }
 
   if (!hasInitialized || !accounts) {
@@ -411,9 +412,10 @@ function Container (props: Props) {
           <ConfirmTransactionPanel
             onConfirm={onConfirmTransaction}
             onReject={onRejectTransaction}
-            selectedAccount={selectedAccount}
+            accounts={accounts}
             selectedNetwork={selectedNetwork}
-            transactionPayload={transactionPayloadExample}
+            transactionInfo={transactionInfoExample}
+            ethPrice='3300'
           />
         </SignContainer>
       </PanelWrapper>

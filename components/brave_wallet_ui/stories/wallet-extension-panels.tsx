@@ -26,7 +26,8 @@ import {
   AppsListType,
   AccountAssetOptionType,
   BuySendSwapViewTypes,
-  EthereumChain
+  EthereumChain,
+  TransactionInfo
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
@@ -97,19 +98,42 @@ const batTokenInfo = {
 
 export const _ConfirmTransaction = () => {
 
-  const transactionPanelPayload = {
-    transactionAmount: '68000000000000000000',
-    transactionGas: '7548000000000000',
-    toAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-    erc20Token: batTokenInfo,
-    tokenPrice: '0.35',
-    ethPrice: '3058.35',
-    transactionData: {
-      functionName: 'Atomic Match_',
-      parameters: 'Parameters: [ {"type": "uint256"}, {"type": "address[]"}, {"type": "address"}, {"type": "uint256"} ]',
-      hexData: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc',
-      hexSize: '228'
-    }
+  // const transactionPanelPayload = {
+  //   transactionAmount: '68000000000000000000',
+  //   transactionGas: '7548000000000000',
+  //   toAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+  //   erc20Token: batTokenInfo,
+  //   tokenPrice: '0.35',
+  //   ethPrice: '3058.35',
+  //   transactionData: {
+  //     functionName: 'Atomic Match_',
+  //     parameters: 'Parameters: [ {"type": "uint256"}, {"type": "address[]"}, {"type": "address"}, {"type": "uint256"} ]',
+  //     hexData: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc',
+  //     hexSize: '228'
+  //   }
+  // }
+
+  const transactionInfo: TransactionInfo = {
+    fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+    id: '465a4d6646-kjlwf665',
+    txArgs: [''],
+    txData: {
+      baseData: {
+        nonce: '0x1',
+        gasPrice: '7548000000000000',
+        gasLimit: '7548000000000000',
+        to: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+        value: '0x15ddf09c97b0000',
+        data: new Uint8Array()
+      },
+      chainId: '0x0',
+      maxPriorityFeePerGas: '',
+      maxFeePerGas: ''
+    },
+    txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
+    txStatus: 0,
+    txParams: [],
+    txType: 0
   }
 
   const onConfirmTransaction = () => {
@@ -126,8 +150,9 @@ export const _ConfirmTransaction = () => {
         selectedNetwork={mockNetworks[0]}
         onConfirm={onConfirmTransaction}
         onReject={onRejectTransaction}
-        selectedAccount={accounts[0]}
-        transactionPayload={transactionPanelPayload}
+        accounts={accounts}
+        ethPrice='3300'
+        transactionInfo={transactionInfo}
       />
     </StyledExtensionWrapperLonger>
   )
