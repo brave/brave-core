@@ -12,17 +12,42 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:paddingTop="16dp"
                 android:layout_marginBottom="8dp"
-                android:text="$12,453.17"
-                android:textColor="@color/wallet_text_color"
-                android:textStyle="bold"
-                android:textSize="32sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="$12,453.17"
+                    android:textColor="@color/wallet_text_color"
+                    android:textStyle="bold"
+                    android:textSize="32sp" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="12sp"
+                    android:textColor="@color/wallet_text_color"
+                    android:layout_gravity="center_vertical"
+                    android:prompt="@string/mainnet"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -58,25 +58,18 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/asset_network_text"
+                <Spinner
+                    android:id="@+id/spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
                     android:textColor="@color/wallet_text_color"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/mainnet"
+                    android:prompt="@string/mainnet"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                    android:background="@drawable/rounded_white_holo_bg"
-                    app:drawableEndCompat="@drawable/ic_circle_down"
-                    android:drawablePadding="8dp"
-                    android:layout_marginEnd="20dp"/>
+                    android:paddingBottom="2dp" />
 
             </LinearLayout>
 

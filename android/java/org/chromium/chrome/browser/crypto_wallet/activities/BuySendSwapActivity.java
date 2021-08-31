@@ -9,29 +9,37 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
+import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class BuySendSwapActivity
-        extends AsyncInitializationActivity implements ConnectionErrorHandler {
+public class BuySendSwapActivity extends AsyncInitializationActivity
+        implements ConnectionErrorHandler, AdapterView.OnItemSelectedListener {
     public enum ActivityType {
         BUY(0),
         SEND(1),
@@ -60,6 +68,7 @@ public class BuySendSwapActivity
     }
 
     private ErcTokenRegistry mErcTokenRegistry;
+    private EthJsonRpcController mEthJsonRpcController;
     private ActivityType mActivityType;
 
     @Override
@@ -110,10 +119,46 @@ public class BuySendSwapActivity
         TextView slippingToleranceValueText = findViewById(R.id.slipping_tolerance_value_text);
         slippingToleranceValueText.setText("2%");
 
+        Spinner spinner = findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(this);
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, Utils.getNetworksList(this));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+
         onInitialLayoutInflationComplete();
 
         adjustControls();
         InitErcTokenRegistry();
+        InitEthJsonRpcController();
+
+        if (mEthJsonRpcController != null) {
+            mEthJsonRpcController.getNetwork(
+                    network -> { spinner.setSelection(getIndexOf(spinner, network)); });
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String item = parent.getItemAtPosition(position).toString();
+        if (mEthJsonRpcController != null) {
+            mEthJsonRpcController.setNetwork(Utils.getNetworkId(this, item));
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {}
+
+    private int getIndexOf(Spinner spinner, int network) {
+        String strNetwork = Utils.getNetworkText(this, network).toString();
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(strNetwork)) {
+                return i;
+            }
+        }
+
+        return 0;
     }
 
     private void adjustControls() {
@@ -216,7 +261,9 @@ public class BuySendSwapActivity
     @Override
     public void onConnectionError(MojoException e) {
         mErcTokenRegistry = null;
+        mEthJsonRpcController = null;
         InitErcTokenRegistry();
+        InitEthJsonRpcController();
     }
 
     private void InitErcTokenRegistry() {
@@ -225,6 +272,15 @@ public class BuySendSwapActivity
         }
 
         mErcTokenRegistry = ERCTokenRegistryFactory.getInstance().getERCTokenRegistry(this);
+    }
+
+    private void InitEthJsonRpcController() {
+        if (mEthJsonRpcController != null) {
+            return;
+        }
+
+        mEthJsonRpcController =
+                EthJsonRpcControllerFactory.getInstance().getEthJsonRpcController(this);
     }
 
     @Override

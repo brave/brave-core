@@ -35,6 +35,7 @@ source_set("brave_wallet") {
     sources += [
       "./android/asset_ratio_controller_factory_android.cc",
       "./android/erc_token_registry_factory_android.cc",
+      "./android/eth_json_rpc_controller_factory_android.cc",
       "./android/keyring_controller_factory_android.cc",
     ]
     deps += [ "//brave/build/android:jni_headers" ]

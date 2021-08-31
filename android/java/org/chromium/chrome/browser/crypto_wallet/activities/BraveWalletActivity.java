@@ -26,9 +26,11 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
+import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter;
@@ -60,6 +62,7 @@ public class BraveWalletActivity
     private CryptoWalletOnboardingPagerAdapter cryptoWalletOnboardingPagerAdapter;
     private KeyringController mKeyringController;
     private ErcTokenRegistry mErcTokenRegistry;
+    private EthJsonRpcController mEthJsonRpcController;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,6 +143,7 @@ public class BraveWalletActivity
         mErcTokenRegistry = null;
         InitKeyringController();
         InitErcTokenRegistry();
+        InitEthJsonRpcController();
     }
 
     private void InitKeyringController() {
@@ -158,6 +162,15 @@ public class BraveWalletActivity
         mErcTokenRegistry = ERCTokenRegistryFactory.getInstance().getERCTokenRegistry(this);
     }
 
+    private void InitEthJsonRpcController() {
+        if (mEthJsonRpcController != null) {
+            return;
+        }
+
+        mEthJsonRpcController =
+                EthJsonRpcControllerFactory.getInstance().getEthJsonRpcController(this);
+    }
+
     public KeyringController getKeyringController() {
         return mKeyringController;
     }
@@ -166,11 +179,16 @@ public class BraveWalletActivity
         return mErcTokenRegistry;
     }
 
+    public EthJsonRpcController getEthJsonRpcController() {
+        return mEthJsonRpcController;
+    }
+
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         InitKeyringController();
         InitErcTokenRegistry();
+        InitEthJsonRpcController();
         if (Utils.shouldShowCryptoOnboarding()) {
             setNavigationFragments(ONBOARDING_ACTION);
         } else if (mKeyringController != null) {
