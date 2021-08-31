@@ -14,6 +14,8 @@
 #include "base/feature_list.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_unittest_util.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
@@ -26,7 +28,6 @@
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -51,13 +52,13 @@ struct ModelCombinationsParamInfo {
 const ModelCombinationsParamInfo kTests[] = {
     // Never processed
     {false, false, false, false, 0},
-    {false, false, true, false, 1},
+    {false, false, true, false, 0},
     {false, true, false, false, 0},
-    {false, true, true, false, 1},
+    {false, true, true, false, 0},
     {true, false, false, false, 3},
-    {true, false, true, false, 4},
+    {true, false, true, false, 3},
     {true, true, false, false, 3},
-    {true, true, true, false, 4},
+    {true, true, true, false, 3},
     // Previously processed
     {false, false, false, true, 0},
     {false, false, true, true, 3},
@@ -97,15 +98,6 @@ class BatAdsAdTargetingTest
         std::make_unique<processor::TextClassification>(
             text_classification_resource_.get());
   }
-
-  void SaveSegments(const std::vector<std::string>& segments) {
-    const std::string json = SerializeSegments(segments);
-
-    AdsClientHelper::Get()->SetStringPref(
-        prefs::kEpsilonGreedyBanditEligibleSegments, json);
-  }
-
-  void SaveAllSegments() { SaveSegments(kSegments); }
 
   void ProcessBandit() {
     const std::vector<processor::BanditFeedbackInfo> feedbacks = {
@@ -160,7 +152,7 @@ class BatAdsAdTargetingTest
 
 TEST_P(BatAdsAdTargetingTest, GetSegments) {
   // Arrange
-  SaveAllSegments();
+  model::SaveAllSegments();
 
   ModelCombinationsParamInfo param(GetParam());
   if (param.previously_processed) {
@@ -200,8 +192,8 @@ TEST_P(BatAdsAdTargetingTest, GetSegments) {
                                                     disabled_features);
 
   // Act
-  AdTargeting ad_targeting;
-  const SegmentList segments = ad_targeting.GetSegments();
+  const UserModelInfo user_model = BuildUserModel();
+  const SegmentList segments = GetTopParentChildSegments(user_model);
 
   // Assert
   EXPECT_EQ(param.number_of_segments, segments.size());
@@ -240,7 +232,7 @@ INSTANTIATE_TEST_SUITE_P(BatAdsAdTargetingTest,
 
 TEST_F(BatAdsAdTargetingTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
   // Arrange
-  SaveAllSegments();
+  model::SaveAllSegments();
 
   ProcessBandit();
   ProcessTextClassification();
@@ -259,26 +251,26 @@ TEST_F(BatAdsAdTargetingTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
       {});
 
   // Act
-  AdTargeting ad_targeting;
-  const SegmentList segments = ad_targeting.GetSegments();
+  const UserModelInfo user_model = BuildUserModel();
+  const SegmentList segments = GetTopParentChildSegments(user_model);
 
   // Assert
   const SegmentList expected_segments = {
       "technology & computing-technology & computing",
       "personal finance-banking",
       "food & drink-cooking",
-      "segment 3",
-      "segment 2",
       "science",
       "travel",
-      "technology & computing"};
+      "technology & computing",
+      "segment 3",
+      "segment 2"};
 
   EXPECT_EQ(expected_segments, segments);
 }
 
 TEST_F(BatAdsAdTargetingTest, GetSegmentsForFieldTrialParticipationPath) {
   // Arrange
-  SaveAllSegments();
+  model::SaveAllSegments();
 
   ProcessBandit();
   ProcessTextClassification();
@@ -298,8 +290,8 @@ TEST_F(BatAdsAdTargetingTest, GetSegmentsForFieldTrialParticipationPath) {
   scoped_feature_list.InitWithFeatureList(std::move(feature_list));
 
   // Act
-  AdTargeting ad_targeting;
-  const SegmentList segments = ad_targeting.GetSegments();
+  const UserModelInfo user_model = BuildUserModel();
+  const SegmentList segments = GetTopParentChildSegments(user_model);
 
   // Assert
   // Even though text classification has been processed we don't expect

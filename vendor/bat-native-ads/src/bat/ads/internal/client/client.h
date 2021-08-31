@@ -51,8 +51,9 @@ class Client {
 
   void AppendToPurchaseIntentSignalHistoryForSegment(
       const std::string& segment,
-      const PurchaseIntentSignalHistoryInfo& history);
-  const PurchaseIntentSignalHistoryMap& GetPurchaseIntentSignalHistory() const;
+      const ad_targeting::PurchaseIntentSignalHistoryInfo& history);
+  const ad_targeting::PurchaseIntentSignalHistoryMap&
+  GetPurchaseIntentSignalHistory() const;
 
   AdContentInfo::LikeAction ToggleAdThumbUp(
       const std::string& creative_instance_id,
@@ -98,8 +99,8 @@ class Client {
   base::Time GetNextAdServingInterval();
 
   void AppendTextClassificationProbabilitiesToHistory(
-      const TextClassificationProbabilitiesMap& probabilities);
-  const TextClassificationProbabilitiesList&
+      const ad_targeting::TextClassificationProbabilitiesMap& probabilities);
+  const ad_targeting::TextClassificationProbabilitiesList&
   GetTextClassificationProbabilitiesHistory();
 
   std::string GetVersionCode() const;

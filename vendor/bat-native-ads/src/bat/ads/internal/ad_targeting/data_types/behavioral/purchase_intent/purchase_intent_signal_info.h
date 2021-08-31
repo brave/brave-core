@@ -8,9 +8,10 @@
 
 #include <cstdint>
 
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
+#include "bat/ads/internal/segments/segments_alias.h"
 
 namespace ads {
+namespace ad_targeting {
 
 struct PurchaseIntentSignalInfo {
  public:
@@ -23,6 +24,7 @@ struct PurchaseIntentSignalInfo {
   uint16_t weight = 0;
 };
 
+}  // namespace ad_targeting
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_INFO_H_

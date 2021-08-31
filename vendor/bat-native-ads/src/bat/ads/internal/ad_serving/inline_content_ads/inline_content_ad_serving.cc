@@ -9,30 +9,27 @@
 #include "bat/ads/ad_type.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_builder.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_permission_rules.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads.h"
 #include "bat/ads/internal/features/inline_content_ads/inline_content_ads_features.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/p2a/p2a_ad_opportunities/p2a_ad_opportunity.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
+#include "bat/ads/internal/segments/segments_alias.h"
 
 namespace ads {
 namespace inline_content_ads {
 
 AdServing::AdServing(
-    AdTargeting* ad_targeting,
     ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
     resource::AntiTargeting* anti_targeting_resource)
-    : ad_targeting_(ad_targeting),
-      subdivision_targeting_(subdivision_targeting),
+    : subdivision_targeting_(subdivision_targeting),
       anti_targeting_resource_(anti_targeting_resource),
       eligible_ads_(std::make_unique<EligibleAds>(subdivision_targeting,
                                                   anti_targeting_resource)) {
-  DCHECK(ad_targeting_);
   DCHECK(subdivision_targeting_);
   DCHECK(anti_targeting_resource_);
 }
@@ -67,11 +64,11 @@ void AdServing::MaybeServeAd(const std::string& dimensions,
     return;
   }
 
-  const SegmentList segments = ad_targeting_->GetSegments();
+  const ad_targeting::UserModelInfo user_model = ad_targeting::BuildUserModel();
 
   DCHECK(eligible_ads_);
-  eligible_ads_->GetForSegments(
-      segments, dimensions,
+  eligible_ads_->Get(
+      user_model, dimensions,
       [=](const bool was_allowed, const CreativeInlineContentAdList& ads) {
         if (ads.empty()) {
           BLOG(1, "Inline content ad not served: No eligible ads found");

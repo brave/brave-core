@@ -10,6 +10,7 @@
 #include "base/json/json_reader.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace resource {

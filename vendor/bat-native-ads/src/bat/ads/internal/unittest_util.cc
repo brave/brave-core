@@ -8,8 +8,10 @@
 #include <limits>
 
 #include "base/base_paths.h"
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
+#include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
@@ -18,7 +20,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time_to_iso8601.h"
 #include "bat/ads/internal/ads_client_mock.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/url_util.h"
 #include "bat/ads/pref_names.h"

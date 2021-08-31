@@ -38,27 +38,4 @@ bool HasCatalogExpired() {
   return true;
 }
 
-SegmentList GetSegments(const Catalog& catalog) {
-  SegmentList segments;
-
-  const CatalogCampaignList catalog_campaigns = catalog.GetCampaigns();
-  for (const auto& catalog_campaign : catalog_campaigns) {
-    CatalogCreativeSetList catalog_creative_sets =
-        catalog_campaign.creative_sets;
-    for (const auto& catalog_creative_set : catalog_creative_sets) {
-      CatalogSegmentList catalog_segments = catalog_creative_set.segments;
-      for (const auto& catalog_segment : catalog_segments) {
-        segments.push_back(catalog_segment.name);
-      }
-    }
-  }
-
-  // Remove duplicates
-  std::sort(segments.begin(), segments.end());
-  const auto iter = std::unique(segments.begin(), segments.end());
-  segments.erase(iter, segments.end());
-
-  return segments;
-}
-
 }  // namespace ads

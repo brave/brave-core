@@ -14,6 +14,7 @@
 #include "bat/ads/internal/user_activity/page_transition_util.h"
 #include "bat/ads/internal/user_activity/user_activity_scoring.h"
 #include "bat/ads/internal/user_activity/user_activity_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

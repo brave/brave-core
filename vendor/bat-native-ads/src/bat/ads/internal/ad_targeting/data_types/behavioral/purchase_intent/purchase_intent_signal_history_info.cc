@@ -5,10 +5,42 @@
 
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
-#include "bat/ads/internal/json_helper.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/values.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/number_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
+namespace ad_targeting {
+
+namespace {
+
+int64_t GetTimestamp(base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  const std::string* value = dictionary->FindStringKey("timestamp_in_seconds");
+  if (!value) {
+    return 0;
+  }
+
+  int64_t value_as_int64 = 0;
+  if (!base::StringToInt64(*value, &value_as_int64)) {
+    return 0;
+  }
+
+  return value_as_int64;
+}
+
+uint16_t GetWeight(base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  return static_cast<uint16_t>(dictionary->FindIntKey("weight").value_or(0));
+}
+
+}  // namespace
 
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo() = default;
 
@@ -34,42 +66,35 @@ bool PurchaseIntentSignalHistoryInfo::operator!=(
 }
 
 std::string PurchaseIntentSignalHistoryInfo::ToJson() const {
+  base::Value dictionary(base::Value::Type::DICTIONARY);
+
+  dictionary.SetKey("timestamp_in_seconds",
+                    base::Value(std::to_string(timestamp_in_seconds)));
+
+  dictionary.SetKey("weight", base::Value(weight));
+
   std::string json;
-  SaveToJson(*this, &json);
+  base::JSONWriter::Write(dictionary, &json);
+
   return json;
 }
 
 bool PurchaseIntentSignalHistoryInfo::FromJson(const std::string& json) {
-  rapidjson::Document document;
-  document.Parse(json.c_str());
-
-  if (document.HasParseError()) {
-    BLOG(1, helper::JSON::GetLastError(&document));
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
+  if (!value) {
     return false;
   }
 
-  if (document.HasMember("timestamp_in_seconds")) {
-    timestamp_in_seconds = document["timestamp_in_seconds"].GetInt64();
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    return false;
   }
 
-  if (document.HasMember("weight")) {
-    weight = document["weight"].GetUint();
-  }
+  timestamp_in_seconds = GetTimestamp(dictionary);
+  weight = GetWeight(dictionary);
 
   return true;
 }
 
-void SaveToJson(JsonWriter* writer,
-                const PurchaseIntentSignalHistoryInfo& history) {
-  writer->StartObject();
-
-  writer->String("timestamp_in_seconds");
-  writer->Int64(history.timestamp_in_seconds);
-
-  writer->String("weight");
-  writer->Uint(history.weight);
-
-  writer->EndObject();
-}
-
+}  // namespace ad_targeting
 }  // namespace ads

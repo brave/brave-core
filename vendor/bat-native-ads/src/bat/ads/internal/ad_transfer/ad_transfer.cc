@@ -11,6 +11,7 @@
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "bat/ads/internal/url_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

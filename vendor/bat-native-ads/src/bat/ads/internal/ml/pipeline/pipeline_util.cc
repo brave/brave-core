@@ -14,7 +14,6 @@
 #include "bat/ads/internal/ml/ml_aliases.h"
 #include "bat/ads/internal/ml/ml_transformation_util.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace ml {

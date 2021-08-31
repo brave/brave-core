@@ -9,7 +9,6 @@
 
 #include "base/guid.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
@@ -92,11 +91,10 @@ class BatAdsAdNotificationServingTest : public UnitTestBase {
   }
 
   void ServeAd() {
-    AdTargeting ad_targeting;
     ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
     resource::AntiTargeting anti_targeting_resource;
-    ad_notifications::AdServing ad_serving(
-        &ad_targeting, &subdivision_targeting, &anti_targeting_resource);
+    ad_notifications::AdServing ad_serving(&subdivision_targeting,
+                                           &anti_targeting_resource);
 
     ad_serving.MaybeServeAd();
   }

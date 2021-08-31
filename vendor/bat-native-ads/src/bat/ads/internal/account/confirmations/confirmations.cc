@@ -25,6 +25,7 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_dto_user_data_builder.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
