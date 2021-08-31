@@ -483,9 +483,7 @@ void KeyringController::AddAccount(const std::string& account_name,
     AddAccountForDefaultKeyring(account_name);
   }
 
-  for (const auto& observer : observers_) {
-    observer->AccountsChanged();
-  }
+  NotifyAccountsChanged();
   std::move(callback).Run(keyring);
 }
 
@@ -542,10 +540,7 @@ void KeyringController::AddImportedAccount(
                               base::Base64Encode(encrypted_private_key)};
   SetImportedAccountForKeyring(prefs_, info, kDefaultKeyringId);
 
-  for (const auto& observer : observers_) {
-    observer->AccountsChanged();
-  }
-
+  NotifyAccountsChanged();
   std::move(callback).Run(true, address);
 }
 
@@ -590,9 +585,8 @@ void KeyringController::RemoveImportedAccount(
     return;
   }
   RemoveImportedAccountForKeyring(prefs_, address, kDefaultKeyringId);
-  for (const auto& observer : observers_) {
-    observer->AccountsChanged();
-  }
+
+  NotifyAccountsChanged();
   std::move(callback).Run(true);
 }
 
@@ -818,6 +812,7 @@ void KeyringController::SetDefaultKeyringDerivedAccountName(
 
   SetAccountNameForKeyring(prefs_, GetAccountPathByIndex(index.value()), name,
                            kDefaultKeyringId);
+  NotifyAccountsChanged();
   std::move(callback).Run(true);
 }
 
@@ -842,19 +837,26 @@ void KeyringController::SetDefaultKeyringImportedAccountName(
   base::Value::ListView imported_accounts_list = imported_accounts.GetList();
 
   bool name_updated = false;
-  for (size_t i = 0; i < imported_accounts_list.size(); i++) {
+  for (size_t i = 0; i < imported_accounts_list.size(); ++i) {
     const std::string* account_address =
         imported_accounts_list[i].FindStringKey(kAccountAddress);
     if (account_address && *account_address == address) {
       imported_accounts_list[i].SetStringKey(kAccountName, name);
       SetPrefForKeyring(prefs_, kImportedAccounts, std::move(imported_accounts),
                         kDefaultKeyringId);
+      NotifyAccountsChanged();
       name_updated = true;
       break;
     }
   }
 
   std::move(callback).Run(name_updated);
+}
+
+void KeyringController::NotifyAccountsChanged() {
+  for (const auto& observer : observers_) {
+    observer->AccountsChanged();
+  }
 }
 
 }  // namespace brave_wallet

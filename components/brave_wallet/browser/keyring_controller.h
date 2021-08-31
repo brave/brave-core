@@ -195,6 +195,8 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   // It's used to reconstruct same default keyring between browser relaunch
   HDKeyring* ResumeDefaultKeyring(const std::string& password);
 
+  void NotifyAccountsChanged();
+
   std::unique_ptr<PasswordEncryptor> encryptor_;
   std::unique_ptr<HDKeyring> default_keyring_;
 
