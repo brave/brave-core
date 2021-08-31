@@ -27,6 +27,10 @@ export const amount = styled.div`
   .amount {
     font-weight: 600;
     color: var(--brave-color-brandBatInteracting);
+
+    .brave-theme-dark & {
+      color: var(--brave-palette-blurple300);
+    }
   }
 
   .currency {

@@ -20,7 +20,7 @@ import {
   NotificationTitleProps
 } from '../../shared/components/notifications'
 
-import * as styles from './notification_card.style'
+import * as style from './notification_card.style'
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'short',
@@ -37,17 +37,17 @@ function Title (props: NotificationTitleProps) {
   }
 
   return (
-    <styles.title className={props.style || 'information'}>
+    <style.title className={props.style || 'information'}>
       {renderIcon()}{props.text}
-    </styles.title>
+    </style.title>
   )
 }
 
 function Body (props: NotificationBodyProps) {
   return (
-    <styles.body>
+    <style.body>
       {props.children}
-    </styles.body>
+    </style.body>
   )
 }
 
@@ -63,11 +63,11 @@ function Action (props: NotificationActionViewProps) {
   }
 
   return (
-    <styles.action>
+    <style.action>
       <button onClick={onActionClick}>
-        {props.label || getString('notificationOK')}
+        {props.label || getString('ok')}
       </button>
-    </styles.action>
+    </style.action>
   )
 }
 
@@ -76,7 +76,6 @@ interface Props {
 }
 
 export function NotificationCard (props: Props) {
-  const { getString } = React.useContext(LocaleContext)
   const host = React.useContext(HostContext)
   const View = getNotificationView(props.notification)
 
@@ -85,31 +84,26 @@ export function NotificationCard (props: Props) {
   }
 
   return (
-    <styles.root>
-      <styles.header>
-        <styles.date>
+    <style.root>
+      <style.header>
+        <style.date>
           <DateIcon />
           {dateFormatter.format(new Date(props.notification.timeStamp))}
-        </styles.date>
-        <styles.close>
+        </style.date>
+        <style.close>
           <button onClick={dismissNotification}>
             <CloseIcon />
           </button>
-        </styles.close>
-      </styles.header>
-      <styles.content>
+        </style.close>
+      </style.header>
+      <style.content>
         <View
           notification={props.notification}
           Title={Title}
           Body={Body}
           Action={Action}
         />
-        <styles.dismiss>
-          <button onClick={dismissNotification}>
-            {getString('notificationDismiss')}
-          </button>
-        </styles.dismiss>
-      </styles.content>
-    </styles.root>
+      </style.content>
+    </style.root>
   )
 }

@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { storiesOf } from '@storybook/react'
 
 import { LocaleContext } from '../../../lib/locale_context'
 import { WithThemeVariables } from '../../with_theme_variables'
@@ -59,67 +58,77 @@ function getRewardsTourProps () {
   }
 }
 
-storiesOf('Rewards/Onboarding', module)
-  .add('Tour Modal', () => {
-    return (
-      <StoryWrapper>
-        <RewardsTourModal
-          {...getRewardsTourProps()}
-          onClose={actionLogger('onClose')}
-        />
-      </StoryWrapper>
-    )
-  })
-  .add('Tour Modal (Wide)', () => {
-    return (
-      <StoryWrapper>
-        <RewardsTourModal
-          {...getRewardsTourProps()}
-          layout='wide'
-          onClose={actionLogger('onClose')}
-        />
-      </StoryWrapper>
-    )
-  })
-  .add('Opt-in Modal', () => {
-    return (
-      <StoryWrapper>
-        <RewardsOptInModal
-          onEnable={actionLogger('onEnable')}
-          onClose={actionLogger('onClose')}
-          onTakeTour={actionLogger('onTakeTour')}
-        />
-      </StoryWrapper>
-    )
-  })
-  .add('Tip Opt-in', () => {
-    return (
-      <StoryWrapper style={{ width: '363px', height: '404px' }}>
-        <TipOptInForm
-          onEnable={actionLogger('onEnable')}
-          onDismiss={actionLogger('onDismiss')}
-          onTakeTour={actionLogger('onTakeTour')}
-        />
-      </StoryWrapper>
-    )
-  })
-  .add('Settings Opt-in', () => {
-    return (
-      <StoryWrapper style={{ width: '619px' }}>
-        <SettingsOptInForm
-          onEnable={actionLogger('onEnable')}
-          onTakeTour={actionLogger('onTakeTour')}
-        />
-      </StoryWrapper>
-    )
-  })
-  .add('Tour Promo', () => {
-    return (
-      <StoryWrapper style={{ width: '373px' }}>
-        <RewardsTourPromo
-          onClose={actionLogger('onClose')}
-          onTakeTour={actionLogger('onTakeTour')}
-        />
-      </StoryWrapper>
-    )
-  })
+export default {
+  title: 'Rewards/Onboarding'
+}
+
+export function TourModal () {
+  return (
+    <StoryWrapper>
+      <RewardsTourModal
+        {...getRewardsTourProps()}
+        onClose={actionLogger('onClose')}
+      />
+    </StoryWrapper>
+  )
+}
+
+export function TourModalWide () {
+  return (
+    <StoryWrapper>
+      <RewardsTourModal
+        {...getRewardsTourProps()}
+        layout='wide'
+        onClose={actionLogger('onClose')}
+      />
+    </StoryWrapper>
+  )
+}
+
+TourModalWide.storyName = 'Tour Modal (Wide)'
+
+export function OptInModal () {
+  return (
+    <StoryWrapper>
+      <RewardsOptInModal
+        onEnable={actionLogger('onEnable')}
+        onClose={actionLogger('onClose')}
+        onTakeTour={actionLogger('onTakeTour')}
+      />
+    </StoryWrapper>
+  )
+}
+
+export function TipOptIn () {
+  return (
+    <StoryWrapper style={{ width: '363px', height: '404px' }}>
+      <TipOptInForm
+        onEnable={actionLogger('onEnable')}
+        onDismiss={actionLogger('onDismiss')}
+        onTakeTour={actionLogger('onTakeTour')}
+      />
+    </StoryWrapper>
+  )
+}
+
+export function SettingsOptIn () {
+  return (
+    <StoryWrapper style={{ width: '619px' }}>
+      <SettingsOptInForm
+        onEnable={actionLogger('onEnable')}
+        onTakeTour={actionLogger('onTakeTour')}
+      />
+    </StoryWrapper>
+  )
+}
+
+export function TourPromo () {
+  return (
+    <StoryWrapper style={{ width: '373px' }}>
+      <RewardsTourPromo
+        onClose={actionLogger('onClose')}
+        onTakeTour={actionLogger('onTakeTour')}
+      />
+    </StoryWrapper>
+  )
+}

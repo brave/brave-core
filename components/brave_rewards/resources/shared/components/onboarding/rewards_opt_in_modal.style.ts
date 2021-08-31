@@ -8,7 +8,7 @@ import modalBackground from './assets/opt_in_modal_bg.svg'
 
 export const root = styled.div`
   flex: 0 0 auto;
-  max-width: 335px;
+  width: 335px;
   padding: 17px;
   font-family: var(--brave-font-heading);
   text-align: center;

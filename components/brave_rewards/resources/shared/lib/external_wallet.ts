@@ -16,13 +16,39 @@ export interface ExternalWallet {
   provider: ExternalWalletProvider
   status: ExternalWalletStatus
   username: string
+  links: {
+    account?: string
+    addFunds?: string
+    completeVerification?: string
+  }
 }
 
 // Returns the external wallet provider name for the specified provider.
 export function getExternalWalletProviderName (
   provider: ExternalWalletProvider
 ) {
-  return lookupExternalWalletProviderName(provider)
+  switch (provider) {
+    case 'bitflyer': return 'bitFlyer'
+    case 'gemini': return 'Gemini'
+    case 'uphold': return 'Uphold'
+  }
+}
+
+// Returns an |ExternalWalletProvider| matching the given provider key, or
+// |null| if the key is invalid. This function is provided for backward
+// compatibility with code that does not yet use the |ExternalWalletProvider|
+// type.
+export function externalWalletProviderFromString (
+  key: string
+): ExternalWalletProvider | null {
+  switch (key) {
+    case 'bitflyer':
+    case 'gemini':
+    case 'uphold':
+      return key
+    default:
+      return null
+  }
 }
 
 // Returns the external wallet provider name associated with the specified
@@ -30,10 +56,6 @@ export function getExternalWalletProviderName (
 // is provided for backward compatibility with code that does not yet use the
 // |ExternalWalletProvider| type. Prefer |getExternalWalletProviderName|.
 export function lookupExternalWalletProviderName (providerKey: string) {
-  switch (providerKey) {
-    case 'bitflyer': return 'bitFlyer'
-    case 'gemini': return 'Gemini'
-    case 'uphold': return 'Uphold'
-    default: return ''
-  }
+  const provider = externalWalletProviderFromString(providerKey)
+  return provider ? getExternalWalletProviderName(provider) : ''
 }

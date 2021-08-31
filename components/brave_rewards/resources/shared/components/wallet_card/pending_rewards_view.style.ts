@@ -17,7 +17,7 @@ export const pendingRewards = styled.div`
   font-size: 12px;
   line-height: 22px;
   text-align: center;
-  padding: 12px;
+  padding: 8px;
 
   .icon {
     color: var(--brave-palette-yellow500);
