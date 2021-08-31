@@ -1,11 +1,10 @@
 import styled, { css } from 'styled-components'
-
 interface Props {
   isActive: boolean
 }
 
 export const Box = styled.button<Props>`
-  --bg-color: ${p => p.theme.color.disabled};
+  --bg-color: ${(p) => p.theme.color.disabled};
   position: relative;
   display: flex;
   width: 100px;
@@ -26,5 +25,5 @@ export const Circle = styled.div<Props>`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: white;
 `
