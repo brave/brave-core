@@ -438,7 +438,8 @@ ExtensionFunction::ResponseAction IpfsResolveIPFSURIFunction::Run() {
   GURL ipfs_gateway_url;
   PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
   if (!::ipfs::ResolveIPFSURI(prefs, chrome::GetChannel(), uri,
-                              &ipfs_gateway_url)) {
+                              &ipfs_gateway_url) ||
+      !ipfs_gateway_url.is_valid()) {
     return RespondNow(Error("Could not translate IPFS URI"));
   }
 
