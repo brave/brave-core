@@ -377,7 +377,7 @@ class NewTabPageViewController: UIViewController {
         backgroundView.imageConstraints?.landscapeCenter.update(offset: inset)
     }
     
-    private func reportSponsoredImageBackgroundEvent(_ event: BraveAdsNewTabPageAdEventType) {
+    private func reportSponsoredImageBackgroundEvent(_ event: Ads.BraveAdsNewTabPageAdEventType) {
         guard let backgroundType = background.currentBackground?.type,
               case .withBrandLogo = backgroundType,
               let creativeInstanceId = background.currentBackground?.wallpaper.creativeInstanceId else {

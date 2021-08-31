@@ -61,7 +61,7 @@ class BraveRewardsSettingsViewController: TableViewController {
                             header: .title(Strings.Rewards.walletTransferTitle),
                             rows: [
                                 Row(text: Strings.Rewards.legacyWalletTransfer,
-                                    detailText: Preferences.Rewards.lastTransferStatus.value.map(DrainStatus.init)??.displayString,
+                                    detailText: Preferences.Rewards.lastTransferStatus.value.map(Ledger.DrainStatus.init)??.displayString,
                                     selection: { [unowned self] in
                                         guard let legacyWallet = self.legacyWallet else { return }
                                         let controller = WalletTransferViewController(legacyWallet: legacyWallet)

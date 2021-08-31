@@ -8,7 +8,7 @@ import BraveCore
 import Static
 import Shared
 
-extension RewardsType {
+extension Ledger.RewardsType {
     fileprivate var displayText: String {
         let s = Strings.RewardsInternals.self
         switch self {
@@ -20,7 +20,7 @@ extension RewardsType {
         }
     }
 }
-extension ContributionStep {
+extension Ledger.ContributionStep {
     fileprivate var displayText: String {
         let s = Strings.RewardsInternals.self
         switch self {
@@ -55,7 +55,7 @@ extension ContributionStep {
         }
     }
 }
-extension ContributionProcessor {
+extension Ledger.ContributionProcessor {
     fileprivate var displayText: String {
         let s = Strings.RewardsInternals.self
         switch self {
@@ -71,7 +71,7 @@ extension ContributionProcessor {
 
 class RewardsInternalsContributionListController: TableViewController {
     private let ledger: BraveLedger
-    private var contributions: [ContributionInfo] = []
+    private var contributions: [Ledger.ContributionInfo] = []
     
     init(ledger: BraveLedger) {
         self.ledger = ledger

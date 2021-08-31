@@ -7,7 +7,7 @@ import BraveCore
 import BraveShared
 import Shared
 
-extension DrainStatus: RepresentableOptionType {
+extension Ledger.DrainStatus: RepresentableOptionType {
     public var displayString: String {
         switch self {
         case .invalid:

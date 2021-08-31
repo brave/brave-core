@@ -159,7 +159,7 @@ class RewardsDebugSettingsViewController: TableViewController {
             case delayed
             case complete
             
-            var status: DrainStatus? {
+            var status: Ledger.DrainStatus? {
                 switch self {
                 case .none: return nil
                 case .invalid: return .invalid
@@ -266,8 +266,8 @@ class RewardsDebugSettingsViewController: TableViewController {
                         BraveLedger.isDebug = value
                         BraveAds.isDebug = value
                     })),
-                    Row(text: "Use Short Retries", accessory: .switchToggle(value: BraveLedger.useShortRetries, { value in
-                        BraveLedger.useShortRetries = value
+                    Row(text: "Use Short Retries", accessory: .switchToggle(value: BraveLedger.retryInterval != 0, { value in
+                        BraveLedger.retryInterval = value ? 30 : 0
                     })),
                     Row(text: "Reconcile Time", detailText: "Number of minutes between reconciles. 0 = No Override", accessory: .view(reconcileTimeTextField), cellClass: MultilineSubtitleCell.self),
                     Row(text: "Custom User Agent", detailText: "Non-persistant. Empty = default", accessory: .view(customUserAgentTextField), cellClass: MultilineSubtitleCell.self)

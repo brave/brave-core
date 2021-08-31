@@ -10,9 +10,9 @@ import BraveShared
 
 class WalletTransferCompleteViewController: UIViewController {
     
-    private let status: DrainStatus?
+    private let status: Ledger.DrainStatus?
     
-    init(status: DrainStatus?) {
+    init(status: Ledger.DrainStatus?) {
         self.status = status
         super.init(nibName: nil, bundle: nil)
         if status == .complete {
