@@ -323,6 +323,7 @@ class Generator(generator.Generator):
             "objc_to_cpp_assign": self._ObjCToCppAssign,
             "expected_cpp_param_type": self._GetExpectedCppParamType,
             "cpp_namespace_from_kind": CppNamespaceFromKind,
+            "under_to_camel": UnderToCamel,
             "under_to_lower_camel": UnderToLowerCamel,
             "interface_remote_sets": self._GetInterfaceRemoteSets,
         }
