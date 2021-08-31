@@ -199,6 +199,8 @@ interface KeyringController {
   GetDefaultKeyringInfo() => (KeyringInfo keyring);
   Reset();
   AddObserver(pending_remote<KeyringControllerObserver> observer);
+  SetDefaultKeyringDerivedAccountName(string address, string name) => (bool success);
+  SetDefaultKeyringImportedAccountName(string address, string name) => (bool success);
 };
 
 interface AssetRatioController {

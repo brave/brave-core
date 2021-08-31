@@ -48,6 +48,16 @@ std::vector<std::string> HDKeyring::GetAccounts() const {
   return addresses;
 }
 
+absl::optional<size_t> HDKeyring::GetAccountIndex(
+    const std::string& address) const {
+  for (size_t i = 0; i < accounts_.size(); ++i) {
+    if (GetAddress(i) == address) {
+      return i;
+    }
+  }
+  return absl::nullopt;
+}
+
 size_t HDKeyring::GetAccountsNumber() const {
   return accounts_.size();
 }

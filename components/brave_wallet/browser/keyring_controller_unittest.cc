@@ -1041,4 +1041,201 @@ TEST_F(KeyringControllerUnitTest, GetPrivateKeyForDefaultKeyringAccount) {
   EXPECT_TRUE(callback_called);
 }
 
+TEST_F(KeyringControllerUnitTest, SetDefaultKeyringDerivedAccountName) {
+  KeyringController controller(GetPrefs());
+  const std::string kUpdatedName = "Updated";
+  bool callback_called = false;
+  controller.SetDefaultKeyringDerivedAccountName(
+      "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db", kUpdatedName,
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
+  controller.default_keyring_->AddAccounts(2);
+  const std::string address1 = controller.default_keyring_->GetAddress(0);
+  const std::string name1 = "Account1";
+  const std::string account_path1 = KeyringController::GetAccountPathByIndex(0);
+  const std::string address2 = controller.default_keyring_->GetAddress(1);
+  const std::string name2 = "Account2";
+  const std::string account_path2 = KeyringController::GetAccountPathByIndex(1);
+
+  KeyringController::SetAccountNameForKeyring(GetPrefs(), account_path1, name1,
+                                              "default");
+  KeyringController::SetAccountNameForKeyring(GetPrefs(), account_path2, name2,
+                                              "default");
+  EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
+                GetPrefs(), account_path1, "default"),
+            name1);
+  EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
+                GetPrefs(), account_path2, "default"),
+            name2);
+
+  callback_called = false;
+  controller.SetDefaultKeyringDerivedAccountName(
+      "", kUpdatedName, base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  controller.SetDefaultKeyringDerivedAccountName(
+      address2, "", base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  controller.SetDefaultKeyringDerivedAccountName(
+      address2, kUpdatedName, base::BindLambdaForTesting([&](bool success) {
+        EXPECT_TRUE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
+                GetPrefs(), account_path1, "default"),
+            name1);
+  EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
+                GetPrefs(), account_path2, "default"),
+            kUpdatedName);
+}
+
+TEST_F(KeyringControllerUnitTest, SetDefaultKeyringImportedAccountName) {
+  KeyringController controller(GetPrefs());
+  controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
+  base::RunLoop().RunUntilIdle();
+
+  const struct {
+    const char* name;
+    const char* private_key;
+    const char* address;
+  } imported_accounts[] = {
+      {"Imported account1",
+       "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
+       "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976"},
+      {"Imported account2",
+       "cca1e9643efc5468789366e4fb682dba57f2e97540981095bc6d9a962309d912",
+       "0x6D59205FADC892333cb945AD563e74F83f3dBA95"},
+      {"Imported account3",
+       "ddc33eef7cc4c5170c3ba4021cc22fd888856cf8bf846f48db6d11d15efcd652",
+       "0xeffF78040EdeF86A9be71ce89c74A35C4cd5D2eA"}};
+
+  const std::string kUpdatedName = "Updated imported accoount 2";
+
+  // Fail when no imported accounts.
+  bool callback_called = false;
+  controller.SetDefaultKeyringImportedAccountName(
+      imported_accounts[1].address, kUpdatedName,
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Add import accounts.
+  for (size_t i = 0;
+       i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
+    callback_called = false;
+    controller.AddImportedAccount(
+        imported_accounts[i].name, imported_accounts[i].private_key,
+        base::BindLambdaForTesting(
+            [&](bool success, const std::string& address) {
+              EXPECT_TRUE(success);
+              EXPECT_EQ(imported_accounts[i].address, address);
+              callback_called = true;
+            }));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+  }
+
+  // Empty address should fail.
+  callback_called = false;
+  controller.SetDefaultKeyringImportedAccountName(
+      "", kUpdatedName, base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Empty name should fail.
+  callback_called = false;
+  controller.SetDefaultKeyringImportedAccountName(
+      imported_accounts[1].address, "",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Update second imported account's name.
+  callback_called = false;
+  controller.SetDefaultKeyringImportedAccountName(
+      imported_accounts[1].address, kUpdatedName,
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_TRUE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Private key of imported accounts should not be changed.
+  for (size_t i = 0;
+       i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
+    callback_called = false;
+    controller.GetPrivateKeyForImportedAccount(
+        imported_accounts[i].address,
+        base::BindLambdaForTesting(
+            [&](bool success, const std::string& private_key) {
+              EXPECT_TRUE(success);
+              EXPECT_EQ(imported_accounts[i].private_key, private_key);
+              callback_called = true;
+            }));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+  }
+
+  // Only second imported account's name is updated.
+  callback_called = false;
+  controller.GetDefaultKeyringInfo(
+      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_FALSE(keyring_info->is_locked);
+        EXPECT_FALSE(keyring_info->is_backed_up);
+        EXPECT_EQ(keyring_info->account_infos.size(), 4u);
+        EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
+        EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
+        EXPECT_FALSE(keyring_info->account_infos[0]->is_imported);
+        EXPECT_EQ(keyring_info->account_infos[1]->address,
+                  imported_accounts[0].address);
+        EXPECT_EQ(keyring_info->account_infos[1]->name,
+                  imported_accounts[0].name);
+        EXPECT_TRUE(keyring_info->account_infos[1]->is_imported);
+        EXPECT_EQ(keyring_info->account_infos[2]->address,
+                  imported_accounts[1].address);
+        EXPECT_EQ(keyring_info->account_infos[2]->name, kUpdatedName);
+        EXPECT_TRUE(keyring_info->account_infos[2]->is_imported);
+        EXPECT_EQ(keyring_info->account_infos[3]->address,
+                  imported_accounts[2].address);
+        EXPECT_EQ(keyring_info->account_infos[3]->name,
+                  imported_accounts[2].name);
+        EXPECT_TRUE(keyring_info->account_infos[3]->is_imported);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
 }  // namespace brave_wallet

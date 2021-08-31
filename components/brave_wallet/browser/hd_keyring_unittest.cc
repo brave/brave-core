@@ -51,8 +51,12 @@ TEST(HDKeyringUnitTest, Accounts) {
             "0x2A22ad45446E8b34Da4da1f4ADd7B1571Ab4e4E7");
   EXPECT_EQ(keyring.GetAddress(2),
             "0x02e77f0e2fa06F95BDEa79Fad158477723145838");
-  for (size_t i = 0; i < accounts.size(); ++i)
+  for (size_t i = 0; i < accounts.size(); ++i) {
     EXPECT_EQ(accounts[i], keyring.GetAddress(i));
+    EXPECT_EQ(keyring.GetAccountIndex(accounts[i]), i);
+  }
+  EXPECT_FALSE(keyring.GetAccountIndex("0x123"));
+
   // remove the last account
   keyring.RemoveAccount();
   accounts = keyring.GetAccounts();
@@ -61,8 +65,10 @@ TEST(HDKeyringUnitTest, Accounts) {
             "0x2166fB4e11D44100112B1124ac593081519cA1ec");
   EXPECT_EQ(keyring.GetAddress(1),
             "0x2A22ad45446E8b34Da4da1f4ADd7B1571Ab4e4E7");
-  for (size_t i = 0; i < accounts.size(); ++i)
+  for (size_t i = 0; i < accounts.size(); ++i) {
     EXPECT_EQ(accounts[i], keyring.GetAddress(i));
+    EXPECT_EQ(keyring.GetAccountIndex(accounts[i]), i);
+  }
 
   keyring.AddAccounts(1);
   EXPECT_EQ(keyring.GetAccounts().size(), 3u);
