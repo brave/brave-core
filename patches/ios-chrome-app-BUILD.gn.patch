@@ -1,0 +1,22 @@
+diff --git a/ios/chrome/app/BUILD.gn b/ios/chrome/app/BUILD.gn
+index 6eb60dddf6cd7fe5a87b2e463187db09a2b5d7cb..71bd4490f4eb31163557e2479a014047bd1e170c 100644
+--- a/ios/chrome/app/BUILD.gn
++++ b/ios/chrome/app/BUILD.gn
+@@ -166,7 +166,7 @@ source_set("credential_provider_migrator_app_agent") {
+     "//components/keyed_service/core",
+     "//ios/chrome/app/application_delegate:app_state_header",
+     "//ios/chrome/app/application_delegate:observing_app_state_agent",
+-    "//ios/chrome/browser/credential_provider",
++    # "//ios/chrome/browser/credential_provider",
+     "//ios/chrome/browser/passwords:store_factory",
+     "//ios/chrome/browser/ui/main:browser_interface_provider",
+     "//ios/chrome/browser/ui/main:scene_state_header",
+@@ -284,7 +284,7 @@ source_set("app_internal") {
+     ":app_metrics_app_state_agent",
+     ":blocking_scene_commands",
+     ":content_suggestions_scheduler_app_state_agent",
+-    ":credential_provider_migrator_app_agent",
++    # ":credential_provider_migrator_app_agent",
+     ":enterprise_app_agent",
+     ":first_run_app_state_agent",
+     ":mode",
