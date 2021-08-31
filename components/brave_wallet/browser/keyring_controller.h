@@ -115,6 +115,14 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void NotifyWalletBackupComplete() override;
   void GetDefaultKeyringInfo(GetDefaultKeyringInfoCallback callback) override;
   void Reset() override;
+  void SetDefaultKeyringDerivedAccountName(
+      const std::string& address,
+      const std::string& name,
+      SetDefaultKeyringDerivedAccountNameCallback callback) override;
+  void SetDefaultKeyringImportedAccountName(
+      const std::string& address,
+      const std::string& name,
+      SetDefaultKeyringImportedAccountNameCallback callback) override;
 
   bool IsDefaultKeyringCreated();
 
@@ -155,6 +163,8 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, ImportedAccounts);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
                            GetPrivateKeyForDefaultKeyringAccount);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
+                           SetDefaultKeyringDerivedAccountName);
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
 

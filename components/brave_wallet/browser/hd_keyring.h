@@ -15,6 +15,7 @@
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -34,6 +35,7 @@ class HDKeyring {
   void AddAccounts(size_t number = 1);
   // This will return vector of address of all accounts
   std::vector<std::string> GetAccounts() const;
+  absl::optional<size_t> GetAccountIndex(const std::string& address) const;
   size_t GetAccountsNumber() const;
   // Only support removing accounts from the back to prevents gaps
   void RemoveAccount();

@@ -18,6 +18,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/pref_service_syncable.h"
 #include "crypto/random.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 /* kBraveWalletKeyrings structure
  *
@@ -33,14 +34,14 @@
  *               "account_name": "account 2",
  *               ...
  *          }
- *      }
+ *      },
  *      "imported_accounts": [
- *	  { "address": "0x71f430f5f2a79274c17986ea1a1106596a39ba05",
+ *        { "address": "0x71f430f5f2a79274c17986ea1a1106596a39ba05",
  *          "encrypted_private_key": [privatekey],
  *          "account_name": "Imported account 1"
- *	  },
- *	  ...
- *      ]
+ *        },
+ *        ...
+ *      ],
  *      ...
  *   },
  *
@@ -797,6 +798,63 @@ bool KeyringController::IsDefaultKeyringCreated() {
 void KeyringController::AddObserver(
     ::mojo::PendingRemote<mojom::KeyringControllerObserver> observer) {
   observers_.Add(std::move(observer));
+}
+
+void KeyringController::SetDefaultKeyringDerivedAccountName(
+    const std::string& address,
+    const std::string& name,
+    SetDefaultKeyringDerivedAccountNameCallback callback) {
+  if (address.empty() || name.empty() || !default_keyring_) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  const absl::optional<size_t> index =
+      default_keyring_->GetAccountIndex(address);
+  if (!index) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  SetAccountNameForKeyring(prefs_, GetAccountPathByIndex(index.value()), name,
+                           kDefaultKeyringId);
+  std::move(callback).Run(true);
+}
+
+void KeyringController::SetDefaultKeyringImportedAccountName(
+    const std::string& address,
+    const std::string& name,
+    SetDefaultKeyringImportedAccountNameCallback callback) {
+  if (address.empty() || name.empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  base::Value imported_accounts(base::Value::Type::LIST);
+  const base::Value* value =
+      GetPrefForKeyring(prefs_, kImportedAccounts, kDefaultKeyringId);
+  if (!value) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  imported_accounts = value->Clone();
+  base::Value::ListView imported_accounts_list = imported_accounts.GetList();
+
+  bool name_updated = false;
+  for (size_t i = 0; i < imported_accounts_list.size(); i++) {
+    const std::string* account_address =
+        imported_accounts_list[i].FindStringKey(kAccountAddress);
+    if (account_address && *account_address == address) {
+      imported_accounts_list[i].SetStringKey(kAccountName, name);
+      SetPrefForKeyring(prefs_, kImportedAccounts, std::move(imported_accounts),
+                        kDefaultKeyringId);
+      name_updated = true;
+      break;
+    }
+  }
+
+  std::move(callback).Run(name_updated);
 }
 
 }  // namespace brave_wallet
