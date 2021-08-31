@@ -28,13 +28,13 @@ extension BraveLedger {
         return now >= deadlineDate
     }
     
-    public func listAutoContributePublishers(_ completion: @escaping (_ publishers: [PublisherInfo]) -> Void) {
-        let filter: ActivityInfoFilter = {
-            let sort = ActivityInfoFilterOrderPair().then {
+    public func listAutoContributePublishers(_ completion: @escaping (_ publishers: [Ledger.PublisherInfo]) -> Void) {
+        let filter: Ledger.ActivityInfoFilter = {
+            let sort = Ledger.ActivityInfoFilterOrderPair().then {
                 $0.propertyName = "percent"
                 $0.ascending = false
             }
-            let filter = ActivityInfoFilter().then {
+            let filter = Ledger.ActivityInfoFilter().then {
                 $0.id = ""
                 $0.excluded = .filterAllExceptExcluded
                 $0.percent = 1 // exclude 0% sites.
@@ -49,14 +49,14 @@ extension BraveLedger {
         }
     }
     
-    public func updateDrainStatus(_ completion: @escaping (DrainStatus?) -> Void) {
+    public func updateDrainStatus(_ completion: @escaping (Ledger.DrainStatus?) -> Void) {
         guard let drainID = Preferences.Rewards.transferDrainID.value else {
             completion(nil)
             return
         }
         if !AppConstants.buildChannel.isPublic,
            let overrideValue = Preferences.Rewards.drainStatusOverride.value,
-           let status = DrainStatus(rawValue: overrideValue) {
+           let status = Ledger.DrainStatus(rawValue: overrideValue) {
             Preferences.Rewards.lastTransferStatus.value = status.rawValue
             completion(status)
             return
@@ -64,7 +64,7 @@ extension BraveLedger {
         drainStatus(for: drainID) { result, status in
             if result != .ledgerOk {
                 if let lastStatus = Preferences.Rewards.lastTransferStatus.value {
-                    completion(DrainStatus(rawValue: lastStatus))
+                    completion(Ledger.DrainStatus(rawValue: lastStatus))
                 } else {
                     completion(nil)
                 }
@@ -153,7 +153,7 @@ extension BraveLedger {
         }
     }
     
-    public func claimPromotion(_ promotion: Promotion, completion: @escaping (_ success: Bool, _ shouldReconcileAds: Bool) -> Void) {
+    public func claimPromotion(_ promotion: Ledger.Promotion, completion: @escaping (_ success: Bool, _ shouldReconcileAds: Bool) -> Void) {
         guard let paymentId = self.paymentId else {
             completion(false, false)
             return

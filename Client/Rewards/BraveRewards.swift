@@ -25,19 +25,19 @@ class BraveRewards: NSObject {
     
     private let configuration: Configuration
     
-    init(configuration: Configuration, buildChannel: BraveAdsBuildChannel?) {
+    init(configuration: Configuration, buildChannel: Ads.BraveAdsBuildChannel?) {
         self.configuration = configuration
         
-        BraveAds.isDebug = configuration.environment != .production
-        BraveAds.environment = Int32(configuration.environment.rawValue)
+        BraveAds.isDebug = configuration.ledgerEnvironment != .production
+        BraveAds.environment = configuration.adsEnvironment
         if let channel = buildChannel {
             BraveAds.buildChannel = channel
         }
         
-        BraveLedger.isDebug = configuration.environment != .production
-        BraveLedger.environment = configuration.environment
+        BraveLedger.isDebug = configuration.ledgerEnvironment != .production
+        BraveLedger.environment = configuration.ledgerEnvironment
         BraveLedger.isTesting = configuration.isTesting
-        BraveLedger.useShortRetries = configuration.useShortRetries
+        BraveLedger.retryInterval = Int32(configuration.retryInterval)
         BraveLedger.reconcileInterval = Int32(configuration.overridenNumberOfSecondsBetweenReconcile)
         
         ads = BraveAds(stateStoragePath: configuration.storageURL.appendingPathComponent("ads").path)
@@ -263,35 +263,40 @@ extension BraveRewards {
     
     struct Configuration {
         var storageURL: URL
-        var environment: BATEnvironment
-        var adsBuildChannel: BraveAdsBuildChannel = .init()
+        var ledgerEnvironment: Ledger.Environment
+        var adsEnvironment: Ads.BraveAdsEnvironment
+        var adsBuildChannel: Ads.BraveAdsBuildChannel = .init()
         var isTesting: Bool = false
         var overridenNumberOfSecondsBetweenReconcile: Int = 0
-        var useShortRetries: Bool = false
+        var retryInterval: Int = 0
         
         static var `default`: Configuration {
             .init(
                 storageURL: FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!,
-                environment: .development
+                ledgerEnvironment: .development,
+                adsEnvironment: .development
             )
         }
         static var staging: Configuration {
             var config = Configuration.default
-            config.environment = .staging
+            config.ledgerEnvironment = .staging
+            config.adsEnvironment = .staging
             return config
         }
         static var production: Configuration {
             var config = Configuration.default
-            config.environment = .production
+            config.ledgerEnvironment = .production
+            config.adsEnvironment = .production
             return config
         }
         static var testing: Configuration {
             .init(
                 storageURL: URL(fileURLWithPath: NSTemporaryDirectory()),
-                environment: .development,
+                ledgerEnvironment: .development,
+                adsEnvironment: .development,
                 isTesting: true,
                 overridenNumberOfSecondsBetweenReconcile: 30,
-                useShortRetries: true
+                retryInterval: 30
             )
         }
     }
