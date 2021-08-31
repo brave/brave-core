@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -228,6 +229,21 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
   }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  const bool show_menu_item = IsCommandIdEnabled(IDC_BRAVE_VPN_MENU);
+  const bool show_panel_item = IsCommandIdEnabled(IDC_SHOW_BRAVE_VPN_PANEL);
+
+  if (show_menu_item) {
+    // Sub menu for post-purchased is not yet implemented.
+    NOTIMPLEMENTED();
+    InsertItemWithStringIdAt(GetIndexOfBraveVPNItem(), IDC_BRAVE_VPN_MENU,
+                             IDS_BRAVE_VPN_MENU);
+  } else if (show_panel_item) {
+    InsertItemWithStringIdAt(GetIndexOfBraveVPNItem(), IDC_SHOW_BRAVE_VPN_PANEL,
+                             IDS_BRAVE_VPN_MENU);
+  }
+#endif
+
   // Insert adblock menu at last. Assumed this is always enabled.
   DCHECK(IsCommandIdEnabled(IDC_SHOW_BRAVE_ADBLOCK));
   InsertItemWithStringIdAt(GetIndexOfBraveAdBlockItem(),
@@ -430,11 +446,17 @@ int BraveAppMenuModel::GetIndexOfBraveAdBlockItem() const {
   // Insert as a last item in second section.
   int adblock_item_index = -1;
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
+  adblock_item_index = GetIndexOfCommandId(IDC_SHOW_BRAVE_VPN_PANEL);
+  if (adblock_item_index != -1)
+    return adblock_item_index + 1;
+
+  adblock_item_index = GetIndexOfCommandId(IDC_BRAVE_VPN_MENU);
+  if (adblock_item_index != -1)
+    return adblock_item_index + 1;
+
   adblock_item_index = GetIndexOfCommandId(IDC_SIDEBAR_SHOW_OPTION_MENU);
   if (adblock_item_index != -1)
     return adblock_item_index + 1;
-#endif
 
   adblock_item_index = GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC);
   if (adblock_item_index != -1)
@@ -508,3 +530,31 @@ int BraveAppMenuModel::GetIndexOfBraveSidebarItem() const {
   return sidebar_item_index + 1;
 }
 #endif
+
+int BraveAppMenuModel::GetIndexOfBraveVPNItem() const {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  int vpn_item_index = -1;
+
+  vpn_item_index = GetIndexOfCommandId(IDC_SIDEBAR_SHOW_OPTION_MENU);
+  if (vpn_item_index != -1)
+    return vpn_item_index + 1;
+
+  vpn_item_index = GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC);
+  if (vpn_item_index != -1)
+    return vpn_item_index + 1;
+
+  vpn_item_index = GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS);
+  if (vpn_item_index != -1)
+    return vpn_item_index + 1;
+
+  vpn_item_index = GetIndexOfCommandId(IDC_SHOW_BRAVE_WALLET);
+  if (vpn_item_index != -1)
+    return vpn_item_index + 1;
+
+  vpn_item_index = GetIndexOfCommandId(IDC_SHOW_DOWNLOADS);
+  DCHECK_NE(-1, vpn_item_index) << "No download item";
+  return vpn_item_index + 1;
+#else
+  return -1;
+#endif
+}

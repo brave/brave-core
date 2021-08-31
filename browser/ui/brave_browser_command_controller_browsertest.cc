@@ -5,8 +5,10 @@
 
 #include <memory>
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -27,7 +29,34 @@
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
-using BraveBrowserCommandControllerTest = InProcessBrowserTest;
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/features.h"
+#endif
+
+class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
+ public:
+  BraveBrowserCommandControllerTest() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    scoped_feature_list_.InitAndEnableFeature(brave_vpn::features::kBraveVPN);
+#endif
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  void SetPurchasedUserForBraveVPN(Browser* browser, bool purchased) {
+    auto* service = BraveVpnServiceFactory::GetForProfile(browser->profile());
+    service->set_is_purchased_user_for_test(purchased);
+    // TODO(simonhong): Delete this explicit update call.
+    // This should be called implicitely whenever purchased state is changed.
+    static_cast<chrome::BraveBrowserCommandController*>(
+        browser->command_controller())
+        ->UpdateCommandForBraveVPN();
+  }
+
+  base::test::ScopedFeatureList scoped_feature_list_;
+#endif
+};
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsEnableTest) {
@@ -46,6 +75,16 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  SetPurchasedUserForBraveVPN(browser(), false);
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+
+  SetPurchasedUserForBraveVPN(browser(), true);
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
 #endif
 
   if (switches::IsSyncAllowedByFlag())
@@ -75,6 +114,16 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  SetPurchasedUserForBraveVPN(private_browser, false);
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+
+  SetPurchasedUserForBraveVPN(private_browser, true);
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
 #endif
 
   if (switches::IsSyncAllowedByFlag())
@@ -111,6 +160,16 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  SetPurchasedUserForBraveVPN(guest_browser, false);
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+
+  SetPurchasedUserForBraveVPN(guest_browser, true);
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+#endif
+
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -144,6 +203,16 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
   else
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  SetPurchasedUserForBraveVPN(tor_browser, false);
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+
+  SetPurchasedUserForBraveVPN(tor_browser, true);
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+#endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));

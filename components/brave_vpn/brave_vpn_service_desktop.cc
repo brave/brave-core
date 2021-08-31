@@ -135,6 +135,12 @@ void BraveVpnServiceDesktop::Disconnect() {
   GetBraveVPNConnectionAPI()->Disconnect(GetConnectionInfo().connection_name());
 }
 
+void BraveVpnServiceDesktop::CheckPurchasedStatus() {
+  // TODO(simonhong): Should notify to observers when purchased status is
+  // changed.
+  NOTIMPLEMENTED();
+}
+
 void BraveVpnServiceDesktop::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }

@@ -56,6 +56,8 @@ class BraveVpnServiceDesktop
   void RemoveObserver(Observer* observer);
 
   bool is_connected() const { return state_ == ConnectionState::CONNECTED; }
+  void CheckPurchasedStatus();
+  bool is_purchased_user() const { return is_purchased_user_; }
 
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
@@ -63,6 +65,9 @@ class BraveVpnServiceDesktop
   void GetIsConnected(GetIsConnectedCallback callback) override;
 
  private:
+  friend class BraveAppMenuBrowserTest;
+  friend class BraveBrowserCommandControllerTest;
+
   // BraveVpnService overrides:
   void Shutdown() override;
 
@@ -74,9 +79,14 @@ class BraveVpnServiceDesktop
   void OnConnectFailed(const std::string& name) override;
   void OnDisconnected(const std::string& name) override;
 
+  void set_is_purchased_user_for_test(bool purchased) {
+    is_purchased_user_ = purchased;
+  }
+
   brave_vpn::BraveVPNConnectionInfo GetConnectionInfo();
 
   ConnectionState state_ = ConnectionState::DISCONNECTED;
+  bool is_purchased_user_ = false;
   base::ObserverList<Observer> observers_;
   base::ScopedObservation<brave_vpn::BraveVPNOSConnectionAPI,
                           brave_vpn::BraveVPNOSConnectionAPI::Observer>

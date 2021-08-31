@@ -24,6 +24,8 @@ class BraveVPNButton : public ToolbarButton,
   BraveVPNButton(const BraveVPNButton&) = delete;
   BraveVPNButton& operator=(const BraveVPNButton&) = delete;
 
+  void ShowBraveVPNPanel();
+
   // BraveVpnService::Observer overrides:
   void OnConnectionStateChanged(ConnectionState state) override;
   void OnConnectionCreated() override;
@@ -37,7 +39,6 @@ class BraveVPNButton : public ToolbarButton,
   bool IsConnected();
 
   void OnButtonPressed(const ui::Event& event);
-  void ShowBraveVPNPanel();
 
   BraveVpnServiceDesktop* service_ = nullptr;
   base::ScopedObservation<BraveVpnServiceDesktop,

@@ -111,6 +111,11 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 }
 
+void ShowBraveVPNBubble(Browser* browser) {
+  // Ask to browser view.
+  static_cast<BraveBrowserWindow*>(browser->window())->ShowBraveVPNBubble();
+}
+
 void ShowWalletBubble(Browser* browser) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && defined(TOOLKIT_VIEWS)
   static_cast<BraveBrowserView*>(browser->window())->CreateWalletBubble();

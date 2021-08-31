@@ -12,6 +12,7 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
@@ -20,6 +21,10 @@
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/brave_browser.h"
@@ -199,6 +204,15 @@ ContentsLayoutManager* BraveBrowserView::GetContentsLayoutManager() const {
   return BrowserView::GetContentsLayoutManager();
 }
 #endif
+
+void BraveBrowserView::ShowBraveVPNBubble() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  if (BraveVPNButton* button =
+          static_cast<BraveToolbarView*>(toolbar())->brave_vpn_button()) {
+    button->ShowBraveVPNPanel();
+  }
+#endif
+}
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
   BookmarkButton* button =

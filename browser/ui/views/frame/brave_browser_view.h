@@ -64,6 +64,7 @@ class BraveBrowserView : public BrowserView {
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
+  void ShowBraveVPNBubble() override;
 
   void StopTabCycling();
   void UpdateSearchTabsButtonState();

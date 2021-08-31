@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
@@ -43,6 +44,7 @@ class BraveAppMenuModel : public AppMenuModel {
   int GetIndexOfBraveRewardsItem() const;
   int GetIndexOfBraveAdBlockItem() const;
   int GetIndexOfBraveSyncItem() const;
+  int GetIndexOfBraveVPNItem() const;
 #if BUILDFLAG(ENABLE_SIDEBAR)
   int GetIndexOfBraveSidebarItem() const;
 #endif
