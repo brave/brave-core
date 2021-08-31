@@ -31,6 +31,56 @@ constexpr char kMasterSecret[] = "Bitcoin seed";
 #define HARDENED_OFFSET 0x80000000
 #define MAINNET_PUBLIC 0x0488B21E
 #define MAINNET_PRIVATE 0x0488ADE4
+
+bool UTCPasswordVerification(const std::string& derived_key,
+                             const std::vector<uint8_t>& ciphertext,
+                             const std::string& mac,
+                             size_t dklen) {
+  std::vector<uint8_t> mac_verification_input(derived_key.end() - dklen / 2,
+                                              derived_key.end());
+  mac_verification_input.insert(mac_verification_input.end(),
+                                ciphertext.begin(), ciphertext.end());
+  // verify password
+  std::vector<uint8_t> mac_verification(KeccakHash(mac_verification_input));
+  if (base::ToLowerASCII(base::HexEncode(mac_verification)) != mac) {
+    VLOG(0) << __func__ << ": password does not match";
+    return false;
+  }
+  return true;
+}
+
+bool UTCDecryptPrivateKey(const std::string& derived_key,
+                          const std::vector<uint8_t>& ciphertext,
+                          const std::vector<uint8_t>& iv,
+                          std::vector<uint8_t>* private_key,
+                          size_t dklen) {
+  if (!private_key)
+    return false;
+  std::unique_ptr<SymmetricKey> decryption_key =
+      SymmetricKey::Import(SymmetricKey::AES, derived_key.substr(0, dklen / 2));
+  if (!decryption_key) {
+    VLOG(1) << __func__ << ": raw key has to be 16 or 32 bytes for AES import";
+    return false;
+  }
+  Encryptor encryptor;
+  if (!encryptor.Init(decryption_key.get(), Encryptor::Mode::CTR,
+                      std::vector<uint8_t>())) {
+    VLOG(0) << __func__ << ": encryptor init failed";
+    return false;
+  }
+  if (!encryptor.SetCounter(iv)) {
+    VLOG(0) << __func__ << ": encryptor set counter failed";
+    return false;
+  }
+
+  if (!encryptor.Decrypt(ciphertext, private_key)) {
+    VLOG(0) << __func__ << ": encryptor decrypt failed";
+    return false;
+  }
+
+  return true;
+}
+
 }  // namespace
 
 HDKey::HDKey()
@@ -268,17 +318,9 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     return nullptr;
   }
 
-  std::vector<uint8_t> mac_verification_input(
-      derived_key->key().end() - *dklen / 2, derived_key->key().end());
-  mac_verification_input.insert(mac_verification_input.end(),
-                                ciphertext_bytes.begin(),
-                                ciphertext_bytes.end());
-  // verify password
-  std::vector<uint8_t> mac_verification(KeccakHash(mac_verification_input));
-  if (base::ToLowerASCII(base::HexEncode(mac_verification)) != *mac) {
-    VLOG(0) << "password does not match";
+  if (!UTCPasswordVerification(derived_key->key(), ciphertext_bytes, *mac,
+                               *dklen))
     return nullptr;
-  }
 
   const auto* cipher = crypto->FindStringKey("cipher");
   if (!cipher) {
@@ -303,27 +345,9 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
   }
 
   std::vector<uint8_t> private_key;
-  std::unique_ptr<SymmetricKey> decryption_key = SymmetricKey::Import(
-      SymmetricKey::AES, derived_key->key().substr(0, *dklen / 2));
-  if (!decryption_key) {
-    VLOG(1) << __func__ << ": raw key has to be 16 or 32 bytes for AES import";
+  if (!UTCDecryptPrivateKey(derived_key->key(), ciphertext_bytes, iv_bytes,
+                            &private_key, *dklen))
     return nullptr;
-  }
-  Encryptor encryptor;
-  if (!encryptor.Init(decryption_key.get(), Encryptor::Mode::CTR,
-                      std::vector<uint8_t>())) {
-    VLOG(0) << __func__ << ": encryptor init failed";
-    return nullptr;
-  }
-  if (!encryptor.SetCounter(iv_bytes)) {
-    VLOG(0) << __func__ << ": encryptor set counter failed";
-    return nullptr;
-  }
-
-  if (!encryptor.Decrypt(ciphertext_bytes, &private_key)) {
-    VLOG(0) << __func__ << ": encryptor decrypt failed";
-    return nullptr;
-  }
 
   return GenerateFromPrivateKey(private_key);
 }
