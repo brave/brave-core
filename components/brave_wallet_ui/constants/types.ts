@@ -251,6 +251,15 @@ export enum TransactionStatus {
   Confirmed = 4
 }
 
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
+export enum TransactionType {
+  ETHSend = 0,
+  ERC20Transfer = 1,
+  ERC20Approve = 2,
+  Other = 3
+}
+
 export interface SwapParams {
   takerAddress: string
   sellAmount: string
@@ -451,6 +460,9 @@ export interface TransactionInfo {
   txHash: string
   txData: TxData1559
   txStatus: TransactionStatus
+  txType: TransactionType
+  txParams: string[]
+  txArgs: string[]
 }
 
 export interface GetAllTransactionInfoReturnInfo {
