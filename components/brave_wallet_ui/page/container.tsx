@@ -406,8 +406,8 @@ function Container (props: Props) {
     props.walletActions.getAllTokensList()
   }
 
-  const onViewPrivateKey = (address: string) => {
-    props.walletPageActions.viewPrivateKey({ address })
+  const onViewPrivateKey = (address: string, isDefault: boolean) => {
+    props.walletPageActions.viewPrivateKey({ address, isDefault })
   }
 
   const onDoneViewingPrivateKey = () => {

@@ -5,11 +5,7 @@ export const AccountSettingsNavOptions: TopTabNavObjectType[] = [
   {
     id: 'details',
     name: locale.accountSettingsDetails
-  }
-]
-
-export const ImportedAccountSettingsNavOptions: TopTabNavObjectType[] = [
-  ...AccountSettingsNavOptions,
+  },
   {
     id: 'privateKey',
     name: locale.accountSettingsPrivateKey

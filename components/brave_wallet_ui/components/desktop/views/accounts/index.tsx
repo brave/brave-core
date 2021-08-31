@@ -51,7 +51,7 @@ export interface Props {
   accounts: WalletAccountType[]
   transactions: (RPCTransactionType | undefined)[]
   privateKey: string
-  onViewPrivateKey: (address: string) => void
+  onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
   toggleNav: () => void
   onClickBackup: () => void
