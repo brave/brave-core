@@ -7,13 +7,9 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_client.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
+#include "chrome/browser/download/background_download_service_factory.h"
 #include "chrome/browser/download/deferred_client_wrapper.h"
-
-#define BuildDownloadService BuildDownloadService_ChromiumImpl
-#define BuildInMemoryDownloadService BuildInMemoryDownloadService_ChromiumImpl
-#include "../../../../../../components/download/content/factory/download_service_factory_helper.cc"
-#undef BuildDownloadService
-#undef BuildInMemoryDownloadService
+#include "components/download/content/factory/download_service_factory_helper.h"
 
 namespace {
 
@@ -28,7 +24,7 @@ std::unique_ptr<download::Client> CreateAdBlockSubscriptionDownloadClient(
 
 namespace download {
 
-std::unique_ptr<BackgroundDownloadService> BuildDownloadService(
+std::unique_ptr<BackgroundDownloadService> BuildDownloadServiceOverride(
     SimpleFactoryKey* simple_factory_key,
     std::unique_ptr<DownloadClientMap> clients,
     network::NetworkConnectionTracker* network_connection_tracker,
@@ -43,14 +39,14 @@ std::unique_ptr<BackgroundDownloadService> BuildDownloadService(
           base::BindOnce(&CreateAdBlockSubscriptionDownloadClient),
           simple_factory_key)));
 
-  return BuildDownloadService_ChromiumImpl(
+  return BuildDownloadService(
       simple_factory_key, std::move(clients), network_connection_tracker,
       storage_dir, download_manager_coordinator, std::move(proto_db_provider),
       background_task_runner, std::move(task_scheduler));
 }
 
 // Create download service for incognito mode without any database or file IO.
-std::unique_ptr<BackgroundDownloadService> BuildInMemoryDownloadService(
+std::unique_ptr<BackgroundDownloadService> BuildInMemoryDownloadServiceOverride(
     SimpleFactoryKey* simple_factory_key,
     std::unique_ptr<DownloadClientMap> clients,
     network::NetworkConnectionTracker* network_connection_tracker,
@@ -64,10 +60,14 @@ std::unique_ptr<BackgroundDownloadService> BuildInMemoryDownloadService(
           base::BindOnce(&CreateAdBlockSubscriptionDownloadClient),
           simple_factory_key)));
 
-  return BuildInMemoryDownloadService_ChromiumImpl(
+  return BuildInMemoryDownloadService(
       simple_factory_key, std::move(clients), network_connection_tracker,
       storage_dir, std::move(blob_context_getter_factory), io_task_runner,
       url_loader_factory);
 }
 
 }  // namespace download
+
+#define BuildDownloadService BuildDownloadServiceOverride
+#define BuildInMemoryDownloadService BuildInMemoryDownloadServiceOverride
+#include "../../../../../chrome/browser/download/background_download_service_factory.cc"

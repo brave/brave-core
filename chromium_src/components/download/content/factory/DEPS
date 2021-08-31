@@ -1,5 +1,0 @@
-include_rules = [
-  "+brave/browser/brave_browser_process.h",
-  "+../../../../../../components/download/content/factory/download_service_factory_helper.cc",
-  "+chrome/browser/download",
-]
