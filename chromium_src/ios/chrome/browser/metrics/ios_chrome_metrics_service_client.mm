@@ -173,6 +173,8 @@ void IOSChromeMetricsServiceClient::Initialize() {
 }
 
 void IOSChromeMetricsServiceClient::RegisterMetricsServiceProviders() {
+  // error: private field 'stability_metrics_provider_' is not used
+  (void)stability_metrics_provider_;
   DeleteFileMetrics();
 }
 
