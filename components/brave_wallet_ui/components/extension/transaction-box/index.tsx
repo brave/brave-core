@@ -1,38 +1,35 @@
 import * as React from 'react'
-// import { TransactionDataType } from '../../../constants/types'
-import locale from '../../../constants/locale'
-// Styled Components
 import {
-  TransactionText,
-  HexBlock,
-  DetailRow,
-  DetailText,
   CodeSnippet,
   CodeSnippetText
 } from './style'
 
 export interface Props {
-  transactionData?: any
+  transactionData: string[]
+  hasNoData: boolean
 }
 
 const TransactionDetailBox = (props: Props) => {
-  const { transactionData } = props
+  const { transactionData, hasNoData } = props
   return (
     <>
-      <DetailRow>
-        <TransactionText>{locale.transactionDetailBoxFunction}:</TransactionText>
-        <DetailText>{transactionData?.functionName}</DetailText>
-      </DetailRow>
-      <CodeSnippet>
-        <code>
-          <CodeSnippetText>{transactionData?.parameters}</CodeSnippetText>
-        </code>
-      </CodeSnippet>
-      <DetailRow>
-        <TransactionText>{locale.transactionDetailBoxHex}:</TransactionText>
-        <DetailText>{transactionData?.hexSize} {locale.transactionDetailBoxBytes}</DetailText>
-      </DetailRow>
-      <HexBlock>{transactionData?.hexData}</HexBlock>
+      {hasNoData ? (
+        <CodeSnippet>
+          <code>
+            <CodeSnippetText>No Data.</CodeSnippetText>
+          </code>
+        </CodeSnippet>
+      ) : (
+        <>
+          {transactionData.map((data, i) =>
+            <CodeSnippet key={i}>
+              <code>
+                <CodeSnippetText>{data}</CodeSnippetText>
+              </code>
+            </CodeSnippet>
+          )}
+        </>
+      )}
     </>
   )
 }

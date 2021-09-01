@@ -1,6 +1,13 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
-import { WalletAccountType, EthereumChain, TransactionInfo } from '../../../constants/types'
+import {
+  WalletAccountType,
+  EthereumChain,
+  TransactionInfo,
+  TransactionType,
+  AssetPriceInfo,
+  TokenInfo
+} from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import locale from '../../../constants/locale'
@@ -38,9 +45,10 @@ export type confirmPanelTabs = 'transaction' | 'details'
 
 export interface Props {
   accounts: WalletAccountType[]
+  visibleTokens: TokenInfo[]
   transactionInfo: TransactionInfo
   selectedNetwork: EthereumChain
-  ethPrice: string
+  getTokenPrice: (symbol: string) => AssetPriceInfo
   onConfirm: () => void
   onReject: () => void
 }
@@ -50,11 +58,14 @@ function ConfirmTransactionPanel (props: Props) {
     accounts,
     selectedNetwork,
     transactionInfo,
-    ethPrice,
+    visibleTokens,
+    getTokenPrice,
     onConfirm,
     onReject
   } = props
+
   const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
+
   const fromOrb = React.useMemo(() => {
     return create({ seed: transactionInfo.fromAddress, size: 8, scale: 16 }).toDataURL()
   }, [transactionInfo])
@@ -63,25 +74,66 @@ function ConfirmTransactionPanel (props: Props) {
     return create({ seed: transactionInfo.txData.baseData.to, size: 8, scale: 10 }).toDataURL()
   }, [transactionInfo])
 
-  const formatedTransaction = React.useMemo(() => {
+  const findTokenInfo = (contractAddress: string) => {
+    return visibleTokens.find((account) => account.contractAddress.toLowerCase() === contractAddress.toLowerCase())
+  }
+
+  const transaction = React.useMemo(() => {
+    const { txType } = transactionInfo
     const { baseData } = transactionInfo.txData
-    const { gasPrice, value, data } = baseData
-    if (data.length === 0) {
-      const sendAmount = formatBalance(value, 18)
-      const sendFiatAmount = formatFiatBalance(value, 18, ethPrice)
-      const gasAmount = formatBalance(gasPrice, 18)
-      const gasFiatAmount = formatFiatBalance(gasPrice, 18, ethPrice)
+    const { gasPrice, value, data, to } = baseData
+    const selectedNetworkPrice = getTokenPrice(selectedNetwork.symbol).price
+    if (txType === TransactionType.ETHSend) {
+      const sendAmount = formatBalance(value, selectedNetwork.decimals)
+      const sendFiatAmount = formatFiatBalance(value, selectedNetwork.decimals, selectedNetworkPrice)
+      const gasAmount = formatBalance(gasPrice, selectedNetwork.decimals)
+      const gasFiatAmount = formatFiatBalance(gasPrice, selectedNetwork.decimals, selectedNetworkPrice)
       const grandTotalFiatAmount = Number(sendFiatAmount) + Number(gasFiatAmount)
       return {
         sendAmount,
+        sendTo: to,
         sendFiatAmount,
         gasAmount,
         gasFiatAmount,
         grandTotalFiatAmount,
-        symbol: 'ETH'
+        symbol: selectedNetwork.symbol,
+        hasNoData: data.length === 0
+      }
+    } else if (txType === TransactionType.ERC20Transfer) {
+      const ERC20Token = findTokenInfo(to)
+      const ERC20TokenPrice = getTokenPrice(ERC20Token?.symbol ?? '').price
+      const sendAmount = formatBalance(value, ERC20Token?.decimals ?? 18)
+      const sendFiatAmount = formatFiatBalance(value, ERC20Token?.decimals ?? 18, ERC20TokenPrice)
+      const gasAmount = formatBalance(gasPrice, selectedNetwork.decimals)
+      const gasFiatAmount = formatFiatBalance(gasPrice, selectedNetwork.decimals, selectedNetworkPrice)
+      const grandTotalFiatAmount = Number(sendFiatAmount) + Number(gasFiatAmount)
+      return {
+        sendAmount,
+        // Need to get extrated data to get address of sending to here
+        sendTo: '',
+        sendFiatAmount,
+        gasAmount,
+        gasFiatAmount,
+        grandTotalFiatAmount,
+        symbol: ERC20Token?.symbol ?? '',
+        hasNoData: data.length === 0
       }
     } else {
-      return
+      const sendAmount = formatBalance(value, selectedNetwork.decimals)
+      const sendFiatAmount = formatFiatBalance(value, selectedNetwork.decimals, selectedNetworkPrice)
+      const gasAmount = formatBalance(gasPrice, selectedNetwork.decimals)
+      const gasFiatAmount = formatFiatBalance(gasPrice, selectedNetwork.decimals, selectedNetworkPrice)
+      const grandTotalFiatAmount = Number(sendFiatAmount) + Number(gasFiatAmount)
+      return {
+        sendAmount,
+        sendTo: to,
+        sendFiatAmount,
+        gasAmount,
+        gasFiatAmount,
+        grandTotalFiatAmount,
+        symbol: selectedNetwork.symbol,
+        hasNoData: data.length === 0
+      }
     }
   }, [transactionInfo])
 
@@ -105,11 +157,11 @@ function ConfirmTransactionPanel (props: Props) {
       <FromToRow>
         <AccountNameText>{findAccountName(transactionInfo.fromAddress)}</AccountNameText>
         <ArrowIcon />
-        <AccountNameText>{reduceAddress(transactionInfo.txData.baseData.to)}</AccountNameText>
+        <AccountNameText>{reduceAddress(transaction.sendTo)}</AccountNameText>
       </FromToRow>
-      <TransactionTypeText>{locale.confrimTransactionBid}</TransactionTypeText>
-      <TransactionAmmountBig>{formatedTransaction?.sendAmount} {formatedTransaction?.symbol}</TransactionAmmountBig>
-      <TransactionFiatAmountBig>${formatedTransaction?.sendFiatAmount}</TransactionFiatAmountBig>
+      <TransactionTypeText>Send</TransactionTypeText>
+      <TransactionAmmountBig>{transaction.sendAmount} {transaction.symbol}</TransactionAmmountBig>
+      <TransactionFiatAmountBig>${transaction.sendFiatAmount}</TransactionFiatAmountBig>
       <TabRow>
         <PanelTab
           isSelected={selectedTab === 'transaction'}
@@ -129,8 +181,8 @@ function ConfirmTransactionPanel (props: Props) {
               <TransactionTitle>{locale.confirmTransactionGasFee}</TransactionTitle>
               <SectionRightColumn>
                 <EditButton>{locale.allowSpendEditButton}</EditButton>
-                <TransactionTypeText>{formatedTransaction?.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
-                <TransactionText>${formatedTransaction?.gasFiatAmount}</TransactionText>
+                <TransactionTypeText>{transaction.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
+                <TransactionText>${transaction.gasFiatAmount}</TransactionText>
               </SectionRightColumn>
             </SectionRow>
             <Divider />
@@ -138,15 +190,14 @@ function ConfirmTransactionPanel (props: Props) {
               <TransactionTitle>{locale.confirmTransactionTotal}</TransactionTitle>
               <SectionRightColumn>
                 <TransactionText>{locale.confirmTransactionAmountGas}</TransactionText>
-                <GrandTotalText>{formatedTransaction?.sendAmount} {formatedTransaction?.symbol} + {formatedTransaction?.gasAmount} {selectedNetwork.symbol}</GrandTotalText>
-                <TransactionText>${formatedTransaction?.grandTotalFiatAmount}</TransactionText>
+                <GrandTotalText>{transaction.sendAmount} {transaction.symbol} + {transaction.gasAmount} {selectedNetwork.symbol}</GrandTotalText>
+                <TransactionText>${transaction.grandTotalFiatAmount.toFixed(2)}</TransactionText>
               </SectionRightColumn>
             </SectionRow>
           </>
         ) : (
-          <TransactionDetailBox transactionData={transactionInfo.txData.baseData.data} />
+          <TransactionDetailBox hasNoData={transaction.hasNoData} transactionData={transactionInfo.txParams} />
         )}
-
       </MessageBox>
       <ButtonRow>
         <NavButton

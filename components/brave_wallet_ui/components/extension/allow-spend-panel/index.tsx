@@ -99,7 +99,7 @@ function AllowSpendPanel (props: Props) {
               </FiatRow>
             </>
           ) : (
-            <TransactionDetailBox transactionData={spendPayload.transactionData} />
+            <TransactionDetailBox hasNoData={true} transactionData={['']} />
           )}
         </MessageBox>
       </CenterColumn>

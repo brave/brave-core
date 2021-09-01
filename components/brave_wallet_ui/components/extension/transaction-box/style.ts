@@ -19,6 +19,7 @@ export const CodeSnippet = styled.pre`
   margin-bottom: 14px;
   white-space: pre-line;
   box-sizing: border-box;
+  word-break: break-all;
 `
 
 export const HexBlock = styled.div`

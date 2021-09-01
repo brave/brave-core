@@ -27,7 +27,8 @@ import {
   AccountAssetOptionType,
   BuySendSwapViewTypes,
   EthereumChain,
-  TransactionInfo
+  TransactionInfo,
+  TransactionType
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
@@ -41,7 +42,7 @@ import {
   SelectContainer
 } from './style'
 import { mockNetworks } from './mock-data/mock-networks'
-import { AccountAssetOptions } from '../options/asset-options'
+import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -98,21 +99,6 @@ const batTokenInfo = {
 
 export const _ConfirmTransaction = () => {
 
-  // const transactionPanelPayload = {
-  //   transactionAmount: '68000000000000000000',
-  //   transactionGas: '7548000000000000',
-  //   toAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-  //   erc20Token: batTokenInfo,
-  //   tokenPrice: '0.35',
-  //   ethPrice: '3058.35',
-  //   transactionData: {
-  //     functionName: 'Atomic Match_',
-  //     parameters: 'Parameters: [ {"type": "uint256"}, {"type": "address[]"}, {"type": "address"}, {"type": "uint256"} ]',
-  //     hexData: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc',
-  //     hexSize: '228'
-  //   }
-  // }
-
   const transactionInfo: TransactionInfo = {
     fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
     id: '465a4d6646-kjlwf665',
@@ -124,7 +110,7 @@ export const _ConfirmTransaction = () => {
         gasLimit: '7548000000000000',
         to: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
         value: '0x15ddf09c97b0000',
-        data: new Uint8Array()
+        data: new Uint8Array(24)
       },
       chainId: '0x0',
       maxPriorityFeePerGas: '',
@@ -132,8 +118,9 @@ export const _ConfirmTransaction = () => {
     },
     txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
     txStatus: 0,
-    txParams: [],
-    txType: 0
+    txParams: ['Parameters: [ {"type": "uint256"}, {"type": "address[]"}, {"type": "address"}, {"type": "uint256"} ]',
+      '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc'],
+    txType: TransactionType.ETHSend
   }
 
   const onConfirmTransaction = () => {
@@ -144,6 +131,24 @@ export const _ConfirmTransaction = () => {
     alert('Rejected Transaction')
   }
 
+  const getTokenPrice = (symbol: string) => {
+    if (symbol === 'ETH') {
+      return {
+        fromAsset: 'ETH',
+        toAsset: 'USD',
+        price: '3300',
+        assetTimeframeChange: ''
+      }
+    } else {
+      return {
+        fromAsset: 'BAT',
+        toAsset: 'USD',
+        price: '0.85',
+        assetTimeframeChange: ''
+      }
+    }
+  }
+
   return (
     <StyledExtensionWrapperLonger>
       <ConfirmTransactionPanel
@@ -151,8 +156,9 @@ export const _ConfirmTransaction = () => {
         onConfirm={onConfirmTransaction}
         onReject={onRejectTransaction}
         accounts={accounts}
-        ethPrice='3300'
+        getTokenPrice={getTokenPrice}
         transactionInfo={transactionInfo}
+        visibleTokens={NewAssetOptions}
       />
     </StyledExtensionWrapperLonger>
   )
