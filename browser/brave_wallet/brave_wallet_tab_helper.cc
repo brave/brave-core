@@ -12,7 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
-#include "brave/components/brave_wallet/common/web3_provider_utils.h"
+#include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_manager.h"

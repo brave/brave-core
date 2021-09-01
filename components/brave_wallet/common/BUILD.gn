@@ -10,8 +10,8 @@ static_library("common") {
   sources = [
     "features.cc",
     "features.h",
-    "web3_provider_utils.cc",
-    "web3_provider_utils.h",
+    "value_conversion_utils.cc",
+    "value_conversion_utils.h",
   ]
   deps = [
     ":common_constants",

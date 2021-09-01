@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/common/web3_provider_utils.h"
+#include "brave/components/brave_wallet/common/value_conversion_utils.h"
 
 #include "base/json/json_reader.h"
 #include "base/values.h"
@@ -11,7 +11,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-TEST(Web3ProviderUtilsUnitTest, ValueToEthereumChainTest) {
+TEST(ValueConversionUtilsUnitTest, ValueToEthereumChainTest) {
   {
     absl::optional<brave_wallet::mojom::EthereumChain> chain =
         brave_wallet::ValueToEthereumChain(base::JSONReader::Read(R"({
@@ -82,7 +82,7 @@ TEST(Web3ProviderUtilsUnitTest, ValueToEthereumChainTest) {
   }
 }
 
-TEST(Web3ProviderUtilsUnitTest, EthereumChainToValueTest) {
+TEST(ValueConversionUtilsUnitTest, EthereumChainToValueTest) {
   brave_wallet::mojom::EthereumChain chain(
       "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
       {"https://url1.com"}, "symbol_name", "symbol", 11);

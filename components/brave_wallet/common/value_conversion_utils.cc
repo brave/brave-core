@@ -9,7 +9,7 @@
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/web3_provider_utils.h"
+#include "brave/components/brave_wallet/common/value_conversion_utils.h"
 
 namespace brave_wallet {
 
