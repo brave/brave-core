@@ -91,7 +91,6 @@ brave_chrome_browser_deps = [
   "//brave/browser:browser_process",
   "//brave/browser/brave_ads",
   "//brave/browser/brave_ads/notifications",
-  "//brave/browser/brave_ads/tooltips",
   "//brave/browser/component_updater",
   "//brave/browser/content_settings",
   "//brave/browser/gcm_driver",
@@ -247,6 +246,10 @@ if (is_android) {
     "//brave/components/weekly_storage",
     "//components/infobars/content",
   ]
+}
+
+if (brave_adaptive_captcha_enabled) {
+  brave_chrome_browser_deps += [ "//brave/browser/brave_ads/tooltips" ]
 }
 
 if (enable_sidebar) {

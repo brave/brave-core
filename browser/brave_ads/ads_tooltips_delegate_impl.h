@@ -9,7 +9,6 @@
 #include <string>
 
 #include "brave/browser/brave_ads/tooltips/ads_tooltips_controller.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 
 class Profile;
@@ -24,12 +23,13 @@ class AdsTooltipsDelegateImpl : public AdsTooltipsDelegate {
   AdsTooltipsDelegateImpl(const AdsTooltipsDelegateImpl&) = delete;
   AdsTooltipsDelegateImpl& operator=(const AdsTooltipsDelegateImpl&) = delete;
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  void ShowCaptchaTooltip(const std::string& payment_id,
-                          const std::string& captcha_id,
-                          bool enable_cancel_button) override;
+  void ShowCaptchaTooltip(
+      const std::string& payment_id,
+      const std::string& captcha_id,
+      bool enable_cancel_button,
+      ShowScheduledCaptchaCallback show_captcha_callback,
+      SnoozeScheduledCaptchaCallback snooze_captcha_callback) override;
   void CloseCaptchaTooltip() override;
-#endif
 
  private:
   AdsTooltipsController ads_tooltips_controller_;

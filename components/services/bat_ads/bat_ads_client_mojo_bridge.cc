@@ -261,11 +261,6 @@ void BatAdsClientMojoBridge::ClearScheduledCaptcha() {
   bat_ads_client_->ClearScheduledCaptcha();
 }
 
-void OnGetScheduledCaptcha(ads::GetScheduledCaptchaCallback callback,
-                           const std::string& captcha_id) {
-  std::move(callback).Run(captcha_id);
-}
-
 void BatAdsClientMojoBridge::GetScheduledCaptcha(
     const std::string& payment_id,
     ads::GetScheduledCaptchaCallback callback) {
@@ -273,8 +268,7 @@ void BatAdsClientMojoBridge::GetScheduledCaptcha(
     return std::move(callback).Run("");
   }
 
-  bat_ads_client_->GetScheduledCaptcha(
-      payment_id, base::BindOnce(&OnGetScheduledCaptcha, std::move(callback)));
+  bat_ads_client_->GetScheduledCaptcha(payment_id, std::move(callback));
 }
 
 void BatAdsClientMojoBridge::ShowScheduledCaptchaNotification(

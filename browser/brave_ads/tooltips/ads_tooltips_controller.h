@@ -9,14 +9,10 @@
 #include <map>
 #include <string>
 
+#include "brave/browser/brave_ads/tooltips/ads_captcha_tooltip.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
-
-namespace brave_adaptive_captcha {
-class BraveAdaptiveCaptchaService;
-}  // namespace brave_adaptive_captcha
 
 namespace brave_tooltips {
 class BraveTooltipPopup;
@@ -29,32 +25,26 @@ namespace brave_ads {
 class AdsTooltipsController : public AdsTooltipsDelegate,
                               public brave_tooltips::BraveTooltipDelegate {
  public:
-  explicit AdsTooltipsController(
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-      brave_adaptive_captcha::BraveAdaptiveCaptchaService*
-          brave_adaptive_captcha_service,
-#endif
-      Profile* profile);
+  explicit AdsTooltipsController(Profile* profile);
   ~AdsTooltipsController() override;
 
   AdsTooltipsController(const AdsTooltipsController&) = delete;
   AdsTooltipsController& operator=(const AdsTooltipsController&) = delete;
 
   // AdsTooltipDelegate:
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  void ShowCaptchaTooltip(const std::string& payment_id,
-                          const std::string& captcha_id,
-                          bool enable_cancel_button) override;
+  void ShowCaptchaTooltip(
+      const std::string& payment_id,
+      const std::string& captcha_id,
+      bool enable_cancel_button,
+      ShowScheduledCaptchaCallback show_captcha_callback,
+      SnoozeScheduledCaptchaCallback snooze_captcha_callback) override;
   void CloseCaptchaTooltip() override;
-#endif
 
  private:
   // brave_tooltips::BraveTooltipDelegate:
   void OnTooltipWidgetDestroyed(const std::string& tooltip_id) override;
 
-  brave_adaptive_captcha::BraveAdaptiveCaptchaService*
-      brave_adaptive_captcha_service_ = nullptr;  // NOT OWNED
-  Profile* profile_ = nullptr;                    // NOT OWNED
+  Profile* profile_ = nullptr;  // NOT OWNED
   std::map<std::string, brave_tooltips::BraveTooltipPopup* /* NOT OWNED */>
       tooltip_popups_;
 };

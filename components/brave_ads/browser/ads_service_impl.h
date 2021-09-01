@@ -413,9 +413,6 @@ class AdsServiceImpl : public AdsService,
   void GetScheduledCaptcha(const std::string& payment_id,
                            ads::GetScheduledCaptchaCallback callback) override;
 
-  void OnGetScheduledCaptcha(ads::GetScheduledCaptchaCallback callback,
-                             const std::string& captcha_id);
-
   void ShowScheduledCaptchaNotification(const std::string& payment_id,
                                         const std::string& captcha_id) override;
 

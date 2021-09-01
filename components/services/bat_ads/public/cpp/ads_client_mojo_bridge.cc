@@ -119,28 +119,10 @@ void AdsClientMojoBridge::ClearScheduledCaptcha() {
   ads_client_->ClearScheduledCaptcha();
 }
 
-// static
-void AdsClientMojoBridge::OnGetScheduledCaptcha(
-    CallbackHolder<GetScheduledCaptchaCallback>* holder,
-    const std::string& captcha_id) {
-  DCHECK(holder);
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(captcha_id);
-  }
-
-  delete holder;
-}
-
 void AdsClientMojoBridge::GetScheduledCaptcha(
     const std::string& payment_id,
     GetScheduledCaptchaCallback callback) {
-  // this gets deleted in OnGetScheduledCaptcha
-  auto* holder = new CallbackHolder<GetScheduledCaptchaCallback>(
-      AsWeakPtr(), std::move(callback));
-  ads_client_->GetScheduledCaptcha(
-      payment_id,
-      base::BindOnce(AdsClientMojoBridge::OnGetScheduledCaptcha, holder));
+  ads_client_->GetScheduledCaptcha(payment_id, std::move(callback));
 }
 
 void AdsClientMojoBridge::ShowScheduledCaptchaNotification(

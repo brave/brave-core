@@ -48,7 +48,6 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
-#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
 #include "brave/components/brave_ads/browser/service_sandbox_type.h"
@@ -110,6 +109,7 @@
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 #endif
 
 using brave_rewards::RewardsNotificationService;
@@ -2219,19 +2219,10 @@ void AdsServiceImpl::GetScheduledCaptcha(
     const std::string& payment_id,
     ads::GetScheduledCaptchaCallback callback) {
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  adaptive_captcha_service_->GetScheduledCaptcha(
-      payment_id, base::BindOnce(&AdsServiceImpl::OnGetScheduledCaptcha,
-                                 AsWeakPtr(), std::move(callback)));
+  adaptive_captcha_service_->GetScheduledCaptcha(payment_id,
+                                                 std::move(callback));
 #endif
 }
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-void AdsServiceImpl::OnGetScheduledCaptcha(
-    ads::GetScheduledCaptchaCallback callback,
-    const std::string& captcha_id) {
-  std::move(callback).Run(captcha_id);
-}
-#endif
 
 void AdsServiceImpl::ShowScheduledCaptchaNotification(
     const std::string& payment_id,
@@ -2247,8 +2238,10 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
   const int snooze_count = pref_service->GetInteger(
       brave_adaptive_captcha::kScheduledCaptchaSnoozeCount);
 
-  ads_tooltips_delegate_->ShowCaptchaTooltip(payment_id, captcha_id,
-                                             snooze_count == 0);
+  ads_tooltips_delegate_->ShowCaptchaTooltip(
+      payment_id, captcha_id, snooze_count == 0,
+      base::BindOnce(&AdsServiceImpl::ShowScheduledCaptcha, AsWeakPtr()),
+      base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptcha, AsWeakPtr()));
 #endif
 }
 

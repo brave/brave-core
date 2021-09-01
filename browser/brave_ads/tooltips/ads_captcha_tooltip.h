@@ -8,12 +8,10 @@
 
 #include <string>
 
+#include "base/callback.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_attributes.h"
-
-namespace brave_adaptive_captcha {
-class BraveAdaptiveCaptchaService;
-}  // namespace brave_adaptive_captcha
+#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 
 namespace brave_ads {
 
@@ -21,8 +19,8 @@ extern const char kScheduledCaptchaTooltipId[];
 
 class AdsCaptchaTooltip : public brave_tooltips::BraveTooltip {
  public:
-  AdsCaptchaTooltip(brave_adaptive_captcha::BraveAdaptiveCaptchaService*
-                        adaptive_captcha_service,
+  AdsCaptchaTooltip(ShowScheduledCaptchaCallback show_captcha_callback,
+                    SnoozeScheduledCaptchaCallback snooze_captcha_callback,
                     const brave_tooltips::BraveTooltipAttributes& attributes,
                     const std::string& payment_id,
                     const std::string& captcha_id);
@@ -39,8 +37,8 @@ class AdsCaptchaTooltip : public brave_tooltips::BraveTooltip {
   void PerformCancelButtonAction() override;
 
  private:
-  brave_adaptive_captcha::BraveAdaptiveCaptchaService*
-      adaptive_captcha_service_;  // NOT OWNED
+  ShowScheduledCaptchaCallback show_captcha_callback_;
+  SnoozeScheduledCaptchaCallback snooze_captcha_callback_;
   std::string payment_id_;
   std::string captcha_id_;
 };

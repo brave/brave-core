@@ -5,24 +5,21 @@
 
 #include "brave/browser/brave_ads/tooltips/ads_captcha_tooltip.h"
 
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#endif
+#include <utility>
 
 namespace brave_ads {
 
 const char kScheduledCaptchaTooltipId[] = "scheduled-captcha";
 
 AdsCaptchaTooltip::AdsCaptchaTooltip(
-    brave_adaptive_captcha::BraveAdaptiveCaptchaService*
-        adaptive_captcha_service,
+    ShowScheduledCaptchaCallback show_captcha_callback,
+    SnoozeScheduledCaptchaCallback snooze_captcha_callback,
     const brave_tooltips::BraveTooltipAttributes& attributes,
     const std::string& payment_id,
     const std::string& captcha_id)
     : BraveTooltip(kScheduledCaptchaTooltipId, attributes, nullptr),
-      adaptive_captcha_service_(adaptive_captcha_service),
+      show_captcha_callback_(std::move(show_captcha_callback)),
+      snooze_captcha_callback_(std::move(snooze_captcha_callback)),
       payment_id_(payment_id),
       captcha_id_(captcha_id) {}
 
@@ -30,15 +27,15 @@ AdsCaptchaTooltip::~AdsCaptchaTooltip() = default;
 
 void AdsCaptchaTooltip::PerformOkButtonAction() {
   // User chose to solve the captcha now, so show it to initiate that process
-  if (adaptive_captcha_service_) {
-    adaptive_captcha_service_->ShowScheduledCaptcha(payment_id_, captcha_id_);
+  if (show_captcha_callback_) {
+    std::move(show_captcha_callback_).Run(payment_id_, captcha_id_);
   }
 }
 
 void AdsCaptchaTooltip::PerformCancelButtonAction() {
   // In this context, cancel means snooze the captcha for now
-  if (adaptive_captcha_service_) {
-    adaptive_captcha_service_->SnoozeScheduledCaptcha();
+  if (snooze_captcha_callback_) {
+    std::move(snooze_captcha_callback_).Run();
   }
 }
 

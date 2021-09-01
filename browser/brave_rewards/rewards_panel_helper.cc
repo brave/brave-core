@@ -12,6 +12,7 @@
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "extensions/buildflags/buildflags.h"
 
 namespace {
 constexpr char kAdaptiveCaptchaPanelUrl[] = "adaptive_captcha_panel.html";
@@ -19,6 +20,7 @@ constexpr char kRewardsPanelUrl[] = "brave_rewards_panel.html";
 
 bool ShowPanel(content::BrowserContext* context,
                const std::string& relative_path) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   Profile* profile = Profile::FromBrowserContext(context);
   Browser* browser = chrome::FindTabbedBrowser(profile, false);
   if (!browser) {
@@ -34,6 +36,9 @@ bool ShowPanel(content::BrowserContext* context,
   }
 
   return true;
+#else
+  return false;
+#endif
 }
 
 }  // namespace

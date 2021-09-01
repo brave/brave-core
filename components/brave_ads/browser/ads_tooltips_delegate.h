@@ -8,23 +8,28 @@
 
 #include <string>
 
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
+#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 
 namespace brave_ads {
+
+using ShowScheduledCaptchaCallback =
+    base::OnceCallback<void(const std::string&, const std::string&)>;
+using SnoozeScheduledCaptchaCallback = base::OnceCallback<void()>;
 
 class AdsTooltipsDelegate {
  public:
   virtual ~AdsTooltipsDelegate() = default;
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   // Called to show the captcha tooltip
-  virtual void ShowCaptchaTooltip(const std::string& payment_id,
-                                  const std::string& captcha_id,
-                                  bool enable_cancel_button) = 0;
+  virtual void ShowCaptchaTooltip(
+      const std::string& payment_id,
+      const std::string& captcha_id,
+      bool enable_cancel_button,
+      ShowScheduledCaptchaCallback show_captcha_callback,
+      SnoozeScheduledCaptchaCallback snooze_captcha_callback) = 0;
 
   // Called to close the captcha tooltip
   virtual void CloseCaptchaTooltip() = 0;
-#endif
 };
 
 }  // namespace brave_ads

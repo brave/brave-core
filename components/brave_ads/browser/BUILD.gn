@@ -14,7 +14,6 @@ static_library("browser") {
     "ads_service_impl.cc",
     "ads_service_impl.h",
     "ads_service_observer.h",
-    "ads_tooltips_delegate.h",
     "background_helper.cc",
     "background_helper.h",
     "component_updater/component_info.cc",
@@ -124,6 +123,7 @@ static_library("browser") {
   }
 
   if (brave_adaptive_captcha_enabled) {
+    sources += [ "ads_tooltips_delegate.h" ]
     deps +=
         [ "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha" ]
   }
