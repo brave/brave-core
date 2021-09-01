@@ -1,6 +1,6 @@
 const locale = {
-  connectedText: 'Connect',
-  disconnectedText: 'Disconnect'
+  connectedLabel: 'Connected',
+  disconnectedLabel: 'Disconnected'
 }
 
 export default locale
