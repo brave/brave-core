@@ -299,6 +299,9 @@ public class BytecodeTest {
                         "isReliabilityLoggingEnabled", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/theme/ThemeUtils",
                 "getTextBoxColorForToolbarBackgroundInNonNativePage", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
+                        "getResourceItem", false, null));
     }
 
     @Test

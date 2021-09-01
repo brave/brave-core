@@ -16,6 +16,7 @@ public class BraveClassAdapter {
         chain = new BraveBottomControlsCoordinatorClassAdapter(chain);
         chain = new BraveBottomControlsMediatorClassAdapter(chain);
         chain = new BraveCommandLineInitUtilClassAdapter(chain);
+        chain = new BraveContentSettingsResourcesClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
         chain = new BraveFreIntentCreatorClassAdapter(chain);
@@ -51,6 +52,7 @@ public class BraveClassAdapter {
         chain = new BraveToolbarLayoutClassAdapter(chain);
         chain = new BraveToolbarManagerClassAdapter(chain);
         chain = new BraveTopToolbarCoordinatorClassAdapter(chain);
+        chain = new BraveWebsitePermissionsFetcherClassAdapter(chain);
         return chain;
     }
 }

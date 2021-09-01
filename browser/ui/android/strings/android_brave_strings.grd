@@ -287,6 +287,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_ON" desc="Desc for desktop mode in site settings">
         If enabled, videos will be played in Brave instead of corresponding app
       </message>
+      <message name="IDS_AUTOPLAY_TITLE" desc="Title for the Autoplay settings screen [CHAR-LIMIT=32]">
+        Autoplay
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_AUTOPLAY_ALLOWED" desc="Summary text explaining that sites are allowed to automatically play muted videos and that it is the recommended setting.">
+        Allow sites to automatically play muted videos (recommended)
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_AUTOPLAY" desc="The description for the allow autoplay of muted videos for website dialog.">
+        Allow autoplay of muted videos for a specific site.
+      </message>
       <message name="IDS_PREFS_SECTION_BRAVE_SHIELDS_GLOBALS" desc="Title for Brave shields global defaults section in the privacy preferences screen">
         Brave shields global defaults
       </message>
