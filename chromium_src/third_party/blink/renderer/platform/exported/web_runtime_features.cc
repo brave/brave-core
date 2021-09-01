@@ -12,4 +12,3 @@ void WebRuntimeFeatures::EnableNavigatorPluginsFixed(bool enable) {
 }
 
 }  // namespace blink
-

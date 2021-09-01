@@ -53,10 +53,10 @@ void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
     if (!for_restart_) {
       EnableWidevineCdmComponent();
     }
-  // Permission denied
+    // Permission denied
   } else if (result == ContentSetting::CONTENT_SETTING_BLOCK) {
     DontAskWidevineInstall(web_contents_, dont_ask_widevine_install_);
-  // Cancelled
+    // Cancelled
   } else {
     DCHECK(result == CONTENT_SETTING_DEFAULT);
     // Do nothing.

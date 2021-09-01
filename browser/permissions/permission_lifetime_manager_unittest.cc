@@ -37,8 +37,7 @@ namespace permissions {
 
 namespace {
 
-using PermissionDecidedCallback =
-    PermissionRequest::PermissionDecidedCallback;
+using PermissionDecidedCallback = PermissionRequest::PermissionDecidedCallback;
 
 constexpr base::StringPiece kOneTypeOneExpirationPrefValue = R"({
   "$1": {
