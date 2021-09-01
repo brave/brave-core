@@ -52,6 +52,7 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
   observed_.Observe(GetBraveVPNConnectionAPI());
 
   // If OS has already connected vpn,`OnConnected()` will be called.
+  GetBraveVPNConnectionAPI()->set_target_vpn_entry_name(kBraveVPNEntryName);
   GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
 }
 

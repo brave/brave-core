@@ -682,7 +682,8 @@ int main(int argc, char* argv[]) {
     LOG(ERROR) << "usage: vpntool.exe [--connections] [--devices] [--entries] "
                   "[--connect --vpn_name=xxx] [--disconnect --vpn_name=xxx] "
                   "[--create --vpn_name=xxx --host_name=xxx user_name=xxx "
-                  "password=xxx] [--remove --vpn_name=xxx]";
+                  "password=xxx] [--remove --vpn_name=xxx] [--check-connection "
+                  "--vpn_name=xxx]";
     return 0;
   }
 
