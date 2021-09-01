@@ -12,9 +12,4 @@ const char kDisconnectEvent[] = "disconnect";
 const char kChainChangedEvent[] = "chainChanged";
 const char kAccountsChangedEvent[] = "accountsChanged";
 const char kAddEthereumChainMethod[] = "wallet_addEthereumChain";
-const char kJsonResponseAddEthereumChainSuccess[] =
-    R"({"id":1,"jsonrpc":"2.0", "result": null})";
-const char kJsonResponseAddEthereumChainError[] =
-    R"({"id":1,"jsonrpc":"2.0", "error": { "code": 4001, "message": "%s" }})";
-
 }  // namespace brave_wallet

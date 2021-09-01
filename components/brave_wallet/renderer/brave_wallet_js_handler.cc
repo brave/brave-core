@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
@@ -360,9 +361,9 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
 
     brave_wallet_provider_->AddEthereumChain(
         chain->Clone(),
-        base::BindOnce(&BraveWalletJSHandler::OnRequest, base::Unretained(this),
-                       std::move(promise_resolver), isolate,
-                       std::move(context_old)));
+        base::BindOnce(&BraveWalletJSHandler::OnAddEthereumChain,
+                       base::Unretained(this), std::move(promise_resolver),
+                       isolate, std::move(context_old)));
   } else {
     std::string formed_input;
     // Hardcode id to 1 as it is unused
@@ -378,6 +379,34 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
   }
 
   return resolver.ToLocalChecked()->GetPromise();
+}
+
+void BraveWalletJSHandler::OnAddEthereumChain(
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    v8::Global<v8::Context> context_old,
+    bool success,
+    const std::string& response) {
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = context_old.Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
+  absl::optional<base::Value> formed_response =
+      base::JSONReader::Read(response);
+  v8::Local<v8::Value> result;
+  if (formed_response) {
+    result = content::V8ValueConverter::Create()->ToV8Value(
+        &formed_response.value(), context);
+  }
+
+  if (success) {
+    ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+  } else {
+    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+  }
 }
 
 void BraveWalletJSHandler::OnRequest(

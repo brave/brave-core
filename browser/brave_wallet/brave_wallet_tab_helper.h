@@ -11,7 +11,6 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"

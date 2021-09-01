@@ -15,6 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller_events_observer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -48,7 +49,7 @@ class BraveWalletProviderImpl final
   void GetChainId(GetChainIdCallback callback) override;
   void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
   void AddEthereumChain(mojom::EthereumChainPtr chain,
-                        RequestCallback callback) override;
+                        AddEthereumChainCallback callback) override;
   void OnGetAllowedAccounts(GetAllowedAccountsCallback callback,
                             bool success,
                             const std::vector<std::string>& accounts);

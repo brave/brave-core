@@ -15,24 +15,31 @@
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "brave/components/brave_wallet/renderer/brave_wallet_response_helpers.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
-void RespondForEthereumChainRequest(
+void RespondErrorForEthereumChainRequest(
     brave_wallet::BraveWalletProviderImpl::AddEthereumChainCallback callback,
-    const std::string& error) {
-  base::flat_map<std::string, std::string> headers;
-  if (!error.empty()) {
-    auto response = base::StringPrintf(
-        brave_wallet::kJsonResponseAddEthereumChainError, error.c_str());
-    std::move(callback).Run(200, response, headers);
-  } else {
-    std::move(callback).Run(
-        200, brave_wallet::kJsonResponseAddEthereumChainSuccess, headers);
-  }
+    brave_wallet::ProviderErrors code,
+    const std::string& message) {
+  auto error = brave_wallet::FormProviderResponse(code, message);
+  auto response = brave_wallet::ToProviderResponse(nullptr, error.get());
+  std::string serialized_response;
+  base::JSONWriter::Write(*response, &serialized_response);
+  std::move(callback).Run(false, serialized_response);
+}
+
+void RespondSuccessForEthereumChainRequest(
+    brave_wallet::BraveWalletProviderImpl::AddEthereumChainCallback callback) {
+  auto response = brave_wallet::ToProviderResponse(nullptr, nullptr);
+  response->SetKey("result", base::Value());
+  std::string serialized_response;
+  base::JSONWriter::Write(*response, &serialized_response);
+  std::move(callback).Run(true, serialized_response);
 }
 
 }  // namespace
@@ -57,15 +64,14 @@ void BraveWalletProviderImpl::AddEthereumChain(
     mojom::EthereumChainPtr chain,
     AddEthereumChainCallback callback) {
   if (!delegate_ || !chain) {
-    RespondForEthereumChainRequest(
-        std::move(callback),
+    RespondErrorForEthereumChainRequest(
+        std::move(callback), ProviderErrors::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   if (GetNetworkURL(prefs_, chain->chain_id).is_valid()) {
-    RespondForEthereumChainRequest(
-        std::move(callback), l10n_util::GetStringUTF8(IDS_WALLET_CHAIN_EXISTS));
+    RespondSuccessForEthereumChainRequest(std::move(callback));
     return;
   }
   // By https://eips.ethereum.org/EIPS/eip-3085 only chain id is required
@@ -73,22 +79,22 @@ void BraveWalletProviderImpl::AddEthereumChain(
   // https://github.com/brave/brave-browser/issues/17637
   if (chain->chain_id.empty() || chain->rpc_urls.empty() ||
       chain->chain_name.empty()) {
-    RespondForEthereumChainRequest(
-        std::move(callback),
+    RespondErrorForEthereumChainRequest(
+        std::move(callback), ProviderErrors::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
   if (chain_callbacks_.contains(chain->chain_id)) {
-    RespondForEthereumChainRequest(
-        std::move(callback),
+    RespondErrorForEthereumChainRequest(
+        std::move(callback), ProviderErrors::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
     return;
   }
   auto value = brave_wallet::EthereumChainToValue(chain);
   std::string serialized_chain;
   if (!base::JSONWriter::Write(value, &serialized_chain)) {
-    RespondForEthereumChainRequest(
-        std::move(callback),
+    RespondErrorForEthereumChainRequest(
+        std::move(callback), ProviderErrors::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
@@ -170,7 +176,14 @@ void BraveWalletProviderImpl::OnConnectionError() {
 void BraveWalletProviderImpl::OnChainApprovalResult(const std::string& chain_id,
                                                     const std::string& error) {
   DCHECK(chain_callbacks_.contains(chain_id));
-  RespondForEthereumChainRequest(std::move(chain_callbacks_[chain_id]), error);
+  if (error.empty()) {
+    RespondSuccessForEthereumChainRequest(
+        std::move(chain_callbacks_[chain_id]));
+  } else {
+    RespondErrorForEthereumChainRequest(std::move(chain_callbacks_[chain_id]),
+                                        ProviderErrors::kUserRejectedRequest,
+                                        error);
+  }
   chain_callbacks_.erase(chain_id);
 }
 
