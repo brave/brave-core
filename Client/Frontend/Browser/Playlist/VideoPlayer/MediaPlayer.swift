@@ -208,7 +208,10 @@ class MediaPlayer: NSObject {
             }
             
             let absoluteTime = CMTimeMakeWithSeconds(seekTime, preferredTimescale: currentItem.currentTime().timescale)
-            player.seek(to: absoluteTime, toleranceBefore: .zero, toleranceAfter: .zero)
+            
+            // Seeking to .zero, .zero can cause a performance hit
+            // So give a nice tolerance to seeking
+            player.seek(to: absoluteTime, toleranceBefore: .positiveInfinity, toleranceAfter: .positiveInfinity)
             
             seekBackwardSubscriber.send(EventNotification(mediaPlayer: self, event: .seekBackward))
         }
@@ -221,7 +224,10 @@ class MediaPlayer: NSObject {
 
             if seekTime < (currentItem.duration.seconds - seekInterval) {
                 let absoluteTime = CMTimeMakeWithSeconds(seekTime, preferredTimescale: currentItem.currentTime().timescale)
-                player.seek(to: absoluteTime, toleranceBefore: .zero, toleranceAfter: .zero)
+                
+                // Seeking to .zero, .zero can cause a performance hit
+                // So give a nice tolerance to seeking
+                player.seek(to: absoluteTime, toleranceBefore: .positiveInfinity, toleranceAfter: .positiveInfinity)
                 
                 seekForwardSubscriber.send(EventNotification(mediaPlayer: self, event: .seekForward))
             }
@@ -240,7 +246,10 @@ class MediaPlayer: NSObject {
             }
             
             let absoluteTime = CMTimeMakeWithSeconds(seekTime, preferredTimescale: currentItem.currentTime().timescale)
-            player.seek(to: absoluteTime, toleranceBefore: .zero, toleranceAfter: .zero)
+            
+            // Seeking to .zero, .zero can cause a performance hit
+            // So give a nice tolerance to seeking
+            player.seek(to: absoluteTime, toleranceBefore: .positiveInfinity, toleranceAfter: .positiveInfinity)
             
             self.changePlaybackPositionSubscriber.send(EventNotification(mediaPlayer: self,
                                                                          event: .changePlaybackPosition))

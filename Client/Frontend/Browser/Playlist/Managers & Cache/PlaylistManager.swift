@@ -242,7 +242,8 @@ class PlaylistManager: NSObject {
         cancelDownload(item: item)
         
         if let cacheItem = PlaylistItem.getItem(pageSrc: item.pageSrc),
-           let cachedData = cacheItem.cachedData {
+           let cachedData = cacheItem.cachedData,
+           !cachedData.isEmpty {
             var isStale = false
             
             do {

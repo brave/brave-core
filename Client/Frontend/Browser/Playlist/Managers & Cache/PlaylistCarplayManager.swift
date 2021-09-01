@@ -26,7 +26,19 @@ class PlaylistCarplayManager: NSObject {
     var browserController: BrowserViewController?
     
     // When Picture-In-Picture is enabled, we need to store a reference to the controller to keep it alive, otherwise if it deallocates, the system automatically kills Picture-In-Picture.
-    var playlistController: PlaylistViewController?
+    var playlistController: PlaylistViewController? {
+        didSet {
+            let selectedTab = browserController?.tabManager.selectedTab
+            if let selectedTab = selectedTab,
+               let playlistItem = selectedTab.playlistItem,
+               PlaylistManager.shared.index(of: playlistItem.pageSrc) == nil {
+                
+                browserController?.updatePlaylistURLBar(tab: selectedTab,
+                                                        state: .newItem,
+                                                        item: playlistItem)
+            }
+        }
+    }
     
     // There can only ever be one instance of this class
     // Because there can only be a single AudioSession and MediaPlayer

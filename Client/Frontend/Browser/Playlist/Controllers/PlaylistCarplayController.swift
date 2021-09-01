@@ -482,7 +482,7 @@ extension PlaylistCarplayController {
             }
             
             // Attempt to play the stream
-            if let url = URL(string: item.pageSrc) {
+            if let url = URL(string: item.src) {
                 self.load(url: url, autoPlayEnabled: true)
                 .handleEvents(receiveCancel: {
                     PlaylistMediaStreamer.clearNowPlayingInfo()

@@ -76,7 +76,7 @@ extension PlaylistListViewController: UITableViewDataSource {
                 }
                 return nil
             }
-        } else {
+        } else if trackStatus != .loading {
             log.debug("AVAsset.statusOfValue not loaded. Status: \(trackStatus)")
         }
         
@@ -99,7 +99,7 @@ extension PlaylistListViewController: UITableViewDataSource {
                 completion(asset.duration.seconds, asset)
                 return nil
             }
-        } else {
+        } else if durationStatus != .loading {
             log.debug("AVAsset.statusOfValue not loaded. Status: \(durationStatus)")
         }
         

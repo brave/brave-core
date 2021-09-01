@@ -41,7 +41,7 @@ window.__firefox__.includeOnce("Playlist", function() {
         // UUID string format generated with array appending
         // Results in "10000000-1000-4000-8000-100000000000".replace(...)
         return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, (X) => {
-            (X ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (X >> 2)))).toString(16)
+            return (X ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (X >> 2)))).toString(16);
         });
     }
     

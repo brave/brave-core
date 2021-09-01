@@ -92,7 +92,7 @@ public class PlaylistThumbnailRenderer {
     }
     
     private func loadAssetThumbnail(url: URL, completion: @escaping (UIImage?) -> Void) {
-        let time = CMTime(seconds: timeout, preferredTimescale: CMTimeScale(1))
+        let time = CMTimeMakeWithSeconds(timeout, preferredTimescale: 1)
         assetGenerator = AVAssetImageGenerator(asset: AVAsset(url: url))
         assetGenerator?.appliesPreferredTrackTransform = false
         assetGenerator?.generateCGImagesAsynchronously(forTimes: [NSValue(time: time)]) { _, cgImage, _, result, error in
@@ -179,7 +179,7 @@ private class HLSThumbnailGenerator {
 
     private func generateThumbnail(at time: TimeInterval) {
         queue.async {
-            let time = CMTime(seconds: time, preferredTimescale: 1)
+            let time = CMTimeMakeWithSeconds(time, preferredTimescale: 1)
             self.player?.seek(to: time) { [weak self] finished in
                 guard let self = self else { return }
                 

@@ -81,10 +81,10 @@ class PlaylistViewController: UIViewController {
         player.pictureInPictureController?.stopPictureInPicture()
         
         // Stop media playback
-        if !PlaylistCarplayManager.shared.isCarPlayAvailable {
-            stop(playerView)
-            PlaylistCarplayManager.shared.currentPlaylistItem = nil
-        }
+        #if targetEnvironment(simulator)
+        stop(playerView)
+        PlaylistCarplayManager.shared.currentPlaylistItem = nil
+        #endif
         
         // If this controller is retained in app-delegate for Picture-In-Picture support
         // then we need to re-attach the player layer
@@ -775,7 +775,7 @@ extension PlaylistViewController: VideoViewDelegate {
             }
             
             // Attempt to play the stream
-            if let url = URL(string: item.pageSrc) {
+            if let url = URL(string: item.src) {
                 self.load(self.playerView,
                           url: url,
                           autoPlayEnabled: self.listController.autoPlayEnabled)
