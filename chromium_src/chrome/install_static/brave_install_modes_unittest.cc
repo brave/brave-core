@@ -99,9 +99,8 @@ TEST(InstallModes, VerifyModes) {
     // UNSUPPORTED and BUILDFLAG(USE_GOOGLE_UPDATE_INTEGRATION) which we set for
     // OFFICIAL_BUILD are mutually exclusive.
 #if defined(OFFICIAL_BUILD)
-    ASSERT_THAT(
-        mode.channel_strategy,
-        AnyOf(ChannelStrategy::FLOATING, ChannelStrategy::FIXED));
+    ASSERT_THAT(mode.channel_strategy,
+                AnyOf(ChannelStrategy::FLOATING, ChannelStrategy::FIXED));
 #else
     ASSERT_THAT(mode.channel_strategy, Eq(ChannelStrategy::UNSUPPORTED));
 #endif

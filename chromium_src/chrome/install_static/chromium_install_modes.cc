@@ -37,24 +37,25 @@ const InstallConstants kInstallModes[] = {
         L"",           // Empty install_suffix for the primary install mode.
         L"",           // No logo suffix for the primary install mode.
         L"{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}",
-        L"Brave",                           // A distinct base_app_name.
-        L"Brave",                           // A distinct base_app_id.
-        L"BraveHTML",                              // ProgID prefix.
-        L"Brave HTML Document",                    // ProgID description.
+        L"Brave",                                   // A distinct base_app_name.
+        L"Brave",                                   // A distinct base_app_id.
+        L"BraveHTML",                               // ProgID prefix.
+        L"Brave HTML Document",                     // ProgID description.
         L"{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}",  // Active Setup GUID.
         L"{B1C5AAC5-2B7C-4C9D-9E96-774C53151B20}",  // CommandExecuteImpl CLSID.
-        { 0x6c9646d,
-          0x2807,
-          0x44c0,
-          { 0x97, 0xd2, 0x6d, 0xa0, 0xdb, 0x62, 0x3d,
-            0xb4 } },  // Toast activator CLSID.
-        { 0x576b31af,
-          0x6369,
-          0x4b6b,
-          { 0x85, 0x60, 0xe4, 0xb2, 0x3, 0xa9, 0x7a,
-            0x8b } },  // Elevator CLSID.
-        { 0xb7965c30, 0x7d58, 0x4d86, {
-          0x9e, 0x18, 0x47, 0x94, 0x25, 0x64, 0x9, 0xee } },
+        {0x6c9646d,
+         0x2807,
+         0x44c0,
+         {0x97, 0xd2, 0x6d, 0xa0, 0xdb, 0x62, 0x3d,
+          0xb4}},  // Toast activator CLSID.
+        {0x576b31af,
+         0x6369,
+         0x4b6b,
+         {0x85, 0x60, 0xe4, 0xb2, 0x3, 0xa9, 0x7a, 0x8b}},  // Elevator CLSID.
+        {0xb7965c30,
+         0x7d58,
+         0x4d86,
+         {0x9e, 0x18, 0x47, 0x94, 0x25, 0x64, 0x9, 0xee}},
         L"",  // The empty string means "stable".
         ChannelStrategy::FLOATING,
         true,  // Supports system-level installs.
@@ -73,30 +74,30 @@ const InstallConstants kInstallModes[] = {
         L"-Beta",       // Install suffix.
         L"Beta",        // Logo suffix.
         L"{103BD053-949B-43A8-9120-2E424887DE11}",  // A distinct app GUID.
-        L"Brave Beta",                      // A distinct base_app_name.
-        L"BraveBeta",                              // A distinct base_app_id.
-        L"BraveBHTML",                             // ProgID prefix.
-        L"Brave Beta HTML Document",               // ProgID description.
+        L"Brave Beta",                              // A distinct base_app_name.
+        L"BraveBeta",                               // A distinct base_app_id.
+        L"BraveBHTML",                              // ProgID prefix.
+        L"Brave Beta HTML Document",                // ProgID description.
         L"{103BD053-949B-43A8-9120-2E424887DE11}",  // Active Setup GUID.
         L"",                                        // CommandExecuteImpl CLSID.
-        { 0x9560028d,
-          0xcca,
-          0x49f0,
-          { 0x8d, 0x47, 0xef, 0x22, 0xbb, 0xc4, 0xb,
-            0xa7 } },  // Toast activator CLSID.
-        { 0x2313f1cd,
-          0x41f3,
-          0x4347,
-          { 0xbe, 0xc0, 0xd7, 0x22, 0xca, 0x41, 0x2c,
-            0x75 } },  // Elevator CLSID.
-        { 0xd9d7b102, 0xfc8a, 0x4843, {
-          0xac, 0x35, 0x1e, 0xbc, 0xc7, 0xed, 0x12,
-          0x3d } },
-        L"beta",                                    // Forced channel name.
+        {0x9560028d,
+         0xcca,
+         0x49f0,
+         {0x8d, 0x47, 0xef, 0x22, 0xbb, 0xc4, 0xb,
+          0xa7}},  // Toast activator CLSID.
+        {0x2313f1cd,
+         0x41f3,
+         0x4347,
+         {0xbe, 0xc0, 0xd7, 0x22, 0xca, 0x41, 0x2c, 0x75}},  // Elevator CLSID.
+        {0xd9d7b102,
+         0xfc8a,
+         0x4843,
+         {0xac, 0x35, 0x1e, 0xbc, 0xc7, 0xed, 0x12, 0x3d}},
+        L"beta",  // Forced channel name.
         ChannelStrategy::FIXED,
-        true,   // Supports system-level installs.
-        true,   // Supports in-product set as default browser UX.
-        true,   // Supports retention experiments.
+        true,  // Supports system-level installs.
+        true,  // Supports in-product set as default browser UX.
+        true,  // Supports retention experiments.
         icon_resources::kBetaApplicationIndex,  // App icon resource index.
         IDR_X005_BETA,                          // App icon resource id.
         L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
@@ -110,30 +111,30 @@ const InstallConstants kInstallModes[] = {
         L"-Dev",       // Install suffix.
         L"Dev",        // Logo suffix.
         L"{CB2150F2-595F-4633-891A-E39720CE0531}",  // A distinct app GUID.
-        L"Brave Dev",                       // A distinct base_app_name.
-        L"BraveDev",                               // A distinct base_app_id.
-        L"BraveDHTML",                             // ProgID prefix.
-        L"Brave Dev HTML Document",                // ProgID description.
+        L"Brave Dev",                               // A distinct base_app_name.
+        L"BraveDev",                                // A distinct base_app_id.
+        L"BraveDHTML",                              // ProgID prefix.
+        L"Brave Dev HTML Document",                 // ProgID description.
         L"{CB2150F2-595F-4633-891A-E39720CE0531}",  // Active Setup GUID.
         L"",                                        // CommandExecuteImpl CLSID.
-        { 0x20b22981,
-          0xf63a,
-          0x47a6,
-          { 0xa5, 0x47, 0x69, 0x1c, 0xc9, 0x4c, 0xae,
-            0xe0 } },  // Toast activator CLSID.
-        { 0x9129ed6a,
-          0x11d3,
-          0x43b7,
-          { 0xb7, 0x18, 0x8f, 0x82, 0x61, 0x45, 0x97,
-            0xa3 } },  // Elevator CLSID.
-        { 0x9cf6868c, 0x8c9f, 0x4220,
-          { 0x95, 0xbe, 0x13, 0x99, 0x9d, 0xd9, 0x9b,
-            0x48 } },
-        L"dev",                                     // Forced channel name.
+        {0x20b22981,
+         0xf63a,
+         0x47a6,
+         {0xa5, 0x47, 0x69, 0x1c, 0xc9, 0x4c, 0xae,
+          0xe0}},  // Toast activator CLSID.
+        {0x9129ed6a,
+         0x11d3,
+         0x43b7,
+         {0xb7, 0x18, 0x8f, 0x82, 0x61, 0x45, 0x97, 0xa3}},  // Elevator CLSID.
+        {0x9cf6868c,
+         0x8c9f,
+         0x4220,
+         {0x95, 0xbe, 0x13, 0x99, 0x9d, 0xd9, 0x9b, 0x48}},
+        L"dev",  // Forced channel name.
         ChannelStrategy::FIXED,
-        true,   // Supports system-level installs.
-        true,   // Supports in-product set as default browser UX.
-        true,   // Supports retention experiments.
+        true,  // Supports system-level installs.
+        true,  // Supports in-product set as default browser UX.
+        true,  // Supports retention experiments.
         icon_resources::kDevApplicationIndex,  // App icon resource index.
         IDR_X004_DEV,                          // App icon resource id.
         L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"
@@ -147,30 +148,30 @@ const InstallConstants kInstallModes[] = {
         L"-Nightly",    // Install suffix.
         L"Canary",      // Logo suffix.
         L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // A distinct app GUID.
-        L"Brave Nightly",                    // A distinct base_app_name.
+        L"Brave Nightly",                           // A distinct base_app_name.
         L"BraveNightly",                            // A distinct base_app_id.
-        L"BraveSSHTM",                             // ProgID prefix.
+        L"BraveSSHTM",                              // ProgID prefix.
         L"Brave Nightly HTML Document",             // ProgID description.
         L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // Active Setup GUID.
         L"{312ABB99-A176-4939-A39F-E8D34EA4D393}",  // CommandExecuteImpl CLSID.
-        { 0xf2edbc59,
-          0x7217,
-          0x4da5,
-          { 0xa2, 0x59, 0x3, 0x2, 0xda, 0x6a, 0x0,
-            0xe1 } },  // Toast activator CLSID.
-        { 0x1ce2f84f,
-          0x70cb,
-          0x4389,
-          { 0x87, 0xdb, 0xd0, 0x99, 0x48, 0x30, 0xbb,
-            0x17 } },  // Elevator CLSID.
-        { 0x648b3c2b, 0xe53, 0x4085,
-          { 0xa9, 0x75, 0x11, 0x18, 0x1, 0x75, 0x8f,
-            0xe7 } },
-        L"nightly",                                  // Forced channel name.
+        {0xf2edbc59,
+         0x7217,
+         0x4da5,
+         {0xa2, 0x59, 0x3, 0x2, 0xda, 0x6a, 0x0,
+          0xe1}},  // Toast activator CLSID.
+        {0x1ce2f84f,
+         0x70cb,
+         0x4389,
+         {0x87, 0xdb, 0xd0, 0x99, 0x48, 0x30, 0xbb, 0x17}},  // Elevator CLSID.
+        {0x648b3c2b,
+         0xe53,
+         0x4085,
+         {0xa9, 0x75, 0x11, 0x18, 0x1, 0x75, 0x8f, 0xe7}},
+        L"nightly",  // Forced channel name.
         ChannelStrategy::FIXED,
-        true,   // Support system-level installs.
-        true,   // Support in-product set as default browser UX.
-        true,   // Supports retention experiments.
+        true,  // Support system-level installs.
+        true,  // Support in-product set as default browser UX.
+        true,  // Supports retention experiments.
         icon_resources::kSxSApplicationIndex,  // App icon resource index.
         IDR_SXS,                               // App icon resource id.
         L"S-1-15-2-3251537155-1984446955-2931258699-841473695-1938553385-"

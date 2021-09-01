@@ -149,11 +149,8 @@ void DatabaseActivityInfo::NormalizeList(
   std::string main_query;
   for (const auto& info : list) {
     main_query += base::StringPrintf(
-      "UPDATE %s SET percent = %d, weight = %f WHERE publisher_id = '%s';",
-      kTableName,
-      info->percent,
-      info->weight,
-      info->id.c_str());
+        "UPDATE %s SET percent = %d, weight = %f WHERE publisher_id = '%s';",
+        kTableName, info->percent, info->weight, info->id.c_str());
   }
 
   if (main_query.empty()) {

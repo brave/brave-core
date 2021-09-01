@@ -49,8 +49,7 @@ void DatabasePublisherInfo::InsertOrUpdate(
       "(SELECT IFNULL( "
       "(SELECT favicon FROM %s "
       "WHERE publisher_id = ?), '')));",
-      kTableName,
-      kTableName);
+      kTableName, kTableName);
 
   auto command = type::DBCommand::New();
   command->type = type::DBCommand::Type::RUN;
