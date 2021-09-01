@@ -69,6 +69,23 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
     content::SetupCrossSiteRedirector(embedded_test_server());
     ASSERT_TRUE(embedded_test_server()->Start());
   }
+
+  void UpdateAdBlockInstanceWithRules(const std::string& rules) {
+    brave_shields::AdBlockService* ad_block_service =
+        g_brave_browser_process->ad_block_service();
+    ad_block_service->GetTaskRunner()->PostTask(
+        FROM_HERE,
+        base::BindOnce(&brave_shields::AdBlockService::ResetForTest,
+                       base::Unretained(ad_block_service), rules, ""));
+
+    WaitForAdBlockServiceThreads();
+  }
+
+  void WaitForAdBlockServiceThreads() {
+    scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
+        g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
+    ASSERT_TRUE(tr_helper->Run());
+  }
 };
 
 IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NoBlockNoSavings) {
@@ -89,8 +106,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NoBlockNoSavings) {
 }
 
 IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, ScriptBlockHasSavings) {
-  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
-                  ->UpdateCustomFilters("*analytics.js"));
+  UpdateAdBlockInstanceWithRules("^analytics.js");
   EXPECT_EQ(getProfileBandwidthSaved(browser()), 0ULL);
 
   GURL url = embedded_test_server()->GetURL("/blocking.html");
@@ -110,8 +126,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, ScriptBlockHasSavings) {
 }
 
 IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NewNavigationStoresSavings) {
-  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
-                  ->UpdateCustomFilters("*analytics.js"));
+  UpdateAdBlockInstanceWithRules("^analytics.js");
   EXPECT_EQ(getProfileBandwidthSaved(browser()), 0ULL);
 
   GURL url = embedded_test_server()->GetURL("/blocking.html");

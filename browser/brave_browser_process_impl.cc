@@ -10,6 +10,7 @@
 #include "base/bind.h"
 #include "base/path_service.h"
 #include "base/task/post_task.h"
+#include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
@@ -27,6 +28,7 @@
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -195,11 +197,15 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 }
 
 brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
-  if (ad_block_service_)
-    return ad_block_service_.get();
-
-  ad_block_service_ =
-      brave_shields::AdBlockServiceFactory(brave_component_updater_delegate());
+  if (!ad_block_service_) {
+    ad_block_service_ = std::make_unique<brave_shields::AdBlockService>(
+        brave_component_updater_delegate(),
+        std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
+            brave_component_updater_delegate(),
+            AdBlockSubscriptionDownloadManagerGetter(),
+            profile_manager()->user_data_dir().Append(
+                profile_manager()->GetInitialProfileDir())));
+  }
   return ad_block_service_.get();
 }
 

@@ -8,6 +8,8 @@ import("//extensions/buildflags/buildflags.gni")
 brave_browser_brave_shields_sources = [
   "//brave/browser/brave_shields/ad_block_pref_service_factory.cc",
   "//brave/browser/brave_shields/ad_block_pref_service_factory.h",
+  "//brave/browser/brave_shields/ad_block_subscription_download_manager_getter.cc",
+  "//brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h",
   "//brave/browser/brave_shields/brave_shields_web_contents_observer.cc",
   "//brave/browser/brave_shields/brave_shields_web_contents_observer.h",
   "//brave/browser/brave_shields/cookie_pref_service_factory.cc",
