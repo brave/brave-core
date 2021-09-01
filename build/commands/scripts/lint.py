@@ -39,8 +39,6 @@ def HasFormatErrors():
   return False
 
 def RunFormatCheck(upstream_branch):
-  # XXX: upstream_branch is hard-coded in git_cl and is not changed
-  # by the --base_branch arg
   upstream_commit = git_cl.RunGit(['merge-base', 'HEAD', upstream_branch])
   print('Running git cl/gn format on the diff from %s...' % upstream_commit)
   try:
