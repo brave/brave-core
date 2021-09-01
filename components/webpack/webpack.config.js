@@ -17,7 +17,13 @@ module.exports = (env, argv) => ({
   resolve: {
     extensions: ['.js', '.tsx', '.ts', '.json'],
     alias: {
+      // Find files in the current build configurations /gen directory
+      'gen': process.env.ROOT_GEN_DIR,
+      // DEPRECATED, use gen/ as this is not the correct path on the
+      // chrome://reousrces UrlDataSource.
       'chrome://resources/mojo': process.env.ROOT_GEN_DIR,
+      // DEPRECATED, use gen/ as there is no advantage in webpack
+      // since it will never translate to a real browser-native import (unlike rollup).
       'chrome://resources/js': path.resolve(path.join(process.env.ROOT_GEN_DIR, './ui/webui/resources/preprocessed/js')),
       'brave-ui': path.resolve(__dirname, '../../node_modules/brave-ui/src'),
       // Force same styled-components module for brave-core and brave-ui
@@ -47,6 +53,9 @@ module.exports = (env, argv) => ({
         options: {
           getCustomTransformers: path.join(__dirname, './webpack-ts-transformers.js'),
           allowTsInNodeModules: true,
+          // TODO(petemill): generate in gen/ directory with baseUrl back to src/brave
+          // - that would remove any problems with TS analyzing types in an incorrect
+          // output directory (e.g. Static/ instead of Component/)
           configFile: 'tsconfig-webpack.json'
         }
       },
