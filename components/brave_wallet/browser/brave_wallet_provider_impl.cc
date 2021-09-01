@@ -80,27 +80,25 @@ void BraveWalletProviderImpl::AddEthereumChain(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
-  auto value = brave_wallet::EthereumChainToValue(chain);
-  std::string chain_json;
-  if (!base::JSONWriter::Write(value, &chain_json)) {
-    RespondForEthereumChainRequest(
-        std::move(callback),
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-    return;
-  }
-  size_t hash = base::FastHash(chain_json);
-  if (chain_callbacks_.contains(hash)) {
+  if (chain_callbacks_.contains(chain->chain_id)) {
     RespondForEthereumChainRequest(
         std::move(callback),
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
     return;
   }
-
-  chain_callbacks_[hash] = std::move(callback);
+  auto value = brave_wallet::EthereumChainToValue(chain);
+  std::string serialized_chain;
+  if (!base::JSONWriter::Write(value, &serialized_chain)) {
+    RespondForEthereumChainRequest(
+        std::move(callback),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+  chain_callbacks_[chain->chain_id] = std::move(callback);
   delegate_->RequestUserApproval(
-      chain_json,
+      chain->chain_id, serialized_chain,
       base::BindOnce(&BraveWalletProviderImpl::OnChainApprovalResult,
-                     weak_factory_.GetWeakPtr(), hash));
+                     weak_factory_.GetWeakPtr(), chain->chain_id));
   return;
 }
 
@@ -171,11 +169,11 @@ void BraveWalletProviderImpl::OnConnectionError() {
   observer_receiver_.reset();
 }
 
-void BraveWalletProviderImpl::OnChainApprovalResult(size_t hash,
+void BraveWalletProviderImpl::OnChainApprovalResult(const std::string& chain_id,
                                                     const std::string& error) {
-  DCHECK(chain_callbacks_.contains(hash));
-  RespondForEthereumChainRequest(std::move(chain_callbacks_[hash]), error);
-  chain_callbacks_.erase(hash);
+  DCHECK(chain_callbacks_.contains(chain_id));
+  RespondForEthereumChainRequest(std::move(chain_callbacks_[chain_id]), error);
+  chain_callbacks_.erase(chain_id);
 }
 
 }  // namespace brave_wallet

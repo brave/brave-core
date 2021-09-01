@@ -53,7 +53,7 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
   }
   if (url.hash === '#addEthereumChain') {
     const tabId = Number(url.searchParams.get('tabId')) || -1
-    const network = url.searchParams.get('payload') || '{ "chainId": ""}'
+    const network = url.searchParams.get('payload') || '{ "chainId": "", nativeCurrency: {}}'
     const networkPayload = JSON.parse(network) as EthereumChain
     store.dispatch(PanelActions.addEthereumChain({ networkPayload, tabId }))
     return
@@ -107,10 +107,10 @@ handler.on(PanelActions.addEthereumChainApproved.getType(), async (store, payloa
   apiProxy.closeUI()
 })
 
-handler.on(PanelActions.addEthereumChainCanceled.getType(), async (store, payload: EthereumChainPayload) => {
+handler.on(PanelActions.addEthereumChainCanceled.getType(), async (store, chainId: string) => {
   const state = getPanelState(store)
   const apiProxy = await getAPIProxy()
-  apiProxy.addEthereumChainCanceled(payload.networkPayload, state.tabId)
+  apiProxy.addEthereumChainCanceled(chainId, state.tabId)
   apiProxy.closeUI()
 })
 

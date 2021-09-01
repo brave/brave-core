@@ -101,7 +101,7 @@ function AllowAddNetworkPanel (props: Props) {
               </MessageBoxColumn>
               <MessageBoxColumn>
                 <NetworkTitle>{locale.allowAddNetworkCurrencySymbol}</NetworkTitle>
-                <NetworkDetail>{networkPayload.symbol}</NetworkDetail>
+                <NetworkDetail>{networkPayload.nativeCurrency.symbol}</NetworkDetail>
               </MessageBoxColumn>
               <MessageBoxColumn>
                 <NetworkTitle>{locale.allowAddNetworkExplorer}</NetworkTitle>

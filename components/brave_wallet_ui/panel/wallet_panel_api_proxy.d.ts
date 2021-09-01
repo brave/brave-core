@@ -10,7 +10,7 @@ export default class APIProxy implements APIProxyControllers {
   showUI: () => {}
   closeUI: () => {}
   addEthereumChainApproved: (payload: EthereumChain, tabId: number) => {}
-  addEthereumChainCanceled: (payload: EthereumChain, tabId: number) => {}
+  addEthereumChainCanceled: (chainId: string, tabId: number) => {}
   connectToSite: (accounts: string[], origin: string, tabId: number) => {}
   cancelConnectToSite: (origin: string, tabId: number) => {}
   walletHandler: WalletAPIHandler

@@ -307,9 +307,7 @@ function Container (props: Props) {
   }
 
   const onCancelAddNetwork = () => {
-    props.walletPanelActions.addEthereumChainCanceled({
-      networkPayload: networkPayload
-    })
+    props.walletPanelActions.addEthereumChainCanceled(networkPayload.chainId)
   }
   const onNetworkLearnMore = () => {
     chrome.tabs.create({

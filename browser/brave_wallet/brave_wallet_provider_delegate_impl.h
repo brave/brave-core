@@ -36,7 +36,8 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
 
   // Requests user approval for wallet actions
   // with some payload from api calls.
-  void RequestUserApproval(const std::string& request_data,
+  void RequestUserApproval(const std::string& chain_id,
+                           const std::string& payload,
                            RequestEthereumChainCallback callback) override;
 
   void RequestEthereumPermissions(

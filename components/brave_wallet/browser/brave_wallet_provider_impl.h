@@ -58,13 +58,14 @@ class BraveWalletProviderImpl final
   void ChainChangedEvent(const std::string& chain_id) override;
 
  private:
-  void OnChainApprovalResult(size_t hash, const std::string& error);
+  void OnChainApprovalResult(const std::string& chain_id,
+                             const std::string& error);
   void OnConnectionError();
 
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
   mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
-  base::flat_map<size_t, AddEthereumChainCallback> chain_callbacks_;
+  base::flat_map<std::string, AddEthereumChainCallback> chain_callbacks_;
   mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
   PrefService* prefs_ = nullptr;
   base::WeakPtrFactory<BraveWalletProviderImpl> weak_factory_;

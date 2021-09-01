@@ -573,9 +573,11 @@ export type EthereumChain = {
   blockExplorerUrls: string[],
   iconUrls: string[],
   rpcUrls: string[],
-  symbol: string,
-  name: string,
-  decimals: number
+  nativeCurrency: {
+    symbol: string,
+    name: string,
+    decimals: number
+  }
 }
 
 export interface GetAllNetworksList {

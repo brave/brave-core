@@ -356,7 +356,7 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
       return v8::Local<v8::Promise>();
 
     absl::optional<mojom::EthereumChain> chain =
-        brave_wallet::ParameterValueToEthereumChain(*params->GetList().begin());
+        brave_wallet::ValueToEthereumChain(*params->GetList().begin());
 
     std::vector<mojom::EthereumChainPtr> chains_ptr;
     if (chain)

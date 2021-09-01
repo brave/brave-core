@@ -11,10 +11,10 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-TEST(Web3ProviderUtilsUnitTest, ParameterValueToEthereumChainTest) {
+TEST(Web3ProviderUtilsUnitTest, ValueToEthereumChainTest) {
   {
     absl::optional<brave_wallet::mojom::EthereumChain> chain =
-        brave_wallet::ParameterValueToEthereumChain(base::JSONReader::Read(R"({
+        brave_wallet::ValueToEthereumChain(base::JSONReader::Read(R"({
       "chainId": "0x5",
       "chainName": "Goerli",
       "rpcUrls": [
@@ -32,77 +32,6 @@ TEST(Web3ProviderUtilsUnitTest, ParameterValueToEthereumChainTest) {
       },
       "blockExplorerUrls": ["https://goerli.etherscan.io"]
     })")
-                                                        .value());
-    ASSERT_TRUE(chain);
-    EXPECT_EQ("0x5", chain->chain_id);
-    EXPECT_EQ("Goerli", chain->chain_name);
-    EXPECT_EQ(size_t(2), chain->rpc_urls.size());
-    EXPECT_EQ("https://goerli.infura.io/v3/INSERT_API_KEY_HERE",
-              chain->rpc_urls.front());
-    EXPECT_EQ("https://second.infura.io/", chain->rpc_urls.back());
-    EXPECT_EQ("https://goerli.etherscan.io",
-              chain->block_explorer_urls.front());
-    EXPECT_EQ("Goerli ETH", chain->name);
-    EXPECT_EQ("gorETH", chain->symbol);
-    EXPECT_EQ(18, chain->decimals);
-    EXPECT_EQ("https://xdaichain.com/fake/example/url/xdai.svg",
-              chain->icon_urls.front());
-    EXPECT_EQ("https://xdaichain.com/fake/example/url/xdai.png",
-              chain->icon_urls.back());
-  }
-  {
-    absl::optional<brave_wallet::mojom::EthereumChain> chain =
-        brave_wallet::ParameterValueToEthereumChain(base::JSONReader::Read(R"({
-      "chainId": "0x5"
-    })")
-                                                        .value());
-    ASSERT_TRUE(chain);
-    EXPECT_EQ("0x5", chain->chain_id);
-    ASSERT_TRUE(chain->chain_name.empty());
-    ASSERT_TRUE(chain->rpc_urls.empty());
-    ASSERT_TRUE(chain->icon_urls.empty());
-    ASSERT_TRUE(chain->block_explorer_urls.empty());
-    ASSERT_TRUE(chain->name.empty());
-    ASSERT_TRUE(chain->symbol.empty());
-  }
-
-  {
-    absl::optional<brave_wallet::mojom::EthereumChain> chain =
-        brave_wallet::ParameterValueToEthereumChain(base::JSONReader::Read(R"({
-    })")
-                                                        .value());
-    ASSERT_FALSE(chain);
-  }
-  {
-    absl::optional<brave_wallet::mojom::EthereumChain> chain =
-        brave_wallet::ParameterValueToEthereumChain(base::JSONReader::Read(R"([
-          ])")
-                                                        .value());
-    ASSERT_FALSE(chain);
-  }
-}
-
-TEST(Web3ProviderUtilsUnitTest, ValueToEthereumChainTest) {
-  {
-    absl::optional<brave_wallet::mojom::EthereumChain> chain =
-        brave_wallet::ValueToEthereumChain(base::JSONReader::Read(R"({
-      "chainId": "0x5",
-      "chainName": "Goerli",
-      "rpcUrls": [
-        "https://goerli.infura.io/v3/INSERT_API_KEY_HERE",
-        "https://second.infura.io/"
-      ],
-      "iconUrls": [
-        "https://xdaichain.com/fake/example/url/xdai.svg",
-        "https://xdaichain.com/fake/example/url/xdai.png"
-      ],
-
-      "name": "Goerli ETH",
-      "symbol": "gorETH",
-      "decimals": 18,
-
-      "blockExplorerUrls": ["https://goerli.etherscan.io"]
-    })")
                                                .value());
     ASSERT_TRUE(chain);
     EXPECT_EQ("0x5", chain->chain_id);
@@ -113,7 +42,7 @@ TEST(Web3ProviderUtilsUnitTest, ValueToEthereumChainTest) {
     EXPECT_EQ("https://second.infura.io/", chain->rpc_urls.back());
     EXPECT_EQ("https://goerli.etherscan.io",
               chain->block_explorer_urls.front());
-    EXPECT_EQ("Goerli ETH", chain->name);
+    EXPECT_EQ("Goerli ETH", chain->symbol_name);
     EXPECT_EQ("gorETH", chain->symbol);
     EXPECT_EQ(18, chain->decimals);
     EXPECT_EQ("https://xdaichain.com/fake/example/url/xdai.svg",
@@ -133,7 +62,7 @@ TEST(Web3ProviderUtilsUnitTest, ValueToEthereumChainTest) {
     ASSERT_TRUE(chain->rpc_urls.empty());
     ASSERT_TRUE(chain->icon_urls.empty());
     ASSERT_TRUE(chain->block_explorer_urls.empty());
-    ASSERT_TRUE(chain->name.empty());
+    ASSERT_TRUE(chain->symbol_name.empty());
     ASSERT_TRUE(chain->symbol.empty());
   }
 
@@ -160,8 +89,9 @@ TEST(Web3ProviderUtilsUnitTest, EthereumChainToValueTest) {
   base::Value value = brave_wallet::EthereumChainToValue(chain.Clone());
   EXPECT_EQ(*value.FindStringKey("chainId"), chain.chain_id);
   EXPECT_EQ(*value.FindStringKey("chainName"), chain.chain_name);
-  EXPECT_EQ(*value.FindStringKey("name"), chain.name);
-  EXPECT_EQ(*value.FindStringKey("symbol"), chain.symbol);
+  EXPECT_EQ(*value.FindStringPath("nativeCurrency.name"), chain.symbol_name);
+  EXPECT_EQ(*value.FindStringPath("nativeCurrency.symbol"), chain.symbol);
+  EXPECT_EQ(*value.FindIntPath("nativeCurrency.decimals"), chain.decimals);
   for (const auto& entry : value.FindListKey("rpcUrls")->GetList()) {
     ASSERT_NE(std::find(chain.rpc_urls.begin(), chain.rpc_urls.end(),
                         entry.GetString()),

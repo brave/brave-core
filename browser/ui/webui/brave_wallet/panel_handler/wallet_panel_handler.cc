@@ -50,30 +50,30 @@ void WalletPanelHandler::AddEthereumChainApproved(const std::string& payload,
   content::WebContents* contents = get_web_contents_for_tab_.Run(tab_id);
   if (!contents)
     return;
-  {
-    auto* prefs = user_prefs::UserPrefs::Get(contents->GetBrowserContext());
-    ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-    base::ListValue* list = update.Get();
-    absl::optional<base::Value> value = base::JSONReader::Read(payload);
-    if (value && brave_wallet::ValueToEthereumChain(value.value())) {
-      list->Append(std::move(value).value_or(base::Value()));
-    }
-  }
-  size_t hash = base::FastHash(payload);
+
+  auto* prefs = user_prefs::UserPrefs::Get(contents->GetBrowserContext());
+  ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  base::ListValue* list = update.Get();
+  absl::optional<base::Value> value = base::JSONReader::Read(payload);
+  if (!value)
+    return;
+  auto chain = brave_wallet::ValueToEthereumChain(value.value());
+  if (!chain)
+    return;
+  list->Append(std::move(value).value_or(base::Value()));
   brave_wallet::BraveWalletTabHelper::FromWebContents(contents)
-      ->UserRequestCompleted(hash, std::string());
+      ->UserRequestCompleted(chain->chain_id, std::string());
 }
 
-void WalletPanelHandler::AddEthereumChainCanceled(const std::string& payload,
+void WalletPanelHandler::AddEthereumChainCanceled(const std::string& chain_id,
                                                   int32_t tab_id) {
   content::WebContents* contents = get_web_contents_for_tab_.Run(tab_id);
   if (!contents)
     return;
 
-  size_t hash = base::FastHash(base::as_bytes(base::make_span(payload)));
   brave_wallet::BraveWalletTabHelper::FromWebContents(contents)
       ->UserRequestCompleted(
-          hash, l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+          chain_id, l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 }
 
 void WalletPanelHandler::ConnectToSite(const std::vector<std::string>& accounts,

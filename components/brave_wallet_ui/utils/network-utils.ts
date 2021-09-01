@@ -8,7 +8,7 @@ export const GetNetworkInfo = (chainId: string, list: EthereumChain[]) => {
   }
   return {
     chainId: '', chainName: '', rpcUrls: [], blockExplorerUrls: [],
-    iconUrls: [], symbol: '', name: '', decimals: 0
+    iconUrls: [], nativeCurrency: { symbol: '', name: '', decimals: 0 }
   }
 }
 

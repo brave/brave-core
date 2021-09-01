@@ -49,14 +49,14 @@ export default class WalletPanelApiProxyImpl extends WalletApiProxy {
   closeUI() {
     this.panelHandler.closeUI();
   }
-  
+
   /** @override */
   addEthereumChainApproved(payload, tab_id) {
     this.panelHandler.addEthereumChainApproved(JSON.stringify(payload), tab_id);
   }
 
-  addEthereumChainCanceled(payload, tab_id) {
-    this.panelHandler.addEthereumChainCanceled(JSON.stringify(payload), tab_id);
+  addEthereumChainCanceled(chain_id, tab_id) {
+    this.panelHandler.addEthereumChainCanceled(chain_id, tab_id);
   }
 
   /** @override */

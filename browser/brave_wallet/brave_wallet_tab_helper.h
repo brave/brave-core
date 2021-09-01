@@ -11,6 +11,7 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
@@ -32,9 +33,11 @@ class BraveWalletTabHelper
 
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
   void ShowBubble();
-  void RequestUserApproval(const std::string& request_data,
+  void RequestUserApproval(const std::string& chain_id,
+                           const std::string& payload,
                            RequestEthereumChainCallback callback);
-  void UserRequestCompleted(size_t hash, const std::string& error);
+  void UserRequestCompleted(const std::string& chain_id,
+                            const std::string& error);
   void CloseBubble();
   bool IsShowingBubble();
   bool IsBubbleClosedForTesting();
@@ -44,7 +47,7 @@ class BraveWalletTabHelper
   friend class content::WebContentsUserData<BraveWalletTabHelper>;
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
   GURL GetBubbleURL();
-  base::flat_map<size_t, RequestEthereumChainCallback> request_callbacks_;
+  base::flat_map<std::string, RequestEthereumChainCallback> request_callbacks_;
   std::unique_ptr<WalletBubbleManagerDelegate> wallet_bubble_manager_delegate_;
 #endif
   content::WebContents* web_contents_;

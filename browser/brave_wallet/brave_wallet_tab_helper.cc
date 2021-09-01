@@ -12,6 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
+#include "brave/components/brave_wallet/common/web3_provider_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_manager.h"
@@ -61,28 +62,27 @@ void BraveWalletTabHelper::ShowBubble() {
   wallet_bubble_manager_delegate_->ShowBubble();
 }
 
-void BraveWalletTabHelper::UserRequestCompleted(size_t hash,
+void BraveWalletTabHelper::UserRequestCompleted(const std::string& chain_id,
                                                 const std::string& error) {
-  DCHECK(request_callbacks_.contains(hash));
-  std::move(request_callbacks_[hash]).Run(error);
-  request_callbacks_.erase(hash);
+  DCHECK(request_callbacks_.contains(chain_id));
+  std::move(request_callbacks_[chain_id]).Run(error);
+  request_callbacks_.erase(chain_id);
 }
 
 void BraveWalletTabHelper::RequestUserApproval(
-    const std::string& request_data,
+    const std::string& chain_id,
+    const std::string& payload,
     RequestEthereumChainCallback callback) {
   std::vector<std::string> accounts;
   int32_t tab_id = sessions::SessionTabHelper::IdForTab(web_contents_).id();
   GURL webui_url = GetAddEthereumChainPayloadWebUIURL(
-      GURL(kBraveUIWalletPanelURL), tab_id, request_data);
+      GURL(kBraveUIWalletPanelURL), tab_id, payload);
   DCHECK(webui_url.is_valid());
-
-  size_t hash = base::FastHash(request_data);
-  if (request_callbacks_.contains(hash)) {
-    UserRequestCompleted(hash, std::string());
+  if (request_callbacks_.contains(chain_id)) {
+    UserRequestCompleted(chain_id, std::string());
     return;
   }
-  request_callbacks_[hash] = std::move(callback);
+  request_callbacks_[chain_id] = std::move(callback);
   wallet_bubble_manager_delegate_ =
       WalletBubbleManagerDelegate::Create(web_contents_, webui_url);
   wallet_bubble_manager_delegate_->ShowBubble();
