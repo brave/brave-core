@@ -648,8 +648,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("", values_after.iframe_2.cookies);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
-                       NetworkCookiesAreNotSentIn3p) {
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, NetworkCookiesAreSentIn3p) {
   WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
   SetValuesInFrames(site_a_tab, "a.com", "from=a.com");
 
@@ -658,14 +657,11 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   // Non 3p request should have cookies in headers.
   EXPECT_TRUE(http_request_monitor_.HasHttpRequestWithCookie(
       a_site_ephemeral_storage_url_, "from=a.com"));
-  // 3p requests should NOT have cookies in headers, even from the ephemeral
+  // 3p requests should have cookies in headers from the ephemeral
   // storage.
-  // https://chromium-review.googlesource.com/c/chromium/src/+/2367394
-  // "<...> when the NetworkDelegate forces PrivacyMode, it will disable sending
-  // auth credentials".
-  EXPECT_FALSE(http_request_monitor_.HasHttpRequestWithCookie(
+  EXPECT_TRUE(http_request_monitor_.HasHttpRequestWithCookie(
       b_site_ephemeral_storage_url_, "from=a.com"));
-  EXPECT_FALSE(http_request_monitor_.HasHttpRequestWithCookie(
+  EXPECT_TRUE(http_request_monitor_.HasHttpRequestWithCookie(
       b_site_ephemeral_storage_url_.Resolve("/simple.html"), "from=a.com"));
 
   // Cookie values should be available via JS API.
