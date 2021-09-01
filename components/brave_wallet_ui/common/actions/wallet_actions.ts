@@ -62,3 +62,4 @@ export const newUnapprovedTxAdded = createAction<NewUnapprovedTxAdded>('newUnapp
 export const transactionStatusChanged = createAction<TransactionStatusChanged>('transactionStatusChanged')
 export const approveTransaction = createAction<TransactionInfo>('approveTransaction')
 export const rejectTransaction = createAction<TransactionInfo>('rejectTransaction')
+export const knownTransactionsUpdated = createAction<TransactionInfo[]>('knownTransactionsUpdated')

@@ -55,6 +55,7 @@ const defaultState: WalletState = {
   userVisibleTokensInfo: [],
   transactions: [],
   pendingTransactions: [],
+  knownTransactions: [],
   fullTokenList: [],
   portfolioPriceHistory: [],
   selectedPendingTransaction: undefined,
@@ -281,6 +282,18 @@ reducer.on(WalletActions.transactionStatusChanged, (state: any, payload: Transac
     return newState
   }
   return state
+})
+
+reducer.on(WalletActions.knownTransactionsUpdated, (state: any, payload: TransactionInfo[]) => {
+  const newPendingTransactions =
+      payload.filter((tx: TransactionInfo) => tx.txStatus === TransactionStatus.Unapproved)
+  const newSelectedPendingTransaction = state.selectedPendingTransaction || newPendingTransactions.pop()
+  return {
+    ...state,
+    pendingTransactions: newPendingTransactions,
+    selectedPendingTransaction: newSelectedPendingTransaction,
+    knownTransactions: payload
+  }
 })
 
 export default reducer

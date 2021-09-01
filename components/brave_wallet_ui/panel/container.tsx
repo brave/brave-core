@@ -394,7 +394,7 @@ function Container (props: Props) {
     )
   }
 
-  if (selectedPanel === 'approveTransaction' && selectedPendingTransaction) {
+  if (selectedPendingTransaction) {
     return (
       <PanelWrapper isLonger={true}>
         <SignContainer>

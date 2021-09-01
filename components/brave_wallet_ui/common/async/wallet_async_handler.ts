@@ -10,8 +10,7 @@ import {
   UnlockWalletPayloadType,
   ChainChangedEventPayloadType,
   SetInitialVisibleTokensPayloadType,
-  NewUnapprovedTxAdded,
-  TransactionStatusChanged
+  InitializedPayloadType
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -21,7 +20,8 @@ import {
   WalletPanelState,
   AssetPriceTimeframe,
   SendTransactionParam,
-  TransactionInfo
+  TransactionInfo,
+  WalletAccountType
 } from '../../constants/types'
 import { AssetOptions } from '../../options/asset-options'
 import { GetNetworkInfo } from '../../utils/network-utils'
@@ -191,6 +191,18 @@ handler.on(WalletActions.selectNetwork.getType(), async (store, payload: Ethereu
   await refreshWalletInfo(store)
 })
 
+handler.on(WalletActions.selectAccount.getType(), async (store, payload: WalletAccountType) => {
+  const apiProxy = await getAPIProxy()
+  const result = await apiProxy.ethTxController.getAllTransactionInfo(payload.address)
+  store.dispatch(WalletActions.knownTransactionsUpdated(result.transactionInfos))
+})
+
+handler.on(WalletActions.initialized.getType(), async (store, payload: InitializedPayloadType) => {
+  const apiProxy = await getAPIProxy()
+  const result = await apiProxy.ethTxController.getAllTransactionInfo(payload.accountInfos[0].address)
+  store.dispatch(WalletActions.knownTransactionsUpdated(result.transactionInfos))
+})
+
 handler.on(WalletActions.getAllNetworks.getType(), async (store) => {
   const ethJsonRpcController = (await getAPIProxy()).ethJsonRpcController
   const fullList = await ethJsonRpcController.getAllNetworks()
@@ -240,14 +252,6 @@ handler.on(WalletActions.sendTransaction.getType(), async (store, payload: SendT
   await refreshWalletInfo(store)
 })
 
-handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store, payload: NewUnapprovedTxAdded) => {
-  console.log('new unapproved tx added: ', payload.txInfo)
-})
-
-handler.on(WalletActions.transactionStatusChanged.getType(), async (store, payload: TransactionStatusChanged) => {
-  console.log('tx status changed: ', payload.txInfo)
-})
-
 handler.on(WalletActions.approveTransaction.getType(), async (store, txInfo: TransactionInfo) => {
   const apiProxy = await getAPIProxy()
   await apiProxy.ethTxController.approveTransaction(txInfo.id)
@@ -255,7 +259,6 @@ handler.on(WalletActions.approveTransaction.getType(), async (store, txInfo: Tra
 })
 
 handler.on(WalletActions.rejectTransaction.getType(), async (store, txInfo: TransactionInfo) => {
-  console.log('rejectTransaction!')
   const apiProxy = await getAPIProxy()
   await apiProxy.ethTxController.rejectTransaction(txInfo.id)
   await refreshWalletInfo(store)
