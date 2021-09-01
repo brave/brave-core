@@ -109,8 +109,8 @@ def main(args):
     # Run format checks
     upstream_branch = cl.GetUpstreamBranch()
     format_output = None
-    if base_branch and not (base_branch in upstream_branch):
-        print('Skipping clang/gn format check because base_branch is %s instead of %s' % (base_branch, upstream_branch))
+    if base_branch:
+        format_output = RunFormatCheck(base_branch)
     else:
         format_output = RunFormatCheck(upstream_branch)
   finally:
