@@ -36,6 +36,7 @@ export type WalletCreatedPayloadType = {
 }
 
 export type ViewPrivateKeyPayloadType = {
+  isDefault: boolean
   address: string
 }
 

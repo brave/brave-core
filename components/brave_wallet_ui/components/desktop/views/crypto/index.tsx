@@ -41,7 +41,7 @@ export interface Props {
   onSelectNetwork: (network: Network) => void
   fetchFullTokenList: () => void
   onRemoveAccount: (address: string) => void
-  onViewPrivateKey: (address: string) => void
+  onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
   privateKey: string
   fullAssetList: TokenInfo[]

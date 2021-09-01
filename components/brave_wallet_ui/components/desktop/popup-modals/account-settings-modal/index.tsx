@@ -9,8 +9,7 @@ import {
   TopTabNav
 } from '../..'
 import {
-  AccountSettingsNavOptions,
-  ImportedAccountSettingsNavOptions
+  AccountSettingsNavOptions
 } from '../../../../options/account-settings-nav-options'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
@@ -39,7 +38,7 @@ export interface Props {
   onCopyToClipboard: () => void
   onChangeTab: (id: AccountSettingsNavTypes) => void
   onRemoveAccount: (address: string) => void
-  onViewPrivateKey: (address: string) => void
+  onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
   onToggleNav: () => void
   privateKey: string
@@ -102,7 +101,10 @@ const AddAccountModal = (props: Props) => {
   }
 
   const onShowPrivateKey = () => {
-    onViewPrivateKey(account.address)
+    if (onViewPrivateKey) {
+      const isDefault = account?.accountType === 'Primary'
+      onViewPrivateKey(account?.address ?? '', isDefault)
+    }
     setShowPrivateKey(true)
   }
 
@@ -126,7 +128,7 @@ const AddAccountModal = (props: Props) => {
     <PopupModal title={title} onClose={onClickClose}>
       {!hideNav &&
         <TopTabNav
-          tabList={account?.accountType === 'Secondary' ? ImportedAccountSettingsNavOptions : AccountSettingsNavOptions}
+          tabList={AccountSettingsNavOptions}
           onSubmit={changeTab}
           selectedTab={tab}
         />
