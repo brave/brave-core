@@ -18,12 +18,4 @@ void EnabledClientHints::SetIsEnabled(const WebClientHintsType type,
   enabled_types_[static_cast<int>(type)] = false;
 }
 
-void EnabledClientHints::SetIsEnabled(
-    const GURL& url,
-    const net::HttpResponseHeaders* response_headers,
-    const network::mojom::WebClientHintsType type,
-    const bool should_send) {
-  SetIsEnabled(type, false);
-}
-
 }  // namespace blink

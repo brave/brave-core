@@ -9,13 +9,13 @@
 // We can't do a `#define SetIsEnabled SetIsEnabled_Unused` because there are
 // two different signatures for that method, so we redefine IsEnabled() instead
 // and make the most of that to squeeze those methods there instead.
-#define IsEnabled                                                        \
-  IsEnabled(network::mojom::WebClientHintsType type) const;              \
-  void SetIsEnabled_Unused(network::mojom::WebClientHintsType type,      \
-                           bool should_send);                            \
-  void SetIsEnabled_Unused(                                              \
-      const GURL& url, const net::HttpResponseHeaders* response_headers, \
-      network::mojom::WebClientHintsType type, bool should_send);        \
+// The above comment is not applicable right now because the upstream change
+// adding the second signature has been temporarily reverted. Leaving the above
+// comment here for when they reland.
+#define IsEnabled                                                   \
+  IsEnabled(network::mojom::WebClientHintsType type) const;         \
+  void SetIsEnabled_Unused(network::mojom::WebClientHintsType type, \
+                           bool should_send);                       \
   bool IsEnabled_Unused
 
 #include "../../../../../../../third_party/blink/public/common/client_hints/enabled_client_hints.h"
