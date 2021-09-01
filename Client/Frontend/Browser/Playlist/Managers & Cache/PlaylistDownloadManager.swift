@@ -158,7 +158,8 @@ public class PlaylistDownloadManager: PlaylistStreamDownloadManagerDelegate {
     
     func localAsset(for pageSrc: String) -> AVURLAsset? {
         guard let item = PlaylistItem.getItem(pageSrc: pageSrc),
-              let cachedData = item.cachedData else { return nil }
+              let cachedData = item.cachedData,
+              !cachedData.isEmpty else { return nil }
 
         var bookmarkDataIsStale = false
         do {

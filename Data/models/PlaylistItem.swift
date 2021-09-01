@@ -107,7 +107,12 @@ final public class PlaylistItem: NSManagedObject, CRUD {
     public static func updateCache(pageSrc: String, cachedData: Data?) {
         DataController.perform(context: .new(inMemory: false), save: true) { context in
             let item = PlaylistItem.first(where: NSPredicate(format: "pageSrc == %@", pageSrc), context: context)
-            item?.cachedData = cachedData
+            
+            if let cachedData = cachedData, !cachedData.isEmpty {
+                item?.cachedData = cachedData
+            } else {
+                item?.cachedData = nil
+            }
         }
     }
     
