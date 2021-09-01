@@ -587,6 +587,7 @@ mod tests {
 
     #[test]
     fn unwrap_noscript_img_delete_preceding() {
+        // Based on https://www.bbc.com/news/world-australia-56307356
         let input = r#"
         <body>
           <img src="https://example.com/image.png">
@@ -598,6 +599,32 @@ mod tests {
         <html><head></head>
         <body>
           <img src="https://example.com/image.png">
+        </body>
+        </html>"#;
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    #[test]
+    fn unwrap_noscript_img_delete_following() {
+        // Based on https://www.dutchnews.nl/features/2021/08/the-region-revolutionising-the-dutch-diet/
+        let input = r#"
+        <body>
+          <noscript>
+            <img src="https://example.com/image.png">
+          </noscript>
+          <img src="https://example.com/image.png">
+          <p>This is the image caption</p>
+        </body>"#;
+        let expected = r#"
+        <html><head></head>
+        <body>
+          <img src="https://example.com/image.png">
+          <p>This is the image caption</p>
         </body>
         </html>"#;
         let mut cursor = Cursor::new(input);
