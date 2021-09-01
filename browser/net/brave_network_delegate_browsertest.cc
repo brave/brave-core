@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
+#include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
@@ -26,9 +27,12 @@
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
+#include "net/test/embedded_test_server/http_request.h"
 #include "url/gurl.h"
 
 using net::test_server::EmbeddedTestServer;
+
+namespace {
 
 bool NavigateRenderFrameToURL(content::RenderFrameHost* frame,
                               std::string iframe_id,
@@ -46,6 +50,15 @@ bool NavigateRenderFrameToURL(content::RenderFrameHost* frame,
   return result;
 }
 
+GURL GetHttpRequestURL(const net::test_server::HttpRequest& http_request) {
+  return GURL(
+      base::StrCat({http_request.base_url.scheme_piece(), "://",
+                    http_request.headers.at(net::HttpRequestHeaders::kHost),
+                    http_request.relative_url}));
+}
+
+}  // namespace
+
 class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
  public:
   BraveNetworkDelegateBrowserTest()
@@ -62,6 +75,9 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
 
     https_server_.ServeFilesFromDirectory(test_data_dir);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
+    https_server_.RegisterRequestMonitor(base::BindRepeating(
+        &BraveNetworkDelegateBrowserTest::MonitorHTTPRequest,
+        base::Unretained(this)));
     content::SetupCrossSiteRedirector(&https_server_);
     ASSERT_TRUE(https_server_.Start());
 
@@ -180,6 +196,17 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
                                                  false);
   }
 
+  void MonitorHTTPRequest(const net::test_server::HttpRequest& request) {
+    auto cookie_it = request.headers.find(net::HttpRequestHeaders::kCookie);
+    if (cookie_it != request.headers.end()) {
+      seen_cookies_[GetHttpRequestURL(request)] = cookie_it->second;
+    }
+  }
+
+  const base::flat_map<GURL, std::string>& seen_cookies() const {
+    return seen_cookies_;
+  }
+
  protected:
   GURL url_;
   GURL nested_iframe_script_url_;
@@ -201,6 +228,7 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL ipfs_cid1_url_;
   GURL ipfs_cid2_frame_url_;
   net::test_server::EmbeddedTestServer https_server_;
+  base::flat_map<GURL, std::string> seen_cookies_;
 
  private:
   ContentSettingsPattern top_level_page_pattern_;
@@ -660,6 +688,29 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   NavigateFrameTo(wordpress_frame_url_);
   ExpectCookiesOnHost(GURL("https://example.wordpress.com"), "frame=true");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ThirdPartyYesNetworkCookieWpComInWordpressCom) {
+  NavigateToPageWithFrame(wordpress_top_url_);
+  ExpectCookiesOnHost(GURL("https://example.wp.com"), "");
+
+  NavigateFrameTo(wp_frame_url_);
+  ExpectCookiesOnHost(GURL("https://example.wp.com"), "frame=true");
+
+  // No network cookie should be sent on first request.
+  EXPECT_FALSE(base::Contains(seen_cookies(), wp_frame_url_));
+
+  // Navigate from WordPress elsewhere.
+  NavigateToPageWithFrame(cookie_iframe_url_);
+
+  // Navigate to WordPress and to a friendly 3p frame to ensure network cookies
+  // are sent from the frame.
+  NavigateToPageWithFrame(wordpress_top_url_);
+  NavigateFrameTo(wp_top_url_);
+
+  ASSERT_TRUE(base::Contains(seen_cookies(), wp_top_url_));
+  EXPECT_EQ(seen_cookies().at(wp_top_url_), "frame=true");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
