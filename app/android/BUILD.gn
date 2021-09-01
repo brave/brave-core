@@ -1,7 +1,6 @@
 import("//brave/build/config.gni")
-import("//build/config/python.gni")
 
-python2_action("generate_breakpad_symbols") {
+action("generate_breakpad_symbols") {
   symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
   outputs = [ symbols_dir ]
 
