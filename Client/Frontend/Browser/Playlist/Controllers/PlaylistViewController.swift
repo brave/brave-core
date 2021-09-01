@@ -86,6 +86,14 @@ class PlaylistViewController: UIViewController {
         PlaylistCarplayManager.shared.currentPlaylistItem = nil
         #endif
         
+        // Simulator cannot "detect" if Car-Play is enabled, therefore we need to STOP playback
+        // When this controller deallocates. The user can still manually resume playback in CarPlay.
+        #if targetEnvironment(simulator)
+        // Stop media playback
+        stop(playerView)
+        PlaylistCarplayManager.shared.currentPlaylistItem = nil
+        #endif
+        
         // If this controller is retained in app-delegate for Picture-In-Picture support
         // then we need to re-attach the player layer
         // and deallocate it.
@@ -396,7 +404,7 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
     }
     
     func displayLoadingResourceError() {
-        let isPrimaryDisplayMode = splitController.displayMode == .primaryOverlay
+        let isPrimaryDisplayMode = splitController.preferredDisplayMode == .primaryOverlay
         if isPrimaryDisplayMode {
             listController.displayLoadingResourceError()
         } else {
@@ -405,7 +413,7 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
     }
     
     func displayExpiredResourceError(item: PlaylistInfo) {
-        let isPrimaryDisplayMode = splitController.displayMode == .primaryOverlay
+        let isPrimaryDisplayMode = splitController.preferredDisplayMode == .primaryOverlay
         if isPrimaryDisplayMode {
             listController.displayExpiredResourceError(item: item)
         } else {
