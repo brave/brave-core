@@ -79,7 +79,7 @@ BraveVPNButton::BraveVPNButton(Profile* profile)
 
 BraveVPNButton::~BraveVPNButton() = default;
 
-void BraveVPNButton::OnConnectionStateChanged(bool connected) {
+void BraveVPNButton::OnConnectionStateChanged(ConnectionState state) {
   UpdateButtonState();
 }
 

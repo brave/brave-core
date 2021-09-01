@@ -37,6 +37,7 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPI {
  private:
   void OnCreated(const std::string& name, bool success);
   void OnConnected(const std::string& name, bool success);
+  void OnIsConnecting(const std::string& name);
   void OnDisconnected(const std::string& name, bool success);
   void OnRemoved(const std::string& name, bool success);
 

@@ -18,6 +18,13 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
+enum class ConnectionState {
+  CONNECTED,
+  DISCONNECTED,
+  CONNECTING,
+  CONNECT_FAILED,
+};
+
 class BraveVpnServiceDesktop
     : public BraveVpnService,
       public brave_vpn::BraveVPNOSConnectionAPI::Observer,
@@ -25,7 +32,7 @@ class BraveVpnServiceDesktop
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnConnectionStateChanged(bool connected) = 0;
+    virtual void OnConnectionStateChanged(ConnectionState state) = 0;
     virtual void OnConnectionCreated() = 0;
     virtual void OnConnectionRemoved() = 0;
 
@@ -48,7 +55,7 @@ class BraveVpnServiceDesktop
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  bool is_connected() const { return is_connected_; }
+  bool is_connected() const { return state_ == ConnectionState::CONNECTED; }
 
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
@@ -63,11 +70,13 @@ class BraveVpnServiceDesktop
   void OnCreated(const std::string& name) override;
   void OnRemoved(const std::string& name) override;
   void OnConnected(const std::string& name) override;
+  void OnIsConnecting(const std::string& name) override;
+  void OnConnectFailed(const std::string& name) override;
   void OnDisconnected(const std::string& name) override;
 
   brave_vpn::BraveVPNConnectionInfo GetConnectionInfo();
 
-  bool is_connected_ = false;
+  ConnectionState state_ = ConnectionState::DISCONNECTED;
   base::ObserverList<Observer> observers_;
   base::ScopedObservation<brave_vpn::BraveVPNOSConnectionAPI,
                           brave_vpn::BraveVPNOSConnectionAPI::Observer>
