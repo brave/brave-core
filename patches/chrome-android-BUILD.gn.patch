@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index c189af1f85ad59b68286aa66238f63cd937bc3c9..d7ba8f9e752794dbe00d4b48ede43f6488eb352d 100644
+index dd4823f8558180d92cd2ab165130f64918b85a68..91cae183db61c4b1812b5cfc0af17eede25452cb 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -252,6 +252,7 @@ android_resources("chrome_app_java_resources") {
@@ -34,7 +34,7 @@ index c189af1f85ad59b68286aa66238f63cd937bc3c9..d7ba8f9e752794dbe00d4b48ede43f64
  }
  
  # This is a list of all base module jni headers. New features should add their
-@@ -796,6 +800,7 @@ group("jni_headers") {
+@@ -797,6 +801,7 @@ group("jni_headers") {
      "//components/ukm/android:jni_headers",
      "//components/webauthn/android:jni_headers",
    ]
@@ -42,7 +42,7 @@ index c189af1f85ad59b68286aa66238f63cd937bc3c9..d7ba8f9e752794dbe00d4b48ede43f64
  }
  
  action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -2077,6 +2082,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2078,6 +2083,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -50,7 +50,7 @@ index c189af1f85ad59b68286aa66238f63cd937bc3c9..d7ba8f9e752794dbe00d4b48ede43f64
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
          if (webview_includes_weblayer && !_is_bundle_module) {
-@@ -2473,6 +2479,7 @@ android_library("base_module_java") {
+@@ -2474,6 +2480,7 @@ android_library("base_module_java") {
      "//components/payments/content/android:service_java",
      "//third_party/androidx:androidx_browser_browser_java",
    ]
