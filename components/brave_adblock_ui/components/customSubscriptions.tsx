@@ -233,17 +233,18 @@ export class CustomSubscriptions extends React.Component<Props, State> {
     return (
       <div>
         <div
-          i18n-content='customListSubscriptionsTitle'
           style={{ fontSize: '18px', marginTop: '20px' }}
-        />
-        <div
-          i18n-content='customListSubscriptionsInstructions'
-        />
+        >
+          {getLocale('customListSubscriptionsTitle')}
+        </div>
+        <div>
+          {getLocale('customListSubscriptionsInstructions')}
+        </div>
         {existingListsSection}
         {addSubscriptionSection}
-        <div
-          i18n-content='customListSubscriptionsDisclaimer'
-        />
+        <div>
+          {getLocale('customListSubscriptionsDisclaimer')}
+        </div>
       </div>
     )
   }
