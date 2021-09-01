@@ -54,17 +54,15 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
 BraveWalletProviderImpl::~BraveWalletProviderImpl() {}
 
 void BraveWalletProviderImpl::AddEthereumChain(
-    std::vector<mojom::EthereumChainPtr> chains,
+    mojom::EthereumChainPtr chain,
     AddEthereumChainCallback callback) {
-  if (!delegate_ || chains.empty()) {
+  if (!delegate_ || !chain) {
     RespondForEthereumChainRequest(
         std::move(callback),
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
-  DCHECK_LT(chains.size(), size_t(2));
-  const auto& chain = chains.front();
   if (GetNetworkURL(prefs_, chain->chain_id).is_valid()) {
     RespondForEthereumChainRequest(
         std::move(callback), l10n_util::GetStringUTF8(IDS_WALLET_CHAIN_EXISTS));
