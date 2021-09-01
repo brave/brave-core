@@ -14,7 +14,10 @@ if (is_android) {
 dep_base = rebase_path("../..", "//")
 
 config("external_config") {
-  visibility = [ ":*" ]
+  visibility = [
+    ":*",
+    "//brave/vendor/bat-native-ads:ads",
+  ]
   include_dirs = [
     "include",
     "$target_gen_dir/include",
@@ -22,6 +25,9 @@ config("external_config") {
   defines = [
     "GEMINI_OAUTH_STAGING_URL=\"$gemini_oauth_staging_url\"",
     "BITFLYER_STAGING_URL=\"$bitflyer_staging_url\"",
+    "REWARDS_GRANT_DEV_ENDPOINT=\"$rewards_grant_dev_endpoint\"",
+    "REWARDS_GRANT_STAGING_ENDPOINT=\"$rewards_grant_staging_endpoint\"",
+    "REWARDS_GRANT_PROD_ENDPOINT=\"$rewards_grant_prod_endpoint\"",
   ]
 }
 

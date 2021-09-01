@@ -82,8 +82,7 @@ class GetAdaptiveCaptchaChallengeTest : public testing::Test {
 
 TEST_F(GetAdaptiveCaptchaChallengeTest, ServerOK) {
   test_url_loader_factory_.AddResponse(
-      "https://grant.rewards.bravesoftware.com"
-      "/v3/captcha/challenge/payment_id",
+      REWARDS_GRANT_STAGING_ENDPOINT "/v3/captcha/challenge/payment_id",
       "{ \"captchaID\": \"ae07288c-d078-11eb-b8bc-0242ac130003\" }",
       net::HTTP_OK);
   challenge_->Request(
@@ -94,9 +93,9 @@ TEST_F(GetAdaptiveCaptchaChallengeTest, ServerOK) {
 }
 
 TEST_F(GetAdaptiveCaptchaChallengeTest, ServerError404) {
-  test_url_loader_factory_.AddResponse(
-      "https://grant.rewards.bravesoftware.com/v3/captcha/challenge/payment_id",
-      "", net::HTTP_NOT_FOUND);
+  test_url_loader_factory_.AddResponse(REWARDS_GRANT_STAGING_ENDPOINT
+                                       "/v3/captcha/challenge/payment_id",
+                                       "", net::HTTP_NOT_FOUND);
   challenge_->Request(
       brave_adaptive_captcha::STAGING, "payment_id",
       base::BindOnce(
@@ -106,9 +105,9 @@ TEST_F(GetAdaptiveCaptchaChallengeTest, ServerError404) {
 }
 
 TEST_F(GetAdaptiveCaptchaChallengeTest, ServerError500) {
-  test_url_loader_factory_.AddResponse(
-      "https://grant.rewards.bravesoftware.com/v3/captcha/challenge/payment_id",
-      "", net::HTTP_INTERNAL_SERVER_ERROR);
+  test_url_loader_factory_.AddResponse(REWARDS_GRANT_STAGING_ENDPOINT
+                                       "/v3/captcha/challenge/payment_id",
+                                       "", net::HTTP_INTERNAL_SERVER_ERROR);
   challenge_->Request(
       brave_adaptive_captcha::STAGING, "payment_id",
       base::BindOnce(
@@ -118,9 +117,9 @@ TEST_F(GetAdaptiveCaptchaChallengeTest, ServerError500) {
 }
 
 TEST_F(GetAdaptiveCaptchaChallengeTest, ServerErrorRandom) {
-  test_url_loader_factory_.AddResponse(
-      "https://grant.rewards.bravesoftware.com/v3/captcha/challenge/payment_id",
-      "", net::HTTP_TOO_MANY_REQUESTS);
+  test_url_loader_factory_.AddResponse(REWARDS_GRANT_STAGING_ENDPOINT
+                                       "/v3/captcha/challenge/payment_id",
+                                       "", net::HTTP_TOO_MANY_REQUESTS);
   challenge_->Request(
       brave_adaptive_captcha::STAGING, "payment_id",
       base::BindOnce(

@@ -12,28 +12,20 @@
 #include "base/notreached.h"
 #include "brave/components/brave_ads/common/switches.h"
 
-namespace {
-
-const char kDevelopment[] = "https://grant.rewards.brave.software";
-const char kStaging[] = "https://grant.rewards.bravesoftware.com";
-const char kProduction[] = "https://grant.rewards.brave.com";
-
-}  // namespace
-
 namespace brave_adaptive_captcha {
 
 std::string GetServerUrl(const std::string& path) {
   DCHECK(!path.empty());
 
-  std::string url = kProduction;
+  std::string url = REWARDS_GRANT_PROD_ENDPOINT;
 
   auto* command_line = base::CommandLine::ForCurrentProcess();
   if (command_line->HasSwitch(brave_ads::switches::kDevelopment)) {
-    url = kDevelopment;
+    url = REWARDS_GRANT_DEV_ENDPOINT;
   } else if (command_line->HasSwitch(brave_ads::switches::kStaging)) {
-    url = kStaging;
+    url = REWARDS_GRANT_STAGING_ENDPOINT;
   } else if (command_line->HasSwitch(brave_ads::switches::kProduction)) {
-    url = kProduction;
+    url = REWARDS_GRANT_PROD_ENDPOINT;
   }
 
   return url + path;

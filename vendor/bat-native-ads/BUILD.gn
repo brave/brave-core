@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/vendor/bat-native-ledger/config.gni")
+
 if (is_android) {
   import("//build/config/android/rules.gni")
 }
@@ -85,7 +87,10 @@ source_set("headers") {
 }
 
 source_set("ads") {
-  configs += [ ":internal_config" ]
+  configs += [
+    ":internal_config",
+    "//brave/vendor/bat-native-ledger:external_config",
+  ]
 
   output_name = "bat_native_ads"
 
