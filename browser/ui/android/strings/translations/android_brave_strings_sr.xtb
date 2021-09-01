@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Sprečava oglase &amp; tragača da se učitaju i pojavljuju na veb-sajtovima</translation>
 <translation id="1680858055899097121">Ne zadržavaj kartice između sesija pregledanja</translation>
 <translation id="7142548388914389999">Dopušta analitiku proizvoda koji čuva privatnost (P3A)</translation>
-<translation id="5469408008145872264">Ova potpuno anonimna informacija pomaže Brave-u da procenjuje ukupno korišćenje određenih karakteristika i čini ih boljim za vas.</translation>
+<translation id="5254037869598726291">Ova potpuno anonimna informacija pomaže Brave-u da procenjuje ukupno korišćenje određenih karakteristika i čini ih boljim za vas.</translation>
 <translation id="7977176350719484850">Procenjeni sačuvani podaci</translation>
 <translation id="9008534313521214777">Istočno standardno vreme\nsačuvano</translation>
 <translation id="6572660632052512096">Režim radne površine</translation>
@@ -249,7 +249,7 @@ meseca...</translation>
 <translation id="723054503945711909">„Brave Software Inc.” ne obrađuje, ne čuva, niti pristupa bilo kojim ličnim podacima koje dajete „Uphold-u” pri otvaranju naloga kod njih.</translation>
 <translation id="3699674790322420653">Dovršite verifikaciju novčanika</translation>
 <translation id="2193391216824305230">Korisnički novčanik</translation>
-<translation id="7591798679868259510">Idi na moj Uphold nalog</translation>
+<translation id="6585020831163574892">Idite na svoj Uphold nalog</translation>
 <translation id="9200453331904391567">Prekinite vezu sa Brave Nagradama</translation>
 <translation id="6239274080752256452">Povuci sredstva</translation>
 <translation id="8874184842967597500">Није повезано</translation>
@@ -478,7 +478,7 @@ meseca...</translation>
 <translation id="1078265935778232285">Dobro došli u Brave pregledač</translation>
 <translation id="6824713633331856331">Pomozite nam da učimo anonimno</translation>
 <translation id="6116685031674149112">Brave štiti vašu privatnost i ceni vašu saglasnost za sledeće:</translation>
-<translation id="3971666849661839619">Pomozite da se poboljša Brave šaljući izveštaje o padovima i potpuno automatizovano, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Pomozite da se poboljša Brave šaljući izveštaje o padovima i potpuno automatizovano, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">analitika privatnog proizvoda.</translation>
 <translation id="5187052478998910855">Treba vam osveženje za nagrade?</translation>
 <translation id="8622329973403382303">Krenite u kratku turneju da biste razjasnili kako se ulazi u istoriju kao Rewards rok zvezda!</translation>

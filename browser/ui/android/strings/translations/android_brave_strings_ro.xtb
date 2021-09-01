@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Blochează încărcarea șabloanelor de urmărire și a anunțurilor în paginile web</translation>
 <translation id="1680858055899097121">Nu păstra paginile între sesiunile de navigare</translation>
 <translation id="7142548388914389999">Permiteți datele de analiză referitoare la produs cu menținerea confidențialități (P3A)</translation>
-<translation id="5469408008145872264">Aceste informații complet anonime ajută Brave să estimeze măsura în care sunt utilizate anumite funcții cu scopul de a le îmbunătăți.</translation>
+<translation id="5254037869598726291">Aceste informații complet anonime ajută Brave să estimeze măsura în care sunt utilizate anumite funcții cu scopul de a le îmbunătăți.</translation>
 <translation id="7977176350719484850">Date est.\neconomisite</translation>
 <translation id="9008534313521214777">Timp\neconomisit estimat</translation>
 <translation id="6572660632052512096">Mod desktop</translation>
@@ -249,7 +249,7 @@ lună...</translation>
 <translation id="723054503945711909">Brave Software Inc. nu procesează, nu stochează sau nu accesează nicio informație personală pe care o furnizați Uphold când creați un cont.</translation>
 <translation id="3699674790322420653">Finalizați verificarea portofelului</translation>
 <translation id="2193391216824305230">Portofel utilizator</translation>
-<translation id="7591798679868259510">Mergi la contul meu Uphold</translation>
+<translation id="6585020831163574892">Accesați contul dvs. Uphold</translation>
 <translation id="9200453331904391567">Deconectare de la Brave Rewards</translation>
 <translation id="6239274080752256452">Retragere fonduri</translation>
 <translation id="8874184842967597500">Neconectat</translation>
@@ -478,7 +478,7 @@ lună...</translation>
 <translation id="1078265935778232285">Bine ați venit pe browserul Brave</translation>
 <translation id="6824713633331856331">Ajută-ne să învățăm, anonim</translation>
 <translation id="6116685031674149112">Brave îți protejează confidențialitatea datelor și \napreciază acordul pentru următoarele:</translation>
-<translation id="3971666849661839619">Ajută-ne să îmbunătățim Brave trimițând rapoarte de defecțiuni complet anonimizate, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Ajută-ne să îmbunătățim Brave trimițând rapoarte de defecțiuni complet anonimizate, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">date de analiză produs privat.</translation>
 <translation id="5187052478998910855">Ai nevoie de o actualizare a Recompenselor?</translation>
 <translation id="8622329973403382303">Fă un tur rapid pentru a vedea cum funcționează, pentru a intra în istorie ca un campion al Recompenselor!</translation>
@@ -583,7 +583,7 @@ lună...</translation>
 <translation id="3819257035322786455">Creați copii de rezervă</translation>
 <translation id="4608713693379664295">Principalele conturi pentru criptomonede</translation>
 <translation id="4003821417160006384">Conturi secundare</translation>
-<translation id="8094541587800369158">Aceste conturi pot fi utilizate cu 3 aplicații descentralizate și pot fi afișate în portofoliul dvs. Cu toate acestea, ele nu pot fi restabilite folosind expresia de recuperare din copia de rezervă a contului principal. Activați conturile Brave Sync pentru restabilirea automată a conturilor secundare.</translation>
+<translation id="8094541587800369158">Aceste conturi pot fi utilizate cu 3 aplicații descentralizate și pot fi afișate în portofoliul dvs. Cu toate acestea, ele nu pot fi restabilite folosind expresia de recuperare utilizată pentru contul principal. Activați conturile Brave Sync pentru restabilirea automată a conturilor secundare.</translation>
 <translation id="6725413948756358325">Numele contului</translation>
 <translation id="6062431965141524986">Puteți crea un cont secundar prin importarea cheii dvs. private.</translation>
 <translation id="3952797765659730604">Introduceți, lipiți sau importați fișierul cu cheia privată sau în format JSON.</translation>

@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">ወርሐዊ መዋጮ ተሞልቷል።</translation>
 <translation id="6356822617569064293">ቀጣይ የመዋጮ ቀን:</translation>
 <translation id="3593485149443019592">በቂ ሣንቲሞች የሉም። እባክዎን፣ <ph name="LINK_BEGIN"/>ገንዘብ ጨምር <ph name="LINK_END"/>፤ ይጎብኙ።</translation>
+<translation id="3586352807094428968">Brave እንደ ስራ ማስኬጂያ ክፍያ ከቲፕ 5%  መጠን ይሰበስባል።</translation>
 <translation id="207268487070188114">የአንድ-ጊዜ ጠቃሚ ምክር</translation>
 <translation id="69861679024013299">የአንድ-ግዜ ጠቃሚ ምክር መጠን:</translation>
 <translation id="3669086939205397942">አንዴ ይቆዩ አሁን’ ጠቃሚ ምክር መስጠት አይችሉም</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">በመሄድዎ አዝነናል…</translation>
 <translation id="1420756770787071946">ይህንን ፈጣሪ ይደግፉ</translation>
 <translation id="3271043362279673449">ስለ ድጋፍዎ እናመሰግናለን!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>የእርስዎ ጠቃሚ ምክር እስኪከናወን ብዙ ደቂቃዎችን ሊወስድ ይችላል</translation>
 <translation id="3312470408978098625">የእርስዎ የአንድ-ጊዜ ጠቃሚ ምክር ተልኳል።</translation>
 <translation id="5096821444729034955">ለነሱ ፖስት</translation>
 <translation id="2978223787436054634">ስለ ድጋፍዎ ትዊት ያድርጉ</translation>
@@ -650,10 +652,11 @@
 <translation id="6436689611575806470">የእርስዎ [[currency]] ስጦታ በሂደት ላይ ነው።</translation>
 <translation id="8267327690882073581">የዋሌትን ትክክለኛነት አጣራ</translation>
 <translation id="543510923939676996">የኪስ ቦርሳዎት ተረጋግጧል</translation>
-<translation id="2659764755126740206">ወደ የእኔ <ph name="PROVIDER"/> መለያ ይሂዱ</translation>
+<translation id="2445110450361135194">ወደ የራስዎ <ph name="PROVIDER"/> መለያ ይሂዱ</translation>
+<translation id="4244985009709452836">ወደ የራስዎ <ph name="PROVIDER"/> መለያ ይግቡ</translation>
 <translation id="3699674790322420653">የኪስ ቦርሳ ማረጋገጥ ተጠናቋል</translation>
 <translation id="9200453331904391567">ከ Brave ሽልማቶች ጋር ግንኙነትዎን ያቋርጡ</translation>
-<translation id="3656941797339037856">ሽልማቶችን ከ ጄሚኒ ጋር ያያይዙ!</translation>
+<translation id="3656941797339037856">Rewards ን ከ ጄሚኒ ጋር ያያይዙ!</translation>
 <translation id="671838195432136371">ጄሚኒ በቀላሉ እንዲገበያዩ፣ እንዲያስቀምጡ ፣ እና በ እርሶ BAT 3.49% APY* እንዲያገኙ ያስችልዎታል። ያያያዙ ኣዳዲስ የ ጄሚኒ ተጠቃሚዎች 5 ነጻ BAT ያገኛሉ።</translation>
 <translation id="9136976526700181750">ጄሚኒ ከ ኦገስት 15, 2021 ጀምሮ APY ያገኛል።</translation>
 <translation id="7404779623219601861">ለስጦታ ካርዶች BAT መልሰው ያግኙ</translation>

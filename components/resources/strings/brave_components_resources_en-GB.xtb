@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Monthly contribution has been set.</translation>
 <translation id="6356822617569064293">Next contribution date:</translation>
 <translation id="3593485149443019592">Not enough tokens. Please <ph name="LINK_BEGIN"/>add funds<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave collects 5% of the tip amount as a processing fee.</translation>
 <translation id="207268487070188114">One-time tip</translation>
 <translation id="69861679024013299">One-time tip amount:</translation>
 <translation id="3669086939205397942">Hold on, you can’t tip yet</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Sorry you're leaving…</translation>
 <translation id="1420756770787071946">Support this creator</translation>
 <translation id="3271043362279673449">Thanks for the support!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Your tip can take several minutes to process</translation>
 <translation id="3312470408978098625">Your one-time tip has been sent.</translation>
 <translation id="5096821444729034955">for their post</translation>
 <translation id="2978223787436054634">Tweet about your support</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">Your [[currency]] grant is on its way.</translation>
 <translation id="8267327690882073581">Verify Wallet</translation>
 <translation id="543510923939676996">Wallet verified</translation>
-<translation id="2659764755126740206">Go to my <ph name="PROVIDER"/> account</translation>
+<translation id="2445110450361135194">Go to your <ph name="PROVIDER"/> account</translation>
+<translation id="4244985009709452836">Log into your <ph name="PROVIDER"/> account</translation>
 <translation id="3699674790322420653">Complete wallet verification</translation>
 <translation id="9200453331904391567">Disconnect from Brave Rewards</translation>
 <translation id="3656941797339037856">Link Rewards to Gemini!</translation>

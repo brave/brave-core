@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Ikmēneša ziedojums iestatīts.</translation>
 <translation id="6356822617569064293">Nākamais ziedošanas datums:</translation>
 <translation id="3593485149443019592">Nepietiek žetonu. Lūdzu, <ph name="LINK_BEGIN"/>papildiniet līdzekļus<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave iekasē 5% no dzeramnaudas kā samaksu par apstrādi.</translation>
 <translation id="207268487070188114">Vienreizēja dzeramnauda</translation>
 <translation id="69861679024013299">Vienreizējās dzeramnaudas summa:</translation>
 <translation id="3669086939205397942">Pagaidiet, jūs vēl nevarat piešķirt dzeramnaudu</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Žēl, ka pamet…</translation>
 <translation id="1420756770787071946">Atbalstīt šo satura veidotāju</translation>
 <translation id="3271043362279673449">Paldies par atbalstu!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Jūsu dzeramnaudas apstrāde var ilgt vairākas minūtes</translation>
 <translation id="3312470408978098625">Jūsu vienreizējā dzeramnauda ir nosūtīta.</translation>
 <translation id="5096821444729034955">par viņu postu</translation>
 <translation id="2978223787436054634">Uzrakstīt tvītu par jūsu atbalstu.</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">Drīzumā saņemsiet savu marķiera [[currency]] piešķīrumu.</translation>
 <translation id="8267327690882073581">Verificēt maku</translation>
 <translation id="543510923939676996">Maks verificēts</translation>
-<translation id="2659764755126740206">Doties uz manu <ph name="PROVIDER"/> kontu</translation>
+<translation id="2445110450361135194">Ejiet uz savu<ph name="PROVIDER"/> kontu</translation>
+<translation id="4244985009709452836">Ielogojieties savā <ph name="PROVIDER"/> kontā</translation>
 <translation id="3699674790322420653">Pabeigt maka verifikāciju</translation>
 <translation id="9200453331904391567">Atspējot Brave balvas</translation>
 <translation id="3656941797339037856">Saistiet Rewards ar Gemini!</translation>

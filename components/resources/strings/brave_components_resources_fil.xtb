@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Naitakda na ang buwanang kontribusyon.</translation>
 <translation id="6356822617569064293">Petsa ng susunod na kontribusyon:</translation>
 <translation id="3593485149443019592">Hindi sapat ang mga token. <ph name="LINK_BEGIN"/>Magdagdag ng pondo<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Kinokolekta ng Brave ang 5% ng halaga ng tip bilang bayarin sa pagpoproseso.</translation>
 <translation id="207268487070188114">Isang Beses na Tip</translation>
 <translation id="69861679024013299">Halaga ng isang beses na tip</translation>
 <translation id="3669086939205397942">Teka lang, hindi ka pa makakapagbigay ng tip</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Ikinalulungkot naming makita kang umalis…</translation>
 <translation id="1420756770787071946">Suportahan ang creator na ito</translation>
 <translation id="3271043362279673449">Salamat sa suporta!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Tandaan: <ph name="BOLD_END"/>Posibleng abutin nang ilang minuto bago maproseso ang iyong tip</translation>
 <translation id="3312470408978098625">Naipadala na ang iyong isang beses na tip.</translation>
 <translation id="5096821444729034955">para sa kanyang post.</translation>
 <translation id="2978223787436054634">Mag-tweet tungkol sa iyong suporta</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">Paparating na ang iyong grant na [[currency]]</translation>
 <translation id="8267327690882073581">I-verify ang Wallet</translation>
 <translation id="543510923939676996">Na-verify ang Wallet</translation>
-<translation id="2659764755126740206">Pumunta sa aking <ph name="PROVIDER"/> account</translation>
+<translation id="2445110450361135194">Pumunta sa iyong <ph name="PROVIDER"/> account</translation>
+<translation id="4244985009709452836">Mag-log in sa iyong <ph name="PROVIDER"/> account</translation>
 <translation id="3699674790322420653">Kumpletuhin ang pag-verify ng wallet</translation>
 <translation id="9200453331904391567">Idiskonekta mula sa Mga Reward ng Brave</translation>
 <translation id="3656941797339037856">I-link ang Rewards sa Gemini!</translation>

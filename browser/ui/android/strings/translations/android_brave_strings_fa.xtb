@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">از بارگیری و نمایش ردیاب‌ها و آگهی‌ها در صفحات وب جلوگیری می‌کند</translation>
 <translation id="1680858055899097121">بین جلسه‌های مرور وب، زبانه‌ها نگه داشته نمی‌شوند</translation>
 <translation id="7142548388914389999">مجاز کردن تجزیه‌وتحلیل‌های محصول حفاظت‌کننده از حریم‌خصوصی (P3A)</translation>
-<translation id="5469408008145872264">این اطلاعات که کاملاً به شکل ناشناس درآمده است به Brave کمک می‌کند استفاده کلی از برخی ویژگی‌ها را تخمین بزند و آن‌ها را برایتان بهبود ببخشد.</translation>
+<translation id="5254037869598726291">این اطلاعات که کاملاً به شکل ناشناس درآمده است به Brave کمک می‌کند استفاده کلی از برخی ویژگی‌ها را تخمین بزند و آن‌ها را برایتان بهبود ببخشد.</translation>
 <translation id="7977176350719484850">داده به‌صورت تخمینی\nذخیره شده است</translation>
 <translation id="9008534313521214777">زمان تخمینی ذخیره شد</translation>
 <translation id="6572660632052512096">حالت دسک‌تاپ</translation>
@@ -251,7 +251,7 @@
 <translation id="723054503945711909">Brave Software Inc.اطلاعات شخصی را که در زمان ایجاد یک حساب با Uphold در اختیار آنها قرار داده‌اید، پردازش و ذخیره‌سازی نخواهد کرد و به آنها دسترسی نخواهد داشت.</translation>
 <translation id="3699674790322420653">تکمیل تأیید کیف پول</translation>
 <translation id="2193391216824305230">کیف پول کاربر</translation>
-<translation id="7591798679868259510">رفتن به حساب Uphold من</translation>
+<translation id="6585020831163574892">به حساب Uphold خود بروید</translation>
 <translation id="9200453331904391567">قطع ارتباط از پاداش‌های Brave</translation>
 <translation id="6239274080752256452">برداشتن سرمایه</translation>
 <translation id="8874184842967597500">متصل نیست</translation>
@@ -481,7 +481,7 @@
 <translation id="1078265935778232285">به مرورگر Brave خوش آمدید</translation>
 <translation id="6824713633331856331">به ما کمک کنید ناشناس اطلاعات دریافت کنیم</translation>
 <translation id="6116685031674149112">Brave از حریم خصوصی شما محافظت می‌کند و\nاز رضایت شما با موارد قدردانی می‌کند:</translation>
-<translation id="3971666849661839619">با ارسال گزارش‌های خرابی کاملاً بی‌نام، به بهبود Brave کمک کنید، <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">با ارسال گزارش‌های خرابی کاملاً بی‌نام، به بهبود Brave کمک کنید، <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">تجزیه و تحلیل خصوصی محصول</translation>
 <translation id="5187052478998910855">به مرور اطلاعات مربوط به Rewards نیاز دارید؟</translation>
 <translation id="8622329973403382303">گشت سریعی بزنید تا نحوه عملکرد برای پیوستن به تاریخ به‌عنوان ستاره راک Rewards را مرور کنید!</translation>
@@ -590,7 +590,7 @@
 <translation id="6725413948756358325">نام حساب</translation>
 <translation id="6062431965141524986">با وارد کردن کلید خصوصی خود می‌توانید یک حساب ثانویه ایجاد کنید.</translation>
 <translation id="3952797765659730604">فایل رشته کلید خصوصی یا JSON خود را درج، جای‌گذاری یا وارد کنید.</translation>
-<translation id="569068482611873351">وارد کنید…</translation>
+<translation id="569068482611873351">وارد کردن…</translation>
 <translation id="1940465339426637378">دارایی‌ها</translation>
 <translation id="4522570452068850558">جزئیات</translation>
 <translation id="9065203028668620118">ویرایش</translation>

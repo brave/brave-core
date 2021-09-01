@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">웹페이지를 로드하여 표시할 때 트래커 및 광고 차단</translation>
 <translation id="1680858055899097121">브라우징 세션 간에 탭을 유지하지 마십시오</translation>
 <translation id="7142548388914389999">프라이버시 보호 제품 분석(P3A) 허용</translation>
-<translation id="5469408008145872264">이 완전히 자동화된 정보를 통해 Brave가 특정 기능의 총 사용량을 산정하고 맞춤 구성합니다.</translation>
+<translation id="5254037869598726291">이 완전히 자동화된 정보를 통해 Brave가 특정 기능의 총 사용량을 산정하고 맞춤 구성합니다.</translation>
 <translation id="7977176350719484850">절약 예상\n데이터량</translation>
 <translation id="9008534313521214777">시간\n절약됨</translation>
 <translation id="6572660632052512096">데스크톱 모드</translation>
@@ -249,7 +249,7 @@
 <translation id="723054503945711909">Brave Software Inc.는 계정을 만들 때 Uphold에 제공된 개인 정보를 처리, 저장, 또는 액세스하지 않습니다.</translation>
 <translation id="3699674790322420653">지갑 인증 완료</translation>
 <translation id="2193391216824305230">사용자 지갑</translation>
-<translation id="7591798679868259510">내 Uphold 계정으로 이동</translation>
+<translation id="6585020831163574892">Uphold 계정으로 이동</translation>
 <translation id="9200453331904391567">Brave Rewards에서 접속 해제됨.</translation>
 <translation id="6239274080752256452">자금 인출</translation>
 <translation id="8874184842967597500">연결되지 않음</translation>
@@ -478,7 +478,7 @@
 <translation id="1078265935778232285">Brave Brower에 오신 것을 환영합니다</translation>
 <translation id="6824713633331856331">익명으로 개발진의 학습 돕기</translation>
 <translation id="6116685031674149112">Brave는 여러분의 프라이버시를 보호하며\n아래에 대한 여러분의 승낙을 존중합니다:</translation>
-<translation id="3971666849661839619">완전히 익명화된 충돌 보고서와 <ph name="PRIVATE_PRODUCT_ANALYSIS"/>을(를) Brave가 개선될 수 있도록 보내 주세요</translation>
+<translation id="4394483075076204916">완전히 익명화된 충돌 보고서와 <ph name="PRIVATE_PRODUCT_ANALYSIS"/>을(를) Brave가 개선될 수 있도록 보내 주세요</translation>
 <translation id="6478996494082389936">프라이빗 상품 분석.</translation>
 <translation id="5187052478998910855">리워드에 대해 복습이 필요하신가요?</translation>
 <translation id="8622329973403382303">역사에 리워드 락스타로 남을 수 있도록 어떻게 작동하는지에 대해 간단히 복습해 봅시다!</translation>

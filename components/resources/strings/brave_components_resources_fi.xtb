@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Kuukausittainen lahjoitus on asetettu.</translation>
 <translation id="6356822617569064293">Seuraava lahjoituspäivämäärä:</translation>
 <translation id="3593485149443019592">Ei riittäväksi merkkejä. <ph name="LINK_BEGIN"/>Lisää varoja<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave veloittaa 5 % tipin määrästä käsittelykuluina.</translation>
 <translation id="207268487070188114">Kertaluontoinen tippi</translation>
 <translation id="69861679024013299">Kertaluontoisten tipin määrä:</translation>
 <translation id="3669086939205397942">Odota hetki, et voi tipata vielä</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Harmi, että lähdet…</translation>
 <translation id="1420756770787071946">Tue tätä tuottajaa</translation>
 <translation id="3271043362279673449">Kiitos tuestasi!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Huomaa: <ph name="BOLD_END"/>Tippisi käsittely saattaa kestää muutaman minuutin</translation>
 <translation id="3312470408978098625">Kertaluontoinen tippi on lähetetty.</translation>
 <translation id="5096821444729034955">julkaisulleen</translation>
 <translation id="2978223787436054634">Twiittaa tuestasi</translation>
@@ -650,10 +652,11 @@
 <translation id="6436689611575806470">[[currency]]-stipendisi on tulossa.</translation>
 <translation id="8267327690882073581">Vahvista kukkaro</translation>
 <translation id="543510923939676996">Lompakko vahvistettu</translation>
-<translation id="2659764755126740206">Siirry <ph name="PROVIDER"/> -tililleni</translation>
+<translation id="2445110450361135194">Siirry <ph name="PROVIDER"/> tilillesi</translation>
+<translation id="4244985009709452836">Kirjaudu sisään <ph name="PROVIDER"/> tilillesi</translation>
 <translation id="3699674790322420653">Viimeistele lompakon vahvistus</translation>
 <translation id="9200453331904391567">Katkaise yhteys Brave-palkinnoista</translation>
-<translation id="3656941797339037856">Link Rewards Geminiin!</translation>
+<translation id="3656941797339037856">Linkitä Rewards Geminiin!</translation>
 <translation id="671838195432136371">Gemini antaa sinun helposti käydä kauppaa, säilyttää ja ansaita 3.49 % vuotuisen tuoton* BATeistasi. Uudet Gemini-käyttäjät, jotka linkittävät, saavat 5 ilmaista BATtia!</translation>
 <translation id="9136976526700181750">* Geminin ansaitsema vuotuinen tuotto 15. elokuuta 2021</translation>
 <translation id="7404779623219601861">Vaihda BAT-valuuttaa lahjakorteiksi</translation>

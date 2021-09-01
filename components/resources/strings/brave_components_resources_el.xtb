@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Ορίστηκε μηνιαία συνεισφορά.</translation>
 <translation id="6356822617569064293">Επόμενη ημερομηνία συνεισφοράς:</translation>
 <translation id="3593485149443019592">Δεν υπάρχουν αρκετά διακριτικά. Παρακαλώ <ph name="LINK_BEGIN"/>προσθέστε κεφάλαια&gt;<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Το Brave εισπράττει 5% του ποσού φιλοδωρήματος ως τέλος επεξεργασίας</translation>
 <translation id="207268487070188114">Εφάπαξ φιλοδώρημα</translation>
 <translation id="69861679024013299">Ποσό εφάπαξ φιλοδωρήματος:</translation>
 <translation id="3669086939205397942">Περιμένετε, μπορείτε ακόμα να’t προσφέρετε φιλοδώρημα</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Λυπούμαστε που μας αφήνετε…</translation>
 <translation id="1420756770787071946">Υποστήριξη αυτού του δημιουργού</translation>
 <translation id="3271043362279673449">Ευχαριστούμε για την υποστήριξη!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Σημείωση: <ph name="BOLD_END"/>Μπορεί να χρειαστούν αρκετά λεπτά για την επεξεργασία του φιλοδωρήματος</translation>
 <translation id="3312470408978098625">Το εφάπαξ φιλοδώρημά σας στάλθηκε.</translation>
 <translation id="5096821444729034955">για την ανάρτησή τους</translation>
 <translation id="2978223787436054634">Tweet για την υποστήριξή σας</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">Σε λίγο θα λάβετε την επιχορήγησή σας ύψους [[currency]].</translation>
 <translation id="8267327690882073581">Επαλήθευση Πορτοφολιού</translation>
 <translation id="543510923939676996">Πορτοφόλι Επαληθεύτηκε</translation>
-<translation id="2659764755126740206">Μεταβείτε στον <ph name="PROVIDER"/> λογαριασμό σας</translation>
+<translation id="2445110450361135194">Μεταβείτε στον λογαριασμό σας <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Συνδεθείτε στον λογαριασμό σας <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Ολοκλήρωση επαλήθευσης πορτοφολιού</translation>
 <translation id="9200453331904391567">Αποσύνδεση από τις Ανταμοιβές Brave</translation>
 <translation id="3656941797339037856">Συνδέστε τα Rewards με το Gemini!</translation>
@@ -740,7 +743,7 @@
 <translation id="1833248467354516560">Τιμή μονάδας</translation>
 <translation id="4763179765154524864">Ξοδεύτηκαν συνολικά</translation>
 <translation id="8851480289992540512">Σύνολο που ελήφθη</translation>
-<translation id="824449983246282560">Δεν έχετε υπόλοιπο στον λογαριασμό σας. Επισκεφθείτε το Gemini, για να αγοράσετε.</translation>
+<translation id="824449983246282560">Δεν έχετε υπόλοιπο στον λογαριασμό σας. Επισκεφθείτε το Gemini, για να αγοράσετε υπόλοιπο.</translation>
 <translation id="8624961452383848703">Θέλω να μετατρέψω…</translation>
 <translation id="616639131065447379">Καλώς ήρθατε στο Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Το Crypto Wallets σας επιτρέπει να χρησιμοποιείτε κρυπτονομίσματα και συγγενή επενδυτικά στοιχεία στο Brave. Το Crypto Wallets υποστηρίζει μάρκες Ethereum όπως οι ETH και BAT, καθώς επίσης και συλλεκτικά, ενώ σας επιτρέπει να χειρίζεστε Ðεφαρμογές και άλλα έξυπνα συμβόλαια. Όλα αυτά προορίζονται για άτομα εξοικειωμένα με το Ethereum και άλλα συστήματα blockchain — ή πρόθυμα να τα μάθουν.</translation>

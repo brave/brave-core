@@ -546,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "Accesați contul meu $provider$",
+    "message": "Accesați contul dvs.  $provider$",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Conectați-vă la contul dvs. $provider$ ",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -652,6 +662,10 @@
   "walletConnected":  {
     "message": "Conectată",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Deconectat",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "În așteptare",

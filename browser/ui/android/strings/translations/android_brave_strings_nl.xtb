@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Hiermee wordt voorkomen dat trackers &amp; advertenties op webpagina's worden getoond</translation>
 <translation id="1680858055899097121">Blijf niet tussen tabbladen doorbladeren.</translation>
 <translation id="7142548388914389999">Productanalyse met privacybescherming (P3A) toestaan</translation>
-<translation id="5469408008145872264">Deze volledige geanonimiseerde info helpt Brave om het algehele gebruik van bepaalde functies te schatten en voor jou te verbeteren.</translation>
+<translation id="5254037869598726291">Deze volledige geanonimiseerde info helpt Brave om het algehele gebruik van bepaalde functies te schatten en voor jou te verbeteren.</translation>
 <translation id="7977176350719484850">Geschatte hoeveelheid\ndata bespaard</translation>
 <translation id="9008534313521214777">Gem. Bespaarde\nTijd</translation>
 <translation id="6572660632052512096">Desktop-modus</translation>
@@ -249,7 +249,7 @@ deze maand...</translation>
 <translation id="723054503945711909">Brave Software Inc. verwerkt, bewaart of heeft geen toegang tot de persoonlijke informatie die je verstrekt aan Uphold wanneer je een account bij hen aanmaakt.</translation>
 <translation id="3699674790322420653">Rond walletverificatie af</translation>
 <translation id="2193391216824305230">Gebruikersportemonnee</translation>
-<translation id="7591798679868259510">Ga naar mijn Uphold-account</translation>
+<translation id="6585020831163574892">Ga naar je Uphold-account</translation>
 <translation id="9200453331904391567">Verbreek de verbinding met Brave Rewards</translation>
 <translation id="6239274080752256452">Geldmiddelen Opnemen</translation>
 <translation id="8874184842967597500">Niet verbonden</translation>
@@ -480,7 +480,7 @@ Beschikbaar</translation>
 <translation id="1078265935778232285">Welkom bij Brave Browser</translation>
 <translation id="6824713633331856331">Help ons anoniem leren</translation>
 <translation id="6116685031674149112">Brave beschermt uw privacy en waardeert u toestemming voor het volgende:</translation>
-<translation id="3971666849661839619">Help Brave te verbeteren door volledig anoniem crash-rapporten te versturen, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Help Brave te verbeteren door volledig anoniem crash-rapporten te versturen, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">privé productanalyse.</translation>
 <translation id="5187052478998910855">Heeft u een opfrisser nodig over Rewards?</translation>
 <translation id="8622329973403382303">Neem een snelle tour om erachter te komen hoe het werkt om de geschiedenis in te gaan als een Rewards rockster!</translation>

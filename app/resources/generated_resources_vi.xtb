@@ -7645,9 +7645,9 @@ Bạn có thể gán thao tác này cho nhiều công tắc</translation>
 <translation id="5053701565089446556">Phần mở rộng Riêng tư: <ph name="EXTENSION_NAME"/></translation>
 <translation id="611296870688433505">Ứng dụng Riêng tư: <ph name="APP_NAME"/></translation>
 <translation id="9048137919253433011">Thẻ Riêng tư: <ph name="TAB_NAME"/></translation>
-<translation id="5932571686022524861">Trang Riêng tư Quay lại/Chuyển tiếp được lưu trong bộ nhớ cache: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
+<translation id="5932571686022524861">Trang được lưu trong bộ nhớ cache trên cửa sổ trình duyệt riêng tư để Quay lại/Chuyển tiếp: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
 <translation id="1799432502220762862">Khung phụ Riêng tư: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="6666022817001893507">Khung phụ Riêng tư Quay lại/Chuyển tiếp được lưu trong bộ nhớ cache: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
+<translation id="6666022817001893507">Khung phụ được lưu trong bộ nhớ cache trên trình duyệt riêng tư để Quay lại/Chuyển tiếp: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
 <translation id="3193187622878830588">Cổng thông tin ẩn danh: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="5097649414558628673">Công cụ: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Web Store</translation>

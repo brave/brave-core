@@ -7649,9 +7649,9 @@ Você pode atribuir vários interruptores a essa ação.</translation>
 <translation id="5053701565089446556">Extensão anônima: <ph name="EXTENSION_NAME"/></translation>
 <translation id="611296870688433505">Aplicativo anônimo: <ph name="APP_NAME"/></translation>
 <translation id="9048137919253433011">Guia anônima: <ph name="TAB_NAME"/></translation>
-<translation id="5932571686022524861">Página de voltar/avançar privada em cache: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
+<translation id="5932571686022524861">Página de voltar/avançar privada armazenada em cache: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
 <translation id="1799432502220762862">Subquadro anônimo: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="6666022817001893507">Subframe de voltar/avançar privado em cache: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
+<translation id="6666022817001893507">Subframe de voltar/avançar privado armazenado em cache: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
 <translation id="3193187622878830588">Portal de navegação anônima: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="5097649414558628673">Ferramenta: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Brave Web Store</translation>

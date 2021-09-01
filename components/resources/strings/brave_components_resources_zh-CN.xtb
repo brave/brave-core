@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">每月供款已设置。</translation>
 <translation id="6356822617569064293">下一个捐款日期：</translation>
 <translation id="3593485149443019592">代币不足。请<ph name="LINK_BEGIN"/>充值<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave 收取小费金额的 5% 作为手续费。</translation>
 <translation id="207268487070188114">一次性赏金</translation>
 <translation id="69861679024013299">一次性赏金金额：</translation>
 <translation id="3669086939205397942">等等，您还不能打赏呢</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">很遗憾看见您离开…</translation>
 <translation id="1420756770787071946">支持此创作者</translation>
 <translation id="3271043362279673449">感谢您的支持！</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>您的小费可能需要几分钟的时间来处理</translation>
 <translation id="3312470408978098625">您的一次性赏金已发送。</translation>
 <translation id="5096821444729034955">（针对它们的帖子）</translation>
 <translation id="2978223787436054634">与您的支持相关的推文</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">您的 [[currency]] 补助金已经发放。</translation>
 <translation id="8267327690882073581">验证钱包</translation>
 <translation id="543510923939676996">钱包已验证</translation>
-<translation id="2659764755126740206">前往我的 <ph name="PROVIDER"/> 帐户</translation>
+<translation id="2445110450361135194">转到您的 <ph name="PROVIDER"/> 帐户</translation>
+<translation id="4244985009709452836">登录到您的 <ph name="PROVIDER"/> 帐户</translation>
 <translation id="3699674790322420653">完成钱包验证</translation>
 <translation id="9200453331904391567">与 Brave 奖励断开连接</translation>
 <translation id="3656941797339037856">将 Rewards 与 Gemini 关联！</translation>
