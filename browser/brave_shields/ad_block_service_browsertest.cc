@@ -166,22 +166,21 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
   GetTestDataDir(&test_data_dir);
   std::vector<adblock::FilterList> regional_catalog;
   regional_catalog.push_back(adblock::FilterList(
-          uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
-          "EasyList Liste FR", {"fr"},
-          "https://forums.lanik.us/viewforum.php?f=91",
-          "emaecjinaegfkoklcdafkiocjhoeilao",
-          "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsbqIWuMS7r2OPXCsIPbbLG1H"
-          "/"
-          "d3NM9uzCMscw7R9ZV3TwhygvMOpZrNp4Y4hImy2H+HE0OniCqzuOAaq7+"
-          "SHXcdHwItvLK"
-          "tnRmeWgdqxgEdzJ8rZMWnfi+dODTbA4QvxI6itU5of8trDFbLzFqgnEOBk8ZxtjM/"
-          "M5v3"
-          "UeYh+EYHSEyHnDSJKbKevlXC931xlbdca0q0Ps3Ln6w/pJFByGbOh212mD/"
-          "PvwS6jIH3L"
-          "YjrMVUMefKC/ywn/AAdnwM5mGirm1NflQCJQOpTjIhbRIXBlACfV/"
-          "hwI1lqfKbFnyr4aP"
-          "Odg3JcOZZVoyi+ko3rKG3vH9JPWEy24Ys9A3SYpTwIDAQAB",
-          "Removes advertisements from French websites"));
+      uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
+      "EasyList Liste FR", {"fr"}, "https://forums.lanik.us/viewforum.php?f=91",
+      "emaecjinaegfkoklcdafkiocjhoeilao",
+      "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsbqIWuMS7r2OPXCsIPbbLG1H"
+      "/"
+      "d3NM9uzCMscw7R9ZV3TwhygvMOpZrNp4Y4hImy2H+HE0OniCqzuOAaq7+"
+      "SHXcdHwItvLK"
+      "tnRmeWgdqxgEdzJ8rZMWnfi+dODTbA4QvxI6itU5of8trDFbLzFqgnEOBk8ZxtjM/"
+      "M5v3"
+      "UeYh+EYHSEyHnDSJKbKevlXC931xlbdca0q0Ps3Ln6w/pJFByGbOh212mD/"
+      "PvwS6jIH3L"
+      "YjrMVUMefKC/ywn/AAdnwM5mGirm1NflQCJQOpTjIhbRIXBlACfV/"
+      "hwI1lqfKbFnyr4aP"
+      "Odg3JcOZZVoyi+ko3rKG3vH9JPWEy24Ys9A3SYpTwIDAQAB",
+      "Removes advertisements from French websites"));
   g_brave_browser_process->ad_block_regional_service_manager()
       ->SetRegionalCatalog(regional_catalog);
   const extensions::Extension* ad_block_extension =

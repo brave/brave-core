@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/download/background_download_service_factory.h"
+
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_client.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
-#include "chrome/browser/download/background_download_service_factory.h"
 #include "chrome/browser/download/deferred_client_wrapper.h"
 #include "components/download/content/factory/download_service_factory_helper.h"
 
@@ -60,10 +61,10 @@ std::unique_ptr<BackgroundDownloadService> BuildInMemoryDownloadServiceOverride(
           base::BindOnce(&CreateAdBlockSubscriptionDownloadClient),
           simple_factory_key)));
 
-  return BuildInMemoryDownloadService(
-      simple_factory_key, std::move(clients), network_connection_tracker,
-      storage_dir, std::move(blob_context_getter_factory), io_task_runner,
-      url_loader_factory);
+  return BuildInMemoryDownloadService(simple_factory_key, std::move(clients),
+                                      network_connection_tracker, storage_dir,
+                                      std::move(blob_context_getter_factory),
+                                      io_task_runner, url_loader_factory);
 }
 
 }  // namespace download
