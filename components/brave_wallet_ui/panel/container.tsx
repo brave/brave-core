@@ -45,8 +45,7 @@ import {
   WalletAccountType,
   BuySendSwapViewTypes,
   AccountAssetOptionType,
-  EthereumChain,
-  TransactionInfo
+  EthereumChain
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
@@ -83,6 +82,7 @@ function Container (props: Props) {
     accounts,
     selectedAccount,
     selectedNetwork,
+    selectedPendingTransaction,
     isWalletLocked,
     favoriteApps,
     hasIncorrectPassword,
@@ -98,7 +98,6 @@ function Container (props: Props) {
     selectedPanel,
     showSignTransaction,
     showAllowSpendERC20Token,
-    showConfirmTransaction,
     networkPayload
   } = props.panel
 
@@ -316,11 +315,15 @@ function Container (props: Props) {
   }
 
   const onRejectTransaction = () => {
-    // Logic here to Reject a Transaction
+    if (selectedPendingTransaction) {
+      props.walletActions.rejectTransaction(selectedPendingTransaction)
+    }
   }
 
   const onConfirmTransaction = () => {
-    // Logic here to Confirm a Transaction
+    if (selectedPendingTransaction) {
+      props.walletActions.approveTransaction(selectedPendingTransaction)
+    }
   }
 
   const onOpenSettings = () => {
@@ -349,31 +352,6 @@ function Container (props: Props) {
       hexData: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc',
       hexSize: '228'
     }
-  }
-
-  // Example of a Confirm Transaction Payload to be passed to the
-  // Confirm Transaction Panel
-  const transactionInfoExample: TransactionInfo = {
-    fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
-    id: '465a4d6646-kjlwf665',
-    txArgs: [''],
-    txData: {
-      baseData: {
-        nonce: '0x1',
-        gasPrice: '7548000000000000',
-        gasLimit: '7548000000000000',
-        to: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-        value: '98480000000000000',
-        data: new Uint8Array()
-      },
-      chainId: '0x0',
-      maxPriorityFeePerGas: '',
-      maxFeePerGas: ''
-    },
-    txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
-    txStatus: 0,
-    txParams: [''],
-    txType: 0
   }
 
   if (!hasInitialized || !accounts) {
@@ -405,7 +383,7 @@ function Container (props: Props) {
     )
   }
 
-  if (showConfirmTransaction) {
+  if (selectedPanel === 'approveTransaction' && selectedPendingTransaction) {
     return (
       <PanelWrapper isLonger={true}>
         <SignContainer>
@@ -414,7 +392,7 @@ function Container (props: Props) {
             onReject={onRejectTransaction}
             accounts={accounts}
             selectedNetwork={selectedNetwork}
-            transactionInfo={transactionInfoExample}
+            transactionInfo={selectedPendingTransaction}
             ethPrice='3300'
           />
         </SignContainer>

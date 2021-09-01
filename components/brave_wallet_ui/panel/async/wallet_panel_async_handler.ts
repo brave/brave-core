@@ -7,6 +7,7 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
+import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { WalletPanelState, PanelState } from '../../constants/types'
 import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload, EthereumChainRequestPayload } from '../constants/action_types'
 
@@ -118,6 +119,10 @@ handler.on(PanelActions.addEthereumChainRequestCompleted.getType(), async (store
   apiProxy.closeUI()
 })
 
+handler.on(PanelActions.showApproveTransaction.getType(), async (store) => {
+  store.dispatch(PanelActions.navigateTo('approveTransaction'))
+})
+
 handler.on(PanelActions.setupWallet.getType(), async (store) => {
   chrome.tabs.create({ url: 'chrome://wallet' }, () => {
     if (chrome.runtime.lastError) {
@@ -156,6 +161,10 @@ handler.on(PanelActions.openWalletSettings.getType(), async (store) => {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
   })
+})
+
+handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store, payload: NewUnapprovedTxAdded) => {
+  store.dispatch(PanelActions.showApproveTransaction())
 })
 
 export default handler.middleware

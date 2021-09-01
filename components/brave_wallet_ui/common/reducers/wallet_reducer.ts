@@ -18,11 +18,17 @@ import {
   GetPriceHistoryReturnInfo,
   AssetPriceTimeframe,
   EthereumChain,
-  kMainnetChainId
+  kMainnetChainId,
+  TransactionInfo,
+  TransactionStatus
 } from '../../constants/types'
+import {
+  NewUnapprovedTxAdded,
+  TransactionStatusChanged,
+  InitializedPayloadType
+} from '../constants/action_types'
 import { convertMojoTimeToJS } from '../../utils/mojo-time'
 import * as WalletActions from '../actions/wallet_actions'
-import { InitializedPayloadType } from '../constants/action_types'
 import { formatFiatBalance } from '../../utils/format-balances'
 import { ETHIconUrl } from '../../assets/asset-icons'
 
@@ -48,8 +54,10 @@ const defaultState: WalletState = {
   userVisibleTokens: [],
   userVisibleTokensInfo: [],
   transactions: [],
+  pendingTransactions: [],
   fullTokenList: [],
   portfolioPriceHistory: [],
+  selectedPendingTransaction: undefined,
   isFetchingPortfolioPriceHistory: true,
   selectedPortfolioTimeline: AssetPriceTimeframe.OneDay,
   networkList: []
@@ -240,6 +248,39 @@ reducer.on(WalletActions.portfolioTimelineUpdated, (state: any, payload: AssetPr
     isFetchingPortfolioPriceHistory: true,
     selectedPortfolioTimeline: payload
   }
+})
+
+reducer.on(WalletActions.newUnapprovedTxAdded, (state: any, payload: NewUnapprovedTxAdded) => {
+  const newState = {
+    ...state,
+    pendingTransactions: [
+      ...state.pendingTransactions,
+      payload.txInfo
+    ]
+  }
+
+  if (state.pendingTransactions.length === 0) {
+    newState.selectedPendingTransaction = payload.txInfo
+  }
+
+  return newState
+})
+
+reducer.on(WalletActions.transactionStatusChanged, (state: any, payload: TransactionStatusChanged) => {
+  const newPendingTransactions =
+      state.pendingTransactions.filter((tx: TransactionInfo) => tx.id !== payload.txInfo.id)
+  const newSelectedPendingTransaction = newPendingTransactions.pop()
+  if (payload.txInfo.txStatus === TransactionStatus.Submitted ||
+      payload.txInfo.txStatus === TransactionStatus.Rejected ||
+      payload.txInfo.txStatus === TransactionStatus.Approved) {
+    const newState = {
+      ...state,
+      pendingTransactions: newPendingTransactions,
+      selectedPendingTransaction: newSelectedPendingTransaction
+    }
+    return newState
+  }
+  return state
 })
 
 export default reducer
