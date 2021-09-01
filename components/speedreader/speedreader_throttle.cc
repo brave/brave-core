@@ -25,25 +25,22 @@ std::unique_ptr<SpeedReaderThrottle>
 SpeedReaderThrottle::MaybeCreateThrottleFor(
     SpeedreaderRewriterService* rewriter_service,
     HostContentSettingsMap* content_settings,
-    const content::WebContents::Getter& wc_getter,
-    SpeedreaderResultDelegate* result_delegate,
+    base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
     const GURL& url,
     bool check_disabled_sites,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner) {
   if (check_disabled_sites && !IsEnabledForSite(content_settings, url))
     return nullptr;
 
-  return std::make_unique<SpeedReaderThrottle>(rewriter_service, wc_getter,
+  return std::make_unique<SpeedReaderThrottle>(rewriter_service,
                                                result_delegate, task_runner);
 }
 
 SpeedReaderThrottle::SpeedReaderThrottle(
     SpeedreaderRewriterService* rewriter_service,
-    const content::WebContents::Getter& wc_getter,
-    SpeedreaderResultDelegate* result_delegate,
+    base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner)
     : rewriter_service_(rewriter_service),
-      wc_getter_(wc_getter),
       result_delegate_(result_delegate),
       task_runner_(std::move(task_runner)) {}
 
@@ -78,7 +75,7 @@ void SpeedReaderThrottle::Resume() {
 
 void SpeedReaderThrottle::OnDistillComplete() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (wc_getter_.Run()) {
+  if (result_delegate_) {
     result_delegate_->OnDistillComplete();
   }
 }

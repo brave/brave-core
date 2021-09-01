@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 #define BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -31,6 +32,9 @@ class SpeedreaderTabHelper
 
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
+
+  // Helper function to return a weak pointer
+  base::WeakPtr<SpeedreaderTabHelper> GetWeakPtr();
 
   // Returns |true| if Speedreader is turned on for all sites.
   bool IsSpeedreaderEnabled() const;
@@ -95,6 +99,8 @@ class SpeedreaderTabHelper
       false;  // run speedreader once on next page load
   DistillState distill_state_ = DistillState::kNone;
   SpeedreaderBubbleView* speedreader_bubble_ = nullptr;
+
+  base::WeakPtrFactory<SpeedreaderTabHelper> weak_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

@@ -28,6 +28,10 @@ SpeedreaderTabHelper::~SpeedreaderTabHelper() {
   HideBubble();
 }
 
+base::WeakPtr<SpeedreaderTabHelper> SpeedreaderTabHelper::GetWeakPtr() {
+  return weak_factory_.GetWeakPtr();
+}
+
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents) {}
 

@@ -520,7 +520,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
               g_brave_browser_process->speedreader_rewriter_service(),
               HostContentSettingsMapFactory::GetForProfile(
                   Profile::FromBrowserContext(browser_context)),
-              wc_getter, tab_helper, request.url, check_disabled_sites,
+              tab_helper->GetWeakPtr(), request.url, check_disabled_sites,
               base::ThreadTaskRunnerHandle::Get());
       if (throttle)
         result.push_back(std::move(throttle));
