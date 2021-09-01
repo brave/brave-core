@@ -14,6 +14,9 @@ namespace brave_wallet {
 
 absl::optional<mojom::EthereumChain> ParameterValueToEthereumChain(
     const base::Value& value);
+base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain);
+absl::optional<mojom::EthereumChain> ValueToEthereumChain(
+    const base::Value& value);
 
 }  // namespace brave_wallet
 

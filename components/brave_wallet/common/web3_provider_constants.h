@@ -15,7 +15,6 @@ extern const char kAccountsChangedEvent[];
 extern const char kJsonResponseAddEthereumChainSuccess[];
 extern const char kJsonResponseAddEthereumChainError[];
 extern const char kAddEthereumChainMethod[];
-extern const char kJsonResponseF[];
 
 // https://eips.ethereum.org/EIPS/eip-1193#provider-errors
 // https://eips.ethereum.org/EIPS/eip-1474#error-codes

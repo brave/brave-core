@@ -34,7 +34,7 @@ class BraveWalletTabHelper
   void ShowBubble();
   void RequestUserApproval(const std::string& request_data,
                            RequestEthereumChainCallback callback);
-  void UserRequestCompleted(size_t hash, const std::string& result);
+  void UserRequestCompleted(size_t hash, const std::string& error);
   void CloseBubble();
   bool IsShowingBubble();
   bool IsBubbleClosedForTesting();

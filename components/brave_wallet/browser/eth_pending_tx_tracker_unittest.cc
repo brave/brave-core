@@ -145,9 +145,7 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
   EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
                                          &nonce_tracker);
-  base::RunLoop run_loop;
-  tx_state_manager.SetChainCallbackForTesting(run_loop.QuitClosure());
-  run_loop.Run();
+  base::RunLoop().RunUntilIdle();
   EthTxStateManager::TxMeta meta;
   meta.id = "001";
   meta.from = addr1;

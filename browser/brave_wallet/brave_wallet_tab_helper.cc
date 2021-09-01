@@ -29,7 +29,6 @@ namespace {
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
 GURL GetAddEthereumChainPayloadWebUIURL(const GURL& webui_base_url,
                                         int32_t tab_id,
-                                        const std::string& origin,
                                         const std::string& payload) {
   DCHECK(webui_base_url.is_valid() && tab_id > 0 && !payload.empty());
 
@@ -63,20 +62,19 @@ void BraveWalletTabHelper::ShowBubble() {
 }
 
 void BraveWalletTabHelper::UserRequestCompleted(size_t hash,
-                                                const std::string& result) {
+                                                const std::string& error) {
   DCHECK(request_callbacks_.contains(hash));
-  std::move(request_callbacks_[hash]).Run(result);
+  std::move(request_callbacks_[hash]).Run(error);
   request_callbacks_.erase(hash);
 }
 
 void BraveWalletTabHelper::RequestUserApproval(
     const std::string& request_data,
     RequestEthereumChainCallback callback) {
-  std::string requesting_origin;
   std::vector<std::string> accounts;
   int32_t tab_id = sessions::SessionTabHelper::IdForTab(web_contents_).id();
   GURL webui_url = GetAddEthereumChainPayloadWebUIURL(
-      GURL(kBraveUIWalletPanelURL), tab_id, requesting_origin, request_data);
+      GURL(kBraveUIWalletPanelURL), tab_id, request_data);
   DCHECK(webui_url.is_valid());
 
   size_t hash = base::FastHash(request_data);

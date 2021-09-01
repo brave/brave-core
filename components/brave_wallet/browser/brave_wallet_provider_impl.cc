@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "brave/components/brave_wallet/common/web3_provider_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -79,7 +80,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
-  auto value = EthereumChainToValue(chain);
+  auto value = brave_wallet::EthereumChainToValue(chain);
   std::string chain_json;
   if (!base::JSONWriter::Write(value, &chain_json)) {
     RespondForEthereumChainRequest(
