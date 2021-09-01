@@ -51,10 +51,10 @@ bool NavigateRenderFrameToURL(content::RenderFrameHost* frame,
 }
 
 GURL GetHttpRequestURL(const net::test_server::HttpRequest& http_request) {
-  return GURL(base::StrCat(
-      {http_request.base_url.scheme_piece(), "://",
-       http_request.headers.at(net::HttpRequestHeaders::kHost).c_str(),
-       http_request.relative_url.c_str()}));
+  return GURL(
+      base::StrCat({http_request.base_url.scheme_piece(), "://",
+                    http_request.headers.at(net::HttpRequestHeaders::kHost),
+                    http_request.relative_url}));
 }
 
 }  // namespace
