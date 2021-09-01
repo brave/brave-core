@@ -33,7 +33,8 @@ AdBlockPrefServiceFactory::AdBlockPrefServiceFactory()
 
 AdBlockPrefServiceFactory::~AdBlockPrefServiceFactory() {}
 
-KeyedService* AdBlockPrefServiceFactory::BuildServiceInstanceFor(content::BrowserContext* context) const {
+KeyedService* AdBlockPrefServiceFactory::BuildServiceInstanceFor(
+    content::BrowserContext* context) const {
   return new AdBlockPrefService(
       g_brave_browser_process->ad_block_service(),
       Profile::FromBrowserContext(context)->GetPrefs());
