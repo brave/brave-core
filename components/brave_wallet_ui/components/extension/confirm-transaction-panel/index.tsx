@@ -56,13 +56,20 @@ export interface Props {
 function ConfirmTransactionPanel (props: Props) {
   const {
     accounts,
-    selectedNetwork,
+    // selectedNetwork,
     transactionInfo,
     visibleTokens,
     getTokenPrice,
     onConfirm,
     onReject
   } = props
+
+  // TODO: Remove this once selectedNetwork is return correct decimal's and symbol's
+  const selectedNetwork = {
+    symbol: 'ETH',
+    decimals: 18,
+    chainName: 'Ethereum'
+  }
 
   const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
 
@@ -79,7 +86,7 @@ function ConfirmTransactionPanel (props: Props) {
   }
 
   const transaction = React.useMemo(() => {
-    const { txType } = transactionInfo
+    const { txType, txArgs } = transactionInfo
     const { baseData } = transactionInfo.txData
     const { gasPrice, value, data, to } = baseData
     const selectedNetworkPrice = getTokenPrice(selectedNetwork.symbol).price
@@ -102,15 +109,14 @@ function ConfirmTransactionPanel (props: Props) {
     } else if (txType === TransactionType.ERC20Transfer) {
       const ERC20Token = findTokenInfo(to)
       const ERC20TokenPrice = getTokenPrice(ERC20Token?.symbol ?? '').price
-      const sendAmount = formatBalance(value, ERC20Token?.decimals ?? 18)
-      const sendFiatAmount = formatFiatBalance(value, ERC20Token?.decimals ?? 18, ERC20TokenPrice)
+      const sendAmount = formatBalance(txArgs[1], ERC20Token?.decimals ?? 18)
+      const sendFiatAmount = formatFiatBalance(txArgs[1], ERC20Token?.decimals ?? 18, ERC20TokenPrice)
       const gasAmount = formatBalance(gasPrice, selectedNetwork.decimals)
       const gasFiatAmount = formatFiatBalance(gasPrice, selectedNetwork.decimals, selectedNetworkPrice)
       const grandTotalFiatAmount = Number(sendFiatAmount) + Number(gasFiatAmount)
       return {
         sendAmount,
-        // Need to get extrated data to get address of sending to here
-        sendTo: '',
+        sendTo: txArgs[0],
         sendFiatAmount,
         gasAmount,
         gasFiatAmount,
