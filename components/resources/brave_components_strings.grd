@@ -350,6 +350,18 @@
       <message name="IDS_ADBLOCK_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Total ads and trackers blocked:</message>
       <message name="IDS_ADBLOCK_CUSTOM_FILTERS_TITLE" desc="Title for custom filters section">Custom Filters</message>
       <message name="IDS_ADBLOCK_CUSTOM_FILTERS_INSTRUCTIONS" desc="Instructions for custom filters section">One per line, a filter is described in Adblock Plus filter syntax</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TITLE" desc="Title for custom filter list subscriptions section">Subscribe to filter lists</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_INSTRUCTIONS" desc="Instructions for custom filter list subscriptions section">Add additional lists created and maintained by your trusted community</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_DISCLAIMER" desc="Warning about risk of periodic IP address leakage from custom filter list subscriptions">Only subscribe to lists from entities you trust. Your browser will periodically check for list updates from the URL you enter, revealing your IP address to their server.</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_ADD_NEW_FILTER_LIST" desc="Text for button to begin adding a new filter list subscription by entering its URL">Add filter list via URL</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_ENTER_SUBSCRIPTION_URL_PLACEHOLDER" desc="Placeholder text for filter list URL input">Enter URL</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_SUBMIT_NEW_SUBSCRIPTION" desc="Text for filter list subscription submission button">Submit</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_CANCEL_ADD_SUBSCRIPTION" desc="Text for filter list subscription cancel button">Cancel</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TABLE_FILTER_LIST_COLUMN" desc="Header for the filter list name column in a table of all list subscriptions">Filter list</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TABLE_LAST_UPDATED_COLUMN" desc="Header for the time of last update in a table of all list subscriptions">Last updated</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TRIGGER_UPDATE" desc="Text for button to immediately download and apply the latest filter list version">Update now</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_VIEW_LIST_SOURCE" desc="Text for button to view the raw source for a custom filter list subscription">View source</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_UNSUBSCRIBE" desc="Text for button to unsubscribe from a custom filter list subscription">Unsubscribe</message>
 
       <!-- WebUI webcompat reporter resources -->
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE" desc="Title for broken website report dialog window">Report a broken site</message>
@@ -613,6 +625,7 @@
       <message name="IDS_BRAVE_REWARDS_TIP_MONTHLY_CONTRIBUTION_SET" desc="">Monthly contribution has been set.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_NEXT_CONTRIBUTION_DATE" desc="">Next contribution date:</message>
       <message name="IDS_BRAVE_REWARDS_TIP_NOT_ENOUGH_TOKENS" desc="">Not enough tokens. Please <ph name="LINK_BEGIN">$1</ph>add funds<ph name="LINK_END">$2</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_TIPPING_FEE_NOTE" desc="">Brave collects 5% of the tip amount as a processing fee.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP" desc="">One-Time Tip</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT" desc="">One-time tip amount:</message>
       <message name="IDS_BRAVE_REWARDS_TIP_OPT_IN_REQUIRED" desc="">Hold on, you can’t tip yet</message>
@@ -621,6 +634,7 @@
       <message name="IDS_BRAVE_REWARDS_TIP_SORRY_TO_SEE_YOU_GO" desc="">Sorry to see you go…</message>
       <message name="IDS_BRAVE_REWARDS_TIP_SUPPORT_THIS_CREATOR" desc="">Support this creator</message>
       <message name="IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT" desc="">Thanks for the support!</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_DELAY_NOTE" desc=""><ph name="BOLD_BEGIN">$1</ph>Note: <ph name="BOLD_END">$2</ph>Your tip can take several minutes to process</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET" desc="">Your one-time tip has been sent.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE" desc="">for their post</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TWEET_ABOUT_SUPPORT" desc="">Tweet about your support</message>
@@ -958,10 +972,12 @@
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_DISCONNECTED" desc="">Disconnected</message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_UNVERIFIED" desc="">Verify Wallet</message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_VERIFIED" desc="">Wallet Verified</message>
-      <message name="IDS_BRAVE_UI_WALLET_GO_TO_PROVIDER" desc="">Go to my <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account</message>
+      <message name="IDS_BRAVE_UI_WALLET_GO_TO_PROVIDER" desc="">Go to your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account</message>
+      <message name="IDS_BRAVE_UI_WALLET_LOG_IN_WITH_PROVIDER" desc="">Log into your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account</message>
       <message name="IDS_BRAVE_UI_WALLET_GO_TO_VERIFY_PAGE" desc="CTA for completing wallet verification">Complete wallet verification</message>
       <message name="IDS_BRAVE_UI_WALLET_DISCONNECT" desc="">Disconnect from Brave Rewards</message>
       <message name="IDS_BRAVE_UI_WALLET_CONNECTED" desc="">Connected</message>
+      <message name="IDS_BRAVE_UI_WALLET_DISCONNECTED" desc="">Disconnected</message>
       <message name="IDS_BRAVE_UI_WALLET_PENDING" desc="">Pending</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFIED" desc="">Verified</message>
 

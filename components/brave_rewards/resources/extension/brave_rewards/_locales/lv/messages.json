@@ -219,21 +219,31 @@
     "message": "Lūdzu, izveidojiet sava Brave maka dublējumkopiju.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Uzziniet vairāk",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Kļūda: cits konts",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, šķiet, ka jūsu Brave Rewards maks jau ir verificēts, izmantojot citu $name$ kontu. Mēģiniet verifikāciju veikt vēlreiz, izmantojot savu iepriekšējo kontu.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Kļūda: BAT nav pieejams",
     "description": "Title for BAT not allowed for user notification"
   },
   "upholdBATNotAllowedForUserNotification": {
-    "message": "BAT jūsu reģionā Uphold vēl netiek atbalstīts.",
+    "message": "BAT jūsu reģionā Uphold makos vēl netiek atbalstīts.",
     "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserLearnMore": {
-    "message": "Uzziniet vairāk",
-    "description": "Notification button text to learn more about the blocked user status"
   },
   "upholdBlockedUserTitle": {
     "message": "Kļūda: bloķēts konts",
@@ -243,10 +253,6 @@
     "message": "Jūsu Uphold konts ir bloķēts.",
     "description": "Description for blocked user notification"
   },
-  "upholdPendingUserLearnMore": {
-    "message": "Uzziniet vairāk",
-    "description": "Notification button text to learn more about the pending user status"
-  },
   "upholdPendingUserTitle": {
     "message": "Kļūda: neapstiprināts konts",
     "description": "Title for pending user notification"
@@ -255,10 +261,6 @@
     "message": "Jūsu Uphold konts vēl nav apstiprināts.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Uzziniet vairāk",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Kļūda: ierobežots konts",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Jūsu Uphold konts šobrīd ir ierobežots.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Uzziniet vairāk",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Sasniegts ierīces limits",
@@ -535,10 +533,6 @@
     "message": "Jūsu atlīdzības summa",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "pārbaudīt",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "Atvienots",
     "description": "CTA status button"
@@ -554,6 +548,16 @@
   "walletGoToProvider":  {
     "message": "Doties uz manu $provider$ kontu",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Ejiet uz savu $provider$ kontu",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -658,6 +662,10 @@
   "walletConnected":  {
     "message": "pievienots",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Atvienots",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "Gaida",

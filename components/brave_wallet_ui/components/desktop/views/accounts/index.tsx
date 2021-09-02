@@ -3,9 +3,7 @@ import * as React from 'react'
 import {
   WalletAccountType,
   RPCTransactionType,
-  AccountSettingsNavTypes,
-  TokenInfo,
-  AccountAssetOptionType
+  AccountSettingsNavTypes
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
@@ -36,7 +34,6 @@ import {
   WalletInfoLeftSide,
   QRCodeIcon,
   EditIcon,
-  EditButtonRow,
   SubviewSectionTitle
 } from './style'
 
@@ -51,32 +48,30 @@ import {
 } from '../../'
 
 export interface Props {
-  userWatchList: string[]
   accounts: WalletAccountType[]
-  userAssetList: AccountAssetOptionType[]
   transactions: (RPCTransactionType | undefined)[]
-  fullAssetList: TokenInfo[]
+  privateKey: string
+  onViewPrivateKey: (address: string, isDefault: boolean) => void
+  onDoneViewingPrivateKey: () => void
   toggleNav: () => void
   onClickBackup: () => void
   onClickAddAccount: () => void
-  onUpdateVisibleTokens: (list: string[]) => void
   onUpdateAccountName: (name: string) => void
-  fetchFullTokenList: () => void
+  onRemoveAccount: (address: string) => void
 }
 
 function Accounts (props: Props) {
   const {
     accounts,
-    userAssetList,
     transactions,
-    userWatchList,
-    fullAssetList,
+    privateKey,
+    onViewPrivateKey,
+    onDoneViewingPrivateKey,
     toggleNav,
     onClickBackup,
     onClickAddAccount,
-    onUpdateVisibleTokens,
     onUpdateAccountName,
-    fetchFullTokenList
+    onRemoveAccount
   } = props
 
   const primaryAccounts = React.useMemo(() => {
@@ -123,18 +118,7 @@ function Accounts (props: Props) {
   }
 
   const onChangeTab = (id: AccountSettingsNavTypes) => {
-    if (id === 'watchlist') {
-      fetchFullTokenList()
-    }
     setEditTab(id)
-  }
-
-  const toggleShowEditWatchlist = () => {
-    if (!showEditModal) {
-      fetchFullTokenList()
-    }
-    setShowEditModal(!showEditModal)
-    setEditTab('watchlist')
   }
 
   const onShowEditModal = () => {
@@ -181,6 +165,7 @@ function Accounts (props: Props) {
                 key={account.id}
                 isHardwareWallet={false}
                 onClick={onSelectAccount}
+                onRemoveAccount={onRemoveAccount}
                 account={account}
               />
             )}
@@ -194,6 +179,7 @@ function Accounts (props: Props) {
                 key={account.id}
                 isHardwareWallet={false}
                 onClick={onSelectAccount}
+                onRemoveAccount={onRemoveAccount}
                 account={account}
               />
             )}
@@ -205,6 +191,7 @@ function Accounts (props: Props) {
                   key={account.id}
                   isHardwareWallet={true}
                   onClick={onSelectAccount}
+                  onRemoveAccount={onRemoveAccount}
                   account={account}
                 />
               )}
@@ -245,14 +232,6 @@ function Accounts (props: Props) {
               icon={item.asset.icon}
             />
           )}
-          <EditButtonRow>
-            <AddButton
-              buttonType='secondary'
-              onSubmit={toggleShowEditWatchlist}
-              text={locale.accountsEditVisibleAssets}
-              editIcon={true}
-            />
-          </EditButtonRow>
           <SubviewSectionTitle>{locale.transactions}</SubviewSectionTitle>
           <SubDivider />
           {transactions?.map((transaction) =>
@@ -269,18 +248,19 @@ function Accounts (props: Props) {
       )}
       {showEditModal && selectedAccount &&
         <AccountSettingsModal
-          userAssetList={userAssetList}
           title={locale.account}
           account={selectedAccount}
           onClose={onCloseEditModal}
           onUpdateAccountName={onUpdateAccountName}
-          onUpdateVisibleTokens={onUpdateVisibleTokens}
           onCopyToClipboard={onCopyToClipboard}
           onChangeTab={onChangeTab}
+          onToggleNav={toggleNav}
+          onRemoveAccount={onRemoveAccount}
+          onViewPrivateKey={onViewPrivateKey}
+          onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+          privateKey={privateKey}
           tab={editTab}
           hideNav={false}
-          fullAssetList={fullAssetList}
-          userWatchList={userWatchList}
         />
       }
     </StyledWrapper>

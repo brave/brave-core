@@ -219,21 +219,31 @@
     "message": "Tafadhali hifadhi kwa njia mbadala wallet yako ya Brave.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Jifunze Zaidi",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Hitilafu: Akaunti tofauti",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, inaonekana pochi yako ya Brave Rewards tayari imethibitishwa na akaunti nyingine ya $name$. Tafadhali jaribu kuthibitisha tena ukitumia akaunti yako ya awali.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Hitilafu: BAT haipatikani",
     "description": "Title for BAT not allowed for user notification"
   },
   "upholdBATNotAllowedForUserNotification": {
-    "message": "BAT bado haitumiki katika eneo lako kwenye Uphold.",
+    "message": "BAT bado haitumiki katika eneo lako kwenye pochi za Uphold.",
     "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserLearnMore": {
-    "message": "Jifunze Zaidi",
-    "description": "Notification button text to learn more about the blocked user status"
   },
   "upholdBlockedUserTitle": {
     "message": "Hitilafu: Akaunti imefungwa",
@@ -243,10 +253,6 @@
     "message": "Akaunti yako kwenye Uphold imefungwa kwa sasa.",
     "description": "Description for blocked user notification"
   },
-  "upholdPendingUserLearnMore": {
-    "message": "Jifunze Zaidi",
-    "description": "Notification button text to learn more about the pending user status"
-  },
   "upholdPendingUserTitle": {
     "message": "Hitilafu: Akaunti inayosubiri",
     "description": "Title for pending user notification"
@@ -255,10 +261,6 @@
     "message": "Akaunti yako kwenye Uphold bado inasubiri.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Jifunze Zaidi",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Hitilafu: Akaunti imewekewa vikwazo",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Akaunti yako kwenye Uphold imewekewa vikwazo kwa sasa.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Jifunze Zaidi",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Kikomo ch Kifaa Kimefikishwa",
@@ -535,10 +533,6 @@
     "message": "Kiwango chako cha Tuzo",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "thibitisha",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "Imeondolewa",
     "description": "CTA status button"
@@ -552,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "Nenda kwenye akaunti yangu ya $provider$",
+    "message": "Nenda kwenye akaunti yako ya $provider$",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Ingia kwenye akaunti yako ya $provider$",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -658,6 +662,10 @@
   "walletConnected":  {
     "message": "Umeunganishwa",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Imeondolewa",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "Inasubiri",

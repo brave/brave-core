@@ -8,20 +8,29 @@ import {
   CreateWalletPayloadType,
   WalletCreatedPayloadType,
   RecoveryWordsAvailablePayloadType,
+  PrivateKeyAvailablePayloadType,
   RestoreWalletPayloadType,
   SelectAssetPayloadType,
   UpdateSelectedAssetType,
-  AddAccountPayloadType
+  AddAccountPayloadType,
+  AddImportedAccountPayloadType,
+  RemoveImportedAccountPayloadType,
+  ViewPrivateKeyPayloadType
 } from '../constants/action_types'
 import { TokenInfo } from '../../constants/types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
 export const restoreWallet = createAction<RestoreWalletPayloadType>('restoreWallet')
 export const addAccount = createAction<AddAccountPayloadType>('addAccount')
+export const addImportedAccount = createAction<AddImportedAccountPayloadType>('addImportedAccount')
+export const removeImportedAccount = createAction<RemoveImportedAccountPayloadType>('removeImportedAccount')
 export const walletCreated = createAction<WalletCreatedPayloadType>('walletCreated')
 export const walletSetupComplete = createAction('walletSetupComplete')
 export const showRecoveryPhrase = createAction<boolean>('showRecoveryPhrase')
+export const viewPrivateKey = createAction<ViewPrivateKeyPayloadType>('viewPrivateKey')
+export const doneViewingPrivateKey = createAction('doneViewingPrivateKey')
 export const recoveryWordsAvailable = createAction<RecoveryWordsAvailablePayloadType>('recoveryWordsAvailable')
+export const privateKeyAvailable = createAction<PrivateKeyAvailablePayloadType>('privateKeyAvailable')
 export const walletBackupComplete = createAction('walletBackupComplete')
 export const hasMnemonicError = createAction<boolean>('hasMnemonicError')
 export const updatePriceInfo = createAction<SelectAssetPayloadType>('updatePriceInfo')

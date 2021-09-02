@@ -54,12 +54,19 @@ void VPNPanelUI::BindInterface(
 
 void VPNPanelUI::CreatePanelHandler(
     mojo::PendingRemote<brave_vpn::mojom::Page> page,
-    mojo::PendingReceiver<brave_vpn::mojom::PanelHandler> panel_receiver) {
+    mojo::PendingReceiver<brave_vpn::mojom::PanelHandler> panel_receiver,
+    mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler>
+        vpn_service_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
 
-  panel_handler_ = std::make_unique<VPNPanelHandler>(
-      std::move(panel_receiver), this,
-      BraveVpnServiceFactory::GetForProfile(profile));
+  panel_handler_ =
+      std::make_unique<VPNPanelHandler>(std::move(panel_receiver), this);
+
+  BraveVpnServiceDesktop* vpn_service_desktop =
+      BraveVpnServiceFactory::GetForProfile(profile);
+  if (vpn_service_desktop) {
+    vpn_service_desktop->BindInterface(std::move(vpn_service_receiver));
+  }
 }

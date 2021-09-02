@@ -28,6 +28,16 @@ const char kPasswordEncryptorNonce[] = "password_encryptor_nonce";
 const char kEncryptedMnemonic[] = "encrypted_mnemonic";
 const char kBackupComplete[] = "backup_complete";
 const char kAccountMetas[] = "account_metas";
+const char kImportedAccounts[] = "imported_accounts";
+const char kAccountAddress[] = "account_address";
+const char kEncryptedPrivateKey[] = "encrypted_private_key";
+
+const char kMnemonic1[] =
+    "divide cruise upon flag harsh carbon filter merit once advice bright "
+    "drive";
+const char kMnemonic2[] =
+    "misery jeans response tiny nominee civil zoo strong correct taxi chimney "
+    "goat";
 }  // namespace
 
 class KeyringControllerUnitTest : public testing::Test {
@@ -263,29 +273,25 @@ TEST_F(KeyringControllerUnitTest, CreateEncryptorForKeyring) {
 
 TEST_F(KeyringControllerUnitTest, CreateDefaultKeyringInternal) {
   KeyringController controller(GetPrefs());
-  const std::string mnemonic1 =
-      "divide cruise upon flag harsh carbon filter merit once advice bright "
-      "drive";
   // encryptor is nullptr
-  ASSERT_FALSE(controller.CreateDefaultKeyringInternal(mnemonic1));
+  ASSERT_FALSE(controller.CreateDefaultKeyringInternal(kMnemonic1));
 
   EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(mnemonic1));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
   controller.default_keyring_->AddAccounts(1);
   EXPECT_EQ(controller.default_keyring_->GetAddress(0),
             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
   const std::string encrypted_mnemonic1 =
       GetStringPrefForKeyring(kEncryptedMnemonic, "default");
   // The pref is encrypted
-  EXPECT_NE(base::Base64Encode(
-                std::vector<uint8_t>(mnemonic1.begin(), mnemonic1.end())),
-            encrypted_mnemonic1);
+  EXPECT_NE(
+      base::Base64Encode(std::vector<uint8_t>(
+          reinterpret_cast<const uint8_t*>(kMnemonic1),
+          reinterpret_cast<const uint8_t*>(kMnemonic1) + strlen(kMnemonic1))),
+      encrypted_mnemonic1);
 
   // default keyring will be overwritten
-  const std::string mnemonic2 =
-      "misery jeans response tiny nominee civil zoo strong correct taxi "
-      "chimney goat";
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(mnemonic2));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic2));
   controller.default_keyring_->AddAccounts(1);
   EXPECT_EQ(controller.default_keyring_->GetAddress(0),
             "0xf83C3cBfF68086F276DD4f87A82DF73B57b28820");
@@ -382,12 +388,9 @@ TEST_F(KeyringControllerUnitTest, RestoreDefaultKeyring) {
   EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorNonce, "default"), nonce);
   EXPECT_EQ(controller.default_keyring_->GetAccountsNumber(), 0u);
 
-  const std::string mnemonic2 =
-      "divide cruise upon flag harsh carbon filter merit once advice bright "
-      "drive";
   // default keyring will be overwritten by new seed which will be encrypted by
   // new key even though the passphrase is same.
-  EXPECT_NE(controller.RestoreDefaultKeyring(mnemonic2, "brave"), nullptr);
+  EXPECT_NE(controller.RestoreDefaultKeyring(kMnemonic1, "brave"), nullptr);
   EXPECT_NE(GetStringPrefForKeyring(kEncryptedMnemonic, "default"),
             encrypted_mnemonic);
   // salt is regenerated and account num is cleared
@@ -449,9 +452,6 @@ TEST_F(KeyringControllerUnitTest, UnlockResumesDefaultKeyring) {
 }
 
 TEST_F(KeyringControllerUnitTest, GetMnemonicForDefaultKeyring) {
-  const std::string mnemonic =
-      "divide cruise upon flag harsh carbon filter merit once advice bright "
-      "drive";
   KeyringController controller(GetPrefs());
   ASSERT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
 
@@ -461,11 +461,11 @@ TEST_F(KeyringControllerUnitTest, GetMnemonicForDefaultKeyring) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(string_value().empty());
 
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(mnemonic));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
   controller.GetMnemonicForDefaultKeyring(base::BindOnce(
       &KeyringControllerUnitTest::GetStringCallback, base::Unretained(this)));
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(string_value(), mnemonic);
+  EXPECT_EQ(string_value(), kMnemonic1);
 
   // Lock controller
   controller.Lock();
@@ -492,7 +492,7 @@ TEST_F(KeyringControllerUnitTest, GetMnemonicForDefaultKeyring) {
   controller.GetMnemonicForDefaultKeyring(base::BindOnce(
       &KeyringControllerUnitTest::GetStringCallback, base::Unretained(this)));
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(string_value(), mnemonic);
+  EXPECT_EQ(string_value(), kMnemonic1);
 }
 
 TEST_F(KeyringControllerUnitTest, GetDefaultKeyringInfo) {
@@ -521,6 +521,7 @@ TEST_F(KeyringControllerUnitTest, GetDefaultKeyringInfo) {
         EXPECT_EQ(keyring_info->account_infos.size(), 1u);
         EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
         EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
+        EXPECT_FALSE(keyring_info->account_infos[0]->is_imported);
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
@@ -647,11 +648,8 @@ TEST_F(KeyringControllerUnitTest, BackupComplete) {
 
 TEST_F(KeyringControllerUnitTest, AccountMetasForKeyring) {
   KeyringController controller(GetPrefs());
-  const std::string mnemonic =
-      "divide cruise upon flag harsh carbon filter merit once advice bright "
-      "drive";
   EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(mnemonic));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
   controller.default_keyring_->AddAccounts(2);
   const std::string address1 = controller.default_keyring_->GetAddress(0);
   const std::string name1 = "Account1";
@@ -820,6 +818,424 @@ TEST_F(KeyringControllerUnitTest, MigrationPrefsFailSafe) {
       KeyringController::GetAccountNameForKeyring(
           GetPrefs(), KeyringController::GetAccountPathByIndex(0), "default"),
       "Account 1");
+}
+
+TEST_F(KeyringControllerUnitTest, ImportedAccounts) {
+  KeyringController controller(GetPrefs());
+  controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
+  base::RunLoop().RunUntilIdle();
+  const struct {
+    const char* name;
+    const char* private_key;
+    const char* address;
+  } imported_accounts[] = {
+      {"Imported account1",
+       "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
+       "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976"},
+      {"Imported account2",
+       "cca1e9643efc5468789366e4fb682dba57f2e97540981095bc6d9a962309d912",
+       "0x6D59205FADC892333cb945AD563e74F83f3dBA95"},
+      {"Imported account3",
+       "ddc33eef7cc4c5170c3ba4021cc22fd888856cf8bf846f48db6d11d15efcd652",
+       "0xeffF78040EdeF86A9be71ce89c74A35C4cd5D2eA"}};
+  for (size_t i = 0;
+       i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
+    bool callback_called = false;
+    controller.AddImportedAccount(
+        imported_accounts[i].name, imported_accounts[i].private_key,
+        base::BindLambdaForTesting(
+            [&](bool success, const std::string& address) {
+              EXPECT_TRUE(success);
+              EXPECT_EQ(imported_accounts[i].address, address);
+              callback_called = true;
+            }));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+
+    callback_called = false;
+    controller.GetPrivateKeyForImportedAccount(
+        imported_accounts[i].address,
+        base::BindLambdaForTesting(
+            [&](bool success, const std::string& private_key) {
+              EXPECT_TRUE(success);
+              EXPECT_EQ(imported_accounts[i].private_key, private_key);
+              callback_called = true;
+            }));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+  }
+
+  bool callback_called = false;
+  controller.RemoveImportedAccount(
+      imported_accounts[1].address,
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_TRUE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // remove invalid address
+  controller.RemoveImportedAccount(
+      "0xxxxxxxxxx0", base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  controller.GetDefaultKeyringInfo(
+      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_FALSE(keyring_info->is_locked);
+        EXPECT_FALSE(keyring_info->is_backed_up);
+        EXPECT_EQ(keyring_info->account_infos.size(), 3u);
+        EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
+        EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
+        EXPECT_FALSE(keyring_info->account_infos[0]->is_imported);
+        EXPECT_EQ(keyring_info->account_infos[1]->address,
+                  imported_accounts[0].address);
+        EXPECT_EQ(keyring_info->account_infos[1]->name,
+                  imported_accounts[0].name);
+        EXPECT_TRUE(keyring_info->account_infos[1]->is_imported);
+        EXPECT_EQ(keyring_info->account_infos[2]->address,
+                  imported_accounts[2].address);
+        EXPECT_EQ(keyring_info->account_infos[2]->name,
+                  imported_accounts[2].name);
+        EXPECT_TRUE(keyring_info->account_infos[2]->is_imported);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  controller.Lock();
+  // cannot get private key when locked
+  callback_called = false;
+  controller.GetPrivateKeyForImportedAccount(
+      imported_accounts[0].address,
+      base::BindLambdaForTesting(
+          [&](bool success, const std::string& private_key) {
+            EXPECT_FALSE(success);
+            EXPECT_TRUE(private_key.empty());
+            callback_called = true;
+          }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  controller.Unlock("brave", base::DoNothing::Once<bool>());
+  base::RunLoop().RunUntilIdle();
+
+  callback_called = false;
+  // Imported accounts should be restored
+  controller.GetDefaultKeyringInfo(
+      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+        EXPECT_EQ(keyring_info->account_infos.size(), 3u);
+        EXPECT_EQ(keyring_info->account_infos[1]->address,
+                  imported_accounts[0].address);
+        EXPECT_EQ(keyring_info->account_infos[1]->name,
+                  imported_accounts[0].name);
+        EXPECT_TRUE(keyring_info->account_infos[1]->is_imported);
+        EXPECT_EQ(keyring_info->account_infos[2]->address,
+                  imported_accounts[2].address);
+        EXPECT_EQ(keyring_info->account_infos[2]->name,
+                  imported_accounts[2].name);
+        EXPECT_TRUE(keyring_info->account_infos[2]->is_imported);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // private key should also be available now
+  callback_called = false;
+  controller.GetPrivateKeyForImportedAccount(
+      imported_accounts[0].address,
+      base::BindLambdaForTesting(
+          [&](bool success, const std::string& private_key) {
+            EXPECT_TRUE(success);
+            EXPECT_EQ(imported_accounts[0].private_key, private_key);
+            callback_called = true;
+          }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Imported accounts should also be restored in default keyring
+  EXPECT_EQ(controller.default_keyring_->GetImportedAccountsNumber(), 2u);
+
+  const base::Value* imported_accounts_value =
+      KeyringController::GetPrefForKeyring(GetPrefs(), kImportedAccounts,
+                                           "default");
+  ASSERT_TRUE(imported_accounts_value);
+  EXPECT_EQ(imported_accounts_value->GetList()[0]
+                .FindKey(kAccountAddress)
+                ->GetString(),
+            imported_accounts[0].address);
+  // private key is encrypted
+  const std::string encrypted_private_key =
+      imported_accounts_value->GetList()[0]
+          .FindKey(kEncryptedPrivateKey)
+          ->GetString();
+  EXPECT_FALSE(encrypted_private_key.empty());
+
+  std::vector<uint8_t> private_key0;
+  ASSERT_TRUE(
+      base::HexStringToBytes(imported_accounts[0].private_key, &private_key0));
+  EXPECT_NE(encrypted_private_key, base::Base64Encode(private_key0));
+}
+
+TEST_F(KeyringControllerUnitTest, GetPrivateKeyForDefaultKeyringAccount) {
+  KeyringController controller(GetPrefs());
+  EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
+
+  bool callback_called = false;
+  controller.GetPrivateKeyForDefaultKeyringAccount(
+      "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+      base::BindLambdaForTesting(
+          [&](bool success, const std::string& private_key) {
+            EXPECT_FALSE(success);
+            EXPECT_TRUE(private_key.empty());
+            callback_called = true;
+          }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  controller.default_keyring_->AddAccounts(1);
+  EXPECT_EQ(controller.default_keyring_->GetAddress(0),
+            "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
+
+  callback_called = false;
+  controller.GetPrivateKeyForDefaultKeyringAccount(
+      "", base::BindLambdaForTesting(
+              [&](bool success, const std::string& private_key) {
+                EXPECT_FALSE(success);
+                EXPECT_TRUE(private_key.empty());
+                callback_called = true;
+              }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  controller.GetPrivateKeyForDefaultKeyringAccount(
+      "0x123", base::BindLambdaForTesting(
+                   [&](bool success, const std::string& private_key) {
+                     EXPECT_FALSE(success);
+                     EXPECT_TRUE(private_key.empty());
+                     callback_called = true;
+                   }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  controller.GetPrivateKeyForDefaultKeyringAccount(
+      "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+      base::BindLambdaForTesting([&](bool success,
+                                     const std::string& private_key) {
+        EXPECT_TRUE(success);
+        EXPECT_EQ(
+            "919af8081ce2a02d9650bf3e10ffb6b7cbadbb1dca749122d7d982cdb6cbcc50",
+            private_key);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(KeyringControllerUnitTest, SetDefaultKeyringDerivedAccountName) {
+  KeyringController controller(GetPrefs());
+  const std::string kUpdatedName = "Updated";
+  bool callback_called = false;
+  controller.SetDefaultKeyringDerivedAccountName(
+      "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db", kUpdatedName,
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
+  controller.default_keyring_->AddAccounts(2);
+  const std::string address1 = controller.default_keyring_->GetAddress(0);
+  const std::string name1 = "Account1";
+  const std::string account_path1 = KeyringController::GetAccountPathByIndex(0);
+  const std::string address2 = controller.default_keyring_->GetAddress(1);
+  const std::string name2 = "Account2";
+  const std::string account_path2 = KeyringController::GetAccountPathByIndex(1);
+
+  KeyringController::SetAccountNameForKeyring(GetPrefs(), account_path1, name1,
+                                              "default");
+  KeyringController::SetAccountNameForKeyring(GetPrefs(), account_path2, name2,
+                                              "default");
+  EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
+                GetPrefs(), account_path1, "default"),
+            name1);
+  EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
+                GetPrefs(), account_path2, "default"),
+            name2);
+
+  callback_called = false;
+  controller.SetDefaultKeyringDerivedAccountName(
+      "", kUpdatedName, base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  controller.SetDefaultKeyringDerivedAccountName(
+      address2, "", base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  controller.SetDefaultKeyringDerivedAccountName(
+      address2, kUpdatedName, base::BindLambdaForTesting([&](bool success) {
+        EXPECT_TRUE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
+                GetPrefs(), account_path1, "default"),
+            name1);
+  EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
+                GetPrefs(), account_path2, "default"),
+            kUpdatedName);
+}
+
+TEST_F(KeyringControllerUnitTest, SetDefaultKeyringImportedAccountName) {
+  KeyringController controller(GetPrefs());
+  controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
+  base::RunLoop().RunUntilIdle();
+
+  const struct {
+    const char* name;
+    const char* private_key;
+    const char* address;
+  } imported_accounts[] = {
+      {"Imported account1",
+       "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
+       "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976"},
+      {"Imported account2",
+       "cca1e9643efc5468789366e4fb682dba57f2e97540981095bc6d9a962309d912",
+       "0x6D59205FADC892333cb945AD563e74F83f3dBA95"},
+      {"Imported account3",
+       "ddc33eef7cc4c5170c3ba4021cc22fd888856cf8bf846f48db6d11d15efcd652",
+       "0xeffF78040EdeF86A9be71ce89c74A35C4cd5D2eA"}};
+
+  const std::string kUpdatedName = "Updated imported accoount 2";
+
+  // Fail when no imported accounts.
+  bool callback_called = false;
+  controller.SetDefaultKeyringImportedAccountName(
+      imported_accounts[1].address, kUpdatedName,
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Add import accounts.
+  for (size_t i = 0;
+       i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
+    callback_called = false;
+    controller.AddImportedAccount(
+        imported_accounts[i].name, imported_accounts[i].private_key,
+        base::BindLambdaForTesting(
+            [&](bool success, const std::string& address) {
+              EXPECT_TRUE(success);
+              EXPECT_EQ(imported_accounts[i].address, address);
+              callback_called = true;
+            }));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+  }
+
+  // Empty address should fail.
+  callback_called = false;
+  controller.SetDefaultKeyringImportedAccountName(
+      "", kUpdatedName, base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Empty name should fail.
+  callback_called = false;
+  controller.SetDefaultKeyringImportedAccountName(
+      imported_accounts[1].address, "",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Update second imported account's name.
+  callback_called = false;
+  controller.SetDefaultKeyringImportedAccountName(
+      imported_accounts[1].address, kUpdatedName,
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_TRUE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Private key of imported accounts should not be changed.
+  for (size_t i = 0;
+       i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
+    callback_called = false;
+    controller.GetPrivateKeyForImportedAccount(
+        imported_accounts[i].address,
+        base::BindLambdaForTesting(
+            [&](bool success, const std::string& private_key) {
+              EXPECT_TRUE(success);
+              EXPECT_EQ(imported_accounts[i].private_key, private_key);
+              callback_called = true;
+            }));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+  }
+
+  // Only second imported account's name is updated.
+  callback_called = false;
+  controller.GetDefaultKeyringInfo(
+      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_FALSE(keyring_info->is_locked);
+        EXPECT_FALSE(keyring_info->is_backed_up);
+        EXPECT_EQ(keyring_info->account_infos.size(), 4u);
+        EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
+        EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
+        EXPECT_FALSE(keyring_info->account_infos[0]->is_imported);
+        EXPECT_EQ(keyring_info->account_infos[1]->address,
+                  imported_accounts[0].address);
+        EXPECT_EQ(keyring_info->account_infos[1]->name,
+                  imported_accounts[0].name);
+        EXPECT_TRUE(keyring_info->account_infos[1]->is_imported);
+        EXPECT_EQ(keyring_info->account_infos[2]->address,
+                  imported_accounts[1].address);
+        EXPECT_EQ(keyring_info->account_infos[2]->name, kUpdatedName);
+        EXPECT_TRUE(keyring_info->account_infos[2]->is_imported);
+        EXPECT_EQ(keyring_info->account_infos[3]->address,
+                  imported_accounts[2].address);
+        EXPECT_EQ(keyring_info->account_infos[3]->name,
+                  imported_accounts[2].name);
+        EXPECT_TRUE(keyring_info->account_infos[3]->is_imported);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
 }
 
 }  // namespace brave_wallet

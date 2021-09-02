@@ -219,33 +219,39 @@
     "message": "Utwórz kopię zapasową portfela.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Dowiedz się więcej",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Błąd: Inne konto",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, wygląda na to, że Twój portfel Brave Rewards został już zweryfikowany przy użyciu innego konta $name$. Spróbuj ponownie zweryfikować portfel przy użyciu poprzedniego konta.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Błąd: BAT niedostępny",
     "description": "Title for BAT not allowed for user notification"
   },
   "upholdBATNotAllowedForUserNotification": {
-    "message": "BAT nie jest jeszcze obsługiwany w Twoim regionie w systemie Uphold.",
+    "message": "BAT nie jest jeszcze obsługiwany portfelu Uphold w Twoim regionie.",
     "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserLearnMore": {
-    "message": "Dowiedz się więcej",
-    "description": "Notification button text to learn more about the blocked user status"
   },
   "upholdBlockedUserTitle": {
     "message": "Błąd: konto zablokowane",
     "description": "Title for blocked user notification"
   },
   "upholdBlockedUserNotification": {
-    "message": "Twoje konto w Uphold jest obecnie zablokowane.",
+    "message": "Twoje konto w portfelu Uphold jest obecnie zablokowane.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "Dowiedz się więcej",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Błąd: Konto w trakcie oczekiwania",
@@ -255,21 +261,13 @@
     "message": "Twoje konto w Uphold jest nadal w trakcie oczekiwania.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Dowiedz się więcej",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Błąd: konto z ograniczeniami",
     "description": "Title for restricted user notification"
   },
   "upholdRestrictedUserNotification": {
-    "message": "Twoje konto w Uphold jest obecnie ograniczone.",
+    "message": "Twoje konto w portfelu Uphold jest obecnie ograniczone.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Dowiedz się więcej",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Osiągnięto limit urządzeń",
@@ -535,10 +533,6 @@
     "message": "Wysokość Twojej nagrody",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "weryfikuj",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "Rozłączony",
     "description": "CTA status button"
@@ -552,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "Przejdź do mojego konta $provider$",
+    "message": "Przejdź do swojego konta $provider$",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Zaloguj się do swojego konta $provider$",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -658,6 +662,10 @@
   "walletConnected":  {
     "message": "Połączone",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Rozłączony",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "Oczekuje",

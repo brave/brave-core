@@ -6,6 +6,7 @@
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 
 #include <algorithm>
+#include <set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -122,6 +123,8 @@ void AdBlockBaseService::ShouldStartRequest(
     bool* did_match_important,
     std::string* mock_data_url) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+  // if (!IsInitialized())
+  //   return;
 
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
@@ -174,11 +177,13 @@ void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
   }
 
   if (enabled) {
-    ad_block_client_->addTag(tag);
-    tags_.push_back(tag);
+    if (tags_.find(tag) == tags_.end()) {
+      ad_block_client_->addTag(tag);
+      tags_.insert(tag);
+    }
   } else {
     ad_block_client_->removeTag(tag);
-    std::vector<std::string>::iterator it =
+    std::set<std::string>::iterator it =
         std::find(tags_.begin(), tags_.end(), tag);
     if (it != tags_.end()) {
       tags_.erase(it);
@@ -204,6 +209,9 @@ bool AdBlockBaseService::TagExists(const std::string& tag) {
 
 absl::optional<base::Value> AdBlockBaseService::UrlCosmeticResources(
     const std::string& url) {
+  // if (!IsInitialized())
+  //   return;
+
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   return base::JSONReader::Read(ad_block_client_->urlCosmeticResources(url));
 }
@@ -212,21 +220,30 @@ absl::optional<base::Value> AdBlockBaseService::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
+  // if (!IsInitialized())
+  //   return;
+
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   return base::JSONReader::Read(
       ad_block_client_->hiddenClassIdSelectors(classes, ids, exceptions));
 }
 
-void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {
+void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path,
+                                        bool deserialize,
+                                        base::OnceClosure callback) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::LoadDATFileData<adblock::Engine>,
-                     dat_file_path),
+      base::BindOnce(
+          deserialize
+              ? &brave_component_updater::LoadDATFileData<adblock::Engine>
+              : &brave_component_updater::LoadRawFileData<adblock::Engine>,
+          dat_file_path),
       base::BindOnce(&AdBlockBaseService::OnGetDATFileData,
-                     weak_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdBlockBaseService::OnGetDATFileData(GetDATFileDataResult result) {
+void AdBlockBaseService::OnGetDATFileData(base::OnceClosure callback,
+                                          GetDATFileDataResult result) {
   if (result.second.empty()) {
     LOG(ERROR) << "Could not obtain ad block data";
     return;
@@ -239,6 +256,8 @@ void AdBlockBaseService::OnGetDATFileData(GetDATFileDataResult result) {
       FROM_HERE, base::BindOnce(&AdBlockBaseService::UpdateAdBlockClient,
                                 base::Unretained(this),
                                 std::move(result.first)));
+  // TODO(bridiver) this needs to happen after adblock client is actually reset
+  std::move(callback).Run();
 }
 
 void AdBlockBaseService::UpdateAdBlockClient(
@@ -264,6 +283,7 @@ bool AdBlockBaseService::Init() {
 
 void AdBlockBaseService::ResetForTest(const std::string& rules,
                                       const std::string& resources) {
+  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   // This is temporary until adblock-rust supports incrementally adding
   // filter rules to an existing instance. At which point the hack below
   // will dissapear.

@@ -3,11 +3,14 @@
 <translationbundle lang="en-GB">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Ad Block</translation>
-<translation id="4615489450165434530">Report a broken site</translation>
+<translation id="4615489450165434530">Report a Broken Site</translation>
+<translation id="1209739344687072997">Report a broken site</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">Wallet</translation>
-<translation id="2445484935443597917">Create a new profile</translation>
-<translation id="2666990579225592931">Open guest window</translation>
+<translation id="2445484935443597917">Create a New Profile</translation>
+<translation id="744341768939279100">Create a new profile</translation>
+<translation id="2666990579225592931">Open Guest window</translation>
+<translation id="4986483413015198747">Open guest window</translation>
 <translation id="8275068909952022340">More…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") is not allowed in Brave.</translation>
 <translation id="6786747875388722282">Extensions</translation>
@@ -45,10 +48,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="5802665280774361839">Show autocomplete in address bar</translation>
 <translation id="597020512043916976">Show top sites in autocomplete suggestions</translation>
 <translation id="264150068416846820">Show Brave suggested sites in autocomplete suggestions</translation>
-<translation id="5529693968082667490">Show search tabs button</translation>
+<translation id="5529693968082667490">Show tab search button</translation>
 <translation id="6414370348346025511">Standard protection is on.</translation>
 <translation id="814018970995616154">Checks URLs with a list of unsafe sites stored in Brave.</translation>
 <translation id="1144810021918451336">Does not protect you against dangerous websites, downloads and extensions.</translation>
+<translation id="6285118765755298263">Index other search engines</translation>
+<translation id="919715748352669592">Automatically indexes websites that follow the OpenSearch spec.</translation>
 <translation id="7781069478569868053">New tab page</translation>
 <translation id="1988804048511540801">New tab page shows</translation>
 <translation id="2970343821770026391">Dashboard</translation>
@@ -191,7 +196,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="1834467296210148203">Show Brave wallet icon on toolbar</translation>
 <translation id="6864914031231797928">Allow Google login for extensions</translation>
 <translation id="5927916530277631319">Method to resolve Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Learn More<ph name="END_LINK"/> about DNS over HTTPS and Ethereum privacy considerations.</translation>
 <translation id="5248318250177143470">Method to resolve Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Set up your IPNS keys</translation>
 <translation id="951216659045543447">Sign content by the corresponding private key and publish it to IPNS</translation>
@@ -223,7 +227,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Local node</translation>
 <translation id="4927734062756955434">IPFS public gateway address</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Learn more<ph name="END_LINK_MPL"/> about IPFS local node and gateway privacy considerations.</translation>
 <translation id="8425213833346101688">Change</translation>
 <translation id="557281710253742286">Set IPFS gateway</translation>
 <translation id="8571837315037233299">Gateway address</translation>
@@ -237,7 +240,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="8655170717758778983">Automatically redirect to IPFS pages via DNSLink when possible</translation>
 <translation id="2233724520223030977">Automatically uses DNSLink to navigate to an IPFS version of a website when possible</translation>
 <translation id="6554397389149987360">Uses Hangouts component to enable screen sharing and other features in the browser.</translation>
-<translation id="1765684547504191670">Uses Media Router component to enable Chromecast in the browser.</translation>
 <translation id="9156965752763025780">Your changes will take effect the next time you relaunch Brave.</translation>
 <translation id="7179921470347911571">Relaunch Now</translation>
 <translation id="8068526464562249859">Uses the IPFS Companion extension for enhanced IPFS support in Brave, including access to common IPFS tasks from your browser bar.</translation>
@@ -307,6 +309,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="6873781976650514089">this setting</translation>
 <translation id="6040143037577758943">Close</translation>
 <translation id="5600566490506283344">Brave ad notification</translation>
+<translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4877147287319222750">Add to sidebar</translation>
 <translation id="4233010476457917696">Show sidebar</translation>
 <translation id="5404213409401164238">Show sidebar</translation>
@@ -347,6 +350,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>source code used to create this copy<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Bookmark all tabs...</translation>
 <translation id="2336228925368920074">Bookmark All Tabs...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">To add a bookmark, click the bookmark button next to the address bar</translation>
 <translation id="4989337484121655457">Full Disk Access required</translation>
 <translation id="8025559074845816210">Brave needs Full Disk Access to import your Bookmarks from Safari.</translation>

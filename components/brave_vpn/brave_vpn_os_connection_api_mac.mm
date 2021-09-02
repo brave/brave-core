@@ -12,6 +12,7 @@
 #include "base/files/file_util.h"
 #include "base/mac/bundle_locations.h"
 #include "base/mac/foundation_util.h"
+#include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
 
 // Referenced GuardianConnect implementation.
@@ -249,6 +250,10 @@ void BraveVPNOSConnectionAPIMac::Disconnect(const std::string& name) {
     for (Observer& obs : observers_)
       obs.OnDisconnected(std::string());
   }];
+}
+
+void BraveVPNOSConnectionAPIMac::CheckConnection(const std::string& name) {
+  NOTIMPLEMENTED();
 }
 
 }  // namespace brave_vpn

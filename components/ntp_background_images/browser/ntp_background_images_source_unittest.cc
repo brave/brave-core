@@ -9,9 +9,9 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
-#include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -62,7 +62,7 @@ TEST_F(NTPBackgroundImagesSourceTest, BasicTest) {
           }
         ]
       })";
-  service_->OnGetComponentJsonData(false, test_json_string_referral);
+  service_->OnGetSponsoredComponentJsonData(false, test_json_string_referral);
   EXPECT_FALSE(source_->AllowCaching());
   EXPECT_TRUE(source_->IsWallpaperPath("sponsored-images/wallpaper-1.jpg"));
   EXPECT_FALSE(source_->IsValidPath("super-duper/brave.png"));
@@ -124,7 +124,7 @@ TEST_F(NTPBackgroundImagesSourceTest, BasicSuperReferralDataTest) {
           }
         ]
       })";
-  service_->OnGetComponentJsonData(true, test_json_string_referral);
+  service_->OnGetSponsoredComponentJsonData(true, test_json_string_referral);
   EXPECT_FALSE(source_->AllowCaching());
   EXPECT_TRUE(source_->IsTopSiteFaviconPath("super-referral/bat.png"));
   EXPECT_FALSE(source_->IsTopSiteFaviconPath("super-referral/logo.png"));

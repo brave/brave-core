@@ -24,7 +24,7 @@ import * as Result from '../../../../common/types/result'
 export interface Props {
   onClose: () => void
   onCreateAccount: (name: string) => void
-  onImportAccount: (name: string, key: string) => void
+  onImportAccount: (accountName: string, privateKey: string) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Result.Type<HardwareWalletAccount[]>
   accounts: WalletAccountType[]
   title: string
@@ -160,14 +160,14 @@ const AddAccountModal = (props: Props) => {
               onChange={handleAccountNameChanged}
             />
             <NavButton
-                onSubmit={onSubmit}
-                disabled={isDisabled}
-                text={
-                  tab === 'create' ?
-                    `${locale.addAccountCreate} ${locale.account}`
-                    : locale.addAccountImport
-                }
-                buttonType='primary'
+              onSubmit={onSubmit}
+              disabled={isDisabled}
+              text={
+                tab === 'create' ?
+                  `${locale.addAccountCreate} ${locale.account}`
+                  : locale.addAccountImport
+              }
+              buttonType='primary'
             />
           </>
         }

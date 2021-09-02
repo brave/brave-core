@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Clicked</translation>
 <translation id="7119308337584989771">Dismissed</translation>
 <translation id="6805660603861526473">Viewed</translation>
+<translation id="1501075228659004450">Hmm, it looks like your Brave Rewards wallet has already been verified with another <ph name="PROVIDER"/> account. Please try verifying again using your previous account.</translation>
+<translation id="5111921830714291902">Error: Different account</translation>
 <translation id="2359865110462963929">BAT is not currently supported in your region. Please refer <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> for updates.</translation>
 <translation id="1737873393693460829">By turning on [[title]], you agree to the <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Error creating Brave Browser BAT card</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">Continue</translation>
 <translation id="5112354605357157725">Continue to login</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> requires a minimum balance of <ph name="AMOUNT"/> BAT to create an account. If you connected an account previously,</translation>
+<translation id="752216563428219524">Ads not initialised, please refresh the page.</translation>
 <translation id="7422678632904904341">Amount:</translation>
 <translation id="6969783933307596818">Automatically refresh every 5 seconds</translation>
 <translation id="5025866799968038247">Balance info</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">Auto Contribute</translation>
 <translation id="2927922949538312364">One-time tip</translation>
 <translation id="3164105678355419142">Recurring tip</translation>
+<translation id="916115051162298064">Ad diagnostics</translation>
 <translation id="7806880412350961625">Event logs</translation>
 <translation id="4309915981827077375">General info</translation>
 <translation id="3662406032239313663">Logs</translation>
@@ -351,6 +355,7 @@
 <translation id="4371618764691059036">Monthly contribution has been set.</translation>
 <translation id="6356822617569064293">Next contribution date:</translation>
 <translation id="3593485149443019592">Not enough tokens. Please <ph name="LINK_BEGIN"/>add funds<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave collects 5% of the tip amount as a processing fee.</translation>
 <translation id="207268487070188114">One-time tip</translation>
 <translation id="69861679024013299">One-time tip amount:</translation>
 <translation id="3669086939205397942">Hold on, you can’t tip yet</translation>
@@ -359,6 +364,7 @@
 <translation id="5531915212947569943">Sorry you're leaving…</translation>
 <translation id="1420756770787071946">Support this creator</translation>
 <translation id="3271043362279673449">Thanks for the support!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Your tip can take several minutes to process</translation>
 <translation id="3312470408978098625">Your one-time tip has been sent.</translation>
 <translation id="5096821444729034955">for their post</translation>
 <translation id="2978223787436054634">Tweet about your support</translation>
@@ -413,6 +419,7 @@
 <translation id="4241224519481557898">Category</translation>
 <translation id="3080423471207781945">Maximum ads received per hour:</translation>
 <translation id="2631006050119455616">Saved</translation>
+<translation id="7847825746023377505">No ads viewed in the last <ph name="TOTAL_DAYS"/> days.</translation>
 <translation id="7902420836933072528">Ads you've received in the past [[totalDays]] days</translation>
 <translation id="8863685593846905344">Ads history</translation>
 <translation id="2777306694585938662">Ads rewards received</translation>
@@ -566,7 +573,6 @@
 <translation id="8014425282125849700">Occasionally, you'll be offered free token grants from Brave. Be sure to keep an eye out for the alert!</translation>
 <translation id="1370034647041840967">Earn tokens for your attention to ads and pay it forward to support content creators you value!</translation>
 <translation id="4919888432594361029">Add, withdraw and manage funds at <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Your Brave wallet is powered by <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards is built on the Basic Attention Token. Learn more about BAT</translation>
 <translation id="7823359893981882407">here</translation>
 <translation id="3034163433136515805">View QR Code</translation>
@@ -644,12 +650,15 @@
 <translation id="39734939514946950">Your Reward amount</translation>
 <translation id="2151535059686617995">It’s your lucky day!</translation>
 <translation id="6436689611575806470">Your [[currency]] grant is on its way.</translation>
-<translation id="7512440811010447157">verify</translation>
 <translation id="8267327690882073581">Verify Wallet</translation>
 <translation id="543510923939676996">Wallet verified</translation>
-<translation id="2659764755126740206">Go to my <ph name="PROVIDER"/> account</translation>
+<translation id="2445110450361135194">Go to your <ph name="PROVIDER"/> account</translation>
+<translation id="4244985009709452836">Log into your <ph name="PROVIDER"/> account</translation>
 <translation id="3699674790322420653">Complete wallet verification</translation>
 <translation id="9200453331904391567">Disconnect from Brave Rewards</translation>
+<translation id="3656941797339037856">Link Rewards to Gemini!</translation>
+<translation id="671838195432136371">Gemini lets you easily trade, store, and earn 3.49% APY* on your BAT. New Gemini users who link receive 5 free BAT!</translation>
+<translation id="9136976526700181750">* Gemini Earn APY as of Aug 15th 2021</translation>
 <translation id="7404779623219601861">Redeem BAT for gift cards</translation>
 <translation id="6215565499749144110">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</translation>
 <translation id="6915065518766963119">* Requires Uphold verification.</translation>
@@ -734,6 +743,7 @@
 <translation id="1833248467354516560">Unit price</translation>
 <translation id="4763179765154524864">Total spent</translation>
 <translation id="8851480289992540512">Total received</translation>
+<translation id="824449983246282560">You do not have any balances in your account. Visit Gemini to purchase some.</translation>
 <translation id="8624961452383848703">I want to convert …</translation>
 <translation id="616639131065447379">Welcome to Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets lets you work with cryptocurrency and related assets in Brave. Crypto Wallets supports Ethereum tokens like ETH and BAT, as well as collectibles, and lets you work with Ðapps and other smart contracts. All this is meant for people who are familiar with Ethereum and other blockchain systems — or are excited to learn.</translation>

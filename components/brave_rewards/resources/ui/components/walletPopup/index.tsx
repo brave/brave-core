@@ -56,6 +56,10 @@ export default class WalletPopup extends React.PureComponent<Props, {}> {
       case 'pending': {
         return getLocale('walletPending')
       }
+      case 'disconnected_unverified':
+      case 'disconnected_verified': {
+        return getLocale('walletDisconnected')
+      }
     }
 
     return ''

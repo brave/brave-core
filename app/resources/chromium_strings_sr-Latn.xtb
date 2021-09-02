@@ -47,7 +47,6 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="8372880274820509128">Brave će šifrovati podatke radi dodatne sigurnosti.</translation>
 <translation id="2770231113462710648">Promeni podrazumevani pregledač u:</translation>
 <translation id="2799223571221894425">Ponovo pokreni</translation>
-<translation id="6811506454451584223">Zaseban Brave profil?</translation>
 <translation id="3783547330001921298">Ovim će se napraviti nov Brave profil za <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Ukloni iz Brave-a...</translation>
 <translation id="2885378588091291677">Menadžer zadataka</translation>
@@ -70,17 +69,19 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="2339258256897053758">Nedostaju šifre za Brave API. Neke funkcije Brave-a će biti onemogućene.</translation>
 <translation id="8926637909431618259">Nastavi sa pokretanjem aplikacija u pozadini kada se Brave zatvori</translation>
 <translation id="4480040274068703980">Chrome OS ne može da sinhronizuje podatke zbog greške pri prijavljivanju.</translation>
+<translation id="1166275459137851283">Brave preporučuje da ne preuzimate niti otvarate ovaj fajl</translation>
 <translation id="2711887072399498551">Brave profil sa ovim nalogom već postoji</translation>
 <translation id="2297290224191497273">Želite da pređete na postojeći Brave profil?</translation>
 <translation id="2450003541323895471">Pomoću Brave profila možete da razdvojite sve Brave sadržaje. Napravite profile za prijatelje i porodicu ili razdvojite posao i zabavu.</translation>
+<translation id="7275165473619697274">Instalacija Chrome OS-a je u toku</translation>
 <translation id="9216183508558772570">Brave će vas obavestiti kada se prijavite pomoću ugrožene lozinke</translation>
 <translation id="5853262807109651878">Ovim ćete izbrisati <ph name="ITEMS_COUNT"/> stavke(i) sa ovog uređaja. Da biste kasnije vratili podatke, prijavite se u Brave kao <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Pomoću prečice <ph name="SHORTCUT"/> možete da prelazite sa jednog Brave profila na drugi</translation>
 <translation id="8703492925273919597">Zatvorite sve Brave prozore i pokušajte ponovo.</translation>
 <translation id="1384923383737428730">Na računaru postoji štetan softver. Brave može da ga ukloni, vrati podešavanja i onemogući dodatke da bi pregledač mogao ponovo da radi uobičajeno.</translation>
+<translation id="2409866122341731384">Obriši podatke sa hard-diska i instaliraj Chrome OS</translation>
 <translation id="7029305463989165490">Da biste poslali broj sa <ph name="ORIGIN"/> na Android telefon, prijavite se u Brave na oba uređaja.</translation>
 <translation id="4304059894777924102">Brave ne može da vam proverava lozinke. Proverite internet vezu.</translation>
-<translation id="2588634262982826227">Chrome OS može uvek da vraća vaše aplikacije i stranice posle restartovanja, a da ne mora svaki put da vas pita.</translation>
 <translation id="1807774211756215222">Otvori link u novoj Brave &amp;kartici</translation>
 <translation id="7453070689008684791">Brave će pristupati Disku da bi prikazivao predloge na traci za adresu</translation>
 <translation id="2106568569080763501">Brave vam omogućava da kliknete na broj telefona na vebu i da ga pozovete pomoću Skype-a!</translation>
@@ -98,6 +99,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="8923080813984421771"><ph name="MANAGER"/> zahteva da pročitate i prihvatite sledeće Uslove korišćenja usluge pre korišćenja ovog uređaja. Ovi uslovi ne proširuju, menjaju niti ograničavaju Uslove za Chrome OS.</translation>
 <translation id="3262506503470845422">Pronađite pomoć za Brave</translation>
 <translation id="7691786510374174420">Instalacija nije uspela zbog neodređene greške. Ako je Brave trenutno otvoren, zatvorite ga i pokušajte ponovo.</translation>
+<translation id="429583012151745428">Instalacija je u toku. Ne isključujte uređaj. Instalacija ne bi trebalo da traje duže od dvadeset minuta. Računar će se automatski isključiti posle instaliranja.</translation>
 <translation id="9183662282810237335">Želite li ipak da zatvorite Brave?</translation>
 <translation id="4065288863231444640">Neka Brave radi u pozadini</translation>
 <translation id="8148611988012584308">Prilagodite i kontrolišite Brave</translation>
@@ -132,7 +134,6 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave beta</translation>
 <translation id="707769633889902835">Chrome OS ne može da otvori ovu stranicu.</translation>
 <translation id="696826782632239602">Brave traži pristup vašoj lokaciji da biste je delili sa ovim sajtom</translation>
-<translation id="7886919915603831625">Brave preporučuje da ne preuzimate niti otvarate ovaj fajl.</translation>
 <translation id="1744365871163268756">Sačekajte da Brave instalira najnovija ažuriranja sistema.</translation>
 <translation id="3861679447659630159">Brave pokušava da izmeni lozinke. Unesite lozinku za Windows da biste to omogućili.</translation>
 <translation id="232381795826373334">Otvarajte PDF-ove u Brave-u</translation>
@@ -157,6 +158,15 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="4168372721886011198">Datoteka <ph name="FILE_NAME"/> je opasna, pa ju je Brave blokirao.</translation>
 <translation id="7006260220514217183">Bezbedno pregledanje je isključeno. Brave preporučuje da ga uključite.</translation>
 <translation id="4060970194201477024">Ovde možete da prelazite sa jednog Brave profila na drugi</translation>
+<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Spremni smo da instaliramo Chrome OS! Kad nastavite:
+          <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Fajlovi, podaci i trenutni operativni sistem će biti obrisani.
+          <ph name="LIST_ITEM"/>Biće instaliran Chrome OS.
+          <ph name="LIST_ITEM"/>Uređaj će se isključiti kad se instalacija završi.
+          <ph name="END_LIST"/>
+          <ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Poslednji put vas podsećamo: instalacija će obrisati kompletne podatke sa hard-diska. Uverite se da imate rezervnu kopiju svih podataka koji su vam važni.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Kad instalacija počne, ne može da se otkaže.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Uverite se da ste prijavljeni u Brave na uređaju <ph name="TARGET_DEVICE_NAME"/> i probajte da pošaljete ponovo.</translation>
 <translation id="8320964054148936490">Ovaj računar već ima noviju verziju Brave-a. Ako softver ne funkcioniše, deinstalirajte Brave i pokušajte ponovo.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Ponovo ćemo pokrenuti Brave}=1{Ponovo ćemo pokrenuti Brave za 1 sekundu}one{Ponovo ćemo pokrenuti Brave za # sekundu}few{Ponovo ćemo pokrenuti Brave za # sekunde}other{Ponovo ćemo pokrenuti Brave za # sekundi}}</translation>
@@ -174,6 +184,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="2644798301485385923">Sistem Chrome OS</translation>
 <translation id="1684121725014454063">Dobro došli u Brave profile</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave će se restartovati za 1 sekundu}one{Brave će se restartovati za # sekundu}few{Brave će se restartovati za # sekunde}other{Brave će se restartovati za # sekundi}}</translation>
+<translation id="664235759707825982">Sve je spremno za instaliranje Chrome OS-a</translation>
 <translation id="2675662665675552980">Kontroliše i stranicu koja se prikazuje kada pokrenete Brave.</translation>
 <translation id="5590013613412457132">Deinstaliraj Brave</translation>
 <translation id="8646609321956191980">Svaki profil zadržava sopstvene Brave podatke, poput obeleživača, istorije, lozinki i drugog sadržaja</translation>
@@ -188,6 +199,7 @@ Neke funkcije će možda biti nedostupne. Navedite drugi direktorijum profila i
 <translation id="6666624454809779082">Brave je već instaliran za sve korisnike na računaru.</translation>
 <translation id="5360050006043219962">Da biste pristupali Brave sadržaju na svim uređajima, prijavite se, pa uključite sinhronizaciju.</translation>
 <translation id="8291513491595858997">Roditelj je isključio Dozvole za sajtove, aplikacije i dodatke za Brave. Omogućavanje ove stavke (<ph name="EXTENSION_TYPE_PARAMETER"/>) nije dozvoljeno.</translation>
+<translation id="1810203443153428607">Instalacija Chrome OS-a će zameniti sve podatke na uređaju.</translation>
 <translation id="8211837073776713955">Brave vas obaveštava ako su lozinke ugrožene</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (kopirano u Brave)</translation>
@@ -221,6 +233,10 @@ Brave ne može da vrati podešavanja.</translation>
       podešavanjima Chrome OS-a<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave koristi kameru i mikrofon.</translation>
 <translation id="2827121003398607864">Upravo smo poboljšali Brave</translation>
+<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Pre nego što počnemo, obavezno napravite ažurnu rezervnu kopiju podataka. Instalacija Chrome OS-a će zameniti sve podatke na hard-disku.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Brave nije odgovoran za gubitak podataka i ne garantuje da će Chrome OS funkcionisati na neovlašćenim modelima. Posetite [neutvrđeno] da biste saznali više o ovlašćenim modelima.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Saznajte više o instaliranju Chrome OS-a i brisanju podataka: [neutvrđeni URL]<ph name="END_PARAGRAPH3"/>
+          <ph name="BEGIN_PARAGRAPH4"/>Ako ste spremni da nastavite, kliknite na Instaliraj Chrome OS i provešćemo vas kroz instalaciju u samo nekoliko lakih koraka. Imaćete još jednu priliku za potvrdu pre nego što primenimo promene na računaru.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave nije podrazumevani pregledač</translation>
 <translation id="5477319665405831211">Sinhronizujte i personalizujte Brave na svim uređajima</translation>
 <translation id="5419189641394808652">Brave ne može da sinhronizuje podatke jer Sinhronizacija nije dostupna za domen.</translation>
@@ -231,7 +247,6 @@ Brave ne može da vrati podešavanja.</translation>
 <translation id="8462524920674814187">Da biste dobijali buduća Brave ažuriranja, treba vam OS X 10.11 ili novija verzija. Ovaj računar koristi OS X 10.10.</translation>
 <translation id="7963515534397191222">Brave nije uspeo da se ažurira na najnoviju verziju, pa propuštate nove funkcije i bezbednosne ispravke.</translation>
 <translation id="7573289029918943991">Da biste proverili da li je uređaj ažuriran, idite u <ph name="LINK_BEGIN"/>Podešavanja Chrome OS-a<ph name="LINK_END"/></translation>
-<translation id="6755885556185485672">Chrome OS se nije ispravno zatvorio.</translation>
 <translation id="2925193881330501265">Bili ste prijavljeni na Brave kao <ph name="USER_EMAIL_ADDRESS"/>. Koristite isti nalog da biste se ponovo prijavili.</translation>
 <translation id="6915252145142862992">Ovo je sekundarna instalacija Brave-a pa ne možete da ga podesite kao podrazumevani pregledač.</translation>
 <translation id="7685904775439037072">Kada Brave dobije pristup, veb-sajtovi će moći da zatraže pristup.</translation>
@@ -263,7 +278,6 @@ Brave ne može da vrati podešavanja.</translation>
 <translation id="6389268239133412586">Ne možete da ažurirate Brave</translation>
 <translation id="6368958679917195344">Chrome OS omogućava dodatni <ph name="BEGIN_LINK_CROS_OSS"/>softver otvorenog koda<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8986207147630327271">Dodajete poslovni profil u ovaj pregledač i dajete administratoru kontrolu samo nad ovim poslovnim profilom.</translation>
-<translation id="1156157157416773301">Želite da premestite nalog na nov Brave profil?</translation>
 <translation id="5173820533850252773">Brave je zastareo</translation>
 <translation id="310518206836658214">{0,plural, =1{Ponovo ćemo pokrenuti Brave za jedan sat}one{Ponovo ćemo pokrenuti Brave za # sat}few{Ponovo ćemo pokrenuti Brave za # sata}other{Ponovo ćemo pokrenuti Brave za # sati}}</translation>
 <translation id="7863882214613921971">Otvori link u novoj Brave &amp;kartici</translation>

@@ -24,22 +24,23 @@ import {
   PanelTypes,
   AppObjectType,
   AppsListType,
-  AssetOptionType,
+  AccountAssetOptionType,
   BuySendSwapViewTypes,
   Network
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import { NetworkOptions } from '../options/network-options'
-import { WyreAssetOptions } from '../options/wyre-asset-options'
+import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { filterAppList } from '../utils/filter-app-list'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import LockPanel from '../components/extension/lock-panel'
 import {
+  StyledExtensionWrapperLonger,
   StyledExtensionWrapper,
   ScrollContainer,
   SelectContainer
 } from './style'
-import { AssetOptions } from '../options/asset-options'
+import { AccountAssetOptions } from '../options/asset-options'
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -102,7 +103,13 @@ export const _ConfirmTransaction = () => {
     toAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
     erc20Token: batTokenInfo,
     tokenPrice: '0.35',
-    ethPrice: '3058.35'
+    ethPrice: '3058.35',
+    transactionData: {
+      functionName: 'Atomic Match_',
+      parameters: 'Parameters: [ {"type": "uint256"}, {"type": "address[]"}, {"type": "address"}, {"type": "uint256"} ]',
+      hexData: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc',
+      hexSize: '228'
+    }
   }
 
   const onConfirmTransaction = () => {
@@ -113,21 +120,16 @@ export const _ConfirmTransaction = () => {
     alert('Rejected Transaction')
   }
 
-  const onClickMore = () => {
-    alert('Will Show More Modal')
-  }
-
   return (
-    <StyledExtensionWrapper>
+    <StyledExtensionWrapperLonger>
       <ConfirmTransactionPanel
         selectedNetwork={Network.Mainnet}
         onConfirm={onConfirmTransaction}
         onReject={onRejectTransaction}
         selectedAccount={accounts[0]}
-        onClickMore={onClickMore}
         transactionPayload={transactionPanelPayload}
       />
-    </StyledExtensionWrapper>
+    </StyledExtensionWrapperLonger>
   )
 }
 
@@ -156,14 +158,14 @@ export const _AllowAddNetwork = () => {
   }
 
   return (
-    <StyledExtensionWrapper>
+    <StyledExtensionWrapperLonger>
       <AllowAddNetworkPanel
         selectedNetwork={Network.Mainnet}
         onApprove={onApprove}
         onCancel={onCancel}
         networkPayload={networkPayload}
       />
-    </StyledExtensionWrapper>
+    </StyledExtensionWrapperLonger>
   )
 }
 
@@ -177,7 +179,13 @@ export const _AllowSpend = () => {
     contractAddress: '0x3f29A1da97149722eB09c526E4eAd698895b426',
     erc20Token: batTokenInfo,
     transactionFeeWei: '0.002447',
-    transactionFeeFiat: '$6.57'
+    transactionFeeFiat: '$6.57',
+    transactionData: {
+      functionName: 'Atomic Match_',
+      parameters: 'Parameters: [ {"type": "uint256"}, {"type": "address[]"}, {"type": "address"}, {"type": "uint256"} ]',
+      hexData: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc',
+      hexSize: '228'
+    }
   }
 
   const onConfirm = () => {
@@ -189,14 +197,14 @@ export const _AllowSpend = () => {
   }
 
   return (
-    <StyledExtensionWrapper>
+    <StyledExtensionWrapperLonger>
       <AllowSpendPanel
         selectedNetwork={Network.Mainnet}
         onConfirm={onConfirm}
         onReject={onReject}
         spendPayload={spendPayload}
       />
-    </StyledExtensionWrapper>
+    </StyledExtensionWrapperLonger>
   )
 }
 
@@ -214,21 +222,16 @@ export const _SignTransaction = () => {
     alert('Canceled Signing Transaction')
   }
 
-  const onClickMore = () => {
-    alert('Will Show More Modal')
-  }
-
   return (
-    <StyledExtensionWrapper>
+    <StyledExtensionWrapperLonger>
       <SignPanel
         selectedAccount={accounts[0]}
         selectedNetwork={Network.Mainnet}
         message='To avoid digital cat burglars, sign below to authenticate with CryptoKitties.'
         onCancel={onCancel}
         onSign={onSign}
-        onClickMore={onClickMore}
       />
-    </StyledExtensionWrapper>
+    </StyledExtensionWrapperLonger>
   )
 }
 
@@ -305,8 +308,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const [selectedNetwork, setSelectedNetwork] = React.useState<Network>(Network.Mainnet)
-  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AssetOptionType>(WyreAssetOptions[0])
-  const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>(AssetOptions[0])
+  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
+  const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [toAddress, setToAddress] = React.useState('')
   const [fromAmount, setFromAmount] = React.useState('')
@@ -347,7 +350,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     setShowSelectAsset(false)
   }
 
-  const onSelectAsset = (asset: AssetOptionType) => () => {
+  const onSelectAsset = (asset: AccountAssetOptionType) => () => {
     if (selectedPanel === 'buy') {
       setSelectedWyreAsset(asset)
     } else {
@@ -460,7 +463,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
               {showSelectAsset &&
                 <SelectContainer>
                   <SelectAsset
-                    assets={AssetOptions}
+                    assets={AccountAssetOptions}
                     onSelectAsset={onSelectAsset}
                     onBack={onHideSelectAsset}
                   />

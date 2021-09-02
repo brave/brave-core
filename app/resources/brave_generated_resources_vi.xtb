@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Phần thưởng của Brave</translation>
 <translation id="7942180974165298215">Chặn Quảng cáo Brave</translation>
 <translation id="4615489450165434530">Báo cáo trang web bị hỏng</translation>
+<translation id="1209739344687072997">Báo cáo trang web bị hỏng</translation>
 <translation id="6406506848690869874">Đồng bộ</translation>
 <translation id="1544192797660353713">Ví</translation>
 <translation id="2445484935443597917">Tạo hồ sơ mới</translation>
+<translation id="744341768939279100">Tạo hồ sơ mới</translation>
 <translation id="2666990579225592931">Mở cửa sổ khách</translation>
+<translation id="4986483413015198747">Mở cửa sổ khách</translation>
 <translation id="8275068909952022340">Nhiều hơn...</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID phần mở rộng "<ph name="EXTENSION_ID"/>") không được phép trong Brave.</translation>
 <translation id="6786747875388722282">Tiện ích mở rộng</translation>
@@ -45,10 +48,12 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="5802665280774361839">Hiện đề xuất tự động hoàn thành trên thanh địa chỉ</translation>
 <translation id="597020512043916976">Hiển thị các trang web hàng đầu trong các đề xuất tự động hoàn thành</translation>
 <translation id="264150068416846820">Hiển thị các trang web được đề xuất của Brave trong các đề xuất tự động hoàn thành</translation>
-<translation id="5529693968082667490">Hiển thị nút Tab tìm kiếm</translation>
+<translation id="5529693968082667490">Hiển thị nút tìm kiếm tab</translation>
 <translation id="6414370348346025511">Chế độ bảo vệ tiêu chuẩn đang bật.</translation>
 <translation id="814018970995616154">Kiểm tra các URL với danh sách những trang web không an toàn được lưu trữ trong Brave.</translation>
 <translation id="1144810021918451336">Không bảo vệ bạn khỏi các trang web, nội dung tải xuống và tiện ích mở rộng nguy hiểm.</translation>
+<translation id="6285118765755298263">Lập chỉ mục các công cụ tìm kiếm khác</translation>
+<translation id="919715748352669592">Tự động lập chỉ mục các trang web tuân theo thông số OpenSearch.</translation>
 <translation id="7781069478569868053">Trang Tab Mới</translation>
 <translation id="1988804048511540801">Trang tab mới hiển thị</translation>
 <translation id="2970343821770026391">Bảng điều khiển</translation>
@@ -97,7 +102,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="6303294677342628402">Lá chắn</translation>
 <translation id="7133511168130368997">Chặn các bộ theo dõi và quảng cáo bám theo bạn trên toàn mạng.</translation>
 <translation id="2761825942249694703">Đây là các cài đặt mặc định cho Lá chắn. Chúng áp dụng với mọi website trừ khi bạn thay đổi điều gì đó trong bảng điều khiển Lá chắn trên một website cụ thể. Việc thay đổi các cài đặt này sẽ không ảnh hưởng tới cài đặt mỗi trang hiện có của bạn.</translation>
-<translation id="1485394570478670912">Điều này sẽ chặn hầu hết các quảng cáo trên các trang web, không chặn Brave Private Ads — chúng được kiểm soát trong</translation>
+<translation id="1485394570478670912">Điều này sẽ chặn hầu hết các quảng cáo trên các trang web, không chặn Brave Private Ads, chúng được kiểm soát trong</translation>
 <translation id="6388201778088078932">cài đặt.</translation>
 <translation id="9185018653595759199">Chặn truyền thông xã hội</translation>
 <translation id="7390783310074170337">Chế độ xem mặc định</translation>
@@ -191,7 +196,6 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="1834467296210148203">Hiển thị biểu tượng Ví Brave trên thanh công cụ</translation>
 <translation id="6864914031231797928">Cho phép đăng nhập bằng Google cho các tiện ích mở rộng</translation>
 <translation id="5927916530277631319">Phương thức phân giải tên miền Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/> về DNS trên HTTPS và các cân nhắc quyền riêng tư của Ethereum.</translation>
 <translation id="5248318250177143470">Phương thức phân giải tên miền ENS (Dịch vụ Cung cấp Tên miền Ethereum)</translation>
 <translation id="7024553202001112871">Thiết lập khóa IPNS của bạn</translation>
 <translation id="951216659045543447">Ký nội dung bằng khóa riêng tư tương ứng và xuất bản lên IPNS</translation>
@@ -223,7 +227,6 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="1327977588028644528">Cổng vào</translation>
 <translation id="80225669816651290">Nút cục bộ</translation>
 <translation id="4927734062756955434">Địa chỉ cổng mạng IPFS công khai</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Tìm hiểu thêm<ph name="END_LINK_MPL"/> về nút cục bộ IPFS và các cân nhắc quyền riêng tư của cổng.</translation>
 <translation id="8425213833346101688">Thay đổi</translation>
 <translation id="557281710253742286">Đặt cổng mạng IPFS</translation>
 <translation id="8571837315037233299">Địa chỉ cổng mạng</translation>
@@ -237,7 +240,6 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="8655170717758778983">Tự động chuyển hướng đến các trang IPFS thông qua DNSLink khi có thể</translation>
 <translation id="2233724520223030977">Tự động dùng DNSLink để điều hướng đến phiên bản IPFS của một website khi có thể</translation>
 <translation id="6554397389149987360">Sử dụng thành phần của Hangouts để cho phép chia sẻ màn hình và các tính năng khác trong trình duyệt.</translation>
-<translation id="1765684547504191670">Sử dụng cấu phần Bộ định tuyến Phương tiện để bật Chromecast trong trình duyệt.</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
 <translation id="7179921470347911571">Khởi chạy lại Ngay</translation>
 <translation id="8068526464562249859">Sử dụng tiện ích mở rộng IPFS Companion để tăng cường hỗ trợ IPFS trong Brave, bao gồm quyền truy cập các tác vụ IPFS phổ biến từ thanh trình duyệt của bạn.</translation>
@@ -307,6 +309,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="6873781976650514089">cài đặt này</translation>
 <translation id="6040143037577758943">Đóng</translation>
 <translation id="5600566490506283344">Thông báo quảng cáo Brave</translation>
+<translation id="1516554614404600536">Brave Chú giải công cụ</translation>
 <translation id="4877147287319222750">Thêm vào Thanh bên</translation>
 <translation id="4233010476457917696">Hiển thị thanh bên</translation>
 <translation id="5404213409401164238">Hiển thị Thanh bên</translation>
@@ -347,6 +350,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
         Bạn có thể đọc <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>hướng dẫn cách tải xuống và tự xây dựng cho mình<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/>mã nguồn cụ thể dùng để tạo bản sao này<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Đánh dấu tất cả các tab...</translation>
 <translation id="2336228925368920074">Đánh dấu trang Tất cả các Tab...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Để thêm dấu trang, hãy nhấp vào nút dấu trang kế bên thanh địa chỉ</translation>
 <translation id="4989337484121655457">Cần được Truy cập Toàn bộ Ổ đĩa</translation>
 <translation id="8025559074845816210">Brave cần Truy cập Toàn bộ Ổ đĩa để có thể nhập các Dấu trang của bạn từ Safari.</translation>

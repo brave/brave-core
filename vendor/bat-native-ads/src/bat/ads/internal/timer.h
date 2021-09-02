@@ -44,8 +44,8 @@ class Timer {
   void FireNow();
 
   // Call this method to stop the timer. It is a no-op if the timer is not
-  // running
-  void Stop();
+  // running. Returns |true| if the timer was stopped, otherwise returns |false|
+  bool Stop();
 
  private:
   std::unique_ptr<base::OneShotTimer> timer_;

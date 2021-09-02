@@ -18,7 +18,7 @@
 <translation id="5345505584130165588">Brave-skjold og -personvern</translation>
 <translation id="4692623383562244444">Søkemotorer</translation>
 <translation id="1468415711258933398">Standardfane</translation>
-<translation id="3377025655491224618">Inkognitofane</translation>
+<translation id="3377025655491224618">Privat fane</translation>
 <translation id="9148058034647219655">Avslutt</translation>
 <translation id="4022987104439075738">IPFS-gateway</translation>
 <translation id="2688519859165248360">Tillater navigering til IPFS-ressurser gjennom en IPFS-inngangsport</translation>
@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Forhindrer sporere og annonser fra å lastes inn og vises på nettsider</translation>
 <translation id="1680858055899097121">Ikke behold faner på tvers av surfeøkter</translation>
 <translation id="7142548388914389999">Tillat produktanalyse som ivaretar personvern (P3A)</translation>
-<translation id="5469408008145872264">Denne helt anonymiserte informasjonen hjelper Brave med å anslå den samlede bruken av enkelte funksjoner og forbedre denne for deg.</translation>
+<translation id="5254037869598726291">Denne helt anonymiserte informasjonen hjelper Brave med å anslå den samlede bruken av enkelte funksjoner og forbedre denne for deg.</translation>
 <translation id="7977176350719484850">Est. data\nlagret</translation>
 <translation id="9008534313521214777">Beregnet tid\nspart</translation>
 <translation id="6572660632052512096">Skrivebordsmodus</translation>
@@ -241,7 +241,6 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="723054503945711909">Brave Software Inc. verken behandler, lagrer eller bruker noen av de personlige opplysningene som du gir til Uphold når du oppretter konto hos dem.</translation>
 <translation id="3699674790322420653">Fullfør lommebokverifiseringen</translation>
 <translation id="2193391216824305230">Brukerlommebok</translation>
-<translation id="7591798679868259510">Gå til Uphold-kontoen min</translation>
 <translation id="9200453331904391567">Koble fra Brave Rewards</translation>
 <translation id="6239274080752256452">Ta ut penger</translation>
 <translation id="8874184842967597500">Ikke tilkoblet</translation>
@@ -466,7 +465,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="1078265935778232285">Velkommen til Brave-nettleseren</translation>
 <translation id="6824713633331856331">Hjelp oss med å lære anonymt</translation>
 <translation id="6116685031674149112">Brave beskytter personvernet ditt, og\nsetter pris på at du samtykker i følgende:</translation>
-<translation id="3971666849661839619">Hjelp oss med å forbedre Brave ved å sende rapporter om krasj og fullstendig anonymisert <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Hjelp oss med å forbedre Brave ved å sende rapporter om krasj og fullstendig anonymisert <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">privat produktanalyse.</translation>
 <translation id="5187052478998910855">Behov for å friske opp kunnskapene dine om Rewards?</translation>
 <translation id="8622329973403382303">Ta en rask omvisning og frisk opp kunnskapen om hvordan du går inn i historien som Rewards-rockestjerne!</translation>
@@ -551,12 +550,36 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="2360588547830602174">Kunne ikke gjenopprette konto. Prøv igjen.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Markedspris i ETH</translation>
+<translation id="5593852897152820572">Pris i ETH</translation>
 <translation id="6748108480210050150">Fra</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
 <translation id="8654192805213365413">75 %</translation>
 <translation id="6159566011642056819">Til (anslag)</translation>
+<translation id="6998989275928107238">Til</translation>
+<translation id="6664416064035847539">adresse eller URL</translation>
 <translation id="59223531494896848">Begrensning</translation>
 <translation id="3567988240819868195">Marked</translation>
 <translation id="632241521608275119">Slingringstoleranse</translation>
+<translation id="4500473291496079954">Utløper om</translation>
+<translation id="1987317783729300807">Kontoer</translation>
+<translation id="3535654229833214438">Transaksjoner</translation>
+<translation id="4636930964841734540">Info</translation>
+<translation id="6284218950354553099">Automatisk ping dagsforbruk til Brave</translation>
+<translation id="5288333155754958121">Denne anonyme, private pingen gjør at Brave kan estimere antall aktive brukere.</translation>
+<translation id="3819257035322786455">Sikkerhetskopi</translation>
+<translation id="4608713693379664295">Primære kryptokontoer</translation>
+<translation id="4003821417160006384">Sekundære kontoer</translation>
+<translation id="8094541587800369158">Disse kontoene kan brukes med web 3-apper og kan vises i porteføljen din, men de kan ikke gjenopprettes ved hjelp av gjenopprettingsfrasen fra backupen for primærkontoen din. Slå på Brave Sync-kontoer for automatisk gjenoppretting av sekundære kontoer.</translation>
+<translation id="6725413948756358325">Kontonavn</translation>
+<translation id="6062431965141524986">Du kan opprette en sekundær konto ved å importere den personlige nøkkelen din.</translation>
+<translation id="3952797765659730604">Skriv inn, lim inn eller importer din personlige nøkkelstrengfil eller JSON</translation>
+<translation id="569068482611873351">Importer …</translation>
+<translation id="1940465339426637378">Eiendeler</translation>
+<translation id="4522570452068850558">Detaljer</translation>
+<translation id="9065203028668620118">Endre</translation>
+<translation id="3995184924764722477">Kontodetaljer</translation>
+<translation id="8967036623785635603">Endre synlige ressurser</translation>
+<translation id="5050890334032852465">Lagre kontoliste</translation>
+<translation id="7755766175599167100">Søk etter tokener</translation>
 </translationbundle>

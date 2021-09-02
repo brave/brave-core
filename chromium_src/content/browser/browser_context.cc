@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/memory/ref_counted.h"
+#include "content/browser/blob_storage/chrome_blob_storage_context.h"
 #include "content/browser/dom_storage/dom_storage_context_wrapper.h"
 #include "content/browser/dom_storage/session_storage_namespace_impl.h"
 #include "content/browser/renderer_host/navigation_controller_impl.h"
@@ -20,6 +21,11 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
+
+mojo::PendingRemote<storage::mojom::BlobStorageContext>
+GetRemoteBlobStorageContextFor(BrowserContext* browser_context) {
+  return content::ChromeBlobStorageContext::GetRemoteFor(browser_context);
+}
 
 scoped_refptr<content::SessionStorageNamespace> CreateSessionStorageNamespace(
     content::StoragePartition* partition,

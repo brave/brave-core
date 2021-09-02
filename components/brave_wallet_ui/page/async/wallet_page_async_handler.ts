@@ -11,7 +11,10 @@ import {
   CreateWalletPayloadType,
   RestoreWalletPayloadType,
   UpdateSelectedAssetType,
-  AddAccountPayloadType
+  AddAccountPayloadType,
+  AddImportedAccountPayloadType,
+  RemoveImportedAccountPayloadType,
+  ViewPrivateKeyPayloadType
 } from '../constants/action_types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -78,6 +81,26 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: Updat
   } else {
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, btcPriceInfo: undefined, usdPriceInfo: undefined, timeFrame: payload.timeFrame }))
   }
+})
+
+handler.on(WalletPageActions.addImportedAccount.getType(), async (store, payload: AddImportedAccountPayloadType) => {
+  const keyringController = (await getAPIProxy()).keyringController
+  const result = await keyringController.addImportedAccount(payload.accountName, payload.privateKey)
+  return result.success
+})
+
+handler.on(WalletPageActions.removeImportedAccount.getType(), async (store, payload: RemoveImportedAccountPayloadType) => {
+  const keyringController = (await getAPIProxy()).keyringController
+  const result = await keyringController.removeImportedAccount(payload.address)
+  return result.success
+})
+
+handler.on(WalletPageActions.viewPrivateKey.getType(), async (store, payload: ViewPrivateKeyPayloadType) => {
+  const keyringController = (await getAPIProxy()).keyringController
+  const result = payload.isDefault ?
+    await keyringController.getPrivateKeyForDefaultKeyringAccount(payload.address)
+    : await keyringController.getPrivateKeyForImportedAccount(payload.address)
+  store.dispatch(WalletPageActions.privateKeyAvailable({ privateKey: result.privateKey }))
 })
 
 // TODO(bbondy): Remove - Example usage:

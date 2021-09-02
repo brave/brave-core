@@ -24,9 +24,15 @@ function getRegionalLists () {
   actions.getRegionalLists()
 }
 
+function getListSubscriptions () {
+  const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+  actions.getListSubscriptions()
+}
+
 function initialize () {
   getCustomFilters()
   getRegionalLists()
+  getListSubscriptions()
   render(
     <Provider store={store}>
       <App />
@@ -44,12 +50,18 @@ function onGetRegionalLists (regionalLists: AdBlock.FilterList[]) {
   actions.onGetRegionalLists(regionalLists)
 }
 
+function onGetListSubscriptions (listSubscriptions: AdBlock.SubscriptionInfo[]) {
+  const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+  actions.onGetListSubscriptions(listSubscriptions)
+}
+
 // Expose functions to Page Handlers.
 // TODO(petemill): Use event listeners instead.
 // @ts-ignore
 window.brave_adblock = {
   onGetCustomFilters,
-  onGetRegionalLists
+  onGetRegionalLists,
+  onGetListSubscriptions
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

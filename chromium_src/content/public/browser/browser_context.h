@@ -15,8 +15,10 @@
 #include <string>
 
 #include "base/memory/ref_counted.h"
+#include "components/services/storage/public/mojom/blob_storage_context.mojom.h"
 #include "content/common/content_export.h"
 #include "content/public/browser/tld_ephemeral_lifetime.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
@@ -24,6 +26,9 @@ namespace content {
 class WebContents;
 class SessionStorageNamespace;
 class StoragePartition;
+
+CONTENT_EXPORT mojo::PendingRemote<storage::mojom::BlobStorageContext>
+GetRemoteBlobStorageContextFor(BrowserContext* browser_context);
 
 CONTENT_EXPORT scoped_refptr<content::SessionStorageNamespace>
 CreateSessionStorageNamespace(

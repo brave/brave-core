@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Brave-belønninger</translation>
 <translation id="7942180974165298215">Brave annonsesporing</translation>
 <translation id="4615489450165434530">Rapporter et nettsted som ikke fungerer</translation>
+<translation id="1209739344687072997">Rapporter et nettsted som ikke fungerer</translation>
 <translation id="6406506848690869874">Synkroniser</translation>
 <translation id="1544192797660353713">Lommebok</translation>
 <translation id="2445484935443597917">Opprett en ny profil</translation>
-<translation id="2666990579225592931">Åpne gjestevindu</translation>
+<translation id="744341768939279100">Opprett en ny profil</translation>
+<translation id="2666990579225592931">Åpne et gjestevindu</translation>
+<translation id="4986483413015198747">Åpne gjestevindu</translation>
 <translation id="8275068909952022340">Mer ...</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") er ikke tillatt hos Brave.</translation>
 <translation id="6786747875388722282">Utvidelser</translation>
@@ -45,10 +48,12 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="5802665280774361839">Vis autofullføring i adressefeltet</translation>
 <translation id="597020512043916976">Vis toppsider med autofullførte forslag</translation>
 <translation id="264150068416846820">Vis Brave-foreslåtte side med autofullførte forslag</translation>
-<translation id="5529693968082667490">Vis søkefaner-knappen</translation>
+<translation id="5529693968082667490">Vis knapp for å søke i faner</translation>
 <translation id="6414370348346025511">Standardbeskyttelse er på.</translation>
 <translation id="814018970995616154">Kontrollerer nettadresser mot en liste i Brave over utrygge nettsteder.</translation>
 <translation id="1144810021918451336">Beskytter deg ikke mot farlige nettsteder, nedlastinger eller utvidelser.</translation>
+<translation id="6285118765755298263">Indekser andre søkemotorer</translation>
+<translation id="919715748352669592">Indekserer automatisk nettsider som er i tråd med OpenSearch-spesifikasjonene.</translation>
 <translation id="7781069478569868053">Ny fane-side</translation>
 <translation id="1988804048511540801">Ny faneside vises</translation>
 <translation id="2970343821770026391">Instrumentbord</translation>
@@ -170,7 +175,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1834467296210148203">Vis Brave Wallet-ikonet i sidefelt</translation>
 <translation id="6864914031231797928">Tillat Google-pålogging for utvidelser</translation>
 <translation id="5927916530277631319">Metode for oppslag av ustoppelige domener</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Les mer<ph name="END_LINK"/> om DNS over personvernhensyn med HTTPS og Ethereum.</translation>
 <translation id="5248318250177143470">Metode for oppslag av Ethereum-navnetjeneste (ENS)</translation>
 <translation id="7024553202001112871">Still inn IPNS-nøklene dine</translation>
 <translation id="951216659045543447">Signér innhold med den samsvarende private nøkkelen, og publiser det i IPNS</translation>
@@ -192,7 +196,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1534091531114892221">Konfigurer beskrivelsen av ipfs-peers</translation>
 <translation id="8996633027318264334">Vil du virkelig slette <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Noden er ikke sendt ut</translation>
-<translation id="616058968889448209">Feil ved lansering av IPFS-tjeneste, mer informasjon er tilgjengelig på <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">IPFS-opplastingafeil. Du finner mer informasjon på <ph name="BEGIN_LINK"/>diagnosesiden<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>'-nøkkelimport mislyktes</translation>
 <translation id="3364053282600191535">Kunne ikke eksportere nøkkel '<ph name="KEY_NAME"/>'</translation>
 <translation id="8275038454117074363">Importer</translation>
@@ -202,7 +206,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal node</translation>
 <translation id="4927734062756955434">Offentlig IPFS-systemportadresse</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Les mer<ph name="END_LINK_MPL"/> om IPFS-personvernhensyn relatert til lokale noder og inngangsporter.</translation>
 <translation id="8425213833346101688">Endre</translation>
 <translation id="557281710253742286">Konfigurer IPFS-systemport</translation>
 <translation id="8571837315037233299">Systemportadresse</translation>
@@ -216,7 +219,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8655170717758778983">Viderekoble automatisk til IPFS-sider via DNSLink når det er mulig</translation>
 <translation id="2233724520223030977">Bruker automatisk DNSLink for å navigere til IPFS-versjoner av nettsteder når det er mulig</translation>
 <translation id="6554397389149987360">Bruk Hangouts-komponenten for å aktivere skjermdeling og andre funksjoner i nettleseren.</translation>
-<translation id="1765684547504191670">Bruker Media Router-komponenten for å aktivere Chromecast i nettleseren.</translation>
 <translation id="9156965752763025780">Endringene dine trer i kraft neste gang du starter Brave.</translation>
 <translation id="7179921470347911571">Start på nytt nå</translation>
 <translation id="8068526464562249859">Bruker IPFS Companion-programutvidelsen for forbedret IPFS-støtte i Brave, inkludert tilgang til vanlige IPFS-oppgaver fra topplinjemenyen i nettleseren din.</translation>
@@ -286,6 +288,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="6873781976650514089">denne innstillingen</translation>
 <translation id="6040143037577758943">Lukk</translation>
 <translation id="5600566490506283344">Varsel om Brave-reklame</translation>
+<translation id="1516554614404600536">Brave-tooltip</translation>
 <translation id="4877147287319222750">Legg til i sidestolpe</translation>
 <translation id="4233010476457917696">Vis sidefelt</translation>
 <translation id="5404213409401164238">Vis sidestolpe</translation>
@@ -326,6 +329,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
         Du kan lese <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>hvordan du laster ned <ph name="END_LINK_BUILD_INSTRUCTIONS"/> den spesifikke <ph name="BEGIN_LINK_SOURCE_CODE"/>kildekoden som ble brukt til å lage dette eksemplaret<ph name="END_LINK_SOURCE_CODE"/>, og bygge den selv.</translation>
 <translation id="4474155171896946103">Bokmerk alle fanene</translation>
 <translation id="2336228925368920074">Legg inn bokmerke for alle åpne faner</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">For å legge til bokmerker, klikk på bokmerkeknappen ved siden av adressefeltet.</translation>
 <translation id="4989337484121655457">Fullstendig disktilgang kreves</translation>
 <translation id="8025559074845816210">Brave trenger fullstendig disktilgang for å importere bokmerkene dine fra Safari.</translation>

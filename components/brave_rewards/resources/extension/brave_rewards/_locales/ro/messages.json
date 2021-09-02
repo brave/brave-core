@@ -219,9 +219,23 @@
     "message": "Vă rugăm efectuați o copie de rezervă pentru portofelul Brave.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Aflați mai multe",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Eroare: alt cont",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, se pare că portofelul dvs. Brave Rewards a fost confirmat deja cu un alt cont $name$. Încercați să realizați confirmarea din nou utilizând celălalt cont.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Eroare: token-ul BAT nu este disponibil",
@@ -231,10 +245,6 @@
     "message": "Uphold nu acceptă încă BAT în regiunea dvs.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "Aflați mai multe",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "Eroare: cont blocat",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "Contul dvs. Uphold este blocat în prezent.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "Aflați mai multe",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Eroare: cont în așteptare",
@@ -255,10 +261,6 @@
     "message": "Contul dvs. Uphold este încă în așteptare.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Aflați mai multe",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Eroare: cont restricționat",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Contul dvs. Uphold este restricționat în prezent.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Aflați mai multe",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Limita dispozitivului a fost atinsă",
@@ -535,10 +533,6 @@
     "message": "Suma de Recompense",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "verifică",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "Deconectat",
     "description": "CTA status button"
@@ -552,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "Accesați contul meu $provider$",
+    "message": "Accesați contul dvs.  $provider$",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Conectați-vă la contul dvs. $provider$ ",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -658,6 +662,10 @@
   "walletConnected":  {
     "message": "Conectată",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Deconectat",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "În așteptare",

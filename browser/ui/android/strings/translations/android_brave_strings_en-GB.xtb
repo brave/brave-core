@@ -18,7 +18,7 @@
 <translation id="5345505584130165588">Brave shields &amp; privacy</translation>
 <translation id="4692623383562244444">Search engines</translation>
 <translation id="1468415711258933398">Standard tab</translation>
-<translation id="3377025655491224618">Incognito Tab</translation>
+<translation id="3377025655491224618">Private Tab</translation>
 <translation id="9148058034647219655">Exit</translation>
 <translation id="4022987104439075738">IPFS Gateway</translation>
 <translation id="2688519859165248360">Allows for navigation to IPFS resources through an IPFS Gateway</translation>
@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Prevents trackers &amp; ads from loading and showing in webpages</translation>
 <translation id="1680858055899097121">Don't persist tabs between browsing sessions</translation>
 <translation id="7142548388914389999">Allow privacy-preserving product analytics (P3A)</translation>
-<translation id="5469408008145872264">This completely anonymised info helps Brave estimate the overall usage of certain features and make it better for you.</translation>
+<translation id="5254037869598726291">This completely anonymised info helps Brave estimate the overall usage of certain features and make it better for you.</translation>
 <translation id="7977176350719484850">Est. Data\nSaved</translation>
 <translation id="6572660632052512096">Desktop mode</translation>
 <translation id="1340503115760585811">Enable desktop view for new tabs</translation>
@@ -235,7 +235,7 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="723054503945711909">Brave Software Inc. does not process, store or access any of the personal information that you provide to Uphold when you create an account with them.</translation>
 <translation id="3699674790322420653">Complete wallet verification</translation>
 <translation id="2193391216824305230">User Wallet</translation>
-<translation id="7591798679868259510">Go to my Uphold account</translation>
+<translation id="6585020831163574892">Go to your Uphold account</translation>
 <translation id="9200453331904391567">Disconnect from Brave Rewards</translation>
 <translation id="6239274080752256452">Withdraw Funds</translation>
 <translation id="8874184842967597500">Not connected</translation>
@@ -464,7 +464,7 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="1078265935778232285">Welcome to Brave Browser</translation>
 <translation id="6824713633331856331">Help us learn anonymously</translation>
 <translation id="6116685031674149112">Brave protects your privacy and\nappreciates your consent to the following:</translation>
-<translation id="3971666849661839619">Help improve Brave by sending crash reports and completely anonymised, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Help improve Brave by sending crash reports and completely anonymised, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">private product analytics.</translation>
 <translation id="5187052478998910855">Need a refresher on Rewards?</translation>
 <translation id="8622329973403382303">Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!</translation>
@@ -549,12 +549,36 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="2360588547830602174">Account recovery failed. Please try again.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Market price in ETH</translation>
+<translation id="5593852897152820572">Price in ETH</translation>
 <translation id="6748108480210050150">From</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">To (estimate)</translation>
+<translation id="6998989275928107238">To</translation>
+<translation id="6664416064035847539">address or url</translation>
 <translation id="59223531494896848">Limit</translation>
 <translation id="3567988240819868195">Market</translation>
 <translation id="632241521608275119">Slippage tolerance</translation>
+<translation id="4500473291496079954">Expires in</translation>
+<translation id="1987317783729300807">Accounts</translation>
+<translation id="3535654229833214438">Transactions</translation>
+<translation id="4636930964841734540">Info</translation>
+<translation id="6284218950354553099">Automatically send daily usage ping to Brave</translation>
+<translation id="5288333155754958121">This anonymous, private ping lets Brave estimate active users.</translation>
+<translation id="3819257035322786455">Backup</translation>
+<translation id="4608713693379664295">Primary Crypto Accounts</translation>
+<translation id="4003821417160006384">Secondary Accounts</translation>
+<translation id="8094541587800369158">These accounts can be used with web 3 dapps and can be shown in your portfolio, however, they cannot not be restored via recovery phrase from your primary account backup. Enable Brave Sync accounts to auto-restore secondary accounts.</translation>
+<translation id="6725413948756358325">Account Name</translation>
+<translation id="6062431965141524986">You can create a secondary account by importing your private key.</translation>
+<translation id="3952797765659730604">Enter, paste, or import your private key string file or JSON.</translation>
+<translation id="569068482611873351">Import...</translation>
+<translation id="1940465339426637378">Assets</translation>
+<translation id="4522570452068850558">Details</translation>
+<translation id="9065203028668620118">Edit</translation>
+<translation id="3995184924764722477">Account Details</translation>
+<translation id="8967036623785635603">Edit visible assets</translation>
+<translation id="5050890334032852465">Save account watchlist</translation>
+<translation id="7755766175599167100">Search tokens</translation>
 </translationbundle>

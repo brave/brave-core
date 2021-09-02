@@ -38,7 +38,7 @@ const updateBadgeTextAllWindows = (windows: chrome.windows.Window[], state?: Rew
       return
     }
 
-    setBadgeText(state, isPublisherConnectedOrVerified(publisher.status), tab.id).catch((e) => { console.log(e) })
+    setBadgeText(state, isPublisherConnectedOrVerified(publisher.status), tab.id)
   }))
 
 }
@@ -111,7 +111,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
         // Valid match and either is a different tab with the same url,
         // or the same tab but it has been unloaded and re-loaded.
         // Set state.
-        setBadgeText(state, isPublisherConnectedOrVerified(publisher.status), tab.id).catch((e) => { console.log(e) })
+        setBadgeText(state, isPublisherConnectedOrVerified(publisher.status), tab.id)
         publishers[tabKey].tabId = tab.id
       }
 
@@ -133,7 +133,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
         const newPublisher = publishers[tabKey]
 
         if (newPublisher.tabId) {
-          setBadgeText(state, isPublisherConnectedOrVerified(newPublisher.status), newPublisher.tabId).catch((e) => { console.log(e) })
+          setBadgeText(state, isPublisherConnectedOrVerified(newPublisher.status), newPublisher.tabId)
         }
       }
 
@@ -178,7 +178,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
         state.currentNotification = id
       }
 
-      setBadgeText(state).catch((e) => { console.log(e) })
+      setBadgeText(state)
       break
     }
     case types.DELETE_NOTIFICATION: {
@@ -219,7 +219,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
         state.currentNotification = current
       }
 
-      setBadgeText(state).catch((e) => { console.log(e) })
+      setBadgeText(state)
 
       if (state.currentNotification === undefined) {
         updateBadgeTextAllWindows(payload.windows, state)
@@ -394,7 +394,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
           notifications: {},
           currentNotification: undefined
         }
-        setBadgeText(state).catch((e) => { console.log(e) })
+        setBadgeText(state)
         break
       }
 
@@ -427,7 +427,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
         state.currentNotification = id
       }
 
-      setBadgeText(state).catch((e) => { console.log(e) })
+      setBadgeText(state)
       break
     }
 
@@ -453,7 +453,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
           return
         }
 
-        setBadgeText(state, isPublisherConnectedOrVerified(publisher.status), publisher.tabId).catch((e) => { console.log(e) })
+        setBadgeText(state, isPublisherConnectedOrVerified(publisher.status), publisher.tabId)
       })
 
       break
@@ -481,7 +481,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
         notifications: {},
         currentNotification: undefined
       }
-      setBadgeText(state).catch((e) => { console.log(e) })
+      setBadgeText(state)
       break
     }
     case types.ON_COMPLETE_RESET: {

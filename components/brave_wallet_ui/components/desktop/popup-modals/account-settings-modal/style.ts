@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import ClipboardIcon from '../../../../assets/svg-icons/clipboard-icon.svg'
-import { LoaderIcon } from 'brave-ui/components/icons'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -71,7 +70,6 @@ export const AddressButton = styled.button`
   line-height: 30px;
   letter-spacing: 0.02em;
   color: ${(p) => p.theme.color.text03};
-  margin-bottom: 24px;
   cursor: pointer;
   outline: none;
   background: none;
@@ -83,6 +81,7 @@ export const ButtonRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-top: 24px;
 `
 
 export const CopyIcon = styled.div`
@@ -94,34 +93,62 @@ export const CopyIcon = styled.div`
   margin-left: 10px;
 `
 
-export const WatchlistScrollContainer = styled.div`
+export const PrivateKeyWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  position: relative;
-  min-height: 225px;
-  max-height: 225px;
-  margin-bottom: 24px;
-  box-sizing: border-box;
-  padding-right: 4px;
+  height: 100%;
 `
 
-export const LoadingWrapper = styled.div`
+export const WarningWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100%;
+  background-color: ${(p) => p.theme.color.warningBackground};
+  border-radius: 16px;
+  padding: 10px;
+  margin-bottom: 40px;
 `
 
-export const LoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.interactive08};
-  height: 70px;
-  width: 70px;
-  opacity: .4;
+export const WarningText = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: ${(p) => p.theme.color.text02};
+`
+
+export const PrivateKeyBubble = styled.button`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  background-color: ${(p) => p.theme.color.background01};
+  padding: 5px 10px;
+  max-width: 240px;
+  height: auto;
+  border-radius: 4px;
+  margin: 0px;
+  word-break: break-all;
+  font-family: Poppins;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 600;
+  color: ${(p) => p.theme.color.text01};
+  outline: none;
+  border: none;
+`
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
 `

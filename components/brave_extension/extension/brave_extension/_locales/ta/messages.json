@@ -20,7 +20,7 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "If a site appears broken, try shields down",
+    "message": "தளம் உடைந்ததாக தோன்றினால், கவசங்களை அமர்த்திப்பார்",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
@@ -32,7 +32,7 @@
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
-    "message": "Items blocked",
+    "message": "உருப்படிகள் தடுக்கப்பட்டன",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
@@ -60,7 +60,7 @@
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (aggressive)",
+    "message": "தடமிகள் & விளம்பரங்கள் தடு (கடுமையான)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
@@ -84,15 +84,15 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cross-site cookies blocked",
+    "message": "குறுக்கு-தள நினைவிகளை தடு",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "குக்கீகள் தடுக்கப்பட்டன",
+    "message": "நினைவிகள் தடுக்கப்பட்டன",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "All cookies allowed",
+    "message": "எல்லா நினைவிகளும் அனுமதிக்கப்பட்டது",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
@@ -128,7 +128,7 @@
     "description": "Message for the script resources allowed"
   },
   "blockAll": {
-    "message": "Block all",
+    "message": "அனைத்தையும் தடு",
     "description": "Message for the resources blocked *block all* option"
   },
   "allowAll": {
@@ -180,11 +180,11 @@
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
-    "message": "Advanced View",
+    "message": "மேம்பட்ட பார்வை",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Simple View",
+    "message": "எளிய பார்வை",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {

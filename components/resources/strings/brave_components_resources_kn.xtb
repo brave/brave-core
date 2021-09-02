@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">ಕ್ಲಿಕ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="7119308337584989771">ವಜಾಗೊಳಿಸಲಾಗಿದೆ</translation>
 <translation id="6805660603861526473">ವೀಕ್ಷಿಸಲಾಗಿದೆ</translation>
+<translation id="1501075228659004450">ಓಹ್, ನಿಮ್ಮ Brave Rewards ವ್ಯಾಲೆಟ್ ಅನ್ನು ಮತ್ತೊಂದು <ph name="PROVIDER"/> ಖಾತೆಯೊಂದಿಗೆ ಈಗಾಗಲೇ ಪರಿಶೀಲಿಸಲಾಗಿದೆ ಎಂಬುದಾಗಿ ಕಂಡುಬರುತ್ತಿದೆ. ನಿಮ್ಮ ಹಿಂದಿನ ಖಾತೆಯನ್ನು ಬಳಸಿಕೊಂಡು ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪರಿಶೀಲಿಸಲು ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="5111921830714291902">ದೋಷ: ಬೇರೆ ಖಾತೆ</translation>
 <translation id="2359865110462963929">ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ ಪ್ರಸ್ತುತ BAT ಬೆಂಬಲಿತವಾಗಿಲ್ಲ. ನವೀಕರಣಗಳಿಗಾಗಿ ದಯವಿಟ್ಟು <ph name="BEGIN_LINK"/>ಇಲ್ಲಿ<ph name="END_LINK"/> ಉಲ್ಲೇಖಿಸಿ.</translation>
 <translation id="1737873393693460829">[[title]] ಆನ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು <ph name="BEGIN_LINK1"/>ಸೇವಾ ನಿಯಮಗಳು<ph name="END_LINK1"/> ಮತ್ತು <ph name="BEGIN_LINK2"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_LINK2"/>ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
 <translation id="2564425876266960486">Brave ಬ್ರೌಸರ್ BAT ಕಾರ್ಡ್ ರಚಿಸುವಲ್ಲಿ ದೋಷ</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">ಮುಂದುವರೆಸಿ</translation>
 <translation id="5112354605357157725">ಲಾಗಿನ್ ಮಾಡಲು ಮುಂದುವರಿಯಿರಿ</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> ಗೆ ಖಾತೆ ರಚಿಸಲು ಕನಿಷ್ಠ <ph name="AMOUNT"/> BAT ಬ್ಯಾಲೆನ್ಸ್ ಅಗತ್ಯವಿದೆ. ನೀವು ಈ ಮೊದಲೇ ಖಾತೆಗೆ ಸಂಪರ್ಕ ಹೊಂದಿದ್ದರೇ,</translation>
+<translation id="752216563428219524">ಜಾಹೀರಾತುಗಳನ್ನು ಆರಂಭಿಸಲಾಗಿಲ್ಲ, ದಯವಿಟ್ಟು ಪುಟವನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ.</translation>
 <translation id="7422678632904904341">ಮೊತ್ತ:</translation>
 <translation id="6969783933307596818">ಪ್ರತಿ 5 ಸೆಕೆಂಡಿಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ರಿಫ್ರೆಶ್ ಮಾಡಿ</translation>
 <translation id="5025866799968038247">ಬ್ಯಾಲೆನ್ಸ್ ಮಾಹಿತಿ</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">ಸ್ವಯಂ ಕೊಡುಗೆ</translation>
 <translation id="2927922949538312364">ಒಂದು ಬಾರಿಯ ಸಲಹೆ</translation>
 <translation id="3164105678355419142">ಮರುಕಳಿಸುವಿಕೆಯ ಸಲಹೆ</translation>
+<translation id="916115051162298064">ಜಾಹೀರಾತು ಡಯಾಗ್ನೋಸಿಸ್</translation>
 <translation id="7806880412350961625">ಈವೆಂಟ್ ಲಾಗ್‌ಗಳು</translation>
 <translation id="4309915981827077375">ಸಾಮಾನ್ಯ ಮಾಹಿತಿ</translation>
 <translation id="3662406032239313663">ಲಾಗ್‌ಗಳು</translation>
@@ -351,6 +355,7 @@
 <translation id="4371618764691059036">ಮಾಸಿಕ ಕೊಡುಗೆಯನ್ನು ಹೊಂದಿಸಲಾಗಿದೆ.</translation>
 <translation id="6356822617569064293">ಮುಂದಿನ ಕೊಡುಗೆ ದಿನಾಂಕ:</translation>
 <translation id="3593485149443019592">ಸಾಕಷ್ಟು ಟೋಕನ್‌ಗಳಿಲ್ಲ. ದಯವಿಟ್ಟು <ph name="LINK_BEGIN"/>ಫಂಡ್‌ಗಳನ್ನು ಸೇರಿಸಿ<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಿಕೆ ಶುಲ್ಕವಾಗಿ 5% ರಷ್ಟು ಟಿಪ್ ಮೊತ್ತವನ್ನು Brave ಸಂಗ್ರಹಿಸುತ್ತದೆ.</translation>
 <translation id="207268487070188114">ಒಂದು-ಬಾರಿಯ ಟಿಪ್</translation>
 <translation id="69861679024013299">ಒಂದು-ಬಾರಿಯ ಟಿಪ್ ಮೊತ್ತ:</translation>
 <translation id="3669086939205397942">ಹೋಲ್ಡ್ ಮಾಡಿ, ನಿಮಗೆ ಇನ್ನೂ ಸಲಹೆ ನೀಡಲಾಗುವುದಿಲ್ಲ</translation>
@@ -359,6 +364,7 @@
 <translation id="5531915212947569943">ನೀವು ಹೊರಟು ಹೋಗುತ್ತಿರುವುದನ್ನು ನೋಡಿ ಬೇಸರವಾಗಿದೆ…</translation>
 <translation id="1420756770787071946">ಈ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಿ</translation>
 <translation id="3271043362279673449">ಬೆಂಬಲಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>ಗಮನಿಸಿ: <ph name="BOLD_END"/>ನಿಮ್ಮ ಟಿಪ್ ಅನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲು ಹಲವಾರು ನಿಮಿಷಗಳ ಸಮಯ ತೆಗೆದುಕೊಳ್ಳಬಹುದು</translation>
 <translation id="3312470408978098625">ನಿಮ್ಮ ಒಂದು ಬಾರಿಯ ಟಿಪ್ ಅನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ.</translation>
 <translation id="5096821444729034955">ಅವರ ಪೋಸ್ಟ್‌ಗಾಗಿ</translation>
 <translation id="2978223787436054634">ನಿಮ್ಮ ಬೆಂಬಲದ ಕುರಿತು ಟ್ವೀಟ್ ಮಾಡಿ</translation>
@@ -376,7 +382,7 @@
 <translation id="6318696841371191107">ತ್ವರಿತ ಪ್ರವಾಸ ಮಾಡಿ</translation>
 <translation id="8465790416279415448">ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು <ph name="TOS_LINK_BEGIN"/>ಸೇವಾ ನಿಯಮಗಳು<ph name="TOS_LINK_END"/> ಮತ್ತು <ph name="PP_LINK_BEGIN"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="PP_LINK_END"/>ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
 <translation id="8222322431155185238">Brave ರಿವಾರ್ಡ್‌ಗಳೊಂದಿಗೆ ಟಿಪ್</translation>
-<translation id="1895476463085410109">Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಗಳಿಸಿ ಮತ್ತು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಿ</translation>
+<translation id="1895476463085410109">Brave Private Ads ವೀಕ್ಷಿಸುವ ಮೂಲಕ ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಗಳಿಸಿ ಮತ್ತು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಿ</translation>
 <translation id="5705882733397021510">ಹಿಂತಿರುಗಿ</translation>
 <translation id="185034574799484512">’ತ್ವರಿತ ಪರಿಚಯಾತ್ಮಕ ಪ್ರಯಾಣವನ್ನು ಕೈಗೊಳ್ಳೋಣ</translation>
 <translation id="8281886186245836920">ಸ್ಕಿಪ್‌</translation>
@@ -413,6 +419,7 @@
 <translation id="4241224519481557898">ವರ್ಗ</translation>
 <translation id="3080423471207781945">ಪ್ರತಿ ಗಂಟೆಗೆ ಸ್ವೀಕರಿಸಲಾದ ಗರಿಷ್ಠ ಜಾಹೀರಾತುಗಳು:</translation>
 <translation id="2631006050119455616">ಉಳಿಸಲಾಗಿದೆ</translation>
+<translation id="7847825746023377505">ಕಳೆದ <ph name="TOTAL_DAYS"/> ದಿನಗಳಲ್ಲಿ ಯಾವುದೇ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಿಲ್ಲ.</translation>
 <translation id="7902420836933072528">ಹಿಂದಿನ [[totalDays]] ದಿನಗಳಲ್ಲಿ ನೀವು ಸ್ವೀಕರಿಸಿದ ಜಾಹೀರಾತುಗಳು</translation>
 <translation id="8863685593846905344">ಜಾಹೀರಾತುಗಳ ಇತಿಹಾಸ</translation>
 <translation id="2777306694585938662">ಜಾಹೀರಾತುಗಳ ರೀವಾರ್ಡ್‌ಗಳನ್ನು ಸ್ವೀಕರಿಸಲಾಗಿದೆ</translation>
@@ -566,7 +573,6 @@
 <translation id="8014425282125849700">ಸಾಂದರ್ಭಿಕವಾಗಿ, Brave ನಿಂದ ನಿಮಗೆ ಉಚಿತ ಟೋಕನ್ ಅನುಧಾನಗಳನ್ನು ನೀಡಲಾಗುತ್ತದೆ. ನೀವು ಸ್ವೀಕರಿಸುವ ಎಚ್ಚರಿಕೆ ಸಂದೇಶಗಳ ಮೇಲೆ ಒಂದು ಕಣ್ಣಿರಲಿ!</translation>
 <translation id="1370034647041840967">ಜಾಹೀರಾತುಗಳ ಬಗೆಗೆ ನೀವು ನೀಡುವ ಗಮನಕ್ಕೆ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ ಮತ್ತು ನೀವು ಗೌರವಿಸುವ ವಿಷಯ ರಚನೆಕಾರರಿಗೆ ಪಾವತಿಸಿ!</translation>
 <translation id="4919888432594361029"><ph name="PROVIDER"/> ಮೂಲಕ ಹಣವನ್ನು ಸೇರಿಸಿ, ಹಿಂಪಡೆಯಿರಿ ಮತ್ತು ನಿರ್ವಹಣೆ ಮಾಡಿ.</translation>
-<translation id="3092054349246483285">ನಿಮ್ಮ Brave ವ್ಯಾಲೆಟ್ <ph name="PROVIDER"/> ಮೂಲಕ ಸಂಚಾಲಿತ.</translation>
 <translation id="6401272292123354754">Basic Attention Token ಆಧಾರದಲ್ಲಿ Brave Rewards ರಚಿಸಲಾಗಿದೆ. BAT ಕುರಿತು ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
 <translation id="7823359893981882407">ಇಲ್ಲಿ</translation>
 <translation id="3034163433136515805">QR ಕೋಡ್ ವೀಕ್ಷಿಸಿ</translation>
@@ -644,12 +650,15 @@
 <translation id="39734939514946950">ನಿಮ್ಮ ರಿವಾರ್ಡ್ ಮೊತ್ತ</translation>
 <translation id="2151535059686617995">ಇದು ನಿಮ್ಮ ಅದೃಷ್ಟ ದಿನವಾಗಿದೆ!</translation>
 <translation id="6436689611575806470">ನಿಮ್ಮ [[currency]] ಅನುದಾನವು ಶೀಘ್ರದಲ್ಲೇ ನಿಮ್ಮ ಕೈತಲುಪಲಿದೆ.</translation>
-<translation id="7512440811010447157">ಪರಿಶೀಲಿಸಿ</translation>
 <translation id="8267327690882073581">ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ</translation>
 <translation id="543510923939676996">ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಲಾಗಿದೆ</translation>
-<translation id="2659764755126740206">ನನ್ನ <ph name="PROVIDER"/> ಖಾತೆಗೆ ಹೋಗಿ</translation>
+<translation id="2445110450361135194">ನಿಮ್ಮ <ph name="PROVIDER"/> ಖಾತೆಗೆ ಹೋಗಿ</translation>
+<translation id="4244985009709452836">ನಿಮ್ಮ <ph name="PROVIDER"/> ಖಾತೆಗೆ ಲಾಗ್ ಇನ್ ಮಾಡಿ</translation>
 <translation id="3699674790322420653">ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲನೆ ಪೂರ್ಣಗೊಳಿಸಿ</translation>
 <translation id="9200453331904391567">Brave ರಿವಾರ್ಡ್‌ಗಳಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ</translation>
+<translation id="3656941797339037856">Rewards ಅನ್ನು Gemini ಗೆ ಲಿಂಕ್ ಮಾಡಿ</translation>
+<translation id="671838195432136371">Gemini ನಿಮಗೆ ನಿಮ್ಮ BAT ನಲ್ಲಿ ಸುಲಭವಾಗಿ ಟ್ರೇಡ್ ಮಾಡಲು, ಸಂಗ್ರಹಣೆ ಮಾಡಲು ಮತ್ತು 3.49% APY* ಗಳಿಸಲು ಅವಕಾಶ ನೀಡುತ್ತದೆ. ಲಿಂಕ್ ಮಾಡುವ ಹೊಸ Gemini ಬಳಕೆದಾರರು 5 ಉಚಿತ BAT ಸ್ವೀಕರಿಸುತ್ತಾರೆ!</translation>
+<translation id="9136976526700181750">* ಆಗಸ್ಟ್ 15, 2021 ರ ಪ್ರಕಾರ Gemini ಗಳಿಕೆ APY</translation>
 <translation id="7404779623219601861">ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಿಗಾಗಿ BAT ರೀಡಿಮ್ ಮಾಡಿ</translation>
 <translation id="6215565499749144110">TAP ನೆಟ್‌ವರ್ಕ್‌ನೊಂದಿಗೆ, ಜನಪ್ರಿಯ ಹೆಸರು-ಬ್ರಾಂಡ್ ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಿಗಾಗಿ ನಿಮ್ಮ BAT ಅನ್ನು ನೀವು ಪುನಃ ಪಡೆದುಕೊಳ್ಳಬಹುದು.</translation>
 <translation id="6915065518766963119">* ಅಪ್‌ಹೋಲ್ಡ್ ಪರಿಶೀಲನೆಯ ಅಗತ್ಯವಿದೆ.</translation>
@@ -734,6 +743,7 @@
 <translation id="1833248467354516560">ಯೂನಿಟ್ ದರ</translation>
 <translation id="4763179765154524864">ಒಟ್ಟು ಖರ್ಚು ಮಾಡಿರುವುದು</translation>
 <translation id="8851480289992540512">ಒಟ್ಟು ಸ್ವೀಕರಿಸಲಾಗಿದೆ</translation>
+<translation id="824449983246282560">ನಿಮ್ಮ ಖಾತೆಯಲ್ಲಿ ನೀವು ಯಾವುದೇ ಬ್ಯಾಲೆನ್ಸ್‌ಗಳನ್ನು ಹೊಂದಿಲ್ಲ. ಏನನ್ನಾದರೂ ಖರೀದಿ ಮಾಡಲು Gemini ಗೆ ಭೇಟಿ ನೀಡಿ.</translation>
 <translation id="8624961452383848703">ನಾನು ಇದನ್ನು ಪರಿವರ್ತಿಸಲು ಬಯಸುತ್ತೇನೆ…</translation>
 <translation id="616639131065447379">Brave Crypto ವ್ಯಾಲೆಟ್‌ಗಳಿಗೆ ಸ್ವಾಗತ</translation>
 <translation id="1740464057879304704">Crypto ವ್ಯಾಲೆಟ್‌ಗಳು Brave ‌ನಲ್ಲಿ ಕ್ರಿಪ್ಟೋಕರೆನ್ಸಿ ಮತ್ತು ಸಂಬಂಧಿತ  ಸ್ವತ್ತುಗಳೊಂದಿಗೆ ಕೆಲಸ ಮಾಡಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ. Crypto ವ್ಯಾಲೆಟ್‌ಗಳು ETH ಮತ್ತು BAT ನಂತಹ Ethereum ಟೋಕನ್‌ಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ, ಜೊತೆಗೆ ಸಂಗ್ರಹಣೆಗಳು Ð ಆ್ಯಪ್‌ಗಳು ಮತ್ತು ಇತರ ಸ್ಮಾರ್ಟ್ ಒಪ್ಪಂದಗಳೊಂದಿಗೆ ಕೆಲಸ ಮಾಡಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ. ಇವೆಲ್ಲವೂ Ethereum ಮತ್ತು ಇತರ ಬ್ಲಾಕ್‌ಚೈನ್ ವ್ಯವಸ್ಥೆಗಳೊಂದಿಗೆ ಪರಿಚಿತವಾಗಿರುವ — ಅಥವಾ ಕಲಿಯಲು ಉತ್ಸುಕರಾಗಿರುವ ಜನರಿಗೆ ಮಾತ್ರ.</translation>

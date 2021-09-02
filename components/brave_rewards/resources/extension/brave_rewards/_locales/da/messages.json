@@ -219,9 +219,23 @@
     "message": "Sikkerhedskopiér venligst din Brave Tegnebog. ",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Få mere at vide",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Fejl: En anden konto",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, det ser ud til, at din Brave Rewards-wallet allerede er blevet bekræftet på en anden $name$-konto. Forsøg at bekræfte den igen med din tidligere konto.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Fejl: BAT ikke tilgængelig",
@@ -231,21 +245,13 @@
     "message": "BAT understøttes endnu ikke i din region på Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "Få mere at vide",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
-    "message": "Fejl; Blokeret konto",
+    "message": "Fejl: Blokeret konto",
     "description": "Title for blocked user notification"
   },
   "upholdBlockedUserNotification": {
     "message": "Din konto på Uphold er i øjeblikket blokeret.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "Få mere at vide",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Fejl: Afventende konto",
@@ -255,10 +261,6 @@
     "message": "Din konto på Udhold afventer stadig",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Få mere at vide",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Fejl: Konto med begrænsninger",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Din konto hos Uphold er i øjeblikket begrænset.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Få mere at vide",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Enhedsgrænse nået",
@@ -535,10 +533,6 @@
     "message": "Dit præmiebeløb ",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "verificere",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "Afbrudt",
     "description": "CTA status button"
@@ -552,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "Gå til min $provider$-konto",
+    "message": "Gå til din $provider$-konto ",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Log på din $provider$-konto ",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -658,6 +662,10 @@
   "walletConnected":  {
     "message": "Tilsluttet",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Afbrudt",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "Afventer ",

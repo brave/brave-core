@@ -72,6 +72,7 @@
     *** mSyncEncryption;
     *** mManageSyncData;
     *** mSyncPaymentsIntegration;
+    *** mTurnOffSync;
 }
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
@@ -90,7 +91,13 @@
 }
 
 -keep class org.chromium.chrome.browser.ui.appmenu.AppMenu {
+    public <init>(...);
     *** getPopupPosition(...);
+    *** runMenuItemEnterAnimations(...);
+}
+
+-keep class org.chromium.chrome.browser.ui.appmenu.BraveAppMenu {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator {

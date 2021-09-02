@@ -199,6 +199,34 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
             "26132fdbe7bf89cbc64cf8dafa3f9f88b8666220");
 }
 
+TEST(HDKeyUnitTest, GenerateFromPrivateKey) {
+  std::vector<uint8_t> private_key;
+  ASSERT_TRUE(base::HexStringToBytes(
+      "bb7d39bdb83ecf58f2fd82b6d918341cbef428661ef01ab97c28a4842125ac23",
+      &private_key));
+  std::unique_ptr<HDKey> key = HDKey::GenerateFromPrivateKey(private_key);
+  EXPECT_NE(key, nullptr);
+  const std::vector<uint8_t> msg_a(32, 0x00);
+  const std::vector<uint8_t> msg_b(32, 0x08);
+  int recid_a = -1;
+  int recid_b = -1;
+  const std::vector<uint8_t> sig_a = key->Sign(msg_a, &recid_a);
+  const std::vector<uint8_t> sig_b = key->Sign(msg_b, &recid_b);
+  EXPECT_NE(recid_a, -1);
+  EXPECT_NE(recid_b, -1);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a)),
+            "6ba4e554457ce5c1f1d7dbd10459465e39219eb9084ee23270688cbe0d49b52b79"
+            "05d5beb28492be439a3250e9359e0390f844321b65f1a88ce07960dd85da06");
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_b)),
+            "dfae85d39b73c9d143403ce472f7c4c8a5032c13d9546030044050e7d39355e47a"
+            "532e5c0ae2a25392d97f5e55ab1288ef1e08d5c034bad3b0956fbbab73b381");
+  EXPECT_TRUE(key->Verify(msg_a, sig_a));
+  EXPECT_TRUE(key->Verify(msg_b, sig_b));
+
+  EXPECT_EQ(HDKey::GenerateFromPrivateKey(std::vector<uint8_t>(33)), nullptr);
+  EXPECT_EQ(HDKey::GenerateFromPrivateKey(std::vector<uint8_t>(31)), nullptr);
+}
+
 TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   std::unique_ptr<HDKey> key = HDKey::GenerateFromExtendedKey(
       "xprvA2nrNbFZABcdryreWet9Ea4LvTJcGsqrMzxHx98MMrotbir7yrKCEXw7nadnHM8Dq38E"
@@ -329,6 +357,18 @@ TEST(HDKeyUnitTest, DeriveChildFromPath) {
         base::ToLowerASCII(base::HexEncode(derived_key->private_key_)),
         "3348069561d2a0fb925e74bf198762acc47dce7db27372257d2d959a9e6f8aeb");
   }
+}
+
+TEST(HDKeyUnitTest, GetHexEncodedPrivateKey) {
+  HDKey key;
+  ASSERT_TRUE(key.private_key_.empty());
+  EXPECT_EQ("", key.GetHexEncodedPrivateKey());
+
+  std::unique_ptr<HDKey> key2 = HDKey::GenerateFromExtendedKey(
+      "xprv9s21ZrQH143K3ckY9DgU79uMTJkQRLdbCCVDh81SnxTgPzLLGax6uHeBULTtaEtcAv"
+      "KjXfT7ZWtHzKjTpujMkUd9dDb8msDeAfnJxrgAYhr");
+  EXPECT_EQ(key2->GetHexEncodedPrivateKey(),
+            "00000055378cf5fafb56c711c674143f9b0ee82ab0ba2924f19b64f5ae7cdbfd");
 }
 
 }  // namespace brave_wallet

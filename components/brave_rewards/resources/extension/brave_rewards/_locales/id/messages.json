@@ -219,21 +219,31 @@
     "message": "Harap buat cadangan dompet Brave Anda.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Pelajari Selengkapnya",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Kesalahan: Akun berbeda",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, sepertinya dompet Brave Rewards Anda telah diverifikasi dengan akun $name$ lain. Silakan coba memverifikasi kembali dengan menggunakan akun Anda yang sebelumnya.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Kesalahan: BAT tidak tersedia",
     "description": "Title for BAT not allowed for user notification"
   },
   "upholdBATNotAllowedForUserNotification": {
-    "message": "BAT belum didukung di wilayah Anda di Uphold.",
+    "message": "BAT belum didukung di dompet Uphold wilayah Anda.",
     "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserLearnMore": {
-    "message": "Pelajari Selengkapnya",
-    "description": "Notification button text to learn more about the blocked user status"
   },
   "upholdBlockedUserTitle": {
     "message": "Kesalahan: Akun yang diblokir",
@@ -243,10 +253,6 @@
     "message": "Akun Anda di Uphold saat ini diblokir.",
     "description": "Description for blocked user notification"
   },
-  "upholdPendingUserLearnMore": {
-    "message": "Pelajari Selengkapnya",
-    "description": "Notification button text to learn more about the pending user status"
-  },
   "upholdPendingUserTitle": {
     "message": "Kesalahan: Akun yang ditangguhkan",
     "description": "Title for pending user notification"
@@ -255,10 +261,6 @@
     "message": "Akun Anda di Uphold saat ini ditangguhkan.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Pelajari Selengkapnya",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Kesalahan: Akun yang dibatasi",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Akun Anda di Uphold saat ini dibatasi.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Pelajari Selengkapnya",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Batas Peranti Tercapai",
@@ -535,10 +533,6 @@
     "message": "Jumlah Reward Anda",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "verifikasi",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "Terputus",
     "description": "CTA status button"
@@ -552,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "Masuk ke akun $provider$ saya",
+    "message": "Buka akun $provider$ Anda",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Masuklah ke dalam akun $provider$ Anda",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -658,6 +662,10 @@
   "walletConnected":  {
     "message": "Tersambung",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Terputus",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "Tertunda",

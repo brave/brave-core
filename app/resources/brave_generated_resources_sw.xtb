@@ -3,11 +3,14 @@
 <translationbundle lang="sw">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Kizuia Matangazo cha Brave</translation>
-<translation id="4615489450165434530">Ripoti tovuti yenye hitilafu</translation>
+<translation id="4615489450165434530">Ripoti Tovuti yenye Hitilafu</translation>
+<translation id="1209739344687072997">Ripoti tovuti yenye hitilafu</translation>
 <translation id="6406506848690869874">Oanisha</translation>
 <translation id="1544192797660353713">Pochi</translation>
-<translation id="2445484935443597917">Unda wasifu mpya</translation>
-<translation id="2666990579225592931">Fungua dirisha la mgeni</translation>
+<translation id="2445484935443597917">Unda Wasifu Mpya</translation>
+<translation id="744341768939279100">Unda wasifu mpya</translation>
+<translation id="2666990579225592931">Fungua Dirisha la Mgeni</translation>
+<translation id="4986483413015198747">Fungua dirisha la mgeni</translation>
 <translation id="8275068909952022340">Zaidi…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") is not allowed in Brave.</translation>
 <translation id="6786747875388722282">Viendelezi</translation>
@@ -45,10 +48,12 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="5802665280774361839">Onyesha ukamilishaji kiotomatiki kwenye upau wa anwani</translation>
 <translation id="597020512043916976">Onyesha tovuti maarufu katika mapendekezo ya kukamilika kiotomatiki</translation>
 <translation id="264150068416846820">Onyesha tovuti za Brave zilizopendekezwa katika mapendekezo ya kukamilika kiotomatiki</translation>
-<translation id="5529693968082667490">Onyesha Kitufe cha Vichupo vya Utafutaji</translation>
+<translation id="5529693968082667490">Onyesha kitufe cha utafutaji wa kichupo</translation>
 <translation id="6414370348346025511">Ulinzi wa kawaida umewashwa.</translation>
 <translation id="814018970995616154">Hukagua URL zenye orodha za tovuti ambazo si salama zilizohifadhiwa katika Brave.</translation>
 <translation id="1144810021918451336">Haikulindi dhidi ya tovuti, vipakuliwa na viendelezi hatari.</translation>
+<translation id="6285118765755298263">Orodhesha mitambo mingine ya kutafuta</translation>
+<translation id="919715748352669592">Inaorodhesha kiotomatiki tovuti zinazofuata OpenSearch</translation>
 <translation id="7781069478569868053">Ukurasa Mpya wa Kichupo</translation>
 <translation id="1988804048511540801">Ukurasa wa kichupo kipya unaonyesha</translation>
 <translation id="2970343821770026391">Dashibodi</translation>
@@ -192,7 +197,6 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="1834467296210148203">Onyesha ikoni ya Brave Wallet kwenye upau zana</translation>
 <translation id="6864914031231797928">Ruhusu kuingia kwa Google kwa ajili hya viendelezi</translation>
 <translation id="5927916530277631319">Mbinu ya kusuluhisha Vikoa Visivyoweza Kusimamishwa</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Pata Maelezo Zaidi<ph name="END_LINK"/> kuhusu DNS badala ya mazingatio ya faragha ya lango ya HTTPS na Ethereum.</translation>
 <translation id="5248318250177143470">Mbinu ya kusuluhisha Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Weka funguo zako za IPNS</translation>
 <translation id="951216659045543447">Tia sahihi maudhui kulingana na ufunguo wa faragha unaooana na uyachapishe kwenye IPNS</translation>
@@ -214,7 +218,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="1534091531114892221">Weka ufafanuzi wa marika ya ipfs</translation>
 <translation id="8996633027318264334">Je, una uhakika unataka kufuta <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Nodi haijafunguka</translation>
-<translation id="616058968889448209">Hitilafu ya kufungua huduma ya IPFS, maelezo zaidi yanapatikana kwenye <ph name="BEGIN_LINK"/>ukurasa wa uchunguzi<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">Hitilafu ya ufunguaji wa huduma ya IPFS, maelezo zaidi yanapatikana kwenye <ph name="BEGIN_LINK"/>ukurasa wa utambuzi<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Uleteaji ufunguo wa '<ph name="KEY_NAME"/>' haijafaulu</translation>
 <translation id="3364053282600191535">Uletaji ufunguo wa '<ph name="KEY_NAME"/>' haujafaulu</translation>
 <translation id="8275038454117074363">Ingiza</translation>
@@ -224,7 +228,6 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="1327977588028644528">Lango</translation>
 <translation id="80225669816651290">Fundo la karibu</translation>
 <translation id="4927734062756955434">Anwani ya lango la umma la IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Pata maelezo zaidi<ph name="END_LINK_MPL"/> kuhusu nodi ya karibu ya IPFS na mazingatio ya faragha ya lango.</translation>
 <translation id="8425213833346101688">Badilisha</translation>
 <translation id="557281710253742286">Weka lango la IPFS</translation>
 <translation id="8571837315037233299">Anwani ya lango</translation>
@@ -238,7 +241,6 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="8655170717758778983">Elekeza kiotomatiki kwenye kurasa za IPFS kupitia DNSLink inapowezekana</translation>
 <translation id="2233724520223030977">Hutumia kiotomatiki DNSLink kuenda kweye toleo la IPFS la tovuti inapowezekana</translation>
 <translation id="6554397389149987360">Hutumia vipengele vya Hangouts ili kuwezesha kushiriki skrini na vipengele vingine kwenye kisakuzi.</translation>
-<translation id="1765684547504191670">Hutumia kijenzi cha Media Router kuwasha Chromecast katika kivinjari</translation>
 <translation id="9156965752763025780">Mabadiliko yako yataanza kufanya kazi wakati ujao utakapozindua upya Brave.</translation>
 <translation id="7179921470347911571">Zindua Sasa</translation>
 <translation id="8068526464562249859">Hutumia kiendelezi cha IPFS Companion kwa matumizi ya IPFS yaliyoboreshwa katika Brave, ikiwemo ufikiaji wa kazi maarufu za IPFS kutoka kwenye upau wa kivinjari chako.</translation>
@@ -309,6 +311,7 @@ Zawadi za Avatar Paladin</translation>
 <translation id="6873781976650514089">mpangilio huu</translation>
 <translation id="6040143037577758943">Funga</translation>
 <translation id="5600566490506283344">Arifa ya Matangazo ya Brave</translation>
+<translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4877147287319222750">Ongeza kwenye Sidebar</translation>
 <translation id="4233010476457917696">Onyesha utepe</translation>
 <translation id="5404213409401164238">Onyesha Sidebar</translation>
@@ -349,6 +352,7 @@ Zawadi za Avatar Paladin</translation>
         Unaweza kusoma <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>maagizo ya jinsi ya kupakua na kujiundia<ph name="END_LINK_BUILD_INSTRUCTIONS"/> msimbo  mahususi wa chanzo <ph name="BEGIN_LINK_SOURCE_CODE"/>uliotumiwa kuunda nakala hii<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Alamisha vichupo vyote...</translation>
 <translation id="2336228925368920074">Alamisha Vichupo Vyote...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Ili kuongeza alamisho, bofya kitufe cha alamisho karibu na sehemu ya anwani</translation>
 <translation id="4989337484121655457">Ufikiaji Kamili wa Diski unahitajika</translation>
 <translation id="8025559074845816210">Brave inahitaji Ufikiaji Kamili wa Diski ili kuingiza Alamisho zako kutoka Safari</translation>

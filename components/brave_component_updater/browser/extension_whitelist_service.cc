@@ -61,13 +61,12 @@ void ExtensionWhitelistService::OnComponentReady(
     const base::FilePath& install_dir,
     const std::string& manifest) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  base::FilePath dat_file_path = install_dir
-      .AppendASCII(EXTENSION_DAT_FILE_VERSION)
-      .AppendASCII(EXTENSION_DAT_FILE);
+  base::FilePath dat_file_path =
+      install_dir.AppendASCII(EXTENSION_DAT_FILE_VERSION)
+          .AppendASCII(EXTENSION_DAT_FILE);
 
   base::PostTaskAndReplyWithResult(
-      local_data_files_service()->GetTaskRunner().get(),
-      FROM_HERE,
+      local_data_files_service()->GetTaskRunner().get(), FROM_HERE,
       base::BindOnce(
           &brave_component_updater::LoadDATFileData<ExtensionWhitelistParser>,
           dat_file_path),

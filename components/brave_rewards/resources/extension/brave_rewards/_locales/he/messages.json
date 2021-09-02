@@ -219,9 +219,23 @@
     "message": "אנא גבו את ארנק ה-Brave שלכם.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "למידע נוסף",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "שגיאה: חשבון שונה",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "הממ, נראה שארנק ה- Brave Rewards כבר מאומת עם חשבון $name$אחר. נא לנסות לאמת שוב בעזרת החשבון הקודם שלך.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "שגיאה: BAT אינו זמין",
@@ -231,10 +245,6 @@
     "message": "BAT עדין לא נתמך באזור שלך ב-Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "למידע נוסף",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "שגיאה: חשבון חסום",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "החשבון שלך ב-Uphold חסום כעת.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "למידע נוסף",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "שגיאה: חשבון בהשהייה",
@@ -255,10 +261,6 @@
     "message": "החשבון שלך ב-Uphold עדין בהשהייה.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "למידע נוסף",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "שגיאה: חשבון מוגבל",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "החשבון שלך ב-Uphold מוגבל כעת.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "למידע נוסף",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "הגעת למגבלת המכשיר",
@@ -535,10 +533,6 @@
     "message": "סכום התגמול שלך",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "אימות",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "מנותק",
     "description": "CTA status button"
@@ -552,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "עבור לחשבון ה-$provider$ שלי",
+    "message": "עבור אל חשבון $provider$ שלך",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "התחבר אל חשבון $provider$ שלך",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -658,6 +662,10 @@
   "walletConnected":  {
     "message": "מחובר",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "מנותק",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "בהמתנה",

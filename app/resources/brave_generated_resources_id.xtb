@@ -3,11 +3,14 @@
 <translationbundle lang="id">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Pemblokir Iklan Brave</translation>
-<translation id="4615489450165434530">Laporkan situs rusak</translation>
+<translation id="4615489450165434530">Laporkan Situs Rusak</translation>
+<translation id="1209739344687072997">Laporkan situs rusak</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">Dompet</translation>
-<translation id="2445484935443597917">Buat profil baru</translation>
-<translation id="2666990579225592931">Buka jendela tamu</translation>
+<translation id="2445484935443597917">Buat Profil Baru</translation>
+<translation id="744341768939279100">Buat profil baru</translation>
+<translation id="2666990579225592931">Buka Jendela Tamu</translation>
+<translation id="4986483413015198747">Buka jendela tamu</translation>
 <translation id="8275068909952022340">Lebih lanjut#8230;</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") tidak diizinkan di Brave.</translation>
 <translation id="6786747875388722282">Ekstensi</translation>
@@ -45,10 +48,12 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="5802665280774361839">Tampilkan melengkapi-otomatis di bilah alamat</translation>
 <translation id="597020512043916976">Tampilkan situs teratas di saran pengisian otomatis</translation>
 <translation id="264150068416846820">Tampilkan situs-situs yang disarankan Brave dalam saran pengisian otomatis</translation>
-<translation id="5529693968082667490">Tampilkan Tombol Tab Pencarian</translation>
+<translation id="5529693968082667490">Tampilkan tombol pencarian tab</translation>
 <translation id="6414370348346025511">Perlindungan standar menyala.</translation>
 <translation id="814018970995616154">Memeriksa URL dengan daftar situs yang tidak aman yang tersimpan di Brave.</translation>
 <translation id="1144810021918451336">Tidak melindungi Anda terhadap situs-situs, unduhan, dan ekstensi berbahaya.</translation>
+<translation id="6285118765755298263">Masukkan mesin pencarian lain ke dalam daftar</translation>
+<translation id="919715748352669592">Menyusun indeks situs web yang mengikuti spesifikasi OpenSearch secara otomatis.</translation>
 <translation id="7781069478569868053">Halaman Tab Baru</translation>
 <translation id="1988804048511540801">Halaman tab baru ditampilkan</translation>
 <translation id="2970343821770026391">Dasbor</translation>
@@ -191,7 +196,6 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1834467296210148203">Tampilkan ikon Brave Wallet pada bilah alat</translation>
 <translation id="6864914031231797928">Izinkan login Google untuk ekstensi</translation>
 <translation id="5927916530277631319">Metode untuk menelusuri Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Pelajari Lebih Lanjut<ph name="END_LINK"/> tentang DNS over HTTPS dan pertimbangan privasi Ethereum.</translation>
 <translation id="5248318250177143470">Metode untuk menelusuri Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Atur kunci IPNS Anda</translation>
 <translation id="951216659045543447">Tandai konten dengan kunci privat yang terkait dan publikasikan ke IPNS</translation>
@@ -213,7 +217,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1534091531114892221">Atur deskripsi IPFS pihak lain</translation>
 <translation id="8996633027318264334">Apakah Anda benar-benar ingin menghapus <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Simpul tidak diluncurkan</translation>
-<translation id="616058968889448209">Kesalahan dalam peluncuran layanan IPFS, informasi lebih lanjut tersedia di <ph name="BEGIN_LINK"/>halaman diagnostik<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">Kesalahan peluncuran layanan IPFS, informasi lebih lanjut tersedia di <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Impor kunci '<ph name="KEY_NAME"/>' telah gagal</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' key export failed</translation>
 <translation id="8275038454117074363">Impor</translation>
@@ -223,7 +227,6 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1327977588028644528">Gerbang</translation>
 <translation id="80225669816651290">Node lokal</translation>
 <translation id="4927734062756955434">Alamat gateway publik IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Pelajari Lebih Lanjut<ph name="END_LINK_MPL"/> tentang simpul lokal IPFS dan pertimbangan privasi gerbang.</translation>
 <translation id="8425213833346101688">Ubah</translation>
 <translation id="557281710253742286">Atur gateway IPFS</translation>
 <translation id="8571837315037233299">Alamat gateway</translation>
@@ -237,7 +240,6 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="8655170717758778983">Secara otomatis mengalihkan ke halaman IPFS melalui DNSLink jika memungkinkan</translation>
 <translation id="2233724520223030977">Secara otomatis menggunakan DNSLink untuk bernavigasi ke situs web versi IPFS jika memungkinkan</translation>
 <translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mengaktifkan berbagi layar dan fitur lainnya di peramban.</translation>
-<translation id="1765684547504191670">Menggunakan komponen Media Router untuk mengaktifkan Chromecast dalam peramban.</translation>
 <translation id="9156965752763025780">Perubahan Anda akan berlaku saat berikutnya Anda membuka Brave.</translation>
 <translation id="7179921470347911571">Luncurkan Ulang Sekarang</translation>
 <translation id="8068526464562249859">Menggunakan ekstensi IPFS Companion untuk peningkatan dukungan IPFS di Brave, termasuk akses ke tugas IPFS umum dari bilah peramban Anda.</translation>
@@ -307,6 +309,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="6873781976650514089">pengaturan ini</translation>
 <translation id="6040143037577758943">Tutup</translation>
 <translation id="5600566490506283344">Notifikasi Brave Ad</translation>
+<translation id="1516554614404600536">Tips Brave</translation>
 <translation id="4877147287319222750">Tambah ke Bilah sisi</translation>
 <translation id="4233010476457917696">Tampilkan bilah sisi</translation>
 <translation id="5404213409401164238">Tampilkan Bilah Sisi</translation>
@@ -347,6 +350,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
         Anda dapat membaca <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>petunjuk cara mengunduh dan membangun sendiri<ph name="END_LINK_BUILD_INSTRUCTIONS"/> secara spesisik <ph name="BEGIN_LINK_SOURCE_CODE"/>kode sumber yang digunakan untuk membuat salinan ini<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Bookmark semua tab...</translation>
 <translation id="2336228925368920074">Bookmark Semua Tab...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Untuk menambah bookmark, klik tombol bookmark di sebelah bilah alamat</translation>
 <translation id="4989337484121655457">Memerlukan Akses Disk Penuh</translation>
 <translation id="8025559074845816210">Brave membutuhkan Akses Disk Penuh untuk mengimpor Penanda Anda dari Safari.</translation>

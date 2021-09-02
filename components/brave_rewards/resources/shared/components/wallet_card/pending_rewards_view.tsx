@@ -10,11 +10,11 @@ import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { TokenAmount } from '../token_amount'
 import { MoneyBagIcon } from '../icons/money_bag_icon'
 
-import * as styles from './pending_rewards_view.style'
+import * as style from './pending_rewards_view.style'
 
 interface Props {
   amount: number
-  nextPaymentDate: Date
+  nextPaymentDate: number
 }
 
 export function PendingRewardsView (props: Props) {
@@ -23,25 +23,25 @@ export function PendingRewardsView (props: Props) {
   const estimatedPendingDays = getDaysUntilRewardsPayment(props.nextPaymentDate)
 
   return (
-    <styles.root>
+    <style.root>
       {
         props.amount > 0 && estimatedPendingDays &&
-          <styles.pendingRewards>
+          <style.pendingRewards>
             <MoneyBagIcon />
             {
               formatMessage(getString('walletPendingRewardsText'), [
-                <styles.pendingAmount key='amount'>
+                <style.pendingAmount key='amount'>
                   <span className='plus'>+</span>
                   <TokenAmount
                     minimumFractionDigits={1}
                     amount={props.amount}
                   />
-                </styles.pendingAmount>,
+                </style.pendingAmount>,
                 estimatedPendingDays
               ])
             }
-          </styles.pendingRewards>
+          </style.pendingRewards>
         }
-    </styles.root>
+    </style.root>
   )
 }

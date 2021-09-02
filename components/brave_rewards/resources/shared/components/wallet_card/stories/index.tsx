@@ -19,7 +19,7 @@ const locale = {
 }
 
 export default {
-  title: 'Rewards/Panel'
+  title: 'Rewards'
 }
 
 function actionLogger (name: string) {
@@ -37,7 +37,6 @@ function getNextPaymentDate (soon: boolean) {
 
 export function Wallet () {
   const summaryData = {
-    grantClaims: 10,
     adEarnings: 10,
     autoContributions: 10,
     oneTimeTips: -2,
@@ -46,8 +45,9 @@ export function Wallet () {
 
   const externalWallet: ExternalWallet = {
     provider: 'uphold',
-    status: 'pending',
-    username: 'brave123'
+    status: 'verified',
+    username: 'brave123',
+    links: {}
   }
 
   const nextPaymentDate = getNextPaymentDate(
@@ -62,12 +62,13 @@ export function Wallet () {
             externalWallet={externalWallet}
             earningsThisMonth={0}
             earningsLastMonth={1}
-            nextPaymentDate={nextPaymentDate}
+            nextPaymentDate={nextPaymentDate.getTime()}
             exchangeRate={0.75}
             exchangeCurrency={'USD'}
             showSummary={knobs.boolean('Show Summary', true)}
             summaryData={summaryData}
             onExternalWalletAction={actionLogger('onExternalWalletAction')}
+            onViewStatement={actionLogger('onViewStatement')}
           />
         </div>
       </WithThemeVariables>

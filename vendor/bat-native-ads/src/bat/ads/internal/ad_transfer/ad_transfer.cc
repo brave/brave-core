@@ -5,14 +5,13 @@
 
 #include "bat/ads/internal/ad_transfer/ad_transfer.h"
 
-#include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
-#include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/url_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -34,18 +33,10 @@ void AdTransfer::RemoveObserver(AdTransferObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void AdTransfer::MaybeTransferAd(const int32_t tab_id, const std::string& url) {
+void AdTransfer::MaybeTransferAd(
+    const int32_t tab_id,
+    const std::vector<std::string>& redirect_chain) {
   if (!last_clicked_ad_.IsValid()) {
-    return;
-  }
-
-  if (!DoesUrlHaveSchemeHTTPOrHTTPS(url)) {
-    BLOG(1, "Visited URL is not supported for ad transfer");
-    return;
-  }
-
-  if (!SameDomainOrHost(url, last_clicked_ad_.target_url)) {
-    BLOG(1, "Visited URL does not match the last clicked ad");
     return;
   }
 
@@ -54,13 +45,12 @@ void AdTransfer::MaybeTransferAd(const int32_t tab_id, const std::string& url) {
     return;
   }
 
-  BLOG(1, "Visited URL matches the last clicked ad");
+  if (!DomainOrHostExists(redirect_chain, last_clicked_ad_.target_url)) {
+    BLOG(1, "Visited URL does not match the last clicked ad");
+    return;
+  }
 
-  TransferAd(tab_id, url);
-}
-
-void AdTransfer::SetLastClickedAd(const AdInfo& ad) {
-  last_clicked_ad_ = ad;
+  TransferAd(tab_id, redirect_chain);
 }
 
 void AdTransfer::Cancel(const int32_t tab_id) {
@@ -68,87 +58,90 @@ void AdTransfer::Cancel(const int32_t tab_id) {
     return;
   }
 
-  if (!timer_.IsRunning()) {
+  if (!timer_.Stop()) {
     return;
   }
 
-  BLOG(1, "Cancelling ad transfer for tab id " << tab_id);
-
-  timer_.FireNow();
+  NotifyCancelledAdTransfer(last_clicked_ad_, tab_id);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdTransfer::clear_last_clicked_ad() {
-  last_clicked_ad_ = AdInfo();
-}
-
-void AdTransfer::TransferAd(const int32_t tab_id, const std::string& url) {
-  const base::TimeDelta delay =
-      base::TimeDelta::FromSeconds(kTransferAdAfterSeconds);
-
-  if (timer_.IsRunning()) {
-    timer_.FireNow();
-  }
+void AdTransfer::TransferAd(const int32_t tab_id,
+                            const std::vector<std::string>& redirect_chain) {
+  timer_.Stop();
 
   transferring_ad_tab_id_ = tab_id;
 
-  const base::Time time =
-      timer_.Start(delay, base::BindOnce(&AdTransfer::OnTransferAd,
-                                         base::Unretained(this), tab_id, url));
+  const base::TimeDelta delay =
+      base::TimeDelta::FromSeconds(kTransferAdAfterSeconds);
 
-  BLOG(1, "Transfer ad for " << url << " " << FriendlyDateAndTime(time));
+  const base::Time time = timer_.Start(
+      delay, base::BindOnce(&AdTransfer::OnTransferAd, base::Unretained(this),
+                            tab_id, redirect_chain));
+
+  NotifyWillTransferAd(last_clicked_ad_, time);
 }
 
-void AdTransfer::OnTransferAd(const int32_t tab_id, const std::string& url) {
+void AdTransfer::OnTransferAd(const int32_t tab_id,
+                              const std::vector<std::string>& redirect_chain) {
   const AdInfo ad = last_clicked_ad_;
-
-  clear_last_clicked_ad();
+  last_clicked_ad_ = {};
 
   transferring_ad_tab_id_ = 0;
 
   if (!TabManager::Get()->IsVisible(tab_id)) {
-    BLOG(1, "Failed to transfer ad for " << url);
-    NotifyAdTransferFailed(ad);
+    NotifyFailedToTransferAd(ad);
     return;
   }
 
   const absl::optional<TabInfo> tab = TabManager::Get()->GetForId(tab_id);
   if (!tab) {
-    BLOG(1, "Failed to transfer ad for " << url);
-    NotifyAdTransferFailed(ad);
+    NotifyFailedToTransferAd(ad);
     return;
   }
 
-  if (!SameDomainOrHost(tab->url, url)) {
-    BLOG(1, "Failed to transfer ad for " << url);
-    NotifyAdTransferFailed(ad);
+  if (!DomainOrHostExists(redirect_chain, tab->url)) {
+    NotifyFailedToTransferAd(ad);
     return;
   }
 
-  BLOG(1, "Transferred ad for " << url);
-
-  LogAdEvent(ad, ConfirmationType::kTransferred, [](const bool success) {
+  LogAdEvent(ad, ConfirmationType::kTransferred, [=](const bool success) {
     if (!success) {
       BLOG(1, "Failed to log transferred ad event");
+      NotifyFailedToTransferAd(ad);
       return;
     }
 
     BLOG(6, "Successfully logged transferred ad event");
-  });
 
-  NotifyAdTransfer(ad);
+    NotifyDidTransferAd(ad);
+  });
 }
 
-void AdTransfer::NotifyAdTransfer(const AdInfo& ad) const {
+void AdTransfer::NotifyWillTransferAd(const AdInfo& ad,
+                                      const base::Time& time) const {
   for (AdTransferObserver& observer : observers_) {
-    observer.OnAdTransfer(ad);
+    observer.OnWillTransferAd(ad, time);
   }
 }
 
-void AdTransfer::NotifyAdTransferFailed(const AdInfo& ad) const {
+void AdTransfer::NotifyDidTransferAd(const AdInfo& ad) const {
   for (AdTransferObserver& observer : observers_) {
-    observer.OnAdTransferFailed(ad);
+    observer.OnDidTransferAd(ad);
+  }
+}
+
+void AdTransfer::NotifyCancelledAdTransfer(const AdInfo& ad,
+                                           const int32_t tab_id) const {
+  for (AdTransferObserver& observer : observers_) {
+    observer.OnCancelledAdTransfer(ad, tab_id);
+  }
+}
+
+void AdTransfer::NotifyFailedToTransferAd(const AdInfo& ad) const {
+  for (AdTransferObserver& observer : observers_) {
+    observer.OnFailedToTransferAd(ad);
   }
 }
 

@@ -19,10 +19,14 @@ export default class VpnPanelApiProxyImpl {
     /** @type {!braveVpn.mojom.PanelHandlerRemote} */
     this.panelHandler = new braveVpn.mojom.PanelHandlerRemote();
 
+    /** @type {!braveVpn.mojom.ServiceHandlerRemote} */
+    this.vpnService = new braveVpn.mojom.ServiceHandlerRemote();
+
     const factory = braveVpn.mojom.PanelHandlerFactory.getRemote();
     factory.createPanelHandler(
       this.callbackRouter.$.bindNewPipeAndPassRemote(),
-      this.panelHandler.$.bindNewPipeAndPassReceiver());
+      this.panelHandler.$.bindNewPipeAndPassReceiver(),
+      this.vpnService.$.bindNewPipeAndPassReceiver());
   }
 
   /** @override */
@@ -35,9 +39,8 @@ export default class VpnPanelApiProxyImpl {
     this.panelHandler.closeUI();
   }
 
-  /** @override */
   getIsConnected() {
-    return this.panelHandler.getIsConnected();
+    return this.vpnService.getIsConnected();
   }
 }
 

@@ -219,9 +219,23 @@
     "message": "অনুগ্রহ করে আপনার Brave ওয়ালেটটিতে ব্যাকআপ নিন।",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "আরও জানুন",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "ত্রুটি: ভিন্ন অ্যাকাউন্ট",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "হুম, মনে হচ্ছে আপনার Brave Rewards ওয়ালেট ইতিমধ্যেই যাচাই করা হয়েছে অন্য একটি $name$ অ্যাকাউন্টের সাথে। আপনার আগের অ্যাকাউন্ট ব্যবহার করে আবার যাচাই করার চেষ্টা করুন।",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "ত্রুটি: BAT উপলভ্য নয়",
@@ -231,10 +245,6 @@
     "message": "আপনার অঞ্চলে আপহোল্ডে BAT এখনও সমর্থিত নয়।",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "আরও জানুন",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "ত্রুটি: ব্লক থাকা অ্যাকাউন্ট",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "আপহোল্ডে আপনার অ্যাকাউন্ট বর্তমানে ব্লক রয়েছে।",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "আরও জানুন",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "ত্রুটি: বাকি থাকা অ্যাকাউন্ট",
@@ -255,10 +261,6 @@
     "message": "আপহোল্ডে আপনার অ্যাকাউন্ট এখনও বাকি রয়েছে।",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "আরও জানুন",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "ত্রুটি: সীমাবদ্ধ অ্যাকাউন্ট",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "আপহোল্ডে আপনার অ্যাকাউন্ট বর্তমানে সীমাবদ্ধ।",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "আরও জানুন",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "ডিভাইসের সীমায় পৌঁছেছে",
@@ -535,10 +533,6 @@
     "message": "আপনার পুরস্কারের অর্থরাশি",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "যাচাই করুন",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "সংযোগবিচ্ছিন্ন",
     "description": "CTA status button"
@@ -552,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "আমার $provider$ অ্যাকাউন্টে যান",
+    "message": "আপনার $provider$ অ্যাকাউন্টে যান",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "আপনার $provider$ অ্যাকাউন্টে লগইন করুন",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -658,6 +662,10 @@
   "walletConnected":  {
     "message": "সংযুক্ত",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "সংযোগবিচ্ছিন্ন",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "বিচারাধীন রয়েছে",

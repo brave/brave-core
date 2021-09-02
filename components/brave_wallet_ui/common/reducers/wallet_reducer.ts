@@ -22,6 +22,7 @@ import { convertMojoTimeToJS } from '../../utils/mojo-time'
 import * as WalletActions from '../actions/wallet_actions'
 import { InitializedPayloadType } from '../constants/action_types'
 import { formatFiatBalance } from '../../utils/format-balances'
+import { ETHIconUrl } from '../../assets/asset-icons'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -53,7 +54,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
       balance: '0',
       fiatBalance: '0',
       asset: 'eth',
-      accountType: 'Primary',
+      accountType: info.isImported ? 'Secondary' : 'Primary',
       tokens: []
     }
   })
@@ -101,7 +102,7 @@ reducer.on(WalletActions.setVisibleTokensInfo, (state: any, payload: TokenInfo[]
     isErc721: false,
     symbol: 'ETH',
     decimals: 18,
-    icon: ''
+    icon: ETHIconUrl
   }
   const list = [eth, ...payload]
   return {

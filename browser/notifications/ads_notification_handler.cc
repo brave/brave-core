@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

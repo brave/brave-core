@@ -219,21 +219,31 @@
     "message": "Ole hyvä ja tee Brave-lompakostasi varmuuskopio.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Lue lisää",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Virhe: Eri tili",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, näyttää siltä, että Brave Rewards -lompakkosi on jo vahvistettu toisella $name$ tilillä. Vahvista uudelleen käyttämällä edellistä tiliäsi.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Virhe: BAT ei ole saatavilla",
     "description": "Title for BAT not allowed for user notification"
   },
   "upholdBATNotAllowedForUserNotification": {
-    "message": "BATtia ei vielä tueta alueellasi Uphold-palvelussa.",
+    "message": "BATtia ei vielä tueta alueesi Uphold-lompakoissa.",
     "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserLearnMore": {
-    "message": "Lue lisää",
-    "description": "Notification button text to learn more about the blocked user status"
   },
   "upholdBlockedUserTitle": {
     "message": "Virhe: Estetty tili",
@@ -243,10 +253,6 @@
     "message": "Uphold-tilisi on tällä hetkellä estetty.",
     "description": "Description for blocked user notification"
   },
-  "upholdPendingUserLearnMore": {
-    "message": "Lue lisää",
-    "description": "Notification button text to learn more about the pending user status"
-  },
   "upholdPendingUserTitle": {
     "message": "Virhe: Odottava tili",
     "description": "Title for pending user notification"
@@ -255,10 +261,6 @@
     "message": "Uphold-tilisi odottaa vielä käsittelyä.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Lue lisää",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Virhe: Rajoitettu tili",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Uphold-tilisi on tällä hetkellä rajoitettu.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Lue lisää",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Laiteraja saavutettu",
@@ -535,10 +533,6 @@
     "message": "Palkintosummasi",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "vahvista",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "Yhteys katkaistu",
     "description": "CTA status button"
@@ -552,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "Siirry $provider$ -tiliini",
+    "message": "Siirry $provider$ tilillesi",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Kirjaudu sisään $provider$ tilillesi",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -658,6 +662,10 @@
   "walletConnected":  {
     "message": "Yhdistetty",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Yhteys katkaistu",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "Odottaa",

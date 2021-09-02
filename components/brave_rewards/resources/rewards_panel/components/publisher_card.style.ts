@@ -8,7 +8,7 @@ export const root = styled.div`
   background: var(--brave-palette-white);
   box-shadow: 0px 4px 16px rgba(27, 29, 47, 0.08);
   border-radius: 16px;
-  margin-top: 16px;
+  margin-top: 13px;
   padding: 18px 35px 33px;
 
   a {
@@ -31,7 +31,6 @@ export const root = styled.div`
 
 export const heading = styled.div`
   display: flex;
-  margin-bottom: 16px;
 `
 
 export const icon = styled.div`
@@ -83,6 +82,14 @@ export const refreshStatus = styled.span`
   padding-left: 4px;
   margin-left: 5px;
 
+  .icon {
+    height: 13px;
+    width: auto;
+    margin-bottom: 2px;
+    margin-left: 2px;
+    color: var(--brave-color-brandBat);
+  }
+
   .brave-theme-dark & {
     border-left-color: var(--brave-palette-grey800);
   }
@@ -104,26 +111,8 @@ export const unverified = styled.span`
   }
 `
 
-export const unverifiedNote = styled.div`
-  font-size: 12px;
-  line-height: 20px;
-  margin-bottom: 12px;
-  color: var(--brave-palette-neutral700);
-  background: var(--brave-palette-neutral000);
-  border-radius: 8px;
-  padding: 9px 11px;
-
-  strong {
-    font-weight: 600;
-  }
-
-  .brave-theme-dark & {
-    background: var(--brave-palette-grey800);
-    color: var(--brave-palette-grey400);
-  }
-`
-
 export const attention = styled.div`
+  margin-top: 12px;
   border-bottom: solid 1px var(--brave-palette-neutral200);
   font-size: 14px;
   line-height: 26px;
@@ -151,7 +140,7 @@ export const contribution = styled.div`
   font-size: 14px;
   line-height: 26px;
   color: var(--brave-palette-neutral600);
-  padding: 6px 0 12px 0;
+  padding: 6px 0 10px 0;
 
   .brave-theme-dark & {
     color: var(--brave-palette-grey600);
@@ -186,7 +175,7 @@ export const monthlyContribution = styled.div`
 
 export const tipAction = styled.div`
   text-align: center;
-  margin-top: 30px;
+  margin-top: 26px;
 
   button {
     width: 100%;

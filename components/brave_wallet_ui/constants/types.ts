@@ -91,7 +91,7 @@ export type AddAccountNavTypes =
 
 export type AccountSettingsNavTypes =
   | 'details'
-  | 'watchlist'
+  | 'privateKey'
 
 export type BuySendSwapTypes =
   | 'buy'
@@ -191,6 +191,7 @@ export interface PageState {
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
   mnemonic?: string
+  privateKey?: string
   isFetchingPriceHistory: boolean
   setupStillInProgress: boolean
   showIsRestoring: boolean
@@ -209,6 +210,7 @@ export interface WalletPanelState {
 export interface AccountInfo {
   address: string[]
   name: string[]
+  isImported: boolean
 }
 
 export interface WalletInfo {
@@ -224,6 +226,8 @@ export interface UnlockReturnInfo {
   success: boolean
 }
 
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
 export enum AssetPriceTimeframe {
   Live = 0,
   OneDay = 1,
@@ -234,6 +238,8 @@ export enum AssetPriceTimeframe {
   All = 6
 }
 
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
 export enum Network {
   Mainnet = 0,
   Rinkeby = 1,
@@ -242,6 +248,16 @@ export enum Network {
   Kovan = 4,
   Localhost = 5,
   Custom = 6
+}
+
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
+export enum TransactionStatus {
+  Unapproved = 0,
+  Approved = 1,
+  Rejected = 2,
+  Submitted = 3,
+  Confirmed = 4
 }
 
 export interface SwapParams {
@@ -368,6 +384,15 @@ export interface PortfolioTokenHistoryAndInfo {
   token: AccountAssetOptionType
 }
 
+export interface SendTransactionParam {
+  from: string
+  to: string
+  value: string
+  contractAddress: string
+  gasPrice: string
+  gasLimit: string
+}
+
 export interface CreateWalletReturnInfo {
   mnemonic: string
 }
@@ -424,12 +449,31 @@ export interface MakeERC20TransferDataReturnInfo {
   data: number[]
 }
 
+export interface MakeERC20ApproveDataReturnInfo {
+  success: boolean
+  data: number[]
+}
+
+export interface TransactionInfo {
+  id: string
+  fromAddress: string
+  txHash: string
+  txData: TxData1559
+  txStatus: TransactionStatus
+}
+
+export interface GetAllTransactionInfoReturnInfo {
+  transactionInfos: TransactionInfo[]
+}
+
 export interface EthTxController {
   addUnapprovedTransaction: (txData: TxData, from: string) => Promise<AddUnapprovedTransactionReturnInfo>
   addUnapproved1559Transaction: (txData: TxData1559, from: string) => (AddUnapproved1559TransactionReturnInfo)
   approveTransaction: (txMetaId: string) => Promise<ApproveTransactionReturnInfo>
   rejectTransaction: (txMetaId: string) => Promise<RejectTransactionReturnInfo>
   makeERC20TransferData: (toAddress: string, amount: string) => Promise<MakeERC20TransferDataReturnInfo>
+  makeERC20ApproveData: (spenderAddress: string, amount: string) => Promise<MakeERC20ApproveDataReturnInfo>
+  getAllTransactionInfo: (fromAddress: string) => Promise<GetAllTransactionInfoReturnInfo>
 }
 
 export interface EthJsonRpcController {
@@ -527,12 +571,20 @@ export interface APIProxyControllers {
   makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string, data: number[]) => any
 }
 
+export type TransactionDataType = {
+  functionName: string
+  parameters: string
+  hexData: string
+  hexSize: string
+}
+
 export type AllowSpendReturnPayload = {
   siteUrl: string,
   contractAddress: string,
   erc20Token: TokenInfo,
   transactionFeeWei: string,
   transactionFeeFiat: string
+  transactionData: TransactionDataType
 }
 
 export type ChainInformation = {
@@ -553,5 +605,6 @@ export type TransactionPanelPayload = {
   toAddress: string,
   erc20Token: TokenInfo,
   ethPrice: string,
-  tokenPrice: string
+  tokenPrice: string,
+  transactionData: TransactionDataType
 }

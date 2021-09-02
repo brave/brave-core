@@ -1,0 +1,12 @@
+diff --git a/components/download/internal/background_service/proto/entry.proto b/components/download/internal/background_service/proto/entry.proto
+index f699afc3f049f4b901704c98a1de6f3c65d9f977..85f85fe3e4fda5d60274f9a1d947a4da01b65a1d 100644
+--- a/components/download/internal/background_service/proto/entry.proto
++++ b/components/download/internal/background_service/proto/entry.proto
+@@ -27,6 +27,7 @@ enum DownloadClient {
+ 
+   // New clients should be added above here.
+   BOUNDARY = 10;
++  CUSTOM_LIST_SUBSCRIPTIONS = 256;
+ }
+ 
+ // Stores the request params, internal state, metrics and metadata associated

@@ -147,7 +147,7 @@ bitflags::bitflags! {
 /// reasonable or srcset is set at all. Some things we've seen in the wild are srcset being left
 /// out in favor of data-srcset, and src being base64 encoded.
 #[inline]
-fn img_is_loaded(data: &ElementData) -> ImageLoadedMask {
+fn img_loaded_mask(data: &ElementData) -> ImageLoadedMask {
     let mut mask: ImageLoadedMask = ImageLoadedMask::NONE;
     if let Some(src) = data.attributes.borrow().get(local_name!("src")) {
         for suffix in LOADABLE_IMG_SUFFIX.iter() {
@@ -359,19 +359,21 @@ fn get_inner_img_from_noscript(handle: &Handle) -> Option<Handle> {
 /// Unwrap a <noscript><img src=".."/></noscript> element to just be an img element. Sites like
 /// Medium and BBC wrap img elements in a noscript on page load, and do this same process in
 /// Javascript.
-fn unwrap_noscript(
-    handle: &Handle,
-    useless_nodes: &mut Vec<Handle>,
-    new_children: &mut Vec<Handle>,
-) {
+fn unwrap_noscript(handle: &Handle, useless_nodes: &mut Vec<Handle>) -> Option<Handle> {
     if let Some(img) = get_inner_img_from_noscript(handle) {
-        new_children.push(img);
         for sibling in handle.preceding_siblings().elements() {
             if dom::is_single_image(&sibling.as_node()) {
                 useless_nodes.push(sibling.as_node().clone());
             }
         }
+        for sibling in handle.following_siblings().elements() {
+            if dom::is_single_image(&sibling.as_node()) {
+                useless_nodes.push(sibling.as_node().clone());
+            }
+        }
+        return Some(img)
     }
+    None
 }
 
 /// Normalizes the dom by replacing tags we aren't interested in, to reduce the
@@ -425,7 +427,6 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
         }
     }
     let mut useless_nodes = vec![];
-    let mut new_children = vec![];
     let mut paragraph_nodes = vec![];
     let mut brs = vec![];
     for child in handle.children() {
@@ -448,7 +449,9 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
                     }
                 }
                 if data.name.local == local_name!("noscript") {
-                    unwrap_noscript(&child, &mut useless_nodes, &mut new_children);
+                    if let Some(unwrapped) = unwrap_noscript(&child, &mut useless_nodes) {
+                        dom.append_before_sibling(&child, NodeOrText::AppendNode(unwrapped));
+                    }
                 } else if !pending_removal && data.name.local == local_name!("div") {
                     // This is handling for sites like mobile.slate.com, where every paragraph
                     // element is wrapped in a single div. Since this can confuse the scoring
@@ -474,9 +477,6 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
             }
             _ => (),
         }
-    }
-    for node in new_children.iter() {
-        dom.append(&handle, NodeOrText::AppendNode(node.clone()));
     }
     for node in useless_nodes.iter() {
         dom.remove_from_parent(node);
@@ -903,7 +903,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                     false
                 }
                 local_name!("img") => {
-                    let mask = img_is_loaded(data);
+                    let mask = img_loaded_mask(data);
                     let (mask, lazy_srcs) = try_lazy_img(data, mask);
                     if mask == ImageLoadedMask::NONE {
                         true
@@ -1041,7 +1041,7 @@ mod tests {
         let handle = dom::parse_inner(input).unwrap();
         let elem = handle.as_element().unwrap();
         assert_eq!(elem.name.local, local_name!("img"));
-        assert_eq!(img_is_loaded(elem), ImageLoadedMask::NONE);
+        assert_eq!(img_loaded_mask(elem), ImageLoadedMask::NONE);
         let (mask, _) = try_lazy_img(elem, ImageLoadedMask::NONE);
         assert_eq!(mask, ImageLoadedMask::SRCSET);
     }
@@ -1057,7 +1057,7 @@ mod tests {
         let handle = dom::parse_inner(input).unwrap();
         let elem = handle.as_element().unwrap();
         assert_eq!(elem.name.local, local_name!("img"));
-        assert_eq!(img_is_loaded(elem), ImageLoadedMask::SRC);
+        assert_eq!(img_loaded_mask(elem), ImageLoadedMask::SRC);
     }
 
     #[test]
@@ -1069,7 +1069,7 @@ mod tests {
         "#;
         let handle = dom::parse_inner(input).unwrap();
         let elem = handle.as_element().unwrap();
-        assert_eq!(img_is_loaded(elem), ImageLoadedMask::SRC);
+        assert_eq!(img_loaded_mask(elem), ImageLoadedMask::SRC);
         let (mask, _) = try_lazy_img(elem, ImageLoadedMask::NONE);
         assert!(mask.is_all());
     }

@@ -6,12 +6,16 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +23,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -29,9 +35,21 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PortfolioFragment extends Fragment implements OnWalletListItemClick {
+public class PortfolioFragment
+        extends Fragment implements OnWalletListItemClick, AdapterView.OnItemSelectedListener {
+    Spinner mSpinner;
+
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
+    }
+
+    private EthJsonRpcController getEthJsonRpcController() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getEthJsonRpcController();
+        }
+
+        return null;
     }
 
     @Override
@@ -65,8 +83,54 @@ public class PortfolioFragment extends Fragment implements OnWalletListItemClick
             }
         });
 
+        mSpinner = view.findViewById(R.id.spinner);
+        mSpinner.setOnItemSelectedListener(this);
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, Utils.getNetworksList(getActivity()));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinner.setAdapter(dataAdapter);
+
         return view;
     }
+
+    private void updateNetwork() {
+        EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
+        if (ethJsonRpcController != null) {
+            ethJsonRpcController.getNetwork(
+                    network -> { mSpinner.setSelection(getIndexOf(mSpinner, network)); });
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateNetwork();
+    }
+
+    private int getIndexOf(Spinner spinner, int network) {
+        String strNetwork = Utils.getNetworkText(getActivity(), network).toString();
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(strNetwork)) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String item = parent.getItemAtPosition(position).toString();
+        EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
+        if (ethJsonRpcController != null) {
+            ethJsonRpcController.setNetwork(Utils.getNetworkId(getActivity(), item));
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {}
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -81,7 +145,8 @@ public class PortfolioFragment extends Fragment implements OnWalletListItemClick
         Button editVisibleAssets = view.findViewById(R.id.edit_visible_assets);
         editVisibleAssets.setOnClickListener(v -> {
             EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
-                    EditVisibleAssetsBottomSheetDialogFragment.newInstance();
+                    EditVisibleAssetsBottomSheetDialogFragment.newInstance(
+                            WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST);
             bottomSheetDialogFragment.show(
                     getFragmentManager(), EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
         });

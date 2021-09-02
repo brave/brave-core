@@ -6,19 +6,18 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_AD_TARGETING_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_AD_TARGETING_H_
 
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
+#include "bat/ads/internal/segments/segments_alias.h"
 
 namespace ads {
+namespace ad_targeting {
 
-class AdTargeting {
- public:
-  AdTargeting();
+struct UserModelInfo;
 
-  ~AdTargeting();
+SegmentList GetTopParentChildSegments(const UserModelInfo& user_model);
 
-  SegmentList GetSegments() const;
-};
+SegmentList GetTopParentSegments(const UserModelInfo& user_model);
 
+}  // namespace ad_targeting
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_AD_TARGETING_H_

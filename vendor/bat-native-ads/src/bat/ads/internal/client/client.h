@@ -46,13 +46,14 @@ class Client {
   FilteredCategoryList get_filtered_categories() const;
   FlaggedAdList get_flagged_ads() const;
 
-  void AppendAdHistoryToAdsHistory(const AdHistoryInfo& ad_history);
+  void AppendAdHistory(const AdHistoryInfo& ad_history);
   const std::deque<AdHistoryInfo>& GetAdsHistory() const;
 
   void AppendToPurchaseIntentSignalHistoryForSegment(
       const std::string& segment,
-      const PurchaseIntentSignalHistoryInfo& history);
-  const PurchaseIntentSignalHistoryMap& GetPurchaseIntentSignalHistory() const;
+      const ad_targeting::PurchaseIntentSignalHistoryInfo& history);
+  const ad_targeting::PurchaseIntentSignalHistoryMap&
+  GetPurchaseIntentSignalHistory() const;
 
   AdContentInfo::LikeAction ToggleAdThumbUp(
       const std::string& creative_instance_id,
@@ -62,18 +63,27 @@ class Client {
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const AdContentInfo::LikeAction action);
+  AdContentInfo::LikeAction GetLikeActionForSegment(const std::string& segment);
+
   CategoryContentInfo::OptAction ToggleAdOptInAction(
       const std::string& category,
       const CategoryContentInfo::OptAction action);
   CategoryContentInfo::OptAction ToggleAdOptOutAction(
       const std::string& category,
       const CategoryContentInfo::OptAction action);
+  CategoryContentInfo::OptAction GetOptActionForSegment(
+      const std::string& segment);
+
   bool ToggleSaveAd(const std::string& creative_instance_id,
                     const std::string& creative_set_id,
                     const bool saved);
+  bool GetSavedAdForCreativeInstanceId(const std::string& creative_instance_id);
+
   bool ToggleFlagAd(const std::string& creative_instance_id,
                     const std::string& creative_set_id,
                     const bool flagged);
+  bool GetFlaggedAdForCreativeInstanceId(
+      const std::string& creative_instance_id);
 
   void UpdateSeenAd(const AdInfo& ad);
   const std::map<std::string, bool>& GetSeenAdsForType(const AdType& type);
@@ -89,8 +99,8 @@ class Client {
   base::Time GetNextAdServingInterval();
 
   void AppendTextClassificationProbabilitiesToHistory(
-      const TextClassificationProbabilitiesMap& probabilities);
-  const TextClassificationProbabilitiesList&
+      const ad_targeting::TextClassificationProbabilitiesMap& probabilities);
+  const ad_targeting::TextClassificationProbabilitiesList&
   GetTextClassificationProbabilitiesHistory();
 
   std::string GetVersionCode() const;

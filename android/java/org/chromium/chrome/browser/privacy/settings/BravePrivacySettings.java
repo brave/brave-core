@@ -17,10 +17,12 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
+import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.privacy.settings.PrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveDialogPreference;
@@ -63,6 +65,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     private static final String PREF_HTTPS_EVERYWHERE = "https_everywhere";
     private static final String PREF_SEND_P3A = "send_p3a_analytics";
+    private static final String PREF_SEND_CRASH_REPORTS = "send_crash_reports";
     private static final String PREF_BRAVE_STATS_USAGE_PING = "brave_stats_usage_ping";
     private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
     private static final String PREF_AUTOCOMPLETE_TOP_SITES = "autocomplete_top_sites";
@@ -92,8 +95,8 @@ public class BravePrivacySettings extends PrivacySettings {
             PREF_OTHER_PRIVACY_SETTINGS_SECTION, // other section
             PREF_WEBRTC_POLICY, PREF_SAFE_BROWSING, PREF_CAN_MAKE_PAYMENT, PREF_UNSTOPPABLE_DOMAINS,
             PREF_ETH_NAMED_SERVICE, PREF_IPFS_GATEWAY, PREF_SECURE_DNS, PREF_DO_NOT_TRACK,
-            PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A, PREF_BRAVE_STATS_USAGE_PING,
-            PREF_SEARCH_SUGGESTIONS, PREF_AUTOCOMPLETE_TOP_SITES,
+            PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A, PREF_SEND_CRASH_REPORTS,
+            PREF_BRAVE_STATS_USAGE_PING, PREF_SEARCH_SUGGESTIONS, PREF_AUTOCOMPLETE_TOP_SITES,
             PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES, PREF_USAGE_STATS, PREF_PRIVACY_SANDBOX};
 
     private final int STRICT = 0;
@@ -101,6 +104,8 @@ public class BravePrivacySettings extends PrivacySettings {
     private final int ALLOW = 2;
 
     private final PrefService mPrefServiceBridge = UserPrefs.get(Profile.getLastUsedRegularProfile());
+    private final PrivacyPreferencesManagerImpl mPrivacyPrefManager =
+            PrivacyPreferencesManagerImpl.getInstance();
     private final ChromeManagedPreferenceDelegate mManagedPreferenceDelegate =
             createManagedPreferenceDelegate();
     private ChromeSwitchPreference mSearchSuggestions;
@@ -114,6 +119,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mBlockScriptsPref;
     private ChromeSwitchPreference mCloseTabsOnExitPref;
     private ChromeSwitchPreference mSendP3A;
+    private ChromeSwitchPreference mSendCrashReports;
     private ChromeSwitchPreference mBraveStatsUsagePing;
     private ChromeSwitchPreference mIpfsGatewayPref;
     private PreferenceCategory mSocialBlockingCategory;
@@ -170,6 +176,8 @@ public class BravePrivacySettings extends PrivacySettings {
         mSendP3A = (ChromeSwitchPreference) findPreference(PREF_SEND_P3A);
         mSendP3A.setOnPreferenceChangeListener(this);
 
+        mSendCrashReports = (ChromeSwitchPreference) findPreference(PREF_SEND_CRASH_REPORTS);
+        mSendCrashReports.setOnPreferenceChangeListener(this);
         mBraveStatsUsagePing = (ChromeSwitchPreference) findPreference(PREF_BRAVE_STATS_USAGE_PING);
         mBraveStatsUsagePing.setOnPreferenceChangeListener(this);
 
@@ -286,6 +294,8 @@ public class BravePrivacySettings extends PrivacySettings {
             sharedPreferencesEditor.putBoolean(PREF_CLOSE_TABS_ON_EXIT, (boolean) newValue);
         } else if (PREF_SEND_P3A.equals(key)) {
             BravePrefServiceBridge.getInstance().setP3AEnabled((boolean) newValue);
+        } else if (PREF_SEND_CRASH_REPORTS.equals(key)) {
+            UmaSessionStats.changeMetricsReportingConsent((boolean) newValue);
         } else if (PREF_BRAVE_STATS_USAGE_PING.equals(key)) {
             BravePrefServiceBridge.getInstance().setStatsReportingEnabled((boolean) newValue);
         } else if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
@@ -420,6 +430,8 @@ public class BravePrivacySettings extends PrivacySettings {
         } else {
             getPreferenceScreen().removePreference(mSendP3A);
         }
+
+        mSendCrashReports.setChecked(mPrivacyPrefManager.isUsageAndCrashReportingPermittedByUser());
 
         mBraveStatsUsagePing.setChecked(
                 BravePrefServiceBridge.getInstance().getStatsReportingEnabled());

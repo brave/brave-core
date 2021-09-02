@@ -236,6 +236,8 @@ public class BytecodeTest {
                 "org/chromium/base/CommandLineInitUtil", "initCommandLine", false, null));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/ui/appmenu/AppMenu", "getPopupPosition", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ui/appmenu/AppMenu",
+                "runMenuItemEnterAnimations", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "onOrientationChange", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
@@ -442,6 +444,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
                         "mSyncPaymentsIntegration"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mTurnOffSync"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
                         "mMediator"));

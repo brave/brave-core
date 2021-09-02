@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 
+#include <utility>
 #include <vector>
 
 #include "base/command_line.h"
@@ -14,6 +15,8 @@
 #include "brave/components/brave_vpn/switches.h"
 
 namespace {
+
+constexpr char kBraveVPNEntryName[] = "BraveVPN";
 
 bool GetVPNCredentialsFromSwitch(brave_vpn::BraveVPNConnectionInfo* info) {
   DCHECK(info);
@@ -47,6 +50,10 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : BraveVpnService(url_loader_factory) {
   observed_.Observe(GetBraveVPNConnectionAPI());
+
+  // If OS has already connected vpn,`OnConnected()` will be called.
+  GetBraveVPNConnectionAPI()->set_target_vpn_entry_name(kBraveVPNEntryName);
+  GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
 }
 
 BraveVpnServiceDesktop::~BraveVpnServiceDesktop() = default;
@@ -69,6 +76,9 @@ void BraveVpnServiceDesktop::OnRemoved(const std::string& name) {
 }
 
 void BraveVpnServiceDesktop::OnConnected(const std::string& name) {
+  if (is_connected_)
+    return;
+
   is_connected_ = true;
 
   for (Observer& obs : observers_)
@@ -76,6 +86,9 @@ void BraveVpnServiceDesktop::OnConnected(const std::string& name) {
 }
 
 void BraveVpnServiceDesktop::OnDisconnected(const std::string& name) {
+  if (!is_connected_)
+    return;
+
   is_connected_ = false;
 
   for (Observer& obs : observers_)
@@ -99,10 +112,6 @@ void BraveVpnServiceDesktop::Disconnect() {
   GetBraveVPNConnectionAPI()->Disconnect(GetConnectionInfo().connection_name());
 }
 
-bool BraveVpnServiceDesktop::IsConnected() const {
-  return is_connected_;
-}
-
 void BraveVpnServiceDesktop::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }
@@ -118,4 +127,13 @@ brave_vpn::BraveVPNConnectionInfo BraveVpnServiceDesktop::GetConnectionInfo() {
     NOTIMPLEMENTED();
   }
   return info;
+}
+
+void BraveVpnServiceDesktop::BindInterface(
+    mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
+void BraveVpnServiceDesktop::GetIsConnected(GetIsConnectedCallback callback) {
+  std::move(callback).Run(is_connected_);
 }

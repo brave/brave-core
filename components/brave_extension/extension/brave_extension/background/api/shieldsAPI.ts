@@ -104,7 +104,8 @@ export const requestShieldPanelData = (tabId: number) =>
     .then((details: ShieldDetails) => {
       actions.shieldsPanelDataUpdated(details)
     })
-    .catch((error: any) => console.error('[Shields]: Can\'t request shields panel data.', error))
+    .catch((error: any) =>
+      console.error('[Shields]: Can\'t request shields panel data for tabId: ' + tabId + '. ', error))
 
 /**
  * Changes the brave shields setting at origin to be allowed or blocked.

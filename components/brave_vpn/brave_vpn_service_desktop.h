@@ -10,13 +10,18 @@
 
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_vpn/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 class BraveVpnServiceDesktop
     : public BraveVpnService,
-      public brave_vpn::BraveVPNOSConnectionAPI::Observer {
+      public brave_vpn::BraveVPNOSConnectionAPI::Observer,
+      public brave_vpn::mojom::ServiceHandler {
  public:
   class Observer : public base::CheckedObserver {
    public:
@@ -37,12 +42,18 @@ class BraveVpnServiceDesktop
 
   void Connect();
   void Disconnect();
-  bool IsConnected() const;
   void CreateVPNConnection();
   void RemoveVPNConnnection();
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
+
+  bool is_connected() const { return is_connected_; }
+
+  void BindInterface(
+      mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
+  // mojom::vpn::ServiceHandler
+  void GetIsConnected(GetIsConnectedCallback callback) override;
 
  private:
   // BraveVpnService overrides:
@@ -61,6 +72,7 @@ class BraveVpnServiceDesktop
   base::ScopedObservation<brave_vpn::BraveVPNOSConnectionAPI,
                           brave_vpn::BraveVPNOSConnectionAPI::Observer>
       observed_{this};
+  mojo::ReceiverSet<brave_vpn::mojom::ServiceHandler> receivers_;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_SERVICE_DESKTOP_H_

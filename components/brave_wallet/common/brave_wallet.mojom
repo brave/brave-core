@@ -130,6 +130,7 @@ struct SwapResponse {
 struct AccountInfo {
   string address;
   string name;
+  bool is_imported;
 };
 
 struct KeyringInfo {
@@ -175,6 +176,7 @@ interface ERCTokenRegistry {
   GetTokenByContract(string contract) => (ERCToken? token);
   GetTokenBySymbol(string symbol) => (ERCToken? token);
   GetAllTokens() => (array<ERCToken> tokens);
+  GetBuyTokens() => (array<ERCToken> tokens);
 };
 
 interface KeyringController {
@@ -185,11 +187,20 @@ interface KeyringController {
   Unlock(string password) => (bool success);
   IsLocked() => (bool isLocked);
   AddAccount(string accountName) => (bool success);
+  GetPrivateKeyForDefaultKeyringAccount(string address)
+    => (bool success, string privateKey);
+  AddImportedAccount(string accountName, string privateKey)
+    => (bool success, string address);
+  GetPrivateKeyForImportedAccount(string address)
+    => (bool success, string privateKey);
+  RemoveImportedAccount(string address) => (bool success);
   IsWalletBackedUp() => (bool backed_up);
   NotifyWalletBackupComplete();
   GetDefaultKeyringInfo() => (KeyringInfo keyring);
   Reset();
   AddObserver(pending_remote<KeyringControllerObserver> observer);
+  SetDefaultKeyringDerivedAccountName(string address, string name) => (bool success);
+  SetDefaultKeyringImportedAccountName(string address, string name) => (bool success);
 };
 
 interface AssetRatioController {
@@ -252,10 +263,36 @@ interface EthJsonRpcController {
   SetCustomNetwork(url.mojom.Url provider_url);
 };
 
+enum TransactionStatus {
+  Unapproved,
+  Approved,
+  Rejected,
+  Submitted,
+  Confirmed,
+  Error
+};
+
+struct TransactionInfo {
+  string id;
+  string from_address;
+  string tx_hash;
+  TxData1559 tx_data;
+  TransactionStatus tx_status;
+};
+
+interface EthTxControllerObserver {
+  OnNewUnapprovedTx(TransactionInfo tx_info);
+  OnTransactionStatusChanged(TransactionInfo tx_info);
+};
+
 interface EthTxController {
   AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id);
   AddUnapproved1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_meta_id);
   ApproveTransaction(string tx_meta_id) => (bool status);
   RejectTransaction(string tx_meta_id) => (bool status);
   MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
+  MakeERC20ApproveData(string spender_address, string amount) => (bool success, array<uint8> data);
+  // This returns different data depending on which network is currently selected in EthJsonRpcController
+  GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
+  AddObserver(pending_remote<EthTxControllerObserver> observer);
 };

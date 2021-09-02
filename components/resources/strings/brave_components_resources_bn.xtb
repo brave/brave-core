@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">ক্লিক করা হয়েছে</translation>
 <translation id="7119308337584989771">খারিজ করা হয়েছে</translation>
 <translation id="6805660603861526473">দেখা হয়েছে</translation>
+<translation id="1501075228659004450">হুম, মনে হচ্ছে আপনার Brave Rewards ওয়ালেট ইতিমধ্যেই যাচাই করা হয়েছে অন্য একটি <ph name="PROVIDER"/> অ্যাকাউন্টের সাথে। আপনার আগের অ্যাকাউন্ট ব্যবহার করে আবার যাচাই করার চেষ্টা করুন।</translation>
+<translation id="5111921830714291902">ত্রুটি: ভিন্ন অ্যাকাউন্ট</translation>
 <translation id="2359865110462963929">বর্তমানে আপনার অঞ্চলে BAT সমর্থিত নয়। আপডেটগুলির জন্য অনুগ্রহ করে <ph name="BEGIN_LINK"/>এখানে<ph name="END_LINK"/> দেখুন।</translation>
 <translation id="1737873393693460829">[[title]] চালু করে, আপনি <ph name="BEGIN_LINK1"/>পরিষেবার শর্তাবলী<ph name="END_LINK1"/> এবং <ph name="BEGIN_LINK2"/>গোপনীয়তা নীতি<ph name="END_LINK2"/>তে সম্মত হচ্ছেন।</translation>
 <translation id="2564425876266960486">Brave ব্রাউজার BAT কার্ড তৈরি করতে ত্রুটি</translation>
@@ -253,6 +255,7 @@
 <translation id="2359808026110333948">চালিয়ে যান</translation>
 <translation id="5112354605357157725">লগইন করে রাখার</translation>
 <translation id="1280764044837262633">একটি অ্যাকাউন্ট তৈরি করতে <ph name="PROVIDER"/> এর <ph name="AMOUNT"/> BAT এর একটি ন্যুনতম ব্যালেন্স প্রয়োজন। আপনি আগে একটি অ্যাকাউন্ট সংযুক্ত করে থাকলে,</translation>
+<translation id="752216563428219524">বিজ্ঞাপন ইনিশিয়ালাইজ করা হয়নি, দয়া করে পৃষ্ঠাটি রিফ্রেশ করুন।</translation>
 <translation id="7422678632904904341">অর্থরাশি:</translation>
 <translation id="6969783933307596818">প্রতি 5 সেকেন্ডে স্বয়ংক্রিয়ভাবে রিফ্রেশ হয়</translation>
 <translation id="5025866799968038247">ব্যালেন্স সম্পর্কিত তথ্য</translation>
@@ -313,6 +316,7 @@
 <translation id="2152423226436243241">স্বতঃ-প্রদান</translation>
 <translation id="2927922949538312364">একবারের জন্য পরামর্শ</translation>
 <translation id="3164105678355419142">পুনরাবৃত্তি টিপ</translation>
+<translation id="916115051162298064">বিজ্ঞাপনের ডায়াগনস্টিকস</translation>
 <translation id="7806880412350961625">ইভেন্টের লগগুলি</translation>
 <translation id="4309915981827077375">সাধারণ তথ্য</translation>
 <translation id="3662406032239313663">লগগুলি</translation>
@@ -351,6 +355,7 @@
 <translation id="4371618764691059036">মাসিক অনুদান সেট করা হয়েছে।</translation>
 <translation id="6356822617569064293">পরবর্তী অবদানের তারিখ:</translation>
 <translation id="3593485149443019592">পর্যাপ্ত টোকেন নেই। অনুগ্রহ করে <ph name="LINK_BEGIN"/>ফান্ড যোগ করুন<ph name="LINK_END"/>।</translation>
+<translation id="3586352807094428968">Brave টিপের পরিমানের 5%প্রসেসিং ফি হিসেবে সগ্রহ করে।</translation>
 <translation id="207268487070188114">এককালীন টিপ</translation>
 <translation id="69861679024013299">এককালীন টিপের অর্থরাশি:</translation>
 <translation id="3669086939205397942">ধরে থাকুন, আপনি পারবেন’tএখনও টিপ করতে</translation>
@@ -359,6 +364,7 @@
 <translation id="5531915212947569943">আপনাকে চলে যেতে দেখে খারাপ লাগছে…</translation>
 <translation id="1420756770787071946">এই স্রষ্টাকে সহায়তা করুন</translation>
 <translation id="3271043362279673449">সহায়তার জন্য ধন্যবাদ!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>নোট করুন: <ph name="BOLD_END"/>আপনার টিপটি প্রক্রিয়াকরণ করতে কিছু মিনিট সময় লাগতে পারে</translation>
 <translation id="3312470408978098625">আপনার এককালীন টিপ পাঠানো হয়েছে।</translation>
 <translation id="5096821444729034955">তাদের পোস্টের জন্য</translation>
 <translation id="2978223787436054634">আপনার সহায়তা সম্পর্কে টুইট</translation>
@@ -376,7 +382,7 @@
 <translation id="6318696841371191107">দ্রুত ভ্রমণ করুন</translation>
 <translation id="8465790416279415448">এগিয়ে গিয়ে, আপনি <ph name="TOS_LINK_BEGIN"/>পরিষেবার শর্তাবলী<ph name="TOS_LINK_END"/> এবং <ph name="PP_LINK_BEGIN"/>গোপনীয়তা নীতি<ph name="PP_LINK_END"/>তে সম্মত হচ্ছেন।</translation>
 <translation id="8222322431155185238">Brave পুরস্কারগুলি সম্পর্কে পরামর্শ</translation>
-<translation id="1895476463085410109">Brave ব্যক্তিগত বিজ্ঞাপনগুলি দেখে পুরস্কার অর্জন করুন এবং স্বয়ংক্রিয়ভাবে স্রষ্টাদের সমর্থন করুন</translation>
+<translation id="1895476463085410109">Brave Private Ads দেখে পুরস্কার অর্জন করুন এবং স্বয়ংক্রিয়ভাবে স্রষ্টাদের সমর্থন করুন</translation>
 <translation id="5705882733397021510">ফিরে যাও</translation>
 <translation id="185034574799484512">#8217 এর দ্রুত ভ্রমণ করতে দিন</translation>
 <translation id="8281886186245836920">ছেড়ে যান</translation>
@@ -413,6 +419,7 @@
 <translation id="4241224519481557898">বিভাগ</translation>
 <translation id="3080423471207781945">এক ঘণ্টায় পাওয়া সর্বাধিক বিজ্ঞাপন:</translation>
 <translation id="2631006050119455616">সেভ করা হয়েছে</translation>
+<translation id="7847825746023377505">শেষ <ph name="TOTAL_DAYS"/> দিন কোন বিজ্ঞাপন দেখা হয়নি।</translation>
 <translation id="7902420836933072528">গত [[totalDays]] দিনে আপনার পাওয়া বিজ্ঞাপনগুলো</translation>
 <translation id="8863685593846905344">বিজ্ঞাপনের ইতিহাস</translation>
 <translation id="2777306694585938662">বিজ্ঞাপনগুলির পুরষ্কারগুলি গৃহীত হয়েছে</translation>
@@ -566,7 +573,6 @@
 <translation id="8014425282125849700">কখনোসখনো, আপনাকে টোকেন মঞ্জুর করা হবে Brave থেকে| তাই সেই অফারের জন্য চোখ খোলা রাখুন!</translation>
 <translation id="1370034647041840967">বিজ্ঞাপনের প্রতি মনোযোগ দেবার জন্য টোকেন অর্জন করুন এবং যে সকল বিষয়বস্তু প্রস্তুতকারকদের আপনি মূল্যবান মনে করেন তাদের তা প্রদান করুন!</translation>
 <translation id="4919888432594361029"><ph name="PROVIDER"/>-এ অর্থ যোগ করুন, তুলুন ও ব্যবস্থাপনা করুন।</translation>
-<translation id="3092054349246483285"><ph name="PROVIDER"/> আপনাকে Brave ওয়ালেট সুবিধা প্রদান করছে।</translation>
 <translation id="6401272292123354754">Brave রিওয়ার্ডস বেসিক অ্যাটেনশন টোকেন উপর নির্মিত| BAT সম্বন্ধে আরো জানুন</translation>
 <translation id="7823359893981882407">এখানে</translation>
 <translation id="3034163433136515805">QR কোড দেখুন</translation>
@@ -644,12 +650,15 @@
 <translation id="39734939514946950">আপনার পুরস্কারের অর্থরাশি</translation>
 <translation id="2151535059686617995">আজ আপনার লাকি দিন!</translation>
 <translation id="6436689611575806470">আপনার [[currency]] অনুদান আসতে চলেছে।</translation>
-<translation id="7512440811010447157">যাচাই করুন</translation>
 <translation id="8267327690882073581">ওয়ালেট যাচাই করুন</translation>
 <translation id="543510923939676996">ওয়ালেট যাচাই করা হয়েছে</translation>
-<translation id="2659764755126740206">আমার <ph name="PROVIDER"/> অ্যাকাউন্টে যান</translation>
+<translation id="2445110450361135194">আপনার <ph name="PROVIDER"/> অ্যাকাউন্টে যান</translation>
+<translation id="4244985009709452836">আপনার <ph name="PROVIDER"/> অ্যাকাউন্টে লগইন করুন</translation>
 <translation id="3699674790322420653">সম্পূর্ণ ওয়ালেট যাচাইকরণ</translation>
 <translation id="9200453331904391567">Brave পুরষ্কারগুলি থেকে সংযোগ বিচ্ছিন্ন করুন</translation>
+<translation id="3656941797339037856">Gemini-র সাথে Rewards লিঙ্ক করুন!</translation>
+<translation id="671838195432136371">Gemini আপনাকে সহজেই বাণিজ্য করতে, সঞ্চয় করতে এবং 3.49% APY* উপার্জন করতে দেয় আপনার BAT এ। নতুন Gemini ব্যবহারকারী যারা লিঙ্ক করেন তারা বিনামূল্যে 5 BAT পান!</translation>
+<translation id="9136976526700181750">* আগস্ট 15, 2021 এর হিসাবে Gemini আর্ন APY</translation>
 <translation id="7404779623219601861">উপহার কার্ডের জন্য BAT রিডিম করুন</translation>
 <translation id="6215565499749144110">TAP নেটওয়ার্ক দিয়ে, আপনি জনপ্রিয় নাম-ব্র্যান্ড যুক্ত উপহার কার্ডের জন্য আপনার BAT রিডিম করে নিতে পারেন।</translation>
 <translation id="6915065518766963119">* অনুমোদিত যাচাইকরণের প্রয়োজন।</translation>
@@ -734,6 +743,7 @@
 <translation id="1833248467354516560">ইউনিট মূল্য</translation>
 <translation id="4763179765154524864">মোট খরচ করা হয়েছে</translation>
 <translation id="8851480289992540512">মোট পাওয়া গেছে</translation>
+<translation id="824449983246282560">আপনার অ্যাকাউন্টে কোনো ব্যালেন্স নেই। কিছু কিনতে Gemini ভিজিট করুন।</translation>
 <translation id="8624961452383848703">আমি পরিবর্তন করতে চাই…</translation>
 <translation id="616639131065447379">ব্রেভ ক্রিপ্টো ওয়ালেটে স্বাগতম</translation>
 <translation id="1740464057879304704">ক্রিপ্টো ওয়ালেটস আপনাকে ক্রিপ্টোকারেন্সি এবং ব্রেভ-এ সম্পর্কিত সম্পদের সাথে কাজ করতে দেয়। ক্রিপ্টো ওয়ালেটস ইথেরিয়াম টোকেনগুলির মতো ETH এবং BAT, আর এর সঙ্গেসঙ্গে সংগ্রহযোগ্যগুলি সমর্থন করে এবং আপনাকে Ðঅ্যাপগুলি এবং অন্যান্য স্মার্ট চুক্তি সহ কাজ করতে দেয়। এই সবগুলি এমন লোকদের জন্য করা হয়েছে যারা ইথেরিয়াম এবং অন্যান্য শৃঙ্খল-বদ্ধ সিস্টেমের সাথে পরিচিত — বা শিখতে উৎসাহিত হয়।</translation>

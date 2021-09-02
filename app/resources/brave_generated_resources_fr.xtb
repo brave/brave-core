@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Récompenses Brave</translation>
 <translation id="7942180974165298215">Bloqueur de publicité Brave</translation>
 <translation id="4615489450165434530">Signaler une panne du site</translation>
+<translation id="1209739344687072997">Signaler une panne du site</translation>
 <translation id="6406506848690869874">Synchroniser</translation>
 <translation id="1544192797660353713">Portefeuille</translation>
 <translation id="2445484935443597917">Créer un profil</translation>
-<translation id="2666990579225592931">Ouvrir la fenêtre d'invité</translation>
+<translation id="744341768939279100">Créer un profil</translation>
+<translation id="2666990579225592931">Ouvrir une fenêtre de navigation en tant qu'invité</translation>
+<translation id="4986483413015198747">Ouvrir la fenêtre d'invité</translation>
 <translation id="8275068909952022340">Plus…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") n'est pas autorisé dans Brave.</translation>
 <translation id="6786747875388722282">Extensions</translation>
@@ -45,10 +48,12 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="5802665280774361839">Afficher la saisie automatique dans la barre d'adresse</translation>
 <translation id="597020512043916976">Afficher les meilleurs sites dans les suggestions semi-automatiques</translation>
 <translation id="264150068416846820">Afficher les sites Brave suggérés dans les suggestions semi-automatiques</translation>
-<translation id="5529693968082667490">Bouton Afficher la recherche des onglets</translation>
+<translation id="5529693968082667490">Afficher le bouton de recherche d'onglet</translation>
 <translation id="6414370348346025511">La protection standard est activée.</translation>
 <translation id="814018970995616154">Compare les URL avec une liste de sites non sûrs conservée dans Brave.</translation>
 <translation id="1144810021918451336">Ne vous protège pas contre les sites Internet dangereux, les téléchargements et les extensions.</translation>
+<translation id="6285118765755298263">Indexer d'autres moteurs de recherche</translation>
+<translation id="919715748352669592">Indexe automatiquement les sites Web qui suivent les caractéristiques OpenSearch.</translation>
 <translation id="7781069478569868053">Nouvel onglet</translation>
 <translation id="1988804048511540801">Le nouvel onglet affiche</translation>
 <translation id="2970343821770026391">Tableau de bord</translation>
@@ -191,7 +196,6 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="1834467296210148203">Afficher l'icône Portefeuille Brave dans la barre d'outils</translation>
 <translation id="6864914031231797928">Autoriser la connexion Google pour les extensions</translation>
 <translation id="5927916530277631319">Méthode de résolution des domaines Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/> sur les considérations relatives au DNS via HTTPS et à Ethereum.</translation>
 <translation id="5248318250177143470">Méthode de résolution des domaines Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Configurer vos clés IPNS</translation>
 <translation id="951216659045543447">Signez le contenu avec la clé privée correspondante et publiez le dans IPNS</translation>
@@ -223,7 +227,6 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="1327977588028644528">Passerelle</translation>
 <translation id="80225669816651290">Nœud local</translation>
 <translation id="4927734062756955434">Adresse de la passerelle réseau IPFS publique</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>En savoir plus<ph name="END_LINK_MPL"/> sur les considérations relatives à la vie privée pour le nœud local et la passerelle IPFS.</translation>
 <translation id="8425213833346101688">Modifier</translation>
 <translation id="557281710253742286">Configurer la passerelle réseau IPFS</translation>
 <translation id="8571837315037233299">Adresse de la passerelle réseau</translation>
@@ -237,7 +240,6 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="8655170717758778983">Rediriger automatiquement vers la page IPFS via DNSLink lorsque cela est possible</translation>
 <translation id="2233724520223030977">Utiliser automatiquement DNSLink pour accéder à la version IPFS d'un site lorsque cela est possible</translation>
 <translation id="6554397389149987360">Utilise le composant Hangouts pour activer le partage d'écran et d'autres fonctionnalités dans le navigateur.</translation>
-<translation id="1765684547504191670">Utilise le routeur média pour activer Chromecast dans le navigateur.</translation>
 <translation id="9156965752763025780">Vos modifications seront prises en compte au prochain redémarrage de Brave.</translation>
 <translation id="7179921470347911571">Relancer maintenant</translation>
 <translation id="8068526464562249859">Utilise l'extension compagnon IPFS pour une prise en charge IPFS améliorée dans Brave, y compris l'accès aux tâches IPFS courantes depuis la barre de votre navigateur.</translation>
@@ -307,6 +309,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="6873781976650514089">ce paramètre</translation>
 <translation id="6040143037577758943">Fermer</translation>
 <translation id="5600566490506283344">Notification de Pub Brave</translation>
+<translation id="1516554614404600536">Infobulle Brave</translation>
 <translation id="4877147287319222750">Ajouter à la barre latérale</translation>
 <translation id="4233010476457917696">Afficher la barre latérale</translation>
 <translation id="5404213409401164238">Afficher la barre latérale</translation>
@@ -347,6 +350,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
         Vous pouvez lire <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>des instructions sur la façon de télécharger et de compiler vous-même<ph name="END_LINK_BUILD_INSTRUCTIONS"/> le code source spécifique <ph name="BEGIN_LINK_SOURCE_CODE"/>utilisé pour créer cette copie<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Ajouter tous les onglets aux favoris...</translation>
 <translation id="2336228925368920074">Ajouter tous les onglets aux favoris...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Pour ajouter un signet, cliquez sur le bouton signet à côté de la barre d'adresse</translation>
 <translation id="4989337484121655457">Accès complet au disque requis</translation>
 <translation id="8025559074845816210">Brave a besoin d'un accès complet au disque pour importer vos signets depuis Safari.</translation>

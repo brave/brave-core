@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">مكافآت Brave</translation>
 <translation id="7942180974165298215">Brave لحظر الإعلانات</translation>
 <translation id="4615489450165434530">الإبلاغ عن موقع إلكتروني معطل</translation>
+<translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="6406506848690869874">مزامنة</translation>
 <translation id="1544192797660353713">المحفظة</translation>
-<translation id="2445484935443597917">إنشاء ملف تعريف جديد</translation>
-<translation id="2666990579225592931">فتح نافذة الضيف</translation>
+<translation id="2445484935443597917">إنشاء ملف شخصي جديد</translation>
+<translation id="744341768939279100">إنشاء ملف تعريف جديد</translation>
+<translation id="2666990579225592931">فتح نافذة "ضيف"</translation>
+<translation id="4986483413015198747">فتح نافذة الضيف</translation>
 <translation id="8275068909952022340">المزيد …</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") غير مسموح به في Brave.</translation>
 <translation id="6786747875388722282">الإضافات</translation>
@@ -45,10 +48,12 @@
 <translation id="5802665280774361839">إظهار الإكمال التلقائي في شريط العناوين</translation>
 <translation id="597020512043916976">عرض أهم المواقع في اقتراحات الإكمال التلقائي</translation>
 <translation id="264150068416846820">إظهار مواقع Brave المقترحة ضمن اقتراحات الإكمال التلقائي</translation>
-<translation id="5529693968082667490">إظهار زر علامات تبويب البحث</translation>
+<translation id="5529693968082667490">إظهار زر بحث علامة التبويب</translation>
 <translation id="6414370348346025511">الحماية القياسية قيد التشغيل.</translation>
 <translation id="814018970995616154">يتحقق من عناوين URL بقائمة من المواقع غير الآمنة المخزنة في متصفّح Brave.</translation>
 <translation id="1144810021918451336">لا يحميك من مواقع الويب والتنزيلات والإضافات الخطيرة.</translation>
+<translation id="6285118765755298263">فهرسة محركات البحث الأخرى</translation>
+<translation id="919715748352669592">يقوم تلقائيًا بفهرسة مواقع الويب التي تتبع مواصفات OpenSearch.</translation>
 <translation id="7781069478569868053">صفحة في علامة تبويب جديدة</translation>
 <translation id="1988804048511540801">تظهر صفحة علامة تبويب جديدة</translation>
 <translation id="2970343821770026391">لوحة التحكم</translation>
@@ -191,7 +196,6 @@
 <translation id="1834467296210148203">إظهار رمز Brave Wallet على شريط الأدوات</translation>
 <translation id="6864914031231797928">قم بالسماح بتسجيل الدخول إلى Google للحصول على الإضافات</translation>
 <translation id="5927916530277631319">طريقة لمعالجة النطاقات التي لا يمكن إيقافها</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>تعرّف على المزيد<ph name="END_LINK"/> حول اعتبارات خصوصية إيثريوم وبروتوكول DNS عبر HTTPS.</translation>
 <translation id="5248318250177143470">طريقة لمعالجة خدمة اسم إيثريوم (ENS)</translation>
 <translation id="7024553202001112871">إعداد مفاتيح IPNS الخاصة بك</translation>
 <translation id="951216659045543447">توقيع المحتوى بواسطة المفتاح الخاص المتوافق ونشره على IPNS</translation>
@@ -213,7 +217,7 @@
 <translation id="1534091531114892221">إعداد وصف الأقران لنظام الملفات اللامركزي</translation>
 <translation id="8996633027318264334">هل تريد بالفعل حذف <ph name="KEY_NAME"/>؟</translation>
 <translation id="910215077892371264">لم يتم تشغيل العقدة</translation>
-<translation id="616058968889448209">حدث خطأ أثناء تشغيل خدمة IPFS، تتوفر المزيد من المعلومات على <ph name="BEGIN_LINK"/>صفحة التشخيص<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">خطأ في تشغيل خدمة IPFS، يتوفر المزيد من المعلومات على <ph name="BEGIN_LINK"/>صفحة التشخيص<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">فشل استيراد المفتاح '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' key export failed
 فشل تصدير المفتاح</translation>
@@ -224,7 +228,6 @@
 <translation id="1327977588028644528">المدخل</translation>
 <translation id="80225669816651290">عقدة محلية</translation>
 <translation id="4927734062756955434">عنوان بوابة IPFS العام</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>تعرّف على المزيد<ph name="END_LINK_MPL"/> حول اعتبارات الخصوصية بالبوابة والعقدة المحلية IPFS.</translation>
 <translation id="8425213833346101688">تغيير</translation>
 <translation id="557281710253742286">تعيين بوابة IPFS</translation>
 <translation id="8571837315037233299">عنوان البوابة</translation>
@@ -238,7 +241,6 @@
 <translation id="8655170717758778983">إعادة التوجيه تلقائياً إلى صفحات IPFS عبر DNSLink عندما يكون ذلك ممكناً</translation>
 <translation id="2233724520223030977">يستخدم DNSLink تلقائياً للانتقال إلى إصدار IPFS من الموقع الإلكتروني عندما يكون ذلك ممكناً</translation>
 <translation id="6554397389149987360">يستخدم عنصر تطبيق Hangouts لتمكين مشاركة الشاشة وغيرها من الميزات في المتصفح.</translation>
-<translation id="1765684547504191670">يستخدم مكوّن Media Router لتمكين Chromecast في المتصفح.</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
 <translation id="8068526464562249859">يستخدم امتداد IPFS Companion لدعم IPFS المحسن في Brave، بما في ذلك الوصول إلى مهام IPFS الشائعة من شريط المستعرض الخاص بك.</translation>
@@ -308,6 +310,7 @@
 <translation id="6873781976650514089">هذا الإعداد</translation>
 <translation id="6040143037577758943">إغلاق</translation>
 <translation id="5600566490506283344">إشعار Brave Ad</translation>
+<translation id="1516554614404600536">تعريف الأدوات الخاصة بشركة Brave</translation>
 <translation id="4877147287319222750">أضف إلى الشريط الجانبي</translation>
 <translation id="4233010476457917696">إظهار الشريط الجانبي</translation>
 <translation id="5404213409401164238">إظهار الشريط الجانبي</translation>
@@ -348,6 +351,7 @@
         يمكنك قراءة <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>التعليمات حول كيفية تنزيل وبناء<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/> التعليمات البرمجية الأصلية المحددة المستخدمة لإنشاء هذه النسخة<ph name="END_LINK_SOURCE_CODE"/> لنفسك.</translation>
 <translation id="4474155171896946103">وضع إشارات على كل علامات التبويب...</translation>
 <translation id="2336228925368920074">وضع إشارة على جميع علامات التبويب...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">لإضافة إشارة مرجعية، انقر فوق زر الإشارة المرجعية بجوار شريط العنوان</translation>
 <translation id="4989337484121655457">مطلوب الوصول الكامل إلى القرص</translation>
 <translation id="8025559074845816210">يتطلب Brave الوصول الكامل إلى القرص لاستيراد إشاراتك المرجعية من Safari.</translation>

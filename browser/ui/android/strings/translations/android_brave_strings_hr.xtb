@@ -18,7 +18,7 @@
 <translation id="5345505584130165588">Brave Shields &amp; privatnost</translation>
 <translation id="4692623383562244444">Tražilice</translation>
 <translation id="1468415711258933398">Standardna kartica</translation>
-<translation id="3377025655491224618">Anonimna kartica</translation>
+<translation id="3377025655491224618">Privatna kartica</translation>
 <translation id="9148058034647219655">Izlaz</translation>
 <translation id="4022987104439075738">Pristupnik IPFS</translation>
 <translation id="2688519859165248360">Omogućuje se navigacija do resursa IPFS putem pristupnika IPFS</translation>
@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Sprječava se učitavanje i prikazivanje elemenata za praćenje &amp; oglasa na mrežnim stranicama</translation>
 <translation id="1680858055899097121">Ne zadržavaj kartice između sesija pregledavanja</translation>
 <translation id="7142548388914389999">Dopusti analitiku proizvoda kojom se čuva privatnost (P3A)</translation>
-<translation id="5469408008145872264">Ovim potpuno anonimnim informacijama omogućava se društvu Brave procjenjivanje i poboljšavanje ukupne uporabe određenih značajki.</translation>
+<translation id="5254037869598726291">Ovim potpuno anonimnim informacijama omogućava se društvu Brave procjenjivanje i poboljšavanje ukupne uporabe određenih značajki.</translation>
 <translation id="7977176350719484850">Procjena smanjenog broja\npodataka</translation>
 <translation id="9008534313521214777">Procjena ušteđenog\nvremena</translation>
 <translation id="6572660632052512096">Način radne površine</translation>
@@ -246,7 +246,7 @@ dok se ne provjere ili do isteka 90 dana.</translation>
 <translation id="723054503945711909">Društvo Brave Software Inc. ne obrađuje, ne pohranjuje niti pristupa nijednom osobnom podatku koji ste ustupili usluzi Uphold pri stvaranju računa na navedenoj usluzi.</translation>
 <translation id="3699674790322420653">Završi provjeru novčanika</translation>
 <translation id="2193391216824305230">Novčanik korisnika</translation>
-<translation id="7591798679868259510">Idi na moj račun Uphold</translation>
+<translation id="6585020831163574892">Idite u svoj račun za Uphold</translation>
 <translation id="9200453331904391567">Poništi vezu s Brave Rewards</translation>
 <translation id="6239274080752256452">Povuci sredstva</translation>
 <translation id="8874184842967597500">Niste povezani</translation>
@@ -475,7 +475,7 @@ dok se ne provjere ili do isteka 90 dana.</translation>
 <translation id="1078265935778232285">Dobro došli u preglednik Brave</translation>
 <translation id="6824713633331856331">Pomognite nam anonimno saznati</translation>
 <translation id="6116685031674149112">Preglednikom Brave štiti se vaša privatnost i\ncijeni vaša privola za sljedeće stavke:</translation>
-<translation id="3971666849661839619">Pomognite unaprijediti preglednik Brave slanjem izvješća o rušenju u potpuno anonimnom formatu, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Pomognite unaprijediti preglednik Brave slanjem izvješća o rušenju u potpuno anonimnom formatu, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">privatna analitika proizvoda.</translation>
 <translation id="5187052478998910855">Trebate podsjetnik na Rewards?</translation>
 <translation id="8622329973403382303">Krenite u kratki obilazak kako biste razjasnili kako se ulazi u povijest kao zvijezda Rewards!</translation>
@@ -560,12 +560,36 @@ dok se ne provjere ili do isteka 90 dana.</translation>
 <translation id="2360588547830602174">Oporavak računa nije uspio. Pokušajte ponovno.</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Tržišna cijena u valuti ETH</translation>
+<translation id="5593852897152820572">Cijena u valuti ETH</translation>
 <translation id="6748108480210050150">Pošiljatelj</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
 <translation id="8654192805213365413">75 %</translation>
 <translation id="6159566011642056819">Za (procjena)</translation>
+<translation id="6998989275928107238">Primatelj</translation>
+<translation id="6664416064035847539">Adresa ili URL</translation>
 <translation id="59223531494896848">Ograničenje</translation>
 <translation id="3567988240819868195">Tržište</translation>
 <translation id="632241521608275119">Tolerancija prekoračenja</translation>
+<translation id="4500473291496079954">Istječe za</translation>
+<translation id="1987317783729300807">Računi</translation>
+<translation id="3535654229833214438">Transakcije</translation>
+<translation id="4636930964841734540">Informacije</translation>
+<translation id="6284218950354553099">Automatski šalji ping dnevne uporabe Braveu</translation>
+<translation id="5288333155754958121">Ovaj anonimni, privatni ping omogućuje Braveu da procijeni broj aktivnih korisnika.</translation>
+<translation id="3819257035322786455">Sigurnosna kopija</translation>
+<translation id="4608713693379664295">Primarni račun za kriptovalute</translation>
+<translation id="4003821417160006384">Sekundarni računi</translation>
+<translation id="8094541587800369158">Ti računi mogu se upotrijebiti s 3 mrežne decentralizirane aplikacije i mogu se prikazati u vašem portfelju, no ne mogu se vratiti putem faze oporavka iz sigurnosne kopije vašeg primarnog računa. Omogućite značajku Brave Sync računa za automatsko vraćanje sekundarnih računa.</translation>
+<translation id="6725413948756358325">Naziv računa</translation>
+<translation id="6062431965141524986">Možete napraviti sekundarni račun uvoženjem svog privatnog ključa.</translation>
+<translation id="3952797765659730604">Upišite, zalijepite ili uvezite datoteku niza ili datoteku JSON svog privatnog ključa.</translation>
+<translation id="569068482611873351">Uvoz...</translation>
+<translation id="1940465339426637378">Imovine</translation>
+<translation id="4522570452068850558">Pojedinosti</translation>
+<translation id="9065203028668620118">Uredi</translation>
+<translation id="3995184924764722477">Pojedinosti o računu</translation>
+<translation id="8967036623785635603">Uredi vidljivu imovinu</translation>
+<translation id="5050890334032852465">Spremi popis za gledanje računa</translation>
+<translation id="7755766175599167100">Pretraži tokene</translation>
 </translationbundle>

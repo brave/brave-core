@@ -4,16 +4,14 @@ import { Network, AllowSpendReturnPayload } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { NetworkOptions } from '../../../options/network-options'
 import locale from '../../../constants/locale'
-import { NavButton } from '../'
+import { NavButton, PanelTab, TransactionDetailBox } from '../'
 
 // Styled Components
 import {
   MessageBox,
-  MessageBoxTitle,
   TransactionText,
   MessageBoxRow,
   EditButton,
-  DetailsButton,
   ButtonRow,
   FavIcon,
   URLText,
@@ -31,8 +29,11 @@ import {
   Description,
   NetworkText,
   PanelTitle,
-  TopRow
+  TopRow,
+  TabRow
 } from '../shared-panel-styles'
+
+export type allowSpendPanelTabs = 'transaction' | 'details'
 
 export interface Props {
   selectedNetwork: Network
@@ -48,10 +49,14 @@ function AllowSpendPanel (props: Props) {
     onConfirm,
     onReject
   } = props
-
+  const [selectedTab, setSelectedTab] = React.useState<allowSpendPanelTabs>('transaction')
   const orb = React.useMemo(() => {
     return create({ seed: spendPayload.contractAddress, size: 8, scale: 16 }).toDataURL()
   }, [spendPayload.contractAddress])
+
+  const onSelectTab = (tab: allowSpendPanelTabs) => () => {
+    setSelectedTab(tab)
+  }
 
   return (
     <StyledWrapper>
@@ -68,19 +73,35 @@ function AllowSpendPanel (props: Props) {
         <PanelTitle>{locale.allowSpendTitle} {spendPayload.erc20Token.symbol}?</PanelTitle>
         {/* Will need to allow parameterized locales by introducing the "t" helper. For ex: {t(locale.allowSpendDescription, [spendPayload.erc20Token.symbol])}*/}
         <Description>{locale.allowSpendDescriptionFirstHalf}{spendPayload.erc20Token.symbol}{locale.allowSpendDescriptionSecondHalf}</Description>
-        <MessageBoxTitle>{locale.allowSpendBoxTitle}</MessageBoxTitle>
+        <TabRow>
+          <PanelTab
+            isSelected={selectedTab === 'transaction'}
+            onSubmit={onSelectTab('transaction')}
+            text='Transaction'
+          />
+          <PanelTab
+            isSelected={selectedTab === 'details'}
+            onSubmit={onSelectTab('details')}
+            text='Details'
+          />
+        </TabRow>
         <MessageBox>
-          <MessageBoxRow>
-            <TransactionText>{locale.allowSpendTransactionFee}</TransactionText>
-            <EditButton>{locale.allowSpendEditButton}</EditButton>
-          </MessageBoxRow>
-          <MessageBoxRow>
-            <DetailsButton>{locale.allowSpendDetailsButton}</DetailsButton>
-            <BalanceText>{spendPayload.transactionFeeWei} ETH</BalanceText>
-          </MessageBoxRow>
-          <FiatRow>
-            <FiatBalanceText>${spendPayload.transactionFeeWei}</FiatBalanceText>
-          </FiatRow>
+          {selectedTab === 'transaction' ? (
+            <>
+              <MessageBoxRow>
+                <TransactionText>{locale.allowSpendTransactionFee}</TransactionText>
+                <EditButton>{locale.allowSpendEditButton}</EditButton>
+              </MessageBoxRow>
+              <FiatRow>
+                <BalanceText>{spendPayload.transactionFeeWei} ETH</BalanceText>
+              </FiatRow>
+              <FiatRow>
+                <FiatBalanceText>${spendPayload.transactionFeeWei}</FiatBalanceText>
+              </FiatRow>
+            </>
+          ) : (
+            <TransactionDetailBox transactionData={spendPayload.transactionData} />
+          )}
         </MessageBox>
       </CenterColumn>
       <ButtonRow>

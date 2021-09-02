@@ -2,7 +2,8 @@ import * as React from 'react'
 import * as S from './style'
 
 // Components
-import Main from '../components/main'
+import Main from '../containers/main'
+import SelectRegion from '../components/select-region'
 
 export default {
   title: 'VPN/Panels',
@@ -16,8 +17,19 @@ export default {
 
 export const _Main = () => {
   return (
-    <S.StyledExtensionWrapper>
+    <S.PanelFrame>
       <Main />
-    </S.StyledExtensionWrapper>
+    </S.PanelFrame>
+  )
+}
+
+export const _SelectLocation = () => {
+  const onDone = () => {
+    alert('Going back')
+  }
+  return (
+    <S.PanelFrame>
+      <SelectRegion onDone={onDone} />
+    </S.PanelFrame>
   )
 }

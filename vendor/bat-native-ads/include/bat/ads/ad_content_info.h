@@ -34,7 +34,6 @@ struct ADS_EXPORT AdContentInfo {
   std::string campaign_id;
   std::string brand;
   std::string brand_info;
-  std::string brand_logo;
   std::string brand_display_url;
   std::string brand_url;
   LikeAction like_action = LikeAction::kNeutral;

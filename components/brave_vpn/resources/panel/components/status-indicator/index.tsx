@@ -11,8 +11,8 @@ function StatusIndicator (props: Props) {
       <S.Indicator isActive={props.isConnected} />
       <S.Text>
         {props.isConnected
-          ? locale.connectedText
-          : locale.disconnectedText}
+          ? locale.connectedLabel
+          : locale.disconnectedLabel}
       </S.Text>
     </S.Box>
   )

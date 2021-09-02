@@ -22,7 +22,7 @@ class BatAdsAntiTargetingResourceTest : public UnitTestBase {
 
 TEST_F(BatAdsAntiTargetingResourceTest, Load) {
   // Arrange
-  resource::AntiTargeting resource;
+  AntiTargeting resource;
 
   // Act
   resource.Load();

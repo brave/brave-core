@@ -10,6 +10,7 @@
 
 #include "base/callback_forward.h"
 #include "chrome/browser/notifications/notification_handler.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 class Profile;

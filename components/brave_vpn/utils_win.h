@@ -13,15 +13,24 @@ namespace brave_vpn {
 
 namespace internal {
 
+enum class CheckConnectionResult {
+  CONNECTED,
+  NOT_CONNECTED,
+  UNKNOWN,
+};
+
 void PrintRasError(DWORD error);
 std::wstring GetPhonebookPath();
-bool CreateEntry(LPCTSTR entry_name,
-                 LPCTSTR hostname,
-                 LPCTSTR username,
-                 LPCTSTR password);
-bool RemoveEntry(LPCTSTR entry_name);
-bool DisconnectEntry(LPCTSTR entry_name);
-bool ConnectEntry(LPCTSTR entry_name);
+
+bool CreateEntry(const std::wstring& entry_name,
+                 const std::wstring& hostname,
+                 const std::wstring& username,
+                 const std::wstring& password);
+bool RemoveEntry(const std::wstring& entry_name);
+bool DisconnectEntry(const std::wstring& entry_name);
+bool ConnectEntry(const std::wstring& entry_name);
+
+CheckConnectionResult CheckConnection(const std::wstring& entry_name);
 
 }  // namespace internal
 

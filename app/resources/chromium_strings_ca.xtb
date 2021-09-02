@@ -45,7 +45,6 @@
 <translation id="8372880274820509128">Per a més seguretat, Brave encriptarà les teves dades.</translation>
 <translation id="2770231113462710648">Canvia el navegador predeterminat a:</translation>
 <translation id="2799223571221894425">Reinicia</translation>
-<translation id="6811506454451584223">Vols un perfil de Brave independent?</translation>
 <translation id="3783547330001921298">Es crearà un perfil de Brave nou per a <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Suprimeix de Brave...</translation>
 <translation id="2885378588091291677">Gestor de tasques</translation>
@@ -68,17 +67,19 @@
 <translation id="2339258256897053758">Falten les claus de l'API de Brave. Es desactivaran algunes de les funcions de Brave.</translation>
 <translation id="8926637909431618259">Continua executant les aplicacions en segon pla quan es tanqui Brave</translation>
 <translation id="4480040274068703980">Chrome OS no ha pogut sincronitzar les vostres dades a causa d'un error amb l'inici de sessió.</translation>
+<translation id="1166275459137851283">Brave et recomana que no baixis ni obris aquest fitxer</translation>
 <translation id="2711887072399498551">Ja existeix un perfil de Brave amb aquest compte</translation>
 <translation id="2297290224191497273">Vols canviar al perfil de Brave existent?</translation>
 <translation id="2450003541323895471">Els perfils de Brave et permeten separar tot el contingut de Brave. Crea perfils per a amics i familiars, o separa la feina de la diversió.</translation>
+<translation id="7275165473619697274">La instal·lació de Chrome OS està en curs</translation>
 <translation id="9216183508558772570">Brave t'enviarà una notificació quan iniciïs la sessió amb una contrasenya en perill</translation>
 <translation id="5853262807109651878">Amb aquesta acció, se suprimiran <ph name="ITEMS_COUNT"/> elements d'aquest dispositiu. Per recuperar les teves dades més endavant, inicia la sessió a Brave com a <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> permet canviar entre perfils de Brave</translation>
 <translation id="8703492925273919597">Tanqueu totes les finestres de Brave i torneu-ho a provar.</translation>
 <translation id="1384923383737428730">Hi ha programari nociu a l'ordinador. Brave el pot suprimir, restaurar la configuració i desactivar les extensions perquè el navegador torni a funcionar amb normalitat.</translation>
+<translation id="2409866122341731384">Esborra la unitat de disc dur i instal·la Chrome OS</translation>
 <translation id="7029305463989165490">Per enviar un número del dispositiu <ph name="ORIGIN"/> al teu telèfon Android, inicia la sessió a Brave en tots dos dispositius.</translation>
 <translation id="4304059894777924102">Brave no pot comprovar les teves contrasenyes. Comprova la connexió a Internet.</translation>
-<translation id="2588634262982826227">Després de reiniciar-se, Brave OS pot restaurar sempre les teves pàgines i aplicacions sense haver de preguntar-t'ho cada vegada.</translation>
 <translation id="1807774211756215222">Obre l'enllaç en una pes&amp;tanya nova a Brave</translation>
 <translation id="7453070689008684791">Brave accedirà a Drive per fer suggeriments a la barra d'adreces</translation>
 <translation id="2106568569080763501">Brave us permet fer clic en un número de telèfon al web i trucar-hi amb Skype!</translation>
@@ -96,6 +97,7 @@
 <translation id="8923080813984421771"><ph name="MANAGER"/> requereix que llegeixis i acceptis les condicions del servei següents abans d'utilitzar el dispositiu. Aquestes condicions no amplien, modifiquen ni limiten les condicions de Brave OS.</translation>
 <translation id="3262506503470845422">Obtén ajuda per a Brave</translation>
 <translation id="7691786510374174420">S'ha produït un error no especificat durant la instal·lació. Si Brave s'està executant en aquests moments, tanqueu-lo i torneu-ho a provar.</translation>
+<translation id="429583012151745428">Instal·lació en curs. No apaguis el dispositiu. La instal·lació no tardarà més de 20 minuts. L'equip s'apagarà automàticament un cop acabada.</translation>
 <translation id="9183662282810237335">Vols sortir de Brave igualment?</translation>
 <translation id="4065288863231444640">Permet que Brave s'executi en segon pla</translation>
 <translation id="8148611988012584308">Personalitza i controla Brave</translation>
@@ -129,7 +131,6 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="707769633889902835">Chrome OS no pot obrir aquesta pàgina.</translation>
 <translation id="696826782632239602">Brave necessita accedir a la teva ubicació per compartir-la amb aquest lloc web</translation>
-<translation id="7886919915603831625">Brave et recomana que no baixis ni obris aquest fitxer.</translation>
 <translation id="1744365871163268756">Espereu mentre Brave instal·la les darreres actualitzacions del sistema.</translation>
 <translation id="3861679447659630159">Brave està provant d'editar les contrasenyes. Escriu la teva contrasenya de Windows per permetre-ho.</translation>
 <translation id="232381795826373334">Obre els fitxers PDF a Brave</translation>
@@ -154,6 +155,15 @@
 <translation id="4168372721886011198">Brave ha bloquejat <ph name="FILE_NAME"/> perquè és perillós.</translation>
 <translation id="7006260220514217183">Navegació segura està desactivada. Brave recomana activar-la.</translation>
 <translation id="4060970194201477024">Pots canviar entre perfils de Brave aquí</translation>
+<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Estem a punt per instal·lar Chrome OS. Quan continuïs:
+<ph name="BEGIN_LIST"/>
+<ph name="LIST_ITEM"/>S'esborraran els fitxers, les dades i el sistema operatiu actual.
+<ph name="LIST_ITEM"/>S'instal·larà Chrome OS.
+<ph name="LIST_ITEM"/>S'apagarà el dispositiu quan es completi la instal·lació.
+<ph name="END_LIST"/>
+<ph name="END_PARAGRAPH1"/>
+<ph name="BEGIN_PARAGRAPH2"/>Un darrer recordatori: la instal·lació esborrarà tota la unitat de disc dur. Assegura't que hagis creat una còpia de seguretat de les dades que vols conservar.<ph name="END_PARAGRAPH2"/>
+<ph name="BEGIN_PARAGRAPH3"/>Un cop comenci la instal·lació, no es pondrà cancel·lar.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Assegura't que tinguis la sessió iniciada a Brave a <ph name="TARGET_DEVICE_NAME"/> i prova d'enviar-ho de nou.</translation>
 <translation id="8320964054148936490">Aquest equip ja té una versió més recent de Brave. Si el programari no funciona, desinstal·leu Brave i torneu-ho a provar.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave es reiniciarà ara}=1{Brave es reiniciarà d'aquí a 1 segon}other{Brave es reiniciarà d'aquí a # segons}}</translation>
@@ -171,6 +181,7 @@
 <translation id="2644798301485385923">Sistema Brave OS</translation>
 <translation id="1684121725014454063">Et donem la benvinguda als perfils de Brave</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave es reiniciarà d'aquí a 1 segon}other{Brave es reiniciarà d'aquí a # segons}}</translation>
+<translation id="664235759707825982">A punt per instal·lar Chrome OS</translation>
 <translation id="2675662665675552980">També controla la pàgina que es mostra quan inicieu Brave.</translation>
 <translation id="5590013613412457132">Desinstal·la Brave</translation>
 <translation id="8646609321956191980">Cada perfil conserva la seva pròpia informació de Brave, com ara les adreces d'interès, l'historial, les contrasenyes i més</translation>
@@ -185,6 +196,7 @@
 <translation id="6666624454809779082">Ja tens instal·lat Brave per a tots els usuaris de l'ordinador.</translation>
 <translation id="5360050006043219962">Per accedir al teu contingut de Brave des de tots els teus dispositius, inicia la sessió i, després, activa la sincronització.</translation>
 <translation id="8291513491595858997">Els teus pares han desactivat Permisos per a llocs web, aplicacions i extensions en relació amb Brave. No es permet activar aquesta <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
+<translation id="1810203443153428607">La instal·lació de Chrome OS sobreescriurà totes les dades del dispositiu.</translation>
 <translation id="8211837073776713955">Brave et permet saber si les contrasenyes s'han posat en perill</translation>
 <translation id="7830723774663008396">Brave: <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (copiada a Brave)</translation>
@@ -217,6 +229,10 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="5657226924540934362">Si alguna opció de configuració no es mostra en aquesta pàgina, consulta la <ph name="LINK_BEGIN"/>configuració de Brave OS<ph name="LINK_END"/>.</translation>
 <translation id="3293668930608086049">Brave està utilitzant la càmera i el micròfon.</translation>
 <translation id="2827121003398607864">Brave és millor que mai</translation>
+<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Abans de començar, assegura't que tinguis una còpia de seguretat actualitzada de les teves dades. La instal·lació de Chrome OS sobreescriurà totes les dades de la unitat de disc dur.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Brave no es fa responsable de cap pèrdua de dades ni garanteix que Chrome OS funcioni en models no certificats. Visita [TBD] per obtenir més informació sobre els models certificats.<ph name="END_PARAGRAPH2"/>
+          <ph name="BEGIN_PARAGRAPH3"/>Obtén més informació sobre com pots instal·lar Chrome OS i sobre l'esborrament de dades: [TBD URL]<ph name="END_PARAGRAPH3"/>
+          <ph name="BEGIN_PARAGRAPH4"/>Si ho tens tot preparat per continuar, fes clic a "Instal·la Chrome OS" i et guiarem per la instal·lació amb un parell de passos senzills. Tindràs una altra oportunitat per confirmar la instal·lació abans que fem cap canvi a l'ordinador.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave no és el navegador predeterminat</translation>
 <translation id="5477319665405831211">Sincronitza i personalitza Brave en tots els teus dispositius</translation>
 <translation id="5419189641394808652">Brave no ha pogut sincronitzar les dades perquè l'opció de sincronització no està disponible per al vostre domini.</translation>
@@ -227,7 +243,6 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="8462524920674814187">Per obtenir actualitzacions de Brave en un futur, necessitaràs OS X 10.11 o una versió posterior. Aquest ordinador utilitza OS X 10.10.</translation>
 <translation id="7963515534397191222">Brave no s'ha pogut actualitzar a la darrera versió, així que no pots gaudir de les noves funcions ni de les correccions de seguretat.</translation>
 <translation id="7573289029918943991">Per veure si el dispositiu està actualitzat, ves a la <ph name="LINK_BEGIN"/>configuració de Brave OS<ph name="LINK_END"/></translation>
-<translation id="6755885556185485672">Brave OS no s'ha tancat correctament.</translation>
 <translation id="2925193881330501265">Teníeu la sessió iniciada a Brave com a <ph name="USER_EMAIL_ADDRESS"/>. Utilitzeu el mateix compte per tornar a iniciar-hi la sessió.</translation>
 <translation id="6915252145142862992">Aquesta és una instal·lació secundària de Brave i no pot definir-se com a navegador predeterminat.</translation>
 <translation id="7685904775439037072">Un cop Brave tingui accés, els llocs web et podran demanar accés.</translation>
@@ -259,7 +274,6 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="6389268239133412586">Brave no es pot actualitzar</translation>
 <translation id="6368958679917195344">Chrome OS és possible gràcies a <ph name="BEGIN_LINK_CROS_OSS"/>programari addicional de codi obert<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8986207147630327271">Estàs afegint un perfil de treball a aquest navegador i donant control al teu administrador únicament sobre el perfil de treball.</translation>
-<translation id="1156157157416773301">Vols moure el compte a un perfil de Brave nou?</translation>
 <translation id="5173820533850252773">Brave no està actualitzat</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave es reiniciarà d'aquí a 1 hora}other{Brave es reiniciarà d'aquí a # hores}}</translation>
 <translation id="7863882214613921971">Obre l'enllaç en una pes&amp;tanya nova a Brave</translation>

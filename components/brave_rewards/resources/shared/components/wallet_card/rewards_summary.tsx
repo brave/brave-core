@@ -9,7 +9,7 @@ import { PendingRewardsView } from './pending_rewards_view'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 
-import * as styles from './rewards_summary.style'
+import * as style from './rewards_summary.style'
 
 const monthFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'long',
@@ -17,7 +17,6 @@ const monthFormatter = new Intl.DateTimeFormat(undefined, {
 })
 
 export interface RewardsSummaryData {
-  grantClaims: number
   adEarnings: number
   autoContributions: number
   oneTimeTips: number
@@ -26,8 +25,9 @@ export interface RewardsSummaryData {
 
 interface Props {
   data: RewardsSummaryData
+  hideAdEarnings: boolean
   earningsLastMonth: number
-  nextPaymentDate: Date
+  nextPaymentDate: number
   exchangeRate: number
   exchangeCurrency?: string
 }
@@ -58,31 +58,35 @@ export function RewardsSummary (props: Props) {
   }
 
   return (
-    <styles.root>
-      <styles.header>
+    <style.root>
+      <style.header>
         <div>{getString('walletRewardsSummary')}</div>
         <div>{monthFormatter.format(Date.now())}</div>
-      </styles.header>
-      <styles.body>
-        <styles.dataTable>
+      </style.header>
+      <style.body>
+        <style.dataTable>
           <table>
-            <thead>
-              <tr><th colSpan={3}>{getString('walletHistory')}</th></tr>
-            </thead>
             <tbody>
-            {renderRow('walletTotalGrantsClaimed', data.grantClaims)}
-            {renderRow('walletRewardsFromAds', data.adEarnings)}
+            {
+              // Ad earnings may be hidden to account for the fact that earnings
+              // are directly transfered to users that have linked external
+              // wallets, and the client may not have knowledge of those
+              // transfer amounts. In such a case, displaying zero would be
+              // misleading.
+              !props.hideAdEarnings &&
+                renderRow('walletRewardsFromAds', data.adEarnings)
+            }
             {renderRow('walletAutoContribute', data.autoContributions)}
             {renderRow('walletOneTimeTips', data.oneTimeTips)}
             {renderRow('walletMonthlyTips', data.monthlyTips)}
             </tbody>
           </table>
-        </styles.dataTable>
+        </style.dataTable>
         <PendingRewardsView
           amount={props.earningsLastMonth}
           nextPaymentDate={props.nextPaymentDate}
         />
-      </styles.body>
-    </styles.root>
+      </style.body>
+    </style.root>
   )
 }

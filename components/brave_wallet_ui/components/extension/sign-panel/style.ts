@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import Action from '../assets/actions.svg'
 
 interface StyleProps {
   orb: string
@@ -78,16 +77,6 @@ export const MessageBox = styled.div`
   margin-bottom: 14px;
 `
 
-export const MessageTitle = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
-  font-weight: 600;
-  margin-bottom: 5px;
-`
-
 export const MessageText = styled.span`
   font-family: Poppins;
   font-size: 12px;
@@ -104,18 +93,4 @@ export const ButtonRow = styled.div`
   flex-direction: row;
   width: 100%;
   margin-bottom: 14px;
-`
-
-export const MoreButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  background-color: ${(p) => p.theme.color.text03};
-  -webkit-mask-image: url(${Action});
-  mask-image: url(${Action});
-  outline: none;
-  border: none;
 `

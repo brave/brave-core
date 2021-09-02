@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,7 +32,9 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     public enum AdapterType {
         VISIBLE_ASSETS_LIST,
         EDIT_VISIBLE_ASSETS_LIST,
-        ACCOUNTS_LIST;
+        ACCOUNTS_LIST,
+        BUY_ASSETS_LIST,
+        SEND_ASSETS_LIST;
     }
 
     private Context context;
@@ -75,34 +78,50 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             if (walletListItemType == Utils.TRANSACTION_ITEM) {
                 onWalletListItemClick.onTransactionClick();
             } else if (walletListItemType == Utils.ASSET_ITEM) {
-                onWalletListItemClick.onAssetClick();
+                if (mType == AdapterType.BUY_ASSETS_LIST || mType == AdapterType.SEND_ASSETS_LIST) {
+                    for (int i = 0; i < walletListItemModelListCopy.size(); i++) {
+                        WalletListItemModel item = walletListItemModelListCopy.get(i);
+                        if (item.getTitle().contains(holder.titleText.getText())
+                                || item.getSubTitle().contains(holder.subTitleText.getText())) {
+                            mCheckedPositions.add((Integer) i);
+                            break;
+                        }
+                    }
+                }
+                if (mType != AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
+                    onWalletListItemClick.onAssetClick();
+                }
             } else {
                 onWalletListItemClick.onAccountClick();
             }
         });
-        if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
+        if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
+                || mType == AdapterType.SEND_ASSETS_LIST) {
             holder.text1Text.setVisibility(View.GONE);
             holder.text2Text.setVisibility(View.GONE);
-            holder.assetCheck.setVisibility(View.VISIBLE);
-            holder.assetCheck.setOnCheckedChangeListener(
-                    new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            for (int i = 0; i <= walletListItemModelListCopy.size(); i++) {
-                                WalletListItemModel item = walletListItemModelListCopy.get(i);
-                                if (item.getTitle().contains(holder.titleText.getText())
-                                        || item.getSubTitle().contains(
-                                                holder.subTitleText.getText())) {
-                                    if (isChecked) {
-                                        mCheckedPositions.add((Integer) i);
-                                    } else {
-                                        mCheckedPositions.remove((Integer) i);
+            if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
+                holder.assetCheck.setVisibility(View.VISIBLE);
+                holder.assetCheck.setOnCheckedChangeListener(
+                        new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(
+                                    CompoundButton buttonView, boolean isChecked) {
+                                for (int i = 0; i < walletListItemModelListCopy.size(); i++) {
+                                    WalletListItemModel item = walletListItemModelListCopy.get(i);
+                                    if (item.getTitle().contains(holder.titleText.getText())
+                                            || item.getSubTitle().contains(
+                                                    holder.subTitleText.getText())) {
+                                        if (isChecked) {
+                                            mCheckedPositions.add((Integer) i);
+                                        } else {
+                                            mCheckedPositions.remove((Integer) i);
+                                        }
+                                        break;
                                     }
-                                    break;
                                 }
                             }
-                        }
-                    });
+                        });
+            }
         }
     }
 
@@ -113,7 +132,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
 
     public void setWalletListItemModelList(List<WalletListItemModel> walletListItemModelList) {
         this.walletListItemModelList = walletListItemModelList;
-        if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
+        if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
+                || mType == AdapterType.SEND_ASSETS_LIST) {
             walletListItemModelListCopy.addAll(walletListItemModelList);
             mCheckedPositions.clear();
         }

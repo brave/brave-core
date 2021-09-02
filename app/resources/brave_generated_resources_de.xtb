@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Brave Belohnung</translation>
 <translation id="7942180974165298215">Brave Werbeblocker</translation>
 <translation id="4615489450165434530">Melden Sie eine fehlerhafte Website</translation>
+<translation id="1209739344687072997">Melden Sie eine fehlerhafte Website</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">Wallet</translation>
-<translation id="2445484935443597917">Erstellen Sie ein neues Profil</translation>
+<translation id="2445484935443597917">Neues Profil erstellen</translation>
+<translation id="744341768939279100">Erstellen Sie ein neues Profil</translation>
 <translation id="2666990579225592931">Gastfenster öffnen</translation>
+<translation id="4986483413015198747">Gastfenster öffnen</translation>
 <translation id="8275068909952022340">Mehr…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ist in Brave nicht erlaubt.</translation>
 <translation id="6786747875388722282">Erweiterungen</translation>
@@ -45,10 +48,12 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="5802665280774361839">Autovervollständigung in der Adressleiste anzeigen</translation>
 <translation id="597020512043916976">Top-Sites in den Vorschlägen für die Autovervollständigung anzeigen</translation>
 <translation id="264150068416846820">Von Brave vorgeschlagene Sites in den Vorschlägen für die Autovervollständigung anzeigen</translation>
-<translation id="5529693968082667490">Schaltfläche "Such-Tabs anzeigen"</translation>
+<translation id="5529693968082667490">Tab-Suchschaltflächen anzeigen</translation>
 <translation id="6414370348346025511">Standardschutz ist aktiviert.</translation>
 <translation id="814018970995616154">Überprüft URLs anhand einer Liste mit unsicheren Seiten, die in Brave gespeichert ist.</translation>
 <translation id="1144810021918451336">Schützt Sie nicht vor gefährlichen Websites, Downloads und Erweiterungen.</translation>
+<translation id="6285118765755298263">Andere Suchmaschinen indizieren</translation>
+<translation id="919715748352669592">Indiziert automatisch Websites, die der OpenSearch-Spezifikation entsprechen.</translation>
 <translation id="7781069478569868053">Neuer-Tab-Seite</translation>
 <translation id="1988804048511540801">Neue Tab-Seite zeigt</translation>
 <translation id="2970343821770026391">Instrumententafel</translation>
@@ -191,7 +196,6 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="1834467296210148203">Brave-Wallet-Symbol in der Werkzeugleiste anzeigen</translation>
 <translation id="6864914031231797928">Google-Anmeldung bei Erweiterungen erlauben</translation>
 <translation id="5927916530277631319">Methode zum Auflösen unaufhaltsamer Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Erfahren Sie mehr<ph name="END_LINK"/> über DNS via HTTPS und Überlegungen zum Datenschutz von Ethereum.</translation>
 <translation id="5248318250177143470">Methode zum Auflösen des Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">IPNS-Schlüssel einrichten</translation>
 <translation id="951216659045543447">Inhalt mit dem entsprechenden privaten Schlüssel signieren und auf IPNS veröffentlichen</translation>
@@ -213,7 +217,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="1534091531114892221">IPFS-Peers-Beschreibung einrichten</translation>
 <translation id="8996633027318264334">Wollen Sie <ph name="KEY_NAME"/> wirklich löschen?</translation>
 <translation id="910215077892371264">Der Knoten wurde nicht gestartet</translation>
-<translation id="616058968889448209">Fehler beim Starten des IFPS-Dienstes. Weitere Informationen finden Sie auf der <ph name="BEGIN_LINK"/>Diagnoseseite<ph name="END_LINK"/>.</translation>
+<translation id="616058968889448209">Fehler beim Starten des IFPS-Dienstes. Weitere Informationen finden Sie auf der <ph name="BEGIN_LINK"/>Diagnoseseite<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Import des „<ph name="KEY_NAME"/>“-Schlüssels fehlgeschlagen</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' Schlüssel-Export fehlgeschlagen</translation>
 <translation id="8275038454117074363">Importieren</translation>
@@ -223,7 +227,6 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokaler Knoten</translation>
 <translation id="4927734062756955434">Öffentliche IPFS-Gateway-Adresse</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Erfahren Sie mehr<ph name="END_LINK_MPL"/> über lokale IPFS-Knoten und Gateway-Datenschutz.</translation>
 <translation id="8425213833346101688">Ändern</translation>
 <translation id="557281710253742286">IPFS-Gateway senden</translation>
 <translation id="8571837315037233299">Gateway-Adresse</translation>
@@ -237,7 +240,6 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8655170717758778983">Wenn möglich, automatisch über DNSLink zu IPFS-Seiten umleiten</translation>
 <translation id="2233724520223030977">Verwendet DNSLink automatisch, um nach Möglichkeit zu einer IPFS-Version einer Website zu navigieren</translation>
 <translation id="6554397389149987360">Nutzt Hangouts-Komponente, um das Teilen des Bildschirms und andere Funktionen im Browser zu ermöglichen.</translation>
-<translation id="1765684547504191670">Eine Media-Router-Komponente wird verwendet, um Chromecast in dem Browser zu aktivieren.</translation>
 <translation id="9156965752763025780">Ihre Änderungen werden beim nächsten Neustart von Brave wirksam.</translation>
 <translation id="7179921470347911571">Jetzt neustarten</translation>
 <translation id="8068526464562249859">Verwendet die Erweiterung IPFS Companion für erweiterte IPFS-Unterstützung in Brave, inklusive Zugriff auf übliche IPFS-Aufgaben von Ihrer Browserleiste.</translation>
@@ -307,6 +309,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="6873781976650514089">diese Einstellung</translation>
 <translation id="6040143037577758943">Schließen</translation>
 <translation id="5600566490506283344">Brave-Werbebenachrichtigung</translation>
+<translation id="1516554614404600536">Brave-Tooltipp</translation>
 <translation id="4877147287319222750">Zur Seitenleiste hinzufügen</translation>
 <translation id="4233010476457917696">Seitenleiste anzeigen</translation>
 <translation id="5404213409401164238">Seitenleiste anzeigen</translation>
@@ -344,9 +347,10 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8053093028263274061">Leider ist keine gespeicherte Version verfügbar.</translation>
 <translation id="8517321676372639828">Auf gespeicherte Version überprüfen</translation>
 <translation id="191143826155037518">Brave wird Ihnen unter der <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) und verwendet weitere <ph name="BEGIN_LINK_OSS"/>Open Source Software<ph name="END_LINK_OSS"/> die unter verschiedenen anderen Lizenzen veröffentlicht wurden.
-        Lesen Sie die <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>Anleitung<ph name="END_LINK_BUILD_INSTRUCTIONS"/>, wie man das Brave-Projekt herunterlädt und selbst aus dem  <ph name="BEGIN_LINK_SOURCE_CODE"/>Quellcode<ph name="END_LINK_SOURCE_CODE"/> zu erstellen.</translation>
+        Lesen Sie die <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>Anleitung<ph name="END_LINK_BUILD_INSTRUCTIONS"/> , wie man das Brave-Projekt herunterlädt und selbst aus dem  <ph name="BEGIN_LINK_SOURCE_CODE"/>Quellcode<ph name="END_LINK_SOURCE_CODE"/> zu erstellen.</translation>
 <translation id="4474155171896946103">Alle Tabs als Lesezeichen speichern...</translation>
 <translation id="2336228925368920074">Alle Tabs als Lesezeichen speichern...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">Um ein Lesezeichen hinzuzufügen, klicken Sie auf die Lesezeichen-Schaltfläche neben der Adressleiste</translation>
 <translation id="4989337484121655457">Voller Festplattenzugriff erforderlich</translation>
 <translation id="8025559074845816210">Brave benötigt vollen Festplattenzugriff, um Ihre Lesezeichen aus Safari importieren zu können.</translation>

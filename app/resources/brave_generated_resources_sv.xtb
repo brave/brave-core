@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave annonsblockerare</translation>
 <translation id="4615489450165434530">Rapportera en trasig webbplats</translation>
+<translation id="1209739344687072997">Rapportera en trasig webbplats</translation>
 <translation id="6406506848690869874">Synka</translation>
 <translation id="1544192797660353713">Plånbok</translation>
 <translation id="2445484935443597917">Skapa en ny profil</translation>
-<translation id="2666990579225592931">Öppna gästfönster</translation>
+<translation id="744341768939279100">Skapa en ny profil</translation>
+<translation id="2666990579225592931">Öppna ett gästfönster</translation>
+<translation id="4986483413015198747">Öppna gästfönster</translation>
 <translation id="8275068909952022340">Mer</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") är inte tillåtet i Brave.</translation>
 <translation id="6786747875388722282">Tillägg</translation>
@@ -45,10 +48,12 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="5802665280774361839">Visa textförslag i adressfältet</translation>
 <translation id="597020512043916976">Vissa toppsajter i förslagen</translation>
 <translation id="264150068416846820">Visa av Brave föreslagna sajter i automatiska förslag.</translation>
-<translation id="5529693968082667490">Knappen Visa sökflik</translation>
+<translation id="5529693968082667490">Visa knappen fliksök</translation>
 <translation id="6414370348346025511">Standardskyddet är på.</translation>
 <translation id="814018970995616154">Kontrollerar webbadresser mot en lista över osäkra webbplatser som lagras i Brave.</translation>
 <translation id="1144810021918451336">Skyddar dig inte mot farliga webbplatser, nedladdningar eller tillägg.</translation>
+<translation id="6285118765755298263">Indexera andra sökmotorer</translation>
+<translation id="919715748352669592">Indexerar automatiskt webbplatser som följer OpenSearch-specifikationerna.</translation>
 <translation id="7781069478569868053">Ny flik</translation>
 <translation id="1988804048511540801">Ny fliksida visas</translation>
 <translation id="2970343821770026391">Instrumentpanel</translation>
@@ -191,7 +196,6 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="1834467296210148203">Visa Brave Wallet-ikon i verktygsfältet</translation>
 <translation id="6864914031231797928">Tillåt Google-inloggning för tillägg</translation>
 <translation id="5927916530277631319">Metod för att lösa ostoppbara domäner</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/> om sekretessöverväganden för DNS över HTTPS och Ethereum.</translation>
 <translation id="5248318250177143470">Metod för att lösa Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Konfigurera dina IPNS-nycklar</translation>
 <translation id="951216659045543447">Signera innehåll med motsvarande privata nyckel och publicera på IPNS</translation>
@@ -223,7 +227,6 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal nod</translation>
 <translation id="4927734062756955434">IPFS publik gateway-adress</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Läs mer<ph name="END_LINK_MPL"/> om sekretessövervägande för IPFS lokal nod och gateway.</translation>
 <translation id="8425213833346101688">Ändra</translation>
 <translation id="557281710253742286">Ställ in IPFS gateway</translation>
 <translation id="8571837315037233299">Gateway-adress</translation>
@@ -237,7 +240,6 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="8655170717758778983">Omdirigera automatiskt till IPFS-sidor via DNSLink när det är möjligt</translation>
 <translation id="2233724520223030977">Använder automatiskt DNSLink för att navigera till en IPFS-version av en webbplats när det är möjligt</translation>
 <translation id="6554397389149987360">Använder komponenten Hangouts för att aktivera skärmdelning och andra funktioner i webbläsaren.</translation>
-<translation id="1765684547504191670">Använder komponenten Media Router för att aktivera Chromecast i webbläsaren.</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
 <translation id="7179921470347911571">Starta om nu</translation>
 <translation id="8068526464562249859">Använder tillägget IPFS Companion för utökad IPFS-support i Brave, inklusive tillgång till gemensamma IPFS-åtgärder från verktygsfältet i din webbläsare.</translation>
@@ -307,6 +309,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="6873781976650514089">den här inställningen</translation>
 <translation id="6040143037577758943">Stäng</translation>
 <translation id="5600566490506283344">Brave-annonsavisering</translation>
+<translation id="1516554614404600536">Brave-knappbeskrivning</translation>
 <translation id="4877147287319222750">Lägg till i sidofält</translation>
 <translation id="4233010476457917696">Visa sidofält</translation>
 <translation id="5404213409401164238">Visa sidofält</translation>
@@ -347,6 +350,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
         Du kan läsa <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hur du laddar ner och själv kan bygga<ph name="END_LINK_BUILD_INSTRUCTIONS"/> den specifika <ph name="BEGIN_LINK_SOURCE_CODE"/>källkod som använts för att skapa denna version<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Skapa bokmärken för alla flikar ...</translation>
 <translation id="2336228925368920074">Skapa bokmärken för alla flikar ...</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="796831669370432378">För att spara ett bokmärke, klicka på bokmärkesknappen bredvid adressraden</translation>
 <translation id="4989337484121655457">Fullständig diskåtkomst krävs</translation>
 <translation id="8025559074845816210">Brave behöver fullständig diskåtkomst för att importera dina bokmärken från Safari.</translation>

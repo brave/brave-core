@@ -13,11 +13,9 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
-#include "brave/common/network_constants.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "content/public/common/referrer.h"
-#include "extensions/common/url_pattern.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
 #include "third_party/blink/public/common/loader/network_utils.h"
@@ -28,15 +26,6 @@ namespace brave {
 
 namespace {
 
-bool IsUAWhitelisted(const GURL& gurl) {
-  static std::vector<URLPattern> whitelist_patterns(
-      {URLPattern(URLPattern::SCHEME_ALL, "https://*.duckduckgo.com/*"),
-       // For Widevine
-       URLPattern(URLPattern::SCHEME_ALL, "https://*.netflix.com/*")});
-  return std::any_of(
-      whitelist_patterns.begin(), whitelist_patterns.end(),
-      [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
-}
 
 const std::string& GetQueryStringTrackers() {
   static const base::NoDestructor<std::string> trackers(base::JoinString(
@@ -189,20 +178,6 @@ int OnBeforeStartTransaction_SiteHacksWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  if (IsUAWhitelisted(ctx->request_url)) {
-    std::string user_agent;
-    if (headers->GetHeader(kUserAgentHeader, &user_agent)) {
-      // We do not want to modify the same UA multiple times - for instance,
-      // during redirects.
-      if (std::string::npos == user_agent.find("Brave")) {
-        base::ReplaceFirstSubstringAfterOffset(&user_agent, 0, "Chrome",
-                                               "Brave Chrome");
-        headers->SetHeader(kUserAgentHeader, user_agent);
-        ctx->set_headers.insert(kUserAgentHeader);
-      }
-    }
-  }
-
   // Special case for handling top-level redirects. There is no other way to
   // normally change referrer in net::URLRequest during redirects
   // (except using network::mojom::TrustedURLLoaderHeaderClient, which

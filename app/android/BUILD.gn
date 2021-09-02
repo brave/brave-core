@@ -1,12 +1,40 @@
 import("//brave/build/config.gni")
+import("//build/config/python.gni")
+
+python2_action("generate_breakpad_symbols") {
+  symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
+  outputs = [ symbols_dir ]
+
+  package_path = rebase_path(brave_android_output)
+
+  script = "//brave/tools/android/generate_breakpad_symbols.py"
+  args = [
+    "--symbols-dir=" + rebase_path(symbols_dir),
+    "--jobs=16",
+    "--build-dir=" + rebase_path(root_out_dir),
+    "--package-path=" + package_path,
+    "--src-root=" + rebase_path("//"),
+    "--clear",
+    "--verbose",
+  ]
+
+  deps = [
+    "//brave/build/android:brave",
+    "//third_party/breakpad:dump_syms",
+  ]
+}
 
 group("symbol_dist_resources") {
+  public_deps = [
+    ":create_symbol_archive",
+    ":generate_breakpad_symbols",
+  ]
 }
+
 group("dist_resources") {
 }
 
 group("create_dist_zips") {
-  deps = [ ":create_symbol_archive" ]
 }
 
 action("create_symbol_archive") {

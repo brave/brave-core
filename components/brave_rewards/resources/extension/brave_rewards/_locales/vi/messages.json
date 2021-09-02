@@ -219,9 +219,23 @@
     "message": "Vui lòng sao lưu ví Brave của bạn.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "Tìm hiểu thêm",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Lỗi: Tài khoản khác",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Rất tiếc, có vẻ như ví Brave Rewards của bạn đã được xác minh với tài khoản $name$ khác. Vui lòng thử xác minh lại bằng tài khoản trước của bạn.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "Lỗi: BAT không khả dụng",
@@ -231,10 +245,6 @@
     "message": "BAT chưa được hỗ trợ trong khu vực của bạn trên Uphold.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "Tìm hiểu thêm",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "Lỗi: Tài khoản bị chặn",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "Tài khoản của bạn tại Uphold hiện đang bị khóa.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "Tìm hiểu thêm",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "Lỗi: Treo tài khoản",
@@ -255,10 +261,6 @@
     "message": "Tài khoản của bạn tại Uphold vẫn đang chờ xử lý.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "Tìm hiểu thêm",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "Lỗi: Tài khoản bị hạn chế",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "Tài khoản của bạn tại Uphold hiện đang bị hạn chế.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Tìm hiểu thêm",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "Đã đến Giới hạn về Thiết bị",
@@ -535,10 +533,6 @@
     "message": "Số tiền thưởng của bạn",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "xác thực",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "Đã ngắt kết nối",
     "description": "CTA status button"
@@ -552,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "Đến tài khoản $provider$ của tôi",
+    "message": "Đi đến tài khoản $provider$ của bạn",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Đăng nhập vào tài khoản $provider$ của bạn",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -658,6 +662,10 @@
   "walletConnected":  {
     "message": "Đã kết nối",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Đã ngắt kết nối",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "Đang chờ xử lý",

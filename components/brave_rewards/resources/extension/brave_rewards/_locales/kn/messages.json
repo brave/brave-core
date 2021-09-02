@@ -219,9 +219,23 @@
     "message": "ದಯವಿಟ್ಟು ನಿಮ್ಮ Brave ವ್ಯಾಲೆಟ್ ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಿ.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "ದೋಷ: ಬೇರೆ ಖಾತೆ",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "ಓಹ್, ನಿಮ್ಮ Brave Rewards ವ್ಯಾಲೆಟ್ ಅನ್ನು ಮತ್ತೊಂದು $name$ ಖಾತೆಯೊಂದಿಗೆ ಈಗಾಗಲೇ ಪರಿಶೀಲಿಸಲಾಗಿದೆ ಎಂಬುದಾಗಿ ಕಂಡುಬರುತ್ತಿದೆ. ನಿಮ್ಮ ಹಿಂದಿನ ಖಾತೆಯನ್ನು ಬಳಸಿಕೊಂಡು ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪರಿಶೀಲಿಸಲು ಪ್ರಯತ್ನಿಸಿ.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "ದೋಷ: BAT ಲಭ್ಯವಿಲ್ಲ",
@@ -231,10 +245,6 @@
     "message": "ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ BAT ಇನ್ನೂ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "ದೋಷ: ನಿಬಂಧಿಸಿದ ಖಾತೆ",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಪ್ರಸ್ತುತ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "ದೋಷ: ಬಾಕಿ ಇರುವ ಖಾತೆ",
@@ -255,10 +261,6 @@
     "message": "ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಖಾತೆ ಇನ್ನೂ ಬಾಕಿ ಉಳಿದಿದೆ.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "ದೋಷ: ನಿರ್ಬಂಧಿತ ಖಾತೆ",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "ನಿಮ್ಮ ಖಾತೆ ಅಪ್‌ಹೋಲ್ಡ್ ಅನ್ನು ಪ್ರಸ್ತುತ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "ಸಾಧನ ಮಿತಿ ತಲುಪಿದೆ",
@@ -535,10 +533,6 @@
     "message": "ನಿಮ್ಮ ರಿವಾರ್ಡ್ ಮೊತ್ತ",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "ಪರಿಶೀಲಿಸಿ",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗಿದೆ",
     "description": "CTA status button"
@@ -552,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "ನನ್ನ $provider$ ಖಾತೆಗೆ ಹೋಗಿ",
+    "message": "ನಿಮ್ಮ $provider$ ಖಾತೆಗೆ ಹೋಗಿ",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "ನಿಮ್ಮ $provider$ ಖಾತೆಗೆ ಲಾಗ್ ಇನ್ ಮಾಡಿ",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -658,6 +662,10 @@
   "walletConnected":  {
     "message": "ಸಂಪರ್ಕಿಸಲಾಗಿದೆ",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗಿದೆ",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "ಬಾಕಿ ಉಳಿದಿರುವುದು",

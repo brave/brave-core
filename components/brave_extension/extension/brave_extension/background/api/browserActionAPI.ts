@@ -28,15 +28,15 @@ export const shieldsOffIcon = {
 /**
  * Initializes the browser action UI
  */
-export async function init () {
+export function init () {
   // Setup badge color
-  try {
-    await chrome.browserAction.setBadgeBackgroundColor({
-      color: '#636473'
-    })
-  } catch (e) {
-    console.error(e)
-  }
+  chrome.browserAction.setBadgeBackgroundColor({
+    color: '#636473'
+  }, () => {
+    if (chrome.runtime.lastError) {
+      console.warn('browserAction.setBadgeBackgroundColor failed: ' + chrome.runtime.lastError.message)
+    }
+  })
   // Initial / default icon
   chrome.browserAction.setIcon({
     path: shieldsOnIcon
@@ -44,34 +44,34 @@ export async function init () {
   // By default, icon is disabled,
   // so that we do not enable the icon in a new tab and then disable it
   // when the context is not http(s).
-  try {
-    await chrome.browserAction.disable()
-  } catch (e) {
-    console.error(e)
-  }
+  chrome.browserAction.disable(undefined, () => {
+    if (chrome.runtime.lastError) {
+      console.error('browserAction.disable failed: ' + chrome.runtime.lastError.message)
+    }
+  })
 }
 
 /**
  * Sets the badge text
  * @param {string} text - The text to put on the badge
  */
-export const setBadgeText = async (tabId: number, text: string) => {
+export const setBadgeText = (tabId: number, text: string) => {
   if (chrome.browserAction) {
-    try {
-      await chrome.browserAction.setBadgeText({
-        tabId,
-        text: String(text)
-      })
-    } catch (e) {
-      console.error(e)
-    }
+    chrome.browserAction.setBadgeText({
+      tabId,
+      text: String(text)
+    }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('browserAction.setBadgeText failed: ' + chrome.runtime.lastError.message)
+      }
+    })
   }
 }
 
 /**
  * Updates the shields icon based on shields state
  */
-export const setIcon = async (url: string, tabId: number, shieldsOn: boolean) => {
+export const setIcon = (url: string, tabId: number, shieldsOn: boolean) => {
 
   const actionIsDisabled = !isHttpOrHttps(url)
   if (chrome.browserAction) {
@@ -79,14 +79,18 @@ export const setIcon = async (url: string, tabId: number, shieldsOn: boolean) =>
       path: shieldsOn ? shieldsOnIcon : shieldsOffIcon,
       tabId
     })
-    try {
-      if (actionIsDisabled) {
-        await chrome.browserAction.disable(tabId)
-      } else {
-        await chrome.browserAction.enable(tabId)
-      }
-    } catch (e) {
-      console.error(e)
+    if (actionIsDisabled) {
+      chrome.browserAction.disable(tabId, () => {
+        if (chrome.runtime.lastError) {
+          console.error('browserAction.disable failed: ' + chrome.runtime.lastError.message)
+        }
+      })
+    } else {
+      chrome.browserAction.enable(tabId, () => {
+        if (chrome.runtime.lastError) {
+          console.error('browserAction.enable failed: ' + chrome.runtime.lastError.message)
+        }
+      })
     }
   }
 }

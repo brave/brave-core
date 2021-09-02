@@ -17,6 +17,7 @@
         <item name="colorControlActivated">@color/brave_rewards_theme_color</item>
         <item name="colorSwitchThumbNormal">@color/modern_grey_600</item>
         <item name="android:colorForeground">@color/modern_grey_600</item>
+        <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
     </style>
 
     <!-- Buttons for Brave Sync -->

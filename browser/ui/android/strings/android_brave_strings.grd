@@ -252,7 +252,13 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Allow privacy-preserving product analytics (P3A)
       </message>
       <message name="IDS_SEND_P3A_ANALYTICS_SUMMARY" desc="Summary for checkbox of send p3a analytics.">
-        This completely anonymised info helps Brave estimate the overall usage of certain features and make it better for you.
+        Anonymized P3A info helps Brave estimate overall usage, and ensure we’re improving popular features.
+      </message>
+      <message name="IDS_SEND_CRASH_REPORTS_TITLE" desc="Title for checkbox of send crash reports automatically.">
+        Automatically send crash reports
+      </message>
+      <message name="IDS_SEND_CRASH_REPORTS_SUMMARY" desc="Summary for checkbox of send crash reports automatically.">
+        Crash reports help Brave improve product stability for all users.
       </message>
       <message name="IDS_BRAVE_STATS_TEXT_DATA_SAVED" desc="Title for the data saved stats">
         Est. Data\nSaved
@@ -902,7 +908,7 @@ until they verify, or until 90 days have passed.
         User Wallet
       </message>
       <message name="IDS_USER_WALLET_GOTO_UPHOLD">
-        Go to my Uphold account
+        Go to your Uphold account
       </message>
       <message name="IDS_USER_WALLET_DISCONNECT_REWARDS">
         Disconnect from Brave Rewards
@@ -1598,7 +1604,7 @@ until they verify, or until 90 days have passed.
         Brave protects your privacy and\nappreciates your consent to the following:
       </message>
       <message name="IDS_P3A_ONBOARDING_CHECKBOX_TEXT" desc="P3a onboarding checkbox text">
-        Help improve Brave by sending crash reports and completely anonymized, <ph name="PRIVATE_PRODUCT_ANALYSIS">%1$s</ph>
+        Help improve Brave by sending completely anonymized <ph name="PRIVATE_PRODUCT_ANALYSIS">%1$s</ph>
       </message>
       <message name="IDS_PRIVATE_PRODUCT_ANALYSIS_TEXT" desc="private product analysis text">
         private product analytics.
@@ -1849,8 +1855,26 @@ until they verify, or until 90 days have passed.
     <message name="IDS_ACCOUNT_RECOVERY_FAILED" desc="Brave Wallet text">
       Account recovery failed. Please try again.
     </message>
-    <message name="IDS_MAINNET" desc="Brave Wallet network selection button text">
+    <message name="IDS_MAINNET" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Mainnet
+    </message>
+    <message name="IDS_RINKEBY" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Rinkeby
+    </message>
+    <message name="IDS_ROPSTEN" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Ropsten
+    </message>
+    <message name="IDS_GOERLI" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Goerli
+    </message>
+    <message name="IDS_KOVAN" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Kovan
+    </message>
+    <message name="IDS_LOCALHOST" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Localhost
+    </message>
+    <message name="IDS_CUSTOM" desc="Brave Wallet network selection button text(network name)">
+      Custom
     </message>
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Market Price in ETH

@@ -7,15 +7,11 @@
 
 #include <utility>
 
-#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
-
 VPNPanelHandler::VPNPanelHandler(
     mojo::PendingReceiver<brave_vpn::mojom::PanelHandler> receiver,
-    ui::MojoBubbleWebUIController* webui_controller,
-    BraveVpnServiceDesktop* service)
+    ui::MojoBubbleWebUIController* webui_controller)
     : receiver_(this, std::move(receiver)),
-      webui_controller_(webui_controller),
-      service_(service) {}
+      webui_controller_(webui_controller) {}
 
 VPNPanelHandler::~VPNPanelHandler() = default;
 
@@ -31,8 +27,4 @@ void VPNPanelHandler::CloseUI() {
   if (embedder) {
     embedder->CloseUI();
   }
-}
-
-void VPNPanelHandler::GetIsConnected(GetIsConnectedCallback callback) {
-  std::move(callback).Run(service_->IsConnected());
 }

@@ -219,9 +219,23 @@
     "message": "لطفاً از کیف پول Brave‌ خود پشتیبان‌گیری کنید.",
     "description": "Description for backup wallet notification"
   },
-  "upholdBATNotAllowedForUserLearnMore": {
+  "learnMore": {
     "message": "بیشتر بدانید",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "خطا: حساب متفاوت",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "هوم، به نظر می‌رسد کیف پول Brave Rewards شما قبلاً با یک حساب $name$ دیگر تأیید شده است. لطفاً با استفاده از حساب قبلی خود دوباره تأیید کنید.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "upholdBATNotAllowedForUserTitle": {
     "message": "خطا: توکن بت دردسترس نیست",
@@ -231,10 +245,6 @@
     "message": "توکن بت هنوز در منطقه شما در Uphold پشتیبانی نمی‌شود.",
     "description": "Description for BAT not allowed for user notification"
   },
-  "upholdBlockedUserLearnMore": {
-    "message": "بیشتر بدانید",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
   "upholdBlockedUserTitle": {
     "message": "خطا: حساب مسدودشده",
     "description": "Title for blocked user notification"
@@ -242,10 +252,6 @@
   "upholdBlockedUserNotification": {
     "message": "درحال‌حاضر حسابتان در Uphold مسدود شده است.",
     "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "بیشتر بدانید",
-    "description": "Notification button text to learn more about the pending user status"
   },
   "upholdPendingUserTitle": {
     "message": "خطا: حساب درانتظار تأیید",
@@ -255,10 +261,6 @@
     "message": "حسابتان در Uphold هنوز تأیید نشده است.",
     "description": "Description for pending user notification"
   },
-  "upholdRestrictedUserLearnMore": {
-    "message": "بیشتر بدانید",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
   "upholdRestrictedUserTitle": {
     "message": "خطا: حساب محدودشده",
     "description": "Title for restricted user notification"
@@ -266,10 +268,6 @@
   "upholdRestrictedUserNotification": {
     "message": "درحال‌حاضر حسابتان در Uphold محدود شده است.",
     "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "بیشتر بدانید",
-    "description": "Notification button text to learn more about device limit"
   },
   "deviceLimitReachedTitle": {
     "message": "دستگاه به حداکثر مجاز رسیده است",
@@ -535,10 +533,6 @@
     "message": "مقدار پاداش شما",
     "description": "Token title on success screen for ads"
   },
-  "rewardsPanelTextVerify":  {
-    "message": "تأیید",
-    "description": "CTA in the footer to verify"
-  },
   "walletButtonDisconnected":  {
     "message": "ارتباط قطع شد",
     "description": "CTA status button"
@@ -552,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "رفتن به حساب $provider$ من",
+    "message": "به حساب $provider$ خود بروید",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "به حساب $provider$ خود وارد شوید",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -658,6 +662,10 @@
   "walletConnected":  {
     "message": "متصل",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "ارتباط قطع شد",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "معوق",

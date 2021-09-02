@@ -9,7 +9,9 @@ import * as WalletActions from '../actions/wallet_actions'
 import {
   UnlockWalletPayloadType,
   ChainChangedEventPayloadType,
-  SetInitialVisibleTokensPayloadType
+  SetInitialVisibleTokensPayloadType,
+  NewUnapprovedTxAdded,
+  TransactionStatusChanged
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -17,8 +19,10 @@ import {
   Network,
   WalletState,
   WalletPanelState,
-  AssetPriceTimeframe
+  AssetPriceTimeframe,
+  SendTransactionParam
 } from '../../constants/types'
+import { AssetOptions } from '../../options/asset-options'
 import { InitialVisibleTokenInfo } from '../../options/initial-visible-token-info'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -72,7 +76,8 @@ async function refreshWalletInfo (store: Store) {
   const visibleTokensInfo = await Promise.all(visibleTokensPayload.map(async (i) => {
     const ercTokenRegistry = (await getAPIProxy()).ercTokenRegistry
     const info = await ercTokenRegistry.getTokenByContract(i)
-    return info.token
+    const icon = AssetOptions.find((a) => info.token.symbol === a.symbol)?.icon
+    return { ...info.token, icon: icon }
   }))
   if (visibleTokensInfo[0]) {
     store.dispatch(WalletActions.setVisibleTokensInfo(visibleTokensInfo))
@@ -199,28 +204,56 @@ handler.on(WalletActions.selectPortfolioTimeline.getType(), async (store, payloa
   await getTokenPriceHistory(store)
 })
 
+handler.on(WalletActions.sendTransaction.getType(), async (store, payload: SendTransactionParam) => {
+  const apiProxy = await getAPIProxy()
+  let txData: any
+
+  if (payload.contractAddress === 'eth') {
+    txData = apiProxy.makeTxData('0x1' /* nonce */, payload.gasPrice, payload.gasLimit, payload.to, payload.value, [])
+  } else {
+    const transferDataResult = await apiProxy.ethTxController.makeERC20TransferData(payload.to, payload.value)
+    if (!transferDataResult.success) {
+      console.log('Failed making ERC20 transfer data, to: ', payload.to, ', value: ', payload.value)
+      return
+    }
+
+    txData = apiProxy.makeTxData('0x1' /* nonce */, payload.gasPrice, payload.gasLimit, payload.contractAddress, '0x0', transferDataResult.data)
+  }
+
+  const addResult = await apiProxy.ethTxController.addUnapprovedTransaction(txData, payload.from)
+  if (!addResult.success) {
+    console.log('Sending unapproved transaction failed, txData: ', txData, ', from: ', payload.from)
+    return
+  }
+  const approveResult = await apiProxy.ethTxController.approveTransaction(addResult.txMetaId)
+  console.log('approveResult: ', approveResult)
+
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store, payload: NewUnapprovedTxAdded) => {
+  console.log('new unapproved tx added: ', payload.txInfo)
+})
+
+handler.on(WalletActions.transactionStatusChanged.getType(), async (store, payload: TransactionStatusChanged) => {
+  console.log('tx status changed: ', payload.txInfo)
+})
+
 export default handler.middleware
 
-// TOOD(bbondy): Remove after we have this hooked up
-// This is for Ganache seedwords of: garage erosion rapid salmon make wine dragon great away drift jewel evoke
-// Don't use this seed with actual funds!
-// Sending ETH:
-//  const apiProxy = await getAPIProxy()
-//  const txData = apiProxy.makeTxData('0x1', '0x20000000000', '0x5208', '0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f', '0xde0b6b3a7640000', [])
-//  const addResult = await apiProxy.ethTxController.addUnapprovedTransaction(txData, '0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7')
-//  console.log('addResult: ', addResult)
-//  const approveResult = await apiProxy.ethTxController.approveTransaction(addResult.txMetaId)
-//  console.log('approveResult: ', approveResult)
+// TODO(bbondy): Remove when we implement the transaction info
+// const apiProxy = await getAPIProxy()
+// const result = await apiProxy.ethTxController.getAllTransactionInfo('0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7')
+// console.log('transactionInfos: ', result.transactionInfos)
 //
-// Sending ERC20 tokens:
+// TODO(bbondy): For swap usage (ERC20 approve)
 //  const apiProxy = await getAPIProxy()
-//  const transferDataResult = await await apiProxy.ethTxController.makeERC20TransferData('0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f', '0x0de0b6b3a7640000')
-//  console.log('data field result: ', transferDataResult)
-//  //const dataArray = Array.from(hexStringToUint8Array(transferDataResult.data))
-//  console.log('data array is: ', transferDataResult.data)
-//  // Deployed ERC20 contract is 0x774171b92Ba6e1d57ac08D6b77AbDD0B51660310
-//  const txData = apiProxy.makeTxData('0x1', '0x20000000000', '0xFDE8', '0x774171b92Ba6e1d57ac08D6b77AbDD0B51660310', '0x0', transferDataResult.data)
-//  const addResult = await apiProxy.ethTxController.addUnapprovedTransaction(txData, '0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7')
-//  console.log('addResult: ', addResult)
-//  const approveResult = await apiProxy.ethTxController.approveTransaction(addResult.txMetaId)
-//  console.log('approveResult: ', approveResult)
+// const approveDataResult = await apiProxy.ethTxController.makeERC20ApproveData("0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f", "0x0de0b6b3a7640000")
+// const txData = apiProxy.makeTxData('0x1' /* nonce */, '0x20000000000', '0xFDE8', '0x774171b92Ba6e1d57ac08D6b77AbDD0B51660310', '0x0', approveDataResult.data)
+// const addResult = await apiProxy.ethTxController.addUnapprovedTransaction(txData, '0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7')
+// if (!addResult.success) {
+//   console.log('Adding unapproved transaction failed, txData: ', txData)
+//   return
+// }
+// const approveResult = await apiProxy.ethTxController.approveTransaction(addResult.txMetaId)
+// console.log('approveResult: ', approveResult)

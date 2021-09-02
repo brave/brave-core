@@ -109,7 +109,7 @@ std::wstring GetPhonebookPath() {
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasenumconnectionsa
-bool DisconnectEntry(LPCTSTR entry_name) {
+bool DisconnectEntry(const std::wstring& entry_name) {
   DWORD dw_cb = 0;
   DWORD dw_ret = ERROR_SUCCESS;
   DWORD dw_connections = 0;
@@ -165,7 +165,7 @@ bool DisconnectEntry(LPCTSTR entry_name) {
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasdiala
-bool ConnectEntry(LPCTSTR entry_name) {
+bool ConnectEntry(const std::wstring& entry_name) {
   LPRASDIALPARAMS lp_ras_dial_params = NULL;
   DWORD cb = sizeof(RASDIALPARAMS);
 
@@ -176,7 +176,8 @@ bool ConnectEntry(LPCTSTR entry_name) {
     return false;
   }
   lp_ras_dial_params->dwSize = sizeof(RASDIALPARAMS);
-  wcscpy_s(lp_ras_dial_params->szEntryName, RAS_MaxEntryName + 1, entry_name);
+  wcscpy_s(lp_ras_dial_params->szEntryName, RAS_MaxEntryName + 1,
+           entry_name.c_str());
   wcscpy_s(lp_ras_dial_params->szDomain, DNLEN + 1, L"*");
   // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgetcredentialsw
   RASCREDENTIALS credentials;
@@ -185,7 +186,7 @@ bool ConnectEntry(LPCTSTR entry_name) {
   credentials.dwSize = sizeof(RASCREDENTIALS);
   credentials.dwMask = RASCM_UserName | RASCM_Password;
   DWORD dw_ret =
-      RasGetCredentials(DEFAULT_PHONE_BOOK, entry_name, &credentials);
+      RasGetCredentials(DEFAULT_PHONE_BOOK, entry_name.c_str(), &credentials);
   if (dw_ret != ERROR_SUCCESS) {
     HeapFree(GetProcessHeap(), 0, (LPVOID)lp_ras_dial_params);
     PrintRasError(dw_ret);
@@ -210,8 +211,8 @@ bool ConnectEntry(LPCTSTR entry_name) {
   return true;
 }
 
-bool RemoveEntry(LPCTSTR entry_name) {
-  DWORD dw_ret = RasDeleteEntry(DEFAULT_PHONE_BOOK, entry_name);
+bool RemoveEntry(const std::wstring& entry_name) {
+  DWORD dw_ret = RasDeleteEntry(DEFAULT_PHONE_BOOK, entry_name.c_str());
   if (dw_ret != ERROR_SUCCESS) {
     PrintRasError(dw_ret);
     return false;
@@ -220,10 +221,10 @@ bool RemoveEntry(LPCTSTR entry_name) {
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rassetentrypropertiesa
-bool CreateEntry(LPCTSTR entry_name,
-                 LPCTSTR hostname,
-                 LPCTSTR username,
-                 LPCTSTR password) {
+bool CreateEntry(const std::wstring& entry_name,
+                 const std::wstring& hostname,
+                 const std::wstring& username,
+                 const std::wstring& password) {
   RASENTRY entry;
   ZeroMemory(&entry, sizeof(RASENTRY));
   // For descriptions of each field (including valid values) see:
@@ -232,7 +233,7 @@ bool CreateEntry(LPCTSTR entry_name,
   entry.dwfOptions = RASEO_RemoteDefaultGateway | RASEO_RequireEAP |
                      RASEO_PreviewUserPw | RASEO_PreviewDomain |
                      RASEO_ShowDialingProgress;
-  wcscpy_s(entry.szLocalPhoneNumber, RAS_MaxPhoneNumber + 1, hostname);
+  wcscpy_s(entry.szLocalPhoneNumber, RAS_MaxPhoneNumber + 1, hostname.c_str());
   entry.dwfNetProtocols = RASNP_Ip | RASNP_Ipv6;
   entry.dwFramingProtocol = RASFP_Ppp;
   wcscpy_s(entry.szDeviceType, RAS_MaxDeviceType + 1, RASDT_Vpn);
@@ -250,14 +251,15 @@ bool CreateEntry(LPCTSTR entry_name,
   // this maps to "Type of sign-in info" => "User name and password"
   entry.dwCustomAuthKey = 26;
 
-  DWORD dw_ret = RasSetEntryProperties(DEFAULT_PHONE_BOOK, entry_name, &entry,
-                                       entry.dwSize, NULL, NULL);
+  DWORD dw_ret = RasSetEntryProperties(DEFAULT_PHONE_BOOK, entry_name.c_str(),
+                                       &entry, entry.dwSize, NULL, NULL);
   if (dw_ret != ERROR_SUCCESS) {
     PrintRasError(dw_ret);
     return false;
   }
 
-  if (SetCredentials(entry_name, username, password) != ERROR_SUCCESS) {
+  if (SetCredentials(entry_name.c_str(), username.c_str(), password.c_str()) !=
+      ERROR_SUCCESS) {
     return false;
   }
 
@@ -300,7 +302,7 @@ bool CreateEntry(LPCTSTR entry_name,
 
   // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-writeprivateprofilestringw
   BOOL wrote_entry =
-      WritePrivateProfileString(entry_name, L"NumCustomPolicy",
+      WritePrivateProfileString(entry_name.c_str(), L"NumCustomPolicy",
                                 kNumCustomPolicy, phone_book_path.c_str());
   if (!wrote_entry) {
     LOG(ERROR)
@@ -310,7 +312,7 @@ bool CreateEntry(LPCTSTR entry_name,
   }
 
   wrote_entry =
-      WritePrivateProfileString(entry_name, L"CustomIPSecPolicies",
+      WritePrivateProfileString(entry_name.c_str(), L"CustomIPSecPolicies",
                                 kCustomIPSecPolicies, phone_book_path.c_str());
   if (!wrote_entry) {
     LOG(ERROR) << "ERROR: failed to write \"CustomIPSecPolicies\" field to "
@@ -320,6 +322,62 @@ bool CreateEntry(LPCTSTR entry_name,
   }
 
   return true;
+}
+
+CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
+  if (entry_name.empty())
+    return CheckConnectionResult::UNKNOWN;
+
+  DWORD dw_cb = 0;
+  DWORD dw_ret = dw_cb;
+  DWORD dw_connections = 0;
+  LPRASCONN lp_ras_conn = NULL;
+
+  // Call RasEnumConnections with lp_ras_conn = NULL. dw_cb is returned with the
+  // required buffer size and a return code of ERROR_BUFFER_TOO_SMALL
+  dw_ret = RasEnumConnections(lp_ras_conn, &dw_cb, &dw_connections);
+
+  // If got success here, it means there is no connected vpn entry.
+  if (dw_ret == ERROR_SUCCESS) {
+    return CheckConnectionResult::NOT_CONNECTED;
+  }
+
+  // Abnormal situation.
+  if (dw_ret != ERROR_BUFFER_TOO_SMALL)
+    return CheckConnectionResult::UNKNOWN;
+
+  // Allocate the memory needed for the array of RAS structure(s).
+  lp_ras_conn = (LPRASCONN)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
+  if (lp_ras_conn == NULL) {
+    LOG(ERROR) << "HeapAlloc failed!";
+    return CheckConnectionResult::UNKNOWN;
+  }
+
+  // The first RASCONN structure in the array must contain the RASCONN
+  // structure size
+  lp_ras_conn[0].dwSize = sizeof(RASCONN);
+
+  // Call RasEnumConnections to enumerate active connections
+  dw_ret = RasEnumConnections(lp_ras_conn, &dw_cb, &dw_connections);
+
+  if (ERROR_SUCCESS != dw_ret) {
+    HeapFree(GetProcessHeap(), 0, lp_ras_conn);
+    lp_ras_conn = NULL;
+    return CheckConnectionResult::UNKNOWN;
+  }
+
+  // If successful, find connection with |entry_name|.
+  CheckConnectionResult result = CheckConnectionResult::NOT_CONNECTED;
+  for (DWORD i = 0; i < dw_connections; i++) {
+    if (entry_name.compare(lp_ras_conn[i].szEntryName) == 0) {
+      result = CheckConnectionResult::CONNECTED;
+      break;
+    }
+  }
+
+  HeapFree(GetProcessHeap(), 0, lp_ras_conn);
+  lp_ras_conn = NULL;
+  return result;
 }
 
 }  // namespace internal

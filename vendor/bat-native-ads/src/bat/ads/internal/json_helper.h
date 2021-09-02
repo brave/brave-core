@@ -31,7 +31,6 @@ struct AdsHistoryInfo;
 struct CategoryContentInfo;
 struct ClientInfo;
 struct NewTabPageAdInfo;
-struct PurchaseIntentSignalHistoryInfo;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
@@ -43,8 +42,6 @@ void SaveToJson(JsonWriter* writer, const AdsHistoryInfo& info);
 void SaveToJson(JsonWriter* writer, const CategoryContentInfo& info);
 void SaveToJson(JsonWriter* writer, const ClientInfo& state);
 void SaveToJson(JsonWriter* writer, const NewTabPageAdInfo& info);
-void SaveToJson(JsonWriter* writer,
-                const PurchaseIntentSignalHistoryInfo& info);
 
 template <typename T>
 void SaveToJson(const T& t, std::string* json) {

@@ -12,7 +12,7 @@ import {
   NavTypes,
   AssetPriceTimeframe,
   PriceDataObjectType,
-  AssetOptionType,
+  AccountAssetOptionType,
   AssetPriceInfo,
   RPCResponseType,
   OrderTypes,
@@ -28,7 +28,8 @@ import BackupWallet from './screens/backup-wallet'
 import * as Result from '../common/types/result'
 
 // import { NavOptions } from '../options/side-nav-options'
-import { AssetOptions, NewAssetOptions } from '../options/asset-options'
+import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
+import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 import BuySendSwap from './screens/buy-send-swap'
@@ -68,8 +69,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedNetwork, setSelectedNetwork] = React.useState<Network>(Network.Mainnet)
   const [selectedAccount, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
-  const [fromAsset, setFromAsset] = React.useState<AssetOptionType>(AssetOptions[0])
-  const [toAsset, setToAsset] = React.useState<AssetOptionType>(AssetOptions[1])
+  const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
+  const [toAsset, setToAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[1])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   const [exchangeRate, setExchangeRate] = React.useState('0.0027533')
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
@@ -325,7 +326,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     alert('Will update Watchlist')
   }
 
-  const onSelectTransactAsset = (asset: AssetOptionType, toOrFrom: ToOrFromType) => {
+  const onSelectTransactAsset = (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {
       setFromAsset(asset)
     } else {
@@ -338,7 +339,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setToAsset(fromAsset)
   }
 
-  const onSubmitBuy = (asset: AssetOptionType) => {
+  const onSubmitBuy = (asset: AccountAssetOptionType) => {
     const url = BuyAssetUrl(selectedNetwork, asset, selectedAccount, buyAmount)
     if (url) {
       window.open(url, '_blank')
@@ -376,9 +377,15 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const fromAssetBalance = '26'
   const toAssetBalance = '78'
 
-  const onSelectPresetAmount = (percent: number) => {
+  const onSelectPresetFromAmount = (percent: number) => {
     const amount = Number(fromAssetBalance) * percent
     setFromAmount(amount.toString())
+    calculateToAmount(amount, true)
+  }
+
+  const onSelectPresetSendAmount = (percent: number) => {
+    const amount = Number(fromAssetBalance) * percent
+    setSendAmount(amount.toString())
     calculateToAmount(amount, true)
   }
 
@@ -420,6 +427,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setToAddress(value)
   }
 
+  const onRemoveAccount = () => {
+    alert('Will Remove Account')
+  }
+
   const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Result.Type<HardwareWalletAccount[]> => {
     const makeDerivationPath = (index: number): string => `m/44'/60'/${index}'/0/0`
 
@@ -433,6 +444,14 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const fetchFullTokenList = () => {
     // Doesnt fetch anything in storybook
+  }
+
+  const onViewPrivateKey = () => {
+    // Doesnt do anything in storybook
+  }
+
+  const onDoneViewingPrivateKey = () => {
+    // Doesnt do anything in storybook
   }
 
   return (
@@ -512,6 +531,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onSelectNetwork={onSelectNetwork}
                               isFetchingPortfolioPriceHistory={false}
                               selectedPortfolioTimeline={selectedTimeline}
+                              onRemoveAccount={onRemoveAccount}
+                              privateKey='gf65a4g6a54fg6a54fg6ad4fa5df65a4d6ff54a6sdf'
+                              onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+                              onViewPrivateKey={onViewPrivateKey}
                             />
                           )}
                         </>
@@ -563,7 +586,11 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             onSelectExpiration={onSelectExpiration}
             onSetExchangeRate={onSetExchangeRate}
             onSelectSlippageTolerance={onSelectSlippageTolerance}
-            onSelectPresetAmount={onSelectPresetAmount}
+            onSelectPresetFromAmount={onSelectPresetFromAmount}
+            onSelectPresetSendAmount={onSelectPresetSendAmount}
+            buyAssetOptions={WyreAccountAssetOptions}
+            sendAssetOptions={AccountAssetOptions}
+            swapAssetOptions={AccountAssetOptions}
           />
         </WalletWidgetStandIn>
       }

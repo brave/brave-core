@@ -4,11 +4,7 @@
 
 import * as React from 'react'
 
-import {
-  ExternalWallet,
-  getExternalWalletProviderName
-} from '../../lib/external_wallet'
-
+import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
 import { ExternalWalletAction } from './external_wallet_action'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
@@ -17,7 +13,7 @@ import { BitflyerIcon } from '../icons/bitflyer_icon'
 import { UpholdIcon } from '../icons/uphold_icon'
 import { PendingIcon } from './icons/pending_icon'
 
-import * as styles from './external_wallet_bubble.style'
+import * as style from './external_wallet_bubble.style'
 
 interface Props {
   externalWallet: ExternalWallet
@@ -28,6 +24,7 @@ interface Props {
 export function ExternalWalletBubble (props: Props) {
   const { getString } = React.useContext(LocaleContext)
   const { externalWallet } = props
+  const providerName = getExternalWalletProviderName(externalWallet.provider)
 
   function actionHandler (action: ExternalWalletAction) {
     return (evt: React.UIEvent) => {
@@ -52,60 +49,73 @@ export function ExternalWalletBubble (props: Props) {
     }
   }
 
-  const providerName = getExternalWalletProviderName(externalWallet.provider)
+  function renderAccountLink () {
+    switch (externalWallet.status) {
+      case 'pending':
+        return (
+          <a href='#' onClick={actionHandler('complete-verification')}>
+            {
+              formatMessage(getString('walletCompleteVerificationLink'), [
+                providerName
+              ])
+            }
+          </a>
+        )
+      case 'disconnected':
+        return (
+          <a href='#' onClick={actionHandler('reconnect')}>
+            {
+              formatMessage(getString('walletLogIntoYourAccount'), [
+                providerName
+              ])
+            }
+          </a>
+        )
+      case 'verified':
+        return (
+          <a href='#' onClick={actionHandler('view-account')}>
+            {formatMessage(getString('walletAccountLink'), [providerName])}
+          </a>
+        )
+    }
+  }
 
   return (
-      <styles.root>
-        <styles.content>
-          <styles.header>
-            <styles.providerIcon>
-              <ProviderIcon />
-            </styles.providerIcon>
-            <styles.username>
-              {externalWallet.username}
-            </styles.username>
-            <styles.status className={externalWallet.status}>
-              {externalWallet.status === 'pending' && <PendingIcon />}
-              {getWalletStatus()}
-            </styles.status>
-          </styles.header>
-          {
-            externalWallet.status === 'pending' &&
-              <styles.pendingNotice>
-                <PendingIcon />
-                <span>{getString('walletCompleteVerificationText')}</span>
-              </styles.pendingNotice>
-          }
-          <styles.links>
-            <styles.link>
-              <styles.linkMarker />
-              {
-                externalWallet.status === 'pending'
-                  ? <a href='#' onClick={actionHandler('complete-verification')}>
-                      {
-                        formatMessage(
-                          getString('walletCompleteVerificationLink'),
-                          [providerName])
-                      }
-                    </a>
-                  : <a href='#' onClick={actionHandler('view-account')}>
-                      {
-                        formatMessage(
-                          getString('walletAccountLink'),
-                          [providerName])
-                      }
-                    </a>
-              }
-            </styles.link>
-            <styles.link>
-              <styles.linkMarker />
-              <a href='#' onClick={actionHandler('disconnect')}>
-                {getString('walletDisconnectLink')}
-              </a>
-            </styles.link>
-          </styles.links>
-        </styles.content>
-        <styles.backdrop onClick={props.onCloseBubble} />
-      </styles.root>
+    <style.root>
+      <style.content>
+        <style.header>
+          <style.providerIcon>
+            <ProviderIcon />
+          </style.providerIcon>
+          <style.username>
+            {externalWallet.username}
+          </style.username>
+          <style.status className={externalWallet.status}>
+            {externalWallet.status === 'pending' && <PendingIcon />}
+            {getWalletStatus()}
+          </style.status>
+        </style.header>
+        {
+          externalWallet.status === 'pending' &&
+            <style.pendingNotice>
+              <PendingIcon />
+              <span>{getString('walletCompleteVerificationText')}</span>
+            </style.pendingNotice>
+        }
+        <style.links>
+          <style.link>
+            <style.linkMarker />
+            {renderAccountLink()}
+          </style.link>
+          <style.link>
+            <style.linkMarker />
+            <a href='#' onClick={actionHandler('disconnect')}>
+              {getString('walletDisconnectLink')}
+            </a>
+          </style.link>
+        </style.links>
+      </style.content>
+      <style.backdrop onClick={props.onCloseBubble} />
+    </style.root>
   )
 }

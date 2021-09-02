@@ -30,7 +30,7 @@ import {
   PageState,
   WalletPageState,
   AssetPriceTimeframe,
-  AssetOptionType,
+  AccountAssetOptionType,
   OrderTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
@@ -46,7 +46,8 @@ import BackupWallet from '../stories/screens/backup-wallet'
 import { formatPrices } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { convertMojoTimeToJS } from '../utils/mojo-time'
-import { AssetOptions } from '../options/asset-options'
+import { AssetOptions, AccountAssetOptions } from '../options/asset-options'
+import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 import {
@@ -55,7 +56,7 @@ import {
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import * as Result from '../common/types/result'
 
-import { formatBalance } from '../utils/format-balances'
+import { formatBalance, toWei } from '../utils/format-balances'
 
 type Props = {
   wallet: WalletState
@@ -96,7 +97,8 @@ function Container (props: Props) {
     selectedAssetPriceHistory,
     setupStillInProgress,
     isFetchingPriceHistory,
-    showIsRestoring
+    showIsRestoring,
+    privateKey
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
@@ -112,6 +114,21 @@ function Container (props: Props) {
   const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   // const [showRestore, setShowRestore] = React.useState<boolean>(false)
+
+  // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
+  const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
+  const [toAsset, setToAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[1])
+  const onSelectTransactAsset = (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => {
+    if (toOrFrom === 'from') {
+      setFromAsset(asset)
+    } else {
+      setToAsset(asset)
+    }
+  }
+  const flipSwapAssets = () => {
+    setFromAsset(toAsset)
+    setToAsset(fromAsset)
+  }
 
   const onToggleShowRestore = () => {
     props.walletPageActions.setShowIsRestoring(!showIsRestoring)
@@ -149,13 +166,6 @@ function Container (props: Props) {
     setSlippageTolerance(slippage)
   }
 
-  const onSelectPresetAmount = (percent: number) => {
-    // 0 Will be replaced with selected from asset's Balance
-    // once we are able to get balances
-    const amount = 0 * percent
-    setFromAmount(amount.toString())
-  }
-
   const onToggleOrderType = () => {
     if (orderType === 'market') {
       setOrderType('limit')
@@ -170,21 +180,6 @@ function Container (props: Props) {
 
   const onSelectNetwork = (network: Network) => {
     props.walletActions.selectNetwork(network)
-  }
-
-  // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
-  const [fromAsset, setFromAsset] = React.useState<AssetOptionType>(AssetOptions[0])
-  const [toAsset, setToAsset] = React.useState<AssetOptionType>(AssetOptions[1])
-  const onSelectTransactAsset = (asset: AssetOptionType, toOrFrom: ToOrFromType) => {
-    if (toOrFrom === 'from') {
-      setFromAsset(asset)
-    } else {
-      setToAsset(asset)
-    }
-  }
-  const flipSwapAssets = () => {
-    setFromAsset(toAsset)
-    setToAsset(fromAsset)
   }
 
   // In the future these will be actual paths
@@ -329,6 +324,24 @@ function Container (props: Props) {
     return formated
   }, [selectedAssetPriceHistory])
 
+  const fromAssetBalance = React.useMemo(() => {
+    if (!selectedAccount) {
+      return '0'
+    }
+    const token = selectedAccount.tokens.find((token) => token.asset.symbol === fromAsset.asset.symbol)
+    return token ? formatBalance(token.assetBalance, token.asset.decimals) : '0'
+  }, [accounts, selectedAccount, fromAsset])
+
+  const onSelectPresetFromAmount = (percent: number) => {
+    const amount = Number(fromAsset.assetBalance) * percent
+    setSendAmount(amount.toString())
+  }
+
+  const onSelectPresetSendAmount = (percent: number) => {
+    const amount = Number(fromAsset.assetBalance) * percent
+    setSendAmount(amount.toString())
+  }
+
   const onToggleAddModal = () => {
     setShowAddModal(!showAddModal)
   }
@@ -340,7 +353,7 @@ function Container (props: Props) {
     }
   }
 
-  const onSubmitBuy = (asset: AssetOptionType) => {
+  const onSubmitBuy = (asset: AccountAssetOptionType) => {
     const url = BuyAssetUrl(selectedNetwork, asset, selectedAccount, buyAmount)
     if (url) {
       window.open(url, '_blank')
@@ -353,8 +366,15 @@ function Container (props: Props) {
     return []
   }
 
-  const onImportAccount = () => {
-    // TODO (DOUGLAS): Add logic to import a secondary account
+  const onImportAccount = (accountName: string, privateKey: string) => {
+    const imported = props.walletPageActions.addImportedAccount({ accountName, privateKey })
+    if (imported) {
+      onToggleAddModal()
+    }
+  }
+
+  const onRemoveAccount = (address: string) => {
+    props.walletPageActions.removeImportedAccount({ address })
   }
 
   const onUpdateAccountName = () => {
@@ -370,11 +390,28 @@ function Container (props: Props) {
   }
 
   const onSubmitSend = () => {
-    // TODO (DOUGLAS): logic Here to submit a send transaction
+    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === fromAsset.asset.symbol)
+    // TODO: Use real gas price & limit
+    props.walletActions.sendTransaction({
+      from: selectedAccount.address,
+      to: toAddress,
+      value: toWei(sendAmount, asset?.decimals ?? 0),
+      contractAddress: asset?.contractAddress ?? '',
+      gasPrice: '0x20000000000',
+      gasLimit: '0xFDE8'
+    })
   }
 
   const fetchFullTokenList = () => {
     props.walletActions.getAllTokensList()
+  }
+
+  const onViewPrivateKey = (address: string, isDefault: boolean) => {
+    props.walletPageActions.viewPrivateKey({ address, isDefault })
+  }
+
+  const onDoneViewingPrivateKey = () => {
+    props.walletPageActions.doneViewingPrivateKey()
   }
 
   const renderWallet = React.useMemo(() => {
@@ -451,6 +488,10 @@ function Container (props: Props) {
                   selectedNetwork={selectedNetwork}
                   onSelectNetwork={onSelectNetwork}
                   isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
+                  onRemoveAccount={onRemoveAccount}
+                  privateKey={privateKey ?? ''}
+                  onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+                  onViewPrivateKey={onViewPrivateKey}
                 />
               )}
             </>
@@ -459,6 +500,7 @@ function Container (props: Props) {
       )
     }
   }, [
+    privateKey,
     fullTokenList,
     isWalletCreated,
     isWalletLocked,
@@ -504,16 +546,20 @@ function Container (props: Props) {
             buyAmount={buyAmount}
             sendAmount={sendAmount}
             fromAmount={fromAmount}
-            fromAssetBalance='0'
+            fromAssetBalance={fromAssetBalance}
             toAmount={toAmount}
             toAssetBalance='0'
             orderExpiration={orderExpiration}
             slippageTolerance={slippageTolerance}
             toAddress={toAddress}
+            buyAssetOptions={WyreAccountAssetOptions}
+            sendAssetOptions={selectedAccount.tokens}
+            swapAssetOptions={AccountAssetOptions}
             onSetBuyAmount={onSetBuyAmount}
             onSetToAddress={onSetToAddress}
             onSelectExpiration={onSelectExpiration}
-            onSelectPresetAmount={onSelectPresetAmount}
+            onSelectPresetFromAmount={onSelectPresetFromAmount}
+            onSelectPresetSendAmount={onSelectPresetSendAmount}
             onSelectSlippageTolerance={onSelectSlippageTolerance}
             onSetExchangeRate={onSetExchangeRate}
             onSetSendAmount={onSetSendAmount}
@@ -527,7 +573,6 @@ function Container (props: Props) {
             onSelectAccount={onSelectAccount}
             onToggleOrderType={onToggleOrderType}
             onSelectAsset={onSelectTransactAsset}
-
           />
         </WalletWidgetStandIn>
       }

@@ -100,7 +100,7 @@ void Client::Initialize(InitializeCallback callback) {
   Load();
 }
 
-void Client::AppendAdHistoryToAdsHistory(const AdHistoryInfo& ad_history) {
+void Client::AppendAdHistory(const AdHistoryInfo& ad_history) {
   DCHECK(is_initialized_);
 
   client_->ads_shown_history.push_front(ad_history);
@@ -128,7 +128,7 @@ const std::deque<AdHistoryInfo>& Client::GetAdsHistory() const {
 
 void Client::AppendToPurchaseIntentSignalHistoryForSegment(
     const std::string& segment,
-    const PurchaseIntentSignalHistoryInfo& history) {
+    const ad_targeting::PurchaseIntentSignalHistoryInfo& history) {
   DCHECK(is_initialized_);
 
   if (client_->purchase_intent_signal_history.find(segment) ==
@@ -146,8 +146,8 @@ void Client::AppendToPurchaseIntentSignalHistoryForSegment(
   Save();
 }
 
-const PurchaseIntentSignalHistoryMap& Client::GetPurchaseIntentSignalHistory()
-    const {
+const ad_targeting::PurchaseIntentSignalHistoryMap&
+Client::GetPurchaseIntentSignalHistory() const {
   DCHECK(is_initialized_);
 
   return client_->purchase_intent_signal_history;
@@ -226,6 +226,17 @@ AdContentInfo::LikeAction Client::ToggleAdThumbDown(
   return like_action;
 }
 
+AdContentInfo::LikeAction Client::GetLikeActionForSegment(
+    const std::string& segment) {
+  for (const auto& element : client_->ads_shown_history) {
+    if (element.category_content.category == segment) {
+      return element.ad_content.like_action;
+    }
+  }
+
+  return AdContentInfo::LikeAction::kNeutral;
+}
+
 CategoryContentInfo::OptAction Client::ToggleAdOptInAction(
     const std::string& category,
     const CategoryContentInfo::OptAction action) {
@@ -296,6 +307,17 @@ CategoryContentInfo::OptAction Client::ToggleAdOptOutAction(
   return opt_action;
 }
 
+CategoryContentInfo::OptAction Client::GetOptActionForSegment(
+    const std::string& segment) {
+  for (const auto& element : client_->ads_shown_history) {
+    if (element.category_content.category == segment) {
+      return element.category_content.opt_action;
+    }
+  }
+
+  return CategoryContentInfo::OptAction::kNone;
+}
+
 bool Client::ToggleSaveAd(const std::string& creative_instance_id,
                           const std::string& creative_set_id,
                           const bool saved) {
@@ -324,7 +346,7 @@ bool Client::ToggleSaveAd(const std::string& creative_instance_id,
     }
   }
 
-  // Update the history detail for ads matching this UUID
+  // Update the history detail for ads matching this creative instance id
   for (auto& item : client_->ads_shown_history) {
     if (item.ad_content.creative_instance_id == creative_instance_id) {
       item.ad_content.saved_ad = saved_ad;
@@ -334,6 +356,17 @@ bool Client::ToggleSaveAd(const std::string& creative_instance_id,
   Save();
 
   return saved_ad;
+}
+
+bool Client::GetSavedAdForCreativeInstanceId(
+    const std::string& creative_instance_id) {
+  for (const auto& element : client_->ads_shown_history) {
+    if (element.ad_content.creative_instance_id == creative_instance_id) {
+      return element.ad_content.saved_ad;
+    }
+  }
+
+  return false;
 }
 
 bool Client::ToggleFlagAd(const std::string& creative_instance_id,
@@ -364,7 +397,7 @@ bool Client::ToggleFlagAd(const std::string& creative_instance_id,
     }
   }
 
-  // Update the history detail for ads matching this UUID
+  // Update the history detail for ads matching this creative instance id
   for (auto& item : client_->ads_shown_history) {
     if (item.ad_content.creative_instance_id == creative_instance_id) {
       item.ad_content.flagged_ad = flagged_ad;
@@ -374,6 +407,17 @@ bool Client::ToggleFlagAd(const std::string& creative_instance_id,
   Save();
 
   return flagged_ad;
+}
+
+bool Client::GetFlaggedAdForCreativeInstanceId(
+    const std::string& creative_instance_id) {
+  for (const auto& element : client_->ads_shown_history) {
+    if (element.ad_content.creative_instance_id == creative_instance_id) {
+      return element.ad_content.flagged_ad;
+    }
+  }
+
+  return false;
 }
 
 void Client::UpdateSeenAd(const AdInfo& ad) {
@@ -474,7 +518,7 @@ base::Time Client::GetNextAdServingInterval() {
 }
 
 void Client::AppendTextClassificationProbabilitiesToHistory(
-    const TextClassificationProbabilitiesMap& probabilities) {
+    const ad_targeting::TextClassificationProbabilitiesMap& probabilities) {
   DCHECK(is_initialized_);
 
   client_->text_classification_probabilities.push_front(probabilities);
@@ -488,7 +532,7 @@ void Client::AppendTextClassificationProbabilitiesToHistory(
   Save();
 }
 
-const TextClassificationProbabilitiesList&
+const ad_targeting::TextClassificationProbabilitiesList&
 Client::GetTextClassificationProbabilitiesHistory() {
   DCHECK(is_initialized_);
 

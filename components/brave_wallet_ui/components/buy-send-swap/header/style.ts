@@ -50,12 +50,17 @@ export const AccountAddress = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
 `
-export const AccountCircle = styled.div<StyleProps>`
+export const AccountCircle = styled.button<StyleProps>`
+  cursor: pointer;
   width: 24px;
   height: 24px;
   border-radius: 100%;
   background-image: url(${(p) => p.orb});
   background-size: cover;
+  margin: 0px;
+  padding: 0px;
+  outline: none;
+  border: none;
   margin-right: 8px;
 `
 

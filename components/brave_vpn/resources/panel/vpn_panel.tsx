@@ -9,7 +9,7 @@ import { render } from 'react-dom'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import vpnDarkTheme from './theme/vpn-dark'
 import vpnLightTheme from './theme/vpn-light'
-import Main from './components/main'
+import Main from './containers/main'
 import { PanelWrapper } from './style'
 import apiProxy from './vpn_panel_api_proxy.js'
 

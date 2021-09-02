@@ -234,6 +234,8 @@
 <translation id="3082557070674409251">Cliccato</translation>
 <translation id="7119308337584989771">Archiviato</translation>
 <translation id="6805660603861526473">Visualizzati</translation>
+<translation id="1501075228659004450">A quanto pare il tuo portafoglio Brave Rewards è già stato verificato con un altro account <ph name="PROVIDER"/>. Prova a verificarlo di nuovo utilizzando il tuo account precedente.</translation>
+<translation id="5111921830714291902">Errore: account diverso</translation>
 <translation id="2359865110462963929">BAT non è attualmente supportato nella tua regione. 
 Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per aggiornamenti.</translation>
 <translation id="1737873393693460829">Attivando [[title]], accetti i <ph name="BEGIN_LINK1"/>Termini di servizio<ph name="END_LINK1"/> e l’<ph name="BEGIN_LINK2"/>Informativa sulla privacy<ph name="END_LINK2"/>.</translation>
@@ -254,6 +256,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="2359808026110333948">Continua</translation>
 <translation id="5112354605357157725">Procedere con il login</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> richiede un saldo minimo di <ph name="AMOUNT"/> BAT per creare un account. Se hai già collegato un account,</translation>
+<translation id="752216563428219524">Annunci non inizializzati, aggiorna la pagina.</translation>
 <translation id="7422678632904904341">Importo:</translation>
 <translation id="6969783933307596818">Aggiorna automaticamente ogni 5 secondi</translation>
 <translation id="5025866799968038247">Informazioni sul saldo</translation>
@@ -314,6 +317,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="2152423226436243241">Contribuisci automaticamente</translation>
 <translation id="2927922949538312364">Mancia una tantum</translation>
 <translation id="3164105678355419142">Mance ricorrenti</translation>
+<translation id="916115051162298064">Diagnostica annuncio</translation>
 <translation id="7806880412350961625">Registri eventi</translation>
 <translation id="4309915981827077375">Informazioni generali</translation>
 <translation id="3662406032239313663">Log</translation>
@@ -352,6 +356,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="4371618764691059036">È stato impostato il contributo mensile.</translation>
 <translation id="6356822617569064293">Prossima data del contributo:</translation>
 <translation id="3593485149443019592">I token non sono sufficienti, <ph name="LINK_BEGIN"/>ricarica<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave trattiene il 5% della mancia come commissione per l’esecuzione tecnica del pagamento.</translation>
 <translation id="207268487070188114">Mancia una tantum</translation>
 <translation id="69861679024013299">Importo mancia una tantum:</translation>
 <translation id="3669086939205397942">Aspetta, non puoi ancora lasciare una mancia</translation>
@@ -360,6 +365,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="5531915212947569943">Ci dispiace vederti andare via…</translation>
 <translation id="1420756770787071946">Supporta questo creatore</translation>
 <translation id="3271043362279673449">Grazie per il supporto!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Per gestire la mancia possono servire alcuni minuti</translation>
 <translation id="3312470408978098625">La tua mancia una tantum è stata inviata.</translation>
 <translation id="5096821444729034955">per la loro pubblicazione</translation>
 <translation id="2978223787436054634">Tweet sul tuo supporto</translation>
@@ -377,7 +383,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="6318696841371191107">Fai un tour veloce</translation>
 <translation id="8465790416279415448">Continuando accetti i <ph name="TOS_LINK_BEGIN"/>Termini di servizio<ph name="TOS_LINK_END"/> e l’<ph name="PP_LINK_BEGIN"/>Informativa sulla privacy<ph name="PP_LINK_END"/>.</translation>
 <translation id="8222322431155185238">Mancia con Brave Rewards</translation>
-<translation id="1895476463085410109">Ottieni ricompense visualizzando gli annunci privati di Brave e sostieni i creatori di contenuti automaticamente</translation>
+<translation id="1895476463085410109">Ottieni ricompense visualizzando i Brave Private Ads e sostieni i creatori di contenuti automaticamente</translation>
 <translation id="5705882733397021510">Vai indietro</translation>
 <translation id="185034574799484512">Facciamo un breve tour</translation>
 <translation id="8281886186245836920">Salta</translation>
@@ -414,6 +420,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="4241224519481557898">Categoria</translation>
 <translation id="3080423471207781945">Annunci massimi ricevuti per ora:</translation>
 <translation id="2631006050119455616">Modifiche salvate</translation>
+<translation id="7847825746023377505">Nessun annuncio visualizzato negli ultimi <ph name="TOTAL_DAYS"/> giorni.</translation>
 <translation id="7902420836933072528">Annunci ricevuti negli ultimi [[totalDays]] giorni</translation>
 <translation id="8863685593846905344">Cronologia degli Annunci</translation>
 <translation id="2777306694585938662">Ricompense da pubblicità ricevute</translation>
@@ -567,7 +574,6 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="8014425282125849700">Occasionalmente, Brave ti offrirà delle donazioni di gettoni gratuiti. Assicurati di tenere d'occhio gli avvisi!</translation>
 <translation id="1370034647041840967">Guadagna gettoni per prestare attenzione agli annunci pubblicitari e pagali in anticipo per supportare i creatori di contenuti che apprezzi!</translation>
 <translation id="4919888432594361029">Aggiungi, preleva e gestisci fondi su <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Il tuo portafoglio Brave è fornito da <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Le Ricompense di Brave si basano sui Token di Attenzione  di Base. Scopri di più sui BAT</translation>
 <translation id="7823359893981882407">qui</translation>
 <translation id="3034163433136515805">Visualizza Codice QR</translation>
@@ -645,12 +651,15 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="39734939514946950">Quantità Premio</translation>
 <translation id="2151535059686617995">È il tuo giorno fortunato!</translation>
 <translation id="6436689611575806470">Il contributo da [[currency]] è in arrivo.</translation>
-<translation id="7512440811010447157">verifica</translation>
 <translation id="8267327690882073581">Verifica il Portafoglio</translation>
 <translation id="543510923939676996">Portafoglio verificato</translation>
-<translation id="2659764755126740206">Vai al mio account <ph name="PROVIDER"/></translation>
+<translation id="2445110450361135194">Andare all’account <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Accedere all’account <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Completa verifica del portafoglio</translation>
 <translation id="9200453331904391567">Scollegati da Brave Rewards</translation>
+<translation id="3656941797339037856">Collega Rewards a Gemini!</translation>
+<translation id="671838195432136371">Con Gemini puoi scambiare, archiviare e guadagnare il 3,49% di rendimento percentuale annuo (APY)* sui tuoi BAT. I nuovi utenti Gemini collegati ricevono 5 BAT gratuiti!</translation>
+<translation id="9136976526700181750">* Gemini guadagna APY a partire dal 15 agosto 2021</translation>
 <translation id="7404779623219601861">Riscatta BAT per Carte Regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, puoi riscattare i tuoi BAT per carte regalo di marchi popolari.</translation>
 <translation id="6915065518766963119">* Richiede verifica Uphold</translation>
@@ -735,6 +744,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="1833248467354516560">Prezzo Unitario</translation>
 <translation id="4763179765154524864">Spesa Totale</translation>
 <translation id="8851480289992540512">Totale Ricevuto</translation>
+<translation id="824449983246282560">Non hai alcun saldo sul tuo conto. Visita Gemini per acquistarne un po’.</translation>
 <translation id="8624961452383848703">Voglio convertire…</translation>
 <translation id="616639131065447379">Benvenuto nei portafogli di criptovalute di Brave</translation>
 <translation id="1740464057879304704">I portafogli di criptovalute consentono di lavorare con le valute criptate e i relativi beni su Brave. I portafogli di criptovalute supportano gettoni Ethereum come ETH e BAT, così come oggetti da collezione, e ti permettono di lavorare con Ðapp e altri contratti intelligenti. Tutto questo è pensato per le persone che hanno familiarità con Ethereum e altri sistemi blockchain — o non vedono l'ora di imparare.</translation>

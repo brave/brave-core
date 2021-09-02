@@ -12,6 +12,7 @@ namespace prefs {
 extern const char kAdBlockCheckedDefaultRegion[];
 extern const char kAdBlockCustomFilters[];
 extern const char kAdBlockRegionalFilters[];
+extern const char kAdBlockListSubscriptions[];
 extern const char kFBEmbedControlType[];
 extern const char kTwitterEmbedControlType[];
 extern const char kLinkedInEmbedControlType[];

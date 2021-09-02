@@ -51,14 +51,6 @@ export const dataTable = styled.div`
     }
   }
 
-  th {
-    text-align:left;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 22px;
-    padding: 8px 0 3px 4px;
-  }
-
   td {
     font-size: 14px;
     line-height: 18px;
@@ -79,6 +71,10 @@ export const dataTable = styled.div`
         color: var(--brave-palette-neutral400);
       }
     }
+  }
+
+  tr:first-child td {
+    padding-top: 16px;
   }
 
   tr:nth-child(1) td.amount {

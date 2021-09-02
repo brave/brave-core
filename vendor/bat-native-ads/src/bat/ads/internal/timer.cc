@@ -51,12 +51,14 @@ void Timer::FireNow() {
   return timer_->FireNow();
 }
 
-void Timer::Stop() {
+bool Timer::Stop() {
   if (!IsRunning()) {
-    return;
+    return false;
   }
 
   timer_->Stop();
+
+  return true;
 }
 
 }  // namespace ads

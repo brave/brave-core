@@ -9,7 +9,7 @@ import { PublisherInfo } from '../lib/interfaces'
 import { TokenAmount } from '../../shared/components/token_amount'
 import { CaretIcon } from '../../shared/components/icons/caret_icon'
 
-import * as styles from './monthly_tip_view.style'
+import * as style from './monthly_tip_view.style'
 
 interface Props {
   publisherInfo: PublisherInfo
@@ -29,11 +29,11 @@ export function MonthlyTipView (props: Props) {
 
   if (monthlyContribution <= 0) {
     return (
-      <styles.root>
-        <styles.setBox onClick={cancelLink}>
+      <style.root>
+        <style.setBox onClick={cancelLink}>
           <a href='#' onClick={props.onUpdateClick}>{getString('set')}</a>
-        </styles.setBox>
-      </styles.root>
+        </style.setBox>
+      </style.root>
     )
   }
 
@@ -42,35 +42,35 @@ export function MonthlyTipView (props: Props) {
   }
 
   return (
-    <styles.root>
-      <styles.amountBox>
-        <styles.amount>
+    <style.root>
+      <style.amountBox>
+        <style.amount>
           <button onClick={toggleActionBubble}>
             <TokenAmount
               amount={monthlyContribution}
               minimumFractionDigits={0}
             /> <CaretIcon direction='down' />
           </button>
-        </styles.amount>
+        </style.amount>
         {
           showActions &&
-            <styles.actionBubble onClick={cancelLink}>
-              <styles.actionBubbleContent>
-                <styles.action>
+            <style.actionBubble onClick={cancelLink}>
+              <style.actionBubbleContent>
+                <style.action>
                   <a href='#' onClick={props.onUpdateClick}>
                     {getString('changeAmount')}
                   </a>
-                </styles.action>
-                <styles.action>
+                </style.action>
+                <style.action>
                   <a href='#' onClick={props.onCancelClick}>
                     {getString('cancel')}
                   </a>
-                </styles.action>
-                <styles.backdrop onClick={toggleActionBubble} />
-              </styles.actionBubbleContent>
-            </styles.actionBubble>
+                </style.action>
+                <style.backdrop onClick={toggleActionBubble} />
+              </style.actionBubbleContent>
+            </style.actionBubble>
         }
-      </styles.amountBox>
-    </styles.root>
+      </style.amountBox>
+    </style.root>
   )
 }
