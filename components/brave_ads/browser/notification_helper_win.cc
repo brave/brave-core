@@ -12,9 +12,7 @@
 #include "base/win/core_winrt_util.h"
 #include "base/win/scoped_hstring.h"
 #include "base/win/windows_version.h"
-#include "brave/components/brave_ads/common/features.h"
 #include "chrome/common/chrome_features.h"
-#include "chrome/install_static/install_util.h"
 #include "chrome/installer/util/install_util.h"
 #include "chrome/installer/util/shell_util.h"
 
@@ -64,19 +62,12 @@ NotificationHelperWin::NotificationHelperWin() = default;
 
 NotificationHelperWin::~NotificationHelperWin() = default;
 
-bool NotificationHelperWin::ShouldShowNotifications() {
-  if (features::IsCustomAdNotificationsEnabled()) {
-    return true;
-  }
-
-  if (IsFocusAssistEnabled()) {
+bool NotificationHelperWin::CanShowNativeNotifications() {
+  if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
+    LOG(WARNING) << "Native notifications feature is disabled";
     return false;
   }
 
-  return CanShowNativeNotifications();
-}
-
-bool NotificationHelperWin::CanShowNativeNotifications() {
   if (base::win::GetVersion() < base::win::Version::WIN10_RS4) {
     // There was a Microsoft bug in Windows 10 prior to vesion 1803, build 17134
     // (i.e. VERSION_WIN10_RS4) causing endless loops in displaying
@@ -88,24 +79,23 @@ bool NotificationHelperWin::CanShowNativeNotifications() {
     return false;
   }
 
-  if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
-    LOG(WARNING) << "Native notifications feature is disabled";
-    return false;
-  }
-
   if (!IsNotificationsEnabled()) {
     return false;
   }
 
+  if (IsFocusAssistEnabled()) {
+    return false;
+  }
+
+  return true;
+}
+
+bool NotificationHelperWin::CanShowBackgroundNotifications() const {
   return true;
 }
 
 bool NotificationHelperWin::ShowMyFirstAdNotification() {
   return false;
-}
-
-bool NotificationHelperWin::CanShowBackgroundNotifications() const {
-  return true;
 }
 
 NotificationHelperWin* NotificationHelperWin::GetInstanceImpl() {
