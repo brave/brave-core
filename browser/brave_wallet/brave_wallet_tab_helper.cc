@@ -42,6 +42,12 @@ void BraveWalletTabHelper::ShowBubble() {
     std::move(show_bubble_callback_for_testing_).Run();
 }
 
+void BraveWalletTabHelper::ShowApproveWalletBubble() {
+  wallet_bubble_manager_delegate_ =
+      WalletBubbleManagerDelegate::Create(web_contents_, GetApproveBubbleURL());
+  wallet_bubble_manager_delegate_->ShowBubble();
+}
+
 void BraveWalletTabHelper::CloseBubble() {
   if (wallet_bubble_manager_delegate_)
     wallet_bubble_manager_delegate_->CloseBubble();
@@ -92,6 +98,15 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
 
   return webui_url;
 }
+
+GURL BraveWalletTabHelper::GetApproveBubbleURL() {
+  GURL webui_url = GURL(kBraveUIWalletPanelURL);
+  url::Replacements<char> replacements;
+  const std::string ref = "approveTransaction";
+  replacements.SetRef(ref.c_str(), url::Component(0, ref.size()));
+  return webui_url.ReplaceComponents(replacements);
+}
+
 #endif  // !defined(OS_ANDROID) && !defined(OS_IOS)
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveWalletTabHelper)

@@ -64,6 +64,7 @@ interface PanelHandler {
 
 // Browser-side handler for requests from WebUI page.
 interface PageHandler {
+  ShowApprovePanelUI();
 };
 
 struct AppItem {
