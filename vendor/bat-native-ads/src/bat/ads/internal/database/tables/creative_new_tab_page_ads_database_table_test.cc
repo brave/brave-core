@@ -38,7 +38,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const std::vector<std::string> segments = {"Technology & Computing"};
+  const std::vector<std::string> segments = {"technology & computing"};
 
   database::table::CreativeNewTabPageAds creative_new_tab_page_ads;
   creative_new_tab_page_ads.GetForSegments(

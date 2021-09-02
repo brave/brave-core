@@ -23,7 +23,6 @@
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h"
@@ -66,6 +65,7 @@
 #include "bat/ads/pref_names.h"
 #include "bat/ads/promoted_content_ad_info.h"
 #include "bat/ads/statement_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -498,13 +498,11 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
 
   conversions_resource_ = std::make_unique<resource::Conversions>();
 
-  ad_targeting_ = std::make_unique<AdTargeting>();
   subdivision_targeting_ =
       std::make_unique<ad_targeting::geographic::SubdivisionTargeting>();
 
   ad_notification_serving_ = std::make_unique<ad_notifications::AdServing>(
-      ad_targeting_.get(), subdivision_targeting_.get(),
-      anti_targeting_resource_.get());
+      subdivision_targeting_.get(), anti_targeting_resource_.get());
   ad_notification_serving_->AddObserver(this);
   ad_notification_ = std::make_unique<AdNotification>();
   ad_notification_->AddObserver(this);
@@ -517,8 +515,7 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   ad_transfer_->AddObserver(this);
 
   inline_content_ad_serving_ = std::make_unique<inline_content_ads::AdServing>(
-      ad_targeting_.get(), subdivision_targeting_.get(),
-      anti_targeting_resource_.get());
+      subdivision_targeting_.get(), anti_targeting_resource_.get());
   inline_content_ad_serving_->AddObserver(this);
   inline_content_ad_ = std::make_unique<InlineContentAd>();
   inline_content_ad_->AddObserver(this);

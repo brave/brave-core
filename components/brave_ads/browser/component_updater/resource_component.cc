@@ -16,7 +16,6 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/browser/component_updater/component_util.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 

@@ -62,10 +62,10 @@ bool ClientInfo::FromJson(const std::string& json) {
     for (const auto& segment_history :
          document["purchaseIntentSignalHistory"].GetObject()) {
       std::string segment = segment_history.name.GetString();
-      std::deque<PurchaseIntentSignalHistoryInfo> histories;
+      std::deque<ad_targeting::PurchaseIntentSignalHistoryInfo> histories;
       for (const auto& segment_history_item :
            segment_history.value.GetArray()) {
-        PurchaseIntentSignalHistoryInfo history;
+        ad_targeting::PurchaseIntentSignalHistoryInfo history;
         rapidjson::StringBuffer buffer;
         rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
         if (segment_history_item.Accept(writer) &&
@@ -113,7 +113,7 @@ bool ClientInfo::FromJson(const std::string& json) {
   if (document.HasMember("textClassificationProbabilitiesHistory")) {
     for (const auto& probabilities :
          document["textClassificationProbabilitiesHistory"].GetArray()) {
-      TextClassificationProbabilitiesMap new_probabilities;
+      ad_targeting::TextClassificationProbabilitiesMap new_probabilities;
 
       for (const auto& probability :
            probabilities["textClassificationProbabilities"].GetArray()) {
@@ -154,7 +154,7 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& state) {
 
     writer->StartArray();
     for (const auto& segment_history_item : segment_history.second) {
-      SaveToJson(writer, segment_history_item);
+      writer->String(segment_history_item.ToJson().c_str());
     }
     writer->EndArray();
   }

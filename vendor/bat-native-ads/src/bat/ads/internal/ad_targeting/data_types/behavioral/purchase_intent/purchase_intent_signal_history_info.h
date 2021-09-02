@@ -10,6 +10,7 @@
 #include <string>
 
 namespace ads {
+namespace ad_targeting {
 
 struct PurchaseIntentSignalHistoryInfo {
   PurchaseIntentSignalHistoryInfo();
@@ -28,6 +29,7 @@ struct PurchaseIntentSignalHistoryInfo {
   uint16_t weight = 0;
 };
 
+}  // namespace ad_targeting
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_HISTORY_INFO_H_

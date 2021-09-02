@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
+#include "bat/ads/internal/segments/segments_util.h"
 
 #include <string>
 
+#include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -14,7 +15,12 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
-namespace ad_targeting {
+
+namespace {
+
+const char kCatalog[] = "catalog_with_multiple_campaigns.json";
+
+}  // namespace
 
 class BatAdsAdTargetingSegmentUtilTest : public UnitTestBase {
  protected:
@@ -23,33 +29,28 @@ class BatAdsAdTargetingSegmentUtilTest : public UnitTestBase {
   ~BatAdsAdTargetingSegmentUtilTest() override = default;
 };
 
-TEST_F(BatAdsAdTargetingSegmentUtilTest, SplitParentChildSegment) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest, GetSegmentsFromCatalog) {
   // Arrange
-  const std::string segment = "parent-child";
+  const absl::optional<std::string> opt_value =
+      ReadFileFromTestPathToString(kCatalog);
+  ASSERT_TRUE(opt_value.has_value());
+
+  const std::string json = opt_value.value();
+
+  Catalog catalog;
+  ASSERT_TRUE(catalog.FromJson(json));
 
   // Act
-  const SegmentList segments = SplitSegment(segment);
+  const SegmentList segments = GetSegments(catalog);
 
   // Assert
-  const SegmentList expected_segments = {"parent", "child"};
-
+  const SegmentList expected_segments = {"technology & computing",
+                                         "untargeted"};
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST_F(BatAdsAdTargetingSegmentUtilTest, SplitParentSegment) {
-  // Arrange
-  const std::string segment = "parent";
-
-  // Act
-  const SegmentList segments = SplitSegment(segment);
-
-  // Assert
-  const SegmentList expected_segments = {"parent"};
-
-  EXPECT_EQ(expected_segments, segments);
-}
-
-TEST_F(BatAdsAdTargetingSegmentUtilTest, GetParentSegment) {
+TEST_F(BatAdsAdTargetingSegmentUtilTest,
+       GetParentSegmentFromParentChildSegment) {
   // Arrange
   const std::string segment = "technology & computing-software";
 
@@ -224,5 +225,4 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest, DoesNotHaveChildSegment) {
   EXPECT_FALSE(has_child_segment);
 }
 
-}  // namespace ad_targeting
 }  // namespace ads

@@ -1,25 +1,67 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
+#include "bat/ads/internal/segments/segments_util.h"
+
+#include <set>
+#include <vector>
 
 #include "base/strings/string_split.h"
+#include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/client/preferences/filtered_category_info.h"
 
 namespace ads {
 
 namespace {
+
 const char kSegmentSeparator[] = "-";
-}  // namespace
 
 std::vector<std::string> SplitSegment(const std::string& segment) {
   DCHECK(!segment.empty());
 
   return base::SplitString(segment, kSegmentSeparator, base::KEEP_WHITESPACE,
                            base::SPLIT_WANT_ALL);
+}
+
+void RemoveDuplicates(SegmentList* segments) {
+  DCHECK(segments);
+
+  std::set<std::string> seen;  // log(n) existence check
+
+  auto iter = segments->begin();
+  while (iter != segments->end()) {
+    if (seen.find(*iter) != seen.end()) {
+      iter = segments->erase(iter);
+    } else {
+      seen.insert(*iter);
+      iter++;
+    }
+  }
+}
+
+}  // namespace
+
+SegmentList GetSegments(const Catalog& catalog) {
+  SegmentList segments;
+
+  const CatalogCampaignList catalog_campaigns = catalog.GetCampaigns();
+  for (const auto& catalog_campaign : catalog_campaigns) {
+    CatalogCreativeSetList catalog_creative_sets =
+        catalog_campaign.creative_sets;
+    for (const auto& catalog_creative_set : catalog_creative_sets) {
+      CatalogSegmentList catalog_segments = catalog_creative_set.segments;
+      for (const auto& catalog_segment : catalog_segments) {
+        segments.push_back(catalog_segment.name);
+      }
+    }
+  }
+
+  RemoveDuplicates(&segments);
+
+  return segments;
 }
 
 std::string GetParentSegment(const std::string& segment) {
@@ -36,13 +78,10 @@ SegmentList GetParentSegments(const SegmentList& segments) {
 
   for (const auto& segment : segments) {
     const std::string parent_segment = GetParentSegment(segment);
-    if (std::find(parent_segments.begin(), parent_segments.end(),
-                  parent_segment) != parent_segments.end()) {
-      continue;
-    }
-
     parent_segments.push_back(parent_segment);
   }
+
+  RemoveDuplicates(&parent_segments);
 
   return parent_segments;
 }
@@ -64,15 +103,7 @@ bool ParentSegmentsMatch(const std::string& lhs, const std::string& rhs) {
   DCHECK(!lhs.empty());
   DCHECK(!rhs.empty());
 
-  const std::vector<std::string> lhs_segment_components = SplitSegment(lhs);
-  DCHECK(!lhs_segment_components.empty());
-  const std::string lhs_parent_segment = lhs_segment_components.front();
-
-  const std::vector<std::string> rhs_segment_components = SplitSegment(rhs);
-  DCHECK(!rhs_segment_components.empty());
-  const std::string rhs_parent_segment = rhs_segment_components.front();
-
-  return lhs_parent_segment == rhs_parent_segment;
+  return GetParentSegment(lhs) == GetParentSegment(rhs);
 }
 
 bool ShouldFilterSegment(const std::string& segment) {
@@ -80,6 +111,10 @@ bool ShouldFilterSegment(const std::string& segment) {
 
   const FilteredCategoryList filtered_segments =
       Client::Get()->get_filtered_categories();
+
+  if (filtered_segments.empty()) {
+    return false;
+  }
 
   const auto iter = std::find_if(
       filtered_segments.begin(), filtered_segments.end(),

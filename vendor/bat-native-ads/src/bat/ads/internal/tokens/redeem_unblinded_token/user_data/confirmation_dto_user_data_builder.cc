@@ -17,6 +17,7 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_locale_dto_user_data.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_platform_dto_user_data.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_studies_dto_user_data.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace dto {

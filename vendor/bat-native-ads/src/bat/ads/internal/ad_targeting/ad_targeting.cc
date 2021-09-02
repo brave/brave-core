@@ -8,44 +8,82 @@
 #include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/models/contextual/text_classification/text_classification_model.h"
-#include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
-#include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
-#include "bat/ads/internal/features/text_classification/text_classification_features.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
+#include "bat/ads/internal/segments/segments_util.h"
 
 namespace ads {
+namespace ad_targeting {
 
-AdTargeting::AdTargeting() = default;
+namespace {
 
-AdTargeting::~AdTargeting() = default;
+const int kTopInterestSegmentsCount = 3;
+const int kTopLatentInterestSegmentsCount = 3;
+const int kTopPurchaseIntentSegmentsCount = 3;
 
-SegmentList AdTargeting::GetSegments() const {
+SegmentList FilterSegments(const SegmentList& segments, const int max_count) {
+  SegmentList top_segments;
+
+  int count = 0;
+
+  for (const auto& segment : segments) {
+    if (ShouldFilterSegment(segment)) {
+      continue;
+    }
+
+    top_segments.push_back(segment);
+    count++;
+    if (count == max_count) {
+      break;
+    }
+  }
+
+  return top_segments;
+}
+
+SegmentList GetTopSegments(const SegmentList& segments,
+                           const int max_count,
+                           const bool parent_only) {
+  if (!parent_only) {
+    return FilterSegments(segments, max_count);
+  }
+
+  const SegmentList parent_segments = GetParentSegments(segments);
+  return FilterSegments(parent_segments, max_count);
+}
+
+SegmentList GetTopSegments(const UserModelInfo& user_model,
+                           const bool parent_only) {
   SegmentList segments;
 
-  if (features::IsTextClassificationEnabled()) {
-    const ad_targeting::model::TextClassification text_classification_model;
-    const SegmentList text_classification_segments =
-        text_classification_model.GetSegments();
-    segments.insert(segments.end(), text_classification_segments.begin(),
-                    text_classification_segments.end());
-  }
+  const SegmentList interest_segments = GetTopSegments(
+      user_model.interest_segments, kTopInterestSegmentsCount, parent_only);
+  segments.insert(segments.end(), interest_segments.begin(),
+                  interest_segments.end());
 
-  if (features::IsPurchaseIntentEnabled()) {
-    const ad_targeting::model::PurchaseIntent purchase_intent_model;
-    const SegmentList purchase_intent_segments =
-        purchase_intent_model.GetSegments();
-    segments.insert(segments.end(), purchase_intent_segments.begin(),
-                    purchase_intent_segments.end());
-  }
+  const SegmentList latent_interest_segments =
+      GetTopSegments(user_model.latent_interest_segments,
+                     kTopLatentInterestSegmentsCount, parent_only);
+  segments.insert(segments.end(), latent_interest_segments.begin(),
+                  latent_interest_segments.end());
 
-  if (features::IsEpsilonGreedyBanditEnabled()) {
-    const ad_targeting::model::EpsilonGreedyBandit epsilon_greedy_bandit_model;
-    const SegmentList epsilon_greedy_bandit_segments =
-        epsilon_greedy_bandit_model.GetSegments();
-    segments.insert(segments.end(), epsilon_greedy_bandit_segments.begin(),
-                    epsilon_greedy_bandit_segments.end());
-  }
+  const SegmentList purchase_intent_segments =
+      GetTopSegments(user_model.purchase_intent_segments,
+                     kTopPurchaseIntentSegmentsCount, parent_only);
+  segments.insert(segments.end(), purchase_intent_segments.begin(),
+                  purchase_intent_segments.end());
 
   return segments;
 }
 
+}  // namespace
+
+SegmentList GetTopParentChildSegments(const UserModelInfo& user_model) {
+  return GetTopSegments(user_model, /* parent_only */ false);
+}
+
+SegmentList GetTopParentSegments(const UserModelInfo& user_model) {
+  return GetTopSegments(user_model, /* parent_only */ true);
+}
+
+}  // namespace ad_targeting
 }  // namespace ads

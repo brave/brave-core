@@ -35,7 +35,7 @@ class BatAdsCatalogTest : public UnitTestBase {
 
     CatalogSegmentInfo catalog_segment;
     catalog_segment.code = "yNl0N-ers2";
-    catalog_segment.name = "Technology & Computing";
+    catalog_segment.name = "technology & computing";
     catalog_segments.push_back(catalog_segment);
 
     // OSes

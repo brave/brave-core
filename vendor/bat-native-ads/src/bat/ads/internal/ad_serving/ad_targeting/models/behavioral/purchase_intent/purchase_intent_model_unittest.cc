@@ -14,6 +14,7 @@
 
 namespace ads {
 namespace ad_targeting {
+namespace model {
 
 class BatAdsPurchaseIntentModelTest : public UnitTestBase {
  protected:
@@ -31,7 +32,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForUnitializedResource) {
   processor.Process(url);
 
   // Act
-  model::PurchaseIntent model;
+  PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -56,7 +57,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   processor.Process(url_2);
 
   // Act
-  model::PurchaseIntent model;
+  PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -71,7 +72,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   resource.Load();
 
   // Act
-  model::PurchaseIntent model;
+  PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -92,7 +93,7 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   processor.Process(url);
 
   // Act
-  model::PurchaseIntent model;
+  PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -117,7 +118,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   processor.Process(url_1);
 
   // Act
-  model::PurchaseIntent model;
+  PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -140,7 +141,7 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   processor.Process(url);
 
   // Act
-  model::PurchaseIntent model;
+  PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -162,7 +163,7 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   processor.Process(url);
 
   // Act
-  model::PurchaseIntent model;
+  PurchaseIntent model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -171,5 +172,6 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   EXPECT_EQ(expected_segments, segments);
 }
 
+}  // namespace model
 }  // namespace ad_targeting
 }  // namespace ads

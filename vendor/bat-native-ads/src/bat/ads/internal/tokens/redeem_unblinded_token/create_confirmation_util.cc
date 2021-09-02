@@ -15,6 +15,7 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 
 namespace ads {

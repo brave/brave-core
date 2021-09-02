@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "bat/ads/ads_client.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
@@ -19,6 +18,7 @@
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
+#include "bat/ads/internal/segments/segments_alias.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {

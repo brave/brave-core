@@ -17,6 +17,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/segments/segments_json_reader.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
@@ -72,7 +73,7 @@ SegmentList GetEligibleSegments() {
   const std::string json = AdsClientHelper::Get()->GetStringPref(
       prefs::kEpsilonGreedyBanditEligibleSegments);
 
-  return DeserializeSegments(json);
+  return JSONReader::ReadSegments(json);
 }
 
 EpsilonGreedyBanditArmMap GetEligibleArms(

@@ -10,6 +10,8 @@
 
 #include "base/guid.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder_unittest_util.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
@@ -91,8 +93,8 @@ TEST_F(BatAdsEligibleAdNotificationsTest, GetAdsForParentChildSegment) {
   const CreativeAdNotificationList expected_creative_ad_notifications = {
       creative_ad_notification_2};
 
-  eligible_ads.GetForSegments(
-      {"technology & computing-software"},
+  eligible_ads.Get(
+      ad_targeting::BuildUserModel({"technology & computing-software"}),
       [&expected_creative_ad_notifications](
           const bool success,
           const CreativeAdNotificationList& creative_ad_notifications) {
@@ -122,8 +124,8 @@ TEST_F(BatAdsEligibleAdNotificationsTest, GetAdsForParentSegment) {
   const CreativeAdNotificationList expected_creative_ad_notifications = {
       creative_ad_notification};
 
-  eligible_ads.GetForSegments(
-      {"technology & computing-software"},
+  eligible_ads.Get(
+      ad_targeting::BuildUserModel({"technology & computing-software"}),
       [&expected_creative_ad_notifications](
           const bool success,
           const CreativeAdNotificationList& creative_ad_notifications) {
@@ -153,8 +155,8 @@ TEST_F(BatAdsEligibleAdNotificationsTest, GetAdsForUntargetedSegment) {
   const CreativeAdNotificationList expected_creative_ad_notifications = {
       creative_ad_notification};
 
-  eligible_ads.GetForSegments(
-      {"finance-banking"},
+  eligible_ads.Get(
+      ad_targeting::BuildUserModel({"finance-banking"}),
       [&expected_creative_ad_notifications](
           const bool success,
           const CreativeAdNotificationList& creative_ad_notifications) {
@@ -192,8 +194,8 @@ TEST_F(BatAdsEligibleAdNotificationsTest, GetAdsForMultipleSegments) {
   const CreativeAdNotificationList expected_creative_ad_notifications = {
       creative_ad_notification_1, creative_ad_notification_2};
 
-  eligible_ads.GetForSegments(
-      {"technology & computing", "food & drink"},
+  eligible_ads.Get(
+      ad_targeting::BuildUserModel({"technology & computing", "food & drink"}),
       [&expected_creative_ad_notifications](
           const bool success,
           const CreativeAdNotificationList& creative_ad_notifications) {
@@ -223,7 +225,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest, GetAdsForNoSegments) {
   const CreativeAdNotificationList expected_creative_ad_notifications = {
       creative_ad_notification};
 
-  eligible_ads.GetForSegments(
+  eligible_ads.Get(
       {}, [&expected_creative_ad_notifications](
               const bool success,
               const CreativeAdNotificationList& creative_ad_notifications) {
@@ -252,8 +254,8 @@ TEST_F(BatAdsEligibleAdNotificationsTest, GetAdsForUnmatchedSegments) {
 
   const CreativeAdNotificationList expected_creative_ad_notifications = {};
 
-  eligible_ads.GetForSegments(
-      {"UNMATCHED"},
+  eligible_ads.Get(
+      ad_targeting::BuildUserModel({"UNMATCHED"}),
       [&expected_creative_ad_notifications](
           const bool success,
           const CreativeAdNotificationList& creative_ad_notifications) {
