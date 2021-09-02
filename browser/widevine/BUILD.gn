@@ -58,6 +58,7 @@ source_set("browser_tests") {
     ]
 
     deps = [
+      ":constants",
       ":widevine",
       "//base",
       "//brave/browser",
