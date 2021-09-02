@@ -22,7 +22,7 @@
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
-#include "brave/browser/brave_ads/ads_tooltips_delegate_impl.h"
+#include "brave/browser/brave_ads/tooltips/ads_tooltips_delegate_impl.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #endif
 

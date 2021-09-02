@@ -8,8 +8,6 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
-
 namespace brave_ads {
 
 using ShowScheduledCaptchaCallback =

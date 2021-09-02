@@ -8,6 +8,8 @@ source_set("tooltips") {
     "ads_captcha_tooltip.h",
     "ads_tooltips_controller.cc",
     "ads_tooltips_controller.h",
+    "ads_tooltips_delegate_impl.cc",
+    "ads_tooltips_delegate_impl.h",
   ]
 
   deps = [

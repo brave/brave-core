@@ -14,10 +14,7 @@ if (is_android) {
 dep_base = rebase_path("../..", "//")
 
 config("external_config") {
-  visibility = [
-    ":*",
-    "//brave/vendor/bat-native-ads:ads",
-  ]
+  visibility = [ ":*" ]
   include_dirs = [
     "include",
     "$target_gen_dir/include",
@@ -25,9 +22,6 @@ config("external_config") {
   defines = [
     "GEMINI_OAUTH_STAGING_URL=\"$gemini_oauth_staging_url\"",
     "BITFLYER_STAGING_URL=\"$bitflyer_staging_url\"",
-    "REWARDS_GRANT_DEV_ENDPOINT=\"$rewards_grant_dev_endpoint\"",
-    "REWARDS_GRANT_STAGING_ENDPOINT=\"$rewards_grant_staging_endpoint\"",
-    "REWARDS_GRANT_PROD_ENDPOINT=\"$rewards_grant_prod_endpoint\"",
   ]
 }
 
@@ -60,6 +54,15 @@ config("internal_config") {
   include_dirs = [
     "src",
     "$target_gen_dir/src",
+  ]
+}
+
+config("endpoints_config") {
+  visibility = [ ":*" ]
+  defines = [
+    "REWARDS_GRANT_DEV_ENDPOINT=\"$rewards_grant_dev_endpoint\"",
+    "REWARDS_GRANT_STAGING_ENDPOINT=\"$rewards_grant_staging_endpoint\"",
+    "REWARDS_GRANT_PROD_ENDPOINT=\"$rewards_grant_prod_endpoint\"",
   ]
 }
 
@@ -97,7 +100,10 @@ source_set("headers") {
     "//brave/vendor/brave-ios:rewards_db",
   ]
 
-  public_configs = [ ":external_config" ]
+  public_configs = [
+    ":endpoints_config",
+    ":external_config",
+  ]
 
   sources = [
     "include/bat/ledger/export.h",
@@ -121,7 +127,10 @@ proto_library("publishers_proto") {
 
 source_set("ledger") {
   visibility = [ ":*" ]
-  configs += [ ":internal_config" ]
+  configs += [
+    ":endpoints_config",
+    ":internal_config",
+  ]
 
   output_name = "bat_native_ledger"
 

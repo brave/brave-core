@@ -124,8 +124,6 @@ static_library("browser") {
 
   if (brave_adaptive_captcha_enabled) {
     sources += [ "ads_tooltips_delegate.h" ]
-    deps +=
-        [ "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha" ]
   }
 }
 

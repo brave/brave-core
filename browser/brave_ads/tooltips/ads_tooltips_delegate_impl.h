@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_ADS_ADS_TOOLTIPS_DELEGATE_IMPL_H_
-#define BRAVE_BROWSER_BRAVE_ADS_ADS_TOOLTIPS_DELEGATE_IMPL_H_
+#ifndef BRAVE_BROWSER_BRAVE_ADS_TOOLTIPS_ADS_TOOLTIPS_DELEGATE_IMPL_H_
+#define BRAVE_BROWSER_BRAVE_ADS_TOOLTIPS_ADS_TOOLTIPS_DELEGATE_IMPL_H_
 
 #include <string>
 
@@ -37,4 +37,4 @@ class AdsTooltipsDelegateImpl : public AdsTooltipsDelegate {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_BROWSER_BRAVE_ADS_ADS_TOOLTIPS_DELEGATE_IMPL_H_
+#endif  // BRAVE_BROWSER_BRAVE_ADS_TOOLTIPS_ADS_TOOLTIPS_DELEGATE_IMPL_H_

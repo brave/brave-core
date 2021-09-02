@@ -87,10 +87,7 @@ source_set("headers") {
 }
 
 source_set("ads") {
-  configs += [
-    ":internal_config",
-    "//brave/vendor/bat-native-ledger:external_config",
-  ]
+  configs += [ ":internal_config" ]
 
   output_name = "bat_native_ads"
 
@@ -802,6 +799,7 @@ source_set("ads") {
     "//brave/components/challenge_bypass_ristretto",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
+    "//brave/vendor/bat-native-ledger",
     "//crypto",
     "//net",
     "//sql",
