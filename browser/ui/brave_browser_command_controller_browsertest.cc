@@ -58,6 +58,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
 #endif
 };
 
+// Regular window
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsEnableTest) {
   // Test normal browser's brave commands status.
@@ -102,10 +103,13 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+}
 
-  // Create private browser and test its brave commands status.
+// Create private browser and test its brave commands status.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       BraveCommandsEnableTestPrivateWindow) {
   auto* private_browser = CreateIncognitoBrowser();
-  command_controller = private_browser->command_controller();
+  auto* command_controller = private_browser->command_controller();
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
 
@@ -139,8 +143,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+}
 
-  // Create guest browser and test its brave commands status.
+// Create guest browser and test its brave commands status.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       BraveCommandsEnableTestGuestWindow) {
   ui_test_utils::BrowserChangeObserver browser_creation_observer(
       nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
   profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
@@ -148,7 +155,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   Browser* guest_browser = browser_creation_observer.Wait();
   DCHECK(guest_browser);
   EXPECT_TRUE(guest_browser->profile()->IsGuestSession());
-  command_controller = guest_browser->command_controller();
+  auto* command_controller = guest_browser->command_controller();
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
@@ -180,16 +187,19 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+}
 
+// Launch tor window and check its command status.
 #if BUILDFLAG(ENABLE_TOR)
-  // Launch tor window and check its command status.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       BraveCommandsEnableTestPrivateTorWindow) {
   ui_test_utils::BrowserChangeObserver tor_browser_creation_observer(
       nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
   brave::NewOffTheRecordWindowTor(browser());
   Browser* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);
   EXPECT_TRUE(tor_browser->profile()->IsTor());
-  command_controller = tor_browser->command_controller();
+  auto* command_controller = tor_browser->command_controller();
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
@@ -230,5 +240,5 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
-#endif
 }
+#endif
