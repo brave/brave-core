@@ -7,9 +7,9 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
-import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
-import { WalletPanelState, PanelState } from '../../constants/types'
-import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload, EthereumChainRequestPayload } from '../constants/action_types'
+import { TransactionStatusChanged } from '../../common/constants/action_types'
+import { WalletPanelState, PanelState, WalletState, TransactionStatus } from '../../constants/types'
+import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload, EthereumChainRequestPayload, PendingRequestCompletedPayload } from '../constants/action_types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -23,6 +23,10 @@ async function getAPIProxy () {
 
 function getPanelState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): PanelState {
   return (store.getState() as WalletPanelState).panel
+}
+
+function getWalletState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): WalletState {
+  return (store.getState() as WalletPanelState).wallet
 }
 
 async function refreshWalletInfo (store: Store) {
@@ -66,6 +70,13 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
       return
     }
   }
+  if (url.hash === '#approveTransaction') {
+    // When this panel is explicitly selected we close the panel
+    // UI after all transactions are approved or rejected.
+    store.dispatch(PanelActions.showApproveTransaction())
+    return
+  }
+
   const apiProxy = await getAPIProxy()
   apiProxy.showUI()
 })
@@ -97,6 +108,12 @@ handler.on(PanelActions.visibilityChanged.getType(), async (store, isVisible) =>
 
 handler.on(PanelActions.showConnectToSite.getType(), async (store, payload: ShowConnectToSitePayload) => {
   store.dispatch(PanelActions.navigateTo('connectWithSite'))
+  const apiProxy = await getAPIProxy()
+  apiProxy.showUI()
+})
+
+handler.on(PanelActions.showApproveTransaction.getType(), async (store, payload: ShowConnectToSitePayload) => {
+  store.dispatch(PanelActions.navigateTo('approveTransaction'))
   const apiProxy = await getAPIProxy()
   apiProxy.showUI()
 })
@@ -163,8 +180,17 @@ handler.on(PanelActions.openWalletSettings.getType(), async (store) => {
   })
 })
 
-handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store, payload: NewUnapprovedTxAdded) => {
-  store.dispatch(PanelActions.showApproveTransaction())
+handler.on(WalletActions.transactionStatusChanged.getType(), async (store, payload: TransactionStatusChanged) => {
+  const state = getPanelState(store)
+  const walletState = getWalletState(store)
+  if (payload.txInfo.txStatus === TransactionStatus.Submitted ||
+    payload.txInfo.txStatus === TransactionStatus.Rejected ||
+    payload.txInfo.txStatus === TransactionStatus.Approved) {
+    if (state.selectedPanel === 'approveTransaction' && walletState.pendingTransactions.length === 0) {
+      const apiProxy = await getAPIProxy()
+      apiProxy.closeUI()
+    }
+  }
 })
 
 export default handler.middleware

@@ -18,6 +18,7 @@ import {
   ViewPrivateKeyPayloadType,
   ImportAccountFromJsonPayloadType
 } from '../constants/action_types'
+import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -127,6 +128,11 @@ handler.on(WalletPageActions.updateAccountName.getType(), async (store, payload:
     await keyringController.setDefaultKeyringDerivedAccountName(payload.address, payload.name)
     : await keyringController.setDefaultKeyringImportedAccountName(payload.address, payload.name)
   return result.success
+})
+
+handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store, payload: NewUnapprovedTxAdded) => {
+  const pageHandler = (await getAPIProxy()).pageHandler
+  await pageHandler.showApprovePanelUI()
 })
 
 // TODO(bbondy): Remove - Example usage:
