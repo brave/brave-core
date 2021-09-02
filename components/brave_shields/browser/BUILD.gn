@@ -48,7 +48,6 @@ static_library("browser") {
 
   deps = [
     "//base",
-    "//base/util/timer:timer",
     "//brave/common:pref_names",
     "//brave/components/adblock_rust_ffi",
     "//brave/components/brave_component_updater/browser",
