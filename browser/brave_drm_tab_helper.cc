@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "brave/browser/widevine/constants.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/browser_process_impl.h"
@@ -27,8 +28,7 @@ bool IsAlreadyRegistered(ComponentUpdateService* cus) {
   std::vector<std::string> component_ids;
   component_ids = cus->GetComponentIDs();
   return std::find(component_ids.begin(), component_ids.end(),
-                   BraveDrmTabHelper::kWidevineComponentId) !=
-         component_ids.end();
+                   kWidevineComponentId) != component_ids.end();
 }
 #if !defined(OS_LINUX)
 content::WebContents* GetActiveWebContents() {
@@ -44,10 +44,6 @@ void ReloadIfActive(content::WebContents* web_contents) {
 #endif
 
 }  // namespace
-
-// static
-const char BraveDrmTabHelper::kWidevineComponentId[] =
-    "oimompecagnajdejgnnjijobebaeigek";
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
     : WebContentsObserver(contents), brave_drm_receivers_(contents, this) {
