@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/browser/notification_helper_android.h"
 
-#include <string>
-
 #include "base/android/jni_string.h"
 #include "base/system/sys_info.h"
 #include "bat/ads/pref_names.h"
@@ -22,24 +20,46 @@ namespace brave_ads {
 
 namespace {
 
-const int kMinimumVersionForNotificationChannels = 8;
+const int kMinimumMajorOperatingSystemVersionForNotificationChannels = 8;
 
 const int kAppNotificationStatusUndeterminable = 0;
 const int kAppNotificationsStatusEnabled = 2;
+
+int GetOperatingSystemMajorVersion() {
+  int32_t major_version = 0;
+  int32_t minor_version = 0;
+  int32_t bugfix_version = 0;
+
+  base::SysInfo::OperatingSystemVersionNumbers(&major_version, &minor_version,
+                                               &bugfix_version);
+
+  return major_version;
+}
+
+bool IsBraveAdsNotificationChannelEnabled(const bool is_foreground) {
+  if (GetOperatingSystemMajorVersion() <
+      kMinimumMajorOperatingSystemVersionForNotificationChannels) {
+    return true;
+  }
+
+  JNIEnv* env = base::android::AttachCurrentThread();
+
+  const auto j_channel_id =
+      (is_foreground) ? Java_BraveAds_getBraveAdsChannelId(env)
+                      : Java_BraveAds_getBraveAdsBackgroundChannelId(env);
+
+  const auto status = static_cast<NotificationChannelStatus>(
+      Java_BraveNotificationSettingsBridge_getChannelStatus(env, j_channel_id));
+
+  return (status == NotificationChannelStatus::ENABLED ||
+          status == NotificationChannelStatus::UNAVAILABLE);
+}
 
 }  // namespace
 
 NotificationHelperAndroid::NotificationHelperAndroid() = default;
 
 NotificationHelperAndroid::~NotificationHelperAndroid() = default;
-
-bool NotificationHelperAndroid::ShouldShowNotifications() {
-  if (features::IsCustomAdNotificationsEnabled()) {
-    return true;
-  }
-
-  return CanShowNativeNotifications();
-}
 
 bool NotificationHelperAndroid::CanShowNativeNotifications() {
   JNIEnv* env = base::android::AttachCurrentThread();
@@ -66,11 +86,12 @@ bool NotificationHelperAndroid::CanShowNativeNotifications() {
   return can_show_native_notifications;
 }
 
-bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
-  if (!ShouldShowNotifications()) {
-    return false;
-  }
+bool NotificationHelperAndroid::CanShowBackgroundNotifications() const {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  return Java_BraveAdsSignupDialog_showAdsInBackground(env);
+}
 
+bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
   const bool should_show_custom_notifications =
       features::IsCustomAdNotificationsEnabled();
 
@@ -81,51 +102,12 @@ bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
   return true;
 }
 
-bool NotificationHelperAndroid::CanShowBackgroundNotifications() const {
-  if (features::IsCustomAdNotificationsEnabled()) {
-    return true;
-  }
-
-  JNIEnv* env = base::android::AttachCurrentThread();
-  return Java_BraveAdsSignupDialog_showAdsInBackground(env);
-}
-
 NotificationHelperAndroid* NotificationHelperAndroid::GetInstanceImpl() {
   return base::Singleton<NotificationHelperAndroid>::get();
 }
 
 NotificationHelper* NotificationHelper::GetInstanceImpl() {
   return NotificationHelperAndroid::GetInstanceImpl();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-bool NotificationHelperAndroid::IsBraveAdsNotificationChannelEnabled(
-    bool foreground_channel) const {
-  if (GetOperatingSystemVersion() < kMinimumVersionForNotificationChannels) {
-    return true;
-  }
-
-  JNIEnv* env = base::android::AttachCurrentThread();
-  auto j_channel_id = (foreground_channel)
-                          ? Java_BraveAds_getBraveAdsChannelId(env)
-                          : Java_BraveAds_getBraveAdsBackgroundChannelId(env);
-  auto status = static_cast<NotificationChannelStatus>(
-      Java_BraveNotificationSettingsBridge_getChannelStatus(env, j_channel_id));
-
-  return (status == NotificationChannelStatus::ENABLED ||
-          status == NotificationChannelStatus::UNAVAILABLE);
-}
-
-int NotificationHelperAndroid::GetOperatingSystemVersion() const {
-  int32_t major_version = 0;
-  int32_t minor_version = 0;
-  int32_t bugfix_version = 0;
-
-  base::SysInfo::OperatingSystemVersionNumbers(&major_version, &minor_version,
-                                               &bugfix_version);
-
-  return major_version;
 }
 
 }  // namespace brave_ads

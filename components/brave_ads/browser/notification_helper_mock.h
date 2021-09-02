@@ -20,10 +20,9 @@ class NotificationHelperMock : public NotificationHelper {
   NotificationHelperMock(const NotificationHelperMock&) = delete;
   NotificationHelperMock& operator=(const NotificationHelperMock&) = delete;
 
-  MOCK_METHOD0(ShouldShowNotifications, bool());
   MOCK_METHOD0(CanShowNativeNotifications, bool());
-  MOCK_METHOD0(ShowMyFirstAdNotification, bool());
   MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
+  MOCK_METHOD0(ShowMyFirstAdNotification, bool());
 };
 
 }  // namespace brave_ads

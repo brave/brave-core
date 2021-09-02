@@ -7,7 +7,6 @@
 
 #include "base/feature_list.h"
 #include "base/logging.h"
-#include "brave/components/brave_ads/common/features.h"
 #include "chrome/common/chrome_features.h"
 
 namespace brave_ads {
@@ -15,10 +14,6 @@ namespace brave_ads {
 NotificationHelperLinux::NotificationHelperLinux() = default;
 
 NotificationHelperLinux::~NotificationHelperLinux() = default;
-
-bool NotificationHelperLinux::ShouldShowNotifications() {
-  return features::IsCustomAdNotificationsEnabled();
-}
 
 bool NotificationHelperLinux::CanShowNativeNotifications() {
   // TODO(https://github.com/brave/brave-browser/issues/5542): Investigate how
@@ -32,12 +27,12 @@ bool NotificationHelperLinux::CanShowNativeNotifications() {
   return true;
 }
 
-bool NotificationHelperLinux::ShowMyFirstAdNotification() {
-  return false;
-}
-
 bool NotificationHelperLinux::CanShowBackgroundNotifications() const {
   return true;
+}
+
+bool NotificationHelperLinux::ShowMyFirstAdNotification() {
+  return false;
 }
 
 NotificationHelperLinux* NotificationHelperLinux::GetInstanceImpl() {
