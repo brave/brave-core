@@ -356,6 +356,7 @@
 <translation id="4371618764691059036">मासिक योगदान तय किया गया है।</translation>
 <translation id="6356822617569064293">अगली योगदान तिथि:</translation>
 <translation id="3593485149443019592">पर्याप्त टोकन नहीं हैं. कृपया<ph name="LINK_BEGIN"/>पैसे  डालें<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave एक प्रोसेसिंग शुल्क के तौर पर टिप की राशि का 5% लेता है.</translation>
 <translation id="207268487070188114">1- टाइम टिप</translation>
 <translation id="69861679024013299">1- टाइम टिप की राशि:</translation>
 <translation id="3669086939205397942">रुकें, आप अभी तक टिप नहीं कर सकते</translation>
@@ -364,6 +365,7 @@
 <translation id="5531915212947569943">आपके जाने पर … बहुत दुख हो रहा है</translation>
 <translation id="1420756770787071946">इस क्रिएटर का सपोर्ट करें</translation>
 <translation id="3271043362279673449">सहायता के लिए धन्यवाद!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>आपकी टिप को प्रोसेस करने में कई मिनट लग सकते हैं</translation>
 <translation id="3312470408978098625">आपकी एकबार की टिप भेजी जा चुकी है.</translation>
 <translation id="5096821444729034955">उनके पोस्ट के लिए</translation>
 <translation id="2978223787436054634">अपने सपोर्ट के बारे में ट्वीट करें</translation>
@@ -651,7 +653,8 @@
 <translation id="6436689611575806470">आपका  [[currency]] अनुदान जल्द ही आने वाला है।</translation>
 <translation id="8267327690882073581">वॉलेट सत्यापित करें</translation>
 <translation id="543510923939676996">वॉलेट सत्यापन पूरा हुआ</translation>
-<translation id="2659764755126740206">मेरे <ph name="PROVIDER"/> अकाउंट पर जाएँ</translation>
+<translation id="2445110450361135194">अपने<ph name="PROVIDER"/> अकाउंट पर जाएँ</translation>
+<translation id="4244985009709452836">अपने <ph name="PROVIDER"/> अकाउंट पर लॉगिन करें</translation>
 <translation id="3699674790322420653">वॉलेट सत्यापन पूरा करें</translation>
 <translation id="9200453331904391567">Brave Rewards से डिसकनेक्ट करें</translation>
 <translation id="3656941797339037856">रिवॉर्ड को Gemini से लिंक करें!</translation>

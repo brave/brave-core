@@ -546,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "Đến tài khoản $provider$ của tôi",
+    "message": "Đi đến tài khoản $provider$ của bạn",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Đăng nhập vào tài khoản $provider$ của bạn",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -652,6 +662,10 @@
   "walletConnected":  {
     "message": "Đã kết nối",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Đã ngắt kết nối",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "Đang chờ xử lý",

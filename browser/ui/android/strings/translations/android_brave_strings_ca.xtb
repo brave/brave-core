@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Evita que els rastrejadors &amp; i els anuncis es carreguin i es mostrin a les pàgines web</translation>
 <translation id="1680858055899097121">No segueixis les pestanyes entre sessions de navegació</translation>
 <translation id="7142548388914389999">Permet l'anàlisi de productes que preserven la privacitat (P3A)</translation>
-<translation id="5469408008145872264">Aquesta informació completament anonimitzada ajuda a Brave a calcular l'ús total de determinades funcions i les milloren per a tu.</translation>
+<translation id="5254037869598726291">Aquesta informació completament anonimitzada ajuda a Brave a calcular l'ús total de determinades funcions i les milloren per a tu.</translation>
 <translation id="7977176350719484850">Data estimada\ndesada</translation>
 <translation id="9008534313521214777">Temps estalviat estimat</translation>
 <translation id="6572660632052512096">Mode d'escriptori</translation>
@@ -251,7 +251,7 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="723054503945711909">Brave Software Inc. no processa, emmagatzema, o accedeix a cap informació personal que proporcionis a UPhold quan estableixis un compte amb ells.</translation>
 <translation id="3699674790322420653">Completeu la verificació del moneder</translation>
 <translation id="2193391216824305230">Moneder d'Usuari</translation>
-<translation id="7591798679868259510">Anar al meu compte d'Uphold</translation>
+<translation id="6585020831163574892">Aneu al vostre compte Uphold</translation>
 <translation id="9200453331904391567">Desconnectar de Gratificacions Brave</translation>
 <translation id="6239274080752256452">Retirar Fons</translation>
 <translation id="8874184842967597500">No connectat</translation>
@@ -481,7 +481,7 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="1078265935778232285">Et donem la benvinguda al navegador Brave</translation>
 <translation id="6824713633331856331">Ajudeu-nos a millorar de forma anònima</translation>
 <translation id="6116685031674149112">Brave protegeix la vostra privacitat i aprecia el vostre consentiment pel següent:</translation>
-<translation id="3971666849661839619">Ajudeu a millorar Brave enviant informes d'error i <ph name="PRIVATE_PRODUCT_ANALYSIS"/> completament anònims.</translation>
+<translation id="4394483075076204916">Ajudeu a millorar Brave enviant informes d'error i <ph name="PRIVATE_PRODUCT_ANALYSIS"/> completament anònims.</translation>
 <translation id="6478996494082389936">anàlisi de producte privat.</translation>
 <translation id="5187052478998910855">Necessiteu un recordatori sobre Rewards?</translation>
 <translation id="8622329973403382303">Feu un tour ràpid per a repassar com podeu passar a la història com una superestrella de Rewards!</translation>

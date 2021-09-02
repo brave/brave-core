@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">阻止跟踪器和广告加载显示在网页中</translation>
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
 <translation id="7142548388914389999">允许保留隐私的产品分析 (P3A)</translation>
-<translation id="5469408008145872264">这些完全匿名的信息可以帮助 Brave 评估某些功能的总体使用情况，并为您提供更好的服务。</translation>
+<translation id="5254037869598726291">这些完全匿名的信息可以帮助 Brave 评估某些功能的总体使用情况，并为您提供更好的服务。</translation>
 <translation id="7977176350719484850">预计\n节省的数据</translation>
 <translation id="9008534313521214777">预计节省的\n时间</translation>
 <translation id="6572660632052512096">桌面模式</translation>
@@ -247,7 +247,7 @@
 <translation id="723054503945711909">在您创建 Uphold 账户时，Brave Software Inc. 不会处理、存储或访问您向其提供的任何个人信息。</translation>
 <translation id="3699674790322420653">完成钱包验证</translation>
 <translation id="2193391216824305230">用户钱包</translation>
-<translation id="7591798679868259510">转至我的 Uphold 账户</translation>
+<translation id="6585020831163574892">转到您的 Uphold 帐户</translation>
 <translation id="9200453331904391567">与 Brave 奖励断开连接</translation>
 <translation id="6239274080752256452">资金提现</translation>
 <translation id="8874184842967597500">未连接</translation>
@@ -477,7 +477,7 @@
 <translation id="1078265935778232285">欢迎使用 Brave 浏览器</translation>
 <translation id="6824713633331856331">帮助我们匿名学习</translation>
 <translation id="6116685031674149112">Brave 会保护您的隐私，并\n感谢您同意以下各项条款：</translation>
-<translation id="3971666849661839619">通过发送崩溃报告并完全匿名化来帮助改进 Brave。<ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">通过发送崩溃报告并完全匿名化来帮助改进 Brave。<ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">私人产品分析。</translation>
 <translation id="5187052478998910855">需要重新了解一下 Rewards？</translation>
 <translation id="8622329973403382303">赶快来快速浏览一下它是如何成为 Rewards 摇滚明星的历史记录吧！</translation>

@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Mencegah pelacak &amp; iklan agar tidak dimuat dan ditampilkan di halaman web</translation>
 <translation id="1680858055899097121">Jangan simpan tab antar sesi penjelajahan</translation>
 <translation id="7142548388914389999">Memungkinkan analitik produk yang menjaga privasi (P3A)</translation>
-<translation id="5469408008145872264">Info yang sepenuhnya anonim ini membantu Brave memperkirakan penggunaan keseluruhan beberapa fitur tertentu dan menjadikannya lebih baik bagi Anda.</translation>
+<translation id="5254037869598726291">Info yang sepenuhnya anonim ini membantu Brave memperkirakan penggunaan keseluruhan beberapa fitur tertentu dan menjadikannya lebih baik bagi Anda.</translation>
 <translation id="7977176350719484850">Perkiraan Data\nDihemat</translation>
 <translation id="9008534313521214777">Est. Waktu\nDihemat</translation>
 <translation id="6572660632052512096">Mode Desktop</translation>
@@ -250,7 +250,7 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="723054503945711909">Brave Software Inc. tidak memproses, menyimpan, atau mengakses informasi pribadi apa pun yang Anda berikan kepada Uphold ketika Anda membuat akun dengan mereka.</translation>
 <translation id="3699674790322420653">Selesaikan verifikasi dompet</translation>
 <translation id="2193391216824305230">Dompet Pengguna</translation>
-<translation id="7591798679868259510">Ke akun Uphold saya</translation>
+<translation id="6585020831163574892">Buka akun Uphold Anda</translation>
 <translation id="9200453331904391567">Putuskan dari Brave Reward</translation>
 <translation id="6239274080752256452">Tarik Dana</translation>
 <translation id="8874184842967597500">Tidak tersambung</translation>
@@ -479,7 +479,7 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="1078265935778232285">Selamat Datang di Peramban Brave</translation>
 <translation id="6824713633331856331">Bantu kami belajar secara anonim</translation>
 <translation id="6116685031674149112">Brave melindungi privasi dan\nmenghargai persetujuan Anda untuk hal-hal berikut:</translation>
-<translation id="3971666849661839619">Bantu tingkatkan Brave dengan mengirim laporan crash dan teranonimisasi sepenuhnya, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Bantu tingkatkan Brave dengan mengirim laporan crash dan teranonimisasi sepenuhnya, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">analitik produk privat.</translation>
 <translation id="5187052478998910855">Perlu penyegaran tentang Reward?</translation>
 <translation id="8622329973403382303">Ikuti tur singkat untuk mempelajari kembali cara menjadi rockstar Reward legendaris!</translation>
@@ -584,7 +584,7 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="3819257035322786455">Cadangkan</translation>
 <translation id="4608713693379664295">Akun Kripto Primer</translation>
 <translation id="4003821417160006384">Akun Sekunder</translation>
-<translation id="8094541587800369158">Akun ini dapat digunakan dengan web 3 dapps dan dapat ditampilkan dalam portofolio Anda, namun akun tidak dapat dipulihkan melalui frasa pemulihan dari cadangan akun primer Anda. Mengaktifkan akun Brave Sync untuk memulihkan akun sekunder secara otomatis.</translation>
+<translation id="8094541587800369158">Akun ini dapat digunakan dengan web 3 dapps dan dapat ditampilkan dalam portofolio Anda, namun akun tidak dapat dipulihkan melalui frasa pemulihan dari cadangan akun primer Anda. Aktifkan akun Brave Sync untuk memulihkan akun sekunder secara otomatis.</translation>
 <translation id="6725413948756358325">Nama Akun</translation>
 <translation id="6062431965141524986">Anda dapat membuat akun sekunder dengan mengimpor kunci privat Anda.</translation>
 <translation id="3952797765659730604">Masukkan, tempelkan, atau impor berkas rangkaian kunci privat atau JSON Anda.</translation>

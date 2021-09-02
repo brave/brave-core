@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">መከታተያዎችን ይከላከላል &amp; ማስታወቂያዎች በድረ-ገፆች ላይ ከመጫን እና ከማሳየት</translation>
 <translation id="1680858055899097121">በማሰሻ ክፍለ ጊዜያት መካከል ትሮችን አይቀያይሩ</translation>
 <translation id="7142548388914389999">የግል ምርት ትንታኔዎች ጠባቂዎች (P3A) ይፍቀዱ።</translation>
-<translation id="5469408008145872264">ይህ ሙሉ ለሙሉ ስም አልባ መረጃ Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም እንዲገምት የሚያግዝ ሆኖ ለእርስዎም የተሻለ እንዲሆን ለማድረግ ያስችለዋል።</translation>
+<translation id="5254037869598726291">ይህ ሙሉ ለሙሉ ስም አልባ መረጃ Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም እንዲገምት የሚያግዝ ሆኖ ለእርስዎም የተሻለ እንዲሆን ለማድረግ ያስችለዋል።</translation>
 <translation id="7977176350719484850">Est. ውሂብ\nተቀምጧል</translation>
 <translation id="9008534313521214777">የተቆጠበ\nጊዜ በግምት</translation>
 <translation id="6572660632052512096">የዴስክቶፕ ኩነት</translation>
@@ -250,7 +250,7 @@
 <translation id="723054503945711909">ከእነሱ ጋር አካውንት ሲያበቁ Brave Software Inc. ለሚደግፉት የሰጡትን ማንኛውንም መረጃ አይሠራም ፣ አያከማችም ወይም አይደርስበትም።</translation>
 <translation id="3699674790322420653">የኪስ ቦርሳ ማረጋገጥ ተጠናቋል</translation>
 <translation id="2193391216824305230">የተጠቃሚ ዋሌት</translation>
-<translation id="7591798679868259510">ወደ የኔ አፕሆልድ መለያ ሂድ</translation>
+<translation id="6585020831163574892">ወደ የራስዎ አፕሆልድ መለያ ይሂዱ</translation>
 <translation id="9200453331904391567">ከ Brave ሽልማቶች ጋር ግንኙነትዎን ያቋርጡ</translation>
 <translation id="6239274080752256452">ገንዘብ ወጪ ያድርጉ</translation>
 <translation id="8874184842967597500">አልተገናኘም</translation>
@@ -480,7 +480,7 @@
 <translation id="1078265935778232285">ወደ Brave አሳሽ እንኳን በደህና መጡ</translation>
 <translation id="6824713633331856331">ስምዎን ሳያሳውቁ እንድንማር ይርዱን</translation>
 <translation id="6116685031674149112">Brave ግላዊነትዎን ይጠብቃል and\nappreciates ለሚከተለው የሚሰጡትን ፍቃድዎን፡</translation>
-<translation id="3971666849661839619">የብልሽት ሪፖርቶችን በመላክ እና ስም-አልባ ሆኖ በመላክ Brave ን እንዲሻሻል ያግዙ፣ <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">የብልሽት ሪፖርቶችን በመላክ እና ስም-አልባ ሆኖ በመላክ Brave ን እንዲሻሻል ያግዙ፣ <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">የግል ምርት ትንታኔዎች።</translation>
 <translation id="5187052478998910855">በሽልማቶች ላይ አዳሽ ይፈልጋሉ?</translation>
 <translation id="8622329973403382303">እንደ የሽልማቶች ሮክስታር ታሪክ ውስጥ ለመግባት እንዴት እንደሚሠራ ለማወቅ በፍጥነት ጉብኝት ያድርጉ።</translation>

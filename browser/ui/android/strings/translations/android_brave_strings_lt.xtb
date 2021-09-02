@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Neleidžia įkelti ir tinklalapiuose rodyti sekiklių ir reklamų</translation>
 <translation id="1680858055899097121">Nepalikti skirtukų tarp naršymo seansų</translation>
 <translation id="7142548388914389999">Leisti privatumo nepažeidžiančią produktų analizę (P3A)</translation>
-<translation id="5469408008145872264">Ši visiškai nuasmeninta informacija padeda „Brave“ įvertinti bendrą tam tikrų funkcijų naudojimą ir jas patobulinti.</translation>
+<translation id="5254037869598726291">Ši visiškai nuasmeninta informacija padeda „Brave“ įvertinti bendrą tam tikrų funkcijų naudojimą ir jas patobulinti.</translation>
 <translation id="7977176350719484850">Numatomi sutaupyti\nduomenys</translation>
 <translation id="9008534313521214777">Numatomas sutaupytas\nlaikas</translation>
 <translation id="6572660632052512096">Stalinio kompiuterio režimas</translation>
@@ -251,7 +251,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="723054503945711909">„Brave Software Inc.“ netvarko, nelaiko ir nepasiekia jokios asmeninės informacijos, kurią teikiate „Uphold“, kai ten susikuriate paskyrą.</translation>
 <translation id="3699674790322420653">Baigti piniginės patvirtinimą</translation>
 <translation id="2193391216824305230">Naudotojo piniginė</translation>
-<translation id="7591798679868259510">Eiti į mano „Uphold“ paskyrą</translation>
+<translation id="6585020831163574892">Eiti į savo „Uphold“ paskyrą</translation>
 <translation id="9200453331904391567">Atsijungti nuo „Brave Rewards“</translation>
 <translation id="6239274080752256452">Išimti lėšų</translation>
 <translation id="8874184842967597500">Neprisijungta</translation>
@@ -481,7 +481,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="1078265935778232285">Sveiki, tai – naršyklė „Brave“</translation>
 <translation id="6824713633331856331">Anonimiškai padėkite mums tobulėti</translation>
 <translation id="6116685031674149112">„Brave“ saugo jūsų privatumą ir\nvertina, kad sutinkate su:</translation>
-<translation id="3971666849661839619">Padėkite tobulinti „Brave“ – siųskite strigčių ataskaitas ir visiškai anoniminę <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Padėkite tobulinti „Brave“ – siųskite strigčių ataskaitas ir visiškai anoniminę <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">privačią produkto analizę.</translation>
 <translation id="5187052478998910855">Galbūt jums reikia prisiminti, kaip veikia „Rewards“?</translation>
 <translation id="8622329973403382303">Žinioms apie veikimą atnaujinti peržiūrėkite trumpą apžvalgą ir tapkite „Rewards“ žvaigžde!</translation>

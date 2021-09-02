@@ -7643,9 +7643,9 @@ Több kapcsolót is hozzárendelhet ehhez a művelethez.</translation>
 <translation id="5053701565089446556">Privát bővítmény: <ph name="EXTENSION_NAME"/></translation>
 <translation id="611296870688433505">Privát alkalmazás: <ph name="APP_NAME"/></translation>
 <translation id="9048137919253433011">Privát fül: <ph name="TAB_NAME"/></translation>
-<translation id="5932571686022524861">Privát Vissza/Előre Gyorsítótár oldal: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
+<translation id="5932571686022524861">Privát Vissza/Előre Gyorsítótárazott oldal: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
 <translation id="1799432502220762862">Privát Subframe: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="6666022817001893507">Privát Vissza/Előre Gyorsítótár alkeret: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
+<translation id="6666022817001893507">Privát Vissza/Előre Gyorsítótárazott alkeret: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
 <translation id="3193187622878830588">Portál inkognitómódban: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="5097649414558628673">Eszköz: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Webáruház</translation>

@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">נקבעה תרומה חודשית.</translation>
 <translation id="6356822617569064293">תאריך התרומה הבא:</translation>
 <translation id="3593485149443019592">אין מספיק אסימונים. יש <ph name="LINK_BEGIN"/>להוסיף כספים<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave אוספת 5% מכמות הטיפים כעמלה עבור עיבוד.</translation>
 <translation id="207268487070188114">טיפ חד-פעמי</translation>
 <translation id="69861679024013299">סכום טיפ חד-פעמי:</translation>
 <translation id="3669086939205397942">נא להמתין, אין באפשרותך’ לתת טיפ עדיין</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">אנו מצטערים לראות אתכם הולכים…</translation>
 <translation id="1420756770787071946">תמכו ביוצר זה</translation>
 <translation id="3271043362279673449">תודה על התמיכה!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>תהליך עיבוד הטיפ עשוי להימשך מספר דקות</translation>
 <translation id="3312470408978098625">טיפ חד-פעמי נשלח.</translation>
 <translation id="5096821444729034955">עבור הפוסט שלהם</translation>
 <translation id="2978223787436054634">צייצו לגבי התמיכה שלכם</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">מענק ה-[[currency]] שלכם בדרך.</translation>
 <translation id="8267327690882073581">אימות ארנק</translation>
 <translation id="543510923939676996">הארנק מאומת</translation>
-<translation id="2659764755126740206">עבור אל חשבון ה-<ph name="PROVIDER"/> שלי</translation>
+<translation id="2445110450361135194">עבור אל חשבון <ph name="PROVIDER"/> שלך</translation>
+<translation id="4244985009709452836">התחבר אל חשבון <ph name="PROVIDER"/> שלך</translation>
 <translation id="3699674790322420653">השלמת אימות הארנק</translation>
 <translation id="9200453331904391567">התנתקות מתגמולי Brave</translation>
 <translation id="3656941797339037856">קשרו פרסים אל Gemini!</translation>

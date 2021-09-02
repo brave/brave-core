@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">تحجب المتتبعات &amp; والإعلانات من تحميل صفحات الويب وعرضها</translation>
 <translation id="1680858055899097121">لا تواصل استخدام علامات التبويب بين جلسات التصفح</translation>
 <translation id="7142548388914389999">السماح بتحليلات المنتج التي تحافظ على الخصوصية (P3A)</translation>
-<translation id="5469408008145872264">تتيح هذه المعلومات المُجهولة تمامًا فقط لمتصفح Brave تقدير الاستخدام الكلي لبعض الميزات، وتحسين تجربتك.</translation>
+<translation id="5254037869598726291">تتيح هذه المعلومات المُجهولة تمامًا فقط لمتصفح Brave تقدير الاستخدام الكلي لبعض الميزات، وتحسين تجربتك.</translation>
 <translation id="7977176350719484850">البيانات التقديرية المحفوظة</translation>
 <translation id="9008534313521214777">الوقت المقدر\nالذي تم توفيره</translation>
 <translation id="6572660632052512096">نمط سطح المكتب</translation>
@@ -248,7 +248,7 @@
 <translation id="723054503945711909">لا تقوم شركة Brave Software Inc بمعالجة أو تخزين أو الوصول إلى أي من المعلومات الشخصية التي تقدمها إلى Uphold عند إنشاء حساب معهم.</translation>
 <translation id="3699674790322420653">أكمل التحقق من المحفظة</translation>
 <translation id="2193391216824305230">محفظة المستخدم</translation>
-<translation id="7591798679868259510">الانتقال إلى حساب Uphold الخاص بي</translation>
+<translation id="6585020831163574892">انتقل إلى حساب Uphold الخاص بك</translation>
 <translation id="9200453331904391567">قطع الاتصال بـ Brave Rewards</translation>
 <translation id="6239274080752256452">سحب رصيد</translation>
 <translation id="8874184842967597500">غير متصل</translation>
@@ -478,7 +478,7 @@
 <translation id="1078265935778232285">مرحباً بك في متصفح Brave</translation>
 <translation id="6824713633331856331">ساعدنا على التعلم بشكل مجهول</translation>
 <translation id="6116685031674149112">يحمي Brave خصوصيتك \n ويقدر موافقتك على ما يلي:</translation>
-<translation id="3971666849661839619">ساعد في تحسين Brave عن طريق إرسال تقارير الأعطال وإخفاء هويتها تماماً <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">ساعد في تحسين Brave عن طريق إرسال تقارير الأعطال وإخفاء هويتها تماماً <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">تحليلات المنتج الخاص.</translation>
 <translation id="5187052478998910855">هل تحتاج إلى تذكير بـ Rewards؟</translation>
 <translation id="8622329973403382303">قم بجولة سريعة للتعرف على الطريقة التي تعمل بها لتدخل التاريخ كنجم Rewards لامع!</translation>
@@ -587,7 +587,7 @@
 <translation id="6725413948756358325">اسم الحساب</translation>
 <translation id="6062431965141524986">يمكنك إنشاء حساب ثانوي باستيراد مفتاحك الخاص.</translation>
 <translation id="3952797765659730604">أدخل أو الصق أو استورد ملف سلسلة المفتاح الخاص أو JSON.</translation>
-<translation id="569068482611873351">استيراد</translation>
+<translation id="569068482611873351">استيراد...</translation>
 <translation id="1940465339426637378">الأصول</translation>
 <translation id="4522570452068850558">التفاصيل</translation>
 <translation id="9065203028668620118">تعديل</translation>

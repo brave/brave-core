@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Verhindert, dass Tracker und Werbung auf Websites geladen und angezeigt werden</translation>
 <translation id="1680858055899097121">Registerkarten zwischen Browsersitzungen nicht beibehalten</translation>
 <translation id="7142548388914389999">Erlaubt Produktanalyse, die den Datenschutz respektiert (P3A)</translation>
-<translation id="5469408008145872264">Diese komplett anonymisierten Daten helfen Brave, die Nutzung bestimmter Funktionen besser abzuschätzen und diese entsprechend zu verbessern.</translation>
+<translation id="5254037869598726291">Diese komplett anonymisierten Daten helfen Brave, die Nutzung bestimmter Funktionen besser abzuschätzen und diese entsprechend zu verbessern.</translation>
 <translation id="7977176350719484850">Geschätzte nicht heruntergeladene\nDatenmenge</translation>
 <translation id="9008534313521214777">Ca. Zeit\ngespart</translation>
 <translation id="6572660632052512096">Desktop-Modus</translation>
@@ -248,7 +248,7 @@
 <translation id="723054503945711909">Brave Software Inc. verarbeitet, speichert oder greift nicht auf persönliche Informationen zu, die Sie Uphold zur Verfügung stellen, wenn Sie dort ein Konto einrichten.</translation>
 <translation id="3699674790322420653">Wallet-Verifizierung abschließen</translation>
 <translation id="2193391216824305230">Benutzer-Wallet</translation>
-<translation id="7591798679868259510">Zu meinem Uphold-Account gehen</translation>
+<translation id="6585020831163574892">Zum Uphold-Konto gehen</translation>
 <translation id="9200453331904391567">Verbindung zu Brave Rewards trennen</translation>
 <translation id="6239274080752256452">Geld abheben</translation>
 <translation id="8874184842967597500">Nicht verbunden</translation>
@@ -477,7 +477,7 @@
 <translation id="1078265935778232285">Willkommen beim Brave Browser</translation>
 <translation id="6824713633331856331">Helfen Sie uns anonym zu lernen</translation>
 <translation id="6116685031674149112">Brave schützt Ihre Daten und\nschätzt Ihre Zustimmung zu Folgendem:</translation>
-<translation id="3971666849661839619">Helfen Sie, Brave zu verbessern, indem Sie Absturzberichte und komplett anonymisierte <ph name="PRIVATE_PRODUCT_ANALYSIS"/> senden</translation>
+<translation id="4394483075076204916">Helfen Sie, Brave zu verbessern, indem Sie Absturzberichte und komplett anonymisierte <ph name="PRIVATE_PRODUCT_ANALYSIS"/> senden</translation>
 <translation id="6478996494082389936">private Produktanalytik.</translation>
 <translation id="5187052478998910855">Brauchen Sie eine kleine Erinnerung über Rewards?</translation>
 <translation id="8622329973403382303">Machen Sie eine schnelle Tour, um Ihre Kenntnisse darüber, wie es funktioniert, aufzufrischen und als Rewards-Rockstar in die Geschichte einzugehen!</translation>
