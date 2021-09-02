@@ -546,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "Go to my $provider$ account",
+    "message": "Go to your $provider$ account",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Log into your $provider$ account",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -652,6 +662,10 @@
   "walletConnected":  {
     "message": "કનેક્ટેડ",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Disconnected",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "બાકી",

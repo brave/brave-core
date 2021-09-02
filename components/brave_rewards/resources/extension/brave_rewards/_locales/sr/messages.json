@@ -546,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "Idu u nalog mog dobavljača $provider$",
+    "message": "Idite na svoj $provider$ nalog",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Prijavite se na svoj $provider$ nalog",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -652,6 +662,10 @@
   "walletConnected":  {
     "message": "Повезан",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Veza je prekinuta",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "U toku",

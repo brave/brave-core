@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Takistab veebilehtedel jälitajate ja reklaamide laadimist ning kuvamist</translation>
 <translation id="1680858055899097121">Ära säilita kaarte sirvimissessioonide vältel</translation>
 <translation id="7142548388914389999">Võimalda privaatsust säilitav tooteanalüüs (P3A)</translation>
-<translation id="5469408008145872264">See täiesti anonüümne teave aitab Brave'il hinnata teatud funktsioonide üldist kasutust ja muuta selle teie jaoks paremaks.</translation>
+<translation id="5254037869598726291">See täiesti anonüümne teave aitab Brave'il hinnata teatud funktsioonide üldist kasutust ja muuta selle teie jaoks paremaks.</translation>
 <translation id="7977176350719484850">Hin. andmed\nSalvestatud</translation>
 <translation id="9008534313521214777">Eeldatav\nsäästetud aeg</translation>
 <translation id="6572660632052512096">Arvutirežiim</translation>
@@ -251,7 +251,7 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="723054503945711909">Brave Software Inc. ei töötle, talleta ega pääse juurde isikuandmetele, mille annata Upholdile, kui loote selle juures konto.</translation>
 <translation id="3699674790322420653">Lõpetage rahakoti kinnitamine</translation>
 <translation id="2193391216824305230">Kasutaja rahakott</translation>
-<translation id="7591798679868259510">Ava minu Upholdi konto</translation>
+<translation id="6585020831163574892">Avage oma Upholdi konto</translation>
 <translation id="9200453331904391567">Katkesta Brave Rewardsi ühendus</translation>
 <translation id="6239274080752256452">Võta vahendid välja</translation>
 <translation id="8874184842967597500">Ühendus puudub</translation>
@@ -481,7 +481,7 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="1078265935778232285">Tere tulemast Brave Software'i</translation>
 <translation id="6824713633331856331">Aidake meil anonüümselt õppida</translation>
 <translation id="6116685031674149112">Brave kaitseb teie privaatsust ja\non tänulik, kui annate nõusoleku järgmiseks:</translation>
-<translation id="3971666849661839619">Aidake Brave'i paremaks muuta, saates krahhiaruandeid ja täiesti anonüümset <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Aidake Brave'i paremaks muuta, saates krahhiaruandeid ja täiesti anonüümset <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">privaatset tooteanalüüsi teavet.</translation>
 <translation id="5187052478998910855">Kas vajate Rewardsi kohta mäluvärskendust?</translation>
 <translation id="8622329973403382303">Tehke kiire ringkäik, et meenutada, kuidas see toimis, ja võite ajalukku minna Rewardsi staarina!</translation>

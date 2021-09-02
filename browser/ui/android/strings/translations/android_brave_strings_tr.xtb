@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Web sayfalarında izleyicilerin &amp; reklamların yüklenmesini ve gösterilmesini önler</translation>
 <translation id="1680858055899097121">Göz atma oturumları arasında sekmeleri açık bırakmayın</translation>
 <translation id="7142548388914389999">Gizlilik korumalı ürün analizine izin ver (P3A)</translation>
-<translation id="5469408008145872264">Bu tamamen anonim bilgi, Brave'in belirli özelliklerin genel kullanımını tahmin ederek sizin için daha iyi hale getirmesine yardımcı olur.</translation>
+<translation id="5254037869598726291">Bu tamamen anonim bilgi, Brave'in belirli özelliklerin genel kullanımını tahmin ederek sizin için daha iyi hale getirmesine yardımcı olur.</translation>
 <translation id="7977176350719484850">Tahmini Veri\nTasarrufu</translation>
 <translation id="9008534313521214777">Tahmini Zaman\nTasarruf edildi</translation>
 <translation id="6572660632052512096">Masaüstü Modu</translation>
@@ -249,7 +249,7 @@ yok...</translation>
 <translation id="723054503945711909">Brave Software Inc. onlarla bir hesap oluştururken, onaylama için verdiğiniz kişisel bilgilerin hiçbirini işlemez, saklamaz veya erişemez.</translation>
 <translation id="3699674790322420653">Tam cüzdan onayı</translation>
 <translation id="2193391216824305230">Kullanıcı Cüzdanı</translation>
-<translation id="7591798679868259510">Uphold hesabıma git</translation>
+<translation id="6585020831163574892">Uphold hesabınıza gidin</translation>
 <translation id="9200453331904391567">Brave Ödüllerden Ayrıl</translation>
 <translation id="6239274080752256452">Para Çek</translation>
 <translation id="8874184842967597500">Bağlı değil</translation>
@@ -478,7 +478,7 @@ yok...</translation>
 <translation id="1078265935778232285">Brave Tarayıcı'ya Hoş Geldiniz</translation>
 <translation id="6824713633331856331">Anonim olarak öğrenmemize yardım edin</translation>
 <translation id="6116685031674149112">Brave gizliliğinizi korur ve\nbunlara onam vermenize minnet duyar:</translation>
-<translation id="3971666849661839619">Kilitlenme raporları göndererek Brave'in iyileşmesine yardım edin ve tamamen anonim, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Kilitlenme raporları göndererek Brave'in iyileşmesine yardım edin ve tamamen anonim, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">özel ürün analizi.</translation>
 <translation id="5187052478998910855">Rewards'la ilgili bir hatırlatıcı mı lazım?</translation>
 <translation id="8622329973403382303">Tarihe bir Rewards rock yıldızı olarak geçmek için, işlerin nasıl yürüdüğü konusunda tazelenmek amacıyla hızlı bir gezinti yapın!</translation>

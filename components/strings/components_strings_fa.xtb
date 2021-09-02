@@ -902,7 +902,7 @@
 <translation id="421066178035138955">از دستگاه‌ها و داده‌های واقعیت مجازی استفاده کند</translation>
 <translation id="4214357935346142455">نمایه صفحه ورود به سیستم</translation>
 <translation id="4215751373031079683">7x9 (Envelope)</translation>
-<translation id="4220128509585149162">خرابی ها</translation>
+<translation id="4220128509585149162">خرابی‌ها</translation>
 <translation id="422022731706691852">شاید مهاجم‌ها در <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> تلاش کنند شما را فریب دهند تا برنامه‌هایی نصب کنید که برای تجربه مرورتان مضر هستند (برای مثال با تغییر دادن صفحه اصلی‌تان یا نشان دادن آگهی‌های اضافی در سایت‌هایی که دیدن می‌کنید). <ph name="BEGIN_LEARN_MORE_LINK"/>بیشتر بدانید<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="4226937834893929579"><ph name="BEGIN_LINK"/>عیب‌یابی شبکه را اجرا کنید<ph name="END_LINK"/>.</translation>
 <translation id="4105395338091503638">‏«بررسی ایمنی» را در تنظیمات Brave اجرا کنید</translation>
@@ -2037,7 +2037,7 @@
 <translation id="8381674639488873545">ممکن است این هزینه‌ها یک‌باره یا تکرارشونده باشند و واضح نباشند. <ph name="BEGIN_LINK"/>درهرصورت نمایش داده شود<ph name="END_LINK"/></translation>
 <translation id="8390725133630534698">براساس خط‌مشی سرپرست، هم‌رسانی از <ph name="ORIGIN_NAME"/> به <ph name="VM_NAME"/> مسدود شده است</translation>
 <translation id="15931837016421186">‏مدیریت اطلاعاتی که همگام‌سازی می‌کنید در تنظیمات Brave</translation>
-<translation id="8412145213513410671">خرابی ها (<ph name="CRASH_COUNT"/>)</translation>
+<translation id="8412145213513410671">خرابی‌ها (<ph name="CRASH_COUNT"/>)</translation>
 <translation id="8412392972487953978">شما باید همان گذرعبارت را دوبار وارد کنید.</translation>
 <translation id="8416694386774425977">پیکربندی شبکه نامعتبر است و نمی‌توان آن را وارد کرد.
 توضیحات بیشتر:
@@ -2292,7 +2292,7 @@
 <translation id="2418728264526266844">دکمه پنجره «خصوصی» را باز کنید، Enter را فشار دهید تا پنجره‌ای «خصوصی» برای مرور خصوصی باز شود</translation>
 <translation id="8120597037175988664">پنجره‌های خصوصی را ببندید</translation>
 <translation id="8506574374929286570">همه پنجره‌های خصوصی را برای نمای خصوصی فعلی ببندید</translation>
-<translation id="72434570621750659"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>به‌منظور بستن همه پنجره‌های خصوصی برای نمایه خصوصی فعلی، اول Tab و سپس Enter را فشار دهید</translation>
+<translation id="72434570621750659"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, به‌منظور بستن همه پنجره‌های خصوصی برای نمایه خصوصی فعلی، اول Tab و سپس Enter را فشار دهید</translation>
 <translation id="5299725681393421941">دکمه پنجره‌های خصوصی را ببندید، Enter را فشار دهید تا همه پنجره‌های خصوصی برای نمایه خصوصی فعلی بسته شوند</translation>
 <translation id="1090109565956608696">به‌صورت خصوصی مجاز نیست</translation>
 <translation id="6934396344327597525">درحال خروج از «حالت خصوصی» برای پرداخت از طریق یک برنامه خارجی. ادامه می‌دهید؟</translation>

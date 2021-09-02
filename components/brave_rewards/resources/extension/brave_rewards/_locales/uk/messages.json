@@ -546,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "Перейти до мого облікового запису $provider$",
+    "message": "Перейти до облікового запису $provider$",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Увійти до облікового запису $provider$",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -652,6 +662,10 @@
   "walletConnected":  {
     "message": "Підключено",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Від'єднано",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "В очікуванні",

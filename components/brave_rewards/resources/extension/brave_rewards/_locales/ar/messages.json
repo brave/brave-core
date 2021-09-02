@@ -546,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "انتقل إلى حساب $provider$ الخاص بي",
+    "message": "انتقل إلى حساب $provider$ الخاص بك",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "قم بتسجيل الدخول إلى حساب $provider$ الخاص بك",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -652,6 +662,10 @@
   "walletConnected":  {
     "message": "متصل",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "قُطع الاتصال",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "معلَّق",

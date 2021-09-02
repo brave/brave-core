@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Impede que rastreadores e anúncios sejam carregados e exibidos em páginas da web</translation>
 <translation id="1680858055899097121">Não mantenha abas entre as sessões de navegação</translation>
 <translation id="7142548388914389999">Permitir a análise de produtos com preservação da privacidade (P3A)</translation>
-<translation id="5469408008145872264">Essas informações totalmente anonimizadas ajudam o Brave a estimar o uso geral de determinados recursos e aprimorá-los para você.</translation>
+<translation id="5254037869598726291">Essas informações totalmente anonimizadas ajudam o Brave a estimar o uso geral de determinados recursos e aprimorá-los para você.</translation>
 <translation id="7977176350719484850">Est. de dados\neconomizados</translation>
 <translation id="9008534313521214777">Est. tempo\neconomizado</translation>
 <translation id="6572660632052512096">Modo Desktop</translation>
@@ -248,7 +248,7 @@
 <translation id="723054503945711909">A Brave Software Inc. não processa, armazena ou acessa quaisquer informações pessoais que você fornece à Uphold quando estabelece uma conta com eles.</translation>
 <translation id="3699674790322420653">Concluir verificação de carteira</translation>
 <translation id="2193391216824305230">Carteira do Usuário</translation>
-<translation id="7591798679868259510">Ir à minha conta Uphold</translation>
+<translation id="6585020831163574892">Acesse sua conta do Uphold</translation>
 <translation id="9200453331904391567">Desconectar de Brave Rewards</translation>
 <translation id="6239274080752256452">Retirar Fundos</translation>
 <translation id="8874184842967597500">Não conectado</translation>
@@ -478,7 +478,7 @@
 <translation id="1078265935778232285">Bem-vindo ao Navegador Brave</translation>
 <translation id="6824713633331856331">Ajude-nos a entender anonimamente</translation>
 <translation id="6116685031674149112">O Brave protege sua privacidade e\nagradece seu consentimento para o seguinte:</translation>
-<translation id="3971666849661839619">Ajude a melhorar o Brave enviando relatórios de falhas e <ph name="PRIVATE_PRODUCT_ANALYSIS"/> totalmente anônimos</translation>
+<translation id="4394483075076204916">Ajude a melhorar o Brave enviando relatórios de falhas e <ph name="PRIVATE_PRODUCT_ANALYSIS"/> totalmente anônimos</translation>
 <translation id="6478996494082389936">análise privada de produtos.</translation>
 <translation id="5187052478998910855">Precisando de uma atualização sobre as Recompensas?</translation>
 <translation id="8622329973403382303">Faça um tour rápido para relembrar como isso funciona e entre para a história como um astro do rock das Recompensas!</translation>
@@ -583,7 +583,7 @@
 <translation id="3819257035322786455">Backup</translation>
 <translation id="4608713693379664295">Contas de criptomoedas principais</translation>
 <translation id="4003821417160006384">Contas secundárias</translation>
-<translation id="8094541587800369158">Essas contas podem ser usadas com dapps de Web3 e podem ser exibidas no seu portfólio. No entanto, elas não podem ser restauradas por meio da frase de recuperação do backup da sua conta principal. Ative a sincronização de contas do Brave para restaurar automaticamente as contas secundárias.</translation>
+<translation id="8094541587800369158">Essas contas podem ser usadas com dapps de Web3 e podem ser exibidas no seu portfólio. No entanto, elas não podem ser restauradas por meio da frase de recuperação do backup da sua conta principal. Permita que contas do Brave Sync restaurem automaticamente contas secundárias.</translation>
 <translation id="6725413948756358325">Nome da Conta</translation>
 <translation id="6062431965141524986">Você pode criar uma conta secundária importando sua chave privada.</translation>
 <translation id="3952797765659730604">Insira, cole ou importe seu arquivo de string de chave privada ou JSON.</translation>
@@ -593,6 +593,6 @@
 <translation id="9065203028668620118">Editar</translation>
 <translation id="3995184924764722477">Detalhes da Conta</translation>
 <translation id="8967036623785635603">Editar ativos visíveis</translation>
-<translation id="5050890334032852465">Salvar lista de observação de contas</translation>
+<translation id="5050890334032852465">Salvar lista de interesses de contas</translation>
 <translation id="7755766175599167100">Pesquisar tokens</translation>
 </translationbundle>

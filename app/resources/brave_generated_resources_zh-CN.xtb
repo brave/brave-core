@@ -197,7 +197,7 @@
 <translation id="1834467296210148203">在工具栏上显示 Brave Wallet 图标</translation>
 <translation id="6864914031231797928">允许 Google 登录以获取扩展程序</translation>
 <translation id="5927916530277631319">解决无法停止域这个问题的方法</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/> 关于基于 HTTPS 的 DNS 和以太坊隐私注意事项。</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/>关于 DNS over HTTPS 和以太坊隐私注意事项。</translation>
 <translation id="5248318250177143470">解决以太坊名称服务（ENS）相关问题的方法</translation>
 <translation id="7024553202001112871">设置 IPNS 密钥</translation>
 <translation id="951216659045543447">用对应的私钥对内容进行签名并发布到 IPNS</translation>
@@ -219,7 +219,7 @@
 <translation id="1534091531114892221">设置 ipfs 对等描述</translation>
 <translation id="8996633027318264334">确定要删除 <ph name="KEY_NAME"/> 吗？</translation>
 <translation id="910215077892371264">节点未启动</translation>
-<translation id="616058968889448209">IPFS 服务启动错误，更多信息参见 <ph name="BEGIN_LINK"/>诊断页<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">IPFS 服务启动错误，更多信息参见<ph name="BEGIN_LINK"/>诊断页<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 密钥导入失败</translation>
 <translation id="3364053282600191535"><ph name="KEY_NAME"/>' 密钥导出失败</translation>
 <translation id="8275038454117074363">导入</translation>

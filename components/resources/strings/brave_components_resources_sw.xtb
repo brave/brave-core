@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Mchango wa kila umewekwa.</translation>
 <translation id="6356822617569064293">Tarehe ya mchango inayofuata:</translation>
 <translation id="3593485149443019592">Tokeni hazitoshi. Tafadhali <ph name="LINK_BEGIN"/>ongeza fedha<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave hukusanya 5% ya kiwango cha bahshishi kama ya uchakataji.</translation>
 <translation id="207268487070188114">Bahshishi ya Wakati Mmoja</translation>
 <translation id="69861679024013299">Kiasi cha bahshishi ya wakati mmoja:</translation>
 <translation id="3669086939205397942">Subiri, bado huwezi kutoa bahshishi</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Tunasikitika kukuona ukienda…</translation>
 <translation id="1420756770787071946">Mfadhili muundaji huyu</translation>
 <translation id="3271043362279673449">Asante kwa ufadhili!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Fahamu: <ph name="BOLD_END"/>Bahshishi yako inaweza kuchukua dakika kadhaa kuchakatwa</translation>
 <translation id="3312470408978098625">Bahshishi yako ya wakati mmoja imetumwa.</translation>
 <translation id="5096821444729034955">kwa chapisho lake</translation>
 <translation id="2978223787436054634">Ujumbe wa twitter kuhusu ufadhili wako</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">Ruzuku yako ya [[currency]] iko njiani.</translation>
 <translation id="8267327690882073581">Thibitisha Pochi</translation>
 <translation id="543510923939676996">Pochi Imethibitishwa</translation>
-<translation id="2659764755126740206">Nenda kwenye akaunti yangu ya <ph name="PROVIDER"/></translation>
+<translation id="2445110450361135194">Nenda kwenye akaunti yako ya <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Unganisha akaunti yako ya <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Kamilisha uthibitishaji pochi</translation>
 <translation id="9200453331904391567">Ondoa kwenye Brave Rewards</translation>
 <translation id="3656941797339037856">Unganisha Zawadi kwa Gemini!</translation>
