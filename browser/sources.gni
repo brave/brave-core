@@ -288,6 +288,7 @@ if (enable_widevine) {
   ]
   brave_chrome_browser_deps += [
     "//brave/browser/widevine",
+    "//brave/browser/widevine:constants",
     "//brave/components/brave_drm",
   ]
 }

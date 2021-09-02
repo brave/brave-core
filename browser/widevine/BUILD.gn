@@ -4,6 +4,7 @@ source_set("widevine") {
   # Remove when https://github.com/brave/brave-browser/issues/10644 is resolved
   check_includes = false
   deps = [
+    ":constants",
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/common:pref_names",
@@ -29,6 +30,10 @@ source_set("widevine") {
     "widevine_utils.cc",
     "widevine_utils.h",
   ]
+}
+
+source_set("constants") {
+  sources = [ "constants.h" ]
 }
 
 source_set("unittest") {

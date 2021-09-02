@@ -9,7 +9,7 @@
 #include "base/path_service.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/brave_drm_tab_helper.h"
+#include "brave/browser/widevine/constants.h"
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -88,7 +88,7 @@ void DisableWidevineCdmComponent() {
 
   SetWidevineOptedIn(false);
   g_browser_process->component_updater()->UnregisterComponent(
-      BraveDrmTabHelper::kWidevineComponentId);
+      kWidevineComponentId);
 }
 
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart) {
