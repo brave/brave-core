@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/scoped_observation.h"
-#include "base/util/values/values_util.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/common/webui_url_constants.h"
