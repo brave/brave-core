@@ -37,7 +37,8 @@ import {
   ToOrFromType,
   WalletAccountType,
   Network,
-  TokenInfo
+  TokenInfo,
+  UpdateAccountNamePayloadType
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -377,8 +378,9 @@ function Container (props: Props) {
     props.walletPageActions.removeImportedAccount({ address })
   }
 
-  const onUpdateAccountName = () => {
-    // TODO (DOUGLAS): Need to add logic to update and Existing Account Name
+  const onUpdateAccountName = (payload: UpdateAccountNamePayloadType): { success: boolean } => {
+    const result = props.walletPageActions.updateAccountName(payload)
+    return result ? { success: true } : { success: false }
   }
 
   const onUpdateVisibleTokens = (visibleTokens: string[]) => {

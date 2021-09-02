@@ -190,6 +190,7 @@ const locale = {
   accountSettingsDisclaimer: 'Warning: Never disclose this key. Anyone with your private key can steal any assets held in your account.',
   accountSettingsShowKey: 'Show Key',
   accountSettingsHideKey: 'Hide Key',
+  accountSettingsUpdateError: 'Failed to update account name, please try again.',
 
   // AmountPresets
   preset25: '25%',

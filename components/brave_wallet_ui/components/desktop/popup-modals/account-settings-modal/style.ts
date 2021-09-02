@@ -152,3 +152,11 @@ export const ButtonWrapper = styled.div`
   justify-content: center;
   margin-top: 40px;
 `
+
+export const ErrorText = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  color: ${(p) => p.theme.color.errorText};
+  margin-bottom: 10px;
+`

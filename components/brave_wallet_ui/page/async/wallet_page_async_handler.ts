@@ -7,6 +7,7 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
+import { UpdateAccountNamePayloadType } from '../../constants/types'
 import {
   CreateWalletPayloadType,
   RestoreWalletPayloadType,
@@ -101,6 +102,14 @@ handler.on(WalletPageActions.viewPrivateKey.getType(), async (store, payload: Vi
     await keyringController.getPrivateKeyForDefaultKeyringAccount(payload.address)
     : await keyringController.getPrivateKeyForImportedAccount(payload.address)
   store.dispatch(WalletPageActions.privateKeyAvailable({ privateKey: result.privateKey }))
+})
+
+handler.on(WalletPageActions.updateAccountName.getType(), async (store, payload: UpdateAccountNamePayloadType) => {
+  const keyringController = (await getAPIProxy()).keyringController
+  const result = payload.isDerived ?
+    await keyringController.setDefaultKeyringDerivedAccountName(payload.address, payload.name)
+    : await keyringController.setDefaultKeyringImportedAccountName(payload.address, payload.name)
+  return result.success
 })
 
 // TODO(bbondy): Remove - Example usage:
