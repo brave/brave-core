@@ -12,7 +12,6 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
@@ -207,10 +206,15 @@ ContentsLayoutManager* BraveBrowserView::GetContentsLayoutManager() const {
 
 void BraveBrowserView::ShowBraveVPNBubble() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (BraveVPNButton* button =
-          static_cast<BraveToolbarView*>(toolbar())->brave_vpn_button()) {
-    button->ShowBraveVPNPanel();
-  }
+  vpn_panel_host_.ShowBraveVPNPanel();
+#endif
+}
+
+views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  return static_cast<BraveToolbarView*>(toolbar())->brave_vpn_button();
+#else
+  return nullptr;
 #endif
 }
 

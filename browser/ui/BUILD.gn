@@ -491,6 +491,8 @@ source_set("ui") {
 
     if (toolkit_views) {
       sources += [
+        "views/brave_vpn_panel_host.cc",
+        "views/brave_vpn_panel_host.h",
         "views/toolbar/brave_vpn_button.cc",
         "views/toolbar/brave_vpn_button.h",
       ]

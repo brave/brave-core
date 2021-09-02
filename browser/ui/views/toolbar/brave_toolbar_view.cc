@@ -170,7 +170,7 @@ void BraveToolbarView::Init() {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNEnabled()) {
-    brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(profile),
+    brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(browser()),
                                 GetIndexOf(GetAppMenuButton()) - 1);
   }
 #endif
