@@ -60,7 +60,7 @@ void WalletPanelHandler::AddEthereumChainApproved(const std::string& payload,
   auto chain = brave_wallet::ValueToEthereumChain(value.value());
   if (!chain)
     return;
-  list->Append(std::move(value).value_or(base::Value()));
+  list->Append(std::move(value).value());
   brave_wallet::BraveWalletTabHelper::FromWebContents(contents)
       ->UserRequestCompleted(chain->chain_id, std::string());
 }

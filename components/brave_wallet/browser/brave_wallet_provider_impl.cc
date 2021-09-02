@@ -17,7 +17,6 @@
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/brave_wallet/renderer/brave_wallet_response_helpers.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/user_prefs/user_prefs.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -35,8 +34,8 @@ void RespondErrorForEthereumChainRequest(
 
 void RespondSuccessForEthereumChainRequest(
     brave_wallet::BraveWalletProviderImpl::AddEthereumChainCallback callback) {
-  auto response = brave_wallet::ToProviderResponse(nullptr, nullptr);
-  response->SetKey("result", base::Value());
+  base::Value value;
+  auto response = brave_wallet::ToProviderResponse(&value, nullptr);
   std::string serialized_response;
   base::JSONWriter::Write(*response, &serialized_response);
   std::move(callback).Run(true, serialized_response);
