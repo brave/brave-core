@@ -694,10 +694,20 @@ class TestAdBlockSubscriptionServiceManagerObserver
   brave_shields::AdBlockSubscriptionServiceManager* sub_service_manager_;
 };
 
+// This test fails intermittently on Windows; see
+// https://github.com/brave/brave-browser/issues/17849
+#if defined(OS_WIN)
+#define MAYBE_SubscribeToCustomSubscription \
+  DISABLED_SubscribeToCustomSubscription
+#else
+#define MAYBE_SubscribeToCustomSubscription SubscribeToCustomSubscription
+#endif
+
 // Make sure a list added as a custom subscription works correctly
 // The download in this test fails intermittently with a network error code,
 // although it doesn't seem to occur in real usage.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       MAYBE_SubscribeToCustomSubscription) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL subscription_url =
       embedded_test_server()->GetURL("lists.com", "/list.txt");
