@@ -36,10 +36,21 @@ import {
   Divider,
   SectionRow,
   SectionRightColumn,
-  EditButton
+  EditButton,
+  MessageBoxRow,
+  FiatRow,
+  FavIcon,
+  URLText
 } from './style'
 
-import { TabRow } from '../shared-panel-styles'
+import {
+  TabRow,
+  Description,
+  PanelTitle,
+  AccountCircle,
+  AddressAndOrb,
+  AddressText
+} from '../shared-panel-styles'
 
 export type confirmPanelTabs = 'transaction' | 'details'
 
@@ -72,14 +83,6 @@ function ConfirmTransactionPanel (props: Props) {
   }
 
   const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
-
-  const fromOrb = React.useMemo(() => {
-    return create({ seed: transactionInfo.fromAddress, size: 8, scale: 16 }).toDataURL()
-  }, [transactionInfo])
-
-  const toOrb = React.useMemo(() => {
-    return create({ seed: transactionInfo.txData.baseData.to, size: 8, scale: 10 }).toDataURL()
-  }, [transactionInfo])
 
   const findTokenInfo = (contractAddress: string) => {
     return visibleTokens.find((account) => account.contractAddress.toLowerCase() === contractAddress.toLowerCase())
@@ -128,6 +131,25 @@ function ConfirmTransactionPanel (props: Props) {
         symbol: ERC20Token?.symbol ?? '',
         hasNoData: data.length === 0
       }
+    } else if (txType === TransactionType.ERC20Approve) {
+      const ERC20Token = findTokenInfo(to)
+      const ERC20TokenPrice = findSpotPrice(ERC20Token?.symbol ?? '')?.price
+      const sendAmount = formatBalance(txArgs[1], ERC20Token?.decimals ?? 18)
+      const sendFiatAmount = formatFiatBalance(txArgs[1], ERC20Token?.decimals ?? 18, ERC20TokenPrice ?? '')
+      const gasAmount = formatBalance(gasPrice, selectedNetwork.decimals)
+      const gasFiatAmount = formatFiatBalance(gasPrice, selectedNetwork.decimals, selectedNetworkPrice ?? '')
+      const grandTotalFiatAmount = Number(sendFiatAmount) + Number(gasFiatAmount)
+      return {
+        sendAmount,
+        sendTo: txArgs[0],
+        sendFiatAmount,
+        gasAmount,
+        gasFiatAmount,
+        grandTotalFiatAmount,
+        symbol: ERC20Token?.symbol ?? '',
+        hasNoData: data.length === 0,
+        siteURL: 'https://app.compound.finance'
+      }
     } else {
       const sendAmount = formatBalance(value, selectedNetwork.decimals)
       const sendFiatAmount = formatFiatBalance(value, selectedNetwork.decimals, selectedNetworkPrice ?? '')
@@ -155,23 +177,49 @@ function ConfirmTransactionPanel (props: Props) {
     return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
   }
 
+  const fromOrb = React.useMemo(() => {
+    return create({ seed: transactionInfo.fromAddress, size: 8, scale: 16 }).toDataURL()
+  }, [transactionInfo])
+
+  const toOrb = React.useMemo(() => {
+    return create({ seed: transaction.sendTo, size: 8, scale: 10 }).toDataURL()
+  }, [transactionInfo])
+
   return (
     <StyledWrapper>
       <TopRow>
         <NetworkText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</NetworkText>
+        {transactionInfo.txType === TransactionType.ERC20Approve &&
+          <AddressAndOrb>
+            <AddressText>{reduceAddress(transaction.sendTo)}</AddressText>
+            <AccountCircle orb={toOrb} />
+          </AddressAndOrb>
+        }
       </TopRow>
-      <AccountCircleWrapper>
-        <FromCircle orb={fromOrb} />
-        <ToCircle orb={toOrb} />
-      </AccountCircleWrapper>
-      <FromToRow>
-        <AccountNameText>{findAccountName(transactionInfo.fromAddress)}</AccountNameText>
-        <ArrowIcon />
-        <AccountNameText>{reduceAddress(transaction.sendTo)}</AccountNameText>
-      </FromToRow>
-      <TransactionTypeText>Send</TransactionTypeText>
-      <TransactionAmmountBig>{transaction.sendAmount} {transaction.symbol}</TransactionAmmountBig>
-      <TransactionFiatAmountBig>${transaction.sendFiatAmount}</TransactionFiatAmountBig>
+      {transactionInfo.txType === TransactionType.ERC20Approve ? (
+        <>
+          <FavIcon src={`chrome://favicon/size/64@1x/${transaction.siteURL}`} />
+          <URLText>{transaction.siteURL}</URLText>
+          <PanelTitle>{locale.allowSpendTitle} {transaction.symbol}?</PanelTitle>
+          {/* Will need to allow parameterized locales by introducing the "t" helper. For ex: {t(locale.allowSpendDescription, [spendPayload.erc20Token.symbol])}*/}
+          <Description>{locale.allowSpendDescriptionFirstHalf}{transaction.symbol}{locale.allowSpendDescriptionSecondHalf}</Description>
+        </>
+      ) : (
+        <>
+          <AccountCircleWrapper>
+            <FromCircle orb={fromOrb} />
+            <ToCircle orb={toOrb} />
+          </AccountCircleWrapper>
+          <FromToRow>
+            <AccountNameText>{findAccountName(transactionInfo.fromAddress)}</AccountNameText>
+            <ArrowIcon />
+            <AccountNameText>{reduceAddress(transaction.sendTo)}</AccountNameText>
+          </FromToRow>
+          <TransactionTypeText>Send</TransactionTypeText>
+          <TransactionAmmountBig>{transaction.sendAmount} {transaction.symbol}</TransactionAmmountBig>
+          <TransactionFiatAmountBig>${transaction.sendFiatAmount}</TransactionFiatAmountBig>
+        </>
+      )}
       <TabRow>
         <PanelTab
           isSelected={selectedTab === 'transaction'}
@@ -184,26 +232,43 @@ function ConfirmTransactionPanel (props: Props) {
           text='Details'
         />
       </TabRow>
-      <MessageBox isDetails={selectedTab === 'details'}>
+      <MessageBox isDetails={selectedTab === 'details'} isApprove={transactionInfo.txType === 2}>
         {selectedTab === 'transaction' ? (
           <>
-            <SectionRow>
-              <TransactionTitle>{locale.confirmTransactionGasFee}</TransactionTitle>
-              <SectionRightColumn>
-                <EditButton>{locale.allowSpendEditButton}</EditButton>
-                <TransactionTypeText>{transaction.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
-                <TransactionText>${transaction.gasFiatAmount}</TransactionText>
-              </SectionRightColumn>
-            </SectionRow>
-            <Divider />
-            <SectionRow>
-              <TransactionTitle>{locale.confirmTransactionTotal}</TransactionTitle>
-              <SectionRightColumn>
-                <TransactionText>{locale.confirmTransactionAmountGas}</TransactionText>
-                <GrandTotalText>{transaction.sendAmount} {transaction.symbol} + {transaction.gasAmount} {selectedNetwork.symbol}</GrandTotalText>
-                <TransactionText>${transaction.grandTotalFiatAmount.toFixed(2)}</TransactionText>
-              </SectionRightColumn>
-            </SectionRow>
+            {transactionInfo.txType === TransactionType.ERC20Approve ? (
+              <>
+                <MessageBoxRow>
+                  <TransactionTitle>{locale.allowSpendTransactionFee}</TransactionTitle>
+                  <EditButton>{locale.allowSpendEditButton}</EditButton>
+                </MessageBoxRow>
+                <FiatRow>
+                  <TransactionTypeText>{transaction.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
+                </FiatRow>
+                <FiatRow>
+                  <TransactionText>${transaction.gasFiatAmount}</TransactionText>
+                </FiatRow>
+              </>
+            ) : (
+              <>
+                <SectionRow>
+                  <TransactionTitle>{locale.confirmTransactionGasFee}</TransactionTitle>
+                  <SectionRightColumn>
+                    <EditButton>{locale.allowSpendEditButton}</EditButton>
+                    <TransactionTypeText>{transaction.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
+                    <TransactionText>${transaction.gasFiatAmount}</TransactionText>
+                  </SectionRightColumn>
+                </SectionRow>
+                <Divider />
+                <SectionRow>
+                  <TransactionTitle>{locale.confirmTransactionTotal}</TransactionTitle>
+                  <SectionRightColumn>
+                    <TransactionText>{locale.confirmTransactionAmountGas}</TransactionText>
+                    <GrandTotalText>{transaction.sendAmount} {transaction.symbol} + {transaction.gasAmount} {selectedNetwork.symbol}</GrandTotalText>
+                    <TransactionText>${transaction.grandTotalFiatAmount.toFixed(2)}</TransactionText>
+                  </SectionRightColumn>
+                </SectionRow>
+              </>
+            )}
           </>
         ) : (
           <TransactionDetailBox

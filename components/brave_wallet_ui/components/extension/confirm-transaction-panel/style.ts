@@ -4,6 +4,7 @@ import { ArrowRightIcon } from 'brave-ui/components/icons'
 interface StyleProps {
   orb: string
   isDetails: boolean
+  isApprove: boolean
 }
 
 export const StyledWrapper = styled.div`
@@ -91,13 +92,13 @@ export const TransactionFiatAmountBig = styled.span`
 export const MessageBox = styled.div<Partial<StyleProps>>`
   display: flex;
   align-items: flex-start;
-  justify-content: ${(p) => p.isDetails ? 'flex-start' : 'space-evenly'};
+  justify-content: ${(p) => p.isDetails || p.isApprove ? 'flex-start' : 'space-evenly'};
   flex-direction: column;
   border: 1px solid ${(p) => p.theme.color.divider01};
   box-sizing: border-box;
   border-radius: 4px;
   width: 255px;
-  height: 140px;
+  height: ${(p) => p.isApprove ? '120px' : '140px'};
   padding: ${(p) => p.isDetails ? '14px' : '4px 14px'};
   margin-bottom: 14px;
   overflow-y: scroll;
@@ -205,4 +206,41 @@ export const GrandTotalText = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
   font-weight: 600;
+`
+
+export const MessageBoxRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  padding-top: 6px;
+`
+
+export const FiatRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+  width: 100%;
+`
+
+export const URLText = styled.span`
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: 0.01em;
+  margin-bottom: 6px;
+  color: ${(p) => p.theme.color.text02};
+`
+
+export const FavIcon = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 5px;
+  background-color: ${(p) => p.theme.palette.grey200};
+  margin-bottom: 7px;
 `
