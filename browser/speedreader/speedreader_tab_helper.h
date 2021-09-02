@@ -91,6 +91,8 @@ class SpeedreaderTabHelper
       content::NavigationHandle* navigation_handle) override;
   void DidRedirectNavigation(
       content::NavigationHandle* navigation_handle) override;
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
 
   // SpeedreaderResultDelegate:
   void OnDistillComplete() override;

@@ -52,7 +52,6 @@ void SpeedreaderExtendedInfoHandler::PersistMode(
           kPageSavedSpeedreaderMode);
       break;
     default:
-      NOTREACHED();
       return;
   }
 

@@ -204,10 +204,6 @@ void SpeedreaderTabHelper::HideBubble() {
 
 void SpeedreaderTabHelper::OnDistillComplete() {
   // Perform a state transition
-  auto* entry = web_contents()->GetController().GetLastCommittedEntry();
-  DCHECK(entry);
-
-  // Perform a state transition
   if (distill_state_ == DistillState::kSpeedreaderModePending) {
     distill_state_ = DistillState::kSpeedreaderMode;
   } else if (distill_state_ == DistillState::kReaderModePending) {
@@ -217,8 +213,16 @@ void SpeedreaderTabHelper::OnDistillComplete() {
     DCHECK(distill_state_ == DistillState::kSpeedreaderMode ||
            distill_state_ == DistillState::kReaderMode);
   }
+}
 
-  // Save current distill state to navigation entry cache.
+void SpeedreaderTabHelper::DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (!navigation_handle->HasCommitted()) {
+    distill_state_ = DistillState::kNone;
+  }
+  auto* entry = web_contents()->GetController().GetLastCommittedEntry();
+  DCHECK(entry);
+
   SpeedreaderExtendedInfoHandler::PersistMode(entry, distill_state_);
 }
 
