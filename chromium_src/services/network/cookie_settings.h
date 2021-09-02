@@ -13,6 +13,13 @@
       const absl::optional<url::Origin>& top_frame_origin) const; \
   bool IsCookieAccessible
 
+#define IsPrivacyModeEnabled                                      \
+  IsEphemeralPrivacyModeEnabled(                                  \
+      const GURL& url, const GURL& site_for_cookies,              \
+      const absl::optional<url::Origin>& top_frame_origin,        \
+      net::SamePartyContext::Type same_party_context_type) const; \
+  bool IsPrivacyModeEnabled
+
 #define AnnotateAndMoveUserBlockedCookies                   \
   AnnotateAndMoveUserBlockedEphemeralCookies(               \
       const GURL& url, const GURL& site_for_cookies,        \
@@ -24,6 +31,7 @@
 #include "../../../../services/network/cookie_settings.h"
 
 #undef AnnotateAndMoveUserBlockedCookies
+#undef IsPrivacyModeEnabled
 #undef IsCookieAccessible
 
 #endif  // BRAVE_CHROMIUM_SRC_SERVICES_NETWORK_COOKIE_SETTINGS_H_
