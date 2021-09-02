@@ -61,8 +61,8 @@ class BraveVpnServiceDesktop
  private:
   // BraveVpnService overrides:
   void Shutdown() override;
-  void AddObserver(mojo::PendingRemote<brave_vpn::mojom::ServiceObserver>
-                       observer) override;
+  void AddObserver(
+      mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> observer) override;
 
   // brave_vpn::BraveVPNOSConnectionAPI::Observer overrides:
   void OnCreated(const std::string& name) override;
