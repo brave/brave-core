@@ -24,7 +24,7 @@ const defaultState: PanelState = {
   showConfirmTransaction: false,
   networkPayload: { chainId: '0x1', chainName: 'Ethereum Mainnet',
     rpcUrls: ['https://mainnet-infura.brave.com/'], blockExplorerUrls: [],
-    iconUrls: [], nativeCurrency: { symbol: '', name: '', decimals: 0 } }
+    iconUrls: [], nativeCurrency: { symbol: 'ETH', name: 'Ethereum', decimals: 18 } }
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)

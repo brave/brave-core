@@ -96,13 +96,14 @@ absl::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value& value);
 
 void GetAllKnownChains(std::vector<mojom::EthereumChainPtr>* chains);
-const std::vector<mojom::KnownNetwork> GetAllKnownNetworks();
+const std::vector<mojom::EthereumChain> GetAllKnownNetworks();
 void GetAllCustomChains(PrefService* prefs,
                         std::vector<mojom::EthereumChainPtr>* result);
 void GetAllChains(PrefService* prefs,
                   std::vector<mojom::EthereumChainPtr>* result);
 GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id);
-
+std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
+mojom::EthereumChainPtr GetKnownChain(const std::string& chain_id);
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_

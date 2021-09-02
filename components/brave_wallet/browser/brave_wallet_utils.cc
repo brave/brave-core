@@ -67,37 +67,72 @@ bool GetUseStagingInfuraEndpoint() {
 }
 
 // Precompiled networks available in native wallet.
-const brave_wallet::mojom::KnownNetwork kKnownNetworks[] = {
-    {"0x1", "Ethereum Mainnet", "mainnet", "https://etherscan.io"},
-    {"0x4", "Rinkeby Test Network", "rinkeby", "https://rinkeby.etherscan.io"},
-    {"0x3", "Ropsten Test Network", "ropsten", "https://ropsten.etherscan.io"},
-    {"0x5", "Goerli Test Network", "ropsten", "https://goerli.etherscan.io"},
-    {"0x2a", "Kovan Test Network", "kovan", "https://kovan.etherscan.io"},
-    {"0x539", "Localhost", "http://localhost:8545/", ""}};
+const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
+    {"0x1",
+     "Ethereum Mainnet",
+     {"https://etherscan.io"},
+     {},
+     {},
+     "ETH",
+     "Ethereum",
+     18},
+    {"0x4",
+     "Rinkeby Test Network",
+     {"https://rinkeby.etherscan.io"},
+     {},
+     {},
+     "ETH",
+     "Ethereum",
+     18},
+    {"0x3",
+     "Ropsten Test Network",
+     {"https://ropsten.etherscan.io"},
+     {},
+     {},
+     "ETH",
+     "Ethereum",
+     18},
+    {"0x5",
+     "Goerli Test Network",
+     {"https://goerli.etherscan.io"},
+     {},
+     {},
+     "ETH",
+     "Ethereum",
+     18},
+    {"0x2a",
+     "Kovan Test Network",
+     {"https://kovan.etherscan.io"},
+     {},
+     {},
+     "ETH",
+     "Ethereum",
+     18},
+    {"0x539",
+     "Localhost",
+     {"http://localhost:8545/"},
+     {},
+     {"http://localhost:8545/"},
+     "ETH",
+     "Ethereum",
+     18}};
 
-std::string GetURLForSubdomain(const std::string& subdomain) {
+const base::flat_map<std::string, std::string> kInfuraSubdomains = {
+    {"0x1", "mainnet"},
+    {"0x4", "rinkeby"},
+    {"0x3", "ropsten"},
+    {"0x5", "goerli"},
+    {"0x2a", "kovan"}};
+
+std::string GetInfuraURLForKnownChainId(const std::string& chain_id) {
+  auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
+  if (subdomain.empty())
+    return std::string();
   return base::StringPrintf(
       GetUseStagingInfuraEndpoint()
           ? "https://%s-staging-infura.bravesoftware.com/%s"
           : "https://%s-infura.brave.com/%s",
       subdomain.c_str(), GetInfuraProjectID().c_str());
-}
-
-brave_wallet::mojom::EthereumChainPtr GetKnownChain(
-    const std::string& chain_id) {
-  brave_wallet::mojom::EthereumChain result;
-  for (const auto& network : kKnownNetworks) {
-    if (network.chain_id != chain_id)
-      continue;
-    result.chain_id = chain_id;
-    result.chain_name = network.chain_name;
-    auto url = (chain_id == "0x539") ? network.subdomain
-                                     : GetURLForSubdomain(network.subdomain);
-    result.rpc_urls.push_back(url);
-    result.block_explorer_urls.push_back(network.block_tracker_url);
-    return result.Clone();
-  }
-  return nullptr;
 }
 
 GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id) {
@@ -114,6 +149,24 @@ GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id) {
 }
 
 }  // namespace
+
+mojom::EthereumChainPtr GetKnownChain(const std::string& chain_id) {
+  for (const auto& network : kKnownNetworks) {
+    if (network.chain_id != chain_id)
+      continue;
+    auto result = network.Clone();
+    if (result->rpc_urls.empty())
+      result->rpc_urls.push_back(GetInfuraURLForKnownChainId(chain_id));
+    return result;
+  }
+  return nullptr;
+}
+
+std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {
+  if (kInfuraSubdomains.contains(chain_id))
+    return kInfuraSubdomains.at(chain_id);
+  return std::string();
+}
 
 void GetAllCustomChains(PrefService* prefs,
                         std::vector<mojom::EthereumChainPtr>* result) {
@@ -134,8 +187,8 @@ bool IsNativeWalletEnabled() {
       brave_wallet::features::kNativeBraveWalletFeature);
 }
 
-const std::vector<brave_wallet::mojom::KnownNetwork> GetAllKnownNetworks() {
-  std::vector<brave_wallet::mojom::KnownNetwork> result;
+const std::vector<brave_wallet::mojom::EthereumChain> GetAllKnownNetworks() {
+  std::vector<brave_wallet::mojom::EthereumChain> result;
   result.assign(kKnownNetworks, std::end(kKnownNetworks));
   return result;
 }

@@ -278,12 +278,17 @@ void EthTxStateManager::ChainChangedEvent(const std::string& chain_id) {
 }
 
 std::string EthTxStateManager::GetNetworkId() const {
-  auto known_networks = GetAllKnownNetworks();
-  for (const auto& network : known_networks) {
-    if (network.chain_id != chain_id_)
-      continue;
-    return network.subdomain;
+  auto subdomain = GetInfuraSubdomainForKnownChainId(chain_id_);
+  if (!subdomain.empty())
+    return subdomain;
+  // Separate check for localhost in known networks as it is predefined
+  // but doesnt have infura subdomain.
+  mojom::EthereumChainPtr known_network = GetKnownChain(chain_id_);
+  if (known_network) {
+    if (known_network->rpc_urls.size())
+      return GURL(known_network->rpc_urls.front()).spec();
   }
+
   std::vector<mojom::EthereumChainPtr> custom_chains;
   GetAllCustomChains(prefs_, &custom_chains);
   std::string id;

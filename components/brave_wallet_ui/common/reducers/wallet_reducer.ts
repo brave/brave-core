@@ -35,14 +35,14 @@ const defaultState: WalletState = {
   selectedAccount: {} as WalletAccountType,
   selectedNetwork: {
     chainId: '0x1',
-    chainName: '',
+    chainName: 'Ethereum Mainnet',
     rpcUrls: [],
     blockExplorerUrls: [],
     iconUrls: [],
     nativeCurrency: {
-      symbol: '',
-      name: '',
-      decimals: 0
+      symbol: 'ETH',
+      name: 'Ethereum',
+      decimals: 18
     }
   } as EthereumChain,
   accounts: [],

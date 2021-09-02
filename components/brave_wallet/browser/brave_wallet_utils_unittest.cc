@@ -877,4 +877,30 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
             GetNetworkURL(&prefs, chain2.chain_id));
 }
 
+TEST(BraveWalletUtilsUnitTest, GetInfuraSubdomainForKnownChainId) {
+  std::vector<mojom::EthereumChainPtr> known_chains;
+  GetAllKnownChains(&known_chains);
+  for (const auto& chain : known_chains) {
+    auto subdomain = GetInfuraSubdomainForKnownChainId(chain->chain_id);
+    bool expected = (chain->chain_id == "0x539");
+    ASSERT_EQ(subdomain.empty(), expected);
+  }
+}
+
+TEST(BraveWalletUtilsUnitTest, GetKnownNetwork) {
+  auto known_chains = brave_wallet::GetAllKnownNetworks();
+  ASSERT_FALSE(known_chains.empty());
+  for (const auto& chain : known_chains) {
+    auto network = brave_wallet::GetKnownChain(chain.chain_id);
+    EXPECT_EQ(network->chain_id, chain.chain_id);
+    EXPECT_EQ(network->chain_name, chain.chain_name);
+    ASSERT_TRUE(GURL(network->rpc_urls.front()).is_valid());
+    EXPECT_EQ(network->icon_urls, chain.icon_urls);
+    EXPECT_EQ(network->block_explorer_urls, chain.block_explorer_urls);
+    EXPECT_EQ(network->symbol, chain.symbol);
+    EXPECT_EQ(network->decimals, chain.decimals);
+    EXPECT_EQ(network->symbol_name, chain.symbol_name);
+  }
+}
+
 }  // namespace brave_wallet
