@@ -37,7 +37,7 @@ std::string PostTransaction::GeneratePayload(
   base::Value payload(base::Value::Type::DICTIONARY);
   payload.SetStringKey("currency_code", "BAT");
   payload.SetStringKey("amount", base::StringPrintf("%f", transaction.amount));
-  payload.SetBoolKey("dry_run", false);
+  payload.SetBoolKey("dry_run", dry_run);
   payload.SetStringKey("deposit_id", transaction.address);
   payload.SetStringKey("transfer_id", base::GenerateGUID());
   if (dry_run) {
@@ -62,6 +62,11 @@ type::Result PostTransaction::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Account not found");
     return type::Result::NOT_FOUND;
+  }
+
+  if (status_code == net::HTTP_CONFLICT) {
+    BLOG(0, "Conflict");
+    return type::Result::IN_PROGRESS;
   }
 
   if (status_code != net::HTTP_OK) {
@@ -137,9 +142,9 @@ void PostTransaction::OnRequest(const type::UrlResponse& response,
 
   type::Result result = CheckStatusCode(response.status_code);
 
-  if (result != type::Result::LEDGER_OK) {
-    callback(result, "");
-    return;
+  if (result != type::Result::LEDGER_OK &&
+      result != type::Result::IN_PROGRESS) {
+    return callback(result, "");
   }
 
   std::string id;
@@ -149,8 +154,11 @@ void PostTransaction::OnRequest(const type::UrlResponse& response,
   if (result == type::Result::LEDGER_OK && transfer_status != "SUCCESS") {
     BLOG(0, "Transfer failed (status: " << transfer_status << ")");
     BLOG_IF(0, !message.empty(), message);
-    callback(type::Result::LEDGER_ERROR, "");
-    return;
+
+    return callback(transfer_status == "SESSION_TIME_OUT"
+                        ? type::Result::EXPIRED_TOKEN
+                        : type::Result::LEDGER_ERROR,
+                    "");
   }
 
   callback(result, id);

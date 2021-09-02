@@ -94,6 +94,66 @@ TEST_F(BitflyerPostTransactionTest, ServerError401) {
                         });
 }
 
+TEST_F(BitflyerPostTransactionTest, ServerError409_SESSION_TIME_OUT) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 409;
+            response.url = request->url;
+            response.body = R"({
+             "dry_run": false,
+             "currency_code": "BAT",
+             "amount": 4.750000,
+             "message": "",
+             "transfer_status": "SESSION_TIME_OUT",
+             "transfer_id": "e94014e7-03cd-4709-852c-a1cf2c2375aa"
+            })";
+            callback(response);
+          }));
+
+  ::ledger::bitflyer::Transaction transaction;
+  transaction.amount = 4.75;
+  transaction.address = "6654ecb0-6079-4f6c-ba58-791cc890a561";
+
+  transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8", transaction,
+                        false,
+                        [](const type::Result result, const std::string& id) {
+                          EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
+                          EXPECT_EQ(id, "");
+                        });
+}
+
+TEST_F(BitflyerPostTransactionTest, ServerError409_RandomStatusEnum) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 409;
+            response.url = request->url;
+            response.body = R"({
+             "dry_run": false,
+             "currency_code": "BAT",
+             "amount": 4.750000,
+             "message": "",
+             "transfer_status": "NOT_ALLOWED_TO_RECV",
+             "transfer_id": "e94014e7-03cd-4709-852c-a1cf2c2375aa"
+            })";
+            callback(response);
+          }));
+
+  ::ledger::bitflyer::Transaction transaction;
+  transaction.amount = 4.75;
+  transaction.address = "6654ecb0-6079-4f6c-ba58-791cc890a561";
+
+  transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8", transaction,
+                        false,
+                        [](const type::Result result, const std::string& id) {
+                          EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                          EXPECT_EQ(id, "");
+                        });
+}
+
 TEST_F(BitflyerPostTransactionTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
