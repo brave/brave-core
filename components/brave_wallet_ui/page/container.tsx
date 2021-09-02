@@ -333,13 +333,17 @@ function Container (props: Props) {
   }, [accounts, selectedAccount, fromAsset])
 
   const onSelectPresetFromAmount = (percent: number) => {
+    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === fromAsset.asset.symbol)
     const amount = Number(fromAsset.assetBalance) * percent
-    setSendAmount(amount.toString())
+    const formatedAmmount = formatBalance(amount.toString(), asset?.decimals ?? 18)
+    setFromAmount(formatedAmmount)
   }
 
   const onSelectPresetSendAmount = (percent: number) => {
+    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === fromAsset.asset.symbol)
     const amount = Number(fromAsset.assetBalance) * percent
-    setSendAmount(amount.toString())
+    const formatedAmmount = formatBalance(amount.toString(), asset?.decimals ?? 18)
+    setSendAmount(formatedAmmount)
   }
 
   const onToggleAddModal = () => {
