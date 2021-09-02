@@ -33,7 +33,6 @@ class SpeedreaderTabHelper
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
 
-  // Helper function to return a weak pointer
   base::WeakPtr<SpeedreaderTabHelper> GetWeakPtr();
 
   // Returns |true| if Speedreader is turned on for all sites.
@@ -91,8 +90,7 @@ class SpeedreaderTabHelper
       content::NavigationHandle* navigation_handle) override;
   void DidRedirectNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void DidFinishNavigation(
-      content::NavigationHandle* navigation_handle) override;
+  void DidStopLoading() override;
 
   // SpeedreaderResultDelegate:
   void OnDistillComplete() override;

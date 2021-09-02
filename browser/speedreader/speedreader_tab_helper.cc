@@ -18,6 +18,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
@@ -97,9 +98,14 @@ bool SpeedreaderTabHelper::MaybeUpdateCachedState(
   if (!entry) {
     return false;
   }
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  DCHECK(profile);
+  auto* speedreader_service = SpeedreaderServiceFactory::GetForProfile(profile);
 
   bool cached = false;
-  DistillState state = SpeedreaderExtendedInfoHandler::GetCachedMode(entry);
+  DistillState state =
+      SpeedreaderExtendedInfoHandler::GetCachedMode(entry, speedreader_service);
   if (state != DistillState::kUnknown) {
     cached = true;
     distill_state_ = state;
@@ -215,15 +221,11 @@ void SpeedreaderTabHelper::OnDistillComplete() {
   }
 }
 
-void SpeedreaderTabHelper::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
-  if (!navigation_handle->HasCommitted()) {
-    distill_state_ = DistillState::kNone;
-  }
+void SpeedreaderTabHelper::DidStopLoading() {
   auto* entry = web_contents()->GetController().GetLastCommittedEntry();
-  DCHECK(entry);
-
-  SpeedreaderExtendedInfoHandler::PersistMode(entry, distill_state_);
+  if (entry) {
+    SpeedreaderExtendedInfoHandler::PersistMode(entry, distill_state_);
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderTabHelper)

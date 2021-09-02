@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/supports_user_data.h"
+#include "brave/components/speedreader/speedreader_service.h"
 #include "components/sessions/content/content_serialized_navigation_driver.h"
 #include "content/public/browser/navigation_entry.h"
 
@@ -18,8 +19,7 @@ namespace {
 // navigation entry user data.
 constexpr char kSpeedreaderKey[] = "speedreader";
 
-constexpr char kPageSavedReaderMode[] = "reader-mode";
-constexpr char kPageSavedSpeedreaderMode[] = "speedreader-mode";
+constexpr char kPageSavedDistilled[] = "distilled";
 
 struct SpeedreaderNavigationData : public base::SupportsUserData::Data {
   explicit SpeedreaderNavigationData(const std::string& value) : value(value) {}
@@ -45,11 +45,8 @@ void SpeedreaderExtendedInfoHandler::PersistMode(
   std::unique_ptr<SpeedreaderNavigationData> data;
   switch (state) {
     case DistillState::kReaderMode:
-      data = std::make_unique<SpeedreaderNavigationData>(kPageSavedReaderMode);
-      break;
     case DistillState::kSpeedreaderMode:
-      data = std::make_unique<SpeedreaderNavigationData>(
-          kPageSavedSpeedreaderMode);
+      data = std::make_unique<SpeedreaderNavigationData>(kPageSavedDistilled);
       break;
     default:
       return;
@@ -60,17 +57,17 @@ void SpeedreaderExtendedInfoHandler::PersistMode(
 
 // static
 DistillState SpeedreaderExtendedInfoHandler::GetCachedMode(
-    content::NavigationEntry* entry) {
+    content::NavigationEntry* entry,
+    SpeedreaderService* service) {
   DCHECK(entry);
   auto* data = static_cast<SpeedreaderNavigationData*>(
       entry->GetUserData(kSpeedreaderKey));
   if (!data) {
     return DistillState::kUnknown;
   }
-  if (data->value == kPageSavedReaderMode) {
-    return DistillState::kReaderMode;
-  } else if (data->value == kPageSavedSpeedreaderMode) {
-    return DistillState::kSpeedreaderMode;
+  if (data->value == kPageSavedDistilled) {
+    return service->IsEnabled() ? DistillState::kSpeedreaderMode
+                                : DistillState::kReaderMode;
   } else {
     return DistillState::kUnknown;
   }

@@ -17,6 +17,8 @@ class NavigationEntry;
 
 namespace speedreader {
 
+class SpeedreaderService;
+
 // This class is meant to persist data to a content::NavigationEntry so that
 // distilled pages will be recognized on a restored session.
 class SpeedreaderExtendedInfoHandler : public sessions::ExtendedInfoHandler {
@@ -30,7 +32,8 @@ class SpeedreaderExtendedInfoHandler : public sessions::ExtendedInfoHandler {
 
   // Retrieve cached speedreader state from NavigationEntry. Returns
   // DistillState::kUnknown if not cached.
-  static DistillState GetCachedMode(content::NavigationEntry* entry);
+  static DistillState GetCachedMode(content::NavigationEntry* entry,
+                                    SpeedreaderService* service);
 
   // Clear the NavigationEntry speedreader state
   static void ClearPersistedData(content::NavigationEntry* entry);

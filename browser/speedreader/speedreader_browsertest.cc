@@ -22,10 +22,9 @@
 #include "components/keep_alive_registry/keep_alive_types.h"
 #include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/network_session_configurator/common/network_switches.h"
-#include "content/public/browser/notification_service.h"
-#include "content/public/browser/notification_types.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -75,6 +74,8 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
+  void TearDownOnMainThread() override { DisableSpeedreader(); }
+
   content::WebContents* ActiveWebContents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
@@ -95,18 +96,12 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
                                                 false);
   }
 
-  void EnableSpeedreader() {
-    speedreader_service()->EnableSpeedreaderForTest();
-  }
-
   void DisableSpeedreader() {
     speedreader_service()->DisableSpeedreaderForTest();
   }
 
   void GoBack(Browser* browser) {
-    content::WindowedNotificationObserver observer(
-        content::NOTIFICATION_LOAD_STOP,
-        content::NotificationService::AllSources());
+    content::TestNavigationObserver observer(ActiveWebContents());
     chrome::GoBack(browser, WindowOpenDisposition::CURRENT_TAB);
     observer.Wait();
   }
@@ -127,11 +122,8 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
-  EnableSpeedreader();
-  const GURL url = https_server_.GetURL(kTestHost, kTestPageReadable);
-  ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageReadable);
   EXPECT_TRUE(
       speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
 
@@ -152,7 +144,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, NavigationNostickTest) {
-  EnableSpeedreader();
+  ToggleSpeedreader();
   NavigateToPageSynchronously(kTestPageSimple);
   EXPECT_FALSE(
       speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
@@ -194,7 +186,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, P3ATest) {
-  DisableSpeedreader();
   base::HistogramTester tester;
 
   // SpeedReader never enabled
