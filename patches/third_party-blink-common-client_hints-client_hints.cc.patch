@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/common/client_hints/client_hints.cc b/third_party/blink/common/client_hints/client_hints.cc
-index f8e39c9ed281ced24c8915f1f94a02c4b4f009fb..83cc481e34950dad89cbf607bc5dc09a099ec0d7 100644
+index 7ec34f0a995b324454530052a73527dce613af83..c14201a9ef484bf884079106aeaf3ee7ff1ff39f 100644
 --- a/third_party/blink/common/client_hints/client_hints.cc
 +++ b/third_party/blink/common/client_hints/client_hints.cc
-@@ -96,6 +96,7 @@ std::string SerializeLangClientHint(const std::string& raw_language_list) {
+@@ -98,6 +98,7 @@ std::string SerializeLangClientHint(const std::string& raw_language_list) {
  }
  
  bool IsClientHintSentByDefault(network::mojom::WebClientHintsType type) {

@@ -1,5 +1,5 @@
 diff --git a/net/base/host_port_pair.cc b/net/base/host_port_pair.cc
-index efa039d35fd44c2c7412563a68a3e7a6fdae1e2a..05e7a587a7d0f63224804737f383ecec15174d9f 100644
+index 5e4c2d3aea431c1d77059a6b2571b3775ecfbc0e..8d3e7dd4764229fe334e06813aaaaaa2248061e3 100644
 --- a/net/base/host_port_pair.cc
 +++ b/net/base/host_port_pair.cc
 @@ -25,6 +25,7 @@ HostPortPair::HostPortPair(base::StringPiece in_host, uint16_t in_port)

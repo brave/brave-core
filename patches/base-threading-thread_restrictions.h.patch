@@ -1,8 +1,8 @@
 diff --git a/base/threading/thread_restrictions.h b/base/threading/thread_restrictions.h
-index 088e966c9948d55fbb22daf4acd21072b220920d..86f6bbbd4c209ae911fab9e3a4f03f5ed9329a8b 100644
+index 67f44e5762bf38f28bec9c7ee57f604a13adc276..3ccbb78c18bd0e5c03caec7f5278983ee8907783 100644
 --- a/base/threading/thread_restrictions.h
 +++ b/base/threading/thread_restrictions.h
-@@ -478,6 +478,7 @@ INLINE_IF_DCHECK_IS_OFF void DisallowBaseSyncPrimitives()
+@@ -482,6 +482,7 @@ INLINE_IF_DCHECK_IS_OFF void DisallowBaseSyncPrimitives()
      EMPTY_BODY_IF_DCHECK_IS_OFF;
  
  class BASE_EXPORT ScopedAllowBaseSyncPrimitives {

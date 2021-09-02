@@ -1,20 +1,20 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index af78cfec2d60ba9f4703ac04eb5f65c1919ff4e2..c0864946a065d8594efed3832cc76b3077a4b24d 100644
+index 5320f5a79f413b3db34c91c15ffda4363dff3eff..45c0e4b7076a749455972915bf293fca73d9bbd0 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-@@ -2188,6 +2188,7 @@ ImageData* BaseRenderingContext2D::getImageData(
+@@ -2128,6 +2128,7 @@ ImageData* BaseRenderingContext2D::getImageData(
  }
- 
+
  ImageData* BaseRenderingContext2D::getImageDataInternal(
 +    BRAVE_GET_IMAGE_DATA_PARAMS
      int sx,
      int sy,
      int sw,
-@@ -2305,6 +2306,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
+@@ -2243,6 +2244,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
        DCHECK(!bounds.intersect(SkIRect::MakeXYWH(sx, sy, sw, sh)));
      }
    }
 +  BRAVE_GET_IMAGE_DATA
- 
-   if (!IsPaint2D()) {
-     int scaled_time = getScaledElapsedTime(
+
+   return image_data;
+ }

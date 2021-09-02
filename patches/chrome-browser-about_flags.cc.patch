@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index e50714dc9f4f87fa315bd1757ba8f96ca8017bbd..f6c57fead42b8afe1bb49441378028c5ce1e496f 100644
+index 95b9796cd5b91b05fdcfdd68507dadc0f24edf9d..82d63ea865b3969da2c4720721657c5ce928919d 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -313,14 +313,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
@@ -18,14 +18,14 @@ index e50714dc9f4f87fa315bd1757ba8f96ca8017bbd..f6c57fead42b8afe1bb49441378028c5
      {flag_descriptions::kTraceUploadUrlChoiceTesting, switches::kTraceUploadURL,
 -     "https://performance-insights.appspot.com/upload?tags=flags,TestingTeam"}};
 +     "https://no-thanks.invalid"}};
- 
+
  const FeatureEntry::Choice kLiteVideoDefaultDownlinkBandwidthKbps[] = {
      {flags_ui::kGenericExperimentChoiceDefault, "", ""},
-@@ -7539,6 +7539,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -7495,6 +7495,7 @@ const FeatureEntry kFeatureEntries[] = {
      // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
      // Histograms" in tools/metrics/histograms/README.md (run the
      // AboutFlagsHistogramTest unit test to verify this process).
 +    BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
  };
- 
+
  class FlagsStateSingleton : public flags_ui::FlagsState::Delegate {
