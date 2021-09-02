@@ -41,7 +41,7 @@
 
   <!-- About (OS Settings) -->
   <message name="IDS_OS_SETTINGS_ABOUT_PAGE_BUILD_DETAILS" desc="Label of the row button that clicks into Build details">
-    Build Details
+    Build details
   </message>
   <message name="IDS_OS_SETTINGS_ABOUT_PAGE_BUILD_DETAILS_COPY_TOOLTIP_LABEL" desc="Tooltip label that describes the build details copy button.">
     Copy build details to clipboard
@@ -868,8 +868,8 @@
   <message name="IDS_SETTINGS_QUICK_ANSWERS_ENABLE_DESCRIPTION" desc="Sub label for the Quick Answers toggle.">
     With a right-click or long press, show related info for your text selection
   </message>
-  <message name="IDS_SETTINGS_QUICK_ANSWERS_ENABLE_DESCRIPTION_WITH_LINK" desc="Sub label for the Quick Answers toggle with link to the website languages.">
-    Get definitions, translations, or unit conversions when you right-click or touch &amp; hold text. Customize translation languages in <ph name="LINK_BEGIN">&lt;a target="_blank" href="#"&gt;</ph>Website languages<ph name="LINK_END">&lt;/a&gt;</ph>.
+  <message name="IDS_SETTINGS_QUICK_ANSWERS_ENABLE_DESCRIPTION_WITH_LINK" desc="Sub label for the Quick Answers toggle with link to the web content languages.">
+    Get definitions, translations, or unit conversions when you right-click or touch &amp; hold text. Customize translation by setting your preferred languages in <ph name="LINK_BEGIN">&lt;a target="_blank" href="#"&gt;</ph>Web content languages<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_QUICK_ANSWERS_DEFINITION_ENABLE" desc="Title for a toggle that controls the Quick Answers definiton feature.">
     Definition
@@ -2020,6 +2020,18 @@ Press an assigned switch to remove assignment
   <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_CHANGE_DEVICE_NAME" desc="Bluetooth device details page: button label for button that prompts user to change the Bluetooth device's name when clicked.">
     Change device name
   </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_CHANGE_DEVICE_NAME_BTN_A11Y_LABEL" desc="Bluetooth device details page: a11y label for button that prompts user to change the Bluetooth device's name when clicked.">
+    Change device name for <ph name="DEVICE_NAME">$1<ex>Beats</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_BATTERY_PERCENTAGE_A11Y_LABEL" desc="Bluetooth device details page: A11y label informing the current battery percentage.">
+    Battery level <ph name="PERCENTAGE">$1<ex>90</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_CONNECTED_A11Y_LABEL" desc="Bluetooth device details page: A11y label informing the current device is connected.">
+    Connected to <ph name="DEVICE">$1<ex>Beats</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_DISCONNECTED_A11Y_LABEL" desc="Bluetooth device details page: A11y label informing the current device is disconnected.">
+    Disconnected from <ph name="DEVICE">$1<ex>Beats</ex></ph>
+  </message>
   <message name="IDS_SETTINGS_BLUETOOTH_CHANGE_DEVICE_NAME_DIALOG_NEW_NAME" desc="Bluetooth device details page &gt; Change name dialog: label informing user to enter a new device name in input below.">
     New device name
   </message>
@@ -2028,6 +2040,21 @@ Press an assigned switch to remove assignment
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_CHANGE_DEVICE_NAME_DIALOG_DONE" desc="Bluetooth device details page &gt; Change device name dialog: Label for button that initiates device's name change.">
     Done
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_CHANGE_DEVICE_SETTINGS_MOUSE" desc="Bluetooth device details page: label for button that changes current mouse device settings.">
+    Change mouse settings
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_CHANGE_DEVICE_SETTINGS_KEYBOARD" desc="Bluetooth device details page: label for button that changes current keyboard device settings.">
+    Change keyboard settings
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_CHANGE_DEVICE_NAME_DIALOG_INPUT_A11Y_LABEL" desc="Bluetooth device details page &gt; Change device name dialog:  The a11y label for the dialog input that renames a Bluetooth device, informing the user that letters, numbers and special characters are allowed, as well as the maximum number of characters permitted.">
+    Name can use letters, numbers, and special characters, and must be <ph name="MAX_CHARACTER_COUNT">$1<ex>20</ex></ph> characters or fewer
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_CHANGE_DEVICE_NAME_DIALOG_INPUT_SUBTITLE" desc="Bluetooth device details page &gt; Change device name dialog: The Label for the dialog input that renames a Bluetooth device, informing the user that letters, numbers and special characters are allowed.">
+    Name can use letters, numbers, and special characters
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_CHANGE_DEVICE_NAME_DIALOG_INPUT_CHARACTER_COUNT" desc="Bluetooth device details page &gt; Change device name dialog: The Label for the dialog input that renames a Bluetooth device, informing the user the number of characters they have inputted compared to the maximum number of characters allowed.">
+    <ph name="CURRENT_CHARACTER_COUNT">$1<ex>15</ex></ph>/<ph name="MAX_CHARACTER_COUNT">$2<ex>20</ex></ph>
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_TOGGLE_ACCESSIBILITY_LABEL" desc="Accessibility only label for Bluetooth enable/disable toggle.">
     Bluetooth enable
@@ -2073,6 +2100,63 @@ Press an assigned switch to remove assignment
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_BATTERY_PERCENTAGE" desc="Label for a paired Bluetooth device in a list that indicates the battery level of the device.">
     <ph name="BATTERY_PERCENTAGE">$1<ex>32</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_UNKNOWN" desc="Accessibility label for paired Bluetooth device list item with a device type of unknown.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Unknown device type
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_UNKNOWN_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of unknown and available battery info.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Unknown device type, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_COMPUTER" desc="Accessibility label for paired Bluetooth device list item with a device type of computer.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Computer
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_COMPUTER_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of computer and available battery info.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Computer, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_PHONE" desc="Accessibility label for paired Bluetooth device list item with a device type of phone.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Phone
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_PHONE_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of phone and available battery info.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Phone, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_HEADSET" desc="Accessibility label for paired Bluetooth device list item with a device type of audio device.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Audio device
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_HEADSET_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of audio device and available battery info.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Audio device, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_VIDEO_CAMERA" desc="Accessibility label for paired Bluetooth device list item with a device type of video camera.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Video camera
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_VIDEO_CAMERA_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of video camera and available battery info.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Video camera, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_GAME_CONTROLLER" desc="Accessibility label for paired Bluetooth device list item with a device type of game controller.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Game controller
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_GAME_CONTROLLER_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of game controller and available battery info.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Game controller, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_KEYBOARD" desc="Accessibility label for paired Bluetooth device list item with a device type of keyboard.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Keyboard
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_KEYBOARD_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of keyboard and available battery info.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Keyboard, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_MOUSE" desc="Accessibility label for paired Bluetooth device list item with a device type of mouse.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Mouse
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_MOUSE_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of mouse and available battery info.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Mouse, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_TABLET" desc="Accessibility label for paired Bluetooth device list item with a device type of tablet.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Tablet
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_TABLET_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of tablet and available battery info.">
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Tablet, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_SUBPAGE_BUTTON_A11Y_LABEL" desc="Accessibility label for button in a paired Bluetooth device list item that routes to the detail page for the device.">
+    <ph name="DEVICE">$1<ex>Beats</ex></ph>, Details
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAILS" desc="Name of the settings page which displays Bluetooth device details.">
     Bluetooth device details
@@ -3558,12 +3642,6 @@ Press an assigned switch to remove assignment
   </message>
   <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_SCHEDULE_SUNSET_TO_SUNRISE" desc="In Device Settings &gt; Displays, the label of the option to set the automatic schedule of the Night Light feature to turn on at sunset and off at sunrise.">
     Sunset to sunrise
-  </message>
-  <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_START_TIME" desc="In Device Settings &gt; Displays, the label of the start time bubble.">
-    Start time
-  </message>
-  <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_STOP_TIME" desc="In Device Settings &gt; Displays, the label of the end time bubble.">
-    End time
   </message>
   <message name="IDS_SETTINGS_DISPLAY_NIGHT_LIGHT_TEXT" desc="In Device Settings &gt; Displays, text describing the Night Light feature.">
     Make it easier to look at your screen or read in dim light
