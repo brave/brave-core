@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -228,6 +229,21 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
   }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  const bool show_menu_item = IsCommandIdEnabled(IDC_BRAVE_VPN_MENU);
+  const bool show_panel_item = IsCommandIdEnabled(IDC_SHOW_BRAVE_VPN_PANEL);
+
+  if (show_menu_item) {
+    // Sub menu for post-purchased is not yet implemented.
+    NOTIMPLEMENTED();
+    InsertItemWithStringIdAt(GetIndexOfBraveVPNItem(), IDC_BRAVE_VPN_MENU,
+                             IDS_BRAVE_VPN_MENU);
+  } else if (show_panel_item) {
+    InsertItemWithStringIdAt(GetIndexOfBraveVPNItem(), IDC_SHOW_BRAVE_VPN_PANEL,
+                             IDS_BRAVE_VPN_MENU);
+  }
+#endif
+
   // Insert adblock menu at last. Assumed this is always enabled.
   DCHECK(IsCommandIdEnabled(IDC_SHOW_BRAVE_ADBLOCK));
   InsertItemWithStringIdAt(GetIndexOfBraveAdBlockItem(),
@@ -428,83 +444,68 @@ void BraveAppMenuModel::InsertAlternateProfileItems() {
 
 int BraveAppMenuModel::GetIndexOfBraveAdBlockItem() const {
   // Insert as a last item in second section.
-  int adblock_item_index = -1;
+  std::vector<int> commands_to_check = {IDC_SHOW_BRAVE_VPN_PANEL,
+                                        IDC_BRAVE_VPN_MENU,
+                                        IDC_SIDEBAR_SHOW_OPTION_MENU,
+                                        IDC_SHOW_BRAVE_SYNC,
+                                        IDC_MANAGE_EXTENSIONS,
+                                        IDC_SHOW_BRAVE_WALLET,
+                                        IDC_SHOW_DOWNLOADS};
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
-  adblock_item_index = GetIndexOfCommandId(IDC_SIDEBAR_SHOW_OPTION_MENU);
-  if (adblock_item_index != -1)
-    return adblock_item_index + 1;
-#endif
-
-  adblock_item_index = GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC);
-  if (adblock_item_index != -1)
-    return adblock_item_index + 1;
-
-  adblock_item_index = GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS);
-  if (adblock_item_index != -1)
-    return adblock_item_index + 1;
-
-  adblock_item_index = GetIndexOfCommandId(IDC_SHOW_BRAVE_WALLET);
-  if (adblock_item_index != -1)
-    return adblock_item_index + 1;
-
-  adblock_item_index = GetIndexOfCommandId(IDC_SHOW_DOWNLOADS);
-  DCHECK_NE(-1, adblock_item_index) << "No download item";
-  return adblock_item_index + 1;
+  return GetProperItemIndex(commands_to_check, true);
 }
 
 int BraveAppMenuModel::GetIndexOfBraveRewardsItem() const {
   // Insert rewards menu at first of this section. If history menu is not
   // available, check below items.
-  int rewards_index = -1;
-  rewards_index = GetIndexOfCommandId(IDC_RECENT_TABS_MENU);
-  if (rewards_index != -1)
-    return rewards_index;
+  std::vector<int> commands_to_check = {IDC_RECENT_TABS_MENU,
+                                        IDC_BOOKMARKS_MENU, IDC_SHOW_DOWNLOADS};
 
-  rewards_index = GetIndexOfCommandId(IDC_BOOKMARKS_MENU);
-  if (rewards_index != -1)
-    return rewards_index;
-
-  rewards_index = GetIndexOfCommandId(IDC_SHOW_DOWNLOADS);
-  DCHECK_NE(-1, rewards_index) << "No download item";
-  return rewards_index;
+  return GetProperItemIndex(commands_to_check, false);
 }
 
 int BraveAppMenuModel::GetIndexOfBraveSyncItem() const {
   // Insert sync menu under extensions menu. If extensions menu is not
   // available, check above items.
-  int sync_index = -1;
-  sync_index = GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS);
-  if (sync_index != -1)
-    return sync_index + 1;
+  std::vector<int> commands_to_check = {
+      IDC_MANAGE_EXTENSIONS, IDC_SHOW_BRAVE_WALLET, IDC_SHOW_DOWNLOADS};
 
-  sync_index = GetIndexOfCommandId(IDC_SHOW_BRAVE_WALLET);
-  if (sync_index != -1)
-    return sync_index + 1;
-
-  sync_index = GetIndexOfCommandId(IDC_SHOW_DOWNLOADS);
-  DCHECK_NE(-1, sync_index) << "No download item";
-  return sync_index + 1;
+  return GetProperItemIndex(commands_to_check, true);
 }
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 int BraveAppMenuModel::GetIndexOfBraveSidebarItem() const {
-  // Insert as a last item in second section.
-  int sidebar_item_index = -1;
-  sidebar_item_index = GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC);
-  if (sidebar_item_index != -1)
-    return sidebar_item_index + 1;
+  std::vector<int> commands_to_check = {
+      IDC_SHOW_BRAVE_SYNC, IDC_MANAGE_EXTENSIONS, IDC_SHOW_BRAVE_WALLET,
+      IDC_SHOW_DOWNLOADS};
 
-  sidebar_item_index = GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS);
-  if (sidebar_item_index != -1)
-    return sidebar_item_index + 1;
-
-  sidebar_item_index = GetIndexOfCommandId(IDC_SHOW_BRAVE_WALLET);
-  if (sidebar_item_index != -1)
-    return sidebar_item_index + 1;
-
-  sidebar_item_index = GetIndexOfCommandId(IDC_SHOW_DOWNLOADS);
-  DCHECK_NE(-1, sidebar_item_index) << "No download item";
-  return sidebar_item_index + 1;
+  return GetProperItemIndex(commands_to_check, true);
 }
 #endif
+
+int BraveAppMenuModel::GetIndexOfBraveVPNItem() const {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  std::vector<int> commands_to_check = {
+      IDC_SIDEBAR_SHOW_OPTION_MENU, IDC_SHOW_BRAVE_SYNC, IDC_MANAGE_EXTENSIONS,
+      IDC_SHOW_BRAVE_WALLET, IDC_SHOW_DOWNLOADS};
+
+  return GetProperItemIndex(commands_to_check, true);
+#else
+  return -1;
+#endif
+}
+
+int BraveAppMenuModel::GetProperItemIndex(std::vector<int> commands_to_check,
+                                          bool insert_next) const {
+  int item_index = -1;
+  const size_t commands_size = commands_to_check.size();
+  for (size_t i = 0; i < commands_size; i++) {
+    item_index = GetIndexOfCommandId(commands_to_check[i]);
+    if (item_index != -1)
+      return insert_next ? item_index + 1 : item_index;
+  }
+
+  NOTREACHED() << "At least, item for this command should be existed: "
+               << commands_to_check[commands_size - 1];
+  return 0;
+}

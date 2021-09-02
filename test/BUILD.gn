@@ -4,6 +4,7 @@ import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -191,7 +192,6 @@ test("brave_unit_tests") {
     "//brave/components/brave_shields/common",
     "//brave/components/brave_sync:crypto",
     "//brave/components/brave_sync:network_time_helper",
-    "//brave/components/brave_vpn:unit_tests",
     "//brave/components/brave_wallet/browser/test:brave_wallet_unit_tests",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/child_process_monitor:unittests",
@@ -253,6 +253,10 @@ test("brave_unit_tests") {
     "//services/network/public/cpp",
     "//services/preferences/public/cpp",
   ]
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn:unit_tests" ]
+  }
 
   if (decentralized_dns_enabled) {
     deps += [ "//brave/browser/decentralized_dns/test:unit_tests" ]
@@ -704,6 +708,7 @@ if (!is_android) {
       "//brave/components/brave_search/browser",
       "//brave/components/brave_search/common",
       "//brave/components/brave_shields/common",
+      "//brave/components/brave_vpn/buildflags",
       "//brave/renderer/test:browser_tests",
       "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-ledger",
@@ -714,6 +719,12 @@ if (!is_android) {
       "//media:test_support",
       "//testing/gmock",
     ]
+
+    if (enable_brave_vpn) {
+      deps += [ "//brave/components/brave_vpn" ]
+      sources +=
+          [ "//brave/browser/ui/views/brave_vpn_panel_host_browsertest.cc" ]
+    }
 
     if (enable_crash_dialog) {
       sources += [ "//brave/browser/ui/views/crash_report_permission_ask_dialog_browsertest.cc" ]
