@@ -354,6 +354,7 @@
 <translation id="4371618764691059036">A contribuição mensal foi enviada.</translation>
 <translation id="6356822617569064293">Data da próxima contribuição:</translation>
 <translation id="3593485149443019592">Sem tokens suficientes. <ph name="LINK_BEGIN"/>Adicione fundos<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">A Brave recebe 5% do valor da gratificação como uma taxa de processamento.</translation>
 <translation id="207268487070188114">Gratificação esporádica</translation>
 <translation id="69861679024013299">Valor da gratificação esporádica:</translation>
 <translation id="3669086939205397942">Espere, ainda não lhe é possível dar gorjeta</translation>
@@ -362,6 +363,7 @@
 <translation id="5531915212947569943">Lamentamos vê-lo partir…</translation>
 <translation id="1420756770787071946">Contribuir para este criador</translation>
 <translation id="3271043362279673449">Agradecemos a sua contribuição!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Nota: <ph name="BOLD_END"/>Pode demorar vários minutos até a sua gratificação ser processada</translation>
 <translation id="3312470408978098625">A sua gratificação esporádica foi enviada.</translation>
 <translation id="5096821444729034955">para publicação</translation>
 <translation id="2978223787436054634">Faça um tweet sobre o seu donativo</translation>
@@ -646,10 +648,11 @@
 <translation id="6436689611575806470">O montante em [[currency]] que ganhou está a caminho.</translation>
 <translation id="8267327690882073581">Verificar Carteira</translation>
 <translation id="543510923939676996">Wallet Verificada</translation>
-<translation id="2659764755126740206">Ir para a minha conta <ph name="PROVIDER"/></translation>
+<translation id="2445110450361135194">Aceda à sua conta <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Inicie sessão na sua conta <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Verificação da wallet concluída</translation>
 <translation id="9200453331904391567">Desligar de «Recompensas Brave»</translation>
-<translation id="3656941797339037856">Recompensas de associação ao Gemini!</translation>
+<translation id="3656941797339037856">Associar Rewards ao Gemini!</translation>
 <translation id="671838195432136371">O Gemini permite-lhe negociar, depositar e ganhar 3,49% de APY* facilmente no seu BAT. Os novos utilizadores que se associarem ao Gemini recebem 5 BAT gratuitos!</translation>
 <translation id="9136976526700181750">* Ganhos APY do Gemini a partir de 15 de agosto de 2021</translation>
 <translation id="7404779623219601861">Resgatar BAT para cartões-presente</translation>
@@ -736,7 +739,7 @@
 <translation id="1833248467354516560">Preço Unitário</translation>
 <translation id="4763179765154524864">Total Gasto</translation>
 <translation id="8851480289992540512">Total Recebido</translation>
-<translation id="824449983246282560">Não tem saldo na sua conta. Visite o Gemini para carregar o seu saldo.</translation>
+<translation id="824449983246282560">Não tem saldo na sua conta. Visite o Gemini para comprar moedas.</translation>
 <translation id="8624961452383848703">Quero converter…</translation>
 <translation id="616639131065447379">Bem-vindo a Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">A Crypto Wallets permite-lhe trabalhar com criptomoedas e ativos relacionados no Brave.  A Crypto Wallets suporta tokens Ethereum como ETH e BAT, assim como colecionáveis, e permite-lhe trabalhar com Ðapps e outros contratos inteligentes. Tudo isto destina-se a pessoas familiarizadas com o Ethereum e com outros sistemas blockchain — ou que desejam aprender.</translation>

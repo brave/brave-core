@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Mėnesinis indėlis nustatytas.</translation>
 <translation id="6356822617569064293">Kito indėlio data:</translation>
 <translation id="3593485149443019592">Nepakanka žetonų. <ph name="LINK_BEGIN"/>Pridėkite lėšų<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Kaip apdorojimo mokestį, „Brave“ paima 5 % arbatpinigių sumos.</translation>
 <translation id="207268487070188114">Vienkartiniai arbatpinigiai</translation>
 <translation id="69861679024013299">Vienkartinių arbatpinigių suma:</translation>
 <translation id="3669086939205397942">Palaukite, dar negalite skirti arbatpinigių</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Apgailestaujame, kad mus paliekate…</translation>
 <translation id="1420756770787071946">Paremti šį kūrėją</translation>
 <translation id="3271043362279673449">Dėkojame už palaikymą!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Pastaba. <ph name="BOLD_END"/>Gali prireikti kelių minučių jūsų arbatpinigių operacijai apdoroti</translation>
 <translation id="3312470408978098625">Jūsų vienkartiniai arbatpinigiai išsiųsti.</translation>
 <translation id="5096821444729034955">už jo (jos) įrašą</translation>
 <translation id="2978223787436054634">Parašykite „Tweet“ žinutę apie savo paramą</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">Jūsų [[currency]] išmoka netrukus bus suteikta.</translation>
 <translation id="8267327690882073581">Patvirtinti piniginę</translation>
 <translation id="543510923939676996">Piniginė patvirtinta</translation>
-<translation id="2659764755126740206">Eiti į mano <ph name="PROVIDER"/> paskyrą</translation>
+<translation id="2445110450361135194">Eiti į savo <ph name="PROVIDER"/> paskyrą</translation>
+<translation id="4244985009709452836">Prisijungti prie savo <ph name="PROVIDER"/> paskyros</translation>
 <translation id="3699674790322420653">Baigti piniginės patvirtinimą</translation>
 <translation id="9200453331904391567">Atsijungti nuo „Brave Rewards“</translation>
 <translation id="3656941797339037856">Susiekite „Rewards“ su „Gemini“!</translation>

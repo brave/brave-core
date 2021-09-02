@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">کمک ماهانه تنظیم شده است.</translation>
 <translation id="6356822617569064293">تاریخ کمک بعدی:</translation>
 <translation id="3593485149443019592">توکن‌ها کافی نیستند. لطفاً <ph name="LINK_BEGIN"/>سرمایه اضافه کنید<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave ‏5 درصد از انعام را به‌عنوان کارمزد پردازش برمی‌دارد</translation>
 <translation id="207268487070188114">انعام یک‌باره</translation>
 <translation id="69861679024013299">مقدار انعام یک‌باره:</translation>
 <translation id="3669086939205397942">دست نگه دارید، هنوز نمی‌توانید انعام بدهید</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">از اینکه اینجا را ترک می‌کنید متأسفیم…</translation>
 <translation id="1420756770787071946">پشتیبانی از این سازنده</translation>
 <translation id="3271043362279673449">بابت پشتیبانی سپاسگزاریم!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>توجه: <ph name="BOLD_END"/>ممکن است پردازش انعام شما چند دقیقه طول بکشد</translation>
 <translation id="3312470408978098625">انعام یک‌باره شما ارسال شده است.</translation>
 <translation id="5096821444729034955">برای پست آن‌ها</translation>
 <translation id="2978223787436054634">درباره پشتیبانی خود توییت کنید</translation>
@@ -650,11 +652,12 @@
 <translation id="6436689611575806470">هدیه [[currency]] شما در راه است.</translation>
 <translation id="8267327690882073581">تأیید کیف پول</translation>
 <translation id="543510923939676996">کیف پول تأیید شد!‍</translation>
-<translation id="2659764755126740206">رفتن به حساب <ph name="PROVIDER"/> من</translation>
+<translation id="2445110450361135194">به حساب <ph name="PROVIDER"/> خود بروید</translation>
+<translation id="4244985009709452836">به حساب <ph name="PROVIDER"/> خود وارد شوید</translation>
 <translation id="3699674790322420653">تکمیل تأیید کیف پول</translation>
 <translation id="9200453331904391567">قطع ارتباط از پاداش‌های Brave</translation>
 <translation id="3656941797339037856">Rewards را به Gemini مرتبط کنید!</translation>
-<translation id="671838195432136371">Gemini به شما این امکان را می‌دهد تا به‌راحتی معامله و ذخیره کنید و 3.49٪ APY* در BAT خود به دست بیاورید. کاربران جدید Gemini که مرتبط کنند، 5 BAT رایگان دریافت می‌کنند!</translation>
+<translation id="671838195432136371">Gemini به شما این امکان را می‌دهد تا به‌راحتی در BAT خود معامله کنید، ذخیره کنید و 3.49٪ APY* به دست بیاورید. کاربران جدید Gemini که مرتبط کنند، 5 BAT رایگان دریافت می‌کنند!</translation>
 <translation id="9136976526700181750">* Gemini Earn APY از تاریخ 15 اوت 2021</translation>
 <translation id="7404779623219601861">نقد کردن BAT برای کارت‌های هدیه</translation>
 <translation id="6215565499749144110">با شبکه TAP، می‌توانید BAT خود را برای کارت‌های هدیه با برند معروف نقد کنید.</translation>

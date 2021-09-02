@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Ежемесячный взнос установлен.</translation>
 <translation id="6356822617569064293">Дата следующего взноса:</translation>
 <translation id="3593485149443019592">Недостаточно средств. Пожалуйста, <ph name="LINK_BEGIN"/>пополните баланс<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave берет 5% от суммы платежа в качестве комиссии за его обработку.</translation>
 <translation id="207268487070188114">Единоразовый платеж</translation>
 <translation id="69861679024013299">Сумма единоразового платежа:</translation>
 <translation id="3669086939205397942">Погодите, пока-что вы не можете давать донаты</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Очень жаль, что вы уходите…</translation>
 <translation id="1420756770787071946">Поддержать этого творца</translation>
 <translation id="3271043362279673449">Спасибо за поддержку!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Примечание.<ph name="BOLD_END"/> Обработка платежа может занять несколько минут.</translation>
 <translation id="3312470408978098625">Ваш единоразовый платеж отправлен.</translation>
 <translation id="5096821444729034955">для их публикации</translation>
 <translation id="2978223787436054634">Отправьте твит о вашей поддержке</translation>
@@ -650,11 +652,12 @@
 <translation id="6436689611575806470">Ваш бонус ([[currency]]) скоро будет начислен.</translation>
 <translation id="8267327690882073581">Проверить кошелек</translation>
 <translation id="543510923939676996">Кошелек проверен</translation>
-<translation id="2659764755126740206">Перейти в аккаунт <ph name="PROVIDER"/></translation>
+<translation id="2445110450361135194">Перейти в аккаунт <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Войти в аккаунт <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Завершить проверку кошелька</translation>
 <translation id="9200453331904391567">Отключиться от храбрых наград Brave Rewards</translation>
 <translation id="3656941797339037856">Привяжите Rewards к Gemini</translation>
-<translation id="671838195432136371">Gemini позволяет легко продавать, хранить криптовалюту и зарабатывать 3,49 % годовых (APY*) с баллов BAT. Новые пользователи Gemini, привязавшие Brave Rewards, получат 5 бесплатных баллов BAT.</translation>
+<translation id="671838195432136371">Gemini позволяет легко продавать, хранить баллы BAT и зарабатывать с них 3,49 % годовых (APY*). Новые пользователи Gemini, привязавшие Brave Rewards, получат 5 баллов BAT бесплатно.</translation>
 <translation id="9136976526700181750">* Годовой процентный доход (APY) в Gemini Earn на 15.08.2021</translation>
 <translation id="7404779623219601861">Использовать BAT для подарочных карт</translation>
 <translation id="6215565499749144110">С сетью TAP вы можете использовать BAT для оплаты подарочных карт популярных торговых брендов.</translation>

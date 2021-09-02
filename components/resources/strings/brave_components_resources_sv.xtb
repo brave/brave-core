@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Månadsbidrag har ställts in.</translation>
 <translation id="6356822617569064293">Nästa bidragsdatum:</translation>
 <translation id="3593485149443019592">Inte tillräckligt med tokens. <ph name="LINK_BEGIN"/>Sätt in pengar<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave samlar in 5 % av dricksbeloppet som bearbetningsavgift.</translation>
 <translation id="207268487070188114">Engångsdricks</translation>
 <translation id="69861679024013299">Engångsdricks:</translation>
 <translation id="3669086939205397942">Vänta, du kan inte ge dricks än</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Tråkigt att se dig gå…</translation>
 <translation id="1420756770787071946">Stöd den här skaparen</translation>
 <translation id="3271043362279673449">Tack för stödet!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Obs: <ph name="BOLD_END"/>Din dricks kan ta flera minuter att bearbeta</translation>
 <translation id="3312470408978098625">Engångsdricks har skickats.</translation>
 <translation id="5096821444729034955">för deras inlägg</translation>
 <translation id="2978223787436054634">Tweeta om ditt stöd</translation>
@@ -650,10 +652,11 @@
 <translation id="6436689611575806470">Din [[currency]]-belöning är på väg.</translation>
 <translation id="8267327690882073581">Verifiera plånbok</translation>
 <translation id="543510923939676996">Plånbok verifierad</translation>
-<translation id="2659764755126740206">Gå till mitt <ph name="PROVIDER"/>-konto</translation>
+<translation id="2445110450361135194">Gå till ditt <ph name="PROVIDER"/>-konto</translation>
+<translation id="4244985009709452836">Logga in på ditt <ph name="PROVIDER"/>-konto</translation>
 <translation id="3699674790322420653">Slutför verifiering av plånbok</translation>
 <translation id="9200453331904391567">Frånkoppla Brave Rewards</translation>
-<translation id="3656941797339037856">Länk-belöningar för Gemini!</translation>
+<translation id="3656941797339037856">Länka Rewards till Gemini!</translation>
 <translation id="671838195432136371">Gemini låter dig enkelt handla, lagra och tjäna 3.49% APY* på din BAT. Nya Gemini-användare som länkar får 5 gratis BAT!</translation>
 <translation id="9136976526700181750">* Gemini ger dig APY från den 15 augusti 2021</translation>
 <translation id="7404779623219601861">Lös in BAT mot presentkort</translation>
@@ -740,7 +743,7 @@
 <translation id="1833248467354516560">Enhetspris</translation>
 <translation id="4763179765154524864">Totalt spenderat</translation>
 <translation id="8851480289992540512">Totalt mottaget</translation>
-<translation id="824449983246282560">Du har inga saldon på ditt konto. Besök Gemini för att köpa lite.</translation>
+<translation id="824449983246282560">Du har inget saldo på ditt konto. Besök Gemini för att köpa.</translation>
 <translation id="8624961452383848703">Jag vill konvertera ...</translation>
 <translation id="616639131065447379">Välkommen till Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets låter dig arbeta med kryptovalutor och liknande tillgångar i Brave. Crypto Wallets stödjer Ethereum-polletter som ETH och BAT samt samlarsaker, och låter dig arbeta med Ðappar och andra smarta kontrakt. Allt detta är avsett för dem som är bekanta med Ethereum och andra blockkedjesystem — eller ser fram emot att lära sig.</translation>

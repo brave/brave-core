@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Se ha establecido la contribución mensual.</translation>
 <translation id="6356822617569064293">Fecha de la próxima contribución:</translation>
 <translation id="3593485149443019592">No hay tokens suficientes. <ph name="LINK_BEGIN"/>Agrega fondos<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave recauda el 5 % de la propina en concepto de tarifa de tramitación.</translation>
 <translation id="207268487070188114">Propina por única vez</translation>
 <translation id="69861679024013299">Importe de propina por única vez:</translation>
 <translation id="3669086939205397942">Espera, todavía no puedes dar propinas.</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Lamentamos que te vayas…</translation>
 <translation id="1420756770787071946">Apoyar a este creador</translation>
 <translation id="3271043362279673449">¡Gracias por tu apoyo!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Nota: <ph name="BOLD_END"/>Tu propina puede tardar varios minutos en tramitarse</translation>
 <translation id="3312470408978098625">Tu propina única se ha enviado.</translation>
 <translation id="5096821444729034955">por su publicación</translation>
 <translation id="2978223787436054634">Tuit sobre tu ayuda</translation>
@@ -650,11 +652,12 @@
 <translation id="6436689611575806470">Tu donación de [[currency]] está en camino.</translation>
 <translation id="8267327690882073581">Verificar billetera</translation>
 <translation id="543510923939676996">Billetera verificada</translation>
-<translation id="2659764755126740206">Ir a mi cuenta de <ph name="PROVIDER"/></translation>
+<translation id="2445110450361135194">Ve a tu cuenta de <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Inicia sesión en tu cuenta de <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Completar verificación de billetera</translation>
 <translation id="9200453331904391567">Desconectar de Recompensas Brave</translation>
 <translation id="3656941797339037856">¡Asocia Rewards con Gemini!</translation>
-<translation id="671838195432136371">Con Gemini puedes operar, conservar y ganar fácilmente hasta un 3,49 % de rendimiento porcentual anual (APY*) en tu BAT. Los nuevos usuarios de Gemini que conecten su cuenta reciben 5 BAT gratis.</translation>
+<translation id="671838195432136371">Con Gemini puedes operar, conservar y ganar fácilmente hasta un 3,49 % de rendimiento porcentual anual (APY*) por tus BAT. Los nuevos usuarios de Gemini que conecten su cuenta reciben 5 BAT gratis.</translation>
 <translation id="9136976526700181750">* A partir del 15 de agosto de 2021, Gemini gana un porcentaje de rendimiento anual (APY)</translation>
 <translation id="7404779623219601861">Canjea BAT por tarjetas de regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, puedes canjear tus BAT por tarjetas de regalo de marcas populares.</translation>

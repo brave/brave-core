@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">La contribution mensuelle a été établie.</translation>
 <translation id="6356822617569064293">Prochaine date de contribution :</translation>
 <translation id="3593485149443019592">Pas assez de jetons. Veuillez <ph name="LINK_BEGIN"/>ajouter des fonds<ph name="LINK_END"/></translation>
+<translation id="3586352807094428968">Brave perçoit 5 % du montant de la contribution à titre de frais de traitement.</translation>
 <translation id="207268487070188114">Contribution unique</translation>
 <translation id="69861679024013299">Montant de la contribution unique :</translation>
 <translation id="3669086939205397942">Patientez, vous ne pouvez pas encore laisser de pourboires.</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Navrés de vous voir partir…</translation>
 <translation id="1420756770787071946">Soutenir ce créateur</translation>
 <translation id="3271043362279673449">Merci pour votre soutien !</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Remarque : <ph name="BOLD_END"/>Le traitement de votre contribution peut prendre plusieurs minutes</translation>
 <translation id="3312470408978098625">Votre contribution unique a été envoyée.</translation>
 <translation id="5096821444729034955">pour sa publication</translation>
 <translation id="2978223787436054634">Tweetez au sujet de votre soutien</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">Votre allocation de [[currency]] est en route.</translation>
 <translation id="8267327690882073581">Vérifier le portefeuille</translation>
 <translation id="543510923939676996">Portefeuille vérifié</translation>
-<translation id="2659764755126740206">Accéder à mon compte <ph name="PROVIDER"/></translation>
+<translation id="2445110450361135194">Accédez à votre compte <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Connectez-vous à votre compte <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Terminer la vérification du portefeuille</translation>
 <translation id="9200453331904391567">Déconnexion des primes Brave</translation>
 <translation id="3656941797339037856">Associez Rewards à Gemini !</translation>

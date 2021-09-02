@@ -2283,9 +2283,9 @@
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>は、[Tab]、 [Enter] と順番にクリックすると、新しいプライベートウィンドウを開き、プライベートにブラウズすることが可能です</translation>
 <translation id="2418728264526266844">プライベートにブラウズするには、[プライベートウィンドウ] のボタンを押したあと、[Enter] を押して、新しいプライベートウィンドウを開きます</translation>
 <translation id="8120597037175988664">プライベートウィンドウを閉じます</translation>
-<translation id="8506574374929286570">現在の非公開プロフィールのすべてのプライベートウィンドウを閉じます</translation>
+<translation id="8506574374929286570">現在の非公開プロフィールのすべてのプライベートウィンドウを閉じる</translation>
 <translation id="72434570621750659"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>、「タブ」「Enter」の順に押して、現在の非公開プロフィールのすべてのプライベートウィンドウを閉じます</translation>
-<translation id="5299725681393421941">プライベートウィンドウボタンを閉じ、Enterを押して現在の非公開プロフィールのすべてのプライベートウィンドウを閉じます</translation>
+<translation id="5299725681393421941">プライベートウィンドウボタンを閉じる、Enterを押して現在の非公開プロフィールのすべてのプライベートウィンドウを閉じます</translation>
 <translation id="1090109565956608696">プライベートでは許可されていません</translation>
 <translation id="6934396344327597525">外部アプリケーションを経由したお支払いの処理に進むため、プライベートモードを解除します。続行しますか？</translation>
 <translation id="3743402671861150530">プライベートモードを終了した後、サインイン情報はこのデバイスに保存されます。</translation>

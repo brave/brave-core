@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">トラッカーや広告の読み込みやウェブページでの表示を防ぎます</translation>
 <translation id="1680858055899097121">セッション間でタブを保持しない</translation>
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
-<translation id="5469408008145872264">この完全に匿名化された情報は、Braveが特定の機能の全体的な使用状況を推定し、ユーザーエクスペリエンスを向上するために役立ちます。</translation>
+<translation id="5254037869598726291">この完全に匿名化された情報は、Braveが特定の機能の全体的な使用状況を推定し、ユーザーエクスペリエンスを向上するために役立ちます。</translation>
 <translation id="7977176350719484850">節約できた\n通信量 (推定)</translation>
 <translation id="9008534313521214777">節約できた\n時間(推定)</translation>
 <translation id="6572660632052512096">デスクトップモード</translation>
@@ -249,7 +249,7 @@
 <translation id="723054503945711909">Brave Software Inc.は、あなたがUpholdのアカウントを開設する際にUpholdに提供する個人情報の処理、保存、アクセスを行いません。</translation>
 <translation id="3699674790322420653">ウォレットの検証を完了</translation>
 <translation id="2193391216824305230">ユーザーウォレット</translation>
-<translation id="7591798679868259510">Upholdのアカウントに移動</translation>
+<translation id="6585020831163574892">Upholdアカウントを開く</translation>
 <translation id="9200453331904391567">Brave Rewardとの接続を解除する</translation>
 <translation id="6239274080752256452">資金を引き出す</translation>
 <translation id="8874184842967597500">未接続</translation>
@@ -479,7 +479,7 @@
 <translation id="1078265935778232285">Braveブラウザへようこそ</translation>
 <translation id="6824713633331856331">匿名での学習にご協力ください</translation>
 <translation id="6116685031674149112">Braveはあなたのプライバシーを保護し、以下へのあなたの同意に感謝します：</translation>
-<translation id="3971666849661839619">クラッシュレポートと完全に匿名化された
+<translation id="4394483075076204916">クラッシュレポートと完全に匿名化された
 <ph name="PRIVATE_PRODUCT_ANALYSIS"/>を送信することで、Braveの改善にご協力ください</translation>
 <translation id="6478996494082389936">プライバシーを保護した製品分析</translation>
 <translation id="5187052478998910855">Rewardsについておさらいが必要ですか？</translation>
@@ -585,7 +585,7 @@
 <translation id="3819257035322786455">バックアップ</translation>
 <translation id="4608713693379664295">プライマリ仮想通貨アカウント</translation>
 <translation id="4003821417160006384">セカンダリアカウント</translation>
-<translation id="8094541587800369158">これらのアカウントは、ウェブ上の3つの分散型アプリケーションで使用し、ポートフォリオに表示することが可能ですが、プライマリアカウントのバックアップからリカバリフレーズを使用して復元することはできません。セカンダリアカウントを自動的に復元するには、Brave Syncアカウントを有効にします。</translation>
+<translation id="8094541587800369158">これらのアカウントは、ウェブ上の3つの分散型アプリケーションで使用し、ポートフォリオに表示することが可能ですが、プライマリアカウントのバックアップからリカバリフレーズを使用して復元できる必要があります。セカンダリアカウントを自動的に復元するには、Brave Syncアカウントを有効にします。</translation>
 <translation id="6725413948756358325">アカウント名</translation>
 <translation id="6062431965141524986">プライベートキーをインポートして、セカンダリアカウントを作成できます。</translation>
 <translation id="3952797765659730604">プライベートキーの文字列ファイルまたはJSONを入力、貼り付け、またはインポートします。</translation>

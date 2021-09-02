@@ -356,6 +356,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="4371618764691059036">È stato impostato il contributo mensile.</translation>
 <translation id="6356822617569064293">Prossima data del contributo:</translation>
 <translation id="3593485149443019592">I token non sono sufficienti, <ph name="LINK_BEGIN"/>ricarica<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave trattiene il 5% della mancia come commissione per l’esecuzione tecnica del pagamento.</translation>
 <translation id="207268487070188114">Mancia una tantum</translation>
 <translation id="69861679024013299">Importo mancia una tantum:</translation>
 <translation id="3669086939205397942">Aspetta, non puoi ancora lasciare una mancia</translation>
@@ -364,6 +365,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="5531915212947569943">Ci dispiace vederti andare via…</translation>
 <translation id="1420756770787071946">Supporta questo creatore</translation>
 <translation id="3271043362279673449">Grazie per il supporto!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Per gestire la mancia possono servire alcuni minuti</translation>
 <translation id="3312470408978098625">La tua mancia una tantum è stata inviata.</translation>
 <translation id="5096821444729034955">per la loro pubblicazione</translation>
 <translation id="2978223787436054634">Tweet sul tuo supporto</translation>
@@ -651,7 +653,8 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="6436689611575806470">Il contributo da [[currency]] è in arrivo.</translation>
 <translation id="8267327690882073581">Verifica il Portafoglio</translation>
 <translation id="543510923939676996">Portafoglio verificato</translation>
-<translation id="2659764755126740206">Vai al mio account <ph name="PROVIDER"/></translation>
+<translation id="2445110450361135194">Andare all’account <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Accedere all’account <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Completa verifica del portafoglio</translation>
 <translation id="9200453331904391567">Scollegati da Brave Rewards</translation>
 <translation id="3656941797339037856">Collega Rewards a Gemini!</translation>

@@ -356,6 +356,7 @@
 <translation id="4371618764691059036">تم تحديد المساهمة الشهرية.</translation>
 <translation id="6356822617569064293">تاريخ المساهمة التالي:</translation>
 <translation id="3593485149443019592">لا توجد رموز كافية. يُرجى <ph name="LINK_BEGIN"/>إضافة الأموال<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">يجمع Brave نسبة 5٪ من مبلغ الإكرامية كرسم معالجة.</translation>
 <translation id="207268487070188114">إكرامية لمرة وحيدة</translation>
 <translation id="69861679024013299">مبلغ الإكرامية الذي يُدفع لمرة وحيدة:</translation>
 <translation id="3669086939205397942">مهلاً، لا يمكنك منح ’الإكرامية بعد</translation>
@@ -364,6 +365,7 @@
 <translation id="5531915212947569943">نأسف لقيامك بإلغاء اشتراكك…</translation>
 <translation id="1420756770787071946">دعم هذا المنشئ</translation>
 <translation id="3271043362279673449">شكراً على الدعم!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>ملاحظة: <ph name="BOLD_END"/>قد تستغرق معالجة الإكرامية بضع دقائق</translation>
 <translation id="3312470408978098625">تم إرسال مبلغ الإكرامية الذي تدفعه لمرة وحيدة.</translation>
 <translation id="5096821444729034955">لمنشورهم</translation>
 <translation id="2978223787436054634">غرّد بشأن دعمك</translation>
@@ -651,11 +653,12 @@
 <translation id="6436689611575806470">منحة [[currency]] الخاصة بك في طريقها إليك.</translation>
 <translation id="8267327690882073581">التحقق من المحفظة</translation>
 <translation id="543510923939676996">تمَّ التحقق من المحفظة</translation>
-<translation id="2659764755126740206">انتقل إلى <ph name="PROVIDER"/> حسابي</translation>
+<translation id="2445110450361135194">انتقل إلى حساب <ph name="PROVIDER"/> الخاص بك</translation>
+<translation id="4244985009709452836">قم بتسجيل الدخول إلى حساب <ph name="PROVIDER"/> الخاص بك</translation>
 <translation id="3699674790322420653">أكمل التحقق من المحفظة</translation>
 <translation id="9200453331904391567">قطع الاتصال بـ Brave Rewards</translation>
-<translation id="3656941797339037856">ربط المكافآت بـ Gemini!</translation>
-<translation id="671838195432136371">تتيح لك Gemini إمكانية التداول والتخزين وكسب 3.49% من العائد المئوي السنوي* بسهولة على أفضل التقنيات المتاحة لديك. يحصل مستخدمو Gemini الجدد الذين يرتبطون بـ 5 BAT مجانًا!</translation>
+<translation id="3656941797339037856">ربط Rewards بـ Gemini!</translation>
+<translation id="671838195432136371">تتيح لك Gemini إمكانية التداول والتخزين وكسب 3.49% من العائد المئوي السنوي* بسهولة على أفضل التقنيات المتاحة لديك. يحصل مستخدمو Gemini الجدد الذين يرتبطون على 5 BAT مجانًا!</translation>
 <translation id="9136976526700181750">تربح Gemini  العائد المئوي السنوي اعتبارًا من 15 أغسطس 2021.</translation>
 <translation id="7404779623219601861">تبديل BAT ببطاقات هدايا</translation>
 <translation id="6215565499749144110">مع شبكة TAP فبإمكانك تبديل BAT ببطاقات هدايا ذات علامات تجارية شهيرة.</translation>
@@ -741,7 +744,7 @@
 <translation id="1833248467354516560">سعر الوحدة</translation>
 <translation id="4763179765154524864">إجمالي ما أُنفق</translation>
 <translation id="8851480289992540512">إجمالي المستلم</translation>
-<translation id="824449983246282560">ليس لديك أي أرصدة في حسابك. قم بزيارة Gemini لشراء بعضها.</translation>
+<translation id="824449983246282560">ليس لديك أي أرصدة في حسابك. قم بزيارة Gemini لشراء بعض العملات.</translation>
 <translation id="8624961452383848703">أريد تحويل…</translation>
 <translation id="616639131065447379">أهلاً بك في Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">تتيح لك Crypto Wallets العمل مع العملات المشفرة والأصول ذات الصلة في Brave. تدعم Crypto Wallets رموز Ethereum مثل ETH و BAT بالإضافة إلى المقتنيات، كما تتيح لك العمل مع Ðالتطبيقات والعقود الذكية الأخرى. كل هذا مخصص للأشخاص الذين هم على دراية بـ Ethereum وأنظمة سلسلة الكتل الأخرى — أو في شوقٍ للتعلم.</translation>

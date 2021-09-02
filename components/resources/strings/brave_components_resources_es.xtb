@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Se ha establecido una contribución mensual.</translation>
 <translation id="6356822617569064293">Próxima fecha de contribución:</translation>
 <translation id="3593485149443019592">No hay suficientes tokens. <ph name="LINK_BEGIN"/>Añade fondos<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave recauda el 5 % de la propina en concepto de tasa de tramitación.</translation>
 <translation id="207268487070188114">Propina única</translation>
 <translation id="69861679024013299">Importe de la propina única:</translation>
 <translation id="3669086939205397942">Espere, aún no puede dar propina</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Siento que te vayas…</translation>
 <translation id="1420756770787071946">Apoya a este creador</translation>
 <translation id="3271043362279673449">¡Gracias por el apoyo!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Nota: <ph name="BOLD_END"/>Tu propina puede tardar varios minutos en tramitarse</translation>
 <translation id="3312470408978098625">Se ha enviado tu propina única.</translation>
 <translation id="5096821444729034955">para su publicación</translation>
 <translation id="2978223787436054634">Tuitea sobre tu apoyo</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">Tu concesión de [[currency]] está en camino.</translation>
 <translation id="8267327690882073581">Verificar Monedero</translation>
 <translation id="543510923939676996">Monedero Verificado</translation>
-<translation id="2659764755126740206">Ir a mi cuenta de <ph name="PROVIDER"/></translation>
+<translation id="2445110450361135194">Ve a tu cuenta de <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Inicia sesión en tu cuenta de <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Finaliza la verificación de tu monedero</translation>
 <translation id="9200453331904391567">Desconectar de Brave Rewards</translation>
 <translation id="3656941797339037856">¡Vincula Brave Rewards con Gemini!</translation>

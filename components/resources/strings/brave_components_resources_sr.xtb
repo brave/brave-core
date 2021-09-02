@@ -356,6 +356,7 @@ ažuriranja.</translation>
 <translation id="4371618764691059036">Mesečni doprinos je poslat.</translation>
 <translation id="6356822617569064293">Datum sledećeg doprinosa:</translation>
 <translation id="3593485149443019592">Nema dovoljno tokena. Dodajte <ph name="LINK_BEGIN"/>sredstva<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave zadržava 5 % od iznosa napojnice kao naknadu za obradu.</translation>
 <translation id="207268487070188114">Jednokratna napojnica</translation>
 <translation id="69861679024013299">Iznos jednokratne napojnice:</translation>
 <translation id="3669086939205397942">Sačekajte, još ne možete da dajete napojnicu</translation>
@@ -364,6 +365,7 @@ ažuriranja.</translation>
 <translation id="5531915212947569943">Žao nam je što nas napuštate…</translation>
 <translation id="1420756770787071946">Podržite ovog autora</translation>
 <translation id="3271043362279673449">Hvala na podršci!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Napomena: <ph name="BOLD_END"/>Za obradu vaše napojnice može biti potrebno nekoliko minuta</translation>
 <translation id="3312470408978098625">Vaša jednokratna napojnica je poslata.</translation>
 <translation id="5096821444729034955">za njihovu objavu</translation>
 <translation id="2978223787436054634">Tvitujte o svojoj podršci</translation>
@@ -651,7 +653,8 @@ ažuriranja.</translation>
 <translation id="6436689611575806470">Uskoro stiže vaša dodela [[currency]].</translation>
 <translation id="8267327690882073581">Verifikuj novčanik</translation>
 <translation id="543510923939676996">Novčanik verifikovan</translation>
-<translation id="2659764755126740206">Idi u moj <ph name="PROVIDER"/> nalog</translation>
+<translation id="2445110450361135194">Idite na svoj <ph name="PROVIDER"/> nalog</translation>
+<translation id="4244985009709452836">Prijavite se na svoj <ph name="PROVIDER"/> nalog</translation>
 <translation id="3699674790322420653">Dovršite verifikaciju novčanika</translation>
 <translation id="9200453331904391567">Prekini vezu sa Brave nagradama</translation>
 <translation id="3656941797339037856">Povežite Rewards i Gemini!</translation>

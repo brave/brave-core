@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Maandelijkse bijdrage is ingesteld.</translation>
 <translation id="6356822617569064293">Datum volgende bijdrage</translation>
 <translation id="3593485149443019592">Niet genoeg tokens. <ph name="LINK_BEGIN"/>Voeg tegoed toe<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave krijgt 5% van het fooibedrag om de verwerkingskosten te dekken.</translation>
 <translation id="207268487070188114">Eenmalige fooi</translation>
 <translation id="69861679024013299">Eenmalig fooibedrag:</translation>
 <translation id="3669086939205397942">Wacht even, U kunt nog geen fooi geven</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Jammer dat je gaat…</translation>
 <translation id="1420756770787071946">Steun deze maker</translation>
 <translation id="3271043362279673449">Bedankt voor de ondersteuning!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Opmerking: <ph name="BOLD_END"/>Het kan enkele minuten duren voor je fooi is verwerkt</translation>
 <translation id="3312470408978098625">Je eenmalige fooi is verzonden.</translation>
 <translation id="5096821444729034955">voor hun post</translation>
 <translation id="2978223787436054634">Tweet over uw support</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">Je beurs ([[currency]]) is onderweg.</translation>
 <translation id="8267327690882073581">Verifieer Wallet</translation>
 <translation id="543510923939676996">Wallet geverifieerd</translation>
-<translation id="2659764755126740206">Ga naar mijn <ph name="PROVIDER"/> account</translation>
+<translation id="2445110450361135194">Ga naar je <ph name="PROVIDER"/>-account</translation>
+<translation id="4244985009709452836">Meld je aan bij je <ph name="PROVIDER"/>-account</translation>
 <translation id="3699674790322420653">Rond walletverificatie af</translation>
 <translation id="9200453331904391567">Verbreek de verbinding met Brave Rewards</translation>
 <translation id="3656941797339037856">Koppel beloningen aan Gemini!</translation>

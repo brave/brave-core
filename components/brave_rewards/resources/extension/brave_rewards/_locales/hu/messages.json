@@ -546,8 +546,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "Ugrás a(z) $provider$ fiókomra",
+    "message": "Lépjen a(z) $provider$ fiókjára",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Jelentkezzen be a(z) $provider$ fiókjába",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -652,6 +662,10 @@
   "walletConnected":  {
     "message": "Kapcsolódva",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Nincs kapcsolat",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "Várakozó",

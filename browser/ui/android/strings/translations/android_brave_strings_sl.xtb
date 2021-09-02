@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Onemogoči sledilcem &amp; oglaševanje, da bi se spletne strani lahko naložile in prikazale</translation>
 <translation id="1680858055899097121">Ne ohranjaj zavihkov med sejami brskanja</translation>
 <translation id="7142548388914389999">Dovoli analitiko izdelkov, ki varuje zasebnost (P3A)</translation>
-<translation id="5469408008145872264">Te popolnoma anonimizirane informacije pomagajo podjetju Brave oceniti splošno uporabo nekaterih funkcij in jih izboljšati za vas.</translation>
+<translation id="5254037869598726291">Te popolnoma anonimizirane informacije pomagajo podjetju Brave oceniti splošno uporabo nekaterih funkcij in jih izboljšati za vas.</translation>
 <translation id="7977176350719484850">Pribl. podatkov\nShranjeno</translation>
 <translation id="9008534313521214777">Pribl. čas\nSaved</translation>
 <translation id="6572660632052512096">Namizni način</translation>
@@ -250,7 +250,7 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="723054503945711909">Družba Brave Software Inc. ne obdeluje, hrani ali dostopa do nobenih osebnih podatkov, ki jih posredujete prek platforme Uphold, ko z njimi vzpostavite račun.</translation>
 <translation id="3699674790322420653">Zaključi preverjanje denarnice</translation>
 <translation id="2193391216824305230">Uporabnikova denarnica</translation>
-<translation id="7591798679868259510">Pojdi na moj račun Uphold</translation>
+<translation id="6585020831163574892">Podjite v vaš račun Uphold</translation>
 <translation id="9200453331904391567">Prekinite povezavo z Brave Rewards</translation>
 <translation id="6239274080752256452">Dvig sredstev</translation>
 <translation id="8874184842967597500">Povezava ni vzpostavljena</translation>
@@ -480,7 +480,7 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="1078265935778232285">Dobrodošli v brskalniku Brave</translation>
 <translation id="6824713633331856331">Pomagajte nam pri anonimnem učenju</translation>
 <translation id="6116685031674149112">Brave varuje vašo zasebnost in\nceni vaše soglasje za naslednje:</translation>
-<translation id="3971666849661839619">Pomagajte izboljšati Brave s pošiljanjem poročil o zrušitvah in to popolnoma anonimizirano, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Pomagajte izboljšati Brave s pošiljanjem poročil o zrušitvah in to popolnoma anonimizirano, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">zasebna analitika izdelkov.</translation>
 <translation id="5187052478998910855">Potrebujete kratko osvežitev o Rewards?</translation>
 <translation id="8622329973403382303">Na hitro si oglejte, kako vse skupaj deluje, da se boste zapisali v zgodovino kot zvezda Rewards!</translation>
