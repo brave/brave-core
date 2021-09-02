@@ -10,6 +10,7 @@
 
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_vpn/brave_vpn.mojom-shared.h"
 #include "brave/components/brave_vpn/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
@@ -18,12 +19,7 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
-enum class ConnectionState {
-  CONNECTED,
-  DISCONNECTED,
-  CONNECTING,
-  CONNECT_FAILED,
-};
+typedef brave_vpn::mojom::ConnectionState ConnectionState;
 
 class BraveVpnServiceDesktop
     : public BraveVpnService,
@@ -70,6 +66,8 @@ class BraveVpnServiceDesktop
 
   // BraveVpnService overrides:
   void Shutdown() override;
+  void AddObserver(
+      mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> observer) override;
 
   // brave_vpn::BraveVPNOSConnectionAPI::Observer overrides:
   void OnCreated(const std::string& name) override;
@@ -92,6 +90,7 @@ class BraveVpnServiceDesktop
                           brave_vpn::BraveVPNOSConnectionAPI::Observer>
       observed_{this};
   mojo::ReceiverSet<brave_vpn::mojom::ServiceHandler> receivers_;
+  mojo::RemoteSet<brave_vpn::mojom::ServiceObserver> mojo_observers_;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_SERVICE_DESKTOP_H_
