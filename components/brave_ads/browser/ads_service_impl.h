@@ -325,7 +325,7 @@ class AdsServiceImpl : public AdsService,
   uint64_t MigrateTimestampToDoubleT(const uint64_t timestamp_in_seconds) const;
 
   void MaybeShowMyFirstAdNotification();
-  bool ShouldShowMyFirstAdNotification() const;
+  bool ShouldShowMyFirstAdNotification();
 
   bool PrefExists(const std::string& path) const;
   void OnPrefsChanged(const std::string& pref);

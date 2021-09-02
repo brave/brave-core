@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/browser/notification_helper_mac.h"
+
 #import <Cocoa/Cocoa.h>
 
 // TODO(https://github.com/brave/brave-browser/issues/5541): Uncomment below
@@ -13,66 +15,13 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/mac/mac_util.h"
-#include "brave/components/brave_ads/browser/notification_helper_mac.h"
-#include "brave/components/brave_ads/common/features.h"
 #include "chrome/common/chrome_features.h"
 
 namespace brave_ads {
 
-NotificationHelperMac::NotificationHelperMac() = default;
+namespace {
 
-NotificationHelperMac::~NotificationHelperMac() = default;
-
-bool NotificationHelperMac::ShouldShowNotifications() {
-  if (features::IsCustomAdNotificationsEnabled()) {
-    return true;
-  }
-
-  return CanShowNativeNotifications();
-}
-
-bool NotificationHelperMac::CanShowNativeNotifications() {
-  if (base::mac::IsAtMostOS10_13()) {
-    LOG(WARNING)
-        << "Native notifications are not supported prior to macOS 10.14";
-    return false;
-  }
-
-  if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
-    LOG(WARNING) << "Native notifications feature is disabled";
-    return false;
-  }
-
-  if (!IsAuthorized()) {
-    return false;
-  }
-
-  if (!IsEnabled()) {
-    return false;
-  }
-
-  return true;
-}
-
-bool NotificationHelperMac::ShowMyFirstAdNotification() {
-  return false;
-}
-
-bool NotificationHelperMac::CanShowBackgroundNotifications() const {
-  return true;
-}
-
-NotificationHelperMac* NotificationHelperMac::GetInstanceImpl() {
-  return base::Singleton<NotificationHelperMac>::get();
-}
-
-NotificationHelper* NotificationHelper::GetInstanceImpl() {
-  return NotificationHelperMac::GetInstanceImpl();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-bool NotificationHelperMac::IsAuthorized() const {
+bool IsAuthorized() {
   // TODO(https://github.com/brave/brave-browser/issues/5541): Uncomment below
   // code when notification_platform_bridge_mac.mm has been updated to use
   // UNUserNotificationCenter
@@ -126,7 +75,7 @@ bool NotificationHelperMac::IsAuthorized() const {
   // #endif
 }
 
-bool NotificationHelperMac::IsEnabled() const {
+bool IsEnabled() {
   // TODO(https://github.com/brave/brave-browser/issues/5541): Uncomment below
   // code when notification_platform_bridge_mac.mm has been updated to use
   // UNUserNotificationCenter
@@ -195,6 +144,51 @@ bool NotificationHelperMac::IsEnabled() const {
 
   //   return true;
   // #endif
+}
+
+}  // namespace
+
+NotificationHelperMac::NotificationHelperMac() = default;
+
+NotificationHelperMac::~NotificationHelperMac() = default;
+
+bool NotificationHelperMac::CanShowNativeNotifications() {
+  if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
+    LOG(WARNING) << "Native notifications feature is disabled";
+    return false;
+  }
+
+  if (base::mac::IsAtMostOS10_13()) {
+    LOG(WARNING)
+        << "Native notifications are not supported prior to macOS 10.14";
+    return false;
+  }
+
+  if (!IsAuthorized()) {
+    return false;
+  }
+
+  if (!IsEnabled()) {
+    return false;
+  }
+
+  return true;
+}
+
+bool NotificationHelperMac::CanShowBackgroundNotifications() const {
+  return true;
+}
+
+bool NotificationHelperMac::ShowMyFirstAdNotification() {
+  return false;
+}
+
+NotificationHelperMac* NotificationHelperMac::GetInstanceImpl() {
+  return base::Singleton<NotificationHelperMac>::get();
+}
+
+NotificationHelper* NotificationHelper::GetInstanceImpl() {
+  return NotificationHelperMac::GetInstanceImpl();
 }
 
 }  // namespace brave_ads
