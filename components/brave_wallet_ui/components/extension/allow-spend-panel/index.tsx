@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
-import { AllowSpendReturnPayload, EthereumChain } from '../../../constants/types'
+import { AllowSpendReturnPayload, EthereumChain, TransactionInfo, TransactionType } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import locale from '../../../constants/locale'
 import { NavButton, PanelTab, TransactionDetailBox } from '../'
@@ -57,6 +57,30 @@ function AllowSpendPanel (props: Props) {
     setSelectedTab(tab)
   }
 
+  const transactionInfo: TransactionInfo = {
+    fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+    id: '465a4d6646-kjlwf665',
+    txArgs: [''],
+    txData: {
+      baseData: {
+        nonce: '0x1',
+        gasPrice: '7548000000000000',
+        gasLimit: '7548000000000000',
+        to: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+        value: '0x15ddf09c97b0000',
+        data: new Uint8Array(24)
+      },
+      chainId: '0x0',
+      maxPriorityFeePerGas: '',
+      maxFeePerGas: ''
+    },
+    txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
+    txStatus: 0,
+    txParams: ['Parameters: [ {"type": "uint256"}, {"type": "address[]"}, {"type": "address"}, {"type": "uint256"} ]',
+      '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc'],
+    txType: TransactionType.ETHSend
+  }
+
   return (
     <StyledWrapper>
       <TopRow>
@@ -99,7 +123,7 @@ function AllowSpendPanel (props: Props) {
               </FiatRow>
             </>
           ) : (
-            <TransactionDetailBox hasNoData={true} transactionData={['']} />
+            <TransactionDetailBox hasNoData={true} transactionInfo={transactionInfo} />
           )}
         </MessageBox>
       </CenterColumn>

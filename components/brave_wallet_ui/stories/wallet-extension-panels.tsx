@@ -131,23 +131,20 @@ export const _ConfirmTransaction = () => {
     alert('Rejected Transaction')
   }
 
-  const getTokenPrice = (symbol: string) => {
-    if (symbol === 'ETH') {
-      return {
-        fromAsset: 'ETH',
-        toAsset: 'USD',
-        price: '3300',
-        assetTimeframeChange: ''
-      }
-    } else {
-      return {
-        fromAsset: 'BAT',
-        toAsset: 'USD',
-        price: '0.85',
-        assetTimeframeChange: ''
-      }
+  const transactionSpotPrices = [
+    {
+      fromAsset: 'ETH',
+      toAsset: 'USD',
+      price: '3300',
+      assetTimeframeChange: ''
+    },
+    {
+      fromAsset: 'BAT',
+      toAsset: 'USD',
+      price: '0.85',
+      assetTimeframeChange: ''
     }
-  }
+  ]
 
   return (
     <StyledExtensionWrapperLonger>
@@ -156,9 +153,9 @@ export const _ConfirmTransaction = () => {
         onConfirm={onConfirmTransaction}
         onReject={onRejectTransaction}
         accounts={accounts}
-        getTokenPrice={getTokenPrice}
         transactionInfo={transactionInfo}
         visibleTokens={NewAssetOptions}
+        transactionSpotPrices={transactionSpotPrices}
       />
     </StyledExtensionWrapperLonger>
   )

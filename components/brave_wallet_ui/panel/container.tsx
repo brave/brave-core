@@ -45,8 +45,7 @@ import {
   WalletAccountType,
   BuySendSwapViewTypes,
   AccountAssetOptionType,
-  EthereumChain,
-  AssetPriceInfo
+  EthereumChain
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
@@ -90,7 +89,8 @@ function Container (props: Props) {
     hasInitialized,
     userVisibleTokensInfo,
     isWalletCreated,
-    networkList
+    networkList,
+    transactionSpotPrices
   } = props.wallet
 
   const {
@@ -331,25 +331,6 @@ function Container (props: Props) {
     props.walletPanelActions.openWalletSettings()
   }
 
-  const getTokenPrice = (symbol: string): AssetPriceInfo => {
-    // Need to create an action to get a SpotPrice of a token
-    if (symbol === 'ETH') {
-      return {
-        fromAsset: 'ETH',
-        toAsset: 'USD',
-        price: '3300',
-        assetTimeframeChange: ''
-      }
-    } else {
-      return {
-        fromAsset: 'BAT',
-        toAsset: 'USD',
-        price: '0.85',
-        assetTimeframeChange: ''
-      }
-    }
-  }
-
   // Example of a ERC20 Spend Payload to be passed to the
   // Allow Spend Panel
   const ERC20SpendPayloadExample = {
@@ -413,7 +394,7 @@ function Container (props: Props) {
             accounts={accounts}
             selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             transactionInfo={selectedPendingTransaction}
-            getTokenPrice={getTokenPrice}
+            transactionSpotPrices={transactionSpotPrices}
             visibleTokens={userVisibleTokensInfo}
           />
         </SignContainer>

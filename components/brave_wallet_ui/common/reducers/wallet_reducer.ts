@@ -61,7 +61,8 @@ const defaultState: WalletState = {
   selectedPendingTransaction: undefined,
   isFetchingPortfolioPriceHistory: true,
   selectedPortfolioTimeline: AssetPriceTimeframe.OneDay,
-  networkList: []
+  networkList: [],
+  transactionSpotPrices: []
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -204,6 +205,7 @@ reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20Tok
   })
   return {
     ...state,
+    transactionSpotPrices: prices.values,
     accounts
   }
 })
@@ -269,11 +271,11 @@ reducer.on(WalletActions.newUnapprovedTxAdded, (state: any, payload: NewUnapprov
 
 reducer.on(WalletActions.transactionStatusChanged, (state: any, payload: TransactionStatusChanged) => {
   const newPendingTransactions =
-      state.pendingTransactions.filter((tx: TransactionInfo) => tx.id !== payload.txInfo.id)
+    state.pendingTransactions.filter((tx: TransactionInfo) => tx.id !== payload.txInfo.id)
   const newSelectedPendingTransaction = newPendingTransactions.pop()
   if (payload.txInfo.txStatus === TransactionStatus.Submitted ||
-      payload.txInfo.txStatus === TransactionStatus.Rejected ||
-      payload.txInfo.txStatus === TransactionStatus.Approved) {
+    payload.txInfo.txStatus === TransactionStatus.Rejected ||
+    payload.txInfo.txStatus === TransactionStatus.Approved) {
     const newState = {
       ...state,
       pendingTransactions: newPendingTransactions,
@@ -286,7 +288,7 @@ reducer.on(WalletActions.transactionStatusChanged, (state: any, payload: Transac
 
 reducer.on(WalletActions.knownTransactionsUpdated, (state: any, payload: TransactionInfo[]) => {
   const newPendingTransactions =
-      payload.filter((tx: TransactionInfo) => tx.txStatus === TransactionStatus.Unapproved)
+    payload.filter((tx: TransactionInfo) => tx.txStatus === TransactionStatus.Unapproved)
   const newSelectedPendingTransaction = state.selectedPendingTransaction || newPendingTransactions.pop()
   return {
     ...state,

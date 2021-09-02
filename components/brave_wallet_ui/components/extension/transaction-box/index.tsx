@@ -1,16 +1,22 @@
 import * as React from 'react'
+import { TransactionInfo, TransactionType } from '../../../constants/types'
+import locale from '../../../constants/locale'
 import {
   CodeSnippet,
-  CodeSnippetText
+  CodeSnippetText,
+  DetailRow,
+  TransactionText,
+  DetailText
 } from './style'
 
 export interface Props {
-  transactionData: string[]
+  transactionInfo: TransactionInfo
   hasNoData: boolean
 }
 
 const TransactionDetailBox = (props: Props) => {
-  const { transactionData, hasNoData } = props
+  const { transactionInfo, hasNoData } = props
+  const { txArgs, txParams, txType } = transactionInfo
   return (
     <>
       {hasNoData ? (
@@ -21,10 +27,14 @@ const TransactionDetailBox = (props: Props) => {
         </CodeSnippet>
       ) : (
         <>
-          {transactionData.map((data, i) =>
+          <DetailRow>
+            <TransactionText>{locale.transactionDetailBoxFunction}:</TransactionText>
+            <DetailText>{TransactionType[txType]}</DetailText>
+          </DetailRow>
+          {txParams.map((data, i) =>
             <CodeSnippet key={i}>
               <code>
-                <CodeSnippetText>{data}</CodeSnippetText>
+                <CodeSnippetText>{data}: {txArgs[i]}</CodeSnippetText>
               </code>
             </CodeSnippet>
           )}
