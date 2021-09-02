@@ -7,6 +7,7 @@
 
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/rand_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 
 namespace brave_vpn {
@@ -34,9 +35,26 @@ void BraveVPNOSConnectionAPISim::UpdateVPNConnection(
 }
 
 void BraveVPNOSConnectionAPISim::Connect(const std::string& name) {
+  // Determine connection success randomly.
+  const bool success = base::RandInt(0, 9) > 3;
+  // Simulate connection success
+  if (success) {
+    base::SequencedTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnIsConnecting,
+                                  weak_factory_.GetWeakPtr(), name));
+
+    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&BraveVPNOSConnectionAPISim::OnConnected,
+                       weak_factory_.GetWeakPtr(), name, true),
+        base::TimeDelta::FromSeconds(3));
+    return;
+  }
+
+  // Simulate connection failure
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnConnected,
-                                weak_factory_.GetWeakPtr(), name, true));
+                                weak_factory_.GetWeakPtr(), name, false));
 }
 
 void BraveVPNOSConnectionAPISim::Disconnect(const std::string& name) {
@@ -66,11 +84,13 @@ void BraveVPNOSConnectionAPISim::OnCreated(const std::string& name,
 
 void BraveVPNOSConnectionAPISim::OnConnected(const std::string& name,
                                              bool success) {
-  if (!success)
-    return;
-
   for (Observer& obs : observers_)
-    obs.OnConnected(name);
+    success ? obs.OnConnected(name) : obs.OnConnectFailed(name);
+}
+
+void BraveVPNOSConnectionAPISim::OnIsConnecting(const std::string& name) {
+  for (Observer& obs : observers_)
+    obs.OnIsConnecting(name);
 }
 
 void BraveVPNOSConnectionAPISim::OnDisconnected(const std::string& name,

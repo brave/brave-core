@@ -76,23 +76,43 @@ void BraveVpnServiceDesktop::OnRemoved(const std::string& name) {
 }
 
 void BraveVpnServiceDesktop::OnConnected(const std::string& name) {
-  if (is_connected_)
+  if (state_ == ConnectionState::CONNECTED)
     return;
 
-  is_connected_ = true;
+  state_ = ConnectionState::CONNECTED;
 
   for (Observer& obs : observers_)
-    obs.OnConnectionStateChanged(true);
+    obs.OnConnectionStateChanged(ConnectionState::CONNECTED);
+}
+
+void BraveVpnServiceDesktop::OnIsConnecting(const std::string& name) {
+  if (state_ == ConnectionState::CONNECTING)
+    return;
+
+  state_ = ConnectionState::CONNECTING;
+
+  for (Observer& obs : observers_)
+    obs.OnConnectionStateChanged(ConnectionState::CONNECTING);
+}
+
+void BraveVpnServiceDesktop::OnConnectFailed(const std::string& name) {
+  if (state_ == ConnectionState::CONNECT_FAILED)
+    return;
+
+  state_ = ConnectionState::CONNECT_FAILED;
+
+  for (Observer& obs : observers_)
+    obs.OnConnectionStateChanged(ConnectionState::CONNECT_FAILED);
 }
 
 void BraveVpnServiceDesktop::OnDisconnected(const std::string& name) {
-  if (!is_connected_)
+  if (state_ == ConnectionState::DISCONNECTED)
     return;
 
-  is_connected_ = false;
+  state_ = ConnectionState::DISCONNECTED;
 
   for (Observer& obs : observers_)
-    obs.OnConnectionStateChanged(false);
+    obs.OnConnectionStateChanged(ConnectionState::DISCONNECTED);
 }
 
 void BraveVpnServiceDesktop::CreateVPNConnection() {
@@ -105,6 +125,9 @@ void BraveVpnServiceDesktop::RemoveVPNConnnection() {
 }
 
 void BraveVpnServiceDesktop::Connect() {
+  if (state_ == ConnectionState::CONNECTING)
+    return;
+
   GetBraveVPNConnectionAPI()->Connect(GetConnectionInfo().connection_name());
 }
 
@@ -135,5 +158,5 @@ void BraveVpnServiceDesktop::BindInterface(
 }
 
 void BraveVpnServiceDesktop::GetIsConnected(GetIsConnectedCallback callback) {
-  std::move(callback).Run(is_connected_);
+  std::move(callback).Run(is_connected());
 }

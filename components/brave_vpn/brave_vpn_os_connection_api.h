@@ -23,6 +23,8 @@ class BraveVPNOSConnectionAPI {
     virtual void OnCreated(const std::string& name) = 0;
     virtual void OnRemoved(const std::string& name) = 0;
     virtual void OnConnected(const std::string& name) = 0;
+    virtual void OnIsConnecting(const std::string& name) = 0;
+    virtual void OnConnectFailed(const std::string& name) = 0;
     virtual void OnDisconnected(const std::string& name) = 0;
 
    protected:
