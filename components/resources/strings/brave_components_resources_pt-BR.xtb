@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">A contribuição mensal foi configurada.</translation>
 <translation id="6356822617569064293">Próxima data de contribuição:</translation>
 <translation id="3593485149443019592">Tokens insuficientes. <ph name="LINK_BEGIN"/>Adicione fundos<ph name="LINK_END"/></translation>
+<translation id="3586352807094428968">O Brave deduz 5% do valor da doação como taxa de processamento.</translation>
 <translation id="207268487070188114">Doação única</translation>
 <translation id="69861679024013299">Valor da doação única:</translation>
 <translation id="3669086939205397942">Só um momento, você ainda não pode dar gorjetas</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Sentimos muito em vê-lo ir…</translation>
 <translation id="1420756770787071946">Apoie este criador</translation>
 <translation id="3271043362279673449">Obrigado pelo apoio!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Observação: <ph name="BOLD_END"/>o processamento da sua doação pode levar alguns minutos</translation>
 <translation id="3312470408978098625">Sua doação única foi enviada.</translation>
 <translation id="5096821444729034955">pela postagem deles</translation>
 <translation id="2978223787436054634">Poste um tweet sobre o seu apoio</translation>
@@ -650,10 +652,11 @@
 <translation id="6436689611575806470">Sua doação de [[currency]] está a caminho.</translation>
 <translation id="8267327690882073581">Verificar Carteira</translation>
 <translation id="543510923939676996">Carteira verificada</translation>
-<translation id="2659764755126740206">Acessar minha conta do <ph name="PROVIDER"/></translation>
+<translation id="2445110450361135194">Acesse sua conta do <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Faça login na sua conta do <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Concluir verificação de carteira</translation>
 <translation id="9200453331904391567">Desconectar-se de Brave Rewards</translation>
-<translation id="3656941797339037856">Vincule recompensas ao Gemini!</translation>
+<translation id="3656941797339037856">Vincule o Rewards ao Gemini!</translation>
 <translation id="671838195432136371">Com o Gemini, você pode negociar, armazenar e ganhar 3,49% de APY* (rendimento percentual anual) sobre seus BATs com facilidade. Novos usuários do Gemini que vinculam a conta recebem 5 BATs grátis!</translation>
 <translation id="9136976526700181750">* Ganhos de APY do Gemini em 15 de agosto de 2021</translation>
 <translation id="7404779623219601861">Trocar BAT por vales-presente</translation>

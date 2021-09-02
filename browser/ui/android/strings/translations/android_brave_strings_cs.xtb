@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Zabraňuje načítání a zobrazování sledovacích &amp; reklam na webových stránkách</translation>
 <translation id="1680858055899097121">Nesetrvávat v kartách mezi relacemi prohlížení</translation>
 <translation id="7142548388914389999">Umožnit analýzu produktů se zachováním soukromí (P3A)</translation>
-<translation id="5469408008145872264">Tyto zcela anonymizované informace pomáhají společnosti Brave odhadnout celkové využití určitých funkcí a vylepšit je pro vás.</translation>
+<translation id="5254037869598726291">Tyto zcela anonymizované informace pomáhají společnosti Brave odhadnout celkové využití určitých funkcí a vylepšit je pro vás.</translation>
 <translation id="7977176350719484850">Odhadovaná uložená data</translation>
 <translation id="9008534313521214777">Odh. ušetřená\ndoba</translation>
 <translation id="6572660632052512096">Režim stolního počítače</translation>
@@ -248,7 +248,7 @@
 <translation id="723054503945711909">Společnost Brave Software Inc. nezpracovává, nepřechovává ani nezpřístupňuje žádné osobní údaje, které poskytujete společnosti Uphold při zakládání uživatelského účtu.</translation>
 <translation id="3699674790322420653">Dokončit ověření peněženky</translation>
 <translation id="2193391216824305230">Uživatelská peněženka</translation>
-<translation id="7591798679868259510">Přejít na můj Uphold účet</translation>
+<translation id="6585020831163574892">Přejděte do svého účtu Uphold</translation>
 <translation id="9200453331904391567">Odpojit od Brave Rewards</translation>
 <translation id="6239274080752256452">Výběr prostředků</translation>
 <translation id="8874184842967597500">Nepřipojeno</translation>
@@ -477,7 +477,7 @@
 <translation id="1078265935778232285">Vítejte v prohlížeči Brave</translation>
 <translation id="6824713633331856331">Pomozte nám se učit anonymně</translation>
 <translation id="6116685031674149112">Brave chrání vaše soukromí a cení si vašeho souhlasu s následujícími:</translation>
-<translation id="3971666849661839619">Pomozte vylepšit Brave zasíláním zpráv o selhání a úplnou anonymizací, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Pomozte vylepšit Brave zasíláním zpráv o selhání a úplnou anonymizací, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">soukromé analýzy produktů.</translation>
 <translation id="5187052478998910855">Potřebujete vzpruhu na Rewards?</translation>
 <translation id="8622329973403382303">Podívejte se na krátkou prohlídku a zjistěte, jak se zapsat do historie jako Rewards rockstar!</translation>

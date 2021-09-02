@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Hadlangan ang trackers at ads na mag-load at lumabas sa mga webpage</translation>
 <translation id="1680858055899097121">Huwag magpapanatili ng mga tab sa sesyon ng pag-browse</translation>
 <translation id="7142548388914389999">Payagan ang privacy-preserving product analytics (P3A)</translation>
-<translation id="5469408008145872264">Ang impormasyong ito na ganap na anonymized ay nakakatulong sa Brave na tantyahin ang pangkalahatang paggamit ng mga partikular na feature at mapaganda pa ang mga ito para sa iyo.</translation>
+<translation id="5254037869598726291">Ang impormasyong ito na ganap na anonymized ay nakakatulong sa Brave na tantyahin ang pangkalahatang paggamit ng mga partikular na feature at mapaganda pa ang mga ito para sa iyo.</translation>
 <translation id="7977176350719484850">Tinatantyang Natipid na\nData</translation>
 <translation id="9008534313521214777">Tinatantyang Oras na\nNatipid</translation>
 <translation id="6572660632052512096">Desktop Mode</translation>
@@ -249,7 +249,7 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="723054503945711909">Hindi pinoproseso, sino-store, o ina-access ng Brave Software Inc. ang anuman sa personal na impormasyon na ibinigay mo sa Uphold noong gumawa ka ng account sa kanila.</translation>
 <translation id="3699674790322420653">Kumpletuhin ang pag-verify ng wallet</translation>
 <translation id="2193391216824305230">Wallet ng User</translation>
-<translation id="7591798679868259510">Pumunta sa aking Uphold account</translation>
+<translation id="6585020831163574892">Pumunta sa iyong Uphold account</translation>
 <translation id="9200453331904391567">Idiskonekta mula sa Mga Reward ng Brave</translation>
 <translation id="6239274080752256452">Mag-withdraw ng Mga Pondo</translation>
 <translation id="8874184842967597500">Hindi nakakonekta</translation>
@@ -478,7 +478,7 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="1078265935778232285">Welcome sa Brave Browser</translation>
 <translation id="6824713633331856331">Anonymous kaming tulungang matuto</translation>
 <translation id="6116685031674149112">Pinoprotektahan ng Brave ang iyong privacy at\nnagpapasalamat ito sa pahintulot mo sa mga sumusunod:</translation>
-<translation id="3971666849661839619">Tumulong na mapahusay ang Brave sa pamamagitan ng pagpapadala ng mga ulat sa pag-crash at ganap na anonymous na, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Tumulong na mapahusay ang Brave sa pamamagitan ng pagpapadala ng mga ulat sa pag-crash at ganap na anonymous na, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">pribadong pagsusuri ng produkto.</translation>
 <translation id="5187052478998910855">Kailangan ng refresher sa Rewards?</translation>
 <translation id="8622329973403382303">Mabilis na matuto tungkol sa kung paano ito gumagana para maalala bilang nangunguna sa Rewards!</translation>

@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">ಮಾಸಿಕ ಕೊಡುಗೆಯನ್ನು ಹೊಂದಿಸಲಾಗಿದೆ.</translation>
 <translation id="6356822617569064293">ಮುಂದಿನ ಕೊಡುಗೆ ದಿನಾಂಕ:</translation>
 <translation id="3593485149443019592">ಸಾಕಷ್ಟು ಟೋಕನ್‌ಗಳಿಲ್ಲ. ದಯವಿಟ್ಟು <ph name="LINK_BEGIN"/>ಫಂಡ್‌ಗಳನ್ನು ಸೇರಿಸಿ<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಿಕೆ ಶುಲ್ಕವಾಗಿ 5% ರಷ್ಟು ಟಿಪ್ ಮೊತ್ತವನ್ನು Brave ಸಂಗ್ರಹಿಸುತ್ತದೆ.</translation>
 <translation id="207268487070188114">ಒಂದು-ಬಾರಿಯ ಟಿಪ್</translation>
 <translation id="69861679024013299">ಒಂದು-ಬಾರಿಯ ಟಿಪ್ ಮೊತ್ತ:</translation>
 <translation id="3669086939205397942">ಹೋಲ್ಡ್ ಮಾಡಿ, ನಿಮಗೆ ಇನ್ನೂ ಸಲಹೆ ನೀಡಲಾಗುವುದಿಲ್ಲ</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">ನೀವು ಹೊರಟು ಹೋಗುತ್ತಿರುವುದನ್ನು ನೋಡಿ ಬೇಸರವಾಗಿದೆ…</translation>
 <translation id="1420756770787071946">ಈ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಿ</translation>
 <translation id="3271043362279673449">ಬೆಂಬಲಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>ಗಮನಿಸಿ: <ph name="BOLD_END"/>ನಿಮ್ಮ ಟಿಪ್ ಅನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲು ಹಲವಾರು ನಿಮಿಷಗಳ ಸಮಯ ತೆಗೆದುಕೊಳ್ಳಬಹುದು</translation>
 <translation id="3312470408978098625">ನಿಮ್ಮ ಒಂದು ಬಾರಿಯ ಟಿಪ್ ಅನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ.</translation>
 <translation id="5096821444729034955">ಅವರ ಪೋಸ್ಟ್‌ಗಾಗಿ</translation>
 <translation id="2978223787436054634">ನಿಮ್ಮ ಬೆಂಬಲದ ಕುರಿತು ಟ್ವೀಟ್ ಮಾಡಿ</translation>
@@ -650,10 +652,11 @@
 <translation id="6436689611575806470">ನಿಮ್ಮ [[currency]] ಅನುದಾನವು ಶೀಘ್ರದಲ್ಲೇ ನಿಮ್ಮ ಕೈತಲುಪಲಿದೆ.</translation>
 <translation id="8267327690882073581">ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ</translation>
 <translation id="543510923939676996">ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಲಾಗಿದೆ</translation>
-<translation id="2659764755126740206">ನನ್ನ <ph name="PROVIDER"/> ಖಾತೆಗೆ ಹೋಗಿ</translation>
+<translation id="2445110450361135194">ನಿಮ್ಮ <ph name="PROVIDER"/> ಖಾತೆಗೆ ಹೋಗಿ</translation>
+<translation id="4244985009709452836">ನಿಮ್ಮ <ph name="PROVIDER"/> ಖಾತೆಗೆ ಲಾಗ್ ಇನ್ ಮಾಡಿ</translation>
 <translation id="3699674790322420653">ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲನೆ ಪೂರ್ಣಗೊಳಿಸಿ</translation>
 <translation id="9200453331904391567">Brave ರಿವಾರ್ಡ್‌ಗಳಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ</translation>
-<translation id="3656941797339037856">ರಿವಾರ್ಡ್ಗಳನ್ನು Gemini ಗೆ ಲಿಂಕ್ ಮಾಡಿ!</translation>
+<translation id="3656941797339037856">Rewards ಅನ್ನು Gemini ಗೆ ಲಿಂಕ್ ಮಾಡಿ</translation>
 <translation id="671838195432136371">Gemini ನಿಮಗೆ ನಿಮ್ಮ BAT ನಲ್ಲಿ ಸುಲಭವಾಗಿ ಟ್ರೇಡ್ ಮಾಡಲು, ಸಂಗ್ರಹಣೆ ಮಾಡಲು ಮತ್ತು 3.49% APY* ಗಳಿಸಲು ಅವಕಾಶ ನೀಡುತ್ತದೆ. ಲಿಂಕ್ ಮಾಡುವ ಹೊಸ Gemini ಬಳಕೆದಾರರು 5 ಉಚಿತ BAT ಸ್ವೀಕರಿಸುತ್ತಾರೆ!</translation>
 <translation id="9136976526700181750">* ಆಗಸ್ಟ್ 15, 2021 ರ ಪ್ರಕಾರ Gemini ಗಳಿಕೆ APY</translation>
 <translation id="7404779623219601861">ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಿಗಾಗಿ BAT ರೀಡಿಮ್ ಮಾಡಿ</translation>

@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Aylık katkı ayarlandı.</translation>
 <translation id="6356822617569064293">Gelecek katkı tarihi:</translation>
 <translation id="3593485149443019592">Yeterli token yok. Lütfen <ph name="LINK_BEGIN"/>fon ekleyin<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave, bahşiş tutarının %5'ini işlem ücreti olarak alır.</translation>
 <translation id="207268487070188114">Tek Seferlik Bahşiş</translation>
 <translation id="69861679024013299">Tek seferlik bahşiş miktarı:</translation>
 <translation id="3669086939205397942">Bekle, henüz bahşiş veremezsiniz</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Gitmenize üzüldükgo…</translation>
 <translation id="1420756770787071946">Bu yaratıcıyı destekle</translation>
 <translation id="3271043362279673449">Destek için teşekkürler!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Bahşişinizin işlenmesi birkaç dakika sürebilir</translation>
 <translation id="3312470408978098625">Tek seferlik bahşişiniz gönderildi.</translation>
 <translation id="5096821444729034955">gönderileri için</translation>
 <translation id="2978223787436054634">Desteğiniz hakkında tweet atın</translation>
@@ -650,11 +652,12 @@
 <translation id="6436689611575806470">[[currency]] bağışınız yolda.</translation>
 <translation id="8267327690882073581">Cüzdanı Doğrula</translation>
 <translation id="543510923939676996">Cüzdan Onaylandı</translation>
-<translation id="2659764755126740206"><ph name="PROVIDER"/> hesabıma git</translation>
+<translation id="2445110450361135194"><ph name="PROVIDER"/> hesabınıza gidin</translation>
+<translation id="4244985009709452836"><ph name="PROVIDER"/> hesabınızda oturum açın</translation>
 <translation id="3699674790322420653">Tam cüzdan onayı</translation>
 <translation id="9200453331904391567">Brave Ödüllerden Ayrıl</translation>
 <translation id="3656941797339037856">Rewards'u Gemini'a bağlayın!</translation>
-<translation id="671838195432136371">Gemini kolayca ticaret ve saklama yapmanıza ve BAT'nizde %3,49 APY* kazanmanıza izin verir. Hesabını bağlayan yeni Gemini kullanıcıları 5 ücretsiz BAT alır!</translation>
+<translation id="671838195432136371">Gemini BAT'nizde kolayca ticaret ve saklama yapmanıza ve %3,49 APY* kazanmanıza izin verir. Hesabını bağlayan yeni Gemini kullanıcıları 5 ücretsiz BAT alır!</translation>
 <translation id="9136976526700181750">* 15 Ağustos 2021 itibarıyla Gemini ile APY Kazanma</translation>
 <translation id="7404779623219601861">Hediye Kartları için BAT Kullanın</translation>
 <translation id="6215565499749144110">TAP Ağı ile, BAT'nizi popüler isim yapmış markalı hediye kartları için kullanabilirsiniz.</translation>

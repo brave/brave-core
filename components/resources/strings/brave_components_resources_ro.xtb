@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Contribuția lunară a fost setată.</translation>
 <translation id="6356822617569064293">Data următoarei contribuții:</translation>
 <translation id="3593485149443019592">Tokenuri insuficiente. Vă rugăm să <ph name="LINK_BEGIN"/>adăugați fonduri<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave reține 5% din valoarea contribuției ca taxă de procesare.</translation>
 <translation id="207268487070188114">Contribuție unică</translation>
 <translation id="69861679024013299">Valoarea contribuției unice:</translation>
 <translation id="3669086939205397942">Așteptați, nu puteți trimite tokenuri încă</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Ne pare rău că plecați…</translation>
 <translation id="1420756770787071946">Susțineți acest creator</translation>
 <translation id="3271043362279673449">Mulțumim pentru susținere!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Observație: <ph name="BOLD_END"/>procesarea contribuției dvs. poate dura câteva minute</translation>
 <translation id="3312470408978098625">Contribuția dvs. unică a fost trimisă.</translation>
 <translation id="5096821444729034955">pentru postarea lor</translation>
 <translation id="2978223787436054634">Tweet despre susținerea dumneavoastră</translation>
@@ -650,11 +652,12 @@
 <translation id="6436689611575806470">Grantul dvs. în [[currency]] este pe drum.</translation>
 <translation id="8267327690882073581">Verificare portofel</translation>
 <translation id="543510923939676996">Portofelul a fost verificat</translation>
-<translation id="2659764755126740206">Accesați <ph name="PROVIDER"/> Contul meu</translation>
+<translation id="2445110450361135194">Accesați contul dvs. <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Conectați-vă la contul dvs. <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Finalizați verificarea portofelului</translation>
 <translation id="9200453331904391567">Deconectare de la Brave Rewards</translation>
 <translation id="3656941797339037856">Conectați Brave Rewards de Gemini!</translation>
-<translation id="671838195432136371">Gemini oferă un mod simplu de tranzacționare și păstrare a monedelor, precum și un randament anual de 3,49% pentru BAT. Utilizatorii noi care își conectează contul primesc gratuit 5 BAT!</translation>
+<translation id="671838195432136371">Gemini oferă un mod simplu de a tranzacționa și păstra BAT, precum și un randament anual de 3,49%. Utilizatorii noi care își conectează contul primesc gratuit 5 BAT!</translation>
 <translation id="9136976526700181750">* Randament oferit de Gemini începând cu 15 august 2021</translation>
 <translation id="7404779623219601861">Transformați BAT în carduri cadou</translation>
 <translation id="6215565499749144110">Prin intermediul rețelei TAP, vă puteți transforma BAT-urile în carduri cadou pentru mărci la modă.</translation>

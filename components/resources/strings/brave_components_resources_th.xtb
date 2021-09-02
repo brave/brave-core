@@ -356,6 +356,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4371618764691059036">ตั้งค่าการสนับสนุนรายเดือนแล้ว</translation>
 <translation id="6356822617569064293">วันที่สนับสนุนรอบถัดไป:</translation>
 <translation id="3593485149443019592">มีโทเค็นไม่เพียงพอ โปรด <ph name="LINK_BEGIN"/>เพิ่มเงิน<ph name="LINK_END"/></translation>
+<translation id="3586352807094428968">Brave จะเรียกเก็บ 5% ของจำนวนเงินทิปเพื่อเป็นค่าธรรมเนียมในการประมวลผล</translation>
 <translation id="207268487070188114">ทิปครั้งเดียว</translation>
 <translation id="69861679024013299">จำนวนทิปครั้งเดียว:</translation>
 <translation id="3669086939205397942">ช้าก่อน คุณยังไม่สามารถให้ทิปได้</translation>
@@ -364,6 +365,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5531915212947569943">รู้สึกเสียใจที่เห็นคุณไปนะ…</translation>
 <translation id="1420756770787071946">สนับสนุนครีเอเตอร์รายนี้</translation>
 <translation id="3271043362279673449">ขอบคุณที่สนับสนุน!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>หมายเหตุ: <ph name="BOLD_END"/>อาจใช้เวลาหลายนาทีในการประมวลผลทิปของคุณ</translation>
 <translation id="3312470408978098625">คุนได้ส่งทิปครั้งเดียวแล้ว</translation>
 <translation id="5096821444729034955">สำหรับโพสต์ของพวกเขา</translation>
 <translation id="2978223787436054634">ทวีตเกี่ยวกับการสนับสนุนของคุณ</translation>
@@ -651,7 +653,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6436689611575806470">เงินสนับสนุน [[currency]] กำลังจะไปถึงคุณแล้ว</translation>
 <translation id="8267327690882073581">ยืนยันวอลเล็ท</translation>
 <translation id="543510923939676996">ยืนยันวอลเล็ตแล้ว</translation>
-<translation id="2659764755126740206">ไปยังบัญชี <ph name="PROVIDER"/> ของฉัน</translation>
+<translation id="2445110450361135194">ไปที่บัญชี <ph name="PROVIDER"/> ของคุณ</translation>
+<translation id="4244985009709452836">ล็อกอินเข้าสู่บัญชี <ph name="PROVIDER"/> ของคุณ</translation>
 <translation id="3699674790322420653">ยืนยันวอลเล็ตให้เสร็จสิ้น</translation>
 <translation id="9200453331904391567">ยกเลิกการเชื่อมต่อกับ Brave Rewards</translation>
 <translation id="3656941797339037856">เชื่อมโยง Rewards กับ Gemini!</translation>

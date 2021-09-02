@@ -566,8 +566,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "আমার $provider$ অ্যাকাউন্টে যান",
+    "message": "আপনার $provider$ অ্যাকাউন্টে যান",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "আপনার $provider$ অ্যাকাউন্টে লগইন করুন",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -672,6 +682,10 @@
   "walletConnected":  {
     "message": "সংযুক্ত",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "সংযোগবিচ্ছিন্ন",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "বিচারাধীন রয়েছে",

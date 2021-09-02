@@ -358,6 +358,7 @@
 <translation id="4371618764691059036">毎月の寄付が設定されています。</translation>
 <translation id="6356822617569064293">次の寄付日：</translation>
 <translation id="3593485149443019592">トークンが不足しています。<ph name="LINK_BEGIN"/>資金を追加<ph name="LINK_END"/>してください。</translation>
+<translation id="3586352807094428968">Braveはチップ金額の5%を処理手数料として徴収します。</translation>
 <translation id="207268487070188114">ワンタイムチップ</translation>
 <translation id="69861679024013299">ワンタイムチップ額:</translation>
 <translation id="3669086939205397942">ちょっと待ってください、まだチップを渡すことはできません</translation>
@@ -366,6 +367,7 @@
 <translation id="5531915212947569943">お別れするのは寂しいです…</translation>
 <translation id="1420756770787071946">このクリエイターをサポート</translation>
 <translation id="3271043362279673449">サポートありがとうございます！</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>注: <ph name="BOLD_END"/>チップの処理に数分かかる場合があります</translation>
 <translation id="3312470408978098625">ワンタイムチップが送信されました。</translation>
 <translation id="5096821444729034955">投稿に</translation>
 <translation id="2978223787436054634">サポートについてツイートする</translation>
@@ -653,7 +655,8 @@
 <translation id="6436689611575806470">[[currency]]の付与があります。</translation>
 <translation id="8267327690882073581">ウォレットを認証</translation>
 <translation id="543510923939676996">ウォレットが認証済み</translation>
-<translation id="2659764755126740206">私の<ph name="PROVIDER"/>アカウントに移動する</translation>
+<translation id="2445110450361135194"><ph name="PROVIDER"/>アカウントを開く</translation>
+<translation id="4244985009709452836"><ph name="PROVIDER"/>アカウントにログイン</translation>
 <translation id="3699674790322420653">ウォレットの認証を完了</translation>
 <translation id="9200453331904391567">Brave Rewardとの接続を解除する</translation>
 <translation id="3656941797339037856">RewardsをGeminiにリンク!</translation>

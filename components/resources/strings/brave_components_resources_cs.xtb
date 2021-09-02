@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Měsíční příspěvek byl nastaven.</translation>
 <translation id="6356822617569064293">Datum příštího příspěvku:</translation>
 <translation id="3593485149443019592">Nemáte dostatek tokenů. <ph name="LINK_BEGIN"/>Přidejte prostředky<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Služba Brave vybírá 5 % z výše spropitného jako poplatek za zpracování.</translation>
 <translation id="207268487070188114">Jednorázová spropitné</translation>
 <translation id="69861679024013299">Částka jednorázového spropitného:</translation>
 <translation id="3669086939205397942">Vydržte, ještě nemůžete přispívat</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Je nám líto, že se musíme rozloučit…</translation>
 <translation id="1420756770787071946">Podpořit tohoto tvůrce</translation>
 <translation id="3271043362279673449">Děkujeme za podporu!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Zpracování spropitného může trvat několik minut.</translation>
 <translation id="3312470408978098625">Vaše jednorázové spropitné bylo odesláno.</translation>
 <translation id="5096821444729034955">pro jejich příspěvek</translation>
 <translation id="2978223787436054634">Vyslat zprávu o vaší podpoře</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">Váš příspěvek v [[currency]] je na cestě.</translation>
 <translation id="8267327690882073581">Ověřit peněženku</translation>
 <translation id="543510923939676996">Ověřená peněženka</translation>
-<translation id="2659764755126740206">Přejít na můj účet <ph name="PROVIDER"/></translation>
+<translation id="2445110450361135194">Přejděte do svého účtu <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Přihlaste se do svého účtu <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Dokončit ověření peněženky</translation>
 <translation id="9200453331904391567">Odpojit od Brave Rewards</translation>
 <translation id="3656941797339037856">Propojte odměny s Gemini!</translation>

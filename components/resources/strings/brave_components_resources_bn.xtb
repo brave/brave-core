@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">মাসিক অনুদান সেট করা হয়েছে।</translation>
 <translation id="6356822617569064293">পরবর্তী অবদানের তারিখ:</translation>
 <translation id="3593485149443019592">পর্যাপ্ত টোকেন নেই। অনুগ্রহ করে <ph name="LINK_BEGIN"/>ফান্ড যোগ করুন<ph name="LINK_END"/>।</translation>
+<translation id="3586352807094428968">Brave টিপের পরিমানের 5%প্রসেসিং ফি হিসেবে সগ্রহ করে।</translation>
 <translation id="207268487070188114">এককালীন টিপ</translation>
 <translation id="69861679024013299">এককালীন টিপের অর্থরাশি:</translation>
 <translation id="3669086939205397942">ধরে থাকুন, আপনি পারবেন’tএখনও টিপ করতে</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">আপনাকে চলে যেতে দেখে খারাপ লাগছে…</translation>
 <translation id="1420756770787071946">এই স্রষ্টাকে সহায়তা করুন</translation>
 <translation id="3271043362279673449">সহায়তার জন্য ধন্যবাদ!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>নোট করুন: <ph name="BOLD_END"/>আপনার টিপটি প্রক্রিয়াকরণ করতে কিছু মিনিট সময় লাগতে পারে</translation>
 <translation id="3312470408978098625">আপনার এককালীন টিপ পাঠানো হয়েছে।</translation>
 <translation id="5096821444729034955">তাদের পোস্টের জন্য</translation>
 <translation id="2978223787436054634">আপনার সহায়তা সম্পর্কে টুইট</translation>
@@ -650,10 +652,11 @@
 <translation id="6436689611575806470">আপনার [[currency]] অনুদান আসতে চলেছে।</translation>
 <translation id="8267327690882073581">ওয়ালেট যাচাই করুন</translation>
 <translation id="543510923939676996">ওয়ালেট যাচাই করা হয়েছে</translation>
-<translation id="2659764755126740206">আমার <ph name="PROVIDER"/> অ্যাকাউন্টে যান</translation>
+<translation id="2445110450361135194">আপনার <ph name="PROVIDER"/> অ্যাকাউন্টে যান</translation>
+<translation id="4244985009709452836">আপনার <ph name="PROVIDER"/> অ্যাকাউন্টে লগইন করুন</translation>
 <translation id="3699674790322420653">সম্পূর্ণ ওয়ালেট যাচাইকরণ</translation>
 <translation id="9200453331904391567">Brave পুরষ্কারগুলি থেকে সংযোগ বিচ্ছিন্ন করুন</translation>
-<translation id="3656941797339037856">Gemini-র সাথে পুরস্কার লিঙ্ক করুন!</translation>
+<translation id="3656941797339037856">Gemini-র সাথে Rewards লিঙ্ক করুন!</translation>
 <translation id="671838195432136371">Gemini আপনাকে সহজেই বাণিজ্য করতে, সঞ্চয় করতে এবং 3.49% APY* উপার্জন করতে দেয় আপনার BAT এ। নতুন Gemini ব্যবহারকারী যারা লিঙ্ক করেন তারা বিনামূল্যে 5 BAT পান!</translation>
 <translation id="9136976526700181750">* আগস্ট 15, 2021 এর হিসাবে Gemini আর্ন APY</translation>
 <translation id="7404779623219601861">উপহার কার্ডের জন্য BAT রিডিম করুন</translation>
