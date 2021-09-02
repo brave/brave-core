@@ -1,5 +1,5 @@
 diff --git a/net/base/host_port_pair.h b/net/base/host_port_pair.h
-index 6a006da957f0fad82ab803d3eb7664eb81f826b7..e3c888792adbb2d2bdff886ab385b37d94cbbf46 100644
+index ae37263ac0420f3965fe2c8358cbb090fd089168..5f7e723378947ece8628b97616804bac873c524c 100644
 --- a/net/base/host_port_pair.h
 +++ b/net/base/host_port_pair.h
 @@ -44,16 +44,20 @@ class NET_EXPORT HostPortPair {

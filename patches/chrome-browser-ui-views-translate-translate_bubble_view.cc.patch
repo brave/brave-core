@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/translate/translate_bubble_view.cc b/chrome/browser/ui/views/translate/translate_bubble_view.cc
-index cf46bdaa49443a040d7e30c59847fffe4b808105..752c38f128848bfe0ef8f0320663b97917cbf2cf 100644
+index 022b9a5fff19ccf15c7168deb5b73371697ed0ab..8fa0f83ec066ebe189d2818f3b951fb0a886b33b 100644
 --- a/chrome/browser/ui/views/translate/translate_bubble_view.cc
 +++ b/chrome/browser/ui/views/translate/translate_bubble_view.cc
 @@ -204,7 +204,7 @@ views::Widget* TranslateBubbleView::ShowBubble(
