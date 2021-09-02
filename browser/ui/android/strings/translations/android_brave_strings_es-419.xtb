@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Evita que los rastreadores y anuncios se carguen y muestren en las páginas web.</translation>
 <translation id="1680858055899097121">No recuperar las pestañas al abrir una nueva sesión de navegación</translation>
 <translation id="7142548388914389999">Permitir análisis de productos que preservan la privacidad (P3A)</translation>
-<translation id="5469408008145872264">Esta información completamente anonimizada ayuda a Brave a calcular el uso general de ciertas funciones y a mejorarlo para usted.</translation>
+<translation id="5254037869598726291">Esta información completamente anonimizada ayuda a Brave a calcular el uso general de ciertas funciones y a mejorarlo para usted.</translation>
 <translation id="7977176350719484850">Datos\nahorrados est.</translation>
 <translation id="9008534313521214777">Tiempo ahorrado estimado</translation>
 <translation id="6572660632052512096">Modo de escritorio</translation>
@@ -240,7 +240,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="723054503945711909">Cuando creas una cuenta con Uphold, Brave Software Inc. no procesa ni almacena la información personal que les proporcionas, así como tampoco accede a esta.</translation>
 <translation id="3699674790322420653">Completar verificación de billetera</translation>
 <translation id="2193391216824305230">Billetera de usuario</translation>
-<translation id="7591798679868259510">Ir a mi cuenta de Uphold</translation>
+<translation id="6585020831163574892">Ve a tu cuenta de Uphold</translation>
 <translation id="9200453331904391567">Desconectar de Recompensas Brave</translation>
 <translation id="6239274080752256452">Retirar fondos</translation>
 <translation id="8874184842967597500">No conectado</translation>
@@ -469,7 +469,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="1078265935778232285">Te damos la bienvenida a Brave</translation>
 <translation id="6824713633331856331">Ayúdanos a aprender de forma anónima</translation>
 <translation id="6116685031674149112">Brave protege tu privacidad y\nagradece tu consentimiento en cuanto a lo siguiente:</translation>
-<translation id="3971666849661839619">Ayuda a mejorar Brave al enviar informes sobre fallos y, de forma completamente anónima, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Ayuda a mejorar Brave al enviar informes sobre fallos y, de forma completamente anónima, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">análisis de productos privados.</translation>
 <translation id="5187052478998910855">¿Necesitas actualizarte en cuanto a Rewards?</translation>
 <translation id="8622329973403382303">¡Haz un recorrido rápido para repasar cómo funciona y pasar a la historia como una estrella de Rewards!</translation>
@@ -574,7 +574,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="3819257035322786455">Copia de seguridad</translation>
 <translation id="4608713693379664295">Cuentas principales de criptomonedas</translation>
 <translation id="4003821417160006384">Cuentas secundarias</translation>
-<translation id="8094541587800369158">Estas cuentas pueden usarse con DApps Web3 y pueden aparecer en tu cartera. Sin embargo, no pueden restaurarse con una frase de recuperación de la copia de seguridad de tu cuenta principal. Activa Brave Sync para restaurar automáticamente las cuentas secundarias.</translation>
+<translation id="8094541587800369158">Estas cuentas pueden usarse con DApps de Web3 y pueden aparecer en tu cartera. Sin embargo, no pueden restaurarse con una frase de recuperación de la copia de seguridad de tu cuenta principal. Activa Brave Sync para restaurar automáticamente las cuentas secundarias.</translation>
 <translation id="6725413948756358325">Nombre de la cuenta</translation>
 <translation id="6062431965141524986">Puedes crear una cuenta secundaria importando tu clave privada.</translation>
 <translation id="3952797765659730604">Introduce, pega o importa tu archivo de cadena de clave privada o JSON.</translation>

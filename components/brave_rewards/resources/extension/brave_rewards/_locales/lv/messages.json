@@ -575,6 +575,16 @@
       }
     }
   },
+  "walletLogInWithProvider":  {
+    "message": "Ejiet uz savu $provider$ kontu",
+    "description": "CTA to log in with a wallet provider",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
   "walletDisconnect":  {
     "message": "Atspējot Brave balvas",
     "description": "CTA to disconnect user wallet from rewards"
@@ -672,6 +682,10 @@
   "walletConnected":  {
     "message": "pievienots",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Atvienots",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "Gaida",

@@ -330,6 +330,7 @@
 <translation id="4371618764691059036">Månedlig bidrag er angitt.</translation>
 <translation id="6356822617569064293">Neste bidragsdato:</translation>
 <translation id="3593485149443019592">Ikke nok tokener. <ph name="LINK_BEGIN"/>add funds<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave tar 5 % av tipsen som et behandlingsgebyr.</translation>
 <translation id="207268487070188114">Engangsdriks</translation>
 <translation id="69861679024013299">Engangsdriksbeløp:</translation>
 <translation id="3669086939205397942">Vent litt, du kan ikke tipse enda</translation>
@@ -338,6 +339,7 @@
 <translation id="5531915212947569943">Det er leit at du forlater oss…</translation>
 <translation id="1420756770787071946">Støtt denne skaperen</translation>
 <translation id="3271043362279673449">Takk for støtten!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Merk: <ph name="BOLD_END"/>Det kan ta noen minutter å behandle tipset ditt</translation>
 <translation id="3312470408978098625">Din engangsdriks ble sendt.</translation>
 <translation id="5096821444729034955">for innlegget deres</translation>
 <translation id="2978223787436054634">Tweet om støtten din</translation>
@@ -617,7 +619,8 @@
 <translation id="6436689611575806470">Ditt [[currency]]-tilskudd er på vei.</translation>
 <translation id="8267327690882073581">Verifiser lommeboken</translation>
 <translation id="543510923939676996">Lommeboken er verifisert</translation>
-<translation id="2659764755126740206">Gå til <ph name="PROVIDER"/>-kontoen min</translation>
+<translation id="2445110450361135194">Gå til din <ph name="PROVIDER"/>-konto</translation>
+<translation id="4244985009709452836">Logg på din <ph name="PROVIDER"/>-konto</translation>
 <translation id="3699674790322420653">Fullfør lommebokverifiseringen</translation>
 <translation id="9200453331904391567">Koble fra Brave Rewards</translation>
 <translation id="3656941797339037856">Knytt Rewards til Gemini!</translation>

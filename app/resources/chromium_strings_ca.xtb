@@ -156,14 +156,14 @@
 <translation id="7006260220514217183">Navegació segura està desactivada. Brave recomana activar-la.</translation>
 <translation id="4060970194201477024">Pots canviar entre perfils de Brave aquí</translation>
 <translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Estem a punt per instal·lar Chrome OS. Quan continuïs:
-          <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>S'esborraran els fitxers, les dades i el sistema operatiu actual.
-          <ph name="LIST_ITEM"/>S'instal·larà Chrome OS.
-          <ph name="LIST_ITEM"/>S'apagarà el dispositiu quan es completi la instal·lació.
-          <ph name="END_LIST"/>
-          <ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Un últim recordatori: la instal·lació esborrarà tota la unitat de disc dur. Assegura't que hagis fet una còpia de seguretat de les dades que vols conservar.<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Un cop comenci la instal·lació, no es pondrà cancel·lar.<ph name="END_PARAGRAPH3"/></translation>
+<ph name="BEGIN_LIST"/>
+<ph name="LIST_ITEM"/>S'esborraran els fitxers, les dades i el sistema operatiu actual.
+<ph name="LIST_ITEM"/>S'instal·larà Chrome OS.
+<ph name="LIST_ITEM"/>S'apagarà el dispositiu quan es completi la instal·lació.
+<ph name="END_LIST"/>
+<ph name="END_PARAGRAPH1"/>
+<ph name="BEGIN_PARAGRAPH2"/>Un darrer recordatori: la instal·lació esborrarà tota la unitat de disc dur. Assegura't que hagis creat una còpia de seguretat de les dades que vols conservar.<ph name="END_PARAGRAPH2"/>
+<ph name="BEGIN_PARAGRAPH3"/>Un cop comenci la instal·lació, no es pondrà cancel·lar.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Assegura't que tinguis la sessió iniciada a Brave a <ph name="TARGET_DEVICE_NAME"/> i prova d'enviar-ho de nou.</translation>
 <translation id="8320964054148936490">Aquest equip ja té una versió més recent de Brave. Si el programari no funciona, desinstal·leu Brave i torneu-ho a provar.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave es reiniciarà ara}=1{Brave es reiniciarà d'aquí a 1 segon}other{Brave es reiniciarà d'aquí a # segons}}</translation>

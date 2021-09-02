@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Estää seuraajia ja mainoksia lataamasta ja näkymästä verkkosivuilla</translation>
 <translation id="1680858055899097121">Älä säilytä välilehtiä selausistuntojen välillä</translation>
 <translation id="7142548388914389999">Salli yksityisyyden säilyttävä tuoteanalytiikka (P3A)</translation>
-<translation id="5469408008145872264">Nämä täysin anonymisoidut tiedot auttavat Bravea arvioimaan tiettyjen ominaisuuksien kokonaiskäytön ja tekemään niistä parempia sinulle.</translation>
+<translation id="5254037869598726291">Nämä täysin anonymisoidut tiedot auttavat Bravea arvioimaan tiettyjen ominaisuuksien kokonaiskäytön ja tekemään niistä parempia sinulle.</translation>
 <translation id="7977176350719484850">Tallennettuja\ntietoja keskimäärin</translation>
 <translation id="9008534313521214777">Arvioitu säästetty\naika</translation>
 <translation id="6572660632052512096">Työpöytätila</translation>
@@ -251,7 +251,7 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="723054503945711909">Brave Software Inc. ei käsittele, tallenna tai käytä mitään henkilökohtaisia tietoja, joita luovutit Upholdille luodessasi heidän käyttäjätilinsä.</translation>
 <translation id="3699674790322420653">Viimeistele lompakon vahvistus</translation>
 <translation id="2193391216824305230">Käyttäjälompakko</translation>
-<translation id="7591798679868259510">Siirry Uphold-tiliini</translation>
+<translation id="6585020831163574892">Siirry Uphold-tilillesi</translation>
 <translation id="9200453331904391567">Katkaise yhteys Brave-palkintoihin</translation>
 <translation id="6239274080752256452">Nosta rahaa</translation>
 <translation id="8874184842967597500">Ei yhdistetty</translation>
@@ -481,7 +481,7 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="1078265935778232285">Tervetuloa Brave-selaimeen</translation>
 <translation id="6824713633331856331">Auta meitä kehittymään nimettömästi</translation>
 <translation id="6116685031674149112">Brave suojaa yksityisyyttäsi ja\npyytäisi sinua hyväksymään seuraavan:</translation>
-<translation id="3971666849661839619">Auta kehittämään Bravea lähettämällä kaatumisraportteja sekä täysin nimettömiä <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Auta kehittämään Bravea lähettämällä kaatumisraportteja sekä täysin nimettömiä <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">yksityistuoteanalytiikka.</translation>
 <translation id="5187052478998910855">Tarvitsetko kertausta Rewardsin toiminnasta?</translation>
 <translation id="8622329973403382303">Käy pikakierroksella kerrataksesi, kuinka voit siirtyä historiassa alaspäin Rewards-ammattilaisen tavoin!</translation>

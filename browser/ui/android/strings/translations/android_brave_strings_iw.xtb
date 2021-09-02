@@ -23,7 +23,7 @@
 <translation id="4022987104439075738">שער IPFS</translation>
 <translation id="2688519859165248360">מאפשר ניווט למשאבי IPFS  דרך IPFS Gateway.</translation>
 <translation id="7534079972563542000">דומיינים בלתי ניתנים לעצירה</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="1448289340149908413">אתריום</translation>
 <translation id="7822245778264751380">Ethereum Price (ETH)</translation>
 <translation id="6513892817556267573">שירות רישום שמות Ethereum</translation>
 <translation id="3894650624018948468">שיטת רזולוציה</translation>
@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">מניעת טעינת תוכנות מעקב ופרסומות</translation>
 <translation id="1680858055899097121">אל תשמר כרטיסיות בין הפעלות גלישה</translation>
 <translation id="7142548388914389999">אפשר ניתוח מוצרים השומר על פרטיות (P3A)</translation>
-<translation id="5469408008145872264">המידע הזה הוא אנונימי לחלוטין ומסייע ל-Brave להעריך את השימוש הכולל בתכונות מסוימות, כדי לשפר את חוויית המשתמש.</translation>
+<translation id="5254037869598726291">המידע הזה הוא אנונימי לחלוטין ומסייע ל-Brave להעריך את השימוש הכולל בתכונות מסוימות, כדי לשפר את חוויית המשתמש.</translation>
 <translation id="7977176350719484850">הערכת נתונים/n שנשמרו</translation>
 <translation id="9008534313521214777">זמן מוערך\n שנשמר</translation>
 <translation id="6572660632052512096">מצב שולחן עבודה</translation>
@@ -251,7 +251,7 @@
 <translation id="723054503945711909">חברת .Brave Software Inc אינה מעבדת, מאחסנת או ניגשת לשום מידע אישי שהנך מוסר/ת ל-Uphold בעת פתיחת חשבון אצלם.</translation>
 <translation id="3699674790322420653">השלמת אימות הארנק</translation>
 <translation id="2193391216824305230">ארנק משתמש</translation>
-<translation id="7591798679868259510">עבור לחשבון Uphold שלי</translation>
+<translation id="6585020831163574892">עבור לחשבון Uphold שלך</translation>
 <translation id="9200453331904391567">התנתקות מתגמולי Brave</translation>
 <translation id="6239274080752256452">משיכת כספים</translation>
 <translation id="8874184842967597500">לא מחובר</translation>
@@ -481,7 +481,7 @@
 <translation id="1078265935778232285">ברוכים הבאים לדפדפן Brave</translation>
 <translation id="6824713633331856331">עזרו לנו ללמוד באופן אנונימי</translation>
 <translation id="6116685031674149112">Brave מגן על פרטיותכם\nומעריך את הסכמתכם לדברים הבאים:</translation>
-<translation id="3971666849661839619">עזרו לשפר את Brave על ידי שליחת דוחות קריסה ואנונימי לחלוטין, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">עזרו לשפר את Brave על ידי שליחת דוחות קריסה ואנונימי לחלוטין, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">אנליטיקס מוצר פרטי.</translation>
 <translation id="5187052478998910855">זקוקים לרענון לגבי Rewards?</translation>
 <translation id="8622329973403382303">ערכו סיור מהיר כדי לרענן ידיעתכם לגבי איך זה עובד להיכנס להיסטוריה בתור כוכב רוק של Rewards!</translation>

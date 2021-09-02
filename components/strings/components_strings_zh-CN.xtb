@@ -2279,7 +2279,7 @@
 <translation id="2418728264526266844">打开私有窗口按钮，按 Enter 键打开一个新的私有窗口进行私密浏览</translation>
 <translation id="8120597037175988664">关闭无痕窗口</translation>
 <translation id="8506574374929286570">关闭当前私密配置文件的所有无痕窗口</translation>
-<translation id="72434570621750659"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, 按 Tab 键，然后按 Enter 键以关闭当前私密配置文件的所有无痕窗口</translation>
+<translation id="72434570621750659"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>，按 Tab 键，然后按 Enter 键以关闭当前私密配置文件的所有无痕窗口</translation>
 <translation id="5299725681393421941">关闭私密窗口按钮，按 Enter 键关闭当前私密配置文件的所有无痕窗口</translation>
 <translation id="1090109565956608696">在无痕模式下不被允许</translation>
 <translation id="6934396344327597525">离开无痕模式以通过外部应用进行支付。要继续吗？</translation>

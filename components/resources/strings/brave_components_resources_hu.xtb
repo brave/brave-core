@@ -255,7 +255,7 @@
 <translation id="2359808026110333948">Folytatás</translation>
 <translation id="5112354605357157725">Tovább a bejelentkezéshez</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> legalább <ph name="AMOUNT"/> BAT egyenleget ír elő új fiók létrehozásához. Ha már korábban kapcsolódott egy fiókhoz,</translation>
-<translation id="752216563428219524">Ads nincs inicializálva, frissítse az oldalt.</translation>
+<translation id="752216563428219524">Az Ads nincs inicializálva, frissítse az oldalt.</translation>
 <translation id="7422678632904904341">Összeg:</translation>
 <translation id="6969783933307596818">Automatikus frissítés minden 5 másodpercben</translation>
 <translation id="5025866799968038247">Egyenleg adatai</translation>
@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">A havi hozzájárulás be lett állítva.</translation>
 <translation id="6356822617569064293">Következő hozzájárulás dátuma:</translation>
 <translation id="3593485149443019592">Nincs elég token. Kérjük, <ph name="LINK_BEGIN"/>adjon hozzá további összeget<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">A Brave a borravaló 5%-át begyűjti kezelési költségként.</translation>
 <translation id="207268487070188114">Egyszeri borravaló</translation>
 <translation id="69861679024013299">Egyszeri borravaló mértéke:</translation>
 <translation id="3669086939205397942">Várjon, még nem adhat borravalót</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Sajnáljuk, hogy távozol…</translation>
 <translation id="1420756770787071946">Támogasd ezt az alkotót</translation>
 <translation id="3271043362279673449">Köszönjük a támogatás!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Megjegyzés: <ph name="BOLD_END"/>A borravaló feldolgozása igénybe vehet néhány percet</translation>
 <translation id="3312470408978098625">Az egyszeri borravalód el lett küldve.</translation>
 <translation id="5096821444729034955">bejegyzésükhöz</translation>
 <translation id="2978223787436054634">Tweetelj támogatásodról</translation>
@@ -650,12 +652,13 @@
 <translation id="6436689611575806470">A(z) [[currency]] jóváírása úton van.</translation>
 <translation id="8267327690882073581">Pénztárca ellenőrzése</translation>
 <translation id="543510923939676996">Pénztárca ellenőrizve</translation>
-<translation id="2659764755126740206">Ugrás az <ph name="PROVIDER"/> fiókomra</translation>
+<translation id="2445110450361135194">Lépjen az <ph name="PROVIDER"/> fiókjára</translation>
+<translation id="4244985009709452836">Jelentkezzen be az <ph name="PROVIDER"/> fiókjába</translation>
 <translation id="3699674790322420653">Komplett pénztárca ellenőrzés</translation>
 <translation id="9200453331904391567">Brave Jutalmak kapcsolat megszakítása</translation>
-<translation id="3656941797339037856">Jutalmak linkje a Geminihez!</translation>
-<translation id="671838195432136371">A Geminivel könnyedén kereskedhet, tárolhatja és megszerezhet 3,49% APY* a BAT-jára. Az újonnan kapcsolódó Gemini-felhasználók 5 BAT-ot kapnak ingyen!</translation>
-<translation id="9136976526700181750">* Gemini Earn APY 2021. Aug. 15-től</translation>
+<translation id="3656941797339037856">Kapcsolja össze a Rewards-ot a Geminivel!</translation>
+<translation id="671838195432136371">A Geminivel könnyedén kereskedhet, tárolhat és szerezhet BAT-ot 3,49% APY* haszonnal. Az újonnan kapcsolódó Gemini-felhasználók 5 BAT-ot kapnak ingyen!</translation>
+<translation id="9136976526700181750">* Gemini Earn APY 2021. aug. 15-től</translation>
 <translation id="7404779623219601861">BAT beváltása ajándékkártyákért</translation>
 <translation id="6215565499749144110">A TAP Network hálózatában BAT-pontjait ajándékutalványokra válthatja közkedvelt márkáktól.</translation>
 <translation id="6915065518766963119">* Uphold-ellenőrzést igényel.</translation>

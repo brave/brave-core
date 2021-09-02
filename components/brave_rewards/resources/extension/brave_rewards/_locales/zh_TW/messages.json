@@ -566,8 +566,18 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "到我的 $provider$ 帳戶",
+    "message": "前往您的 $provider$ 帳戶",
     "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "登入您的 $provider$ 帳戶",
+    "description": "CTA to log in with a wallet provider",
     "placeholders": {
       "provider": {
         "content": "$1",
@@ -672,6 +682,10 @@
   "walletConnected":  {
     "message": "已連線",
     "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "已取消連結",
+    "description": "Status button that tells user that he is disconnected"
   },
   "walletPending":  {
     "message": "未定",

@@ -81,6 +81,7 @@
 <translation id="7895302206188277628">תוכן מקושר</translation>
 <translation id="3654831858282189202">פרסם עם מפתח IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">יבא את הטקסט שנבחר אל IPFS</translation>
 <translation id="6925604404524625582">יבוא והעתקה של קישור לתמונת IPFS</translation>
 <translation id="1434416574322382019">חלון גלישה פרטי עם תור</translation>
 <translation id="4703780849509456860">פתחו קישור בחלון פרטי בעזרת Tor</translation>
@@ -196,6 +197,7 @@
 <translation id="1834467296210148203">הצג את סמל Brave Wallet בסרגל הכלים</translation>
 <translation id="6864914031231797928">אפשר התחברות באמצעות Google להרחבות</translation>
 <translation id="5927916530277631319">שיטה לזיהוי דומיינים בלתי ניתנים לעצירה</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>קבל מידע נוסף<ph name="END_LINK"/> אודות פרוטוקול DNS באמצעות פרטיות פרוטוקול HTTPS ואתריום.</translation>
 <translation id="5248318250177143470">שיטה לזיהוי Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">הגדר את מפתחות IPNS שלך</translation>
 <translation id="951216659045543447">חתמו על תוכן לפי המפתח הפרטי המתאים ופרסמו אותו ב-IPNS</translation>
@@ -227,6 +229,7 @@
 <translation id="1327977588028644528">שער</translation>
 <translation id="80225669816651290">צומת מקומי</translation>
 <translation id="4927734062756955434">כתובת השער הציבורי של IPFS</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>קבל מידע נוסף<ph name="END_LINK_MPL"/> אודות שיקולי פרטיות צומת ושער IPFS מקומיים.</translation>
 <translation id="8425213833346101688">שנה</translation>
 <translation id="557281710253742286">הגדר שער IPFS</translation>
 <translation id="8571837315037233299">כתובת השער</translation>

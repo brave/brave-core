@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Đã thiết lập khoản đóng góp hàng tháng.</translation>
 <translation id="6356822617569064293">Ngày đóng góp tiếp theo:</translation>
 <translation id="3593485149443019592">Không đủ token. Vui lòng <ph name="LINK_BEGIN"/>thêm tiền<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave thu 5% số tiền thưởng làm phí xử lý.</translation>
 <translation id="207268487070188114">Tiền thưởng một lần</translation>
 <translation id="69861679024013299">Số tiền thưởng một lần:</translation>
 <translation id="3669086939205397942">Chờ đã, bạn chưa thể tặng tiền</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Rất tiếc khi bạn rời khỏi...</translation>
 <translation id="1420756770787071946">Hỗ trợ nhà sáng tạo này</translation>
 <translation id="3271043362279673449">Xin cảm ơn bạn đã hỗ trợ!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Lưu ý: <ph name="BOLD_END"/>Có thể mất một vài phút để xử lý số tiền thưởng của bạn</translation>
 <translation id="3312470408978098625">Đã gửi khoản tiền thưởng một lần của bạn</translation>
 <translation id="5096821444729034955">cho bài đăng của họ</translation>
 <translation id="2978223787436054634">Tweet về việc hỗ trợ của bạn</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">Khoản trợ cấp [[currency]] của bạn đang trên đường đến.</translation>
 <translation id="8267327690882073581">Xác thực Ví</translation>
 <translation id="543510923939676996">Ví đã được xác thực.</translation>
-<translation id="2659764755126740206">Đến tài khoản <ph name="PROVIDER"/> của tôi</translation>
+<translation id="2445110450361135194">Đi đến tài khoản <ph name="PROVIDER"/> của bạn</translation>
+<translation id="4244985009709452836">Đăng nhập vào tài khoản <ph name="PROVIDER"/> của bạn</translation>
 <translation id="3699674790322420653">Hoàn thành xác thực ví</translation>
 <translation id="9200453331904391567">Ngắt kết nối với Brave Rewards</translation>
 <translation id="3656941797339037856">Liên kết Rewards với Gemini!</translation>
@@ -740,7 +743,7 @@
 <translation id="1833248467354516560">Đơn Giá</translation>
 <translation id="4763179765154524864">Tổng số Tiền Đã chi</translation>
 <translation id="8851480289992540512">Tổng số Token Đã nhận</translation>
-<translation id="824449983246282560">Bạn không có bất kỳ số dư nào trong tài khoản của mình. Hãy truy cập Gemini để mua.</translation>
+<translation id="824449983246282560">Bạn không không còn tiền trong tài khoản. Hãy truy cập Gemini để mua.</translation>
 <translation id="8624961452383848703">Tôi muốn chuyển đổi...</translation>
 <translation id="616639131065447379">Chào mừng bạn đến với Ví Tiền điện tử Brave</translation>
 <translation id="1740464057879304704">Ví Tiền điện tử cho phép bạn làm việc với tiền điện tử và các tài sản liên quan trong Brave. Ví Tiền điện tử hỗ trợ các token Ethereum như ETH và BAT, cũng như các bộ sưu tập tiền điện tử, và cho phép bạn làm việc với các ứng dụng và hợp đồng thông minh khác. Tất cả điều này dành cho những người quen thuộc với Ethereum và các hệ thống blockchain khác hoặc hào hứng tìm hiểu.</translation>

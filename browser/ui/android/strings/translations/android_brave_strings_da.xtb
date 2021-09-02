@@ -36,7 +36,7 @@
 <translation id="2448893613530489637">Forhindrer trackere og reklamer i at blive indlæst og vist på websider</translation>
 <translation id="1680858055899097121">Vedhold ikke faner mellem browsingsessioner</translation>
 <translation id="7142548388914389999">Tillad anonymitetsbeskyttede produktanalyser (også kendt som P3A)</translation>
-<translation id="5469408008145872264">Disse anonyme informationer hjælper kun Brave med at anslå det generelle forbrug af visse funktioner og gøre servicen endnu bedre.</translation>
+<translation id="5254037869598726291">Disse anonyme informationer hjælper kun Brave med at anslå det generelle forbrug af visse funktioner og gøre servicen endnu bedre.</translation>
 <translation id="7977176350719484850">Est. datamængde\ngemt</translation>
 <translation id="9008534313521214777">Forventet tid\nsparet</translation>
 <translation id="6572660632052512096">Computertilstand</translation>
@@ -250,7 +250,7 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="723054503945711909">Brave Software Inc. hverken behandler, opbevarer, eller benytter sig af den personlige information som du overlader til Uphold når du opretter en konto ved dem.</translation>
 <translation id="3699674790322420653">Gennemfør tegnebogsverificering</translation>
 <translation id="2193391216824305230">Brugers tegnebog</translation>
-<translation id="7591798679868259510">Gå til min Uphold-konto</translation>
+<translation id="6585020831163574892">Gå til din Uphold-konto</translation>
 <translation id="9200453331904391567">Afbryd forbindelsen fra Brave Belønninger</translation>
 <translation id="6239274080752256452">Hæv Penge</translation>
 <translation id="8874184842967597500">Ikke tilsluttet</translation>
@@ -479,7 +479,7 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="1078265935778232285">Velkommen til Brave Browser</translation>
 <translation id="6824713633331856331">Hjælp os med at lære, og vær anonym</translation>
 <translation id="6116685031674149112">Brave beskytter dine data og \nværdsætter dit samtykke til følgende:</translation>
-<translation id="3971666849661839619">Hjælp med at forbedre Brave ved at sende nedbrudsrapporter og helt anonymiseret, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Hjælp med at forbedre Brave ved at sende nedbrudsrapporter og helt anonymiseret, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">analyser over private produkter</translation>
 <translation id="5187052478998910855">Har du brug for en opfriskning omkring Rewards?</translation>
 <translation id="8622329973403382303">Tag en hurtig rundvisning for at få et overblik over, hvordan det er at være en del af historien som en Rewards-rockstjerne!</translation>

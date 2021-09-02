@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Месечното ппащане беше зададено.</translation>
 <translation id="6356822617569064293">Дата на следващо плащане:</translation>
 <translation id="3593485149443019592">Недостатъчен брой жетони. <ph name="LINK_BEGIN"/>Добавете средства<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave събира 5% от сумата на бакшиша като такса за обработка.</translation>
 <translation id="207268487070188114">Еднократно дарение</translation>
 <translation id="69861679024013299">Сума на еднократното дарение:</translation>
 <translation id="3669086939205397942">Изчакайте, още не можете да подпомагате</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Съжаляваме, че напускате…</translation>
 <translation id="1420756770787071946">Подкрепете този създател</translation>
 <translation id="3271043362279673449">Благодарим Ви за подкрепата!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Забележка: <ph name="BOLD_END"/>обработката на вашия бакшиш може да отнеме няколко минути</translation>
 <translation id="3312470408978098625">Вашето еднократно дарение беше изпратено.</translation>
 <translation id="5096821444729034955">за тяхната публикация</translation>
 <translation id="2978223787436054634">Изпратете туийт за вашата поддръжка</translation>
@@ -650,7 +652,8 @@
 <translation id="6436689611575806470">Вашите безвъзмездни средства в [[currency]] са на път.</translation>
 <translation id="8267327690882073581">Потвърди портфейла</translation>
 <translation id="543510923939676996">Портфейлът е потвърден</translation>
-<translation id="2659764755126740206">Отидете в моя акаунт <ph name="PROVIDER"/></translation>
+<translation id="2445110450361135194">Към вашия акаунт в <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Влезте в своя акаунт в <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Завършете проверката на портфейла</translation>
 <translation id="9200453331904391567">Прекъсване на връзката с Brave Rewards</translation>
 <translation id="3656941797339037856">Свържете Rewards към Gemini!</translation>

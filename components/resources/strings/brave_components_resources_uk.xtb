@@ -355,6 +355,7 @@
 <translation id="4371618764691059036">Місячний внесок було надіслано.</translation>
 <translation id="6356822617569064293">Дата наступного внеску:</translation>
 <translation id="3593485149443019592">Недостатньо токенів. <ph name="LINK_BEGIN"/>Додайте кошти<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave збирає 5 % від суми чайових як комісію за обробку.</translation>
 <translation id="207268487070188114">Одноразові чайові</translation>
 <translation id="69861679024013299">Розмір одноразових чайових:</translation>
 <translation id="3669086939205397942">Зачекайте, ви ще не можете давати чайові</translation>
@@ -363,6 +364,7 @@
 <translation id="5531915212947569943">Шкода, що ви нас залишаєте…</translation>
 <translation id="1420756770787071946">Підтримати цього творця</translation>
 <translation id="3271043362279673449">Дякуємо за підтримку!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Примітка. <ph name="BOLD_END"/>Обробка чайових може зайняти кілька хвилин</translation>
 <translation id="3312470408978098625">Ваші одноразові чайові надіслано.</translation>
 <translation id="5096821444729034955">за їхній допис</translation>
 <translation id="2978223787436054634">Напишіть твіт про вашу підтримку</translation>
@@ -650,10 +652,11 @@
 <translation id="6436689611575806470">Ваш грант на суму [[currency]] обробляється.</translation>
 <translation id="8267327690882073581">Верифікувати гаманець</translation>
 <translation id="543510923939676996">Гаманець підтверджено</translation>
-<translation id="2659764755126740206">Перейти у мій обліковий запис <ph name="PROVIDER"/></translation>
+<translation id="2445110450361135194">Перейти до облікового запису <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Увійти до облікового запису <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Завершити підтвердження гаманця</translation>
 <translation id="9200453331904391567">Від'єднатись від Винагород Brave</translation>
-<translation id="3656941797339037856">Винагорода за посиланням на Gemini!</translation>
+<translation id="3656941797339037856">Прив’яжіть Rewards до Gemini!</translation>
 <translation id="671838195432136371">Gemini дозволяє вам легко продавати, зберігати й заробляти 3,49 % APY* на ваших BAT. Нові користувачі Gemini за посиланням отримують 5 безкоштовних BAT!</translation>
 <translation id="9136976526700181750">* Gemini Earn APY станом на 15 серпня 2021 р.</translation>
 <translation id="7404779623219601861">Отримати BAT за Подарункові картки</translation>
