@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import AppI from '../assets/app-icon.svg'
+import UnCheckStar from '../../../assets/svg-icons/star-unchecked.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -53,7 +53,9 @@ export const NavButtonText = styled.span`
 `
 
 export const AppsIcon = styled.div`
-  width: 16px;
-  height: 16px;
-  background: url(${AppI});
+  width: 18px;
+  height: 18px;
+  background-color: ${(p) => p.theme.palette.white};
+  -webkit-mask-image: url(${UnCheckStar});
+  mask-image: url(${UnCheckStar});
 `
