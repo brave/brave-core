@@ -17,6 +17,8 @@ class BraveVPNPanelHost {
  public:
   explicit BraveVPNPanelHost(BraveBrowserView* browser_view);
   ~BraveVPNPanelHost();
+  BraveVPNPanelHost(const BraveVPNPanelHost&) = delete;
+  BraveVPNPanelHost& operator=(const BraveVPNPanelHost&) = delete;
 
   void ShowBraveVPNPanel();
 
