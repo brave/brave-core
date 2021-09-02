@@ -68,11 +68,17 @@ void BraveVpnServiceDesktop::Shutdown() {
 void BraveVpnServiceDesktop::OnCreated(const std::string& name) {
   for (Observer& obs : observers_)
     obs.OnConnectionCreated();
+
+  for (const auto& obs : mojo_observers_)
+    obs->OnConnectionCreated();
 }
 
 void BraveVpnServiceDesktop::OnRemoved(const std::string& name) {
   for (Observer& obs : observers_)
     obs.OnConnectionRemoved();
+
+  for (const auto& obs : mojo_observers_)
+    obs->OnConnectionRemoved();
 }
 
 void BraveVpnServiceDesktop::OnConnected(const std::string& name) {
@@ -83,6 +89,9 @@ void BraveVpnServiceDesktop::OnConnected(const std::string& name) {
 
   for (Observer& obs : observers_)
     obs.OnConnectionStateChanged(ConnectionState::CONNECTED);
+
+  for (const auto& obs : mojo_observers_)
+    obs->OnConnectionStateChanged(ConnectionState::CONNECTED);
 }
 
 void BraveVpnServiceDesktop::OnIsConnecting(const std::string& name) {
@@ -93,6 +102,9 @@ void BraveVpnServiceDesktop::OnIsConnecting(const std::string& name) {
 
   for (Observer& obs : observers_)
     obs.OnConnectionStateChanged(ConnectionState::CONNECTING);
+
+  for (const auto& obs : mojo_observers_)
+    obs->OnConnectionStateChanged(ConnectionState::CONNECTING);
 }
 
 void BraveVpnServiceDesktop::OnConnectFailed(const std::string& name) {
@@ -103,6 +115,9 @@ void BraveVpnServiceDesktop::OnConnectFailed(const std::string& name) {
 
   for (Observer& obs : observers_)
     obs.OnConnectionStateChanged(ConnectionState::CONNECT_FAILED);
+
+  for (const auto& obs : mojo_observers_)
+    obs->OnConnectionStateChanged(ConnectionState::CONNECT_FAILED);
 }
 
 void BraveVpnServiceDesktop::OnDisconnected(const std::string& name) {
@@ -113,6 +128,9 @@ void BraveVpnServiceDesktop::OnDisconnected(const std::string& name) {
 
   for (Observer& obs : observers_)
     obs.OnConnectionStateChanged(ConnectionState::DISCONNECTED);
+
+  for (const auto& obs : mojo_observers_)
+    obs->OnConnectionStateChanged(ConnectionState::DISCONNECTED);
 }
 
 void BraveVpnServiceDesktop::CreateVPNConnection() {
@@ -137,6 +155,11 @@ void BraveVpnServiceDesktop::Disconnect() {
 
 void BraveVpnServiceDesktop::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
+}
+
+void BraveVpnServiceDesktop::AddObserver(
+    mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> observer) {
+  mojo_observers_.Add(std::move(observer));
 }
 
 void BraveVpnServiceDesktop::RemoveObserver(Observer* observer) {
