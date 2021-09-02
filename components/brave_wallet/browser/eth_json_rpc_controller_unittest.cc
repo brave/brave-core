@@ -13,12 +13,12 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "components/prefs/testing_pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/test/browser_task_environment.h"
@@ -59,6 +59,7 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(std::move(resource_request));
     user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
     prefs_.registry()->RegisterListPref(kBraveWalletCustomNetworks);
+    KeyringController::RegisterProfilePrefs(prefs_.registry());
   }
 
   ~EthJsonRpcControllerUnitTest() override = default;
@@ -93,7 +94,7 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
   std::unique_ptr<content::TestBrowserContext> browser_context_;
-  TestingPrefServiceSimple prefs_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };
@@ -216,6 +217,27 @@ TEST_F(EthJsonRpcControllerUnitTest, ResolveENSDomain) {
           },
           run.QuitClosure()));
   run.Run();
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, ResetCustomChains) {
+  std::vector<base::Value> values;
+  brave_wallet::mojom::EthereumChain chain(
+      "0x1", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "symbol_name", "symbol", 11);
+  auto chain_ptr = chain.Clone();
+  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr));
+  UpdateCustomNetworks(prefs(), &values);
+
+  std::vector<brave_wallet::mojom::EthereumChainPtr> custom_chains;
+  GetAllCustomChains(prefs(), &custom_chains);
+  ASSERT_FALSE(custom_chains.empty());
+  custom_chains.clear();
+  ASSERT_TRUE(custom_chains.empty());
+
+  KeyringController controller(prefs());
+  controller.Reset();
+  GetAllCustomChains(prefs(), &custom_chains);
+  ASSERT_TRUE(custom_chains.empty());
 }
 
 }  // namespace brave_wallet

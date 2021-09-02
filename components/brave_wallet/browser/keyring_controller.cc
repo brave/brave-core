@@ -737,6 +737,7 @@ void KeyringController::Reset() {
   default_keyring_.reset();
 
   prefs_->ClearPref(kBraveWalletKeyrings);
+  prefs_->ClearPref(kBraveWalletCustomNetworks);
 }
 
 bool KeyringController::GetPrefInBytesForKeyring(const std::string& key,

@@ -13,7 +13,7 @@
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "components/user_prefs/user_prefs.h"
+#include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
