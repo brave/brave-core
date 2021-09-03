@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 2ecd19c1d005903656cb8178e3eca4290968a174..8672ff87ac5fcc63cf0c99839abf2ab70c656995 100644
+index 28a1d7e315aebe299fbc32af7dc716b61f10e2d1..2fa06d2da872332ba2157cc62ccb5bc20636007e 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1308,6 +1308,7 @@ static_library("extensions") {
+@@ -1312,6 +1312,7 @@ static_library("extensions") {
    } else {
      sources += [ "api/braille_display_private/braille_controller_stub.cc" ]
    }
