@@ -1,5 +1,5 @@
 export const localeStrings = {
-  walletAccountLink: 'Go to my $1 account',
+  walletAccountLink: 'Go to your $1 account',
   walletAddFunds: 'Add Funds',
   walletAutoContribute: 'Auto-Contribute',
   walletCompleteVerificationLink: 'Go to $1 to complete verification',

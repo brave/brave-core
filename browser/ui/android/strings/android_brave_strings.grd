@@ -902,7 +902,7 @@ until they verify, or until 90 days have passed.
         User Wallet
       </message>
       <message name="IDS_USER_WALLET_GOTO_UPHOLD">
-        Go to my Uphold account
+        Go to your Uphold account
       </message>
       <message name="IDS_USER_WALLET_DISCONNECT_REWARDS">
         Disconnect from Brave Rewards
