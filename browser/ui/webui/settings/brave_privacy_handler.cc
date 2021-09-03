@@ -46,18 +46,18 @@ void BravePrivacyHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "setP3AEnabled", base::BindRepeating(&BravePrivacyHandler::SetP3AEnabled,
                                            base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "getP3AEnabled", base::BindRepeating(&BravePrivacyHandler::GetP3AEnabled,
                                            base::Unretained(this)));
 #endif
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "setStatsUsagePingEnabled",
       base::BindRepeating(&BravePrivacyHandler::SetStatsUsagePingEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "getStatsUsagePingEnabled",
       base::BindRepeating(&BravePrivacyHandler::GetStatsUsagePingEnabled,
                           base::Unretained(this)));
@@ -80,35 +80,35 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
 
 void BravePrivacyHandler::SetLocalStateBooleanEnabled(
     const std::string& path,
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
+  if (!args[0].is_bool())
+    return;
 
-  bool enabled;
-  args->GetBoolean(0, &enabled);
-
+  bool enabled = args[0].GetBool();
   PrefService* local_state = g_browser_process->local_state();
   local_state->SetBoolean(path, enabled);
 }
 
 void BravePrivacyHandler::GetLocalStateBooleanEnabled(
     const std::string& path,
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
 
   PrefService* local_state = g_browser_process->local_state();
   bool enabled = local_state->GetBoolean(path);
 
   AllowJavascript();
-  ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(enabled));
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(enabled));
 }
 
 void BravePrivacyHandler::SetStatsUsagePingEnabled(
-    const base::ListValue* args) {
+    base::Value::ConstListView args) {
   SetLocalStateBooleanEnabled(kStatsReportingEnabled, args);
 }
 
 void BravePrivacyHandler::GetStatsUsagePingEnabled(
-    const base::ListValue* args) {
+    base::Value::ConstListView args) {
   GetLocalStateBooleanEnabled(kStatsReportingEnabled, args);
 }
 
@@ -122,11 +122,11 @@ void BravePrivacyHandler::OnStatsUsagePingEnabledChanged() {
 }
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
-void BravePrivacyHandler::SetP3AEnabled(const base::ListValue* args) {
+void BravePrivacyHandler::SetP3AEnabled(base::Value::ConstListView args) {
   SetLocalStateBooleanEnabled(brave::kP3AEnabled, args);
 }
 
-void BravePrivacyHandler::GetP3AEnabled(const base::ListValue* args) {
+void BravePrivacyHandler::GetP3AEnabled(base::Value::ConstListView args) {
   GetLocalStateBooleanEnabled(brave::kP3AEnabled, args);
 }
 

@@ -52,26 +52,26 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void OnJavascriptAllowed() override;
   void OnJavascriptDisallowed() override;
 
-  void HandleGetPreferences(const base::ListValue* args);
-  void HandleGetStats(const base::ListValue* args);
-  void HandleGetPrivateProperties(const base::ListValue* args);
-  void HandleGetTorProperties(const base::ListValue* args);
-  void HandleSaveNewTabPagePref(const base::ListValue* args);
+  void HandleGetPreferences(base::Value::ConstListView args);
+  void HandleGetStats(base::Value::ConstListView args);
+  void HandleGetPrivateProperties(base::Value::ConstListView args);
+  void HandleGetTorProperties(base::Value::ConstListView args);
+  void HandleSaveNewTabPagePref(base::Value::ConstListView args);
   void HandleToggleAlternativeSearchEngineProvider(
-      const base::ListValue* args);
-  void HandleRegisterNewTabPageView(const base::ListValue* args);
-  void HandleBrandedWallpaperLogoClicked(const base::ListValue* args);
-  void HandleGetBrandedWallpaperData(const base::ListValue* args);
-  void HandleCustomizeClicked(const base::ListValue* args);
+      base::Value::ConstListView args);
+  void HandleRegisterNewTabPageView(base::Value::ConstListView args);
+  void HandleBrandedWallpaperLogoClicked(base::Value::ConstListView args);
+  void HandleGetBrandedWallpaperData(base::Value::ConstListView args);
+  void HandleCustomizeClicked(base::Value::ConstListView args);
   // TODO(petemill): Today should get it's own message handler
   // or service.
-  void HandleTodayInteractionBegin(const base::ListValue* args);
-  void HandleTodayOnCardVisit(const base::ListValue* args);
-  void HandleTodayOnCardViews(const base::ListValue* args);
-  void HandleTodayOnPromotedCardView(const base::ListValue* args);
-  void HandleTodayGetDisplayAd(const base::ListValue* args);
-  void HandleTodayOnDisplayAdVisit(const base::ListValue* args);
-  void HandleTodayOnDisplayAdView(const base::ListValue* args);
+  void HandleTodayInteractionBegin(base::Value::ConstListView args);
+  void HandleTodayOnCardVisit(base::Value::ConstListView args);
+  void HandleTodayOnCardViews(base::Value::ConstListView args);
+  void HandleTodayOnPromotedCardView(base::Value::ConstListView args);
+  void HandleTodayGetDisplayAd(base::Value::ConstListView args);
+  void HandleTodayOnDisplayAdVisit(base::Value::ConstListView args);
+  void HandleTodayOnDisplayAdView(base::Value::ConstListView args);
 
   void OnStatsChanged();
   void OnPreferencesChanged();

@@ -21,7 +21,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 
-
 BraveAppearanceHandler::BraveAppearanceHandler() {
   local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
@@ -39,52 +38,53 @@ void BraveAppearanceHandler::RegisterMessages() {
   profile_state_change_registrar_.Add(
       kNewTabPageShowsOptions,
       base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
-      base::Unretained(this)));
+                          base::Unretained(this)));
   profile_state_change_registrar_.Add(
       prefs::kHomePageIsNewTabPage,
       base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
-      base::Unretained(this)));
+                          base::Unretained(this)));
   profile_state_change_registrar_.Add(
       prefs::kHomePage,
       base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
-      base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "setBraveThemeType",
       base::BindRepeating(&BraveAppearanceHandler::SetBraveThemeType,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "getBraveThemeType",
       base::BindRepeating(&BraveAppearanceHandler::GetBraveThemeType,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "getNewTabShowsOptionsList",
       base::BindRepeating(&BraveAppearanceHandler::GetNewTabShowsOptionsList,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "shouldShowNewTabDashboardSettings",
       base::BindRepeating(
           &BraveAppearanceHandler::ShouldShowNewTabDashboardSettings,
           base::Unretained(this)));
 }
 
-void BraveAppearanceHandler::SetBraveThemeType(const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
-  CHECK(args->GetList()[0].is_int());
+void BraveAppearanceHandler::SetBraveThemeType(
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(args[0].is_int());
   AllowJavascript();
 
-  int int_type = args->GetList()[0].GetInt();
+  int int_type = args[0].GetInt();
   dark_mode::SetBraveDarkModeType(
       static_cast<dark_mode::BraveDarkModeType>(int_type));
 }
 
-void BraveAppearanceHandler::GetBraveThemeType(const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
-
+void BraveAppearanceHandler::GetBraveThemeType(
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   // GetBraveThemeType() should be used because settings option displays all
   // available options including default.
   ResolveJavascriptCallback(
-      args->GetList()[0],
+      args[0],
       base::Value(static_cast<int>(dark_mode::GetBraveDarkModeType())));
 }
 
@@ -105,8 +105,7 @@ void BraveAppearanceHandler::OnBackgroundPreferenceChanged(
 
 void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {
   if (IsJavascriptAllowed()) {
-    if (pref_name == kNewTabPageShowsOptions ||
-        pref_name == prefs::kHomePage ||
+    if (pref_name == kNewTabPageShowsOptions || pref_name == prefs::kHomePage ||
         pref_name == prefs::kHomePageIsNewTabPage) {
       FireWebUIListener(
           "show-new-tab-dashboard-settings-changed",
@@ -117,18 +116,17 @@ void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {
 }
 
 void BraveAppearanceHandler::GetNewTabShowsOptionsList(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   AllowJavascript();
-  ResolveJavascriptCallback(args->GetList()[0],
+  ResolveJavascriptCallback(args[0],
                             brave::GetNewTabShowsOptionsList(profile_));
 }
 
 void BraveAppearanceHandler::ShouldShowNewTabDashboardSettings(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(
-      args->GetList()[0],
-      base::Value(brave::ShouldNewTabShowDashboard(profile_)));
+      args[0], base::Value(brave::ShouldNewTabShowDashboard(profile_)));
 }

@@ -22,193 +22,168 @@ using brave_shields::ControlTypeToString;
 
 void DefaultBraveShieldsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "isAdControlEnabled",
       base::BindRepeating(&DefaultBraveShieldsHandler::IsAdControlEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "setAdControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetAdControlType,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "isFirstPartyCosmeticFilteringEnabled",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::IsFirstPartyCosmeticFilteringEnabled,
           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "setCosmeticFilteringControlType",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::SetCosmeticFilteringControlType,
           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "getCookieControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::GetCookieControlType,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "setCookieControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetCookieControlType,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "getFingerprintingControlType",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::GetFingerprintingControlType,
           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "setFingerprintingControlType",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::SetFingerprintingControlType,
           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "setHTTPSEverywhereEnabled",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled,
           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "setNoScriptControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetNoScriptControlType,
                           base::Unretained(this)));
 }
 
 void DefaultBraveShieldsHandler::IsAdControlEnabled(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
   ControlType setting = brave_shields::GetAdControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
 
   AllowJavascript();
-  ResolveJavascriptCallback(
-      args->GetList()[0].Clone(),
-      base::Value(setting == ControlType::BLOCK));
+  ResolveJavascriptCallback(args[0].Clone(),
+                            base::Value(setting == ControlType::BLOCK));
 }
 
-void DefaultBraveShieldsHandler::SetAdControlType(const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+void DefaultBraveShieldsHandler::SetAdControlType(
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  bool value;
-  args->GetBoolean(0, &value);
+  bool value = args[0].GetBool();
 
   brave_shields::SetAdControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      value ? ControlType::BLOCK
-            : ControlType::ALLOW,
-      GURL(),
+      value ? ControlType::BLOCK : ControlType::ALLOW, GURL(),
       g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::IsFirstPartyCosmeticFilteringEnabled(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
   bool enabled = brave_shields::IsFirstPartyCosmeticFilteringEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      GURL());
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
 
   AllowJavascript();
-  ResolveJavascriptCallback(
-      args->GetList()[0].Clone(),
-      base::Value(enabled));
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(enabled));
 }
 
 void DefaultBraveShieldsHandler::SetCosmeticFilteringControlType(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  std::string value;
-  args->GetString(0, &value);
+  std::string value = args[0].GetString();
 
   brave_shields::SetCosmeticFilteringControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value),
-      GURL(),
-      g_browser_process->local_state());
+      ControlTypeFromString(value), GURL(), g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::GetCookieControlType(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
   ControlType setting = brave_shields::GetCookieControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      GURL());
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
 
   AllowJavascript();
-  ResolveJavascriptCallback(
-      args->GetList()[0].Clone(),
-      base::Value(ControlTypeToString(setting)));
+  ResolveJavascriptCallback(args[0].Clone(),
+                            base::Value(ControlTypeToString(setting)));
 }
 
 void DefaultBraveShieldsHandler::SetCookieControlType(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  std::string value;
-  args->GetString(0, &value);
+  std::string value = args[0].GetString();
 
   brave_shields::SetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value),
-      GURL(),
-      g_browser_process->local_state());
+      ControlTypeFromString(value), GURL(), g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::GetFingerprintingControlType(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
   ControlType setting = brave_shields::GetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      GURL());
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
 
   AllowJavascript();
-  ResolveJavascriptCallback(
-      args->GetList()[0].Clone(),
-      base::Value(ControlTypeToString(setting)));
+  ResolveJavascriptCallback(args[0].Clone(),
+                            base::Value(ControlTypeToString(setting)));
 }
 
 void DefaultBraveShieldsHandler::SetFingerprintingControlType(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  std::string value;
-  args->GetString(0, &value);
+  std::string value = args[0].GetString();
 
   brave_shields::SetFingerprintingControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value),
-      GURL(),
-      g_browser_process->local_state());
+      ControlTypeFromString(value), GURL(), g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  bool value;
-  args->GetBoolean(0, &value);
+  bool value = args[0].GetBool();
 
   brave_shields::SetHTTPSEverywhereEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      value,
-      GURL(),
+      HostContentSettingsMapFactory::GetForProfile(profile_), value, GURL(),
       g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::SetNoScriptControlType(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  bool value;
-  args->GetBoolean(0, &value);
+  bool value = args[0].GetBool();
 
   brave_shields::SetNoScriptControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      value ? ControlType::BLOCK
-            : ControlType::ALLOW,
-      GURL(),
+      value ? ControlType::BLOCK : ControlType::ALLOW, GURL(),
       g_browser_process->local_state());
 }

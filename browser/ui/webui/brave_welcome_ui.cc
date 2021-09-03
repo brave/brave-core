@@ -59,16 +59,15 @@ void RecordP3AHistogram(int screen_number, bool finished) {
 // The handler for Javascript messages for the chrome://welcome page
 class WelcomeDOMHandler : public WebUIMessageHandler {
  public:
-  WelcomeDOMHandler() {
-  }
+  WelcomeDOMHandler() {}
   ~WelcomeDOMHandler() override;
 
   // WebUIMessageHandler implementation.
   void RegisterMessages() override;
 
  private:
-  void HandleImportNowRequested(const base::ListValue* args);
-  void HandleRecordP3A(const base::ListValue* args);
+  void HandleImportNowRequested(base::Value::ConstListView args);
+  void HandleRecordP3A(base::Value::ConstListView args);
   Browser* GetBrowser();
 
   int screen_number_ = 0;
@@ -87,28 +86,27 @@ Browser* WelcomeDOMHandler::GetBrowser() {
 }
 
 void WelcomeDOMHandler::RegisterMessages() {
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "importNowRequested",
       base::BindRepeating(&WelcomeDOMHandler::HandleImportNowRequested,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "recordP3A", base::BindRepeating(&WelcomeDOMHandler::HandleRecordP3A,
                                        base::Unretained(this)));
 }
 
-void WelcomeDOMHandler::HandleImportNowRequested(const base::ListValue* args) {
+void WelcomeDOMHandler::HandleImportNowRequested(
+    base::Value::ConstListView args) {
   chrome::ShowSettingsSubPageInTabbedBrowser(GetBrowser(),
-      chrome::kImportDataSubPage);
+                                             chrome::kImportDataSubPage);
 }
 
-void WelcomeDOMHandler::HandleRecordP3A(const base::ListValue* args) {
-  if (!args->GetList()[0].is_int())
+void WelcomeDOMHandler::HandleRecordP3A(base::Value::ConstListView args) {
+  if (!args[0].is_int() || !args[1].is_bool() || !args[2].is_bool())
     return;
-  screen_number_ = args->GetList()[0].GetInt();
-  if (!args->GetBoolean(1, &finished_))
-    return;
-  if (!args->GetBoolean(2, &skipped_))
-    return;
+  screen_number_ = args[0].GetInt();
+  finished_ = args[1].GetBool();
+  skipped_ = args[2].GetBool();
 
   if (screen_number_) {
     // It is 1-based on JS side, we want 0-based.
@@ -162,5 +160,4 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 }
 
-BraveWelcomeUI::~BraveWelcomeUI() {
-}
+BraveWelcomeUI::~BraveWelcomeUI() {}

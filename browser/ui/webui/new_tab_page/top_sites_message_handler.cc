@@ -44,37 +44,37 @@ TopSitesMessageHandler::TopSitesMessageHandler(Profile* profile)
 TopSitesMessageHandler::~TopSitesMessageHandler() = default;
 
 void TopSitesMessageHandler::RegisterMessages() {
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "updateMostVisitedInfo",
       base::BindRepeating(&TopSitesMessageHandler::HandleUpdateMostVisitedInfo,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "deleteMostVisitedTile",
       base::BindRepeating(&TopSitesMessageHandler::HandleDeleteMostVisitedTile,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "reorderMostVisitedTile",
       base::BindRepeating(&TopSitesMessageHandler::HandleReorderMostVisitedTile,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "restoreMostVisitedDefaults",
       base::BindRepeating(
           &TopSitesMessageHandler::HandleRestoreMostVisitedDefaults,
           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "undoMostVisitedTileAction",
       base::BindRepeating(
           &TopSitesMessageHandler::HandleUndoMostVisitedTileAction,
           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "setMostVisitedSettings",
       base::BindRepeating(&TopSitesMessageHandler::HandleSetMostVisitedSettings,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "addNewTopSite",
       base::BindRepeating(&TopSitesMessageHandler::HandleAddNewTopSite,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "editTopSite",
       base::BindRepeating(&TopSitesMessageHandler::HandleEditTopSite,
                           base::Unretained(this)));
@@ -180,7 +180,7 @@ bool TopSitesMessageHandler::IsShortcutsVisible() const {
 }
 
 void TopSitesMessageHandler::HandleUpdateMostVisitedInfo(
-    const base::ListValue* args) {
+    base::Value::ConstListView args) {
   if (!most_visited_sites_)
     return;
 
@@ -191,16 +191,16 @@ void TopSitesMessageHandler::HandleUpdateMostVisitedInfo(
 }
 
 void TopSitesMessageHandler::HandleDeleteMostVisitedTile(
-    const base::ListValue* args) {
+    base::Value::ConstListView args) {
   if (!most_visited_sites_)
     return;
 
   AllowJavascript();
 
-  std::string url;
-  if (!args->GetString(0, &url))
+  if (!args[0].is_string())
     return;
 
+  std::string url = args[0].GetString();
   GURL gurl(url);
 
   // same as `MostVisitedHandler::DeleteMostVisitedTile`
@@ -213,29 +213,26 @@ void TopSitesMessageHandler::HandleDeleteMostVisitedTile(
 }
 
 void TopSitesMessageHandler::HandleReorderMostVisitedTile(
-    const base::ListValue* args) {
+    base::Value::ConstListView args) {
   if (!most_visited_sites_)
     return;
 
   AllowJavascript();
 
-  std::string url;
-  if (!args->GetString(0, &url))
-    return;
-
-  if (!args->GetList()[1].is_int())
+  if (!args[0].is_string() || !args[1].is_int())
     return;
 
   // same as `MostVisitedHandler::ReorderMostVisitedTile`
   if (most_visited_sites_->IsCustomLinksEnabled()) {
+    std::string url = args[0].GetString();
     GURL gurl(url);
-    int new_pos = args->GetList()[1].GetInt();
+    int new_pos = args[1].GetInt();
     most_visited_sites_->ReorderCustomLink(gurl, new_pos);
   }
 }
 
 void TopSitesMessageHandler::HandleRestoreMostVisitedDefaults(
-    const base::ListValue* args) {
+    base::Value::ConstListView args) {
   if (!most_visited_sites_)
     return;
 
@@ -250,7 +247,7 @@ void TopSitesMessageHandler::HandleRestoreMostVisitedDefaults(
 }
 
 void TopSitesMessageHandler::HandleUndoMostVisitedTileAction(
-    const base::ListValue* args) {
+    base::Value::ConstListView args) {
   if (!most_visited_sites_)
     return;
 
@@ -266,19 +263,17 @@ void TopSitesMessageHandler::HandleUndoMostVisitedTileAction(
 }
 
 void TopSitesMessageHandler::HandleSetMostVisitedSettings(
-    const base::ListValue* args) {
+    base::Value::ConstListView args) {
   if (!most_visited_sites_)
     return;
 
   AllowJavascript();
 
-  bool custom_links_enabled;
-  if (!args->GetBoolean(0, &custom_links_enabled))
+  if (!args[0].is_bool() || !args[1].is_bool())
     return;
 
-  bool visible;
-  if (!args->GetBoolean(1, &visible))
-    return;
+  bool custom_links_enabled = args[0].GetBool();
+  bool visible = args[1].GetBool();
 
   // similar to `NewTabPageHandler::SetMostVisitedSettings`
   bool old_visible = IsShortcutsVisible();
@@ -295,24 +290,21 @@ void TopSitesMessageHandler::HandleSetMostVisitedSettings(
   }
 }
 
-void TopSitesMessageHandler::HandleEditTopSite(const base::ListValue* args) {
+void TopSitesMessageHandler::HandleEditTopSite(
+    base::Value::ConstListView args) {
   if (!most_visited_sites_)
     return;
 
   AllowJavascript();
 
-  std::string url;
-  if (!args->GetString(0, &url))
+  if (!args[0].is_string() || !args[1].is_string() || !args[2].is_string())
     return;
+
+  std::string url = args[0].GetString();
   DCHECK(!url.empty());
 
-  std::string new_url;
-  if (!args->GetString(1, &new_url))
-    return;
-
-  std::string title;
-  if (!args->GetString(2, &title))
-    return;
+  std::string new_url = args[1].GetString();
+  std::string title = args[2].GetString();
 
   // |new_url| can be empty if user only want to change title.
   // Stop editing if we can't make |new_url| valid.
@@ -342,20 +334,20 @@ void TopSitesMessageHandler::HandleEditTopSite(const base::ListValue* args) {
   }
 }
 
-void TopSitesMessageHandler::HandleAddNewTopSite(const base::ListValue* args) {
+void TopSitesMessageHandler::HandleAddNewTopSite(
+    base::Value::ConstListView args) {
   if (!most_visited_sites_)
     return;
 
   AllowJavascript();
 
-  std::string url;
-  if (!args->GetString(0, &url))
+  if (!args[0].is_string() || !args[1].is_string())
     return;
+
+  std::string url = args[0].GetString();
   DCHECK(!url.empty());
 
-  std::string title;
-  if (!args->GetString(1, &title))
-    return;
+  std::string title = args[1].GetString();
 
   // Stop adding if we can't make |url| valid.
   if (!GetValidURLStringForTopSite(&url))

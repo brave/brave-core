@@ -26,19 +26,19 @@ TorInternalsDOMHandler::~TorInternalsDOMHandler() {
 }
 
 void TorInternalsDOMHandler::RegisterMessages() {
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "tor_internals.getTorGeneralInfo",
       base::BindRepeating(&TorInternalsDOMHandler::HandleGetTorGeneralInfo,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "tor_internals.getTorLog",
       base::BindRepeating(&TorInternalsDOMHandler::HandleGetTorLog,
                           base::Unretained(this)));
 }
 
 void TorInternalsDOMHandler::HandleGetTorGeneralInfo(
-    const base::ListValue* args) {
-  DCHECK_EQ(args->GetSize(), 0U);
+    base::Value::ConstListView args) {
+  DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
 
@@ -53,8 +53,8 @@ void TorInternalsDOMHandler::HandleGetTorGeneralInfo(
                                          std::move(info));
 }
 
-void TorInternalsDOMHandler::HandleGetTorLog(const base::ListValue* args) {
-  DCHECK_EQ(args->GetSize(), 0U);
+void TorInternalsDOMHandler::HandleGetTorLog(base::Value::ConstListView args) {
+  DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
   tor_launcher_factory_->GetTorLog(base::BindOnce(

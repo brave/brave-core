@@ -8,11 +8,11 @@
 #import "brave/browser/mac/sparkle_glue.h"
 
 void BraveRelaunchHandler::RegisterMessages() {
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "relaunchOnMac", base::BindRepeating(&BraveRelaunchHandler::Relaunch,
                                            base::Unretained(this)));
 }
 
-void BraveRelaunchHandler::Relaunch(const base::ListValue* args) {
+void BraveRelaunchHandler::Relaunch(base::Value::ConstListView args) {
   [[SparkleGlue sharedSparkleGlue] relaunch];
 }

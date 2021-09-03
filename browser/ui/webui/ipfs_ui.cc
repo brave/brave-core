@@ -46,39 +46,39 @@ IPFSDOMHandler::IPFSDOMHandler() : weak_ptr_factory_{this} {}
 IPFSDOMHandler::~IPFSDOMHandler() {}
 
 void IPFSDOMHandler::RegisterMessages() {
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "ipfs.getConnectedPeers",
       base::BindRepeating(&IPFSDOMHandler::HandleGetConnectedPeers,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "ipfs.getAddressesConfig",
       base::BindRepeating(&IPFSDOMHandler::HandleGetAddressesConfig,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "ipfs.getDaemonStatus",
       base::BindRepeating(&IPFSDOMHandler::HandleGetDaemonStatus,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "ipfs.launchDaemon",
       base::BindRepeating(&IPFSDOMHandler::HandleLaunchDaemon,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "ipfs.shutdownDaemon",
       base::BindRepeating(&IPFSDOMHandler::HandleShutdownDaemon,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "ipfs.restartDaemon",
       base::BindRepeating(&IPFSDOMHandler::HandleRestartDaemon,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "ipfs.getRepoStats",
       base::BindRepeating(&IPFSDOMHandler::HandleGetRepoStats,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "ipfs.getNodeInfo",
       base::BindRepeating(&IPFSDOMHandler::HandleGetNodeInfo,
                           base::Unretained(this)));
-  web_ui()->RegisterDeprecatedMessageCallback(
+  web_ui()->RegisterMessageCallback(
       "ipfs.garbageCollection",
       base::BindRepeating(&IPFSDOMHandler::HandleGarbageCollection,
                           base::Unretained(this)));
@@ -100,8 +100,8 @@ IPFSUI::IPFSUI(content::WebUI* web_ui, const std::string& name)
 
 IPFSUI::~IPFSUI() {}
 
-void IPFSDOMHandler::HandleGetConnectedPeers(const base::ListValue* args) {
-  DCHECK_EQ(args->GetSize(), 0U);
+void IPFSDOMHandler::HandleGetConnectedPeers(base::Value::ConstListView args) {
+  DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
 
@@ -125,8 +125,8 @@ void IPFSDOMHandler::OnGetConnectedPeers(
                                          std::move(stats_value));
 }
 
-void IPFSDOMHandler::HandleGetAddressesConfig(const base::ListValue* args) {
-  DCHECK_EQ(args->GetSize(), 0U);
+void IPFSDOMHandler::HandleGetAddressesConfig(base::Value::ConstListView args) {
+  DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
 
@@ -157,16 +157,16 @@ void IPFSDOMHandler::OnGetAddressesConfig(bool success,
                                          std::move(config_value));
 }
 
-void IPFSDOMHandler::HandleGetDaemonStatus(const base::ListValue* args) {
-  DCHECK_EQ(args->GetSize(), 0U);
+void IPFSDOMHandler::HandleGetDaemonStatus(base::Value::ConstListView args) {
+  DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
 
   CallOnGetDaemonStatus(web_ui(), std::string());
 }
 
-void IPFSDOMHandler::HandleLaunchDaemon(const base::ListValue* args) {
-  DCHECK_EQ(args->GetSize(), 0U);
+void IPFSDOMHandler::HandleLaunchDaemon(base::Value::ConstListView args) {
+  DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
   LaunchDaemon();
@@ -221,8 +221,8 @@ void IPFSDOMHandler::OnIpfsShutdown() {
   CallOnGetDaemonStatus(web_ui(), std::string());
 }
 
-void IPFSDOMHandler::HandleShutdownDaemon(const base::ListValue* args) {
-  DCHECK_EQ(args->GetSize(), 0U);
+void IPFSDOMHandler::HandleShutdownDaemon(base::Value::ConstListView args) {
+  DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
 
@@ -235,8 +235,8 @@ void IPFSDOMHandler::HandleShutdownDaemon(const base::ListValue* args) {
   service->ShutdownDaemon(base::NullCallback());
 }
 
-void IPFSDOMHandler::HandleRestartDaemon(const base::ListValue* args) {
-  DCHECK_EQ(args->GetSize(), 0U);
+void IPFSDOMHandler::HandleRestartDaemon(base::Value::ConstListView args) {
+  DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
 
@@ -250,8 +250,8 @@ void IPFSDOMHandler::HandleRestartDaemon(const base::ListValue* args) {
   }
 }
 
-void IPFSDOMHandler::HandleGetRepoStats(const base::ListValue* args) {
-  DCHECK_EQ(args->GetSize(), 0U);
+void IPFSDOMHandler::HandleGetRepoStats(base::Value::ConstListView args) {
+  DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
 
@@ -281,8 +281,8 @@ void IPFSDOMHandler::OnGetRepoStats(bool success,
                                          std::move(stats_value));
 }
 
-void IPFSDOMHandler::HandleGetNodeInfo(const base::ListValue* args) {
-  DCHECK_EQ(args->GetSize(), 0U);
+void IPFSDOMHandler::HandleGetNodeInfo(base::Value::ConstListView args) {
+  DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
 
@@ -296,8 +296,8 @@ void IPFSDOMHandler::HandleGetNodeInfo(const base::ListValue* args) {
                                       weak_ptr_factory_.GetWeakPtr()));
 }
 
-void IPFSDOMHandler::HandleGarbageCollection(const base::ListValue* args) {
-  DCHECK_EQ(args->GetSize(), 0U);
+void IPFSDOMHandler::HandleGarbageCollection(base::Value::ConstListView args) {
+  DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
 
