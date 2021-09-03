@@ -26,11 +26,11 @@ TorInternalsDOMHandler::~TorInternalsDOMHandler() {
 }
 
 void TorInternalsDOMHandler::RegisterMessages() {
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "tor_internals.getTorGeneralInfo",
       base::BindRepeating(&TorInternalsDOMHandler::HandleGetTorGeneralInfo,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "tor_internals.getTorLog",
       base::BindRepeating(&TorInternalsDOMHandler::HandleGetTorLog,
                           base::Unretained(this)));

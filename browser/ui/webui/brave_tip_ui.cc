@@ -125,89 +125,74 @@ TipMessageHandler::~TipMessageHandler() {
 }
 
 void TipMessageHandler::RegisterMessages() {
-  web_ui()->RegisterMessageCallback(
-      "dialogReady",
-      base::BindRepeating(
-          &TipMessageHandler::DialogReady,
-          base::Unretained(this)));
+  web_ui()->RegisterDeprecatedMessageCallback(
+      "dialogReady", base::BindRepeating(&TipMessageHandler::DialogReady,
+                                         base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getPublisherBanner",
-      base::BindRepeating(
-          &TipMessageHandler::GetPublisherBanner,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::GetPublisherBanner,
+                          base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getRewardsParameters",
-      base::BindRepeating(
-          &TipMessageHandler::GetRewardsParameters,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::GetRewardsParameters,
+                          base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getOnboardingStatus",
-      base::BindRepeating(
-          &TipMessageHandler::GetOnboardingStatus,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::GetOnboardingStatus,
+                          base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "saveOnboardingResult",
-      base::BindRepeating(
-          &TipMessageHandler::SaveOnboardingResult,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::SaveOnboardingResult,
+                          base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "onTip",
-       base::BindRepeating(
-           &TipMessageHandler::OnTip,
-           base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::OnTip, base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getRecurringTips",
-      base::BindRepeating(
-          &TipMessageHandler::GetRecurringTips,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::GetRecurringTips,
+                          base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getReconcileStamp",
-      base::BindRepeating(
-          &TipMessageHandler::GetReconcileStamp,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::GetReconcileStamp,
+                          base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getAutoContributeAmount",
       base::BindRepeating(&TipMessageHandler::GetAutoContributeAmount,
                           base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setAutoContributeAmount",
       base::BindRepeating(&TipMessageHandler::SetAutoContributeAmount,
                           base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getAdsPerHour", base::BindRepeating(&TipMessageHandler::GetAdsPerHour,
                                            base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setAdsPerHour", base::BindRepeating(&TipMessageHandler::SetAdsPerHour,
                                            base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
-      "tweetTip",
-      base::BindRepeating(
-          &TipMessageHandler::TweetTip,
-          base::Unretained(this)));
+  web_ui()->RegisterDeprecatedMessageCallback(
+      "tweetTip", base::BindRepeating(&TipMessageHandler::TweetTip,
+                                      base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
-      "fetchBalance",
-      base::BindRepeating(
-          &TipMessageHandler::FetchBalance,
-          base::Unretained(this)));
+  web_ui()->RegisterDeprecatedMessageCallback(
+      "fetchBalance", base::BindRepeating(&TipMessageHandler::FetchBalance,
+                                          base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getExternalWallet",
-      base::BindRepeating(
-          &TipMessageHandler::GetExternalWallet,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::GetExternalWallet,
+                          base::Unretained(this)));
 }
 
 void TipMessageHandler::OnRecurringTipRemoved(

@@ -32,26 +32,26 @@ BraveSyncHandler::~BraveSyncHandler() {}
 
 void BraveSyncHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "SyncGetDeviceList",
       base::BindRepeating(&BraveSyncHandler::HandleGetDeviceList,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "SyncSetupSetSyncCode",
       base::BindRepeating(&BraveSyncHandler::HandleSetSyncCode,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "SyncSetupGetSyncCode",
       base::BindRepeating(&BraveSyncHandler::HandleGetSyncCode,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "SyncGetQRCode", base::BindRepeating(&BraveSyncHandler::HandleGetQRCode,
                                            base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "SyncSetupReset", base::BindRepeating(&BraveSyncHandler::HandleReset,
                                             base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "SyncDeleteDevice",
       base::BindRepeating(&BraveSyncHandler::HandleDeleteDevice,
                           base::Unretained(this)));

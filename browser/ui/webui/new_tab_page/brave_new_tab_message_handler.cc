@@ -234,79 +234,79 @@ void BraveNewTabMessageHandler::RegisterMessages() {
   // - Stats
   // - Preferences
   // - PrivatePage properties
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getNewTabPagePreferences",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleGetPreferences,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getNewTabPageStats",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleGetStats,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getNewTabPagePrivateProperties",
       base::BindRepeating(
           &BraveNewTabMessageHandler::HandleGetPrivateProperties,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getNewTabPageTorProperties",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleGetTorProperties,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "toggleAlternativePrivateSearchEngine",
       base::BindRepeating(&BraveNewTabMessageHandler::
                               HandleToggleAlternativeSearchEngineProvider,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "saveNewTabPagePref",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleSaveNewTabPagePref,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "registerNewTabPageView",
       base::BindRepeating(
           &BraveNewTabMessageHandler::HandleRegisterNewTabPageView,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brandedWallpaperLogoClicked",
       base::BindRepeating(
           &BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getBrandedWallpaperData",
       base::BindRepeating(
           &BraveNewTabMessageHandler::HandleGetBrandedWallpaperData,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "customizeClicked",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleCustomizeClicked,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "todayInteractionBegin",
       base::BindRepeating(
           &BraveNewTabMessageHandler::HandleTodayInteractionBegin,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "todayOnCardVisit",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleTodayOnCardVisit,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "todayOnCardViews",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleTodayOnCardViews,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "todayOnPromotedCardView",
       base::BindRepeating(
           &BraveNewTabMessageHandler::HandleTodayOnPromotedCardView,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "todayGetDisplayAd",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleTodayGetDisplayAd,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "todayOnDisplayAdVisit",
       base::BindRepeating(
           &BraveNewTabMessageHandler::HandleTodayOnDisplayAdVisit,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "todayOnDisplayAdView",
       base::BindRepeating(
           &BraveNewTabMessageHandler::HandleTodayOnDisplayAdView,

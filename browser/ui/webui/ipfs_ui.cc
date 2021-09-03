@@ -46,39 +46,39 @@ IPFSDOMHandler::IPFSDOMHandler() : weak_ptr_factory_{this} {}
 IPFSDOMHandler::~IPFSDOMHandler() {}
 
 void IPFSDOMHandler::RegisterMessages() {
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "ipfs.getConnectedPeers",
       base::BindRepeating(&IPFSDOMHandler::HandleGetConnectedPeers,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "ipfs.getAddressesConfig",
       base::BindRepeating(&IPFSDOMHandler::HandleGetAddressesConfig,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "ipfs.getDaemonStatus",
       base::BindRepeating(&IPFSDOMHandler::HandleGetDaemonStatus,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "ipfs.launchDaemon",
       base::BindRepeating(&IPFSDOMHandler::HandleLaunchDaemon,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "ipfs.shutdownDaemon",
       base::BindRepeating(&IPFSDOMHandler::HandleShutdownDaemon,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "ipfs.restartDaemon",
       base::BindRepeating(&IPFSDOMHandler::HandleRestartDaemon,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "ipfs.getRepoStats",
       base::BindRepeating(&IPFSDOMHandler::HandleGetRepoStats,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "ipfs.getNodeInfo",
       base::BindRepeating(&IPFSDOMHandler::HandleGetNodeInfo,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "ipfs.garbageCollection",
       base::BindRepeating(&IPFSDOMHandler::HandleGarbageCollection,
                           base::Unretained(this)));

@@ -76,43 +76,43 @@ AdblockDOMHandler::AdblockDOMHandler() {}
 AdblockDOMHandler::~AdblockDOMHandler() {}
 
 void AdblockDOMHandler::RegisterMessages() {
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_adblock.enableFilterList",
       base::BindRepeating(&AdblockDOMHandler::HandleEnableFilterList,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_adblock.getCustomFilters",
       base::BindRepeating(&AdblockDOMHandler::HandleGetCustomFilters,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_adblock.getRegionalLists",
       base::BindRepeating(&AdblockDOMHandler::HandleGetRegionalLists,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_adblock.getListSubscriptions",
       base::BindRepeating(&AdblockDOMHandler::HandleGetListSubscriptions,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_adblock.updateCustomFilters",
       base::BindRepeating(&AdblockDOMHandler::HandleUpdateCustomFilters,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_adblock.submitNewSubscription",
       base::BindRepeating(&AdblockDOMHandler::HandleSubmitNewSubscription,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_adblock.setSubscriptionEnabled",
       base::BindRepeating(&AdblockDOMHandler::HandleSetSubscriptionEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_adblock.deleteSubscription",
       base::BindRepeating(&AdblockDOMHandler::HandleDeleteSubscription,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_adblock.refreshSubscription",
       base::BindRepeating(&AdblockDOMHandler::HandleRefreshSubscription,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_adblock.viewSubscriptionSource",
       base::BindRepeating(&AdblockDOMHandler::HandleViewSubscriptionSource,
                           base::Unretained(this)));

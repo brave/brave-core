@@ -22,48 +22,48 @@ using brave_shields::ControlTypeToString;
 
 void DefaultBraveShieldsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "isAdControlEnabled",
       base::BindRepeating(&DefaultBraveShieldsHandler::IsAdControlEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setAdControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetAdControlType,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "isFirstPartyCosmeticFilteringEnabled",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::IsFirstPartyCosmeticFilteringEnabled,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setCosmeticFilteringControlType",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::SetCosmeticFilteringControlType,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getCookieControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::GetCookieControlType,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setCookieControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetCookieControlType,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getFingerprintingControlType",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::GetFingerprintingControlType,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setFingerprintingControlType",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::SetFingerprintingControlType,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setHTTPSEverywhereEnabled",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setNoScriptControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetNoScriptControlType,
                           base::Unretained(this)));

@@ -81,43 +81,43 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
   if (service) {
     ipfs_service_observer_.Observe(service);
   }
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "notifyIpfsNodeStatus",
       base::BindRepeating(&BraveDefaultExtensionsHandler::CheckIpfsNodeStatus,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setIPFSStorageMax",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetIPFSStorageMax,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "importIpnsKey",
       base::BindRepeating(&BraveDefaultExtensionsHandler::ImportIpnsKey,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "launchIPFSService",
       base::BindRepeating(&BraveDefaultExtensionsHandler::LaunchIPFSService,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "exportIPNSKey",
       base::BindRepeating(&BraveDefaultExtensionsHandler::ExportIPNSKey,
                           base::Unretained(this)));
 #endif
 
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setWebTorrentEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetWebTorrentEnabled,
                           base::Unretained(this)));
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setBraveWalletEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetBraveWalletEnabled,
                           base::Unretained(this)));
 #endif
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setHangoutsEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetHangoutsEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setIPFSCompanionEnabled",
       base::BindRepeating(
           &BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled,
@@ -125,36 +125,36 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
   // TODO(petemill): If anything outside this handler is responsible for causing
   // restart-neccessary actions, then this should be moved to a generic handler
   // and the flag should be moved to somewhere more static / singleton-like.
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getRestartNeeded",
       base::BindRepeating(&BraveDefaultExtensionsHandler::GetRestartNeeded,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setTorEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetTorEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "isTorEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::IsTorEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "isTorManaged",
       base::BindRepeating(&BraveDefaultExtensionsHandler::IsTorManaged,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setWidevineEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetWidevineEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "isWidevineEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::IsWidevineEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "isDecentralizedDnsEnabled",
       base::BindRepeating(
           &BraveDefaultExtensionsHandler::IsDecentralizedDnsEnabled,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getDecentralizedDnsResolveMethodList",
       base::BindRepeating(
           &BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList,

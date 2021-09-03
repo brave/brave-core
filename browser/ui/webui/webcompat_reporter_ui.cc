@@ -44,7 +44,7 @@ WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(
 WebcompatReporterDOMHandler::~WebcompatReporterDOMHandler() = default;
 
 void WebcompatReporterDOMHandler::RegisterMessages() {
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "webcompat_reporter.submitReport",
       base::BindRepeating(&WebcompatReporterDOMHandler::HandleSubmitReport,
                           base::Unretained(this)));

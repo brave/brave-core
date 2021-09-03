@@ -80,51 +80,44 @@ RewardsInternalsDOMHandler::RewardsInternalsDOMHandler()
 RewardsInternalsDOMHandler::~RewardsInternalsDOMHandler() {}
 
 void RewardsInternalsDOMHandler::RegisterMessages() {
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_rewards_internals.getRewardsInternalsInfo",
       base::BindRepeating(
           &RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_rewards_internals.getBalance",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetBalance,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetBalance,
+                          base::Unretained(this)));
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_rewards_internals.getContributions",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetContributions,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetContributions,
+                          base::Unretained(this)));
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_rewards_internals.getPromotions",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetPromotions,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetPromotions,
+                          base::Unretained(this)));
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_rewards_internals.getPartialLog",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetPartialLog,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetPartialLog,
+                          base::Unretained(this)));
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_rewards_internals.getFullLog",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetFulllLog,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetFulllLog,
+                          base::Unretained(this)));
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_rewards_internals.clearLog",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::ClearLog,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+      base::BindRepeating(&RewardsInternalsDOMHandler::ClearLog,
+                          base::Unretained(this)));
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_rewards_internals.getExternalWallet",
       base::BindRepeating(&RewardsInternalsDOMHandler::GetExternalWallet,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_rewards_internals.getEventLogs",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetEventLogs,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetEventLogs,
+                          base::Unretained(this)));
+  web_ui()->RegisterDeprecatedMessageCallback(
       "brave_rewards_internals.getAdDiagnostics",
       base::BindRepeating(&RewardsInternalsDOMHandler::GetAdDiagnostics,
                           base::Unretained(this)));

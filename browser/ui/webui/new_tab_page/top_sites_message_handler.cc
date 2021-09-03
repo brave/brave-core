@@ -44,37 +44,37 @@ TopSitesMessageHandler::TopSitesMessageHandler(Profile* profile)
 TopSitesMessageHandler::~TopSitesMessageHandler() = default;
 
 void TopSitesMessageHandler::RegisterMessages() {
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "updateMostVisitedInfo",
       base::BindRepeating(&TopSitesMessageHandler::HandleUpdateMostVisitedInfo,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "deleteMostVisitedTile",
       base::BindRepeating(&TopSitesMessageHandler::HandleDeleteMostVisitedTile,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "reorderMostVisitedTile",
       base::BindRepeating(&TopSitesMessageHandler::HandleReorderMostVisitedTile,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "restoreMostVisitedDefaults",
       base::BindRepeating(
           &TopSitesMessageHandler::HandleRestoreMostVisitedDefaults,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "undoMostVisitedTileAction",
       base::BindRepeating(
           &TopSitesMessageHandler::HandleUndoMostVisitedTileAction,
           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setMostVisitedSettings",
       base::BindRepeating(&TopSitesMessageHandler::HandleSetMostVisitedSettings,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "addNewTopSite",
       base::BindRepeating(&TopSitesMessageHandler::HandleAddNewTopSite,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "editTopSite",
       base::BindRepeating(&TopSitesMessageHandler::HandleEditTopSite,
                           base::Unretained(this)));

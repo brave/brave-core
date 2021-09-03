@@ -48,19 +48,19 @@ void BraveAppearanceHandler::RegisterMessages() {
       prefs::kHomePage,
       base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "setBraveThemeType",
       base::BindRepeating(&BraveAppearanceHandler::SetBraveThemeType,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getBraveThemeType",
       base::BindRepeating(&BraveAppearanceHandler::GetBraveThemeType,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "getNewTabShowsOptionsList",
       base::BindRepeating(&BraveAppearanceHandler::GetNewTabShowsOptionsList,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
+  web_ui()->RegisterDeprecatedMessageCallback(
       "shouldShowNewTabDashboardSettings",
       base::BindRepeating(
           &BraveAppearanceHandler::ShouldShowNewTabDashboardSettings,

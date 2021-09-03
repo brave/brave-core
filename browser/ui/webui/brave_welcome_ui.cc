@@ -87,12 +87,13 @@ Browser* WelcomeDOMHandler::GetBrowser() {
 }
 
 void WelcomeDOMHandler::RegisterMessages() {
-  web_ui()->RegisterMessageCallback("importNowRequested",
+  web_ui()->RegisterDeprecatedMessageCallback(
+      "importNowRequested",
       base::BindRepeating(&WelcomeDOMHandler::HandleImportNowRequested,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("recordP3A",
-      base::BindRepeating(&WelcomeDOMHandler::HandleRecordP3A,
-                          base::Unretained(this)));
+  web_ui()->RegisterDeprecatedMessageCallback(
+      "recordP3A", base::BindRepeating(&WelcomeDOMHandler::HandleRecordP3A,
+                                       base::Unretained(this)));
 }
 
 void WelcomeDOMHandler::HandleImportNowRequested(const base::ListValue* args) {
