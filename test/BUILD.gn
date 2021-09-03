@@ -763,6 +763,7 @@ if (!is_android) {
     if (brave_wallet_enabled) {
       sources += [
         "//brave/browser/brave_wallet/asset_ratio_controller_browsertest.cc",
+        "//brave/browser/brave_wallet/brave_wallet_ethereum_chain_browsertest.cc",
         "//brave/browser/brave_wallet/brave_wallet_event_emitter_browsertest.cc",
         "//brave/browser/brave_wallet/eth_json_rpc_controller_browsertest.cc",
         "//brave/browser/brave_wallet/swap_controller_browsertest.cc",

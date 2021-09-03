@@ -9,8 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/callback.h"
-
 namespace brave_wallet {
 
 typedef unsigned _ExtInt(256) uint256_t;
@@ -35,9 +33,6 @@ struct TransactionReceipt {
   std::string logs_bloom;
   bool status;
 };
-
-using RequestEthereumChainCallback =
-    base::OnceCallback<void(const std::string&)>;
 
 }  // namespace brave_wallet
 

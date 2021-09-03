@@ -3,14 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { WalletAPIHandler, APIProxyControllers, EthereumChain } from '../constants/types'
+import { WalletAPIHandler, APIProxyControllers } from '../constants/types'
 
 export default class APIProxy implements APIProxyControllers {
   static getInstance: () => APIProxy
   showUI: () => {}
   closeUI: () => {}
-  addEthereumChainApproved: (payload: EthereumChain, tabId: number) => {}
-  addEthereumChainCanceled: (chainId: string, tabId: number) => {}
   connectToSite: (accounts: string[], origin: string, tabId: number) => {}
   cancelConnectToSite: (origin: string, tabId: number) => {}
   walletHandler: WalletAPIHandler

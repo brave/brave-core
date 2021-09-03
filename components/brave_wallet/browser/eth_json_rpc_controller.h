@@ -98,12 +98,20 @@ class EthJsonRpcController : public KeyedService,
       UnstoppableDomainsProxyReaderGetManyCallback callback);
 
   void SetNetwork(const std::string& chain_id) override;
+  void AddEthereumChain(mojom::EthereumChainPtr chain,
+                        const std::string& origin,
+                        AddEthereumChainCallback callback) override;
+  void PendingRequestCompleted(const std::string& chain_id,
+                               bool approved) override;
+
   std::string GetChainId() const;
   void GetChainId(
       mojom::EthJsonRpcController::GetChainIdCallback callback) override;
   void GetBlockTrackerUrl(
       mojom::EthJsonRpcController::GetBlockTrackerUrlCallback callback)
       override;
+  void GetPendingChainRequests(
+      GetPendingChainRequestsCallback callback) override;
   void GetAllNetworks(GetAllNetworksCallback callback) override;
   void GetNetworkUrl(
       mojom::EthJsonRpcController::GetNetworkUrlCallback callback) override;
@@ -117,6 +125,11 @@ class EthJsonRpcController : public KeyedService,
 
  private:
   void FireNetworkChanged();
+  void FirePendingRequestCompleted(const std::string& chain_id,
+                                   const std::string& error);
+  const mojom::EthereumChain* FindChainRequest(
+      const std::string& chain_id) const;
+  void RemoveChainIdRequest(const std::string& chain_id);
   void OnGetBlockNumber(
       GetBlockNumberCallback callback,
       const int status,
@@ -169,6 +182,7 @@ class EthJsonRpcController : public KeyedService,
   api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;
   std::string chain_id_;
+  base::flat_map<std::string, mojom::EthereumChain> pending_requests_;
   mojo::RemoteSet<mojom::EthJsonRpcControllerObserver> observers_;
 
   mojo::ReceiverSet<mojom::EthJsonRpcController> receivers_;

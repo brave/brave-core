@@ -76,12 +76,16 @@ void BraveWalletProviderDelegateImpl::OnConnectionError() {
   EnsureConnected();
 }
 
-void BraveWalletProviderDelegateImpl::RequestUserApproval(
-    const std::string& chain_id,
-    const std::string& payload,
-    RequestEthereumChainCallback callback) {
-  brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_)
-      ->RequestUserApproval(chain_id, payload, std::move(callback));
+std::string BraveWalletProviderDelegateImpl::GetOrigin() const {
+  auto* rfh = content::RenderFrameHost::FromID(host_id_);
+  return rfh->GetLastCommittedURL().GetOrigin().spec();
+}
+
+void BraveWalletProviderDelegateImpl::ShowBubble() {
+  auto* tab_heper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
+  if (tab_heper)
+    tab_heper->ShowBubble();
 }
 
 void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(

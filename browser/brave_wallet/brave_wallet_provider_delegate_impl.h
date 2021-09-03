@@ -11,7 +11,6 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/global_routing_id.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -34,12 +33,8 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
       const BraveWalletProviderDelegateImpl&) = delete;
   ~BraveWalletProviderDelegateImpl() override;
 
-  // Requests user approval for wallet actions
-  // with some payload from api calls.
-  void RequestUserApproval(const std::string& chain_id,
-                           const std::string& payload,
-                           RequestEthereumChainCallback callback) override;
-
+  void ShowBubble() override;
+  std::string GetOrigin() const override;
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
 

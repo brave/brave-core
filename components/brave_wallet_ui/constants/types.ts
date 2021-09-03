@@ -466,6 +466,8 @@ export interface EthTxController {
 }
 
 export interface EthJsonRpcController {
+  getPendingChainRequests: () => Promise<GetAllNetworksList>
+  pendingRequestCompleted: (chainId: string, approved: boolean) => Promise<void>
   getNetwork: () => Promise<GetNetworkReturnInfo>
   setNetwork: (netowrk: string) => Promise<void>
   getAllNetworks: () => Promise<GetAllNetworksList>
@@ -573,11 +575,9 @@ export type EthereumChain = {
   blockExplorerUrls: string[],
   iconUrls: string[],
   rpcUrls: string[],
-  nativeCurrency: {
-    symbol: string,
-    name: string,
-    decimals: number
-  }
+  symbol: string,
+  symbolName: string,
+  decimals: number
 }
 
 export interface GetAllNetworksList {

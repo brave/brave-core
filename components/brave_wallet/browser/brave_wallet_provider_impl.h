@@ -50,13 +50,17 @@ class BraveWalletProviderImpl final
   void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
   void AddEthereumChain(mojom::EthereumChainPtr chain,
                         AddEthereumChainCallback callback) override;
+  void OnAddEthereumChain(const std::string& chain_id, bool accepted);
   void OnGetAllowedAccounts(GetAllowedAccountsCallback callback,
                             bool success,
                             const std::vector<std::string>& accounts);
   void Init(
       mojo::PendingRemote<mojom::EventsListener> events_listener) override;
 
+  // mojom::EthJsonRpcControllerObserver
   void ChainChangedEvent(const std::string& chain_id) override;
+  void OnPendingRequestCompleted(const std::string& chain_id,
+                                 const std::string& error) override;
 
  private:
   void OnChainApprovalResult(const std::string& chain_id,

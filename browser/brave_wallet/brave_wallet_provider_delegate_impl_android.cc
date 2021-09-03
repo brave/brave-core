@@ -16,10 +16,6 @@ BraveWalletProviderDelegateImplAndroid::BraveWalletProviderDelegateImplAndroid(
 void BraveWalletProviderDelegateImplAndroid::RequestEthereumPermissions(
     BraveWalletProviderDelegate::RequestEthereumPermissionsCallback callback) {}
 
-void BraveWalletProviderDelegateImplAndroid::RequestUserApproval(
-    const std::string& request_data,
-    RequestEthereumChainCallback callback) {}
-
 void BraveWalletProviderDelegateImplAndroid::GetAllowedAccounts(
     BraveWalletProviderDelegate::GetAllowedAccountsCallback callback) {}
 

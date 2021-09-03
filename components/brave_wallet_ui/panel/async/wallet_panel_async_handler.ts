@@ -7,8 +7,8 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
-import { WalletPanelState, PanelState, EthereumChain } from '../../constants/types'
-import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload } from '../constants/action_types'
+import { WalletPanelState, PanelState } from '../../constants/types'
+import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload, PendingRequestCompletedPayload } from '../constants/action_types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -28,6 +28,14 @@ async function refreshWalletInfo (store: Store) {
   const walletHandler = (await getAPIProxy()).walletHandler
   const result = await walletHandler.getWalletInfo()
   store.dispatch(WalletActions.initialized(result))
+}
+
+async function getPendingChainRequest () {
+  const ethJsonRpcController = (await getAPIProxy()).ethJsonRpcController
+  const chains = (await ethJsonRpcController.getPendingChainRequests()).networks
+  if (chains && chains.length) {
+    return chains[0]
+  }
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {
@@ -50,15 +58,13 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
     const origin = url.searchParams.get('origin') || ''
     store.dispatch(PanelActions.showConnectToSite({ tabId, accounts, origin }))
     return
+  } else {
+    const chain = await getPendingChainRequest()
+    if (chain) {
+      store.dispatch(PanelActions.addEthereumChain({ chain }))
+      return
+    }
   }
-  if (url.hash === '#addEthereumChain') {
-    const tabId = Number(url.searchParams.get('tabId')) || -1
-    const network = url.searchParams.get('payload') || '{ "chainId": "", nativeCurrency: {}}'
-    const networkPayload = JSON.parse(network) as EthereumChain
-    store.dispatch(PanelActions.addEthereumChain({ networkPayload, tabId }))
-    return
-  }
-
   const apiProxy = await getAPIProxy()
   apiProxy.showUI()
 })
@@ -100,17 +106,15 @@ handler.on(PanelActions.addEthereumChain.getType(), async (store, payload: Ether
   apiProxy.showUI()
 })
 
-handler.on(PanelActions.addEthereumChainApproved.getType(), async (store, payload: EthereumChainPayload) => {
-  const state = getPanelState(store)
+handler.on(PanelActions.pendingRequestCompleted.getType(), async (store: any, payload: PendingRequestCompletedPayload) => {
   const apiProxy = await getAPIProxy()
-  apiProxy.addEthereumChainApproved(payload.networkPayload, state.tabId)
-  apiProxy.closeUI()
-})
-
-handler.on(PanelActions.addEthereumChainCanceled.getType(), async (store, chainId: string) => {
-  const state = getPanelState(store)
-  const apiProxy = await getAPIProxy()
-  apiProxy.addEthereumChainCanceled(chainId, state.tabId)
+  const ethJsonRpcController = apiProxy.ethJsonRpcController
+  ethJsonRpcController.pendingRequestCompleted(payload.chainId, payload.approved)
+  const chain = await getPendingChainRequest()
+  if (chain) {
+    store.dispatch(PanelActions.addEthereumChain({ chain }))
+    return
+  }
   apiProxy.closeUI()
 })
 

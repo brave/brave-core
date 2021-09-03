@@ -39,11 +39,9 @@ const defaultState: WalletState = {
     rpcUrls: [],
     blockExplorerUrls: [],
     iconUrls: [],
-    nativeCurrency: {
-      symbol: 'ETH',
-      name: 'Ethereum',
-      decimals: 18
-    }
+    symbol: '',
+    symbolName: '',
+    decimals: 0
   } as EthereumChain,
   accounts: [],
   userVisibleTokens: [],

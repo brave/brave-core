@@ -12,6 +12,8 @@ namespace brave_wallet {
 class BraveWalletProviderEventsObserver {
  public:
   virtual void ChainChangedEvent(const std::string& chain_id) = 0;
+  virtual void OnPendingRequestCompleted(const std::string& chain_id,
+                                         const std::string& error) = 0;
 };
 }  // namespace brave_wallet
 

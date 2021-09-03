@@ -277,6 +277,9 @@ void EthTxStateManager::ChainChangedEvent(const std::string& chain_id) {
                                              weak_factory_.GetWeakPtr()));
 }
 
+void EthTxStateManager::OnPendingRequestCompleted(const std::string& chain_id,
+                                                  const std::string& error) {}
+
 std::string EthTxStateManager::GetNetworkId() const {
   auto subdomain = GetInfuraSubdomainForKnownChainId(chain_id_);
   if (!subdomain.empty())

@@ -12,9 +12,13 @@
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -84,6 +88,74 @@ void EthJsonRpcController::Request(const std::string& json_payload,
                               std::move(callback));
 }
 
+void EthJsonRpcController::FirePendingRequestCompleted(
+    const std::string& chain_id,
+    const std::string& error) {
+  for (const auto& observer : observers_) {
+    observer->OnPendingRequestCompleted(chain_id, error);
+  }
+}
+
+void EthJsonRpcController::RemoveChainIdRequest(const std::string& chain_id) {
+  for (auto& request : pending_requests_) {
+    if (request.second.chain_id != chain_id)
+      continue;
+    pending_requests_.erase(request);
+    return;
+  }
+}
+
+const mojom::EthereumChain* EthJsonRpcController::FindChainRequest(
+    const std::string& chain_id) const {
+  for (const auto& request : pending_requests_) {
+    if (request.second.chain_id == chain_id)
+      return &request.second;
+  }
+  return nullptr;
+}
+
+void EthJsonRpcController::GetPendingChainRequests(
+    GetPendingChainRequestsCallback callback) {
+  std::vector<mojom::EthereumChainPtr> all_chains;
+  for (const auto& request : pending_requests_) {
+    all_chains.push_back(request.second.Clone());
+  }
+  std::move(callback).Run(std::move(all_chains));
+}
+
+void EthJsonRpcController::AddEthereumChain(mojom::EthereumChainPtr chain,
+                                            const std::string& origin,
+                                            AddEthereumChainCallback callback) {
+  if (pending_requests_.contains(origin) || FindChainRequest(chain->chain_id)) {
+    std::move(callback).Run(chain->chain_id, false);
+    return;
+  }
+  auto chain_id = chain->chain_id;
+  pending_requests_[origin] = std::move(*chain);
+  std::move(callback).Run(chain_id, true);
+}
+
+void EthJsonRpcController::PendingRequestCompleted(const std::string& chain_id,
+                                                   bool approved) {
+  auto* request = FindChainRequest(chain_id);
+  if (!request)
+    return;
+  if (approved) {
+    ListPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
+    base::ListValue* list = update.Get();
+    absl::optional<base::Value> value =
+        brave_wallet::EthereumChainToValue(request->Clone());
+    if (!value)
+      return;
+    list->Append(std::move(value).value());
+  }
+  RemoveChainIdRequest(chain_id);
+  std::string error =
+      approved ? std::string()
+               : l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST);
+  FirePendingRequestCompleted(chain_id, error);
+}
+
 void EthJsonRpcController::SetNetwork(const std::string& chain_id) {
   auto network_url = GetNetworkURL(prefs_, chain_id);
   if (!network_url.is_valid())
@@ -95,7 +167,7 @@ void EthJsonRpcController::SetNetwork(const std::string& chain_id) {
 
 void EthJsonRpcController::FireNetworkChanged() {
   for (const auto& observer : observers_) {
-    observer->ChainChangedEvent(chain_id_);
+    observer->ChainChangedEvent(GetChainId());
   }
 }
 
@@ -105,16 +177,15 @@ std::string EthJsonRpcController::GetChainId() const {
 
 void EthJsonRpcController::GetChainId(
     mojom::EthJsonRpcController::GetChainIdCallback callback) {
-  std::move(callback).Run(chain_id_);
+  std::move(callback).Run(GetChainId());
 }
 
 void EthJsonRpcController::GetBlockTrackerUrl(
     mojom::EthJsonRpcController::GetBlockTrackerUrlCallback callback) {
-  std::move(callback).Run(GetBlockTrackerUrlFromNetwork(chain_id_).spec());
+  std::move(callback).Run(GetBlockTrackerUrlFromNetwork(GetChainId()).spec());
 }
 
-void EthJsonRpcController::GetAllNetworks(
-    mojom::EthJsonRpcController::GetAllNetworksCallback callback) {
+void EthJsonRpcController::GetAllNetworks(GetAllNetworksCallback callback) {
   std::vector<mojom::EthereumChainPtr> all_chains;
   brave_wallet::GetAllChains(prefs_, &all_chains);
   std::move(callback).Run(std::move(all_chains));

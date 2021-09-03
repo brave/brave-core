@@ -47,9 +47,9 @@ function AllowAddNetworkPanel (props: Props) {
     onLearnMore
   } = props
   const rpcUrl = networkPayload.rpcUrls ? (new URL(networkPayload.rpcUrls[0])).hostname : ''
-  const iconUrl = networkPayload.iconUrls ? networkPayload.iconUrls[0] : ''
-  const [selectedTab, setSelectedTab] = React.useState<tabs>('network')
+  const blockUrl = networkPayload.blockExplorerUrls ? networkPayload.blockExplorerUrls[0] : ''
 
+  const [selectedTab, setSelectedTab] = React.useState<tabs>('network')
   const orb = React.useMemo(() => {
     return create({ seed: rpcUrl, size: 8, scale: 16 }).toDataURL()
   }, [rpcUrl])
@@ -68,7 +68,7 @@ function AllowAddNetworkPanel (props: Props) {
         </AddressAndOrb>
       </TopRow>
       <CenterColumn>
-        <FavIcon src={iconUrl} />
+        <FavIcon src='' />
         <URLText>{rpcUrl}</URLText>
         <PanelTitle>{locale.allowAddNetworkTitle}</PanelTitle>
         <Description>{locale.allowAddNetworkDescription} <DetailsButton onClick={onLearnMore}>{locale.allowAddNetworkLearnMoreButton}</DetailsButton></Description>
@@ -97,15 +97,15 @@ function AllowAddNetworkPanel (props: Props) {
             <>
               <MessageBoxColumn>
                 <NetworkTitle>{locale.allowAddNetworkChainID}</NetworkTitle>
-                <NetworkDetail>{Number(networkPayload.chainId)}</NetworkDetail>
+                <NetworkDetail>{networkPayload.chainId}</NetworkDetail>
               </MessageBoxColumn>
               <MessageBoxColumn>
                 <NetworkTitle>{locale.allowAddNetworkCurrencySymbol}</NetworkTitle>
-                <NetworkDetail>{networkPayload.nativeCurrency.symbol}</NetworkDetail>
+                <NetworkDetail>{networkPayload.symbol}</NetworkDetail>
               </MessageBoxColumn>
               <MessageBoxColumn>
                 <NetworkTitle>{locale.allowAddNetworkExplorer}</NetworkTitle>
-                <NetworkDetail>{networkPayload.blockExplorerUrls.length ? networkPayload.blockExplorerUrls[0] : ''}</NetworkDetail>
+                <NetworkDetail>{blockUrl}</NetworkDetail>
               </MessageBoxColumn>
             </>
           }

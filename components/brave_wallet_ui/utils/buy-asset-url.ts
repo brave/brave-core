@@ -15,6 +15,6 @@ export function BuyAssetUrl (networkChainId: string, asset: AccountAssetOptionTy
     case '0x5':
       return 'https://goerli-faucet.slock.it/'
     default:
-      throw new Error(`Unknown cryptocurrency exchange or faucet: "${networkChainId}"`)
+      return ''
   }
 }

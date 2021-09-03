@@ -58,9 +58,6 @@ interface PanelHandler {
   // Notify the backend that the dialog should be closed.
   CloseUI();
 
-  AddEthereumChainApproved(string network, int32 tab_id);
-  AddEthereumChainCanceled(string chain, int32 tab_id);
-
   ConnectToSite(array<string> accounts, string origin, int32 tab_id);
   CancelConnectToSite(string origin, int32 tab_id);
 };
@@ -225,6 +222,7 @@ interface SwapController {
 
 interface EthJsonRpcControllerObserver {
   ChainChangedEvent(string chain_id);
+  OnPendingRequestCompleted(string chain_id, string error);
 };
 
 struct TxData {
@@ -255,6 +253,9 @@ struct EthereumChain {
 };
 
 interface EthJsonRpcController {
+  AddEthereumChain(EthereumChain chain, string origin) => (string chain_id, bool accepted);
+  PendingRequestCompleted(string chain_id, bool approved);
+  GetPendingChainRequests() => (array<EthereumChain> networks);
   SetNetwork(string chain_id);
   GetAllNetworks() => (array<EthereumChain> networks);
   GetChainId() => (string chain_id);

@@ -35,10 +35,6 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
   // brave_wallet::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
-  void AddEthereumChainApproved(const std::string& payload,
-                                int32_t tab_id) override;
-  void AddEthereumChainCanceled(const std::string& payload,
-                                int32_t tab_id) override;
   void ConnectToSite(const std::vector<std::string>& accounts,
                      const std::string& origin,
                      int32_t tab_id) override;
