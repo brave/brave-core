@@ -293,7 +293,7 @@
 "defaultBrowserCallout.introTertiaryText" = "Buka pengaturan, ketuk Default Browser App, dan pilih Brave.";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Telah dioptimalkan untuk iOS 14. Jadikan Brave peramban utama Anda sekarang juga.";
+"defaultBrowserCallout.notificationBody" = "Telah dioptimalkan untuk iOS %@. Jadikan Brave peramban utama Anda sekarang juga.";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Brave Peramban Web";

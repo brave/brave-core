@@ -293,7 +293,7 @@
 "defaultBrowserCallout.introTertiaryText" = "Abre Ajustes, toca en \"Aplicación de navegador predeterminado\" y selecciona Brave.";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Versión optimizada para iOS 14. Establece Brave como tu navegador predeterminado hoy mismo.";
+"defaultBrowserCallout.notificationBody" = "Versión optimizada para iOS %@. Establece Brave como tu navegador predeterminado hoy mismo.";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Navegador web Brave";

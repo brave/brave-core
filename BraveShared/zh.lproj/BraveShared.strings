@@ -293,7 +293,7 @@
 "defaultBrowserCallout.introTertiaryText" = "打开设置、点击默认浏览器应用，然后选择 Brave。";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "已针对 iOS 14 进行了优yij化。立即将 Brave 设为您的默认浏览器。";
+"defaultBrowserCallout.notificationBody" = "已针对 iOS %@ 进行了优yij化。立即将 Brave 设为您的默认浏览器。";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Brave 网页浏览器";

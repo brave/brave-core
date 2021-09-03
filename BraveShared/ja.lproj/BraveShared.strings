@@ -293,7 +293,7 @@
 "defaultBrowserCallout.introTertiaryText" = "アプリ設定画面で、「デフォルトのブラウザApp」をタップし、Braveを選択してください。";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "BraveはiOS14に最適化されています。今すぐBraveをデフォルトブラウザに設定しましょう";
+"defaultBrowserCallout.notificationBody" = "BraveはiOS%@に最適化されています。今すぐBraveをデフォルトブラウザに設定しましょう";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Braveブラウザ";

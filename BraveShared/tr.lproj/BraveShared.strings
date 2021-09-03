@@ -293,7 +293,7 @@
 "defaultBrowserCallout.introTertiaryText" = "Ayarlar'ı açın, Varsayılan Tarayıcı Uygulaması'nı dokunun ve Brave'i seçin.";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "iOS 14 için optimize edilmiştir. Brave'i bugün varsayılan tarayıcınız yapın.";
+"defaultBrowserCallout.notificationBody" = "iOS %@ için optimize edilmiştir. Brave'i bugün varsayılan tarayıcınız yapın.";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Brave Web Tarayıcısı";
