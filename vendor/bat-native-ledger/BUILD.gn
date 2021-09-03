@@ -57,6 +57,15 @@ config("internal_config") {
   ]
 }
 
+config("endpoints_config") {
+  visibility = [ ":*" ]
+  defines = [
+    "REWARDS_GRANT_DEV_ENDPOINT=\"$rewards_grant_dev_endpoint\"",
+    "REWARDS_GRANT_STAGING_ENDPOINT=\"$rewards_grant_staging_endpoint\"",
+    "REWARDS_GRANT_PROD_ENDPOINT=\"$rewards_grant_prod_endpoint\"",
+  ]
+}
+
 group("bat-native-ledger") {
   public_deps = [ ":ledger" ]
 
@@ -91,7 +100,10 @@ source_set("headers") {
     "//brave/vendor/brave-ios:rewards_db",
   ]
 
-  public_configs = [ ":external_config" ]
+  public_configs = [
+    ":endpoints_config",
+    ":external_config",
+  ]
 
   sources = [
     "include/bat/ledger/export.h",
@@ -115,7 +127,10 @@ proto_library("publishers_proto") {
 
 source_set("ledger") {
   visibility = [ ":*" ]
-  configs += [ ":internal_config" ]
+  configs += [
+    ":endpoints_config",
+    ":internal_config",
+  ]
 
   output_name = "bat_native_ledger"
 

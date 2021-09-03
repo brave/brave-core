@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/vendor/bat-native-ledger/config.gni")
+
 if (is_android) {
   import("//build/config/android/rules.gni")
 }
@@ -793,9 +795,11 @@ source_set("ads") {
   deps = [
     "//base",
     "//brave/common",
+    "//brave/components/brave_adaptive_captcha/buildflags",
     "//brave/components/challenge_bypass_ristretto",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
+    "//brave/vendor/bat-native-ledger",
     "//crypto",
     "//net",
     "//sql",

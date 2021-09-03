@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/build/config.gni")
+import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//build/config/sanitizers/sanitizers.gni")
 import("//testing/test.gni")
 
@@ -203,6 +204,7 @@ source_set("brave_ads_unit_tests") {
     "//base/test:test_support",
     "//brave/browser",
     "//brave/browser/brave_ads",
+    "//brave/components/brave_adaptive_captcha/buildflags",
     "//brave/components/brave_ads/browser:browser",
     "//brave/components/brave_ads/browser:testutil",
     "//brave/components/brave_rewards/browser:browser",
@@ -218,6 +220,10 @@ source_set("brave_ads_unit_tests") {
     "//components/prefs:prefs",
     "//content/test:test_support",
   ]
+
+  if (brave_adaptive_captcha_enabled) {
+    deps += [ "//brave/components/brave_adaptive_captcha" ]
+  }
 
   data = [ "//brave/vendor/bat-native-ads/data/" ]
 

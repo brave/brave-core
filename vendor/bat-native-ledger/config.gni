@@ -16,6 +16,9 @@ declare_args() {
   uphold_client_secret = ""
   uphold_staging_client_id = ""
   uphold_staging_client_secret = ""
+  rewards_grant_dev_endpoint = ""
+  rewards_grant_staging_endpoint = ""
+  rewards_grant_prod_endpoint = ""
 }
 
 if (is_official_build && !is_ios) {

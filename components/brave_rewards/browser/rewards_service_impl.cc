@@ -88,10 +88,12 @@
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #endif
+
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #endif
+
 using net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES;
 
 namespace brave_rewards {
@@ -100,10 +102,10 @@ static const unsigned int kRetriesCountOnNetworkChange = 1;
 
 namespace {
 
-const int kDiagnosticLogMaxVerboseLevel = 6;
-const int kDiagnosticLogKeepNumLines = 20000;
-const int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
-const char pref_prefix[] = "brave.rewards";
+constexpr int kDiagnosticLogMaxVerboseLevel = 6;
+constexpr int kDiagnosticLogKeepNumLines = 20000;
+constexpr int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
+constexpr char pref_prefix[] = "brave.rewards";
 
 std::string URLMethodToRequestType(ledger::type::UrlMethod method) {
   switch (method) {

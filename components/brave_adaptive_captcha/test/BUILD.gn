@@ -1,0 +1,21 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/build/config.gni")
+
+import("//testing/test.gni")
+source_set("brave_adaptive_captcha_unit_tests") {
+  testonly = true
+  sources = [ "//brave/components/brave_adaptive_captcha/get_adaptive_captcha_challenge_unittest.cc" ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+  ]
+
+  data = [ "//brave/vendor/bat-native-ads/data/" ]
+}

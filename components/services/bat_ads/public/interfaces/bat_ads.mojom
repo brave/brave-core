@@ -52,6 +52,9 @@ interface BatAdsClient {
   Save(string name, string value) => (bool success);
   Load(string name) => (bool success, string value);
   LoadAdsResource(string id, int32 version) => (bool success, string value);
+  ClearScheduledCaptcha();
+  GetScheduledCaptcha(string payment_id) => (string captcha_id);
+  ShowScheduledCaptchaNotification(string payment_id, string captcha_id);
   GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<string> history);
   RunDBTransaction(ads.mojom.DBTransaction transaction) => (ads.mojom.DBCommandResponse response);
   OnAdRewardsChanged();

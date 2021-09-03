@@ -12,26 +12,18 @@ namespace ads {
 namespace rewards {
 namespace server {
 
-namespace {
-
-const char kProductionDomain[] = "https://grant.rewards.brave.com";
-const char kStagingDomain[] = "https://grant.rewards.bravesoftware.com";
-const char kDevelopmentDomain[] = "https://grant.rewards.brave.software";
-
-}  // namespace
-
 std::string GetHost() {
   switch (g_environment) {
     case mojom::Environment::kProduction: {
-      return kProductionDomain;
+      return REWARDS_GRANT_PROD_ENDPOINT;
     }
 
     case mojom::Environment::kStaging: {
-      return kStagingDomain;
+      return REWARDS_GRANT_STAGING_ENDPOINT;
     }
 
     case mojom::Environment::kDevelopment: {
-      return kDevelopmentDomain;
+      return REWARDS_GRANT_DEV_ENDPOINT;
     }
   }
 }

@@ -21,7 +21,7 @@ TEST(BatAdsRewardsServerUtilTest, Production) {
   const std::string host = rewards::server::GetHost();
 
   // Assert
-  const std::string expected_host = "https://grant.rewards.brave.com";
+  const std::string expected_host = REWARDS_GRANT_PROD_ENDPOINT;
   EXPECT_EQ(expected_host, host);
 }
 
@@ -33,7 +33,7 @@ TEST(BatAdsRewardsServerUtilTest, Staging) {
   const std::string host = rewards::server::GetHost();
 
   // Assert
-  const std::string expected_host = "https://grant.rewards.bravesoftware.com";
+  const std::string expected_host = REWARDS_GRANT_STAGING_ENDPOINT;
   EXPECT_EQ(expected_host, host);
 }
 
@@ -45,7 +45,7 @@ TEST(BatAdsRewardsServerUtilTest, Development) {
   const std::string host = rewards::server::GetHost();
 
   // Assert
-  const std::string expected_host = "https://grant.rewards.brave.software";
+  const std::string expected_host = REWARDS_GRANT_DEV_ENDPOINT;
   EXPECT_EQ(expected_host, host);
 }
 

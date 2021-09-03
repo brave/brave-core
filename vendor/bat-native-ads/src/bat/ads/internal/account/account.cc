@@ -13,6 +13,7 @@
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/wallet/wallet.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
@@ -38,12 +39,14 @@ Account::Account(privacy::TokenGeneratorInterface* token_generator)
 
   ad_rewards_->set_delegate(this);
   redeem_unblinded_payment_tokens_->set_delegate(this);
+  refill_unblinded_tokens_->set_delegate(this);
 }
 
 Account::~Account() {
   confirmations_->RemoveObserver(this);
   ad_rewards_->set_delegate(nullptr);
   redeem_unblinded_payment_tokens_->set_delegate(nullptr);
+  refill_unblinded_tokens_->set_delegate(nullptr);
 }
 
 void Account::AddObserver(AccountObserver* observer) {
@@ -197,6 +200,21 @@ void Account::OnFailedToRedeemUnblindedPaymentTokens() {
 
 void Account::OnDidRetryRedeemingUnblindedPaymentTokens() {
   BLOG(1, "Retry redeeming unblinded payment tokens");
+}
+
+void Account::OnDidRefillUnblindedTokens() {
+  BLOG(1, "Successfully refilled unblinded tokens");
+
+  AdsClientHelper::Get()->ClearScheduledCaptcha();
+}
+
+void Account::OnCaptchaRequiredToRefillUnblindedTokens(
+    const std::string& captcha_id) {
+  BLOG(1, "Captcha required to refill unblinded tokens");
+
+  const WalletInfo wallet = GetWallet();
+  AdsClientHelper::Get()->ShowScheduledCaptchaNotification(wallet.id,
+                                                           captcha_id);
 }
 
 }  // namespace ads

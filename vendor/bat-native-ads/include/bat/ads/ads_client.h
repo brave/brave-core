@@ -30,6 +30,9 @@ using RunDBTransactionCallback =
 using GetBrowsingHistoryCallback =
     std::function<void(const std::vector<std::string>&)>;
 
+using GetScheduledCaptchaCallback =
+    base::OnceCallback<void(const std::string&)>;
+
 class ADS_EXPORT AdsClient {
  public:
   virtual ~AdsClient() = default;
@@ -104,6 +107,22 @@ class ADS_EXPORT AdsClient {
 
   // Should return the resource for given |id|
   virtual std::string LoadResourceForId(const std::string& id) = 0;
+
+  // Clears the currently scheduled captcha, if any
+  virtual void ClearScheduledCaptcha() = 0;
+
+  // Retrieves the captcha scheduled for the given |payment_id|, if
+  // any. If there is a scheduled captcha that the user must solve in
+  // order to proceed, |callback| will return the captcha id;
+  // otherwise, |callback| will return the empty string.
+  virtual void GetScheduledCaptcha(const std::string& payment_id,
+                                   GetScheduledCaptchaCallback callback) = 0;
+
+  // Show a notification indicating that a scheduled captcha with the given
+  // |captcha_id| must be solved to resume Ads for the given |payment_id|
+  virtual void ShowScheduledCaptchaNotification(
+      const std::string& payment_id,
+      const std::string& captcha_id) = 0;
 
   // Run database transaction. The callback takes one argument -
   // |mojom::DBCommandResponsePtr|

@@ -42,10 +42,15 @@ if (enable_extensions) {
     "//brave/browser/brave_rewards/extension_rewards_notification_service_observer.h",
     "//brave/browser/brave_rewards/extension_rewards_service_observer.cc",
     "//brave/browser/brave_rewards/extension_rewards_service_observer.h",
+    "//brave/browser/brave_rewards/rewards_panel_helper.cc",
+    "//brave/browser/brave_rewards/rewards_panel_helper.h",
   ]
 
   brave_browser_brave_rewards_deps += [
+    "//brave/browser/ui",
     "//brave/common/extensions/api",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
     "//extensions/browser",
   ]
 }
