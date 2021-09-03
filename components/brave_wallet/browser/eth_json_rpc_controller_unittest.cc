@@ -12,6 +12,7 @@
 #include "base/test/task_environment.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
@@ -89,8 +90,7 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
         &EthJsonRpcControllerUnitTest::ResourceRequest, this);
     url_loader_factory_.SetInterceptor(std::move(resource_request));
     user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
-    KeyringController::RegisterProfilePrefs(prefs_.registry());
-    EthJsonRpcController::RegisterProfilePrefs(prefs_.registry());
+    brave_wallet::RegisterProfilePrefs(prefs_.registry());
   }
 
   ~EthJsonRpcControllerUnitTest() override = default;

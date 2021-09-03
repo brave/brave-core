@@ -27,8 +27,6 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "url/gurl.h"
 
-class PrefRegistrySimple;
-
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
@@ -46,7 +44,6 @@ class EthJsonRpcController : public KeyedService,
       PrefService* prefs);
   ~EthJsonRpcController() override;
 
-  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   static void ClearProfilePrefs(PrefService* prefs);
 
   struct EthereumChainRequest {

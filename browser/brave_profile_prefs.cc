@@ -73,8 +73,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
@@ -144,7 +143,7 @@ void RegisterProfilePrefsForMigration(
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  brave_wallet::KeyringController::RegisterProfilePrefsForMigration(registry);
+  brave_wallet::RegisterProfilePrefsForMigration(registry);
 #endif
 
   // Restore "Other Bookmarks" migration
@@ -335,8 +334,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Brave Wallet
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  brave_wallet::KeyringController::RegisterProfilePrefs(registry);
-  brave_wallet::EthJsonRpcController::RegisterProfilePrefs(registry);
+  brave_wallet::RegisterProfilePrefs(registry);
 #endif
 
   // Brave Search

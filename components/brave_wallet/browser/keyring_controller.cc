@@ -18,7 +18,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "components/sync_preferences/pref_service_syncable.h"
 #include "crypto/random.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -90,37 +89,6 @@ mojo::PendingRemote<mojom::KeyringController> KeyringController::MakeRemote() {
 void KeyringController::Bind(
     mojo::PendingReceiver<mojom::KeyringController> receiver) {
   receivers_.Add(this, std::move(receiver));
-}
-
-// static
-void KeyringController::RegisterProfilePrefs(
-    user_prefs::PrefRegistrySyncable* registry) {
-  // TODO(bridiver) - move to brave/browser
-  registry->RegisterIntegerPref(
-      kBraveWalletWeb3Provider,
-      static_cast<int>(brave_wallet::IsNativeWalletEnabled()
-                           ? brave_wallet::Web3ProviderTypes::BRAVE_WALLET
-                           : brave_wallet::Web3ProviderTypes::ASK));
-  // TODO(bridiver) - move to brave/browser
-  registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
-
-  // TODO(bridiver) - move to EthTxControllerFactory
-  registry->RegisterDictionaryPref(kBraveWalletTransactions);
-
-  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
-  registry->RegisterDictionaryPref(kBraveWalletKeyrings);
-}
-
-// static
-void KeyringController::RegisterProfilePrefsForMigration(
-    user_prefs::PrefRegistrySyncable* registry) {
-  // Added 08/2021
-  registry->RegisterStringPref(kBraveWalletPasswordEncryptorSalt, "");
-  registry->RegisterStringPref(kBraveWalletPasswordEncryptorNonce, "");
-  registry->RegisterStringPref(kBraveWalletEncryptedMnemonic, "");
-  registry->RegisterIntegerPref(kBraveWalletDefaultKeyringAccountNum, 0);
-  registry->RegisterBooleanPref(kBraveWalletBackupComplete, false);
-  registry->RegisterListPref(kBraveWalletAccountNames);
 }
 
 // static
