@@ -91,10 +91,11 @@ def Main():
     if args.plist_output is not None:
         output_path = args.plist_output
 
-    if args.skip_signing:
+    if args.skip_signing and args.brave_channel != "":
         plist['KSChannelID'] = args.brave_channel
     elif 'KSChannelID' in plist:
-        # 'KSChannelID' is set at _modify_plists() of modification.py.
+        # 'KSChannelID' is set at _modify_plists() of modification.py only
+        # during signing
         del plist['KSChannelID']
 
     plist['CrProductDirName'] = args.brave_product_dir_name
