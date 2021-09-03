@@ -106,11 +106,7 @@ def main(args):
 
     # Run format checks
     upstream_branch = cl.GetUpstreamBranch()
-    format_output = None
-    if base_branch:
-        format_output = RunFormatCheck(base_branch)
-    else:
-        format_output = RunFormatCheck(upstream_branch)
+    format_output = RunFormatCheck(base_branch or cl.GetUpstreamBranch())
   finally:
     os.chdir(previous_cwd)
 
