@@ -88,8 +88,8 @@ std::wstring GetPhonebookPath() {
   }
 
   // Allocate required buf.
-  app_data_path = reinterpret_cast<TCHAR*>(
-      HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_buf_size + 1));
+  app_data_path = reinterpret_cast<TCHAR*>(HeapAlloc(
+      GetProcessHeap(), HEAP_ZERO_MEMORY, dw_buf_size * sizeof(TCHAR)));
   if (app_data_path == NULL) {
     LOG(ERROR) << "HeapAlloc failed!";
     return app_data_path;
