@@ -11,7 +11,7 @@ namespace ads {
 
 namespace {
 
-std::string GetId(const std::string ad_type,
+std::string GetId(const std::string& ad_type,
                   const std::string& confirmation_type) {
   return ad_type + confirmation_type;
 }
