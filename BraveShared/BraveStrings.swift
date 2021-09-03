@@ -617,6 +617,7 @@ extension Strings {
     public static let yesterday = NSLocalizedString("Yesterday", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Yesterday", comment: "History tableview section header")
     public static let lastWeek = NSLocalizedString("LastWeek", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Last week", comment: "History tableview section header")
     public static let lastMonth = NSLocalizedString("LastMonth", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Last month", comment: "History tableview section header")
+    public static let earlier = NSLocalizedString("Earlier", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Earlier", comment: "History tableview section header that indicated history items earlier than last month")
     public static let savedLogins = NSLocalizedString("SavedLogins", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Saved Logins", comment: "Settings item for clearing passwords and login data")
     public static let downloadedFiles = NSLocalizedString("DownloadedFiles", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Downloaded files", comment: "Settings item for clearing downloaded files.")
     public static let browsingHistory = NSLocalizedString("BrowsingHistory", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Browsing History", comment: "Settings item for clearing browsing history")
