@@ -134,7 +134,8 @@ class Historyv2Fetcher: NSObject, HistoryV2FetchResultsController {
     private var sectionDetails: OrderedDictionary<Historyv2.Section, Int> = [.today: 0,
                                                                              .yesterday: 0,
                                                                              .lastWeek: 0,
-                                                                             .thisMonth: 0]
+                                                                             .thisMonth: 0,
+                                                                             .earlier: 0]
     
     private func clearHistoryData() {
         historyList.removeAll()

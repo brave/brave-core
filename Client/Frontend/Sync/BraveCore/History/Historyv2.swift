@@ -26,6 +26,8 @@ class Historyv2: WebsitePresentable {
         case lastWeek
         /// History happened between end of this week and end of this month
         case thisMonth
+        /// History happened after the end of this month
+        case earlier
         
         /// The list of titles time period
         var title: String {
@@ -38,6 +40,8 @@ class Historyv2: WebsitePresentable {
                      return Strings.lastWeek
                 case .thisMonth:
                      return Strings.lastMonth
+                case .earlier:
+                     return Strings.earlier
             }
         }
     }
@@ -98,7 +102,7 @@ class Historyv2: WebsitePresentable {
             return .thisMonth
         }
         
-        return nil
+        return .earlier
     }
     
     private func getDate(_ dayOffset: Int) -> Date {
