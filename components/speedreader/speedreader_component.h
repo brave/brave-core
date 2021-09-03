@@ -54,12 +54,16 @@ class SpeedreaderComponent
                         const std::string& manifest) override;
 
   // Used in testing/development with custom rule set for auto-reloading
+  void OnStylesheetFileReady(const base::FilePath& path, bool error);
   void OnWhitelistFileReady(const base::FilePath& path, bool error);
 
   base::ObserverList<Observer> observers_;
   std::unique_ptr<base::FilePathWatcher> whitelist_path_watcher_;
+  std::unique_ptr<base::FilePathWatcher> stylesheet_path_watcher_;
   base::FilePath whitelist_path_;
   base::FilePath stylesheet_path_;
+  bool user_provided_whitelist_ = false;
+  bool user_provided_stylesheet_ = false;
   base::WeakPtrFactory<SpeedreaderComponent> weak_factory_{this};
 };
 

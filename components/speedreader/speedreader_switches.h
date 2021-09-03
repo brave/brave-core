@@ -8,6 +8,12 @@
 
 namespace speedreader {
 
+// Command line stylesheet override for Speedreader. Useful for testing changes.
+constexpr char kSpeedreaderStylesheet[] = "speedreader-stylesheet";
+
+// NOTE: All of the following switches are DEPRECATED. The following command
+// line arguments support the speedreader adblock backend, which is no longer in
+// use. TODO(keur): Delete these.
 constexpr char kSpeedreaderWhitelist[] = "speedreader-whitelist";
 constexpr char kSpeedreaderWhitelistPath[] = "speedreader-whitelist-path";
 constexpr char kSpeedreaderBackend[] = "speedreader-backend";

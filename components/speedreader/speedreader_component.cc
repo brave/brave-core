@@ -40,17 +40,14 @@ constexpr char kComponentPublicKey[] =
 SpeedreaderComponent::SpeedreaderComponent(Delegate* delegate)
     : brave_component_updater::BraveComponent(delegate) {
   const auto* cmd_line = base::CommandLine::ForCurrentProcess();
-  if (!cmd_line->HasSwitch(speedreader::kSpeedreaderWhitelistPath)) {
-    // Register component
-    Register(kComponentName, kComponentId, kComponentPublicKey);
-  } else {
+  if (cmd_line->HasSwitch(speedreader::kSpeedreaderWhitelistPath)) {
+    user_provided_whitelist_ = true;
     const base::FilePath whitelist_path(
         cmd_line->GetSwitchValuePath(speedreader::kSpeedreaderWhitelistPath));
     VLOG(2) << "Speedreader whitelist from " << whitelist_path;
 
-    // Notify the `OnWhitelistFileReady` method asynchronously.
-    whitelist_path_ = whitelist_path;
-    OnWhitelistFileReady(whitelist_path, false /* no error */);
+    // Notify the `OnWhitelistFileReady` method synchronously.
+    OnWhitelistFileReady(whitelist_path, false /* error */);
 
     // Watch the provided file for changes.
     whitelist_path_watcher_ = std::make_unique<base::FilePathWatcher>();
@@ -58,10 +55,32 @@ SpeedreaderComponent::SpeedreaderComponent(Delegate* delegate)
             whitelist_path, base::FilePathWatcher::Type::kNonRecursive,
             base::BindRepeating(&SpeedreaderComponent::OnWhitelistFileReady,
                                 weak_factory_.GetWeakPtr()))) {
-      LOG(ERROR) << "SpeedReader could not watch filesystem for changes"
+      LOG(ERROR) << "Speedreader could not watch filesystem for changes"
                  << " at path " << whitelist_path.LossyDisplayName();
     }
   }
+
+  if (cmd_line->HasSwitch(speedreader::kSpeedreaderStylesheet)) {
+    user_provided_stylesheet_ = true;
+    const base::FilePath stylesheet_path(
+        cmd_line->GetSwitchValuePath(speedreader::kSpeedreaderStylesheet));
+    VLOG(2) << "Speedreader stylesheet from " << stylesheet_path;
+
+    // Notify the `OnStylesheetReady` method synchronously.
+    OnStylesheetFileReady(stylesheet_path, false /* error */);
+
+    stylesheet_path_watcher_ = std::make_unique<base::FilePathWatcher>();
+    if (!stylesheet_path_watcher_->Watch(
+            stylesheet_path, base::FilePathWatcher::Type::kNonRecursive,
+            base::BindRepeating(&SpeedreaderComponent::OnStylesheetFileReady,
+                                weak_factory_.GetWeakPtr()))) {
+      LOG(ERROR) << "Speedreader could not watch filesystem for changes"
+                 << " at path " << stylesheet_path.LossyDisplayName();
+    }
+  }
+
+  // Register component
+  Register(kComponentName, kComponentId, kComponentPublicKey);
 }
 
 SpeedreaderComponent::~SpeedreaderComponent() = default;
@@ -74,10 +93,26 @@ void SpeedreaderComponent::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
+void SpeedreaderComponent::OnStylesheetFileReady(const base::FilePath& path,
+                                                 bool error) {
+  if (error) {
+    LOG(ERROR) << __func__
+               << "Speedreader got an error watching for file changes."
+               << " Stopping watching.";
+    stylesheet_path_watcher_.reset();
+    return;
+  }
+
+  stylesheet_path_ = path;
+  for (Observer& observer : observers_)
+    observer.OnStylesheetReady(stylesheet_path_);
+}
+
 void SpeedreaderComponent::OnWhitelistFileReady(const base::FilePath& path,
                                                 bool error) {
   if (error) {
-    LOG(ERROR) << "SpeedReader got an error watching for file changes."
+    LOG(ERROR) << __func__
+               << "Speedreader got an error watching for file changes."
                << " Stopping watching.";
     whitelist_path_watcher_.reset();
     return;
@@ -93,12 +128,13 @@ void SpeedreaderComponent::OnComponentReady(const std::string& component_id,
                                             const std::string& manifest) {
   stylesheet_path_ =
       install_dir.Append(kDatFileVersion).Append(kStylesheetFileName);
-  whitelist_path_ =
-      install_dir.Append(kDatFileVersion).Append(kDatFileName);
+  whitelist_path_ = install_dir.Append(kDatFileVersion).Append(kDatFileName);
 
   for (Observer& observer : observers_) {
-    observer.OnWhitelistReady(whitelist_path_);
-    observer.OnStylesheetReady(stylesheet_path_);
+    if (!user_provided_whitelist_)
+      observer.OnWhitelistReady(whitelist_path_);
+    if (!user_provided_stylesheet_)
+      observer.OnStylesheetReady(stylesheet_path_);
   }
 }
 
