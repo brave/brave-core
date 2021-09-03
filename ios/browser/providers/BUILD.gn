@@ -1,0 +1,22 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+# This is a variant of //ios/chrome/browser/providers:chromium_providers which
+# does not include bundling the MaterialComponents framework or Chromium
+# providers we don't need.
+group("brave_providers") {
+  deps = [
+    # The target providing the ChromeBrowserProvider factory.
+    "//ios/chrome/browser/providers:chromium_provider_factory",
+
+    # The individual API implementations.
+    "//ios/chrome/browser/providers/modals:chromium_modals",
+    "//ios/chrome/browser/providers/text_zoom:chromium_text_zoom",
+
+    # The provider API needs to provide MaterialDesignComponent API (as the
+    # internal provider provides an alternate implementation).
+    "//ios/third_party/material_components_ios:material_components_ios+link",
+  ]
+}

@@ -422,6 +422,8 @@ Config.prototype.buildArgs = function () {
     args.ios_enable_credential_provider_extension = false
     args.ios_enable_widget_kit_extension = false
 
+    args.ios_provider_target = "//brave/ios/browser/providers:brave_providers"
+
     delete args.safebrowsing_api_endpoint
     delete args.updater_prod_endpoint
     delete args.updater_dev_endpoint
