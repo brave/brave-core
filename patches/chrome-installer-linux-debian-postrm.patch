@@ -1,9 +1,10 @@
 diff --git a/chrome/installer/linux/debian/postrm b/chrome/installer/linux/debian/postrm
-index 85b9961013ff276c13810d32ec8d927859abba37..542e1298f986d90579182ecdf2c870365190f349 100755
+index c55d98e2663b8cb4339d9eaaaa6410544852d5a6..c72c9db6f92e15ec45073ebdded94aa5009f1ece 100755
 --- a/chrome/installer/linux/debian/postrm
 +++ b/chrome/installer/linux/debian/postrm
-@@ -30,4 +30,3 @@ if [ -s "$DEFAULTS_FILE" ]; then
+@@ -30,5 +30,4 @@ if [ -s "$DEFAULTS_FILE" ]; then
    rm "$DEFAULTS_FILE" || exit 1
  fi
  # Remove any Google repository added by the package.
 -clean_sources_lists
+ uninstall_key
