@@ -22,13 +22,16 @@ namespace origin_trials {
 
 bool IsTrialDisabledInBrave(const StringView& trial_name) {
   // When updating also update the array in the overload below.
+  // clang-format off
   static const char* const kBraveDisabledTrialNames[] = {
+      "ConversionMeasurement",
       "DigitalGoods",
       "HandwritingRecognition",
       "SignedExchangeSubresourcePrefetch",
       "SubresourceWebBundles",
       "TrustTokens",
   };
+  // clang-format on
 
   if (base::Contains(kBraveDisabledTrialNames, trial_name)) {
     // Check if this is still a valid trial name in Chromium. If not, it needs
@@ -42,13 +45,16 @@ bool IsTrialDisabledInBrave(const StringView& trial_name) {
 
 bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
   // When updating also update the array in the overload above.
-  static const std::array<OriginTrialFeature, 5> kBraveDisabledTrialFeatures = {
+  // clang-format off
+  static const std::array<OriginTrialFeature, 6> kBraveDisabledTrialFeatures = {
+      OriginTrialFeature::kConversionMeasurement,
       OriginTrialFeature::kDigitalGoods,
       OriginTrialFeature::kHandwritingRecognition,
       OriginTrialFeature::kSignedExchangeSubresourcePrefetch,
       OriginTrialFeature::kSubresourceWebBundles,
       OriginTrialFeature::kTrustTokens,
   };
+  // clang-format on
 
   return base::Contains(kBraveDisabledTrialFeatures, feature);
 }
