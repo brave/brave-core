@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_H_
 
+#include <string>
+
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -19,7 +21,7 @@ namespace brave_wallet {
 class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService {
  public:
-  BraveWalletService(PrefService* prefs);
+  explicit BraveWalletService(PrefService* prefs);
   ~BraveWalletService() override;
 
   BraveWalletService(const BraveWalletService&) = delete;
@@ -29,6 +31,18 @@ class BraveWalletService : public KeyedService,
   void Bind(mojo::PendingReceiver<mojom::BraveWalletService> receiver);
 
   // mojom::BraveWalletService:
+  void GetUserAssets(const std::string& chain_id,
+                     GetUserAssetsCallback callback) override;
+  void AddUserAsset(mojom::ERCTokenPtr token,
+                    const std::string& chain_id,
+                    AddUserAssetCallback callback) override;
+  void RemoveUserAsset(const std::string& contract_address,
+                       const std::string& chain_id,
+                       RemoveUserAssetCallback callback) override;
+  void SetUserAssetVisible(const std::string& contract_address,
+                           const std::string& chain_id,
+                           bool visible,
+                           SetUserAssetVisibleCallback callback) override;
 
  private:
   PrefService* prefs_;

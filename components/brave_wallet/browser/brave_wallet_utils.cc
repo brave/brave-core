@@ -657,4 +657,35 @@ void GetAllChains(PrefService* prefs,
   GetAllCustomChains(prefs, result);
 }
 
+std::string GetNetworkId(PrefService* prefs, const std::string& chain_id) {
+  DCHECK(prefs);
+
+  auto subdomain = GetInfuraSubdomainForKnownChainId(chain_id);
+  if (!subdomain.empty())
+    return subdomain;
+  // Separate check for localhost in known networks as it is predefined
+  // but doesnt have infura subdomain.
+  mojom::EthereumChainPtr known_network = GetKnownChain(chain_id);
+  if (known_network) {
+    if (known_network->rpc_urls.size())
+      return GURL(known_network->rpc_urls.front()).spec();
+  }
+
+  std::vector<mojom::EthereumChainPtr> custom_chains;
+  GetAllCustomChains(prefs, &custom_chains);
+  std::string id;
+  for (const auto& network : custom_chains) {
+    if (network->chain_id != chain_id)
+      continue;
+    if (network->rpc_urls.size()) {
+      id = GURL(network->rpc_urls.front()).host();
+    } else {
+      id = chain_id;
+    }
+    break;
+  }
+
+  return id;
+}
+
 }  // namespace brave_wallet
