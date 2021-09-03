@@ -13,6 +13,7 @@
 #include "components/content_settings/core/common/features.h"
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "net/cookies/site_for_cookies.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -96,7 +97,7 @@ ScopedEphemeralStorageAwareness& ScopedEphemeralStorageAwareness::operator=(
 
 bool CookieSettingsBase::ShouldUseEphemeralStorage(
     const GURL& url,
-    const GURL& site_for_cookies,
+    const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin) const {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
@@ -128,12 +129,13 @@ CookieSettingsBase::CreateScopedEphemeralStorageAwareness() const {
 bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
     const GURL& first_party_url) const {
-  return IsEphemeralCookieAccessAllowed(url, first_party_url, absl::nullopt);
+  return IsEphemeralCookieAccessAllowed(
+      url, net::SiteForCookies::FromUrl(first_party_url), absl::nullopt);
 }
 
 bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
-    const GURL& site_for_cookies,
+    const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin) const {
   auto scoped_ephemeral_storage_awareness =
       CreateScopedEphemeralStorageAwareness();
@@ -143,12 +145,13 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
 bool CookieSettingsBase::IsFullCookieAccessAllowed(
     const GURL& url,
     const GURL& first_party_url) const {
-  return IsFullCookieAccessAllowed(url, first_party_url, absl::nullopt);
+  return IsFullCookieAccessAllowed(
+      url, net::SiteForCookies::FromUrl(first_party_url), absl::nullopt);
 }
 
 bool CookieSettingsBase::IsFullCookieAccessAllowed(
     const GURL& url,
-    const GURL& site_for_cookies,
+    const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin) const {
   if (ephemeral_storage_aware_ &&
       ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin)) {
@@ -160,7 +163,7 @@ bool CookieSettingsBase::IsFullCookieAccessAllowed(
 
 bool CookieSettingsBase::IsCookieAccessAllowedImpl(
     const GURL& url,
-    const GURL& site_for_cookies,
+    const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin) const {
   bool allow = IsChromiumFullCookieAccessAllowed(url, site_for_cookies,
                                                  top_frame_origin);

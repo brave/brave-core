@@ -22,7 +22,7 @@ void CookieSettings::ShutdownOnUIThread() {
 
 bool CookieSettings::ShouldUseEphemeralStorage(
     const url::Origin& origin,
-    const GURL& site_for_cookies,
+    const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin,
     url::Origin& storage_origin) {
   const bool should_use = CookieSettingsBase::ShouldUseEphemeralStorage(
