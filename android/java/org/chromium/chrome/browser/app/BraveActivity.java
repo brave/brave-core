@@ -52,6 +52,7 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveSyncReflectionUtils;
+import org.chromium.chrome.browser.BraveTabbedActivity;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
@@ -63,10 +64,6 @@ import org.chromium.chrome.browser.browsing_data.BrowsingDataBridge;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataType;
 import org.chromium.chrome.browser.browsing_data.ClearBrowsingDataFragmentAdvanced;
 import org.chromium.chrome.browser.browsing_data.TimePeriod;
-import org.chromium.chrome.browser.compositor.layouts.Layout;
-import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
-import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
-import org.chromium.chrome.browser.compositor.layouts.phone.StackLayout;
 import org.chromium.chrome.browser.crypto_wallet.CryptoWalletActivity;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
@@ -733,6 +730,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         return null;
     }
 
+    static public BraveTabbedActivity getBraveTabbedActivity() {
+        for (Activity ref : ApplicationStatus.getRunningActivities()) {
+            if (!(ref instanceof BraveTabbedActivity)) continue;
+
+            return (BraveTabbedActivity) ref;
+        }
+        assert (false);
+        return null;
+    }
+
     static public BraveActivity getBraveActivity() {
         for (Activity ref : ApplicationStatus.getRunningActivities()) {
             if (!(ref instanceof BraveActivity)) continue;
@@ -834,13 +841,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
 
         editor.putLong(BravePreferenceKeys.BRAVE_MILLISECONDS_NAME, milliSeconds);
         editor.apply();
-    }
-
-    public void hideOverview(LayoutManagerChrome layoutManager) {
-        Layout activeLayout = layoutManager.getActiveLayout();
-        if (activeLayout instanceof StackLayout) {
-            ((StackLayout) activeLayout).commitOutstandingModelState(LayoutManagerImpl.time());
-        }
     }
 
     public ObservableSupplier<BrowserControlsManager> getBrowserControlsManagerSupplier() {

@@ -10,6 +10,9 @@ import org.objectweb.asm.ClassVisitor;
 public class BraveTabbedActivityClassAdapter extends BraveClassVisitor {
     static String sChromeTabbedActivityClassName =
             "org/chromium/chrome/browser/ChromeTabbedActivity";
+    static String sChromeTabbedActivityPreloadClassName =
+            "org/chromium/chrome/browser/ChromeTabbedActivity$Preload";
+    static String sBraveTabbedActivityClassName = "org/chromium/chrome/browser/BraveTabbedActivity";
     static String sBraveActivityClassName = "org/chromium/chrome/browser/app/BraveActivity";
     static String sTabbedRootUiCoordinatorClassName =
             "org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator";
@@ -39,6 +42,10 @@ public class BraveTabbedActivityClassAdapter extends BraveClassVisitor {
         changeSuperName(sCustomTabAppMenuPropertiesDelegateClassName,
                 sBraveAppMenuPropertiesDelegateImplClassName);
 
+        changeSuperName(sChromeTabbedActivityPreloadClassName, sBraveTabbedActivityClassName);
+
+        redirectConstructor(sChromeTabbedActivityClassName, sBraveTabbedActivityClassName);
+
         redirectConstructor(sTabbedAppMenuPropertiesDelegateClassName,
                 sBraveTabbedAppMenuPropertiesDelegateClassName);
 
@@ -47,6 +54,10 @@ public class BraveTabbedActivityClassAdapter extends BraveClassVisitor {
 
         redirectConstructor(sChromeTabCreatorClassName, sBraveTabCreatorClassName);
 
+        deleteField(sBraveTabbedActivityClassName, "mLayoutManager");
+        makeProtectedField(sChromeTabbedActivityClassName, "mLayoutManager");
+
         makePublicMethod(sChromeTabbedActivityClassName, "hideOverview");
+        addMethodAnnotation(sBraveTabbedActivityClassName, "hideOverview", "Ljava/lang/Override;");
     }
 }

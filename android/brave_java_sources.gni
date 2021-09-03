@@ -35,6 +35,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsUserWalletActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsVerifyWalletActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveSyncReflectionUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveTabbedActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveUphold.java",
   "../../brave/android/java/org/chromium/chrome/browser/CrossPromotionalModalDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/InternetConnection.java",

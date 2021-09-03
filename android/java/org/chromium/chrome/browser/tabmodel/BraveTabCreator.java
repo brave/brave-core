@@ -8,10 +8,9 @@ package org.chromium.chrome.browser.tabmodel;
 import android.app.Activity;
 import android.os.Build;
 
-import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
-import org.chromium.chrome.browser.ChromeTabbedActivity;
+import org.chromium.chrome.browser.BraveTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
@@ -44,17 +43,17 @@ public class BraveTabCreator extends ChromeTabCreator {
     public Tab launchUrl(String url, @TabLaunchType int type) {
         if (url.equals(UrlConstants.NTP_URL) && type == TabLaunchType.FROM_CHROME_UI) {
             registerPageView();
-            ChromeTabbedActivity chromeTabbedActivity = BraveActivity.getChromeTabbedActivity();
-            if (chromeTabbedActivity != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-                TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
+            BraveTabbedActivity braveTabbedActivity = BraveActivity.getBraveTabbedActivity();
+            braveTabbedActivity.hideOverview();
+            if (braveTabbedActivity != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+                TabModel tabModel = braveTabbedActivity.getCurrentTabModel();
                 if (tabModel.getCount() >= SponsoredImageUtil.MAX_TABS
                         && UserPrefs.get(Profile.getLastUsedRegularProfile())
                                    .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
-                    Tab tab = BraveActivity.class.cast(chromeTabbedActivity)
+                    Tab tab = BraveActivity.class.cast(braveTabbedActivity)
                                       .selectExistingTab(UrlConstants.NTP_URL);
                     if (tab != null) {
-                        BraveReflectionUtil.InvokeMethod(
-                                ChromeTabbedActivity.class, chromeTabbedActivity, "hideOverview");
+                        braveTabbedActivity.hideOverview();
                         return tab;
                     }
                 }
