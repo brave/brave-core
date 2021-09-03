@@ -12,7 +12,8 @@ import {
   WalletAccountType,
   AssetPriceTimeframe,
   Network,
-  TokenInfo
+  TokenInfo,
+  UpdateAccountNamePayloadType
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, BackupWarningBanner, AddAccountModal } from '../../'
@@ -35,7 +36,7 @@ export interface Props {
   onCreateAccount: (name: string) => void
   onImportAccount: (accountName: string, privateKey: string) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Result.Type<HardwareWalletAccount[]>
-  onUpdateAccountName: (name: string) => void
+  onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onToggleAddModal: () => void
   onUpdateVisibleTokens: (list: string[]) => void
   onSelectNetwork: (network: Network) => void

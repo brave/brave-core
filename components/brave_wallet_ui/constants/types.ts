@@ -608,3 +608,9 @@ export type TransactionPanelPayload = {
   tokenPrice: string,
   transactionData: TransactionDataType
 }
+
+export type UpdateAccountNamePayloadType = {
+  address: string,
+  name: string,
+  isDerived: boolean
+}
