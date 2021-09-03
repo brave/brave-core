@@ -6,6 +6,7 @@
 #include <memory>
 #include <utility>
 
+#include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "brave/components/speedreader/speedreader_util.h"
@@ -24,7 +25,14 @@
 namespace speedreader {
 
 namespace {
+
 constexpr char kTestProfileName[] = "TestProfile";
+
+class TestSpeedreaderResultDelegate : public SpeedreaderResultDelegate {
+ protected:
+  void OnDistillComplete() override {}
+};
+
 }  // anonymous namespace
 
 class SpeedreaderThrottleTest : public testing::Test {
@@ -59,18 +67,26 @@ class SpeedreaderThrottleTest : public testing::Test {
     return HostContentSettingsMapFactory::GetForProfile(profile());
   }
 
+  std::unique_ptr<SpeedReaderThrottle> speedreader_throttle(
+      const GURL& url,
+      bool check_disabled_sites = false) {
+    auto runner = content::GetUIThreadTaskRunner({});
+    return SpeedReaderThrottle::MaybeCreateThrottleFor(
+        nullptr, content_settings(),
+        base::WeakPtr<TestSpeedreaderResultDelegate>(), url,
+        check_disabled_sites, runner);
+  }
+
  private:
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<content::WebContents> web_contents_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
   TestingProfile* profile_;
+  TestSpeedreaderResultDelegate delegate_;
 };
 
 TEST_F(SpeedreaderThrottleTest, AllowThrottle) {
-  auto runner = content::GetUIThreadTaskRunner({});
-  std::unique_ptr<SpeedReaderThrottle> throttle =
-      SpeedReaderThrottle::MaybeCreateThrottleFor(nullptr, content_settings(),
-                                                  url(), false, runner);
+  auto throttle = speedreader_throttle(url(), false /* check_disabled_sites */);
   EXPECT_NE(throttle.get(), nullptr);
 }
 
@@ -79,17 +95,15 @@ TEST_F(SpeedreaderThrottleTest, ToggleThrottle) {
   std::unique_ptr<SpeedReaderThrottle> throttle;
 
   speedreader::SetEnabledForSite(content_settings(), url(), false);
-  throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
-      nullptr, content_settings(), url(), true, runner);
+  throttle = speedreader_throttle(url(), true /* check_disabled_sites */);
   EXPECT_EQ(throttle.get(), nullptr);
   // no other domains are affected by the rule.
-  throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
-      nullptr, content_settings(), GURL("kevin.com"), true, runner);
+  throttle =
+      speedreader_throttle(GURL("kevin.com"), true /* check_disabled_sites */);
   EXPECT_NE(throttle.get(), nullptr);
 
   speedreader::SetEnabledForSite(content_settings(), url(), true);
-  throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
-      nullptr, content_settings(), url(), true, runner);
+  throttle = speedreader_throttle(url(), true /* check_disabled_sites */);
   EXPECT_NE(throttle.get(), nullptr);
 }
 
@@ -99,14 +113,10 @@ TEST_F(SpeedreaderThrottleTest, ThrottleIgnoreDisabled) {
 
   speedreader::SetEnabledForSite(content_settings(), url(), false);
 
-  throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
-      nullptr, content_settings(), url(), true /* check_disabled_sites */,
-      runner);
+  throttle = speedreader_throttle(url(), true /* check_disabled_sites */);
   EXPECT_EQ(throttle.get(), nullptr);
 
-  throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
-      nullptr, content_settings(), url(), false /* check_disabled_sites */,
-      runner);
+  throttle = speedreader_throttle(url(), false /* check_disabled_sites */);
   EXPECT_NE(throttle.get(), nullptr);
 }
 
@@ -118,8 +128,7 @@ TEST_F(SpeedreaderThrottleTest, ThrottleNestedURL) {
   // to all of brave.com.
   speedreader::SetEnabledForSite(
       content_settings(), GURL("https://brave.com/some/nested/page"), false);
-  throttle = SpeedReaderThrottle::MaybeCreateThrottleFor(
-      nullptr, content_settings(), url(), true, runner);
+  throttle = speedreader_throttle(url(), true /* check_disabled_sites */);
   EXPECT_EQ(throttle.get(), nullptr);
 }
 

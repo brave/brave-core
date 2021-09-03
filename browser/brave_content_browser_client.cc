@@ -48,6 +48,7 @@
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
@@ -492,14 +493,14 @@ std::vector<std::unique_ptr<blink::URLLoaderThrottle>>
 BraveContentBrowserClient::CreateURLLoaderThrottles(
     const network::ResourceRequest& request,
     content::BrowserContext* browser_context,
-    const base::RepeatingCallback<content::WebContents*()>& wc_getter,
+    const content::WebContents::Getter& wc_getter,
     content::NavigationUIData* navigation_ui_data,
     int frame_tree_node_id) {
   auto result = ChromeContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
       frame_tree_node_id);
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  using DistillState = speedreader::SpeedreaderTabHelper::DistillState;
+  using DistillState = speedreader::DistillState;
   content::WebContents* contents = wc_getter.Run();
   if (!contents) {
     return result;
@@ -508,15 +509,18 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       speedreader::SpeedreaderTabHelper::FromWebContents(contents);
   if (tab_helper) {
     const auto state = tab_helper->PageDistillState();
-    if (speedreader::SpeedreaderTabHelper::PageStateIsDistilled(state) &&
+    if (speedreader::PageWantsDistill(state) &&
         request.resource_type ==
             static_cast<int>(blink::mojom::ResourceType::kMainFrame)) {
+      // Only check for disabled sites if we are in Speedreader mode
+      const bool check_disabled_sites =
+          state == DistillState::kSpeedreaderModePending;
       std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
           speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
               g_brave_browser_process->speedreader_rewriter_service(),
               HostContentSettingsMapFactory::GetForProfile(
                   Profile::FromBrowserContext(browser_context)),
-              request.url, state == DistillState::kSpeedreaderMode,
+              tab_helper->GetWeakPtr(), request.url, check_disabled_sites,
               base::ThreadTaskRunnerHandle::Get());
       if (throttle)
         result.push_back(std::move(throttle));

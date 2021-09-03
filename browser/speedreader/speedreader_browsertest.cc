@@ -12,17 +12,26 @@
 #include "brave/components/speedreader/features.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_switches.h"
+#include "chrome/browser/profiles/profile_keep_alive_types.h"
+#include "chrome/browser/profiles/scoped_profile_keep_alive.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/keep_alive_registry/keep_alive_types.h"
+#include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
+#include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
 const char kTestHost[] = "theguardian.com";
-const char kTestPage[] = "/guardian.html";
+const char kTestPageSimple[] = "/simple.html";
+const char kTestPageReadable[] = "/articles/guardian.html";
 const base::FilePath::StringPieceType kTestWhitelist =
     FILE_PATH_LITERAL("speedreader_whitelist.json");
 
@@ -65,8 +74,15 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
+  void TearDownOnMainThread() override { DisableSpeedreader(); }
+
   content::WebContents* ActiveWebContents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  speedreader::SpeedreaderTabHelper* tab_helper() {
+    return speedreader::SpeedreaderTabHelper::FromWebContents(
+        ActiveWebContents());
   }
 
   speedreader::SpeedreaderService* speedreader_service() {
@@ -75,12 +91,29 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   }
 
   void ToggleSpeedreader() {
-    auto* speedreader_service =
-        speedreader::SpeedreaderServiceFactory::GetForProfile(
-            browser()->profile());
-    speedreader_service->ToggleSpeedreader();
+    speedreader_service()->ToggleSpeedreader();
     ActiveWebContents()->GetController().Reload(content::ReloadType::NORMAL,
                                                 false);
+  }
+
+  void DisableSpeedreader() {
+    speedreader_service()->DisableSpeedreaderForTest();
+  }
+
+  void GoBack(Browser* browser) {
+    content::TestNavigationObserver observer(ActiveWebContents());
+    chrome::GoBack(browser, WindowOpenDisposition::CURRENT_TAB);
+    observer.Wait();
+  }
+
+  void NavigateToPageSynchronously(
+      const char* path,
+      WindowOpenDisposition disposition =
+          WindowOpenDisposition::NEW_FOREGROUND_TAB) {
+    const GURL url = https_server_.GetURL(kTestHost, path);
+    ui_test_utils::NavigateToURLWithDisposition(
+        browser(), url, disposition,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   }
 
  protected:
@@ -88,10 +121,49 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_;
 };
 
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageReadable);
+  EXPECT_TRUE(
+      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+
+  Profile* profile = browser()->profile();
+
+  ScopedKeepAlive test_keep_alive(KeepAliveOrigin::PANEL_VIEW,
+                                  KeepAliveRestartOption::DISABLED);
+  ScopedProfileKeepAlive test_profile_keep_alive(
+      profile, ProfileKeepAliveOrigin::kBrowserWindow);
+  CloseBrowserSynchronously(browser());
+
+  EXPECT_EQ(0u, BrowserList::GetInstance()->size());
+  chrome::OpenWindowWithRestoredTabs(profile);
+  EXPECT_EQ(1u, BrowserList::GetInstance()->size());
+  SelectFirstBrowser();
+  EXPECT_TRUE(
+      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, NavigationNostickTest) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageSimple);
+  EXPECT_FALSE(
+      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
+  EXPECT_TRUE(
+      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+
+  // Ensure distill state doesn't stick when we back-navigate from a readable
+  // page to a non-readable one.
+  GoBack(browser());
+  EXPECT_FALSE(
+      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+}
+
 // disabled in https://github.com/brave/brave-browser/issues/11328
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
   ToggleSpeedreader();
-  const GURL url = https_server_.GetURL(kTestHost, kTestPage);
+  const GURL url = https_server_.GetURL(kTestHost, kTestPageReadable);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = ActiveWebContents();
   content::RenderFrameHost* rfh = contents->GetMainFrame();
@@ -115,9 +187,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, P3ATest) {
   base::HistogramTester tester;
-
-  const GURL url = https_server_.GetURL(kTestHost, kTestPage);
-  ui_test_utils::NavigateToURL(browser(), url);
 
   // SpeedReader never enabled
   EXPECT_FALSE(speedreader_service()->IsEnabled());

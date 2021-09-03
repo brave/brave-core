@@ -9,6 +9,7 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
+#include "brave/components/speedreader/speedreader_extended_info_handler.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_test_whitelist.h"
@@ -17,6 +18,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "content/public/browser/navigation_details.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 
@@ -24,6 +27,10 @@ namespace speedreader {
 
 SpeedreaderTabHelper::~SpeedreaderTabHelper() {
   HideBubble();
+}
+
+base::WeakPtr<SpeedreaderTabHelper> SpeedreaderTabHelper::GetWeakPtr() {
+  return weak_factory_.GetWeakPtr();
 }
 
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
@@ -85,13 +92,37 @@ void SpeedreaderTabHelper::SingleShotSpeedreader() {
   }
 }
 
+bool SpeedreaderTabHelper::MaybeUpdateCachedState(
+    content::NavigationHandle* handle) {
+  auto* entry = handle->GetNavigationEntry();
+  if (!entry) {
+    return false;
+  }
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  DCHECK(profile);
+  auto* speedreader_service = SpeedreaderServiceFactory::GetForProfile(profile);
+
+  bool cached = false;
+  DistillState state =
+      SpeedreaderExtendedInfoHandler::GetCachedMode(entry, speedreader_service);
+  if (state != DistillState::kUnknown) {
+    cached = true;
+    distill_state_ = state;
+  }
+  if (!cached) {
+    SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
+  }
+  return cached;
+}
+
 void SpeedreaderTabHelper::UpdateActiveState(
     content::NavigationHandle* handle) {
   DCHECK(handle);
   DCHECK(handle->IsInMainFrame());
 
   if (single_shot_next_request_) {
-    SetNextRequestState(DistillState::kReaderMode);
+    SetNextRequestState(DistillState::kReaderModePending);
     return;
   }
 
@@ -108,7 +139,7 @@ void SpeedreaderTabHelper::UpdateActiveState(
       } else if (!IsEnabledForSite(handle->GetURL())) {
         SetNextRequestState(DistillState::kSpeedreaderOnDisabledPage);
       } else {
-        SetNextRequestState(DistillState::kSpeedreaderMode);
+        SetNextRequestState(DistillState::kSpeedreaderModePending);
       }
       return;
     }
@@ -124,14 +155,18 @@ void SpeedreaderTabHelper::SetNextRequestState(DistillState state) {
 void SpeedreaderTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsInMainFrame()) {
-    UpdateActiveState(navigation_handle);
+    if (!MaybeUpdateCachedState(navigation_handle)) {
+      UpdateActiveState(navigation_handle);
+    }
   }
 }
 
 void SpeedreaderTabHelper::DidRedirectNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsInMainFrame()) {
-    UpdateActiveState(navigation_handle);
+    if (!MaybeUpdateCachedState(navigation_handle)) {
+      UpdateActiveState(navigation_handle);
+    }
   }
 }
 
@@ -170,6 +205,26 @@ void SpeedreaderTabHelper::HideBubble() {
   if (speedreader_bubble_) {
     speedreader_bubble_->Hide();
     speedreader_bubble_ = nullptr;
+  }
+}
+
+void SpeedreaderTabHelper::OnDistillComplete() {
+  // Perform a state transition
+  if (distill_state_ == DistillState::kSpeedreaderModePending) {
+    distill_state_ = DistillState::kSpeedreaderMode;
+  } else if (distill_state_ == DistillState::kReaderModePending) {
+    distill_state_ = DistillState::kReaderMode;
+  } else {
+    // We got here via an already cached page.
+    DCHECK(distill_state_ == DistillState::kSpeedreaderMode ||
+           distill_state_ == DistillState::kReaderMode);
+  }
+}
+
+void SpeedreaderTabHelper::DidStopLoading() {
+  auto* entry = web_contents()->GetController().GetLastCommittedEntry();
+  if (entry) {
+    SpeedreaderExtendedInfoHandler::PersistMode(entry, distill_state_);
   }
 }
 

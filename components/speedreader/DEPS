@@ -1,6 +1,8 @@
 include_rules = [
   "+components/content_settings/core",
   "+components/prefs",
+  "+components/sessions/content",
+  "+content/public/browser",
   "+services/network/public",
   "+services/network/public/cpp",
   "+services/network/public/mojom",

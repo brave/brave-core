@@ -30,8 +30,9 @@ class SpeedreaderIconView : public PageActionIconView {
   views::BubbleDialogDelegate* GetBubble() const override;
   std::u16string GetTextForTooltipAndAccessibleName() const override;
   void UpdateImpl() override;
+
  private:
-  speedreader::SpeedreaderTabHelper::DistillState GetDistillState() const;
+  speedreader::DistillState GetDistillState() const;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_SPEEDREADER_ICON_VIEW_H_

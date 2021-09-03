@@ -7,34 +7,40 @@
 
 #include <utility>
 
+#include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_url_loader.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace speedreader {
-
 // static
 std::unique_ptr<SpeedReaderThrottle>
 SpeedReaderThrottle::MaybeCreateThrottleFor(
     SpeedreaderRewriterService* rewriter_service,
     HostContentSettingsMap* content_settings,
+    base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
     const GURL& url,
     bool check_disabled_sites,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner) {
   if (check_disabled_sites && !IsEnabledForSite(content_settings, url))
     return nullptr;
-  return std::make_unique<SpeedReaderThrottle>(rewriter_service, task_runner);
+
+  return std::make_unique<SpeedReaderThrottle>(rewriter_service,
+                                               result_delegate, task_runner);
 }
 
 SpeedReaderThrottle::SpeedReaderThrottle(
     SpeedreaderRewriterService* rewriter_service,
+    base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner)
     : rewriter_service_(rewriter_service),
+      result_delegate_(result_delegate),
       task_runner_(std::move(task_runner)) {}
 
 SpeedReaderThrottle::~SpeedReaderThrottle() = default;
@@ -64,6 +70,13 @@ void SpeedReaderThrottle::WillProcessResponse(
 
 void SpeedReaderThrottle::Resume() {
   delegate_->Resume();
+}
+
+void SpeedReaderThrottle::OnDistillComplete() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (result_delegate_) {
+    result_delegate_->OnDistillComplete();
+  }
 }
 
 }  // namespace speedreader
