@@ -200,8 +200,7 @@ TEST_P(DisconnectGeminiWallet, Paths) {
       });
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
-      .WillByDefault(
-          Return(FakeEncryption::Base64EncryptString(input_rewards_wallet)));
+      .WillByDefault(Return(input_rewards_wallet));
 
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(

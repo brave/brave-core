@@ -241,11 +241,10 @@ void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
 }
 
 type::BraveWalletPtr Wallet::GetWallet(bool create) {
-  auto json = ledger_->state()->GetEncryptedString(state::kWalletBrave);
-  if (!json)
-    return nullptr;
+  const std::string json =
+      ledger_->ledger_client()->GetStringState(state::kWalletBrave);
 
-  if (json->empty()) {
+  if (json.empty()) {
     if (create) {
       auto wallet = type::BraveWallet::New();
       wallet->recovery_seed = util::Security::GenerateSeed();
@@ -256,7 +255,7 @@ type::BraveWalletPtr Wallet::GetWallet(bool create) {
     return nullptr;
   }
 
-  absl::optional<base::Value> value = base::JSONReader::Read(*json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     BLOG(0, "Parsing of brave wallet failed");
     return nullptr;
@@ -314,8 +313,7 @@ bool Wallet::SetWallet(type::BraveWalletPtr wallet) {
   std::string json;
   base::JSONWriter::Write(new_wallet, &json);
 
-  if (!ledger_->state()->SetEncryptedString(state::kWalletBrave, json))
-    return false;
+  ledger_->ledger_client()->SetStringState(state::kWalletBrave, json);
 
   ledger_->database()->SaveEventLog(state::kRecoverySeed, event_string);
 

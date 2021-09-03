@@ -19,7 +19,7 @@ TEST_F(WalletTest, GetWallet) {
   auto* ledger = GetLedgerImpl();
 
   // A wallet is created if none exists
-  ledger->state()->SetEncryptedString(state::kWalletBrave, "");
+  ledger->ledger_client()->SetStringState(state::kWalletBrave, "");
   auto wallet = ledger->wallet()->GetWallet(true);
   ASSERT_TRUE(wallet);
   EXPECT_TRUE(wallet->payment_id.empty());
@@ -32,7 +32,7 @@ TEST_F(WalletTest, GetWallet) {
   EXPECT_EQ(wallet->recovery_seed, recovery_seed);
 
   // Corrupted wallet data is not overwritten
-  ledger->state()->SetEncryptedString(state::kWalletBrave, "BAD-DATA");
+  ledger->ledger_client()->SetStringState(state::kWalletBrave, "BAD-DATA");
   wallet = ledger->wallet()->GetWallet(true);
   ASSERT_FALSE(wallet);
 }
@@ -40,7 +40,7 @@ TEST_F(WalletTest, GetWallet) {
 TEST_F(WalletTest, CreateWallet) {
   auto* ledger = GetLedgerImpl();
 
-  ledger->state()->SetEncryptedString(state::kWalletBrave, "BAD-DATA");
+  ledger->ledger_client()->SetStringState(state::kWalletBrave, "BAD-DATA");
 
   mojom::Result result;
   ledger->wallet()->CreateWalletIfNecessary(
@@ -48,7 +48,7 @@ TEST_F(WalletTest, CreateWallet) {
 
   // Corrupted wallet data is not overwritten with a new wallet
   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-  EXPECT_EQ(ledger->state()->GetEncryptedString(state::kWalletBrave),
+  EXPECT_EQ(ledger->ledger_client()->GetStringState(state::kWalletBrave),
             "BAD-DATA");
 }
 
