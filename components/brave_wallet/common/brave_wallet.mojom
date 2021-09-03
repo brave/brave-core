@@ -322,3 +322,6 @@ interface EthTxController {
   GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
   AddObserver(pending_remote<EthTxControllerObserver> observer);
 };
+
+interface BraveWalletService {
+};

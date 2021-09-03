@@ -12,6 +12,8 @@ source_set("brave_wallet") {
     "asset_ratio_controller_factory.h",
     "brave_wallet_context_utils.cc",
     "brave_wallet_context_utils.h",
+    "brave_wallet_service_factory.cc",
+    "brave_wallet_service_factory.h",
     "eth_tx_controller_factory.cc",
     "eth_tx_controller_factory.h",
     "keyring_controller_factory.cc",
