@@ -332,6 +332,7 @@ test("brave_unit_tests") {
         [ "//brave/browser/brave_wallet/brave_wallet_tab_helper_unittest.cc" ]
     deps += [
       "//brave/browser/brave_wallet",
+      "//brave/browser/brave_wallet:tab_helper",
       "//brave/components/brave_wallet/browser",
       "//brave/components/brave_wallet/common",
     ]

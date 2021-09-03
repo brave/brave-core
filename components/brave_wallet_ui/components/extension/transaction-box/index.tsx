@@ -22,7 +22,7 @@ const TransactionDetailBox = (props: Props) => {
       {hasNoData ? (
         <CodeSnippet>
           <code>
-            <CodeSnippetText>No Data.</CodeSnippetText>
+            <CodeSnippetText>{locale.confirmTransactionNoData}</CodeSnippetText>
           </code>
         </CodeSnippet>
       ) : (

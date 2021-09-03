@@ -265,6 +265,7 @@ const locale = {
   confirmTransactionGasFee: 'Gas Fee',
   confrimTransactionBid: 'Bid',
   confirmTransactionAmountGas: 'Amount + Gas',
+  confirmTransactionNoData: 'No Data.',
 
   // Wallet Main Panel
   panelTitle: 'Crypto',

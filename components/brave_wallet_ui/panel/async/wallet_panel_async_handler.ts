@@ -9,7 +9,7 @@ import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import { TransactionStatusChanged } from '../../common/constants/action_types'
 import { WalletPanelState, PanelState, WalletState, TransactionStatus } from '../../constants/types'
-import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload, EthereumChainRequestPayload, PendingRequestCompletedPayload } from '../constants/action_types'
+import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload, EthereumChainRequestPayload } from '../constants/action_types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 

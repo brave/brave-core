@@ -67,20 +67,13 @@ export interface Props {
 function ConfirmTransactionPanel (props: Props) {
   const {
     accounts,
-    // selectedNetwork,
+    selectedNetwork,
     transactionInfo,
     visibleTokens,
     transactionSpotPrices,
     onConfirm,
     onReject
   } = props
-
-  // TODO: Remove this once selectedNetwork is return correct decimal's and symbol's
-  const selectedNetwork = {
-    symbol: 'ETH',
-    decimals: 18,
-    chainName: 'Ethereum'
-  }
 
   const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
 
@@ -92,79 +85,70 @@ function ConfirmTransactionPanel (props: Props) {
     return transactionSpotPrices.find((token) => token.fromAsset.toLowerCase() === symbol.toLowerCase())
   }
 
+  // Will remove this hardcoded value once we know
+  // where the site info will be coming from.
+  const siteURL = 'https://app.compound.finance'
+
+  const getTransactionPriceDisplayInfo = (
+    gasPrice: string,
+    network: EthereumChain,
+    networkPrice: string,
+    sendValue: string,
+    sendDecimals: number,
+    sendPrice: string
+  ) => {
+    const sendAmount = formatBalance(sendValue, sendDecimals)
+    const sendFiatAmount = formatFiatBalance(sendValue, sendDecimals, sendPrice)
+    const gasAmount = formatBalance(gasPrice, network.decimals)
+    const gasFiatAmount = formatFiatBalance(gasPrice, network.decimals, networkPrice)
+    const grandTotalFiatAmount = Number(sendFiatAmount) + Number(gasFiatAmount)
+    return {
+      sendAmount,
+      sendFiatAmount,
+      gasAmount,
+      gasFiatAmount,
+      grandTotalFiatAmount
+    }
+  }
+
   const transaction = React.useMemo(() => {
     const { txType, txArgs } = transactionInfo
     const { baseData } = transactionInfo.txData
     const { gasPrice, value, data, to } = baseData
-    const selectedNetworkPrice = findSpotPrice(selectedNetwork.symbol)?.price
-    if (txType === TransactionType.ETHSend) {
-      const sendAmount = formatBalance(value, selectedNetwork.decimals)
-      const sendFiatAmount = formatFiatBalance(value, selectedNetwork.decimals, selectedNetworkPrice ?? '')
-      const gasAmount = formatBalance(gasPrice, selectedNetwork.decimals)
-      const gasFiatAmount = formatFiatBalance(gasPrice, selectedNetwork.decimals, selectedNetworkPrice ?? '')
-      const grandTotalFiatAmount = Number(sendFiatAmount) + Number(gasFiatAmount)
+    const networkPrice = findSpotPrice(selectedNetwork.symbol)?.price ?? ''
+    const ERC20Token = findTokenInfo(to)
+    const ERC20TokenDecimals = ERC20Token?.decimals ?? 18
+    const ERC20TokenPrice = findSpotPrice(ERC20Token?.symbol ?? '')?.price ?? ''
+    const hasNoData = data.length === 0
+    if (txType === TransactionType.ERC20Transfer || txType === TransactionType.ERC20Approve) {
+      const priceInfo = getTransactionPriceDisplayInfo(
+        gasPrice,
+        selectedNetwork,
+        networkPrice,
+        txArgs[1],
+        ERC20TokenDecimals,
+        ERC20TokenPrice
+      )
       return {
-        sendAmount,
-        sendTo: to,
-        sendFiatAmount,
-        gasAmount,
-        gasFiatAmount,
-        grandTotalFiatAmount,
-        symbol: selectedNetwork.symbol,
-        hasNoData: data.length === 0
-      }
-    } else if (txType === TransactionType.ERC20Transfer) {
-      const ERC20Token = findTokenInfo(to)
-      const ERC20TokenPrice = findSpotPrice(ERC20Token?.symbol ?? '')?.price
-      const sendAmount = formatBalance(txArgs[1], ERC20Token?.decimals ?? 18)
-      const sendFiatAmount = formatFiatBalance(txArgs[1], ERC20Token?.decimals ?? 18, ERC20TokenPrice ?? '')
-      const gasAmount = formatBalance(gasPrice, selectedNetwork.decimals)
-      const gasFiatAmount = formatFiatBalance(gasPrice, selectedNetwork.decimals, selectedNetworkPrice ?? '')
-      const grandTotalFiatAmount = Number(sendFiatAmount) + Number(gasFiatAmount)
-      return {
-        sendAmount,
         sendTo: txArgs[0],
-        sendFiatAmount,
-        gasAmount,
-        gasFiatAmount,
-        grandTotalFiatAmount,
         symbol: ERC20Token?.symbol ?? '',
-        hasNoData: data.length === 0
-      }
-    } else if (txType === TransactionType.ERC20Approve) {
-      const ERC20Token = findTokenInfo(to)
-      const ERC20TokenPrice = findSpotPrice(ERC20Token?.symbol ?? '')?.price
-      const sendAmount = formatBalance(txArgs[1], ERC20Token?.decimals ?? 18)
-      const sendFiatAmount = formatFiatBalance(txArgs[1], ERC20Token?.decimals ?? 18, ERC20TokenPrice ?? '')
-      const gasAmount = formatBalance(gasPrice, selectedNetwork.decimals)
-      const gasFiatAmount = formatFiatBalance(gasPrice, selectedNetwork.decimals, selectedNetworkPrice ?? '')
-      const grandTotalFiatAmount = Number(sendFiatAmount) + Number(gasFiatAmount)
-      return {
-        sendAmount,
-        sendTo: txArgs[0],
-        sendFiatAmount,
-        gasAmount,
-        gasFiatAmount,
-        grandTotalFiatAmount,
-        symbol: ERC20Token?.symbol ?? '',
-        hasNoData: data.length === 0,
-        siteURL: 'https://app.compound.finance'
+        hasNoData,
+        ...priceInfo
       }
     } else {
-      const sendAmount = formatBalance(value, selectedNetwork.decimals)
-      const sendFiatAmount = formatFiatBalance(value, selectedNetwork.decimals, selectedNetworkPrice ?? '')
-      const gasAmount = formatBalance(gasPrice, selectedNetwork.decimals)
-      const gasFiatAmount = formatFiatBalance(gasPrice, selectedNetwork.decimals, selectedNetworkPrice ?? '')
-      const grandTotalFiatAmount = Number(sendFiatAmount) + Number(gasFiatAmount)
+      const priceInfo = getTransactionPriceDisplayInfo(
+        gasPrice,
+        selectedNetwork,
+        networkPrice,
+        value,
+        selectedNetwork.decimals,
+        networkPrice
+      )
       return {
-        sendAmount,
         sendTo: to,
-        sendFiatAmount,
-        gasAmount,
-        gasFiatAmount,
-        grandTotalFiatAmount,
         symbol: selectedNetwork.symbol,
-        hasNoData: data.length === 0
+        hasNoData,
+        ...priceInfo
       }
     }
   }, [transactionInfo, transactionSpotPrices])
@@ -198,8 +182,8 @@ function ConfirmTransactionPanel (props: Props) {
       </TopRow>
       {transactionInfo.txType === TransactionType.ERC20Approve ? (
         <>
-          <FavIcon src={`chrome://favicon/size/64@1x/${transaction.siteURL}`} />
-          <URLText>{transaction.siteURL}</URLText>
+          <FavIcon src={`chrome://favicon/size/64@1x/${siteURL}`} />
+          <URLText>{siteURL}</URLText>
           <PanelTitle>{locale.allowSpendTitle} {transaction.symbol}?</PanelTitle>
           {/* Will need to allow parameterized locales by introducing the "t" helper. For ex: {t(locale.allowSpendDescription, [spendPayload.erc20Token.symbol])}*/}
           <Description>{locale.allowSpendDescriptionFirstHalf}{transaction.symbol}{locale.allowSpendDescriptionSecondHalf}</Description>
@@ -215,7 +199,7 @@ function ConfirmTransactionPanel (props: Props) {
             <ArrowIcon />
             <AccountNameText>{reduceAddress(transaction.sendTo)}</AccountNameText>
           </FromToRow>
-          <TransactionTypeText>Send</TransactionTypeText>
+          <TransactionTypeText>{locale.send}</TransactionTypeText>
           <TransactionAmmountBig>{transaction.sendAmount} {transaction.symbol}</TransactionAmmountBig>
           <TransactionFiatAmountBig>${transaction.sendFiatAmount}</TransactionFiatAmountBig>
         </>
@@ -235,7 +219,7 @@ function ConfirmTransactionPanel (props: Props) {
       <MessageBox isDetails={selectedTab === 'details'} isApprove={transactionInfo.txType === 2}>
         {selectedTab === 'transaction' ? (
           <>
-            {transactionInfo.txType === TransactionType.ERC20Approve ? (
+            {transactionInfo.txType === TransactionType.ERC20Approve &&
               <>
                 <MessageBoxRow>
                   <TransactionTitle>{locale.allowSpendTransactionFee}</TransactionTitle>
@@ -248,7 +232,8 @@ function ConfirmTransactionPanel (props: Props) {
                   <TransactionText>${transaction.gasFiatAmount}</TransactionText>
                 </FiatRow>
               </>
-            ) : (
+            }
+            {transactionInfo.txType !== TransactionType.ERC20Approve &&
               <>
                 <SectionRow>
                   <TransactionTitle>{locale.confirmTransactionGasFee}</TransactionTitle>
@@ -268,7 +253,7 @@ function ConfirmTransactionPanel (props: Props) {
                   </SectionRightColumn>
                 </SectionRow>
               </>
-            )}
+            }
           </>
         ) : (
           <TransactionDetailBox
