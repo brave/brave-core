@@ -868,8 +868,8 @@
   <message name="IDS_SETTINGS_QUICK_ANSWERS_ENABLE_DESCRIPTION" desc="Sub label for the Quick Answers toggle.">
     With a right-click or long press, show related info for your text selection
   </message>
-  <message name="IDS_SETTINGS_QUICK_ANSWERS_ENABLE_DESCRIPTION_WITH_LINK" desc="Sub label for the Quick Answers toggle with link to the web content languages.">
-    Get definitions, translations, or unit conversions when you right-click or touch &amp; hold text. Customize translation by setting your preferred languages in <ph name="LINK_BEGIN">&lt;a target="_blank" href="#"&gt;</ph>Web content languages<ph name="LINK_END">&lt;/a&gt;</ph>.
+  <message name="IDS_SETTINGS_QUICK_ANSWERS_ENABLE_DESCRIPTION_WITH_LINK" desc="Sub label for the Quick Answers toggle with link to the website languages.">
+    Get definitions, translations, or unit conversions when you right-click or touch &amp; hold text. Customize translation languages in <ph name="LINK_BEGIN">&lt;a target="_blank" href="#"&gt;</ph>Website languages<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_QUICK_ANSWERS_DEFINITION_ENABLE" desc="Title for a toggle that controls the Quick Answers definiton feature.">
     Definition
@@ -1762,8 +1762,11 @@ Press an assigned switch to remove assignment
   <message name="IDS_SETTINGS_CROSTINI_CONTAINER_UPGRADE_MESSAGE" desc="Message shown when an upgrade to Debian 10 (codenamed Buster) is available.">
     An upgrade to Debian 10 (Buster) is available
   </message>
+  <message name="IDS_SETTINGS_CROSTINI_CONTAINER_UPGRADE_BULLSEYE_MESSAGE" desc="Message shown when an upgrade to Debian 11 (codenamed Bullseye) is available.">
+    An upgrade to Debian 11 (Bullseye) is available
+  </message>
   <message name="IDS_SETTINGS_CROSTINI_CONTAINER_UPGRADE_SUBTEXT" desc="The current version the user has.">
-    Current version is Debian 9 (Stretch)
+    Current version is <ph name="CURRENT_VERSION">$1<ex>Debian GNU/Linux 9 (stretch)</ex></ph>
   </message>
   <message name="IDS_SETTINGS_CROSTINI_CONTAINER_UPGRADE_BUTTON" desc="Label for the button that launches the upgrade to Debian 10 for Crostini.">
     Upgrade

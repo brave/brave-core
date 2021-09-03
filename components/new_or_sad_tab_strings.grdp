@@ -178,6 +178,9 @@
 
       <!-- Revamped Private New Tab Page strings -->
 
+      <message name="IDS_REVAMPED_INCOGNITO_NTP_TITLE" desc="Title of the Private new tab page." formatter_data="android_java">
+        Private
+      </message>
       <message name="IDS_REVAMPED_INCOGNITO_NTP_DOES_HEADER" desc="Header for the 'Private does' section that informs users about what happens while browsing Private: browsing activity, search history and information entered in forms are not saved locally." formatter_data="android_java">
         What Private does
       </message>

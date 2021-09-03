@@ -57,7 +57,7 @@
   <if expr="chromeos">
     </if>
 
-  <if expr="chromeos">
+  <if expr="chromeos or lacros">
     </if>
 
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_EXPLANATION2" desc="Part 2 of the explanation of the setting to enable or disable the Privacy Sandbox.">

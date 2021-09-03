@@ -64,6 +64,9 @@
       <message name="IDS_NEW_TAB_OTR_SUBTITLE_WITH_READING_LIST" desc="Subtitle of the Private new tab page, explaining to the user that the Private mode hides their browsing activity from other profiles using the same device. The second sentence clarifies that there are two important exceptions from this rule - downloaded files and added bookmarks will be persisted even after the Private session is closed." formatter_data="android_java">
         Now you can browse privately, and other profiles who use this device won’t see your activity. However, downloads, bookmarks and reading list items will be saved.
       </message>
+      <message name="IDS_REVAMPED_INCOGNITO_NTP_TITLE" desc="Title of the Private new tab page." formatter_data="android_java">
+        Private
+      </message>
       <message name="IDS_REVAMPED_INCOGNITO_NTP_DOES_HEADER" desc="Header for the 'Private does' section that informs users about what happens while browsing Private: browsing activity, search history and information entered in forms are not saved locally." formatter_data="android_java">
         What Private does
       </message>
