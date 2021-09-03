@@ -46,18 +46,9 @@ SpeedreaderComponent::SpeedreaderComponent(Delegate* delegate)
         cmd_line->GetSwitchValuePath(speedreader::kSpeedreaderWhitelistPath));
     VLOG(2) << "Speedreader whitelist from " << whitelist_path;
 
-    // Notify the `OnWhitelistFileReady` method synchronously.
-    OnWhitelistFileReady(whitelist_path, false /* error */);
-
-    // Watch the provided file for changes.
-    whitelist_path_watcher_ = std::make_unique<base::FilePathWatcher>();
-    if (!whitelist_path_watcher_->Watch(
-            whitelist_path, base::FilePathWatcher::Type::kNonRecursive,
-            base::BindRepeating(&SpeedreaderComponent::OnWhitelistFileReady,
-                                weak_factory_.GetWeakPtr()))) {
-      LOG(ERROR) << "Speedreader could not watch filesystem for changes"
-                 << " at path " << whitelist_path.LossyDisplayName();
-    }
+    whitelist_path_ = whitelist_path;
+    for (Observer& observer : observers_)
+      observer.OnWhitelistReady(whitelist_path_);
   }
 
   if (cmd_line->HasSwitch(speedreader::kSpeedreaderStylesheet)) {
@@ -66,17 +57,9 @@ SpeedreaderComponent::SpeedreaderComponent(Delegate* delegate)
         cmd_line->GetSwitchValuePath(speedreader::kSpeedreaderStylesheet));
     VLOG(2) << "Speedreader stylesheet from " << stylesheet_path;
 
-    // Notify the `OnStylesheetReady` method synchronously.
-    OnStylesheetFileReady(stylesheet_path, false /* error */);
-
-    stylesheet_path_watcher_ = std::make_unique<base::FilePathWatcher>();
-    if (!stylesheet_path_watcher_->Watch(
-            stylesheet_path, base::FilePathWatcher::Type::kNonRecursive,
-            base::BindRepeating(&SpeedreaderComponent::OnStylesheetFileReady,
-                                weak_factory_.GetWeakPtr()))) {
-      LOG(ERROR) << "Speedreader could not watch filesystem for changes"
-                 << " at path " << stylesheet_path.LossyDisplayName();
-    }
+    stylesheet_path_ = stylesheet_path;
+    for (Observer& observer : observers_)
+      observer.OnStylesheetReady(stylesheet_path_);
   }
 
   // Register component
@@ -91,36 +74,6 @@ void SpeedreaderComponent::AddObserver(Observer* observer) {
 
 void SpeedreaderComponent::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
-}
-
-void SpeedreaderComponent::OnStylesheetFileReady(const base::FilePath& path,
-                                                 bool error) {
-  if (error) {
-    LOG(ERROR) << __func__
-               << "Speedreader got an error watching for file changes."
-               << " Stopping watching.";
-    stylesheet_path_watcher_.reset();
-    return;
-  }
-
-  stylesheet_path_ = path;
-  for (Observer& observer : observers_)
-    observer.OnStylesheetReady(stylesheet_path_);
-}
-
-void SpeedreaderComponent::OnWhitelistFileReady(const base::FilePath& path,
-                                                bool error) {
-  if (error) {
-    LOG(ERROR) << __func__
-               << "Speedreader got an error watching for file changes."
-               << " Stopping watching.";
-    whitelist_path_watcher_.reset();
-    return;
-  }
-
-  whitelist_path_ = path;
-  for (Observer& observer : observers_)
-    observer.OnWhitelistReady(whitelist_path_);
 }
 
 void SpeedreaderComponent::OnComponentReady(const std::string& component_id,
