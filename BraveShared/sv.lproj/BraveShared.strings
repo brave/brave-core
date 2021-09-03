@@ -293,7 +293,7 @@
 "defaultBrowserCallout.introTertiaryText" = "Öppna Inställningar, tryck på Standardwebbläsare och välj Brave.";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Optimerad för iOS 14. Gör Brave till din standardwebbläsare idag.";
+"defaultBrowserCallout.notificationBody" = "Optimerad för iOS %@. Gör Brave till din standardwebbläsare idag.";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Webbläsaren Brave";

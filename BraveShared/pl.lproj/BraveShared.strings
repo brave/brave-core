@@ -293,7 +293,7 @@
 "defaultBrowserCallout.introTertiaryText" = "Otwórz „Ustawienia”, dotknij „Domyślna aplikacja przeglądarki” i wybierz „Brave”.";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Zoptymalizowana pod kątem iOS 14. Już dziś ustaw Brave jako domyślną przeglądarkę.";
+"defaultBrowserCallout.notificationBody" = "Zoptymalizowana pod kątem iOS %@. Już dziś ustaw Brave jako domyślną przeglądarkę.";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Przeglądarka Brave";

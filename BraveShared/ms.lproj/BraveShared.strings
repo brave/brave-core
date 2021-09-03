@@ -293,7 +293,7 @@
 "defaultBrowserCallout.introTertiaryText" = "Buka Tetapan, ketik Aplikasi Penyemak Imbas Lalai, dan pilih Brave.  ";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Dioptimumkan untuk iOS 14. Jadikan Brave sebagai penyemak imbas lalai anda hari ini.  ";
+"defaultBrowserCallout.notificationBody" = "Dioptimumkan untuk iOS %@. Jadikan Brave sebagai penyemak imbas lalai anda hari ini.  ";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Penyemk Imbas Web Brave";

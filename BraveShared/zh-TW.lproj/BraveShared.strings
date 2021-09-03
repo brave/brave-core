@@ -293,7 +293,7 @@
 "defaultBrowserCallout.introTertiaryText" = "開啟「設定」，點選「預設瀏覽器應用程序」，然後選取「Brave」。";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "已針對 iOS 14 最佳化。立即將 Brave 設為預設瀏覽器。";
+"defaultBrowserCallout.notificationBody" = "已針對 iOS %@ 最佳化。立即將 Brave 設為預設瀏覽器。";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Brave 網頁瀏覽器";

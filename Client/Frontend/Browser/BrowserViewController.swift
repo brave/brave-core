@@ -766,7 +766,7 @@ class BrowserViewController: UIViewController {
                 
                 let content = UNMutableNotificationContent().then {
                     $0.title = Strings.DefaultBrowserCallout.notificationTitle
-                    $0.body = Strings.DefaultBrowserCallout.notificationBody
+                    $0.body = String(format: Strings.DefaultBrowserCallout.notificationBody, String(ProcessInfo().operatingSystemVersion.majorVersion))
                 }
                 
                 let timeToShow = AppConstants.buildChannel.isPublic ? 2.hours : 2.minutes

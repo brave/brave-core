@@ -293,7 +293,7 @@
 "defaultBrowserCallout.introTertiaryText" = "설정을 열고 기본 브라우저 앱을 탭한 다음 Brave를 선택하세요.";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "iOS 14에 최적. Brave를 기본 브라우저로 설정하세요.";
+"defaultBrowserCallout.notificationBody" = "iOS %@에 최적. Brave를 기본 브라우저로 설정하세요.";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Brave 웹브라우저";
