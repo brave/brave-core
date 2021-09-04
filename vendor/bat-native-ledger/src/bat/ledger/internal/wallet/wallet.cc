@@ -128,14 +128,23 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
                               ledger::ResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
     if (const auto uphold_wallet = ledger_->uphold()->GetWallet()) {
-      if (uphold_wallet->status != type::WalletStatus::PENDING &&
-          uphold_wallet->status != type::WalletStatus::VERIFIED) {
-        BLOG(0, "Wallet status should have been either PENDING or VERIFIED!");
-      } else {
-        DCHECK(!uphold_wallet->token.empty());
-        DCHECK(uphold_wallet->status == type::WalletStatus::PENDING
-                   ? uphold_wallet->address.empty()
-                   : !uphold_wallet->address.empty());
+      switch (uphold_wallet->status) {
+        case type::WalletStatus::DISCONNECTED_VERIFIED:
+          DCHECK(uphold_wallet->token.empty());
+          DCHECK(uphold_wallet->address.empty());
+          break;
+        case type::WalletStatus::PENDING:
+          DCHECK(!uphold_wallet->token.empty());
+          DCHECK(uphold_wallet->address.empty());
+          break;
+        case type::WalletStatus::VERIFIED:
+          DCHECK(!uphold_wallet->token.empty());
+          DCHECK(!uphold_wallet->address.empty());
+          break;
+        default:
+          BLOG(0,
+               "Wallet status should have been either DISCONNECTED_VERIFIED, "
+               "PENDING, or VERIFIED!");
       }
     } else {
       BLOG(0, "Uphold wallet is null!");
@@ -151,7 +160,9 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
               return callback(type::Result::LEDGER_ERROR);
             }
 
-            if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
+            if (uphold_wallet->status ==
+                    type::WalletStatus::DISCONNECTED_VERIFIED ||
+                uphold_wallet->status == type::WalletStatus::VERIFIED) {
               BLOG(0, "Wallet unlinking failed!");
               return callback(result);
             }

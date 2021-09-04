@@ -186,12 +186,10 @@ void Uphold::DisconnectWallet(const std::string& notification) {
   }
 
   BLOG(1, "Disconnecting wallet");
-  if (!wallet->address.empty()) {
-    ledger_->database()->SaveEventLog(
-        log::kWalletDisconnected,
-        static_cast<std::string>(constant::kWalletUphold) + "/" +
-            wallet->address.substr(0, 5));
-  }
+  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
+                                    std::string(constant::kWalletUphold) +
+                                        (!wallet->address.empty() ? "/" : "") +
+                                        wallet->address.substr(0, 5));
 
   const bool manual = notification.empty();
 

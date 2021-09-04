@@ -404,6 +404,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               position: 'before'
             }}
             {...buttonProps}
+            onClick={this.toggleVerificationDetails}
             id={'disconnected-wallet-button'}
           />
         )
@@ -424,6 +425,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
   getVerificationDetails = () => {
     const { goToExternalWallet, greetings, onDisconnectClick, onVerifyClick, walletState, walletType, walletProvider } = this.props
     const notVerified = walletState === 'connected' || walletState === 'pending'
+    const disconnected = walletState === 'disconnected_unverified' || walletState === 'disconnected_verified'
 
     return (
       <WalletPopup
@@ -444,8 +446,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               : null
             }
             <li>
-              <StyledLink onClick={this.onDetailsLinkClicked.bind(this, goToExternalWallet)} target={'_blank'}>
-                {getLocale('walletGoToProvider').replace('$1', walletProvider)}
+              <StyledLink onClick={this.onDetailsLinkClicked.bind(this, disconnected ? onVerifyClick : goToExternalWallet)} target={'_blank'}>
+                {getLocale(disconnected ? 'walletLogInWithProvider' : 'walletGoToProvider').replace('$1', walletProvider)}
               </StyledLink>
             </li>
             <li>
