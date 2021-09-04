@@ -1,6 +1,7 @@
 /vendor/*
 !/vendor/bat-native-ledger
 !/vendor/bat-native-ads
+!/vendor/brave_base
 .DS_Store
 .tags*
 /.idea/
