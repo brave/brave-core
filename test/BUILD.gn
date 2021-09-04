@@ -150,6 +150,7 @@ test("brave_unit_tests") {
   defines = brave_service_key_defines
 
   deps = [
+    ":crypto_unittests",
     ":test_support",
     "//brave/app:command_ids",
     "//brave/app/theme:brave_theme_resources_grit",
@@ -486,6 +487,18 @@ test("brave_unit_tests") {
   if (enable_ipfs) {
     deps += [ "//brave/browser/ipfs/test:unittests" ]
   }
+}
+
+source_set("crypto_unittests") {
+  testonly = true
+
+  sources = [ "//crypto/symmetric_key_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//crypto",
+    "//testing/gtest",
+  ]
 }
 
 if (!is_android && !is_ios) {
