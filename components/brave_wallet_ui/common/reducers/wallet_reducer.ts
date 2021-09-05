@@ -17,7 +17,8 @@ import {
   PortfolioTokenHistoryAndInfo,
   GetPriceHistoryReturnInfo,
   AssetPriceTimeframe,
-  EthereumChain
+  EthereumChain,
+  kMainnetChainId
 } from '../../constants/types'
 import { convertMojoTimeToJS } from '../../utils/mojo-time'
 import * as WalletActions from '../actions/wallet_actions'
@@ -34,14 +35,14 @@ const defaultState: WalletState = {
   hasIncorrectPassword: false,
   selectedAccount: {} as WalletAccountType,
   selectedNetwork: {
-    chainId: '0x1',
+    chainId: kMainnetChainId,
     chainName: 'Ethereum Mainnet',
     rpcUrls: [],
     blockExplorerUrls: [],
     iconUrls: [],
-    symbol: '',
-    symbolName: '',
-    decimals: 0
+    symbol: 'ETH',
+    symbolName: 'Ethereum',
+    decimals: 18
   } as EthereumChain,
   accounts: [],
   userVisibleTokens: [],

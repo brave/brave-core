@@ -882,7 +882,7 @@ TEST(BraveWalletUtilsUnitTest, GetInfuraSubdomainForKnownChainId) {
   GetAllKnownChains(&known_chains);
   for (const auto& chain : known_chains) {
     auto subdomain = GetInfuraSubdomainForKnownChainId(chain->chain_id);
-    bool expected = (chain->chain_id == "0x539");
+    bool expected = (chain->chain_id == brave_wallet::mojom::kLocalhostChainId);
     ASSERT_EQ(subdomain.empty(), expected);
   }
 }

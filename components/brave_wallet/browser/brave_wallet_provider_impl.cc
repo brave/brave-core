@@ -112,7 +112,7 @@ void BraveWalletProviderImpl::OnAddEthereumChain(const std::string& chain_id,
   delegate_->ShowBubble();
 }
 
-void BraveWalletProviderImpl::OnPendingRequestCompleted(
+void BraveWalletProviderImpl::OnAddEthereumChainRequestCompleted(
     const std::string& chain_id,
     const std::string& error) {
   if (!chain_callbacks_.contains(chain_id))

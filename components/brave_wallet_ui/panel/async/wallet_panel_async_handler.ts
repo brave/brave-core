@@ -8,7 +8,7 @@ import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import { WalletPanelState, PanelState } from '../../constants/types'
-import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload, PendingRequestCompletedPayload } from '../constants/action_types'
+import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload, EthereumChainRequestPayload } from '../constants/action_types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -106,10 +106,10 @@ handler.on(PanelActions.addEthereumChain.getType(), async (store, payload: Ether
   apiProxy.showUI()
 })
 
-handler.on(PanelActions.pendingRequestCompleted.getType(), async (store: any, payload: PendingRequestCompletedPayload) => {
+handler.on(PanelActions.addEthereumChainRequestCompleted.getType(), async (store: any, payload: EthereumChainRequestPayload) => {
   const apiProxy = await getAPIProxy()
   const ethJsonRpcController = apiProxy.ethJsonRpcController
-  ethJsonRpcController.pendingRequestCompleted(payload.chainId, payload.approved)
+  ethJsonRpcController.addEthereumChainRequestCompleted(payload.chainId, payload.approved)
   const chain = await getPendingChainRequest()
   if (chain) {
     store.dispatch(PanelActions.addEthereumChain({ chain }))

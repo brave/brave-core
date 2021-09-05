@@ -1,18 +1,24 @@
-import { AccountAssetOptionType, UserAccountType } from '../constants/types'
+import { AccountAssetOptionType,
+         UserAccountType,
+         kMainnetChainId,
+         kRopstenChainId,
+         kKovanChainId,
+         kRinkebyChainId,
+         kGoerliChainId } from '../constants/types'
 
 const wyreID = 'AC_MGNVBGHPA9T'
 
 export function BuyAssetUrl (networkChainId: string, asset: AccountAssetOptionType, account: UserAccountType, buyAmount: string) {
   switch (networkChainId) {
-    case '0x1':
+    case kMainnetChainId:
       return `https://pay.sendwyre.com/?dest=ethereum:${account.address}&destCurrency=${asset.asset.symbol}&amount=${buyAmount}&accountId=${wyreID}&paymentMethod=debit-card`
-    case '0x3':
+    case kRopstenChainId:
       return 'https://faucet.metamask.io/'
-    case '0x2a':
+    case kKovanChainId:
       return 'https://github.com/kovan-testnet/faucet'
-    case '0x4':
+    case kRinkebyChainId:
       return 'https://www.rinkeby.io/'
-    case '0x5':
+    case kGoerliChainId:
       return 'https://goerli-faucet.slock.it/'
     default:
       return ''

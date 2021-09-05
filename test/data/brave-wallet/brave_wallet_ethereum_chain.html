@@ -3,9 +3,11 @@
 <script>
   var request_finished = false;
   var chain_added_result = false;
-  console.log('page loaded!')
+  const url = new URL(window.location.href)
+  const id = url.searchParams.get('id');
+
   const data = [{
-                     chainId: '0x38',
+                     chainId: id ? id : '0x38',
                      chainName: 'Binance1 Smart Chain',
                      nativeCurrency: {
                          name: 'BNB',

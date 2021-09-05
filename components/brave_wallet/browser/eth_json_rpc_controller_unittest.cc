@@ -199,7 +199,7 @@ TEST_F(EthJsonRpcControllerUnitTest, GetAllNetworks) {
 
 TEST_F(EthJsonRpcControllerUnitTest, ResolveENSDomain) {
   EthJsonRpcController controller(shared_url_loader_factory(), prefs());
-  controller.SetNetwork("0x539");
+  controller.SetNetwork(brave_wallet::mojom::kLocalhostChainId);
   SetRegistrarResponse();
   base::RunLoop run;
   controller.EnsProxyReaderGetResolverAddress(

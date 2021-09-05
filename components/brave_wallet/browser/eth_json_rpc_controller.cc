@@ -55,10 +55,7 @@ EthJsonRpcController::EthJsonRpcController(
     : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       prefs_(prefs),
       weak_ptr_factory_(this) {
-  std::vector<mojom::EthereumChainPtr> networks;
-  GetAllKnownChains(&networks);
-  DCHECK(!networks.empty());
-  SetNetwork(networks.front()->chain_id);
+  SetNetwork(brave_wallet::mojom::kMainnetChainId);
 }
 
 EthJsonRpcController::~EthJsonRpcController() {}
@@ -92,7 +89,7 @@ void EthJsonRpcController::FirePendingRequestCompleted(
     const std::string& chain_id,
     const std::string& error) {
   for (const auto& observer : observers_) {
-    observer->OnPendingRequestCompleted(chain_id, error);
+    observer->OnAddEthereumChainRequestCompleted(chain_id, error);
   }
 }
 
@@ -135,8 +132,9 @@ void EthJsonRpcController::AddEthereumChain(mojom::EthereumChainPtr chain,
   std::move(callback).Run(chain_id, true);
 }
 
-void EthJsonRpcController::PendingRequestCompleted(const std::string& chain_id,
-                                                   bool approved) {
+void EthJsonRpcController::AddEthereumChainRequestCompleted(
+    const std::string& chain_id,
+    bool approved) {
   auto* request = FindChainRequest(chain_id);
   if (!request)
     return;
@@ -145,9 +143,8 @@ void EthJsonRpcController::PendingRequestCompleted(const std::string& chain_id,
     base::ListValue* list = update.Get();
     absl::optional<base::Value> value =
         brave_wallet::EthereumChainToValue(request->Clone());
-    if (!value)
-      return;
-    list->Append(std::move(value).value());
+    if (value)
+      list->Append(std::move(value).value());
   }
   RemoveChainIdRequest(chain_id);
   std::string error =

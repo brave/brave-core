@@ -59,8 +59,8 @@ class BraveWalletProviderImpl final
 
   // mojom::EthJsonRpcControllerObserver
   void ChainChangedEvent(const std::string& chain_id) override;
-  void OnPendingRequestCompleted(const std::string& chain_id,
-                                 const std::string& error) override;
+  void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
+                                          const std::string& error) override;
 
  private:
   void OnChainApprovalResult(const std::string& chain_id,

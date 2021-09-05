@@ -72,8 +72,8 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
 
   // mojom::EthJsonRpcControllerObserver
   void ChainChangedEvent(const std::string& chain_id) override;
-  void OnPendingRequestCompleted(const std::string& chain_id,
-                                 const std::string& error) override;
+  void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
+                                          const std::string& error) override;
 
   void SetChainCallbackForTesting(base::OnceClosure callback) {
     chain_callback_for_testing_ = std::move(callback);

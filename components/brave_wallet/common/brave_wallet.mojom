@@ -222,7 +222,7 @@ interface SwapController {
 
 interface EthJsonRpcControllerObserver {
   ChainChangedEvent(string chain_id);
-  OnPendingRequestCompleted(string chain_id, string error);
+  OnAddEthereumChainRequestCompleted(string chain_id, string error);
 };
 
 struct TxData {
@@ -241,6 +241,14 @@ struct TxData1559 {
   string max_fee_per_gas;
 };
 
+const string kMainnetChainId = "0x1";
+const string kRinkebyChainId = "0x4";
+const string kRopstenChainId = "0x3";
+const string kGoerliChainId = "0x5";
+const string kKovanChainId = "0x2a";
+const string kLocalhostChainId = "0x539";
+
+
 struct EthereumChain {
   string chain_id;
   string chain_name;
@@ -254,7 +262,7 @@ struct EthereumChain {
 
 interface EthJsonRpcController {
   AddEthereumChain(EthereumChain chain, string origin) => (string chain_id, bool accepted);
-  PendingRequestCompleted(string chain_id, bool approved);
+  AddEthereumChainRequestCompleted(string chain_id, bool approved);
   GetPendingChainRequests() => (array<EthereumChain> networks);
   SetNetwork(string chain_id);
   GetAllNetworks() => (array<EthereumChain> networks);

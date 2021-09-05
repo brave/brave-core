@@ -103,8 +103,8 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
     https_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(https_server_->Start());
     auto rpc_controller = GetEthJsonRpcController();
-    rpc_controller->SetCustomNetworkForTesting("0x539",
-                                               https_server_->base_url());
+    rpc_controller->SetCustomNetworkForTesting(
+        brave_wallet::mojom::kLocalhostChainId, https_server_->base_url());
   }
 
   void OnResponse(const int status,

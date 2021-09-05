@@ -467,7 +467,7 @@ export interface EthTxController {
 
 export interface EthJsonRpcController {
   getPendingChainRequests: () => Promise<GetAllNetworksList>
-  pendingRequestCompleted: (chainId: string, approved: boolean) => Promise<void>
+  addEthereumChainRequestCompleted: (chainId: string, approved: boolean) => Promise<void>
   getNetwork: () => Promise<GetNetworkReturnInfo>
   setNetwork: (netowrk: string) => Promise<void>
   getAllNetworks: () => Promise<GetAllNetworksList>
@@ -569,6 +569,17 @@ export type AllowSpendReturnPayload = {
   transactionData: TransactionDataType
 }
 
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
+export const kMainnetChainId = '0x1'
+export const kRinkebyChainId = '0x4'
+export const kRopstenChainId = '0x3'
+export const kGoerliChainId = '0x5'
+export const kKovanChainId = '0x2a'
+export const kLocalhostChainId = '0x539'
+
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
 export type EthereumChain = {
   chainId: string,
   chainName: string,

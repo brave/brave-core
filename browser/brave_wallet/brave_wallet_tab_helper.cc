@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <utility>
 
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
@@ -25,13 +26,18 @@ namespace brave_wallet {
 BraveWalletTabHelper::BraveWalletTabHelper(content::WebContents* web_contents)
     : web_contents_(web_contents) {}
 
-BraveWalletTabHelper::~BraveWalletTabHelper() = default;
+BraveWalletTabHelper::~BraveWalletTabHelper() {
+  if (IsShowingBubble())
+    CloseBubble();
+}
 
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
 void BraveWalletTabHelper::ShowBubble() {
   wallet_bubble_manager_delegate_ =
       WalletBubbleManagerDelegate::Create(web_contents_, GetBubbleURL());
   wallet_bubble_manager_delegate_->ShowBubble();
+  if (show_bubble_callback_for_testing_)
+    std::move(show_bubble_callback_for_testing_).Run();
 }
 
 void BraveWalletTabHelper::CloseBubble() {

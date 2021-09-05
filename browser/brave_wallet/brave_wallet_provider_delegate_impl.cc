@@ -82,10 +82,10 @@ std::string BraveWalletProviderDelegateImpl::GetOrigin() const {
 }
 
 void BraveWalletProviderDelegateImpl::ShowBubble() {
-  auto* tab_heper =
+  auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (tab_heper)
-    tab_heper->ShowBubble();
+  if (tab_helper)
+    tab_helper->ShowBubble();
 }
 
 void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(

@@ -16,7 +16,7 @@ export type ShowConnectToSitePayload = {
   origin: string
 }
 
-export type PendingRequestCompletedPayload = {
+export type EthereumChainRequestPayload = {
   chainId: string,
   approved: boolean
 }

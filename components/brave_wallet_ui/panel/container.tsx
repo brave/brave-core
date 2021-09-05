@@ -301,11 +301,11 @@ function Container (props: Props) {
   }
 
   const onApproveAddNetwork = () => {
-    props.walletPanelActions.pendingRequestCompleted({ chainId: networkPayload.chainId, approved: true })
+    props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: networkPayload.chainId, approved: true })
   }
 
   const onCancelAddNetwork = () => {
-    props.walletPanelActions.pendingRequestCompleted({ chainId: networkPayload.chainId, approved: false })
+    props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: networkPayload.chainId, approved: false })
   }
 
   const onNetworkLearnMore = () => {

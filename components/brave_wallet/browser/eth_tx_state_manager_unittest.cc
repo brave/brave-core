@@ -334,7 +334,7 @@ TEST_F(EthTxStateManagerUnitTest, SwitchNetwork) {
   EXPECT_EQ(tx_state_manager.GetTx("001"), nullptr);
   tx_state_manager.AddOrUpdateTx(meta);
 
-  rpc_controller_->SetNetwork("0x539");
+  rpc_controller_->SetNetwork(brave_wallet::mojom::kLocalhostChainId);
   // Wait for network info
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(tx_state_manager.GetTx("001"), nullptr);

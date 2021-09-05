@@ -68,7 +68,7 @@ bool GetUseStagingInfuraEndpoint() {
 
 // Precompiled networks available in native wallet.
 const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
-    {"0x1",
+    {brave_wallet::mojom::kMainnetChainId,
      "Ethereum Mainnet",
      {"https://etherscan.io"},
      {},
@@ -76,7 +76,7 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      "ETH",
      "Ethereum",
      18},
-    {"0x4",
+    {brave_wallet::mojom::kRinkebyChainId,
      "Rinkeby Test Network",
      {"https://rinkeby.etherscan.io"},
      {},
@@ -84,7 +84,7 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      "ETH",
      "Ethereum",
      18},
-    {"0x3",
+    {brave_wallet::mojom::kRopstenChainId,
      "Ropsten Test Network",
      {"https://ropsten.etherscan.io"},
      {},
@@ -92,7 +92,7 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      "ETH",
      "Ethereum",
      18},
-    {"0x5",
+    {brave_wallet::mojom::kGoerliChainId,
      "Goerli Test Network",
      {"https://goerli.etherscan.io"},
      {},
@@ -100,7 +100,7 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      "ETH",
      "Ethereum",
      18},
-    {"0x2a",
+    {brave_wallet::mojom::kKovanChainId,
      "Kovan Test Network",
      {"https://kovan.etherscan.io"},
      {},
@@ -108,7 +108,7 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      "ETH",
      "Ethereum",
      18},
-    {"0x539",
+    {brave_wallet::mojom::kLocalhostChainId,
      "Localhost",
      {"http://localhost:8545/"},
      {},
@@ -118,11 +118,11 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      18}};
 
 const base::flat_map<std::string, std::string> kInfuraSubdomains = {
-    {"0x1", "mainnet"},
-    {"0x4", "rinkeby"},
-    {"0x3", "ropsten"},
-    {"0x5", "goerli"},
-    {"0x2a", "kovan"}};
+    {brave_wallet::mojom::kMainnetChainId, "mainnet"},
+    {brave_wallet::mojom::kRinkebyChainId, "rinkeby"},
+    {brave_wallet::mojom::kRopstenChainId, "ropsten"},
+    {brave_wallet::mojom::kGoerliChainId, "goerli"},
+    {brave_wallet::mojom::kKovanChainId, "kovan"}};
 
 std::string GetInfuraURLForKnownChainId(const std::string& chain_id) {
   auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
