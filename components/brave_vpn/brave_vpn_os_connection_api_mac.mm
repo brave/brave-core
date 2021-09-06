@@ -54,7 +54,7 @@ OSStatus RemoveKeychainItemForAccount() {
   return result;
 }
 
-OSStatus StorePassword(const NSString* password, bool overwrite) {
+OSStatus StorePassword(const NSString* password) {
   if (password == nil || [password length] == 0) {
     LOG(ERROR) << "Error: password is empty";
     return errSecParam;
@@ -70,15 +70,8 @@ OSStatus StorePassword(const NSString* password, bool overwrite) {
     (__bridge id)kSecAttrAccount : kBraveVPNKey,
     (__bridge id)kSecValueData : password_data,
   };
-
   OSStatus status = SecItemAdd((__bridge CFDictionaryRef)sec_item, &result);
   if (status == errSecDuplicateItem) {
-    if (!overwrite) {
-      // overwrite could be true when update vpn connection.
-      VLOG(2) << "Treat success if there is duplicated one";
-      return errSecSuccess;
-    }
-
     VLOG(2) << "There is duplicated key in keychain. Update it.";
     NSDictionary* query = @{
       (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
@@ -160,8 +153,7 @@ void BraveVPNOSConnectionAPIMac::CreateVPNConnection(
     const BraveVPNConnectionInfo& info) {
   info_ = info;
 
-  if (StorePassword(base::SysUTF8ToNSString(info_.password()), false) !=
-      errSecSuccess)
+  if (StorePassword(base::SysUTF8ToNSString(info_.password())) != errSecSuccess)
     return;
 
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
