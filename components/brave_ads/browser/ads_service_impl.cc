@@ -262,28 +262,6 @@ bool AdsServiceImpl::IsSupportedLocale() const {
   return ads::IsSupportedLocale(locale);
 }
 
-bool AdsServiceImpl::IsNewlySupportedLocale() {
-  if (!IsSupportedLocale()) {
-    return false;
-  }
-
-  const int schema_version =
-      GetIntegerPref(prefs::kSupportedCountryCodesSchemaVersion);
-  if (schema_version != prefs::kSupportedCountryCodesSchemaVersionNumber) {
-    SetIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion,
-                   schema_version);
-
-    SetIntegerPref(prefs::kSupportedCountryCodesSchemaVersion,
-                   prefs::kSupportedCountryCodesSchemaVersionNumber);
-  }
-
-  const int last_schema_version =
-      GetIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion);
-
-  const std::string locale = GetLocale();
-  return ads::IsNewlySupportedLocale(locale, last_schema_version);
-}
-
 void AdsServiceImpl::SetEnabled(const bool is_enabled) {
   SetBooleanPref(ads::prefs::kEnabled, is_enabled);
 }

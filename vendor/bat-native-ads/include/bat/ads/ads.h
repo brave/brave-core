@@ -59,10 +59,6 @@ extern const char g_catalog_schema_resource_id[];
 // Returns true if the locale is supported otherwise returns false
 bool IsSupportedLocale(const std::string& locale);
 
-// Returns true if the locale is newly supported otherwise returns false
-bool IsNewlySupportedLocale(const std::string& locale,
-                            const int last_schema_version);
-
 class ADS_EXPORT Ads {
  public:
   Ads() = default;

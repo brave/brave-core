@@ -163,7 +163,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/ads_serve_server_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/ads_server_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/confirmations_server_util_unittest.cc",
-    "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/rewards_server_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/via_header_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/settings/settings_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/string_util_unittest.cc",

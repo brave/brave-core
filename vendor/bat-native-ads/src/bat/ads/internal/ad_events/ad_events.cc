@@ -89,11 +89,6 @@ void RecordAdEvent(const AdEventInfo& ad_event) {
 
 std::deque<uint64_t> GetAdEvents(const AdType& ad_type,
                                  const ConfirmationType& confirmation_type) {
-  const std::string ad_type_as_string = std::string(ad_type);
-
-  const std::string confirmation_type_as_string =
-      std::string(confirmation_type);
-
   const std::vector<uint64_t> ad_events =
       AdsClientHelper::Get()->GetAdEvents(ad_type, confirmation_type);
 

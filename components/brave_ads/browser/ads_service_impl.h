@@ -95,7 +95,6 @@ class AdsServiceImpl : public AdsService,
   AdsServiceImpl& operator=(const AdsServiceImpl&) = delete;
 
   bool IsSupportedLocale() const override;
-  bool IsNewlySupportedLocale() override;
 
   bool IsEnabled() const override;
   void SetEnabled(const bool is_enabled) override;

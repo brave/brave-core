@@ -198,12 +198,6 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
   return ads::IsSupportedLocale(base::SysNSStringToUTF8(locale));
 }
 
-+ (BOOL)isNewlySupportedLocale:(NSString*)locale {
-  // TODO(khickinson): Add support for last schema version, however for the MVP
-  // we can safely pass 0 as all locales are newly supported
-  return ads::IsNewlySupportedLocale(base::SysNSStringToUTF8(locale), 0);
-}
-
 + (BOOL)isCurrentLocaleSupported {
   return [self isSupportedLocale:[self currentLocaleCode]];
 }
