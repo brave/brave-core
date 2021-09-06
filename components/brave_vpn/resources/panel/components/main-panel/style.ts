@@ -28,7 +28,29 @@ export const PanelTitle = styled.h1`
   margin: 0 13px 0 0;
 `
 
-export const RegionSelector = styled.button`
+export const ToggleBox = styled.div`
+  margin-bottom: 15px;
+`
+
+export const StatusIndicatorBox = styled.div`
+  margin-bottom: 24px;
+`
+
+export const SettingsButton = styled.button`
+  border: 0;
+  background: transparent;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  svg>path {
+    fill: ${(p) => p.theme.color.text02};
+  }
+`
+
+export const RegionSelectorButton = styled.button`
   --region-label-color: ${(p) => p.theme.color.text01};
   --svg-color: ${(p) => p.theme.color.text01};
   --border-color: transparent;
@@ -42,6 +64,11 @@ export const RegionSelector = styled.button`
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);
   background-color: ${(p) => p.theme.color.background02};
   padding: 0 16px;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
 
   svg>path {
     fill: var(--svg-color);
@@ -64,26 +91,4 @@ export const RegionLabel = styled.span`
   line-height: 20px;
   color: var(--region-label-color);
   letter-spacing: 0.04em;
-`
-
-export const ToggleBox = styled.div`
-  margin-bottom: 15px;
-`
-
-export const StatusIndicatorBox = styled.div`
-  margin-bottom: 24px;
-`
-
-export const SettingsButton = styled.button`
-  border: 0;
-  background: transparent;
-
-  svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  svg>path {
-    fill: ${(p) => p.theme.color.text02};
-  }
 `

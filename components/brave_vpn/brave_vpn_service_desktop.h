@@ -43,9 +43,6 @@ class BraveVpnServiceDesktop
   BraveVpnServiceDesktop(const BraveVpnServiceDesktop&) = delete;
   BraveVpnServiceDesktop& operator=(const BraveVpnServiceDesktop&) = delete;
 
-  void Connect();
-  void Disconnect();
-  void CreateVPNConnection();
   void RemoveVPNConnnection();
 
   void AddObserver(Observer* observer);
@@ -59,6 +56,9 @@ class BraveVpnServiceDesktop
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
   // mojom::vpn::ServiceHandler
   void GetIsConnected(GetIsConnectedCallback callback) override;
+  void Connect() override;
+  void Disconnect() override;
+  void CreateVPNConnection() override;
 
  private:
   friend class BraveAppMenuBrowserTest;

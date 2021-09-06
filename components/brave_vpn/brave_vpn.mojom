@@ -32,6 +32,9 @@ interface ServiceObserver {
 interface ServiceHandler {
   GetIsConnected() => (bool is_connected);
   AddObserver(pending_remote<ServiceObserver> observer);
+  CreateVPNConnection();
+  Connect();
+  Disconnect();
 };
 
 // WebUI-side handler for requests from the browser.

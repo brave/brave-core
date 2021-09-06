@@ -2,10 +2,18 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
-
 export default class APIProxy {
   static getInstance: () => APIProxy
   showUI: () => {}
   closeUI: () => {}
   getIsConnected: () => Promise<boolean>
+  createVPNConnection: () => {}
+  connect: () => {}
+  disconnect: () => {}
+  addVPNObserver: (obj: ServiceObserver) => {}
+}
+interface ServiceObserver {
+  onConnectionCreated?: Function
+  onConnectionRemoved?: Function
+  onConnectionStateChanged?: Function
 }

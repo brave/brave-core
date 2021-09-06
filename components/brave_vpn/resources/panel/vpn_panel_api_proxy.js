@@ -42,6 +42,23 @@ export default class VpnPanelApiProxyImpl {
   getIsConnected() {
     return this.vpnService.getIsConnected();
   }
+
+  createVPNConnection() {
+    return this.vpnService.createVPNConnection();
+  }
+
+  connect() {
+    return this.vpnService.connect();
+  }
+
+  disconnect() {
+    return this.vpnService.disconnect();
+  }
+
+  addVPNObserver(obj) {
+    const serviceObserverReceiver = new braveVpn.mojom.ServiceObserverReceiver(obj)
+    this.vpnService.addObserver(serviceObserverReceiver.$.bindNewPipeAndPassRemote())
+  }
 }
 
 addSingletonGetter(VpnPanelApiProxyImpl);
