@@ -23,6 +23,7 @@ import NetworkExtension
 import YubiKit
 import FeedKit
 import SwiftUI
+import GameController
 import class Combine.AnyCancellable
 
 private let log = Logger.browserLogger
@@ -1544,18 +1545,29 @@ class BrowserViewController: UIViewController {
         openURLInNewTab(nil, isPrivate: isPrivate, isPrivileged: true)
         let freshTab = tabManager.selectedTab
         
-        // Focus field only if requested and background images are not supported
-        if attemptLocationFieldFocus {
+        // Focus field if requested and background images are not supported or there is hardware keyboard connected
+        if attemptLocationFieldFocus || isHardwareKeyboardConnected() {
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
                 // Without a delay, the text field fails to become first responder
                 // Check that the newly created tab is still selected.
                 // This let's the user spam the Cmd+T button without lots of responder changes.
                 guard freshTab == self.tabManager.selectedTab else { return }
+                // submit location if there's search query or just focus on location otherwise
                 if let text = searchText {
                     self.topToolbar.submitLocation(text)
+                } else {
+                    self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
                 }
             }
         }
+    }
+        
+    func isHardwareKeyboardConnected() -> Bool {
+        if #available(iOS 14.0, *) {
+            let bool = GCKeyboard.coalesced != nil
+            return bool
+        }
+        return false
     }
     
     func clearHistoryAndOpenNewTab() {
