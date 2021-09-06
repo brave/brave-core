@@ -58,9 +58,22 @@ const char kScriptRunAndCheckAddChainResult[] = R"(
       setInterval(waitForEvent, 100);
     )";
 
+const char kScriptRunEmptyAndCheckChainResult[] = R"(
+      function waitForEvent() {
+        if (!window.ethereum)
+          return;
+        window.ethereum.request({ method: 'wallet_addEthereumChain', params:[]
+        }).catch(result => {
+          %s
+        })
+      };
+      console.log("!!!starting");
+      setInterval(waitForEvent, 100);
+    )";
+
 const char kRejectedResult[] =
     R"(window.domAutomationController.send(
-        result.error && result.error.code == 4001))";
+        result.error && result.error.code == %s))";
 
 }  // namespace
 
@@ -165,8 +178,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddChainSameOrigin) {
   tab_helper->CloseBubble();
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(tab_helper->IsShowingBubble());
-  auto script = base::StringPrintf(kScriptRunAndCheckAddChainResult, "0x11", "",
-                                   kRejectedResult);
+  auto script =
+      base::StringPrintf(kScriptRunAndCheckAddChainResult, "0x11", "",
+                         base::StringPrintf(kRejectedResult, "4001").c_str());
   auto result_first =
       EvalJs(contents, script, content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_FALSE(tab_helper->IsShowingBubble());
@@ -287,4 +301,26 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddChainAndCloseTab) {
   brave_wallet::GetAllCustomChains(prefs, &result);
   ASSERT_FALSE(result.empty());
   EXPECT_EQ(result.front()->chain_id, "0x11");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddBrokenChain) {
+  GURL url =
+      https_server()->GetURL("a.com", "/brave_wallet_ethereum_chain.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  WaitForLoadStop(contents);
+  auto* tab_helper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(contents);
+  ASSERT_FALSE(tab_helper->IsShowingBubble());
+  tab_helper->CloseBubble();
+  base::RunLoop().RunUntilIdle();
+  ASSERT_FALSE(tab_helper->IsShowingBubble());
+  auto script =
+      base::StringPrintf(kScriptRunEmptyAndCheckChainResult,
+                         base::StringPrintf(kRejectedResult, "-32602").c_str());
+  auto result_first =
+      EvalJs(contents, script, content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  ASSERT_FALSE(tab_helper->IsShowingBubble());
+  EXPECT_EQ(base::Value(true), result_first.value);
 }

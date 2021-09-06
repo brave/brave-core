@@ -704,6 +704,7 @@ if (!is_android) {
     deps = [
       "//brave/browser/autoplay:browser_tests",
       "//brave/browser/brave_ads",
+      "//brave/browser/brave_wallet:tab_helper",
       "//brave/browser/browsing_data:browser_tests",
       "//brave/browser/farbling:browser_tests",
       "//brave/browser/permissions:browser_tests",

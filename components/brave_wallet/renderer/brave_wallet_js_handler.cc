@@ -14,7 +14,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/brave_wallet/renderer/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
@@ -352,15 +351,15 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
         &OnEthereumPermissionRequested, std::move(promise_resolver), isolate,
         std::move(context_old)));
   } else if (method && *method == kAddEthereumChainMethod) {
-    const base::Value* params = out_dict->FindPath(kParams);
-    if (!params)
+    std::string formed_input;
+    // Hardcode id to 1 as it is unused
+    ALLOW_UNUSED_LOCAL(out_dict->SetIntPath("id", kRequestId));
+    ALLOW_UNUSED_LOCAL(out_dict->SetStringPath("jsonrpc", kRequestJsonRPC));
+    if (!base::JSONWriter::Write(*out_dict, &formed_input))
       return v8::Local<v8::Promise>();
 
-    absl::optional<mojom::EthereumChain> chain =
-        brave_wallet::ValueToEthereumChain(*params->GetList().begin());
-
     brave_wallet_provider_->AddEthereumChain(
-        chain->Clone(),
+        formed_input,
         base::BindOnce(&BraveWalletJSHandler::OnAddEthereumChain,
                        base::Unretained(this), std::move(promise_resolver),
                        isolate, std::move(context_old)));

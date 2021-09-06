@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
@@ -60,9 +61,39 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
 BraveWalletProviderImpl::~BraveWalletProviderImpl() {}
 
 void BraveWalletProviderImpl::AddEthereumChain(
-    mojom::EthereumChainPtr chain,
+    const std::string& json_payload,
     AddEthereumChainCallback callback) {
-  if (!delegate_ || !chain) {
+  if (json_payload.empty()) {
+    RespondErrorForEthereumChainRequest(
+        std::move(callback), ProviderErrors::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto json_value = base::JSONReader::Read(json_payload);
+  if (!json_value) {
+    RespondErrorForEthereumChainRequest(
+        std::move(callback), ProviderErrors::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  const base::Value* params = json_value->FindListPath(brave_wallet::kParams);
+  if (!params || !params->is_list()) {
+    RespondErrorForEthereumChainRequest(
+        std::move(callback), ProviderErrors::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+  const auto list = params->GetList();
+  if (list.empty()) {
+    RespondErrorForEthereumChainRequest(
+        std::move(callback), ProviderErrors::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_EXPECTED_SINGLE_PARAMETER));
+    return;
+  }
+  auto chain = brave_wallet::ValueToEthereumChain(list.front());
+  if (!chain) {
     RespondErrorForEthereumChainRequest(
         std::move(callback), ProviderErrors::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -89,9 +120,15 @@ void BraveWalletProviderImpl::AddEthereumChain(
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
     return;
   }
+  if (!delegate_) {
+    RespondErrorForEthereumChainRequest(
+        std::move(callback), ProviderErrors::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
   chain_callbacks_[chain->chain_id] = std::move(callback);
   rpc_controller_->AddEthereumChain(
-      std::move(chain), delegate_->GetOrigin(),
+      chain->Clone(), delegate_->GetOrigin(),
       base::BindOnce(&BraveWalletProviderImpl::OnAddEthereumChain,
                      base::Unretained(this)));
 }
