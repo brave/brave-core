@@ -1,9 +1,17 @@
+import { select } from '@storybook/addon-knobs'
 import * as React from 'react'
 import * as S from './style'
 
 // Components
-import Main from '../containers/main'
+import MainPanel from '../components/main-panel'
 import SelectRegion from '../components/select-region'
+import { ConnectionState } from '../types/connection_state'
+
+const statusOptions = {
+  'Disconnected': ConnectionState.DISCONNECTED,
+  'Connecting': ConnectionState.CONNECTING,
+  'Connected': ConnectionState.CONNECTED
+}
 
 export default {
   title: 'VPN/Panels',
@@ -16,9 +24,19 @@ export default {
 }
 
 export const _Main = () => {
+  const [isOn, setIsOn] = React.useState(false)
+  const handleToggleClick = () => setIsOn(state => !state)
+  const handleSelectRegionButtonClick = () => {/**/}
+
   return (
     <S.PanelFrame>
-      <Main />
+      <MainPanel
+        isOn={isOn}
+        status={select('Current Status', statusOptions, ConnectionState.DISCONNECTED)}
+        region='Tokyo'
+        onToggleClick={handleToggleClick}
+        onSelectRegionButtonClick={handleSelectRegionButtonClick}
+      />
     </S.PanelFrame>
   )
 }
