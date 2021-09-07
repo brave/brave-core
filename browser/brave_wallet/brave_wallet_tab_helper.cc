@@ -27,8 +27,10 @@ BraveWalletTabHelper::BraveWalletTabHelper(content::WebContents* web_contents)
     : web_contents_(web_contents) {}
 
 BraveWalletTabHelper::~BraveWalletTabHelper() {
+#if !defined(OS_ANDROID) && !defined(OS_IOS)
   if (IsShowingBubble())
     CloseBubble();
+#endif  // !defined(OS_ANDROID) && !defined(OS_IOS)
 }
 
 #if !defined(OS_ANDROID) && !defined(OS_IOS)

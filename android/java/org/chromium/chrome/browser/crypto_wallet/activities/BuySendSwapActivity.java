@@ -134,8 +134,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         InitEthJsonRpcController();
 
         if (mEthJsonRpcController != null) {
-            mEthJsonRpcController.getNetwork(
-                    network -> { spinner.setSelection(getIndexOf(spinner, network)); });
+            mEthJsonRpcController.getChainId(
+                    chain_id -> { spinner.setSelection(getIndexOf(spinner, chain_id)); });
         }
     }
 
@@ -143,15 +143,15 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
         if (mEthJsonRpcController != null) {
-            mEthJsonRpcController.setNetwork(Utils.getNetworkId(this, item));
+            mEthJsonRpcController.setNetwork(Utils.getNetworkConst(this, item));
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {}
 
-    private int getIndexOf(Spinner spinner, int network) {
-        String strNetwork = Utils.getNetworkText(this, network).toString();
+    private int getIndexOf(Spinner spinner, String chain_id) {
+        String strNetwork = Utils.getNetworkText(this, chain_id).toString();
         for (int i = 0; i < spinner.getCount(); i++) {
             if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(strNetwork)) {
                 return i;

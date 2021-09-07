@@ -98,8 +98,8 @@ public class PortfolioFragment
     private void updateNetwork() {
         EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
         if (ethJsonRpcController != null) {
-            ethJsonRpcController.getNetwork(
-                    network -> { mSpinner.setSelection(getIndexOf(mSpinner, network)); });
+            ethJsonRpcController.getChainId(
+                    chain_id -> { mSpinner.setSelection(getIndexOf(mSpinner, chain_id)); });
         }
     }
 
@@ -109,8 +109,8 @@ public class PortfolioFragment
         updateNetwork();
     }
 
-    private int getIndexOf(Spinner spinner, int network) {
-        String strNetwork = Utils.getNetworkText(getActivity(), network).toString();
+    private int getIndexOf(Spinner spinner, String chain_id) {
+        String strNetwork = Utils.getNetworkText(getActivity(), chain_id).toString();
         for (int i = 0; i < spinner.getCount(); i++) {
             if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(strNetwork)) {
                 return i;
@@ -125,7 +125,7 @@ public class PortfolioFragment
         String item = parent.getItemAtPosition(position).toString();
         EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
         if (ethJsonRpcController != null) {
-            ethJsonRpcController.setNetwork(Utils.getNetworkId(getActivity(), item));
+            ethJsonRpcController.setNetwork(Utils.getNetworkConst(getActivity(), item));
         }
     }
 
