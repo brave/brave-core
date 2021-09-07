@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/callback.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
@@ -23,6 +24,7 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_browser_context.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
@@ -42,6 +44,35 @@ void UpdateCustomNetworks(PrefService* prefs,
     list->Append(std::move(it));
   }
 }
+
+class FakeEthereumChainObserver
+    : public brave_wallet::mojom::EthJsonRpcControllerObserver {
+ public:
+  FakeEthereumChainObserver(base::OnceClosure callback,
+                            const std::string& expected_chain_id,
+                            const bool expected_error_empty) {
+    callback_ = std::move(callback);
+    expected_chain_id_ = expected_chain_id;
+    expected_error_empty_ = expected_error_empty;
+  }
+
+  void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
+                                          const std::string& error) override {
+    EXPECT_EQ(chain_id, expected_chain_id_);
+    EXPECT_EQ(error.empty(), expected_error_empty_);
+    std::move(callback_).Run();
+  }
+  void ChainChangedEvent(const std::string& chain_id) override { NOTREACHED(); }
+  ::mojo::PendingRemote<brave_wallet::mojom::EthJsonRpcControllerObserver>
+  GetReceiver() {
+    return observer_receiver_.BindNewPipeAndPassRemote();
+  }
+  base::OnceClosure callback_;
+  std::string expected_chain_id_;
+  bool expected_error_empty_;
+  mojo::Receiver<brave_wallet::mojom::EthJsonRpcControllerObserver>
+      observer_receiver_{this};
+};
 
 }  // namespace
 
@@ -238,6 +269,136 @@ TEST_F(EthJsonRpcControllerUnitTest, ResetCustomChains) {
   controller.Reset();
   GetAllCustomChains(prefs(), &custom_chains);
   ASSERT_TRUE(custom_chains.empty());
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainApproved) {
+  brave_wallet::mojom::EthereumChain chain(
+      "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "symbol_name", "symbol", 11);
+  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
+
+  base::RunLoop loop;
+  std::unique_ptr<FakeEthereumChainObserver> observer(
+      new FakeEthereumChainObserver(loop.QuitClosure(), "0x111", true));
+
+  controller.AddObserver(observer->GetReceiver());
+
+  mojo::PendingRemote<brave_wallet::mojom::EthJsonRpcControllerObserver>
+      receiver;
+  mojo::MakeSelfOwnedReceiver(std::move(observer),
+                              receiver.InitWithNewPipeAndPassReceiver());
+
+  bool callback_is_called = false;
+  bool expected = true;
+  ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
+  controller.AddEthereumChain(
+      chain.Clone(), "brave.com",
+      base::BindLambdaForTesting([&callback_is_called, &expected](
+                                     const std::string& chain_id, bool added) {
+        ASSERT_FALSE(chain_id.empty());
+        EXPECT_EQ(added, expected);
+        callback_is_called = true;
+      }));
+  controller.AddEthereumChainRequestCompleted("0x111", true);
+  loop.Run();
+  ASSERT_TRUE(callback_is_called);
+  ASSERT_TRUE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
+  callback_is_called = false;
+  controller.AddEthereumChainRequestCompleted("0x111", true);
+  ASSERT_FALSE(callback_is_called);
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainRejected) {
+  brave_wallet::mojom::EthereumChain chain(
+      "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "symbol_name", "symbol", 11);
+  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
+
+  base::RunLoop loop;
+  std::unique_ptr<FakeEthereumChainObserver> observer(
+      new FakeEthereumChainObserver(loop.QuitClosure(), "0x111", false));
+
+  controller.AddObserver(observer->GetReceiver());
+
+  mojo::PendingRemote<brave_wallet::mojom::EthJsonRpcControllerObserver>
+      receiver;
+  mojo::MakeSelfOwnedReceiver(std::move(observer),
+                              receiver.InitWithNewPipeAndPassReceiver());
+
+  bool callback_is_called = false;
+  bool expected = true;
+  ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
+  controller.AddEthereumChain(
+      chain.Clone(), "brave.com",
+      base::BindLambdaForTesting([&callback_is_called, &expected](
+                                     const std::string& chain_id, bool added) {
+        ASSERT_FALSE(chain_id.empty());
+        EXPECT_EQ(added, expected);
+        callback_is_called = true;
+      }));
+  controller.AddEthereumChainRequestCompleted("0x111", false);
+  loop.Run();
+  ASSERT_TRUE(callback_is_called);
+  ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
+  callback_is_called = false;
+  controller.AddEthereumChainRequestCompleted("0x111", true);
+  ASSERT_FALSE(callback_is_called);
+  ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainError) {
+  brave_wallet::mojom::EthereumChain chain(
+      "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "symbol_name", "symbol", 11);
+  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
+
+  bool callback_is_called = false;
+  bool expected = true;
+  ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
+  controller.AddEthereumChain(
+      chain.Clone(), "brave.com",
+      base::BindLambdaForTesting([&callback_is_called, &expected](
+                                     const std::string& chain_id, bool added) {
+        ASSERT_FALSE(chain_id.empty());
+        EXPECT_EQ(added, expected);
+        callback_is_called = true;
+      }));
+  ASSERT_TRUE(callback_is_called);
+  callback_is_called = false;
+
+  // other chain, same origin
+  brave_wallet::mojom::EthereumChain chain2(
+      "0x222", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "symbol_name", "symbol", 11);
+
+  bool second_callback_is_called = false;
+  bool second_expected = false;
+  controller.AddEthereumChain(
+      chain2.Clone(), "brave.com",
+      base::BindLambdaForTesting([&second_callback_is_called, &second_expected](
+                                     const std::string& chain_id, bool added) {
+        ASSERT_FALSE(chain_id.empty());
+        EXPECT_EQ(added, second_expected);
+        second_callback_is_called = true;
+      }));
+  ASSERT_FALSE(callback_is_called);
+  ASSERT_TRUE(second_callback_is_called);
+  second_callback_is_called = false;
+
+  // same chain, other origin
+  bool third_callback_is_called = false;
+  bool third_expected = false;
+  controller.AddEthereumChain(
+      chain.Clone(), "others.com",
+      base::BindLambdaForTesting([&third_callback_is_called, &third_expected](
+                                     const std::string& chain_id, bool added) {
+        ASSERT_FALSE(chain_id.empty());
+        EXPECT_EQ(added, third_expected);
+        third_callback_is_called = true;
+      }));
+  ASSERT_FALSE(callback_is_called);
+  ASSERT_FALSE(second_callback_is_called);
+  ASSERT_TRUE(third_callback_is_called);
 }
 
 }  // namespace brave_wallet
