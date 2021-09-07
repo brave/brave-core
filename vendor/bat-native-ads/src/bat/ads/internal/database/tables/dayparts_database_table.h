@@ -41,8 +41,8 @@ class Dayparts : public Table {
   std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const CreativeAdList& creative_ads);
 
-  void CreateTableV15(mojom::DBTransaction* transaction);
-  void MigrateToV15(mojom::DBTransaction* transaction);
+  void CreateTableV16(mojom::DBTransaction* transaction);
+  void MigrateToV16(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

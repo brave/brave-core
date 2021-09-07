@@ -78,8 +78,8 @@ class CreativeAdNotifications : public Table {
 
   CreativeAdNotificationInfo GetFromRecord(mojom::DBRecord* record) const;
 
-  void CreateTableV15(mojom::DBTransaction* transaction);
-  void MigrateToV15(mojom::DBTransaction* transaction);
+  void CreateTableV16(mojom::DBTransaction* transaction);
+  void MigrateToV16(mojom::DBTransaction* transaction);
 
   int batch_size_;
 

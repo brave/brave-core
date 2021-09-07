@@ -82,6 +82,7 @@ class BatAdsAdPacingTest : public UnitTestBase {
     creative_ad_notification.per_week = 4;
     creative_ad_notification.per_month = 5;
     creative_ad_notification.total_max = 6;
+    creative_ad_notification.value = 1.0;
     creative_ad_notification.segment = "untargeted";
     creative_ad_notification.geo_targets = {"US"};
     creative_ad_notification.target_url = "https://brave.com/1";
@@ -113,6 +114,7 @@ class BatAdsAdPacingTest : public UnitTestBase {
     creative_ad_notification.per_week = 4;
     creative_ad_notification.per_month = 5;
     creative_ad_notification.total_max = 6;
+    creative_ad_notification.value = 1.0;
     creative_ad_notification.segment = "untargeted";
     creative_ad_notification.geo_targets = {"US"};
     creative_ad_notification.target_url = "https://brave.com/2";

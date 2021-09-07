@@ -32,6 +32,7 @@ struct CatalogCreativeSetInfo {
   unsigned int per_week = 0;
   unsigned int per_month = 0;
   unsigned int total_max = 0;
+  double value = 0.0;
   std::string split_test_group;
   CatalogSegmentList segments;
   CatalogOsList oses;

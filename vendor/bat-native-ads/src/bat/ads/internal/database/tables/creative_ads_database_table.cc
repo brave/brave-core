@@ -62,8 +62,8 @@ void CreativeAds::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 15: {
-      MigrateToV15(transaction);
+    case 16: {
+      MigrateToV16(transaction);
       break;
     }
 
@@ -89,6 +89,7 @@ int CreativeAds::BindParameters(mojom::DBCommand* command,
     BindInt(command, index++, creative_ad.per_week);
     BindInt(command, index++, creative_ad.per_month);
     BindInt(command, index++, creative_ad.total_max);
+    BindDouble(command, index++, creative_ad.value);
     BindString(command, index++, creative_ad.split_test_group);
     BindString(command, index++, creative_ad.target_url);
 
@@ -111,13 +112,14 @@ std::string CreativeAds::BuildInsertOrUpdateQuery(
       "per_week, "
       "per_month, "
       "total_max, "
+      "value, "
       "split_test_group, "
       "target_url) VALUES %s",
       get_table_name().c_str(),
-      BuildBindingParameterPlaceholders(8, count).c_str());
+      BuildBindingParameterPlaceholders(9, count).c_str());
 }
 
-void CreativeAds::CreateTableV15(mojom::DBTransaction* transaction) {
+void CreativeAds::CreateTableV16(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -129,6 +131,7 @@ void CreativeAds::CreateTableV15(mojom::DBTransaction* transaction) {
       "per_week INTEGER NOT NULL DEFAULT 0, "
       "per_month INTEGER NOT NULL DEFAULT 0, "
       "total_max INTEGER NOT NULL DEFAULT 0, "
+      "value DOUBLE NOT NULL DEFAULT 0, "
       "split_test_group TEXT, "
       "target_url TEXT NOT NULL)",
       get_table_name().c_str());
@@ -140,12 +143,12 @@ void CreativeAds::CreateTableV15(mojom::DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeAds::MigrateToV15(mojom::DBTransaction* transaction) {
+void CreativeAds::MigrateToV16(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV15(transaction);
+  CreateTableV16(transaction);
 }
 
 }  // namespace table

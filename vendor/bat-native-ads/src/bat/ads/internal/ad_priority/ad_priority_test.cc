@@ -88,6 +88,7 @@ class BatAdsAdPriorityTest : public UnitTestBase {
     creative_ad_notification.per_week = 1;
     creative_ad_notification.per_month = 1;
     creative_ad_notification.total_max = 1;
+    creative_ad_notification.value = 1.0;
     creative_ad_notification.segment = "untargeted";
     creative_ad_notification.geo_targets = {"US"};
     creative_ad_notification.target_url = "https://brave.com";
