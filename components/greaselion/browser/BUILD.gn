@@ -19,7 +19,10 @@ static_library("browser") {
     "//components/version_info",
     "//content/public/browser",
     "//content/public/common",
+    "//crypto",
     "//extensions/browser",
+    "//extensions/common",
+    "//third_party/abseil-cpp:absl",
     "//url",
   ]
 

@@ -34,6 +34,7 @@
 #include "chrome/browser/extensions/extension_service.h"
 #include "components/version_info/version_info.h"
 #include "crypto/sha2.h"
+#include "extensions/browser/computed_hashes.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/api/content_scripts.h"
@@ -51,6 +52,13 @@ using extensions::mojom::ManifestLocation;
 namespace {
 
 constexpr char kRunAtDocumentStart[] = "document_start";
+
+bool ShouldComputeHashesForResource(
+    const base::FilePath& relative_resource_path) {
+  std::vector<base::FilePath::StringType> components;
+  relative_resource_path.GetComponents(&components);
+  return !components.empty() && components[0] != extensions::kMetadataFolder;
+}
 
 // Wraps a Greaselion rule in a component. The component is stored as
 // an unpacked extension in the user data dir. Returns a valid
@@ -183,6 +191,19 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
     LOG(ERROR) << "Could not load Greaselion extension";
     LOG(ERROR) << error;
     return absl::nullopt;
+  }
+
+  // Calculate and write computed hashes.
+  absl::optional<extensions::ComputedHashes::Data> computed_hashes_data =
+      extensions::ComputedHashes::Compute(
+          extension->path(),
+          extension_misc::kContentVerificationDefaultBlockSize,
+          extensions::IsCancelledCallback(),
+          base::BindRepeating(&ShouldComputeHashesForResource));
+  if (computed_hashes_data) {
+    extensions::ComputedHashes(std::move(*computed_hashes_data))
+        .WriteToFile(
+            extensions::file_util::GetComputedHashesPath(extension->path()));
   }
 
   // Take ownership of this temporary directory so it's deleted when
