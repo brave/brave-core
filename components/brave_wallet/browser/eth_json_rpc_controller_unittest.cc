@@ -89,8 +89,8 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
         &EthJsonRpcControllerUnitTest::ResourceRequest, this);
     url_loader_factory_.SetInterceptor(std::move(resource_request));
     user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
-    prefs_.registry()->RegisterListPref(kBraveWalletCustomNetworks);
     KeyringController::RegisterProfilePrefs(prefs_.registry());
+    EthJsonRpcController::RegisterProfilePrefs(prefs_.registry());
   }
 
   ~EthJsonRpcControllerUnitTest() override = default;
@@ -122,6 +122,19 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
         "0000000000000000000226159d592e2b063810a10ebf6dcbada94ed68b8\"}");
   }
 
+  void ValidateStartWithNetwork(const std::string& chain_id,
+                                const std::string& expected_id) {
+    prefs()->SetString(kBraveWalletCurrentChainId, chain_id);
+    EthJsonRpcController controller(shared_url_loader_factory(), prefs());
+    bool callback_is_called = false;
+    controller.GetChainId(base::BindLambdaForTesting(
+        [&callback_is_called, &expected_id](const std::string& chain_id) {
+          EXPECT_EQ(chain_id, expected_id);
+          callback_is_called = true;
+        }));
+    ASSERT_TRUE(callback_is_called);
+  }
+
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
   std::unique_ptr<content::TestBrowserContext> browser_context_;
@@ -138,6 +151,8 @@ TEST_F(EthJsonRpcControllerUnitTest, SetNetwork) {
   for (const auto& network : networks) {
     bool callback_is_called = false;
     controller.SetNetwork(network->chain_id);
+    EXPECT_EQ(network->chain_id,
+              prefs()->GetString(kBraveWalletCurrentChainId));
     const std::string& expected_id = network->chain_id;
     controller.GetChainId(base::BindLambdaForTesting(
         [&callback_is_called, &expected_id](const std::string& chain_id) {
@@ -399,6 +414,13 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainError) {
   ASSERT_FALSE(callback_is_called);
   ASSERT_FALSE(second_callback_is_called);
   ASSERT_TRUE(third_callback_is_called);
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, StartWithNetwork) {
+  ValidateStartWithNetwork(std::string(), std::string());
+  ValidateStartWithNetwork("SomeBadChainId", std::string());
+  ValidateStartWithNetwork(brave_wallet::mojom::kRopstenChainId,
+                           brave_wallet::mojom::kRopstenChainId);
 }
 
 }  // namespace brave_wallet

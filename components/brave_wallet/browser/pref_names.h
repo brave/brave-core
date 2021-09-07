@@ -12,6 +12,7 @@ extern const char kShowWalletIconOnToolbar[];
 extern const char kBraveWalletLastUnlockTime[];
 extern const char kBraveWalletKeyrings[];
 extern const char kBraveWalletCustomNetworks[];
+extern const char kBraveWalletCurrentChainId[];
 
 // DEPRECATED
 extern const char kBraveWalletPasswordEncryptorSalt[];

@@ -55,7 +55,7 @@ EthJsonRpcController::EthJsonRpcController(
     : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       prefs_(prefs),
       weak_ptr_factory_(this) {
-  SetNetwork(brave_wallet::mojom::kMainnetChainId);
+  SetNetwork(prefs_->GetString(kBraveWalletCurrentChainId));
 }
 
 EthJsonRpcController::~EthJsonRpcController() {}
@@ -153,6 +153,7 @@ void EthJsonRpcController::SetNetwork(const std::string& chain_id) {
     return;
   chain_id_ = chain_id;
   network_url_ = network_url;
+  prefs_->SetString(kBraveWalletCurrentChainId, chain_id);
   FireNetworkChanged();
 }
 
@@ -306,6 +307,8 @@ void EthJsonRpcController::OnGetTransactionReceipt(
 // static
 void EthJsonRpcController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kBraveWalletCustomNetworks);
+  registry->RegisterStringPref(kBraveWalletCurrentChainId,
+                               brave_wallet::mojom::kMainnetChainId);
 }
 
 void EthJsonRpcController::SendRawTransaction(const std::string& signed_tx,
