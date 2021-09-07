@@ -9,13 +9,21 @@
 #include <cstdint>
 #include <string>
 
-#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_info.h"
 #include "bat/ads/internal/ad_targeting/processors/processor.h"
-#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
+#include "bat/ads/internal/segments/segments_alias.h"
 #include "url/gurl.h"
 
 namespace ads {
+
+namespace resource {
+class PurchaseIntent;
+}  // namespace resource
+
 namespace ad_targeting {
+
+struct PurchaseIntentSignalInfo;
+struct PurchaseIntentSiteInfo;
+
 namespace processor {
 
 class PurchaseIntent : public Processor<GURL> {

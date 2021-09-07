@@ -11,7 +11,6 @@
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/catalog/catalog_state.h"
 #include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 

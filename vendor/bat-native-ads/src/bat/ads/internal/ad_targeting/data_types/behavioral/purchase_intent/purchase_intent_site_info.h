@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <string>
 
-#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_segment_keyword_info.h"
+#include "bat/ads/internal/segments/segments_alias.h"
 
 namespace ads {
 namespace ad_targeting {

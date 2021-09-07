@@ -10,11 +10,10 @@
 #include <map>
 #include <string>
 
+#include "bat/ads/internal/tab_manager/tab_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
-
-struct TabInfo;
 
 class TabManager {
  public:

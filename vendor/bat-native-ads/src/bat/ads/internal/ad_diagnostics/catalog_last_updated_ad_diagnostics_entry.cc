@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ad_diagnostics/catalog_last_updated_ad_diagnostics_entry.h"
 
+#include <cstdint>
+
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/pref_names.h"

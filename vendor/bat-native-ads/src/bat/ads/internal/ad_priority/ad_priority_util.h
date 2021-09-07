@@ -6,10 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_PRIORITY_AD_PRIORITY_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_PRIORITY_AD_PRIORITY_UTIL_H_
 
+#include <algorithm>
 #include <map>
 #include <utility>
-
-#include "base/rand_util.h"
 
 namespace ads {
 

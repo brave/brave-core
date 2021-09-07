@@ -5,8 +5,10 @@
 
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 
+#include <cstdint>
+
 #include "base/time/time.h"
-#include "bat/ads/internal/unittest_base.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

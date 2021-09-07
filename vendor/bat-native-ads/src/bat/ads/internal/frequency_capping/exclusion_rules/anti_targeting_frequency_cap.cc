@@ -9,7 +9,6 @@
 #include <memory>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/url_util.h"
 

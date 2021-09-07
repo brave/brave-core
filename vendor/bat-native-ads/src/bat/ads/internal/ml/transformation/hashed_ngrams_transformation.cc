@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <map>
 
-#include "base/values.h"
+#include "base/check.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/transformation/hash_vectorizer.h"

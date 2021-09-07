@@ -14,8 +14,6 @@
 
 namespace ads {
 
-struct CreativeAdInfo;
-
 class PerMonthFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
   explicit PerMonthFrequencyCap(const AdEventList& ad_events);

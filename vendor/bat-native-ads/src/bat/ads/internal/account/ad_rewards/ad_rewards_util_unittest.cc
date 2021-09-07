@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/pref_names.h"

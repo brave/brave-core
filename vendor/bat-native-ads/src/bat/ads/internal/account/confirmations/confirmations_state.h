@@ -14,12 +14,15 @@
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/transaction_info.h"
 
 namespace ads {
 
 class AdRewards;
+
+namespace privacy {
+class UnblindedTokens;
+}  // namespace privacy
 
 class ConfirmationsState {
  public:

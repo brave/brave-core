@@ -8,9 +8,11 @@
 
 #include <memory>
 
-#include "bat/ads/internal/conversions/sorts/conversions_sort.h"
+#include "bat/ads/internal/conversions/conversion_info.h"
 
 namespace ads {
+
+class ConversionsSort;
 
 class ConversionsSortFactory {
  public:

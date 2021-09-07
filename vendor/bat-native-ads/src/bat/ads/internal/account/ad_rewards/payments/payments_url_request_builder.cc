@@ -8,10 +8,10 @@
 #include <cstdint>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/security/crypto_util.h"
 #include "bat/ads/internal/server/confirmations_server_util.h"
 

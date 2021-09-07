@@ -7,10 +7,9 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_PACING_AD_PACING_H_
 
 #include "bat/ads/internal/ad_pacing/ad_pacing_util.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 
 namespace ads {
-
-struct CreativeAdInfo;
 
 template <typename T>
 T PaceAds(const T& ads) {

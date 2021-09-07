@@ -8,8 +8,6 @@
 #include <cstdint>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/ad_info.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 

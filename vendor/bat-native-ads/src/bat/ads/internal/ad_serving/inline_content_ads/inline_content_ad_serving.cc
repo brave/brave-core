@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving.h"
 
+#include "base/check.h"
 #include "base/rand_util.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/inline_content_ad_info.h"

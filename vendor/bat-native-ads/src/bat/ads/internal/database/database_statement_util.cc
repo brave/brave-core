@@ -8,9 +8,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_op.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 namespace database {

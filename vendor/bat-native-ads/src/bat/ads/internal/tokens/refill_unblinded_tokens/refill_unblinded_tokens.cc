@@ -10,11 +10,14 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/check.h"
 #include "base/json/json_reader.h"
+#include "base/notreached.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/logging_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/privacy_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"

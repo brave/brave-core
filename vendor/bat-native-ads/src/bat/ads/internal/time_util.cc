@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/time_util.h"
 
+#include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 
 namespace ads {

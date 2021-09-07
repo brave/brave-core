@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/account.h"
 
+#include "base/check.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
@@ -19,6 +20,7 @@
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens.h"
+#include "bat/ads/statement_info.h"
 
 namespace ads {
 

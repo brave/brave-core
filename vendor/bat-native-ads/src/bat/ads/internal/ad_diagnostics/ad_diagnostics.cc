@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry.h"

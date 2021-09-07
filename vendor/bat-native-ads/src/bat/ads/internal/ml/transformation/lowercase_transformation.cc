@@ -7,8 +7,9 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/strings/string_util.h"
-#include "base/values.h"
+#include "bat/ads/internal/ml/data/data.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 
 namespace ads {

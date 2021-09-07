@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/ads_client_helper.h"
 
-#include "bat/ads/internal/logging.h"
+#include "base/check_op.h"
 
 namespace ads {
 

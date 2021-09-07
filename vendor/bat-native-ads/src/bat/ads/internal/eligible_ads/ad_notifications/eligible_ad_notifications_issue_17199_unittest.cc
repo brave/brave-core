@@ -5,9 +5,6 @@
 
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications.h"
 
-#include <memory>
-#include <string>
-
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder_unittest_util.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"

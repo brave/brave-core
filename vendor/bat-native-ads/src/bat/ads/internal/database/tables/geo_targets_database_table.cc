@@ -5,8 +5,11 @@
 
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 
+#include <algorithm>
+#include <functional>
 #include <utility>
 
+#include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_statement_util.h"

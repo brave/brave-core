@@ -8,13 +8,6 @@
 
 #include <string>
 
-#include "base/values.h"
-#include "bat/ads/internal/ml/ml_aliases.h"
-#include "bat/ads/internal/ml/model/linear/linear.h"
-#include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
-#include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
-#include "bat/ads/internal/ml/transformation/normalization_transformation.h"
-#include "bat/ads/internal/ml/transformation/transformation.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -22,12 +15,6 @@ namespace ml {
 namespace pipeline {
 
 struct PipelineInfo;
-
-absl::optional<TransformationVector> ParseTransformationsJSON(
-    base::Value* transformations_value);
-
-absl::optional<model::Linear> ParseClassifierJSON(
-    base::Value* classifier_value);
 
 absl::optional<PipelineInfo> ParsePipelineJSON(const std::string& json);
 

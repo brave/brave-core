@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ad_transfer/ad_transfer.h"
 
+#include "base/check.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/logging.h"

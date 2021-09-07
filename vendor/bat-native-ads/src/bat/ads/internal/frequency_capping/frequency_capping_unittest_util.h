@@ -9,10 +9,11 @@
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/ad_events/ad_event_info.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 
 namespace ads {
+
+struct AdEventInfo;
+struct CreativeAdInfo;
 
 AdEventInfo GenerateAdEvent(const AdType& type,
                             const CreativeAdInfo& ad,

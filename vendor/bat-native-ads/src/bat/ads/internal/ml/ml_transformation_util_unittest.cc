@@ -3,13 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <cmath>
-#include <map>
-#include <memory>
-#include <string>
-
 #include "bat/ads/internal/ml/ml_transformation_util.h"
 
+#include <memory>
+
+#include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
+#include "bat/ads/internal/ml/transformation/normalization_transformation.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 

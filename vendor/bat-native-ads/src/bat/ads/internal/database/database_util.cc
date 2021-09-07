@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/database/database_util.h"
 
-#include "bat/ads/internal/logging.h"
+#include "base/check.h"
 
 namespace ads {
 namespace database {

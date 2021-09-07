@@ -7,7 +7,6 @@
 
 #include "base/metrics/field_trial.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

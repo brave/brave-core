@@ -5,6 +5,8 @@
 
 #include "bat/ads/ad_event_history.h"
 
+#include <cstdint>
+
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 

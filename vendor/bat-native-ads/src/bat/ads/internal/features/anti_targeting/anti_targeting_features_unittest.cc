@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/features/anti_targeting/anti_targeting_features.h"
 
-#include "base/time/time.h"
-#include "bat/ads/internal/unittest_base.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

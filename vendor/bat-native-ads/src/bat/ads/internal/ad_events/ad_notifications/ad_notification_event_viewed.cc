@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_viewed.h"
 
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_history/ads_history.h"

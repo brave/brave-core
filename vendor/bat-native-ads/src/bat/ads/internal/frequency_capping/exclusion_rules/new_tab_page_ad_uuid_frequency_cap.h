@@ -8,12 +8,11 @@
 
 #include <string>
 
+#include "bat/ads/ad_info.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
-
-struct AdInfo;
 
 class NewTabPageAdUuidFrequencyCap : public ExclusionRule<AdInfo> {
  public:

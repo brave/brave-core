@@ -5,10 +5,7 @@
 
 #include "bat/ads/internal/ml/transformation/normalization_transformation.h"
 
-#include <map>
-#include <string>
-
-#include "base/values.h"
+#include "base/check.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 
 namespace ads {

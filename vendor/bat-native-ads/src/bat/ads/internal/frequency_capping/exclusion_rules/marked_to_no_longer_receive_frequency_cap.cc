@@ -6,7 +6,6 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_to_no_longer_receive_frequency_cap.h"
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/segments/segments_util.h"
 
 namespace ads {
