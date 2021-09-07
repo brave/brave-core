@@ -400,7 +400,7 @@
 		27EB6020244607DA00265C1B /* NewTabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EB601F244607DA00265C1B /* NewTabPageViewController.swift */; };
 		27EF6B8024BF48C7005E034F /* FeedSourceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EF6B7F24BF48C7005E034F /* FeedSourceListViewController.swift */; };
 		27EF6B8124BF6095005E034F /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB8234CC7EF009DAC37 /* UITableViewExtensions.swift */; };
-		27F4439F2135E11200296C58 /* BraveShareTo.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* BraveShareTo.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
 		27F4798C25AF94B0004922E4 /* YubiKit in Frameworks */ = {isa = PBXBuildFile; productRef = 27F4798B25AF94B0004922E4 /* YubiKit */; };
 		27F94A3A21909A5900F4FADF /* SearchSuggestionsPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F94A3921909A5900F4FADF /* SearchSuggestionsPromptView.swift */; };
@@ -1401,7 +1401,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				27F4439F2135E11200296C58 /* BraveShareTo.appex in Embed App Extensions */,
+				27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */,
 				2F6931BB260CFB3700ECEB38 /* BrowserIntents.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -1916,8 +1916,8 @@
 		27EEEDB52507CE1C00024038 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		27EEEDB72507D51E00024038 /* Release (AppStore).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Release (AppStore).entitlements"; sourceTree = "<group>"; };
 		27EF6B7F24BF48C7005E034F /* FeedSourceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSourceListViewController.swift; sourceTree = "<group>"; };
-		27F443952135E11200296C58 /* BraveShareTo.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BraveShareTo.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		27F4439C2135E11200296C58 /* BraveShareToInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = BraveShareToInfo.plist; sourceTree = "<group>"; };
+		27F443952135E11200296C58 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		27F4439C2135E11200296C58 /* ShareExtension.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ShareExtension.plist; sourceTree = "<group>"; };
 		27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareToBraveViewController.swift; sourceTree = "<group>"; };
 		27F94A3921909A5900F4FADF /* SearchSuggestionsPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsPromptView.swift; sourceTree = "<group>"; };
 		27FCA8DF2447708300A8CA48 /* FavoritesSectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesSectionProvider.swift; sourceTree = "<group>"; };
@@ -4023,14 +4023,14 @@
 			path = "Source List";
 			sourceTree = "<group>";
 		};
-		27F443962135E11200296C58 /* BraveShareTo */ = {
+		27F443962135E11200296C58 /* ShareExtension */ = {
 			isa = PBXGroup;
 			children = (
 				27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */,
-				27F4439C2135E11200296C58 /* BraveShareToInfo.plist */,
+				27F4439C2135E11200296C58 /* ShareExtension.plist */,
 				59B6912121B695A400E9388E /* InfoPlist.strings */,
 			);
-			path = BraveShareTo;
+			path = ShareExtension;
 			sourceTree = "<group>";
 		};
 		288A2D7E1AB8B2AD0023ABC3 /* Result */ = {
@@ -5475,7 +5475,7 @@
 				5D1DC52120AC9AFB00905E5A /* DataTests */,
 				4452CA382552FC620053EFE6 /* BraveCore */,
 				5DE7688520B3456D00FF5533 /* BraveShared */,
-				27F443962135E11200296C58 /* BraveShareTo */,
+				27F443962135E11200296C58 /* ShareExtension */,
 				278C468723F1E6270083347F /* BraveUI */,
 				277568D125ACF91600C129AF /* SPMLibraries */,
 				27756E9525AF6F5F00C129AF /* SPMLibrariesTests */,
@@ -5508,7 +5508,7 @@
 				5D1DC51B20AC9AFA00905E5A /* DataTests.xctest */,
 				5DE7688420B3456C00FF5533 /* BraveShared.framework */,
 				5DE7688C20B3456E00FF5533 /* BraveSharedTests.xctest */,
-				27F443952135E11200296C58 /* BraveShareTo.appex */,
+				27F443952135E11200296C58 /* ShareExtension.appex */,
 				278C468623F1E6270083347F /* BraveUI.framework */,
 				277568D025ACF91500C129AF /* SPMLibraries.framework */,
 				27756E9425AF6F5F00C129AF /* SPMLibrariesTests.xctest */,
@@ -5988,9 +5988,9 @@
 			productReference = 278C468623F1E6270083347F /* BraveUI.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		27F443942135E11200296C58 /* BraveShareTo */ = {
+		27F443942135E11200296C58 /* ShareExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "BraveShareTo" */;
+			buildConfigurationList = 27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "ShareExtension" */;
 			buildPhases = (
 				27F443912135E11200296C58 /* Sources */,
 				27F443922135E11200296C58 /* Frameworks */,
@@ -6000,9 +6000,9 @@
 			);
 			dependencies = (
 			);
-			name = BraveShareTo;
+			name = ShareExtension;
 			productName = BraveShareTo;
-			productReference = 27F443952135E11200296C58 /* BraveShareTo.appex */;
+			productReference = 27F443952135E11200296C58 /* ShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		288A2D851AB8B3260023ABC3 /* Shared */ = {
@@ -6261,7 +6261,6 @@
 					27F443942135E11200296C58 = {
 						CreatedOnToolsVersion = 10.0;
 						LastSwiftMigration = 1010;
-						ProvisioningStyle = Automatic;
 					};
 					288A2D851AB8B3260023ABC3 = {
 						CreatedOnToolsVersion = 6.2;
@@ -6395,7 +6394,7 @@
 			projectRoot = "";
 			targets = (
 				F84B21BD1A090F8100AAB793 /* Client */,
-				27F443942135E11200296C58 /* BraveShareTo */,
+				27F443942135E11200296C58 /* ShareExtension */,
 				5DE7688320B3456C00FF5533 /* BraveShared */,
 				288A2D851AB8B3260023ABC3 /* Shared */,
 				2FCAE2191ABB51F800877008 /* Storage */,
@@ -7725,7 +7724,7 @@
 		};
 		27F4439E2135E11200296C58 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 27F443942135E11200296C58 /* BraveShareTo */;
+			target = 27F443942135E11200296C58 /* ShareExtension */;
 			targetProxy = 27F4439D2135E11200296C58 /* PBXContainerItemProxy */;
 		};
 		288A2D9C1AB8B3260023ABC3 /* PBXTargetDependency */ = {
@@ -8993,7 +8992,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraveShareTo/BraveShareToInfo.plist;
+				INFOPLIST_FILE = ShareExtension/ShareExtension.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -9642,6 +9641,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -9654,7 +9655,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraveShareTo/BraveShareToInfo.plist;
+				INFOPLIST_FILE = ShareExtension/ShareExtension.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -9664,6 +9665,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -10184,6 +10186,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_BITCODE = NO;
@@ -10202,7 +10206,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraveShareTo/BraveShareToInfo.plist;
+				INFOPLIST_FILE = ShareExtension/ShareExtension.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -10212,6 +10216,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -10252,6 +10257,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -10264,7 +10271,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraveShareTo/BraveShareToInfo.plist;
+				INFOPLIST_FILE = ShareExtension/ShareExtension.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -10274,6 +10281,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -10327,7 +10335,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraveShareTo/BraveShareToInfo.plist;
+				INFOPLIST_FILE = ShareExtension/ShareExtension.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -10379,6 +10387,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -10391,7 +10401,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraveShareTo/BraveShareToInfo.plist;
+				INFOPLIST_FILE = ShareExtension/ShareExtension.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -10401,6 +10411,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -12825,7 +12836,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "BraveShareTo" */ = {
+		27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "ShareExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				27F443A02135E11200296C58 /* Debug */,
