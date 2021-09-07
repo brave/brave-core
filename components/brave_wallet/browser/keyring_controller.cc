@@ -371,7 +371,7 @@ HDKeyring* KeyringController::ResumeDefaultKeyring(
                              &private_key)) {
       continue;
     }
-    default_keyring_->AddImportedAccount(private_key);
+    default_keyring_->ImportAccount(private_key);
   }
 
   return default_keyring_.get();
@@ -506,10 +506,9 @@ void KeyringController::GetPrivateKeyForDefaultKeyringAccount(
   std::move(callback).Run(!private_key.empty(), private_key);
 }
 
-void KeyringController::AddImportedAccount(
-    const std::string& account_name,
-    const std::string& private_key_hex,
-    AddImportedAccountCallback callback) {
+void KeyringController::ImportAccount(const std::string& account_name,
+                                      const std::string& private_key_hex,
+                                      ImportAccountCallback callback) {
   if (account_name.empty() || private_key_hex.empty() || !encryptor_) {
     std::move(callback).Run(false, "");
     return;
@@ -521,7 +520,7 @@ void KeyringController::AddImportedAccount(
     return;
   }
 
-  auto address = AddImportedAccountForDefaultKeyring(account_name, private_key);
+  auto address = ImportAccountForDefaultKeyring(account_name, private_key);
   if (!address) {
     std::move(callback).Run(false, "");
     return;
@@ -530,11 +529,10 @@ void KeyringController::AddImportedAccount(
   std::move(callback).Run(true, *address);
 }
 
-void KeyringController::AddImportedAccountFromJson(
-    const std::string& account_name,
-    const std::string& password,
-    const std::string& json,
-    AddImportedAccountCallback callback) {
+void KeyringController::ImportAccountFromJson(const std::string& account_name,
+                                              const std::string& password,
+                                              const std::string& json,
+                                              ImportAccountCallback callback) {
   if (account_name.empty() || password.empty() || json.empty() || !encryptor_) {
     std::move(callback).Run(false, "");
     return;
@@ -546,7 +544,7 @@ void KeyringController::AddImportedAccountFromJson(
   }
 
   auto address =
-      AddImportedAccountForDefaultKeyring(account_name, hd_key->private_key());
+      ImportAccountForDefaultKeyring(account_name, hd_key->private_key());
   if (!address) {
     std::move(callback).Run(false, "");
     return;
@@ -629,15 +627,14 @@ void KeyringController::AddAccountForDefaultKeyring(
                            account_name, kDefaultKeyringId);
 }
 
-absl::optional<std::string>
-KeyringController::AddImportedAccountForDefaultKeyring(
+absl::optional<std::string> KeyringController::ImportAccountForDefaultKeyring(
     const std::string& account_name,
     const std::vector<uint8_t>& private_key) {
   if (!default_keyring_) {
     return absl::nullopt;
   }
 
-  const std::string address = default_keyring_->AddImportedAccount(private_key);
+  const std::string address = default_keyring_->ImportAccount(private_key);
   if (address.empty()) {
     return absl::nullopt;
   }

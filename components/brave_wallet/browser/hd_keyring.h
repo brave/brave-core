@@ -41,8 +41,7 @@ class HDKeyring {
   void RemoveAccount();
 
   // address will be returned
-  virtual std::string AddImportedAccount(
-      const std::vector<uint8_t>& private_key);
+  virtual std::string ImportAccount(const std::vector<uint8_t>& private_key);
   size_t GetImportedAccountsNumber() const;
   bool RemoveImportedAccount(const std::string& address);
 

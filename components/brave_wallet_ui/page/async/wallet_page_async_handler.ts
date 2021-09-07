@@ -13,7 +13,7 @@ import {
   RestoreWalletPayloadType,
   UpdateSelectedAssetType,
   AddAccountPayloadType,
-  AddImportedAccountPayloadType,
+  ImportAccountPayloadType,
   RemoveImportedAccountPayloadType,
   ViewPrivateKeyPayloadType
 } from '../constants/action_types'
@@ -84,9 +84,9 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: Updat
   }
 })
 
-handler.on(WalletPageActions.addImportedAccount.getType(), async (store, payload: AddImportedAccountPayloadType) => {
+handler.on(WalletPageActions.importAccount.getType(), async (store, payload: ImportAccountPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
-  const result = await keyringController.addImportedAccount(payload.accountName, payload.privateKey)
+  const result = await keyringController.importAccount(payload.accountName, payload.privateKey)
   return result.success
 })
 

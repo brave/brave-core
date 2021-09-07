@@ -17,7 +17,7 @@ export type AddAccountPayloadType = {
   accountName: string
 }
 
-export type AddImportedAccountPayloadType = {
+export type ImportAccountPayloadType = {
   accountName: string,
   privateKey: string
 }

@@ -372,7 +372,7 @@ function Container (props: Props) {
   }
 
   const onImportAccount = (accountName: string, privateKey: string) => {
-    const imported = props.walletPageActions.addImportedAccount({ accountName, privateKey })
+    const imported = props.walletPageActions.importAccount({ accountName, privateKey })
     if (imported) {
       onToggleAddModal()
     }
