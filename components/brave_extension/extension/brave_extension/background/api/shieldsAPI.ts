@@ -24,7 +24,6 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
   return Promise.all([
     chrome.braveShields.getBraveShieldsEnabledAsync(tabData.url),
     chrome.braveShields.getAdControlTypeAsync(tabData.url),
-    chrome.braveShields.shouldDoCosmeticFilteringAsync(tabData.url),
     chrome.braveShields.isFirstPartyCosmeticFilteringEnabledAsync(tabData.url),
     chrome.braveShields.getHTTPSEverywhereEnabledAsync(tabData.url),
     chrome.braveShields.getNoScriptControlTypeAsync(tabData.url),
@@ -39,12 +38,11 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       braveShields: details[0] ? 'allow' : 'block',
       ads: details[1],
       trackers: details[1],
-      cosmeticFiltering: details[2],
-      firstPartyCosmeticFiltering: details[3],
-      httpUpgradableResources: details[4] ? 'block' : 'allow',
-      javascript: details[5],
-      fingerprinting: details[6],
-      cookies: details[7]
+      firstPartyCosmeticFiltering: details[2],
+      httpUpgradableResources: details[3] ? 'block' : 'allow',
+      javascript: details[4],
+      fingerprinting: details[5],
+      cookies: details[6]
     }
   }).catch(() => {
     return {
@@ -55,8 +53,6 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       braveShields: 'block',
       ads: 0,
       trackers: 0,
-      cosmeticFiltering: 0,
-      cosmeticFilteringFeatureFlag: 0,
       httpUpgradableResources: 0,
       javascript: 0,
       fingerprinting: 0

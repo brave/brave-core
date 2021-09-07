@@ -51,7 +51,6 @@
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
-using brave_shields::features::kBraveAdblockCosmeticFilteringNative;
 using brave_shields::features::kBraveAdblockCspRules;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveDarkModeBlock;
@@ -80,11 +79,6 @@ constexpr char kBraveAdblockCosmeticFilteringName[] =
     "Enable cosmetic filtering";
 constexpr char kBraveAdblockCosmeticFilteringDescription[] =
     "Enable support for cosmetic filtering";
-
-constexpr char kBraveAdblockCosmeticFilteringNativeName[] =
-    "Use native implementation for cosmetic filtering";
-constexpr char kBraveAdblockCosmeticFilteringNativeDescription[] =
-    "Uses native implementation for cosmetic filtering instead of extension";
 
 constexpr char kBraveAdblockCspRulesName[] = "Enable support for CSP rules";
 constexpr char kBraveAdblockCspRulesDescription[] =
@@ -323,11 +317,6 @@ constexpr char kUseDevUpdaterUrlDescription[] =
      flag_descriptions::kBraveAdblockCosmeticFilteringName,                 \
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll,  \
      FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFiltering)},                   \
-    {"brave-adblock-cosmetic-filtering-native",                             \
-     flag_descriptions::kBraveAdblockCosmeticFilteringNativeName,           \
-     flag_descriptions::kBraveAdblockCosmeticFilteringNativeDescription,    \
-     kOsMac | kOsWin | kOsLinux,                                            \
-     FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFilteringNative)},             \
     {"brave-adblock-csp-rules",                                             \
      flag_descriptions::kBraveAdblockCspRulesName,                          \
      flag_descriptions::kBraveAdblockCspRulesDescription, kOsAll,           \

@@ -48,90 +48,6 @@ const char kInvalidControlTypeError[] = "Invalid ControlType.";
 }  // namespace
 
 ExtensionFunction::ResponseAction
-BraveShieldsUrlCosmeticResourcesFunction::Run() {
-  std::unique_ptr<brave_shields::UrlCosmeticResources::Params> params(
-      brave_shields::UrlCosmeticResources::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-  g_brave_browser_process->ad_block_service()
-      ->GetTaskRunner()
-      ->PostTaskAndReplyWithResult(
-          FROM_HERE,
-          base::BindOnce(&BraveShieldsUrlCosmeticResourcesFunction::
-                             GetUrlCosmeticResourcesOnTaskRunner,
-                         this, params->url),
-          base::BindOnce(&BraveShieldsUrlCosmeticResourcesFunction::
-                             GetUrlCosmeticResourcesOnUI,
-                         this));
-  return RespondLater();
-}
-
-std::unique_ptr<base::ListValue>
-BraveShieldsUrlCosmeticResourcesFunction::GetUrlCosmeticResourcesOnTaskRunner(
-    const std::string& url) {
-  absl::optional<base::Value> resources =
-      g_brave_browser_process->ad_block_service()->UrlCosmeticResources(url);
-
-  if (!resources || !resources->is_dict()) {
-    return std::unique_ptr<base::ListValue>();
-  }
-
-  auto result_list = std::make_unique<base::ListValue>();
-  result_list->Append(std::move(*resources));
-  return result_list;
-}
-
-void BraveShieldsUrlCosmeticResourcesFunction::GetUrlCosmeticResourcesOnUI(
-    std::unique_ptr<base::ListValue> resources) {
-  if (!resources) {
-    Respond(Error("Url-specific cosmetic resources could not be returned"));
-    return;
-  }
-  Respond(ArgumentList(std::move(resources)));
-}
-
-ExtensionFunction::ResponseAction
-BraveShieldsHiddenClassIdSelectorsFunction::Run() {
-  std::unique_ptr<brave_shields::HiddenClassIdSelectors::Params> params(
-      brave_shields::HiddenClassIdSelectors::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-  g_brave_browser_process->ad_block_service()
-      ->GetTaskRunner()
-      ->PostTaskAndReplyWithResult(
-          FROM_HERE,
-          base::BindOnce(&BraveShieldsHiddenClassIdSelectorsFunction::
-                             GetHiddenClassIdSelectorsOnTaskRunner,
-                         this, params->classes, params->ids,
-                         params->exceptions),
-          base::BindOnce(&BraveShieldsHiddenClassIdSelectorsFunction::
-                             GetHiddenClassIdSelectorsOnUI,
-                         this));
-  return RespondLater();
-}
-
-std::unique_ptr<base::ListValue> BraveShieldsHiddenClassIdSelectorsFunction::
-    GetHiddenClassIdSelectorsOnTaskRunner(
-        const std::vector<std::string>& classes,
-        const std::vector<std::string>& ids,
-        const std::vector<std::string>& exceptions) {
-  absl::optional<base::Value> hide_selectors =
-      g_brave_browser_process->ad_block_service()->HiddenClassIdSelectors(
-          classes, ids, exceptions);
-
-  if (!hide_selectors || !hide_selectors->is_list())
-    return std::make_unique<base::ListValue>();
-
-  auto result_list =
-      std::make_unique<base::ListValue>(hide_selectors->GetList());
-
-  return result_list;
-}
-
-void BraveShieldsHiddenClassIdSelectorsFunction::GetHiddenClassIdSelectorsOnUI(
-    std::unique_ptr<base::ListValue> selectors) {
-  Respond(ArgumentList(std::move(selectors)));
-}
-
-ExtensionFunction::ResponseAction
 BraveShieldsAddSiteCosmeticFilterFunction::Run() {
   std::unique_ptr<brave_shields::AddSiteCosmeticFilter::Params> params(
       brave_shields::AddSiteCosmeticFilter::Params::Create(*args_));
@@ -232,32 +148,6 @@ BraveShieldsGetBraveShieldsEnabledFunction::Run() {
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto enabled = ::brave_shields::GetBraveShieldsEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile),
-      url);
-
-  return RespondNow(OneArgument(base::Value(enabled)));
-}
-
-ExtensionFunction::ResponseAction
-BraveShieldsShouldDoCosmeticFilteringFunction::Run() {
-#if !defined(OS_ANDROID) && !defined(CHROME_OS)
-  if (base::FeatureList::IsEnabled(
-          ::brave_shields::features::kBraveAdblockCosmeticFilteringNative))
-    return RespondNow(OneArgument(base::Value(false)));
-#endif
-  std::unique_ptr<brave_shields::ShouldDoCosmeticFiltering::Params>
-    params(
-      brave_shields::ShouldDoCosmeticFiltering::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  const GURL url(params->url);
-  // we don't allow getting defaults from the extension
-  if (url.is_empty() || !url.is_valid()) {
-    return RespondNow(Error(kInvalidUrlError, params->url));
-  }
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  const bool enabled = ::brave_shields::ShouldDoCosmeticFiltering(
       HostContentSettingsMapFactory::GetForProfile(profile),
       url);
 

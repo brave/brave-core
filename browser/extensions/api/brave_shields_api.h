@@ -15,39 +15,6 @@
 namespace extensions {
 namespace api {
 
-class BraveShieldsUrlCosmeticResourcesFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveShields.urlCosmeticResources", UNKNOWN)
-
- protected:
-  ~BraveShieldsUrlCosmeticResourcesFunction() override {}
-
-  ResponseAction Run() override;
-
- private:
-  std::unique_ptr<base::ListValue> GetUrlCosmeticResourcesOnTaskRunner(
-      const std::string& url);
-  void GetUrlCosmeticResourcesOnUI(std::unique_ptr<base::ListValue> resources);
-};
-
-class BraveShieldsHiddenClassIdSelectorsFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveShields.hiddenClassIdSelectors", UNKNOWN)
-
- protected:
-  ~BraveShieldsHiddenClassIdSelectorsFunction() override {}
-
-  ResponseAction Run() override;
-
- private:
-  std::unique_ptr<base::ListValue> GetHiddenClassIdSelectorsOnTaskRunner(
-      const std::vector<std::string>& classes,
-      const std::vector<std::string>& ids,
-      const std::vector<std::string>& exceptions);
-  void GetHiddenClassIdSelectorsOnUI(
-      std::unique_ptr<base::ListValue> selectors);
-};
-
 class BraveShieldsAddSiteCosmeticFilterFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.addSiteCosmeticFilter", UNKNOWN)
@@ -105,16 +72,6 @@ class BraveShieldsGetBraveShieldsEnabledFunction : public ExtensionFunction {
 
  protected:
   ~BraveShieldsGetBraveShieldsEnabledFunction() override {}
-
-  ResponseAction Run() override;
-};
-
-class BraveShieldsShouldDoCosmeticFilteringFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveShields.shouldDoCosmeticFiltering", UNKNOWN)
-
- protected:
-  ~BraveShieldsShouldDoCosmeticFilteringFunction() override {}
 
   ResponseAction Run() override;
 };
