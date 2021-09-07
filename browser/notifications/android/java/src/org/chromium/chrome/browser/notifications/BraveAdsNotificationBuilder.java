@@ -148,8 +148,7 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
                 : BraveChannelDefinitions.ChannelId.BRAVE_ADS_BACKGROUND;
         NotificationWrapperBuilder builder =
                 NotificationWrapperBuilderFactory.createNotificationWrapperBuilder(
-                        false /* preferCompat */, channelId, mRemotePackageForBuilderContext,
-                        metadata);
+                        channelId, metadata);
         builder.setTicker(mTickerText);
         builder.setContentIntent(mContentIntent);
         builder.setDeleteIntent(mDeleteIntent);
