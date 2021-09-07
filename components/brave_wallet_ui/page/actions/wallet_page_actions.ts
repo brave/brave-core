@@ -13,7 +13,7 @@ import {
   SelectAssetPayloadType,
   UpdateSelectedAssetType,
   AddAccountPayloadType,
-  AddImportedAccountPayloadType,
+  ImportAccountPayloadType,
   RemoveImportedAccountPayloadType,
   ViewPrivateKeyPayloadType
 } from '../constants/action_types'
@@ -22,7 +22,7 @@ import { TokenInfo, UpdateAccountNamePayloadType } from '../../constants/types'
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
 export const restoreWallet = createAction<RestoreWalletPayloadType>('restoreWallet')
 export const addAccount = createAction<AddAccountPayloadType>('addAccount')
-export const addImportedAccount = createAction<AddImportedAccountPayloadType>('addImportedAccount')
+export const importAccount = createAction<ImportAccountPayloadType>('importAccount')
 export const removeImportedAccount = createAction<RemoveImportedAccountPayloadType>('removeImportedAccount')
 export const walletCreated = createAction<WalletCreatedPayloadType>('walletCreated')
 export const walletSetupComplete = createAction('walletSetupComplete')

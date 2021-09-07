@@ -151,13 +151,13 @@ TEST(HDKeyringUnitTest, ImportedAccounts) {
   for (size_t i = 0; i < private_keys_size; ++i) {
     std::vector<uint8_t> private_key;
     EXPECT_TRUE(base::HexStringToBytes(private_keys[i].key, &private_key));
-    EXPECT_EQ(keyring.AddImportedAccount(private_key), private_keys[i].address);
+    EXPECT_EQ(keyring.ImportAccount(private_key), private_keys[i].address);
   }
   EXPECT_EQ(keyring.GetImportedAccountsNumber(), private_keys_size);
   // Trying to add a duplicate account
   std::vector<uint8_t> private_key0;
   EXPECT_TRUE(base::HexStringToBytes(private_keys[0].key, &private_key0));
-  EXPECT_TRUE(keyring.AddImportedAccount(private_key0).empty());
+  EXPECT_TRUE(keyring.ImportAccount(private_key0).empty());
 
   // SignMessage
   std::vector<uint8_t> message;
@@ -204,7 +204,7 @@ TEST(HDKeyringUnitTest, ImportedAccounts) {
       "8140cea58e3bebd6174dbc589a7f70e049556233d32e44969d62e51dd0d1189a";
   std::vector<uint8_t> private_key;
   EXPECT_TRUE(base::HexStringToBytes(account_0_pri_key, &private_key));
-  EXPECT_TRUE(keyring.AddImportedAccount(private_key).empty());
+  EXPECT_TRUE(keyring.ImportAccount(private_key).empty());
 }
 
 }  // namespace brave_wallet

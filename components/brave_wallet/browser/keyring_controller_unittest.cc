@@ -841,7 +841,7 @@ TEST_F(KeyringControllerUnitTest, ImportedAccounts) {
   for (size_t i = 0;
        i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
     bool callback_called = false;
-    controller.AddImportedAccount(
+    controller.ImportAccount(
         imported_accounts[i].name, imported_accounts[i].private_key,
         base::BindLambdaForTesting(
             [&](bool success, const std::string& address) {
@@ -1016,7 +1016,7 @@ TEST_F(KeyringControllerUnitTest, ImportedAccountFromJson) {
   base::RunLoop().RunUntilIdle();
 
   bool callback_called = false;
-  controller.AddImportedAccountFromJson(
+  controller.ImportAccountFromJson(
       "Imported 1", "wrong password", json,
       base::BindLambdaForTesting([&](bool success, const std::string& address) {
         EXPECT_FALSE(success);
@@ -1027,7 +1027,7 @@ TEST_F(KeyringControllerUnitTest, ImportedAccountFromJson) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  controller.AddImportedAccountFromJson(
+  controller.ImportAccountFromJson(
       "Imported 1", "testtest", "{crypto: 123}",
       base::BindLambdaForTesting([&](bool success, const std::string& address) {
         EXPECT_FALSE(success);
@@ -1038,7 +1038,7 @@ TEST_F(KeyringControllerUnitTest, ImportedAccountFromJson) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  controller.AddImportedAccountFromJson(
+  controller.ImportAccountFromJson(
       "Imported 1", "testtest", json,
       base::BindLambdaForTesting([&](bool success, const std::string& address) {
         EXPECT_TRUE(success);
@@ -1244,7 +1244,7 @@ TEST_F(KeyringControllerUnitTest, SetDefaultKeyringImportedAccountName) {
   for (size_t i = 0;
        i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
     callback_called = false;
-    controller.AddImportedAccount(
+    controller.ImportAccount(
         imported_accounts[i].name, imported_accounts[i].private_key,
         base::BindLambdaForTesting(
             [&](bool success, const std::string& address) {
