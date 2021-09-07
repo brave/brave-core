@@ -1817,9 +1817,11 @@ void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
   SetBooleanPref(prefs::kShouldShowMyFirstAdNotification, false);
 }
 
-bool AdsServiceImpl::ShouldShowMyFirstAdNotification() const {
-  auto should_show = GetBooleanPref(prefs::kShouldShowMyFirstAdNotification);
-  return IsEnabled() && should_show;
+bool AdsServiceImpl::ShouldShowMyFirstAdNotification() {
+  const bool should_show_my_first_ad_notification =
+      GetBooleanPref(prefs::kShouldShowMyFirstAdNotification);
+  return IsEnabled() && ShouldShowNotifications() &&
+         should_show_my_first_ad_notification;
 }
 
 bool AdsServiceImpl::PrefExists(const std::string& path) const {
@@ -1987,7 +1989,7 @@ bool AdsServiceImpl::ShouldShowNotifications() {
     return false;
   }
 
-  if (!NotificationHelper::GetInstance()->ShouldShowNotifications()) {
+  if (!NotificationHelper::GetInstance()->CanShowNativeNotifications()) {
     return ShouldShowCustomAdNotifications();
   }
 

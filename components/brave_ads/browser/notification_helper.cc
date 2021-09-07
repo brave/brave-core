@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/browser/notification_helper.h"
 
+#include "build/build_config.h"
+
 namespace brave_ads {
 
 NotificationHelper* g_notification_helper_for_testing = nullptr;
@@ -18,20 +20,16 @@ void NotificationHelper::set_for_testing(
   g_notification_helper_for_testing = notification_helper;
 }
 
-bool NotificationHelper::ShouldShowNotifications() {
+bool NotificationHelper::CanShowNativeNotifications() {
   return true;
 }
 
-bool NotificationHelper::CanShowNativeNotifications() {
+bool NotificationHelper::CanShowBackgroundNotifications() const {
   return true;
 }
 
 bool NotificationHelper::ShowMyFirstAdNotification() {
   return false;
-}
-
-bool NotificationHelper::CanShowBackgroundNotifications() const {
-  return true;
 }
 
 NotificationHelper* NotificationHelper::GetInstance() {
