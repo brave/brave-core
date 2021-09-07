@@ -12,7 +12,6 @@ source_set("brave_wallet_unit_tests") {
   if (brave_wallet_enabled) {
     sources = [
       "//brave/components/brave_wallet/browser/asset_ratio_response_parser_unittest.cc",
-      "//brave/components/brave_wallet/browser/brave_wallet_provider_impl_unittest.cc",
       "//brave/components/brave_wallet/browser/brave_wallet_types_unittest.cc",
       "//brave/components/brave_wallet/browser/brave_wallet_utils_unittest.cc",
       "//brave/components/brave_wallet/browser/eip1559_transaction_unittest.cc",
@@ -41,7 +40,6 @@ source_set("brave_wallet_unit_tests") {
 
     deps = [
       "//base/test:test_support",
-      "//brave/browser/brave_wallet:brave_wallet_delegate",
       "//brave/components/brave_wallet/browser",
       "//brave/components/brave_wallet/browser:ethereum_permission_utils",
       "//brave/components/brave_wallet/common",
@@ -54,5 +52,13 @@ source_set("brave_wallet_unit_tests") {
       "//testing/gtest",
       "//url",
     ]
+    if (!is_android && !is_ios) {
+      sources += [
+        "//brave/components/brave_wallet/browser/brave_wallet_provider_impl_unittest.cc"
+      ]
+      deps += [
+        "//brave/browser/brave_wallet:brave_wallet_delegate"
+      ]
+    }
   }  # if (brave_wallet_enabled)
 }  # source_set("brave_wallet_unit_tests")
