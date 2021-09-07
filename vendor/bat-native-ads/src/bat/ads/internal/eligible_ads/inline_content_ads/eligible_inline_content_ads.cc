@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads.h"
 
-#include <vector>
-
+#include "base/check.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ad_pacing/ad_pacing.h"
 #include "bat/ads/internal/ad_priority/ad_priority.h"
@@ -15,7 +14,6 @@
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_exclusion_rules.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_constants.h"

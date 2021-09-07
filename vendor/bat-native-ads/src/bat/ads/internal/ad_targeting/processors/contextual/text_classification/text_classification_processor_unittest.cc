@@ -6,6 +6,9 @@
 #include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h"
 
 #include "bat/ads/internal/ad_serving/ad_targeting/models/contextual/text_classification/text_classification_model.h"
+#include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_aliases.h"
+#include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 

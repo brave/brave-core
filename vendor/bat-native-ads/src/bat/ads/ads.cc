@@ -5,6 +5,7 @@
 
 #include "bat/ads/ads.h"
 
+#include "base/check.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/locale/supported_country_codes.h"
 #include "brave/components/l10n/common/locale_util.h"

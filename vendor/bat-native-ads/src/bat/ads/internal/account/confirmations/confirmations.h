@@ -10,9 +10,7 @@
 #include <string>
 
 #include "base/values.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/internal/account/confirmations/confirmations_observer.h"
-#include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/timer.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 
@@ -23,6 +21,10 @@ class ConfirmationsState;
 class RedeemUnblindedToken;
 struct CatalogIssuersInfo;
 struct UnblindedTokenInfo;
+
+namespace privacy {
+class TokenGeneratorInterface;
+}  // namespace privacy
 
 class Confirmations : public RedeemUnblindedTokenDelegate {
  public:

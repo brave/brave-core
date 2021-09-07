@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 #include "wrapper.hpp"

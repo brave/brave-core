@@ -9,9 +9,13 @@
 #include <string>
 
 #include "bat/ads/internal/ad_targeting/processors/processor.h"
-#include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 
 namespace ads {
+
+namespace resource {
+class TextClassification;
+}  // namespace resource
+
 namespace ad_targeting {
 namespace processor {
 

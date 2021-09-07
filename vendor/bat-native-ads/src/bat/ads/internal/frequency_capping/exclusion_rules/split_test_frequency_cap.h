@@ -8,11 +8,10 @@
 
 #include <string>
 
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
-
-struct CreativeAdInfo;
 
 class SplitTestFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:

@@ -5,7 +5,7 @@
 
 #include "bat/ads/ad_type.h"
 
-#include "bat/ads/internal/logging.h"
+#include "base/notreached.h"
 
 namespace ads {
 

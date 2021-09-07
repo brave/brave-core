@@ -9,7 +9,7 @@
 #include <deque>
 #include <vector>
 
-#include "bat/ads/internal/logging.h"
+#include "base/check_op.h"
 
 namespace ads {
 
@@ -35,7 +35,7 @@ std::vector<std::vector<T>> SplitVector(const std::vector<T>& elements,
   auto begin = elements.begin();
   const auto end = elements.end();
   while (begin != end) {
-    auto next =
+    const auto next =
         std::distance(begin, end) >= chunk_size ? begin + chunk_size : end;
 
     result.emplace_back(begin, next);

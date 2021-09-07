@@ -14,7 +14,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/logging.h"
+#include "base/check.h"
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
 #include "rapidjson/schema.h"

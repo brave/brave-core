@@ -14,10 +14,8 @@
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
-#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_aliases.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
-#include "bat/ads/internal/client/client_info.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/client/preferences/filtered_ad_info.h"
 #include "bat/ads/internal/client/preferences/filtered_category_info.h"
 #include "bat/ads/internal/client/preferences/flagged_ad_info.h"
@@ -25,10 +23,15 @@
 
 namespace ads {
 
+namespace ad_targeting {
+struct PurchaseIntentSignalHistoryInfo;
+}  // namespace ad_targeting
+
 struct AdContentInfo;
 struct AdHistoryInfo;
 struct AdInfo;
 struct CategoryContentInfo;
+struct ClientInfo;
 
 class Client {
  public:

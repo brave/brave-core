@@ -9,7 +9,6 @@
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/promoted_content_ad_info.h"
 
 namespace ads {
 namespace promoted_content_ads {

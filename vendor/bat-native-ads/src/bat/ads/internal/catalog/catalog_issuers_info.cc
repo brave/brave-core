@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/logging.h"
 #include "third_party/re2/src/re2/re2.h"

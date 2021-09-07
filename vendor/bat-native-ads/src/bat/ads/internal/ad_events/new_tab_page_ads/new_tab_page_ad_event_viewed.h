@@ -7,11 +7,9 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_VIEWED_H_
 
 #include "bat/ads/internal/ad_events/ad_event.h"
+#include "bat/ads/new_tab_page_ad_info.h"
 
 namespace ads {
-
-struct NewTabPageAdInfo;
-
 namespace new_tab_page_ads {
 
 class AdEventViewed : public AdEvent<NewTabPageAdInfo> {

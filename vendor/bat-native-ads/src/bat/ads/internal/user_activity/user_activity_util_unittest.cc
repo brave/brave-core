@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/user_activity/user_activity_scoring.h"
 
-#include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/internal/user_activity/user_activity_util.h"
 

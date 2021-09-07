@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 #include "bat/ads/internal/logging.h"
 

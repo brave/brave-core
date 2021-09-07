@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <functional>
 
+#include "base/check_op.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
@@ -16,6 +17,7 @@
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
+#include "bat/ads/internal/client/client_info.h"
 #include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
 #include "bat/ads/internal/json_helper.h"

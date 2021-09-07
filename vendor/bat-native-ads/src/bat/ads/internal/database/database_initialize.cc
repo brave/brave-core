@@ -8,10 +8,10 @@
 #include <functional>
 #include <utility>
 
+#include "base/check.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_migration.h"
 #include "bat/ads/internal/database/database_version.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 namespace database {

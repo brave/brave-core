@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <utility>
 
+#include "base/check.h"
 #include "brave_base/random.h"
 
 namespace ads {

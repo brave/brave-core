@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/conversions/conversions.h"
 
+#include <cstdint>
 #include <memory>
 
 #include "base/strings/stringprintf.h"

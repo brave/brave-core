@@ -9,9 +9,10 @@
 #include <memory>
 
 #include "bat/ads/ads_history_info.h"
-#include "bat/ads/internal/ads_history/filters/ads_history_filter.h"
 
 namespace ads {
+
+class AdsHistoryFilter;
 
 class AdsHistoryFilterFactory {
  public:

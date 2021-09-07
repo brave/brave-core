@@ -5,17 +5,17 @@
 
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
 
+#include <algorithm>
+#include <functional>
 #include <utility>
 
-#include "base/strings/string_util.h"
+#include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
 #include "bat/ads/internal/database/database_util.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daypart_frequency_cap.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 namespace database {

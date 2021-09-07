@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/catalog/catalog.h"
 
+#include <cstdint>
+
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 

@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/user_activity/user_activity.h"
 
-#include <cstdint>
 #include <string>
 
+#include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/features/user_activity/user_activity_features.h"
 #include "bat/ads/internal/logging.h"

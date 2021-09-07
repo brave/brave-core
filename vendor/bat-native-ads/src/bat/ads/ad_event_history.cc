@@ -5,6 +5,9 @@
 
 #include "bat/ads/ad_event_history.h"
 
+#include <cstdint>
+
+#include "base/check.h"
 #include "base/time/time.h"
 
 namespace ads {

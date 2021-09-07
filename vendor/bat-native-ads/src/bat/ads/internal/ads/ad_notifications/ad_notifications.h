@@ -11,11 +11,10 @@
 #include <string>
 
 #include "base/values.h"
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
 
 namespace ads {
-
-struct AdNotificationInfo;
 
 class AdNotifications {
  public:

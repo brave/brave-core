@@ -10,6 +10,7 @@
 #include "base/time/time.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/inline_content_ad_info.h"
+#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/new_tab_page_ad_info.h"

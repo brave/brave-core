@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/number_util.h"
 
-#include <string>
-
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

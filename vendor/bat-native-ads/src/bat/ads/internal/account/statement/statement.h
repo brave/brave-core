@@ -8,8 +8,6 @@
 
 #include <cstdint>
 
-#include "base/time/time.h"
-
 namespace ads {
 
 class AdRewards;

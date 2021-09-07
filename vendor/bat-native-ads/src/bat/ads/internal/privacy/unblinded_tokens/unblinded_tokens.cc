@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check_op.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {

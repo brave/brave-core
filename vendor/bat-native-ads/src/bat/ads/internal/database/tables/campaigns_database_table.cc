@@ -5,15 +5,16 @@
 
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
 
+#include <cstdint>
+#include <functional>
 #include <utility>
 
-#include "base/strings/string_util.h"
+#include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
 #include "bat/ads/internal/database/database_util.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 namespace database {

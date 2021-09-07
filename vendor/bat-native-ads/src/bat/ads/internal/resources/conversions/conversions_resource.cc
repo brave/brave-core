@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/resources/conversions/conversions_resource.h"
 
-#include <utility>
-
 #include "base/json/json_reader.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"

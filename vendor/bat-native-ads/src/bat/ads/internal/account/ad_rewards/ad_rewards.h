@@ -8,11 +8,9 @@
 
 #include <cstdint>
 #include <memory>
-#include <string>
 
 #include "base/time/time.h"
 #include "base/values.h"
-#include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -20,6 +18,7 @@
 
 namespace ads {
 
+class AdRewardsDelegate;
 class Payments;
 
 class AdRewards {

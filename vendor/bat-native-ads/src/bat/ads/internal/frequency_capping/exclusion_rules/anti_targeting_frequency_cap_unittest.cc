@@ -5,9 +5,6 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/anti_targeting_frequency_cap.h"
 
-#include <memory>
-
-#include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"

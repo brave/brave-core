@@ -8,6 +8,8 @@
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 

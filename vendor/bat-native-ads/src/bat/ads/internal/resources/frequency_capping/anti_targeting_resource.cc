@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 
-#include <utility>
 #include <vector>
 
 #include "base/json/json_reader.h"

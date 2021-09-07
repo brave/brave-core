@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/statement/statement.h"
 
+#include "base/check.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/statement_info.h"

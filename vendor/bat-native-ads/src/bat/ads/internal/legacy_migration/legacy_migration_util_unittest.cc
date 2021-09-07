@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/legacy_migration/legacy_migration_util.h"
 
+#include <cstdint>
+
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

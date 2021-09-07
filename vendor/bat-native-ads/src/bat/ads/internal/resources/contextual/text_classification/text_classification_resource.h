@@ -7,12 +7,17 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_RESOURCE_H_
 
 #include <memory>
-#include <string>
 
-#include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 #include "bat/ads/internal/resources/resource.h"
 
 namespace ads {
+
+namespace ml {
+namespace pipeline {
+class TextProcessing;
+}  // namespace pipeline
+}  // namespace ml
+
 namespace resource {
 
 class TextClassification : public Resource<ml::pipeline::TextProcessing*> {

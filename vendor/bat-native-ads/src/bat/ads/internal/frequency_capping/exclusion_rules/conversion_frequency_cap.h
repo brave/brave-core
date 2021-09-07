@@ -14,8 +14,6 @@
 
 namespace ads {
 
-struct CreativeAdInfo;
-
 class ConversionFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
   explicit ConversionFrequencyCap(const AdEventList& ad_events);

@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 
 #include "bat/ads/internal/ml/ml_transformation_util.h"
+#include "bat/ads/internal/ml/transformation/transformation.h"
 
 namespace ads {
 namespace ml {

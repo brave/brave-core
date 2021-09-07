@@ -7,16 +7,18 @@
 
 #include <algorithm>
 #include <cstdint>
-#include <functional>
 #include <set>
-#include <utility>
 
-#include "base/strings/string_number_conversions.h"
+#include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
+#include "bat/ads/internal/conversions/sorts/conversions_sort.h"
 #include "bat/ads/internal/conversions/sorts/conversions_sort_factory.h"
+#include "bat/ads/internal/conversions/verifiable_conversion_info.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/conversion_queue_database_table.h"
 #include "bat/ads/internal/database/tables/conversions_database_table.h"

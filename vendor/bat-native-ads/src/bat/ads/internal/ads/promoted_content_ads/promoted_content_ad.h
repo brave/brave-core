@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
