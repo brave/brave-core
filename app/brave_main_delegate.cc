@@ -263,7 +263,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     feed::kInterestFeedContentSuggestions.name,
     feed::kInterestFeedV2.name,
     offline_pages::kPrefetchingOfflinePagesFeature.name,
-    signin::kMobileIdentityConsistency.name,
     translate::kTranslate.name,
 #endif
   };
