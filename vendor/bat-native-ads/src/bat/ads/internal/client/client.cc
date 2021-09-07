@@ -323,7 +323,7 @@ bool Client::ToggleSaveAd(const std::string& creative_instance_id,
                           const bool saved) {
   DCHECK(is_initialized_);
 
-  const bool saved_ad = !saved;
+  const bool is_saved_ad = !saved;
 
   // Update this ad in the saved ads list
   auto it_ad = std::find_if(
@@ -333,7 +333,7 @@ bool Client::ToggleSaveAd(const std::string& creative_instance_id,
         return saved_ad.creative_instance_id == creative_instance_id;
       });
 
-  if (saved_ad) {
+  if (is_saved_ad) {
     if (it_ad == client_->ad_preferences.saved_ads.end()) {
       SavedAdInfo saved_ad;
       saved_ad.creative_instance_id = creative_instance_id;
@@ -349,13 +349,13 @@ bool Client::ToggleSaveAd(const std::string& creative_instance_id,
   // Update the history detail for ads matching this creative instance id
   for (auto& item : client_->ads_shown_history) {
     if (item.ad_content.creative_instance_id == creative_instance_id) {
-      item.ad_content.saved_ad = saved_ad;
+      item.ad_content.saved_ad = is_saved_ad;
     }
   }
 
   Save();
 
-  return saved_ad;
+  return is_saved_ad;
 }
 
 bool Client::GetSavedAdForCreativeInstanceId(
@@ -374,7 +374,7 @@ bool Client::ToggleFlagAd(const std::string& creative_instance_id,
                           const bool flagged) {
   DCHECK(is_initialized_);
 
-  const bool flagged_ad = !flagged;
+  const bool is_flagged_ad = !flagged;
 
   // Update this ad in the flagged ads list
   auto it_ad = std::find_if(
@@ -384,7 +384,7 @@ bool Client::ToggleFlagAd(const std::string& creative_instance_id,
         return flagged_ad.creative_instance_id == creative_instance_id;
       });
 
-  if (flagged_ad) {
+  if (is_flagged_ad) {
     if (it_ad == client_->ad_preferences.flagged_ads.end()) {
       FlaggedAdInfo flagged_ad;
       flagged_ad.creative_instance_id = creative_instance_id;
@@ -400,13 +400,13 @@ bool Client::ToggleFlagAd(const std::string& creative_instance_id,
   // Update the history detail for ads matching this creative instance id
   for (auto& item : client_->ads_shown_history) {
     if (item.ad_content.creative_instance_id == creative_instance_id) {
-      item.ad_content.flagged_ad = flagged_ad;
+      item.ad_content.flagged_ad = is_flagged_ad;
     }
   }
 
   Save();
 
-  return flagged_ad;
+  return is_flagged_ad;
 }
 
 bool Client::GetFlaggedAdForCreativeInstanceId(
