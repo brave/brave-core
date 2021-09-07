@@ -363,6 +363,7 @@ class BraveClassVisitor extends ClassVisitor {
                       int access) {
         if (shouldDeleteInnerClass(innerName)) {
             System.out.println("delete InnerClass " + innerName + " from " + mName);
+            return;
         }
 
         if (shouldMakePublicInnerClass(innerName)) {
