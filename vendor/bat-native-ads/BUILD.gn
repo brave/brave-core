@@ -681,8 +681,6 @@ source_set("ads") {
     "src/bat/ads/internal/server/ads_server_util.h",
     "src/bat/ads/internal/server/confirmations_server_util.cc",
     "src/bat/ads/internal/server/confirmations_server_util.h",
-    "src/bat/ads/internal/server/rewards_server_util.cc",
-    "src/bat/ads/internal/server/rewards_server_util.h",
     "src/bat/ads/internal/server/url_request_builder.h",
     "src/bat/ads/internal/server/via_header_util.cc",
     "src/bat/ads/internal/server/via_header_util.h",

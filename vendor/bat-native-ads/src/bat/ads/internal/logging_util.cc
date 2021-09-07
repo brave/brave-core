@@ -105,8 +105,6 @@ std::string UrlRequestHeadersToString(const mojom::UrlRequestPtr& url_request) {
 }
 
 std::string UrlResponseToString(const mojom::UrlResponse& url_response) {
-  const std::string formatted_headers = HeadersToString(url_response.headers);
-
   return base::StringPrintf(
       "URL Response:\n  URL: %s\n  Response "
       "Status Code: %d\n  Response: %s",

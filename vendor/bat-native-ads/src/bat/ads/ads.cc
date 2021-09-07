@@ -36,27 +36,6 @@ bool IsSupportedLocale(const std::string& locale) {
   return false;
 }
 
-bool IsNewlySupportedLocale(const std::string& locale,
-                            const int last_schema_version) {
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  for (const auto& schema : kSupportedCountryCodes) {
-    const int schema_version = schema.first;
-    if (schema_version < last_schema_version) {
-      continue;
-    }
-
-    const SupportedCountryCodesSet country_codes = schema.second;
-    const auto iter =
-        std::find(country_codes.begin(), country_codes.end(), country_code);
-    if (iter != country_codes.end()) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
 // static
 Ads* Ads::CreateInstance(AdsClient* ads_client) {
   DCHECK(ads_client);
