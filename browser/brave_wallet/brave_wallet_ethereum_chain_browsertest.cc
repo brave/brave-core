@@ -312,7 +312,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddBrokenChain) {
   WaitForLoadStop(contents);
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(contents);
-  ASSERT_FALSE(tab_helper->IsShowingBubble());
+  ASSERT_TRUE(tab_helper->IsShowingBubble());
   tab_helper->CloseBubble();
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(tab_helper->IsShowingBubble());

@@ -75,7 +75,8 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                           v8::Isolate* isolate,
                           v8::Global<v8::Context> context_old,
                           bool success,
-                          const std::string& response);
+                          int provider_error,
+                          const std::string& error_message);
   content::RenderFrame* render_frame_;
   mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;
   mojo::Receiver<mojom::EventsListener> receiver_{this};

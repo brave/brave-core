@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
@@ -40,17 +39,15 @@ void ValidateErrorCode(BraveWalletProviderImpl* provider,
                        ProviderErrors expected) {
   bool callback_is_called = false;
   provider->AddEthereumChain(
-      payload, base::BindLambdaForTesting([&callback_is_called, &expected](
-                                              bool success,
-                                              const std::string& response) {
-        auto json_value = base::JSONReader::Read(response);
-        ASSERT_FALSE(json_value->FindPath("result"));
-        EXPECT_EQ(json_value->FindPath("error.code")->GetInt(),
-                  static_cast<int>(expected));
-        ASSERT_FALSE(
-            json_value->FindPath("error.message")->GetString().empty());
-        callback_is_called = true;
-      }));
+      payload,
+      base::BindLambdaForTesting(
+          [&callback_is_called, &expected](bool success, int error_code,
+                                           const std::string& error_message) {
+            ASSERT_FALSE(success);
+            EXPECT_EQ(error_code, static_cast<int>(expected));
+            ASSERT_FALSE(error_message.empty());
+            callback_is_called = true;
+          }));
   ASSERT_TRUE(callback_is_called);
 }
 
@@ -159,13 +156,12 @@ TEST_F(BraveWalletProviderImplUnitTest, OnAddEthereumChain) {
         "rpcUrls": ["https://bsc-dataseed.binance.org/"]
       }]})",
       base::BindLambdaForTesting(
-          [&callback_is_called](bool success, const std::string& response) {
-            auto json_value = base::JSONReader::Read(response);
-            ASSERT_FALSE(json_value->FindPath("result"));
-            EXPECT_EQ(json_value->FindPath("error.code")->GetInt(),
+          [&callback_is_called](bool success, int error_code,
+                                const std::string& error_message) {
+            ASSERT_FALSE(success);
+            EXPECT_EQ(error_code,
                       static_cast<int>(ProviderErrors::kUserRejectedRequest));
-            ASSERT_FALSE(
-                json_value->FindPath("error.message")->GetString().empty());
+            ASSERT_FALSE(error_message.empty());
             callback_is_called = true;
           }));
   ASSERT_FALSE(callback_is_called);
@@ -190,13 +186,12 @@ TEST_F(BraveWalletProviderImplUnitTest,
         "rpcUrls": ["https://bsc-dataseed.binance.org/"]
       }]})",
       base::BindLambdaForTesting(
-          [&callback_is_called](bool success, const std::string& response) {
-            auto json_value = base::JSONReader::Read(response);
-            ASSERT_FALSE(json_value->FindPath("result"));
-            EXPECT_EQ(json_value->FindPath("error.code")->GetInt(),
+          [&callback_is_called](bool success, int error_code,
+                                const std::string& error_message) {
+            ASSERT_FALSE(success);
+            EXPECT_EQ(error_code,
                       static_cast<int>(ProviderErrors::kUserRejectedRequest));
-            EXPECT_EQ(json_value->FindPath("error.message")->GetString(),
-                      "test message");
+            EXPECT_EQ(error_message, "test message");
             callback_is_called++;
           }));
   EXPECT_EQ(callback_is_called, 0);
@@ -223,11 +218,11 @@ TEST_F(BraveWalletProviderImplUnitTest,
         "rpcUrls": ["https://bsc-dataseed.binance.org/"]
       }]})",
       base::BindLambdaForTesting(
-          [&callback_is_called](bool success, const std::string& response) {
-            auto json_value = base::JSONReader::Read(response);
+          [&callback_is_called](bool success, int error_code,
+                                const std::string& error_message) {
             base::Value empty;
-            ASSERT_TRUE(json_value->FindPath("result")->Equals(&empty));
-            ASSERT_FALSE(json_value->FindPath("error"));
+            EXPECT_EQ(error_code, 0);
+            ASSERT_TRUE(error_message.empty());
             callback_is_called++;
           }));
   EXPECT_EQ(callback_is_called, 0);
