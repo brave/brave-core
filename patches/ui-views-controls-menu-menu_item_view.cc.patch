@@ -1,0 +1,33 @@
+diff --git a/ui/views/controls/menu/menu_item_view.cc b/ui/views/controls/menu/menu_item_view.cc
+index 039cbc90f0eed01ecdda3c27a9aa56cc0b6ef3ac..5fd42621b9c56fbe692222ff60d35b137ce46c11 100644
+--- a/ui/views/controls/menu/menu_item_view.cc
++++ b/ui/views/controls/menu/menu_item_view.cc
+@@ -52,6 +52,8 @@
+ #include "ui/views/view_class_properties.h"
+ #include "ui/views/widget/widget.h"
+ 
++#include "ui/views/controls/button/toggle_button.h"
++
+ #if defined(OS_MAC)
+ #include "ui/views/accessibility/view_accessibility.h"
+ #endif  //  defined(OS_MAC)
+@@ -223,6 +225,7 @@ void MenuItemView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
+       node_data->SetHasPopup(ax::mojom::HasPopup::kMenu);
+       break;
+     case Type::kCheckbox:
++    case Type::kToggle:
+     case Type::kRadio: {
+       const bool is_checked =
+           GetDelegate() && GetDelegate()->IsItemChecked(GetCommand());
+@@ -861,6 +864,11 @@ void MenuItemView::Init(MenuItemView* parent,
+     radio_check_image_view_->SetCanProcessEventsWithinSubtree(false);
+   }
+ 
++  if (type_ == Type::kToggle && GetDelegate()) {
++    auto* toggle = AddChildView(std::make_unique<ToggleButton>(GetDelegate()->GetToggleMenuCallback(GetCommand())));
++    toggle->SetIsOn(GetDelegate()->IsItemChecked(GetCommand()));
++  }
++
+   if (type_ == Type::kActionableSubMenu)
+     vertical_separator_ = AddChildView(std::make_unique<VerticalSeparator>());
+ 

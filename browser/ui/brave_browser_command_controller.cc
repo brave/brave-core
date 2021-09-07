@@ -196,6 +196,7 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
     UpdateCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK, false);
     UpdateCommandEnabled(IDC_ABOUT_BRAVE_VPN, false);
     UpdateCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN, false);
+    UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN, false);
     return;
   }
 
@@ -209,6 +210,7 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
       BraveVpnServiceFactory::GetForProfile(browser_->profile());
   // Only show vpn sub menu for purchased user.
   UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, vpn_service->is_purchased_user());
+  UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN, vpn_service->is_purchased_user());
 #endif
 }
 
@@ -292,6 +294,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SEND_BRAVE_VPN_FEEDBACK:
     case IDC_ABOUT_BRAVE_VPN:
     case IDC_MANAGE_BRAVE_VPN_PLAN:
+    case IDC_TOGGLE_BRAVE_VPN:
       NOTIMPLEMENTED();
       break;
     default:

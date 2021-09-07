@@ -238,7 +238,6 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
   const bool show_panel_item = IsCommandIdEnabled(IDC_SHOW_BRAVE_VPN_PANEL);
 
   if (show_menu_item) {
-    // Sub menu for post-purchased is not yet implemented.
     sub_menus_.push_back(std::make_unique<BraveVPNMenuModel>(browser()));
     InsertSubMenuWithStringIdAt(GetIndexOfBraveVPNItem(), IDC_BRAVE_VPN_MENU,
                                 IDS_BRAVE_VPN_MENU, sub_menus_.back().get());

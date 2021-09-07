@@ -68,6 +68,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
         command_controller->IsCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN));
 
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_TOGGLE_BRAVE_VPN));
 
     SetPurchasedUserForBraveVPN(browser, true);
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
@@ -80,6 +81,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
         command_controller->IsCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN));
 
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_BRAVE_VPN));
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;

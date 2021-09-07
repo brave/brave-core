@@ -1,0 +1,13 @@
+diff --git a/ui/views/controls/menu/menu_delegate.h b/ui/views/controls/menu/menu_delegate.h
+index b47a61998daaa3fabfbd58f7b0454fcaaa9f0dcf..e0a4155f8227465b3ecb4f8abdace2af2e4d6420 100644
+--- a/ui/views/controls/menu/menu_delegate.h
++++ b/ui/views/controls/menu/menu_delegate.h
+@@ -231,6 +231,8 @@ class VIEWS_EXPORT MenuDelegate {
+   // rather than directly above or below it, when the menu is too tall to fit
+   // within the screen.
+   virtual bool ShouldTryPositioningBesideAnchor() const;
++
++  virtual base::RepeatingCallback<void(const ui::Event& event)> GetToggleMenuCallback(int command_id) const;
+ };
+ 
+ }  // namespace views

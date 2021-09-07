@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/toolbar/app_menu.h b/chrome/browser/ui/views/toolbar/app_menu.h
+index 494e0ba95614c0f5894db2c3619ffda29cea79a9..7cea0f42a7b4f7f9b62cbabc52a12cca480fba50 100644
+--- a/chrome/browser/ui/views/toolbar/app_menu.h
++++ b/chrome/browser/ui/views/toolbar/app_menu.h
+@@ -94,6 +94,7 @@ class AppMenu : public views::MenuDelegate,
+   void OnMenuClosed(views::MenuItemView* menu) override;
+   bool ShouldExecuteCommandWithoutClosingMenu(int command_id,
+                                               const ui::Event& event) override;
++  base::RepeatingCallback<void(const ui::Event& event)> GetToggleMenuCallback(int command_id) const override;
+ 
+   // bookmarks::BaseBookmarkModelObserver overrides:
+   void BookmarkModelChanged() override;

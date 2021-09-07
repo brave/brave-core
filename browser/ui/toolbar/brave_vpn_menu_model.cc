@@ -18,8 +18,8 @@ BraveVPNMenuModel::BraveVPNMenuModel(Browser* browser)
 BraveVPNMenuModel::~BraveVPNMenuModel() = default;
 
 void BraveVPNMenuModel::Build() {
-  DCHECK(browser_);
-
+  AddToggleItemWithStringId(IDC_TOGGLE_BRAVE_VPN, IDS_BRAVE_VPN_MENU);
+  AddSeparator(ui::NORMAL_SEPARATOR);
   AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON,
                       IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM);
   AddItemWithStringId(IDC_SEND_BRAVE_VPN_FEEDBACK,
@@ -29,6 +29,27 @@ void BraveVPNMenuModel::Build() {
                       IDS_BRAVE_VPN_MANAGE_MY_PLAN_MENU_ITEM);
 }
 
+bool BraveVPNMenuModel::IsItemCheckedAt(int index) const {
+  ui::MenuModel::ItemType item_type = GetTypeAt(index);
+  if (item_type == ui::MenuModel::TYPE_TOGGLE) {
+    return IsCommandIdChecked(GetCommandIdAt(index));
+  }
+
+  return SimpleMenuModel::IsItemCheckedAt(index);
+}
+
 void BraveVPNMenuModel::ExecuteCommand(int command_id, int event_flags) {
   chrome::ExecuteCommand(browser_, command_id);
+}
+
+bool BraveVPNMenuModel::IsCommandIdChecked(int command_id) const {
+  if (command_id != IDC_TOGGLE_BRAVE_VPN)
+    return false;
+
+  return IsVPNConnected();
+}
+
+bool BraveVPNMenuModel::IsVPNConnected() const {
+  NOTIMPLEMENTED();
+  return true;
 }
