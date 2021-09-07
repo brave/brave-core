@@ -16,10 +16,10 @@ import static org.objectweb.asm.Opcodes.NEW;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,7 +91,8 @@ class BraveClassVisitor extends ClassVisitor {
                 Map<String, String> types = mRedirectMethodType.get(mMethod.name);
                 if (types.containsKey(type)) {
                     String newType = types.get(type);
-                    System.out.println("redirecting type in method " + mMethod.name + " from " + type + " to " + newType);
+                    System.out.println("redirecting type in method " + mMethod.name + " from "
+                            + type + " to " + newType);
                     type = newType;
                 }
             }
@@ -233,12 +234,10 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     private boolean shouldDeleteInnerClass(String innerName) {
-        for(Map.Entry<String, ArrayList<String>> entry :
-                mDeleteInnerClasses.entrySet()) {
+        for (Map.Entry<String, ArrayList<String>> entry : mDeleteInnerClasses.entrySet()) {
             String outerName = entry.getKey();
             ArrayList<String> innerNames = entry.getValue();
-            return outerName.contains(mName) &&
-                   innerNames.contains(innerName);
+            return outerName.contains(mName) && innerNames.contains(innerName);
         }
 
         return false;
@@ -254,12 +253,10 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     private boolean shouldMakePublicInnerClass(String innerName) {
-        for(Map.Entry<String, ArrayList<String>> entry :
-                mMakePublicInnerClasses.entrySet()) {
+        for (Map.Entry<String, ArrayList<String>> entry : mMakePublicInnerClasses.entrySet()) {
             String outerName = entry.getKey();
             ArrayList<String> innerNames = entry.getValue();
-            return outerName.contains(mName) &&
-                   innerNames.contains(innerName);
+            return outerName.contains(mName) && innerNames.contains(innerName);
         }
 
         return false;
@@ -320,7 +317,8 @@ class BraveClassVisitor extends ClassVisitor {
         mRedirectConstructors.put(originalClassName, newClassName);
     }
 
-    protected void redirectTypeInMethod(String methodName, String originalTypeName, String newTypeName) {
+    protected void redirectTypeInMethod(
+            String methodName, String originalTypeName, String newTypeName) {
         Map types = mRedirectMethodType.get(methodName);
         if (types == null) {
             types = new HashMap<String, String>();
@@ -357,10 +355,7 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     @Override
-    public void visitInnerClass​(String name,
-                      String outerName,
-                      String innerName,
-                      int access) {
+    public void visitInnerClass​(String name, String outerName, String innerName, int access) {
         if (shouldDeleteInnerClass(innerName)) {
             System.out.println("delete InnerClass " + innerName + " from " + mName);
             return;
@@ -408,7 +403,8 @@ class BraveClassVisitor extends ClassVisitor {
                 if (desc.contains(originalTypeName)) {
                     // Use literal replacement like other methods in the class
                     desc = desc.replace(originalTypeName, newTypeName);
-                    System.out.println("redirecting type in method declaration " + name + " from " + originalTypeName + " to " + newTypeName);
+                    System.out.println("redirecting type in method declaration " + name + " from "
+                            + originalTypeName + " to " + newTypeName);
                 }
             }
         }
