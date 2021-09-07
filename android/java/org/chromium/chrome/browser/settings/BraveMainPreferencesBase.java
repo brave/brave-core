@@ -174,7 +174,8 @@ public class BraveMainPreferencesBase
         if (BraveVpnPrefUtils.isBraveVpnBooleanPref(
                     BraveVpnPrefUtils.PREF_BRAVE_VPN_CALLOUT_SETTINGS, true)
                 && !BraveVpnPrefUtils.isBraveVpnBooleanPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false)) {
+                        BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false)
+                && BraveVpnUtils.isBraveVpnFeatureEnable()) {
             findPreference(PREF_BRAVE_VPN_CALLOUT).setOrder(firstSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
@@ -184,7 +185,11 @@ public class BraveMainPreferencesBase
 
         findPreference(PREF_SHIELDS_AND_PRIVACY).setOrder(++firstSectionOrder);
         findPreference(PREF_BRAVE_REWARDS).setOrder(++firstSectionOrder);
-        findPreference(PREF_BRAVE_VPN).setOrder(++firstSectionOrder);
+        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
+            findPreference(PREF_BRAVE_VPN).setOrder(++firstSectionOrder);
+        } else {
+            removePreferenceIfPresent(PREF_BRAVE_VPN);
+        }
 
         int generalOrder = firstSectionOrder;
         findPreference(PREF_GENERAL_SECTION).setOrder(++generalOrder);

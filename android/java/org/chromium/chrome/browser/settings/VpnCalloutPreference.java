@@ -54,6 +54,7 @@ public class VpnCalloutPreference extends Preference {
         ViewGroup.LayoutParams params = mainView.getLayoutParams();
         params.width = width;
         params.height = height;
+        mainView.setLayoutParams(params);
         mainView.requestLayout();
 
         AppCompatImageView btnClose = (AppCompatImageView) holder.findViewById(R.id.modal_close);

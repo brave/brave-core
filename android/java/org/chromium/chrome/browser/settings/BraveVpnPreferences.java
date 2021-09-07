@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,7 +15,6 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.Uri;
 import android.net.VpnManager;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -102,8 +102,8 @@ public class BraveVpnPreferences
         mVpnSwitch.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                progressDialog = ProgressDialog.show(getActivity(), "", 
-                    "Loading. Please wait...", true);
+                progressDialog =
+                        ProgressDialog.show(getActivity(), "", "Loading. Please wait...", true);
                 if (mVpnSwitch != null) {
                     mVpnSwitch.setChecked(
                             VpnProfileUtils.getInstance(getActivity()).isVPNConnected());
@@ -203,8 +203,8 @@ public class BraveVpnPreferences
         super.onResume();
         if (BraveVpnUtils.isServerLocationChanged) {
             BraveVpnUtils.isServerLocationChanged = false;
-            progressDialog = ProgressDialog.show(getActivity(), "", 
-                    "Loading. Please wait...", true);
+            progressDialog =
+                    ProgressDialog.show(getActivity(), "", "Loading. Please wait...", true);
             verifyPurchase(false);
         }
         new Handler().post(() -> updateSummaries());

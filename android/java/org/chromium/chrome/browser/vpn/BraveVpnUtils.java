@@ -32,6 +32,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnPlansActivity;
+import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.VpnServerRegion;
 
@@ -47,7 +48,9 @@ public class BraveVpnUtils {
     public static boolean isServerLocationChanged = false;
 
     public static boolean isBraveVpnFeatureEnable() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+                && BraveVpnPrefUtils.isBraveVpnBooleanPref(
+                        BraveVpnPrefUtils.PREF_BRAVE_VPN_FEATURE, false)) {
             return true;
         }
         return false;

@@ -13,6 +13,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 
 public class BraveVpnPrefUtils {
+    public static final String PREF_BRAVE_VPN_FEATURE = "brave_vpn_feature";
     public static final String PREF_BRAVE_VPN_CALLOUT = "brave_vpn_callout";
     public static final String PREF_BRAVE_VPN_CALLOUT_SETTINGS = "brave_vpn_callout_settings";
     public static final String PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE =
