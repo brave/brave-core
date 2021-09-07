@@ -476,6 +476,8 @@ source_set("ui") {
 
   if (enable_brave_vpn && !is_android) {
     sources += [
+      "toolbar/brave_vpn_menu_model.cc",
+      "toolbar/brave_vpn_menu_model.h",
       "webui/brave_vpn/vpn_panel_handler.cc",
       "webui/brave_vpn/vpn_panel_handler.h",
       "webui/brave_vpn/vpn_panel_ui.cc",
