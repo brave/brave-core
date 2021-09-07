@@ -133,7 +133,6 @@ RegisterStyleOverride(
         margin-top: 30px !important;
         line-height: 1.25 !important;
         border: none !important;
-        :host { border-radius: 0 !important; }
       }
 
       #advancedButton > iron-icon {
