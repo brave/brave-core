@@ -58,11 +58,19 @@ const getLink = (type: PromoType) => {
   return ''
 }
 
+// Ensure that images are retrieved from the root path, since we may be on a
+// rewards page subpath like brave://rewards/uphold.
+// TODO: Come up with a more generic solution for this, since it affects other
+// resource loads
+const getRootImagePath = (path: string) => {
+  return `/${path}`
+}
+
 export const getPromo = (type: PromoType, rewardsData: Rewards.State) => {
   switch (type) {
     case 'gemini':
       return {
-        imagePath: geminiBg,
+        imagePath: getRootImagePath(geminiBg),
         link: getLink(type),
         copy: (
           <StyledInfo>
@@ -80,7 +88,7 @@ export const getPromo = (type: PromoType, rewardsData: Rewards.State) => {
       }
     case 'tap-network':
       return {
-        imagePath: tapBg,
+        imagePath: getRootImagePath(tapBg),
         link: getLink(type),
         copy: (
           <StyledInfo>
@@ -93,7 +101,7 @@ export const getPromo = (type: PromoType, rewardsData: Rewards.State) => {
       }
     case 'uphold-card':
       return {
-        imagePath: upholdCardBg,
+        imagePath: getRootImagePath(upholdCardBg),
         link: getLink(type),
         copy: (
           <StyledInfo>
@@ -105,7 +113,7 @@ export const getPromo = (type: PromoType, rewardsData: Rewards.State) => {
       }
     case 'uphold-equities':
       return {
-        imagePath: upholdEquitiesBg,
+        imagePath: getRootImagePath(upholdEquitiesBg),
         link: getLink(type),
         copy: (
           <StyledInfo>
