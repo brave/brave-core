@@ -59,6 +59,8 @@ void LocalStorageImpl::DeleteStorage(const url::Origin& origin,
       in_memory_local_storage_->DeleteStorage(*non_opaque_origin,
                                               std::move(callback));
       non_opaque_origins_.erase(origin);
+    } else {
+      std::move(callback).Run();
     }
   } else {
     local_storage_->DeleteStorage(origin, std::move(callback));
