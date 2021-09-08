@@ -211,6 +211,12 @@
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "リソースの読み込み中に問題が発生しました！";
 
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "有効にすると、閲覧中のページにあるメディアがBrave Playlistに追加された可能性があることを示すバッジが、メインメニューのアイコンに表示されます。";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "メニューの通知バッジを表示する";
+
 /* Text indicator on the table cell If a video is already downloaded */
 "playList.noItemLabelTitle" = "利用可能なアイテムがありません";
 
@@ -301,17 +307,26 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "前回の続きから再生";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "オンにすると、多くの動画・音声メディアのウェブサイトで、動画や音声を簡単にPlaylistに追加するためのバーが自動で表示されます。";
-
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionTitle" = "「Brave Playlistに追加する」を表示する";
-
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "WebKit MediaSource APIを無効化します";
 
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "Web互換性";
+
+/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddBody" = "Brave Playlistにより、オフライン再生、ピクチャー・イン・ピクチャー再生、連続再生、リピート再生ができるようになります。";
+
+/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddedTitle" = "このメディアはBrave Playlistに追加されています。";
+
+/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddTitle" = "このメディアをBrave Playlistに追加しますか？";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverOpenInBravePlaylist" = "Brave Playlistで開く";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverRemoveFromBravePlaylist" = "削除する";
 
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "削除する";

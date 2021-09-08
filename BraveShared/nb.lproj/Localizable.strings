@@ -211,6 +211,12 @@
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Det oppstod et problem under innlastingen av ressursen!";
 
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "Etter aktivering vil et merke vises på hovedmenyikonet, hvilket indikerer at videoen på siden kan legges til i Brave-spillelisten.";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "Vis menyvarselmerke";
+
 /* Text indicator on the table cell If a video is already downloaded */
 "playList.noItemLabelTitle" = "Ingen tilgjengelige elementer";
 
@@ -301,17 +307,26 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Start avspilling fra der jeg var";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "Når dette aktiveres, vises en stolpe automatisk på de fleste medienettsteder, hvilket gjør det lettere å legge til video-/ lydfilene i spillelisten din.";
-
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionTitle" = "Vis «Legg til i Brave-spilleliste»";
-
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "Deaktiverer WebKit MediaSource-API";
 
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "Nettkompatibilitet";
+
+/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddBody" = "Brave-spillelister støtter frakoblet avspilling, bilde-i-bilde, kontinuerlig avspilling og gjentagelsesmoduser.";
+
+/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddedTitle" = "Denne videoen er i Brave-spillelisten din";
+
+/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddTitle" = "Vil du legge til denne videoen i spillelisten din?";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverOpenInBravePlaylist" = "Åpne i Brave-spilleliste";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverRemoveFromBravePlaylist" = "Fjern";
 
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Fjern";

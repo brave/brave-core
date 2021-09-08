@@ -211,6 +211,12 @@
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Kaynak yüklenirken bir sorun meydana geldi!";
 
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "Etkinleştirildiğinde ana menü ikonu üzerinde sayfadaki medyanın Brave Oynatma Listesi'ne eklenebileceğini belirten bir rozet gösterilir.";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "Menü Bildirim Rozetini Göster";
+
 /* Text indicator on the table cell If a video is already downloaded */
 "playList.noItemLabelTitle" = "Kullanılabilir Öğe Yok";
 
@@ -301,17 +307,26 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Kayıttan Yürütmeyi en son kaldığım yerden başlat";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "Etkinleştirildiğinde, çoğu medya web sitesinde otomatik olarak bir çubuk gösterilir ve bu video/ses dosyalarını Oynatma Listenize eklemeyi kolaylaştırır.";
-
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionTitle" = "\"Brave Oynatma Listesine Ekle\" yi göster";
-
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "WebKit MediaSource API'sini devre dışı bırakır";
 
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "Web Uyumluluğu";
+
+/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddBody" = "Brave Oynatma Listeleri Çevrimdışı Yeniden Oynatma, Resim İçinde Resim, devamlı yeniden oynatma ve tekrarlama modlarını destekler.";
+
+/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddedTitle" = "Bu medya Brave Oynatma Listeniz'de";
+
+/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddTitle" = "Bu medyayı Brave Oynatma Listeniz'e eklemek ister misiniz?";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverOpenInBravePlaylist" = "Brave Oynatma Listesi'nde Aç";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverRemoveFromBravePlaylist" = "Kaldır";
 
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Kaldır";

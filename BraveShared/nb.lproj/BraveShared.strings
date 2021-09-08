@@ -565,8 +565,11 @@
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "Velg alle";
 
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "Aktiver bakgrunnslyd";
+
 /* Setting to allow media to play automatically */
-"MediaAutoPlays" = "Aktiver automatisk avspilling av bakgrunnsvideo";
+"MediaAutoPlays" = "Aktiver automatisk avspilling";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Kopier";
@@ -1030,12 +1033,6 @@
 /* Sync settings section title */
 "Sync" = "Synk";
 
-/* Message for popup when the history migration fails */
-"sync.historyMigrationErrorMessage" = "Mesteparten av loggen er flyttet, med unntak av et par sider der det manglet sideinformasjon.";
-
-/* The title for popup when the history migration fails */
-"sync.historyMigrationErrorTitle" = "Overføringen er (nesten) fullført";
-
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "Bestem hvilken informasjon du vil synkronisere mellom enheter. Disse innstillingene gjelder bare for denne enheten.";
 
@@ -1200,6 +1197,9 @@
 
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Meny";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "Spilleliste";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Lesevisning";

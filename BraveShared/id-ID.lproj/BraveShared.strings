@@ -565,8 +565,11 @@
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "Pilih Semua";
 
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "Aktifkan Audio Latar";
+
 /* Setting to allow media to play automatically */
-"MediaAutoPlays" = "Aktifkan pemutaran video otomatis di latar belakang";
+"MediaAutoPlays" = "Aktifkan Putar Otomatis";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Salin";
@@ -1030,12 +1033,6 @@
 /* Sync settings section title */
 "Sync" = "Sinkronisasi";
 
-/* Message for popup when the history migration fails */
-"sync.historyMigrationErrorMessage" = "Sebagian besar riwayat telah dipindahkan. Namun, beberapa halaman tidak dipindahkan karena hilangnya info halaman.";
-
-/* The title for popup when the history migration fails */
-"sync.historyMigrationErrorTitle" = "Migrasi (hampir) selesai";
-
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "Kelola informasi yang ingin Anda sinkronisasikan di antara perangkat. Pengaturan ini hanya memengaruhi perangkat ini.";
 
@@ -1200,6 +1197,9 @@
 
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menu";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "Daftar Putar";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Tampilan Pembaca";

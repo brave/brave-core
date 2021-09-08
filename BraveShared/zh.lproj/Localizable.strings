@@ -211,6 +211,12 @@
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "加载资源时出现问题。";
 
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "启用后，主菜单图标上会显示一个徽章，表示可以将页面上的媒体添加到 Brave 播放列单中。";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "显示菜单通知徽章";
+
 /* Text indicator on the table cell If a video is already downloaded */
 "playList.noItemLabelTitle" = "无可用项目";
 
@@ -301,17 +307,26 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "从我上次停止播放的位置开始播放 ";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "启用后，大部分多媒体网站上均会自动显示一个工具栏，用于轻松将视频/音频文件添加至播放列表。";
-
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionTitle" = "显示“添加至 Brave 播放列表”";
-
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "禁用 WebKit MediaSource API";
 
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "Web 兼容性";
+
+/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddBody" = "Brave 播放列表支持离线播放、画中画、连续播放和重复模式。";
+
+/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddedTitle" = "此媒体已在您的 Brave 播放列表中";
+
+/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddTitle" = "您想将此媒体添加到您的 Brave 播放列表中？";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverOpenInBravePlaylist" = "在 Brave 播放列表中打开";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverRemoveFromBravePlaylist" = "移除";
 
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "移除";

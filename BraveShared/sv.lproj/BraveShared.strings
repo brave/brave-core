@@ -565,8 +565,11 @@
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "Välj alla";
 
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "Aktivera bakgrundsljud";
+
 /* Setting to allow media to play automatically */
-"MediaAutoPlays" = "Aktivera uppspelning av videor i bakgrunden";
+"MediaAutoPlays" = "Aktivera automatisk uppspelning";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Kopiera";
@@ -1030,12 +1033,6 @@
 /* Sync settings section title */
 "Sync" = "Synkronisera";
 
-/* Message for popup when the history migration fails */
-"sync.historyMigrationErrorMessage" = "Den mesta av historiken har migrerats. Några sidor migrerades inte på grund av saknad sidinformation.";
-
-/* The title for popup when the history migration fails */
-"sync.historyMigrationErrorTitle" = "Migreringen (nästan) slutförd";
-
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "Hantera vilken information du vill synkronisera mellan enheter. Dessa inställningar påverkar bara den här enheten.";
 
@@ -1200,6 +1197,9 @@
 
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Meny";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Läsläge";

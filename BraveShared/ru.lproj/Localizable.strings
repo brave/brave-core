@@ -211,6 +211,12 @@
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "При загрузке этого ресурса произошла ошибка.";
 
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "Когда настройка включена, на значке главного меню будет отображаться пометка, если медиафайлы на странице можно добавить в плейлист Brave.";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "Включить уведомления на значке меню";
+
 /* Text indicator on the table cell If a video is already downloaded */
 "playList.noItemLabelTitle" = "Нет доступных объектов";
 
@@ -301,17 +307,26 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Начинать воспроизведение с того места, где вы остановились";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "Если включить этот параметр, на большинстве сайтов с медиаконтентом будет показываться панель, с помощью которой можно легко добавлять аудио- и видеофайлы в свой плейлист.";
-
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionTitle" = "Показывать кнопку «Добавить в плейлист Brave»";
-
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "Отключить WebKit MediaSource API";
 
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "Веб-совместимость";
+
+/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddBody" = "Плейлисты Brave поддерживают воспроизведение без перерыва, на повторе и офлайн, а также функцию «Картинка в картинке».";
+
+/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddedTitle" = "Этот медиафайл уже есть в плейлисте Brave";
+
+/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddTitle" = "Вы хотите добавить этот медиафайл в плейлист Brave?";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverOpenInBravePlaylist" = "Открыть в плейлисте Brave";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverRemoveFromBravePlaylist" = "Удалить";
 
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Удалить";

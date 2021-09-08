@@ -565,8 +565,11 @@
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "Seleziona tutto";
 
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "Attiva l’audio in sottofondo";
+
 /* Setting to allow media to play automatically */
-"MediaAutoPlays" = "Abilita la riproduzione automatica del video di sfondo";
+"MediaAutoPlays" = "Attiva la riproduzione automatica";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Copia";
@@ -1030,12 +1033,6 @@
 /* Sync settings section title */
 "Sync" = "Sincronizza";
 
-/* Message for popup when the history migration fails */
-"sync.historyMigrationErrorMessage" = "La maggior parte della cronologia è stata trasferita. Alcune pagine però non sono state trasferite perché erano sprovviste di alcune informazioni.";
-
-/* The title for popup when the history migration fails */
-"sync.historyMigrationErrorTitle" = "Migrazione (quasi) completata";
-
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "Gestisci le informazioni che desideri sincronizzare tra i dispositivi. Queste impostazioni varranno solo per questo dispositivo.";
 
@@ -1200,6 +1197,9 @@
 
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menu";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Modalità di lettura";
