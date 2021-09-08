@@ -4,6 +4,7 @@ import * as S from './style'
 
 // Components
 import MainPanel from '../components/main-panel'
+import ErrorPanel from '../components/error-panel'
 import SelectRegion from '../components/select-region'
 import { ConnectionState } from '../types/connection_state'
 
@@ -36,6 +37,26 @@ export const _Main = () => {
         region='Tokyo'
         onToggleClick={handleToggleClick}
         onSelectRegionButtonClick={handleSelectRegionButtonClick}
+      />
+    </S.PanelFrame>
+  )
+}
+
+export const _Error = () => {
+  const handleTryAgain = () => {
+    alert('Trying..')
+  }
+
+  const handleChooseServer = () => {
+    alert('Server selection panel')
+  }
+
+  return (
+    <S.PanelFrame>
+      <ErrorPanel
+        onTryAgainClick={handleTryAgain}
+        onChooseServerClick={handleChooseServer}
+        region='Tokyo'
       />
     </S.PanelFrame>
   )
