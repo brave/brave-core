@@ -18,6 +18,15 @@ RegisterPolymerTemplateModifications({
             icon="cr:extension" label="${I18nBehavior.i18n('siteSettingsAutoplay')}">
         </site-details-permission>
       `)
+      const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
+      if (isNativeBraveWalletEnabled) {
+          firstPermissionItem.insertAdjacentHTML('beforebegin', `
+          <site-details-permission
+              category="[[contentSettingsTypesEnum_.ETHEREUM]]"
+              icon="cr:extension" label="${I18nBehavior.i18n('siteSettingsEthereum')}">
+          </site-details-permission>
+        `)
+      }
     }
   },
 })

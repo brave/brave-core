@@ -61,6 +61,7 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategoriesForOrigin(
   std::vector<ContentSettingsType> result =
       GetVisiblePermissionCategoriesForOrigin_ChromiumImpl(profile, origin);
   result.push_back(ContentSettingsType::AUTOPLAY);
+  result.push_back(ContentSettingsType::BRAVE_ETHEREUM);
 
   return result;
 }
