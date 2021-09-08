@@ -8,9 +8,7 @@ package org.chromium.components.browser_ui.site_settings;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import org.chromium.components.browser_ui.site_settings.SiteSettingsPreferenceFragment;
-
-public class BraveSingleCategorySettings extends SiteSettingsPreferenceFragment {
+public class BraveSingleCategorySettings extends SingleCategorySettings {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) { }

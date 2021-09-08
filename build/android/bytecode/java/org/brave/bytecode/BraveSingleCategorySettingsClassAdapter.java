@@ -14,6 +14,6 @@ public class BraveSingleCategorySettingsClassAdapter extends BraveClassVisitor {
     public BraveSingleCategorySettingsClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeSuperName(sSingleCategorySettingsClassName, sBraveSingleCategorySettingsClassName);
+        changeMethodOwner(sSingleCategorySettingsClassName, "onOptionsItemSelected", sBraveSingleCategorySettingsClassName);
     }
 }
