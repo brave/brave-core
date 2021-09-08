@@ -232,9 +232,6 @@ void BraveVPNOSConnectionAPIMac::Connect(const std::string& name) {
                  << base::SysNSStringToUTF8([start_error localizedDescription]);
       return;
     }
-
-    for (Observer& obs : observers_)
-      obs.OnConnected(std::string());
   }];
 }
 
@@ -254,8 +251,6 @@ void BraveVPNOSConnectionAPIMac::Disconnect(const std::string& name) {
     }
 
     [[vpn_manager connection] stopVPNTunnel];
-    for (Observer& obs : observers_)
-      obs.OnDisconnected(std::string());
   }];
 }
 
