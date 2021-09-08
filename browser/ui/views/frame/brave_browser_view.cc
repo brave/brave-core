@@ -16,6 +16,7 @@
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
+#include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
@@ -212,7 +213,11 @@ void BraveBrowserView::ShowBraveVPNBubble() {
 
 views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  return static_cast<BraveToolbarView*>(toolbar())->brave_vpn_button();
+  auto* vpn_button =
+      static_cast<BraveToolbarView*>(toolbar())->brave_vpn_button();
+  if (vpn_button->GetVisible())
+    return vpn_button;
+  return toolbar()->app_menu_button();
 #else
   return nullptr;
 #endif

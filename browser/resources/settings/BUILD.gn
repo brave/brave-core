@@ -4,6 +4,7 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//chrome/browser/resources/tools/optimize_webui.gni")
@@ -126,6 +127,7 @@ preprocess_if_expr("preprocess_generated") {
   defines = [
     "enable_tor=$enable_tor",
     "enable_brave_wayback_machine=$enable_brave_wayback_machine",
+    "enable_brave_vpn=$enable_brave_vpn",
   ]
   in_folder = target_gen_dir
   out_folder =

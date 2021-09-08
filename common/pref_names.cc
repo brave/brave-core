@@ -95,6 +95,10 @@ const char kImportDialogPayments[] = "import_dialog_payments";
 const char kMRUCyclingEnabled[] = "brave.mru_cycling_enabled";
 const char kTabsSearchShow[] = "brave.tabs_search_show";
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+const char kBraveVPNShowButton[] = "brave.brave_vpn.show_button";
+#endif
+
 #if defined(OS_ANDROID)
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";
 const char kPlayYTVideoInBrowserEnabled[] =

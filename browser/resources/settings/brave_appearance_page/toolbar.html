@@ -25,6 +25,16 @@
   class="cr-row"
   label="$i18n{appearanceSettingsHideBraveRewardsButtonLabel}">
 </settings-toggle-button>
+<if expr="enable_brave_vpn">
+  <template is="dom-if" if="[[showBraveVPNOption_()]]">
+    <settings-toggle-button
+      pref="{{prefs.brave.brave_vpn.show_button}}"
+      class="cr-row"
+      label="$i18n{showBraveVPNButton}"
+      sub-label="$i18n{showBraveVPNButtonSubLabel}">
+    </settings-toggle-button>
+  </template>
+</if>
 <settings-toggle-button
   pref="{{prefs.brave.always_show_bookmark_bar_on_ntp}}"
   class="cr-row"
