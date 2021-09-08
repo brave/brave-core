@@ -437,6 +437,7 @@ void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
   if (tor_launcher_factory_)
     tor_launcher_factory_->RemoveObserver(this);
 #endif
+  weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
 void BraveNewTabMessageHandler::HandleGetPreferences(
@@ -732,6 +733,11 @@ void BraveNewTabMessageHandler::HandleTodayGetDisplayAd(
         if (!handler) {
           return;
         }
+
+        if (!handler->IsJavascriptAllowed()) {
+          return;
+        }
+
         if (!success) {
           handler->ResolveJavascriptCallback(base::Value(callback_id),
                                              std::move(base::Value()));
