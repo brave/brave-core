@@ -320,6 +320,7 @@ class Generator(generator.Generator):
             "objc_method_name_formatter": self._ObjCMethodNameFormatter,
             "objc_enum_formatter": self._ObjCEnumFormatter,
             "cpp_to_objc_assign": self._CppToObjCAssign,
+            "const_objc_assign": self._ConstObjCAssign,
             "objc_to_cpp_assign": self._ObjCToCppAssign,
             "expected_cpp_param_type": self._GetExpectedCppParamType,
             "cpp_namespace_from_kind": CppNamespaceFromKind,
@@ -436,6 +437,15 @@ class Generator(generator.Generator):
         typemap = MojoTypemapForKind(kind)
         return typemap.CppToObjC(accessor)
 
+    def _ConstObjCAssign(self, constant):
+        kind = constant.kind
+        # Obj-C only supports a handful of constant types
+        if mojom.IsStringKind(kind):
+            return '@%s' % constant.value # string constant value come with quotes already
+        if kind in _kind_to_nsnumber_getter:
+            return constant.value
+        raise Exception("Obj-C constant cannot be generated for the given kind: %s" % kind)
+
     def _GetJinjaExports(self):
         all_structs = [item for item in self.module.structs if item.name not in self.excludedTypes]
         all_interfaces = [item for item in
@@ -475,6 +485,7 @@ class Generator(generator.Generator):
             "class_prefix": ObjCPrefixFromModule(self.module),
             "structs": all_structs,
             "unions": self.module.unions,
+            "constants": self.module.constants
         }
 
     @UseJinja("module.h.tmpl")
