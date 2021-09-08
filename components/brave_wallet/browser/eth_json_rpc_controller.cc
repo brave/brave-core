@@ -93,29 +93,19 @@ void EthJsonRpcController::FirePendingRequestCompleted(
   }
 }
 
-void EthJsonRpcController::RemoveChainIdRequest(const std::string& chain_id) {
-  for (auto& request : add_chain_pending_requests_) {
-    if (request.second.chain_id != chain_id)
-      continue;
-    add_chain_pending_requests_.erase(request);
-    return;
-  }
-}
-
-const mojom::EthereumChain* EthJsonRpcController::FindChainRequest(
-    const std::string& chain_id) const {
+bool EthJsonRpcController::HasRequestFromOrigin(const GURL& origin) const {
   for (const auto& request : add_chain_pending_requests_) {
-    if (request.second.chain_id == chain_id)
-      return &request.second;
+    if (request.second.origin == origin)
+      return true;
   }
-  return nullptr;
+  return false;
 }
 
 void EthJsonRpcController::GetPendingChainRequests(
     GetPendingChainRequestsCallback callback) {
   std::vector<mojom::EthereumChainPtr> all_chains;
   for (const auto& request : add_chain_pending_requests_) {
-    all_chains.push_back(request.second.Clone());
+    all_chains.push_back(request.second.request.Clone());
   }
   std::move(callback).Run(std::move(all_chains));
 }
@@ -125,35 +115,36 @@ void EthJsonRpcController::AddEthereumChain(mojom::EthereumChainPtr chain,
                                             AddEthereumChainCallback callback) {
   DCHECK_EQ(origin, origin.GetOrigin());
   if (!origin.is_valid() ||
-      add_chain_pending_requests_.contains(origin.spec()) ||
-      FindChainRequest(chain->chain_id)) {
+      add_chain_pending_requests_.contains(chain->chain_id) ||
+      HasRequestFromOrigin(origin)) {
     std::move(callback).Run(chain->chain_id, false);
     return;
   }
   auto chain_id = chain->chain_id;
-  add_chain_pending_requests_[origin.spec()] = std::move(*chain);
+  add_chain_pending_requests_[chain_id] =
+      EthereumChainRequest(origin, std::move(*chain));
   std::move(callback).Run(chain_id, true);
 }
 
 void EthJsonRpcController::AddEthereumChainRequestCompleted(
     const std::string& chain_id,
     bool approved) {
-  auto* request = FindChainRequest(chain_id);
-  if (!request)
+  if (!add_chain_pending_requests_.contains(chain_id))
     return;
   if (approved) {
     ListPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
     base::ListValue* list = update.Get();
+    const auto& request = add_chain_pending_requests_.at(chain_id).request;
     absl::optional<base::Value> value =
-        brave_wallet::EthereumChainToValue(request->Clone());
+        brave_wallet::EthereumChainToValue(request.Clone());
     if (value)
       list->Append(std::move(value).value());
   }
-  RemoveChainIdRequest(chain_id);
   std::string error =
       approved ? std::string()
                : l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST);
   FirePendingRequestCompleted(chain_id, error);
+  add_chain_pending_requests_.erase(chain_id);
 }
 
 void EthJsonRpcController::SetNetwork(const std::string& chain_id) {

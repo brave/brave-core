@@ -292,7 +292,7 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainApproved) {
   bool expected = true;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
   controller.AddEthereumChain(
-      chain.Clone(), "brave.com",
+      chain.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&callback_is_called, &expected](
                                      const std::string& chain_id, bool added) {
         ASSERT_FALSE(chain_id.empty());
@@ -329,7 +329,7 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainRejected) {
   bool expected = true;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
   controller.AddEthereumChain(
-      chain.Clone(), "brave.com",
+      chain.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&callback_is_called, &expected](
                                      const std::string& chain_id, bool added) {
         ASSERT_FALSE(chain_id.empty());
@@ -356,7 +356,7 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainError) {
   bool expected = true;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
   controller.AddEthereumChain(
-      chain.Clone(), "brave.com",
+      chain.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&callback_is_called, &expected](
                                      const std::string& chain_id, bool added) {
         ASSERT_FALSE(chain_id.empty());
@@ -374,7 +374,7 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainError) {
   bool second_callback_is_called = false;
   bool second_expected = false;
   controller.AddEthereumChain(
-      chain2.Clone(), "brave.com",
+      chain2.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&second_callback_is_called, &second_expected](
                                      const std::string& chain_id, bool added) {
         ASSERT_FALSE(chain_id.empty());
@@ -389,7 +389,7 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainError) {
   bool third_callback_is_called = false;
   bool third_expected = false;
   controller.AddEthereumChain(
-      chain.Clone(), "others.com",
+      chain.Clone(), GURL("https://others.com"),
       base::BindLambdaForTesting([&third_callback_is_called, &third_expected](
                                      const std::string& chain_id, bool added) {
         ASSERT_FALSE(chain_id.empty());

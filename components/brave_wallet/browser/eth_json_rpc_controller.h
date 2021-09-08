@@ -9,6 +9,7 @@
 #include <list>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/callback.h"
@@ -47,6 +48,14 @@ class EthJsonRpcController : public KeyedService,
   ~EthJsonRpcController() override;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+  struct EthereumChainRequest {
+    EthereumChainRequest() {}
+    EthereumChainRequest(const GURL& origin_, mojom::EthereumChain request_)
+        : origin(origin_), request(std::move(request_)) {}
+    GURL origin;
+    mojom::EthereumChain request;
+  };
 
   mojo::PendingRemote<mojom::EthJsonRpcController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::EthJsonRpcController> receiver);
@@ -127,8 +136,7 @@ class EthJsonRpcController : public KeyedService,
   void FireNetworkChanged();
   void FirePendingRequestCompleted(const std::string& chain_id,
                                    const std::string& error);
-  const mojom::EthereumChain* FindChainRequest(
-      const std::string& chain_id) const;
+  bool HasRequestFromOrigin(const GURL& origin) const;
   void RemoveChainIdRequest(const std::string& chain_id);
   void OnGetBlockNumber(
       GetBlockNumberCallback callback,
@@ -182,8 +190,8 @@ class EthJsonRpcController : public KeyedService,
   api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;
   std::string chain_id_;
-  // <origin, EthereumChain>
-  base::flat_map<std::string, mojom::EthereumChain> add_chain_pending_requests_;
+  // <chain_id, EthereumChain>
+  base::flat_map<std::string, EthereumChainRequest> add_chain_pending_requests_;
   mojo::RemoteSet<mojom::EthJsonRpcControllerObserver> observers_;
 
   mojo::ReceiverSet<mojom::EthJsonRpcController> receivers_;
