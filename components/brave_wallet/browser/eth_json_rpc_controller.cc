@@ -121,15 +121,17 @@ void EthJsonRpcController::GetPendingChainRequests(
 }
 
 void EthJsonRpcController::AddEthereumChain(mojom::EthereumChainPtr chain,
-                                            const std::string& origin,
+                                            const GURL& origin,
                                             AddEthereumChainCallback callback) {
-  if (add_chain_pending_requests_.contains(origin) ||
+  DCHECK_EQ(origin, origin.GetOrigin());
+  if (!origin.is_valid() ||
+      add_chain_pending_requests_.contains(origin.spec()) ||
       FindChainRequest(chain->chain_id)) {
     std::move(callback).Run(chain->chain_id, false);
     return;
   }
   auto chain_id = chain->chain_id;
-  add_chain_pending_requests_[origin] = std::move(*chain);
+  add_chain_pending_requests_[origin.spec()] = std::move(*chain);
   std::move(callback).Run(chain_id, true);
 }
 

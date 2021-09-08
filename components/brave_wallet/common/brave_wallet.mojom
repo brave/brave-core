@@ -260,7 +260,7 @@ struct EthereumChain {
 };
 
 interface EthJsonRpcController {
-  AddEthereumChain(EthereumChain chain, string origin) => (string chain_id, bool accepted);
+  AddEthereumChain(EthereumChain chain, url.mojom.Url origin) => (string chain_id, bool accepted);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
   GetPendingChainRequests() => (array<EthereumChain> networks);
   SetNetwork(string chain_id);

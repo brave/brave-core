@@ -76,11 +76,11 @@ void BraveWalletProviderDelegateImpl::OnConnectionError() {
   EnsureConnected();
 }
 
-std::string BraveWalletProviderDelegateImpl::GetOrigin() const {
+GURL BraveWalletProviderDelegateImpl::GetOrigin() const {
   auto* rfh = content::RenderFrameHost::FromID(host_id_);
   if (!rfh)
-    return std::string();
-  return rfh->GetLastCommittedURL().GetOrigin().spec();
+    return GURL();
+  return rfh->GetLastCommittedURL().GetOrigin();
 }
 
 void BraveWalletProviderDelegateImpl::ShowBubble() {

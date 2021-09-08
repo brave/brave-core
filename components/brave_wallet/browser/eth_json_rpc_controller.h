@@ -99,7 +99,7 @@ class EthJsonRpcController : public KeyedService,
 
   void SetNetwork(const std::string& chain_id) override;
   void AddEthereumChain(mojom::EthereumChainPtr chain,
-                        const std::string& origin,
+                        const GURL& origin,
                         AddEthereumChainCallback callback) override;
   void AddEthereumChainRequestCompleted(const std::string& chain_id,
                                         bool approved) override;

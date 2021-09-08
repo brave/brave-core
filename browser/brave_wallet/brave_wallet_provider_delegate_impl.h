@@ -34,7 +34,7 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
   ~BraveWalletProviderDelegateImpl() override;
 
   void ShowBubble() override;
-  std::string GetOrigin() const override;
+  GURL GetOrigin() const override;
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
 

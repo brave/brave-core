@@ -21,8 +21,8 @@ void BraveWalletProviderDelegateImplAndroid::RequestEthereumPermissions(
 void BraveWalletProviderDelegateImplAndroid::GetAllowedAccounts(
     BraveWalletProviderDelegate::GetAllowedAccountsCallback callback) {}
 
-std::string BraveWalletProviderDelegateImplAndroid::GetOrigin() const {
-  return "";
+GURL BraveWalletProviderDelegateImplAndroid::GetOrigin() const {
+  return GURL();
 }
 
 }  // namespace brave_wallet
