@@ -30,7 +30,7 @@ interface ServiceObserver {
 
 // Browser-side handler for vpn service things
 interface ServiceHandler {
-  GetIsConnected() => (bool is_connected);
+  GetConnectionState() => (ConnectionState state);
   AddObserver(pending_remote<ServiceObserver> observer);
   CreateVPNConnection();
   Connect();

@@ -211,6 +211,7 @@ void BraveVpnServiceDesktop::BindInterface(
   receivers_.Add(this, std::move(receiver));
 }
 
-void BraveVpnServiceDesktop::GetIsConnected(GetIsConnectedCallback callback) {
-  std::move(callback).Run(is_connected());
+void BraveVpnServiceDesktop::GetConnectionState(
+    GetConnectionStateCallback callback) {
+  std::move(callback).Run(state_);
 }

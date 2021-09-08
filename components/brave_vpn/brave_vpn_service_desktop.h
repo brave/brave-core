@@ -55,7 +55,7 @@ class BraveVpnServiceDesktop
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
   // mojom::vpn::ServiceHandler
-  void GetIsConnected(GetIsConnectedCallback callback) override;
+  void GetConnectionState(GetConnectionStateCallback callback) override;
   void Connect() override;
   void Disconnect() override;
   void CreateVPNConnection() override;

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import SelectRegion from './components/select-region'
 import MainPanel from './components/main-panel'
+import ErrorPanel from './components/error-panel'
 import apiProxy from './vpn_panel_api_proxy.js'
 import { ConnectionState } from './types/connection_state'
 
@@ -10,30 +11,41 @@ function Main () {
   const [hasError, setHasError] = React.useState(false)
   const [status, setStatus] = React.useState<ConnectionState>(ConnectionState.DISCONNECTED)
 
-  const handleToggleClick = () => setOn(prevState => !prevState)
+  const handleToggleClick = () => {
+    // VPN actions should be performed on user interactions
+    setOn(prevState => {
+      const newState = !prevState
+      if (newState) apiProxy.getInstance().connect()
+      else apiProxy.getInstance().disconnect()
+      return newState
+    })
+  }
+
   const handleSelectRegionButtonClick = () => setSelectingRegion(true)
-  const handleOnDone = () => setSelectingRegion(false)
 
-  React.useEffect(() => {
-    if (status === ConnectionState.CONNECT_FAILED) setHasError(true)
-  }, [status])
-
-  React.useEffect(() => {
-    if (isOn) {
-      apiProxy.getInstance().connect()
-    } else {
-      apiProxy.getInstance().disconnect()
+  const resetUI = (state: boolean) => {
+    if (state) {
+      setOn(false)
+      setHasError(false)
     }
-  }, [isOn])
+  }
+
+  const onSelectingRegionDone = () => {
+    resetUI(hasError)
+    setSelectingRegion(false)
+  }
+
+  const handleTryAgain = () => {
+    setHasError(false)
+    setOn(true)
+    apiProxy.getInstance().connect()
+  }
 
   React.useEffect(() => {
     const visibilityChangedListener = () => {
       if (document.visibilityState === 'visible') {
+        resetUI(hasError)
         apiProxy.getInstance().showUI()
-        if (hasError) {
-          setHasError(false)
-          setOn(false)
-        }
       }
     }
 
@@ -42,7 +54,14 @@ function Main () {
     apiProxy.getInstance().addVPNObserver({
       onConnectionCreated: () => {/**/},
       onConnectionRemoved: () => {/**/},
-      onConnectionStateChanged: (state: ConnectionState) => setStatus(state)
+      onConnectionStateChanged: (state: ConnectionState) => {
+        if (state === ConnectionState.CONNECT_FAILED) {
+          setHasError(true)
+          setOn(false)
+        }
+
+        setStatus(state)
+      }
     })
 
     return () => {
@@ -50,13 +69,30 @@ function Main () {
     }
   }, [hasError])
 
+  React.useEffect(() => {
+    const getInitialState = async () => {
+      const res = await apiProxy.getInstance().getConnectionState()
+      setOn(res.state === ConnectionState.CONNECTED
+        || res.state === ConnectionState.CONNECTING)
+      // Treat connection failure as disconnect on initial startup
+      if (res.state !== ConnectionState.CONNECT_FAILED) setStatus(res.state)
+    }
+
+    getInitialState().catch(e => console.error('getConnectionState failed', e))
+  }, [])
+
   if (isSelectingRegion) {
-    return <SelectRegion onDone={handleOnDone} />
+    return <SelectRegion onDone={onSelectingRegionDone} />
   }
 
-  // TODO(nullhook): Create a seperate component for error state
   if (hasError) {
-    return <h1>Can't connect to server, sorry!</h1>
+    return (
+      <ErrorPanel
+        onTryAgainClick={handleTryAgain}
+        onChooseServerClick={handleSelectRegionButtonClick}
+        region='Tokyo'
+      />
+    )
   }
 
   return (
