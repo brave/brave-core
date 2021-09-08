@@ -4,6 +4,8 @@
 
 import styled from 'styled-components'
 
+import * as mixins from '../../shared/lib/css_mixins'
+
 export const root = styled.div`
   background: var(--brave-palette-white);
   box-shadow: 0px 4px 16px rgba(27, 29, 47, 0.08);
@@ -11,21 +13,8 @@ export const root = styled.div`
   margin-top: 13px;
   padding: 18px 35px 33px;
 
-  a {
-    color: var(--brave-color-brandBatInteracting);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
   .brave-theme-dark & {
     background: #1E2029;
-
-    a {
-      color: var(--brave-palette-blurple300);
-    }
   }
 `
 
@@ -92,8 +81,22 @@ export const refreshStatus = styled.span`
     color: var(--brave-color-brandBat);
   }
 
+  button {
+    ${mixins.buttonReset}
+    color: var(--brave-color-brandBatInteracting);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .brave-theme-dark & {
     border-left-color: var(--brave-palette-grey800);
+
+    button {
+      color: var(--brave-palette-blurple300);
+    }
   }
 `
 

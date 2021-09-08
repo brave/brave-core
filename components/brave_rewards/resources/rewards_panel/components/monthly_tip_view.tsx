@@ -23,21 +23,16 @@ export function MonthlyTipView (props: Props) {
 
   const { monthlyContribution } = props.publisherInfo
 
-  function cancelLink (evt: React.UIEvent) {
-    evt.preventDefault()
-  }
-
   if (monthlyContribution <= 0) {
     return (
       <style.root>
-        <style.setBox onClick={cancelLink}>
-          <a
-            href='#'
+        <style.setBox>
+          <button
             onClick={props.onUpdateClick}
             data-test-id='set-monthly-tip-button'
           >
             {getString('set')}
-          </a>
+          </button>
         </style.setBox>
       </style.root>
     )
@@ -63,25 +58,23 @@ export function MonthlyTipView (props: Props) {
         </style.amount>
         {
           showActions &&
-            <style.actionBubble onClick={cancelLink}>
+            <style.actionBubble>
               <style.actionBubbleContent>
                 <style.action>
-                  <a
-                    href='#'
+                  <button
                     onClick={props.onUpdateClick}
                     data-test-id='change-monthly-tip-button'
                   >
                     {getString('changeAmount')}
-                  </a>
+                  </button>
                 </style.action>
                 <style.action>
-                  <a
-                    href='#'
+                  <button
                     onClick={props.onCancelClick}
                     data-test-id='cancel-monthly-tip-button'
                   >
                     {getString('cancel')}
-                  </a>
+                  </button>
                 </style.action>
                 <style.backdrop onClick={toggleActionBubble} />
               </style.actionBubbleContent>
