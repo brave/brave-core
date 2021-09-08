@@ -64,7 +64,7 @@ function Action (props: NotificationActionViewProps) {
 
   return (
     <style.action>
-      <button onClick={onActionClick}>
+      <button onClick={onActionClick} data-test-id='notification-action-button'>
         {props.label || getString('ok')}
       </button>
     </style.action>

@@ -36,11 +36,11 @@ export function RewardsSummary (props: Props) {
   const { getString } = React.useContext(LocaleContext)
   const { data } = props
 
-  function renderRow (message: string, amount: number) {
+  function renderRow (amount: number, message: string, key: string) {
     return (
       <tr>
         <td>{getString(message)}</td>
-        <td className='amount'>
+        <td className='amount' data-test-id={`rewards-summary-${key}`}>
           <TokenAmount
             minimumFractionDigits={2}
             amount={amount}
@@ -67,18 +67,18 @@ export function RewardsSummary (props: Props) {
         <style.dataTable>
           <table>
             <tbody>
-            {
-              // Ad earnings may be hidden to account for the fact that earnings
-              // are directly transfered to users that have linked external
-              // wallets, and the client may not have knowledge of those
-              // transfer amounts. In such a case, displaying zero would be
-              // misleading.
-              !props.hideAdEarnings &&
-                renderRow('walletRewardsFromAds', data.adEarnings)
-            }
-            {renderRow('walletAutoContribute', data.autoContributions)}
-            {renderRow('walletOneTimeTips', data.oneTimeTips)}
-            {renderRow('walletMonthlyTips', data.monthlyTips)}
+              {
+                // Ad earnings may be hidden to account for the fact that
+                // earnings are directly transfered to users that have linked
+                // external wallets, and the client may not have knowledge of
+                // those transfer amounts. In such a case, displaying zero would
+                // be misleading.
+                !props.hideAdEarnings &&
+                  renderRow(data.adEarnings, 'walletRewardsFromAds', 'ads')
+              }
+              {renderRow(-data.autoContributions, 'walletAutoContribute', 'ac')}
+              {renderRow(-data.oneTimeTips, 'walletOneTimeTips', 'one-time')}
+              {renderRow(-data.monthlyTips, 'walletMonthlyTips', 'monthly')}
             </tbody>
           </table>
         </style.dataTable>

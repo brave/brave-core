@@ -9,7 +9,6 @@ import Box from './box'
 import BoxAlert from './boxAlert'
 import CategoryLikePicker from './categoryLikePicker'
 import DisabledContent from './disabledContent'
-import DisabledPanel from './disabledPanel'
 import GrantCaptcha from './grantCaptcha'
 import GrantClaim from './grantClaim'
 import GrantComplete from './grantComplete'
@@ -45,10 +44,8 @@ import ToggleTips from './toggleTips'
 import Tokens from './tokens'
 import Tooltip from './tooltip'
 import WalletEmpty from './walletEmpty'
-import WalletPanel from './walletPanel'
 import WalletPopup from './walletPopup'
 import WalletSummary from './walletSummary'
-import WalletSummarySlider from './walletSummarySlider'
 import WalletWrapper from './walletWrapper'
 
 export {
@@ -59,7 +56,6 @@ export {
   BoxAlert,
   CategoryLikePicker,
   DisabledContent,
-  DisabledPanel,
   GrantCaptcha,
   GrantClaim,
   GrantComplete,
@@ -95,9 +91,7 @@ export {
   Tokens,
   Tooltip,
   WalletEmpty,
-  WalletPanel,
   WalletPopup,
   WalletSummary,
-  WalletSummarySlider,
   WalletWrapper
 }

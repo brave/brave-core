@@ -47,6 +47,7 @@ export interface GrantCaptchaInfo {
 
 export interface Settings {
   adsPerHour: number
+  autoContributeEnabled: boolean
   autoContributeAmount: number
 }
 

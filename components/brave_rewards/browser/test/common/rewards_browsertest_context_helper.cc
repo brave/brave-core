@@ -89,8 +89,7 @@ content::WebContents* RewardsBrowserTestContextHelper::OpenRewardsPopup() {
   // Wait for the popup to load
   popup_observer.Wait();
   rewards_browsertest_util::WaitForElementToAppear(
-      popup_contents,
-      "#rewards-panel");
+      popup_contents, "[data-test-id=rewards-panel]");
 
   return popup_contents;
 }
@@ -109,17 +108,17 @@ content::WebContents* RewardsBrowserTestContextHelper::OpenSiteBanner(
 
   switch (tip_action) {
     case rewards_browsertest_util::TipAction::OneTime:
-      button_selector = "[data-test-id=tip-once]";
+      button_selector = "[data-test-id=tip-button]";
       break;
     case rewards_browsertest_util::TipAction::SetMonthly:
-      button_selector = "[data-test-id=tip-monthly]";
+      button_selector = "[data-test-id=set-monthly-tip-button]";
       break;
     case rewards_browsertest_util::TipAction::ChangeMonthly:
-      button_selector = "[data-test-id=change-monthly-amount]";
+      button_selector = "[data-test-id=change-monthly-tip-button]";
       open_tip_actions = true;
       break;
     case rewards_browsertest_util::TipAction::ClearMonthly:
-      button_selector = "[data-test-id=clear-monthly-amount]";
+      button_selector = "[data-test-id=cancel-monthly-tip-button]";
       open_tip_actions = true;
       break;
   }
@@ -127,8 +126,7 @@ content::WebContents* RewardsBrowserTestContextHelper::OpenSiteBanner(
   // If necessary, show the monthly tip actions menu.
   if (open_tip_actions) {
     rewards_browsertest_util::WaitForElementThenClick(
-        popup_contents,
-        "[data-test-id=toggle-monthly-actions]");
+        popup_contents, "[data-test-id=monthly-tip-actions-button]");
   }
 
   // Click button to initiate sending a tip.

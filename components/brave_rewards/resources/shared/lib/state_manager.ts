@@ -23,7 +23,11 @@ export function createStateManager<State> (
   }
 
   function update (source: Partial<State>) {
-    Object.assign(state, source)
+    for (const [key, value] of Object.entries(source)) {
+      if (value !== undefined) {
+        state[key] = value
+      }
+    }
     sendInitialState = false
     for (const listener of listeners) {
       try {

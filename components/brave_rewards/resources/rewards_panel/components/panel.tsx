@@ -41,7 +41,7 @@ export function Panel () {
   })
 
   return (
-    <style.root>
+    <style.root data-test-id='rewards-panel'>
       <WalletCard
         balance={balance}
         externalWallet={externalWallet}

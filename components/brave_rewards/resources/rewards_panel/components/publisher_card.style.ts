@@ -31,14 +31,16 @@ export const root = styled.div`
 
 export const heading = styled.div`
   display: flex;
+  margin-bottom: 12px;
 `
 
 export const icon = styled.div`
   flex: 0 0 auto;
-  margin-right: 7px;
+  margin-right: 9px;
+  margin-top: 7px;
 
   img {
-    height: 53px;
+    height: 32px;
     width: auto;
   }
 `
@@ -112,11 +114,8 @@ export const unverified = styled.span`
 `
 
 export const attention = styled.div`
-  margin-top: 12px;
-  border-bottom: solid 1px var(--brave-palette-neutral200);
   font-size: 14px;
   line-height: 26px;
-  color: var(--brave-palette-neutral900);
   padding: 4px 0;
   display: flex;
 
@@ -130,12 +129,12 @@ export const attention = styled.div`
   }
 
   .brave-theme-dark & {
-    border-color: var(--brave-palette-grey800);
     color: var(--brave-palette-grey000);
   }
 `
 
 export const contribution = styled.div`
+  border-top: solid 1px var(--brave-palette-neutral200);
   border-bottom: solid 1px var(--brave-palette-neutral200);
   font-size: 14px;
   line-height: 26px;

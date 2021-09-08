@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_REWARDS_WALLET_ACCOUNT_LINK" desc="">
+    Go to my <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
+  </message>
+  <message name="IDS_REWARDS_WALLET_ADD_FUNDS" desc="">
+    Add Funds
+  </message>
+  <message name="IDS_REWARDS_WALLET_AUTO_CONTRIBUTE" desc="">
+    Auto-Contribute
+  </message>
+  <message name="IDS_REWARDS_WALLET_COMPLETE_VERIFICATION_LINK" desc="">
+    Go to <ph name="PROVIDER">$1<ex>Uphold</ex></ph> to complete verification
+  </message>
+  <message name="IDS_REWARDS_WALLET_COMPLETE_VERIFICATION_TEXT" desc="">
+    Please complete identity verification in order to start receiving rewards.
+  </message>
+  <message name="IDS_REWARDS_WALLET_DISCONNECTED" desc="">
+    Disconnected
+  </message>
+  <message name="IDS_REWARDS_WALLET_DISCONNECT_LINK" desc="">
+    Disconnect from Brave Rewards
+  </message>
+  <message name="IDS_REWARDS_WALLET_ESTIMATED_EARNINGS" desc="">
+    Estimated Earnings
+  </message>
+  <message name="IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT" desc="">
+    Log into your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
+  </message>
+  <message name="IDS_REWARDS_WALLET_MONTHLY_TIPS" desc="">
+    Monthly Tips
+  </message>
+  <message name="IDS_REWARDS_WALLET_MY_WALLET" desc="">
+    My Wallet
+  </message>
+  <message name="IDS_REWARDS_WALLET_ONE_TIME_TIPS" desc="">
+    One-Time Tips
+  </message>
+  <message name="IDS_REWARDS_WALLET_PENDING" desc="">
+    Pending
+  </message>
+  <message name="IDS_REWARDS_WALLET_PENDING_REWARDS_TEXT" desc="">
+    <ph name="AMOUNT">$1<ex>2 BAT</ex></ph> arriving in <ph name="DAYS">$2<ex>5 Days</ex></ph>
+  </message>
+  <message name="IDS_REWARDS_WALLET_REWARDS_FROM_ADS" desc="">
+    Rewards from Ads
+  </message>
+  <message name="IDS_REWARDS_WALLET_REWARDS_SUMMARY" desc="">
+    Rewards Summary
+  </message>
+  <message name="IDS_REWARDS_WALLET_VIEW_STATEMENT" desc="">
+    View statement
+  </message>
+  <message name="IDS_REWARDS_WALLET_VERIFIED" desc="">
+    Verified
+  </message>
+  <message name="IDS_REWARDS_WALLET_VERIFY" desc="">
+    Verify Wallet
+  </message>
+  <message name="IDS_REWARDS_WALLET_YOUR_BALANCE" desc="">
+    Your Balance
+  </message>
+</grit-part>
