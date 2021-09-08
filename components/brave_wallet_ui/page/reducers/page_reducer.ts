@@ -20,8 +20,10 @@ import {
 
 const defaultState: PageState = {
   hasInitialized: false,
+  showAddModal: false,
   showRecoveryPhrase: false,
   invalidMnemonic: false,
+  importError: false,
   selectedTimeline: AssetPriceTimeframe.OneDay,
   selectedAsset: undefined,
   selectedUSDAssetPrice: undefined,
@@ -123,6 +125,20 @@ reducer.on(Actions.setShowIsRestoring, (state: PageState, payload: boolean) => {
   return {
     ...state,
     showIsRestoring: payload
+  }
+})
+
+reducer.on(Actions.setImportError, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    importError: payload
+  }
+})
+
+reducer.on(Actions.setShowAddModal, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    showAddModal: payload
   }
 })
 

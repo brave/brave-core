@@ -15,7 +15,8 @@ import {
   AddAccountPayloadType,
   ImportAccountPayloadType,
   RemoveImportedAccountPayloadType,
-  ViewPrivateKeyPayloadType
+  ViewPrivateKeyPayloadType,
+  ImportAccountFromJsonPayloadType
 } from '../constants/action_types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -87,7 +88,23 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: Updat
 handler.on(WalletPageActions.importAccount.getType(), async (store, payload: ImportAccountPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.importAccount(payload.accountName, payload.privateKey)
-  return result.success
+  if (result.success) {
+    store.dispatch(WalletPageActions.setImportError(false))
+    store.dispatch(WalletPageActions.setShowAddModal(false))
+  } else {
+    store.dispatch(WalletPageActions.setImportError(true))
+  }
+})
+
+handler.on(WalletPageActions.importAccountFromJson.getType(), async (store, payload: ImportAccountFromJsonPayloadType) => {
+  const keyringController = (await getAPIProxy()).keyringController
+  const result = await keyringController.importAccountFromJson(payload.accountName, payload.password, payload.json)
+  if (result.success) {
+    store.dispatch(WalletPageActions.setImportError(false))
+    store.dispatch(WalletPageActions.setShowAddModal(false))
+  } else {
+    store.dispatch(WalletPageActions.setImportError(true))
+  }
 })
 
 handler.on(WalletPageActions.removeImportedAccount.getType(), async (store, payload: RemoveImportedAccountPayloadType) => {
