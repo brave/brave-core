@@ -16,7 +16,7 @@ import android.content.SharedPreferences;
 import android.view.inputmethod.InputMethodManager;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.brave_wallet.mojom.Network;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
@@ -137,33 +137,29 @@ public class Utils {
         categories.add(activity.getText(R.string.goerli).toString());
         categories.add(activity.getText(R.string.kovan).toString());
         categories.add(activity.getText(R.string.localhost).toString());
-        categories.add(activity.getText(R.string.custom).toString());
 
         return categories;
     }
 
-    public static CharSequence getNetworkText(Activity activity, int network) {
+    public static CharSequence getNetworkText(Activity activity, String chain_id) {
         CharSequence strNetwork = activity.getText(R.string.mainnet);
-        switch (network) {
-            case Network.RINKEBY:
+        switch (chain_id) {
+            case BraveWalletConstants.RINKEBY_CHAIN_ID:
                 strNetwork = activity.getText(R.string.rinkeby);
                 break;
-            case Network.ROPSTEN:
+            case BraveWalletConstants.ROPSTEN_CHAIN_ID:
                 strNetwork = activity.getText(R.string.ropsten);
                 break;
-            case Network.GOERLI:
+            case BraveWalletConstants.GOERLI_CHAIN_ID:
                 strNetwork = activity.getText(R.string.goerli);
                 break;
-            case Network.KOVAN:
+            case BraveWalletConstants.KOVAN_CHAIN_ID:
                 strNetwork = activity.getText(R.string.kovan);
                 break;
-            case Network.LOCALHOST:
+            case BraveWalletConstants.LOCALHOST_CHAIN_ID:
                 strNetwork = activity.getText(R.string.localhost);
                 break;
-            case Network.CUSTOM:
-                strNetwork = activity.getText(R.string.custom);
-                break;
-            case Network.MAINNET:
+            case BraveWalletConstants.MAINNET_CHAIN_ID:
             default:
                 strNetwork = activity.getText(R.string.mainnet);
         }
@@ -171,22 +167,20 @@ public class Utils {
         return strNetwork;
     }
 
-    public static int getNetworkId(Activity activity, String network) {
-        int networkId = Network.MAINNET;
+    public static String getNetworkConst(Activity activity, String network) {
+        String networkConst = BraveWalletConstants.MAINNET_CHAIN_ID;
         if (network.equals(activity.getText(R.string.rinkeby).toString())) {
-            networkId = Network.RINKEBY;
+            networkConst = BraveWalletConstants.RINKEBY_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.ropsten).toString())) {
-            networkId = Network.ROPSTEN;
+            networkConst = BraveWalletConstants.ROPSTEN_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.goerli).toString())) {
-            networkId = Network.GOERLI;
+            networkConst = BraveWalletConstants.GOERLI_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.kovan).toString())) {
-            networkId = Network.KOVAN;
+            networkConst = BraveWalletConstants.KOVAN_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.localhost).toString())) {
-            networkId = Network.LOCALHOST;
-        } else if (network.equals(activity.getText(R.string.custom).toString())) {
-            networkId = Network.CUSTOM;
+            networkConst = BraveWalletConstants.LOCALHOST_CHAIN_ID;
         }
 
-        return networkId;
+        return networkConst;
     }
 }

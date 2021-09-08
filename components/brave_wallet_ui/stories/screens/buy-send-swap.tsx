@@ -7,7 +7,7 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  Network
+  EthereumChain
 } from '../../constants/types'
 import Swap from '../../components/buy-send-swap/tabs/swap-tab'
 import Send from '../../components/buy-send-swap/tabs/send-tab'
@@ -18,10 +18,11 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
+  networkList: EthereumChain[]
   orderType: OrderTypes
   swapToAsset: AccountAssetOptionType
   swapFromAsset: AccountAssetOptionType
-  selectedNetwork: Network
+  selectedNetwork: EthereumChain
   selectedAccount: UserAccountType
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
@@ -40,7 +41,7 @@ export interface Props {
   onSubmitSend: () => void
   onSubmitSwap: () => void
   flipSwapAssets: () => void
-  onSelectNetwork: (network: Network) => void
+  onSelectNetwork: (network: EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
   onSelectAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
@@ -59,6 +60,7 @@ export interface Props {
 function BuySendSwap (props: Props) {
   const {
     accounts,
+    networkList,
     orderType,
     swapToAsset,
     swapFromAsset,
@@ -107,6 +109,7 @@ function BuySendSwap (props: Props) {
       {selectedTab === 'swap' &&
         <Swap
           accounts={accounts}
+          networkList={networkList}
           orderType={orderType}
           swapToAsset={swapToAsset}
           swapFromAsset={swapFromAsset}
@@ -137,6 +140,7 @@ function BuySendSwap (props: Props) {
       {selectedTab === 'send' &&
         <Send
           accounts={accounts}
+          networkList={networkList}
           selectedAssetAmount={sendAmount}
           selectedAssetBalance={fromAssetBalance}
           toAddress={toAddress}
@@ -157,6 +161,7 @@ function BuySendSwap (props: Props) {
       {selectedTab === 'buy' &&
         <Buy
           accounts={accounts}
+          networkList={networkList}
           buyAmount={buyAmount}
           onSelectAccount={onSelectAccount}
           onSelectNetwork={onSelectNetwork}

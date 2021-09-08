@@ -17,6 +17,7 @@ interface BraveWalletProvider {
   Init(pending_remote<EventsListener> events_listener);
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
   RequestEthereumPermissions() => (bool success, array<string> accounts);
+  AddEthereumChain(string json_payload) => (bool success, int32 error, string message);
   GetChainId() => (string chain_id);
   GetAllowedAccounts() => (bool success, array<string> accounts);
 };
@@ -219,18 +220,9 @@ interface SwapController {
       (bool success, SwapResponse response);
 };
 
-enum Network {
-  Mainnet,
-  Rinkeby,
-  Ropsten,
-  Goerli,
-  Kovan,
-  Localhost,
-  Custom
-};
-
 interface EthJsonRpcControllerObserver {
   ChainChangedEvent(string chain_id);
+  OnAddEthereumChainRequestCompleted(string chain_id, string error);
 };
 
 struct TxData {
@@ -249,12 +241,33 @@ struct TxData1559 {
   string max_fee_per_gas;
 };
 
+const string kMainnetChainId = "0x1";
+const string kRinkebyChainId = "0x4";
+const string kRopstenChainId = "0x3";
+const string kGoerliChainId = "0x5";
+const string kKovanChainId = "0x2a";
+const string kLocalhostChainId = "0x539";
+
+struct EthereumChain {
+  string chain_id;
+  string chain_name;
+  array<string> block_explorer_urls;
+  array<string> icon_urls;
+  array<string> rpc_urls;
+  string symbol;
+  string symbol_name;
+  int32 decimals;
+};
+
 interface EthJsonRpcController {
-  SetNetwork(Network network);
-  GetNetwork() => (Network network);
-  GetChainId() => (string chainId);
-  GetBlockTrackerUrl() => (string blockTrackerUrl);
-  GetNetworkUrl() => (string networkUrl);
+  AddEthereumChain(EthereumChain chain, url.mojom.Url origin) => (string chain_id, bool accepted);
+  AddEthereumChainRequestCompleted(string chain_id, bool approved);
+  GetPendingChainRequests() => (array<EthereumChain> networks);
+  SetNetwork(string chain_id);
+  GetAllNetworks() => (array<EthereumChain> networks);
+  GetChainId() => (string chain_id);
+  GetBlockTrackerUrl() => (string block_tracker_url);
+  GetNetworkUrl() => (string network_url);
   GetBalance(string address) => (bool success, string balance);
   GetERC20TokenBalance(string contract,
                        string address) => (bool success, string balance);
@@ -262,7 +275,7 @@ interface EthJsonRpcController {
   EnsProxyReaderGetResolverAddress(string contract_address, string domain) => (bool status, string result);
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
   AddObserver(pending_remote<EthJsonRpcControllerObserver> observer);
-  SetCustomNetwork(url.mojom.Url provider_url);
+  SetCustomNetworkForTesting(string chain_id, url.mojom.Url provider_url);
 };
 
 enum TransactionStatus {

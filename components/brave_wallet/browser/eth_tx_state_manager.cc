@@ -36,7 +36,7 @@ EthTxStateManager::EthTxStateManager(
   rpc_controller_.set_disconnect_handler(base::BindOnce(
       &EthTxStateManager::OnConnectionError, weak_factory_.GetWeakPtr()));
   rpc_controller_->AddObserver(observer_receiver_.BindNewPipeAndPassRemote());
-  rpc_controller_->GetNetwork(base::BindOnce(&EthTxStateManager::OnGetNetwork,
+  rpc_controller_->GetChainId(base::BindOnce(&EthTxStateManager::OnGetChainId,
                                              weak_factory_.GetWeakPtr()));
 }
 EthTxStateManager::~EthTxStateManager() = default;
@@ -217,7 +217,6 @@ void EthTxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   const std::string path = GetNetworkId() + "." + meta.id;
   bool is_add = dict->FindPath(path) == nullptr;
   dict->SetPath(path, TxMetaToValue(meta));
-
   if (!is_add)
     return;
   // We only keep most recent 10 confirmed and rejected tx metas per network
@@ -274,35 +273,38 @@ EthTxStateManager::GetTransactionsByStatus(
 }
 
 void EthTxStateManager::ChainChangedEvent(const std::string& chain_id) {
-  rpc_controller_->GetNetwork(base::BindOnce(&EthTxStateManager::OnGetNetwork,
+  rpc_controller_->GetChainId(base::BindOnce(&EthTxStateManager::OnGetChainId,
                                              weak_factory_.GetWeakPtr()));
 }
 
-std::string EthTxStateManager::GetNetworkId() const {
-  std::string id;
+void EthTxStateManager::OnAddEthereumChainRequestCompleted(
+    const std::string& chain_id,
+    const std::string& error) {}
 
-  switch (network_) {
-    case brave_wallet::mojom::Network::Mainnet:
-      id = "mainnet";
-      break;
-    case brave_wallet::mojom::Network::Rinkeby:
-      id = "rinkeby";
-      break;
-    case brave_wallet::mojom::Network::Ropsten:
-      id = "ropsten";
-      break;
-    case brave_wallet::mojom::Network::Goerli:
-      id = "goerli";
-      break;
-    case brave_wallet::mojom::Network::Kovan:
-      id = "kovan";
-      break;
-    case brave_wallet::mojom::Network::Localhost:
-      id = network_url_;
-      break;
-    case brave_wallet::mojom::Network::Custom:
-    default:
-      NOTREACHED();
+std::string EthTxStateManager::GetNetworkId() const {
+  auto subdomain = GetInfuraSubdomainForKnownChainId(chain_id_);
+  if (!subdomain.empty())
+    return subdomain;
+  // Separate check for localhost in known networks as it is predefined
+  // but doesnt have infura subdomain.
+  mojom::EthereumChainPtr known_network = GetKnownChain(chain_id_);
+  if (known_network) {
+    if (known_network->rpc_urls.size())
+      return GURL(known_network->rpc_urls.front()).spec();
+  }
+
+  std::vector<mojom::EthereumChainPtr> custom_chains;
+  GetAllCustomChains(prefs_, &custom_chains);
+  std::string id;
+  for (const auto& network : custom_chains) {
+    if (network->chain_id != chain_id_)
+      continue;
+    if (network->rpc_urls.size()) {
+      id = GURL(network->rpc_urls.front()).host();
+    } else {
+      id = chain_id_;
+    }
+    break;
   }
 
   return id;
@@ -342,13 +344,12 @@ void EthTxStateManager::OnGetNetworkUrl(const std::string& url) {
   network_url_ = url;
 }
 
-void EthTxStateManager::OnGetNetwork(mojom::Network network) {
-  network_ = network;
-  if (network_ == brave_wallet::mojom::Network::Localhost ||
-      network_ == brave_wallet::mojom::Network::Custom) {
-    rpc_controller_->GetNetworkUrl(base::BindOnce(
-        &EthTxStateManager::OnGetNetworkUrl, weak_factory_.GetWeakPtr()));
-  }
+void EthTxStateManager::OnGetChainId(const std::string& chain_id) {
+  chain_id_ = chain_id;
+  rpc_controller_->GetNetworkUrl(base::BindOnce(
+      &EthTxStateManager::OnGetNetworkUrl, weak_factory_.GetWeakPtr()));
+  if (chain_callback_for_testing_)
+    std::move(chain_callback_for_testing_).Run();
 }
 
 }  // namespace brave_wallet

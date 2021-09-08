@@ -1,0 +1,31 @@
+<html>
+<head><title>OK</title>
+<script>
+  var request_finished = false;
+  var chain_added_result = false;
+  const url = new URL(window.location.href)
+  const id = url.searchParams.get('id');
+
+  const data = [{
+                     chainId: id ? id : '0x38',
+                     chainName: 'Binance1 Smart Chain',
+                     nativeCurrency: {
+                         name: 'BNB',
+                         symbol: 'BNB',
+                         decimals: 18
+                     },
+                     rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                     iconUrls: [],
+                     blockExplorerUrls: ['https://bscscan.com/'],
+                 }]
+  window.ethereum.request(
+      { method: 'wallet_addEthereumChain', params:data }).then(result => {
+        request_finished = true;
+        chain_added_result = (!result.result && !result.error)
+      }).catch(error => {
+        request_finished = true;
+        chain_added_result = !(result.error && result.error.code == 4001)
+      })
+</script></head>
+<body></body>
+</html>

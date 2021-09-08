@@ -66,8 +66,7 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
 };
 
 TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {
-  EthJsonRpcController controller(brave_wallet::mojom::Network::Mainnet,
-                                  shared_url_loader_factory());
+  EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
   EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
   EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
@@ -93,8 +92,7 @@ TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {
 TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
   EthAddress addr =
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
-  EthJsonRpcController controller(brave_wallet::mojom::Network::Mainnet,
-                                  shared_url_loader_factory());
+  EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
   EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
   EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
@@ -123,8 +121,7 @@ TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
 }
 
 TEST_F(EthPendingTxTrackerUnitTest, DropTransaction) {
-  EthJsonRpcController controller(brave_wallet::mojom::Network::Mainnet,
-                                  shared_url_loader_factory());
+  EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
   EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
   EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
@@ -143,12 +140,12 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   EthAddress addr2 =
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
-  EthJsonRpcController controller(brave_wallet::mojom::Network::Mainnet,
-                                  shared_url_loader_factory());
+  EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
   EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
   EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
                                          &nonce_tracker);
+  base::RunLoop().RunUntilIdle();
   EthTxStateManager::TxMeta meta;
   meta.id = "001";
   meta.from = addr1;

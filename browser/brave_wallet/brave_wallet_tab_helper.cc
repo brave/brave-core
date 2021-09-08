@@ -6,6 +6,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "brave/common/webui_url_constants.h"
@@ -25,13 +26,20 @@ namespace brave_wallet {
 BraveWalletTabHelper::BraveWalletTabHelper(content::WebContents* web_contents)
     : web_contents_(web_contents) {}
 
-BraveWalletTabHelper::~BraveWalletTabHelper() = default;
+BraveWalletTabHelper::~BraveWalletTabHelper() {
+#if !defined(OS_ANDROID) && !defined(OS_IOS)
+  if (IsShowingBubble())
+    CloseBubble();
+#endif  // !defined(OS_ANDROID) && !defined(OS_IOS)
+}
 
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
 void BraveWalletTabHelper::ShowBubble() {
   wallet_bubble_manager_delegate_ =
       WalletBubbleManagerDelegate::Create(web_contents_, GetBubbleURL());
   wallet_bubble_manager_delegate_->ShowBubble();
+  if (show_bubble_callback_for_testing_)
+    std::move(show_bubble_callback_for_testing_).Run();
 }
 
 void BraveWalletTabHelper::CloseBubble() {

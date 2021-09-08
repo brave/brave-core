@@ -63,6 +63,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
+#include "components/user_prefs/user_prefs.h"
 #include "components/version_info/version_info.h"
 #include "content/browser/renderer_host/render_frame_host_impl.h"
 #include "content/browser/service_worker/service_worker_host.h"
@@ -111,7 +112,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
-#include "components/user_prefs/user_prefs.h"
 #endif
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
@@ -234,7 +234,8 @@ void MaybeBindBraveWalletProvider(
 #else
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
 #endif
-              web_contents, frame_host)),
+              web_contents, frame_host),
+          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())),
       std::move(receiver));
 }
 #endif

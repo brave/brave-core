@@ -10,6 +10,12 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 
+namespace {
+// Hardcode id to 1 as it is unused
+const uint32_t kRequestId = 1;
+const char kRequestJsonRPC[] = "2.0";
+}  // namespace
+
 namespace brave_wallet {
 
 std::unique_ptr<base::Value> FormProviderResponse(ProviderErrors code,
@@ -86,6 +92,24 @@ std::string FormProviderErrorResponse(const std::string& controller_response) {
     return "";
 
   return error_response;
+}
+
+std::unique_ptr<base::Value> ToProviderResponse(base::Value* result,
+                                                base::Value* error) {
+  base::Value response(base::Value::Type::DICTIONARY);
+
+  response.SetIntKey("id", kRequestId);
+  response.SetStringKey("jsonrpc", kRequestJsonRPC);
+
+  if (result) {
+    response.SetKey("result", result->Clone());
+  }
+
+  if (error) {
+    response.SetKey("error", error->Clone());
+  }
+
+  return base::Value::ToUniquePtrValue(std::move(response));
 }
 
 }  // namespace brave_wallet

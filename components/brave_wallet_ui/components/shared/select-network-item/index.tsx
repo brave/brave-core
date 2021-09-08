@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { NetworkOptionsType } from '../../../constants/types'
+import { EthereumChain } from '../../../constants/types'
 import { create } from 'ethereum-blockies'
 // Styled Components
 import {
@@ -9,7 +9,7 @@ import {
 } from './style'
 
 export interface Props {
-  network: NetworkOptionsType
+  network: EthereumChain
   onSelectNetwork: () => void
 }
 
@@ -17,13 +17,13 @@ function SelectNetworkItem (props: Props) {
   const { network, onSelectNetwork } = props
 
   const orb = React.useMemo(() => {
-    return create({ seed: network.name, size: 8, scale: 16 }).toDataURL()
+    return create({ seed: network.chainName, size: 8, scale: 16 }).toDataURL()
   }, [network])
 
   return (
     <StyledWrapper onClick={onSelectNetwork}>
       <AccountCircle orb={orb} />
-      <NetworkName>{network.name}</NetworkName>
+      <NetworkName>{network.chainName}</NetworkName>
     </StyledWrapper>
   )
 }

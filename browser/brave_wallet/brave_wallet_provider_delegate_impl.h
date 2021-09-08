@@ -33,6 +33,8 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate {
       const BraveWalletProviderDelegateImpl&) = delete;
   ~BraveWalletProviderDelegateImpl() override;
 
+  void ShowBubble() override;
+  GURL GetOrigin() const override;
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
 

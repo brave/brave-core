@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/time/time.h"
@@ -71,6 +72,12 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
 
   // mojom::EthJsonRpcControllerObserver
   void ChainChangedEvent(const std::string& chain_id) override;
+  void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
+                                          const std::string& error) override;
+
+  void SetChainCallbackForTesting(base::OnceClosure callback) {
+    chain_callback_for_testing_ = std::move(callback);
+  }
 
  private:
   std::string GetNetworkId() const;
@@ -79,13 +86,14 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
 
   void OnConnectionError();
   void OnGetNetworkUrl(const std::string& url);
-  void OnGetNetwork(mojom::Network network);
+  void OnGetChainId(const std::string& chain_id);
 
   PrefService* prefs_;
   mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
   mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
-  mojom::Network network_ = brave_wallet::mojom::Network::Mainnet;
+  std::string chain_id_;
   std::string network_url_;
+  base::OnceClosure chain_callback_for_testing_;
   base::WeakPtrFactory<EthTxStateManager> weak_factory_;
 };
 

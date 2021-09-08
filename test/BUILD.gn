@@ -197,6 +197,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_sync:network_time_helper",
     "//brave/components/brave_wallet/browser/test:brave_wallet_unit_tests",
     "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/brave_wallet/common/test:brave_wallet_common_unit_tests",
     "//brave/components/child_process_monitor:unittests",
     "//brave/components/ipfs/buildflags",
     "//brave/components/ipfs/test:brave_ipfs_unit_tests",
@@ -703,6 +704,7 @@ if (!is_android) {
     deps = [
       "//brave/browser/autoplay:browser_tests",
       "//brave/browser/brave_ads",
+      "//brave/browser/brave_wallet:tab_helper",
       "//brave/browser/browsing_data:browser_tests",
       "//brave/browser/farbling:browser_tests",
       "//brave/browser/permissions:browser_tests",
@@ -762,6 +764,7 @@ if (!is_android) {
     if (brave_wallet_enabled) {
       sources += [
         "//brave/browser/brave_wallet/asset_ratio_controller_browsertest.cc",
+        "//brave/browser/brave_wallet/brave_wallet_ethereum_chain_browsertest.cc",
         "//brave/browser/brave_wallet/brave_wallet_event_emitter_browsertest.cc",
         "//brave/browser/brave_wallet/eth_json_rpc_controller_browsertest.cc",
         "//brave/browser/brave_wallet/swap_controller_browsertest.cc",

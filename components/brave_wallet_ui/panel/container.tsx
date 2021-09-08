@@ -45,14 +45,14 @@ import {
   WalletAccountType,
   BuySendSwapViewTypes,
   AccountAssetOptionType,
-  Network
+  EthereumChain
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { AccountAssetOptions } from '../options/asset-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
-import { NetworkOptions } from '../options/network-options'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
+import { GetNetworkInfo } from '../utils/network-utils'
 
 import { formatBalance, toWei } from '../utils/format-balances'
 
@@ -87,7 +87,8 @@ function Container (props: Props) {
     hasIncorrectPassword,
     hasInitialized,
     userVisibleTokensInfo,
-    isWalletCreated
+    isWalletCreated,
+    networkList
   } = props.wallet
 
   const {
@@ -96,8 +97,8 @@ function Container (props: Props) {
     selectedPanel,
     showSignTransaction,
     showAllowSpendERC20Token,
-    showAllowAddNetwork,
-    showConfirmTransaction
+    showConfirmTransaction,
+    networkPayload
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -119,7 +120,7 @@ function Container (props: Props) {
   }
 
   const onSubmitBuy = () => {
-    const url = BuyAssetUrl(selectedNetwork, selectedWyreAsset, selectedAccount, buyAmount)
+    const url = BuyAssetUrl(selectedNetwork.chainId, selectedWyreAsset, selectedAccount, buyAmount)
     if (url) {
       chrome.tabs.create({ url: url }, () => {
         if (chrome.runtime.lastError) {
@@ -274,7 +275,7 @@ function Container (props: Props) {
     props.walletPanelActions.navigateTo('main')
   }
 
-  const onSelectNetwork = (network: Network) => () => {
+  const onSelectNetwork = (network: EthereumChain) => () => {
     props.walletActions.selectNetwork(network)
     props.walletPanelActions.navigateTo('main')
   }
@@ -300,11 +301,17 @@ function Container (props: Props) {
   }
 
   const onApproveAddNetwork = () => {
-    // Logic Here to Approve Adding a Network
+    props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: networkPayload.chainId, approved: true })
   }
 
   const onCancelAddNetwork = () => {
-    // Logic Here to Cancel Adding a Network
+    props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: networkPayload.chainId, approved: false })
+  }
+
+  const onNetworkLearnMore = () => {
+    chrome.tabs.create({
+      url: 'https://support.brave.com/'
+    }).catch((e) => { console.error(e) })
   }
 
   const onRejectTransaction = () => {
@@ -340,18 +347,6 @@ function Container (props: Props) {
       parameters: 'Parameters: [ {"type": "uint256"}, {"type": "address[]"}, {"type": "address"}, {"type": "uint256"} ]',
       hexData: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc',
       hexSize: '228'
-    }
-  }
-
-  // Example of a Add Network Payload to be passed to the
-  // Allow Add Network Panel
-  const networkPayloadExample = {
-    siteUrl: 'https://app.compound.finance',
-    contractAddress: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-    chainInfo: {
-      chainId: '',
-      name: 'BSC (Binance Smart Chain)',
-      url: 'https://bsc.binance.com'
     }
   }
 
@@ -425,15 +420,15 @@ function Container (props: Props) {
     )
   }
 
-  if (showAllowAddNetwork) {
+  if (selectedPanel === 'addEthereumChain') {
     return (
       <PanelWrapper isLonger={true}>
         <SignContainer>
           <AllowAddNetworkPanel
             onApprove={onApproveAddNetwork}
             onCancel={onCancelAddNetwork}
-            networkPayload={networkPayloadExample}
-            selectedNetwork={selectedNetwork}
+            onLearnMore={onNetworkLearnMore}
+            networkPayload={networkPayload}
           />
         </SignContainer>
       </PanelWrapper>
@@ -449,7 +444,7 @@ function Container (props: Props) {
             onCancel={onCancelSigning}
             onSign={onSignTransaction}
             selectedAccount={selectedAccount}
-            selectedNetwork={selectedNetwork}
+            selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
           />
         </SignContainer>
       </PanelWrapper>
@@ -463,7 +458,7 @@ function Container (props: Props) {
           <AllowSpendPanel
             onReject={onRejectERC20Spend}
             onConfirm={onConfirmERC20Spend}
-            selectedNetwork={selectedNetwork}
+            selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             spendPayload={ERC20SpendPayloadExample}
           />
         </SignContainer>
@@ -498,7 +493,7 @@ function Container (props: Props) {
       <PanelWrapper isLonger={false}>
         <SelectContainer>
           <SelectNetwork
-            networks={NetworkOptions}
+            networks={networkList}
             onBack={onReturnToMain}
             onSelectNetwork={onSelectNetwork}
           />
@@ -611,7 +606,7 @@ function Container (props: Props) {
                 onSubmit={onSubmitBuy}
                 selectedAsset={selectedWyreAsset}
                 buyAmount={buyAmount}
-                selectedNetwork={selectedNetwork}
+                selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
               />
             </SendWrapper>
           </Panel>
@@ -624,7 +619,7 @@ function Container (props: Props) {
     <PanelWrapper isLonger={false}>
       <ConnectedPanel
         selectedAccount={selectedAccount}
-        selectedNetwork={selectedNetwork}
+        selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
         isConnected={walletConnected}
         connectAction={toggleConnected}
         navAction={navigateTo}

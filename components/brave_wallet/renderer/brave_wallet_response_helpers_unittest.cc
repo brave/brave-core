@@ -61,4 +61,40 @@ TEST(BraveWalletResponseHelpersTest, CorrectResultResponse) {
   ASSERT_EQ(result->GetString(), "0xbb4323");
 }
 
+TEST(BraveWalletResponseHelpersTest, ToProviderResponseEmpty) {
+  std::unique_ptr<base::Value> result = ToProviderResponse(nullptr, nullptr);
+
+  ASSERT_TRUE(result != nullptr);
+  ASSERT_TRUE(result->is_dict());
+  ASSERT_EQ(result->FindPath("id")->GetInt(), 1);
+  ASSERT_EQ(result->FindPath("jsonrpc")->GetString(), "2.0");
+  ASSERT_FALSE(result->FindPath("result"));
+  ASSERT_FALSE(result->FindPath("error"));
+}
+
+TEST(BraveWalletResponseHelpersTest, ToProviderResponseSuccess) {
+  base::Value value("test");
+  std::unique_ptr<base::Value> result = ToProviderResponse(&value, nullptr);
+
+  ASSERT_TRUE(result != nullptr);
+  ASSERT_TRUE(result->is_dict());
+  ASSERT_EQ(result->FindPath("id")->GetInt(), 1);
+  ASSERT_EQ(result->FindPath("jsonrpc")->GetString(), "2.0");
+  EXPECT_EQ(result->FindPath("result")->GetString(), value.GetString());
+  ASSERT_FALSE(result->FindPath("error"));
+}
+
+TEST(BraveWalletResponseHelpersTest, ToProviderResponseError) {
+  base::Value value("test");
+  base::Value error("error");
+  std::unique_ptr<base::Value> result = ToProviderResponse(&value, &error);
+
+  ASSERT_TRUE(result != nullptr);
+  ASSERT_TRUE(result->is_dict());
+  ASSERT_EQ(result->FindPath("id")->GetInt(), 1);
+  ASSERT_EQ(result->FindPath("jsonrpc")->GetString(), "2.0");
+  EXPECT_EQ(result->FindPath("result")->GetString(), value.GetString());
+  ASSERT_TRUE(result->FindPath("error")->Equals(&error));
+}
+
 }  // namespace brave_wallet

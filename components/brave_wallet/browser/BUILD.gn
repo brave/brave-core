@@ -39,7 +39,6 @@ static_library("browser") {
     "eth_data_builder.h",
     "eth_json_rpc_controller.cc",
     "eth_json_rpc_controller.h",
-    "eth_json_rpc_controller_events_observer.h",
     "eth_nonce_tracker.cc",
     "eth_nonce_tracker.h",
     "eth_pending_tx_tracker.cc",
@@ -83,7 +82,9 @@ static_library("browser") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/resources:strings_grit",
     "//brave/third_party/bitcoin-core",
     "//brave/third_party/bitcoin-core:secp256k1",
     "//brave/third_party/ethash",
@@ -96,6 +97,7 @@ static_library("browser") {
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
+    "//ui/base:base",
     "//url",
   ]
 }

@@ -4,5 +4,11 @@
     <message name="IDS_TOOLTIP_WALLET" desc="Tooltip to acccess the Brave Wallet">Wallet</message>
     <message name="IDS_ACCNAME_BRAVE_WALLET_BUTTON" desc="The accessible name for the Brave Wallet bubble.">Brave Wallet</message>
     <message name="IDS_BRAVE_WALLET" desc="The name of the feature Brave Wallet">Brave Wallet</message>
+    <message name="IDS_WALLET_USER_REJECTED_REQUEST" desc="The text of the response for wallet_addEthereumChain call if the user rejected the request">The user rejected the request.</message>
+    <message name="IDS_WALLET_INVALID_PARAMETERS" desc="The text of the response for wallet_addEthereumChain call with invalid parameters">Invalid parameters.</message>
+    <message name="IDS_WALLET_EXPECTED_SINGLE_PARAMETER" desc="The text of the response for wallet_addEthereumChain call with empty parameters">Expected single, object parameter.</message>
+    <message name="IDS_WALLET_CHAIN_EXISTS" desc="The text of the response for wallet_addEthereumChain call with existing chain id">This Chain ID is currently used</message>
+    <message name="IDS_WALLET_INTERNAL_ERROR" desc="The text of the response for wallet_addEthereumChain call with internal error">An internal error has occurred</message>
+    <message name="IDS_WALLET_ALREADY_IN_PROGRESS_ERROR" desc="The text of the response for wallet_addEthereumChain call for existing request">A request is already in progress</message>
   </if>
 </grit-part>

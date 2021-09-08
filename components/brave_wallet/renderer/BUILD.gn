@@ -8,6 +8,7 @@ source_set("renderer") {
 
   deps = [
     "//base",
+    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",

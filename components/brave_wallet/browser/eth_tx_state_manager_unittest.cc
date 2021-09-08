@@ -35,8 +35,7 @@ class EthTxStateManagerUnitTest : public testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
         shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)),
-        rpc_controller_(mojom::Network::Mainnet, shared_url_loader_factory_) {}
+                &url_loader_factory_)) {}
   ~EthTxStateManagerUnitTest() override {}
 
  protected:
@@ -47,6 +46,8 @@ class EthTxStateManagerUnitTest : public testing::Test {
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
+    rpc_controller_.reset(
+        new EthJsonRpcController(shared_url_loader_factory_, GetPrefs()));
   }
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
@@ -55,7 +56,7 @@ class EthTxStateManagerUnitTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  EthJsonRpcController rpc_controller_;
+  std::unique_ptr<EthJsonRpcController> rpc_controller_;
 };
 
 TEST_F(EthTxStateManagerUnitTest, GenerateMetaID) {
@@ -156,7 +157,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
 
 TEST_F(EthTxStateManagerUnitTest, TxOperations) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.MakeRemote());
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_->MakeRemote());
   // Wait for network info
   base::RunLoop().RunUntilIdle();
 
@@ -239,7 +240,7 @@ TEST_F(EthTxStateManagerUnitTest, TxOperations) {
 
 TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.MakeRemote());
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_->MakeRemote());
   // Wait for network info
   base::RunLoop().RunUntilIdle();
 
@@ -319,7 +320,7 @@ TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
 
 TEST_F(EthTxStateManagerUnitTest, SwitchNetwork) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.MakeRemote());
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_->MakeRemote());
   // Wait for network info
   base::RunLoop().RunUntilIdle();
 
@@ -327,13 +328,13 @@ TEST_F(EthTxStateManagerUnitTest, SwitchNetwork) {
   meta.id = "001";
   tx_state_manager.AddOrUpdateTx(meta);
 
-  rpc_controller_.SetNetwork(brave_wallet::mojom::Network::Ropsten);
+  rpc_controller_->SetNetwork("0x3");
   // Wait for network info
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(tx_state_manager.GetTx("001"), nullptr);
   tx_state_manager.AddOrUpdateTx(meta);
 
-  rpc_controller_.SetNetwork(brave_wallet::mojom::Network::Localhost);
+  rpc_controller_->SetNetwork(brave_wallet::mojom::kLocalhostChainId);
   // Wait for network info
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(tx_state_manager.GetTx("001"), nullptr);
@@ -358,7 +359,7 @@ TEST_F(EthTxStateManagerUnitTest, SwitchNetwork) {
 
 TEST_F(EthTxStateManagerUnitTest, RetireOldTxMeta) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.MakeRemote());
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_->MakeRemote());
   // Wait for network info
   base::RunLoop().RunUntilIdle();
 

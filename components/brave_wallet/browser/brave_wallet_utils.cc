@@ -7,23 +7,30 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdlib>
 #include <sstream>
 #include <utility>
 
+#include "base/environment.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "components/prefs/pref_service.h"
 #include "crypto/random.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"
+#include "url/gurl.h"
 
 #if defined(OS_WIN)
 #include <windows.h>
@@ -43,11 +50,147 @@ std::string GenerateMnemonicInternal(uint8_t* entropy, size_t size) {
   wally_free_string(words);
   return result;
 }
+
+std::string GetInfuraProjectID() {
+  std::string project_id(BRAVE_INFURA_PROJECT_ID);
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  if (env->HasVar("BRAVE_INFURA_PROJECT_ID")) {
+    env->GetVar("BRAVE_INFURA_PROJECT_ID", &project_id);
+  }
+  return project_id;
+}
+
+bool GetUseStagingInfuraEndpoint() {
+  std::string project_id(BRAVE_INFURA_PROJECT_ID);
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  return env->HasVar("BRAVE_INFURA_STAGING");
+}
+
+// Precompiled networks available in native wallet.
+const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
+    {brave_wallet::mojom::kMainnetChainId,
+     "Ethereum Mainnet",
+     {"https://etherscan.io"},
+     {},
+     {},
+     "ETH",
+     "Ethereum",
+     18},
+    {brave_wallet::mojom::kRinkebyChainId,
+     "Rinkeby Test Network",
+     {"https://rinkeby.etherscan.io"},
+     {},
+     {},
+     "ETH",
+     "Ethereum",
+     18},
+    {brave_wallet::mojom::kRopstenChainId,
+     "Ropsten Test Network",
+     {"https://ropsten.etherscan.io"},
+     {},
+     {},
+     "ETH",
+     "Ethereum",
+     18},
+    {brave_wallet::mojom::kGoerliChainId,
+     "Goerli Test Network",
+     {"https://goerli.etherscan.io"},
+     {},
+     {},
+     "ETH",
+     "Ethereum",
+     18},
+    {brave_wallet::mojom::kKovanChainId,
+     "Kovan Test Network",
+     {"https://kovan.etherscan.io"},
+     {},
+     {},
+     "ETH",
+     "Ethereum",
+     18},
+    {brave_wallet::mojom::kLocalhostChainId,
+     "Localhost",
+     {"http://localhost:8545/"},
+     {},
+     {"http://localhost:8545/"},
+     "ETH",
+     "Ethereum",
+     18}};
+
+const base::flat_map<std::string, std::string> kInfuraSubdomains = {
+    {brave_wallet::mojom::kMainnetChainId, "mainnet"},
+    {brave_wallet::mojom::kRinkebyChainId, "rinkeby"},
+    {brave_wallet::mojom::kRopstenChainId, "ropsten"},
+    {brave_wallet::mojom::kGoerliChainId, "goerli"},
+    {brave_wallet::mojom::kKovanChainId, "kovan"}};
+
+std::string GetInfuraURLForKnownChainId(const std::string& chain_id) {
+  auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
+  if (subdomain.empty())
+    return std::string();
+  return base::StringPrintf(
+      GetUseStagingInfuraEndpoint()
+          ? "https://%s-staging-infura.bravesoftware.com/%s"
+          : "https://%s-infura.brave.com/%s",
+      subdomain.c_str(), GetInfuraProjectID().c_str());
+}
+
+GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id) {
+  std::vector<brave_wallet::mojom::EthereumChainPtr> custom_chains;
+  brave_wallet::GetAllCustomChains(prefs, &custom_chains);
+  for (const auto& it : custom_chains) {
+    if (it->chain_id != chain_id)
+      continue;
+    if (it->rpc_urls.empty())
+      return GURL();
+    return GURL(it->rpc_urls.front());
+  }
+  return GURL();
+}
+
 }  // namespace
+
+mojom::EthereumChainPtr GetKnownChain(const std::string& chain_id) {
+  for (const auto& network : kKnownNetworks) {
+    if (network.chain_id != chain_id)
+      continue;
+    auto result = network.Clone();
+    if (result->rpc_urls.empty())
+      result->rpc_urls.push_back(GetInfuraURLForKnownChainId(chain_id));
+    return result;
+  }
+  return nullptr;
+}
+
+std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {
+  if (kInfuraSubdomains.contains(chain_id))
+    return kInfuraSubdomains.at(chain_id);
+  return std::string();
+}
+
+void GetAllCustomChains(PrefService* prefs,
+                        std::vector<mojom::EthereumChainPtr>* result) {
+  const base::Value* custom_networks_list =
+      prefs->GetList(kBraveWalletCustomNetworks);
+  if (!custom_networks_list)
+    return;
+  for (const auto& it : custom_networks_list->GetList()) {
+    absl::optional<mojom::EthereumChain> chain =
+        brave_wallet::ValueToEthereumChain(it);
+    if (chain)
+      result->push_back(chain->Clone());
+  }
+}
 
 bool IsNativeWalletEnabled() {
   return base::FeatureList::IsEnabled(
       brave_wallet::features::kNativeBraveWalletFeature);
+}
+
+const std::vector<brave_wallet::mojom::EthereumChain> GetAllKnownNetworks() {
+  std::vector<brave_wallet::mojom::EthereumChain> result;
+  result.assign(kKnownNetworks, std::end(kKnownNetworks));
+  return result;
 }
 
 std::string ToHex(const std::string& data) {
@@ -489,6 +632,29 @@ absl::optional<TransactionReceipt> ValueToTransactionReceipt(
   tx_receipt.status = *status;
 
   return tx_receipt;
+}
+
+void GetAllKnownChains(std::vector<mojom::EthereumChainPtr>* chains) {
+  for (const auto& network : kKnownNetworks) {
+    chains->push_back(GetKnownChain(network.chain_id));
+  }
+}
+
+GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id) {
+  mojom::EthereumChainPtr known_network = GetKnownChain(chain_id);
+  if (!known_network)
+    return GetCustomChainURL(prefs, chain_id);
+
+  if (known_network->rpc_urls.size())
+    return GURL(known_network->rpc_urls.front());
+
+  return GURL();
+}
+
+void GetAllChains(PrefService* prefs,
+                  std::vector<mojom::EthereumChainPtr>* result) {
+  GetAllKnownChains(result);
+  GetAllCustomChains(prefs, result);
 }
 
 }  // namespace brave_wallet
