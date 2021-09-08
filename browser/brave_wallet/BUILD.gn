@@ -113,4 +113,11 @@ source_set("unit_tests") {
     "//chrome/test:test_support",
     "//testing/gtest",
   ]
+  if (!is_android && !is_ios) {
+    sources += [ "brave_wallet_provider_impl_unittest.cc" ]
+    deps += [
+      ":brave_wallet_delegate",
+      "//brave/components/brave_wallet/common:common_constants",
+    ]
+  }
 }
