@@ -12,6 +12,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -737,7 +738,7 @@ void KeyringController::Reset() {
   default_keyring_.reset();
 
   prefs_->ClearPref(kBraveWalletKeyrings);
-  prefs_->ClearPref(kBraveWalletCustomNetworks);
+  EthJsonRpcController::ResetProfilePrefs(prefs_);
 }
 
 bool KeyringController::GetPrefInBytesForKeyring(const std::string& key,

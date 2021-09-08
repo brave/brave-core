@@ -311,6 +311,13 @@ void EthJsonRpcController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
                                brave_wallet::mojom::kMainnetChainId);
 }
 
+// static
+void EthJsonRpcController::ResetProfilePrefs(PrefService* prefs) {
+  DCHECK(prefs);
+  prefs->ClearPref(kBraveWalletCustomNetworks);
+  prefs->ClearPref(kBraveWalletCurrentChainId);
+}
+
 void EthJsonRpcController::SendRawTransaction(const std::string& signed_tx,
                                               SendRawTxCallback callback) {
   auto internal_callback =
