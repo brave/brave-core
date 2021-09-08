@@ -85,6 +85,12 @@
         sub-label="$i18n{hangoutsEnabledDesc}"
         on-settings-boolean-control-change="onHangoutsEnabledChange_">
     </settings-toggle-button>
+    <settings-toggle-button id="mediaRouterEnabled"
+        class="cr-row"
+        pref="{{prefs.media_router.enable_media_router}}"
+        label="Media Router"
+        sub-label="$i18n{mediaRouterEnabledDesc}">
+    </settings-toggle-button>
     <template is="dom-if" if="{{ decentralizedDnsEnabled_ }}">
       <div class="settings-box">
         <div class="flex cr-padded-text">
