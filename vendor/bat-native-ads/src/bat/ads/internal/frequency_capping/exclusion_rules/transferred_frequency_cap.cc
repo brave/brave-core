@@ -9,8 +9,6 @@
 #include <deque>
 
 #include "base/strings/stringprintf.h"
-#include "base/time/time.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 

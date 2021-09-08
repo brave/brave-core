@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads_history/filters/ads_history_date_range_filter.h"
 
+#include <cstdint>
 #include <limits>
 
 #include "testing/gtest/include/gtest/gtest.h"

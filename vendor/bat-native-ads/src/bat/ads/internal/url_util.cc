@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/url_util.h"
 
-#include "bat/ads/internal/logging.h"
+#include "base/check.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"

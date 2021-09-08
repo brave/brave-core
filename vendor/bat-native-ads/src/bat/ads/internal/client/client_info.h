@@ -18,8 +18,6 @@
 
 namespace ads {
 
-struct AdPreferencesInfo;
-
 struct ClientInfo {
   ClientInfo();
   ClientInfo(const ClientInfo& state);

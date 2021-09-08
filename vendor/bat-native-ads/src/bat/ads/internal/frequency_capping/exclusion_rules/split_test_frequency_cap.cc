@@ -7,7 +7,6 @@
 
 #include "base/metrics/field_trial.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -16,7 +15,7 @@ namespace {
 
 const char kStudyName[] = "AdvertiserSplitTestStudy";
 
-absl::optional<std::string> GetSplitTestGroup(const std::string study_name) {
+absl::optional<std::string> GetSplitTestGroup(const std::string& study_name) {
   base::FieldTrial* field_trial = base::FieldTrialList::Find(study_name);
   if (!field_trial) {
     return absl::nullopt;

@@ -45,6 +45,9 @@ class BraveTooltip {
     delegate_ = std::move(delegate);
   }
 
+  virtual void PerformOkButtonAction() {}
+  virtual void PerformCancelButtonAction() {}
+
  protected:
   std::string id_;
   BraveTooltipAttributes attributes_;

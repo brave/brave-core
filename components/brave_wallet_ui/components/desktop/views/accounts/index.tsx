@@ -3,7 +3,8 @@ import * as React from 'react'
 import {
   WalletAccountType,
   RPCTransactionType,
-  AccountSettingsNavTypes
+  AccountSettingsNavTypes,
+  UpdateAccountNamePayloadType
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
@@ -56,7 +57,7 @@ export interface Props {
   toggleNav: () => void
   onClickBackup: () => void
   onClickAddAccount: () => void
-  onUpdateAccountName: (name: string) => void
+  onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onRemoveAccount: (address: string) => void
 }
 

@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/privacy/privacy_util.h"
 
-#include "bat/ads/internal/logging.h"
+#include "base/check.h"
 
 namespace ads {
 namespace privacy {

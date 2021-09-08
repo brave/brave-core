@@ -9,9 +9,10 @@
 #include <memory>
 
 #include "bat/ads/ads_history_info.h"
-#include "bat/ads/internal/ads_history/sorts/ads_history_sort.h"
 
 namespace ads {
+
+class AdsHistorySort;
 
 class AdsHistorySortFactory {
  public:

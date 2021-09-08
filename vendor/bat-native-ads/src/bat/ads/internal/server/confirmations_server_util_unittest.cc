@@ -6,7 +6,6 @@
 #include "bat/ads/internal/server/confirmations_server_util.h"
 
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

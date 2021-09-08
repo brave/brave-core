@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/features/conversions/conversions_features.h"
 
-#include "bat/ads/internal/unittest_base.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

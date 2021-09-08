@@ -6,12 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EVENT_SERVED_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EVENT_SERVED_H_
 
+#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ad_events/ad_event.h"
 
 namespace ads {
-
-struct InlineContentAdInfo;
-
 namespace inline_content_ads {
 
 class AdEventServed : public AdEvent<InlineContentAdInfo> {

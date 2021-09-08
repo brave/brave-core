@@ -16,6 +16,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
@@ -89,11 +90,6 @@ void RecordAdEvent(const AdEventInfo& ad_event) {
 
 std::deque<uint64_t> GetAdEvents(const AdType& ad_type,
                                  const ConfirmationType& confirmation_type) {
-  const std::string ad_type_as_string = std::string(ad_type);
-
-  const std::string confirmation_type_as_string =
-      std::string(confirmation_type);
-
   const std::vector<uint64_t> ad_events =
       AdsClientHelper::Get()->GetAdEvents(ad_type, confirmation_type);
 

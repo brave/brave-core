@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads_history/ads_history_util.h"
 
+#include <cstdint>
+
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ads_history_info.h"

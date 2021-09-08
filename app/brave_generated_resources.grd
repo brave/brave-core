@@ -1350,9 +1350,14 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         </message>
       </if>
       <!-- Brave VPN -->
-      <message name="IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT" desc="Text for vpn button in toolbar.">
-        VPN
-      </message>
+      <if expr="enable_brave_vpn">
+        <message name="IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT" desc="Text for vpn button in toolbar.">
+          VPN
+        </message>
+        <message name="IDS_BRAVE_VPN_MENU" desc="The Brave VPN item (app menu)">
+          Brave VPN
+        </message>
+      </if>
       <message name="IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST" desc="">
         To add a bookmark, click the bookmark button next to the address bar
       </message>

@@ -8,10 +8,10 @@
 
 #include <memory>
 
-#include "bat/ads/internal/ml/data/data.h"
-
 namespace ads {
 namespace ml {
+
+class Data;
 
 enum class TransformationType {
   LOWERCASE = 0,

@@ -2,7 +2,8 @@ import * as React from 'react'
 import * as qr from 'qr-image'
 import {
   AccountSettingsNavTypes,
-  WalletAccountType
+  WalletAccountType,
+  UpdateAccountNamePayloadType
 } from '../../../../constants/types'
 import {
   PopupModal,
@@ -29,12 +30,13 @@ import {
   WarningText,
   WarningWrapper,
   PrivateKeyBubble,
-  ButtonWrapper
+  ButtonWrapper,
+  ErrorText
 } from './style'
 
 export interface Props {
   onClose: () => void
-  onUpdateAccountName: (name: string) => void
+  onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onCopyToClipboard: () => void
   onChangeTab: (id: AccountSettingsNavTypes) => void
   onRemoveAccount: (address: string) => void
@@ -66,14 +68,22 @@ const AddAccountModal = (props: Props) => {
   } = props
   const [accountName, setAccountName] = React.useState<string>(account.name)
   const [showPrivateKey, setShowPrivateKey] = React.useState<boolean>(false)
+  const [updateError, setUpdateError] = React.useState<boolean>(false)
   const [qrCode, setQRCode] = React.useState<string>('')
 
   const handleAccountNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAccountName(event.target.value)
+    setUpdateError(false)
   }
 
   const onSubmitUpdateName = () => {
-    onUpdateAccountName(accountName)
+    const isDerived = account?.accountType === 'Primary'
+    const payload = {
+      address: account.address,
+      name: accountName,
+      isDerived: isDerived
+    }
+    onUpdateAccountName(payload).success ? onClose() : setUpdateError(true)
   }
 
   const generateQRData = () => {
@@ -115,6 +125,7 @@ const AddAccountModal = (props: Props) => {
 
   const onClickClose = () => {
     onHidePrivateKey()
+    setUpdateError(false)
     onClose()
   }
 
@@ -141,6 +152,9 @@ const AddAccountModal = (props: Props) => {
               placeholder={locale.addAccountPlaceholder}
               onChange={handleAccountNameChanged}
             />
+            {updateError &&
+              <ErrorText>{locale.accountSettingsUpdateError}</ErrorText>
+            }
             <QRCodeWrapper src={qrCode} />
             <Tooltip text={locale.toolTipCopyToClipboard}>
               <AddressButton onClick={onCopyToClipboard}>{reduceAddress(account.address)}<CopyIcon /></AddressButton>

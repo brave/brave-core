@@ -21,6 +21,10 @@
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
+#endif
+
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -199,6 +203,20 @@ ContentsLayoutManager* BraveBrowserView::GetContentsLayoutManager() const {
   return BrowserView::GetContentsLayoutManager();
 }
 #endif
+
+void BraveBrowserView::ShowBraveVPNBubble() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  vpn_panel_host_.ShowBraveVPNPanel();
+#endif
+}
+
+views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  return static_cast<BraveToolbarView*>(toolbar())->brave_vpn_button();
+#else
+  return nullptr;
+#endif
+}
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
   BookmarkButton* button =

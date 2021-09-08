@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
 
-#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

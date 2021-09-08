@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_H_
 
 #include <cstdint>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -17,7 +18,6 @@
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/promoted_content_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/statement_info.h"
 
@@ -58,10 +58,6 @@ extern const char g_catalog_schema_resource_id[];
 
 // Returns true if the locale is supported otherwise returns false
 bool IsSupportedLocale(const std::string& locale);
-
-// Returns true if the locale is newly supported otherwise returns false
-bool IsNewlySupportedLocale(const std::string& locale,
-                            const int last_schema_version);
 
 class ADS_EXPORT Ads {
  public:

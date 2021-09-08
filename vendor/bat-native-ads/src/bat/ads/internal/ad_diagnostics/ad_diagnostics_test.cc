@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics.h"
 
+#include <cstdint>
 #include <string>
 
 #include "base/i18n/time_formatting.h"

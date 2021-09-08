@@ -7,25 +7,25 @@
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_
 
 #include "base/scoped_observation.h"
-#include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
-#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+
+class Browser;
 
 class BraveVPNButton : public ToolbarButton,
                        public BraveVpnServiceDesktop::Observer {
  public:
   METADATA_HEADER(BraveVPNButton);
 
-  explicit BraveVPNButton(Profile* profile);
+  explicit BraveVPNButton(Browser* browser);
   ~BraveVPNButton() override;
 
   BraveVPNButton(const BraveVPNButton&) = delete;
   BraveVPNButton& operator=(const BraveVPNButton&) = delete;
 
   // BraveVpnService::Observer overrides:
-  void OnConnectionStateChanged(bool connected) override;
+  void OnConnectionStateChanged(ConnectionState state) override;
   void OnConnectionCreated() override;
   void OnConnectionRemoved() override;
 
@@ -37,13 +37,12 @@ class BraveVPNButton : public ToolbarButton,
   bool IsConnected();
 
   void OnButtonPressed(const ui::Event& event);
-  void ShowBraveVPNPanel();
 
+  Browser* browser_ = nullptr;
   BraveVpnServiceDesktop* service_ = nullptr;
   base::ScopedObservation<BraveVpnServiceDesktop,
                           BraveVpnServiceDesktop::Observer>
       observation_{this};
-  WebUIBubbleManagerT<VPNPanelUI> webui_bubble_manager_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_

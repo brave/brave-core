@@ -5,10 +5,12 @@
 
 #include "bat/ads/internal/settings/settings.h"
 
+#include <cstdint>
 #include <vector>
 
 #include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"

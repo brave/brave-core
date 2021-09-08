@@ -27,6 +27,11 @@ declare namespace RewardsExtension {
     rewardsPanelData: State
   }
 
+  interface ScheduledCaptcha {
+    url: string
+    maxAttemptsExceeded: boolean
+  }
+
   export enum PublisherStatus {
     NOT_VERIFIED = 0,
     CONNECTED = 1,

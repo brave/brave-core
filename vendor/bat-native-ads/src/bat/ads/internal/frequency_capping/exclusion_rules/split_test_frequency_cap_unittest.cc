@@ -6,7 +6,6 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/split_test_frequency_cap.h"
 
 #include "base/metrics/field_trial.h"
-#include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 

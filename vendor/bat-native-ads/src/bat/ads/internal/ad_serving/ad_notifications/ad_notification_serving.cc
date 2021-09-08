@@ -7,6 +7,7 @@
 
 #include <cstdint>
 
+#include "base/check.h"
 #include "base/rand_util.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ad_type.h"

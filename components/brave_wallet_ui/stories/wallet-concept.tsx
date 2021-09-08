@@ -122,8 +122,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setInputValue(value)
   }
 
-  const onUpdateAccountName = () => {
-    alert('Will update account name')
+  const onUpdateAccountName = (): { success: boolean } => {
+    return { success: true }
   }
 
   const onShowBackup = () => {

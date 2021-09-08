@@ -3,6 +3,7 @@ import * as S from './style'
 import { Radio } from 'brave-ui'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
 
+// TODO(nullhook): Fetch from the service api
 const data = [
   { region: 'United States' },
   { region: 'Japan' },

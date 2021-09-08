@@ -8,11 +8,12 @@
 
 #include <memory>
 
-#include "bat/ads/internal/ml/data/data.h"
 #include "bat/ads/internal/ml/transformation/transformation.h"
 
 namespace ads {
 namespace ml {
+
+class Data;
 
 class LowercaseTransformation : public Transformation {
  public:

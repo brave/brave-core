@@ -35,6 +35,8 @@ class BraveBrowserWindow : public BrowserWindow {
 #if BUILDFLAG(ENABLE_SIDEBAR)
   virtual sidebar::Sidebar* InitSidebar() = 0;
 #endif
+
+  virtual void ShowBraveVPNBubble() = 0;
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_

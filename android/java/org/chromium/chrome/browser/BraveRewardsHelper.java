@@ -78,6 +78,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     public static final int THANKYOU_STAY_DURATION = 2000; //ms
     private static final float DP_PER_INCH_MDPI = 160f;
     private Tab mTab;
+    private Profile mProfile;
 
     public static void setRewardsEnvChange(boolean isEnabled) {
         SharedPreferences.Editor sharedPreferencesEditor =
@@ -185,8 +186,9 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     public BraveRewardsHelper(Tab tab) {
         mTab = tab;
         assert mTab != null;
-        if (mLargeIconBridge == null && mTab != null) {
-            mLargeIconBridge = new LargeIconBridge(Profile.fromWebContents(mTab.getWebContents()));
+        mProfile = Profile.getLastUsedRegularProfile();
+        if (mLargeIconBridge == null && mTab != null && mProfile != null) {
+            mLargeIconBridge = new LargeIconBridge(mProfile);
         }
     }
 
@@ -201,7 +203,6 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         mCallback =  null;
     }
 
-
     public void detach() {
         mCallback =  null;
     }
@@ -213,9 +214,9 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     }
 
     private void retrieveLargeIconInternal() {
-        mFetchCount ++;
+        mFetchCount++;
 
-        //favIconURL (or content URL) is still not available, try to read it again
+        // FavIconURL (or content URL) is still not available, try to read it again.
         if (mFaviconUrl == null || mFaviconUrl.isEmpty() || mFaviconUrl.equals("clear")) {
             if (mTab != null) {
                 mFaviconUrl = mTab.getUrl().getSpec();
@@ -231,9 +232,10 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
             return;
         }
 
-        //get the icon
-        if (mLargeIconBridge!= null && mCallback != null && !mFaviconUrl.isEmpty()) {
-            mLargeIconBridge.getLargeIconForUrl(new GURL(mFaviconUrl),FAVICON_DESIRED_SIZE, this);
+        // Get the icon.
+        if (mLargeIconBridge != null && mCallback != null && !mFaviconUrl.isEmpty()
+                && mProfile.isNativeInitialized()) {
+            mLargeIconBridge.getLargeIconForUrl(new GURL(mFaviconUrl), FAVICON_DESIRED_SIZE, this);
         }
     }
 

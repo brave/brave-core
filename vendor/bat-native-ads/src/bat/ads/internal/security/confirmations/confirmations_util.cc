@@ -5,8 +5,11 @@
 
 #include "bat/ads/internal/security/confirmations/confirmations_util.h"
 
+#include <string>
+
 #include "base/base64.h"
 #include "base/json/json_reader.h"
+#include "base/notreached.h"
 #include "base/values.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/logging.h"

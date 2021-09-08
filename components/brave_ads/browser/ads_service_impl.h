@@ -23,6 +23,7 @@
 #include "bat/ads/database.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ledger/mojom_structs.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
@@ -39,6 +40,10 @@
 #include "ui/base/idle/idle.h"
 
 #include "base/task/cancelable_task_tracker.h"
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#endif
 
 using brave_ads::ResourceComponent;
 using brave_rewards::RewardsNotificationService;
@@ -64,6 +69,8 @@ class SimpleURLLoader;
 
 namespace brave_ads {
 
+class AdsTooltipsDelegate;
+
 class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
                        public history::HistoryServiceObserver,
@@ -74,15 +81,20 @@ class AdsServiceImpl : public AdsService,
   void OnWalletUpdated();
 
   // AdsService implementation
-  explicit AdsServiceImpl(Profile* profile,
-                          history::HistoryService* history_service);
+  explicit AdsServiceImpl(
+      Profile* profile,
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+      brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+          adaptive_captcha_service,
+      std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
+#endif
+      history::HistoryService* history_service);
   ~AdsServiceImpl() override;
 
   AdsServiceImpl(const AdsServiceImpl&) = delete;
   AdsServiceImpl& operator=(const AdsServiceImpl&) = delete;
 
   bool IsSupportedLocale() const override;
-  bool IsNewlySupportedLocale() override;
 
   bool IsEnabled() const override;
   void SetEnabled(const bool is_enabled) override;
@@ -99,6 +111,12 @@ class AdsServiceImpl : public AdsService,
   std::string GetAutoDetectedAdsSubdivisionTargetingCode() const override;
   void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  void ShowScheduledCaptcha(const std::string& payment_id,
+                            const std::string& captcha_id) override;
+  void SnoozeScheduledCaptcha() override;
+#endif
 
   void OnShowAdNotification(const std::string& notification_id) override;
   void OnCloseAdNotification(const std::string& notification_id,
@@ -325,7 +343,7 @@ class AdsServiceImpl : public AdsService,
   uint64_t MigrateTimestampToDoubleT(const uint64_t timestamp_in_seconds) const;
 
   void MaybeShowMyFirstAdNotification();
-  bool ShouldShowMyFirstAdNotification() const;
+  bool ShouldShowMyFirstAdNotification();
 
   bool PrefExists(const std::string& path) const;
   void OnPrefsChanged(const std::string& pref);
@@ -389,6 +407,14 @@ class AdsServiceImpl : public AdsService,
 
   std::string LoadResourceForId(const std::string& id) override;
 
+  void ClearScheduledCaptcha() override;
+
+  void GetScheduledCaptcha(const std::string& payment_id,
+                           ads::GetScheduledCaptchaCallback callback) override;
+
+  void ShowScheduledCaptchaNotification(const std::string& payment_id,
+                                        const std::string& captcha_id) override;
+
   void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                         ads::RunDBTransactionCallback callback) override;
 
@@ -442,6 +468,12 @@ class AdsServiceImpl : public AdsService,
   Profile* profile_;  // NOT OWNED
 
   history::HistoryService* history_service_;  // NOT OWNED
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+      adaptive_captcha_service_;  // NOT OWNED
+  std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;
+#endif
 
   bool is_initialized_ = false;
 

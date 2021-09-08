@@ -13,8 +13,6 @@
 
 namespace ads {
 
-struct CreativeAdInfo;
-
 class DaypartFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
   DaypartFrequencyCap();

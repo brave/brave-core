@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
 
+#include "base/check.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/server/confirmations_server_util.h"
 
 namespace ads {

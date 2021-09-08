@@ -1,9 +1,7 @@
 import styled from 'styled-components'
-import Swap from '../assets/swap.svg'
-import {
-  VerifiedSIcon,
-  CaratCircleODownIcon
-} from 'brave-ui/components/icons'
+import CheckMark from '../../../assets/svg-icons/big-checkmark.svg'
+import SwitchDown from '../../../assets/svg-icons/switch-icon.svg'
+import { CaratCircleODownIcon } from 'brave-ui/components/icons'
 
 interface StyleProps {
   panelBackground: string
@@ -31,13 +29,18 @@ export const CenterColumn = styled.div`
   max-width: 300px;
 `
 
-export const AccountCircle = styled.div<Partial<StyleProps>>`
+export const AccountCircle = styled.button<Partial<StyleProps>>`
+  display: flex;
+  cursor: pointer;
   width: 54px;
   height: 54px;
   border-radius: 100%;
   background-image: url(${(p) => p.orb});
   background-size: cover;
   border: 2px solid white;
+  position: relative;
+  box-sizing: border-box;
+  margin-bottom: 6px;
 `
 
 export const AccountNameText = styled.span`
@@ -88,13 +91,6 @@ export const FiatBalanceText = styled.span`
   font-weight: 300;
 `
 
-export const ConnectedIcon = styled(VerifiedSIcon)`
-  width: 14px;
-  height: 14px;
-  margin-right: 8px;
-  color: ${(p) => p.theme.palette.white};
-`
-
 export const NotConnectedIcon = styled.div`
   width: 14px;
   height: 14px;
@@ -109,14 +105,6 @@ export const CaratDownIcon = styled(CaratCircleODownIcon)`
   margin-left: 8px;
 `
 
-export const SwapIcon = styled.div`
-  width: 14px;
-  height: 11.67px;
-  background: url(${Swap});
-`
-
-// Will use brave-ui button comp in the future!
-// Currently is missing "tiny" variant
 export const OvalButton = styled.button`
   display: flex;;
   align-items: center;
@@ -147,4 +135,23 @@ export const StatusRow = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0px 12px;
+`
+
+export const BigCheckMark = styled.div`
+  width: 14px;
+  height: 14px;
+  background-color: ${(p) => p.theme.palette.white};
+  -webkit-mask-image: url(${CheckMark});
+  mask-image: url(${CheckMark});
+  margin-right: 8px;
+`
+
+export const SwitchIcon = styled.div`
+  width: 14px;
+  height: 14px;
+  background: url(${SwitchDown});
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  z-index: 10;
 `

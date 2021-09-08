@@ -12,7 +12,6 @@
 
 #include "bat/ads/internal/ml/ml_aliases.h"
 #include "bat/ads/internal/ml/model/linear/linear.h"
-#include "bat/ads/internal/ml/transformation/transformation.h"
 
 namespace ads {
 namespace ml {

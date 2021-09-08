@@ -8,14 +8,17 @@
 #include <cstdint>
 #include <utility>
 
+#include "base/check_op.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/legacy_migration/legacy_migration_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 

@@ -21,7 +21,7 @@ std::deque<uint64_t> GetTimestampHistoryForAdEvents(
 }
 
 bool DoesHistoryRespectCapForRollingTimeConstraint(
-    const std::deque<uint64_t> history,
+    const std::deque<uint64_t>& history,
     const uint64_t time_constraint_in_seconds,
     const uint64_t cap) {
   uint64_t count = 0;

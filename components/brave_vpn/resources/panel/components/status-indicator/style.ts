@@ -1,9 +1,5 @@
 import styled from 'styled-components'
 
-interface IndicatorProps {
-  isActive: boolean
-}
-
 export const Box = styled.div`
   display: flex;
   align-items: center;
@@ -18,12 +14,24 @@ export const Text = styled.span`
   letter-spacing: 0.04em;
 `
 
-export const Indicator = styled.span<IndicatorProps>`
+export const ActiveIndicator = styled.span`
   width: 6px;
   height: 6px;
   margin-right: 8px;
   border-radius: 50%;
-  background: ${(p) => p.isActive
-  ? p.theme.color.successBorder
-  : p.theme.color.disabled };
+  background: ${(p) => p.theme.color.successBorder};
+`
+
+export const InActiveIndicator = styled(ActiveIndicator)`
+  background: ${(p) => p.theme.color.disabled};
+`
+
+export const Loader = styled.span`
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+
+  svg>path {
+    fill: ${(p) => p.theme.color.text03};
+  }
 `

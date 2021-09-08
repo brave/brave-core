@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/eth_address.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -17,6 +18,14 @@ bool IsPublicKeyEmpty(const std::vector<uint8_t> public_key) {
       return false;
   }
   return true;
+}
+std::string GetHexAddr(const HDKey* key) {
+  const std::vector<uint8_t> public_key = key->GetUncompressedPublicKey();
+  // trim the header byte 0x04
+  const std::vector<uint8_t> pubkey_no_header(public_key.begin() + 1,
+                                              public_key.end());
+  EthAddress addr = EthAddress::FromPublicKey(pubkey_no_header);
+  return addr.ToHex();
 }
 }  // namespace
 
@@ -174,7 +183,7 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(hdkey_from_pri->index_, 2u);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pri->chain_code_)),
             "9452b549be8cea3ecb7a84bec10dcfd94afe4d129ebfd3b3cb58eedf394ed271");
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pri->private_key_)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pri->private_key())),
             "bb7d39bdb83ecf58f2fd82b6d918341cbef428661ef01ab97c28a4842125ac23");
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(hdkey_from_pri->public_key_)),
@@ -191,7 +200,7 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(hdkey_from_pub->index_, 2u);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pub->chain_code_)),
             "9452b549be8cea3ecb7a84bec10dcfd94afe4d129ebfd3b3cb58eedf394ed271");
-  EXPECT_TRUE(hdkey_from_pub->private_key_.empty());
+  EXPECT_TRUE(hdkey_from_pub->private_key().empty());
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(hdkey_from_pub->public_key_)),
       "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c");
@@ -278,11 +287,11 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
 TEST(HDKeyUnitTest, SetPrivateKey) {
   HDKey key;
   key.SetPrivateKey(std::vector<uint8_t>(31));
-  ASSERT_TRUE(key.private_key_.empty());
+  ASSERT_TRUE(key.private_key().empty());
   key.SetPrivateKey(std::vector<uint8_t>(33));
-  ASSERT_TRUE(key.private_key_.empty());
+  ASSERT_TRUE(key.private_key().empty());
   key.SetPrivateKey(std::vector<uint8_t>(32, 0x1));
-  EXPECT_FALSE(key.private_key_.empty());
+  EXPECT_FALSE(key.private_key().empty());
   EXPECT_TRUE(!IsPublicKeyEmpty(key.public_key_));
 }
 
@@ -349,19 +358,19 @@ TEST(HDKeyUnitTest, DeriveChildFromPath) {
         "xprv9s21ZrQH143K3ckY9DgU79uMTJkQRLdbCCVDh81SnxTgPzLLGax6uHeBULTtaEtcAv"
         "KjXfT7ZWtHzKjTpujMkUd9dDb8msDeAfnJxrgAYhr");
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(key->private_key_)),
+        base::ToLowerASCII(base::HexEncode(key->private_key())),
         "00000055378cf5fafb56c711c674143f9b0ee82ab0ba2924f19b64f5ae7cdbfd");
     std::unique_ptr<HDKey> derived_key =
         key->DeriveChildFromPath("m/44'/0'/0'/0/0'");
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(derived_key->private_key_)),
+        base::ToLowerASCII(base::HexEncode(derived_key->private_key())),
         "3348069561d2a0fb925e74bf198762acc47dce7db27372257d2d959a9e6f8aeb");
   }
 }
 
 TEST(HDKeyUnitTest, GetHexEncodedPrivateKey) {
   HDKey key;
-  ASSERT_TRUE(key.private_key_.empty());
+  ASSERT_TRUE(key.private_key().empty());
   EXPECT_EQ("", key.GetHexEncodedPrivateKey());
 
   std::unique_ptr<HDKey> key2 = HDKey::GenerateFromExtendedKey(
@@ -369,6 +378,95 @@ TEST(HDKeyUnitTest, GetHexEncodedPrivateKey) {
       "KjXfT7ZWtHzKjTpujMkUd9dDb8msDeAfnJxrgAYhr");
   EXPECT_EQ(key2->GetHexEncodedPrivateKey(),
             "00000055378cf5fafb56c711c674143f9b0ee82ab0ba2924f19b64f5ae7cdbfd");
+}
+
+TEST(HDKeyUnitTest, GenerateFromV3UTC) {
+  const std::string json(
+      R"({
+          "address":"b14ab53e38da1c172f877dbc6d65e4a1b0474c3c",
+          "crypto" : {
+              "cipher" : "aes-128-ctr",
+              "cipherparams" : {
+                  "iv" : "cecacd85e9cb89788b5aab2f93361233"
+              },
+              "ciphertext" : "c52682025b1e5d5c06b816791921dbf439afe7a053abb9fac19f38a57499652c",
+              "kdf" : "scrypt",
+              "kdfparams" : {
+                  "dklen" : 32,
+                  "n" : 262144,
+                  "p" : 1,
+                  "r" : 8,
+                  "salt" : "dc9e4a98886738bd8aae134a1f89aaa5a502c3fbd10e336136d4d5fe47448ad6"
+              },
+              "mac" : "27b98c8676dc6619d077453b38db645a4c7c17a3e686ee5adaf53c11ac1b890e"
+          },
+          "id" : "7e59dc02-8d42-409d-b29a-a8a0f862cc81",
+          "version" : 3
+      })");
+  std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromV3UTC("testtest", json);
+  ASSERT_TRUE(hd_key);
+  EXPECT_EQ(GetHexAddr(hd_key.get()),
+            "0xb14ab53e38da1c172f877dbc6d65e4a1b0474c3c");
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hd_key->private_key())),
+            "efca4cdd31923b50f4214af5d2ae10e7ac45a5019e9431cc195482d707485378");
+
+  // wrong password
+  EXPECT_FALSE(HDKey::GenerateFromV3UTC("brave1234", json));
+  EXPECT_FALSE(HDKey::GenerateFromV3UTC("", json));
+  EXPECT_FALSE(HDKey::GenerateFromV3UTC("testtest", R"({{})"));
+
+  // |N| > 2^(128 * |r| / 8)
+  const std::string invalid_r(
+      R"({
+        "crypto" : {
+            "cipher" : "aes-128-ctr",
+            "cipherparams" : {
+                "iv" : "83dbcc02d8ccb40e466191a123791e0e"
+            },
+            "ciphertext" : "d172bf743a674da9cdad04534d56926ef8358534d458fffccd4e6ad2fbde479c",
+            "kdf" : "scrypt",
+            "kdfparams" : {
+                "dklen" : 32,
+                "n" : 262144,
+                "p" : 8,
+                "r" : 1,
+                "salt" : "ab0c7876052600dd703518d6fc3fe8984592145b591fc8fb5c6d43190334ba19"
+            },
+            "mac" : "2103ac29920d71da29f15d75b4a16dbe95cfd7ff8faea1056c33131d846e3097"
+        },
+        "id" : "3198bc9c-6672-5ab3-d995-4942343ae5b6",
+        "version" : 3
+      })");
+
+  EXPECT_FALSE(HDKey::GenerateFromV3UTC("testtest", invalid_r));
+
+  const std::string pbkdf2_json(
+      R"({
+        "address":"b14ab53e38da1c172f877dbc6d65e4a1b0474c3c",
+        "crypto" : {
+            "cipher" : "aes-128-ctr",
+            "cipherparams" : {
+                "iv" : "cecacd85e9cb89788b5aab2f93361233"
+            },
+            "ciphertext" : "01ee7f1a3c8d187ea244c92eea9e332ab0bb2b4c902d89bdd71f80dc384da1be",
+            "kdf" : "pbkdf2",
+            "kdfparams" : {
+                "c" : 262144,
+                "dklen" : 32,
+                "prf" : "hmac-sha256",
+                "salt" : "dc9e4a98886738bd8aae134a1f89aaa5a502c3fbd10e336136d4d5fe47448ad6"
+            },
+            "mac" : "0c02cd0badfebd5e783e0cf41448f84086a96365fc3456716c33641a86ebc7cc"
+        },
+        "id" : "7e59dc02-8d42-409d-b29a-a8a0f862cc81",
+        "version" : 3
+      })");
+
+  std::unique_ptr<HDKey> hd_key2 =
+      HDKey::GenerateFromV3UTC("testtest", pbkdf2_json);
+  ASSERT_TRUE(hd_key2);
+  EXPECT_EQ(GetHexAddr(hd_key2.get()),
+            "0xb14ab53e38da1c172f877dbc6d65e4a1b0474c3c");
 }
 
 }  // namespace brave_wallet

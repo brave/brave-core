@@ -8,6 +8,7 @@
 #include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/models/contextual/text_classification/text_classification_model.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"

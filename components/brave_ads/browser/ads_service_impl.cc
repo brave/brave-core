@@ -46,6 +46,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
@@ -104,6 +105,11 @@
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "content/public/browser/page_navigator.h"
+#endif
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 #endif
 
 using brave_rewards::RewardsNotificationService;
@@ -205,10 +211,20 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 }  // namespace
 
-AdsServiceImpl::AdsServiceImpl(Profile* profile,
-                               history::HistoryService* history_service)
+AdsServiceImpl::AdsServiceImpl(
+    Profile* profile,
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+    brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+        adaptive_captcha_service,
+    std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
+#endif
+    history::HistoryService* history_service)
     : profile_(profile),
       history_service_(history_service),
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+      adaptive_captcha_service_(adaptive_captcha_service),
+      ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
+#endif
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
@@ -220,6 +236,9 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile,
           brave_rewards::RewardsServiceFactory::GetForProfile(profile_)),
       bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(profile_);
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  DCHECK(adaptive_captcha_service_);
+#endif
   DCHECK(history_service_);
   DCHECK(brave::IsRegularProfile(profile_));
 
@@ -241,28 +260,6 @@ void AdsServiceImpl::OnResourceComponentUpdated(const std::string& id) {
 bool AdsServiceImpl::IsSupportedLocale() const {
   const std::string locale = GetLocale();
   return ads::IsSupportedLocale(locale);
-}
-
-bool AdsServiceImpl::IsNewlySupportedLocale() {
-  if (!IsSupportedLocale()) {
-    return false;
-  }
-
-  const int schema_version =
-      GetIntegerPref(prefs::kSupportedCountryCodesSchemaVersion);
-  if (schema_version != prefs::kSupportedCountryCodesSchemaVersionNumber) {
-    SetIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion,
-                   schema_version);
-
-    SetIntegerPref(prefs::kSupportedCountryCodesSchemaVersion,
-                   prefs::kSupportedCountryCodesSchemaVersionNumber);
-  }
-
-  const int last_schema_version =
-      GetIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion);
-
-  const std::string locale = GetLocale();
-  return ads::IsNewlySupportedLocale(locale, last_schema_version);
 }
 
 void AdsServiceImpl::SetEnabled(const bool is_enabled) {
@@ -1017,6 +1014,17 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
 int AdsServiceImpl::GetIdleTimeThreshold() {
   return GetIntegerPref(ads::prefs::kIdleTimeThreshold);
 }
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
+                                          const std::string& captcha_id) {
+  adaptive_captcha_service_->ShowScheduledCaptcha(payment_id, captcha_id);
+}
+
+void AdsServiceImpl::SnoozeScheduledCaptcha() {
+  adaptive_captcha_service_->SnoozeScheduledCaptcha();
+}
+#endif
 
 void AdsServiceImpl::OnShowAdNotification(const std::string& notification_id) {
   if (!connected()) {
@@ -1817,9 +1825,11 @@ void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
   SetBooleanPref(prefs::kShouldShowMyFirstAdNotification, false);
 }
 
-bool AdsServiceImpl::ShouldShowMyFirstAdNotification() const {
-  auto should_show = GetBooleanPref(prefs::kShouldShowMyFirstAdNotification);
-  return IsEnabled() && should_show;
+bool AdsServiceImpl::ShouldShowMyFirstAdNotification() {
+  const bool should_show_my_first_ad_notification =
+      GetBooleanPref(prefs::kShouldShowMyFirstAdNotification);
+  return IsEnabled() && ShouldShowNotifications() &&
+         should_show_my_first_ad_notification;
 }
 
 bool AdsServiceImpl::PrefExists(const std::string& path) const {
@@ -1835,6 +1845,14 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
       if (!IsEnabled()) {
         SuspendP2AHistograms();
         VLOG(1) << "P2A histograms suspended";
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+        // Close any open captcha tooltip
+        ads_tooltips_delegate_->CloseCaptchaTooltip();
+
+        // Clear any scheduled captcha
+        adaptive_captcha_service_->ClearScheduledCaptcha();
+#endif
       }
 
       brave_rewards::p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
@@ -1987,7 +2005,7 @@ bool AdsServiceImpl::ShouldShowNotifications() {
     return false;
   }
 
-  if (!NotificationHelper::GetInstance()->ShouldShowNotifications()) {
+  if (!NotificationHelper::GetInstance()->CanShowNativeNotifications()) {
     return ShouldShowCustomAdNotifications();
   }
 
@@ -2167,6 +2185,42 @@ void AdsServiceImpl::Load(const std::string& name, ads::LoadCallback callback) {
 std::string AdsServiceImpl::LoadResourceForId(const std::string& id) {
   const auto resource_id = GetSchemaResourceId(id);
   return LoadDataResourceAndDecompressIfNeeded(resource_id);
+}
+
+void AdsServiceImpl::ClearScheduledCaptcha() {
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  adaptive_captcha_service_->ClearScheduledCaptcha();
+#endif
+}
+
+void AdsServiceImpl::GetScheduledCaptcha(
+    const std::string& payment_id,
+    ads::GetScheduledCaptchaCallback callback) {
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  adaptive_captcha_service_->GetScheduledCaptcha(payment_id,
+                                                 std::move(callback));
+#endif
+}
+
+void AdsServiceImpl::ShowScheduledCaptchaNotification(
+    const std::string& payment_id,
+    const std::string& captcha_id) {
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  PrefService* pref_service = profile_->GetPrefs();
+  if (pref_service->GetBoolean(
+          brave_adaptive_captcha::kScheduledCaptchaPaused)) {
+    VLOG(0) << "Ads paused; support intervention required";
+    return;
+  }
+
+  const int snooze_count = pref_service->GetInteger(
+      brave_adaptive_captcha::kScheduledCaptchaSnoozeCount);
+
+  ads_tooltips_delegate_->ShowCaptchaTooltip(
+      payment_id, captcha_id, snooze_count == 0,
+      base::BindOnce(&AdsServiceImpl::ShowScheduledCaptcha, AsWeakPtr()),
+      base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptcha, AsWeakPtr()));
+#endif
 }
 
 ads::mojom::DBCommandResponsePtr RunDBTransactionOnFileTaskRunner(

@@ -164,9 +164,10 @@ function Container (props: Props) {
     return token ? formatBalance(token.assetBalance, token.asset.decimals) : '0'
   }, [accounts, selectedAccount, selectedAsset])
 
-  const onSelectPresetAmount = (percent: number) => {
-    const amount = Number(selectedAssetBalance) * percent
-    setSendAmount(amount.toString())
+  const onSelectPresetSendAmount = (percent: number) => {
+    const amount = Number(selectedAsset.assetBalance) * percent
+    const formatedAmmount = formatBalance(amount.toString(), selectedAsset.asset.decimals)
+    setSendAmount(formatedAmmount)
   }
 
   const onSubmitSend = () => {
@@ -580,7 +581,7 @@ function Container (props: Props) {
               <Send
                 onChangeSendView={onChangeSendView}
                 onInputChange={onInputChange}
-                onSelectPresetAmount={onSelectPresetAmount}
+                onSelectPresetAmount={onSelectPresetSendAmount}
                 onSubmit={onSubmitSend}
                 selectedAsset={selectedAsset}
                 selectedAssetAmount={sendAmount}

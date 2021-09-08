@@ -16,7 +16,6 @@
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/time/time.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"

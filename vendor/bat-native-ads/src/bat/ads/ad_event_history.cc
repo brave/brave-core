@@ -5,13 +5,16 @@
 
 #include "bat/ads/ad_event_history.h"
 
+#include <cstdint>
+
+#include "base/check.h"
 #include "base/time/time.h"
 
 namespace ads {
 
 namespace {
 
-std::string GetId(const std::string ad_type,
+std::string GetId(const std::string& ad_type,
                   const std::string& confirmation_type) {
   return ad_type + confirmation_type;
 }

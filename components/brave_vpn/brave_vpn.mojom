@@ -22,11 +22,28 @@ interface PanelHandler {
   CloseUI();
 };
 
+interface ServiceObserver {
+  OnConnectionCreated();
+  OnConnectionRemoved();
+  OnConnectionStateChanged(ConnectionState state);
+};
+
 // Browser-side handler for vpn service things
 interface ServiceHandler {
   GetIsConnected() => (bool is_connected);
+  AddObserver(pending_remote<ServiceObserver> observer);
+  CreateVPNConnection();
+  Connect();
+  Disconnect();
 };
 
 // WebUI-side handler for requests from the browser.
 interface Page {
+};
+
+enum ConnectionState {
+  CONNECTED,
+  DISCONNECTED,
+  CONNECTING,
+  CONNECT_FAILED,
 };

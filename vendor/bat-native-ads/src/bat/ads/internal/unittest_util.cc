@@ -5,10 +5,8 @@
 
 #include "bat/ads/internal/unittest_util.h"
 
-#include <limits>
-
 #include "base/base_paths.h"
-#include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
 #include "base/notreached.h"
@@ -17,14 +15,13 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/time/time_to_iso8601.h"
+#include "bat/ads/ads.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/url_util.h"
 #include "bat/ads/pref_names.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "net/http/http_status_code.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"

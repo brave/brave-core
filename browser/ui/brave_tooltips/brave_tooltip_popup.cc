@@ -44,7 +44,9 @@ constexpr int kShadowElevation = 5;
 
 constexpr int kBorderThickness = 6;
 
-constexpr SkColor kBackgroundColor = SkColorSetRGB(0xFF, 0xFF, 0xFF);
+constexpr SkColor kLightModeBackgroundColor = SkColorSetRGB(0xFF, 0xFF, 0xFF);
+constexpr SkColor kDarkModeBackgroundColor = SkColorSetRGB(0x3B, 0x3E, 0x4F);
+
 constexpr SkColor kBorderColor = SkColorSetRGB(0xF7, 0x3A, 0x1C);
 
 #if defined(OS_WIN)
@@ -106,6 +108,8 @@ void BraveTooltipPopup::CloseWidget() {
 }
 
 void BraveTooltipPopup::OnOkButtonPressed() {
+  tooltip_->PerformOkButtonAction();
+
   BraveTooltipDelegate* delegate = tooltip_->delegate();
   if (delegate) {
     delegate->OnTooltipOkButtonPressed(tooltip_->id());
@@ -118,6 +122,8 @@ void BraveTooltipPopup::OnCancelButtonPressed() {
   if (!tooltip_->attributes().cancel_button_enabled()) {
     return;
   }
+
+  tooltip_->PerformCancelButtonAction();
 
   BraveTooltipDelegate* delegate = tooltip_->delegate();
   if (delegate) {
@@ -171,6 +177,8 @@ void BraveTooltipPopup::OnPaintBackground(gfx::Canvas* canvas) {
   gfx::RectF bounds(GetWidget()->GetLayer()->bounds());
   bounds.Inset(-GetShadowMargin());
 
+  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+
   // Draw border
   canvas->FillRect(gfx::Rect(0, 0, kBorderThickness, bounds.bottom()),
                    kBorderColor);
@@ -185,7 +193,8 @@ void BraveTooltipPopup::OnPaintBackground(gfx::Canvas* canvas) {
   // Draw background
   cc::PaintFlags background_flags;
   background_flags.setAntiAlias(true);
-  background_flags.setColor(kBackgroundColor);
+  background_flags.setColor(should_use_dark_colors ? kDarkModeBackgroundColor
+                                                   : kLightModeBackgroundColor);
   canvas->DrawRect(bounds, background_flags);
 }
 

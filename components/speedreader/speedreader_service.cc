@@ -95,6 +95,12 @@ void SpeedreaderService::ToggleSpeedreader() {
                    !enabled);  // toggling - now enabled
 }
 
+void SpeedreaderService::DisableSpeedreaderForTest() {
+  prefs_->SetBoolean(kSpeedreaderPrefEnabled, false);
+  prefs_->SetBoolean(kSpeedreaderPrefEverEnabled, false);
+  prefs_->SetInteger(kSpeedreaderPrefPromptCount, 0);
+}
+
 bool SpeedreaderService::IsEnabled() {
   if (!base::FeatureList::IsEnabled(kSpeedreaderFeature)) {
     return false;

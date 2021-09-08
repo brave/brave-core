@@ -47,7 +47,8 @@ namespace {
 
 // TODO(https://github.com/brave/brave-browser/issues/14957): Decouple
 // AdNotificationPopup management to NotificationPopupCollection
-std::map<std::string, AdNotificationPopup*> g_ad_notification_popups;
+std::map<std::string, AdNotificationPopup* /* NOT OWNED */>
+    g_ad_notification_popups;
 
 bool g_disable_fade_in_animation_for_testing = false;
 
@@ -282,6 +283,9 @@ void AdNotificationPopup::OnWidgetDestroyed(views::Widget* widget) {
 
   const std::string notification_id = ad_notification_.id();
   DCHECK(!notification_id.empty());
+
+  // Note: The pointed-to AdNotificationPopup members are deallocated by their
+  // containing Widgets
   g_ad_notification_popups.erase(notification_id);
 
   DCHECK(widget_observation_.IsObservingSource(widget));

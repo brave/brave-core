@@ -1045,8 +1045,7 @@ TEST_P(GetAnonFunds, Paths) {
       .WillByDefault(Return(fetch_old_balance));
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
-      .WillByDefault(
-          Return(FakeEncryption::Base64EncryptString(input_rewards_wallet)));
+      .WillByDefault(Return(input_rewards_wallet));
 
   uphold_->GenerateWallet([&](type::Result result) {
     ASSERT_EQ(result, expected_result);
@@ -1240,8 +1239,7 @@ TEST_P(LinkWallet, Paths) {
       .WillByDefault(Return(fetch_old_balance));
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
-      .WillByDefault(
-          Return(FakeEncryption::Base64EncryptString(input_rewards_wallet)));
+      .WillByDefault(Return(input_rewards_wallet));
 
   uphold_->GenerateWallet(
       [&](type::Result result) { ASSERT_EQ(result, expected_result); });
@@ -1415,8 +1413,7 @@ TEST_P(DisconnectUpholdWallet, Paths) {
       });
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
-      .WillByDefault(
-          Return(FakeEncryption::Base64EncryptString(input_rewards_wallet)));
+      .WillByDefault(Return(input_rewards_wallet));
 
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/ad_notifications/ad_notification.h"
 
+#include "base/check.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_factory.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"

@@ -8,6 +8,7 @@
 #include <set>
 #include <vector>
 
+#include "base/check.h"
 #include "base/strings/string_split.h"
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/client/client.h"

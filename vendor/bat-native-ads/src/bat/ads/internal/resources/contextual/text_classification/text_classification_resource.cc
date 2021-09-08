@@ -5,10 +5,12 @@
 
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 
-#include "base/json/json_reader.h"
+#include <string>
+
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {

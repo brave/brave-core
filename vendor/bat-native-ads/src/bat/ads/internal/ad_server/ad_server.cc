@@ -10,6 +10,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
@@ -20,6 +21,7 @@
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/catalog/catalog_version.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/logging_util.h"
 #include "bat/ads/internal/server/ads_server_util.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/pref_names.h"

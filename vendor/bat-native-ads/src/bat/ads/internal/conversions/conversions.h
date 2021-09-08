@@ -9,19 +9,16 @@
 #include <string>
 #include <vector>
 
-#include "base/values.h"
-#include "bat/ads/ads.h"
-#include "bat/ads/internal/account/confirmations/confirmations.h"
-#include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
-#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
-#include "bat/ads/internal/conversions/verifiable_conversion_info.h"
 #include "bat/ads/internal/resources/conversions/conversion_id_pattern_info.h"
-#include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_info.h"
 #include "bat/ads/internal/timer.h"
 
 namespace ads {
+
+struct AdEventInfo;
+struct ConversionQueueItemInfo;
+struct VerifiableConversionInfo;
 
 class Conversions {
  public:

@@ -10,7 +10,6 @@
 #include <string>
 
 #include "bat/ads/ads.h"
-#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving_observer.h"
 
 namespace ads {
@@ -24,6 +23,8 @@ class SubdivisionTargeting;
 namespace resource {
 class AntiTargeting;
 }  // namespace resource
+
+struct InlineContentAdInfo;
 
 namespace inline_content_ads {
 

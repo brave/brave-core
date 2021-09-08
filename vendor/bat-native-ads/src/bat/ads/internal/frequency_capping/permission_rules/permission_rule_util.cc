@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "base/check.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {

@@ -189,7 +189,9 @@ interface KeyringController {
   AddAccount(string accountName) => (bool success);
   GetPrivateKeyForDefaultKeyringAccount(string address)
     => (bool success, string privateKey);
-  AddImportedAccount(string accountName, string privateKey)
+  ImportAccount(string accountName, string privateKey)
+    => (bool success, string address);
+  ImportAccountFromJson(string accountName, string password, string json)
     => (bool success, string address);
   GetPrivateKeyForImportedAccount(string address)
     => (bool success, string privateKey);

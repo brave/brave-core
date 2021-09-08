@@ -7,7 +7,9 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/json/json_writer.h"
+#include "base/notreached.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"

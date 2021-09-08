@@ -841,7 +841,7 @@ TEST_F(KeyringControllerUnitTest, ImportedAccounts) {
   for (size_t i = 0;
        i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
     bool callback_called = false;
-    controller.AddImportedAccount(
+    controller.ImportAccount(
         imported_accounts[i].name, imported_accounts[i].private_key,
         base::BindLambdaForTesting(
             [&](bool success, const std::string& address) {
@@ -981,6 +981,103 @@ TEST_F(KeyringControllerUnitTest, ImportedAccounts) {
   ASSERT_TRUE(
       base::HexStringToBytes(imported_accounts[0].private_key, &private_key0));
   EXPECT_NE(encrypted_private_key, base::Base64Encode(private_key0));
+}
+
+TEST_F(KeyringControllerUnitTest, ImportedAccountFromJson) {
+  const std::string json(
+      R"({
+          "address":"b14ab53e38da1c172f877dbc6d65e4a1b0474c3c",
+          "crypto" : {
+              "cipher" : "aes-128-ctr",
+              "cipherparams" : {
+                  "iv" : "cecacd85e9cb89788b5aab2f93361233"
+              },
+              "ciphertext" : "c52682025b1e5d5c06b816791921dbf439afe7a053abb9fac19f38a57499652c",
+              "kdf" : "scrypt",
+              "kdfparams" : {
+                  "dklen" : 32,
+                  "n" : 262144,
+                  "p" : 1,
+                  "r" : 8,
+                  "salt" : "dc9e4a98886738bd8aae134a1f89aaa5a502c3fbd10e336136d4d5fe47448ad6"
+              },
+              "mac" : "27b98c8676dc6619d077453b38db645a4c7c17a3e686ee5adaf53c11ac1b890e"
+          },
+          "id" : "7e59dc02-8d42-409d-b29a-a8a0f862cc81",
+          "version" : 3
+      })");
+  const std::string expected_private_key =
+      "efca4cdd31923b50f4214af5d2ae10e7ac45a5019e9431cc195482d707485378";
+  const std::string expected_address =
+      "0xB14Ab53E38DA1C172f877DBC6d65e4a1B0474C3c";
+
+  KeyringController controller(GetPrefs());
+  controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
+  base::RunLoop().RunUntilIdle();
+
+  bool callback_called = false;
+  controller.ImportAccountFromJson(
+      "Imported 1", "wrong password", json,
+      base::BindLambdaForTesting([&](bool success, const std::string& address) {
+        EXPECT_FALSE(success);
+        EXPECT_TRUE(address.empty());
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  controller.ImportAccountFromJson(
+      "Imported 1", "testtest", "{crypto: 123}",
+      base::BindLambdaForTesting([&](bool success, const std::string& address) {
+        EXPECT_FALSE(success);
+        EXPECT_TRUE(address.empty());
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  controller.ImportAccountFromJson(
+      "Imported 1", "testtest", json,
+      base::BindLambdaForTesting([&](bool success, const std::string& address) {
+        EXPECT_TRUE(success);
+        EXPECT_EQ(address, expected_address);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  controller.Lock();
+  controller.Unlock("brave", base::DoNothing::Once<bool>());
+  base::RunLoop().RunUntilIdle();
+
+  // check restore by getting private key
+  callback_called = false;
+  controller.GetPrivateKeyForImportedAccount(
+      expected_address, base::BindLambdaForTesting(
+                            [&](bool success, const std::string& private_key) {
+                              EXPECT_TRUE(success);
+                              EXPECT_EQ(expected_private_key, private_key);
+                              callback_called = true;
+                            }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // private key is encrypted
+  const base::Value* imported_accounts_value =
+      KeyringController::GetPrefForKeyring(GetPrefs(), kImportedAccounts,
+                                           "default");
+  ASSERT_TRUE(imported_accounts_value);
+  const std::string encrypted_private_key =
+      imported_accounts_value->GetList()[0]
+          .FindKey(kEncryptedPrivateKey)
+          ->GetString();
+  EXPECT_FALSE(encrypted_private_key.empty());
+
+  std::vector<uint8_t> private_key;
+  ASSERT_TRUE(base::HexStringToBytes(expected_private_key, &private_key));
+  EXPECT_NE(encrypted_private_key, base::Base64Encode(private_key));
 }
 
 TEST_F(KeyringControllerUnitTest, GetPrivateKeyForDefaultKeyringAccount) {
@@ -1147,7 +1244,7 @@ TEST_F(KeyringControllerUnitTest, SetDefaultKeyringImportedAccountName) {
   for (size_t i = 0;
        i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
     callback_called = false;
-    controller.AddImportedAccount(
+    controller.ImportAccount(
         imported_accounts[i].name, imported_accounts[i].private_key,
         base::BindLambdaForTesting(
             [&](bool success, const std::string& address) {

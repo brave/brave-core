@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_FREQUENCY_CAPPING_ANTI_TARGETING_INFO_H_
 
 #include <stdint.h>
-
 #include <map>
 #include <string>
 #include <vector>

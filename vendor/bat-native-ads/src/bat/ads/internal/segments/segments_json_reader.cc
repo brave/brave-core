@@ -26,13 +26,13 @@ SegmentList ReadSegments(const std::string& json) {
     return segments;
   }
 
-  for (const auto& value : list->GetList()) {
-    if (!value.is_string()) {
+  for (const auto& element : list->GetList()) {
+    if (!element.is_string()) {
       NOTREACHED();
       continue;
     }
 
-    segments.push_back(value.GetString());
+    segments.push_back(element.GetString());
   }
 
   return segments;

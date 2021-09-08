@@ -7,9 +7,9 @@
 
 #include <string>
 
+#include "base/notreached.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 
 namespace ads {
@@ -21,7 +21,7 @@ TransactionList GetCleared(const int64_t from_timestamp,
 
   const auto iter = std::remove_if(
       transactions.begin(), transactions.end(),
-      [from_timestamp, to_timestamp](TransactionInfo& transaction) {
+      [from_timestamp, to_timestamp](const TransactionInfo& transaction) {
         return transaction.timestamp < from_timestamp ||
                transaction.timestamp > to_timestamp;
       });

@@ -198,12 +198,6 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
   return ads::IsSupportedLocale(base::SysNSStringToUTF8(locale));
 }
 
-+ (BOOL)isNewlySupportedLocale:(NSString*)locale {
-  // TODO(khickinson): Add support for last schema version, however for the MVP
-  // we can safely pass 0 as all locales are newly supported
-  return ads::IsNewlySupportedLocale(base::SysNSStringToUTF8(locale), 0);
-}
-
 + (BOOL)isCurrentLocaleSupported {
   return [self isSupportedLocale:[self currentLocaleCode]];
 }
@@ -1143,6 +1137,21 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
   BLOG(1, @"%@ ads resource not found", bridgedId);
   callback(/* success */ false, "");
+}
+
+- (void)clearScheduledCaptcha {
+  // Adaptive captcha not supported on iOS
+}
+
+- (void)getScheduledCaptcha:(const std::string&)payment_id
+                   callback:(ads::GetScheduledCaptchaCallback)callback {
+  // Adaptive captcha not supported on iOS
+  std::move(callback).Run("");
+}
+
+- (void)showScheduledCaptchaNotification:(const std::string&)payment_id
+                               captchaId:(const std::string&)captcha_id {
+  // Adaptive captcha not supported on iOS
 }
 
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback {

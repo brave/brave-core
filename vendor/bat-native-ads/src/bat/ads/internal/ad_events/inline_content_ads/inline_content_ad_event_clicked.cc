@@ -6,7 +6,6 @@
 #include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_event_clicked.h"
 
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/logging.h"

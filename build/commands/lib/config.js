@@ -119,6 +119,9 @@ const Config = function () {
   this.updaterProdEndpoint = getNPMConfig(['updater_prod_endpoint']) || ''
   this.updaterDevEndpoint = getNPMConfig(['updater_dev_endpoint']) || ''
   this.webcompatReportApiEndpoint = getNPMConfig(['webcompat_report_api_endpoint']) || 'https://webcompat.brave.com/1/webcompat'
+  this.rewardsGrantDevEndpoint = getNPMConfig(['rewards_grant_dev_endpoint']) || ''
+  this.rewardsGrantStagingEndpoint = getNPMConfig(['rewards_grant_staging_endpoint']) || ''
+  this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
   this.chromePgoPhase = 0
   // this.buildProjects()
   this.braveVersion = getNPMConfig(['version']) || '0.0.0'
@@ -261,6 +264,9 @@ Config.prototype.buildArgs = function () {
     updater_prod_endpoint: this.updaterProdEndpoint,
     updater_dev_endpoint: this.updaterDevEndpoint,
     webcompat_report_api_endpoint: this.webcompatReportApiEndpoint,
+    rewards_grant_dev_endpoint: this.rewardsGrantDevEndpoint,
+    rewards_grant_staging_endpoint: this.rewardsGrantStagingEndpoint,
+    rewards_grant_prod_endpoint: this.rewardsGrantProdEndpoint,
     brave_stats_api_key: this.braveStatsApiKey,
     brave_stats_updater_url: this.braveStatsUpdaterUrl,
     enable_hangout_services_extension: this.enable_hangout_services_extension,
@@ -422,6 +428,8 @@ Config.prototype.buildArgs = function () {
     args.ios_enable_credential_provider_extension = false
     args.ios_enable_widget_kit_extension = false
 
+    args.ios_provider_target = "//brave/ios/browser/providers:brave_providers"
+
     delete args.safebrowsing_api_endpoint
     delete args.updater_prod_endpoint
     delete args.updater_dev_endpoint
@@ -461,6 +469,9 @@ Config.prototype.buildArgs = function () {
     delete args.uphold_staging_client_id
     delete args.uphold_staging_client_secret
     delete args.webcompat_report_api_endpoint
+    delete args.rewards_grant_dev_endpoint
+    delete args.rewards_grant_staging_endpoint
+    delete args.rewards_grant_prod_endpoint
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
     delete args.brave_variations_server_url
@@ -677,7 +688,6 @@ Config.prototype.update = function (options) {
     this.geminiWalletStagingClientSecret = options.gemini_wallet_staging_client_secret
   }
 
-
   if (options.gemini_client_id) {
     this.geminiClientId = options.gemini_client_id
   }
@@ -716,6 +726,18 @@ Config.prototype.update = function (options) {
 
   if (options.webcompat_report_api_endpoint) {
     this.webcompatReportApiEndpoint = options.webcompat_report_api_endpoint
+  }
+
+  if (options.rewards_grant_dev_endpoint) {
+    this.rewardsGrantDevEndpoint = options.rewards_grant_dev_endpoint
+  }
+
+  if (options.rewards_grant_staging_endpoint) {
+    this.rewardsGrantStagingEndpoint = options.rewards_grant_staging_endpoint
+  }
+
+  if (options.rewards_grant_prod_endpoint) {
+    this.rewardsGrantProdEndpoint = options.rewards_grant_prod_endpoint
   }
 
   if (options.brave_stats_api_key) {

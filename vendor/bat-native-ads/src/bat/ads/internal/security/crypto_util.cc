@@ -8,16 +8,12 @@
 #include <openssl/digest.h>
 #include <openssl/hkdf.h>
 #include <openssl/sha.h>
-
 #include <algorithm>
 
 #include "base/base64.h"
 #include "base/cxx17_backports.h"
-#include "base/json/json_reader.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/values.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/security/key_pair_info.h"
 #include "bat/ads/internal/string_util.h"
 #include "tweetnacl.h"  // NOLINT
