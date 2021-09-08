@@ -19,7 +19,6 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller_events_observer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -51,8 +50,8 @@ class EthJsonRpcController : public KeyedService,
 
   struct EthereumChainRequest {
     EthereumChainRequest() {}
-    EthereumChainRequest(const GURL& origin_, mojom::EthereumChain request_)
-        : origin(origin_), request(std::move(request_)) {}
+    EthereumChainRequest(const GURL& origin, mojom::EthereumChain request)
+        : origin(origin), request(std::move(request)) {}
     GURL origin;
     mojom::EthereumChain request;
   };
@@ -190,7 +189,7 @@ class EthJsonRpcController : public KeyedService,
   api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;
   std::string chain_id_;
-  // <chain_id, EthereumChain>
+  // <chain_id, EthereumChainRequest>
   base::flat_map<std::string, EthereumChainRequest> add_chain_pending_requests_;
   mojo::RemoteSet<mojom::EthJsonRpcControllerObserver> observers_;
 

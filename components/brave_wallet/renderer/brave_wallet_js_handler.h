@@ -71,6 +71,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                    const int http_code,
                    const std::string& response,
                    const base::flat_map<std::string, std::string>& headers);
+
   content::RenderFrame* render_frame_;
   mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;
   mojo::Receiver<mojom::EventsListener> receiver_{this};

@@ -78,9 +78,7 @@ void BraveWalletProviderDelegateImpl::OnConnectionError() {
 
 GURL BraveWalletProviderDelegateImpl::GetOrigin() const {
   auto* rfh = content::RenderFrameHost::FromID(host_id_);
-  if (!rfh)
-    return GURL();
-  return rfh->GetLastCommittedURL().GetOrigin();
+  return rfh ? rfh->GetLastCommittedURL().GetOrigin() : GURL();
 }
 
 void BraveWalletProviderDelegateImpl::ShowBubble() {

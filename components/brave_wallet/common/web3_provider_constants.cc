@@ -11,4 +11,5 @@ const char kConnectEvent[] = "connect";
 const char kDisconnectEvent[] = "disconnect";
 const char kChainChangedEvent[] = "chainChanged";
 const char kAccountsChangedEvent[] = "accountsChanged";
+
 }  // namespace brave_wallet
