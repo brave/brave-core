@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 7a0f5548a1972b49ada94c6dc479e14cdc0bf40d..aa9f647da0c99943d9e129f7cd8f29297a437aa3 100644
+index 5dd76d1c7f8999332228c236a5fdb03e87ff2ad0..38908a28ecd5a306cadc72573517d7622f7d00eb 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -2348,6 +2348,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -2352,6 +2352,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
      }
  
      private void hideOverview() {
