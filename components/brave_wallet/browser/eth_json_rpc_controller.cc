@@ -312,7 +312,7 @@ void EthJsonRpcController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 }
 
 // static
-void EthJsonRpcController::ResetProfilePrefs(PrefService* prefs) {
+void EthJsonRpcController::ClearProfilePrefs(PrefService* prefs) {
   DCHECK(prefs);
   prefs->ClearPref(kBraveWalletCustomNetworks);
   prefs->ClearPref(kBraveWalletCurrentChainId);

@@ -738,7 +738,7 @@ void KeyringController::Reset() {
   default_keyring_.reset();
 
   prefs_->ClearPref(kBraveWalletKeyrings);
-  EthJsonRpcController::ResetProfilePrefs(prefs_);
+  EthJsonRpcController::ClearProfilePrefs(prefs_);
 }
 
 bool KeyringController::GetPrefInBytesForKeyring(const std::string& key,

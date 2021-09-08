@@ -47,7 +47,7 @@ class EthJsonRpcController : public KeyedService,
   ~EthJsonRpcController() override;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-  static void ResetProfilePrefs(PrefService* prefs);
+  static void ClearProfilePrefs(PrefService* prefs);
 
   struct EthereumChainRequest {
     EthereumChainRequest() {}
