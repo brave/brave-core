@@ -182,7 +182,8 @@ class EthJsonRpcController : public KeyedService,
   api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;
   std::string chain_id_;
-  base::flat_map<std::string, mojom::EthereumChain> pending_requests_;
+  // <origin, EthereumChain>
+  base::flat_map<std::string, mojom::EthereumChain> add_chain_pending_requests_;
   mojo::RemoteSet<mojom::EthJsonRpcControllerObserver> observers_;
 
   mojo::ReceiverSet<mojom::EthJsonRpcController> receivers_;

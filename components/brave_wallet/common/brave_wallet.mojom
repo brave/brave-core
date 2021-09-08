@@ -248,7 +248,6 @@ const string kGoerliChainId = "0x5";
 const string kKovanChainId = "0x2a";
 const string kLocalhostChainId = "0x539";
 
-
 struct EthereumChain {
   string chain_id;
   string chain_name;

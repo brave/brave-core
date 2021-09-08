@@ -53,12 +53,8 @@ source_set("brave_wallet_unit_tests") {
       "//url",
     ]
     if (!is_android && !is_ios) {
-      sources += [
-        "//brave/components/brave_wallet/browser/brave_wallet_provider_impl_unittest.cc"
-      ]
-      deps += [
-        "//brave/browser/brave_wallet:brave_wallet_delegate"
-      ]
+      sources += [ "//brave/components/brave_wallet/browser/brave_wallet_provider_impl_unittest.cc" ]
+      deps += [ "//brave/browser/brave_wallet:brave_wallet_delegate" ]
     }
   }  # if (brave_wallet_enabled)
 }  # source_set("brave_wallet_unit_tests")

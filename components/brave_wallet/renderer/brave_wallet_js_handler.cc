@@ -163,6 +163,37 @@ void OnGetAllowedAccounts(v8::Global<v8::Promise::Resolver> promise_resolver,
   ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
 }
 
+void OnAddEthereumChain(v8::Global<v8::Promise::Resolver> promise_resolver,
+                        v8::Isolate* isolate,
+                        v8::Global<v8::Context> context_old,
+                        bool success,
+                        int provider_error,
+                        const std::string& error_message) {
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = context_old.Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
+  if (success) {
+    base::Value value;
+    auto response = brave_wallet::ToProviderResponse(&value, nullptr);
+    v8::Local<v8::Value> result =
+        content::V8ValueConverter::Create()->ToV8Value(response.get(), context);
+    ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+  } else {
+    auto error_response = FormProviderResponse(
+        static_cast<brave_wallet::ProviderErrors>(provider_error),
+        error_message);
+    auto response =
+        brave_wallet::ToProviderResponse(nullptr, error_response.get());
+    v8::Local<v8::Value> result =
+        content::V8ValueConverter::Create()->ToV8Value(response.get(), context);
+    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+  }
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -360,8 +391,7 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
 
     brave_wallet_provider_->AddEthereumChain(
         formed_input,
-        base::BindOnce(&BraveWalletJSHandler::OnAddEthereumChain,
-                       base::Unretained(this), std::move(promise_resolver),
+        base::BindOnce(&OnAddEthereumChain, std::move(promise_resolver),
                        isolate, std::move(context_old)));
   } else {
     std::string formed_input;
@@ -378,36 +408,6 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
   }
 
   return resolver.ToLocalChecked()->GetPromise();
-}
-
-void BraveWalletJSHandler::OnAddEthereumChain(
-    v8::Global<v8::Promise::Resolver> promise_resolver,
-    v8::Isolate* isolate,
-    v8::Global<v8::Context> context_old,
-    bool success,
-    int provider_error,
-    const std::string& error_message) {
-  v8::HandleScope handle_scope(isolate);
-  v8::Local<v8::Context> context = context_old.Get(isolate);
-  v8::Context::Scope context_scope(context);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
-
-  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  if (success) {
-    base::Value value;
-    auto response = ToProviderResponse(&value, nullptr);
-    v8::Local<v8::Value> result =
-        content::V8ValueConverter::Create()->ToV8Value(response.get(), context);
-    ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
-  } else {
-    auto error_response = FormProviderResponse(
-        static_cast<ProviderErrors>(provider_error), error_message);
-    auto response = ToProviderResponse(nullptr, error_response.get());
-    v8::Local<v8::Value> result =
-        content::V8ValueConverter::Create()->ToV8Value(response.get(), context);
-    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
-  }
 }
 
 void BraveWalletJSHandler::OnRequest(

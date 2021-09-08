@@ -78,6 +78,8 @@ void BraveWalletProviderDelegateImpl::OnConnectionError() {
 
 std::string BraveWalletProviderDelegateImpl::GetOrigin() const {
   auto* rfh = content::RenderFrameHost::FromID(host_id_);
+  if (!rfh)
+    return std::string();
   return rfh->GetLastCommittedURL().GetOrigin().spec();
 }
 

@@ -14,7 +14,6 @@ extern const char kConnectEvent[];
 extern const char kDisconnectEvent[];
 extern const char kChainChangedEvent[];
 extern const char kAccountsChangedEvent[];
-extern const char kAddEthereumChainMethod[];
 
 // https://eips.ethereum.org/EIPS/eip-1193#provider-errors
 // https://eips.ethereum.org/EIPS/eip-1474#error-codes
@@ -35,6 +34,7 @@ constexpr char kEthAccounts[] = "eth_accounts";
 constexpr char kEthRequestAccounts[] = "eth_requestAccounts";
 constexpr char kMethod[] = "method";
 constexpr char kParams[] = "params";
+constexpr char kAddEthereumChainMethod[] = "wallet_addEthereumChain";
 
 }  // namespace brave_wallet
 

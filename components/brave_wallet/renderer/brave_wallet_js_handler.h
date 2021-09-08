@@ -71,12 +71,6 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                    const int http_code,
                    const std::string& response,
                    const base::flat_map<std::string, std::string>& headers);
-  void OnAddEthereumChain(v8::Global<v8::Promise::Resolver> promise_resolver,
-                          v8::Isolate* isolate,
-                          v8::Global<v8::Context> context_old,
-                          bool success,
-                          int provider_error,
-                          const std::string& error_message);
   content::RenderFrame* render_frame_;
   mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;
   mojo::Receiver<mojom::EventsListener> receiver_{this};

@@ -94,17 +94,17 @@ void EthJsonRpcController::FirePendingRequestCompleted(
 }
 
 void EthJsonRpcController::RemoveChainIdRequest(const std::string& chain_id) {
-  for (auto& request : pending_requests_) {
+  for (auto& request : add_chain_pending_requests_) {
     if (request.second.chain_id != chain_id)
       continue;
-    pending_requests_.erase(request);
+    add_chain_pending_requests_.erase(request);
     return;
   }
 }
 
 const mojom::EthereumChain* EthJsonRpcController::FindChainRequest(
     const std::string& chain_id) const {
-  for (const auto& request : pending_requests_) {
+  for (const auto& request : add_chain_pending_requests_) {
     if (request.second.chain_id == chain_id)
       return &request.second;
   }
@@ -114,7 +114,7 @@ const mojom::EthereumChain* EthJsonRpcController::FindChainRequest(
 void EthJsonRpcController::GetPendingChainRequests(
     GetPendingChainRequestsCallback callback) {
   std::vector<mojom::EthereumChainPtr> all_chains;
-  for (const auto& request : pending_requests_) {
+  for (const auto& request : add_chain_pending_requests_) {
     all_chains.push_back(request.second.Clone());
   }
   std::move(callback).Run(std::move(all_chains));
@@ -123,12 +123,13 @@ void EthJsonRpcController::GetPendingChainRequests(
 void EthJsonRpcController::AddEthereumChain(mojom::EthereumChainPtr chain,
                                             const std::string& origin,
                                             AddEthereumChainCallback callback) {
-  if (pending_requests_.contains(origin) || FindChainRequest(chain->chain_id)) {
+  if (add_chain_pending_requests_.contains(origin) ||
+      FindChainRequest(chain->chain_id)) {
     std::move(callback).Run(chain->chain_id, false);
     return;
   }
   auto chain_id = chain->chain_id;
-  pending_requests_[origin] = std::move(*chain);
+  add_chain_pending_requests_[origin] = std::move(*chain);
   std::move(callback).Run(chain_id, true);
 }
 
