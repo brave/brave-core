@@ -565,8 +565,11 @@
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "全選";
 
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "啟用背景音訊";
+
 /* Setting to allow media to play automatically */
-"MediaAutoPlays" = "啟用自動播放背景影片";
+"MediaAutoPlays" = "啟用自動播放";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "複製";
@@ -1030,12 +1033,6 @@
 /* Sync settings section title */
 "Sync" = "同步";
 
-/* Message for popup when the history migration fails */
-"sync.historyMigrationErrorMessage" = "已遷移大部分歷史記錄。不過，有些頁面缺少頁面資訊，因此尚未遷移。";
-
-/* The title for popup when the history migration fails */
-"sync.historyMigrationErrorTitle" = "遷移作業已 (幾乎) 完成";
-
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "管理要在裝置之間保持同步的資訊。這些設定只會影響這部裝置。";
 
@@ -1200,6 +1197,9 @@
 
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "選單";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "播放清單";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "閱讀檢視";

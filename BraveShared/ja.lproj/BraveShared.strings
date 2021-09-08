@@ -565,8 +565,11 @@
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "すべて選択";
 
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "音声のバックグラウンド再生を有効にする";
+
 /* Setting to allow media to play automatically */
-"MediaAutoPlays" = "動画のバックグラウンド再生を有効にする";
+"MediaAutoPlays" = "自動再生を有効にする";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "コピー";
@@ -1030,12 +1033,6 @@
 /* Sync settings section title */
 "Sync" = "Brave Sync";
 
-/* Message for popup when the history migration fails */
-"sync.historyMigrationErrorMessage" = "ほとんどの履歴は移行されましたが、ページ情報が失われているためいくつかのページは移行されませんでした。";
-
-/* The title for popup when the history migration fails */
-"sync.historyMigrationErrorTitle" = "移行が（ほぼ）完了しました";
-
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "複数のデバイス間でどの情報を同期させるかを管理します。ここでの設定は、このデバイスにのみ適用されます。";
 
@@ -1200,6 +1197,9 @@
 
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "メニュー";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "リーダービュー";

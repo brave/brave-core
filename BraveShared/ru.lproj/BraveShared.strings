@@ -565,8 +565,11 @@
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "Выбрать все";
 
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "Разрешить фоновое аудио";
+
 /* Setting to allow media to play automatically */
-"MediaAutoPlays" = "Включить автозапуск фонового видео";
+"MediaAutoPlays" = "Включить автовоспроизведение";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Копировать";
@@ -1030,12 +1033,6 @@
 /* Sync settings section title */
 "Sync" = "Синхронизация";
 
-/* Message for popup when the history migration fails */
-"sync.historyMigrationErrorMessage" = "Некоторые страницы не импортированы, так как информации о них нет.";
-
-/* The title for popup when the history migration fails */
-"sync.historyMigrationErrorTitle" = "Импорт почти завершен";
-
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "Выбирайте, какие данные вы хотите синхронизировать. Настройки действуют только на этом устройстве.";
 
@@ -1200,6 +1197,9 @@
 
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Меню";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "Плейлист";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Режим чтения";

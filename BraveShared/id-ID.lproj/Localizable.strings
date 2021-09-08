@@ -211,6 +211,12 @@
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Terjadi masalah saat memuat sumber!";
 
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "Saat diaktifkan, sebuah emblem akan ditampilkan pada lambang menu utama, yang menunjukkan bahwa media pada halaman tersebut dapat ditambahkan ke Daftar Putar Brave.";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "Tampilkan Emblem Notifikasi Menu";
+
 /* Text indicator on the table cell If a video is already downloaded */
 "playList.noItemLabelTitle" = "Video Tidak Tersedia";
 
@@ -301,17 +307,26 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Mulai Putar Ulang dari saat saya terakhir memutarnya";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "Saat diaktifkan, sebuah bilah akan secara otomatis muncul di sebagian besar situs web media, sehingga menambahkan berkas video/audio ke Daftar Putar Anda menjadi lebih mudah.";
-
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionTitle" = "Tampilkan \"Tambahkan ke Daftar Putar Brave\"";
-
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "Nonaktifkan API WebKit MediaSource";
 
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "Kompatibilitas Web";
+
+/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddBody" = "Daftar Putar Brave mendukung Putar Kembali Luring, Gambar dalam Gambar, putar kembali terus-menerus, serta mode pengulangan.";
+
+/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddedTitle" = "Media ini ada di Daftar Putar Brave Anda";
+
+/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddTitle" = "Apakah Anda ingin menambahkan media ini ke Daftar Putar Brave Anda?";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverOpenInBravePlaylist" = "Buka di Daftar Putar Brave";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverRemoveFromBravePlaylist" = "Hapus";
 
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Hapus";

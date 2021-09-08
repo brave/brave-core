@@ -211,6 +211,12 @@
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "리소스를 로드하는 중에 문제가 발생했습니다.";
 
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "활성화하면 메인 메뉴 아이콘에 배지가 표시되어 페이지상의 미디어가 Brave 재생목록에 추가될 수 있음을 나타냅니다.";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "메뉴 알림 배지 표시";
+
 /* Text indicator on the table cell If a video is already downloaded */
 "playList.noItemLabelTitle" = "사용 가능한 항목 없음";
 
@@ -301,17 +307,26 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "종료한 위치에서 재생 시작";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "활성화하면 창에 대부분의 미디어 웹사이트가 자동으로 표시되어 동영상/오디오를 재생목록으로 쉽게 추가할 수 있습니다.";
-
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionTitle" = "\"Brave Playlist에 추가\" 표시";
-
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "WebKit MediaSource API를 비활성화합니다.";
 
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "웹 호환성";
+
+/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddBody" = "Brave 재생목록은 오프라인 재생, PIP(Picture-in-picture), 연속 재생, 반복 모드를 지원합니다.";
+
+/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddedTitle" = "Brave 재생목록에 있는 미디어";
+
+/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddTitle" = "이 미디어를 Brave 재생목록에 추가하시겠습니까?";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverOpenInBravePlaylist" = "Brave 재생목록에서 열기";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverRemoveFromBravePlaylist" = "제거";
 
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "제거";

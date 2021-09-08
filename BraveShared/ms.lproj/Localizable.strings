@@ -211,6 +211,12 @@
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Terdapat masalah memuatkan sumber!";
 
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "Apabila didayakan, lencana akan dipaparkan pada ikon menu utama, menunjukkan bahawa media pada halaman mungkin ditambahkan pada Senarai Main Brave.";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "Tunjukkan Lencana Pemberitahuan Menu";
+
 /* Text indicator on the table cell If a video is already downloaded */
 "playList.noItemLabelTitle" = "Tiada Item Tersedia";
 
@@ -301,17 +307,26 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Mulakan Main Balik di tempat terakhir saya berhenti";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "Apabila didayakan, bar akan muncul secara automatik di kebanyakan laman web media menjadikannya lebih mudah untuk menambah fail video/audio tersebut ke Senarai Main anda.";
-
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionTitle" = "Tunjukkan \"Tambah ke Senarai Main Brave\"";
-
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "Menyahdayakan API WebKit MediaSource";
 
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "Keserasian Web";
+
+/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddBody" = "Senarai Main Brave menyokong mod Main Semula Luar Talian, Gambar dalam gambar, main semula berterusan dan ulang.";
+
+/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddedTitle" = "Media ini berada dalam Senarai Main Brave anda";
+
+/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddTitle" = "Adakah anda mahu menambahkan media ini pada Senarai Main Brave?";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverOpenInBravePlaylist" = "Buka Dalam Senarai Main Brave";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverRemoveFromBravePlaylist" = "Alih keluar";
 
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Alih Keluar";

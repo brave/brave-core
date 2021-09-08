@@ -565,8 +565,11 @@
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "Tümünü seç";
 
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "Arka Plan Sesini Etkinleştir";
+
 /* Setting to allow media to play automatically */
-"MediaAutoPlays" = "Arka planda video otomatik oynatmayı etkinleştir";
+"MediaAutoPlays" = "Otomatik Oynatmayı Etkinleştir";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Kopyala";
@@ -1030,12 +1033,6 @@
 /* Sync settings section title */
 "Sync" = "Eşitle";
 
-/* Message for popup when the history migration fails */
-"sync.historyMigrationErrorMessage" = "Geçmişin çoğu taşındı. Ancak eksik sayfa bilgileri nedeniyle birkaç sayfa taşınamadı.";
-
-/* The title for popup when the history migration fails */
-"sync.historyMigrationErrorTitle" = "Taşıma (neredeyse) tamamlandı";
-
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "Cihazlar arasında hangi bilgileri senkronize etmek istediğinizi yönetin. Bu ayarlar yalnızca bu cihazı etkiler.";
 
@@ -1200,6 +1197,9 @@
 
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "Menü";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "Oynatma Listesi";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Okuyucu Görünümü";

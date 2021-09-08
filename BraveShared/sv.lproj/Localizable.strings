@@ -211,6 +211,12 @@
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Det uppstod ett problem med att läsa in resursen!";
 
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "När det är aktiverat visas ett märke på huvudmenyikonen, vilket indikerar att media på sidan kan läggas till i Brave Playlist.";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "Visa menyaviseringsmärke";
+
 /* Text indicator on the table cell If a video is already downloaded */
 "playList.noItemLabelTitle" = "Inga objekt tillgängliga";
 
@@ -301,17 +307,26 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Starta uppspelningen där jag senast slutade";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "När funktionen är aktiverad visas ett fält automatiskt på de flesta mediewebbplatser, vilket gör det enklare att lägga till dessa video-/ljudfiler i Playlist.";
-
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionTitle" = "Visa \"Lägg till i Brave Playlist\"";
-
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "Inaktiverar WebKit MediaSource API";
 
 /* Title for Playlist setting */
 "playlist.playlistWebCompatibilityTitle" = "Webbkompatibilitet";
+
+/* Body of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddBody" = "Brave Playlist stöder offlineuppspelning, bild-i-bild, kontinuerlig uppspelning och repeat-lägen.";
+
+/* Title of the popover that shows when you already have the current media item in your playlist and you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddedTitle" = "Denna media finns i din Brave Playlist";
+
+/* Title of the popover that shows when you tap on the 'Add to Playlist' button in the URL bar */
+"playlist.popoverAddTitle" = "Vill du lägga till detta media till din Brave Playlist?";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverOpenInBravePlaylist" = "Öppna i Brave Playlist";
+
+/* Button title in the popover when an item is already in your playlist and you tap the 'Add to Playlist' button in the URL bar */
+"playlist.popoverRemoveFromBravePlaylist" = "Ta bort";
 
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Ta bort";

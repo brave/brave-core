@@ -565,8 +565,11 @@
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "모두 선택";
 
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "백그라운드 오디오 활성화";
+
 /* Setting to allow media to play automatically */
-"MediaAutoPlays" = "백그라운드 동영상 자동재생 활성화";
+"MediaAutoPlays" = "자동 재생 활성화";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "복사";
@@ -1030,12 +1033,6 @@
 /* Sync settings section title */
 "Sync" = "동기화";
 
-/* Message for popup when the history migration fails */
-"sync.historyMigrationErrorMessage" = "대부분의 기록이 마이그레이션되었지만 몇 개에는 페이지 정보가 누락되어 완료하지 못했습니다.";
-
-/* The title for popup when the history migration fails */
-"sync.historyMigrationErrorTitle" = "마이그레이션 (대부분) 완료";
-
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "기기 간에 동기화할 정보를 관리합니다. 이 설정은 이 기기에만 적용됩니다.";
 
@@ -1200,6 +1197,9 @@
 
 /* Accessibility Label for the browser toolbar Menu button */
 "TabToolbarMenuButtonAccessibilityLabel" = "메뉴";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "재생목록";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "읽기 전용 뷰";
