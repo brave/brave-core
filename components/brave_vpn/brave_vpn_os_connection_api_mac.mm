@@ -138,8 +138,16 @@ BraveVPNOSConnectionAPI* BraveVPNOSConnectionAPI::GetInstance() {
   return s_manager.get();
 }
 
-BraveVPNOSConnectionAPIMac::BraveVPNOSConnectionAPIMac() = default;
-BraveVPNOSConnectionAPIMac::~BraveVPNOSConnectionAPIMac() = default;
+BraveVPNOSConnectionAPIMac::BraveVPNOSConnectionAPIMac() {
+  ObserveVPNConnectionChange();
+}
+
+BraveVPNOSConnectionAPIMac::~BraveVPNOSConnectionAPIMac() {
+  if (vpn_observer_) {
+    [[NSNotificationCenter defaultCenter] removeObserver:vpn_observer_];
+    vpn_observer_ = nil;
+  }
+}
 
 void BraveVPNOSConnectionAPIMac::CreateVPNConnection(
     const BraveVPNConnectionInfo& info) {
@@ -225,7 +233,6 @@ void BraveVPNOSConnectionAPIMac::Connect(const std::string& name) {
       return;
     }
 
-    VLOG(2) << "Successfully connected";
     for (Observer& obs : observers_)
       obs.OnConnected(std::string());
   }];
@@ -253,7 +260,50 @@ void BraveVPNOSConnectionAPIMac::Disconnect(const std::string& name) {
 }
 
 void BraveVPNOSConnectionAPIMac::CheckConnection(const std::string& name) {
-  NOTIMPLEMENTED();
+  NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
+  [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
+    if (error) {
+      LOG(ERROR) << "Connect - loadFromPrefs error: "
+                 << base::SysNSStringToUTF8([error localizedDescription]);
+      return;
+    }
+
+    NEVPNStatus current_status = [[vpn_manager connection] status];
+    VLOG(2) << "CheckConnection: " << current_status;
+    switch (current_status) {
+      case NEVPNStatusConnected:
+        for (Observer& obs : observers_)
+          obs.OnConnected(name);
+        break;
+      case NEVPNStatusConnecting:
+      case NEVPNStatusReasserting:
+        for (Observer& obs : observers_)
+          obs.OnIsConnecting(name);
+        break;
+      case NEVPNStatusDisconnected:
+      case NEVPNStatusInvalid:
+        for (Observer& obs : observers_)
+          obs.OnDisconnected(name);
+        break;
+      case NEVPNStatusDisconnecting:
+        for (Observer& obs : observers_)
+          obs.OnIsDisconnecting(name);
+        break;
+      default:
+        break;
+    }
+  }];
+}
+
+void BraveVPNOSConnectionAPIMac::ObserveVPNConnectionChange() {
+  vpn_observer_ = [[NSNotificationCenter defaultCenter]
+      addObserverForName:NEVPNStatusDidChangeNotification
+                  object:nil
+                   queue:nil
+              usingBlock:^(NSNotification* notification) {
+                VLOG(2) << "Received VPN connection status change notification";
+                CheckConnection(std::string());
+              }];
 }
 
 }  // namespace brave_vpn

@@ -26,6 +26,7 @@ class BraveVPNOSConnectionAPI {
     virtual void OnIsConnecting(const std::string& name) = 0;
     virtual void OnConnectFailed(const std::string& name) = 0;
     virtual void OnDisconnected(const std::string& name) = 0;
+    virtual void OnIsDisconnecting(const std::string& name) = 0;
 
    protected:
     ~Observer() override = default;
