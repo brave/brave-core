@@ -59,6 +59,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_1.per_week = 4;
   info_1.per_month = 5;
   info_1.total_max = 6;
+  info_1.value = 1.0;
   info_1.segment = "technology & computing-software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
@@ -81,6 +82,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_2.per_week = 4;
   info_2.per_month = 5;
   info_2.total_max = 6;
+  info_2.value = 1.0;
   info_2.segment = "technology & computing-software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
@@ -130,6 +132,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_1.per_week = 4;
   info_1.per_month = 5;
   info_1.total_max = 6;
+  info_1.value = 1.0;
   info_1.segment = "technology & computing-software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
@@ -152,6 +155,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_2.per_week = 4;
   info_2.per_month = 5;
   info_2.total_max = 6;
+  info_2.value = 1.0;
   info_2.segment = "technology & computing-software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
@@ -174,6 +178,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_3.per_week = 4;
   info_3.per_month = 5;
   info_3.total_max = 6;
+  info_3.value = 1.0;
   info_3.segment = "technology & computing-software";
   info_3.dayparts.push_back(daypart_info);
   info_3.geo_targets = {"US"};
@@ -221,6 +226,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info.per_week = 4;
   info.per_month = 5;
   info.total_max = 6;
+  info.value = 1.0;
   info.segment = "technology & computing-software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
@@ -270,6 +276,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, GetForSegments) {
   info_1.per_week = 4;
   info_1.per_month = 5;
   info_1.total_max = 6;
+  info_1.value = 1.0;
   info_1.segment = "technology & computing-software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
@@ -292,6 +299,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, GetForSegments) {
   info_2.per_week = 4;
   info_2.per_month = 5;
   info_2.total_max = 6;
+  info_2.value = 1.0;
   info_2.segment = "technology & computing-software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
@@ -340,6 +348,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info.per_week = 4;
   info.per_month = 5;
   info.total_max = 6;
+  info.value = 1.0;
   info.segment = "technology & computing-software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
@@ -388,6 +397,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info.per_week = 4;
   info.per_month = 5;
   info.total_max = 6;
+  info.value = 1.0;
   info.segment = "technology & computing-software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
@@ -432,6 +442,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info.per_week = 4;
   info.per_month = 5;
   info.total_max = 6;
+  info.value = 1.0;
   info.segment = "technology & computing-software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
@@ -479,6 +490,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info.per_week = 4;
   info.per_month = 5;
   info.total_max = 6;
+  info.value = 1.0;
   info.segment = "technology & computing-software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
@@ -526,6 +538,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_1.per_week = 4;
   info_1.per_month = 5;
   info_1.total_max = 6;
+  info_1.value = 1.0;
   info_1.segment = "technology & computing-software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
@@ -548,6 +561,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_2.per_week = 4;
   info_2.per_month = 5;
   info_2.total_max = 6;
+  info_2.value = 1.0;
   info_2.segment = "food & drink";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
@@ -570,6 +584,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_3.per_week = 4;
   info_3.per_month = 5;
   info_3.total_max = 6;
+  info_3.value = 1.0;
   info_3.segment = "automobiles";
   info_3.dayparts.push_back(daypart_info);
   info_3.geo_targets = {"US"};
@@ -620,6 +635,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_1.per_week = 4;
   info_1.per_month = 5;
   info_1.total_max = 6;
+  info_1.value = 1.0;
   info_1.segment = "technology & computing-software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
@@ -642,6 +658,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_2.per_week = 4;
   info_2.per_month = 5;
   info_2.total_max = 6;
+  info_2.value = 1.0;
   info_2.segment = "technology & computing-software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
@@ -691,6 +708,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_1.per_week = 4;
   info_1.per_month = 5;
   info_1.total_max = 6;
+  info_1.value = 1.0;
   info_1.segment = "technology & computing-software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
@@ -713,6 +731,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_2.per_week = 4;
   info_2.per_month = 5;
   info_2.total_max = 6;
+  info_2.value = 1.0;
   info_2.segment = "food & drink";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};

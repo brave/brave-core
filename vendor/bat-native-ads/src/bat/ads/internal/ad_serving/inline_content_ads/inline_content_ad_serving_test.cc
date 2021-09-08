@@ -66,6 +66,7 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
     creative_inline_content_ad.per_week = 1;
     creative_inline_content_ad.per_month = 1;
     creative_inline_content_ad.total_max = 1;
+    creative_inline_content_ad.value = 1.0;
     creative_inline_content_ad.segment = "untargeted";
     creative_inline_content_ad.geo_targets = {"US"};
     creative_inline_content_ad.target_url = "https://brave.com";

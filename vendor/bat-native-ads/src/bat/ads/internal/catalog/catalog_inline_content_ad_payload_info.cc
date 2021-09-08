@@ -19,7 +19,8 @@ CatalogInlineContentAdPayloadInfo::~CatalogInlineContentAdPayloadInfo() =
 bool CatalogInlineContentAdPayloadInfo::operator==(
     const CatalogInlineContentAdPayloadInfo& rhs) const {
   return title == rhs.title && description == rhs.description &&
-         target_url == rhs.target_url;
+         image_url == rhs.image_url && dimensions == rhs.dimensions &&
+         cta_text == rhs.cta_text && target_url == rhs.target_url;
 }
 
 bool CatalogInlineContentAdPayloadInfo::operator!=(

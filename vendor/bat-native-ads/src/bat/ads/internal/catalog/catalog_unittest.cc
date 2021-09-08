@@ -136,6 +136,11 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_inline_content_ad.payload.title = "Inline Content 1";
     catalog_creative_inline_content_ad.payload.description =
         "Test Inline Content Ad Campaign 1";
+    catalog_creative_inline_content_ad.payload.image_url =
+        "https://www.brave.com/1/image.png";
+    catalog_creative_inline_content_ad.payload.dimensions = "200x100";
+    catalog_creative_inline_content_ad.payload.cta_text =
+        "Call to Action Text 1";
     catalog_creative_inline_content_ad.payload.target_url =
         "https://brave.com/1/inline_content_ad";
     catalog_creative_inline_content_ads.push_back(
@@ -163,6 +168,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_set.per_month = 7;
     catalog_creative_set.split_test_group = "GroupB";
     catalog_creative_set.total_max = 100;
+    catalog_creative_set.value = 0.05;
     catalog_creative_set.segments = catalog_segments;
     catalog_creative_set.oses = catalog_oses;
     catalog_creative_set.creative_ad_notifications =
@@ -316,6 +322,11 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_inline_content_ad.payload.title = "Inline Content 2";
     catalog_creative_inline_content_ad.payload.description =
         "Test Inline Content Ad Campaign 2";
+    catalog_creative_inline_content_ad.payload.image_url =
+        "https://www.brave.com/2/image.png";
+    catalog_creative_inline_content_ad.payload.dimensions = "100x200";
+    catalog_creative_inline_content_ad.payload.cta_text =
+        "Call to Action Text 2";
     catalog_creative_inline_content_ad.payload.target_url =
         "https://brave.com/2/inline_content_ad";
     catalog_creative_inline_content_ads.push_back(
@@ -343,6 +354,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_set.per_week = 11;
     catalog_creative_set.per_month = 12;
     catalog_creative_set.total_max = 1000;
+    catalog_creative_set.value = 0.1;
     catalog_creative_set.segments = catalog_segments;
     catalog_creative_set.oses = catalog_oses;
     catalog_creative_set.creative_ad_notifications =
@@ -351,6 +363,8 @@ class BatAdsCatalogTest : public UnitTestBase {
         catalog_creative_new_tab_page_ads;
     catalog_creative_set.creative_promoted_content_ads =
         catalog_creative_promoted_content_ads;
+    catalog_creative_set.creative_inline_content_ads =
+        catalog_creative_inline_content_ads;
     catalog_creative_set.conversions = conversions;
     catalog_creative_sets.push_back(catalog_creative_set);
 

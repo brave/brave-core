@@ -117,6 +117,7 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
       "ca.per_week, "
       "ca.per_month, "
       "ca.total_max, "
+      "ca.value, "
       "ca.split_test_group, "
       "s.segment, "
       "gt.geo_target, "
@@ -162,6 +163,7 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // segment
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
@@ -210,6 +212,7 @@ void CreativeInlineContentAds::GetForSegments(
       "ca.per_week, "
       "ca.per_month, "
       "ca.total_max, "
+      "ca.value, "
       "ca.split_test_group, "
       "s.segment, "
       "gt.geo_target, "
@@ -265,6 +268,7 @@ void CreativeInlineContentAds::GetForSegments(
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // segment
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
@@ -306,6 +310,7 @@ void CreativeInlineContentAds::GetAll(
       "ca.per_week, "
       "ca.per_month, "
       "ca.total_max, "
+      "ca.value, "
       "ca.split_test_group, "
       "s.segment, "
       "gt.geo_target, "
@@ -352,6 +357,7 @@ void CreativeInlineContentAds::GetAll(
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // segment
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
@@ -390,8 +396,8 @@ void CreativeInlineContentAds::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 15: {
-      MigrateToV15(transaction);
+    case 16: {
+      MigrateToV16(transaction);
       break;
     }
 
@@ -560,27 +566,28 @@ CreativeInlineContentAdInfo CreativeInlineContentAds::GetFromRecord(
   creative_inline_content_ad.per_week = ColumnInt(record, 10);
   creative_inline_content_ad.per_month = ColumnInt(record, 11);
   creative_inline_content_ad.total_max = ColumnInt(record, 12);
-  creative_inline_content_ad.split_test_group = ColumnString(record, 13);
-  creative_inline_content_ad.segment = ColumnString(record, 14);
-  creative_inline_content_ad.geo_targets.push_back(ColumnString(record, 15));
-  creative_inline_content_ad.target_url = ColumnString(record, 16);
-  creative_inline_content_ad.title = ColumnString(record, 17);
-  creative_inline_content_ad.description = ColumnString(record, 18);
-  creative_inline_content_ad.image_url = ColumnString(record, 19);
-  creative_inline_content_ad.dimensions = ColumnString(record, 20);
-  creative_inline_content_ad.cta_text = ColumnString(record, 21);
-  creative_inline_content_ad.ptr = ColumnDouble(record, 22);
+  creative_inline_content_ad.value = ColumnDouble(record, 13);
+  creative_inline_content_ad.split_test_group = ColumnString(record, 14);
+  creative_inline_content_ad.segment = ColumnString(record, 15);
+  creative_inline_content_ad.geo_targets.push_back(ColumnString(record, 16));
+  creative_inline_content_ad.target_url = ColumnString(record, 17);
+  creative_inline_content_ad.title = ColumnString(record, 18);
+  creative_inline_content_ad.description = ColumnString(record, 19);
+  creative_inline_content_ad.image_url = ColumnString(record, 20);
+  creative_inline_content_ad.dimensions = ColumnString(record, 21);
+  creative_inline_content_ad.cta_text = ColumnString(record, 22);
+  creative_inline_content_ad.ptr = ColumnDouble(record, 23);
 
   CreativeDaypartInfo daypart;
-  daypart.dow = ColumnString(record, 23);
-  daypart.start_minute = ColumnInt(record, 24);
-  daypart.end_minute = ColumnInt(record, 25);
+  daypart.dow = ColumnString(record, 24);
+  daypart.start_minute = ColumnInt(record, 25);
+  daypart.end_minute = ColumnInt(record, 26);
   creative_inline_content_ad.dayparts.push_back(daypart);
 
   return creative_inline_content_ad;
 }
 
-void CreativeInlineContentAds::CreateTableV15(
+void CreativeInlineContentAds::CreateTableV16(
     mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
@@ -604,12 +611,12 @@ void CreativeInlineContentAds::CreateTableV15(
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeInlineContentAds::MigrateToV15(mojom::DBTransaction* transaction) {
+void CreativeInlineContentAds::MigrateToV16(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV15(transaction);
+  CreateTableV16(transaction);
 }
 
 }  // namespace table

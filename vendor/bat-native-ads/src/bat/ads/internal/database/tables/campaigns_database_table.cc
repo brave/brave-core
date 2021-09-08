@@ -62,8 +62,8 @@ void Campaigns::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 15: {
-      MigrateToV15(transaction);
+    case 16: {
+      MigrateToV16(transaction);
       break;
     }
 
@@ -115,7 +115,7 @@ std::string Campaigns::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(7, count).c_str());
 }
 
-void Campaigns::CreateTableV15(mojom::DBTransaction* transaction) {
+void Campaigns::CreateTableV16(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -136,12 +136,12 @@ void Campaigns::CreateTableV15(mojom::DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void Campaigns::MigrateToV15(mojom::DBTransaction* transaction) {
+void Campaigns::MigrateToV16(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV15(transaction);
+  CreateTableV16(transaction);
 }
 
 }  // namespace table

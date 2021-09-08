@@ -116,6 +116,7 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
       "ca.per_week, "
       "ca.per_month, "
       "ca.total_max, "
+      "ca.value, "
       "s.segment, "
       "gt.geo_target, "
       "ca.target_url, "
@@ -157,6 +158,7 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // segment
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // target_url
@@ -200,6 +202,7 @@ void CreativePromotedContentAds::GetForSegments(
       "ca.per_week, "
       "ca.per_month, "
       "ca.total_max, "
+      "ca.value, "
       "s.segment, "
       "gt.geo_target, "
       "ca.target_url, "
@@ -250,6 +253,7 @@ void CreativePromotedContentAds::GetForSegments(
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // segment
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // target_url
@@ -287,6 +291,7 @@ void CreativePromotedContentAds::GetAll(
       "ca.per_week, "
       "ca.per_month, "
       "ca.total_max, "
+      "ca.value, "
       "s.segment, "
       "gt.geo_target, "
       "ca.target_url, "
@@ -329,6 +334,7 @@ void CreativePromotedContentAds::GetAll(
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // segment
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // target_url
@@ -363,8 +369,8 @@ void CreativePromotedContentAds::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 15: {
-      MigrateToV15(transaction);
+    case 16: {
+      MigrateToV16(transaction);
       break;
     }
 
@@ -528,23 +534,24 @@ CreativePromotedContentAdInfo CreativePromotedContentAds::GetFromRecord(
   creative_promoted_content_ad.per_week = ColumnInt(record, 10);
   creative_promoted_content_ad.per_month = ColumnInt(record, 11);
   creative_promoted_content_ad.total_max = ColumnInt(record, 12);
-  creative_promoted_content_ad.segment = ColumnString(record, 13);
-  creative_promoted_content_ad.geo_targets.push_back(ColumnString(record, 14));
-  creative_promoted_content_ad.target_url = ColumnString(record, 15);
-  creative_promoted_content_ad.title = ColumnString(record, 16);
-  creative_promoted_content_ad.description = ColumnString(record, 17);
-  creative_promoted_content_ad.ptr = ColumnDouble(record, 18);
+  creative_promoted_content_ad.value = ColumnDouble(record, 13);
+  creative_promoted_content_ad.segment = ColumnString(record, 14);
+  creative_promoted_content_ad.geo_targets.push_back(ColumnString(record, 15));
+  creative_promoted_content_ad.target_url = ColumnString(record, 16);
+  creative_promoted_content_ad.title = ColumnString(record, 17);
+  creative_promoted_content_ad.description = ColumnString(record, 18);
+  creative_promoted_content_ad.ptr = ColumnDouble(record, 19);
 
   CreativeDaypartInfo daypart;
-  daypart.dow = ColumnString(record, 19);
-  daypart.start_minute = ColumnInt(record, 20);
-  daypart.end_minute = ColumnInt(record, 21);
+  daypart.dow = ColumnString(record, 20);
+  daypart.start_minute = ColumnInt(record, 21);
+  daypart.end_minute = ColumnInt(record, 22);
   creative_promoted_content_ad.dayparts.push_back(daypart);
 
   return creative_promoted_content_ad;
 }
 
-void CreativePromotedContentAds::CreateTableV15(
+void CreativePromotedContentAds::CreateTableV16(
     mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
@@ -565,13 +572,13 @@ void CreativePromotedContentAds::CreateTableV15(
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativePromotedContentAds::MigrateToV15(
+void CreativePromotedContentAds::MigrateToV16(
     mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV15(transaction);
+  CreateTableV16(transaction);
 }
 
 }  // namespace table

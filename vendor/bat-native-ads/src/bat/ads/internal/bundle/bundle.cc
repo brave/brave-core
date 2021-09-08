@@ -160,6 +160,7 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
         info.per_week = creative_set.per_week;
         info.per_month = creative_set.per_month;
         info.total_max = creative_set.total_max;
+        info.value = creative_set.value;
         info.split_test_group = creative_set.split_test_group;
         info.dayparts = creative_dayparts;
         info.geo_targets = geo_targets;
@@ -244,6 +245,7 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
         info.per_week = creative_set.per_week;
         info.per_month = creative_set.per_month;
         info.total_max = creative_set.total_max;
+        info.value = creative_set.value;
         info.split_test_group = creative_set.split_test_group;
         info.dayparts = creative_dayparts;
         info.geo_targets = geo_targets;
@@ -331,6 +333,7 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
         info.per_week = creative_set.per_week;
         info.per_month = creative_set.per_month;
         info.total_max = creative_set.total_max;
+        info.value = creative_set.value;
         info.split_test_group = creative_set.split_test_group;
         info.dayparts = creative_dayparts;
         info.geo_targets = geo_targets;
@@ -415,6 +418,7 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
         info.per_week = creative_set.per_week;
         info.per_month = creative_set.per_month;
         info.total_max = creative_set.total_max;
+        info.value = creative_set.value;
         info.split_test_group = creative_set.split_test_group;
         info.dayparts = creative_dayparts;
         info.geo_targets = geo_targets;
