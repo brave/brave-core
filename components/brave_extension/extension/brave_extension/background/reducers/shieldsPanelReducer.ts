@@ -36,10 +36,6 @@ import {
   setAllowScriptOriginsOnce
 } from '../api/shieldsAPI'
 import { reloadTab } from '../api/tabsAPI'
-import {
-  injectClassIdStylesheet,
-  applyAdblockCosmeticFilters
-} from '../api/cosmeticFilterAPI'
 
 // Helpers
 import { getAllowedScriptsOrigins } from '../../helpers/noScriptUtils'
@@ -378,62 +374,6 @@ export default function shieldsPanelReducer (
       onShieldsPanelShown().catch(() => {
         console.error('error calling `chrome.braveShields.onShieldsPanelShown()`')
       })
-      break
-    }
-    case shieldsPanelTypes.GENERATE_CLASS_ID_STYLESHEET: {
-      const tabData = state.tabs[action.tabId]
-      if (!tabData) {
-        console.error('Active tab not found')
-        break
-      }
-      const exceptions = tabData.cosmeticFilters.ruleExceptions
-      const hide1pContent = tabData.firstPartyCosmeticFiltering
-
-      // setTimeout is used to prevent injectClassIdStylesheet from calling
-      // another Redux function immediately
-      setTimeout(() => injectClassIdStylesheet(action.tabId, action.classes, action.ids, exceptions, hide1pContent), 0)
-      break
-    }
-    case shieldsPanelTypes.COSMETIC_FILTER_RULE_EXCEPTIONS: {
-      const tabData = state.tabs[action.tabId]
-      if (!tabData) {
-        console.error('Active tab not found')
-        break
-      }
-      let message: { type: string, scriptlet: string, hideOptions?: { hide1pContent: boolean, generichide: boolean } } = {
-        type: 'cosmeticFilteringBackgroundReady',
-        scriptlet: action.scriptlet,
-        hideOptions: undefined
-      }
-      if (action.frameId === 0) {
-        // Non-scriptlet cosmetic filters are only applied on the top-level frame
-        state = shieldsPanelState.saveCosmeticFilterRuleExceptions(state, action.tabId, action.exceptions)
-        message.hideOptions = {
-          hide1pContent: tabData.firstPartyCosmeticFiltering,
-          generichide: action.generichide
-        }
-      }
-      chrome.tabs.sendMessage(action.tabId, message, {
-        frameId: action.frameId
-      })
-      break
-    }
-    case shieldsPanelTypes.CONTENT_SCRIPTS_LOADED: {
-      const tabData = state.tabs[action.tabId]
-      if (!tabData) {
-        console.error('Active tab not found')
-        break
-      }
-      Promise.all([chrome.braveShields.shouldDoCosmeticFilteringAsync(action.url), chrome.braveShields.isFirstPartyCosmeticFilteringEnabledAsync(action.url)])
-        .then(([doCosmeticBlocking, hide1pContent]: [boolean, boolean]) => {
-          if (doCosmeticBlocking) {
-            applyAdblockCosmeticFilters(action.tabId, action.frameId, action.url, hide1pContent)
-          }
-          return null
-        })
-        .catch(() => {
-          console.error('Could not apply cosmetic blocking')
-        })
       break
     }
   }

@@ -316,7 +316,6 @@ declare namespace chrome.braveShields {
   const allowScriptsOnce: any
   const setBraveShieldsEnabledAsync: any
   const getBraveShieldsEnabledAsync: any
-  const shouldDoCosmeticFilteringAsync: any
   const setCosmeticFilteringControlTypeAsync: any
   const isFirstPartyCosmeticFilteringEnabledAsync: any
   const setAdControlTypeAsync: any
@@ -332,16 +331,6 @@ declare namespace chrome.braveShields {
   const onShieldsPanelShown: any
   const reportBrokenSite: any
 
-  interface UrlSpecificResources {
-    hide_selectors: string[]
-    style_selectors: any
-    exceptions: string[]
-    injected_script: string
-    force_hide_selectors: string[]
-    generichide: boolean
-  }
-  const urlCosmeticResources: (url: string, callback: (resources: UrlSpecificResources) => void) => void
-  const hiddenClassIdSelectors: (classes: string[], ids: string[], exceptions: string[], callback: (selectors: string[], forceHideSelectors: string[]) => void) => void
   const addSiteCosmeticFilter: (origin: string, cssSelector: string) => void
   const openFilterManagementPage: () => void
 

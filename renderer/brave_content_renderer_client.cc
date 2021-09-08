@@ -56,12 +56,11 @@ void BraveContentRendererClient::RenderFrameCreated(
     content::RenderFrame* render_frame) {
   ChromeContentRendererClient::RenderFrameCreated(render_frame);
 
-#if !defined(OS_ANDROID) && !defined(CHROME_OS)
   if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveAdblockCosmeticFilteringNative))
-#endif
+          brave_shields::features::kBraveAdblockCosmeticFiltering)) {
     new cosmetic_filters::CosmeticFiltersJsRenderFrameObserver(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (base::FeatureList::IsEnabled(

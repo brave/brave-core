@@ -1,6 +1,5 @@
 import { getLocale } from '../api/localeAPI'
 import { addSiteCosmeticFilter, openFilterManagementPage } from '../api/cosmeticFilterAPI'
-import shieldsPanelActions from '../actions/shieldsPanelActions'
 
 export let rule = {
   host: '',
@@ -56,38 +55,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   switch (action) {
     case 'contextMenuOpened': {
       rule.host = msg.baseURI
-      break
-    }
-    case 'hiddenClassIdSelectors': {
-      const tab = sender.tab
-      if (tab === undefined) {
-        break
-      }
-      const tabId = tab.id
-      if (tabId === undefined) {
-        break
-      }
-      shieldsPanelActions.generateClassIdStylesheet(tabId, msg.classes, msg.ids)
-      break
-    }
-    case 'contentScriptsLoaded': {
-      const tab = sender.tab
-      if (tab === undefined) {
-        break
-      }
-      const tabId = tab.id
-      if (tabId === undefined) {
-        break
-      }
-      const url = msg.location.href
-      if (url === undefined) {
-        break
-      }
-      const frameId = sender.frameId
-      if (frameId === undefined) {
-        break
-      }
-      shieldsPanelActions.contentScriptsLoaded(tabId, frameId, url)
       break
     }
     case 'cosmeticFilterCreate': {

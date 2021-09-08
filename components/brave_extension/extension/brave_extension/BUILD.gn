@@ -18,10 +18,6 @@ transpile_web_ui("brave_extension") {
       rebase_path("content_dapps.ts"),
     ],
     [
-      "content_cosmetic",
-      rebase_path("content_cosmetic.ts"),
-    ],
-    [
       "content_element_picker",
       rebase_path("content_element_picker.ts"),
     ],

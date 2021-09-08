@@ -39,7 +39,6 @@ const details: ShieldDetails = {
   javascript: 'block',
   trackers: 'block',
   ads: 'block',
-  cosmeticFiltering: 'block_third_party',
   fingerprinting: 'block',
   cookies: 'block'
 }
