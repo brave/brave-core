@@ -12,18 +12,33 @@ RegisterPolymerTemplateModifications({
     if (!pages) {
       console.error(`[Brave Settings Overrides] Couldn't find privacy_page #pages`)
     } else {
+      pages.insertAdjacentHTML('beforeend', `
+        <template is="dom-if" route-path="/content/autoplay" no-search>
+          <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsCategoryAutoplay')}">
+            <category-default-setting
+                toggle-off-label="${I18nBehavior.i18n('siteSettingsBlocked')}"
+                toggle-on-label="${I18nBehavior.i18n('siteSettingsAllowed')}"
+                category="[[contentSettingsTypesEnum_.AUTOPLAY}}">
+            </category-default-setting>
+            <category-setting-exceptions
+                category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
+                block-header="${I18nBehavior.i18n('siteSettingsBlock')}">
+            </category-setting-exceptions>
+          </settings-subpage>
+        </template>
+      `)
       const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       if (isNativeBraveWalletEnabled) {
         pages.insertAdjacentHTML('beforeend', `
           <template is="dom-if" route-path="/content/ethereum" no-search>
           <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsCategoryEthereum')}">
           <category-default-setting
-          category="[[ContentSettingsTypes.ETHEREUM]]"
+          category="[[contentSettingsTypesEnum_.ETHEREUM]]"
           toggle-off-label="${I18nBehavior.i18n('siteSettingsEthereumBlock')}"
           toggle-on-label="${I18nBehavior.i18n('siteSettingsEthereumAsk')}">
           </category-default-setting>
           <category-setting-exceptions
-          category="[[ContentSettingsTypes.ETHEREUM]]"
+          category="[[contentSettingsTypesEnum_.ETHEREUM]]"
           read-only-list
           block-header="${I18nBehavior.i18n('siteSettingsBlock')}"
           allow-header="${I18nBehavior.i18n('siteSettingsAllow')}">

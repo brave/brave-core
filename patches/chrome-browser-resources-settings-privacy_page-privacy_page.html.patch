@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index 07c8a1c383f4dbd94b89663394a2dbc69491e435..c0d7619d335801021f99de431c06597f58290eb1 100644
+index 07c8a1c383f4dbd94b89663394a2dbc69491e435..8e42b4766ef4896fbc09be4752fb760f4ea86925 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
 @@ -29,6 +29,7 @@
@@ -40,23 +40,3 @@ index 07c8a1c383f4dbd94b89663394a2dbc69491e435..c0d7619d335801021f99de431c06597f
              <category-setting-exceptions
                  category="[[contentSettingsTypesEnum_.JAVASCRIPT]]"
                  block-header="$i18n{siteSettingsBlock}"
-@@ -772,6 +777,19 @@
-           </settings-subpage>
-        </template>
-      </template>
-+      <template is="dom-if" route-path="/content/autoplay" no-search>
-+        <settings-subpage page-title="$i18n{siteSettingsCategoryAutoplay}">
-+          <category-default-setting
-+              toggle-off-label="$i18n{siteSettingsBlocked}"
-+              toggle-on-label="$i18n{siteSettingsAllowed}"
-+              category="{{ContentSettingsTypes.AUTOPLAY}}">
-+          </category-default-setting>
-+          <category-setting-exceptions
-+              category="{{ContentSettingsTypes.AUTOPLAY}}"
-+              block-header="$i18n{siteSettingsBlock}">
-+          </category-setting-exceptions>
-+        </settings-subpage>
-+      </template>
-       <template is="dom-if" route-path="/content/midiDevices" no-search>
-         <settings-subpage page-title="$i18n{siteSettingsMidiDevices}"
-             search-label="$i18n{siteSettingsAllSitesSearch}"

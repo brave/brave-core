@@ -11,6 +11,7 @@
 
 import './config.js'
 import { ContentSettingsTypes } from '../site_settings/constants.js'
+ContentSettingsTypes.AUTOPLAY = 'autoplay',
 ContentSettingsTypes.ETHEREUM = 'ethereum'
 import './about_page.js'
 import './appearance_page.js'
@@ -32,6 +33,7 @@ import './security_page.js'
 import './settings_menu.js'
 import './settings_section.js'
 import './settings_ui.js'
+import './site_details.js'
 import './site_settings_page.js'
 import './sync_account_control.js'
 import './sync_controls.js'
