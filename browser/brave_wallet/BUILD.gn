@@ -1,5 +1,6 @@
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
+import("//testing/test.gni")
 
 assert(brave_wallet_enabled)
 
@@ -92,5 +93,31 @@ source_set("tab_helper") {
 
   if (!is_android && !is_ios) {
     deps += [ "//brave/browser/ui/brave_wallet" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "eth_nonce_tracker_unittest.cc",
+    "eth_pending_tx_tracker_unittest.cc",
+    "eth_tx_state_manager_unittest.cc",
+    "keyring_controller_unittest.cc",
+  ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/common:mojom",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+  if (!is_android && !is_ios) {
+    sources += [ "brave_wallet_provider_impl_unittest.cc" ]
+    deps += [
+      ":brave_wallet_delegate",
+      "//brave/components/brave_wallet/common:common_constants",
+    ]
   }
 }
