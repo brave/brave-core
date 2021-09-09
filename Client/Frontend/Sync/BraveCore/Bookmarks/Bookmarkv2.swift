@@ -214,15 +214,16 @@ extension Bookmarkv2 {
         return nil
     }
     
-    public class func addFolder(title: String, parentFolder: Bookmarkv2? = nil) {
+    @discardableResult
+    public class func addFolder(title: String, parentFolder: Bookmarkv2? = nil) -> BookmarkNode? {
         guard let bookmarksAPI = Bookmarkv2.bookmarksAPI else {
-            return
+            return nil
         }
         
         if let parentFolder = parentFolder?.bookmarkNode {
-            bookmarksAPI.createFolder(withParent: parentFolder, title: title)
+            return bookmarksAPI.createFolder(withParent: parentFolder, title: title)
         } else {
-            bookmarksAPI.createFolder(withTitle: title)
+            return bookmarksAPI.createFolder(withTitle: title)
         }
     }
     
