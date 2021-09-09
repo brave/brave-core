@@ -233,6 +233,7 @@ GreaselionServiceImpl::GreaselionServiceImpl(
       browser_version_(
           version_info::GetBraveVersionWithoutChromiumMajorVersion()),
       weak_factory_(this) {
+  download_service_->AddObserver(this);
   extension_registry_->AddObserver(this);
   for (int i = FIRST_FEATURE; i != LAST_FEATURE; i++)
     state_[static_cast<GreaselionFeature>(i)] = false;
@@ -241,6 +242,7 @@ GreaselionServiceImpl::GreaselionServiceImpl(
 }
 
 GreaselionServiceImpl::~GreaselionServiceImpl() {
+  download_service_->RemoveObserver(this);
   extension_registry_->RemoveObserver(this);
 }
 
@@ -367,11 +369,12 @@ void GreaselionServiceImpl::OnExtensionUnloaded(
   }
 }
 
-void GreaselionServiceImpl::AddObserver(Observer* observer) {
+void GreaselionServiceImpl::AddObserver(GreaselionService::Observer* observer) {
   observers_.AddObserver(observer);
 }
 
-void GreaselionServiceImpl::RemoveObserver(Observer* observer) {
+void GreaselionServiceImpl::RemoveObserver(
+    GreaselionService::Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
@@ -382,9 +385,16 @@ void GreaselionServiceImpl::MaybeNotifyObservers() {
       update_pending_ = false;
       UpdateInstalledExtensions();
     } else {
-      for (Observer& observer : observers_)
+      for (auto& observer : observers_)
         observer.OnExtensionsReady(this, all_rules_installed_successfully_);
     }
+  }
+}
+
+void GreaselionServiceImpl::OnRulesReady(
+    GreaselionDownloadService* download_service) {
+  for (auto& observer : observers_) {
+    observer.OnRulesReady(this);
   }
 }
 
