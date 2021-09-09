@@ -46,11 +46,13 @@ class BraveWalletTabHelperUnitTest : public testing::Test {
   std::unique_ptr<content::WebContents> web_contents_;
 };
 
+#if !defined(OS_ANDROID)
 TEST_F(BraveWalletTabHelperUnitTest, GetApproveBubbleURL) {
   auto* helper = brave_wallet_tab_helper();
   ASSERT_TRUE(helper);
   ASSERT_EQ(helper->GetApproveBubbleURL(),
             GURL("chrome://wallet-panel.top-chrome/#approveTransaction"));
 }
+#endif
 
 }  // namespace brave_wallet
