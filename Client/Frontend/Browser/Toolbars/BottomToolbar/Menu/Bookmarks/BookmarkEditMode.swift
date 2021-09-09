@@ -11,6 +11,7 @@ import Shared
 enum BookmarkEditMode {
     case addBookmark(title: String, url: String)
     case addFolder(title: String)
+    case addFolderUsingTabs(title: String, tabList: [Tab])
     case editBookmark(_ bookmark: Bookmarkv2)
     case editFolder(_ folder: Bookmarkv2)
     case editFavorite(_ favorite: Bookmarkv2)
@@ -18,7 +19,7 @@ enum BookmarkEditMode {
     /// Returns a initial, default save location if none is provided
     var initialSaveLocation: BookmarkSaveLocation {
         switch self {
-        case .addBookmark(_, _), .addFolder(_):
+        case .addBookmark(_, _), .addFolder(_), .addFolderUsingTabs(_, _):
             return .rootLevel
         // Set current parent folder if possible, fallback to root folder
         case .editBookmark(let bookmark):
@@ -44,7 +45,7 @@ enum BookmarkEditMode {
     var title: String {
         switch self {
         case .addBookmark(_, _): return Strings.newBookmarkTitle
-        case .addFolder(_): return  Strings.newFolderTitle
+        case .addFolder(_), .addFolderUsingTabs(_, _): return  Strings.newFolderTitle
         case .editBookmark(_): return  Strings.editBookmarkTitle
         case .editFolder(_): return  Strings.editFolderTitle
         case .editFavorite(_): return  Strings.editFavoriteTitle
@@ -59,7 +60,7 @@ enum BookmarkEditMode {
     var specialCells: [AddEditBookmarkTableViewController.SpecialCell] {
         // Order of cells matters.
         switch self {
-        case .addFolder, .editFolder: return [.rootLevel]
+        case .addFolder, .addFolderUsingTabs, .editFolder: return [.rootLevel]
         case .addBookmark, .editBookmark, .editFavorite: return [.addFolder, .favorites, .rootLevel]
         }
     }

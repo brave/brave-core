@@ -111,6 +111,8 @@ extension Strings {
     public static let openPhoneSettingsActionTitle = NSLocalizedString("OpenPhoneSettingsActionTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Open Settings", comment: "See http://mzl.la/1G7uHo7")
     public static let copyImageActionTitle = NSLocalizedString("CopyImageActionTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Copy Image", comment: "Context menu item for copying an image to the clipboard")
     public static let closeAllTabsTitle = NSLocalizedString("CloseAllTabsTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Close All %i Tabs", comment: "")
+    public static let savedTabsFolderTitle = NSLocalizedString("SavedTabsFolderTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Saved Tabs", comment: "The title for the folder created when all bookmarks are being ")
+    public static let bookmarkAllTabsTitle = NSLocalizedString("BookmarkAllTabsTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Bookmark All Tabs", comment: "Action item title of long press for Adding Bookmark for All Tabs in Tab List")
     public static let suppressAlertsActionTitle = NSLocalizedString("SuppressAlertsActionTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Suppress Alerts", comment: "Title of alert that seeks permission from user to suppress future JS alerts")
     public static let suppressAlertsActionMessage = NSLocalizedString("SuppressAlertsActionMessage", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Prevent this page from creating additional alerts", comment: "Message body of alert that seeks permission from user to suppress future JS alerts")
 }
