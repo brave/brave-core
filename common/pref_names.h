@@ -89,7 +89,6 @@ extern const char kSafetynetStatus[];
 #endif
 
 extern const char kDefaultBrowserLaunchingCount[];
-extern const char kBraveDefaultSearchVersion[];
 extern const char kTabsSearchShow[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_
