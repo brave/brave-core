@@ -161,6 +161,8 @@ source_set("ui") {
       "views/tabs/brave_tab_strip.h",
       "views/toolbar/bookmark_button.cc",
       "views/toolbar/bookmark_button.h",
+      "views/toolbar/brave_app_menu.cc",
+      "views/toolbar/brave_app_menu.h",
     ]
 
     if (use_aura) {
@@ -497,6 +499,8 @@ source_set("ui") {
         "views/brave_vpn_panel_host.h",
         "views/toolbar/brave_vpn_button.cc",
         "views/toolbar/brave_vpn_button.h",
+        "views/toolbar/brave_vpn_toggle_button.cc",
+        "views/toolbar/brave_vpn_toggle_button.h",
       ]
     }
   }

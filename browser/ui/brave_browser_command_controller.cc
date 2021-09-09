@@ -291,10 +291,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::ShowBraveVPNBubble(browser_);
       break;
     case IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON:
+      brave::ToggleBraveVPNButton(browser_);
+      break;
     case IDC_SEND_BRAVE_VPN_FEEDBACK:
     case IDC_ABOUT_BRAVE_VPN:
     case IDC_MANAGE_BRAVE_VPN_PLAN:
-    case IDC_TOGGLE_BRAVE_VPN:
       NOTIMPLEMENTED();
       break;
     default:

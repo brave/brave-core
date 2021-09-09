@@ -20,15 +20,11 @@ class BraveVPNMenuModel : public ui::SimpleMenuModel,
   BraveVPNMenuModel& operator=(const BraveVPNMenuModel&) = delete;
 
  private:
-  // ui::SimpleMenuModel override:
-  bool IsItemCheckedAt(int index) const override;
-
   // ui::SimpleMenuModel::Delegate override:
   void ExecuteCommand(int command_id, int event_flags) override;
-  bool IsCommandIdChecked(int command_id) const override;
 
   void Build();
-  bool IsVPNConnected() const;
+  bool IsBraveVPNButtonVisible() const;
 
   Browser* browser_ = nullptr;
 };
