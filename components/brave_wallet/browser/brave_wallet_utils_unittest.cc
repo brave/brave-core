@@ -292,6 +292,9 @@ TEST(BraveWalletUtilsUnitTest, Mnemonic) {
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     std::vector<uint8_t> bytes;
     EXPECT_TRUE(base::HexStringToBytes(cases[i].entropy, &bytes));
+    std::unique_ptr<std::vector<uint8_t>> entropy =
+        MnemonicToEntropy(cases[i].mnemonic);
+    EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*entropy)), cases[i].entropy);
 
     EXPECT_EQ(GenerateMnemonicForTest(bytes), cases[i].mnemonic);
     std::unique_ptr<std::vector<uint8_t>> seed =
@@ -315,21 +318,23 @@ TEST(BraveWalletUtilsUnitTest, Mnemonic) {
   }
 }
 
-TEST(BraveWalletUtilsUnitTest, MnemonicToSeed) {
-  EXPECT_NE(MnemonicToSeed("kingdom possible coast island six arrow fluid "
-                           "spell chunk loud glue street",
-                           ""),
-            nullptr);
-  EXPECT_EQ(MnemonicToSeed("lingdom possible coast island six arrow fluid "
-                           "spell chunk loud glue street",
-                           ""),
-            nullptr);
-  EXPECT_EQ(
-      MnemonicToSeed(
-          "kingdom possible coast island six arrow fluid spell chunk loud glue",
-          ""),
-      nullptr);
+TEST(BraveWalletUtilsUnitTest, MnemonicToSeedAndEntropy) {
+  const char* valid_mnemonic =
+      "kingdom possible coast island six arrow fluid spell chunk loud glue "
+      "street";
+  const char* invalid_mnemonic1 =
+      "lingdom possible coast island six arrow fluid spell chunk loud glue "
+      "street";
+  const char* invalid_mnemonic2 =
+      "kingdom possible coast island six arrow fluid spell chunk loud glue";
+  EXPECT_NE(MnemonicToSeed(valid_mnemonic, ""), nullptr);
+  EXPECT_NE(MnemonicToEntropy(valid_mnemonic), nullptr);
+  EXPECT_EQ(MnemonicToSeed(invalid_mnemonic1, ""), nullptr);
+  EXPECT_EQ(MnemonicToEntropy(invalid_mnemonic1), nullptr);
+  EXPECT_EQ(MnemonicToSeed(invalid_mnemonic2, ""), nullptr);
+  EXPECT_EQ(MnemonicToEntropy(invalid_mnemonic2), nullptr);
   EXPECT_EQ(MnemonicToSeed("", ""), nullptr);
+  EXPECT_EQ(MnemonicToEntropy(""), nullptr);
 }
 
 TEST(BraveWalletUtilsUnitTest, IsValidMnemonic) {

@@ -65,6 +65,9 @@ std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy);
 std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
     const std::string& mnemonic,
     const std::string& passphrase);
+// This is mainly used for restoring legacy brave crypto wallet
+std::unique_ptr<std::vector<uint8_t>> MnemonicToEntropy(
+    const std::string& mnemonic);
 bool IsValidMnemonic(const std::string& mnemonic);
 
 bool EncodeString(const std::string& input, std::string* output);
