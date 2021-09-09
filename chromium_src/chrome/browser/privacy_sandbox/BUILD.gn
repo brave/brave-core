@@ -1,0 +1,36 @@
+# Copyright 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "privacy_sandbox_settings_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//chrome/browser",
+    "//chrome/browser/ui/webui/federated_learning:mojo_bindings",
+    "//chrome/common:chrome_features",
+    "//chrome/test:test_support",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
+    "//components/content_settings/core/test:test_support",
+    "//components/federated_learning",
+    "//components/policy/core/common:test_support",
+    "//components/privacy_sandbox:privacy_sandbox_prefs",
+    "//components/signin/public/identity_manager",
+    "//components/signin/public/identity_manager:test_support",
+    "//components/strings:components_strings",
+    "//components/sync/base",
+    "//components/sync/driver:test_support",
+    "//components/sync_preferences:test_support",
+    "//content/public/common",
+    "//content/test:test_support",
+    "//testing/gtest:gtest",
+    "//third_party/blink/public/common",
+    "//third_party/blink/public/mojom:mojom_platform_headers",
+    "//ui/base",
+    "//url",
+  ]
+}

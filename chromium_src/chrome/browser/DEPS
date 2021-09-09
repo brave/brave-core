@@ -32,6 +32,7 @@ include_rules = [
   "+../../../../../chrome/browser/permissions",
   "+../../../../../chrome/browser/policy",
   "+../../../../../chrome/browser/prefs",
+  "+../../../../../chrome/browser/privacy_sandbox",
   "+../../../../../chrome/browser/profiles",
   "+../../../../../chrome/browser/push_messaging",
   "+../../../../../chrome/browser/renderer_context_menu",
