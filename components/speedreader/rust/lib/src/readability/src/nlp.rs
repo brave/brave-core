@@ -3,6 +3,7 @@ use std::cmp::max;
 use std::collections::HashSet;
 
 // A list of common abbreviations
+// Taken from https://www.enchantedlearning.com/abbreviations/
 static EN_ABBREVIATIONS_LIST: [&str; 80] = [
     "abbr.", "Acad.", "alt.", "A.D.", "A.M.", "apt.", "Assn.", "Aug.", "Ave.", "B.A.", "B.S.",
     "B.C.", "Blvd.", "Capt.", "ctr.", "cent.", "Col.", "Cpl.", "Corp.", "Ct.", "D.C.", "Dr.",
