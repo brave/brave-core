@@ -1354,6 +1354,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </if>
       <!-- Brave VPN -->
       <if expr="enable_brave_vpn">
+        <message name="IDS_SETTINGS_SHOW_VPN_BUTTON" desc="The label for showing vpn button in the toolbar">
+          Show VPN button
+        </message>
+        <message name="IDS_SETTINGS_SHOW_VPN_BUTTON_SUB_LABEL" desc="The sub label for vpn button setting">
+            Shows the VPN button in the toolbar
+        </message>
         <message name="IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT" desc="Text for vpn button in toolbar.">
           VPN
         </message>

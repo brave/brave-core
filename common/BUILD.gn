@@ -67,7 +67,10 @@ source_set("pref_names") {
     "pref_names.h",
   ]
 
-  deps = [ "//components/gcm_driver:gcm_buildflags" ]
+  deps = [
+    "//brave/components/brave_vpn/buildflags",
+    "//components/gcm_driver:gcm_buildflags",
+  ]
 }
 
 source_set("switches") {

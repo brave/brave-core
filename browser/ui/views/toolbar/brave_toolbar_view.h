@@ -30,6 +30,7 @@ class BraveToolbarView : public ToolbarView,
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNButton* brave_vpn_button() const { return brave_vpn_; }
+  void OnVPNButtonVisibilityChanged();
 #endif
 
   void Init() override;
@@ -60,6 +61,7 @@ class BraveToolbarView : public ToolbarView,
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNButton* brave_vpn_ = nullptr;
+  BooleanPrefMember show_brave_vpn_button_;
 #endif
 
   BooleanPrefMember location_bar_is_wide_;
