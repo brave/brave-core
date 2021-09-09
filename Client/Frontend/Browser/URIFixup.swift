@@ -71,7 +71,8 @@ class URIFixup {
         // However, we ensure that the scheme is one that is listed in
         // the official URI scheme list, so that other such search phrases
         // like "filetype:" are recognised as searches rather than URLs.
-        if let url = URL(string: escaped), url.schemeIsValid {
+        // Use `URL(string: entry)` so it doesn't double percent escape URLs.
+        if let url = URL(string: entry) ?? URL(string: escaped), url.schemeIsValid {
             return validateURL(url)
         }
 
