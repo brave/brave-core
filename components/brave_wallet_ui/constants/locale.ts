@@ -163,6 +163,7 @@ const locale = {
   importAccountFile: 'JSON File',
   importAccountUploadButton: 'Choose File',
   importAccountUploadPlaceholder: 'No file chosen',
+  importAccountError: 'Failed to import account, please try again.',
 
   // Connect Hardware Wallet
   connectHardwareTitle: 'Select your hardware wallet device',

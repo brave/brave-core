@@ -22,6 +22,12 @@ export type ImportAccountPayloadType = {
   privateKey: string
 }
 
+export type ImportAccountFromJsonPayloadType = {
+  accountName: string,
+  password: string,
+  json: string
+}
+
 export type RemoveImportedAccountPayloadType = {
   address: string
 }

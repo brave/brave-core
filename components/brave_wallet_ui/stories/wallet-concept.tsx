@@ -82,6 +82,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [fromAmount, setFromAmount] = React.useState('')
   const [toAmount, setToAmount] = React.useState('')
   const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
+  const [importError, setImportError] = React.useState<boolean>(false)
 
   const onToggleRestore = () => {
     setIsRestoring(!isRestoring)
@@ -312,7 +313,11 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   }
 
   const onImportAccount = (name: string, key: string) => {
-    alert(`Account Name: ${name}, Private Key: ${key}`)
+    // doesnt do anything in storybook
+  }
+
+  const onImportAccountFromJson = (name: string, password: string, json: string) => {
+    // doesnt do anything in storybook
   }
 
   const onToggleAddModal = () => {
@@ -455,6 +460,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     // Doesnt do anything in storybook
   }
 
+  const onSetImportError = (hasError: boolean) => {
+    setImportError(hasError)
+  }
+
   return (
     <WalletPageLayout>
       {/* <SideNav
@@ -537,6 +546,9 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onDoneViewingPrivateKey={onDoneViewingPrivateKey}
                               onViewPrivateKey={onViewPrivateKey}
                               networkList={mockNetworks}
+                              onImportAccountFromJson={onImportAccountFromJson}
+                              hasImportError={importError}
+                              onSetImportError={onSetImportError}
                             />
                           )}
                         </>

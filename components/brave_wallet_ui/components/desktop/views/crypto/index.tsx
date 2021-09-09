@@ -44,6 +44,9 @@ export interface Props {
   onRemoveAccount: (address: string) => void
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
+  onImportAccountFromJson: (accountName: string, password: string, json: string) => void
+  onSetImportError: (hasError: boolean) => void
+  hasImportError: boolean
   privateKey: string
   fullAssetList: TokenInfo[]
   needsBackup: boolean
@@ -83,6 +86,9 @@ const CryptoView = (props: Props) => {
     onRemoveAccount,
     onViewPrivateKey,
     onDoneViewingPrivateKey,
+    onImportAccountFromJson,
+    onSetImportError,
+    hasImportError,
     privateKey,
     selectedNetwork,
     fullAssetList,
@@ -237,6 +243,9 @@ const CryptoView = (props: Props) => {
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}
           onConnectHardwareWallet={onConnectHardwareWallet}
+          onImportAccountFromJson={onImportAccountFromJson}
+          hasImportError={hasImportError}
+          onSetImportError={onSetImportError}
         />
       }
     </StyledWrapper>
