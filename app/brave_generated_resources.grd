@@ -856,7 +856,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Rotate
       </message>
       <message name="IDS_SETTINGS_ADD_PEER_DIALOG_PLACEHOLDER" desc="The placholder of the dialog to add new peer on IPFS Settings page">
-        /ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2
+        /ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2
       </message>
       <message name="IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_ERROR" desc="The error message for the add peer dialog on IPFS Settings page if the peer name is not valid">
         This name is not valid
