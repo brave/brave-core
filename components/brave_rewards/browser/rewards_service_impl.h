@@ -219,13 +219,10 @@ class RewardsServiceImpl : public RewardsService,
       RefreshPublisherCallback callback) override;
   void OnAdsEnabled(bool ads_enabled) override;
 
-  void OnSaveRecurringTip(
-      SaveRecurringTipCallback callback,
-      const ledger::type::Result result);
-  void SaveRecurringTip(
-      const std::string& publisher_key,
-      const double amount,
-      SaveRecurringTipCallback callback) override;
+  void OnSaveRecurringTip(OnTipCallback callback, ledger::type::Result result);
+  void SaveRecurringTip(const std::string& publisher_key,
+                        double amount,
+                        OnTipCallback callback) override;
 
   const RewardsNotificationService::RewardsNotificationsMap&
     GetAllNotifications() override;
@@ -281,10 +278,10 @@ class RewardsServiceImpl : public RewardsService,
       const bool recurring,
       ledger::type::PublisherInfoPtr publisher) override;
 
-  void OnTip(
-      const std::string& publisher_key,
-      const double amount,
-      const bool recurring) override;
+  void OnTip(const std::string& publisher_key,
+             double amount,
+             bool recurring,
+             OnTipCallback callback) override;
 
   void SetPublisherMinVisitTime(int duration_in_seconds) const override;
 

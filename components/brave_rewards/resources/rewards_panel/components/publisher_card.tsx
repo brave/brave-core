@@ -11,7 +11,7 @@ import { MonthlyTipAction } from '../lib/interfaces'
 import { ToggleButton } from './toggle_button'
 import { MonthlyTipView } from './monthly_tip_view'
 import { VerifiedIcon } from './icons/verified_icon'
-import { LoadingIcon } from './icons/loading_icon'
+import { LoadingIcon } from '../../shared/components/icons/loading_icon'
 
 import * as style from './publisher_card.style'
 

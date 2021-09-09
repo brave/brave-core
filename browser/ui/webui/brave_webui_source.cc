@@ -881,6 +881,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "doMonthly", IDS_BRAVE_UI_DO_MONTHLY },
         { "errorHasOccurred", IDS_BRAVE_REWARDS_TIP_ERROR_HAS_OCCURRED },
         { "errorServerConnection", IDS_BRAVE_REWARDS_TIP_ERROR_SERVER_CONNECTION },  // NOLINT
+        { "errorTipFailed", IDS_BRAVE_REWARDS_TIP_ERROR_TIP_FAILED },
         { "errorTryAgain", IDS_BRAVE_REWARDS_TIP_ERROR_TRY_AGAIN },
         { "exampleTipAmount", IDS_BRAVE_REWARDS_TIP_EXAMPLE_TIP_AMOUNT },
         { "minimumTipAmount", IDS_BRAVE_REWARDS_TIP_MINIMUM_TIP_AMOUNT },

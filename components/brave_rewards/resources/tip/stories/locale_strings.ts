@@ -19,6 +19,7 @@ export const localeStrings = {
   doMonthly: 'Set monthly contribution',
   errorHasOccurred: 'A wild bug has appeared',
   errorServerConnection: 'Server connection error',
+  errorTipFailed: 'There was a problem sending your tip.',
   errorTryAgain: 'Please close and reopen the tipping banner to try again.',
   exampleTipAmount: 'e.g. $1',
   minimumTipAmount: 'Minimum tip amount is $1 $2',

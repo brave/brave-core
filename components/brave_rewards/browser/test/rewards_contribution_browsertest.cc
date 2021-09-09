@@ -579,7 +579,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipNonIntegralAmount) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
-  rewards_service_->OnTip("duckduckgo.com", 2.5, false);
+  rewards_service_->OnTip("duckduckgo.com", 2.5, false, base::DoNothing());
   contribution_->WaitForTipReconcileCompleted();
   ASSERT_EQ(contribution_->GetTipStatus(), ledger::type::Result::LEDGER_OK);
   ASSERT_EQ(contribution_->GetReconcileTipTotal(), 2.5);
@@ -600,7 +600,7 @@ IN_PROC_BROWSER_TEST_F(
       rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
       verified);
 
-  rewards_service_->OnTip("duckduckgo.com", 2.5, true);
+  rewards_service_->OnTip("duckduckgo.com", 2.5, true, base::DoNothing());
   rewards_service_->StartMonthlyContributionForTest();
   contribution_->WaitForTipReconcileCompleted();
   ASSERT_EQ(contribution_->GetTipStatus(), ledger::type::Result::LEDGER_OK);

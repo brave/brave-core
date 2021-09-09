@@ -9,7 +9,7 @@ import { HostContext, useHostListener } from '../lib/host_context'
 import { Host } from '../lib/interfaces'
 import { WithThemeVariables } from '../../shared/components/with_theme_variables'
 import { Panel } from './panel'
-import { LoadingIcon } from './icons/loading_icon'
+import { LoadingIcon } from '../../shared/components/icons/loading_icon'
 
 import * as style from './app.style'
 

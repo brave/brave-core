@@ -751,12 +751,10 @@ BraveRewardsSaveRecurringTipFunction::Run() {
   return RespondLater();
 }
 
-void BraveRewardsSaveRecurringTipFunction::OnSaveRecurringTip(bool success) {
-  if (!success) {
-    Respond(Error("Failed to save"));
-    return;
-  }
-  Respond(NoArguments());
+void BraveRewardsSaveRecurringTipFunction::OnSaveRecurringTip(
+    ledger::type::Result result) {
+  Respond(result == ledger::type::Result::LEDGER_OK ? NoArguments()
+                                                    : Error("Failed to save"));
 }
 
 BraveRewardsRemoveRecurringTipFunction::

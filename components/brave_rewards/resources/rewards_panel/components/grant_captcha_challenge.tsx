@@ -6,7 +6,7 @@ import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { GrantCaptchaInfo } from '../lib/interfaces'
-import { LoadingIcon } from './icons/loading_icon'
+import { LoadingIcon } from '../../shared/components/icons/loading_icon'
 import { ArrowDownIcon } from './icons/arrow_down_icon'
 
 import * as style from './grant_captcha_challenge.style'

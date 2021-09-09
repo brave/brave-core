@@ -311,8 +311,8 @@ void BraveRewardsNativeWorker::Donate(JNIEnv* env,
         int amount, bool recurring) {
   if (brave_rewards_service_) {
     brave_rewards_service_->OnTip(
-      base::android::ConvertJavaStringToUTF8(env, publisher_key), amount,
-        recurring);
+        base::android::ConvertJavaStringToUTF8(env, publisher_key), amount,
+        recurring, base::DoNothing());
     if (!recurring) {
       Java_BraveRewardsNativeWorker_OnOneTimeTip(env,
         weak_java_brave_rewards_native_worker_.get(env));
