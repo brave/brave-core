@@ -245,8 +245,9 @@ void BraveVPNOSConnectionAPIMac::Disconnect(const std::string& name) {
     }
 
     NEVPNStatus current_status = [[vpn_manager connection] status];
-    if (current_status != NEVPNStatusConnected) {
-      VLOG(2) << "Disconnect - Not connected";
+    if (current_status == NEVPNStatusDisconnecting ||
+        current_status == NEVPNStatusDisconnected) {
+      VLOG(2) << "Don't need to ask disconnect: " << current_status;
       return;
     }
 
