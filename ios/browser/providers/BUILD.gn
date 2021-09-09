@@ -16,10 +16,13 @@ group("brave_providers") {
     "//ios/chrome/browser/providers/branded_images:chromium_branded_images",
     "//ios/chrome/browser/providers/lens:chromium_lens",
     "//ios/chrome/browser/providers/modals:chromium_modals",
+    "//ios/chrome/browser/providers/omaha:chromium_omaha",
+    "//ios/chrome/browser/providers/overrides:chromium_overrides",
     "//ios/chrome/browser/providers/risk_data:chromium_risk_data",
     "//ios/chrome/browser/providers/signin:chromium_signin_error",
     "//ios/chrome/browser/providers/signin:chromium_signin_resources",
     "//ios/chrome/browser/providers/text_zoom:chromium_text_zoom",
+    "//ios/chrome/browser/providers/url_rewriters:chromium_url_rewriters",
 
     # The provider API needs to provide MaterialDesignComponent API (as the
     # internal provider provides an alternate implementation).
