@@ -27,6 +27,7 @@ class BraveVPNToggleButton : public views::ToggleButton,
 
   void OnButtonPressed(const ui::Event& event);
   void UpdateState();
+  void UpdateColors();
 
   Browser* browser_ = nullptr;
   BraveVpnServiceDesktop* service_ = nullptr;

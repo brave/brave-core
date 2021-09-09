@@ -7,7 +7,10 @@
 
 #include "base/bind.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "ui/base/theme_provider.h"
 
 BraveVPNToggleButton::BraveVPNToggleButton(Browser* browser)
     : browser_(browser),
@@ -16,6 +19,17 @@ BraveVPNToggleButton::BraveVPNToggleButton(Browser* browser)
   SetCallback(base::BindRepeating(&BraveVPNToggleButton::OnButtonPressed,
                                   base::Unretained(this)));
   UpdateState();
+  if (auto* provider =
+          BrowserView::GetBrowserViewForBrowser(browser_)->GetThemeProvider()) {
+    SetThumbOnColor(provider->GetColor(
+        BraveThemeProperties::COLOR_TOGGLE_BUTTON_THUMB_ON_COLOR));
+    SetThumbOffColor(provider->GetColor(
+        BraveThemeProperties::COLOR_TOGGLE_BUTTON_THUMB_OFF_COLOR));
+    SetTrackOnColor(provider->GetColor(
+        BraveThemeProperties::COLOR_TOGGLE_BUTTON_TRACK_ON_COLOR));
+    SetTrackOffColor(provider->GetColor(
+        BraveThemeProperties::COLOR_TOGGLE_BUTTON_TRACK_OFF_COLOR));
+  }
 }
 
 BraveVPNToggleButton::~BraveVPNToggleButton() = default;
