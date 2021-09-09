@@ -604,12 +604,18 @@ TEST_F(KeyringControllerUnitTest, Reset) {
   EXPECT_TRUE(HasPrefForKeyring(kPasswordEncryptorSalt, "default"));
   EXPECT_TRUE(HasPrefForKeyring(kPasswordEncryptorNonce, "default"));
   EXPECT_TRUE(HasPrefForKeyring(kEncryptedMnemonic, "default"));
-
+  GetPrefs()->Set(kBraveWalletCustomNetworks, base::ListValue());
+  GetPrefs()->SetString(kBraveWalletCurrentChainId,
+                        brave_wallet::mojom::kMainnetChainId);
+  EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletCustomNetworks));
+  EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletCurrentChainId));
   controller.Reset();
   EXPECT_FALSE(HasPrefForKeyring(kPasswordEncryptorSalt, "default"));
   EXPECT_FALSE(HasPrefForKeyring(kPasswordEncryptorNonce, "default"));
   EXPECT_FALSE(HasPrefForKeyring(kEncryptedMnemonic, "default"));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletKeyrings));
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletCustomNetworks));
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletCurrentChainId));
   EXPECT_EQ(controller.default_keyring_, nullptr);
   EXPECT_EQ(controller.encryptor_, nullptr);
 }

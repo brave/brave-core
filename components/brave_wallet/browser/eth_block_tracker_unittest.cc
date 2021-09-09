@@ -44,6 +44,7 @@ class EthBlockTrackerUnitTest : public testing::Test {
                 &url_loader_factory_)) {}
   void SetUp() override {
     user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
+    EthJsonRpcController::RegisterProfilePrefs(prefs_.registry());
     rpc_controller_.reset(new brave_wallet::EthJsonRpcController(
         shared_url_loader_factory_, &prefs_));
   }
