@@ -311,9 +311,7 @@ function Container (props: Props) {
     if (selectedAsset) {
       props.walletPageActions.selectAsset({ asset: selectedAsset, timeFrame: timeline })
     } else {
-      if (parseFloat(fullPortfolioBalance) !== 0) {
-        props.walletActions.selectPortfolioTimeline(timeline)
-      }
+      props.walletActions.selectPortfolioTimeline(timeline)
     }
   }
 

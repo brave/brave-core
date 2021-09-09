@@ -205,6 +205,14 @@ const Portfolio = (props: Props) => {
     return (found) ? formatBalance(found.assetBalance, found.asset.decimals) : '0'
   }
 
+  const priceHistory = React.useMemo(() => {
+    if (parseFloat(portfolioBalance) === 0) {
+      return []
+    } else {
+      return portfolioHistory
+    }
+  }, [portfolioHistory, portfolioBalance])
+
   return (
     <StyledWrapper onClick={onHideNetworkDropdown}>
       <TopRow>
@@ -252,7 +260,7 @@ const Portfolio = (props: Props) => {
       <LineChart
         isDown={selectedAsset && selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false}
         isAsset={!!selectedAsset}
-        priceData={selectedAsset ? selectedAssetPriceHistory : portfolioHistory}
+        priceData={selectedAsset ? selectedAssetPriceHistory : priceHistory}
         onUpdateBalance={onUpdateBalance}
         isLoading={selectedAsset ? isLoading : parseFloat(portfolioBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
         isDisabled={selectedAsset ? false : parseFloat(portfolioBalance) === 0}
