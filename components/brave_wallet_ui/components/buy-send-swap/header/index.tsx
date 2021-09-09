@@ -16,7 +16,8 @@ import {
   NameAndIcon,
   OvalButton,
   OvalButtonText,
-  CaratDownIcon
+  CaratDownIcon,
+  SwitchIcon
 } from './style'
 
 export interface Props {
@@ -47,7 +48,9 @@ function SwapHeader (props: Props) {
   return (
     <StyledWrapper>
       <NameAndIcon>
-        <AccountCircle onClick={onShowAccounts} orb={orb} />
+        <AccountCircle onClick={onShowAccounts} orb={orb}>
+          <SwitchIcon />
+        </AccountCircle>
         <Tooltip text={locale.toolTipCopyToClipboard}>
           <AccountAndAddress onClick={onCopyToClipboard}>
             <AccountName>{selectedAccount.name}</AccountName>
