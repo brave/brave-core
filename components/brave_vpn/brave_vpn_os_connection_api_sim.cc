@@ -49,14 +49,19 @@ void BraveVPNOSConnectionAPISim::Connect(const std::string& name) {
         FROM_HERE,
         base::BindOnce(&BraveVPNOSConnectionAPISim::OnConnected,
                        weak_factory_.GetWeakPtr(), name, true),
-        base::TimeDelta::FromSeconds(3));
+        base::TimeDelta::FromSeconds(1));
     return;
   }
 
   // Simulate connection failure
   base::SequencedTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnConnected,
-                                weak_factory_.GetWeakPtr(), name, false));
+      FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnIsConnecting,
+                                weak_factory_.GetWeakPtr(), name));
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&BraveVPNOSConnectionAPISim::OnConnected,
+                     weak_factory_.GetWeakPtr(), name, false),
+      base::TimeDelta::FromSeconds(1));
 }
 
 void BraveVPNOSConnectionAPISim::Disconnect(const std::string& name) {
