@@ -25,12 +25,6 @@
 
 namespace {
 
-const uint64_t zero = 0;
-
-inline uint64_t lfsr_next(uint64_t v) {
-  return ((v >> 1) | (((v << 62) ^ (v << 61)) & (~(~zero << 63) << 62)));
-}
-
 float Identity(float value, size_t index) {
   return value;
 }
@@ -40,17 +34,15 @@ float ConstantMultiplier(double fudge_factor, float value, size_t index) {
 }
 
 float PseudoRandomSequence(uint64_t seed, float value, size_t index) {
-  static uint64_t v;
+  static std::mt19937_64 prng;
   const double maxUInt64AsDouble = UINT64_MAX;
   if (index == 0) {
     // start of loop, reset to initial seed which was passed in and is based on
     // the domain key
-    v = seed;
+    prng = std::mt19937_64(seed);
   }
-  // get next value in PRNG sequence
-  v = lfsr_next(v);
   // return pseudo-random float between 0 and 0.1
-  return (v / maxUInt64AsDouble) / 10;
+  return (prng() / maxUInt64AsDouble) / 10;
 }
 
 }  // namespace
@@ -195,23 +187,22 @@ void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
   uint8_t canvas_key[32];
   CHECK(h.Sign(base::StringPiece(reinterpret_cast<const char*>(pixels), size),
                canvas_key, sizeof canvas_key));
-  uint64_t v = *reinterpret_cast<uint64_t*>(canvas_key);
+  auto prng = std::mt19937_64(*reinterpret_cast<uint64_t*>(canvas_key));
   uint64_t pixel_index;
   // choose which channel (R, G, or B) to perturb
   uint8_t channel;
   // iterate through 32-byte canvas key and use each bit to determine how to
-  // perturb the current pixel
+  // perturb a randomly chosen pixel
   for (int i = 0; i < 32; i++) {
     uint8_t bit = canvas_key[i];
     for (int j = 0; j < 16; j++) {
+      uint64_t v = prng();
       if (j % 8 == 0)
         bit = canvas_key[i];
       channel = v % 3;
       pixel_index = 4 * (v % pixel_count) + channel;
       pixels[pixel_index] = pixels[pixel_index] ^ (bit & 0x1);
       bit = bit >> 1;
-      // find next pixel to perturb
-      v = lfsr_next(v);
     }
   }
 }
@@ -224,13 +215,12 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
                sizeof domain_key_));
   CHECK(h.Sign(seed, key, sizeof key));
   // initial PRNG seed based on session key and passed-in seed string
-  uint64_t v = *reinterpret_cast<uint64_t*>(key);
+  auto prng = std::mt19937_64(*reinterpret_cast<uint64_t*>(key));
   UChar* destination;
   WTF::String value = WTF::String::CreateUninitialized(length, destination);
   for (wtf_size_t i = 0; i < length; i++) {
     destination[i] =
-        kLettersForRandomStrings[v % kLettersForRandomStringsLength];
-    v = lfsr_next(v);
+        kLettersForRandomStrings[prng() % kLettersForRandomStringsLength];
   }
   return value;
 }
