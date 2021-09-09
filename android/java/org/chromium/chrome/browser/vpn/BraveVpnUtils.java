@@ -9,6 +9,7 @@ package org.chromium.chrome.browser.vpn;
 
 import android.app.Activity;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 // import android.content.SharedPreferences;
@@ -46,6 +47,7 @@ public class BraveVpnUtils {
     public static final int BRAVE_VPN_NOTIFICATION_ID = 36;
 
     public static boolean isServerLocationChanged = false;
+    private static ProgressDialog progressDialog;
 
     public static boolean isBraveVpnFeatureEnable() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
@@ -72,6 +74,16 @@ public class BraveVpnUtils {
         Intent braveVpnSupportIntent = new Intent(context, BraveVpnSupportActivity.class);
         braveVpnSupportIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(braveVpnSupportIntent);
+    }
+
+    public static void showProgressDialog(Context context) {
+        progressDialog = ProgressDialog.show(context, "", "Loading. Please wait...", true);
+    }
+
+    public static void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
 
     public static String getRegionForTimeZone(String jsonTimezones, String currentTimezone) {

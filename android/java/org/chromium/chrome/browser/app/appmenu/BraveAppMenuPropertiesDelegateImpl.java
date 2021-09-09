@@ -45,7 +45,6 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
         super.prepareMenu(menu, handler);
 
         maybeReplaceIcons(menu);
-        updateBraveVPNMenuItem(menu, true);
     }
 
     private void maybeReplaceIcons(Menu menu) {
@@ -78,17 +77,5 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
                 }
             }
         }
-    }
-
-    protected void updateBraveVPNMenuItem(Menu menu, boolean canShowRequestBraveVpn) {
-        MenuItem requestMenuRow = menu.findItem(R.id.request_brave_vpn_row_menu_id);
-        MenuItem requestMenuLabel = menu.findItem(R.id.request_brave_vpn_id);
-        MenuItem requestMenuCheck = menu.findItem(R.id.request_brave_vpn_check_id);
-
-        boolean itemVisible = BraveVpnUtils.isBraveVpnFeatureEnable();
-        requestMenuRow.setVisible(itemVisible);
-        if (!itemVisible) return;
-
-        requestMenuCheck.setChecked(VpnProfileUtils.getInstance(mContext).isVPNConnected());
     }
 }

@@ -248,6 +248,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
+            BraveVpnUtils.showProgressDialog(BraveActivity.this);
             if (VpnProfileUtils.getInstance(BraveActivity.this).isVPNConnected()) {
                 VpnProfileUtils.getInstance(BraveActivity.this).stopVpn();
             } else {
@@ -255,6 +256,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                             BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false)) {
                     verifySubscription();
                 } else {
+                    BraveVpnUtils.dismissProgressDialog();
                     BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
                 }
             }
@@ -601,11 +603,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 @Override
                 public void onAvailable(Network network) {
                     BraveVpnUtils.showBraveVpnNotification(BraveActivity.this);
+                    BraveVpnUtils.dismissProgressDialog();
                 }
 
                 @Override
                 public void onLost(Network network) {
                     BraveVpnUtils.cancelBraveVpnNotification(BraveActivity.this);
+                    BraveVpnUtils.dismissProgressDialog();
                 }
             };
 
