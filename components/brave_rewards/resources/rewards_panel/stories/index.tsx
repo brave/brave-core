@@ -78,7 +78,7 @@ function createHost (): Host {
       username: 'brave123',
       status: 'verified',
       links: {}
-    } && null,
+    },
     summaryData: {
       adEarnings: 10,
       autoContributions: 10,

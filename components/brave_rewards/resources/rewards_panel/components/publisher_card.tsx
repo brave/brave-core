@@ -56,9 +56,7 @@ export function PublisherCard () {
     )
   }
 
-  function onRefreshClick (evt: React.UIEvent) {
-    evt.preventDefault()
-
+  function onRefreshClick () {
     // Show the publisher loading state for a minimum amount of time in order
     // to indicate activity to the user.
     setShowPublisherLoading(true)
@@ -90,9 +88,9 @@ export function PublisherCard () {
               {
                 publisherRefreshing || showPublisherLoading
                   ? <LoadingIcon />
-                  : <a href='#' onClick={onRefreshClick}>
+                  : <button onClick={onRefreshClick}>
                       {getString('refreshStatus')}
-                    </a>
+                    </button>
               }
             </style.refreshStatus>
           </style.status>
