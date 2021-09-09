@@ -9,7 +9,6 @@
 // - for cosmetic filters work with CSS and stylesheet. That work itself
 //   could call the script several times.
 
-const { parseDomain, ParseResultType } = require('parse-domain')
 // Start looking for things to unhide before at most this long after
 // the backend script is up and connected (eg backgroundReady = true),
 // or sooner if the thread is idle.
@@ -160,43 +159,14 @@ const handleMutations: MutationCallback = (mutations: MutationRecord[]) => {
   fetchNewClassIdRules()
 }
 
-const _parseDomainCache = Object.create(null)
-const getParsedDomain = (aDomain: string) => {
-  const cacheResult = _parseDomainCache[aDomain]
-  if (cacheResult !== undefined) {
-    return cacheResult
-  }
-
-  const newResult = parseDomain(aDomain)
-  _parseDomainCache[aDomain] = newResult
-  return newResult
-}
-
-const _parsedCurrentDomain = getParsedDomain(window.location.host)
 const isFirstPartyUrl = (url: string): boolean => {
   if (isRelativeUrl(url)) {
     return true
   }
 
-  const parsedTargetDomain = getParsedDomain(url)
-
-  if (parsedTargetDomain.type !== _parsedCurrentDomain.type) {
-    return false
-  }
-
-  if (parsedTargetDomain.type === ParseResultType.Listed) {
-    const isSameEtldP1 = (_parsedCurrentDomain.icann.topLevelDomains === parsedTargetDomain.icann.topLevelDomains &&
-      _parsedCurrentDomain.icann.domain === parsedTargetDomain.icann.domain)
-    return isSameEtldP1
-  }
-
-  const looksLikePrivateOrigin =
-    [ParseResultType.NotListed, ParseResultType.Ip, ParseResultType.Reserved].includes(parsedTargetDomain.type)
-  if (looksLikePrivateOrigin) {
-    return _parsedCurrentDomain.hostname === parsedTargetDomain.hostname
-  }
-
-  return false
+  // Callback to c++ renderer process
+  // @ts-ignore
+  return cf_worker.isFirstPartyUrl(url)
 }
 
 const stripChildTagsFromText = (elm: HTMLElement, tagName: string, text: string): string => {

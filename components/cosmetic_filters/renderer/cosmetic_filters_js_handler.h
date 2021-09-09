@@ -60,6 +60,7 @@ class CosmeticFiltersJSHandler {
   void OnUrlCosmeticResources(base::OnceClosure callback, base::Value result);
   void CSSRulesRoutine(base::DictionaryValue* resources_dict);
   void OnHiddenClassIdSelectors(base::Value result);
+  bool OnIsFirstParty(const std::string& url_string);
 
   content::RenderFrame* render_frame_;
   mojo::Remote<cosmetic_filters::mojom::CosmeticFiltersResources>

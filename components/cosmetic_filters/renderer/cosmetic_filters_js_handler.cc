@@ -212,6 +212,15 @@ void CosmeticFiltersJSHandler::HiddenClassIdSelectors(
                      base::Unretained(this)));
 }
 
+bool CosmeticFiltersJSHandler::OnIsFirstParty(const std::string& url_string) {
+  const auto url = GURL(url_string);
+  if (!url.is_valid())
+    return false;
+
+  return net::registry_controlled_domains::SameDomainOrHost(
+      url, url_, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+}
+
 void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
     v8::Local<v8::Context> context) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
@@ -248,6 +257,10 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
   BindFunctionToObject(
       isolate, javascript_object, "hiddenClassIdSelectors",
       base::BindRepeating(&CosmeticFiltersJSHandler::HiddenClassIdSelectors,
+                          base::Unretained(this)));
+  BindFunctionToObject(
+      isolate, javascript_object, "isFirstPartyUrl",
+      base::BindRepeating(&CosmeticFiltersJSHandler::OnIsFirstParty,
                           base::Unretained(this)));
 }
 
