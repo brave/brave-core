@@ -30,11 +30,33 @@ class NavigationRouterTests: XCTestCase {
     }
     
     func testOpenURLScheme() {
-        let url = "http://google.com?a=1&b=2&c=foo%20bar".escape()!
-        let appURL = "\(appScheme)://open-url?url=\(url)"
-        let navItem = NavigationPath(url: URL(string: appURL)!)!
-        let encodedUrl = url.unescape()!.addingPercentEncoding(withAllowedCharacters: .URLAllowed)!
-        XCTAssertEqual(navItem, NavigationPath.url(webURL: URL(string: encodedUrl)!, isPrivate: false))
+        let testURLEncoding = { [appScheme] (url: String) -> Bool in
+            guard let escaped = url.escape() else {
+                XCTFail("URL Cannot be escaped")
+                return false
+            }
+            
+            guard let appURL = URL(string: "\(appScheme)://open-url?url=\(escaped)") else {
+                XCTFail("Application URL is Invalid")
+                return false
+            }
+            
+            guard let navItem = NavigationPath(url: appURL) else {
+                XCTFail("Invalid Navigation Path")
+                return false
+            }
+            
+            return navItem == NavigationPath.url(webURL: URL(string: url)!, isPrivate: false)
+        }
+        
+        // Test regular URL with no escape characters
+        XCTAssertTrue(testURLEncoding("http://google.com?a=1&b=2"))
+        
+        // Test URL with single escape encoded characters
+        XCTAssertTrue(testURLEncoding("http://google.com?a=1&b=2&c=foo%20bar"))
+        
+        // Test URL with double escaped encoded characters (URL was encoded twice)
+        XCTAssertTrue(testURLEncoding("http://google.com%3Fa%3D1%26b%3D2%26c%3Dfoo%2520bar"))
         
         let emptyNav = NavigationPath(url: URL(string: "\(appScheme)://open-url?private=true")!)
         XCTAssertEqual(emptyNav, NavigationPath.url(webURL: nil, isPrivate: true))
