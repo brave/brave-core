@@ -102,6 +102,7 @@ reducer.on(WalletActions.selectAccount, (state: any, payload: WalletAccountType)
 reducer.on(WalletActions.setNetwork, (state: any, payload: EthereumChain) => {
   return {
     ...state,
+    isFetchingPortfolioPriceHistory: true,
     selectedNetwork: payload
   }
 })

@@ -105,5 +105,5 @@ export const SwitchIcon = styled.div`
   position: absolute;
   left: -2px;
   bottom: -2px;
-  z-index: 10;
+  z-index: 8;
 `
