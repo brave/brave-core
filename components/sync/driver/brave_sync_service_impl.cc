@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/metrics/histogram_functions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync/driver/brave_sync_auth_manager.h"
@@ -43,6 +44,11 @@ void BraveSyncServiceImpl::Initialize() {
   if (!brave_sync_prefs_.IsSyncV1Migrated()) {
     StopAndClear();
     brave_sync_prefs_.SetSyncV1Migrated(true);
+  }
+
+  // P3A ping for those who have sync disabled
+  if (!user_settings_->IsFirstSetupComplete()) {
+    base::UmaHistogramExactLinear("Brave.Sync.Status.2", 0, 3);
   }
 }
 
@@ -97,6 +103,10 @@ void BraveSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& path) {
     } else {
       VLOG(1) << "Brave sync seed cleared";
       GetBraveSyncAuthManager()->ResetKeys();
+      // Send updated status here, because OnDeviceInfoChange is not triggered
+      // when device leaves the chain by `Leave Sync Chain` button
+      // 0 means disabled or 1 device
+      base::UmaHistogramExactLinear("Brave.Sync.Status.2", 0, 3);
     }
   }
 }
