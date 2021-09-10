@@ -95,39 +95,30 @@ public class ScrollingHostingController<Content: View>: UIViewController {
     hostingController.didMove(toParent: self)
     scrollView.addSubview(hostingController.view)
     
-    scrollView.translatesAutoresizingMaskIntoConstraints = false
-    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-    
-    NSLayoutConstraint.activate([
-      scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-      scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-    ])
+    scrollView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
     
     if (axis.contains(.vertical) && axis.contains(.horizontal)) || axis.isEmpty {
-      NSLayoutConstraint.activate([
-        scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: hostingController.view.leadingAnchor),
-        scrollView.contentLayoutGuide.trailingAnchor.constraint(equalTo: hostingController.view.trailingAnchor),
-        scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: hostingController.view.topAnchor),
-        scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: hostingController.view.bottomAnchor),
-      ])
+      scrollView.contentLayoutGuide.snp.makeConstraints {
+        $0.edges.equalTo(hostingController.view)
+      }
     } else if axis.contains(.vertical) {
-      NSLayoutConstraint.activate([
-        scrollView.contentLayoutGuide.widthAnchor.constraint(equalTo: view.widthAnchor),
-        scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: hostingController.view.topAnchor),
-        scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: hostingController.view.bottomAnchor),
-        hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-      ])
+      scrollView.contentLayoutGuide.snp.makeConstraints {
+        $0.width.equalTo(view)
+        $0.top.bottom.equalTo(hostingController.view)
+      }
+      hostingController.view.snp.makeConstraints {
+        $0.leading.trailing.equalTo(view)
+      }
     } else if axis.contains(.horizontal) {
-      NSLayoutConstraint.activate([
-        scrollView.contentLayoutGuide.heightAnchor.constraint(equalTo: view.heightAnchor),
-        scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: hostingController.view.leadingAnchor),
-        scrollView.contentLayoutGuide.trailingAnchor.constraint(equalTo: hostingController.view.trailingAnchor),
-        hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-        hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-      ])
+      scrollView.contentLayoutGuide.snp.makeConstraints {
+        $0.height.equalTo(view)
+        $0.leading.trailing.equalTo(hostingController.view)
+      }
+      hostingController.view.snp.makeConstraints {
+        $0.top.bottom.equalTo(view)
+      }
     }
   }
 }

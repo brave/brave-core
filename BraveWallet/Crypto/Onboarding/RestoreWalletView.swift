@@ -143,7 +143,7 @@ private struct RestoreWalletView: View {
               phrase = string
             }
           }) {
-            Image("paste-restore-phrase")
+            Image("brave.clipboard")
           }
         }
       }

@@ -141,7 +141,7 @@ private struct AccountDetailsHeaderView: View {
         Text(address.truncatedAddress)
           .foregroundColor(Color(.secondaryBraveLabel))
         Button(action: { UIPasteboard.general.string = address }) {
-          Image("brave.copy")
+          Image("brave.clipboard")
             .foregroundColor(Color(.braveLabel))
         }
       }
