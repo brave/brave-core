@@ -24,7 +24,8 @@ export function TokenAmount (props: Props) {
   const formatter = getFormatter(props)
   return (
     <>
-      <span className='amount'>{formatter.format(props.amount)}</span>&nbsp;
+      <span className='amount'>{formatter.format(props.amount || 0)}</span>
+      &nbsp;
       <span className='currency'>BAT</span>
     </>
   )
