@@ -261,7 +261,6 @@
 		271F68BE26EBD27E00AA2A50 /* LineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F688C26EBD27D00AA2A50 /* LineChartView.swift */; };
 		271F68BF26EBD27E00AA2A50 /* DateRangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F688D26EBD27D00AA2A50 /* DateRangeView.swift */; };
 		271F68C026EBD27E00AA2A50 /* WalletTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F688E26EBD27D00AA2A50 /* WalletTableViewHeaderView.swift */; };
-		271F68C126EBD27E00AA2A50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 271F688F26EBD27D00AA2A50 /* Assets.xcassets */; };
 		271F68C226EBD27E00AA2A50 /* SwapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F689026EBD27E00AA2A50 /* SwapButton.swift */; };
 		271F68C326EBD29500AA2A50 /* ModalPresentationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F688326EBD27D00AA2A50 /* ModalPresentationMode.swift */; };
 		271F68C426EBD29500AA2A50 /* EdgeInsetsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F688226EBD27D00AA2A50 /* EdgeInsetsExtensions.swift */; };
@@ -1798,7 +1797,6 @@
 		271F688C26EBD27D00AA2A50 /* LineChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChartView.swift; sourceTree = "<group>"; };
 		271F688D26EBD27D00AA2A50 /* DateRangeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateRangeView.swift; sourceTree = "<group>"; };
 		271F688E26EBD27D00AA2A50 /* WalletTableViewHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletTableViewHeaderView.swift; sourceTree = "<group>"; };
-		271F688F26EBD27D00AA2A50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		271F689026EBD27E00AA2A50 /* SwapButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapButton.swift; sourceTree = "<group>"; };
 		271F68CB26EBD2DE00AA2A50 /* BraveTextFieldStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveTextFieldStyle.swift; sourceTree = "<group>"; };
 		271F68CF26EBD31800AA2A50 /* FixedHeightHostingPanModalController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedHeightHostingPanModalController.swift; sourceTree = "<group>"; };
@@ -3520,7 +3518,6 @@
 		271F683626EBD0E400AA2A50 /* BraveWallet */ = {
 			isa = PBXGroup;
 			children = (
-				271F688F26EBD27D00AA2A50 /* Assets.xcassets */,
 				271F688926EBD27D00AA2A50 /* Blockies */,
 				271F688B26EBD27D00AA2A50 /* Chart */,
 				271F685626EBD27C00AA2A50 /* Crypto */,
@@ -6905,7 +6902,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				271F68C126EBD27E00AA2A50 /* Assets.xcassets in Resources */,
 				271F689526EBD27E00AA2A50 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

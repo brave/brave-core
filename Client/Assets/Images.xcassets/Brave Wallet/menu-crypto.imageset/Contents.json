@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "crypto.png",
+      "filename" : "crypto-wallets.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "crypto@2x.png",
+      "filename" : "crypto-wallets@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "crypto@3x.png",
+      "filename" : "crypto-wallets@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

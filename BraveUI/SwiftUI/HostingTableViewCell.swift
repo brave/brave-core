@@ -23,13 +23,9 @@ public class HostingTableViewCell<Content: View>: UITableViewCell {
     
     hostingController.view.backgroundColor = .clear
     contentView.addSubview(hostingController.view)
-    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      hostingController.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-      hostingController.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-      hostingController.view.topAnchor.constraint(equalTo: contentView.topAnchor),
-      hostingController.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-    ])
+    hostingController.view.snp.makeConstraints {
+      $0.edges.equalTo(contentView)
+    }
   }
   
   @available(*, unavailable)

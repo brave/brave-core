@@ -9,11 +9,9 @@ import SwiftUI
 public class PopupViewController<Content: View>: UIViewController, UIViewControllerTransitioningDelegate, BasicAnimationControllerDelegate {
   private let hostingController: UIHostingController<PopupView<Content>>
   
-  private let backgroundView: UIView = {
-    let view = UIView()
-    view.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
-    return view
-  }()
+  private let backgroundView = UIView().then {
+    $0.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
+  }
   
   public init(rootView: Content) {
     let popup = PopupView({ rootView })
@@ -34,20 +32,13 @@ public class PopupViewController<Content: View>: UIViewController, UIViewControl
     view.addSubview(backgroundView)
     view.addSubview(hostingController.view)
     
-    backgroundView.translatesAutoresizingMaskIntoConstraints = false
-    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+    backgroundView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
     
-    NSLayoutConstraint.activate([
-      backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
-      backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      
-      hostingController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      hostingController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-      hostingController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      hostingController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-    ])
+    hostingController.view.snp.makeConstraints {
+      $0.edges.equalTo(view.safeAreaLayoutGuide)
+    }
   }
   
   @available(*, unavailable)

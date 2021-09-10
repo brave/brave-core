@@ -69,13 +69,6 @@ class TabbedPageViewController: UIViewController {
   
   private var contentOffsetObservation: NSKeyValueObservation?
   
-  let navigationBarAppearance: UINavigationBarAppearance = {
-    let appearance = UINavigationBarAppearance()
-    appearance.configureWithDefaultBackground()
-    appearance.shadowColor = .clear
-    return appearance
-  }()
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -86,7 +79,10 @@ class TabbedPageViewController: UIViewController {
     view.addSubview(tabsBar)
     
     // Gets rid of the bottom border to appear flush with the tab bar
-    navigationItem.standardAppearance = navigationBarAppearance
+    navigationItem.standardAppearance = UINavigationBarAppearance().then {
+      $0.configureWithDefaultBackground()
+      $0.shadowColor = .clear
+    }
     
     tabsBar.selectedTabAtIndexPath = { [unowned self] indexPath in
       moveToPage(at: indexPath)
@@ -321,11 +317,9 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
     )
   }()
   
-  private let shadowView: UIView = {
-    let view = UIView()
-    view.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
-    return view
-  }()
+  private let shadowView = UIView().then {
+    $0.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
+  }
   
   let selectionIndicatorView: BraveGradientView = .init { traitCollection in
     if traitCollection.userInterfaceStyle == .dark {
@@ -369,21 +363,14 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
     addSubview(shadowView)
     collectionView.addSubview(selectionIndicatorView)
     
-    collectionView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      collectionView.topAnchor.constraint(equalTo: topAnchor),
-      collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
-    ])
-    
-    shadowView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      shadowView.topAnchor.constraint(equalTo: self.bottomAnchor),
-      shadowView.heightAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale),
-      shadowView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-      shadowView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
-    ])
+    collectionView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    shadowView.snp.makeConstraints {
+      $0.height.equalTo(1.0 / UIScreen.main.scale)
+      $0.leading.trailing.equalToSuperview()
+      $0.top.equalTo(snp.bottom)
+    }
     
     collectionView.register(Cell.self, forCellWithReuseIdentifier: Cell.reuseIdentifier)
     collectionView.dataSource = dataSource
@@ -421,25 +408,20 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
       }
     }
     
-    let label: UILabel = {
-      let label = UILabel()
-      label.font = .boldSystemFont(ofSize: 15)
-      label.textAlignment = .center
-      return label
-    }()
+    let label = UILabel().then {
+      $0.font = .boldSystemFont(ofSize: 15)
+      $0.textAlignment = .center
+    }
     
     override init(frame: CGRect) {
       super.init(frame: frame)
       
       contentView.addSubview(label)
       
-      // FIXME: SnapKit
-      label.translatesAutoresizingMaskIntoConstraints = false
-      NSLayoutConstraint.activate([
-        label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-        label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-        label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-      ])
+      label.snp.makeConstraints {
+        $0.leading.trailing.equalTo(contentView).inset(12)
+        $0.centerY.equalTo(contentView)
+      }
       
       isAccessibilityElement = true
       accessibilityTraits = [.staticText, .button]

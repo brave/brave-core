@@ -16,11 +16,16 @@ import UniformTypeIdentifiers
 @available(iOS 14.0, *)
 public struct DocumentOpenerView: UIViewControllerRepresentable {
   public let allowedContentTypes: [UTType]
-  public var allowsMultipleSelection = false
+  public var allowsMultipleSelection: Bool
   public var initialDirectoryURL: URL?
   public var onCompletion: ([URL]) -> Void
   
-  public init(allowedContentTypes: [UTType], allowsMultipleSelection: Bool = false, initialDirectoryURL: URL? = nil, onCompletion: @escaping ([URL]) -> Void) {
+  public init(
+    allowedContentTypes: [UTType],
+    allowsMultipleSelection: Bool = false,
+    initialDirectoryURL: URL? = nil,
+    onCompletion: @escaping ([URL]) -> Void
+  ) {
     self.allowedContentTypes = allowedContentTypes
     self.allowsMultipleSelection = allowsMultipleSelection
     self.initialDirectoryURL = initialDirectoryURL
