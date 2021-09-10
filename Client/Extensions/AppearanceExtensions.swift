@@ -56,6 +56,9 @@ extension AppDelegate {
             $0.backgroundColor = tableSecondaryColor
         }
         
+        UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self])
+            .tintColor = .braveLabel
+        
         //  UIView.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self])
         //    .backgroundColor = tablePrimaryColor
         

@@ -20,6 +20,9 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
         networkStore: networkStore
       )
     )
+    rootView.dismissAction = { [unowned self] in
+      self.dismiss(animated: true)
+    }
   }
   
   @available(*, unavailable)

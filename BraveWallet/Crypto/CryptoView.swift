@@ -14,7 +14,10 @@ import BraveUI
 public struct CryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: EthNetworkStore
-  @Environment(\.presentationMode) @Binding private var presentationMode
+  
+  // in iOS 15, PresentationMode will be available in SwiftUI hosted by UIHostingController
+  // but for now we'll have to manage this ourselves
+  var dismissAction: (() -> Void)?
   
   public init(keyringStore: KeyringStore, networkStore: EthNetworkStore) {
     self.keyringStore = keyringStore
@@ -27,6 +30,16 @@ public struct CryptoView: View {
   
   private var isShowingOnboarding: Bool {
     !keyringStore.keyring.isDefaultKeyringCreated || keyringStore.isOnboardingVisible
+  }
+  
+  @ToolbarContentBuilder
+  private var dismissButtonToolbarContents: some ToolbarContent {
+    ToolbarItemGroup(placement: .cancellationAction) {
+      Button(action: { dismissAction?() }) {
+        Image("wallet-dismiss")
+          .renderingMode(.template)
+      }
+    }
   }
   
   public var body: some View {
@@ -51,12 +64,7 @@ public struct CryptoView: View {
           .navigationTitle("Crypto") // NSLocalizedString
           .navigationBarTitleDisplayMode(.inline)
           .toolbar {
-            ToolbarItemGroup(placement: .cancellationAction) {
-              Button(action: { presentationMode.dismiss() }) {
-                Image("wallet-dismiss")
-                  .renderingMode(.template)
-              }
-            }
+            dismissButtonToolbarContents
           }
         }
         .navigationViewStyle(StackNavigationViewStyle())
@@ -66,6 +74,9 @@ public struct CryptoView: View {
       if isShowingOnboarding {
         NavigationView {
           SetupCryptoView(keyringStore: keyringStore)
+            .toolbar {
+              dismissButtonToolbarContents
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .transition(.move(edge: .bottom))
