@@ -27,6 +27,7 @@ protocol TabDelegate {
     func tab(_ tab: Tab, didSelectFindInPageForSelection selection: String)
     @objc optional func tab(_ tab: Tab, didCreateWebView webView: WKWebView)
     @objc optional func tab(_ tab: Tab, willDeleteWebView webView: WKWebView)
+    func showRequestRewardsPanel(_ tab: Tab)
 }
 
 @objc
@@ -45,6 +46,8 @@ class Tab: NSObject {
     var id: String?
     
     let rewardsId: UInt32
+    
+    var rewardsEnabledCallback: ((Bool) -> Void)?
     
     var alertShownCount: Int = 0
     var blockAllAlerts: Bool = false

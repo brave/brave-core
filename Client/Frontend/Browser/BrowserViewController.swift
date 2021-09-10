@@ -2030,8 +2030,14 @@ extension BrowserViewController: TabDelegate {
         tab.addContentScript(FingerprintingProtection(tab: tab), name: FingerprintingProtection.name(), sandboxed: false)
         
         tab.addContentScript(BraveGetUA(tab: tab), name: BraveGetUA.name(), sandboxed: false)
-        tab.addContentScript(BraveSearchHelper(tab: tab, profile: profile),
-                             name: BraveSearchHelper.name(), sandboxed: false)
+        tab.addContentScript(BraveSearchScriptHandler(tab: tab,
+                                                        profile: profile,
+                                                        rewards: rewards),
+                             name: BraveSearchScriptHandler.name(), sandboxed: false)
+        
+        tab.addContentScript(BraveTalkScriptHandler(tab: tab,
+                                                        rewards: rewards),
+                             name: BraveTalkScriptHandler.name(), sandboxed: false)
 
         if YubiKitDeviceCapabilities.supportsMFIAccessoryKey {
             tab.addContentScript(U2FExtensions(tab: tab), name: U2FExtensions.name(), sandboxed: false)
@@ -2096,6 +2102,42 @@ extension BrowserViewController: TabDelegate {
     func tab(_ tab: Tab, didSelectFindInPageForSelection selection: String) {
         updateFindInPageVisibility(visible: true)
         findInPageBar?.text = selection
+    }
+    
+    func showRequestRewardsPanel(_ tab: Tab) {
+        let vc = BraveTalkRewardsOptInViewController()
+        
+        // Edge case: user disabled Rewards button and wants to access free Brave Talk
+        // We re-enable the button again. It can be disabled in settings later.
+        Preferences.Rewards.hideRewardsIcon.value = false
+        
+        let popover = PopoverController(contentController: vc,
+                                        contentSizeBehavior: .preferredContentSize)
+        popover.addsConvenientDismissalMargins = false
+        popover.present(from: topToolbar.locationView.rewardsButton, on: self)
+        popover.popoverDidDismiss = { _ in
+            // This gets called if popover is dismissed by user gesture
+            // This does not conflict with 'Enable Rewards' button.
+            tab.rewardsEnabledCallback?(false)
+        }
+        
+        vc.rewardsEnabledHandler = { [weak self] in
+            guard let self = self else { return }
+            
+            self.rewards.isEnabled = true
+            tab.rewardsEnabledCallback?(true)
+            
+            let vc2 = BraveTalkOptInSuccessViewController()
+            let popover2 = PopoverController(contentController: vc2,
+                                             contentSizeBehavior: .preferredContentSize)
+            popover2.present(from: self.topToolbar.locationView.rewardsButton, on: self)
+        }
+        
+        vc.linkTapped = { [unowned self] request in
+            tab.rewardsEnabledCallback?(false)
+            self.tabManager
+                .addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        }
     }
 }
 
