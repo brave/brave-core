@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { EthereumChain } from '../../../constants/types'
 import { SelectNetwork } from '../../shared'
+import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 // Styled Components
 import {
   StyledWrapper,
@@ -24,7 +25,7 @@ function SelectNetworkDropdown (props: Props) {
   return (
     <StyledWrapper>
       <OvalButton onClick={onClick}>
-        <OvalButtonText>{selectedNetwork.chainName}</OvalButtonText>
+        <OvalButtonText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
         <CaratDownIcon />
       </OvalButton>
       {showNetworkDropDown &&
