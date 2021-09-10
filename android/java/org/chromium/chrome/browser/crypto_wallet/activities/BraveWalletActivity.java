@@ -296,7 +296,7 @@ public class BraveWalletActivity
 
         ViewPager viewPager = findViewById(R.id.navigation_view_pager);
         CryptoFragmentPageAdapter adapter =
-                new CryptoFragmentPageAdapter(getSupportFragmentManager(), this);
+                new CryptoFragmentPageAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
         TabLayout tabLayout = findViewById(R.id.tabs);
