@@ -27,9 +27,16 @@ import java.util.List;
 
 public class AccountDetailActivity
         extends AsyncInitializationActivity implements OnWalletListItemClick {
+    private String address;
+    private String name;
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_account_detail);
+
+        if (getIntent() != null) {
+            address = getIntent().getStringExtra("address");
+            name = getIntent().getStringExtra("name");
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -37,10 +44,10 @@ public class AccountDetailActivity
         getSupportActionBar().setTitle("");
 
         TextView accountText = findViewById(R.id.account_text);
-        accountText.setText("Account 2");
+        accountText.setText(name);
 
         TextView accountValueText = findViewById(R.id.account_value_text);
-        accountValueText.setText("0xffd3...32ee");
+        accountValueText.setText(address);
 
         TextView btnDetails = findViewById(R.id.details_btn);
         btnDetails.setOnClickListener(new View.OnClickListener() {
@@ -48,6 +55,8 @@ public class AccountDetailActivity
             public void onClick(View v) {
                 Intent accountDetailsWithQrActivityIntent =
                         new Intent(AccountDetailActivity.this, AccountDetailsWithQrActivity.class);
+                accountDetailsWithQrActivityIntent.putExtra("address", address);
+                accountDetailsWithQrActivityIntent.putExtra("name", name);
                 startActivity(accountDetailsWithQrActivityIntent);
             }
         });

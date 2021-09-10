@@ -92,7 +92,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                     onWalletListItemClick.onAssetClick();
                 }
             } else {
-                onWalletListItemClick.onAccountClick();
+                onWalletListItemClick.onAccountClick(walletListItemModel);
             }
         });
         if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST

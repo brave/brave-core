@@ -19,10 +19,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
@@ -40,6 +44,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, OnWalletListItemClick {
     private SmoothLineChartEquallySpaced chartES;
     private AssetRatioController mAssetRatioController;
+    private KeyringController mKeyringController;
 
     @Override
     protected void onDestroy() {
@@ -126,9 +131,6 @@ public class AssetDetailActivity extends AsyncInitializationActivity
             }
         });
 
-        setUpAccountList();
-        setUpTransactionList();
-
         onInitialLayoutInflationComplete();
     }
 
@@ -142,17 +144,29 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     private void setUpAccountList() {
         RecyclerView rvAccounts = findViewById(R.id.rv_accounts);
         WalletCoinAdapter walletCoinAdapter =
-                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
-        List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-        walletListItemModelList.add(new WalletListItemModel(
-                R.drawable.ic_eth, "Account 1", "0xFCdF***DDee", "$616.47", "0.31178 ETH"));
-        walletListItemModelList.add(new WalletListItemModel(
-                R.drawable.ic_eth, "Ledger Nano", "0xA1da***7af1", "$256.01", "0.0121 ETH"));
-        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-        walletCoinAdapter.setOnWalletListItemClick(AssetDetailActivity.this);
-        walletCoinAdapter.setWalletListItemType(Utils.ACCOUNT_ITEM);
-        rvAccounts.setAdapter(walletCoinAdapter);
-        rvAccounts.setLayoutManager(new LinearLayoutManager(this));
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
+        KeyringController keyringController = getKeyringController();
+        if (keyringController != null) {
+            keyringController.getDefaultKeyringInfo(keyringInfo -> {
+                if (keyringInfo != null) {
+                    AccountInfo[] accountInfos = keyringInfo.accountInfos;
+                    List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+                    for (AccountInfo accountInfo : accountInfos) {
+                        Log.e("NTP", "Account name : " + accountInfo.name);
+                        walletListItemModelList.add(new WalletListItemModel(R.drawable.ic_eth,
+                                accountInfo.name, accountInfo.address, null, null));
+                    }
+                    if (walletCoinAdapter != null) {
+                        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+                        walletCoinAdapter.setOnWalletListItemClick(AssetDetailActivity.this);
+                        walletCoinAdapter.setWalletListItemType(Utils.ACCOUNT_ITEM);
+                        rvAccounts.setAdapter(walletCoinAdapter);
+                        rvAccounts.setLayoutManager(
+                                new LinearLayoutManager(AssetDetailActivity.this));
+                    }
+                }
+            });
+        }
     }
 
     private void setUpTransactionList() {
@@ -183,13 +197,19 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         InitAssetRatioController();
+        InitKeyringController();
         getPriceHistory("eth", AssetPriceTimeframe.LIVE);
+        setUpAccountList();
+        setUpTransactionList();
     }
 
     @Override
     public void onConnectionError(MojoException e) {
         mAssetRatioController = null;
         InitAssetRatioController();
+
+        mKeyringController = null;
+        InitKeyringController();
     }
 
     private void InitAssetRatioController() {
@@ -207,10 +227,23 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void onAccountClick() {
-        Utils.openAccountDetailActivity(AssetDetailActivity.this);
+    public void onAccountClick(WalletListItemModel walletListItemModel) {
+        Utils.openAccountDetailActivity(AssetDetailActivity.this, walletListItemModel.getTitle(),
+                walletListItemModel.getSubTitle());
     }
 
     @Override
     public void onTransactionClick() {}
+
+    private void InitKeyringController() {
+        if (mKeyringController != null) {
+            return;
+        }
+
+        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+    }
+
+    public KeyringController getKeyringController() {
+        return mKeyringController;
+    }
 }
