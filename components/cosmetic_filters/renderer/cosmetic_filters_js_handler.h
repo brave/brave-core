@@ -49,6 +49,9 @@ class CosmeticFiltersJSHandler {
   bool EnsureConnected();
   void OnRemoteDisconnect();
 
+  // Injects content_cosmetic bundle (if needed) and calls the entry point.
+  void ExecuteObservingBundleEntryPoint();
+
   void CreateWorkerObject(v8::Isolate* isolate, v8::Local<v8::Context> context);
 
   // A function to be called from JS
@@ -70,6 +73,10 @@ class CosmeticFiltersJSHandler {
   std::vector<std::string> exceptions_;
   GURL url_;
   std::unique_ptr<base::DictionaryValue> resources_dict_;
+
+  // Shows if the content_cosmetic.bundle.js has injected in the current frame.
+  bool bundle_injected_ = false;
+
   base::WeakPtrFactory<CosmeticFiltersJSHandler> weak_ptr_factory_{this};
 };
 
