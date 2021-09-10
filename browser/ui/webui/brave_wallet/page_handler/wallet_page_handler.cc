@@ -7,13 +7,29 @@
 
 #include <utility>
 
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#endif
 
 WalletPageHandler::WalletPageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
     Profile* profile)
-    : receiver_(this, std::move(receiver)),
+    : profile_(profile),
+      receiver_(this, std::move(receiver)),
       weak_ptr_factory_(this) {}
 
 WalletPageHandler::~WalletPageHandler() = default;
+
+void WalletPageHandler::ShowApprovePanelUI() {
+#if defined(TOOLKIT_VIEWS)
+  Browser* browser = chrome::FindBrowserWithProfile(profile_);
+  if (browser) {
+    brave::ShowApproveWalletBubble(browser);
+  }
+#endif
+}

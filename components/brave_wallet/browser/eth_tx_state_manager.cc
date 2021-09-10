@@ -9,12 +9,14 @@
 
 #include "base/guid.h"
 #include "base/logging.h"
+#include "base/strings/string_util.h"
 #include "base/util/values/values_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
+#include "brave/components/brave_wallet/browser/eth_data_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_service.h"
@@ -85,12 +87,23 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
     auto* tx2930 = reinterpret_cast<Eip2930Transaction*>(meta.tx.get());
     chain_id = Uint256ValueToHex(tx2930->chain_id());
   } else if (meta.tx->type() == 2) {
-    // When type is 1 it's always Eip1559Transaction
+    // When type is 2 it's always Eip1559Transaction
     auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(meta.tx.get());
     chain_id = Uint256ValueToHex(tx1559->chain_id());
     max_priority_fee_per_gas =
         Uint256ValueToHex(tx1559->max_priority_fee_per_gas());
     max_fee_per_gas = Uint256ValueToHex(tx1559->max_fee_per_gas());
+  }
+
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::string data = "0x0";
+  if (meta.tx->data().size() > 0) {
+    data = "0x" + base::HexEncode(meta.tx->data());
+  }
+  if (!GetTransactionInfoFromData(data, &tx_type, &tx_params, &tx_args)) {
+    LOG(ERROR) << "Error parsing transaction data: " << data;
   }
 
   return mojom::TransactionInfo::New(
@@ -102,7 +115,7 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
               Uint256ValueToHex(meta.tx->gas_limit()), meta.tx->to().ToHex(),
               Uint256ValueToHex(meta.tx->value()), meta.tx->data()),
           chain_id, max_priority_fee_per_gas, max_fee_per_gas),
-      meta.status);
+      meta.status, tx_type, tx_params, tx_args);
 }
 
 std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(

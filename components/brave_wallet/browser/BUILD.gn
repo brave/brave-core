@@ -37,6 +37,8 @@ static_library("browser") {
     "eth_block_tracker.h",
     "eth_data_builder.cc",
     "eth_data_builder.h",
+    "eth_data_parser.cc",
+    "eth_data_parser.h",
     "eth_json_rpc_controller.cc",
     "eth_json_rpc_controller.h",
     "eth_nonce_tracker.cc",

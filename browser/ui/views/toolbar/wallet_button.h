@@ -27,6 +27,7 @@ class WalletButton : public ToolbarButton {
   WalletButton& operator=(const WalletButton&) = delete;
 
   void ShowWalletBubble();
+  void ShowApproveWalletBubble();
   void CloseWalletBubble();
   bool IsShowingBubble();
   bool IsBubbleClosedForTesting();

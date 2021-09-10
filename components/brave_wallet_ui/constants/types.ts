@@ -73,6 +73,7 @@ export type PanelTypes =
   | 'settings'
   | 'expanded'
   | 'assets'
+  | 'connectWithSite'
 
 export type NavTypes =
   | 'crypto'
@@ -162,9 +163,13 @@ export interface WalletState {
   userVisibleTokensInfo: TokenInfo[]
   fullTokenList: TokenInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
+  pendingTransactions: TransactionInfo[]
+  knownTransactions: TransactionInfo[]
+  selectedPendingTransaction: TransactionInfo | undefined
   isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: AssetPriceTimeframe
   networkList: EthereumChain[]
+  transactionSpotPrices: AssetPriceInfo[]
 }
 
 export interface PanelState {
@@ -176,8 +181,6 @@ export interface PanelState {
   tabId: number
   connectingAccounts: string[]
   showSignTransaction: boolean
-  showAllowSpendERC20Token: boolean
-  showConfirmTransaction: boolean
   networkPayload: EthereumChain
 }
 
@@ -211,8 +214,8 @@ export interface WalletPanelState {
 }
 
 export interface AccountInfo {
-  address: string[]
-  name: string[]
+  address: string
+  name: string
   isImported: boolean
 }
 
@@ -248,7 +251,17 @@ export enum TransactionStatus {
   Approved = 1,
   Rejected = 2,
   Submitted = 3,
-  Confirmed = 4
+  Confirmed = 4,
+  Error = 5
+}
+
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
+export enum TransactionType {
+  ETHSend = 0,
+  ERC20Transfer = 1,
+  ERC20Approve = 2,
+  Other = 3
 }
 
 export interface SwapParams {
@@ -451,6 +464,9 @@ export interface TransactionInfo {
   txHash: string
   txData: TxData1559
   txStatus: TransactionStatus
+  txType: TransactionType
+  txParams: string[]
+  txArgs: string[]
 }
 
 export interface GetAllTransactionInfoReturnInfo {

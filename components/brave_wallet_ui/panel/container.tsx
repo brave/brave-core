@@ -12,7 +12,6 @@ import {
   Panel,
   WelcomePanel,
   SignPanel,
-  AllowSpendPanel,
   AllowAddNetworkPanel,
   ConfirmTransactionPanel
 } from '../components/extension'
@@ -82,13 +81,15 @@ function Container (props: Props) {
     accounts,
     selectedAccount,
     selectedNetwork,
+    selectedPendingTransaction,
     isWalletLocked,
     favoriteApps,
     hasIncorrectPassword,
     hasInitialized,
     userVisibleTokensInfo,
     isWalletCreated,
-    networkList
+    networkList,
+    transactionSpotPrices
   } = props.wallet
 
   const {
@@ -96,8 +97,6 @@ function Container (props: Props) {
     panelTitle,
     selectedPanel,
     showSignTransaction,
-    showAllowSpendERC20Token,
-    showConfirmTransaction,
     networkPayload
   } = props.panel
 
@@ -292,14 +291,6 @@ function Container (props: Props) {
     // Logic here to sign a transaction
   }
 
-  const onRejectERC20Spend = () => {
-    // Logic here to Reject an ERC20 Spend Transactiong
-  }
-
-  const onConfirmERC20Spend = () => {
-    // Logic here to Confirm an ERC20 Spend Transaction
-  }
-
   const onApproveAddNetwork = () => {
     props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: networkPayload.chainId, approved: true })
   }
@@ -315,64 +306,19 @@ function Container (props: Props) {
   }
 
   const onRejectTransaction = () => {
-    // Logic here to Reject a Transaction
+    if (selectedPendingTransaction) {
+      props.walletActions.rejectTransaction(selectedPendingTransaction)
+    }
   }
 
   const onConfirmTransaction = () => {
-    // Logic here to Confirm a Transaction
+    if (selectedPendingTransaction) {
+      props.walletActions.approveTransaction(selectedPendingTransaction)
+    }
   }
 
   const onOpenSettings = () => {
     props.walletPanelActions.openWalletSettings()
-  }
-
-  // Example of a ERC20 Spend Payload to be passed to the
-  // Allow Spend Panel
-  const ERC20SpendPayloadExample = {
-    siteUrl: 'https://app.compound.finance',
-    contractAddress: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-    erc20Token: {
-      contractAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-      name: 'Basic Attention Token',
-      isErc20: true,
-      isErc721: false,
-      symbol: 'BAT',
-      decimals: 18,
-      icon: ''
-    },
-    transactionFeeWei: '0.002447',
-    transactionFeeFiat: '$6.57',
-    transactionData: {
-      functionName: 'Atomic Match_',
-      parameters: 'Parameters: [ {"type": "uint256"}, {"type": "address[]"}, {"type": "address"}, {"type": "uint256"} ]',
-      hexData: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc',
-      hexSize: '228'
-    }
-  }
-
-  // Example of a Confirm Transaction Payload to be passed to the
-  // Confirm Transaction Panel
-  const transactionPayloadExample = {
-    transactionAmount: '68000000000000000000',
-    transactionGas: '7548000000000000',
-    toAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-    erc20Token: {
-      contractAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-      name: 'Basic Attention Token',
-      isErc20: true,
-      isErc721: false,
-      symbol: 'BAT',
-      decimals: 18,
-      icon: ''
-    },
-    tokenPrice: '0.35',
-    ethPrice: '3058.35',
-    transactionData: {
-      functionName: 'Atomic Match_',
-      parameters: 'Parameters: [ {"type": "uint256"}, {"type": "address[]"}, {"type": "address"}, {"type": "uint256"} ]',
-      hexData: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc',
-      hexSize: '228'
-    }
   }
 
   if (!hasInitialized || !accounts) {
@@ -404,16 +350,18 @@ function Container (props: Props) {
     )
   }
 
-  if (showConfirmTransaction) {
+  if (selectedPendingTransaction) {
     return (
       <PanelWrapper isLonger={true}>
         <SignContainer>
           <ConfirmTransactionPanel
             onConfirm={onConfirmTransaction}
             onReject={onRejectTransaction}
-            selectedAccount={selectedAccount}
-            selectedNetwork={selectedNetwork}
-            transactionPayload={transactionPayloadExample}
+            accounts={accounts}
+            selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
+            transactionInfo={selectedPendingTransaction}
+            transactionSpotPrices={transactionSpotPrices}
+            visibleTokens={userVisibleTokensInfo}
           />
         </SignContainer>
       </PanelWrapper>
@@ -445,21 +393,6 @@ function Container (props: Props) {
             onSign={onSignTransaction}
             selectedAccount={selectedAccount}
             selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
-          />
-        </SignContainer>
-      </PanelWrapper>
-    )
-  }
-
-  if (showAllowSpendERC20Token) {
-    return (
-      <PanelWrapper isLonger={true}>
-        <SignContainer>
-          <AllowSpendPanel
-            onReject={onRejectERC20Spend}
-            onConfirm={onConfirmERC20Spend}
-            selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
-            spendPayload={ERC20SpendPayloadExample}
           />
         </SignContainer>
       </PanelWrapper>

@@ -98,6 +98,11 @@ void WalletButton::ShowWalletBubble() {
       ->ShowBubble();
 }
 
+void WalletButton::ShowApproveWalletBubble() {
+  brave_wallet::BraveWalletTabHelper::FromWebContents(GetActiveWebContents())
+      ->ShowApproveWalletBubble();
+}
+
 void WalletButton::CloseWalletBubble() {
   brave_wallet::BraveWalletTabHelper::FromWebContents(GetActiveWebContents())
       ->CloseBubble();

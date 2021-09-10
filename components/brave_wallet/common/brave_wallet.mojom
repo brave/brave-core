@@ -64,6 +64,7 @@ interface PanelHandler {
 
 // Browser-side handler for requests from WebUI page.
 interface PageHandler {
+  ShowApprovePanelUI();
 };
 
 struct AppItem {
@@ -287,12 +288,22 @@ enum TransactionStatus {
   Error
 };
 
+enum TransactionType {
+  ETHSend,
+  ERC20Transfer,
+  ERC20Approve,
+  Other
+};
+
 struct TransactionInfo {
   string id;
   string from_address;
   string tx_hash;
   TxData1559 tx_data;
   TransactionStatus tx_status;
+  TransactionType tx_type;
+  array<string> tx_params;
+  array<string> tx_args;
 };
 
 interface EthTxControllerObserver {

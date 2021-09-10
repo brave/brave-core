@@ -122,6 +122,13 @@ void ShowWalletBubble(Browser* browser) {
 #endif
 }
 
+void ShowApproveWalletBubble(Browser* browser) {
+#if BUILDFLAG(BRAVE_WALLET_ENABLED) && defined(TOOLKIT_VIEWS)
+  static_cast<BraveBrowserView*>(browser->window())
+      ->CreateApproveWalletBubble();
+#endif
+}
+
 void CloseWalletBubble(Browser* browser) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && defined(TOOLKIT_VIEWS)
   static_cast<BraveBrowserView*>(browser->window())->CloseWalletBubble();

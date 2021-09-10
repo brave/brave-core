@@ -99,6 +99,7 @@ source_set("tab_helper") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "brave_wallet_tab_helper_unittest.cc",
     "eth_nonce_tracker_unittest.cc",
     "eth_pending_tx_tracker_unittest.cc",
     "eth_tx_state_manager_unittest.cc",
@@ -107,7 +108,10 @@ source_set("unit_tests") {
 
   deps = [
     "//base/test:test_support",
+    "//brave/browser/brave_wallet",
+    "//brave/browser/brave_wallet:tab_helper",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//chrome/browser",
     "//chrome/test:test_support",

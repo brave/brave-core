@@ -20,9 +20,8 @@ const defaultState: PanelState = {
   tabId: -1,
   connectingAccounts: [],
   showSignTransaction: false,
-  showAllowSpendERC20Token: false,
-  showConfirmTransaction: false,
-  networkPayload: { chainId: '0x1', chainName: 'Ethereum Mainnet',
+  networkPayload: {
+    chainId: '0x1', chainName: 'Ethereum Mainnet',
     rpcUrls: ['https://mainnet-infura.brave.com/'], blockExplorerUrls: [],
     iconUrls: [], symbol: 'ETH', symbolName: 'Ethereum', decimals: 18 }
 }

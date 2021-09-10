@@ -30,6 +30,7 @@ class BraveWalletTabHelper
 
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
   void ShowBubble();
+  void ShowApproveWalletBubble();
   void CloseBubble();
   bool IsShowingBubble();
   bool IsBubbleClosedForTesting();
@@ -39,10 +40,12 @@ class BraveWalletTabHelper
 #endif
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletTabHelperUnitTest, GetApproveBubbleURL);
   friend class content::WebContentsUserData<BraveWalletTabHelper>;
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
   GURL GetBubbleURL();
   base::OnceClosure show_bubble_callback_for_testing_;
+  GURL GetApproveBubbleURL();
   std::unique_ptr<WalletBubbleManagerDelegate> wallet_bubble_manager_delegate_;
 #endif
   content::WebContents* web_contents_;

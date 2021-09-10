@@ -5,9 +5,14 @@
 
 import { WalletAPIHandler } from '../constants/types'
 
+export class PageHandler {
+  showApprovePanelUI: () => Promise<void>
+}
+
 export default class APIProxy {
   static getInstance: () => APIProxy
   walletHandler: WalletAPIHandler
+  pageHandler: PageHandler
   ethJsonRpcController: EthJsonRpcController
   swapController: SwapController
   assetRatioController: AssetRatioController

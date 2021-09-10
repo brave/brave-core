@@ -15,6 +15,7 @@ void NewTorConnectionForSite(Browser*);
 void AddNewProfile();
 void OpenGuestProfile();
 void ShowWalletBubble(Browser* browser);
+void ShowApproveWalletBubble(Browser* browser);
 void CloseWalletBubble(Browser* browser);
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser);
 void ShowBraveVPNBubble(Browser* browser);

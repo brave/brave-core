@@ -23,7 +23,8 @@ import {
   GetERC20TokenBalanceAndPriceReturnInfo,
   PortfolioTokenHistoryAndInfo,
   AssetPriceTimeframe,
-  SendTransactionParam
+  SendTransactionParam,
+  TransactionInfo
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -59,3 +60,6 @@ export const portfolioTimelineUpdated = createAction<AssetPriceTimeframe>('portf
 export const sendTransaction = createAction<SendTransactionParam>('sendTransaction')
 export const newUnapprovedTxAdded = createAction<NewUnapprovedTxAdded>('newUnapprovedTxAdded')
 export const transactionStatusChanged = createAction<TransactionStatusChanged>('transactionStatusChanged')
+export const approveTransaction = createAction<TransactionInfo>('approveTransaction')
+export const rejectTransaction = createAction<TransactionInfo>('rejectTransaction')
+export const knownTransactionsUpdated = createAction<TransactionInfo[]>('knownTransactionsUpdated')
