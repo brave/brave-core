@@ -101,6 +101,7 @@ source_set("tab_helper") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "brave_wallet_service_unittest.cc",
     "brave_wallet_tab_helper_unittest.cc",
     "eth_nonce_tracker_unittest.cc",
     "eth_pending_tx_tracker_unittest.cc",
