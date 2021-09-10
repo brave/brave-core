@@ -544,3 +544,5 @@ const tryScheduleQueuePump = () => {
 }
 
 CC.tryScheduleQueuePump = CC.tryScheduleQueuePump || tryScheduleQueuePump
+
+tryScheduleQueuePump()

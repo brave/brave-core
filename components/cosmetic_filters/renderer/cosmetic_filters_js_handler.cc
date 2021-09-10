@@ -485,9 +485,13 @@ void CosmeticFiltersJSHandler::ExecuteObservingBundleEntryPoint() {
     static base::NoDestructor<std::string> s_observing_script(
         LoadDataResource(kCosmeticFiltersGenerated[0].id));
     bundle_injected_ = true;
+
     web_frame->ExecuteScriptInIsolatedWorld(
         isolated_world_id_, blink::WebString::FromUTF8(*s_observing_script),
         blink::BackForwardCacheAware::kAllow);
+
+    // kObservingScriptletEntryPoint was called by `s_observing_script`.
+    return;
   }
 
   web_frame->ExecuteScriptInIsolatedWorld(
