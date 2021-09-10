@@ -114,6 +114,21 @@ extension UIColor {
   public static var braveErrorLabel: UIColor {
     DesignSystemColor.errorText.color
   }
+  public static var braveErrorBorder: UIColor {
+    DesignSystemColor.errorBorder.color
+  }
+  public static var braveErrorBackground: UIColor {
+    DesignSystemColor.errorBackground.color
+  }
+  public static var braveWarningLabel: UIColor {
+    DesignSystemColor.warningText.color
+  }
+  public static var braveWarningBorder: UIColor {
+    DesignSystemColor.warningBorder.color
+  }
+  public static var braveWarningBackground: UIColor {
+    DesignSystemColor.warningBackground.color
+  }
   public static var braveInfoLabel: UIColor {
     DesignSystemColor.infoText.color
   }

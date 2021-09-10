@@ -15,7 +15,6 @@ extension AppDelegate {
     ///
     /// - warning: Be careful adjusting colors here, and make sure impact is well known
     func applyAppearanceDefaults() {
-        // important! for privacy concerns, otherwise UI can bleed through
         UIToolbar.appearance().do {
             $0.tintColor = .braveOrange
             $0.standardAppearance = {
@@ -28,14 +27,18 @@ extension AppDelegate {
         
         UINavigationBar.appearance().do {
             $0.tintColor = .braveOrange
-            $0.standardAppearance = {
+            let appearance: UINavigationBarAppearance = {
                 let appearance = UINavigationBarAppearance()
-                appearance.configureWithDefaultBackground()
+                appearance.configureWithOpaqueBackground()
                 appearance.titleTextAttributes = [.foregroundColor: UIColor.braveLabel]
                 appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.braveLabel]
                 appearance.backgroundColor = .braveBackground
+                appearance.backgroundEffect = nil
                 return appearance
             }()
+            $0.standardAppearance = appearance
+            $0.compactAppearance = appearance
+            $0.scrollEdgeAppearance = appearance
         }
         
         UISwitch.appearance().onTintColor = UIColor.braveOrange
@@ -53,11 +56,8 @@ extension AppDelegate {
             $0.backgroundColor = tableSecondaryColor
         }
         
-        UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self])
-            .tintColor = .braveLabel
-
-        UIView.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self])
-            .backgroundColor = tablePrimaryColor
+        //  UIView.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self])
+        //    .backgroundColor = tablePrimaryColor
         
         UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = .braveLabel
         UILabel.appearance(whenContainedInInstancesOf: [UICollectionReusableView.self])

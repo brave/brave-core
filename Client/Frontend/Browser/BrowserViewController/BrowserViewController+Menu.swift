@@ -8,6 +8,7 @@ import SwiftUI
 import BraveUI
 import Shared
 import Data
+import BraveWallet
 
 private let log = Logger.browserLogger
 
@@ -44,6 +45,20 @@ extension BrowserViewController {
             MenuItemButton(icon: #imageLiteral(resourceName: "menu-downloads").template, title: Strings.downloadsMenuItem) { [unowned self, unowned menuController] in
                 let vc = DownloadsPanel(profile: self.profile)
                 menuController.pushInnerMenu(vc)
+            }
+            if #available(iOS 14.0, *) {
+                MenuItemButton(icon: #imageLiteral(resourceName: "menu-downloads").template, title: "Brave Wallet") { [unowned self] in // NSLocalizedString
+                    guard let braveCoreMain = (UIApplication.shared.delegate as? AppDelegate)?.braveCore else {
+                        return
+                    }
+                    let vc = UIHostingController(rootView: CryptoView(
+                        keyringStore: .init(keyringController: braveCoreMain.keyringController),
+                        networkStore: .init(ethJsonRpcController: braveCoreMain.ethJsonRpcController)
+                    ))
+                    self.dismiss(animated: true) {
+                        self.present(vc, animated: true)
+                    }
+                }
             }
             MenuItemButton(icon: #imageLiteral(resourceName: "playlist_menu").template, title: Strings.playlistMenuItem) { [weak self] in
                 guard let self = self else { return }
