@@ -4,23 +4,24 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ledger/internal/wallet/wallet_util.h"
+
+#include "bat/ledger/internal/core/bat_ledger_test.h"
 #include "bat/ledger/mojom_structs.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=WalletUtilTest.*
 
 namespace ledger {
 namespace wallet {
 
-class WalletUtilTest : public testing::Test {};
+class WalletUtilTest : public BATLedgerTest {};
 
-TEST(WalletUtilTest, InvalidJSON) {
+TEST_F(WalletUtilTest, InvalidJSON) {
   const char data[] = "";
   type::ExternalWalletPtr wallet = ExternalWalletPtrFromJSON(data, "uphold");
   EXPECT_EQ(nullptr, wallet.get());
 }
 
-TEST(WalletUtilTest, ExternalWalletPtrFromJSON) {
+TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
   const char data[] =
       "{\n"
       "  \"token\": \"sI5rKiy6ijzbbJgE2MMFzAbTc6udYYXEi3wzS9iknP6n\",\n"

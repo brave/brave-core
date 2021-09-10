@@ -6,6 +6,7 @@
 #include <string>
 
 #include "bat/ledger/global_constants.h"
+#include "bat/ledger/internal/core/bat_ledger_test.h"
 #include "bat/ledger/internal/endpoint/gemini/gemini_utils.h"
 #include "bat/ledger/ledger.h"
 #include "net/http/http_status_code.h"
@@ -17,45 +18,45 @@ namespace ledger {
 namespace endpoint {
 namespace gemini {
 
-class GeminiUtilsTest : public testing::Test {};
+class GeminiUtilsTest : public BATLedgerTest {};
 
-TEST(GeminiUtilsTest, GetApiServerUrlDevelopment) {
+TEST_F(GeminiUtilsTest, GetApiServerUrlDevelopment) {
   ledger::_environment = type::Environment::DEVELOPMENT;
   const std::string url = GetApiServerUrl("/test");
   ASSERT_EQ(url, GEMINI_API_STAGING_URL "/test");
 }
 
-TEST(GeminiUtilsTest, GetApiServerUrlStaging) {
+TEST_F(GeminiUtilsTest, GetApiServerUrlStaging) {
   ledger::_environment = type::Environment::STAGING;
   const std::string url = GetApiServerUrl("/test");
   ASSERT_EQ(url, GEMINI_API_STAGING_URL "/test");
 }
 
-TEST(GeminiUtilsTest, GetApiServerUrlProduction) {
+TEST_F(GeminiUtilsTest, GetApiServerUrlProduction) {
   ledger::_environment = type::Environment::PRODUCTION;
   const std::string url = GetApiServerUrl("/test");
   ASSERT_EQ(url, GEMINI_API_URL "/test");
 }
 
-TEST(GeminiUtilsTest, GetOauthServerUrlDevelopment) {
+TEST_F(GeminiUtilsTest, GetOauthServerUrlDevelopment) {
   ledger::_environment = type::Environment::DEVELOPMENT;
   const std::string url = GetOauthServerUrl("/test");
   ASSERT_EQ(url, GEMINI_OAUTH_STAGING_URL "/test");
 }
 
-TEST(GeminiUtilsTest, GetOauthServerUrlStaging) {
+TEST_F(GeminiUtilsTest, GetOauthServerUrlStaging) {
   ledger::_environment = type::Environment::STAGING;
   const std::string url = GetOauthServerUrl("/test");
   ASSERT_EQ(url, GEMINI_OAUTH_STAGING_URL "/test");
 }
 
-TEST(GeminiUtilsTest, GetOauthServerUrlProduction) {
+TEST_F(GeminiUtilsTest, GetOauthServerUrlProduction) {
   ledger::_environment = type::Environment::PRODUCTION;
   const std::string url = GetOauthServerUrl("/test");
   ASSERT_EQ(url, GEMINI_OAUTH_URL "/test");
 }
 
-TEST(GeminiUtilsTest, CheckStatusCodeTest) {
+TEST_F(GeminiUtilsTest, CheckStatusCodeTest) {
   ASSERT_EQ(CheckStatusCode(net::HTTP_UNAUTHORIZED),
             type::Result::EXPIRED_TOKEN);
   ASSERT_EQ(CheckStatusCode(net::HTTP_FORBIDDEN), type::Result::EXPIRED_TOKEN);
