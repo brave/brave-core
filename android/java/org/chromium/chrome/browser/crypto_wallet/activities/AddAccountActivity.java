@@ -5,19 +5,28 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.widget.Toolbar;
 
+import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddAccountActivity extends AsyncInitializationActivity {
+public class AddAccountActivity
+        extends AsyncInitializationActivity implements ConnectionErrorHandler {
+    private KeyringController mKeyringController;
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_add_account);
@@ -27,15 +36,47 @@ public class AddAccountActivity extends AsyncInitializationActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.add_account));
 
+        EditText addAccountText = findViewById(R.id.add_account_text);
+
         Button btnBuy = findViewById(R.id.btn_add);
         btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Add account action
+                if (mKeyringController != null) {
+                    mKeyringController.addAccount(addAccountText.getText().toString(), result -> {
+                        if (result) {
+                            Intent returnIntent = new Intent();
+                            returnIntent.putExtra("result", result);
+                            setResult(Activity.RESULT_OK, returnIntent);
+                            finish();
+                        } else {
+                            addAccountText.setError(getString(R.string.password_error));
+                        }
+                    });
+                }
             }
         });
 
         onInitialLayoutInflationComplete();
+    }
+
+    @Override
+    public void onConnectionError(MojoException e) {
+        mKeyringController = null;
+        InitKeyringController();
+    }
+
+    private void InitKeyringController() {
+        if (mKeyringController != null) {
+            return;
+        }
+
+        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
+    }
+
+    public KeyringController getKeyringController() {
+        return mKeyringController;
     }
 
     @Override
@@ -51,6 +92,7 @@ public class AddAccountActivity extends AsyncInitializationActivity {
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+        InitKeyringController();
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.google.zxing.common.BitMatrix;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 
@@ -32,9 +34,17 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
 
     private ImageView qrCodeImage;
 
+    private String address;
+    private String name;
+
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_account_details_with_qr);
+
+        if (getIntent() != null) {
+            address = getIntent().getStringExtra("address");
+            name = getIntent().getStringExtra("name");
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -42,10 +52,19 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
         getSupportActionBar().setTitle(getResources().getString(R.string.account_details));
 
         qrCodeImage = findViewById(R.id.qr_code_image);
-        fillQrCode("0x514e...8E8C");
+        fillQrCode(address);
 
         TextView accountValueText = findViewById(R.id.account_value_text);
-        accountValueText.setText("0x514e...8E8C");
+        accountValueText.setText(address);
+
+        ImageView accountCopyImage = findViewById(R.id.account_copy_image);
+        accountCopyImage.setOnClickListener(v
+                -> Utils.saveTextToClipboard(
+                        AccountDetailsWithQrActivity.this, accountValueText.getText().toString()));
+
+        EditText accountNameText = findViewById(R.id.account_name_text);
+        accountNameText.setText(name);
+        accountNameText.setEnabled(false);
 
         onInitialLayoutInflationComplete();
     }

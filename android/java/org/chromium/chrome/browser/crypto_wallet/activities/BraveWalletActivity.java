@@ -204,10 +204,10 @@ public class BraveWalletActivity
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (mKeyringController != null) {
             mKeyringController.lock();
         }
+        super.onDestroy();
     }
 
     @Override
