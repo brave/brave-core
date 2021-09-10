@@ -1,5 +1,5 @@
 diff --git a/tools/metrics/histograms/metadata/histogram_suffixes_list.xml b/tools/metrics/histograms/metadata/histogram_suffixes_list.xml
-index f6b0e4f31f3601878ce06c371d445e3b1abf9279..747190f33b0a700d123ae8f88fe5f3849e94ae36 100644
+index f218d8e729e1704a36a37b370e75cbe6dc4cc825..4024b30dc725964be10b3b9c6b5ddcb5cb3b5920 100644
 --- a/tools/metrics/histograms/metadata/histogram_suffixes_list.xml
 +++ b/tools/metrics/histograms/metadata/histogram_suffixes_list.xml
 @@ -12965,6 +12965,7 @@ reviews. Googlers can read more about this at go/gwsq-gerrit.

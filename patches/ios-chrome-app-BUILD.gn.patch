@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/app/BUILD.gn b/ios/chrome/app/BUILD.gn
-index 6c44a122c3ea26f742a4cff5b68a2ded19f47204..f970af2454b918e9ff99857bfa91319644a495f5 100644
+index f09ff76c113eb8858ba7ebffa002626d86c3396b..246298ba7fa51d674fd350ccbb2aeb5b020d312b 100644
 --- a/ios/chrome/app/BUILD.gn
 +++ b/ios/chrome/app/BUILD.gn
-@@ -157,23 +157,25 @@ source_set("content_suggestions_scheduler_app_state_agent") {
+@@ -156,23 +156,25 @@ source_set("content_suggestions_scheduler_app_state_agent") {
    ]
  }
 
@@ -45,7 +45,7 @@ index 6c44a122c3ea26f742a4cff5b68a2ded19f47204..f970af2454b918e9ff99857bfa913196
  }
 
  source_set("app_metrics_app_state_agent") {
-@@ -285,7 +287,6 @@ source_set("app_internal") {
+@@ -284,7 +286,6 @@ source_set("app_internal") {
      ":app_metrics_app_state_agent",
      ":blocking_scene_commands",
      ":content_suggestions_scheduler_app_state_agent",
@@ -53,7 +53,7 @@ index 6c44a122c3ea26f742a4cff5b68a2ded19f47204..f970af2454b918e9ff99857bfa913196
      ":enterprise_app_agent",
      ":first_run_app_state_agent",
      ":mode",
-@@ -407,7 +408,10 @@ source_set("app_internal") {
+@@ -406,7 +407,10 @@ source_set("app_internal") {
    ]
 
    if (ios_enable_credential_provider_extension) {

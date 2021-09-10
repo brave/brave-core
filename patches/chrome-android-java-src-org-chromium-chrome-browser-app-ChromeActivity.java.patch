@@ -1,13 +1,13 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index a18a1de8aa4ffc947ff7037a1e6e7cccb5d8faeb..aafb58e17a0e3e3183b12f754982e4bf25d506b6 100644
+index bbca510d2f0a845f46afbb0b46eded56bd61bf7b..e71497695c5d12434f131ba6e64e55345343d685 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 @@ -388,7 +388,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
      private boolean mLastPictureInPictureModeForTesting;
-
+ 
      protected ChromeActivity() {
 -        mIntentHandler = new IntentHandler(this, createIntentHandlerDelegate());
 +        mIntentHandler = new org.chromium.chrome.browser.BraveIntentHandler(this, createIntentHandlerDelegate());
          mManualFillingComponentSupplier.set(ManualFillingComponentFactory.createComponent());
      }
-
+ 

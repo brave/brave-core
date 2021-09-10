@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index 74622820330e2a3c8bf81691789dd45411f50843..6a3236a42c785a99b9e0b9f36b8f6593f12de04b 100644
+index e71a0645b5148699673501c576423db155e44a4d..dac43fb00c4f097050f0aa4a86828c675c9b2eed 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -287,6 +287,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -290,6 +290,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
  
    // Preference related to the browser sign-in policy that is being deprecated.
    registry->RegisterBooleanPref(kSigninAllowedByPolicy, true);
