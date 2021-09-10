@@ -40,9 +40,22 @@ pub fn is_abbreviation(s: &str) -> bool {
     }
 }
 
-/// Looks for the first sentence boundary
+/// Looks for the first sentence boundary. Three cases must be met:
+///     (1) The token at the boundary must not list of common abbreviations.
+///     (2) The token must should not pass heuristics that match abbreviations
+///         of the form `A.`, `F.A.`, or `Ms.`.
+///     (3) The next token must be capitalized.
 pub fn first_sentence_boundary(s: &str) -> Option<usize> {
     for m in POSSIBLE_SENTENCE_BOUNDARIES.find_iter(&s) {
+        let is_next_token_caps = s[m.end()..]
+            .trim_start()
+            .chars()
+            .next()
+            .map(|c| c.is_uppercase())
+            .unwrap_or_else(|| true);
+        if !is_next_token_caps {
+            continue;
+        }
         let byte_offset = m.end() - 1;
         if m.as_str().ends_with(". ") {
             if !is_abbreviation(&m.as_str().trim_end()) {
@@ -118,5 +131,17 @@ mod tests {
         espanol,
         "EE.UU. saluda \"cooperación\" de talibanes en nueva evacuación tras su retirada de Afganistán. Eliminar este oración",
         "EE.UU. saluda \"cooperación\" de talibanes en nueva evacuación tras su retirada de Afganistán."
+    );
+
+    test_first_sentence_boundary!(
+        yahoo,
+        "Yahoo! is an American web services provider. Yahoo was established in January 1994.",
+        "Yahoo! is an American web services provider."
+    );
+
+    test_first_sentence_boundary!(
+        end_of_string_edge_case,
+        "This string ends with a space. ",
+        "This string ends with a space."
     );
 }
