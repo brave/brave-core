@@ -25,7 +25,6 @@ import {
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
-import * as Result from '../common/types/result'
 
 // import { NavOptions } from '../options/side-nav-options'
 import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
@@ -440,19 +439,24 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     alert('Will Remove Account')
   }
 
-  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Result.Type<HardwareWalletAccount[]> => {
+  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<HardwareWalletAccount[]> => {
     const makeDerivationPath = (index: number): string => `m/44'/60'/${index}'/0/0`
 
-    return Array.from({ length: opts.stopIndex - opts.startIndex }, (_, i) => ({
-      address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-      derivationPath: makeDerivationPath(i + opts.startIndex),
-      balance: '0.012345',
-      ticker: 'ETH'
-    }))
+    return new Promise((resolve) => {
+      resolve(Array.from({ length: opts.stopIndex - opts.startIndex }, (_, i) => ({
+        address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+        derivationPath: makeDerivationPath(i + opts.startIndex),
+        balance: '0.012345',
+        ticker: 'ETH'
+      })))
+    })
   }
 
   const onImportWallet = () => {
     completeWalletSetup(false)
+  }
+  const onAddHardwareAccounts = (accounts: HardwareWalletAccount[]) => {
+    console.log(accounts)
   }
 
   const fetchFullTokenList = () => {
@@ -542,6 +546,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onCreateAccount={onCreateAccount}
                               onImportAccount={onImportAccount}
                               onConnectHardwareWallet={onConnectHardwareWallet}
+                              onAddHardwareAccounts={onAddHardwareAccounts}
                               isLoading={false}
                               showAddModal={showAddModal}
                               onToggleAddModal={onToggleAddModal}

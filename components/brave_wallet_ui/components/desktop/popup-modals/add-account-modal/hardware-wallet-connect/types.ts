@@ -40,5 +40,4 @@ export interface HardwareWalletAccount {
   address: string
   derivationPath: string
   balance: string
-  ticker: string
 }

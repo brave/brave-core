@@ -5,7 +5,10 @@
 
 import WalletApiProxy from '../common/wallet_api_proxy.js'
 import { addSingletonGetter } from 'chrome://resources/js/cr.m.js'
-import { kLedgerKeyringType } from '../constants/types'
+import {
+  HardwareWallet
+} from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
+
 import LedgerBridgeKeyring from '../common/ledgerjs/eth_ledger_bridge_keyring'
 
 
@@ -31,16 +34,16 @@ export default class WalletPageApiProxyImpl extends WalletApiProxy {
       this.assetRatioController.$.bindNewPipeAndPassReceiver(),
       this.keyringController.$.bindNewPipeAndPassReceiver(),
       this.ercTokenRegistry.$.bindNewPipeAndPassReceiver(),
-      this.ethTxController.$.bindNewPipeAndPassReceiver());
+      this.ethTxController.$.bindNewPipeAndPassReceiver(),
       this.braveWalletService.$.bindNewPipeAndPassReceiver());
-    this.hardwareKeyring = new LedgerBridgeKeyring();
+    this.ledgerHardwareKeyring = new LedgerBridgeKeyring();
   }
   /** @override */
   getKeyringsByType(type) {
-    if (type == kLedgerKeyringType) {
-      return this.hardwareKeyring;
+    if (type == HardwareWallet.Ledger) {
+      return this.ledgerHardwareKeyring;
     }
-    return this.keyringController.getKeyringsByType(type);
+    return this.keyringController;
   }
 
 }
