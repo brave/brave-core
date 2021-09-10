@@ -20,8 +20,7 @@
 using brave::ResponseCallback;
 
 TEST(BraveReferralsNetworkDelegateHelperTest, ReplaceHeadersForMatchingDomain) {
-  const std::array<std::tuple<GURL, std::string>, 2> test_cases = {
-      std::make_tuple<>(GURL("https://api-sandbox.uphold.com"), "uphold"),
+  const std::array<std::tuple<GURL, std::string>, 1> test_cases = {
       std::make_tuple<>(GURL("http://grammarly.com"), "grammarly"),
   };
 
@@ -42,13 +41,19 @@ TEST(BraveReferralsNetworkDelegateHelperTest, ReplaceHeadersForMatchingDomain) {
 
 TEST(BraveReferralsNetworkDelegateHelperTest,
      NoReplaceHeadersForNonMatchingDomain) {
-  const GURL url("https://www.google.com");
+  const std::array<GURL, 2> test_cases = {
+      GURL("https://api-sandbox.uphold.com"),
+      GURL("https://www.google.com"),
+  };
 
-  net::HttpRequestHeaders headers;
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(GURL());
-  int rc = brave::OnBeforeStartTransaction_ReferralsWork(
-      &headers, brave::ResponseCallback(), request_info);
+  for (const auto& c : test_cases) {
+    net::HttpRequestHeaders headers;
 
-  EXPECT_FALSE(headers.HasHeader("X-Brave-Partner"));
-  EXPECT_EQ(rc, net::OK);
+    auto request_info = std::make_shared<brave::BraveRequestInfo>(c);
+    int rc = brave::OnBeforeStartTransaction_ReferralsWork(
+        &headers, brave::ResponseCallback(), request_info);
+
+    EXPECT_FALSE(headers.HasHeader("X-Brave-Partner"));
+    EXPECT_EQ(rc, net::OK);
+  }
 }
