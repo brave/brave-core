@@ -208,11 +208,9 @@ constexpr char kBraveSuperReferralName[] = "Enable Brave Super Referral";
 constexpr char kBraveSuperReferralDescription[] =
     "Use custom theme for Brave Super Referral";
 
-constexpr char kNativeBraveWalletName[] =
-    "Enable experimental Brave native wallet";
+constexpr char kNativeBraveWalletName[] = "Enable Brave Wallet";
 constexpr char kNativeBraveWalletDescription[] =
-    "Experimental native cryptocurrency wallet support without the use of "
-    "extensions";
+    "Native cryptocurrency wallet support without the use of extensions";
 
 constexpr char kUseDevUpdaterUrlName[] = "Use dev updater url";
 constexpr char kUseDevUpdaterUrlDescription[] =
