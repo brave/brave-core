@@ -195,24 +195,15 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
         }
     }
 
-    // Clean title of html encoded attributes
+    // HTML decode title, author, and description
     if !meta.title.is_empty() {
-        if let Some(ref inner) = dom::parse_inner(&meta.title) {
-            let title = dom::extract_text_from_node(inner, true, true);
-            if !title.is_empty() {
-                meta.title = title;
-            }
-        }
+        meta.title = dom::html_decode(&meta.title).unwrap_or(meta.title);
     }
-
-    // Clean description of html encoded attributes
+    if let Some(ref author) = meta.author {
+        meta.author = dom::html_decode(author).or(meta.author);
+    }
     if let Some(ref description) = meta.description {
-        if let Some(ref inner) = dom::parse_inner(description) {
-            let desc = dom::extract_text_from_node(inner, true, true);
-            if !desc.is_empty() {
-                meta.description = Some(desc);
-            }
-        }
+        meta.description = dom::html_decode(description).or(meta.description);
     }
 
     meta
@@ -568,6 +559,21 @@ mod tests {
         assert_eq!(
             product.meta.description.expect("No description extracted"),
             "An inquest into Eloise Parry's death has been adjourned."
+        );
+    }
+
+    #[test]
+    fn test_byline_html_decode() {
+        let input = r#"
+        <head>
+        <meta property="author" content="Geek&#039;s Guide to the Galaxy"/>
+        </head>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let meta = preprocess(&mut cursor).unwrap().meta;
+        assert_eq!(
+            "Geek's Guide to the Galaxy",
+            meta.author.expect("No author extracted"),
         );
     }
 
