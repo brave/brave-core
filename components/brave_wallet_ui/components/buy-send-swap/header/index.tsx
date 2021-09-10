@@ -42,7 +42,7 @@ function SwapHeader (props: Props) {
   }
 
   const orb = React.useMemo(() => {
-    return create({ seed: selectedAccount.address, size: 8, scale: 16 }).toDataURL()
+    return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [selectedAccount])
 
   return (

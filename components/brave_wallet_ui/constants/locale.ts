@@ -307,7 +307,13 @@ const locale = {
   connectHardwarePanelConnected: 'connected',
   connectHardwarePanelDisconnected: 'disconnected',
   connectHardwarePanelInstructions: 'Instructions',
-  connectHardwarePanelConnect: 'Connect your'
+  connectHardwarePanelConnect: 'Connect your',
+
+  // Transaction List Item
+  transactionSent: 'sent',
+  transactionReceived: 'received',
+  transactionExplorer: 'View on Block Explorer',
+  transactionPlaceholder: 'Transactions will appear here'
 }
 
 export default locale

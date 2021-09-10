@@ -162,11 +162,11 @@ function ConfirmTransactionPanel (props: Props) {
   }
 
   const fromOrb = React.useMemo(() => {
-    return create({ seed: transactionInfo.fromAddress, size: 8, scale: 16 }).toDataURL()
+    return create({ seed: transactionInfo.fromAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [transactionInfo])
 
   const toOrb = React.useMemo(() => {
-    return create({ seed: transaction.sendTo, size: 8, scale: 10 }).toDataURL()
+    return create({ seed: transaction.sendTo.toLowerCase(), size: 8, scale: 10 }).toDataURL()
   }, [transactionInfo])
 
   return (

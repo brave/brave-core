@@ -14,6 +14,7 @@ export const StyledWrapper = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
+  marging-bottom: 10px;
 `
 
 export const PrimaryRow = styled.div`
@@ -216,4 +217,14 @@ export const SubviewSectionTitle = styled.span`
   letter-spacing: 0.04em;
   color: ${(p) => p.theme.color.text02};
   margin-bottom: 10px;
+`
+
+export const TransactionPlaceholderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100px;
+  padding-top: 10px;
 `

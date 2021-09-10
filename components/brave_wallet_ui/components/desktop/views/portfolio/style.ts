@@ -12,6 +12,7 @@ export const StyledWrapper = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
+  margin-bottom: 10px;
 `
 
 export const TopRow = styled.div`
@@ -153,4 +154,40 @@ export const ArrowIcon = styled(ArrowUpIcon) <Partial<StyleProps>>`
   margin-right: 2px;
   transform: ${(p) => p.isDown ? 'rotate(270deg)' : 'rotate(90deg)'};
   color: ${(p) => p.theme.palette.white};
+`
+
+export const EmptyTransactionContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100px;
+`
+
+export const TransactionPlaceholderText = styled.span`
+  font-family: Poppins;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: ${(p) => p.theme.color.text03};
+  margin-left: 10px;
+`
+
+export const AssetBalanceDisplay = styled.span`
+  font-family: Poppins;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: ${(p) => p.theme.color.text02};
+`
+
+export const DividerRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
 `

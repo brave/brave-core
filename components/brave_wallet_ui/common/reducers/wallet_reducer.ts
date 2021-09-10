@@ -20,7 +20,8 @@ import {
   EthereumChain,
   kMainnetChainId,
   TransactionInfo,
-  TransactionStatus
+  TransactionStatus,
+  TransactionListInfo
 } from '../../constants/types'
 import {
   NewUnapprovedTxAdded,
@@ -296,6 +297,13 @@ reducer.on(WalletActions.knownTransactionsUpdated, (state: any, payload: Transac
     pendingTransactions: newPendingTransactions,
     selectedPendingTransaction: newSelectedPendingTransaction,
     knownTransactions: payload
+  }
+})
+
+reducer.on(WalletActions.setTransactionList, (state: any, payload: TransactionListInfo[]) => {
+  return {
+    ...state,
+    transactions: payload
   }
 })
 

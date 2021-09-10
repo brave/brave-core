@@ -24,7 +24,8 @@ import {
   PortfolioTokenHistoryAndInfo,
   AssetPriceTimeframe,
   SendTransactionParam,
-  TransactionInfo
+  TransactionInfo,
+  TransactionListInfo
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -63,3 +64,4 @@ export const transactionStatusChanged = createAction<TransactionStatusChanged>('
 export const approveTransaction = createAction<TransactionInfo>('approveTransaction')
 export const rejectTransaction = createAction<TransactionInfo>('rejectTransaction')
 export const knownTransactionsUpdated = createAction<TransactionInfo[]>('knownTransactionsUpdated')
+export const setTransactionList = createAction<TransactionListInfo[]>('setTransactionList')

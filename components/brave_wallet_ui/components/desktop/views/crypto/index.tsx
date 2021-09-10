@@ -7,7 +7,7 @@ import {
   AppsListType,
   PriceDataObjectType,
   AccountAssetOptionType,
-  RPCTransactionType,
+  TransactionListInfo,
   AssetPriceInfo,
   WalletAccountType,
   AssetPriceTimeframe,
@@ -48,8 +48,10 @@ export interface Props {
   onAddCustomToken: (tokenName: string, tokenSymbol: string, tokenContractAddress: string, tokenDecimals: number) => void
   onSetImportError: (hasError: boolean) => void
   hasImportError: boolean
+  transactionSpotPrices: AssetPriceInfo[]
   privateKey: string
   fullAssetList: TokenInfo[]
+  userVisibleTokensInfo: TokenInfo[]
   needsBackup: boolean
   accounts: WalletAccountType[]
   networkList: EthereumChain[]
@@ -61,7 +63,7 @@ export interface Props {
   selectedBTCAssetPrice: AssetPriceInfo | undefined
   selectedAsset: TokenInfo | undefined
   portfolioBalance: string
-  transactions: (RPCTransactionType | undefined)[]
+  transactions: (TransactionListInfo | undefined)[]
   userAssetList: AccountAssetOptionType[]
   userWatchList: string[]
   isLoading: boolean
@@ -92,6 +94,8 @@ const CryptoView = (props: Props) => {
     onSetImportError,
     onAddCustomToken,
     hasImportError,
+    userVisibleTokensInfo,
+    transactionSpotPrices,
     privateKey,
     selectedNetwork,
     fullAssetList,
@@ -220,9 +224,11 @@ const CryptoView = (props: Props) => {
           isLoading={isLoading}
           selectedNetwork={selectedNetwork}
           fullAssetList={fullAssetList}
+          userVisibleTokensInfo={userVisibleTokensInfo}
           userWatchList={userWatchList}
           isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
           onAddCustomToken={onAddCustomToken}
+          transactionSpotPrices={transactionSpotPrices}
         />
       }
       {selectedTab === 'accounts' &&
@@ -237,6 +243,9 @@ const CryptoView = (props: Props) => {
           onViewPrivateKey={onViewPrivateKey}
           privateKey={privateKey}
           transactions={transactions}
+          selectedNetwork={selectedNetwork}
+          transactionSpotPrices={transactionSpotPrices}
+          userVisibleTokensInfo={userVisibleTokensInfo}
         />
       }
       {showAddModal &&

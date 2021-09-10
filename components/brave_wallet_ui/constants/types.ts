@@ -158,7 +158,7 @@ export interface WalletState {
   selectedAccount: WalletAccountType
   selectedNetwork: EthereumChain
   accounts: WalletAccountType[]
-  transactions: RPCTransactionType[]
+  transactions: TransactionListInfo[]
   userVisibleTokens: string[]
   userVisibleTokensInfo: TokenInfo[]
   fullTokenList: TokenInfo[]
@@ -471,6 +471,11 @@ export interface TransactionInfo {
   txType: TransactionType
   txParams: string[]
   txArgs: string[]
+}
+
+export interface TransactionListInfo {
+  account: UserAccountType
+  transactions: TransactionInfo[]
 }
 
 export interface GetAllTransactionInfoReturnInfo {
