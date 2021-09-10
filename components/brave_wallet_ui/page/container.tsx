@@ -38,7 +38,8 @@ import {
   WalletAccountType,
   TokenInfo,
   UpdateAccountNamePayloadType,
-  EthereumChain
+  EthereumChain,
+  kLedgerKeyringType
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -53,7 +54,8 @@ import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 import {
   HardwareWalletAccount,
-  HardwareWalletConnectOpts
+  HardwareWalletConnectOpts,
+  HardwareWallet
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import * as Result from '../common/types/result'
 
@@ -366,8 +368,10 @@ function Container (props: Props) {
   }
 
   const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Result.Type<HardwareWalletAccount[]> => {
-    // TODO (DOUGLAS): Add logic to connect a hardware wallet
-
+    if (opts.hardware === HardwareWallet.Ledger) {
+      props.walletPageActions.connectHardwareWallet(
+          { type: kLedgerKeyringType })
+    }
     return []
   }
 

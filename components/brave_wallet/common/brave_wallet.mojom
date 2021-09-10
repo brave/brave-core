@@ -181,6 +181,8 @@ interface ERCTokenRegistry {
   GetBuyTokens() => (array<ERCToken> tokens);
 };
 
+const string kLegerKeyringType = "Ledger Hardware";
+
 interface KeyringController {
   CreateWallet(string password) => (string mnemonic);
   GetMnemonicForDefaultKeyring() => (string mnemonic);

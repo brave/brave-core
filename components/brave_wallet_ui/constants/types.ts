@@ -505,6 +505,10 @@ export interface AssetRatioController {
   getPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetPriceHistoryReturnObjectInfo>
 }
 
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
+export const kLedgerKeyringType = 'Ledger Hardware'
+
 export interface KeyringController {
   createWallet: (password: string) => Promise<CreateWalletReturnInfo>
   restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
