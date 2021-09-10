@@ -12,8 +12,8 @@
 #define ForcePulseForTest                                                    \
   DeleteDeviceInfo(const std::string& client_id, base::OnceClosure callback) \
       override;                                                              \
-  std::vector<std::unique_ptr<BraveDeviceInfo>>                              \
-  GetAllBraveDeviceInfo() const override;                                    \
+  std::vector<std::unique_ptr<BraveDeviceInfo>> GetAllBraveDeviceInfo()      \
+      const override;                                                        \
   void ForcePulseForTest
 
 #define RefreshLocalDeviceInfoIfNeeded           \
@@ -21,9 +21,9 @@
   void RefreshLocalDeviceInfoIfNeeded
 
 // private:
-#define StoreSpecifics                              \
-  OnDeviceInfoDeleted(const std::string& client_id, \
-                      base::OnceClosure callback);  \
+#define StoreSpecifics                                                 \
+  OnDeviceInfoDeleted(const std::string& client_id, const int attempt, \
+                      base::OnceClosure callback);                     \
   void StoreSpecifics
 
 #include "../../../../components/sync_device_info/device_info_sync_bridge.h"

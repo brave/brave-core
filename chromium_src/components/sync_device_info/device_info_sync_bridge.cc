@@ -25,6 +25,8 @@ namespace syncer {
 
 namespace {
 
+const int kFailedAttemtpsToAckDeviceDelete = 5;
+
 std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
     const DeviceInfoSpecifics& specifics) {
   ModelTypeSet data_types;
@@ -67,19 +69,21 @@ void DeviceInfoSyncBridge::DeleteDeviceInfo(const std::string& client_id,
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&DeviceInfoSyncBridge::OnDeviceInfoDeleted,
-                     weak_ptr_factory_.GetWeakPtr(), client_id,
+                     weak_ptr_factory_.GetWeakPtr(), client_id, 1,
                      std::move(callback)),
       base::TimeDelta::FromSeconds(1));
 }
 
 void DeviceInfoSyncBridge::OnDeviceInfoDeleted(const std::string& client_id,
+                                               const int attempt,
                                                base::OnceClosure callback) {
   // Make sure the deleted device info is sent
-  if (change_processor()->IsEntityUnsynced(client_id)) {
+  if (change_processor()->IsEntityUnsynced(client_id) &&
+      attempt < kFailedAttemtpsToAckDeviceDelete) {
     base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&DeviceInfoSyncBridge::OnDeviceInfoDeleted,
-                       weak_ptr_factory_.GetWeakPtr(), client_id,
+                       weak_ptr_factory_.GetWeakPtr(), client_id, attempt + 1,
                        std::move(callback)),
         base::TimeDelta::FromSeconds(1));
   } else {
