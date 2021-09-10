@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_SERVICE_DESKTOP_H_
 
 #include <string>
+#include <vector>
 
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
@@ -18,6 +19,10 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+
+namespace base {
+class Value;
+}  // namespace base
 
 typedef brave_vpn::mojom::ConnectionState ConnectionState;
 
@@ -54,11 +59,15 @@ class BraveVpnServiceDesktop
 
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
+
   // mojom::vpn::ServiceHandler
+  void AddObserver(
+      mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> observer) override;
   void GetConnectionState(GetConnectionStateCallback callback) override;
   void Connect() override;
   void Disconnect() override;
   void CreateVPNConnection() override;
+  void GetAllRegions(GetAllRegionsCallback callback) override;
 
  private:
   friend class BraveAppMenuBrowserTest;
@@ -66,8 +75,6 @@ class BraveVpnServiceDesktop
 
   // BraveVpnService overrides:
   void Shutdown() override;
-  void AddObserver(
-      mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> observer) override;
 
   // brave_vpn::BraveVPNOSConnectionAPI::Observer overrides:
   void OnCreated(const std::string& name) override;
@@ -83,7 +90,11 @@ class BraveVpnServiceDesktop
   }
 
   brave_vpn::BraveVPNConnectionInfo GetConnectionInfo();
+  void FetchRegionList();
+  void OnFetchRegionList(const std::string& region_list, bool success);
+  void ParseAndCacheRegionList(base::Value region_value);
 
+  std::vector<brave_vpn::mojom::Region> regions_;
   ConnectionState state_ = ConnectionState::DISCONNECTED;
   bool is_purchased_user_ = false;
   base::ObserverList<Observer> observers_;

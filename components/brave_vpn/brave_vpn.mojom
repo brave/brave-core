@@ -28,6 +28,12 @@ interface ServiceObserver {
   OnConnectionStateChanged(ConnectionState state);
 };
 
+struct Region {
+  string continent;
+  string name;
+  string name_pretty;
+};
+
 // Browser-side handler for vpn service things
 interface ServiceHandler {
   GetConnectionState() => (ConnectionState state);
@@ -35,6 +41,7 @@ interface ServiceHandler {
   CreateVPNConnection();
   Connect();
   Disconnect();
+  GetAllRegions() => (array<Region> regions);
 };
 
 // WebUI-side handler for requests from the browser.
