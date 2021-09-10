@@ -38,8 +38,7 @@ import {
   WalletAccountType,
   TokenInfo,
   UpdateAccountNamePayloadType,
-  EthereumChain,
-  kLedgerKeyringType
+  EthereumChain
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -54,12 +53,11 @@ import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 import {
   HardwareWalletAccount,
-  HardwareWalletConnectOpts,
-  HardwareWallet
+  HardwareWalletConnectOpts
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import * as Result from '../common/types/result'
 
 import { formatBalance, toWei } from '../utils/format-balances'
+import apiProxy from './wallet_page_api_proxy.js'
 
 type Props = {
   wallet: WalletState
@@ -367,12 +365,11 @@ function Container (props: Props) {
     }
   }
 
-  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Result.Type<HardwareWalletAccount[]> => {
-    if (opts.hardware === HardwareWallet.Ledger) {
-      props.walletPageActions.connectHardwareWallet(
-          { type: kLedgerKeyringType })
-    }
-    return []
+  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<HardwareWalletAccount[]> => {
+    return new Promise(async (resolve, reject) => {
+      const keyring = await apiProxy.getInstance().getKeyringsByType(opts.hardware)
+      keyring.getAccounts(opts.startIndex, opts.stopIndex).then(resolve).catch(reject)
+    })
   }
 
   const onImportAccount = (accountName: string, privateKey: string) => {

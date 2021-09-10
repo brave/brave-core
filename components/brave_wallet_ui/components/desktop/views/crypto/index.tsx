@@ -26,7 +26,6 @@ import {
   HardwareWalletAccount,
   HardwareWalletConnectOpts
 } from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
-import * as Result from '../../../../common/types/result'
 
 export interface Props {
   onLockWallet: () => void
@@ -35,7 +34,7 @@ export interface Props {
   onSelectAsset: (asset: TokenInfo | undefined) => void
   onCreateAccount: (name: string) => void
   onImportAccount: (accountName: string, privateKey: string) => void
-  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Result.Type<HardwareWalletAccount[]>
+  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onToggleAddModal: () => void
   onUpdateVisibleTokens: (list: string[]) => void

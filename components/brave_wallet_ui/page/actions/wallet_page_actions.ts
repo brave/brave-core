@@ -16,8 +16,7 @@ import {
   ImportAccountPayloadType,
   RemoveImportedAccountPayloadType,
   ViewPrivateKeyPayloadType,
-  ImportAccountFromJsonPayloadType,
-  ConnectHardwareWalletPayload
+  ImportAccountFromJsonPayloadType
 } from '../constants/action_types'
 import { TokenInfo, UpdateAccountNamePayloadType } from '../../constants/types'
 
@@ -44,4 +43,3 @@ export const updateSelectedAsset = createAction<TokenInfo>('updateSelectedAsset'
 export const setIsFetchingPriceHistory = createAction<boolean>('setIsFetchingPriceHistory')
 export const setShowIsRestoring = createAction<boolean>('setShowIsRestoring')
 export const updateAccountName = createAction<UpdateAccountNamePayloadType>('updateAccountName')
-export const connectHardwareWallet = createAction<ConnectHardwareWalletPayload>('connectHardwareWallet')

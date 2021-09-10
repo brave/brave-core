@@ -16,8 +16,7 @@ import {
   ImportAccountPayloadType,
   RemoveImportedAccountPayloadType,
   ViewPrivateKeyPayloadType,
-  ImportAccountFromJsonPayloadType,
-  ConnectHardwareWalletPayload
+  ImportAccountFromJsonPayloadType
 } from '../constants/action_types'
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 
@@ -134,12 +133,6 @@ handler.on(WalletPageActions.updateAccountName.getType(), async (store, payload:
 handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store, payload: NewUnapprovedTxAdded) => {
   const pageHandler = (await getAPIProxy()).pageHandler
   await pageHandler.showApprovePanelUI()
-})
-
-handler.on(WalletPageActions.connectHardwareWallet.getType(), async (store, payload: ConnectHardwareWalletPayload) => {
-  const keyring = await (await getAPIProxy()).getKeyringsByType(payload.type)
-  const info = await keyring.getDefaultKeyringInfo()
-  console.log(info)
 })
 
 // TODO(bbondy): Remove - Example usage:

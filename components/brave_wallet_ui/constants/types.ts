@@ -217,6 +217,7 @@ export interface AccountInfo {
   address: string
   name: string
   isImported: boolean
+  isLedger: boolean
 }
 
 export interface WalletInfo {
@@ -504,10 +505,6 @@ export interface AssetRatioController {
   getPrice: (fromAssets: string[], toAssets: string[], timeframe: AssetPriceTimeframe) => Promise<GetPriceReturnInfo>
   getPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetPriceHistoryReturnObjectInfo>
 }
-
-// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
-// we auto generate this type file from mojo.
-export const kLedgerKeyringType = 'Ledger Hardware'
 
 export interface KeyringController {
   createWallet: (password: string) => Promise<CreateWalletReturnInfo>

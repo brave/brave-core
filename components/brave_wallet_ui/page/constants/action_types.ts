@@ -17,10 +17,6 @@ export type AddAccountPayloadType = {
   accountName: string
 }
 
-export type ConnectHardwareWalletPayload = {
-  type: string
-}
-
 export type ImportAccountPayloadType = {
   accountName: string,
   privateKey: string

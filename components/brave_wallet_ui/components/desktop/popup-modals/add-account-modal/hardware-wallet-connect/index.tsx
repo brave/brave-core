@@ -2,7 +2,6 @@ import * as React from 'react'
 
 import locale from '../../../../../constants/locale'
 import { NavButton } from '../../../../extension'
-import * as Result from '../../../../../common/types/result'
 
 // Styled Components
 import { DisclaimerText, InfoIcon } from '../style'
@@ -15,7 +14,8 @@ import {
   HardwareInfoRow,
   HardwareTitle,
   LedgerIcon,
-  TrezorIcon
+  TrezorIcon,
+  ErrorText
 } from './style'
 
 // Custom types
@@ -24,7 +24,7 @@ import { HardwareWallet, HardwareWalletAccount, HardwareWalletConnectOpts, Ledge
 import HardwareWalletAccountsList from './accounts-list'
 
 export interface Props {
-  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Result.Type<HardwareWalletAccount[]>
+  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
 }
 
 const derivationBatch = 4
@@ -42,19 +42,17 @@ export default function (props: Props) {
   const onConnectHardwareWallet = (hardware: HardwareWallet) => {
     setIsConnecting(true)
 
-    const result = props.onConnectHardwareWallet({
+    props.onConnectHardwareWallet({
       hardware,
       startIndex: accounts.length,
       stopIndex: accounts.length + derivationBatch
-    })
-
-    if (Result.isError(result)) {
-      setConnectionError(result.message)
-    } else {
+    }).then((result) => {
       setAccounts([...accounts, ...result])
-    }
-
-    setIsConnecting(false)
+      setIsConnecting(false)
+    }).catch((error) => {
+      setConnectionError(error.message)
+      setIsConnecting(false)
+    })
   }
 
   const onAddAccounts = () => {
@@ -111,6 +109,9 @@ export default function (props: Props) {
           <DisclaimerText>{locale.connectHardwareInfo3}</DisclaimerText>
         </HardwareInfoColumn>
       </HardwareInfoRow>
+      {connectionError !== '' &&
+              <ErrorText>{connectionError}</ErrorText>
+            }
 
       {isConnecting ? (
         <ConnectingButton>
