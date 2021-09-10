@@ -12,12 +12,6 @@ import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-// import android.content.SharedPreferences;
-// import android.net.ConnectivityManager;
-// import android.net.Ikev2VpnProfile;
-// import android.net.NetworkCapabilities;
-// import android.net.NetworkInfo;
-// import android.net.VpnManager;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -28,7 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-// import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -38,7 +31,10 @@ import org.chromium.chrome.browser.vpn.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.VpnServerRegion;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 public class BraveVpnUtils {
     public static final int MONTHLY_SUBSCRIPTION = 1;
@@ -112,7 +108,21 @@ public class BraveVpnUtils {
         try {
             JSONObject result = new JSONObject(jsonHostnames);
             JSONArray hostnames = result.getJSONArray("hostnames");
-            JSONObject hostname = hostnames.getJSONObject(0);
+            ArrayList<JSONObject> hosts = new ArrayList<JSONObject>();
+            for (int i = 0; i < hostnames.length(); i++) {
+                JSONObject hostname = hostnames.getJSONObject(i);
+                if (hostname.getInt("capacity-score") == 0
+                        || hostname.getInt("capacity-score") == 1) {
+                    hosts.add(hostname);
+                }
+            }
+
+            JSONObject hostname;
+            if (hosts.size() < 2) {
+                hostname = hostnames.getJSONObject(new Random().nextInt(hostnames.length()));
+            } else {
+                hostname = hosts.get(new Random().nextInt(hosts.size()));
+            }
             return hostname.getString("hostname");
         } catch (JSONException e) {
             Log.e("BraveVPN", "getHostnameForRegion JSONException error " + e);
