@@ -341,6 +341,11 @@ test("brave_unit_tests") {
     ]
   }
 
+  if (toolkit_views) {
+    sources += [ "//brave/browser/ui/views/brave_ads/color_util_unittest.cc" ]
+    deps += [ "//brave/browser/ui/views/brave_ads" ]
+  }
+
   if (binance_enabled) {
     sources +=
         [ "//brave/components/binance/browser/binance_json_parser_unittest.cc" ]
