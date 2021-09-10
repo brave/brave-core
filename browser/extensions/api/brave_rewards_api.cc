@@ -854,7 +854,7 @@ void BraveRewardsGetPublisherBannerFunction::OnPublisherBanner(
 
     auto amounts = std::make_unique<base::ListValue>();
     for (auto const& value : banner->amounts) {
-      amounts->AppendInteger(value);
+      amounts->Append(value);
     }
     result.SetList("amounts", std::move(amounts));
 
