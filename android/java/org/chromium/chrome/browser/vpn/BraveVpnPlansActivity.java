@@ -66,6 +66,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     public void onResumeWithNative() {
         super.onResumeWithNative();
         BraveVpnNativeWorker.getInstance().addObserver(this);
+        hideProgress();
     }
 
     @Override

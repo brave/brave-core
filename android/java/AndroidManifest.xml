@@ -128,8 +128,9 @@
 </activity>
 
 <activity android:name="com.android.billingclient.api.ProxyBillingActivity"
-    android:exported="false">
-</activity>
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen.Transparent"
+    android:exported="false"
+    android:screenOrientation="sensorPortrait"/>
 
 <!-- Upgrade related -->
 <receiver android:name="org.chromium.chrome.browser.upgrade.BravePackageReplacedBroadcastReceiver"
