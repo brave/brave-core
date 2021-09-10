@@ -11,7 +11,6 @@ import BraveUI
 @available(iOS 14.0, *)
 struct SetupCryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
-  @Environment(\.presentationMode) @Binding private var presentationMode
   
   var body: some View {
     VStack(spacing: 46) {
@@ -47,14 +46,6 @@ struct SetupCryptoView: View {
     .introspectViewController { vc in
       vc.navigationItem.backButtonTitle = "Welcome" // NSLocalizedString
       vc.navigationItem.backButtonDisplayMode = .minimal
-    }
-    .toolbar {
-      ToolbarItemGroup(placement: .cancellationAction) {
-        Button(action: { presentationMode.dismiss() }) {
-          Image("wallet-dismiss")
-            .renderingMode(.template)
-        }
-      }
     }
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
   }
