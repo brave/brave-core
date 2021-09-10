@@ -23,13 +23,15 @@ test('Extracting accounts from device', () => {
     .resolves.toStrictEqual([
       {
         'address': 'address for m/44\'/60\'/0\'/0/0',
-        'balance': '',
-        'derivationPath': 'm/44\'/60\'/0\'/0/0'
+        'derivationPath': 'm/44\'/60\'/0\'/0/0',
+        'hardware': 'Ledger',
+        'name': 'Ledger 0'
       },
       {
         'address': 'address for m/44\'/60\'/1\'/0/0',
-        'balance': '',
-        'derivationPath': 'm/44\'/60\'/1\'/0/0'
+        'derivationPath': 'm/44\'/60\'/1\'/0/0',
+        'hardware': 'Ledger',
+        'name': 'Ledger 1'
       }]
     )
 })

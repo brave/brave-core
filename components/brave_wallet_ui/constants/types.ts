@@ -1,3 +1,5 @@
+import { HardwareWalletAccount } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
+
 export interface WalletAccountType {
   id: string
   name: string
@@ -520,6 +522,7 @@ export interface KeyringController {
   lock: () => Promise<void>
   unlock: (password: string) => Promise<UnlockReturnInfo>
   addAccount: (accountName: string) => Promise<AddAccountReturnInfo>
+  getHardwareAccounts: () => Promise<{ accounts: HardwareWalletAccount[] }>
 }
 
 export interface GetUserAssetsReturnInfo {
@@ -601,6 +604,7 @@ export interface APIProxyControllers {
   ercTokenRegistry: ERCTokenRegistry
   ethTxController: EthTxController
   braveWalletService: BraveWalletService
+  getKeyringsByType: (type: string) => any
   makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string, data: number[]) => any
 }
 

@@ -581,15 +581,22 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
       resolve(Array.from({ length: opts.stopIndex - opts.startIndex }, (_, i) => ({
         address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
         derivationPath: makeDerivationPath(i + opts.startIndex),
-        balance: '0.012345',
-        ticker: 'ETH'
+        name: 'Ledger 1',
+        hardware: 'Ledger'
       })))
+    })
+  }
+
+  const getBalance = (address: string): Promise<string> => {
+    return new Promise(async (resolve) => {
+      resolve('0')
     })
   }
 
   const onImportWallet = () => {
     completeWalletSetup(false)
   }
+
   const onAddHardwareAccounts = (accounts: HardwareWalletAccount[]) => {
     console.log(accounts)
   }
@@ -690,6 +697,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onImportAccount={onImportAccount}
                               onConnectHardwareWallet={onConnectHardwareWallet}
                               onAddHardwareAccounts={onAddHardwareAccounts}
+                              getBalance={getBalance}
                               isLoading={false}
                               showAddModal={showAddModal}
                               onToggleAddModal={onToggleAddModal}

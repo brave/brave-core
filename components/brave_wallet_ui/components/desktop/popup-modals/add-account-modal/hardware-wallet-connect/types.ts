@@ -36,8 +36,11 @@ export interface HardwareWalletConnectOpts {
   stopIndex: number
 }
 
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
 export interface HardwareWalletAccount {
   address: string
   derivationPath: string
-  balance: string
+  name: string
+  hardware: string
 }

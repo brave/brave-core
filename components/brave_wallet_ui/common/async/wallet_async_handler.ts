@@ -26,6 +26,11 @@ import {
 import { AssetOptions } from '../../options/asset-options'
 import { GetNetworkInfo } from '../../utils/network-utils'
 import { InitialVisibleTokenInfo } from '../../options/initial-visible-token-info'
+import { formatBalance } from '../../utils/format-balances'
+import {
+  HardwareWalletAccount,
+  HardwareWalletConnectOpts
+} from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -66,6 +71,16 @@ async function refreshWalletInfo (store: Store) {
   const ethJsonRpcController = apiProxy.ethJsonRpcController
   const assetPriceController = apiProxy.assetRatioController
   const result = await walletHandler.getWalletInfo()
+  const hardwareAccounts = await apiProxy.keyringController.getHardwareAccounts()
+  for (const account of hardwareAccounts.accounts) {
+    result.accountInfos.push({
+      address: account.address,
+      name: account.name,
+      isImported: false,
+      isLedger: true
+    })
+  }
+
   store.dispatch(WalletActions.initialized(result))
   const networkList = await ethJsonRpcController.getAllNetworks()
   store.dispatch(WalletActions.setAllNetworks(networkList))
@@ -279,6 +294,24 @@ handler.on(WalletActions.rejectTransaction.getType(), async (store, txInfo: Tran
   await apiProxy.ethTxController.rejectTransaction(txInfo.id)
   await refreshWalletInfo(store)
 })
+
+export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<HardwareWalletAccount[]> => {
+  return new Promise(async (resolve, reject) => {
+    const apiProxy = await getAPIProxy()
+    const keyring = await apiProxy.getKeyringsByType(opts.hardware)
+    keyring.getAccounts(opts.startIndex, opts.stopIndex).then(async (accounts: HardwareWalletAccount[]) => {
+      resolve(accounts)
+    }).catch(reject)
+  })
+}
+
+export const getBalance = (address: string): Promise<string> => {
+  return new Promise(async (resolve, reject) => {
+    const controller = (await getAPIProxy()).ethJsonRpcController
+    const balance = await controller.getBalance(address)
+    resolve(formatBalance(balance.balance, 18))
+  })
+}
 
 export default handler.middleware
 

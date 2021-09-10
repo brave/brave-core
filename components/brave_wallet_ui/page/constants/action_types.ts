@@ -32,6 +32,10 @@ export type RemoveImportedAccountPayloadType = {
   address: string
 }
 
+export type RemoveHardwareAccountPayloadType = {
+  address: string
+}
+
 export type RestoreWalletPayloadType = {
   mnemonic: string,
   password: string,

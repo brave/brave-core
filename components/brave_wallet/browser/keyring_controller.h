@@ -44,6 +44,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   static const base::Value* GetPrefForKeyring(PrefService* prefs,
                                               const std::string& key,
                                               const std::string& id);
+  static const base::Value* GetPrefForHardwareKeyring(PrefService* prefs);
   // If keyring dicionary for id doesn't exist, it will be created.
   static void SetPrefForKeyring(PrefService* prefs,
                                 const std::string& key,
@@ -104,6 +105,10 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                              const std::string& password,
                              const std::string& json,
                              ImportAccountCallback callback) override;
+  void AddHardwareAccounts(
+      std::vector<mojom::HardwareWalletAccountPtr> info) override;
+  void GetHardwareAccounts(GetHardwareAccountsCallback callback) override;
+  void RemoveHardwareAccount(const std::string& address) override;
   void GetPrivateKeyForImportedAccount(
       const std::string& address,
       GetPrivateKeyForImportedAccountCallback callback) override;

@@ -8,8 +8,11 @@ import 'chrome://resources/mojo/url/mojom/url.mojom-lite.js'
 import 'chrome://resources/mojo/mojo/public/mojom/base/time.mojom-lite.js';
 import 'chrome://resources/mojo/brave/components/brave_wallet/common/brave_wallet.mojom-lite.js'
 import * as WalletActions from '../common/actions/wallet_actions'
-
+import LedgerBridgeKeyring from '../common/ledgerjs/eth_ledger_bridge_keyring'
 import { addSingletonGetter } from 'chrome://resources/js/cr.m.js'
+import {
+  HardwareWallet
+} from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 export default class WalletApiProxy {
   constructor() {
@@ -29,6 +32,7 @@ export default class WalletApiProxy {
     this.ethTxController = new braveWallet.mojom.EthTxControllerRemote();
     /** @type {!braveWallet.mojom.BraveWalletServiceRemote} */
     this.braveWalletService = new braveWallet.mojom.BraveWalletServiceRemote();
+    this.ledgerHardwareKeyring = new LedgerBridgeKeyring();
   }
 
   addEthJsonRpcControllerObserver(store) {
@@ -51,6 +55,13 @@ export default class WalletApiProxy {
     txData.value = value
     txData.data = data
     return txData
+  }
+
+  getKeyringsByType(type) {
+    if (type == HardwareWallet.Ledger) {
+      return this.ledgerHardwareKeyring;
+    }
+    return this.keyringController;
   }
 
   addKeyringControllerObserver(store) {

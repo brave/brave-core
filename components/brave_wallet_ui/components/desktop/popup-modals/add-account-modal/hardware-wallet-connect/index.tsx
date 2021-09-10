@@ -26,6 +26,7 @@ import HardwareWalletAccountsList from './accounts-list'
 export interface Props {
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
   onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
+  getBalance: (address: string) => Promise<string>
 }
 
 const derivationBatch = 4
@@ -61,6 +62,10 @@ export default function (props: Props) {
     props.onAddHardwareAccounts(selectedAccounts)
   }
 
+  const getBalance = (address: string) => {
+    return props.getBalance(address)
+  }
+
   const onSelectLedger = () => {
     setSelectedHardwareWallet(HardwareWallet.Ledger)
   }
@@ -86,6 +91,7 @@ export default function (props: Props) {
         selectedDerivationScheme={selectedDerivationScheme}
         setSelectedDerivationScheme={setSelectedDerivationScheme}
         onAddAccounts={onAddAccounts}
+        getBalance={getBalance}
       />
     )
   }

@@ -15,9 +15,13 @@ import {
   AddAccountPayloadType,
   ImportAccountPayloadType,
   RemoveImportedAccountPayloadType,
+  RemoveHardwareAccountPayloadType,
   ViewPrivateKeyPayloadType,
   ImportAccountFromJsonPayloadType
 } from '../constants/action_types'
+import {
+  HardwareWalletAccount
+} from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { TokenInfo, UpdateAccountNamePayloadType } from '../../constants/types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
@@ -43,3 +47,5 @@ export const updateSelectedAsset = createAction<TokenInfo>('updateSelectedAsset'
 export const setIsFetchingPriceHistory = createAction<boolean>('setIsFetchingPriceHistory')
 export const setShowIsRestoring = createAction<boolean>('setShowIsRestoring')
 export const updateAccountName = createAction<UpdateAccountNamePayloadType>('updateAccountName')
+export const addHardwareAccounts = createAction<HardwareWalletAccount[]>('addHardwareAccounts')
+export const removeHardwareAccount = createAction<RemoveHardwareAccountPayloadType>('removeHardwareAccount')

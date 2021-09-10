@@ -15,9 +15,13 @@ import {
   AddAccountPayloadType,
   ImportAccountPayloadType,
   RemoveImportedAccountPayloadType,
+  RemoveHardwareAccountPayloadType,
   ViewPrivateKeyPayloadType,
   ImportAccountFromJsonPayloadType
 } from '../constants/action_types'
+import {
+  HardwareWalletAccount
+} from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -128,6 +132,20 @@ handler.on(WalletPageActions.updateAccountName.getType(), async (store, payload:
     await keyringController.setDefaultKeyringDerivedAccountName(payload.address, payload.name)
     : await keyringController.setDefaultKeyringImportedAccountName(payload.address, payload.name)
   return result.success
+})
+
+handler.on(WalletPageActions.addHardwareAccounts.getType(), async (store, accounts: HardwareWalletAccount[]) => {
+  const keyringController = (await getAPIProxy()).keyringController
+  await keyringController.addHardwareAccounts(accounts)
+  store.dispatch(WalletActions.accountsChanged())
+  store.dispatch(WalletPageActions.setShowAddModal(false))
+})
+
+handler.on(WalletPageActions.removeHardwareAccount.getType(), async (store, payload: RemoveHardwareAccountPayloadType) => {
+  const keyringController = (await getAPIProxy()).keyringController
+  await keyringController.removeHardwareAccount(payload.address)
+  store.dispatch(WalletActions.accountsChanged())
+  store.dispatch(WalletPageActions.setShowAddModal(false))
 })
 
 handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store, payload: NewUnapprovedTxAdded) => {
