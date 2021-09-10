@@ -1,5 +1,6 @@
 static_library("brave_private_cdn") {
   sources = [
+    "headers.h",
     "private_cdn_helper.cc",
     "private_cdn_helper.h",
   ]

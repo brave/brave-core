@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import * as Card from '../cardSizes'
-import braveNewsController from '../../../../api/brave_news/brave_news_proxy'
+import getBraveNewsController, * as BraveNews from '../../../../api/brave_news'
 import { getDataUrl } from '../../../../../common/privateCDN'
 
 type Props = {
@@ -40,7 +40,7 @@ function useGetUnpaddedImage (paddedUrl: string, isUnpadded: boolean, onLoaded?:
       return
     }
 
-    braveNewsController.getImageData({url: paddedUrl})
+    getBraveNewsController().getImageData({ url: paddedUrl })
     .then(async (result) => {
       if (!result.imageData) {
         return
@@ -79,4 +79,38 @@ export default function CardImage (props: Props) {
       <Card.Image isPromoted={props.isPromoted} src={unpaddedUrl} />
     </Frame>
   )
+}
+
+type FromFeedItemProps = Omit<Props, 'imageUrl' | 'isUnpadded'> & {
+  data: BraveNews.FeedItemMetadata
+}
+
+export function CardImageFromFeedItem (props: FromFeedItemProps) {
+  React.useEffect(() => {
+    if (!props.data.image.imageUrl && !props.data.image.paddedImageUrl) {
+      // Shouldn't happen since backend filters out items
+      // with no image. This is in a useEffect so it does not log every render.
+      console.error('Brave News found item with no image', props.data.url.url)
+    }
+  }, [props.data.image.imageUrl, props.data.image.paddedImageUrl])
+  const { data, ...baseProps } = props
+  if (props.data.image.paddedImageUrl) {
+    return (
+      <CardImage
+        {...baseProps}
+        imageUrl={props.data.image.paddedImageUrl.url}
+        isPromoted={props.isPromoted}
+      />
+    )
+  }
+  if (props.data.image.imageUrl) {
+    return (
+      <CardImage
+        imageUrl={props.data.image.imageUrl.url}
+        isUnpadded={true}
+        isPromoted={props.isPromoted}
+      />
+    )
+  }
+  return null
 }

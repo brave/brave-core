@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_today/common/switches.h"
 
-#include "base/command_line.h"
-
 namespace brave_today {
 namespace switches {
 

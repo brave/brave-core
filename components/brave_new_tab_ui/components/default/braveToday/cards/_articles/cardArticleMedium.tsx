@@ -4,7 +4,8 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import CardImage from '../CardImage'
+import * as BraveNews from '../../../../../api/brave_news'
+import { CardImageFromFeedItem } from '../CardImage'
 import * as Card from '../../cardSizes'
 import PublisherMeta from '../PublisherMeta'
 import useScrollIntoView from '../../useScrollIntoView'
@@ -13,16 +14,16 @@ import { OnReadFeedItem, OnSetPublisherPref } from '../../'
 // TODO(petemill): Large and Medium article should be combined to 1 component.
 
 interface Props {
-  content: (BraveToday.Article)[]
-  publishers: BraveToday.Publishers
-  articleToScrollTo?: BraveToday.FeedItem
+  content: (BraveNews.FeedItem)[]
+  publishers: BraveNews.Publishers
+  articleToScrollTo?: BraveNews.FeedItemMetadata
   onReadFeedItem: OnReadFeedItem
   onSetPublisherPref: OnSetPublisherPref
 }
 
 type ArticleProps = {
-  item: BraveToday.Article
-  publisher?: BraveToday.Publisher
+  item: BraveNews.FeedItem
+  publisher?: BraveNews.Publisher
   shouldScrollIntoView?: boolean
   onReadFeedItem: OnReadFeedItem
   onSetPublisherPref: OnSetPublisherPref
@@ -34,16 +35,20 @@ function MediumArticle (props: ArticleProps) {
   const onClick = useReadArticleClickHandler(props.onReadFeedItem, {
     item
   })
+  const data = item.article?.data
+  if (!data) {
+    return null
+  }
   return (
     <Card.Small>
-      <a onClick={onClick} href={item.url} ref={cardRef}>
-        <CardImage
-          imageUrl={item.img}
+      <a onClick={onClick} href={data.url.url} ref={cardRef}>
+        <CardImageFromFeedItem
+          data={data}
         />
         <Card.Content>
           <Card.Text>
-            {item.title}
-          <Card.Time>{item.relative_time}</Card.Time>
+            {data.title}
+          <Card.Time>{data.relativeTimeDescription}</Card.Time>
           {
             publisher &&
               <Card.Publisher>
@@ -72,8 +77,14 @@ export default function CardSingleArticleMedium (props: Props) {
     <Card.ContainerForTwo>
       {
         content.map((item, index) => {
-          const shouldScrollIntoView = props.articleToScrollTo && (props.articleToScrollTo.url === item.url)
-          const publisher = props.publishers[item.publisher_id]
+          const data = item.article?.data
+          if (!data) {
+            return (
+              <React.Fragment key={index} />
+            )
+          }
+          const shouldScrollIntoView = props.articleToScrollTo && (props.articleToScrollTo.url.url === data.url.url)
+          const publisher = props.publishers[data.publisherId]
           return (
             <MediumArticle
               key={index}

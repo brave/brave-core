@@ -46,6 +46,7 @@
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_today/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -165,11 +166,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
 
-#if !defined(OS_ANDROID)
-#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
-#include "brave/components/brave_today/common/brave_news.mojom.h"
-#endif
-
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
@@ -181,6 +177,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
+#include "brave/components/brave_today/common/brave_news.mojom.h"
+#endif
 #endif
 
 #if defined(OS_ANDROID)
@@ -455,7 +455,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 // Brave News
-#if !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_NEWS) && !defined(OS_ANDROID)
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
 #endif

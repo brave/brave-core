@@ -8,12 +8,15 @@
 
 #include <string>
 
-#include "brave/components/brave_today/common/brave_news.mojom.h"
+#include "brave/components/brave_today/buildflags/buildflags.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-// #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_today/common/brave_news.mojom.h"
+#endif
 
 namespace brave_news {
 class BraveNewsController;
@@ -26,14 +29,14 @@ class BraveNewTabUI : public ui::MojoWebUIController {
   BraveNewTabUI(const BraveNewTabUI&) = delete;
   BraveNewTabUI& operator=(const BraveNewTabUI&) = delete;
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   // Instantiates the implementor of the mojo
   // interface passing the pending receiver that will be internally bound.
   void BindInterface(
-      mojo::PendingReceiver<
-          brave_news::mojom::BraveNewsController> receiver);
+      mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver);
+#endif
 
  private:
-
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 

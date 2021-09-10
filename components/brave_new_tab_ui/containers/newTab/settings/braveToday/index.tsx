@@ -11,11 +11,12 @@ import {
   SettingsText
 } from '../../../../components/default'
 import { Toggle } from '../../../../components/toggle'
+import { Publishers } from '../../../../api/brave_news'
 import * as Styled from './style'
 import Sources from './sources'
 
 export interface Props {
-  publishers?: BraveToday.Publishers
+  publishers?: Publishers
   setPublisherPref: (publisherId: string, enabled: boolean) => any
   onDisplay: () => any
   onClearPrefs: () => any

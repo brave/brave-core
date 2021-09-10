@@ -8,19 +8,20 @@ import("//testing/test.gni")
 
 source_set("brave_news_unit_tests") {
   testonly = true
-    sources = [
-      "//brave/components/brave_today/browser/feed_parsing_unittest.cc",
-    ]
+  sources = [
+    "//brave/components/brave_today/browser/feed_building_unittest.cc",
+    "//brave/components/brave_today/browser/publishers_parsing_unittest.cc",
+  ]
 
-    deps = [
-      "//base/test:test_support",
-      "//brave/components/brave_today/browser",
-      "//brave/components/brave_today/common",
-      "//brave/components/brave_today/common:mojo_bindings",
-      "//chrome/browser",
-      "//chrome/test:test_support",
-      "//content/test:test_support",
-      "//testing/gtest",
-      "//url",
-    ]
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/brave_today/browser",
+    "//brave/components/brave_today/common",
+    "//brave/components/brave_today/common:mojo_bindings",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
 }

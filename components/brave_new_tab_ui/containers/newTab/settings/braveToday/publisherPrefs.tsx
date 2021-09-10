@@ -6,7 +6,7 @@
 import * as React from 'react'
 import AutoSizer from '@brave/react-virtualized-auto-sizer'
 import { VariableSizeList } from 'react-window'
-import { isPublisherContentAllowed } from '../../../../../common/braveToday'
+import { Publisher, UserEnabled } from '../../../../api/brave_news'
 import {
   SettingsRow,
   SettingsText
@@ -14,19 +14,31 @@ import {
 import { Toggle } from '../../../../components/toggle'
 import * as s from './style'
 
+function isPublisherContentAllowed (publisher: Publisher): boolean {
+  // Either the publisher is enabled-by-default (remotely) and the user has
+  // not overriden that default, or the user has made a choice.
+  if (publisher.userEnabledStatus === UserEnabled.ENABLED) {
+    return true
+  }
+  if (publisher.isEnabled && publisher.userEnabledStatus !== UserEnabled.DISABLED) {
+    return true
+  }
+  return false
+}
+
 export const DynamicListContext = React.createContext<
   Partial<{ setSize: (index: number, size: number) => void }>
 >({})
 
 type PublisherPrefsProps = {
   setPublisherPref: (publisherId: string, enabled: boolean) => any
-  publishers: BraveToday.Publisher[]
+  publishers: Publisher[]
 }
 
 type ListItemProps = {
   index: number
   width: number
-  data: BraveToday.Publisher[]
+  data: Publisher[]
   style: React.CSSProperties
   setPublisherPref: (publisherId: string, enabled: boolean) => any
 }
@@ -52,7 +64,7 @@ function ListItem (props: ListItemProps) {
     if (!publisher) {
       return
     }
-    props.setPublisherPref(publisher.publisher_id, !isChecked)
+    props.setPublisherPref(publisher.publisherId, !isChecked)
   }, [publisher, isChecked])
 
   if (!publisher) {
@@ -62,8 +74,8 @@ function ListItem (props: ListItemProps) {
 
   return (
     <s.PublisherListItem style={props.style}>
-      <SettingsRow ref={rowRoot} key={publisher.publisher_id} onClick={onChange} isInteractive={true}>
-        <SettingsText>{publisher.publisher_name}</SettingsText>
+      <SettingsRow ref={rowRoot} key={publisher.publisherId} onClick={onChange} isInteractive={true}>
+        <SettingsText>{publisher.publisherName}</SettingsText>
         <Toggle
           checked={isChecked}
           onChange={onChange}

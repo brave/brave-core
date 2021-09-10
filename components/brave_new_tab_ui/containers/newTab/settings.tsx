@@ -20,6 +20,7 @@ import {
 } from '../../components/default'
 
 import { getLocale } from '../../../common/locale'
+import { Publishers } from '../../api/brave_news'
 
 // Icons
 import { CloseStrokeIcon } from 'brave-ui/components/icons'
@@ -82,7 +83,7 @@ export interface Props {
   cryptoDotComSupported: boolean
   showFTX: boolean
   ftxSupported: boolean
-  todayPublishers?: BraveToday.Publishers
+  todayPublishers?: Publishers
   setActiveTab?: TabType
   cardsHidden: boolean
 }

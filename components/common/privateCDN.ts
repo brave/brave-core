@@ -28,7 +28,6 @@ export async function getDataUrl (buffer: ArrayBuffer, mimeType = DEFAULT_MIMETY
   return dataUrl
 }
 
-
 export async function getUnpaddedAsDataUrl (buffer: ArrayBuffer, mimeType = DEFAULT_MIMETYPE) {
   const data = new DataView(buffer)
   const contentLength = data.getUint32(

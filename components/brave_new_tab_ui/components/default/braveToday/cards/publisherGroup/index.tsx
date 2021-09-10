@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-// Feature-specific components
+import * as BraveNews from '../../../../../api/brave_news'
 import * as Card from './style'
 import useScrollIntoView from '../../useScrollIntoView'
 import useReadArticleClickHandler from '../../useReadArticleClickHandler'
@@ -12,16 +12,16 @@ import { OnReadFeedItem, OnSetPublisherPref } from '../../'
 import PublisherMeta from '../PublisherMeta'
 
 interface Props {
-  content: BraveToday.Article[]
-  publisher: BraveToday.Publisher
-  articleToScrollTo?: BraveToday.FeedItem
+  content: (BraveNews.FeedItem)[]
+  articleToScrollTo?: BraveNews.FeedItemMetadata
+  publisher: BraveNews.Publisher
   onReadFeedItem: OnReadFeedItem
   onSetPublisherPref: OnSetPublisherPref
 }
 
 type ListItemProps = {
-  item: BraveToday.Article
-  publisher: BraveToday.Publisher
+  item: BraveNews.FeedItem
+  publisher: BraveNews.Publisher
   onReadFeedItem: OnReadFeedItem
   onSetPublisherPref: OnSetPublisherPref
   shouldScrollIntoView: boolean
@@ -32,13 +32,17 @@ function ListItem (props: ListItemProps) {
   const onClick = useReadArticleClickHandler(props.onReadFeedItem, {
     item: props.item
   })
+  const data = props.item.article?.data
+  if (!data) {
+    return null
+  }
   return (
     <Card.ListItem>
-      <a onClick={onClick} href={props.item.url} ref={cardRef}>
+      <a onClick={onClick} href={data.url.url} ref={cardRef}>
         <Card.Heading>
-          {props.item.title}
+          {data.title}
         </Card.Heading>
-        <Card.Time>{props.item.relative_time}</Card.Time>
+        <Card.Time>{data.relativeTimeDescription}</Card.Time>
       </a>
     </Card.ListItem>
   )
@@ -46,7 +50,7 @@ function ListItem (props: ListItemProps) {
 
 export default function PublisherGroup (props: Props) {
   // No content no render®
-  if (props.content.length < 3) {
+  if (props.content.length < 3 || props.content.some(c => !c.article)) {
     return null
   }
   return (
@@ -63,9 +67,15 @@ export default function PublisherGroup (props: Props) {
       <Card.List>
         {
           props.content.map((item, index) => {
+            const data = item.article?.data
+            // we already validated this, but typescript wants
+            // us to do it again
+            if (!data) {
+              return <React.Fragment key={index} />
+            }
             const shouldScrollTo = (
               !!props.articleToScrollTo &&
-              props.articleToScrollTo.url === item.url
+              props.articleToScrollTo.url.url === data.url.url
             )
             return <ListItem
               publisher={props.publisher}

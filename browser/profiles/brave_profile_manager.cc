@@ -15,6 +15,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_today/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -46,6 +47,10 @@
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
 #include "brave/browser/decentralized_dns/decentralized_dns_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #endif
 
 using content::BrowserThread;
@@ -128,6 +133,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
       gcm::BraveGCMChannelStatus::GetForProfile(profile);
   DCHECK(status);
   status->UpdateGCMDriverStatus();
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  brave_news::BraveNewsControllerFactory::GetForContext(profile);
 #endif
 }
 

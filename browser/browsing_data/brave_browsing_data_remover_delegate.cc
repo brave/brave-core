@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
-#include "brave/components/brave_today/browser/brave_news_controller.h"
+#include "brave/components/brave_today/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
@@ -29,6 +29,10 @@
 #include "base/time/time.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/ipfs_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_today/browser/brave_news_controller.h"
 #endif
 
 BraveBrowsingDataRemoverDelegate::BraveBrowsingDataRemoverDelegate(
@@ -64,11 +68,13 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   if (remove_mask & content::BrowsingDataRemover::DATA_TYPE_CACHE)
     ClearIPFSCache();
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   // Brave News feed cache
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) {
     brave_news::BraveNewsControllerFactory::GetForContext(profile_)
         ->ClearHistory();
   }
+#endif
 }
 
 void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(

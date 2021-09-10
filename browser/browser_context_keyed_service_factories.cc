@@ -6,7 +6,6 @@
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/cookie_pref_service_factory.h"
@@ -23,6 +22,7 @@
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
+#include "brave/components/brave_today/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -53,6 +53,9 @@
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
+#endif
 namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
@@ -77,7 +80,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif
 
-brave_news::BraveNewsControllerFactory::GetInstance();
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  brave_news::BraveNewsControllerFactory::GetInstance();
+#endif
 
   brave_wallet::AssetRatioControllerFactory::GetInstance();
   brave_wallet::KeyringControllerFactory::GetInstance();

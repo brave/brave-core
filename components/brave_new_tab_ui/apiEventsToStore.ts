@@ -48,9 +48,6 @@ export function wireApiEventsToStore () {
       rewardsInitData()
     }
     getActions().setInitialData(initialData)
-    if (initialData.preferences.showToday) {
-      getActions().today.todayInit()
-    }
     // Listen for API changes and dispatch to store
     topSitesAPI.addMostVistedInfoChangedListener(onMostVisitedInfoChanged)
     topSitesAPI.updateMostVisitedInfo()

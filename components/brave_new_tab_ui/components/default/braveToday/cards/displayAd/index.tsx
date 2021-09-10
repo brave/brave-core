@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { DisplayAd, PaddedImage, UnpaddedImage } from '../../../../../api/brave_news/brave_news_proxy'
+import { DisplayAd } from '../../../../../api/brave_news'
 import VisibilityTimer from '../../../../../helpers/visibilityTimer'
 import { getLocale } from '../../../../../../common/locale'
 import * as Card from '../../cardSizes'
@@ -60,13 +60,13 @@ export default function CardDisplayAd (props: Props) {
     // verbose ref type conversion due to https://stackoverflow.com/questions/61102101/cannot-assign-refobjecthtmldivelement-to-refobjecthtmlelement-instance
     return <div ref={contentTrigger}><div ref={cardRef as unknown as React.RefObject<HTMLDivElement>} /></div>
   }
-  let isImagePadded = true
+  let isImageUnpadded = true
   let imageUrl: string = ''
-  if ((content.image as PaddedImage).paddedImageUrl) {
-    imageUrl = (content.image as PaddedImage).paddedImageUrl.url
-  } else if ((content.image as UnpaddedImage).imageUrl) {
-    imageUrl = (content.image as UnpaddedImage).imageUrl.url
-    isImagePadded = false
+  if (content.image.paddedImageUrl) {
+    imageUrl = content.image.paddedImageUrl.url
+    isImageUnpadded = false
+  } else if (content.image.imageUrl) {
+    imageUrl = content.image.imageUrl.url
   }
   // Render ad when one is available for this unit
   // TODO(petemill): Avoid nested links
@@ -77,7 +77,7 @@ export default function CardDisplayAd (props: Props) {
       </Styles.BatAdLabel>
       <a onClick={onClick} href={content.targetUrl.url} ref={cardRef}>
         <CardImage
-          isUnpadded={!isImagePadded}
+          isUnpadded={isImageUnpadded}
           imageUrl={imageUrl}
           isPromoted={true}
         />

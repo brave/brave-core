@@ -3,11 +3,20 @@ module brave_news.mojom;
 import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
 
-
 // Items either have a padded or an unpadded image url
 union Image {
   url.mojom.Url padded_image_url;
   url.mojom.Url image_url;
+};
+
+enum CardType {
+  HEADLINE,
+  HEADLINE_PAIRED,
+  CATEGORY_GROUP,
+  PUBLISHER_GROUP,
+  DEALS,
+  DISPLAY_AD,
+  PROMOTED_ARTICLE
 };
 
 struct FeedItemMetadata {
@@ -44,40 +53,21 @@ union FeedItem {
   Deal deal;
 };
 
-struct CategoryArticles {
-  string category_name;
-  array<Article> articles; // Up to 3
+struct FeedPageItem {
+  CardType card_type;
+  // Each UI must validate if the items array
+  // contains enough content to support the card_type.
+  array<FeedItem> items;
 };
 
-struct PublisherArticles {
-  string publisher_id;
-  array<Article> articles; // Up to 3
-};
-
-struct Page {
-  array<Article> articles;  // Up to 15
-  array<Article> random_articles; // Up to 3
-  CategoryArticles? items_by_category;
-  PublisherArticles? items_by_publisher;
-  array<Deal>? deals; // Up to 3
-  PromotedArticle? promoted_article;
+struct FeedPage {
+  array<FeedPageItem> items;
 };
 
 struct Feed {
   string hash;
-  array<Page> pages;
-  Article? featured_article;
-};
-
-struct DisplayAd {
-  string uuid;
-  string creative_instance_id;
-  string dimensions;
-  string title;
-  string description;
-  Image image;
-  url.mojom.Url target_url;
-  string? cta_text;
+  array<FeedPage> pages;
+  FeedItem? featured_item;
 };
 
 enum UserEnabled {
@@ -97,6 +87,16 @@ struct Publisher {
   UserEnabled user_enabled_status = UserEnabled.NOT_MODIFIED;
 };
 
+struct DisplayAd {
+  string uuid;
+  string creative_instance_id;
+  string dimensions;
+  string title;
+  string description;
+  Image image;
+  url.mojom.Url target_url;
+  string? cta_text;
+};
 
 // Browser-side handler
 interface BraveNewsController {
@@ -105,7 +105,8 @@ interface BraveNewsController {
   GetImageData(url.mojom.Url padded_image_url) => (array<uint8>? image_data);
   SetPublisherPref(string publisher_id, UserEnabled new_status);
   ClearPrefs();
-  IsFeedUpdateAvailable(string displayed_feed_hash) => (bool is_update_available);
+  IsFeedUpdateAvailable(string displayed_feed_hash)
+    => (bool is_update_available);
   GetDisplayAd() => (DisplayAd? ad);
   // Lets the browser know when a user begins viewing or scrolling
   // through Brave News, for statistics gathering purposes.

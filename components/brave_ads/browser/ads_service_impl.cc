@@ -60,6 +60,7 @@
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_today/buildflags/buildflags.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -112,6 +113,10 @@
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_today/common/pref_names.h"
 #endif
 
 using brave_rewards::RewardsNotificationService;
@@ -529,8 +534,12 @@ bool AdsServiceImpl::IsEnabled() const {
 }
 
 bool AdsServiceImpl::IsBraveNewsEnabled() const {
-  return GetBooleanPref(kBraveTodayOptedIn) &&
-         GetBooleanPref(kNewTabPageShowToday);
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  return GetBooleanPref(brave_news::prefs::kBraveTodayOptedIn) &&
+         GetBooleanPref(brave_news::prefs::kNewTabPageShowToday);
+#else
+  return false;
+#endif
 }
 
 bool AdsServiceImpl::ShouldStart() const {
@@ -669,15 +678,17 @@ void AdsServiceImpl::Initialize() {
       brave_rewards::prefs::kWalletBrave,
       base::BindRepeating(&AdsServiceImpl::OnPrefsChanged,
                           base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  profile_pref_change_registrar_.Add(
+      brave_news::prefs::kBraveTodayOptedIn,
+      base::BindRepeating(&AdsServiceImpl::OnPrefsChanged,
+                          base::Unretained(this)));
 
   profile_pref_change_registrar_.Add(
-      kBraveTodayOptedIn, base::BindRepeating(&AdsServiceImpl::OnPrefsChanged,
-                                              base::Unretained(this)));
-
-  profile_pref_change_registrar_.Add(
-      kNewTabPageShowToday, base::BindRepeating(&AdsServiceImpl::OnPrefsChanged,
-                                                base::Unretained(this)));
-
+      brave_news::prefs::kNewTabPageShowToday,
+      base::BindRepeating(&AdsServiceImpl::OnPrefsChanged,
+                          base::Unretained(this)));
+#endif
   MaybeStart(false);
 }
 
@@ -1826,33 +1837,33 @@ bool AdsServiceImpl::PrefExists(const std::string& path) const {
 }
 
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
-  if (pref == ads::prefs::kEnabled || pref == kBraveTodayOptedIn ||
-      pref == kNewTabPageShowToday) {
-    if (pref == ads::prefs::kEnabled) {
-      rewards_service_->OnAdsEnabled(IsEnabled());
-
-      if (!IsEnabled()) {
-        SuspendP2AHistograms();
-        VLOG(1) << "P2A histograms suspended";
+  if (pref == ads::prefs::kEnabled) {
+    rewards_service_->OnAdsEnabled(IsEnabled());
+    if (!IsEnabled()) {
+      SuspendP2AHistograms();
+      VLOG(1) << "P2A histograms suspended";
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-        // Close any open captcha tooltip
-        ads_tooltips_delegate_->CloseCaptchaTooltip();
+      // Close any open captcha tooltip
+      ads_tooltips_delegate_->CloseCaptchaTooltip();
 
-        // Clear any scheduled captcha
-        adaptive_captcha_service_->ClearScheduledCaptcha();
+      // Clear any scheduled captcha
+      adaptive_captcha_service_->ClearScheduledCaptcha();
 #endif
-      }
-
-      brave_rewards::p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
-                                                           pref);
     }
 
+    brave_rewards::p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
+                                                         pref);
     MaybeStart(/* should_restart */ false);
   } else if (pref == ads::prefs::kIdleTimeThreshold) {
     StartCheckIdleStateTimer();
   } else if (pref == brave_rewards::prefs::kWalletBrave) {
     OnWalletUpdated();
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  } else if (pref == brave_news::prefs::kBraveTodayOptedIn ||
+             pref == brave_news::prefs::kNewTabPageShowToday) {
+    MaybeStart(/* should_restart */ false);
+#endif
   }
 }
 
