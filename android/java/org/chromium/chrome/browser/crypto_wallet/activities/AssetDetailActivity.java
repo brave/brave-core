@@ -143,7 +143,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
     private void setUpAccountList() {
         RecyclerView rvAccounts = findViewById(R.id.rv_accounts);
-        WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter();
+        WalletCoinAdapter walletCoinAdapter = new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
         KeyringController keyringController = getKeyringController();
         if (keyringController != null) {
             keyringController.getDefaultKeyringInfo(keyringInfo -> {

@@ -71,7 +71,7 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
 
     private void setUpAccountList(View view) {
         RecyclerView rvAccounts = view.findViewById(R.id.rv_accounts);
-        walletCoinAdapter = new WalletCoinAdapter();
+        walletCoinAdapter = new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
         KeyringController keyringController = getKeyringController();
         if (keyringController != null) {
             keyringController.getDefaultKeyringInfo(keyringInfo -> {
