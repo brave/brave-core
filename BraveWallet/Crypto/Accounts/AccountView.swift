@@ -1,0 +1,44 @@
+/* Copyright 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import SwiftUI
+
+/// Displays basic info around a single account
+struct AccountView: View {
+  /// The full address, which will be truncated in the middle
+  var address: String
+  /// The account name describing what the account is for
+  var name: String
+  
+  var body: some View {
+    HStack {
+      Blockie(address: address)
+        .frame(width: 40, height: 40)
+      VStack(alignment: .leading, spacing: 2) {
+        Text(name)
+          .fontWeight(.semibold)
+          .foregroundColor(Color(.bravePrimary))
+        Text(address.truncatedAddress)
+          .foregroundColor(Color(.braveLabel))
+      }
+      .font(.caption)
+      Spacer()
+    }
+    .padding(.vertical, 6)
+  }
+}
+
+#if DEBUG
+struct AccountView_Previews: PreviewProvider {
+  static var previews: some View {
+    AccountView(
+      address: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+      name: "Account 1"
+    )
+    .previewLayout(.sizeThatFits)
+    .previewColorSchemes()
+  }
+}
+#endif
