@@ -1,4 +1,4 @@
-use crate::{dom, scorer, util};
+use crate::{dom, nlp, scorer, util};
 use chrono::DateTime;
 use html5ever::parse_document;
 use html5ever::tendril::TendrilSink;
@@ -153,13 +153,13 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
                     | "weibo:article:description"
                     | "weibo:webpage:description"
                     | "twitter:description" => {
-                        meta_tags.description = Some(
-                            content
-                                .find(". ")
-                                .map(|pos| &content[..pos])
-                                .unwrap_or(content)
-                                .to_string(),
-                        );
+                        if let Some(ref desc) = meta_tags.description {
+                            if content.chars().count() < desc.chars().count() {
+                                meta_tags.description = Some(content.to_string());
+                            }
+                        } else {
+                            meta_tags.description = Some(content.to_string());
+                        }
                     }
                     "dc:creator" | "dcterm:creator" | "author" => {
                         meta_tags.author = Some(content.to_string());
@@ -277,7 +277,17 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         }
         // Add in the description
         if let Some(ref text) = meta.description {
-            let description = dom::create_element_simple(dom, "p", "subhead metadata", Some(text));
+            let slice_offset = if text.chars().count() > 200 {
+                nlp::first_sentence_boundary(text).unwrap_or_else(|| text.len())
+            } else {
+                text.len()
+            };
+            let description = dom::create_element_simple(
+                dom,
+                "p",
+                "subhead metadata",
+                Some(&text[..slice_offset]),
+            );
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(description));
         }
 

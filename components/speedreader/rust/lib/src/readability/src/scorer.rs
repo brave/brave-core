@@ -371,7 +371,7 @@ fn unwrap_noscript(handle: &Handle, useless_nodes: &mut Vec<Handle>) -> Option<H
                 useless_nodes.push(sibling.as_node().clone());
             }
         }
-        return Some(img)
+        return Some(img);
     }
     None
 }
