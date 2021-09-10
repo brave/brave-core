@@ -45,7 +45,7 @@ handler.on(WalletPageActions.createWallet.getType(), async (store, payload: Crea
 
 handler.on(WalletPageActions.restoreWallet.getType(), async (store, payload: RestoreWalletPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
-  const result = await keyringController.restoreWallet(payload.mnemonic, payload.password)
+  const result = await keyringController.restoreWallet(payload.mnemonic, payload.password, payload.isLegacy)
   if (!result.isValidMnemonic) {
     store.dispatch(WalletPageActions.hasMnemonicError(!result.isValidMnemonic))
     return

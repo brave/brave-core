@@ -136,7 +136,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setShowBackup(false)
   }
 
-  const onRestore = (phrase: string, password: string) => {
+  const onRestore = (phrase: string, password: string, isLegacy: boolean) => {
     if (JSON.stringify(phrase.split(' ')) === JSON.stringify(recoveryPhrase)) {
       completeWalletSetup(true)
     } else {
