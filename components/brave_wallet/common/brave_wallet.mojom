@@ -184,7 +184,8 @@ interface ERCTokenRegistry {
 interface KeyringController {
   CreateWallet(string password) => (string mnemonic);
   GetMnemonicForDefaultKeyring() => (string mnemonic);
-  RestoreWallet(string mnemonic, string password) => (bool isValidMnemonic);
+  RestoreWallet(string mnemonic, string password, bool isLegacyBraveWallet)
+    => (bool isValidMnemonic);
   Lock();
   Unlock(string password) => (bool success);
   IsLocked() => (bool isLocked);
