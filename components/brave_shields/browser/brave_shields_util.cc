@@ -14,6 +14,7 @@
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
+#include "brave/components/debounce/common/features.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/pref_names.h"
@@ -229,6 +230,23 @@ bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url) {
   const ControlType type = GetCosmeticFilteringControlType(map, url);
   return type == ControlType::BLOCK;
+}
+
+bool ShouldDoDebouncing(HostContentSettingsMap* map, const GURL& url) {
+  // Don't debounce if debounce feature is disabled
+  if (!base::FeatureList::IsEnabled(debounce::features::kBraveDebounce))
+    return false;
+
+  // Don't debounce if Brave Shields is down (this also handles cases where
+  // the URL is not HTTP(S))
+  if (!brave_shields::GetBraveShieldsEnabled(map, url))
+    return false;
+
+  // Don't debounce if ad blocking is off
+  if (brave_shields::GetAdControlType(map, url) != ControlType::BLOCK)
+    return false;
+
+  return true;
 }
 
 bool ShouldDoDomainBlocking(HostContentSettingsMap* map, const GURL& url) {

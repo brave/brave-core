@@ -8,6 +8,7 @@
 
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
+#include "chrome/browser/extensions/install_verifier.h"
 
 using brave_component_updater::LocalDataFilesObserver;
 using extensions::ExtensionBrowserTest;
@@ -34,6 +35,10 @@ class BaseLocalDataFilesBrowserTest : public ExtensionBrowserTest {
   virtual const char* test_data_directory() = 0;
   virtual const char* embedded_test_server_directory() = 0;
   virtual LocalDataFilesObserver* service() = 0;
+
+ private:
+  // Disable extension install verification for our mock extension.
+  extensions::ScopedInstallVerifierBypassForTest install_verifier_bypass_;
 };
 
 #endif  // BRAVE_BROWSER_EXTENSIONS_BRAVE_BASE_LOCAL_DATA_FILES_BROWSERTEST_H_
