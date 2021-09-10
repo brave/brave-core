@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/task/post_task.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
