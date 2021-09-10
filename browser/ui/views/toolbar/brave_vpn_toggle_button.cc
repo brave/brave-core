@@ -19,6 +19,7 @@ BraveVPNToggleButton::BraveVPNToggleButton(Browser* browser)
   SetCallback(base::BindRepeating(&BraveVPNToggleButton::OnButtonPressed,
                                   base::Unretained(this)));
   UpdateState();
+
   if (auto* provider =
           BrowserView::GetBrowserViewForBrowser(browser_)->GetThemeProvider()) {
     SetThumbOnColor(provider->GetColor(

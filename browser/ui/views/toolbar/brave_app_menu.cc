@@ -8,10 +8,14 @@
 #include <memory>
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/ui/views/toolbar/brave_vpn_toggle_button.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "ui/base/models/menu_model.h"
 #include "ui/views/controls/menu/menu_item_view.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/ui/views/toolbar/brave_vpn_status_label.h"
+#include "brave/browser/ui/views/toolbar/brave_vpn_toggle_button.h"
+#endif
 
 using views::MenuItemView;
 
@@ -27,6 +31,7 @@ MenuItemView* BraveAppMenu::AddMenuItem(views::MenuItemView* parent,
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (menu_item && model->GetCommandIdAt(model_index) == IDC_TOGGLE_BRAVE_VPN) {
+    menu_item->AddChildView(std::make_unique<BraveVPNStatusLabel>(browser_));
     menu_item->AddChildView(std::make_unique<BraveVPNToggleButton>(browser_));
   }
 #endif

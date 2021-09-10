@@ -54,6 +54,8 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
       return SkColorSetRGB(0xE1, 0xE2, 0xF6);
     case BraveThemeProperties::COLOR_TOGGLE_BUTTON_TRACK_OFF_COLOR:
       return SkColorSetRGB(0xDA, 0xDC, 0xE8);
+    case BraveThemeProperties::COLOR_MENU_ITEM_SUB_TEXT_COLOR:
+      return SkColorSetRGB(0x86, 0x8E, 0x96);
 #if BUILDFLAG(ENABLE_SIDEBAR)
     case BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND:
       return SkColorSetRGB(0xF3, 0xF3, 0xF5);
@@ -156,6 +158,8 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
       return SkColorSetRGB(0x76, 0x79, 0xB1);
     case BraveThemeProperties::COLOR_TOGGLE_BUTTON_TRACK_OFF_COLOR:
       return SkColorSetRGB(0x5E, 0x61, 0x75);
+    case BraveThemeProperties::COLOR_MENU_ITEM_SUB_TEXT_COLOR:
+      return SkColorSetRGB(0x84, 0x88, 0x9C);
 #if BUILDFLAG(ENABLE_SIDEBAR)
     case BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND:
       return kDarkToolbar;

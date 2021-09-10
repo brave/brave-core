@@ -499,6 +499,8 @@ source_set("ui") {
         "views/brave_vpn_panel_host.h",
         "views/toolbar/brave_vpn_button.cc",
         "views/toolbar/brave_vpn_button.h",
+        "views/toolbar/brave_vpn_status_label.cc",
+        "views/toolbar/brave_vpn_status_label.h",
         "views/toolbar/brave_vpn_toggle_button.cc",
         "views/toolbar/brave_vpn_toggle_button.h",
       ]
