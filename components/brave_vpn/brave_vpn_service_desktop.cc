@@ -8,10 +8,13 @@
 #include <utility>
 #include <vector>
 
+#include "base/bind.h"
 #include "base/command_line.h"
+#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
+#include "base/values.h"
 #include "brave/components/brave_vpn/switches.h"
 
 namespace {
@@ -54,6 +57,7 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
   GetBraveVPNConnectionAPI()->set_target_vpn_entry_name(kBraveVPNEntryName);
   GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
 
+  FetchRegionList();
   CheckPurchasedStatus();
 }
 
@@ -214,4 +218,65 @@ void BraveVpnServiceDesktop::BindInterface(
 void BraveVpnServiceDesktop::GetConnectionState(
     GetConnectionStateCallback callback) {
   std::move(callback).Run(state_);
+}
+
+void BraveVpnServiceDesktop::FetchRegionList() {
+  // Unretained is safe here becasue this class owns request helper.
+  GetAllServerRegions(base::BindOnce(&BraveVpnServiceDesktop::OnFetchRegionList,
+                                     base::Unretained(this)));
+}
+
+void BraveVpnServiceDesktop::OnFetchRegionList(const std::string& region_list,
+                                               bool success) {
+  if (!success) {
+    // TODO(simonhong): Re-try?
+    return;
+  }
+
+  std::string json_string = "{\"response\": " + region_list + "}";
+  absl::optional<base::Value> value = base::JSONReader::Read(json_string);
+  if (value && value->is_dict()) {
+    ParseAndCacheRegionList(std::move(*value));
+    return;
+  }
+
+  // TODO(simonhong): Re-try?
+}
+
+void BraveVpnServiceDesktop::ParseAndCacheRegionList(base::Value region_value) {
+  base::Value* region_list_value = region_value.FindKey("response");
+  DCHECK(region_list_value && region_list_value->is_list());
+
+  if (!region_list_value || !region_list_value->is_list())
+    return;
+
+  regions_.clear();
+  for (const auto& value : region_list_value->GetList()) {
+    DCHECK(value.is_dict());
+    if (!value.is_dict())
+      continue;
+
+    brave_vpn::mojom::Region region;
+    if (auto* continent = value.FindStringKey("continent"))
+      region.continent = *continent;
+    if (auto* name = value.FindStringKey("name"))
+      region.name = *name;
+    if (auto* name_pretty = value.FindStringKey("name-pretty"))
+      region.name_pretty = *name_pretty;
+
+    regions_.push_back(region);
+  }
+}
+
+void BraveVpnServiceDesktop::GetAllRegions(GetAllRegionsCallback callback) {
+  if (regions_.empty()) {
+    // TODO(simonhong): Handle this situation.
+    return;
+  }
+
+  std::vector<brave_vpn::mojom::RegionPtr> regions;
+  for (const auto& region : regions_) {
+    regions.push_back(region.Clone());
+  }
+  std::move(callback).Run(std::move(regions));
 }
