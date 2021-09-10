@@ -121,6 +121,8 @@ const char kGoogleAccountURL[] = "https://support.brave.com/";
 
 const char kGoogleAccountChooserURL[] = "https://support.brave.com/";
 
+const char kGoogleAccountDeviceActivityURL[] = "https://support.brave.com/";
+
 const char kGooglePasswordManagerURL[] = "https://support.brave.com";
 
 const char kLearnMoreReportingURL[] =
