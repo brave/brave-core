@@ -1722,6 +1722,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
 
   WaitForBraveExtensionShieldsDataReady();
 
+  // *.appspot.com is used here to check the eTLD logic.
+  // Tt's a private suffix from https://publicsuffix.org/list/
   GURL tab_url = embedded_test_server()->GetURL("test.lion.appspot.com",
                                                 "/cosmetic_filtering.html");
   ui_test_utils::NavigateToURL(browser(), tab_url);
