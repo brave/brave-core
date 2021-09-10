@@ -50,6 +50,7 @@
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
+#include "components/search_engines/search_engines_pref_names.h"
 #include "components/signin/public/base/signin_pref_names.h"
 #include "components/sync/base/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
@@ -369,7 +370,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Default search engine version
   registry->RegisterIntegerPref(
-      kBraveDefaultSearchVersion,
+      prefs::kBraveDefaultSearchVersion,
       TemplateURLPrepopulateData::kBraveCurrentDataVersion);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)

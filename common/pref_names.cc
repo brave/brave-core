@@ -111,7 +111,6 @@ const char kSafetynetStatus[] = "safetynet.status";
 
 const char kDefaultBrowserLaunchingCount[] =
     "brave.default_browser.launching_count";
-const char kBraveDefaultSearchVersion[] = "brave.search.default_version";
 
 // deprecated
 const char kBraveThemeType[] = "brave.theme.type";

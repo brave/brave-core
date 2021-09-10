@@ -23,6 +23,7 @@
 #include "chrome/browser/profiles/profile_key.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/search_engines_pref_names.h"
 
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
 using ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImage; // NOLINT
@@ -225,11 +226,13 @@ void RecordInitialP3AValues(Profile* profile) {
 
 void SetDefaultSearchVersion(Profile* profile, bool is_new_profile) {
   const PrefService::Preference* pref_default_search_version =
-        profile->GetPrefs()->FindPreference(kBraveDefaultSearchVersion);
+      profile->GetPrefs()->FindPreference(prefs::kBraveDefaultSearchVersion);
   if (!pref_default_search_version->HasUserSetting()) {
-    profile->GetPrefs()->SetInteger(kBraveDefaultSearchVersion, is_new_profile
-        ? TemplateURLPrepopulateData::kBraveCurrentDataVersion
-        : TemplateURLPrepopulateData::kBraveFirstTrackedDataVersion);
+    profile->GetPrefs()->SetInteger(
+        prefs::kBraveDefaultSearchVersion,
+        is_new_profile
+            ? TemplateURLPrepopulateData::kBraveCurrentDataVersion
+            : TemplateURLPrepopulateData::kBraveFirstTrackedDataVersion);
   }
 }
 

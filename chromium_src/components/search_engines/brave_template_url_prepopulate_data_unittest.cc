@@ -15,7 +15,6 @@
 #include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/google/core/common/google_switches.h"
 #include "components/search_engines/search_engines_pref_names.h"
@@ -65,13 +64,13 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
     // Calling brave::RegisterProfilePrefs() causes some problems though
     auto* registry = prefs_.registry();
     registry->RegisterIntegerPref(
-        kBraveDefaultSearchVersion,
+        prefs::kBraveDefaultSearchVersion,
         TemplateURLPrepopulateData::kBraveCurrentDataVersion);
   }
 
   void CheckForCountry(char digit1, char digit2, const std::string& expected) {
     prefs_.SetInteger(kCountryIDAtInstall, digit1 << 8 | digit2);
-    prefs_.SetInteger(kBraveDefaultSearchVersion,
+    prefs_.SetInteger(prefs::kBraveDefaultSearchVersion,
                       TemplateURLPrepopulateData::kBraveCurrentDataVersion);
     size_t default_index;
     std::vector<std::unique_ptr<TemplateURLData>> t_urls =
