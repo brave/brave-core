@@ -61,6 +61,10 @@ void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
   if (!IsSpeedreaderEnabled())
     return;
 
+  if (auto* entry = web_contents()->GetController().GetLastCommittedEntry()) {
+    SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
+  }
+
   Profile* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   auto* content_rules = HostContentSettingsMapFactory::GetForProfile(profile);
