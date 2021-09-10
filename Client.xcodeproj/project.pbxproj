@@ -280,6 +280,7 @@
 		271F68E726EBD55D00AA2A50 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 271F68E626EBD55D00AA2A50 /* Introspect */; };
 		271F68EA26EBD59F00AA2A50 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 271F68E926EBD59F00AA2A50 /* Algorithms */; };
 		271F68F026EBDC3600AA2A50 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 271F68EF26EBDC3600AA2A50 /* Then */; };
+		271F68F826EBE92900AA2A50 /* WalletHostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F68F726EBE92900AA2A50 /* WalletHostingViewController.swift */; };
 		27201EF924535A9500C19DD1 /* NewTabCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27201EF824535A9500C19DD1 /* NewTabCollectionViewCell.swift */; };
 		27201EFC24535C2F00C19DD1 /* NewTabPageFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27201EFB24535C2F00C19DD1 /* NewTabPageFlowLayout.swift */; };
 		27201EFE24539B5500C19DD1 /* NewTabPageBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27201EFD24539B5500C19DD1 /* NewTabPageBackground.swift */; };
@@ -1802,6 +1803,7 @@
 		271F68CF26EBD31800AA2A50 /* FixedHeightHostingPanModalController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedHeightHostingPanModalController.swift; sourceTree = "<group>"; };
 		271F68D126EBD35100AA2A50 /* PopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		271F68D326EBD3FC00AA2A50 /* UIFontExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFontExtensions.swift; sourceTree = "<group>"; };
+		271F68F726EBE92900AA2A50 /* WalletHostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletHostingViewController.swift; sourceTree = "<group>"; };
 		27201EF824535A9500C19DD1 /* NewTabCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabCollectionViewCell.swift; sourceTree = "<group>"; };
 		27201EFB24535C2F00C19DD1 /* NewTabPageFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageFlowLayout.swift; sourceTree = "<group>"; };
 		27201EFD24539B5500C19DD1 /* NewTabPageBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageBackground.swift; sourceTree = "<group>"; };
@@ -3518,6 +3520,7 @@
 		271F683626EBD0E400AA2A50 /* BraveWallet */ = {
 			isa = PBXGroup;
 			children = (
+				271F68F726EBE92900AA2A50 /* WalletHostingViewController.swift */,
 				271F688926EBD27D00AA2A50 /* Blockies */,
 				271F688B26EBD27D00AA2A50 /* Chart */,
 				271F685626EBD27C00AA2A50 /* Crypto */,
@@ -7259,6 +7262,7 @@
 				271F68B126EBD27E00AA2A50 /* EnableBiometricsView.swift in Sources */,
 				271F68BF26EBD27E00AA2A50 /* DateRangeView.swift in Sources */,
 				271F68B226EBD27E00AA2A50 /* RestoreWalletView.swift in Sources */,
+				271F68F826EBE92900AA2A50 /* WalletHostingViewController.swift in Sources */,
 				271F68A326EBD27E00AA2A50 /* AccountView.swift in Sources */,
 				271F68B526EBD27E00AA2A50 /* TabbedPageViewController.swift in Sources */,
 				271F68AF26EBD27E00AA2A50 /* SetupCryptoView.swift in Sources */,

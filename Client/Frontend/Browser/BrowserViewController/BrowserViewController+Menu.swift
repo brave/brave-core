@@ -51,10 +51,10 @@ extension BrowserViewController {
                     guard let braveCoreMain = (UIApplication.shared.delegate as? AppDelegate)?.braveCore else {
                         return
                     }
-                    let vc = UIHostingController(rootView: CryptoView(
+                    let vc = WalletHostingViewController(
                         keyringStore: .init(keyringController: braveCoreMain.keyringController),
                         networkStore: .init(ethJsonRpcController: braveCoreMain.ethJsonRpcController)
-                    ))
+                    )
                     self.dismiss(animated: true) {
                         self.present(vc, animated: true)
                     }
