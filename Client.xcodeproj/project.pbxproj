@@ -163,7 +163,7 @@
 		0ADCD45F2319799F0078CC67 /* RollingFileLoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61453BD1B750A1700C3F9D7 /* RollingFileLoggerTests.swift */; };
 		0AE16F8D251BEF8C00A688ED /* InitialSearchEnginesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE16F8C251BEF8C00A688ED /* InitialSearchEnginesTests.swift */; };
 		0AE50854261C63D70099C6A3 /* BraveSearchHelper.js in Resources */ = {isa = PBXBuildFile; fileRef = 0AE50853261C63D70099C6A3 /* BraveSearchHelper.js */; };
-		0AE5086A261C6F2E0099C6A3 /* BraveSearchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE50869261C6F2E0099C6A3 /* BraveSearchHelper.swift */; };
+		0AE5086A261C6F2E0099C6A3 /* BraveSearchScriptHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE50869261C6F2E0099C6A3 /* BraveSearchScriptHandler.swift */; };
 		0AE5C09922CAA01E00DFF3EE /* RewardsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5C09822CAA01E00DFF3EE /* RewardsButton.swift */; };
 		0AE5C69124F0059D004CBC9B /* OnboardingPrivacyConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5C69024F0059D004CBC9B /* OnboardingPrivacyConsentViewController.swift */; };
 		0AE5C69424F005F9004CBC9B /* OnboardingPrivacyConsentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5C69324F005F9004CBC9B /* OnboardingPrivacyConsentView.swift */; };
@@ -667,7 +667,11 @@
 		44331DD8225521B6007E3E93 /* UrlBarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44331DD7225521B6007E3E93 /* UrlBarTextField.swift */; };
 		44331DDA22552313007E3E93 /* LocationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44331DD922552313007E3E93 /* LocationContainerView.swift */; };
 		44331DDC22561F34007E3E93 /* ToolbarUrlActionsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44331DDB22561F34007E3E93 /* ToolbarUrlActionsDelegate.swift */; };
+		4433E15526B996C20023A134 /* BraveTalkRewardsOptInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4433E15426B996C20023A134 /* BraveTalkRewardsOptInViewController.swift */; };
+		4433E15726B999B40023A134 /* BraveTalkRewardsOptInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4433E15626B999B40023A134 /* BraveTalkRewardsOptInView.swift */; };
 		4452CAF0255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4452CAEF255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift */; };
+		4457123226BAB1D200B60C1A /* BraveTalkOptInSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4457123126BAB1D200B60C1A /* BraveTalkOptInSuccessViewController.swift */; };
+		4457123F26BAB20000B60C1A /* BraveTalkOptInSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4457123E26BAB20000B60C1A /* BraveTalkOptInSuccessView.swift */; };
 		445E1F5B26B7292B005C56C3 /* leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 445E1F5A26B72923005C56C3 /* leaf.cer */; };
 		4481F22D26CBD1C600658EAC /* AmazonRootCA3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22926CBD1C400658EAC /* AmazonRootCA3.cer */; };
 		4481F22E26CBD1C600658EAC /* AmazonRootCA4.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22A26CBD1C500658EAC /* AmazonRootCA4.cer */; };
@@ -685,10 +689,13 @@
 		4481F24626CBF9C900658EAC /* DSTRootCA_X3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F24526CBF9C900658EAC /* DSTRootCA_X3.cer */; };
 		448DC7D6268A5C3E00F4795C /* BraveSearchDebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DC7D5268A5C3E00F4795C /* BraveSearchDebugMenu.swift */; };
 		448DC7E4268A6A2200F4795C /* BraveSearchLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DC7E3268A6A2200F4795C /* BraveSearchLogEntry.swift */; };
+		449AC16226D8FE5B00A53F33 /* BraveTalkScriptHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449AC16126D8FE5B00A53F33 /* BraveTalkScriptHandler.swift */; };
+		449AC16F26D9008D00A53F33 /* BraveTalkHelper.js in Resources */ = {isa = PBXBuildFile; fileRef = 449AC16E26D9008D00A53F33 /* BraveTalkHelper.js */; };
 		44A58CC82693A309005C0879 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A58CC72693A309005C0879 /* ActivityView.swift */; };
 		44A58CEA26947100005C0879 /* BraveSearchDebugMenuFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A58CE926947100005C0879 /* BraveSearchDebugMenuFixture.swift */; };
 		44C42CF6268378B1009572D7 /* BrowserIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 44C42CF9268378B1009572D7 /* BrowserIntents.intentdefinition */; };
 		44C42CF7268378B1009572D7 /* BrowserIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 44C42CF9268378B1009572D7 /* BrowserIntents.intentdefinition */; };
+		44C6CCD226DE6CB100E90068 /* DomainUserScriptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6CCD126DE6CB100E90068 /* DomainUserScriptTests.swift */; };
 		44FA2F3021F8DB1000EFA86A /* DataPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44FA2F2F21F8DB1000EFA86A /* DataPreferences.swift */; };
 		592F521E2217327C0078395E /* HttpCookieExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592F521D2217327B0078395E /* HttpCookieExtension.swift */; };
 		59350AFB22612D95004D7445 /* DisplayTextFieldTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59350AFA22612D95004D7445 /* DisplayTextFieldTest.swift */; };
@@ -1586,7 +1593,7 @@
 		0ADCD45A231973650078CC67 /* UserAgentBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgentBuilderTests.swift; sourceTree = "<group>"; };
 		0AE16F8C251BEF8C00A688ED /* InitialSearchEnginesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialSearchEnginesTests.swift; sourceTree = "<group>"; };
 		0AE50853261C63D70099C6A3 /* BraveSearchHelper.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = BraveSearchHelper.js; sourceTree = "<group>"; };
-		0AE50869261C6F2E0099C6A3 /* BraveSearchHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveSearchHelper.swift; sourceTree = "<group>"; };
+		0AE50869261C6F2E0099C6A3 /* BraveSearchScriptHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveSearchScriptHandler.swift; sourceTree = "<group>"; };
 		0AE5C09822CAA01E00DFF3EE /* RewardsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsButton.swift; sourceTree = "<group>"; };
 		0AE5C69024F0059D004CBC9B /* OnboardingPrivacyConsentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPrivacyConsentViewController.swift; sourceTree = "<group>"; };
 		0AE5C69324F005F9004CBC9B /* OnboardingPrivacyConsentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPrivacyConsentView.swift; sourceTree = "<group>"; };
@@ -2200,9 +2207,13 @@
 		44331DD7225521B6007E3E93 /* UrlBarTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlBarTextField.swift; sourceTree = "<group>"; };
 		44331DD922552313007E3E93 /* LocationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationContainerView.swift; sourceTree = "<group>"; };
 		44331DDB22561F34007E3E93 /* ToolbarUrlActionsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarUrlActionsDelegate.swift; sourceTree = "<group>"; };
+		4433E15426B996C20023A134 /* BraveTalkRewardsOptInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTalkRewardsOptInViewController.swift; sourceTree = "<group>"; };
+		4433E15626B999B40023A134 /* BraveTalkRewardsOptInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTalkRewardsOptInView.swift; sourceTree = "<group>"; };
 		4452CA392552FC7F0053EFE6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4452CA3A2552FD360053EFE6 /* build_in_core.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_in_core.sh; sourceTree = "<group>"; };
 		4452CAEF255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBrowserIntroCalloutViewController.swift; sourceTree = "<group>"; };
+		4457123126BAB1D200B60C1A /* BraveTalkOptInSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTalkOptInSuccessViewController.swift; sourceTree = "<group>"; };
+		4457123E26BAB20000B60C1A /* BraveTalkOptInSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTalkOptInSuccessView.swift; sourceTree = "<group>"; };
 		445E1F5A26B72923005C56C3 /* leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = leaf.cer; sourceTree = "<group>"; };
 		4481F22926CBD1C400658EAC /* AmazonRootCA3.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AmazonRootCA3.cer; sourceTree = "<group>"; };
 		4481F22A26CBD1C500658EAC /* AmazonRootCA4.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AmazonRootCA4.cer; sourceTree = "<group>"; };
@@ -2229,6 +2240,8 @@
 		4484BAF12654227A0099A205 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		448DC7D5268A5C3E00F4795C /* BraveSearchDebugMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveSearchDebugMenu.swift; sourceTree = "<group>"; };
 		448DC7E3268A6A2200F4795C /* BraveSearchLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveSearchLogEntry.swift; sourceTree = "<group>"; };
+		449AC16126D8FE5B00A53F33 /* BraveTalkScriptHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTalkScriptHandler.swift; sourceTree = "<group>"; };
+		449AC16E26D9008D00A53F33 /* BraveTalkHelper.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = BraveTalkHelper.js; sourceTree = "<group>"; };
 		44A58CC72693A309005C0879 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		44A58CE926947100005C0879 /* BraveSearchDebugMenuFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveSearchDebugMenuFixture.swift; sourceTree = "<group>"; };
 		44C42CF8268378B1009572D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/BrowserIntents.intentdefinition; sourceTree = "<group>"; };
@@ -2249,6 +2262,7 @@
 		44C42D2226837A1B009572D7 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		44C42D2426837A21009572D7 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		44C42D2626837A30009572D7 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		44C6CCD126DE6CB100E90068 /* DomainUserScriptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainUserScriptTests.swift; sourceTree = "<group>"; };
 		44FA2F2F21F8DB1000EFA86A /* DataPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPreferences.swift; sourceTree = "<group>"; };
 		5902D2FF22DCD681002232FB /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/BraveShared.strings; sourceTree = "<group>"; };
 		590913E223268115004625FA /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -3766,6 +3780,7 @@
 				27829E802549FF73007CF0B2 /* Panel */,
 				27829E812549FF7C007CF0B2 /* Transfer */,
 				27829E822549FF84007CF0B2 /* Common */,
+				4433E14826B996A10023A134 /* OptIn */,
 			);
 			path = "Brave Rewards";
 			sourceTree = "<group>";
@@ -4645,6 +4660,17 @@
 			path = UrlBar;
 			sourceTree = "<group>";
 		};
+		4433E14826B996A10023A134 /* OptIn */ = {
+			isa = PBXGroup;
+			children = (
+				4433E15426B996C20023A134 /* BraveTalkRewardsOptInViewController.swift */,
+				4433E15626B999B40023A134 /* BraveTalkRewardsOptInView.swift */,
+				4457123126BAB1D200B60C1A /* BraveTalkOptInSuccessViewController.swift */,
+				4457123E26BAB20000B60C1A /* BraveTalkOptInSuccessView.swift */,
+			);
+			path = OptIn;
+			sourceTree = "<group>";
+		};
 		4452CA382552FC620053EFE6 /* BraveCore */ = {
 			isa = PBXGroup;
 			children = (
@@ -5078,6 +5104,7 @@
 				D0FCF7E91FE44DA2004A7995 /* MainFrame */,
 				595E0EDA21CAD97C00813D49 /* CookieControl.js */,
 				0AE50853261C63D70099C6A3 /* BraveSearchHelper.js */,
+				449AC16E26D9008D00A53F33 /* BraveTalkHelper.js */,
 				F99505FE22937E3900CC6543 /* U2F-low-level.js */,
 				5E3477E822D7771700B0D5F8 /* ResourceDownloader.js */,
 				5E4845BF22DE381200372022 /* WindowRenderHelper.js */,
@@ -5273,7 +5300,8 @@
 				0A8A6224257905E300B035F4 /* UniversalLinkManager.swift */,
 				4452CAEF255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift */,
 				0A0A5ED025B1F080007B3E74 /* DefaultBrowserIntroManager.swift */,
-				0AE50869261C6F2E0099C6A3 /* BraveSearchHelper.swift */,
+				0AE50869261C6F2E0099C6A3 /* BraveSearchScriptHandler.swift */,
+				449AC16126D8FE5B00A53F33 /* BraveTalkScriptHandler.swift */,
 			);
 			indentWidth = 4;
 			path = Browser;
@@ -5580,6 +5608,7 @@
 				F95ED17D25A95426001A432D /* UserScriptManagerTest.swift */,
 				0A2BFB3325F2754600719AA9 /* NTPDownloaderTests.swift */,
 				27C5AE2D25D72B0A00B8F50E /* OPMLParsingTests.swift */,
+				44C6CCD126DE6CB100E90068 /* DomainUserScriptTests.swift */,
 				2F26C42B267B9B7E00E5AD60 /* ProductNotificationTests */,
 				F84B21D71A090F8100AAB793 /* Supporting Files */,
 			);
@@ -6651,6 +6680,7 @@
 				C6345ECB2113B3A000CFB983 /* SearchPlugins in Resources */,
 				4481F24326CBD42C00658EAC /* GlobalSignRootCA_R3.cer in Resources */,
 				F930CDAC227000F200A23FE1 /* U2F.js in Resources */,
+				449AC16F26D9008D00A53F33 /* BraveTalkHelper.js in Resources */,
 				4422D55921BFFB7F00BF1855 /* unicode.py in Resources */,
 				7B2142FE1E5E055000CDD3FC /* InfoPlist.strings in Resources */,
 				E69922171B94E3EF007C480D /* Licenses.html in Resources */,
@@ -7329,6 +7359,7 @@
 				392ED7E61D0AEFEF009D9B62 /* HomePageAccessors.swift in Sources */,
 				7BA8D1C71BA037F500C8AE9E /* OpenInHelper.swift in Sources */,
 				0A27ABA123D1B9C400194921 /* BrandedImageCalloutState.swift in Sources */,
+				4433E15726B999B40023A134 /* BraveTalkRewardsOptInView.swift in Sources */,
 				A1AD4BCF20BF3E8C007A6EA1 /* BookmarksViewController.swift in Sources */,
 				5D24AF9021BA4D7700F9506A /* ContentBlockerRegion.swift in Sources */,
 				E4B423BE1AB9FE6A007E66C8 /* ReaderModeCache.swift in Sources */,
@@ -7367,6 +7398,7 @@
 				2FF0EDB325BA19E9004B18E2 /* SearchQuickEnginesViewController.swift in Sources */,
 				0A5CBD3423D4677100362CC8 /* NTPLearnMoreViewController.swift in Sources */,
 				F35B8D2F1D638408008E3D61 /* SessionRestoreHandler.swift in Sources */,
+				4457123226BAB1D200B60C1A /* BraveTalkOptInSuccessViewController.swift in Sources */,
 				44C42CF6268378B1009572D7 /* BrowserIntents.intentdefinition in Sources */,
 				27201EF924535A9500C19DD1 /* NewTabCollectionViewCell.swift in Sources */,
 				4422D4C621BFFB7600BF1855 /* env_posix.cc in Sources */,
@@ -7518,6 +7550,7 @@
 				27A1ABF42485567900344503 /* BraveNewsSectionProvider.swift in Sources */,
 				E68AEDB01B18F81A00133D99 /* SwipeAnimator.swift in Sources */,
 				0AEFB8532226D7C5007AF600 /* AdblockResourcesMappings.swift in Sources */,
+				449AC16226D8FE5B00A53F33 /* BraveTalkScriptHandler.swift in Sources */,
 				0A66550A23E9D9750047EF2A /* UserAgent.swift in Sources */,
 				3BF56D271CDBBE1F00AC4D75 /* SimpleToast.swift in Sources */,
 				D31F95E91AC226CB005C9F3B /* ScreenshotHelper.swift in Sources */,
@@ -7537,6 +7570,7 @@
 				2746D27324A2A5DA00E38852 /* RewardsInternalsContributionListController.swift in Sources */,
 				3B6889C51D66950E002AC85E /* UIImageColors.swift in Sources */,
 				0A1E84402190A57F0042F782 /* SyncSelectDeviceTypeViewController.swift in Sources */,
+				4457123F26BAB20000B60C1A /* BraveTalkOptInSuccessView.swift in Sources */,
 				392ED7E41D0AEF56009D9B62 /* NewTabAccessors.swift in Sources */,
 				276E7A3C22F21DBE00939424 /* RewardsReporting.swift in Sources */,
 				F9C6B7D623886EF8003F7D16 /* SceneObserver.swift in Sources */,
@@ -7572,7 +7606,7 @@
 				0A4BEF5D221AF1910005551A /* AdblockResourceDownloader.swift in Sources */,
 				0BA1E02E1B046F1E007675AF /* ErrorPageHelper.swift in Sources */,
 				5EC2C07325BF988E005EA984 /* PlaylistCell.swift in Sources */,
-				0AE5086A261C6F2E0099C6A3 /* BraveSearchHelper.swift in Sources */,
+				0AE5086A261C6F2E0099C6A3 /* BraveSearchScriptHandler.swift in Sources */,
 				D3A9949C1A3686BD008AD1AC /* BrowserViewController.swift in Sources */,
 				59A681BDFC95A19F05E07223 /* SearchViewController.swift in Sources */,
 				0A8C6993225BC7B100988715 /* ToolbarUrlActionsProtocol.swift in Sources */,
@@ -7627,6 +7661,7 @@
 				27D114D62358FCA400166534 /* SettingsRowViews.swift in Sources */,
 				4422D56621BFFB7F00BF1855 /* tostring.cc in Sources */,
 				2727369B24A65F650096DCB9 /* UIActionExtensions.swift in Sources */,
+				4433E15526B996C20023A134 /* BraveTalkRewardsOptInViewController.swift in Sources */,
 				2746D28124A4F8DA00E38852 /* RewardsInternalsShareController.swift in Sources */,
 				4422D54821BFFB7E00BF1855 /* pcre.cc in Sources */,
 				C8F457AA1F1FDD9B000CB895 /* BrowserViewController+KeyCommands.swift in Sources */,
@@ -7684,6 +7719,7 @@
 				E696FE511C47F86E00EC007C /* AuthenticatorTests.swift in Sources */,
 				275965E224EEC4EA0051A827 /* FeedFillStrategyTests.swift in Sources */,
 				2FA01E2825F29B0900103D67 /* BenchmarkTierTests.swift in Sources */,
+				44C6CCD226DE6CB100E90068 /* DomainUserScriptTests.swift in Sources */,
 				F95ED17E25A95426001A432D /* UserScriptManagerTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

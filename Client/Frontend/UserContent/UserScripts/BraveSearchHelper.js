@@ -42,7 +42,6 @@ writable: false,
     getCanSetDefaultSearchProvider() {
         return window.__firefox__.$<brave-search-helper>.sendMessage(1);
     },
-
     setIsDefaultSearchProvider() {
         return window.__firefox__.$<brave-search-helper>.sendMessage(2);
     }
