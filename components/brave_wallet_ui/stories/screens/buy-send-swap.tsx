@@ -7,7 +7,9 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  EthereumChain
+  EthereumChain,
+  BuySupportedChains,
+  SwapSupportedChains
 } from '../../constants/types'
 import Swap from '../../components/buy-send-swap/tabs/swap-tab'
 import Send from '../../components/buy-send-swap/tabs/send-tab'
@@ -100,12 +102,35 @@ function BuySendSwap (props: Props) {
   } = props
   const [selectedTab, setSelectedTab] = React.useState<BuySendSwapTypes>('buy')
 
+  React.useMemo(() => {
+    if (selectedTab === 'buy' && !BuySupportedChains.includes(selectedNetwork.chainId)) {
+      setSelectedTab('send')
+    }
+    if (selectedTab === 'swap' && !SwapSupportedChains.includes(selectedNetwork.chainId)) {
+      setSelectedTab('send')
+    }
+  }, [selectedNetwork, selectedTab, BuySupportedChains])
+
+  const isBuyDisabled = React.useMemo(() => {
+    return !BuySupportedChains.includes(selectedNetwork.chainId)
+  }, [BuySupportedChains, selectedNetwork])
+
+  const isSwapDisabled = React.useMemo(() => {
+    return !SwapSupportedChains.includes(selectedNetwork.chainId)
+  }, [SwapSupportedChains, selectedNetwork])
+
   const changeTab = (tab: BuySendSwapTypes) => () => {
     setSelectedTab(tab)
   }
 
   return (
-    <Layout selectedTab={selectedTab} onChangeTab={changeTab}>
+    <Layout
+      selectedNetwork={selectedNetwork}
+      isBuyDisabled={isBuyDisabled}
+      isSwapDisabled={isSwapDisabled}
+      selectedTab={selectedTab}
+      onChangeTab={changeTab}
+    >
       {selectedTab === 'swap' &&
         <Swap
           accounts={accounts}

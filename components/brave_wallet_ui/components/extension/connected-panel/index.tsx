@@ -31,7 +31,7 @@ import {
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
-import { WalletAccountType, PanelTypes, EthereumChain, BuySwapSupportedChains } from '../../../constants/types'
+import { WalletAccountType, PanelTypes, EthereumChain, BuySupportedChains, SwapSupportedChains } from '../../../constants/types'
 import { create, background } from 'ethereum-blockies'
 import locale from '../../../constants/locale'
 
@@ -79,9 +79,13 @@ const ConnectedPanel = (props: Props) => {
     return create({ seed: selectedAccount.address, size: 8, scale: 16 }).toDataURL()
   }, [selectedAccount.address])
 
-  const isDisabled = React.useMemo(() => {
-    return !BuySwapSupportedChains.includes(selectedNetwork.chainId)
-  }, [BuySwapSupportedChains, selectedNetwork])
+  const isBuyDisabled = React.useMemo(() => {
+    return !BuySupportedChains.includes(selectedNetwork.chainId)
+  }, [BuySupportedChains, selectedNetwork])
+
+  const isSwapDisabled = React.useMemo(() => {
+    return !SwapSupportedChains.includes(selectedNetwork.chainId)
+  }, [SwapSupportedChains, selectedNetwork])
 
   return (
     <StyledWrapper onClick={onHideMore} panelBackground={bg}>
@@ -117,7 +121,12 @@ const ConnectedPanel = (props: Props) => {
           <FiatBalanceText>${formatPrices(Number(selectedAccount.fiatBalance))}</FiatBalanceText>
         </BalanceColumn>
       </CenterColumn>
-      <ConnectedBottomNav selectedNetwork={selectedNetwork} isDisabled={isDisabled} onNavigate={navAction} />
+      <ConnectedBottomNav
+        selectedNetwork={selectedNetwork}
+        isBuyDisabled={isBuyDisabled}
+        isSwapDisabled={isSwapDisabled}
+        onNavigate={navAction}
+      />
     </StyledWrapper>
   )
 }

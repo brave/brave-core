@@ -17,12 +17,13 @@ import { PanelTypes, EthereumChain } from '../../../constants/types'
 
 export interface Props {
   onNavigate: (path: PanelTypes) => void
-  isDisabled: boolean
+  isSwapDisabled: boolean
+  isBuyDisabled: boolean
   selectedNetwork: EthereumChain
 }
 
 function ConnectedBottomNav (props: Props) {
-  const { onNavigate, isDisabled, selectedNetwork } = props
+  const { onNavigate, isSwapDisabled, isBuyDisabled, selectedNetwork } = props
 
   const navigate = (path: PanelTypes) => () => {
     onNavigate(path)
@@ -33,11 +34,11 @@ function ConnectedBottomNav (props: Props) {
       <NavOutline>
         <PanelTooltip
           position='right'
-          isDisabled={isDisabled}
+          isDisabled={isBuyDisabled}
           text={`${reduceNetworkDisplayName(selectedNetwork.chainName)} ${locale.bssToolTip}`}
         >
-          <NavButton disabled={isDisabled} onClick={navigate('buy')}>
-            <NavButtonText disabled={isDisabled}>{locale.buy}</NavButtonText>
+          <NavButton disabled={isBuyDisabled} onClick={navigate('buy')}>
+            <NavButtonText disabled={isBuyDisabled}>{locale.buy}</NavButtonText>
           </NavButton>
         </PanelTooltip>
         <NavDivider />
@@ -47,11 +48,11 @@ function ConnectedBottomNav (props: Props) {
         <NavDivider />
         <PanelTooltip
           position='left'
-          isDisabled={isDisabled}
+          isDisabled={isSwapDisabled}
           text={`${reduceNetworkDisplayName(selectedNetwork.chainName)} ${locale.bssToolTip}`}
         >
-          <NavButton disabled={isDisabled} onClick={navigate('swap')}>
-            <NavButtonText disabled={isDisabled}>{locale.swap}</NavButtonText>
+          <NavButton disabled={isSwapDisabled} onClick={navigate('swap')}>
+            <NavButtonText disabled={isSwapDisabled}>{locale.swap}</NavButtonText>
           </NavButton>
         </PanelTooltip>
         {/* <NavDivider /> */}

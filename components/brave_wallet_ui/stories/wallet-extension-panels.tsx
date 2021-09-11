@@ -495,6 +495,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         selectedAsset={selectedWyreAsset}
                         buyAmount={buyAmount}
                         selectedNetwork={selectedNetwork}
+                        networkList={[]}
                       />
                     }
                   </ScrollContainer>

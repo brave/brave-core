@@ -596,13 +596,18 @@ export const kGoerliChainId = '0x5'
 export const kKovanChainId = '0x2a'
 export const kLocalhostChainId = '0x539'
 
-export const BuySwapSupportedChains = [
+export const BuySupportedChains = [
   kMainnetChainId,
   kRinkebyChainId,
   kRopstenChainId,
   kGoerliChainId,
   kKovanChainId,
   kLocalhostChainId
+]
+
+export const SwapSupportedChains = [
+  kMainnetChainId,
+  kRopstenChainId
 ]
 
 // Keep in sync with components/brave_wallet/common/brave_wallet.mojom until

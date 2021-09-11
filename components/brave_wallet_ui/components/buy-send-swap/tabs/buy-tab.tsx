@@ -91,6 +91,7 @@ function BuyTab (props: Props) {
             onChangeBuyView={onChangeBuyView}
             onInputChange={onInputChange}
             onSubmit={onSubmitBuy}
+            networkList={networkList}
           />
         </>
       }

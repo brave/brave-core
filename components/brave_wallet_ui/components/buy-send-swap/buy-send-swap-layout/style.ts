@@ -5,6 +5,7 @@ interface StyleProps {
   isSelected: boolean
   selectedTab: BuySendSwapTypes
   tabID: BuySendSwapTypes
+  isDisabled: boolean
 }
 
 export const StyledWrapper = styled.div`
@@ -63,7 +64,7 @@ export const TabButton = styled.button<Partial<StyleProps>>`
   height: 100%;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: ${(p) => p.isDisabled ? 'default' : 'pointer'};
   outline: none;
   background: ${(p) =>
     p.isSelected ? p.theme.color.background02 : p.theme.color.background01};
@@ -83,7 +84,7 @@ export const TabButtonText = styled.span<Partial<StyleProps>>`
   font-weight: 600;
   letter-spacing: 0.01em;
   background: ${(p) =>
-    p.isSelected ? p.theme.color.text01 : p.theme.color.text02};
+    p.isDisabled ? p.theme.color.interactive08 : p.isSelected ? p.theme.color.text01 : p.theme.color.text02};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `
@@ -104,4 +105,11 @@ export const LeftDivider = styled.div<Partial<StyleProps>>`
   position: absolute;
   left: -2px;
   bottom: 4px;
+`
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
 `
