@@ -19,6 +19,17 @@
     "message": "Refresh Status",
     "description": ""
   },
+  "platformPublisherTitle": {
+    "message": "$name$ on $platform$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
+      }
+    }
+  },
   "attention": {
     "message": "Attention",
     "description": ""

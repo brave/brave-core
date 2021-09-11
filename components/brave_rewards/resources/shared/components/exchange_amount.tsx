@@ -11,7 +11,7 @@ interface Props {
 }
 
 export function ExchangeAmount (props: Props) {
-  const exchangeAmount = props.amount * props.rate
+  const exchangeAmount = (props.amount * props.rate) || 0
   const currency = props.currency || 'USD'
   return (
     <>

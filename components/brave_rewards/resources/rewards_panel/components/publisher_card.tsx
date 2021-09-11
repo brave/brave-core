@@ -4,7 +4,8 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../../shared/lib/locale_context'
+import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
+import { getPublisherPlatformName } from '../../shared/lib/publisher_platform'
 import { HostContext, useHostListener } from '../lib/host_context'
 import { MonthlyTipAction } from '../lib/interfaces'
 import { ToggleButton } from './toggle_button'
@@ -71,6 +72,21 @@ export function PublisherCard () {
     }
   }
 
+  function getPublisherName () {
+    if (!publisherInfo) {
+      return null
+    }
+
+    if (publisherInfo.platform) {
+      return formatMessage(getString('platformPublisherTitle'), [
+        publisherInfo.name,
+        getPublisherPlatformName(publisherInfo.platform)
+      ])
+    }
+
+    return publisherInfo.name
+  }
+
   return (
     <style.root>
       <style.heading>
@@ -81,7 +97,7 @@ export function PublisherCard () {
             </style.icon>
         }
         <style.name>
-          {publisherInfo.name}
+          {getPublisherName()}
           <style.status>
             {renderStatusMessage()}
             <style.refreshStatus>

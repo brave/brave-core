@@ -14,6 +14,7 @@ export const localeStrings = {
   unverifiedCreator: 'Unverified Creator',
   verifiedCreator: 'Verified Creator',
   refreshStatus: 'Refresh Status',
+  platformPublisherTitle: '$1 on $2',
   attention: 'Attention',
   sendTip: 'Send Tip',
   includeInAutoContribute: 'Include in Auto-Contribute',

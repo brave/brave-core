@@ -199,10 +199,6 @@ let grantPromise: Promise<GrantInfo[]> | null = null
 let grantsUpdatedCallbacks: GrantsUpdatedCallback[] = []
 
 chrome.braveRewards.onPromotions.addListener((result, promotions) => {
-  if (result === 1) { // Error
-    return
-  }
-
   const grants: GrantInfo[] = []
   for (const obj of promotions) {
     const source = obj.type === 1 ? 'ads' : 'ugp'
@@ -320,6 +316,7 @@ function defaultPublisherInfo (url: string) {
     id: parsedURL.hostname,
     name: parsedURL.hostname,
     icon: origin ? `chrome://favicon/size/64@1x/${parsedURL.origin}` : '',
+    platform: null,
     registered: false,
     attentionScore: 0,
     autoContributeEnabled: true,
@@ -367,6 +364,19 @@ export async function fetchPublisherInfo (tabId: number) {
   }
 }
 
+function getPublisherPlatform (name: string) {
+  switch (name) {
+    case 'twitter':
+    case 'youtube':
+    case 'twitch':
+    case 'reddit':
+    case 'vimeo':
+    case 'github':
+      return name
+  }
+  return null
+}
+
 export async function getPublisherInfo (tabId: number) {
   const tab = await getTab(tabId)
   if (!tab) {
@@ -408,6 +418,7 @@ export async function getPublisherInfo (tabId: number) {
     id: publisherKey,
     name: String(publisher.name || ''),
     icon: iconPath ? `chrome://favicon/size/64@1x/${iconPath}` : '',
+    platform: getPublisherPlatform(String(publisher.provider || '')),
     registered,
     attentionScore: Number(publisher.percentage) / 100 || 0,
     autoContributeEnabled: !publisher.excluded,

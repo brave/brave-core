@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { ExternalWallet, ExternalWalletProvider } from '../../shared/lib/external_wallet'
+import { PublisherPlatform } from '../../shared/lib/publisher_platform'
 import { ExternalWalletAction, RewardsSummaryData } from '../../shared/components/wallet_card'
 import { Notification, NotificationAction } from '../../shared/components/notifications'
 
@@ -21,6 +22,7 @@ export interface PublisherInfo {
   id: string
   name: string
   icon: string
+  platform: PublisherPlatform | null
   registered: boolean
   attentionScore: number
   autoContributeEnabled: boolean
