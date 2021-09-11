@@ -108,5 +108,4 @@ export const StyledLink = styled('a')<{}>`
   cursor: pointer;
   display: inline-block;
   font-weight: 700;
-  margin-left: 3px;
 `
