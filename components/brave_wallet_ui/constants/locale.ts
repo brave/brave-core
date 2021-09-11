@@ -49,7 +49,7 @@ const locale = {
   topNavAccounts: 'Accounts',
 
   // Chart Timeline Buttons
-  chartLive: 'LIVE',
+  chartLive: '1H',
   chartOneDay: '1D',
   chartOneWeek: '1W',
   chartOneMonth: '1M',
