@@ -37,7 +37,15 @@ bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
 #if defined(TOOLKIT_VIEWS)
 ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
                                      absl::variant<int, SkColor> color) {
-  int default_id = IDR_BRAVE_BOOKMARK_FOLDER_CLOSED;
+  int default_id =
+#if defined(OS_WIN)
+      IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_LIGHT;
+#elif defined(OS_LINUX)
+      IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_LIGHT;
+#else
+      IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIGHT;
+#endif
+
   const auto generator = [](int default_id, BookmarkFolderIconType icon_type,
                             absl::variant<int, SkColor> color,
                             const ui::NativeTheme* native_theme) {
@@ -52,8 +60,16 @@ ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
     }
 
     const int resource_id = color_utils::IsDark(sk_color)
-                                ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED
-                                : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WHITE;
+#if defined(OS_WIN)
+                                ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_LIGHT
+                                : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_DARK;
+#elif defined(OS_LINUX)
+                                ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_LIGHT
+                                : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_DARK;
+#else
+                                ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIGHT
+                                : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_DARK;
+#endif
     folder = *ui::ResourceBundle::GetSharedInstance()
                   .GetNativeImageNamed(resource_id)
                   .ToImageSkia();
