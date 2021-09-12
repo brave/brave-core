@@ -31,7 +31,7 @@ export const SelectAddressScrollContainer = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
-  max-height: 100px;
+  max-height: 200px;
   box-sizing: border-box;
 `
 
@@ -54,7 +54,7 @@ export const NewAccountTitle = styled.span`
   padding-left: 12px;
   padding-bottom: 8px;
   align-self: flex-start;
-  color: ${(p) => p.theme.color.interactive07};
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const AccountListWrapper = styled.div`
