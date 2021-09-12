@@ -253,6 +253,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_NUMBER;
 #endif
 
+  // Media router pref
+  (*s_brave_allowlist)[prefs::kEnableMediaRouter] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+
   return *s_brave_allowlist;
 }
 
