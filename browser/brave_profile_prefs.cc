@@ -391,6 +391,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   RegisterDefaultBraveBrowserPromptPrefs(registry);
 #endif
 
+  registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(false));
+
   RegisterProfilePrefsForMigration(registry);
 }
 
