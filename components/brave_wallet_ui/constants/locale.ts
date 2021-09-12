@@ -73,6 +73,7 @@ const locale = {
   buy: 'Buy',
   send: 'Send',
   swap: 'Swap',
+  bssToolTip: 'not supported',
 
   // Buttons
   buttonContinue: 'Continue',
