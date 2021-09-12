@@ -85,9 +85,6 @@
 #include "url/url_canon_stdstring.h"
 #include "url/url_util.h"
 
-#if BUILDFLAG(ENABLE_GREASELION)
-#include "brave/components/greaselion/browser/greaselion_service.h"
-#endif
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -338,10 +335,23 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 
   if (base::FeatureList::IsEnabled(features::kVerboseLoggingFeature))
     persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
+
+#if BUILDFLAG(ENABLE_GREASELION)
+  if (greaselion_service_) {
+    greaselion_service_->AddObserver(this);
+  }
+#endif
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+#if BUILDFLAG(ENABLE_GREASELION)
+  if (greaselion_service_) {
+    greaselion_service_->RemoveObserver(this);
+  }
+#endif
+
   if (ledger_database_) {
     file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
   }
@@ -379,7 +389,6 @@ void RewardsServiceImpl::Init(
 
   CheckPreferences();
   InitPrefChangeRegistrar();
-  EnableGreaseLion();
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
@@ -1371,8 +1380,8 @@ void RewardsServiceImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
   bat_ledger_->GetReconcileStamp(std::move(callback));
 }
 
-void RewardsServiceImpl::EnableGreaseLion() {
 #if BUILDFLAG(ENABLE_GREASELION)
+void RewardsServiceImpl::EnableGreaseLion() {
   if (!greaselion_service_) {
     return;
   }
@@ -1397,8 +1406,13 @@ void RewardsServiceImpl::EnableGreaseLion() {
       greaselion::GITHUB_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled) &&
           !hide_button);
-#endif
 }
+
+void RewardsServiceImpl::OnRulesReady(
+    greaselion::GreaselionService* greaselion_service) {
+  EnableGreaseLion();
+}
+#endif
 
 void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
   BLOG(1, "Shutting down ledger process");
@@ -1727,11 +1741,13 @@ void RewardsServiceImpl::OnFetchBalanceForEnableRewards(
 }
 
 void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
-  #if BUILDFLAG(ENABLE_GREASELION)
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::ADS,
-      profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
-  #endif
+#if BUILDFLAG(ENABLE_GREASELION)
+  if (greaselion_service_) {
+    greaselion_service_->SetFeatureEnabled(
+        greaselion::ADS,
+        profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
+  }
+#endif
 
   for (auto& observer : observers_) {
     observer.OnAdsEnabled(this, ads_enabled);

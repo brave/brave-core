@@ -53,8 +53,9 @@ class GreaselionService : public KeyedService,
   // implementation of our own observers
   class Observer : public base::CheckedObserver {
    public:
+    virtual void OnRulesReady(GreaselionService* greaselion_service) {}
     virtual void OnExtensionsReady(GreaselionService* greaselion_service,
-                                   bool success) = 0;
+                                   bool success) {}
   };
   virtual void AddObserver(Observer* observer) = 0;
   virtual void RemoveObserver(Observer* observer) = 0;

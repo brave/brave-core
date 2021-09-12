@@ -18,6 +18,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/version.h"
+#include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "extensions/common/extension_id.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -36,9 +37,8 @@ class ExtensionSystem;
 
 namespace greaselion {
 
-class GreaselionDownloadService;
-
-class GreaselionServiceImpl : public GreaselionService {
+class GreaselionServiceImpl : public GreaselionService,
+                              public GreaselionDownloadService::Observer {
  public:
   explicit GreaselionServiceImpl(
       GreaselionDownloadService* download_service,
@@ -54,8 +54,8 @@ class GreaselionServiceImpl : public GreaselionService {
   bool IsGreaselionExtension(const std::string& id) override;
   std::vector<extensions::ExtensionId> GetExtensionIdsForTesting() override;
   bool ready() override;
-  void AddObserver(Observer* observer) override;
-  void RemoveObserver(Observer* observer) override;
+  void AddObserver(GreaselionService::Observer* observer) override;
+  void RemoveObserver(GreaselionService::Observer* observer) override;
 
   // ExtensionRegistryObserver overrides
   void OnExtensionReady(content::BrowserContext* browser_context,
@@ -75,6 +75,9 @@ class GreaselionServiceImpl : public GreaselionService {
   void Install(scoped_refptr<extensions::Extension> extension);
   void MaybeNotifyObservers();
 
+  // GreaselionDownloadService::Observer:
+  void OnRulesReady(GreaselionDownloadService* download_service) override;
+
   GreaselionDownloadService* download_service_;  // NOT OWNED
   GreaselionFeatures state_;
   const base::FilePath install_directory_;
@@ -86,7 +89,7 @@ class GreaselionServiceImpl : public GreaselionService {
   bool update_pending_;
   int pending_installs_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  base::ObserverList<Observer> observers_;
+  base::ObserverList<GreaselionService::Observer> observers_;
   std::vector<extensions::ExtensionId> greaselion_extensions_;
   std::vector<base::ScopedTempDir> extension_dirs_;
   base::Version browser_version_;
