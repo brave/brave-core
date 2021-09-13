@@ -695,13 +695,10 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "reviewSitesMsg", IDS_BRAVE_UI_REVIEW_SITE_MSG },
         { "rewardsBackupNoticeText1", IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT1 },                // NOLINT
         { "rewardsBackupNoticeText2", IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT2 },                // NOLINT
-        { "rewardsBackupNoticeText3", IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT3 },                // NOLINT
         { "rewardsBackupText1", IDS_BRAVE_UI_REWARDS_BACKUP_TEXT1 },
         { "rewardsBackupText2", IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2 },
         { "rewardsBackupText3", IDS_BRAVE_UI_REWARDS_BACKUP_TEXT3 },
         { "rewardsBackupText4", IDS_BRAVE_UI_REWARDS_BACKUP_TEXT4 },
-        { "rewardsBackupText5", IDS_BRAVE_UI_REWARDS_BACKUP_TEXT5 },
-        { "rewardsBackupText6", IDS_BRAVE_UI_REWARDS_BACKUP_TEXT6 },
         { "rewardsContribute", IDS_BRAVE_UI_REWARDS_CONTRIBUTE },
         { "rewardsContributeAttention", IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION },             // NOLINT
         { "rewardsPanelEmptyText1", IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT1 },

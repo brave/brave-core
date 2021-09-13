@@ -793,14 +793,11 @@
       <message name="IDS_BRAVE_UI_RESTORE_ALL" desc="">Restore All</message>
       <message name="IDS_BRAVE_UI_REVIEW_SITE_MSG" desc="">Your pinned sites have been moved to</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT1" desc="">The funds in your Brave wallet are virtual and not required to backup. It's available for you to spend exclusively on this browser.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT2" desc="">If you'd like to secure all of your funds in the case of clean installing the browser or switching to a new device, and have other benefits such as adding, withdrawing and transferring funds, we recommend</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT3" desc="">connecting to a verified <ph name="PROVIDER">$1<ex>Uphold</ex></ph> wallet.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT2" desc="">If you'd like to secure all of your funds in the case of clean installing the browser or switching to a new device, and have other benefits such as adding, withdrawing and transferring funds, we recommend <ph name="LINK_BEGIN">$1</ph>verifying your wallet<ph name="LINK_END">$2</ph>.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT1" desc="">Keep this recovery key safe.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2" desc="">You can always use this key to get your wallet back if something happens to your browser or computer. But make sure to protect it — anyone who gets this key could steal your wallet. It’s probably safest to write it down on a piece of paper, or wherever else you keep important info.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT3" desc="">Note:</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT4" desc="">Part of the funds may be received from Brave and are not included in the backup as it is not required. It's available for you to spend exclusively on this browser.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT5" desc="">If you'd like to secure all of your funds in the case of clean installing the browser or switching to a new device, and have other benefits such as adding, withdrawing and transferring funds, we recommend</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT6" desc="">connecting to a verified <ph name="PROVIDER">$1<ex>Uphold</ex></ph> wallet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">You can support this content creator by sending a tip. It’s a way of thanking them for making great content. Verified creators get paid for their tips during the first week of each calendar month.</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
