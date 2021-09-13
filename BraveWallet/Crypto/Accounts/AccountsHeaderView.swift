@@ -7,13 +7,7 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 struct AccountsHeaderView: View {
-  enum Action {
-    case addAccount
-    case settings
-  }
-  
   @ObservedObject var keyringStore: KeyringStore
-  var action: (Action) -> Void
   
   @State private var isPresentingBackup: Bool = false
   @State private var isPresentingAddAccount: Bool = false
@@ -53,7 +47,7 @@ struct AccountsHeaderView: View {
               .navigationViewStyle(StackNavigationViewStyle())
             }
         )
-        Button(action: { action(.settings) }) {
+        NavigationLink(destination: WalletSettingsView(keyringStore: keyringStore)) {
           Image("brave.gear")
         }
       }
@@ -67,7 +61,7 @@ struct AccountsHeaderView: View {
 @available(iOS 14.0, *)
 struct AccountsHeaderView_Previews: PreviewProvider {
   static var previews: some View {
-    AccountsHeaderView(keyringStore: .previewStore, action: { _ in })
+    AccountsHeaderView(keyringStore: .previewStore)
       .previewLayout(.sizeThatFits)
       .previewColorSchemes()
   }

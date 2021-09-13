@@ -314,6 +314,7 @@
 		2748625D25AD309800BC40AA /* sqlcipher.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2748625C25AD308A00BC40AA /* sqlcipher.xcframework */; };
 		2748626925AD30A500BC40AA /* sqlcipher.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2748625C25AD308A00BC40AA /* sqlcipher.xcframework */; };
 		2748626A25AD30A500BC40AA /* sqlcipher.xcframework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2748625C25AD308A00BC40AA /* sqlcipher.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		275034E326EF9E6A00CF4C8A /* WalletSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275034E226EF9E6A00CF4C8A /* WalletSettingsView.swift */; };
 		2755AB7D23107BC600F0721F /* AdsReporting.js in Resources */ = {isa = PBXBuildFile; fileRef = 2755AB7C23107BC600F0721F /* AdsReporting.js */; };
 		2755AB8623107DBD00F0721F /* AdsMediaReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2755AB8523107DBD00F0721F /* AdsMediaReporting.swift */; };
 		2755EA9C2551F94B0033C43F /* RewardsInternalsAutoContributeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2755EA9B2551F94B0033C43F /* RewardsInternalsAutoContributeController.swift */; };
@@ -1833,6 +1834,7 @@
 		2746D28024A4F8DA00E38852 /* RewardsInternalsShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsShareController.swift; sourceTree = "<group>"; };
 		2746D28224A4FB7400E38852 /* RewardsInternalsSharable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsSharable.swift; sourceTree = "<group>"; };
 		2748625C25AD308A00BC40AA /* sqlcipher.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = sqlcipher.xcframework; sourceTree = "<group>"; };
+		275034E226EF9E6A00CF4C8A /* WalletSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSettingsView.swift; sourceTree = "<group>"; };
 		2755AB7C23107BC600F0721F /* AdsReporting.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = AdsReporting.js; sourceTree = "<group>"; };
 		2755AB8523107DBD00F0721F /* AdsMediaReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsMediaReporting.swift; sourceTree = "<group>"; };
 		2755EA9B2551F94B0033C43F /* RewardsInternalsAutoContributeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsAutoContributeController.swift; sourceTree = "<group>"; };
@@ -3524,6 +3526,7 @@
 				271F688926EBD27D00AA2A50 /* Blockies */,
 				271F688B26EBD27D00AA2A50 /* Chart */,
 				271F685626EBD27C00AA2A50 /* Crypto */,
+				275034D626EF9E5D00CF4C8A /* Settings */,
 				271F685026EBD27C00AA2A50 /* Preview Content */,
 				271F689026EBD27E00AA2A50 /* SwapButton.swift */,
 				271F688026EBD27D00AA2A50 /* TabbedPageViewController.swift */,
@@ -3733,6 +3736,14 @@
 				2746D28024A4F8DA00E38852 /* RewardsInternalsShareController.swift */,
 			);
 			path = "Rewards Internals";
+			sourceTree = "<group>";
+		};
+		275034D626EF9E5D00CF4C8A /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				275034E226EF9E6A00CF4C8A /* WalletSettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		2755EABB2553239B0033C43F /* Rewards */ = {
@@ -7251,6 +7262,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				271F689326EBD27E00AA2A50 /* TestContent.swift in Sources */,
+				275034E326EF9E6A00CF4C8A /* WalletSettingsView.swift in Sources */,
 				271F689B26EBD27E00AA2A50 /* CryptoView.swift in Sources */,
 				271F689826EBD27E00AA2A50 /* EthNetworkStore.swift in Sources */,
 				271F68AD26EBD27E00AA2A50 /* VerifyRecoveryPhraseView.swift in Sources */,
