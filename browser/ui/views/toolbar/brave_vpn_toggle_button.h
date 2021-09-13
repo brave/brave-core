@@ -6,14 +6,15 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_TOGGLE_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_TOGGLE_BUTTON_H_
 
-#include "base/scoped_observation.h"
-#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/brave_vpn.mojom.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/views/controls/button/toggle_button.h"
 
+class BraveVpnServiceDesktop;
 class Browser;
 
 class BraveVPNToggleButton : public views::ToggleButton,
-                             public BraveVpnServiceDesktop::Observer {
+                             public brave_vpn::mojom::ServiceObserver {
  public:
   explicit BraveVPNToggleButton(Browser* browser);
   ~BraveVPNToggleButton() override;
@@ -22,17 +23,18 @@ class BraveVPNToggleButton : public views::ToggleButton,
   BraveVPNToggleButton& operator=(const BraveVPNToggleButton&) = delete;
 
  private:
-  // BraveVpnServiceDesktop::Observer overrides:
-  void OnConnectionStateChanged(ConnectionState state) override;
+  // brave_vpn::mojom::ServiceObserver overrides:
+  void OnConnectionStateChanged(
+      brave_vpn::mojom::ConnectionState state) override;
+  void OnConnectionCreated() override {}
+  void OnConnectionRemoved() override {}
 
   void OnButtonPressed(const ui::Event& event);
   void UpdateState();
 
   Browser* browser_ = nullptr;
   BraveVpnServiceDesktop* service_ = nullptr;
-  base::ScopedObservation<BraveVpnServiceDesktop,
-                          BraveVpnServiceDesktop::Observer>
-      observation_{this};
+  mojo::Receiver<brave_vpn::mojom::ServiceObserver> receiver_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_TOGGLE_BUTTON_H_

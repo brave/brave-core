@@ -5,8 +5,11 @@
 
 #include "brave/browser/ui/views/toolbar/brave_vpn_status_label.h"
 
+#include <utility>
+
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/themes/theme_properties.h"
+#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -16,7 +19,10 @@
 BraveVPNStatusLabel::BraveVPNStatusLabel(Browser* browser)
     : browser_(browser),
       service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
-  observation_.Observe(service_);
+  mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> listener;
+  receiver_.Bind(listener.InitWithNewPipeAndPassReceiver());
+  service_->AddObserver(std::move(listener));
+
   SetAutoColorReadabilityEnabled(false);
   UpdateState();
 

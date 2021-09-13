@@ -6,14 +6,15 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_STATUS_LABEL_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_STATUS_LABEL_H_
 
-#include "base/scoped_observation.h"
-#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/brave_vpn.mojom.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/views/controls/label.h"
 
+class BraveVpnServiceDesktop;
 class Browser;
 
 class BraveVPNStatusLabel : public views::Label,
-                            public BraveVpnServiceDesktop::Observer {
+                            public brave_vpn::mojom::ServiceObserver {
  public:
   explicit BraveVPNStatusLabel(Browser* browser);
   ~BraveVPNStatusLabel() override;
@@ -22,16 +23,17 @@ class BraveVPNStatusLabel : public views::Label,
   BraveVPNStatusLabel& operator=(const BraveVPNStatusLabel&) = delete;
 
  private:
-  // BraveVpnServiceDesktop::Observer overrides:
-  void OnConnectionStateChanged(ConnectionState state) override;
+  // brave_vpn::mojom::ServiceObserver overrides:
+  void OnConnectionStateChanged(
+      brave_vpn::mojom::ConnectionState state) override;
+  void OnConnectionCreated() override {}
+  void OnConnectionRemoved() override {}
 
   void UpdateState();
 
   Browser* browser_ = nullptr;
   BraveVpnServiceDesktop* service_ = nullptr;
-  base::ScopedObservation<BraveVpnServiceDesktop,
-                          BraveVpnServiceDesktop::Observer>
-      observation_{this};
+  mojo::Receiver<brave_vpn::mojom::ServiceObserver> receiver_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_STATUS_LABEL_H_

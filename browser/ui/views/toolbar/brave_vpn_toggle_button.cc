@@ -5,9 +5,12 @@
 
 #include "brave/browser/ui/views/toolbar/brave_vpn_toggle_button.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/themes/theme_properties.h"
+#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/theme_provider.h"
@@ -15,7 +18,10 @@
 BraveVPNToggleButton::BraveVPNToggleButton(Browser* browser)
     : browser_(browser),
       service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
-  observation_.Observe(service_);
+  mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> listener;
+  receiver_.Bind(listener.InitWithNewPipeAndPassReceiver());
+  service_->AddObserver(std::move(listener));
+
   SetCallback(base::BindRepeating(&BraveVPNToggleButton::OnButtonPressed,
                                   base::Unretained(this)));
   UpdateState();
