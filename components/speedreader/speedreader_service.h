@@ -8,19 +8,28 @@
 
 #include <memory>
 
+#include "brave/components/speedreader/common/speedreader_ui.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefRegistrySimple;
 class PrefService;
 
 namespace speedreader {
 
-class SpeedreaderService : public KeyedService {
+class SpeedreaderService : public KeyedService, public mojom::SpeedreaderUI {
  public:
   explicit SpeedreaderService(PrefService* prefs);
   ~SpeedreaderService() override;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+  // mojom::SpeedreaderUI:
+  void AddObserver(
+      mojo::PendingRemote<mojom::SpeedreaderUIObserver> observer) override;
+
+  void Bind(mojo::PendingReceiver<mojom::SpeedreaderUI> receiver);
 
   void ToggleSpeedreader();
   void DisableSpeedreaderForTest();
@@ -33,6 +42,8 @@ class SpeedreaderService : public KeyedService {
 
  private:
   PrefService* prefs_ = nullptr;
+  mojo::RemoteSet<mojom::SpeedreaderUIObserver> mojo_observers_;
+  mojo::ReceiverSet<mojom::SpeedreaderUI> receivers_;
 };
 
 }  // namespace speedreader

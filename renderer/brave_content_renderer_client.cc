@@ -11,6 +11,9 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
+#include "brave/components/speedreader/buildflags.h"
+#include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/renderer/speedreader_js_render_frame_observer.h"
 #include "brave/renderer/brave_render_thread_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "content/public/renderer/render_thread.h"
@@ -69,6 +72,13 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, BraveRenderThreadObserver::GetDynamicParams());
   }
 #endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+    new speedreader::SpeedreaderJsRenderFrameObserver(
+        render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
   if (brave_search::IsDefaultAPIEnabled()) {
     new brave_search::BraveSearchRenderFrameObserver(

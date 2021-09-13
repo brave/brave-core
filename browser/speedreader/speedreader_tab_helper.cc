@@ -5,6 +5,8 @@
 
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 
+#include <utility>
+
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
@@ -25,6 +27,20 @@
 
 namespace speedreader {
 
+// static
+void SpeedreaderTabHelper::BindSpeedreaderHost(
+    mojo::PendingAssociatedReceiver<mojom::SpeedreaderResult> receiver,
+    content::RenderFrameHost* rfh) {
+  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+  if (!web_contents)
+    return;
+
+  auto* tab_helper = SpeedreaderTabHelper::FromWebContents(web_contents);
+  if (!tab_helper)
+    return;
+  tab_helper->speedreader_result_receivers_.Bind(rfh, std::move(receiver));
+}
+
 SpeedreaderTabHelper::~SpeedreaderTabHelper() {
   HideBubble();
 }
@@ -34,7 +50,8 @@ base::WeakPtr<SpeedreaderTabHelper> SpeedreaderTabHelper::GetWeakPtr() {
 }
 
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents) {}
+    : content::WebContentsObserver(web_contents),
+      speedreader_result_receivers_(web_contents, this) {}
 
 bool SpeedreaderTabHelper::IsSpeedreaderEnabled() const {
   Profile* profile =
@@ -226,6 +243,10 @@ void SpeedreaderTabHelper::DidStopLoading() {
   if (entry) {
     SpeedreaderExtendedInfoHandler::PersistMode(entry, distill_state_);
   }
+}
+
+void SpeedreaderTabHelper::GetPageDistilled(GetPageDistilledCallback callback) {
+  std::move(callback).Run(PageStateIsDistilled(distill_state_));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderTabHelper)

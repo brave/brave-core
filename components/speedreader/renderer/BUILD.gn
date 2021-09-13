@@ -1,0 +1,33 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("renderer") {
+  visibility = [
+    "//brave:child_dependencies",
+    "//brave/renderer/*",
+    "//chrome/renderer/*",
+    "//components/content_settings/renderer/*",
+  ]
+
+  sources = [
+    "speedreader_js_handler.cc",
+    "speedreader_js_handler.h",
+    "speedreader_js_render_frame_observer.cc",
+    "speedreader_js_render_frame_observer.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/speedreader/common:mojom",
+    "//chrome/browser:browser",
+    "//content/public/renderer",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//v8",
+  ]
+}

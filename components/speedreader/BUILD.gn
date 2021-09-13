@@ -48,6 +48,7 @@ static_library("speedreader") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/resources",
     "//brave/components/resources:static_resources_grit",
+    "//brave/components/speedreader/common:mojom",
     "//brave/components/weekly_storage",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",

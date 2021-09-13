@@ -1,4 +1,5 @@
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("renderer") {
@@ -19,6 +20,14 @@ source_set("renderer") {
     "//brave/components/cosmetic_filters/renderer",
     "//v8",
   ]
+
+  if (enable_speedreader) {
+    deps += [
+      "//brave/components/speedreader",
+      "//brave/components/speedreader:buildflags",
+      "//brave/components/speedreader/renderer",
+    ]
+  }
 
   if (brave_wallet_enabled) {
     deps += [

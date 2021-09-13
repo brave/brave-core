@@ -5,6 +5,8 @@
 
 #include "brave/components/speedreader/speedreader_service.h"
 
+#include <utility>
+
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/speedreader/features.h"
@@ -84,6 +86,16 @@ void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kSpeedreaderPrefEverEnabled, false);
   registry->RegisterListPref(kSpeedreaderPrefToggleCount);
   registry->RegisterIntegerPref(kSpeedreaderPrefPromptCount, 0);
+}
+
+void SpeedreaderService::AddObserver(
+    mojo::PendingRemote<mojom::SpeedreaderUIObserver> observer) {
+  mojo_observers_.Add(std::move(observer));
+}
+
+void SpeedreaderService::Bind(
+    mojo::PendingReceiver<mojom::SpeedreaderUI> receiver) {
+  receivers_.Add(this, std::move(receiver));
 }
 
 void SpeedreaderService::ToggleSpeedreader() {

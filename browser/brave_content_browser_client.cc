@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/rand_util.h"
 #include "base/system/sys_info.h"
@@ -25,6 +26,7 @@
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
@@ -50,6 +52,10 @@
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "brave/components/speedreader/common/speedreader_result.mojom.h"
+#include "brave/components/speedreader/common/speedreader_ui.mojom.h"
+#include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -279,6 +285,16 @@ void BindBraveSearchDefaultHost(
   }
 }
 
+void BindSpeedreaderUI(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<speedreader::mojom::SpeedreaderUI> receiver) {
+  Profile* profile =
+      Profile::FromBrowserContext(frame_host->GetBrowserContext());
+  auto* speedreader_service =
+      speedreader::SpeedreaderServiceFactory::GetForProfile(profile);
+  speedreader_service->Bind(std::move(receiver));
+}
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient()
@@ -341,6 +357,16 @@ bool BraveContentBrowserClient::BindAssociatedReceiverFromFrame(
   }
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (interface_name == speedreader::mojom::SpeedreaderResult::Name_) {
+    speedreader::SpeedreaderTabHelper::BindSpeedreaderHost(
+        mojo::PendingAssociatedReceiver<speedreader::mojom::SpeedreaderResult>(
+            std::move(*handle)),
+        render_frame_host);
+    return true;
+  }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
+
   if (interface_name == brave_shields::mojom::BraveShieldsHost::Name_) {
     brave_shields::BraveShieldsWebContentsObserver::BindBraveShieldsHost(
         mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShieldsHost>(
@@ -382,6 +408,14 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     map->Add<brave_search::mojom::BraveSearchDefault>(
         base::BindRepeating(&BindBraveSearchDefaultHost));
   }
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+    map->Add<speedreader::mojom::SpeedreaderUI>(
+        base::BindRepeating(&BindSpeedreaderUI));
+  }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
+
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (brave_wallet::IsNativeWalletEnabled()) {
     map->Add<brave_wallet::mojom::BraveWalletProvider>(

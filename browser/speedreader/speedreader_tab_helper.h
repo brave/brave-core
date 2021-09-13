@@ -7,10 +7,13 @@
 #define BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/speedreader/common/speedreader_result.mojom.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_util.h"
+#include "content/public/browser/render_frame_host_receiver_set.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 
 namespace content {
 class NavigationEntry;
@@ -26,8 +29,13 @@ class SpeedreaderBubbleView;
 class SpeedreaderTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<SpeedreaderTabHelper>,
-      public SpeedreaderResultDelegate {
+      public SpeedreaderResultDelegate,
+      public mojom::SpeedreaderResult {
  public:
+  static void BindSpeedreaderHost(
+      mojo::PendingAssociatedReceiver<mojom::SpeedreaderResult> receiver,
+      content::RenderFrameHost* rfh);
+
   ~SpeedreaderTabHelper() override;
 
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
@@ -95,10 +103,15 @@ class SpeedreaderTabHelper
   // SpeedreaderResultDelegate:
   void OnDistillComplete() override;
 
+  // blink::mojom::SpeedreaderResult:
+  void GetPageDistilled(GetPageDistilledCallback callback) override;
+
   bool single_shot_next_request_ =
       false;  // run speedreader once on next page load
   DistillState distill_state_ = DistillState::kNone;
   SpeedreaderBubbleView* speedreader_bubble_ = nullptr;
+  content::RenderFrameHostReceiverSet<mojom::SpeedreaderResult>
+      speedreader_result_receivers_;
 
   base::WeakPtrFactory<SpeedreaderTabHelper> weak_factory_{this};
 
