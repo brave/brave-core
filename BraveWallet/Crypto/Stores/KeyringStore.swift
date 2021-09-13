@@ -145,6 +145,10 @@ public class KeyringStore: ObservableObject {
       controller.setDefaultKeyringDerivedAccountName(account.address, name: name, completion: handler)
     }
   }
+  
+  func reset() {
+    controller.reset()
+  }
 }
 
 extension KeyringStore: BraveWalletKeyringControllerObserver {

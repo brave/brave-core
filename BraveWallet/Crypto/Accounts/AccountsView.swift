@@ -50,11 +50,10 @@ struct AccountsView: View {
   var body: some View {
     List {
       Section(
-        header: AccountsHeaderView(keyringStore: keyringStore, action: { action in
-        })
-        .listRowInsets(.zero)
-        .textCase(.none)
-        .font(.body)
+        header: AccountsHeaderView(keyringStore: keyringStore)
+          .listRowInsets(.zero)
+          .textCase(.none)
+          .font(.body)
       ) {
       }
       Section(

@@ -13,6 +13,7 @@ import Data
 import WebKit
 import BraveCore
 import SwiftUI
+import BraveWallet
 
 extension TabBarVisibility: RepresentableOptionType {
     public var displayString: String {
@@ -58,13 +59,22 @@ class SettingsViewController: TableViewController {
     private let rewards: BraveRewards?
     private let legacyWallet: BraveLedger?
     private let feedDataSource: FeedDataSource
+    private let walletKeyringStore: KeyringStore?
     
-    init(profile: Profile, tabManager: TabManager, feedDataSource: FeedDataSource, rewards: BraveRewards? = nil, legacyWallet: BraveLedger? = nil) {
+    init(
+        profile: Profile,
+        tabManager: TabManager,
+        feedDataSource: FeedDataSource,
+        rewards: BraveRewards? = nil,
+        legacyWallet: BraveLedger? = nil,
+        walletKeyringStore: KeyringStore? = nil
+    ) {
         self.profile = profile
         self.tabManager = tabManager
         self.feedDataSource = feedDataSource
         self.rewards = rewards
         self.legacyWallet = legacyWallet
+        self.walletKeyringStore = walletKeyringStore
         
         super.init(style: .insetGrouped)
     }
@@ -210,6 +220,15 @@ class SettingsViewController: TableViewController {
                 self.navigationController?.pushViewController(playlistSettings, animated: true)
             }, image: #imageLiteral(resourceName: "settings-playlist").template, accessory: .disclosureIndicator)
         )
+        
+        if #available(iOS 14.0, *), let keyringStore = walletKeyringStore {
+            section.rows.append(
+                Row(text: "Wallet", selection: { [unowned self] in // NSLocalizedString
+                    let vc = UIHostingController(rootView: WalletSettingsView(keyringStore: keyringStore))
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }, image: #imageLiteral(resourceName: "menu-crypto").template, accessory: .disclosureIndicator)
+            )
+        }
         
         return section
     }()

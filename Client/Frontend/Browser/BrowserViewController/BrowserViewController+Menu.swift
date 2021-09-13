@@ -47,7 +47,7 @@ extension BrowserViewController {
                 menuController.pushInnerMenu(vc)
             }
             if #available(iOS 14.0, *) {
-                MenuItemButton(icon: #imageLiteral(resourceName: "menu-crypto").template, title: "Brave Wallet") { [unowned self] in // NSLocalizedString
+                MenuItemButton(icon: #imageLiteral(resourceName: "menu-crypto").template, title: "Wallet") { [unowned self] in // NSLocalizedString
                     guard let braveCoreMain = (UIApplication.shared.delegate as? AppDelegate)?.braveCore else {
                         return
                     }
