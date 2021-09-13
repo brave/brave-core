@@ -225,6 +225,14 @@ extension BrowserViewController: PlaylistHelperDelegate {
     }
     
     func showPlaylistOnboarding(tab: Tab?) {
+        // Do NOT show the playlist onboarding popup if the tab isn't visible
+        
+        guard let selectedTab = tabManager.selectedTab,
+              selectedTab === tab,
+              selectedTab.playlistItemState != .none else {
+            return
+        }
+        
         let shouldShowOnboarding = tab?.url?.isPlaylistSupportedSiteURL == true
         
         if shouldShowOnboarding {
