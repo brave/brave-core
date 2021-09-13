@@ -2187,30 +2187,21 @@ extension BrowserViewController: TabManagerDelegate {
             wv.accessibilityLabel = nil
             wv.accessibilityElementsHidden = true
             wv.accessibilityIdentifier = nil
+            wv.alpha = 0.0
             
-            // Firefox code removed webview from superview,
-            // but this causes PDFs to stop rendering,
-            // audio and video to stop playing, etc..
-            for tab in tabManager.allTabs where tab != selected {
-                if let webView = tab.webView {
-                    #if swift(>=5.4)
-                    if #available(iOS 14.5, *) {
-                        webView.requestMediaPlaybackState { state in
-                            if state == .playing {
-                                webView.isHidden = true
-                                webView.alpha = 0.0
-                            } else {
-                                webView.removeFromSuperview()
-                            }
-                        }
-                    } else {
-                        webView.removeFromSuperview()
+            #if swift(>=5.4)
+            if #available(iOS 14.5, *) {
+                wv.requestMediaPlaybackState { state in
+                    if state != .playing && wv != tabManager.selectedTab?.webView {
+                        wv.alpha = 1.0
                     }
-                    #else
-                    webView.removeFromSuperview()
-                    #endif
                 }
+            } else {
+                wv.removeFromSuperview()
             }
+            #else
+            wv.removeFromSuperview()
+            #endif
         }
         
         toolbar?.setSearchButtonState(url: selected?.url)
@@ -2241,7 +2232,6 @@ extension BrowserViewController: TabManagerDelegate {
             webView.accessibilityElementsHidden = false
             
             // Restore WebView visibility state
-            webView.isHidden = false
             webView.alpha = 1.0
 
             if webView.url == nil {
@@ -2284,6 +2274,24 @@ extension BrowserViewController: TabManagerDelegate {
         }
 
         updateInContentHomePanel(selected?.url as URL?)
+        
+        for tab in tabManager.allTabs {
+            if let wv = tab.webView {
+                #if swift(>=5.4)
+                if #available(iOS 14.5, *) {
+                    wv.requestMediaPlaybackState { state in
+                        if state != .playing && wv != tabManager.selectedTab?.webView {
+                            wv.alpha = 1.0
+                        }
+                    }
+                } else {
+                    wv.removeFromSuperview()
+                }
+                #else
+                wv.removeFromSuperview()
+                #endif
+            }
+        }
     }
 
     func tabManager(_ tabManager: TabManager, willAddTab tab: Tab) {
