@@ -58,6 +58,16 @@ export const SignContainer = styled.div`
   background-color: ${(p) => p.theme.color.background01};
 `
 
+export const ConnectWithSiteWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: ${(p) => p.theme.color.background01};
+  width: 320px;
+  height: 100%;
+`
+
 export const ScrollContainer = styled.div`
   flex: 1;
   flex-direction: column;

@@ -28,7 +28,8 @@ import {
   ScrollContainer,
   StyledExtensionWrapper,
   SelectContainer,
-  SignContainer
+  SignContainer,
+  ConnectWithSiteWrapper
 } from '../stories/style'
 import { SendWrapper, PanelWrapper } from './style'
 import store from './store'
@@ -479,8 +480,8 @@ function Container (props: Props) {
       (account) => props.panel.connectingAccounts.includes(account.address.toLowerCase())
     )
     return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
+      <PanelWrapper isLonger={true}>
+        <ConnectWithSiteWrapper>
           <ConnectWithSite
             siteURL={connectedSiteOrigin}
             isReady={readyToConnect}
@@ -491,7 +492,7 @@ function Container (props: Props) {
             removeAccount={removeAccount}
             selectedAccounts={selectedAccounts}
           />
-        </StyledExtensionWrapper>
+        </ConnectWithSiteWrapper>
       </PanelWrapper>
     )
   }

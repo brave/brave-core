@@ -244,7 +244,7 @@ export const _ConnectWithSite = () => {
     }
   }
   return (
-    <StyledExtensionWrapper>
+    <StyledExtensionWrapperLonger>
       <ConnectWithSite
         siteURL={url}
         isReady={readyToConnect}
@@ -255,7 +255,7 @@ export const _ConnectWithSite = () => {
         removeAccount={removeAccount}
         selectedAccounts={selectedAccounts}
       />
-    </StyledExtensionWrapper>
+    </StyledExtensionWrapperLonger>
   )
 }
 
