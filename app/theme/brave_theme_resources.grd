@@ -15,8 +15,12 @@
       <!-- KEEP THESE IN ALPHABETICAL ORDER!  DO NOT ADD TO RANDOM PLACES JUST
            BECAUSE YOUR RESOURCES ARE FUNCTIONALLY RELATED OR FALL UNDER THE
            SAME CONDITIONALS. -->
-      <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED" file="common/brave_bookmark_folder_closed.png" />
-      <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WHITE" file="common/brave_bookmark_folder_closed_white.png" />
+      <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_DARK" file="common/brave_bookmark_folder_closed-dark.png" />
+      <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIGHT" file="common/brave_bookmark_folder_closed-light.png" />
+      <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_DARK" file="common/brave_bookmark_folder_closed-lin-dark.png" />
+      <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_LIGHT" file="common/brave_bookmark_folder_closed-lin-light.png" />
+      <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_DARK" file="common/brave_bookmark_folder_closed-win-dark.png" />
+      <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_LIGHT" file="common/brave_bookmark_folder_closed-win-light.png" />
       <structure type="chrome_scaled_image" name="IDR_BRAVE_WAYBACK_INFOBAR" file="brave/brave_wayback_infobar.png" />
       <structure type="chrome_scaled_image" name="IDR_BRAVE_WAYBACK_INFOBAR_DARK" file="brave/brave_wayback_infobar_dark.png" />
       <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="brave/product_logo_32_beta.png" />
