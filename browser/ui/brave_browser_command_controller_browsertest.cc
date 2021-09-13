@@ -54,6 +54,36 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
         ->UpdateCommandForBraveVPN();
   }
 
+  void CheckBraveVPNCommands(Browser* browser) {
+    // Only IDC_BRAVE_VPN_MENU command is changed based on purchased state.
+    auto* command_controller = browser->command_controller();
+    SetPurchasedUserForBraveVPN(browser, false);
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+    EXPECT_TRUE(command_controller->IsCommandEnabled(
+        IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON));
+    EXPECT_TRUE(
+        command_controller->IsCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK));
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ABOUT_BRAVE_VPN));
+    EXPECT_TRUE(
+        command_controller->IsCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN));
+
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_TOGGLE_BRAVE_VPN));
+
+    SetPurchasedUserForBraveVPN(browser, true);
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+    EXPECT_TRUE(command_controller->IsCommandEnabled(
+        IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON));
+    EXPECT_TRUE(
+        command_controller->IsCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK));
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ABOUT_BRAVE_VPN));
+    EXPECT_TRUE(
+        command_controller->IsCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN));
+
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_BRAVE_VPN));
+  }
+
   base::test::ScopedFeatureList scoped_feature_list_;
 #endif
 };
@@ -79,13 +109,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  SetPurchasedUserForBraveVPN(browser(), false);
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
-  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
-
-  SetPurchasedUserForBraveVPN(browser(), true);
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+  CheckBraveVPNCommands(browser());
 #endif
 
   if (switches::IsSyncAllowedByFlag())
@@ -121,13 +145,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  SetPurchasedUserForBraveVPN(private_browser, false);
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
-  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
-
-  SetPurchasedUserForBraveVPN(private_browser, true);
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+  CheckBraveVPNCommands(private_browser);
 #endif
 
   if (switches::IsSyncAllowedByFlag())
@@ -168,13 +186,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  SetPurchasedUserForBraveVPN(guest_browser, false);
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
-  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
-
-  SetPurchasedUserForBraveVPN(guest_browser, true);
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+  CheckBraveVPNCommands(guest_browser);
 #endif
 
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
@@ -215,13 +227,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  SetPurchasedUserForBraveVPN(tor_browser, false);
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
-  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
-
-  SetPurchasedUserForBraveVPN(tor_browser, true);
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+  CheckBraveVPNCommands(tor_browser);
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

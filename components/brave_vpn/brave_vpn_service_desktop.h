@@ -40,8 +40,11 @@ class BraveVpnServiceDesktop
   void RemoveVPNConnnection();
 
   bool is_connected() const { return state_ == ConnectionState::CONNECTED; }
-  void CheckPurchasedStatus();
   bool is_purchased_user() const { return is_purchased_user_; }
+  ConnectionState connection_state() const { return state_; }
+
+  void CheckPurchasedStatus();
+  void ToggleConnection();
 
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);

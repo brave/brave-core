@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/notreached.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
@@ -191,15 +192,25 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
   if (!brave_vpn::IsBraveVPNEnabled()) {
     UpdateCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL, false);
     UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, false);
+    UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON, false);
+    UpdateCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK, false);
+    UpdateCommandEnabled(IDC_ABOUT_BRAVE_VPN, false);
+    UpdateCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN, false);
+    UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN, false);
     return;
   }
 
   UpdateCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL, true);
+  UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON, true);
+  UpdateCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK, true);
+  UpdateCommandEnabled(IDC_ABOUT_BRAVE_VPN, true);
+  UpdateCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN, true);
 
   auto* vpn_service =
       BraveVpnServiceFactory::GetForProfile(browser_->profile());
-  // Only show vpn menu for purchased user.
+  // Only show vpn sub menu for purchased user.
   UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, vpn_service->is_purchased_user());
+  UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN, vpn_service->is_purchased_user());
 #endif
 }
 
@@ -278,6 +289,14 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SHOW_BRAVE_VPN_PANEL:
       brave::ShowBraveVPNBubble(browser_);
+      break;
+    case IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON:
+      brave::ToggleBraveVPNButton(browser_);
+      break;
+    case IDC_SEND_BRAVE_VPN_FEEDBACK:
+    case IDC_ABOUT_BRAVE_VPN:
+    case IDC_MANAGE_BRAVE_VPN_PLAN:
+      NOTIMPLEMENTED();
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

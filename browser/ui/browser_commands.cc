@@ -6,6 +6,8 @@
 #include "brave/browser/ui/browser_commands.h"
 
 #include "base/files/file_path.h"
+#include "brave/common/pref_names.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -114,6 +116,14 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 void ShowBraveVPNBubble(Browser* browser) {
   // Ask to browser view.
   static_cast<BraveBrowserWindow*>(browser->window())->ShowBraveVPNBubble();
+}
+
+void ToggleBraveVPNButton(Browser* browser) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  auto* prefs = browser->profile()->GetPrefs();
+  const bool show = prefs->GetBoolean(kBraveVPNShowButton);
+  prefs->SetBoolean(kBraveVPNShowButton, !show);
+#endif
 }
 
 void ShowWalletBubble(Browser* browser) {

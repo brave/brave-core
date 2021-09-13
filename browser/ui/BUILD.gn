@@ -161,6 +161,8 @@ source_set("ui") {
       "views/tabs/brave_tab_strip.h",
       "views/toolbar/bookmark_button.cc",
       "views/toolbar/bookmark_button.h",
+      "views/toolbar/brave_app_menu.cc",
+      "views/toolbar/brave_app_menu.h",
     ]
 
     if (use_aura) {
@@ -476,6 +478,8 @@ source_set("ui") {
 
   if (enable_brave_vpn && !is_android) {
     sources += [
+      "toolbar/brave_vpn_menu_model.cc",
+      "toolbar/brave_vpn_menu_model.h",
       "webui/brave_vpn/vpn_panel_handler.cc",
       "webui/brave_vpn/vpn_panel_handler.h",
       "webui/brave_vpn/vpn_panel_ui.cc",
@@ -495,6 +499,10 @@ source_set("ui") {
         "views/brave_vpn_panel_host.h",
         "views/toolbar/brave_vpn_button.cc",
         "views/toolbar/brave_vpn_button.h",
+        "views/toolbar/brave_vpn_status_label.cc",
+        "views/toolbar/brave_vpn_status_label.h",
+        "views/toolbar/brave_vpn_toggle_button.cc",
+        "views/toolbar/brave_vpn_toggle_button.h",
       ]
     }
   }
