@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -46,6 +47,8 @@ class BraveWalletService : public KeyedService,
                            SetUserAssetVisibleCallback callback) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
+
   absl::optional<std::string> GetChecksumAddress(
       const std::string& contract_address,
       const std::string& chain_id);

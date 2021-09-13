@@ -212,7 +212,12 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
-  AddUserAsset(token1.Clone(), "0x4", &callback_called, &success);
+  // Adding token with lower case contract address should be converted to
+  // checksum address..
+  auto unchecked_token = token1.Clone();
+  unchecked_token->contract_address =
+      base::ToLowerASCII(unchecked_token->contract_address);
+  AddUserAsset(std::move(unchecked_token), "0x4", &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
@@ -308,12 +313,23 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAsset) {
   EXPECT_TRUE(callback_called);
   EXPECT_FALSE(success);
 
+  // Adding token with same address in lower cases in the same chain will fail.
+  auto token_with_unchecked_address = token.Clone();
+  token_with_unchecked_address->contract_address =
+      base::ToLowerASCII(token->contract_address);
+  AddUserAsset(token_with_unchecked_address.Clone(), "0x1", &callback_called,
+               &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
+
   // Adding token with same address in a different chain will succeed.
+  // And the address will be converted to checksum address.
   GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(tokens.empty());
 
-  AddUserAsset(token.Clone(), "0x4", &callback_called, &success);
+  AddUserAsset(token_with_unchecked_address.Clone(), "0x4", &callback_called,
+               &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
@@ -383,8 +399,10 @@ TEST_F(BraveWalletServiceUnitTest, RemoveUserAsset) {
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
-  RemoveUserAsset(GetBatToken()->contract_address, "0x1", &callback_called,
-                  &success);
+  // Lowercase address will be converted to checksum address when removing
+  // token.
+  RemoveUserAsset(base::ToLowerASCII(GetBatToken()->contract_address), "0x1",
+                  &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
@@ -458,8 +476,9 @@ TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
-  SetUserAssetVisible(GetBatToken()->contract_address, "0x1", false,
-                      &callback_called, &success);
+  // Lowercase address will be converted to checksum address directly.
+  SetUserAssetVisible(base::ToLowerASCII(GetBatToken()->contract_address),
+                      "0x1", false, &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
@@ -485,6 +504,29 @@ TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
   EXPECT_EQ(tokens.size(), 1u);
   EXPECT_EQ(tokens[0]->contract_address, token2->contract_address);
   EXPECT_FALSE(tokens[0]->visible);
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetChecksumAddress) {
+  absl::optional<std::string> addr = service_->GetChecksumAddress(
+      "0x06012c8cf97bead5deae237070f9587f8e7a266d", "0x1");
+  EXPECT_EQ(addr.value(), "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
+
+  addr = service_->GetChecksumAddress(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1");
+  EXPECT_EQ(addr.value(), "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
+
+  addr = service_->GetChecksumAddress("", "0x1");
+  EXPECT_FALSE(addr.has_value());
+
+  addr = service_->GetChecksumAddress("0x123", "0x1");
+  EXPECT_FALSE(addr.has_value());
+
+  addr = service_->GetChecksumAddress("123", "0x1");
+  EXPECT_FALSE(addr.has_value());
+
+  addr = service_->GetChecksumAddress(
+      "06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1");
+  EXPECT_FALSE(addr.has_value());
 }
 
 }  // namespace brave_wallet
