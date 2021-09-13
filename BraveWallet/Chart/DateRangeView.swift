@@ -20,7 +20,7 @@ struct DateRangeView: View {
   
   @ViewBuilder private func button(for range: BraveWallet.AssetPriceTimeframe) -> some View {
     Button(action: { selectedRange = range }) {
-      range.label
+      Text(verbatim: range.displayString)
         .accessibility(label: Text(verbatim: range.accessibilityLabel))
     }
     .buttonStyle(OptionButtonStyle(isSelected: range == selectedRange))
@@ -66,7 +66,7 @@ extension BraveWallet.AssetPriceTimeframe: CaseIterable {
   var accessibilityLabel: String {
     // NSLocalizedString
     switch self {
-    case .live: return "Live"
+    case .live: return "1 Hour"
     case .oneDay: return "1 Day"
     case .oneWeek: return "1 Week"
     case .oneMonth: return "1 Month"
@@ -77,10 +77,10 @@ extension BraveWallet.AssetPriceTimeframe: CaseIterable {
     }
   }
   
-  private var displayString: String {
+  var displayString: String {
     // NSLocalizedString
     switch self {
-    case .live: return "LIVE"
+    case .live: return "1H"
     case .oneDay: return "1D"
     case .oneWeek: return "1W"
     case .oneMonth: return "1M"
@@ -88,18 +88,6 @@ extension BraveWallet.AssetPriceTimeframe: CaseIterable {
     case .oneYear: return "1Y"
     case .all: return "ALL"
     @unknown default: return ""
-    }
-  }
-  
-  @ViewBuilder fileprivate var label: some View {
-    switch self {
-    case .live:
-      HStack(spacing: 4) {
-        Circle().frame(width: 6, height: 6)
-        Text(verbatim: displayString)
-      }
-    default:
-      Text(verbatim: displayString)
     }
   }
 }
