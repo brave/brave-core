@@ -34,9 +34,9 @@
 #include "components/version_info/version_info.h"
 #include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/chrome_paths.h"
-#include "ios/chrome/browser/google/google_brand.h"
 #include "ios/chrome/browser/metrics/ios_chrome_stability_metrics_provider.h"
 #include "ios/chrome/common/channel_info.h"
+#include "ios/public/provider/chrome/browser/app_distribution/app_distribution_api.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -117,7 +117,8 @@ std::string IOSChromeMetricsServiceClient::GetApplicationLocale() {
 }
 
 bool IOSChromeMetricsServiceClient::GetBrand(std::string* brand_code) {
-  return ios::google_brand::GetBrand(brand_code);
+  brand_code->assign(ios::provider::GetBrandCode());
+  return true;
 }
 
 metrics::SystemProfileProto::Channel
@@ -157,10 +158,6 @@ base::TimeDelta IOSChromeMetricsServiceClient::GetStandardUploadInterval() {
   return metrics::GetUploadInterval(metrics::ShouldUseCellularUploadInterval());
 }
 
-void IOSChromeMetricsServiceClient::OnRendererProcessCrash() {
-  stability_metrics_provider_->LogRendererCrash();
-}
-
 void IOSChromeMetricsServiceClient::WebStateDidStartLoading(
     web::WebState* web_state) {
   metrics_service_->OnApplicationNotIdle();
@@ -176,6 +173,8 @@ void IOSChromeMetricsServiceClient::Initialize() {
 }
 
 void IOSChromeMetricsServiceClient::RegisterMetricsServiceProviders() {
+  // error: private field 'stability_metrics_provider_' is not used
+  (void)stability_metrics_provider_;
   DeleteFileMetrics();
 }
 

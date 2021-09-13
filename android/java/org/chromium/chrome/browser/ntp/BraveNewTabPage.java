@@ -77,6 +77,7 @@ public class BraveNewTabPage extends NewTabPage {
                 NewTabPageUtils.decodeOriginFromNtpUrl(url),
                 PrivacyPreferencesManagerImpl.getInstance(), mToolbarSupplier,
                 /* FeedLaunchReliabilityLoggingState */ null,
-                FeedSwipeRefreshLayout.create(activity), /* overScrollDisabled= */ false);
+                FeedSwipeRefreshLayout.create(activity), /* overScrollDisabled= */ false,
+                /* viewportView= */ null);
     }
 }

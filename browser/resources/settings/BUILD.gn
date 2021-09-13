@@ -16,7 +16,7 @@ import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/generate_grd.gni")
 import("//ui/webui/resources/tools/js_modulizer.gni")
 
-preprocess_folder = "preprocessed"
+preprocess_folder = "tsc"
 preprocess_manifest = "brave_preprocessed_manifest.json"
 preprocess_gen_manifest = "brave_preprocessed_gen_manifest.json"
 

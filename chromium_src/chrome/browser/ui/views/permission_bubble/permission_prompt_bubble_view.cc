@@ -66,7 +66,7 @@ bool HasWidevinePermissionRequest(
   // When widevine permission is requested, |requests| only includes Widevine
   // permission because it is not a candidate for grouping.
   if (requests.size() == 1 &&
-      requests[0]->GetRequestType() == permissions::RequestType::kWidevine)
+      requests[0]->request_type() == permissions::RequestType::kWidevine)
     return true;
 
   return false;

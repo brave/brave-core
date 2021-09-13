@@ -77,7 +77,7 @@ TEST_F(TorProfileManagerUnitTest, InitTorProfileUserPrefs) {
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
   // Check translate.enabled for translate bubble.
-  EXPECT_FALSE(
-      tor_profile->GetPrefs()->GetBoolean(prefs::kOfferTranslateEnabled));
+  EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(
+      translate::prefs::kOfferTranslateEnabled));
 #endif
 }

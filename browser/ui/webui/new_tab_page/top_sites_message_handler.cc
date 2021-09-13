@@ -223,14 +223,13 @@ void TopSitesMessageHandler::HandleReorderMostVisitedTile(
   if (!args->GetString(0, &url))
     return;
 
-  int new_pos;
-  if (!args->GetInteger(1, &new_pos))
+  if (!args[1].is_int())
     return;
-
-  GURL gurl(url);
 
   // same as `MostVisitedHandler::ReorderMostVisitedTile`
   if (most_visited_sites_->IsCustomLinksEnabled()) {
+    GURL gurl(url);
+    int new_pos = args[1].GetInt();
     most_visited_sites_->ReorderCustomLink(gurl, new_pos);
   }
 }

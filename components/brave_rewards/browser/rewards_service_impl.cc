@@ -79,6 +79,7 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
@@ -2831,7 +2832,7 @@ std::string RewardsServiceImpl::GetLegacyWallet() {
   auto* dict = profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
 
   std::string json;
-  for (const auto& it : dict->DictItems()) {
+  for (auto it : dict->DictItems()) {
     base::JSONWriter::Write(std::move(it.second), &json);
   }
 

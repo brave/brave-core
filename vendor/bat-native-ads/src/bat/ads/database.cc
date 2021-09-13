@@ -226,8 +226,7 @@ mojom::DBCommandResponse::Status Database::Execute(mojom::DBCommand* command) {
     return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
-  const int error = db_.ExecuteAndReturnErrorCode(command->command.c_str());
-  if (error != SQLITE_OK) {
+  if (!db_.Execute(command->command.c_str())) {
     BLOG(0, "Database error: " << db_.GetErrorMessage());
     return mojom::DBCommandResponse::Status::COMMAND_ERROR;
   }

@@ -2,6 +2,7 @@ include_rules = [
   "+../../../../components/permissions",
   "+components/permissions",
   "+components/resources/android",
+  "+components/strings/grit/components_strings.h",
   "+components/vector_icons",
   "+third_party/widevine/cdm",
   "+ui/gfx",

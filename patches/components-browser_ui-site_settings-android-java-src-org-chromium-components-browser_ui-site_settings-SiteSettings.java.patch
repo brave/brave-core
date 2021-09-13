@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettings.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettings.java
-index 3a3019fddf6168107ffa121edb892e1ea4b7e1ae..60ca66002e28e3e5731ed9afe4afdb5bf64074e6 100644
+index 81e798d66124f687cf5113f9c0209f92e64b2ea4..66ea45e129429a8ebfabf1f9244203c57c055d48 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettings.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettings.java
-@@ -24,7 +24,7 @@ import org.chromium.components.user_prefs.UserPrefs;
+@@ -24,7 +24,7 @@ import org.chromium.content_public.browser.BrowserContextHandle;
   * browser-wide.
   */
  public class SiteSettings

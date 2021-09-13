@@ -1,5 +1,5 @@
 diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
-index 861d73ba795692af40c2faee81efea9758f6bdf8..058af16eedec044fbe412842a7a96c1fb9e95005 100644
+index 5bd511c6824689339cc2340306fc693d189854a7..50e8615fa8d057a5cbfdf22aced95e0c9ea6086f 100644
 --- a/components/permissions/BUILD.gn
 +++ b/components/permissions/BUILD.gn
 @@ -129,6 +129,7 @@ source_set("permissions") {

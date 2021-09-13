@@ -13,41 +13,16 @@ source_set("notifications") {
   ]
 
   deps = [
+    "//base",
     "//chrome/browser/notifications",
     "//third_party/abseil-cpp:absl",
+    "//url",
   ]
 
-  if (is_mac) {
-    sources += [
-      "brave_alert_dispatcher_mac.h",
-      "brave_alert_dispatcher_mac.mm",
-    ]
-
-    if (enable_system_notifications) {
-      sources += [
-        "brave_notification_platform_bridge.h",
-        "brave_notification_platform_bridge_mac.mm",
-      ]
-    }
-
-    deps += [
-      "//base",
-      "//chrome/browser/ui/cocoa/notifications:common",
-      "//chrome/services/mac_notifications/public/cpp",
-      "//skia",
-      "//ui/message_center/public/cpp",
-    ]
-
-    frameworks = [ "Foundation.framework" ]
-  } else if (is_android) {
+  if (is_android) {
     sources += [
       "brave_notification_platform_bridge_helper_android.cc",
       "brave_notification_platform_bridge_helper_android.h",
-    ]
-
-    deps += [
-      "//base",
-      "//chrome/common",
     ]
   }
 }

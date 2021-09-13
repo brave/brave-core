@@ -10,6 +10,7 @@
 #include "base/no_destructor.h"
 #include "content/browser/dom_storage/dom_storage_context_wrapper.h"
 #include "services/network/public/mojom/cookie_manager.mojom.h"
+#include "third_party/blink/public/common/storage_key/storage_key.h"
 
 namespace content {
 
@@ -50,7 +51,7 @@ TLDEphemeralLifetime::~TLDEphemeralLifetime() {
   for (const auto& opaque_origin :
        delegate_->TakeEphemeralStorageOpaqueOrigins(key_.second)) {
     storage_partition_->GetDOMStorageContext()->DeleteLocalStorage(
-        opaque_origin, base::DoNothing());
+        blink::StorageKey(opaque_origin), base::DoNothing());
   }
 
   if (!on_destroy_callbacks_.empty()) {

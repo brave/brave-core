@@ -394,8 +394,8 @@ are declared in tools/grit/grit_rule.gni.
           Permission requested, press ⌘ + Option + Down arrow to respond
         </message>
       </if>
-      <if expr="is_win or desktop_linux">
-        <message name="IDS_PERMISSIONS_REQUESTED_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on Windows or Linux when permission is requested to inform users of how to focus the permission UI.">
+      <if expr="is_win or desktop_linux or is_fuchsia">
+        <message name="IDS_PERMISSIONS_REQUESTED_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on Windows, Linux or Fuchsia when permission is requested to inform users of how to focus the permission UI.">
           Permission requested, press F6 to respond
         </message>
       </if>
@@ -648,8 +648,8 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_LOOP" desc="The name of the Loop command for audio and video playback in the content area context menu">
             &amp;Loop
           </message>
-          <message name="IDS_CONTENT_CONTEXT_CONTROLS" desc="The name of the Show Controls command for audio and video playback in the content area context menu">
-            Show &amp;controls
+          <message name="IDS_CONTENT_CONTEXT_CONTROLS" desc="The name of the Show All Controls command for audio and video playback in the content area context menu">
+            Show all &amp;controls
           </message>
           <message name="IDS_CONTENT_CONTEXT_ROTATECW" desc="The name of the Rotate clockwise command for plugins in the content area context menu">
             Rotate &amp;clockwise
@@ -889,8 +889,8 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_LOOP" desc="In Title Case: The name of the Loop command for audio and video playback in the content area context menu">
             &amp;Loop
           </message>
-          <message name="IDS_CONTENT_CONTEXT_CONTROLS" desc="In Title Case: The name of the Show Controls command for audio and video playback in the content area context menu">
-            Show &amp;Controls
+          <message name="IDS_CONTENT_CONTEXT_CONTROLS" desc="In Title Case: The name of the Show All Controls command for audio and video playback in the content area context menu">
+            Show All &amp;Controls
           </message>
           <message name="IDS_CONTENT_CONTEXT_ROTATECW" desc="In Title Case: The name of the Rotate Clockwise command for plugins in the content area context menu">
             Rotate &amp;Clockwise
@@ -1019,6 +1019,10 @@ are declared in tools/grit/grit_rule.gni.
             Suggest Password...
           </message>
         </if>
+
+        <message name="IDS_SHARE_MENU_TITLE" desc="The label of the menu item used to share content (links, images, etc) with others.">
+          Share
+        </message>
       </if>
 
       <if expr="not use_titlecase">
@@ -2739,6 +2743,18 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_PREDICTION_SERVICE_DESCRIPTION" desc="Text used as notification message when requesting permission for Web Notifications via a notification. Used when the prediction service has decided that the user will be very unlikely to grant this permission.">
         Notifications were automatically blocked because you usually don't allow them
       </message>
+      <message name="IDS_GEOLOCATION_OFF_EXPLANATORY_TEXT" desc="Explanatory animated text that appears (and then disappears) in the address bar as part of the less-prominent UX, when a website requests the geolocation permission.">
+        Location blocked
+      </message>
+      <message name="IDS_GEOLOCATION_QUIET_PERMISSION_BUBBLE_TITLE" desc="Title for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox.">
+        Location blocked
+      </message>
+      <message name="IDS_GEOLOCATION_QUIET_PERMISSION_BUBBLE_PREDICTION_SERVICE_DESCRIPTION" desc="Text used as notification message when requesting permission for Geolocation. Used when the prediction service has decided that the user will be very unlikely to grant this permission.">
+        This site was blocked from knowing your precise location because you usually don't allow this
+      </message>
+    <message name="IDS_GEOLOCATION_QUIET_PERMISSION_BUBBLE_ALLOW_BUTTON" desc="Text displayed on the button that enables geolocation for a site. This button is part of the geolocation status bubble, which is triggered when a user clicks on the blocked geolocation icon in the omnibox.">
+      Allow for this site
+    </message>
 
       <!-- Cookie controls strings. -->
       <message name="IDS_COOKIE_CONTROLS_DIALOG_TITLE" desc="Title of the dialog that allows users to control cookie blocking.">
@@ -3752,7 +3768,7 @@ are declared in tools/grit/grit_rule.gni.
         You already requested "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
       </message>
       <message name="IDS_EXTENSION_BLOCKED_BY_POLICY_PROMPT_TITLE" desc="Title of the extension or app install blocked prompt. Tells the user they can't install this extension as it's blocked by policy.">
-        Your admin has blocked "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
+        Your admin has blocked "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" - App ID <ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>
       </message>
       <message name="IDS_EXTENSION_PROGRAMMATIC_UNINSTALL_PROMPT_HEADING" desc="First bold line in the content area of the extension or app uninstallation prompt when the uninstallation is programmatically triggered by another extension. Asks the user if they want to uninstall a particular extension or app.">
         "<ph name="TRIGGERING_EXTENSION_NAME">$1<ex>Extension Manager</ex></ph>" would like to remove "<ph name="EXTENSION_NAME">$2<ex>Gmail Checker</ex></ph>".
@@ -3874,7 +3890,7 @@ are declared in tools/grit/grit_rule.gni.
       </message>
 
       <message name="IDS_EXTENSION_PERMISSION_LINE" desc="Template for item in list of privileges that an extension or app has">
-          • <ph name="PERMISSION">$1<ex>Read and change all your data on the websites you visit</ex></ph>
+          • <ph name="PERMISSION">$1<ex>Read and change all your data on all websites</ex></ph>
       </message>
       <message name="IDS_EXTENSION_RATING_COUNT" desc="Number of ratings an app or extensions has (displayed after star icons)">
         (<ph name="RATING_COUNT">$1<ex>46</ex></ph>)
@@ -3907,16 +3923,16 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="enable_extensions">
         <message name="IDS_EXTENSION_PROMPT_WARNING_FULL_ACCESS" desc="Permission string for full access to the computer and all websites.">
-          Read and change all your data on your computer and the websites you visit
+          Read and change all your data on your computer and all websites
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_ALL_HOSTS" desc="Permission string for access to data on all websites.">
-          Read and change all your data on the websites you visit
+          Read and change all your data on all websites
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_CURRENT_HOST" desc="Permission string for access to data on current website.">
           Read and change all your data on the current website when invoked
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_ALL_HOSTS_READ_ONLY" desc="Permission string for read-only access to data on all websites.">
-          Read all your data on the websites you visit
+          Read all your data on all websites
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_AUDIO_CAPTURE" desc="Permission string for access to audio capture devices.">
           Use your microphone
@@ -3958,7 +3974,7 @@ are declared in tools/grit/grit_rule.gni.
           Block parts of web pages
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_DECLARATIVE_NET_REQUEST" desc="Permission string for Declarative Net Request API.">
-          Block content on any page you visit
+          Block content on any page
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_DOCUMENT_SCAN" desc="Permission string for access to document scanning.">
           Access document scanners attached via USB or on the local network
@@ -4963,7 +4979,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Update password for <ph name="ORIGIN">$1<ex>example.com</ex></ph>?
       </message>
       <message name="IDS_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_GOOGLE_ACCOUNT" desc="The description of save password message when the user is signed in.">
-        <ph name="USERNAME">$1<ex>Username</ex></ph> <ph name="MASKED_PASSWORD">$2<ex>*****</ex></ph> will be saved to your Brave sync chain, <ph name="ACCOUNT">$3<ex>user@gmail.com</ex></ph>
+        Save it in your Brave sync chain, <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
+      </message>
+      <message name="IDS_UPDATE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_GOOGLE_ACCOUNT" desc="The description of update password message when the signed-in user updates the password.">
+        Update it in your Brave sync chain, <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
       </message>
       <message name="IDS_SAVE_PASSWORD_FOOTER" desc="The footer text of the bubble that offers user to save a password to Brave.">
         Passwords are saved in your Brave sync chain so you can use them on any device
@@ -5677,6 +5696,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_CART_LOWER_YOUR" desc="Name of the chrome cart module in lowercase shown in various UIs.">
         your carts
       </message>
+      <message name="IDS_NTP_MODULES_CART_ITEM_COUNT_SINGULAR" desc="Item count displayed on chrome cart module when there is a single item in a cart.">
+        <ph name="ITEM_COUNT_ONE">$1<ex>1</ex></ph> item
+      </message>
+      <message name="IDS_NTP_MODULES_CART_ITEM_COUNT_MULTIPLE" desc="Item count displayed on chrome cart module when there are multiple items in a cart.">
+        <ph name="ITEM_COUNT_MULTIPLE">$1<ex>2</ex></ph> items
+      </message>
       <message name="IDS_NTP_MODULES_DRIVE_SENTENCE" desc="Name of the Drive module in sentence case shown in various UIs.">
         Google Drive files
       </message>
@@ -5700,6 +5725,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_DRIVE_TITLE" desc="Title shown in the header of the drive module and various other UIs.">
         From your Google Drive
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_TITLE" desc="Title shown in the header of the photos module and various other UIs.">
+        Brave Photos
       </message>
       <message name="IDS_NTP_MODULES_DRIVE_INFO" desc="Text shown in the body of the info dialog of the drive module.">
         You’re seeing your recent and suggested documents based on your previous activity using Google Drive.
@@ -5843,6 +5871,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READ_LATER_MENU_TOOLTIP_MARK_AS_UNREAD" desc="Tooltip for the button to mark a read later entry as unread.">
         Mark as unread
       </message>
+      <message name="IDS_READ_LATER_MENU_EMPTY_STATE_ADD_FROM_DIALOG_SUBHEADER" desc="Subheader for the read later menu when there are no unread or read entries.">
+        To add a page to read later, click the button
+      </message>
       <message name="IDS_READ_LATER_MENU_EMPTY_STATE_HEADER" desc="Header for the read later menu when there are no unread or read entries.">
         You'll find your reading list here
       </message>
@@ -5852,14 +5883,30 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READ_LATER_ADD_CURRENT_TAB" desc="Label for button to add the current tab to Read later">
         Add current tab
       </message>
+      <message name="IDS_READ_LATER_CANT_ADD_CURRENT_TAB" desc="Label for button when the current tab cannot be added to read later">
+        Can't add current tab
+      </message>
+      <message name="IDS_READ_LATER_REMOVE_CURRENT_TAB" desc="Label for button to remove the current tab from read later">
+        Remove current tab
+      </message>
 
       <!-- Read Later context menu -->
-      <message name="IDS_READ_LATER_CONTEXT_MENU_MARK_AS_UNREAD" desc="Label for context menu item to a read later entry as unread.">
-        Mark as unread
-      </message>
-      <message name="IDS_READ_LATER_CONTEXT_MENU_MARK_AS_READ" desc="Label for context menu item to a read later entry as read.">
-        Mark as read
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_READ_LATER_CONTEXT_MENU_MARK_AS_UNREAD" desc="Label for context menu item to a read later entry as unread. (In title case.)">
+          Mark as Unread
+        </message>
+        <message name="IDS_READ_LATER_CONTEXT_MENU_MARK_AS_READ" desc="Label for context menu item to a read later entry as read. (In title case.)">
+          Mark as Read
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_READ_LATER_CONTEXT_MENU_MARK_AS_UNREAD" desc="Label for context menu item to a read later entry as unread.">
+          Mark as unread
+        </message>
+        <message name="IDS_READ_LATER_CONTEXT_MENU_MARK_AS_READ" desc="Label for context menu item to a read later entry as read.">
+          Mark as read
+        </message>
+      </if>
       <message name="IDS_READ_LATER_CONTEXT_MENU_DELETE" desc="Label for context menu item to a delete a read later entry.">
         Delete
       </message>
@@ -6141,6 +6188,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TAB_GROUPS_NEW_GROUP_PROMO" desc="Text shown on promotional UI encouraging users to create a tab group in their tab strip">
         To group tabs together, right-click a tab
       </message>
+      <message name="IDS_TAB_GROUPS_UNNAMED_GROUP_TOOLTIP" desc="Static tooltip to display on hover over unnamed tab group.">
+        Unnamed group - <ph name="GROUP_CONTENT_STRING">$1<ex>"New Tab" and one other</ex></ph>
+      </message>
+      <message name="IDS_TAB_GROUPS_NAMED_GROUP_TOOLTIP" desc="Dynamic tooltip to display on hover over named tab group.">
+        <ph name="GROUP_NAME">$1<ex>New Group</ex></ph> - <ph name="GROUP_CONTENT_STRING">$2<ex>"New Tab" and one other</ex></ph>
+      </message>
       <if expr="use_titlecase">
         <message name="IDS_PROMO_DISMISS_BUTTON" desc="Text shown on the button for the user to acknowledge that they understand the message">
           Got It
@@ -6353,6 +6406,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_UPDATE_BUTTON" desc="Label for the 'update' button in the Update Password infobar. This infobar asks if the user wishes to update the saved password for a site to a new password the user has just entered; the button applies the suggested update." formatter_data="android_java">
           Update
         </message>
+        <message name="IDS_PASSWORD_MANAGER_UPDATE_WITH_FOLLOWUP_BUTTON" desc="Label for the 'update' button in the Update Password prompt that will be followed by username confirmation dialog. This prompt asks if the user wishes to update the saved password for a site to a new password the user has just entered; the button applies the suggested update.">
+          Update...
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_CONTINUE_BUTTON" desc="Label for the 'continue' button in the Update Password prompt that will be followed by username confirmation dialog. This prompt asks if the user wishes to update the saved password for a site to a new password the user has just entered; the button applies the suggested update.">
+          Continue
+        </message>
         <message name="IDS_PASSWORD_SAVING_STATUS_TOGGLE" desc="Label for the toggle that shows whether saving passwords for the current site is enabled or disabled.">
           Save passwords for this site
         </message>
@@ -6377,8 +6436,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_GENERATE_PASSWORD_BUTTON_TITLE" desc="Text for the button used to generate a password.">
           Suggest strong password
         </message>
-        <message name="IDS_UPDATE_PASSWORD_DIALOG_TITLE" desc="The title of the update password dialog." formatter_data="android_java">
-          Update password for <ph name="ORIGIN">%1$s<ex>example.com</ex></ph>
+        <message name="IDS_CONFIRM_USERNAME_DIALOG_TITLE" desc="The title of the confirm username dialog." formatter_data="android_java">
+          Confirm your username
         </message>
         <message name="IDS_UPDATE_PASSWORD_DIALOG_SIGNED_IN_DESCRIPTION" desc="The description at the bottom of update password dialog when the user is signed in." formatter_data="android_java">
           Passwords are saved in your Brave sync chain (<ph name="ACCOUNT">%1$s<ex>user@gmail.com</ex></ph>) so you can use them on any device
@@ -6874,6 +6933,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_MOVETOANOTHERNEWWINDOW" desc="The label for the Tab context item to move items to a new window from the 'Move tabs to another window' submenu.">
           New window
         </message>
+        <if expr="chromeos">
+          <message name="IDS_TAB_CXMENU_GROUPED_BY_DESK_MENU_ITEM_A11Y" desc="The a11y message for menu items in 'Move tabs to another window' when grouped by desk.">
+            <ph name="TAB_TITLE">$1<ex>Brave News</ex></ph> belongs to desk <ph name="DESK_TITLE">$2<ex>School</ex></ph>
+          </message>
+          <message name="IDS_TAB_CXMENU_GROUPED_BY_DESK_DESK_HEADING_A11Y" desc="The a11y message for desk headings in 'Move tabs to another window' when grouped by desk.">
+            Desk <ph name="DESK_TITLE">$1<ex>School</ex></ph> has <ph name="NUM_BROWSERS">$2<ex>3</ex></ph> browser windows open
+          </message>
+        </if>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_NEWTABTORIGHT" desc="In Title Case: The label of the 'New Tab to the Right' Tab context menu item.">
@@ -7028,6 +7095,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TAB_SEARCH_TAB_COUNT" desc="Plural form of a message indicating the presence of a number of tabs greater than one.">
         <ph name="NUM">$1<ex>2</ex></ph> Tabs
+      </message>
+      <message name="IDS_TAB_SEARCH_EXPAND_RECENTLY_CLOSED_ITEMS" desc="The label for the button that toggles showing the recently closed items list section.">
+        Toggle Recently Closed Items
       </message>
 
       <!-- Strings for Window Titles in Menus -->
@@ -7527,6 +7597,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Open
       </message>
       </if>
+      <message name="IDS_SEND_TAB_TO_SELF_SENDING_ANNOUNCE" desc="Text read by a screenreader when a tab is sent to a target device." is_accessibility_with_no_ui="true">
+        Sending link to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
+      </message>
 
       <!-- Share via QR Code strings -->
       <if expr="not use_titlecase">
@@ -7593,6 +7666,23 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_SHARING_HUB_SHARE_LABEL" desc="The Label for the Third Party Targets in the Sharing Hub dialog.">
         Share link to
+      </message>
+      <message name="IDS_SHARING_HUB_SHARE_LABEL_ACCESSIBILITY" desc="The acccessibility label spoken by screen readers when the label for a Third Party Sharing Target gets focus but not visually rendered.">
+        Share link to <ph name="SHARE_TARGET">$1<ex>Facebook</ex></ph>
+      </message>
+
+      <!-- Desktop screenshot -->
+      <message name="IDS_BROWSER_SHARING_SCREENSHOT_POST_CAPTURE_TITLE" desc="Title for the dialog shown after a screenshot is captured.">
+       Screenshot copied to clipboard
+      </message>
+      <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_DOWNLOAD_BUTTON_LABEL" desc="Button text for the Screenshot dialog download button.">
+        Download
+      </message>
+      <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_EDIT_BUTTON_LABEL" desc="Button text for the Screenshot dialog edit button.">
+        Edit
+      </message>
+      <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_SHARE_BUTTON_LABEL" desc="Button text for the Screenshot dialog share button.">
+        Share
       </message>
 
       <!-- Clipboard History Menu feature. -->
@@ -8378,14 +8468,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Failed To Create Data Directory
       </message>
 
-      <!-- Multiple download warning-->
-      <message name="IDS_MULTI_DOWNLOAD_WARNING" desc="Warning invoked if multiple downloads are attempted without user interaction.">
-        <ph name="ORIGIN">$1<ex>https://backgroundfetch.com</ex></ph> wants to download multiple files
-      </message>
-      <message name="IDS_MULTI_DOWNLOAD_PERMISSION_FRAGMENT" desc="Permission request shown if multiple downloads are attempted without user interaction and there are multiple permissions requested. Follows a prompt: 'This site would like to:'">
-        Download multiple files
-      </message>
-
       <if expr="use_titlecase">
         <message name="IDS_RECENT_TABS_MENU" desc="In Title Case: The title of the Recent Tabs menu in the wrench menu.">
           Recent Tabs
@@ -8976,9 +9058,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="The Mac menu item for opening a new Private window in the file menu.">
           New Private Window
         </message>
-        <message name="IDS_BACKGROUND_APPS_MAC" desc="The Mac submenu for opening Background Apps.">
-          Background Apps
-        </message>
         <message name="IDS_REOPEN_CLOSED_TABS_MAC" desc="The Mac menu item reopen recently closed tabs in the file menu.">
           Reopen Closed Tab
         </message>
@@ -9159,9 +9238,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_HISTORY_CLOSED_RESTORE_WINDOW_MAC" desc="The Mac menu item for restoring all the tabs of a recently closed window.">
           Restore All Tabs
-        </message>
-        <message name="IDS_HISTORY_INCOGNITO_DISCLAIMER_MAC" desc="The Mac menu item for the Private disclaimer text.">
-          History isn’t saved in Private
         </message>
         <!-- Window menu -->
         <message name="IDS_MINIMIZE_WINDOW_MAC" desc="The Mac menu item for minimize the window menu." meaning="Mac Menubar: The Mac menu item for minimize the window menu.">
@@ -9919,6 +9995,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DESKTOP_MEDIA_PICKER_MULTIPLE_SCREEN_NAME" desc="Name for screens in the desktop media picker UI when there are multiple monitors.">
         {SCREEN_INDEX, plural, =1{Screen #} other{Screen #}}
       </message>
+      <message name="IDS_DESKTOP_MEDIA_PICKER_MANAGED" desc="Text to display when picker choices have been limited by enterprise policies.">
+        Options for sharing are managed by your organization. Some items may be hidden.
+      </message>
       <if expr="toolkit_views">
         <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_THIS_TAB" desc="Text for one of the dialog-tabs on the media picker dialog. This dialog-tab controls sharing the current tab.">
           This Tab
@@ -9927,6 +10006,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Other Tab
         </message>
       </if>
+
+      <message name="IDS_TAB_CAPTURE_TERMINATED_BY_POLICY_TITLE" desc="Title for a confirmation dialog shown on the captured tab when capture of that tab is terminated due to enterprise policy.">
+        Screen sharing has ended
+      </message>
+      <message name="IDS_TAB_CAPTURE_TERMINATED_BY_POLICY_TEXT" desc="Text to be shown in a confirmation dialog on the captured tab when capture of that tab is terminated due to enterprise policy.">
+         Your organization doesn't allow you to share this content. If you need help, contact your administrator.
+      </message>
 
       <!--Printer registration message for local discovery and Print Preview-->
       <message name="IDS_CLOUD_PRINT_REGISTER_PRINTER_INFORMATION" desc="Information about registering printers with Google Cloud Print shown to the user before they confirm registration.">
@@ -10032,8 +10118,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Permission requested, press ⌘ + Option + Up arrow to respond
         </message>
       </if>
-      <if expr="is_win or desktop_linux">
-        <message name="IDS_TAB_AX_LABEL_PERMISSION_REQUESTED_FORMAT" desc="Accessibility label text for Windows or Linux, when a tab has a pending request. Example: 'Brave Search - Permission requested, press F6 to respond'.">
+      <if expr="is_win or desktop_linux or is_fuchsia">
+        <message name="IDS_TAB_AX_LABEL_PERMISSION_REQUESTED_FORMAT" desc="Accessibility label text for Windows, Linux or Fuchsia, when a tab has a pending request. Example: 'Brave Search - Permission requested, press F6 to respond'.">
           <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Permission requested, press F6 to respond
         </message>
       </if>
@@ -10374,9 +10460,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <!-- File Handling permission prompt -->
     <if expr="not is_android">
-      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_TEXT" desc="Permission request shown if the user is opening a file using a PWA with registered file handlers. Follows a prompt: 'This site would like to:'">
-        Open <ph name="FILE_EXTENSIONS">$1<ex>.txt, .csv, .md</ex></ph> files
-      </message>
       <message name="IDS_WEB_APP_FILE_HANDLING_LIST_SEPARATOR" desc="Text/punctuation that separates items in a lists. For example, this is used in a list of files, such as 'todo_list.txt, shopping_list.txt', and file types/extensions, such as '.txt, .csv.'" meaning="List separator for files.">
          , '''
       </message>
@@ -10516,9 +10599,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Security Key permission -->
-    <message name="IDS_SECURITY_KEY_ATTESTATION_PERMISSION_FRAGMENT" desc="A permission prompt shown to a user when a website wants to see information that identifies the user's Security Key, such as make and model number. The text '[website URL] wants to:' precedes this string. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key.">
-      See the make and model of your Security Key
-    </message>
     <if expr="is_android">
       <message name="IDS_SECURITY_KEY_ATTESTATION_INFOBAR_QUESTION" desc="An infobar prompt shown to a user when a website wants to see information that identifies the user's Security Key, such as make and model number. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key.">
         <ph name="URL">
@@ -10707,7 +10787,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <!-- Web-modal dialog shown during Web Authenticaton API requests. -->
-    <if expr="is_win or is_macosx or desktop_linux or chromeos">
+    <if expr="is_win or is_macosx or desktop_linux or chromeos or is_fuchsia">
       <message name="IDS_WEBAUTHN_GENERIC_TITLE" desc="Title of most dialogs shown while the user is authenticating on a web site using a security key.">
         Use your security key with <ph name="APP_NAME">$1<ex>google.com</ex></ph>
       </message>
@@ -10977,7 +11057,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
    </if>
 
    <!-- WebAuthn strings that are used on both Android and Desktop -->
-   <if expr="is_win or is_macosx or desktop_linux or chromeos or is_android">
+   <if expr="is_win or is_macosx or desktop_linux or chromeos or is_android or is_fuchsia">
       <message name="IDS_CABLEV2_MAKE_CREDENTIAL_NOTIFICATION_TITLE" desc="The title of a notification shown on Android that informs the user that a website wishes to register their phone for signing into that website." formatter_data="android_java">
         Verify with this phone
       </message>
@@ -11017,6 +11097,20 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_CLOSE_WINDOWS_BUTTON" desc="The text of the button offering to close all Private windows in the dialog.">
       Close windows
     </message>
+
+<!-- Private History Disclaimer dialog bubble. -->
+      <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode.">
+    Sites you visit aren’t saved in Private
+  </message>
+  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to clear Private browsing history from the device,">
+    To clear Private browsing history from your device, close all Private tabs
+  </message>
+  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action.">
+    Close Private
+  </message>
+  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CANCEL_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close the bubble action.">
+    Got it
+  </message>
 
    <!-- Guest Profile Menu bubble. -->
    <message name="IDS_GUEST_WINDOW_COUNT_MESSAGE" desc="The message showing the number of open guest windows. This is not used for zero windows.[ICU Syntax]">
@@ -11175,8 +11269,22 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Google Drive
     </message>
 
+    <!-- Enterprise file system connector sign in from settings page confirmation dialog -->
+    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_CONFIRM_TITLE" desc="Title shown in modal shown upon clicking sign in for downloads connection on settings page, before sign in dialog">
+      Storing <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph> Authentication Token
+    </message>
+    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_CONFIRM_MESSAGE" desc="Meesage shown in above-mentioned modal">
+      Upon signing in, an unique authentication token will be stored and used for all future eligible downloads.
+    </message>
+    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_CONFIRM_CANCEL_BUTTON" desc="Text displayed for cancel button in above-mentioned modal">
+      Cancel
+    </message>
+    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_CONFIRM_ACCEPT_BUTTON" desc="Text displayed for accept button in above-mentioned modal">
+      Continue
+    </message>
+
     <!-- Enterprise file system connector sign in on first download confirmation dialog -->
-    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_REQUIRED_TITLE" desc="Title shown in modal shown upon first eligible download to be uploaded, before sign in dia;pg">
+    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_REQUIRED_TITLE" desc="Title shown in modal shown upon first eligible download to be uploaded, before sign in dialog">
       Sign into <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph> to complete download
     </message>
     <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_REQUIRED_MESSAGE" desc="Meesage shown in above-mentioned modal">
@@ -11363,6 +11471,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_LENS_REGION_SEARCH_EXPERIMENT_DESCRIPTION" desc="Description for Lens Region Search experiment">
       Right click and select “Search part of the page with Brave Lens” to search any region of the site to learn more about the visual content you see while you browse and shop on the web.
     </message>
+
+    <if expr="is_cfm">
+      <message name="IDS_CFM_NETWORK_SETTINGS_TITLE" desc="Title for CFM Network Settings dialog">
+        Network Settings
+      </message>
+      <message name="IDS_CFM_NETWORK_SETTINGS_AVAILABLE_NETWORKS" desc="Subheader displayed above list of discovered and available WiFi networks">
+        Available WiFi networks
+      </message>
+    </if>
   </messages>
 </release>
 </grit>

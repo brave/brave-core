@@ -14,7 +14,7 @@ namespace network_session_configurator {
 void ParseCommandLineAndFieldTrials(const base::CommandLine& command_line,
                                     bool is_quic_force_disabled,
                                     const std::string& quic_user_agent_id,
-                                    net::HttpNetworkSession::Params* params,
+                                    net::HttpNetworkSessionParams* params,
                                     net::QuicParams* quic_params) {
   ParseCommandLineAndFieldTrials_ChromiumImpl(
       command_line,

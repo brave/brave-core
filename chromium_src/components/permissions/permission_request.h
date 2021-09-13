@@ -18,10 +18,18 @@ namespace permissions {
 
 class PermissionRequest : public PermissionRequest_ChromiumImpl {
  public:
-  PermissionRequest();
+  PermissionRequest(const GURL& requesting_origin,
+                    RequestType request_type,
+                    bool has_gesture,
+                    PermissionDecidedCallback permission_decided_callback,
+                    base::OnceClosure delete_callback);
+
+  PermissionRequest(const PermissionRequest&) = delete;
+  PermissionRequest& operator=(const PermissionRequest&) = delete;
+
   ~PermissionRequest() override;
 
-  virtual bool SupportsLifetime() const;
+  bool SupportsLifetime() const;
   void SetLifetime(absl::optional<base::TimeDelta> lifetime);
   const absl::optional<base::TimeDelta>& GetLifetime() const;
 

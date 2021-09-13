@@ -2,6 +2,7 @@ include_rules = [
   "+../../../../../../ios/chrome/browser/prefs",
   "+../../../../../../ios/chrome/browser/sync",
   "+ios/chrome/browser",
+  "+ios/public/provider/chrome/browser/app_distribution/app_distribution_api.h",
   "+components/component_updater",
   "+components/gcm_driver/gcm_driver.h",
   "+components/history/core/browser",

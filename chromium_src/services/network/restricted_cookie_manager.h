@@ -18,13 +18,13 @@
       mojom::RestrictedCookieManagerRole role, const GURL& url,       \
       const net::SiteForCookies& site_for_cookies,                    \
       const net::IsolationInfo& isolation_info,                       \
-      const CookieSettings* cookie_settings,                          \
+      const CookieSettings& cookie_settings,                          \
       const net::CookieAccessDelegate* cookie_access_delegate) const; \
   net::CookieOptions MakeOptionsForGet(                               \
       mojom::RestrictedCookieManagerRole role, const GURL& url,       \
       const net::SiteForCookies& site_for_cookies,                    \
       const net::IsolationInfo& isolation_info,                       \
-      const CookieSettings* cookie_settings,                          \
+      const CookieSettings& cookie_settings,                          \
       const net::CookieAccessDelegate* cookie_access_delegate) const; \
   void RemoveChangeListener
 
