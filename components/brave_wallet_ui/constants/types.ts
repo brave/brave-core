@@ -628,3 +628,11 @@ export type UpdateAccountNamePayloadType = {
   name: string,
   isDerived: boolean
 }
+
+export enum WalletOnboardingSteps {
+  OnboardingWelcome = 0,
+  OnboardingCreatePassword = 1,
+  OnboardingBackupWallet = 2,
+  OnboardingImportMetaMask = 3,
+  OnboardingImportBraveLegacy = 4
+}

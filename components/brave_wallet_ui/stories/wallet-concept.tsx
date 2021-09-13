@@ -55,9 +55,12 @@ export default {
 }
 
 export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boolean }) => {
-  const { onboarding, locked } = args
+  const {
+    // onboarding,
+    locked
+  } = args
   const [view] = React.useState<NavTypes>('crypto')
-  const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(onboarding)
+  const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(true)
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
   const [needsBackup, setNeedsBackup] = React.useState<boolean>(true)
   const [showBackup, setShowBackup] = React.useState<boolean>(false)
@@ -448,6 +451,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     }))
   }
 
+  const onImportWallet = () => {
+    completeWalletSetup(false)
+  }
+
   const fetchFullTokenList = () => {
     // Doesnt fetch anything in storybook
   }
@@ -483,10 +490,15 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             {needsOnboarding ?
               (
                 <Onboarding
+                  hasImportError={hasPasswordError}
                   recoveryPhrase={recoveryPhrase}
                   onSubmit={completeWalletSetup}
                   onPasswordProvided={passwordProvided}
                   onShowRestore={onToggleRestore}
+                  braveLegacyWalletDetected={true}
+                  metaMaskWalletDetected={true}
+                  onImportMetaMask={onImportWallet}
+                  onImportBraveLegacy={onImportWallet}
                 />
               ) : (
                 <>
