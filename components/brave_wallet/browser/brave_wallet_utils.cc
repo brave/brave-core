@@ -51,6 +51,15 @@ std::string GenerateMnemonicInternal(uint8_t* entropy, size_t size) {
   return result;
 }
 
+bool IsValidEntropySize(size_t entropy_size) {
+  // entropy size should be 128, 160, 192, 224, 256 bits
+  if (entropy_size < 16 || entropy_size > 32 || entropy_size % 4 != 0) {
+    LOG(ERROR) << __func__ << ": Entropy should be 16, 20, 24, 28, 32 bytes";
+    return false;
+  }
+  return true;
+}
+
 std::string GetInfuraProjectID() {
   std::string project_id(BRAVE_INFURA_PROJECT_ID);
   std::unique_ptr<base::Environment> env(base::Environment::Create());
@@ -332,11 +341,8 @@ std::string Uint256ValueToHex(uint256_t input) {
 }
 
 std::string GenerateMnemonic(size_t entropy_size) {
-  // entropy size should be 128, 160, 192, 224, 256 bits
-  if (entropy_size < 16 || entropy_size > 32 || entropy_size % 4 != 0) {
-    LOG(ERROR) << __func__ << ": Entropy should be 16, 20, 24, 28, 32 bytes";
+  if (!IsValidEntropySize(entropy_size))
     return "";
-  }
 
   std::vector<uint8_t> entropy(entropy_size);
   crypto::RandBytes(&entropy[0], entropy.size());
@@ -352,10 +358,9 @@ std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy) {
 std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
     const std::string& mnemonic,
     const std::string& passphrase) {
-  if (!IsValidMnemonic(mnemonic)) {
-    LOG(ERROR) << __func__ << ": Invalid mnemonic: " << mnemonic;
+  if (!IsValidMnemonic(mnemonic))
     return nullptr;
-  }
+
   std::unique_ptr<std::vector<uint8_t>> seed =
       std::make_unique<std::vector<uint8_t>>(64);
   const std::string salt = "mnemonic" + passphrase;
@@ -366,8 +371,54 @@ std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
   return rv == 1 ? std::move(seed) : nullptr;
 }
 
+std::unique_ptr<std::vector<uint8_t>> MnemonicToEntropy(
+    const std::string& mnemonic) {
+  if (!IsValidMnemonic(mnemonic))
+    return nullptr;
+
+  const std::vector<std::string> words = SplitString(
+      mnemonic, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  // size in bytes
+  size_t entropy_size = 0;
+  switch (words.size()) {
+    case 12:
+      entropy_size = 16;
+      break;
+    case 15:
+      entropy_size = 20;
+      break;
+    case 18:
+      entropy_size = 24;
+      break;
+    case 21:
+      entropy_size = 28;
+      break;
+    case 24:
+      entropy_size = 32;
+      break;
+    default:
+      NOTREACHED();
+  }
+  DCHECK(IsValidEntropySize(entropy_size)) << entropy_size;
+
+  std::unique_ptr<std::vector<uint8_t>> entropy =
+      std::make_unique<std::vector<uint8_t>>(entropy_size);
+
+  size_t written;
+  if (bip39_mnemonic_to_bytes(nullptr, mnemonic.c_str(), entropy->data(),
+                              entropy->size(), &written) != WALLY_OK) {
+    LOG(ERROR) << "bip39_mnemonic_to_bytes failed";
+    return nullptr;
+  }
+  return entropy;
+}
+
 bool IsValidMnemonic(const std::string& mnemonic) {
-  return bip39_mnemonic_validate(nullptr, mnemonic.c_str()) == WALLY_OK;
+  if (bip39_mnemonic_validate(nullptr, mnemonic.c_str()) != WALLY_OK) {
+    LOG(ERROR) << __func__ << ": Invalid mnemonic: " << mnemonic;
+    return false;
+  }
+  return true;
 }
 
 bool EncodeString(const std::string& input, std::string* output) {

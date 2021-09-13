@@ -34,7 +34,8 @@ export type RemoveImportedAccountPayloadType = {
 
 export type RestoreWalletPayloadType = {
   mnemonic: string,
-  password: string
+  password: string,
+  isLegacy: boolean
 }
 
 export type WalletCreatedPayloadType = {

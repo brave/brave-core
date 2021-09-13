@@ -507,7 +507,7 @@ export interface AssetRatioController {
 
 export interface KeyringController {
   createWallet: (password: string) => Promise<CreateWalletReturnInfo>
-  restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
+  restoreWallet: (mnemonic: string, password: string, isLegacy: boolean) => Promise<RestoreWalletReturnInfo>
   lock: () => Promise<void>
   unlock: (password: string) => Promise<UnlockReturnInfo>
   addAccount: (accountName: string) => Promise<AddAccountReturnInfo>

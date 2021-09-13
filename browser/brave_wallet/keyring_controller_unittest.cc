@@ -274,10 +274,10 @@ TEST_F(KeyringControllerUnitTest, CreateEncryptorForKeyring) {
 TEST_F(KeyringControllerUnitTest, CreateDefaultKeyringInternal) {
   KeyringController controller(GetPrefs());
   // encryptor is nullptr
-  ASSERT_FALSE(controller.CreateDefaultKeyringInternal(kMnemonic1));
+  ASSERT_FALSE(controller.CreateDefaultKeyringInternal(kMnemonic1, false));
 
   EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1, false));
   controller.default_keyring_->AddAccounts(1);
   EXPECT_EQ(controller.default_keyring_->GetAddress(0),
             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
@@ -291,7 +291,7 @@ TEST_F(KeyringControllerUnitTest, CreateDefaultKeyringInternal) {
       encrypted_mnemonic1);
 
   // default keyring will be overwritten
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic2));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic2, false));
   controller.default_keyring_->AddAccounts(1);
   EXPECT_EQ(controller.default_keyring_->GetAddress(0),
             "0xf83C3cBfF68086F276DD4f87A82DF73B57b28820");
@@ -349,7 +349,8 @@ TEST_F(KeyringControllerUnitTest, RestoreDefaultKeyring) {
   const std::string mnemonic = controller.GetMnemonicForDefaultKeyringImpl();
 
   // Restore with same mnemonic and same password
-  EXPECT_NE(controller.RestoreDefaultKeyring(mnemonic, "brave"), nullptr);
+  EXPECT_NE(controller.RestoreDefaultKeyring(mnemonic, "brave", false),
+            nullptr);
   EXPECT_EQ(GetStringPrefForKeyring(kEncryptedMnemonic, "default"),
             encrypted_mnemonic);
   EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorSalt, "default"), salt);
@@ -357,7 +358,8 @@ TEST_F(KeyringControllerUnitTest, RestoreDefaultKeyring) {
   EXPECT_EQ(controller.default_keyring_->GetAccountsNumber(), 1u);
 
   // Restore with same mnemonic but different password
-  EXPECT_NE(controller.RestoreDefaultKeyring(mnemonic, "brave377"), nullptr);
+  EXPECT_NE(controller.RestoreDefaultKeyring(mnemonic, "brave377", false),
+            nullptr);
   EXPECT_NE(GetStringPrefForKeyring(kEncryptedMnemonic, "default"),
             encrypted_mnemonic);
   EXPECT_NE(GetStringPrefForKeyring(kPasswordEncryptorSalt, "default"), salt);
@@ -371,7 +373,7 @@ TEST_F(KeyringControllerUnitTest, RestoreDefaultKeyring) {
   nonce = GetStringPrefForKeyring(kPasswordEncryptorNonce, "default");
 
   // Restore with invalid mnemonic but same password
-  EXPECT_EQ(controller.RestoreDefaultKeyring("", "brave"), nullptr);
+  EXPECT_EQ(controller.RestoreDefaultKeyring("", "brave", false), nullptr);
   // Keyring prefs won't be cleared
   EXPECT_EQ(GetStringPrefForKeyring(kEncryptedMnemonic, "default"),
             encrypted_mnemonic);
@@ -380,7 +382,7 @@ TEST_F(KeyringControllerUnitTest, RestoreDefaultKeyring) {
   EXPECT_EQ(controller.default_keyring_->GetAccountsNumber(), 0u);
 
   // Restore with same mnemonic but empty password
-  EXPECT_EQ(controller.RestoreDefaultKeyring(mnemonic, ""), nullptr);
+  EXPECT_EQ(controller.RestoreDefaultKeyring(mnemonic, "", false), nullptr);
   // Keyring prefs won't be cleared
   EXPECT_EQ(GetStringPrefForKeyring(kEncryptedMnemonic, "default"),
             encrypted_mnemonic);
@@ -390,7 +392,8 @@ TEST_F(KeyringControllerUnitTest, RestoreDefaultKeyring) {
 
   // default keyring will be overwritten by new seed which will be encrypted by
   // new key even though the passphrase is same.
-  EXPECT_NE(controller.RestoreDefaultKeyring(kMnemonic1, "brave"), nullptr);
+  EXPECT_NE(controller.RestoreDefaultKeyring(kMnemonic1, "brave", false),
+            nullptr);
   EXPECT_NE(GetStringPrefForKeyring(kEncryptedMnemonic, "default"),
             encrypted_mnemonic);
   // salt is regenerated and account num is cleared
@@ -461,7 +464,7 @@ TEST_F(KeyringControllerUnitTest, GetMnemonicForDefaultKeyring) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(string_value().empty());
 
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1, false));
   controller.GetMnemonicForDefaultKeyring(base::BindOnce(
       &KeyringControllerUnitTest::GetStringCallback, base::Unretained(this)));
   base::RunLoop().RunUntilIdle();
@@ -655,7 +658,7 @@ TEST_F(KeyringControllerUnitTest, BackupComplete) {
 TEST_F(KeyringControllerUnitTest, AccountMetasForKeyring) {
   KeyringController controller(GetPrefs());
   EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1, false));
   controller.default_keyring_->AddAccounts(2);
   const std::string address1 = controller.default_keyring_->GetAddress(0);
   const std::string name1 = "Account1";
@@ -718,21 +721,27 @@ TEST_F(KeyringControllerUnitTest, CreateAndRestoreWallet) {
   EXPECT_EQ(account_infos[0]->name, "Account 1");
 
   controller.Reset();
-  callback_called = false;
-  controller.RestoreWallet(mnemonic_to_be_restored, "brave1",
-                           base::BindLambdaForTesting([&](bool success) {
-                             EXPECT_TRUE(success);
-                             callback_called = true;
-                           }));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  {
-    std::vector<mojom::AccountInfoPtr> account_infos =
-        controller.GetAccountInfosForKeyring("default");
-    EXPECT_EQ(account_infos.size(), 1u);
-    EXPECT_EQ(account_infos[0]->address, address0);
-    EXPECT_EQ(account_infos[0]->name, "Account 1");
-  }
+  auto verify_restore_wallet = base::BindLambdaForTesting(
+      [&mnemonic_to_be_restored, &controller, &address0]() {
+        bool callback_called = false;
+        controller.RestoreWallet(mnemonic_to_be_restored, "brave1", false,
+                                 base::BindLambdaForTesting([&](bool success) {
+                                   EXPECT_TRUE(success);
+                                   callback_called = true;
+                                 }));
+        base::RunLoop().RunUntilIdle();
+        EXPECT_TRUE(callback_called);
+        {
+          std::vector<mojom::AccountInfoPtr> account_infos =
+              controller.GetAccountInfosForKeyring("default");
+          EXPECT_EQ(account_infos.size(), 1u);
+          EXPECT_EQ(account_infos[0]->address, address0);
+          EXPECT_EQ(account_infos[0]->name, "Account 1");
+        }
+      });
+  verify_restore_wallet.Run();
+  // Restore twice consecutively should succeed and have only one account
+  verify_restore_wallet.Run();
 }
 
 TEST_F(KeyringControllerUnitTest, AddAccount) {
@@ -1089,7 +1098,7 @@ TEST_F(KeyringControllerUnitTest, ImportedAccountFromJson) {
 TEST_F(KeyringControllerUnitTest, GetPrivateKeyForDefaultKeyringAccount) {
   KeyringController controller(GetPrefs());
   EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1, false));
 
   bool callback_called = false;
   controller.GetPrivateKeyForDefaultKeyringAccount(
@@ -1158,7 +1167,7 @@ TEST_F(KeyringControllerUnitTest, SetDefaultKeyringDerivedAccountName) {
   EXPECT_TRUE(callback_called);
 
   EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
-  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1));
+  ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1, false));
   controller.default_keyring_->AddAccounts(2);
   const std::string address1 = controller.default_keyring_->GetAddress(0);
   const std::string name1 = "Account1";
@@ -1339,6 +1348,54 @@ TEST_F(KeyringControllerUnitTest, SetDefaultKeyringImportedAccountName) {
       }));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(KeyringControllerUnitTest, RestoreLegacyBraveWallet) {
+  const char* mnemonic24 =
+      "cushion pitch impact album daring marine much annual budget social "
+      "clarify balance rose almost area busy among bring hidden bind later "
+      "capable pulp laundry";
+  const char* mnemonic12 =
+      "drip caution abandon festival order clown oven regular absorb evidence "
+      "crew where";
+  KeyringController controller(GetPrefs());
+  auto verify_restore_wallet = base::BindLambdaForTesting(
+      [&controller](const char* mnemonic, const char* address, bool is_legacy,
+                    bool expect_result) {
+        bool callback_called = false;
+        controller.RestoreWallet(mnemonic, "brave1", is_legacy,
+                                 base::BindLambdaForTesting([&](bool success) {
+                                   EXPECT_EQ(success, expect_result);
+                                   callback_called = true;
+                                 }));
+        base::RunLoop().RunUntilIdle();
+        EXPECT_TRUE(callback_called);
+        if (expect_result) {
+          std::vector<mojom::AccountInfoPtr> account_infos =
+              controller.GetAccountInfosForKeyring("default");
+          ASSERT_EQ(account_infos.size(), 1u);
+          EXPECT_EQ(account_infos[0]->address, address);
+          EXPECT_EQ(account_infos[0]->name, "Account 1");
+
+          // Test lock & unlock to check if it read the right
+          // legacy_brave_wallet pref so it will use the right seed
+          controller.Lock();
+          controller.Unlock("brave1", base::DoNothing::Once<bool>());
+          base::RunLoop().RunUntilIdle();
+          account_infos.clear();
+          account_infos = controller.GetAccountInfosForKeyring("default");
+          ASSERT_EQ(account_infos.size(), 1u);
+          EXPECT_EQ(account_infos[0]->address, address);
+        }
+      });
+  verify_restore_wallet.Run(
+      mnemonic24, "0xea3C17c81E3baC3472d163b2c8b12ddDAa027874", true, true);
+  verify_restore_wallet.Run(
+      mnemonic24, "0xe026eBd81C1A64807F9Cbf21d89a67211eF48717", false, true);
+  // brave legacy menmonic can only be 24 words
+  verify_restore_wallet.Run(mnemonic12, "", true, false);
+  verify_restore_wallet.Run(
+      mnemonic12, "0x084DCb94038af1715963F149079cE011C4B22961", false, true);
 }
 
 }  // namespace brave_wallet
