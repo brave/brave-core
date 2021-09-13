@@ -74,7 +74,7 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
   // Only check the first entry because it will not be grouped with other
   // types.
   if (manager->Requests().empty() ||
-      manager->Requests()[0]->GetRequestType() !=
+      manager->Requests()[0]->request_type() !=
           permissions::RequestType::kBraveEthereum)
     return webui_url;
 
@@ -84,7 +84,7 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
   for (auto* request : manager->Requests()) {
     std::string account;
     if (!brave_wallet::ParseRequestingOriginFromSubRequest(
-            request->GetOrigin(), &requesting_origin, &account)) {
+            request->requesting_origin(), &requesting_origin, &account)) {
       continue;
     }
     accounts.push_back(account);

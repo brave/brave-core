@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-index 8f178e7b56924ddc7ee6026c39ab67b49b6e3153..0e4a6c54924ce674c804f22ee0947761797e630d 100644
+index 69bcd7e5e38574b6e1edba96cbfc61f2552b72bd..2c28f017de2911511d152b05117d34842bd9535c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-@@ -45,7 +45,7 @@ import org.chromium.ui.text.SpanApplier;
+@@ -46,7 +46,7 @@ import org.chromium.ui.text.SpanApplier;
   * Fragment to keep track of the all the privacy related preferences.
   */
  public class PrivacySettings
@@ -10,8 +10,8 @@ index 8f178e7b56924ddc7ee6026c39ab67b49b6e3153..0e4a6c54924ce674c804f22ee0947761
 +        extends org.chromium.chrome.browser.settings.BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
      private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
      private static final String PREF_NETWORK_PREDICTIONS = "preload_pages";
-     private static final String PREF_SECURE_DNS = "secure_dns";
-@@ -229,6 +229,7 @@ public class PrivacySettings
+     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
+@@ -246,6 +246,7 @@ public class PrivacySettings
      @Override
      public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
          menu.clear();
@@ -19,7 +19,7 @@ index 8f178e7b56924ddc7ee6026c39ab67b49b6e3153..0e4a6c54924ce674c804f22ee0947761
          MenuItem help =
                  menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, R.string.menu_help);
          help.setIcon(VectorDrawableCompat.create(
-@@ -243,6 +244,6 @@ public class PrivacySettings
+@@ -260,6 +261,6 @@ public class PrivacySettings
                      null);
              return true;
          }

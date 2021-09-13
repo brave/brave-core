@@ -42,7 +42,8 @@ base::FilePath GetResourcesPakFilePath() {
 #endif  // OS_ANDROID
 
 #if !defined(OS_ANDROID)
-base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
+base::FilePath GetScaledResourcesPakFilePath(
+    ui::ResourceScaleFactor scale_factor) {
   DCHECK(scale_factor == ui::SCALE_FACTOR_100P ||
          scale_factor == ui::SCALE_FACTOR_200P);
 

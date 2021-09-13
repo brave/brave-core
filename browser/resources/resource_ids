@@ -2,124 +2,123 @@
 {
   "SRCDIR": "../../..",
   "brave/common/extensions/api/brave_api_resources.grd": {
-    "includes": [32000],
+    "includes": [38000],
   },
   "brave/components/resources/brave_components_resources.grd": {
-    "includes": [33000],
+    "includes": [38100],
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_adblock/brave_adblock.grd": {
-    "includes": [33070],
+    "includes": [38200],
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_new_tab/brave_new_tab.grd": {
-    "includes": [33140],
+    "includes": [38250],
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_welcome/brave_welcome.grd": {
-    "includes": [33500],
+    "includes": [38600],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/settings/brave_settings_resources.grd": {
     "META": {"sizes": {"includes": [100],}},
-    "includes": [34500],
+    "includes": [38800],
   },
   "brave/app/brave_generated_resources.grd": {
-    "includes": [35000],
-    "messages": [35500],
+    "includes": [39200],
+    "messages": [39700],
   },
   "brave/app/theme/brave_theme_resources.grd": {
-    "structures": [36000],
+    "structures": [40200],
   },
   "brave/app/theme/brave_unscaled_resources.grd": {
-    "includes": [36500],
+    "includes": [40700],
   },
   "brave/components/brave_sync/resources.grd": {
-    "includes": [37000]
+    "includes": [41200]
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_sync/brave_sync.grd": {
-    "includes": [37100],
+    "includes": [41300],
   },
-  # brave webtorrent 37500
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_webtorrent/brave_webtorrent.grd": {
-    "includes": [37520],
+    "includes": [41800],
   },
   "brave/components/brave_rewards/resources/extension/extension_static_resources.grd": {
-    "includes": [38000]
+    "includes": [42300]
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_panel/brave_rewards_panel.grd": {
-    "includes": [38160],
+    "includes": [42500],
   },
   "brave/components/brave_rewards/resources/brave_rewards_static_resources.grd": {
-    "includes": [38320]
+    "includes": [42700]
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_page/brave_rewards_page.grd": {
-    "includes": [38480],
+    "includes": [42900],
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_internals/brave_rewards_internals.grd": {
-    "includes": [38640],
+    "includes": [43400],
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_tip/brave_rewards_tip.grd": {
-    "includes": [38800],
+    "includes": [43700],
   },
   "brave/components/resources/brave_components_strings.grd": {
-    "messages": [39000]
+    "messages": [43900]
   },
   "brave/vendor/bat-native-ads/data/resources/bat_ads_resources.grd": {
-    "includes": [40000]
+    "includes": [44000]
   },
   "brave/ui/webui/resources/brave_webui_resources.grd": {
-    "includes": [41000],
-    "structures": [42000],
+    "includes": [45000],
+    "structures": [46000],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/extensions/brave_extensions_resources.grd": {
     "META": {"sizes": {"includes": [50],}},
-    "includes": [43000],
+    "includes": [47000],
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet_page/brave_wallet_page.grd": {
-    "includes": [43600],
+    "includes": [47600],
   },
   "<(ROOT_GEN_DIR)/brave/web-ui-ethereum_remote_client_page/ethereum_remote_client_page.grd": {
-    "includes": [43700],
+    "includes": [47700],
   },
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet_panel/brave_wallet_panel.grd": {
-    "includes": [43800],
+    "includes": [47800],
   },
   "brave/components/brave_extension/extension/resources.grd": {
-    "includes": [44000],
+    "includes": [48000],
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_extension/brave_extension.grd": {
-    "includes": [44500],
+    "includes": [48500],
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-webcompat_reporter/webcompat_reporter.grd": {
-    "includes": [45000],
+    "includes": [49000],
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-ipfs/ipfs.grd": {
-    "includes": [45500],
+    "includes": [49500],
   },
   "<(ROOT_GEN_DIR)/brave/web-ui-cosmetic_filters/cosmetic_filters.grd": {
-    "includes": [46000]
+    "includes": [50000]
   },
   "brave/components/tor/resources/tor_static_resources.grd": {
-    "includes": [46250]
+    "includes": [50250]
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-tor_internals/tor_internals.grd": {
-    "includes": [46500],
+    "includes": [50500],
   },
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet_script/brave_wallet_script.grd": {
-    "includes": [46750]
+    "includes": [50750]
   },
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_vpn_panel/brave_vpn_panel.grd": {
-    "includes": [47000]
+    "includes": [51000]
   },
 }

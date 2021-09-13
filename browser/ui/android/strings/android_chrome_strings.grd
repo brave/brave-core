@@ -114,86 +114,86 @@ CHAR_LIMIT guidelines:
     <output filename="values-zu/android_chrome_strings.xml" lang="zu" type="android" />
   </outputs>
   <translations>
-    <file lang="af" path="translations/android_chrome_strings_af.xtb" />
-    <file lang="am" path="translations/android_chrome_strings_am.xtb" />
-    <file lang="ar" path="translations/android_chrome_strings_ar.xtb" />
-    <file lang="as" path="translations/android_chrome_strings_as.xtb" />
-    <file lang="az" path="translations/android_chrome_strings_az.xtb" />
-    <file lang="be" path="translations/android_chrome_strings_be.xtb" />
-    <file lang="bg" path="translations/android_chrome_strings_bg.xtb" />
-    <file lang="bn" path="translations/android_chrome_strings_bn.xtb" />
-    <file lang="bs" path="translations/android_chrome_strings_bs.xtb" />
-    <file lang="ca" path="translations/android_chrome_strings_ca.xtb" />
-    <file lang="cs" path="translations/android_chrome_strings_cs.xtb" />
-    <file lang="da" path="translations/android_chrome_strings_da.xtb" />
-    <file lang="de" path="translations/android_chrome_strings_de.xtb" />
-    <file lang="el" path="translations/android_chrome_strings_el.xtb" />
-    <file lang="en-GB" path="translations/android_chrome_strings_en-GB.xtb" />
-    <file lang="es" path="translations/android_chrome_strings_es.xtb" />
-    <file lang="es-419" path="translations/android_chrome_strings_es-419.xtb" />
-    <file lang="et" path="translations/android_chrome_strings_et.xtb" />
-    <file lang="eu" path="translations/android_chrome_strings_eu.xtb" />
-    <file lang="fa" path="translations/android_chrome_strings_fa.xtb" />
-    <file lang="fi" path="translations/android_chrome_strings_fi.xtb" />
-    <file lang="fil" path="translations/android_chrome_strings_fil.xtb" />
-    <file lang="fr" path="translations/android_chrome_strings_fr.xtb" />
-    <file lang="fr-CA" path="translations/android_chrome_strings_fr-CA.xtb" />
-    <file lang="gl" path="translations/android_chrome_strings_gl.xtb" />
-    <file lang="gu" path="translations/android_chrome_strings_gu.xtb" />
-    <file lang="hi" path="translations/android_chrome_strings_hi.xtb" />
-    <file lang="hr" path="translations/android_chrome_strings_hr.xtb" />
-    <file lang="hu" path="translations/android_chrome_strings_hu.xtb" />
-    <file lang="hy" path="translations/android_chrome_strings_hy.xtb" />
-    <file lang="id" path="translations/android_chrome_strings_id.xtb" />
-    <file lang="is" path="translations/android_chrome_strings_is.xtb" />
-    <file lang="it" path="translations/android_chrome_strings_it.xtb" />
-    <file lang="iw" path="translations/android_chrome_strings_iw.xtb" />
-    <file lang="ja" path="translations/android_chrome_strings_ja.xtb" />
-    <file lang="ka" path="translations/android_chrome_strings_ka.xtb" />
-    <file lang="kk" path="translations/android_chrome_strings_kk.xtb" />
-    <file lang="km" path="translations/android_chrome_strings_km.xtb" />
-    <file lang="kn" path="translations/android_chrome_strings_kn.xtb" />
-    <file lang="ko" path="translations/android_chrome_strings_ko.xtb" />
-    <file lang="ky" path="translations/android_chrome_strings_ky.xtb" />
-    <file lang="lo" path="translations/android_chrome_strings_lo.xtb" />
-    <file lang="lt" path="translations/android_chrome_strings_lt.xtb" />
-    <file lang="lv" path="translations/android_chrome_strings_lv.xtb" />
-    <file lang="mk" path="translations/android_chrome_strings_mk.xtb" />
-    <file lang="ml" path="translations/android_chrome_strings_ml.xtb" />
-    <file lang="mn" path="translations/android_chrome_strings_mn.xtb" />
-    <file lang="mr" path="translations/android_chrome_strings_mr.xtb" />
-    <file lang="ms" path="translations/android_chrome_strings_ms.xtb" />
-    <file lang="my" path="translations/android_chrome_strings_my.xtb" />
-    <file lang="ne" path="translations/android_chrome_strings_ne.xtb" />
-    <file lang="nl" path="translations/android_chrome_strings_nl.xtb" />
-    <file lang="no" path="translations/android_chrome_strings_no.xtb" />
-    <file lang="or" path="translations/android_chrome_strings_or.xtb" />
-    <file lang="pa" path="translations/android_chrome_strings_pa.xtb" />
-    <file lang="pl" path="translations/android_chrome_strings_pl.xtb" />
-    <file lang="pt-BR" path="translations/android_chrome_strings_pt-BR.xtb" />
-    <file lang="pt-PT" path="translations/android_chrome_strings_pt-PT.xtb" />
-    <file lang="ro" path="translations/android_chrome_strings_ro.xtb" />
-    <file lang="ru" path="translations/android_chrome_strings_ru.xtb" />
-    <file lang="si" path="translations/android_chrome_strings_si.xtb" />
-    <file lang="sk" path="translations/android_chrome_strings_sk.xtb" />
-    <file lang="sl" path="translations/android_chrome_strings_sl.xtb" />
-    <file lang="sq" path="translations/android_chrome_strings_sq.xtb" />
-    <file lang="sr" path="translations/android_chrome_strings_sr.xtb" />
-    <file lang="sr-Latn" path="translations/android_chrome_strings_sr-Latn.xtb" />
-    <file lang="sv" path="translations/android_chrome_strings_sv.xtb" />
-    <file lang="sw" path="translations/android_chrome_strings_sw.xtb" />
-    <file lang="ta" path="translations/android_chrome_strings_ta.xtb" />
-    <file lang="te" path="translations/android_chrome_strings_te.xtb" />
-    <file lang="th" path="translations/android_chrome_strings_th.xtb" />
-    <file lang="tr" path="translations/android_chrome_strings_tr.xtb" />
-    <file lang="uk" path="translations/android_chrome_strings_uk.xtb" />
-    <file lang="ur" path="translations/android_chrome_strings_ur.xtb" />
-    <file lang="uz" path="translations/android_chrome_strings_uz.xtb" />
-    <file lang="vi" path="translations/android_chrome_strings_vi.xtb" />
-    <file lang="zh-CN" path="translations/android_chrome_strings_zh-CN.xtb" />
-    <file lang="zh-HK" path="translations/android_chrome_strings_zh-HK.xtb" />
-    <file lang="zh-TW" path="translations/android_chrome_strings_zh-TW.xtb" />
-    <file lang="zu" path="translations/android_chrome_strings_zu.xtb" />
+    <file path="translations/android_chrome_strings_af.xtb" lang="af" />
+    <file path="translations/android_chrome_strings_am.xtb" lang="am" />
+    <file path="translations/android_chrome_strings_ar.xtb" lang="ar" />
+    <file path="translations/android_chrome_strings_as.xtb" lang="as" />
+    <file path="translations/android_chrome_strings_az.xtb" lang="az" />
+    <file path="translations/android_chrome_strings_be.xtb" lang="be" />
+    <file path="translations/android_chrome_strings_bg.xtb" lang="bg" />
+    <file path="translations/android_chrome_strings_bn.xtb" lang="bn" />
+    <file path="translations/android_chrome_strings_bs.xtb" lang="bs" />
+    <file path="translations/android_chrome_strings_ca.xtb" lang="ca" />
+    <file path="translations/android_chrome_strings_cs.xtb" lang="cs" />
+    <file path="translations/android_chrome_strings_da.xtb" lang="da" />
+    <file path="translations/android_chrome_strings_de.xtb" lang="de" />
+    <file path="translations/android_chrome_strings_el.xtb" lang="el" />
+    <file path="translations/android_chrome_strings_en-GB.xtb" lang="en-GB" />
+    <file path="translations/android_chrome_strings_es.xtb" lang="es" />
+    <file path="translations/android_chrome_strings_es-419.xtb" lang="es-419" />
+    <file path="translations/android_chrome_strings_et.xtb" lang="et" />
+    <file path="translations/android_chrome_strings_eu.xtb" lang="eu" />
+    <file path="translations/android_chrome_strings_fa.xtb" lang="fa" />
+    <file path="translations/android_chrome_strings_fi.xtb" lang="fi" />
+    <file path="translations/android_chrome_strings_fil.xtb" lang="fil" />
+    <file path="translations/android_chrome_strings_fr.xtb" lang="fr" />
+    <file path="translations/android_chrome_strings_fr-CA.xtb" lang="fr-CA" />
+    <file path="translations/android_chrome_strings_gl.xtb" lang="gl" />
+    <file path="translations/android_chrome_strings_gu.xtb" lang="gu" />
+    <file path="translations/android_chrome_strings_hi.xtb" lang="hi" />
+    <file path="translations/android_chrome_strings_hr.xtb" lang="hr" />
+    <file path="translations/android_chrome_strings_hu.xtb" lang="hu" />
+    <file path="translations/android_chrome_strings_hy.xtb" lang="hy" />
+    <file path="translations/android_chrome_strings_id.xtb" lang="id" />
+    <file path="translations/android_chrome_strings_is.xtb" lang="is" />
+    <file path="translations/android_chrome_strings_it.xtb" lang="it" />
+    <file path="translations/android_chrome_strings_iw.xtb" lang="iw" />
+    <file path="translations/android_chrome_strings_ja.xtb" lang="ja" />
+    <file path="translations/android_chrome_strings_ka.xtb" lang="ka" />
+    <file path="translations/android_chrome_strings_kk.xtb" lang="kk" />
+    <file path="translations/android_chrome_strings_km.xtb" lang="km" />
+    <file path="translations/android_chrome_strings_kn.xtb" lang="kn" />
+    <file path="translations/android_chrome_strings_ko.xtb" lang="ko" />
+    <file path="translations/android_chrome_strings_ky.xtb" lang="ky" />
+    <file path="translations/android_chrome_strings_lo.xtb" lang="lo" />
+    <file path="translations/android_chrome_strings_lt.xtb" lang="lt" />
+    <file path="translations/android_chrome_strings_lv.xtb" lang="lv" />
+    <file path="translations/android_chrome_strings_mk.xtb" lang="mk" />
+    <file path="translations/android_chrome_strings_ml.xtb" lang="ml" />
+    <file path="translations/android_chrome_strings_mn.xtb" lang="mn" />
+    <file path="translations/android_chrome_strings_mr.xtb" lang="mr" />
+    <file path="translations/android_chrome_strings_ms.xtb" lang="ms" />
+    <file path="translations/android_chrome_strings_my.xtb" lang="my" />
+    <file path="translations/android_chrome_strings_ne.xtb" lang="ne" />
+    <file path="translations/android_chrome_strings_nl.xtb" lang="nl" />
+    <file path="translations/android_chrome_strings_no.xtb" lang="no" />
+    <file path="translations/android_chrome_strings_or.xtb" lang="or" />
+    <file path="translations/android_chrome_strings_pa.xtb" lang="pa" />
+    <file path="translations/android_chrome_strings_pl.xtb" lang="pl" />
+    <file path="translations/android_chrome_strings_pt-BR.xtb" lang="pt-BR" />
+    <file path="translations/android_chrome_strings_pt-PT.xtb" lang="pt-PT" />
+    <file path="translations/android_chrome_strings_ro.xtb" lang="ro" />
+    <file path="translations/android_chrome_strings_ru.xtb" lang="ru" />
+    <file path="translations/android_chrome_strings_si.xtb" lang="si" />
+    <file path="translations/android_chrome_strings_sk.xtb" lang="sk" />
+    <file path="translations/android_chrome_strings_sl.xtb" lang="sl" />
+    <file path="translations/android_chrome_strings_sq.xtb" lang="sq" />
+    <file path="translations/android_chrome_strings_sr.xtb" lang="sr" />
+    <file path="translations/android_chrome_strings_sr-Latn.xtb" lang="sr-Latn" />
+    <file path="translations/android_chrome_strings_sv.xtb" lang="sv" />
+    <file path="translations/android_chrome_strings_sw.xtb" lang="sw" />
+    <file path="translations/android_chrome_strings_ta.xtb" lang="ta" />
+    <file path="translations/android_chrome_strings_te.xtb" lang="te" />
+    <file path="translations/android_chrome_strings_th.xtb" lang="th" />
+    <file path="translations/android_chrome_strings_tr.xtb" lang="tr" />
+    <file path="translations/android_chrome_strings_uk.xtb" lang="uk" />
+    <file path="translations/android_chrome_strings_ur.xtb" lang="ur" />
+    <file path="translations/android_chrome_strings_uz.xtb" lang="uz" />
+    <file path="translations/android_chrome_strings_vi.xtb" lang="vi" />
+    <file path="translations/android_chrome_strings_zh-CN.xtb" lang="zh-CN" />
+    <file path="translations/android_chrome_strings_zh-HK.xtb" lang="zh-HK" />
+    <file path="translations/android_chrome_strings_zh-TW.xtb" lang="zh-TW" />
+    <file path="translations/android_chrome_strings_zu.xtb" lang="zu" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
@@ -315,7 +315,7 @@ CHAR_LIMIT guidelines:
         Allow Brave sign-in
       </message>
       <message name="IDS_ALLOW_CHROME_SIGNIN_SUMMARY" desc="Summary for a checkbox in Brave services that controls sign-in and sync prompts.">
-        Show Brave sign-in prompts when you sign in to your Brave sync chain
+        Shows prompts to sign in to Brave
       </message>
       <message name="IDS_AUTOCOMPLETE_SEARCHES_AND_URLS_TITLE" desc="Title for a checkbox in Settings that controls URL and search autocompletion and informs the user about the data shared by this feature.">
         Autocomplete searches and URLs
@@ -1195,6 +1195,21 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_ACCESSIBILITY_CAPTIONS_TITLE" desc="Title of the preference that allows the user to update caption settings.">
         Captions
       </message>
+      <message name="IDS_ACCESSIBILITY_PAGE_ZOOM_TITLE" desc="Title of the preference that allows the user to update the accessibility page zoom feature that applies to the web contents." translateable="false">
+        Page Zoom
+      </message>
+      <message name="IDS_ACCESSIBILITY_PAGE_ZOOM_SUMMARY" desc="Summary of the preference that allows the user to update the accessibility page zoom feature that applies to the web contents." translateable="false">
+        Use this setting to increase/decrease the zoom factor for a given page.
+      </message>
+      <message name="IDS_ACCESSIBILITY_PAGE_ZOOM_DECREASE_ZOOM_BUTTON_TEXT" desc="Accessibility label for button to allow user to decrease page zoom" translateable="false">
+        Decrease zoom
+      </message>
+      <message name="IDS_ACCESSIBILITY_PAGE_ZOOM_INCREASE_ZOOM_BUTTON_TEXT" desc="Accessibility label for button to allow user to increase page zoom" translateable="false">
+        Increase zoom
+      </message>
+      <message name="IDS_ACCESSIBILITY_PAGE_ZOOM_FACTOR" desc="Text description of the current page zoom factor set by the user" translateable="false">
+        <ph name="ZOOM_FACTOR">%1$d<ex>100</ex></ph> %%
+      </message>
 
       <!-- Language Settings -->
       <message name="IDS_LANGUAGE_SETTINGS" desc="Title for the Languages settings screen that allows users to manage their languages preferences. [CHAR_LIMIT=32]">
@@ -1257,11 +1272,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_LANGUAGES_SPLIT_READY" desc="Text to display next to the native name of a language when it has been downloaded to use as Brave's UI language. The dash separates the native name from the description.">
         <ph name="LANG">%1$s<ex>हिन्दी</ex></ph> - Language ready, restart <ph name="APP_NAME">%2$s<ex>Brave</ex></ph>.
       </message>
-      <message name="IDS_LANGUAGES_SPLIT_FAILED" desc="Text to display next to the native name of a language when a langauge pack has failed to download. The dash separates the native name from the description. The message asks the user to try again.">
+      <message name="IDS_LANGUAGES_SPLIT_FAILED" desc="Text to display next to the native name of a language when a language pack has failed to download. The dash separates the native name from the description. The message asks the user to try again.">
         <ph name="LANG">%1$s<ex>हिन्दी</ex></ph> - This language couldn't be downloaded. Try again later.
       </message>
       <message name="IDS_LANGUAGES_INFOBAR_READY" desc="Infobar text to appear when a new language pack has been downloaded. [CHAR_LIMIT=32]">
-        <ph name="LANG">%1$s<ex>Hindi</ex></ph> is ready.
+        <ph name="LANG">%1$s<ex>Hindi</ex></ph> is ready
       </message>
       <message name="IDS_LANGUAGES_INFOBAR_RESTART" desc="The clickable link letting the user know they can click to restart Brave. [CHAR_LIMIT=32]">
         Restart Brave
@@ -1413,6 +1428,17 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_DATA_REDUCTION_MILESTONE_PROMO_TEXT_GB" desc="Text to be displayed in the data reduction promo message that lets the user know they saved a certain amount of data in GB">
         Brave has saved you <ph name="gigabytes">%1$d<ex>10</ex></ph> GB
+      </message>
+
+       <!-- Dangerous download -->
+      <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_CONFIRM_TEXT" desc="Text label for the confirm button on the dangerous download dialog for user to confirm the download.">
+        Download anyway
+      </message>
+      <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TEXT" desc="Warning message shown on a dialog to ask user to validate the download of a dangerous file.">
+        Do you want to download <ph name="FILE_NAME">%1$s<ex>malware.exe</ex></ph> anyway?
+      </message>
+      <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TITLE" desc="Title of the dialog for asking user to confirm a dangerous download">
+        File might be harmful
       </message>
 
       <!-- Download later -->
@@ -1642,11 +1668,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_URL" desc="URL for Brave and Chrome OS additional terms of service" translateable="false">
         https://www.google.com/chrome/terms/
       </message>
-      <message name="IDS_PRIVACY_NOTICE_TITLE" desc="Title for the Brave privacy notice">
-        Brave Privacy Notice
+      <message name="IDS_PRIVACY_POLICY_TITLE" desc="Title for the Brave privacy policy">
+        Brave Privacy Policy
       </message>
-      <message name="IDS_CHROME_PRIVACY_NOTICE_URL" desc="URL for the Brave privacy notice" translateable="false">
-        https://www.google.com/intl/$LOCALE/chrome/browser/privacy/
+      <message name="IDS_GOOGLE_PRIVACY_POLICY_URL" desc="URL for the Brave privacy policy" translateable="false">
+        https://policies.google.com/privacy
       </message>
       <message name="IDS_FAMILY_LINK_PRIVACY_POLICY_URL" desc="URL for the Family Link privacy policy" translateable="false">
         https://families.google.com/intl/$LOCALE/familylink/privacy/child-policy/
@@ -1999,6 +2025,42 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_DOWNLOAD_SCHEDULED_ON_TIME" desc="Label describing that the download was scheduled to start at a later time.">
         You’ll see a notification when this download starts at <ph name="time">%1$s<ex>8:30PM</ex></ph>.
+      </message>
+
+      <!-- Download progress message UI -->
+      <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_IN_PROGRESS_DESCRIPTION" desc="Download message text describing that user can find about their download status from notifications.">
+        See notification for download status
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_COMPLETE_DESCRIPTION" desc="Download message description text about downloaded file name and their size.">
+        (<ph name="megabytes">%1$s<ex>100 MB</ex></ph>)\n<ph name="url">%2$s<ex>https://...example.com</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_IN_PROGRESS" desc="Download message text describing that chrome is downloading multiple files.">
+        {FILE_COUNT, plural,
+            =1 {Downloading file…}
+            other {Downloading # files…}}
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_COMPLETE" desc="Download message label describing that one or more downloads have completed">
+        {FILE_COUNT, plural,
+          =1 {File downloaded}
+          other {# downloads complete}}
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_FAILED" desc="Download message label describing that one or more downloads have failed">
+        {FILE_COUNT, plural,
+          =1 {1 download failed}
+          other {# downloads failed}}
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_PENDING" desc="Download message label describing that one or more downloads are pending">
+        {FILE_COUNT, plural,
+          =1 {1 download pending}
+          other {# downloads pending}}
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_SCHEDULED" desc="Download message label describing that one or more downloads are scheduled">
+        {FILE_COUNT, plural,
+          =1 {1 download scheduled}
+          other {# downloads scheduled}}
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_SCHEDULED_DESCRIPTION" desc="Download message text describing that user can find about their download status from notifications.">
+        Download will start when on Wi-Fi
       </message>
 
       <!-- Inline Update Infobar -->
@@ -2531,11 +2593,11 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_HISTORY_MANAGER_SEARCH" desc="Placeholder text for the input field that allows users to search browsing history.">
         Search your history
       </message>
-      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_TITLE" desc="Title that states history is not saved in Private mode.">
-        History isn’t saved in Private
+      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_TITLE" desc="Title that states sites the users visit are not saved in Private mode.">
+        Sites you visit aren’t saved in Private
       </message>
-      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_DESCRIPTION" desc="Description that states history is not saved in Private mode.">
-        Brave doesn’t save your browsing history when you choose to browse privately. You can still use bookmarks to access your favorite sites.
+      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_DESCRIPTION" desc="Description that states to clear Private browsing history from the device, users need to close all private tabs.">
+        To clear Private browsing history from your device, close all Private tabs.
       </message>
 
       <!-- Close Private tabs notification messages -->
@@ -2586,6 +2648,11 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Your browser is managed by your organization
       </message>
 
+      <!-- Signin First Run strings -->
+      <message name="IDS_SIGNIN_FRE_DISMISS_BUTTON" desc="Text for the dismiss button on the welcome sign-in screen. By clicking this button users will continue without signing in,">
+        Use without an account
+      </message>
+
       <!-- Account Signin Strings -->
       <message name="IDS_SIGNIN_ADD_ACCOUNT" desc="Text for adding another Brave sync chain">
         Add account
@@ -2626,13 +2693,13 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Signing in...
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_ERROR_TITLE" desc="The title of the account picker bottom sheet when something went wrong in the sign-in process">
-        Something went wrong
+        Can't sign in
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_GENERAL_ERROR_SUBTITLE" desc="The subtitle of the account picker bottom sheet when something went wrong in the sign-in process">
-        Brave couldn’t verify your information
+        Something went wrong during sign-in
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_AUTH_ERROR_SUBTITLE" desc="The subtitle of the account picker bottom sheet when there is an authentication error with the credentials of the account selected.">
-        Sorry, we couldn’t validate your credentials
+        Your stored sign-in info might be out of date
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_DISMISS_BUTTON" desc="Dismiss button text of the account picker bottom sheet">
         Skip
@@ -2685,6 +2752,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- New Tab Page strings -->
+      <message name="IDS_NEW_TAB_TITLE" desc="Title in tab strip when opening a new tab.">
+        New tab
+      </message>
+      <message name="IDS_NEW_INCOGNITO_TAB_TITLE" desc="Title in tab strip when opening a new Private tab.">
+        New Private tab
+      </message>
       <message name="IDS_RECENT_TABS" desc="Text for button to show 'Recent tabs', i.e. recently closed tabs and tabs that are open on other devices [CHAR_LIMIT=20]">
         Recent tabs
       </message>
@@ -2769,6 +2842,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_FEED_MANAGE_HIDDEN_DESCRIPTION" desc="Content description to manage hiding and unhiding topics.">
         Hide and unhide topics
       </message>
+      <message name="IDS_FEED_MANAGE_AUTOPLAY" desc="Menu item to manage feed autoplay from the feed header overflow menu.">
+        Autoplay
+      </message>
+      <message name="IDS_FEED_MANAGE_AUTOPLAY_DESCRIPTION" desc="Content description to manage feed autoplay from the feed header overflow menu.">
+        Manage Video Preview Settings
+      </message>
       <message name="IDS_FEED_MANAGE_FOLLOWING" desc="Menu item to manage followed sites.">
         Following
       </message>
@@ -2783,6 +2862,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_FOLLOW_MANAGE_UPDATES_UNAVAILABLE" desc="Label this web feed source as unavailable so the user will not expect updates from it.">
         Updates Unavailable
+      </message>
+      <message name="IDS_FOLLOW_MANAGE_WAITING_FOR_CONTENT" desc="Label this web feed source as waiting for content so the user will know to check  back later.">
+        Waiting for content
       </message>
       <message name="IDS_NTP_TURN_OFF_FEED" desc="Content description to turn off the feed from the feed header overflow menu.">
         Turn off
@@ -2802,7 +2884,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_NTP_DISCOVER_OFF_BRANDED" desc="Title in the feed header when the feed is turned off and the default search engine is not Brave. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         Discover by Brave - off
       </message>
-      <message name="IDS_NTP_FOR_YOU" desc="Title in the feed header for interest-based feed.">For you</message>
       <message name="IDS_NTP_FOLLOWING" desc="Title in the feed header for user-customized following feed.">Following</message>
       <message name="IDS_ACCESSIBILITY_NTP_FOLLOWING_UNREAD_CONTENT" desc="Content description for the feed header blue dot for user-customized following feed, which indicates that unread content is available.">
       Unread stories ready
@@ -2820,8 +2901,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DISCOVER_NO_CARDS_INSTRUCTIONS" desc="Message body for the article feed on the New Tab Page. Instructs the user to come back later when new feed content is available. Please translate 'stories' to match its use in TC ID 792300740424433300. Also see TC ID 7331961212006720987 for the corresponding message in Discover.">Check back later for new stories</message>
       <message name="IDS_DISCOVER_CANT_REFRESH" desc="Message title for the article feed on the New Tab Page. Shown when feed content is not available because there is no internet connection. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278). Also see TC ID 6114827482740570724 for the corresponding message in Discover.">Can't refresh Discover</message>
       <message name="IDS_DISCOVER_CANT_REFRESH_INSTRUCTIONS" desc="Message body for the article feed on the New Tab Page. Instructs the user to wait and try to refresh the feed once the internet connection returns. Please translate 'stories' to match its use in TC ID 792300740424433300. Also see TC ID 6114827482740570724 for the corresponding message in Discover.">Check back later for new stories</message>
-      <message name="IDS_WEB_FEED_NO_CARDS_TITLE" desc="Message title for the user-customizable web feed on the New Tab Page. Shown when the user either has not followed any websites or when the user has followed some websites but the sites do not have any new articles. Please translate 'stories' to match its use in TC ID 792300740424433300.">You'll find stories here</message>
-      <message name="IDS_WEB_FEED_NO_CARDS_INSTRUCTIONS" desc="Message body for the user-customizable web feed on the New Tab Page. Shown when the user either has not followed any websites or when the user has followed some websites but the sites do not have any new articles. Instructs the user to follow more sites or check back later. Please translate 'Follow' (with capital F) to match its use in TC ID 4108314971463891922.">To follow a site, go to the site, open the Brave menu, and tap Follow.</message>
+      <message name="IDS_WEB_FEED_NO_CARDS_TITLE" desc="Message title for the user-customizable web feed on the New Tab Page. Shown when the user either has not followed any websites or when the user has followed some websites but the sites do not have any new articles.">
+        Keep up with your favorite sites
+      </message>
+      <message name="IDS_WEB_FEED_NO_CARDS_INSTRUCTIONS" desc="Message body for the user-customizable web feed on the New Tab Page. Shown when the user either has not followed any websites or when the user has followed some websites but the sites do not have any new articles. Instructs the user to follow more sites or check back later. Please translate 'Follow' (with capital F) to match its use in TC ID 4108314971463891922.">
+        To follow a site, go to the site, open the Brave menu, and tap Follow.
+      </message>
       <message name="IDS_FEED_SWIPE_REFRESH_IPH" desc="In-product help that prompts the user to use pull-down gesture to refresh the feed content.">
         For new stories, pull down to refresh
       </message>
@@ -3009,6 +3094,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_MENU_MOVE_TO_OTHER_WINDOW" desc="Menu item for moving the current tab into the other window. [CHAR_LIMIT=27]">
         Move to other window
+      </message>
+      <message name="IDS_MENU_MANAGE_ALL_WINDOWS" desc="Menu item for bringing up instance switcher UI. [CHAR_LIMIT=27]">
+        Manage windows (<ph name="INSTANCE_COUNTS">%1$d<ex>3</ex></ph>)
       </message>
       <message name="IDS_MENU_FORWARD" desc="Tooltip for the button to advance to the next web page. Verb. [CHAR_LIMIT=27]">
         Forward
@@ -3344,8 +3432,16 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_CONTENT_PROVIDER_SEARCH_DESCRIPTION" desc="Description for Brave's entry in QSB's list of search suggestion providers [CHAR_LIMIT=32]">
         Bookmarks and web history
       </message>
+
+      <!-- Brave survey -->
       <message name="IDS_CHROME_SURVEY_PROMPT" desc="Message shown that invites the user to take a survey about Brave. 'Help' and 'improve' are imperative verbs. 'Take survey' is a tappable link. When tapped, a survey about Brave opens.">
         Help improve Brave. <ph name="BEGIN_LINK">&lt;LINK&gt;</ph>Take survey<ph name="END_LINK">&lt;/LINK&gt;</ph>
+      </message>
+      <message name="IDS_CHROME_SURVEY_MESSAGE_TITLE" desc="Message shown that invites the user to take a survey about Brave. 'Help' and 'improve' are imperative verbs.">
+        Help improve Brave?
+      </message>
+      <message name="IDS_CHROME_SURVEY_MESSAGE_BUTTON" desc="The label for the button to open a survey for Brave.">
+        Take survey
       </message>
 
       <!-- Accessibility -->
@@ -3572,6 +3668,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_UNSUPPORTED_NUMBER_OF_WINDOWS" desc="Popup message for when the user has tried to start too many concurrent versions of Brave.">
         Unsupported number of Brave instances.
       </message>
+      <message name="IDS_MAX_NUMBER_OF_WINDOWS" desc="Toast message for when the user has tried to start more than 5 instances of Brave window.">
+        You can have up to 5 windows.
+      </message>
 
       <message name="IDS_CLOSE_TAB" desc="Context menu option that allows the user to close the selected tab.">
         Close tab
@@ -3652,37 +3751,37 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_WEB_FEED_FOLLOW_LOADING_DESCRIPTION" desc="The content description of the loading spinner after the user presses Follow and is waiting for a response.">
         Following...
       </message>
-      <message name="IDS_WEB_FEED_FOLLOW_SUCCESS_SNACKBAR_MESSAGE" desc="The snackbar message after a successful Web Feed follow.">
-        Followed <ph name="SITE_NAME">%1$s<ex>Brave</ex></ph>
+      <message name="IDS_WEB_FEED_FOLLOW_SUCCESS_SNACKBAR_MESSAGE" desc="The snackbar message after a successful Web Feed follow request.">
+        Following <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph>
       </message>
-      <message name="IDS_WEB_FEED_FOLLOW_SUCCESS_SNACKBAR_ACTION" desc="The snackbar action after a successful Web Feed follow.">
+      <message name="IDS_WEB_FEED_FOLLOW_SUCCESS_SNACKBAR_ACTION" desc="The snackbar action after a successful Web Feed follow request.">
         Go to feed
       </message>
-      <message name="IDS_WEB_FEED_FOLLOW_GENERIC_FAILURE_SNACKBAR_MESSAGE" desc="The generic snackbar message after an unsuccessful Web Feed follow.">
+      <message name="IDS_WEB_FEED_FOLLOW_GENERIC_FAILURE_SNACKBAR_MESSAGE" desc="The generic snackbar message after an unsuccessful Web Feed follow request.">
         Can’t follow. Something went wrong.
       </message>
-      <message name="IDS_WEB_FEED_UNFOLLOW_GENERIC_FAILURE_SNACKBAR_MESSAGE" desc="The generic snackbar message after an unsuccessful Web Feed unfollow.">
+      <message name="IDS_WEB_FEED_UNFOLLOW_GENERIC_FAILURE_SNACKBAR_MESSAGE" desc="The generic snackbar message after an unsuccessful Web Feed unfollow request.">
         Can’t unfollow. Something went wrong.
       </message>
-      <message name="IDS_WEB_FEED_GENERIC_FAILURE_SNACKBAR_ACTION" desc="The snackbar action after an unsuccessful Web Feed follow/unfollow.">
+      <message name="IDS_WEB_FEED_GENERIC_FAILURE_SNACKBAR_ACTION" desc="The snackbar action after an unsuccessful Web Feed follow or unfollow request.">
         Try again
       </message>
-      <message name="IDS_WEB_FEED_UNFOLLOW_SUCCESS_SNACKBAR_MESSAGE" desc="The snackbar message after a successful Web Feed unfollow.">
-        Unfollowed <ph name="SITE_NAME">%1$s<ex>Brave</ex></ph>
+      <message name="IDS_WEB_FEED_UNFOLLOW_SUCCESS_SNACKBAR_MESSAGE" desc="The snackbar message after a successful Web Feed unfollow request.">
+        Unfollowed <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph>
       </message>
-      <message name="IDS_WEB_FEED_UNFOLLOW_SUCCESS_SNACKBAR_ACTION" desc="The snackbar action after a successful Web Feed unfollow.">
+      <message name="IDS_WEB_FEED_UNFOLLOW_SUCCESS_SNACKBAR_ACTION" desc="The snackbar action after a successful Web Feed unfollow request.">
         Refollow
       </message>
-      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_TITLE" desc="The snackbar action after a successful Web Feed unfollow.">
-        You’re following <ph name="SITE_NAME">%1$s<ex>Brave</ex></ph>
+      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_TITLE" desc="The title of the dialog presented a few times after a successful Web Feed follow request.">
+        You’re following <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph>
       </message>
-      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_STORIES_READY_DESCRIPTION" desc="The snackbar action after a successful Web Feed unfollow.">
-        You’ll now see stories from <ph name="SITE_NAME">%1$s<ex>Brave</ex></ph> when you open a new tab. You can control the sites you’re following in Manage Follows.
+      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_STORIES_READY_DESCRIPTION" desc="The body text of the dialog presented a few times after a successful Web Feed follow request, when content from that Web Feed is immediately available. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
+        You'll now see stories from <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph> when you open a new tab. Sites you follow are saved in your Brave account. You can manage them in Discover settings.
       </message>
-      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_STORIES_NOT_READY_DESCRIPTION" desc="The snackbar action after a successful Web Feed unfollow.">
-        Soon, you’ll see stories from <ph name="SITE_NAME">%1$s<ex>Brave</ex></ph> when you open a new tab. You can control the sites you’re following in Manage Follows.
+      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_STORIES_NOT_READY_DESCRIPTION" desc="The body text of the dialog presented a few times after a successful Web Feed follow request, when content from that Web Feed is not readily available. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
+        Soon, you’ll see stories from <ph name="SITE_NAME">%1$s<ex>Reuters</ex></ph> when you open a new tab. Sites you follow are saved in your Brave account. You can manage them in Discover settings.
       </message>
-      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_OPEN_A_NEW_TAB" desc="The snackbar action after a successful Web Feed unfollow.">
+      <message name="IDS_WEB_FEED_POST_FOLLOW_DIALOG_OPEN_A_NEW_TAB" desc="The main action of the dialog presented a few times after a successful Web Feed follow request, when content from from that Web Feed is immediately available.">
         Open a new tab
       </message>
 
@@ -3929,6 +4028,74 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         VIDEO
       </message>
 
+      <!-- Multi-instance Switcher Dialog strings -->
+      <message name="IDS_INSTANCE_SWITCHER_HEADER" desc="The header of multi-instance switcher dialog.">
+        Manage windows
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_ENTRY_EMPTY_WINDOW" desc="Title of an instance entry that has no tabs in it.">
+        Empty window
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_DESC_INCOGNITO" desc="Description of an instance entry with private tab(s) only.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_COUNT_ONE">%1$s</ph> private tab}
+          other {<ph name="TAB_COUNT_NORMAL">%1$s<ex>2</ex></ph> private tabs}}
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_DESC_MIXED" desc="Description of an instance entry showing both normal and private tabs.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_COUNT_ONE">%1$s</ph> tab}
+          other {<ph name="TAB_COUNT_MANY">%2$s<ex>1</ex></ph> tabs, <ph name="TAB_COUNT_INCOGNITO">%1$s</ph> private}}
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_TAB_COUNT_ZERO" desc="Multi-instance switcher entry description when there is no tab for an instance.">
+        No tabs
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_TAB_COUNT_NONZERO" desc="Total number of tabs for each instance entry.">
+        {TAB_COUNT, plural,
+          =1 {1 tab}
+          other {# tabs}}
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_WINDOW" desc="The menu item for the 3-dot more button to close the instance.">
+        Close window
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CURRENT_WINDOW" desc="The description for an instance entry saying that it is the entry for the current window.">
+        Current
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_ADJACENT_WINDOW" desc="The description for an instance entry running in the foreground.">
+        Window is open
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_ALREADY_RUNNING_FOREGROUND" desc="Toast message to show when user tries to switch to a window that is already running in the foreground.">
+        Brave is already running here.
+      </message>
+      <message name="IDS_TARGET_SELECTOR_MOVE" desc="The message in the button in target selector dialog that starts moving a tab.">
+        Move tab
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_HEADER" desc="The header of multi-instance switcher dialog confirming close operation.">
+        Close window?
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_BUTTON" desc="The button text of multi-instance switcher dialog confirming close operation.">
+        Close window
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_ZERO" desc="The phrase used in the message when there is a single tab to delete.">
+        The window will be closed
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_ONE" desc="The phrase used in the message when there is a single tab to delete.">
+        The tab <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> will be closed
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_MANY" desc="The phrase used in the message when there are multiple tabs to delete.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> and <ph name="TAB_COUNT_ONE">%2$s</ph> more tab will be closed}
+          other {<ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> and <ph name="TAB_COUNT_MANY">%2$s</ph> more tabs will be closed}}
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO" desc="The phrase used in the message for deleting private-only instance.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_COUNT_ONE">%1$s<ex>1</ex></ph> private tab will be closed}
+          other {<ph name="TAB_COUNT_MANY">%1$s<ex>4</ex></ph> private tabs will be closed}}
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO_MIXED" desc="The phrase used in the message for deleting private-selected instance.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>2</ex></ph> private and <ph name="TAB_COUNT_ONE">%2$s<ex>1</ex></ph> more tab will be closed}
+          other {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>4</ex></ph> private and <ph name="TAB_COUNT_MANY">%2$s<ex>4</ex></ph> more tabs will be closed}}
+      </message>
+
       <!-- In-Product Help strings -->
       <message name="IDS_IPH_DOWNLOAD_PAGE_FOR_OFFLINE_USAGE_TEXT" desc="The in-product-help message after a successful navigation prompting user to download the pages to view offline.">
         Download pages to use them offline
@@ -4026,6 +4193,20 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_ACCESSIBILITY_QUICK_ACTION_SEARCH_WIDGET_ICON" desc="Content description for the for the icon on the Quick Action Search Widget">
         Quick Action Search Widget Icon
+      </message>
+      <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_MESSAGE_NO_INCOGNITO" desc="Toast message shown when the user tries to open Private tab which is disabled on the device.">
+        Private is not available on this device
+      </message>
+      <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_MESSAGE_NO_VOICE_SEARCH" desc="Toast message shown when the user tries to use Voice Search which is disabled on the device.">
+        Voice search is not available on this device
+      </message>
+      <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_MESSAGE_NO_GOOGLE_LENS" desc="Toast message shown when the user tries to use Brave Lens which is disabled on the device.">
+        Brave Lens is not available on this device
+      </message>
+
+      <!-- Dino Widget -->
+      <message name="IDS_DINO_WIDGET_TEXT" desc="Text displayed on the Dino Widget">
+              Brave Dino
       </message>
 
       <!-- Launcher Shortcuts -->
@@ -4767,7 +4948,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         <ph name="TEMPLATE_TITLE">%1$s<ex>Classic</ex> template selected</ph>
       </message>
       <message name="IDS_CONTENT_CREATION_NOTE_DIALOG_DESCRIPTION" desc="Accessibility information for note template picking dialog.">
-        Select a template for your highlight
+        Select a template for your highlight. To return to the main dialog, use an up then down gesture, then tap Next.
       </message>
       <message name="IDS_CONTENT_CREATION_NOTE_SHORTENED_MESSAGE" desc="Toast message displayed when highlighted text is too long and is cropped to fit in the note.">
         Highlight was shortened
@@ -4777,6 +4958,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_QUOTATION_MARK_SUFFIX" desc="String to put after other text to represent it as a quote end.">
         ”
+      </message>
+
+      <!-- HTTPS-First Mode settings strings -->
+      <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_TITLE" desc="Text for the HTTPS-First Mode toggle in settings.">
+        Always use secure connections
+      </message>
+      <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_SUMMARY" desc="Secondary, continued explanation of HTTPS-First Mode in settings.">
+        Upgrade navigations to HTTPS and warn you before loading sites that don’t support it
       </message>
     </messages>
   </release>

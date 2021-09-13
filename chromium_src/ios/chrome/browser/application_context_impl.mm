@@ -36,7 +36,7 @@
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager_impl.h"
 #include "ios/chrome/browser/chrome_paths.h"
-#import "ios/chrome/browser/crash_report/breadcrumbs/application_breadcrumbs_logger.h"
+#import "ios/chrome/browser/crash_report/breadcrumbs/application_breadcrumbs_logger_ios.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/ios_chrome_io_thread.h"
 #include "ios/chrome/browser/policy/browser_policy_connector_ios.h"
@@ -73,8 +73,7 @@ ApplicationContextImpl::ApplicationContextImpl(
     base::SequencedTaskRunner* local_state_task_runner,
     const base::CommandLine& command_line,
     const std::string& locale)
-    : local_state_task_runner_(local_state_task_runner),
-      was_last_shutdown_clean_(false) {
+    : local_state_task_runner_(local_state_task_runner) {
   DCHECK(!GetApplicationContext());
   SetApplicationContext(this);
 
@@ -134,9 +133,6 @@ void ApplicationContextImpl::PostDestroyThreads() {
 
 void ApplicationContextImpl::OnAppEnterForeground() {
   DCHECK(thread_checker_.CalledOnValidThread());
-
-  PrefService* local_state = GetLocalState();
-  local_state->SetBoolean(prefs::kLastSessionExitedCleanly, false);
 }
 
 void ApplicationContextImpl::OnAppEnterBackground() {
@@ -155,16 +151,12 @@ void ApplicationContextImpl::OnAppEnterBackground() {
     if (browser_state_prefs)
       browser_state_prefs->CommitPendingWrite();
   }
-
-  PrefService* local_state = GetLocalState();
-  local_state->SetBoolean(prefs::kLastSessionExitedCleanly, true);
 }
 
 bool ApplicationContextImpl::WasLastShutdownClean() {
   DCHECK(thread_checker_.CalledOnValidThread());
   // Make sure the locale state is created as the file is initialized there.
-  ignore_result(GetLocalState());
-  return was_last_shutdown_clean_;
+  return true;
 }
 
 PrefService* ApplicationContextImpl::GetLocalState() {
@@ -341,12 +333,6 @@ void ApplicationContextImpl::CreateLocalState() {
       std::max(std::min<int>(net::kDefaultMaxSocketsPerProxyServer, 99),
                net::ClientSocketPoolManager::max_sockets_per_group(
                    net::HttpNetworkSession::NORMAL_SOCKET_POOL)));
-
-  // Register the shutdown state before anything changes it.
-  if (local_state_->HasPrefPath(prefs::kLastSessionExitedCleanly)) {
-    was_last_shutdown_clean_ =
-        local_state_->GetBoolean(prefs::kLastSessionExitedCleanly);
-  }
 }
 
 void ApplicationContextImpl::CreateGCMDriver() {

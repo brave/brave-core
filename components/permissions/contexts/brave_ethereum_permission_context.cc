@@ -26,7 +26,7 @@ namespace {
 bool IsAccepted(PermissionRequest* request,
                 const std::vector<std::string>& accounts) {
   for (const auto& account : accounts) {
-    if (base::EndsWith(request->GetOrigin().host_piece(), account,
+    if (base::EndsWith(request->requesting_origin().host_piece(), account,
                        base::CompareCase::INSENSITIVE_ASCII)) {
       return true;
     }

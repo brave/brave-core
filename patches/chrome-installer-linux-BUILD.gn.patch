@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 338fc080cc43ffc8ada98ed2015230d5c1c79764..9fcee95c8bcfc8ff927590a4b818525ebf9949a2 100644
+index 4d9054ea8c329cb2a5644b41d54527f78fe5e5b6..84420ea55d222d5a023b1aec62de7c2797349416 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -79,6 +79,8 @@ if (enable_swiftshader) {
@@ -30,8 +30,8 @@ index 338fc080cc43ffc8ada98ed2015230d5c1c79764..9fcee95c8bcfc8ff927590a4b818525e
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
  }
 @@ -325,6 +330,7 @@ group("installer_deps") {
+     "//components/crash/core/app:chrome_crashpad_handler",
      "//sandbox/linux:chrome_sandbox",
-     "//third_party/crashpad/crashpad/handler:crashpad_handler",
    ]
 +  public_deps += brave_installer_deps
    if (enable_nacl) {

@@ -249,7 +249,7 @@ void PermissionExpirations::ReadExpirationsFromPrefs() {
   DCHECK(type_expirations_map_val->is_dict());
 
   std::vector<std::string> invalid_content_type_names;
-  for (const auto& type_expirations_val :
+  for (const auto type_expirations_val :
        type_expirations_map_val->DictItems()) {
     const std::string& content_type_name = type_expirations_val.first;
     const base::Value& key_expirations_map_val = type_expirations_val.second;
@@ -263,8 +263,7 @@ void PermissionExpirations::ReadExpirationsFromPrefs() {
       continue;
     }
     KeyExpirationsMap key_expirations_map;
-    for (const auto& key_expirations_val :
-         key_expirations_map_val.DictItems()) {
+    for (const auto key_expirations_val : key_expirations_map_val.DictItems()) {
       const std::string& key_str = key_expirations_val.first;
       const base::Value& expiring_permissions_val = key_expirations_val.second;
       ExpiringPermissions expiring_permissions =

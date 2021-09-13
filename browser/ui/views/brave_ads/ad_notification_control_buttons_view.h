@@ -27,6 +27,9 @@ class AdNotificationControlButtonsView : public views::View {
       AdNotificationView* ad_notification_view);
   ~AdNotificationControlButtonsView() override;
 
+  // views::View:
+  void OnThemeChanged() override;
+
   void UpdateContent();
 
  private:

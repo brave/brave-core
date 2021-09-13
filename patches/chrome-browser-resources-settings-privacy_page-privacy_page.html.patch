@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index 07c8a1c383f4dbd94b89663394a2dbc69491e435..8e42b4766ef4896fbc09be4752fb760f4ea86925 100644
+index 56a342be7add7a2227d9f66c0eb2d2e9d19337d6..80ac5a517f8a1b1d0fc3fe1f1d3cdccd8281dea4 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-@@ -29,6 +29,7 @@
+@@ -35,6 +35,7 @@
      <settings-animated-pages id="pages" section="privacy"
          focus-config="[[focusConfig_]]">
        <div route-path="default">
@@ -10,7 +10,7 @@ index 07c8a1c383f4dbd94b89663394a2dbc69491e435..8e42b4766ef4896fbc09be4752fb760f
          <template is="dom-if" if="[[enablePrivacyReview_]]">
            <cr-link-row id="privacyReviewLinkRow"
                start-icon="settings20:safety-check"
-@@ -167,6 +168,7 @@
+@@ -173,6 +174,7 @@
            </template>
          </settings-subpage>
        </template>
@@ -18,7 +18,7 @@ index 07c8a1c383f4dbd94b89663394a2dbc69491e435..8e42b4766ef4896fbc09be4752fb760f
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
          <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -210,6 +212,7 @@
+@@ -216,6 +218,7 @@
            </template>
          </settings-subpage>
        </template>
@@ -26,7 +26,7 @@ index 07c8a1c383f4dbd94b89663394a2dbc69491e435..8e42b4766ef4896fbc09be4752fb760f
        <template is="dom-if" route-path="/content/camera" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -463,11 +466,13 @@
+@@ -481,11 +484,13 @@
              </category-setting-exceptions>
            </template>
            <template is="dom-if" if="[[!enableContentSettingsRedesign_]]">

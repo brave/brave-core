@@ -39,8 +39,7 @@ class BraveP3ALogStore : public metrics::LogStore {
   BraveP3ALogStore(Delegate* delegate,
                    PrefService* local_state);
 
-  // TODO(iefremov): Make parent destructor virtual?
-  virtual ~BraveP3ALogStore();
+  ~BraveP3ALogStore() override;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 

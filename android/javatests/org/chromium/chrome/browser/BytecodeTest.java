@@ -8,11 +8,11 @@ package org.chromium.chrome.browser;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.test.filters.SmallTest;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.test.filters.SmallTest;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -71,8 +71,8 @@ import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
-import org.chromium.components.embedder_support.browser_context.BrowserContextHandle;
 import org.chromium.components.permissions.PermissionDialogController;
+import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.PropertyModel;
@@ -195,6 +195,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/theme/ThemeUtils"));
     }
 
     @Test
@@ -293,6 +294,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator",
                         "isReliabilityLoggingEnabled", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/theme/ThemeUtils",
+                "getTextBoxColorForToolbarBackgroundInNonNativePage", false, null));
     }
 
     @Test

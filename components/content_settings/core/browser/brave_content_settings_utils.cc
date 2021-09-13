@@ -121,10 +121,9 @@ std::string GetShieldsSettingUserPrefsPath(const std::string& name) {
 // timestamp exists.
 base::Time GetTimeStampFromDictionary(const base::DictionaryValue* dictionary,
                                       const char* key) {
-  std::string timestamp_str;
-  dictionary->GetStringWithoutPathExpansion(key, &timestamp_str);
   int64_t timestamp = 0;
-  base::StringToInt64(timestamp_str, &timestamp);
+  if (const std::string* timestamp_str = dictionary->FindStringKey(key))
+    base::StringToInt64(*timestamp_str, &timestamp);
   base::Time last_modified = base::Time::FromDeltaSinceWindowsEpoch(
       base::TimeDelta::FromMicroseconds(timestamp));
   return last_modified;

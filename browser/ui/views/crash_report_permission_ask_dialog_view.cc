@@ -46,7 +46,8 @@ void ScheduleSessionCrashedBubble() {
   // It's ok to use lastly used browser because there will be only one when
   // this launched after un-cleaned exit.
   if (auto* browser = BrowserList::GetInstance()->GetLastActive())
-    SessionCrashedBubble::ShowIfNotOffTheRecordProfile(browser);
+    SessionCrashedBubble::ShowIfNotOffTheRecordProfile(
+        browser, /*skip_tab_checking=*/false);
 }
 
 gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {

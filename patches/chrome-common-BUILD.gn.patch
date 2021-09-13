@@ -1,16 +1,16 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index bc6070aa64d712a489fce6054a2544955c901f36..f26d555af950cf1bc7d29f980a4c951144a25abb 100644
+index b20921ddbf4171463ddaf0d181ab7a606be8d299..be14e1a01c29a12612024f5325d96684a9097294 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -81,6 +81,7 @@ source_set("channel_info") {
-   } else if (is_posix) {
-     sources += [ "channel_info_posix.cc" ]
+@@ -83,6 +83,7 @@ source_set("channel_info") {
+   } else if (is_fuchsia) {
+     sources += [ "channel_info_fuchsia.cc" ]
    }
 +  public_deps += [ "//brave/common:channel_info" ]
  }
  
  source_set("ini_parser") {
-@@ -548,6 +549,7 @@ static_library("non_code_constants") {
+@@ -554,6 +555,7 @@ static_library("non_code_constants") {
      "//printing/buildflags",
      "//ui/base:buildflags",
    ]

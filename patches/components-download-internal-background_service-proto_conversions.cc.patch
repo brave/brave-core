@@ -1,8 +1,8 @@
 diff --git a/components/download/internal/background_service/proto_conversions.cc b/components/download/internal/background_service/proto_conversions.cc
-index 560fd484d0362466d9b1af423fe319156441adf1..df41f195b41418094f513c53207d638fc153246e 100644
+index 1768714f0cdde033c566ea93cf94b96842e2a320..88b7d6c5a3ef3c127f39bdd00de513181be62b49 100644
 --- a/components/download/internal/background_service/proto_conversions.cc
 +++ b/components/download/internal/background_service/proto_conversions.cc
-@@ -76,6 +76,7 @@ protodb::DownloadClient ProtoConversions::DownloadClientToProto(
+@@ -77,6 +77,7 @@ protodb::DownloadClient ProtoConversions::DownloadClientToProto(
        return protodb::DownloadClient::OPTIMIZATION_GUIDE_PREDICTION_MODELS;
      case DownloadClient::BOUNDARY:
        return protodb::DownloadClient::BOUNDARY;
@@ -10,7 +10,7 @@ index 560fd484d0362466d9b1af423fe319156441adf1..df41f195b41418094f513c53207d638f
    }
  
    NOTREACHED();
-@@ -107,6 +108,7 @@ DownloadClient ProtoConversions::DownloadClientFromProto(
+@@ -108,6 +109,7 @@ DownloadClient ProtoConversions::DownloadClientFromProto(
        return DownloadClient::OPTIMIZATION_GUIDE_PREDICTION_MODELS;
      case protodb::DownloadClient::BOUNDARY:
        return DownloadClient::BOUNDARY;

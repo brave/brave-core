@@ -13,11 +13,11 @@
 #include "base/bind.h"
 #include "base/files/file_util.h"
 #include "base/json/json_value_converter.h"
+#include "base/json/values_util.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
-#include "base/util/values/values_util.h"
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
@@ -323,10 +323,10 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
   auto subscription_dict = base::Value(base::Value::Type::DICTIONARY);
   subscription_dict.SetBoolKey("enabled", info.enabled);
   subscription_dict.SetKey("last_update_attempt",
-                           util::TimeToValue(info.last_update_attempt));
+                           base::TimeToValue(info.last_update_attempt));
   subscription_dict.SetKey(
       "last_successful_update_attempt",
-      util::TimeToValue(info.last_successful_update_attempt));
+      base::TimeToValue(info.last_successful_update_attempt));
   subscriptions_dict->SetKey(sub_url.spec(), std::move(subscription_dict));
 
   // TODO(bridiver) - change to pref registrar

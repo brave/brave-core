@@ -203,7 +203,7 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
 void SidebarAddItemBubbleDelegateView::OnDefaultItemsButtonPressed(
     const sidebar::SidebarItem& item) {
   GetSidebarService(browser_)->AddItem(item);
-  RemoveAllChildViews(true);
+  RemoveAllChildViews();
   AddChildViews();
   if (children().size() == 1)
     GetWidget()->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
@@ -211,7 +211,7 @@ void SidebarAddItemBubbleDelegateView::OnDefaultItemsButtonPressed(
 
 void SidebarAddItemBubbleDelegateView::OnCurrentItemButtonPressed() {
   browser_->sidebar_controller()->AddItemWithCurrentTab();
-  RemoveAllChildViews(true);
+  RemoveAllChildViews();
   AddChildViews();
   if (children().size() == 1)
     GetWidget()->CloseWithReason(views::Widget::ClosedReason::kUnspecified);

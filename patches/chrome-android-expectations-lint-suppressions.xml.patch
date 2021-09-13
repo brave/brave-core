@@ -1,8 +1,8 @@
 diff --git a/chrome/android/expectations/lint-suppressions.xml b/chrome/android/expectations/lint-suppressions.xml
-index 57d9b134dbe5be0cac2369c335533d11f81405d5..79b806032507b9039789642eefc619f8c5e74aee 100644
+index b6d0d195ca192093dc6801855fe031efe4d8ff7d..5d65177959a039b20ffe27fc5b50dac15dd9430b 100644
 --- a/chrome/android/expectations/lint-suppressions.xml
 +++ b/chrome/android/expectations/lint-suppressions.xml
-@@ -122,6 +122,7 @@ https://chromium.googlesource.com/chromium/src/+/main/build/android/docs/lint.md
+@@ -121,6 +121,7 @@ https://chromium.googlesource.com/chromium/src/+/main/build/android/docs/lint.md
      <ignore regexp="chrome/browser/ui/android/strings/ui_strings_grd.resources.zip/values/android_chrome_strings.xml"/>
      <!-- This string has a % in it. -->
      <ignore regexp="data_reduction_promo_infobar_title"/>
@@ -10,7 +10,7 @@ index 57d9b134dbe5be0cac2369c335533d11f81405d5..79b806032507b9039789642eefc619f8
    </issue>
    <!-- Many .xtb files have a % that is not part of a formatted string.
         https://crbug.com/941164 -->
-@@ -277,4 +278,5 @@ https://chromium.googlesource.com/chromium/src/+/main/build/android/docs/lint.md
+@@ -294,4 +295,5 @@ https://chromium.googlesource.com/chromium/src/+/main/build/android/docs/lint.md
      <!-- Discussed in crbug.com/1069204, ignoring this class of errors since these are Q+ constants. -->
      <ignore regexp="Must be one of: LineBreaker.BREAK_STRATEGY_SIMPLE, LineBreaker.BREAK_STRATEGY_HIGH_QUALITY, LineBreaker.BREAK_STRATEGY_BALANCED"/>
    </issue>

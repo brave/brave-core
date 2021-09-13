@@ -139,12 +139,9 @@ bool SetEncryptionKey(const base::FilePath& source_path) {
 
 std::u16string DecryptedCardFromColumn(sql::Statement* s, int column_index) {
   std::u16string credit_card_number;
-  int encrypted_number_len = s->ColumnByteLength(column_index);
-  if (encrypted_number_len) {
-    std::string encrypted_number;
-    encrypted_number.resize(encrypted_number_len);
-    memcpy(&encrypted_number[0], s->ColumnBlob(column_index),
-           encrypted_number_len);
+  std::string encrypted_number;
+  s->ColumnBlobAsString(column_index, &encrypted_number);
+  if (!encrypted_number.empty()) {
     OSCrypt::DecryptString16(encrypted_number, &credit_card_number);
   }
   return credit_card_number;

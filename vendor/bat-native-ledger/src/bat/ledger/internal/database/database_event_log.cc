@@ -79,12 +79,10 @@ void DatabaseEventLog::InsertRecords(
 
   std::string query = base_query;
   for (const auto& record : records) {
-    query += base::StringPrintf(
-        R"(("%s","%s","%s",%u),)",
-        base::GenerateGUID().c_str(),
-        record.first.c_str(),
-        record.second.c_str(),
-        static_cast<uint32_t>(time));
+    query +=
+        base::StringPrintf(R"(('%s','%s','%s',%u),)",
+                           base::GenerateGUID().c_str(), record.first.c_str(),
+                           record.second.c_str(), static_cast<uint32_t>(time));
   }
 
   query.pop_back();

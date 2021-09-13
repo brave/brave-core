@@ -188,21 +188,6 @@ config("constants_configs") {
   }
 }
 
-source_set("unit_tests") {
-  testonly = true
-
-  if (!is_ios) {
-    sources = [ "brave_paths_unittest.cc" ]
-
-    deps = [
-      "//base",
-      "//brave/common",
-      "//chrome/common",
-      "//testing/gtest",
-    ]
-  }
-}
-
 mojom("mojo_bindings") {
   sources = [ "brave_renderer_configuration.mojom" ]
 

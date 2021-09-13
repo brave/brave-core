@@ -20,6 +20,11 @@
 // color, we use this micro-theme for the FocusRingView.
 namespace {
 
+ui::NativeTheme::ColorId ColorIdForValidity(bool valid) {
+  return valid ? ui::NativeTheme::kColorId_FocusedBorderColor
+               : ui::NativeTheme::kColorId_AlertSeverityHigh;
+}
+
 class FocusRingTheme {
  public:
   SkColor GetSystemColor(int id) {
