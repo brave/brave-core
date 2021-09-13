@@ -115,6 +115,59 @@ class BraveWalletServiceUnitTest : public testing::Test {
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
   ERCTokenRegistry* GetRegistry() { return ERCTokenRegistry::GetInstance(); }
 
+  void GetUserAssets(const std::string& chain_id,
+                     bool* callback_called,
+                     std::vector<mojom::ERCTokenPtr>* out_tokens) {
+    *callback_called = false;
+    service_->GetUserAssets(
+        chain_id,
+        base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
+          *out_tokens = std::move(tokens);
+          *callback_called = true;
+        }));
+    base::RunLoop().RunUntilIdle();
+  }
+
+  void AddUserAsset(mojom::ERCTokenPtr token,
+                    const std::string& chain_id,
+                    bool* callback_called,
+                    bool* out_success) {
+    *callback_called = false;
+    service_->AddUserAsset(std::move(token), chain_id,
+                           base::BindLambdaForTesting([&](bool success) {
+                             *out_success = success;
+                             *callback_called = true;
+                           }));
+    base::RunLoop().RunUntilIdle();
+  }
+
+  void RemoveUserAsset(const std::string& contract_address,
+                       const std::string& chain_id,
+                       bool* callback_called,
+                       bool* out_success) {
+    *callback_called = false;
+    service_->RemoveUserAsset(contract_address, chain_id,
+                              base::BindLambdaForTesting([&](bool success) {
+                                *out_success = success;
+                                *callback_called = true;
+                              }));
+    base::RunLoop().RunUntilIdle();
+  }
+
+  void SetUserAssetVisible(const std::string& contract_address,
+                           const std::string& chain_id,
+                           bool visible,
+                           bool* callback_called,
+                           bool* out_success) {
+    *callback_called = false;
+    service_->SetUserAssetVisible(contract_address, chain_id, visible,
+                                  base::BindLambdaForTesting([&](bool success) {
+                                    *out_success = success;
+                                    *callback_called = true;
+                                  }));
+    base::RunLoop().RunUntilIdle();
+  }
+
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<BraveWalletService> service_;
@@ -125,161 +178,92 @@ class BraveWalletServiceUnitTest : public testing::Test {
 };
 
 TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
-  // Empty vector should be returned for invalid chain_id.
   bool callback_called = false;
-  service_->GetUserAssets("", base::BindLambdaForTesting(
-                                  [&](std::vector<mojom::ERCTokenPtr> tokens) {
-                                    EXPECT_TRUE(tokens.empty());
-                                    callback_called = true;
-                                  }));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  bool success = false;
+  std::vector<mojom::ERCTokenPtr> tokens;
 
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x123",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_TRUE(tokens.empty());
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  // Empty vector should be returned for invalid chain_id.
+  GetUserAssets("", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens, std::vector<mojom::ERCTokenPtr>());
+
+  GetUserAssets("0x123", &callback_called, &tokens);
+  EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens, std::vector<mojom::ERCTokenPtr>());
 
   // Check mainnet default value.
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x1",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 2u);
-        EXPECT_EQ(tokens[0], GetEthToken());
-        EXPECT_EQ(tokens[1], GetBatToken());
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x1", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 2u);
+  EXPECT_EQ(tokens[0], GetEthToken());
+  EXPECT_EQ(tokens[1], GetBatToken());
 
   // Empty vector should be returned before any token is added.
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x3",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_TRUE(tokens.empty());
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x3", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens, std::vector<mojom::ERCTokenPtr>());
 
   // Prepare tokens to add.
   mojom::ERCTokenPtr token1 = GetToken1();
   mojom::ERCTokenPtr token2 = GetToken2();
 
   // Add tokens and test GetUserAsset.
-  callback_called = false;
-  service_->AddUserAsset(token1.Clone(), "0x1",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_TRUE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
+  AddUserAsset(token1.Clone(), "0x1", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->AddUserAsset(token1.Clone(), "0x4",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_TRUE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
+  AddUserAsset(token1.Clone(), "0x4", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->AddUserAsset(token2.Clone(), "0x4",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_TRUE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
+  AddUserAsset(token2.Clone(), "0x4", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x1",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 3u);
-        EXPECT_EQ(GetEthToken(), tokens[0]);
-        EXPECT_EQ(GetBatToken(), tokens[1]);
-        EXPECT_EQ(token1, tokens[2]);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x1", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 3u);
+  EXPECT_EQ(GetEthToken(), tokens[0]);
+  EXPECT_EQ(GetBatToken(), tokens[1]);
+  EXPECT_EQ(token1, tokens[2]);
 
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x4",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 2u);
-        EXPECT_EQ(token1, tokens[0]);
-        EXPECT_EQ(token2, tokens[1]);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 2u);
+  EXPECT_EQ(token1, tokens[0]);
+  EXPECT_EQ(token2, tokens[1]);
 
   // Remove token1 from "0x1" and token2 from "0x4" and test GetUserAssets.
-  callback_called = false;
-  service_->RemoveUserAsset(token1->contract_address, "0x1",
-                            base::BindLambdaForTesting([&](bool success) {
-                              EXPECT_TRUE(success);
-                              callback_called = true;
-                            }));
-  base::RunLoop().RunUntilIdle();
+  RemoveUserAsset(token1->contract_address, "0x1", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->RemoveUserAsset(token2->contract_address, "0x4",
-                            base::BindLambdaForTesting([&](bool success) {
-                              EXPECT_TRUE(success);
-                              callback_called = true;
-                            }));
-  base::RunLoop().RunUntilIdle();
+  RemoveUserAsset(token2->contract_address, "0x4", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x1",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 2u);
-        EXPECT_EQ(tokens[0], GetEthToken());
-        EXPECT_EQ(tokens[1], GetBatToken());
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x1", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 2u);
+  EXPECT_EQ(tokens[0], GetEthToken());
+  EXPECT_EQ(tokens[1], GetBatToken());
 
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x4",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 1u);
-        EXPECT_EQ(token1, tokens[0]);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(token1, tokens[0]);
 }
 
 TEST_F(BraveWalletServiceUnitTest, AddUserAsset) {
   bool callback_called = false;
+  bool success = false;
+  std::vector<mojom::ERCTokenPtr> tokens;
 
-  service_->GetUserAssets(
-      "0x1",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 2u);
-        EXPECT_EQ(tokens[0], GetEthToken());
-        EXPECT_EQ(tokens[1], GetBatToken());
-        callback_called = true;
-      }));
+  GetUserAssets("0x1", &callback_called, &tokens);
+  EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 2u);
+  EXPECT_EQ(tokens[0], GetEthToken());
+  EXPECT_EQ(tokens[1], GetBatToken());
 
   callback_called = false;
   mojom::ERCTokenPtr token;
@@ -294,376 +278,213 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAsset) {
   ASSERT_EQ(token->symbol, "CK");
 
   // Token with empty contract address will fail.
-  callback_called = false;
   auto token_with_empty_contract_address = token.Clone();
   token_with_empty_contract_address->contract_address = "";
-  service_->AddUserAsset(std::move(token_with_empty_contract_address), "0x1",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_FALSE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
+  AddUserAsset(std::move(token_with_empty_contract_address), "0x1",
+               &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
 
   // Invalid chain_id will fail.
-  callback_called = false;
-  service_->AddUserAsset(token.Clone(), "0x123",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_FALSE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
+  AddUserAsset(token.Clone(), "0x123", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
 
   // Add Crypto Kitties.
-  callback_called = false;
-  service_->AddUserAsset(token.Clone(), "0x1",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_TRUE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
+  AddUserAsset(token.Clone(), "0x1", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
   // Check Crypto Kitties is added as expected.
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x1",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 3u);
-        EXPECT_EQ(tokens[0], GetEthToken());
-        EXPECT_EQ(tokens[1], GetBatToken());
-        EXPECT_EQ(tokens[2], token);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x1", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 3u);
+  EXPECT_EQ(tokens[0], GetEthToken());
+  EXPECT_EQ(tokens[1], GetBatToken());
+  EXPECT_EQ(tokens[2], token);
 
   // Adding token with same address in the same chain will fail.
-  callback_called = false;
-  service_->AddUserAsset(token.Clone(), "0x1",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_FALSE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
+  AddUserAsset(token.Clone(), "0x1", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
 
   // Adding token with same address in a different chain will succeed.
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x4",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_TRUE(tokens.empty());
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(tokens.empty());
 
-  callback_called = false;
-  service_->AddUserAsset(token.Clone(), "0x4",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_TRUE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
+  AddUserAsset(token.Clone(), "0x4", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x4",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 1u);
-        EXPECT_EQ(tokens[0], token);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(tokens[0], token);
 }
 
 TEST_F(BraveWalletServiceUnitTest, RemoveUserAsset) {
   mojom::ERCTokenPtr token1 = GetToken1();
   mojom::ERCTokenPtr token2 = GetToken2();
 
-  // Add tokens
   bool callback_called = false;
-  service_->AddUserAsset(token1.Clone(), "0x1",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_TRUE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  bool success = false;
+  std::vector<mojom::ERCTokenPtr> tokens;
 
-  callback_called = false;
-  service_->AddUserAsset(token2.Clone(), "0x1",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_TRUE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
+  // Add tokens
+  AddUserAsset(token1.Clone(), "0x1", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->AddUserAsset(token2.Clone(), "0x4",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_TRUE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
+  AddUserAsset(token2.Clone(), "0x1", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x1",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 4u);
-        EXPECT_EQ(tokens[0], GetEthToken());
-        EXPECT_EQ(tokens[1], GetBatToken());
-        EXPECT_EQ(tokens[2], token1);
-        EXPECT_EQ(tokens[3], token2);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  AddUserAsset(token2.Clone(), "0x4", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x4",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 1u);
-        EXPECT_EQ(tokens[0], token2);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x1", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 4u);
+  EXPECT_EQ(tokens[0], GetEthToken());
+  EXPECT_EQ(tokens[1], GetBatToken());
+  EXPECT_EQ(tokens[2], token1);
+  EXPECT_EQ(tokens[3], token2);
+
+  GetUserAssets("0x4", &callback_called, &tokens);
+  EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(tokens[0], token2);
 
   // Remove token with invalid contract_address returns false.
-  callback_called = false;
-  service_->RemoveUserAsset("", "0x1",
-                            base::BindLambdaForTesting([&](bool success) {
-                              EXPECT_FALSE(success);
-                              callback_called = true;
-                            }));
-  base::RunLoop().RunUntilIdle();
+  RemoveUserAsset("", "0x1", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
 
   // Remove token with invalid network_id returns false.
-  callback_called = false;
-  service_->RemoveUserAsset(token1->contract_address, "0x123",
-                            base::BindLambdaForTesting([&](bool success) {
-                              EXPECT_FALSE(success);
-                              callback_called = true;
-                            }));
-  base::RunLoop().RunUntilIdle();
+  RemoveUserAsset(token1->contract_address, "0x123", &callback_called,
+                  &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
 
   // Returns false when we annot find the list with network_id.
-  callback_called = false;
-  service_->RemoveUserAsset(token1->contract_address, "0x3",
-                            base::BindLambdaForTesting([&](bool success) {
-                              EXPECT_FALSE(success);
-                              callback_called = true;
-                            }));
-  base::RunLoop().RunUntilIdle();
+  RemoveUserAsset(token1->contract_address, "0x3", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
 
   // Remove non-exist token returns true.
-  callback_called = false;
-  service_->RemoveUserAsset(token1->contract_address, "0x4",
-                            base::BindLambdaForTesting([&](bool success) {
-                              EXPECT_TRUE(success);
-                              callback_called = true;
-                            }));
-  base::RunLoop().RunUntilIdle();
+  RemoveUserAsset(token1->contract_address, "0x4", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
   // Remove existing token.
-  callback_called = false;
-  service_->RemoveUserAsset(token2->contract_address, "0x1",
-                            base::BindLambdaForTesting([&](bool success) {
-                              EXPECT_TRUE(success);
-                              callback_called = true;
-                            }));
-  base::RunLoop().RunUntilIdle();
+  RemoveUserAsset(token2->contract_address, "0x1", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->RemoveUserAsset(GetBatToken()->contract_address, "0x1",
-                            base::BindLambdaForTesting([&](bool success) {
-                              EXPECT_TRUE(success);
-                              callback_called = true;
-                            }));
-  base::RunLoop().RunUntilIdle();
+  RemoveUserAsset(GetBatToken()->contract_address, "0x1", &callback_called,
+                  &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x1",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 2u);
-        EXPECT_EQ(tokens[0], GetEthToken());
-        EXPECT_EQ(tokens[1], token1);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x1", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 2u);
+  EXPECT_EQ(tokens[0], GetEthToken());
+  EXPECT_EQ(tokens[1], token1);
 }
 
 TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
   mojom::ERCTokenPtr token1 = GetToken1();
   mojom::ERCTokenPtr token2 = GetToken2();
 
-  // Add tokens
   bool callback_called = false;
-  service_->AddUserAsset(token1.Clone(), "0x1",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_TRUE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  bool success = false;
+  std::vector<mojom::ERCTokenPtr> tokens;
 
-  callback_called = false;
-  service_->AddUserAsset(token2.Clone(), "0x1",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_TRUE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
+  // Add tokens
+  AddUserAsset(token1.Clone(), "0x1", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->AddUserAsset(token2.Clone(), "0x4",
-                         base::BindLambdaForTesting([&](bool success) {
-                           EXPECT_TRUE(success);
-                           callback_called = true;
-                         }));
-  base::RunLoop().RunUntilIdle();
+  AddUserAsset(token2.Clone(), "0x1", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x1",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 4u);
-        EXPECT_EQ(tokens[0], GetEthToken());
-        EXPECT_EQ(tokens[1], GetBatToken());
-        EXPECT_EQ(tokens[2], token1);
-        EXPECT_EQ(tokens[3], token2);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  AddUserAsset(token2.Clone(), "0x4", &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x4",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 1u);
-        EXPECT_EQ(tokens[0], token2);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x1", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 4u);
+  EXPECT_EQ(tokens[0], GetEthToken());
+  EXPECT_EQ(tokens[1], GetBatToken());
+  EXPECT_EQ(tokens[2], token1);
+  EXPECT_EQ(tokens[3], token2);
+
+  GetUserAssets("0x4", &callback_called, &tokens);
+  EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(tokens[0], token2);
 
   // Empty contract_address return false.
-  callback_called = false;
-  service_->SetUserAssetVisible("", "0x1", false,
-                                base::BindLambdaForTesting([&](bool success) {
-                                  EXPECT_FALSE(success);
-                                  callback_called = true;
-                                }));
-  base::RunLoop().RunUntilIdle();
+  SetUserAssetVisible("", "0x1", false, &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
 
   // Invalid chain_id return false.
-  callback_called = false;
-  service_->SetUserAssetVisible(token1->contract_address, "0x123", false,
-                                base::BindLambdaForTesting([&](bool success) {
-                                  EXPECT_FALSE(success);
-                                  callback_called = true;
-                                }));
-  base::RunLoop().RunUntilIdle();
+  SetUserAssetVisible(token1->contract_address, "0x123", false,
+                      &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
 
   // List for this network_id is not existed should return false.
-  callback_called = false;
-  service_->SetUserAssetVisible(token1->contract_address, "0x3", false,
-                                base::BindLambdaForTesting([&](bool success) {
-                                  EXPECT_FALSE(success);
-                                  callback_called = true;
-                                }));
-  base::RunLoop().RunUntilIdle();
+  SetUserAssetVisible(token1->contract_address, "0x3", false, &callback_called,
+                      &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
 
   // No entry with this contract address exists in the list.
-  callback_called = false;
-  service_->SetUserAssetVisible(token1->contract_address, "0x4", false,
-                                base::BindLambdaForTesting([&](bool success) {
-                                  EXPECT_FALSE(success);
-                                  callback_called = true;
-                                }));
-  base::RunLoop().RunUntilIdle();
+  SetUserAssetVisible(token1->contract_address, "0x4", false, &callback_called,
+                      &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
 
   // Set visible to false for BAT & token1 in "0x1" and token2 in "0x4".
-  callback_called = false;
-  service_->SetUserAssetVisible(token1->contract_address, "0x1", false,
-                                base::BindLambdaForTesting([&](bool success) {
-                                  EXPECT_TRUE(success);
-                                  callback_called = true;
-                                }));
-  base::RunLoop().RunUntilIdle();
+  SetUserAssetVisible(token1->contract_address, "0x1", false, &callback_called,
+                      &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->SetUserAssetVisible(GetBatToken()->contract_address, "0x1", false,
-                                base::BindLambdaForTesting([&](bool success) {
-                                  EXPECT_TRUE(success);
-                                  callback_called = true;
-                                }));
-  base::RunLoop().RunUntilIdle();
+  SetUserAssetVisible(GetBatToken()->contract_address, "0x1", false,
+                      &callback_called, &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->SetUserAssetVisible(token2->contract_address, "0x4", false,
-                                base::BindLambdaForTesting([&](bool success) {
-                                  EXPECT_TRUE(success);
-                                  callback_called = true;
-                                }));
-  base::RunLoop().RunUntilIdle();
+  SetUserAssetVisible(token2->contract_address, "0x4", false, &callback_called,
+                      &success);
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
 
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x1",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 4u);
-        EXPECT_EQ(tokens[0]->contract_address, GetEthToken()->contract_address);
-        EXPECT_TRUE(tokens[0]->visible);
-        EXPECT_EQ(tokens[1]->contract_address, GetBatToken()->contract_address);
-        EXPECT_FALSE(tokens[1]->visible);
-        EXPECT_EQ(tokens[2]->contract_address, token1->contract_address);
-        EXPECT_FALSE(tokens[2]->visible);
-        EXPECT_EQ(tokens[3]->contract_address, token2->contract_address);
-        EXPECT_TRUE(tokens[3]->visible);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x1", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 4u);
+  EXPECT_EQ(tokens[0]->contract_address, GetEthToken()->contract_address);
+  EXPECT_TRUE(tokens[0]->visible);
+  EXPECT_EQ(tokens[1]->contract_address, GetBatToken()->contract_address);
+  EXPECT_FALSE(tokens[1]->visible);
+  EXPECT_EQ(tokens[2]->contract_address, token1->contract_address);
+  EXPECT_FALSE(tokens[2]->visible);
+  EXPECT_EQ(tokens[3]->contract_address, token2->contract_address);
+  EXPECT_TRUE(tokens[3]->visible);
 
-  callback_called = false;
-  service_->GetUserAssets(
-      "0x4",
-      base::BindLambdaForTesting([&](std::vector<mojom::ERCTokenPtr> tokens) {
-        EXPECT_EQ(tokens.size(), 1u);
-        EXPECT_EQ(tokens[0]->contract_address, token2->contract_address);
-        EXPECT_FALSE(tokens[0]->visible);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
+  GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(tokens[0]->contract_address, token2->contract_address);
+  EXPECT_FALSE(tokens[0]->visible);
 }
 
 }  // namespace brave_wallet
