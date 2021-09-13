@@ -162,7 +162,9 @@ void AdBlockSubscriptionDownloadManager::OnDownloadSucceeded(
     const std::string& guid,
     base::FilePath downloaded_file) {
   auto it = pending_download_guids_.find(guid);
-  DCHECK(it != pending_download_guids_.end());
+  if (it == pending_download_guids_.end()) {
+    return;
+  }
   GURL download_url = it->second;
   pending_download_guids_.erase(guid);
 
