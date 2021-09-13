@@ -11,6 +11,7 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -75,8 +76,7 @@ base::CheckedContiguousIterator<base::Value> FindAsset(
           return false;
         }
         const std::string* address = value.FindStringKey("contract_address");
-        return address &&
-               base::EqualsCaseInsensitiveASCII(*address, contract_address);
+        return address && *address == contract_address;
       });
 
   return iter;
@@ -102,6 +102,21 @@ BraveWalletService::MakeRemote() {
 void BraveWalletService::Bind(
     mojo::PendingReceiver<mojom::BraveWalletService> receiver) {
   receivers_.Add(this, std::move(receiver));
+}
+
+absl::optional<std::string> BraveWalletService::GetChecksumAddress(
+    const std::string& contract_address,
+    const std::string& chain_id) {
+  const auto eth_addr = EthAddress::FromHex(contract_address);
+  if (eth_addr.IsEmpty()) {
+    return absl::nullopt;
+  }
+  uint256_t chain;
+  if (!HexValueToUint256(chain_id, &chain)) {
+    return absl::nullopt;
+  }
+
+  return eth_addr.ToChecksumAddress(chain);
 }
 
 void BraveWalletService::GetUserAssets(const std::string& chain_id,
@@ -180,10 +195,13 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
 void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
                                       const std::string& chain_id,
                                       AddUserAssetCallback callback) {
-  if (token->contract_address.empty()) {
+  absl::optional<std::string> optional_checksum_address =
+      GetChecksumAddress(token->contract_address, chain_id);
+  if (!optional_checksum_address) {
     std::move(callback).Run(false);
     return;
   }
+  const std::string checksum_address = optional_checksum_address.value();
 
   const std::string network_id = GetNetworkId(prefs_, chain_id);
   if (network_id.empty()) {
@@ -200,14 +218,14 @@ void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
         network_id, base::Value(base::Value::Type::LIST));
   }
 
-  auto it = FindAsset(user_assets_dict, token->contract_address);
+  auto it = FindAsset(user_assets_dict, checksum_address);
   if (it != user_assets_dict->GetList().end()) {
     std::move(callback).Run(false);
     return;
   }
 
   base::Value value(base::Value::Type::DICTIONARY);
-  value.SetKey("contract_address", base::Value(token->contract_address));
+  value.SetKey("contract_address", base::Value(checksum_address));
   value.SetKey("name", base::Value(token->name));
   value.SetKey("symbol", base::Value(token->symbol));
   value.SetKey("is_erc20", base::Value(token->is_erc20));
@@ -222,10 +240,13 @@ void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
 void BraveWalletService::RemoveUserAsset(const std::string& contract_address,
                                          const std::string& chain_id,
                                          RemoveUserAssetCallback callback) {
-  if (contract_address.empty()) {
+  absl::optional<std::string> optional_checksum_address =
+      GetChecksumAddress(contract_address, chain_id);
+  if (!optional_checksum_address) {
     std::move(callback).Run(false);
     return;
   }
+  const std::string checksum_address = optional_checksum_address.value();
 
   const std::string network_id = GetNetworkId(prefs_, chain_id);
   if (network_id.empty()) {
@@ -243,7 +264,7 @@ void BraveWalletService::RemoveUserAsset(const std::string& contract_address,
   }
 
   user_assets_dict->EraseListIter(
-      FindAsset(user_assets_dict, contract_address));
+      FindAsset(user_assets_dict, checksum_address));
   std::move(callback).Run(true);
 }
 
@@ -252,10 +273,13 @@ void BraveWalletService::SetUserAssetVisible(
     const std::string& chain_id,
     bool visible,
     SetUserAssetVisibleCallback callback) {
-  if (contract_address.empty()) {
+  absl::optional<std::string> optional_checksum_address =
+      GetChecksumAddress(contract_address, chain_id);
+  if (!optional_checksum_address) {
     std::move(callback).Run(false);
     return;
   }
+  const std::string checksum_address = optional_checksum_address.value();
 
   const std::string network_id = GetNetworkId(prefs_, chain_id);
   if (network_id.empty()) {
@@ -272,7 +296,7 @@ void BraveWalletService::SetUserAssetVisible(
     return;
   }
 
-  auto it = FindAsset(user_assets_dict, contract_address);
+  auto it = FindAsset(user_assets_dict, checksum_address);
   if (it == user_assets_dict->GetList().end()) {
     std::move(callback).Run(false);
     return;

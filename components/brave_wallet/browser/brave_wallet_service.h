@@ -13,6 +13,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -45,6 +46,10 @@ class BraveWalletService : public KeyedService,
                            SetUserAssetVisibleCallback callback) override;
 
  private:
+  absl::optional<std::string> GetChecksumAddress(
+      const std::string& contract_address,
+      const std::string& chain_id);
+
   PrefService* prefs_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
 };
