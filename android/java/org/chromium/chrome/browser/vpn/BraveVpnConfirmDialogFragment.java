@@ -61,7 +61,7 @@ public class BraveVpnConfirmDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mAnimatedView = view.findViewById(R.id.bg_image);
-        mAnimatedView.setAnimation("vpn_confirm.json");
+        mAnimatedView.setAnimation("brave_vpn_confirm.json");
         mAnimatedView.addAnimatorListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {}

@@ -40,8 +40,8 @@ import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinato
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.vpn.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
-import org.chromium.chrome.browser.vpn.VpnProfileUtils;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
@@ -82,7 +82,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                     vpnSubMenu.add(Menu.NONE, R.id.request_brave_vpn_check_id, 0, null);
             braveVpnCheckedSubMenuItem.setCheckable(true);
             braveVpnCheckedSubMenuItem.setChecked(
-                    VpnProfileUtils.getInstance(mContext).isVPNConnected());
+                    BraveVpnProfileUtils.getInstance(mContext).isVPNConnected());
         }
 
         mMenu = menu;

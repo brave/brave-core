@@ -41,7 +41,7 @@ import java.util.Set;
 public class InAppPurchaseWrapper {
     public static final String NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
     public static final String NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
-    private static InAppPurchaseWrapper inAppPurchaseWrapper = null;
+    private static InAppPurchaseWrapper inAppPurchaseWrapper;
     private BillingClient billingClient;
     private Context context;
 
@@ -124,7 +124,6 @@ public class InAppPurchaseWrapper {
                 if (billingResult.getResponseCode() == OK) {
                     BraveVpnPrefUtils.setBraveVpnBooleanPref(
                             BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, true);
-                    Log.e("BraveVPN", "Subscription consumed");
                     BraveVpnUtils.openBraveVpnProfileActivity(context);
                     Toast.makeText(context, "Subscription successfully consumed", Toast.LENGTH_LONG)
                             .show();

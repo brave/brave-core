@@ -42,8 +42,8 @@ import org.chromium.chrome.browser.vpn.BraveVpnConfirmDialogFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.BraveVpnPlanPagerAdapter;
+import org.chromium.chrome.browser.vpn.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
-import org.chromium.chrome.browser.vpn.VpnProfileUtils;
 import org.chromium.ui.widget.Toast;
 
 import java.util.List;
@@ -131,9 +131,10 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == VpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
+        if (resultCode == RESULT_OK
+                && requestCode == BraveVpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            VpnProfileUtils.getInstance(BraveVpnProfileActivity.this).startVpn();
+            BraveVpnProfileUtils.getInstance(BraveVpnProfileActivity.this).startVpn();
             BraveVpnConfirmDialogFragment braveVpnConfirmDialogFragment =
                     new BraveVpnConfirmDialogFragment();
             braveVpnConfirmDialogFragment.setCancelable(false);
@@ -149,8 +150,10 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
     public void showRestoreMenu(boolean shouldShowRestore) {}
 
+    @Override
     public void showProgress() {
         if (profileProgress != null) {
             profileProgress.setVisibility(View.VISIBLE);
@@ -160,6 +163,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         }
     }
 
+    @Override
     public void hideProgress() {
         if (profileProgress != null) {
             profileProgress.setVisibility(View.GONE);

@@ -85,10 +85,6 @@ void BraveVpnService::OAuthRequest(const GURL& url,
                                    const std::string& method,
                                    const std::string& post_data,
                                    URLRequestCallback callback) {
-  LOG(ERROR) << "BraveVPN"
-             << "OAuthRequest : "
-             << "post_data : " << post_data;
-
   api_request_helper_.Request(method, url, post_data, "application/json", false,
                               std::move(callback));
 }
@@ -159,12 +155,6 @@ void BraveVpnService::OnGetResponse(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   std::string json_response;
-  LOG(ERROR) << "BraveVPN"
-             << "OnGetResponse : "
-             << "response code : " << status;
-  LOG(ERROR) << "BraveVPN"
-             << "body : "
-             << "body : " << body;
   bool success = status == 200;
   if (success) {
     json_response = body;
@@ -190,9 +180,6 @@ void BraveVpnService::GetSubscriberCredential(
   dict.SetStringKey("purchase-token", purchase_token);
   dict.SetStringKey("bundle-id", bundle_id);
   std::string request_body = CreateJSONRequestBody(dict);
-  LOG(ERROR) << "BraveVPN"
-             << "GetSubscriberCredential : "
-             << "Request : " << request_body;
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
 

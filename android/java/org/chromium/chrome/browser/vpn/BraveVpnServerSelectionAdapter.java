@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BraveVpnServerSelectionPreferences.OnServerRegionSelection;
 import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.List;
 
 public class BraveVpnServerSelectionAdapter
         extends RecyclerView.Adapter<BraveVpnServerSelectionAdapter.ViewHolder> {
-    List<VpnServerRegion> vpnServerRegions = new ArrayList<>();
+    List<BraveVpnServerRegion> vpnServerRegions = new ArrayList<>();
     private OnServerRegionSelection onServerRegionSelection;
     public static final String PREF_SERVER_CHANGE_LOCATION = "server_change_location";
 
@@ -40,7 +41,7 @@ public class BraveVpnServerSelectionAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final VpnServerRegion vpnServerRegion = vpnServerRegions.get(position);
+        final BraveVpnServerRegion vpnServerRegion = vpnServerRegions.get(position);
         if (vpnServerRegion != null) {
             holder.serverText.setText(vpnServerRegion.getNamePretty());
             if (BraveVpnPrefUtils.getServerRegion(PREF_SERVER_CHANGE_LOCATION)
@@ -64,7 +65,7 @@ public class BraveVpnServerSelectionAdapter
         return vpnServerRegions.size();
     }
 
-    public void setVpnServerRegions(List<VpnServerRegion> vpnServerRegions) {
+    public void setVpnServerRegions(List<BraveVpnServerRegion> vpnServerRegions) {
         this.vpnServerRegions = vpnServerRegions;
     }
 

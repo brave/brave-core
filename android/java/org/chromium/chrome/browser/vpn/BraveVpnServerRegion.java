@@ -5,12 +5,12 @@
 
 package org.chromium.chrome.browser.vpn;
 
-public class VpnServerRegion {
+public class BraveVpnServerRegion {
     private String continent;
     private String name;
     private String namePretty;
 
-    public VpnServerRegion(String continent, String name, String namePretty) {
+    public BraveVpnServerRegion(String continent, String name, String namePretty) {
         this.continent = continent;
         this.name = name;
         this.namePretty = namePretty;

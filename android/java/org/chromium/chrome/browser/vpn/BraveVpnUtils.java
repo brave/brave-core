@@ -28,7 +28,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnProfileActivity;
-import org.chromium.chrome.browser.vpn.VpnServerRegion;
+import org.chromium.chrome.browser.vpn.BraveVpnServerRegion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +42,7 @@ public class BraveVpnUtils {
 
     public static final int BRAVE_VPN_NOTIFICATION_ID = 36;
 
-    public static boolean isServerLocationChanged = false;
+    public static boolean isServerLocationChanged;
     private static ProgressDialog progressDialog;
 
     public static boolean isBraveVpnFeatureEnable() {
@@ -98,7 +98,7 @@ public class BraveVpnUtils {
                 }
             }
         } catch (JSONException e) {
-            Log.e("BraveVPN", "getRegionForTimeZone JSONException error " + e);
+            Log.e("BraveVPN", "BraveVpnUtils -> getRegionForTimeZone JSONException error " + e);
         }
         return "";
     }
@@ -125,7 +125,7 @@ public class BraveVpnUtils {
             }
             return hostname.getString("hostname");
         } catch (JSONException e) {
-            Log.e("BraveVPN", "getHostnameForRegion JSONException error " + e);
+            Log.e("BraveVPN", "BraveVpnUtils -> getHostnameForRegion JSONException error " + e);
         }
         return "";
     }
@@ -136,7 +136,7 @@ public class BraveVpnUtils {
             return new Pair<>(profileCredentials.getString("eap-username"),
                     profileCredentials.getString("eap-password"));
         } catch (JSONException e) {
-            Log.e("BraveVPN", "getProfileCredentials JSONException error " + e);
+            Log.e("BraveVPN", "BraveVpnUtils -> getProfileCredentials JSONException error " + e);
         }
         return null;
     }
@@ -147,7 +147,7 @@ public class BraveVpnUtils {
             return Long.parseLong(purchase.getString("expiryTimeMillis"))
                     >= System.currentTimeMillis();
         } catch (JSONException e) {
-            Log.e("BraveVPN", "getProfileCredentials JSONException error " + e);
+            Log.e("BraveVPN", "BraveVpnUtils -> getProfileCredentials JSONException error " + e);
         }
         return false;
     }
@@ -157,13 +157,13 @@ public class BraveVpnUtils {
             JSONObject purchase = new JSONObject(json);
             return purchase.getString("expiryTimeMillis");
         } catch (JSONException e) {
-            Log.e("BraveVPN", "getProfileCredentials JSONException error " + e);
+            Log.e("BraveVPN", "BraveVpnUtils -> getProfileCredentials JSONException error " + e);
         }
         return "";
     }
 
-    public static List<VpnServerRegion> getServerLocations(String jsonServerLocations) {
-        List<VpnServerRegion> vpnServerRegions = new ArrayList<>();
+    public static List<BraveVpnServerRegion> getServerLocations(String jsonServerLocations) {
+        List<BraveVpnServerRegion> vpnServerRegions = new ArrayList<>();
         if (TextUtils.isEmpty(jsonServerLocations)) {
             return vpnServerRegions;
         }
@@ -173,12 +173,13 @@ public class BraveVpnUtils {
             JSONArray servers = result.getJSONArray("servers");
             for (int i = 0; i < servers.length(); i++) {
                 JSONObject server = servers.getJSONObject(i);
-                VpnServerRegion vpnServerRegion = new VpnServerRegion(server.getString("continent"),
-                        server.getString("name"), server.getString("name-pretty"));
+                BraveVpnServerRegion vpnServerRegion =
+                        new BraveVpnServerRegion(server.getString("continent"),
+                                server.getString("name"), server.getString("name-pretty"));
                 vpnServerRegions.add(vpnServerRegion);
             }
         } catch (JSONException e) {
-            Log.e("BraveVPN", "getServerLocations JSONException error " + e);
+            Log.e("BraveVPN", "BraveVpnUtils -> getServerLocations JSONException error " + e);
         }
         return vpnServerRegions;
     }

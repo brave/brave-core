@@ -2030,6 +2030,9 @@ until they verify, or until 90 days have passed.
     <message name="IDS_MONTHLY_SUBSCRIPTION" desc="Brave VPN plan text">
       Monthly subscription
     </message>
+    <message name="IDS_YEARLY_SUBSCRIPTION" desc="Brave VPN plan text">
+      Yearly subscription
+    </message>
     <message name="IDS_RENEWS_MONTHLY" desc="Brave VPN plan text">
       Renews monthly
     </message>
@@ -2178,6 +2181,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_OTHER" desc="Brave Vpn support text">
       Other
+    </message>
+    <message name="IDS_RESET_VPN_CONFIG_DIALOG_TITLE" desc="Brave Vpn reset configuration dialog title">
+      Reset VPN configuration
+    </message>
+    <message name="IDS_RESET_VPN_CONFIG_DIALOG_MESSAGE" desc="Brave Vpn reset configuration dialog message">
+      Are you sure you want to reset vpn configuration?
     </message>
     </messages>
   </release>

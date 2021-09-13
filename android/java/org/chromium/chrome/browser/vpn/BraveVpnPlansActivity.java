@@ -191,11 +191,13 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         return true;
     }
 
+    @Override
     public void showRestoreMenu(boolean shouldShowRestore) {
         this.shouldShowRestoreMenu = shouldShowRestore;
         invalidateOptionsMenu();
     }
 
+    @Override
     public void showProgress() {
         if (planProgress != null) {
             planProgress.setVisibility(View.VISIBLE);
@@ -205,6 +207,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         }
     }
 
+    @Override
     public void hideProgress() {
         if (planProgress != null) {
             planProgress.setVisibility(View.GONE);

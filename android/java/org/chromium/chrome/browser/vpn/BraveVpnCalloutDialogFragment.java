@@ -27,7 +27,7 @@ import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
-public class VpnCalloutDialogFragment extends DialogFragment implements View.OnClickListener {
+public class BraveVpnCalloutDialogFragment extends DialogFragment implements View.OnClickListener {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);

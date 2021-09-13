@@ -32,15 +32,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class VpnProfileUtils {
+public class BraveVpnProfileUtils {
     public static final int BRAVE_VPN_PROFILE_REQUEST_CODE = 36;
 
-    private static VpnProfileUtils vpnProfileUtils = null;
+    private static BraveVpnProfileUtils vpnProfileUtils;
     private Context context;
     private VpnManager vpnManager;
 
-    public static VpnProfileUtils getInstance(Context context) {
-        if (vpnProfileUtils == null) vpnProfileUtils = new VpnProfileUtils(context);
+    public static BraveVpnProfileUtils getInstance(Context context) {
+        if (vpnProfileUtils == null) vpnProfileUtils = new BraveVpnProfileUtils(context);
         return vpnProfileUtils;
     }
 
@@ -51,7 +51,7 @@ public class VpnProfileUtils {
         return vpnManager;
     }
 
-    private VpnProfileUtils(Context context) {
+    private BraveVpnProfileUtils(Context context) {
         this.context = context;
         if (vpnManager == null)
             vpnManager = (VpnManager) context.getSystemService(Context.VPN_MANAGEMENT_SERVICE);
@@ -85,6 +85,7 @@ public class VpnProfileUtils {
             } catch (SecurityException securityException) {
                 Toast.makeText(context, R.string.vpn_profile_is_not_created, Toast.LENGTH_LONG)
                         .show();
+                BraveVpnUtils.dismissProgressDialog();
                 BraveVpnUtils.openBraveVpnProfileActivity(context);
             }
         } else {

@@ -116,13 +116,13 @@ import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.BraveReferrer;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.vpn.BraveVpnCalloutDialogFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.InAppPurchaseWrapper;
-import org.chromium.chrome.browser.vpn.VpnCalloutDialogFragment;
-import org.chromium.chrome.browser.vpn.VpnProfileUtils;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.components.bookmarks.BookmarkId;
@@ -200,7 +200,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     private String purchaseToken = "";
     private String productId = "";
-    private boolean isVerification = false;
+    private boolean isVerification;
 
     public BraveActivity() {
         // Disable key checker to avoid asserts on Brave keys in debug
@@ -218,7 +218,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void onPauseWithNative() {
         BraveVpnNativeWorker.getInstance().removeObserver(this);
-        Log.e("BraveVPN", "BraveActivity onPauseWithNative");
         super.onPauseWithNative();
     }
 
@@ -249,8 +248,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             openBraveWallet();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
             BraveVpnUtils.showProgressDialog(BraveActivity.this);
-            if (VpnProfileUtils.getInstance(BraveActivity.this).isVPNConnected()) {
-                VpnProfileUtils.getInstance(BraveActivity.this).stopVpn();
+            if (BraveVpnProfileUtils.getInstance(BraveActivity.this).isVPNConnected()) {
+                BraveVpnProfileUtils.getInstance(BraveActivity.this).stopVpn();
             } else {
                 if (BraveVpnPrefUtils.isBraveVpnBooleanPref(
                             BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false)) {
@@ -273,7 +272,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             Purchase purchase = purchases.get(0);
             purchaseToken = purchase.getPurchaseToken();
             productId = purchase.getSkus().get(0).toString();
-            Log.e("BraveVPN", "Purchase Token : " + purchaseToken);
             BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
                     purchaseToken, productId, "subscription", getPackageName());
         } else {
@@ -285,10 +283,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_EXPIRY, "");
             BraveVpnPrefUtils.setBraveVpnBooleanPref(
                     BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false);
-            if (VpnProfileUtils.getInstance(BraveActivity.this).isVPNConnected()) {
-                VpnProfileUtils.getInstance(BraveActivity.this).stopVpn();
+            if (BraveVpnProfileUtils.getInstance(BraveActivity.this).isVPNConnected()) {
+                BraveVpnProfileUtils.getInstance(BraveActivity.this).stopVpn();
             }
-            VpnProfileUtils.getInstance(BraveActivity.this).deleteVpnProfile();
+            BraveVpnProfileUtils.getInstance(BraveActivity.this).deleteVpnProfile();
             BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
         }
     }
@@ -308,15 +306,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 BraveVpnPrefUtils.setBraveVpnBooleanPref(
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, true);
                 if (!isVerification) {
-                    VpnProfileUtils.getInstance(BraveActivity.this).startStopVpn();
+                    BraveVpnProfileUtils.getInstance(BraveActivity.this).startStopVpn();
                 } else {
-                    Log.e("BraveVPN", "App open verify");
-                    Log.e("BraveVPN",
-                            BraveVpnPrefUtils.getBraveVpnStringPref(
-                                    BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN));
-                    Log.e("BraveVPN",
-                            BraveVpnPrefUtils.getBraveVpnStringPref(
-                                    BraveVpnPrefUtils.PREF_BRAVE_VPN_PRODUCT_ID));
                     isVerification = false;
                 }
             } else {
@@ -328,10 +319,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_EXPIRY, "");
                 BraveVpnPrefUtils.setBraveVpnBooleanPref(
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false);
-                if (VpnProfileUtils.getInstance(BraveActivity.this).isVPNConnected()) {
-                    VpnProfileUtils.getInstance(BraveActivity.this).stopVpn();
+                if (BraveVpnProfileUtils.getInstance(BraveActivity.this).isVPNConnected()) {
+                    BraveVpnProfileUtils.getInstance(BraveActivity.this).stopVpn();
                 }
-                VpnProfileUtils.getInstance(BraveActivity.this).deleteVpnProfile();
+                BraveVpnProfileUtils.getInstance(BraveActivity.this).deleteVpnProfile();
                 Toast.makeText(BraveActivity.this, R.string.purchase_token_verification_failed,
                              Toast.LENGTH_LONG)
                         .show();
@@ -586,7 +577,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN))
                     && !TextUtils.isEmpty(BraveVpnPrefUtils.getBraveVpnStringPref(
                             BraveVpnPrefUtils.PREF_BRAVE_VPN_PRODUCT_ID))) {
-                Log.e("BraveVPN", "Should verify");
                 isVerification = true;
                 BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
                         BraveVpnPrefUtils.getBraveVpnStringPref(
@@ -614,9 +604,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             };
 
     private void showVpnCalloutDialog() {
-        VpnCalloutDialogFragment mVpnCalloutDialogFragment = new VpnCalloutDialogFragment();
-        mVpnCalloutDialogFragment.setCancelable(false);
-        mVpnCalloutDialogFragment.show(getSupportFragmentManager(), "VpnCalloutDialogFragment");
+        BraveVpnCalloutDialogFragment mBraveVpnCalloutDialogFragment =
+                new BraveVpnCalloutDialogFragment();
+        mBraveVpnCalloutDialogFragment.setCancelable(false);
+        mBraveVpnCalloutDialogFragment.show(
+                getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
     }
 
     private void checkFingerPrintingOnUpgrade() {
@@ -945,7 +937,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void onActivityResult (int requestCode, int resultCode,
                                   Intent data) {
-        Log.e("BraveVPN", "onActivityResult : BraveActivity");
         if (resultCode == RESULT_OK &&
                 (requestCode == VERIFY_WALLET_ACTIVITY_REQUEST_CODE ||
                  requestCode == USER_WALLET_ACTIVITY_REQUEST_CODE ||
@@ -956,9 +947,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 openNewOrSelectExistingTab(open_url);
             }
         } else if (resultCode == RESULT_OK
-                && requestCode == VpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
+                && requestCode == BraveVpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            VpnProfileUtils.getInstance(BraveActivity.this).startVpn();
+            BraveVpnProfileUtils.getInstance(BraveActivity.this).startVpn();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

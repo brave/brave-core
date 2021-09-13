@@ -27,9 +27,9 @@ import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.BraveVpnServerSelectionAdapter;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
-import org.chromium.chrome.browser.vpn.VpnServerRegion;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class BraveVpnServerSelectionPreferences
     private ProgressBar serverSelectionProgress;
 
     public interface OnServerRegionSelection {
-        void onServerRegionClick(VpnServerRegion vpnServerRegion);
+        void onServerRegionClick(BraveVpnServerRegion vpnServerRegion);
     }
     @Override
     public View onCreateView(
@@ -96,12 +96,13 @@ public class BraveVpnServerSelectionPreferences
                         }
                     }
                 });
-        List<VpnServerRegion> vpnServerRegions =
+        List<BraveVpnServerRegion> vpnServerRegions =
                 BraveVpnUtils.getServerLocations(BraveVpnPrefUtils.getBraveVpnStringPref(
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_SERVER_REGIONS));
-        Collections.sort(vpnServerRegions, new Comparator<VpnServerRegion>() {
+        Collections.sort(vpnServerRegions, new Comparator<BraveVpnServerRegion>() {
             @Override
-            public int compare(VpnServerRegion vpnServerRegion1, VpnServerRegion vpnServerRegion2) {
+            public int compare(
+                    BraveVpnServerRegion vpnServerRegion1, BraveVpnServerRegion vpnServerRegion2) {
                 return vpnServerRegion1.getNamePretty().compareToIgnoreCase(
                         vpnServerRegion2.getNamePretty());
             }
@@ -117,7 +118,7 @@ public class BraveVpnServerSelectionPreferences
 
     OnServerRegionSelection onServerRegionSelection = new OnServerRegionSelection() {
         @Override
-        public void onServerRegionClick(VpnServerRegion vpnServerRegion) {
+        public void onServerRegionClick(BraveVpnServerRegion vpnServerRegion) {
             BraveVpnPrefUtils.setServerRegion(
                     PREF_SERVER_CHANGE_LOCATION, vpnServerRegion.getName());
             BraveVpnUtils.isServerLocationChanged = true;
