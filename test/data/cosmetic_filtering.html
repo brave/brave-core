@@ -23,6 +23,8 @@ let didWait = false;
 function checkSelector(selector, property, expected) {
   const checkSelectorInner = () => {
     let elements = [].slice.call(document.querySelectorAll(selector));
+    if (elements.length === 0)
+      return false
     let result = elements.every(e => {
       let style = window.getComputedStyle(e);
       return style[property] === expected;
@@ -47,12 +49,33 @@ function checkSelector(selector, property, expected) {
 </script>
 </head>
 <body>
-    <div class="fpsponsored"><img src="b.com/sponsored/640x820.png"></div>
     <div id="ad-banner"><img src="https://example.com/logo.png" alt=""></div>
     <div class="ad-banner">
         <div class="ad" style="background: url(example.com)"><img src="https://example.com/logo.png" alt=""></div>
     </div>
     <div class="ad" style="background: url(example.com)"><img src="https://example.com/logo.png" alt=""></div>
     <div class="ad" style="background: url(example.com)"><img src="https://example.com/logo.png" alt=""></div>
+
+    <!-- Assume that the document host is test.lion.appspot.com (see AdBlockServiceTest.*) -->
+    <div id="relative-url-div" class="fpsponsored">
+      A text of 30 chars and 5 words is needed here to consider element significant.
+      <img src="/sponsored/640x820.png">
+    </div>
+    <div id="same-origin-div" class="fpsponsored1">
+      A text of 30 chars and 5 words is needed here to consider element significant.
+      <img src="http://test.lion.appspot.com/sponsored/640x820.png">
+    </div>
+    <div id="subdomain-div" class="fpsponsored2">
+      A text of 30 chars and 5 words is needed here to consider element significant.
+      <img src="http://sub.test.lion.appspot.com/sponsored/640x820.png">
+    </div>
+    <div id="same-etld" class="fpsponsored3">
+      A text of 30 chars and 5 words is needed here to consider element significant.
+      <img src="http://another.lion.appspot.com/sponsored/640x820.png">
+    </div>
+    <div id="another-etld" class="fpsponsored4">
+      A text of 30 chars and 5 words is needed here to consider element significant.
+      <img src="http://chrome.appspot.com/sponsored/640x820.png">
+    </div>
 </body>
 </html>
