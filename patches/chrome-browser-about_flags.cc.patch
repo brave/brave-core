@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 11f9808ee1e06d51887100ae97f29b3215eb16aa..d068106d00870dd9eb74a6d77959322eb4fd64a2 100644
+index 2224b7d7693893a137ab2fbcbf2eac6aed89a409..ec1866be53067d88f38fa29a6f07449809912b9a 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -314,14 +314,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
@@ -21,7 +21,7 @@ index 11f9808ee1e06d51887100ae97f29b3215eb16aa..d068106d00870dd9eb74a6d77959322e
  
  const FeatureEntry::Choice kLiteVideoDefaultDownlinkBandwidthKbps[] = {
      {flags_ui::kGenericExperimentChoiceDefault, "", ""},
-@@ -7617,6 +7617,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -7636,6 +7636,7 @@ const FeatureEntry kFeatureEntries[] = {
      // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
      // Histograms" in tools/metrics/histograms/README.md (run the
      // AboutFlagsHistogramTest unit test to verify this process).
