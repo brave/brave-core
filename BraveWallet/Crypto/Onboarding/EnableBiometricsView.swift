@@ -11,39 +11,18 @@ import BraveUI
 struct EnableBiometricsView: View {
   var action: (_ enable: Bool) -> Void
   
-  private var title: String {
-    let context = LAContext()
-    let fallback = "Enable biometrics unlock" // NSLocalizedString
-    if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
-      switch context.biometryType {
-      case .faceID:
-        return "Enable Face ID unlock" // NSLocalizedString
-      case .touchID:
-        return "Enable fingerprint unlock" // NSLocalizedString
-      case .none:
-        assertionFailure("This screen should not be shown to users without biometrics available")
-        return fallback
-      @unknown default:
-        return fallback
-      }
-    }
-    return fallback
-  }
-  
   var body: some View {
     VStack {
-      Image("popup-touch-id")
+      Image("pin-migration-graphic")
+        .resizable()
+        .aspectRatio(contentMode: .fit)
+        .frame(maxWidth: 250)
         .padding()
-      VStack(spacing: 10) {
-        Text(title)
-          .font(.headline)
-        Text("Enable biometrics to quickly unlock your wallet without entering your password.") // NSLocalizedString
-          .font(.subheadline)
-          .foregroundColor(.secondary)
-      }
-      .fixedSize(horizontal: false, vertical: true)
-      .multilineTextAlignment(.center)
-      .padding(.bottom)
+      Text("Unlock Brave Wallet with your Face ID, Touch ID, or passcode.")
+        .font(.headline)
+        .fixedSize(horizontal: false, vertical: true)
+        .multilineTextAlignment(.center)
+        .padding(.bottom)
       Button(action: { action(true) }) {
         Text("Enable")
       }
