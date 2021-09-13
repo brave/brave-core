@@ -148,6 +148,7 @@ public class KeyringStore: ObservableObject {
   
   func reset() {
     controller.reset()
+    isOnboardingVisible = true
   }
 }
 
