@@ -77,6 +77,16 @@ extension BraveGradient {
       angle: .figmaDegrees(122.5)
     )
   }
+  public static var lightAlternateGradient02: BraveGradient {
+    .init(
+      stops: [
+        .init(color: DesignSystemColor.gradient02_alt_step0.color, position: 0.16),
+        .init(color: DesignSystemColor.gradient02_alt_step1.color, position: 0.63),
+        .init(color: DesignSystemColor.gradient02_alt_step2.color, position: 1.0),
+      ],
+      angle: .figmaDegrees(304.5)
+    )
+  }
   public static var darkGradient02: BraveGradient {
     .init(
       stops: [
@@ -85,6 +95,16 @@ extension BraveGradient {
         .init(color: DesignSystemColor.gradient02_step2.color, position: 1.0),
       ],
       angle: .figmaDegrees(314)
+    )
+  }
+  public static var darkAlternateGradient02: BraveGradient {
+    .init(
+      stops: [
+        .init(color: DesignSystemColor.gradient02_alt_step0.color, position: 0.12),
+        .init(color: DesignSystemColor.gradient02_alt_step1.color, position: 0.47),
+        .init(color: DesignSystemColor.gradient02_alt_step2.color, position: 1.0),
+      ],
+      angle: .figmaDegrees(135)
     )
   }
   public static var gradient03: BraveGradient {
@@ -105,6 +125,14 @@ extension BraveGradientView {
         return .darkGradient02
       }
       return .lightGradient02
+    }
+  }
+  public static var alternateGradient02: BraveGradientView {
+    .init { traitCollection in
+      if traitCollection.userInterfaceStyle == .dark {
+        return .darkAlternateGradient02
+      }
+      return .lightAlternateGradient02
     }
   }
   public static var gradient03: BraveGradientView {
