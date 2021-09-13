@@ -123,10 +123,11 @@ static_library("browser") {
     ]
   }
 
+  public_deps += [ "//brave/components/brave_adaptive_captcha/buildflags" ]
+
   if (brave_adaptive_captcha_enabled) {
     sources += [ "ads_tooltips_delegate.h" ]
     deps += [ "//brave/components/brave_adaptive_captcha" ]
-    public_deps += [ "//brave/components/brave_adaptive_captcha/buildflags" ]
   }
 }
 
