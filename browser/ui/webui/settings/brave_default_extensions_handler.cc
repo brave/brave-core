@@ -483,9 +483,9 @@ void BraveDefaultExtensionsHandler::LaunchIPFSService(
 void BraveDefaultExtensionsHandler::SetIPFSStorageMax(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
-  CHECK(args[0].is_int());
+  CHECK(args->GetList()[0].is_int());
   CHECK(profile_);
-  int storage_max_gb = args[0].GetInt();
+  int storage_max_gb = args->GetList()[0].GetInt();
   PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   prefs->SetInteger(kIpfsStorageMax, storage_max_gb);
   ipfs::IpfsService* service =
