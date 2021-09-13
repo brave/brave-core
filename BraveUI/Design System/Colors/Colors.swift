@@ -50,6 +50,10 @@ enum DesignSystemColor: String {
   case gradient02_step1 = "gradient02-step1"
   case gradient02_step2 = "gradient02-step2"
   
+  case gradient02_alt_step0 = "gradient02-alt-step0"
+  case gradient02_alt_step1 = "gradient02-alt-step1"
+  case gradient02_alt_step2 = "gradient02-alt-step2"
+  
   case gradient03_step0 = "gradient03-step0"
   case gradient03_step1 = "gradient03-step1"
   

@@ -8,12 +8,7 @@ import UIKit
 import BraveUI
 
 class SwapButton: SpringButton {
-  private let gradientView = BraveGradientView { traitCollection in
-    if traitCollection.userInterfaceStyle == .dark {
-      return .darkGradient02
-    }
-    return .lightGradient02
-  }.then {
+  private let gradientView = BraveGradientView.alternateGradient02.then {
     $0.isUserInteractionEnabled = false
     $0.clipsToBounds = true
   }
