@@ -239,7 +239,9 @@ extension FavoritesViewController: KeyboardHelperDelegate {
             sections.append(.pasteboard)
         }
         
-        sections.append(.favorites)
+        if let favoritesObjects = favoritesFRC.fetchedObjects, !favoritesObjects.isEmpty {
+            sections.append(.favorites)
+        }
         
         if !tabType.isPrivate &&
             Preferences.Search.shouldShowRecentSearches.value, RecentSearch.totalCount() > 0 {
@@ -522,9 +524,12 @@ extension FavoritesViewController {
 
 // MARK: - Diffable data source + NSFetchedResultsControllerDelegate
 extension FavoritesViewController: NSFetchedResultsControllerDelegate {
+    private var favoritesSectionExists: Bool {
+        availableSections.contains(.favorites)
+    }
     
     private var recentSearchesSectionExists: Bool {
-        availableSections[safe: Section.recentSearches.rawValue] != nil
+        availableSections.contains(.recentSearches)
     }
     
     /// Performs first frc fetches and handles setting first snaphot.
@@ -540,11 +545,13 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
         var snapshot = Snapshot()
         snapshot.appendSections(availableSections)
         
-        let favorites: [DataWrapper] = favoritesFRC.fetchedObjects?.compactMap {
+        let fetchedFavorites: [DataWrapper]? = favoritesFRC.fetchedObjects?.compactMap {
             return .favorite(FavoriteDiffable(objectID: $0.objectID, title: $0.displayTitle, url: $0.url))
-        } ?? []
+        }
         
-        snapshot.appendItems(favorites, toSection: .favorites)
+        if favoritesSectionExists, let favorites = fetchedFavorites {
+            snapshot.appendItems(favorites, toSection: .favorites)
+        }
         
         if recentSearchesSectionExists, let objects = recentSearchesFRC.fetchedObjects {
             snapshot.appendItems(objects.compactMap({ .recentSearch($0.objectID) }),
@@ -571,18 +578,20 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
         if controller === favoritesFRC {
             var items = [DataWrapper]()
             
-            ids.forEach {
-                // Fetch existing item from the DB then add it to snapshot.
-                // This way the snapshot will be able to detect changes on the object.
-                // Non existing objects are not added, this simulates removing the item.
-                if let existingItem = controller.managedObjectContext.object(with: $0) as? Favorite {
-                    items.append(.favorite(FavoriteDiffable(objectID: $0,
-                                                            title: existingItem.title,
-                                                            url: existingItem.url)))
+            if favoritesSectionExists {
+                ids.forEach {
+                    // Fetch existing item from the DB then add it to snapshot.
+                    // This way the snapshot will be able to detect changes on the object.
+                    // Non existing objects are not added, this simulates removing the item.
+                    if let existingItem = controller.managedObjectContext.object(with: $0) as? Favorite {
+                        items.append(.favorite(FavoriteDiffable(objectID: $0,
+                                                                title: existingItem.title,
+                                                                url: existingItem.url)))
+                    }
                 }
+                
+                newSnapshot.appendItems(items, toSection: .favorites)
             }
-            
-            newSnapshot.appendItems(items, toSection: .favorites)
             
             // New snapshot is created, items from the other frc must be added to it.
             if recentSearchesSectionExists {
@@ -591,9 +600,11 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
         }
         
         if controller === recentSearchesFRC {
-            // New snapshot is created, items from the other frc must be added to it.
-            newSnapshot.appendItems(currentSnapshot.itemIdentifiers(inSection: .favorites),
-                                    toSection: .favorites)
+            if favoritesSectionExists {
+                // New snapshot is created, items from the other frc must be added to it.
+                newSnapshot.appendItems(currentSnapshot.itemIdentifiers(inSection: .favorites),
+                                        toSection: .favorites)
+            }
             
             if recentSearchesSectionExists {
                 var items = [DataWrapper]()
