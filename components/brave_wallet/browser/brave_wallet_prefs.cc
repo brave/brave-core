@@ -50,7 +50,6 @@ base::Value GetDefaultUserAssets() {
 
 namespace brave_wallet {
 
-// static
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
       kBraveWalletWeb3Provider,
@@ -71,7 +70,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                    GetDefaultUserAssets());
 }
 
-// static
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
   // Added 08/2021
@@ -81,6 +79,15 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterIntegerPref(kBraveWalletDefaultKeyringAccountNum, 0);
   registry->RegisterBooleanPref(kBraveWalletBackupComplete, false);
   registry->RegisterListPref(kBraveWalletAccountNames);
+}
+
+void ClearProfilePrefs(PrefService* prefs) {
+  DCHECK(prefs);
+  prefs->ClearPref(kBraveWalletCustomNetworks);
+  prefs->ClearPref(kBraveWalletCurrentChainId);
+  prefs->ClearPref(kBraveWalletTransactions);
+  prefs->ClearPref(kBraveWalletUserAssets);
+  prefs->ClearPref(kBraveWalletKeyrings);
 }
 
 }  // namespace brave_wallet

@@ -11,6 +11,7 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/hd_key.h"
@@ -702,11 +703,9 @@ void KeyringController::IsLocked(IsLockedCallback callback) {
 
 void KeyringController::Reset() {
   encryptor_.reset();
-
   default_keyring_.reset();
 
-  prefs_->ClearPref(kBraveWalletKeyrings);
-  EthJsonRpcController::ClearProfilePrefs(prefs_);
+  ClearProfilePrefs(prefs_);
 }
 
 bool KeyringController::GetPrefInBytesForKeyring(const std::string& key,

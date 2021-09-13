@@ -44,8 +44,6 @@ class EthJsonRpcController : public KeyedService,
       PrefService* prefs);
   ~EthJsonRpcController() override;
 
-  static void ClearProfilePrefs(PrefService* prefs);
-
   struct EthereumChainRequest {
     EthereumChainRequest() {}
     EthereumChainRequest(const GURL& origin, mojom::EthereumChain request)
