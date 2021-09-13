@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_RENDERER_SPEEDREADER_JS_HANDLER_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_RENDERER_SPEEDREADER_JS_HANDLER_H_
 
-#include "base/memory/weak_ptr.h"
+#include <string>
+
+#include "brave/components/speedreader/common/speedreader_ui.mojom-forward.h"
 #include "brave/components/speedreader/common/speedreader_ui.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -23,9 +25,11 @@ class SpeedreaderJsHandler : public mojom::SpeedreaderUIObserver {
 
  public:
   void EnsureConnected();
+  void ExecuteScript(const std::string& script);
+  void ApplyPreferences(mojom::SpeedreaderUIPreferencesPtr prefs);
 
   // mojom::SpeedreaderUIObserver:
-  void OnFontScaleChanged(float scale) override;
+  void OnPreferencesChanged(mojom::SpeedreaderUIPreferencesPtr prefs) override;
 
   content::RenderFrame* render_frame_;
   int32_t isolated_world_id_;
@@ -33,8 +37,6 @@ class SpeedreaderJsHandler : public mojom::SpeedreaderUIObserver {
   // UI service interface
   mojo::Receiver<mojom::SpeedreaderUIObserver> receiver_{this};
   mojo::Remote<mojom::SpeedreaderUI> remote_;
-
-  base::WeakPtrFactory<SpeedreaderJsHandler> weak_ptr_factory_{this};
 };
 
 }  // namespace speedreader

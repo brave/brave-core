@@ -6,9 +6,29 @@ module speedreader.mojom;
 
 import "mojo/public/mojom/base/values.mojom";
 
+enum FontStyle {
+  SERIF = 0,
+  SANS_SERIF = 1
+};
+
+enum Theme {
+  LIGHT_THEME_DEFAULT = 0,
+  LIGHT_THEME_MILK = 1,
+  LIGHT_THEME_SEPIA = 2,
+  DARK_THEME_BROWN = 3,
+  DARK_THEME_BLACK = 4
+};
+
+struct SpeedreaderUIPreferences {
+  double font_scale;
+  bool show_images;
+  FontStyle font_style;
+  Theme theme;
+};
+
 // Observer interface to notify the render process of Speedreader style changes.
 interface SpeedreaderUIObserver {
-  OnFontScaleChanged(float scale);
+  OnPreferencesChanged(SpeedreaderUIPreferences prefs);
 };
 
 // The browser process can register the renderers

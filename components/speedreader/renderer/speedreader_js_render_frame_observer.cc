@@ -31,13 +31,15 @@ void SpeedreaderJsRenderFrameObserver::DidCreateScriptContext(
                      base::Unretained(this)));
 }
 
-void SpeedreaderJsRenderFrameObserver::OnDestruct() {
-  delete this;
+void SpeedreaderJsRenderFrameObserver::OnPageDistillResult(bool is_distilled) {
+  if (is_distilled) {
+    speedreader_js_handler_ = std::make_unique<SpeedreaderJsHandler>(
+        render_frame(), isolated_world_id_);
+  }
 }
 
-void SpeedreaderJsRenderFrameObserver::OnPageDistillResult(bool is_distilled) {
-  speedreader_js_handler_ = std::make_unique<SpeedreaderJsHandler>(
-      render_frame(), isolated_world_id_);
+void SpeedreaderJsRenderFrameObserver::OnDestruct() {
+  delete this;
 }
 
 }  // namespace speedreader
