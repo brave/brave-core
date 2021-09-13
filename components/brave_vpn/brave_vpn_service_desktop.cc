@@ -67,22 +67,17 @@ void BraveVpnServiceDesktop::Shutdown() {
   BraveVpnService::Shutdown();
 
   observed_.Reset();
+  receivers_.Clear();
   observers_.Clear();
 }
 
 void BraveVpnServiceDesktop::OnCreated(const std::string& name) {
-  for (Observer& obs : observers_)
-    obs.OnConnectionCreated();
-
-  for (const auto& obs : mojo_observers_)
+  for (const auto& obs : observers_)
     obs->OnConnectionCreated();
 }
 
 void BraveVpnServiceDesktop::OnRemoved(const std::string& name) {
-  for (Observer& obs : observers_)
-    obs.OnConnectionRemoved();
-
-  for (const auto& obs : mojo_observers_)
+  for (const auto& obs : observers_)
     obs->OnConnectionRemoved();
 }
 
@@ -92,10 +87,7 @@ void BraveVpnServiceDesktop::OnConnected(const std::string& name) {
 
   state_ = ConnectionState::CONNECTED;
 
-  for (Observer& obs : observers_)
-    obs.OnConnectionStateChanged(ConnectionState::CONNECTED);
-
-  for (const auto& obs : mojo_observers_)
+  for (const auto& obs : observers_)
     obs->OnConnectionStateChanged(ConnectionState::CONNECTED);
 }
 
@@ -105,10 +97,7 @@ void BraveVpnServiceDesktop::OnIsConnecting(const std::string& name) {
 
   state_ = ConnectionState::CONNECTING;
 
-  for (Observer& obs : observers_)
-    obs.OnConnectionStateChanged(ConnectionState::CONNECTING);
-
-  for (const auto& obs : mojo_observers_)
+  for (const auto& obs : observers_)
     obs->OnConnectionStateChanged(ConnectionState::CONNECTING);
 }
 
@@ -118,10 +107,7 @@ void BraveVpnServiceDesktop::OnConnectFailed(const std::string& name) {
 
   state_ = ConnectionState::CONNECT_FAILED;
 
-  for (Observer& obs : observers_)
-    obs.OnConnectionStateChanged(ConnectionState::CONNECT_FAILED);
-
-  for (const auto& obs : mojo_observers_)
+  for (const auto& obs : observers_)
     obs->OnConnectionStateChanged(ConnectionState::CONNECT_FAILED);
 }
 
@@ -131,10 +117,7 @@ void BraveVpnServiceDesktop::OnDisconnected(const std::string& name) {
 
   state_ = ConnectionState::DISCONNECTED;
 
-  for (Observer& obs : observers_)
-    obs.OnConnectionStateChanged(ConnectionState::DISCONNECTED);
-
-  for (const auto& obs : mojo_observers_)
+  for (const auto& obs : observers_)
     obs->OnConnectionStateChanged(ConnectionState::DISCONNECTED);
 }
 
@@ -144,10 +127,7 @@ void BraveVpnServiceDesktop::OnIsDisconnecting(const std::string& name) {
 
   state_ = ConnectionState::DISCONNECTING;
 
-  for (Observer& obs : observers_)
-    obs.OnConnectionStateChanged(ConnectionState::DISCONNECTING);
-
-  for (const auto& obs : mojo_observers_)
+  for (const auto& obs : observers_)
     obs->OnConnectionStateChanged(ConnectionState::DISCONNECTING);
 }
 
@@ -187,17 +167,9 @@ void BraveVpnServiceDesktop::CheckPurchasedStatus() {
   NOTIMPLEMENTED();
 }
 
-void BraveVpnServiceDesktop::AddObserver(Observer* observer) {
-  observers_.AddObserver(observer);
-}
-
 void BraveVpnServiceDesktop::AddObserver(
     mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> observer) {
-  mojo_observers_.Add(std::move(observer));
-}
-
-void BraveVpnServiceDesktop::RemoveObserver(Observer* observer) {
-  observers_.RemoveObserver(observer);
+  observers_.Add(std::move(observer));
 }
 
 brave_vpn::BraveVPNConnectionInfo BraveVpnServiceDesktop::GetConnectionInfo() {
