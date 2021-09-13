@@ -144,12 +144,8 @@ BraveReferralsHeaders::BraveReferralsHeaders() {
   // https://github.com/brave/brave-browser/wiki/Custom-Headers for more
   // information. Custom headers are deprecated and new partners use the
   // navigator.brave.isBrave() JavaScript API.
-  constexpr char kPartnerUpholdName[] = "uphold";
   constexpr char kPartnerGrammarlyName[] = "grammarly";
 
-  referral_headers_.push_back(CreateReferralHeader(
-      kPartnerUpholdName, {"sandbox.uphold.com", "api-sandbox.uphold.com",
-                           "uphold.com", "api.uphold.com"}));
   referral_headers_.push_back(CreateReferralHeader(
       kPartnerGrammarlyName, {"www.grammarly.com", "grammarly.com",
                               "static.grammarly.com", "gnar.grammarly.com"}));
