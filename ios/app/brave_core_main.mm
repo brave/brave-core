@@ -198,55 +198,10 @@ static bool CustomLogHandler(int severity,
   return _syncProfileService;
 }
 
-- (id<BraveWalletKeyringController>)keyringController {
-  if (!_keyringController) {
-    auto* controller =
-        brave_wallet::KeyringControllerFactory::GetForBrowserState(
-            _mainBrowserState);
-    _keyringController = [[BraveWalletKeyringControllerImpl alloc]
-        initWithKeyringController:controller];
-  }
-  return _keyringController;
-}
-
-- (id<BraveWalletEthJsonRpcController>)ethJsonRpcController {
-  if (!_ethJsonRpcController) {
-    auto* controller =
-        brave_wallet::EthJsonRpcControllerFactory::GetForBrowserState(
-            _mainBrowserState);
-    _ethJsonRpcController = [[BraveWalletEthJsonRpcControllerImpl alloc]
-        initWithEthJsonRpcController:controller];
-  }
-  return _ethJsonRpcController;
-}
-
-- (id<BraveWalletSwapController>)swapController {
-  if (!_swapController) {
-    auto* controller = brave_wallet::SwapControllerFactory::GetForBrowserState(
-        _mainBrowserState);
-    _swapController = [[BraveWalletSwapControllerImpl alloc]
-        initWithSwapController:controller];
-  }
-  return _swapController;
-}
-
-- (id<BraveWalletERCTokenRegistry>)ercTokenRegistry {
-  if (!_ercTokenRegistry) {
-    auto* registry = brave_wallet::ERCTokenRegistry::GetInstance();
-    _ercTokenRegistry = [[BraveWalletERCTokenRegistryImpl alloc]
-        initWithERCTokenRegistry:registry];
-  }
-  return _ercTokenRegistry;
-}
-
-- (id<BraveWalletEthTxController>)ethTxController {
-  if (!_ethTxController) {
-    auto* controller = brave_wallet::EthTxControllerFactory::GetForBrowserState(
-        _mainBrowserState);
-    _ethTxController = [[BraveWalletEthTxControllerImpl alloc]
-        initWithEthTxController:controller];
-  }
-  return _ethTxController;
++ (id<BraveWalletERCTokenRegistry>)ercTokenRegistry {
+  auto* registry = brave_wallet::ERCTokenRegistry::GetInstance();
+  return [[BraveWalletERCTokenRegistryImpl alloc]
+      initWithERCTokenRegistry:registry];
 }
 
 @end

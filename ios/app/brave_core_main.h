@@ -7,6 +7,7 @@
 #define BRAVE_IOS_APP_BRAVE_CORE_MAIN_H_
 
 #import <Foundation/Foundation.h>
+
 #include "brave_wallet.mojom.objc.h"
 
 @class BraveBookmarksAPI;
@@ -40,17 +41,7 @@ OBJC_EXPORT
 
 - (void)setUserAgent:(NSString*)userAgent;
 
-@property(nonatomic, readonly) id<BraveWalletKeyringController>
-    keyringController;
-
-@property(nonatomic, readonly) id<BraveWalletEthJsonRpcController>
-    ethJsonRpcController;
-
-@property(nonatomic, readonly) id<BraveWalletSwapController> swapController;
-
-@property(nonatomic, readonly) id<BraveWalletERCTokenRegistry> ercTokenRegistry;
-
-@property(nonatomic, readonly) id<BraveWalletEthTxController> ethTxController;
+@property(class, readonly) id<BraveWalletERCTokenRegistry> ercTokenRegistry;
 
 @end
 

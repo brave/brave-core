@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#include "keyed_service_factory_wrapper.h"
+#include "brave/ios/components/keyed_service/keyed_service_factory_wrapper.h"
 
 class ChromeBrowserState;
 

@@ -5,6 +5,8 @@
 
 #include "brave/ios/browser/brave_wallet/eth_tx_controller_factory.h"
 
+#include <utility>
+
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
