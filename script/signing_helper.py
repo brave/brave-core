@@ -124,6 +124,15 @@ def AddBravePartsForSigning(parts, config):
     parts['helper-app'].options = (CodeSignOptions.RESTRICT
                                    + CodeSignOptions.KILL
                                    + CodeSignOptions.HARDENED_RUNTIME)
+    # Alerts helper is not being distributed with Chrome yet and, because it
+    # uses the same identifier as the current Alerts service, the signing fails.
+    # For now we can set a different identifier and then remove this change once
+    # the helper starts being bundled into the distribution.
+    # Cr94 update: Alrts helper is now distributed with Chrome and the conflicting
+    # XPC Notification service is supposed to be gone, but we still end up with
+    # the signing error. So, let's keep this override and see if it causes any
+    # issues.
+    parts['helper-alerts'].identifier = '{}.helper.alerts'.format(config.base_bundle_id)
 
     return parts
 
