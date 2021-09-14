@@ -263,6 +263,9 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
               permission_request_manager->Requests()[i]->requesting_origin());
   }
 
+  // Remove the observer before closing the tab.
+  observer.reset();
+
   // Close tab with active request pending.
   content::WebContentsDestroyedWatcher tab_destroyed_watcher(web_contents());
   browser()->tab_strip_model()->CloseWebContentsAt(0,
