@@ -69,10 +69,10 @@ void BraveAppearanceHandler::RegisterMessages() {
 
 void BraveAppearanceHandler::SetBraveThemeType(const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
-  CHECK(args[0].is_int());
+  CHECK(args->GetList()[0].is_int());
   AllowJavascript();
 
-  int int_type = args[0].GetInt();
+  int int_type = args->GetList()[0].GetInt();
   dark_mode::SetBraveDarkModeType(
       static_cast<dark_mode::BraveDarkModeType>(int_type));
 }
