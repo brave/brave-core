@@ -71,7 +71,7 @@ struct CryptoSwapView: View {
   
   var body: some View {
     NavigationView {
-      UIKitScrollView(axis: .vertical) {
+      ScrollView(.vertical) {
         VStack {
           HStack {
             AccountView(address: "0x", name: "Account 1")

@@ -12,7 +12,7 @@ struct RestoreWalletContainerView: View {
   @ObservedObject var keyringStore: KeyringStore
   
   var body: some View {
-    UIKitScrollView(axis: .vertical) {
+    ScrollView(.vertical) {
       RestoreWalletView(keyringStore: keyringStore)
         .background(Color(.braveBackground))
     }
