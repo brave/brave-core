@@ -120,13 +120,6 @@ CHAR_LIMIT guidelines:
         Automatically sends crash reports to Brave
       </message>
 
-      <message name="IDS_PRIVACY_SANDBOX_TOGGLE_DESCRIPTION" desc="Description for the Privacy Sandbox toggle.">
-        When enabled, sites may use the privacy-preserving techniques shown here to provide their content and services. These include alternatives to cross-site tracking. More trials may be added over time.
-
-<ph name="BEGIN_LIST_ITEM1">&lt;li1&gt;</ph>Advertisers can learn when thousands of users share a similar interest – like a crowd at a concert — and select ads for the crowd, rather than an individual profile.<ph name="END_LIST_ITEM1">&lt;/li1&gt;</ph>
-
-<ph name="BEGIN_LIST_ITEM2">&lt;li2&gt;</ph>Advertisers can study the effectiveness of ads in a way that does not track you across sites.<ph name="END_LIST_ITEM2">&lt;/li2&gt;</ph>
-      </message>
       <message name="IDS_DATA_REDUCTION_DESCRIPTION_LITE_MODE" desc="Text describing how the Lite mode feature works. Seen only before the user has enabled the feature.">
         When Lite mode is on, Brave uses Brave servers to make pages load faster. Lite mode rewrites very slow pages to load only essential content. Lite mode does not apply to Private tabs.
       </message>
