@@ -534,9 +534,15 @@ const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
   }, { timeout: maxTimeMSBeforeStart })
 }
 
-if (!CC.observingHasStarted) {
-  CC.observingHasStarted = true
-  scheduleQueuePump(CC.hide1pContent, CC.generichide)
-} else {
-  scheduleQueuePump(false, false)
+const tryScheduleQueuePump = () => {
+  if (!CC.observingHasStarted) {
+    CC.observingHasStarted = true
+    scheduleQueuePump(CC.hide1pContent, CC.generichide)
+  } else {
+    scheduleQueuePump(false, false)
+  }
 }
+
+CC.tryScheduleQueuePump = CC.tryScheduleQueuePump || tryScheduleQueuePump
+
+tryScheduleQueuePump()
