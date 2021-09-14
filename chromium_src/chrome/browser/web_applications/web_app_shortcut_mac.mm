@@ -18,8 +18,7 @@ base::FilePath GetLocalizableBraveAppShortcutsSubdirName() {
   // clang-format off
   static const char kBraveBrowserDevelopmentAppDirName[] =
       "Brave Browser Development Apps.localized";
-  static const char kBraveBrowserAppDirName[] =
-      "Brave Browser Apps.localized";
+  static const char kBraveBrowserAppDirName[] = "Brave Browser Apps.localized";
   static const char kBraveBrowserBetaAppDirName[] =
       "Brave Browser Beta Apps.localized";
   static const char kBraveBrowserDevAppDirName[] =
