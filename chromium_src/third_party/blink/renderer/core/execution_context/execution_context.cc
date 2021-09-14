@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+#include <utility>
+
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
 #include "base/command_line.h"
@@ -33,16 +36,19 @@ float ConstantMultiplier(double fudge_factor, float value, size_t index) {
   return value * fudge_factor;
 }
 
-float PseudoRandomSequence(uint64_t seed, float value, size_t index) {
-  static std::mt19937_64 prng;
+float PseudoRandomSequence(std::shared_ptr<std::mt19937_64> prng,
+                           uint64_t seed,
+                           float value,
+                           size_t index) {
   const double maxUInt64AsDouble = UINT64_MAX;
   if (index == 0) {
     // start of loop, reset to initial seed which was passed in and is based on
     // the domain key
-    prng = std::mt19937_64(seed);
+    auto reset = std::make_shared<std::mt19937_64>(std::mt19937_64(seed));
+    std::swap(prng, reset);
   }
   // return pseudo-random float between 0 and 0.1
-  return (prng() / maxUInt64AsDouble) / 10;
+  return ((*prng)() / maxUInt64AsDouble) / 10;
 }
 
 }  // namespace
@@ -139,7 +145,8 @@ AudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
       }
       case BraveFarblingLevel::MAXIMUM: {
         uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
-        return base::BindRepeating(&PseudoRandomSequence, seed);
+        auto prng = std::make_shared<std::mt19937_64>(std::mt19937_64(seed));
+        return base::BindRepeating(&PseudoRandomSequence, prng, seed);
       }
     }
   }
