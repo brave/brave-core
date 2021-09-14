@@ -54,6 +54,7 @@ struct AccountsView: View {
           .listRowInsets(.zero)
           .textCase(.none)
           .font(.body)
+          .foregroundColor(.primary)
       ) {
       }
       Section(
