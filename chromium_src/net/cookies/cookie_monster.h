@@ -41,9 +41,11 @@ class NET_EXPORT CookieMonster : public ChromiumCookieMonster {
                                const GURL& source_url,
                                const CookieOptions& options,
                                SetCookiesCallback callback) override;
-  void GetCookieListWithOptionsAsync(const GURL& url,
-                                     const CookieOptions& options,
-                                     GetCookieListCallback callback) override;
+  void GetCookieListWithOptionsAsync(
+      const GURL& url,
+      const CookieOptions& options,
+      const absl::optional<net::CookiePartitionKey>& cookie_partition_key,
+      GetCookieListCallback callback) override;
 
  private:
   NetLogWithSource net_log_;
