@@ -286,7 +286,7 @@ std::string HTTPSEverywhereService::ApplyHTTPSRule(
       const base::ListValue* eValues = nullptr;
       exclusion->GetAsList(&eValues);
       if (nullptr != eValues) {
-        for (size_t j = 0; j < eValues->GetSize(); ++j) {
+        for (size_t j = 0; j < eValues->GetList().size(); ++j) {
           const base::Value* pValue = nullptr;
           if (!eValues->Get(j, &pValue)) {
             continue;
@@ -322,7 +322,7 @@ std::string HTTPSEverywhereService::ApplyHTTPSRule(
       return "";
     }
 
-    for (size_t j = 0; j < rValues->GetSize(); ++j) {
+    for (size_t j = 0; j < rValues->GetList().size(); ++j) {
       const base::Value* pValue = nullptr;
       if (!rValues->Get(j, &pValue)) {
         continue;

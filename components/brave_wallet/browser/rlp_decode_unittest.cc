@@ -26,7 +26,7 @@ std::string RLPTestValueToString(const base::Value& val) {
     std::string elems;
     const base::ListValue* list;
     val.GetAsList(&list);
-    for (size_t i = 0; i < list->GetSize(); i++) {
+    for (size_t i = 0; i < list->GetList().size(); i++) {
       const base::Value* child;
       list->Get(i, &child);
       if (elems.size()) {
