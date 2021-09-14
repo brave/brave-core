@@ -32,6 +32,7 @@ enum class ProviderErrors {
 
 constexpr char kEthAccounts[] = "eth_accounts";
 constexpr char kEthRequestAccounts[] = "eth_requestAccounts";
+constexpr char kEthSendTransaction[] = "eth_sendTransaction";
 constexpr char kMethod[] = "method";
 constexpr char kParams[] = "params";
 constexpr char kAddEthereumChainMethod[] = "wallet_addEthereumChain";
