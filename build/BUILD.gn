@@ -5,6 +5,8 @@ brave_include_dirs_ = [ "//brave/chromium_src" ]
 
 config("compiler") {
   include_dirs = brave_include_dirs_
+  defines = brave_service_key_defines
+  defines += brave_updater_defines
 }
 
 # do not expose this as a public config anywhere

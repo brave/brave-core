@@ -147,8 +147,6 @@ test("brave_unit_tests") {
     "//components/sync_device_info/device_info_sync_bridge_unittest.cc",
   ]
 
-  defines = brave_service_key_defines
-
   deps = [
     ":crypto_unittests",
     ":test_support",

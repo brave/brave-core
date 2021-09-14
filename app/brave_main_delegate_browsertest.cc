@@ -9,6 +9,7 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/component_updater/component_updater_switches.h"
 #include "components/embedder_support/switches.h"
 #include "components/federated_learning/features/features.h"
 #include "components/language/core/common/language_experiments.h"
@@ -49,6 +50,15 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest,
       switches::kDisableDomainReliability));
   EXPECT_FALSE(domain_reliability::DomainReliabilityServiceFactory::
                    ShouldCreateService());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest,
+                       ComponentUpdaterReplacement) {
+  EXPECT_TRUE(base::CommandLine::ForCurrentProcess()->HasSwitch(
+      switches::kComponentUpdater));
+  EXPECT_EQ(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+                switches::kComponentUpdater),
+            "url-source=" UPDATER_PROD_ENDPOINT);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {

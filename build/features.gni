@@ -1,5 +1,13 @@
 declare_args() {
   brave_services_key = ""
+  updater_dev_endpoint = ""
+  updater_prod_endpoint = ""
+}
+
+if (is_official_build) {
+  assert(brave_services_key != "")
+  assert(updater_dev_endpoint != "")
+  assert(updater_prod_endpoint != "")
 }
 
 brave_service_key_defines = []
@@ -8,3 +16,8 @@ if (brave_services_key != "") {
 } else {
   brave_service_key_defines += [ "BRAVE_SERVICES_KEY=\"dummytoken\"" ]
 }
+
+brave_updater_defines = [
+  "UPDATER_DEV_ENDPOINT=\"$updater_dev_endpoint\"",
+  "UPDATER_PROD_ENDPOINT=\"$updater_prod_endpoint\"",
+]

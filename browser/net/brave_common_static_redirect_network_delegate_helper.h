@@ -14,8 +14,6 @@ class GURL;
 
 namespace brave {
 
-extern const char kUpdaterTestingEndpoint[];
-
 int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx);
@@ -24,7 +22,6 @@ int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
     const GURL& url,
     GURL* new_url);
 
-void SetUpdateURLHostForTesting(bool testing);
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_NET_BRAVE_COMMON_STATIC_REDIRECT_NETWORK_DELEGATE_HELPER_H_

@@ -8,8 +8,6 @@ import("//brave/build/features.gni")
 source_set("unit_tests") {
   testonly = true
 
-  defines = brave_service_key_defines
-
   public_deps = [
     "//testing/gmock",
     "//testing/gtest",
