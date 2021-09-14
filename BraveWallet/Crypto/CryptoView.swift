@@ -57,7 +57,7 @@ public struct CryptoView: View {
       }
       if isShowingUnlockView {
         NavigationView {
-          UIKitScrollView(axis: .vertical) {
+          ScrollView(.vertical) {
             UnlockWalletView(keyringStore: keyringStore)
           }
           .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
