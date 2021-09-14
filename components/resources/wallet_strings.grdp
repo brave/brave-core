@@ -10,5 +10,19 @@
     <message name="IDS_WALLET_CHAIN_EXISTS" desc="The text of the response for wallet_addEthereumChain call with existing chain id">This Chain ID is currently used</message>
     <message name="IDS_WALLET_INTERNAL_ERROR" desc="The text of the response for wallet_addEthereumChain call with internal error">An internal error has occurred</message>
     <message name="IDS_WALLET_ALREADY_IN_PROGRESS_ERROR" desc="The text of the response for wallet_addEthereumChain call for existing request">A request is already in progress</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_NO_TX_DATA" desc="The text of the response for eth_sendTransaction">Transaction data is missing</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED" desc="The text of the response for eth_sendTransaction">'from' is not authorized to send transactions</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_TO_OR_DATA" desc="Transaction data is not validated">Transaction data 'to' or 'data' must be specified</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_NONCE_INVALID" desc="Transaction data is not validated">Transaction data 'nonce' is not valid</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GAS_PRICE_INVALID" desc="Transaction data is not validated">Transaction data 'gasPrice' is not valid</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GAS_LIMIT_INVALID" desc="Transaction data is not validated">Transaction data 'gas' is not valid</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_VALUE_INVALID" desc="Transaction data is not validated">Transaction data 'value' is not valid</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_TO_INVALID" desc="Transaction data is not validated">Transaction data 'to' must be a valid address when specified</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GAS_PRICING_EXISTS" desc="Transaction data is not validated">Transaction data 'gasPrice' or 'maxFeePerGas' must be specified</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_CHAIN_ID_INVALID" desc="Transaction data is not validated">Transaction data 'chainId' is not valid</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_MAX_FEE_PER_GAS_INVALID" desc="Transaction data is not validated">Transaction data 'maxFeePerGas' is not valid</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_MAX_PRIORITY_FEE_PER_GAS_INVALID" desc="Transaction data is not validated">Transaction data 'maxPriorityFeePerGas' is not valid</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_CONVERT_TX_DATA" desc="Transaction data is not validated">Could not convert transaction data</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_FROM_EMPTY" desc="Transaction data is not validated">Transaction data 'from' must be specified</message>
   </if>
 </grit-part>
