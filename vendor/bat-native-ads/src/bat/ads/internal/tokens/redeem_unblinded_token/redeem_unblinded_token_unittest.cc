@@ -6,6 +6,7 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token.h"
 
 #include <memory>
+#include <string>
 
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder.h"

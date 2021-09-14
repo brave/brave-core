@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "bat/ads/ad_info.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 

@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <deque>
 
-#include "bat/ads/internal/ad_events/ad_event_info.h"
+#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 
 namespace ads {
 

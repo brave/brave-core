@@ -6,10 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CREATIVE_ADS_DATABASE_TABLE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CREATIVE_ADS_DATABASE_TABLE_H_
 
+#include <functional>
 #include <string>
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/bundle/creative_ad_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 

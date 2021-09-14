@@ -45,7 +45,8 @@ bool CategoryContentInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("opt_action")) {
-    opt_action = static_cast<OptAction>(document["opt_action"].GetInt());
+    opt_action =
+        static_cast<CategoryContentActionType>(document["opt_action"].GetInt());
   }
 
   return true;

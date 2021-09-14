@@ -10,6 +10,7 @@
 
 #include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/unittest_base.h"

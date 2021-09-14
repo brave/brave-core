@@ -11,7 +11,6 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
-#include "base/time/time.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
@@ -26,6 +25,11 @@
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+namespace base {
+class Time;
+class TimeDelta;
+}  // namespace base
 
 namespace ads {
 

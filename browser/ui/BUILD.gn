@@ -292,6 +292,7 @@ source_set("ui") {
     "//content/public/common",
     "//services/network/public/cpp",
     "//skia",
+    "//third_party/abseil-cpp:absl",
     "//ui/accessibility",
     "//ui/base",
     "//ui/gfx",

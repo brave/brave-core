@@ -8,7 +8,10 @@
 
 #include <string>
 
-#include "base/memory/singleton.h"
+namespace base {
+template <typename T>
+struct DefaultSingletonTraits;
+}  // namespace base
 
 namespace ads {
 

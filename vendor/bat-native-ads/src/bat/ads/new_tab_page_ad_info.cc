@@ -10,8 +10,6 @@
 
 namespace ads {
 
-struct ConfirmationType;
-
 NewTabPageAdInfo::NewTabPageAdInfo() = default;
 
 NewTabPageAdInfo::NewTabPageAdInfo(const NewTabPageAdInfo& info) = default;

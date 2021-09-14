@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/features/features_util.h"
 
+#include "base/feature_list.h"
+#include "base/time/time.h"
 #include "base/time/time_delta_from_string.h"
 #include "bat/ads/internal/logging.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

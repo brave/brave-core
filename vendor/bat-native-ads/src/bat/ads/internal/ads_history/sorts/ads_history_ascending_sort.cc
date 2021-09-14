@@ -7,6 +7,8 @@
 
 #include <algorithm>
 
+#include "bat/ads/ad_history_info.h"
+
 namespace ads {
 
 AdsHistoryAscendingSort::AdsHistoryAscendingSort() = default;

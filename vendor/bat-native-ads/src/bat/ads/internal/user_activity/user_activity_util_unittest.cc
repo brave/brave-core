@@ -6,6 +6,8 @@
 #include "bat/ads/internal/user_activity/user_activity_scoring.h"
 
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/user_activity/user_activity_trigger_info.h"
+#include "bat/ads/internal/user_activity/user_activity_trigger_info_aliases.h"
 #include "bat/ads/internal/user_activity/user_activity_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -16,11 +18,11 @@ TEST(BatAdsUserActivityUtilTest, ToUserActivityTriggers) {
   // Arrange
 
   // Act
-  const UserActivityTriggers triggers =
+  const UserActivityTriggerList triggers =
       ToUserActivityTriggers("05=.3;0C1305=1.0;0C13=0.5");
 
   // Assert
-  UserActivityTriggers expected_triggers;
+  UserActivityTriggerList expected_triggers;
   UserActivityTriggerInfo trigger;
   trigger.event_sequence = "05";
   trigger.score = 0.3;
@@ -39,10 +41,10 @@ TEST(BatAdsUserActivityUtilTest, ToUserActivityTriggersForInvalidTrigger) {
   // Arrange
 
   // Act
-  const UserActivityTriggers triggers = ToUserActivityTriggers("INVALID");
+  const UserActivityTriggerList triggers = ToUserActivityTriggers("INVALID");
 
   // Assert
-  const UserActivityTriggers expected_triggers = {};
+  const UserActivityTriggerList expected_triggers = {};
   EXPECT_EQ(expected_triggers, triggers);
 }
 
@@ -50,11 +52,11 @@ TEST(BatAdsUserActivityUtilTest, ToUserActivityTriggersForMalformedTrigger) {
   // Arrange
 
   // Act
-  const UserActivityTriggers triggers =
+  const UserActivityTriggerList triggers =
       ToUserActivityTriggers("05=.3;0C1305=;=0.5;C1305=1.0");
 
   // Assert
-  UserActivityTriggers expected_triggers;
+  UserActivityTriggerList expected_triggers;
   UserActivityTriggerInfo trigger;
   trigger.event_sequence = "05";
   trigger.score = 0.3;
@@ -67,10 +69,10 @@ TEST(BatAdsUserActivityUtilTest, ToUserActivityTriggersForEmptyTrigger) {
   // Arrange
 
   // Act
-  const UserActivityTriggers triggers = ToUserActivityTriggers("");
+  const UserActivityTriggerList triggers = ToUserActivityTriggers("");
 
   // Assert
-  const UserActivityTriggers expected_triggers = {};
+  const UserActivityTriggerList expected_triggers = {};
   EXPECT_EQ(expected_triggers, triggers);
 }
 

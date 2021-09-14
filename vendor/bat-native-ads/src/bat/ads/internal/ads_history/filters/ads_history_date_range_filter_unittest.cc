@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <limits>
 
+#include "bat/ads/ads_history_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

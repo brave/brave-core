@@ -18,9 +18,14 @@
 #include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
 #include "bat/ads/ad_event_history.h"
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_history_info.h"
 #include "bat/ads/database.h"
+#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/statement_info.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave_ads.h"
@@ -486,9 +491,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   const uint64_t from_timestamp = 0;
   const uint64_t to_timestamp = std::numeric_limits<uint64_t>::max();
 
-  const auto history = ads->GetAdsHistory(
-      ads::AdsHistoryInfo::FilterType::kNone,
-      ads::AdsHistoryInfo::SortType::kNone, from_timestamp, to_timestamp);
+  const auto history = ads->GetAdsHistory(ads::AdsHistoryFilterType::kNone,
+                                          ads::AdsHistorySortType::kNone,
+                                          from_timestamp, to_timestamp);
 
   const auto dates = [[NSMutableArray<NSDate*> alloc] init];
   for (const auto& item : history.items) {
@@ -661,7 +666,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->GetAccountStatement(^(bool success, ads::StatementInfo list) {
+  ads->GetAccountStatement(^(const bool success,
+                             const ads::StatementInfo& list) {
     if (!success) {
       completion(0, 0, nil);
       return;
@@ -684,7 +690,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   }
   ads->ToggleAdThumbUp(base::SysNSStringToUTF8(creativeInstanceId),
                        base::SysNSStringToUTF8(creativeSetID),
-                       ads::AdContentInfo::LikeAction::kThumbsUp);
+                       ads::AdContentActionType::kThumbsUp);
 }
 
 - (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId
@@ -694,7 +700,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   }
   ads->ToggleAdThumbDown(base::SysNSStringToUTF8(creativeInstanceId),
                          base::SysNSStringToUTF8(creativeSetID),
-                         ads::AdContentInfo::LikeAction::kThumbsDown);
+                         ads::AdContentActionType::kThumbsDown);
 }
 
 #pragma mark - Configuration

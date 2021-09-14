@@ -9,12 +9,15 @@
 #include <cstdint>
 #include <memory>
 
-#include "base/time/time.h"
-#include "base/values.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/transaction_info.h"
+#include "bat/ads/transaction_info_aliases.h"
+
+namespace base {
+class Time;
+class Value;
+}  // namespace base
 
 namespace ads {
 

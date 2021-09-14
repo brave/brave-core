@@ -8,8 +8,8 @@
 
 #include <functional>
 
-#include "bat/ads/internal/ad_events/ad_event_info.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
+#include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
 
 namespace ads {

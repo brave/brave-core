@@ -7,6 +7,7 @@
 
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/catalog/catalog_state.h"

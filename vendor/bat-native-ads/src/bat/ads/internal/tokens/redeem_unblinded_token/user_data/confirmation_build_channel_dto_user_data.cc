@@ -6,6 +6,7 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_build_channel_dto_user_data.h"
 
 #include "base/check.h"
+#include "base/values.h"
 #include "bat/ads/ads.h"
 
 namespace ads {

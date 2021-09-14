@@ -10,7 +10,7 @@
 #include <string>
 #include <utility>
 
-#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model_values.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model_constants.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"

@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"

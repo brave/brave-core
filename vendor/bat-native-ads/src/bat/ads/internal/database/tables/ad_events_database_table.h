@@ -9,8 +9,8 @@
 #include <functional>
 #include <string>
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/ad_events/ad_event_info.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 

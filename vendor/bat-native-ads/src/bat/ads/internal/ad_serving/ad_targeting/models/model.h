@@ -6,7 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_SERVING_AD_TARGETING_MODELS_MODEL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_SERVING_AD_TARGETING_MODELS_MODEL_H_
 
-#include "bat/ads/internal/segments/segments_alias.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 
 namespace ads {
 namespace ad_targeting {

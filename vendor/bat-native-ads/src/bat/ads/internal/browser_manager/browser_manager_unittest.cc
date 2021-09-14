@@ -50,11 +50,11 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsActiveUserActivityEvent) {
   BrowserManager::Get()->OnActive();
 
   // Assert
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kBrowserWindowIsActive;
   event.time = base::Time::Now();
@@ -82,11 +82,11 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsInactiveUserActivityEvent) {
   BrowserManager::Get()->OnInactive();
 
   // Assert
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kBrowserWindowIsInactive;
   event.time = base::Time::Now();
@@ -113,11 +113,11 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActiveUserActivityEvent) {
   BrowserManager::Get()->OnActive();
 
   // Assert
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kBrowserWindowIsActive;
   event.time = base::Time::Now();
@@ -145,11 +145,11 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackgroundUserActivityEvent) {
   BrowserManager::Get()->OnBackgrounded();
 
   // Assert
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kBrowserDidEnterBackground;
   event.time = base::Time::Now();

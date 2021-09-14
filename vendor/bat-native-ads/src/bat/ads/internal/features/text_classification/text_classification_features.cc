@@ -6,7 +6,7 @@
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
 
 #include "base/metrics/field_trial_params.h"
-#include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor_values.h"
+#include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor_constants.h"
 
 namespace ads {
 namespace features {

@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_PROMOTED_CONTENT_AD_INFO_H_
 
 #include <string>
-#include <vector>
 
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 
@@ -24,9 +23,6 @@ struct CreativePromotedContentAdInfo : CreativeAdInfo {
   std::string title;
   std::string description;
 };
-
-using CreativePromotedContentAdList =
-    std::vector<CreativePromotedContentAdInfo>;
 
 }  // namespace ads
 

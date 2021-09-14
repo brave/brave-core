@@ -41,8 +41,6 @@ struct CreativeAdInfo {
   std::string target_url;
 };
 
-using CreativeAdList = std::vector<CreativeAdInfo>;
-
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_INFO_H_

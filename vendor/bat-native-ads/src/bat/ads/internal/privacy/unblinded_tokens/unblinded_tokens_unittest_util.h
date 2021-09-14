@@ -10,10 +10,12 @@
 #include <vector>
 
 #include "base/values.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info_aliases.h"
 
 namespace ads {
 namespace privacy {
+
+struct UnblindedTokenInfo;
 
 UnblindedTokenInfo CreateUnblindedToken(
     const std::string& unblinded_token_base64);

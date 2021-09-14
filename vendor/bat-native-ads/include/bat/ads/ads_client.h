@@ -7,30 +7,16 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_H_
 
 #include <cstdint>
-#include <functional>
 #include <string>
 #include <vector>
 
-#include "bat/ads/ad_notification_info.h"
+#include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
-using ResultCallback = std::function<void(const bool)>;
-
-using LoadCallback = std::function<void(const bool, const std::string&)>;
-
-using UrlRequestCallback = std::function<void(const mojom::UrlResponse&)>;
-
-using RunDBTransactionCallback =
-    std::function<void(mojom::DBCommandResponsePtr)>;
-
-using GetBrowsingHistoryCallback =
-    std::function<void(const std::vector<std::string>&)>;
-
-using GetScheduledCaptchaCallback =
-    base::OnceCallback<void(const std::string&)>;
+struct AdNotificationInfo;
 
 class ADS_EXPORT AdsClient {
  public:

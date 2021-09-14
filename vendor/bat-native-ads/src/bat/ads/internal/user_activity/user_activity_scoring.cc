@@ -13,14 +13,15 @@
 #include "base/strings/string_util.h"
 #include "bat/ads/internal/features/user_activity/user_activity_features.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
+#include "bat/ads/internal/user_activity/user_activity_trigger_info.h"
 #include "bat/ads/internal/user_activity/user_activity_util.h"
 
 namespace ads {
 
 namespace {
 
-UserActivityTriggers SortTriggers(const UserActivityTriggers& triggers) {
-  UserActivityTriggers mutable_triggers = triggers;
+UserActivityTriggerList SortTriggers(const UserActivityTriggerList& triggers) {
+  UserActivityTriggerList mutable_triggers = triggers;
 
   std::sort(mutable_triggers.begin(), mutable_triggers.end(),
             [](const UserActivityTriggerInfo& lhs,
@@ -33,7 +34,7 @@ UserActivityTriggers SortTriggers(const UserActivityTriggers& triggers) {
   return mutable_triggers;
 }
 
-std::string EncodeEvents(const UserActivityEvents& events) {
+std::string EncodeEvents(const UserActivityEventList& events) {
   std::vector<UserActivityEventType> eligible_events;
   for (const auto& event : events) {
     eligible_events.push_back(event.type);
@@ -45,7 +46,7 @@ std::string EncodeEvents(const UserActivityEvents& events) {
   return base::ToUpperASCII(encoded_eligible_events);
 }
 
-double CalculateScore(const UserActivityTriggers& triggers,
+double CalculateScore(const UserActivityTriggerList& triggers,
                       const std::string& events) {
   std::string mutable_events = events;
 
@@ -76,13 +77,13 @@ double CalculateScore(const UserActivityTriggers& triggers,
 
 }  // namespace
 
-double GetUserActivityScore(const UserActivityTriggers& triggers,
-                            const UserActivityEvents& events) {
+double GetUserActivityScore(const UserActivityTriggerList& triggers,
+                            const UserActivityEventList& events) {
   if (triggers.empty() || events.empty()) {
     return 0.0;
   }
 
-  UserActivityTriggers sorted_triggers = SortTriggers(triggers);
+  UserActivityTriggerList sorted_triggers = SortTriggers(triggers);
 
   const std::string encoded_events = EncodeEvents(events);
 

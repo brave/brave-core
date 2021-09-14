@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_factory.h"
 
+#include "bat/ads/internal/ad_events/ad_event.h"
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_clicked.h"
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_served.h"
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_viewed.h"

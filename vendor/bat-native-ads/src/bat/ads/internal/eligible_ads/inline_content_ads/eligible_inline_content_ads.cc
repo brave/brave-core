@@ -6,6 +6,7 @@
 #include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads.h"
 
 #include "base/check.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ad_pacing/ad_pacing.h"
 #include "bat/ads/internal/ad_priority/ad_priority.h"

@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "bat/ads/internal/conversions/conversion_info.h"
+#include "bat/ads/internal/conversions/conversion_sort_types.h"
 
 namespace ads {
 
@@ -16,8 +16,7 @@ class ConversionsSort;
 
 class ConversionsSortFactory {
  public:
-  static std::unique_ptr<ConversionsSort> Build(
-      const ConversionInfo::SortType type);
+  static std::unique_ptr<ConversionsSort> Build(const ConversionSortType type);
 };
 
 }  // namespace ads

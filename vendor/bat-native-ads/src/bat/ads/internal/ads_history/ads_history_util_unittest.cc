@@ -59,12 +59,11 @@ TEST_F(BatAdsAdsHistoryUtilTest, BuildAd) {
       GetHostFromUrl(ad.target_url);
   expected_ad_history.ad_content.brand_url = ad.target_url;
   expected_ad_history.ad_content.ad_action = ConfirmationType::kViewed;
-  expected_ad_history.ad_content.like_action =
-      AdContentInfo::LikeAction::kNeutral;
+  expected_ad_history.ad_content.like_action = AdContentActionType::kNeutral;
 
   expected_ad_history.category_content.category = ad.segment;
   expected_ad_history.category_content.opt_action =
-      CategoryContentInfo::OptAction::kNone;
+      CategoryContentActionType::kNone;
 
   EXPECT_EQ(expected_ad_history, ad_history);
 }
