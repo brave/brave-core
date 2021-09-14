@@ -7,13 +7,8 @@
 
 package org.chromium.chrome.browser.vpn;
 
-import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
-
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -23,40 +18,22 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
-
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.google.android.material.tabs.TabLayout;
-
-import org.json.JSONException;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.FirstRunFlowSequencer;
-import org.chromium.chrome.browser.init.AsyncInitializationActivity;
-import org.chromium.chrome.browser.vpn.BraveVpnConfirmDialogFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
-import org.chromium.chrome.browser.vpn.BraveVpnObserver;
-import org.chromium.chrome.browser.vpn.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
-import org.chromium.ui.widget.Toast;
-
-import java.util.List;
-import java.util.TimeZone;
 
 public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     private FirstRunFlowSequencer mFirstRunFlowSequencer;
-    private TextView profileTitle;
-    private TextView profileText;
-    private Button installVpnButton;
-    private Button contactSupportButton;
-    private ProgressBar profileProgress;
-    private LinearLayout profileLayout;
+    private TextView mProfileTitle;
+    private TextView mProfileText;
+    private Button mInstallVpnButton;
+    private Button mContactSupportButton;
+    private ProgressBar mProfileProgress;
+    private LinearLayout mProfileLayout;
 
     @Override
     public void onResumeWithNative() {
@@ -81,22 +58,22 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_close_24);
         actionBar.setTitle(getResources().getString(R.string.install_vpn));
 
-        profileProgress = findViewById(R.id.profile_progress);
-        profileLayout = findViewById(R.id.profile_layout);
+        mProfileProgress = findViewById(R.id.profile_progress);
+        mProfileLayout = findViewById(R.id.profile_layout);
 
-        profileTitle = findViewById(R.id.brave_vpn_profile_title);
-        profileText = findViewById(R.id.brave_vpn_profile_text);
+        mProfileTitle = findViewById(R.id.brave_vpn_profile_title);
+        mProfileText = findViewById(R.id.brave_vpn_profile_text);
 
-        installVpnButton = findViewById(R.id.btn_install_profile);
-        installVpnButton.setOnClickListener(new View.OnClickListener() {
+        mInstallVpnButton = findViewById(R.id.btn_install_profile);
+        mInstallVpnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 verifySubscription();
             }
         });
 
-        contactSupportButton = findViewById(R.id.btn_contact_supoort);
-        contactSupportButton.setOnClickListener(new View.OnClickListener() {
+        mContactSupportButton = findViewById(R.id.btn_contact_supoort);
+        mContactSupportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BraveVpnUtils.openBraveVpnSupportActivity(BraveVpnProfileActivity.this);
@@ -141,10 +118,10 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
             braveVpnConfirmDialogFragment.show(
                     getSupportFragmentManager(), "BraveVpnConfirmDialogFragment");
         } else if (resultCode == RESULT_CANCELED) {
-            profileTitle.setText(getResources().getString(R.string.some_context));
-            profileText.setText(getResources().getString(R.string.some_context_text));
-            installVpnButton.setText(getResources().getString(R.string.accept_connection_request));
-            contactSupportButton.setVisibility(View.GONE);
+            mProfileTitle.setText(getResources().getString(R.string.some_context));
+            mProfileText.setText(getResources().getString(R.string.some_context_text));
+            mInstallVpnButton.setText(getResources().getString(R.string.accept_connection_request));
+            mContactSupportButton.setVisibility(View.GONE);
         }
         hideProgress();
         super.onActivityResult(requestCode, resultCode, data);
@@ -155,21 +132,21 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
 
     @Override
     public void showProgress() {
-        if (profileProgress != null) {
-            profileProgress.setVisibility(View.VISIBLE);
+        if (mProfileProgress != null) {
+            mProfileProgress.setVisibility(View.VISIBLE);
         }
-        if (profileLayout != null) {
-            profileLayout.setAlpha(0.4f);
+        if (mProfileLayout != null) {
+            mProfileLayout.setAlpha(0.4f);
         }
     }
 
     @Override
     public void hideProgress() {
-        if (profileProgress != null) {
-            profileProgress.setVisibility(View.GONE);
+        if (mProfileProgress != null) {
+            mProfileProgress.setVisibility(View.GONE);
         }
-        if (profileLayout != null) {
-            profileLayout.setAlpha(1f);
+        if (mProfileLayout != null) {
+            mProfileLayout.setAlpha(1f);
         }
     }
 }

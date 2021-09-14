@@ -85,14 +85,10 @@ public class BraveVpnCalloutDialogFragment extends DialogFragment implements Vie
         WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
         boolean isLandscape = ConfigurationUtils.isLandscape(getActivity());
-        if (isTablet) {
+        if (isTablet || isLandscape) {
             params.width = (int) (0.5 * mDeviceWidth);
         } else {
-            if (isLandscape) {
-                params.width = (int) (0.5 * mDeviceWidth);
-            } else {
-                params.width = (int) (0.9 * mDeviceWidth);
-            }
+            params.width = (int) (0.9 * mDeviceWidth);
         }
         params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
         getDialog().getWindow().setAttributes(params);

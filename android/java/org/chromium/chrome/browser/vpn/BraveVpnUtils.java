@@ -31,19 +31,17 @@ import org.chromium.chrome.browser.vpn.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnServerRegion;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
 public class BraveVpnUtils {
-    public static final int MONTHLY_SUBSCRIPTION = 1;
-    public static final int YEARLY_SUBSCRIPTION = 2;
+    public static final String SUBSCRIPTION_PARAM_TEXT = "subscription";
+    public static final String IAP_ANDROID_PARAM_TEXT = "iap-android";
 
     public static final int BRAVE_VPN_NOTIFICATION_ID = 36;
 
-    public static boolean isServerLocationChanged;
-    private static ProgressDialog progressDialog;
+    public static boolean mIsServerLocationChanged;
+    private static ProgressDialog mProgressDialog;
 
     public static boolean isBraveVpnFeatureEnable() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
@@ -73,12 +71,13 @@ public class BraveVpnUtils {
     }
 
     public static void showProgressDialog(Context context) {
-        progressDialog = ProgressDialog.show(context, "", "Loading. Please wait...", true);
+        mProgressDialog = ProgressDialog.show(
+                context, "", context.getResources().getString(R.string.vpn_loading_text), true);
     }
 
     public static void dismissProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
         }
     }
 

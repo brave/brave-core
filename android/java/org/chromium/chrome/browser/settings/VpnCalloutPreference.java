@@ -9,12 +9,10 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;

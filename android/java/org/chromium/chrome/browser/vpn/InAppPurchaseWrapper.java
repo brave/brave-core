@@ -26,6 +26,7 @@ import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 
 import org.chromium.base.Log;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
@@ -33,51 +34,49 @@ import org.chromium.ui.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class InAppPurchaseWrapper {
     public static final String NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
     public static final String NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
-    private static InAppPurchaseWrapper inAppPurchaseWrapper;
-    private BillingClient billingClient;
-    private Context context;
+    private static InAppPurchaseWrapper mInAppPurchaseWrapper;
+    private BillingClient mBillingClient;
+    private Context mContext;
 
-    private final Map<String, SkuDetails> skusWithSkuDetails = new HashMap<>();
+    private final Map<String, SkuDetails> mSkusWithSkuDetails = new HashMap<>();
 
     public SkuDetails getSkuDetails(String sku) {
-        return skusWithSkuDetails.get(sku);
+        return mSkusWithSkuDetails.get(sku);
     }
 
     public static final List<String> SUBS_SKUS = new ArrayList<>(
             Arrays.asList(NIGHTLY_MONTHLY_SUBSCRIPTION, NIGHTLY_YEARLY_SUBSCRIPTION));
 
     public static InAppPurchaseWrapper getInstance() {
-        if (inAppPurchaseWrapper == null) inAppPurchaseWrapper = new InAppPurchaseWrapper();
+        if (mInAppPurchaseWrapper == null) mInAppPurchaseWrapper = new InAppPurchaseWrapper();
 
-        return inAppPurchaseWrapper;
+        return mInAppPurchaseWrapper;
     }
 
     public void startBillingServiceConnection(Context context) {
-        this.context = context;
-        billingClient = BillingClient.newBuilder(context)
-                                .enablePendingPurchases()
-                                .setListener(purchasesUpdatedListener)
-                                .build();
+        this.mContext = context;
+        mBillingClient = BillingClient.newBuilder(context)
+                                 .enablePendingPurchases()
+                                 .setListener(purchasesUpdatedListener)
+                                 .build();
 
         connectToBillingService();
     }
 
     public void connectToBillingService() {
-        if (!billingClient.isReady()) {
-            billingClient.startConnection(billingClientStateListener);
+        if (!mBillingClient.isReady()) {
+            mBillingClient.startConnection(billingClientStateListener);
         }
     }
 
     public BillingClient getBillingClient() {
-        return billingClient;
+        return mBillingClient;
     }
 
     public void querySkuDetailsAsync(List<String> skuList) {
@@ -85,17 +84,17 @@ public class InAppPurchaseWrapper {
                                           .setSkusList(skuList)
                                           .setType(BillingClient.SkuType.SUBS)
                                           .build();
-        billingClient.querySkuDetailsAsync(params, (billingResult, skuDetailsList) -> {
+        mBillingClient.querySkuDetailsAsync(params, (billingResult, skuDetailsList) -> {
             if (billingResult.getResponseCode() == OK && skuDetailsList != null) {
                 for (SkuDetails skuDetails : skuDetailsList) {
-                    skusWithSkuDetails.put(skuDetails.getSku(), skuDetails);
+                    mSkusWithSkuDetails.put(skuDetails.getSku(), skuDetails);
                 }
             }
         });
     }
 
     public List<Purchase> queryPurchases() {
-        return billingClient.queryPurchases(SUBS).getPurchasesList();
+        return mBillingClient.queryPurchases(SUBS).getPurchasesList();
     }
 
     public void purchase(Activity activity, SkuDetails skuDetails) {
@@ -103,7 +102,7 @@ public class InAppPurchaseWrapper {
                 BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build();
 
         int responseCode =
-                billingClient.launchBillingFlow(activity, billingFlowParams).getResponseCode();
+                mBillingClient.launchBillingFlow(activity, billingFlowParams).getResponseCode();
     }
 
     public void processPurchases(List<Purchase> purchases) {
@@ -120,16 +119,20 @@ public class InAppPurchaseWrapper {
                         .setPurchaseToken(purchase.getPurchaseToken())
                         .build();
         if (!purchase.isAcknowledged()) {
-            billingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
+            mBillingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
                 if (billingResult.getResponseCode() == OK) {
                     BraveVpnPrefUtils.setBraveVpnBooleanPref(
                             BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, true);
-                    BraveVpnUtils.openBraveVpnProfileActivity(context);
-                    Toast.makeText(context, "Subscription successfully consumed", Toast.LENGTH_LONG)
+                    BraveVpnUtils.openBraveVpnProfileActivity(mContext);
+                    Toast.makeText(mContext,
+                                 mContext.getResources().getString(R.string.subscription_consumed),
+                                 Toast.LENGTH_SHORT)
                             .show();
                 } else {
-                    Toast.makeText(context, "Failed to acknowledge purchase :" + billingResult,
-                                 Toast.LENGTH_LONG)
+                    Toast.makeText(mContext,
+                                 mContext.getResources().getString(R.string.fail_to_aknowledge)
+                                         + billingResult,
+                                 Toast.LENGTH_SHORT)
                             .show();
                 }
             });
@@ -144,33 +147,35 @@ public class InAppPurchaseWrapper {
             if (purchases != null) processPurchases(purchases);
         } else if (billingResult.getResponseCode()
                 == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-            Toast.makeText(context,
-                         "You are already subscribed to the subscription. Try restoring the subscription.",
-                         Toast.LENGTH_LONG)
+            Toast.makeText(mContext, mContext.getResources().getString(R.string.already_subscribed),
+                         Toast.LENGTH_SHORT)
                     .show();
         } else if (billingResult.getResponseCode()
                 == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED) {
-            InAppPurchaseWrapper.getInstance().connectToBillingService();
+            connectToBillingService();
         } else if (billingResult.getResponseCode()
                 == BillingClient.BillingResponseCode.USER_CANCELED) {
-            Toast.makeText(context, "ERROR!!\nCaused by a user cancelling the purchase flow.",
-                         Toast.LENGTH_LONG)
+            Toast.makeText(mContext,
+                         mContext.getResources().getString(R.string.error_caused_by_user),
+                         Toast.LENGTH_SHORT)
                     .show();
         } else {
-            Toast.makeText(context, "ERROR!!\nPurchased failed..", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getResources().getString(R.string.purchased_failed),
+                         Toast.LENGTH_SHORT)
+                    .show();
         }
     };
 
     BillingClientStateListener billingClientStateListener = new BillingClientStateListener() {
         @Override
         public void onBillingServiceDisconnected() {
-            InAppPurchaseWrapper.getInstance().connectToBillingService();
+            connectToBillingService();
         }
 
         @Override
         public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                InAppPurchaseWrapper.getInstance().querySkuDetailsAsync(SUBS_SKUS);
+                querySkuDetailsAsync(SUBS_SKUS);
             }
         }
     };

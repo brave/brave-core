@@ -17,49 +17,41 @@ import android.net.NetworkInfo;
 import android.net.VpnManager;
 import android.os.Build;
 
-import androidx.annotation.NonNull;
-
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 public class BraveVpnProfileUtils {
     public static final int BRAVE_VPN_PROFILE_REQUEST_CODE = 36;
 
-    private static BraveVpnProfileUtils vpnProfileUtils;
-    private Context context;
-    private VpnManager vpnManager;
+    private static BraveVpnProfileUtils mBraveVpnProfileUtils;
+    private Context mContext;
+    private VpnManager mVpnManager;
 
     public static BraveVpnProfileUtils getInstance(Context context) {
-        if (vpnProfileUtils == null) vpnProfileUtils = new BraveVpnProfileUtils(context);
-        return vpnProfileUtils;
+        if (mBraveVpnProfileUtils == null)
+            mBraveVpnProfileUtils = new BraveVpnProfileUtils(context);
+        return mBraveVpnProfileUtils;
     }
 
     public VpnManager getVpnManager() {
-        if (vpnManager == null) {
-            vpnManager = (VpnManager) context.getSystemService(Context.VPN_MANAGEMENT_SERVICE);
+        if (mVpnManager == null) {
+            mVpnManager = (VpnManager) mContext.getSystemService(Context.VPN_MANAGEMENT_SERVICE);
         }
-        return vpnManager;
+        return mVpnManager;
     }
 
     private BraveVpnProfileUtils(Context context) {
-        this.context = context;
-        if (vpnManager == null)
-            vpnManager = (VpnManager) context.getSystemService(Context.VPN_MANAGEMENT_SERVICE);
+        this.mContext = context;
+        if (mVpnManager == null) {
+            mVpnManager = (VpnManager) context.getSystemService(Context.VPN_MANAGEMENT_SERVICE);
+        }
     }
 
     public boolean isVPNConnected() {
         ConnectivityManager connectivityManager =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(
@@ -74,7 +66,7 @@ public class BraveVpnProfileUtils {
     }
 
     public Ikev2VpnProfile getVpnProfile(String hostname, String username, String password) {
-        Ikev2VpnProfile.Builder builder = new Ikev2VpnProfile.Builder(hostname, "identity");
+        Ikev2VpnProfile.Builder builder = new Ikev2VpnProfile.Builder(hostname, hostname);
         return builder.setAuthUsernamePassword(username, password, null).build();
     }
 
@@ -83,10 +75,10 @@ public class BraveVpnProfileUtils {
             try {
                 startVpn();
             } catch (SecurityException securityException) {
-                Toast.makeText(context, R.string.vpn_profile_is_not_created, Toast.LENGTH_LONG)
+                Toast.makeText(mContext, R.string.vpn_profile_is_not_created, Toast.LENGTH_SHORT)
                         .show();
                 BraveVpnUtils.dismissProgressDialog();
-                BraveVpnUtils.openBraveVpnProfileActivity(context);
+                BraveVpnUtils.openBraveVpnProfileActivity(mContext);
             }
         } else {
             stopVpn();

@@ -198,9 +198,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         public static final int NUM_ENTRIES = 6;
     }
 
-    private String purchaseToken = "";
-    private String productId = "";
-    private boolean isVerification;
+    private String mPurchaseToken = "";
+    private String mProductId = "";
+    private boolean mIsVerification;
 
     public BraveActivity() {
         // Disable key checker to avoid asserts on Brave keys in debug
@@ -270,10 +270,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         List<Purchase> purchases = InAppPurchaseWrapper.getInstance().queryPurchases();
         if (purchases.size() == 1) {
             Purchase purchase = purchases.get(0);
-            purchaseToken = purchase.getPurchaseToken();
-            productId = purchase.getSkus().get(0).toString();
-            BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
-                    purchaseToken, productId, "subscription", getPackageName());
+            mPurchaseToken = purchase.getPurchaseToken();
+            mProductId = purchase.getSkus().get(0).toString();
+            BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken, mProductId,
+                    BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
         } else {
             BraveVpnPrefUtils.setBraveVpnStringPref(
                     BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN, "");
@@ -298,17 +298,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             if (!purchaseExpiry.isEmpty()
                     && Long.parseLong(purchaseExpiry) >= System.currentTimeMillis()) {
                 BraveVpnPrefUtils.setBraveVpnStringPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN, purchaseToken);
+                        BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN, mPurchaseToken);
                 BraveVpnPrefUtils.setBraveVpnStringPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_PRODUCT_ID, productId);
+                        BraveVpnPrefUtils.PREF_BRAVE_VPN_PRODUCT_ID, mProductId);
                 BraveVpnPrefUtils.setBraveVpnStringPref(
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_EXPIRY, purchaseExpiry);
                 BraveVpnPrefUtils.setBraveVpnBooleanPref(
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, true);
-                if (!isVerification) {
+                if (!mIsVerification) {
                     BraveVpnProfileUtils.getInstance(BraveActivity.this).startStopVpn();
                 } else {
-                    isVerification = false;
+                    mIsVerification = false;
                 }
             } else {
                 BraveVpnPrefUtils.setBraveVpnStringPref(
@@ -328,8 +328,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         .show();
                 BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
             }
-            purchaseToken = "";
-            productId = "";
+            mPurchaseToken = "";
+            mProductId = "";
         }
     };
 
@@ -577,13 +577,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN))
                     && !TextUtils.isEmpty(BraveVpnPrefUtils.getBraveVpnStringPref(
                             BraveVpnPrefUtils.PREF_BRAVE_VPN_PRODUCT_ID))) {
-                isVerification = true;
+                mIsVerification = true;
                 BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
                         BraveVpnPrefUtils.getBraveVpnStringPref(
                                 BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN),
                         BraveVpnPrefUtils.getBraveVpnStringPref(
                                 BraveVpnPrefUtils.PREF_BRAVE_VPN_PRODUCT_ID),
-                        "subscription", getPackageName());
+                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
             }
         }
     }
@@ -604,10 +604,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             };
 
     private void showVpnCalloutDialog() {
-        BraveVpnCalloutDialogFragment mBraveVpnCalloutDialogFragment =
+        BraveVpnCalloutDialogFragment braveVpnCalloutDialogFragment =
                 new BraveVpnCalloutDialogFragment();
-        mBraveVpnCalloutDialogFragment.setCancelable(false);
-        mBraveVpnCalloutDialogFragment.show(
+        braveVpnCalloutDialogFragment.setCancelable(false);
+        braveVpnCalloutDialogFragment.show(
                 getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
     }
 

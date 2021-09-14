@@ -23,6 +23,8 @@ public class BraveVpnPrefUtils {
     public static final String PREF_BRAVE_VPN_PRODUCT_ID = "brave_vpn_product_id";
     public static final String PREF_BRAVE_VPN_PURCHASE_EXPIRY = "brave_vpn_purchase_expiry";
     public static final String PREF_BRAVE_VPN_SERVER_REGIONS = "brave_vpn_server_regions";
+    public static final String PREF_BRAVE_VPN_AUTOMATIC = "automatic";
+    public static final String PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION = "server_change_location";
 
     public static boolean isBraveVpnBooleanPref(String pref, boolean defaultValue) {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();

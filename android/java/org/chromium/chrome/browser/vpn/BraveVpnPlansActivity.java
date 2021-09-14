@@ -7,60 +7,38 @@
 
 package org.chromium.chrome.browser.vpn;
 
-import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
-
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
-import com.android.billingclient.api.SkuDetailsParams;
-import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.google.android.material.tabs.TabLayout;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.FirstRunFlowSequencer;
-import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnParentActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.InAppPurchaseWrapper;
-import org.chromium.ui.widget.Toast;
-
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private FirstRunFlowSequencer mFirstRunFlowSequencer;
-    private ProgressBar planProgress;
-    private LinearLayout planLayout;
-    private boolean shouldShowRestoreMenu;
+    private ProgressBar mPlanProgress;
+    private LinearLayout mPlanLayout;
+    private boolean mShouldShowRestoreMenu;
 
-    private LinearLayout monthlySelectorLayout;
-    private LinearLayout yearlySelectorLayout;
+    private LinearLayout mMonthlySelectorLayout;
+    private LinearLayout mYearlySelectorLayout;
 
     @Override
     public void onResumeWithNative() {
@@ -86,8 +64,8 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_close_24);
         actionBar.setTitle(getResources().getString(R.string.brave_vpn));
 
-        planProgress = findViewById(R.id.plan_progress);
-        planLayout = findViewById(R.id.plan_layout);
+        mPlanProgress = findViewById(R.id.plan_progress);
+        mPlanLayout = findViewById(R.id.plan_layout);
 
         ViewPager braveRewardsViewPager = findViewById(R.id.brave_rewards_view_pager);
 
@@ -103,8 +81,8 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         SkuDetails monthlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
                 InAppPurchaseWrapper.NIGHTLY_MONTHLY_SUBSCRIPTION);
 
-        monthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
-        monthlySelectorLayout.setOnClickListener(new View.OnClickListener() {
+        mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
+        mMonthlySelectorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showProgress();
@@ -122,8 +100,8 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         SkuDetails yearlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
                 InAppPurchaseWrapper.NIGHTLY_YEARLY_SUBSCRIPTION);
 
-        yearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
-        yearlySelectorLayout.setOnClickListener(new View.OnClickListener() {
+        mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
+        mYearlySelectorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showProgress();
@@ -136,7 +114,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         yearlySubscriptionAmountText.setText(
                 String.format(getResources().getString(R.string.yearly_subscription_amount),
                         yearlySkuDetails.getPrice()));
-        isVerification = true;
+        mIsVerification = true;
         verifySubscription();
     }
 
@@ -144,17 +122,17 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_brave_vpn, menu);
         MenuItem item = menu.findItem(R.id.restore);
-        if (shouldShowRestoreMenu) {
-            shouldShowRestoreMenu = false;
+        if (mShouldShowRestoreMenu) {
+            mShouldShowRestoreMenu = false;
             item.setVisible(true);
-            if (monthlySelectorLayout != null) {
-                monthlySelectorLayout.setAlpha(0.4f);
-                monthlySelectorLayout.setOnClickListener(null);
+            if (mMonthlySelectorLayout != null) {
+                mMonthlySelectorLayout.setAlpha(0.4f);
+                mMonthlySelectorLayout.setOnClickListener(null);
             }
 
-            if (yearlySelectorLayout != null) {
-                yearlySelectorLayout.setAlpha(0.4f);
-                yearlySelectorLayout.setOnClickListener(null);
+            if (mYearlySelectorLayout != null) {
+                mYearlySelectorLayout.setAlpha(0.4f);
+                mYearlySelectorLayout.setOnClickListener(null);
             }
         } else {
             item.setVisible(false);
@@ -167,8 +145,6 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.restore) {
-            // showProgress();
-            // verifySubscription(true);
             BraveVpnUtils.openBraveVpnProfileActivity(BraveVpnPlansActivity.this);
         }
         return super.onOptionsItemSelected(item);
@@ -193,27 +169,27 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
 
     @Override
     public void showRestoreMenu(boolean shouldShowRestore) {
-        this.shouldShowRestoreMenu = shouldShowRestore;
+        this.mShouldShowRestoreMenu = shouldShowRestore;
         invalidateOptionsMenu();
     }
 
     @Override
     public void showProgress() {
-        if (planProgress != null) {
-            planProgress.setVisibility(View.VISIBLE);
+        if (mPlanProgress != null) {
+            mPlanProgress.setVisibility(View.VISIBLE);
         }
-        if (planLayout != null) {
-            planLayout.setAlpha(0.4f);
+        if (mPlanLayout != null) {
+            mPlanLayout.setAlpha(0.4f);
         }
     }
 
     @Override
     public void hideProgress() {
-        if (planProgress != null) {
-            planProgress.setVisibility(View.GONE);
+        if (mPlanProgress != null) {
+            mPlanProgress.setVisibility(View.GONE);
         }
-        if (planLayout != null) {
-            planLayout.setAlpha(1f);
+        if (mPlanLayout != null) {
+            mPlanLayout.setAlpha(1f);
         }
     }
 }

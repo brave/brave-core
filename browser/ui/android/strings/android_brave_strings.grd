@@ -2188,6 +2188,27 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_RESET_VPN_CONFIG_DIALOG_MESSAGE" desc="Brave Vpn reset configuration dialog message">
       Are you sure you want to reset vpn configuration?
     </message>
+    <message name="IDS_AUTOMATIC" desc="Brave Vpn default server location text">
+      Automatic
+    </message>
+    <message name="IDS_VPN_LOADING_TEXT" desc="Brave Vpn loading text">
+      Loading. Please wait...
+    </message>
+    <message name="IDS_SUBSCRIPTION_CONSUMED" desc="Brave Vpn in app purchase message">
+      Subscription successfully consumed
+    </message>
+    <message name="IDS_FAIL_TO_AKNOWLEDGE" desc="Brave Vpn in app purchase message">
+      Failed to acknowledge purchase :
+    </message>
+    <message name="IDS_ALREADY_SUBSCRIBED" desc="Brave Vpn in app purchase message">
+      You are already subscribed to the subscription. Try restoring the subscription.
+    </message>
+    <message name="IDS_ERROR_CAUSED_BY_USER" desc="Brave Vpn in app purchase message">
+      ERROR!!\nCaused by a user cancelling the purchase flow.
+    </message>
+    <message name="IDS_PURCHASED_FAILED" desc="Brave Vpn in app purchase message">
+      ERROR!!\nPurchased failed..
+    </message>
     </messages>
   </release>
 </grit>

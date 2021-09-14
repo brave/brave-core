@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
@@ -32,7 +31,6 @@ import org.chromium.chrome.browser.about_settings.AboutSettingsBridge;
 import org.chromium.chrome.browser.firstrun.FirstRunFlowSequencer;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
-import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 
 import java.util.TimeZone;
 
@@ -179,7 +177,8 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null) { // connected to the internet
+        if (activeNetwork != null) {
+            // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 // connected to wifi
                 return activeNetwork.getTypeName();

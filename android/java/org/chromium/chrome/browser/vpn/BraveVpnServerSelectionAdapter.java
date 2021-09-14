@@ -19,16 +19,14 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BraveVpnServerSelectionPreferences.OnServerRegionSelection;
 import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnServerRegion;
-import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BraveVpnServerSelectionAdapter
         extends RecyclerView.Adapter<BraveVpnServerSelectionAdapter.ViewHolder> {
-    List<BraveVpnServerRegion> vpnServerRegions = new ArrayList<>();
-    private OnServerRegionSelection onServerRegionSelection;
-    public static final String PREF_SERVER_CHANGE_LOCATION = "server_change_location";
+    List<BraveVpnServerRegion> mBraveVpnServerRegions = new ArrayList<>();
+    private OnServerRegionSelection mOnServerRegionSelection;
 
     @NonNull
     @Override
@@ -41,10 +39,12 @@ public class BraveVpnServerSelectionAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final BraveVpnServerRegion vpnServerRegion = vpnServerRegions.get(position);
+        final BraveVpnServerRegion vpnServerRegion = mBraveVpnServerRegions.get(position);
         if (vpnServerRegion != null) {
             holder.serverText.setText(vpnServerRegion.getNamePretty());
-            if (BraveVpnPrefUtils.getServerRegion(PREF_SERVER_CHANGE_LOCATION)
+            if (BraveVpnPrefUtils
+                            .getServerRegion(
+                                    BraveVpnPrefUtils.PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION)
                             .equals(vpnServerRegion.getName())) {
                 holder.serverText.setCompoundDrawablesWithIntrinsicBounds(
                         0, 0, R.drawable.ic_server_selection_check, 0);
@@ -54,7 +54,7 @@ public class BraveVpnServerSelectionAdapter
             holder.serverText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onServerRegionSelection.onServerRegionClick(vpnServerRegion);
+                    mOnServerRegionSelection.onServerRegionClick(vpnServerRegion);
                 }
             });
         }
@@ -62,15 +62,15 @@ public class BraveVpnServerSelectionAdapter
 
     @Override
     public int getItemCount() {
-        return vpnServerRegions.size();
+        return mBraveVpnServerRegions.size();
     }
 
     public void setVpnServerRegions(List<BraveVpnServerRegion> vpnServerRegions) {
-        this.vpnServerRegions = vpnServerRegions;
+        this.mBraveVpnServerRegions = vpnServerRegions;
     }
 
     public void setOnServerRegionSelection(OnServerRegionSelection onServerRegionSelection) {
-        this.onServerRegionSelection = onServerRegionSelection;
+        this.mOnServerRegionSelection = onServerRegionSelection;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
