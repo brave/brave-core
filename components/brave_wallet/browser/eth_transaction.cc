@@ -49,16 +49,17 @@ bool EthTransaction::operator==(const EthTransaction& tx) const {
 
 // static
 absl::optional<EthTransaction> EthTransaction::FromTxData(
-    const mojom::TxDataPtr& tx_data) {
+    const mojom::TxDataPtr& tx_data,
+    bool strict) {
   EthTransaction tx;
-  if (!HexValueToUint256(tx_data->nonce, &tx.nonce_))
+  if (!HexValueToUint256(tx_data->nonce, &tx.nonce_) && strict)
     return absl::nullopt;
-  if (!HexValueToUint256(tx_data->gas_price, &tx.gas_price_))
+  if (!HexValueToUint256(tx_data->gas_price, &tx.gas_price_) && strict)
     return absl::nullopt;
-  if (!HexValueToUint256(tx_data->gas_limit, &tx.gas_limit_))
+  if (!HexValueToUint256(tx_data->gas_limit, &tx.gas_limit_) && strict)
     return absl::nullopt;
   tx.to_ = EthAddress::FromHex(tx_data->to);
-  if (!HexValueToUint256(tx_data->value, &tx.value_))
+  if (!HexValueToUint256(tx_data->value, &tx.value_) && strict)
     return absl::nullopt;
   tx.data_ = tx_data->data;
   return tx;

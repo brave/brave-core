@@ -49,13 +49,14 @@ bool Eip1559Transaction::operator==(const Eip1559Transaction& tx) const {
 
 // static
 absl::optional<Eip1559Transaction> Eip1559Transaction::FromTxData(
-    const mojom::TxData1559Ptr& tx_data1559) {
+    const mojom::TxData1559Ptr& tx_data1559,
+    bool strict) {
   uint256_t chain_id;
   if (!HexValueToUint256(tx_data1559->chain_id, &chain_id))
     return absl::nullopt;
 
   absl::optional<Eip2930Transaction> tx_2930 =
-      Eip2930Transaction::FromTxData(tx_data1559->base_data, chain_id);
+      Eip2930Transaction::FromTxData(tx_data1559->base_data, chain_id, strict);
   if (!tx_2930)
     return absl::nullopt;
 
