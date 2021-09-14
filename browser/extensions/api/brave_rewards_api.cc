@@ -923,7 +923,7 @@ BraveRewardsGetAllNotificationsFunction::Run() {
 
     auto args = std::make_unique<base::ListValue>();
     for (auto const& arg : notification.second.args_) {
-      args->AppendString(arg);
+      args->Append(arg);
     }
 
     item->SetList("args", std::move(args));
