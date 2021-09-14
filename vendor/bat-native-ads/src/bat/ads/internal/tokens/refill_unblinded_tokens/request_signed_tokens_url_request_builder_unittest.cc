@@ -95,7 +95,7 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
-      R"(https://ads-serve.brave.software/v1/confirmation/token/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)";
+      R"(https://ads-serve.bravesoftware.com/v1/confirmation/token/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)";
   expected_url_request->headers = {
       R"(digest: SHA-256=Sxq6H/YDThn/m2RSXsTzewSzKfAuGLh09w7m59VBYwU=)",
       R"(signature: keyId="primary",algorithm="ed25519",headers="digest",signature="zImEsG3U2K2jROcUOerWMgzA+LyEoDqqYcr9svpnaEDNOYLzGn67qiz+HIFlqSjzy6Q9RPdU+h3VaFrIspsfCQ==")",
@@ -134,7 +134,7 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
-      R"(https://ads-serve.brave.software/v1/confirmation/token/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)";
+      R"(https://ads-serve.bravesoftware.com/v1/confirmation/token/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)";
   expected_url_request->headers = {
       R"(digest: SHA-256=Sxq6H/YDThn/m2RSXsTzewSzKfAuGLh09w7m59VBYwU=)",
       R"(signature: keyId="primary",algorithm="ed25519",headers="digest",signature="zImEsG3U2K2jROcUOerWMgzA+LyEoDqqYcr9svpnaEDNOYLzGn67qiz+HIFlqSjzy6Q9RPdU+h3VaFrIspsfCQ==")",

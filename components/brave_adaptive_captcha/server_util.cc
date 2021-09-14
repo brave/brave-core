@@ -20,9 +20,7 @@ std::string GetServerUrl(const std::string& path) {
   std::string url = REWARDS_GRANT_PROD_ENDPOINT;
 
   auto* command_line = base::CommandLine::ForCurrentProcess();
-  if (command_line->HasSwitch(brave_ads::switches::kDevelopment)) {
-    url = REWARDS_GRANT_DEV_ENDPOINT;
-  } else if (command_line->HasSwitch(brave_ads::switches::kStaging)) {
+  if (command_line->HasSwitch(brave_ads::switches::kStaging)) {
     url = REWARDS_GRANT_STAGING_ENDPOINT;
   } else if (command_line->HasSwitch(brave_ads::switches::kProduction)) {
     url = REWARDS_GRANT_PROD_ENDPOINT;

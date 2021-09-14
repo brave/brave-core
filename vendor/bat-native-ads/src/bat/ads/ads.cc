@@ -12,7 +12,7 @@
 
 namespace ads {
 
-mojom::Environment g_environment = mojom::Environment::kDevelopment;
+mojom::Environment g_environment = mojom::Environment::kStaging;
 
 mojom::SysInfo g_sys_info;
 

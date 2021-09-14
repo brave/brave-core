@@ -146,7 +146,7 @@ size_t UnitTestBase::GetPendingTaskCount() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void UnitTestBase::Initialize() {
-  SetEnvironment(mojom::Environment::kDevelopment);
+  SetEnvironment(mojom::Environment::kStaging);
 
   SetSysInfo(mojom::SysInfo());
 
