@@ -22,9 +22,10 @@ struct AssetDetailView: View {
           networkStore: networkStore,
           currency: Currency(image: .init(), name: "Basic Attention Token", symbol: "BAT", cost: 0.999444)
         )
-        .foregroundColor(.primary)
-        .textCase(.none)
         .listRowInsets(.zero)
+        .textCase(.none)
+        .font(.body)
+        .foregroundColor(.primary)
         .padding(.horizontal, -16) // inset grouped layout margins workaround
       ) {
       }

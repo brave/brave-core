@@ -63,6 +63,8 @@ struct PortfolioView: View {
           .padding(.horizontal, -16) // inset grouped layout margins workaround
           .listRowInsets(.zero)
           .textCase(.none)
+          .font(.body)
+          .foregroundColor(.primary)
       ) {
       }
       Section(
