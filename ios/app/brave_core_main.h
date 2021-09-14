@@ -26,12 +26,11 @@ typedef bool (^BraveCoreLogHandler)(int severity,
 OBJC_EXPORT
 @interface BraveCoreMain : NSObject
 
-@property(nullable, nonatomic, readonly) BraveBookmarksAPI* bookmarksAPI;
+@property(nonatomic, readonly) BraveBookmarksAPI* bookmarksAPI;
 
-@property(nullable, nonatomic, readonly) BraveHistoryAPI* historyAPI;
+@property(nonatomic, readonly) BraveHistoryAPI* historyAPI;
 
-@property(nullable, nonatomic, readonly)
-    BraveSyncProfileServiceIOS* syncProfileService;
+@property(nonatomic, readonly) BraveSyncProfileServiceIOS* syncProfileService;
 
 + (void)setLogHandler:(nullable BraveCoreLogHandler)logHandler;
 
