@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
@@ -24,6 +25,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.ui.widget.Toast;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -184,5 +186,49 @@ public class Utils {
         }
 
         return networkConst;
+    }
+
+    public static double fromHexWei(String number) {
+        if (number.equals("0x0")) {
+            return 0;
+        }
+        if (number.startsWith("0x")) {
+            number = number.substring(2);
+        }
+        BigInteger bigNumber = new BigInteger(number, 16);
+        BigInteger[] res = bigNumber.divideAndRemainder(new BigInteger("1000000000000000000"));
+        String resStr = res[0].toString() + "." + res[1].toString();
+
+        return Double.valueOf(resStr);
+    }
+
+    public static String toHexWei(String number) {
+        if (number.isEmpty()) {
+            return "0x0";
+        }
+        int dotPosition = number.indexOf(".");
+        String multiplier = "1000000000000000000";
+        if (dotPosition != -1) {
+            int zeroToRemove = number.length() - dotPosition - 1;
+            multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
+            number = number.replace(".", "");
+        }
+        BigInteger bigNumber = new BigInteger(number, 10);
+        BigInteger res = bigNumber.multiply(new BigInteger(multiplier));
+
+        return "0x" + res.toString(16);
+    }
+
+    public static TxData getTxData(
+            String nonce, String gasPrice, String gasLimit, String to, String value, byte[] data) {
+        TxData res = new TxData();
+        res.nonce = nonce;
+        res.gasPrice = gasPrice;
+        res.gasLimit = gasLimit;
+        res.to = to;
+        res.value = value;
+        res.data = data;
+
+        return res;
     }
 }
