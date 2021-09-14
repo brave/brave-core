@@ -55,6 +55,8 @@ private struct RestoreWalletView: View {
   @State private var isEditingPhrase: Bool = false
   @State private var showingRecoveryPhase: Bool = false
   @State private var restoreError: RestoreWalletError?
+  @State private var isShowingLegacyWalletToggle: Bool = false
+  @State private var isBraveLegacyWallet: Bool = false
   
   private func validate() -> Bool {
     if phrase.isEmpty {
@@ -73,7 +75,11 @@ private struct RestoreWalletView: View {
     if !validate() {
       return
     }
-    keyringStore.restoreWallet(phrase: phrase, password: password) { success in
+    keyringStore.restoreWallet(
+      phrase: phrase,
+      password: password,
+      isLegacyBraveWallet: isBraveLegacyWallet
+    ) { success in
       if !success {
         restoreError = .invalidPhrase
       } else {
@@ -84,6 +90,7 @@ private struct RestoreWalletView: View {
   }
   
   private func handlePhraseChanged(_ value: String) {
+    isShowingLegacyWalletToggle = value.split(separator: " ").count == 24
     if restoreError == .invalidPhrase {
       // Reset validation on user changing
       restoreError = nil
@@ -125,6 +132,22 @@ private struct RestoreWalletView: View {
           }
         }
         .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .invalidPhrase))
+        if isShowingLegacyWalletToggle {
+          HStack {
+            Toggle("Import from legacy Brave Crypto Wallet?", isOn: $isBraveLegacyWallet) // NSLocalizedString
+              .labelsHidden()
+              .scaleEffect(0.75)
+              .padding(-6)
+            Text("Import from legacy Brave Crypto Wallet?") // NSLocalizedString
+              .font(.footnote)
+              .onTapGesture {
+                withAnimation {
+                  showingRecoveryPhase.toggle()
+                }
+              }
+          }
+          .frame(maxWidth: .infinity, alignment: .leading)
+        }
         HStack {
           Toggle("Show Recovery Phase", isOn: $showingRecoveryPhase) // NSLocalizedString
             .labelsHidden()

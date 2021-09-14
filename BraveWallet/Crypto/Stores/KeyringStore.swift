@@ -84,14 +84,15 @@ public class KeyringStore: ObservableObject {
     }
   }
   
-  func restoreWallet(words: [String], password: String, completion: ((Bool) -> Void)? = nil) {
-    restoreWallet(phrase: words.joined(separator: " "), password: password, completion: completion)
+  func restoreWallet(words: [String], password: String, isLegacyBraveWallet: Bool, completion: ((Bool) -> Void)? = nil) {
+    restoreWallet(phrase: words.joined(separator: " "), password: password, isLegacyBraveWallet: isLegacyBraveWallet, completion: completion)
   }
   
-  func restoreWallet(phrase: String, password: String, completion: ((Bool) -> Void)? = nil) {
+  func restoreWallet(phrase: String, password: String, isLegacyBraveWallet: Bool, completion: ((Bool) -> Void)? = nil) {
     controller.restoreWallet(
       phrase,
-      password: password
+      password: password,
+      isLegacyBraveWallet: isLegacyBraveWallet
     ) { [weak self] isMnemonicValid in
       if isMnemonicValid {
         // Restoring from wallet means you already have your phrase backed up
