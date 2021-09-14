@@ -143,7 +143,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
         if (mEthJsonRpcController != null) {
             mEthJsonRpcController.getChainId(
-                    chain_id -> { spinner.setSelection(getIndexOf(spinner, chain_id)); });
+                    chainId -> { spinner.setSelection(getIndexOf(spinner, chainId)); });
         }
         if (mKeyringController != null) {
             mKeyringController.getDefaultKeyringInfo(keyring -> {
@@ -202,8 +202,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         });
     }
 
-    private int getIndexOf(Spinner spinner, String chain_id) {
-        String strNetwork = Utils.getNetworkText(this, chain_id).toString();
+    private int getIndexOf(Spinner spinner, String chainId) {
+        String strNetwork = Utils.getNetworkText(this, chainId).toString();
         for (int i = 0; i < spinner.getCount(); i++) {
             if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(strNetwork)) {
                 return i;
