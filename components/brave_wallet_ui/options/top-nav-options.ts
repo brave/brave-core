@@ -9,9 +9,10 @@ export const TopNavOptions: TopTabNavObjectType[] = [
   {
     id: 'accounts',
     name: locale.topNavAccounts
-  },
-  {
-    id: 'apps',
-    name: locale.topTabApps
   }
+  // Temp commented out for MVP
+  // {
+  //   id: 'apps',
+  //   name: locale.topTabApps
+  // }
 ]
