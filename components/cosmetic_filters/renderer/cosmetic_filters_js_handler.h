@@ -74,7 +74,7 @@ class CosmeticFiltersJSHandler {
   GURL url_;
   std::unique_ptr<base::DictionaryValue> resources_dict_;
 
-  // Shows if the content_cosmetic.bundle.js has injected in the current frame.
+  // True if the content_cosmetic.bundle.js has injected in the current frame.
   bool bundle_injected_ = false;
 
   base::WeakPtrFactory<CosmeticFiltersJSHandler> weak_ptr_factory_{this};
