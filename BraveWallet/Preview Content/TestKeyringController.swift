@@ -141,7 +141,7 @@ private class TestKeyringController: NSObject, BraveWalletKeyringController {
     keyring.accountInfos.removeAll()
   }
   
-  func restoreWallet(_ mnemonic: String, password: String, completion: @escaping (Bool) -> Void) {
+  func restoreWallet(_ mnemonic: String, password: String, isLegacyBraveWallet: Bool, completion: @escaping (Bool) -> Void) {
     reset()
     self.password = password
     // Test store does not test phrase validity
