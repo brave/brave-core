@@ -9,9 +9,11 @@
 #include <string>
 
 #include "base/test/bind.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_browser_context.h"
@@ -44,7 +46,7 @@ class EthBlockTrackerUnitTest : public testing::Test {
                 &url_loader_factory_)) {}
   void SetUp() override {
     user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
-    EthJsonRpcController::RegisterProfilePrefs(prefs_.registry());
+    brave_wallet::RegisterProfilePrefs(prefs_.registry());
     rpc_controller_.reset(new brave_wallet::EthJsonRpcController(
         shared_url_loader_factory_, &prefs_));
   }
@@ -57,7 +59,7 @@ class EthBlockTrackerUnitTest : public testing::Test {
   uint256_t response_block_num_ = 0;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<content::TestBrowserContext> browser_context_;
-  TestingPrefServiceSimple prefs_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<EthJsonRpcController> rpc_controller_;

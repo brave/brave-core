@@ -14,7 +14,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -302,20 +301,6 @@ void EthJsonRpcController::OnGetTransactionReceipt(
   }
 
   std::move(callback).Run(true, receipt);
-}
-
-// static
-void EthJsonRpcController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterListPref(kBraveWalletCustomNetworks);
-  registry->RegisterStringPref(kBraveWalletCurrentChainId,
-                               brave_wallet::mojom::kMainnetChainId);
-}
-
-// static
-void EthJsonRpcController::ClearProfilePrefs(PrefService* prefs) {
-  DCHECK(prefs);
-  prefs->ClearPref(kBraveWalletCustomNetworks);
-  prefs->ClearPref(kBraveWalletCurrentChainId);
 }
 
 void EthJsonRpcController::SendRawTransaction(const std::string& signed_tx,

@@ -23,10 +23,6 @@
 
 class PrefService;
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}
-
 namespace brave_wallet {
 
 class HDKeyring;
@@ -38,11 +34,6 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
  public:
   explicit KeyringController(PrefService* prefs);
   ~KeyringController() override;
-
-  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
-
-  static void RegisterProfilePrefsForMigration(
-      user_prefs::PrefRegistrySyncable* registry);
 
   static void MigrateObsoleteProfilePrefs(PrefService* prefs);
 

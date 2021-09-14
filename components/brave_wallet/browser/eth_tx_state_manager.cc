@@ -227,7 +227,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
 void EthTxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
   base::DictionaryValue* dict = update.Get();
-  const std::string path = GetNetworkId() + "." + meta.id;
+  const std::string path = GetNetworkId(prefs_, chain_id_) + "." + meta.id;
   bool is_add = dict->FindPath(path) == nullptr;
   dict->SetPath(path, TxMetaToValue(meta));
   if (!is_add)
@@ -243,7 +243,8 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::GetTx(
       prefs_->GetDictionary(kBraveWalletTransactions);
   if (!dict)
     return nullptr;
-  const base::Value* value = dict->FindPath(GetNetworkId() + "." + id);
+  const base::Value* value =
+      dict->FindPath(GetNetworkId(prefs_, chain_id_) + "." + id);
   if (!value)
     return nullptr;
 
@@ -253,7 +254,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::GetTx(
 void EthTxStateManager::DeleteTx(const std::string& id) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
   base::DictionaryValue* dict = update.Get();
-  dict->RemovePath(GetNetworkId() + "." + id);
+  dict->RemovePath(GetNetworkId(prefs_, chain_id_) + "." + id);
 }
 
 void EthTxStateManager::WipeTxs() {
@@ -267,7 +268,8 @@ EthTxStateManager::GetTransactionsByStatus(
   std::vector<std::unique_ptr<EthTxStateManager::TxMeta>> result;
   const base::DictionaryValue* dict =
       prefs_->GetDictionary(kBraveWalletTransactions);
-  const base::Value* network_dict = dict->FindKey(GetNetworkId());
+  const base::Value* network_dict =
+      dict->FindKey(GetNetworkId(prefs_, chain_id_));
   if (!network_dict)
     return result;
 
@@ -293,35 +295,6 @@ void EthTxStateManager::ChainChangedEvent(const std::string& chain_id) {
 void EthTxStateManager::OnAddEthereumChainRequestCompleted(
     const std::string& chain_id,
     const std::string& error) {}
-
-std::string EthTxStateManager::GetNetworkId() const {
-  auto subdomain = GetInfuraSubdomainForKnownChainId(chain_id_);
-  if (!subdomain.empty())
-    return subdomain;
-  // Separate check for localhost in known networks as it is predefined
-  // but doesnt have infura subdomain.
-  mojom::EthereumChainPtr known_network = GetKnownChain(chain_id_);
-  if (known_network) {
-    if (known_network->rpc_urls.size())
-      return GURL(known_network->rpc_urls.front()).spec();
-  }
-
-  std::vector<mojom::EthereumChainPtr> custom_chains;
-  GetAllCustomChains(prefs_, &custom_chains);
-  std::string id;
-  for (const auto& network : custom_chains) {
-    if (network->chain_id != chain_id_)
-      continue;
-    if (network->rpc_urls.size()) {
-      id = GURL(network->rpc_urls.front()).host();
-    } else {
-      id = chain_id_;
-    }
-    break;
-  }
-
-  return id;
-}
 
 void EthTxStateManager::RetireTxByStatus(mojom::TransactionStatus status,
                                          size_t max_num) {

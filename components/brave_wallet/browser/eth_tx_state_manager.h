@@ -80,7 +80,6 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
   }
 
  private:
-  std::string GetNetworkId() const;
   // only support REJECTED and CONFIRMED
   void RetireTxByStatus(mojom::TransactionStatus status, size_t max_num);
 
