@@ -27,41 +27,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/ic_eth_24"
-                    android:layout_marginEnd="8dp"
-                    android:contentDescription="@null" />
-
-                <LinearLayout
+                <Spinner
+                    android:id="@+id/accounts_spinner"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/account_name_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/wallet_text_color"
-                        android:textSize="14sp"/>
-
-                    <TextView
-                        android:id="@+id/account_value_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/wallet_secondary_text_color"
-                        android:textSize="12sp"/>
-
-                </LinearLayout>
+                    android:layout_weight="3" />
 
                 <Spinner
-                    android:id="@+id/spinner"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/network_spinner"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:textSize="12sp"
                     android:textColor="@color/wallet_text_color"
                     android:layout_gravity="center_vertical"
