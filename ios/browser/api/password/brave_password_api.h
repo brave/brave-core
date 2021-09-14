@@ -20,11 +20,11 @@ OBJC_EXPORT
 @interface IOSPasswordForm : NSObject
 
 @property(nonatomic, strong, copy) NSURL* url;
-@property(nonatomic, strong, copy) NSString* signOnRealm;
+@property(nonatomic, nullable, copy) NSString* signOnRealm;
 @property(nonatomic, nullable, copy) NSDate* dateCreated;
 @property(nonatomic, nullable, copy) NSString* usernameValue;
 @property(nonatomic, nullable, copy) NSString* passwordValue;
-@property(nonatomic, assign, readonly) bool isBlockedByUser;
+@property(nonatomic) bool isBlockedByUser;
 
 /// Password Form Constructor used with BravePasswordAPI
 /// @param url - Primary data used by the PasswordManager to decide (in longest
@@ -36,7 +36,7 @@ OBJC_EXPORT
 /// @param usernameValue - The string represantation of the username
 /// @param passwordValue - The string represantation of the password
 - (instancetype)initWithURL:(NSURL*)url
-                signOnRealm:(NSString*)signOnRealm
+                signOnRealm:(nullable NSString*)signOnRealm
                 dateCreated:(nullable NSDate*)dateCreated
               usernameValue:(nullable NSString*)usernameValue
               passwordValue:(nullable NSString*)passwordValue
@@ -53,16 +53,16 @@ OBJC_EXPORT
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Add Login Method that add form using password store
-/// @param passwordForm - List of Password Forms to be added
-- (void)addLogins:(NSArray<IOSPasswordForm*>*)passwordFormList;
+/// @param passwordForm - Password Form to be added
+- (void)addLogin:(IOSPasswordForm*)passwordForm;
 
 /// Remove Selected Password Forms
 /// @param passwordForm - Password Form to be removed from the store
-- (void)removeLogins:(NSArray<IOSPasswordForm*>*)passwordFormList;
+- (void)removeLogin:(IOSPasswordForm*)passwordForm;
 
 /// Update List of Password Form
-/// @param passwordForm - List of Password Form to be updated inside the store
-- (void)updateLogins:(NSArray<IOSPasswordForm*>*)passwordFormList;
+/// @param passwordForm - Password Form to be updated inside the store
+- (void)updateLogin:(IOSPasswordForm*)passwordForm;
 
 /// Fetch Function that will return list of Password Forms from saved password presenter
 - (NSArray<IOSPasswordForm*>*)getSavedLogins;
