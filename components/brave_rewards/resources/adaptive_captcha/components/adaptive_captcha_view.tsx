@@ -13,22 +13,20 @@ import checkIconSrc from '../assets/check.svg'
 import smileySadIconSrc from '../assets/smiley_sad.svg'
 
 const iframeAllow = `
-  accelerometer "none";
-  ambient-light-sensor "none";
-  camera "none";
-  display-capture "none";
-  document-domain "none";
-  fullscreen "none";
-  geolocation "none";
-  gyroscope "none";
-  magnetometer "none";
-  microphone "none";
-  midi "none";
-  payment "none";
-  usb "none";
-  vibrate "none";
-  vr "none";
-  webauthn "none"
+  accelerometer 'none';
+  ambient-light-sensor 'none';
+  camera 'none';
+  display-capture 'none';
+  document-domain 'none';
+  fullscreen 'none';
+  geolocation 'none';
+  gyroscope 'none';
+  magnetometer 'none';
+  microphone 'none';
+  midi 'none';
+  payment 'none';
+  publickey-credentials-get 'none';
+  usb 'none'
 `
 
 interface Props {
@@ -82,7 +80,7 @@ export function AdaptiveCaptchaView (props: Props) {
       <styles.frameBox>
         <iframe
           ref={iframeRef}
-          allow={iframeAllow.trim()}
+          allow={iframeAllow.trim().replace(/\n/g, '')}
           src={props.captchaURL}
           sandbox='allow-scripts'
           scrolling='no'
