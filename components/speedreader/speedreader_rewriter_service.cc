@@ -44,10 +44,6 @@ SpeedreaderRewriterService::SpeedreaderRewriterService(
     brave_component_updater::BraveComponent::Delegate* delegate)
     : component_(new speedreader::SpeedreaderComponent(delegate)),
       speedreader_(new speedreader::SpeedReader) {
-  if (base::FeatureList::IsEnabled(kSpeedreaderLegacyBackend)) {
-    backend_ = RewriterType::RewriterStreaming;
-  }
-
   // Load the built-in stylesheet as the default
   content_stylesheet_ =
       "<style id=\"brave_speedreader_style\">" +
@@ -92,23 +88,19 @@ void SpeedreaderRewriterService::OnStylesheetReady(const base::FilePath& path) {
 }
 
 bool SpeedreaderRewriterService::IsWhitelisted(const GURL& url) {
-  if (backend_ == RewriterType::RewriterStreaming) {
-    return speedreader_->IsReadableURL(url.spec());
-  } else {
-    // Only HTTP is readable.
-    if (!url.SchemeIsHTTPOrHTTPS())
-      return false;
+  // Only HTTP is readable.
+  if (!url.SchemeIsHTTPOrHTTPS())
+    return false;
 
-    // @pes research has shown basically no landing pages are readable.
-    if (!url.has_path() || url.path() == "/")
-      return false;
+  // @pes research has shown basically no landing pages are readable.
+  if (!url.has_path() || url.path() == "/")
+    return false;
 
-    // TODO(keur): Once implemented, check against the "maybe-speedreadable"
-    // list here.
+  // TODO(keur): Once implemented, check against the "maybe-speedreadable"
+  // list here.
 
-    // Check URL against precompiled regexes
-    return URLReadableHintExtractor::GetInstance()->HasHints(url);
-  }
+  // Check URL against precompiled regexes
+  return URLReadableHintExtractor::GetInstance()->HasHints(url);
 }
 
 std::unique_ptr<Rewriter> SpeedreaderRewriterService::MakeRewriter(

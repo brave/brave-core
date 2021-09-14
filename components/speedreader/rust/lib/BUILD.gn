@@ -19,10 +19,8 @@ rust_crate("lib") {
     "src/readability/src/lib.rs",
     "src/readability/src/scorer.rs",
     "src/readability/src/statistics.rs",
-    "src/rewriter_config_builder.rs",
     "src/speedreader_heuristics.rs",
     "src/speedreader_readability.rs",
-    "src/speedreader_streaming.rs",
     "src/speedreader.rs",
     "src/whitelist.rs",
   ]

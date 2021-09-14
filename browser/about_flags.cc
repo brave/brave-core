@@ -239,11 +239,7 @@ constexpr char kUseDevUpdaterUrlDescription[] =
     {"brave-speedreader",                                               \
      flag_descriptions::kBraveSpeedreaderName,                          \
      flag_descriptions::kBraveSpeedreaderDescription, kOsDesktop,       \
-     FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature)},             \
-    {"speedreader-legacy-backend",                                      \
-     flag_descriptions::kBraveSpeedreaderLegacyName,                    \
-     flag_descriptions::kBraveSpeedreaderLegacyDescription, kOsDesktop, \
-     FEATURE_VALUE_TYPE(speedreader::kSpeedreaderLegacyBackend)},
+     FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature)},
 #else
 #define SPEEDREADER_FEATURE_ENTRIES
 #endif

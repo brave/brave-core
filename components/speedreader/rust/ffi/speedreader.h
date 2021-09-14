@@ -73,7 +73,6 @@ class SPEEDREADER_EXPORT Rewriter {
   std::string output_;
   bool ended_;
   bool poisoned_;
-  C_CRewriterConfig* config_raw_;
   C_CRewriter* raw_;
 };
 
@@ -81,19 +80,11 @@ class SPEEDREADER_EXPORT SpeedReader {
  public:
   SpeedReader();
   /// New instance of SpeedReader using serialized whitelist
-  SpeedReader(const char* whitelist_serialized, size_t whitelist_size);
   ~SpeedReader();
   SpeedReader(const SpeedReader&) = delete;
   void operator=(const SpeedReader&) = delete;
 
   bool deserialize(const char* data, size_t data_size);
-
-  /// Checks if the provided URL matches whitelisted readable URLs.
-  bool IsReadableURL(const std::string& url);
-
-  /// Returns type of SpeedReader that would be applied by default for the given
-  /// URL. `RewriterUnknown` if no match in the whitelist.
-  RewriterType RewriterTypeForURL(const std::string& url);
 
   /// Create a buffering `Rewriter`. Output will be accumulated by the
   /// `Rewriter` instance.
