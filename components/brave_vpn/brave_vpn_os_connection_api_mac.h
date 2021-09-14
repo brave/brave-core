@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_MAC_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_MAC_H_
 
+#import <Foundation/Foundation.h>
 #include <string>
 
 #include "base/no_destructor.h"
