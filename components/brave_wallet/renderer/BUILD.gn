@@ -4,6 +4,8 @@ source_set("renderer") {
     "brave_wallet_js_handler.h",
     "brave_wallet_response_helpers.cc",
     "brave_wallet_response_helpers.h",
+    "eth_request_parser.cc",
+    "eth_request_parser.h",
   ]
 
   deps = [
