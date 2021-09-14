@@ -32,7 +32,6 @@ public class BraveSingleCategorySettings extends SiteSettingsPreferenceFragment
     }
 
     public String getAddExceptionDialogMessage() {
-        Log.w("BraveSingleCategorySettings", "getAddExceptionDialogMessage");
         BrowserContextHandle browserContextHandle =
                 getSiteSettingsDelegate().getBrowserContextHandle();
         int resource = 0;
@@ -49,7 +48,6 @@ public class BraveSingleCategorySettings extends SiteSettingsPreferenceFragment
     }
     
     public void resetList() {
-        Log.w("BraveSingleCategorySettings", "resetList");
         BraveReflectionUtil.InvokeMethod(SingleCategorySettings.class, this, "resetList");
         BrowserContextHandle browserContextHandle =
                 getSiteSettingsDelegate().getBrowserContextHandle();

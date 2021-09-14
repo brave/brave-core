@@ -5,6 +5,7 @@
 
 package org.brave.bytecode;
 
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
 import static org.objectweb.asm.Opcodes.ACC_PROTECTED;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
@@ -123,6 +124,7 @@ class BraveClassVisitor extends ClassVisitor {
     private Map<String, String> mRedirectConstructors = new HashMap<String, String>();
     private Map<String, Map<String, String>> mRedirectMethodType =
             new HashMap<String, Map<String, String>>();
+    private ArrayList<String> mMakeNonFinalClasses = new ArrayList<String>();
 
     public BraveClassVisitor(ClassVisitor visitor) {
         super(ASM5, null);
@@ -192,7 +194,7 @@ class BraveClassVisitor extends ClassVisitor {
             }
         }
         // Explicitly redirect ownership to a new super class
-        if (mSuperName.equals(owner) && mSuperNames.containsKey(mName)) {
+        if (mSuperName.equals(owner) && !mSuperName.equals("java/lang/Object") && mSuperNames.containsKey(mName)) {
             String newSuperOwner = mSuperNames.get(mName);
             if (!newSuperOwner.equals(mSuperName)) {
                 System.out.println("redirecting ownership for " + mSuperName + "." + methodName
@@ -250,6 +252,20 @@ class BraveClassVisitor extends ClassVisitor {
             mDeleteInnerClasses.put(outerName, innerNames);
         }
         innerNames.add(innerName);
+    }
+
+    private boolean shouldMakeNonFinalClass(String className) {
+        int idx = mMakeNonFinalClasses.indexOf(className);
+        if (idx != -1)
+            return true;
+
+        return false;
+    }
+
+    protected void makeNonFinalClass(String className) {
+        int idx = mMakeNonFinalClasses.indexOf(className);
+        if (idx == -1)
+            mMakeNonFinalClasses.add(className);
     }
 
     private boolean shouldMakePublicInnerClass(String innerName) {
@@ -337,6 +353,10 @@ class BraveClassVisitor extends ClassVisitor {
         super.cv = new ClassNode();
         mName = name;
         mSuperName = superName;
+        if (shouldMakeNonFinalClass(name)) {
+            System.out.println("make Class " + name + " non final");
+            access &= ~ACC_FINAL;
+        }
         if (mSuperNames.containsKey(name)) {
             superName = mSuperNames.get(name);
             System.out.println("change superclass of " + name + " to " + superName);
