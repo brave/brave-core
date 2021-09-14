@@ -31,6 +31,7 @@
 #if defined(OS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
+#include "chrome/browser/browser_features.h"
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -81,6 +82,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &blink::features::kLangClientHintHeader,
       &blink::features::kNavigatorPluginsFixed,
       &blink::features::kTextFragmentAnchor,
+#if !defined(OS_ANDROID)
+      &features::kCopyLinkToText,
+#endif
       &features::kDirectSockets,
       &features::kIdleDetection,
       &features::kNotificationTriggers,
