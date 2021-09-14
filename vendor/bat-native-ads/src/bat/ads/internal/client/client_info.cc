@@ -41,6 +41,7 @@ bool ClientInfo::FromJson(const std::string& json) {
     }
   }
 
+#if !defined(OS_IOS)
   if (document.HasMember("adsShownHistory")) {
     for (const auto& ad_shown : document["adsShownHistory"].GetArray()) {
       // adsShownHistory used to be an array of timestamps, so if
@@ -57,6 +58,7 @@ bool ClientInfo::FromJson(const std::string& json) {
       }
     }
   }
+#endif
 
   if (document.HasMember("purchaseIntentSignalHistory")) {
     for (const auto& segment_history :
