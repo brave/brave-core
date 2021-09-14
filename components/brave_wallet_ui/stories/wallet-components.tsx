@@ -100,10 +100,15 @@ export const _Onboarding = () => {
     <WalletPageLayout>
       <WalletSubViewLayout>
         <Onboarding
+          hasImportError={false}
           recoveryPhrase={recoveryPhrase}
           onSubmit={complete}
           onPasswordProvided={passwordProvided}
           onShowRestore={onShowRestor}
+          braveLegacyWalletDetected={true}
+          metaMaskWalletDetected={true}
+          onImportMetaMask={complete}
+          onImportBraveLegacy={complete}
         />
       </WalletSubViewLayout>
     </WalletPageLayout>

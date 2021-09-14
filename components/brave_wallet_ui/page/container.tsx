@@ -425,6 +425,14 @@ function Container (props: Props) {
     props.walletPageActions.doneViewingPrivateKey()
   }
 
+  const onImportBraveLegacy = (password: string) => {
+    // Logic here to import a detected Brave Legacy Wallet
+  }
+
+  const onImportMetaMask = (password: string) => {
+    // Logic here to import a detected MetaMask Wallet
+  }
+
   const renderWallet = React.useMemo(() => {
     if (!hasInitialized) {
       return null
@@ -445,6 +453,13 @@ function Container (props: Props) {
           onPasswordProvided={passwordProvided}
           onSubmit={completeWalletSetup}
           onShowRestore={onToggleShowRestore}
+          // Pass a boolean if either wallet is detected
+          braveLegacyWalletDetected={false}
+          metaMaskWalletDetected={false}
+          // Pass a boolean if it failed to import
+          hasImportError={false}
+          onImportBraveLegacy={onImportBraveLegacy}
+          onImportMetaMask={onImportMetaMask}
         />
       )
     } else {

@@ -5,7 +5,11 @@ import {
   Title,
   Description,
   PageIcon,
-  RestoreButton
+  RestoreButton,
+  Divider,
+  ImportButton,
+  ImportButtonText,
+  MetaMaskIcon
 } from './style'
 import { NavButton } from '../../../extension'
 import locale from '../../../../constants/locale'
@@ -13,10 +17,12 @@ import locale from '../../../../constants/locale'
 export interface Props {
   onSetup: () => void
   onRestore: () => void
+  onClickImportMetaMask: () => void
+  metaMaskWalletDetected: boolean
 }
 
 function OnboardingWelcome (props: Props) {
-  const { onRestore, onSetup } = props
+  const { onRestore, onSetup, onClickImportMetaMask, metaMaskWalletDetected } = props
   return (
     <StyledWrapper>
       <PageIcon />
@@ -24,6 +30,15 @@ function OnboardingWelcome (props: Props) {
       <Description>{locale.welcomeDescription}</Description>
       <NavButton buttonType='primary' text={locale.welcomeButton} onSubmit={onSetup} />
       <RestoreButton onClick={onRestore}>{locale.welcomeRestoreButton}</RestoreButton>
+      {metaMaskWalletDetected &&
+        <>
+          <Divider />
+          <ImportButton onClick={onClickImportMetaMask}>
+            <MetaMaskIcon />
+            <ImportButtonText>{locale.importMetaMaskTitle}</ImportButtonText>
+          </ImportButton>
+        </>
+      }
     </StyledWrapper>
   )
 }

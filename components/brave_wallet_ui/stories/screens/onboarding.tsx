@@ -1,37 +1,63 @@
 import * as React from 'react'
 import {
   OnboardingWelcome,
-  OnboardingCreatePassword
+  OnboardingCreatePassword,
+  OnboardingImportMetaMaskOrLegacy
 } from '../../components/desktop'
+import { WalletOnboardingSteps } from '../../constants/types'
 import { BackButton } from '../../components/shared'
 import BackupWallet from './backup-wallet'
 
 export interface Props {
   recoveryPhrase: string[]
+  metaMaskWalletDetected: boolean
+  braveLegacyWalletDetected: boolean
+  hasImportError: boolean
   onPasswordProvided: (password: string) => void
+  onImportMetaMask: (password: string) => void
+  onImportBraveLegacy: (password: string) => void
   onSubmit: (recoveryVerified: boolean) => void
   onShowRestore: () => void
 }
 
 function Onboarding (props: Props) {
-  const { recoveryPhrase, onPasswordProvided, onSubmit, onShowRestore } = props
-  const [onboardingStep, setOnboardingStep] = React.useState<number>(0)
+  const {
+    recoveryPhrase,
+    metaMaskWalletDetected,
+    braveLegacyWalletDetected,
+    hasImportError,
+    onPasswordProvided,
+    onSubmit,
+    onShowRestore,
+    onImportMetaMask,
+    onImportBraveLegacy
+  } = props
+  const [onboardingStep, setOnboardingStep] = React.useState<WalletOnboardingSteps>(WalletOnboardingSteps.OnboardingWelcome)
   const [password, setPassword] = React.useState<string>('')
   const [confirmedPassword, setConfirmedPassword] = React.useState<string>('')
 
   const nextStep = () => {
-    if (onboardingStep === 2) {
+    if (onboardingStep === WalletOnboardingSteps.OnboardingWelcome && braveLegacyWalletDetected) {
+      setOnboardingStep(WalletOnboardingSteps.OnboardingImportBraveLegacy)
+      return
+    }
+    if (onboardingStep === WalletOnboardingSteps.OnboardingBackupWallet) {
       onSubmit(true)
       return
     }
-
-    if (onboardingStep === 1) {
+    if (onboardingStep === WalletOnboardingSteps.OnboardingCreatePassword) {
       onPasswordProvided(password)
     }
     setOnboardingStep(onboardingStep + 1)
   }
 
   const onBack = () => {
+    if (onboardingStep === WalletOnboardingSteps.OnboardingImportBraveLegacy
+      || onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask) {
+      setOnboardingStep(WalletOnboardingSteps.OnboardingWelcome)
+      setPassword('')
+      return
+    }
     setOnboardingStep(onboardingStep - 1)
   }
 
@@ -47,8 +73,24 @@ function Onboarding (props: Props) {
     setConfirmedPassword(value)
   }
 
+  const onClickImportMetaMask = () => {
+    setOnboardingStep(WalletOnboardingSteps.OnboardingImportMetaMask)
+  }
+
+  const onImport = () => {
+    if (onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask) {
+      onImportMetaMask(password)
+    } else {
+      onImportBraveLegacy(password)
+    }
+  }
+
   const showBackButton = React.useMemo(() => {
-    if (onboardingStep === 1) {
+    if (
+      onboardingStep === WalletOnboardingSteps.OnboardingCreatePassword
+      || onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask
+      || onboardingStep === WalletOnboardingSteps.OnboardingImportBraveLegacy
+    ) {
       return true
     } else {
       return false
@@ -75,19 +117,28 @@ function Onboarding (props: Props) {
     }
   }, [confirmedPassword, password])
 
+  const startNormalOnboarding = () => {
+    setOnboardingStep(WalletOnboardingSteps.OnboardingCreatePassword)
+  }
+
+  const isImporting = onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask
+    || onboardingStep === WalletOnboardingSteps.OnboardingImportBraveLegacy
+
   return (
     <>
       {showBackButton &&
         <BackButton onSubmit={onBack} />
       }
       <>
-        {onboardingStep === 0 &&
+        {onboardingStep === WalletOnboardingSteps.OnboardingWelcome &&
           <OnboardingWelcome
             onRestore={onShowRestore}
             onSetup={nextStep}
+            onClickImportMetaMask={onClickImportMetaMask}
+            metaMaskWalletDetected={metaMaskWalletDetected}
           />
         }
-        {onboardingStep === 1 &&
+        {onboardingStep === WalletOnboardingSteps.OnboardingCreatePassword &&
           <OnboardingCreatePassword
             onSubmit={nextStep}
             onPasswordChanged={handlePasswordChanged}
@@ -97,13 +148,23 @@ function Onboarding (props: Props) {
             hasConfirmPasswordError={checkConfirmedPassword}
           />
         }
-        {onboardingStep === 2 &&
+        {onboardingStep === WalletOnboardingSteps.OnboardingBackupWallet &&
           <BackupWallet
             isOnboarding={true}
             onCancel={onSkipBackup}
             onSubmit={nextStep}
             onBack={onBack}
             recoveryPhrase={recoveryPhrase}
+          />
+        }
+        {isImporting &&
+          <OnboardingImportMetaMaskOrLegacy
+            onSubmit={onImport}
+            onPasswordChanged={handlePasswordChanged}
+            disabled={password === ''}
+            onboardingStep={onboardingStep}
+            hasImportError={hasImportError}
+            onClickLost={startNormalOnboarding}
           />
         }
       </>

@@ -83,7 +83,7 @@ const locale = {
   // Wallet Onboarding Welcome
   welcomeTitle: 'DeFi & Secure Crypto Storage',
   welcomeDescription: 'Hold crypto in your custody. Trade assets, and interact with web 3 apps. Track portfolio performance, invest, borrow, and lend with DeFi.',
-  welcomeButton: 'Setup Crypto',
+  welcomeButton: 'Get Started',
   welcomeRestoreButton: 'Restore',
 
   // Backup Wallet Intro
@@ -282,7 +282,18 @@ const locale = {
   connectWithSiteDescription1: 'View the addressess of your',
   connectWithSiteDescription2: 'permitted accounts (required)',
   connectWithSiteNext: 'Next',
-  connectWithSiteHeaderTitle: 'Connect With Brave Wallet'
+  connectWithSiteHeaderTitle: 'Connect With Brave Wallet',
+
+  // Import from MetaMask
+  importMetaMaskTitle: 'Import from MetaMask',
+  importMetaMaskDescription: 'Import your MetaMask HD wallet, assets, and settings, into Brave Wallet. Enjoy a faster and more secure way to manage crypto, interact with DeFi. With more assets support like Doge, Bitcoin, Solana.',
+  importMetaMaskInput: 'Enter your MetaMask password',
+
+  // Import from Legacy Wallet
+  importBraveLegacyTitle: 'Existing Crypto Wallets detected',
+  importBraveLegacyDescription: 'Enter your existing crypto wallet password to update. Enjoy a faster and more secure way to manage crypto, interact with DeFi. With more assets support like Doge, Bitcoin, Solana.',
+  importBraveLegacyInput: 'Enter your crypto wallets password',
+  importBraveLegacyAltButton: 'I’ve lost my password and recovery phrase'
 }
 
 export default locale
