@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api_mac.h"
 
-#import <Foundation/Foundation.h>
 #import <NetworkExtension/NetworkExtension.h>
 
 #include "base/files/file_path.h"
