@@ -115,6 +115,7 @@ source_set("unit_tests") {
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:tab_helper",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//chrome/browser",
