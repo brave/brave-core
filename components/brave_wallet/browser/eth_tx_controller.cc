@@ -19,8 +19,98 @@
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
+
+// static
+void EthTxController::FixMissingTxData(mojom::TxDataPtr* tx_data) {
+  CHECK(tx_data);
+  if ((*tx_data)->value.empty())
+    (*tx_data)->value = "0x00";
+}
+
+// static
+void EthTxController::FixMissingTxData1559(mojom::TxData1559Ptr* tx_data) {
+  CHECK(tx_data);
+  FixMissingTxData(&(*tx_data)->base_data);
+}
+
+// static
+bool EthTxController::ValidateTxData(const mojom::TxDataPtr& tx_data,
+                                     std::string* error) {
+  CHECK(error);
+  // To cannot be empty if data is not specified
+  if (tx_data->data.size() == 0 && tx_data->to.empty()) {
+    *error =
+        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_TO_OR_DATA);
+    return false;
+  }
+
+  // If the following fields are specified, they must be valid hex strings
+  if (!tx_data->nonce.empty() && !IsValidHexString(tx_data->nonce)) {
+    *error =
+        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_NONCE_INVALID);
+    return false;
+  }
+  if (!tx_data->gas_price.empty() && !IsValidHexString(tx_data->gas_price)) {
+    *error = l10n_util::GetStringUTF8(
+        IDS_WALLET_ETH_SEND_TRANSACTION_GAS_PRICE_INVALID);
+    return false;
+  }
+  if (!tx_data->gas_limit.empty() && !IsValidHexString(tx_data->gas_limit)) {
+    *error = l10n_util::GetStringUTF8(
+        IDS_WALLET_ETH_SEND_TRANSACTION_GAS_LIMIT_INVALID);
+    return false;
+  }
+  if (!tx_data->value.empty() && !IsValidHexString(tx_data->value)) {
+    *error =
+        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_VALUE_INVALID);
+    return false;
+  }
+  // to must be a valid address if specified
+  if (!tx_data->to.empty() && EthAddress::FromHex(tx_data->to).IsEmpty()) {
+    *error =
+        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_TO_INVALID);
+    return false;
+  }
+  return true;
+}
+
+// static
+bool EthTxController::ValidateTxData1559(const mojom::TxData1559Ptr& tx_data,
+                                         std::string* error) {
+  if (!ValidateTxData(tx_data->base_data, error))
+    return false;
+  // Not allowed to have empty gas price and fee per gas
+  if (!tx_data->base_data->gas_price.empty() &&
+      !tx_data->max_fee_per_gas.empty()) {
+    *error = l10n_util::GetStringUTF8(
+        IDS_WALLET_ETH_SEND_TRANSACTION_GAS_PRICING_EXISTS);
+    return false;
+  }
+  // If the following fields are specified, they must be valid hex strings
+  if (!tx_data->chain_id.empty() && !IsValidHexString(tx_data->chain_id)) {
+    *error = l10n_util::GetStringUTF8(
+        IDS_WALLET_ETH_SEND_TRANSACTION_CHAIN_ID_INVALID);
+    return false;
+  }
+  if (!tx_data->max_priority_fee_per_gas.empty() &&
+      !IsValidHexString(tx_data->max_priority_fee_per_gas)) {
+    *error = l10n_util::GetStringUTF8(
+        IDS_WALLET_ETH_SEND_TRANSACTION_MAX_PRIORITY_FEE_PER_GAS_INVALID);
+    return false;
+  }
+  if (!tx_data->max_fee_per_gas.empty() &&
+      !IsValidHexString(tx_data->max_fee_per_gas)) {
+    *error = l10n_util::GetStringUTF8(
+        IDS_WALLET_ETH_SEND_TRANSACTION_MAX_FEE_PER_GAS_INVALID);
+    return false;
+  }
+
+  return true;
+}
 
 EthTxController::EthTxController(
     EthJsonRpcController* rpc_controller,
@@ -56,11 +146,27 @@ void EthTxController::AddUnapprovedTransaction(
     mojom::TxDataPtr tx_data,
     const std::string& from,
     AddUnapprovedTransactionCallback callback) {
-  auto tx = EthTransaction::FromTxData(tx_data);
-  if (!tx) {
-    std::move(callback).Run(false, "");
+  FixMissingTxData(&tx_data);
+  if (from.empty()) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_FROM_EMPTY));
     return;
   }
+  std::string error;
+  if (!EthTxController::ValidateTxData(tx_data, &error)) {
+    std::move(callback).Run(false, "", error);
+    return;
+  }
+  auto tx = EthTransaction::FromTxData(tx_data, false);
+  if (!tx) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_CONVERT_TX_DATA));
+    return;
+  }
+
   EthTxStateManager::TxMeta meta(std::make_unique<EthTransaction>(*tx));
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.from = EthAddress::FromHex(from);
@@ -72,16 +178,31 @@ void EthTxController::AddUnapprovedTransaction(
     observer->OnNewUnapprovedTx(
         EthTxStateManager::TxMetaToTransactionInfo(meta));
 
-  std::move(callback).Run(true, meta.id);
+  std::move(callback).Run(true, meta.id, "");
 }
 
 void EthTxController::AddUnapproved1559Transaction(
     mojom::TxData1559Ptr tx_data,
     const std::string& from,
     AddUnapproved1559TransactionCallback callback) {
-  auto tx = Eip1559Transaction::FromTxData(tx_data);
+  FixMissingTxData1559(&tx_data);
+  if (from.empty()) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_FROM_EMPTY));
+    return;
+  }
+  std::string error;
+  if (!EthTxController::ValidateTxData1559(tx_data, &error)) {
+    std::move(callback).Run(false, "", error);
+    return;
+  }
+  auto tx = Eip1559Transaction::FromTxData(tx_data, false);
   if (!tx) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_CONVERT_TX_DATA));
     return;
   }
   EthTxStateManager::TxMeta meta(std::make_unique<Eip1559Transaction>(*tx));
@@ -95,7 +216,7 @@ void EthTxController::AddUnapproved1559Transaction(
     observer->OnNewUnapprovedTx(
         EthTxStateManager::TxMetaToTransactionInfo(meta));
 
-  std::move(callback).Run(true, meta.id);
+  std::move(callback).Run(true, meta.id, "");
 }
 
 void EthTxController::ApproveTransaction(const std::string& tx_meta_id,
