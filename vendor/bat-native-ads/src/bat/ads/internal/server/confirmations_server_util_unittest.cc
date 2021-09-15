@@ -36,16 +36,4 @@ TEST(BatAdsConfirmationsServerUtilTest, Staging) {
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsConfirmationsServerUtilTest, Development) {
-  // Arrange
-  SetEnvironment(mojom::Environment::kDevelopment);
-
-  // Act
-  const std::string host = confirmations::server::GetHost();
-
-  // Assert
-  const std::string expected_host = "https://ads-serve.brave.software";
-  EXPECT_EQ(expected_host, host);
-}
-
 }  // namespace ads

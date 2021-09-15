@@ -6,8 +6,7 @@ module ads.mojom;
 
 enum Environment {
   kStaging = 0,
-  kProduction,
-  kDevelopment
+  kProduction
 };
 
 struct SysInfo {

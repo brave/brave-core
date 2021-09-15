@@ -16,7 +16,6 @@ namespace {
 
 const char kProductionHost[] = "https://ads-serve.brave.com";
 const char kStagingHost[] = "https://ads-serve.bravesoftware.com";
-const char kDevelopmentHost[] = "https://ads-serve.brave.software";
 
 }  // namespace
 
@@ -28,10 +27,6 @@ std::string GetHost() {
 
     case mojom::Environment::kStaging: {
       return kStagingHost;
-    }
-
-    case mojom::Environment::kDevelopment: {
-      return kDevelopmentHost;
     }
   }
 }

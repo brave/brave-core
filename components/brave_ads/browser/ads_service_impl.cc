@@ -936,8 +936,6 @@ void AdsServiceImpl::SetEnvironment() {
     environment = ads::mojom::Environment::kProduction;
   } else if (command_line.HasSwitch(switches::kStaging)) {
     environment = ads::mojom::Environment::kStaging;
-  } else if (command_line.HasSwitch(switches::kDevelopment)) {
-    environment = ads::mojom::Environment::kDevelopment;
   }
 #endif
 
