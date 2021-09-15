@@ -12,6 +12,7 @@ struct UnlockWalletView: View {
   
   @State private var password: String = ""
   @State private var unlockError: UnlockError?
+  @State private var attemptedBiometricsUnlock: Bool = false
   
   private enum UnlockError: LocalizedError {
     case incorrectPassword
@@ -75,6 +76,17 @@ struct UnlockWalletView: View {
     .background(Color(.braveBackground))
     .onChange(of: password) { _ in
       unlockError = nil
+    }
+    .onAppear {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+        if !attemptedBiometricsUnlock {
+          attemptedBiometricsUnlock = true
+          if let password = KeyringStore.retrievePasswordFromKeychain() {
+            self.password = password
+            unlock()
+          }
+        }
+      }
     }
   }
 }
