@@ -55,7 +55,7 @@ Eip2930Transaction::Eip2930Transaction(uint256_t nonce,
       chain_id_(chain_id) {
   type_ = 1;
 }
-Eip2930Transaction::Eip2930Transaction() {
+Eip2930Transaction::Eip2930Transaction() : chain_id_(0) {
   type_ = 1;
 }
 Eip2930Transaction::~Eip2930Transaction() = default;

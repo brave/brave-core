@@ -14,7 +14,8 @@
 
 namespace brave_wallet {
 
-Eip1559Transaction::Eip1559Transaction() {
+Eip1559Transaction::Eip1559Transaction()
+    : max_priority_fee_per_gas_(0), max_fee_per_gas_(0) {
   type_ = 2;
 }
 
@@ -51,8 +52,8 @@ bool Eip1559Transaction::operator==(const Eip1559Transaction& tx) const {
 absl::optional<Eip1559Transaction> Eip1559Transaction::FromTxData(
     const mojom::TxData1559Ptr& tx_data1559,
     bool strict) {
-  uint256_t chain_id;
-  if (!HexValueToUint256(tx_data1559->chain_id, &chain_id))
+  uint256_t chain_id = 0;
+  if (!HexValueToUint256(tx_data1559->chain_id, &chain_id) && strict)
     return absl::nullopt;
 
   absl::optional<Eip2930Transaction> tx_2930 =
@@ -60,12 +61,14 @@ absl::optional<Eip1559Transaction> Eip1559Transaction::FromTxData(
   if (!tx_2930)
     return absl::nullopt;
 
-  uint256_t max_priority_fee_per_gas;
+  uint256_t max_priority_fee_per_gas = 0;
   if (!HexValueToUint256(tx_data1559->max_priority_fee_per_gas,
-                         &max_priority_fee_per_gas))
+                         &max_priority_fee_per_gas) &&
+      strict)
     return absl::nullopt;
-  uint256_t max_fee_per_gas;
-  if (!HexValueToUint256(tx_data1559->max_fee_per_gas, &max_fee_per_gas))
+  uint256_t max_fee_per_gas = 0;
+  if (!HexValueToUint256(tx_data1559->max_fee_per_gas, &max_fee_per_gas) &&
+      strict)
     return absl::nullopt;
 
   Eip1559Transaction tx(tx_2930->nonce(), tx_2930->gas_price(),

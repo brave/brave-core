@@ -23,7 +23,9 @@ constexpr uint256_t kTxDataZeroCostPerByte = 4;
 constexpr uint256_t kTxDataCostPerByte = 16;
 }  // namespace
 
-EthTransaction::EthTransaction() = default;
+EthTransaction::EthTransaction()
+    : nonce_(0), gas_price_(0), gas_limit_(0), value_(0) {}
+
 EthTransaction::EthTransaction(const EthTransaction&) = default;
 EthTransaction::EthTransaction(uint256_t nonce,
                                uint256_t gas_price,
