@@ -320,7 +320,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                         accountSpinner.getSelectedItemPosition());
                 if (mEthTxController != null) {
                     mEthTxController.addUnapprovedTransaction(data, from,
-                            (success, tx_meta_id)
+                            (success, tx_meta_id, error_message)
                                     -> {
                                             // TODO(sergz): Add an observer and approve transaction
                                     });
