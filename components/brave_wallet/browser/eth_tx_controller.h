@@ -68,8 +68,6 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
   void AddObserver(
       ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) override;
 
-  static void FixMissingTxData(mojom::TxDataPtr* tx_data);
-  static void FixMissingTxData1559(mojom::TxData1559Ptr* tx_data);
   static bool ValidateTxData(const mojom::TxDataPtr& tx_data,
                              std::string* error);
   static bool ValidateTxData1559(const mojom::TxData1559Ptr& tx_data,

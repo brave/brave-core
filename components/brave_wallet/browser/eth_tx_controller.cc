@@ -25,19 +25,6 @@
 namespace brave_wallet {
 
 // static
-void EthTxController::FixMissingTxData(mojom::TxDataPtr* tx_data) {
-  CHECK(tx_data);
-  if ((*tx_data)->value.empty())
-    (*tx_data)->value = "0x00";
-}
-
-// static
-void EthTxController::FixMissingTxData1559(mojom::TxData1559Ptr* tx_data) {
-  CHECK(tx_data);
-  FixMissingTxData(&(*tx_data)->base_data);
-}
-
-// static
 bool EthTxController::ValidateTxData(const mojom::TxDataPtr& tx_data,
                                      std::string* error) {
   CHECK(error);
@@ -146,7 +133,6 @@ void EthTxController::AddUnapprovedTransaction(
     mojom::TxDataPtr tx_data,
     const std::string& from,
     AddUnapprovedTransactionCallback callback) {
-  FixMissingTxData(&tx_data);
   if (from.empty()) {
     std::move(callback).Run(
         false, "",
@@ -185,7 +171,6 @@ void EthTxController::AddUnapproved1559Transaction(
     mojom::TxData1559Ptr tx_data,
     const std::string& from,
     AddUnapproved1559TransactionCallback callback) {
-  FixMissingTxData1559(&tx_data);
   if (from.empty()) {
     std::move(callback).Run(
         false, "",

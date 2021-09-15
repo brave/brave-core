@@ -11,24 +11,6 @@
 
 namespace brave_wallet {
 
-TEST(EthTxControllerUnitTest, FixMissingTxData) {
-  auto tx_data = mojom::TxData::New(
-      "0x06", "0x09184e72a000", "0x0974",
-      "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "", std::vector<uint8_t>());
-  EthTxController::FixMissingTxData(&tx_data);
-  CHECK_EQ(tx_data->value, "0x00");
-}
-
-TEST(EthTxControllerUnitTest, FixMissingTxData1559) {
-  auto tx_data = mojom::TxData1559::New(
-      mojom::TxData::New("0x00", "", "0x00",
-                         "0x0101010101010101010101010101010101010101", "0x00",
-                         std::vector<uint8_t>()),
-      "0x04", "0x0", "0x1");
-  EthTxController::FixMissingTxData1559(&tx_data);
-  CHECK_EQ(tx_data->base_data->value, "0x00");
-}
-
 TEST(EthTxControllerUnitTest, ValidateTxData) {
   std::string error_message;
   EXPECT_TRUE(EthTxController::ValidateTxData(
