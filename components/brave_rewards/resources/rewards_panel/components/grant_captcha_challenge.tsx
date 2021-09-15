@@ -18,27 +18,6 @@ interface Point {
   y: number
 }
 
-function applyDevicePixelTransform (point: Point): Point {
-  if (window.navigator.platform !== 'Win32') {
-    return point
-  }
-
-  const { devicePixelRatio } = window
-  if (devicePixelRatio <= 1) {
-    return point
-  }
-
-  // TODO(zenparsing): It's unclear how this works - if the ratio is 2 on
-  // Windows, why would we offset the answer by 10 pixels left and down? Revisit
-  // this logic and add comments explaining the strategy.
-  const offset = 5 * devicePixelRatio
-
-  return {
-    x: point.x + offset,
-    y: point.y + offset
-  }
-}
-
 interface Props {
   grantCaptchaInfo: GrantCaptchaInfo
   onSolve: (solution: Point) => void
@@ -78,10 +57,10 @@ export function GrantCaptchaChallenge (props: Props) {
 
     // The solution is the center point of the draggable object within the
     // space coordinates of the captcha image.
-    props.onSolve(applyDevicePixelTransform({
+    props.onSolve({
       x: event.clientX - rect.left + centerOffset.x,
       y: event.clientY - rect.top + centerOffset.y
-    }))
+    })
   }
 
   if (!grantCaptchaInfo.imageURL) {
