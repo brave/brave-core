@@ -2189,7 +2189,7 @@ extension BrowserViewController: TabManagerDelegate {
             wv.accessibilityIdentifier = nil
             
             #if swift(>=5.4)
-            if #available(iOS 14.5, *) {
+            if #available(iOS 15.0, *) {
                 wv.alpha = 0.0
                 wv.requestMediaPlaybackState { state in
                     if state != .playing && wv != tabManager.selectedTab?.webView {
@@ -2277,7 +2277,7 @@ extension BrowserViewController: TabManagerDelegate {
         
         #if swift(>=5.4)
         for tab in tabManager.allTabs {
-            if #available(iOS 14.5, *), let wv = tab.webView {
+            if #available(iOS 15.0, *), let wv = tab.webView {
                 wv.requestMediaPlaybackState { state in
                     if state != .playing && wv != tabManager.selectedTab?.webView {
                         wv.alpha = 1.0
