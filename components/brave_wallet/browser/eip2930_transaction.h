@@ -38,7 +38,8 @@ class Eip2930Transaction : public EthTransaction {
   bool operator==(const Eip2930Transaction&) const;
 
   static absl::optional<Eip2930Transaction> FromTxData(const mojom::TxDataPtr&,
-                                                       uint256_t chain_id);
+                                                       uint256_t chain_id,
+                                                       bool strict = true);
   static absl::optional<Eip2930Transaction> FromValue(const base::Value& value);
 
   static std::vector<base::Value> AccessListToValue(const AccessList&);

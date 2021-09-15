@@ -28,6 +28,7 @@ namespace brave_wallet {
 class HDKeyring;
 class EthTransaction;
 class KeyringControllerUnitTest;
+class BraveWalletProviderImplUnitTest;
 
 // This class is not thread-safe and should have single owner
 class KeyringController : public KeyedService, public mojom::KeyringController {
@@ -163,6 +164,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
                            SetDefaultKeyringDerivedAccountName);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, RestoreLegacyBraveWallet);
+  friend class BraveWalletProviderImplUnitTest;
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
 

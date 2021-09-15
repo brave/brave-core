@@ -433,11 +433,13 @@ export class TxData1559 {
 export interface AddUnapprovedTransactionReturnInfo {
   success: boolean
   txMetaId: string
+  errorMessage: string
 }
 
 export interface AddUnapproved1559TransactionReturnInfo {
   success: boolean
   txMetaId: string
+  errorMessage: string
 }
 
 export interface ApproveTransactionReturnInfo {

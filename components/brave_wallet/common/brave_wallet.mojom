@@ -18,6 +18,8 @@ interface BraveWalletProvider {
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
   RequestEthereumPermissions() => (bool success, array<string> accounts);
   AddEthereumChain(string json_payload) => (bool success, int32 error, string message);
+  AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id, string error_message);
+  AddUnapproved1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_meta_id, string error_message);
   GetChainId() => (string chain_id);
   GetAllowedAccounts() => (bool success, array<string> accounts);
 };
@@ -314,8 +316,8 @@ interface EthTxControllerObserver {
 };
 
 interface EthTxController {
-  AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id);
-  AddUnapproved1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_meta_id);
+  AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id, string error_message);
+  AddUnapproved1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_meta_id, string error_message);
   ApproveTransaction(string tx_meta_id) => (bool status);
   RejectTransaction(string tx_meta_id) => (bool status);
   MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
