@@ -155,7 +155,7 @@ export function getVerifyWalletPanel (
       )
 
       content = (
-        <NewTabLink href='https://bitflyer.com/static/lp03/?ns=display_brave_bf_brave&utm_source=brave&utm_medium=display&utm_campaign=bf_brave&utm_term=202104&utm_content='>
+        <NewTabLink href='https://twitter.com/bravesoftwarejp'>
           <img src={bitflyerPromoImage} />
         </NewTabLink>
       )
