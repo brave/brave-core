@@ -9,6 +9,7 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "bat/ads/internal/catalog/catalog_campaign_info.h"
 #include "bat/ads/internal/catalog/catalog_version.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"

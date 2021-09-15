@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FEATURES_FEATURES_H_
 
 #include "base/metrics/field_trial.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace features {

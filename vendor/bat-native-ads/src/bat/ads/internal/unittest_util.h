@@ -15,13 +15,20 @@
 
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/time/time.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+
+namespace absl {
+template <typename T>
+class optional;
+}  // namespace absl
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 

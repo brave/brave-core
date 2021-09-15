@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/privacy/privacy_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"

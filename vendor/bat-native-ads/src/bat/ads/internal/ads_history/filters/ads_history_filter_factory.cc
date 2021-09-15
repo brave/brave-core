@@ -11,13 +11,13 @@
 namespace ads {
 
 std::unique_ptr<AdsHistoryFilter> AdsHistoryFilterFactory::Build(
-    const AdsHistoryInfo::FilterType type) {
+    const AdsHistoryFilterType type) {
   switch (type) {
-    case AdsHistoryInfo::FilterType::kNone: {
+    case AdsHistoryFilterType::kNone: {
       return nullptr;
     }
 
-    case AdsHistoryInfo::FilterType::kConfirmationType: {
+    case AdsHistoryFilterType::kConfirmationType: {
       return std::make_unique<AdsHistoryConfirmationFilter>();
     }
   }

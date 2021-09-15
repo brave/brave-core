@@ -9,8 +9,8 @@
 #include <functional>
 #include <string>
 
-#include "bat/ads/internal/ad_events/ad_event_info.h"
-#include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
+#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
+#include "bat/ads/internal/bundle/creative_inline_content_ad_info_aliases.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
 
 namespace ads {

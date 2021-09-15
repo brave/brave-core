@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 

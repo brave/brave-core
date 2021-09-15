@@ -13,7 +13,6 @@
 #include "base/check.h"
 #include "base/files/file_util.h"
 #include "base/notreached.h"
-#include "base/sequence_checker.h"
 #include "bat/ads/internal/logging.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"

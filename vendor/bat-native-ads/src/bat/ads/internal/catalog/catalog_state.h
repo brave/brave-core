@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <string>
 
-#include "bat/ads/internal/catalog/catalog_campaign_info.h"
+#include "bat/ads/internal/catalog/catalog_campaign_info_aliases.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 
 namespace ads {

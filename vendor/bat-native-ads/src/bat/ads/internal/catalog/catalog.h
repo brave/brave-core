@@ -10,7 +10,7 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/internal/catalog/catalog_campaign_info.h"
+#include "bat/ads/internal/catalog/catalog_campaign_info_aliases.h"
 
 namespace ads {
 

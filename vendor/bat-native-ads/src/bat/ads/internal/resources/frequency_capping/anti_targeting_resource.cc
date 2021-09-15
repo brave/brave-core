@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/anti_targeting/anti_targeting_features.h"
 #include "bat/ads/internal/logging.h"

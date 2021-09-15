@@ -10,8 +10,10 @@
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate_mock.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/wallet/wallet.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/statement_info.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

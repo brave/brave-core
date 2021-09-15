@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/timer/timer.h"
+
 namespace ads {
 
 BackoffTimer::BackoffTimer() {

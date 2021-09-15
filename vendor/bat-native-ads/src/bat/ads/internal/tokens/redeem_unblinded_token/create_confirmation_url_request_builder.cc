@@ -7,14 +7,9 @@
 
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
-#include "bat/ads/internal/locale/country_code_util.h"
-#include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/server/confirmations_server_util.h"
 #include "bat/ads/internal/server/via_header_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
-#include "brave/components/l10n/browser/locale_helper.h"
-#include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
 

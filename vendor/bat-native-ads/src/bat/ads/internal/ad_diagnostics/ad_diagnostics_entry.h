@@ -9,7 +9,6 @@
 #include <string>
 
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry_type.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

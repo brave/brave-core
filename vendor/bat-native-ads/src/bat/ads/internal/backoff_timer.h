@@ -11,8 +11,11 @@
 
 #include "base/callback_forward.h"
 #include "base/time/time.h"
-#include "base/timer/timer.h"
 #include "bat/ads/internal/timer.h"
+
+namespace base {
+class OneShotTimer;
+}  // namespace base
 
 namespace ads {
 

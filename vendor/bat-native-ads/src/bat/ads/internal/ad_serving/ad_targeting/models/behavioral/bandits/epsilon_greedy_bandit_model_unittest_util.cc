@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/segments/segments_json_writer.h"

@@ -10,11 +10,12 @@
 #include <memory>
 #include <utility>
 
-#include "bat/ads/ads.h"
 #include "base/bind.h"
 #include "base/callback.h"
 #include "base/containers/flat_map.h"
 #include "base/logging.h"
+#include "bat/ads/ad_notification_info.h"
+#include "bat/ads/ads.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;

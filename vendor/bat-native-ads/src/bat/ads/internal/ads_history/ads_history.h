@@ -8,12 +8,14 @@
 
 #include <cstdint>
 
-#include "bat/ads/ads_history_info.h"
+#include "bat/ads/ads_history_filter_types.h"
+#include "bat/ads/ads_history_sort_types.h"
 
 namespace ads {
 
 class ConfirmationType;
 struct AdNotificationInfo;
+struct AdsHistoryInfo;
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
 struct PromotedContentAdInfo;
@@ -22,8 +24,8 @@ namespace history {
 
 const int kForDays = 30;
 
-AdsHistoryInfo Get(const AdsHistoryInfo::FilterType filter_type,
-                   const AdsHistoryInfo::SortType sort_type,
+AdsHistoryInfo Get(const AdsHistoryFilterType filter_type,
+                   const AdsHistorySortType sort_type,
                    const uint64_t from_timestamp,
                    const uint64_t to_timestamp);
 

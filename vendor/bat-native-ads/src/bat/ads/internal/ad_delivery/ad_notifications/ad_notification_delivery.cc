@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ad_delivery/ad_notifications/ad_notification_delivery.h"
 
 #include "bat/ads/ad_notification_info.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"

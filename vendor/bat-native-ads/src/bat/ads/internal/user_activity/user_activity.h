@@ -8,10 +8,13 @@
 
 #include <cstdint>
 
-#include "base/time/time.h"
-#include "bat/ads/internal/user_activity/user_activity_event_info.h"
+#include "bat/ads/internal/user_activity/user_activity_event_info_aliases.h"
 #include "bat/ads/internal/user_activity/user_activity_event_types.h"
 #include "bat/ads/page_transition_types.h"
+
+namespace base {
+class TimeDelta;
+}  // namespace base
 
 namespace ads {
 
@@ -34,11 +37,11 @@ class UserActivity {
   void RecordEventForPageTransition(const PageTransitionType type);
   void RecordEventForPageTransitionFromInt(const int32_t type);
 
-  UserActivityEvents GetHistoryForTimeWindow(
+  UserActivityEventList GetHistoryForTimeWindow(
       const base::TimeDelta time_window) const;
 
  private:
-  UserActivityEvents history_;
+  UserActivityEventList history_;
 };
 
 }  // namespace ads

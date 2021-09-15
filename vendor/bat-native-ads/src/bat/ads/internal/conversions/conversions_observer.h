@@ -6,7 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSIONS_OBSERVER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSIONS_OBSERVER_H_
 
-#include "base/observer_list.h"
+#include "base/observer_list_types.h"
 
 namespace ads {
 

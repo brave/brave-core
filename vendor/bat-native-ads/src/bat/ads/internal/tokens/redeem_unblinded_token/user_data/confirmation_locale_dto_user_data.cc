@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/values.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/locale/country_code_util.h"
 #include "brave/components/l10n/browser/locale_helper.h"

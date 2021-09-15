@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <string>
 
-#include "bat/ads/internal/segments/segments_alias.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 
 namespace ads {
 namespace ad_targeting {

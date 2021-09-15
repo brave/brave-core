@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "bat/ads/internal/account/wallet/wallet.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate_mock.h"

@@ -37,6 +37,7 @@
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history_info.h"
+#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "bat/ads/statement_info.h"

@@ -8,7 +8,9 @@
 
 #include <string>
 
-#include "base/time/time.h"
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 

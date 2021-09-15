@@ -10,10 +10,11 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/values.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
@@ -26,6 +27,7 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
+#include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_dto_user_data_builder.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -42,10 +44,13 @@ using challenge_bypass_ristretto::UnblindedToken;
 
 RedeemUnblindedToken::RedeemUnblindedToken() = default;
 
-RedeemUnblindedToken::~RedeemUnblindedToken() = default;
+RedeemUnblindedToken::~RedeemUnblindedToken() {
+  delegate_ = nullptr;
+}
 
 void RedeemUnblindedToken::set_delegate(
     RedeemUnblindedTokenDelegate* delegate) {
+  DCHECK_EQ(delegate_, nullptr);
   delegate_ = delegate;
 }
 
@@ -69,11 +74,11 @@ void RedeemUnblindedToken::CreateConfirmation(
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
   mojom::UrlRequestPtr url_request = url_request_builder.Build();
-  BLOG(5, UrlRequestToString(url_request));
+  BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  auto callback = std::bind(&RedeemUnblindedToken::OnCreateConfirmation, this,
-                            std::placeholders::_1, confirmation);
+  const auto callback = std::bind(&RedeemUnblindedToken::OnCreateConfirmation,
+                                  this, std::placeholders::_1, confirmation);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
@@ -117,11 +122,11 @@ void RedeemUnblindedToken::FetchPaymentToken(
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
   mojom::UrlRequestPtr url_request = url_request_builder.Build();
-  BLOG(5, UrlRequestToString(url_request));
+  BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  auto callback = std::bind(&RedeemUnblindedToken::OnFetchPaymentToken, this,
-                            std::placeholders::_1, confirmation);
+  const auto callback = std::bind(&RedeemUnblindedToken::OnFetchPaymentToken,
+                                  this, std::placeholders::_1, confirmation);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 

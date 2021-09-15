@@ -10,7 +10,7 @@
 #include <string>
 
 #include "bat/ads/internal/ad_targeting/processors/processor.h"
-#include "bat/ads/internal/segments/segments_alias.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 #include "url/gurl.h"
 
 namespace ads {

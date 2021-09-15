@@ -8,10 +8,10 @@
 
 #include <string>
 
-#include "bat/ads/internal/client/preferences/filtered_ad_info.h"
-#include "bat/ads/internal/client/preferences/filtered_category_info.h"
-#include "bat/ads/internal/client/preferences/flagged_ad_info.h"
-#include "bat/ads/internal/client/preferences/saved_ad_info.h"
+#include "bat/ads/internal/client/preferences/filtered_ad_info_aliases.h"
+#include "bat/ads/internal/client/preferences/filtered_category_info_aliases.h"
+#include "bat/ads/internal/client/preferences/flagged_ad_info_aliases.h"
+#include "bat/ads/internal/client/preferences/saved_ad_info_aliases.h"
 
 namespace ads {
 

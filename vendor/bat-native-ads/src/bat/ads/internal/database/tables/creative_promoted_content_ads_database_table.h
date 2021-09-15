@@ -11,10 +11,10 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/bundle/creative_promoted_content_ad_info.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/bundle/creative_promoted_content_ad_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
-#include "bat/ads/internal/segments/segments_alias.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
@@ -28,6 +28,8 @@ using GetCreativePromotedContentAdsCallback =
     std::function<void(const bool,
                        const std::vector<std::string>&,
                        const CreativePromotedContentAdList&)>;
+
+struct CreativePromotedContentAdInfo;
 
 namespace database {
 namespace table {

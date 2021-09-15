@@ -8,7 +8,6 @@
 
 #include <cstdint>
 #include <string>
-#include <vector>
 
 namespace ads {
 
@@ -20,8 +19,6 @@ struct ConversionInfo {
   bool operator==(const ConversionInfo& rhs) const;
   bool operator!=(const ConversionInfo& rhs) const;
 
-  enum class SortType { kNone = 0, kAscendingOrder, kDescendingOrder };
-
   std::string creative_set_id;
   std::string type;
   std::string url_pattern;
@@ -29,8 +26,6 @@ struct ConversionInfo {
   int observation_window = 0;
   int64_t expiry_timestamp = 0;
 };
-
-using ConversionList = std::vector<ConversionInfo>;
 
 }  // namespace ads
 

@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/platform/platform_helper.h"
 
+#include "base/memory/singleton.h"
+
 namespace ads {
 
 PlatformHelper* g_platform_helper_for_testing = nullptr;

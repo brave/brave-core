@@ -8,15 +8,18 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_client.h"
+#include "bat/ads/ads_history_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics.h"
 #include "bat/ads/internal/ad_diagnostics/last_unidle_timestamp_ad_diagnostics_entry.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
@@ -75,7 +78,6 @@ namespace ads {
 
 AdsImpl::AdsImpl(AdsClient* ads_client)
     : ads_client_helper_(std::make_unique<AdsClientHelper>(ads_client)),
-      ad_diagnostics_(std::make_unique<AdDiagnostics>()),
       token_generator_(std::make_unique<privacy::TokenGenerator>()) {
   set(token_generator_.get());
 }
@@ -385,11 +387,10 @@ void AdsImpl::ReconcileAdRewards() {
   account_->Reconcile();
 }
 
-AdsHistoryInfo AdsImpl::GetAdsHistory(
-    const AdsHistoryInfo::FilterType filter_type,
-    const AdsHistoryInfo::SortType sort_type,
-    const uint64_t from_timestamp,
-    const uint64_t to_timestamp) {
+AdsHistoryInfo AdsImpl::GetAdsHistory(const AdsHistoryFilterType filter_type,
+                                      const AdsHistorySortType sort_type,
+                                      const uint64_t from_timestamp,
+                                      const uint64_t to_timestamp) {
   if (!IsInitialized()) {
     return {};
   }
@@ -417,41 +418,41 @@ void AdsImpl::GetAdDiagnostics(GetAdDiagnosticsCallback callback) {
   AdDiagnostics::Get()->GetAdDiagnostics(std::move(callback));
 }
 
-AdContentInfo::LikeAction AdsImpl::ToggleAdThumbUp(
+AdContentActionType AdsImpl::ToggleAdThumbUp(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const AdContentInfo::LikeAction& action) {
+    const AdContentActionType& action) {
   auto like_action = Client::Get()->ToggleAdThumbUp(creative_instance_id,
                                                     creative_set_id, action);
-  if (like_action == AdContentInfo::LikeAction::kThumbsUp) {
+  if (like_action == AdContentActionType::kThumbsUp) {
     account_->Deposit(creative_instance_id, ConfirmationType::kUpvoted);
   }
 
   return like_action;
 }
 
-AdContentInfo::LikeAction AdsImpl::ToggleAdThumbDown(
+AdContentActionType AdsImpl::ToggleAdThumbDown(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const AdContentInfo::LikeAction& action) {
+    const AdContentActionType& action) {
   auto like_action = Client::Get()->ToggleAdThumbDown(creative_instance_id,
                                                       creative_set_id, action);
-  if (like_action == AdContentInfo::LikeAction::kThumbsDown) {
+  if (like_action == AdContentActionType::kThumbsDown) {
     account_->Deposit(creative_instance_id, ConfirmationType::kDownvoted);
   }
 
   return like_action;
 }
 
-CategoryContentInfo::OptAction AdsImpl::ToggleAdOptInAction(
+CategoryContentActionType AdsImpl::ToggleAdOptInAction(
     const std::string& category,
-    const CategoryContentInfo::OptAction& action) {
+    const CategoryContentActionType& action) {
   return Client::Get()->ToggleAdOptInAction(category, action);
 }
 
-CategoryContentInfo::OptAction AdsImpl::ToggleAdOptOutAction(
+CategoryContentActionType AdsImpl::ToggleAdOptOutAction(
     const std::string& category,
-    const CategoryContentInfo::OptAction& action) {
+    const CategoryContentActionType& action) {
   return Client::Get()->ToggleAdOptOutAction(category, action);
 }
 
@@ -478,6 +479,8 @@ bool AdsImpl::ToggleFlagAd(const std::string& creative_instance_id,
 
 void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   DCHECK(token_generator);
+
+  ad_diagnostics_ = std::make_unique<AdDiagnostics>();
 
   account_ = std::make_unique<Account>(token_generator_.get());
   account_->AddObserver(this);

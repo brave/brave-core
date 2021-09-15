@@ -8,7 +8,6 @@
 
 #include <cstdint>
 #include <string>
-#include <vector>
 
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
@@ -40,8 +39,6 @@ struct ConfirmationInfo {
   int64_t timestamp = 0;
   bool created = false;
 };
-
-using ConfirmationList = std::vector<ConfirmationInfo>;
 
 }  // namespace ads
 

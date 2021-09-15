@@ -8,11 +8,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/user_activity/user_activity_trigger_info.h"
+#include "bat/ads/internal/user_activity/user_activity_trigger_info_aliases.h"
 
 namespace ads {
 
-UserActivityTriggers ToUserActivityTriggers(const std::string& param_value);
+UserActivityTriggerList ToUserActivityTriggers(const std::string& param_value);
 
 }  // namespace ads
 

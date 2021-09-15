@@ -6,7 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_LEGACY_CONVERSION_MIGRATION_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LEGACY_MIGRATION_LEGACY_CONVERSION_MIGRATION_H_
 
-#include "bat/ads/ads.h"
+#include "bat/ads/ads_aliases.h"
 
 namespace ads {
 namespace conversions {

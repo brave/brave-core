@@ -15,7 +15,6 @@
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "sql/database.h"
-#include "sql/init_status.h"
 #include "sql/meta_table.h"
 
 namespace ads {

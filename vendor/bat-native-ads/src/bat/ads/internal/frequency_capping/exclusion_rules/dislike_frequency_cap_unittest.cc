@@ -43,7 +43,7 @@ TEST_F(BatAdsDislikeFrequencyCapTest, DoNotAllowAd) {
   ad.creative_set_id = kCreativeSetId;
 
   Client::Get()->ToggleAdThumbDown(ad.creative_instance_id, ad.creative_set_id,
-                                   AdContentInfo::LikeAction::kNeutral);
+                                   AdContentActionType::kNeutral);
 
   // Act
   DislikeFrequencyCap frequency_cap;

@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 #include "wrapper.hpp"
 
 namespace ads {

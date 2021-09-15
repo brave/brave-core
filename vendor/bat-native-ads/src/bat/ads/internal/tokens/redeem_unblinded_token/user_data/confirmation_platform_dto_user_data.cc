@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/values.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 
 namespace ads {

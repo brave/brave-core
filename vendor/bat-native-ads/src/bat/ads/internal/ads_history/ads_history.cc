@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "bat/ads/ad_notification_info.h"
+#include "bat/ads/ads_history_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads_history/ads_history_util.h"
@@ -24,8 +25,8 @@
 namespace ads {
 namespace history {
 
-AdsHistoryInfo Get(const AdsHistoryInfo::FilterType filter_type,
-                   const AdsHistoryInfo::SortType sort_type,
+AdsHistoryInfo Get(const AdsHistoryFilterType filter_type,
+                   const AdsHistorySortType sort_type,
                    const uint64_t from_timestamp,
                    const uint64_t to_timestamp) {
   std::deque<AdHistoryInfo> ads_history = Client::Get()->GetAdsHistory();

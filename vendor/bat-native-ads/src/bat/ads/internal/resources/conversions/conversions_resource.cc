@@ -6,6 +6,7 @@
 #include "bat/ads/internal/resources/conversions/conversions_resource.h"
 
 #include "base/json/json_reader.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

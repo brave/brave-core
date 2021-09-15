@@ -9,9 +9,13 @@
 #include <cstdint>
 #include <string>
 
-#include "base/values.h"
 #include "bat/ads/export.h"
-#include "bat/ads/transaction_info.h"
+#include "bat/ads/transaction_info_aliases.h"
+
+namespace base {
+class DictionaryValue;
+class Value;
+}  // namespace base
 
 namespace ads {
 

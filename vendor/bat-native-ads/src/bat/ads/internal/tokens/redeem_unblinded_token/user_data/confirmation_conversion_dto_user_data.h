@@ -6,11 +6,14 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_USER_DATA_CONFIRMATION_CONVERSION_DTO_USER_DATA_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_USER_DATA_CONFIRMATION_CONVERSION_DTO_USER_DATA_H_
 
-#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
-
-#include "base/values.h"
+namespace base {
+class DictionaryValue;
+}  // namespace base
 
 namespace ads {
+
+struct ConversionQueueItemInfo;
+
 namespace dto {
 namespace user_data {
 

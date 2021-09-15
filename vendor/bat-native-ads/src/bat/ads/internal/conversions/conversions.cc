@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -354,7 +355,7 @@ ConversionList Conversions::FilterConversions(
 
 ConversionList Conversions::SortConversions(const ConversionList& conversions) {
   const auto sort =
-      ConversionsSortFactory::Build(ConversionInfo::SortType::kDescendingOrder);
+      ConversionsSortFactory::Build(ConversionSortType::kDescendingOrder);
   DCHECK(sort);
 
   return sort->Apply(conversions);

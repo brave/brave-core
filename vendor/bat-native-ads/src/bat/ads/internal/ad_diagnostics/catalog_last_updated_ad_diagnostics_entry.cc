@@ -7,6 +7,7 @@
 
 #include <cstdint>
 
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/pref_names.h"
