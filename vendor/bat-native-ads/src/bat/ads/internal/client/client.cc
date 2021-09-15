@@ -104,6 +104,7 @@ void Client::Initialize(InitializeCallback callback) {
 }
 
 void Client::AppendAdHistory(const AdHistoryInfo& ad_history) {
+#if !defined(OS_IOS)
   DCHECK(is_initialized_);
 
   client_->ads_shown_history.push_front(ad_history);
@@ -121,6 +122,7 @@ void Client::AppendAdHistory(const AdHistoryInfo& ad_history) {
   client_->ads_shown_history.erase(iter, client_->ads_shown_history.end());
 
   Save();
+#endif
 }
 
 const std::deque<AdHistoryInfo>& Client::GetAdsHistory() const {

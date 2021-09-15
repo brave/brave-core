@@ -166,7 +166,9 @@ TransactionList ConfirmationsState::get_transactions() const {
 
 void ConfirmationsState::add_transaction(const TransactionInfo& transaction) {
   DCHECK(is_initialized_);
+#if !defined(OS_IOS)
   transactions_.push_back(transaction);
+#endif
 }
 
 base::Time ConfirmationsState::get_next_token_redemption_date() const {
@@ -632,6 +634,7 @@ bool ConfirmationsState::GetTransactionsFromDictionary(
 
 bool ConfirmationsState::ParseTransactionsFromDictionary(
     base::DictionaryValue* dictionary) {
+#if !defined(OS_IOS)
   DCHECK(dictionary);
 
   base::Value* transactions_dictionary =
@@ -643,6 +646,7 @@ bool ConfirmationsState::ParseTransactionsFromDictionary(
   if (!GetTransactionsFromDictionary(transactions_dictionary, &transactions_)) {
     return false;
   }
+#endif
 
   return true;
 }
