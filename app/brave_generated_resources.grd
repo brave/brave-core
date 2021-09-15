@@ -1167,6 +1167,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_CANCEL_BUTTON_LABEL" desc="The text for cancel button">
           Block
         </message>
+        <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_DONT_ASK_TEXT" desc="The text for disabling dialog checkbox">
+          Don't ask again
+        </message>
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_CONTENT_TEXT" desc="The contents for crash report ask dialog">
           Send crash reports automatically so Brave can prevent this issue from happening again?
         </message>
