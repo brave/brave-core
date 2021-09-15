@@ -43,43 +43,47 @@ struct UnlockWalletView: View {
   }
   
   var body: some View {
-    VStack(spacing: 46) {
-      Image("graphic-lock")
-        .padding(.bottom)
-      VStack {
-        Text("Enter your password to unlock")
-          .font(.headline)
+    ScrollView(.vertical) {
+      VStack(spacing: 46) {
+        Image("graphic-lock")
           .padding(.bottom)
-          .multilineTextAlignment(.center)
-          .fixedSize(horizontal: false, vertical: true)
-        SecureField("Password", text: $password, onCommit: unlock) // NSLocalizedString
-          .font(.subheadline)
-          .textFieldStyle(BraveValidatedTextFieldStyle(error: unlockError))
-          .padding(.horizontal, 48)
-      }
-      VStack(spacing: 30) {
-        Button(action: unlock) {
-          Text("Unlock") // NSLocalizedString
+        VStack {
+          Text("Enter your password to unlock")
+            .font(.headline)
+            .padding(.bottom)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
+          SecureField("Password", text: $password, onCommit: unlock) // NSLocalizedString
+            .font(.subheadline)
+            .textFieldStyle(BraveValidatedTextFieldStyle(error: unlockError))
+            .padding(.horizontal, 48)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .normal))
-        .disabled(!isPasswordValid)
-        NavigationLink(destination: RestoreWalletContainerView(keyringStore: keyringStore)) {
-          Text("Restore") // NSLocalizedString
-            .font(.subheadline.weight(.medium))
+        VStack(spacing: 30) {
+          Button(action: unlock) {
+            Text("Unlock") // NSLocalizedString
+          }
+          .buttonStyle(BraveFilledButtonStyle(size: .normal))
+          .disabled(!isPasswordValid)
+          NavigationLink(destination: RestoreWalletContainerView(keyringStore: keyringStore)) {
+            Text("Restore") // NSLocalizedString
+              .font(.subheadline.weight(.medium))
+          }
+          .foregroundColor(Color(.braveLabel))
         }
-        .foregroundColor(Color(.braveLabel))
       }
+      .frame(maxHeight: .infinity, alignment: .top)
+      .padding()
+      .padding(.vertical)
     }
-    .frame(maxHeight: .infinity, alignment: .top)
-    .padding()
-    .padding(.vertical)
-    .background(Color(.braveBackground))
+    .navigationTitle("Crypto") // NSLocalizedString
+    .navigationBarTitleDisplayMode(.inline)
+    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
     .onChange(of: password) { _ in
       unlockError = nil
     }
     .onAppear {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-        if !attemptedBiometricsUnlock {
+        if !attemptedBiometricsUnlock && keyringStore.keyring.isLocked {
           attemptedBiometricsUnlock = true
           if let password = KeyringStore.retrievePasswordFromKeychain() {
             self.password = password
