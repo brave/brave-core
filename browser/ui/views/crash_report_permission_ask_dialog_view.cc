@@ -11,6 +11,7 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/themes/theme_properties.h"
+#include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
@@ -22,10 +23,12 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/constrained_window/constrained_window_views.h"
+#include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/theme_provider.h"
 #include "ui/views/background.h"
+#include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/styled_label.h"
@@ -150,11 +153,11 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
   if (offset != 0)
     header_label->AddStyleRange(gfx::Range(0, offset), default_style);
 
-  // Construct contents text area
+  // Construct contents area that includes main text and checkbox.
   auto* contents = AddChildView(std::make_unique<views::View>());
   contents->SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kHorizontal,
-      gfx::Insets{0, kPadding + kChildSpacing, 0, 0}));
+      views::BoxLayout::Orientation::kVertical,
+      gfx::Insets{0, kPadding + kChildSpacing, 0, 0}, 5));
   constexpr int kContentsTextFontSize = 13;
   auto* contents_label = contents->AddChildView(std::make_unique<views::Label>(
       l10n_util::GetStringUTF16(
@@ -165,6 +168,9 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
   contents_label->SetMultiLine(true);
   constexpr int kContentsLabelMaxWidth = 350;
   contents_label->SetMaximumWidth(kContentsLabelMaxWidth);
+  dont_ask_again_checkbox_ = contents->AddChildView(
+      std::make_unique<views::Checkbox>(l10n_util::GetStringUTF16(
+          IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_DONT_ASK_TEXT)));
 
   // Construct footnote text area
   constexpr int kFootnoteVerticalPadding = 16;
@@ -231,6 +237,9 @@ void CrashReportPermissionAskDialogView::OnAcceptButtonClicked() {
 }
 
 void CrashReportPermissionAskDialogView::OnWindowClosing() {
+  g_browser_process->local_state()->SetBoolean(
+      kDontAskForCrashReporting, dont_ask_again_checkbox_->GetChecked());
+
   // On macOS, this dialog is not destroyed properly when session crashed bubble
   // is launched directly.
   base::SequencedTaskRunnerHandle::Get()->PostTask(

@@ -4,5 +4,5 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 declare_args() {
-  enable_crash_dialog = is_official_build
+  enable_crash_dialog = !is_android && is_official_build
 }
