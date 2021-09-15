@@ -261,8 +261,8 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransaction) {
         ASSERT_EQ(v.size(), 1UL);
         EXPECT_TRUE(
             base::EqualsCaseInsensitiveASCII(v[0]->from_address, from()));
-        CHECK_EQ(v[0]->tx_status, mojom::TransactionStatus::Unapproved);
-        CHECK_EQ(v[0]->id, tx_meta_id);
+        EXPECT_EQ(v[0]->tx_status, mojom::TransactionStatus::Unapproved);
+        EXPECT_EQ(v[0]->id, tx_meta_id);
         callback_called = true;
       }));
   browser_task_environment_.RunUntilIdle();
@@ -298,9 +298,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionNoPermission) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
 
-  // We don't need to check every error type since that is checked by
-  // eth_tx_controller_unittest but make sure an error type is handled
-  // correctly.
   bool callback_called = false;
   provider()->AddUnapprovedTransaction(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
@@ -350,8 +347,8 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559Transaction) {
         ASSERT_EQ(v.size(), 1UL);
         EXPECT_TRUE(
             base::EqualsCaseInsensitiveASCII(v[0]->from_address, from()));
-        CHECK_EQ(v[0]->tx_status, mojom::TransactionStatus::Unapproved);
-        CHECK_EQ(v[0]->id, tx_meta_id);
+        EXPECT_EQ(v[0]->tx_status, mojom::TransactionStatus::Unapproved);
+        EXPECT_EQ(v[0]->id, tx_meta_id);
         callback_called = true;
       }));
   browser_task_environment_.RunUntilIdle();
@@ -391,14 +388,10 @@ TEST_F(BraveWalletProviderImplUnitTest,
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
 
-  // We don't need to check every error type since that is checked by
-  // eth_tx_controller_unittest but make sure an error type is handled
-  // correctly.
   bool callback_called = false;
   provider()->AddUnapproved1559Transaction(
       mojom::TxData1559::New(
-          // Can't specify both gas price and max fee per gas
-          mojom::TxData::New("0x00", "0x01", "0x00",
+          mojom::TxData::New("0x00", "", "0x00",
                              "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                              "0x00", std::vector<uint8_t>()),
           "0x04", "0x0", "0x0"),

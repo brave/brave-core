@@ -9,11 +9,10 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
-#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 
-namespace brave_wallet {
+namespace {
 
 absl::optional<base::Value> GetObjectFromParamsList(const std::string& json) {
   auto json_value = base::JSONReader::Read(json);
@@ -31,10 +30,10 @@ absl::optional<base::Value> GetObjectFromParamsList(const std::string& json) {
 }
 
 // This is a best effort parsing of the data
-mojom::TxDataPtr ValueToTxData(const base::Value& tx_value,
-                               std::string* from_out) {
+brave_wallet::mojom::TxDataPtr ValueToTxData(const base::Value& tx_value,
+                                             std::string* from_out) {
   CHECK(from_out);
-  auto tx_data = mojom::TxData::New();
+  auto tx_data = brave_wallet::mojom::TxData::New();
   const base::DictionaryValue* params_dict = nullptr;
   if (!tx_value.GetAsDictionary(&params_dict) || !params_dict)
     return nullptr;
@@ -77,6 +76,10 @@ mojom::TxDataPtr ValueToTxData(const base::Value& tx_value,
   return tx_data;
 }
 
+}  // namespace
+
+namespace brave_wallet {
+
 mojom::TxDataPtr ParseEthSendTransactionParams(const std::string& json,
                                                std::string* from) {
   CHECK(from);
@@ -85,7 +88,7 @@ mojom::TxDataPtr ParseEthSendTransactionParams(const std::string& json,
   auto param_obj = GetObjectFromParamsList(json);
   if (!param_obj)
     return nullptr;
-  return brave_wallet::ValueToTxData(*param_obj, from);
+  return ValueToTxData(*param_obj, from);
 }
 
 mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
@@ -97,7 +100,7 @@ mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
     return nullptr;
 
   auto tx_data = mojom::TxData1559::New();
-  auto base_data_ret = brave_wallet::ValueToTxData(*param_obj, from);
+  auto base_data_ret = ValueToTxData(*param_obj, from);
   if (!base_data_ret)
     return nullptr;
 
