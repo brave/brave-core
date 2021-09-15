@@ -33,10 +33,7 @@ bool GetDefaultPrefValueForMetricsReporting() {
 }
 
 bool ShouldShowCrashReportPermissionAskDialog() {
-#if !BUILDFLAG(ENABLE_CRASH_DIALOG)
-  return false;
-#endif
-
+#if BUILDFLAG(ENABLE_CRASH_DIALOG)
   PrefService* local_prefs = g_browser_process->local_state();
   if (local_prefs->GetBoolean(kDontAskForCrashReporting))
     return false;
@@ -48,4 +45,7 @@ bool ShouldShowCrashReportPermissionAskDialog() {
     return false;
 
   return true;
+#else
+  return false;
+#endif
 }
