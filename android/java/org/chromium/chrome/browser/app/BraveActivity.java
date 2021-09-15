@@ -251,8 +251,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             if (BraveVpnProfileUtils.getInstance(BraveActivity.this).isVPNConnected()) {
                 BraveVpnProfileUtils.getInstance(BraveActivity.this).stopVpn();
             } else {
-                if (BraveVpnPrefUtils.isBraveVpnBooleanPref(
-                            BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false)) {
+                if (BraveVpnPrefUtils.isBraveVpnSubscriptionPurchase()) {
                     verifySubscription();
                 } else {
                     BraveVpnUtils.dismissProgressDialog();
@@ -275,14 +274,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken, mProductId,
                     BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
         } else {
-            BraveVpnPrefUtils.setBraveVpnStringPref(
-                    BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN, "");
-            BraveVpnPrefUtils.setBraveVpnStringPref(
-                    BraveVpnPrefUtils.PREF_BRAVE_VPN_PRODUCT_ID, "");
-            BraveVpnPrefUtils.setBraveVpnStringPref(
-                    BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_EXPIRY, "");
-            BraveVpnPrefUtils.setBraveVpnBooleanPref(
-                    BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false);
+            BraveVpnPrefUtils.setBraveVpnPurchaseToken("");
+            BraveVpnPrefUtils.setBraveVpnProductId("");
+            BraveVpnPrefUtils.setBraveVpnPurchaseExpiry("");
+            BraveVpnPrefUtils.setBraveVpnSubscriptionPurchase(false);
             if (BraveVpnProfileUtils.getInstance(BraveActivity.this).isVPNConnected()) {
                 BraveVpnProfileUtils.getInstance(BraveActivity.this).stopVpn();
             }
@@ -297,28 +292,20 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             String purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
             if (!purchaseExpiry.isEmpty()
                     && Long.parseLong(purchaseExpiry) >= System.currentTimeMillis()) {
-                BraveVpnPrefUtils.setBraveVpnStringPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN, mPurchaseToken);
-                BraveVpnPrefUtils.setBraveVpnStringPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_PRODUCT_ID, mProductId);
-                BraveVpnPrefUtils.setBraveVpnStringPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_EXPIRY, purchaseExpiry);
-                BraveVpnPrefUtils.setBraveVpnBooleanPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, true);
+                BraveVpnPrefUtils.setBraveVpnPurchaseToken(mPurchaseToken);
+                BraveVpnPrefUtils.setBraveVpnProductId(mProductId);
+                BraveVpnPrefUtils.setBraveVpnPurchaseExpiry(purchaseExpiry);
+                BraveVpnPrefUtils.setBraveVpnSubscriptionPurchase(true);
                 if (!mIsVerification) {
                     BraveVpnProfileUtils.getInstance(BraveActivity.this).startStopVpn();
                 } else {
                     mIsVerification = false;
                 }
             } else {
-                BraveVpnPrefUtils.setBraveVpnStringPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN, "");
-                BraveVpnPrefUtils.setBraveVpnStringPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_PRODUCT_ID, "");
-                BraveVpnPrefUtils.setBraveVpnStringPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_EXPIRY, "");
-                BraveVpnPrefUtils.setBraveVpnBooleanPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false);
+                BraveVpnPrefUtils.setBraveVpnPurchaseToken("");
+                BraveVpnPrefUtils.setBraveVpnProductId("");
+                BraveVpnPrefUtils.setBraveVpnPurchaseExpiry("");
+                BraveVpnPrefUtils.setBraveVpnSubscriptionPurchase(false);
                 if (BraveVpnProfileUtils.getInstance(BraveActivity.this).isVPNConnected()) {
                     BraveVpnProfileUtils.getInstance(BraveActivity.this).stopVpn();
                 }
@@ -558,10 +545,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                             .build();
             connectivityManager.registerNetworkCallback(networkRequest, mNetworkCallback);
 
-            if (BraveVpnPrefUtils.isBraveVpnBooleanPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_CALLOUT, true)
-                            && !BraveVpnPrefUtils.isBraveVpnBooleanPref(
-                                    BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false)
+            if (BraveVpnPrefUtils.shouldShowBraveVpnCallout()
+                            && !BraveVpnPrefUtils.isBraveVpnSubscriptionPurchase()
                             && (SharedPreferencesManager.getInstance().readInt(
                                         BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                                             == 1
@@ -573,16 +558,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 showVpnCalloutDialog();
             }
 
-            if (!TextUtils.isEmpty(BraveVpnPrefUtils.getBraveVpnStringPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN))
-                    && !TextUtils.isEmpty(BraveVpnPrefUtils.getBraveVpnStringPref(
-                            BraveVpnPrefUtils.PREF_BRAVE_VPN_PRODUCT_ID))) {
+            if (!TextUtils.isEmpty(BraveVpnPrefUtils.getBraveVpnPurchaseToken())
+                    && !TextUtils.isEmpty(BraveVpnPrefUtils.getBraveVpnProductId())) {
                 mIsVerification = true;
                 BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
-                        BraveVpnPrefUtils.getBraveVpnStringPref(
-                                BraveVpnPrefUtils.PREF_BRAVE_VPN_PURCHASE_TOKEN),
-                        BraveVpnPrefUtils.getBraveVpnStringPref(
-                                BraveVpnPrefUtils.PREF_BRAVE_VPN_PRODUCT_ID),
+                        BraveVpnPrefUtils.getBraveVpnPurchaseToken(),
+                        BraveVpnPrefUtils.getBraveVpnProductId(),
                         BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
             }
         }

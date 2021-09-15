@@ -45,8 +45,7 @@ public class BraveVpnUtils {
 
     public static boolean isBraveVpnFeatureEnable() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
-                && BraveVpnPrefUtils.isBraveVpnBooleanPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_FEATURE, false)) {
+                && BraveVpnPrefUtils.isBraveVpnFeatureEnable()) {
             return true;
         }
         return false;

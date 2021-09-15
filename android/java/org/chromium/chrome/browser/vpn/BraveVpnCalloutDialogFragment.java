@@ -65,7 +65,7 @@ public class BraveVpnCalloutDialogFragment extends DialogFragment implements Vie
         ImageView btnClose = view.findViewById(R.id.modal_close);
         btnClose.setOnClickListener(this);
 
-        BraveVpnPrefUtils.setBraveVpnBooleanPref(BraveVpnPrefUtils.PREF_BRAVE_VPN_CALLOUT, false);
+        BraveVpnPrefUtils.setBraveVpnCallout(false);
     }
 
     @Override

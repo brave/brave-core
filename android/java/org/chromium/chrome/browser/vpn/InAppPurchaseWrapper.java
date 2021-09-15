@@ -121,8 +121,7 @@ public class InAppPurchaseWrapper {
         if (!purchase.isAcknowledged()) {
             mBillingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
                 if (billingResult.getResponseCode() == OK) {
-                    BraveVpnPrefUtils.setBraveVpnBooleanPref(
-                            BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, true);
+                    BraveVpnPrefUtils.setBraveVpnSubscriptionPurchase(true);
                     BraveVpnUtils.openBraveVpnProfileActivity(mContext);
                     Toast.makeText(mContext,
                                  mContext.getResources().getString(R.string.subscription_consumed),
@@ -137,8 +136,7 @@ public class InAppPurchaseWrapper {
                 }
             });
         } else {
-            BraveVpnPrefUtils.setBraveVpnBooleanPref(
-                    BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, true);
+            BraveVpnPrefUtils.setBraveVpnSubscriptionPurchase(true);
         }
     }
 

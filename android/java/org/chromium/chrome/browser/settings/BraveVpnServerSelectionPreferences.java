@@ -53,9 +53,8 @@ public class BraveVpnServerSelectionPreferences
 
         TextView automaticText = (TextView) getView().findViewById(R.id.automatic_server_text);
         automaticText.setText(getActivity().getResources().getString(R.string.automatic));
-        if (BraveVpnPrefUtils
-                        .getServerRegion(BraveVpnPrefUtils.PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION)
-                        .equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)) {
+        if (BraveVpnPrefUtils.getServerRegion().equals(
+                    BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)) {
             automaticText.setCompoundDrawablesWithIntrinsicBounds(
                     0, 0, R.drawable.ic_server_selection_check, 0);
         } else {
@@ -64,9 +63,7 @@ public class BraveVpnServerSelectionPreferences
         automaticText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BraveVpnPrefUtils.setServerRegion(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION,
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
+                BraveVpnPrefUtils.setServerRegion(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
                 BraveVpnUtils.mIsServerLocationChanged = true;
                 getActivity().onBackPressed();
             }
@@ -95,8 +92,7 @@ public class BraveVpnServerSelectionPreferences
                     }
                 });
         List<BraveVpnServerRegion> braveVpnServerRegions =
-                BraveVpnUtils.getServerLocations(BraveVpnPrefUtils.getBraveVpnStringPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_SERVER_REGIONS));
+                BraveVpnUtils.getServerLocations(BraveVpnPrefUtils.getBraveVpnServerRegions());
         Collections.sort(braveVpnServerRegions, new Comparator<BraveVpnServerRegion>() {
             @Override
             public int compare(BraveVpnServerRegion braveVpnServerRegion1,
@@ -117,9 +113,7 @@ public class BraveVpnServerSelectionPreferences
     OnServerRegionSelection onServerRegionSelection = new OnServerRegionSelection() {
         @Override
         public void onServerRegionClick(BraveVpnServerRegion braveVpnServerRegion) {
-            BraveVpnPrefUtils.setServerRegion(
-                    BraveVpnPrefUtils.PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION,
-                    braveVpnServerRegion.getName());
+            BraveVpnPrefUtils.setServerRegion(braveVpnServerRegion.getName());
             BraveVpnUtils.mIsServerLocationChanged = true;
             getActivity().onBackPressed();
         }

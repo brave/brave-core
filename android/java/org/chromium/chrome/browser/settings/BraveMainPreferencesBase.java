@@ -171,10 +171,8 @@ public class BraveMainPreferencesBase
     private void rearrangePreferenceOrders() {
         int firstSectionOrder = 0;
 
-        if (BraveVpnPrefUtils.isBraveVpnBooleanPref(
-                    BraveVpnPrefUtils.PREF_BRAVE_VPN_CALLOUT_SETTINGS, true)
-                && !BraveVpnPrefUtils.isBraveVpnBooleanPref(
-                        BraveVpnPrefUtils.PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false)
+        if (BraveVpnPrefUtils.shouldShowBraveVpnCallout()
+                && !BraveVpnPrefUtils.isBraveVpnSubscriptionPurchase()
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
             findPreference(PREF_BRAVE_VPN_CALLOUT).setOrder(firstSectionOrder);
         } else {

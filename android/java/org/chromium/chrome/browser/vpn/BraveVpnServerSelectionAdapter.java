@@ -42,10 +42,7 @@ public class BraveVpnServerSelectionAdapter
         final BraveVpnServerRegion vpnServerRegion = mBraveVpnServerRegions.get(position);
         if (vpnServerRegion != null) {
             holder.serverText.setText(vpnServerRegion.getNamePretty());
-            if (BraveVpnPrefUtils
-                            .getServerRegion(
-                                    BraveVpnPrefUtils.PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION)
-                            .equals(vpnServerRegion.getName())) {
+            if (BraveVpnPrefUtils.getServerRegion().equals(vpnServerRegion.getName())) {
                 holder.serverText.setCompoundDrawablesWithIntrinsicBounds(
                         0, 0, R.drawable.ic_server_selection_check, 0);
             } else {
