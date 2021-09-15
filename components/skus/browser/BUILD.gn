@@ -2,6 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
 import("//build/config/features.gni")
 
 static_library("browser") {
@@ -9,7 +10,15 @@ static_library("browser") {
     "pref_names.h",
     "skus_sdk_impl.cc",
     "skus_sdk_impl.h",
+    #"br-rs/brave-rewards-cxx/src/cxx.h",
+    #"br-rs/brave-rewards-cxx/src/shim.hpp",
+    #"br-rs/brave-rewards-cxx/src/wrapper.cpp",
+    #"br-rs/brave-rewards-cxx/src/wrapper.hpp",
   ]
 
-  deps = [ "//components/pref_registry" ]
+  deps = [
+    "//brave/components/skus/common:mojom",
+    "//components/pref_registry"
+    "//components/prefs",
+  ]
 }
