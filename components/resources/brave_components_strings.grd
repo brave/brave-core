@@ -989,8 +989,8 @@
       <message name="IDS_BINANCE_WIDGET_AUTH_INVALID" desc="">Session Expired</message>
       <message name="IDS_BINANCE_WIDGET_AUTH_INVALID_COPY" desc="">Your Binance access token has expired. Please reconnect to continue using the widget.</message>
 
-      <message name="IDS_GEMINI_WIDGET_CONNECT_TITLE" desc="">Purchase and trade with Gemini</message>
-      <message name="IDS_GEMINI_WIDGET_CONNECT_COPY" desc="">Enable a Gemini connection to view your Gemini account balance and trade crypto.</message>
+      <message name="IDS_GEMINI_WIDGET_CONNECT_TITLE" desc="">Buy crypto with Gemini</message>
+      <message name="IDS_GEMINI_WIDGET_CONNECT_COPY" desc="">Connect to Gemini to view your balance and trade 45+ cryptos.</message>
       <message name="IDS_GEMINI_WIDGET_CONNECT_BUTTON" desc="">Connect to Gemini</message>
       <message name="IDS_GEMINI_WIDGET_AUTH_INVALID_COPY" desc="">Your Gemini access token has expired and could not be refreshed. Please reconnect.</message>
       <message name="IDS_GEMINI_WIDGET_FAILED_TRADE" desc="">Unable to perform trade</message>
