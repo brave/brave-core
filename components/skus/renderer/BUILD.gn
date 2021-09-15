@@ -1,0 +1,21 @@
+source_set("renderer") {
+  sources = [
+    "brave_skus_js_handler.h",
+    "brave_skus_js_handler.cc",
+    "brave_skus_render_frame_observer.h",
+    "brave_skus_render_frame_observer.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/skus/common:mojom",
+    "//content/public/renderer",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//third_party/blink/public/mojom/frame",
+    "//third_party/blink/public/strings",
+    "//v8",
+  ]
+}
