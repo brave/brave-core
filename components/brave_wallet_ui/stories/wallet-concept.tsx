@@ -56,11 +56,11 @@ export default {
 
 export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boolean }) => {
   const {
-    // onboarding,
+    onboarding,
     locked
   } = args
   const [view] = React.useState<NavTypes>('crypto')
-  const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(true)
+  const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(onboarding)
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
   const [needsBackup, setNeedsBackup] = React.useState<boolean>(true)
   const [showBackup, setShowBackup] = React.useState<boolean>(false)
@@ -471,6 +471,14 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setImportError(hasError)
   }
 
+  const onAddCustomToken = (
+    tokenName: string,
+    tokenSymbol: string,
+    tokenContractAddress: string,
+    tokenDecimals: number) => {
+    alert({ tokenName, tokenSymbol, tokenContractAddress, tokenDecimals })
+  }
+
   return (
     <WalletPageLayout>
       {/* <SideNav
@@ -561,6 +569,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onImportAccountFromJson={onImportAccountFromJson}
                               hasImportError={importError}
                               onSetImportError={onSetImportError}
+                              onAddCustomToken={onAddCustomToken}
                             />
                           )}
                         </>
