@@ -5,6 +5,7 @@
 
 #include "brave/third_party/blink/renderer/modules/brave/brave.h"
 
+#include "brave/third_party/blink/renderer/modules/brave/skus/skus.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_promise.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h"
 
@@ -15,6 +16,18 @@ ScriptPromise Brave::isBrave(ScriptState* script_state) {
   ScriptPromise promise = resolver->Promise();
   resolver->Resolve(true);
   return promise;
+}
+
+Skus* Brave::skus() {
+  if (!skus_) {
+    skus_ = MakeGarbageCollected<Skus>();
+  }
+  return skus_;
+}
+
+void Brave::Trace(blink::Visitor* visitor) const {
+  visitor->Trace(skus_);
+  ScriptWrappable::Trace(visitor);
 }
 
 }  // namespace blink

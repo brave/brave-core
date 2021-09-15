@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_MODULES_BRAVE_BRAVE_H_
-#define BRAVE_THIRD_PARTY_BLINK_RENDERER_MODULES_BRAVE_BRAVE_H_
+#ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_MODULES_BRAVE_SKUS_SKUS_H_
+#define BRAVE_THIRD_PARTY_BLINK_RENDERER_MODULES_BRAVE_SKUS_SKUS_H_
 
 #include "third_party/blink/renderer/modules/modules_export.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
@@ -12,25 +12,19 @@
 
 namespace blink {
 
-class Skus;
 class ScriptPromise;
 class ScriptState;
 
-class MODULES_EXPORT Brave final
+class MODULES_EXPORT Skus final
     : public ScriptWrappable {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
-  Brave() = default;
-  ScriptPromise isBrave(ScriptState*);
-  Skus* skus();
-
-  void Trace(blink::Visitor*) const override;
-
- private:
-  Member<Skus> skus_;
+  Skus() = default;
+  ScriptPromise refresh_order(ScriptState*, uint32_t);
+  ScriptPromise fetch_order_credentials(ScriptState*, uint32_t);
 };
 
 }  // namespace blink
 
-#endif  // BRAVE_THIRD_PARTY_BLINK_RENDERER_MODULES_BRAVE_BRAVE_H_
+#endif  // BRAVE_THIRD_PARTY_BLINK_RENDERER_MODULES_BRAVE_SKUS_SKUS_H_
