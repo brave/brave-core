@@ -42,7 +42,8 @@ const EditVisibleAssetsModal = (props: Props) => {
     fullAssetList,
     userAssetList,
     onClose,
-    onAddCustomToken
+    onAddCustomToken,
+    onUpdateVisibleTokens
   } = props
   const watchlist = React.useMemo(() => {
     const visibleList = userAssetList.map((item) => { return item.asset })
@@ -57,6 +58,7 @@ const EditVisibleAssetsModal = (props: Props) => {
   const [tokenSymbol, setTokenSymbol] = React.useState<string>('')
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
   const [tokenDecimals, setTokenDecimals] = React.useState<string>('')
+  const [foundToken, setFoundToken] = React.useState<string>('')
 
   const handleTokenNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTokenName(event.target.value)
@@ -98,7 +100,11 @@ const EditVisibleAssetsModal = (props: Props) => {
   }
 
   const onClickAddCustomToken = () => {
-    onAddCustomToken(tokenName, tokenSymbol, tokenContractAddress, Number(tokenDecimals))
+    if (foundToken !== '') {
+      onUpdateVisibleTokens(foundToken, true)
+    } else {
+      onAddCustomToken(tokenName, tokenSymbol, tokenContractAddress, Number(tokenDecimals))
+    }
   }
 
   const onCheckWatchlistItem = (key: string, selected: boolean) => {
@@ -129,6 +135,23 @@ const EditVisibleAssetsModal = (props: Props) => {
     toggleShowAddCustomToken()
   }
 
+  const isDisabled = React.useMemo(() => {
+    const foundToken = fullAssetList.find((token) => token.contractAddress.toLowerCase() === tokenContractAddress.toLowerCase())
+    if (foundToken) {
+      setFoundToken(foundToken.contractAddress)
+      setTokenName(foundToken.name)
+      setTokenSymbol(foundToken.symbol)
+      setTokenDecimals(foundToken.decimals.toString())
+      return true
+    } else {
+      setFoundToken('')
+      setTokenName('')
+      setTokenSymbol('')
+      setTokenDecimals('')
+      return false
+    }
+  }, [tokenContractAddress, fullAssetList])
+
   return (
     <PopupModal title={showAddCustomToken ? locale.watchlistAddCustomAsset : locale.accountsEditVisibleAssets} onClose={onClose}>
       {showAddCustomToken &&
@@ -139,7 +162,9 @@ const EditVisibleAssetsModal = (props: Props) => {
           <FormWrapper>
             <InputLabel>{locale.watchListTokenName}</InputLabel>
             <Input
+              value={tokenName}
               onChange={handleTokenNameChanged}
+              disabled={isDisabled}
             />
             <InputLabel>{locale.watchListTokenAddress}</InputLabel>
             <Input
@@ -148,11 +173,15 @@ const EditVisibleAssetsModal = (props: Props) => {
             />
             <InputLabel>{locale.watchListTokenSymbol}</InputLabel>
             <Input
+              value={tokenSymbol}
               onChange={handleTokenSymbolChanged}
+              disabled={isDisabled}
             />
             <InputLabel>{locale.watchListTokenDecimals}</InputLabel>
             <Input
+              value={tokenDecimals}
               onChange={handleTokenDecimalsChanged}
+              disabled={isDisabled}
               type='number'
             />
             <ButtonRow>
