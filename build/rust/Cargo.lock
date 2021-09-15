@@ -1176,7 +1176,6 @@ dependencies = [
  "markup5ever",
  "readability",
  "regex",
- "serde",
  "serde_json",
  "thiserror",
  "url",
