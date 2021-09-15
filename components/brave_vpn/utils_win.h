@@ -15,7 +15,8 @@ namespace internal {
 
 enum class CheckConnectionResult {
   CONNECTED,
-  NOT_CONNECTED,
+  CONNECTING,
+  DISCONNECTED,
   UNKNOWN,
 };
 
@@ -29,6 +30,9 @@ bool CreateEntry(const std::wstring& entry_name,
 bool RemoveEntry(const std::wstring& entry_name);
 bool DisconnectEntry(const std::wstring& entry_name);
 bool ConnectEntry(const std::wstring& entry_name);
+// Don't cache returned HANDLE. It could be invalidated.
+HANDLE GetEventHandleForConnecting();
+void CloseEventHandleForConnecting();
 
 CheckConnectionResult CheckConnection(const std::wstring& entry_name);
 

@@ -51,8 +51,11 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPI,
 
   void StartVPNConnectionChangeMonitoring();
 
-  HANDLE event_handle_ = nullptr;
-  base::win::ObjectWatcher watcher_;
+  HANDLE event_handle_for_connected_ = nullptr;
+  HANDLE event_handle_for_disconnected_ = nullptr;
+  base::win::ObjectWatcher connected_event_watcher_;
+  base::win::ObjectWatcher connecting_event_watcher_;
+  base::win::ObjectWatcher disconnected_event_watcher_;
   base::WeakPtrFactory<BraveVPNOSConnectionAPIWin> weak_factory_{this};
 };
 
