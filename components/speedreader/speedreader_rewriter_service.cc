@@ -57,26 +57,11 @@ SpeedreaderRewriterService::SpeedreaderRewriterService(
   if (!stylesheet_path.empty())
     OnStylesheetReady(stylesheet_path);
 
-  const auto whitelist_path = component_->GetWhitelistPath();
-  if (!whitelist_path.empty())
-    OnWhitelistReady(whitelist_path);
-
   component_->AddObserver(this);
 }
 
 SpeedreaderRewriterService::~SpeedreaderRewriterService() {
   component_->RemoveObserver(this);
-}
-
-void SpeedreaderRewriterService::OnWhitelistReady(const base::FilePath& path) {
-  VLOG(2) << "Whitelist ready at " << path;
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(
-          &brave_component_updater::LoadDATFileData<speedreader::SpeedReader>,
-          path),
-      base::BindOnce(&SpeedreaderRewriterService::OnLoadDATFileData,
-                     weak_factory_.GetWeakPtr()));
 }
 
 void SpeedreaderRewriterService::OnStylesheetReady(const base::FilePath& path) {
@@ -115,13 +100,6 @@ const std::string& SpeedreaderRewriterService::GetContentStylesheet() {
 void SpeedreaderRewriterService::OnLoadStylesheet(std::string stylesheet) {
   VLOG(2) << "Speedreader stylesheet loaded";
   content_stylesheet_ = stylesheet;
-}
-
-void SpeedreaderRewriterService::OnLoadDATFileData(
-    GetDATFileDataResult result) {
-  VLOG(2) << "Speedreader loaded from DAT file";
-  if (result.first)
-    speedreader_ = std::move(result.first);
 }
 
 }  // namespace speedreader

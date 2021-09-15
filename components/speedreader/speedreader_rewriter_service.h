@@ -31,7 +31,6 @@ namespace speedreader {
 class SpeedreaderRewriterService : public SpeedreaderComponent::Observer {
  public:
   // SpeedreaderComponent::Observer
-  void OnWhitelistReady(const base::FilePath& path) override;
   void OnStylesheetReady(const base::FilePath& path) override;
 
   explicit SpeedreaderRewriterService(
@@ -48,10 +47,6 @@ class SpeedreaderRewriterService : public SpeedreaderComponent::Observer {
   const std::string& GetContentStylesheet();
 
  private:
-  using GetDATFileDataResult =
-      brave_component_updater::LoadDATFileDataResult<speedreader::SpeedReader>;
-
-  void OnLoadDATFileData(GetDATFileDataResult result);
   void OnLoadStylesheet(std::string stylesheet);
 
   // Default backend is an Arc90 implementation.

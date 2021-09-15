@@ -11,7 +11,6 @@
 #include "brave/common/brave_paths.h"
 #include "brave/components/speedreader/features.h"
 #include "brave/components/speedreader/speedreader_service.h"
-#include "brave/components/speedreader/speedreader_switches.h"
 #include "chrome/browser/profiles/profile_keep_alive_types.h"
 #include "chrome/browser/profiles/scoped_profile_keep_alive.h"
 #include "chrome/browser/ui/browser.h"
@@ -32,8 +31,6 @@
 const char kTestHost[] = "theguardian.com";
 const char kTestPageSimple[] = "/simple.html";
 const char kTestPageReadable[] = "/articles/guardian.html";
-const base::FilePath::StringPieceType kTestWhitelist =
-    FILE_PATH_LITERAL("speedreader_whitelist.json");
 
 constexpr char kSpeedreaderToggleUMAHistogramName[] =
     "Brave.SpeedReader.ToggleCount";
@@ -62,9 +59,6 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   void SetUpCommandLine(base::CommandLine* command_line) override {
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    base::FilePath whitelist_path = test_data_dir.Append(kTestWhitelist);
-    command_line->AppendSwitchPath(speedreader::kSpeedreaderWhitelistPath,
-                                   whitelist_path);
     // HTTPS server only serves a valid cert for localhost, so this is needed
     // to load pages from other hosts without an error
     command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
