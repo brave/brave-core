@@ -72,43 +72,49 @@ class PlaylistHelper: NSObject, TabContentScript {
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
-        guard let item = PlaylistInfo.from(message: message), !item.src.isEmpty else {
+
+        PlaylistHelper.processPlaylistInfo(helper: self,
+                                           item: PlaylistInfo.from(message: message))
+    }
+    
+    private class func processPlaylistInfo(helper: PlaylistHelper, item: PlaylistInfo?) {
+        guard let item = item, !item.src.isEmpty else {
             DispatchQueue.main.async {
-                self.delegate?.updatePlaylistURLBar(tab: self.tab, state: .none, item: nil)
+                helper.delegate?.updatePlaylistURLBar(tab: helper.tab, state: .none, item: nil)
             }
             return
         }
         
-        PlaylistHelper.queue.async { [weak self] in
-            guard let self = self else { return }
+        PlaylistHelper.queue.async { [weak helper] in
+            guard let helper = helper else { return }
 
             if item.duration <= 0.0 && !item.detected || item.src.isEmpty || item.src.hasPrefix("data:") || item.src.hasPrefix("blob:") {
                 DispatchQueue.main.async {
-                    self.delegate?.updatePlaylistURLBar(tab: self.tab, state: .none, item: nil)
+                    helper.delegate?.updatePlaylistURLBar(tab: helper.tab, state: .none, item: nil)
                 }
                 return
             }
             
             if let url = URL(string: item.src) {
-                self.loadAssetPlayability(url: url) { [weak self] isPlayable in
-                    guard let self = self,
-                          let delegate = self.delegate else { return }
+                helper.loadAssetPlayability(url: url) { [weak helper] isPlayable in
+                    guard let helper = helper,
+                          let delegate = helper.delegate else { return }
                     
                     if !isPlayable {
-                        delegate.updatePlaylistURLBar(tab: self.tab, state: .none, item: nil)
+                        delegate.updatePlaylistURLBar(tab: helper.tab, state: .none, item: nil)
                         return
                     }
                     
                     if PlaylistItem.itemExists(item) {
                         // Item already exists, so just update the database with new token or URL.
-                        self.updateItem(item, detected: item.detected)
+                        helper.updateItem(item, detected: item.detected)
                     } else if item.detected {
                         // Automatic Detection
-                        delegate.updatePlaylistURLBar(tab: self.tab, state: .newItem, item: item)
-                        delegate.showPlaylistOnboarding(tab: self.tab)
+                        delegate.updatePlaylistURLBar(tab: helper.tab, state: .newItem, item: item)
+                        delegate.showPlaylistOnboarding(tab: helper.tab)
                     } else {
                         // Long-Press
-                        delegate.showPlaylistAlert(tab: self.tab, state: .newItem, item: item)
+                        delegate.showPlaylistAlert(tab: helper.tab, state: .newItem, item: item)
                     }
                 }
             }
@@ -249,5 +255,13 @@ extension PlaylistHelper {
                 log.error("Error Retrieving Stopping Media Playback: \(error)")
             }
         })
+    }
+}
+
+extension PlaylistHelper {
+    static func updatePlaylistTab(tab: Tab, item: PlaylistInfo?) {
+        if let helper = tab.getContentScript(name: PlaylistHelper.name()) as? PlaylistHelper {
+            PlaylistHelper.processPlaylistInfo(helper: helper, item: item)
+        }
     }
 }

@@ -66,19 +66,16 @@ class PlaylistListViewController: UIViewController {
         super.viewDidLoad()
         
         PlaylistManager.shared.contentWillChange
-        .receive(on: RunLoop.main)
         .sink { [weak self] in
             self?.controllerWillChangeContent()
         }.store(in: &observers)
         
         PlaylistManager.shared.contentDidChange
-        .receive(on: RunLoop.main)
         .sink { [weak self] in
             self?.controllerDidChangeContent()
         }.store(in: &observers)
         
         PlaylistManager.shared.objectDidChange
-        .receive(on: RunLoop.main)
         .sink { [weak self] in
             self?.controllerDidChange($0.object,
                                       at: $0.indexPath,
@@ -87,14 +84,12 @@ class PlaylistListViewController: UIViewController {
         }.store(in: &observers)
         
         PlaylistManager.shared.downloadProgressUpdated
-        .receive(on: RunLoop.main)
         .sink { [weak self] in
             self?.onDownloadProgressUpdate(id: $0.id,
                                            percentComplete: $0.percentComplete)
         }.store(in: &observers)
         
         PlaylistManager.shared.downloadStateChanged
-        .receive(on: RunLoop.main)
         .sink { [weak self] in
             self?.onDownloadStateChanged(id: $0.id,
                                          state: $0.state,
