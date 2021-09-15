@@ -696,13 +696,6 @@ if (!is_android) {
       "//chrome/browser/ui/test/test_browser_ui.h",
     ]
 
-    if (is_mac) {
-      sources += [
-        "//chrome/browser/ui/test/test_browser_dialog_mac.h",
-        "//chrome/browser/ui/test/test_browser_dialog_mac.mm",
-      ]
-    }
-
     deps = [
       "//brave/browser/autoplay:browser_tests",
       "//brave/browser/brave_ads",
@@ -742,6 +735,16 @@ if (!is_android) {
       "//media:test_support",
       "//testing/gmock",
     ]
+
+    if (is_mac) {
+      sources += [
+        "//brave/chromium_src/components/os_crypt/keychain_password_mac_browsertest.mm",
+        "//chrome/browser/ui/test/test_browser_dialog_mac.h",
+        "//chrome/browser/ui/test/test_browser_dialog_mac.mm",
+      ]
+
+      deps += [ "//components/os_crypt:test_support" ]
+    }
 
     if (use_aura) {
       deps += [ "//ui/aura:test_support" ]
