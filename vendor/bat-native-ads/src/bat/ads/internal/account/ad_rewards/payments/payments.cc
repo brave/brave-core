@@ -351,7 +351,7 @@ PaymentInfo Payments::GetPaymentForTransactionMonth(
 
 std::string Payments::GetTransactionMonth(const base::Time& time) const {
   base::Time::Exploded time_exploded;
-  time.UTCExplode(&time_exploded);
+  time.LocalExplode(&time_exploded);
 
   return GetFormattedTransactionMonth(time_exploded.year, time_exploded.month);
 }
@@ -359,7 +359,7 @@ std::string Payments::GetTransactionMonth(const base::Time& time) const {
 std::string Payments::GetPreviousTransactionMonth(
     const base::Time& time) const {
   base::Time::Exploded time_exploded;
-  time.UTCExplode(&time_exploded);
+  time.LocalExplode(&time_exploded);
 
   time_exploded.month--;
   if (time_exploded.month < 1) {
