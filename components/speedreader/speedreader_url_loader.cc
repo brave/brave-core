@@ -326,17 +326,8 @@ void SpeedReaderURLLoader::CompleteSending() {
   state_ = State::kCompleted;
   // Call client's OnComplete() if |this|'s OnComplete() has already been
   // called.
-  if (complete_status_.has_value()) {
+  if (complete_status_.has_value())
     destination_url_loader_client_->OnComplete(complete_status_.value());
-    if (throttle_) {
-      // When distillation fails we return the original data. Causes this
-      // throttle to get deleted.
-      //
-      // TODO(iefremov): Is it okay to rely on just this, or should the distill
-      // thread also return a boolean indicating an error?
-      throttle_->OnDistillComplete();
-    }
-  }
 
   body_consumer_watcher_.Cancel();
   body_producer_watcher_.Cancel();

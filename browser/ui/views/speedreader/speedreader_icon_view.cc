@@ -28,7 +28,7 @@
 #include "ui/views/animation/ink_drop_host_view.h"
 #include "ui/views/animation/ink_drop_state.h"
 
-using DistillState = speedreader::DistillState;
+using DistillState = speedreader::SpeedreaderTabHelper::DistillState;
 
 SpeedreaderIconView::SpeedreaderIconView(
     CommandUpdater* command_updater,
@@ -63,7 +63,8 @@ void SpeedreaderIconView::UpdateImpl() {
 
   const ui::ThemeProvider* theme_provider = GetThemeProvider();
   const DistillState state = GetDistillState();
-  const bool is_distilled = speedreader::PageStateIsDistilled(state);
+  const bool is_distilled =
+      speedreader::SpeedreaderTabHelper::PageStateIsDistilled(state);
 
   if (!is_distilled) {
     if (state == DistillState::kSpeedreaderOnDisabledPage ||

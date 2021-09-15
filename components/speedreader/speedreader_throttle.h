@@ -11,7 +11,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/single_thread_task_runner.h"
-#include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
@@ -32,7 +31,6 @@ class SpeedReaderThrottle : public blink::URLLoaderThrottle {
   static std::unique_ptr<SpeedReaderThrottle> MaybeCreateThrottleFor(
       SpeedreaderRewriterService* rewriter_service,
       HostContentSettingsMap* content_settings,
-      base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
       const GURL& url,
       bool check_disabled_sites,
       scoped_refptr<base::SingleThreadTaskRunner> task_runner);
@@ -41,7 +39,6 @@ class SpeedReaderThrottle : public blink::URLLoaderThrottle {
   // IPC in SpeedReaderLoader. |task_runner| is supposed to be bound to the
   // current sequence.
   SpeedReaderThrottle(SpeedreaderRewriterService* rewriter_service,
-                      base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
                       scoped_refptr<base::SingleThreadTaskRunner> task_runner);
   ~SpeedReaderThrottle() override;
 
@@ -55,11 +52,9 @@ class SpeedReaderThrottle : public blink::URLLoaderThrottle {
 
   // Called from SpeedReaderURLLoader.
   void Resume();
-  void OnDistillComplete();
 
  private:
   SpeedreaderRewriterService* rewriter_service_;  // not owned
-  base::WeakPtr<SpeedreaderResultDelegate> result_delegate_;
   scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
   base::WeakPtrFactory<SpeedReaderThrottle> weak_factory_{this};
 };

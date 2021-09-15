@@ -23,7 +23,6 @@ class SpeedreaderService : public KeyedService {
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   void ToggleSpeedreader();
-  void DisableSpeedreaderForTest();
   bool IsEnabled();
   bool ShouldPromptUserToEnable() const;
   void IncrementPromptCount();
