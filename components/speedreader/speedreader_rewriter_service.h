@@ -43,7 +43,7 @@ class SpeedreaderRewriterService : public SpeedreaderComponent::Observer {
       delete;
 
   // The API
-  bool IsWhitelisted(const GURL& url);
+  bool URLLooksReadable(const GURL& url);
   std::unique_ptr<Rewriter> MakeRewriter(const GURL& url);
   const std::string& GetContentStylesheet();
 

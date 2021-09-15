@@ -34,8 +34,6 @@ static_library("speedreader") {
     "speedreader_service.cc",
     "speedreader_service.h",
     "speedreader_switches.h",
-    "speedreader_test_whitelist.cc",
-    "speedreader_test_whitelist.h",
     "speedreader_throttle.cc",
     "speedreader_throttle.h",
     "speedreader_url_loader.cc",

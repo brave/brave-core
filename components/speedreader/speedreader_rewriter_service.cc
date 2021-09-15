@@ -87,7 +87,7 @@ void SpeedreaderRewriterService::OnStylesheetReady(const base::FilePath& path) {
                      weak_factory_.GetWeakPtr()));
 }
 
-bool SpeedreaderRewriterService::IsWhitelisted(const GURL& url) {
+bool SpeedreaderRewriterService::URLLooksReadable(const GURL& url) {
   // Only HTTP is readable.
   if (!url.SchemeIsHTTPOrHTTPS())
     return false;
