@@ -541,6 +541,7 @@ function Container (props: Props) {
                 selectedAsset={selectedWyreAsset}
                 buyAmount={buyAmount}
                 selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
+                networkList={networkList}
               />
             </SendWrapper>
           </Panel>
