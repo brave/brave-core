@@ -8,7 +8,8 @@ import {
   WelcomePanel,
   SignPanel,
   AllowAddNetworkPanel,
-  ConfirmTransactionPanel
+  ConfirmTransactionPanel,
+  ConnectHardwareWalletPanel
 } from '../components/extension'
 import { AppList } from '../components/shared'
 import {
@@ -536,4 +537,25 @@ export const _SetupWallet = () => {
 
 _SetupWallet.story = {
   name: 'Setup New Wallet'
+}
+
+export const _ConnectHardwareWallet = () => {
+
+  const onCancel = () => {
+    // Doesn't do anything in storybook
+  }
+
+  return (
+    <StyledExtensionWrapper>
+      <ConnectHardwareWalletPanel
+        walletName='Ledger 1'
+        isConnected={false}
+        onCancel={onCancel}
+      />
+    </StyledExtensionWrapper>
+  )
+}
+
+_ConnectHardwareWallet.story = {
+  name: 'Connect Hardware Wallet'
 }
