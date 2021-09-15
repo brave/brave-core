@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
 import { WalletAccountType, EthereumChain } from '../../../constants/types'
+import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import locale from '../../../constants/locale'
 import { NavButton, PanelTab } from '../'
 // Styled Components
@@ -44,7 +45,7 @@ function SignPanel (props: Props) {
         <NetworkText>{selectedNetwork.chainName}</NetworkText>
       </TopRow>
       <AccountCircle orb={orb} />
-      <AccountNameText>{selectedAccount.name}</AccountNameText>
+      <AccountNameText>{reduceAccountDisplayName(selectedAccount.name, 14)}</AccountNameText>
       <PanelTitle>{locale.signTransactionTitle}</PanelTitle>
       <TabRow>
         <PanelTab

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { WalletAccountType } from '../../../constants/types'
+import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { create } from 'ethereum-blockies'
 
 // Styled Components
@@ -35,7 +36,7 @@ const SelectAddress = (props: Props) => {
       <LeftSide>
         <AccountCircle orb={orb} />
         <NameAndAddressColumn>
-          <AccountNameText>{account.name}</AccountNameText>
+          <AccountNameText>{reduceAccountDisplayName(account.name, 22)}</AccountNameText>
           <AccountAddressText>
             {reduceAddress(account.address)}
           </AccountAddressText>

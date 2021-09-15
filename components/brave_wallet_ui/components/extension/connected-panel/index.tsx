@@ -8,6 +8,7 @@ import {
 import { Tooltip } from '../../shared'
 import { formatPrices } from '../../../utils/format-prices'
 import { formatBalance } from '../../../utils/format-balances'
+import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 
 // Styled Components
 import {
@@ -111,7 +112,7 @@ const ConnectedPanel = (props: Props) => {
           <AccountCircle orb={orb} onClick={navigate('accounts')}>
             <SwitchIcon />
           </AccountCircle>
-          <AccountNameText>{selectedAccount.name}</AccountNameText>
+          <AccountNameText>{reduceAccountDisplayName(selectedAccount.name, 14)}</AccountNameText>
           <Tooltip text={locale.toolTipCopyToClipboard}>
             <AccountAddressText onClick={onCopyToClipboard}>{reduceAddress(selectedAccount.address)}</AccountAddressText>
           </Tooltip>
