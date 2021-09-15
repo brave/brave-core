@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/common/pref_names.h"
@@ -158,11 +159,14 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
       prefs::kHideWebStoreIcon));
 }
 
-#if !defined(OS_ANDROID)
 IN_PROC_BROWSER_TEST_F(BraveLocalStatePrefsBrowserTest, DefaultLocalStateTest) {
+#if !defined(OS_ANDROID)
   EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(
       kDefaultBrowserPromptEnabled));
+#endif
+
+#if BUILDFLAG(ENABLE_CRASH_DIALOG)
   EXPECT_FALSE(
       g_browser_process->local_state()->GetBoolean(kDontAskForCrashReporting));
-}
 #endif
+}
