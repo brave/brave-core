@@ -162,7 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveLocalStatePrefsBrowserTest, DefaultLocalStateTest) {
   EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(
       kDefaultBrowserPromptEnabled));
-  EXPECT_TRUE(
-      g_browser_process->local_state()->GetBoolean(kAskCrashReportPermission));
+  EXPECT_FALSE(
+      g_browser_process->local_state()->GetBoolean(kDontAskForCrashReporting));
 }
 #endif

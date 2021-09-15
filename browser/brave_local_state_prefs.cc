@@ -98,7 +98,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   dark_mode::RegisterBraveDarkModeLocalStatePrefs(registry);
 
   registry->RegisterBooleanPref(kDefaultBrowserPromptEnabled, true);
-  registry->RegisterBooleanPref(kAskCrashReportPermission, true);
+  registry->RegisterBooleanPref(kDontAskForCrashReporting, false);
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)

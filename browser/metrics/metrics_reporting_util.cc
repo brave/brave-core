@@ -38,7 +38,7 @@ bool ShouldShowCrashReportPermissionAskDialog() {
 #endif
 
   PrefService* local_prefs = g_browser_process->local_state();
-  if (!local_prefs->GetBoolean(kAskCrashReportPermission))
+  if (local_prefs->GetBoolean(kDontAskForCrashReporting))
     return false;
 
   if (IsMetricsReportingPolicyManaged())

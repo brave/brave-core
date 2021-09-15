@@ -238,7 +238,7 @@ void CrashReportPermissionAskDialogView::OnAcceptButtonClicked() {
 
 void CrashReportPermissionAskDialogView::OnWindowClosing() {
   g_browser_process->local_state()->SetBoolean(
-      kAskCrashReportPermission, !dont_ask_again_checkbox_->GetChecked());
+      kDontAskForCrashReporting, dont_ask_again_checkbox_->GetChecked());
 
   // On macOS, this dialog is not destroyed properly when session crashed bubble
   // is launched directly.
