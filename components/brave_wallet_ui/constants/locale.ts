@@ -269,7 +269,7 @@ const locale = {
   confirmTransactionNoData: 'No Data.',
 
   // Wallet Main Panel
-  panelTitle: 'Crypto',
+  panelTitle: 'Brave Wallet',
   panelConnected: 'Connected',
   panelNotConnected: 'Not Connected',
 
