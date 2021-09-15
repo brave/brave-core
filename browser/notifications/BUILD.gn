@@ -14,6 +14,7 @@ source_set("notifications") {
 
   deps = [
     "//base",
+    "//brave/components/brave_adaptive_captcha/buildflags",
     "//chrome/browser/notifications",
     "//third_party/abseil-cpp:absl",
     "//url",
