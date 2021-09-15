@@ -151,6 +151,7 @@ public class KeyringStore: ObservableObject {
   func reset() {
     controller.reset()
     isOnboardingVisible = true
+    Self.resetKeychainStoredPassword()
   }
   
   // MARK: - Keychain
@@ -173,6 +174,16 @@ public class KeyringStore: ObservableObject {
       kSecValueData as String: passwordData
     ]
     let status = SecItemAdd(query as CFDictionary, nil)
+    return status == errSecSuccess
+  }
+  
+  @discardableResult
+  static func resetKeychainStoredPassword() -> Bool {
+    let query: [String: Any] = [
+      kSecClass as String: kSecClassGenericPassword,
+      kSecAttrAccount as String: passwordKeychainKey
+    ]
+    let status = SecItemDelete(query as CFDictionary)
     return status == errSecSuccess
   }
   

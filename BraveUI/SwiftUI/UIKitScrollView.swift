@@ -12,6 +12,7 @@ import Combine
 ///
 /// On iOS 14, this view automatically ignores the safe area, since the underlying `UIScrollView`
 /// will handles keyboard observation itself.
+@available(iOS, introduced: 13.0, deprecated: 14.0, message: "Use `ScrollView` instead")
 public struct UIKitScrollView<Content: View>: View {
   public var axis: Axis.Set
   public var content: Content

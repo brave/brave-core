@@ -24,12 +24,21 @@ public struct CryptoView: View {
     self.networkStore = networkStore
   }
   
-  private var isShowingUnlockView: Bool {
-    keyringStore.keyring.isLocked
+  private enum VisibleScreen: Equatable {
+    case crypto
+    case onboarding
+    case unlock
   }
   
-  private var isShowingOnboarding: Bool {
-    !keyringStore.keyring.isDefaultKeyringCreated || keyringStore.isOnboardingVisible
+  private var visibleScreen: VisibleScreen {
+    let keyring = keyringStore.keyring
+    if !keyring.isDefaultKeyringCreated || keyringStore.isOnboardingVisible {
+      return .onboarding
+    }
+    if keyring.isLocked {
+      return .unlock
+    }
+    return .crypto
   }
   
   @ToolbarContentBuilder
@@ -44,7 +53,8 @@ public struct CryptoView: View {
   
   public var body: some View {
     ZStack {
-      if !isShowingUnlockView {
+      switch visibleScreen {
+      case .crypto:
         UIKitController(
           UINavigationController(
             rootViewController: CryptoPagesViewController(
@@ -53,38 +63,28 @@ public struct CryptoView: View {
             )
           )
         )
-        .transition(.identity)
-      }
-      if isShowingUnlockView {
-        NavigationView {
-          ScrollView(.vertical) {
-            UnlockWalletView(keyringStore: keyringStore)
-          }
-          .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
-          .navigationTitle("Crypto") // NSLocalizedString
-          .navigationBarTitleDisplayMode(.inline)
-          .toolbar {
-            dismissButtonToolbarContents
-          }
+        .transition(.asymmetric(insertion: .identity, removal: .opacity))
+      case .unlock:
+        UIKitNavigationView {
+          UnlockWalletView(keyringStore: keyringStore)
+            .toolbar {
+              dismissButtonToolbarContents
+            }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
         .transition(.move(edge: .bottom))
         .zIndex(1)  // Needed or the dismiss animation messes up
-      }
-      if isShowingOnboarding {
-        NavigationView {
+      case .onboarding:
+        UIKitNavigationView {
           SetupCryptoView(keyringStore: keyringStore)
             .toolbar {
               dismissButtonToolbarContents
             }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
         .transition(.move(edge: .bottom))
         .zIndex(2)  // Needed or the dismiss animation messes up
       }
     }
-    .animation(.default, value: isShowingUnlockView) // Animate unlock dismiss (required for some reason)
-    .animation(.default, value: isShowingOnboarding) // Animate onboarding dismiss (required for some reason)
+    .animation(.default, value: visibleScreen) // Animate unlock dismiss (required for some reason)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .onDisappear {
       keyringStore.lock()
