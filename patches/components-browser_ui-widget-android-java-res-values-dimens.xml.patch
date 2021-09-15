@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/widget/android/java/res/values/dimens.xml b/components/browser_ui/widget/android/java/res/values/dimens.xml
-index be72ffa6c43bbe92bf7e0a7909910d9bb63f0279..656143765257b06790f8cd30138b130ec5cfba77 100644
+index 42489b70d88c8557528fd4d5c36a81e1f9013fce..1974490a020f5f4c29c0448e8ddefdacff697098 100644
 --- a/components/browser_ui/widget/android/java/res/values/dimens.xml
 +++ b/components/browser_ui/widget/android/java/res/values/dimens.xml
 @@ -65,7 +65,7 @@
