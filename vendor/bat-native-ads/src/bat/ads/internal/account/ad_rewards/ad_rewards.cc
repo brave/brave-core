@@ -99,7 +99,7 @@ uint64_t AdRewards::GetAdsReceivedForMonth(const base::Time& time) const {
 
   for (const auto& transaction : transactions) {
     if (transaction.timestamp == 0) {
-      // Workaround for Windows crash when passing 0 to UTCExplode
+      // Workaround for Windows crash when passing 0 to LocalExplode
       continue;
     }
 
@@ -137,7 +137,7 @@ double AdRewards::GetEarningsForMonth(const base::Time& time) const {
 double AdRewards::GetUnclearedEarningsForThisMonth() const {
   const base::Time now = base::Time::Now();
   base::Time::Exploded exploded;
-  now.UTCExplode(&exploded);
+  now.LocalExplode(&exploded);
 
   exploded.day_of_month = 1;
   exploded.hour = 0;
@@ -145,7 +145,7 @@ double AdRewards::GetUnclearedEarningsForThisMonth() const {
   exploded.second = 0;
 
   base::Time from_time;
-  const bool success = base::Time::FromUTCExploded(exploded, &from_time);
+  const bool success = base::Time::FromLocalExploded(exploded, &from_time);
   DCHECK(success);
 
   const int64_t from_timestamp = static_cast<int64_t>(from_time.ToDoubleT());

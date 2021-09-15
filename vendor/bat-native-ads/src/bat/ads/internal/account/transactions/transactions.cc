@@ -68,7 +68,7 @@ uint64_t GetCountForMonth(const base::Time& time) {
 
   for (const auto& transaction : transactions) {
     if (transaction.timestamp == 0) {
-      // Workaround for Windows crash when passing 0 to UTCExplode
+      // Workaround for Windows crash when passing 0 to LocalExplode
       continue;
     }
 

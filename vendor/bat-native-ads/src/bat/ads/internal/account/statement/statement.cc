@@ -48,7 +48,7 @@ double Statement::GetEarningsForThisMonth() const {
 double Statement::GetEarningsForLastMonth() const {
   const base::Time now = base::Time::Now();
   base::Time::Exploded exploded;
-  now.UTCExplode(&exploded);
+  now.LocalExplode(&exploded);
 
   exploded.month--;
   if (exploded.month < 1) {
@@ -59,7 +59,7 @@ double Statement::GetEarningsForLastMonth() const {
   exploded.day_of_month = 1;
 
   base::Time last_month;
-  const bool success = base::Time::FromUTCExploded(exploded, &last_month);
+  const bool success = base::Time::FromLocalExploded(exploded, &last_month);
   DCHECK(success);
 
   return ad_rewards_->GetEarningsForMonth(last_month);
