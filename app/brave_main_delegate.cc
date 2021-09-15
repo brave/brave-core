@@ -58,6 +58,7 @@
 #include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
 #include "components/signin/public/base/account_consistency_method.h"
 #else
+#include "chrome/browser/browser_features.h"
 #include "chrome/browser/ui/profile_picker.h"
 #endif
 
@@ -216,6 +217,9 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     blink::features::kLangClientHintHeader.name,
     blink::features::kNavigatorPluginsFixed.name,
     blink::features::kTextFragmentAnchor.name,
+#if !defined(OS_ANDROID)
+    features::kCopyLinkToText.name,
+#endif
     features::kDirectSockets.name,
     features::kIdleDetection.name,
     features::kNotificationTriggers.name,

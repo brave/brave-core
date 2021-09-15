@@ -31,6 +31,7 @@
 #if defined(OS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
+#include "chrome/browser/browser_features.h"
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -70,32 +71,35 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
-      &autofill::features::kAutofillEnableAccountWalletStorage,
-      &autofill::features::kAutofillServerCommunication,
-      &blink::features::kConversionMeasurement,
-      &blink::features::kFledgeInterestGroupAPI,
-      &blink::features::kFledgeInterestGroups,
-      &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
-      &blink::features::kInterestCohortAPIOriginTrial,
-      &blink::features::kInterestCohortFeaturePolicy,
-      &blink::features::kLangClientHintHeader,
-      &blink::features::kNavigatorPluginsFixed,
-      &blink::features::kTextFragmentAnchor,
-      &features::kDirectSockets,
-      &features::kIdleDetection,
-      &features::kNotificationTriggers,
-      &features::kPrivacySandboxSettings,
-      &features::kSignedExchangePrefetchCacheForNavigations,
-      &features::kSignedExchangeSubresourcePrefetch,
-      &features::kSubresourceWebBundles,
-      &features::kWebOTP,
-      &federated_learning::kFederatedLearningOfCohorts,
-      &federated_learning::kFlocIdComputedEventLogging,
-      &media::kLiveCaption,
-      &net::features::kFirstPartySets,
-      &network::features::kTrustTokens,
-      &network_time::kNetworkTimeServiceQuerying,
-      &reading_list::switches::kReadLater,
+    &autofill::features::kAutofillEnableAccountWalletStorage,
+    &autofill::features::kAutofillServerCommunication,
+    &blink::features::kConversionMeasurement,
+    &blink::features::kFledgeInterestGroupAPI,
+    &blink::features::kFledgeInterestGroups,
+    &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
+    &blink::features::kInterestCohortAPIOriginTrial,
+    &blink::features::kInterestCohortFeaturePolicy,
+    &blink::features::kLangClientHintHeader,
+    &blink::features::kNavigatorPluginsFixed,
+    &blink::features::kTextFragmentAnchor,
+#if !defined(OS_ANDROID)
+    &features::kCopyLinkToText,
+#endif
+    &features::kDirectSockets,
+    &features::kIdleDetection,
+    &features::kNotificationTriggers,
+    &features::kPrivacySandboxSettings,
+    &features::kSignedExchangePrefetchCacheForNavigations,
+    &features::kSignedExchangeSubresourcePrefetch,
+    &features::kSubresourceWebBundles,
+    &features::kWebOTP,
+    &federated_learning::kFederatedLearningOfCohorts,
+    &federated_learning::kFlocIdComputedEventLogging,
+    &media::kLiveCaption,
+    &net::features::kFirstPartySets,
+    &network::features::kTrustTokens,
+    &network_time::kNetworkTimeServiceQuerying,
+    &reading_list::switches::kReadLater,
   };
 
   for (const auto* feature : disabled_features)
