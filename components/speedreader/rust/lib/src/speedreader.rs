@@ -75,55 +75,6 @@ pub trait SpeedReaderProcessor {
     fn rewriter_type(&self) -> RewriterType;
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct SpeedReaderConfig {
-    pub domain: String,
-    pub url_rules: Vec<String>,
-    pub declarative_rewrite: Option<RewriteRules>,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct AttributeRewrite {
-    pub selector: String,
-    pub attribute: Option<(String, String)>,
-    pub element_name: String,
-}
-
-impl Default for RewriteRules {
-    fn default() -> Self {
-        RewriteRules {
-            main_content: vec![],
-            main_content_cleanup: vec![],
-            delazify: true,
-            fix_embeds: false,
-            content_script: None,
-            preprocess: vec![],
-        }
-    }
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct RewriteRules {
-    pub main_content: Vec<String>,
-    pub main_content_cleanup: Vec<String>,
-    pub delazify: bool,
-    pub fix_embeds: bool,
-    pub content_script: Option<String>,
-    pub preprocess: Vec<AttributeRewrite>,
-}
-
-impl RewriteRules {
-    pub fn get_main_content_selectors(&self) -> Vec<&str> {
-        self.main_content.iter().map(AsRef::as_ref).collect()
-    }
-    pub fn get_content_cleanup_selectors(&self) -> Vec<&str> {
-        self.main_content_cleanup
-            .iter()
-            .map(AsRef::as_ref)
-            .collect()
-    }
-}
-
 #[derive(Default)]
 pub struct SpeedReader;
 

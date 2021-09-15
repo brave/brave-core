@@ -22,6 +22,5 @@ rust_crate("lib") {
     "src/speedreader_heuristics.rs",
     "src/speedreader_readability.rs",
     "src/speedreader.rs",
-    "src/whitelist.rs",
   ]
 }
