@@ -125,9 +125,17 @@ private struct CreateWalletView: View {
       .background(BiometricsPromptView(isPresented: $isShowingBiometricsPrompt) { enabled, navController in
         if enabled {
           // Store password in keychain
+          if !KeyringStore.storePasswordInKeychain(password) {
+            // TODO: Get real copy
+            let alert = UIAlertController(title: "Failed to enable biometrics", message: "There was an error while trying to enable biometrics. Please try again later", preferredStyle: .alert)
+            alert.addAction(.init(title: "OK", style: .default, handler: nil))
+            navController?.presentedViewController?.present(alert, animated: true)
+            return false
+          }
         }
         let controller = UIHostingController(rootView: BackupWalletView(keyringStore: keyringStore))
         navController?.pushViewController(controller, animated: true)
+        return true
       })
       .background(
         NavigationLink(
@@ -145,7 +153,7 @@ private struct CreateWalletView: View {
 
 private struct BiometricsPromptView: UIViewControllerRepresentable {
   @Binding var isPresented: Bool
-  var action: (Bool, UINavigationController?) -> Void
+  var action: (Bool, UINavigationController?) -> Bool
   
   func makeUIViewController(context: Context) -> UIViewController {
     .init()
@@ -157,9 +165,10 @@ private struct BiometricsPromptView: UIViewControllerRepresentable {
         return
       }
       let controller = PopupViewController(rootView: EnableBiometricsView(action: { enabled in
-        uiViewController.dismiss(animated: true) {
-          isPresented = false
-          action(enabled, uiViewController.navigationController)
+        if action(enabled, uiViewController.navigationController) {
+          uiViewController.dismiss(animated: true) {
+            isPresented = false
+          }
         }
       }))
       uiViewController.present(controller, animated: true)

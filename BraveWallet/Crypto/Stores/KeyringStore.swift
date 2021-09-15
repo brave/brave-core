@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveCore
+import Security
 
 /// Defines a single word in a bip32 mnemonic recovery prhase.
 ///
@@ -150,6 +151,48 @@ public class KeyringStore: ObservableObject {
   func reset() {
     controller.reset()
     isOnboardingVisible = true
+  }
+  
+  // MARK: - Keychain
+  
+  private static let passwordKeychainKey = "brave-wallet-password"
+  
+  /// Stores the users wallet password in the keychain so that they may unlock using biometrics/passcode
+  static func storePasswordInKeychain(_ password: String) -> Bool {
+    guard let passwordData = password.data(using: .utf8) else { return false }
+    let accessControl = SecAccessControlCreateWithFlags(
+      nil,
+      kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+      .userPresence,
+      nil
+    )
+    let query: [String: Any] = [
+      kSecClass as String: kSecClassGenericPassword,
+      kSecAttrAccount as String: passwordKeychainKey,
+      kSecAttrAccessControl as String: accessControl as Any,
+      kSecValueData as String: passwordData
+    ]
+    let status = SecItemAdd(query as CFDictionary, nil)
+    return status == errSecSuccess
+  }
+  
+  /// Retreives a users stored wallet password using biometrics or passcode or nil if they have not saved
+  /// it to the keychain
+  static func retrievePasswordFromKeychain() -> String? {
+    let query: [String: Any] = [
+      kSecClass as String: kSecClassGenericPassword,
+      kSecAttrAccount as String: passwordKeychainKey,
+      kSecMatchLimit as String: kSecMatchLimitOne,
+      kSecReturnData as String: true
+    ]
+    var passwordData: AnyObject?
+    let status = SecItemCopyMatching(query as CFDictionary, &passwordData)
+    guard status == errSecSuccess,
+          let data = passwordData as? Data,
+          let password = String(data: data, encoding: .utf8) else {
+            return nil
+          }
+    return password
   }
 }
 
