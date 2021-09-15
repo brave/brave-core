@@ -22,6 +22,8 @@ source_set("brave_ads") {
     "ad_notification_view_factory.h",
     "bounds_util.cc",
     "bounds_util.h",
+    "color_util.cc",
+    "color_util.h",
     "insets_util.cc",
     "insets_util.h",
     "padded_image_button.cc",

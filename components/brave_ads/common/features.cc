@@ -40,6 +40,12 @@ const char kFieldTrialParameterAdNotificationFadeDuration[] =
     "ad_notification_fade_duration";
 const int kDefaultAdNotificationFadeDuration = 200;
 
+// Ad notification dark mode background color
+const char kFieldTrialParameterAdNotificationDarkModeBackgroundColor[] =
+    "ad_notification_dark_mode_background_color";
+// Default color value is SkColorSetRGB(0x20, 0x23, 0x27);
+const char kDefaultAdNotificationDarkModeBackgroundColor[] = "202327";
+
 // Ad notification normalized display coordinate for the x component should be
 // between 0.0 and 1.0; coordinates outside this range will be adjusted to fit
 // the work area. Set to 0.0 for left, 0.5 for center or 1.0 for right
@@ -122,6 +128,18 @@ int AdNotificationFadeDuration() {
   return GetFieldTrialParamByFeatureAsInt(
       kCustomAdNotifications, kFieldTrialParameterAdNotificationFadeDuration,
       kDefaultAdNotificationFadeDuration);
+}
+
+std::string AdNotificationDarkModeBackgroundColor() {
+  const std::string param_value = GetFieldTrialParamValueByFeature(
+      kCustomAdNotifications,
+      kFieldTrialParameterAdNotificationDarkModeBackgroundColor);
+
+  if (param_value.empty()) {
+    return kDefaultAdNotificationDarkModeBackgroundColor;
+  }
+
+  return param_value;
 }
 
 double AdNotificationNormalizedDisplayCoordinateX() {
