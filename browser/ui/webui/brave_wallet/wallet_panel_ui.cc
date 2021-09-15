@@ -43,6 +43,9 @@
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
 
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+
 namespace {
 
 content::WebContents* GetWebContentsFromTabId(int32_t tab_id) {
@@ -108,7 +111,9 @@ void WalletPanelUI::CreatePanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>
         erc_token_registry_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::EthTxController>
-        eth_tx_controller_receiver) {
+        eth_tx_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
+        brave_wallet_service_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -153,5 +158,11 @@ void WalletPanelUI::CreatePanelHandler(
       brave_wallet::EthTxControllerFactory::GetControllerForContext(profile);
   if (eth_tx_controller) {
     eth_tx_controller->Bind(std::move(eth_tx_controller_receiver));
+  }
+
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
+  if (brave_wallet_service) {
+    brave_wallet_service->Bind(std::move(brave_wallet_service_receiver));
   }
 }

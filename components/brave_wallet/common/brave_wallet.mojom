@@ -33,7 +33,8 @@ interface PanelHandlerFactory {
                      pending_receiver<AssetRatioController> asset_ratio_controller,
                      pending_receiver<KeyringController> keyring_controller,
                      pending_receiver<ERCTokenRegistry> erc_token_registry,
-                     pending_receiver<EthTxController> eth_tx_controller);
+                     pending_receiver<EthTxController> eth_tx_controller,
+                     pending_receiver<BraveWalletService> brave_wallet_service);
 };
 
 interface PageHandlerFactory {
@@ -46,7 +47,8 @@ interface PageHandlerFactory {
                     pending_receiver<AssetRatioController> asset_ratio_controller,
                     pending_receiver<KeyringController> keyring_controller,
                     pending_receiver<ERCTokenRegistry> erc_token_registry,
-                     pending_receiver<EthTxController> eth_tx_controller);
+                    pending_receiver<EthTxController> eth_tx_controller,
+                    pending_receiver<BraveWalletService> brave_wallet_service);
 
 };
 
