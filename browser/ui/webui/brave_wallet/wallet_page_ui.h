@@ -51,7 +51,9 @@ class WalletPageUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>
           erc_token_registry,
       mojo::PendingReceiver<brave_wallet::mojom::EthTxController>
-          eth_tx_controller) override;
+          eth_tx_controller,
+      mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
+          brave_wallet_service) override;
 
   std::unique_ptr<WalletPageHandler> page_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;

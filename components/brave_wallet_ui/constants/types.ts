@@ -350,6 +350,7 @@ export interface TokenInfo {
   isErc721: boolean
   symbol: string
   decimals: number
+  visible?: boolean
   icon?: string
 }
 
@@ -515,6 +516,29 @@ export interface KeyringController {
   addAccount: (accountName: string) => Promise<AddAccountReturnInfo>
 }
 
+export interface GetUserAssetsReturnInfo {
+  tokens: TokenInfo[]
+}
+
+export interface AddUserAssetReturnInfo {
+  success: boolean
+}
+
+export interface RemoveUserAssetReturnInfo {
+  success: boolean
+}
+
+export interface SetUserAssetVisibleReturnInfo {
+  success: boolean
+}
+
+export interface BraveWalletService {
+  getUserAssets: (chainId: string) => Promise<GetUserAssetsReturnInfo>
+  addUserAsset: (token: TokenInfo, chainId: string) => Promise<AddUserAssetReturnInfo>
+  removeUserAsset: (contractAddress: string, chainId: string) => Promise<RemoveUserAssetReturnInfo>
+  setUserAssetVisible: (contractAddress: string, chainId: string, visible: boolean) => Promise<SetUserAssetVisibleReturnInfo>
+}
+
 export interface RecoveryObject {
   value: string,
   id: number
@@ -570,6 +594,7 @@ export interface APIProxyControllers {
   keyringController: KeyringController
   ercTokenRegistry: ERCTokenRegistry
   ethTxController: EthTxController
+  braveWalletService: BraveWalletService
   makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string, data: number[]) => any
 }
 

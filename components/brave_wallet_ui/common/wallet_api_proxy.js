@@ -27,6 +27,8 @@ export default class WalletApiProxy {
     this.ercTokenRegistry = new braveWallet.mojom.ERCTokenRegistryRemote();
     /** @type {!braveWallet.mojom.EthTxControllerRemote} */
     this.ethTxController = new braveWallet.mojom.EthTxControllerRemote();
+    /** @type {!braveWallet.mojom.BraveWalletServiceRemote} */
+    this.braveWalletService = new braveWallet.mojom.BraveWalletServiceRemote();
   }
 
   addEthJsonRpcControllerObserver(store) {
