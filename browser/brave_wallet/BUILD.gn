@@ -72,7 +72,9 @@ source_set("brave_wallet_delegate") {
     deps += [
       "//brave/browser/brave_wallet",
       "//brave/browser/brave_wallet:tab_helper",
+      "//brave/browser/ui",
       "//brave/components/brave_wallet/common:mojom",
+      "//chrome/browser/ui",
       "//components/content_settings/core/common",
       "//components/permissions",
       "//mojo/public/cpp/bindings",
