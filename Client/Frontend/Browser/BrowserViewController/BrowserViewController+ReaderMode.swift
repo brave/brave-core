@@ -30,7 +30,7 @@ extension BrowserViewController: ReaderModeDelegate {
         if tabManager.selectedTab === tab {
             let shouldShowPlaylistURLBarButton = tab.url?.isPlaylistSupportedSiteURL == true
             
-            if !shouldShowPlaylistURLBarButton && tab.playlistItemState == .none {
+            if !shouldShowPlaylistURLBarButton || tab.playlistItemState == .none {
                 topToolbar.updateReaderModeState(state)
             }
         }
@@ -150,16 +150,22 @@ extension BrowserViewController {
         guard let currentURL = webView.backForwardList.currentItem?.url, let readerModeURL = currentURL.encodeReaderModeURL(WebServer.sharedInstance.baseReaderModeURL()) else { return }
 
         if backList.count > 1 && backList.last?.url == readerModeURL {
+            let playlistItem = tab.playlistItem
             webView.go(to: backList.last!)
+            PlaylistHelper.updatePlaylistTab(tab: tab, item: playlistItem)
         } else if !forwardList.isEmpty && forwardList.first?.url == readerModeURL {
+            let playlistItem = tab.playlistItem
             webView.go(to: forwardList.first!)
+            PlaylistHelper.updatePlaylistTab(tab: tab, item: playlistItem)
         } else {
             // Store the readability result in the cache and load it. This will later move to the ReadabilityHelper.
             webView.evaluateSafeJavaScript(functionName: "\(ReaderModeNamespace).readerize", sandboxed: false) { (object, error) -> Void in
                 if let readabilityResult = ReadabilityResult(object: object as AnyObject?) {
+                    let playlistItem = tab.playlistItem
                     try? self.readerModeCache.put(currentURL, readabilityResult)
                     if let nav = webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest) {
                         self.ignoreNavigationInTab(tab, navigation: nav)
+                        PlaylistHelper.updatePlaylistTab(tab: tab, item: playlistItem)
                     }
                 }
             }
@@ -180,12 +186,18 @@ extension BrowserViewController {
             if let currentURL = webView.backForwardList.currentItem?.url {
                 if let originalURL = currentURL.decodeReaderModeURL {
                     if backList.count > 1 && backList.last?.url == originalURL {
+                        let playlistItem = tab.playlistItem
                         webView.go(to: backList.last!)
+                        PlaylistHelper.updatePlaylistTab(tab: tab, item: playlistItem)
                     } else if !forwardList.isEmpty && forwardList.first?.url == originalURL {
+                        let playlistItem = tab.playlistItem
                         webView.go(to: forwardList.first!)
+                        PlaylistHelper.updatePlaylistTab(tab: tab, item: playlistItem)
                     } else {
+                        let playlistItem = tab.playlistItem
                         if let nav = webView.load(URLRequest(url: originalURL)) {
                             ignoreNavigationInTab(tab, navigation: nav)
+                            PlaylistHelper.updatePlaylistTab(tab: tab, item: playlistItem)
                         }
                     }
                 }
