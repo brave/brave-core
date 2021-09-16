@@ -29,4 +29,4 @@
     return nil;                                                     \
   }
 
-#include "../../../../../ui/accessibility/platform/ax_platform_node_mac.mm"
+#include "../../../../../ui/accessibility/platform/ax_platform_node_cocoa.mm"
