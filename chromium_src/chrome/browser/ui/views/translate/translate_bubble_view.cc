@@ -930,14 +930,14 @@ std::unique_ptr<views::View> TranslateBubbleView::CreateViewAdvanced(
   ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
 
   views::ColumnSet* cs = layout->AddColumnSet(COLUMN_SET_ID_TITLE);
-  if (!UseGoogleTranslateBranding()) {
-    cs->AddColumn(views::GridLayout::TRAILING, views::GridLayout::CENTER,
-                  views::GridLayout::kFixedSize,
-                  views::GridLayout::ColumnSize::kUsePreferred, 0, 0);
-    cs->AddPaddingColumn(views::GridLayout::kFixedSize,
-                         provider->GetDistanceMetric(
-                             views::DISTANCE_RELATED_CONTROL_HORIZONTAL));
-  }
+  // if (!UseGoogleTranslateBranding()) {
+  //   cs->AddColumn(views::GridLayout::TRAILING, views::GridLayout::CENTER,
+  //                 views::GridLayout::kFixedSize,
+  //                 views::GridLayout::ColumnSize::kUsePreferred, 0, 0);
+  //   cs->AddPaddingColumn(views::GridLayout::kFixedSize,
+  //                        provider->GetDistanceMetric(
+  //                            views::DISTANCE_RELATED_CONTROL_HORIZONTAL));
+  // }
   cs->AddColumn(views::GridLayout::FILL, views::GridLayout::CENTER,
                 views::GridLayout::kFixedSize,
                 views::GridLayout::ColumnSize::kUsePreferred, 0, 0);
@@ -950,18 +950,18 @@ std::unique_ptr<views::View> TranslateBubbleView::CreateViewAdvanced(
 
   cs = layout->AddColumnSet(COLUMN_SET_ID_LANGUAGES);
 
-  if (!UseGoogleTranslateBranding()) {
-    cs->AddPaddingColumn(views::GridLayout::kFixedSize,
-                         language_icon->CalculatePreferredSize().width());
-    cs->AddPaddingColumn(views::GridLayout::kFixedSize,
-                         provider->GetDistanceMetric(
-                             views::DISTANCE_RELATED_CONTROL_HORIZONTAL));
+  // if (!UseGoogleTranslateBranding()) {
+  //   cs->AddPaddingColumn(views::GridLayout::kFixedSize,
+  //                        language_icon->CalculatePreferredSize().width());
+  //   cs->AddPaddingColumn(views::GridLayout::kFixedSize,
+  //                        provider->GetDistanceMetric(
+  //                            views::DISTANCE_RELATED_CONTROL_HORIZONTAL));
+  //   cs->AddColumn(views::GridLayout::FILL, views::GridLayout::CENTER, 1,
+  //                 views::GridLayout::ColumnSize::kUsePreferred, 0, 0);
+  // } else {
     cs->AddColumn(views::GridLayout::FILL, views::GridLayout::CENTER, 1,
                   views::GridLayout::ColumnSize::kUsePreferred, 0, 0);
-  } else {
-    cs->AddColumn(views::GridLayout::FILL, views::GridLayout::CENTER, 1,
-                  views::GridLayout::ColumnSize::kUsePreferred, 0, 0);
-  }
+  // }
   cs->AddPaddingColumn(
       views::GridLayout::kFixedSize,
       provider->GetDistanceMetric(views::DISTANCE_RELATED_CONTROL_HORIZONTAL));
@@ -1002,12 +1002,12 @@ std::unique_ptr<views::View> TranslateBubbleView::CreateViewAdvanced(
       provider->GetDistanceMetric(views::DISTANCE_RELATED_CONTROL_HORIZONTAL));
 
   layout->StartRow(views::GridLayout::kFixedSize, COLUMN_SET_ID_TITLE);
-  if (!UseGoogleTranslateBranding()) {
-    // If the bottom branding isn't showing, display the leading translate
-    // icon otherwise it's not obvious what the bubble is about. This should
-    // only happen on non-Chrome-branded builds.
-    layout->AddView(std::move(language_icon));
-  }
+  // if (!UseGoogleTranslateBranding()) {
+  //   // If the bottom branding isn't showing, display the leading translate
+  //   // icon otherwise it's not obvious what the bubble is about. This should
+  //   // only happen on non-Chrome-branded builds.
+  //   layout->AddView(std::move(language_icon));
+  // }
   const int vertical_spacing =
       provider->GetDistanceMetric(views::DISTANCE_RELATED_CONTROL_VERTICAL);
   language_title_label->SetLineHeight(vertical_spacing * 5);
