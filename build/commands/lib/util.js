@@ -576,7 +576,7 @@ const util = {
       ninjaOpts.push('-j', config.gomaJValue)
     }
 
-    util.run('ninja', ninjaOpts, options)
+    util.run('autoninja', ninjaOpts, options)
   },
 
   generateXcodeWorkspace: (options = config.defaultOptions) => {
