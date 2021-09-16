@@ -182,3 +182,10 @@ export const SelectWrapper = styled.div`
   margin-left: -300px;
   width: 250px;
 `
+export const ErrorText = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  color: ${(p) => p.theme.color.errorText};
+  margin-bottom: 10px;
+`

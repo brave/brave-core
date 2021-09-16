@@ -217,6 +217,7 @@ export interface AccountInfo {
   address: string
   name: string
   isImported: boolean
+  isLedger: boolean
 }
 
 export interface WalletInfo {

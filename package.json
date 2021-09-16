@@ -313,6 +313,8 @@
   },
   "dependencies": {
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
+    "@ledgerhq/hw-app-eth": "^6.6.0",
+    "@ledgerhq/hw-transport-webhid": "^6.4.1",
     "@types/jszip": "^3.1.6",
     "@types/parse-torrent": "^5.8.3",
     "@types/webtorrent": "^0.109.0",

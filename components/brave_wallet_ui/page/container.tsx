@@ -55,9 +55,9 @@ import {
   HardwareWalletAccount,
   HardwareWalletConnectOpts
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import * as Result from '../common/types/result'
 
 import { formatBalance, toWei } from '../utils/format-balances'
+import apiProxy from './wallet_page_api_proxy.js'
 
 type Props = {
   wallet: WalletState
@@ -365,10 +365,24 @@ function Container (props: Props) {
     }
   }
 
-  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Result.Type<HardwareWalletAccount[]> => {
-    // TODO (DOUGLAS): Add logic to connect a hardware wallet
+  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<HardwareWalletAccount[]> => {
+    return new Promise(async (resolve, reject) => {
+      const keyring = await apiProxy.getInstance().getKeyringsByType(opts.hardware)
+      const controller = await apiProxy.getInstance().ethJsonRpcController
+      keyring.getAccounts(opts.startIndex, opts.stopIndex).then(async (accounts: HardwareWalletAccount[]) => {
+        for (let index = 0; index < accounts.length; index++) {
+          const balance = await controller.getBalance(accounts[index].address)
+          if (balance.success) {
+            accounts[index].balance = formatBalance(balance.balance, 18)
+          }
+        }
+        resolve(accounts)
+      }).catch(reject)
+    })
+  }
 
-    return []
+  const onAddHardwareAccounts = (selected: HardwareWalletAccount[]) => {
+    console.log(selected)
   }
 
   const onImportAccount = (accountName: string, privateKey: string) => {
@@ -511,6 +525,7 @@ function Container (props: Props) {
                   userAssetList={userAssetList}
                   fullAssetList={fullTokenList}
                   onConnectHardwareWallet={onConnectHardwareWallet}
+                  onAddHardwareAccounts={onAddHardwareAccounts}
                   onCreateAccount={onCreateAccount}
                   onImportAccount={onImportAccount}
                   isLoading={isFetchingPriceHistory}

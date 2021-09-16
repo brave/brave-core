@@ -20,14 +20,14 @@ import {
 
 import { HardwareWalletAccount, HardwareWalletConnectOpts } from './hardware-wallet-connect/types'
 import HardwareWalletConnect from './hardware-wallet-connect'
-import * as Result from '../../../../common/types/result'
 
 export interface Props {
   onClose: () => void
   onCreateAccount: (name: string) => void
   onImportAccount: (accountName: string, privateKey: string) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
-  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Result.Type<HardwareWalletAccount[]>
+  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
+  onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
   onSetImportError: (hasError: boolean) => void
   hasImportError: boolean
   accounts: WalletAccountType[]
@@ -43,6 +43,7 @@ const AddAccountModal = (props: Props) => {
     onCreateAccount,
     onImportAccount,
     onConnectHardwareWallet,
+    onAddHardwareAccounts,
     onImportAccountFromJson,
     onSetImportError
   } = props
@@ -230,7 +231,7 @@ const AddAccountModal = (props: Props) => {
             />
           </>
         }
-        {tab === 'hardware' && <HardwareWalletConnect onConnectHardwareWallet={onConnectHardwareWallet} />}
+        {tab === 'hardware' && <HardwareWalletConnect onConnectHardwareWallet={onConnectHardwareWallet} onAddHardwareAccounts={onAddHardwareAccounts} />}
       </StyledWrapper>
     </PopupModal>
   )
