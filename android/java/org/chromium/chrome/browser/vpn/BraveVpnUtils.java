@@ -139,17 +139,6 @@ public class BraveVpnUtils {
         return null;
     }
 
-    public static boolean isPurchaseValid(String json) {
-        try {
-            JSONObject purchase = new JSONObject(json);
-            return Long.parseLong(purchase.getString("expiryTimeMillis"))
-                    >= System.currentTimeMillis();
-        } catch (JSONException e) {
-            Log.e("BraveVPN", "BraveVpnUtils -> getProfileCredentials JSONException error " + e);
-        }
-        return false;
-    }
-
     public static String getPurchaseExpiryDate(String json) {
         try {
             JSONObject purchase = new JSONObject(json);
