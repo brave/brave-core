@@ -153,7 +153,83 @@ void EthTxController::AddUnapprovedTransaction(
     return;
   }
 
-  EthTxStateManager::TxMeta meta(std::make_unique<EthTransaction>(*tx));
+  auto tx_ptr = std::make_unique<EthTransaction>(*tx);
+
+  // Use default gas price and limit for ETHSend.
+  if (tx_ptr->data().empty()) {  // ETHSend
+    if (!tx_ptr->gas_limit())
+      tx_ptr->set_gas_limit(21000);
+    if (!tx_ptr->gas_price())
+      tx_ptr->set_gas_price(150 * 1e9);  // 150 Gwei
+
+    const std::string new_gas_price = Uint256ValueToHex(tx_ptr->gas_price());
+    ContinueAddUnapprovedTransaction(from, std::move(tx_ptr),
+                                     std::move(callback), true, new_gas_price);
+    return;
+  }
+
+  if (!tx_ptr->gas_limit()) {
+    rpc_controller_->GetEstimateGas(
+        from, tx_data->to, "" /* gas */, "" /* gas_price */, tx_data->value,
+        ToHex(tx_data->data),
+        base::BindOnce(&EthTxController::OnGetEstimateGas,
+                       weak_factory_.GetWeakPtr(), from, tx_data->gas_price,
+                       std::move(tx_ptr), std::move(callback)));
+  } else if (!tx_ptr->gas_price()) {
+    rpc_controller_->GetGasPrice(
+        base::BindOnce(&EthTxController::ContinueAddUnapprovedTransaction,
+                       weak_factory_.GetWeakPtr(), from, std::move(tx_ptr),
+                       std::move(callback)));
+  } else {
+    ContinueAddUnapprovedTransaction(
+        from, std::move(tx_ptr), std::move(callback), true, tx_data->gas_price);
+  }
+}
+
+void EthTxController::OnGetEstimateGas(
+    const std::string& from,
+    const std::string& gas_price,
+    std::unique_ptr<EthTransaction> tx,
+    AddUnapprovedTransactionCallback callback,
+    bool success,
+    const std::string& result) {
+  uint256_t gas_limit;
+  if (!success || !HexValueToUint256(result, &gas_limit)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_LIMIT_FAILED));
+    return;
+  }
+  tx->set_gas_limit(gas_limit);
+
+  if (!tx->gas_price()) {
+    rpc_controller_->GetGasPrice(base::BindOnce(
+        &EthTxController::ContinueAddUnapprovedTransaction,
+        weak_factory_.GetWeakPtr(), from, std::move(tx), std::move(callback)));
+  } else {
+    ContinueAddUnapprovedTransaction(from, std::move(tx), std::move(callback),
+                                     true, gas_price);
+  }
+}
+
+void EthTxController::ContinueAddUnapprovedTransaction(
+    const std::string& from,
+    std::unique_ptr<EthTransaction> tx,
+    AddUnapprovedTransactionCallback callback,
+    bool success,
+    const std::string& result) {
+  uint256_t gas_price;
+  if (!success || !HexValueToUint256(result, &gas_price)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_PRICE_FAILED));
+    return;
+  }
+  tx->set_gas_price(gas_price);
+
+  EthTxStateManager::TxMeta meta(std::move(tx));
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.from = EthAddress::FromHex(from);
   meta.created_time = base::Time::Now();

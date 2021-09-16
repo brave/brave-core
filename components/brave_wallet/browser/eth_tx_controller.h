@@ -85,6 +85,18 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
   void OnPublishTransaction(std::string tx_meta_id,
                             bool status,
                             const std::string& tx_hash);
+  void OnGetEstimateGas(const std::string& from,
+                        const std::string& gas_price,
+                        std::unique_ptr<EthTransaction> tx,
+                        AddUnapprovedTransactionCallback callback,
+                        bool success,
+                        const std::string& result);
+  void ContinueAddUnapprovedTransaction(
+      const std::string& from,
+      std::unique_ptr<EthTransaction> tx,
+      AddUnapprovedTransactionCallback callback,
+      bool success,
+      const std::string& result);
 
   EthJsonRpcController* rpc_controller_;   // NOT OWNED
   KeyringController* keyring_controller_;  // NOT OWNED
