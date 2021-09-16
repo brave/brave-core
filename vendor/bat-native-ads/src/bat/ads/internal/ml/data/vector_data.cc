@@ -15,16 +15,16 @@ namespace {
 const double kMinimumVectorLength = 1e-7;
 }  // namespace
 
-VectorData::VectorData() : Data(DataType::VECTOR_DATA) {}
+VectorData::VectorData() : Data(DataType::kVector) {}
 
 VectorData::VectorData(const VectorData& vector_data)
-    : Data(DataType::VECTOR_DATA) {
+    : Data(DataType::kVector) {
   dimension_count_ = vector_data.GetDimensionCount();
   data_ = vector_data.GetRawData();
 }
 
 VectorData::VectorData(const std::vector<double>& data)
-    : Data(DataType::VECTOR_DATA) {
+    : Data(DataType::kVector) {
   dimension_count_ = static_cast<int>(data.size());
   data_.resize(dimension_count_);
   for (int i = 0; i < dimension_count_; ++i) {
@@ -34,7 +34,7 @@ VectorData::VectorData(const std::vector<double>& data)
 
 VectorData::VectorData(const int dimension_count,
                        const std::map<uint32_t, double>& data)
-    : Data(DataType::VECTOR_DATA) {
+    : Data(DataType::kVector) {
   dimension_count_ = dimension_count;
   data_.reserve(dimension_count_);
   for (auto iter = data.begin(); iter != data.end(); iter++) {

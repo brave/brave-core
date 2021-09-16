@@ -8,14 +8,14 @@
 
 #include <string>
 
+#include "bat/ads/internal/platform/platform_helper_types.h"
+
 namespace base {
 template <typename T>
 struct DefaultSingletonTraits;
 }  // namespace base
 
 namespace ads {
-
-enum class PlatformType { kUnknown, kAndroid, kIOS, kLinux, kMacOS, kWindows };
 
 class PlatformHelper {
  public:

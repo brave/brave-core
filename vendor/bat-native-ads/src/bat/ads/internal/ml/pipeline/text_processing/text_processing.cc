@@ -78,7 +78,7 @@ PredictionMap TextProcessing::Apply(
   size_t transformation_count = transformations_.size();
 
   if (!transformation_count) {
-    DCHECK(input_data->GetType() == DataType::VECTOR_DATA);
+    DCHECK(input_data->GetType() == DataType::kVector);
     vector_data = *static_cast<VectorData*>(input_data.get());
   } else {
     std::unique_ptr<Data> current_data = transformations_[0]->Apply(input_data);
@@ -86,7 +86,7 @@ PredictionMap TextProcessing::Apply(
       current_data = transformations_[i]->Apply(current_data);
     }
 
-    DCHECK(current_data->GetType() == DataType::VECTOR_DATA);
+    DCHECK(current_data->GetType() == DataType::kVector);
     vector_data = *static_cast<VectorData*>(current_data.get());
   }
 

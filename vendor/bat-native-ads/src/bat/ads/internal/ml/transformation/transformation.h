@@ -8,16 +8,12 @@
 
 #include <memory>
 
+#include "bat/ads/internal/ml/transformation/transformation_types.h"
+
 namespace ads {
 namespace ml {
 
 class Data;
-
-enum class TransformationType {
-  LOWERCASE = 0,
-  HASHED_NGRAMS = 1,
-  NORMALIZATION = 2
-};
 
 class Transformation {
  public:

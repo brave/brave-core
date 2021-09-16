@@ -45,7 +45,7 @@ TEST_F(BatAdsNormalizationTest, NormalizationTest) {
 
   data = normalization.Apply(data);
 
-  ASSERT_EQ(DataType::VECTOR_DATA, data->GetType());
+  ASSERT_EQ(DataType::kVector, data->GetType());
 
   const VectorData* norm_data = static_cast<VectorData*>(data.release());
 
@@ -89,7 +89,7 @@ TEST_F(BatAdsNormalizationTest, ChainingTest) {
     data = chain[i]->Apply(data);
   }
 
-  ASSERT_EQ(DataType::VECTOR_DATA, data->GetType());
+  ASSERT_EQ(DataType::kVector, data->GetType());
   const VectorData* vect_data = static_cast<VectorData*>(data.get());
 
   // Assert

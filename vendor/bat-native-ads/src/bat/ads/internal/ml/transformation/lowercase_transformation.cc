@@ -16,13 +16,13 @@ namespace ads {
 namespace ml {
 
 LowercaseTransformation::LowercaseTransformation()
-    : Transformation(TransformationType::LOWERCASE) {}
+    : Transformation(TransformationType::kLowercase) {}
 
 LowercaseTransformation::~LowercaseTransformation() = default;
 
 std::unique_ptr<Data> LowercaseTransformation::Apply(
     const std::unique_ptr<Data>& input_data) const {
-  DCHECK(input_data->GetType() == DataType::TEXT_DATA);
+  DCHECK(input_data->GetType() == DataType::kText);
 
   TextData* text_data = static_cast<TextData*>(input_data.get());
 
