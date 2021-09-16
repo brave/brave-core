@@ -37,7 +37,7 @@ bool TransferredFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string TransferredFrequencyCap::get_last_message() const {
+std::string TransferredFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

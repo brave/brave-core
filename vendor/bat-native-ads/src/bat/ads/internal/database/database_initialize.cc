@@ -36,10 +36,6 @@ void Initialize::CreateOrOpen(ResultCallback callback) {
                                         std::placeholders::_1, callback));
 }
 
-std::string Initialize::get_last_message() const {
-  return last_message_;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 void Initialize::OnCreateOrOpen(mojom::DBCommandResponsePtr response,

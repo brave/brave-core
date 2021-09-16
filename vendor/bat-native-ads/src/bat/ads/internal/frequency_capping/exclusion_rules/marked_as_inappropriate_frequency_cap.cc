@@ -30,13 +30,13 @@ bool MarkedAsInappropriateFrequencyCap::ShouldExclude(
   return false;
 }
 
-std::string MarkedAsInappropriateFrequencyCap::get_last_message() const {
+std::string MarkedAsInappropriateFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
 bool MarkedAsInappropriateFrequencyCap::DoesRespectCap(
     const CreativeAdInfo& ad) {
-  const FlaggedAdList flagged_ads = Client::Get()->get_flagged_ads();
+  const FlaggedAdList flagged_ads = Client::Get()->GetFlaggedAds();
   if (flagged_ads.empty()) {
     return true;
   }

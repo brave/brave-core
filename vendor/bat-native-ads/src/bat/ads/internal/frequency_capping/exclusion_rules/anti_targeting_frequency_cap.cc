@@ -52,7 +52,7 @@ bool AntiTargetingFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string AntiTargetingFrequencyCap::get_last_message() const {
+std::string AntiTargetingFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

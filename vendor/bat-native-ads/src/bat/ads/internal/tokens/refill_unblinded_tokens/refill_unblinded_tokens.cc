@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/time/time.h"
@@ -60,12 +60,6 @@ RefillUnblindedTokens::~RefillUnblindedTokens() {
   delegate_ = nullptr;
 }
 
-void RefillUnblindedTokens::set_delegate(
-    RefillUnblindedTokensDelegate* delegate) {
-  DCHECK_EQ(delegate_, nullptr);
-  delegate_ = delegate;
-}
-
 void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
   if (is_processing_ || retry_timer_.IsRunning()) {
     return;
@@ -92,7 +86,7 @@ void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
   wallet_ = wallet;
 
   const CatalogIssuersInfo catalog_issuers =
-      ConfirmationsState::Get()->get_catalog_issuers();
+      ConfirmationsState::Get()->GetCatalogIssuers();
   if (!catalog_issuers.IsValid()) {
     BLOG(0, "Failed to refill unblinded tokens due to missing catalog issuers");
 

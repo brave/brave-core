@@ -32,7 +32,7 @@ bool DismissedFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string DismissedFrequencyCap::get_last_message() const {
+std::string DismissedFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

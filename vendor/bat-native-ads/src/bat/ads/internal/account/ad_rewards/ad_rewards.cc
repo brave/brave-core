@@ -8,7 +8,7 @@
 #include <functional>
 #include <utility>
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/ads_client.h"
@@ -59,11 +59,6 @@ AdRewards::~AdRewards() {
   delegate_ = nullptr;
 }
 
-void AdRewards::set_delegate(AdRewardsDelegate* delegate) {
-  DCHECK_EQ(delegate_, nullptr);
-  delegate_ = delegate;
-}
-
 void AdRewards::MaybeReconcile(const WalletInfo& wallet) {
   if (is_processing_ || retry_timer_.IsRunning()) {
     return;
@@ -83,7 +78,7 @@ uint64_t AdRewards::GetNextPaymentDate() const {
   const base::Time now = base::Time::Now();
 
   const base::Time next_token_redemption_date =
-      ConfirmationsState::Get()->get_next_token_redemption_date();
+      ConfirmationsState::Get()->GetNextTokenRedemptionDate();
 
   const base::Time next_payment_date =
       payments_->CalculateNextPaymentDate(now, next_token_redemption_date);
@@ -98,7 +93,7 @@ uint64_t AdRewards::GetAdsReceivedThisMonth() const {
 
 uint64_t AdRewards::GetAdsReceivedForMonth(const base::Time& time) const {
   const TransactionList transactions =
-      ConfirmationsState::Get()->get_transactions();
+      ConfirmationsState::Get()->GetTransactions();
 
   uint64_t ads_received_this_month = 0;
 

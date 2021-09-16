@@ -63,7 +63,7 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
 
     confirmation.type = ConfirmationType::kViewed;
 
-    if (!ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
+    if (!get_unblinded_tokens()->IsEmpty()) {
       const privacy::UnblindedTokenInfo unblinded_token =
           get_unblinded_tokens()->GetToken();
       get_unblinded_tokens()->RemoveToken(unblinded_token);

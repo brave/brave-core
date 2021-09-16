@@ -30,7 +30,7 @@ bool NetworkConnectionFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string NetworkConnectionFrequencyCap::get_last_message() const {
+std::string NetworkConnectionFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

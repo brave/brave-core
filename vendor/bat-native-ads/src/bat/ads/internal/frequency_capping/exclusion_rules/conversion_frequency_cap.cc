@@ -51,7 +51,7 @@ bool ConversionFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string ConversionFrequencyCap::get_last_message() const {
+std::string ConversionFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

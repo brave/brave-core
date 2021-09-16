@@ -49,9 +49,9 @@ class Client {
 
   void Initialize(InitializeCallback callback);
 
-  FilteredAdList get_filtered_ads() const;
-  FilteredCategoryList get_filtered_categories() const;
-  FlaggedAdList get_flagged_ads() const;
+  FilteredAdList GetFilteredAds() const;
+  FilteredCategoryList GetFilteredCategories() const;
+  FlaggedAdList GetFlaggedAds() const;
 
   void AppendAdHistory(const AdHistoryInfo& ad_history);
   const std::deque<AdHistoryInfo>& GetAdsHistory() const;

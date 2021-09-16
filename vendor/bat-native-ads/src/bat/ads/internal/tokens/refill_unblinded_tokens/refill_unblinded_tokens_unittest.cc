@@ -180,7 +180,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -218,7 +218,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -269,7 +269,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, CatalogIssuersPublicKeyMismatch) {
   catalog_issuer.name = "1.23BAT";
   catalog_issuer.public_key = "JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=";
   catalog_issuers.issuers = {catalog_issuer};
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -429,7 +429,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   InSequence seq;
@@ -475,7 +475,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -586,7 +586,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   InSequence seq;
@@ -638,7 +638,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -742,7 +742,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -846,7 +846,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -899,7 +899,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -1004,7 +1004,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -1045,7 +1045,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, VerifyAndUnblindInvalidTokens) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -1203,7 +1203,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,

@@ -36,7 +36,7 @@ class AdEvents : public Table {
   void PurgeExpired(ResultCallback callback);
   void PurgeOrphaned(const mojom::AdType ad_type, ResultCallback callback);
 
-  std::string get_table_name() const override;
+  std::string GetTableName() const override;
 
   void Migrate(mojom::DBTransaction* transaction,
                const int to_version) override;

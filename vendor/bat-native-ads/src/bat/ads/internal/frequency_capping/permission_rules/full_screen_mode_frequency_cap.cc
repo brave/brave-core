@@ -30,7 +30,7 @@ bool FullScreenModeFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string FullScreenModeFrequencyCap::get_last_message() const {
+std::string FullScreenModeFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

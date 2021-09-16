@@ -30,7 +30,7 @@ bool MediaFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string MediaFrequencyCap::get_last_message() const {
+std::string MediaFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/check_op.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
@@ -33,7 +34,10 @@ class RefillUnblindedTokens {
 
   ~RefillUnblindedTokens();
 
-  void set_delegate(RefillUnblindedTokensDelegate* delegate);
+  void set_delegate(RefillUnblindedTokensDelegate* delegate) {
+    DCHECK_EQ(delegate_, nullptr);
+    delegate_ = delegate;
+  }
 
   void MaybeRefill(const WalletInfo& wallet);
 

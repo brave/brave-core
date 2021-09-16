@@ -39,7 +39,7 @@ bool MinimumWaitTimeFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string MinimumWaitTimeFrequencyCap::get_last_message() const {
+std::string MinimumWaitTimeFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

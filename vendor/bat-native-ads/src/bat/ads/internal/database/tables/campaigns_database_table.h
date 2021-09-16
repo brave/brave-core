@@ -29,7 +29,7 @@ class Campaigns : public Table {
 
   void Delete(ResultCallback callback);
 
-  std::string get_table_name() const override;
+  std::string GetTableName() const override;
 
   void Migrate(mojom::DBTransaction* transaction,
                const int to_version) override;

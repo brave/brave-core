@@ -23,7 +23,7 @@ Timer::~Timer() {
   Stop();
 }
 
-void Timer::set_timer_for_testing(std::unique_ptr<base::OneShotTimer> timer) {
+void Timer::SetTimerForTesting(std::unique_ptr<base::OneShotTimer> timer) {
   timer_ = std::move(timer);
 }
 

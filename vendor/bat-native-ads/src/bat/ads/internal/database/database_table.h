@@ -17,7 +17,7 @@ class Table {
  public:
   virtual ~Table() = default;
 
-  virtual std::string get_table_name() const = 0;
+  virtual std::string GetTableName() const = 0;
 
   virtual void Migrate(mojom::DBTransaction* transaction,
                        const int to_version) = 0;

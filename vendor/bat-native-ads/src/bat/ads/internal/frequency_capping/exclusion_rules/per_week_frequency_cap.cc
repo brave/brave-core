@@ -35,7 +35,7 @@ bool PerWeekFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string PerWeekFrequencyCap::get_last_message() const {
+std::string PerWeekFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

@@ -30,7 +30,7 @@ bool InlineContentAdsPerHourFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string InlineContentAdsPerHourFrequencyCap::get_last_message() const {
+std::string InlineContentAdsPerHourFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

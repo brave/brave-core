@@ -28,7 +28,7 @@ class BackoffTimer {
   // Set a mock implementation of base::OneShotTimer which requires |Fire()| to
   // be explicitly called. Prefer using TaskEnvironment::MOCK_TIME +
   // FastForward*() to this when possible
-  void set_timer_for_testing(std::unique_ptr<base::OneShotTimer> timer);
+  void SetTimerForTesting(std::unique_ptr<base::OneShotTimer> timer);
 
   // Start a timer to run at the given |delay| from now backing off
   // exponentially for each call. If the timer is already running, it will be
@@ -57,7 +57,9 @@ class BackoffTimer {
 
   // Optionally call this method to set the maximum backoff delay to
   // |max_delay|. Default maximum backoff delay is 1 hour
-  void set_max_backoff_delay(const base::TimeDelta& max_delay);
+  void set_max_backoff_delay(const base::TimeDelta& max_backoff_delay) {
+    max_backoff_delay_ = max_backoff_delay;
+  }
 
  private:
   base::TimeDelta CalculateDelay(const base::TimeDelta& delay);

@@ -21,7 +21,7 @@ class PromotedContentAdsPerHourFrequencyCap : public PermissionRule {
 
   bool ShouldAllow() override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   std::string last_message_;

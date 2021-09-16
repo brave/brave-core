@@ -95,8 +95,7 @@ AdsImpl::~AdsImpl() {
   promoted_content_ad_->RemoveObserver(this);
 }
 
-void AdsImpl::set_for_testing(
-    privacy::TokenGeneratorInterface* token_generator) {
+void AdsImpl::SetForTesting(privacy::TokenGeneratorInterface* token_generator) {
   DCHECK(token_generator);
 
   token_generator_.release();

@@ -45,7 +45,7 @@ bool DaypartFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string DaypartFrequencyCap::get_last_message() const {
+std::string DaypartFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

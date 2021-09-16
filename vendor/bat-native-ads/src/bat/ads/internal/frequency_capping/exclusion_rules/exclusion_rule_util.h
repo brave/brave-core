@@ -22,9 +22,9 @@ bool ShouldExclude(const T& ad, ExclusionRule<T>* exclusion_rule) {
     return false;
   }
 
-  const std::string reason = exclusion_rule->get_last_message();
-  if (!reason.empty()) {
-    BLOG(2, reason);
+  const std::string last_message = exclusion_rule->GetLastMessage();
+  if (!last_message.empty()) {
+    BLOG(2, last_message);
   }
 
   return true;

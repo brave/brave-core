@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <memory>
 
+#include "base/check_op.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -30,7 +31,10 @@ class AdRewards {
 
   ~AdRewards();
 
-  void set_delegate(AdRewardsDelegate* delegate);
+  void set_delegate(AdRewardsDelegate* delegate) {
+    DCHECK_EQ(delegate_, nullptr);
+    delegate_ = delegate;
+  }
 
   void MaybeReconcile(const WalletInfo& wallet);
 

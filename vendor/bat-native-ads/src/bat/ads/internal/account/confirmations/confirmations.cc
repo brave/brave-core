@@ -68,13 +68,13 @@ void Confirmations::SetCatalogIssuers(
   }
 
   const CatalogIssuersInfo current_catalog_issuers =
-      ConfirmationsState::Get()->get_catalog_issuers();
+      ConfirmationsState::Get()->GetCatalogIssuers();
 
   const bool public_key_was_rotated =
       !current_catalog_issuers.public_key.empty() &&
       current_catalog_issuers.public_key != catalog_issuers.public_key;
 
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   if (public_key_was_rotated) {
     ConfirmationsState::Get()->get_unblinded_tokens()->RemoveAllTokens();
@@ -177,7 +177,7 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
 }
 
 void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
-  ConfirmationsState::Get()->append_failed_confirmation(confirmation);
+  ConfirmationsState::Get()->AppendFailedConfirmation(confirmation);
   ConfirmationsState::Get()->Save();
 
   BLOG(1, "Added confirmation id " << confirmation.id
@@ -189,7 +189,7 @@ void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
 }
 
 void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
-  if (!ConfirmationsState::Get()->remove_failed_confirmation(confirmation)) {
+  if (!ConfirmationsState::Get()->RemoveFailedConfirmation(confirmation)) {
     BLOG(0, "Failed to remove confirmation id "
                 << confirmation.id << ", creative instance id "
                 << confirmation.creative_instance_id << " and "
@@ -212,7 +212,7 @@ void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
 
 void Confirmations::Retry() {
   ConfirmationList failed_confirmations =
-      ConfirmationsState::Get()->get_failed_confirmations();
+      ConfirmationsState::Get()->GetFailedConfirmations();
   if (failed_confirmations.empty()) {
     BLOG(1, "No failed confirmations to retry");
     return;
@@ -254,7 +254,7 @@ void Confirmations::OnDidRedeemUnblindedToken(
   ConfirmationsState::Get()->Save();
 
   const CatalogIssuersInfo catalog_issuers =
-      ConfirmationsState::Get()->get_catalog_issuers();
+      ConfirmationsState::Get()->GetCatalogIssuers();
 
   const absl::optional<double> estimated_redemption_value =
       catalog_issuers.GetEstimatedRedemptionValue(

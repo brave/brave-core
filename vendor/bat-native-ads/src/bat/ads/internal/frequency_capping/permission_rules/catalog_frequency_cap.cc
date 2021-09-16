@@ -19,7 +19,7 @@ bool CatalogFrequencyCap::ShouldAllow() {
   return DoesRespectCap();
 }
 
-std::string CatalogFrequencyCap::get_last_message() const {
+std::string CatalogFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
@@ -35,7 +35,7 @@ bool CatalogFrequencyCap::DoesRespectCap() {
   }
 
   const CatalogIssuersInfo catalog_issuers =
-      ConfirmationsState::Get()->get_catalog_issuers();
+      ConfirmationsState::Get()->GetCatalogIssuers();
   if (!catalog_issuers.IsValid()) {
     last_message_ = "Invalid catalog issuers";
     return false;

@@ -24,7 +24,7 @@ bool AllowNotificationsFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string AllowNotificationsFrequencyCap::get_last_message() const {
+std::string AllowNotificationsFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
