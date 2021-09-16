@@ -557,6 +557,7 @@ extension BrowserViewController: ToolbarDelegate {
                     PageActionsMenuSection(browserViewController: self, tabURL: tabURL, activities: activities)
                 }
             }
+            .navigationBarHidden(true)
         })
         presentPanModal(menuController, sourceView: tabToolbar.menuButton, sourceRect: tabToolbar.menuButton.bounds)
         if menuController.modalPresentationStyle == .popover {
