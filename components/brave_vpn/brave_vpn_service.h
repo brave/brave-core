@@ -77,6 +77,7 @@ class BraveVpnService : public KeyedService {
       const base::flat_map<std::string, std::string>& headers);
 
   api_request_helper::APIRequestHelper api_request_helper_;
+  base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_SERVICE_H_

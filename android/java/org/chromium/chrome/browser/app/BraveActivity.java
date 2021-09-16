@@ -188,16 +188,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private static final List<String> yandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
-    public final class DialogOption {
-        public static final int CLEAR_HISTORY = 0;
-        public static final int CLEAR_COOKIES_AND_SITE_DATA = 1;
-        public static final int CLEAR_CACHE = 2;
-        public static final int CLEAR_PASSWORDS = 3;
-        public static final int CLEAR_FORM_DATA = 4;
-        public static final int CLEAR_SITE_SETTINGS = 5;
-        public static final int NUM_ENTRIES = 6;
-    }
-
     private String mPurchaseToken = "";
     private String mProductId = "";
     private boolean mIsVerification;
