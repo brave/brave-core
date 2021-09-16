@@ -73,6 +73,7 @@ export type PanelTypes =
   | 'settings'
   | 'expanded'
   | 'assets'
+  | 'connectWithSite'
 
 export type NavTypes =
   | 'crypto'
@@ -155,15 +156,20 @@ export interface WalletState {
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   selectedAccount: WalletAccountType
-  selectedNetwork: Network
+  selectedNetwork: EthereumChain
   accounts: WalletAccountType[]
   transactions: RPCTransactionType[]
   userVisibleTokens: string[]
   userVisibleTokensInfo: TokenInfo[]
   fullTokenList: TokenInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
+  pendingTransactions: TransactionInfo[]
+  knownTransactions: TransactionInfo[]
+  selectedPendingTransaction: TransactionInfo | undefined
   isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: AssetPriceTimeframe
+  networkList: EthereumChain[]
+  transactionSpotPrices: AssetPriceInfo[]
 }
 
 export interface PanelState {
@@ -175,9 +181,7 @@ export interface PanelState {
   tabId: number
   connectingAccounts: string[]
   showSignTransaction: boolean
-  showAllowSpendERC20Token: boolean
-  showAllowAddNetwork: boolean
-  showConfirmTransaction: boolean
+  networkPayload: EthereumChain
 }
 
 export interface PageState {
@@ -195,6 +199,8 @@ export interface PageState {
   isFetchingPriceHistory: boolean
   setupStillInProgress: boolean
   showIsRestoring: boolean
+  importError: boolean
+  showAddModal: boolean
 }
 
 export interface WalletPageState {
@@ -208,8 +214,8 @@ export interface WalletPanelState {
 }
 
 export interface AccountInfo {
-  address: string[]
-  name: string[]
+  address: string
+  name: string
   isImported: boolean
 }
 
@@ -240,24 +246,22 @@ export enum AssetPriceTimeframe {
 
 // Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
 // we auto generate this type file from mojo.
-export enum Network {
-  Mainnet = 0,
-  Rinkeby = 1,
-  Ropsten = 2,
-  Goerli = 3,
-  Kovan = 4,
-  Localhost = 5,
-  Custom = 6
-}
-
-// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
-// we auto generate this type file from mojo.
 export enum TransactionStatus {
   Unapproved = 0,
   Approved = 1,
   Rejected = 2,
   Submitted = 3,
-  Confirmed = 4
+  Confirmed = 4,
+  Error = 5
+}
+
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
+export enum TransactionType {
+  ETHSend = 0,
+  ERC20Transfer = 1,
+  ERC20Approve = 2,
+  Other = 3
 }
 
 export interface SwapParams {
@@ -298,7 +302,7 @@ export interface SwapResponseReturnInfo {
 }
 
 export interface GetNetworkReturnInfo {
-  network: Network
+  network: EthereumChain
 }
 
 export interface GetBlockTrackerUrlReturnInfo {
@@ -346,6 +350,7 @@ export interface TokenInfo {
   isErc721: boolean
   symbol: string
   decimals: number
+  visible?: boolean
   icon?: string
 }
 
@@ -429,11 +434,13 @@ export class TxData1559 {
 export interface AddUnapprovedTransactionReturnInfo {
   success: boolean
   txMetaId: string
+  errorMessage: string
 }
 
 export interface AddUnapproved1559TransactionReturnInfo {
   success: boolean
   txMetaId: string
+  errorMessage: string
 }
 
 export interface ApproveTransactionReturnInfo {
@@ -460,6 +467,9 @@ export interface TransactionInfo {
   txHash: string
   txData: TxData1559
   txStatus: TransactionStatus
+  txType: TransactionType
+  txParams: string[]
+  txArgs: string[]
 }
 
 export interface GetAllTransactionInfoReturnInfo {
@@ -477,8 +487,11 @@ export interface EthTxController {
 }
 
 export interface EthJsonRpcController {
+  getPendingChainRequests: () => Promise<GetAllNetworksList>
+  addEthereumChainRequestCompleted: (chainId: string, approved: boolean) => Promise<void>
   getNetwork: () => Promise<GetNetworkReturnInfo>
-  setNetwork: (netowrk: Network) => Promise<void>
+  setNetwork: (netowrk: string) => Promise<void>
+  getAllNetworks: () => Promise<GetAllNetworksList>
   getChainId: () => Promise<GetChainIdReturnInfo>
   getBlockTrackerUrl: () => Promise<GetBlockTrackerUrlReturnInfo>
   getBalance: (address: string) => Promise<GetBalanceReturnInfo>
@@ -497,14 +510,33 @@ export interface AssetRatioController {
 
 export interface KeyringController {
   createWallet: (password: string) => Promise<CreateWalletReturnInfo>
-  restoreWallet: (mnemonic: string, password: string) => Promise<RestoreWalletReturnInfo>
+  restoreWallet: (mnemonic: string, password: string, isLegacy: boolean) => Promise<RestoreWalletReturnInfo>
   lock: () => Promise<void>
   unlock: (password: string) => Promise<UnlockReturnInfo>
   addAccount: (accountName: string) => Promise<AddAccountReturnInfo>
 }
 
-export interface EthJsonRpcController {
-  getChainId: () => Promise<GetChainIdReturnInfo>
+export interface GetUserAssetsReturnInfo {
+  tokens: TokenInfo[]
+}
+
+export interface AddUserAssetReturnInfo {
+  success: boolean
+}
+
+export interface RemoveUserAssetReturnInfo {
+  success: boolean
+}
+
+export interface SetUserAssetVisibleReturnInfo {
+  success: boolean
+}
+
+export interface BraveWalletService {
+  getUserAssets: (chainId: string) => Promise<GetUserAssetsReturnInfo>
+  addUserAsset: (token: TokenInfo, chainId: string) => Promise<AddUserAssetReturnInfo>
+  removeUserAsset: (contractAddress: string, chainId: string) => Promise<RemoveUserAssetReturnInfo>
+  setUserAssetVisible: (contractAddress: string, chainId: string, visible: boolean) => Promise<SetUserAssetVisibleReturnInfo>
 }
 
 export interface RecoveryObject {
@@ -514,12 +546,6 @@ export interface RecoveryObject {
 
 export interface MojoTime {
   microseconds: number
-}
-
-export interface NetworkOptionsType {
-  name: string
-  id: number
-  abbr: string
 }
 
 export type BuySendSwapViewTypes =
@@ -568,6 +594,7 @@ export interface APIProxyControllers {
   keyringController: KeyringController
   ercTokenRegistry: ERCTokenRegistry
   ethTxController: EthTxController
+  braveWalletService: BraveWalletService
   makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string, data: number[]) => any
 }
 
@@ -587,16 +614,44 @@ export type AllowSpendReturnPayload = {
   transactionData: TransactionDataType
 }
 
-export type ChainInformation = {
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
+export const kMainnetChainId = '0x1'
+export const kRinkebyChainId = '0x4'
+export const kRopstenChainId = '0x3'
+export const kGoerliChainId = '0x5'
+export const kKovanChainId = '0x2a'
+export const kLocalhostChainId = '0x539'
+
+export const BuySupportedChains = [
+  kMainnetChainId,
+  kRinkebyChainId,
+  kRopstenChainId,
+  kGoerliChainId,
+  kKovanChainId,
+  kLocalhostChainId
+]
+
+export const SwapSupportedChains = [
+  kMainnetChainId,
+  kRopstenChainId
+]
+
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
+export type EthereumChain = {
   chainId: string,
-  name: string,
-  url: string
+  chainName: string,
+  blockExplorerUrls: string[],
+  iconUrls: string[],
+  rpcUrls: string[],
+  symbol: string,
+  symbolName: string,
+  decimals: number
 }
 
-export type AddNetworkReturnPayload = {
-  siteUrl: string,
-  contractAddress: string,
-  chainInfo: ChainInformation
+export interface GetAllNetworksList {
+  networks: EthereumChain[]
 }
 
 export type TransactionPanelPayload = {
@@ -613,4 +668,12 @@ export type UpdateAccountNamePayloadType = {
   address: string,
   name: string,
   isDerived: boolean
+}
+
+export enum WalletOnboardingSteps {
+  OnboardingWelcome = 0,
+  OnboardingCreatePassword = 1,
+  OnboardingBackupWallet = 2,
+  OnboardingImportMetaMask = 3,
+  OnboardingImportBraveLegacy = 4
 }

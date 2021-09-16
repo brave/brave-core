@@ -219,14 +219,13 @@ void RewardsBrowserTestContribution::VerifyTip(
     IsBalanceCorrect();
 
     // Check that tip table shows the appropriate tip amount
-    const std::string selector = monthly
-        ? "[data-test-id='summary-monthly']"
-        : "[data-test-id='summary-tips']";
+    const std::string selector =
+        monthly ? "[data-test-id=rewards-summary-monthly]"
+                : "[data-test-id=rewards-summary-one-time]";
 
     rewards_browsertest_util::WaitForElementToContain(
-        contents(),
-        selector,
-        "-" + rewards_browsertest_util::BalanceDoubleToString(amount) + "BAT");
+        contents(), selector,
+        "-" + base::StringPrintf("%.2f", amount) + " BAT");
     return;
   }
 
@@ -245,9 +244,7 @@ void RewardsBrowserTestContribution::VerifyTip(
 
 void RewardsBrowserTestContribution::IsBalanceCorrect() {
   rewards_browsertest_util::WaitForElementToEqual(
-      contents(),
-      "[data-test-id='balance']",
-      GetStringBalance());
+      contents(), "[data-test-id=rewards-balance-text]", GetStringBalance());
 }
 
 void RewardsBrowserTestContribution::IsPendingBalanceCorrect() {

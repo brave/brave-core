@@ -40,6 +40,7 @@ declare global {
       alreadyKnownFirstPartySubtrees: WeakSet
       _hasDelayOcurred: boolean
       _startCheckingId: number | undefined
+      tryScheduleQueuePump: (() => void)
     }
   }
 }

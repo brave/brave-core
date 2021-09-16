@@ -48,7 +48,6 @@ static_library("browser") {
 
   deps = [
     "//base",
-    "//base/util/timer:timer",
     "//brave/common:pref_names",
     "//brave/components/adblock_rust_ffi",
     "//brave/components/brave_component_updater/browser",
@@ -56,6 +55,7 @@ static_library("browser") {
     "//brave/components/brave_shields/common:mojom",
     "//brave/components/content_settings/core/browser",
     "//brave/components/content_settings/core/common",
+    "//brave/components/debounce/common",
     "//brave/components/p3a",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",

@@ -5,8 +5,10 @@
 
 package org.chromium.chrome.browser.crypto_wallet.listeners;
 
+import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+
 public interface OnWalletListItemClick {
-    default public void onAccountClick(){};
+    default public void onAccountClick(WalletListItemModel walletListItemModel){};
     default public void onAssetClick(){};
     default public void onTransactionClick(){};
 }

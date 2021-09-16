@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_DAYPART_INFO_H_
 
 #include <string>
-#include <vector>
 
 #include "base/time/time.h"
 
@@ -18,8 +17,6 @@ struct CreativeDaypartInfo {
   int start_minute = 0;
   int end_minute = (base::Time::kMinutesPerHour * base::Time::kHoursPerDay) - 1;
 };
-
-using CreativeDaypartList = std::vector<CreativeDaypartInfo>;
 
 }  // namespace ads
 

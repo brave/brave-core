@@ -168,7 +168,7 @@ void SubdivisionTargeting::Fetch() {
 
   GetSubdivisionUrlRequestBuilder url_request_builder;
   mojom::UrlRequestPtr url_request = url_request_builder.Build();
-  BLOG(5, UrlRequestToString(url_request));
+  BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
   const auto callback =

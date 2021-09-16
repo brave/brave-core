@@ -19,6 +19,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "third_party/blink/public/common/client_hints/client_hints.h"
+#include "third_party/blink/public/common/features.h"
 
 const char kClientHints[] = "/ch.html";
 
@@ -50,10 +51,10 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
     if (IsLangClientHintHeaderEnabled()) {
       // Test that even with Lang CH feature enabled, there is no header.
       scoped_feature_list_.InitAndEnableFeature(
-          features::kLangClientHintHeader);
+          blink::features::kLangClientHintHeader);
     } else {
       scoped_feature_list_.InitAndDisableFeature(
-          features::kLangClientHintHeader);
+          blink::features::kLangClientHintHeader);
     }
     InProcessBrowserTest::SetUp();
   }
@@ -90,8 +91,9 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
 };
 
 IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
-  EXPECT_EQ(IsLangClientHintHeaderEnabled(),
-            base::FeatureList::IsEnabled(features::kLangClientHintHeader));
+  EXPECT_EQ(
+      IsLangClientHintHeaderEnabled(),
+      base::FeatureList::IsEnabled(blink::features::kLangClientHintHeader));
   ui_test_utils::NavigateToURL(browser(), client_hints_url());
   EXPECT_EQ(0u, count_client_hints_headers_seen());
 }

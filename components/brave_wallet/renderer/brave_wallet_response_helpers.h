@@ -21,7 +21,8 @@ std::unique_ptr<base::Value> FormProviderResponse(
     const bool send_async,
     bool* reject);
 std::string FormProviderErrorResponse(const std::string& controller_response);
-
+std::unique_ptr<base::Value> ToProviderResponse(base::Value* result,
+                                                base::Value* error);
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_BRAVE_WALLET_RESPONSE_HELPERS_H_

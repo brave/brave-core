@@ -6,15 +6,16 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_
 
-#include "base/scoped_observation.h"
-#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/brave_vpn.mojom.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
+class BraveVpnServiceDesktop;
 class Browser;
 
 class BraveVPNButton : public ToolbarButton,
-                       public BraveVpnServiceDesktop::Observer {
+                       public brave_vpn::mojom::ServiceObserver {
  public:
   METADATA_HEADER(BraveVPNButton);
 
@@ -24,8 +25,9 @@ class BraveVPNButton : public ToolbarButton,
   BraveVPNButton(const BraveVPNButton&) = delete;
   BraveVPNButton& operator=(const BraveVPNButton&) = delete;
 
-  // BraveVpnService::Observer overrides:
-  void OnConnectionStateChanged(ConnectionState state) override;
+  // brave_vpn::mojom::ServiceObserver overrides:
+  void OnConnectionStateChanged(
+      brave_vpn::mojom::ConnectionState state) override;
   void OnConnectionCreated() override;
   void OnConnectionRemoved() override;
 
@@ -40,9 +42,7 @@ class BraveVPNButton : public ToolbarButton,
 
   Browser* browser_ = nullptr;
   BraveVpnServiceDesktop* service_ = nullptr;
-  base::ScopedObservation<BraveVpnServiceDesktop,
-                          BraveVpnServiceDesktop::Observer>
-      observation_{this};
+  mojo::Receiver<brave_vpn::mojom::ServiceObserver> receiver_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_

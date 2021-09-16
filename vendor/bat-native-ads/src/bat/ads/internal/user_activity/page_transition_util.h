@@ -8,7 +8,11 @@
 
 #include "bat/ads/internal/user_activity/user_activity_event_types.h"
 #include "bat/ads/page_transition_types.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+
+namespace absl {
+template <typename T>
+class optional;
+}  // namespace absl
 
 namespace ads {
 

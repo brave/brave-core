@@ -7,7 +7,7 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  Network
+  EthereumChain
 } from '../../../constants/types'
 import {
   AccountsAssetsNetworks,
@@ -17,10 +17,11 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
+  networkList: EthereumChain[]
   orderType: OrderTypes
   swapToAsset: AccountAssetOptionType
   swapFromAsset: AccountAssetOptionType
-  selectedNetwork: Network
+  selectedNetwork: EthereumChain
   selectedAccount: UserAccountType
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
@@ -32,7 +33,7 @@ export interface Props {
   assetOptions: AccountAssetOptionType[]
   onSubmitSwap: () => void
   flipSwapAssets: () => void
-  onSelectNetwork: (network: Network) => void
+  onSelectNetwork: (network: EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
   onSelectSwapAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
@@ -47,6 +48,7 @@ export interface Props {
 function SwapTab (props: Props) {
   const {
     accounts,
+    networkList,
     orderType,
     swapToAsset,
     swapFromAsset,
@@ -86,7 +88,7 @@ function SwapTab (props: Props) {
     }
   }
 
-  const onClickSelectNetwork = (network: Network) => () => {
+  const onClickSelectNetwork = (network: EthereumChain) => () => {
     onSelectNetwork(network)
     setSwapView('swap')
   }
@@ -157,6 +159,7 @@ function SwapTab (props: Props) {
       {swapView !== 'send' &&
         <AccountsAssetsNetworks
           accounts={accounts}
+          networkList={networkList}
           goBack={goBack}
           assetOptions={filteredAssetList}
           onClickSelectAccount={onClickSelectAccount}

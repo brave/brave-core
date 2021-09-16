@@ -55,7 +55,7 @@ export const NewAssetOptions: TokenInfo[] = [
     icon: ETHIconUrl,
     isErc20: true,
     isErc721: false,
-    decimals: 8
+    decimals: 18
   },
   {
     contractAddress: '2',
@@ -64,7 +64,7 @@ export const NewAssetOptions: TokenInfo[] = [
     icon: BATIconUrl,
     isErc20: true,
     isErc721: false,
-    decimals: 8
+    decimals: 18
   },
   {
     contractAddress: '3',
@@ -73,7 +73,7 @@ export const NewAssetOptions: TokenInfo[] = [
     icon: BNBIconUrl,
     isErc20: true,
     isErc721: false,
-    decimals: 8
+    decimals: 18
   },
   {
     contractAddress: '4',
@@ -82,7 +82,7 @@ export const NewAssetOptions: TokenInfo[] = [
     icon: BTCIconUrl,
     isErc20: true,
     isErc721: false,
-    decimals: 8
+    decimals: 18
   },
   {
     contractAddress: '5',
@@ -91,7 +91,7 @@ export const NewAssetOptions: TokenInfo[] = [
     icon: ALGOIconUrl,
     isErc20: true,
     isErc721: false,
-    decimals: 8
+    decimals: 18
   },
   {
     contractAddress: '6',
@@ -100,7 +100,7 @@ export const NewAssetOptions: TokenInfo[] = [
     icon: ZRXIconUrl,
     isErc20: true,
     isErc721: false,
-    decimals: 8
+    decimals: 18
   }
 ]
 

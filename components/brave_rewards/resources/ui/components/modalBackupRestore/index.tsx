@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+
+import { formatMessage } from '../../../shared/lib/locale_context'
 import {
   StyledContent,
   StyledImport,
@@ -116,8 +118,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
       onCopy,
       onPrint,
       onSaveFile,
-      onVerify,
-      walletProvider
+      onVerify
     } = this.props
 
     return (
@@ -177,10 +178,17 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
           {getLocale('rewardsBackupText4')}
         </StyledContent>
         <StyledContent>
-            {getLocale('rewardsBackupText5')}
-          <StyledLink onClick={onVerify}>
-            {getLocale('rewardsBackupText6').replace('$1', walletProvider)}
-          </StyledLink>
+          {
+            formatMessage(getLocale('rewardsBackupNoticeText2'), {
+              tags: {
+                $1: (content) => (
+                  <StyledLink key='link' onClick={onVerify}>
+                    {content}
+                  </StyledLink>
+                )
+              }
+            })
+          }
         </StyledContent>
         <StyledDoneWrapper>
           <Button
@@ -197,8 +205,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
   getBackupNotice = () => {
     const {
       onClose,
-      onVerify,
-      walletProvider
+      onVerify
     } = this.props
 
     return (
@@ -207,10 +214,17 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
           {getLocale('rewardsBackupNoticeText1')}
         </StyledContent>
         <StyledContent>
-          {getLocale('rewardsBackupNoticeText2')}
-          <StyledLink onClick={onVerify} id={'backup-verify-link'}>
-            {getLocale('rewardsBackupNoticeText3').replace('$1', walletProvider)}
-          </StyledLink>
+          {
+            formatMessage(getLocale('rewardsBackupNoticeText2'), {
+              tags: {
+                $1: (content) => (
+                  <StyledLink key='link' onClick={onVerify} id={'backup-verify-link'}>
+                    {content}
+                  </StyledLink>
+                )
+              }
+            })
+          }
         </StyledContent>
         <StyledDoneWrapper>
           <Button

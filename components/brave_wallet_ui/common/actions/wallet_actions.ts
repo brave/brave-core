@@ -15,14 +15,16 @@ import {
 import {
   AppObjectType,
   WalletAccountType,
-  Network,
+  EthereumChain,
+  GetAllNetworksList,
   GetAllTokensReturnInfo,
   TokenInfo,
   GetETHBalancesPriceReturnInfo,
   GetERC20TokenBalanceAndPriceReturnInfo,
   PortfolioTokenHistoryAndInfo,
   AssetPriceTimeframe,
-  SendTransactionParam
+  SendTransactionParam,
+  TransactionInfo
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -37,8 +39,10 @@ export const updateVisibleTokens = createAction<string[]>('updateVisibleTokens')
 export const setVisibleTokens = createAction<string[]>('setVisibleTokens')
 export const setVisibleTokensInfo = createAction<TokenInfo[]>('setVisibleTokensInfo')
 export const selectAccount = createAction<WalletAccountType>('selectAccount')
-export const selectNetwork = createAction<Network>('selectNetwork')
-export const setNetwork = createAction<Network>('setNetwork')
+export const selectNetwork = createAction<EthereumChain>('selectNetwork')
+export const setNetwork = createAction<EthereumChain>('setNetwork')
+export const getAllNetworks = createAction('getAllNetworks')
+export const setAllNetworks = createAction<GetAllNetworksList>('getAllNetworks')
 export const chainChangedEvent = createAction<ChainChangedEventPayloadType>('chainChangedEvent')
 export const keyringCreated = createAction('keyringCreated')
 export const keyringRestored = createAction('keyringRestored')
@@ -56,3 +60,6 @@ export const portfolioTimelineUpdated = createAction<AssetPriceTimeframe>('portf
 export const sendTransaction = createAction<SendTransactionParam>('sendTransaction')
 export const newUnapprovedTxAdded = createAction<NewUnapprovedTxAdded>('newUnapprovedTxAdded')
 export const transactionStatusChanged = createAction<TransactionStatusChanged>('transactionStatusChanged')
+export const approveTransaction = createAction<TransactionInfo>('approveTransaction')
+export const rejectTransaction = createAction<TransactionInfo>('rejectTransaction')
+export const knownTransactionsUpdated = createAction<TransactionInfo[]>('knownTransactionsUpdated')

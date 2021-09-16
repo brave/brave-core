@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -85,7 +86,7 @@ TEST(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
-      R"(https://ads-serve.brave.software/v1/confirmation/payment/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)";
+      R"(https://ads-serve.bravesoftware.com/v1/confirmation/payment/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)";
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -120,7 +121,7 @@ TEST(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForBPill) {
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
-      R"(https://ads-serve.brave.software/v1/confirmation/payment/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)";
+      R"(https://ads-serve.bravesoftware.com/v1/confirmation/payment/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)";
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};

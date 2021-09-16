@@ -10,7 +10,9 @@
 #include <utility>
 
 #include "base/check_op.h"
+#include "base/values.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 
 namespace ads {
 namespace privacy {

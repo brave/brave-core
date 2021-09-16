@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/resources/conversions/conversion_id_pattern_info.h"
+#include "bat/ads/internal/resources/conversions/conversion_id_pattern_info_aliases.h"
 #include "bat/ads/internal/resources/resource.h"
 
 namespace ads {

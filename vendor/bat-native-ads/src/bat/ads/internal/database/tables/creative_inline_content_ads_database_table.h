@@ -10,10 +10,10 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/bundle/creative_inline_content_ad_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
-#include "bat/ads/internal/segments/segments_alias.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
@@ -27,6 +27,8 @@ using GetCreativeInlineContentAdsCallback =
     std::function<void(const bool success,
                        const SegmentList& segments,
                        const CreativeInlineContentAdList& ads)>;
+
+struct CreativeInlineContentAdInfo;
 
 namespace database {
 namespace table {
@@ -90,8 +92,8 @@ class CreativeInlineContentAds : public Table {
 
   CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecord* record) const;
 
-  void CreateTableV15(mojom::DBTransaction* transaction);
-  void MigrateToV15(mojom::DBTransaction* transaction);
+  void CreateTableV16(mojom::DBTransaction* transaction);
+  void MigrateToV16(mojom::DBTransaction* transaction);
 
   int batch_size_;
 

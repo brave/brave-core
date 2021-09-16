@@ -4,7 +4,8 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../../shared/lib/locale_context'
+import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
+import { getPublisherPlatformName } from '../../shared/lib/publisher_platform'
 import { HostContext, useHostListener } from '../lib/host_context'
 import { MonthlyTipAction } from '../lib/interfaces'
 import { ToggleButton } from './toggle_button'
@@ -22,12 +23,14 @@ export function PublisherCard () {
     React.useState(host.state.publisherInfo)
   const [publisherRefreshing, setPublisherRefreshing] =
     React.useState(host.state.publisherRefreshing)
+  const [settings, setSettings] = React.useState(host.state.settings)
 
   const [showPublisherLoading, setShowPublisherLoading] = React.useState(false)
 
   useHostListener(host, (state) => {
     setPublisherInfo(state.publisherInfo)
     setPublisherRefreshing(state.publisherRefreshing)
+    setSettings(host.state.settings)
   })
 
   if (!publisherInfo) {
@@ -54,9 +57,7 @@ export function PublisherCard () {
     )
   }
 
-  function onRefreshClick (evt: React.UIEvent) {
-    evt.preventDefault()
-
+  function onRefreshClick () {
     // Show the publisher loading state for a minimum amount of time in order
     // to indicate activity to the user.
     setShowPublisherLoading(true)
@@ -71,6 +72,21 @@ export function PublisherCard () {
     }
   }
 
+  function getPublisherName () {
+    if (!publisherInfo) {
+      return null
+    }
+
+    if (publisherInfo.platform) {
+      return formatMessage(getString('platformPublisherTitle'), [
+        publisherInfo.name,
+        getPublisherPlatformName(publisherInfo.platform)
+      ])
+    }
+
+    return publisherInfo.name
+  }
+
   return (
     <style.root>
       <style.heading>
@@ -81,37 +97,43 @@ export function PublisherCard () {
             </style.icon>
         }
         <style.name>
-          {publisherInfo.name}
+          {getPublisherName()}
           <style.status>
             {renderStatusMessage()}
             <style.refreshStatus>
               {
                 publisherRefreshing || showPublisherLoading
                   ? <LoadingIcon />
-                  : <a href='#' onClick={onRefreshClick}>
+                  : <button onClick={onRefreshClick}>
                       {getString('refreshStatus')}
-                    </a>
+                    </button>
               }
             </style.refreshStatus>
           </style.status>
         </style.name>
       </style.heading>
-      <style.attention>
-        <div>{getString('attention')}</div>
-        <div className='value'>
-          {(publisherInfo.attentionScore * 100).toFixed(0)}%
-        </div>
-      </style.attention>
+      {
+        settings.autoContributeEnabled &&
+          <style.attention data-test-id='attention-score-text'>
+            <div>{getString('attention')}</div>
+            <div className='value'>
+              {(publisherInfo.attentionScore * 100).toFixed(0)}%
+            </div>
+          </style.attention>
+      }
       <style.contribution>
-        <style.autoContribution>
-          <div>{getString('includeInAutoContribute')}</div>
-          <div>
-            <ToggleButton
-              checked={publisherInfo.autoContributeEnabled}
-              onChange={host.setIncludeInAutoContribute}
-            />
-          </div>
-        </style.autoContribution>
+        {
+          settings.autoContributeEnabled &&
+            <style.autoContribution>
+              <div>{getString('includeInAutoContribute')}</div>
+              <div>
+                <ToggleButton
+                  checked={publisherInfo.autoContributeEnabled}
+                  onChange={host.setIncludeInAutoContribute}
+                />
+              </div>
+            </style.autoContribution>
+        }
         <style.monthlyContribution>
           <div>{getString('monthlyContribution')}</div>
           <div>
@@ -124,7 +146,7 @@ export function PublisherCard () {
         </style.monthlyContribution>
       </style.contribution>
       <style.tipAction>
-        <button onClick={host.sendTip}>
+        <button data-test-id='tip-button' onClick={host.sendTip}>
           {getString('sendTip')}
         </button>
       </style.tipAction>

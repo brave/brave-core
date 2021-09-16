@@ -8,7 +8,8 @@ package org.chromium.chrome.browser.password_manager.settings;
 import static org.junit.Assert.assertEquals;
 
 import android.os.Bundle;
-import android.support.test.filters.SmallTest;
+
+import androidx.test.filters.SmallTest;
 
 import org.junit.Before;
 import org.junit.Rule;

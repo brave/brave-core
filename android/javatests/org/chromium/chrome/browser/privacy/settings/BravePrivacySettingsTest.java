@@ -9,9 +9,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
-import android.support.test.filters.SmallTest;
-
 import androidx.preference.Preference;
+import androidx.test.filters.SmallTest;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -41,10 +40,11 @@ public class BravePrivacySettingsTest {
     private static final String PREF_SYNC_AND_SERVICES_LINK = "sync_and_services_link";
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
     private static final String PREF_PRIVACY_SANDBOX = "privacy_sandbox";
+    private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
 
-    // Ignore "usage_stats_reporting" and "privacy_sandbox"
-    private static int PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 7;
     private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 20;
+
+    private int mItemsLeft;
 
     @Rule
     public ChromeTabbedActivityTestRule mActivityTestRule = new ChromeTabbedActivityTestRule();
@@ -58,28 +58,33 @@ public class BravePrivacySettingsTest {
     public void setUp() {
         mSettingsActivityTestRule.startSettingsActivity();
         mFragment = (BravePrivacySettings) mSettingsActivityTestRule.getFragment();
-    }
-
-    @Test
-    @SmallTest
-    public void testNumberOfItemsNotChanged() {
-        assertEquals(PRIVACY_SETTINGS_NUMBER_OF_ITEMS + BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS,
-                mFragment.getPreferenceScreen().getPreferenceCount());
+        mItemsLeft = mFragment.getPreferenceScreen().getPreferenceCount();
     }
 
     @Test
     @SmallTest
     public void testParentItems() {
-        assertNotEquals(null, mFragment.findPreference(PREF_CAN_MAKE_PAYMENT));
-        assertNotEquals(null, mFragment.findPreference(PREF_SECURE_DNS));
-        assertNotEquals(null, mFragment.findPreference(PREF_DO_NOT_TRACK));
-        assertNotEquals(null, mFragment.findPreference(PREF_SAFE_BROWSING));
-        assertNotEquals(null, mFragment.findPreference(PREF_CLEAR_BROWSING_DATA));
-        // These parent items should be removed
-        assertEquals(null, mFragment.findPreference(PREF_NETWORK_PREDICTIONS));
-        assertEquals(null, mFragment.findPreference(PREF_USAGE_STATS));
-        assertEquals(null, mFragment.findPreference(PREF_SYNC_AND_SERVICES_LINK));
-        assertEquals(null, mFragment.findPreference(PREF_PRIVACY_SANDBOX));
+        checkPreferenceExists(PREF_CAN_MAKE_PAYMENT);
+        checkPreferenceExists(PREF_CLEAR_BROWSING_DATA);
+        checkPreferenceExists(PREF_DO_NOT_TRACK);
+        checkPreferenceExists(PREF_HTTPS_FIRST_MODE);
+        checkPreferenceExists(PREF_SAFE_BROWSING);
+        checkPreferenceExists(PREF_SECURE_DNS);
+
+        checkPreferenceRemoved(PREF_NETWORK_PREDICTIONS);
+        checkPreferenceRemoved(PREF_SYNC_AND_SERVICES_LINK);
+
+        assertEquals(BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS, mItemsLeft);
+    }
+
+    private void checkPreferenceExists(String pref) {
+        assertNotEquals(null, mFragment.findPreference(pref));
+        mItemsLeft--;
+    }
+
+    private void checkPreferenceRemoved(String pref) {
+        assertEquals(null, mFragment.findPreference(pref));
+        mItemsLeft--;
     }
 
     @Test

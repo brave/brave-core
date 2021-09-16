@@ -8,6 +8,8 @@
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/time/time.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -146,7 +148,7 @@ size_t UnitTestBase::GetPendingTaskCount() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void UnitTestBase::Initialize() {
-  SetEnvironment(mojom::Environment::kDevelopment);
+  SetEnvironment(mojom::Environment::kStaging);
 
   SetSysInfo(mojom::SysInfo());
 

@@ -13,6 +13,8 @@
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/values.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/legacy_migration/legacy_migration_util.h"
@@ -164,7 +166,9 @@ TransactionList ConfirmationsState::get_transactions() const {
 
 void ConfirmationsState::add_transaction(const TransactionInfo& transaction) {
   DCHECK(is_initialized_);
+#if !defined(OS_IOS)
   transactions_.push_back(transaction);
+#endif
 }
 
 base::Time ConfirmationsState::get_next_token_redemption_date() const {
@@ -630,6 +634,7 @@ bool ConfirmationsState::GetTransactionsFromDictionary(
 
 bool ConfirmationsState::ParseTransactionsFromDictionary(
     base::DictionaryValue* dictionary) {
+#if !defined(OS_IOS)
   DCHECK(dictionary);
 
   base::Value* transactions_dictionary =
@@ -641,6 +646,7 @@ bool ConfirmationsState::ParseTransactionsFromDictionary(
   if (!GetTransactionsFromDictionary(transactions_dictionary, &transactions_)) {
     return false;
   }
+#endif
 
   return true;
 }

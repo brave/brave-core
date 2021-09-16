@@ -856,7 +856,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Rotate
       </message>
       <message name="IDS_SETTINGS_ADD_PEER_DIALOG_PLACEHOLDER" desc="The placholder of the dialog to add new peer on IPFS Settings page">
-        /ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2
+        /ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2
       </message>
       <message name="IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_ERROR" desc="The error message for the add peer dialog on IPFS Settings page if the peer name is not valid">
         This name is not valid
@@ -959,6 +959,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
      <message name="IDS_SETTINGS_HANGOUTS_ENABLED_DESC" desc="The description for Hangouts switch in settings">
         Uses Hangouts component to enable screen sharing and other features in the browser.
+      </message>
+     <message name="IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC" desc="The description for media router switch in settings">
+        Media router enables cast feature in the browser.
       </message>
      <message name="IDS_SETTINGS_RESTART_NOTICE" desc="Notifies the user that they need to relaunch Brave">
         Your changes will take effect the next time you relaunch Brave.
@@ -1164,6 +1167,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_CANCEL_BUTTON_LABEL" desc="The text for cancel button">
           Block
         </message>
+        <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_DONT_ASK_TEXT" desc="The text for disabling dialog checkbox">
+          Don't ask again
+        </message>
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_CONTENT_TEXT" desc="The contents for crash report ask dialog">
           Send crash reports automatically so Brave can prevent this issue from happening again?
         </message>
@@ -1351,12 +1357,61 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </if>
       <!-- Brave VPN -->
       <if expr="enable_brave_vpn">
+        <message name="IDS_SETTINGS_SHOW_VPN_BUTTON" desc="The label for showing vpn button in the toolbar">
+          Show VPN button
+        </message>
+        <message name="IDS_SETTINGS_SHOW_VPN_BUTTON_SUB_LABEL" desc="The sub label for vpn button setting">
+            Shows the VPN button in the toolbar
+        </message>
         <message name="IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT" desc="Text for vpn button in toolbar.">
           VPN
         </message>
         <message name="IDS_BRAVE_VPN_MENU" desc="The Brave VPN item (app menu)">
           Brave VPN
         </message>
+        <message name="IDS_BRAVE_VPN_ABOUT_VPN_MENU_ITEM" desc="The menu item for showing about vpn">
+          About Brave VPN
+        </message>
+        <message name="IDS_BRAVE_VPN_STATUS_LABEL_CONNECTING" desc="The text for vpn status label in connecting">
+          Connecting...
+        </message>
+        <message name="IDS_BRAVE_VPN_STATUS_LABEL_CONNECTED" desc="The text for vpn status label in connected">
+          Connected
+        </message>
+        <message name="IDS_BRAVE_VPN_STATUS_LABEL_DISCONNECTING" desc="The text for vpn status label in disconnecting">
+          Disconnecting...
+        </message>
+        <message name="IDS_BRAVE_VPN_STATUS_LABEL_DISCONNECTED" desc="The text for vpn status label in disconnected">
+          Disconnected
+        </message>
+        <if expr="use_titlecase">
+          <message name="IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM" desc="The menu item for showing vpn button in toolbar">
+            Show VPN Button in Toolbar
+          </message>
+          <message name="IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM" desc="The menu item for hiding vpn button in toolbar">
+            Hide VPN Button in Toolbar
+          </message>
+          <message name="IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM" desc="The menu item for sending feedback">
+            Send Feedback
+          </message>
+          <message name="IDS_BRAVE_VPN_MANAGE_MY_PLAN_MENU_ITEM" desc="The menu item for managing my vpn plan">
+            Manage My Plan
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+          <message name="IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM" desc="The menu item for showing vpn button in toolbar">
+            Show VPN button in toolbar
+          </message>
+          <message name="IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM" desc="The menu item for hiding vpn button in toolbar">
+            Hide VPN button in toolbar
+          </message>
+          <message name="IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM" desc="The menu item for sending feedback">
+            Send feedback
+          </message>
+          <message name="IDS_BRAVE_VPN_MANAGE_MY_PLAN_MENU_ITEM" desc="The menu item for managing my vpn plan">
+            Manage my plan
+          </message>
+        </if>
       </if>
       <message name="IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST" desc="">
         To add a bookmark, click the bookmark button next to the address bar

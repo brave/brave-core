@@ -67,7 +67,10 @@ source_set("pref_names") {
     "pref_names.h",
   ]
 
-  deps = [ "//components/gcm_driver:gcm_buildflags" ]
+  deps = [
+    "//brave/components/brave_vpn/buildflags",
+    "//components/gcm_driver:gcm_buildflags",
+  ]
 }
 
 source_set("switches") {
@@ -182,21 +185,6 @@ config("constants_configs") {
   defines = []
   if (is_mac) {
     defines += [ "BRAVE_PRODUCT_STRING=\"$chrome_product_full_name\"" ]
-  }
-}
-
-source_set("unit_tests") {
-  testonly = true
-
-  if (!is_ios) {
-    sources = [ "brave_paths_unittest.cc" ]
-
-    deps = [
-      "//base",
-      "//brave/common",
-      "//chrome/common",
-      "//testing/gtest",
-    ]
   }
 }
 

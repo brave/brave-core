@@ -27,7 +27,8 @@ import {
   OnboardingRecovery,
   OnboardingVerify,
   OnboardingCreatePassword,
-  OnboardingRestore
+  OnboardingRestore,
+  OnboardingImportMetaMaskOrLegacy
 } from './wallet-onboarding'
 
 export {
@@ -60,5 +61,6 @@ export {
   AccountSettingsModal,
   AssetWatchlistItem,
   SelectNetworkDropdown,
-  EditVisibleAssetsModal
+  EditVisibleAssetsModal,
+  OnboardingImportMetaMaskOrLegacy
 }

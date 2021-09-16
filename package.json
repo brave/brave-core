@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.31.26",
+  "version": "1.31.45",
   "description": "Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -270,7 +270,7 @@
     "@types/styled-components": "5.1.9",
     "acorn": "8.0.5",
     "babel-loader": "8.2.2",
-    "brave-ui": "github:brave/brave-ui#abf54ab62e464a03762197cb751c957dbc801427",
+    "brave-ui": "github:brave/brave-ui#86e384b96d1038fbd25d7b7390f73d4268b50d36",
     "chalk": "4.1.0",
     "commander": "2.20.3",
     "css-loader": "3.6.0",
@@ -322,7 +322,6 @@
     "core-js": "^3.9.1",
     "date-fns": "^2.15.0",
     "jszip": "^3.2.2",
-    "parse-domain": "^3.0.2",
     "prettier-bytes": "^1.0.4",
     "qr-image": "^3.2.0",
     "react-sortable-hoc": "^1.10.1",

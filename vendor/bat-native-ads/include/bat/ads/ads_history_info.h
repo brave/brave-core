@@ -19,10 +19,6 @@ struct ADS_EXPORT AdsHistoryInfo {
   AdsHistoryInfo(const AdsHistoryInfo& info);
   ~AdsHistoryInfo();
 
-  enum class FilterType { kNone = 0, kConfirmationType };
-
-  enum class SortType { kNone = 0, kAscendingOrder, kDescendingOrder };
-
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 

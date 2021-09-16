@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "bat/ads/inline_content_ad_info.h"
+#include "bat/ads/internal/ad_events/ad_event.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_event_factory.h"

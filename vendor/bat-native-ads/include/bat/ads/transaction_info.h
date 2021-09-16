@@ -8,10 +8,13 @@
 
 #include <cstdint>
 #include <string>
-#include <vector>
 
-#include "base/values.h"
 #include "bat/ads/export.h"
+
+namespace base {
+class DictionaryValue;
+class Value;
+}  // namespace base
 
 namespace ads {
 
@@ -31,8 +34,6 @@ struct ADS_EXPORT TransactionInfo {
 
   void FromDictionary(base::DictionaryValue* dictionary);
 };
-
-using TransactionList = std::vector<TransactionInfo>;
 
 }  // namespace ads
 

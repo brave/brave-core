@@ -17,6 +17,7 @@
 #include "brave/components/brave_talk/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/debounce/common/features.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -51,12 +52,12 @@
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
-using brave_shields::features::kBraveAdblockCosmeticFilteringNative;
 using brave_shields::features::kBraveAdblockCspRules;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveDarkModeBlock;
 using brave_shields::features::kBraveDomainBlock;
 using brave_shields::features::kBraveExtensionNetworkBlocking;
+using debounce::features::kBraveDebounce;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
@@ -80,11 +81,6 @@ constexpr char kBraveAdblockCosmeticFilteringName[] =
     "Enable cosmetic filtering";
 constexpr char kBraveAdblockCosmeticFilteringDescription[] =
     "Enable support for cosmetic filtering";
-
-constexpr char kBraveAdblockCosmeticFilteringNativeName[] =
-    "Use native implementation for cosmetic filtering";
-constexpr char kBraveAdblockCosmeticFilteringNativeDescription[] =
-    "Uses native implementation for cosmetic filtering instead of extension";
 
 constexpr char kBraveAdblockCspRulesName[] = "Enable support for CSP rules";
 constexpr char kBraveAdblockCspRulesDescription[] =
@@ -110,6 +106,10 @@ constexpr char kBraveDarkModeBlockDescription[] =
 constexpr char kBraveDomainBlockName[] = "Enable domain blocking";
 constexpr char kBraveDomainBlockDescription[] =
     "Enable support for blocking domains with an interstitial page";
+
+constexpr char kBraveDebounceName[] = "Enable debouncing";
+constexpr char kBraveDebounceDescription[] =
+    "Enable support for skipping top-level redirect tracking URLs";
 
 constexpr char kBraveExtensionNetworkBlockingName[] =
     "Enable extension network blocking";
@@ -323,11 +323,6 @@ constexpr char kUseDevUpdaterUrlDescription[] =
      flag_descriptions::kBraveAdblockCosmeticFilteringName,                 \
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll,  \
      FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFiltering)},                   \
-    {"brave-adblock-cosmetic-filtering-native",                             \
-     flag_descriptions::kBraveAdblockCosmeticFilteringNativeName,           \
-     flag_descriptions::kBraveAdblockCosmeticFilteringNativeDescription,    \
-     kOsMac | kOsWin | kOsLinux,                                            \
-     FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFilteringNative)},             \
     {"brave-adblock-csp-rules",                                             \
      flag_descriptions::kBraveAdblockCspRulesName,                          \
      flag_descriptions::kBraveAdblockCspRulesDescription, kOsAll,           \
@@ -344,6 +339,10 @@ constexpr char kUseDevUpdaterUrlDescription[] =
      flag_descriptions::kBraveDomainBlockName,                              \
      flag_descriptions::kBraveDomainBlockDescription, kOsAll,               \
      FEATURE_VALUE_TYPE(kBraveDomainBlock)},                                \
+    {"brave-debounce",                                                      \
+        flag_descriptions::kBraveDebounceName,                              \
+        flag_descriptions::kBraveDebounceDescription, kOsAll,               \
+        FEATURE_VALUE_TYPE(kBraveDebounce)},                                \
     {"brave-extension-network-blocking",                                    \
      flag_descriptions::kBraveExtensionNetworkBlockingName,                 \
      flag_descriptions::kBraveExtensionNetworkBlockingDescription, kOsAll,  \

@@ -84,7 +84,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                 KeyringController keyringController = getKeyringController();
                 if (keyringController != null) {
                     keyringController.restoreWallet(recoveryPhraseText.getText().toString().trim(),
-                            passwordEdittext.getText().toString().trim(), result -> {
+                            passwordEdittext.getText().toString().trim(), false, result -> {
                                 if (result) {
                                     Utils.hideKeyboard(getActivity());
                                     onNextPage.gotoNextPage(true);

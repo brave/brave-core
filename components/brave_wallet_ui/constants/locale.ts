@@ -49,7 +49,7 @@ const locale = {
   topNavAccounts: 'Accounts',
 
   // Chart Timeline Buttons
-  chartLive: 'LIVE',
+  chartLive: '1H',
   chartOneDay: '1D',
   chartOneWeek: '1W',
   chartOneMonth: '1M',
@@ -73,6 +73,7 @@ const locale = {
   buy: 'Buy',
   send: 'Send',
   swap: 'Swap',
+  bssToolTip: 'not supported',
 
   // Buttons
   buttonContinue: 'Continue',
@@ -83,7 +84,7 @@ const locale = {
   // Wallet Onboarding Welcome
   welcomeTitle: 'DeFi & Secure Crypto Storage',
   welcomeDescription: 'Hold crypto in your custody. Trade assets, and interact with web 3 apps. Track portfolio performance, invest, borrow, and lend with DeFi.',
-  welcomeButton: 'Setup Crypto',
+  welcomeButton: 'Get Started',
   welcomeRestoreButton: 'Restore',
 
   // Backup Wallet Intro
@@ -163,6 +164,7 @@ const locale = {
   importAccountFile: 'JSON File',
   importAccountUploadButton: 'Choose File',
   importAccountUploadPlaceholder: 'No file chosen',
+  importAccountError: 'Failed to import account, please try again.',
 
   // Connect Hardware Wallet
   connectHardwareTitle: 'Select your hardware wallet device',
@@ -218,7 +220,7 @@ const locale = {
   searchAsset: 'Search Coins',
 
   // Swap
-  swapFrom: 'From',
+  swapFrom: 'Amount',
   swapTo: 'To',
   swapEstimate: 'estimate',
   swapMarket: 'Market',
@@ -255,12 +257,16 @@ const locale = {
   allowAddNetworkUrl: 'Network URL',
   allowAddNetworkDetailsButton: 'View all details',
   allowAddNetworkApproveButton: 'Approve',
+  allowAddNetworkChainID: 'Chain ID',
+  allowAddNetworkCurrencySymbol: 'Currency Symbol',
+  allowAddNetworkExplorer: 'Block Explorer URL',
 
   // Confirm Transaction Panel
   confirmTransactionTotal: 'Total',
   confirmTransactionGasFee: 'Gas Fee',
   confrimTransactionBid: 'Bid',
   confirmTransactionAmountGas: 'Amount + Gas',
+  confirmTransactionNoData: 'No Data.',
 
   // Wallet Main Panel
   panelTitle: 'Crypto',
@@ -270,7 +276,25 @@ const locale = {
   // Transaction Detail Box
   transactionDetailBoxFunction: 'FUNCTION TYPE',
   transactionDetailBoxHex: 'HEX DATA',
-  transactionDetailBoxBytes: 'BYTES'
+  transactionDetailBoxBytes: 'BYTES',
+
+  // Connect With Site Panel
+  connectWithSiteTitle: 'Select accounts(s)',
+  connectWithSiteDescription1: 'View the addressess of your',
+  connectWithSiteDescription2: 'permitted accounts (required)',
+  connectWithSiteNext: 'Next',
+  connectWithSiteHeaderTitle: 'Connect With Brave Wallet',
+
+  // Import from MetaMask
+  importMetaMaskTitle: 'Import from MetaMask',
+  importMetaMaskDescription: 'Import your MetaMask HD wallet, assets, and settings, into Brave Wallet. Enjoy a faster and more secure way to manage crypto, interact with DeFi. With more assets support like Doge, Bitcoin, Solana.',
+  importMetaMaskInput: 'Enter your MetaMask password',
+
+  // Import from Legacy Wallet
+  importBraveLegacyTitle: 'Existing Crypto Wallets detected',
+  importBraveLegacyDescription: 'Enter your existing crypto wallet password to update. Enjoy a faster and more secure way to manage crypto, interact with DeFi. With more assets support like Doge, Bitcoin, Solana.',
+  importBraveLegacyInput: 'Enter your crypto wallets password',
+  importBraveLegacyAltButton: 'I’ve lost my password and recovery phrase'
 }
 
 export default locale

@@ -7,9 +7,9 @@ import {
   AssetPriceInfo,
   WalletAccountType,
   AssetPriceTimeframe,
-  Network,
   AccountAssetOptionType,
-  TokenInfo
+  TokenInfo,
+  EthereumChain
 } from '../../../../constants/types'
 import locale from '../../../../constants/locale'
 
@@ -62,8 +62,9 @@ export interface Props {
   onClickAddAccount: () => void
   onUpdateVisibleTokens: (list: string[]) => void
   fetchFullTokenList: () => void
-  onSelectNetwork: (network: Network) => void
-  selectedNetwork: Network
+  onSelectNetwork: (network: EthereumChain) => void
+  selectedNetwork: EthereumChain
+  networkList: EthereumChain[]
   userAssetList: AccountAssetOptionType[]
   accounts: WalletAccountType[]
   selectedTimeline: AssetPriceTimeframe
@@ -100,6 +101,7 @@ const Portfolio = (props: Props) => {
     selectedTimeline,
     selectedPortfolioTimeline,
     accounts,
+    networkList,
     selectedAsset,
     portfolioBalance,
     transactions,
@@ -175,7 +177,7 @@ const Portfolio = (props: Props) => {
     }
   }
 
-  const onClickSelectNetwork = (network: Network) => () => {
+  const onClickSelectNetwork = (network: EthereumChain) => () => {
     onSelectNetwork(network)
     toggleShowNetworkDropdown()
   }
@@ -203,6 +205,14 @@ const Portfolio = (props: Props) => {
     return (found) ? formatBalance(found.assetBalance, found.asset.decimals) : '0'
   }
 
+  const priceHistory = React.useMemo(() => {
+    if (parseFloat(portfolioBalance) === 0) {
+      return []
+    } else {
+      return portfolioHistory
+    }
+  }, [portfolioHistory, portfolioBalance])
+
   return (
     <StyledWrapper onClick={onHideNetworkDropdown}>
       <TopRow>
@@ -214,6 +224,7 @@ const Portfolio = (props: Props) => {
           )}
           <SelectNetworkDropdown
             onClick={toggleShowNetworkDropdown}
+            networkList={networkList}
             showNetworkDropDown={showNetworkDropdown}
             selectedNetwork={selectedNetwork}
             onSelectNetwork={onClickSelectNetwork}
@@ -249,7 +260,7 @@ const Portfolio = (props: Props) => {
       <LineChart
         isDown={selectedAsset && selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false}
         isAsset={!!selectedAsset}
-        priceData={selectedAsset ? selectedAssetPriceHistory : portfolioHistory}
+        priceData={selectedAsset ? selectedAssetPriceHistory : priceHistory}
         onUpdateBalance={onUpdateBalance}
         isLoading={selectedAsset ? isLoading : parseFloat(portfolioBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
         isDisabled={selectedAsset ? false : parseFloat(portfolioBalance) === 0}

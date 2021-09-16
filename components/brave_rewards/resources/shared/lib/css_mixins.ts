@@ -7,4 +7,6 @@ export const buttonReset = `
   padding: 0;
   background: 0;
   border: none;
+  font-size: inherit;
+  line-height: inherit;
 `

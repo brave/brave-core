@@ -9,8 +9,8 @@
 #include <functional>
 #include <string>
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/conversions/conversion_info.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/conversions/conversion_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -18,6 +18,8 @@ namespace ads {
 
 using GetConversionsCallback =
     std::function<void(const bool, const ConversionList&)>;
+
+struct ConversionInfo;
 
 namespace database {
 namespace table {

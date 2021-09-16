@@ -38,8 +38,7 @@ TEST(BatConversionsSortTest, NoSortOrder) {
   // Arrange
 
   // Act
-  const auto sort =
-      ConversionsSortFactory::Build(ConversionInfo::SortType::kNone);
+  const auto sort = ConversionsSortFactory::Build(ConversionSortType::kNone);
 
   // Assert
   EXPECT_EQ(nullptr, sort);
@@ -50,7 +49,7 @@ TEST(BatConversionsSortTest, DescendingSortOrder) {
   ConversionList list = GetUnsortedConversions();
 
   const auto sort =
-      ConversionsSortFactory::Build(ConversionInfo::SortType::kDescendingOrder);
+      ConversionsSortFactory::Build(ConversionSortType::kDescendingOrder);
 
   // Act
   list = sort->Apply(list);
@@ -77,7 +76,7 @@ TEST(BatConversionsSortTest, DescendingSortOrderForEmptyList) {
   ConversionList list = {};
 
   const auto sort =
-      ConversionsSortFactory::Build(ConversionInfo::SortType::kDescendingOrder);
+      ConversionsSortFactory::Build(ConversionSortType::kDescendingOrder);
 
   // Act
   list = sort->Apply(list);
@@ -93,7 +92,7 @@ TEST(BatConversionsSortTest, AscendingSortOrder) {
   ConversionList list = GetUnsortedConversions();
 
   const auto sort =
-      ConversionsSortFactory::Build(ConversionInfo::SortType::kAscendingOrder);
+      ConversionsSortFactory::Build(ConversionSortType::kAscendingOrder);
 
   // Act
   list = sort->Apply(list);
@@ -120,7 +119,7 @@ TEST(BatConversionsSortTest, AscendingSortOrderForEmptyList) {
   ConversionList list = {};
 
   const auto sort =
-      ConversionsSortFactory::Build(ConversionInfo::SortType::kAscendingOrder);
+      ConversionsSortFactory::Build(ConversionSortType::kAscendingOrder);
 
   // Act
   list = sort->Apply(list);

@@ -1,0 +1,14 @@
+diff --git a/ios/chrome/app/main_controller.mm b/ios/chrome/app/main_controller.mm
+index f941eb6b60c46446a255d3a621d9385f20b9db8a..74b7f566a37fe00f8085fcc073675251e42ad915 100644
+--- a/ios/chrome/app/main_controller.mm
++++ b/ios/chrome/app/main_controller.mm
+@@ -660,7 +660,9 @@ void MainControllerAuthenticationServiceDelegate::ClearBrowsingData(
+   [self.appState addAgent:[[IncognitoUsageAppStateAgent alloc] init]];
+   [self.appState addAgent:[[FirstRunAppAgent alloc] init]];
+   [self.appState addAgent:[[CertificatePolicyAppAgent alloc] init]];
++#if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
+   [self.appState addAgent:[[CredentialProviderAppAgent alloc] init]];
++#endif
+ }
+ 
+ #pragma mark - Property implementation.

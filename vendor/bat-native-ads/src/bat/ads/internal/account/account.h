@@ -10,12 +10,13 @@
 #include <memory>
 #include <string>
 
+#include "base/observer_list.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate.h"
 #include "bat/ads/internal/account/confirmations/confirmations_observer.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info_aliases.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
-#include "bat/ads/transaction_info.h"
 
 namespace ads {
 
@@ -26,7 +27,6 @@ class RedeemUnblindedPaymentTokens;
 class RefillUnblindedTokens;
 class Statement;
 class Wallet;
-struct CatalogIssuersInfo;
 struct StatementInfo;
 struct WalletInfo;
 
@@ -67,8 +67,6 @@ class Account : public AdRewardsDelegate,
  private:
   base::ObserverList<AccountObserver> observers_;
 
-  privacy::TokenGeneratorInterface* token_generator_;  // NOT_OWNED
-
   std::unique_ptr<AdRewards> ad_rewards_;
   std::unique_ptr<Confirmations> confirmations_;
   std::unique_ptr<RedeemUnblindedPaymentTokens>
@@ -86,21 +84,21 @@ class Account : public AdRewardsDelegate,
       const CatalogIssuersInfo& catalog_issuers) const;
   void NotifyStatementOfAccountsDidChange() const;
 
-  // AdRewardsDelegate implementation
+  // AdRewardsDelegate:
   void OnDidReconcileAdRewards() override;
 
-  // ConfirmationsObserver implementation
-  void OnConfirmAd(const double estimated_redemption_value,
-                   const ConfirmationInfo& confirmation) override;
-  void OnConfirmAdFailed(const ConfirmationInfo& confirmation) override;
+  // ConfirmationsObserver:
+  void OnDidConfirm(const double estimated_redemption_value,
+                    const ConfirmationInfo& confirmation) override;
+  void OnFailedToConfirm(const ConfirmationInfo& confirmation) override;
 
-  // RedeemUnblindedPaymentTokensDelegate implementation
+  // RedeemUnblindedPaymentTokensDelegate:
   void OnDidRedeemUnblindedPaymentTokens(
       const privacy::UnblindedTokenList unblinded_tokens) override;
   void OnFailedToRedeemUnblindedPaymentTokens() override;
   void OnDidRetryRedeemingUnblindedPaymentTokens() override;
 
-  // RedeemUnblindedTokensDelegate implementation
+  // RedeemUnblindedTokensDelegate:
   void OnDidRefillUnblindedTokens() override;
   void OnCaptchaRequiredToRefillUnblindedTokens(
       const std::string& captcha_id) override;

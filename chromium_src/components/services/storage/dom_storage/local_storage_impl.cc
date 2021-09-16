@@ -38,13 +38,14 @@ void LocalStorageImpl::ShutDown(base::OnceClosure callback) {
 }
 
 void LocalStorageImpl::BindStorageArea(
-    const url::Origin& origin,
+    const blink::StorageKey& storage_key,
     mojo::PendingReceiver<blink::mojom::StorageArea> receiver) {
-  if (origin.opaque()) {
-    in_memory_local_storage_->BindStorageArea(*GetNonOpaqueOrigin(origin, true),
-                                              std::move(receiver));
+  if (storage_key.origin().opaque()) {
+    in_memory_local_storage_->BindStorageArea(
+        *GetStorageKeyWithNonOpaqueOrigin(storage_key, true),
+        std::move(receiver));
   } else {
-    local_storage_->BindStorageArea(origin, std::move(receiver));
+    local_storage_->BindStorageArea(storage_key, std::move(receiver));
   }
 }
 
@@ -52,18 +53,20 @@ void LocalStorageImpl::GetUsage(GetUsageCallback callback) {
   local_storage_->GetUsage(std::move(callback));
 }
 
-void LocalStorageImpl::DeleteStorage(const url::Origin& origin,
+void LocalStorageImpl::DeleteStorage(const blink::StorageKey& storage_key,
                                      DeleteStorageCallback callback) {
-  if (origin.opaque()) {
-    if (const auto* non_opaque_origin = GetNonOpaqueOrigin(origin, false)) {
-      in_memory_local_storage_->DeleteStorage(*non_opaque_origin,
+  const url::Origin& storage_key_origin = storage_key.origin();
+  if (storage_key_origin.opaque()) {
+    if (const auto* non_opaque_origins_storage_key =
+            GetStorageKeyWithNonOpaqueOrigin(storage_key, false)) {
+      in_memory_local_storage_->DeleteStorage(*non_opaque_origins_storage_key,
                                               std::move(callback));
-      non_opaque_origins_.erase(origin);
+      storage_keys_with_non_opaque_origin_.erase(storage_key_origin);
     } else {
       std::move(callback).Run();
     }
   } else {
-    local_storage_->DeleteStorage(origin, std::move(callback));
+    local_storage_->DeleteStorage(storage_key, std::move(callback));
   }
 }
 
@@ -88,26 +91,28 @@ void LocalStorageImpl::ForceKeepSessionState() {
   local_storage_->ForceKeepSessionState();
 }
 
-const url::Origin* LocalStorageImpl::GetNonOpaqueOrigin(
-    const url::Origin& origin,
+const blink::StorageKey* LocalStorageImpl::GetStorageKeyWithNonOpaqueOrigin(
+    const blink::StorageKey& storage_key,
     bool create) {
-  DCHECK(origin.opaque());
-  auto non_opaque_origin_it = non_opaque_origins_.find(origin);
-  if (non_opaque_origin_it != non_opaque_origins_.end()) {
-    return &non_opaque_origin_it->second;
+  const url::Origin& storage_key_origin = storage_key.origin();
+  DCHECK(storage_key_origin.opaque());
+  auto storage_keys_it =
+      storage_keys_with_non_opaque_origin_.find(storage_key_origin);
+  if (storage_keys_it != storage_keys_with_non_opaque_origin_.end()) {
+    return &storage_keys_it->second;
   }
   if (!create) {
     return nullptr;
   }
 
   const auto& origin_scheme_host_port =
-      origin.GetTupleOrPrecursorTupleIfOpaque();
-  auto emplaced_pair = non_opaque_origins_.emplace(
-      origin,
-      url::Origin::CreateFromNormalizedTuple(
-          origin_scheme_host_port.scheme(),
-          base::ToLowerASCII(base::UnguessableToken::Create().ToString()),
-          origin_scheme_host_port.port()));
+      storage_key_origin.GetTupleOrPrecursorTupleIfOpaque();
+  url::Origin non_opaque_origin = url::Origin::CreateFromNormalizedTuple(
+      origin_scheme_host_port.scheme(),
+      base::ToLowerASCII(base::UnguessableToken::Create().ToString()),
+      origin_scheme_host_port.port());
+  auto emplaced_pair = storage_keys_with_non_opaque_origin_.emplace(
+      storage_key_origin, blink::StorageKey(non_opaque_origin));
   return &emplaced_pair.first->second;
 }
 

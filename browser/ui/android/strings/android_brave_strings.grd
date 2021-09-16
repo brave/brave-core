@@ -1873,9 +1873,6 @@ until they verify, or until 90 days have passed.
     <message name="IDS_LOCALHOST" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Localhost
     </message>
-    <message name="IDS_CUSTOM" desc="Brave Wallet network selection button text(network name)">
-      Custom
-    </message>
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Market Price in ETH
     </message>
@@ -1978,6 +1975,9 @@ until they verify, or until 90 days have passed.
     </message>
     <message name="IDS_SEARCH_TOKENS" desc="Brave wallet search tokens control hint">
       Search tokens
+    </message>
+    <message name="IDS_CRYPTO_WALLET_BALANCE" desc="Brave crypto wallet balance">
+      Balance:
     </message>
     </messages>
   </release>

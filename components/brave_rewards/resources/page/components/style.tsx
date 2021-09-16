@@ -7,6 +7,10 @@ export const TourPromoWrapper = styled('div')<{}>`
   margin-top: 30px;
 `
 
+export const PageWalletWrapper = styled.div`
+  width: 373px;
+`
+
 export const ArrivingSoon = styled.div`
   background: rgba(93, 181, 252, 0.2);
   border-radius: 4px;

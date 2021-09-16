@@ -2,8 +2,9 @@ import * as React from 'react'
 import {
   AccountAssetOptionType,
   BuySendSwapViewTypes,
-  Network,
-  ToOrFromType
+  EthereumChain,
+  ToOrFromType,
+  kMainnetChainId
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
@@ -18,8 +19,9 @@ import {
 
 export interface Props {
   selectedAsset: AccountAssetOptionType
-  selectedNetwork: Network
+  selectedNetwork: EthereumChain
   buyAmount: string
+  networkList: EthereumChain[]
   onSubmit: () => void
   onInputChange: (value: string, name: string) => void
   onChangeBuyView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
@@ -30,6 +32,7 @@ function Buy (props: Props) {
     selectedNetwork,
     selectedAsset,
     buyAmount,
+    networkList,
     onInputChange,
     onSubmit,
     onChangeBuyView
@@ -39,9 +42,13 @@ function Buy (props: Props) {
     onChangeBuyView('assets', 'from')
   }
 
+  const networkName = React.useMemo((): string => {
+    return networkList.find((network) => network.chainId === selectedNetwork.chainId)?.chainName ?? ''
+  }, [networkList, selectedNetwork])
+
   return (
     <StyledWrapper>
-      {selectedNetwork === Network.Mainnet ? (
+      {selectedNetwork.chainId === kMainnetChainId ? (
         <SwapInputComponent
           componentType='buyAmount'
           onInputChange={onInputChange}
@@ -53,13 +60,13 @@ function Buy (props: Props) {
       ) : (
         <FaucetWrapper>
           <FaucetTitle>{locale.buyTitle}</FaucetTitle>
-          <FaucetDescription>{locale.buyDescription} {Network[selectedNetwork]}</FaucetDescription>
+          <FaucetDescription>{locale.buyDescription} {networkName}</FaucetDescription>
         </FaucetWrapper>
       )}
       <NavButton
         disabled={false}
         buttonType='primary'
-        text={selectedNetwork === Network.Mainnet ? locale.buyWyreButton : locale.buyFaucetButton}
+        text={selectedNetwork.chainId === kMainnetChainId ? locale.buyWyreButton : locale.buyFaucetButton}
         onSubmit={onSubmit}
       />
     </StyledWrapper>

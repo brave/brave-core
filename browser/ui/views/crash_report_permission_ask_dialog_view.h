@@ -12,6 +12,10 @@
 
 class Browser;
 
+namespace views {
+class Checkbox;
+}  // namespace views
+
 class CrashReportPermissionAskDialogView : public views::DialogDelegateView {
  public:
   static void Show(Browser* browser);
@@ -34,6 +38,8 @@ class CrashReportPermissionAskDialogView : public views::DialogDelegateView {
   void OnAcceptButtonClicked();
   void OnWindowClosing();
   void CreateChildViews(views::Widget* parent);
+
+  views::Checkbox* dont_ask_again_checkbox_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_CRASH_REPORT_PERMISSION_ASK_DIALOG_VIEW_H_

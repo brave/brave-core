@@ -13,10 +13,12 @@
 #include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
+#include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/privacy_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
@@ -25,7 +27,6 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_dto_user_data_builder.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -43,9 +44,7 @@ Confirmations::Confirmations(privacy::TokenGeneratorInterface* token_generator,
   redeem_unblinded_token_->set_delegate(this);
 }
 
-Confirmations::~Confirmations() {
-  redeem_unblinded_token_->set_delegate(nullptr);
-}
+Confirmations::~Confirmations() = default;
 
 void Confirmations::AddObserver(ConfirmationsObserver* observer) {
   DCHECK(observer);
@@ -84,10 +83,10 @@ void Confirmations::SetCatalogIssuers(
   ConfirmationsState::Get()->Save();
 }
 
-void Confirmations::ConfirmAd(const std::string& creative_instance_id,
-                              const ConfirmationType& confirmation_type) {
+void Confirmations::Confirm(const std::string& creative_instance_id,
+                            const ConfirmationType& confirmation_type) {
   BLOG(1, "Confirming " << std::string(confirmation_type)
-                        << " ad for creative instance id "
+                        << " for creative instance id "
                         << creative_instance_id);
 
   dto::user_data::Build(
@@ -273,7 +272,7 @@ void Confirmations::OnDidRedeemUnblindedToken(
            << ConfirmationsState::Get()->get_unblinded_payment_tokens()->Count()
            << " unblinded payment tokens");
 
-  NotifyConfirmAd(*estimated_redemption_value, confirmation);
+  NotifyDidConfirm(*estimated_redemption_value, confirmation);
 }
 
 void Confirmations::OnFailedToRedeemUnblindedToken(
@@ -292,21 +291,21 @@ void Confirmations::OnFailedToRedeemUnblindedToken(
     }
   }
 
-  NotifyConfirmAdFailed(confirmation);
+  NotifyFailedToConfirm(confirmation);
 }
 
-void Confirmations::NotifyConfirmAd(
+void Confirmations::NotifyDidConfirm(
     const double estimated_redemption_value,
     const ConfirmationInfo& confirmation) const {
   for (ConfirmationsObserver& observer : observers_) {
-    observer.OnConfirmAd(estimated_redemption_value, confirmation);
+    observer.OnDidConfirm(estimated_redemption_value, confirmation);
   }
 }
 
-void Confirmations::NotifyConfirmAdFailed(
+void Confirmations::NotifyFailedToConfirm(
     const ConfirmationInfo& confirmation) const {
   for (ConfirmationsObserver& observer : observers_) {
-    observer.OnConfirmAdFailed(confirmation);
+    observer.OnFailedToConfirm(confirmation);
   }
 }
 

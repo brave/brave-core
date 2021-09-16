@@ -26,7 +26,6 @@ namespace brave {
 
 namespace {
 
-
 const std::string& GetQueryStringTrackers() {
   static const base::NoDestructor<std::string> trackers(base::JoinString(
       std::vector<std::string>(
@@ -52,6 +51,8 @@ const std::string& GetQueryStringTrackers() {
            "s_cid",
            // https://github.com/brave/brave-browser/issues/17507
            "ml_subscriber", "ml_subscriber_hash",
+           // https://github.com/brave/brave-browser/issues/18020
+           "twclid",
            // https://github.com/brave/brave-browser/issues/9019
            "_hsenc", "__hssc", "__hstc", "__hsfp", "hsCtaTracking"}),
       "|"));

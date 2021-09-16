@@ -5,8 +5,11 @@
 
 #include "bat/ads/internal/catalog/catalog_state.h"
 
+#include "base/check.h"
 #include "base/notreached.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "bat/ads/internal/catalog/catalog_campaign_info.h"
 #include "bat/ads/internal/catalog/catalog_version.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
@@ -102,6 +105,11 @@ bool CatalogState::FromJson(const std::string& json,
       creative_set_info.per_month = creative_set["perMonth"].GetUint();
 
       creative_set_info.total_max = creative_set["totalMax"].GetUint();
+
+      const std::string value_as_string = creative_set["value"].GetString();
+      const bool success =
+          base::StringToDouble(value_as_string, &creative_set_info.value);
+      DCHECK(success);
 
       if (creative_set.HasMember("splitTestGroup")) {
         creative_set_info.split_test_group =

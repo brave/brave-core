@@ -43,7 +43,7 @@ TEST_F(BatAdsMarkedToNoLongerReceiveFrequencyCapTest, DoNotAllowAd) {
   ad.segment = kSegment;
 
   Client::Get()->ToggleAdOptOutAction(ad.segment,
-                                      CategoryContentInfo::OptAction::kNone);
+                                      CategoryContentActionType::kNone);
 
   // Act
   MarkedToNoLongerReceiveFrequencyCap frequency_cap;

@@ -35,6 +35,10 @@
 #include "ui/base/l10n/l10n_util.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/ui/toolbar/brave_vpn_menu_model.h"
+#endif
+
 namespace {
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -234,10 +238,9 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
   const bool show_panel_item = IsCommandIdEnabled(IDC_SHOW_BRAVE_VPN_PANEL);
 
   if (show_menu_item) {
-    // Sub menu for post-purchased is not yet implemented.
-    NOTIMPLEMENTED();
-    InsertItemWithStringIdAt(GetIndexOfBraveVPNItem(), IDC_BRAVE_VPN_MENU,
-                             IDS_BRAVE_VPN_MENU);
+    sub_menus_.push_back(std::make_unique<BraveVPNMenuModel>(browser()));
+    InsertSubMenuWithStringIdAt(GetIndexOfBraveVPNItem(), IDC_BRAVE_VPN_MENU,
+                                IDS_BRAVE_VPN_MENU, sub_menus_.back().get());
   } else if (show_panel_item) {
     InsertItemWithStringIdAt(GetIndexOfBraveVPNItem(), IDC_SHOW_BRAVE_VPN_PANEL,
                              IDS_BRAVE_VPN_MENU);

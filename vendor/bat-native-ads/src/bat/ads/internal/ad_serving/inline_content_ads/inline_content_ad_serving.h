@@ -9,7 +9,8 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/ads.h"
+#include "base/observer_list.h"
+#include "bat/ads/ads_aliases.h"
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving_observer.h"
 
 namespace ads {
@@ -45,11 +46,6 @@ class AdServing {
                     GetInlineContentAdCallback callback);
 
  private:
-  ad_targeting::geographic::SubdivisionTargeting*
-      subdivision_targeting_;  // NOT OWNED
-
-  resource::AntiTargeting* anti_targeting_resource_;  // NOT OWNED
-
   std::unique_ptr<EligibleAds> eligible_ads_;
 
   base::ObserverList<InlineContentAdServingObserver> observers_;

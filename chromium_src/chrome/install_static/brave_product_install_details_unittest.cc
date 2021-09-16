@@ -199,59 +199,6 @@ TEST_P(MakeProductDetailsTest, DefaultChannel) {
   EXPECT_THAT(details->channel(), StrEq(test_data().channel));
 }
 
-// Test that the channel name is properly parsed out of additional parameters.
-TEST_P(MakeProductDetailsTest, AdditionalParametersChannels) {
-  const std::pair<const wchar_t*, const wchar_t*> kApChannels[] = {
-      // stable
-      {L"", L""},
-      {L"-full", L""},
-      {L"x64-stable", L""},
-      {L"x64-stable-full", L""},
-      {L"baz-x64-stable", L""},
-      {L"foo-1.1-beta", L""},
-      {L"2.0-beta", L""},
-      {L"bar-2.0-dev", L""},
-      {L"1.0-dev", L""},
-      {L"fuzzy", L""},
-      {L"foo", L""},
-      {L"-multi-chrome", L""},                               // Legacy.
-      {L"x64-stable-multi-chrome", L""},                     // Legacy.
-      {L"-stage:ensemble_patching-multi-chrome-full", L""},  // Legacy.
-      {L"-multi-chrome-full", L""},                          // Legacy.
-      // beta
-      {L"1.1-beta", L"beta"},
-      {L"1.1-beta-full", L"beta"},
-      {L"x64-beta", L"beta"},
-      {L"x64-beta-full", L"beta"},
-      {L"1.1-bar", L"beta"},
-      {L"1n1-foobar", L"beta"},
-      {L"x64-Beta", L"beta"},
-      {L"bar-x64-beta", L"beta"},
-      // dev
-      {L"2.0-dev", L"dev"},
-      {L"2.0-dev-full", L"dev"},
-      {L"x64-dev", L"dev"},
-      {L"x64-dev-full", L"dev"},
-      {L"2.0-DEV", L"dev"},
-      {L"2.0-dev-eloper", L"dev"},
-      {L"2.0-doom", L"dev"},
-      {L"250-doom", L"dev"},
-  };
-
-  for (const auto& ap_and_channel : kApChannels) {
-    SetAp(ap_and_channel.first);
-    std::unique_ptr<PrimaryInstallDetails> details(
-        MakeProductDetails(test_data().path));
-    if (kInstallModes[test_data().index].channel_strategy ==
-        ChannelStrategy::ADDITIONAL_PARAMETERS) {
-      EXPECT_THAT(details->channel(), StrEq(ap_and_channel.second));
-    } else {
-      // "ap" is ignored for this mode.
-      EXPECT_THAT(details->channel(), StrEq(test_data().channel));
-    }
-  }
-}
-
 // Test that the "ap" value is cached during initialization.
 TEST_P(MakeProductDetailsTest, UpdateAp) {
   // This test is only valid for brands that integrate with Google Update.

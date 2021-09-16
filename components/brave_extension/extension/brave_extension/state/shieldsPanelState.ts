@@ -60,7 +60,6 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
     braveShields: 'allow',
     ads: 'allow',
     trackers: 'allow',
-    cosmeticFiltering: 'allow',
     httpUpgradableResources: 'allow',
     javascript: 'allow',
     fingerprinting: 'allow',
@@ -114,12 +113,6 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
     tabs[tabId].fingerprintingBlocked = tabs[tabId].fingerprintingBlockedResources.length
   }
 
-  return { ...state, tabs }
-}
-
-export const saveCosmeticFilterRuleExceptions: shieldState.SaveCosmeticFilterRuleExceptions = (state, tabId, exceptions) => {
-  const tabs: shieldState.Tabs = { ...state.tabs }
-  tabs[tabId] = { ...tabs[tabId], ...{ cosmeticFilters: { ...tabs[tabId].cosmeticFilters, ruleExceptions: exceptions } } }
   return { ...state, tabs }
 }
 

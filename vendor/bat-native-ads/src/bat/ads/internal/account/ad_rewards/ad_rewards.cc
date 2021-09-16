@@ -8,7 +8,10 @@
 #include <functional>
 #include <utility>
 
-#include "base/check.h"
+#include "base/check_op.h"
+#include "base/time/time.h"
+#include "base/values.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate.h"
 #include "bat/ads/internal/account/ad_rewards/payments/payments.h"
 #include "bat/ads/internal/account/ad_rewards/payments/payments_url_request_builder.h"
@@ -52,9 +55,12 @@ AdRewards::AdRewards() : payments_(std::make_unique<Payments>()) {
       AdsClientHelper::Get()->GetDoublePref(prefs::kUnreconciledTransactions);
 }
 
-AdRewards::~AdRewards() = default;
+AdRewards::~AdRewards() {
+  delegate_ = nullptr;
+}
 
 void AdRewards::set_delegate(AdRewardsDelegate* delegate) {
+  DCHECK_EQ(delegate_, nullptr);
   delegate_ = delegate;
 }
 
@@ -231,10 +237,10 @@ void AdRewards::GetPayments() {
 
   PaymentsUrlRequestBuilder url_request_builder(wallet_);
   mojom::UrlRequestPtr url_request = url_request_builder.Build();
-  BLOG(5, UrlRequestToString(url_request));
+  BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  auto callback =
+  const auto callback =
       std::bind(&AdRewards::OnGetPayments, this, std::placeholders::_1);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }

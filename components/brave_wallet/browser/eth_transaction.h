@@ -32,7 +32,8 @@ class EthTransaction {
   bool operator==(const EthTransaction&) const;
 
   static absl::optional<EthTransaction> FromTxData(
-      const mojom::TxDataPtr& tx_data);
+      const mojom::TxDataPtr& tx_data,
+      bool strict = true);
   static absl::optional<EthTransaction> FromValue(const base::Value& value);
 
   uint8_t type() const { return type_; }

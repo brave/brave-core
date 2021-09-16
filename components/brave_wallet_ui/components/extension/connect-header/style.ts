@@ -32,11 +32,10 @@ export const PanelTitle = styled.span`
   color: ${(p) => p.theme.color.text01};
 `
 
-// This is temp, will be replaced with real FavIcon
-export const FavIcon = styled.div`
-	width: 44px;
-	height: 44px;
-	border-radius: 5px;
-	background-color: ${(p) => p.theme.palette.grey200};
-	margin-bottom: 7px;
+export const FavIcon = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 5px;
+  background-color: ${(p) => p.theme.palette.grey200};
+  margin-bottom: 7px;
 `

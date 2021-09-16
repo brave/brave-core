@@ -4,6 +4,8 @@
 
 import styled from 'styled-components'
 
+import * as mixins from '../../lib/css_mixins'
+
 export const root = styled.div`
   position: absolute;
   top: 32px;
@@ -106,11 +108,12 @@ export const links = styled.div`
 `
 
 export const link = styled.div`
-  a {
+  button {
+    ${mixins.buttonReset}
     font-size: 12px;
     line-height: 24px;
     color: var(--brave-color-brandBat);
-    text-decoration: none;
+    cursor: pointer;
 
     &:hover {
       text-decoration: underline;

@@ -9,6 +9,7 @@
 #include <list>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/callback.h"
@@ -18,7 +19,6 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller_events_observer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -32,15 +32,25 @@ class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
 
+class PrefService;
+
 namespace brave_wallet {
 
 class EthJsonRpcController : public KeyedService,
                              public mojom::EthJsonRpcController {
  public:
   EthJsonRpcController(
-      mojom::Network network,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* prefs);
   ~EthJsonRpcController() override;
+
+  struct EthereumChainRequest {
+    EthereumChainRequest() {}
+    EthereumChainRequest(const GURL& origin, mojom::EthereumChain request)
+        : origin(origin), request(std::move(request)) {}
+    GURL origin;
+    mojom::EthereumChain request;
+  };
 
   mojo::PendingRemote<mojom::EthJsonRpcController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::EthJsonRpcController> receiver);
@@ -91,29 +101,38 @@ class EthJsonRpcController : public KeyedService,
       const std::string& domain,
       UnstoppableDomainsProxyReaderGetManyCallback callback);
 
-  void GetNetwork(
-      mojom::EthJsonRpcController::GetNetworkCallback callback) override;
-  void SetNetwork(mojom::Network network) override;
+  void SetNetwork(const std::string& chain_id) override;
+  void AddEthereumChain(mojom::EthereumChainPtr chain,
+                        const GURL& origin,
+                        AddEthereumChainCallback callback) override;
+  void AddEthereumChainRequestCompleted(const std::string& chain_id,
+                                        bool approved) override;
+
   std::string GetChainId() const;
   void GetChainId(
       mojom::EthJsonRpcController::GetChainIdCallback callback) override;
   void GetBlockTrackerUrl(
       mojom::EthJsonRpcController::GetBlockTrackerUrlCallback callback)
       override;
+  void GetPendingChainRequests(
+      GetPendingChainRequestsCallback callback) override;
+  void GetAllNetworks(GetAllNetworksCallback callback) override;
   void GetNetworkUrl(
       mojom::EthJsonRpcController::GetNetworkUrlCallback callback) override;
-  void SetCustomNetwork(const GURL& provider_url) override;
+  void SetCustomNetworkForTesting(const std::string& chain_id,
+                                  const GURL& provider_url) override;
 
   void AddObserver(::mojo::PendingRemote<mojom::EthJsonRpcControllerObserver>
                        observer) override;
 
-  // Returns the chain ID for a network or an empty string if no standard
-  // chain ID is defined for the specified network.
-  static std::string GetChainIdFromNetwork(mojom::Network network);
-  static GURL GetBlockTrackerUrlFromNetwork(mojom::Network network);
+  GURL GetBlockTrackerUrlFromNetwork(std::string chain_id);
 
  private:
   void FireNetworkChanged();
+  void FirePendingRequestCompleted(const std::string& chain_id,
+                                   const std::string& error);
+  bool HasRequestFromOrigin(const GURL& origin) const;
+  void RemoveChainIdRequest(const std::string& chain_id);
   void OnGetBlockNumber(
       GetBlockNumberCallback callback,
       const int status,
@@ -165,11 +184,13 @@ class EthJsonRpcController : public KeyedService,
 
   api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;
-  mojom::Network network_;
+  std::string chain_id_;
+  // <chain_id, EthereumChainRequest>
+  base::flat_map<std::string, EthereumChainRequest> add_chain_pending_requests_;
   mojo::RemoteSet<mojom::EthJsonRpcControllerObserver> observers_;
 
   mojo::ReceiverSet<mojom::EthJsonRpcController> receivers_;
-
+  PrefService* prefs_ = nullptr;
   base::WeakPtrFactory<EthJsonRpcController> weak_ptr_factory_;
 };
 

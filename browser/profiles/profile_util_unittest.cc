@@ -7,13 +7,13 @@
 
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/search_engines_pref_names.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -43,40 +43,40 @@ class BraveProfileUtilTest : public testing::Test {
 // No entry yet. Check initialized value
 TEST_F(BraveProfileUtilTest, SetDefaultSearchVersionExistingProfileNoEntryYet) {
   const PrefService::Preference* pref =
-      GetPrefs()->FindPreference(kBraveDefaultSearchVersion);
+      GetPrefs()->FindPreference(prefs::kBraveDefaultSearchVersion);
   EXPECT_TRUE(pref->IsDefaultValue());
   brave::SetDefaultSearchVersion(GetProfile(), false);
-  ASSERT_EQ(GetPrefs()->GetInteger(kBraveDefaultSearchVersion),
+  ASSERT_EQ(GetPrefs()->GetInteger(prefs::kBraveDefaultSearchVersion),
             TemplateURLPrepopulateData::kBraveFirstTrackedDataVersion);
 }
 
 TEST_F(BraveProfileUtilTest, SetDefaultSearchVersionNewProfileNoEntryYet) {
   const PrefService::Preference* pref =
-      GetPrefs()->FindPreference(kBraveDefaultSearchVersion);
+      GetPrefs()->FindPreference(prefs::kBraveDefaultSearchVersion);
   EXPECT_TRUE(pref->IsDefaultValue());
   brave::SetDefaultSearchVersion(GetProfile(), true);
-  ASSERT_EQ(GetPrefs()->GetInteger(kBraveDefaultSearchVersion),
+  ASSERT_EQ(GetPrefs()->GetInteger(prefs::kBraveDefaultSearchVersion),
             TemplateURLPrepopulateData::kBraveCurrentDataVersion);
 }
 
 // Entry there; ensure value is kept
 TEST_F(BraveProfileUtilTest,
        SetDefaultSearchVersionExistingProfileHasEntryKeepsValue) {
-  GetPrefs()->SetInteger(kBraveDefaultSearchVersion, 1);
+  GetPrefs()->SetInteger(prefs::kBraveDefaultSearchVersion, 1);
   const PrefService::Preference* pref =
-      GetPrefs()->FindPreference(kBraveDefaultSearchVersion);
+      GetPrefs()->FindPreference(prefs::kBraveDefaultSearchVersion);
   EXPECT_FALSE(pref->IsDefaultValue());
   brave::SetDefaultSearchVersion(GetProfile(), false);
-  ASSERT_EQ(GetPrefs()->GetInteger(kBraveDefaultSearchVersion), 1);
+  ASSERT_EQ(GetPrefs()->GetInteger(prefs::kBraveDefaultSearchVersion), 1);
 }
 
 TEST_F(BraveProfileUtilTest,
        SetDefaultSearchVersionNewProfileHasEntryKeepsValue) {
   // This is an anomaly case; new profile won't ever have a hard set value
-  GetPrefs()->SetInteger(kBraveDefaultSearchVersion, 1);
+  GetPrefs()->SetInteger(prefs::kBraveDefaultSearchVersion, 1);
   const PrefService::Preference* pref =
-      GetPrefs()->FindPreference(kBraveDefaultSearchVersion);
+      GetPrefs()->FindPreference(prefs::kBraveDefaultSearchVersion);
   EXPECT_FALSE(pref->IsDefaultValue());
   brave::SetDefaultSearchVersion(GetProfile(), true);
-  ASSERT_EQ(GetPrefs()->GetInteger(kBraveDefaultSearchVersion), 1);
+  ASSERT_EQ(GetPrefs()->GetInteger(prefs::kBraveDefaultSearchVersion), 1);
 }

@@ -1,38 +1,45 @@
 import * as React from 'react'
-import { TransactionDataType } from '../../../constants/types'
+import { TransactionInfo, TransactionType } from '../../../constants/types'
 import locale from '../../../constants/locale'
-// Styled Components
 import {
-  TransactionText,
-  HexBlock,
-  DetailRow,
-  DetailText,
   CodeSnippet,
-  CodeSnippetText
+  CodeSnippetText,
+  DetailRow,
+  TransactionText,
+  DetailText
 } from './style'
 
 export interface Props {
-  transactionData: TransactionDataType
+  transactionInfo: TransactionInfo
+  hasNoData: boolean
 }
 
 const TransactionDetailBox = (props: Props) => {
-  const { transactionData } = props
+  const { transactionInfo, hasNoData } = props
+  const { txArgs, txParams, txType } = transactionInfo
   return (
     <>
-      <DetailRow>
-        <TransactionText>{locale.transactionDetailBoxFunction}:</TransactionText>
-        <DetailText>{transactionData.functionName}</DetailText>
-      </DetailRow>
-      <CodeSnippet>
-        <code>
-          <CodeSnippetText>{transactionData.parameters}</CodeSnippetText>
-        </code>
-      </CodeSnippet>
-      <DetailRow>
-        <TransactionText>{locale.transactionDetailBoxHex}:</TransactionText>
-        <DetailText>{transactionData.hexSize} {locale.transactionDetailBoxBytes}</DetailText>
-      </DetailRow>
-      <HexBlock>{transactionData.hexData}</HexBlock>
+      {hasNoData ? (
+        <CodeSnippet>
+          <code>
+            <CodeSnippetText>{locale.confirmTransactionNoData}</CodeSnippetText>
+          </code>
+        </CodeSnippet>
+      ) : (
+        <>
+          <DetailRow>
+            <TransactionText>{locale.transactionDetailBoxFunction}:</TransactionText>
+            <DetailText>{TransactionType[txType]}</DetailText>
+          </DetailRow>
+          {txParams.map((data, i) =>
+            <CodeSnippet key={i}>
+              <code>
+                <CodeSnippetText>{data}: {txArgs[i]}</CodeSnippetText>
+              </code>
+            </CodeSnippet>
+          )}
+        </>
+      )}
     </>
   )
 }

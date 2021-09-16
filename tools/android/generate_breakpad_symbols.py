@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """A tool to generate symbols for a binary suitable for breakpad.
 
@@ -10,8 +10,8 @@ import argparse
 import glob
 import multiprocessing
 import os
-import Queue
 import re
+import six.moves.queue
 import shutil
 import sys
 import subprocess
@@ -25,7 +25,7 @@ def GetDumpSymsBinary(build_dir=None):
     DUMP_SYMS = 'dump_syms'
     dump_syms_bin = os.path.join(os.path.expanduser(build_dir), DUMP_SYMS)
     if not os.access(dump_syms_bin, os.X_OK):
-        print 'Cannot find %s.' % dump_syms_bin
+        print('Cannot find %s.' % dump_syms_bin)
         return None
 
     return dump_syms_bin
@@ -77,7 +77,7 @@ def GetRequiredLibsPaths(args, extension):
             else:
                 # Something is wrong, we met the lib in aab/apk, for which we
                 # cannot find lib in the build dir
-                print 'Seeing lib don\'t know the location for: ' + lib_name
+                print('Seeing lib don\'t know the location for: ' + lib_name)
                 return []
 
         if additional_abi_dirs:
@@ -96,7 +96,7 @@ def InvokeChromiumGenerateSymbols(args, lib_paths):
     components/crash/content/tools/generate_breakpad_symbols.py for each lib
     of lib_paths."""
 
-    queue = Queue.Queue()
+    queue = six.moves.queue.Queue()
     print_lock = threading.Lock()
 
     at_least_one_failed = multiprocessing.Value('b', False)
@@ -125,11 +125,11 @@ def InvokeChromiumGenerateSymbols(args, lib_paths):
                     # Lets fail just not to ignore something important
                     at_least_one_failed.value = True
 
-            except Exception, e: # pylint: disable=broad-except
+            except  Exception as e: # pylint: disable=broad-except
                 if args.verbose:
                     with print_lock:
-                        print type(e)
-                        print e
+                        print(type(e))
+                        print(e)
             finally:
                 queue.task_done()
 
@@ -174,8 +174,8 @@ def main():
 
     _, extension = os.path.splitext(args.package_path)
 
-    if extension != '.apk' and extension != '.aab':
-        print 'Input file is not apk or aab'
+    if extension not in ('.apk', '.aab'):
+        print('Input file is not apk or aab')
         return 1
 
     libs_result = GetRequiredLibsPaths(args, extension)

@@ -10,9 +10,12 @@ static_library("common") {
   sources = [
     "features.cc",
     "features.h",
+    "value_conversion_utils.cc",
+    "value_conversion_utils.h",
   ]
   deps = [
     ":common_constants",
+    ":mojom__generator",
     "//base",
   ]
 }

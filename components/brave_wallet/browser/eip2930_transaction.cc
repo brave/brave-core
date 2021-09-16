@@ -55,7 +55,7 @@ Eip2930Transaction::Eip2930Transaction(uint256_t nonce,
       chain_id_(chain_id) {
   type_ = 1;
 }
-Eip2930Transaction::Eip2930Transaction() {
+Eip2930Transaction::Eip2930Transaction() : chain_id_(0) {
   type_ = 1;
 }
 Eip2930Transaction::~Eip2930Transaction() = default;
@@ -69,9 +69,10 @@ bool Eip2930Transaction::operator==(const Eip2930Transaction& tx) const {
 // static
 absl::optional<Eip2930Transaction> Eip2930Transaction::FromTxData(
     const mojom::TxDataPtr& tx_data,
-    uint256_t chain_id) {
+    uint256_t chain_id,
+    bool strict) {
   absl::optional<EthTransaction> legacy_tx =
-      EthTransaction::FromTxData(tx_data);
+      EthTransaction::FromTxData(tx_data, strict);
   if (!legacy_tx)
     return absl::nullopt;
   return Eip2930Transaction(legacy_tx->nonce(), legacy_tx->gas_price(),

@@ -11,7 +11,7 @@ import {
   AssetPriceInfo,
   WalletAccountType,
   AssetPriceTimeframe,
-  Network,
+  EthereumChain,
   TokenInfo,
   UpdateAccountNamePayloadType
 } from '../../../../constants/types'
@@ -39,15 +39,19 @@ export interface Props {
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onToggleAddModal: () => void
   onUpdateVisibleTokens: (list: string[]) => void
-  onSelectNetwork: (network: Network) => void
+  onSelectNetwork: (network: EthereumChain) => void
   fetchFullTokenList: () => void
   onRemoveAccount: (address: string) => void
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
+  onImportAccountFromJson: (accountName: string, password: string, json: string) => void
+  onSetImportError: (hasError: boolean) => void
+  hasImportError: boolean
   privateKey: string
   fullAssetList: TokenInfo[]
   needsBackup: boolean
   accounts: WalletAccountType[]
+  networkList: EthereumChain[]
   selectedTimeline: AssetPriceTimeframe
   selectedPortfolioTimeline: AssetPriceTimeframe
   portfolioPriceHistory: PriceDataObjectType[]
@@ -61,7 +65,7 @@ export interface Props {
   userWatchList: string[]
   isLoading: boolean
   showAddModal: boolean
-  selectedNetwork: Network
+  selectedNetwork: EthereumChain
   isFetchingPortfolioPriceHistory: boolean
 }
 
@@ -82,6 +86,9 @@ const CryptoView = (props: Props) => {
     onRemoveAccount,
     onViewPrivateKey,
     onDoneViewingPrivateKey,
+    onImportAccountFromJson,
+    onSetImportError,
+    hasImportError,
     privateKey,
     selectedNetwork,
     fullAssetList,
@@ -93,6 +100,7 @@ const CryptoView = (props: Props) => {
     selectedAssetPriceHistory,
     needsBackup,
     accounts,
+    networkList,
     selectedAsset,
     portfolioBalance,
     transactions,
@@ -189,6 +197,7 @@ const CryptoView = (props: Props) => {
         <PortfolioView
           toggleNav={toggleNav}
           accounts={accounts}
+          networkList={networkList}
           onChangeTimeline={onChangeTimeline}
           selectedAssetPriceHistory={selectedAssetPriceHistory}
           selectedTimeline={selectedTimeline}
@@ -234,6 +243,9 @@ const CryptoView = (props: Props) => {
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}
           onConnectHardwareWallet={onConnectHardwareWallet}
+          onImportAccountFromJson={onImportAccountFromJson}
+          hasImportError={hasImportError}
+          onSetImportError={onSetImportError}
         />
       }
     </StyledWrapper>

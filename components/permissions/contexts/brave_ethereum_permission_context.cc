@@ -26,7 +26,7 @@ namespace {
 bool IsAccepted(PermissionRequest* request,
                 const std::vector<std::string>& accounts) {
   for (const auto& account : accounts) {
-    if (base::EndsWith(request->GetOrigin().host_piece(), account,
+    if (base::EndsWith(request->requesting_origin().host_piece(), account,
                        base::CompareCase::INSENSITIVE_ASCII)) {
       return true;
     }
@@ -205,12 +205,12 @@ void BraveEthereumPermissionContext::GetAllowedAccounts(
     GURL sub_request_origin;
     bool success =
         brave_wallet::GetSubRequestOrigin(origin, address, &sub_request_origin);
-    DCHECK(success);
-
-    PermissionResult result = permission_manager->GetPermissionStatusForFrame(
-        ContentSettingsType::BRAVE_ETHEREUM, rfh, sub_request_origin);
-    if (result.content_setting == CONTENT_SETTING_ALLOW) {
-      allowed_accounts.push_back(address);
+    if (success) {
+      PermissionResult result = permission_manager->GetPermissionStatusForFrame(
+          ContentSettingsType::BRAVE_ETHEREUM, rfh, sub_request_origin);
+      if (result.content_setting == CONTENT_SETTING_ALLOW) {
+        allowed_accounts.push_back(address);
+      }
     }
   }
 

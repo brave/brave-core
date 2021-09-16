@@ -105,7 +105,12 @@ export function GrantCaptchaChallenge (props: Props) {
       </style.hint>
       <style.dragObject>
         <style.dragObjectCircle>
-          <img src={dragIconURL} draggable={true} onDragStart={onDragStart} />
+          <img
+            src={dragIconURL}
+            draggable={true}
+            onDragStart={onDragStart}
+            data-test-id='grant-captcha-object'
+          />
         </style.dragObjectCircle>
       </style.dragObject>
       <style.arrow>
@@ -116,6 +121,7 @@ export function GrantCaptchaChallenge (props: Props) {
           src={grantCaptchaInfo.imageURL}
           onDragOver={onDragOver}
           onDrop={onDrop}
+          data-test-id='grant-captcha-target'
         />
       </style.dragTarget>
     </style.root>

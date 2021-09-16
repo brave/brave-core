@@ -16,7 +16,8 @@ import android.content.SharedPreferences;
 import android.view.inputmethod.InputMethodManager;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.brave_wallet.mojom.Network;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
@@ -24,6 +25,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.ui.widget.Toast;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -123,9 +125,11 @@ public class Utils {
         activity.startActivity(addAccountActivityIntent);
     }
 
-    public static void openAccountDetailActivity(Activity activity) {
+    public static void openAccountDetailActivity(Activity activity, String name, String address) {
         assert activity != null;
         Intent accountDetailActivityIntent = new Intent(activity, AccountDetailActivity.class);
+        accountDetailActivityIntent.putExtra("name", name);
+        accountDetailActivityIntent.putExtra("address", address);
         activity.startActivity(accountDetailActivityIntent);
     }
 
@@ -137,33 +141,29 @@ public class Utils {
         categories.add(activity.getText(R.string.goerli).toString());
         categories.add(activity.getText(R.string.kovan).toString());
         categories.add(activity.getText(R.string.localhost).toString());
-        categories.add(activity.getText(R.string.custom).toString());
 
         return categories;
     }
 
-    public static CharSequence getNetworkText(Activity activity, int network) {
+    public static CharSequence getNetworkText(Activity activity, String chain_id) {
         CharSequence strNetwork = activity.getText(R.string.mainnet);
-        switch (network) {
-            case Network.RINKEBY:
+        switch (chain_id) {
+            case BraveWalletConstants.RINKEBY_CHAIN_ID:
                 strNetwork = activity.getText(R.string.rinkeby);
                 break;
-            case Network.ROPSTEN:
+            case BraveWalletConstants.ROPSTEN_CHAIN_ID:
                 strNetwork = activity.getText(R.string.ropsten);
                 break;
-            case Network.GOERLI:
+            case BraveWalletConstants.GOERLI_CHAIN_ID:
                 strNetwork = activity.getText(R.string.goerli);
                 break;
-            case Network.KOVAN:
+            case BraveWalletConstants.KOVAN_CHAIN_ID:
                 strNetwork = activity.getText(R.string.kovan);
                 break;
-            case Network.LOCALHOST:
+            case BraveWalletConstants.LOCALHOST_CHAIN_ID:
                 strNetwork = activity.getText(R.string.localhost);
                 break;
-            case Network.CUSTOM:
-                strNetwork = activity.getText(R.string.custom);
-                break;
-            case Network.MAINNET:
+            case BraveWalletConstants.MAINNET_CHAIN_ID:
             default:
                 strNetwork = activity.getText(R.string.mainnet);
         }
@@ -171,22 +171,64 @@ public class Utils {
         return strNetwork;
     }
 
-    public static int getNetworkId(Activity activity, String network) {
-        int networkId = Network.MAINNET;
+    public static String getNetworkConst(Activity activity, String network) {
+        String networkConst = BraveWalletConstants.MAINNET_CHAIN_ID;
         if (network.equals(activity.getText(R.string.rinkeby).toString())) {
-            networkId = Network.RINKEBY;
+            networkConst = BraveWalletConstants.RINKEBY_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.ropsten).toString())) {
-            networkId = Network.ROPSTEN;
+            networkConst = BraveWalletConstants.ROPSTEN_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.goerli).toString())) {
-            networkId = Network.GOERLI;
+            networkConst = BraveWalletConstants.GOERLI_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.kovan).toString())) {
-            networkId = Network.KOVAN;
+            networkConst = BraveWalletConstants.KOVAN_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.localhost).toString())) {
-            networkId = Network.LOCALHOST;
-        } else if (network.equals(activity.getText(R.string.custom).toString())) {
-            networkId = Network.CUSTOM;
+            networkConst = BraveWalletConstants.LOCALHOST_CHAIN_ID;
         }
 
-        return networkId;
+        return networkConst;
+    }
+
+    public static double fromHexWei(String number) {
+        if (number.equals("0x0")) {
+            return 0;
+        }
+        if (number.startsWith("0x")) {
+            number = number.substring(2);
+        }
+        BigInteger bigNumber = new BigInteger(number, 16);
+        BigInteger[] res = bigNumber.divideAndRemainder(new BigInteger("1000000000000000000"));
+        String resStr = res[0].toString() + "." + res[1].toString();
+
+        return Double.valueOf(resStr);
+    }
+
+    public static String toHexWei(String number) {
+        if (number.isEmpty()) {
+            return "0x0";
+        }
+        int dotPosition = number.indexOf(".");
+        String multiplier = "1000000000000000000";
+        if (dotPosition != -1) {
+            int zeroToRemove = number.length() - dotPosition - 1;
+            multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
+            number = number.replace(".", "");
+        }
+        BigInteger bigNumber = new BigInteger(number, 10);
+        BigInteger res = bigNumber.multiply(new BigInteger(multiplier));
+
+        return "0x" + res.toString(16);
+    }
+
+    public static TxData getTxData(
+            String nonce, String gasPrice, String gasLimit, String to, String value, byte[] data) {
+        TxData res = new TxData();
+        res.nonce = nonce;
+        res.gasPrice = gasPrice;
+        res.gasLimit = gasLimit;
+        res.to = to;
+        res.value = value;
+        res.data = data;
+
+        return res;
     }
 }

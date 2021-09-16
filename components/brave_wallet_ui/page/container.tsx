@@ -36,9 +36,9 @@ import {
   ExpirationPresetObjectType,
   ToOrFromType,
   WalletAccountType,
-  Network,
   TokenInfo,
-  UpdateAccountNamePayloadType
+  UpdateAccountNamePayloadType,
+  EthereumChain
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -74,6 +74,7 @@ function Container (props: Props) {
     isWalletBackedUp,
     hasIncorrectPassword,
     accounts,
+    networkList,
     transactions,
     selectedNetwork,
     selectedAccount,
@@ -99,12 +100,13 @@ function Container (props: Props) {
     setupStillInProgress,
     isFetchingPriceHistory,
     showIsRestoring,
-    privateKey
+    privateKey,
+    importError,
+    showAddModal
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
   const [inputValue, setInputValue] = React.useState<string>('')
-  const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
   const [exchangeRate, setExchangeRate] = React.useState('')
   const [toAddress, setToAddress] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
@@ -179,7 +181,7 @@ function Container (props: Props) {
     props.walletActions.selectAccount(account)
   }
 
-  const onSelectNetwork = (network: Network) => {
+  const onSelectNetwork = (network: EthereumChain) => {
     props.walletActions.selectNetwork(network)
   }
 
@@ -202,7 +204,7 @@ function Container (props: Props) {
 
   const restoreWallet = (mnemonic: string, password: string, isLegacy: boolean) => {
     // isLegacy prop will be passed into the restoreWallet action once the keyring is setup handle the derivation.
-    props.walletPageActions.restoreWallet({ mnemonic, password })
+    props.walletPageActions.restoreWallet({ mnemonic, password, isLegacy })
   }
 
   const passwordProvided = (password: string) => {
@@ -309,9 +311,7 @@ function Container (props: Props) {
     if (selectedAsset) {
       props.walletPageActions.selectAsset({ asset: selectedAsset, timeFrame: timeline })
     } else {
-      if (parseFloat(fullPortfolioBalance) !== 0) {
-        props.walletActions.selectPortfolioTimeline(timeline)
-      }
+      props.walletActions.selectPortfolioTimeline(timeline)
     }
   }
 
@@ -348,7 +348,7 @@ function Container (props: Props) {
   }
 
   const onToggleAddModal = () => {
-    setShowAddModal(!showAddModal)
+    props.walletPageActions.setShowAddModal(!showAddModal)
   }
 
   const onCreateAccount = (name: string) => {
@@ -359,7 +359,7 @@ function Container (props: Props) {
   }
 
   const onSubmitBuy = (asset: AccountAssetOptionType) => {
-    const url = BuyAssetUrl(selectedNetwork, asset, selectedAccount, buyAmount)
+    const url = BuyAssetUrl(selectedNetwork.chainId, asset, selectedAccount, buyAmount)
     if (url) {
       window.open(url, '_blank')
     }
@@ -372,10 +372,15 @@ function Container (props: Props) {
   }
 
   const onImportAccount = (accountName: string, privateKey: string) => {
-    const imported = props.walletPageActions.importAccount({ accountName, privateKey })
-    if (imported) {
-      onToggleAddModal()
-    }
+    props.walletPageActions.importAccount({ accountName, privateKey })
+  }
+
+  const onImportAccountFromJson = (accountName: string, password: string, json: string) => {
+    props.walletPageActions.importAccountFromJson({ accountName, password, json })
+  }
+
+  const onSetImportError = (hasError: boolean) => {
+    props.walletPageActions.setImportError(hasError)
   }
 
   const onRemoveAccount = (address: string) => {
@@ -420,6 +425,14 @@ function Container (props: Props) {
     props.walletPageActions.doneViewingPrivateKey()
   }
 
+  const onImportBraveLegacy = (password: string) => {
+    // Logic here to import a detected Brave Legacy Wallet
+  }
+
+  const onImportMetaMask = (password: string) => {
+    // Logic here to import a detected MetaMask Wallet
+  }
+
   const renderWallet = React.useMemo(() => {
     if (!hasInitialized) {
       return null
@@ -440,6 +453,13 @@ function Container (props: Props) {
           onPasswordProvided={passwordProvided}
           onSubmit={completeWalletSetup}
           onShowRestore={onToggleShowRestore}
+          // Pass a boolean if either wallet is detected
+          braveLegacyWalletDetected={false}
+          metaMaskWalletDetected={false}
+          // Pass a boolean if it failed to import
+          hasImportError={false}
+          onImportBraveLegacy={onImportBraveLegacy}
+          onImportMetaMask={onImportMetaMask}
         />
       )
     } else {
@@ -468,6 +488,7 @@ function Container (props: Props) {
                   needsBackup={!isWalletBackedUp}
                   onShowBackup={onShowBackup}
                   accounts={accounts}
+                  networkList={networkList}
                   onChangeTimeline={onChangeTimeline}
                   onSelectAsset={onSelectAsset}
                   portfolioBalance={fullPortfolioBalance}
@@ -498,6 +519,9 @@ function Container (props: Props) {
                   privateKey={privateKey ?? ''}
                   onDoneViewingPrivateKey={onDoneViewingPrivateKey}
                   onViewPrivateKey={onViewPrivateKey}
+                  onImportAccountFromJson={onImportAccountFromJson}
+                  onSetImportError={onSetImportError}
+                  hasImportError={importError}
                 />
               )}
             </>
@@ -506,6 +530,7 @@ function Container (props: Props) {
       )
     }
   }, [
+    importError,
     privateKey,
     fullTokenList,
     isWalletCreated,
@@ -543,6 +568,7 @@ function Container (props: Props) {
         <WalletWidgetStandIn>
           <BuySendSwap
             accounts={accounts}
+            networkList={networkList}
             orderType={orderType}
             swapToAsset={toAsset}
             swapFromAsset={fromAsset}

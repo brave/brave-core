@@ -10,10 +10,11 @@
 #include <functional>
 
 #include "base/check_op.h"
-#include "bat/ads/ad_content_info.h"
+#include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
-#include "bat/ads/category_content_info.h"
+#include "bat/ads/ad_type.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
@@ -103,6 +104,7 @@ void Client::Initialize(InitializeCallback callback) {
 }
 
 void Client::AppendAdHistory(const AdHistoryInfo& ad_history) {
+#if !defined(OS_IOS)
   DCHECK(is_initialized_);
 
   client_->ads_shown_history.push_front(ad_history);
@@ -120,6 +122,7 @@ void Client::AppendAdHistory(const AdHistoryInfo& ad_history) {
   client_->ads_shown_history.erase(iter, client_->ads_shown_history.end());
 
   Save();
+#endif
 }
 
 const std::deque<AdHistoryInfo>& Client::GetAdsHistory() const {
@@ -155,17 +158,17 @@ Client::GetPurchaseIntentSignalHistory() const {
   return client_->purchase_intent_signal_history;
 }
 
-AdContentInfo::LikeAction Client::ToggleAdThumbUp(
+AdContentActionType Client::ToggleAdThumbUp(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const AdContentInfo::LikeAction action) {
+    const AdContentActionType action) {
   DCHECK(is_initialized_);
 
-  AdContentInfo::LikeAction like_action;
-  if (action == AdContentInfo::LikeAction::kThumbsUp) {
-    like_action = AdContentInfo::LikeAction::kNeutral;
+  AdContentActionType like_action;
+  if (action == AdContentActionType::kThumbsUp) {
+    like_action = AdContentActionType::kNeutral;
   } else {
-    like_action = AdContentInfo::LikeAction::kThumbsUp;
+    like_action = AdContentActionType::kThumbsUp;
   }
 
   // Remove this ad from the filtered ads list
@@ -187,23 +190,23 @@ AdContentInfo::LikeAction Client::ToggleAdThumbUp(
   return like_action;
 }
 
-AdContentInfo::LikeAction Client::ToggleAdThumbDown(
+AdContentActionType Client::ToggleAdThumbDown(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const AdContentInfo::LikeAction action) {
+    const AdContentActionType action) {
   DCHECK(is_initialized_);
 
-  AdContentInfo::LikeAction like_action;
-  if (action == AdContentInfo::LikeAction::kThumbsDown) {
-    like_action = AdContentInfo::LikeAction::kNeutral;
+  AdContentActionType like_action;
+  if (action == AdContentActionType::kThumbsDown) {
+    like_action = AdContentActionType::kNeutral;
   } else {
-    like_action = AdContentInfo::LikeAction::kThumbsDown;
+    like_action = AdContentActionType::kThumbsDown;
   }
 
   // Update this ad in the filtered ads list
   auto it_ad = FindFilteredAd(creative_instance_id,
                               &client_->ad_preferences.filtered_ads);
-  if (like_action == AdContentInfo::LikeAction::kNeutral) {
+  if (like_action == AdContentActionType::kNeutral) {
     if (it_ad != client_->ad_preferences.filtered_ads.end()) {
       client_->ad_preferences.filtered_ads.erase(it_ad);
     }
@@ -228,7 +231,7 @@ AdContentInfo::LikeAction Client::ToggleAdThumbDown(
   return like_action;
 }
 
-AdContentInfo::LikeAction Client::GetLikeActionForSegment(
+AdContentActionType Client::GetLikeActionForSegment(
     const std::string& segment) {
   for (const auto& element : client_->ads_shown_history) {
     if (element.category_content.category == segment) {
@@ -236,19 +239,19 @@ AdContentInfo::LikeAction Client::GetLikeActionForSegment(
     }
   }
 
-  return AdContentInfo::LikeAction::kNeutral;
+  return AdContentActionType::kNeutral;
 }
 
-CategoryContentInfo::OptAction Client::ToggleAdOptInAction(
+CategoryContentActionType Client::ToggleAdOptInAction(
     const std::string& category,
-    const CategoryContentInfo::OptAction action) {
+    const CategoryContentActionType action) {
   DCHECK(is_initialized_);
 
-  CategoryContentInfo::OptAction opt_action;
-  if (action == CategoryContentInfo::OptAction::kOptIn) {
-    opt_action = CategoryContentInfo::OptAction::kNone;
+  CategoryContentActionType opt_action;
+  if (action == CategoryContentActionType::kOptIn) {
+    opt_action = CategoryContentActionType::kNone;
   } else {
-    opt_action = CategoryContentInfo::OptAction::kOptIn;
+    opt_action = CategoryContentActionType::kOptIn;
   }
 
   // Remove this category from the filtered categories list
@@ -270,22 +273,22 @@ CategoryContentInfo::OptAction Client::ToggleAdOptInAction(
   return opt_action;
 }
 
-CategoryContentInfo::OptAction Client::ToggleAdOptOutAction(
+CategoryContentActionType Client::ToggleAdOptOutAction(
     const std::string& category,
-    const CategoryContentInfo::OptAction action) {
+    const CategoryContentActionType action) {
   DCHECK(is_initialized_);
 
-  CategoryContentInfo::OptAction opt_action;
-  if (action == CategoryContentInfo::OptAction::kOptOut) {
-    opt_action = CategoryContentInfo::OptAction::kNone;
+  CategoryContentActionType opt_action;
+  if (action == CategoryContentActionType::kOptOut) {
+    opt_action = CategoryContentActionType::kNone;
   } else {
-    opt_action = CategoryContentInfo::OptAction::kOptOut;
+    opt_action = CategoryContentActionType::kOptOut;
   }
 
   // Update this category in the filtered categories list
   auto it = FindFilteredCategory(category,
                                  &client_->ad_preferences.filtered_categories);
-  if (opt_action == CategoryContentInfo::OptAction::kNone) {
+  if (opt_action == CategoryContentActionType::kNone) {
     if (it != client_->ad_preferences.filtered_categories.end()) {
       client_->ad_preferences.filtered_categories.erase(it);
     }
@@ -309,7 +312,7 @@ CategoryContentInfo::OptAction Client::ToggleAdOptOutAction(
   return opt_action;
 }
 
-CategoryContentInfo::OptAction Client::GetOptActionForSegment(
+CategoryContentActionType Client::GetOptActionForSegment(
     const std::string& segment) {
   for (const auto& element : client_->ads_shown_history) {
     if (element.category_content.category == segment) {
@@ -317,7 +320,7 @@ CategoryContentInfo::OptAction Client::GetOptActionForSegment(
     }
   }
 
-  return CategoryContentInfo::OptAction::kNone;
+  return CategoryContentActionType::kNone;
 }
 
 bool Client::ToggleSaveAd(const std::string& creative_instance_id,

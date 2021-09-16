@@ -7,7 +7,9 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  Network
+  EthereumChain,
+  BuySupportedChains,
+  SwapSupportedChains
 } from '../../constants/types'
 import Swap from '../../components/buy-send-swap/tabs/swap-tab'
 import Send from '../../components/buy-send-swap/tabs/send-tab'
@@ -18,10 +20,11 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
+  networkList: EthereumChain[]
   orderType: OrderTypes
   swapToAsset: AccountAssetOptionType
   swapFromAsset: AccountAssetOptionType
-  selectedNetwork: Network
+  selectedNetwork: EthereumChain
   selectedAccount: UserAccountType
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
@@ -40,7 +43,7 @@ export interface Props {
   onSubmitSend: () => void
   onSubmitSwap: () => void
   flipSwapAssets: () => void
-  onSelectNetwork: (network: Network) => void
+  onSelectNetwork: (network: EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
   onSelectAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
@@ -59,6 +62,7 @@ export interface Props {
 function BuySendSwap (props: Props) {
   const {
     accounts,
+    networkList,
     orderType,
     swapToAsset,
     swapFromAsset,
@@ -98,15 +102,39 @@ function BuySendSwap (props: Props) {
   } = props
   const [selectedTab, setSelectedTab] = React.useState<BuySendSwapTypes>('buy')
 
+  React.useMemo(() => {
+    if (selectedTab === 'buy' && !BuySupportedChains.includes(selectedNetwork.chainId)) {
+      setSelectedTab('send')
+    }
+    if (selectedTab === 'swap' && !SwapSupportedChains.includes(selectedNetwork.chainId)) {
+      setSelectedTab('send')
+    }
+  }, [selectedNetwork, selectedTab, BuySupportedChains])
+
+  const isBuyDisabled = React.useMemo(() => {
+    return !BuySupportedChains.includes(selectedNetwork.chainId)
+  }, [BuySupportedChains, selectedNetwork])
+
+  const isSwapDisabled = React.useMemo(() => {
+    return !SwapSupportedChains.includes(selectedNetwork.chainId)
+  }, [SwapSupportedChains, selectedNetwork])
+
   const changeTab = (tab: BuySendSwapTypes) => () => {
     setSelectedTab(tab)
   }
 
   return (
-    <Layout selectedTab={selectedTab} onChangeTab={changeTab}>
+    <Layout
+      selectedNetwork={selectedNetwork}
+      isBuyDisabled={isBuyDisabled}
+      isSwapDisabled={isSwapDisabled}
+      selectedTab={selectedTab}
+      onChangeTab={changeTab}
+    >
       {selectedTab === 'swap' &&
         <Swap
           accounts={accounts}
+          networkList={networkList}
           orderType={orderType}
           swapToAsset={swapToAsset}
           swapFromAsset={swapFromAsset}
@@ -137,6 +165,7 @@ function BuySendSwap (props: Props) {
       {selectedTab === 'send' &&
         <Send
           accounts={accounts}
+          networkList={networkList}
           selectedAssetAmount={sendAmount}
           selectedAssetBalance={fromAssetBalance}
           toAddress={toAddress}
@@ -157,6 +186,7 @@ function BuySendSwap (props: Props) {
       {selectedTab === 'buy' &&
         <Buy
           accounts={accounts}
+          networkList={networkList}
           buyAmount={buyAmount}
           onSelectAccount={onSelectAccount}
           onSelectNetwork={onSelectNetwork}

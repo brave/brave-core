@@ -122,7 +122,8 @@
         </settings-subpage>
       </template>
     </settings-animated-pages>
-    <settings-animated-pages id="ipfs-peers" section="ipfs">
+    <settings-animated-pages id="ipfs-peers" section="ipfs"
+        hidden="[[!isLocalNodeEnabled_]]">
       <div route-path="default">
         <cr-link-row id="peersLinkRow"
           class="hr" label="$i18n{ipfsPeersLinkTitle}"

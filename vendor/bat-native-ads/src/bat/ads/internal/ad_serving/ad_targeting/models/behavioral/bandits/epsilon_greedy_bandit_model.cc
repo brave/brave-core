@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/rand_util.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"

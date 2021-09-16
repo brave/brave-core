@@ -8,13 +8,15 @@
 #include <utility>
 
 #include "base/guid.h"
+#include "base/json/values_util.h"
 #include "base/logging.h"
-#include "base/util/values/values_util.h"
+#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
+#include "brave/components/brave_wallet/browser/eth_data_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_service.h"
@@ -36,7 +38,7 @@ EthTxStateManager::EthTxStateManager(
   rpc_controller_.set_disconnect_handler(base::BindOnce(
       &EthTxStateManager::OnConnectionError, weak_factory_.GetWeakPtr()));
   rpc_controller_->AddObserver(observer_receiver_.BindNewPipeAndPassRemote());
-  rpc_controller_->GetNetwork(base::BindOnce(&EthTxStateManager::OnGetNetwork,
+  rpc_controller_->GetChainId(base::BindOnce(&EthTxStateManager::OnGetChainId,
                                              weak_factory_.GetWeakPtr()));
 }
 EthTxStateManager::~EthTxStateManager() = default;
@@ -65,9 +67,9 @@ base::Value EthTxStateManager::TxMetaToValue(const TxMeta& meta) {
   dict.SetIntKey("status", static_cast<int>(meta.status));
   dict.SetStringKey("from", meta.from.ToHex());
   dict.SetStringKey("last_gas_price", Uint256ValueToHex(meta.last_gas_price));
-  dict.SetKey("created_time", util::TimeToValue(meta.created_time));
-  dict.SetKey("submitted_time", util::TimeToValue(meta.submitted_time));
-  dict.SetKey("confirmed_time", util::TimeToValue(meta.confirmed_time));
+  dict.SetKey("created_time", base::TimeToValue(meta.created_time));
+  dict.SetKey("submitted_time", base::TimeToValue(meta.submitted_time));
+  dict.SetKey("confirmed_time", base::TimeToValue(meta.confirmed_time));
   dict.SetKey("tx_receipt", TransactionReceiptToValue(meta.tx_receipt));
   dict.SetStringKey("tx_hash", meta.tx_hash);
   dict.SetKey("tx", meta.tx->ToValue());
@@ -85,12 +87,23 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
     auto* tx2930 = reinterpret_cast<Eip2930Transaction*>(meta.tx.get());
     chain_id = Uint256ValueToHex(tx2930->chain_id());
   } else if (meta.tx->type() == 2) {
-    // When type is 1 it's always Eip1559Transaction
+    // When type is 2 it's always Eip1559Transaction
     auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(meta.tx.get());
     chain_id = Uint256ValueToHex(tx1559->chain_id());
     max_priority_fee_per_gas =
         Uint256ValueToHex(tx1559->max_priority_fee_per_gas());
     max_fee_per_gas = Uint256ValueToHex(tx1559->max_fee_per_gas());
+  }
+
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::string data = "0x0";
+  if (meta.tx->data().size() > 0) {
+    data = "0x" + base::HexEncode(meta.tx->data());
+  }
+  if (!GetTransactionInfoFromData(data, &tx_type, &tx_params, &tx_args)) {
+    LOG(ERROR) << "Error parsing transaction data: " << data;
   }
 
   return mojom::TransactionInfo::New(
@@ -102,7 +115,7 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
               Uint256ValueToHex(meta.tx->gas_limit()), meta.tx->to().ToHex(),
               Uint256ValueToHex(meta.tx->value()), meta.tx->data()),
           chain_id, max_priority_fee_per_gas, max_fee_per_gas),
-      meta.status);
+      meta.status, tx_type, tx_params, tx_args);
 }
 
 std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
@@ -136,7 +149,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
   if (!created_time)
     return nullptr;
   absl::optional<base::Time> created_time_from_value =
-      util::ValueToTime(created_time);
+      base::ValueToTime(created_time);
   if (!created_time_from_value)
     return nullptr;
   meta->created_time = *created_time_from_value;
@@ -145,7 +158,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
   if (!submitted_time)
     return nullptr;
   absl::optional<base::Time> submitted_time_from_value =
-      util::ValueToTime(submitted_time);
+      base::ValueToTime(submitted_time);
   if (!submitted_time_from_value)
     return nullptr;
   meta->submitted_time = *submitted_time_from_value;
@@ -154,7 +167,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
   if (!confirmed_time)
     return nullptr;
   absl::optional<base::Time> confirmed_time_from_value =
-      util::ValueToTime(confirmed_time);
+      base::ValueToTime(confirmed_time);
   if (!confirmed_time_from_value)
     return nullptr;
   meta->confirmed_time = *confirmed_time_from_value;
@@ -214,10 +227,9 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
 void EthTxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
   base::DictionaryValue* dict = update.Get();
-  const std::string path = GetNetworkId() + "." + meta.id;
+  const std::string path = GetNetworkId(prefs_, chain_id_) + "." + meta.id;
   bool is_add = dict->FindPath(path) == nullptr;
   dict->SetPath(path, TxMetaToValue(meta));
-
   if (!is_add)
     return;
   // We only keep most recent 10 confirmed and rejected tx metas per network
@@ -231,7 +243,8 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::GetTx(
       prefs_->GetDictionary(kBraveWalletTransactions);
   if (!dict)
     return nullptr;
-  const base::Value* value = dict->FindPath(GetNetworkId() + "." + id);
+  const base::Value* value =
+      dict->FindPath(GetNetworkId(prefs_, chain_id_) + "." + id);
   if (!value)
     return nullptr;
 
@@ -241,7 +254,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::GetTx(
 void EthTxStateManager::DeleteTx(const std::string& id) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
   base::DictionaryValue* dict = update.Get();
-  dict->RemovePath(GetNetworkId() + "." + id);
+  dict->RemovePath(GetNetworkId(prefs_, chain_id_) + "." + id);
 }
 
 void EthTxStateManager::WipeTxs() {
@@ -255,7 +268,8 @@ EthTxStateManager::GetTransactionsByStatus(
   std::vector<std::unique_ptr<EthTxStateManager::TxMeta>> result;
   const base::DictionaryValue* dict =
       prefs_->GetDictionary(kBraveWalletTransactions);
-  const base::Value* network_dict = dict->FindKey(GetNetworkId());
+  const base::Value* network_dict =
+      dict->FindKey(GetNetworkId(prefs_, chain_id_));
   if (!network_dict)
     return result;
 
@@ -274,39 +288,13 @@ EthTxStateManager::GetTransactionsByStatus(
 }
 
 void EthTxStateManager::ChainChangedEvent(const std::string& chain_id) {
-  rpc_controller_->GetNetwork(base::BindOnce(&EthTxStateManager::OnGetNetwork,
+  rpc_controller_->GetChainId(base::BindOnce(&EthTxStateManager::OnGetChainId,
                                              weak_factory_.GetWeakPtr()));
 }
 
-std::string EthTxStateManager::GetNetworkId() const {
-  std::string id;
-
-  switch (network_) {
-    case brave_wallet::mojom::Network::Mainnet:
-      id = "mainnet";
-      break;
-    case brave_wallet::mojom::Network::Rinkeby:
-      id = "rinkeby";
-      break;
-    case brave_wallet::mojom::Network::Ropsten:
-      id = "ropsten";
-      break;
-    case brave_wallet::mojom::Network::Goerli:
-      id = "goerli";
-      break;
-    case brave_wallet::mojom::Network::Kovan:
-      id = "kovan";
-      break;
-    case brave_wallet::mojom::Network::Localhost:
-      id = network_url_;
-      break;
-    case brave_wallet::mojom::Network::Custom:
-    default:
-      NOTREACHED();
-  }
-
-  return id;
-}
+void EthTxStateManager::OnAddEthereumChainRequestCompleted(
+    const std::string& chain_id,
+    const std::string& error) {}
 
 void EthTxStateManager::RetireTxByStatus(mojom::TransactionStatus status,
                                          size_t max_num) {
@@ -342,13 +330,12 @@ void EthTxStateManager::OnGetNetworkUrl(const std::string& url) {
   network_url_ = url;
 }
 
-void EthTxStateManager::OnGetNetwork(mojom::Network network) {
-  network_ = network;
-  if (network_ == brave_wallet::mojom::Network::Localhost ||
-      network_ == brave_wallet::mojom::Network::Custom) {
-    rpc_controller_->GetNetworkUrl(base::BindOnce(
-        &EthTxStateManager::OnGetNetworkUrl, weak_factory_.GetWeakPtr()));
-  }
+void EthTxStateManager::OnGetChainId(const std::string& chain_id) {
+  chain_id_ = chain_id;
+  rpc_controller_->GetNetworkUrl(base::BindOnce(
+      &EthTxStateManager::OnGetNetworkUrl, weak_factory_.GetWeakPtr()));
+  if (chain_callback_for_testing_)
+    std::move(chain_callback_for_testing_).Run();
 }
 
 }  // namespace brave_wallet

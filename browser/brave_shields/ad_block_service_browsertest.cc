@@ -1712,22 +1712,38 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
 }
 
 // Test cosmetic filtering ignores content determined to be 1st party
-// This is disabled due to https://github.com/brave/brave-browser/issues/13882
-#define MAYBE_CosmeticFilteringProtect1p DISABLED_CosmeticFilteringProtect1p
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_CosmeticFilteringProtect1p) {
-  UpdateAdBlockInstanceWithRules("b.com##.fpsponsored\n");
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
+  UpdateAdBlockInstanceWithRules(
+      "appspot.com##.fpsponsored\n"
+      "appspot.com##.fpsponsored1\n"
+      "appspot.com##.fpsponsored2\n"
+      "appspot.com##.fpsponsored3\n"
+      "appspot.com##.fpsponsored4\n");
 
   WaitForBraveExtensionShieldsDataReady();
 
-  GURL tab_url =
-      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  // *.appspot.com is used here to check the eTLD logic.
+  // It's a private suffix from https://publicsuffix.org/list/
+  GURL tab_url = embedded_test_server()->GetURL("test.lion.appspot.com",
+                                                "/cosmetic_filtering.html");
   ui_test_utils::NavigateToURL(browser(), tab_url);
 
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents,
-                         "checkSelector('.fpsponsored', 'display', 'block')"));
+  EXPECT_EQ(true,
+            EvalJs(contents,
+                   "checkSelector('#relative-url-div', 'display', 'block')"));
+  EXPECT_EQ(true,
+            EvalJs(contents,
+                   "checkSelector('#same-origin-div', 'display', 'block')"));
+  EXPECT_EQ(
+      true,
+      EvalJs(contents, "checkSelector('#subdomain-div', 'display', 'block')"));
+  EXPECT_EQ(true, EvalJs(contents,
+                         "checkSelector('#same-etld', 'display', 'block')"));
+  EXPECT_EQ(true, EvalJs(contents,
+                         "checkSelector('#another-etld', 'display', 'none')"));
 }
 
 // Test cosmetic filtering bypasses 1st party checks when toggled

@@ -7,13 +7,13 @@
 
 #include <algorithm>
 #include <cstdint>
-#include <functional>
 #include <utility>
 
 #include "base/check_op.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/container_util.h"
@@ -114,6 +114,7 @@ void CreativeAdNotifications::GetForSegments(
       "ca.per_week, "
       "ca.per_month, "
       "ca.total_max, "
+      "ca.value, "
       "ca.split_test_group, "
       "s.segment, "
       "gt.geo_target, "
@@ -165,6 +166,7 @@ void CreativeAdNotifications::GetForSegments(
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // segment
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
@@ -203,6 +205,7 @@ void CreativeAdNotifications::GetAll(
       "ca.per_week, "
       "ca.per_month, "
       "ca.total_max, "
+      "ca.value, "
       "ca.split_test_group, "
       "s.segment, "
       "gt.geo_target, "
@@ -246,6 +249,7 @@ void CreativeAdNotifications::GetAll(
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // segment
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
@@ -281,8 +285,8 @@ void CreativeAdNotifications::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 15: {
-      MigrateToV15(transaction);
+    case 16: {
+      MigrateToV16(transaction);
       break;
     }
 
@@ -418,24 +422,25 @@ CreativeAdNotificationInfo CreativeAdNotifications::GetFromRecord(
   creative_ad_notification.per_week = ColumnInt(record, 10);
   creative_ad_notification.per_month = ColumnInt(record, 11);
   creative_ad_notification.total_max = ColumnInt(record, 12);
-  creative_ad_notification.split_test_group = ColumnString(record, 13);
-  creative_ad_notification.segment = ColumnString(record, 14);
-  creative_ad_notification.geo_targets.push_back(ColumnString(record, 15));
-  creative_ad_notification.target_url = ColumnString(record, 16);
-  creative_ad_notification.title = ColumnString(record, 17);
-  creative_ad_notification.body = ColumnString(record, 18);
-  creative_ad_notification.ptr = ColumnDouble(record, 19);
+  creative_ad_notification.value = ColumnDouble(record, 13);
+  creative_ad_notification.split_test_group = ColumnString(record, 14);
+  creative_ad_notification.segment = ColumnString(record, 15);
+  creative_ad_notification.geo_targets.push_back(ColumnString(record, 16));
+  creative_ad_notification.target_url = ColumnString(record, 17);
+  creative_ad_notification.title = ColumnString(record, 18);
+  creative_ad_notification.body = ColumnString(record, 19);
+  creative_ad_notification.ptr = ColumnDouble(record, 20);
 
   CreativeDaypartInfo daypart;
-  daypart.dow = ColumnString(record, 20);
-  daypart.start_minute = ColumnInt(record, 21);
-  daypart.end_minute = ColumnInt(record, 22);
+  daypart.dow = ColumnString(record, 21);
+  daypart.start_minute = ColumnInt(record, 22);
+  daypart.end_minute = ColumnInt(record, 23);
   creative_ad_notification.dayparts.push_back(daypart);
 
   return creative_ad_notification;
 }
 
-void CreativeAdNotifications::CreateTableV15(
+void CreativeAdNotifications::CreateTableV16(
     mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
@@ -456,12 +461,12 @@ void CreativeAdNotifications::CreateTableV15(
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeAdNotifications::MigrateToV15(mojom::DBTransaction* transaction) {
+void CreativeAdNotifications::MigrateToV16(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV15(transaction);
+  CreateTableV16(transaction);
 }
 
 }  // namespace table

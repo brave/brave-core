@@ -140,8 +140,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_ActivateSettingsModal) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
 
   rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id='settingsButton']");
+      contents(), "[data-test-id=manage-wallet-button]");
   rewards_browsertest_util::WaitForElementToAppear(
       contents(),
       "#modal");
@@ -249,21 +248,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_NotVerifiedWallet) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowMonthlyIfACOff) {
-  rewards_browsertest_util::NavigateToPublisherPage(
-      browser(),
-      https_server_.get(),
-      "3zsistemi.si");
-
-  // Open the Rewards popup
-  content::WebContents* popup_contents = context_helper_->OpenRewardsPopup();
-  ASSERT_TRUE(popup_contents);
-
-  rewards_browsertest_util::WaitForElementToAppear(
-      popup_contents,
-      "#panel-donate-monthly");
-}
-
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
@@ -283,8 +267,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
 
   const std::string score =
       rewards_browsertest_util::WaitForElementThenGetContent(
-          popup_contents,
-          "[data-test-id='attention-score']");
+          popup_contents, "[data-test-id=attention-score-text]");
   EXPECT_NE(score.find("100%"), std::string::npos);
 }
 
@@ -366,8 +349,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
 
   // Click the settings button and wait for the backup modal to appear
   rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id='settingsButton']");
+      contents(), "[data-test-id=manage-wallet-button]");
   rewards_browsertest_util::WaitForElementToAppear(
       contents(),
       "#modal");
@@ -385,17 +367,12 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNoNotice) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
 
   rewards_browsertest_util::WaitForElementToEqual(
-      contents(),
-      "[data-test-id='balance']",
-      "20.000 BAT");
+      contents(), "[data-test-id=rewards-balance-text]", "20.000 BAT");
 
   // Click the settings button and wait for the backup modal to appear
   rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id='settingsButton']");
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents(),
-      "#modal");
+      contents(), "[data-test-id=manage-wallet-button]");
+  rewards_browsertest_util::WaitForElementToAppear(contents(), "#modal");
 
   // Presence of recovery key textarea indicates notice isn't
   // displayed
@@ -408,12 +385,9 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
 
   rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id='settingsButton']");
+      contents(), "[data-test-id=manage-wallet-button]");
 
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents(),
-      "#modal");
+  rewards_browsertest_util::WaitForElementToAppear(contents(), "#modal");
 
   rewards_browsertest_util::WaitForElementThenClick(
       contents(),
@@ -432,8 +406,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_ResetRewardsWithBAT) {
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id='settingsButton']");
+      contents(), "[data-test-id=manage-wallet-button]");
 
   rewards_browsertest_util::WaitForElementToAppear(
       contents(),

@@ -11,13 +11,14 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "components/sync_preferences/pref_service_syncable.h"
 #include "crypto/random.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -26,6 +27,7 @@
  * { "default":
  *   {  "backup_complete": false,
  *      "encrypted_mnemonic": [mnemonic],
+ *      "legacy_brave_wallet": false,
  *      "account_metas": {
  *         "m/44'/60'/0'/0/0": {
  *               "account_name": "account 1",
@@ -68,6 +70,7 @@ const char kAccountName[] = "account_name";
 const char kImportedAccounts[] = "imported_accounts";
 const char kAccountAddress[] = "account_address";
 const char kEncryptedPrivateKey[] = "encrypted_private_key";
+const char kLegacyBraveWallet[] = "legacy_brave_wallet";
 
 static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
   return base::as_bytes(base::make_span(sp));
@@ -89,37 +92,6 @@ mojo::PendingRemote<mojom::KeyringController> KeyringController::MakeRemote() {
 void KeyringController::Bind(
     mojo::PendingReceiver<mojom::KeyringController> receiver) {
   receivers_.Add(this, std::move(receiver));
-}
-
-// static
-void KeyringController::RegisterProfilePrefs(
-    user_prefs::PrefRegistrySyncable* registry) {
-  // TODO(bridiver) - move to brave/browser
-  registry->RegisterIntegerPref(
-      kBraveWalletWeb3Provider,
-      static_cast<int>(brave_wallet::IsNativeWalletEnabled()
-                           ? brave_wallet::Web3ProviderTypes::BRAVE_WALLET
-                           : brave_wallet::Web3ProviderTypes::ASK));
-  // TODO(bridiver) - move to brave/browser
-  registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
-
-  // TODO(bridiver) - move to EthTxControllerFactory
-  registry->RegisterDictionaryPref(kBraveWalletTransactions);
-
-  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
-  registry->RegisterDictionaryPref(kBraveWalletKeyrings);
-}
-
-// static
-void KeyringController::RegisterProfilePrefsForMigration(
-    user_prefs::PrefRegistrySyncable* registry) {
-  // Added 08/2021
-  registry->RegisterStringPref(kBraveWalletPasswordEncryptorSalt, "");
-  registry->RegisterStringPref(kBraveWalletPasswordEncryptorNonce, "");
-  registry->RegisterStringPref(kBraveWalletEncryptedMnemonic, "");
-  registry->RegisterIntegerPref(kBraveWalletDefaultKeyringAccountNum, 0);
-  registry->RegisterBooleanPref(kBraveWalletBackupComplete, false);
-  registry->RegisterListPref(kBraveWalletAccountNames);
 }
 
 // static
@@ -297,7 +269,7 @@ KeyringController::GetImportedAccountsForKeyring(PrefService* prefs,
     const std::string* encrypted_private_key =
         imported_account.FindStringKey(kEncryptedPrivateKey);
     if (!account_name || !account_address || !encrypted_private_key) {
-      LOG(ERROR) << "Imported accounts corruppted";
+      VLOG(0) << __func__ << "Imported accounts corruppted";
       continue;
     }
     result.push_back(ImportedAccountInfo(
@@ -334,7 +306,7 @@ HDKeyring* KeyringController::CreateDefaultKeyring(
     return nullptr;
 
   const std::string mnemonic = GenerateMnemonic(16);
-  if (!CreateDefaultKeyringInternal(mnemonic)) {
+  if (!CreateDefaultKeyringInternal(mnemonic, false)) {
     return nullptr;
   }
 
@@ -352,7 +324,13 @@ HDKeyring* KeyringController::ResumeDefaultKeyring(
   }
 
   const std::string mnemonic = GetMnemonicForDefaultKeyringImpl();
-  if (mnemonic.empty() || !CreateDefaultKeyringInternal(mnemonic)) {
+  bool is_legacy_brave_wallet = false;
+  const base::Value* value =
+      GetPrefForKeyring(prefs_, kLegacyBraveWallet, kDefaultKeyringId);
+  if (value)
+    is_legacy_brave_wallet = value->GetBool();
+  if (mnemonic.empty() ||
+      !CreateDefaultKeyringInternal(mnemonic, is_legacy_brave_wallet)) {
     return nullptr;
   }
   size_t account_no = GetAccountMetasNumberForKeyring(kDefaultKeyringId);
@@ -379,7 +357,8 @@ HDKeyring* KeyringController::ResumeDefaultKeyring(
 
 HDKeyring* KeyringController::RestoreDefaultKeyring(
     const std::string& mnemonic,
-    const std::string& password) {
+    const std::string& password,
+    bool is_legacy_brave_wallet) {
   if (!IsValidMnemonic(mnemonic))
     return nullptr;
 
@@ -387,7 +366,13 @@ HDKeyring* KeyringController::RestoreDefaultKeyring(
   if (CreateEncryptorForKeyring(password, kDefaultKeyringId)) {
     const std::string current_mnemonic = GetMnemonicForDefaultKeyringImpl();
     // Restore with same mnmonic and same password, resume current keyring
-    if (!current_mnemonic.empty() && current_mnemonic == mnemonic) {
+    // Also need to make sure is_legacy_brave_wallet are the same, users might
+    // choose the option wrongly and then want to start over with same mnemonic
+    // but different is_legacy_brave_wallet value
+    const base::Value* value =
+        GetPrefForKeyring(prefs_, kLegacyBraveWallet, kDefaultKeyringId);
+    if (!current_mnemonic.empty() && current_mnemonic == mnemonic && value &&
+        value->GetBool() == is_legacy_brave_wallet) {
       return ResumeDefaultKeyring(password);
     } else {
       // We have no way to check if new mnemonic is same as current mnemonic so
@@ -400,7 +385,7 @@ HDKeyring* KeyringController::RestoreDefaultKeyring(
     return nullptr;
   }
 
-  if (!CreateDefaultKeyringInternal(mnemonic)) {
+  if (!CreateDefaultKeyringInternal(mnemonic, is_legacy_brave_wallet)) {
     return nullptr;
   }
 
@@ -445,9 +430,11 @@ void KeyringController::CreateWallet(const std::string& password,
 
 void KeyringController::RestoreWallet(const std::string& mnemonic,
                                       const std::string& password,
+                                      bool is_legacy_brave_wallet,
                                       RestoreWalletCallback callback) {
-  auto* keyring = RestoreDefaultKeyring(mnemonic, password);
-  if (keyring) {
+  auto* keyring =
+      RestoreDefaultKeyring(mnemonic, password, is_legacy_brave_wallet);
+  if (keyring && !keyring->GetAccountsNumber()) {
     AddAccountForDefaultKeyring(kFirstAccountName);
   }
   // TODO(darkdh): add account discovery mechanism
@@ -457,7 +444,7 @@ void KeyringController::RestoreWallet(const std::string& mnemonic,
 
 const std::string KeyringController::GetMnemonicForDefaultKeyringImpl() {
   if (IsLocked()) {
-    LOG(ERROR) << __func__ << ": Must Unlock controller first";
+    VLOG(1) << __func__ << ": Must Unlock controller first";
     return std::string();
   }
   DCHECK(encryptor_);
@@ -733,10 +720,9 @@ void KeyringController::IsLocked(IsLockedCallback callback) {
 
 void KeyringController::Reset() {
   encryptor_.reset();
-
   default_keyring_.reset();
 
-  prefs_->ClearPref(kBraveWalletKeyrings);
+  ClearProfilePrefs(prefs_);
 }
 
 bool KeyringController::GetPrefInBytesForKeyring(const std::string& key,
@@ -794,14 +780,24 @@ bool KeyringController::CreateEncryptorForKeyring(const std::string& password,
 }
 
 bool KeyringController::CreateDefaultKeyringInternal(
-    const std::string& mnemonic) {
+    const std::string& mnemonic,
+    bool is_legacy_brave_wallet) {
   if (!encryptor_)
     return false;
 
-  const std::unique_ptr<std::vector<uint8_t>> seed =
-      MnemonicToSeed(mnemonic, "");
+  std::unique_ptr<std::vector<uint8_t>> seed = nullptr;
+  if (is_legacy_brave_wallet)
+    seed = MnemonicToEntropy(mnemonic);
+  else
+    seed = MnemonicToSeed(mnemonic, "");
   if (!seed)
     return false;
+  if (is_legacy_brave_wallet && seed->size() != 32) {
+    VLOG(1) << __func__
+            << "mnemonic for legacy brave wallet must be 24 words which will "
+               "produce 32 bytes seed";
+    return false;
+  }
 
   std::vector<uint8_t> encrypted_mnemonic;
   if (!encryptor_->Encrypt(ToSpan(mnemonic),
@@ -812,6 +808,12 @@ bool KeyringController::CreateDefaultKeyringInternal(
 
   SetPrefInBytesForKeyring(kEncryptedMnemonic, encrypted_mnemonic,
                            kDefaultKeyringId);
+  if (is_legacy_brave_wallet)
+    SetPrefForKeyring(prefs_, kLegacyBraveWallet, base::Value(true),
+                      kDefaultKeyringId);
+  else
+    SetPrefForKeyring(prefs_, kLegacyBraveWallet, base::Value(false),
+                      kDefaultKeyringId);
 
   default_keyring_ = std::make_unique<HDKeyring>();
   default_keyring_->ConstructRootHDKey(*seed, kRootPath);

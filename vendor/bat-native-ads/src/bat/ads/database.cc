@@ -13,7 +13,6 @@
 #include "base/check.h"
 #include "base/files/file_util.h"
 #include "base/notreached.h"
-#include "base/sequence_checker.h"
 #include "bat/ads/internal/logging.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
@@ -230,8 +229,7 @@ mojom::DBCommandResponse::Status Database::Execute(mojom::DBCommand* command) {
     return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
-  const int error = db_.ExecuteAndReturnErrorCode(command->command.c_str());
-  if (error != SQLITE_OK) {
+  if (!db_.Execute(command->command.c_str())) {
     BLOG(0, "Database error: " << db_.GetErrorMessage());
     return mojom::DBCommandResponse::Status::COMMAND_ERROR;
   }

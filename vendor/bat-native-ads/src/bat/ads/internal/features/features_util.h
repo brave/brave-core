@@ -8,8 +8,10 @@
 
 #include <string>
 
-#include "base/feature_list.h"
-#include "base/time/time.h"
+namespace base {
+class TimeDelta;
+struct Feature;
+}  // namespace base
 
 namespace ads {
 

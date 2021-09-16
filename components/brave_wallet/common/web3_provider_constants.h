@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_WEB3_PROVIDER_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_WEB3_PROVIDER_CONSTANTS_H_
 
+#include <stdint.h>
+
 namespace brave_wallet {
 
 extern const char kConnectEvent[];
@@ -24,12 +26,16 @@ enum class ProviderErrors {
   kDisconnected = 4900,         // The provider is disconnected from all chains
   kChainDisconnected = 4901,    // The provider is disconnected from the
                                 // specified chain
+  kInvalidParams = -32602,      // Invalid method parameters
   kInternalError = -32603,      // Internal JSON-RPC error
 };
 
 constexpr char kEthAccounts[] = "eth_accounts";
 constexpr char kEthRequestAccounts[] = "eth_requestAccounts";
+constexpr char kEthSendTransaction[] = "eth_sendTransaction";
 constexpr char kMethod[] = "method";
+constexpr char kParams[] = "params";
+constexpr char kAddEthereumChainMethod[] = "wallet_addEthereumChain";
 
 }  // namespace brave_wallet
 

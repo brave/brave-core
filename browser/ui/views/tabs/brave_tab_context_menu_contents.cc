@@ -24,7 +24,8 @@ BraveTabContextMenuContents::BraveTabContextMenuContents(
       browser_(const_cast<Browser*>(controller->browser())),
       controller_(controller) {
   model_ = std::make_unique<BraveTabMenuModel>(
-      this, controller->model(), index);
+      this, controller->browser()->tab_menu_model_delegate(),
+      controller->model(), index);
   restore_service_ =
       TabRestoreServiceFactory::GetForProfile(browser_->profile());
   menu_runner_ = std::make_unique<views::MenuRunner>(

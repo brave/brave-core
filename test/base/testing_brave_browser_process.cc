@@ -76,6 +76,12 @@ TestingBraveBrowserProcess::greaselion_download_service() {
 }
 #endif
 
+debounce::DebounceComponentInstaller*
+TestingBraveBrowserProcess::debounce_component_installer() {
+  NOTREACHED();
+  return nullptr;
+}
+
 brave_shields::HTTPSEverywhereService*
 TestingBraveBrowserProcess::https_everywhere_service() {
   NOTREACHED();

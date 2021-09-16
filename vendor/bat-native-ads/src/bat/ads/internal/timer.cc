@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "brave_base/random.h"
 
 namespace ads {

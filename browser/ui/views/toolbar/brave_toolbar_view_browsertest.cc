@@ -3,6 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
@@ -16,14 +20,21 @@
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 #include "ui/views/view.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
+#include "brave/components/brave_vpn/features.h"
+#endif
 
 // An observer that returns back to test code after a new profile is
 // initialized.
@@ -36,7 +47,11 @@ void OnUnblockOnProfileCreation(base::RunLoop* run_loop,
 
 class BraveToolbarViewTest : public InProcessBrowserTest {
  public:
-  BraveToolbarViewTest() = default;
+  BraveToolbarViewTest() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    scoped_feature_list_.InitAndEnableFeature(brave_vpn::features::kBraveVPN);
+#endif
+  }
   ~BraveToolbarViewTest() override = default;
 
   void SetUpOnMainThread() override { Init(browser()); }
@@ -58,8 +73,34 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
 
  private:
   ToolbarButtonProvider* toolbar_button_provider_;
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  base::test::ScopedFeatureList scoped_feature_list_;
+#endif
+
   DISALLOW_COPY_AND_ASSIGN(BraveToolbarViewTest);
 };
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, VPNButtonVisibility) {
+  auto* browser_view = static_cast<BraveBrowserView*>(
+      BrowserView::GetBrowserViewForBrowser(browser()));
+  auto* toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  // Button is visible by default.
+  EXPECT_TRUE(prefs->GetBoolean(kBraveVPNShowButton));
+  EXPECT_TRUE(toolbar->brave_vpn_button()->GetVisible());
+  EXPECT_EQ(browser_view->GetAnchorViewForBraveVPNPanel(),
+            toolbar->brave_vpn_button());
+
+  // Hide button.
+  prefs->SetBoolean(kBraveVPNShowButton, false);
+  EXPECT_FALSE(toolbar->brave_vpn_button()->GetVisible());
+  EXPECT_EQ(browser_view->GetAnchorViewForBraveVPNPanel(),
+            static_cast<views::View*>(toolbar->app_menu_button()));
+}
+#endif
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        AvatarButtonNotShownSingleProfile) {

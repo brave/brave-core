@@ -7,9 +7,9 @@
 
 #include "base/files/file_path.h"
 #include "base/json/json_value_converter.h"
+#include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/strings/string_piece.h"
-#include "base/util/values/values_util.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -22,7 +22,7 @@ bool SkipGURLField(base::StringPiece value, GURL* field) {
 }
 
 bool ParseTimeValue(const base::Value* value, base::Time* field) {
-  auto time = util::ValueToTime(value);
+  auto time = base::ValueToTime(value);
   if (!time) {
     return false;
   }

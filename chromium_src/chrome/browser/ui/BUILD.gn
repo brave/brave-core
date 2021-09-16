@@ -7,7 +7,10 @@ import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 
 group("ui") {
-  deps = [ "//brave/components/sidebar/buildflags" ]
+  deps = [
+    "//brave/components/brave_vpn/buildflags",
+    "//brave/components/sidebar/buildflags",
+  ]
 
   if (enable_sidebar) {
     deps += [ "//brave/components/sidebar" ]

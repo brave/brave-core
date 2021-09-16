@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad.h"
 
 #include "base/check.h"
+#include "bat/ads/internal/ad_events/ad_event.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_factory.h"

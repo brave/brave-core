@@ -132,7 +132,7 @@ bool PublisherSettingsState::FromDict(
       continue;
     }
 
-    for (const auto& item : monthly_balance_value.DictItems()) {
+    for (const auto item : monthly_balance_value.DictItems()) {
       const auto& key = item.first;
       const auto& value = item.second;
 

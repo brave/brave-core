@@ -204,26 +204,15 @@ absl::optional<base::Value> AdBlockService::HiddenClassIdSelectors(
     custom_selectors = std::move(subscription_selectors);
   }
 
-#if !defined(OS_ANDROID) && !defined(CHROME_OS)
-  if (!base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveAdblockCosmeticFilteringNative)) {
-    auto result_list = std::make_unique<base::ListValue>();
-    if (hide_selectors && hide_selectors->is_list()) {
-      result_list->Append(std::move(*hide_selectors));
-    }
-    if (custom_selectors && custom_selectors->is_list()) {
-      result_list->Append(std::move(*custom_selectors));
-    }
-
-    return std::move(*result_list);
-  }
-#endif
-
   if (!hide_selectors || !hide_selectors->is_list())
     hide_selectors = base::ListValue();
 
-  if (custom_selectors && custom_selectors->is_list())
-    hide_selectors->Append(std::move(*custom_selectors));
+  if (custom_selectors && custom_selectors->is_list()) {
+    for (auto i = custom_selectors->GetList().begin();
+         i < custom_selectors->GetList().end(); i++) {
+      hide_selectors->Append(std::move(*i));
+    }
+  }
 
   return hide_selectors;
 }

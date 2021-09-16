@@ -9,8 +9,12 @@
 #include <memory>
 
 #include "base/callback_forward.h"
-#include "base/time/time.h"
-#include "base/timer/timer.h"
+
+namespace base {
+class OneShotTimer;
+class Time;
+class TimeDelta;
+}  // namespace base
 
 namespace ads {
 

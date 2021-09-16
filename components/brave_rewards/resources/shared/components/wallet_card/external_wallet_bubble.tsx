@@ -27,10 +27,7 @@ export function ExternalWalletBubble (props: Props) {
   const providerName = getExternalWalletProviderName(externalWallet.provider)
 
   function actionHandler (action: ExternalWalletAction) {
-    return (evt: React.UIEvent) => {
-      evt.preventDefault()
-      props.onExternalWalletAction(action)
-    }
+    return () => { props.onExternalWalletAction(action) }
   }
 
   function ProviderIcon () {
@@ -53,29 +50,29 @@ export function ExternalWalletBubble (props: Props) {
     switch (externalWallet.status) {
       case 'pending':
         return (
-          <a href='#' onClick={actionHandler('complete-verification')}>
+          <button onClick={actionHandler('complete-verification')}>
             {
               formatMessage(getString('walletCompleteVerificationLink'), [
                 providerName
               ])
             }
-          </a>
+          </button>
         )
       case 'disconnected':
         return (
-          <a href='#' onClick={actionHandler('reconnect')}>
+          <button onClick={actionHandler('reconnect')}>
             {
               formatMessage(getString('walletLogIntoYourAccount'), [
                 providerName
               ])
             }
-          </a>
+          </button>
         )
       case 'verified':
         return (
-          <a href='#' onClick={actionHandler('view-account')}>
+          <button onClick={actionHandler('view-account')}>
             {formatMessage(getString('walletAccountLink'), [providerName])}
-          </a>
+          </button>
         )
     }
   }
@@ -109,9 +106,9 @@ export function ExternalWalletBubble (props: Props) {
           </style.link>
           <style.link>
             <style.linkMarker />
-            <a href='#' onClick={actionHandler('disconnect')}>
+            <button onClick={actionHandler('disconnect')}>
               {getString('walletDisconnectLink')}
-            </a>
+            </button>
           </style.link>
         </style.links>
       </style.content>

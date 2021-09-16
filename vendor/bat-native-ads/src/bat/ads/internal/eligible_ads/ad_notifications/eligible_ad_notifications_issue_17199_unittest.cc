@@ -31,18 +31,11 @@ class BatAdsEligibleAdNotificationsIssue17199Test : public UnitTestBase {
 
     UnitTestBase::SetUpForTesting(/* integration_test */ false);
   }
-
-  void RecordUserActivityEvents() {
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
-  }
 };
 
 TEST_F(BatAdsEligibleAdNotificationsIssue17199Test, GetEligibleAds) {
   // Arrange
   AdvanceClock(TimeFromDateString("4 July 2021"));
-
-  RecordUserActivityEvents();
 
   // Act
   ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;

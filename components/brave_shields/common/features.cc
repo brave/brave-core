@@ -28,8 +28,6 @@ const base::Feature kBraveAdblockCollapseBlockedElements{
 const base::Feature kBraveAdblockCosmeticFiltering{
     "BraveAdblockCosmeticFiltering",
     base::FEATURE_ENABLED_BY_DEFAULT};
-const base::Feature kBraveAdblockCosmeticFilteringNative{
-    "BraveAdblockCosmeticFilteringNative", base::FEATURE_DISABLED_BY_DEFAULT};
 const base::Feature kBraveAdblockCspRules{
     "BraveAdblockCspRules", base::FEATURE_ENABLED_BY_DEFAULT};
 // When enabled, Brave will block domains listed in the user's selected adblock

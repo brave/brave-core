@@ -170,7 +170,6 @@ describe('shieldsPanelState test', () => {
       expect(shieldsPanelState.updateTabShieldsData(state, this.tabId, {
         ads: 'allow',
         trackers: 'allow',
-        cosmeticFiltering: 'allow',
         httpUpgradableResources: 'allow',
         javascript: 'allow',
         fingerprinting: 'allow',
@@ -183,7 +182,6 @@ describe('shieldsPanelState test', () => {
             ...state.tabs[this.tabId],
             ads: 'allow',
             trackers: 'allow',
-            cosmeticFiltering: 'allow',
             httpUpgradableResources: 'allow',
             javascript: 'allow',
             fingerprinting: 'allow',

@@ -10,11 +10,15 @@
 #include <string>
 
 #include "base/time/time.h"
-#include "base/values.h"
-#include "bat/ads/ads.h"
-#include "bat/ads/internal/account/confirmations/confirmation_info.h"
+#include "bat/ads/ads_aliases.h"
+#include "bat/ads/internal/account/confirmations/confirmation_info_aliases.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
-#include "bat/ads/transaction_info.h"
+#include "bat/ads/transaction_info_aliases.h"
+
+namespace base {
+class DictionaryValue;
+class Value;
+}  // namespace base
 
 namespace ads {
 

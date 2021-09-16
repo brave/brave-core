@@ -28,7 +28,7 @@ std::unique_ptr<permissions::PermissionPrompt> CreatePermissionPrompt(
   }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID) && !defined(OS_IOS)
-  if (delegate->Requests()[0]->GetRequestType() ==
+  if (delegate->Requests()[0]->request_type() ==
       permissions::RequestType::kBraveEthereum) {
     return std::make_unique<EthereumPermissionPromptImpl>(browser, web_contents,
                                                           delegate);

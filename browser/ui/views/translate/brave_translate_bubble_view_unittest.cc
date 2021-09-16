@@ -31,7 +31,7 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
         translation_declined_(false),
         original_language_index_on_translation_(-1),
         target_language_index_on_translation_(-1),
-        can_blocklist_site_(true) {}
+        can_add_site_to_never_prompt_list_(true) {}
 
   TranslateBubbleModel::ViewState GetViewState() const override {
     return view_state_transition_.view_state();
@@ -126,11 +126,15 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
            target_language_index_on_translation_ == target_language_index_;
   }
 
-  bool CanBlocklistSite() override { return can_blocklist_site_; }
+  bool CanAddSiteToNeverPromptList() override {
+    return can_add_site_to_never_prompt_list_;
+  }
 
   void ReportUIInteraction(translate::UIInteraction ui_interaction) override {}
 
-  void SetCanBlocklistSite(bool value) { can_blocklist_site_ = value; }
+  void SetCanAddSiteToNeverPromptList(bool value) {
+    can_add_site_to_never_prompt_list_ = value;
+  }
 
   TranslateBubbleViewStateTransition view_state_transition_;
   translate::TranslateErrors::Type error_type_;
@@ -146,7 +150,7 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
   bool translation_declined_;
   int original_language_index_on_translation_;
   int target_language_index_on_translation_;
-  bool can_blocklist_site_;
+  bool can_add_site_to_never_prompt_list_;
 };
 
 class MockBraveTranslateBubbleView : public BraveTranslateBubbleView {

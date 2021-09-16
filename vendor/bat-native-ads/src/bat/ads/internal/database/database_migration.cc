@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_util.h"
 #include "bat/ads/internal/database/database_version.h"

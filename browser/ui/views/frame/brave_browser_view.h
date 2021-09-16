@@ -52,6 +52,7 @@ class BraveBrowserView : public BrowserView {
       speedreader::SpeedreaderTabHelper* tab_helper,
       bool is_enabled) override;
   void CreateWalletBubble();
+  void CreateApproveWalletBubble();
   void CloseWalletBubble();
   WalletButton* GetWalletButton();
   views::View* GetWalletButtonAnchorView();

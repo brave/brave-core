@@ -106,8 +106,7 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     // Claim promotion via settings page or panel, as instructed
     if (use_panel) {
       rewards_browsertest_util::WaitForElementThenClick(
-          contents,
-          "#panel-notifications");
+          contents, "[data-test-id=notification-action-button");
     } else {
       rewards_browsertest_util::WaitForElementThenClick(
           contents,
@@ -116,13 +115,11 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
 
     // Wait for CAPTCHA
     rewards_browsertest_util::WaitForElementToAppear(
-        contents,
-        "[data-test-id='captcha']");
+        contents, "[data-test-id=grant-captcha-object]");
 
     rewards_browsertest_util::DragAndDrop(
-        contents,
-        "[data-test-id=\"captcha-triangle\"]",
-        "[data-test-id=\"captcha-drop\"]");
+        contents, "[data-test-id=grant-captcha-object]",
+        "[data-test-id=grant-captcha-target]");
 
     if (!should_finish) {
       promotion_->WaitForPromotionFinished(false);

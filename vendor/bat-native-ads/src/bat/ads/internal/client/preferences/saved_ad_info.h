@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_PREFERENCES_SAVED_AD_INFO_H_
 
 #include <string>
-#include <vector>
 
 namespace ads {
 
@@ -22,8 +21,6 @@ struct SavedAdInfo {
   std::string creative_instance_id;
   std::string creative_set_id;
 };
-
-using SavedAdList = std::vector<SavedAdInfo>;
 
 }  // namespace ads
 

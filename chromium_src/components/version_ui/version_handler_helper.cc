@@ -10,7 +10,7 @@
 namespace version_ui {
 
 // Brave always shows full variations names instead of hashes.
-std::unique_ptr<base::Value> GetVariationsList() {
+base::Value GetVariationsList() {
   std::vector<std::string> variations;
   base::FieldTrial::ActiveGroups active_groups;
   base::FieldTrialList::GetActiveFieldTrialGroups(&active_groups);
@@ -24,13 +24,11 @@ std::unique_ptr<base::Value> GetVariationsList() {
     variations.push_back(line);
   }
 
-  std::unique_ptr<base::ListValue> variations_list(new base::ListValue);
-  for (std::vector<std::string>::const_iterator it = variations.begin();
-       it != variations.end(); ++it) {
-    variations_list->AppendString(*it);
-  }
+  base::Value variations_list(base::Value::Type::LIST);
+  for (std::string& variation : variations)
+    variations_list.Append(std::move(variation));
 
-  return std::move(variations_list);
+  return variations_list;
 }
 
 }  // namespace version_ui

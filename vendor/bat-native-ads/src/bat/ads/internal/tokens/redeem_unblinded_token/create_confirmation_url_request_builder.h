@@ -15,10 +15,6 @@
 
 namespace ads {
 
-namespace privacy {
-struct UnblindedTokenInfo;
-}  // namespace privacy
-
 class CreateConfirmationUrlRequestBuilder : UrlRequestBuilder {
  public:
   explicit CreateConfirmationUrlRequestBuilder(

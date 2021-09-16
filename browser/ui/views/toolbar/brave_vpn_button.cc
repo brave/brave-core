@@ -14,10 +14,11 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
+#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -58,7 +59,10 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
       browser_(browser),
       service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
   DCHECK(service_);
-  observation_.Observe(service_);
+
+  mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> listener;
+  receiver_.Bind(listener.InitWithNewPipeAndPassReceiver());
+  service_->AddObserver(std::move(listener));
 
   // Replace ToolbarButton's highlight path generator.
   views::HighlightPathGenerator::Install(
@@ -132,7 +136,7 @@ bool BraveVPNButton::IsConnected() {
 }
 
 void BraveVPNButton::OnButtonPressed(const ui::Event& event) {
-  browser_->command_controller()->ExecuteCommand(IDC_SHOW_BRAVE_VPN_PANEL);
+  chrome::ExecuteCommand(browser_, IDC_SHOW_BRAVE_VPN_PANEL);
 }
 
 BEGIN_METADATA(BraveVPNButton, LabelButton)

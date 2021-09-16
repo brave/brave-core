@@ -37,7 +37,6 @@ static_library("browser") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/notifications",
     "//brave/common",
-    "//brave/components/brave_adaptive_captcha/buildflags:buildflags",
     "//brave/components/brave_ads/common",
     "//brave/components/brave_ads/resources",
     "//brave/components/brave_component_updater/browser",
@@ -47,6 +46,8 @@ static_library("browser") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/rpill/common",
     "//brave/components/services/bat_ads/public/cpp",
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//brave/components/weekly_storage",
     "//chrome/common:buildflags",
     "//components/history/core/browser",
     "//components/history/core/common",
@@ -122,8 +123,11 @@ static_library("browser") {
     ]
   }
 
+  public_deps += [ "//brave/components/brave_adaptive_captcha/buildflags" ]
+
   if (brave_adaptive_captcha_enabled) {
     sources += [ "ads_tooltips_delegate.h" ]
+    deps += [ "//brave/components/brave_adaptive_captcha" ]
   }
 }
 

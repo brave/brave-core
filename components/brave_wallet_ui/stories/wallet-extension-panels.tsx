@@ -7,7 +7,6 @@ import {
   Panel,
   WelcomePanel,
   SignPanel,
-  AllowSpendPanel,
   AllowAddNetworkPanel,
   ConfirmTransactionPanel
 } from '../components/extension'
@@ -26,10 +25,11 @@ import {
   AppsListType,
   AccountAssetOptionType,
   BuySendSwapViewTypes,
-  Network
+  EthereumChain,
+  TransactionInfo,
+  TransactionType
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
-import { NetworkOptions } from '../options/network-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { filterAppList } from '../utils/filter-app-list'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
@@ -40,7 +40,8 @@ import {
   ScrollContainer,
   SelectContainer
 } from './style'
-import { AccountAssetOptions } from '../options/asset-options'
+import { mockNetworks } from './mock-data/mock-networks'
+import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -85,31 +86,29 @@ const accounts: WalletAccountType[] = [
   }
 ]
 
-const batTokenInfo = {
-  contractAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-  name: 'Basic Attention Token',
-  isErc20: true,
-  isErc721: false,
-  symbol: 'BAT',
-  decimals: 18,
-  icon: ''
-}
-
 export const _ConfirmTransaction = () => {
 
-  const transactionPanelPayload = {
-    transactionAmount: '68000000000000000000',
-    transactionGas: '7548000000000000',
-    toAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-    erc20Token: batTokenInfo,
-    tokenPrice: '0.35',
-    ethPrice: '3058.35',
-    transactionData: {
-      functionName: 'Atomic Match_',
-      parameters: 'Parameters: [ {"type": "uint256"}, {"type": "address[]"}, {"type": "address"}, {"type": "uint256"} ]',
-      hexData: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc',
-      hexSize: '228'
-    }
+  const transactionInfo: TransactionInfo = {
+    fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+    id: '465a4d6646-kjlwf665',
+    txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
+    txData: {
+      baseData: {
+        nonce: '0x1',
+        gasPrice: '7548000000000000',
+        gasLimit: '7548000000000000',
+        to: '2',
+        value: '0x15ddf09c97b0000',
+        data: new Uint8Array(24)
+      },
+      chainId: '0x0',
+      maxPriorityFeePerGas: '',
+      maxFeePerGas: ''
+    },
+    txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
+    txStatus: 0,
+    txParams: ['address', 'ammount'],
+    txType: TransactionType.ERC20Approve
   }
 
   const onConfirmTransaction = () => {
@@ -120,14 +119,31 @@ export const _ConfirmTransaction = () => {
     alert('Rejected Transaction')
   }
 
+  const transactionSpotPrices = [
+    {
+      fromAsset: 'ETH',
+      toAsset: 'USD',
+      price: '3300',
+      assetTimeframeChange: ''
+    },
+    {
+      fromAsset: 'BAT',
+      toAsset: 'USD',
+      price: '0.85',
+      assetTimeframeChange: ''
+    }
+  ]
+
   return (
     <StyledExtensionWrapperLonger>
       <ConfirmTransactionPanel
-        selectedNetwork={Network.Mainnet}
+        selectedNetwork={mockNetworks[0]}
         onConfirm={onConfirmTransaction}
         onReject={onRejectTransaction}
-        selectedAccount={accounts[0]}
-        transactionPayload={transactionPanelPayload}
+        accounts={accounts}
+        transactionInfo={transactionInfo}
+        visibleTokens={NewAssetOptions}
+        transactionSpotPrices={transactionSpotPrices}
       />
     </StyledExtensionWrapperLonger>
   )
@@ -139,16 +155,6 @@ _ConfirmTransaction.story = {
 
 export const _AllowAddNetwork = () => {
 
-  const networkPayload = {
-    siteUrl: 'https://app.compound.finance',
-    contractAddress: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-    chainInfo: {
-      chainId: '',
-      name: 'BSC (Binance Smart Chain)',
-      url: 'https://bsc.binance.com'
-    }
-  }
-
   const onApprove = () => {
     alert('Approved Adding Network')
   }
@@ -157,13 +163,17 @@ export const _AllowAddNetwork = () => {
     alert('Canceled Adding Network')
   }
 
+  const onLearnMore = () => {
+    alert('Will nav to Learn More')
+  }
+
   return (
     <StyledExtensionWrapperLonger>
       <AllowAddNetworkPanel
-        selectedNetwork={Network.Mainnet}
         onApprove={onApprove}
         onCancel={onCancel}
-        networkPayload={networkPayload}
+        networkPayload={mockNetworks[0]}
+        onLearnMore={onLearnMore}
       />
     </StyledExtensionWrapperLonger>
   )
@@ -171,45 +181,6 @@ export const _AllowAddNetwork = () => {
 
 _AllowAddNetwork.story = {
   name: 'Allow Add Network'
-}
-
-export const _AllowSpend = () => {
-  const spendPayload = {
-    siteUrl: 'https://app.compound.finance',
-    contractAddress: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-    erc20Token: batTokenInfo,
-    transactionFeeWei: '0.002447',
-    transactionFeeFiat: '$6.57',
-    transactionData: {
-      functionName: 'Atomic Match_',
-      parameters: 'Parameters: [ {"type": "uint256"}, {"type": "address[]"}, {"type": "address"}, {"type": "uint256"} ]',
-      hexData: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da97149722eb09c526e4ead698895bdc',
-      hexSize: '228'
-    }
-  }
-
-  const onConfirm = () => {
-    alert('Confirmed Spend')
-  }
-
-  const onReject = () => {
-    alert('Rejected Spend')
-  }
-
-  return (
-    <StyledExtensionWrapperLonger>
-      <AllowSpendPanel
-        selectedNetwork={Network.Mainnet}
-        onConfirm={onConfirm}
-        onReject={onReject}
-        spendPayload={spendPayload}
-      />
-    </StyledExtensionWrapperLonger>
-  )
-}
-
-_AllowSpend.story = {
-  name: 'Allow Spend'
 }
 
 export const _SignTransaction = () => {
@@ -226,7 +197,7 @@ export const _SignTransaction = () => {
     <StyledExtensionWrapperLonger>
       <SignPanel
         selectedAccount={accounts[0]}
-        selectedNetwork={Network.Mainnet}
+        selectedNetwork={mockNetworks[0]}
         message='To avoid digital cat burglars, sign below to authenticate with CryptoKitties.'
         onCancel={onCancel}
         onSign={onSign}
@@ -273,7 +244,7 @@ export const _ConnectWithSite = () => {
     }
   }
   return (
-    <StyledExtensionWrapper>
+    <StyledExtensionWrapperLonger>
       <ConnectWithSite
         siteURL={url}
         isReady={readyToConnect}
@@ -284,7 +255,7 @@ export const _ConnectWithSite = () => {
         removeAccount={removeAccount}
         selectedAccounts={selectedAccounts}
       />
-    </StyledExtensionWrapper>
+    </StyledExtensionWrapperLonger>
   )
 }
 
@@ -307,7 +278,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
-  const [selectedNetwork, setSelectedNetwork] = React.useState<Network>(Network.Mainnet)
+  const [selectedNetwork, setSelectedNetwork] = React.useState<EthereumChain>(mockNetworks[0])
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
   const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
@@ -320,7 +291,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }
 
   const onSubmitBuy = () => {
-    const url = BuyAssetUrl(selectedNetwork, selectedWyreAsset, selectedAccount, buyAmount)
+    const url = BuyAssetUrl(mockNetworks[0].chainId, selectedWyreAsset, selectedAccount, buyAmount)
     if (url) {
       window.open(url, '_blank')
     }
@@ -336,7 +307,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     setSelectedPanel('main')
   }
 
-  const onSelectNetwork = (network: Network) => () => {
+  const onSelectNetwork = (network: EthereumChain) => () => {
     setSelectedNetwork(network)
     setSelectedPanel('main')
   }
@@ -481,7 +452,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
               {selectedPanel === 'networks' &&
                 <SelectContainer>
                   <SelectNetwork
-                    networks={NetworkOptions}
+                    networks={mockNetworks}
                     onBack={onBack}
                     onSelectNetwork={onSelectNetwork}
                   />
@@ -524,6 +495,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         selectedAsset={selectedWyreAsset}
                         buyAmount={buyAmount}
                         selectedNetwork={selectedNetwork}
+                        networkList={[]}
                       />
                     }
                   </ScrollContainer>

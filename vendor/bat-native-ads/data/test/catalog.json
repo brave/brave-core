@@ -102,7 +102,7 @@
           "perWeek": 6,
           "perMonth": 7,
           "totalMax": 100,
-          "value": "value"
+          "value": "1.0"
         }
       ],
       "dayParts": [
@@ -176,7 +176,7 @@
           "perWeek": 6,
           "perMonth": 7,
           "totalMax": 100,
-          "value": "value"
+          "value": "1.0"
         }
       ],
       "dayParts": [
@@ -236,7 +236,7 @@
           "perWeek": 6,
           "perMonth": 7,
           "totalMax": 100,
-          "value": "value"
+          "value": "1.0"
         }
       ],
       "dayParts": [

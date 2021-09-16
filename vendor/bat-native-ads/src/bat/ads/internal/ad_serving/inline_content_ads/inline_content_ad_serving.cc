@@ -19,7 +19,7 @@
 #include "bat/ads/internal/features/inline_content_ads/inline_content_ads_features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
-#include "bat/ads/internal/segments/segments_alias.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 
 namespace ads {
 namespace inline_content_ads {
@@ -27,13 +27,8 @@ namespace inline_content_ads {
 AdServing::AdServing(
     ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
     resource::AntiTargeting* anti_targeting_resource)
-    : subdivision_targeting_(subdivision_targeting),
-      anti_targeting_resource_(anti_targeting_resource),
-      eligible_ads_(std::make_unique<EligibleAds>(subdivision_targeting,
-                                                  anti_targeting_resource)) {
-  DCHECK(subdivision_targeting_);
-  DCHECK(anti_targeting_resource_);
-}
+    : eligible_ads_(std::make_unique<EligibleAds>(subdivision_targeting,
+                                                  anti_targeting_resource)) {}
 
 AdServing::~AdServing() = default;
 
@@ -67,7 +62,6 @@ void AdServing::MaybeServeAd(const std::string& dimensions,
 
   const ad_targeting::UserModelInfo user_model = ad_targeting::BuildUserModel();
 
-  DCHECK(eligible_ads_);
   eligible_ads_->Get(
       user_model, dimensions,
       [=](const bool was_allowed, const CreativeInlineContentAdList& ads) {

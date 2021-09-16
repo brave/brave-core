@@ -8,7 +8,6 @@
 
 #include <cstdint>
 #include <string>
-#include <vector>
 
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
@@ -29,8 +28,6 @@ struct AdEventInfo {
   std::string advertiser_id;
   int64_t timestamp = 0;
 };
-
-using AdEventList = std::vector<AdEventInfo>;
 
 }  // namespace ads
 

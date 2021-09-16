@@ -29,15 +29,15 @@ import {
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
+import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
-import { WalletAccountType, PanelTypes, Network } from '../../../constants/types'
+import { WalletAccountType, PanelTypes, EthereumChain, BuySupportedChains, SwapSupportedChains } from '../../../constants/types'
 import { create, background } from 'ethereum-blockies'
 import locale from '../../../constants/locale'
-import { NetworkOptions } from '../../../options/network-options'
 
 export interface Props {
   selectedAccount: WalletAccountType
-  selectedNetwork: Network
+  selectedNetwork: EthereumChain
   isConnected: boolean
   connectAction: () => void
   navAction: (path: PanelTypes) => void
@@ -79,6 +79,14 @@ const ConnectedPanel = (props: Props) => {
     return create({ seed: selectedAccount.address, size: 8, scale: 16 }).toDataURL()
   }, [selectedAccount.address])
 
+  const isBuyDisabled = React.useMemo(() => {
+    return !BuySupportedChains.includes(selectedNetwork.chainId)
+  }, [BuySupportedChains, selectedNetwork])
+
+  const isSwapDisabled = React.useMemo(() => {
+    return !SwapSupportedChains.includes(selectedNetwork.chainId)
+  }, [SwapSupportedChains, selectedNetwork])
+
   return (
     <StyledWrapper onClick={onHideMore} panelBackground={bg}>
       <ConnectedHeader
@@ -95,7 +103,7 @@ const ConnectedPanel = (props: Props) => {
             <OvalButtonText>{isConnected ? locale.panelConnected : locale.panelNotConnected}</OvalButtonText>
           </OvalButton>
           <OvalButton onClick={navigate('networks')}>
-            <OvalButtonText>{NetworkOptions[selectedNetwork].abbr}</OvalButtonText>
+            <OvalButtonText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
             <CaratDownIcon />
           </OvalButton>
         </StatusRow>
@@ -113,7 +121,12 @@ const ConnectedPanel = (props: Props) => {
           <FiatBalanceText>${formatPrices(Number(selectedAccount.fiatBalance))}</FiatBalanceText>
         </BalanceColumn>
       </CenterColumn>
-      <ConnectedBottomNav onNavigate={navAction} />
+      <ConnectedBottomNav
+        selectedNetwork={selectedNetwork}
+        isBuyDisabled={isBuyDisabled}
+        isSwapDisabled={isSwapDisabled}
+        onNavigate={navAction}
+      />
     </StyledWrapper>
   )
 }

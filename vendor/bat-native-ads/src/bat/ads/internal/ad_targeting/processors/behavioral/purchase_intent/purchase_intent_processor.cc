@@ -14,7 +14,7 @@
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_info.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_site_info.h"
-#include "bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor_values.h"
+#include "bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor_constants.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"

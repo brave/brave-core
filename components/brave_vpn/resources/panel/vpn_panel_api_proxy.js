@@ -39,8 +39,8 @@ export default class VpnPanelApiProxyImpl {
     this.panelHandler.closeUI();
   }
 
-  getIsConnected() {
-    return this.vpnService.getIsConnected();
+  getConnectionState() {
+    return this.vpnService.getConnectionState();
   }
 
   createVPNConnection() {

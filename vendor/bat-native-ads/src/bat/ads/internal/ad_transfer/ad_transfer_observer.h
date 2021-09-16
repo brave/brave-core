@@ -8,8 +8,11 @@
 
 #include <cstdint>
 
-#include "base/observer_list.h"
-#include "base/time/time.h"
+#include "base/observer_list_types.h"
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 

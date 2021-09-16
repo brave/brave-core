@@ -23,15 +23,16 @@ export function MonthlyTipView (props: Props) {
 
   const { monthlyContribution } = props.publisherInfo
 
-  function cancelLink (evt: React.UIEvent) {
-    evt.preventDefault()
-  }
-
   if (monthlyContribution <= 0) {
     return (
       <style.root>
-        <style.setBox onClick={cancelLink}>
-          <a href='#' onClick={props.onUpdateClick}>{getString('set')}</a>
+        <style.setBox>
+          <button
+            onClick={props.onUpdateClick}
+            data-test-id='set-monthly-tip-button'
+          >
+            {getString('set')}
+          </button>
         </style.setBox>
       </style.root>
     )
@@ -45,7 +46,10 @@ export function MonthlyTipView (props: Props) {
     <style.root>
       <style.amountBox>
         <style.amount>
-          <button onClick={toggleActionBubble}>
+          <button
+            onClick={toggleActionBubble}
+            data-test-id='monthly-tip-actions-button'
+          >
             <TokenAmount
               amount={monthlyContribution}
               minimumFractionDigits={0}
@@ -54,17 +58,23 @@ export function MonthlyTipView (props: Props) {
         </style.amount>
         {
           showActions &&
-            <style.actionBubble onClick={cancelLink}>
+            <style.actionBubble>
               <style.actionBubbleContent>
                 <style.action>
-                  <a href='#' onClick={props.onUpdateClick}>
+                  <button
+                    onClick={props.onUpdateClick}
+                    data-test-id='change-monthly-tip-button'
+                  >
                     {getString('changeAmount')}
-                  </a>
+                  </button>
                 </style.action>
                 <style.action>
-                  <a href='#' onClick={props.onCancelClick}>
+                  <button
+                    onClick={props.onCancelClick}
+                    data-test-id='cancel-monthly-tip-button'
+                  >
                     {getString('cancel')}
-                  </a>
+                  </button>
                 </style.action>
                 <style.backdrop onClick={toggleActionBubble} />
               </style.actionBubbleContent>

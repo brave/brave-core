@@ -12,6 +12,8 @@
 
 namespace ads {
 
+struct AdHistoryInfo;
+
 class AdsHistoryAscendingSort : public AdsHistorySort {
  public:
   AdsHistoryAscendingSort();

@@ -10,6 +10,7 @@
 
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_util.h"
 #include "bat/ads/internal/ad_diagnostics/ads_enabled_ad_diagnostics_entry.h"
 #include "bat/ads/internal/ad_diagnostics/catalog_id_ad_diagnostics_entry.h"

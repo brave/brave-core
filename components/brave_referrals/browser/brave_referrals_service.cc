@@ -43,6 +43,7 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 
 #if defined(OS_ANDROID)
 #include "chrome/browser/android/service_tab_launcher.h"
@@ -144,12 +145,8 @@ BraveReferralsHeaders::BraveReferralsHeaders() {
   // https://github.com/brave/brave-browser/wiki/Custom-Headers for more
   // information. Custom headers are deprecated and new partners use the
   // navigator.brave.isBrave() JavaScript API.
-  constexpr char kPartnerUpholdName[] = "uphold";
   constexpr char kPartnerGrammarlyName[] = "grammarly";
 
-  referral_headers_.push_back(CreateReferralHeader(
-      kPartnerUpholdName, {"sandbox.uphold.com", "api-sandbox.uphold.com",
-                           "uphold.com", "api.uphold.com"}));
   referral_headers_.push_back(CreateReferralHeader(
       kPartnerGrammarlyName, {"www.grammarly.com", "grammarly.com",
                               "static.grammarly.com", "gnar.grammarly.com"}));

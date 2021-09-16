@@ -32,6 +32,8 @@ BRAVE_SRC = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 BRAVE_CHROMIUM_SRC = os.path.join(BRAVE_SRC, 'chromium_src')
 CHROMIUM_SRC = os.path.abspath(os.path.dirname(BRAVE_SRC))
 
+NORMAL_DEFINITIONS_REGEXP = r'#define[\s\\]+([a-zA-Z0-9_]+[^\s\(]*)(?:[ \t]+\\\s*|[ \t])+([a-zA-Z0-9_]+[^\s\(]*)'
+FUNCTION_LIKE_DEFINITIONS_REGEXP = r'#define[\s\\]+([a-zA-Z0-9_]+)[\s\\]*\(.*?\)(?:[ \t]+\\\s*|[ \t])([a-zA-Z0-9_]*[\s\\]*\(.*?\))'
 
 EXCLUDES = [
     'CPPLINT.cfg',
@@ -107,19 +109,34 @@ def do_check_defines(override_filepath, original_filepath):
     attempts to find the <TARGET> in the |original_filepath|.
     """
     with open(override_filepath, mode='r', encoding='utf-8') as override_file:
-        for line in override_file:
-            line_match = re.search(r'^#define\s*(\S*)\s*(\S*)', line)
-            if not line_match:
-                continue
-            target = line_match.group(1)
-            replacement = line_match.group(2)
+        content = override_file.read()
+        matches = []
+
+        # Search for all matches for normal definitions
+        # e.g. #define FooBar FooBar_ChromiumImpl
+        normal_matches = re.findall(NORMAL_DEFINITIONS_REGEXP, content)
+        matches += [{'value': m, 'is_func': False} for m in normal_matches]
+
+        # Search for all matches for function-like definitions
+        # e.g. #define FooBar(P1, P2) FooBar_ChromiumImpl(P1, P2, p3)
+        function_matches = re.findall(FUNCTION_LIKE_DEFINITIONS_REGEXP,
+                                      content, flags=re.DOTALL)
+        matches += [{'value': m, 'is_func': True} for m in function_matches]
+
+        if not matches:
+            return
+
+        for match in matches:
+            target = match['value'][0]
+            replacement = match['value'][1]
+
             if not replacement:
                 continue
 
-            # Adjust target name for BUILDFLAG_INTERNAL_*() cases.
-            if target.startswith('BUILDFLAG_INTERNAL_'):
-                buildflag_match = re.search(r'BUILDFLAG_INTERNAL_(\S*)\(\)',
-                                            target)
+            # Adjust target name for BUILDFLAG_INTERNAL_*() cases for
+            # function-like matches.
+            if match['is_func'] and target.startswith('BUILDFLAG_INTERNAL_'):
+                buildflag_match = re.search(r'BUILDFLAG_INTERNAL_(\S*)', target)
                 target = buildflag_match.group(1)
 
             # Report ERROR if target can't be found in the original file.

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
@@ -73,6 +74,18 @@ void BraveWalletProviderDelegateImpl::EnsureConnected() {
 void BraveWalletProviderDelegateImpl::OnConnectionError() {
   keyring_controller_.reset();
   EnsureConnected();
+}
+
+GURL BraveWalletProviderDelegateImpl::GetOrigin() const {
+  auto* rfh = content::RenderFrameHost::FromID(host_id_);
+  return rfh ? rfh->GetLastCommittedURL().GetOrigin() : GURL();
+}
+
+void BraveWalletProviderDelegateImpl::ShowBubble() {
+  auto* tab_helper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
+  if (tab_helper)
+    tab_helper->ShowBubble();
 }
 
 void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(

@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_client.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"

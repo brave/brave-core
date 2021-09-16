@@ -4,6 +4,8 @@
 
 import styled from 'styled-components'
 
+import * as mixins from '../../shared/lib/css_mixins'
+
 export const root = styled.div`
   background: var(--brave-palette-white);
   box-shadow: 0px 4px 16px rgba(27, 29, 47, 0.08);
@@ -11,34 +13,23 @@ export const root = styled.div`
   margin-top: 13px;
   padding: 18px 35px 33px;
 
-  a {
-    color: var(--brave-color-brandBatInteracting);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
   .brave-theme-dark & {
     background: #1E2029;
-
-    a {
-      color: var(--brave-palette-blurple300);
-    }
   }
 `
 
 export const heading = styled.div`
   display: flex;
+  margin-bottom: 12px;
 `
 
 export const icon = styled.div`
   flex: 0 0 auto;
-  margin-right: 7px;
+  margin-right: 9px;
+  margin-top: 7px;
 
   img {
-    height: 53px;
+    height: 32px;
     width: auto;
   }
 `
@@ -90,8 +81,22 @@ export const refreshStatus = styled.span`
     color: var(--brave-color-brandBat);
   }
 
+  button {
+    ${mixins.buttonReset}
+    color: var(--brave-color-brandBatInteracting);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .brave-theme-dark & {
     border-left-color: var(--brave-palette-grey800);
+
+    button {
+      color: var(--brave-palette-blurple300);
+    }
   }
 `
 
@@ -112,11 +117,8 @@ export const unverified = styled.span`
 `
 
 export const attention = styled.div`
-  margin-top: 12px;
-  border-bottom: solid 1px var(--brave-palette-neutral200);
   font-size: 14px;
   line-height: 26px;
-  color: var(--brave-palette-neutral900);
   padding: 4px 0;
   display: flex;
 
@@ -130,12 +132,12 @@ export const attention = styled.div`
   }
 
   .brave-theme-dark & {
-    border-color: var(--brave-palette-grey800);
     color: var(--brave-palette-grey000);
   }
 `
 
 export const contribution = styled.div`
+  border-top: solid 1px var(--brave-palette-neutral200);
   border-bottom: solid 1px var(--brave-palette-neutral200);
   font-size: 14px;
   line-height: 26px;

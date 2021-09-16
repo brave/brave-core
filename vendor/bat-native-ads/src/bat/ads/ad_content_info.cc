@@ -84,7 +84,8 @@ bool AdContentInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("like_action")) {
-    like_action = static_cast<LikeAction>(document["like_action"].GetInt());
+    like_action =
+        static_cast<AdContentActionType>(document["like_action"].GetInt());
   }
 
   if (document.HasMember("ad_action")) {

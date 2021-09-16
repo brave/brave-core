@@ -131,6 +131,6 @@ export const viewStatement = styled.div`
 
 export const pendingBox = styled.div`
   margin-top: 17px;
-  border-radius: 0 0 16px 16px;
+  border-radius: 0 0 14px 14px;
   overflow: hidden;
 `

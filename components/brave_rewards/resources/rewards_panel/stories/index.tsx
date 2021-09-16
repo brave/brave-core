@@ -33,6 +33,7 @@ function createHost (): Host {
     rewardsEnabled: false,
     settings: {
       adsPerHour: 3,
+      autoContributeEnabled: true,
       autoContributeAmount: 5
     },
     options: {
@@ -65,6 +66,7 @@ function createHost (): Host {
       id: 'brave.com',
       name: 'brave.com',
       icon: 'https://brave.com/static-assets/images/brave-favicon.png',
+      platform: null,
       registered: true,
       attentionScore: 0.17,
       autoContributeEnabled: true,
@@ -77,7 +79,7 @@ function createHost (): Host {
       username: 'brave123',
       status: 'verified',
       links: {}
-    } && null,
+    },
     summaryData: {
       adEarnings: 10,
       autoContributions: 10,

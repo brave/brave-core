@@ -107,6 +107,13 @@
       "matches": [
         "chrome://newtab/*"
       ]
+    },
+    {
+      "channel": "stable",
+      "contexts": ["webui"],
+      "matches": [
+        "chrome://rewards/*"
+      ]
     }
   ],
   "rewardsNotifications": {

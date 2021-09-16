@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import SwitchDown from '../../../assets/svg-icons/switch-icon.svg'
 import {
   CaratCircleODownIcon
 } from 'brave-ui/components/icons'
@@ -51,6 +52,7 @@ export const AccountAddress = styled.span`
   color: ${(p) => p.theme.color.text02};
 `
 export const AccountCircle = styled.button<StyleProps>`
+  display: flex;
   cursor: pointer;
   width: 24px;
   height: 24px;
@@ -62,6 +64,7 @@ export const AccountCircle = styled.button<StyleProps>`
   outline: none;
   border: none;
   margin-right: 8px;
+  position: relative;
 `
 
 export const CaratDownIcon = styled(CaratCircleODownIcon)`
@@ -93,4 +96,14 @@ export const OvalButtonText = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
   font-weight: 600;
+`
+
+export const SwitchIcon = styled.div`
+  width: 14px;
+  height: 14px;
+  background: url(${SwitchDown});
+  position: absolute;
+  left: -2px;
+  bottom: -2px;
+  z-index: 8;
 `

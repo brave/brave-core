@@ -4,19 +4,37 @@
 
 import styled from 'styled-components'
 
+import * as mixins from '../../shared/lib/css_mixins'
+
 export const root = styled.div``
 
 export const setBox = styled.div`
   margin-right: 4px;
 
-  a {
+  button {
+    ${mixins.buttonReset}
     font-size: 13px;
     line-height: 21px;
+    color: var(--brave-color-brandBatInteracting);
+    cursor: pointer;
+
+    .brave-theme-dark & {
+      color: var(--brave-palette-blurple300);
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `
 
 export const amountBox = styled.div`
   position: relative;
+
+  button {
+    ${mixins.buttonReset}
+    cursor: pointer;
+  }
 `
 
 export const amount = styled.div`
@@ -71,6 +89,19 @@ export const actionBubble = styled.div`
   border: solid 1px rgba(0, 0, 0, .2);
   border-radius: 6px;
   z-index: 1;
+
+  button {
+    color: var(--brave-color-brandBatInteracting);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    .brave-theme-dark & {
+      color: var(--brave-palette-blurple300);
+    }
+  }
 `
 
 export const actionBubbleContent = styled.div`

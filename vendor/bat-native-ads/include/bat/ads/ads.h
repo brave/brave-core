@@ -7,35 +7,22 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_H_
 
 #include <cstdint>
-#include <functional>
 #include <string>
 #include <vector>
 
-#include "bat/ads/ad_content_info.h"
-#include "bat/ads/ad_notification_info.h"
-#include "bat/ads/ads_client.h"
-#include "bat/ads/ads_history_info.h"
-#include "bat/ads/category_content_info.h"
+#include "bat/ads/ad_content_action_types.h"
+#include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_history_filter_types.h"
+#include "bat/ads/ads_history_sort_types.h"
+#include "bat/ads/category_content_action_types.h"
 #include "bat/ads/export.h"
-#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/statement_info.h"
 
 namespace ads {
 
-using InitializeCallback = std::function<void(const bool)>;
-using ShutdownCallback = std::function<void(const bool)>;
-
-using RemoveAllHistoryCallback = std::function<void(const bool)>;
-
-using GetInlineContentAdCallback = std::function<
-    void(const bool, const std::string&, const InlineContentAdInfo&)>;
-
-using GetAccountStatementCallback =
-    std::function<void(const bool, const StatementInfo&)>;
-
-using GetAdDiagnosticsCallback =
-    std::function<void(const bool, const std::string&)>;
+class AdsClient;
+struct AdsHistoryInfo;
+struct AdNotificationInfo;
 
 // |g_environment| indicates that URL requests should use production, staging or
 // development servers but can be overridden via command-line arguments
@@ -199,11 +186,10 @@ class ADS_EXPORT Ads {
 
   // Should be called to get ads history for a specified date range. Returns
   // |AdsHistoryInfo|
-  virtual AdsHistoryInfo GetAdsHistory(
-      const AdsHistoryInfo::FilterType filter_type,
-      const AdsHistoryInfo::SortType sort_type,
-      const uint64_t from_timestamp,
-      const uint64_t to_timestamp) = 0;
+  virtual AdsHistoryInfo GetAdsHistory(const AdsHistoryFilterType filter_type,
+                                       const AdsHistorySortType sort_type,
+                                       const uint64_t from_timestamp,
+                                       const uint64_t to_timestamp) = 0;
 
   // Should be called to get the statement of accounts. The callback takes one
   // argument - |StatementInfo| which contains next payment date, ads received
@@ -216,31 +202,31 @@ class ADS_EXPORT Ads {
 
   // Should be called to indicate interest in the specified ad. This is a
   // toggle, so calling it again returns the setting to the neutral state
-  virtual AdContentInfo::LikeAction ToggleAdThumbUp(
+  virtual AdContentActionType ToggleAdThumbUp(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const AdContentInfo::LikeAction& action) = 0;
+      const AdContentActionType& action) = 0;
 
   // Should be called to indicate a lack of interest in the specified ad. This
   // is a toggle, so calling it again returns the setting to the neutral state
-  virtual AdContentInfo::LikeAction ToggleAdThumbDown(
+  virtual AdContentActionType ToggleAdThumbDown(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const AdContentInfo::LikeAction& action) = 0;
+      const AdContentActionType& action) = 0;
 
   // Should be called to opt-in to the specified ad category. This is a toggle,
   // so calling it again neutralizes the ad category. Returns |OptAction" with
   // the current status
-  virtual CategoryContentInfo::OptAction ToggleAdOptInAction(
+  virtual CategoryContentActionType ToggleAdOptInAction(
       const std::string& category,
-      const CategoryContentInfo::OptAction& action) = 0;
+      const CategoryContentActionType& action) = 0;
 
   // Should be called to opt-out of the specified ad category. This is a toggle,
   // so calling it again neutralizes the ad category. Returns |OptAction" with
   // the current status
-  virtual CategoryContentInfo::OptAction ToggleAdOptOutAction(
+  virtual CategoryContentActionType ToggleAdOptOutAction(
       const std::string& category,
-      const CategoryContentInfo::OptAction& action) = 0;
+      const CategoryContentActionType& action) = 0;
 
   // Should be called to save an ad for later viewing. This is a toggle, so
   // calling it again removes the ad from the saved list. Returns true if the ad

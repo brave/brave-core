@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving.h"
 
 #include "base/guid.h"
+#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_builder.h"
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
@@ -66,6 +67,7 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
     creative_inline_content_ad.per_week = 1;
     creative_inline_content_ad.per_month = 1;
     creative_inline_content_ad.total_max = 1;
+    creative_inline_content_ad.value = 1.0;
     creative_inline_content_ad.segment = "untargeted";
     creative_inline_content_ad.geo_targets = {"US"};
     creative_inline_content_ad.target_url = "https://brave.com";

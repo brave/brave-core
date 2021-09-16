@@ -8,8 +8,11 @@
 
 #include <cstdint>
 
-#include "base/time/time.h"
-#include "bat/ads/transaction_info.h"
+#include "bat/ads/transaction_info_aliases.h"
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 

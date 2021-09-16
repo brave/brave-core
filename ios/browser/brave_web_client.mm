@@ -36,7 +36,7 @@ std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
 
 base::StringPiece BraveWebClient::GetDataResource(
     int resource_id,
-    ui::ScaleFactor scale_factor) const {
+    ui::ResourceScaleFactor scale_factor) const {
   return ui::ResourceBundle::GetSharedInstance().GetRawDataResourceForScale(
       resource_id, scale_factor);
 }

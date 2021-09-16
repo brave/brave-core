@@ -160,6 +160,17 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, NavigationNostickTest) {
       speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
 }
 
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageReadable);
+  EXPECT_TRUE(
+      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  tab_helper()->MaybeToggleEnabledForSite(false);
+  EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
+  EXPECT_FALSE(
+      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+}
+
 // disabled in https://github.com/brave/brave-browser/issues/11328
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
   ToggleSpeedreader();

@@ -23,26 +23,18 @@
 
 class PrefService;
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}
-
 namespace brave_wallet {
 
 class HDKeyring;
 class EthTransaction;
 class KeyringControllerUnitTest;
+class BraveWalletProviderImplUnitTest;
 
 // This class is not thread-safe and should have single owner
 class KeyringController : public KeyedService, public mojom::KeyringController {
  public:
   explicit KeyringController(PrefService* prefs);
   ~KeyringController() override;
-
-  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
-
-  static void RegisterProfilePrefsForMigration(
-      user_prefs::PrefRegistrySyncable* registry);
 
   static void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
@@ -95,6 +87,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                     CreateWalletCallback callback) override;
   void RestoreWallet(const std::string& mnemonic,
                      const std::string& password,
+                     bool is_legacy_brave_wallet,
                      RestoreWalletCallback callback) override;
   void Unlock(const std::string& password, UnlockCallback callback) override;
   void Lock() override;
@@ -170,6 +163,8 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                            GetPrivateKeyForDefaultKeyringAccount);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
                            SetDefaultKeyringDerivedAccountName);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, RestoreLegacyBraveWallet);
+  friend class BraveWalletProviderImplUnitTest;
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
 
@@ -194,14 +189,16 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   std::vector<uint8_t> GetOrCreateNonceForKeyring(const std::string& id);
   bool CreateEncryptorForKeyring(const std::string& password,
                                  const std::string& id);
-  bool CreateDefaultKeyringInternal(const std::string& mnemonic);
+  bool CreateDefaultKeyringInternal(const std::string& mnemonic,
+                                    bool is_legacy_brave_wallet);
 
   // Currently only support one default keyring, `CreateDefaultKeyring` and
   // `RestoreDefaultKeyring` will overwrite existing one if success
   HDKeyring* CreateDefaultKeyring(const std::string& password);
   // Restore default keyring from backup seed phrase
   HDKeyring* RestoreDefaultKeyring(const std::string& mnemonic,
-                                   const std::string& password);
+                                   const std::string& password,
+                                   bool is_legacy_brave_wallet);
   // It's used to reconstruct same default keyring between browser relaunch
   HDKeyring* ResumeDefaultKeyring(const std::string& password);
 

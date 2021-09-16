@@ -6,12 +6,12 @@
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
 
 #include <cstdint>
-#include <functional>
 #include <utility>
 
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"

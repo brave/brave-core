@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 8fdddbadf5e9a202fc20ac9e326a4631f91f4a0d..4c1cd2bef9d9fb7c4fa17ec6733bec4a89a8d717 100644
+index 7e29403699d56081424643bd143d0f255c8e8e73..6d7ed5d35424786b54fe43077205d6653a73d7db 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -440,6 +440,7 @@ Browser::CreationStatus Browser::GetCreationStatusForProfile(Profile* profile) {
+@@ -443,6 +443,7 @@ Browser::CreationStatus Browser::GetCreationStatusForProfile(Profile* profile) {
  // static
  Browser* Browser::Create(const CreateParams& params) {
    CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
@@ -10,12 +10,12 @@ index 8fdddbadf5e9a202fc20ac9e326a4631f91f4a0d..4c1cd2bef9d9fb7c4fa17ec6733bec4a
    return new Browser(params);
  }
  
-@@ -451,7 +452,7 @@ Browser::Browser(const CreateParams& params)
+@@ -454,7 +455,7 @@ Browser::Browser(const CreateParams& params)
        tab_strip_model_delegate_(
            std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),
        tab_strip_model_(
 -          std::make_unique<TabStripModel>(tab_strip_model_delegate_.get(),
 +          std::make_unique<BraveTabStripModel>(tab_strip_model_delegate_.get(),
                                            params.profile)),
-       app_name_(params.app_name),
-       is_trusted_source_(params.trusted_source),
+       tab_menu_model_delegate_(
+           std::make_unique<chrome::BrowserTabMenuModelDelegate>(this)),

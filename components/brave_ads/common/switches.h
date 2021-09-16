@@ -12,7 +12,6 @@ namespace switches {
 
 extern const char kProduction[];
 extern const char kStaging[];
-extern const char kDevelopment[];
 extern const char kDebug[];
 extern const char kTesting[];
 

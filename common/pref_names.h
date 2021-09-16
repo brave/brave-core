@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMMON_PREF_NAMES_H_
 #define BRAVE_COMMON_PREF_NAMES_H_
 
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 
@@ -89,7 +90,11 @@ extern const char kSafetynetStatus[];
 #endif
 
 extern const char kDefaultBrowserLaunchingCount[];
-extern const char kBraveDefaultSearchVersion[];
 extern const char kTabsSearchShow[];
+extern const char kDontAskForCrashReporting[];
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+extern const char kBraveVPNShowButton[];
+#endif
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_
