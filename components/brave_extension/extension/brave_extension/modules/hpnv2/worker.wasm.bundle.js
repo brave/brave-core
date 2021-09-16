@@ -1,1 +1,0 @@
-../../../../../../vendor/web-discovery-project/build/hpnv2/worker.wasm.bundle.js
