@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
-index d9354ca6d042611d276df45fb1c4586a4634a8c6..52e7291e53c80a4394d28721ccf3be42caebb624 100644
+index c85babf6cb6277274f2baa978c5549b9c7fb352f..019d888f315950294e0027737a0d8ed36af3225c 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
-@@ -949,6 +949,7 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
+@@ -956,6 +956,7 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
    if (!canvas()->GetDocument().GetFrame())
      return MakeGarbageCollected<TextMetrics>();
  

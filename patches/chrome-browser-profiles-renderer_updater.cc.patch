@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/renderer_updater.cc b/chrome/browser/profiles/renderer_updater.cc
-index 0757d75a24b28bf3cbc20234ae23742a78318993..3dad32e466ec8ae92b257b172797c10039e62384 100644
+index 96b9b82ffe61d60b31b309a7d8e42ab07903a15b..309e9908b7e0543f344ad8240a111745eb43eedb 100644
 --- a/chrome/browser/profiles/renderer_updater.cc
 +++ b/chrome/browser/profiles/renderer_updater.cc
 @@ -54,6 +54,7 @@ void GetGuestViewDefaultContentSettingRules(
