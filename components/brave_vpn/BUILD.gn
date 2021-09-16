@@ -68,6 +68,7 @@ static_library("brave_vpn") {
     deps += [
       ":brave_vpn_internal",
       ":mojom",
+      "//third_party/icu",
     ]
   }
 }
@@ -99,6 +100,7 @@ source_set("unit_tests") {
       ":brave_vpn",
       "//base",
       "//content/test:test_support",
+      "//services/network:test_support",
       "//testing/gtest",
     ]
   }

@@ -5,8 +5,9 @@
 
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 
+#include <algorithm>
+#include <memory>
 #include <utility>
-#include <vector>
 
 #include "base/bind.h"
 #include "base/command_line.h"
@@ -16,6 +17,7 @@
 #include "base/strings/string_split.h"
 #include "base/values.h"
 #include "brave/components/brave_vpn/switches.h"
+#include "third_party/icu/source/i18n/unicode/timezone.h"
 
 namespace {
 
@@ -57,7 +59,7 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
   GetBraveVPNConnectionAPI()->set_target_vpn_entry_name(kBraveVPNEntryName);
   GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
 
-  FetchRegionList();
+  FetchRegionData();
   CheckPurchasedStatus();
 }
 
@@ -198,7 +200,7 @@ void BraveVpnServiceDesktop::GetConnectionState(
   std::move(callback).Run(state_);
 }
 
-void BraveVpnServiceDesktop::FetchRegionList() {
+void BraveVpnServiceDesktop::FetchRegionData() {
   // Unretained is safe here becasue this class owns request helper.
   GetAllServerRegions(base::BindOnce(&BraveVpnServiceDesktop::OnFetchRegionList,
                                      base::Unretained(this)));
@@ -244,6 +246,113 @@ void BraveVpnServiceDesktop::ParseAndCacheRegionList(base::Value region_value) {
 
     regions_.push_back(region);
   }
+
+  // If we can't get region list, we can't determine device region.
+  if (regions_.empty())
+    return;
+
+  // Make sure device_region_ is not set twice.
+  DCHECK(device_region_.name.empty());
+
+  // Fetch timezones list to determine default region of this device.
+  GetTimezonesForRegions(base::BindOnce(
+      &BraveVpnServiceDesktop::OnFetchTimezones, base::Unretained(this)));
+}
+
+void BraveVpnServiceDesktop::OnFetchTimezones(const std::string& timezones_list,
+                                              bool success) {
+  if (!success) {
+    // TODO(simonhong): Re-try?
+    VLOG(2) << "Failed to get timezones list";
+    SetFallbackDeviceRegion();
+    return;
+  }
+
+  std::string json_string = "{\"response\": " + timezones_list + "}";
+  absl::optional<base::Value> value = base::JSONReader::Read(json_string);
+  if (value && value->is_dict()) {
+    ParseAndCacheDefaultRegionName(std::move(*value));
+    return;
+  }
+
+  // TODO(simonhong): Re-try?
+  SetFallbackDeviceRegion();
+}
+
+void BraveVpnServiceDesktop::ParseAndCacheDefaultRegionName(
+    base::Value timezones_value) {
+  base::Value* timezones_list_value = timezones_value.FindKey("response");
+  DCHECK(timezones_list_value && timezones_list_value->is_list());
+
+  if (!timezones_list_value || !timezones_list_value->is_list()) {
+    SetFallbackDeviceRegion();
+    return;
+  }
+
+  const std::string current_time_zone = GetCurrentTimeZone();
+  if (current_time_zone.empty()) {
+    SetFallbackDeviceRegion();
+    return;
+  }
+
+  for (const auto& timezones : timezones_list_value->GetList()) {
+    DCHECK(timezones.is_dict());
+    if (!timezones.is_dict())
+      continue;
+
+    const std::string* region_name = timezones.FindStringKey("name");
+    if (!region_name)
+      continue;
+    std::string default_region_name_candidate = *region_name;
+    const base::Value* timezone_list_value = timezones.FindKey("timezones");
+    if (!timezone_list_value || !timezone_list_value->is_list())
+      continue;
+
+    for (const auto& timezone : timezone_list_value->GetList()) {
+      DCHECK(timezone.is_string());
+      if (!timezone.is_string())
+        continue;
+      if (current_time_zone == timezone.GetString()) {
+        SetDeviceRegion(*region_name);
+        VLOG(2) << "Found default region: " << device_region_.name;
+        return;
+      }
+    }
+  }
+
+  SetFallbackDeviceRegion();
+}
+
+void BraveVpnServiceDesktop::SetDeviceRegion(const std::string& name) {
+  DCHECK(device_region_.name.empty());
+
+  auto it =
+      std::find_if(regions_.begin(), regions_.end(),
+                   [&name](const auto& region) { return region.name == name; });
+  if (it != regions_.end()) {
+    device_region_ = *it;
+  }
+}
+
+void BraveVpnServiceDesktop::SetFallbackDeviceRegion() {
+  // Set first item in the region list as a |device_region_| as a fallback.
+  DCHECK(!regions_.empty());
+  if (regions_.empty())
+    return;
+
+  device_region_ = regions_[0];
+}
+
+std::string BraveVpnServiceDesktop::GetCurrentTimeZone() {
+  if (!test_timezone_.empty())
+    return test_timezone_;
+
+  std::unique_ptr<icu::TimeZone> zone(icu::TimeZone::createDefault());
+  icu::UnicodeString id;
+  zone->getID(id);
+  std::string current_time_zone;
+  id.toUTF8String<std::string>(current_time_zone);
+  return current_time_zone;
 }
 
 void BraveVpnServiceDesktop::GetAllRegions(GetAllRegionsCallback callback) {
@@ -257,4 +366,8 @@ void BraveVpnServiceDesktop::GetAllRegions(GetAllRegionsCallback callback) {
     regions.push_back(region.Clone());
   }
   std::move(callback).Run(std::move(regions));
+}
+
+void BraveVpnServiceDesktop::GetDeviceRegion(GetDeviceRegionCallback callback) {
+  std::move(callback).Run(device_region_.Clone());
 }
