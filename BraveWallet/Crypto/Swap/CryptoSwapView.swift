@@ -101,7 +101,7 @@ struct CryptoSwapView: View {
         ToolbarItemGroup(placement: .cancellationAction) {
           Button(action: { }) {
             Text("Cancel") // NSLocalizedString
-              .foregroundColor(.accentColor)
+              .foregroundColor(Color(.braveOrange))
           }
         }
       }
