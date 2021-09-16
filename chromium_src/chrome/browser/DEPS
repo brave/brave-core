@@ -78,7 +78,7 @@ include_rules = [
   "+../../../../../../../chrome/browser/ui/webui/settings",
   "+../../../../../../../chrome/browser/ui/webui/signin",
   "+../../../../../../../chrome/browser/ui/webui/version",
-  "+../../../../../../chrome/browser/web_applications/components",
+  "+../../../../../chrome/browser/web_applications",
   "+../../../../../chrome/browser/webauthn",
   "+brave/app",
   "+brave/browser",
