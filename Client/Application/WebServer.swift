@@ -26,7 +26,7 @@ class WebServer {
     
     // For development builds, random host is used in case of working with multiple instances of the app.
     // For safety we keep static port number for public builds.
-    let port = AppConstants.buildChannel.isPublic ? 6571 : Int.random(in: 6572..<6600)
+    let port = AppConstants.webServerPort
 
     /// A random, transient token used for authenticating requests.
     /// Other apps are able to make requests to our local Web server,
@@ -86,6 +86,7 @@ class WebServer {
         if components.host == "localhost" && components.scheme == "http" {
             components.port = Int(WebServer.sharedInstance.server.port)
         }
+
         return components.url
     }
 

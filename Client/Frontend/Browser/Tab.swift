@@ -99,7 +99,15 @@ class Tab: NSObject {
     fileprivate var lastRequest: URLRequest?
     var restoring: Bool = false
     var pendingScreenshot = false
-    var url: URL?
+    var url: URL? {
+        didSet {
+            if let _url = url,
+               PrivilegedRequest.isWebServerRequest(url: _url),
+               PrivilegedRequest.isPrivileged(url: _url) {
+                url = PrivilegedRequest.removePrivileges(url: _url)
+            }
+        }
+    }
     var mimeType: String?
     var isEditing: Bool = false
     var shouldClassifyLoadsForAds = true
@@ -312,8 +320,17 @@ class Tab: NSObject {
             jsonDict[SessionData.Keys.history] = updatedURLs as AnyObject
             jsonDict[SessionData.Keys.currentPage] = Int(currentPage) as AnyObject
             
-            guard let escapedJSON = JSON(jsonDict).rawString()?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed),
-                  let restoreURL = URL(string: "\(WebServer.sharedInstance.base)/about/sessionrestore?history=\(escapedJSON)") else {
+            // We escape everything, except alpha-numeric characters
+            // This is because when `URLSearchParams` in `SessionRestore.html`
+            // attempts to parse the URL query parameters, it will not properly parse
+            // the unescaped characters.. Therefore, we will get a blank screen,
+            // after restoring multiple times, because SessionRestore can be double
+            // percent-escaped (percent-encoded multiple times)!
+            // Especially if the original URL already has escaped query parameters.
+            let characterSet: CharacterSet = .alphanumerics
+            
+            guard let escapedJSON = JSON(jsonDict).rawString()?.addingPercentEncoding(withAllowedCharacters: characterSet),
+                  let restoreURL = URL(string: "\(WebServer.sharedInstance.base)/about/sessionrestore?timestamp=\(Int(Date().timeIntervalSince1970))&history=\(escapedJSON)") else {
                 return
             }
             
@@ -382,7 +399,7 @@ class Tab: NSObject {
     var displayTitle: String {
         if let title = webView?.title, !title.isEmpty {
             return title.contains("localhost") ? "" : title
-        } else if let url = webView?.url ?? self.url, url.isAboutHomeURL {
+        } else if webView?.url?.isAboutHomeURL == true || self.url?.isAboutHomeURL == true {
             return Strings.newTabTitle
         }
         
