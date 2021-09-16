@@ -34,10 +34,12 @@
  *            "0xEA04...CC8Acc": {
  *              "account_name": "Ledger 1",
  *              "derivation_path": "m/44'/60'/1'/0/0",
+ *              "hardware_vendor": "ledger"
  *           },
  *           "0x264Ef...6b8F1": {
  *              "account_name": "Ledger 2",
  *              "derivation_path": "m/44'/60'/2'/0/0",
+ *              "hardware_vendor": "ledger"
  *            }
  *        },
  *        device_name: "Ledger 123"
@@ -51,7 +53,16 @@
  *   {  "backup_complete": false,
  *      "encrypted_mnemonic": [mnemonic],
  *      "legacy_brave_wallet": false,
- *      "account_metas": {},
+ *      "account_metas": {
+ *         "m/44'/60'/0'/0/0": {
+ *               "account_name": "account 1",
+ *               ...
+ *          },
+ *          "m/44'/60'/0'/0/1": {
+ *               "account_name": "account 2",
+ *               ...
+ *          }
+ *      },
  *      "imported_accounts": [
  *        { "address": "0x71f430f5f2a79274c17986ea1a1106596a39ba05",
  *          "encrypted_private_key": [privatekey],
@@ -81,7 +92,7 @@ const char kEncryptedMnemonic[] = "encrypted_mnemonic";
 const char kBackupComplete[] = "backup_complete";
 const char kAccountMetas[] = "account_metas";
 const char kAccountName[] = "account_name";
-const char kAccountHardware[] = "account_hardware";
+const char kHardwareVendor[] = "hardware_vendor";
 const char kImportedAccounts[] = "imported_accounts";
 const char kAccountAddress[] = "account_address";
 const char kEncryptedPrivateKey[] = "encrypted_private_key";
@@ -94,18 +105,17 @@ static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
 }
 
 void SerializeHardwareAccounts(const base::Value* account_value,
-  std::vector<mojom::HardwareWalletAccountPtr>* accounts) {
+                               std::vector<mojom::AccountInfoPtr>* accounts) {
   for (const auto account : account_value->DictItems()) {
     std::string address = account.first;
-    std::string hardware;
+    std::string hardware_vendor;
     const std::string* hardware_value =
-        account.second.FindStringPath(kAccountHardware);
+        account.second.FindStringKey(kHardwareVendor);
     if (hardware_value)
-      hardware = *hardware_value;
+      hardware_vendor = *hardware_value;
 
     std::string name;
-    const std::string* name_value =
-        account.second.FindStringPath(kAccountName);
+    const std::string* name_value = account.second.FindStringPath(kAccountName);
     if (name_value)
       name = *name_value;
 
@@ -115,8 +125,8 @@ void SerializeHardwareAccounts(const base::Value* account_value,
     if (derivation_path_value)
       derivation_path = *derivation_path_value;
 
-    accounts->push_back(mojom::HardwareWalletAccount::New(
-        address, derivation_path, name, hardware));
+    accounts->push_back(mojom::AccountInfo::New(
+        address, name, false, hardware_vendor == mojom::kLedgerHardwareVendor));
   }
 }
 
@@ -722,7 +732,7 @@ std::vector<mojom::AccountInfoPtr> KeyringController::GetAccountInfosForKeyring(
 
 void KeyringController::GetHardwareAccounts(
     GetHardwareAccountsCallback callback) {
-  std::vector<mojom::HardwareWalletAccountPtr> accounts;
+  std::vector<mojom::AccountInfoPtr> accounts;
   base::Value hardware_keyrings(base::Value::Type::DICTIONARY);
   const base::Value* value = GetPrefForHardwareKeyring(prefs_);
   if (!value) {
@@ -732,8 +742,7 @@ void KeyringController::GetHardwareAccounts(
 
   for (const auto hw_keyring : value->DictItems()) {
     std::string device_id = hw_keyring.first;
-    const base::Value* account_value =
-        hw_keyring.second.FindKey(kAccountMetas);
+    const base::Value* account_value = hw_keyring.second.FindKey(kAccountMetas);
     if (!account_value)
       continue;
     SerializeHardwareAccounts(account_value, &accounts);
@@ -757,9 +766,9 @@ void KeyringController::AddHardwareAccounts(
     std::vector<mojom::HardwareWalletAccountPtr> infos) {
   if (infos.empty())
     return;
-  const auto& hardware = infos.front()->hardware;
+  const auto& hardware_vendor = infos.front()->hardware_vendor;
   const auto hash = base::PersistentHash(infos.front()->address);
-  std::string device_id = hardware + std::to_string(hash);
+  std::string device_id = hardware_vendor + std::to_string(hash);
 
   base::Value hardware_keyrings(base::Value::Type::DICTIONARY);
   const base::Value* value = GetPrefForHardwareKeyring(prefs_);
@@ -777,12 +786,12 @@ void KeyringController::AddHardwareAccounts(
     account_meta = meta_value->Clone();
 
   for (const auto& info : infos) {
-    DCHECK_EQ(hardware, info->hardware);
-    if (hardware != info->hardware)
+    DCHECK_EQ(hardware_vendor, info->hardware_vendor);
+    if (hardware_vendor != info->hardware_vendor)
       continue;
     base::Value hw_account(base::Value::Type::DICTIONARY);
     hw_account.SetStringKey(kAccountName, info->name);
-    hw_account.SetStringKey(kAccountHardware, info->hardware);
+    hw_account.SetStringKey(kHardwareVendor, info->hardware_vendor);
     hw_account.SetStringKey(kHardwareDerivationPath, info->derivation_path);
 
     account_meta.SetKey(info->address, std::move(hw_account));
@@ -794,6 +803,7 @@ void KeyringController::AddHardwareAccounts(
   DictionaryPrefUpdate update(prefs_, kBraveWalletKeyrings);
   base::DictionaryValue* keyrings_pref = update.Get();
   keyrings_pref->SetKey(kHardwareKeyrings, std::move(hardware_keyrings));
+  NotifyAccountsChanged();
 }
 
 void KeyringController::RemoveHardwareAccount(const std::string& address) {
@@ -817,6 +827,7 @@ void KeyringController::RemoveHardwareAccount(const std::string& address) {
     DictionaryPrefUpdate update(prefs_, kBraveWalletKeyrings);
     base::DictionaryValue* keyrings_pref = update.Get();
     keyrings_pref->SetKey(kHardwareKeyrings, std::move(hardware_keyrings));
+    NotifyAccountsChanged();
     return;
   }
 }

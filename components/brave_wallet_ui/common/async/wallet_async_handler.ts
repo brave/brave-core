@@ -72,14 +72,7 @@ async function refreshWalletInfo (store: Store) {
   const assetPriceController = apiProxy.assetRatioController
   const result = await walletHandler.getWalletInfo()
   const hardwareAccounts = await apiProxy.keyringController.getHardwareAccounts()
-  for (const account of hardwareAccounts.accounts) {
-    result.accountInfos.push({
-      address: account.address,
-      name: account.name,
-      isImported: false,
-      isLedger: true
-    })
-  }
+  result.accountInfos = [...result.accountInfos, ...hardwareAccounts.accounts]
 
   store.dispatch(WalletActions.initialized(result))
   const networkList = await ethJsonRpcController.getAllNetworks()

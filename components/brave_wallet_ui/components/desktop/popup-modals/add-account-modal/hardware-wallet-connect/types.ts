@@ -42,5 +42,5 @@ export interface HardwareWalletAccount {
   address: string
   derivationPath: string
   name: string
-  hardware: string
+  hardwareVendor: string
 }

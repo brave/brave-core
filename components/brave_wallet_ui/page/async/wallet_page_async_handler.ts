@@ -137,14 +137,12 @@ handler.on(WalletPageActions.updateAccountName.getType(), async (store, payload:
 handler.on(WalletPageActions.addHardwareAccounts.getType(), async (store, accounts: HardwareWalletAccount[]) => {
   const keyringController = (await getAPIProxy()).keyringController
   await keyringController.addHardwareAccounts(accounts)
-  store.dispatch(WalletActions.accountsChanged())
   store.dispatch(WalletPageActions.setShowAddModal(false))
 })
 
 handler.on(WalletPageActions.removeHardwareAccount.getType(), async (store, payload: RemoveHardwareAccountPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   await keyringController.removeHardwareAccount(payload.address)
-  store.dispatch(WalletActions.accountsChanged())
   store.dispatch(WalletPageActions.setShowAddModal(false))
 })
 

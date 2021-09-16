@@ -582,7 +582,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
         address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
         derivationPath: makeDerivationPath(i + opts.startIndex),
         name: 'Ledger 1',
-        hardware: 'Ledger'
+        hardwareVendor: 'Ledger'
       })))
     })
   }

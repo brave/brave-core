@@ -1419,23 +1419,23 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
 
   bool callback_called = false;
   controller.GetHardwareAccounts(base::BindLambdaForTesting(
-      [&](std::vector<mojom::HardwareWalletAccountPtr> accounts) {
+      [&](std::vector<mojom::AccountInfoPtr> accounts) {
         EXPECT_EQ(accounts.size(), size_t(3));
 
         EXPECT_EQ(accounts[0]->address, "0x111");
         EXPECT_EQ(accounts[0]->name, "name 1");
-        EXPECT_EQ(accounts[0]->derivation_path, "m/44'/60'/1'/0/0");
-        EXPECT_EQ(accounts[0]->hardware, "Ledger");
+        EXPECT_EQ(accounts[0]->is_imported, false);
+        EXPECT_EQ(accounts[0]->is_ledger, true);
 
         EXPECT_EQ(accounts[1]->address, "0x264");
         EXPECT_EQ(accounts[1]->name, "name 2");
-        EXPECT_EQ(accounts[1]->derivation_path, "m/44'/60'/2'/0/0");
-        EXPECT_EQ(accounts[1]->hardware, "Ledger");
+        EXPECT_EQ(accounts[1]->is_imported, false);
+        EXPECT_EQ(accounts[1]->is_ledger, true);
 
         EXPECT_EQ(accounts[2]->address, "0xEA0");
         EXPECT_EQ(accounts[2]->name, "name 3");
-        EXPECT_EQ(accounts[2]->derivation_path, "m/44'/60'/3'/0/0");
-        EXPECT_EQ(accounts[2]->hardware, "Ledger");
+        EXPECT_EQ(accounts[2]->is_imported, false);
+        EXPECT_EQ(accounts[2]->is_ledger, true);
 
         callback_called = true;
       }));
@@ -1462,13 +1462,13 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
 
   callback_called = false;
   controller.GetHardwareAccounts(base::BindLambdaForTesting(
-      [&](std::vector<mojom::HardwareWalletAccountPtr> accounts) {
+      [&](std::vector<mojom::AccountInfoPtr> accounts) {
         EXPECT_EQ(accounts.size(), size_t(1));
 
         EXPECT_EQ(accounts[0]->address, "0xEA0");
         EXPECT_EQ(accounts[0]->name, "name 3");
-        EXPECT_EQ(accounts[0]->derivation_path, "m/44'/60'/3'/0/0");
-        EXPECT_EQ(accounts[0]->hardware, "Ledger");
+        EXPECT_EQ(accounts[0]->is_imported, false);
+        EXPECT_EQ(accounts[0]->is_ledger, true);
 
         callback_called = true;
       }));
