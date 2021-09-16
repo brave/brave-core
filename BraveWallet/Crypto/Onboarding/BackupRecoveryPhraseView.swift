@@ -122,7 +122,7 @@ struct BackupRecoveryPhraseView: View {
                 presentationMode.dismiss()
               }) {
                 Text("Cancel")
-                  .foregroundColor(.accentColor)
+                  .foregroundColor(Color(.braveOrange))
               }
             }
           }

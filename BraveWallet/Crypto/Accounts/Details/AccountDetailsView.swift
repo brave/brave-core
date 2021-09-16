@@ -92,11 +92,13 @@ struct AccountDetailsView: View {
         ToolbarItemGroup(placement: .cancellationAction) {
           Button(action: { presentationMode.dismiss() }) {
             Text("Cancel") // NSLocalizedString
+              .foregroundColor(Color(.braveOrange))
           }
         }
         ToolbarItemGroup(placement: .confirmationAction) {
           Button(action: renameAccountAndDismiss) {
             Text("Done") // NSLocalizedString
+              .foregroundColor(Color(.braveOrange))
           }
         }
       }
