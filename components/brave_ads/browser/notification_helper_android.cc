@@ -44,9 +44,9 @@ bool IsBraveAdsNotificationChannelEnabled(const bool is_foreground) {
 
   JNIEnv* env = base::android::AttachCurrentThread();
 
-  const auto j_channel_id = (is_foreground)
-                          ? Java_BraveAds_getBraveAdsChannelId(env)
-                          : Java_BraveAds_getBraveAdsBackgroundChannelId(env);
+  const auto j_channel_id =
+      (is_foreground) ? Java_BraveAds_getBraveAdsChannelId(env)
+                      : Java_BraveAds_getBraveAdsBackgroundChannelId(env);
 
   const auto status = static_cast<NotificationChannelStatus>(
       Java_BraveNotificationSettingsBridge_getChannelStatus(env, j_channel_id));
