@@ -51,6 +51,11 @@ class BraveClassVisitor extends ClassVisitor {
             access &= ~ACC_PRIVATE;
             access |= ACC_PUBLIC;
         }
+
+        public void makePrivate() {
+            access &= ~ACC_PUBLIC;
+            access |= ACC_PRIVATE;
+        }
     }
 
     class BraveMethodVisitor extends MethodVisitor {
@@ -113,6 +118,8 @@ class BraveClassVisitor extends ClassVisitor {
             new HashMap<String, ArrayList<String>>();
     private Map<String, ArrayList<String>> mMakePublicMethods =
             new HashMap<String, ArrayList<String>>();
+    private Map<String, ArrayList<String>> mMakePrivateMethods =
+            new HashMap<String, ArrayList<String>>();
     private Map<String, ArrayList<String>> mMakePublicInnerClasses =
             new HashMap<String, ArrayList<String>>();
     private Map<String, Map<String, String>> mChangeOwnerMethods =
@@ -161,6 +168,10 @@ class BraveClassVisitor extends ClassVisitor {
                 mMakePublicMethods.entrySet()) {
             String entryClassName = entry.getKey();
             ArrayList<String> methodNames = entry.getValue();
+            // Why className.contains(entryClassName)? This seems erroneous
+            if (className.equals(entryClassName) != className.contains(entryClassName)) {
+                   System.out.println("Warning: class name " + className + " may not be written correctly!");
+            }
             return className.contains(entryClassName) &&
                    methodNames.contains(methodName);
         }
@@ -181,6 +192,31 @@ class BraveClassVisitor extends ClassVisitor {
         methods.add(methodName);
     }
 
+    private boolean shouldMakePrivateMethod(String className, String methodName) {
+        for(Map.Entry<String, ArrayList<String>> entry :
+                mMakePrivateMethods.entrySet()) {
+            String entryClassName = entry.getKey();
+            ArrayList<String> methodNames = entry.getValue();
+            return className.equals(entryClassName) &&
+                   methodNames.contains(methodName);
+        }
+
+        return false;
+    }
+
+    private boolean shouldMakePrivateMethod(String methodName) {
+        return shouldMakePrivateMethod(mName, methodName);
+    }
+
+    protected void makePrivateMethod(String className, String methodName) {
+        ArrayList methods = mMakePrivateMethods.get(className);
+        if (methods == null) {
+            methods = new ArrayList<String>();
+            mMakePrivateMethods.put(className, methods);
+        }
+        methods.add(methodName);
+    }
+
     private String maybeChangeOwner(String owner, String methodName) {
         if (mChangeOwnerMethods.containsKey(owner)) {
             Map<String, String> methods = mChangeOwnerMethods.get(owner);
@@ -194,7 +230,7 @@ class BraveClassVisitor extends ClassVisitor {
             }
         }
         // Explicitly redirect ownership to a new super class
-        if (mSuperName.equals(owner) && !mSuperName.equals("java/lang/Object") && mSuperNames.containsKey(mName)) {
+        if (mSuperName.equals(owner) && mSuperNames.containsKey(mName)) {
             String newSuperOwner = mSuperNames.get(mName);
             if (!newSuperOwner.equals(mSuperName)) {
                 System.out.println("redirecting ownership for " + mSuperName + "." + methodName
@@ -437,6 +473,9 @@ class BraveClassVisitor extends ClassVisitor {
         if (shouldMakePublicMethod(name)) {
             System.out.println("make " + name + " public in " + mName);
             method.makePublic();
+        } else if (shouldMakePrivateMethod(name)) {
+            System.out.println("make " + name + " private in " + mName);
+            method.makePrivate();
         }
         return visitMethodImpl(method);
     }

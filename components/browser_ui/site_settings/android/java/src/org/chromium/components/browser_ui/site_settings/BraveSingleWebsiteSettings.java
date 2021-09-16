@@ -35,19 +35,15 @@ public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
     }
 
     public void setupContentSettingsPreferences() {
-        for (@ContentSettingsType int type : SiteSettingsUtil.SETTINGS_ORDER) {
-            Preference preference = isActionableContentSettingsEnabled()
-                    ? new ChromeSwitchPreference(getStyledContext())
-                    : new ListPreference(getStyledContext());
-            preference.setKey(getPreferenceKey(type));
+        Preference preference = isActionableContentSettingsEnabled()
+                ? new ChromeSwitchPreference(getStyledContext())
+                : new ListPreference(getStyledContext());
+        preference.setKey(getPreferenceKey(ContentSettingsType.AUTOPLAY));
 
-            if (type == ContentSettingsType.AUTOPLAY) {
-                setUpAutoplayPreference(preference);
-            }
-        }
+        setUpAutoplayPreference(preference);
         // SingleWebsiteSettings.setupContentSettingsPreferences has its own for loop
         BraveReflectionUtil.InvokeMethod(
-                    SingleWebsiteSettings.class, null, "setupContentSettingsPreferences");
+                    SingleWebsiteSettings.class, this, "setupContentSettingsPreferences");
     }
 
     private void setUpAutoplayPreference(Preference preference) {
@@ -58,7 +54,7 @@ public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
         Website mSite = (Website) BraveReflectionUtil.getField(SingleWebsiteSettings.class, "mSite", this);
         Integer currentValue =
                 mSite.getContentSetting(browserContextHandle, ContentSettingsType.AUTOPLAY);
-        // In order to always show the sound permission, set it up with the default value if it
+        // In order to always show the autoplay permission, set it up with the default value if it
         // doesn't have a current value.
         if (currentValue == null) {
             currentValue = WebsitePreferenceBridge.isCategoryEnabled(
@@ -67,7 +63,10 @@ public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
                     : ContentSettingValues.BLOCK;
         }
         // Not possible to embargo AUTOPLAY.
-        setupContentSettingsPreference(preference, currentValue, false /* isEmbargoed */);
+        BraveReflectionUtil.InvokeMethod(
+                    SingleWebsiteSettings.class, this, "setupContentSettingsPreference",
+                    Preference.class, preference, Integer.class, currentValue,
+                    boolean.class, false);
     }
 
     private Context getStyledContext() {
@@ -78,10 +77,5 @@ public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
     private static boolean isActionableContentSettingsEnabled() {
         assert (false);
         return false;
-    }
-
-    private void setupContentSettingsPreference(Preference preference,
-            @ContentSettingValues @Nullable Integer value, boolean isEmbargoed) {
-        assert (false);
     }
 }

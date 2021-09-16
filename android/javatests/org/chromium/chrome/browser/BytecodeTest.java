@@ -302,6 +302,36 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
                         "getResourceItem", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                        "getAddExceptionDialogMessage", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                        "resetList", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "getPreferenceKey", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "setupContentSettingsPreferences", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "setupContentSettingsPreference", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/components/browser_ui/site_settings/Website",
+                        "getPermissionInfo", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/components/browser_ui/site_settings/Website",
+                        "getContentSettingException", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/components/browser_ui/site_settings/Website",
+                        "getAddress", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/components/browser_ui/site_settings/Website",
+                        "setContentSettingException", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/components/browser_ui/site_settings/Website",
+                        "setContentSetting", false, null));
     }
 
     @Test
@@ -560,6 +590,12 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
                 "mSearchEngineAdapter"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                "mCategory"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                "mSite"));
     }
 
     @Test

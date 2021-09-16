@@ -14,21 +14,11 @@ public class BraveWebsiteClassAdapter extends BraveClassVisitor {
     public BraveWebsiteClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeSuperName(sBraveWebsiteClassName, sWebsiteClassName);
-        makeNonFinalClass(sWebsiteClassName);
+        changeSuperName(sWebsiteClassName, sBraveWebsiteClassName);
 
-        makePublicMethod(sWebsiteClassName, "setContentSetting");
-        redirectConstructor(sWebsiteClassName, sBraveWebsiteClassName);
+        makePrivateMethod(sWebsiteClassName, "setContentSetting");
 
-//         changeMethodOwner(sWebsiteClassName, "setContentSetting", sBraveWebsiteClassName);
-//         changeMethodOwner(sBraveWebsiteClassName, "getAddress", sWebsiteClassName);
-//         changeMethodOwner(sBraveWebsiteClassName, "getPermissionInfo", sWebsiteClassName);
-//         changeMethodOwner(sBraveWebsiteClassName, "getContentSettingException", sWebsiteClassName);
-//         changeMethodOwner(sBraveWebsiteClassName, "setContentSettingException", sWebsiteClassName);
-        
-        deleteMethod(sBraveWebsiteClassName, "getAddress");
-        deleteMethod(sBraveWebsiteClassName, "getPermissionInfo");
-        deleteMethod(sBraveWebsiteClassName, "getContentSettingException");
-        deleteMethod(sBraveWebsiteClassName, "setContentSettingException");
+        makePublicMethod(sBraveWebsiteClassName, "setContentSetting");
+        changeMethodOwner(sWebsiteClassName, "setContentSetting", sBraveWebsiteClassName);
     }
 }

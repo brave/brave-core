@@ -46,7 +46,7 @@ public class BraveSingleCategorySettings extends SiteSettingsPreferenceFragment
         assert resource > 0;
         return getString(resource);
     }
-    
+
     public void resetList() {
         BraveReflectionUtil.InvokeMethod(SingleCategorySettings.class, this, "resetList");
         BrowserContextHandle browserContextHandle =

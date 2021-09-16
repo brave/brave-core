@@ -17,44 +17,28 @@ public class BraveWebsite {
 
     public void setContentSetting(BrowserContextHandle browserContextHandle,
             @ContentSettingsType int type, @ContentSettingValues int value) {
-        if (getPermissionInfo(type) != null) {
-            getPermissionInfo(type).setContentSetting(browserContextHandle, value);
+        PermissionInfo info = (PermissionInfo) BraveReflectionUtil.InvokeMethod(Website.class, this, "getPermissionInfo",
+                int.class, type);
+        if (info != null) {
+            info.setContentSetting(browserContextHandle, value);
             return;
         }
 
-        ContentSettingException exception = getContentSettingException(type);
+        ContentSettingException exception = (ContentSettingException) BraveReflectionUtil.InvokeMethod(
+                Website.class, this, "getContentSettingException", int.class, type);
         if (type == ContentSettingsType.AUTOPLAY) {
             if (exception == null) {
                 exception = new ContentSettingException(
-                        ContentSettingsType.AUTOPLAY, getAddress().getHost(), value, "");
-                setContentSettingException(type, exception);
+                        ContentSettingsType.AUTOPLAY, ((WebsiteAddress) BraveReflectionUtil.InvokeMethod(
+                                Website.class, this, "getAddress")).getHost(), value, "");
+                BraveReflectionUtil.InvokeMethod(
+                        Website.class, this, "setContentSettingException", int.class, type, ContentSettingException.class, exception);
             }
         }
-        
+
         BraveReflectionUtil.InvokeMethod(
                 Website.class, this, "setContentSetting",
                 BrowserContextHandle.class, browserContextHandle,
                 int.class, type, int.class, value);
-    }
-    
-    // placeholders
-    public PermissionInfo getPermissionInfo(@ContentSettingsType int type) {
-        assert (false);
-        return null;
-    }
-
-    public ContentSettingException getContentSettingException(@ContentSettingsType int type) {
-        assert (false);
-        return null;
-    }
-    
-    public void setContentSettingException(
-            @ContentSettingsType int type, ContentSettingException exception) {
-        assert (false);
-    }
-
-    public WebsiteAddress getAddress() {
-        assert (false);
-        return null;
     }
 }
