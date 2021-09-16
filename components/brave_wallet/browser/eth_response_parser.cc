@@ -160,4 +160,12 @@ bool ParseEthCall(const std::string& json, std::string* result) {
   return ParseSingleStringResult(json, result);
 }
 
+bool ParseEthEstimateGas(const std::string& json, std::string* result) {
+  return ParseSingleStringResult(json, result);
+}
+
+bool ParseEthGasPrice(const std::string& json, std::string* result) {
+  return ParseSingleStringResult(json, result);
+}
+
 }  // namespace brave_wallet

@@ -485,4 +485,64 @@ GURL EthJsonRpcController::GetBlockTrackerUrlFromNetwork(std::string chain_id) {
   return GURL();
 }
 
+void EthJsonRpcController::GetEstimateGas(const std::string& from_address,
+                                          const std::string& to_address,
+                                          const std::string& gas,
+                                          const std::string& gas_price,
+                                          const std::string& value,
+                                          const std::string& data,
+                                          GetEstimateGasCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetEstimateGas,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(eth_estimateGas(from_address, to_address, gas, gas_price,
+                                 value, data, "latest"),
+                 true, std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnGetEstimateGas(
+    GetEstimateGasCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string result;
+  if (!ParseEthEstimateGas(body, &result)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, result);
+}
+
+void EthJsonRpcController::GetGasPrice(GetGasPriceCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetGasPrice,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(eth_gasPrice(), true, std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnGetGasPrice(
+    GetGasPriceCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string result;
+  if (!ParseEthGasPrice(body, &result)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, result);
+}
+
 }  // namespace brave_wallet
