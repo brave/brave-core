@@ -23,7 +23,6 @@ const int kMaximumHistoryEntries = 3600;
 class UserActivity final {
  public:
   UserActivity();
-
   ~UserActivity();
 
   UserActivity(const UserActivity&) = delete;

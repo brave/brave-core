@@ -24,7 +24,6 @@ class TextClassification final
     : public Resource<ml::pipeline::TextProcessing*> {
  public:
   TextClassification();
-
   ~TextClassification() override;
 
   bool IsInitialized() const override;

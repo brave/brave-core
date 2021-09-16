@@ -19,14 +19,10 @@ namespace model {
 class Linear final {
  public:
   Linear();
-
   Linear(const Linear& other);
-
   explicit Linear(const std::string& model);
-
   Linear(const std::map<std::string, VectorData>& weights,
          const std::map<std::string, double>& biases);
-
   ~Linear();
 
   PredictionMap Predict(const VectorData& x) const;

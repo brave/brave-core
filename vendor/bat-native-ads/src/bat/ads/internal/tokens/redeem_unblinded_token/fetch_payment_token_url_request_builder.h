@@ -18,7 +18,6 @@ class FetchPaymentTokenUrlRequestBuilder final : UrlRequestBuilder {
  public:
   explicit FetchPaymentTokenUrlRequestBuilder(
       const ConfirmationInfo& confirmation);
-
   ~FetchPaymentTokenUrlRequestBuilder() override;
 
   mojom::UrlRequestPtr Build() override;

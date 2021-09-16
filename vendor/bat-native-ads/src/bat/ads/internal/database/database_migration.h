@@ -15,7 +15,6 @@ namespace database {
 class Migration final {
  public:
   Migration();
-
   ~Migration();
 
   void FromVersion(const int from_version, ResultCallback callback);

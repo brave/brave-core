@@ -24,7 +24,6 @@ namespace table {
 class AdEvents final : public Table {
  public:
   AdEvents();
-
   ~AdEvents() override;
 
   void LogEvent(const AdEventInfo& ad_event, ResultCallback callback);

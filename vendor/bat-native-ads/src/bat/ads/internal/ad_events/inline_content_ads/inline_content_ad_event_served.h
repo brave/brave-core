@@ -15,7 +15,6 @@ namespace inline_content_ads {
 class AdEventServed final : public AdEvent<InlineContentAdInfo> {
  public:
   AdEventServed();
-
   ~AdEventServed() override;
 
   void FireEvent(const InlineContentAdInfo& ad) override;

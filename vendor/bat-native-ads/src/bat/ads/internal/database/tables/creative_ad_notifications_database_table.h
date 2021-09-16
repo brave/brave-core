@@ -36,7 +36,6 @@ class Segments;
 class CreativeAdNotifications final : public Table {
  public:
   CreativeAdNotifications();
-
   ~CreativeAdNotifications() override;
 
   void Save(const CreativeAdNotificationList& creative_ad_notifications,

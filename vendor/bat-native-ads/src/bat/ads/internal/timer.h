@@ -21,7 +21,6 @@ namespace ads {
 class Timer final {
  public:
   Timer();
-
   ~Timer();
 
   // Set a mock implementation of base::OneShotTimer which requires |Fire()| to

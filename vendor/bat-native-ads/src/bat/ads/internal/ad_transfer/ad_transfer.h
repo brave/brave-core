@@ -24,7 +24,6 @@ namespace ads {
 class AdTransfer final {
  public:
   AdTransfer();
-
   ~AdTransfer();
 
   void AddObserver(AdTransferObserver* observer);

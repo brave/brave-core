@@ -15,7 +15,6 @@ namespace model {
 class PurchaseIntent final : public Model {
  public:
   PurchaseIntent();
-
   ~PurchaseIntent() override;
 
   SegmentList GetSegments() const override;

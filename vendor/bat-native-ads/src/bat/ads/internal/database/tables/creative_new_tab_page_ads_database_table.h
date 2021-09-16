@@ -43,7 +43,6 @@ class Segments;
 class CreativeNewTabPageAds final : public Table {
  public:
   CreativeNewTabPageAds();
-
   ~CreativeNewTabPageAds() override;
 
   void Save(const CreativeNewTabPageAdList& creative_new_tab_page_ads,

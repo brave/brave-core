@@ -20,7 +20,6 @@ struct BundleState;
 class Bundle final {
  public:
   Bundle();
-
   ~Bundle();
 
   void BuildFromCatalog(const Catalog& catalog);

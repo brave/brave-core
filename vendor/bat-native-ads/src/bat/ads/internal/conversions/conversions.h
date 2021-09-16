@@ -24,7 +24,6 @@ struct VerifiableConversionInfo;
 class Conversions final {
  public:
   Conversions();
-
   ~Conversions();
 
   void AddObserver(ConversionsObserver* observer);

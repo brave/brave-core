@@ -15,7 +15,6 @@ namespace model {
 class TextClassification final : public Model {
  public:
   TextClassification();
-
   ~TextClassification() override;
 
   SegmentList GetSegments() const override;

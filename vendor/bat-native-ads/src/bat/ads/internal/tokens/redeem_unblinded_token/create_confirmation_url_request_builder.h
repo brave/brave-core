@@ -19,7 +19,6 @@ class CreateConfirmationUrlRequestBuilder final : UrlRequestBuilder {
  public:
   explicit CreateConfirmationUrlRequestBuilder(
       const ConfirmationInfo& confirmation);
-
   ~CreateConfirmationUrlRequestBuilder() override;
 
   mojom::UrlRequestPtr Build() override;

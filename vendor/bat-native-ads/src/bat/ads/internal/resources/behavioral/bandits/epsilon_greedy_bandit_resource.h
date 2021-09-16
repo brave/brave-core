@@ -19,7 +19,6 @@ namespace resource {
 class EpsilonGreedyBandit final : public Resource<SegmentList> {
  public:
   EpsilonGreedyBandit();
-
   ~EpsilonGreedyBandit() override;
 
   bool IsInitialized() const override;

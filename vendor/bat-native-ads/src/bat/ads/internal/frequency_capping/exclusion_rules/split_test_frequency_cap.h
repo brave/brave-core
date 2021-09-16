@@ -16,7 +16,6 @@ namespace ads {
 class SplitTestFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
   SplitTestFrequencyCap();
-
   ~SplitTestFrequencyCap() override;
 
   SplitTestFrequencyCap(const SplitTestFrequencyCap&) = delete;

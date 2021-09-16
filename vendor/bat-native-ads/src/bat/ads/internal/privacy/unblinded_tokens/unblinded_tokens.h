@@ -20,7 +20,6 @@ struct UnblindedTokenInfo;
 class UnblindedTokens final {
  public:
   UnblindedTokens();
-
   ~UnblindedTokens();
 
   UnblindedTokenInfo GetToken() const;

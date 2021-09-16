@@ -29,7 +29,6 @@ namespace processor {
 class PurchaseIntent final : public Processor<GURL> {
  public:
   explicit PurchaseIntent(resource::PurchaseIntent* resource);
-
   ~PurchaseIntent() override;
 
   void Process(const GURL& url) override;

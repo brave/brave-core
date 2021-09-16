@@ -15,7 +15,6 @@ namespace ads {
 class CatalogFrequencyCap final : public PermissionRule {
  public:
   CatalogFrequencyCap();
-
   ~CatalogFrequencyCap() override;
 
   CatalogFrequencyCap(const CatalogFrequencyCap&) = delete;

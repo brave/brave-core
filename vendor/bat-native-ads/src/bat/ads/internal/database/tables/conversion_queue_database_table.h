@@ -32,7 +32,6 @@ namespace table {
 class ConversionQueue final : public Table {
  public:
   ConversionQueue();
-
   ~ConversionQueue() override;
 
   void Save(const ConversionQueueItemList& conversion_queue_items,

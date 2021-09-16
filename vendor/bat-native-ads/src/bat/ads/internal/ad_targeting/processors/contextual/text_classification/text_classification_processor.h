@@ -22,7 +22,6 @@ namespace processor {
 class TextClassification final : public Processor<std::string> {
  public:
   explicit TextClassification(resource::TextClassification* resource);
-
   ~TextClassification() override;
 
   void Process(const std::string& text) override;

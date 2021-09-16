@@ -21,7 +21,6 @@ namespace table {
 class Dayparts final : public Table {
  public:
   Dayparts();
-
   ~Dayparts() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,

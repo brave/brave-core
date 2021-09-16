@@ -19,7 +19,6 @@ struct NewTabPageAdInfo;
 class NewTabPageAd final : public NewTabPageAdObserver {
  public:
   NewTabPageAd();
-
   ~NewTabPageAd() override;
 
   void AddObserver(NewTabPageAdObserver* observer);

@@ -43,7 +43,6 @@ class Segments;
 class CreativePromotedContentAds final : public Table {
  public:
   CreativePromotedContentAds();
-
   ~CreativePromotedContentAds() override;
 
   void Save(const CreativePromotedContentAdList& creative_promoted_content_ads,

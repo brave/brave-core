@@ -18,7 +18,6 @@ namespace geographic {
 class GetSubdivisionUrlRequestBuilder final : UrlRequestBuilder {
  public:
   GetSubdivisionUrlRequestBuilder();
-
   ~GetSubdivisionUrlRequestBuilder() override;
 
   mojom::UrlRequestPtr Build() override;

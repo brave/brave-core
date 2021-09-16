@@ -21,7 +21,6 @@ namespace table {
 class GeoTargets final : public Table {
  public:
   GeoTargets();
-
   ~GeoTargets() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,

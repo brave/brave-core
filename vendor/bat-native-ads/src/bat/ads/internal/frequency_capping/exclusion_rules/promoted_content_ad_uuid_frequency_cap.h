@@ -17,7 +17,6 @@ namespace ads {
 class PromotedContentAdUuidFrequencyCap final : public ExclusionRule<AdInfo> {
  public:
   explicit PromotedContentAdUuidFrequencyCap(const AdEventList& ad_events);
-
   ~PromotedContentAdUuidFrequencyCap() override;
 
   PromotedContentAdUuidFrequencyCap(const PromotedContentAdUuidFrequencyCap&) =

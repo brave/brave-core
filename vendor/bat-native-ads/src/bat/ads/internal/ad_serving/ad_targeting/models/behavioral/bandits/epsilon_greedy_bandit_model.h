@@ -15,7 +15,6 @@ namespace model {
 class EpsilonGreedyBandit final : public Model {
  public:
   EpsilonGreedyBandit();
-
   ~EpsilonGreedyBandit() override;
 
   SegmentList GetSegments() const override;

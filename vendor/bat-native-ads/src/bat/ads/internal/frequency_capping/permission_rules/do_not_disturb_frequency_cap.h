@@ -15,7 +15,6 @@ namespace ads {
 class DoNotDisturbFrequencyCap final : public PermissionRule {
  public:
   DoNotDisturbFrequencyCap();
-
   ~DoNotDisturbFrequencyCap() override;
 
   DoNotDisturbFrequencyCap(const DoNotDisturbFrequencyCap&) = delete;

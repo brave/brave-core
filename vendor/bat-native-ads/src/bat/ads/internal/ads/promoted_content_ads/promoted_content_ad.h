@@ -19,7 +19,6 @@ struct PromotedContentAdInfo;
 class PromotedContentAd final : public PromotedContentAdObserver {
  public:
   PromotedContentAd();
-
   ~PromotedContentAd() override;
 
   void AddObserver(PromotedContentAdObserver* observer);

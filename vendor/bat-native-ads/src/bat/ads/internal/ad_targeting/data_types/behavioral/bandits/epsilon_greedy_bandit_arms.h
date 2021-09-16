@@ -20,11 +20,9 @@ using EpsilonGreedyBanditArmMap =
 class EpsilonGreedyBanditArms final {
  public:
   EpsilonGreedyBanditArms();
-
   ~EpsilonGreedyBanditArms();
 
   static EpsilonGreedyBanditArmMap FromJson(const std::string& json);
-
   static std::string ToJson(const EpsilonGreedyBanditArmMap& arms);
 };
 

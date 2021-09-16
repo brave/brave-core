@@ -40,7 +40,6 @@ class Account final : public AdRewardsDelegate,
                       public RefillUnblindedTokensDelegate {
  public:
   explicit Account(privacy::TokenGeneratorInterface* token_generator);
-
   ~Account() override;
 
   void AddObserver(AccountObserver* observer);

@@ -19,7 +19,6 @@ struct AdNotificationInfo;
 class AdNotification final : public AdNotificationObserver {
  public:
   AdNotification();
-
   ~AdNotification() override;
 
   void AddObserver(AdNotificationObserver* observer);

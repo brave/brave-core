@@ -17,7 +17,6 @@ class MarkedToNoLongerReceiveFrequencyCap final
     : public ExclusionRule<CreativeAdInfo> {
  public:
   MarkedToNoLongerReceiveFrequencyCap();
-
   ~MarkedToNoLongerReceiveFrequencyCap() override;
 
   MarkedToNoLongerReceiveFrequencyCap(

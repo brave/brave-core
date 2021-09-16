@@ -30,7 +30,6 @@ class RefillUnblindedTokens final {
  public:
   explicit RefillUnblindedTokens(
       privacy::TokenGeneratorInterface* token_generator);
-
   ~RefillUnblindedTokens();
 
   void set_delegate(RefillUnblindedTokensDelegate* delegate);

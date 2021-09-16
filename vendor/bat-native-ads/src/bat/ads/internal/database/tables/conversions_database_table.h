@@ -27,7 +27,6 @@ namespace table {
 class Conversions final : public Table {
  public:
   Conversions();
-
   ~Conversions() override;
 
   void Save(const ConversionList& conversions, ResultCallback callback);

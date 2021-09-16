@@ -21,7 +21,6 @@ namespace table {
 class Campaigns final : public Table {
  public:
   Campaigns();
-
   ~Campaigns() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,

@@ -17,7 +17,6 @@ class MarkedAsInappropriateFrequencyCap final
     : public ExclusionRule<CreativeAdInfo> {
  public:
   MarkedAsInappropriateFrequencyCap();
-
   ~MarkedAsInappropriateFrequencyCap() override;
 
   MarkedAsInappropriateFrequencyCap(const MarkedAsInappropriateFrequencyCap&) =

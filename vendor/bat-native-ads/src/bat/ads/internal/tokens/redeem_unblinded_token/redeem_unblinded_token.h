@@ -20,7 +20,6 @@ struct UnblindedTokenInfo;
 class RedeemUnblindedToken final {
  public:
   RedeemUnblindedToken();
-
   ~RedeemUnblindedToken();
 
   void set_delegate(RedeemUnblindedTokenDelegate* delegate);

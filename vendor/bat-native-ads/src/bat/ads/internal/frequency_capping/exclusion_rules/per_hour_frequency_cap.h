@@ -17,7 +17,6 @@ namespace ads {
 class PerHourFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   explicit PerHourFrequencyCap(const AdEventList& ad_events);
-
   ~PerHourFrequencyCap() override;
 
   PerHourFrequencyCap(const PerHourFrequencyCap&) = delete;

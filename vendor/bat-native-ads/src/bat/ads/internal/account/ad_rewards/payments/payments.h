@@ -25,7 +25,6 @@ struct PaymentInfo;
 class Payments final {
  public:
   Payments();
-
   ~Payments();
 
   bool SetFromJson(const std::string& json);

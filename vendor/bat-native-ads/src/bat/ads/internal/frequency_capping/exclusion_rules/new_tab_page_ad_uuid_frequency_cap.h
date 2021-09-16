@@ -17,7 +17,6 @@ namespace ads {
 class NewTabPageAdUuidFrequencyCap final : public ExclusionRule<AdInfo> {
  public:
   explicit NewTabPageAdUuidFrequencyCap(const AdEventList& ad_events);
-
   ~NewTabPageAdUuidFrequencyCap() override;
 
   NewTabPageAdUuidFrequencyCap(const NewTabPageAdUuidFrequencyCap&) = delete;

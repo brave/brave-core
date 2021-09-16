@@ -22,7 +22,6 @@ namespace ads {
 class TabManager final {
  public:
   TabManager();
-
   ~TabManager();
 
   TabManager(const TabManager&) = delete;

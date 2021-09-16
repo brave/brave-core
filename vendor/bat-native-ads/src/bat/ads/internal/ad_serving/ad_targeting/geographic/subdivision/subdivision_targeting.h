@@ -20,7 +20,6 @@ namespace geographic {
 class SubdivisionTargeting final {
  public:
   SubdivisionTargeting();
-
   ~SubdivisionTargeting();
 
   bool ShouldAllowForLocale(const std::string& locale) const;

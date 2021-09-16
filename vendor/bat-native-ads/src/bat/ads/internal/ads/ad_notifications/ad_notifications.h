@@ -24,7 +24,6 @@ namespace ads {
 class AdNotifications final {
  public:
   AdNotifications();
-
   ~AdNotifications();
 
   static AdNotifications* Get();

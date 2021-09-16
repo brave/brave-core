@@ -24,7 +24,6 @@ class RedeemUnblindedPaymentTokensDelegate;
 class RedeemUnblindedPaymentTokens final {
  public:
   RedeemUnblindedPaymentTokens();
-
   ~RedeemUnblindedPaymentTokens();
 
   void set_delegate(RedeemUnblindedPaymentTokensDelegate* delegate);

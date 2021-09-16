@@ -40,7 +40,6 @@ struct ClientInfo;
 class Client final {
  public:
   Client();
-
   ~Client();
 
   static Client* Get();

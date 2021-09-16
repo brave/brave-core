@@ -18,7 +18,6 @@ namespace database {
 class Initialize final {
  public:
   Initialize();
-
   ~Initialize();
 
   void CreateOrOpen(ResultCallback callback);

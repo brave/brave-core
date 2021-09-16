@@ -15,7 +15,6 @@ namespace ads {
 class UserActivityFrequencyCap final : public PermissionRule {
  public:
   UserActivityFrequencyCap();
-
   ~UserActivityFrequencyCap() override;
 
   UserActivityFrequencyCap(const UserActivityFrequencyCap&) = delete;

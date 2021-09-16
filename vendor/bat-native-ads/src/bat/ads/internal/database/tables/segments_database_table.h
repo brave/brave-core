@@ -21,7 +21,6 @@ namespace table {
 class Segments final : public Table {
  public:
   Segments();
-
   ~Segments() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,

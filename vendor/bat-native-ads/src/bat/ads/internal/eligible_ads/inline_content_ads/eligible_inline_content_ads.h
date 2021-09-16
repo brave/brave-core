@@ -36,7 +36,6 @@ class EligibleAds final {
   EligibleAds(
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting);
-
   ~EligibleAds();
 
   void SetLastServedAd(const CreativeAdInfo& creative_ad);

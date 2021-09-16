@@ -15,7 +15,6 @@ namespace ads {
 class FullScreenModeFrequencyCap final : public PermissionRule {
  public:
   FullScreenModeFrequencyCap();
-
   ~FullScreenModeFrequencyCap() override;
 
   FullScreenModeFrequencyCap(const FullScreenModeFrequencyCap&) = delete;

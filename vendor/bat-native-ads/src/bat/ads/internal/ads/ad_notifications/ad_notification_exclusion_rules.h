@@ -33,7 +33,6 @@ class ExclusionRules final {
       resource::AntiTargeting* anti_targeting_resource,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history);
-
   ~ExclusionRules();
 
   bool ShouldExcludeAd(const CreativeAdInfo& ad) const;

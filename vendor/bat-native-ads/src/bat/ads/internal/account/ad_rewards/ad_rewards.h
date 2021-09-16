@@ -27,7 +27,6 @@ class Payments;
 class AdRewards final {
  public:
   AdRewards();
-
   ~AdRewards();
 
   void set_delegate(AdRewardsDelegate* delegate);

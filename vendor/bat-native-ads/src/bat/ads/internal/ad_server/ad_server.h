@@ -19,7 +19,6 @@ class Catalog;
 class AdServer final {
  public:
   AdServer();
-
   ~AdServer();
 
   void AddObserver(AdServerObserver* observer);

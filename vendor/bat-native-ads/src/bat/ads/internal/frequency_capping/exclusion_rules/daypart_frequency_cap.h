@@ -16,7 +16,6 @@ namespace ads {
 class DaypartFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   DaypartFrequencyCap();
-
   ~DaypartFrequencyCap() override;
 
   DaypartFrequencyCap(const DaypartFrequencyCap&) = delete;

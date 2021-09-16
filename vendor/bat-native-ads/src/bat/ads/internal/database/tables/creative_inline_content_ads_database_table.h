@@ -42,7 +42,6 @@ class Segments;
 class CreativeInlineContentAds final : public Table {
  public:
   CreativeInlineContentAds();
-
   ~CreativeInlineContentAds() override;
 
   void Save(const CreativeInlineContentAdList& creative_inline_content_ads,

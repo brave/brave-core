@@ -22,7 +22,6 @@ class AntiTargetingFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   AntiTargetingFrequencyCap(resource::AntiTargeting* anti_targeting_resource,
                             const BrowsingHistoryList& browsing_history);
-
   ~AntiTargetingFrequencyCap() override;
 
   AntiTargetingFrequencyCap(const AntiTargetingFrequencyCap&) = delete;

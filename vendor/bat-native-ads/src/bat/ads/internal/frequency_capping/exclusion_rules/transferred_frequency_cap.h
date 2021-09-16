@@ -17,7 +17,6 @@ namespace ads {
 class TransferredFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   explicit TransferredFrequencyCap(const AdEventList& ad_events);
-
   ~TransferredFrequencyCap() override;
 
   TransferredFrequencyCap(const TransferredFrequencyCap&) = delete;

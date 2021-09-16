@@ -15,7 +15,6 @@ namespace promoted_content_ads {
 class AdEventViewed final : public AdEvent<PromotedContentAdInfo> {
  public:
   AdEventViewed();
-
   ~AdEventViewed() override;
 
   void FireEvent(const PromotedContentAdInfo& ad) override;

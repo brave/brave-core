@@ -29,7 +29,6 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final : UrlRequestBuilder {
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
       const WalletInfo& wallet,
       const privacy::UnblindedTokenList& unblinded_tokens);
-
   ~RedeemUnblindedPaymentTokensUrlRequestBuilder() override;
 
   mojom::UrlRequestPtr Build() override;

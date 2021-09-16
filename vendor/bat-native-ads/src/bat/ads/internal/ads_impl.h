@@ -109,7 +109,6 @@ class AdsImpl final : public Ads,
                       public PromotedContentAdObserver {
  public:
   explicit AdsImpl(AdsClient* ads_client);
-
   ~AdsImpl() override;
 
   AdsImpl(const AdsImpl&) = delete;

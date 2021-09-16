@@ -18,7 +18,6 @@ namespace ads {
 class PaymentsUrlRequestBuilder final : UrlRequestBuilder {
  public:
   explicit PaymentsUrlRequestBuilder(const WalletInfo& wallet);
-
   ~PaymentsUrlRequestBuilder() override;
 
   mojom::UrlRequestPtr Build() override;

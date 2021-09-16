@@ -36,7 +36,6 @@ class AdServing final {
   AdServing(
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource);
-
   ~AdServing();
 
   void AddObserver(InlineContentAdServingObserver* observer);

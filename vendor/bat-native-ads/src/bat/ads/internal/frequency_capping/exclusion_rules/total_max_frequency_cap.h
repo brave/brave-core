@@ -17,7 +17,6 @@ namespace ads {
 class TotalMaxFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   explicit TotalMaxFrequencyCap(const AdEventList& ad_events);
-
   ~TotalMaxFrequencyCap() override;
 
   TotalMaxFrequencyCap(const TotalMaxFrequencyCap&) = delete;

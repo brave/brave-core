@@ -15,7 +15,6 @@ namespace ads {
 class MediaFrequencyCap final : public PermissionRule {
  public:
   MediaFrequencyCap();
-
   ~MediaFrequencyCap() override;
 
   MediaFrequencyCap(const MediaFrequencyCap&) = delete;

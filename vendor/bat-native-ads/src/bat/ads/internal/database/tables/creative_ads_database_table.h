@@ -22,7 +22,6 @@ namespace table {
 class CreativeAds final : public Table {
  public:
   CreativeAds();
-
   ~CreativeAds() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,

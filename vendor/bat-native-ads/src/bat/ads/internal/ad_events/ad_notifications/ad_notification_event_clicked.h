@@ -15,7 +15,6 @@ namespace ad_notifications {
 class AdEventClicked final : public AdEvent<AdNotificationInfo> {
  public:
   AdEventClicked();
-
   ~AdEventClicked() override;
 
   void FireEvent(const AdNotificationInfo& ad) override;

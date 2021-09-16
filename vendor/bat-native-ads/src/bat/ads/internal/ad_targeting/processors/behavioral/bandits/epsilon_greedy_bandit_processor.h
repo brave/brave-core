@@ -19,7 +19,6 @@ namespace processor {
 class EpsilonGreedyBandit final : public Processor<BanditFeedbackInfo> {
  public:
   EpsilonGreedyBandit();
-
   ~EpsilonGreedyBandit() override;
 
   void Process(const BanditFeedbackInfo& feedback) override;

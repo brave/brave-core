@@ -20,7 +20,6 @@ struct CatalogIssuersInfo;
 class Catalog final {
  public:
   Catalog();
-
   ~Catalog();
 
   bool FromJson(const std::string& json);

@@ -24,7 +24,6 @@ class SubdivisionTargetingFrequencyCap final
  public:
   SubdivisionTargetingFrequencyCap(
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting);
-
   ~SubdivisionTargetingFrequencyCap() override;
 
   SubdivisionTargetingFrequencyCap(const SubdivisionTargetingFrequencyCap&) =

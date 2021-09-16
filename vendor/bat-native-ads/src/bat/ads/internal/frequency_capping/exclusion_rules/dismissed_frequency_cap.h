@@ -17,7 +17,6 @@ namespace ads {
 class DismissedFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   explicit DismissedFrequencyCap(const AdEventList& ad_events);
-
   ~DismissedFrequencyCap() override;
 
   DismissedFrequencyCap(const DismissedFrequencyCap&) = delete;

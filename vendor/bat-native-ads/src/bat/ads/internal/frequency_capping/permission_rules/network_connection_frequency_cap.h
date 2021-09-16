@@ -15,7 +15,6 @@ namespace ads {
 class NetworkConnectionFrequencyCap final : public PermissionRule {
  public:
   NetworkConnectionFrequencyCap();
-
   ~NetworkConnectionFrequencyCap() override;
 
   NetworkConnectionFrequencyCap(const NetworkConnectionFrequencyCap&) = delete;

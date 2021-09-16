@@ -13,7 +13,6 @@ class AdsClient;
 class AdsClientHelper final {
  public:
   explicit AdsClientHelper(AdsClient* ads_client);
-
   ~AdsClientHelper();
 
   static AdsClient* Get();

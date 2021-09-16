@@ -16,7 +16,6 @@ namespace ads {
 class GetCatalogUrlRequestBuilder final : UrlRequestBuilder {
  public:
   GetCatalogUrlRequestBuilder();
-
   ~GetCatalogUrlRequestBuilder() override;
 
   mojom::UrlRequestPtr Build() override;

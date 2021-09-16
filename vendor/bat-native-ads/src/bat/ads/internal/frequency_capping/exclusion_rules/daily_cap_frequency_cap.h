@@ -17,7 +17,6 @@ namespace ads {
 class DailyCapFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   explicit DailyCapFrequencyCap(const AdEventList& ad_events);
-
   ~DailyCapFrequencyCap() override;
 
   DailyCapFrequencyCap(const DailyCapFrequencyCap&) = delete;

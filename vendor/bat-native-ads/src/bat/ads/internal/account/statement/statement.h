@@ -16,7 +16,6 @@ struct StatementInfo;
 class Statement final {
  public:
   explicit Statement(AdRewards* ad_rewards);
-
   ~Statement();
 
   StatementInfo Get(const int64_t from_timestamp,

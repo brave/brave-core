@@ -15,7 +15,6 @@ namespace ads {
 class BrowserIsActiveFrequencyCap final : public PermissionRule {
  public:
   BrowserIsActiveFrequencyCap();
-
   ~BrowserIsActiveFrequencyCap() override;
 
   BrowserIsActiveFrequencyCap(const BrowserIsActiveFrequencyCap&) = delete;
