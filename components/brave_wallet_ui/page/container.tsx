@@ -392,8 +392,8 @@ function Container (props: Props) {
     return result ? { success: true } : { success: false }
   }
 
-  const onUpdateVisibleTokens = (visibleTokens: string[]) => {
-    props.walletActions.updateVisibleTokens(visibleTokens)
+  const onUpdateVisibleTokens = (contractAddress: string, visible: boolean) => {
+    // Logic Here to Update if a token is visible or not.
   }
 
   const onSubmitSwap = () => {
@@ -431,6 +431,14 @@ function Container (props: Props) {
 
   const onImportMetaMask = (password: string) => {
     // Logic here to import a detected MetaMask Wallet
+  }
+
+  const onAddCustomToken = (
+    tokenName: string,
+    tokenSymbol: string,
+    tokenContractAddress: string,
+    tokenDecimals: number) => {
+    // Logic Here to add a custom Token
   }
 
   const renderWallet = React.useMemo(() => {
@@ -522,6 +530,7 @@ function Container (props: Props) {
                   onImportAccountFromJson={onImportAccountFromJson}
                   onSetImportError={onSetImportError}
                   hasImportError={importError}
+                  onAddCustomToken={onAddCustomToken}
                 />
               )}
             </>

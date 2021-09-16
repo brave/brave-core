@@ -38,13 +38,14 @@ export interface Props {
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Result.Type<HardwareWalletAccount[]>
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onToggleAddModal: () => void
-  onUpdateVisibleTokens: (list: string[]) => void
+  onUpdateVisibleTokens: (contractAddress: string, visible: boolean) => void
   onSelectNetwork: (network: EthereumChain) => void
   fetchFullTokenList: () => void
   onRemoveAccount: (address: string) => void
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
+  onAddCustomToken: (tokenName: string, tokenSymbol: string, tokenContractAddress: string, tokenDecimals: number) => void
   onSetImportError: (hasError: boolean) => void
   hasImportError: boolean
   privateKey: string
@@ -88,6 +89,7 @@ const CryptoView = (props: Props) => {
     onDoneViewingPrivateKey,
     onImportAccountFromJson,
     onSetImportError,
+    onAddCustomToken,
     hasImportError,
     privateKey,
     selectedNetwork,
@@ -219,6 +221,7 @@ const CryptoView = (props: Props) => {
           fullAssetList={fullAssetList}
           userWatchList={userWatchList}
           isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
+          onAddCustomToken={onAddCustomToken}
         />
       }
       {selectedTab === 'accounts' &&

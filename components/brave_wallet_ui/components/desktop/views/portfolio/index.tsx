@@ -60,9 +60,10 @@ export interface Props {
   onChangeTimeline: (path: AssetPriceTimeframe) => void
   onSelectAsset: (asset: TokenInfo | undefined) => void
   onClickAddAccount: () => void
-  onUpdateVisibleTokens: (list: string[]) => void
+  onUpdateVisibleTokens: (contractAddress: string, visible: boolean) => void
   fetchFullTokenList: () => void
   onSelectNetwork: (network: EthereumChain) => void
+  onAddCustomToken: (tokenName: string, tokenSymbol: string, tokenContractAddress: string, tokenDecimals: number) => void
   selectedNetwork: EthereumChain
   networkList: EthereumChain[]
   userAssetList: AccountAssetOptionType[]
@@ -91,6 +92,7 @@ const Portfolio = (props: Props) => {
     onSelectNetwork,
     onUpdateVisibleTokens,
     fetchFullTokenList,
+    onAddCustomToken,
     selectedNetwork,
     fullAssetList,
     userWatchList,
@@ -331,6 +333,7 @@ const Portfolio = (props: Props) => {
           fullAssetList={fullAssetList}
           userWatchList={userWatchList}
           onClose={toggleShowVisibleAssetModal}
+          onAddCustomToken={onAddCustomToken}
         />
       }
     </StyledWrapper>
