@@ -14,6 +14,7 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
+#include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
@@ -34,6 +35,7 @@ std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
            SpeedReaderURLLoader*>
 SpeedReaderURLLoader::CreateLoader(
     base::WeakPtr<SpeedReaderThrottle> throttle,
+    base::WeakPtr<SpeedreaderResultDelegate> delegate,
     const GURL& response_url,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner,
     SpeedreaderRewriterService* rewriter_service) {
@@ -44,8 +46,8 @@ SpeedReaderURLLoader::CreateLoader(
           url_loader_client.InitWithNewPipeAndPassReceiver();
 
   auto loader = base::WrapUnique(new SpeedReaderURLLoader(
-      std::move(throttle), response_url, std::move(url_loader_client),
-      std::move(task_runner), rewriter_service));
+      std::move(throttle), std::move(delegate), response_url,
+      std::move(url_loader_client), std::move(task_runner), rewriter_service));
   SpeedReaderURLLoader* loader_rawptr = loader.get();
   mojo::MakeSelfOwnedReceiver(std::move(loader),
                               url_loader.InitWithNewPipeAndPassReceiver());
@@ -55,12 +57,14 @@ SpeedReaderURLLoader::CreateLoader(
 
 SpeedReaderURLLoader::SpeedReaderURLLoader(
     base::WeakPtr<SpeedReaderThrottle> throttle,
+    base::WeakPtr<SpeedreaderResultDelegate> delegate,
     const GURL& response_url,
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner,
     SpeedreaderRewriterService* rewriter_service)
     : throttle_(throttle),
+      delegate_(delegate),
       destination_url_loader_client_(std::move(destination_url_loader_client)),
       response_url_(response_url),
       task_runner_(task_runner),
@@ -328,14 +332,11 @@ void SpeedReaderURLLoader::CompleteSending() {
   // called.
   if (complete_status_.has_value()) {
     destination_url_loader_client_->OnComplete(complete_status_.value());
-    if (throttle_) {
-      // When distillation fails we return the original data. Causes this
-      // throttle to get deleted.
-      //
-      // TODO(iefremov): Is it okay to rely on just this, or should the distill
-      // thread also return a boolean indicating an error?
-      throttle_->OnDistillComplete();
-    }
+    // TODO(keur, iefremov): This API could probably be improved with an enum
+    // indicating distill success, distill fail, load from cache.
+    // |complete_status_| has an |exists_in_cache| field.
+    if (delegate_)
+      delegate_->OnDistillComplete();
   }
 
   body_consumer_watcher_.Cancel();
