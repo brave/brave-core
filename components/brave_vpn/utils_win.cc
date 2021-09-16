@@ -18,6 +18,25 @@ namespace brave_vpn {
 
 namespace {
 
+HANDLE g_event_handle = NULL;
+
+void WINAPI RasDialFunc(UINT, RASCONNSTATE rasconnstate, DWORD error) {
+  if (error) {
+    internal::PrintRasError(error);
+    return;
+  }
+
+  // Only interested in connecting event.
+  switch (rasconnstate) {
+    case RASCS_ConnectDevice:
+      SetEvent(g_event_handle);
+      break;
+    default:
+      // Ignore all other states.
+      break;
+  }
+}
+
 // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-formatmessage
 void PrintSystemError(DWORD error) {
   constexpr DWORD kBufSize = 512;
@@ -56,6 +75,19 @@ DWORD SetCredentials(LPCTSTR entry_name, LPCTSTR username, LPCTSTR password) {
 }  // namespace
 
 namespace internal {
+
+HANDLE GetEventHandleForConnecting() {
+  if (!g_event_handle)
+    g_event_handle = CreateEvent(NULL, false, false, NULL);
+  return g_event_handle;
+}
+
+void CloseEventHandleForConnecting() {
+  if (g_event_handle) {
+    CloseHandle(g_event_handle);
+    g_event_handle = NULL;
+  }
+}
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgeterrorstringa
 void PrintRasError(DWORD error) {
@@ -197,8 +229,8 @@ bool ConnectEntry(const std::wstring& entry_name) {
 
   DVLOG(2) << "Connecting to " << entry_name;
   HRASCONN h_ras_conn = NULL;
-  dw_ret = RasDial(NULL, DEFAULT_PHONE_BOOK, lp_ras_dial_params, NULL, NULL,
-                   &h_ras_conn);
+  dw_ret = RasDial(NULL, DEFAULT_PHONE_BOOK, lp_ras_dial_params, 0,
+                   (LPVOID)(&RasDialFunc), &h_ras_conn);
   if (dw_ret != ERROR_SUCCESS) {
     HeapFree(GetProcessHeap(), 0, (LPVOID)lp_ras_dial_params);
     PrintRasError(dw_ret);
@@ -324,6 +356,37 @@ bool CreateEntry(const std::wstring& entry_name,
   return true;
 }
 
+CheckConnectionResult GetConnectionState(HRASCONN h_ras_conn) {
+  DWORD dw_ret = 0;
+
+  RASCONNSTATUS ras_conn_status;
+  ZeroMemory(&ras_conn_status, sizeof(RASCONNSTATUS));
+  ras_conn_status.dwSize = sizeof(RASCONNSTATUS);
+
+  // Checking connection status using RasGetConnectStatus
+  dw_ret = RasGetConnectStatus(h_ras_conn, &ras_conn_status);
+  if (ERROR_SUCCESS != dw_ret) {
+    LOG(ERROR) << "RasGetConnectStatus failed: Error = " << dw_ret;
+    return CheckConnectionResult::UNKNOWN;
+  }
+
+  switch (ras_conn_status.rasconnstate) {
+    case RASCS_ConnectDevice:
+      VLOG(2) << "Connecting device...";
+      return CheckConnectionResult::CONNECTING;
+    case RASCS_Connected:
+      VLOG(2) << "Connection completed";
+      return CheckConnectionResult::CONNECTED;
+    case RASCS_Disconnected:
+      VLOG(2) << "Disconnected";
+      return CheckConnectionResult::DISCONNECTED;
+    default:
+      break;
+  }
+
+  return CheckConnectionResult::DISCONNECTED;
+}
+
 CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
   if (entry_name.empty())
     return CheckConnectionResult::UNKNOWN;
@@ -339,7 +402,7 @@ CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
 
   // If got success here, it means there is no connected vpn entry.
   if (dw_ret == ERROR_SUCCESS) {
-    return CheckConnectionResult::NOT_CONNECTED;
+    return CheckConnectionResult::DISCONNECTED;
   }
 
   // Abnormal situation.
@@ -367,10 +430,10 @@ CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
   }
 
   // If successful, find connection with |entry_name|.
-  CheckConnectionResult result = CheckConnectionResult::NOT_CONNECTED;
+  CheckConnectionResult result = CheckConnectionResult::DISCONNECTED;
   for (DWORD i = 0; i < dw_connections; i++) {
     if (entry_name.compare(lp_ras_conn[i].szEntryName) == 0) {
-      result = CheckConnectionResult::CONNECTED;
+      result = GetConnectionState(lp_ras_conn[i].hrasconn);
       break;
     }
   }
