@@ -28,9 +28,8 @@ export default class LedgerBridgeKeyring extends EventEmitter {
         from = 0
       }
       if (!this.isUnlocked() && !(await this.unlock())) {
-        return reject({ message: 'Unable to unlock device, try to reconnect' })
+        return reject(new Error('Unable to unlock device, try to reconnect'))
       }
-
       this._getAccountsBIP44(from, to).then(resolve).catch(reject)
     })
   }
@@ -44,7 +43,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       return this.app
     }
     this.app = new Eth(await TransportWebHID.create())
-    return this.app
+    return this.isUnlocked()
   }
 
   /* PRIVATE METHODS */
@@ -61,7 +60,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
 
   _getAccountsBIP44 = async (from: number, to: number) => {
     const accounts = []
-    for (let i = from; i < to; i++) {
+    for (let i = from; i <= to; i++) {
       const path = this._getPathForIndex(i)
       const address = await this._getAddress(path)
       accounts.push({
