@@ -5,48 +5,55 @@
 
 #include "components/os_crypt/keychain_password_mac.h"
 
-#include <memory>
+#include <utility>
 
 #include "base/command_line.h"
 
-#define BRAVE_KEYCHAIN_PASSWORD_GET_PASSWORD                                \
-  std::unique_ptr<std::string> service_name, account_name;                  \
-  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess(); \
-  if (command_line->HasSwitch("import-chrome")) {                           \
-    service_name = std::make_unique<std::string>("Chrome Safe Storage");    \
-    account_name = std::make_unique<std::string>("Chrome");                 \
-  } else if (command_line->HasSwitch("import-chromium") ||                  \
-             command_line->HasSwitch("import-brave")) {                     \
-    service_name = std::make_unique<std::string>("Chromium Safe Storage");  \
-    account_name = std::make_unique<std::string>("Chromium");               \
-  } else {                                                                  \
-    service_name = std::make_unique<std::string>(                           \
-        ::KeychainPassword::GetServiceName().c_str());                      \
-    account_name = std::make_unique<std::string>(                           \
-        ::KeychainPassword::GetAccountName().c_str());                      \
-  }
-
-#define KeychainPassword KeychainPassword_ChromiumImpl
-#include "../../../../components/os_crypt/keychain_password_mac.mm"
-#undef KeychainPassword
-#undef BRAVE_KEYCHAIN_PASSWORD_GET_PASSWORD
+namespace {
 
 const char kBraveDefaultServiceName[] = "Brave Safe Storage";
 const char kBraveDefaultAccountName[] = "Brave";
 
-// static
-KeychainPassword::KeychainNameType& KeychainPassword::GetServiceName() {
-  static KeychainNameContainerType service_name(kBraveDefaultServiceName);
+KeychainPassword::KeychainNameType& GetBraveServiceName();
+KeychainPassword::KeychainNameType& GetBraveAccountName();
+
+}
+
+#define BRAVE_GET_SERVICE_NAME return GetBraveServiceName();
+#define BRAVE_GET_ACCOUNT_NAME return GetBraveAccountName();
+#include "../../../../components/os_crypt/keychain_password_mac.mm"
+#undef BRAVE_GET_SERVICE_NAME
+#undef BRAVE_GET_ACCOUNT_NAME
+
+namespace {
+
+std::pair<std::string, std::string> GetServiceAndAccountName() {
+  std::string service_name, account_name;
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch("import-chrome")) {
+    service_name = std::string("Chrome Safe Storage");
+    account_name = std::string("Chrome");
+  } else if (command_line->HasSwitch("import-chromium") ||
+             command_line->HasSwitch("import-brave")) {
+    service_name = std::string("Chromium Safe Storage");
+    account_name = std::string("Chromium");
+  } else {
+    service_name = std::string(kBraveDefaultServiceName);
+    account_name = std::string(kBraveDefaultAccountName);
+  }
+  return std::make_pair(service_name, account_name);
+}
+
+KeychainPassword::KeychainNameType& GetBraveServiceName() {
+  static KeychainNameContainerType service_name(
+      GetServiceAndAccountName().first);
   return *service_name;
 }
 
-// static
-KeychainPassword::KeychainNameType& KeychainPassword::GetAccountName() {
-  static KeychainNameContainerType account_name(kBraveDefaultAccountName);
+KeychainPassword::KeychainNameType& GetBraveAccountName() {
+  static KeychainNameContainerType account_name(
+      GetServiceAndAccountName().second);
   return *account_name;
 }
 
-KeychainPassword::KeychainPassword(const AppleKeychain& keychain)
-    : KeychainPassword_ChromiumImpl(keychain) {}
-
-KeychainPassword::~KeychainPassword() = default;
+}
