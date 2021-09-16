@@ -12,10 +12,12 @@ function StatusIndicator (props: Props) {
     <S.Box>
       {props.status === ConnectionState.CONNECTED && <S.ActiveIndicator />}
       {props.status === ConnectionState.CONNECTING && <S.Loader><LoaderIcon /></S.Loader>}
+      {props.status === ConnectionState.DISCONNECTING && <S.Loader><LoaderIcon /></S.Loader>}
       {props.status === ConnectionState.DISCONNECTED && <S.InActiveIndicator />}
       <S.Text>
         {props.status === ConnectionState.CONNECTED && locale.connectedLabel}
         {props.status === ConnectionState.CONNECTING && `${locale.connectingLabel}...`}
+        {props.status === ConnectionState.DISCONNECTING && `${locale.disconnectingLabel}...`}
         {props.status === ConnectionState.DISCONNECTED && locale.disconnectedLabel}
         {props.status === ConnectionState.CONNECT_FAILED && locale.connectionFailedLabel}
       </S.Text>

@@ -11,6 +11,7 @@ import { ConnectionState } from '../types/connection_state'
 const statusOptions = {
   'Disconnected': ConnectionState.DISCONNECTED,
   'Connecting': ConnectionState.CONNECTING,
+  'Disconnecting': ConnectionState.DISCONNECTING,
   'Connected': ConnectionState.CONNECTED
 }
 
