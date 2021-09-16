@@ -14,6 +14,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_piece.h"
+#include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -71,12 +72,14 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
                     mojo::PendingReceiver<network::mojom::URLLoaderClient>,
                     SpeedReaderURLLoader*>
   CreateLoader(base::WeakPtr<SpeedReaderThrottle> throttle,
+               base::WeakPtr<SpeedreaderResultDelegate> delegate,
                const GURL& response_url,
                scoped_refptr<base::SingleThreadTaskRunner> task_runner,
                SpeedreaderRewriterService* rewriter_service);
 
  private:
   SpeedReaderURLLoader(base::WeakPtr<SpeedReaderThrottle> throttle,
+                       base::WeakPtr<SpeedreaderResultDelegate> delegate,
                        const GURL& response_url,
                        mojo::PendingRemote<network::mojom::URLLoaderClient>
                            destination_url_loader_client,
@@ -124,6 +127,7 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
   void Abort();
 
   base::WeakPtr<SpeedReaderThrottle> throttle_;
+  base::WeakPtr<SpeedreaderResultDelegate> delegate_;
 
   mojo::Receiver<network::mojom::URLLoaderClient> source_url_client_receiver_{
       this};

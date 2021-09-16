@@ -60,8 +60,8 @@ void SpeedReaderThrottle::WillProcessResponse(
   SpeedReaderURLLoader* speedreader_loader;
   std::tie(new_remote, new_receiver, speedreader_loader) =
       SpeedReaderURLLoader::CreateLoader(weak_factory_.GetWeakPtr(),
-                                         response_url, task_runner_,
-                                         rewriter_service_);
+                                         result_delegate_, response_url,
+                                         task_runner_, rewriter_service_);
   delegate_->InterceptResponse(std::move(new_remote), std::move(new_receiver),
                                &source_loader, &source_client_receiver);
   speedreader_loader->Start(std::move(source_loader),
@@ -70,13 +70,6 @@ void SpeedReaderThrottle::WillProcessResponse(
 
 void SpeedReaderThrottle::Resume() {
   delegate_->Resume();
-}
-
-void SpeedReaderThrottle::OnDistillComplete() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (result_delegate_) {
-    result_delegate_->OnDistillComplete();
-  }
 }
 
 }  // namespace speedreader

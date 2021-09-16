@@ -55,7 +55,6 @@ class SpeedReaderThrottle : public blink::URLLoaderThrottle {
 
   // Called from SpeedReaderURLLoader.
   void Resume();
-  void OnDistillComplete();
 
  private:
   SpeedreaderRewriterService* rewriter_service_;  // not owned
