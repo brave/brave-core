@@ -166,8 +166,8 @@ void BraveVPNOSConnectionAPIWin::OnRemoved(const std::string& name,
 void BraveVPNOSConnectionAPIWin::StartVPNConnectionChangeMonitoring() {
   DCHECK(!event_handle_for_connected_ && !event_handle_for_disconnected_);
 
-  event_handle_for_connected_ = CreateEvent(nullptr, false, false, nullptr);
-  event_handle_for_disconnected_ = CreateEvent(nullptr, false, false, nullptr);
+  event_handle_for_connected_ = CreateEvent(NULL, false, false, NULL);
+  event_handle_for_disconnected_ = CreateEvent(NULL, false, false, NULL);
 
   // We don't need to check current connection state again if monitor each event
   // separately.

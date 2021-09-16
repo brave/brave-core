@@ -18,7 +18,7 @@ namespace brave_vpn {
 
 namespace {
 
-HANDLE g_event_handle = nullptr;
+HANDLE g_event_handle = NULL;
 
 void WINAPI RasDialFunc(UINT, RASCONNSTATE rasconnstate, DWORD error) {
   if (error) {
@@ -78,14 +78,14 @@ namespace internal {
 
 HANDLE GetEventHandleForConnecting() {
   if (!g_event_handle)
-    g_event_handle = CreateEvent(nullptr, false, false, nullptr);
+    g_event_handle = CreateEvent(NULL, false, false, NULL);
   return g_event_handle;
 }
 
 void CloseEventHandleForConnecting() {
   if (g_event_handle) {
     CloseHandle(g_event_handle);
-    g_event_handle = nullptr;
+    g_event_handle = NULL;
   }
 }
 
