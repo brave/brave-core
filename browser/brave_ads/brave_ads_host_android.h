@@ -6,7 +6,15 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_BRAVE_ADS_HOST_ANDROID_H_
 #define BRAVE_BROWSER_BRAVE_ADS_BRAVE_ADS_HOST_ANDROID_H_
 
+#include <vector>
+
+#include "base/android/jni_android.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/common/brave_ads_host.mojom.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+
+class Profile;
 
 class Profile;
 
@@ -14,7 +22,8 @@ namespace brave_ads {
 
 // The class handles chrome.braveRequestAdsEnabled() js api call for Android
 // platform. The js api asks the user for permission to enable ads.
-class BraveAdsHostAndroid : public brave_ads::mojom::BraveAdsHost {
+class BraveAdsHostAndroid : public brave_ads::mojom::BraveAdsHost,
+                            public brave_rewards::RewardsServiceObserver {
  public:
   explicit BraveAdsHostAndroid(Profile* profile);
   BraveAdsHostAndroid(const BraveAdsHostAndroid&) = delete;
@@ -24,8 +33,25 @@ class BraveAdsHostAndroid : public brave_ads::mojom::BraveAdsHost {
   // brave_ads::mojom::BraveAdsHost
   void RequestAdsEnabled(RequestAdsEnabledCallback callback) override;
 
+  // brave_rewards::RewardsServiceObserver
+  void OnAdsEnabled(brave_rewards::RewardsService* rewards_service,
+                    bool ads_enabled) override;
+
+  void NotifyAdsEnabled(JNIEnv* env,
+                        const base::android::JavaParamRef<jobject>& obj);
+  void NotifyPopupClosed(JNIEnv* env,
+                         const base::android::JavaParamRef<jobject>& obj);
+
  private:
+  void RunCallbacksAndReset(bool ads_enabled);
+
   Profile* profile_;
+  base::android::ScopedJavaGlobalRef<jobject> java_object_;
+  std::vector<RequestAdsEnabledCallback> callbacks_;
+  base::ScopedObservation<brave_rewards::RewardsService,
+                          brave_rewards::RewardsServiceObserver>
+      rewards_service_observation_{this};
+  bool ads_opted_in_ = false;
 };
 
 }  // namespace brave_ads
