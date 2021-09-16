@@ -1,4 +1,6 @@
 import * as React from 'react'
+import Fuse from 'fuse.js'
+
 import SelectAssetItem from '../select-asset-item'
 import { AccountAssetOptionType } from '../../../constants/types'
 import { SearchBar } from '../../shared'
@@ -18,31 +20,45 @@ export interface Props {
 
 function SelectAsset (props: Props) {
   const { assets, onBack, onSelectAsset } = props
+
+  const fuse = React.useMemo(() => new Fuse(assets, {
+    shouldSort: true,
+    threshold: 0.45,
+    location: 0,
+    distance: 100,
+    minMatchCharLength: 1,
+    keys: [
+      { name: 'asset.name', weight: 0.5 },
+      { name: 'asset.symbol', weight: 0.5 }
+    ]
+  }), [assets])
+
   const [filteredAssetList, setFilteredAssetList] = React.useState<AccountAssetOptionType[]>(assets)
 
-  const filterAssetList = (event: any) => {
+  const filterAssetList = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const search = event.target.value
     if (search === '') {
       setFilteredAssetList(assets)
     } else {
-      const filteredList = assets.filter((item) => {
-        return (
-          item.asset.name.toLowerCase() === search.toLowerCase() ||
-          item.asset.name.toLowerCase().startsWith(search.toLowerCase()) ||
-          item.asset.symbol.toLocaleLowerCase() === search.toLowerCase() ||
-          item.asset.symbol.toLowerCase().startsWith(search.toLowerCase())
-        )
-      })
+      const filteredList = fuse.search(search).map((result: Fuse.FuseResult<AccountAssetOptionType>) => result.item)
       setFilteredAssetList(filteredList)
     }
-  }
+  }, [fuse, assets])
 
   return (
     <SelectWrapper>
       <Header title={locale.selectAsset} onBack={onBack} />
       <SearchBar placeholder={locale.searchAsset} action={filterAssetList} />
       <SelectScrollSearchContainer>
-        {filteredAssetList.map((asset) => <SelectAssetItem key={asset.asset.contractAddress} asset={asset} onSelectAsset={onSelectAsset(asset)} />)}
+        {
+          filteredAssetList.map((asset: AccountAssetOptionType) =>
+            <SelectAssetItem
+              key={asset.asset.contractAddress}
+              asset={asset}
+              onSelectAsset={onSelectAsset(asset)}
+            />
+          )
+        }
       </SelectScrollSearchContainer>
     </SelectWrapper>
   )
