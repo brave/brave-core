@@ -127,7 +127,7 @@ class TranslateUIDelegate {
 
   // Returns true if the site of the current webpage can be put on the never
   // prompt list.
-  bool CanAddToNeverPromptList() const;
+  bool CanAddSiteToNeverPromptList() const;
 
   // Sets the never-prompt state for the host of the current page. If
   // value is true, the current host will be blocklisted and translation

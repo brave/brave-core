@@ -80,15 +80,15 @@ TranslateManager::TranslateInitCallbackList* g_init_callback_list_ = nullptr;
 TranslateManager::LanguageDetectedCallbackList* g_detection_callback_list_ =
     nullptr;
 
-const char kReportLanguageDetectionErrorURL[] =
-    "https://translate.google.com/translate_error?client=cr&action=langidc";
+// const char kReportLanguageDetectionErrorURL[] =
+//     "https://translate.google.com/translate_error?client=cr&action=langidc";
 
 // Used in kReportLanguageDetectionErrorURL to specify the page source
 // language.
-const char kSourceLanguageQueryName[] = "sl";
+// const char kSourceLanguageQueryName[] = "sl";
 
 // Used in kReportLanguageDetectionErrorURL to specify the page URL.
-const char kUrlQueryName[] = "u";
+// const char kUrlQueryName[] = "u";
 
 std::set<std::string> GetSkippedLanguagesForExperiments(
     std::string source_lang,
@@ -391,7 +391,7 @@ void TranslateManager::ShowTranslateUI(bool auto_translate,
   if (auto_translate && !language_state_.IsPageTranslated()) {
     TranslatePage(
         source_code, target_lang, triggered_from_menu,
-        GetActiveTranslateMetricsLogger()->GetNextManualTranslationType());
+        GetActiveTranslateMetricsLogger()->GetNextManualTranslationType(triggered_from_menu));
     return;
   }
 
@@ -503,24 +503,24 @@ void TranslateManager::RevertTranslation() {
   GetActiveTranslateMetricsLogger()->LogReversion();
 }
 
-void TranslateManager::ReportLanguageDetectionError() {
-  TranslateBrowserMetrics::ReportLanguageDetectionError();
+// void TranslateManager::ReportLanguageDetectionError() {
+//   TranslateBrowserMetrics::ReportLanguageDetectionError();
 
-  GURL report_error_url = GURL(kReportLanguageDetectionErrorURL);
+//   GURL report_error_url = GURL(kReportLanguageDetectionErrorURL);
 
-  report_error_url = net::AppendQueryParameter(
-      report_error_url, kUrlQueryName,
-      translate_driver_->GetLastCommittedURL().spec());
+//   report_error_url = net::AppendQueryParameter(
+//       report_error_url, kUrlQueryName,
+//       translate_driver_->GetLastCommittedURL().spec());
 
-  report_error_url =
-      net::AppendQueryParameter(report_error_url, kSourceLanguageQueryName,
-                                language_state_.source_language());
+//   report_error_url =
+//       net::AppendQueryParameter(report_error_url, kSourceLanguageQueryName,
+//                                 language_state_.source_language());
 
-  report_error_url = translate::AddHostLocaleToUrl(report_error_url);
-  report_error_url = translate::AddApiKeyToUrl(report_error_url);
+//   report_error_url = translate::AddHostLocaleToUrl(report_error_url);
+//   report_error_url = translate::AddApiKeyToUrl(report_error_url);
 
-  translate_client_->ShowReportLanguageDetectionErrorUI(report_error_url);
-}
+//   translate_client_->ShowReportLanguageDetectionErrorUI(report_error_url);
+// }
 
 void TranslateManager::DoTranslatePage(const std::string& translate_script,
                                        const std::string& source_lang,
@@ -1394,12 +1394,12 @@ void TranslateManager::RecordDecisionMetrics(
           page_language_code);
     }
 
-    if (status ==
-        TranslateBrowserMetrics::INITIATION_STATUS_DISABLED_BY_PREFS) {
-      const std::string& locale =
-          TranslateDownloadManager::GetInstance()->application_locale();
-      TranslateBrowserMetrics::ReportLocalesOnDisabledByPrefs(locale);
-    }
+    // if (status ==
+    //     TranslateBrowserMetrics::INITIATION_STATUS_DISABLED_BY_PREFS) {
+    //   const std::string& locale =
+    //       TranslateDownloadManager::GetInstance()->application_locale();
+    //   TranslateBrowserMetrics::ReportLocalesOnDisabledByPrefs(locale);
+    // }
   }
 }
 

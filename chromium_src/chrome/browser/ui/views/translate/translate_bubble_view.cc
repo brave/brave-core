@@ -159,7 +159,7 @@ TranslateBubbleView::~TranslateBubbleView() {
   // the child view is destructed. For example, |source_language_combobx_model_|
   // is referred by Combobox's destructor. Before destroying the models,
   // removing the child views is needed.
-  RemoveAllChildViews(true);
+  RemoveAllChildViews();
 }
 
 // static
@@ -397,7 +397,7 @@ void TranslateBubbleView::ShowOptionsMenu(views::Button* source) {
                                    source_language));
   }
 
-  if (model_->CanBlocklistSite()) {
+  if (model_->CanAddSiteToNeverPromptList()) {
     options_menu_model_->AddCheckItem(
         OptionsMenuItem::NEVER_TRANSLATE_SITE,
         l10n_util::GetStringUTF16(IDS_TRANSLATE_BUBBLE_NEVER_TRANSLATE_SITE));

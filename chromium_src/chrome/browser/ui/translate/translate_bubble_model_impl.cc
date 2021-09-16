@@ -126,9 +126,13 @@ void TranslateBubbleModelImpl::SetNeverTranslateSite(bool value) {
   ui_delegate_->SetNeverPrompt(value);
 }
 
-bool TranslateBubbleModelImpl::CanBlocklistSite() {
-  return ui_delegate_->CanAddToNeverPromptList();
+bool TranslateBubbleModelImpl::CanAddSiteToNeverPromptList() {
+  return ui_delegate_->CanAddSiteToNeverPromptList();
 }
+
+// bool TranslateBubbleModelImpl::CanBlocklistSite() {
+//   return ui_delegate_->CanAddToNeverPromptList();
+// }
 
 bool TranslateBubbleModelImpl::ShouldAlwaysTranslate() const {
   return ui_delegate_->ShouldAlwaysTranslate();

@@ -484,7 +484,7 @@ void TranslateUIDelegate::Translate() {
     translate_manager_->TranslatePage(
         GetSourceLanguageCode(), GetTargetLanguageCode(), false,
         translate_manager_->GetActiveTranslateMetricsLogger()
-            ->GetNextManualTranslationType());
+            ->GetNextManualTranslationType(/*is_context_menu_initiated_translation=*/false));
     UMA_HISTOGRAM_BOOLEAN(kPerformTranslate, true);
     if (IsLikelyAmpCacheUrl(translate_driver_->GetLastCommittedURL()))
       UMA_HISTOGRAM_BOOLEAN(kPerformTranslateAmpCacheUrl, true);
@@ -554,7 +554,7 @@ bool TranslateUIDelegate::IsSiteOnNeverPromptList() const {
   return !host.empty() && prefs_->IsSiteOnNeverPromptList(host);
 }
 
-bool TranslateUIDelegate::CanAddToNeverPromptList() const {
+bool TranslateUIDelegate::CanAddSiteToNeverPromptList() const {
   return !GetPageHost().empty();
 }
 
