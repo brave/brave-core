@@ -45,7 +45,7 @@ public class BraveVpnUtils {
 
     public static boolean isBraveVpnFeatureEnable() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
-                && BraveVpnPrefUtils.isBraveVpnFeatureEnable()) {
+                && BraveVpnPrefUtils.isBraveVpnFeatureEnabled()) {
             return true;
         }
         return false;
@@ -139,14 +139,15 @@ public class BraveVpnUtils {
         return null;
     }
 
-    public static String getPurchaseExpiryDate(String json) {
+    public static Long getPurchaseExpiryDate(String json) {
         try {
             JSONObject purchase = new JSONObject(json);
-            return purchase.getString("expiryTimeMillis");
-        } catch (JSONException e) {
+            String expiryTimeInString = purchase.getString("expiryTimeMillis");
+            return Long.parseLong(expiryTimeInString);
+        } catch (JSONException | NumberFormatException e) {
             Log.e("BraveVPN", "BraveVpnUtils -> getProfileCredentials JSONException error " + e);
         }
-        return "";
+        return 0L;
     }
 
     public static List<BraveVpnServerRegion> getServerLocations(String jsonServerLocations) {

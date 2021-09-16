@@ -62,10 +62,10 @@ public abstract class BraveVpnParentActivity
             }
         } else {
             if (!mIsVerification) {
-                BraveVpnPrefUtils.setBraveVpnPurchaseToken("");
-                BraveVpnPrefUtils.setBraveVpnProductId("");
-                BraveVpnPrefUtils.setBraveVpnPurchaseExpiry("");
-                BraveVpnPrefUtils.setBraveVpnSubscriptionPurchase(false);
+                BraveVpnPrefUtils.setPurchaseToken("");
+                BraveVpnPrefUtils.setProductId("");
+                BraveVpnPrefUtils.setPurchaseExpiry(0L);
+                BraveVpnPrefUtils.setSubscriptionPurchase(false);
                 if (BraveVpnProfileUtils.getInstance(BraveVpnParentActivity.this)
                                 .isVPNConnected()) {
                     BraveVpnProfileUtils.getInstance(BraveVpnParentActivity.this).stopVpn();
@@ -81,13 +81,12 @@ public abstract class BraveVpnParentActivity
     @Override
     public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
         if (isSuccess) {
-            String purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
-            if (!purchaseExpiry.isEmpty()
-                    && Long.parseLong(purchaseExpiry) >= System.currentTimeMillis()) {
-                BraveVpnPrefUtils.setBraveVpnPurchaseToken(mPurchaseToken);
-                BraveVpnPrefUtils.setBraveVpnProductId(mProductId);
-                BraveVpnPrefUtils.setBraveVpnPurchaseExpiry(purchaseExpiry);
-                BraveVpnPrefUtils.setBraveVpnSubscriptionPurchase(true);
+            Long purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
+            if (purchaseExpiry > 0 && purchaseExpiry >= System.currentTimeMillis()) {
+                BraveVpnPrefUtils.setPurchaseToken(mPurchaseToken);
+                BraveVpnPrefUtils.setProductId(mProductId);
+                BraveVpnPrefUtils.setPurchaseExpiry(purchaseExpiry);
+                BraveVpnPrefUtils.setSubscriptionPurchase(true);
                 if (mIsVerification) {
                     mIsVerification = false;
                     showRestoreMenu(true);
@@ -99,10 +98,10 @@ public abstract class BraveVpnParentActivity
                     BraveVpnProfileUtils.getInstance(BraveVpnParentActivity.this).startStopVpn();
                 }
             } else {
-                BraveVpnPrefUtils.setBraveVpnPurchaseToken("");
-                BraveVpnPrefUtils.setBraveVpnProductId("");
-                BraveVpnPrefUtils.setBraveVpnPurchaseExpiry("");
-                BraveVpnPrefUtils.setBraveVpnSubscriptionPurchase(false);
+                BraveVpnPrefUtils.setPurchaseToken("");
+                BraveVpnPrefUtils.setProductId("");
+                BraveVpnPrefUtils.setPurchaseExpiry(0L);
+                BraveVpnPrefUtils.setSubscriptionPurchase(false);
                 if (BraveVpnProfileUtils.getInstance(BraveVpnParentActivity.this)
                                 .isVPNConnected()) {
                     BraveVpnProfileUtils.getInstance(BraveVpnParentActivity.this).stopVpn();
@@ -175,12 +174,12 @@ public abstract class BraveVpnParentActivity
         if (isSuccess) {
             Pair<String, String> profileCredentials =
                     BraveVpnUtils.getProfileCredentials(jsonProfileCredentials);
-            BraveVpnPrefUtils.setBraveVpnHostname(mHostname);
+            BraveVpnPrefUtils.setHostname(mHostname);
             BraveVpnProfileUtils.getInstance(BraveVpnParentActivity.this)
                     .createVpnProfile(BraveVpnParentActivity.this, mHostname,
                             profileCredentials.first, profileCredentials.second);
-            BraveVpnPrefUtils.setBraveVpnPurchaseToken(mPurchaseToken);
-            BraveVpnPrefUtils.setBraveVpnProductId(mProductId);
+            BraveVpnPrefUtils.setPurchaseToken(mPurchaseToken);
+            BraveVpnPrefUtils.setProductId(mProductId);
             mPurchaseToken = "";
             mProductId = "";
         } else {

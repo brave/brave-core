@@ -92,7 +92,7 @@ public class BraveVpnServerSelectionPreferences
                     }
                 });
         List<BraveVpnServerRegion> braveVpnServerRegions =
-                BraveVpnUtils.getServerLocations(BraveVpnPrefUtils.getBraveVpnServerRegions());
+                BraveVpnUtils.getServerLocations(BraveVpnPrefUtils.getServerRegions());
         Collections.sort(braveVpnServerRegions, new Comparator<BraveVpnServerRegion>() {
             @Override
             public int compare(BraveVpnServerRegion braveVpnServerRegion1,

@@ -30,93 +30,93 @@ public class BraveVpnPrefUtils {
     private static final SharedPreferences mSharedPreferences =
             ContextUtils.getAppSharedPreferences();
 
-    public static boolean isBraveVpnFeatureEnable() {
+    public static boolean isBraveVpnFeatureEnabled() {
         return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_FEATURE, false);
     }
 
-    public static void setBraveVpnFeatureEnable(boolean newValue) {
+    public static void setBraveVpnFeatureEnabled(boolean newValue) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_FEATURE, newValue);
         sharedPreferencesEditor.apply();
     }
 
-    public static boolean shouldShowBraveVpnCallout() {
+    public static boolean shouldShowCallout() {
         return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_CALLOUT, true);
     }
 
-    public static void setBraveVpnCallout(boolean newValue) {
+    public static void setCallout(boolean newValue) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_CALLOUT, newValue);
         sharedPreferencesEditor.apply();
     }
 
-    public static boolean shouldShowBraveVpnCalloutSettings() {
+    public static boolean shouldShowCalloutSettings() {
         return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_CALLOUT_SETTINGS, true);
     }
 
-    public static void setBraveVpnCalloutSettings(boolean newValue) {
+    public static void setCalloutSettings(boolean newValue) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_CALLOUT_SETTINGS, newValue);
         sharedPreferencesEditor.apply();
     }
 
-    public static boolean isBraveVpnSubscriptionPurchase() {
+    public static boolean isSubscriptionPurchase() {
         return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, false);
     }
 
-    public static void setBraveVpnSubscriptionPurchase(boolean newValue) {
+    public static void setSubscriptionPurchase(boolean newValue) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, newValue);
         sharedPreferencesEditor.apply();
     }
 
-    public static void setBraveVpnHostname(String value) {
+    public static void setHostname(String value) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putString(PREF_BRAVE_VPN_HOSTNAME, value);
         sharedPreferencesEditor.apply();
     }
 
-    public static String getBraveVpnHostname() {
+    public static String getHostname() {
         return mSharedPreferences.getString(PREF_BRAVE_VPN_HOSTNAME, "");
     }
 
-    public static void setBraveVpnPurchaseToken(String value) {
+    public static void setPurchaseToken(String value) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putString(PREF_BRAVE_VPN_PURCHASE_TOKEN, value);
         sharedPreferencesEditor.apply();
     }
 
-    public static String getBraveVpnPurchaseToken() {
+    public static String getPurchaseToken() {
         return mSharedPreferences.getString(PREF_BRAVE_VPN_PURCHASE_TOKEN, "");
     }
 
-    public static void setBraveVpnProductId(String value) {
+    public static void setProductId(String value) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putString(PREF_BRAVE_VPN_PRODUCT_ID, value);
         sharedPreferencesEditor.apply();
     }
 
-    public static String getBraveVpnProductId() {
+    public static String getProductId() {
         return mSharedPreferences.getString(PREF_BRAVE_VPN_PRODUCT_ID, "");
     }
 
-    public static void setBraveVpnPurchaseExpiry(String value) {
+    public static void setPurchaseExpiry(Long value) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_PURCHASE_EXPIRY, value);
+        sharedPreferencesEditor.putLong(PREF_BRAVE_VPN_PURCHASE_EXPIRY, value);
         sharedPreferencesEditor.apply();
     }
 
-    public static String getBraveVpnPurchaseExpiry() {
-        return mSharedPreferences.getString(PREF_BRAVE_VPN_PURCHASE_EXPIRY, "");
+    public static Long getPurchaseExpiry() {
+        return mSharedPreferences.getLong(PREF_BRAVE_VPN_PURCHASE_EXPIRY, 0);
     }
 
-    public static void setBraveVpnServerRegions(String value) {
+    public static void setServerRegions(String value) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putString(PREF_BRAVE_VPN_SERVER_REGIONS, value);
         sharedPreferencesEditor.apply();
     }
 
-    public static String getBraveVpnServerRegions() {
+    public static String getServerRegions() {
         return mSharedPreferences.getString(PREF_BRAVE_VPN_SERVER_REGIONS, "");
     }
 

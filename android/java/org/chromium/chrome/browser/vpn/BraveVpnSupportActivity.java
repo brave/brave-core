@@ -86,15 +86,14 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
                 StringBuilder bodyText = new StringBuilder(
                         "\n\n\n\n\n#### Please do not edit any information below ####\n");
                 if (vpnHostnameSwitch.isChecked()) {
-                    bodyText.append("\n\nVPN Hostname\n" + BraveVpnPrefUtils.getBraveVpnHostname());
+                    bodyText.append("\n\nVPN Hostname\n" + BraveVpnPrefUtils.getHostname());
                 }
                 if (subscriptionTypeSwitch.isChecked()) {
-                    bodyText.append(
-                            "\n\nSubscription Type\n" + BraveVpnPrefUtils.getBraveVpnProductId());
+                    bodyText.append("\n\nSubscription Type\n" + BraveVpnPrefUtils.getProductId());
                 }
                 if (appReceiptSwitch.isChecked()) {
-                    bodyText.append("\n\nPlay store token\n"
-                            + BraveVpnPrefUtils.getBraveVpnPurchaseToken());
+                    bodyText.append(
+                            "\n\nPlay store token\n" + BraveVpnPrefUtils.getPurchaseToken());
                 }
                 if (appVersionSwitch.isChecked()) {
                     bodyText.append("\n\nApp Version\n"

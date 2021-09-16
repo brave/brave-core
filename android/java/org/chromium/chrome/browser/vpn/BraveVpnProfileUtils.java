@@ -25,14 +25,14 @@ import org.chromium.ui.widget.Toast;
 public class BraveVpnProfileUtils {
     public static final int BRAVE_VPN_PROFILE_REQUEST_CODE = 36;
 
-    private static BraveVpnProfileUtils mBraveVpnProfileUtils;
+    private static BraveVpnProfileUtils sBraveVpnProfileUtils;
     private Context mContext;
     private VpnManager mVpnManager;
 
     public static BraveVpnProfileUtils getInstance(Context context) {
-        if (mBraveVpnProfileUtils == null)
-            mBraveVpnProfileUtils = new BraveVpnProfileUtils(context);
-        return mBraveVpnProfileUtils;
+        if (sBraveVpnProfileUtils == null)
+            sBraveVpnProfileUtils = new BraveVpnProfileUtils(context);
+        return sBraveVpnProfileUtils;
     }
 
     public VpnManager getVpnManager() {

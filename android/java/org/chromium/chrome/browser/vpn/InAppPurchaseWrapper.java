@@ -40,7 +40,7 @@ import java.util.Map;
 public class InAppPurchaseWrapper {
     public static final String NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
     public static final String NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
-    private static InAppPurchaseWrapper mInAppPurchaseWrapper;
+    private static InAppPurchaseWrapper sInAppPurchaseWrapper;
     private BillingClient mBillingClient;
     private Context mContext;
 
@@ -54,9 +54,9 @@ public class InAppPurchaseWrapper {
             Arrays.asList(NIGHTLY_MONTHLY_SUBSCRIPTION, NIGHTLY_YEARLY_SUBSCRIPTION));
 
     public static InAppPurchaseWrapper getInstance() {
-        if (mInAppPurchaseWrapper == null) mInAppPurchaseWrapper = new InAppPurchaseWrapper();
+        if (sInAppPurchaseWrapper == null) sInAppPurchaseWrapper = new InAppPurchaseWrapper();
 
-        return mInAppPurchaseWrapper;
+        return sInAppPurchaseWrapper;
     }
 
     public void startBillingServiceConnection(Context context) {
@@ -121,7 +121,7 @@ public class InAppPurchaseWrapper {
         if (!purchase.isAcknowledged()) {
             mBillingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
                 if (billingResult.getResponseCode() == OK) {
-                    BraveVpnPrefUtils.setBraveVpnSubscriptionPurchase(true);
+                    BraveVpnPrefUtils.setSubscriptionPurchase(true);
                     BraveVpnUtils.openBraveVpnProfileActivity(mContext);
                     Toast.makeText(mContext,
                                  mContext.getResources().getString(R.string.subscription_consumed),
@@ -136,7 +136,7 @@ public class InAppPurchaseWrapper {
                 }
             });
         } else {
-            BraveVpnPrefUtils.setBraveVpnSubscriptionPurchase(true);
+            BraveVpnPrefUtils.setSubscriptionPurchase(true);
         }
     }
 

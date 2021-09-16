@@ -34,7 +34,7 @@ public class BraveVpnCalloutDialogFragment
         ImageView btnClose = view.findViewById(R.id.modal_close);
         btnClose.setOnClickListener(this);
 
-        BraveVpnPrefUtils.setBraveVpnCallout(false);
+        BraveVpnPrefUtils.setCallout(false);
     }
 
     @Override
