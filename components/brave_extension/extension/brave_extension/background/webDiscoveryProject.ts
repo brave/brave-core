@@ -5,13 +5,13 @@
 
 import { App } from '../../../../../vendor/web-discovery-project/build'
 
-declare var window: any;
+declare var window: any
 
 if (App !== undefined) {
   const APP = new App({
     version: chrome.runtime.getManifest().version
   })
-  window.WDP = APP;
+  window.WDP = APP
 
   const WEB_DISCOVERY_PREF_KEY = 'brave.web_discovery_enabled'
 
