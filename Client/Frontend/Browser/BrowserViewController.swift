@@ -1844,7 +1844,7 @@ class BrowserViewController: UIViewController {
                 runScriptsOnWebView(webView)
                 
                 // Only add history of a url which is not a localhost url
-                if !tab.isPrivate {
+                if !tab.isPrivate, !PrivilegedRequest.isWebServerRequest(url: url) {
                     // The visitType is checked If it is "typed" or not to determine the History object we are adding
                     // should be synced or not. This limitation exists on browser side so we are aligning with this
                     if let visitType =

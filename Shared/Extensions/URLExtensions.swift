@@ -382,7 +382,15 @@ extension URL {
 
     public var decodeReaderModeURL: URL? {
         if self.isReaderModeURL {
-            if let components = URLComponents(url: self, resolvingAgainstBaseURL: false), let queryItems = components.queryItems, queryItems.count == 1 {
+            var url = self
+            
+            // Remove Privileges from the URL
+            if PrivilegedRequest.isPrivileged(url: url),
+               let strippedURL = PrivilegedRequest.removePrivileges(url: url) {
+                url = strippedURL
+            }
+            
+            if let components = URLComponents(url: url, resolvingAgainstBaseURL: false), let queryItems = components.queryItems, queryItems.count == 1 {
                 if let queryItem = queryItems.first, let value = queryItem.value {
                     return URL(string: value)
                 }
@@ -421,7 +429,15 @@ extension URL {
     }
 
     public var originalURLFromErrorURL: URL? {
-        let components = URLComponents(url: self, resolvingAgainstBaseURL: false)
+        var url = self
+        
+        // Remove Privileges from the URL
+        if PrivilegedRequest.isPrivileged(url: url),
+           let strippedURL = PrivilegedRequest.removePrivileges(url: url) {
+            url = strippedURL
+        }
+        
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         if self.isErrorPageURL, let queryURL = components?.queryItems?.find({ $0.name == "url" })?.value {
             return URL(string: queryURL)
         }
