@@ -755,16 +755,19 @@ are declared in tools/grit/grit_rule.gni.
             Search image with Brave Lens
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH" desc="The name of the Lens Region Search command in the content area context menu">
-            Search part of the page with Brave Lens
+            Search part of the page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT1" desc="The name of the Lens Region Search command in the content area context menu">
-            Drag to search images with Brave Lens
+            Drag to search images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT2" desc="The name of the Lens Region Search command in the content area context menu">
-            Drag over images to search with Brave Lens
+            Drag over images to search with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT3" desc="The name of the Lens Region Search command in the content area context menu">
-            Search your screen with Brave Lens
+            Search your screen with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT4" desc="The name of the Lens Region Search command in the content area context menu">
+            Search images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_GOTOURL" desc="The name of the Go to 'url' command in the content area context menu">
             &amp;Go to <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
@@ -1008,16 +1011,19 @@ are declared in tools/grit/grit_rule.gni.
             Search Image with Brave Lens
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
-            Search Part of the Page with Brave Lens
+            Search Part of the Page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT1" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
-            Drag to Search Images with Brave Lens
+            Drag to Search Images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT2" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
-            Drag over Images to Search with Brave Lens
+            Drag over Images to Search with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT3" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
-            Search Your Screen with Brave Lens
+            Search Your Screen with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT4" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
+            Search Images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_GOTOURL" desc="In Title Case: The name of the Go to url for 'string' command in the content area context menu">
             &amp;Go to <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
@@ -3709,6 +3715,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_UTILITY_PROCESS_NOOP_SERVICE_NAME" desc="The name of the utility process which does nothing, used for experimentation.">
         No-op Service
       </message>
+      <message name="IDS_SERVICE_PROCESS_DOCUMENT_ANALYSIS_NAME" desc="The name of the service process used for document analysis operations as part of Safe Browsing.">
+        Brave Document Analysis
+      </message>
       <!-- Theme preview infobar -->
       <message name="IDS_THEME_INSTALL_INFOBAR_LABEL" desc="Text displayed on an infobar when a theme has been installed.">
         Installed theme "<ph name="THEME_NAME">$1<ex>Snowflake Theme</ex></ph>"
@@ -3838,27 +3847,32 @@ are declared in tools/grit/grit_rule.gni.
       </message>
 
       <!-- Extension alerts. -->
-      <message name="IDS_EXTENSION_ALERT_TITLE" desc="Titlebar of the extension notification alert">
+      <message name="IDS_EXTENSION_ALERT_TITLE" desc="Titlebar of the extension notification alert for blocklisted extensions">
         {NUM_EXTENSIONS, plural,
-        =1 {This extension may be dangerous}
-        other {These extensions may be dangerous}}
+        =1 {This extension is blocked}
+        other {These extensions are blocked}}
       </message>
-      <message name="IDS_APP_ALERT_TITLE" desc="Titlebar of the app notification alert">
+      <message name="IDS_APP_ALERT_TITLE" desc="Titlebar of the app notification alert for blocklisted apps">
        {NUM_APPS, plural,
-        =1 {This app may be dangerous}
-        other {These apps may be dangerous}}
+        =1 {This app is blocked}
+        other {Some apps are blocked}}
       </message>
-       <message name="IDS_EXTENSION_AND_APP_ALERT_TITLE" desc="Titlebar of the extension and app notification alert">
-        These items may be dangerous
+       <message name="IDS_EXTENSION_AND_APP_ALERT_TITLE" desc="Titlebar of the extension and app notification alert for blocklisted items">
+        Some items are blocked
       </message>
-      <message name="IDS_EXTENSION_ALERT_ITEM_BLOCKLISTED_OTHER" desc="A statement that an extension has been newly blocklisted. https://support.google.com/chrome/answer/1210215 contains the language on which we're basing the phrasing.">
-        The extension "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" was automatically disabled.
+      <message name="IDS_POLICY_BLOCKED_EXTENSION_ALERT_TITLE" desc="Titlebar of the policy blocked extension notification alert">
+        {NUM_EXTENSIONS, plural,
+        =1 {This extension is not allowed}
+        other {Some extensions are not allowed}}
       </message>
-      <message name="IDS_EXTENSION_ALERT_ITEM_BLOCKLISTED_MALWARE" desc="A statement that an extension has been newly blocklisted for malware.">
-        "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" has been disabled because it contains malware
+      <message name="IDS_POLICY_BLOCKED_EXTENSIONS_ALERT_ITEM_TITLE" desc="A statement that several extensions has been newly blocked by policy.">
+        The following extensions were blocked by your administrator:
       </message>
-      <message name="IDS_APP_ALERT_ITEM_BLOCKLISTED_OTHER" desc="A statement that a packaged app has been newly blocklisted. https://support.google.com/chrome/answer/1210215 contains the language on which we're basing the phrasing.">
-        The app "<ph name="EXTENSION_NAME">$1<ex>Gmail</ex></ph>" was automatically removed.
+      <message name="IDS_BLOCKLISTED_EXTENSIONS_ALERT_ITEM" desc="Name of the extension that is blocklisted">
+        "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
+      </message>
+      <message name="IDS_POLICY_BLOCKED_EXTENSION_ALERT_ITEM_DETAIL" desc="A statement that an extension has been newly blocklisted. https://support.google.com/chrome/answer/1210215 contains the language on which we're basing the phrasing.">
+        The extension "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" was blocked by your administrator
       </message>
       <message name="IDS_EXTENSION_ALERT_ITEM_OK" desc="The title of the default button acknowledging the information presented.">
         OK
@@ -5916,6 +5930,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
       <message name="IDS_READ_LATER_CONTEXT_MENU_DELETE" desc="Label for context menu item to a delete a read later entry.">
         Delete
+      </message>
+
+      <!-- Side panel strings -->
+      <message name="IDS_SIDE_PANEL_TITLE" desc="Title of the Side Panel">
+        Side Panel
       </message>
 
       <!--Tooltip strings-->
@@ -8839,7 +8858,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
             Always translate
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_OPTIONS_MENU_BUTTON" desc="Text to show for the translate bubble 'Options' menu button">
-            Options
+            Translate options
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_PAGE_LANGUAGE" desc="Text to show for the translate bubble label next to the combobox of the page language">
             Page language:
@@ -8895,7 +8914,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
             Always Translate
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_OPTIONS_MENU_BUTTON" desc="In Title Case: Text to show for the translate bubble 'Options' button">
-            Options
+            Translate Options
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_PAGE_LANGUAGE" desc="In Title Case: Text to show for the translate bubble label next to the combobox of the page language">
             Page Language:
