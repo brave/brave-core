@@ -14,7 +14,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/bundle/bundle_state.h"
+#include "bat/ads/internal/bundle/bundle_info.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
@@ -63,24 +63,22 @@ Bundle::Bundle() = default;
 Bundle::~Bundle() = default;
 
 void Bundle::BuildFromCatalog(const Catalog& catalog) {
-  const BundleState bundle_state = FromCatalog(catalog);
+  const BundleInfo bundle = FromCatalog(catalog);
 
-  // TODO(https://github.com/brave/brave-browser/issues/3661): Merge in diffs
-  // to Brave Ads catalog instead of rebuilding the database
   DeleteDatabaseTables();
 
-  SaveCreativeAdNotifications(bundle_state.creative_ad_notifications);
-  SaveCreativeInlineContentAds(bundle_state.creative_inline_content_ads);
-  SaveCreativeNewTabPageAds(bundle_state.creative_new_tab_page_ads);
-  SaveCreativePromotedContentAds(bundle_state.creative_promoted_content_ads);
+  SaveCreativeAdNotifications(bundle.creative_ad_notifications);
+  SaveCreativeInlineContentAds(bundle.creative_inline_content_ads);
+  SaveCreativeNewTabPageAds(bundle.creative_new_tab_page_ads);
+  SaveCreativePromotedContentAds(bundle.creative_promoted_content_ads);
 
   PurgeExpiredConversions();
-  SaveConversions(bundle_state.conversions);
+  SaveConversions(bundle.conversions);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-BundleState Bundle::FromCatalog(const Catalog& catalog) const {
+BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
   CreativeAdNotificationList creative_ad_notifications;
   CreativeInlineContentAdList creative_inline_content_ads;
   CreativeNewTabPageAdList creative_new_tab_page_ads;
@@ -472,14 +470,14 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
     }
   }
 
-  BundleState bundle_state;
-  bundle_state.creative_ad_notifications = creative_ad_notifications;
-  bundle_state.creative_inline_content_ads = creative_inline_content_ads;
-  bundle_state.creative_new_tab_page_ads = creative_new_tab_page_ads;
-  bundle_state.creative_promoted_content_ads = creative_promoted_content_ads;
-  bundle_state.conversions = conversions;
+  BundleInfo bundle;
+  bundle.creative_ad_notifications = creative_ad_notifications;
+  bundle.creative_inline_content_ads = creative_inline_content_ads;
+  bundle.creative_new_tab_page_ads = creative_new_tab_page_ads;
+  bundle.creative_promoted_content_ads = creative_promoted_content_ads;
+  bundle.conversions = conversions;
 
-  return bundle_state;
+  return bundle;
 }
 
 void Bundle::DeleteDatabaseTables() {

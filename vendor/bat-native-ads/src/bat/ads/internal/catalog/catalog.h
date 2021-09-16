@@ -14,7 +14,7 @@
 
 namespace ads {
 
-struct CatalogState;
+struct CatalogInfo;
 struct CatalogIssuersInfo;
 
 class Catalog final {
@@ -33,7 +33,7 @@ class Catalog final {
   CatalogCampaignList GetCampaigns() const;
 
  private:
-  std::unique_ptr<CatalogState> catalog_state_;
+  std::unique_ptr<CatalogInfo> catalog_;
 };
 
 }  // namespace ads

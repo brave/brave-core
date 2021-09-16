@@ -3,14 +3,14 @@
 //  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
 //  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/bundle/bundle_state.h"
+#include "bat/ads/internal/bundle/bundle_info.h"
 
 namespace ads {
 
-BundleState::BundleState() = default;
+BundleInfo::BundleInfo() = default;
 
-BundleState::BundleState(const BundleState& info) = default;
+BundleInfo::BundleInfo(const BundleInfo& info) = default;
 
-BundleState::~BundleState() = default;
+BundleInfo::~BundleInfo() = default;
 
 }  // namespace ads

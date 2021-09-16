@@ -15,7 +15,7 @@
 namespace ads {
 
 class Catalog;
-struct BundleState;
+struct BundleInfo;
 
 class Bundle final {
  public:
@@ -25,7 +25,7 @@ class Bundle final {
   void BuildFromCatalog(const Catalog& catalog);
 
  private:
-  BundleState FromCatalog(const Catalog& catalog) const;
+  BundleInfo FromCatalog(const Catalog& catalog) const;
 
   void DeleteDatabaseTables();
 
