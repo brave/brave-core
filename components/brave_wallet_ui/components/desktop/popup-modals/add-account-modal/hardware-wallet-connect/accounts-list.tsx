@@ -65,8 +65,8 @@ export default function (props: Props) {
     } else {
       const filteredList = accounts.filter((account) => {
         return (
-            account.address.toLowerCase() === search.toLowerCase() ||
-            account.address.toLowerCase().startsWith(search.toLowerCase())
+          account.address.toLowerCase() === search.toLowerCase() ||
+          account.address.toLowerCase().startsWith(search.toLowerCase())
         )
       })
       setFilteredAccountList(filteredList)
@@ -129,7 +129,7 @@ interface AccountListItemProps {
 function AccountListItem (props: AccountListItemProps) {
   const { account, onSelect, selected } = props
   const orb = React.useMemo(() => {
-    return create({ seed: account.address, size: 8, scale: 16 }).toDataURL()
+    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [account.address])
 
   return (

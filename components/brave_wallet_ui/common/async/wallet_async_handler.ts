@@ -121,6 +121,19 @@ async function refreshWalletInfo (store: Store) {
   }
   store.dispatch(WalletActions.tokenBalancesUpdated(tokenBalancesAndPrices))
   await getTokenPriceHistory(store)
+
+  const getTransactions = await Promise.all(state.accounts.map(async (account) => {
+    const transactions = await apiProxy.ethTxController.getAllTransactionInfo(account.address)
+    return {
+      account: {
+        id: account.id,
+        address: account.address,
+        name: account.name
+      },
+      transactions: transactions.transactionInfos
+    }
+  }))
+  store.dispatch(WalletActions.setTransactionList(getTransactions))
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {

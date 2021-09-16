@@ -84,7 +84,8 @@ function Container (props: Props) {
     fullTokenList,
     portfolioPriceHistory,
     selectedPortfolioTimeline,
-    isFetchingPortfolioPriceHistory
+    isFetchingPortfolioPriceHistory,
+    transactionSpotPrices
   } = props.wallet
 
   // Page Props
@@ -546,6 +547,8 @@ function Container (props: Props) {
                   onSetImportError={onSetImportError}
                   hasImportError={importError}
                   onAddCustomToken={onAddCustomToken}
+                  transactionSpotPrices={transactionSpotPrices}
+                  userVisibleTokensInfo={userVisibleTokensInfo}
                 />
               )}
             </>

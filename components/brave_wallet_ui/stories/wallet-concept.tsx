@@ -20,8 +20,9 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
+  EthereumChain,
   TokenInfo,
-  EthereumChain
+  TransactionListInfo
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
@@ -52,6 +53,151 @@ export default {
     locked: { control: { type: 'boolean', lock: false } }
   }
 }
+
+const transactionDummyData: TransactionListInfo[] = [
+  {
+    account: mockUserAccounts[0],
+    transactions: [
+      {
+        fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+        txData: {
+          baseData: {
+            data: new Uint8Array(24),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec50000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: ''
+        },
+        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+        txStatus: 3,
+        txArgs: [],
+        txParams: [],
+        txType: 0
+      },
+      {
+        fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
+        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+        txData: {
+          baseData: {
+            data: new Uint8Array(24),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: ''
+        },
+        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+        txStatus: 4,
+        txArgs: [],
+        txParams: [],
+        txType: 0
+      },
+      {
+        fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+        txData: {
+          baseData: {
+            data: new Uint8Array(24),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: ''
+        },
+        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+        txStatus: 2,
+        txArgs: [],
+        txParams: [],
+        txType: 0
+      },
+      {
+        fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+        txData: {
+          baseData: {
+            data: new Uint8Array(24),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: ''
+        },
+        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+        txStatus: 1,
+        txArgs: [],
+        txParams: [],
+        txType: 0
+      }
+    ]
+  },
+  {
+    account: mockUserAccounts[1],
+    transactions: [
+      {
+        fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
+        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+        txData: {
+          baseData: {
+            data: new Uint8Array(24),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: ''
+        },
+        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+        txStatus: 0,
+        txArgs: [],
+        txParams: [],
+        txType: 0
+      },
+      {
+        fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
+        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+        txData: {
+          baseData: {
+            data: new Uint8Array(24),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: ''
+        },
+        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+        txStatus: 5,
+        txArgs: [],
+        txParams: [],
+        txType: 0
+      }
+    ]
+  }
+]
 
 export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boolean }) => {
   const {
@@ -223,17 +369,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     })
     return newList
   }, [selectedAsset, mockRPCResponse])
-
-  // This returns a list of transactions from all accounts filtered by selected asset
-  const transactions = React.useMemo(() => {
-    const response = mockRPCResponse
-    const transactionList = response.map((account) => {
-      const id = selectedAsset?.symbol ?? ''
-      return account.transactions.find((item) => item.assetId === id)
-    })
-    const removedEmptyTransactions = transactionList.filter(x => x)
-    return removedEmptyTransactions
-  }, [selectedAsset])
 
   // This will scrape all of the user's accounts and combine the balances for a single asset
   const scrapedFullAssetBalance = (asset: TokenInfo) => {
@@ -547,7 +682,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onSelectAsset={onSelectAsset}
                               portfolioPriceHistory={selectedAssetPriceHistory}
                               portfolioBalance={scrapedFullPortfolioBalance()}
-                              transactions={transactions}
+                              transactions={transactionDummyData}
                               selectedUSDAssetPrice={selectedUSDAssetPrice}
                               selectedBTCAssetPrice={selectedBTCAssetPrice}
                               userAssetList={userAssetList}
@@ -575,6 +710,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               hasImportError={importError}
                               onSetImportError={onSetImportError}
                               onAddCustomToken={onAddCustomToken}
+                              transactionSpotPrices={[]}
+                              userVisibleTokensInfo={[]}
                             />
                           )}
                         </>

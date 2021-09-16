@@ -46,7 +46,7 @@ function AccountListItem (props: Props) {
   }
 
   const orb = React.useMemo(() => {
-    return create({ seed: account.address, size: 8, scale: 16 }).toDataURL()
+    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [account.address])
 
   const removeAccount = () => {

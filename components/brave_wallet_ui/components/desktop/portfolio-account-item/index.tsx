@@ -38,7 +38,7 @@ const PortfolioAccountItem = (props: Props) => {
   }
 
   const orb = React.useMemo(() => {
-    return create({ seed: address, size: 8, scale: 16 }).toDataURL()
+    return create({ seed: address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [address])
 
   return (
