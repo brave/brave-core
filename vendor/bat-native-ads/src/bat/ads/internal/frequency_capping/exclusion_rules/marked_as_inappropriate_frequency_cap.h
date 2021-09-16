@@ -13,7 +13,8 @@
 
 namespace ads {
 
-class MarkedAsInappropriateFrequencyCap : public ExclusionRule<CreativeAdInfo> {
+class MarkedAsInappropriateFrequencyCap final
+    : public ExclusionRule<CreativeAdInfo> {
  public:
   MarkedAsInappropriateFrequencyCap();
 

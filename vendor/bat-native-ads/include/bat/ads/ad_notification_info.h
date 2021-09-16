@@ -13,7 +13,7 @@
 
 namespace ads {
 
-struct ADS_EXPORT AdNotificationInfo : AdInfo {
+struct ADS_EXPORT AdNotificationInfo final : AdInfo {
   AdNotificationInfo();
   AdNotificationInfo(const AdNotificationInfo& info);
   ~AdNotificationInfo();

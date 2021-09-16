@@ -30,7 +30,7 @@ namespace ad_notifications {
 using GetEligibleAdsCallback =
     std::function<void(const bool, const CreativeAdNotificationList&)>;
 
-class EligibleAds {
+class EligibleAds final {
  public:
   EligibleAds(
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,

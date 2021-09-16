@@ -15,7 +15,7 @@ namespace ads {
 
 namespace database {
 
-class Initialize {
+class Initialize final {
  public:
   Initialize();
 

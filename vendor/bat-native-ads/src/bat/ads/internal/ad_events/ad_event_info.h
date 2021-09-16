@@ -14,7 +14,7 @@
 
 namespace ads {
 
-struct AdEventInfo {
+struct AdEventInfo final {
   AdEventInfo();
   AdEventInfo(const AdEventInfo& info);
   ~AdEventInfo();

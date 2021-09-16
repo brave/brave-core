@@ -11,7 +11,7 @@
 namespace ads {
 namespace ad_targeting {
 
-struct UserModelInfo {
+struct UserModelInfo final {
   UserModelInfo();
   UserModelInfo(const UserModelInfo& info);
   ~UserModelInfo();

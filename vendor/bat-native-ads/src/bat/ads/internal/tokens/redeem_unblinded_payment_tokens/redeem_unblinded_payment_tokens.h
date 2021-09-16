@@ -21,7 +21,7 @@ namespace ads {
 
 class RedeemUnblindedPaymentTokensDelegate;
 
-class RedeemUnblindedPaymentTokens {
+class RedeemUnblindedPaymentTokens final {
  public:
   RedeemUnblindedPaymentTokens();
 

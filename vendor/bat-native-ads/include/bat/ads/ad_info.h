@@ -19,7 +19,6 @@ struct ADS_EXPORT AdInfo {
   ~AdInfo();
 
   bool operator==(const AdInfo& rhs) const;
-
   bool operator!=(const AdInfo& rhs) const;
 
   bool IsValid() const;

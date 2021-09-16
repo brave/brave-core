@@ -17,7 +17,7 @@ namespace ml {
 
 class HashVectorizer;
 
-class HashedNGramsTransformation : public Transformation {
+class HashedNGramsTransformation final : public Transformation {
  public:
   HashedNGramsTransformation();
 

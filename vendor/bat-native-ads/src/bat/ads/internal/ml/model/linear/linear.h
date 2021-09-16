@@ -16,7 +16,7 @@ namespace ads {
 namespace ml {
 namespace model {
 
-class Linear {
+class Linear final {
  public:
   Linear();
 

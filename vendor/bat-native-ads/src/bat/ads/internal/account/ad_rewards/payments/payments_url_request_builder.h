@@ -15,7 +15,7 @@
 
 namespace ads {
 
-class PaymentsUrlRequestBuilder : UrlRequestBuilder {
+class PaymentsUrlRequestBuilder final : UrlRequestBuilder {
  public:
   explicit PaymentsUrlRequestBuilder(const WalletInfo& wallet);
 

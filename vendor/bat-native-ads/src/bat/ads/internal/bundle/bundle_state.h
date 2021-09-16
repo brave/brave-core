@@ -14,9 +14,9 @@
 
 namespace ads {
 
-struct BundleState {
+struct BundleState final {
   BundleState();
-  BundleState(const BundleState& state);
+  BundleState(const BundleState& info);
   ~BundleState();
 
   CreativeAdNotificationList creative_ad_notifications;

@@ -24,7 +24,7 @@ struct ConversionInfo;
 namespace database {
 namespace table {
 
-class Conversions : public Table {
+class Conversions final : public Table {
  public:
   Conversions();
 

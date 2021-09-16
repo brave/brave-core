@@ -13,7 +13,7 @@
 
 namespace ads {
 
-struct ADS_EXPORT CategoryContentInfo {
+struct ADS_EXPORT CategoryContentInfo final {
   CategoryContentInfo();
   CategoryContentInfo(const CategoryContentInfo& info);
   ~CategoryContentInfo();

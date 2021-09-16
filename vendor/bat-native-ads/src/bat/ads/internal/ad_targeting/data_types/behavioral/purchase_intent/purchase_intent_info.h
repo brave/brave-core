@@ -16,7 +16,7 @@
 namespace ads {
 namespace ad_targeting {
 
-struct PurchaseIntentInfo {
+struct PurchaseIntentInfo final {
  public:
   PurchaseIntentInfo();
   PurchaseIntentInfo(const PurchaseIntentInfo& info);

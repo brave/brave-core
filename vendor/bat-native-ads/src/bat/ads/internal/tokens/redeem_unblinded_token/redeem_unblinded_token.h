@@ -17,7 +17,7 @@ namespace privacy {
 struct UnblindedTokenInfo;
 }  // namespace privacy
 
-class RedeemUnblindedToken {
+class RedeemUnblindedToken final {
  public:
   RedeemUnblindedToken();
 

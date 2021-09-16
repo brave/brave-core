@@ -10,9 +10,9 @@
 
 namespace ads {
 
-struct FilteredCategoryInfo {
+struct FilteredCategoryInfo final {
   FilteredCategoryInfo();
-  FilteredCategoryInfo(const FilteredCategoryInfo& category);
+  FilteredCategoryInfo(const FilteredCategoryInfo& info);
   ~FilteredCategoryInfo();
 
   std::string ToJson() const;

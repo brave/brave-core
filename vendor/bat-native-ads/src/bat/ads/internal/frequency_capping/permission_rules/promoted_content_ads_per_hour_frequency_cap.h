@@ -14,7 +14,7 @@
 
 namespace ads {
 
-class PromotedContentAdsPerHourFrequencyCap : public PermissionRule {
+class PromotedContentAdsPerHourFrequencyCap final : public PermissionRule {
  public:
   PromotedContentAdsPerHourFrequencyCap();
   ~PromotedContentAdsPerHourFrequencyCap() override;

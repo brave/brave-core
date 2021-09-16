@@ -40,7 +40,7 @@ namespace {
 const char kTextClassificationFeatureName[] = "TextClassification";
 const char kEpsilonGreedyBanditFeatureName[] = "EpsilonGreedyBandit";
 
-struct ModelCombinationsParamInfo {
+struct ModelCombinationsParamInfo final {
   bool epsilon_greedy_bandits_enabled;
   bool purchase_intent_enabled;
   bool text_classification_enabled;

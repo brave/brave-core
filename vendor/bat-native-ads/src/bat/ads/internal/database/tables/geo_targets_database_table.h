@@ -18,7 +18,7 @@ namespace ads {
 namespace database {
 namespace table {
 
-class GeoTargets : public Table {
+class GeoTargets final : public Table {
  public:
   GeoTargets();
 

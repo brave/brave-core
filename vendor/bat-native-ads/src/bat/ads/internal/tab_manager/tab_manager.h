@@ -19,7 +19,7 @@ class optional;
 
 namespace ads {
 
-class TabManager {
+class TabManager final {
  public:
   TabManager();
 

@@ -17,7 +17,7 @@ namespace ad_targeting {
 using EpsilonGreedyBanditArmMap =
     std::map<std::string, EpsilonGreedyBanditArmInfo>;
 
-class EpsilonGreedyBanditArms {
+class EpsilonGreedyBanditArms final {
  public:
   EpsilonGreedyBanditArms();
 

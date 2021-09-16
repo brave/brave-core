@@ -19,7 +19,7 @@ namespace ads {
 namespace database {
 namespace table {
 
-class CreativeAds : public Table {
+class CreativeAds final : public Table {
  public:
   CreativeAds();
 

@@ -24,7 +24,7 @@ namespace ads {
 class AdRewardsDelegate;
 class Payments;
 
-class AdRewards {
+class AdRewards final {
  public:
   AdRewards();
 

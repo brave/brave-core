@@ -16,7 +16,7 @@
 namespace ads {
 namespace ml {
 
-class VectorData : public Data {
+class VectorData final : public Data {
  public:
   VectorData();
 

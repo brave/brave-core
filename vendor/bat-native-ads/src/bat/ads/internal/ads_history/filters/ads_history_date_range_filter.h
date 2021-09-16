@@ -13,7 +13,7 @@ namespace ads {
 
 struct AdHistoryInfo;
 
-class AdsHistoryDateRangeFilter {
+class AdsHistoryDateRangeFilter final {
  public:
   AdsHistoryDateRangeFilter();
   ~AdsHistoryDateRangeFilter();

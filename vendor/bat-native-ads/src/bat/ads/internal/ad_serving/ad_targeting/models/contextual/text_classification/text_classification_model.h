@@ -12,7 +12,7 @@ namespace ads {
 namespace ad_targeting {
 namespace model {
 
-class TextClassification : public Model {
+class TextClassification final : public Model {
  public:
   TextClassification();
 

@@ -12,7 +12,7 @@
 
 namespace ads {
 
-class MediaFrequencyCap : public PermissionRule {
+class MediaFrequencyCap final : public PermissionRule {
  public:
   MediaFrequencyCap();
 

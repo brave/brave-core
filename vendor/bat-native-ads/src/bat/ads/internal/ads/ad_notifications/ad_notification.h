@@ -16,7 +16,7 @@ namespace ads {
 
 struct AdNotificationInfo;
 
-class AdNotification : public AdNotificationObserver {
+class AdNotification final : public AdNotificationObserver {
  public:
   AdNotification();
 

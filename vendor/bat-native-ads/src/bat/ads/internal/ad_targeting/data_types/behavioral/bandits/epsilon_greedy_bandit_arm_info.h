@@ -11,11 +11,9 @@
 namespace ads {
 namespace ad_targeting {
 
-struct EpsilonGreedyBanditArmInfo {
+struct EpsilonGreedyBanditArmInfo final {
   EpsilonGreedyBanditArmInfo();
-
   EpsilonGreedyBanditArmInfo(const EpsilonGreedyBanditArmInfo& info);
-
   ~EpsilonGreedyBanditArmInfo();
 
   bool operator==(const EpsilonGreedyBanditArmInfo& rhs) const;

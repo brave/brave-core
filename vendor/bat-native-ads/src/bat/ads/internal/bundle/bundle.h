@@ -17,7 +17,7 @@ namespace ads {
 class Catalog;
 struct BundleState;
 
-class Bundle {
+class Bundle final {
  public:
   Bundle();
 

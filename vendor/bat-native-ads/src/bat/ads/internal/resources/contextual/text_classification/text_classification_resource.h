@@ -20,7 +20,8 @@ class TextProcessing;
 
 namespace resource {
 
-class TextClassification : public Resource<ml::pipeline::TextProcessing*> {
+class TextClassification final
+    : public Resource<ml::pipeline::TextProcessing*> {
  public:
   TextClassification();
 

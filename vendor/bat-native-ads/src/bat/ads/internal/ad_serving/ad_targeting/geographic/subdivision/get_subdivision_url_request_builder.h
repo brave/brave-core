@@ -15,7 +15,7 @@ namespace ads {
 namespace ad_targeting {
 namespace geographic {
 
-class GetSubdivisionUrlRequestBuilder : UrlRequestBuilder {
+class GetSubdivisionUrlRequestBuilder final : UrlRequestBuilder {
  public:
   GetSubdivisionUrlRequestBuilder();
 

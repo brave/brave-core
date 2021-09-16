@@ -19,7 +19,7 @@ class OneShotTimer;
 
 namespace ads {
 
-class BackoffTimer {
+class BackoffTimer final {
  public:
   BackoffTimer();
 

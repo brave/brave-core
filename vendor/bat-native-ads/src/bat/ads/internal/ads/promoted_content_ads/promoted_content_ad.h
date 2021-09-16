@@ -16,7 +16,7 @@ namespace ads {
 
 struct PromotedContentAdInfo;
 
-class PromotedContentAd : public PromotedContentAdObserver {
+class PromotedContentAd final : public PromotedContentAdObserver {
  public:
   PromotedContentAd();
 

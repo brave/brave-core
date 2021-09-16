@@ -18,7 +18,7 @@ namespace ads {
 namespace database {
 namespace table {
 
-class Dayparts : public Table {
+class Dayparts final : public Table {
  public:
   Dayparts();
 

@@ -13,7 +13,7 @@
 
 namespace ads {
 
-class MarkedToNoLongerReceiveFrequencyCap
+class MarkedToNoLongerReceiveFrequencyCap final
     : public ExclusionRule<CreativeAdInfo> {
  public:
   MarkedToNoLongerReceiveFrequencyCap();

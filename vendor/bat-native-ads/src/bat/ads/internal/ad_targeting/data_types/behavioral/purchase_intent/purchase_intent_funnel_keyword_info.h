@@ -12,11 +12,12 @@
 namespace ads {
 namespace ad_targeting {
 
-struct PurchaseIntentFunnelKeywordInfo {
+struct PurchaseIntentFunnelKeywordInfo final {
  public:
   PurchaseIntentFunnelKeywordInfo();
   PurchaseIntentFunnelKeywordInfo(const std::string& keywords,
                                   const uint16_t weight);
+  PurchaseIntentFunnelKeywordInfo(const PurchaseIntentFunnelKeywordInfo& info);
   ~PurchaseIntentFunnelKeywordInfo();
 
   std::string keywords;

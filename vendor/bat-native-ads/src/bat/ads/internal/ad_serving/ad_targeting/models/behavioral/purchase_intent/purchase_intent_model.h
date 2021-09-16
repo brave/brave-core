@@ -12,7 +12,7 @@ namespace ads {
 namespace ad_targeting {
 namespace model {
 
-class PurchaseIntent : public Model {
+class PurchaseIntent final : public Model {
  public:
   PurchaseIntent();
 

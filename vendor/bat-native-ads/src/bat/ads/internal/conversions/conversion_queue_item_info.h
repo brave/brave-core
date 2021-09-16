@@ -12,7 +12,7 @@
 
 namespace ads {
 
-struct ConversionQueueItemInfo {
+struct ConversionQueueItemInfo final {
   ConversionQueueItemInfo();
   ConversionQueueItemInfo(const ConversionQueueItemInfo& info);
   ~ConversionQueueItemInfo();

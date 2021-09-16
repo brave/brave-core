@@ -12,7 +12,7 @@
 
 namespace ads {
 
-class FullScreenModeFrequencyCap : public PermissionRule {
+class FullScreenModeFrequencyCap final : public PermissionRule {
  public:
   FullScreenModeFrequencyCap();
 

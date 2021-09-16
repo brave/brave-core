@@ -14,7 +14,7 @@
 
 namespace ads {
 
-class MinimumWaitTimeFrequencyCap : public PermissionRule {
+class MinimumWaitTimeFrequencyCap final : public PermissionRule {
  public:
   MinimumWaitTimeFrequencyCap();
   ~MinimumWaitTimeFrequencyCap() override;

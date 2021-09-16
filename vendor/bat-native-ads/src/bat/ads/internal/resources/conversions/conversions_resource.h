@@ -14,7 +14,7 @@
 namespace ads {
 namespace resource {
 
-class Conversions : public Resource<ConversionIdPatternMap> {
+class Conversions final : public Resource<ConversionIdPatternMap> {
  public:
   Conversions();
   ~Conversions() override;

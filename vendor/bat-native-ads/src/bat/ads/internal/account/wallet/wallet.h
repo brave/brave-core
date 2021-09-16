@@ -12,7 +12,7 @@
 
 namespace ads {
 
-class Wallet {
+class Wallet final {
  public:
   Wallet();
 

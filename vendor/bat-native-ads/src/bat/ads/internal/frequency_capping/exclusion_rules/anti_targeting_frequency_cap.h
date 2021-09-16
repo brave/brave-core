@@ -18,7 +18,7 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
-class AntiTargetingFrequencyCap : public ExclusionRule<CreativeAdInfo> {
+class AntiTargetingFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   AntiTargetingFrequencyCap(resource::AntiTargeting* anti_targeting_resource,
                             const BrowsingHistoryList& browsing_history);

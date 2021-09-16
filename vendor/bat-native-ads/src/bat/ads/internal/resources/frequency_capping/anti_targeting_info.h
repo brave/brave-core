@@ -17,14 +17,13 @@ namespace resource {
 using AntiTargetingList = std::vector<std::string>;
 using AntiTargetingMap = std::map<std::string, AntiTargetingList>;
 
-struct AntiTargetingInfo {
+struct AntiTargetingInfo final {
  public:
   AntiTargetingInfo();
   AntiTargetingInfo(const AntiTargetingInfo& info);
   ~AntiTargetingInfo();
 
   uint16_t version = 0;
-
   AntiTargetingMap sites;
 };
 

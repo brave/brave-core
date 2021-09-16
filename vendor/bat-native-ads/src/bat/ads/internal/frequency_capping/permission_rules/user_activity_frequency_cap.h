@@ -12,7 +12,7 @@
 
 namespace ads {
 
-class UserActivityFrequencyCap : public PermissionRule {
+class UserActivityFrequencyCap final : public PermissionRule {
  public:
   UserActivityFrequencyCap();
 

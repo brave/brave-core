@@ -11,9 +11,9 @@
 
 namespace ads {
 
-struct FilteredAdInfo {
+struct FilteredAdInfo final {
   FilteredAdInfo();
-  FilteredAdInfo(const FilteredAdInfo& ad);
+  FilteredAdInfo(const FilteredAdInfo& info);
   ~FilteredAdInfo();
 
   std::string ToJson() const;

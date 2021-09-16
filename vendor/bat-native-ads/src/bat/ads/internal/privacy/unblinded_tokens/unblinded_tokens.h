@@ -17,7 +17,7 @@ namespace privacy {
 
 struct UnblindedTokenInfo;
 
-class UnblindedTokens {
+class UnblindedTokens final {
  public:
   UnblindedTokens();
 

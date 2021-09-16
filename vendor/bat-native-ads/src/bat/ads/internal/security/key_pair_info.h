@@ -12,7 +12,7 @@
 namespace ads {
 namespace security {
 
-struct KeyPairInfo {
+struct KeyPairInfo final {
   KeyPairInfo();
   KeyPairInfo(const KeyPairInfo& info);
   ~KeyPairInfo();

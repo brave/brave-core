@@ -13,7 +13,7 @@
 namespace ads {
 namespace ml {
 
-class TextData : public Data {
+class TextData final : public Data {
  public:
   TextData();
 

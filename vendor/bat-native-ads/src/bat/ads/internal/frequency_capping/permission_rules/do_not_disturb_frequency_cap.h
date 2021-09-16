@@ -12,7 +12,7 @@
 
 namespace ads {
 
-class DoNotDisturbFrequencyCap : public PermissionRule {
+class DoNotDisturbFrequencyCap final : public PermissionRule {
  public:
   DoNotDisturbFrequencyCap();
 

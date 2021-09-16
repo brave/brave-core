@@ -14,9 +14,9 @@
 
 namespace ads {
 
-struct CatalogState {
+struct CatalogState final {
   CatalogState();
-  CatalogState(const CatalogState& state);
+  CatalogState(const CatalogState& info);
   ~CatalogState();
 
   bool FromJson(const std::string& json, const std::string& json_schema);

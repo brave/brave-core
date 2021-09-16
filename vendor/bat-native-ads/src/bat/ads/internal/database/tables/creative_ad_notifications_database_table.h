@@ -33,7 +33,7 @@ class Dayparts;
 class GeoTargets;
 class Segments;
 
-class CreativeAdNotifications : public Table {
+class CreativeAdNotifications final : public Table {
  public:
   CreativeAdNotifications();
 

@@ -13,7 +13,7 @@
 
 namespace ads {
 
-class DislikeFrequencyCap : public ExclusionRule<CreativeAdInfo> {
+class DislikeFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   DislikeFrequencyCap();
 

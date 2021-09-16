@@ -12,7 +12,7 @@
 
 namespace ads {
 
-class BrowserIsActiveFrequencyCap : public PermissionRule {
+class BrowserIsActiveFrequencyCap final : public PermissionRule {
  public:
   BrowserIsActiveFrequencyCap();
 

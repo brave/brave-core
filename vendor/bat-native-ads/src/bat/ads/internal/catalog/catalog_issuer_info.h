@@ -11,7 +11,7 @@
 
 namespace ads {
 
-struct CatalogIssuerInfo {
+struct CatalogIssuerInfo final {
   CatalogIssuerInfo();
   CatalogIssuerInfo(const CatalogIssuerInfo& info);
   ~CatalogIssuerInfo();

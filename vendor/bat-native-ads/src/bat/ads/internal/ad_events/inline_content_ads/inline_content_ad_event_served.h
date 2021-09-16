@@ -12,7 +12,7 @@
 namespace ads {
 namespace inline_content_ads {
 
-class AdEventServed : public AdEvent<InlineContentAdInfo> {
+class AdEventServed final : public AdEvent<InlineContentAdInfo> {
  public:
   AdEventServed();
 

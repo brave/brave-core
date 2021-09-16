@@ -31,7 +31,7 @@ namespace inline_content_ads {
 using GetEligibleAdsCallback =
     std::function<void(const bool, const CreativeInlineContentAdList&)>;
 
-class EligibleAds {
+class EligibleAds final {
  public:
   EligibleAds(
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,

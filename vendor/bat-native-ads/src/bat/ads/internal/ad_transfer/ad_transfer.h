@@ -21,7 +21,7 @@ class Time;
 
 namespace ads {
 
-class AdTransfer {
+class AdTransfer final {
  public:
   AdTransfer();
 

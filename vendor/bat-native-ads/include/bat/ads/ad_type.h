@@ -12,7 +12,7 @@
 
 namespace ads {
 
-class AdType {
+class AdType final {
  public:
   enum Value {
     kUndefined,

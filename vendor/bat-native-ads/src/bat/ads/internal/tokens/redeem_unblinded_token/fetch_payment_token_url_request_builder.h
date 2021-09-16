@@ -14,7 +14,7 @@
 
 namespace ads {
 
-class FetchPaymentTokenUrlRequestBuilder : UrlRequestBuilder {
+class FetchPaymentTokenUrlRequestBuilder final : UrlRequestBuilder {
  public:
   explicit FetchPaymentTokenUrlRequestBuilder(
       const ConfirmationInfo& confirmation);

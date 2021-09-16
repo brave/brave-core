@@ -39,7 +39,7 @@ class Dayparts;
 class GeoTargets;
 class Segments;
 
-class CreativeInlineContentAds : public Table {
+class CreativeInlineContentAds final : public Table {
  public:
   CreativeInlineContentAds();
 

@@ -12,7 +12,7 @@
 
 namespace ads {
 
-class CatalogLastUpdatedAdDiagnosticsEntry : public AdDiagnosticsEntry {
+class CatalogLastUpdatedAdDiagnosticsEntry final : public AdDiagnosticsEntry {
  public:
   CatalogLastUpdatedAdDiagnosticsEntry();
   CatalogLastUpdatedAdDiagnosticsEntry(

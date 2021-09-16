@@ -13,7 +13,7 @@ namespace ads {
 class AdRewards;
 struct StatementInfo;
 
-class Statement {
+class Statement final {
  public:
   explicit Statement(AdRewards* ad_rewards);
 

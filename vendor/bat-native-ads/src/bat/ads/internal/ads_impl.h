@@ -96,17 +96,17 @@ struct NewTabPageAdInfo;
 struct PromotedContentAdInfo;
 struct WalletInfo;
 
-class AdsImpl : public Ads,
-                public AccountObserver,
-                public AdNotificationObserver,
-                public AdNotificationServingObserver,
-                public AdServerObserver,
-                public AdTransferObserver,
-                public InlineContentAdObserver,
-                public InlineContentAdServingObserver,
-                public ConversionsObserver,
-                public NewTabPageAdObserver,
-                public PromotedContentAdObserver {
+class AdsImpl final : public Ads,
+                      public AccountObserver,
+                      public AdNotificationObserver,
+                      public AdNotificationServingObserver,
+                      public AdServerObserver,
+                      public AdTransferObserver,
+                      public InlineContentAdObserver,
+                      public InlineContentAdServingObserver,
+                      public ConversionsObserver,
+                      public NewTabPageAdObserver,
+                      public PromotedContentAdObserver {
  public:
   explicit AdsImpl(AdsClient* ads_client);
 

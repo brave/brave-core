@@ -19,7 +19,7 @@ struct NewTabPageAdInfo;
 
 namespace new_tab_page_ads {
 
-class AdEventFactory {
+class AdEventFactory final {
  public:
   static std::unique_ptr<AdEvent<NewTabPageAdInfo>> Build(
       const mojom::NewTabPageAdEventType event_type);

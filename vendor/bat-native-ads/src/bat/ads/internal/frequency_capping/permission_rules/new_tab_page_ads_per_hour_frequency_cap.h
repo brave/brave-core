@@ -14,7 +14,7 @@
 
 namespace ads {
 
-class NewTabPageAdsPerHourFrequencyCap : public PermissionRule {
+class NewTabPageAdsPerHourFrequencyCap final : public PermissionRule {
  public:
   NewTabPageAdsPerHourFrequencyCap();
   ~NewTabPageAdsPerHourFrequencyCap() override;

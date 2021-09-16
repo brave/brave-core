@@ -18,7 +18,7 @@ class TimeDelta;
 
 namespace ads {
 
-class Timer {
+class Timer final {
  public:
   Timer();
 

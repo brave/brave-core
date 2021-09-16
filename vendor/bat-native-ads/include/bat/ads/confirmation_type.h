@@ -10,7 +10,7 @@
 
 namespace ads {
 
-class ConfirmationType {
+class ConfirmationType final {
  public:
   enum Value {
     // When adding new confirmation types they must be added with highest

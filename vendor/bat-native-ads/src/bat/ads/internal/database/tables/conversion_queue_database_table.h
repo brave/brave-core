@@ -29,7 +29,7 @@ struct ConversionQueueItemInfo;
 namespace database {
 namespace table {
 
-class ConversionQueue : public Table {
+class ConversionQueue final : public Table {
  public:
   ConversionQueue();
 

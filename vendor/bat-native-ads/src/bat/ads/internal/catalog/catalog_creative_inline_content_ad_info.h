@@ -11,7 +11,7 @@
 
 namespace ads {
 
-struct CatalogCreativeInlineContentAdInfo : CatalogCreativeInfo {
+struct CatalogCreativeInlineContentAdInfo final : CatalogCreativeInfo {
   CatalogCreativeInlineContentAdInfo();
   CatalogCreativeInlineContentAdInfo(
       const CatalogCreativeInlineContentAdInfo& info);

@@ -10,7 +10,7 @@
 
 namespace ads {
 
-struct ConversionIdPatternInfo {
+struct ConversionIdPatternInfo final {
   ConversionIdPatternInfo();
   ConversionIdPatternInfo(const ConversionIdPatternInfo& info);
   ~ConversionIdPatternInfo();

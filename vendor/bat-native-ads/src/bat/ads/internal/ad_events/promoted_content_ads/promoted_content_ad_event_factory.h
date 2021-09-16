@@ -19,7 +19,7 @@ struct PromotedContentAdInfo;
 
 namespace promoted_content_ads {
 
-class AdEventFactory {
+class AdEventFactory final {
  public:
   static std::unique_ptr<AdEvent<PromotedContentAdInfo>> Build(
       const mojom::PromotedContentAdEventType event_type);

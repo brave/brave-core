@@ -17,7 +17,7 @@ namespace ads {
 struct CatalogState;
 struct CatalogIssuersInfo;
 
-class Catalog {
+class Catalog final {
  public:
   Catalog();
 

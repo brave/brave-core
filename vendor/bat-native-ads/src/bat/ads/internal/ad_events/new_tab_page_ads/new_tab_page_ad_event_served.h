@@ -12,7 +12,7 @@
 namespace ads {
 namespace new_tab_page_ads {
 
-class AdEventServed : public AdEvent<NewTabPageAdInfo> {
+class AdEventServed final : public AdEvent<NewTabPageAdInfo> {
  public:
   AdEventServed();
 

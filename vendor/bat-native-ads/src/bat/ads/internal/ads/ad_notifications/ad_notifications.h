@@ -21,7 +21,7 @@ class Value;
 
 namespace ads {
 
-class AdNotifications {
+class AdNotifications final {
  public:
   AdNotifications();
 

@@ -19,7 +19,8 @@ class SubdivisionTargeting;
 }  // namespace geographic
 }  // namespace ad_targeting
 
-class SubdivisionTargetingFrequencyCap : public ExclusionRule<CreativeAdInfo> {
+class SubdivisionTargetingFrequencyCap final
+    : public ExclusionRule<CreativeAdInfo> {
  public:
   SubdivisionTargetingFrequencyCap(
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting);

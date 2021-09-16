@@ -26,7 +26,7 @@ class AntiTargeting;
 namespace inline_content_ads {
 namespace frequency_capping {
 
-class ExclusionRules {
+class ExclusionRules final {
  public:
   ExclusionRules(
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,

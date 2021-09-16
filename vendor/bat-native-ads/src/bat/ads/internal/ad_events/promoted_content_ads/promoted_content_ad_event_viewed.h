@@ -12,7 +12,7 @@
 namespace ads {
 namespace promoted_content_ads {
 
-class AdEventViewed : public AdEvent<PromotedContentAdInfo> {
+class AdEventViewed final : public AdEvent<PromotedContentAdInfo> {
  public:
   AdEventViewed();
 

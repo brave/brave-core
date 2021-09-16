@@ -15,7 +15,7 @@ namespace ml {
 
 class Data;
 
-class LowercaseTransformation : public Transformation {
+class LowercaseTransformation final : public Transformation {
  public:
   LowercaseTransformation();
 

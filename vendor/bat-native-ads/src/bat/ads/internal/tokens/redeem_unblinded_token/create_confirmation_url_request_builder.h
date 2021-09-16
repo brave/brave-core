@@ -15,7 +15,7 @@
 
 namespace ads {
 
-class CreateConfirmationUrlRequestBuilder : UrlRequestBuilder {
+class CreateConfirmationUrlRequestBuilder final : UrlRequestBuilder {
  public:
   explicit CreateConfirmationUrlRequestBuilder(
       const ConfirmationInfo& confirmation);

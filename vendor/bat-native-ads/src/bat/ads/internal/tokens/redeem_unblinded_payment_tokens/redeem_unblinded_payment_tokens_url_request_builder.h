@@ -24,7 +24,7 @@ namespace privacy {
 struct UnblindedTokenInfo;
 }  // namespace privacy
 
-class RedeemUnblindedPaymentTokensUrlRequestBuilder : UrlRequestBuilder {
+class RedeemUnblindedPaymentTokensUrlRequestBuilder final : UrlRequestBuilder {
  public:
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
       const WalletInfo& wallet,

@@ -16,7 +16,7 @@ namespace ads {
 
 class Catalog;
 
-class AdServer {
+class AdServer final {
  public:
   AdServer();
 

@@ -17,7 +17,7 @@ struct DefaultSingletonTraits;
 
 namespace ads {
 
-class PlatformHelperWin : public PlatformHelper {
+class PlatformHelperWin final : public PlatformHelper {
  public:
   PlatformHelperWin(const PlatformHelperWin&) = delete;
   PlatformHelperWin& operator=(const PlatformHelperWin&) = delete;

@@ -10,9 +10,9 @@
 
 namespace ads {
 
-struct FlaggedAdInfo {
+struct FlaggedAdInfo final {
   FlaggedAdInfo();
-  FlaggedAdInfo(const FlaggedAdInfo& ad);
+  FlaggedAdInfo(const FlaggedAdInfo& info);
   ~FlaggedAdInfo();
 
   std::string ToJson() const;

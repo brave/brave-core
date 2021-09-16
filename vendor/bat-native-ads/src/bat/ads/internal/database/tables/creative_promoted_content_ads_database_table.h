@@ -40,7 +40,7 @@ class Dayparts;
 class GeoTargets;
 class Segments;
 
-class CreativePromotedContentAds : public Table {
+class CreativePromotedContentAds final : public Table {
  public:
   CreativePromotedContentAds();
 

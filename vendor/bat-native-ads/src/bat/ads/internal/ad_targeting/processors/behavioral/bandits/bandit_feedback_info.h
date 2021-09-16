@@ -14,7 +14,7 @@ namespace ads {
 namespace ad_targeting {
 namespace processor {
 
-struct BanditFeedbackInfo {
+struct BanditFeedbackInfo final {
   std::string segment;
   mojom::AdNotificationEventType ad_event_type;
 };

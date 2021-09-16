@@ -12,7 +12,7 @@
 namespace ads {
 namespace ad_notifications {
 
-class AdEventViewed : public AdEvent<AdNotificationInfo> {
+class AdEventViewed final : public AdEvent<AdNotificationInfo> {
  public:
   AdEventViewed();
 

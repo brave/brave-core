@@ -12,7 +12,7 @@
 
 namespace ads {
 
-class AllowNotificationsFrequencyCap : public PermissionRule {
+class AllowNotificationsFrequencyCap final : public PermissionRule {
  public:
   AllowNotificationsFrequencyCap();
 

@@ -12,7 +12,7 @@
 namespace ads {
 namespace ad_targeting {
 
-struct PurchaseIntentSignalHistoryInfo {
+struct PurchaseIntentSignalHistoryInfo final {
   PurchaseIntentSignalHistoryInfo();
   PurchaseIntentSignalHistoryInfo(const int64_t timestamp_in_seconds,
                                   const uint16_t weight);

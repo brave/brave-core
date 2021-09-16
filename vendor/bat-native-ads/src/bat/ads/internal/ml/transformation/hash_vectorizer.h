@@ -14,7 +14,7 @@
 namespace ads {
 namespace ml {
 
-class HashVectorizer {
+class HashVectorizer final {
  public:
   HashVectorizer();
 

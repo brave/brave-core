@@ -18,7 +18,7 @@ namespace ads {
 namespace database {
 namespace table {
 
-class Campaigns : public Table {
+class Campaigns final : public Table {
  public:
   Campaigns();
 

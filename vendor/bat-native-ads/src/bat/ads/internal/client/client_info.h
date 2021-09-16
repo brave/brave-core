@@ -18,9 +18,9 @@
 
 namespace ads {
 
-struct ClientInfo {
+struct ClientInfo final {
   ClientInfo();
-  ClientInfo(const ClientInfo& state);
+  ClientInfo(const ClientInfo& info);
   ~ClientInfo();
 
   std::string ToJson();

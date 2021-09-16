@@ -31,7 +31,7 @@ namespace inline_content_ads {
 
 class EligibleAds;
 
-class AdServing {
+class AdServing final {
  public:
   AdServing(
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,

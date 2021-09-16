@@ -19,7 +19,7 @@ class Value;
 
 namespace ads {
 
-struct ADS_EXPORT StatementInfo {
+struct ADS_EXPORT StatementInfo final {
   StatementInfo();
   StatementInfo(const StatementInfo& info);
   ~StatementInfo();

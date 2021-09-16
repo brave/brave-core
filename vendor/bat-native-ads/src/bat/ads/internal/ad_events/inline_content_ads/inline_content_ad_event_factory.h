@@ -19,7 +19,7 @@ struct InlineContentAdInfo;
 
 namespace inline_content_ads {
 
-class AdEventFactory {
+class AdEventFactory final {
  public:
   static std::unique_ptr<AdEvent<InlineContentAdInfo>> Build(
       const mojom::InlineContentAdEventType event_type);

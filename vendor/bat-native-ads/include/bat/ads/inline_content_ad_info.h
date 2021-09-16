@@ -14,13 +14,12 @@
 
 namespace ads {
 
-struct ADS_EXPORT InlineContentAdInfo : AdInfo {
+struct ADS_EXPORT InlineContentAdInfo final : AdInfo {
   InlineContentAdInfo();
   InlineContentAdInfo(const InlineContentAdInfo& info);
   ~InlineContentAdInfo();
 
   bool operator==(const InlineContentAdInfo& rhs) const;
-
   bool operator!=(const InlineContentAdInfo& rhs) const;
 
   bool IsValid() const;

@@ -14,7 +14,7 @@
 
 namespace ads {
 
-class DailyCapFrequencyCap : public ExclusionRule<CreativeAdInfo> {
+class DailyCapFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   explicit DailyCapFrequencyCap(const AdEventList& ad_events);
 

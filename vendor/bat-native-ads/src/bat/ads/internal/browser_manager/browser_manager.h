@@ -8,7 +8,7 @@
 
 namespace ads {
 
-class BrowserManager {
+class BrowserManager final {
  public:
   BrowserManager();
 

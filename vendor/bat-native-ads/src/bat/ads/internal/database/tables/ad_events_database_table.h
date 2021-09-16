@@ -21,7 +21,7 @@ using GetAdEventsCallback = std::function<void(const bool, const AdEventList&)>;
 namespace database {
 namespace table {
 
-class AdEvents : public Table {
+class AdEvents final : public Table {
  public:
   AdEvents();
 

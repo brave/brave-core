@@ -22,7 +22,7 @@ namespace ads {
 
 struct PaymentInfo;
 
-class Payments {
+class Payments final {
  public:
   Payments();
 

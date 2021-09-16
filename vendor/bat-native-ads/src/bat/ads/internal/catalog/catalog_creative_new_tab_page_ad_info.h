@@ -11,7 +11,7 @@
 
 namespace ads {
 
-struct CatalogCreativeNewTabPageAdInfo : CatalogCreativeInfo {
+struct CatalogCreativeNewTabPageAdInfo final : CatalogCreativeInfo {
   CatalogCreativeNewTabPageAdInfo();
   CatalogCreativeNewTabPageAdInfo(const CatalogCreativeNewTabPageAdInfo& info);
   ~CatalogCreativeNewTabPageAdInfo();

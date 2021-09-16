@@ -13,7 +13,7 @@
 namespace ads {
 namespace ad_targeting {
 
-struct PurchaseIntentSegmentKeywordInfo {
+struct PurchaseIntentSegmentKeywordInfo final {
  public:
   PurchaseIntentSegmentKeywordInfo();
   PurchaseIntentSegmentKeywordInfo(const SegmentList& segments,

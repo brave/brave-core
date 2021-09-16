@@ -12,7 +12,7 @@ namespace ads {
 namespace ad_targeting {
 namespace model {
 
-class EpsilonGreedyBandit : public Model {
+class EpsilonGreedyBandit final : public Model {
  public:
   EpsilonGreedyBandit();
 

@@ -12,7 +12,7 @@
 namespace ads {
 namespace database {
 
-class Migration {
+class Migration final {
  public:
   Migration();
 

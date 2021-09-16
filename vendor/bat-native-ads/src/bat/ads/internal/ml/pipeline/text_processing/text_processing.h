@@ -19,7 +19,7 @@ namespace pipeline {
 
 struct PipelineInfo;
 
-class TextProcessing {
+class TextProcessing final {
  public:
   static TextProcessing* CreateInstance();
 

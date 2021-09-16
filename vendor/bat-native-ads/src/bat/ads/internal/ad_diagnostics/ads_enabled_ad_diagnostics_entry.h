@@ -12,7 +12,7 @@
 
 namespace ads {
 
-class AdsEnabledAdDiagnosticsEntry : public AdDiagnosticsEntry {
+class AdsEnabledAdDiagnosticsEntry final : public AdDiagnosticsEntry {
  public:
   AdsEnabledAdDiagnosticsEntry();
   AdsEnabledAdDiagnosticsEntry(const AdsEnabledAdDiagnosticsEntry&) = delete;

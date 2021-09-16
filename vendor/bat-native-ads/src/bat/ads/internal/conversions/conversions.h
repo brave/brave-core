@@ -21,7 +21,7 @@ struct AdEventInfo;
 struct ConversionQueueItemInfo;
 struct VerifiableConversionInfo;
 
-class Conversions {
+class Conversions final {
  public:
   Conversions();
 

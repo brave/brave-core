@@ -10,7 +10,7 @@ namespace ads {
 namespace ad_notifications {
 namespace frequency_capping {
 
-class PermissionRules {
+class PermissionRules final {
  public:
   PermissionRules();
   ~PermissionRules();

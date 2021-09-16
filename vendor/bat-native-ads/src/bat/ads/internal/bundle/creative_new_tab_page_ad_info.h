@@ -12,12 +12,12 @@
 
 namespace ads {
 
-struct CreativeNewTabPageAdInfo : CreativeAdInfo {
+struct CreativeNewTabPageAdInfo final : CreativeAdInfo {
   CreativeNewTabPageAdInfo();
+  CreativeNewTabPageAdInfo(const CreativeNewTabPageAdInfo& info);
   ~CreativeNewTabPageAdInfo();
 
   bool operator==(const CreativeNewTabPageAdInfo& rhs) const;
-
   bool operator!=(const CreativeNewTabPageAdInfo& rhs) const;
 
   std::string company_name;

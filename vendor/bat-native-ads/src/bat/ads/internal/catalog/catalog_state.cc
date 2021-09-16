@@ -23,7 +23,7 @@ const int64_t kDefaultCatalogPing = 2 * base::Time::kSecondsPerHour;
 
 CatalogState::CatalogState() = default;
 
-CatalogState::CatalogState(const CatalogState& state) = default;
+CatalogState::CatalogState(const CatalogState& info) = default;
 
 CatalogState::~CatalogState() = default;
 

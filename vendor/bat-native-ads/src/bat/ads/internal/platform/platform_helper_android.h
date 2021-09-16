@@ -17,7 +17,7 @@ struct DefaultSingletonTraits;
 
 namespace ads {
 
-class PlatformHelperAndroid : public PlatformHelper {
+class PlatformHelperAndroid final : public PlatformHelper {
  public:
   PlatformHelperAndroid(const PlatformHelperAndroid&) = delete;
   PlatformHelperAndroid& operator=(const PlatformHelperAndroid&) = delete;
