@@ -100,6 +100,8 @@ const char kImportDialogPayments[] = "import_dialog_payments";
 const char kMRUCyclingEnabled[] = "brave.mru_cycling_enabled";
 const char kTabsSearchShow[] = "brave.tabs_search_show";
 const char kDontAskForCrashReporting[] = "brave.dont_ask_for_crash_reporting";
+const char kEnableMediaRouterOnRestart[] =
+    "brave.enable_media_router_on_restart";
 
 #if defined(OS_ANDROID)
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";

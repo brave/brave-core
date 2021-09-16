@@ -161,6 +161,13 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
       prefs::kHideWebStoreIcon));
 }
 
+IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MediaRouterPrefTest) {
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      ::prefs::kEnableMediaRouter));
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kEnableMediaRouterOnRestart));
+}
+
 IN_PROC_BROWSER_TEST_F(BraveLocalStatePrefsBrowserTest, DefaultLocalStateTest) {
 #if !defined(OS_ANDROID)
   EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(

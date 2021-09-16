@@ -14,12 +14,16 @@
 namespace media_router {
 
 bool MediaRouterEnabled(content::BrowserContext* context) {
-#if !defined(OS_ANDROID)
-  if (GetMediaRouterPref(context)->IsDefaultValue()) {
+#if defined(OS_ANDROID)
+  return MediaRouterEnabled_ChromiumImpl(context);
+#else
+  if (!base::FeatureList::IsEnabled(kMediaRouter)) {
     return false;
   }
+  const PrefService::Preference* pref = GetMediaRouterPref(context);
+  CHECK(pref->GetValue()->is_bool());
+  return pref->GetValue()->GetBool();
 #endif
-  return MediaRouterEnabled_ChromiumImpl(context);
 }
 
 }  // namespace media_router
