@@ -8,11 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-#include "brave_wallet.mojom.objc.h"
-
 @class BraveBookmarksAPI;
 @class BraveHistoryAPI;
 @class BraveSyncProfileServiceIOS;
+@protocol BraveWalletERCTokenRegistry;
 
 NS_ASSUME_NONNULL_BEGIN
 

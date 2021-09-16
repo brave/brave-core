@@ -7,6 +7,7 @@
 
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
@@ -66,6 +67,18 @@
   }
   return [[BraveWalletKeyringControllerImpl alloc]
       initWithKeyringController:controller];
+}
+@end
+
+@implementation BraveWalletServiceFactory
++ (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
+  auto* controller =
+      brave_wallet::BraveWalletServiceFactory::GetForBrowserState(browserState);
+  if (!controller) {
+    return nil;
+  }
+  return [[BraveWalletBraveWalletServiceImpl alloc]
+      initWithBraveWalletService:controller];
 }
 @end
 

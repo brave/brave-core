@@ -24,6 +24,7 @@ source_set("app") {
     "//base",
     "//brave/common:pref_names",
     "//brave/components/brave_sync:constants",
+    "//brave/components/brave_wallet/browser",
     "//brave/ios/browser",
     "//brave/ios/browser/api/ads",
     "//brave/ios/browser/api/bookmarks",

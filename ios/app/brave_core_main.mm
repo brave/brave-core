@@ -17,10 +17,6 @@
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
-#include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
-#include "brave/ios/browser/brave_wallet/eth_tx_controller_factory.h"
-#include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
-#include "brave/ios/browser/brave_wallet/swap_controller_factory.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
@@ -50,11 +46,6 @@ static BraveCoreLogHandler _Nullable _logHandler = nil;
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
-@property(nonatomic) id<BraveWalletKeyringController> keyringController;
-@property(nonatomic) id<BraveWalletEthJsonRpcController> ethJsonRpcController;
-@property(nonatomic) id<BraveWalletSwapController> swapController;
-@property(nonatomic) id<BraveWalletERCTokenRegistry> ercTokenRegistry;
-@property(nonatomic) id<BraveWalletEthTxController> ethTxController;
 @end
 
 @implementation BraveCoreMain
