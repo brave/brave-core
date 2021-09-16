@@ -301,7 +301,13 @@ const locale = {
   importBraveLegacyTitle: 'Existing Crypto Wallets detected',
   importBraveLegacyDescription: 'Enter your existing crypto wallet password to update. Enjoy a faster and more secure way to manage crypto, interact with DeFi. With more assets support like Doge, Bitcoin, Solana.',
   importBraveLegacyInput: 'Enter your crypto wallets password',
-  importBraveLegacyAltButton: 'I’ve lost my password and recovery phrase'
+  importBraveLegacyAltButton: 'I’ve lost my password and recovery phrase',
+
+  // Connect Hardware Wallet Panel
+  connectHardwarePanelConnected: 'connected',
+  connectHardwarePanelDisconnected: 'disconnected',
+  connectHardwarePanelInstructions: 'Instructions',
+  connectHardwarePanelConnect: 'Connect your'
 }
 
 export default locale

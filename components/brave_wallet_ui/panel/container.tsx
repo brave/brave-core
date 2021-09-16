@@ -13,7 +13,8 @@ import {
   WelcomePanel,
   SignPanel,
   AllowAddNetworkPanel,
-  ConfirmTransactionPanel
+  ConfirmTransactionPanel,
+  ConnectHardwareWalletPanel
 } from '../components/extension'
 import {
   Send,
@@ -322,6 +323,10 @@ function Container (props: Props) {
     props.walletPanelActions.openWalletSettings()
   }
 
+  const onCancelConnectHardwareWallet = () => {
+    // Logic here to cancel connecting your hardware wallet
+  }
+
   if (!hasInitialized || !accounts) {
     return null
   }
@@ -365,6 +370,20 @@ function Container (props: Props) {
             visibleTokens={userVisibleTokensInfo}
           />
         </SignContainer>
+      </PanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'connectHardwareWallet') {
+    return (
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <ConnectHardwareWalletPanel
+            onCancel={onCancelConnectHardwareWallet}
+            isConnected={false}
+            walletName='Ledger 1'
+          />
+        </StyledExtensionWrapper>
       </PanelWrapper>
     )
   }
