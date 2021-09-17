@@ -223,6 +223,9 @@ TEST_F(EthTxStateManagerUnitTest, TxOperations) {
     ASSERT_NE(meta_fetched2, nullptr);
     EXPECT_EQ(meta_fetched2->id, "002");
     EXPECT_EQ(meta_fetched2->tx_hash, "0xabff");
+
+    auto meta_fetched3 = tx_state_manager.GetTx("");
+    EXPECT_EQ(meta_fetched3, nullptr);
   }
 
   // Delete

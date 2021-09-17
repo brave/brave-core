@@ -478,6 +478,13 @@ void EthTxController::NotifyTransactionStatusChanged(
         EthTxStateManager::TxMetaToTransactionInfo(*meta));
 }
 
+void EthTxController::NotifyUnapprovedTxUpdated(
+    EthTxStateManager::TxMeta* meta) {
+  for (const auto& observer : observers_)
+    observer->OnUnapprovedTxUpdated(
+        EthTxStateManager::TxMetaToTransactionInfo(*meta));
+}
+
 void EthTxController::GetAllTransactionInfo(
     const std::string& from,
     GetAllTransactionInfoCallback callback) {
@@ -497,6 +504,41 @@ void EthTxController::GetAllTransactionInfo(
                    return EthTxStateManager::TxMetaToTransactionInfo(*m);
                  });
   std::move(callback).Run(std::move(tis));
+}
+
+void EthTxController::SetGasPriceAndLimitForUnapprovedTransaction(
+    const std::string& tx_meta_id,
+    const std::string& gas_price,
+    const std::string& gas_limit,
+    SetGasPriceAndLimitForUnapprovedTransactionCallback callback) {
+  if (gas_price.empty() || gas_limit.empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  std::unique_ptr<EthTxStateManager::TxMeta> tx_meta =
+      tx_state_manager_->GetTx(tx_meta_id);
+  if (!tx_meta || tx_meta->status != mojom::TransactionStatus::Unapproved) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  uint256_t value;
+  if (!HexValueToUint256(gas_price, &value)) {
+    std::move(callback).Run(false);
+    return;
+  }
+  tx_meta->tx->set_gas_price(value);
+
+  if (!HexValueToUint256(gas_limit, &value)) {
+    std::move(callback).Run(false);
+    return;
+  }
+  tx_meta->tx->set_gas_limit(value);
+
+  tx_state_manager_->AddOrUpdateTx(*tx_meta);
+  NotifyUnapprovedTxUpdated(tx_meta.get());
+  std::move(callback).Run(true);
 }
 
 std::unique_ptr<EthTxStateManager::TxMeta> EthTxController::GetTxForTesting(

@@ -444,6 +444,10 @@ export interface AddUnapproved1559TransactionReturnInfo {
   errorMessage: string
 }
 
+export interface SetGasPriceAndLimitForUnapprovedTransactionReturnInfo {
+  success: boolean
+}
+
 export interface ApproveTransactionReturnInfo {
   status: boolean
 }
@@ -485,6 +489,7 @@ export interface GetAllTransactionInfoReturnInfo {
 export interface EthTxController {
   addUnapprovedTransaction: (txData: TxData, from: string) => Promise<AddUnapprovedTransactionReturnInfo>
   addUnapproved1559Transaction: (txData: TxData1559, from: string) => (AddUnapproved1559TransactionReturnInfo)
+  setGasPriceAndLimitForUnapprovedTransaction: (txMetaId: string, gasPrice: string, gasLimit: string) => Promise<SetGasPriceAndLimitForUnapprovedTransactionReturnInfo>
   approveTransaction: (txMetaId: string) => Promise<ApproveTransactionReturnInfo>
   rejectTransaction: (txMetaId: string) => Promise<RejectTransactionReturnInfo>
   makeERC20TransferData: (toAddress: string, amount: string) => Promise<MakeERC20TransferDataReturnInfo>

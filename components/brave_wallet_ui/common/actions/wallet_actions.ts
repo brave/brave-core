@@ -10,6 +10,7 @@ import {
   ChainChangedEventPayloadType,
   SetInitialVisibleTokensPayloadType,
   NewUnapprovedTxAdded,
+  UnapprovedTxUpdated,
   TransactionStatusChanged
 } from '../constants/action_types'
 import {
@@ -60,6 +61,7 @@ export const selectPortfolioTimeline = createAction<AssetPriceTimeframe>('select
 export const portfolioTimelineUpdated = createAction<AssetPriceTimeframe>('portfolioTimelineUpdated')
 export const sendTransaction = createAction<SendTransactionParam>('sendTransaction')
 export const newUnapprovedTxAdded = createAction<NewUnapprovedTxAdded>('newUnapprovedTxAdded')
+export const unapprovedTxUpdated = createAction<UnapprovedTxUpdated>('unapprovedTxUpdated')
 export const transactionStatusChanged = createAction<TransactionStatusChanged>('transactionStatusChanged')
 export const approveTransaction = createAction<TransactionInfo>('approveTransaction')
 export const rejectTransaction = createAction<TransactionInfo>('rejectTransaction')

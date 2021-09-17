@@ -93,6 +93,9 @@ export default class WalletApiProxy {
       onNewUnapprovedTx: function (txInfo) {
         store.dispatch(WalletActions.newUnapprovedTxAdded({txInfo}))
       },
+      onUnapprovedTxUpdated: function (txInfo) {
+        store.dispatch(WalletActions.unapprovedTxUpdated({txInfo}))
+      },
       onTransactionStatusChanged: function (txInfo) {
         store.dispatch(WalletActions.transactionStatusChanged({txInfo}))
       }
