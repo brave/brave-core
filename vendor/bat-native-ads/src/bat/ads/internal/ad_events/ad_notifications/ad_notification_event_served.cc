@@ -7,8 +7,8 @@
 
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
+#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -31,6 +31,8 @@ void AdEventServed::FireEvent(const AdNotificationInfo& ad) {
 
     BLOG(1, "Successfully logged ad notification served event");
   });
+
+  Client::Get()->UpdateSeenAd(ad);
 }
 
 }  // namespace ad_notifications
