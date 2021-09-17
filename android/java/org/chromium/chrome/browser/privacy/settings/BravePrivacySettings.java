@@ -78,7 +78,8 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_WEBRTC_POLICY = "webrtc_policy";
     private static final String PREF_UNSTOPPABLE_DOMAINS = "unstoppable_domains";
     private static final String PREF_ETH_NAMED_SERVICE = "ens";
-    private static final String PREF_HTTPS_ONLY_MODE_ENABLED_SAVED_STATE = "https_only_mode_enabled_saved_state";
+    private static final String PREF_HTTPS_ONLY_MODE_ENABLED_SAVED_STATE =
+            "https_only_mode_enabled_saved_state";
 
     public static final String PREF_BLOCK_TRACKERS_ADS = "block_trackers_ads";
     private static final String PREF_BLOCK_CROSS_SITE_COOKIES = "block_cross_site_cookies";
