@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_INLINE_CONTENT_AD_INFO_H_
 
 #include <string>
-#include <vector>
 
 #include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
@@ -33,8 +32,6 @@ struct ADS_EXPORT InlineContentAdInfo final : AdInfo {
   std::string dimensions;
   std::string cta_text;
 };
-
-using InlineContentAdList = std::vector<InlineContentAdInfo>;
 
 }  // namespace ads
 

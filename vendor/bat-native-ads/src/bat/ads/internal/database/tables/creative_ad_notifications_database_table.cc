@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <utility>
+#include <vector>
 
 #include "base/check_op.h"
 #include "base/strings/string_util.h"

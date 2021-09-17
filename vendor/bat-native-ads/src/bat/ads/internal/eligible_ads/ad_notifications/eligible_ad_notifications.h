@@ -6,10 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_AD_NOTIFICATIONS_ELIGIBLE_AD_NOTIFICATIONS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_AD_NOTIFICATIONS_ELIGIBLE_AD_NOTIFICATIONS_H_
 
-#include <functional>
-
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
+#include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_aliases.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
 
 namespace ads {
@@ -26,9 +25,6 @@ class AntiTargeting;
 }  // namespace resource
 
 namespace ad_notifications {
-
-using GetEligibleAdsCallback =
-    std::function<void(const bool, const CreativeAdNotificationList&)>;
 
 class EligibleAds final {
  public:
