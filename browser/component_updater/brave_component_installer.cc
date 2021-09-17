@@ -31,16 +31,14 @@ using InstallError = update_client::InstallError;
 }  // namespace
 
 namespace {
-bool RewriteManifestFile(
-    const base::FilePath& extension_root,
-    const base::DictionaryValue& manifest,
-    const std::string &public_key) {
-
+bool RewriteManifestFile(const base::FilePath& extension_root,
+                         const base::Value& manifest,
+                         const std::string& public_key) {
   // Add the public key
   DCHECK(!public_key.empty());
 
-  std::unique_ptr<base::DictionaryValue> final_manifest(manifest.DeepCopy());
-  final_manifest->SetString("key", public_key);
+  std::unique_ptr<base::Value> final_manifest(manifest.DeepCopy());
+  final_manifest->SetStringKey("key", public_key);
 
   std::string manifest_json;
   JSONStringValueSerializer serializer(&manifest_json);
@@ -50,7 +48,7 @@ bool RewriteManifestFile(
   }
 
   base::FilePath manifest_path =
-    extension_root.Append(FILE_PATH_LITERAL("manifest.json"));
+      extension_root.Append(FILE_PATH_LITERAL("manifest.json"));
   int size = base::checked_cast<int>(manifest_json.size());
   if (base::WriteFile(manifest_path, manifest_json.data(), size) != size) {
     return false;
@@ -58,9 +56,9 @@ bool RewriteManifestFile(
   return true;
 }
 
-std::string GetManifestString(std::unique_ptr<base::DictionaryValue> manifest,
-    const std::string &public_key) {
-  manifest->SetString("key", public_key);
+std::string GetManifestString(base::Value* manifest,
+                              const std::string& public_key) {
+  manifest->SetStringKey("key", public_key);
 
   std::string manifest_json;
   JSONStringValueSerializer serializer(&manifest_json);
@@ -70,7 +68,6 @@ std::string GetManifestString(std::unique_ptr<base::DictionaryValue> manifest,
   }
   return manifest_json;
 }
-
 
 }  // namespace
 
@@ -89,7 +86,7 @@ BraveComponentInstallerPolicy::BraveComponentInstallerPolicy(
 BraveComponentInstallerPolicy::~BraveComponentInstallerPolicy() {}
 
 bool BraveComponentInstallerPolicy::VerifyInstallation(
-    const base::DictionaryValue& manifest,
+    const base::Value& manifest,
     const base::FilePath& install_dir) const {
   // The manifest file will generate a random ID if we don't provide one.
   // We want to write one with the actual extensions public key so we get
@@ -101,8 +98,8 @@ bool BraveComponentInstallerPolicy::VerifyInstallation(
       install_dir.Append(FILE_PATH_LITERAL("manifest.json")));
 }
 
-bool BraveComponentInstallerPolicy::
-SupportsGroupPolicyEnabledComponentUpdates() const {
+bool BraveComponentInstallerPolicy::SupportsGroupPolicyEnabledComponentUpdates()
+    const {
   return false;
 }
 
@@ -112,21 +109,19 @@ bool BraveComponentInstallerPolicy::RequiresNetworkEncryption() const {
 
 update_client::CrxInstaller::Result
 BraveComponentInstallerPolicy::OnCustomInstall(
-  const base::DictionaryValue& manifest,
-  const base::FilePath& install_dir) {
+    const base::Value& manifest,
+    const base::FilePath& install_dir) {
   return Result(InstallError::NONE);
 }
 
-void BraveComponentInstallerPolicy::OnCustomUninstall() {
-}
+void BraveComponentInstallerPolicy::OnCustomUninstall() {}
 
 void BraveComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& install_dir,
-    std::unique_ptr<base::DictionaryValue> manifest) {
-  ready_callback_.Run(
-      install_dir,
-      GetManifestString(std::move(manifest), base64_public_key_));
+    base::Value manifest) {
+  ready_callback_.Run(install_dir,
+                      GetManifestString(&manifest, base64_public_key_));
 }
 
 base::FilePath BraveComponentInstallerPolicy::GetRelativeInstallDir() const {
@@ -151,12 +146,11 @@ BraveComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
 }
 
-void RegisterComponent(
-    component_updater::ComponentUpdateService* cus,
-    const std::string& name,
-    const std::string& base64_public_key,
-    base::OnceClosure registered_callback,
-    BraveComponent::ReadyCallback ready_callback) {
+void RegisterComponent(component_updater::ComponentUpdateService* cus,
+                       const std::string& name,
+                       const std::string& base64_public_key,
+                       base::OnceClosure registered_callback,
+                       BraveComponent::ReadyCallback ready_callback) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<BraveComponentInstallerPolicy>(
           name, base64_public_key, std::move(ready_callback)));
