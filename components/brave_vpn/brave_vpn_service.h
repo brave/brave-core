@@ -39,15 +39,20 @@ class BraveVpnService : public KeyedService {
   void GetTimezonesForRegions(ResponseCallback callback);
   void GetHostnamesForRegion(ResponseCallback callback,
                              const std::string& region);
+  void GetProfileCredentials(ResponseCallback callback,
+                             const std::string& subscriber_credential,
+                             const std::string& hostname);
   void GetSubscriberCredential(ResponseCallback callback,
                                const std::string& product_type,
                                const std::string& product_id,
                                const std::string& validation_method,
-                               const std::string& purchase_token);
+                               const std::string& purchase_token,
+                               const std::string& bundle_id);
   void VerifyPurchaseToken(ResponseCallback callback,
                            const std::string& purchase_token,
                            const std::string& product_id,
-                           const std::string& product_type);
+                           const std::string& product_type,
+                           const std::string& bundle_id);
 
  private:
   using URLRequestCallback =
@@ -58,7 +63,6 @@ class BraveVpnService : public KeyedService {
   void OAuthRequest(const GURL& url,
                     const std::string& method,
                     const std::string& post_data,
-                    bool set_app_ident,
                     URLRequestCallback callback);
 
   void OnGetResponse(ResponseCallback callback,
@@ -73,6 +77,7 @@ class BraveVpnService : public KeyedService {
       const base::flat_map<std::string, std::string>& headers);
 
   api_request_helper::APIRequestHelper api_request_helper_;
+  base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_SERVICE_H_

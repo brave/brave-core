@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2021 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginTop="-7dp"
+        android:src="@drawable/ic_embellishments"
+        android:contentDescription="@null"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_vpn_shield"
+            android:contentDescription="@null"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:text="@string/brave_firewall_vpn"
+            android:textSize="20sp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/brave_stats_text_color"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/powered_by"
+            android:drawableEnd="@drawable/ic_guardian"
+            android:drawablePadding="4dp"
+            android:drawableTint="@color/brave_stats_text_color"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/brave_stats_text_color"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vpn_modal_text_1"
+            android:drawableStart="@drawable/ic_basic_check"
+            android:drawablePadding="4dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/brave_stats_text_color"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vpn_modal_text_2"
+            android:drawableStart="@drawable/ic_basic_check"
+            android:drawablePadding="4dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/brave_stats_text_color"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vpn_modal_text_3"
+            android:drawableStart="@drawable/ic_basic_check"
+            android:drawablePadding="4dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/brave_stats_text_color"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vpn_modal_text_4"
+            android:drawableStart="@drawable/ic_basic_check"
+            android:drawablePadding="4dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="24dp"
+            android:textColor="@color/brave_stats_text_color"/>
+
+        <Button
+            android:id="@+id/btn_enable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/orange_rounded_button"
+            android:text="@string/enable"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/modal_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:layout_gravity="end|top"
+        android:tint="@color/brave_stats_close_button_color"
+        android:padding="16dp"
+        android:src="@drawable/btn_close"/>
+
+</FrameLayout>

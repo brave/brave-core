@@ -41,12 +41,21 @@ class BraveVpnNativeWorker {
 
   void OnGetHostnamesForRegion(const std::string& hostname_json, bool success);
 
+  void GetProfileCredentials(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& subscriber_credential,
+      const base::android::JavaParamRef<jstring>& hostname);
+
+  void OnGetProfileCredentials(const std::string& profile_credentials_json,
+                               bool success);
+
   void GetSubscriberCredential(
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& product_type,
       const base::android::JavaParamRef<jstring>& product_id,
       const base::android::JavaParamRef<jstring>& validation_method,
-      const base::android::JavaParamRef<jstring>& purchase_token);
+      const base::android::JavaParamRef<jstring>& purchase_token,
+      const base::android::JavaParamRef<jstring>& bundle_id);
 
   void OnGetSubscriberCredential(const std::string& subscriber_credential,
                                  bool success);
@@ -55,7 +64,8 @@ class BraveVpnNativeWorker {
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& purchase_token,
       const base::android::JavaParamRef<jstring>& product_id,
-      const base::android::JavaParamRef<jstring>& product_type);
+      const base::android::JavaParamRef<jstring>& product_type,
+      const base::android::JavaParamRef<jstring>& bundle_id);
 
   void OnVerifyPurchaseToken(const std::string& json_response, bool success);
 

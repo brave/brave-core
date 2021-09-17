@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2021 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/onboarding_bg_color"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/BraveVpnToolbar"
+        android:minHeight="?attr/actionBarSize"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/profile_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/brave_vpn_profile_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_brave_vpn_graphic"
+                    android:contentDescription="@null"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="40dp"/>
+
+                <TextView
+                    android:id="@+id/brave_vpn_profile_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/brave_vpn_profile_title"
+                    android:lineSpacingMultiplier="1.2"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/onboarding_text_color"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/brave_vpn_profile_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/brave_vpn_profile_text"
+                    android:lineSpacingMultiplier="1.2"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/onboarding_text_color"/>
+
+                <Button
+                    android:id="@+id/btn_install_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/orange_rounded_button"
+                    android:text="@string/install_vpn_profile"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+                <Button
+                    android:id="@+id/btn_contact_supoort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@android:color/transparent"
+                    android:padding="16dp"
+                    android:text="@string/contact_support_vpn"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/onboarding_text_size"
+                    android:textColor="@color/onboarding_text_color"/>
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/profile_progress"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:indeterminate="true"/>
+
+        </FrameLayout>
+
+    </ScrollView>
+
+</LinearLayout>
