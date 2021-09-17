@@ -47,6 +47,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_SYNC_AND_SERVICES_LINK = "sync_and_services_link";
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
     private static final String PREF_PRIVACY_SANDBOX = "privacy_sandbox";
+    private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
 
     // brave Prefs
     private static final String PREF_BRAVE_SHIELDS_GLOBALS_SECTION =
@@ -77,6 +78,8 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_WEBRTC_POLICY = "webrtc_policy";
     private static final String PREF_UNSTOPPABLE_DOMAINS = "unstoppable_domains";
     private static final String PREF_ETH_NAMED_SERVICE = "ens";
+    private static final String PREF_HTTPS_ONLY_MODE_ENABLED_SAVED_STATE =
+            "https_only_mode_enabled_saved_state";
 
     public static final String PREF_BLOCK_TRACKERS_ADS = "block_trackers_ads";
     private static final String PREF_BLOCK_CROSS_SITE_COOKIES = "block_cross_site_cookies";
@@ -85,8 +88,8 @@ public class BravePrivacySettings extends PrivacySettings {
 
     private static final String[] NEW_PRIVACY_PREFERENCE_ORDER = {
             PREF_BRAVE_SHIELDS_GLOBALS_SECTION, //  shields globals  section
-            PREF_SHIELDS_SUMMARY, PREF_BLOCK_TRACKERS_ADS, PREF_HTTPSE, PREF_BLOCK_SCRIPTS,
-            PREF_BLOCK_CROSS_SITE_COOKIES, PREF_FINGERPRINTING_PROTECTION,
+            PREF_SHIELDS_SUMMARY, PREF_BLOCK_TRACKERS_ADS, PREF_HTTPSE, PREF_HTTPS_FIRST_MODE,
+            PREF_BLOCK_SCRIPTS, PREF_BLOCK_CROSS_SITE_COOKIES, PREF_FINGERPRINTING_PROTECTION,
             PREF_CLEAR_DATA_SECTION, //  clear data automatically  section
             PREF_CLEAR_ON_EXIT, PREF_CLEAR_BROWSING_DATA,
             PREF_BRAVE_SOCIAL_BLOCKING_SECTION, // social blocking section
@@ -115,6 +118,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mAutocompleteTopSites;
     private ChromeSwitchPreference mAutocompleteBraveSuggestedSites;
     private ChromeSwitchPreference mHttpsePref;
+    private ChromeSwitchPreference mHttpsFirstModePref;
     private BraveDialogPreference mFingerprintingProtectionPref;
     private ChromeSwitchPreference mBlockScriptsPref;
     private ChromeSwitchPreference mCloseTabsOnExitPref;
@@ -143,6 +147,9 @@ public class BravePrivacySettings extends PrivacySettings {
 
         mHttpsePref = (ChromeSwitchPreference) findPreference(PREF_HTTPSE);
         mHttpsePref.setOnPreferenceChangeListener(this);
+
+        mHttpsFirstModePref = (ChromeSwitchPreference) findPreference(PREF_HTTPS_FIRST_MODE);
+        mHttpsFirstModePref.setVisible(mHttpsePref.isChecked());
 
         mCanMakePayment = (ChromeSwitchPreference) findPreference(PREF_CAN_MAKE_PAYMENT);
         mCanMakePayment.setOnPreferenceChangeListener(this);
@@ -239,7 +246,25 @@ public class BravePrivacySettings extends PrivacySettings {
         SharedPreferences.Editor sharedPreferencesEditor =
                 ContextUtils.getAppSharedPreferences().edit();
         if (PREF_HTTPSE.equals(key)) {
-            BravePrefServiceBridge.getInstance().setHTTPSEEnabled((boolean) newValue);
+            boolean newValueBool = (boolean) newValue;
+            BravePrefServiceBridge.getInstance().setHTTPSEEnabled(newValueBool);
+            mHttpsFirstModePref.setVisible(newValueBool);
+            if (newValueBool) {
+                // Restore state of HTTPS_ONLY_MODE.
+                UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        .setBoolean(Pref.HTTPS_ONLY_MODE_ENABLED,
+                                ContextUtils.getAppSharedPreferences().getBoolean(
+                                        PREF_HTTPS_ONLY_MODE_ENABLED_SAVED_STATE, false));
+                mHttpsFirstModePref.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                                       .getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
+            } else {
+                // Save state for HTTPS_ONLY_MODE and disable it.
+                sharedPreferencesEditor.putBoolean(PREF_HTTPS_ONLY_MODE_ENABLED_SAVED_STATE,
+                        UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                .getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
+                UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        .setBoolean(Pref.HTTPS_ONLY_MODE_ENABLED, newValueBool);
+            }
         } else if (PREF_IPFS_GATEWAY.equals(key)) {
             BravePrefServiceBridge.getInstance().setIpfsGatewayEnabled((boolean) newValue);
         } else if (PREF_FINGERPRINTING_PROTECTION.equals(key)) {
