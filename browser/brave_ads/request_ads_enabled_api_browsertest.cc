@@ -160,7 +160,7 @@ IN_PROC_BROWSER_TEST_F(RequestAdsEnabledApiTestEnabled, AdsAlreadyEnabled) {
 
   GURL url = https_server()->GetURL(kAllowedDomain, "/simple.html");
 
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetVisibleURL());
@@ -184,7 +184,7 @@ IN_PROC_BROWSER_TEST_F(RequestAdsEnabledApiTestEnabled,
   rewards_browsertest_util::CreateWallet(rewards_service);
   rewards_browsertest_util::SetOnboardingBypassed(browser(), true);
 
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetVisibleURL());
@@ -205,7 +205,7 @@ IN_PROC_BROWSER_TEST_F(RequestAdsEnabledApiTestEnabled,
   rewards_browsertest_util::SetOnboardingBypassed(browser(), false);
   GetPrefs()->SetBoolean(ads::prefs::kEnabled, false);
 
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetVisibleURL());
@@ -225,7 +225,7 @@ IN_PROC_BROWSER_TEST_F(RequestAdsEnabledApiTestEnabled,
   GURL url = https_server()->GetURL(kAllowedDomain, "/simple.html");
   GetPrefs()->SetBoolean(ads::prefs::kEnabled, false);
 
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetVisibleURL());
@@ -261,7 +261,7 @@ IN_PROC_BROWSER_TEST_F(RequestAdsEnabledApiTestEnabled,
                        RunApiForWithoutUserGesture) {
   GURL url = https_server()->GetURL(kAllowedDomain, "/simple.html");
 
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetVisibleURL());
@@ -278,7 +278,7 @@ IN_PROC_BROWSER_TEST_F(RequestAdsEnabledApiTestEnabled,
                        ApiNotAvailableForUnknownHost) {
   GURL url = https_server()->GetURL(kNotAllowedDomain, "/simple.html");
 
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetVisibleURL());
@@ -297,7 +297,7 @@ IN_PROC_BROWSER_TEST_F(RequestAdsEnabledApiTestDisabled,
                        ApiNotAvailableWhenFeatureOff) {
   GURL url = https_server()->GetURL(kAllowedDomain, "/simple.html");
 
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetVisibleURL());

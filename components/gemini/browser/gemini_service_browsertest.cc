@@ -283,12 +283,14 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
   }
 
   bool NavigateToNewTabUntilLoadStop() {
-    ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab"));
+    EXPECT_TRUE(
+        ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab")));
     return WaitForLoadStop(active_contents());
   }
 
   bool NavigateToVersionTabUntilLoadStop() {
-    ui_test_utils::NavigateToURL(browser(), GURL("chrome://version"));
+    EXPECT_TRUE(
+        ui_test_utils::NavigateToURL(browser(), GURL("chrome://version")));
     return WaitForLoadStop(active_contents());
   }
 

@@ -167,7 +167,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseLocalNode) {
 
   // Navigate to IPFS URL and check if we'll show the interstitial when there
   // are no connected peers.
-  ui_test_utils::NavigateToURL(browser(), ipfs_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -185,7 +185,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseLocalNode) {
 
   // Navigate to that URL again and see if we auto fallback to gateway this
   // time without interstitials.
-  ui_test_utils::NavigateToURL(browser(), ipfs_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
   EXPECT_EQ(nullptr, GetInterstitialType(web_contents));
@@ -202,7 +202,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseGateway) {
 
   // Navigate to IPFS URL and check if we'll show the interstitial when there
   // are no connected peers.
-  ui_test_utils::NavigateToURL(browser(), ipfs_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -219,7 +219,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseGateway) {
 
   // Navigate to that URL again and see if we auto fallback to gateway this
   // time without interstitials.
-  ui_test_utils::NavigateToURL(browser(), ipfs_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
   EXPECT_EQ(nullptr, GetInterstitialType(web_contents));
@@ -236,7 +236,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, LearnMore) {
 
   // Navigate to IPFS URL and check if we'll show the interstitial when there
   // are no connected peers.
-  ui_test_utils::NavigateToURL(browser(), ipfs_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -265,7 +265,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, OpenSettings) {
 
   // Navigate to IPFS URL and check if we'll show the interstitial when there
   // are no connected peers.
-  ui_test_utils::NavigateToURL(browser(), ipfs_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 

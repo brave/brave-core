@@ -29,7 +29,7 @@ class NavigatorBluetoothDisabledTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(NavigatorBluetoothDisabledTest, IsDisabled) {
   GURL url = embedded_test_server()->GetURL(kBluetoothTest);
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));

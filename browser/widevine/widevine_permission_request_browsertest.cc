@@ -260,7 +260,7 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
                        SuggestPermissionIfWidevineDetected) {
   // In this test, we just want to know whether permission bubble is shown.
   GURL url = https_server_.GetURL("a.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_FALSE(IsPermissionBubbleShown());
 
   const std::string drm_js =
@@ -284,7 +284,7 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
 
   // Navigate to a page with some videos.
   url = https_server_.GetURL("a.com", "/media/youtube.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(IsPermissionBubbleShown());
   ResetBubbleState();

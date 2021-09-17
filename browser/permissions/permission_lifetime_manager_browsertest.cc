@@ -139,7 +139,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
   const GURL& url = https_server()->GetURL("/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
@@ -183,7 +183,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                        PRE_PermissionExpiredAfterRestart) {
   const GURL& url = https_server()->GetURL("/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
   EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
@@ -241,7 +241,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                        ExpirationRemovedAfterManualReset) {
   const GURL& url = https_server()->GetURL("/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
   EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
@@ -283,7 +283,7 @@ class PermissionLifetimeManagerWithOriginMonitorBrowserTest
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        DomainPermissionReset) {
   const GURL& url = https_server()->GetURL("host.com", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
@@ -307,7 +307,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Navigate to another domain. It should not reset the permission.
   const GURL& other_url =
       https_server()->GetURL("other_host.com", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), other_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), other_url));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -328,7 +328,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        FriendlyDomainPermissionKept) {
   const GURL& url = https_server()->GetURL("example.com", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
@@ -352,7 +352,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Navigate to a subdomain, permission should be kept.
   const GURL& sub_url =
       https_server()->GetURL("sub.example.com", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), sub_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), sub_url));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -361,7 +361,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Navigate to another domain. It should keep the permission.
   const GURL& other_url =
       https_server()->GetURL("other_host.com", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), other_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), other_url));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -383,7 +383,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        PublicSuffixListDomainPermissionReset) {
   const GURL& url = https_server()->GetURL("user.github.io", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
@@ -407,7 +407,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Navigate to a subdomain, permission should be kept.
   const GURL& sub_url =
       https_server()->GetURL("sub.user.github.io", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), sub_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), sub_url));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -416,7 +416,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Navigate to another domain in PSL. It should keep the permission.
   const GURL& other_url =
       https_server()->GetURL("user2.github.io", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), other_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), other_url));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -438,7 +438,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        PRE_DomainPermissionResetAfterRestart) {
   const GURL& url = https_server()->GetURL("example.com", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 

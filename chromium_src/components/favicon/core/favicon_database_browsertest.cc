@@ -147,7 +147,7 @@ class BraveFaviconDatabaseBrowserTest : public InProcessBrowserTest {
   void NavigateToURLAndWaitForRedirects(const GURL& url) {
     ui_test_utils::UrlLoadObserver load_complete(
         landing_url(), content::NotificationService::AllSources());
-    ui_test_utils::NavigateToURL(browser(), url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     EXPECT_EQ(contents()->GetMainFrame()->GetLastCommittedURL(), url);
     load_complete.Wait();
 
@@ -155,7 +155,7 @@ class BraveFaviconDatabaseBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(GetLastRequest().path(), landing_url().path());
 
     // Navigate again to make sure all of the favicons finished loading.
-    ui_test_utils::NavigateToURL(browser(), GURL("about:blank"));
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("about:blank")));
   }
 
  private:
