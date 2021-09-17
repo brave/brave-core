@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.h b/chrome/browser/ui/views/frame/browser_view.h
-index c628d5143c8bc895353bfd4377728238fff6bc0d..05742010dfab0ceec8e8a35b864f6812aba3de1d 100644
+index c030157118be3f06b93d7d9ac1840d62510df767..6df036f0a31ef5cd9094e5a0fba249d9a63bcd17 100644
 --- a/chrome/browser/ui/views/frame/browser_view.h
 +++ b/chrome/browser/ui/views/frame/browser_view.h
-@@ -685,6 +685,7 @@ class BrowserView : public BrowserWindow,
+@@ -683,6 +683,7 @@ class BrowserView : public BrowserWindow,
      return accessibility_focus_highlight_.get();
    }
- 
+
 +  BRAVE_BROWSER_VIEW_H
   private:
    // Do not friend BrowserViewLayout. Use the BrowserViewLayoutDelegate

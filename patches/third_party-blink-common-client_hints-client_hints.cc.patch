@@ -1,9 +1,9 @@
 diff --git a/third_party/blink/common/client_hints/client_hints.cc b/third_party/blink/common/client_hints/client_hints.cc
-index db781f2a59ca4b15c3df48b0f6b6607acfcce4ae..6ac3ead8119ded47118d61a197167c851fc90b10 100644
+index c304e266f300d6657291c9a148f12de1b5e67f82..29e86ac17fd81aba8a6b2de3770db30cf19b2887 100644
 --- a/third_party/blink/common/client_hints/client_hints.cc
 +++ b/third_party/blink/common/client_hints/client_hints.cc
-@@ -95,6 +95,7 @@ std::string SerializeLangClientHint(const std::string& raw_language_list) {
- }
+@@ -84,6 +84,7 @@ const size_t kWebEffectiveConnectionTypeMappingCount =
+     base::size(kWebEffectiveConnectionTypeMapping);
  
  bool IsClientHintSentByDefault(network::mojom::WebClientHintsType type) {
 +  BRAVE_CLIENT_HINTS_IS_CLIENT_HINT_SENT_BY_DEFAULT
