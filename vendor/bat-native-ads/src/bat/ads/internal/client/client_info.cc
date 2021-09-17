@@ -12,7 +12,7 @@ namespace ads {
 
 ClientInfo::ClientInfo() = default;
 
-ClientInfo::ClientInfo(const ClientInfo& state) = default;
+ClientInfo::ClientInfo(const ClientInfo& info) = default;
 
 ClientInfo::~ClientInfo() = default;
 

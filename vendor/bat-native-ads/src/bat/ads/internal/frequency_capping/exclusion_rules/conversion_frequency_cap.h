@@ -14,10 +14,9 @@
 
 namespace ads {
 
-class ConversionFrequencyCap : public ExclusionRule<CreativeAdInfo> {
+class ConversionFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   explicit ConversionFrequencyCap(const AdEventList& ad_events);
-
   ~ConversionFrequencyCap() override;
 
   ConversionFrequencyCap(const ConversionFrequencyCap&) = delete;

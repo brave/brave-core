@@ -12,7 +12,7 @@ namespace ads {
 
 FlaggedAdInfo::FlaggedAdInfo() = default;
 
-FlaggedAdInfo::FlaggedAdInfo(const FlaggedAdInfo& ad) = default;
+FlaggedAdInfo::FlaggedAdInfo(const FlaggedAdInfo& info) = default;
 
 FlaggedAdInfo::~FlaggedAdInfo() = default;
 

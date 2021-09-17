@@ -13,7 +13,7 @@
 
 namespace ads {
 
-struct ADS_EXPORT NewTabPageAdInfo : AdInfo {
+struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
   NewTabPageAdInfo();
   NewTabPageAdInfo(const NewTabPageAdInfo& info);
   ~NewTabPageAdInfo();

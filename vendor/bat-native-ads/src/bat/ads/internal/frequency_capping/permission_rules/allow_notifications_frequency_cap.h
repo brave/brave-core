@@ -12,10 +12,9 @@
 
 namespace ads {
 
-class AllowNotificationsFrequencyCap : public PermissionRule {
+class AllowNotificationsFrequencyCap final : public PermissionRule {
  public:
   AllowNotificationsFrequencyCap();
-
   ~AllowNotificationsFrequencyCap() override;
 
   AllowNotificationsFrequencyCap(const AllowNotificationsFrequencyCap&) =

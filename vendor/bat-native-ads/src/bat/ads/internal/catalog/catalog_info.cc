@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/catalog/catalog_state.h"
+#include "bat/ads/internal/catalog/catalog_info.h"
 
 #include "base/check.h"
 #include "base/notreached.h"
@@ -21,14 +21,14 @@ namespace {
 const int64_t kDefaultCatalogPing = 2 * base::Time::kSecondsPerHour;
 }  // namespace
 
-CatalogState::CatalogState() = default;
+CatalogInfo::CatalogInfo() = default;
 
-CatalogState::CatalogState(const CatalogState& state) = default;
+CatalogInfo::CatalogInfo(const CatalogInfo& info) = default;
 
-CatalogState::~CatalogState() = default;
+CatalogInfo::~CatalogInfo() = default;
 
-bool CatalogState::FromJson(const std::string& json,
-                            const std::string& json_schema) {
+bool CatalogInfo::FromJson(const std::string& json,
+                           const std::string& json_schema) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -38,13 +38,13 @@ bool CatalogState::FromJson(const std::string& json,
     return false;
   }
 
-  std::string new_catalog_id;
+  std::string new_id;
   int new_version = 0;
   int64_t new_ping = kDefaultCatalogPing * base::Time::kMillisecondsPerSecond;
   CatalogCampaignList new_campaigns;
   CatalogIssuersInfo new_catalog_issuers;
 
-  new_catalog_id = document["catalogId"].GetString();
+  new_id = document["catalogId"].GetString();
 
   new_version = document["version"].GetInt();
   if (new_version != kCurrentCatalogVersion) {
@@ -324,7 +324,7 @@ bool CatalogState::FromJson(const std::string& json,
     new_catalog_issuers.issuers.push_back(catalog_issuer_info);
   }
 
-  catalog_id = new_catalog_id;
+  id = new_id;
   version = new_version;
   ping = new_ping;
   campaigns = new_campaigns;

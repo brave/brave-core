@@ -18,10 +18,9 @@ namespace ads {
 namespace database {
 namespace table {
 
-class Segments : public Table {
+class Segments final : public Table {
  public:
   Segments();
-
   ~Segments() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,

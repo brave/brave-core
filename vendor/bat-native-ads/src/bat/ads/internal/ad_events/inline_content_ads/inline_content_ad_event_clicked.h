@@ -12,10 +12,9 @@
 namespace ads {
 namespace inline_content_ads {
 
-class AdEventClicked : public AdEvent<InlineContentAdInfo> {
+class AdEventClicked final : public AdEvent<InlineContentAdInfo> {
  public:
   AdEventClicked();
-
   ~AdEventClicked() override;
 
   void FireEvent(const InlineContentAdInfo& ad) override;

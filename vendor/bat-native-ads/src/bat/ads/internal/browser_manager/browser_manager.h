@@ -8,10 +8,9 @@
 
 namespace ads {
 
-class BrowserManager {
+class BrowserManager final {
  public:
   BrowserManager();
-
   ~BrowserManager();
 
   BrowserManager(const BrowserManager&) = delete;

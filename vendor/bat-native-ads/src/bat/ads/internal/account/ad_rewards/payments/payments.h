@@ -22,10 +22,9 @@ namespace ads {
 
 struct PaymentInfo;
 
-class Payments {
+class Payments final {
  public:
   Payments();
-
   ~Payments();
 
   bool SetFromJson(const std::string& json);

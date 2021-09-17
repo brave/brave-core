@@ -11,7 +11,7 @@
 
 namespace ads {
 
-struct ConversionInfo {
+struct ConversionInfo final {
   ConversionInfo();
   ConversionInfo(const ConversionInfo& info);
   ~ConversionInfo();

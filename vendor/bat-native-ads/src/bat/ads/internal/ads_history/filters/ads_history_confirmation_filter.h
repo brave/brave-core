@@ -14,7 +14,7 @@ namespace ads {
 
 struct AdHistoryInfo;
 
-class AdsHistoryConfirmationFilter : public AdsHistoryFilter {
+class AdsHistoryConfirmationFilter final : public AdsHistoryFilter {
  public:
   AdsHistoryConfirmationFilter();
   ~AdsHistoryConfirmationFilter() override;

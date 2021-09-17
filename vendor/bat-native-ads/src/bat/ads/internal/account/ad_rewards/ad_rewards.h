@@ -24,10 +24,9 @@ namespace ads {
 class AdRewardsDelegate;
 class Payments;
 
-class AdRewards {
+class AdRewards final {
  public:
   AdRewards();
-
   ~AdRewards();
 
   void set_delegate(AdRewardsDelegate* delegate);

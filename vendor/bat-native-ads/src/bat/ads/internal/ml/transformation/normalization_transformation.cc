@@ -12,13 +12,13 @@ namespace ads {
 namespace ml {
 
 NormalizationTransformation::NormalizationTransformation()
-    : Transformation(TransformationType::NORMALIZATION) {}
+    : Transformation(TransformationType::kNormalization) {}
 
 NormalizationTransformation::~NormalizationTransformation() = default;
 
 std::unique_ptr<Data> NormalizationTransformation::Apply(
     const std::unique_ptr<Data>& input_data) const {
-  DCHECK(input_data->GetType() == DataType::VECTOR_DATA);
+  DCHECK(input_data->GetType() == DataType::kVector);
 
   VectorData* vector_data = static_cast<VectorData*>(input_data.get());
 

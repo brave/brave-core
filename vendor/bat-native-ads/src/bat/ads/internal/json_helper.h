@@ -72,7 +72,7 @@ bool LoadFromJson(T* t,
 
 namespace helper {
 
-class JSON {
+class JSON final {
  public:
   static bool Validate(rapidjson::Document* document,
                        const std::string& json_schema);

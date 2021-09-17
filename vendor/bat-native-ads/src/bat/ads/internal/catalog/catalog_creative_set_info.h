@@ -18,7 +18,7 @@
 
 namespace ads {
 
-struct CatalogCreativeSetInfo {
+struct CatalogCreativeSetInfo final {
   CatalogCreativeSetInfo();
   CatalogCreativeSetInfo(const CatalogCreativeSetInfo& info);
   ~CatalogCreativeSetInfo();

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads_history/sorts/ads_history_sort_factory.h"
 
+#include "bat/ads/ad_history_info.h"
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/ads_history_sort_types.h"
 #include "bat/ads/internal/ads_history/sorts/ads_history_sort.h"

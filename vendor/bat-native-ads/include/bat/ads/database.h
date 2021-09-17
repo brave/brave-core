@@ -19,10 +19,9 @@
 
 namespace ads {
 
-class ADS_EXPORT Database {
+class ADS_EXPORT Database final {
  public:
   explicit Database(const base::FilePath& path);
-
   ~Database();
 
   Database(const Database&) = delete;

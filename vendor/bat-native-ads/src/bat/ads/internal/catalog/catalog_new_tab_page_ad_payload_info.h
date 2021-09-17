@@ -10,7 +10,7 @@
 
 namespace ads {
 
-struct CatalogNewTabPageAdPayloadInfo {
+struct CatalogNewTabPageAdPayloadInfo final {
   CatalogNewTabPageAdPayloadInfo();
   CatalogNewTabPageAdPayloadInfo(const CatalogNewTabPageAdPayloadInfo& info);
   ~CatalogNewTabPageAdPayloadInfo();

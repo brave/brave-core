@@ -16,10 +16,9 @@ namespace ads {
 
 struct NewTabPageAdInfo;
 
-class NewTabPageAd : public NewTabPageAdObserver {
+class NewTabPageAd final : public NewTabPageAdObserver {
  public:
   NewTabPageAd();
-
   ~NewTabPageAd() override;
 
   void AddObserver(NewTabPageAdObserver* observer);

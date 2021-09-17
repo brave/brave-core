@@ -14,7 +14,7 @@
 namespace ads {
 namespace resource {
 
-class AntiTargeting : public Resource<AntiTargetingInfo> {
+class AntiTargeting final : public Resource<AntiTargetingInfo> {
  public:
   AntiTargeting();
   ~AntiTargeting() override;

@@ -21,10 +21,9 @@ namespace ads {
 
 class RedeemUnblindedPaymentTokensDelegate;
 
-class RedeemUnblindedPaymentTokens {
+class RedeemUnblindedPaymentTokens final {
  public:
   RedeemUnblindedPaymentTokens();
-
   ~RedeemUnblindedPaymentTokens();
 
   void set_delegate(RedeemUnblindedPaymentTokensDelegate* delegate);

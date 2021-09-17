@@ -7,20 +7,18 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_INLINE_CONTENT_AD_INFO_H_
 
 #include <string>
-#include <vector>
 
 #include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
 
 namespace ads {
 
-struct ADS_EXPORT InlineContentAdInfo : AdInfo {
+struct ADS_EXPORT InlineContentAdInfo final : AdInfo {
   InlineContentAdInfo();
   InlineContentAdInfo(const InlineContentAdInfo& info);
   ~InlineContentAdInfo();
 
   bool operator==(const InlineContentAdInfo& rhs) const;
-
   bool operator!=(const InlineContentAdInfo& rhs) const;
 
   bool IsValid() const;
@@ -34,8 +32,6 @@ struct ADS_EXPORT InlineContentAdInfo : AdInfo {
   std::string dimensions;
   std::string cta_text;
 };
-
-using InlineContentAdList = std::vector<InlineContentAdInfo>;
 
 }  // namespace ads
 

@@ -13,7 +13,7 @@ namespace ads {
 
 struct UserActivityEventInfo;
 
-struct UserActivityEventInfo {
+struct UserActivityEventInfo final {
   UserActivityEventInfo();
   UserActivityEventInfo(const UserActivityEventInfo& info);
   ~UserActivityEventInfo();

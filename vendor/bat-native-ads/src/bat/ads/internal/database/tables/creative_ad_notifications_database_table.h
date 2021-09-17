@@ -6,24 +6,17 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CREATIVE_AD_NOTIFICATIONS_DATABASE_TABLE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CREATIVE_AD_NOTIFICATIONS_DATABASE_TABLE_H_
 
-#include <functional>
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
+#include "bat/ads/internal/database/tables/creative_ad_notifications_database_table_aliases.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
-using GetCreativeAdNotificationsCallback =
-    std::function<void(const bool,
-                       const std::vector<std::string>&,
-                       const CreativeAdNotificationList&)>;
-
 namespace database {
 namespace table {
 
@@ -33,10 +26,9 @@ class Dayparts;
 class GeoTargets;
 class Segments;
 
-class CreativeAdNotifications : public Table {
+class CreativeAdNotifications final : public Table {
  public:
   CreativeAdNotifications();
-
   ~CreativeAdNotifications() override;
 
   void Save(const CreativeAdNotificationList& creative_ad_notifications,

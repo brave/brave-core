@@ -14,7 +14,7 @@
 namespace ads {
 namespace resource {
 
-class PurchaseIntent : public Resource<ad_targeting::PurchaseIntentInfo> {
+class PurchaseIntent final : public Resource<ad_targeting::PurchaseIntentInfo> {
  public:
   PurchaseIntent();
   ~PurchaseIntent() override;

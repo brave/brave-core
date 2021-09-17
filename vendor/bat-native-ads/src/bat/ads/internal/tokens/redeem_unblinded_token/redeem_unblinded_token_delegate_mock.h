@@ -14,7 +14,6 @@ namespace ads {
 class RedeemUnblindedTokenDelegateMock : public RedeemUnblindedTokenDelegate {
  public:
   RedeemUnblindedTokenDelegateMock();
-
   ~RedeemUnblindedTokenDelegateMock() override;
 
   RedeemUnblindedTokenDelegateMock(const RedeemUnblindedTokenDelegateMock&) =

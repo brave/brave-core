@@ -17,7 +17,7 @@ struct DefaultSingletonTraits;
 
 namespace ads {
 
-class PlatformHelperMac : public PlatformHelper {
+class PlatformHelperMac final : public PlatformHelper {
  public:
   PlatformHelperMac(const PlatformHelperMac&) = delete;
   PlatformHelperMac& operator=(const PlatformHelperMac&) = delete;

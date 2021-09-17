@@ -26,14 +26,13 @@ class AntiTargeting;
 namespace ad_notifications {
 namespace frequency_capping {
 
-class ExclusionRules {
+class ExclusionRules final {
  public:
   ExclusionRules(
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history);
-
   ~ExclusionRules();
 
   bool ShouldExcludeAd(const CreativeAdInfo& ad) const;

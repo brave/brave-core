@@ -12,10 +12,9 @@
 namespace ads {
 namespace ad_notifications {
 
-class AdEventTimedOut : public AdEvent<AdNotificationInfo> {
+class AdEventTimedOut final : public AdEvent<AdNotificationInfo> {
  public:
   AdEventTimedOut();
-
   ~AdEventTimedOut() override;
 
   void FireEvent(const AdNotificationInfo& ad) override;

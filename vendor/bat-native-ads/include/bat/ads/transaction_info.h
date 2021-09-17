@@ -18,7 +18,7 @@ class Value;
 
 namespace ads {
 
-struct ADS_EXPORT TransactionInfo {
+struct ADS_EXPORT TransactionInfo final {
   TransactionInfo();
   TransactionInfo(const TransactionInfo& info);
   ~TransactionInfo();

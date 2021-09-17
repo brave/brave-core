@@ -19,17 +19,14 @@ namespace pipeline {
 
 struct PipelineInfo;
 
-class TextProcessing {
+class TextProcessing final {
  public:
   static TextProcessing* CreateInstance();
 
   TextProcessing();
-
   TextProcessing(const TextProcessing& pipeline);
-
   TextProcessing(const TransformationVector& transformations,
                  const model::Linear& linear_model);
-
   ~TextProcessing();
 
   bool IsInitialized() const;

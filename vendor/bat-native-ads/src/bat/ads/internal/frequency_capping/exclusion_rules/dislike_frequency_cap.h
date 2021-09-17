@@ -13,10 +13,9 @@
 
 namespace ads {
 
-class DislikeFrequencyCap : public ExclusionRule<CreativeAdInfo> {
+class DislikeFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   DislikeFrequencyCap();
-
   ~DislikeFrequencyCap() override;
 
   DislikeFrequencyCap(const DislikeFrequencyCap&) = delete;

@@ -20,10 +20,9 @@ namespace ads {
 
 const int kMaximumHistoryEntries = 3600;
 
-class UserActivity {
+class UserActivity final {
  public:
   UserActivity();
-
   ~UserActivity();
 
   UserActivity(const UserActivity&) = delete;

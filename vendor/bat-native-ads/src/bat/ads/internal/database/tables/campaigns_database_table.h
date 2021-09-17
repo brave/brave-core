@@ -18,10 +18,9 @@ namespace ads {
 namespace database {
 namespace table {
 
-class Campaigns : public Table {
+class Campaigns final : public Table {
  public:
   Campaigns();
-
   ~Campaigns() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,

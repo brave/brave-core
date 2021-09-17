@@ -21,7 +21,7 @@ class Value;
 
 namespace ads {
 
-struct CatalogIssuersInfo {
+struct CatalogIssuersInfo final {
   CatalogIssuersInfo();
   CatalogIssuersInfo(const CatalogIssuersInfo& info);
   ~CatalogIssuersInfo();

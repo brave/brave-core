@@ -18,7 +18,7 @@ namespace ads {
 using challenge_bypass_ristretto::BlindedToken;
 using challenge_bypass_ristretto::Token;
 
-struct ConfirmationInfo {
+struct ConfirmationInfo final {
   ConfirmationInfo();
   ConfirmationInfo(const ConfirmationInfo& info);
   ~ConfirmationInfo();

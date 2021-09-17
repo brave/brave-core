@@ -6,25 +6,20 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_FREQUENCY_CAPPING_ANTI_TARGETING_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_FREQUENCY_CAPPING_ANTI_TARGETING_INFO_H_
 
-#include <stdint.h>
-#include <map>
-#include <string>
-#include <vector>
+#include <cstdint>
+
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting_info_aliases.h"
 
 namespace ads {
 namespace resource {
 
-using AntiTargetingList = std::vector<std::string>;
-using AntiTargetingMap = std::map<std::string, AntiTargetingList>;
-
-struct AntiTargetingInfo {
+struct AntiTargetingInfo final {
  public:
   AntiTargetingInfo();
   AntiTargetingInfo(const AntiTargetingInfo& info);
   ~AntiTargetingInfo();
 
   uint16_t version = 0;
-
   AntiTargetingMap sites;
 };
 

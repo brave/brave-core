@@ -134,7 +134,7 @@ const std::vector<SearchProviderInfo> _search_providers = {
                        "https://search.brave.com/search?q={searchTerms}",
                        true)};
 
-class SearchProviders {
+class SearchProviders final {
  public:
   SearchProviders();
   ~SearchProviders();

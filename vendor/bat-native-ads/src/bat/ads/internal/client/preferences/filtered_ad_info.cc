@@ -12,7 +12,7 @@ namespace ads {
 
 FilteredAdInfo::FilteredAdInfo() = default;
 
-FilteredAdInfo::FilteredAdInfo(const FilteredAdInfo& ad) = default;
+FilteredAdInfo::FilteredAdInfo(const FilteredAdInfo& info) = default;
 
 FilteredAdInfo::~FilteredAdInfo() = default;
 

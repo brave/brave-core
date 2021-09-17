@@ -8,13 +8,11 @@
 
 #include <cstdint>
 #include <deque>
-#include <functional>
 
+#include "bat/ads/internal/ad_events/ad_events_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
-using AdEventCallback = std::function<void(const bool)>;
 
 class AdType;
 class ConfirmationType;

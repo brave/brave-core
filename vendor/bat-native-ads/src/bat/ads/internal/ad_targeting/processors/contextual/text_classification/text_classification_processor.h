@@ -19,10 +19,9 @@ class TextClassification;
 namespace ad_targeting {
 namespace processor {
 
-class TextClassification : public Processor<std::string> {
+class TextClassification final : public Processor<std::string> {
  public:
   explicit TextClassification(resource::TextClassification* resource);
-
   ~TextClassification() override;
 
   void Process(const std::string& text) override;

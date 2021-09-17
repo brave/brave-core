@@ -36,7 +36,7 @@ TEST_F(BatAdsMLTransformationUtilTest, TransformationCopyTest) {
 
   // Assert
   EXPECT_EQ(transformation_ptr_copy->GetType(),
-            TransformationType::NORMALIZATION);
+            TransformationType::kNormalization);
 }
 
 TEST_F(BatAdsMLTransformationUtilTest, TransformationVectorDeepCopyTest) {
@@ -59,9 +59,9 @@ TEST_F(BatAdsMLTransformationUtilTest, TransformationVectorDeepCopyTest) {
   // Assert
   ASSERT_EQ(kVectorSize, transformation_vector_copy.size());
   EXPECT_TRUE(transformation_vector_copy[0]->GetType() ==
-                  TransformationType::HASHED_NGRAMS &&
+                  TransformationType::kHashedNGrams &&
               transformation_vector_copy[1]->GetType() ==
-                  TransformationType::NORMALIZATION);
+                  TransformationType::kNormalization);
 }
 
 }  // namespace ml

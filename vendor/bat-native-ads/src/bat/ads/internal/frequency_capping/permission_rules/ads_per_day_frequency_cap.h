@@ -14,7 +14,7 @@
 
 namespace ads {
 
-class AdsPerDayFrequencyCap : public PermissionRule {
+class AdsPerDayFrequencyCap final : public PermissionRule {
  public:
   AdsPerDayFrequencyCap();
   ~AdsPerDayFrequencyCap() override;

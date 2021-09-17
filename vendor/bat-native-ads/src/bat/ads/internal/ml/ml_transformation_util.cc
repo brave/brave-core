@@ -21,20 +21,20 @@ namespace ml {
 TransformationPtr GetTransformationCopy(
     const TransformationPtr& transformation_ptr) {
   switch (transformation_ptr->GetType()) {
-    case TransformationType::LOWERCASE: {
+    case TransformationType::kLowercase: {
       LowercaseTransformation* lowercase_ptr =
           static_cast<LowercaseTransformation*>(transformation_ptr.get());
       LowercaseTransformation lowercase_copy = *lowercase_ptr;
       return std::make_unique<LowercaseTransformation>(lowercase_copy);
     }
-    case TransformationType::HASHED_NGRAMS: {
+    case TransformationType::kHashedNGrams: {
       HashedNGramsTransformation* hashed_n_grams_ptr =
           static_cast<HashedNGramsTransformation*>(transformation_ptr.get());
       HashedNGramsTransformation hashed_n_grams_ptr_copy = *hashed_n_grams_ptr;
       return std::make_unique<HashedNGramsTransformation>(
           hashed_n_grams_ptr_copy);
     }
-    case TransformationType::NORMALIZATION: {
+    case TransformationType::kNormalization: {
       NormalizationTransformation* normalization_ptr =
           static_cast<NormalizationTransformation*>(transformation_ptr.get());
       NormalizationTransformation normalization_copy = *normalization_ptr;

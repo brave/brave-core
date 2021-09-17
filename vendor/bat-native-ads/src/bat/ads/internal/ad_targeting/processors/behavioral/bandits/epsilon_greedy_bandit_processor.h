@@ -16,10 +16,9 @@ namespace ads {
 namespace ad_targeting {
 namespace processor {
 
-class EpsilonGreedyBandit : public Processor<BanditFeedbackInfo> {
+class EpsilonGreedyBandit final : public Processor<BanditFeedbackInfo> {
  public:
   EpsilonGreedyBandit();
-
   ~EpsilonGreedyBandit() override;
 
   void Process(const BanditFeedbackInfo& feedback) override;

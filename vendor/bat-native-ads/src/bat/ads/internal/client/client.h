@@ -37,10 +37,9 @@ struct AdHistoryInfo;
 struct AdInfo;
 struct ClientInfo;
 
-class Client {
+class Client final {
  public:
   Client();
-
   ~Client();
 
   static Client* Get();

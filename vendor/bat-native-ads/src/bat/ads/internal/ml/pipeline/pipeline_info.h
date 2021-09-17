@@ -15,11 +15,9 @@ namespace ads {
 namespace ml {
 namespace pipeline {
 
-struct PipelineInfo {
+struct PipelineInfo final {
   PipelineInfo();
-
-  PipelineInfo(const PipelineInfo& pinfo);
-
+  PipelineInfo(const PipelineInfo& info);
   ~PipelineInfo();
 
   PipelineInfo(const int& version,

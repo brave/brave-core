@@ -12,10 +12,9 @@
 namespace ads {
 namespace new_tab_page_ads {
 
-class AdEventViewed : public AdEvent<NewTabPageAdInfo> {
+class AdEventViewed final : public AdEvent<NewTabPageAdInfo> {
  public:
   AdEventViewed();
-
   ~AdEventViewed() override;
 
   void FireEvent(const NewTabPageAdInfo& ad) override;

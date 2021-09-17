@@ -12,8 +12,8 @@ namespace ads {
 
 FilteredCategoryInfo::FilteredCategoryInfo() = default;
 
-FilteredCategoryInfo::FilteredCategoryInfo(
-    const FilteredCategoryInfo& category) = default;
+FilteredCategoryInfo::FilteredCategoryInfo(const FilteredCategoryInfo& info) =
+    default;
 
 FilteredCategoryInfo::~FilteredCategoryInfo() = default;
 

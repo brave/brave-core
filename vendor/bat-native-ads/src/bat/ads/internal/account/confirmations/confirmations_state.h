@@ -28,10 +28,9 @@ namespace privacy {
 class UnblindedTokens;
 }  // namespace privacy
 
-class ConfirmationsState {
+class ConfirmationsState final {
  public:
   explicit ConfirmationsState(AdRewards* ad_rewards);
-
   ~ConfirmationsState();
 
   static ConfirmationsState* Get();

@@ -6,10 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_USER_DATA_CONFIRMATION_DTO_USER_DATA_BUILDER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_USER_DATA_CONFIRMATION_DTO_USER_DATA_BUILDER_H_
 
-#include <functional>
 #include <string>
 
-#include "base/values.h"
+#include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_dto_user_data_builder_aliases.h"
 
 namespace ads {
 
@@ -17,8 +16,6 @@ class ConfirmationType;
 
 namespace dto {
 namespace user_data {
-
-using Callback = std::function<void(const base::Value)>;
 
 void Build(const std::string& creative_instance_id,
            const ConfirmationType& confirmation_type,

@@ -34,13 +34,12 @@ namespace privacy {
 class TokenGeneratorInterface;
 }  // namespace privacy
 
-class Account : public AdRewardsDelegate,
-                public ConfirmationsObserver,
-                public RedeemUnblindedPaymentTokensDelegate,
-                public RefillUnblindedTokensDelegate {
+class Account final : public AdRewardsDelegate,
+                      public ConfirmationsObserver,
+                      public RedeemUnblindedPaymentTokensDelegate,
+                      public RefillUnblindedTokensDelegate {
  public:
   explicit Account(privacy::TokenGeneratorInterface* token_generator);
-
   ~Account() override;
 
   void AddObserver(AccountObserver* observer);

@@ -19,7 +19,7 @@ struct AdNotificationInfo;
 
 namespace ad_notifications {
 
-class AdEventFactory {
+class AdEventFactory final {
  public:
   static std::unique_ptr<AdEvent<AdNotificationInfo>> Build(
       const mojom::AdNotificationEventType event_type);

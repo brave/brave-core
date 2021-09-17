@@ -19,10 +19,9 @@ class OneShotTimer;
 
 namespace ads {
 
-class BackoffTimer {
+class BackoffTimer final {
  public:
   BackoffTimer();
-
   ~BackoffTimer();
 
   // Set a mock implementation of base::OneShotTimer which requires |Fire()| to

@@ -15,7 +15,7 @@
 
 namespace ads {
 
-struct AdPreferencesInfo {
+struct AdPreferencesInfo final {
   AdPreferencesInfo();
   AdPreferencesInfo(const AdPreferencesInfo& info);
   ~AdPreferencesInfo();

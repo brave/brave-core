@@ -16,10 +16,9 @@ class Catalog;
 
 namespace resource {
 
-class EpsilonGreedyBandit : public Resource<SegmentList> {
+class EpsilonGreedyBandit final : public Resource<SegmentList> {
  public:
   EpsilonGreedyBandit();
-
   ~EpsilonGreedyBandit() override;
 
   bool IsInitialized() const override;

@@ -12,7 +12,7 @@ struct AdNotificationInfo;
 
 namespace ad_notifications {
 
-class AdDelivery {
+class AdDelivery final {
  public:
   AdDelivery();
   ~AdDelivery();

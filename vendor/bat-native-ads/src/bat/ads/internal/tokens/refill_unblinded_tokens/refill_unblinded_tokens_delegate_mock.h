@@ -16,7 +16,6 @@ namespace ads {
 class RefillUnblindedTokensDelegateMock : public RefillUnblindedTokensDelegate {
  public:
   RefillUnblindedTokensDelegateMock();
-
   ~RefillUnblindedTokensDelegateMock() override;
 
   RefillUnblindedTokensDelegateMock(const RefillUnblindedTokensDelegateMock&) =

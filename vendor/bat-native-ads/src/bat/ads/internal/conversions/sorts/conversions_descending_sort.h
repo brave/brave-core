@@ -10,7 +10,7 @@
 
 namespace ads {
 
-class ConversionsDescendingSort : public ConversionsSort {
+class ConversionsDescendingSort final : public ConversionsSort {
  public:
   ConversionsDescendingSort();
   ~ConversionsDescendingSort() override;

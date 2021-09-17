@@ -10,7 +10,7 @@
 
 namespace ads {
 
-struct CatalogOsInfo {
+struct CatalogOsInfo final {
   CatalogOsInfo();
   CatalogOsInfo(const CatalogOsInfo& info);
   ~CatalogOsInfo();

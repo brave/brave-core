@@ -14,7 +14,7 @@
 
 namespace ads {
 
-struct CatalogCampaignInfo {
+struct CatalogCampaignInfo final {
   CatalogCampaignInfo();
   CatalogCampaignInfo(const CatalogCampaignInfo& info);
   ~CatalogCampaignInfo();

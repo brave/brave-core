@@ -36,7 +36,6 @@ namespace ads {
 class UnitTestBase : public testing::Test {
  public:
   UnitTestBase();
-
   ~UnitTestBase() override;
 
   UnitTestBase(const UnitTestBase&) = delete;

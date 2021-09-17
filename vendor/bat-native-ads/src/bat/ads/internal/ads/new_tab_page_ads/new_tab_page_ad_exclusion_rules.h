@@ -15,10 +15,9 @@ struct AdInfo;
 namespace new_tab_page_ads {
 namespace frequency_capping {
 
-class ExclusionRules {
+class ExclusionRules final {
  public:
   explicit ExclusionRules(const AdEventList& ad_events);
-
   ~ExclusionRules();
 
   bool ShouldExcludeAd(const AdInfo& ad) const;

@@ -14,7 +14,7 @@
 namespace ads {
 namespace ad_targeting {
 
-struct PurchaseIntentSiteInfo {
+struct PurchaseIntentSiteInfo final {
  public:
   PurchaseIntentSiteInfo();
   PurchaseIntentSiteInfo(const SegmentList& segments,

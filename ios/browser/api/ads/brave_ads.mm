@@ -18,6 +18,7 @@
 #include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
 #include "bat/ads/ad_event_history.h"
+#include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_aliases.h"

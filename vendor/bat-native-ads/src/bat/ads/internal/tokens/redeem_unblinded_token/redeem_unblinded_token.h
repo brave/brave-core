@@ -17,10 +17,9 @@ namespace privacy {
 struct UnblindedTokenInfo;
 }  // namespace privacy
 
-class RedeemUnblindedToken {
+class RedeemUnblindedToken final {
  public:
   RedeemUnblindedToken();
-
   ~RedeemUnblindedToken();
 
   void set_delegate(RedeemUnblindedTokenDelegate* delegate);

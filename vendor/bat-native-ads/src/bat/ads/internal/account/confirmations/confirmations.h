@@ -30,11 +30,10 @@ namespace privacy {
 class TokenGeneratorInterface;
 }  // namespace privacy
 
-class Confirmations : public RedeemUnblindedTokenDelegate {
+class Confirmations final : public RedeemUnblindedTokenDelegate {
  public:
   Confirmations(privacy::TokenGeneratorInterface* token_generator,
                 AdRewards* ad_rewards);
-
   ~Confirmations() override;
 
   void AddObserver(ConfirmationsObserver* observer);

@@ -16,10 +16,9 @@ namespace ads {
 
 struct InlineContentAdInfo;
 
-class InlineContentAd : public InlineContentAdObserver {
+class InlineContentAd final : public InlineContentAdObserver {
  public:
   InlineContentAd();
-
   ~InlineContentAd() override;
 
   void AddObserver(InlineContentAdObserver* observer);

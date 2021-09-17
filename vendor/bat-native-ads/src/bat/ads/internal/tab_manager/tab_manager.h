@@ -19,10 +19,9 @@ class optional;
 
 namespace ads {
 
-class TabManager {
+class TabManager final {
  public:
   TabManager();
-
   ~TabManager();
 
   TabManager(const TabManager&) = delete;

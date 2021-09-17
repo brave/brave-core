@@ -12,10 +12,9 @@
 namespace ads {
 namespace promoted_content_ads {
 
-class AdEventServed : public AdEvent<PromotedContentAdInfo> {
+class AdEventServed final : public AdEvent<PromotedContentAdInfo> {
  public:
   AdEventServed();
-
   ~AdEventServed() override;
 
   void FireEvent(const PromotedContentAdInfo& ad) override;

@@ -19,7 +19,6 @@ namespace ads {
 class AdsClientMock : public AdsClient {
  public:
   AdsClientMock();
-
   ~AdsClientMock() override;
 
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());

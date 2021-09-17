@@ -16,21 +16,17 @@
 namespace ads {
 namespace ml {
 
-class VectorData : public Data {
+class VectorData final : public Data {
  public:
   VectorData();
-
   VectorData(const VectorData& vector_data);
-
   explicit VectorData(const std::vector<double>& data);
+  VectorData(const int dimension_count, const std::map<uint32_t, double>& data);
+  ~VectorData() override;
 
   // Explicit copy assignment operator is required because the class
   // inherits const member type_ that cannot be copied by default
   VectorData& operator=(const VectorData& vector_data);
-
-  VectorData(const int dimension_count, const std::map<uint32_t, double>& data);
-
-  ~VectorData() override;
 
   friend double operator*(const VectorData& lhs, const VectorData& rhs);
 

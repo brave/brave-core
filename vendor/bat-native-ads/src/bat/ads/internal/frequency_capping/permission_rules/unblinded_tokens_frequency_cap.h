@@ -12,10 +12,9 @@
 
 namespace ads {
 
-class UnblindedTokensFrequencyCap : public PermissionRule {
+class UnblindedTokensFrequencyCap final : public PermissionRule {
  public:
   UnblindedTokensFrequencyCap();
-
   ~UnblindedTokensFrequencyCap() override;
 
   UnblindedTokensFrequencyCap(const UnblindedTokensFrequencyCap&) = delete;

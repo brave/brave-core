@@ -12,7 +12,7 @@
 
 namespace ads {
 
-struct CatalogDaypartInfo {
+struct CatalogDaypartInfo final {
   CatalogDaypartInfo();
   CatalogDaypartInfo(const CatalogDaypartInfo& info);
   ~CatalogDaypartInfo();

@@ -10,7 +10,7 @@
 
 namespace ads {
 
-struct UserActivityTriggerInfo {
+struct UserActivityTriggerInfo final {
   UserActivityTriggerInfo();
   UserActivityTriggerInfo(const UserActivityTriggerInfo& info);
   ~UserActivityTriggerInfo();

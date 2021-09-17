@@ -15,10 +15,9 @@ namespace ml {
 
 class Data;
 
-class LowercaseTransformation : public Transformation {
+class LowercaseTransformation final : public Transformation {
  public:
   LowercaseTransformation();
-
   ~LowercaseTransformation() override;
 
   std::unique_ptr<Data> Apply(

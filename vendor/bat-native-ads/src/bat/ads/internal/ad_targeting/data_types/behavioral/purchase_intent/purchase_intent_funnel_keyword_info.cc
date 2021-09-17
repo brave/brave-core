@@ -15,6 +15,9 @@ PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
     const uint16_t weight)
     : keywords(keywords), weight(weight) {}
 
+PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
+    const PurchaseIntentFunnelKeywordInfo& info) = default;
+
 PurchaseIntentFunnelKeywordInfo::~PurchaseIntentFunnelKeywordInfo() = default;
 
 }  // namespace ad_targeting

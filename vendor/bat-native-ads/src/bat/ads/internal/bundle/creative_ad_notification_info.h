@@ -12,12 +12,12 @@
 
 namespace ads {
 
-struct CreativeAdNotificationInfo : CreativeAdInfo {
+struct CreativeAdNotificationInfo final : CreativeAdInfo {
   CreativeAdNotificationInfo();
+  CreativeAdNotificationInfo(const CreativeAdNotificationInfo& info);
   ~CreativeAdNotificationInfo();
 
   bool operator==(const CreativeAdNotificationInfo& rhs) const;
-
   bool operator!=(const CreativeAdNotificationInfo& rhs) const;
 
   std::string title;

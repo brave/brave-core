@@ -9,6 +9,9 @@ namespace ads {
 
 CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo() = default;
 
+CreativeNewTabPageAdInfo::CreativeNewTabPageAdInfo(
+    const CreativeNewTabPageAdInfo& info) = default;
+
 CreativeNewTabPageAdInfo::~CreativeNewTabPageAdInfo() = default;
 
 bool CreativeNewTabPageAdInfo::operator==(

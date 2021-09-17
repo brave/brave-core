@@ -12,7 +12,7 @@
 
 namespace ads {
 
-class CatalogIdAdDiagnosticsEntry : public AdDiagnosticsEntry {
+class CatalogIdAdDiagnosticsEntry final : public AdDiagnosticsEntry {
  public:
   CatalogIdAdDiagnosticsEntry();
   CatalogIdAdDiagnosticsEntry(const CatalogIdAdDiagnosticsEntry&) = delete;

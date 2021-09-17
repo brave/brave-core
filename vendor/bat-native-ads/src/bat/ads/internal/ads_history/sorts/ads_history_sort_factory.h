@@ -14,7 +14,7 @@ namespace ads {
 
 class AdsHistorySort;
 
-class AdsHistorySortFactory {
+class AdsHistorySortFactory final {
  public:
   static std::unique_ptr<AdsHistorySort> Build(const AdsHistorySortType type);
 };

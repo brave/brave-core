@@ -10,7 +10,7 @@
 
 namespace ads {
 
-struct CatalogGeoTargetInfo {
+struct CatalogGeoTargetInfo final {
   CatalogGeoTargetInfo();
   CatalogGeoTargetInfo(const CatalogGeoTargetInfo& info);
   ~CatalogGeoTargetInfo();

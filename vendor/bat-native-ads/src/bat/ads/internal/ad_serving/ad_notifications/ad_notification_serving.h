@@ -36,12 +36,11 @@ namespace ad_notifications {
 
 class EligibleAds;
 
-class AdServing {
+class AdServing final {
  public:
   AdServing(
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource);
-
   ~AdServing();
 
   void AddObserver(AdNotificationServingObserver* observer);

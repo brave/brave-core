@@ -11,9 +11,11 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/export.h"
+
 namespace ads {
 
-class AdEventHistory {
+class ADS_EXPORT AdEventHistory final {
  public:
   AdEventHistory();
   ~AdEventHistory();

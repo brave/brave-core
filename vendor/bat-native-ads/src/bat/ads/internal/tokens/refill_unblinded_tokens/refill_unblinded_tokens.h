@@ -26,11 +26,10 @@ namespace privacy {
 class TokenGeneratorInterface;
 }  // namespace privacy
 
-class RefillUnblindedTokens {
+class RefillUnblindedTokens final {
  public:
   explicit RefillUnblindedTokens(
       privacy::TokenGeneratorInterface* token_generator);
-
   ~RefillUnblindedTokens();
 
   void set_delegate(RefillUnblindedTokensDelegate* delegate);

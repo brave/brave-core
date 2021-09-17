@@ -12,10 +12,9 @@
 
 namespace ads {
 
-class NetworkConnectionFrequencyCap : public PermissionRule {
+class NetworkConnectionFrequencyCap final : public PermissionRule {
  public:
   NetworkConnectionFrequencyCap();
-
   ~NetworkConnectionFrequencyCap() override;
 
   NetworkConnectionFrequencyCap(const NetworkConnectionFrequencyCap&) = delete;

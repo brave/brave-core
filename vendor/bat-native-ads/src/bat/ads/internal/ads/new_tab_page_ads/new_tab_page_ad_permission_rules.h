@@ -10,7 +10,7 @@ namespace ads {
 namespace new_tab_page_ads {
 namespace frequency_capping {
 
-class PermissionRules {
+class PermissionRules final {
  public:
   PermissionRules();
   ~PermissionRules();

@@ -15,7 +15,7 @@
 
 namespace ads {
 
-struct ADS_EXPORT AdHistoryInfo {
+struct ADS_EXPORT AdHistoryInfo final {
   AdHistoryInfo();
   AdHistoryInfo(const AdHistoryInfo& info);
   ~AdHistoryInfo();

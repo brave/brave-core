@@ -14,7 +14,7 @@ namespace privacy {
 using challenge_bypass_ristretto::PublicKey;
 using challenge_bypass_ristretto::UnblindedToken;
 
-struct UnblindedTokenInfo {
+struct UnblindedTokenInfo final {
   UnblindedTokenInfo();
   UnblindedTokenInfo(const UnblindedTokenInfo& info);
   ~UnblindedTokenInfo();

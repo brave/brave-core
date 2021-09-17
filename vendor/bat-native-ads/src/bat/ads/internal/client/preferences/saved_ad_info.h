@@ -10,7 +10,7 @@
 
 namespace ads {
 
-struct SavedAdInfo {
+struct SavedAdInfo final {
   SavedAdInfo();
   SavedAdInfo(const SavedAdInfo& info);
   ~SavedAdInfo();

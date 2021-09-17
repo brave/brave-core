@@ -12,10 +12,9 @@
 namespace ads {
 namespace database {
 
-class Migration {
+class Migration final {
  public:
   Migration();
-
   ~Migration();
 
   void FromVersion(const int from_version, ResultCallback callback);
