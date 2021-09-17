@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/values.h"
@@ -46,12 +46,6 @@ RedeemUnblindedToken::RedeemUnblindedToken() = default;
 
 RedeemUnblindedToken::~RedeemUnblindedToken() {
   delegate_ = nullptr;
-}
-
-void RedeemUnblindedToken::set_delegate(
-    RedeemUnblindedTokenDelegate* delegate) {
-  DCHECK_EQ(delegate_, nullptr);
-  delegate_ = delegate;
 }
 
 void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {

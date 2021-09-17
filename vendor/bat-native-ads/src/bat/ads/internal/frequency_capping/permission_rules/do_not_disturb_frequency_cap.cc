@@ -33,7 +33,7 @@ bool DoNotDisturbFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string DoNotDisturbFrequencyCap::get_last_message() const {
+std::string DoNotDisturbFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

@@ -17,9 +17,9 @@ BackoffTimer::BackoffTimer() {
 
 BackoffTimer::~BackoffTimer() = default;
 
-void BackoffTimer::set_timer_for_testing(
+void BackoffTimer::SetTimerForTesting(
     std::unique_ptr<base::OneShotTimer> timer) {
-  timer_.set_timer_for_testing(std::move(timer));
+  timer_.SetTimerForTesting(std::move(timer));
 }
 
 base::Time BackoffTimer::Start(const base::TimeDelta& delay,
@@ -50,10 +50,6 @@ bool BackoffTimer::Stop() {
   backoff_count_ = 0;
 
   return timer_.Stop();
-}
-
-void BackoffTimer::set_max_backoff_delay(const base::TimeDelta& max_delay) {
-  max_backoff_delay_ = max_delay;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -26,7 +26,7 @@ class Timer final {
   // Set a mock implementation of base::OneShotTimer which requires |Fire()| to
   // be explicitly called. Prefer using TaskEnvironment::MOCK_TIME +
   // FastForward*() to this when possible
-  void set_timer_for_testing(std::unique_ptr<base::OneShotTimer> timer);
+  void SetTimerForTesting(std::unique_ptr<base::OneShotTimer> timer);
 
   // Start a timer to run at the given |delay| from now. If the timer is already
   // running, it will be replaced to call the given |user_task|. Returns the

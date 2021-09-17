@@ -79,19 +79,19 @@ bool Client::HasInstance() {
   return g_client;
 }
 
-FilteredAdList Client::get_filtered_ads() const {
+FilteredAdList Client::GetFilteredAds() const {
   DCHECK(is_initialized_);
 
   return client_->ad_preferences.filtered_ads;
 }
 
-FilteredCategoryList Client::get_filtered_categories() const {
+FilteredCategoryList Client::GetFilteredCategories() const {
   DCHECK(is_initialized_);
 
   return client_->ad_preferences.filtered_categories;
 }
 
-FlaggedAdList Client::get_flagged_ads() const {
+FlaggedAdList Client::GetFlaggedAds() const {
   DCHECK(is_initialized_);
 
   return client_->ad_preferences.flagged_ads;

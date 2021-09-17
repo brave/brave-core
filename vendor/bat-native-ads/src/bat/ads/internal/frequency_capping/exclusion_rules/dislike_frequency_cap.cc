@@ -27,12 +27,12 @@ bool DislikeFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string DislikeFrequencyCap::get_last_message() const {
+std::string DislikeFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
 bool DislikeFrequencyCap::DoesRespectCap(const CreativeAdInfo& ad) {
-  const FilteredAdList filtered_ads = Client::Get()->get_filtered_ads();
+  const FilteredAdList filtered_ads = Client::Get()->GetFilteredAds();
   if (filtered_ads.empty()) {
     return true;
   }

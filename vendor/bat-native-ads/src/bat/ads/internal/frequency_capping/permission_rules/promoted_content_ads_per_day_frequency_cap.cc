@@ -31,7 +31,7 @@ bool PromotedContentAdsPerDayFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string PromotedContentAdsPerDayFrequencyCap::get_last_message() const {
+std::string PromotedContentAdsPerDayFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

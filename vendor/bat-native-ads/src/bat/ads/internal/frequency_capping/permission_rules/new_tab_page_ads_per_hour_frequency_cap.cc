@@ -28,7 +28,7 @@ bool NewTabPageAdsPerHourFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string NewTabPageAdsPerHourFrequencyCap::get_last_message() const {
+std::string NewTabPageAdsPerHourFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

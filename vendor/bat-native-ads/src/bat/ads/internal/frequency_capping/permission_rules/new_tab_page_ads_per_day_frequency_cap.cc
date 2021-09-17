@@ -28,7 +28,7 @@ bool NewTabPageAdsPerDayFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string NewTabPageAdsPerDayFrequencyCap::get_last_message() const {
+std::string NewTabPageAdsPerDayFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

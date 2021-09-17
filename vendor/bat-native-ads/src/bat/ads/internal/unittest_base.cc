@@ -35,7 +35,7 @@ UnitTestBase::UnitTestBase()
   brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
       locale_helper_mock_.get());
 
-  PlatformHelper::GetInstance()->set_for_testing(platform_helper_mock_.get());
+  PlatformHelper::GetInstance()->SetForTesting(platform_helper_mock_.get());
 }
 
 UnitTestBase::~UnitTestBase() {

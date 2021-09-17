@@ -22,7 +22,7 @@ class Initialize final {
 
   void CreateOrOpen(ResultCallback callback);
 
-  std::string get_last_message() const;
+  std::string get_last_message() const { return last_message_; }
 
  private:
   void OnCreateOrOpen(mojom::DBCommandResponsePtr response,

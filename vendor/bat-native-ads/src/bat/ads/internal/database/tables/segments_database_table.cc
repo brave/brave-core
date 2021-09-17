@@ -48,14 +48,14 @@ void Segments::InsertOrUpdate(mojom::DBTransaction* transaction,
 void Segments::Delete(ResultCallback callback) {
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
-  util::Delete(transaction.get(), get_table_name());
+  util::Delete(transaction.get(), GetTableName());
 
   AdsClientHelper::Get()->RunDBTransaction(
       std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
-std::string Segments::get_table_name() const {
+std::string Segments::GetTableName() const {
   return kTableName;
 }
 
@@ -103,7 +103,7 @@ std::string Segments::BuildInsertOrUpdateQuery(
       "INSERT OR REPLACE INTO %s "
       "(creative_set_id, "
       "segment) VALUES %s",
-      get_table_name().c_str(),
+      GetTableName().c_str(),
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
@@ -116,7 +116,7 @@ void Segments::CreateTableV16(mojom::DBTransaction* transaction) {
       "segment TEXT NOT NULL, "
       "PRIMARY KEY (creative_set_id, segment), "
       "UNIQUE(creative_set_id, segment) ON CONFLICT REPLACE)",
-      get_table_name().c_str());
+      GetTableName().c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;
@@ -128,7 +128,7 @@ void Segments::CreateTableV16(mojom::DBTransaction* transaction) {
 void Segments::MigrateToV16(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  util::Drop(transaction, get_table_name());
+  util::Drop(transaction, GetTableName());
 
   CreateTableV16(transaction);
 }

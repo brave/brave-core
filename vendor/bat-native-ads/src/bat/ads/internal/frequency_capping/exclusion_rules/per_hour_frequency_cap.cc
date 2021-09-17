@@ -39,7 +39,7 @@ bool PerHourFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string PerHourFrequencyCap::get_last_message() const {
+std::string PerHourFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

@@ -29,7 +29,7 @@ bool TotalMaxFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string TotalMaxFrequencyCap::get_last_message() const {
+std::string TotalMaxFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

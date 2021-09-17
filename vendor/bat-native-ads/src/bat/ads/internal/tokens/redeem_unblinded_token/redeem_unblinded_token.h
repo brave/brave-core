@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_H_
 
+#include "base/check_op.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
@@ -22,7 +23,10 @@ class RedeemUnblindedToken final {
   RedeemUnblindedToken();
   ~RedeemUnblindedToken();
 
-  void set_delegate(RedeemUnblindedTokenDelegate* delegate);
+  void set_delegate(RedeemUnblindedTokenDelegate* delegate) {
+    DCHECK_EQ(delegate_, nullptr);
+    delegate_ = delegate;
+  }
 
   void Redeem(const ConfirmationInfo& confirmation);
 

@@ -119,28 +119,28 @@ void ConfirmationsState::Save() {
       });
 }
 
-CatalogIssuersInfo ConfirmationsState::get_catalog_issuers() const {
+CatalogIssuersInfo ConfirmationsState::GetCatalogIssuers() const {
   return catalog_issuers_;
 }
 
-void ConfirmationsState::set_catalog_issuers(
+void ConfirmationsState::SetCatalogIssuers(
     const CatalogIssuersInfo& catalog_issuers) {
   DCHECK(is_initialized_);
   catalog_issuers_ = catalog_issuers;
 }
 
-ConfirmationList ConfirmationsState::get_failed_confirmations() const {
+ConfirmationList ConfirmationsState::GetFailedConfirmations() const {
   DCHECK(is_initialized_);
   return failed_confirmations_;
 }
 
-void ConfirmationsState::append_failed_confirmation(
+void ConfirmationsState::AppendFailedConfirmation(
     const ConfirmationInfo& confirmation) {
   DCHECK(is_initialized_);
   failed_confirmations_.push_back(confirmation);
 }
 
-bool ConfirmationsState::remove_failed_confirmation(
+bool ConfirmationsState::RemoveFailedConfirmation(
     const ConfirmationInfo& confirmation) {
   DCHECK(is_initialized_);
 
@@ -159,38 +159,27 @@ bool ConfirmationsState::remove_failed_confirmation(
   return true;
 }
 
-TransactionList ConfirmationsState::get_transactions() const {
+TransactionList ConfirmationsState::GetTransactions() const {
   DCHECK(is_initialized_);
   return transactions_;
 }
 
-void ConfirmationsState::add_transaction(const TransactionInfo& transaction) {
+void ConfirmationsState::AppendTransaction(const TransactionInfo& transaction) {
   DCHECK(is_initialized_);
 #if !defined(OS_IOS)
   transactions_.push_back(transaction);
 #endif
 }
 
-base::Time ConfirmationsState::get_next_token_redemption_date() const {
+base::Time ConfirmationsState::GetNextTokenRedemptionDate() const {
   DCHECK(is_initialized_);
   return next_token_redemption_date_;
 }
 
-void ConfirmationsState::set_next_token_redemption_date(
+void ConfirmationsState::SetNextTokenRedemptionDate(
     const base::Time& next_token_redemption_date) {
   DCHECK(is_initialized_);
   next_token_redemption_date_ = next_token_redemption_date;
-}
-
-privacy::UnblindedTokens* ConfirmationsState::get_unblinded_tokens() const {
-  DCHECK(is_initialized_);
-  return unblinded_tokens_.get();
-}
-
-privacy::UnblindedTokens* ConfirmationsState::get_unblinded_payment_tokens()
-    const {
-  DCHECK(is_initialized_);
-  return unblinded_payment_tokens_.get();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

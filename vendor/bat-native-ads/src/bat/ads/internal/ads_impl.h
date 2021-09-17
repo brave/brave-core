@@ -114,7 +114,7 @@ class AdsImpl final : public Ads,
   AdsImpl(const AdsImpl&) = delete;
   AdsImpl& operator=(const AdsImpl&) = delete;
 
-  void set_for_testing(privacy::TokenGeneratorInterface* token_generator);
+  void SetForTesting(privacy::TokenGeneratorInterface* token_generator);
 
   bool IsInitialized() const;
 

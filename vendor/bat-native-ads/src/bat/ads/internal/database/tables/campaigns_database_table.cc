@@ -32,7 +32,7 @@ Campaigns::~Campaigns() = default;
 void Campaigns::Delete(ResultCallback callback) {
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
-  util::Delete(transaction.get(), get_table_name());
+  util::Delete(transaction.get(), GetTableName());
 
   AdsClientHelper::Get()->RunDBTransaction(
       std::move(transaction),
@@ -54,7 +54,7 @@ void Campaigns::InsertOrUpdate(mojom::DBTransaction* transaction,
   transaction->commands.push_back(std::move(command));
 }
 
-std::string Campaigns::get_table_name() const {
+std::string Campaigns::GetTableName() const {
   return kTableName;
 }
 
@@ -112,7 +112,7 @@ std::string Campaigns::BuildInsertOrUpdateQuery(
       "advertiser_id, "
       "priority, "
       "ptr) VALUES %s",
-      get_table_name().c_str(),
+      GetTableName().c_str(),
       BuildBindingParameterPlaceholders(7, count).c_str());
 }
 
@@ -128,7 +128,7 @@ void Campaigns::CreateTableV16(mojom::DBTransaction* transaction) {
       "advertiser_id TEXT NOT NULL, "
       "priority INTEGER NOT NULL DEFAULT 0, "
       "ptr DOUBLE NOT NULL DEFAULT 1)",
-      get_table_name().c_str());
+      GetTableName().c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;
@@ -140,7 +140,7 @@ void Campaigns::CreateTableV16(mojom::DBTransaction* transaction) {
 void Campaigns::MigrateToV16(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  util::Drop(transaction, get_table_name());
+  util::Drop(transaction, GetTableName());
 
   CreateTableV16(transaction);
 }

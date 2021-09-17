@@ -24,7 +24,7 @@ class ConversionFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
 
   bool ShouldExclude(const CreativeAdInfo& ad) override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   AdEventList ad_events_;

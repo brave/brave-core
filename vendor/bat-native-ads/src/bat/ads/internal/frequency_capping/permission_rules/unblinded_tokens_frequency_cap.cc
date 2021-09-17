@@ -32,7 +32,7 @@ bool UnblindedTokensFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string UnblindedTokensFrequencyCap::get_last_message() const {
+std::string UnblindedTokensFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

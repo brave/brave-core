@@ -54,7 +54,7 @@ void AdEvents::GetIf(const std::string& condition,
       "FROM %s AS ae "
       "WHERE %s "
       "ORDER BY timestamp DESC ",
-      get_table_name().c_str(), condition.c_str());
+      GetTableName().c_str(), condition.c_str());
 
   RunTransaction(query, callback);
 }
@@ -72,7 +72,7 @@ void AdEvents::GetAll(GetAdEventsCallback callback) {
       "ae.timestamp "
       "FROM %s AS ae "
       "ORDER BY timestamp DESC",
-      get_table_name().c_str());
+      GetTableName().c_str());
 
   RunTransaction(query, callback);
 }
@@ -85,7 +85,7 @@ void AdEvents::PurgeExpired(ResultCallback callback) {
       "AND creative_set_id NOT IN "
       "(SELECT creative_set_id from creative_ad_conversions) "
       "AND DATETIME('now') >= DATETIME(timestamp, 'unixepoch', '+3 month')",
-      get_table_name().c_str());
+      GetTableName().c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;
@@ -109,8 +109,8 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
       "AND confirmation_type IN (SELECT confirmation_type from %s "
       "WHERE confirmation_type = 'served') "
       "AND type = '%s'",
-      get_table_name().c_str(), get_table_name().c_str(),
-      get_table_name().c_str(), ad_type_as_string.c_str());
+      GetTableName().c_str(), GetTableName().c_str(), GetTableName().c_str(),
+      ad_type_as_string.c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;
@@ -124,7 +124,7 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
-std::string AdEvents::get_table_name() const {
+std::string AdEvents::GetTableName() const {
   return kTableName;
 }
 
@@ -230,7 +230,7 @@ std::string AdEvents::BuildInsertOrUpdateQuery(mojom::DBCommand* command,
       "creative_instance_id, "
       "advertiser_id, "
       "timestamp) VALUES %s",
-      get_table_name().c_str(),
+      GetTableName().c_str(),
       BuildBindingParameterPlaceholders(8, count).c_str());
 }
 

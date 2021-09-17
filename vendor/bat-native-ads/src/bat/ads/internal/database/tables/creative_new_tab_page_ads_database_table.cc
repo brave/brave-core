@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -84,7 +84,7 @@ void CreativeNewTabPageAds::Save(
 void CreativeNewTabPageAds::Delete(ResultCallback callback) {
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
-  util::Delete(transaction.get(), get_table_name());
+  util::Delete(transaction.get(), GetTableName());
 
   AdsClientHelper::Get()->RunDBTransaction(
       std::move(transaction),
@@ -139,7 +139,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
       "INNER JOIN dayparts AS dp "
       "ON dp.campaign_id = cntpa.campaign_id "
       "WHERE cntpa.creative_instance_id = '%s'",
-      get_table_name().c_str(), creative_instance_id.c_str());
+      GetTableName().c_str(), creative_instance_id.c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
@@ -226,7 +226,7 @@ void CreativeNewTabPageAds::GetForSegments(
       "ON dp.campaign_id = cntpa.campaign_id "
       "WHERE s.segment IN %s "
       "AND %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
-      get_table_name().c_str(),
+      GetTableName().c_str(),
       BuildBindingParameterPlaceholder(segments.size()).c_str(),
       TimeAsTimestampString(base::Time::Now()).c_str());
 
@@ -313,8 +313,7 @@ void CreativeNewTabPageAds::GetAll(GetCreativeNewTabPageAdsCallback callback) {
       "INNER JOIN dayparts AS dp "
       "ON dp.campaign_id = cntpa.campaign_id "
       "WHERE %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
-      get_table_name().c_str(),
-      TimeAsTimestampString(base::Time::Now()).c_str());
+      GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
@@ -354,13 +353,7 @@ void CreativeNewTabPageAds::GetAll(GetCreativeNewTabPageAdsCallback callback) {
                                         std::placeholders::_1, callback));
 }
 
-void CreativeNewTabPageAds::set_batch_size(const int batch_size) {
-  DCHECK_GT(batch_size, 0);
-
-  batch_size_ = batch_size;
-}
-
-std::string CreativeNewTabPageAds::get_table_name() const {
+std::string CreativeNewTabPageAds::GetTableName() const {
   return kTableName;
 }
 
@@ -432,7 +425,7 @@ std::string CreativeNewTabPageAds::BuildInsertOrUpdateQuery(
       "campaign_id, "
       "company_name, "
       "alt) VALUES %s",
-      get_table_name().c_str(),
+      GetTableName().c_str(),
       BuildBindingParameterPlaceholders(5, count).c_str());
 }
 
@@ -559,7 +552,7 @@ void CreativeNewTabPageAds::CreateTableV16(mojom::DBTransaction* transaction) {
       "campaign_id TEXT NOT NULL, "
       "company_name TEXT NOT NULL, "
       "alt TEXT NOT NULL)",
-      get_table_name().c_str());
+      GetTableName().c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;
@@ -571,7 +564,7 @@ void CreativeNewTabPageAds::CreateTableV16(mojom::DBTransaction* transaction) {
 void CreativeNewTabPageAds::MigrateToV16(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  util::Drop(transaction, get_table_name());
+  util::Drop(transaction, GetTableName());
 
   CreateTableV16(transaction);
 }

@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -85,7 +85,7 @@ void CreativePromotedContentAds::Save(
 void CreativePromotedContentAds::Delete(ResultCallback callback) {
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
-  util::Delete(transaction.get(), get_table_name());
+  util::Delete(transaction.get(), GetTableName());
 
   AdsClientHelper::Get()->RunDBTransaction(
       std::move(transaction),
@@ -140,7 +140,7 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
       "INNER JOIN dayparts AS dp "
       "ON dp.campaign_id = cpca.campaign_id "
       "WHERE cpca.creative_instance_id = '%s'",
-      get_table_name().c_str(), creative_instance_id.c_str());
+      GetTableName().c_str(), creative_instance_id.c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
@@ -227,7 +227,7 @@ void CreativePromotedContentAds::GetForSegments(
       "ON dp.campaign_id = cpca.campaign_id "
       "WHERE s.segment IN %s "
       "AND %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
-      get_table_name().c_str(),
+      GetTableName().c_str(),
       BuildBindingParameterPlaceholder(segments.size()).c_str(),
       TimeAsTimestampString(base::Time::Now()).c_str());
 
@@ -315,8 +315,7 @@ void CreativePromotedContentAds::GetAll(
       "INNER JOIN dayparts AS dp "
       "ON dp.campaign_id = cpca.campaign_id "
       "WHERE %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
-      get_table_name().c_str(),
-      TimeAsTimestampString(base::Time::Now()).c_str());
+      GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
@@ -356,13 +355,7 @@ void CreativePromotedContentAds::GetAll(
                                         this, std::placeholders::_1, callback));
 }
 
-void CreativePromotedContentAds::set_batch_size(const int batch_size) {
-  DCHECK_GT(batch_size, 0);
-
-  batch_size_ = batch_size;
-}
-
-std::string CreativePromotedContentAds::get_table_name() const {
+std::string CreativePromotedContentAds::GetTableName() const {
   return kTableName;
 }
 
@@ -436,7 +429,7 @@ std::string CreativePromotedContentAds::BuildInsertOrUpdateQuery(
       "campaign_id, "
       "title, "
       "description) VALUES %s",
-      get_table_name().c_str(),
+      GetTableName().c_str(),
       BuildBindingParameterPlaceholders(5, count).c_str());
 }
 
@@ -565,7 +558,7 @@ void CreativePromotedContentAds::CreateTableV16(
       "campaign_id TEXT NOT NULL, "
       "title TEXT NOT NULL, "
       "description TEXT NOT NULL)",
-      get_table_name().c_str());
+      GetTableName().c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;
@@ -578,7 +571,7 @@ void CreativePromotedContentAds::MigrateToV16(
     mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  util::Drop(transaction, get_table_name());
+  util::Drop(transaction, GetTableName());
 
   CreateTableV16(transaction);
 }

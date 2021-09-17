@@ -35,7 +35,7 @@ bool PerMonthFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string PerMonthFrequencyCap::get_last_message() const {
+std::string PerMonthFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

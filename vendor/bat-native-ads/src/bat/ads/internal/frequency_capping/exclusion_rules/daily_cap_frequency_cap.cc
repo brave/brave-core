@@ -34,7 +34,7 @@ bool DailyCapFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string DailyCapFrequencyCap::get_last_message() const {
+std::string DailyCapFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

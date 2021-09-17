@@ -30,7 +30,7 @@ bool MarkedToNoLongerReceiveFrequencyCap::ShouldExclude(
   return false;
 }
 
-std::string MarkedToNoLongerReceiveFrequencyCap::get_last_message() const {
+std::string MarkedToNoLongerReceiveFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

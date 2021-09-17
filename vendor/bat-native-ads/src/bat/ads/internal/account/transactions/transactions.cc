@@ -18,7 +18,7 @@ namespace transactions {
 
 TransactionList GetCleared(const int64_t from_timestamp,
                            const int64_t to_timestamp) {
-  TransactionList transactions = ConfirmationsState::Get()->get_transactions();
+  TransactionList transactions = ConfirmationsState::Get()->GetTransactions();
 
   const auto iter = std::remove_if(
       transactions.begin(), transactions.end(),
@@ -43,7 +43,7 @@ TransactionList GetUncleared() {
 
   // Uncleared transactions are always at the end of the transaction history
   const TransactionList transactions =
-      ConfirmationsState::Get()->get_transactions();
+      ConfirmationsState::Get()->GetTransactions();
 
   if (transactions.size() < count) {
     // There are fewer transactions than unblinded payment tokens which is
@@ -60,7 +60,7 @@ TransactionList GetUncleared() {
 
 uint64_t GetCountForMonth(const base::Time& time) {
   const TransactionList transactions =
-      ConfirmationsState::Get()->get_transactions();
+      ConfirmationsState::Get()->GetTransactions();
 
   uint64_t count = 0;
 
@@ -99,7 +99,7 @@ void Add(const double estimated_redemption_value,
   transaction.estimated_redemption_value = estimated_redemption_value;
   transaction.confirmation_type = std::string(confirmation.type);
 
-  ConfirmationsState::Get()->add_transaction(transaction);
+  ConfirmationsState::Get()->AppendTransaction(transaction);
   ConfirmationsState::Get()->Save();
 }
 

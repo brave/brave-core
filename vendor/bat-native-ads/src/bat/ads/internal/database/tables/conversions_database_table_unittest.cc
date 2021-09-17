@@ -212,7 +212,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, TableName) {
   // Arrange
 
   // Act
-  const std::string table_name = database_table_->get_table_name();
+  const std::string table_name = database_table_->GetTableName();
 
   // Assert
   const std::string expected_table_name = "creative_ad_conversions";

@@ -15,7 +15,7 @@ PlatformHelper::PlatformHelper() = default;
 
 PlatformHelper::~PlatformHelper() = default;
 
-void PlatformHelper::set_for_testing(PlatformHelper* platform_helper) {
+void PlatformHelper::SetForTesting(PlatformHelper* platform_helper) {
   g_platform_helper_for_testing = platform_helper;
 }
 

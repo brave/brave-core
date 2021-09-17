@@ -78,7 +78,7 @@ bool SubdivisionTargetingFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string SubdivisionTargetingFrequencyCap::get_last_message() const {
+std::string SubdivisionTargetingFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/check_op.h"
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
@@ -38,9 +39,13 @@ class ConversionQueue final : public Table {
       const std::string& creative_instance_id,
       GetConversionQueueForCreativeInstanceIdCallback callback);
 
-  void set_batch_size(const int batch_size);
+  void set_batch_size(const int batch_size) {
+    DCHECK_GT(batch_size, 0);
 
-  std::string get_table_name() const override;
+    batch_size_ = batch_size;
+  }
+
+  std::string GetTableName() const override;
 
   void Migrate(mojom::DBTransaction* transaction,
                const int to_version) override;

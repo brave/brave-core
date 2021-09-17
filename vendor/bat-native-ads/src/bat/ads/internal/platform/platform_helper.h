@@ -24,7 +24,7 @@ class PlatformHelper {
 
   static PlatformHelper* GetInstance();
 
-  void set_for_testing(PlatformHelper* platform_helper);
+  void SetForTesting(PlatformHelper* platform_helper);
 
   virtual bool IsMobile() const;
   virtual std::string GetPlatformName() const;

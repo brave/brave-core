@@ -36,7 +36,7 @@ bool PromotedContentAdUuidFrequencyCap::ShouldExclude(const AdInfo& ad) {
   return false;
 }
 
-std::string PromotedContentAdUuidFrequencyCap::get_last_message() const {
+std::string PromotedContentAdUuidFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
