@@ -31,6 +31,7 @@ interface Props {
   selectedDerivationScheme: string
   setSelectedDerivationScheme: (scheme: string) => void
   onAddAccounts: () => void
+  getBalance: (address: string) => Promise<string>
 }
 
 export default function (props: Props) {
@@ -42,7 +43,8 @@ export default function (props: Props) {
     setSelectedDerivationPaths,
     selectedDerivationPaths,
     onLoadMore,
-    onAddAccounts
+    onAddAccounts,
+    getBalance
   } = props
   const [filteredAccountList, setFilteredAccountList] = React.useState<HardwareWalletAccount[]>(accounts)
 
@@ -100,13 +102,17 @@ export default function (props: Props) {
         {filteredAccountList.map((account) => {
           const { selectedDerivationPaths } = props
           const { derivationPath } = account
-
+          const [balance, setBalance] = React.useState('')
           const isSelected = selectedDerivationPaths.includes(derivationPath)
+          getBalance(account.address).then((result) => {
+            setBalance(result)
+          }).catch()
           return (
             <AccountListItem
               key={derivationPath}
               account={account}
               selected={isSelected}
+              balance={balance}
               onSelect={onSelectAccountCheckbox(account)}
             />
           )
@@ -124,10 +130,11 @@ interface AccountListItemProps {
   account: HardwareWalletAccount
   onSelect: () => void
   selected: boolean
+  balance: string
 }
 
 function AccountListItem (props: AccountListItemProps) {
-  const { account, onSelect, selected } = props
+  const { account, onSelect, selected, balance } = props
   const orb = React.useMemo(() => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [account.address])
@@ -137,7 +144,7 @@ function AccountListItem (props: AccountListItemProps) {
       <HardwareWalletAccountCircle orb={orb} />
       <HardwareWalletAccountListItemColumn>
         <div>{reduceAddress(account.address)}</div>
-        <div>{account.balance}</div>
+        <div>{balance}</div>
         <Checkbox value={{ selected }} onChange={onSelect}>
           <div data-key='selected' />
         </Checkbox>

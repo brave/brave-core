@@ -39,7 +39,7 @@ export interface Props {
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onCopyToClipboard: () => void
   onChangeTab: (id: AccountSettingsNavTypes) => void
-  onRemoveAccount: (address: string) => void
+  onRemoveAccount: (address: string, hardware: boolean) => void
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
   onToggleNav: () => void
@@ -105,7 +105,7 @@ const AddAccountModal = (props: Props) => {
   }
 
   const removeAccount = () => {
-    onRemoveAccount(account.address)
+    onRemoveAccount(account.address, false)
     onToggleNav()
     onClose()
   }

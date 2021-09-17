@@ -67,7 +67,7 @@ export interface Props {
   onClickBackup: () => void
   onClickAddAccount: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
-  onRemoveAccount: (address: string) => void
+  onRemoveAccount: (address: string, hardware: boolean) => void
 }
 
 function Accounts (props: Props) {

@@ -68,6 +68,13 @@ const defaultState: WalletState = {
 
 const reducer = createReducer<WalletState>({}, defaultState)
 
+const getAccountType = (info: AccountInfo) => {
+  if (info.isLedger) {
+    return 'Ledger'
+  }
+  return info.isImported ? 'Secondary' : 'Primary'
+}
+
 reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadType) => {
   const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
     return {
@@ -77,7 +84,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
       balance: '0',
       fiatBalance: '0',
       asset: 'eth',
-      accountType: info.isImported ? 'Secondary' : 'Primary',
+      accountType: getAccountType(info),
       tokens: []
     }
   })

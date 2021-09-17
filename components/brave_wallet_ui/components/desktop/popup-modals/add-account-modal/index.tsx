@@ -28,6 +28,7 @@ export interface Props {
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
   onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
+  getBalance: (address: string) => Promise<string>
   onSetImportError: (hasError: boolean) => void
   hasImportError: boolean
   accounts: WalletAccountType[]
@@ -44,6 +45,7 @@ const AddAccountModal = (props: Props) => {
     onImportAccount,
     onConnectHardwareWallet,
     onAddHardwareAccounts,
+    getBalance,
     onImportAccountFromJson,
     onSetImportError
   } = props
@@ -231,7 +233,7 @@ const AddAccountModal = (props: Props) => {
             />
           </>
         }
-        {tab === 'hardware' && <HardwareWalletConnect onConnectHardwareWallet={onConnectHardwareWallet} onAddHardwareAccounts={onAddHardwareAccounts} />}
+        {tab === 'hardware' && <HardwareWalletConnect onConnectHardwareWallet={onConnectHardwareWallet} onAddHardwareAccounts={onAddHardwareAccounts} getBalance={getBalance}/>}
       </StyledWrapper>
     </PopupModal>
   )

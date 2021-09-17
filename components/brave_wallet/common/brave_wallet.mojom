@@ -133,10 +133,20 @@ struct SwapResponse {
   // Note we could also expose "sources" later
 };
 
+const string kLedgerHardwareVendor = "Ledger";
+
+struct HardwareWalletAccount {
+  string address;
+  string derivation_path;
+  string name;
+  string hardware_vendor;
+};
+
 struct AccountInfo {
   string address;
   string name;
   bool is_imported;
+  bool is_ledger;
 };
 
 struct KeyringInfo {
@@ -211,6 +221,9 @@ interface KeyringController {
   AddObserver(pending_remote<KeyringControllerObserver> observer);
   SetDefaultKeyringDerivedAccountName(string address, string name) => (bool success);
   SetDefaultKeyringImportedAccountName(string address, string name) => (bool success);
+  AddHardwareAccounts(array<HardwareWalletAccount> info);
+  GetHardwareAccounts() => (array<AccountInfo> accounts);
+  RemoveHardwareAccount(string address);
 };
 
 interface AssetRatioController {

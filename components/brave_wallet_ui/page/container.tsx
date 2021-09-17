@@ -52,12 +52,12 @@ import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 import {
-  HardwareWalletAccount,
-  HardwareWalletConnectOpts
+  HardwareWalletAccount
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
+import { onConnectHardwareWallet, getBalance } from '../common/async/wallet_async_handler'
+
 import { formatBalance, toWei } from '../utils/format-balances'
-import apiProxy from './wallet_page_api_proxy.js'
 
 type Props = {
   wallet: WalletState
@@ -330,7 +330,7 @@ function Container (props: Props) {
     if (!selectedAccount) {
       return '0'
     }
-    const token = selectedAccount.tokens.find((token) => token.asset.symbol === fromAsset.asset.symbol)
+    const token = selectedAccount.tokens ? selectedAccount.tokens.find((token) => token.asset.symbol === fromAsset.asset.symbol) : undefined
     return token ? formatBalance(token.assetBalance, token.asset.decimals) : '0'
   }, [accounts, selectedAccount, fromAsset])
 
@@ -366,24 +366,8 @@ function Container (props: Props) {
     }
   }
 
-  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<HardwareWalletAccount[]> => {
-    return new Promise(async (resolve, reject) => {
-      const keyring = await apiProxy.getInstance().getKeyringsByType(opts.hardware)
-      const controller = await apiProxy.getInstance().ethJsonRpcController
-      keyring.getAccounts(opts.startIndex, opts.stopIndex).then(async (accounts: HardwareWalletAccount[]) => {
-        for (let index = 0; index < accounts.length; index++) {
-          const balance = await controller.getBalance(accounts[index].address)
-          if (balance.success) {
-            accounts[index].balance = formatBalance(balance.balance, 18)
-          }
-        }
-        resolve(accounts)
-      }).catch(reject)
-    })
-  }
-
   const onAddHardwareAccounts = (selected: HardwareWalletAccount[]) => {
-    console.log(selected)
+    props.walletPageActions.addHardwareAccounts(selected)
   }
 
   const onImportAccount = (accountName: string, privateKey: string) => {
@@ -398,7 +382,11 @@ function Container (props: Props) {
     props.walletPageActions.setImportError(hasError)
   }
 
-  const onRemoveAccount = (address: string) => {
+  const onRemoveAccount = (address: string, hardware: boolean) => {
+    if (hardware) {
+      props.walletPageActions.removeHardwareAccount({ address })
+      return
+    }
     props.walletPageActions.removeImportedAccount({ address })
   }
 
@@ -527,6 +515,7 @@ function Container (props: Props) {
                   fullAssetList={fullTokenList}
                   onConnectHardwareWallet={onConnectHardwareWallet}
                   onAddHardwareAccounts={onAddHardwareAccounts}
+                  getBalance={getBalance}
                   onCreateAccount={onCreateAccount}
                   onImportAccount={onImportAccount}
                   isLoading={isFetchingPriceHistory}

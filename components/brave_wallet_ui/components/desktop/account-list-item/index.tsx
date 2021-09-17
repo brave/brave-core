@@ -26,7 +26,7 @@ export interface Props {
   onClick: (account: WalletAccountType) => void
   account: WalletAccountType
   isHardwareWallet: boolean
-  onRemoveAccount: (address: string) => void
+  onRemoveAccount: (address: string, hardware: boolean) => void
 }
 
 function AccountListItem (props: Props) {
@@ -52,7 +52,7 @@ function AccountListItem (props: Props) {
   const removeAccount = () => {
     let confirmAction = confirm(`Are you sure to remove ${account.name}?`)
     if (confirmAction) {
-      onRemoveAccount(account.address)
+      onRemoveAccount(account.address, isHardwareWallet)
     }
   }
 
@@ -71,7 +71,7 @@ function AccountListItem (props: Props) {
         </AccountAndAddress>
       </NameAndIcon>
       <RightSide>
-        {account.accountType === 'Secondary' &&
+        {(account.accountType === 'Secondary' || account.accountType === 'Ledger') &&
           <DeleteButton onClick={removeAccount}>
             <DeleteIcon />
           </DeleteButton>

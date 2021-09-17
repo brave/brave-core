@@ -24,5 +24,5 @@ export default class APIProxy {
   addKeyringControllerObserver: (store: any) => void
   addEthTxControllerObserverObserver: (store: any) => void
   makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string) => any
-  getKeyringsByType: (type: string) => Promise<KeyringController>
+  getKeyringsByType: (type: string) => any
 }

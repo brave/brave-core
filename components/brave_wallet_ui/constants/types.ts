@@ -520,6 +520,7 @@ export interface KeyringController {
   lock: () => Promise<void>
   unlock: (password: string) => Promise<UnlockReturnInfo>
   addAccount: (accountName: string) => Promise<AddAccountReturnInfo>
+  getHardwareAccounts: () => Promise<{ accounts: AccountInfo[] }>
 }
 
 export interface GetUserAssetsReturnInfo {
@@ -601,6 +602,7 @@ export interface APIProxyControllers {
   ercTokenRegistry: ERCTokenRegistry
   ethTxController: EthTxController
   braveWalletService: BraveWalletService
+  getKeyringsByType: (type: string) => any
   makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string, data: number[]) => any
 }
 
