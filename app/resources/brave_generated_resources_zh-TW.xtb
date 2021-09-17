@@ -211,7 +211,7 @@
 <translation id="6476061084931271248">重新啟動節點，以套用變更</translation>
 <translation id="3754226427671882382">重新啟動節點</translation>
 <translation id="949667118776341807">旋轉</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">此名稱無效</translation>
 <translation id="6758961763875471084">修改對等清單</translation>
 <translation id="1295874070797049002">匯出金鑰</translation>
@@ -243,6 +243,7 @@
 <translation id="8655170717758778983">可行時，自動透過 DNSLink 重新導向至 IPFS 頁面</translation>
 <translation id="2233724520223030977">可行時，會自動使用 DNSLink 來導向至網站的 IPFS 版本</translation>
 <translation id="6554397389149987360">使用 Hangouts 元件來啟用畫面分享和其它瀏覽器功能。</translation>
+<translation id="7878791177459550035">媒體路由器可在瀏覽器中啟用投影功能。</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="8068526464562249859">在 Brave 使用 IPFS 隨附擴充功能以增強 IPFS 支援，包括從您的瀏覽器列存取一般的 IPFS 任務。</translation>
@@ -353,7 +354,23 @@
         您可以閱讀 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>如何下載並自行建構<ph name="END_LINK_BUILD_INSTRUCTIONS"/> 特定 <ph name="BEGIN_LINK_SOURCE_CODE"/>原始碼來建立此副本<ph name="END_LINK_SOURCE_CODE"/> 的說明。</translation>
 <translation id="4474155171896946103">將所有分頁加入書籤...</translation>
 <translation id="2336228925368920074">將所有分頁加入書籤...</translation>
+<translation id="4235920711083356755">顯示 VPN 按鈕</translation>
+<translation id="4070612712151038707">在工具列中顯示 VPN 按鈕</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">關於 Brave VPN</translation>
+<translation id="4378551569595875038">連線中...</translation>
+<translation id="3368922792935385530">已連線</translation>
+<translation id="1536754031901697553">正在中斷連線…</translation>
+<translation id="8030169304546394654">已取消連結</translation>
+<translation id="1863950594388384201">在工具列中顯示 VPN 按鈕</translation>
+<translation id="5187139277471084437">在工具列中隱藏 VPN 按鈕</translation>
+<translation id="8041089156583427627">提供意見</translation>
+<translation id="4049186905514157504">管理我的方案</translation>
+<translation id="7570585565843385325">在工具列中顯示 VPN 按鈕</translation>
+<translation id="5310426188697803101">在工具列中隱藏 VPN 按鈕</translation>
+<translation id="945522503751344254">提供意見</translation>
+<translation id="3015685033234401792">管理我的方案</translation>
 <translation id="796831669370432378">要新增書籤，點擊網址列旁的書籤按鈕</translation>
 <translation id="4989337484121655457">需要完整的硬碟存取權限</translation>
 <translation id="8025559074845816210">Brave 需要完整的硬碟存取權限，以從 Safari 匯入您的書籤。</translation>

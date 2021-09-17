@@ -103,7 +103,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="9183662282810237335">Exit Brave anyway?</translation>
 <translation id="4065288863231444640">Let Brave Run in the Background</translation>
 <translation id="8148611988012584308">Customise and control Brave</translation>
-<translation id="1201005444605297066">This page allows you to manage your signed-in Brave sync chains. These accounts will be available in Brave browser and Play Store apps, as well as services like Gmail, Drive and YouTube. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Welcome to Brave; new browser window opened</translation>
 <translation id="2633397153656205379">Brave didn't update. Something went wrong. <ph name="BEGIN_LINK"/>Fix Brave update problems and failed updates.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Continue in a new Brave profile?</translation>
@@ -248,6 +247,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="2925193881330501265">You were signed in to Brave as <ph name="USER_EMAIL_ADDRESS"/>. Please use the same account to sign in again.</translation>
 <translation id="6915252145142862992">This is a secondary installation of Brave, and cannot be made your default browser.</translation>
 <translation id="7685904775439037072">Once Brave has access, websites will be able to ask you for access.</translation>
+<translation id="828406390101464081">The following accounts are not signed into any Brave profiles. If you want to use an account in another profile, remove that profile first.</translation>
 <translation id="9067428552314418522">This file is dangerous, so Brave has blocked it.</translation>
 <translation id="8207657266087451193">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave. You can turn this off in settings at any time.</translation>
 <translation id="8622246347342688645">Brave can't check your passwords because you're not signed in</translation>
@@ -297,4 +297,5 @@ Brave is unable to recover your settings.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Your administrator asks that you relaunch Brave to apply this update}=1{Your administrator asks that you relaunch Brave to apply this update. Your Private window won't reopen.}other{Your administrator asks that you relaunch Brave to apply this update. Your # Private windows won't reopen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Your administrator requires that you relaunch Brave to apply an update}=1{Your administrator requires that you relaunch Brave to apply an update. Your Private window won't reopen.}other{Your administrator requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}</translation>
 <translation id="7914115000169617076">Nearly up to date! Relaunch Brave to finish updating. Private windows won't reopen.</translation>
+<translation id="2176087127109773485">You can manage your signed-in Brave sync chains. Your Brave sync chains are used for Brave browser, Play Store, Gmail and more. If you want to add an account for someone else, like a family member, add a new profile to your <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 </translationbundle>

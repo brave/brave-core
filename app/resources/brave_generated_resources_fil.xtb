@@ -209,7 +209,6 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="6476061084931271248">I-restart ang node para ma-apply ang mga pagbabago</translation>
 <translation id="3754226427671882382">I-restart ang node</translation>
 <translation id="949667118776341807">I-rotate</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Hindi valid ang pangalang ito</translation>
 <translation id="6758961763875471084">Baguhin ang listahan ng mga peer</translation>
 <translation id="1295874070797049002">Key sa pag-export</translation>
@@ -240,6 +239,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="8655170717758778983">Awtomatikong i-redirect sa mga page ng IPFS sa pamamagitan ng DNSLink kapag posible</translation>
 <translation id="2233724520223030977">Awtomatikong ginagamit ang DNSLink para mag-navigate sa isang bersyon ng IPFS ng isang website kapag posible</translation>
 <translation id="6554397389149987360">Ginagamit ang component ng Hangouts upang ma-enable ang pagbabahagi ng screen at iba pang feature sa browser.</translation>
+<translation id="7878791177459550035">Ine-enable ng media router ang feature na cast sa browser.</translation>
 <translation id="9156965752763025780">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave.</translation>
 <translation id="7179921470347911571">Muling Ilunsad Ngayon</translation>
 <translation id="8068526464562249859">Ginagamit ang Companion extension ng IPFS para sa pinahusay na suporta sa IPFS sa Brave, kasama ang access sa mga karaniwang gawain ng IPFS mula sa bar ng iyong browser.</translation>
@@ -350,7 +350,23 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
         Maaari mong basahin ang <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>mga tagubilin sa kung paano i-download at gawin nang mag-isa<ph name="END_LINK_BUILD_INSTRUCTIONS"/> ang partikular na <ph name="BEGIN_LINK_SOURCE_CODE"/>source code na ginamit para gawin ang kopyang ito<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">I-bookmark ang lahat ng tab...</translation>
 <translation id="2336228925368920074">I-bookmark ang Lahat ng Mga Tab...</translation>
+<translation id="4235920711083356755">Ipakita ang button ng VPN</translation>
+<translation id="4070612712151038707">Ipinapakita ang button ng VPN sa toolbar</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Tungkol sa Brave VPN</translation>
+<translation id="4378551569595875038">Kumokonekta...</translation>
+<translation id="3368922792935385530">Nakakonekta</translation>
+<translation id="1536754031901697553">Nagdidiskonekta...</translation>
+<translation id="8030169304546394654">Nadiskonekta</translation>
+<translation id="1863950594388384201">Ipakita ang Button ng VPN sa Toolbar</translation>
+<translation id="5187139277471084437">Itago ang Button ng VPN sa Toolbar</translation>
+<translation id="8041089156583427627">Magpadala ng Feedback</translation>
+<translation id="4049186905514157504">Pamahalaan ang Aking Plan</translation>
+<translation id="7570585565843385325">Ipakita ang button ng VPN sa toolbar</translation>
+<translation id="5310426188697803101">Itago ang button ng VPN sa toolbar</translation>
+<translation id="945522503751344254">Magpadala ng feedback...</translation>
+<translation id="3015685033234401792">Pamahalaan ang aking plan</translation>
 <translation id="796831669370432378">Para magdagdag ng bookmark, i-click ang button ng bookmark sa tabi ng address bar</translation>
 <translation id="4989337484121655457">Kailangan ng Full Disk Access</translation>
 <translation id="8025559074845816210">Kailangan ng Brave ng Full Disk Access para i-import ang iyong Mga Bookmark mula sa Safari.</translation>

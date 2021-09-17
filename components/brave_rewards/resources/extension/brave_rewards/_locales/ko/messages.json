@@ -1,685 +1,382 @@
 {
-  "braveRewards": {
-    "message": "Brave Rewards",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "요약",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "지금 획득 시작하기!",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "팁",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "Rewards에 참여하기 ",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "미인증 제작자",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "광고를 시청해 돈을 받으시고, 그것을 좋아하는 콘텐츠 제작자를 후원하는 데 사용하십시오.",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "인증된 제작자",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "이제 개인 신상이 보호되는 광고 시청으로 토큰을 벌 수 있습니다.",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "상태 새로 고침",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "개인 정보를 존중하는 광고 시청으로 이제 포인트를 획득할 수 있습니다.",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "무엇이 개선되었는지 확인하기 ",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "자세히 알아보기",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "저희가 Brave Rewards를 크게 업그레이드하였습니다.",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "다음 인터넷을 경험할 준비를 하세요.",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "귀하의 지갑",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "보조금 ",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "세부 정보",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "on": {
-    "message": "위에",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "Brave 인증 창작자",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "주의",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "매월 기부금",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "자동 기부에 포함하기",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "팁 보내기...",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "팁 활성화",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "위해서",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "보상 요약",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "4월 ",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "8월 ",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "12월 ",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "2월 ",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "1월 ",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "7월",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "6월",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "3월",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "5월",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "11월",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "10월 ",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "9월",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "$currency$ 보조금",
-    "description": "Title for grant notification",
+  "platformPublisherTitle": {
+    "message": "$name$ - $platform$",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "토큰 승인 요청됨",
-    "description": "Title for grant section in wallet summary"
+  "attention": {
+    "message": "주의",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "광고 수입",
-    "description": "Title for ads section in wallet summary"
+  "sendTip": {
+    "message": "팁 보내기",
+    "description": ""
   },
-  "rewardsContribute": {
-    "message": "자동 기부",
-    "description": "Title for auto contribute section in wallet summary"
+  "includeInAutoContribute": {
+    "message": "자동 기부에 포함하기",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "일회성 팁",
-    "description": "Title for one-time tips section in wallet summary"
-  },
-  "expiresOn": {
-    "message": "만료됩니다 ",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
-  },
-  "recurringDonations": {
-    "message": "월 기부금",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "사용 안함",
-    "description": "Label used in toggle indicating that toggle is off"
+  "monthlyContribution": {
+    "message": "매월 기부금",
+    "description": ""
   },
   "ok": {
     "message": "확인",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "이제 광고를 보고 수익을 올릴 수 있습니다.",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "Brave 광고",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "자동 기부",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "$amount$ $currency$를 기부하셨습니다",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "사용할 수 있는 보조금이 있습니다.",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "지금 백업",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "지갑 백업",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "귀하의 브레이브 지갑을 백업해 주세요.",
-    "description": "Description for backup wallet notification"
-  },
-  "learnMore": {
-    "message": "자세히 알아보기",
-    "description": "Notification button text to learn more about a specific use-case"
-  },
-  "mismatchedProviderAccountsTitle": {
-    "message": "오류: 다른 계정",
-    "description": "Title for mismatched provider accounts notification"
-  },
-  "mismatchedProviderAccountsNotification": {
-    "message": "다른 $name$ 계정에서 이미 확인을 완료한 Brave Rewards 월렛인 것 같습니다. 이전 계정으로 확인을 다시 시도해보세요.",
-    "description": "Description for mismatched provider accounts notification",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "upholdBATNotAllowedForUserTitle": {
-    "message": "오류: BAT 이용 불가",
-    "description": "Title for BAT not allowed for user notification"
-  },
-  "upholdBATNotAllowedForUserNotification": {
-    "message": "거주하고 계신 지역에서는 Uphold에 BAT가 아직 지원되지 않습니다.",
-    "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserTitle": {
-    "message": "오류: 차단된 계정",
-    "description": "Title for blocked user notification"
-  },
-  "upholdBlockedUserNotification": {
-    "message": "귀하의 Uphold 계정이 현재 차단되어 있습니다.",
-    "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserTitle": {
-    "message": "오류: 계정 보류 중",
-    "description": "Title for pending user notification"
-  },
-  "upholdPendingUserNotification": {
-    "message": "귀하의 Uphold 계정이 아직 보류 중입니다.",
-    "description": "Description for pending user notification"
-  },
-  "upholdRestrictedUserTitle": {
-    "message": "오류: 이용 제한된 계정",
-    "description": "Title for restricted user notification"
-  },
-  "upholdRestrictedUserNotification": {
-    "message": "귀하의 Uphold 계정이 현재 이용 제한되어 있습니다.",
-    "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "기기 한도 도달",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "승인 기기 최대한도에 도달하였으므로, 귀하의 월렛은 승인될 수 없습니다.",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "귀하의 Brave Rewards 계정이 입금을 기다리고 있습니다.",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "부족한 자금",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "지갑 생성 중",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "기부금 처리 중 문제가 생겼습니다.",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "자금이 부족하여 자동 기부 및 월 기부금을 위해 예정된 월간 결제를 완료하지 못했습니다. 30일 후에 다시 시도합니다.",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "귀하의 팁을 보낼 수 없습니다. 나중에 사디 시도해 주세요.",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "아직 활동이 없습니다...",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "배트 아이콘을 다음으로 드래그하세요",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "귀하가 인간임을 증명하세요!",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "타킷.",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "음... 잘 모르겠어요. 다시 해 보세요.",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "건의",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "무료 토큰 승인",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "만료 일자 승인",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
-    "message": "확인",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "Brave Rewards에 문제가 있습니다. 나중에 다시 시도해 주세요.",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "이런, 뭔가 잘못되었습니다. 나중에 다시 시도해 주세요.",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "상태 새로 고침",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "아직 인증되지 않음",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "아직 구성되지 않아 회원님의 월렛에서 팁을 받을 수 없는 제작자입니다. 만든 팁은 회원님의 월렛에서 보류 중인 상태로 남고, 90일간 자동으로 재시도합니다.",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "더 알아보기.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "아직 기부금을 받기 위해 가입하지 않은 제작자들에게 {{reservedAmount}} {{currency}}을/를 지정하셨습니다. 그들이 확인할 때까지, 또는 90일이 지날 때까지, 귀하의 브라우저가 계속 기부하려고 시도할 것입니다.",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "더 알아보기.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "사용 안함",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "설정.",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "귀하께서는 현재 브라우징 중에 리워드 수익을 모으고 있지 않습니다. 리워드를 다음에 돌려 놓으세요",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "브레이브 리워드란",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "지갑 생성 실패됨",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "다시 시도하세요",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "자금 추가",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "리워드 설정",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "Ads의 보상금이 도착했습니다!",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "및",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "브라우징하고 보상 받기!",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "개인정보를 존중하는 광고 시청으로 돈을 벌고 번 금액을 좋아하는 컨텐츠 창작자들에게 보내세요.",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "Brave Rewards 사용",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "개인정보 보호 정책",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "'Brave Rewards 활성화'를 클릭하심으로서, 귀하께서는 다음을 읽고 동의하시는 것이 됩니다: ",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "서비스 약관",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "환영합니다!",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "월 기부금이 처리되었습니다!",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "기부금 및 팁",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": " ‘보상 참여 (Join Rewards)’를 클릭함으로써, 다음을 읽고 동의했음을 나타냅니다",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "BAT",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "turnOnAds": {
-    "message": "광고 켜기",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "광고로부터 수입",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "이 트윗에 팁 주기",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "팁",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "이 포스팅에 팁",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "팁",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "팁 보내기 ",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "팁",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "최근에 인증된 창작자 $name$",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "부족한 자금으로 인해 보류 중인 팁이 있습니다",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "보류 중인 기부금",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "오늘은 당신의 행운의 날입니다!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "귀하의 $currency$ 보조금이 나오는 중입니다.",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "무료 토큰 승인",
-    "description": "Token title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "광고 리워드를 획득하셨습니다!",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "귀하의 리워드는 귀하의 Brave 리워드 월렛으로 이동하는 중입니다.",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "귀하의 리워드 금액",
-    "description": "Token title on success screen for ads"
-  },
-  "walletButtonDisconnected":  {
-    "message": "연결 해제됨",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "월렛 검증하기",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "지갑 인증됨",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "$provider$ 계정으로 이동",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletLogInWithProvider":  {
-    "message": "$provider$ 계정에 로그인",
-    "description": "CTA to log in with a wallet provider",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "Brave Rewards에서 접속 해제됨.",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "검증 완료됨",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "귀하의 월렛이 검증 완료되었습니다!",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "축하합니다! 귀하의 $name$ 월렛이 성공적으로 검증되었으며, 자금을 추가 및 인출할 준비가 되었습니다.",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "이런. 귀하의 월렛에 접근할 수 없습니다.",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "걱정하지 마십시오. 다양한 보안상 원인으로 발생할 수 있는 일입니다. 지갑에 다시 연결해 문제를 해결할 수 있습니다.",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "Brave Verified Creator가 Brave 사용자로부터 기부금을 수령하도록 아직 계정을 구성하지 않았습니다. 귀하가 보내는 모든 팁은 이 프로세스가 완료될 때까지 귀하의 지갑에 남아 있을 것입니다.",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "지갑 인증 완료",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "설정...",
-    "description": "Button text for setting monthly contribution"
+    "message": "설정",
+    "description": ""
   },
-  "tokens":  {
-    "message": "토큰",
-    "description": "Standard tokens text"
-  },
-  "point":  {
-    "message": "포인트",
-    "description": "BAT Point text"
-  },
-  "token":  {
-    "message": "토큰",
-    "description": "BAT Token text"
-  },
-  "tokenGrants":  {
-    "message": "토큰 보조금",
-    "description": "BAT Tokens Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "안녕하세요, $name$ 님!",
-    "description": "Greetings for external wallet popup",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
-      }
-    }
-  },
-  "cancel":  {
-    "message": "취소",
-    "description": "Text for cancel button"
-  },
-  "changeAmount":  {
+  "changeAmount": {
     "message": "금액 변경",
-    "description": "Button text for changing monthly contribution amount"
+    "description": ""
   },
-  "login":  {
-    "message": "로그인",
-    "description": "Text for login button"
+  "cancel": {
+    "message": "취소",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "지갑을 인증하면 자금을 보다 효율적으로 관리할 수 있습니다.",
-    "description": "Text for login button"
+  "grantCaptchaTitle": {
+    "message": "사람이 맞는지 확인",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "Uphold 지갑을 만들려면 최소 $amount$BAT가 필요합니다. 인증된 Uphold 계정이 이미 있는 경우, 로그인하세요.",
-    "description": "Text for login button",
+  "grantCaptchaFailedTitle": {
+    "message": "음... 잘 모르겠어요. 다시 해 보세요.",
+    "description": ""
+  },
+  "grantCaptchaHint": {
+    "message": "BAT 아이콘을 $hint$ 대상으로 드래그하세요.",
+    "description": "",
     "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "walletConnected":  {
-    "message": "연결됨",
-    "description": "Status button that tells user that he is connected"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "오늘은 당신의 행운의 날입니다!",
+    "description": ""
   },
-  "walletDisconnected":  {
-    "message": "연결 해제됨",
-    "description": "Status button that tells user that he is disconnected"
+  "grantCaptchaPassedTextUGP": {
+    "message": "귀하의 토큰 승인이 진행 중입니다.",
+    "description": ""
   },
-  "walletPending":  {
-    "message": "대기 중",
-    "description": "Status button that tells user that he is currently pending"
+  "grantCaptchaAmountUGP": {
+    "message": "무료 토큰 승인",
+    "description": ""
   },
-  "walletVerificationNote3":  {
-    "message": "주의: 한 번 승인하면 $provider$ 측에서 귀하의 거래를 볼 수 있게 됩니다. 예를 들어, 수취인과 팁의 금액을 볼 수 있습니다.",
-    "description": "Displayed in login modal for external wallet providers",
+  "grantCaptchaPassedTitleAds": {
+    "message": "광고 리워드를 획득하셨습니다!",
+    "description": ""
+  },
+  "grantCaptchaPassedTextAds": {
+    "message": "귀하의 리워드는 귀하의 Brave 리워드 월렛으로 이동하는 중입니다.",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "귀하의 리워드 금액",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "만료 일자 승인",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "이런, 뭔가 잘못되었습니다. 나중에 다시 시도해 주세요.",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "Brave Rewards에 문제가 있습니다. 나중에 다시 시도해 주세요.",
+    "description": ""
+  },
+  "walletAccountLink": {
+    "message": "내 $provider$ 계정으로 가기",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "자금 추가",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "자동 기부",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "$provider$로 이동하여 확인 완료",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "리워드 적립을 시작하려면 신원 확인을 완료하세요.",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "연결 해제됨",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "Brave Rewards에서 접속 해제됨.",
+    "description": ""
+  },
+  "walletEstimatedEarnings": {
+    "message": "예상 수익",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "$provider$ 계정에 로그인",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "월간 팁",
+    "description": ""
+  },
+  "walletMyWallet": {
+    "message": "내 월렛",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "일회성 팁",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "대기 중",
+    "description": ""
+  },
+  "walletPendingRewardsText": {
+    "message": "$amount$ 도착 예정, $days$ 후",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "walletRewardsFromAds": {
+    "message": "광고로 받은 리워드",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "보상 요약",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "검증 완료됨",
+    "description": ""
+  },
+  "walletVerify": {
+    "message": "월렛 검증하기",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "귀하의 잔액",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "자금 추가",
+    "description": ""
+  },
+  "notificationLearnMore": {
+    "message": "자세히 알아보기",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "재연결",
+    "description": ""
+  },
+  "notificationClaim": {
+    "message": "건의",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "부족한 자금",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "귀하의 Brave Rewards 계정이 입금을 기다리고 있습니다.",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "자동 기부",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "$amount$를 기부하셨습니다.",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "월렛 백업",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "귀하의 브레이브 지갑을 백업해 주세요.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "지금 백업하기",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "월렛 로그아웃 상태",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "이렇게 하면 귀하의 계정이 안전하게 보호됩니다. 재연결하려면 아래를 클릭하세요.",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "재연결",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "귀하의 월렛이 검증 완료되었습니다!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "$provider$ 월렛이 성공적으로 확인되어 자금을 추가하고 인출할 준비가 되었습니다.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "토큰 보조금",
+    "description": ""
+  },
+  "notificationTokenGrantText": {
+    "message": "사용할 수 있는 보조금이 있습니다.",
+    "description": ""
+  },
+  "notificationAdGrantTitle": {
+    "message": "광고 수익 받음",
+    "description": ""
+  },
+  "notificationAdGrantText": {
+    "message": "Brave Private Ads로 받은 리워드가 표시됩니다!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "월 기부 실패",
+    "description": ""
+  },
+  "notificationInsufficientFundsText": {
+    "message": "자금이 부족하여 자동 기부 및 월 기부금을 위해 예정된 월간 결제를 완료하지 못했습니다. 30일 후에 다시 시도합니다.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "기부금 처리 중 문제가 생겼습니다.",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "기부 및 팁",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "월 기부금이 처리되었습니다.",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "기부 대기 중",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "제작자 $publisher_name$ 님이 최근 인증되었습니다.",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "자금 부족",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "부족한 자금으로 인해 보류 중인 팁이 있습니다",
+    "description": ""
+  },
+  "notificationWalletLinkingFailedTitle": {
+    "message": "월렛 연결 실패",
+    "description": ""
+  },
+  "notificationDeviceLimitReachedText": {
+    "message": "승인 기기 최대한도에 도달하였으므로, 귀하의 월렛은 승인될 수 없습니다.",
+    "description": ""
+  },
+  "notificationMismatchedProviderAccountsText": {
+    "message": "다른 $provider$ 계정에서 이미 확인을 완료한 Brave Rewards 월렛인 것 같습니다. 이전 계정으로 확인을 다시 시도해보세요.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationUpholdBatNotSupportedText": {
+    "message": "거주하고 계신 지역에서는 Uphold에 BAT가 아직 지원되지 않습니다.",
+    "description": ""
+  },
+  "notificationUpholdUserBlockedText": {
+    "message": "귀하의 Uphold 계정이 현재 차단되어 있습니다.",
+    "description": ""
+  },
+  "notificationUpholdUserPendingText": {
+    "message": "귀하의 Uphold 계정이 아직 보류 중입니다.",
+    "description": ""
+  },
+  "notificationUpholdUserRestrictedText": {
+    "message": "귀하의 Uphold 계정이 현재 이용 제한되어 있습니다.",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "토큰 획득 및 돌려주기",
@@ -854,5 +551,29 @@
         "content": "$2"
       }
     }
+  },
+  "captchaMaxAttemptsExceededText": {
+    "message": "제대로 풀리지 않아 Brave Ads가 일시 중지 상태로 유지됩니다. Captcha 관련 도움을 받으려면 문의하세요.",
+    "description": ""
+  },
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "최대 시도 횟수 초과",
+    "description": ""
+  },
+  "captchaSolvedTitle": {
+    "message": "풀었습니다!",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "이제 광고 및 수익이 재개되었습니다. Brave Rewards 및 개인 정보 존중 광고 보호에 도움을 주셔서 감사합니다.",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "지원팀에 문의",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "숨기기",
+    "description": ""
   }
 }

@@ -101,7 +101,6 @@
 <translation id="9183662282810237335">今すぐ Brave を終了しますか？</translation>
 <translation id="4065288863231444640">Brave をバックグラウンドで実行する</translation>
 <translation id="8148611988012584308">Brave の設定</translation>
-<translation id="1201005444605297066">このページでは、ログインする Brave アカウントを管理できます。アカウントは Brave ブラウザや Play ストアのアプリのほか、Gmail、ドライブ、YouTube などのサービスで使用できます。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Brave へようこそ。新しいブラウザ ウィンドウが開いています</translation>
 <translation id="2633397153656205379">エラーが発生したため、Brave が更新されませんでした。<ph name="BEGIN_LINK"/>Brave の更新に関する問題を解決してください。<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">新しい Brave プロフィールで続行しますか？</translation>
@@ -246,6 +245,7 @@
 <translation id="2925193881330501265">Brave に <ph name="USER_EMAIL_ADDRESS"/> としてログインしていました。再度ログインするには同じアカウントを使用してください。</translation>
 <translation id="6915252145142862992">この Brave はセカンダリ インストールのため、既定のブラウザには設定できません。</translation>
 <translation id="7685904775439037072">Brave にアクセスを許可すると、ウェブサイトからアクセスをリクエストできるようになります。</translation>
+<translation id="828406390101464081">以下のアカウントは Brave プロファイルにログインしていません。別のプロファイルでアカウントを使用する場合は、最初にそのプロファイルを削除してください。</translation>
 <translation id="9067428552314418522">このファイルは危険なファイルであるため、Brave でブロックしました。</translation>
 <translation id="8207657266087451193">画像に有効な説明が設定されていない場合に、Brave で説明を自動的に生成できるよう Brave に画像が送信されます。この機能は設定でいつでも無効にできます。</translation>
 <translation id="8622246347342688645">ログインしていないため、Brave でパスワードを確認できません</translation>
@@ -295,4 +295,5 @@
 <translation id="3829358914761176693">{COUNT,plural, =0{管理者が、このアップデートを適用するために Brave を再起動するよう求めています}=1{管理者が、このアップデートを適用するために Brave を再起動するよう求めています。プライベートウィンドウは、再起動後は自動的には開きません。}other{管理者が、このアップデートを適用するために Brave を再起動するよう求めています。現在開いている # 個のプライベートウィンドウは、再起動後は自動的には開きません。}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{管理者が、アップデートを適用するために Brave を再起動するよう求めています}=1{管理者が、アップデートを適用するために Brave を再起動するよう求めています。プライベートウィンドウは、再起動後は自動的には開きません。}other{管理者が、アップデートを適用するために Brave を再起動するよう求めています。現在開いている # 個のプライベートウィンドウは、再起動後は自動的には開きません。}}</translation>
 <translation id="7914115000169617076">もうすぐアップデート完了です！更新を完了するには Brave を再起動してください。再起動後、プライベート ウィンドウは自動的に開きません。</translation>
+<translation id="2176087127109773485">サインイン済みのBrave同期チェーンを管理できます。Brave同期チェーンは、Braveブラウザ、Play ストア、Gmailなどに使用されます。家族など、他のユーザー用にアカウントを追加するには、<ph name="DEVICE_TYPE"/>にプロフィールを新規追加します。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 </translationbundle>

@@ -53,7 +53,7 @@
 <translation id="2953892977076487219">Brave sta cercando di modificare le password.</translation>
 <translation id="8755404239607088219">Brave non può controllare le tue password. Riprova più tardi.</translation>
 <translation id="8880183781256147665">Aggiunta a Brave in corso...</translation>
-<translation id="7918740962659365265">Aiutaci a migliorare Brave inviando a Brave rapporti sugli arresti anomali e <ph name="UMA_LINK"/></translation>
+<translation id="7918740962659365265">Aiutaci a migliorare Brave inviando a Brave report sugli arresti anomali e <ph name="UMA_LINK"/></translation>
 <translation id="7365690458036015383">Il programma di installazione non è riuscito a decomprimere l'archivio. Scarica di nuovo Brave.</translation>
 <translation id="8919461291440820124">Brave sta utilizzando il microfono.</translation>
 <translation id="4805806622840861220">Riavvia Brave</translation>
@@ -101,7 +101,6 @@
 <translation id="9183662282810237335">Vuoi uscire comunque da Brave?</translation>
 <translation id="4065288863231444640">Lascia Brave in esecuzione in background</translation>
 <translation id="8148611988012584308">Personalizza e controlla Brave</translation>
-<translation id="1201005444605297066">Questa pagina ti consente di gestire gli Account Brave a cui hai eseguito l'accesso. Questi account saranno disponibili nel browser Brave e nelle app del Play Store, nonché in servizi come Gmail, Drive e YouTube. <ph name="LINK_BEGIN"/>Scopri di più<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Ti diamo il benvenuto in Brave; nuova finestra del browser aperta</translation>
 <translation id="2633397153656205379">Si è verificato un errore: Brave non si è aggiornato. <ph name="BEGIN_LINK"/>Risolvi i problemi di aggiornamento e gli aggiornamenti non riusciti di Brave.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Vuoi continuare con un nuovo profilo Brave?</translation>
@@ -245,6 +244,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="2925193881330501265">Hai eseguito l'accesso a Brave come <ph name="USER_EMAIL_ADDRESS"/>. Utilizza lo stesso account per eseguire di nuovo l'accesso.</translation>
 <translation id="6915252145142862992">Questa è un'installazione secondaria, di conseguenza Brave non può essere impostato come browser predefinito.</translation>
 <translation id="7685904775439037072">Dopo che Brave avrà ottenuto l'accesso, i siti web potranno chiederti l'accesso.</translation>
+<translation id="828406390101464081">I seguenti account non hanno effettuato l'accesso a nessun profilo Brave. Se vuoi usare un account in un altro profilo, rimuovi per prima cosa questo profilo.</translation>
 <translation id="9067428552314418522">Questo file è pericoloso, pertanto è stato bloccato da Brave.</translation>
 <translation id="8207657266087451193">Se un'immagine è senza descrizione utile, Brave proverà a fornirne una. Per la creazione delle descrizioni, le immagini vengono inviate a Brave. Puoi disattivare questa funzionalità in qualsiasi momento nelle Impostazioni.</translation>
 <translation id="8622246347342688645">Brave non può controllare le tue password perché non hai effettuato l'accesso</translation>
@@ -294,4 +294,5 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento}=1{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento. La finestra di navigazione in incognito non verrà riaperta.}other{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{L'amministratore richiede il riavvio di Brave per installare un aggiornamento}=1{L'amministratore richiede il riavvio di Brave per installare un aggiornamento. La finestra di navigazione in incognito non verrà riaperta.}other{L'amministratore richiede il riavvio di Brave per installare un aggiornamento. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
 <translation id="7914115000169617076">Aggiornamento quasi terminato. Riavvia Brave per terminare l'aggiornamento. Le finestre private non verranno riaperte.</translation>
+<translation id="2176087127109773485">Puoi gestire le catene di sincronizzazione di Brave per cui hai eseguito l’accesso. Le catene di sincronizzazione di Brave sono utilizzate per il browser di Brave, per Play Store, per Gmail e altro ancora. Se invece vuoi aggiungere un account per un’altra persona, per esempio per un familiare, aggiungi un nuovo profilo a <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Scopri di più<ph name="LINK_END"/></translation>
 </translationbundle>

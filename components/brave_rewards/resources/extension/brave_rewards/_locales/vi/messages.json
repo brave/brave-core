@@ -1,685 +1,382 @@
 {
-  "braveRewards": {
-    "message": "Phần thưởng của Brave",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "Tóm tắt",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "Bắt đầu kiếm tiền ngay!",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "Tiền tip",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "Tham gia Nhận thưởng",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "Người tạo nội dung chưa được xác minh",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "Kiếm tiền bằng việc xem quảng cáo và thanh toán để hỗ trợ những nhà sáng tạo nội dung mà bạn yêu thích.",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "Người tạo nội dung đã được xác minh",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "Bạn hiện có thể kiếm được token bằng việc xem các quảng cáo tôn trọng quyền riêng tư.",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "Làm mới Trạng thái",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "Giờ đây, bạn có thể kiếm điểm khi xem các quảng cáo tôn trọng quyền riêng tư.",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "Xem có gì được cải thiện",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "Tìm hiểu thêm",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "Chúng tôi đã thực hiện nâng cấp lớn cho Tiền thưởng Brave.",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "Hãy sẵn sàng để trải nghiệm Internet tiếp theo.",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "Ví của bạn",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "Cấp",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "Thông tin chi tiết",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "on": {
-    "message": "trên",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "Người tạo nội dung được Brave Xác minh",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "Chú ý",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "Khoản đóng góp hàng tháng",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "Bao gồm trong Tự động Đóng góp",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "Gửi Tiền tip...",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "Kcish hoạt tiền boa",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "dành cho",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "Tóm tắt Tiền thưởng",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "Tháng 4",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "Tháng 8",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "Tháng 12",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "Tháng 2",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "Tháng 1",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "Tháng 7",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "Tháng 6",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "Tháng ba",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "Tháng 5",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "Tháng 11",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "Tháng 10",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "Tháng 9",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "Khoản tài trợ $currency$",
-    "description": "Title for grant notification",
+  "platformPublisherTitle": {
+    "message": "$name$ trên $platform$",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "Khoản thưởng Token Đã nhận",
-    "description": "Title for grant section in wallet summary"
+  "attention": {
+    "message": "Chú ý",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "Tiền kiếm được từ Quảng cáo",
-    "description": "Title for ads section in wallet summary"
+  "sendTip": {
+    "message": "Gửi tiền thưởng thêm",
+    "description": ""
   },
-  "rewardsContribute": {
-    "message": "Tự động Đóng góp",
-    "description": "Title for auto contribute section in wallet summary"
+  "includeInAutoContribute": {
+    "message": "Bao gồm trong Tự động Đóng góp",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "Tiền tip Một lần",
-    "description": "Title for one-time tips section in wallet summary"
-  },
-  "expiresOn": {
-    "message": "hết hạn vào",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
-  },
-  "recurringDonations": {
-    "message": "Khoản đóng góp Hàng tháng",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "Tắt",
-    "description": "Label used in toggle indicating that toggle is off"
+  "monthlyContribution": {
+    "message": "Khoản đóng góp hàng tháng",
+    "description": ""
   },
   "ok": {
-    "message": "ok",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "Giờ đây bạn có thể kiếm tiền bằng cách xem quảng cáo.",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "Quảng cáo Brave",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "Tự động Đóng góp",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "Bạn đã đóng góp $amount$ $currency$",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "Bạn có một khoản thưởng đang chờ.",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "Sao lưu Ngay",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "Sao lưu Ví",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "Vui lòng sao lưu ví Brave của bạn.",
-    "description": "Description for backup wallet notification"
-  },
-  "learnMore": {
-    "message": "Tìm hiểu thêm",
-    "description": "Notification button text to learn more about a specific use-case"
-  },
-  "mismatchedProviderAccountsTitle": {
-    "message": "Lỗi: Tài khoản khác",
-    "description": "Title for mismatched provider accounts notification"
-  },
-  "mismatchedProviderAccountsNotification": {
-    "message": "Rất tiếc, có vẻ như ví Brave Rewards của bạn đã được xác minh với tài khoản $name$ khác. Vui lòng thử xác minh lại bằng tài khoản trước của bạn.",
-    "description": "Description for mismatched provider accounts notification",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "upholdBATNotAllowedForUserTitle": {
-    "message": "Lỗi: BAT không khả dụng",
-    "description": "Title for BAT not allowed for user notification"
-  },
-  "upholdBATNotAllowedForUserNotification": {
-    "message": "BAT chưa được hỗ trợ trong khu vực của bạn trên Uphold.",
-    "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserTitle": {
-    "message": "Lỗi: Tài khoản bị chặn",
-    "description": "Title for blocked user notification"
-  },
-  "upholdBlockedUserNotification": {
-    "message": "Tài khoản của bạn tại Uphold hiện đang bị khóa.",
-    "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserTitle": {
-    "message": "Lỗi: Treo tài khoản",
-    "description": "Title for pending user notification"
-  },
-  "upholdPendingUserNotification": {
-    "message": "Tài khoản của bạn tại Uphold vẫn đang chờ xử lý.",
-    "description": "Description for pending user notification"
-  },
-  "upholdRestrictedUserTitle": {
-    "message": "Lỗi: Tài khoản bị hạn chế",
-    "description": "Title for restricted user notification"
-  },
-  "upholdRestrictedUserNotification": {
-    "message": "Tài khoản của bạn tại Uphold hiện đang bị hạn chế.",
-    "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Đã đến Giới hạn về Thiết bị",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Không thể xác thực ví của bạn vì bạn đã dùng hết giới hạn tối đa thiết bị được xác thực.",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "Tài khoản Tiền thưởng Brave của bạn đang chờ khoản tiền gửi.",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "Không đủ Tiền",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "Tạo ví",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "Đã xảy ra lỗi khi xử lý khoản đóng góp của bạn.",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "Không thể hoàn tất khoản thanh toán hàng tháng theo lịch cho Tự động đóng góp và các khoản đóng góp hàng tháng của bạn do không đủ tiền. Chúng tôi sẽ thử lại sau 30 ngày.",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "Không thể gửi tiền tip. Xin vui lòng thử lại sau.",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "Chưa có hoạt động nào…",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "Kéo Biểu tượng BAT vào",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "Chứng minh rằng bạn là con người!",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "mục tiêu.",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "Hmm... Không Hẳn. Thử Lại.",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "Nhận",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "Khoản thưởng Token Miễn phí",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "Ngày Khoản thưởng Hết hạn",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
     "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "Phần thưởng Brave đang gặp sự cố. Vui lòng thử lại sau.",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "Rất tiếc, đã xảy ra lỗi. Vui lòng thử lại sau.",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "Làm mới Trạng thái",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "Vẫn chưa được xác minh",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "Người sáng tạo này hiện không được định cấu hình để nhận tiền thưởng từ ví của bạn. Mọi tiền thưởng bạn trả sẽ vẫn chờ xử lý trong ví của bạn và tự động thử lại trong vòng 90 ngày.",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "Learn more.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "Bạn đã trao thưởng {{reservedAmount}} {{currency}} cho người sáng tạo chưa đăng ký nhận đóng góp. Trình duyệt của bạn sẽ tiếp tục gửi đóng góp cho đến khi họ xác thực hoặc hết thời hạn 90 ngày.",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "Learn more.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "Tắt",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "Cài đặt.",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "Bạn hiện không tích lũy bất kỳ lợi ích Phần thưởng nào trong khi duyệt web. Hãy bật lại Phần thưởng trong",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "Phần thưởng Brave là",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "Tạo ví thất bại",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "Thử lại",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "Nạp tiền",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "Cài đặt Tiền thưởng",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "Các phần thưởng cho bạn từ Quảng cáo đều có tại đây!",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "và",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "Nhận thưởng khi lướt web!",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "Kiếm tiền bằng cách xem quảng cáo tôn trọng quyền riêng tư và thanh toán số tiền đó để hỗ trợ  những người tạo nội dung mà bạn yêu thích.",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "Kích hoạt Phần thưởng của Brave",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "Privacy Policy",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "Bằng cách nhấp vào \"Bật Tiền thưởng Brave\", bạn cho biết rằng bạn đã đọc và đồng ý với",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "Điều khoản Dịch vụ",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "Welcome Back!",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "Các khoản đóng góp hàng tháng của bạn đã được xử lý!",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "Đ",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": "Nhấp vào 'Tham gia Quỹ thưởng' nghĩa là bạn đã đọc và đồng ý với",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "BAT",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "turnOnAds": {
-    "message": "Bật Ads",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "thu được từ quảng cáo",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "Thưởng tweet này",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "Tiền tip",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "Gợi ý cho bài đăng này",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "Tiền tip",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "Gửi một Mẹo",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "Tiền tip",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "Người tạo nội dung $name$ mới được xác minh",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "Bạn có các gợi ý đang chờ xử lý do không đủ tiền",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "Khoản đóng góp Chưa xử lý",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "Đây là ngày may mắn của bạn!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "Chúng tôi đang gửi khoản tài trợ $currency$ đến bạn.",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "Khoản thưởng Token Miễn phí",
-    "description": "Token title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "Bạn đã nhận được Điểm thưởng Quảng cáo!",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "Điểm thưởng của bạn đang được gửi đến ví Brave Rewards.",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "Số tiền thưởng của bạn",
-    "description": "Token title on success screen for ads"
-  },
-  "walletButtonDisconnected":  {
-    "message": "Đã ngắt kết nối",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "Xác thực Ví",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "Ví đã được xác thực.",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "Đi đến tài khoản $provider$ của bạn",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletLogInWithProvider":  {
-    "message": "Đăng nhập vào tài khoản $provider$ của bạn",
-    "description": "CTA to log in with a wallet provider",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "Ngắt kết nối với Brave Rewards",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "Đã xác thực",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "Ví của bạn đã được xác thực!",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "Xin chúc mừng! Ví $name$ của bạn đã được xác thực thành công và sẵn sàng để gửi và rút tiền.",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "Ồ, không thể truy cập ví của bạn.",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "Đừng lo. Điều này có thể xảy ra vì nhiều lý an ninh. Kết nối lại ví của bạn để xử lý vấn đề này.",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "Người sáng tạo được Brave xác minh này chưa định cấu hình tài khoản của họ để nhận các khoản đóng góp từ Người dùng Brave. Bất kỳ khoản tiền thưởng thêm nào mà bạn gửi sẽ vẫn nằm trong ví của bạn cho đến khi họ hoàn tất quá trình này.",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "Hoàn thành xác thực ví",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "Thiết lập...",
-    "description": "Button text for setting monthly contribution"
+    "message": "Đặt",
+    "description": ""
   },
-  "tokens":  {
-    "message": "mã thông báo",
-    "description": "Standard tokens text"
-  },
-  "point":  {
-    "message": "Điểm",
-    "description": "BAT Point text"
-  },
-  "token":  {
-    "message": "Token",
-    "description": "BAT Token text"
-  },
-  "tokenGrants":  {
-    "message": "Tặng Token",
-    "description": "BAT Tokens Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "Xin chào, $name$!",
-    "description": "Greetings for external wallet popup",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
-      }
-    }
-  },
-  "cancel":  {
-    "message": "Hủy",
-    "description": "Text for cancel button"
-  },
-  "changeAmount":  {
+  "changeAmount": {
     "message": "Thay đổi số lượng",
-    "description": "Button text for changing monthly contribution amount"
+    "description": ""
   },
-  "login":  {
-    "message": "Đăng nhập",
-    "description": "Text for login button"
+  "cancel": {
+    "message": "Hủy",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "Việc xác minh ví cho phép bạn quản lý tiền của mình hiệu quả hơn.",
-    "description": "Text for login button"
+  "grantCaptchaTitle": {
+    "message": "Xác nhận bạn là con người",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "You need to have minimum $amount$ BAT to create an Uphold account. If you already have a verified Uphold account, continue to login.",
-    "description": "Text for login button",
+  "grantCaptchaFailedTitle": {
+    "message": "Hmm... Không Hẳn. Thử Lại.",
+    "description": ""
+  },
+  "grantCaptchaHint": {
+    "message": "Kéo biểu tượng BAT vào mục tiêu $hint$.",
+    "description": "",
     "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "walletConnected":  {
-    "message": "Đã kết nối",
-    "description": "Status button that tells user that he is connected"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "Đây là ngày may mắn của bạn!",
+    "description": ""
   },
-  "walletDisconnected":  {
-    "message": "Đã ngắt kết nối",
-    "description": "Status button that tells user that he is disconnected"
+  "grantCaptchaPassedTextUGP": {
+    "message": "Khoản thưởng token của bạn đang đến.",
+    "description": ""
   },
-  "walletPending":  {
-    "message": "Đang chờ xử lý",
-    "description": "Status button that tells user that he is currently pending"
+  "grantCaptchaAmountUGP": {
+    "message": "Khoản thưởng Token Miễn phí",
+    "description": ""
   },
-  "walletVerificationNote3":  {
-    "message": "Lưu ý: $provider$ sẽ có thể thấy được các giao dịch của bạn sau khi bạn cho phép; ví dụ như họ sẽ có thể thấy người nhận cũng như số tiền boa của bạn.",
-    "description": "Displayed in login modal for external wallet providers",
+  "grantCaptchaPassedTitleAds": {
+    "message": "Bạn đã nhận được Điểm thưởng Quảng cáo!",
+    "description": ""
+  },
+  "grantCaptchaPassedTextAds": {
+    "message": "Điểm thưởng của bạn đang được gửi đến ví Brave Rewards.",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "Số tiền thưởng của bạn",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "Ngày Khoản thưởng Hết hạn",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "Rất tiếc, đã xảy ra lỗi. Vui lòng thử lại sau.",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "Phần thưởng Brave đang gặp sự cố. Vui lòng thử lại sau.",
+    "description": ""
+  },
+  "walletAccountLink": {
+    "message": "Đến tài khoản $provider$ của tôi",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "Thêm Nguồn tiền",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "Tự động Đóng góp",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "Truy cập $provider$ để hoàn tất xác minh",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Vui lòng hoàn thành xác minh danh tính để bắt đầu nhận phần thưởng.",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "Đã ngắt kết nối",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "Ngắt kết nối với Brave Rewards",
+    "description": ""
+  },
+  "walletEstimatedEarnings": {
+    "message": "Thu nhập ước tính",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "Đăng nhập vào tài khoản $provider$ của bạn",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "Tiền tip Hàng tháng",
+    "description": ""
+  },
+  "walletMyWallet": {
+    "message": "Ví của tôi",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "Tiền tip Một lần",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "Đang chờ xử lý",
+    "description": ""
+  },
+  "walletPendingRewardsText": {
+    "message": "$amount$ đến trong vòng $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "walletRewardsFromAds": {
+    "message": "Rewards từ Ads",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "Tóm tắt Tiền thưởng",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "Đã xác thực",
+    "description": ""
+  },
+  "walletVerify": {
+    "message": "Xác thực Ví",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "Số dư của bạn",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "Thêm Nguồn tiền",
+    "description": ""
+  },
+  "notificationLearnMore": {
+    "message": "Tìm hiểu thêm",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "Kết nối lại",
+    "description": ""
+  },
+  "notificationClaim": {
+    "message": "Nhận",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "Không đủ Tiền",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "Tài khoản Tiền thưởng Brave của bạn đang chờ khoản tiền gửi.",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "Tự động Đóng góp",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "Bạn đã đóng góp $amount$.",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "Sao lưu ví",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Vui lòng sao lưu ví Brave của bạn.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Backup now",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "Ví của bạn đã đăng xuất",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "Điều này có thể xảy ra để giữ an toàn cho tài khoản của bạn. Nhấp vào bên dưới để kết nối lại ngay bây giờ.",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "Kết nối lại",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "Ví của bạn đã được xác thực!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Ví $provider$ của bạn đã được xác minh thành công và đã sẵn sàng để thêm và rút tiền.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "Cấp token",
+    "description": ""
+  },
+  "notificationTokenGrantText": {
+    "message": "Bạn có một khoản thưởng đang chờ.",
+    "description": ""
+  },
+  "notificationAdGrantTitle": {
+    "message": "Thu nhập Ads đã nhận được",
+    "description": ""
+  },
+  "notificationAdGrantText": {
+    "message": "Phần thưởng của bạn từ Brave Private Ads có ở đây!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Đóng góp hàng tháng không thành công",
+    "description": ""
+  },
+  "notificationInsufficientFundsText": {
+    "message": "Không thể hoàn tất khoản thanh toán hàng tháng theo lịch cho Tự động đóng góp và các khoản đóng góp hàng tháng của bạn do không đủ tiền. Chúng tôi sẽ thử lại sau 30 ngày.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "Đã xảy ra lỗi khi xử lý khoản đóng góp của bạn.",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "Đóng góp và tiền thưởng",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "Các khoản đóng góp hàng tháng của bạn đã được xử lý.",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "Đóng góp đang chờ xử lý",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "Người tạo nội dung $publisher_name$ đã được xác minh gần đây.",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "Không đủ tiền",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "Bạn có các gợi ý đang chờ xử lý do không đủ tiền",
+    "description": ""
+  },
+  "notificationWalletLinkingFailedTitle": {
+    "message": "Liên kết ví không thành công",
+    "description": ""
+  },
+  "notificationDeviceLimitReachedText": {
+    "message": "Không thể xác thực ví của bạn vì bạn đã dùng hết giới hạn tối đa thiết bị được xác thực.",
+    "description": ""
+  },
+  "notificationMismatchedProviderAccountsText": {
+    "message": "Có vẻ như ví Brave Rewards của bạn đã được xác minh với tài khoản $provider$ khác. Vui lòng thử xác minh lại bằng tài khoản trước của bạn.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationUpholdBatNotSupportedText": {
+    "message": "BAT chưa được hỗ trợ trong khu vực của bạn trên Uphold.",
+    "description": ""
+  },
+  "notificationUpholdUserBlockedText": {
+    "message": "Tài khoản của bạn tại Uphold hiện đang bị khóa.",
+    "description": ""
+  },
+  "notificationUpholdUserPendingText": {
+    "message": "Tài khoản của bạn tại Uphold vẫn đang chờ xử lý.",
+    "description": ""
+  },
+  "notificationUpholdUserRestrictedText": {
+    "message": "Tài khoản của bạn tại Uphold hiện đang bị hạn chế.",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "Kiếm Token & Tặng Lại",
@@ -854,5 +551,29 @@
         "content": "$2"
       }
     }
+  },
+  "captchaMaxAttemptsExceededText": {
+    "message": "Có vẻ như cách này không hoạt động, Brave Ads sẽ vẫn bị tạm dừng. Liên hệ với chúng tôi nếu bạn cần trợ giúp với mã ngẫu nhiên.",
+    "description": ""
+  },
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "Đã vượt quá số lần thử tối đa",
+    "description": ""
+  },
+  "captchaSolvedTitle": {
+    "message": "Đã giải!",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "Quảng cáo và thu nhập bây giờ sẽ tiếp tục. Cảm ơn bạn đã giúp chúng tôi bảo vệ Brave Rewards và các quảng cáo dựa trên quyền riêng tư.",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "Liên hệ hỗ trợ",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "Dismiss",
+    "description": ""
   }
 }
