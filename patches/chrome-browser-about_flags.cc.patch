@@ -1,27 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index fe379c80aa605589d136c9c99e864c28be796ec6..b4e5a1c8934db888ea9aa3c3e14dcbeef109f755 100644
+index 75c00645d1943f731f1eedda509f8d0764169b2c..a57490ed01cab6df167c88614d2693b25cb0eb93 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -320,14 +320,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
- const FeatureEntry::Choice kTraceUploadURL[] = {
-     {flags_ui::kGenericExperimentChoiceDisabled, "", ""},
-     {flag_descriptions::kTraceUploadUrlChoiceOther, switches::kTraceUploadURL,
--     "https://performance-insights.appspot.com/upload?tags=flags,Other"},
-+     "https://no-thanks.invalid"},
-     {flag_descriptions::kTraceUploadUrlChoiceEmloading,
-      switches::kTraceUploadURL,
--     "https://performance-insights.appspot.com/upload?tags=flags,emloading"},
-+     "https://no-thanks.invalid"},
-     {flag_descriptions::kTraceUploadUrlChoiceQa, switches::kTraceUploadURL,
--     "https://performance-insights.appspot.com/upload?tags=flags,QA"},
-+     "https://no-thanks.invalid"},
-     {flag_descriptions::kTraceUploadUrlChoiceTesting, switches::kTraceUploadURL,
--     "https://performance-insights.appspot.com/upload?tags=flags,TestingTeam"}};
-+     "https://no-thanks.invalid"}};
-
- const FeatureEntry::Choice kLiteVideoDefaultDownlinkBandwidthKbps[] = {
-     {flags_ui::kGenericExperimentChoiceDefault, "", ""},
-@@ -7654,6 +7654,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -7711,6 +7711,7 @@ const FeatureEntry kFeatureEntries[] = {
      // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
      // Histograms" in tools/metrics/histograms/README.md (run the
      // AboutFlagsHistogramTest unit test to verify this process).
