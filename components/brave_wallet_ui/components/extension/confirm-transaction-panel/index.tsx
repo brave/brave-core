@@ -10,6 +10,7 @@ import {
 } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
+import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import locale from '../../../constants/locale'
 import { formatBalance, formatFiatBalance } from '../../../utils/format-balances'
 import { NavButton, PanelTab, TransactionDetailBox } from '../'
@@ -195,7 +196,7 @@ function ConfirmTransactionPanel (props: Props) {
             <ToCircle orb={toOrb} />
           </AccountCircleWrapper>
           <FromToRow>
-            <AccountNameText>{findAccountName(transactionInfo.fromAddress)}</AccountNameText>
+            <AccountNameText>{reduceAccountDisplayName(findAccountName(transactionInfo.fromAddress) ?? '', 11)}</AccountNameText>
             <ArrowIcon />
             <AccountNameText>{reduceAddress(transaction.sendTo)}</AccountNameText>
           </FromToRow>
