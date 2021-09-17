@@ -65,7 +65,7 @@ class EthereumRemoteClientService
   bool ShouldShowLazyLoadInfobar() const;
   void MaybeLoadCryptoWalletsExtension(LoadUICallback callback);
   void CryptoWalletsExtensionReady();
-  void MaybeLoadCryptoWalletsExtension(content::BrowserContext* context);
+  void RemoveCryptoWalletExtension();
 
   static std::string GetEthereumRemoteClientSeedFromRootSeed(
       const std::string& seed);

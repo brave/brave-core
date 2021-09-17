@@ -27,3 +27,16 @@ void EthereumRemoteClientDelegateImpl::MaybeLoadCryptoWalletsExtension(
   }
 #endif  // #if BUILDFLAG(ENABLE_EXTENSIONS)
 }
+
+void EthereumRemoteClientDelegateImpl::RemoveCryptoWalletExtension(
+    content::BrowserContext* context) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  extensions::ExtensionService* service =
+      extensions::ExtensionSystem::Get(context)->extension_service();
+  if (service) {
+    extensions::ComponentLoader* loader = service->component_loader();
+    static_cast<extensions::BraveComponentLoader*>(loader)
+        ->RemoveEthereumRemoteClientExtension();
+  }
+#endif  // #if BUILDFLAG(ENABLE_EXTENSIONS)
+}

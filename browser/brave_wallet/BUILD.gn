@@ -83,6 +83,18 @@ source_set("brave_wallet_delegate") {
       "//components/permissions",
       "//mojo/public/cpp/bindings",
     ]
+    if (enable_extensions) {
+      sources += [
+        "brave_wallet_importer_delegate_impl.cc",
+        "brave_wallet_importer_delegate_impl.h",
+      ]
+      deps += [
+        "//brave/browser/ethereum_remote_client",
+        "//brave/browser/ethereum_remote_client:browser",
+        "//extensions/browser",
+        "//extensions/common",
+      ]
+    }
   }
 }
 

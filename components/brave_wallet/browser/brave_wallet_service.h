@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_H_
 
+#include <memory>
 #include <string>
 
 #include "base/gtest_prod_util.h"
@@ -20,10 +21,14 @@ class PrefService;
 
 namespace brave_wallet {
 
+class BraveWalletImporterDelegate;
+
 class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService {
  public:
-  explicit BraveWalletService(PrefService* prefs);
+  explicit BraveWalletService(
+      std::unique_ptr<BraveWalletImporterDelegate> delegate,
+      PrefService* prefs);
   ~BraveWalletService() override;
 
   BraveWalletService(const BraveWalletService&) = delete;
@@ -45,6 +50,11 @@ class BraveWalletService : public KeyedService,
                            const std::string& chain_id,
                            bool visible,
                            SetUserAssetVisibleCallback callback) override;
+  void ImportFromBraveCryptoWallet(
+      const std::string& password,
+      ImportFromBraveCryptoWalletCallback callback) override;
+  void ImportFromMetamask(const std::string& password,
+                          ImportFromMetamaskCallback callback) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
@@ -53,6 +63,7 @@ class BraveWalletService : public KeyedService,
       const std::string& contract_address,
       const std::string& chain_id);
 
+  std::unique_ptr<BraveWalletImporterDelegate> delegate_;
   PrefService* prefs_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
 };

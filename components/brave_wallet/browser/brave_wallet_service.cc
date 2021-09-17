@@ -10,6 +10,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_importer_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -86,7 +87,10 @@ base::CheckedContiguousIterator<base::Value> FindAsset(
 
 namespace brave_wallet {
 
-BraveWalletService::BraveWalletService(PrefService* prefs) : prefs_(prefs) {
+BraveWalletService::BraveWalletService(
+    std::unique_ptr<BraveWalletImporterDelegate> delegate,
+    PrefService* prefs)
+    : delegate_(std::move(delegate)), prefs_(prefs) {
   DCHECK(prefs_);
 }
 
@@ -310,6 +314,20 @@ void BraveWalletService::SetUserAssetVisible(
 
   it->SetKey("visible", base::Value(visible));
   std::move(callback).Run(true);
+}
+
+void BraveWalletService::ImportFromBraveCryptoWallet(
+    const std::string& password,
+    ImportFromBraveCryptoWalletCallback callback) {
+  if (delegate_)
+    delegate_->ImportFromBraveCryptoWallet(password, std::move(callback));
+}
+
+void BraveWalletService::ImportFromMetamask(
+    const std::string& password,
+    ImportFromMetamaskCallback callback) {
+  if (delegate_)
+    delegate_->ImportFromMetamask(password, std::move(callback));
 }
 
 }  // namespace brave_wallet

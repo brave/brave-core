@@ -400,3 +400,9 @@ void EthereumRemoteClientService::MaybeLoadCryptoWalletsExtension(
   ethereum_remote_client_delegate_->MaybeLoadCryptoWalletsExtension(context_);
 #endif
 }
+
+void EthereumRemoteClientService::RemoveCryptoWalletExtension() {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  ethereum_remote_client_delegate_->RemoveCryptoWalletExtension(context_);
+#endif
+}
