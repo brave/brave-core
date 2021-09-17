@@ -8,6 +8,7 @@
 #include <cstdint>
 
 #include "base/time/time.h"
+#include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/confirmation_type.h"

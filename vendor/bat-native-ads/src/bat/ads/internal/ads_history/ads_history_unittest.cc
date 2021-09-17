@@ -8,6 +8,7 @@
 #include <deque>
 
 #include "base/time/time.h"
+#include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/inline_content_ad_info.h"

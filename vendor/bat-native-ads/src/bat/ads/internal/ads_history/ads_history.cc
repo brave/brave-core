@@ -8,6 +8,7 @@
 #include <deque>
 #include <memory>
 
+#include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/confirmation_type.h"

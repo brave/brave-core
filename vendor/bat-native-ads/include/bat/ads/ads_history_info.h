@@ -9,10 +9,11 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/ad_history_info.h"
 #include "bat/ads/export.h"
 
 namespace ads {
+
+struct AdHistoryInfo;
 
 struct ADS_EXPORT AdsHistoryInfo final {
   AdsHistoryInfo();
