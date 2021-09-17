@@ -86,4 +86,11 @@
     <style name="BraveWalletTabsTextAppearance" parent="TextAppearance.Design.Tab">
       <item name="textAllCaps">false</item>
     </style>
+
+    <style name="BraveVpnToolbar" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="android:background">@color/brave_plan_bg</item>
+        <item name="titleTextColor">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>s
+    </style>
 </resources>

@@ -10,6 +10,9 @@
     <item name="brave_wallet_id" type="id"/>
     <item name="exit_id" type="id"/>
     <item name="help_id" type="id"/>
+    <item name="request_brave_vpn_row_menu_id" type="id"/>
+    <item name="request_brave_vpn_id" type="id"/>
+    <item name="request_brave_vpn_check_id" type="id"/>
 
     <!-- App menu item custom tags -->
     <item type="id" name="menu_item_enter_anim_id" />

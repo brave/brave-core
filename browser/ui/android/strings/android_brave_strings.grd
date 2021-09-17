@@ -474,10 +474,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
 <!--  <message name="IDS_BRAVE_TODAY" desc="Title for Brave today settings">
         Brave today
-      </message>
+      </message> -->
       <message name="IDS_BRAVE_VPN" desc="Title for Brave vpn settings">
         Brave VPN
-      </message> -->
+      </message>
       <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
         <ph name="VALUE">%1$s<ex>0.0</ex></ph>
       </message>
@@ -1847,7 +1847,7 @@ until they verify, or until 90 days have passed.
       Password must be at least 7 characters containg at least one number and a special character
     </message>
     <message name="IDS_BRAVE_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
-        Does not protect you against dangerous websites, downloads, and extensions.
+      Does not protect you against dangerous websites, downloads, and extensions.
     </message>
     <message name="IDS_PHRASES_DID_NOT_MATCH" desc="Brave Wallet text">
       Phrases did not match, Please try again.
@@ -1978,6 +1978,236 @@ until they verify, or until 90 days have passed.
     </message>
     <message name="IDS_CRYPTO_WALLET_BALANCE" desc="Brave crypto wallet balance">
       Balance:
+    </message>
+    <message name="IDS_BRAVE_FIREWALL_VPN" desc="VPN title text">
+      Brave Firewall + VPN
+    </message>
+    <message name="IDS_VPN_SETTINGS_CALLOUT_TEXT" desc="Vpn settings callout text">
+        Upgrade to a VPN to protect your connection and block invasive trackers everywhere.
+    </message>
+    <message name="IDS_ENABLE" desc="VPN callout text">
+      Enable
+    </message>
+    <message name="IDS_ENABLED" desc="VPN settings toggle text">
+      Enabled
+    </message>
+    <message name="IDS_POWERED_BY" desc="VPN text">
+      Powered by
+    </message>
+    <message name="IDS_VPN_MODAL_TEXT_1" desc="VPN modal text">
+      Block ads &amp; trackers across all apps
+    </message>
+    <message name="IDS_VPN_MODAL_TEXT_2" desc="VPN modal text">
+      Secures all connections
+    </message>
+    <message name="IDS_VPN_MODAL_TEXT_3" desc="VPN modal text">
+      Fast and unlimited up to 100 Mbps
+    </message>
+    <message name="IDS_VPN_MODAL_TEXT_4" desc="VPN modal text">
+      24/7 support
+    </message>
+    <message name="IDS_BLOCK_ADS" desc="Brave VPN plan text">
+      Blocks unwanted network connections
+    </message>
+    <message name="IDS_ACROSS_ALL_APPS" desc="Brave VPN plan text">
+      Choose your geo/country location
+    </message>
+    <message name="IDS_KEEP_YOUR_IP_ADDRESS" desc="Brave VPN plan text">
+      Keeps you anonymous online
+    </message>
+    <message name="IDS_SUPPORTS_SPEED" desc="Brave VPN plan text">
+      Supports speeds of up to 100 Mbps
+    </message>
+    <message name="IDS_USE_IKEV2" desc="Brave VPN plan text">
+      Uses IKEv2 secure encrypted VPN tunnel
+    </message>
+    <message name="IDS_NEVER_SHARE_INFO" desc="Brave VPN plan text">
+      We never share or sell your info
+    </message>
+    <message name="IDS_TRIAL_TEXT" desc="Brave VPN plan text">
+      All plans include a free 7-day trial!
+    </message>
+    <message name="IDS_MONTHLY_SUBSCRIPTION" desc="Brave VPN plan text">
+      Monthly subscription
+    </message>
+    <message name="IDS_YEARLY_SUBSCRIPTION" desc="Brave VPN plan text">
+      Yearly subscription
+    </message>
+    <message name="IDS_RENEWS_MONTHLY" desc="Brave VPN plan text">
+      Renews monthly
+    </message>
+    <message name="IDS_MONTHLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
+      <ph name="MONTHLY_AMOUNT">%1$s</ph> / mo.
+    </message>
+    <message name="IDS_ONE_YEAR" desc="Brave VPN plan text">
+      One Year
+    </message>
+    <message name="IDS_RENEW_MONTHLY_SAVE" desc="Brave VPN plan text">
+      Renew annually save 16%
+    </message>
+    <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
+      <ph name="YEARLY_AMOUNT">%1$s</ph> / yr.
+    </message>
+    <message name="IDS_YEAR_SUBSCRIPTION_OLD_AMOUNT" desc="Brave VPN plan text">
+      &#36;119.88
+    </message>
+    <message name="IDS_BRAVE_VPN_RENEWAL_TEXT" desc="Brave VPN plan text">
+      Try free for 7 days. After 7 days, you will be charged the plan price. All subscriptions are auto-renewed but can be cancelled before renawal.
+    </message>
+    <message name="IDS_TRY_FOR_FREE" desc="Brave VPN plan text">
+      Try for FREE
+    </message>
+    <message name="IDS_INSTALL_VPN" desc="Brave VPN plan text">
+      Install VPN
+    </message>
+    <message name="IDS_INSTALL_VPN_PROFILE" desc="Brave VPN plan text">
+      Install VPN Profile
+    </message>
+    <message name="IDS_BRAVE_VPN_PROFILE_TITLE" desc="Brave VPN plan text">
+      Brave will now install a VPN profile.
+    </message>
+    <message name="IDS_BRAVE_VPN_PROFILE_TEXT" desc="Brave VPN plan text">
+      This profile allows the VPN to automatically connect and secure traffic across your device — in every app, all the time. This VPN connection will be encrypted and routed through Guardian's intelligent firewall to block ads and trackers.
+    </message>
+    <message name="IDS_CONTACT_SUPPORT_VPN" desc = "Brave VPN profile text">
+      Contact Technical Support
+    </message>
+    <message name="IDS_VPN_IS_ENABLED" desc="Brave VPN profile text">
+      VPN is now enabled
+    </message>
+    <message name="IDS_SOME_CONTEXT" desc="Brave VPN profile text">
+      Some context...
+    </message>
+    <message name="IDS_SOME_CONTEXT_TEXT" desc="Brave VPN profile text">
+      Your previous VPN connection was disconnected. To reconnect to VPN, you'll need to accept the connection request.
+
+If you don't accept this request, VPN will not reconnect and your internet connection will not be secured.
+    </message>
+    <message name="IDS_ACCEPT_CONNECTION_REQUEST" desc="Brave VPN profile text">
+      Accept connection request
+    </message>
+    <message name="IDS_VPN_PROFILE_CREATION_FAILED" desc="Brave VPN profile text">
+      Vpn profile creation failed. Please try again.
+    </message>
+    <message name="IDS_PURCHASE_TOKEN_VERIFICATION_FAILED" desc="Brave VPN profile text">
+      Purchase Token verification failed. Please try again.
+    </message>
+    <message name="IDS_BRAVE_VPN_NOTIFICATION_MESSAGE" desc="Brave VPN notification message">
+      VPN is running in the background
+    </message>
+    <message name="IDS_SUBSCRIPTION" desc="Brave VPN settings section title">
+      Subscription
+    </message>
+    <message name="IDS_STATUS" desc="Brave VPN settings section text">
+      Status
+    </message>
+    <message name="IDS_EXPIRES" desc="Brave VPN settings section text">
+      Expires
+    </message>
+    <message name="IDS_MANAGE_SUBSCRIPTION" desc="Brave VPN settings section text">
+      Manage Subscription
+    </message>
+    <message name="IDS_SERVER" desc="Brave VPN settings section title">
+      Server
+    </message>
+    <message name="IDS_HOST" desc="Brave VPN settings section text">
+      Host
+    </message>
+    <message name="IDS_LOCATION" desc="Brave VPN settings section text">
+      Location
+    </message>
+    <message name="IDS_CHANGE_LOCATION" desc="Brave VPN settings section text">
+      Change Location
+    </message>
+    <message name="IDS_RESET_CONFIGURATION" desc="Brave VPN settings section text">
+      Reset Configuration
+    </message>
+    <message name="IDS_SUPPORT" desc="Brave VPN settings section text">
+      Support
+    </message>
+    <message name="IDS_CONTACT_TECHNICAL_SUPPORT" desc="Brave VPN settings section text">
+      Contact Technical Support
+    </message>
+    <message name="IDS_VPN_SUPPORT" desc="Brave VPN settings section text">
+      VPN Support
+    </message>
+    <message name="IDS_VPN_PROFILE_IS_NOT_CREATED" desc="Brave VPN profile error text">
+      Vpn profile is not created. Creating a new profile.
+    </message>
+    <message name="IDS_FAIL_TO_GET_SERVER_LOCATIONS" desc="Brave VPN error text">
+      Fail to get server location. Please try again later.
+    </message>
+    <message name="IDS_VPN_HOSTNAME" desc="Brave Vpn support text">
+      VPN Hostname
+    </message>
+    <message name="IDS_SUBSCRIPTION_TYPE" desc="Brave Vpn support text">
+      Subscription Type
+    </message>
+    <message name="IDS_APP_VERSION" desc="Brave Vpn support text">
+      App Version
+    </message>
+    <message name="IDS_TIMEZONE" desc="Brave Vpn support text">
+      Timezone
+    </message>
+    <message name="IDS_NETWORK_TYPE" desc="Brave Vpn support text">
+      Network Type
+    </message>
+    <message name="IDS_CELLULAR_CARRIER" desc="Brave Vpn support text">
+      Cellular Carrier
+    </message>
+    <message name="IDS_CONTINUE_TO_EMAIL" desc="Brave Vpn support text">
+      Continue to Email
+    </message>
+    <message name="IDS_VPN_SUPPORT_TEXT" desc="Brave Vpn support text">
+      Support provided  with the help of the Guardian team.\n\nPlease select the information you're comfortable sharing with us.\n\nThe more information you initially share with us the easier it will be for our support staff to help you resolve your
+    </message>
+    <message name="IDS_AUTOMATIC_SERVER_SELECTION_TEXT" desc="Vpn server selection text">
+      A server region most proximate to you willl be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds.
+    </message>
+    <message name="IDS_OTHER_ISSUES" desc="Brave Vpn support text">
+      Other Issues
+    </message>
+    <message name="IDS_CANNOT_CONNECT_TO_VPN" desc="Brave Vpn support text">
+      Cannot connect to the VPN (Other error)
+    </message>
+    <message name="IDS_NO_INTERNET" desc="Brave Vpn support text">
+      No internet when connected
+    </message>
+    <message name="IDS_SLOW_CONNECTION" desc="Brave Vpn support text">
+      Slow connection
+    </message>
+    <message name="IDS_WEBSITE_DOESNT_WORK" desc="Brave Vpn support text">
+      Website doesn't work
+    </message>
+    <message name="IDS_OTHER" desc="Brave Vpn support text">
+      Other
+    </message>
+    <message name="IDS_RESET_VPN_CONFIG_DIALOG_TITLE" desc="Brave Vpn reset configuration dialog title">
+      Reset VPN configuration
+    </message>
+    <message name="IDS_RESET_VPN_CONFIG_DIALOG_MESSAGE" desc="Brave Vpn reset configuration dialog message">
+      Are you sure you want to reset vpn configuration?
+    </message>
+    <message name="IDS_AUTOMATIC" desc="Brave Vpn default server location text">
+      Automatic
+    </message>
+    <message name="IDS_VPN_LOADING_TEXT" desc="Brave Vpn loading text">
+      Loading. Please wait...
+    </message>
+    <message name="IDS_SUBSCRIPTION_CONSUMED" desc="Brave Vpn in app purchase message">
+      Subscription successfully consumed
+    </message>
+    <message name="IDS_FAIL_TO_AKNOWLEDGE" desc="Brave Vpn in app purchase message">
+      Failed to acknowledge purchase :
+    </message>
+    <message name="IDS_ALREADY_SUBSCRIBED" desc="Brave Vpn in app purchase message">
+      You are already subscribed to the subscription. Try restoring the subscription.
+    </message>
+    <message name="IDS_ERROR_CAUSED_BY_USER" desc="Brave Vpn in app purchase message">
+      ERROR!!\nCaused by a user cancelling the purchase flow.
+    </message>
+    <message name="IDS_PURCHASED_FAILED" desc="Brave Vpn in app purchase message">
+      ERROR!!\nPurchased failed..
     </message>
     </messages>
   </release>
