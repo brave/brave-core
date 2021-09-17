@@ -351,7 +351,9 @@ TEST_F(EthTxStateManagerUnitTest, SwitchNetwork) {
   ASSERT_TRUE(ropsten_dict);
   EXPECT_EQ(ropsten_dict->DictSize(), 1u);
   EXPECT_TRUE(ropsten_dict->FindKey("001"));
-  const auto* localhost_dict = dict->FindKey("http://localhost:7545/");
+  auto localhost_url_spec =
+      brave_wallet::GetNetworkURL(GetPrefs(), mojom::kLocalhostChainId).spec();
+  const auto* localhost_dict = dict->FindKey(localhost_url_spec);
   ASSERT_TRUE(localhost_dict);
   EXPECT_EQ(localhost_dict->DictSize(), 1u);
   EXPECT_TRUE(localhost_dict->FindKey("001"));
