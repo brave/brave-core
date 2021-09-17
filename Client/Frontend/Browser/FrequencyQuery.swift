@@ -7,28 +7,39 @@ import Foundation
 import Shared
 import Storage
 import Data
+import BraveCore
 
 class FrequencyQuery {
     
-    private static let queue = DispatchQueue(label: "frequency-query-queue")
-    private static var cancellable: DispatchWorkItem?
+    private let historyAPI: BraveHistoryAPI
+    private let bookmarkAPI: BraveBookmarksAPI
     
-    public static func sitesByFrequency(containing query: String? = nil,
-                                        completion: @escaping (Set<Site>) -> Void) {
-        
-        Historyv2.byFrequency(query: query) { historyList in
-            let historySites = historyList
-                .map { Site(url: $0.url ?? "", title: $0.title ?? "") }
+    private let queue = DispatchQueue(label: "frequency-query-queue")
+    private var cancellable: DispatchWorkItem?
+    
+    init(historyAPI: BraveHistoryAPI, bookmarkAPI: BraveBookmarksAPI) {
+        self.historyAPI = historyAPI
+        self.bookmarkAPI = bookmarkAPI
+    }
+    
+    public func sitesByFrequency(containing query: String, completion: @escaping (Set<Site>) -> Void) {
+        historyAPI.byFrequency(query: query) { [weak self] historyList in
+            guard let self = self else {
+                completion(Set<Site>())
+                return
+            }
             
-            cancellable = DispatchWorkItem {
+            let historySites = historyList
+                .map { Site(url: $0.url.absoluteString, title: $0.title ?? "") }
+
+            self.cancellable = DispatchWorkItem {
                 // brave-core fetch can be slow over 200ms per call,
                 // a cancellable serial queue is used for it.
                 DispatchQueue.main.async {
-                    Bookmarkv2.byFrequency(query: query) { sites in
-                        let bookmarkSites = sites.map { Site(url: $0.url ?? "", title: $0.title ?? "", bookmarked: true) }
-                        
+                    self.bookmarkAPI.byFrequency(query: query) { sites in
+                        let bookmarkSites = sites.map { Site(url: $0.titleUrlNodeUrl?.absoluteString ?? "", title: $0.titleUrlNodeTitle, bookmarked: true) }
                         let result = Set<Site>(historySites+bookmarkSites)
-                        
+
                         completion(result)
                     }
                 }

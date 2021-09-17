@@ -57,9 +57,10 @@ class BraveCoreMigrator {
             migrationObserver = .completed
         }
         
+        // TODO: Handle fetching bookmarkAPI and historyAPI from using AppDelegate IOS-4170
         if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
-            bookmarksAPI = appDelegate.braveCore?.bookmarksAPI
-            historyAPI = appDelegate.braveCore?.historyAPI
+            bookmarksAPI = appDelegate.braveCore.bookmarksAPI
+            historyAPI = appDelegate.braveCore.historyAPI
         }
         
         #if TEST_MIGRATION

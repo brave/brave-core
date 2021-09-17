@@ -4,6 +4,7 @@
 
 import Foundation
 import Data
+import BraveCore
 
 /// A location where a Bookmark will be saved to.
 enum BookmarkSaveLocation {
@@ -12,12 +13,12 @@ enum BookmarkSaveLocation {
     /// Root level in bookmarks screen
     case rootLevel
     /// Custom folder in bookmarks screen
-    case folder(folder: Bookmarkv2)
+    case folder(folder: BookmarkNode)
     
     /// Returns a folder where a Bookmark will be saved to.
     /// This only applies to custom folders, root level and favorites
     /// are not folder per se, and nil is returned in this case.
-    var getFolder: Bookmarkv2? {
+    var getFolder: BookmarkNode? {
         switch self {
         case .folder(let folder): return folder
         default: return nil
@@ -31,7 +32,7 @@ enum BookmarkSaveLocation {
         // Root level and favorites locations are permanent, only custom folder needs to be checked.
         switch self {
         case .folder(let folder):
-            return folder.existsInPersistentStore()
+            return folder.existsInPersistentStore
         default:
             // Non-folder locations return nil
             return nil
