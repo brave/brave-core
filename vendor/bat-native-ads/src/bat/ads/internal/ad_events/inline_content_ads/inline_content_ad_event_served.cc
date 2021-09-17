@@ -8,6 +8,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
+#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -30,6 +31,8 @@ void AdEventServed::FireEvent(const InlineContentAdInfo& ad) {
 
     BLOG(1, "Successfully logged inline content ad served event");
   });
+
+  Client::Get()->UpdateSeenAd(ad);
 }
 
 }  // namespace inline_content_ads
