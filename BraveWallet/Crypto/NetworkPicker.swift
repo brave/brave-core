@@ -20,7 +20,7 @@ struct NetworkPicker: View {
   var body: some View {
     Menu {
       Picker("Selected Network", selection: $selectedNetwork) { // NSLocalizedString
-        ForEach(networks, id: \.self) {
+        ForEach(networks) {
           Text($0.chainName).tag($0)
         }
       }

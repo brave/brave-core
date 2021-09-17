@@ -62,7 +62,7 @@ struct AccountsView: View {
           title: Text("Primary Crypto Accounts") // NSLocalizedString
         )
       ) {
-        ForEach(primaryAccounts, id: \.address) { account in
+        ForEach(primaryAccounts) { account in
           accountView(for: account)
         }
       }
@@ -81,7 +81,7 @@ struct AccountsView: View {
             .frame(maxWidth: .infinity)
             .font(.footnote.weight(.medium))
         } else {
-          ForEach(secondaryAccounts, id: \.address) { account in
+          ForEach(secondaryAccounts) { account in
             accountView(for: account)
           }
         }

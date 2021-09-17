@@ -54,7 +54,7 @@ struct AssetSearchView: View {
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
           } else {
-            ForEach(tokens, id: \.symbol) { token in
+            ForEach(tokens) { token in
               Text(token.name)
             }
           }
