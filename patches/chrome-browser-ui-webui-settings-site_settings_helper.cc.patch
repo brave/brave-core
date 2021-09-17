@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 2c5ea2b03ced0106241fbbbb84e730dc9d1b692e..417af838d508b49079107bb5878f9939bc5d6c62 100644
+index 3acd26e2357ddce06ebc654c00bba83a74e49a0e..18b36f0273a8a427f294396729c6d6ec5cce235e 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -163,6 +163,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
-     {ContentSettingsType::HTTP_ALLOWED, nullptr},
+@@ -166,6 +166,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::FORMFILL_METADATA, nullptr},
      {ContentSettingsType::FEDERATED_IDENTITY_ACTIVE_SESSION, nullptr},
+     {ContentSettingsType::AUTO_DARK_WEB_CONTENT, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
  static_assert(base::size(kContentSettingsTypeGroupNames) ==
-@@ -386,6 +387,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -389,6 +390,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {
