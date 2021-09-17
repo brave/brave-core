@@ -115,13 +115,13 @@ void SerializeHardwareAccounts(const base::Value* account_value,
       hardware_vendor = *hardware_value;
 
     std::string name;
-    const std::string* name_value = account.second.FindStringPath(kAccountName);
+    const std::string* name_value = account.second.FindStringKey(kAccountName);
     if (name_value)
       name = *name_value;
 
     std::string derivation_path;
     const std::string* derivation_path_value =
-        account.second.FindStringPath(kHardwareDerivationPath);
+        account.second.FindStringKey(kHardwareDerivationPath);
     if (derivation_path_value)
       derivation_path = *derivation_path_value;
 
@@ -734,7 +734,7 @@ void KeyringController::GetHardwareAccounts(
     GetHardwareAccountsCallback callback) {
   std::vector<mojom::AccountInfoPtr> accounts;
   base::Value hardware_keyrings(base::Value::Type::DICTIONARY);
-  const base::Value* value = GetPrefForHardwareKeyring(prefs_);
+  const base::Value* value = GetPrefForHardwareKeyringUpdate(prefs_);
   if (!value) {
     std::move(callback).Run({});
     return;
@@ -752,14 +752,18 @@ void KeyringController::GetHardwareAccounts(
 }
 
 // static
-const base::Value* KeyringController::GetPrefForHardwareKeyring(
+base::Value* KeyringController::GetPrefForHardwareKeyringUpdate(
     PrefService* prefs) {
   DCHECK(prefs);
-  const base::DictionaryValue* keyrings_pref =
-      prefs->GetDictionary(kBraveWalletKeyrings);
+  DictionaryPrefUpdate update(prefs, kBraveWalletKeyrings);
+  base::DictionaryValue* keyrings_pref = update.Get();
   if (!keyrings_pref)
     return nullptr;
-  return keyrings_pref->FindKey(kHardwareKeyrings);
+  base::Value* keyring_dict = keyrings_pref->FindKey(kHardwareKeyrings);
+  if (!keyring_dict)
+    keyring_dict = keyrings_pref->SetKey(
+        kHardwareKeyrings, base::Value(base::Value::Type::DICTIONARY));
+  return keyring_dict;
 }
 
 void KeyringController::AddHardwareAccounts(
@@ -770,12 +774,9 @@ void KeyringController::AddHardwareAccounts(
   const auto hash = base::PersistentHash(infos.front()->address);
   std::string device_id = hardware_vendor + std::to_string(hash);
 
-  base::Value hardware_keyrings(base::Value::Type::DICTIONARY);
-  const base::Value* value = GetPrefForHardwareKeyring(prefs_);
-  if (value) {
-    hardware_keyrings = value->Clone();
-  }
-  const base::Value* device_value = hardware_keyrings.FindKey(device_id);
+  base::Value* hardware_keyrings = GetPrefForHardwareKeyringUpdate(prefs_);
+
+  const base::Value* device_value = hardware_keyrings->FindKey(device_id);
   base::Value device_keyring(base::Value::Type::DICTIONARY);
   if (device_value)
     device_keyring = device_value->Clone();
@@ -798,21 +799,14 @@ void KeyringController::AddHardwareAccounts(
   }
 
   device_keyring.SetKey(kAccountMetas, std::move(account_meta));
-  hardware_keyrings.SetKey(device_id, std::move(device_keyring));
+  hardware_keyrings->SetKey(device_id, std::move(device_keyring));
 
-  DictionaryPrefUpdate update(prefs_, kBraveWalletKeyrings);
-  base::DictionaryValue* keyrings_pref = update.Get();
-  keyrings_pref->SetKey(kHardwareKeyrings, std::move(hardware_keyrings));
   NotifyAccountsChanged();
 }
 
 void KeyringController::RemoveHardwareAccount(const std::string& address) {
-  base::Value hardware_keyrings(base::Value::Type::DICTIONARY);
-  const base::Value* value = GetPrefForHardwareKeyring(prefs_);
-  if (value) {
-    hardware_keyrings = value->Clone();
-  }
-  for (auto devices : hardware_keyrings.DictItems()) {
+  base::Value* hardware_keyrings = GetPrefForHardwareKeyringUpdate(prefs_);
+  for (auto devices : hardware_keyrings->DictItems()) {
     base::Value* account_metas = devices.second.FindKey(kAccountMetas);
     if (!account_metas)
       continue;
@@ -822,11 +816,8 @@ void KeyringController::RemoveHardwareAccount(const std::string& address) {
     account_metas->RemoveKey(address);
 
     if (account_metas->DictEmpty())
-      hardware_keyrings.RemoveKey(devices.first);
+      hardware_keyrings->RemoveKey(devices.first);
 
-    DictionaryPrefUpdate update(prefs_, kBraveWalletKeyrings);
-    base::DictionaryValue* keyrings_pref = update.Get();
-    keyrings_pref->SetKey(kHardwareKeyrings, std::move(hardware_keyrings));
     NotifyAccountsChanged();
     return;
   }

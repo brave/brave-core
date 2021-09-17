@@ -44,7 +44,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   static const base::Value* GetPrefForKeyring(PrefService* prefs,
                                               const std::string& key,
                                               const std::string& id);
-  static const base::Value* GetPrefForHardwareKeyring(PrefService* prefs);
+  static base::Value* GetPrefForHardwareKeyringUpdate(PrefService* prefs);
   // If keyring dicionary for id doesn't exist, it will be created.
   static void SetPrefForKeyring(PrefService* prefs,
                                 const std::string& key,
