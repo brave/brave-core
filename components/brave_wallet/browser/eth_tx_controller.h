@@ -72,6 +72,8 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
                              std::string* error);
   static bool ValidateTxData1559(const mojom::TxData1559Ptr& tx_data,
                                  std::string* error);
+  std::unique_ptr<EthTxStateManager::TxMeta> GetTxForTesting(
+      const std::string& tx_meta_id);
 
  private:
   void NotifyTransactionStatusChanged(EthTxStateManager::TxMeta* meta);

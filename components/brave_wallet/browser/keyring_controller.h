@@ -180,6 +180,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                            SetDefaultKeyringDerivedAccountMeta);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, RestoreLegacyBraveWallet);
   friend class BraveWalletProviderImplUnitTest;
+  friend class EthTxControllerUnitTest;
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
 

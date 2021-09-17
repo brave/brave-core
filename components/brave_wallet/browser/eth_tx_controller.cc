@@ -488,4 +488,9 @@ void EthTxController::GetAllTransactionInfo(
   std::move(callback).Run(std::move(tis));
 }
 
+std::unique_ptr<EthTxStateManager::TxMeta> EthTxController::GetTxForTesting(
+    const std::string& tx_meta_id) {
+  return tx_state_manager_->GetTx(tx_meta_id);
+}
+
 }  // namespace brave_wallet
