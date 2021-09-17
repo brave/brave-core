@@ -47,7 +47,10 @@ BraveEthereumPermissionContext::BraveEthereumPermissionContext(
 BraveEthereumPermissionContext::~BraveEthereumPermissionContext() = default;
 
 bool BraveEthereumPermissionContext::IsRestrictedToSecureOrigins() const {
-  return true;
+  // For parity with Crypto Wallets and MM we should allow a permission prompt
+  // to be shown for HTTP sites. Developers often use localhost for development
+  // for example.
+  return false;
 }
 
 void BraveEthereumPermissionContext::RequestPermission(
