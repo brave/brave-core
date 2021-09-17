@@ -55,7 +55,7 @@ const char kGetImageDataScript[] =
     "domAutomationController.send(ctx.getImageData(0, 0, canvas.width, "
     "canvas.height).data.reduce(adder));";
 
-const int kExpectedImageDataHashFarblingBalanced = 204;
+const int kExpectedImageDataHashFarblingBalanced = 194;
 const int kExpectedImageDataHashFarblingOff = 0;
 const int kExpectedImageDataHashFarblingMaximum =
     kExpectedImageDataHashFarblingBalanced;

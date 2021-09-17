@@ -29,6 +29,7 @@ using brave_shields::ControlType;
 
 const char kEmbeddedTestServerDirectory[] = "webaudio";
 const char kTitleScript[] = "domAutomationController.send(document.title);";
+const char kExpectedWebAudioFarblingSum[] = "399";
 
 class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
  public:
@@ -123,11 +124,13 @@ IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest, FarbleWebAudio) {
   // web audio: pseudo-random data with no relation to underlying audio channel
   BlockFingerprinting();
   NavigateToURLUntilLoadStop(farbling_url());
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "405");
+  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()),
+            kExpectedWebAudioFarblingSum);
   // second time, same as the first (tests that the PRNG properly resets itself
   // at the beginning of each calculation)
   NavigateToURLUntilLoadStop(farbling_url());
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "405");
+  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()),
+            kExpectedWebAudioFarblingSum);
 
   // Farbling level: balanced (default)
   // web audio: farbled audio data
