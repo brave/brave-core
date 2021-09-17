@@ -18,10 +18,7 @@
   },
   "web_accessible_resources": [
     "elementPicker.html",
-    "elementPicker.js",
-    "star.wasm",
-    "modules/hpnv2/worker.asmjs.bundle.js",
-    "modules/hpnv2/worker.wasm.bundle.js"
+    "elementPicker.js"
   ],
   "background": {
     "scripts": [
