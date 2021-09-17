@@ -223,8 +223,8 @@ handler.on(WalletActions.sendTransaction.getType(), async (store, payload: SendT
     console.log('Sending unapproved transaction failed, txData: ', txData, ', from: ', payload.from)
     return
   }
-  const approveResult = await apiProxy.ethTxController.approveTransaction(addResult.txMetaId)
-  console.log('approveResult: ', approveResult)
+  // const approveResult = await apiProxy.ethTxController.approveTransaction(addResult.txMetaId)
+  // console.log('approveResult: ', approveResult)
 
   await refreshWalletInfo(store)
 })
