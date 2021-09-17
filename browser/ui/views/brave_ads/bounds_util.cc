@@ -39,6 +39,17 @@ void AdjustBoundsToFitWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
   bounds->AdjustToFit(work_area);
 }
 
+}  // namespace
+
+void AdjustBoundsAndSnapToFitWorkAreaForNativeView(gfx::NativeView native_view,
+                                                   gfx::Rect* bounds) {
+  DCHECK(bounds);
+
+  const gfx::Rect work_area = GetDisplayScreenWorkArea(bounds, native_view);
+  AdjustBoundsToFitWorkArea(work_area, bounds);
+  SnapBoundsToEdgeOfWorkArea(work_area, bounds);
+}
+
 void SnapBoundsToEdgeOfWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
   DCHECK(bounds);
 
@@ -78,17 +89,6 @@ void SnapBoundsToEdgeOfWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
       bounds->set_x(work_area.x() + work_area.width() - bounds->width());
       break;
   }
-}
-
-}  // namespace
-
-void AdjustBoundsAndSnapToFitWorkAreaForNativeView(gfx::NativeView native_view,
-                                                   gfx::Rect* bounds) {
-  DCHECK(bounds);
-
-  const gfx::Rect work_area = GetDisplayScreenWorkArea(bounds, native_view);
-  AdjustBoundsToFitWorkArea(work_area, bounds);
-  SnapBoundsToEdgeOfWorkArea(work_area, bounds);
 }
 
 }  // namespace brave_ads

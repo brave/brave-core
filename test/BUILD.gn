@@ -344,7 +344,10 @@ test("brave_unit_tests") {
   }
 
   if (toolkit_views) {
-    sources += [ "//brave/browser/ui/views/brave_ads/color_util_unittest.cc" ]
+    sources += [
+      "//brave/browser/ui/views/brave_ads/bounds_util_unittest.cc",
+      "//brave/browser/ui/views/brave_ads/color_util_unittest.cc",
+    ]
     deps += [ "//brave/browser/ui/views/brave_ads" ]
   }
 

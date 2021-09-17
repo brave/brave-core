@@ -17,6 +17,9 @@ namespace brave_ads {
 void AdjustBoundsAndSnapToFitWorkAreaForNativeView(gfx::NativeView native_view,
                                                    gfx::Rect* bounds);
 
+// Exposed here to be available in tests.
+void SnapBoundsToEdgeOfWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds);
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_BOUNDS_UTIL_H_
