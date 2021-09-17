@@ -1,4 +1,5 @@
 use adblock::engine::Engine;
+use adblock::blocker::Redirection;
 use adblock::resources::{Resource, ResourceType, MimeType};
 use core::ptr;
 use libc::size_t;
@@ -63,7 +64,7 @@ pub unsafe extern "C" fn engine_create(rules: *const c_char) -> *mut Engine {
 
 fn engine_create_from_str(rules: &str) -> *mut Engine {
     let mut filter_set = adblock::lists::FilterSet::new(false);
-    filter_set.add_filter_list(&rules, adblock::lists::FilterFormat::Standard);
+    filter_set.add_filter_list(&rules, Default::default());
     let engine = Engine::from_filter_set(filter_set, true);
     Box::into_raw(Box::new(engine))
 }
@@ -107,10 +108,12 @@ pub unsafe extern "C" fn engine_match(
     *did_match_exception |= blocker_result.exception.is_some();
     *did_match_important |= blocker_result.important;
     *redirect = match blocker_result.redirect {
-        Some(x) => match CString::new(x) {
+        Some(Redirection::Resource(x)) => match CString::new(x) {
             Ok(y) => y.into_raw(),
             _ => ptr::null_mut(),
         },
+        // Ignore `redirect-url` for now.
+        Some(Redirection::Url(_)) => ptr::null_mut(),
         None => ptr::null_mut(),
     };
 }
