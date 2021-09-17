@@ -194,5 +194,6 @@ declare namespace RewardsExtension {
     userName: string
     accountUrl: string
     loginUrl: string
+    activityUrl: string
   }
 }

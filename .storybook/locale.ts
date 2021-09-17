@@ -92,6 +92,7 @@ let locale: Record<string, string> = {
   earningsClaimDefault: 'Your Ads earnings are available.',
   earningsClaimOne: 'Your Ads earnings,',
   earningsClaimTwo: 'are available.',
+  earningsViewDepositHistory: 'View deposit history',
   enableRewards: 'Enable Brave Rewards',
   enableTips: 'Enable Tips',
   excludeSite: 'Exclude this site',

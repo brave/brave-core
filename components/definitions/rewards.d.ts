@@ -292,6 +292,7 @@ declare namespace Rewards {
     userName?: string
     accountUrl: string
     loginUrl: string
+    activityUrl: string
   }
 
   export interface ProcessRewardsPageUrl {

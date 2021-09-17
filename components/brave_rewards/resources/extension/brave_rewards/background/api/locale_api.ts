@@ -49,6 +49,7 @@ export const getUIMessages = (): Record<string, string> => {
     'donateMonthly',
     'donateNow',
     'earningsAds',
+    'earningsViewDepositHistory',
     'enableRewards',
     'enableTips',
     'expiresOn',

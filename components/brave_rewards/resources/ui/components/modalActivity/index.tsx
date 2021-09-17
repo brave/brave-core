@@ -36,6 +36,7 @@ import { getLocale } from 'brave-ui/helpers'
 export interface Token {
   value: string
   converted: string
+  link?: string
 }
 
 export type SummaryType = 'grant' | 'ads' | 'contribute' | 'monthly' | 'tip'
@@ -143,6 +144,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
           size={'small'}
           border={i === 0 ? 'first' : 'default'}
           isNegative={negative}
+          link={item.token.link}
         />
       )
     })

@@ -1669,6 +1669,7 @@ void RewardsDOMHandler::OnGetExternalWallet(
       wallet_dict.SetStringKey("userName", wallet->user_name);
       wallet_dict.SetStringKey("accountUrl", wallet->account_url);
       wallet_dict.SetStringKey("loginUrl", wallet->login_url);
+      wallet_dict.SetStringKey("activityUrl", wallet->activity_url);
     }
 
     data.SetKey("wallet", std::move(wallet_dict));
