@@ -472,6 +472,24 @@ CHAR_LIMIT guidelines:
       <message name="IDS_AUTOFILL_DESCRIBE_LOCAL_COPY" desc="Text label that describes a Wallet credit card which has been copied to the local Brave instance.">
          Copied to Brave
       </message>
+      <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_TITLE" desc="Title for the dialog where the user selects an authenticator from a list of options.">
+        Verify your card
+      </message>
+      <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_HEADER" desc="Header for the dialog where the user selects an authenticator from a list of options.">
+        Your bank wants to confirm it\u2019s you.
+      </message>
+      <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_FOOTER" desc="Footer for the dialog where the user selects an authenticator from a list of options.">
+        Not seeing your current info? Please contact your bank to update it.
+      </message>
+      <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_PROGRESS_BAR_MESSAGE" desc="Message shown on the progress bar after the user selects an authenticator from a list of options and proceeds.">
+        Contacting your bank\u2026
+      </message>
+      <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_POSITIVE_BUTTON_LABEL" desc="Positive button label for the dialog where the user selects an authenticator from a list of options.">
+        Continue
+      </message>
+      <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_NEGATIVE_BUTTON_LABEL" desc="Negative button label for the dialog where the user selects an authenticator from a list of options.">
+        Cancel
+      </message>
 
        <!-- Payment Request section preview strings -->
        <message name="IDS_PAYMENT_REQUEST_PAYMENT_METHODS_PREVIEW" desc="This is a snippet of a payment method a user has saved to Brave, plus an indication of the number of additional payment methods the user has saved.         Its function is to show the user has payment methods that can be used to complete a payment, and thus doesn't have to type the entire payment method. [ICU Syntax]">
@@ -533,9 +551,6 @@ CHAR_LIMIT guidelines:
       </message>
       <message name="IDS_MANAGE_PASSWORDS_TEXT" desc="Text for link to manage passwords on Account Central.">
         View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;link&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/link&gt;</ph>
-      </message>
-      <message name="IDS_PHONE_AS_SECURITY_KEY_TEXT" desc="Text for link to use phone as a security key. A 'security key' is physical device used for authentication, usually as part of two-factor security. This option allows a phone to be used in place of a dedicated security key.">
-        Use phone as a security key
       </message>
       <message name="IDS_SAVED_PASSWORDS_NONE_TEXT" desc="Text when there are no saved passwords/exceptions.">
         Saved passwords will appear here.
@@ -2675,6 +2690,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <!-- Signin First Run strings -->
       <message name="IDS_SIGNIN_FRE_DISMISS_BUTTON" desc="Text for the dismiss button on the welcome sign-in screen. By clicking this button users will continue without signing in,">
         Use without an account
+      </message>
+      <message name="IDS_SIGNIN_FRE_FOOTER" desc="Text for asking the user to allow sending diagnostic reports">
+        To help improve the app, Brave sends diagnostic data to Brave. <ph name="BEGIN_LINK">&lt;LINK&gt;</ph>Change<ph name="END_LINK">&lt;/LINK&gt;</ph>
       </message>
 
       <!-- Account Signin Strings -->
