@@ -119,9 +119,9 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      18},
     {brave_wallet::mojom::kLocalhostChainId,
      "Localhost",
-     {"http://localhost:8545/"},
+     {"http://localhost:7545/"},
      {},
-     {"http://localhost:8545/"},
+     {"http://localhost:7545/"},
      "ETH",
      "Ethereum",
      18}};

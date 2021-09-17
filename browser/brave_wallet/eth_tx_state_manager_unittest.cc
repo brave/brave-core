@@ -351,7 +351,7 @@ TEST_F(EthTxStateManagerUnitTest, SwitchNetwork) {
   ASSERT_TRUE(ropsten_dict);
   EXPECT_EQ(ropsten_dict->DictSize(), 1u);
   EXPECT_TRUE(ropsten_dict->FindKey("001"));
-  const auto* localhost_dict = dict->FindKey("http://localhost:8545/");
+  const auto* localhost_dict = dict->FindKey("http://localhost:7545/");
   ASSERT_TRUE(localhost_dict);
   EXPECT_EQ(localhost_dict->DictSize(), 1u);
   EXPECT_TRUE(localhost_dict->FindKey("001"));
