@@ -291,9 +291,6 @@ are declared in tools/grit/grit_rule.gni.
       <part file="profiles_strings.grdp" />
 
       <!-- Web app intent picker strings -->
-      <if expr="not is_android">
-        <part file="protocol_handler_intent_picker_strings.grdp" />
-      </if>
       <if expr="is_win or is_macosx or is_linux">
         <part file="url_handler_intent_picker_strings.grdp" />
       </if>
@@ -5750,14 +5747,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_DRIVE_TITLE" desc="Title shown in the header of the drive module and various other UIs.">
         From your Google Drive
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_TITLE" desc="Title shown in the header of the photos module and various other UIs.">
-        Brave Photos
-      </message>
       <message name="IDS_NTP_MODULES_DRIVE_INFO" desc="Text shown in the body of the info dialog of the drive module.">
         You’re seeing your recent and suggested documents based on your previous activity using Google Drive.
         <ph name="BREAK">&lt;br&gt;</ph>
         <ph name="BREAK">&lt;br&gt;</ph>
         Learn about the data Google Drive collects and why <ph name="BEGIN_LINK">&lt;a href="https://support.google.com/drive/answer/2450387" target="_blank"&gt;</ph>here<ph name="END_LINK">&lt;/a&gt;</ph>.
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_TITLE" desc="Title shown in the header of the photos module and various other UIs.">
+        Brave Photos
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_INFO" desc="Text shown in the body of the info dialog of the Photos module.">
+        Your Memories from Brave Photos are shown here. They are visible only when you’re signed in.
+        <ph name="BREAK">&lt;br&gt;</ph>
+        <ph name="BREAK">&lt;br&gt;</ph>
+        Manage what you see in your memories at <ph name="BEGIN_LINK">&lt;a href="https://photos.google.com/settings" target="_blank"&gt;</ph>photos.google.com/settings<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
         Top picks for you
@@ -6314,6 +6317,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_CONFIRM_MESSAGEBOX_NO_BUTTON_LABEL" desc="Confirm MessageBox Dialog's 'No' button text">
         No
+      </message>
+
+      <!-- OOM Intervention -->
+      <message name="IDS_NEAR_OOM_REDUCTION_MESSAGE_TITLE" desc="The title of the message asking if the user wants to show the original content of a page using too much memory.">
+         Show original content?
+      </message>
+      <message name="IDS_NEAR_OOM_REDUCTION_MESSAGE_DESCRIPTION" desc="The description of the message stating that the browser removed some content on the page using too much memory.">
+         To save memory, Brave removed some content
       </message>
 
       <!-- Password Manager -->
@@ -10534,10 +10545,25 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Don't ask again when opening these file formats in this app:
 <ph name="FILE_FORMATS">$1<ex>TXT, CSV, DOC</ex></ph>
       </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_DONT_ALLOW" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for button that doesn't allow PWA to open the file(s).">
+      <if expr="use_titlecase">
+      <message name="IDS_WEB_APP_PERMISSION_DONT_ALLOW" desc="Label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
+        Don't Allow
+      </message>
+      </if>
+      <if expr="not use_titlecase">
+      <message name="IDS_WEB_APP_PERMISSION_DONT_ALLOW" desc="Label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
         Don't allow
       </message>
+      </if>
     </if>
+
+  <!-- Protocol Handling intent prompt -->
+    <if expr="not is_android">
+      <message name="IDS_PROTOCOL_HANDLER_INTENT_PICKER_QUESTION" desc="Label on the protocol handler intent picker.">
+    Allow app to open <ph name="PROTOCOL_SCHEME">$1<ex>mailto</ex></ph> links?
+  </message>
+  </if>
+
 
     <!-- Font Access chooser -->
     <if expr="not is_android">

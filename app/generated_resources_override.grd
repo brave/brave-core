@@ -94,8 +94,6 @@ are declared in tools/grit/grit_rule.gni.
 
       <part file="profiles_strings_override.grdp" />
 
-      <if expr="not is_android">
-        </if>
       <if expr="is_win or is_macosx or is_linux">
         </if>
 
@@ -893,7 +891,15 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
     <if expr="not is_android">
+      <if expr="use_titlecase">
       </if>
+      <if expr="not use_titlecase">
+      </if>
+    </if>
+
+  <if expr="not is_android">
+      </if>
+
 
     <if expr="not is_android">
       </if>
