@@ -34,6 +34,7 @@ export interface HardwareWalletConnectOpts {
 
   startIndex: number
   stopIndex: number
+  scheme: string
 }
 
 // Keep in sync with components/brave_wallet/common/brave_wallet.mojom until

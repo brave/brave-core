@@ -7,7 +7,8 @@
 const { EventEmitter } = require('events')
 
 import {
-  HardwareWallet
+  HardwareWallet,
+  LedgerDerivationPaths
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 import Eth from '@ledgerhq/hw-app-eth'
@@ -22,7 +23,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     return HardwareWallet.Ledger
   }
 
-  getAccounts = (from: number, to: number) => {
+  getAccounts = (from: number, to: number, scheme: string) => {
     return new Promise(async (resolve, reject) => {
       if (from < 0) {
         from = 0
@@ -30,7 +31,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       if (!this.isUnlocked() && !(await this.unlock())) {
         return reject(new Error('Unable to unlock device, try to reconnect'))
       }
-      this._getAccountsBIP44(from, to).then(resolve).catch(reject)
+      this._getAccounts(from, to, scheme).then(resolve).catch(reject)
     })
   }
 
@@ -47,8 +48,14 @@ export default class LedgerBridgeKeyring extends EventEmitter {
   }
 
   /* PRIVATE METHODS */
-  _getPathForIndex = (index: number) => {
-    return `m/44'/60'/${index}'/0/0`
+  _getPathForIndex = (index: number, scheme: string) => {
+    if (scheme === LedgerDerivationPaths.LedgerLive) {
+      return `m/44'/60'/${index}'/0/0`
+    } else if (scheme === LedgerDerivationPaths.Legacy) {
+      return `m/44'/60'/${index}'/0`
+    } else {
+      throw Error('Unknown scheme')
+    }
   }
 
   _getAddress = async (path: string) => {
@@ -58,10 +65,10 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     return this.app.getAddress(path)
   }
 
-  _getAccountsBIP44 = async (from: number, to: number) => {
+  _getAccounts = async (from: number, to: number, scheme: string) => {
     const accounts = []
     for (let i = from; i <= to; i++) {
-      const path = this._getPathForIndex(i)
+      const path = this._getPathForIndex(i, scheme)
       const address = await this._getAddress(path)
       accounts.push({
         address: address.address,
