@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/toolbar/toolbar_actions_model.h b/chrome/browser/ui/toolbar/toolbar_actions_model.h
-index 56d46065c33f64450c4ecebb925f351837cdf96f..801e862518d8149af4e78663fb25970aa0595e43 100644
+index fe928818631a9ff908b72ef70e7fa01affdb2a0c..4f1a78ae2f0e78422362fbe70a851ce9f90a893e 100644
 --- a/chrome/browser/ui/toolbar/toolbar_actions_model.h
 +++ b/chrome/browser/ui/toolbar/toolbar_actions_model.h
-@@ -27,6 +27,7 @@ class Browser;
+@@ -29,6 +29,7 @@ class Browser;
  class PrefService;
  class Profile;
  class ExtensionsContainer;
@@ -10,15 +10,15 @@ index 56d46065c33f64450c4ecebb925f351837cdf96f..801e862518d8149af4e78663fb25970a
  
  namespace extensions {
  class ExtensionActionManager;
-@@ -45,6 +46,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
-                             public extensions::ExtensionManagement::Observer,
+@@ -48,6 +49,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
+                             public content::NotificationObserver,
                              public KeyedService {
   public:
 +  friend class BraveToolbarActionsModel;
    using ActionId = std::string;
  
    ToolbarActionsModel(Profile* profile,
-@@ -152,7 +154,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
+@@ -163,7 +165,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
    void RemovePref(const ActionId& action_id);
  
    // Returns true if the given |extension| should be added to the toolbar.
