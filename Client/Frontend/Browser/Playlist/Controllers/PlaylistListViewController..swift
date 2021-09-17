@@ -42,6 +42,7 @@ class PlaylistListViewController: UIViewController {
     var playerController: AVPlayerViewController?
     
     let activityIndicator = UIActivityIndicatorView(style: .medium).then {
+        $0.color = .white
         $0.isHidden = true
         $0.hidesWhenStopped = true
     }
@@ -209,6 +210,7 @@ class PlaylistListViewController: UIViewController {
                                                      isExpired: true)
                     delegate.displayExpiredResourceError(item: item)
                 case .none:
+                    PlaylistCarplayManager.shared.currentlyPlayingItemIndex = indexPath.row
                     PlaylistCarplayManager.shared.currentPlaylistItem = item
                     self.commitPlayerItemTransaction(at: indexPath,
                                                      isExpired: false)
@@ -392,6 +394,8 @@ extension PlaylistListViewController {
             return
         }
         
+        playerView.stop()
+        playerView.bringSubviewToFront(activityIndicator)
         activityIndicator.startAnimating()
         activityIndicator.isHidden = false
 

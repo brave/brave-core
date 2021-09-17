@@ -119,15 +119,34 @@ class PlaylistMediaStreamer {
         let mediaType: MPNowPlayingInfoMediaType =
             item.mimeType.contains("video") ? .video : .audio
         
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = [
+        var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo ?? [:]
+        nowPlayingInfo.merge(with: [
             MPNowPlayingInfoPropertyMediaType: NSNumber(value: mediaType.rawValue),
             MPMediaItemPropertyTitle: item.name,
             MPMediaItemPropertyArtist: URL(string: item.pageSrc)?.baseDomain ?? item.pageSrc,
             MPMediaItemPropertyPlaybackDuration: item.duration,
-            MPNowPlayingInfoPropertyPlaybackProgress: 0.0,
+            MPNowPlayingInfoPropertyPlaybackRate: player.rate,
             MPNowPlayingInfoPropertyAssetURL: URL(string: item.pageSrc) as Any,
-            MPNowPlayingInfoPropertyElapsedPlaybackTime: 0.0,
-        ]
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: player.currentTime.seconds,
+        ])
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+    
+    static func updateNowPlayingInfo(_ player: MediaPlayer) {
+        let mediaType: MPNowPlayingInfoMediaType = player.currentItem?.asset.isVideoTracksAvailable() == true ? .video : .audio
+        let duration = player.currentItem?.asset.duration.seconds ?? 0.0
+        
+        var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo ?? [:]
+        nowPlayingInfo.merge(with: [
+            MPNowPlayingInfoPropertyMediaType: NSNumber(value: mediaType.rawValue),
+            MPMediaItemPropertyPlaybackDuration: duration,
+            MPNowPlayingInfoPropertyPlaybackRate: player.rate,
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: player.currentTime.seconds,
+        ])
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
     static func clearNowPlayingInfo() {
@@ -142,6 +161,8 @@ class PlaylistMediaStreamer {
                 return image
             })
             setNowPlayingMediaArtwork(artwork: artwork)
+        } else {
+            setNowPlayingMediaArtwork(artwork: nil)
         }
     }
     

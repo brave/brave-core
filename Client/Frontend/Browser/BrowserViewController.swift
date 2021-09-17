@@ -1487,7 +1487,18 @@ class BrowserViewController: UIViewController {
         guard let tab = tabManager.selectedTab else { return }
         
         updateRewardsButtonState()
-        updatePlaylistURLBar(tab: tab, state: tab.playlistItemState, item: tab.playlistItem)
+        
+        DispatchQueue.main.async {
+            if let item = tab.playlistItem {
+                if PlaylistItem.itemExists(item) {
+                    self.updatePlaylistURLBar(tab: tab, state: .existingItem, item: item)
+                } else {
+                    self.updatePlaylistURLBar(tab: tab, state: .newItem, item: item)
+                }
+            } else {
+                self.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
+            }
+        }
         
         topToolbar.currentURL = tab.url?.displayURL
         if tabManager.selectedTab === tab {

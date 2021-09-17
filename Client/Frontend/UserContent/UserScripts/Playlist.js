@@ -227,7 +227,7 @@ window.__firefox__.includeOnce("Playlist", function() {
                 }
             }
 
-            if (src !== "") {
+            if (src && src !== "") {
                 $<tagNode>(node);
                 $<sendMessage>({
                     "securitytoken": "$<security_token>",

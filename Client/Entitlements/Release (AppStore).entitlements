@@ -26,5 +26,7 @@
 	</array>
 	<key>com.apple.developer.playable-content</key>
 	<true/>
+	<key>com.apple.developer.carplay-audio</key>
+	<true/>
 </dict>
 </plist>

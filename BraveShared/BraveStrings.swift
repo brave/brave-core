@@ -1134,7 +1134,13 @@ extension Strings {
             NSLocalizedString("playList.noItemLabelTitle",
                               bundle: .braveShared,
                               value: "No Items Available",
-                              comment: "Text indicator on the table cell If a video is already downloaded")
+                              comment: "Text when there are no items in the playlist")
+        
+        public static let noItemLabelDetailLabel =
+            NSLocalizedString("playList.noItemLabelTitle",
+                              bundle: .braveShared,
+                              value: "You can add items to your Brave Playlist within the browser",
+                              comment: "Detail Text when there are no items in the playlist")
         
         public static let expiredLabelTitle =
             NSLocalizedString("playList.expiredLabelTitle",

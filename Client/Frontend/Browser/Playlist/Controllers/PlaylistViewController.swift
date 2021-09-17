@@ -80,12 +80,6 @@ class PlaylistViewController: UIViewController {
         player.pictureInPictureController?.delegate = nil
         player.pictureInPictureController?.stopPictureInPicture()
         
-        // Stop media playback
-        #if targetEnvironment(simulator)
-        stop(playerView)
-        PlaylistCarplayManager.shared.currentPlaylistItem = nil
-        #endif
-        
         // Simulator cannot "detect" if Car-Play is enabled, therefore we need to STOP playback
         // When this controller deallocates. The user can still manually resume playback in CarPlay.
         #if targetEnvironment(simulator)
@@ -222,22 +216,34 @@ class PlaylistViewController: UIViewController {
     }
     
     private func observePlayerStates() {
-        player.publisher(for: .play).sink { [weak self] _ in
+        player.publisher(for: .play).sink { [weak self] event in
             self?.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_pause"), for: .normal)
+            
+            if !PlaylistCarplayManager.shared.isCarPlayAvailable {
+                MPNowPlayingInfoCenter.default().playbackState = .playing
+                PlaylistMediaStreamer.updateNowPlayingInfo(event.mediaPlayer)
+            }
         }.store(in: &playerStateObservers)
         
-        player.publisher(for: .pause).sink { [weak self] _ in
+        player.publisher(for: .pause).sink { [weak self] event in
             self?.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+            
+            if !PlaylistCarplayManager.shared.isCarPlayAvailable {
+                MPNowPlayingInfoCenter.default().playbackState = .paused
+                PlaylistMediaStreamer.updateNowPlayingInfo(event.mediaPlayer)
+            }
         }.store(in: &playerStateObservers)
         
         player.publisher(for: .stop).sink { [weak self] _ in
-            self?.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+            guard let self = self else { return }
+            self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+            self.playerView.resetVideoInfo()
         }.store(in: &playerStateObservers)
         
-        player.publisher(for: .changePlaybackRate).sink { [weak self] _ in
+        player.publisher(for: .changePlaybackRate).sink { [weak self] event in
             guard let self = self else { return }
             
-            let playbackRate = self.player.rate
+            let playbackRate = event.mediaPlayer.rate
             let button = self.playerView.controlsView.playbackRateButton
             
             if playbackRate <= 1.0 {
@@ -246,6 +252,10 @@ class PlaylistViewController: UIViewController {
                 button.setTitle("1.5x", for: .normal)
             } else {
                 button.setTitle("2x", for: .normal)
+            }
+            
+            if !PlaylistCarplayManager.shared.isCarPlayAvailable {
+                MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = event.mediaPlayer.rate
             }
         }.store(in: &playerStateObservers)
         
@@ -262,23 +272,47 @@ class PlaylistViewController: UIViewController {
         }.store(in: &playerStateObservers)
         
         player.publisher(for: .finishedPlaying).sink { [weak self] event in
-            guard let self = self,
+            guard let self = self ,
                   let currentItem = event.mediaPlayer.currentItem else { return }
             
-            self.playerView.controlsView.playPauseButton.isEnabled = false
-            self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_pause"), for: .normal)
-            event.mediaPlayer.pause()
-            
-            let endTime = CMTimeConvertScale(currentItem.asset.duration, timescale: event.mediaPlayer.currentTime.timescale, method: .roundHalfAwayFromZero)
-            
-            self.playerView.controlsView.trackBar.setTimeRange(currentTime: currentItem.currentTime(), endTime: endTime)
-            event.mediaPlayer.seek(to: .zero)
-            
-            self.playerView.controlsView.playPauseButton.isEnabled = true
-            self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+            // When CarPlay is available, do NOT pause or handle `nextTrack`
+            // CarPlay will do all of that. So, just update the UI only.
+            if PlaylistCarplayManager.shared.isCarPlayAvailable {
+                self.playerView.controlsView.playPauseButton.isEnabled = false
+                self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_pause"), for: .normal)
 
-            self.playerView.toggleOverlays(showOverlay: true)
-            self.onNextTrack(self.playerView, isUserInitiated: false)
+                let endTime = CMTimeConvertScale(currentItem.asset.duration, timescale: event.mediaPlayer.currentTime.timescale, method: .roundHalfAwayFromZero)
+
+                self.playerView.controlsView.trackBar.setTimeRange(currentTime: currentItem.currentTime(), endTime: endTime)
+                event.mediaPlayer.seek(to: .zero)
+                
+                self.playerView.controlsView.playPauseButton.isEnabled = true
+                self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+
+                self.playerView.toggleOverlays(showOverlay: true)
+            } else {
+                var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+                nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackProgress] = 0.0
+                nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0.0
+                nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = 0.0
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+                
+                self.playerView.controlsView.playPauseButton.isEnabled = false
+                self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_pause"), for: .normal)
+
+                event.mediaPlayer.pause()
+
+                let endTime = CMTimeConvertScale(currentItem.asset.duration, timescale: event.mediaPlayer.currentTime.timescale, method: .roundHalfAwayFromZero)
+
+                self.playerView.controlsView.trackBar.setTimeRange(currentTime: currentItem.currentTime(), endTime: endTime)
+                event.mediaPlayer.seek(to: .zero)
+                
+                self.playerView.controlsView.playPauseButton.isEnabled = true
+                self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+
+                self.playerView.toggleOverlays(showOverlay: true)
+                self.onNextTrack(self.playerView, isUserInitiated: false)
+            }
         }.store(in: &playerStateObservers)
         
         player.publisher(for: .periodicPlayTimeChanged).sink { [weak self] event in
@@ -455,6 +489,8 @@ extension PlaylistViewController: VideoViewDelegate {
                 
                 PlaylistCarplayManager.shared.currentlyPlayingItemIndex = indexPath.row
                 self.playItem(item: item) { [weak self] error in
+                    PlaylistCarplayManager.shared.currentPlaylistItem = nil
+                    
                     guard let self = self else { return }
                     
                     switch error {
@@ -466,8 +502,9 @@ extension PlaylistViewController: VideoViewDelegate {
                         self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: true)
                         self.displayExpiredResourceError(item: item)
                     case .none:
-                        self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
                         PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+                        PlaylistCarplayManager.shared.currentPlaylistItem = item
+                        self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
                         self.updateLastPlayedItem(item: item)
                     case .cancelled:
                         self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
@@ -515,7 +552,9 @@ extension PlaylistViewController: VideoViewDelegate {
                     return
                 }
                 
+                PlaylistCarplayManager.shared.currentlyPlayingItemIndex = indexPath.row
                 self.playItem(item: item) { [weak self] error in
+                    PlaylistCarplayManager.shared.currentPlaylistItem = nil
                     guard let self = self else { return }
                     
                     switch error {
@@ -537,6 +576,7 @@ extension PlaylistViewController: VideoViewDelegate {
                     case .none:
                         self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
                         PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+                        PlaylistCarplayManager.shared.currentPlaylistItem = item
                         self.updateLastPlayedItem(item: item)
                     case .cancelled:
                         self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
@@ -740,6 +780,9 @@ extension PlaylistViewController: VideoViewDelegate {
                         return
                     }
                     
+                    PlaylistMediaStreamer.clearNowPlayingInfo()
+                    self.playerView.setVideoInfo(videoDomain: item.pageSrc,
+                                                 videoTitle: item.pageTitle)
                     PlaylistMediaStreamer.setNowPlayingInfo(item, withPlayer: self.player)
                     completion?(.none)
                 }).store(in: &assetLoadingStateObservers)
@@ -806,6 +849,8 @@ extension PlaylistViewController: VideoViewDelegate {
                         return
                     }
                     
+                    self.playerView.setVideoInfo(videoDomain: item.pageSrc,
+                                                 videoTitle: item.pageTitle)
                     PlaylistMediaStreamer.setNowPlayingInfo(item, withPlayer: self.player)
                     completion?(.none)
                 }).store(in: &self.assetLoadingStateObservers)
