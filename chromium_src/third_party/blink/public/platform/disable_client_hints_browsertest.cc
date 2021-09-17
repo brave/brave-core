@@ -25,7 +25,6 @@
 namespace {
 const char kClientHints[] = "/ch.html";
 const std::vector<base::Feature> kTestFeatures = {
-    blink::features::kLangClientHintHeader,
     blink::features::kViewportHeightClientHintHeader,
 };
 }  // namespace
@@ -55,7 +54,7 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
   bool IsClientHintHeaderEnabled() { return GetParam(); }
 
   void SetUp() override {
-    // Test that even with Lang CH feature enabled, there is no header.
+    // Test that even with CH features enabled, there is no header.
     scoped_feature_list_.InitWithFeatures(
         IsClientHintHeaderEnabled() ? kTestFeatures
                                     : std::vector<base::Feature>(),
