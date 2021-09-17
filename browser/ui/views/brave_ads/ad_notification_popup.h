@@ -102,7 +102,6 @@ class AdNotificationPopup : public views::WidgetDelegateView,
   void OnThemeChanged() override;
 
   // views::WidgetObserver:
-  void OnWidgetCreated(views::Widget* widget) override;
   void OnWidgetDestroyed(views::Widget* widget) override;
   void OnWidgetBoundsChanged(views::Widget* widget,
                              const gfx::Rect& new_bounds) override;

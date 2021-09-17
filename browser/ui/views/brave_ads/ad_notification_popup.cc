@@ -97,6 +97,15 @@ SkColor GetDarkModeBackgroundColor() {
   return bg_color;
 }
 
+void AdjustBoundsAndSnapToFitWorkAreaForWidget(views::Widget* widget) {
+  DCHECK(widget);
+
+  gfx::Rect bounds = widget->GetWindowBoundsInScreen();
+  const gfx::NativeView native_view = widget->GetNativeView();
+  AdjustBoundsAndSnapToFitWorkAreaForNativeView(native_view, &bounds);
+  widget->SetBounds(bounds);
+}
+
 }  // namespace
 
 AdNotificationPopup::PopupInstanceFactory::~PopupInstanceFactory() = default;
@@ -284,16 +293,6 @@ void AdNotificationPopup::OnThemeChanged() {
   SchedulePaint();
 }
 
-void AdNotificationPopup::OnWidgetCreated(views::Widget* widget) {
-  DCHECK(widget);
-
-  gfx::Rect bounds = widget->GetWindowBoundsInScreen();
-  const gfx::NativeView native_view = widget->GetNativeView();
-  AdjustBoundsToFitWorkAreaForNativeView(&bounds, native_view);
-
-  widget->SetBounds(bounds);
-}
-
 void AdNotificationPopup::OnWidgetDestroyed(views::Widget* widget) {
   DCHECK(widget);
 
@@ -448,10 +447,7 @@ void AdNotificationPopup::RecomputeAlignment() {
     return;
   }
 
-  gfx::Rect bounds = GetWidget()->GetWindowBoundsInScreen();
-  const gfx::NativeView native_view = GetWidget()->GetNativeView();
-  AdjustBoundsToFitWorkAreaForNativeView(&bounds, native_view);
-  GetWidget()->SetBounds(bounds);
+  AdjustBoundsAndSnapToFitWorkAreaForWidget(GetWidget());
 }
 
 const gfx::ShadowDetails& AdNotificationPopup::GetShadowDetails() const {
@@ -475,6 +471,7 @@ void AdNotificationPopup::CreateWidgetView() {
   if (!g_disable_fade_in_animation_for_testing) {
     widget->SetOpacity(0.0);
   }
+  AdjustBoundsAndSnapToFitWorkAreaForWidget(widget);
   widget->ShowInactive();
 }
 
