@@ -292,7 +292,7 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
   return new Promise(async (resolve, reject) => {
     const apiProxy = await getAPIProxy()
     const keyring = await apiProxy.getKeyringsByType(opts.hardware)
-    keyring.getAccounts(opts.startIndex, opts.stopIndex).then(async (accounts: HardwareWalletAccount[]) => {
+    keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme).then(async (accounts: HardwareWalletAccount[]) => {
       resolve(accounts)
     }).catch(reject)
   })

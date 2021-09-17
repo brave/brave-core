@@ -41,13 +41,28 @@ export default function (props: Props) {
     LedgerDerivationPaths.LedgerLive.toString()
   )
 
+  const onSelectedDerivationScheme = (scheme: string) => {
+    setSelectedDerivationScheme(scheme)
+    setAccounts([])
+    props.onConnectHardwareWallet({
+      hardware: selectedHardwareWallet,
+      startIndex: 0,
+      stopIndex: derivationBatch,
+      scheme: scheme
+    }).then((result) => {
+      setAccounts(result)
+    }).catch((error) => {
+      setConnectionError(error.message)
+    })
+  }
   const onConnectHardwareWallet = (hardware: HardwareWallet) => {
     setIsConnecting(true)
 
     props.onConnectHardwareWallet({
       hardware,
       startIndex: accounts.length,
-      stopIndex: accounts.length + derivationBatch
+      stopIndex: accounts.length + derivationBatch,
+      scheme: selectedDerivationScheme
     }).then((result) => {
       setAccounts([...accounts, ...result])
       setIsConnecting(false)
@@ -89,7 +104,7 @@ export default function (props: Props) {
         selectedDerivationPaths={selectedDerivationPaths}
         setSelectedDerivationPaths={setSelectedDerivationPaths}
         selectedDerivationScheme={selectedDerivationScheme}
-        setSelectedDerivationScheme={setSelectedDerivationScheme}
+        setSelectedDerivationScheme={onSelectedDerivationScheme}
         onAddAccounts={onAddAccounts}
         getBalance={getBalance}
       />
