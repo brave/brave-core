@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
+#include "brave/components/brave_wallet/browser/eth_data_parser.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "components/grit/brave_components_strings.h"
@@ -156,11 +157,21 @@ void EthTxController::AddUnapprovedTransaction(
   auto tx_ptr = std::make_unique<EthTransaction>(*tx);
 
   // Use default gas price and limit for ETHSend.
-  if (tx_ptr->data().empty()) {  // ETHSend
+  mojom::TransactionType tx_type;
+  if (!GetTransactionInfoFromData(ToHex(tx_ptr->data()), &tx_type, nullptr,
+                                  nullptr)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_GET_TX_TYPE_FAILED));
+    return;
+  }
+
+  if (tx_type == mojom::TransactionType::ETHSend) {
     if (!tx_ptr->gas_limit())
-      tx_ptr->set_gas_limit(21000);
+      tx_ptr->set_gas_limit(kDefaultSendEthGasLimit);
     if (!tx_ptr->gas_price())
-      tx_ptr->set_gas_price(150 * 1e9);  // 150 Gwei
+      tx_ptr->set_gas_price(kDefaultSendEthGasPrice);
 
     const std::string new_gas_price = Uint256ValueToHex(tx_ptr->gas_price());
     ContinueAddUnapprovedTransaction(from, std::move(tx_ptr),

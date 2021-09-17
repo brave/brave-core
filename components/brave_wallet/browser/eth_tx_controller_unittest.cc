@@ -12,6 +12,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
@@ -114,6 +115,11 @@ class EthTxControllerUnitTest : public testing::Test {
     base::RunLoop().RunUntilIdle();
     keyring_controller_->AddAccount("Account 1", base::DoNothing::Once<bool>());
     base::RunLoop().RunUntilIdle();
+
+    ASSERT_TRUE(base::HexStringToBytes(
+        "095ea7b3000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e6446"
+        "0f0000000000000000000000000000000000000000000000003fffffffffffffff",
+        &data_));
   }
 
   std::string from() {
@@ -139,17 +145,17 @@ class EthTxControllerUnitTest : public testing::Test {
   std::unique_ptr<EthJsonRpcController> rpc_controller_;
   std::unique_ptr<KeyringController> keyring_controller_;
   std::unique_ptr<EthTxController> eth_tx_controller_;
+  std::vector<uint8_t> data_;
 };
 
 TEST_F(EthTxControllerUnitTest,
        AddUnapprovedTransactionWithGasPriceAndGasLimit) {
-  std::vector<uint8_t> data;
-  EXPECT_TRUE(base::HexStringToBytes("010200", &data));
   std::string gas_price = "0x09184e72a000";
   std::string gas_limit = "0x0974";
-  auto tx_data = mojom::TxData::New(
-      "0x06", gas_price, gas_limit,
-      "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000", data);
+  auto tx_data =
+      mojom::TxData::New("0x06", gas_price, gas_limit,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -172,12 +178,11 @@ TEST_F(EthTxControllerUnitTest,
 }
 
 TEST_F(EthTxControllerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
-  std::vector<uint8_t> data;
-  EXPECT_TRUE(base::HexStringToBytes("010200", &data));
   std::string gas_price = "0x09184e72a000";
-  auto tx_data = mojom::TxData::New(
-      "0x06", gas_price, "" /* gas_limit */,
-      "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000", data);
+  auto tx_data =
+      mojom::TxData::New("0x06", gas_price, "" /* gas_limit */,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -210,12 +215,11 @@ TEST_F(EthTxControllerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
 }
 
 TEST_F(EthTxControllerUnitTest, AddUnapprovedTransactionWithoutGasPrice) {
-  std::vector<uint8_t> data;
-  EXPECT_TRUE(base::HexStringToBytes("010200", &data));
   std::string gas_limit = "0x0974";
-  auto tx_data = mojom::TxData::New(
-      "0x06", "" /* gas_price */, gas_limit,
-      "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000", data);
+  auto tx_data =
+      mojom::TxData::New("0x06", "" /* gas_price */, gas_limit,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -249,11 +253,10 @@ TEST_F(EthTxControllerUnitTest, AddUnapprovedTransactionWithoutGasPrice) {
 
 TEST_F(EthTxControllerUnitTest,
        AddUnapprovedTransactionWithoutGasPriceAndGasLimit) {
-  std::vector<uint8_t> data;
-  EXPECT_TRUE(base::HexStringToBytes("010200", &data));
-  auto tx_data = mojom::TxData::New(
-      "0x06", "" /* gas_price */, "" /* gas_limit */,
-      "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000", data);
+  auto tx_data =
+      mojom::TxData::New("0x06", "" /* gas_price */, "" /* gas_limit */,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
   bool callback_called = false;
   std::string tx_meta_id;
 
@@ -304,8 +307,8 @@ TEST_F(EthTxControllerUnitTest,
   EXPECT_TRUE(tx_meta);
 
   // Default value will be used.
-  EXPECT_EQ(tx_meta->tx->gas_price(), 150u * 1e9);
-  EXPECT_EQ(tx_meta->tx->gas_limit(), 21000u);
+  EXPECT_EQ(tx_meta->tx->gas_price(), kDefaultSendEthGasPrice);
+  EXPECT_EQ(tx_meta->tx->gas_limit(), kDefaultSendEthGasLimit);
 }
 
 TEST_F(EthTxControllerUnitTest, ValidateTxData) {
