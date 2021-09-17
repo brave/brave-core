@@ -75,9 +75,9 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
 
  private:
   void MonitorResourceRequest(const net::test_server::HttpRequest& request) {
-    for (size_t i = 0; i < blink::kClientHintsMappingsCount; ++i) {
+    for (size_t i = 0; i < network::kClientHintsNameMappingCount; ++i) {
       if (base::Contains(request.headers,
-                         blink::kClientHintsHeaderMapping[i])) {
+                         network::kClientHintsNameMapping[i])) {
         count_client_hints_headers_seen_++;
       }
     }
