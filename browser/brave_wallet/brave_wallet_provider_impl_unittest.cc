@@ -84,11 +84,6 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         brave_wallet::EthTxControllerFactory::GetControllerForContext(
             browser_context());
     eth_json_rpc_controller_->SetNetwork("0x1");
-    keyring_controller()->CreateWallet(
-        "testing123", base::DoNothing::Once<const std::string&>());
-    base::RunLoop().RunUntilIdle();
-    keyring_controller()->AddAccount("Account 1",
-                                     base::DoNothing::Once<bool>());
     base::RunLoop().RunUntilIdle();
     provider_ = std::make_unique<BraveWalletProviderImpl>(
         eth_json_rpc_controller()->MakeRemote(),
@@ -115,6 +110,14 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   PrefService* prefs() { return profile_.GetPrefs(); }
   HostContentSettingsMap* host_content_settings_map() {
     return HostContentSettingsMapFactory::GetForProfile(&profile_);
+  }
+  void CreateWalletAndAccount() {
+    keyring_controller()->CreateWallet(
+        "testing123", base::DoNothing::Once<const std::string&>());
+    base::RunLoop().RunUntilIdle();
+    keyring_controller()->AddAccount("Account 1",
+                                     base::DoNothing::Once<bool>());
+    base::RunLoop().RunUntilIdle();
   }
 
   void NavigateAndAddEthereumPermission() {
@@ -236,6 +239,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransaction) {
   browser_task_environment_.RunUntilIdle();
   bool callback_called = false;
   std::string tx_meta_id;
+  CreateWalletAndAccount();
   NavigateAndAddEthereumPermission();
   provider()->AddUnapprovedTransaction(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
@@ -251,7 +255,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransaction) {
         tx_meta_id = id;
       }));
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(callback_called, true);
+  EXPECT_TRUE(callback_called);
 
   // Make sure the transaction info is available
   callback_called = false;
@@ -266,7 +270,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransaction) {
         callback_called = true;
       }));
   browser_task_environment_.RunUntilIdle();
-  EXPECT_EQ(callback_called, true);
+  EXPECT_TRUE(callback_called);
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionError) {
@@ -277,6 +281,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionError) {
   // eth_tx_controller_unittest but make sure an error type is handled
   // correctly.
   bool callback_called = false;
+  CreateWalletAndAccount();
   NavigateAndAddEthereumPermission();
   provider()->AddUnapprovedTransaction(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
@@ -291,7 +296,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionError) {
         callback_called = true;
       }));
   browser_task_environment_.RunUntilIdle();
-  EXPECT_EQ(callback_called, true);
+  EXPECT_TRUE(callback_called);
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionNoPermission) {
@@ -312,7 +317,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionNoPermission) {
         callback_called = true;
       }));
   browser_task_environment_.RunUntilIdle();
-  EXPECT_EQ(callback_called, true);
+  EXPECT_TRUE(callback_called);
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559Transaction) {
@@ -320,6 +325,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559Transaction) {
   browser_task_environment_.RunUntilIdle();
   bool callback_called = false;
   std::string tx_meta_id;
+  CreateWalletAndAccount();
   NavigateAndAddEthereumPermission();
   provider()->AddUnapproved1559Transaction(
       mojom::TxData1559::New(
@@ -337,7 +343,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559Transaction) {
         tx_meta_id = id;
       }));
   browser_task_environment_.RunUntilIdle();
-  EXPECT_EQ(callback_called, true);
+  EXPECT_TRUE(callback_called);
 
   // Make sure the transaction info is available
   callback_called = false;
@@ -352,7 +358,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559Transaction) {
         callback_called = true;
       }));
   browser_task_environment_.RunUntilIdle();
-  EXPECT_EQ(callback_called, true);
+  EXPECT_TRUE(callback_called);
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559TransactionError) {
@@ -363,6 +369,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559TransactionError) {
   // eth_tx_controller_unittest but make sure an error type is handled
   // correctly.
   bool callback_called = false;
+  CreateWalletAndAccount();
   NavigateAndAddEthereumPermission();
   provider()->AddUnapproved1559Transaction(
       mojom::TxData1559::New(
@@ -380,7 +387,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559TransactionError) {
         callback_called = true;
       }));
   browser_task_environment_.RunUntilIdle();
-  EXPECT_EQ(callback_called, true);
+  EXPECT_TRUE(callback_called);
 }
 
 TEST_F(BraveWalletProviderImplUnitTest,
@@ -404,7 +411,60 @@ TEST_F(BraveWalletProviderImplUnitTest,
         callback_called = true;
       }));
   browser_task_environment_.RunUntilIdle();
-  EXPECT_EQ(callback_called, true);
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissions) {
+  bool new_setup_callback_called = false;
+  BraveWalletProviderDelegateImpl::SetCallbackForNewSetupNeededForTesting(
+      base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
+  CreateWalletAndAccount();
+  NavigateAndAddEthereumPermission();
+  bool permission_callback_called = false;
+  provider()->RequestEthereumPermissions(base::BindLambdaForTesting(
+      [&](bool success, const std::vector<std::string>& allowed_accounts) {
+        EXPECT_TRUE(success);
+        EXPECT_EQ(allowed_accounts.size(), 1UL);
+        EXPECT_EQ(allowed_accounts[0], from());
+        permission_callback_called = true;
+      }));
+  browser_task_environment_.RunUntilIdle();
+  EXPECT_TRUE(permission_callback_called);
+  EXPECT_FALSE(new_setup_callback_called);
+}
+
+TEST_F(BraveWalletProviderImplUnitTest,
+       RequestEthereumPermissionsNoPermission) {
+  bool new_setup_callback_called = false;
+  BraveWalletProviderDelegateImpl::SetCallbackForNewSetupNeededForTesting(
+      base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
+  bool permission_callback_called = false;
+  CreateWalletAndAccount();
+  provider()->RequestEthereumPermissions(base::BindLambdaForTesting(
+      [&](bool success, const std::vector<std::string>& allowed_accounts) {
+        EXPECT_FALSE(success);
+        EXPECT_TRUE(allowed_accounts.empty());
+        permission_callback_called = true;
+      }));
+  browser_task_environment_.RunUntilIdle();
+  EXPECT_TRUE(permission_callback_called);
+  EXPECT_FALSE(new_setup_callback_called);
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
+  bool new_setup_callback_called = false;
+  BraveWalletProviderDelegateImpl::SetCallbackForNewSetupNeededForTesting(
+      base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
+  bool permission_callback_called = false;
+  provider()->RequestEthereumPermissions(base::BindLambdaForTesting(
+      [&](bool success, const std::vector<std::string>& allowed_accounts) {
+        EXPECT_FALSE(success);
+        EXPECT_TRUE(allowed_accounts.empty());
+        permission_callback_called = true;
+      }));
+  browser_task_environment_.RunUntilIdle();
+  EXPECT_TRUE(permission_callback_called);
+  EXPECT_TRUE(new_setup_callback_called);
 }
 
 }  // namespace brave_wallet

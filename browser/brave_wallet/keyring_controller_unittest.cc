@@ -667,10 +667,10 @@ TEST_F(KeyringControllerUnitTest, AccountMetasForKeyring) {
   const std::string name2 = "Account2";
   const std::string account_path2 = KeyringController::GetAccountPathByIndex(1);
 
-  KeyringController::SetAccountNameForKeyring(GetPrefs(), account_path1, name1,
-                                              "default");
-  KeyringController::SetAccountNameForKeyring(GetPrefs(), account_path2, name2,
-                                              "default");
+  KeyringController::SetAccountMetaForKeyring(GetPrefs(), account_path1, name1,
+                                              address1, "default");
+  KeyringController::SetAccountMetaForKeyring(GetPrefs(), account_path2, name2,
+                                              address2, "default");
 
   const base::Value* account_metas = KeyringController::GetPrefForKeyring(
       GetPrefs(), kAccountMetas, "default");
@@ -685,12 +685,20 @@ TEST_F(KeyringControllerUnitTest, AccountMetasForKeyring) {
   EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
                 GetPrefs(), account_path1, "default"),
             name1);
+  EXPECT_EQ(KeyringController::GetAccountAddressForKeyring(
+                GetPrefs(), account_path1, "default"),
+            address1);
   EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
                 GetPrefs(), account_path2, "default"),
             name2);
+  EXPECT_EQ(KeyringController::GetAccountAddressForKeyring(
+                GetPrefs(), account_path2, "default"),
+            address2);
   EXPECT_EQ(controller.GetAccountMetasNumberForKeyring("default"), 2u);
   EXPECT_EQ(controller.GetAccountMetasNumberForKeyring("keyring1"), 0u);
 
+  // GetAccountInfosForKeyring should work even if the keyring is locked
+  controller.Lock();
   std::vector<mojom::AccountInfoPtr> account_infos =
       controller.GetAccountInfosForKeyring("default");
   EXPECT_EQ(account_infos.size(), 2u);
@@ -1153,7 +1161,7 @@ TEST_F(KeyringControllerUnitTest, GetPrivateKeyForDefaultKeyringAccount) {
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(KeyringControllerUnitTest, SetDefaultKeyringDerivedAccountName) {
+TEST_F(KeyringControllerUnitTest, SetDefaultKeyringDerivedAccountMeta) {
   KeyringController controller(GetPrefs());
   const std::string kUpdatedName = "Updated";
   bool callback_called = false;
@@ -1176,16 +1184,22 @@ TEST_F(KeyringControllerUnitTest, SetDefaultKeyringDerivedAccountName) {
   const std::string name2 = "Account2";
   const std::string account_path2 = KeyringController::GetAccountPathByIndex(1);
 
-  KeyringController::SetAccountNameForKeyring(GetPrefs(), account_path1, name1,
-                                              "default");
-  KeyringController::SetAccountNameForKeyring(GetPrefs(), account_path2, name2,
-                                              "default");
+  KeyringController::SetAccountMetaForKeyring(GetPrefs(), account_path1, name1,
+                                              address1, "default");
+  KeyringController::SetAccountMetaForKeyring(GetPrefs(), account_path2, name2,
+                                              address2, "default");
   EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
                 GetPrefs(), account_path1, "default"),
             name1);
+  EXPECT_EQ(KeyringController::GetAccountAddressForKeyring(
+                GetPrefs(), account_path1, "default"),
+            address1);
   EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
                 GetPrefs(), account_path2, "default"),
             name2);
+  EXPECT_EQ(KeyringController::GetAccountAddressForKeyring(
+                GetPrefs(), account_path2, "default"),
+            address2);
 
   callback_called = false;
   controller.SetDefaultKeyringDerivedAccountName(

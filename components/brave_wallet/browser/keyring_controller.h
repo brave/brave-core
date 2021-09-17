@@ -45,6 +45,9 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                                               const std::string& key,
                                               const std::string& id);
   static base::Value* GetPrefForHardwareKeyringUpdate(PrefService* prefs);
+  static base::Value* GetPrefForKeyringUpdate(PrefService* prefs,
+                                              const std::string& key,
+                                              const std::string& id);
   // If keyring dicionary for id doesn't exist, it will be created.
   static void SetPrefForKeyring(PrefService* prefs,
                                 const std::string& key,
@@ -52,13 +55,20 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                                 const std::string& id);
 
   // Account path will be used as key in kAccountMetas
-  static void SetAccountNameForKeyring(PrefService* prefs,
-                                       const std::string& account_path,
-                                       const std::string& name,
-                                       const std::string& id);
+  static void SetAccountMetaForKeyring(
+      PrefService* prefs,
+      const std::string& account_path,
+      const absl::optional<std::string> name,
+      const absl::optional<std::string> address,
+      const std::string& id);
+
   static std::string GetAccountNameForKeyring(PrefService* prefs,
                                               const std::string& account_path,
                                               const std::string& id);
+  static std::string GetAccountAddressForKeyring(
+      PrefService* prefs,
+      const std::string& account_path,
+      const std::string& id);
 
   static std::string GetAccountPathByIndex(size_t index);
 
@@ -167,7 +177,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
                            GetPrivateKeyForDefaultKeyringAccount);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
-                           SetDefaultKeyringDerivedAccountName);
+                           SetDefaultKeyringDerivedAccountMeta);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, RestoreLegacyBraveWallet);
   friend class BraveWalletProviderImplUnitTest;
 
