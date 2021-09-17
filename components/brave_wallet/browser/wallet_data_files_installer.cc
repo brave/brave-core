@@ -62,14 +62,14 @@ class WalletDataFilesInstallerPolicy
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
   bool RequiresNetworkEncryption() const override;
   update_client::CrxInstaller::Result OnCustomInstall(
-      const base::DictionaryValue& manifest,
+      const base::Value& manifest,
       const base::FilePath& install_dir) override;
   void OnCustomUninstall() override;
-  bool VerifyInstallation(const base::DictionaryValue& manifest,
+  bool VerifyInstallation(const base::Value& manifest,
                           const base::FilePath& install_dir) const override;
   void ComponentReady(const base::Version& version,
                       const base::FilePath& path,
-                      std::unique_ptr<base::DictionaryValue> manifest) override;
+                      base::Value manifest) override;
   base::FilePath GetRelativeInstallDir() const override;
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
@@ -77,7 +77,7 @@ class WalletDataFilesInstallerPolicy
 
   std::vector<mojom::ERCTokenPtr> TokenListReady(
       const base::FilePath& install_dir,
-      std::unique_ptr<base::DictionaryValue> manifest);
+      base::Value manifest);
   void UpdateTokenRegistry(std::vector<mojom::ERCTokenPtr>);
 
   WalletDataFilesInstallerPolicy(const WalletDataFilesInstallerPolicy&) =
@@ -99,7 +99,7 @@ bool WalletDataFilesInstallerPolicy::RequiresNetworkEncryption() const {
 
 update_client::CrxInstaller::Result
 WalletDataFilesInstallerPolicy::OnCustomInstall(
-    const base::DictionaryValue& manifest,
+    const base::Value& manifest,
     const base::FilePath& install_dir) {
   return update_client::CrxInstaller::Result(update_client::InstallError::NONE);
 }
@@ -109,7 +109,7 @@ void WalletDataFilesInstallerPolicy::OnCustomUninstall() {}
 void WalletDataFilesInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
-    std::unique_ptr<base::DictionaryValue> manifest) {
+    base::Value manifest) {
   last_installed_wallet_version = version;
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
@@ -120,7 +120,7 @@ void WalletDataFilesInstallerPolicy::ComponentReady(
 }
 
 bool WalletDataFilesInstallerPolicy::VerifyInstallation(
-    const base::DictionaryValue& manifest,
+    const base::Value& manifest,
     const base::FilePath& install_dir) const {
   return true;
 }
@@ -147,7 +147,7 @@ WalletDataFilesInstallerPolicy::GetInstallerAttributes() const {
 
 std::vector<mojom::ERCTokenPtr> WalletDataFilesInstallerPolicy::TokenListReady(
     const base::FilePath& install_dir,
-    std::unique_ptr<base::DictionaryValue> manifest) {
+    base::Value manifest) {
   std::vector<mojom::ERCTokenPtr> erc_tokens;
   // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
   // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
