@@ -57,8 +57,6 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   ~SpeedReaderBrowserTest() override {}
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     // HTTPS server only serves a valid cert for localhost, so this is needed
     // to load pages from other hosts without an error
     command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
