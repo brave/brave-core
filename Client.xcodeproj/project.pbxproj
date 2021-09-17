@@ -214,6 +214,7 @@
 		2703BE8B24F4508E00CBE6CD /* CreatePDFActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2703BE8A24F4508E00CBE6CD /* CreatePDFActivity.swift */; };
 		270A0F392605267D0091D880 /* LegacyWalletTransferStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270A0F382605267D0091D880 /* LegacyWalletTransferStatusButton.swift */; };
 		270E5F1326F29C320024C70E /* UIKitNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E5F1226F29C320024C70E /* UIKitNavigationView.swift */; };
+		270E5F3226F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */; };
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
 		2718780A216526240006036E /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187809216526240006036E /* PopupView.swift */; };
 		2719DA00249AAC2A0080AB48 /* FeedContextMenuDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2719D9FF249AAC2A0080AB48 /* FeedContextMenuDelegate.swift */; };
@@ -1738,6 +1739,7 @@
 		2703BE8A24F4508E00CBE6CD /* CreatePDFActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePDFActivity.swift; sourceTree = "<group>"; };
 		270A0F382605267D0091D880 /* LegacyWalletTransferStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyWalletTransferStatusButton.swift; sourceTree = "<group>"; };
 		270E5F1226F29C320024C70E /* UIKitNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitNavigationView.swift; sourceTree = "<group>"; };
+		270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWalletSwiftUIExtensions.swift; sourceTree = "<group>"; };
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
 		27187809216526240006036E /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		2719D9FF249AAC2A0080AB48 /* FeedContextMenuDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContextMenuDelegate.swift; sourceTree = "<group>"; };
@@ -3511,6 +3513,14 @@
 			path = Ads;
 			sourceTree = "<group>";
 		};
+		270E5F2526F3E1A50024C70E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		271877FF216525FB0006036E /* Popup */ = {
 			isa = PBXGroup;
 			children = (
@@ -3529,6 +3539,7 @@
 				271F688B26EBD27D00AA2A50 /* Chart */,
 				271F685626EBD27C00AA2A50 /* Crypto */,
 				275034D626EF9E5D00CF4C8A /* Settings */,
+				270E5F2526F3E1A50024C70E /* Extensions */,
 				271F685026EBD27C00AA2A50 /* Preview Content */,
 				271F689026EBD27E00AA2A50 /* SwapButton.swift */,
 				271F688026EBD27D00AA2A50 /* TabbedPageViewController.swift */,
@@ -7301,6 +7312,7 @@
 				271F68B326EBD27E00AA2A50 /* RecoveryPhraseGrid.swift in Sources */,
 				271F689D26EBD27E00AA2A50 /* AssetSearchView.swift in Sources */,
 				271F689926EBD27E00AA2A50 /* Address.swift in Sources */,
+				270E5F3226F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift in Sources */,
 				271F68A526EBD27E00AA2A50 /* UnlockWalletView.swift in Sources */,
 				271F689226EBD27E00AA2A50 /* TestKeyringController.swift in Sources */,
 				271F68BE26EBD27E00AA2A50 /* LineChartView.swift in Sources */,
