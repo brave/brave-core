@@ -422,6 +422,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     func resetVideoInfo() {
         infoView.titleLabel.text = ""
         infoView.clearFavIcon()
+        controlsView.trackBar.setTimeRange(currentTime: .zero, endTime: .zero)
     }
     
     func setControlsEnabled(_ enabled: Bool) {
