@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/renderer/content_settings_agent_impl.h b/components/content_settings/renderer/content_settings_agent_impl.h
-index b018a8b9149ac4732c06eb95620c283fb60e58cd..0b9a1b3b1522d08cbd6954d1ad331696ec26cbc1 100644
+index 856e4549b40b9e9b9218ec2ed17ecd731b57e493..8c159aa6793871dbf94ec2b794f704047192adc0 100644
 --- a/components/content_settings/renderer/content_settings_agent_impl.h
 +++ b/components/content_settings/renderer/content_settings_agent_impl.h
 @@ -118,6 +118,7 @@ class ContentSettingsAgentImpl

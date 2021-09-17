@@ -61,6 +61,6 @@ public class BraveTabSwitcherModeTTPhone extends TabSwitcherModeTTPhone {
     public int getToolbarColorForCurrentState() {
         // Return primary background color regardless of GridTabSwitcher state. Otherwise toolbar of
         // browsing mode is still visible in tab switching mode with stack layout.
-        return ChromeColors.getPrimaryBackgroundColor(getResources(), mIsIncognito);
+        return ChromeColors.getPrimaryBackgroundColor(getContext(), mIsIncognito);
     }
 }

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/history/history_ui.cc b/chrome/browser/ui/webui/history/history_ui.cc
-index 6cb4ecac81cd23fb39ecc86993f75df1c8e152a7..0f2b0cedb40a03754f48ba74399756c330485615 100644
+index b6840c30d11969c8bc17d120b1c467e87e266fe3..2e0ee73a2218fcd093d26fe386db6dc31d93cdc0 100644
 --- a/chrome/browser/ui/webui/history/history_ui.cc
 +++ b/chrome/browser/ui/webui/history/history_ui.cc
-@@ -55,6 +55,7 @@ content::WebUIDataSource* CreateHistoryUIHTMLSource(Profile* profile) {
+@@ -60,6 +60,7 @@ content::WebUIDataSource* CreateHistoryUIHTMLSource(Profile* profile) {
    content::WebUIDataSource* source =
        content::WebUIDataSource::Create(chrome::kChromeUIHistoryHost);
  

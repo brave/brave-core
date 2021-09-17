@@ -61,5 +61,11 @@
     <message name="IDS_PROFILE_PICKER_PROFILE_MENU_INCOGNITO_TEXT" desc="Text of the Private button in profile card menu">
       Private
     </message>
-    </if>
+    <if expr="not lacros">
+      </if>
+
+    <if expr="lacros">
+      </if>
+
+  </if>
 </grit-part>

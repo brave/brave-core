@@ -79,6 +79,7 @@ const base::FilePath::CharType kFrameworkName[] =
     FPL(PRODUCT_STRING " Framework.framework");
 const base::FilePath::CharType kFrameworkExecutableName[] =
     FPL(PRODUCT_STRING " Framework");
+const char kMacHelperSuffixAlerts[] = " (Alerts)";
 #endif  // OS_MAC
 
 #if defined(OS_WIN)
@@ -142,6 +143,8 @@ const base::FilePath::CharType kSingletonSocketFilename[] =
 const base::FilePath::CharType kSupervisedUserSettingsFilename[] =
     FPL("Managed Mode Settings");
 const base::FilePath::CharType kThemePackFilename[] = FPL("Cached Theme.pak");
+const base::FilePath::CharType kTransportSecurityPersisterFilename[] =
+    FPL("TransportSecurity");
 const base::FilePath::CharType kTrustTokenFilename[] = FPL("Trust Tokens");
 const base::FilePath::CharType kVideoTutorialsStorageDirname[] =
     FPL("Video Tutorials");

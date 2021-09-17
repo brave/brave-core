@@ -363,3 +363,7 @@
 -keep class org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.theme.ThemeUtils {
+    *** getTextBoxColorForToolbarBackgroundInNonNativePage(...);
+}

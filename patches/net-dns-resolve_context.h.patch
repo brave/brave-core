@@ -1,8 +1,8 @@
 diff --git a/net/dns/resolve_context.h b/net/dns/resolve_context.h
-index 0af99b232b8f34214621d53b76b28111bc9a0df6..b09f63b7df1140eca5909f6b5b6ff8c40858fb1f 100644
+index 4e57ea62a1c8aca0cdbf318c7078489dee8c725d..2b3c0fc7c081a1f53817d3f4469b5778de407a60 100644
 --- a/net/dns/resolve_context.h
 +++ b/net/dns/resolve_context.h
-@@ -176,6 +176,7 @@ class NET_EXPORT_PRIVATE ResolveContext : public base::CheckedObserver {
+@@ -175,6 +175,7 @@ class NET_EXPORT_PRIVATE ResolveContext : public base::CheckedObserver {
    // (alternative service info if it supports QUIC, for instance).
    const IsolationInfo& isolation_info() const { return isolation_info_; }
  

@@ -16,7 +16,7 @@ import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/generate_grd.gni")
 import("//ui/webui/resources/tools/js_modulizer.gni")
 
-preprocess_folder = "preprocessed"
+preprocess_folder = "tsc"
 preprocess_manifest = "brave_preprocessed_manifest.json"
 preprocess_gen_manifest = "brave_preprocessed_gen_manifest.json"
 
@@ -117,6 +117,7 @@ preprocess_if_expr("preprocess") {
     "brave_overrides/site_settings_page.js",
     "brave_overrides/sync_account_control.js",
     "brave_overrides/sync_controls.js",
+    "brave_reset_page/brave_reset_profile_dialog_behavior.js",
     "brave_routes.js",
     "brave_sync_page/brave_sync_browser_proxy.js",
   ]

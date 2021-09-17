@@ -1,0 +1,32 @@
+diff --git a/chrome/browser/resources/settings/lifetime_browser_proxy.ts b/chrome/browser/resources/settings/lifetime_browser_proxy.ts
+index 88d9caa34016bcf9d87a908303e77bb89df48b81..a2827a32a3885c05da3722ce99328e1033fe9461 100644
+--- a/chrome/browser/resources/settings/lifetime_browser_proxy.ts
++++ b/chrome/browser/resources/settings/lifetime_browser_proxy.ts
+@@ -9,6 +9,13 @@ export interface LifetimeBrowserProxy {
+   // Triggers a browser relaunch.
+   relaunch(): void;
+ 
++  // <if expr="is_macosx">
++  // Use separate api for relaunch after update on Mac.
++  // Chromium's relaunch api isn't compatible with sparkle framework.
++  // So, sparkle framework's relaunch api is used on Mac.
++  relaunchOnMac(): void;
++  // </if>
++
+   // <if expr="chromeos">
+   // First signs out current user and then performs a restart.
+   signOutAndRestart(): void;
+@@ -30,6 +37,13 @@ export class LifetimeBrowserProxyImpl implements LifetimeBrowserProxy {
+     chrome.send('relaunch');
+   }
+ 
++  // <if expr="is_macosx">
++  /** @override */
++  relaunchOnMac() {
++    chrome.send('relaunchOnMac');
++  }
++  // </if>
++
+   // <if expr="chromeos">
+   signOutAndRestart() {
+     chrome.send('signOutAndRestart');

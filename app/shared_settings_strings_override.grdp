@@ -9,6 +9,12 @@
   </message>
   <if expr="chromeos">
     </if>
+
+  <if expr="lacros">
+    </if>
+
+  <if expr="chromeos">
+    </if>
   <if expr="not chromeos">
       </if>
 </grit-part>

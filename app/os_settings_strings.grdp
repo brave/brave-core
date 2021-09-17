@@ -851,10 +851,13 @@
     Search
   </message>
   <message name="IDS_SETTINGS_QUICK_ANSWERS_ENABLE" desc="Title for a toggle that controls the Quick Answers feature.">
-    Quick Answers
+    Quick answers
   </message>
   <message name="IDS_SETTINGS_QUICK_ANSWERS_ENABLE_DESCRIPTION" desc="Sub label for the Quick Answers toggle.">
     With a right-click or long press, show related info for your text selection
+  </message>
+  <message name="IDS_SETTINGS_QUICK_ANSWERS_ENABLE_DESCRIPTION_WITH_LINK" desc="Sub label for the Quick Answers toggle with link to the website languages.">
+    Get definitions, translations, or unit conversions when you right-click or touch &amp; hold text. Customize translation languages in <ph name="LINK_BEGIN">&lt;a target="_blank" href="#"&gt;</ph>Website languages<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_QUICK_ANSWERS_DEFINITION_ENABLE" desc="Title for a toggle that controls the Quick Answers definiton feature.">
     Definition
@@ -1114,6 +1117,45 @@ and Ctrl+Alt+Brightness down to zoom out.
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LOCALE_SUB_LABEL_NETWORK" desc="Sub-label for a drop-down menu to select the language to use for Dictation. Describes how speech will be sent over the network to Brave for processing to create text.">
     <ph name="language">$1<ex>English</ex></ph> speech is sent to Brave for processing.
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_CHANGE_LANGUAGE_BUTTON" desc="Text on a button to open a dialog to change the Dictation language.">
+    Change
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_CHANGE_LANGUAGE_DIALOG_TITLE" desc="Title of a dialog allowing the user to change their Dictation language.">
+    Change Dictation language
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_SEARCH_HINT" desc="Hint in a language search box in the dialog allowing users to change their Dictation language.">
+    Search languages
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_SEARCH_CLEAR" desc="Hint to clear search in a language search box in the dialog allowing users to change their Dictation language.">
+    Clear search
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_RECOMMENDED" desc="Heading for suggested languages list in the Dictation change language dialog.">
+    Suggested
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_ALL" desc="Heading for the list of all Dictation languages in the Dictation change language dialog.">
+    All languages
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_NO_RESULTS" desc="Message shown when there are no Dictation languages matching the search query the user has typed.">
+    No search results
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_UPDATE_BUTTON" desc="Text on a button to update the Dictation language in the change language dialog.">
+    Update
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_CANCEL_BUTTON" desc="Text on a button to cancel the Dictation language dialog without updating the language.">
+    Cancel
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_OFFLINE_SUBTITLE" desc="Subtitle of a language in the Dictation language settings dialog which indicates that the language is availble offline.">
+    Works offline
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_OFFLINE_DESCRIPTION" desc="Description of a language that works offline in the Dictation language settings dialog." is_accessibility_with_no_ui="true">
+    <ph name="LANGUAGE">$1<ex>English</ex></ph> (works offline)
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_SELECTED_DESCRIPTION" desc="Description of a language that is selected in the Dictation language settings dialog." is_accessibility_with_no_ui="true">
+    <ph name="LANGUAGE">$1<ex>English</ex></ph> (selected)
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LANGUAGE_DIALOG_NOT_SELECTED_DESCRIPTION" desc="Description of a language that is not selected in the Dictation language settings dialog." is_accessibility_with_no_ui="true">
+    <ph name="LANGUAGE">$1<ex>English</ex></ph> (not selected)
   </message>
   <message name="IDS_SETTINGS_ON_SCREEN_KEYBOARD_LABEL" desc="Label for checkbox which enables an on-screen keyboard.">
     Enable on-screen keyboard
@@ -1510,7 +1552,7 @@ Press an assigned switch to remove assignment
     Manage your accounts here. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_DESCRIPTION_V2" desc="Description of the Account Manager Settings page for child users. Shown just below the title of the page.">
-    This page allows you to manage your signed-in Brave accounts. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    This page allows you to manage your signed-in Brave sync chains. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_FIRST_MESSAGE" desc="Description of the Account Manager Settings page for child users. Shown just below the link to learn more about account management.">
      Bookmarks, passwords, and other browser data are synced with the primary account.
@@ -1960,6 +2002,9 @@ Press an assigned switch to remove assignment
   <message name="IDS_SETTINGS_BLUETOOTH_NO_DEVICES" desc="Message displayed when there are no paired Bluetooth devices scan.">
     No paired devices
   </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIR_NEW_DEVICES" desc="Message displayed describing how to pair a new Bluetooth device.">
+    Pair new device
+  </message>
   <message name="IDS_SETTINGS_BLUETOOTH_NO_DEVICES_FOUND" desc="Message displayed when no Bluetooth devices are found after a scan.">
     No Bluetooth devices found
   </message>
@@ -1969,7 +2014,31 @@ Press an assigned switch to remove assignment
   <message name="IDS_SETTINGS_BLUETOOTH" desc="Name of the settings page which displays Bluetooth device settings.">
     Bluetooth
   </message>
-    <message name="IDS_SETTINGS_BLUETOOTH_PAIR_DEVICE_TITLE" desc="Title of the settings dialog for adding or pairing Bluetooth a device.">
+  <message name="IDS_SETTINGS_BLUETOOTH_SUMMARY_PAGE_CONNECTED_A11Y_ONE_DEVICE" desc="Accessibility only label for Bluetooth summary page, when connected to one device.">
+    Connected to Bluetooth device named <ph name="DEVICE">$1<ex>Beats</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_SUMMARY_PAGE_CONNECTED_A11Y_TWO_DEVICES" desc="Accessibility only label for Bluetooth summary page, when connected to two devices.">
+    Connected to Bluetooth devices named <ph name="FIRST_DEVICE">$1<ex>Beats</ex></ph> and <ph name="SECOND_DEVICE">$2<ex>Mouse</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_SUMMARY_PAGE_CONNECTED_A11Y_TWO_OR_MORE_DEVICES" desc="Accessibility only label for Bluetooth summary page, when connected to two or more devices.">
+    Connected to <ph name="DEVICE">$1<ex>Beats</ex></ph> and <ph name="NUMBER_OF_DEVICES">$2<ex>2</ex></ph> other Bluetooth devices
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_SUMMARY_PAGE_TWO_OR_MORE_DEVICES_DESCRIPTION" desc="Label for Bluetooth summary page, when connected to two or more devices.">
+    <ph name="DEVICE">$1<ex>Beats</ex></ph> and <ph name="NUMBER_OF_DEVICES">$2<ex>2</ex></ph> others
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_SUMMARY_PAGE_TWO_DEVICES_DESCRIPTION" desc="Label for Bluetooth summary page, when connected to two devices.">
+    <ph name="FIRST_DEVICE">$1<ex>Beats</ex></ph>, <ph name="SECOND_DEVICE">$2<ex>Mouse</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_SUMMARY_PAGE_OFF" desc="Label for Bluetooth summary page, when Bluetooth is off.">
+    Off
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_SUMMARY_PAGE_ON" desc="Label for Bluetooth summary page, when Bluetooth is on but no devices are connected.">
+    On
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAILS" desc="Name of the settings page which displays Bluetooth device details.">
+    Bluetooth device details
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIR_DEVICE_TITLE" desc="Title of the settings dialog for adding or pairing Bluetooth a device.">
     Connect to Bluetooth device
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_REMOVE" desc="Label for removing (unpairing) a paired Bluetooth device">
@@ -2475,12 +2544,6 @@ Press an assigned switch to remove assignment
   <message name="IDS_SETTINGS_INTERNET_DEVICE_ENABLING" desc="Settings &gt; Internet &gt; Message when a device (e.g a Cellular modem) is enabling.">
     Enabling
   </message>
-  <message name="IDS_SETTINGS_INTERNET_DEVICE_DISABLING" desc="Settings &gt; Internet &gt; Message when a Cellular modem is turning off (disabling).">
-    Turning off
-  </message>
-  <message name="IDS_SETTINGS_INTERNET_DEVICE_INITIALIZING" desc="Settings &gt; Internet &gt; Message when a device (e.g a Cellular modem) is initializing.">
-    Initializing
-  </message>
   <message name="IDS_SETTINGS_INTERNET_DEVICE_BUSY" desc="Settings &gt; Internet &gt; Message when the cellular modem is busy applying updates (e.g., installing an eSIM profile).">
     Applying changes...
   </message>
@@ -2501,12 +2564,6 @@ Press an assigned switch to remove assignment
   </message>
   <message name="IDS_SETTINGS_INTERNET_TOGGLE_MOBILE_ACCESSIBILITY_LABEL" desc="Accessibility only label for mobile data enable/disable toggle .">
     Mobile data enable
-  </message>
-  <message name="IDS_SETTINGS_INTERNET_TOGGLE_TETHER_LABEL" desc="Settings &gt; Internet: Label for Tether enable/disable toggle .">
-    Get data connection
-  </message>
-  <message name="IDS_SETTINGS_INTERNET_TOGGLE_TETHER_SUBTEXT" desc="Settings &gt; Internet: Description for Tether enable/disable toggle .">
-    Let this device find other devices with your Brave sync chain that have a mobile data connection
   </message>
   <message name="IDS_SETTINGS_INTERNET_TOGGLE_WIFI_ACCESSIBILITY_LABEL" desc="Accessibility only label for WiFi enable/disable toggle .">
     Wi-Fi enable
@@ -2861,8 +2918,14 @@ Press an assigned switch to remove assignment
   <message name="IDS_SETTINGS_USERS_REMOVE_USER_TOOLTIP" desc="Tooltip for the button that removes a user from the list of restricted sign in users.">
     Remove <ph name="USER_NAME">$1<ex>John Smith</ex></ph>
   </message>
+  <message name="IDS_SETTINGS_USERS_USER_REMOVED_MESSAGE" desc="Message announced by screen reader after removal of the user from the list of restricted sign in users.">
+    <ph name="USER_NAME_OR_EMAIL">$1<ex>John Smith</ex></ph> removed
+  </message>
   <message name="IDS_SETTINGS_USERS_ADD_USERS" desc="Label the dialog for adding users.">
     Add user
+  </message>
+  <message name="IDS_SETTINGS_USERS_USER_ADDED_MESSAGE" desc="Message announced by screen reader after addition of the user to the list of restricted sign in users.">
+    <ph name="USER_EMAIL">$1<ex>user@gmail.com</ex></ph> added
   </message>
   <message name="IDS_SETTINGS_USERS_ADD_USERS_EMAIL" desc="Label for the email input field for adding users.">
     Email address
@@ -3786,6 +3849,15 @@ Press an assigned switch to remove assignment
   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_LINK_TEXT" desc="The label for the settings row button in the App section of OS Settings which links to the App Notifications page.">
     Notifications
   </message>
+  <message name="IDS_SETTINGS_APP_NOTIFICATIONS_DO_NOT_DISTURB_TOGGLE_TITLE" desc="The label for the notfications DoNotDisturb toggle that lets the user silence all app notifications.">
+    Do not disturb
+  </message>
+   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_DO_NOT_DISTURB_TOGGLE_DESCRIPTION" desc="The text description of the DoNotDisturb toggle within help icon tooltip.">
+    When turned on, all notifications will be silenced
+  </message>
+  <message name="IDS_SETTINGS_APP_NOTIFICATIONS_LINK_TO_BROWSER_SETTINGS_DESCRIPTION" desc="In notifications OSSettings subpage, explanatory text for website notifications link.">
+    For website notifications, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>Brave Settings<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Google Play Store (Arc++ / Android Apps) section.">
     Google Play Store
   </message>
@@ -3806,6 +3878,16 @@ Press an assigned switch to remove assignment
   </message>
   <message name="IDS_SETTINGS_APP_DETAILS_TITLE" desc="The title of app details subpage, which displays details about a specific app.">
     App details
+  </message>
+
+   <!-- Apps > Manage your apps > Borealis -->
+   <!-- TODO(b/194640944): Replace "borealis" string before launch -->
+  <message name="IDS_SETTINGS_APPS_BOREALIS_MAIN_PERMISSION_TEXT" translateable="false" desc="Describes how Borealis permissions are applied on main app with learn more link.">
+    Permission settings applied here are applied across all Borealis apps. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_APPS_BOREALIS_APP_PERMISSION_TEXT" translateable="false" desc="Link to main Borealis app from other borealis apps.">
+    Permissions for apps installed by Borealis are managed via the <ph name="LINK_BEGIN">&lt;a&gt;</ph>Borealis app settings<ph name="LINK_END">&lt;/a&gt;</ph>.
+    Borealis permission settings are applied across all Borealis applications.
   </message>
 
   <!-- Apps > Manage your apps > Parallels -->

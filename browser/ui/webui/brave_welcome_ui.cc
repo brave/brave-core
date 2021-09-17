@@ -101,8 +101,9 @@ void WelcomeDOMHandler::HandleImportNowRequested(const base::ListValue* args) {
 }
 
 void WelcomeDOMHandler::HandleRecordP3A(const base::ListValue* args) {
-  if (!args->GetInteger(0, &screen_number_))
+  if (!args->GetList()[0].is_int())
     return;
+  screen_number_ = args->GetList()[0].GetInt();
   if (!args->GetBoolean(1, &finished_))
     return;
   if (!args->GetBoolean(2, &skipped_))
