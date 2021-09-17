@@ -8,3 +8,26 @@
 -keep class org.chromium.chrome.browser.ChromeTabbedActivity {
     *** hideOverview(...);
 }
+
+-keep class org.chromium.components.browser_ui.site_settings.ContentSettingsResources {
+    private static *** getResourceItem(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.SingleCategorySettings {
+    private *** getAddExceptionDialogMessage();
+    private void resetList();
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.SingleWebsiteSettings {
+    private static *** getPreferenceKey(...);
+    private void setupContentSettingsPreferences();
+    private void setupContentSettingsPreference(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.Website {
+    public *** getPermissionInfo(...);
+    public *** getContentSettingException(...);
+    public *** getAddress();
+    public void setContentSettingException(...);
+    public void setContentSetting(...);
+}

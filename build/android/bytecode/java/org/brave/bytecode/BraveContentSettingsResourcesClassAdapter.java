@@ -21,6 +21,6 @@ public class BraveContentSettingsResourcesClassAdapter extends BraveClassVisitor
                 sContentSettingsResourcesClassName, "getResourceItem", sBraveContentSettingsResourcesClassName);
         makePublicInnerClass(sContentSettingsResourcesClassName, "ResourceItem");
         redirectConstructor(sBraveContentSettingsResourcesResourceItemClassName, sContentSettingsResourcesResourceItemClassName);
-        redirectTypeInMethod("getResourceItem", sBraveContentSettingsResourcesResourceItemClassName, sContentSettingsResourcesResourceItemClassName);
+        redirectTypeInMethod(sBraveContentSettingsResourcesClassName, "getResourceItem", sBraveContentSettingsResourcesResourceItemClassName, sContentSettingsResourcesResourceItemClassName);
     }
 }

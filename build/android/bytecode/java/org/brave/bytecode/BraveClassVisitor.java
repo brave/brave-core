@@ -93,14 +93,12 @@ class BraveClassVisitor extends ClassVisitor {
                 type = newType;
             }
             // Point one type in method to another
-            if (mRedirectMethodType.containsKey(mMethod.name)) {
-                Map<String, String> types = mRedirectMethodType.get(mMethod.name);
-                if (types.containsKey(type)) {
-                    String newType = types.get(type);
-                    System.out.println("redirecting type in method " + mMethod.name + " from "
-                            + type + " to " + newType);
-                    type = newType;
-                }
+            Map<String, String> types = getMapForRedirectTypeInMethod(mName, mMethod.name);
+            if (types != null && types.containsKey(type)) {
+                String newType = types.get(type);
+                System.out.println("redirecting type in method " + mMethod.name
+                        + " in class " + mName + " from " + type + " to " + newType);
+                type = newType;
             }
             super.visitTypeInsn(opcode, type);
         }
@@ -129,8 +127,8 @@ class BraveClassVisitor extends ClassVisitor {
     private Map<String, Map<String, ArrayList<String>>> mAddAnnotations =
             new HashMap<String, Map<String, ArrayList<String>>>();
     private Map<String, String> mRedirectConstructors = new HashMap<String, String>();
-    private Map<String, Map<String, String>> mRedirectMethodType =
-            new HashMap<String, Map<String, String>>();
+    private Map<String, Map<String, Map<String, String>>> mRedirectMethodType =
+            new HashMap<String, Map<String, Map<String, String>>>();
     private ArrayList<String> mMakeNonFinalClasses = new ArrayList<String>();
 
     public BraveClassVisitor(ClassVisitor visitor) {
@@ -169,7 +167,7 @@ class BraveClassVisitor extends ClassVisitor {
             String entryClassName = entry.getKey();
             ArrayList<String> methodNames = entry.getValue();
             // Why className.contains(entryClassName)? This seems erroneous
-            if (className.equals(entryClassName) != className.contains(entryClassName)) {
+            if (methodNames.contains(methodName) && className.equals(entryClassName) != className.contains(entryClassName)) {
                    System.out.println("Warning: class name " + className + " may not be written correctly!");
             }
             return className.contains(entryClassName) &&
@@ -369,12 +367,34 @@ class BraveClassVisitor extends ClassVisitor {
         mRedirectConstructors.put(originalClassName, newClassName);
     }
 
-    protected void redirectTypeInMethod(
+    private Map<String, String> getMapForRedirectTypeInMethod(String className, String methodName) {
+        for(Map.Entry<String, Map<String, Map<String, String>>> entry :
+                mRedirectMethodType.entrySet()) {
+            String entryClassName = entry.getKey();
+            Map<String, Map<String, String>> methodNames = entry.getValue();
+            for(Map.Entry<String, Map<String, String>> entryMethod :
+                methodNames.entrySet()) {
+                String entryMethodName = entryMethod.getKey();
+                Map<String, String> typeNames = entryMethod.getValue();
+                if (className.equals(entryClassName) && entryMethodName.equals(methodName))
+                    return typeNames;
+            }
+        }
+
+        return null;
+    }
+
+    protected void redirectTypeInMethod(String className,
             String methodName, String originalTypeName, String newTypeName) {
-        Map types = mRedirectMethodType.get(methodName);
+        Map<String, Map<String, String>> methods = mRedirectMethodType.get(className);
+        if (methods == null) {
+            methods = new HashMap<String, Map<String, String>>();
+            mRedirectMethodType.put(className, methods);
+        }
+        Map<String, String> types = methods.get(methodName);
         if (types == null) {
             types = new HashMap<String, String>();
-            mRedirectMethodType.put(methodName, types);
+            methods.put(methodName, types);
         }
         types.put(originalTypeName, newTypeName);
     }
@@ -451,16 +471,16 @@ class BraveClassVisitor extends ClassVisitor {
                                      String signature,
                                      String[] exceptions) {
         // This part changes the type in method declaration
-        if (mRedirectMethodType.containsKey(name)) {
-            Map<String, String> types = mRedirectMethodType.get(name);
+        Map<String, String> types = getMapForRedirectTypeInMethod(mName, name);
+        if (types != null) {
             for (Map.Entry<String, String> entry : types.entrySet()) {
                 String originalTypeName = entry.getKey();
                 String newTypeName = entry.getValue();
                 if (desc.contains(originalTypeName)) {
                     // Use literal replacement like other methods in the class
                     desc = desc.replace(originalTypeName, newTypeName);
-                    System.out.println("redirecting type in method declaration " + name + " from "
-                            + originalTypeName + " to " + newTypeName);
+                    System.out.println("redirecting type in method declaration " + name + " in class "
+                            + mName + " from " + originalTypeName + " to " + newTypeName);
                 }
             }
         }

@@ -10,7 +10,7 @@ import org.chromium.base.annotations.UsedByReflection;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.components.content_settings.ContentSettingValues;
 import org.chromium.components.content_settings.ContentSettingsType;
-import org.chromium.components.embedder_support.browser_context.BrowserContextHandle;
+import org.chromium.content_public.browser.BrowserContextHandle;
 
 @UsedByReflection("Website")
 public class BraveWebsite {

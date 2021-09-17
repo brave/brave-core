@@ -12,7 +12,7 @@ import org.chromium.base.annotations.UsedByReflection;
 import org.chromium.base.Log;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.components.content_settings.ContentSettingsType;
-import org.chromium.components.embedder_support.browser_context.BrowserContextHandle;
+import org.chromium.content_public.browser.BrowserContextHandle;
 
 @UsedByReflection("brave_site_settings_preferences.xml")
 public class BraveSingleCategorySettings extends SiteSettingsPreferenceFragment

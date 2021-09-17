@@ -16,7 +16,7 @@ import org.chromium.base.BraveReflectionUtil;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.content_settings.ContentSettingValues;
 import org.chromium.components.content_settings.ContentSettingsType;
-import org.chromium.components.embedder_support.browser_context.BrowserContextHandle;
+import org.chromium.content_public.browser.BrowserContextHandle;
 
 
 public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
