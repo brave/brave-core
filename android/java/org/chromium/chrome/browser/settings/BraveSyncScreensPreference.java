@@ -999,9 +999,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         mShowCategoriesButton.setVisibility(View.GONE);
         mAddDeviceButton.setVisibility(View.GONE);
 
-        PostTask.postDelayedTask(
-                UiThreadTaskTraits.USER_VISIBLE, () -> leaveSyncChainComplete(), 5 * 1000);
-
         ViewGroup devicesUiGroup = (ViewGroup) getView().findViewById(R.id.brave_sync_devices);
         if (devicesUiGroup != null) {
             devicesUiGroup.removeAllViews();
