@@ -776,16 +776,17 @@ void KeyringController::AddHardwareAccounts(
 
   base::Value* hardware_keyrings = GetPrefForHardwareKeyringUpdate(prefs_);
 
-  const base::Value* device_value = hardware_keyrings->FindKey(device_id);
-  base::Value device_keyring(base::Value::Type::DICTIONARY);
-  if (device_value)
-    device_keyring = device_value->Clone();
+  base::Value* device_value = hardware_keyrings->FindKey(device_id);
+  if (!device_value) {
+    device_value = hardware_keyrings->SetKey(
+        device_id, base::Value(base::Value::Type::DICTIONARY));
+  }
 
-  const base::Value* meta_value = device_keyring.FindKey(kAccountMetas);
-  base::Value account_meta(base::Value::Type::DICTIONARY);
-  if (meta_value)
-    account_meta = meta_value->Clone();
-
+  base::Value* meta_value = device_value->FindKey(kAccountMetas);
+  if (!meta_value) {
+    meta_value = device_value->SetKey(
+        kAccountMetas, base::Value(base::Value::Type::DICTIONARY));
+  }
   for (const auto& info : infos) {
     DCHECK_EQ(hardware_vendor, info->hardware_vendor);
     if (hardware_vendor != info->hardware_vendor)
@@ -795,11 +796,8 @@ void KeyringController::AddHardwareAccounts(
     hw_account.SetStringKey(kHardwareVendor, info->hardware_vendor);
     hw_account.SetStringKey(kHardwareDerivationPath, info->derivation_path);
 
-    account_meta.SetKey(info->address, std::move(hw_account));
+    meta_value->SetKey(info->address, std::move(hw_account));
   }
-
-  device_keyring.SetKey(kAccountMetas, std::move(account_meta));
-  hardware_keyrings->SetKey(device_id, std::move(device_keyring));
 
   NotifyAccountsChanged();
 }
