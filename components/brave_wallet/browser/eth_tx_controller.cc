@@ -222,8 +222,9 @@ void EthTxController::ApproveTransaction(const std::string& tx_meta_id,
   }
 
   if (!meta->last_gas_price) {
+    auto from = EthAddress(meta->from);
     nonce_tracker_->GetNextNonce(
-        meta->from,
+        from,
         base::BindOnce(&EthTxController::OnGetNextNonce,
                        weak_factory_.GetWeakPtr(), std::move(meta), chain_id));
   } else {
