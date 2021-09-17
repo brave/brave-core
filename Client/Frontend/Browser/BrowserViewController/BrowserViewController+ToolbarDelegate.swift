@@ -256,7 +256,8 @@ extension BrowserViewController: TopToolbarDelegate {
                 let shieldsAndPrivacy = BraveShieldsAndPrivacySettingsController(
                     profile: self.profile,
                     tabManager: self.tabManager,
-                    feedDataSource: self.feedDataSource
+                    feedDataSource: self.feedDataSource,
+                    historyAPI: self.historyAPI
                 )
                 let container = SettingsNavigationController(rootViewController: shieldsAndPrivacy)
                 container.isModalInPresentation = true
@@ -319,7 +320,7 @@ extension BrowserViewController: TopToolbarDelegate {
         searchController.searchDelegate = self
         searchController.profile = self.profile
 
-        searchLoader = SearchLoader()
+        searchLoader = SearchLoader(historyAPI: historyAPI, bookmarkAPI: bookmarkAPI)
         searchLoader?.addListener(searchController)
         searchLoader?.autocompleteSuggestionHandler = { [weak self] completion in
             self?.topToolbar.setAutocompleteSuggestion(completion)
@@ -445,7 +446,8 @@ extension BrowserViewController: TopToolbarDelegate {
     
     private func showBookmarkController() {
         let bookmarkViewController = BookmarksViewController(
-            folder: Bookmarkv2.lastVisitedFolder(),
+            folder: bookmarkAPI.lastVisitedFolder(),
+            bookmarkAPI: bookmarkAPI,
             isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
         
         bookmarkViewController.toolbarUrlActionsDelegate = self
@@ -464,7 +466,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
         let mode = BookmarkEditMode.addBookmark(title: selectedTab.displayTitle, url: bookmarkUrl.absoluteString)
 
-        let addBookMarkController = AddEditBookmarkTableViewController(mode: mode)
+        let addBookMarkController = AddEditBookmarkTableViewController(bookmarkAPI: bookmarkAPI, mode: mode)
 
         presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
     }
@@ -624,7 +626,7 @@ extension BrowserViewController: ToolbarDelegate {
         if tabManager.openedWebsitesCount > 0 {
             controller.addAction( UIAlertAction(title: Strings.bookmarkAllTabsTitle, style: .default, handler: { [unowned self] _ in
                 let mode =  BookmarkEditMode.addFolderUsingTabs(title: Strings.savedTabsFolderTitle, tabList: tabManager.tabsForCurrentMode)
-                let addBookMarkController = AddEditBookmarkTableViewController(mode: mode)
+                let addBookMarkController = AddEditBookmarkTableViewController(bookmarkAPI: bookmarkAPI, mode: mode)
                 
                 presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
             }), accessibilityIdentifier: "toolbarTabButtonLongPress.bookmarkTab")

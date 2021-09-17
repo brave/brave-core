@@ -41,8 +41,9 @@ extension BraveSyncAPI {
     }
     
     func enableSyncTypes() {
+        // TODO: Handle fetching syncProfileService from using AppDelegate IOS-4170
         guard let syncProfileService =
-                (UIApplication.shared.delegate as? AppDelegate)?.braveCore?.syncProfileService else {
+                (UIApplication.shared.delegate as? AppDelegate)?.braveCore.syncProfileService else {
             return
         }
 
