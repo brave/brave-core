@@ -7,11 +7,14 @@
 
 #include <utility>
 
+#include "base/base64.h"
 #include "base/bind_post_task.h"
+#include "base/json/json_reader.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
+#include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/browser/api/storage/backend_task_runner.h"
 #include "extensions/browser/api/storage/storage_frontend.h"
@@ -39,6 +42,11 @@ void OnRunWithStorage(
   ValueStore::ReadResult result = storage->Get();
   std::move(callback).Run(result.PassSettings());
 }
+
+static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
+  return base::as_bytes(base::make_span(sp));
+}
+
 }  // namespace
 
 BraveWalletImporterDelegateImpl::BraveWalletImporterDelegateImpl(
@@ -59,6 +67,7 @@ void BraveWalletImporterDelegateImpl::ImportFromBraveCryptoWallet(
           context_);
   service->MaybeLoadCryptoWalletsExtension(base::DoNothing());
   callback_ = std::move(callback);
+  password_ = password;
 }
 void BraveWalletImporterDelegateImpl::ImportFromMetamask(
     const std::string& password,
@@ -75,6 +84,7 @@ void BraveWalletImporterDelegateImpl::ImportFromMetamask(
   }
 
   GetLocalStorage(extension, std::move(callback));
+  password_ = password;
 }
 
 void BraveWalletImporterDelegateImpl::OnExtensionLoaded(
@@ -129,6 +139,57 @@ void BraveWalletImporterDelegateImpl::OnGetLocalStorage(
     base::OnceCallback<void(bool)> callback,
     std::unique_ptr<base::DictionaryValue> dict) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  const std::string* vault_str =
+      dict->FindStringPath("data.KeyringController.vault");
+  if (!vault_str) {
+    VLOG(0) << "cannot find data.KeyringController.vault";
+    std::move(callback).Run(false);
+    return;
+  }
+  auto vault = base::JSONReader::Read(*vault_str);
+  if (!vault) {
+    std::move(callback).Run(false);
+    return;
+  }
+  auto* data_str = vault->FindStringKey("data");
+  auto* iv_str = vault->FindStringKey("iv");
+  auto* salt_str = vault->FindStringKey("salt");
+  if (!data_str || !iv_str || !salt_str) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  std::string salt_decoded;
+  if (!base::Base64Decode(*salt_str, &salt_decoded)) {
+    std::move(callback).Run(false);
+    return;
+  }
+  std::string iv_decoded;
+  if (!base::Base64Decode(*iv_str, &iv_decoded)) {
+    std::move(callback).Run(false);
+    return;
+  }
+  std::string data_decoded;
+  if (!base::Base64Decode(*data_str, &data_decoded)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  std::unique_ptr<PasswordEncryptor> encryptor =
+      PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+          password_, ToSpan(salt_decoded), 10000, 256);
+  DCHECK(encryptor);
+
+  std::vector<uint8_t> decrypted_keyring;
+  if (!encryptor->DecryptForImporter(ToSpan(data_decoded), ToSpan(iv_decoded),
+                                     &decrypted_keyring)) {
+    VLOG(1) << "Importer decryption failed";
+    std::move(callback).Run(false);
+    return;
+  }
+
+  LOG(ERROR) << std::string(decrypted_keyring.begin(), decrypted_keyring.end());
+
   std::move(callback).Run(true);
 }
 

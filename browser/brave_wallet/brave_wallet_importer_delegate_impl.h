@@ -62,6 +62,7 @@ class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate,
 
   mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
   content::BrowserContext* context_;
+  std::string password_;
   ImportFromBraveCryptoWalletCallback callback_;
   scoped_refptr<extensions::Extension> extension_;
   base::WeakPtrFactory<BraveWalletImporterDelegateImpl> weak_ptr_factory_;

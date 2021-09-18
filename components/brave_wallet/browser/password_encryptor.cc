@@ -70,4 +70,34 @@ bool PasswordEncryptor::Decrypt(base::span<const uint8_t> ciphertext,
   return true;
 }
 
+bool PasswordEncryptor::DecryptForImporter(base::span<const uint8_t> ciphertext,
+                                           base::span<const uint8_t> nonce,
+                                           std::vector<uint8_t>* plaintext) {
+  if (!plaintext)
+    return false;
+  crypto::Aead aead(crypto::Aead::AES_256_GCM);
+  aead.Init(key_);
+  // MM uses 16 bytes nonce while boringSSL expect it to be 12
+  // https://github.com/MetaMask/browser-passworder/blob/2c8195a4bfe3778571eb35117159f448fef07865/src/index.ts#L42-L51
+  //
+  // From aead.h in boringSSL
+  // Note: AES-GCM should only be used with 12-byte (96-bit) nonces. Although it
+  // is specified to take a variable-length nonce, nonces with other lengths are
+  // effectively randomized, which means one must consider collisions. Unless
+  // implementing an existing protocol which has already specified incorrect
+  // parameters, only use 12-byte nonces.
+  //
+  // so we override the nonce length to prevent DCHECK failure
+  if (nonce.size() != aead.NonceLength()) {
+    aead.OverrideNonceLength(nonce.size());
+  }
+  absl::optional<std::vector<uint8_t>> decrypted =
+      aead.Open(ciphertext, nonce, std::vector<uint8_t>());
+  if (!decrypted)
+    return false;
+  *plaintext = std::vector<uint8_t>(decrypted->data(),
+                                    decrypted->data() + decrypted->size());
+  return true;
+}
+
 }  // namespace brave_wallet

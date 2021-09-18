@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/gtest_prod_util.h"
 
 namespace brave_wallet {
 
@@ -34,7 +35,13 @@ class PasswordEncryptor {
                base::span<const uint8_t> nonce,
                std::vector<uint8_t>* plaintext);
 
+  // This can only be used by wallet importer
+  bool DecryptForImporter(base::span<const uint8_t> ciphertext,
+                          base::span<const uint8_t> nonce,
+                          std::vector<uint8_t>* plaintext);
+
  private:
+  FRIEND_TEST_ALL_PREFIXES(PasswordEncryptorUnitTest, DecryptForImporter);
   explicit PasswordEncryptor(const std::vector<uint8_t> key);
 
   // symmetric key used to encrypt and decrypt
