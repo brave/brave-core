@@ -85,6 +85,10 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new IPFSUI(web_ui, url.host());
 #endif  // BUILDFLAG(ENABLE_IPFS)
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+  } else if (host == kCryptoWalletsHost) {
+    return new EthereumRemoteClientUI(web_ui, url.host());
+#endif
   } else if (host == kWalletPageHost) {
     if (brave_wallet::IsNativeWalletEnabled()) {
       return new WalletPageUI(web_ui);
@@ -142,6 +146,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
       url.host_piece() == kWalletPanelHost ||
       url.host_piece() == kWalletPageHost ||
+      url.host_piece() == kCryptoWalletsHost ||
 #endif
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost ||

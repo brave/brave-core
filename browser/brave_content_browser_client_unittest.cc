@@ -6,6 +6,7 @@
 #include "brave/browser/brave_content_browser_client.h"
 
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/common/webui_url_constants.h"
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -18,6 +19,7 @@
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "content/public/common/content_client.h"
 
@@ -60,7 +62,7 @@ class BraveWalleBrowserClientUnitTest
 
 TEST_F(BraveWalleBrowserClientUnitTest,
     DoesNotResolveEthereumRemoteClientIfNotInstalled) {
-  GURL url("chrome://wallet/");
+  GURL url(kCryptoWalletsURL);
   ASSERT_FALSE(BraveContentBrowserClient::HandleURLOverrideRewrite(
         &url, browser_context()));
 }
@@ -68,10 +70,35 @@ TEST_F(BraveWalleBrowserClientUnitTest,
 TEST_F(BraveWalleBrowserClientUnitTest,
     ResolvesEthereumRemoteClientIfInstalled) {
   AddExtension();
-  GURL url("chrome://wallet/");
+  GURL url(kCryptoWalletsURL);
   ASSERT_TRUE(BraveContentBrowserClient::HandleURLOverrideRewrite(
         &url, browser_context()));
   ASSERT_STREQ(url.spec().c_str(), ethereum_remote_client_base_url);
+}
+
+TEST_F(BraveWalleBrowserClientUnitTest,
+       WalletMapsToCryptoWalletsExtWhenNativeWalletDisabled) {
+  AddExtension();
+  base::test::ScopedFeatureList scoped_feature_list_;
+  scoped_feature_list_.InitAndDisableFeature(
+      brave_wallet::features::kNativeBraveWalletFeature);
+  GURL url(kBraveUIWalletURL);
+  ASSERT_TRUE(BraveContentBrowserClient::HandleURLOverrideRewrite(
+      &url, browser_context()));
+  ASSERT_STREQ(url.spec().c_str(), ethereum_remote_client_base_url);
+}
+
+TEST_F(BraveWalleBrowserClientUnitTest,
+       WalletMapsToCryptoWalletsWhenNativeWalletDisabled) {
+  // In this case there is no extension added, we should map to
+  // brave://crypto-wallets
+  base::test::ScopedFeatureList scoped_feature_list_;
+  scoped_feature_list_.InitAndDisableFeature(
+      brave_wallet::features::kNativeBraveWalletFeature);
+  GURL url(kBraveUIWalletURL);
+  ASSERT_TRUE(BraveContentBrowserClient::HandleURLOverrideRewrite(
+      &url, browser_context()));
+  ASSERT_STREQ(url.spec().c_str(), kCryptoWalletsURL);
 }
 
 }  // namespace extensions

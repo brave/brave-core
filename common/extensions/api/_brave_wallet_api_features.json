@@ -21,7 +21,8 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://settings/*",
-      "chrome://wallet/*"
+      "chrome://wallet/*",
+      "chrome://crypto-wallets/*"
     ],
     "default_parent": true
   }],

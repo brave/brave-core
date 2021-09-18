@@ -21,7 +21,10 @@
 
 bool ShouldTrackURLForRestore(const GURL& url) {
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  if (url.SchemeIs(content::kChromeUIScheme) && url.host() == "wallet") {
+  // TODO(bbondy): Once we have wallet live we should allow session restore here
+  // for brave://wallet
+  if (url.SchemeIs(content::kChromeUIScheme) &&
+      (url.host() == "crypto-wallets" || url.host() == "wallet")) {
     return false;
   } else if (url.SchemeIs("chrome-extension") &&
              url.host() == ethereum_remote_client_extension_id) {

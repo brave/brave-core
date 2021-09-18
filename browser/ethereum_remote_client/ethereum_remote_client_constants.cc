@@ -21,5 +21,5 @@ const char ethereum_remote_client_phishing_url[] =
     "chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/phishing.html";
 const char ethereum_remote_client_ens_redirect_url[] =
     "chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/loading.html";
-const char ethereum_remote_client_host[] = "wallet";
+const char ethereum_remote_client_host[] = "crypto-wallets";
 const char metamask_extension_id[] = "nkbihfbeogaeaoehlefnkodbefgpgknn";

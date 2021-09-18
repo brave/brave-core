@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_pages.h"
 
+#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -16,6 +17,10 @@
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #endif
 
 namespace brave {
@@ -48,8 +53,16 @@ void ShowWebcompatReporter(Browser* browser) {
 }
 
 void ShowBraveWallet(Browser* browser) {
-  NavigateParams params(
-      GetSingletonTabNavigateParams(browser, GURL(kBraveUIWalletURL)));
+  GURL url(kBraveUIWalletURL);
+
+// If ethereum-remote-client is enabled then brave-wallet also be
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+  if (!brave_wallet::IsNativeWalletEnabled()) {
+    url = GURL(kCryptoWalletsURL);
+  }
+#endif  // if BUILDFLAG(BRAVE_WALLET_ENABLED)
+
+  NavigateParams params(GetSingletonTabNavigateParams(browser, url));
   ShowSingletonTabOverwritingNTP(browser, &params);
 }
 

@@ -21,7 +21,7 @@ function initialize () {
   chrome.braveWallet.shouldPromptForSetup((prompt: boolean) => {
     if (!prompt) {
       chrome.braveWallet.loadUI(() => {
-        window.location.href = 'chrome://wallet'
+        window.location.href = 'chrome://crypto-wallets'
       })
       return
     }

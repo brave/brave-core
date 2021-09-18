@@ -408,7 +408,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
 #endif
       }
     }, {
-      std::string("wallet"), {
+      std::string("crypto-wallets"), {
         { "cryptoWalletsWelcome", IDS_BRAVE_WALLET_WELCOME },
         { "cryptoWalletsDisclosureOne", IDS_BRAVE_WALLET_DISCLOSURE_ONE },
         { "cryptoWalletsDisclosureTwo", IDS_BRAVE_WALLET_DISCLOSURE_TWO },
