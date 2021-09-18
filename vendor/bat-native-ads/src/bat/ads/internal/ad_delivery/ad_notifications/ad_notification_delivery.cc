@@ -9,8 +9,6 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/client/client.h"
-#include "bat/ads/internal/p2a/p2a_ad_impressions/p2a_ad_impression.h"
 
 namespace ads {
 namespace ad_notifications {
@@ -33,10 +31,6 @@ bool AdDelivery::MaybeDeliverAd(const AdNotificationInfo& ad) {
   if (!ad.IsValid()) {
     return false;
   }
-
-  Client::Get()->UpdateSeenAd(ad);
-
-  p2a::RecordAdImpression(ad);
 
   DeliverAd(ad);
 
