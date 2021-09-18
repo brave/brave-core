@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/no_destructor.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
@@ -23,6 +24,9 @@ enum class Web3ProviderTypes {
 
 extern const char kAssetRatioBaseURL[];
 extern const char kSwapBaseURL[];
+
+constexpr uint256_t kDefaultSendEthGasLimit = 21000;
+constexpr uint256_t kDefaultSendEthGasPrice = 150000000000ULL;  // 150 Gwei
 
 // List of assets from Wyre, available to buy
 static base::NoDestructor<std::vector<mojom::ERCToken>> kBuyTokens(

@@ -54,11 +54,12 @@ bool GetTransactionInfoFromData(const std::string& data,
                                 std::vector<std::string>* tx_params,
                                 std::vector<std::string>* tx_args) {
   CHECK(tx_type);
-  CHECK(tx_params);
-  CHECK(tx_args);
 
-  tx_params->clear();
-  tx_args->clear();
+  if (tx_params)
+    tx_params->clear();
+  if (tx_args)
+    tx_args->clear();
+
   *tx_type = mojom::TransactionType::Other;
 
   static std::map<std::string, mojom::TransactionType> kEthDataFunctionHashes =
@@ -96,10 +97,16 @@ bool GetTransactionInfoFromData(const std::string& data,
     // Very strictly must have correct data
     if (left_over_data.length() > 0)
       return false;
-    tx_args->push_back(address);
-    tx_args->push_back(value);
-    tx_params->push_back("address");
-    tx_params->push_back("uint256");
+
+    if (tx_args) {
+      tx_args->push_back(address);
+      tx_args->push_back(value);
+    }
+
+    if (tx_params) {
+      tx_params->push_back("address");
+      tx_params->push_back("uint256");
+    }
   }
 
   return true;
