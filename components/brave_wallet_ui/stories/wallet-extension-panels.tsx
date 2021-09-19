@@ -409,6 +409,10 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     alert('Will go to Wallet Settings')
   }
 
+  const onRestore = () => {
+    alert('Will navigate to full wallet restore page')
+  }
+
   return (
     <StyledExtensionWrapper>
       {walletLocked ? (
@@ -417,6 +421,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
           onSubmit={unlockWallet}
           disabled={inputValue === ''}
           onPasswordChanged={handlePasswordChanged}
+          onClickRestore={onRestore}
         />
       ) : (
         <>

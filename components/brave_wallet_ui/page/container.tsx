@@ -69,7 +69,7 @@ type Props = {
 
 function Container (props: Props) {
   let history = useHistory()
-  const walletLocation = useLocation().pathname
+  const { pathname: walletLocation } = useLocation()
   // Wallet Props
   const {
     isWalletCreated,
@@ -93,7 +93,6 @@ function Container (props: Props) {
 
   // Page Props
   const {
-    // showRecoveryPhrase,
     invalidMnemonic,
     mnemonic,
     selectedTimeline,
@@ -103,7 +102,6 @@ function Container (props: Props) {
     selectedAssetPriceHistory,
     setupStillInProgress,
     isFetchingPriceHistory,
-    // showIsRestoring,
     privateKey,
     importError,
     showAddModal
@@ -541,7 +539,7 @@ function Container (props: Props) {
               recoveryPhrase={recoveryPhrase}
             />
           </Route>
-          <Route path={WalletRoutes.CryptoPage}>
+          <Route path={WalletRoutes.CryptoPage} exact={true}>
             {(isWalletCreated && !setupStillInProgress) && !isWalletLocked && walletLocation !== WalletRoutes.Backup &&
               <CryptoView
                 onLockWallet={lockWallet}

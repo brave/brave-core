@@ -152,7 +152,6 @@ const CryptoView = (props: Props) => {
         setHideNav(false)
       }
     }
-    console.log(id)
   }, [id, userVisibleTokensInfo, category, accounts])
 
   const toggleNav = () => {
@@ -171,7 +170,7 @@ const CryptoView = (props: Props) => {
     onToggleAddModal()
   }
 
-  const selectAsset = (asset: TokenInfo) => {
+  const selectAsset = (asset: TokenInfo | undefined) => {
     if (asset) {
       history.push(`${WalletRoutes.Portfolio}/${asset.symbol}`)
     } else {
@@ -186,7 +185,7 @@ const CryptoView = (props: Props) => {
     setHideNav(false)
   }
 
-  const onSelectAccount = (account: WalletAccountType) => {
+  const onSelectAccount = (account: WalletAccountType | undefined) => {
     if (account) {
       history.push(`${WalletRoutes.Accounts}/${account.address}`)
     }
