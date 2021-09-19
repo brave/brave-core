@@ -61,6 +61,7 @@ export interface Props {
   selectedNetwork: EthereumChain
   userVisibleTokensInfo: TokenInfo[]
   transactionSpotPrices: AssetPriceInfo[]
+  selectedAccount: WalletAccountType | undefined
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
   toggleNav: () => void
@@ -68,6 +69,8 @@ export interface Props {
   onClickAddAccount: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onRemoveAccount: (address: string, hardware: boolean) => void
+  onSelectAccount: (account: WalletAccountType) => void
+  goBack: () => void
 }
 
 function Accounts (props: Props) {
@@ -78,6 +81,9 @@ function Accounts (props: Props) {
     selectedNetwork,
     transactionSpotPrices,
     userVisibleTokensInfo,
+    selectedAccount,
+    goBack,
+    onSelectAccount,
     onViewPrivateKey,
     onDoneViewingPrivateKey,
     toggleNav,
@@ -99,26 +105,8 @@ function Accounts (props: Props) {
     return accounts.filter((account) => account.accountType === 'Trezor' || account.accountType === 'Ledger')
   }, [accounts])
 
-  const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>()
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
   const [editTab, setEditTab] = React.useState<AccountSettingsNavTypes>('details')
-
-  React.useMemo(() => {
-    if (selectedAccount) {
-      const updatedAccount = accounts.find((account) => account.id === selectedAccount.id)
-      setSelectedAccount(updatedAccount)
-    }
-  }, [accounts])
-
-  const goBack = () => {
-    setSelectedAccount(undefined)
-    toggleNav()
-  }
-
-  const onSelectAccount = (account: WalletAccountType) => {
-    setSelectedAccount(account)
-    toggleNav()
-  }
 
   const onCopyToClipboard = async () => {
     if (selectedAccount) {

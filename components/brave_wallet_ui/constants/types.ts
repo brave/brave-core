@@ -685,3 +685,15 @@ export enum WalletOnboardingSteps {
   OnboardingImportMetaMask = 3,
   OnboardingImportBraveLegacy = 4
 }
+
+export enum WalletRoutes {
+  Unlock = '/crypto/unlock',
+  Onboarding = '/crypto/onboarding',
+  Restore = '/crypto/restore-wallet',
+  Portfolio = '/crypto/portfolio',
+  PortfolioSub = '/crypto/portfolio/:id?',
+  Accounts = '/crypto/accounts',
+  AccountsSub = '/crypto/accounts/:id?',
+  Backup = '/crypto/backup-wallet',
+  CryptoPage = '/crypto/:category/:id?'
+}

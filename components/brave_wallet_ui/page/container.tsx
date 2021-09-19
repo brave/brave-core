@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
-
+import { Switch, Route, useHistory, useLocation } from 'react-router-dom'
 import * as WalletPageActions from './actions/wallet_page_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 import store from './store'
@@ -38,7 +38,8 @@ import {
   WalletAccountType,
   TokenInfo,
   UpdateAccountNamePayloadType,
-  EthereumChain
+  EthereumChain,
+  WalletRoutes
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -67,6 +68,8 @@ type Props = {
 }
 
 function Container (props: Props) {
+  let history = useHistory()
+  const walletLocation = useLocation().pathname
   // Wallet Props
   const {
     isWalletCreated,
@@ -90,7 +93,7 @@ function Container (props: Props) {
 
   // Page Props
   const {
-    showRecoveryPhrase,
+    // showRecoveryPhrase,
     invalidMnemonic,
     mnemonic,
     selectedTimeline,
@@ -100,7 +103,7 @@ function Container (props: Props) {
     selectedAssetPriceHistory,
     setupStillInProgress,
     isFetchingPriceHistory,
-    showIsRestoring,
+    // showIsRestoring,
     privateKey,
     importError,
     showAddModal
@@ -117,7 +120,6 @@ function Container (props: Props) {
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
   const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
-  // const [showRestore, setShowRestore] = React.useState<boolean>(false)
 
   // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
   const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
@@ -134,9 +136,13 @@ function Container (props: Props) {
     setToAsset(fromAsset)
   }
 
-  const onToggleShowRestore = () => {
-    props.walletPageActions.setShowIsRestoring(!showIsRestoring)
-  }
+  const onToggleShowRestore = React.useCallback(() => {
+    if (walletLocation === WalletRoutes.Restore) {
+      history.goBack()
+    } else {
+      history.push(WalletRoutes.Restore)
+    }
+  }, [walletLocation])
 
   const onSetToAddress = (value: string) => {
     setToAddress(value)
@@ -186,12 +192,6 @@ function Container (props: Props) {
     props.walletActions.selectNetwork(network)
   }
 
-  // In the future these will be actual paths
-  // for example wallet/rewards
-  // const navigateTo = (path: NavTypes) => {
-  //   setView(path)
-  // }
-
   const completeWalletSetup = (recoveryVerified: boolean) => {
     if (recoveryVerified) {
       props.walletPageActions.walletBackupComplete()
@@ -201,10 +201,10 @@ function Container (props: Props) {
 
   const onBackupWallet = () => {
     props.walletPageActions.walletBackupComplete()
+    history.goBack()
   }
 
   const restoreWallet = (mnemonic: string, password: string, isLegacy: boolean) => {
-    // isLegacy prop will be passed into the restoreWallet action once the keyring is setup handle the derivation.
     props.walletPageActions.restoreWallet({ mnemonic, password, isLegacy })
   }
 
@@ -223,10 +223,12 @@ function Container (props: Props) {
 
   const onShowBackup = () => {
     props.walletPageActions.showRecoveryPhrase(true)
+    history.push(WalletRoutes.Backup)
   }
 
   const onHideBackup = () => {
     props.walletPageActions.showRecoveryPhrase(false)
+    history.goBack()
   }
 
   const handlePasswordChanged = (value: string) => {
@@ -444,123 +446,47 @@ function Container (props: Props) {
     // Logic Here to add a custom Token
   }
 
-  const renderWallet = React.useMemo(() => {
+  React.useEffect(() => {
+    // Creates a list of Accepted Portfolio Routes
+    const acceptedPortfolioRoutes = userVisibleTokensInfo.map((token) => {
+      return `${WalletRoutes.Portfolio}/${token.symbol}`
+    })
+    // Creates a list of Accepted Account Routes
+    const acceptedAccountRoutes = accounts.map((account) => {
+      return `${WalletRoutes.Accounts}/${account.address}`
+    })
     if (!hasInitialized) {
-      return null
+      return
     }
-    if (showIsRestoring) {
-      return (
-        <OnboardingRestore
-          onRestore={restoreWallet}
-          toggleShowRestore={onToggleShowRestore}
-          hasRestoreError={restorError}
-        />
-      )
-    }
-    if (!isWalletCreated || setupStillInProgress) {
-      return (
-        <Onboarding
-          recoveryPhrase={recoveryPhrase}
-          onPasswordProvided={passwordProvided}
-          onSubmit={completeWalletSetup}
-          onShowRestore={onToggleShowRestore}
-          // Pass a boolean if either wallet is detected
-          braveLegacyWalletDetected={false}
-          metaMaskWalletDetected={false}
-          // Pass a boolean if it failed to import
-          hasImportError={false}
-          onImportBraveLegacy={onImportBraveLegacy}
-          onImportMetaMask={onImportMetaMask}
-        />
-      )
-    } else {
-      return (
-        <>
-          {isWalletLocked ? (
-            <LockScreen
-              onSubmit={unlockWallet}
-              disabled={inputValue === ''}
-              onPasswordChanged={handlePasswordChanged}
-              hasPasswordError={hasIncorrectPassword}
-              onShowRestore={onToggleShowRestore}
-            />
-          ) : (
-            <>
-              {showRecoveryPhrase ? (
-                <BackupWallet
-                  isOnboarding={false}
-                  onCancel={onHideBackup}
-                  onSubmit={onBackupWallet}
-                  recoveryPhrase={recoveryPhrase}
-                />
-              ) : (
-                <CryptoView
-                  onLockWallet={lockWallet}
-                  needsBackup={!isWalletBackedUp}
-                  onShowBackup={onShowBackup}
-                  accounts={accounts}
-                  networkList={networkList}
-                  onChangeTimeline={onChangeTimeline}
-                  onSelectAsset={onSelectAsset}
-                  portfolioBalance={fullPortfolioBalance}
-                  selectedAsset={selectedAsset}
-                  selectedUSDAssetPrice={selectedUSDAssetPrice}
-                  selectedBTCAssetPrice={selectedBTCAssetPrice}
-                  selectedAssetPriceHistory={formatedPriceHistory}
-                  portfolioPriceHistory={portfolioPriceHistory}
-                  selectedTimeline={selectedTimeline}
-                  selectedPortfolioTimeline={selectedPortfolioTimeline}
-                  transactions={transactions}
-                  userAssetList={userAssetList}
-                  fullAssetList={fullTokenList}
-                  onConnectHardwareWallet={onConnectHardwareWallet}
-                  onAddHardwareAccounts={onAddHardwareAccounts}
-                  getBalance={getBalance}
-                  onCreateAccount={onCreateAccount}
-                  onImportAccount={onImportAccount}
-                  isLoading={isFetchingPriceHistory}
-                  showAddModal={showAddModal}
-                  onToggleAddModal={onToggleAddModal}
-                  onUpdateAccountName={onUpdateAccountName}
-                  onUpdateVisibleTokens={onUpdateVisibleTokens}
-                  fetchFullTokenList={fetchFullTokenList}
-                  userWatchList={userVisibleTokens}
-                  selectedNetwork={selectedNetwork}
-                  onSelectNetwork={onSelectNetwork}
-                  isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
-                  onRemoveAccount={onRemoveAccount}
-                  privateKey={privateKey ?? ''}
-                  onDoneViewingPrivateKey={onDoneViewingPrivateKey}
-                  onViewPrivateKey={onViewPrivateKey}
-                  onImportAccountFromJson={onImportAccountFromJson}
-                  onSetImportError={onSetImportError}
-                  hasImportError={importError}
-                  onAddCustomToken={onAddCustomToken}
-                  transactionSpotPrices={transactionSpotPrices}
-                  userVisibleTokensInfo={userVisibleTokensInfo}
-                />
-              )}
-            </>
-          )}
-        </>
-      )
+    // If wallet is not yet created will Route to Onboarding
+    if ((!isWalletCreated || setupStillInProgress) && walletLocation !== WalletRoutes.Restore) {
+      history.push(WalletRoutes.Onboarding)
+      // If wallet is created will Route to login
+    } else if (isWalletLocked && walletLocation !== WalletRoutes.Restore) {
+      history.push(WalletRoutes.Unlock)
+      // Allowed Private Routes if a wallet is unlocked else will redirect back to Portfolio
+    } else if (
+      !isWalletLocked &&
+      hasInitialized &&
+      walletLocation !== WalletRoutes.Backup &&
+      walletLocation !== WalletRoutes.Accounts &&
+      acceptedAccountRoutes.length !== 0 &&
+      !acceptedAccountRoutes.includes(walletLocation) &&
+      walletLocation !== WalletRoutes.Portfolio &&
+      acceptedPortfolioRoutes.length !== 0 &&
+      !acceptedPortfolioRoutes.includes(walletLocation)
+    ) {
+      history.push(WalletRoutes.Portfolio)
     }
   }, [
-    importError,
-    privateKey,
-    fullTokenList,
+    walletLocation,
     isWalletCreated,
     isWalletLocked,
-    recoveryPhrase,
-    isWalletBackedUp,
-    inputValue,
-    hasIncorrectPassword,
-    showRecoveryPhrase,
-    userAssetList,
-    userVisibleTokens,
+    hasInitialized,
+    setupStillInProgress,
+    selectedAsset,
     userVisibleTokensInfo,
-    portfolioPriceHistory,
-    isFetchingPortfolioPriceHistory
+    accounts
   ])
 
   return (
@@ -570,16 +496,102 @@ function Container (props: Props) {
         selectedButton={view}
         onSubmit={navigateTo}
       /> */}
-      <WalletSubViewLayout>
-        {renderWallet}
-        {/* {view === 'crypto' ? (
-          renderWallet
-        ) : (
-          <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <h2>{view} view</h2>
-          </div>
-        )} */}
-      </WalletSubViewLayout>
+      <Switch>
+        <WalletSubViewLayout>
+          <Route path={WalletRoutes.Restore} exact={true}>
+            {isWalletLocked &&
+              <OnboardingRestore
+                onRestore={restoreWallet}
+                toggleShowRestore={onToggleShowRestore}
+                hasRestoreError={restorError}
+              />
+            }
+          </Route>
+          <Route path={WalletRoutes.Onboarding} exact={true}>
+            <Onboarding
+              recoveryPhrase={recoveryPhrase}
+              onPasswordProvided={passwordProvided}
+              onSubmit={completeWalletSetup}
+              onShowRestore={onToggleShowRestore}
+              // Pass a boolean if either wallet is detected
+              braveLegacyWalletDetected={false}
+              metaMaskWalletDetected={false}
+              // Pass a boolean if it failed to import
+              hasImportError={false}
+              onImportBraveLegacy={onImportBraveLegacy}
+              onImportMetaMask={onImportMetaMask}
+            />
+          </Route>
+          <Route path={WalletRoutes.Unlock} exact={true}>
+            {isWalletLocked &&
+              <LockScreen
+                onSubmit={unlockWallet}
+                disabled={inputValue === ''}
+                onPasswordChanged={handlePasswordChanged}
+                hasPasswordError={hasIncorrectPassword}
+                onShowRestore={onToggleShowRestore}
+              />
+            }
+          </Route>
+          <Route path={WalletRoutes.Backup} exact={true}>
+            <BackupWallet
+              isOnboarding={false}
+              onCancel={onHideBackup}
+              onSubmit={onBackupWallet}
+              recoveryPhrase={recoveryPhrase}
+            />
+          </Route>
+          <Route path={WalletRoutes.CryptoPage}>
+            {(isWalletCreated && !setupStillInProgress) && !isWalletLocked && walletLocation !== WalletRoutes.Backup &&
+              <CryptoView
+                onLockWallet={lockWallet}
+                needsBackup={!isWalletBackedUp}
+                onShowBackup={onShowBackup}
+                accounts={accounts}
+                networkList={networkList}
+                onChangeTimeline={onChangeTimeline}
+                onSelectAsset={onSelectAsset}
+                portfolioBalance={fullPortfolioBalance}
+                selectedAsset={selectedAsset}
+                selectedUSDAssetPrice={selectedUSDAssetPrice}
+                selectedBTCAssetPrice={selectedBTCAssetPrice}
+                selectedAssetPriceHistory={formatedPriceHistory}
+                portfolioPriceHistory={portfolioPriceHistory}
+                selectedTimeline={selectedTimeline}
+                selectedPortfolioTimeline={selectedPortfolioTimeline}
+                transactions={transactions}
+                userAssetList={userAssetList}
+                fullAssetList={fullTokenList}
+                onConnectHardwareWallet={onConnectHardwareWallet}
+                onCreateAccount={onCreateAccount}
+                onImportAccount={onImportAccount}
+                isLoading={isFetchingPriceHistory}
+                showAddModal={showAddModal}
+                onToggleAddModal={onToggleAddModal}
+                onUpdateAccountName={onUpdateAccountName}
+                onUpdateVisibleTokens={onUpdateVisibleTokens}
+                fetchFullTokenList={fetchFullTokenList}
+                userWatchList={userVisibleTokens}
+                selectedNetwork={selectedNetwork}
+                onSelectNetwork={onSelectNetwork}
+                isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
+                onRemoveAccount={onRemoveAccount}
+                privateKey={privateKey ?? ''}
+                onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+                onViewPrivateKey={onViewPrivateKey}
+                onImportAccountFromJson={onImportAccountFromJson}
+                onSetImportError={onSetImportError}
+                hasImportError={importError}
+                onAddHardwareAccounts={onAddHardwareAccounts}
+                onAddCustomToken={onAddCustomToken}
+                transactionSpotPrices={transactionSpotPrices}
+                userVisibleTokensInfo={userVisibleTokensInfo}
+                getBalance={getBalance}
+              />
+            }
+          </Route>
+        </WalletSubViewLayout>
+      </Switch>
       {(isWalletCreated && !setupStillInProgress) && !isWalletLocked &&
         <WalletWidgetStandIn>
           <BuySendSwap

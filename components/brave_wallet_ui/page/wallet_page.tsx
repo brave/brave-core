@@ -10,7 +10,7 @@ import { Provider } from 'react-redux'
 import Container from './container'
 import * as WalletActions from '../common/actions/wallet_actions'
 import store from './store'
-
+import { BrowserRouter } from 'react-router-dom'
 import 'emptykit.css'
 import '../../../ui/webui/resources/fonts/poppins.css'
 import '../../../ui/webui/resources/fonts/muli.css'
@@ -26,15 +26,17 @@ function App () {
   }, [])
   return (
     <Provider store={store}>
-      {initialThemeType &&
-      <BraveCoreThemeProvider
-        initialThemeType={initialThemeType}
-        dark={walletDarkTheme}
-        light={walletLightTheme}
-      >
-        <Container />
-      </BraveCoreThemeProvider>
-      }
+      <BrowserRouter>
+        {initialThemeType &&
+          <BraveCoreThemeProvider
+            initialThemeType={initialThemeType}
+            dark={walletDarkTheme}
+            light={walletLightTheme}
+          >
+            <Container />
+          </BraveCoreThemeProvider>
+        }
+      </BrowserRouter>
     </Provider>
   )
 }
