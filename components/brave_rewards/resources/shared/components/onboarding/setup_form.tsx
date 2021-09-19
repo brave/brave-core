@@ -8,7 +8,7 @@ import { LocaleContext } from '../../lib/locale_context'
 import { RewardsTourProps } from './rewards_tour_props'
 import * as style from './setup_form.style'
 
-const adsPerHourOptions = [1, 2, 3, 4, 5]
+const adsPerHourOptions = [1, 2, 3, 4, 5, 10]
 
 function getAutoContributeOptions (options: number[], initialAmount: number) {
   // Create a sorted list of options containing |initialAmount|
