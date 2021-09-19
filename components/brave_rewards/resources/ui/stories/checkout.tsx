@@ -42,7 +42,7 @@ const localeData = {
     securityCode: 'Security code',
     saveThisCard: 'Save this card',
     checkout: 'Checkout',
-    goBack: 'Go Back',
+    goBack: 'Go back',
     itemSelected: 'Item Selected',
     goodToGo: 'You’re good to go!',
     enjoyYourPurchase: 'Enjoy your purchase.',

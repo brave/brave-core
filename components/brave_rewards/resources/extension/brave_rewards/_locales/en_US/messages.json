@@ -387,7 +387,7 @@
     "description": ""
   },
   "onboardingSetupAdsHeader": {
-    "message": "How often do you want to see ads?",
+    "message": "How many ads per hour would you like to see?",
     "description": ""
   },
   "onboardingSetupAdsSubheader": {
@@ -429,7 +429,7 @@
     }
   },
   "onboardingTourBack": {
-    "message": "Go Back",
+    "message": "Go back",
     "description": ""
   },
   "onboardingTourBegin": {

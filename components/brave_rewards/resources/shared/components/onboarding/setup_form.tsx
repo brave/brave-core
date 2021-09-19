@@ -39,9 +39,6 @@ export function SetupForm (props: RewardsTourProps) {
         <style.label>
           {getString('onboardingSetupAdsHeader')}
         </style.label>
-        <style.sublabel>
-          {getString('onboardingSetupAdsSubheader')}
-        </style.sublabel>
         <style.optionBar>
           {
             adsPerHourOptions.map((value) => {
@@ -65,9 +62,6 @@ export function SetupForm (props: RewardsTourProps) {
         <style.label>
           {getString('onboardingSetupContributeHeader')}
         </style.label>
-        <style.sublabel>
-          {getString('onboardingSetupContributeSubheader')}
-        </style.sublabel>
         <style.optionBar>
           {
             acOptions.map((amount) => {

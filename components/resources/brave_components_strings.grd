@@ -646,7 +646,7 @@
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER" desc="">Maybe Later</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PROMO_HEADER" desc="">Need a refresher on Rewards?</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PROMO_TEXT" desc="">Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER" desc="">How often do you want to see ads?</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER" desc="">How many ads per hour would you like to see?</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_SUBHEADER" desc="">(ads per hour)</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_HEADER" desc="">How much monthly support do you want to give to your favorite creators?</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_SUBHEADER" desc="">(from your ads earnings)</message>
@@ -655,7 +655,7 @@
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TERMS" desc="">By proceeding, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TIP_HEADER" desc="">Tip with Brave Rewards</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TIP_TEXT" desc="">Earn Rewards by viewing Brave Private Ads and support content creators automatically</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BACK" desc="">Go Back</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BACK" desc="">Go back</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BEGIN" desc="">Let’s take a quick tour</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_CONTINUE" desc="">Continue</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_DONE" desc="">Done</message>

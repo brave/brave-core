@@ -1514,7 +1514,7 @@ until they verify, or until 90 days have passed.
         You can change this later.
       </message>
       <message name="IDS_HOW_OFTEN_DO_YOU_SEE_ADS" desc="Brave rewards onboarding text">
-        How often do you want to see ads?
+        How many ads per hour would you like to see?
       </message>
       <message name="IDS_ADS_PER_HOUR" desc="Brave rewards onboarding text">
         (Ads per hour)
@@ -1532,7 +1532,7 @@ until they verify, or until 90 days have passed.
         By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!
       </message>
       <message name="IDS_GO_BACK" desc="Brave rewards onboarding button text">
-        Go Back
+        Go back
       </message>
       <message name="IDS_LETS_TAKE_A_QUICK_TOUR" desc="Brave rewards onboarding button text">
         Let's Take A Quick Tour
