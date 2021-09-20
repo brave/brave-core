@@ -36,7 +36,9 @@
 <translation id="2448893613530489637">Takistab veebilehtedel jälitajate ja reklaamide laadimist ning kuvamist</translation>
 <translation id="1680858055899097121">Ära säilita kaarte sirvimissessioonide vältel</translation>
 <translation id="7142548388914389999">Võimalda privaatsust säilitav tooteanalüüs (P3A)</translation>
-<translation id="5254037869598726291">See täiesti anonüümne teave aitab Brave'il hinnata teatud funktsioonide üldist kasutust ja muuta selle teie jaoks paremaks.</translation>
+<translation id="5254037869598726291">Anonüümitud P3A teave aitab Brave'il hinnata üldist kasutust ja tagada, et parandame menukaid funktsioone.</translation>
+<translation id="4272190451231642425">Saada krahhiaruanded automaatselt</translation>
+<translation id="2239766974964486304">Krahhiaruanded aitavad Brave'il parandada kõigi kasutajate jaoks toote stabiilsust.</translation>
 <translation id="7977176350719484850">Hin. andmed\nSalvestatud</translation>
 <translation id="9008534313521214777">Eeldatav\nsäästetud aeg</translation>
 <translation id="6572660632052512096">Arvutirežiim</translation>
@@ -481,7 +483,7 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="1078265935778232285">Tere tulemast Brave Software'i</translation>
 <translation id="6824713633331856331">Aidake meil anonüümselt õppida</translation>
 <translation id="6116685031674149112">Brave kaitseb teie privaatsust ja\non tänulik, kui annate nõusoleku järgmiseks:</translation>
-<translation id="4394483075076204916">Aidake Brave'i paremaks muuta, saates krahhiaruandeid ja täiesti anonüümset <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Aidake Brave'i paremaks muuta, saates täiesti anonüümitud <ph name="PRIVATE_PRODUCT_ANALYSIS"/>.</translation>
 <translation id="6478996494082389936">privaatset tooteanalüüsi teavet.</translation>
 <translation id="5187052478998910855">Kas vajate Rewardsi kohta mäluvärskendust?</translation>
 <translation id="8622329973403382303">Tehke kiire ringkäik, et meenutada, kuidas see toimis, ja võite ajalukku minna Rewardsi staarina!</translation>
@@ -564,7 +566,6 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="1144810021918451336">Ei kaitse sind ohtlike veebisaitide, allalaaditavate failide ja laienduste eest.</translation>
 <translation id="745115390910697838">Laused ei ühildunud, palun proovige uuesti.</translation>
 <translation id="2360588547830602174">Konto taastamine ebaõnnestus. Palun proovige uuesti.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Turuhind ETH-des</translation>
 <translation id="5593852897152820572">Hind ETH-des</translation>
 <translation id="6748108480210050150">Saatja</translation>
@@ -598,4 +599,5 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="8967036623785635603">Nähtavate varade muutmine</translation>
 <translation id="5050890334032852465">Salvesta konto vaatamisloend</translation>
 <translation id="7755766175599167100">Otsi tokeneid</translation>
+<translation id="3835223348537121988">Saldo:</translation>
 </translationbundle>

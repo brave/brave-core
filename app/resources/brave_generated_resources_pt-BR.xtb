@@ -210,7 +210,6 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="6476061084931271248">Reinicie o nó para aplicar as alterações</translation>
 <translation id="3754226427671882382">Reiniciar nó</translation>
 <translation id="949667118776341807">Girar</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Este nome não é válido</translation>
 <translation id="6758961763875471084">Modificar a lista de pares</translation>
 <translation id="1295874070797049002">Exportar chave</translation>
@@ -241,6 +240,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="8655170717758778983">Quando possível, redirecione automaticamente para páginas do IPFS via DNSLink</translation>
 <translation id="2233724520223030977">Quando possível, usa DNSLink automaticamente para navegar para uma versão IPFS de um site</translation>
 <translation id="6554397389149987360">Usa o componente Hangouts para ativar o compartilhamento de tela e outros recursos no navegador.</translation>
+<translation id="7878791177459550035">O roteador de mídia permite o uso do recurso de transmissão no navegador.</translation>
 <translation id="9156965752763025780">As alterações entrarão em vigor na próxima vez que você reiniciar o Brave.</translation>
 <translation id="7179921470347911571">Reiniciar agora</translation>
 <translation id="8068526464562249859">Usa a extensão Complemento de IPFS para um melhor suporte ao IPFS no Brave, incluindo acesso a tarefas de IPFS comuns da barra do seu navegador.</translation>
@@ -351,7 +351,23 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
         Você pode ler <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruções sobre como baixar e criar para você mesmo<ph name="END_LINK_BUILD_INSTRUCTIONS"/> o <ph name="BEGIN_LINK_SOURCE_CODE"/>código fonte específico usado para criar esta cópia<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Adicionar todas as guias aos favoritos...</translation>
 <translation id="2336228925368920074">Adicionar todas as guias aos favoritos...</translation>
+<translation id="4235920711083356755">Mostrar o botão de VPN</translation>
+<translation id="4070612712151038707">Mostra o botão de VPN na barra de ferramentas</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Sobre o Brave VPN</translation>
+<translation id="4378551569595875038">Conectando...</translation>
+<translation id="3368922792935385530">Conectado</translation>
+<translation id="1536754031901697553">Desconectando…</translation>
+<translation id="8030169304546394654">Desconectado</translation>
+<translation id="1863950594388384201">Mostrar o botão de VPN na barra de tarefas</translation>
+<translation id="5187139277471084437">Ocultar o botão de VPN na barra de ferramentas</translation>
+<translation id="8041089156583427627">Enviar comentários</translation>
+<translation id="4049186905514157504">Gerenciar meu plano</translation>
+<translation id="7570585565843385325">Mostrar o botão de VPN na barra de ferramentas</translation>
+<translation id="5310426188697803101">Ocultar o botão de VPN na barra de ferramentas</translation>
+<translation id="945522503751344254">Enviar comentários</translation>
+<translation id="3015685033234401792">Gerenciar meu plano</translation>
 <translation id="796831669370432378">Para adicionar um marcador, clique no botão do marcador próximo à barra de endereço</translation>
 <translation id="4989337484121655457">É necessário acesso total ao disco</translation>
 <translation id="8025559074845816210">O Brave precisa de acesso total ao disco para importar seus favoritos do Safari.</translation>

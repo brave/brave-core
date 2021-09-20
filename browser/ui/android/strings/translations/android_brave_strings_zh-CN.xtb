@@ -36,7 +36,9 @@
 <translation id="2448893613530489637">阻止跟踪器和广告加载显示在网页中</translation>
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
 <translation id="7142548388914389999">允许保留隐私的产品分析 (P3A)</translation>
-<translation id="5254037869598726291">这些完全匿名的信息可以帮助 Brave 评估某些功能的总体使用情况，并为您提供更好的服务。</translation>
+<translation id="5254037869598726291">匿名的 P3A 信息有助于 Brave 估计总体使用量，并确保我们’在改进受欢迎的功能。</translation>
+<translation id="4272190451231642425">自动发送宕机报告</translation>
+<translation id="2239766974964486304">宕机报告可帮助 Brave 提高所有用户的产品稳定性。</translation>
 <translation id="7977176350719484850">预计\n节省的数据</translation>
 <translation id="9008534313521214777">预计节省的\n时间</translation>
 <translation id="6572660632052512096">桌面模式</translation>
@@ -477,7 +479,7 @@
 <translation id="1078265935778232285">欢迎使用 Brave 浏览器</translation>
 <translation id="6824713633331856331">帮助我们匿名学习</translation>
 <translation id="6116685031674149112">Brave 会保护您的隐私，并\n感谢您同意以下各项条款：</translation>
-<translation id="4394483075076204916">通过发送崩溃报告并完全匿名化来帮助改进 Brave。<ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">通过发送完全匿名的 <ph name="PRIVATE_PRODUCT_ANALYSIS"/> 来帮助改进 Brave</translation>
 <translation id="6478996494082389936">私人产品分析。</translation>
 <translation id="5187052478998910855">需要重新了解一下 Rewards？</translation>
 <translation id="8622329973403382303">赶快来快速浏览一下它是如何成为 Rewards 摇滚明星的历史记录吧！</translation>
@@ -560,7 +562,6 @@
 <translation id="1144810021918451336">不能保护您免受危险网站、下载和扩展名的侵害。</translation>
 <translation id="745115390910697838">密语不匹配，请重试。</translation>
 <translation id="2360588547830602174">账户恢复失败。请重试。</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">市场价格 (ETH)</translation>
 <translation id="5593852897152820572">以 ETH 计算的价格</translation>
 <translation id="6748108480210050150">来自</translation>
@@ -594,4 +595,5 @@
 <translation id="8967036623785635603">编辑可见资产</translation>
 <translation id="5050890334032852465">保存账户监视清单</translation>
 <translation id="7755766175599167100">搜索代币</translation>
+<translation id="3835223348537121988">余额：</translation>
 </translationbundle>

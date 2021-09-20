@@ -1,685 +1,382 @@
 {
-  "braveRewards": {
-    "message": "Brave 奖励",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "摘要",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "立即开始赚取赏金！",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "打赏",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "加入奖励",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "未验证的创建者",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "通过浏览广告获得收益并提前支付给您喜爱的内容创作者。",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "已验证的创建者",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "您可以通过观看尊重隐私的广告赚取代币。",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "刷新状态",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "您可以通过看尊重隐私的广告来赚积分。",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "查看改进的内容",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "详细了解",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "我们大幅度升级了 Brave 奖励。",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "做好准备体验新一代网络。",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "您的钱包",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "授权",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "详细信息",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "on": {
-    "message": "在",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "经 Brave 验证的内容创作者",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "精力",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "每月捐款",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "包含在自动贡献中",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "发送赏金",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "启用打赏",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "给",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "奖励摘要",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "四月",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "八月",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "十二月",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "二月",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "一月",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "七月",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "六月",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "三月",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "三月",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "十一月",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "十月",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "九月",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "$currency$ 的奖励",
-    "description": "Title for grant notification",
+  "platformPublisherTitle": {
+    "message": "$platform$ 上的 $name$",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "已领取代币补助",
-    "description": "Title for grant section in wallet summary"
+  "attention": {
+    "message": "精力",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "从广告中赚取的收益",
-    "description": "Title for ads section in wallet summary"
+  "sendTip": {
+    "message": "发送赏金",
+    "description": ""
   },
-  "rewardsContribute": {
-    "message": "自动贡献",
-    "description": "Title for auto contribute section in wallet summary"
+  "includeInAutoContribute": {
+    "message": "包含在自动贡献中",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "一次赏金",
-    "description": "Title for one-time tips section in wallet summary"
-  },
-  "expiresOn": {
-    "message": "过期日期",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
-  },
-  "recurringDonations": {
+  "monthlyContribution": {
     "message": "每月捐款",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "关闭",
-    "description": "Label used in toggle indicating that toggle is off"
+    "description": ""
   },
   "ok": {
     "message": "确定",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "现在您可以通过看广告来赚钱。",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "Brave广告",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "自动贡献",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "您已捐赠了 $amount$ $currency$",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "您有一笔资助金在等您使用。",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "立即备份",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "备用钱包",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "请备份您的 Brave 钱包。",
-    "description": "Description for backup wallet notification"
-  },
-  "learnMore": {
-    "message": "详细了解",
-    "description": "Notification button text to learn more about a specific use-case"
-  },
-  "mismatchedProviderAccountsTitle": {
-    "message": "错误：不同的账户",
-    "description": "Title for mismatched provider accounts notification"
-  },
-  "mismatchedProviderAccountsNotification": {
-    "message": "哎呀，看来您的 Brave Rewards 钱包已使用其他 $name$ 账户验证。请尝试使用您先前的账户验证。",
-    "description": "Description for mismatched provider accounts notification",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "upholdBATNotAllowedForUserTitle": {
-    "message": "错误：BAT 不可用",
-    "description": "Title for BAT not allowed for user notification"
-  },
-  "upholdBATNotAllowedForUserNotification": {
-    "message": "您所在地区的 Uphold 尚不支持 BAT。",
-    "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserTitle": {
-    "message": "错误：账户被屏蔽",
-    "description": "Title for blocked user notification"
-  },
-  "upholdBlockedUserNotification": {
-    "message": "您在 Uphold 的账户目前已被屏蔽。",
-    "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserTitle": {
-    "message": "错误：待处理账户",
-    "description": "Title for pending user notification"
-  },
-  "upholdPendingUserNotification": {
-    "message": "您在 Uphold 的账户仍处于待处理状态。",
-    "description": "Description for pending user notification"
-  },
-  "upholdRestrictedUserTitle": {
-    "message": "错误：受限账户",
-    "description": "Title for restricted user notification"
-  },
-  "upholdRestrictedUserNotification": {
-    "message": "您在 Uphold 的账户目前受到限制。",
-    "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "已达到设备限量",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "无法验证您的钱包，因为您已达到验证设备的最大限量。",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "您的 Brave 奖励账户正在等待存款。",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "资金不足",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "正在创建钱包",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "处理您的贡献时出现问题。",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "由于资金不足，您安排的对自动捐赠和每月捐赠的每月支付无法完成。我们将会在30天后重试。",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "无法发送您的打赏。请稍后重试。",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "还没有活动…",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "将 BAT 图标拖到",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "证明您是真人！",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "目标。",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "嗯......不太妙。请重试。",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "领取",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "免费代币补助",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "补助过期日期",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
-    "message": "确定",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "Brave 奖励出现了问题。请稍后再试。",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "哎呀，有些不对劲。请稍后再试。",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "刷新状态",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "尚未验证",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "此创建者当前尚未配置为接收来自您的钱包的赏金。您发送的任何赏金都将保留在您的钱包中，并每 90 天自动重试一次。",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "了解详情。",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "您为尚未注册接收捐款的创作者分派了 {{reservedAmount}} {{currency}} 。您的浏览器将在他们通过验证或 90 天后继续尝试捐款。",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "了解详情。",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "关闭",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "设置。",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "您目前在浏览时没有产生任何奖励收益。重新开启奖励：",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "Brave 奖励",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "Wallet创建失败",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "重试",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "添加资金",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "奖励设置",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "您的广告奖励到了！",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "和",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "获得浏览奖励！",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "通过观看尊重隐私的广告获得收益，并打赏您喜爱的内容创作者。",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "启用 Brave 奖励",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "隐私政策",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "点击“启用 Brave 奖励”即表示您已阅读并同意",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "服务条款",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "欢迎回来！",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "您的每月捐赠已处理！",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "捐款和打赏",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": "点击“加入奖励”，即表示您已阅读并同意",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "BAT",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "turnOnAds": {
-    "message": "开启广告",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "从广告中赚取",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "对此推文打赏",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "打赏",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "对此博文打赏",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "打赏",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "发送提示",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "打赏",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "内容创建者 $name$ 最近已经过验证",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "由于资金不足，您的赏金待处理",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "待处理的捐款",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "这是您的幸运日！",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "您即将收到 $currency$ 的奖励。",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "免费代币补助",
-    "description": "Token title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "您已经获得了 Ads Reward！",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "您的 Reward 即将汇入您的 Brave Rewards 钱包。",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "您的 Reward 金额",
-    "description": "Token title on success screen for ads"
-  },
-  "walletButtonDisconnected":  {
-    "message": "已断开连接",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "验证钱包",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "钱包已验证",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "转到您的 $provider$  帐户",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletLogInWithProvider":  {
-    "message": "登录到您的 $provider$ 帐户",
-    "description": "CTA to log in with a wallet provider",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "与 Brave 奖励断开连接",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "已验证",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "您的钱包已经过验证！",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "恭喜！您的 $name$ 钱包已成功验证，现在可添加和提取资金了。",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "哎呀。您的钱包无法连接。",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "别担心。这可能是由各种安全原因引起的。重新连接钱包即可解决此问题。",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "此经过 Brave 验证创建者尚未配置其账户以接收来自 Brave 用户的捐款。您发送的任何打赏都将保留在您的钱包中，直到他们完成该流程。",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "完成钱包验证",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "设置...",
-    "description": "Button text for setting monthly contribution"
+    "message": "设定",
+    "description": ""
   },
-  "tokens":  {
-    "message": "令牌",
-    "description": "Standard tokens text"
-  },
-  "point":  {
-    "message": "积分",
-    "description": "BAT Point text"
-  },
-  "token":  {
-    "message": "代币",
-    "description": "BAT Token text"
-  },
-  "tokenGrants":  {
-    "message": "代币发放",
-    "description": "BAT Tokens Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "您好，$name$!",
-    "description": "Greetings for external wallet popup",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
-      }
-    }
-  },
-  "cancel":  {
-    "message": "取消",
-    "description": "Text for cancel button"
-  },
-  "changeAmount":  {
+  "changeAmount": {
     "message": "更改金额",
-    "description": "Button text for changing monthly contribution amount"
+    "description": ""
   },
-  "login":  {
-    "message": "登录",
-    "description": "Text for login button"
+  "cancel": {
+    "message": "取消",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "验证钱包让您可以更有效地管理资金。",
-    "description": "Text for login button"
+  "grantCaptchaTitle": {
+    "message": "确认您是人",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "您需要至少有 $amount$ 个 BAT 才能创建Uphold帐户。如果您已经有通过验证的Uphold帐户，请继续登录。",
-    "description": "Text for login button",
+  "grantCaptchaFailedTitle": {
+    "message": "嗯......不太妙。请重试。",
+    "description": ""
+  },
+  "grantCaptchaHint": {
+    "message": "将 BAT 图标拖到 $hint$ 目标上。",
+    "description": "",
     "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "walletConnected":  {
-    "message": "已连接",
-    "description": "Status button that tells user that he is connected"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "这是您的幸运日！",
+    "description": ""
   },
-  "walletDisconnected":  {
-    "message": "已断开连接",
-    "description": "Status button that tells user that he is disconnected"
+  "grantCaptchaPassedTextUGP": {
+    "message": "您即将收到代币补助。",
+    "description": ""
   },
-  "walletPending":  {
-    "message": "等待审批",
-    "description": "Status button that tells user that he is currently pending"
+  "grantCaptchaAmountUGP": {
+    "message": "免费代币补助",
+    "description": ""
   },
-  "walletVerificationNote3":  {
-    "message": "注意：授权后，您的交易将对$provider$ 可见。例如，一旦您授权，他们将能够看到收件人和您的提示数量。",
-    "description": "Displayed in login modal for external wallet providers",
+  "grantCaptchaPassedTitleAds": {
+    "message": "您已经获得了 Ads Reward！",
+    "description": ""
+  },
+  "grantCaptchaPassedTextAds": {
+    "message": "您的 Reward 即将汇入您的 Brave Rewards 钱包。",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "您的 Reward 金额",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "补助过期日期",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "哎呀，有些不对劲。请稍后再试。",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "Brave 奖励出现了问题。请稍后再试。",
+    "description": ""
+  },
+  "walletAccountLink": {
+    "message": "转到我的 $provider$ 帐户",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "添加资金",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "自动贡献",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "转到$provider$完成验证。",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "请完成身份验证以开始接收奖励。",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "已断开连接",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "与 Brave 奖励断开连接",
+    "description": ""
+  },
+  "walletEstimatedEarnings": {
+    "message": "预估收益",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "登录到您的 $provider$ 帐户",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "每月赏金",
+    "description": ""
+  },
+  "walletMyWallet": {
+    "message": "我的钱包",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "一次赏金",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "等待审批",
+    "description": ""
+  },
+  "walletPendingRewardsText": {
+    "message": "$amount$ 即将在 $days$ 内到账",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "walletRewardsFromAds": {
+    "message": "广告奖励",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "奖励摘要",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "已验证",
+    "description": ""
+  },
+  "walletVerify": {
+    "message": "验证钱包",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "您的余额",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "添加资金",
+    "description": ""
+  },
+  "notificationLearnMore": {
+    "message": "详细了解",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "重新连接",
+    "description": ""
+  },
+  "notificationClaim": {
+    "message": "领取",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "资金不足",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "您的 Brave 奖励账户正在等待存款。",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "自动贡献",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "您已经捐赠了 $amount$。",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "备用钱包",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "请备份您的 Brave 钱包。",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "立即备份",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "您的钱包已注销",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "为了确保您的帐户安全，这种情况可能会发生。点击下方立即重新连接。",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "重新连接",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "您的钱包已经过验证！",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "您的 $provider$ 钱包已成功验证，现在可以添加和提取资金了。",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "代币授予",
+    "description": ""
+  },
+  "notificationTokenGrantText": {
+    "message": "您有一笔资助金在等您使用。",
+    "description": ""
+  },
+  "notificationAdGrantTitle": {
+    "message": "广告收入已收到",
+    "description": ""
+  },
+  "notificationAdGrantText": {
+    "message": "您从 Brave Private Ads 获得的奖励到了！",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "月供失败",
+    "description": ""
+  },
+  "notificationInsufficientFundsText": {
+    "message": "由于资金不足，您安排的对自动捐赠和每月捐赠的每月支付无法完成。我们将会在30天后重试。",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "处理您的贡献时出现问题。",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "供款和提示",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "您的每月供款已处理完毕。",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "待处理贡款",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "创建者$publisher_name$最近已验证。",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "资金不足",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "由于资金不足，您的赏金待处理",
+    "description": ""
+  },
+  "notificationWalletLinkingFailedTitle": {
+    "message": "钱包关联失败",
+    "description": ""
+  },
+  "notificationDeviceLimitReachedText": {
+    "message": "无法验证您的钱包，因为您已达到验证设备的最大限量。",
+    "description": ""
+  },
+  "notificationMismatchedProviderAccountsText": {
+    "message": "您的 Brave Rewards 钱包好象已经通过另一个 $provider$ 帐户进行了验证。请尝试用您以前的帐户再次验证。",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationUpholdBatNotSupportedText": {
+    "message": "您所在地区的 Uphold 尚不支持 BAT。",
+    "description": ""
+  },
+  "notificationUpholdUserBlockedText": {
+    "message": "您在 Uphold 的账户目前已被屏蔽。",
+    "description": ""
+  },
+  "notificationUpholdUserPendingText": {
+    "message": "您在 Uphold 的账户仍处于待处理状态。",
+    "description": ""
+  },
+  "notificationUpholdUserRestrictedText": {
+    "message": "您在 Uphold 的账户目前受到限制。",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "赚取代币并给予回馈",
@@ -854,5 +551,29 @@
         "content": "$2"
       }
     }
+  },
+  "captchaMaxAttemptsExceededText": {
+    "message": "看起来这不起作用，Brave 广告将保持暂停状态。如果您需要验证码方面的帮助，请联系我们。",
+    "description": ""
+  },
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "已超过最大尝试次数",
+    "description": ""
+  },
+  "captchaSolvedTitle": {
+    "message": "解决了！",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "广告和收入即将恢复。感谢您帮助我们保护 Brave Rewards 和基于隐私的广告。",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "联系支持",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "关闭",
+    "description": ""
   }
 }

@@ -209,7 +209,6 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="6476061084931271248">Değişikliklerin uygulanması için düğümü yeniden başlatın</translation>
 <translation id="3754226427671882382">Düğümü yeniden başlat</translation>
 <translation id="949667118776341807">Döndür</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Bu ad geçerli değil</translation>
 <translation id="6758961763875471084">Eşler listesini değiştirin</translation>
 <translation id="1295874070797049002">Anahtarı dışa aktar</translation>
@@ -240,6 +239,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="8655170717758778983">Mümkün olduğunda DNSLink ile IPFS sayfalarını otomatik olarak yeniden yönlendir</translation>
 <translation id="2233724520223030977">Mümkün olduğunda web sitenin IPFS versiyonuna gitmek için otomatik olarak DNSLink kullanır</translation>
 <translation id="6554397389149987360">Ekran paylaşımını ve tarayıcıdaki diğer özellikleri etkinleştirmek için Hangouts bileşenini kullanır.</translation>
+<translation id="7878791177459550035">Medya yönlendiricisi tarayıcıda yayın özelliğini etkinleştirir.</translation>
 <translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
 <translation id="7179921470347911571">Şimdi Tekrar Başlat</translation>
 <translation id="8068526464562249859">Tarayıcı çubuğunuzdan genel IPFS görevlerine erişim dahil, Brave'de gelişmiş IPFS desteği için IPFS Eşlikçisi uzantısını kullanır.</translation>
@@ -350,7 +350,23 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
         <ph name="BEGIN_LINK_SOURCE_CODE"/>Bu kopyayı oluşturmak için kullanılan kaynak kodunu<ph name="END_LINK_SOURCE_CODE"/> <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>indirmek ve inşa etmek için talimatları<ph name="END_LINK_BUILD_INSTRUCTIONS"/> okuyabilirsiniz.</translation>
 <translation id="4474155171896946103">Tüm sekmelere yer işareti koy...</translation>
 <translation id="2336228925368920074">Tüm Sekmelere Yer İşareti Koy...</translation>
+<translation id="4235920711083356755">VPN düğmesini göster</translation>
+<translation id="4070612712151038707">VPN düğmesini araç çubuğunda gösterir</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Brave VPN Hakkında</translation>
+<translation id="4378551569595875038">Connecting...</translation>
+<translation id="3368922792935385530">Bağlı</translation>
+<translation id="1536754031901697553">Bağlantı kesiliyor...</translation>
+<translation id="8030169304546394654">Bağlantı kesildi</translation>
+<translation id="1863950594388384201">VPN Düğmesini Araç Çubuğunda Göster</translation>
+<translation id="5187139277471084437">VPN Düğmesini Araç Çubuğunda Gizle</translation>
+<translation id="8041089156583427627">Görüş bildirin</translation>
+<translation id="4049186905514157504">Planımı Yönet</translation>
+<translation id="7570585565843385325">VPN düğmesini araç çubuğunda göster</translation>
+<translation id="5310426188697803101">VPN düğmesini araç çubuğunda gizle</translation>
+<translation id="945522503751344254">Geri bildirim gönder</translation>
+<translation id="3015685033234401792">Planımı yönet</translation>
 <translation id="796831669370432378">Bir yer işareti eklemek için, adres satırının yanında yer alan yer işareti butonuna tıklayın</translation>
 <translation id="4989337484121655457">Tam Disk Erişimi gereklidir</translation>
 <translation id="8025559074845816210">Safari'den Yer İmlerinizi aktarmak için Brave'in Tam Disk Erişimine ihtiyacı var.</translation>

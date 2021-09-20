@@ -103,7 +103,6 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="9183662282810237335">Chcete Brave napriek tomu ukončiť?</translation>
 <translation id="4065288863231444640">Povoliť prehliadaču Brave spustenie na pozadí</translation>
 <translation id="8148611988012584308">Prispôsobiť a spravovať Brave</translation>
-<translation id="1201005444605297066">Táto stránka vám umožňuje spravovať účty Brave prihlásených používateľov. Tieto účty budú k dispozícii v prehliadači Brave a Obchode Play, ale aj v službách, ako sú Gmail, Disk a YouTube. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Vitajte v prehliadači Brave, otvorilo sa nové okno prehliadača</translation>
 <translation id="2633397153656205379">Brave sa neaktualizoval. Vyskytol sa problém. <ph name="BEGIN_LINK"/>Vyriešiť problémy so sťahovaním aktualizácií prehliadača Brave a neúspešnými aktualizáciami<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Chcete pokračovať v novom profile prehliadača Brave?</translation>
@@ -248,6 +247,7 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="2925193881330501265">Do prehliadača Brave ste boli prihlásený/-á ako <ph name="USER_EMAIL_ADDRESS"/>. Ak sa chcete prihlásiť znova, použite rovnaký účet.</translation>
 <translation id="6915252145142862992">Toto je sekundárna inštalácia prehliadača Brave – nemôže byť nastavený ako váš predvolený prehliadač.</translation>
 <translation id="7685904775439037072">Keď Brave získa prístup, weby vás budú môcť žiadať o prístup.</translation>
+<translation id="828406390101464081">Nasledujúce účtu nie sú prihlásené do žiadneho profilu prehliadača Brave. Ak chcete používať účet v inom profile, najprv daný profil odstráňte.</translation>
 <translation id="9067428552314418522">Tento súbor je nebezpečný, a preto ho prehliadač Brave zablokoval.</translation>
 <translation id="8207657266087451193">Ak obrázok nemá užitočný popis, Brave sa vám ho pokúsi poskytnúť. Obrázky sa odosielajú Googlu, aby bolo možné vytvoriť popisy. Môžete to kedykoľvek vypnúť v nastaveniach.</translation>
 <translation id="8622246347342688645">Brave nemôže skontrolovať heslá, pretože ste sa neprihlásili</translation>
@@ -297,4 +297,5 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Správca vás žiada o nové spustenie prehliadača Brave, aby sa použila táto aktualizácia}=1{Správca vás žiada o nové spustenie prehliadača Brave, aby sa použila táto aktualizácia. Vaše okno inkognito sa neotvorí.}few{Správca vás žiada o nové spustenie prehliadača Brave, aby sa použila táto aktualizácia. Vaše # okná inkognito sa neotvoria.}many{Správca vás žiada o nové spustenie prehliadača Brave, aby sa použila táto aktualizácia. Your # Incognito windows won't reopen.}other{Správca vás žiada o nové spustenie prehliadača Brave, aby sa použila táto aktualizácia. Vašich # okien inkognito sa neotvorí.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Správca požaduje nové spustenie prehliadača Brave, aby sa použila aktualizácia}=1{Správca požaduje nové spustenie prehliadača Brave, aby sa použila aktualizácia. Vaše okno inkognito sa neotvorí.}few{Správca požaduje nové spustenie prehliadača Brave, aby sa použila aktualizácia. Vaše # okná inkognito sa neotvoria.}many{Správca požaduje nové spustenie prehliadača Brave, aby sa použila aktualizácia. Your # Incognito windows won't reopen.}other{Správca požaduje nové spustenie prehliadača Brave, aby sa použila aktualizácia. Vašich # okien inkognito sa neotvorí.}}</translation>
 <translation id="7914115000169617076">Takmer aktualizované. Aktualizáciu dokončíte reštartovaním prehliadača Brave. Súkromné okná sa neotvoria.</translation>
+<translation id="2176087127109773485">Svoje prihlásené synchronizačné reťazce Brave môžete spravovať. Vaše synchronizačné reťazce Brave sa používajú pre prehliadač Brave, Play Store, Gmail a ďalšie. Ak chcete pridať účet pre niekoho iného, napríklad pre člena rodiny, pridajte do svojho <ph name="DEVICE_TYPE"/> namiesto toho nový profil. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 </translationbundle>

@@ -209,7 +209,6 @@
 <translation id="6476061084931271248">รีสตาร์ทโหนดเพื่อใช้การเปลี่ยนแปลง</translation>
 <translation id="3754226427671882382">รีสตาร์ทโหนด</translation>
 <translation id="949667118776341807">หมุน</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">ชื่อนี้ไม่ถูกต้อง</translation>
 <translation id="6758961763875471084">แก้ไขรายการเพียร์</translation>
 <translation id="1295874070797049002">ส่งออกคีย์</translation>
@@ -227,6 +226,7 @@
 <translation id="1327977588028644528">เกตเวย์</translation>
 <translation id="80225669816651290">โหนดภายใน</translation>
 <translation id="4927734062756955434">ที่อยู่เกตเวย์ IPFS สาธารณะ</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>เรียนรู้เพิ่มเติม<ph name="END_LINK_MPL"/> เกี่ยวกับข้อควรพิจารณาเกี่ยวกับความเป็นส่วนตัวของโหนดภายใน IPFS และเกตเวย์</translation>
 <translation id="8425213833346101688">เปลี่ยน</translation>
 <translation id="557281710253742286">ตั้งค่าเกตเวย์ IPFS</translation>
 <translation id="8571837315037233299">ที่อยู่เกตเวย์</translation>
@@ -240,6 +240,7 @@
 <translation id="8655170717758778983">เปลี่ยนเส้นทางไปยังหน้า IPFS ผ่าน DNSLink โดยอัตโนมัติทุกครั้งที่ทำได้</translation>
 <translation id="2233724520223030977">ใช้ DNSLink โดยอัตโนมัติเพื่อนำทางไปยังเวอร์ชัน IPFS ของเว็บไซต์ทุกครั้งที่ทำได้</translation>
 <translation id="6554397389149987360">ใช้ส่วนประกอบ Hangouts เพื่อเปิดใช้งานการแชร์หน้าจอและฟีเจอร์อื่น ๆ ในเบราว์เซอร์</translation>
+<translation id="7878791177459550035">เราเตอร์สื่อจะเปิดใช้งานฟีเจอร์การส่งภาพในเบราว์เซอร์</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
 <translation id="8068526464562249859">ใช้ส่วนขยาย IPFS Companion เพื่อยกระดับการรองรับ IPFS ใน Brave รวมถึงการเข้าถึงงาน IPFS ทั่วไปจากแถบเบราว์เซอร์ของคุณ</translation>
@@ -350,7 +351,23 @@
         คุณสามารถอ่าน <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>คำแนะนำวิธีดาวน์โหลดและสร้าง<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>ซอร์ซโค้ดที่ใช้สร้างสำเนานี้<ph name="END_LINK_SOURCE_CODE"/>ด้วยตัวเองได้</translation>
 <translation id="4474155171896946103">บุ๊กมาร์กแท็บทั้งหมด...</translation>
 <translation id="2336228925368920074">บุ๊กมาร์กแท็บทั้งหมด...</translation>
+<translation id="4235920711083356755">แสดงปุ่ม VPN</translation>
+<translation id="4070612712151038707">แสดงปุ่ม VPN ในแถบเครื่องมือ</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">เกี่ยวกับ Brave VPN</translation>
+<translation id="4378551569595875038">กำลังเชื่อมต่อ...</translation>
+<translation id="3368922792935385530">เชื่อมต่อแล้ว</translation>
+<translation id="1536754031901697553">กำลังยกเลิกการเชื่อมต่อ...</translation>
+<translation id="8030169304546394654">ไม่ได้เชื่อมต่อ</translation>
+<translation id="1863950594388384201">แสดงปุ่ม VPN ในแถบเครื่องมือ</translation>
+<translation id="5187139277471084437">ซ่อนปุ่ม VPN ในแถบเครื่องมือ</translation>
+<translation id="8041089156583427627">ส่งความคิดเห็น</translation>
+<translation id="4049186905514157504">จัดการแผนของฉัน</translation>
+<translation id="7570585565843385325">แสดงปุ่ม VPN ในแถบเครื่องมือ</translation>
+<translation id="5310426188697803101">ซ่อนปุ่ม VPN ในแถบเครื่องมือ</translation>
+<translation id="945522503751344254">ส่งความคิดเห็น</translation>
+<translation id="3015685033234401792">จัดการแผนของฉัน</translation>
 <translation id="796831669370432378">หากต้องการเพิ่มบุ๊กมาร์ก ให้คลิกปุ่มบุ๊กมาร์กที่อยู่ถัดจากแถบที่อยู่</translation>
 <translation id="4989337484121655457">จำเป็นต้องให้สิทธิ์เข้าถึงดิสก์ทั้งหมด</translation>
 <translation id="8025559074845816210">Brave จำเป็นต้องได้รับสิทธิ์เข้าถึงดิสก์ทั้งหมดเพื่อนำเข้าบุ๊กมาร์กจาก Safari</translation>

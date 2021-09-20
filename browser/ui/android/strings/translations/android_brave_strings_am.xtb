@@ -36,7 +36,9 @@
 <translation id="2448893613530489637">መከታተያዎችን ይከላከላል &amp; ማስታወቂያዎች በድረ-ገፆች ላይ ከመጫን እና ከማሳየት</translation>
 <translation id="1680858055899097121">በማሰሻ ክፍለ ጊዜያት መካከል ትሮችን አይቀያይሩ</translation>
 <translation id="7142548388914389999">የግል ምርት ትንታኔዎች ጠባቂዎች (P3A) ይፍቀዱ።</translation>
-<translation id="5254037869598726291">ይህ ሙሉ ለሙሉ ስም አልባ መረጃ Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም እንዲገምት የሚያግዝ ሆኖ ለእርስዎም የተሻለ እንዲሆን ለማድረግ ያስችለዋል።</translation>
+<translation id="5254037869598726291">ስም የለሽ የ P3A መረጃ ጎበዝ አጠቃላይ አጠቃቀምን ለመገመት እና ታዋቂ ባህሪያትን እያሻሻልን መሆኑን ለማረጋገጥ ይረዳል።</translation>
+<translation id="4272190451231642425">የብልሽት ሪፖርቶችን በራስ -ሰር ይላኩ</translation>
+<translation id="2239766974964486304">የብልሽት ሪፖርቶች Brave ለሁሉም ተጠቃሚዎች የምርት ቋሚነትን እንዲያሻሽል ያግዛል።</translation>
 <translation id="7977176350719484850">Est. ውሂብ\nተቀምጧል</translation>
 <translation id="9008534313521214777">የተቆጠበ\nጊዜ በግምት</translation>
 <translation id="6572660632052512096">የዴስክቶፕ ኩነት</translation>
@@ -480,7 +482,7 @@
 <translation id="1078265935778232285">ወደ Brave አሳሽ እንኳን በደህና መጡ</translation>
 <translation id="6824713633331856331">ስምዎን ሳያሳውቁ እንድንማር ይርዱን</translation>
 <translation id="6116685031674149112">Brave ግላዊነትዎን ይጠብቃል and\nappreciates ለሚከተለው የሚሰጡትን ፍቃድዎን፡</translation>
-<translation id="4394483075076204916">የብልሽት ሪፖርቶችን በመላክ እና ስም-አልባ ሆኖ በመላክ Brave ን እንዲሻሻል ያግዙ፣ <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">ሙሉ በሙሉ ስም-አልባ የሆነ <ph name="PRIVATE_PRODUCT_ANALYSIS"/> በመላክ Brave ን እንዲያሻሽል ያግዙ።</translation>
 <translation id="6478996494082389936">የግል ምርት ትንታኔዎች።</translation>
 <translation id="5187052478998910855">በሽልማቶች ላይ አዳሽ ይፈልጋሉ?</translation>
 <translation id="8622329973403382303">እንደ የሽልማቶች ሮክስታር ታሪክ ውስጥ ለመግባት እንዴት እንደሚሠራ ለማወቅ በፍጥነት ጉብኝት ያድርጉ።</translation>
@@ -563,7 +565,6 @@
 <translation id="1144810021918451336">ከአደገኛ ድርጣቢያዎች፣ ዳውንሎዶች እና ቅጥያዎች አይከላከልልዎትም።</translation>
 <translation id="745115390910697838">ሐረጎች አልተመሳሰሉም። እባክዎ እንደገና ይሞክሩ።</translation>
 <translation id="2360588547830602174">የመለያ መልሶ ማግኘት አልተሳካም። እባክዎ እንደገና ይሞክሩ።</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">የገቢያ ዋጋ በኢትዮጵያ ውስጥ</translation>
 <translation id="5593852897152820572">ዋጋ በ ኢትዮ</translation>
 <translation id="6748108480210050150">ከ</translation>
@@ -597,4 +598,5 @@
 <translation id="8967036623785635603">የሚታዩ እሴቶችን ኣስተካክል</translation>
 <translation id="5050890334032852465">የመለያ የክትትል ዝርዝርን ኣስቀምጥ</translation>
 <translation id="7755766175599167100">ቶክኖችን ፈልግ</translation>
+<translation id="3835223348537121988">ሂሳብ፡</translation>
 </translationbundle>

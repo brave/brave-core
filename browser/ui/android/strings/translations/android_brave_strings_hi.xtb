@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">ट्रैकर्स को रोकता है &amp; वेबपेजेज़ में लोड होने और दिखने वाले विज्ञापन</translation>
 <translation id="1680858055899097121">ब्राउज़िंग सत्रों के बीच टैब बनाएं न रखें</translation>
 <translation id="7142548388914389999">गोपनीयता-संरक्षण प्रोडक्ट एनालिटिक्स की अनुमति दें (P3A)</translation>
-<translation id="5254037869598726291">यह अज्ञात जानकारी केवल Brave को कुछ फ़ीचर्स के समग्र उपयोग का अनुमान लगाने देती है  और आपके लिए इन्हें बेहतर बनाते हैं.</translation>
+<translation id="4272190451231642425">अपने आप क्रैश रिपोर्ट भेजें</translation>
+<translation id="2239766974964486304">क्रैश रिपोर्ट Brave को सभी उपयोगकर्ताओं के लिए उत्पाद स्थिरता में सुधार करने में मदद करती है.</translation>
 <translation id="7977176350719484850">डेटा\nसेव किया गया</translation>
 <translation id="9008534313521214777">अनुमानित समय\nसेव किया</translation>
 <translation id="6572660632052512096">डेस्कटॉप मोड</translation>
@@ -478,7 +479,7 @@
 <translation id="1078265935778232285">Brave ब्राउज़र में आपका स्वागत है</translation>
 <translation id="6824713633331856331">अज्ञात रूप से जानने में हमारी मदद करें</translation>
 <translation id="6116685031674149112">Brave आपकी गोपनीयता की सुरक्षा करता है और\n निम्नलिखित के लिए आपकी सहमति की सराहना करता है:</translation>
-<translation id="4394483075076204916">क्रैश रिपोर्ट और पूरी तरह से अज्ञात, <ph name="PRIVATE_PRODUCT_ANALYSIS"/> भेजकर Brave को बेहतर बनाने में मदद करें</translation>
+<translation id="4394483075076204916">पूरी तरह से अज्ञात, <ph name="PRIVATE_PRODUCT_ANALYSIS"/> भेजकर Brave को बेहतर बनाने में मदद करें</translation>
 <translation id="6478996494082389936">निजी उत्पाद का विश्लेषण।</translation>
 <translation id="5187052478998910855">पुरस्कारों के बारे में नई जानकारी चाहिए?</translation>
 <translation id="8622329973403382303">पुरस्कार रॉकस्टार के रूप में इतिहास दर्ज होने के लिए यह कैसे काम करता है, यह जानने के लिए एक त्वरित टूर करें!</translation>
@@ -561,7 +562,6 @@
 <translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
 <translation id="745115390910697838">वाक्यांश नहीं मेल खा रहे. कृपया दोबारा कोशिश करें.</translation>
 <translation id="2360588547830602174">अकाउंट रिकवरी नहीं हो पाया. कृपया दोबारा कोशिश करें.</translation>
-<translation id="1530109021798294736">मेननेट</translation>
 <translation id="990936698620790924">ETH . में बाजार मूल्य</translation>
 <translation id="5593852897152820572">ETH में मूल्य</translation>
 <translation id="6748108480210050150">से\n\n</translation>
@@ -595,4 +595,5 @@
 <translation id="8967036623785635603">दिखाई देने वाले एसेट में बदलाव करें</translation>
 <translation id="5050890334032852465">अकाउंट वॉचलिस्ट सेव करें</translation>
 <translation id="7755766175599167100">टोकन सर्च करें</translation>
+<translation id="3835223348537121988">बैलेंस</translation>
 </translationbundle>

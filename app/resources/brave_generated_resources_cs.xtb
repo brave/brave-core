@@ -209,7 +209,6 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="6476061084931271248">Restartovat uzel k použití změn</translation>
 <translation id="3754226427671882382">Restartovat uzel</translation>
 <translation id="949667118776341807">Otáčení</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Tento název není platný</translation>
 <translation id="6758961763875471084">Upravit seznam peerů</translation>
 <translation id="1295874070797049002">Export klíče</translation>
@@ -240,6 +239,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="8655170717758778983">Pokud je to možné, automaticky přesměrovávat na stránky využívající protokol IPFS prostřednictvím služby DNSLink</translation>
 <translation id="2233724520223030977">Když je to možné, automaticky používá službu DNSLink k přechodu na verzi webu využívající protokol IPFS</translation>
 <translation id="6554397389149987360">Používá komponentu Hangouts k umožnění sdílení obrazovek a dalších funkcí prohlížeče.</translation>
+<translation id="7878791177459550035">Směrovač médií umožňuje funkci odesílání v prohlížeči.</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="7179921470347911571">Znovu spustit</translation>
 <translation id="8068526464562249859">Používá rozšíření IPFS Companion pro vylepšenou podporu IPFS v prohlížeči Brave, včetně přístupu k běžným úlohám IPFS z lišty prohlížeče.</translation>
@@ -350,7 +350,23 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
         Můžete si sami přečíst <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>pokyny ke způsobu stahování a tvorby<ph name="END_LINK_BUILD_INSTRUCTIONS"/> specifického <ph name="BEGIN_LINK_SOURCE_CODE"/>zdrojového kódu používaného k vytváření této kopie<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Přidat do záložek všechny karty...</translation>
 <translation id="2336228925368920074">Přidat do záložek všechny karty...</translation>
+<translation id="4235920711083356755">Zobrazit tlačítko VPN</translation>
+<translation id="4070612712151038707">Zobrazit tlačítko VPN v panelu nástrojů</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">VPN síť Brave</translation>
+<translation id="2345974803401546682">O VPN síti Brave</translation>
+<translation id="4378551569595875038">Connecting...</translation>
+<translation id="3368922792935385530">Připojeno</translation>
+<translation id="1536754031901697553">Odpojování...</translation>
+<translation id="8030169304546394654">Odpojeno</translation>
+<translation id="1863950594388384201">Zobrazit tlačítko VPN v panelu nástrojů</translation>
+<translation id="5187139277471084437">Skrýt tlačítko VPN v panelu nástrojů</translation>
+<translation id="8041089156583427627">Odeslat svůj názor</translation>
+<translation id="4049186905514157504">Spravovat můj plán</translation>
+<translation id="7570585565843385325">Zobrazit tlačítko VPN v panelu nástrojů</translation>
+<translation id="5310426188697803101">Skrýt tlačítko VPN v panelu nástrojů</translation>
+<translation id="945522503751344254">Odeslat zpětnou vazbu</translation>
+<translation id="3015685033234401792">Spravovat můj plán</translation>
 <translation id="796831669370432378">Chcete-li přidat záložku, klepněte na tlačítko záložky vedle adresního řádku</translation>
 <translation id="4989337484121655457">Vyžadován plný přístup k disku</translation>
 <translation id="8025559074845816210">Pro import záložek ze Safari potřebuje Brave plný přístup k disku.</translation>

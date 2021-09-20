@@ -1,685 +1,382 @@
 {
-  "braveRewards": {
-    "message": "Brave Rewards",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "ಸಾರಾಂಶ",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "ಈಗಲೇ ಸಂಪಾದನೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ!",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "ಸಲಹೆ",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "ಪುರಸ್ಕಾರಗಳಲ್ಲಿ ಸೇರಿಕೊಳ್ಳಿ",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "ಪರಿಶೀಲಿಸದೇ ಇರುವ ರಚನೆಕಾರ",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಿ, ಹಣ ಪಡೆಯಿರಿ ಮತ್ತು ನಿಮ್ಮ ಮೆಚ್ಚಿನ ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಲು ಅದನ್ನು ಮುಂದಕ್ಕೆ ಪಾವತಿಸಿ.",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ ರಚನೆಕಾರ",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "ಗೌಪ್ಯತೆ-ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ನೀವು ಇದೀಗ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಬಹುದು.",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "ಸ್ಥಿತಿ ರಿಫ್ರೆಶ್ ಮಾಡಿ",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "ಗೌಪ್ಯತೆಯನ್ನು-ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ನೀವು ಇದೀಗ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಬಹುದು.",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "ಏನೆಲ್ಲಾ ಸುಧಾರಣೆಗಳಾಗಿವೆ ಎಂಬುದನ್ನು ಪರಿಶೀಲಿಸಿ",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ಗೆ ನಾವು ಮಹತ್ವದ ಅಪ್‌ಗ್ರೇಡ್ ನೀಡಿದ್ದೇವೆ.",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "ಹೊಸ ಇಂಟರ್ನೆಟ್ ಅನುಭವವನ್ನು ಪಡೆಯಲು ಸಿದ್ಧರಾಗಿ.",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "ನಿಮ್ಮ ವಾಲೆಟ್",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "ಅನುದಾನಗಳು",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "ವಿವರಗಳು",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "on": {
-    "message": "ಆನ್",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "Brave ಪರಿಶೀಲಿಸಿದ ರಚನೆಕಾರ",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "ಗಮನ",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "ಮಾಸಿಕ ಕೊಡುಗೆ",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆಯಲ್ಲಿ ಸೇರಿ",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "ಸಲಹೆ ಕಳುಹಿಸಿ...",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "ಸಲಹೆಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "ಇದಕ್ಕೆ",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "ಪುರಸ್ಕಾರಗಳ ಸಾರಾಂಶ",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "ಏಪ್ರಿಲ್",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "ಆಗಸ್ಟ್",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "ಡಿಸೆಂಬರ್",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "ಫೆಬ್ರವರಿ",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "ಜನವರಿ",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "ಜುಲೈ",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "ಜೂನ್",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "ಮಾರ್ಚ್",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "ಮೇ",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "ನವೆಂಬರ್",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "ಅಕ್ಟೋಬರ್",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "ಸೆಪ್ಟೆಂಬರ್",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "$currency$ ಅನುದಾನಗಳು",
-    "description": "Title for grant notification",
+  "platformPublisherTitle": {
+    "message": "$name$ ನಲ್ಲಿ $platform$",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "ಟೋಕನ್ ಅನುದಾನಗಳು ಕ್ಲೈಮ್ ಮಾಡಿರುವುದು",
-    "description": "Title for grant section in wallet summary"
+  "attention": {
+    "message": "ಗಮನ",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "ಜಾಹೀರಾತುಗಳಿಂದ ಸಂಪಾದನೆಗಳು",
-    "description": "Title for ads section in wallet summary"
+  "sendTip": {
+    "message": "ಸಲಹೆ ಕಳುಹಿಸಿ",
+    "description": ""
   },
-  "rewardsContribute": {
-    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆ",
-    "description": "Title for auto contribute section in wallet summary"
+  "includeInAutoContribute": {
+    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆಯಲ್ಲಿ ಸೇರಿ",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "ಒಂದು ಬಾರಿಯ ಸಲಹೆಗಳು",
-    "description": "Title for one-time tips section in wallet summary"
-  },
-  "expiresOn": {
-    "message": "ಅವಧಿ ಮೀರುವ ದಿನಾಂಕ",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
-  },
-  "recurringDonations": {
-    "message": "ಮಾಸಿಕ ಕೊಡುಗೆಗಳು",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "ಆಫ್",
-    "description": "Label used in toggle indicating that toggle is off"
+  "monthlyContribution": {
+    "message": "ಮಾಸಿಕ ಕೊಡುಗೆ",
+    "description": ""
   },
   "ok": {
     "message": "ಸರಿ",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "ನೀವು ಈಗ ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡುವ ಮೂಲಕ ಗಳಿಸಬಹುದು.",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "Brave ಜಾಹೀರಾತುಗಳು",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆ",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "ನೀವು $amount$ $currency$ ಗೆ ಕೊಡುಗೆ ನೀಡಿರುವಿರಿ",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "ನಿಮಗಾಗಿ ಒಂದು ಅನುದಾನ ಕಾಯುತ್ತಿದೆ.",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "ಈಗ ಬ್ಯಾಕಪ್‌ ಮಾಡಿ",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "ವಾಲೆಟ್ ಬ್ಯಾಕಪ್",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "ದಯವಿಟ್ಟು ನಿಮ್ಮ Brave ವ್ಯಾಲೆಟ್ ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಿ.",
-    "description": "Description for backup wallet notification"
-  },
-  "learnMore": {
-    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
-    "description": "Notification button text to learn more about a specific use-case"
-  },
-  "mismatchedProviderAccountsTitle": {
-    "message": "ದೋಷ: ಬೇರೆ ಖಾತೆ",
-    "description": "Title for mismatched provider accounts notification"
-  },
-  "mismatchedProviderAccountsNotification": {
-    "message": "ಓಹ್, ನಿಮ್ಮ Brave Rewards ವ್ಯಾಲೆಟ್ ಅನ್ನು ಮತ್ತೊಂದು $name$ ಖಾತೆಯೊಂದಿಗೆ ಈಗಾಗಲೇ ಪರಿಶೀಲಿಸಲಾಗಿದೆ ಎಂಬುದಾಗಿ ಕಂಡುಬರುತ್ತಿದೆ. ನಿಮ್ಮ ಹಿಂದಿನ ಖಾತೆಯನ್ನು ಬಳಸಿಕೊಂಡು ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪರಿಶೀಲಿಸಲು ಪ್ರಯತ್ನಿಸಿ.",
-    "description": "Description for mismatched provider accounts notification",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "upholdBATNotAllowedForUserTitle": {
-    "message": "ದೋಷ: BAT ಲಭ್ಯವಿಲ್ಲ",
-    "description": "Title for BAT not allowed for user notification"
-  },
-  "upholdBATNotAllowedForUserNotification": {
-    "message": "ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ BAT ಇನ್ನೂ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ.",
-    "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserTitle": {
-    "message": "ದೋಷ: ನಿಬಂಧಿಸಿದ ಖಾತೆ",
-    "description": "Title for blocked user notification"
-  },
-  "upholdBlockedUserNotification": {
-    "message": "ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಪ್ರಸ್ತುತ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ.",
-    "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserTitle": {
-    "message": "ದೋಷ: ಬಾಕಿ ಇರುವ ಖಾತೆ",
-    "description": "Title for pending user notification"
-  },
-  "upholdPendingUserNotification": {
-    "message": "ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಖಾತೆ ಇನ್ನೂ ಬಾಕಿ ಉಳಿದಿದೆ.",
-    "description": "Description for pending user notification"
-  },
-  "upholdRestrictedUserTitle": {
-    "message": "ದೋಷ: ನಿರ್ಬಂಧಿತ ಖಾತೆ",
-    "description": "Title for restricted user notification"
-  },
-  "upholdRestrictedUserNotification": {
-    "message": "ನಿಮ್ಮ ಖಾತೆ ಅಪ್‌ಹೋಲ್ಡ್ ಅನ್ನು ಪ್ರಸ್ತುತ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ.",
-    "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "ಸಾಧನ ಮಿತಿ ತಲುಪಿದೆ",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಲಾಗುವುದಿಲ್ಲ, ಏಕೆಂದರೆ ನೀವು ಗರಿಷ್ಠ ದೃಢೀಕೃತ ಸಾಧನ ಮಿತಿಯನ್ನು ಈಗಾಗಲೇ ತಲುಪಿದ್ದೀರಿ.",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "ನಿಮ್ಮ ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಖಾತೆ ಡೆಪಾಸಿಟ್‌ಗೆ ನಿರೀಕ್ಷಿಸುತ್ತಿದೆ.",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "ಫಂಡ್‌ಗಳು ಸಾಕಷ್ಟಿಲ್ಲ",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "ವಾಲೆಟ್ ರಚಿಸಲಾಗುತ್ತಿದೆ",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "ನಿಮ್ಮ ಕೊಡುಗೆಯನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಲ್ಲಿ ಸಮಸ್ಯೆ ಎದುರಾಗಿದೆ.",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "ಸ್ವಯಂ ಕೊಡುಗೆಗಾಗಿ ನಿಮ್ಮ ನಿಗದಿತ ಮಾಸಿಕ ಪಾವತಿಯನ್ನು ಮತ್ತು ಮಾಸಿಕ ಕೊಡುಗೆಗಳನ್ನು ಸಾಕಷ್ಟು ಹಣವಿಲ್ಲದ ಕಾರಣದಿಂದಾಗಿ ಪೂರ್ಣಗೊಳಿಸಲಾಗಲಿಲ್ಲ. ನಾವು 30 ದಿನಗಳಲ್ಲಿ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸುತ್ತೇವೆ.",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "ನಿಮ್ಮ ಟಿಪ್ ಕಳುಹಿಸಲು‌ ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ. ದಯವಿಟ್ಟು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ.",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "ಇನ್ನೂ ಯಾವುದೇ ಚಟುವಟಿಕೆಗಳಿಲ್ಲ…",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "ಇಲ್ಲಿಗೆ BAT ಐಕಾನ್ ಅನ್ನು ಎಳೆಯಿರಿ",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "ನೀವು ಮನುಷ್ಯ ಎಂಬುದನ್ನು ಸಾಬೀತುಪಡಿಸಿ!",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "ಗುರಿ.",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "ಹ್‌ಮ್... ನಿರ್ಗಮಿಸಿಲ್ಲ. ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "ಕ್ಲೈಮ್ ಮಾಡಿ",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "ಉಚಿತ ಟೋಕನ್ ಅನುದಾನ",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "ಅನುದಾನ ಅವಧಿ ಮೀರುವ ದಿನಾಂಕ",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
-    "message": "ಸರಿ",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "Brave Rewards ಏನೋ ಸಮಸ್ಯೆ ಎದುರಿಸುತ್ತಿದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "ಓಹೋ, ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "ಸ್ಥಿತಿ ರಿಫ್ರೆಶ್ ಮಾಡಿ",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "ಇನ್ನೂ ಪರಿಶೀಲಿಸಿಲ್ಲ",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನಿಂದ ಟಿಪ್ಸ್ ಸ್ವೀಕರಿಸಲು ಈ ರಚನೆಕಾರರನ್ನು ಪ್ರಸ್ತುತ ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿಲ್ಲ. ನೀವು ಪಡೆಯುವ ಯಾವುದೇ ಟಿಪ್ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನಲ್ಲಿಯೇ ಬಾಕಿ ಇರುತ್ತದೆ ಮತ್ತು 90 ದಿನಗಳವರೆಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರುಪ್ರಯತ್ನಿಸಿ.",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಇನ್ನೂ ಸೈನ್ ಅಪ್ ಮಾಡದ ರಚನೆಕಾರರಿಗೆ ನೀವು {{reservedAmount}} {{currency}} ಅನ್ನು ನಿಯೋಜಿಸಿದ್ದೀರಿ. ಅವರು ಅವುಗಳನ್ನು ಪರಿಶೀಲಿಸುವ ತನಕ ಅಥವಾ 90 ದಿನಗಳು ಮುಗಿಯುವ ತನಕ ನಿಮ್ಮ ಬ್ರೌಸರ್ ಕೊಡುಗೆ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಲೇ ಇರುತ್ತದೆ.",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "ಆಫ್",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು.",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "ಬ್ರೌಸ್ ಮಾಡುವಾಗ ನೀವು ಪ್ರಸ್ತುತ ಯಾವುದೇ ಬಹುಮಾನ ಲಾಭಗಳನ್ನು ಪಡೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ. ಬಹುಮಾನಗಳನ್ನು ಮತ್ತೆ ಆನ್ ಮಾಡಿ",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "Brave Rewards ಇದಾಗಿದೆ",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "ವಾಲೆಟ್ ರಚನೆ ವಿಫಲಗೊಂಡಿದೆ",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "ಫಂಡ್‌ಗಳನ್ನು ಸೇರಿಸಿ",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "ರಿವಾರ್ಡ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "ಜಾಹೀರಾತುಗಳಿಂದ ಗಳಿಸಿದ ನಿಮ್ಮ ಬಹುಮಾನಗಳು ಇಲ್ಲಿವೆ!",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "ಮತ್ತು",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "ಬ್ರೌಸಿಂಗ್ ಮಾಡಿ, ಪುರಸ್ಕಾರ ಪಡೆಯಿರಿ!",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "ಗೌಪ್ಯತೆಯನ್ನು ಗೌರವಿಸುವ ಜಾಹೀರಾತು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ಗಳಿಸಿ ಮತ್ತು ನೀವು ಇಷ್ಟಪಡುವ ಕಂಟೆಂಟ್ ಕ್ರಿಯೇಟರುಗಳನ್ನು ಬೆಂಬಲಿಸಲು ಪಾವತಿ ಮಾಡಿ.",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "Brave Rewards ಸಕ್ರಿಯಗೊಳಿಸಿ",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "ಗೌಪ್ಯತೆ ನೀತಿ",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "'ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್' ಸಕ್ರಿಯಗೊಳಿಸಿ' ಕ್ಲಿಕ್ ಮಾಡುವ ಮೂಲಕ, ಇದನ್ನು ನೀವು ಓದಿದ್ದೀರಿ ಮತ್ತು ಸಮ್ಮತಿಸಿದ್ದೀರಿ ಎಂದು ಸೂಚಿಸಿ",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "ಸೇವೆಯ ನಿಯಮಗಳು",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "ಮರಳಿ ಸ್ವಾಗತ!",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "ನಿಮ್ಮ ಮಾಸಿಕ ಕೊಡುಗೆಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗಿದೆ!",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "ಕೊಡುಗೆಗಳು & ಸಲಹೆಗಳು",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": "‘ರಿವಾರ್ಡ್‌ಗಳಿಗೆ ಸೇರ್ಪಡೆಗೊಳಿಸು’ ಕ್ಲಿಕ್ ಮಾಡುವ ಮೂಲಕ, ಇದನ್ನು ನೀವು ಓದಿರುವಿರಿ ಮತ್ತು ಸಮ್ಮತಿಸಿದ್ದೀರಿ ಎಂದು ಸೂಚಿಸುತ್ತೀರಿ",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "ಬಿಎಟಿ",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "turnOnAds": {
-    "message": "ಜಾಹೀರಾತುಗಳನ್ನು ಆನ್ ಮಾಡಿ",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "ಜಾಹೀರಾತುಗಳಿಂದ ಗಳಿಸಲಾಗಿದೆ",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "ಈ ಟ್ವಿಟ್‌ಗೆ ಸಲಹೆ ನೀಡಿ",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "ಸಲಹೆ",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "ಈ ಪೋಸ್ಟ್ ಸಲಹೆ ಮಾಡಿ",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "ಸಲಹೆ",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "ಸಲಹೆ ಕಳುಹಿಸಿ",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "ಸಲಹೆ",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "ರಚಿಸುವವರ $name$ ಇತ್ತೀಚೆಗೆ ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "ಸಾಕಷ್ಟು ಹಣ ಇಲ್ಲದೇ ಇರುವುದರಿಂದ ನೀವು ಬಾಕಿಯಿರುವ ಸಲಹೆಗಳನ್ನು ಹೊಂದಿದ್ದೀರಿ",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "ಕೊಡುಗೆ ಬಾಕಿ ಉಳಿದಿದೆ",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "ಇದು ನಿಮ್ಮ ಅದೃಷ್ಟ ದಿನವಾಗಿದೆ!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "ನಿಮ್ಮ $currency$ ಅನುದಾನವು ಶೀಘ್ರದಲ್ಲೇ ನಿಮ್ಮ ಕೈತಲುಪಲಿದೆ.",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "ಉಚಿತ ಟೋಕನ್ ಅನುದಾನ",
-    "description": "Token title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "ನೀವು ಜಾಹೀರಾತುಗಳ ರಿವಾರ್ಡ್ ಅನ್ನು ಗಳಿಸಿದ್ದೀರಿ!",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "ನಿಮ್ಮ ರಿವಾರ್ಡ್ ನಿಮ್ಮ Brave Rewards ವ್ಯಾಲೆಟ್‌ನಲ್ಲಿ ಇನ್ನೇನು ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ.",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "ನಿಮ್ಮ ರಿವಾರ್ಡ್ ಮೊತ್ತ",
-    "description": "Token title on success screen for ads"
-  },
-  "walletButtonDisconnected":  {
-    "message": "ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗಿದೆ",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "ನಿಮ್ಮ $provider$ ಖಾತೆಗೆ ಹೋಗಿ",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletLogInWithProvider":  {
-    "message": "ನಿಮ್ಮ $provider$ ಖಾತೆಗೆ ಲಾಗ್ ಇನ್ ಮಾಡಿ",
-    "description": "CTA to log in with a wallet provider",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "Brave ರಿವಾರ್ಡ್‌ಗಳಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿದೆ!",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "ಅಭಿನಂದನೆಗಳು! ನಿಮ್ಮ $name$ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಪರಿಶೀಲಿಸಲಾಗಿದೆ ಮತ್ತು ಅದು ಹಣವನ್ನು ಸೇರಿಸಲು ಮತ್ತು ಹಿಂಪಡೆಯಲು ಸಿದ್ಧವಾಗಿದೆ.",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "ಓಹ್. ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ತಲುಪಲಾಗುತ್ತಿಲ್ಲ.",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "ಯಾವುದೇ ಚಿಂತೆ ಇಲ್ಲ. ಇದು ಭದ್ರತೆಯ ಹಲವು ಕಾರಣಗಳಿಗೆ ಸಂಭವಿಸಬಹುದು. ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ಗೆ ಮರುಸಂಪರ್ಕಿಸುವ ಮೂಲಕ ಈ ಸಮಸ್ಯೆಯನ್ನು ಪರಿಹರಿಸಬಹುದು.",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "Brave ಬಳಕೆದಾರರಿಂದ ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಈ ಪರಿಶೀಲಿತ Brave ರಚನೆಕಾರ ಇನ್ನೂ ಕಾನ್ಫಿಗರ್ ಮಾಡಿಲ್ಲ. ನೀವು ಕಳುಹಿಸುವ ಯಾವುದೇ ಸಲಹೆಗಳು ಈ ಪ್ರಕ್ರಿಯೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸುವವರೆಗೆ ನಿಮ್ಮ ವಾಲೆಟ್‌ನಲ್ಲಿ ಉಳಿಯುತ್ತವೆ.",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲನೆ ಪೂರ್ಣಗೊಳಿಸಿ",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "ಹೊಂದಿಸಿ...",
-    "description": "Button text for setting monthly contribution"
+    "message": "ಹೊಂದಿಸಿ",
+    "description": ""
   },
-  "tokens":  {
-    "message": "ಟೋಕನ್‌ಗಳು",
-    "description": "Standard tokens text"
-  },
-  "point":  {
-    "message": "ಪಾಯಿಂಟ್",
-    "description": "BAT Point text"
-  },
-  "token":  {
-    "message": "ಟೋಕನ್",
-    "description": "BAT Token text"
-  },
-  "tokenGrants":  {
-    "message": "ಟೋಕನ್ ಅನುದಾನಗಳು",
-    "description": "BAT Tokens Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "ಹಲೋ, $name$!",
-    "description": "Greetings for external wallet popup",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
-      }
-    }
-  },
-  "cancel":  {
-    "message": "ರದ್ದುಗೊಳಿಸಿ",
-    "description": "Text for cancel button"
-  },
-  "changeAmount":  {
+  "changeAmount": {
     "message": "ಮೊತ್ತವನ್ನು ಬದಲಾಯಿಸಿ",
-    "description": "Button text for changing monthly contribution amount"
+    "description": ""
   },
-  "login":  {
-    "message": "'ಲಾಗಿನ್",
-    "description": "Text for login button"
+  "cancel": {
+    "message": "ರದ್ದುಗೊಳಿಸಿ",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "ವಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವುದು ನಿಮ್ಮ ಫಂಡ್‌ಗಳನ್ನು ಹೆಚ್ಚು ದಕ್ಷತೆಯಿಂದ ನಿರ್ವಹಿಸಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ.",
-    "description": "Text for login button"
+  "grantCaptchaTitle": {
+    "message": "ನೀವು ಮಾನವರು ಎಂಬುದಾಗಿ ದೃಢಪಡಿಸಿ",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆ ರಚಿಸಲು ನೀವು ಕನಿಷ್ಠ $amount$ BAT ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ. ನೀವು ಈಗಾಗಲೇ ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆಯನ್ನು ಪರಿಶೀಲಿಸಿದ್ದರೆ, ಲಾಗಿನ್ ಮಾಡಲು ಮುಂದುವರಿಯಿರಿ.",
-    "description": "Text for login button",
+  "grantCaptchaFailedTitle": {
+    "message": "ಹ್‌ಮ್... ನಿರ್ಗಮಿಸಿಲ್ಲ. ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
+    "description": ""
+  },
+  "grantCaptchaHint": {
+    "message": "BAT ಐಕಾನ್ ಅನ್ನು $hint$ ಟಾರ್ಗೆಟ್‌ಗೆ ಡ್ರ್ಯಾಗ್ ಮಾಡಿ.",
+    "description": "",
     "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "walletConnected":  {
-    "message": "ಸಂಪರ್ಕಿಸಲಾಗಿದೆ",
-    "description": "Status button that tells user that he is connected"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "ಇದು ನಿಮ್ಮ ಅದೃಷ್ಟ ದಿನವಾಗಿದೆ!",
+    "description": ""
   },
-  "walletDisconnected":  {
-    "message": "ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗಿದೆ",
-    "description": "Status button that tells user that he is disconnected"
+  "grantCaptchaPassedTextUGP": {
+    "message": "ನಿಮ್ಮ ಟೋಕನ್ ಅನುದಾನವು ಶೀಘ್ರದಲ್ಲೇ ನಿಮ್ಮ ಕೈತಲುಪಲಿದೆ.",
+    "description": ""
   },
-  "walletPending":  {
-    "message": "ಬಾಕಿ ಉಳಿದಿರುವುದು",
-    "description": "Status button that tells user that he is currently pending"
+  "grantCaptchaAmountUGP": {
+    "message": "ಉಚಿತ ಟೋಕನ್ ಅನುದಾನ",
+    "description": ""
   },
-  "walletVerificationNote3":  {
-    "message": "ಗಮನಿಸಿ: ನೀವು ಒಮ್ಮೆ ದೃಢೀಕರಿಸಿದರೆ ನಿಮ್ಮ ವಹಿವಾಟುಗಳು $provider$ ಗೆ ಕಾಣುತ್ತವೆ; ಉದಾಹರಣೆಗೆ, ಅವರಿಗೆ ಸ್ವೀಕೃತದಾರರು ಮತ್ತು ನಿಮ್ಮ ಟಿಪ್ಸ್ ಮೊತ್ತವನ್ನು ನೋಡಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ.",
-    "description": "Displayed in login modal for external wallet providers",
+  "grantCaptchaPassedTitleAds": {
+    "message": "ನೀವು ಜಾಹೀರಾತುಗಳ ರಿವಾರ್ಡ್ ಅನ್ನು ಗಳಿಸಿದ್ದೀರಿ!",
+    "description": ""
+  },
+  "grantCaptchaPassedTextAds": {
+    "message": "ನಿಮ್ಮ ರಿವಾರ್ಡ್ ನಿಮ್ಮ Brave Rewards ವ್ಯಾಲೆಟ್‌ನಲ್ಲಿ ಇನ್ನೇನು ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ.",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "ನಿಮ್ಮ ರಿವಾರ್ಡ್ ಮೊತ್ತ",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "ಅನುದಾನ ಅವಧಿ ಮೀರುವ ದಿನಾಂಕ",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "ಓಹೋ, ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "Brave Rewards ಏನೋ ಸಮಸ್ಯೆ ಎದುರಿಸುತ್ತಿದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
+    "description": ""
+  },
+  "walletAccountLink": {
+    "message": "ನನ್ನ $provider$ ಖಾತೆಗೆ ಹೋಗಿ",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "ಹಣ ಜಮೆಮಾಡಿ",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆ",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "ಪರಿಶೀಲನೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು $provider$ ಗೆ ಹೋಗಿ",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಸ್ವೀಕರಿಸುವುದನ್ನು ಆರಂಭಿಸುವುದಕ್ಕಾಗಿ ದಯವಿಟ್ಟು ಗುರುತು ಪರಿಶೀಲನೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ.",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗಿದೆ",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "Brave ರಿವಾರ್ಡ್‌ಗಳಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ",
+    "description": ""
+  },
+  "walletEstimatedEarnings": {
+    "message": "ಅಂದಾಜು ಮಾಡಲಾದ ಗಳಿಕೆಗಳು",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "ನಿಮ್ಮ $provider$ ಖಾತೆಗೆ ಲಾಗ್ ಇನ್ ಮಾಡಿ",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "ಮಾಸಿಕ ಇನಾಮು",
+    "description": ""
+  },
+  "walletMyWallet": {
+    "message": "ನನ್ನ ವಾಲೆಟ್",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "ಒಂದು ಬಾರಿಯ ಸಲಹೆಗಳು",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "ಬಾಕಿ ಉಳಿದಿರುವುದು",
+    "description": ""
+  },
+  "walletPendingRewardsText": {
+    "message": "$days$ ದಿನಗಳಲ್ಲಿ $amount$ ಆಗಮಿಸುತ್ತಿದೆ",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "walletRewardsFromAds": {
+    "message": "ಜಾಹೀರಾತುಗಳಿಂದ ರಿವಾರ್ಡ್‌ಗಳು",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "ಪುರಸ್ಕಾರಗಳ ಸಾರಾಂಶ",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
+    "description": ""
+  },
+  "walletVerify": {
+    "message": "ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "ಹಣ ಜಮೆಮಾಡಿ",
+    "description": ""
+  },
+  "notificationLearnMore": {
+    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "ಮರುಸಂಪರ್ಕಿಸಿ",
+    "description": ""
+  },
+  "notificationClaim": {
+    "message": "ಕ್ಲೈಮ್ ಮಾಡಿ",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "ಫಂಡ್‌ಗಳು ಸಾಕಷ್ಟಿಲ್ಲ",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "ನಿಮ್ಮ ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಖಾತೆ ಡೆಪಾಸಿಟ್‌ಗೆ ನಿರೀಕ್ಷಿಸುತ್ತಿದೆ.",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆ",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "ನೀವು $amount$ ಮೊತ್ತದ ಕೊಡುಗೆ ನೀಡಿರುವಿರಿ.",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "ಬ್ಯಾಕಪ್ ವಾಲೆಟ್",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "ದಯವಿಟ್ಟು ನಿಮ್ಮ Brave ವ್ಯಾಲೆಟ್ ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಿ.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "ಈಗ ಬ್ಯಾಕಪ್‌ ಮಾಡಿ",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "ನಿಮ್ಮ ವಾಲೆಟ್ ಲಾಗ್ ಔಟ್ ಮಾಡಲಾಗಿದೆ",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಸುರಕ್ಷಿತಗೊಳಿಸುವುದಕ್ಕಾಗಿ ಇದು ಸಂಭವಿಸಬಹುದು. ಇದೀಗ ಮರುಸಂಪರ್ಕಿಸಲು ಕೆಳಗೆ ಕ್ಲಿಕ್ ಮಾಡಿ.",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "ಮರುಸಂಪರ್ಕಿಸಿ",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿದೆ!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "ನಿಮ್ಮ $provider$ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಪರಿಶೀಲಿಸಲಾಗಿದೆ ಮತ್ತು ಅದು ಫಂಡ್‌ಗಳನ್ನು ಸೇರಿಸಲು ಮತ್ತು ಹಿಂಪಡೆಯಲು ಸಿದ್ಧವಾಗಿದೆ.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "ಟೋಕನ್ ಅನುದಾನಗಳು",
+    "description": ""
+  },
+  "notificationTokenGrantText": {
+    "message": "ನಿಮಗಾಗಿ ಒಂದು ಅನುದಾನ ಕಾಯುತ್ತಿದೆ.",
+    "description": ""
+  },
+  "notificationAdGrantTitle": {
+    "message": "ಜಾಹೀರಾತುಗಳ ಗಳಿಕೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲಾಗಿದೆ",
+    "description": ""
+  },
+  "notificationAdGrantText": {
+    "message": "Brave Private Ads ನಿಮ್ಮ ರಿವಾರ್ಡ್ಗಳು ಇಲ್ಲಿವೆ!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "ಮಾಸಿಕ ಕೊಡುಗೆ ವಿಫಲಗೊಂಡಿದೆ",
+    "description": ""
+  },
+  "notificationInsufficientFundsText": {
+    "message": "ಸ್ವಯಂ ಕೊಡುಗೆಗಾಗಿ ನಿಮ್ಮ ನಿಗದಿತ ಮಾಸಿಕ ಪಾವತಿಯನ್ನು ಮತ್ತು ಮಾಸಿಕ ಕೊಡುಗೆಗಳನ್ನು ಸಾಕಷ್ಟು ಹಣವಿಲ್ಲದ ಕಾರಣದಿಂದಾಗಿ ಪೂರ್ಣಗೊಳಿಸಲಾಗಲಿಲ್ಲ. ನಾವು 30 ದಿನಗಳಲ್ಲಿ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸುತ್ತೇವೆ.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "ನಿಮ್ಮ ಕೊಡುಗೆಯನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಲ್ಲಿ ಸಮಸ್ಯೆ ಎದುರಾಗಿದೆ.",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "ಕೊಡುಗೆಗಳು ಮತ್ತು ಸಲಹೆಗಳು",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "ನಿಮ್ಮ ಮಾಸಿಕ ಕೊಡುಗೆಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗಿದೆ.",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "ಕೊಡುಗೆ ಬಾಕಿ ಉಳಿದಿದೆ",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "ರಚನೆಕಾರರ $publisher_name$ ಅನ್ನು ಇತ್ತೀಚೆಗೆ ಪರಿಶೀಲಿಸಲಾಗಿದೆ.",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "ಫಂಡ್‌ಗಳು ಸಾಕಷ್ಟಿಲ್ಲ",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "ಸಾಕಷ್ಟು ಹಣ ಇಲ್ಲದೇ ಇರುವುದರಿಂದ ನೀವು ಬಾಕಿಯಿರುವ ಸಲಹೆಗಳನ್ನು ಹೊಂದಿದ್ದೀರಿ",
+    "description": ""
+  },
+  "notificationWalletLinkingFailedTitle": {
+    "message": "ವಾಲೆಟ್ ಲಿಂಕ್ ಮಾಡುವಿಕೆ ವಿಫಲಗೊಂಡಿದೆ",
+    "description": ""
+  },
+  "notificationDeviceLimitReachedText": {
+    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಲಾಗುವುದಿಲ್ಲ, ಏಕೆಂದರೆ ನೀವು ಗರಿಷ್ಠ ದೃಢೀಕೃತ ಸಾಧನ ಮಿತಿಯನ್ನು ಈಗಾಗಲೇ ತಲುಪಿದ್ದೀರಿ.",
+    "description": ""
+  },
+  "notificationMismatchedProviderAccountsText": {
+    "message": "ಓಹ್, ನಿಮ್ಮ Brave Rewards ವ್ಯಾಲೆಟ್ ಅನ್ನು ಮತ್ತೊಂದು $provider$ ಖಾತೆಯೊಂದಿಗೆ ಈಗಾಗಲೇ ಪರಿಶೀಲಿಸಲಾಗಿದೆ ಎಂಬುದಾಗಿ ಕಂಡುಬರುತ್ತಿದೆ. ನಿಮ್ಮ ಹಿಂದಿನ ಖಾತೆಯನ್ನು ಬಳಸಿಕೊಂಡು ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪರಿಶೀಲಿಸಲು ಪ್ರಯತ್ನಿಸಿ.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationUpholdBatNotSupportedText": {
+    "message": "ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ BAT ಇನ್ನೂ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ.",
+    "description": ""
+  },
+  "notificationUpholdUserBlockedText": {
+    "message": "ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಪ್ರಸ್ತುತ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ.",
+    "description": ""
+  },
+  "notificationUpholdUserPendingText": {
+    "message": "ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಖಾತೆ ಇನ್ನೂ ಬಾಕಿ ಉಳಿದಿದೆ.",
+    "description": ""
+  },
+  "notificationUpholdUserRestrictedText": {
+    "message": "ನಿಮ್ಮ ಖಾತೆ ಅಪ್‌ಹೋಲ್ಡ್ ಅನ್ನು ಪ್ರಸ್ತುತ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ.",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ ಮತ್ತು ಹಿಂತಿರುಗಿ",
@@ -854,5 +551,29 @@
         "content": "$2"
       }
     }
+  },
+  "captchaMaxAttemptsExceededText": {
+    "message": "ಇದು ಕಾರ್ಯನಿರ್ವಹಿಸದೇ ಇರುವಂತೆ ಕಂಡುಬರುತ್ತಿದೆ, Brave ads ವಿರಾಮಗೊಂಡಿರುವ ಸ್ಥಿತಿಯಲ್ಲಿಯೇ ಇರುತ್ತದೆ. ಕ್ಯಾಪ್ಚಾ ಜೊತೆಗೆ ನಿಮಗೆ ಸಹಾಯ ಬೇಕಿದ್ದರೆ ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ.",
+    "description": ""
+  },
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "ಗರಿಷ್ಠ ಪ್ರಯತ್ನಗಳನ್ನು ಮೀರಿದೆ",
+    "description": ""
+  },
+  "captchaSolvedTitle": {
+    "message": "ಪರಿಹರಿಸಲಾಗಿದೆ!",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಗಳಿಕೆಗಳು ಇದೀಗ ಪುನಾರಂಭಗೊಳ್ಳುತ್ತವೆ. Brave Rewards ಮತ್ತು ಗೌಪ್ಯತೆ-ಆಧಾರಿತ ಜಾಹೀರಾತುಗಳನ್ನು ರಕ್ಷಿಸಲು ನಮಗೆ ಸಹಾಯ ಮಾಡಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು.",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "ಬೆಂಬಲವನ್ನು ಸಂಪರ್ಕಿಸಿ",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "ವಜಾಗೊಳಿಸಿ",
+    "description": ""
   }
 }
