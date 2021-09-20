@@ -84,7 +84,7 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
           FROM_HERE,
           base::BindOnce(
               &AdBlockSubscriptionDownloadManagerGetterImpl::GetDownloadManager,
-              base::Unretained(this), profile));
+              base::Unretained(this), profile->GetProfileKey()));
     } else {
       g_browser_process->profile_manager()->AddObserver(this);
     }
@@ -100,14 +100,14 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
     if (profile->GetPath() == profile_manager->user_data_dir().Append(
                                   profile_manager->GetInitialProfileDir())) {
       profile_manager->RemoveObserver(this);
-      GetDownloadManager(profile);
+      GetDownloadManager(profile->GetProfileKey());
     }
   }
 
-  void GetDownloadManager(Profile* profile) {
+  void GetDownloadManager(ProfileKey* profile_key) {
     auto* download_manager =
         AdBlockSubscriptionDownloadManagerFactory::GetInstance()->GetForKey(
-            profile->GetProfileKey());
+            profile_key);
     std::move(callback_).Run(download_manager);
     delete this;
   }
