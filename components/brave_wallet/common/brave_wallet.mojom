@@ -169,6 +169,7 @@ interface WalletHandler {
 struct ERCToken {
   string contract_address;
   string name;
+  string logo;
   bool is_erc20;
   bool is_erc721;
   string symbol;
