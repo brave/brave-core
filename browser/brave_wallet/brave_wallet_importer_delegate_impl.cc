@@ -11,9 +11,11 @@
 #include "base/bind_post_task.h"
 #include "base/json/json_reader.h"
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
+#include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/browser/api/storage/backend_task_runner.h"
@@ -57,9 +59,16 @@ BraveWalletImporterDelegateImpl::~BraveWalletImporterDelegateImpl() = default;
 
 void BraveWalletImporterDelegateImpl::ImportFromBraveCryptoWallet(
     const std::string& password,
+    const std::string& new_password,
     ImportFromBraveCryptoWalletCallback callback) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   DCHECK(context_);
+
+  if (password.empty() || new_password.empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
   extension_registry_observer_.Observe(ExtensionRegistry::Get(context_));
 
   EthereumRemoteClientService* service =
@@ -68,12 +77,19 @@ void BraveWalletImporterDelegateImpl::ImportFromBraveCryptoWallet(
   service->MaybeLoadCryptoWalletsExtension(base::DoNothing());
   callback_ = std::move(callback);
   password_ = password;
+  new_password_ = new_password;
 }
 void BraveWalletImporterDelegateImpl::ImportFromMetamask(
     const std::string& password,
+    const std::string& new_password,
     ImportFromMetamaskCallback callback) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   DCHECK(context_);
+
+  if (password.empty() || new_password.empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
 
   ExtensionRegistry* registry = ExtensionRegistry::Get(context_);
   const Extension* extension =
@@ -85,6 +101,7 @@ void BraveWalletImporterDelegateImpl::ImportFromMetamask(
 
   GetLocalStorage(extension, std::move(callback));
   password_ = password;
+  new_password_ = new_password;
 }
 
 void BraveWalletImporterDelegateImpl::OnExtensionLoaded(
@@ -108,7 +125,7 @@ void BraveWalletImporterDelegateImpl::OnExtensionLoaded(
 
 void BraveWalletImporterDelegateImpl::GetLocalStorage(
     const extensions::Extension* extension,
-    base::OnceCallback<void(bool)> callback) {
+    ImportFromBraveCryptoWalletCallback callback) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
   std::string error;
@@ -136,9 +153,11 @@ void BraveWalletImporterDelegateImpl::GetLocalStorage(
 }
 
 void BraveWalletImporterDelegateImpl::OnGetLocalStorage(
-    base::OnceCallback<void(bool)> callback,
+    ImportFromBraveCryptoWalletCallback callback,
     std::unique_ptr<base::DictionaryValue> dict) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  EnsureConnected();
+
   const std::string* vault_str =
       dict->FindStringPath("data.KeyringController.vault");
   if (!vault_str) {
@@ -148,6 +167,7 @@ void BraveWalletImporterDelegateImpl::OnGetLocalStorage(
   }
   auto vault = base::JSONReader::Read(*vault_str);
   if (!vault) {
+    VLOG(1) << "not a valid json: " << *vault_str;
     std::move(callback).Run(false);
     return;
   }
@@ -180,17 +200,69 @@ void BraveWalletImporterDelegateImpl::OnGetLocalStorage(
           password_, ToSpan(salt_decoded), 10000, 256);
   DCHECK(encryptor);
 
-  std::vector<uint8_t> decrypted_keyring;
+  std::vector<uint8_t> decrypted_keyrings;
   if (!encryptor->DecryptForImporter(ToSpan(data_decoded), ToSpan(iv_decoded),
-                                     &decrypted_keyring)) {
+                                     &decrypted_keyrings)) {
     VLOG(1) << "Importer decryption failed";
     std::move(callback).Run(false);
     return;
   }
 
-  LOG(ERROR) << std::string(decrypted_keyring.begin(), decrypted_keyring.end());
+  const std::string decrypted_keyrings_str =
+      std::string(decrypted_keyrings.begin(), decrypted_keyrings.end());
+  auto keyrings = base::JSONReader::Read(decrypted_keyrings_str);
+  if (!keyrings) {
+    VLOG(1) << "not a valid json: " << decrypted_keyrings_str;
+    std::move(callback).Run(false);
+    return;
+  }
 
-  std::move(callback).Run(true);
+  const std::string* mnemonic = nullptr;
+  for (const auto& keyring : keyrings->GetList()) {
+    DCHECK(keyring.is_dict());
+    const auto* type = keyring.FindStringKey("type");
+    if (!type) {
+      VLOG(0) << "keyring.type is missing";
+      std::move(callback).Run(false);
+      return;
+    }
+    if (*type != "HD Key Tree")
+      continue;
+    mnemonic = keyring.FindStringPath("data.mnemonic");
+    if (!mnemonic) {
+      VLOG(0) << "keyring.data.menmonic is missing";
+      std::move(callback).Run(false);
+      return;
+    }
+    break;
+  }
+
+  keyring_controller_->RestoreWallet(
+      *mnemonic, new_password_, false,
+      base::BindOnce(
+          [](ImportFromBraveCryptoWalletCallback callback,
+             bool is_valid_mnemonic) {
+            std::move(callback).Run(is_valid_mnemonic);
+          },
+          std::move(callback)));
+}
+
+void BraveWalletImporterDelegateImpl::EnsureConnected() {
+  if (!keyring_controller_) {
+    auto pending =
+        brave_wallet::KeyringControllerFactory::GetInstance()->GetForContext(
+            context_);
+    keyring_controller_.Bind(std::move(pending));
+  }
+  DCHECK(keyring_controller_);
+  keyring_controller_.set_disconnect_handler(
+      base::BindOnce(&BraveWalletImporterDelegateImpl::OnConnectionError,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveWalletImporterDelegateImpl::OnConnectionError() {
+  keyring_controller_.reset();
+  EnsureConnected();
 }
 
 }  // namespace brave_wallet

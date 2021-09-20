@@ -43,8 +43,10 @@ class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate,
 
   void ImportFromBraveCryptoWallet(
       const std::string& password,
+      const std::string& new_password,
       ImportFromBraveCryptoWalletCallback callback) override;
   void ImportFromMetamask(const std::string& password,
+                          const std::string& new_password,
                           ImportFromMetamaskCallback callback) override;
 
  private:
@@ -52,9 +54,12 @@ class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate,
                          const extensions::Extension* extension) override;
 
   void GetLocalStorage(const extensions::Extension* extension,
-                       base::OnceCallback<void(bool)> callback);
-  void OnGetLocalStorage(base::OnceCallback<void(bool)> callback,
+                       ImportFromBraveCryptoWalletCallback callback);
+  void OnGetLocalStorage(ImportFromBraveCryptoWalletCallback callback,
                          std::unique_ptr<base::DictionaryValue> dict);
+
+  void EnsureConnected();
+  void OnConnectionError();
 
   base::ScopedObservation<extensions::ExtensionRegistry,
                           extensions::ExtensionRegistryObserver>
@@ -63,6 +68,7 @@ class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate,
   mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
   content::BrowserContext* context_;
   std::string password_;
+  std::string new_password_;
   ImportFromBraveCryptoWalletCallback callback_;
   scoped_refptr<extensions::Extension> extension_;
   base::WeakPtrFactory<BraveWalletImporterDelegateImpl> weak_ptr_factory_;

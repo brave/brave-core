@@ -25,8 +25,10 @@ class BraveWalletImporterDelegate {
 
   virtual void ImportFromBraveCryptoWallet(
       const std::string& password,
+      const std::string& new_password,
       ImportFromBraveCryptoWalletCallback callback);
   virtual void ImportFromMetamask(const std::string& password,
+                                  const std::string& new_password,
                                   ImportFromMetamaskCallback callback);
 };
 

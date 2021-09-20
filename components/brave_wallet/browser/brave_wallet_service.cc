@@ -318,16 +318,19 @@ void BraveWalletService::SetUserAssetVisible(
 
 void BraveWalletService::ImportFromBraveCryptoWallet(
     const std::string& password,
+    const std::string& new_password,
     ImportFromBraveCryptoWalletCallback callback) {
   if (delegate_)
-    delegate_->ImportFromBraveCryptoWallet(password, std::move(callback));
+    delegate_->ImportFromBraveCryptoWallet(password, new_password,
+                                           std::move(callback));
 }
 
 void BraveWalletService::ImportFromMetamask(
     const std::string& password,
+    const std::string& new_password,
     ImportFromMetamaskCallback callback) {
   if (delegate_)
-    delegate_->ImportFromMetamask(password, std::move(callback));
+    delegate_->ImportFromMetamask(password, new_password, std::move(callback));
 }
 
 }  // namespace brave_wallet

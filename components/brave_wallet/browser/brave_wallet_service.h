@@ -52,8 +52,10 @@ class BraveWalletService : public KeyedService,
                            SetUserAssetVisibleCallback callback) override;
   void ImportFromBraveCryptoWallet(
       const std::string& password,
+      const std::string& new_password,
       ImportFromBraveCryptoWalletCallback callback) override;
   void ImportFromMetamask(const std::string& password,
+                          const std::string& new_password,
                           ImportFromMetamaskCallback callback) override;
 
  private:
