@@ -1,3 +1,10 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+#include "brave/components/skus/skus.h"
+
 #include <iostream>
 #include <vector>
 #include "brave/components/skus/br-rs/brave-rewards-cxx/src/wrapper.hpp"
@@ -47,5 +54,12 @@ void shim_executeRequest(
     if (CbFunc) {
       CbFunc(result, order);
     }
+  }
+
+  void SkusSdkCallerImpl::StartRefreshOrder(uint32_t order_id) {
+    LOG(ERROR) << "BSC]] LOL INSIDE THE BROWSER PROCESS! ORDERID=" << order_id;
+  }
+  void SkusSdkCallerImpl::StartFetchOrderCredentials(uint32_t order_id) {
+
   }
 } // namespace brave_rewards

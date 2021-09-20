@@ -1,0 +1,14 @@
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
+module skus_sdk_caller.mojom;
+
+// TODO see
+//https://chromium.googlesource.com/chromium/src.git/+/refs/heads/main/docs/mojo_and_services.md#Specifying-a-sandbox
+
+interface SkusSdkCaller {
+  StartRefreshOrder(uint32 order_id);
+  StartFetchOrderCredentials(uint32 order_id);
+};
