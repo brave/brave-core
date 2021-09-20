@@ -5,7 +5,7 @@ import os
 import sys
 
 from lib.config import PLATFORM, SOURCE_ROOT, enable_verbose_mode
-from lib.util import execute_stdout
+from lib.util import execute_stdout, scoped_cwd
 
 WEB_DISCOVERY_DIR = os.path.join(SOURCE_ROOT, 'vendor', 'web-discovery-project')
 
@@ -15,15 +15,16 @@ if PLATFORM in ['win32', 'cygwin']:
 
 
 def main():
-    os.chdir(WEB_DISCOVERY_DIR)
     args = parse_args()
+    env = os.environ.copy()
 
-    if args.verbose:
-        enable_verbose_mode()
-    if args.install:
-        execute_stdout([NPM, 'install'])
-    if args.build:
-        execute_stdout([NPM, 'run', 'build-module'])
+    with scoped_cwd(WEB_DISCOVERY_DIR):
+        if args.verbose:
+            enable_verbose_mode()
+        if args.install:
+            execute_stdout([NPM, 'install'], env=env)
+        if args.build:
+            execute_stdout([NPM, 'run', 'build-module'], env=env)
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Web Discovery Project setup')

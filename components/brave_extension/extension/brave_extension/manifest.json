@@ -62,7 +62,6 @@
       ],
       "run_at": "document_start",
       "js": [
-        "bundles/content-script.bundle.js",
         "bundles/web-discovery-content-script.bundle.js"
       ]
     }
