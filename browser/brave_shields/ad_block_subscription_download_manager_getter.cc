@@ -70,23 +70,28 @@ class AdBlockSubscriptionDownloadManagerFactory
 };
 
 class AdBlockSubscriptionDownloadManagerGetterImpl
-    : public ProfileManagerObserver {
+    : public ProfileManagerObserver,
+      public base::SupportsWeakPtr<AdBlockSubscriptionDownloadManagerGetterImpl> {
  public:
   AdBlockSubscriptionDownloadManagerGetterImpl(
       base::OnceCallback<void(AdBlockSubscriptionDownloadManager*)> callback)
       : callback_(std::move(callback)) {
+    g_browser_process->profile_manager()->AddObserver(this);
+    // trigger a check for the download manager
+    OnProfileAdded(nullptr);
+  }
+
+  void MaybeGetDownloadManager() {
     auto* profile_manager = g_browser_process->profile_manager();
     auto* profile = profile_manager->GetProfileByPath(
         profile_manager->user_data_dir().Append(
             profile_manager->GetInitialProfileDir()));
     if (profile) {
-      base::ThreadTaskRunnerHandle::Get()->PostTask(
-          FROM_HERE,
-          base::BindOnce(
-              &AdBlockSubscriptionDownloadManagerGetterImpl::GetDownloadManager,
-              base::Unretained(this), profile->GetProfileKey()));
-    } else {
-      g_browser_process->profile_manager()->AddObserver(this);
+      auto* download_manager =
+          AdBlockSubscriptionDownloadManagerFactory::GetInstance()->GetForKey(
+              profile->GetProfileKey());
+      std::move(callback_).Run(download_manager);
+      OnProfileManagerDestroying();
     }
   }
 
@@ -96,19 +101,11 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
 
  private:
   void OnProfileAdded(Profile* profile) override {
-    auto* profile_manager = g_browser_process->profile_manager();
-    if (profile->GetPath() == profile_manager->user_data_dir().Append(
-                                  profile_manager->GetInitialProfileDir())) {
-      profile_manager->RemoveObserver(this);
-      GetDownloadManager(profile->GetProfileKey());
-    }
+    base::ThreadTaskRunnerHandle::Get()->PostTask(FROM_HERE, base::BindOnce(&AdBlockSubscriptionDownloadManagerGetterImpl::MaybeGetDownloadManager, AsWeakPtr()));
   }
 
-  void GetDownloadManager(ProfileKey* profile_key) {
-    auto* download_manager =
-        AdBlockSubscriptionDownloadManagerFactory::GetInstance()->GetForKey(
-            profile_key);
-    std::move(callback_).Run(download_manager);
+  void OnProfileManagerDestroying() override {
+    g_browser_process->profile_manager()->RemoveObserver(this);
     delete this;
   }
 
