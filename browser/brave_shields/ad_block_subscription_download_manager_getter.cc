@@ -69,7 +69,8 @@ class AdBlockSubscriptionDownloadManagerFactory
 
 class AdBlockSubscriptionDownloadManagerGetterImpl
     : public ProfileManagerObserver,
-      public base::SupportsWeakPtr<AdBlockSubscriptionDownloadManagerGetterImpl> {
+      public base::SupportsWeakPtr<
+          AdBlockSubscriptionDownloadManagerGetterImpl> {
  public:
   AdBlockSubscriptionDownloadManagerGetterImpl(
       base::OnceCallback<void(AdBlockSubscriptionDownloadManager*)> callback)
@@ -95,7 +96,11 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
 
  private:
   void OnProfileAdded(Profile* profile) override {
-    base::ThreadTaskRunnerHandle::Get()->PostTask(FROM_HERE, base::BindOnce(&AdBlockSubscriptionDownloadManagerGetterImpl::MaybeGetDownloadManager, AsWeakPtr()));
+    base::ThreadTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE,
+        base::BindOnce(&AdBlockSubscriptionDownloadManagerGetterImpl::
+                           MaybeGetDownloadManager,
+                       AsWeakPtr()));
   }
 
   void OnProfileManagerDestroying() override {
