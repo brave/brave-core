@@ -211,7 +211,7 @@
 <translation id="6476061084931271248">Paleiskite mazgą iš naujo, kad būtų pritaikyti pakeitimai</translation>
 <translation id="3754226427671882382">Mazgą paleisti iš naujo</translation>
 <translation id="949667118776341807">Pasukti</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Šis vardas negalioja</translation>
 <translation id="6758961763875471084">Keisti kolegų sąrašą</translation>
 <translation id="1295874070797049002">Eksportuoti raktą</translation>
@@ -243,6 +243,7 @@
 <translation id="8655170717758778983">Kai įmanoma, automatiškai nukreipti į IPFS puslapius per „DNSLink“</translation>
 <translation id="2233724520223030977">Kai įmanoma, automatiškai naudoja „DNSLink“ pereiti prie IPFS svetainės versijos</translation>
 <translation id="6554397389149987360">Naudodamas Hangouts komponentą įjunk ekrano bendrinimą ir kitas naršyklės funkcijas.</translation>
+<translation id="7878791177459550035">Medijos maršrutizatorius naršyklėje įgalina perdavimo funkciją.</translation>
 <translation id="9156965752763025780">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“.</translation>
 <translation id="7179921470347911571">Paleisti iš naujo dabar</translation>
 <translation id="8068526464562249859">Paleidžiamas plėtinys „IPFS Companion“, skirtas „Brave“ IPFS funkcionalumui pagerinti, įskaitant prieigą prie dažniausių IPFS užduočių iš naršyklės valdymo juostos.</translation>
@@ -353,7 +354,23 @@
         Galite perskaityti <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instrukcijas, kaip atsisiųsti ir sau susikurti<ph name="END_LINK_BUILD_INSTRUCTIONS"/> specialų <ph name="BEGIN_LINK_SOURCE_CODE"/>šaltinio kodą, naudojamą šiai kopijai sukurti<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Pažymėti visus skirtukus...</translation>
 <translation id="2336228925368920074">Žymėti visus skirtukus...</translation>
+<translation id="4235920711083356755">Rodyti VPN mygtuką</translation>
+<translation id="4070612712151038707">Rodomas VPN mygtukas įrankių juostoje</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">„Brave“ VPN</translation>
+<translation id="2345974803401546682">Apie „Brave“ VPN</translation>
+<translation id="4378551569595875038">Jungiamasi...</translation>
+<translation id="3368922792935385530">Prijungta</translation>
+<translation id="1536754031901697553">Atjungiama...</translation>
+<translation id="8030169304546394654">Atsijungta</translation>
+<translation id="1863950594388384201">Rodyti VPN mygtuką įrankių juostoje</translation>
+<translation id="5187139277471084437">Slėpti VPN mygtuką įrankių juostoje</translation>
+<translation id="8041089156583427627">Siųsti atsiliepimą</translation>
+<translation id="4049186905514157504">Tvarkyti mano planą</translation>
+<translation id="7570585565843385325">Rodyti VPN mygtuką įrankių juostoje</translation>
+<translation id="5310426188697803101">Slėpti VPN mygtuką įrankių juostoje</translation>
+<translation id="945522503751344254">Siųsti atsiliepimą</translation>
+<translation id="3015685033234401792">Tvarkyti mano planą</translation>
 <translation id="796831669370432378">Jei norite pridėti žymę, spustelėkite žymių mygtuką greta adreso juostos</translation>
 <translation id="4989337484121655457">Reikia neribotos prieigos prie disko</translation>
 <translation id="8025559074845816210">Jūsų žymėms iš „Safari“ importuoti reikia, kad „Brave“ turėtų neribotą prieigą prie disko.</translation>

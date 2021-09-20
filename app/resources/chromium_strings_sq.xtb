@@ -18,6 +18,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="5616153642055197778">Ofrohet një version i ri më i sigurt i Brave.</translation>
 <translation id="6797402139308059782">Lejo që Brave të ekzekutohet në sfond</translation>
 <translation id="5875673934455379806">Instalo përsëri Brave</translation>
+<translation id="2176087127109773485">Mund t'i menaxhosh "Llogaritë e Brave" ku je identifikuar. "Llogaritë e tua të Brave" përdoren për shfletuesin Brave, Play Store, Gmail etj. Nëse do të shtosh një llogari për dikë tjetër, si p.sh. anëtar të familjes, shto më mirë një person të ri te <ph name="DEVICE_TYPE"/> yt. <ph name="LINK_BEGIN"/>Mëso më shumë<ph name="LINK_END"/></translation>
 <translation id="4528406859989804913">Po identifikohesh me një llogari të menaxhuar dhe po i jep administratorit të saj kontrollin mbi profilin tënd të Brave. Të dhënat e tua të Brave, si aplikacionet, faqeshënuesit, historiku, fjalëkalimet dhe cilësimet e tjera do të bëhen të lidhura përgjithmonë me <ph name="USER_NAME"/>. Do të mund t'i fshish këto të dhëna nëpërmjet "Panelit të llogarive të Brave", por nuk do të mund t'i lidhësh këto të dhëna me një llogari tjetër. Mund të krijosh si opsion një profil të ri për t'i mbajtur më vete të dhënat ekzistuese të Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">Duke çaktivizuar këtë, mund të identifikohesh në sajtet e Brave si Gmail pa u identifikuar në Brave</translation>
 <translation id="189297655255130768">Brave nuk përgjigjet. Dëshiron ta hapësh sërish tani?</translation>
@@ -103,7 +104,6 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="9183662282810237335">Dëshiron të dalësh nga Brave gjithsesi?</translation>
 <translation id="4065288863231444640">Lejo që Brave të ekzekutohet në sfond</translation>
 <translation id="8148611988012584308">Personalizo dhe kontrollo Brave</translation>
-<translation id="1201005444605297066">Kjo faqe të lejon të menaxhosh "Llogaritë e tua të Brave" ku je identifikuar. Këto llogari do të ofrohen në shfletuesin Brave dhe në aplikacionet e "Dyqanit të Play", si dhe në shërbimet si Gmail, "Disku" dhe YouTube. <ph name="LINK_BEGIN"/>Mëso më shumë<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Mirë se erdhe në Brave. U hap një dritare e re e shfletuesit</translation>
 <translation id="2633397153656205379">Brave nuk u përditësua. Ndodhi një gabim. <ph name="BEGIN_LINK"/>Rregullo problemet e përditësimit të Brave dhe përditësimet e dështuara.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Të vazhdohet te një profil i ri i Brave?</translation>
@@ -249,6 +249,7 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="2925193881330501265">Je identifikuar në Brave si <ph name="USER_EMAIL_ADDRESS"/>. Përdor të njëjtën llogari për t'u identifikuar sërish.</translation>
 <translation id="6915252145142862992">Ky është instalim dytësor i Brave dhe nuk mund të bëhet shfletuesi yt i parazgjedhur.</translation>
 <translation id="7685904775439037072">Pasi Brave të ketë qasje, sajtet e uebit do të jenë në gjendje të kërkojnë prej teje qasje.</translation>
+<translation id="828406390101464081">Llogaritë e mëposhtme nuk janë të identifikuara në ndonjë profil të Brave. Nëse do të përdorësh një llogari në një profil tjetër, hiq atë profil përpara.</translation>
 <translation id="9067428552314418522">Ky skedar është i rrezikshëm, prandaj Brave e ka bllokuar.</translation>
 <translation id="8207657266087451193">Nëse një imazh nuk ka një përshkrim të dobishëm, Brave do të përpiqet të të japë një përshkrim. Për të krijuar përshkrime, imazhet dërgohen te Brave. Këtë mund ta çaktivizosh te cilësimet në çdo moment.</translation>
 <translation id="8622246347342688645">Brave nuk mund t'i kontrollojë fjalëkalimet e tua sepse nuk je identifikuar</translation>

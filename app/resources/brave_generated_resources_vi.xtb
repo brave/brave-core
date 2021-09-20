@@ -209,7 +209,6 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="6476061084931271248">Khởi động lại nút để áp dụng các thay đổi</translation>
 <translation id="3754226427671882382">Khởi động lại nút</translation>
 <translation id="949667118776341807">Xoay</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Tên này không hợp lệ</translation>
 <translation id="6758961763875471084">Sửa đổi danh sách nút ngang hàng</translation>
 <translation id="1295874070797049002">Xuất khẩu khóa</translation>
@@ -240,6 +239,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="8655170717758778983">Tự động chuyển hướng đến các trang IPFS thông qua DNSLink khi có thể</translation>
 <translation id="2233724520223030977">Tự động dùng DNSLink để điều hướng đến phiên bản IPFS của một website khi có thể</translation>
 <translation id="6554397389149987360">Sử dụng thành phần của Hangouts để cho phép chia sẻ màn hình và các tính năng khác trong trình duyệt.</translation>
+<translation id="7878791177459550035">Bộ định tuyến phương tiện cho phép tính năng truyền trong trình duyệt.</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
 <translation id="7179921470347911571">Khởi chạy lại Ngay</translation>
 <translation id="8068526464562249859">Sử dụng tiện ích mở rộng IPFS Companion để tăng cường hỗ trợ IPFS trong Brave, bao gồm quyền truy cập các tác vụ IPFS phổ biến từ thanh trình duyệt của bạn.</translation>
@@ -350,7 +350,23 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
         Bạn có thể đọc <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>hướng dẫn cách tải xuống và tự xây dựng cho mình<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/>mã nguồn cụ thể dùng để tạo bản sao này<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Đánh dấu tất cả các tab...</translation>
 <translation id="2336228925368920074">Đánh dấu trang Tất cả các Tab...</translation>
+<translation id="4235920711083356755">Hiển thị nút VPN</translation>
+<translation id="4070612712151038707">Hiển thị nút VPN trên Thanh công cụ</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Về Brave VPN</translation>
+<translation id="4378551569595875038">Connecting...</translation>
+<translation id="3368922792935385530">Đã kết nối</translation>
+<translation id="1536754031901697553">Đang ngắt kết nối...</translation>
+<translation id="8030169304546394654">Đã ngắt kết nối</translation>
+<translation id="1863950594388384201">Hiển thị nút VPN trên Thanh công cụ</translation>
+<translation id="5187139277471084437">Ẩn nút VPN trên Thanh công cụ</translation>
+<translation id="8041089156583427627">Gửi phản hồi</translation>
+<translation id="4049186905514157504">Quản lý gói của tôi</translation>
+<translation id="7570585565843385325">Hiển thị nút VPN trên Thanh công cụ</translation>
+<translation id="5310426188697803101">Ẩn nút VPN trên Thanh công cụ</translation>
+<translation id="945522503751344254">Gửi phản hồi</translation>
+<translation id="3015685033234401792">Quản lý gói của tôi</translation>
 <translation id="796831669370432378">Để thêm dấu trang, hãy nhấp vào nút dấu trang kế bên thanh địa chỉ</translation>
 <translation id="4989337484121655457">Cần được Truy cập Toàn bộ Ổ đĩa</translation>
 <translation id="8025559074845816210">Brave cần Truy cập Toàn bộ Ổ đĩa để có thể nhập các Dấu trang của bạn từ Safari.</translation>

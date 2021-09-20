@@ -209,7 +209,6 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="6476061084931271248">Starten Sie den Knoten neu, um die Änderungen zu übernehmen</translation>
 <translation id="3754226427671882382">Knoten neu starten</translation>
 <translation id="949667118776341807">Drehen</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Dieser Name ist nicht gültig</translation>
 <translation id="6758961763875471084">Peer-Liste bearbeiten</translation>
 <translation id="1295874070797049002">Schlüssel exportieren</translation>
@@ -240,6 +239,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8655170717758778983">Wenn möglich, automatisch über DNSLink zu IPFS-Seiten umleiten</translation>
 <translation id="2233724520223030977">Verwendet DNSLink automatisch, um nach Möglichkeit zu einer IPFS-Version einer Website zu navigieren</translation>
 <translation id="6554397389149987360">Nutzt Hangouts-Komponente, um das Teilen des Bildschirms und andere Funktionen im Browser zu ermöglichen.</translation>
+<translation id="7878791177459550035">Mit dem Media Router wird die Übertragungsfunktion im Browser aktiviert</translation>
 <translation id="9156965752763025780">Ihre Änderungen werden beim nächsten Neustart von Brave wirksam.</translation>
 <translation id="7179921470347911571">Jetzt neustarten</translation>
 <translation id="8068526464562249859">Verwendet die Erweiterung IPFS Companion für erweiterte IPFS-Unterstützung in Brave, inklusive Zugriff auf übliche IPFS-Aufgaben von Ihrer Browserleiste.</translation>
@@ -350,7 +350,23 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
         Lesen Sie die <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>Anleitung<ph name="END_LINK_BUILD_INSTRUCTIONS"/> , wie man das Brave-Projekt herunterlädt und selbst aus dem  <ph name="BEGIN_LINK_SOURCE_CODE"/>Quellcode<ph name="END_LINK_SOURCE_CODE"/> zu erstellen.</translation>
 <translation id="4474155171896946103">Alle Tabs als Lesezeichen speichern...</translation>
 <translation id="2336228925368920074">Alle Tabs als Lesezeichen speichern...</translation>
+<translation id="4235920711083356755">VPN-Schaltfläche anzeigen</translation>
+<translation id="4070612712151038707">Zeigt die VPN-Schaltfläche in der Werkzeugleiste an</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Über Brave VPN</translation>
+<translation id="4378551569595875038">Verbindung wird hergestellt...</translation>
+<translation id="3368922792935385530">Verbunden</translation>
+<translation id="1536754031901697553">Verbindung wird getrennt…</translation>
+<translation id="8030169304546394654">Verbindung getrennt</translation>
+<translation id="1863950594388384201">VPN-Schaltfläche in der Werkzeugleiste anzeigen</translation>
+<translation id="5187139277471084437">VPN-Schaltfläche in der Werkzeugleiste ausblenden</translation>
+<translation id="8041089156583427627">Feedback geben</translation>
+<translation id="4049186905514157504">Meinen Plan verwalten</translation>
+<translation id="7570585565843385325">VPN-Schaltfläche in der Werkzeugleiste anzeigen</translation>
+<translation id="5310426188697803101">VPN-Schaltfläche in der Werkzeugleiste ausblenden</translation>
+<translation id="945522503751344254">Feedback geben</translation>
+<translation id="3015685033234401792">Meinen Plan verwalten</translation>
 <translation id="796831669370432378">Um ein Lesezeichen hinzuzufügen, klicken Sie auf die Lesezeichen-Schaltfläche neben der Adressleiste</translation>
 <translation id="4989337484121655457">Voller Festplattenzugriff erforderlich</translation>
 <translation id="8025559074845816210">Brave benötigt vollen Festplattenzugriff, um Ihre Lesezeichen aus Safari importieren zu können.</translation>

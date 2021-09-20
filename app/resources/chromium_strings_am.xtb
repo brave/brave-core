@@ -103,7 +103,6 @@
 <translation id="9183662282810237335">የሆነው ሆኖ ከBrave ይወጣ?</translation>
 <translation id="4065288863231444640">Brave በበስተጀርባ ላይ ያሂድ</translation>
 <translation id="8148611988012584308">Braveን ያብጁ እና ይቆጣጠሩ</translation>
-<translation id="1201005444605297066">ይህ ገጽ በመለያ የገቡትን የBrave መለያዎችዎን እንዲያስተዳድሩ ያስችልዎታል። የእርስዎ መለያዎች በBrave አሳሽ እና Play መደብር ላይ እና እንዲሁም እንደ Gmail፣ Drive እና YouTube ባሉ አገልግሎቶች ላይ ይገኛሉ። <ph name="LINK_BEGIN"/>የበለጠ ለመረዳት<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">እንኳን ወደ Brave በደህና መጡ፤ አዲስ የአሳሽ መስኮት ተከፍቷል</translation>
 <translation id="2633397153656205379">Brave አልተዘመነም፣ የሆነ ችግር ተፈጥሯል። <ph name="BEGIN_LINK"/>የBrave ዝማኔ ችግሮችን እና ያልተሳኩ ዝማኔዎችን ያስተካክሉ።<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">በአዲሱ የBrave መገለጫ ውስጥ ይቀጥል?</translation>
@@ -248,6 +247,7 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="2925193881330501265">እንደ <ph name="USER_EMAIL_ADDRESS"/> ሆነው ወደ Brave ገብተዋል። እባክዎ እንደገና ለመግባት ተመሳሳዩን መለያ ይጠቀሙ።</translation>
 <translation id="6915252145142862992">ይሄ ሁለተኛ የBrave ጭነት ነው፣ እና ነባሪ አሳሽዎ ማድረግ አይቻልም።</translation>
 <translation id="7685904775439037072">አንዴ Brave መዳረሻ ከኖረው በኋላ ድር ጣቢያዎች እርስዎን መዳረሻ መጠየቅ ይችላሉ።</translation>
+<translation id="828406390101464081">የሚከተሉት መለያዎች በማናቸውም የBrave መገለጫዎች ውስጥ አልገቡም። አንድ መለያ በሌላ መገለጫ ውስጥ ለመጠቀም ከፈለጉ መጀመሪያ ያንን መገለጫ ያስወግዱት።</translation>
 <translation id="9067428552314418522">ይህ ፋይል አደገኛ ስለሆነ Brave አግዶታል።</translation>
 <translation id="8207657266087451193">አንድ ምስል ጠቃሚ መግለጫ ከሌለው Brave ለእርስዎ አንድ ለማቅረብ ይሞክራል። ዝርዝር መግለጫዎችን ለመፍጠር፣ ምስሎች ወደ Brave ይላካሉ። ይህን በማንኛውም ጊዜ በቅንብሮች ውስጥ ሊያጠፉት ይችላሉ።</translation>
 <translation id="8622246347342688645">እርስዎ በመለያ ስላልገቡ ስለሆኑ Brave የይለፍ ቃላትዎን መፈተሽ አይችልም</translation>
@@ -297,4 +297,5 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{ይህን ዝማኔ ለመተግበር አስተዳዳሪዎ Braveን ዳግም እንዲያስጀምሩት ይጠይቀዎታል}=1{ይህን ዝማኔ ለመተግበር አስተዳዳሪዎ Braveን ዳግም እንዲያስጀምሩት ይጠይቀዎታል የእርስዎ ማንነት የማያሳውቅ መስኮት ዳግም አይከፈትም}one{ይህን ዝማኔ ለመተግበር አስተዳዳሪዎ Braveን ዳግም እንዲያስጀምሩት ይጠይቀዎታል የእርስዎ # ማንነት የማያሳውቁ መስኮቶች ዳግም አይከፈቱም}other{ይህን ዝማኔ ለመተግበር አስተዳዳሪዎ Braveን ዳግም እንዲያስጀምሩት ይጠይቀዎታል የእርስዎ # ማንነት የማያሳውቁ መስኮቶች ዳግም አይከፈቱም}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{አንድ ዝማኔ ለመተግበር አስተዳዳሪዎ Braveን ዳግም እንዲያስጀምሩት ይፈልግብዎታል}=1{አንድ ዝማኔ ለመተግበር አስተዳዳሪዎ Braveን ዳግም እንዲያስጀምሩት ይፈልግብዎታል። የእርስዎ ማንነት የማያሳውቅ መስኮት ዳግም አይከፈትም}one{አንድ ዝማኔ ለመተግበር አስተዳዳሪዎ Braveን ዳግም እንዲያስጀምሩት ይፈልግብዎታል። የእርስዎ # ማንነት የማያሳውቁ መስኮቶች ዳግም አይከፈቱም}other{አንድ ዝማኔ ለመተግበር አስተዳዳሪዎ Braveን ዳግም እንዲያስጀምሩት ይፈልግብዎታል። የእርስዎ # ማንነት የማያሳውቁ መስኮቶች ዳግም አይከፈቱም}}</translation>
 <translation id="7914115000169617076">ሊዘመን ጥቂት ቀርቶታል! ማዘመን ለማጠናቀቅ Braveን ዳግም ያስጀምሩት። የግል መስኮቶች እንደገና አይከፈቱም ፡፡</translation>
+<translation id="2176087127109773485">በመለያ የገቡ Brave የማመሳሰል ሰንሰለቶችን ማቀናበር ይችላሉ። የእርስዎ Brave የማመሳሰል ሰንሰለቶች ለBrave አሳሽ ፣ ለ Play መደብር ፣ ለጂሜይል እና ለሌሎችም ያገለግላሉ። ለሌላ ሰው መለያ ማከል ከፈለጉ ፣ እንደ የቤተሰብ አባል ፣ አዲስ መገለጫ ወደ እርስዎ ያክሉ <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 </translationbundle>

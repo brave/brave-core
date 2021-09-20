@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">Запретить загрузку трекеров и показ объявлений на веб-страницах</translation>
 <translation id="1680858055899097121">Не сохранять вкладки между сеансами</translation>
 <translation id="7142548388914389999">Разрешить выполнение аналитики продукта, не нарушающей конфиденциальности</translation>
-<translation id="5254037869598726291">Эти анонимные сведения помогают Brave оценить, как используются определенные функции, и улучшить работу браузера</translation>
+<translation id="4272190451231642425">Автоматически отправлять отчеты о сбоях</translation>
+<translation id="2239766974964486304">Отчеты о сбоях помогают Brave улучшать стабильность продукта для всех пользователей.</translation>
 <translation id="7977176350719484850">Данных\nНе скачано</translation>
 <translation id="9008534313521214777">Сохранено\nвремени</translation>
 <translation id="6572660632052512096">Режим компьютера</translation>
@@ -481,7 +482,7 @@
 <translation id="1078265935778232285">Добро пожаловать в браузер Brave</translation>
 <translation id="6824713633331856331">Помогите нам обучаться анонимно</translation>
 <translation id="6116685031674149112">Brave защищает вашу конфиденциальность и\nблагодарит вас за согласие со следующим:</translation>
-<translation id="4394483075076204916">Помочь улучшить Brave, отправляя отчеты о сбоях и полностью анонимную <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Помоги сделать Brave лучше, отправляя полностью анонимный <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">приватную аналитику продукта.</translation>
 <translation id="5187052478998910855">Хотите освежить в памяти, как работает Rewards?</translation>
 <translation id="8622329973403382303">Пройдите быстрый тур, чтобы закрепить в памяти, как работает Rewards, и стать настоящей рок-звездой платформы!</translation>
@@ -564,7 +565,6 @@
 <translation id="1144810021918451336">Не защищает вас от угроз на опасных веб-сайтах, в загрузках и расширениях.</translation>
 <translation id="745115390910697838">Фразы не совпадают. Повторите попытку.</translation>
 <translation id="2360588547830602174">Не удалось восстановить аккаунт. Повторите попытку.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Рыночная цена в ETH</translation>
 <translation id="5593852897152820572">Цена в ETH</translation>
 <translation id="6748108480210050150">Отправитель</translation>
@@ -598,4 +598,5 @@
 <translation id="8967036623785635603">Редактировать видимые активы</translation>
 <translation id="5050890334032852465">Сохранить список просмотра</translation>
 <translation id="7755766175599167100">Поиск баллов</translation>
+<translation id="3835223348537121988">Баланс:</translation>
 </translationbundle>

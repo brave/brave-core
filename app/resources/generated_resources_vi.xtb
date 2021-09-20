@@ -6,11 +6,13 @@
 <translation id="1003088604756913841">Mở đường liên kết trong cửa sổ mới của <ph name="APP"/></translation>
 <translation id="100323615638474026">Thiết bị USB (<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>)</translation>
 <translation id="1004218526896219317">Quyền truy cập vào trang web</translation>
+<translation id="100524763483954942">Quay lại phần cài đặt</translation>
 <translation id="1005274289863221750">Sử dụng micrô và máy ảnh của bạn</translation>
 <translation id="1005333234656240382">Bật tùy chọn gỡ lỗi ADB?</translation>
 <translation id="1006873397406093306">Tiện ích này có thể đọc và thay đổi dữ liệu của bạn trên các trang web. Bạn có thể kiểm soát việc tiện ích có thể truy cập vào các trang web nào.</translation>
 <translation id="1008186147501209563">Xuất dấu trang</translation>
 <translation id="1008557486741366299">Không phải Bây giờ</translation>
+<translation id="1009476156254802388">Vị trí của <ph name="WEB_DRIVE"/></translation>
 <translation id="1010498023906173788">Thẻ này đã kết nối với một cổng nối tiếp.</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Trang không phản hồi}other{Trang không phản hồi}}</translation>
 <translation id="1011355516189274711">Âm lượng giọng nói của tính năng chuyển văn bản sang lời nói</translation>
@@ -30,7 +32,6 @@
 <translation id="1032605640136438169">Vui lòng xem các điều khoản mới này</translation>
 <translation id="103279545524624934">Giải phóng dung lượng ổ đĩa để khởi chạy ứng dụng Android.</translation>
 <translation id="1033780634303702874">Truy cập thiết bị tuần tự của bạn</translation>
-<translation id="1034942643314881546">Đang bật ADB để tạo hình minh họa ứng dụng</translation>
 <translation id="1036348656032585052">Tắt</translation>
 <translation id="1036511912703768636">Truy cập bất kỳ trong số các thiết bị USB này</translation>
 <translation id="1036982837258183574">Nhấn |<ph name="ACCELERATOR"/>| để thoát khỏi chế độ toàn màn hình</translation>
@@ -99,6 +100,7 @@
 <translation id="1103523840287552314">Luôn dịch <ph name="LANGUAGE"/></translation>
 <translation id="1108600514891325577">&amp;Dừng</translation>
 <translation id="1110155001042129815">Chờ</translation>
+<translation id="1111781754511998498">Máy chiếu</translation>
 <translation id="1112420131909513020">Thẻ nền đang sử dụng Bluetooth</translation>
 <translation id="1113892970288677790">Chọn các hình ảnh và tác phẩm nghệ thuật tuyển chọn</translation>
 <translation id="1114102982691049955"><ph name="PRINTER_MANUFACTURER"/> <ph name="PRINTER_MODEL"/> (USB)</translation>
@@ -134,7 +136,6 @@
 <translation id="1139923033416533844">Mức sử dụng bộ nhớ</translation>
 <translation id="1140351953533677694">Truy cập thiết bị tuần tự và Bluetooth của bạn</translation>
 <translation id="114036956334641753">Âm thanh và phụ đề</translation>
-<translation id="1140746652461896221">Chặn nội dung trên bất cứ trang nào mà bạn truy cập</translation>
 <translation id="1143142264369994168">Người ký Chứng chỉ</translation>
 <translation id="6046800399974545535">{NUM_MINS,plural, =1{Brave không tìm thấy phần mềm gây hại trên máy tính của bạn • Đã kiểm tra 1 phút trước}other{Brave không tìm thấy phần mềm gây hại trên máy tính của bạn • Đã kiểm tra {NUM_MINS} phút trước}}</translation>
 <translation id="1145593918056169051">Máy in đã dừng</translation>
@@ -159,6 +160,7 @@
 <translation id="1165039591588034296">Lỗi</translation>
 <translation id="1166212789817575481">Đóng Thẻ Bên phải</translation>
 <translation id="1166583374608765787">Xem lại bản cập nhật tên</translation>
+<translation id="1166596238782048887"><ph name="TAB_TITLE"/> thuộc không gian làm việc <ph name="DESK_TITLE"/></translation>
 <translation id="1168020859489941584">Đang mở trong <ph name="TIME_REMAINING"/>...</translation>
 <translation id="1170288591054440704">Hỏi khi có một trang web muốn dùng phông chữ đã cài đặt trên thiết bị của bạn</translation>
 <translation id="1171135284592304528">Đánh dấu đối tượng bằng tiêu điểm bàn phím khi đối tượng thay đổi</translation>
@@ -237,6 +239,7 @@
 <translation id="1246863218384630739">Không thể cài đặt <ph name="VM_NAME"/>: URL của hình ảnh trả về mã lỗi <ph name="HTTP_ERROR"/>. Vui lòng liên hệ với quản trị viên của bạn.</translation>
 <translation id="1251366534849411931">Thiếu dấu ngoặc nhọn mở: <ph name="ERROR_LINE"/></translation>
 <translation id="1251480783646955802">Thao tác này sẽ xóa <ph name="TOTAL_USAGE"/> dữ liệu lưu trữ trong các trang web và ứng dụng đã cài đặt</translation>
+<translation id="1251578593170406502">Đang quét tìm mạng dữ liệu di động...</translation>
 <translation id="125220115284141797">Mặc định</translation>
 <translation id="1252987234827889034">Đã xảy ra lỗi hồ sơ</translation>
 <translation id="1254593899333212300">Kết nối Internet trực tiếp</translation>
@@ -281,7 +284,6 @@
 <translation id="1301135395320604080"><ph name="ORIGIN"/> có thể chỉnh sửa các tệp sau đây</translation>
 <translation id="1302227299132585524">Cho phép JavaScript từ Apple Events</translation>
 <translation id="1303101771013849280">Tệp HTML chứa dấu trang</translation>
-<translation id="1303178898338186101">Không thể truy cập vào Google Play. Mã lỗi: <ph name="ERROR_CODE"/>.</translation>
 <translation id="1303671224831497365">Không tìm thấy thiết bị Bluetooth nào</translation>
 <translation id="130491383855577612">Đã thay thế thành công các ứng dụng và tệp Linux</translation>
 <translation id="1306390193749326011">Bạn sẽ không thấy lại <ph name="MODULE_NAME"/> trên trang này</translation>
@@ -322,6 +324,7 @@
 <translation id="1347512539447549782">Bộ nhớ Linux</translation>
 <translation id="1347975661240122359">Sẽ bắt đầu cập nhật khi pin đạt đến mức <ph name="BATTERY_LEVEL"/>%.</translation>
 <translation id="1353275871123211385">Để sử dụng các quyền kiểm soát của cha mẹ như phê duyệt ứng dụng và giới hạn thời gian sử dụng thiết bị, trẻ phải có một Tài khoản Brave do cha mẹ quản lý. Bạn có thể thêm một tài khoản trường học vào lúc khác để dùng các công cụ như Brave Lớp học.</translation>
+<translation id="135389172849514421">Hoạt động khi không có mạng</translation>
 <translation id="6580983683519551561">Không tìm thấy PPD. Hãy đảm bảo Bravebook của bạn đã kết nối mạng rồi thử lại.</translation>
 <translation id="1354045473509304750">Tiếp tục cho phép <ph name="HOST"/> sử dụng và di chuyển máy ảnh của bạn</translation>
 <translation id="1355088139103479645">Xóa tất cả dữ liệu?</translation>
@@ -401,7 +404,6 @@
 <translation id="142758023928848008">Bật phím cố định (để thực hiện phím tắt bằng cách nhập chúng liên tục)</translation>
 <translation id="142765311413773645">Giấy phép của <ph name="APP_NAME"/> đã hết hạn</translation>
 <translation id="1429300045468813835">Đã xóa tất cả</translation>
-<translation id="143027896309062157">Đọc và thay đổi tất cả dữ liệu trên máy tính của bạn và các trang web bạn truy cập</translation>
 <translation id="1430915738399379752">In</translation>
 <translation id="1431188203598586230">Bản cập nhật phần mềm cuối cùng</translation>
 <translation id="1431432486300429272">Brave có thể sử dụng lịch sử duyệt web của bạn để điều chỉnh tính năng Tìm kiếm và các dịch vụ khác của Brave cho phù hợp với bạn. Bạn hoặc cha mẹ của bạn có thể truy cập vào trang myaccount.google.com/activitycontrols/search để thay đổi tùy chọn này bất cứ lúc nào</translation>
@@ -410,7 +412,6 @@
 <translation id="1434696352799406980">Thao tác này sẽ đặt lại trang khởi động, trang thẻ mới, công cụ tìm kiếm và thẻ được ghim. Thao tác này cũng sẽ vô hiệu hóa tất cả các tiện ích và xóa dữ liệu tạm thời như cookie. Dấu trang, lịch sử và mật khẩu đã lưu của bạn sẽ không bị xóa.</translation>
 <translation id="1434886155212424586">Trang chủ là trang Thẻ mới</translation>
 <translation id="1436390408194692385">Có hiệu lực trong <ph name="TICKET_TIME_LEFT"/></translation>
-<translation id="1436671784520050284">Tiếp tục thiết lập</translation>
 <translation id="1436784010935106834">Đã xóa</translation>
 <translation id="1437986450143295708">Mô tả chi tiết về vấn đề</translation>
 <translation id="144283815522798837">Đã chọn <ph name="NUMBER_OF_ITEMS_SELECTED"/></translation>
@@ -446,6 +447,7 @@
 <translation id="1476088332184200792">Sao chép vào Thiết bị của bạn</translation>
 <translation id="1476607407192946488">&amp;Cài đặt ngôn ngữ</translation>
 <translation id="1477446329585670721"><ph name="DOMAIN"/> yêu cầu bạn không tháo thẻ thông minh.</translation>
+<translation id="1477654881618305065">Tổ chức của bạn không cho phép bạn chia sẻ nội dung này. Nếu bạn cần trợ giúp, hãy liên hệ với quản trị viên của mình.</translation>
 <translation id="1478340334823509079">Chi tiết: <ph name="FILE_NAME"/></translation>
 <translation id="1478607704480248626">Cài đặt chưa được bật</translation>
 <translation id="1480571698637441426">Để nhận được các câu trả lời phù hợp khi bạn đặt câu hỏi, hãy cho phép Trợ lý truy cập vào ảnh chụp những thông tin có trên màn hình của bạn. Trợ lý cũng có thể dùng thông tin về các bài hát hoặc video đang phát.</translation>
@@ -532,6 +534,7 @@
 <translation id="156793199942386351">Phím "<ph name="CURRENTKEY"/>" đã được gán cho thao tác "<ph name="ACTION"/>". Hãy nhấn phím bất kỳ để <ph name="RESPONSE"/>.</translation>
 <translation id="1567993339577891801">Bảng điều khiển JavaScript</translation>
 <translation id="1568323446248056064">Mở cài đặt thiết bị hiển thị</translation>
+<translation id="1570604804919108255">Hiển thị thông báo</translation>
 <translation id="1571738973904005196">Xem thẻ: <ph name="TAB_ORIGIN"/></translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (Khách)</translation>
 <translation id="1572266655485775982">Bật Wi-Fi</translation>
@@ -582,11 +585,13 @@
 <translation id="1617765145568323981">{NUM_FILES,plural, =0{Đang kiểm tra để xem dữ liệu này có tuân theo các chính sách bảo mật của tổ chức bạn hay không...}=1{Đang kiểm tra để xem tệp này có tuân theo các chính sách bảo mật của tổ chức bạn hay không...}other{Đang kiểm tra để xem những tệp này có tuân theo các chính sách bảo mật của tổ chức bạn hay không...}}</translation>
 <translation id="1618102204889321535"><ph name="CURRENT_CHARACTER_COUNT"/>/<ph name="MAX_CHARACTER_COUNT"/></translation>
 <translation id="1618268899808219593">Trung tâm trợ g&amp;iúp</translation>
+<translation id="1619879934359211038">Không thể kết nối với Google Play. Hãy kiểm tra kết nối mạng của bạn rồi thử lại. Mã lỗi: <ph name="ERROR_CODE"/>.</translation>
 <translation id="1620307519959413822">Mật khẩu không chính xác. Hãy thử lại hoặc nhấp vào "Bạn quên mật khẩu" để đặt lại.</translation>
 <translation id="1620510694547887537">Máy ảnh</translation>
 <translation id="1621485112342885423">Giỏ hàng của bạn</translation>
 <translation id="1621729191093924223">Các tính năng cần dùng micrô sẽ không hoạt động</translation>
 <translation id="1621831347985899379">Dữ liệu trên <ph name="DEVICE_TYPE"/> sẽ bị xóa</translation>
+<translation id="1621984899599015181">Các lựa chọn chia sẻ do tổ chức của bạn quản lý. Một số mục có thể bị ẩn.</translation>
 <translation id="1622054403950683339">Bỏ qua mạng Wi-Fi</translation>
 <translation id="1623132449929929218">Hiện không sử dụng được hình ảnh. Vui lòng kết nối lại với Internet để xem các bộ sưu tập hình nền.</translation>
 <translation id="1623723619460186680">Giảm ánh sáng xanh</translation>
@@ -613,11 +618,13 @@
 <translation id="1640235262200048077"><ph name="IME_NAME"/> chưa hoạt động trên các ứng dụng Linux</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 Với Mã hóa RSA</translation>
 <translation id="1641113438599504367">Duyệt web an toàn</translation>
+<translation id="1642492862748815878">Đã kết nối với <ph name="DEVICE"/> và <ph name="NUMBER_OF_DEVICES"/> thiết bị Bluetooth khác</translation>
 <translation id="1642494467033190216">Yêu cầu xóa bảo vệ rootfs và khởi động lại trước khi bật các tính năng gỡ lỗi khác.</translation>
 <translation id="1643072738649235303">Chữ ký X9.62 ECDSA với SHA-1</translation>
 <translation id="1643921258693943800">Để dùng tính năng Chia sẻ lân cận, hãy bật Bluetooth và Wi-Fi</translation>
 <translation id="1644574205037202324">Nhật ký</translation>
 <translation id="1645516838734033527">Để giữ an toàn cho <ph name="DEVICE_TYPE"/>, Smart Lock yêu cầu phải bật khóa màn hình trên điện thoại của bạn.</translation>
+<translation id="1646793251510634025">Xem xét các chế độ cài đặt để tối ưu hóa tìm kiếm và duyệt web</translation>
 <translation id="1646982517418478057">Vui lòng nhập mật khẩu để mã hóa chứng chỉ này</translation>
 <translation id="1648528859488547844">Sử dụng Wi‑Fi hoặc mạng di động để xác định vị trí</translation>
 <translation id="164936512206786300">Hủy ghép nối thiết bị Bluetooth</translation>
@@ -683,6 +690,7 @@
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="1709106626015023981"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (Gốc)</translation>
 <translation id="1709217939274742847">Chọn một phiếu để dùng cho việc xác thực. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
+<translation id="1709762881904163296">Cài đặt mạng</translation>
 <translation id="1709972045049031556">Không thể chia sẻ</translation>
 <translation id="1711935594505774770">Thao tác này sẽ xóa toàn bộ dữ liệu và cookie lưu trữ trong <ph name="SITE_GROUP_NAME"/> cũng như trong mọi trang web và ứng dụng đã cài đặt thuộc nhóm này</translation>
 <translation id="1714644264617423774">Bật các tính năng hỗ trợ tiếp cận để dễ dàng sử dụng thiết bị của bạn. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
@@ -693,7 +701,6 @@
 <translation id="1721312023322545264">Bạn cần được <ph name="NAME"/> cấp quyền để truy cập vào trang web này</translation>
 <translation id="1722460139690167654"><ph name="ENROLLMENT_DOMAIN"/> <ph name="BEGIN_LINK"/>quản lý <ph name="DEVICE_TYPE"/><ph name="END_LINK"/> của bạn</translation>
 <translation id="1723824996674794290">Cửa sổ &amp;Mới</translation>
-<translation id="1725149567830788547">Hiển thị &amp;Kiểm soát</translation>
 <translation id="1725562816265788801">Cuộn thẻ</translation>
 <translation id="1727662110063605623">Mở phần Cài đặt để kết nối <ph name="USB_DEVICE_NAME"/> với Parallels Desktop hoặc Linux</translation>
 <translation id="1729533290416704613">Tiện ích này cũng điều khiển trang nào được hiển thị khi bạn tìm kiếm từ Thanh địa chỉ.</translation>
@@ -746,7 +753,6 @@
 <translation id="1776883657531386793"><ph name="OID"/>: <ph name="INFO"/></translation>
 <translation id="1778457539567749232">Đánh dấu là chưa đọc</translation>
 <translation id="1778991607452011493">Gửi nhật ký gỡ lỗi (khuyến nghị)</translation>
-<translation id="5781127179210503598">Trang này cho phép bạn quản lý các Tài khoản Brave mà mình đã đăng nhập. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
 <translation id="1779468444204342338">Tối thiểu</translation>
 <translation id="1779652936965200207">Vui lòng nhập mã xác nhận này trên "<ph name="DEVICE_NAME"/>":</translation>
 <translation id="177989070088644880">Ứng dụng (<ph name="ANDROID_PACKAGE_NAME"/>)</translation>
@@ -828,6 +834,7 @@
 <translation id="1850508293116537636">Xoay &amp;theo chiều kim đồng hồ</translation>
 <translation id="1852141627593563189">Tìm phần mềm có hại</translation>
 <translation id="1852799913675865625">Đã có lỗi khi tìm cách đọc tệp: <ph name="ERROR_TEXT"/>.</translation>
+<translation id="1854049213067042715">Tiếp tục ở trạng thái trước đó. Trong phần Cài đặt, bạn có thể thiết lập để các ứng dụng luôn khôi phục khi khởi động hoặc tắt chế độ này.</translation>
 <translation id="1854180393107901205">Dừng truyền</translation>
 <translation id="1855079636134697549">Máy ảnh đang bật</translation>
 <translation id="1856715684130786728">Thêm vị trí...</translation>
@@ -914,6 +921,7 @@
 <translation id="1937774647013465102">Không thể nhập loại kiến trúc vùng chứa <ph name="ARCHITECTURE_CONTAINER"/> bằng thiết bị thuộc loại <ph name="ARCHITECTURE_DEVICE"/> này. Bạn có thể thử khôi phục vùng chứa này vào một thiết bị khác hoặc truy cập vào các tệp bên trong hình ảnh vùng chứa này bằng cách mở trong ứng dụng Files.</translation>
 <translation id="1938351510777341717">Lệnh bên ngoài</translation>
 <translation id="1940546824932169984">Thiết bị đã kết nối</translation>
+<translation id="1942128823046546853">Đọc và thay đổi tất cả dữ liệu của bạn trên mọi trang web</translation>
 <translation id="1942600407708803723">Tắt máy khi đóng nắp màn hình</translation>
 <translation id="1944528062465413897">Mã ghép nối Bluetooth:</translation>
 <translation id="1944921356641260203">Đã tìm thấy bản cập nhật</translation>
@@ -930,6 +938,7 @@
 <translation id="1963976881984600709">Chế độ bảo vệ thông thường</translation>
 <translation id="196425401113508486">Làm nổi bật con trỏ khi di chuyển</translation>
 <translation id="1965624977906726414">Không có đặc quyền.</translation>
+<translation id="1966497651828975688">Đã mất kết nối mạng. Vui lòng kiểm tra kết nối mạng của bạn hoặc thử một mạng Wi-Fi khác.</translation>
 <translation id="1969654639948595766">Nhật ký văn bản WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="1970368523891847084">Đã chuyển sang chế độ video</translation>
 <translation id="197288927597451399">Giữ lại</translation>
@@ -946,6 +955,7 @@
 <translation id="1979095679518582070">Việc tắt tính năng này sẽ không ảnh hưởng đến khả năng thiết bị gửi thông tin cần thiết cho các dịch vụ thiết yếu như bảo mật và cập nhật hệ thống.</translation>
 <translation id="1979280758666859181">Bạn đang thay đổi sang kênh có phiên bản <ph name="PRODUCT_NAME"/> cũ hơn. Sẽ áp dụng thay đổi kênh khi phiên bản kênh khớp với phiên bản hiện được cài đặt trên thiết bị của bạn.</translation>
 <translation id="197989455406964291">KDC không hỗ trợ loại mã hóa</translation>
+<translation id="1981434377190976112">Đọc tất cả dữ liệu của bạn trên mọi trang web</translation>
 <translation id="1983497378699148207">Để hoàn tất việc thiết lập Linux, hãy cập nhật Chrome OS rồi thử lại.</translation>
 <translation id="1984417487208496350">Không được bảo vệ (không khuyến nghị)</translation>
 <translation id="1987317783729300807">Tài khoản</translation>
@@ -954,6 +964,7 @@
 <translation id="1989113344093894667">Không thể chụp nội dung</translation>
 <translation id="1990046457226896323">Đã tải tệp mã chuyển lời nói thành văn bản xuống</translation>
 <translation id="1990512225220753005">Không hiển thị lối tắt trên trang này</translation>
+<translation id="199191324030140441">Tắt chế độ Không làm phiền</translation>
 <translation id="1992397118740194946">Chưa đặt</translation>
 <translation id="1992924914582925289">Xóa khỏi thiết bị</translation>
 <translation id="1994173015038366702">URL trang web</translation>
@@ -995,6 +1006,7 @@ Nếu không, hãy đăng xuất ngay để hệ thống cập nhật các thay 
 
 Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này bằng cách cài đặt ứng dụng Family Link trên thiết bị.  Chúng tôi đã gửi hướng dẫn cho bạn qua email.</translation>
 <translation id="2040460856718599782">Rất tiếc! Đã xảy ra sự cố khi tìm cách xác thực bạn. Vui lòng kiểm tra kỹ thông tin xác thực đăng nhập của bạn và thử lại.</translation>
+<translation id="2040894699575719559">Đã chặn quyền truy cập vị trí</translation>
 <translation id="2042279886444479655">Các hồ sơ đang hoạt động</translation>
 <translation id="2044014337866019681">Để mở khóa phiên này, hãy đảm bảo rằng bạn đang xác minh <ph name="ACCOUNT"/>.</translation>
 <translation id="204497730941176055">Tên Mẫu Chứng chỉ của Microsoft</translation>
@@ -1134,6 +1146,7 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="2175927920773552910">Mã QR</translation>
 <translation id="2178614541317717477">Lộ CA</translation>
 <translation id="2179416702468739594">Đang tìm hồ sơ có sẵn. Thao tác này có thể khiến mạng di động của bạn bị ngắt kết nối trong vài phút.</translation>
+<translation id="2180620921879609685">Chặn nội dung trên bất kỳ trang nào</translation>
 <translation id="2182058453334755893">Đã sao chép vào bảng nhớ tạm</translation>
 <translation id="8098574385249290065">Cho phép Brave chọn thời điểm trang web có thể phát âm thanh (khuyên dùng)</translation>
 <translation id="2186711480981247270">Trang được chia sẻ từ một thiết bị khác</translation>
@@ -1216,7 +1229,7 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="2270450558902169558">Trao đổi dữ liệu với bất kỳ thiết bị nào trong miền <ph name="DOMAIN"/></translation>
 <translation id="2270627217422354837">Trao đổi dữ liệu với bất kỳ thiết bị nào trong miền: <ph name="DOMAINS"/></translation>
 <translation id="2271469253353559191">Lịch áp dụng chế độ tối</translation>
-<translation id="2272430695183451567">Đã chỉ định 0 công tắc</translation>
+<translation id="2272430695183451567">Đã gán 0 công tắc</translation>
 <translation id="2272570998639520080">Ly rượu Martini</translation>
 <translation id="2273119997271134996">Vấn đề với cổng video khi gắn đế sạc</translation>
 <translation id="2274840746523584236">Sạc pin cho Bravebook</translation>
@@ -1227,6 +1240,7 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="2278668501808246459">Đang khởi động dịch vụ quản lý vùng chứa</translation>
 <translation id="2280486287150724112">Lề phải</translation>
 <translation id="2282146716419988068">Quá trình GPU</translation>
+<translation id="2285109769884538519">{COUNT,plural, =0{Mở tất cả trong &amp;nhóm thẻ mới}=1{Mở trong &amp;nhóm thẻ mới}other{Mở tất cả ({COUNT}) trong &amp;nhóm thẻ mới}}</translation>
 <translation id="2285942871162473373">Không thể nhận dạng vân tay của bạn. Hãy thử lại.</translation>
 <translation id="2287944065963043964">Màn hình đăng nhập</translation>
 <translation id="2288181517385084064">Chuyển sang chế độ quay video</translation>
@@ -1346,7 +1360,6 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="2392369802118427583">Kích hoạt</translation>
 <translation id="2393136602862631930">Thiết lập ứng dụng <ph name="APP_NAME"/> trên Bravebook</translation>
 <translation id="2395616325548404795">Thiết bị <ph name="DEVICE_TYPE"/> của bạn đã được đăng ký thành công cho quản lý doanh nghiệp, nhưng không gửi được thông tin phần tử và vị trí. Vui lòng nhập thủ công thông tin này từ Bảng điều khiển dành cho quản trị viên của thiết bị này.</translation>
-<translation id="2396387085693598316">Quản trị viên đã chặn "<ph name="EXTENSION_NAME"/>"</translation>
 <translation id="2396783860772170191">Nhập mã pin có 4 chữ số (0000-9999)</translation>
 <translation id="2398546389094871088">Việc định dạng lại thiết bị bằng chức năng Powerwash sẽ không xóa hồ sơ eSIM của bạn. Hãy chuyển đến phần <ph name="LINK_BEGIN"/>Cài đặt cho thiết bị di động<ph name="LINK_END"/> để xóa những hồ sơ này theo cách thủ công.</translation>
 <translation id="2399699884460174994">Đã bật thông báo</translation>
@@ -1355,6 +1368,7 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="2406153734066939945">Xóa hồ sơ này và dữ liệu của hồ sơ?</translation>
 <translation id="2408018932941436077">Đang lưu thẻ</translation>
 <translation id="2408955596600435184">Nhập mã PIN của bạn</translation>
+<translation id="2410754283952462441">Chọn một tài khoản</translation>
 <translation id="241082044617551207">Plugin không rõ</translation>
 <translation id="2412593942846481727">Đã có bản cập nhật</translation>
 <translation id="2412753904894530585">Kerberos</translation>
@@ -1458,10 +1472,12 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="2509495747794740764">Số tỷ lệ phải là một số giữa 10 và 200.</translation>
 <translation id="2509566264613697683">8x</translation>
 <translation id="2510988373360790637">Xóa thiết bị Bluetooth</translation>
+<translation id="2512065992892294946"><ph name="LANGUAGE"/> (đã chọn)</translation>
 <translation id="2513396635448525189">Hình ảnh đăng nhập</translation>
 <translation id="2514326558286966059">Mở khóa nhanh hơn bằng vân tay</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="2515807442171220586">Chỉ định một công tắc khác</translation>
+<translation id="251722524540674480">Xác nhận tên người dùng</translation>
 <translation id="2517472476991765520">Quét</translation>
 <translation id="2518024842978892609">Sử dụng chứng chỉ ứng dụng</translation>
 <translation id="2519517390894391510">Tên hồ sơ chứng chỉ</translation>
@@ -1470,12 +1486,12 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="252219247728877310">Thành phần chưa được cập nhật</translation>
 <translation id="284843628681142937">Gửi cho Brave URL của các trang bạn truy cập</translation>
 <translation id="8181884647588958753">Brave đang kiểm tra máy tính của bạn để tìm phần mềm gây hại...</translation>
-<translation id="2526277209479171883">Cài đặt và tiếp tục</translation>
 <translation id="2526590354069164005">Màn hình nền</translation>
 <translation id="2526619973349913024">Kiểm tra bản cập nhật</translation>
 <translation id="2527167509808613699">Bất kỳ loại kết nối</translation>
 <translation id="2530166226437958497">Khắc phục sự cố</translation>
 <translation id="2532589005999780174">Chế độ tương phản cao</translation>
+<translation id="2533649878691950253">Vì bạn thường không cho phép truy cập thông tin vị trí nên hệ thống đã chặn không cho trang web này biết vị trí chính xác của bạn</translation>
 <translation id="253434972992662860">&amp;Tạm dừng</translation>
 <translation id="253557089021624350">Số lượng giữ kết nối</translation>
 <translation id="2535799430745250929">Không có mạng di động</translation>
@@ -1496,6 +1512,7 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="2549985041256363841">Bắt đầu ghi</translation>
 <translation id="2550212893339833758">Đã hoán đổi bộ nhớ</translation>
 <translation id="2550596535588364872">Bạn muốn cho phép <ph name="EXTENSION_NAME"/> mở <ph name="FILE_NAME"/>?</translation>
+<translation id="2552230905527343195">Không thể thêm thẻ hiện tại</translation>
 <translation id="2552966063069741410">Múi giờ</translation>
 <translation id="2553290675914258594">Quyền truy cập đã xác minh</translation>
 <translation id="2553340429761841190"><ph name="PRODUCT_NAME"/> không thể kết nối đến <ph name="NETWORK_ID"/>. Vui lòng chọn một mạng khác hoặc thử lại.</translation>
@@ -1511,7 +1528,6 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="2575247648642144396">Biểu tượng này sẽ hiển thị khi tiện ích có thể hoạt động trên trang hiện tại. Sử dụng tiện ích này bằng cách nhấp vào biểu tượng hoặc bằng cách nhấn <ph name="EXTENSION_SHORTCUT"/>.</translation>
 <translation id="2575441894380764255">Không được phép hiển thị quảng cáo xâm nhập hoặc quảng cáo gây hiểu nhầm</translation>
 <translation id="257779572837908839">Thiết lập làm Bravebox cho hội họp</translation>
-<translation id="2579232805407578790">Không thể kết nối với máy chủ. Vui lòng kiểm tra kết nối mạng rồi thử lại. Nếu sự cố này vẫn tiếp diễn, hãy khởi động lại Bravebook. Mã lỗi: <ph name="ERROR_CODE"/>.</translation>
 <translation id="2580889980133367162">Luôn cho phép <ph name="HOST"/> tải xuống nhiều tệp</translation>
 <translation id="258095186877893873">Lâu</translation>
 <translation id="2582253231918033891"><ph name="PRODUCT_NAME"/> <ph name="PRODUCT_VERSION"/> (Nền tảng <ph name="PLATFORM_VERSION"/>) <ph name="DEVICE_SERIAL_NUMBER"/></translation>
@@ -1565,6 +1581,7 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="2635276683026132559">Ký</translation>
 <translation id="2636625531157955190">Brave không thể truy cập hình ảnh.</translation>
 <translation id="2637400434494156704">Mã PIN không chính xác. Bạn còn một lần thử.</translation>
+<translation id="2638286699381354126">Cập nhật...</translation>
 <translation id="2638662041295312666">Hình ảnh đăng nhập</translation>
 <translation id="2640549051766135490">Đã chọn album <ph name="TITLE"/> <ph name="DESC"/></translation>
 <translation id="264083724974021997">Kết nối với điện thoại của bạn – Hộp thoại</translation>
@@ -1661,6 +1678,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="2738771556149464852">Không được Sau</translation>
 <translation id="2739191690716947896">Gỡ lỗi</translation>
 <translation id="2739240477418971307">Thay đổi cài đặt trợ năng của bạn</translation>
+<translation id="2739965161385757621">Xem xét các chế độ cài đặt của tôi</translation>
 <translation id="274029851662193272">Hạ xuống</translation>
 <translation id="2740531572673183784">Ok</translation>
 <translation id="2741713322780029189">Mở Cửa sổ lệnh khôi phục</translation>
@@ -1784,6 +1802,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="2864601841139725659">Đặt ảnh hồ sơ của bạn</translation>
 <translation id="2865919525181940183">Ảnh chụp các chương trình có trên màn hình</translation>
 <translation id="286674810810214575">Đang kiểm tra nguồn điện...</translation>
+<translation id="2866876751734765554">Xem xét về quyền riêng tư</translation>
 <translation id="2867768963760577682">Mở dưới dạng thẻ được ghim</translation>
 <translation id="2868746137289129307">Tiện ích này là đã lỗi thời và bị chính sách doanh nghiệp vô hiệu hóa. Tiện ích có thể được bật tự động khi có phiên bản mới hơn.</translation>
 <translation id="2870560284913253234">Trang web</translation>
@@ -1806,6 +1825,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="2885378588091291677">Trình quản lý tác vụ</translation>
 <translation id="2885729872133513017">Đã xảy ra lỗi khi giải mã phản hồi của máy chủ.</translation>
 <translation id="2886771036282400576">• <ph name="PERMISSION"/></translation>
+<translation id="288734198558082692"><ph name="DEVICE"/> và <ph name="NUMBER_OF_DEVICES"/> thiết bị khác</translation>
 <translation id="2889064240420137087">Mở đường liên kết bằng...</translation>
 <translation id="2891922230654533301">Dùng thiết bị của bạn để đăng nhập vào <ph name="APP_NAME"/>?</translation>
 <translation id="2893168226686371498">Trình duyệt mặc định</translation>
@@ -1824,6 +1844,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
     Thông báo máy chủ: <ph name="SERVER_MSG"/></translation>
 <translation id="2908162660801918428">Thêm thư viện của phương tiện theo thư mục</translation>
 <translation id="2908358077082926882">Hãy nhấn phím “<ph name="CURRENTKEY"/>” một lần nữa để xóa công tắc đã gán và <ph name="RESPONSE"/></translation>
+<translation id="2909506265808101667">Không thể kết nối với các dịch vụ của Brave. Hãy kiểm tra kết nối mạng của bạn rồi thử lại. Mã lỗi: <ph name="ERROR_CODE"/>.</translation>
 <translation id="2910318910161511225">Hãy kết nối với mạng rồi thử lại</translation>
 <translation id="291056154577034373">CHƯA ĐỌC</translation>
 <translation id="2910718431259223434">Đã xảy ra lỗi. Vui lòng thử lại hoặc liên hệ với quản trị viên hay chủ sở hữu thiết bị. Mã lỗi: <ph name="ERROR_CODE"/>.</translation>
@@ -1956,6 +1977,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="3037754279345160234">Không thể phân tích cú pháp cấu hình để tham gia miền. Vui lòng liên hệ với quản trị viên của bạn.</translation>
 <translation id="3038612606416062604">Thêm máy in theo cách thủ công</translation>
 <translation id="3039491566278747710">Không cài đặt được chính sách ngoại tuyến trên thiết bị.</translation>
+<translation id="3043218608271070212"><ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="3043581297103810752">Từ <ph name="ORIGIN"/></translation>
 <translation id="3045447014237878114">Trang web này đã tự động tải nhiều tệp xuống</translation>
 <translation id="3046178388369461825">Dung lượng ổ đĩa Linux còn rất ít</translation>
@@ -2161,6 +2183,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="3288047731229977326">Tiện ích chạy ở chế độ nhà phát triển có thể gây hại cho máy tính của bạn. Nếu bạn không phải là nhà phát triển, bạn nên vô hiệu hóa các tiện ích này chạy trong chế độ nhà phát triển để giữ an toàn.</translation>
 <translation id="3289668031376215426">Tự động viết hoa</translation>
 <translation id="3289856944988573801">Để kiểm tra các cập nhật, hãy sử dụng kết nối Ethernet hoặc Wi-Fi.</translation>
+<translation id="3291436823898732747">Duyệt web dễ dàng hơn: Chẳng hạn, các đề xuất sẽ xuất hiện trong Thanh địa chỉ trước khi bạn bắt đầu nhập</translation>
 <translation id="3293644607209440645">Gửi trang này</translation>
 <translation id="32939749466444286">Vùng chứa Linux không khởi động. Vui lòng thử lại.</translation>
 <translation id="3294437725009624529">Khách</translation>
@@ -2182,8 +2205,8 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="3308852433423051161">Đang tải Trợ lý Brave...</translation>
 <translation id="3309330461362844500">Mã hồ sơ chứng chỉ</translation>
 <translation id="3311445899360743395">Dữ liệu liên quan đến ứng dụng này có thể bị xóa khỏi thiết bị.</translation>
-<translation id="3312424061798279731">Ngôn ngữ đã bật</translation>
 <translation id="3313622045786997898">Giá trị Chữ ký Chứng chỉ</translation>
+<translation id="3313950410573257029">Kiểm tra kết nối</translation>
 <translation id="3315158641124845231">Ẩn <ph name="PRODUCT_NAME"/></translation>
 <translation id="3315442055907669208">Bật chế độ đọc</translation>
 <translation id="3317459757438853210">Hai mặt</translation>
@@ -2230,6 +2253,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="337286756654493126">Đọc thư mục mà bạn mở trong ứng dụng</translation>
 <translation id="3378572629723696641">Tiện ích này có thể đã bị hỏng.</translation>
 <translation id="337920581046691015"><ph name="PRODUCT_NAME"/> sẽ được cài đặt.</translation>
+<translation id="337995611229308295">Không thể kết nối với máy chủ. Vui lòng kiểm tra kết nối mạng của bạn và thử lại. Nếu bạn vẫn gặp sự cố thì hãy thử khởi động lại Bravebook của mình.</translation>
 <translation id="3380365263193509176">Lỗi không xác định</translation>
 <translation id="3382073616108123819">Rất tiếc! Hệ thống không thể xác định số nhận dạng thiết bị cho thiết bị này.</translation>
 <translation id="3382200254148930874">Ngừng tính năng giám sát...</translation>
@@ -2307,6 +2331,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="3446274660183028131">Vui lòng chạy ứng dụng Parallels Desktop để cài đặt Windows.</translation>
 <translation id="344630545793878684">Đọc dữ liệu của bạn trên một số trang web</translation>
 <translation id="3446650212859500694">Tệp này có chứa nội dung nhạy cảm</translation>
+<translation id="3446827946208017735">Hiểu và xem xét các chế độ cài đặt quyền riêng tư quan trọng nhất tại cùng một nơi</translation>
 <translation id="3448086340637592206">Các điều khoản bổ sung của Brave và Chrome OS</translation>
 <translation id="3448492834076427715">Cập nhật tài khoản</translation>
 <translation id="3449393517661170867">Cửa sổ mới dạng thẻ</translation>
@@ -2340,6 +2365,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="3476303763173086583">Gửi dữ liệu chẩn đoán và dữ liệu về mức sử dụng. Giúp cải thiện trải nghiệm Android của con bạn bằng cách tự động gửi dữ liệu chẩn đoán cũng như dữ liệu về mức sử dụng ứng dụng và thiết bị cho Brave. Những thông tin này sẽ không dùng để nhận dạng con bạn mà giúp tăng độ ổn định của hệ thống và ứng dụng cũng như cải thiện các mặt khác. Một số dữ liệu tổng hợp cũng sẽ hữu ích cho các ứng dụng và đối tác của Brave, chẳng hạn như những nhà phát triển Android. Mục <ph name="BEGIN_LINK1"/>cài đặt<ph name="END_LINK1"/> này do chủ sở hữu thực thi. Chủ sở hữu có thể chọn gửi dữ liệu chẩn đoán và dữ liệu về mức sử dụng của thiết bị này cho Brave. Nếu bạn bật mục cài đặt bổ sung Hoạt động trên web và ứng dụng cho con mình thì dữ liệu này có thể được lưu vào Tài khoản Brave của trẻ. <ph name="BEGIN_LINK2"/>Tìm hiểu thêm<ph name="END_LINK2"/></translation>
 <translation id="347670947055184738">Rất tiếc! Hệ thống không tìm nạp được chính sách cho thiết bị của bạn.</translation>
 <translation id="347785443197175480">Tiếp tục cho phép <ph name="HOST"/> truy cập vào máy ảnh và micrô của bạn</translation>
+<translation id="3478813605045578676">Chỉ hỗ trợ đăng ký sau khi hoàn tất cài đặt. Để quản lý thiết bị này, trước tiên hãy cài đặt CloudReady.</translation>
 <translation id="3479552764303398839">Không phải bây giờ</translation>
 <translation id="3479685872808224578">Không tìm thấy máy chủ máy in này. Vui lòng kiểm tra địa chỉ rồi thử lại.</translation>
 <translation id="3480612136143976912">Tùy chỉnh kích cỡ và kiểu phụ đề cho Phụ đề trực tiếp. Một số ứng dụng và trang web cũng sẽ dùng chế độ cài đặt này.</translation>
@@ -2359,6 +2385,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="3495496470825196617">Chế độ rảnh khi sạc pin</translation>
 <translation id="3908743412684152579">Cài đặt Trợ lý Brave</translation>
 <translation id="3496213124478423963">Thu Nhỏ</translation>
+<translation id="3496238553815913323"><ph name="LANGUAGE"/> (chưa chọn)</translation>
 <translation id="3497501929010263034">Thiết bị USB của <ph name="VENDOR_NAME"/> (sản phẩm <ph name="PRODUCT_ID"/>)</translation>
 <translation id="3497560059572256875">Chia sẻ Doodle</translation>
 <translation id="3498215018399854026">Chúng tôi không thể liên lạc với cha mẹ của bạn vào thời điểm này. Vui lòng thử lại.</translation>
@@ -2553,17 +2580,16 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="3711931198657368127">Dá&amp;n và truy cập <ph name="URL"/></translation>
 <translation id="3711945201266135623">Tìm thấy <ph name="NUM_PRINTERS"/> máy in trên máy chủ máy in</translation>
 <translation id="3712050472459130149">Cần cập nhật tài khoản</translation>
-<translation id="3910561287607745583">Cho phép thiết bị này tìm các thiết bị khác có kết nối dữ liệu di động bằng Tài khoản Brave của bạn</translation>
 <translation id="3712897371525859903">Lưu trang &amp;thành...</translation>
 <translation id="371300529209814631">Lùi/Tiến</translation>
 <translation id="3713047097299026954">Khóa bảo mật này không có bất kỳ dữ liệu đăng nhập nào</translation>
 <translation id="3714195043138862580">Thiết bị giới thiệu này đã được đặt sang trạng thái hủy cấp phép.</translation>
 <translation id="3714633008798122362">lịch trên web</translation>
-<translation id="3716758537211256894">Kiểm tra mạng của tôi</translation>
 <translation id="3719826155360621982">Trang chủ</translation>
 <translation id="372062398998492895">CUPS</translation>
 <translation id="8397843425685839889">Bạn và Brave</translation>
 <translation id="3722108462506185496">Lỗi khi khởi động dịch vụ máy ảo. Vui lòng thử lại.</translation>
+<translation id="3727144509609414201">Các mạng WiFi có sẵn</translation>
 <translation id="3727187387656390258">Kiểm tra cửa sổ bật lên</translation>
 <translation id="372722114124766626">Chỉ một lần</translation>
 <translation id="3727473233247516571">Khung phụ lưu trong bộ nhớ đệm cho thao tác tiến/lùi: <ph name="BACK_FORWARD_CACHE_PAGE_URL"/></translation>
@@ -2609,7 +2635,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="377050016711188788">Kem</translation>
 <translation id="3771290962915251154">Tùy chọn cài đặt này bị tắt do các quyền kiểm soát của cha mẹ đang bật</translation>
 <translation id="3771294271822695279">Tệp video</translation>
-<translation id="3772609330847318323">Cập nhật mật khẩu cho <ph name="ORIGIN"/></translation>
 <translation id="3775432569830822555">Chứng chỉ Máy chủ SSL</translation>
 <translation id="3775705724665058594">Gửi đến các thiết bị của bạn</translation>
 <translation id="3776508619697147021">Các trang web có thể yêu cầu tự động tải nhiều tệp xuống</translation>
@@ -2641,7 +2666,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="3797900183766075808">&amp;Tìm kiếm trên <ph name="SEARCH_ENGINE"/> cho “<ph name="SEARCH_TERMS"/>”</translation>
 <translation id="3798449238516105146">Phiên bản</translation>
 <translation id="3799128412641261490">Cài đặt tính năng Tiếp cận bằng công tắc</translation>
-<translation id="3799903419983101749">Tiếp tục ở trạng thái trước đó. Trong phần Cài đặt, bạn có thể thiết lập để các ứng dụng tự động khôi phục.</translation>
 <translation id="3800806661949714323">Hiển thị tất cả (được đề xuất)</translation>
 <translation id="380329542618494757">Tên</translation>
 <translation id="3803345858388753269">Chất lượng video</translation>
@@ -2729,6 +2753,8 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="3884152383786131369">Nội dung web có nhiều phiên bản ngôn ngữ sẽ dùng ngôn ngữ đầu tiên được hỗ trợ trong danh sách này. Những tùy chọn này được đồng bộ hóa với tùy chọn cài đặt của trình duyệt. <ph name="BEGIN_LINK_LEARN_MORE"/>Tìm hiểu thêm<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3885112598747515383">Quản trị viên của bạn quản lý các bản cập nhật</translation>
 <translation id="3886446263141354045">Yêu cầu truy cập trang web này của bạn đã được gửi tới <ph name="NAME"/></translation>
+<translation id="3887022758415973389">Hiện danh sách thiết bị</translation>
+<translation id="3888053818972567950">Kết nối với <ph name="WEB_DRIVE"/></translation>
 <translation id="3888550877729210209">Ghi chú bằng <ph name="LOCK_SCREEN_APP_NAME"/></translation>
 <translation id="3888586133700543064">Thông tin này sẽ giúp chúng tôi hiểu rõ hơn vấn đề liên quan đến Trợ lý của bạn. Chúng tôi lưu trữ thông tin này trong tối đa 90 ngày và chỉ các nhóm liên quan phụ trách kỹ thuật và phản hồi mới được phép truy cập.</translation>
 <translation id="3518294595762833244">Bật Brave Sync để dùng tính năng Đồng bộ hóa Wi-Fi</translation>
@@ -2753,6 +2779,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="3905761538810670789">Sửa ứng dụng</translation>
 <translation id="3908393983276948098"><ph name="PLUGIN_NAME"/> đã lỗi thời</translation>
 <translation id="3908501907586732282">Bật tiện ích</translation>
+<translation id="3909701002594999354">Hiển thị tất cả &amp;nút điều khiển</translation>
 <translation id="3909791450649380159">Cắ&amp;t</translation>
 <translation id="39103738135459590">Mã kích hoạt</translation>
 <translation id="3911824782900911339">Trang thẻ mới</translation>
@@ -2851,6 +2878,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="3994374631886003300">Mở khóa điện thoại và mang điện thoại tới gần hơn để mở khóa <ph name="DEVICE_TYPE"/> của bạn.</translation>
 <translation id="3994878504415702912">Thu &amp;phóng</translation>
 <translation id="3995138139523574647">Thiết bị USB-C (cổng phía sau, bên phải)</translation>
+<translation id="3999533068584271567">Không thể thiết lập kết nối mạng. Vui lòng kiểm tra kết nối mạng của bạn và thử lại.</translation>
 <translation id="4002329649066944389">Quản lý các ngoại lệ cụ thể của trang web</translation>
 <translation id="4002440992267487163">Thiết lập mã PIN</translation>
 <translation id="4005817994523282006">Phương pháp phát hiện múi giờ</translation>
@@ -2895,7 +2923,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="4057896668975954729">Xem trong cửa hàng</translation>
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="4058793769387728514">Kiểm tra Tài liệu Ngay bây giờ</translation>
-<translation id="406070391919917862">Ứng dụng nền</translation>
 <translation id="4061374428807229313">Để chia sẻ, hãy nhấp chuột phải vào một thư mục trong ứng dụng Files rồi chọn "Chia sẻ với ứng dụng Parallels Desktop".</translation>
 <translation id="406213378265872299">Chế độ tùy chỉnh</translation>
 <translation id="4062561150282203854">Đồng bộ hóa ứng dụng, chế độ cài đặt, v.v. trên <ph name="DEVICE_TYPE"/> của bạn</translation>
@@ -2986,6 +3013,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="4158364720893025815">Đạt</translation>
 <translation id="4159681666905192102">Đây là tài khoản cho trẻ em do <ph name="CUSTODIAN_EMAIL"/> và <ph name="SECOND_CUSTODIAN_EMAIL"/> quản lý.</translation>
 <translation id="4163560723127662357">Bàn phím không xác định</translation>
+<translation id="4165942112764990069"><ph name="USER_EMAIL"/> không thuộc về một tổ chức hợp lệ. Hãy liên hệ với quản trị viên của bạn. Nếu bạn là quản trị viên thì bạn có thể thiết lập tổ chức của mình bằng cách truy cập: g.co/BraveEnterpriseAccount</translation>
 <translation id="4167686856635546851">Các trang web thường sử dụng JavaScript để hiển thị những tính năng tương tác, như trò chơi điện tử hoặc biểu mẫu web</translation>
 <translation id="4168015872538332605">Một số cài đặt thuộc về <ph name="PRIMARY_EMAIL"/> đang được chia sẻ với bạn. Những cài đặt này chỉ ảnh hưởng đến tài khoản của bạn khi sử dụng đăng nhập nhiều tài khoản.</translation>
 <translation id="4169535189173047238">Không cho phép</translation>
@@ -3101,6 +3129,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="3047737257561987312">{COUNT,plural, =1{1 Tài khoản Brave}other{<ph name="EXTRA_ACCOUNTS"/> Tài khoản Brave}}</translation>
 <translation id="4312866146174492540">Chặn (mặc định)</translation>
 <translation id="4314815835985389558">Quản lý dữ liệu đồng bộ hóa</translation>
+<translation id="4315933848520197627">Hủy liên kết tài khoản</translation>
 <translation id="4316850752623536204">Trang web dành cho nhà phát triển</translation>
 <translation id="4317820549299924617">Không xác minh được</translation>
 <translation id="4320177379694898372">Không có kết nối Internet</translation>
@@ -3141,6 +3170,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="4364830672918311045">Hiện thông báo</translation>
 <translation id="4366138410738374926">Đã bắt đầu in</translation>
 <translation id="4370975561335139969">Email và mật khẩu bạn nhập không khớp</translation>
+<translation id="4371452868325715552">Không thể kết nối với máy chủ. Vui lòng kiểm tra kết nối mạng của bạn và thử lại. Nếu bạn vẫn gặp sự cố thì hãy thử khởi động lại Bravebook của mình. Mã lỗi: <ph name="ERROR_CODE"/>.</translation>
 <translation id="4373966964907728675">Đang truyền màn hình</translation>
 <translation id="4374831787438678295">Trình cài đặt Linux</translation>
 <translation id="4375035964737468845">Mở các tệp đã tải xuống</translation>
@@ -3156,6 +3186,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="4384312707950789900">Thêm vào ưa thích</translation>
 <translation id="4384652540891215547">Kích hoạt tiện ích</translation>
 <translation id="438503109373656455">Ngựa đua Saratoga</translation>
+<translation id="4385146930797718821">Đã sao chép ảnh chụp màn hình vào bảng nhớ tạm</translation>
 <translation id="4385905942116811558">Tìm kiếm thiết bị Bluetooth và USB</translation>
 <translation id="4387890294700445764">Mật khẩu bị lộ</translation>
 <translation id="4389091756366370506">Người dùng <ph name="VALUE"/></translation>
@@ -3204,7 +3235,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="443454694385851356">Cũ (không an toàn)</translation>
 <translation id="443475966875174318">Cập nhật hoặc xóa các ứng dụng không tương thích</translation>
 <translation id="4438043733494739848">Trong suốt</translation>
-<translation id="9154782952206115436">Mật khẩu <ph name="MASKED_PASSWORD"/> của <ph name="USERNAME"/> sẽ được lưu vào Tài khoản Brave <ph name="ACCOUNT"/> của bạn</translation>
 <translation id="4440097423000553826"><ph name="WEBSITE"/> đã gửi một thông báo đến điện thoại của bạn. Để xác nhận danh tính của bạn, hãy nhấn vào thông báo "<ph name="NOTIFICATIONTITLE"/>" rồi làm theo các bước.</translation>
 <translation id="4441124369922430666">Bạn có muốn tự động khởi động ứng dụng này khi máy bật không?</translation>
 <translation id="4441147046941420429">Để tiếp tục, hãy rút khóa bảo mật khỏi thiết bị rồi cắm lại và chạm vào khóa đó</translation>
@@ -3365,10 +3395,10 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="4596295440756783523">Bạn có các chứng chỉ trên tệp có thể nhận dạng các máy chủ này</translation>
 <translation id="4598556348158889687">Quản lý bộ nhớ</translation>
 <translation id="4598776695426288251">Wi-Fi khả dụng qua nhiều thiết bị</translation>
+<translation id="4601426376352205922">Đánh dấu là chưa đọc</translation>
 <translation id="4602466770786743961">Luôn cho phép <ph name="HOST"/> truy cập vào máy ảnh và micrô của bạn</translation>
 <translation id="4606551464649945562">Không cho phép trang web tạo bản đồ 3D về các khu vực xung quanh bạn hoặc theo dõi thông tin vị trí của máy ảnh</translation>
 <translation id="4608500690299898628">&amp;Tìm...</translation>
-<translation id="4608520674724523647">Minh họa đăng ký thành công</translation>
 <translation id="4608703838363792434">Tệp <ph name="FILE_NAME"/> có chứa nội dung nhạy cảm</translation>
 <translation id="4609987916561367134">Được phép sử dụng JavaScript</translation>
 <translation id="4610162781778310380"><ph name="PLUGIN_NAME"/> đã gặp lỗi</translation>
@@ -3429,6 +3459,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="4662373422909645029">Biệt hiệu không được bao gồm số</translation>
 <translation id="4662788913887017617">Chia sẻ dấu trang này với iPhone của bạn</translation>
 <translation id="4663373278480897665">Cho phép máy ảnh</translation>
+<translation id="4664289193573249666">Quản lý tính năng DNS bảo mật trong phần cài đặt của Chrome OS</translation>
 <translation id="4664482161435122549">Lỗi xuất PKCS #12</translation>
 <translation id="4665014895760275686">Nhà sản xuất</translation>
 <translation id="4665446389743427678">Tất cả dữ liệu do <ph name="SITE"/> lưu trữ sẽ bị xóa.</translation>
@@ -3508,6 +3539,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="4770119228883592393">Đã yêu cầu quyền. Hãy nhấn tổ hợp phím ⌘ + Option + Mũi tên xuống để phản hồi</translation>
 <translation id="4773112038801431077">Nâng cấp Linux</translation>
 <translation id="477647109558161443">Tạo lối tắt trên màn hình</translation>
+<translation id="4776594120007763294">Để thêm một trang để đọc vào lúc khác, hãy nhấp vào nút</translation>
 <translation id="4776917500594043016">Mật khẩu cho <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="4777458362738635055">Những người dùng khác trên thiết bị này có thể sử dụng mạng này</translation>
 <translation id="4777825441726637019">Cửa hàng Play</translation>
@@ -3555,6 +3587,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="4827904420700932487">Tạo mã QR cho Hình ảnh này</translation>
 <translation id="482952334869563894">Các thiết bị USB của nhà cung cấp <ph name="VENDOR_ID"/></translation>
 <translation id="4829768588131278040">Thiết lập mã PIN</translation>
+<translation id="4830026649400230050">Hệ thống sẽ chuyển tất cả tệp tải xuống đủ điều kiện đến tài khoản <ph name="WEB_DRIVE"/> của tổ chức bạn.</translation>
 <translation id="4830121310592638841">Hỏi khi có một trang web muốn mở và đặt các cửa sổ trên màn hình của bạn</translation>
 <translation id="4830502475412647084">Đang cài đặt bản cập nhật hệ điều hành</translation>
 <translation id="4830573902900904548"><ph name="DEVICE_TYPE"/> của bạn không thể kết nối Internet bằng cách sử dụng <ph name="NETWORK_NAME"/>. Vui lòng chọn mạng khác. <ph name="LEARN_MORE_LINK_START"/>Tìm hiểu thêm<ph name="LEARN_MORE_LINK_END"/></translation>
@@ -3686,6 +3719,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="4961361269522589229">ý tưởng nấu ăn</translation>
 <translation id="496185450405387901">Quản trị viên của bạn đã cài đặt ứng dụng này.</translation>
+<translation id="4963789650715167449">Xóa thẻ hiện tại</translation>
 <translation id="4964455510556214366">Sắp xếp</translation>
 <translation id="496446150016900060">Đồng bộ hóa các mạng Wi-Fi với điện thoại của bạn</translation>
 <translation id="4965808351167763748">Bạn có chắc chắn muốn thiết lập thiết bị này để chạy Hangouts Meet không?</translation>
@@ -3715,6 +3749,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="4996851818599058005">{NUM_VMS,plural, =0{Không tìm thấy máy ảo <ph name="VM_TYPE"/>}=1{Đã tìm thấy 1 máy ảo <ph name="VM_TYPE"/>: <ph name="VM_NAME_LIST"/>}other{Đã tìm thấy {NUM_VMS} máy ảo <ph name="VM_TYPE"/>: <ph name="VM_NAME_LIST"/>}}</translation>
 <translation id="4997086284911172121">Không có kết nối Internet.</translation>
 <translation id="4998430619171209993">Đang bật</translation>
+<translation id="4999804342505941663">Bật chế độ Không làm phiền</translation>
 <translation id="5000922062037820727">Bị chặn (được đề xuất)</translation>
 <translation id="5005498671520578047">Sao chép mật khẩu</translation>
 <translation id="5006218871145547804">Cầu gỡ lỗi Android (ADB) cho ứng dụng Android trong Crostini</translation>
@@ -3755,6 +3790,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5050330054928994520">Chuyển văn bản sang lời nói (TTS)</translation>
 <translation id="5051836348807686060">Các ngôn ngữ bạn đã chọn không hỗ trợ tính năng kiểm tra chính tả</translation>
 <translation id="5052499409147950210">Chỉnh sửa trang web</translation>
+<translation id="505347685865235222">Nhóm chưa có tên – <ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="8364458882768727272">Tìm hình ảnh qua Brave Ống kính</translation>
 <translation id="5056950756634735043">Đang kết nối với vùng chứa</translation>
 <translation id="5057110919553308744">Khi bạn nhấp vào tiện ích</translation>
@@ -3770,6 +3806,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5067867186035333991">Hỏi nếu <ph name="HOST"/> muốn truy cập micrô của bạn</translation>
 <translation id="5068918910148307423">Không cho phép các trang web đóng gần đây hoàn tất gửi và nhận dữ liệu</translation>
 <translation id="5068919226082848014">Pizza</translation>
+<translation id="5070710277167211639">Nâng các hình thức chuyển hướng lên giao thức HTTPS và cảnh báo bạn trước khi tải những trang web không hỗ trợ giao thức HTTPS</translation>
 <translation id="5070773577685395116">Bạn không nhận được thông báo?</translation>
 <translation id="5071892329440114717">Hiển thị thông tin chi tiết về phương thức bảo vệ tiêu chuẩn</translation>
 <translation id="5072052264945641674">Điều chỉnh kích thước con trỏ</translation>
@@ -3876,7 +3913,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5190926251776387065">Kích hoạt cổng</translation>
 <translation id="5191094172448199359">Mã PIN bạn nhập không khớp</translation>
 <translation id="5191251636205085390">Tìm hiểu và kiểm soát các công nghệ mới giúp thay thế cookie của bên thứ ba</translation>
-<translation id="51918995459521422"><ph name="ORIGIN"/> muốn tải nhiều tệp xuống</translation>
 <translation id="5192062846343383368">Mở ứng dụng Family Link để xem các tùy chọn cài đặt giám sát của bạn</translation>
 <translation id="5193988420012215838">Đã sao chép vào bảng nhớ tạm</translation>
 <translation id="5197255632782567636">Internet</translation>
@@ -3891,6 +3927,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="520621735928254154">Lỗi nhập chứng chỉ</translation>
 <translation id="7485307793427476822">{COUNT,plural, =1{Đã đổi thành công mật khẩu bị lộ. Bạn còn # mật khẩu bị lộ nữa. Brave khuyên bạn nên kiểm tra ngay mật khẩu này.}other{Đã đổi thành công mật khẩu bị lộ. Bạn còn # mật khẩu bị lộ nữa. Brave khuyên bạn nên kiểm tra ngay những mật khẩu này.}}</translation>
 <translation id="5207949376430453814">Đánh dấu điểm chèn văn bản</translation>
+<translation id="5208548918290612795">Lưu trữ Mã xác thực của <ph name="WEB_DRIVE"/></translation>
 <translation id="5247681254378595620">Bật bong bóng cửa sổ bật lên trong giao diện người dùng hàng đầu của Brave để tìm một thẻ trong các thẻ hiện đang mở.</translation>
 <translation id="5209320130288484488">Không tìm thấy thiết bị nào</translation>
 <translation id="5210365745912300556">Đóng thẻ</translation>
@@ -3919,7 +3956,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5235750401727657667">Thay thế trang bạn sẽ nhìn thấy khi mở thẻ mới</translation>
 <translation id="6465706586789214771">Để dễ dàng sử dụng các mật khẩu trên mọi thiết bị, bạn có thể di chuyển mật khẩu sang Tài khoản Brave của mình</translation>
 <translation id="5238278114306905396">Ứng dụng "<ph name="EXTENSION_NAME"/>" đã được tự động xóa.</translation>
-<translation id="5241128660650683457">Đọc tất cả dữ liệu của bạn trên các trang web bạn truy cập</translation>
 <translation id="5242724311594467048">Cho phép "<ph name="EXTENSION_NAME"/>"?</translation>
 <translation id="5243522832766285132">Vui lòng thử lại sau giây lát</translation>
 <translation id="5244474230056479698">Đang đồng bộ hóa với <ph name="EMAIL"/></translation>
@@ -3992,6 +4028,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5315738755890845852">Thừa dấu ngoặc nhọn: <ph name="ERROR_LINE"/></translation>
 <translation id="5317780077021120954">Lưu</translation>
 <translation id="989239400026154074">Brave đề xuất Brave</translation>
+<translation id="5319712128756744240">Ghép nối thiết bị mới</translation>
 <translation id="5320135788267874712">Tên mới của thiết bị</translation>
 <translation id="532247166573571973">Máy chủ có thể không truy cập được. Hãy thử lại sau.</translation>
 <translation id="5324300749339591280">Danh sách ứng dụng</translation>
@@ -4092,10 +4129,12 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5442550868130618860">Bật tự động cập nhật</translation>
 <translation id="5445400788035474247">10x</translation>
 <translation id="5446983216438178612">Hiển thị chứng chỉ cho tổ chức</translation>
+<translation id="5447384712203291074"><ph name="ITEM_COUNT_MULTIPLE"/> mục</translation>
 <translation id="5448293924669608770">Rất tiếc, đã xảy ra lỗi khi đăng nhập</translation>
 <translation id="5449551289610225147">Mật khẩu không hợp lệ</translation>
 <translation id="5449588825071916739">Đánh dấu trang tất cả các thẻ</translation>
 <translation id="5449716055534515760">Đóng cửa &amp;sổ</translation>
+<translation id="5452976525201205853"><ph name="LANGUAGE"/> (hoạt động khi không có mạng)</translation>
 <translation id="5454166040603940656">với <ph name="PROVIDER"/></translation>
 <translation id="5457113250005438886">Không hợp lệ</translation>
 <translation id="5457459357461771897">Đọc và xóa ảnh, nhạc và các phương tiện khác khỏi máy tính của bạn</translation>
@@ -4161,6 +4200,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5505307013568720083">Hết mực</translation>
 <translation id="5505794066310932198">Bật/tắt tính năng Commander</translation>
 <translation id="5507756662695126555">Không tuân thủ</translation>
+<translation id="5507795078844206688">URL của các trang bạn truy cập, ví dụ: https://www.google.com</translation>
 <translation id="5509693895992845810">Lưu &amp;Dưới dạng...</translation>
 <translation id="5509914365760201064">Nhà cung cấp: <ph name="CERTIFICATE_AUTHORITY"/></translation>
 <translation id="6849870115130610913">Lấy nội dung mô tả hình ảnh từ Brave</translation>
@@ -4213,6 +4253,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5565735124758917034">Đang hoạt động</translation>
 <translation id="5567989639534621706">Bộ nhớ đệm của ứng dụng</translation>
 <translation id="5568069709869097550">Không thể đăng nhập</translation>
+<translation id="5571092938913434726">Global Media Controls</translation>
 <translation id="5571832155627049070">Tùy chỉnh hồ sơ của bạn</translation>
 <translation id="1254756632288991504">Vui lòng khởi động và đăng nhập vào Brave để Brave có thể kiểm tra xem bạn có được phép truy cập trang web này không.</translation>
 <translation id="5575528586625653441">Đã xảy ra lỗi với yêu cầu đăng ký chế độ minh họa.</translation>
@@ -4398,6 +4439,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5790651917470750848">Đã chuyển tiếp cổng này</translation>
 <translation id="5792728279623964091">Vui lòng nhấn vào nút nguồn</translation>
 <translation id="5793339252089865437">Nếu tải bản cập nhật này xuống qua mạng di động, thì bạn có thể phải trả phí phát sinh.</translation>
+<translation id="5794034487966529952">Không gian làm việc <ph name="DESK_TITLE"/> có <ph name="NUM_BROWSERS"/> cửa sổ trình duyệt đang mở</translation>
 <translation id="5794414402486823030">Luôn mở bằng trình xem hệ thống</translation>
 <translation id="5794700615121138172">Thư mục do Linux chia sẻ</translation>
 <translation id="7397305826909094212">Thoát khỏi tất cả các ứng dụng Brave</translation>
@@ -4413,6 +4455,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5805697420284793859">Trình quản lý cửa sổ</translation>
 <translation id="5806773519584576205">0° (Mặc định)</translation>
 <translation id="5810809306422959727">Tài khoản này không đủ điều kiện để thêm các quyền kiểm soát của cha mẹ</translation>
+<translation id="2714877654978324555">Để quản lý thông báo của trang web, hãy đi tới phần <ph name="LINK_BEGIN"/>Cài đặt Brave<ph name="LINK_END"/></translation>
 <translation id="5812674658566766066">Mở rộng tất cả</translation>
 <translation id="5815645614496570556">Địa chỉ X.400</translation>
 <translation id="5816434091619127343">Các thay đổi đã yêu cầu đối với máy in sẽ làm cho máy in đó không sử dụng được.</translation>
@@ -4469,6 +4512,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5869522115854928033">Mật khẩu đã lưu</translation>
 <translation id="5870086504539785141">Đóng trình đơn hỗ trợ tiếp cận</translation>
 <translation id="5870155679953074650">Lỗi phần cứng</translation>
+<translation id="5875534259258494936">Đã dừng chia sẻ màn hình</translation>
 <translation id="5876576639916258720">Đang chạy...</translation>
 <translation id="5876851302954717356">Thẻ mới ở bên phải</translation>
 <translation id="5877064549588274448">Kênh đã thay đổi. Hãy khởi động lại thiết bị để áp dụng thay đổi.</translation>
@@ -4510,7 +4554,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
           Hình ảnh này sẽ hiển thị trên màn hình đăng nhập và màn hình khóa của Bravebook.</translation>
 <translation id="5925147183566400388">Con trỏ tới Báo cáo Thực hành Chứng nhận</translation>
 <translation id="539658326146969381">Tải tệp PDF xuống thay vì tự động mở trong Brave</translation>
-<translation id="5931146425219109062">Đọc và thay đổi tất cả dữ liệu của bạn trên các trang web bạn truy cập</translation>
 <translation id="5932124097031739492">Đã nâng cấp Linux thành công.</translation>
 <translation id="5932224571077948991">Trang web hiển thị quảng cáo xâm nhập hoặc quảng cáo gây hiểu nhầm</translation>
 <translation id="59324397759951282">Thiết bị USB của <ph name="MANUFACTURER_NAME"/></translation>
@@ -4548,8 +4591,8 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5963117322306686970">Để nhóm các thẻ lại với nhau, hãy nhấp chuột phải vào một thẻ</translation>
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (tối đa <ph name="NUM_KILOBYTES_LIVE"/>)</translation>
 <translation id="5964113968897211042">{COUNT,plural, =0{Mở tất cả trong cửa sổ &amp;mới}=1{Mở trong cửa sổ &amp;mới}other{Mở tất cả ({COUNT}) trong cửa sổ &amp;mới}}</translation>
-<translation id="5964328685964290415">Nâng mọi hình thức chuyển hướng lên giao thức HTTPS và cảnh báo bạn trước khi tải những trang web không hỗ trợ HTTPS</translation>
 <translation id="5965661248935608907">Tiện ích này cũng điều khiển trang nào được hiển thị khi bạn nhấp vào nút Trang chủ hoặc tìm kiếm từ Thanh địa chỉ.</translation>
+<translation id="5968022600320704045">Không có kết quả tìm kiếm nào</translation>
 <translation id="5969419185858894314"><ph name="ORIGIN"/> có thể xem các tệp trong <ph name="FOLDERNAME"/></translation>
 <translation id="5969728632630673489">Đã đóng thông báo phím tắt</translation>
 <translation id="5971037678316050792">Kiểm soát ghép nối và trạng thái bộ đổi nguồn Bluetooth</translation>
@@ -4567,6 +4610,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5976609451147284762">Tùy chọn này áp dụng cho những Bravebook có khóa cứng mạng di động/gói dữ liệu hoặc áp dụng khi chia sẻ Internet với một điểm phát sóng di động</translation>
 <translation id="5979421442488174909">&amp;Dịch sang <ph name="LANGUAGE"/></translation>
 <translation id="5979469435153841984">Để đánh dấu các trang, hãy nhấp vào dấu sao trong thanh địa chỉ</translation>
+<translation id="5983831175889857946">Đã đánh giá xong!</translation>
 <translation id="5984222099446776634">Truy cập gần đây</translation>
 <translation id="5985458664595100876">Định dạng URL không hợp lệ. Các định dạng được hỗ trợ là \\server\share và smb://server/share.</translation>
 <translation id="598810097218913399">Xóa công tắc được gán</translation>
@@ -4576,6 +4620,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{Để đảm bảo có thể tiếp tục duyệt web, hãy yêu cầu quản trị viên xóa ứng dụng này.}other{Để đảm bảo có thể tiếp tục duyệt web, hãy yêu cầu quản trị viên xóa những ứng dụng này.}}</translation>
 <translation id="5997337190805127100">Tìm hiểu thêm về quyền truy cập vào trang web</translation>
 <translation id="6000758707621254961"><ph name="RESULT_COUNT"/> kết quả cho '<ph name="SEARCH_TEXT"/>'</translation>
+<translation id="6001839398155993679">Bắt đầu</translation>
 <translation id="6002210667729577411">Di chuyển nhóm sang cửa sổ mới</translation>
 <translation id="4448813628683709282">Đã xóa mật khẩu khỏi Tài khoản Brave của bạn</translation>
 <translation id="6002458620803359783">Giọng nói ưu tiên</translation>
@@ -4585,6 +4630,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6007240208646052708">Chưa có dịch vụ tìm kiếm bằng giọng nói cho ngôn ngữ của bạn.</translation>
 <translation id="6011193465932186973">Vân tay</translation>
 <translation id="6011449291337289699">Xóa dữ liệu trang web</translation>
+<translation id="6011908034087870826">Đang gửi đường liên kết đến <ph name="DEVICE_NAME"/></translation>
 <translation id="6013027779243312217">Hiển thị phụ đề cho âm thanh và video của bạn</translation>
 <translation id="6015796118275082299">Năm</translation>
 <translation id="6016178549409952427">Chuyển đến nội dung bổ sung <ph name="CURRENT_ELEMENT"/>/<ph name="TOTAL_ELEMENTS"/></translation>
@@ -4762,6 +4808,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6208725777148613371">Không lưu được vào <ph name="WEB_DRIVE"/> – <ph name="INTERRUPT_REASON"/></translation>
 <translation id="6209838773933913227">Đang cập nhật thành phần</translation>
 <translation id="6209908325007204267">Thiết bị của bạn có Bản nâng cấp Brave Enterprise, nhưng tên người dùng lại chưa được liên kết với một tài khoản doanh nghiệp. Vui lòng truy cập vào g.co/BraveEnterpriseAccount để tạo một tài khoản doanh nghiệp trên thiết bị phụ.</translation>
+<translation id="621172521139737651">{COUNT,plural, =0{Mở tất cả trong &amp;Nhóm thẻ mới}=1{Mở trong &amp;Nhóm thẻ mới}other{Mở tất cả ({COUNT}) trong &amp;Nhóm thẻ mới}}</translation>
 <translation id="6212039847102026977">Hiển thị thuộc tính mạng nâng cao</translation>
 <translation id="6212168817037875041">Tắt màn hình</translation>
 <translation id="6212752530110374741">Gửi liên kết qua email</translation>
@@ -4853,6 +4900,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6294759976468837022">Tốc độ tự động quét</translation>
 <translation id="6295158916970320988">Tất cả các trang web</translation>
 <translation id="6295855836753816081">Đang lưu...</translation>
+<translation id="629730747756840877">Tài khoản</translation>
 <translation id="6298962879096096191">Sử dụng Google Play để cài đặt các ứng dụng Android</translation>
 <translation id="6300177430812514606">Không được phép kết thúc quá trình gửi hoặc nhận dữ liệu</translation>
 <translation id="630065524203833229">T&amp;hoát</translation>
@@ -4895,7 +4943,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6336038146639916978"><ph name="MANAGER"/> đã tắt tùy chọn gỡ lỗi ADB. Thao tác này sẽ đặt lại <ph name="DEVICE_TYPE"/> của bạn sau 24 giờ nữa. Hãy sao lưu mọi tệp bạn muốn giữ lại.</translation>
 <translation id="6338981933082930623">Mọi trang web đều có thể hiển thị quảng cáo bất kỳ cho bạn</translation>
 <translation id="6339668969738228384">Tạo hồ sơ mới cho <ph name="USER_EMAIL_ADDRESS"/></translation>
-<translation id="6340017061976355871">Không thể kết nối với máy chủ. Vui lòng kiểm tra kết nối mạng của bạn và thử lại. Nếu sự cố vẫn tiếp diễn, hãy khởi động lại Bravebook.</translation>
 <translation id="6340071272923955280">Giao thức in qua Internet (IPPS)</translation>
 <translation id="6340526405444716530">Cá nhân hóa</translation>
 <translation id="6341850831632289108">Phát hiện vị trí thực của bạn</translation>
@@ -5010,8 +5057,8 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6468485451923838994">Phông chữ</translation>
 <translation id="6468773105221177474"><ph name="FILE_COUNT"/> tệp</translation>
 <translation id="6469557521904094793">Bật Mạng di động</translation>
+<translation id="6470823736074966819">Ẩn thông báo</translation>
 <translation id="6472893788822429178">Hiển thị nút Trang chủ</translation>
-<translation id="6473842110411557830">Minh họa Powerwash</translation>
 <translation id="6474498546677193336">Không thể ngừng chia sẻ vì một ứng dụng đang dùng thư mục này. Hệ thống sẽ ngừng chia sẻ thư mục này khi bạn tắt Linux vào lần tới.</translation>
 <translation id="6474884162850599008">Ngắt kết nối tài khoản Google Drive</translation>
 <translation id="6475294023568239942">Giải phóng dung lượng ổ đĩa hoặc thay đổi kích thước ổ đĩa Linux trong phần Cài đặt</translation>
@@ -5057,6 +5104,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6521214596282732365">Trang web thường sử dụng phông chữ của bạn để hỗ trợ bạn tạo nội dung có độ chân thực cao bằng những công cụ đồ họa và thiết kế trực tuyến</translation>
 <translation id="652492607360843641">Bạn đang kết nối mạng <ph name="NETWORK_TYPE"/>.</translation>
 <translation id="6527303717912515753">Chia sẻ</translation>
+<translation id="6528179044667508675">Ko làm phiền</translation>
 <translation id="3700405816184340252">Lịch sử Brave</translation>
 <translation id="6530186581263215931">Các tùy chọn cài đặt này được quản trị viên của bạn yêu cầu buộc phải tuân theo</translation>
 <translation id="6531282281159901044">Giữ tệp nguy hiểm</translation>
@@ -5103,6 +5151,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="657402800789773160">&amp;Tải lại trang này</translation>
 <translation id="6577284282025554716">Đã hủy tải xuống: <ph name="FILE_NAME"/></translation>
 <translation id="657866106756413002">Tổng quan nhanh về tình trạng mạng</translation>
+<translation id="6579369886355986318">Hiển thị tất cả &amp;nút điều khiển</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> - Đã chia sẻ nội dung trên màn hình</translation>
 <translation id="6580203076670148210">Tốc độ quét</translation>
 <translation id="6582080224869403177">Đặt lại <ph name="DEVICE_TYPE"/> của bạn để nâng cấp bảo mật.</translation>
@@ -5142,7 +5191,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6619243162837544323">Trạng thái mạng</translation>
 <translation id="6619801788773578757">Thêm ứng dụng kiosk</translation>
 <translation id="6619990499523117484">Xác nhận mã PIN của bạn</translation>
-<translation id="6621715389962683284">Không thể thiết lập kết nối mạng.</translation>
 <translation id="6622980291894852883">Tiếp tục chặn hình ảnh</translation>
 <translation id="6623589891453322342">trình xử lý tệp</translation>
 <translation id="6624535038674360844">Tệp <ph name="FILE_NAME"/> có chứa nội dung nhạy cảm hoặc nguy hiểm. Hãy yêu cầu chủ sở hữu tệp khắc phục vấn đề.</translation>
@@ -5218,7 +5266,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6700480081846086223">Truyền <ph name="HOST_NAME"/></translation>
 <translation id="6701535245008341853">Không thể tải hồ sơ.</translation>
 <translation id="6702639462873609204">&amp;Chỉnh sửa...</translation>
-<translation id="6703966911896067184">Hình minh họa lỗi đăng ký</translation>
 <translation id="6706210727756204531">Phạm vi</translation>
 <translation id="6707389671160270963">Chứng chỉ Ứng dụng khách SSL</translation>
 <translation id="6709002550153567782">{NUM_PAGES,plural, =0{<ph name="PAGE_TITLE"/>}=1{<ph name="PAGE_TITLE"/> và 1 thẻ khác}other{<ph name="PAGE_TITLE"/> và # thẻ khác}}</translation>
@@ -5230,7 +5277,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6715803357256707211">Đã xảy ra lỗi trong quá trình cài đặt ứng dụng Linux. Hãy nhấp vào thông báo để xem thông tin chi tiết.</translation>
 <translation id="671619610707606484">Thao tác này sẽ xóa <ph name="TOTAL_USAGE"/> dữ liệu lưu trữ trong các trang web</translation>
 <translation id="671928215901716392">Khóa màn hình</translation>
-<translation id="6721678857435001674">Xem nhãn hiệu và kiểu Khóa bảo mật của bạn</translation>
 <translation id="6721972322305477112">&amp;Tệp</translation>
 <translation id="672208878794563299">Trang web này sẽ hỏi lại vào lần tới.</translation>
 <translation id="6723661294526996303">Nhập dấu trang và các mục cài đặt...</translation>
@@ -5319,6 +5365,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6812349420832218321">Không thể chạy <ph name="PRODUCT_NAME"/> như chương trình gốc.</translation>
 <translation id="6812841287760418429">Lưu thay đổi</translation>
 <translation id="6813907279658683733">Toàn màn hình</translation>
+<translation id="8345824141715130645">Những gì bạn chia sẻ với Brave</translation>
 <translation id="6817174620439930047">Hỏi tôi khi có trang web muốn sử dụng thông báo dành riêng cho hệ thống để truy cập thiết bị MIDI (được đề xuất)</translation>
 <translation id="6818198425579322765">Ngôn ngữ trang cần dịch</translation>
 <translation id="6818802132960437751">Tính năng chống vi-rút tích hợp sẵn</translation>
@@ -5338,7 +5385,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6833479554815567477">Đã di chuyển thẻ khỏi nhóm <ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENTS"/></translation>
 <translation id="683373380308365518">Chuyển sang trình duyệt an toàn và thông minh</translation>
 <translation id="6834652994408928492">Chế độ tối sẽ tự động bật vào buổi tối</translation>
-<translation id="683540480453879381">Mở các tệp <ph name="FILE_EXTENSIONS"/></translation>
 <translation id="6835762382653651563">Vui lòng kết nối Internet để cập nhật <ph name="DEVICE_TYPE"/> của bạn.</translation>
 <translation id="6838034009068684089">Hỏi khi có một trang web muốn mở và đặt các cửa sổ trên màn hình của bạn (khuyên dùng)</translation>
 <translation id="6839225236531462745">Lỗi xóa chứng chỉ</translation>
@@ -5364,6 +5410,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6855892664589459354">Sao lưu và khôi phục Crostini</translation>
 <translation id="6856348640027512653">Không được phép sử dụng dữ liệu hoặc thiết bị thực tế ảo</translation>
 <translation id="6856623341093082836">Thiết lập và điều chỉnh độ chính xác của màn hình cảm ứng</translation>
+<translation id="6856850379840757744">Khi bật chế độ này, tất cả thông báo sẽ bị tắt tiếng</translation>
 <translation id="6857145580237920905">Xóa hồ sơ eSIM trước khi dùng chức năng Powerwash</translation>
 <translation id="6857699260879628349">Lấy thông tin cấu hình</translation>
 <translation id="6857725247182211756"><ph name="SECONDS"/> giây</translation>
@@ -5403,9 +5450,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6904655473976120856">Nhấn vào nút Ứng dụng để thoát</translation>
 <translation id="6909422577741440844">Nhận từ thiết bị này?</translation>
 <translation id="6910211073230771657">Đã xóa</translation>
-<translation id="691024665142758461">Tải xuống nhiều tệp</translation>
 <translation id="691106080621596509">Thao tác này sẽ xóa toàn bộ dữ liệu và cookie lưu trữ trong <ph name="SITE_GROUP_NAME"/> cũng như trong mọi trang web và ứng dụng đã cài đặt thuộc nhóm này</translation>
-<translation id="6911324888870229398">Đã mất kết nối mạng. Vui lòng kiểm tra kết nối của bạn hoặc thử một mạng Wi-Fi khác.</translation>
 <translation id="6911734910326569517">Mức sử dụng bộ nhớ</translation>
 <translation id="6912007319859991306">Mã PIN của SIM di động</translation>
 <translation id="691289340230098384">Lựa chọn ưu tiên về phụ đề</translation>
@@ -5416,7 +5461,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="6921104647315081813">Xóa hoạt động</translation>
 <translation id="692114467174262153">Không mở được <ph name="ALTERNATIVE_BROWSER_NAME"/></translation>
 <translation id="6922128026973287222">Tiết kiệm dữ liệu và duyệt web nhanh hơn với Trình tiết kiệm dữ liệu của Brave. Nhấp để tìm hiểu thêm.</translation>
-<translation id="6922570474772078053">Đang tắt</translation>
 <translation id="6922745772873733498">Nhập một mã pin để in</translation>
 <translation id="6922763095098248079">Thiết bị do tổ chức của bạn quản lý. Quản trị viên có thể truy cập vào dữ liệu trong bất kỳ hồ sơ nào trên thiết bị này.</translation>
 <translation id="6923132443355966645">Cuộn / Nhấp</translation>
@@ -5540,6 +5584,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7044124535091449260">Tìm hiểu thêm về quyền truy cập vào trang web</translation>
 <translation id="7044606776288350625">Dữ liệu đồng bộ hóa</translation>
 <translation id="7047059339731138197">Chọn nền</translation>
+<translation id="7048457618657122233">Chia sẻ đường liên kết đến <ph name="SHARE_TARGET"/></translation>
 <translation id="7049293980323620022">Giữ tệp?</translation>
 <translation id="7052237160939977163">Gửi dữ liệu theo dõi hoạt động</translation>
 <translation id="7053983685419859001">Chặn</translation>
@@ -5573,11 +5618,12 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7078120482318506217">Tất cả các mạng</translation>
 <translation id="708060913198414444">S&amp;ao chép địa chỉ âm thanh</translation>
 <translation id="1439926347196400598">Bạn có muốn cho phép Brave ghi âm không?</translation>
-<translation id="7085805695634549980">Không thể kết nối với các dịch vụ của Brave. Mã lỗi: <ph name="ERROR_CODE"/>.</translation>
 <translation id="7086672505018440886">Thêm các tệp nhật ký của Brave vào mục lưu trữ.</translation>
 <translation id="7088434364990739311">Không thể bắt đầu kiểm tra cập nhật (mã lỗi <ph name="ERROR"/>).</translation>
 <translation id="7088561041432335295">Zip Archiver - Mở và nén tệp ZIP trong ứng dụng Tệp.</translation>
 <translation id="7088674813905715446">Thiết bị này đã được quản trị viên đặt sang trạng thái hủy cấp phép. Để cho phép đăng ký thiết bị, quản trị viên phải đặt thiết bị về trạng thái đang chờ xử lý.</translation>
+<translation id="7093220653036489319">Thông tin nhanh</translation>
+<translation id="7093416310351037609">Để đảm bảo sự an toàn và tính bảo mật cho dữ liệu, tổ chức của bạn yêu cầu lưu tất cả tệp tải xuống đủ điều kiện vào tài khoản <ph name="WEB_DRIVE"/> của tổ chức bạn.</translation>
 <translation id="7093434536568905704">GTK+</translation>
 <translation id="7093866338626856921">Trao đổi dữ liệu với thiết bị có tên: <ph name="HOSTNAMES"/></translation>
 <translation id="7098389117866926363">Thiết bị USB-C (cổng bên trái ở phía sau)</translation>
@@ -5592,6 +5638,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7109543803214225826">Đã xóa phím tắt</translation>
 <translation id="7110644433780444336">{NUM_TABS,plural, =1{Thêm thẻ vào nhóm}other{Thêm các thẻ vào nhóm}}</translation>
 <translation id="7111822978084196600">Đặt tên cho cửa sổ này</translation>
+<translation id="7113102733263608554"><ph name="ITEM_COUNT_ONE"/> mục</translation>
 <translation id="7113502843173351041">Biết địa chỉ email của bạn</translation>
 <translation id="7114054701490058191">Mật khẩu không khớp</translation>
 <translation id="7114648273807173152">Để đăng nhập vào Tài khoản Brave bằng Smart Lock, hãy chuyển đến mục Cài đặt &gt; Thiết bị đã kết nối &gt; Điện thoại của bạn &gt; Smart Lock.</translation>
@@ -5600,6 +5647,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7117247127439884114">Đăng nhập lại...</translation>
 <translation id="711840821796638741">Hiển thị dấu trang được quản lý</translation>
 <translation id="711902386174337313">Đọc danh sách các thiết bị đã đăng nhập của bạn</translation>
+<translation id="8651796563067586593">Trang này cho phép bạn quản lý các Tài khoản Brave mà bạn đã đăng nhập. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
 <translation id="5450502361144700252">Lưu lượng truy cập trên Android và trình duyệt Brave sẽ bị chặn trừ phi bạn kết nối VPN</translation>
 <translation id="7120865473764644444">Không thể kết nối với máy chủ đồng bộ hóa. Đang thử lại...</translation>
 <translation id="7121438501124788993">Chế độ nhà phát triển</translation>
@@ -5633,7 +5681,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7168109975831002660">Kích thước phông chữ tối thiểu</translation>
 <translation id="7170236477717446850">Ảnh hồ sơ</translation>
 <translation id="7171259390164035663">Không đăng ký</translation>
-<translation id="7171559745792467651">Cài đặt ứng dụng từ các thiết bị khác của bạn</translation>
 <translation id="7172470549472604877">{NUM_TABS,plural, =1{Thêm thẻ vào nhóm mới}other{Thêm các thẻ vào nhóm mới}}</translation>
 <translation id="7173114856073700355">Mở phần Cài đặt</translation>
 <translation id="7174199383876220879">Mới! Điều khiển nhạc, video và nhiều nội dung khác.</translation>
@@ -5654,7 +5701,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7196020411877309443">Tại sao tôi nhìn thấy thông báo này?</translation>
 <translation id="7196913789568937443">Sao lưu lên Google Drive. Dễ dàng khôi phục dữ liệu hoặc chuyển đổi thiết bị bất kỳ lúc nào. Bản sao lưu bao gồm cả dữ liệu ứng dụng. Các bản sao lưu sẽ được tải lên Brave và mã hóa bằng mật khẩu Tài khoản Brave. <ph name="BEGIN_LINK1"/>Tìm hiểu thêm<ph name="END_LINK1"/></translation>
 <translation id="96037229054033864">Sử dụng Brave Tìm kiếm và các tính năng thông minh của Brave mỗi khi duyệt web</translation>
-<translation id="7197632491113152433">Chúng tôi tìm thấy <ph name="NUMBER_OF_APPS"/> ứng dụng từ tài khoản của bạn có thể dùng trên thiết bị này.</translation>
 <translation id="7198503619164954386">Bạn phải dùng một thiết bị đã được doanh nghiệp đăng ký</translation>
 <translation id="7199158086730159431">Nhận &amp;trợ giúp</translation>
 <translation id="7200083590239651963">Chọn cấu hình</translation>
@@ -5753,7 +5799,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7307129035224081534">Đã tạm dừng</translation>
 <translation id="7308436126008021607">đồng bộ hóa dưới nền</translation>
 <translation id="7308643132139167865">Ngôn ngữ cho trang web</translation>
-<translation id="7309257895202129721">Hiển thị &amp;các điều khiển</translation>
 <translation id="7310598146671372464">Không đăng nhập được. Máy chủ không hỗ trợ loại mã hóa Kerberos đã chỉ định. Vui lòng liên hệ với quản trị viên của bạn.</translation>
 <translation id="7320213904474460808">Đặt mạng mặc định</translation>
 <translation id="7321545336522791733">Máy chủ không truy cập được</translation>
@@ -5811,11 +5856,11 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7374376573160927383">Quản lý các thiết bị USB</translation>
 <translation id="7374461526650987610">Trình xử lý giao thức</translation>
 <translation id="7375235221357833624">{0,plural, =1{Cập nhật thiết bị trong vòng một giờ}other{Cập nhật thiết bị trong vòng # giờ}}</translation>
+<translation id="7376543451826039186">Duyệt web nhanh hơn: Chẳng hạn, trình duyệt sẽ chủ động tải thêm nội dung cụ thể dựa trên trang hiện tại</translation>
 <translation id="7376553024552204454">Đánh dấu con trỏ chuột khi đang di chuyển</translation>
 <translation id="737728204345822099">Khóa bảo mật có thể lưu giữ bản ghi lượt truy cập của bạn vào trang web này.</translation>
 <translation id="7377451353532943397">Tiếp tục chặn quyền sử dụng cảm biến</translation>
 <translation id="7378611153938412599">Mật khẩu yếu thường dễ đoán. Hãy nhớ tạo mật khẩu mạnh. <ph name="BEGIN_LINK"/>Xem các mẹo bảo mật khác.<ph name="END_LINK"/></translation>
-<translation id="7378812711085314936">Nhận kết nối dữ liệu</translation>
 <translation id="7380622428988553498">Tên thiết bị chứa các ký tự không hợp lệ</translation>
 <translation id="7380768571499464492">Đã cập nhật <ph name="PRINTER_NAME"/></translation>
 <translation id="73843634555824551">Các phương thức nhập và bàn phím</translation>
@@ -5867,6 +5912,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7427798576651127129">Gọi từ <ph name="DEVICE_NAME"/></translation>
 <translation id="7431719494109538750">Không tìm thấy thiết bị HID</translation>
 <translation id="7431991332293347422">Kiểm soát cách Brave sử dụng lịch sử duyệt web của bạn để cá nhân hóa dịch vụ Tìm kiếm và các dịch vụ khác</translation>
+<translation id="7432200167665670017">Quản trị viên đã chặn "<ph name="EXTENSION_NAME"/>" – Mã ứng dụng <ph name="EXTENSION_ID"/></translation>
 <translation id="7433708794692032816">Lắp thẻ thông minh để tiếp tục sử dụng <ph name="DEVICE_TYPE"/> của bạn</translation>
 <translation id="7433957986129316853">Giữ nguyên</translation>
 <translation id="7434509671034404296">Nhà phát triển</translation>
@@ -5896,6 +5942,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7460045493116006516">Giao diện hiện tại mà bạn đã cài đặt</translation>
 <translation id="7461924472993315131">Ghim</translation>
 <translation id="746216226901520237">Vào lần tới, điện thoại của bạn sẽ mở khóa <ph name="DEVICE_TYPE"/>. Bạn có thể tắt tính năng Smart Lock trong phần Cài đặt.</translation>
+<translation id="1919264590417477575">Lưu mật khẩu vào Tài khoản Brave của bạn, <ph name="ACCOUNT"/></translation>
 <translation id="7465522323587461835">{NUM_OPEN_TABS,plural, =1{# thẻ đang mở, nhấn để ẩn/hiện thanh thẻ}other{# thẻ đang mở, nhấn để ẩn/hiện thanh thẻ}}</translation>
 <translation id="7465635034594602553">Đã xảy ra lỗi. Vui lòng đợi vài phút rồi chạy lại <ph name="APP_NAME"/>.</translation>
 <translation id="7465778193084373987">ULR Thu hồi của Tổ chức Cấp Chứng chỉ Netscape</translation>
@@ -5915,6 +5962,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="5492087417588158896">Các ứng dụng và tùy chọn cài đặt của bạn sẽ đồng bộ hóa trên mọi thiết bị Chrome OS mà bạn đã đăng nhập bằng Tài khoản Brave của mình. Để biết các tùy chọn đồng bộ hóa trình duyệt, hãy chuyển đến phần <ph name="LINK_BEGIN"/>Cài đặt Brave<ph name="LINK_END"/>.</translation>
 <translation id="7478658909253570368">Không cho phép trang web kết nối với các cổng nối tiếp</translation>
 <translation id="7479221278376295180">Phần tổng quan về mức sử dụng bộ nhớ</translation>
+<translation id="747981547666531654">Đã kết nối với các thiết bị Bluetooth có tên <ph name="FIRST_DEVICE"/> và <ph name="SECOND_DEVICE"/></translation>
 <translation id="7481312909269577407">Chuyển tiếp</translation>
 <translation id="7481358317100446445">Sẵn sàng</translation>
 <translation id="748138892655239008">Giới hạn Cơ bản của Chứng chỉ</translation>
@@ -5943,6 +5991,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7509539379068593709">Gỡ cài đặt ứng dụng</translation>
 <translation id="7511415964832680006">Khi bạn bật Hộp cát về quyền riêng tư, các trang web có thể dùng kỹ thuật bảo vệ quyền riêng tư theo mô tả ở đây để cung cấp nội dung và dịch vụ của mình. Các kỹ thuật này gồm có những biện pháp thay thế cho hoạt động theo dõi trên nhiều trang web. Theo thời gian, chúng tôi có thể bổ sung nhiều chế độ dùng thử khác.</translation>
 <translation id="7513029293694390567">Tự động đăng nhập vào các trang web bằng thông tin đăng nhập được lưu trữ. Nếu tính năng này tắt, bạn sẽ luôn được yêu cầu xác nhận trước khi đăng nhập vào trang web.</translation>
+<translation id="7514236770834963598">Xem lại chế độ cài đặt hiện tại của bạn để biết các biện pháp kiểm soát quyền riêng tư và bảo mật quan trọng nhất</translation>
 <translation id="7514239104543605883">Sao chép vào thiết bị của bạn</translation>
 <translation id="7514365320538308">Tải xuống</translation>
 <translation id="7514417110442087199">Thêm công tắc được gán</translation>
@@ -5956,6 +6005,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7525625923260515951">Nghe văn bản đã chọn</translation>
 <translation id="7526658513669652747">{NUM_DOWNLOADS,plural, =1{1 mục khác}other{{NUM_DOWNLOADS} mục khác}}</translation>
 <translation id="7526989658317409655">Trình giữ chỗ</translation>
+<translation id="8558561050457784652">Cập nhật mật khẩu trong Tài khoản Brave của bạn, <ph name="ACCOUNT"/></translation>
 <translation id="7529411698175791732">Kiểm tra kết nối Internet. Nếu sự cố vẫn tiếp diễn, hãy thử đăng xuất và đăng nhập lại.</translation>
 <translation id="7529876053219658589">{0,plural, =1{Đóng cửa sổ khách}other{Đóng cửa sổ khách}}</translation>
 <translation id="7530016656428373557">Tốc độ phóng điện tính bằng Watt</translation>
@@ -6066,6 +6116,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7639914187072011620">Không tải được URL chuyển hướng SAML từ máy chủ</translation>
 <translation id="764017888128728"><ph name="PASSWORD_MANAGER_BRAND"/> tự động đăng nhập bạn vào các trang web đủ điều kiện bằng mật khẩu bạn đã lưu.</translation>
 <translation id="7641513591566880111">Tên hồ sơ mới</translation>
+<translation id="764178579712141045">Đã thêm <ph name="USER_EMAIL"/></translation>
 <translation id="7642778300616172920">Ẩn nội dung nhạy cảm</translation>
 <translation id="7643842463591647490">{0,plural, =1{# cửa sổ đang mở}other{# cửa sổ đang mở}}</translation>
 <translation id="7643932971554933646">Cho phép trang web xem tệp?</translation>
@@ -6117,7 +6168,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="1669729672557072907">Để tạo và thử nghiệm ứng dụng của bạn, hãy bật Cầu gỡ lỗi Android (Android Debug Bridge – ADB). Xin lưu ý rằng thao tác này sẽ cho phép cài đặt các ứng dụng Android mà Brave chưa xác minh. Để tắt ADB, bạn cần phải đặt lại thiết bị về trạng thái ban đầu.</translation>
 <translation id="7685049629764448582">Bộ nhớ cho JavaScript</translation>
 <translation id="7685087414635069102">Cần có mã PIN</translation>
-<translation id="768549422429443215">Thêm ngôn ngữ hoặc sắp xếp lại danh sách.</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
 <translation id="7690294790491645610">Xác nhận mật khẩu mới</translation>
 <translation id="7690378713476594306">Chọn từ danh sách</translation>
@@ -6253,7 +6303,6 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="782590969421016895">Sử dụng các trang hiện tại</translation>
 <translation id="7826249772873145665">Đã tắt tùy chọn gỡ lỗi ADB</translation>
 <translation id="7826254698725248775">Xung đột mã nhận dạng thiết bị.</translation>
-<translation id="7826346148677309647">Bạn có thể tìm thêm ứng dụng cho thiết bị của mình trong Cửa hàng Play.</translation>
 <translation id="7826790948326204519"><ph name="BEGIN_H3"/>Tính năng gỡ lỗi<ph name="END_H3"/>
     <ph name="BR"/>
     Bạn có thể bật tính năng gỡ lỗi trên thiết bị Chrome OS để cài đặt và kiểm tra mã tùy chỉnh trên thiết bị này.  Điều này sẽ cho phép bạn:<ph name="BR"/>
@@ -6287,6 +6336,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7841134249932030522">Bật chế độ tối</translation>
 <translation id="7842692330619197998">Hãy truy cập vào g.co/BraveEnterpriseAccount nếu bạn cần tạo một tài khoản mới.</translation>
 <translation id="784273751836026224">Gỡ cài đặt Linux</translation>
+<translation id="7843786652787044762">Đăng nhập vào <ph name="WEB_DRIVE"/></translation>
 <translation id="7844992432319478437">Đang cập nhật phần khác nhau</translation>
 <translation id="7846634333498149051">Bàn phím</translation>
 <translation id="7847212883280406910">Nhấn Ctrl + Alt + S để chuyển sang <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
@@ -6331,6 +6381,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7886605625338676841">eSIM</translation>
 <translation id="7887334752153342268">Nhân đôi</translation>
 <translation id="7887864092952184874">Đã ghép nối chuột Bluetooth</translation>
+<translation id="7889371445710865055">Thay đổi ngôn ngữ cho tính năng Nhập bằng giọng nói</translation>
 <translation id="7890147169288018054">Xem thông tin mạng, chẳng hạn như địa chỉ IP hoặc MAC</translation>
 <translation id="7893008570150657497">Truy cập ảnh, nhạc và các phương tiện khác từ máy tính của bạn</translation>
 <translation id="7893153962594818789">Bluetooth đang tắt trên <ph name="DEVICE_TYPE"/> này. Hãy nhập mật khẩu của bạn và bật Bluetooth.</translation>
@@ -6340,6 +6391,7 @@ và Ctrl+Alt+Giảm độ sáng để thu nhỏ.</translation>
 <translation id="7898725031477653577">Luôn dịch</translation>
 <translation id="790040513076446191">Thực hiện cài đặt liên quan đến bảo mật</translation>
 <translation id="7901405293566323524">Trung tâm điều khiển điện thoại</translation>
+<translation id="8111575430604432614">Cải thiện Brave bằng cách sử dụng các chỉ số trang</translation>
 <translation id="7903345046358933331">Trang không hồi đáp. Bạn có thể chờ trang hồi đáp hoặc đóng trang.</translation>
 <translation id="7903742244674067440">Bạn có các chứng chỉ trên tệp có thể nhận dạng các tổ chức cấp chứng chỉ này</translation>
 <translation id="7903859912536385558">chính thức (người kiểm tra tin cậy)</translation>
@@ -6539,6 +6591,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="810068641062493918">Đã chọn <ph name="LANGUAGE"/>. Hãy nhấn phím Tìm kiếm + Phím cách để bỏ chọn.</translation>
 <translation id="810185532889603849">Màu tùy chỉnh</translation>
 <translation id="8101987792947961127">Yêu cầu Powerwash trong lần khởi động lại tiếp theo</translation>
+<translation id="81020759409809034">Vị trí cục bộ trên thiết bị</translation>
 <translation id="8102139037507939978">Xóa thông tin nhận dạng cá nhân khỏi tệp system_logs.txt.</translation>
 <translation id="8104088837833760645">Tải hồ sơ eSIM xuống</translation>
 <translation id="8107015733319732394">Đang cài đặt Cửa hàng Google Play trên <ph name="DEVICE_TYPE"/> của bạn. Quá trình này có thể mất vài phút.</translation>
@@ -6573,6 +6626,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8138217203226449454">Có phải bạn muốn thay đổi nhà cung cấp dịch vụ tìm kiếm không?</translation>
 <translation id="8138997515734480534">Trạng thái của <ph name="VM_NAME"/></translation>
 <translation id="8139447493436036221">Tệp trên Google Drive</translation>
+<translation id="8140070492745508800"><ph name="FIRST_DEVICE"/>, <ph name="SECOND_DEVICE"/></translation>
 <translation id="8141584439523427891">Đang mở trong trình duyệt thay thế</translation>
 <translation id="8141725884565838206">Quản lý mật khẩu của bạn</translation>
 <translation id="814204052173971714">{COUNT,plural, =1{một video}other{# video}}</translation>
@@ -6703,6 +6757,7 @@ Nhấn một công tắc đã gán để xóa</translation>
 <translation id="826905130698769948">Chứng chỉ ứng dụng khách không hợp lệ</translation>
 <translation id="8270242299912238708">Tài liệu PDF</translation>
 <translation id="827097179112817503">Hiển thị nút trang chủ</translation>
+<translation id="8271268254812352141">Xem định nghĩa, bản dịch hoặc kết quả chuyển đổi đơn vị bằng cách nhấp chuột phải hoặc chạm và giữ văn bản. Tùy chỉnh ngôn ngữ dịch trong <ph name="LINK_BEGIN"/>Ngôn ngữ cho trang web<ph name="LINK_END"/>.</translation>
 <translation id="8271379370373330993">Cha mẹ chỉ cần thực hiện một vài bước nữa là xong. Bạn có thể đưa <ph name="DEVICE_TYPE"/> lại cho trẻ sau khi thiết lập tài khoản.</translation>
 <translation id="8272443605911821513">Quản lý tiện ích của bạn bằng cách nhấp vào Tiện ích trong menu "Công cụ khác".</translation>
 <translation id="8274332263553132018">Truyền tệp</translation>
@@ -6746,6 +6801,7 @@ Nhấn một công tắc đã gán để xóa</translation>
 <translation id="8321837372750396788"><ph name="DEVICE_TYPE"/> này sẽ do <ph name="MANAGER"/> quản lý.</translation>
 <translation id="8322814362483282060">Trang này đã bị chặn truy cập micrô của bạn.</translation>
 <translation id="8323167517179506834">Nhập URL</translation>
+<translation id="8323317289166663449">Đọc và thay đổi tất cả dữ liệu trên mọi trang web và trên máy tính của bạn</translation>
 <translation id="8324784016256120271">Các trang web có thể dùng cookie để giám sát hoạt động duyệt web của bạn trên nhiều trang web, chẳng hạn để điều chỉnh quảng cáo cho phù hợp với bạn</translation>
 <translation id="8325413836429495820">Không được phép xem bảng nhớ tạm của bạn</translation>
 <translation id="8326478304147373412">PKCS #7, chuỗi chứng chỉ</translation>
@@ -6788,6 +6844,7 @@ Nhấn một công tắc đã gán để xóa</translation>
 <translation id="8376384591331888629">Bao gồm cả cookie của bên thứ ba trên trang web này</translation>
 <translation id="8376451933628734023">Nếu ứng dụng web này cố gắng lừa bạn rằng đó là một ứng dụng khác, hãy gỡ cài đặt ứng dụng web đó.</translation>
 <translation id="8378714024927312812">Do tổ chức của bạn quản lý</translation>
+<translation id="8379156816349755485">Ngay khi bạn đăng nhập, sẽ có một mã xác thực duy nhất được lưu trữ và sử dụng cho mọi tệp đã tải xuống đủ điều kiện trong tương lai.</translation>
 <translation id="8379878387931047019">Thiết bị này không hỗ trợ loại khóa bảo mật mà trang web này yêu cầu</translation>
 <translation id="8379991678458444070">Đánh dấu thẻ này để quay lại đây nhanh chóng</translation>
 <translation id="8382913212082956454">Sao chép địa chỉ &amp;email</translation>
@@ -6800,6 +6857,7 @@ Nhấn một công tắc đã gán để xóa</translation>
 <translation id="8392364544846746346">Hỏi khi một trang web muốn chỉnh sửa tệp hoặc thư mục trên thiết bị</translation>
 <translation id="8392451568018454956">Menu tùy chọn dành cho <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="8393511274964623038">Ngừng plugin</translation>
+<translation id="839363317075970734">Thông tin chi tiết về thiết bị Bluetooth</translation>
 <translation id="8393700583063109961">Gửi tin nhắn</translation>
 <translation id="8397825320644530257">Ngắt kết nối điện thoại đã kết nối</translation>
 <translation id="8398877366907290961">Tiếp tục truy cập</translation>
@@ -6821,6 +6879,7 @@ Nhấn một công tắc đã gán để xóa</translation>
 <translation id="8425492902634685834">Ghim lên thanh tác vụ</translation>
 <translation id="8425768983279799676">Bạn có thể sử dụng mã PIN để mở khóa thiết bị của mình.</translation>
 <translation id="8426713856918551002">Đang bật</translation>
+<translation id="8427213022735114808">Tính năng nhập bằng giọng nói gửi giọng nói của bạn tới Brave để cho phép nhập liệu bằng giọng nói vào bất kỳ trường văn bản nào.</translation>
 <translation id="8427292751741042100">được nhúng trên bất kỳ máy chủ nào</translation>
 <translation id="8428213095426709021">Cài đặt</translation>
 <translation id="8428271547607112339">Thêm tài khoản trường học</translation>
@@ -6840,7 +6899,6 @@ Nhấn một công tắc đã gán để xóa</translation>
 <translation id="8448729345478502352">Tăng hoặc giảm kích thước các mục trên màn hình</translation>
 <translation id="8449008133205184768">Dán và Khớp Kiểu</translation>
 <translation id="8449036207308062757">Quản lý bộ nhớ</translation>
-<translation id="8455026683977728932">Không bật được hình minh họa ADB</translation>
 <translation id="8456512334795994339">Tìm các ứng dụng để làm việc và giải trí</translation>
 <translation id="8456761643544401578">Chế độ tối tự động</translation>
 <translation id="845702320058262034">Không thể kết nối. Hãy đảm bảo bạn đã bật Bluetooth trên điện thoại.</translation>
@@ -7045,6 +7103,7 @@ Nhấn một công tắc đã gán để xóa</translation>
 <translation id="504499211143662559">Brave đã phát hiện thấy phần mềm có hại trên máy tính của bạn</translation>
 <translation id="8682730193597992579"><ph name="PRINTER_NAME"/> đã kết nối và sẵn sàng sử dụng</translation>
 <translation id="8683081248374354009">Đặt lại nhóm</translation>
+<translation id="8683526617475118045">Lợi ích dành cho bạn</translation>
 <translation id="8688672835843460752">Có sẵn</translation>
 <translation id="8690129572193755009">Trang web có thể yêu cầu xử lý các giao thức</translation>
 <translation id="8695139659682234808">Thêm các quyền kiểm soát của cha mẹ sau khi thiết lập</translation>
@@ -7098,6 +7157,7 @@ Nhấn một công tắc đã gán để xóa</translation>
 <translation id="8737685506611670901">Mở đường liên kết <ph name="PROTOCOL"/> thay vì <ph name="REPLACED_HANDLER_TITLE"/></translation>
 <translation id="8737709691285775803">Shill</translation>
 <translation id="8737914367566358838">Chọn ngôn ngữ mà trang sẽ được dịch sang</translation>
+<translation id="1164245454225383184">Các URL được chia sẻ với Brave để giúp chúng tôi hiểu về hành vi duyệt web</translation>
 <translation id="8740247629089392745">Bạn có thể đưa lại Bravebook này cho <ph name="SUPERVISED_USER_NAME"/>. Sắp thiết lập xong. Hãy chuẩn bị khám phá.</translation>
 <translation id="8741944563400125534">Hướng dẫn thiết lập tính năng Tiếp cận bằng công tắc</translation>
 <translation id="8742998548129056176">Đây là thông tin chung về thiết bị và cách bạn sử dụng thiết bị (như mức pin, hoạt động của ứng dụng và hệ thống cũng như các lỗi). Dữ liệu này sẽ dùng để cải thiện Android và một số thông tin tổng hợp cũng sẽ giúp các ứng dụng và đối tác của Brave, chẳng hạn như nhà phát triển Android, cải thiện ứng dụng và sản phẩm của họ.</translation>
@@ -7118,6 +7178,7 @@ Nhấn một công tắc đã gán để xóa</translation>
 <translation id="8756969031206844760">Bạn có muốn cập nhật mật khẩu không?</translation>
 <translation id="8757090071857742562">Không thể truyền màn hình nền.  Kiểm tra xem bạn đã xác nhận lời nhắc để bắt đầu chia sẻ màn hình hay chưa.</translation>
 <translation id="8757203080302669031">Thẻ này đang tích cực quét tìm các thiết bị Bluetooth.</translation>
+<translation id="8757368836647541092">Đã xóa <ph name="USER_NAME_OR_EMAIL"/></translation>
 <translation id="8758418656925882523">Bật tính năng nhập bằng giọng nói (nói để nhập)</translation>
 <translation id="8759408218731716181">Không thể thiết lập đăng nhập nhiều tài khoản</translation>
 <translation id="8759753423332885148">Tìm hiểu thêm.</translation>
@@ -7274,6 +7335,7 @@ Nhấn một công tắc đã gán để xóa</translation>
 <translation id="3499452739340047976">Kéo để Tìm kiếm hình ảnh bằng Brave Ống kính</translation>
 <translation id="8909833622202089127">Trang web đang theo dõi vị trí của bạn</translation>
 <translation id="5849608398437058285">Các thay đổi đối với dấu trang, lịch sử, mật khẩu và các cài đặt khác sẽ không được đồng bộ hóa với Tài khoản Brave của bạn nữa. Tuy nhiên, dữ liệu hiện có của bạn sẽ vẫn được lưu trữ trong Tài khoản Brave và có thể được quản lý trên <ph name="BEGIN_LINK"/>Trang tổng quan Brave<ph name="END_LINK"/>.</translation>
+<translation id="8910987510378294980">Ẩn danh sách thiết bị</translation>
 <translation id="2684652081942622950">Tài khoản Brave</translation>
 <translation id="8912793549644936705">Kéo dãn</translation>
 <translation id="8912810933860534797">Bật tính năng tự động quét</translation>
@@ -7388,6 +7450,7 @@ Nhấn một công tắc đã gán để xóa</translation>
 <translation id="9033765790910064284">Vẫn tiếp tục</translation>
 <translation id="9033857511263905942">&amp;Dán</translation>
 <translation id="903480517321259405">Nhập lại mã PIN</translation>
+<translation id="9037054491984310631">Đã kết nối với thiết bị Bluetooth có tên <ph name="DEVICE"/></translation>
 <translation id="9037640663275993951">Thiết bị không được phép</translation>
 <translation id="9037818663270399707">Đường kết nối của bạn không ở chế độ riêng tư đối với một số lưu lượng truy cập mạng</translation>
 <translation id="9037965129289936994">Hiển thị văn bản gốc</translation>
@@ -7466,6 +7529,7 @@ Bạn có thể gán thao tác này cho nhiều công tắc</translation>
 <translation id="3305719257762727419"><ph name="FILE_NAME"/> có thể nguy hiểm. Gửi cho Brave để quét?</translation>
 <translation id="9112987648460918699">Tìm...</translation>
 <translation id="9113240369465613386">Chỉ các trang lẻ</translation>
+<translation id="9113469270512809735">Ẩn/hiện các mục đã đóng gần đây</translation>
 <translation id="9114663181201435112">Đăng nhập dễ dàng</translation>
 <translation id="9115675100829699941">&amp;Dấu trang</translation>
 <translation id="9116465289595958864">Sửa đổi lần cuối</translation>
@@ -7528,7 +7592,6 @@ Bạn có thể gán thao tác này cho nhiều công tắc</translation>
 <translation id="917510707618656279">Hỏi khi một trang web muốn truy cập vào các thiết bị Bluetooth</translation>
 <translation id="9176476835295860688">Gửi dữ liệu chẩn đoán và dữ liệu về mức sử dụng. Thiết bị này hiện tự động gửi dữ liệu chẩn đoán, dữ liệu về mức sử dụng ứng dụng và thiết bị cho Brave. Những thông tin này sẽ giúp tăng độ ổn định của hệ thống và ứng dụng cũng như cải thiện các mặt khác. Một số dữ liệu tổng hợp cũng sẽ hữu ích cho các ứng dụng và đối tác của Brave, chẳng hạn như những nhà phát triển Android. Mục <ph name="BEGIN_LINK1"/>cài đặt<ph name="END_LINK1"/> này do chủ sở hữu thực thi. Nếu bạn bật mục cài đặt bổ sung Hoạt động trên web và ứng dụng thì dữ liệu này có thể được lưu vào Tài khoản Brave của bạn. <ph name="BEGIN_LINK2"/>Tìm hiểu thêm<ph name="END_LINK2"/></translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> - Đã kết nối thiết bị Bluetooth</translation>
-<translation id="9176817945195089764"><ph name="DOMAIN"/> không phải là một tổ chức hợp lệ. Hãy liên hệ với quản trị viên của bạn. Nếu bạn là quản trị viên thì bạn có thể thiết lập tổ chức của mình bằng cách truy cập: g.co/BraveEnterpriseAccount</translation>
 <translation id="9179524979050048593">Tên người dùng trên màn hình đăng nhập</translation>
 <translation id="9180281769944411366">Quá trình này có thể mất vài phút. Đang khởi động vùng chứa Linux.</translation>
 <translation id="9180380851667544951">Trang web có thể chia sẻ màn hình của bạn</translation>
@@ -7662,7 +7725,6 @@ Bạn có thể gán thao tác này cho nhiều công tắc</translation>
 <translation id="6945695820322143954">Phần mở rộng này vi phạm chính sách Web Store.</translation>
 <translation id="1676595396635191120">Cửa sổ Riêng tư Mới</translation>
 <translation id="5094764494104066239">Luôn Hiển thị Thanh Dấu trang</translation>
-<translation id="3073689951164015877">Lịch sử không được lưu ở chế độ Riêng tư</translation>
 <translation id="5760418762676108038">Cửa sổ Riêng tư mới</translation>
 <translation id="5298187053819934487">Dữ liệu đăng nhập sẽ được lưu trên thiết bị này sau khi bạn thoát chế độ Riêng tư. Bạn sẽ có thể đăng nhập lại vào trang web này bằng thiết bị của bạn sau.</translation>
 <translation id="5186185447130319458">Riêng tư</translation>
@@ -7670,6 +7732,8 @@ Bạn có thể gán thao tác này cho nhiều công tắc</translation>
 <translation id="1001131747196960052">Đóng phiên Riêng tư</translation>
 <translation id="4466778299493212338">Để xóa dữ liệu, hãy đóng tất cả các cửa sổ Riêng tư</translation>
 <translation id="3610571162330520499">Điều này chỉ ảnh hưởng đến các cửa sổ Riêng tư</translation>
+<translation id="1961291599064731706">Các trang web bạn truy cập không được lưu ở chế độ Riêng tư</translation>
+<translation id="7070305978939333489">Để xóa lịch sử duyệt web Riêng tư khỏi thiết bị của bạn, hãy đóng tất cả các tab Riêng tư</translation>
 <translation id="433830930456392967">{COUNT, plural,
           =0 {Mở tất cả trong &amp;cửa sổ Riêng tư}
           =1 {Mở trong &amp;cửa sổ Riêng tư}

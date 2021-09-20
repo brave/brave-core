@@ -1,685 +1,382 @@
 {
-  "braveRewards": {
-    "message": "Brave Rewards",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "Samenvatting",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "Begin nu met verdienen!",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "Fooi",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "Meld je aan bij Rewards",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "Niet-geverifieerde ontwikkelaar",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "Krijg betaald voor het bekijken van advertenties en deel deze met anderen om de makers van jouw favoriete content te steunen.",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "Geverifieerde ontwikkelaar",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "Je kunt nu tokens verdienen door het bekijken van advertenties die je privacy respecteren.",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "Status vernieuwen",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "U kunt nu punten verdienen voor het bekijken van advertenties die de privacy respecteren.",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "Bekijk wat we verbeterd hebben",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "Meer informatie",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "We hebben Brave Rewards een grote upgrade gegeven.",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "Maak je klaar om het nieuwe internet te ervaren.",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "Jouw wallet",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "Donaties",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "Details",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "on": {
-    "message": "op",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "Geverifieerde Brave-ontwikkelaar",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "Opgelet",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "Maandelijkse bijdrage",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "Deelname aan Auto-Contributie",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "Stuur een Tip ...",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "Sta fooien toe",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "voor",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "Overzicht van de Beloningen",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "April",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "Augustus",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "December",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "Februari",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "Januari",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "Juli",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "Juni",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "Maart",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "Mei",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "November",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "Oktober",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "September",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "$currency$ Beurzen",
-    "description": "Title for grant notification",
+  "platformPublisherTitle": {
+    "message": "$name$ op $platform$",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "Geclaimde giften",
-    "description": "Title for grant section in wallet summary"
+  "attention": {
+    "message": "Opgelet",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "Inkomsten uit Advertenties",
-    "description": "Title for ads section in wallet summary"
+  "sendTip": {
+    "message": "Fooi versturen",
+    "description": ""
   },
-  "rewardsContribute": {
-    "message": "Auto-Contribute",
-    "description": "Title for auto contribute section in wallet summary"
+  "includeInAutoContribute": {
+    "message": "Deelname aan Auto-Contributie",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "Eenmalige tips",
-    "description": "Title for one-time tips section in wallet summary"
-  },
-  "expiresOn": {
-    "message": "vervalt op",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
-  },
-  "recurringDonations": {
-    "message": "Maandelijkse bijdragen",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "Uit",
-    "description": "Label used in toggle indicating that toggle is off"
+  "monthlyContribution": {
+    "message": "Maandelijkse bijdrage",
+    "description": ""
   },
   "ok": {
-    "message": "Oké",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "Nu kunt je verdienen aan het bekijken van advertenties.",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "Brave Advertenties",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "Auto-Contribute",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "U heeft $amount$ $currency$ bijgedragen",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "Er staat een geschenk voor je klaar.",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "Nu een back-up maken",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "Back-up maken van wallet",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "Maak een back-up van je Brave-wallet.",
-    "description": "Description for backup wallet notification"
-  },
-  "learnMore": {
-    "message": "Meer informatie",
-    "description": "Notification button text to learn more about a specific use-case"
-  },
-  "mismatchedProviderAccountsTitle": {
-    "message": "Fout: ander account",
-    "description": "Title for mismatched provider accounts notification"
-  },
-  "mismatchedProviderAccountsNotification": {
-    "message": "Het lijkt erop dat je Brave-beloningen-wallet al is geverifieerd met een ander $name$-account. Probeer nog eens te verifiëren met je vorige account.",
-    "description": "Description for mismatched provider accounts notification",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "upholdBATNotAllowedForUserTitle": {
-    "message": "Fout: BAT niet beschikbaar",
-    "description": "Title for BAT not allowed for user notification"
-  },
-  "upholdBATNotAllowedForUserNotification": {
-    "message": "BAT wordt in Uphold nog niet ondersteund in jouw regio.",
-    "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserTitle": {
-    "message": "Fout: geblokkeerd account",
-    "description": "Title for blocked user notification"
-  },
-  "upholdBlockedUserNotification": {
-    "message": "Je account in Uphold is momenteel geblokkeerd.",
-    "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserTitle": {
-    "message": "Fout: account in behandeling",
-    "description": "Title for pending user notification"
-  },
-  "upholdPendingUserNotification": {
-    "message": "Je account in Uphold is nog steeds in behandeling.",
-    "description": "Description for pending user notification"
-  },
-  "upholdRestrictedUserTitle": {
-    "message": "Fout: beperkt account",
-    "description": "Title for restricted user notification"
-  },
-  "upholdRestrictedUserNotification": {
-    "message": "Je account in Uphold is momenteel beperkt.",
-    "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Apparaat limiet bereikt",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Uw wallet kan niet worden geverifieerd omdat u de maximale limiet aan geverifieerde apparaten heeft bereikt.",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "Je Brave Rewards-account wacht op een storting.",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "Onvoldoende saldo",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "Wallet aanmaken",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "Er is een probleem opgetreden bij het verwerken van je bijdrage.",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "Je geplande maandelijkse betaling voor Auto-Contribute en maandelijkse bijdragen kan niet worden verwerkt dankzij een te laag saldo. We proberen het opnieuw over 30 dagen. ",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "Kan je fooi niet verzenden. Probeer het later opnieuw.",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "Nog geen activiteiten...",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "Sleep het BAT-pictogram naar de",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "Bewijs dat je een mens bent!",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "doel.",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "Hmmm... niet helemaal. Probeer het opnieuw.",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "Claimen",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "Gratis gift",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "Vervaldatum gift",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
     "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "Brave Rewards ondervindt problemen. Probeer het later opnieuw.",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "Oeps, er is iets misgegaan. Probeer het later opnieuw.",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "Status vernieuwen",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "Nog niet geverifieerd",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "Deze maker is momenteel nog niet geconfigureerd voor het ontvangen van fooi uit je wallet. Alle fooien die je stuurt, blijven in je wallet in behandeling. Na 90 dagen wordt automatisch opnieuw geprobeerd om de fooi te verzenden.",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "Meer Leren",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "Je hebt {{reservedAmount}} {{currency}} toegewezen aan makers die zich nog niet hebben aangemeld voor het ontvangen van bijdragen. Je browser blijft proberen je bijdragen te versturen tot ze verifiëren of tot er 90 dagen zijn verstreken.",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "Meer Leren",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "Uit",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "Instellingen.",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "Je verzamelt momenteel geen Rewards tijdens het browsen. Schakel Rewards weer in.",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "Brave Rewards is",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "Het aanmaken van de Wallet is mislukt.",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "Probeer opnieuw",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "Fondsen toevoegen",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "Beloningen Instellingen",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "Uw beloningen uit Ads zijn binnen!",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "en",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "Word beloond door op het web te surfen!",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "Verdien door het bekijken van advertenties die de privacy respecteren en ondersteun de content-makers waar je van houdt.",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "Brave Beloningen inschakelen",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "Privacybeleid",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "Door op 'Brave Rewards inschakelen' te klikken, geef je aan dat je akkoord gaat met de ",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "Servicevoorwaarden",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "Welkom Terug!",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "Je maandelijkse bijdragen zijn verwerkt!",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "Bijdragen en fooien",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": "Door te klikken op 'Beloningen voor lid worden' geeft u aan dat u het volgende hebt gelezen en ermee akkoord gaat:",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "BAT",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "turnOnAds": {
-    "message": "Advertenties inschakelen",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "verdiend ",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "Geef deze tweet een fooi",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "Tip",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "Geef deze post een fooi",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "Tip",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "Stuur fooi",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "Tip",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "Ontwikkelaar $name$ is recentelijk geverifieerd",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "U hebt openstaande fooien door ontoereikende fondsen",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "In afwachting van bijdrage",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "Je hebt vandaag geluk!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "Uw $currency$ beurs is onderweg.",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "Gratis gift",
-    "description": "Token title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "Je hebt een Ads Reward verdiend!",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "Je Reward is onderweg naar je Brave Rewards-wallet.",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "Je Rewards-bedrag",
-    "description": "Token title on success screen for ads"
-  },
-  "walletButtonDisconnected":  {
-    "message": "Verbinding verbroken",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "Verifieer Wallet",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "Wallet geverifieerd",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "Ga naar je $provider$-account",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletLogInWithProvider":  {
-    "message": "Meld je aan bij je $provider$-account",
-    "description": "CTA to log in with a wallet provider",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "Verbreek de verbinding met Brave Rewards",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "Geverifieerd",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "Je wallet is geverifieerd!",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "Gefeliciteerd! Je $name$ wallet is succesvol geverifieerd en klaar om geldmiddelen toe te voegen en op te nemen.",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "Oh oh. Je wallet is niet bereikbaar.",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "Geen zorgen. Dit kan zich vanwege verschillende veiligheidsredenen voordoen. Uw wallet opnieuw verbinden zal het probleem verhelpen.",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "Deze Brave geverifieerde maker heeft zijn account nog niet geconfigureerd om bijdragen te ontvangen van Brave-gebruikers. Alle fooien die u verzendt, blijven in uw portefeuille totdat ze dit proces hebben voltooid.",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "Rond walletverificatie af",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "Instellen...",
-    "description": "Button text for setting monthly contribution"
+    "message": "Instellen",
+    "description": ""
   },
-  "tokens":  {
-    "message": "tokens",
-    "description": "Standard tokens text"
-  },
-  "point":  {
-    "message": "Punt",
-    "description": "BAT Point text"
-  },
-  "token":  {
-    "message": "Token",
-    "description": "BAT Token text"
-  },
-  "tokenGrants":  {
-    "message": "Tokentoewijzingen",
-    "description": "BAT Tokens Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "Hallo, $name$!",
-    "description": "Greetings for external wallet popup",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
-      }
-    }
-  },
-  "cancel":  {
-    "message": "Annuleren",
-    "description": "Text for cancel button"
-  },
-  "changeAmount":  {
+  "changeAmount": {
     "message": "Aantal veranderen",
-    "description": "Button text for changing monthly contribution amount"
+    "description": ""
   },
-  "login":  {
-    "message": "Aanmelden",
-    "description": "Text for login button"
+  "cancel": {
+    "message": "Annuleren",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "Door uw portemonnee te verifiëren, kunt u uw geld efficiënter beheren.",
-    "description": "Text for login button"
+  "grantCaptchaTitle": {
+    "message": "Bevestig dat je een mens bent",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "Je hebt minimaal $amount$ BAT nodig om een Uphold-account te maken. Als je al een Uphold-account hebt, kun je doorgaan met aanmelden.",
-    "description": "Text for login button",
+  "grantCaptchaFailedTitle": {
+    "message": "Hmmm... niet helemaal. Probeer het opnieuw.",
+    "description": ""
+  },
+  "grantCaptchaHint": {
+    "message": "Sleep het BAT-pictogram naar het doel $hint$. ",
+    "description": "",
     "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "walletConnected":  {
-    "message": "Verbonden",
-    "description": "Status button that tells user that he is connected"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "Je hebt vandaag geluk!",
+    "description": ""
   },
-  "walletDisconnected":  {
-    "message": "Verbinding verbroken",
-    "description": "Status button that tells user that he is disconnected"
+  "grantCaptchaPassedTextUGP": {
+    "message": "Je gift komt eraan.",
+    "description": ""
   },
-  "walletPending":  {
-    "message": "In afwachting",
-    "description": "Status button that tells user that he is currently pending"
+  "grantCaptchaAmountUGP": {
+    "message": "Gratis gift",
+    "description": ""
   },
-  "walletVerificationNote3":  {
-    "message": "Opmerking: uw transacties zijn zichtbaar voor $provider$ zodra u toestemming geeft; Ze kunnen bijvoorbeeld de ontvanger en de hoeveelheid fooi zien.",
-    "description": "Displayed in login modal for external wallet providers",
+  "grantCaptchaPassedTitleAds": {
+    "message": "Je hebt een Ads Reward verdiend!",
+    "description": ""
+  },
+  "grantCaptchaPassedTextAds": {
+    "message": "Je Reward is onderweg naar je Brave Rewards-wallet.",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "Je Rewards-bedrag",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "Vervaldatum gift",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "Oeps, er is iets misgegaan. Probeer het later opnieuw.",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "Brave Rewards ondervindt problemen. Probeer het later opnieuw.",
+    "description": ""
+  },
+  "walletAccountLink": {
+    "message": "Ga naar mijn $provider$ account",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "Voeg geld toe",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "Ga naar $provider$ om de verificatie te voltooien",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Voltooi de identiteitverificatie om te kunnen beginnen beloningen te ontvangen.",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "Verbinding verbroken",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "Verbreek de verbinding met Brave Rewards",
+    "description": ""
+  },
+  "walletEstimatedEarnings": {
+    "message": "Geschatte verdiensten",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "Meld je aan bij je $provider$-account",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "Maandelijkse Fooien",
+    "description": ""
+  },
+  "walletMyWallet": {
+    "message": "Mijn wallet",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "Eenmalige tips",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "In afwachting",
+    "description": ""
+  },
+  "walletPendingRewardsText": {
+    "message": "$amount$ komt binnen over $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "walletRewardsFromAds": {
+    "message": "Beloningen uit advertenties",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "Overzicht van de Beloningen",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "Geverifieerd",
+    "description": ""
+  },
+  "walletVerify": {
+    "message": "Verifieer Wallet",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "Je saldo",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "Voeg geld toe",
+    "description": ""
+  },
+  "notificationLearnMore": {
+    "message": "Meer informatie",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "Opnieuw verbinding maken",
+    "description": ""
+  },
+  "notificationClaim": {
+    "message": "Claimen",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "Onvoldoende saldo",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "Je Brave Rewards-account wacht op een storting.",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "Je hebt $amount$ bijgedragen.",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "Back-up maken van wallet",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Maak een back-up van je Brave-wallet.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Backup nu",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "Je wallet is uitgelogd",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "Dit kan voorkomen om je account veilig te houden. Klik hieronder om nu opnieuw verbinding te maken.",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "Opnieuw verbinding maken",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "Je wallet is geverifieerd!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Je $provider$-wallet is geverifieerd en je kunt er nu geld aan toevoegen en er geld uithalen.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "Tokentoewijzingen",
+    "description": ""
+  },
+  "notificationTokenGrantText": {
+    "message": "Er staat een geschenk voor je klaar.",
+    "description": ""
+  },
+  "notificationAdGrantTitle": {
+    "message": "Advertentie-verdiensten ontvangen",
+    "description": ""
+  },
+  "notificationAdGrantText": {
+    "message": "Je beloningen van de Brave-privébrowseradvertenties zijn er!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Maandelijkse bijdrage mislukt",
+    "description": ""
+  },
+  "notificationInsufficientFundsText": {
+    "message": "Je geplande maandelijkse betaling voor Auto-Contribute en maandelijkse bijdragen kan niet worden verwerkt dankzij een te laag saldo. We proberen het opnieuw over 30 dagen. ",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "Er is een probleem opgetreden bij het verwerken van je bijdrage.",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "Bijdragen en fooien",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "Je maandelijkse bijdragen zijn verwerkt.",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "Bijdrage in behandeling",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "Ontwikkelaar $publisher_name$ is recentelijk geverifieerd.",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "Onvoldoende saldo",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "U hebt openstaande fooien door ontoereikende fondsen",
+    "description": ""
+  },
+  "notificationWalletLinkingFailedTitle": {
+    "message": "Wallet koppelen mislukt",
+    "description": ""
+  },
+  "notificationDeviceLimitReachedText": {
+    "message": "Uw wallet kan niet worden geverifieerd omdat u de maximale limiet aan geverifieerde apparaten heeft bereikt.",
+    "description": ""
+  },
+  "notificationMismatchedProviderAccountsText": {
+    "message": "Het ziet ernaar uit dat je Brave Rewards-wallet al is geverifieerd met een ander $provider$-account. Probeer opnieuw te verifiëren met je eerdere account.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationUpholdBatNotSupportedText": {
+    "message": "BAT wordt in Uphold nog niet ondersteund in jouw regio.",
+    "description": ""
+  },
+  "notificationUpholdUserBlockedText": {
+    "message": "Je account in Uphold is momenteel geblokkeerd.",
+    "description": ""
+  },
+  "notificationUpholdUserPendingText": {
+    "message": "Je account in Uphold is nog steeds in behandeling.",
+    "description": ""
+  },
+  "notificationUpholdUserRestrictedText": {
+    "message": "Je account in Uphold is momenteel beperkt.",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "Tokens verdienen en ze weer terugschenken",
@@ -854,5 +551,29 @@
         "content": "$2"
       }
     }
+  },
+  "captchaMaxAttemptsExceededText": {
+    "message": "Het ziet ernaar uit dat dit niet werkt, Brave Ads blijven gepauzeerd. Neem contact met ons op als je hulp nodig hebt met de captcha.",
+    "description": ""
+  },
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "Max. aantal pogingen overschreden",
+    "description": ""
+  },
+  "captchaSolvedTitle": {
+    "message": "Opgelost!",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "Advertenties en verdiensten worden nu hervat. Bedankt dat je ons helpt bij het beschermen van Brave Rewards en op privacy gebaseerde advertenties.",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "Contact opnemen met ondersteuning",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "Dismiss",
+    "description": ""
   }
 }

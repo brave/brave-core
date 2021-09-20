@@ -17,7 +17,7 @@
 <translation id="6797402139308059782">Permitir que o Brave seja executado em segundo plano</translation>
 <translation id="5875673934455379806">Reinstalar Brave</translation>
 <translation id="4528406859989804913">Está a iniciar sessão com uma conta gerida e a permitir que o gestor controle o seu perfil do Brave. Os seus dados do Brave, como aplicações, marcadores, histórico, palavras-passe e outras definições, ficarão associados definitivamente a <ph name="USER_NAME"/>. Poderá eliminar estes dados através do Painel de Controlo das Contas Brave, mas não poderá associá-los a outra conta. Opcionalmente, pode criar um perfil novo para manter os seus dados atuais do Brave em separado. <ph name="LEARN_MORE"/></translation>
-<translation id="1649714546770135458">Ao desativar esta opção, pode iniciar sessão nos sites Brave como o Gmail sem iniciar sessão no Brave.</translation>
+<translation id="1649714546770135458">Ao desativar esta opção, pode iniciar sessão nos sites da Brave como o Gmail sem iniciar sessão no Brave.</translation>
 <translation id="189297655255130768">O Brave não responde. Reiniciar agora?</translation>
 <translation id="1775322105159056176">O Brave não consegue determinar ou definir o navegador predefinido</translation>
 <translation id="7665553140559834626">Reiniciar para atualizar o &amp;Chrome OS</translation>
@@ -101,7 +101,6 @@
 <translation id="9183662282810237335">Pretende sair do Brave mesmo assim?</translation>
 <translation id="4065288863231444640">Permitir que o Brave seja executado em segundo plano</translation>
 <translation id="8148611988012584308">Personalizar e controlar o Brave</translation>
-<translation id="1201005444605297066">Esta página permite-lhe gerir Contas Brave com sessão iniciada. Estas contas estarão disponíveis no navegador Brave e nas apps da Play Store, bem como em serviços como o Gmail, o Drive e o YouTube. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Damos-lhe as boas-vindas ao Brave; nova janela do navegador aberta</translation>
 <translation id="2633397153656205379">O Brave não foi atualizado. Ocorreu um erro. <ph name="BEGIN_LINK"/>Corrija problemas de atualização do Brave e falhas nas atualizações<ph name="END_LINK"/>.</translation>
 <translation id="3679799810790990472">Pretende continuar num novo perfil do Brave?</translation>
@@ -247,6 +246,7 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="2925193881330501265">Iniciou sessão no Brave com a conta <ph name="USER_EMAIL_ADDRESS"/>. Utilize a mesma conta para iniciar sessão novamente.</translation>
 <translation id="6915252145142862992">Esta é uma instalação secundária do Brave, pelo que não pode tornar-se o navegador predefinido.</translation>
 <translation id="7685904775439037072">Assim que o Brave tiver acesso, os Websites poderão solicitar-lhe o acesso.</translation>
+<translation id="828406390101464081">As seguintes contas não têm sessão iniciada em perfis do Brave. Se pretender utilizar uma conta noutro perfil, remova esse perfil primeiro.</translation>
 <translation id="9067428552314418522">Este ficheiro é perigoso. Como tal, o Brave bloqueou-o.</translation>
 <translation id="8207657266087451193">Se uma imagem não tiver uma descrição útil, o Brave tenta fornecer uma. Para criar as descrições, são enviadas imagens para a Brave. Pode desativar esta opção nas definições em qualquer altura.</translation>
 <translation id="8622246347342688645">O Brave não consegue verificar as suas palavras-passe porque não tem sessão iniciada.</translation>
@@ -296,4 +296,5 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{O seu administrador solicita-lhe que reinicie o Brave para aplicar esta atualização.}=1{O seu administrador solicita-lhe que reinicie o Brave para aplicar esta atualização. Não é possível reabrir a sua janela de Navegação Privada.}other{O seu administrador solicita-lhe que reinicie o Brave para aplicar esta atualização. Não é possível reabrir as suas # janelas de Navegação Privada.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{O seu administrador necessita que reinicie o Brave para aplicar uma atualização.}=1{O seu administrador necessita que reinicie o Brave para aplicar uma atualização. Não é possível reabrir a sua janela de Navegação Privada.}other{O seu administrador necessita que reinicie o Brave para aplicar uma atualização. Não é possível reabrir as suas # janelas de Navegação Privada.}}</translation>
 <translation id="7914115000169617076">Quase atualizado! Reinicie o Brave para concluir a atualização. Não é possível reabrir as suas janelas de navegação privada.</translation>
+<translation id="2176087127109773485">Pode gerir as suas cadeias de sincronização Brave com sessão iniciada. Estas são utilizadas no navegador Brave, na Play Store e no Gmail, entre outros. Caso pretenda adicionar uma conta para outra pessoa, como um familiar, adicione um novo perfil a <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/></translation>
 </translationbundle>

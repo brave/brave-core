@@ -101,7 +101,6 @@
 <translation id="9183662282810237335">Suljetaanko Brave silti?</translation>
 <translation id="4065288863231444640">Jätä Brave käyntiin taustalle</translation>
 <translation id="8148611988012584308">Bravein muokkaus ja hallinta</translation>
-<translation id="1201005444605297066">Tällä sivulla voit ylläpitää sisäänkirjautuneita Brave-tilejäsi. Nämä tilit ovat käytettävissä Brave-selaimella ja Play Kaupan sovelluksilla sekä Gmailin, Driven ja YouTuben kaltaisissa palveluissa. <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Tervetuloa Braveiin, uusi selainikkuna avattu</translation>
 <translation id="2633397153656205379">Braveia ei päivitetty, vaan jotain meni pieleen. <ph name="BEGIN_LINK"/>Korjaa Bravein päivitysongelmat ja epäonnistuneet päivitykset<ph name="END_LINK"/>.</translation>
 <translation id="3679799810790990472">Jatketaanko uudessa Brave-profiilissa?</translation>
@@ -247,6 +246,7 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="2925193881330501265">Braveiin kirjautunut käyttäjä: <ph name="USER_EMAIL_ADDRESS"/>. Kirjaudu uudelleen sisään samalla tilillä.</translation>
 <translation id="6915252145142862992">Tämä on Bravein toissijainen asennus, eikä sitä voi asettaa oletusselaimeksi.</translation>
 <translation id="7685904775439037072">Kun Braveilla on käyttöoikeus, sivustot voivat pyytää sitä sinulta.</translation>
+<translation id="828406390101464081">Näillä tileillä ei ole kirjauduttu sisään Brave-profiileille. Jos haluat käyttää tiliä toisella profiililla, poista ensin kyseinen profiili.</translation>
 <translation id="9067428552314418522">Tämä tiedosto on vaarallinen, joten Brave on estänyt sen.</translation>
 <translation id="8207657266087451193">Jos kuvalla ei ole hyödyllistä kuvausta, Brave yrittää luoda sellaisen. Kuvat lähetetään Bravelle kuvausten luomista varten. Voit milloin tahansa poistaa tämän käytöstä asetuksissa.</translation>
 <translation id="8622246347342688645">Brave ei voi tarkistaa salasanojasi, koska et ole kirjautuneena sisään</translation>
@@ -296,4 +296,5 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön.}=1{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön. Incognito-ikkunaasi ei avata uudelleen.}other{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön.}=1{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön. Incognito-ikkunaasi ei avata uudelleen.}other{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
 <translation id="7914115000169617076">Melkein ajan tasalla. Viimeistele päivitys käynnistämällä Brave uudelleen. Yksityiset ikkunat ei avata uudelleen.</translation>
+<translation id="2176087127109773485">Voit hallita sisäänkirjautuneita Brave-synkronointiketjujasi. Brave-synkronointiketjujasi käytetään Brave-selaimelle, Play-kaupalle, Gmailille ja muille. Jos haluat lisätä tilin toiselle käyttäjälle, esim. perheenjäsenelle, lisää uusi profiili kohteeseen <ph name="DEVICE_TYPE"/> sen sijaan. <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
 </translationbundle>

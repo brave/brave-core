@@ -263,6 +263,7 @@ Binance
 <translation id="8655170717758778983">जब संभव हो तो DNSLink के माध्यम से IPFS पृष्ठों पर स्वचालित रूप से रीडायरेक्ट करें</translation>
 <translation id="2233724520223030977">जब भी संभव हो, वेबसाइट के IPFS संस्करण में नेविगेट करने के लिए DNSLink का स्वचालित रूप से उपयोग करता है</translation>
 <translation id="6554397389149987360">ब्राउज़र में स्क्रीन साझा करने और अन्य सुविधाओं के लिए हैंगऑउट के घटकों का उपयोग करें।</translation>
+<translation id="7878791177459550035">मीडिया राउटर ब्राउज़र में कास्ट फीचर इनेबल करता है.</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
 <translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
 <translation id="8068526464562249859">आपके ब्राउज़र बार से सामान्य IPFS टास्क एक्सेस करने सहित Brave में बेहतर IPFS समर्थन के लिए IPFS Companion एक्सटेंशन का उपयोग करता है।</translation>
@@ -367,7 +368,23 @@ Binance
 आप इस प्रतिलिपि<ph name="BEGIN_LINK_SOURCE_CODE"/> को बनाने के लिए उपयोग किए गए विशिष्ट <ph name="END_LINK_SOURCE_CODE"/>सोर्स कोड को डाउनलोड करने और स्वयं के लिए निर्माण करने के<ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/> निर्देश <ph name="END_LINK_BUILD_INSTRUCTIONS"/>पढ़ सकते हैं।</translation>
 <translation id="4474155171896946103">सभी टैब बुकमार्क करें...</translation>
 <translation id="2336228925368920074">सभी टैब बुकमार्क करें...</translation>
+<translation id="4235920711083356755">VPN बटन दिखाएं</translation>
+<translation id="4070612712151038707">टूलबार में VPN बटन दिखाता है</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Brave VPN के बारे में</translation>
+<translation id="4378551569595875038">कनेक्ट हो रहा है...</translation>
+<translation id="3368922792935385530">कनेक्टेड</translation>
+<translation id="1536754031901697553">डिसकनेक्ट हो रहा है...</translation>
+<translation id="8030169304546394654">डिसकनेक्ट करें</translation>
+<translation id="1863950594388384201">टूलबार में VPN बटन दिखाएं</translation>
+<translation id="5187139277471084437">टूलबार में VPN बटन छुपाएं</translation>
+<translation id="8041089156583427627">सुझाव भेजें</translation>
+<translation id="4049186905514157504">मेरा प्लान मैनेज करें</translation>
+<translation id="7570585565843385325">टूलबार में VPN बटन दिखाएं</translation>
+<translation id="5310426188697803101">टूलबार में VPN बटन छुपाएं</translation>
+<translation id="945522503751344254">फ़ीडबैक दें</translation>
+<translation id="3015685033234401792">मेरा प्लान मैनेज करें</translation>
 <translation id="796831669370432378">बुकमार्क जोड़ने के लिए, एड्रेस बार के आगे बुकमार्क बटन पर क्लिक करें</translation>
 <translation id="4989337484121655457">पूर्ण डिस्क एक्सेस की आवश्यकता है</translation>
 <translation id="8025559074845816210">आपके बुकमार्क को Safari से इम्पोर्ट करने के लिए Brave को पुरे डिस्क के एक्सेस के आवश्यकता है।</translation>

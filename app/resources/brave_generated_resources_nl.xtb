@@ -210,7 +210,6 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="6476061084931271248">Knooppunt opnieuw opstarten om wijzigingen door te voeren</translation>
 <translation id="3754226427671882382">Knooppunt opnieuw starten</translation>
 <translation id="949667118776341807">Vernieuwen</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Deze naam is ongeldig</translation>
 <translation id="6758961763875471084">Lijst met peers aanpassen</translation>
 <translation id="1295874070797049002">Sleutel exporteren</translation>
@@ -241,6 +240,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="8655170717758778983">Indien mogelijk automatisch omleiden naar IPFS-pagina's via DNSLink</translation>
 <translation id="2233724520223030977">Gebruikt automatisch DNSLink om indien mogelijk naar een IPFS-versie van een website te navigeren</translation>
 <translation id="6554397389149987360">Gebruikt een Hangouts-component om het delen van het scherm en andere functies in de browser mogelijk te maken.</translation>
+<translation id="7878791177459550035">Mediarouter maakt castfunctie beschikbaar in de browser.</translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
 <translation id="7179921470347911571">Nu Opnieuw Opstarten</translation>
 <translation id="8068526464562249859">Gebruikt de IPFS Companion-extensie voor verbeterde IPFS-ondersteuning in Brave, inclusief toegang tot veelvoorkomende IPFS-taken vanuit uw browserbalk.</translation>
@@ -351,7 +351,23 @@ suggesties voor automatisch aanvullen</translation>
         U kunt <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instructies lezen over het downloaden en zelf bouwen<ph name="END_LINK_BUILD_INSTRUCTIONS"/> de specifieke <ph name="BEGIN_LINK_SOURCE_CODE"/>broncode die wordt gebruikt om deze kopij te maken<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Bladwijzer toevoegen aan alle tabbladen...</translation>
 <translation id="2336228925368920074">Bladwijzer toevoegen aan alle tabbladen...</translation>
+<translation id="4235920711083356755">VPN-knop tonen</translation>
+<translation id="4070612712151038707">Laat de VPN-knop zien in de werkbalk</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave-VPN</translation>
+<translation id="2345974803401546682">Over Brave-VPN</translation>
+<translation id="4378551569595875038">Connecting...</translation>
+<translation id="3368922792935385530">Verbonden</translation>
+<translation id="1536754031901697553">Verbinding verbreken...</translation>
+<translation id="8030169304546394654">Verbinding verbroken</translation>
+<translation id="1863950594388384201">VPN-knop tonen in de werkbalk</translation>
+<translation id="5187139277471084437">VPN-knop verbergen in de werkbalk</translation>
+<translation id="8041089156583427627">Feedback sturen</translation>
+<translation id="4049186905514157504">Mijn plan beheren</translation>
+<translation id="7570585565843385325">VPN-knop tonen in de werkbalk</translation>
+<translation id="5310426188697803101">VPN-knop verbergen in de werkbalk</translation>
+<translation id="945522503751344254">Feedback verzenden</translation>
+<translation id="3015685033234401792">Mijn plan beheren</translation>
 <translation id="796831669370432378">Om een bladwijzer toe te voegen, klik je op de bladwijzerknop naast de adresbalk</translation>
 <translation id="4989337484121655457">Volledige toegang tot de schijf vereist</translation>
 <translation id="8025559074845816210">Brave heeft volledige schijftoegang nodig om uw bladwijzers uit Safari te importeren.</translation>

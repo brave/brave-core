@@ -99,7 +99,6 @@
 <translation id="9183662282810237335">Zamknąć Brave mimo to?</translation>
 <translation id="4065288863231444640">Zezwalaj Brave na działanie w tle</translation>
 <translation id="8148611988012584308">Dostosowywanie i kontrolowanie Brave</translation>
-<translation id="1201005444605297066">Na tej stronie możesz zarządzać kontami Brave, na które się logujesz. Będą one dostępne w przeglądarce Brave, w aplikacji Sklep Play i w usługach Brave takich jak Gmail, Dysk czy YouTube. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Witamy w Brave. Zostało otwarte nowe okno przeglądarki.</translation>
 <translation id="2633397153656205379">Coś poszło nie tak i nie udało się zaktualizować Brave. <ph name="BEGIN_LINK"/>Napraw nieudane aktualizacje Brave i rozwiąż inne problemy z aktualizacjami<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Kontynuować w nowym profilu Brave?</translation>
@@ -243,6 +242,7 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="2925193881330501265">Byłeś zalogowany w Brave jako <ph name="USER_EMAIL_ADDRESS"/>. Zaloguj się ponownie, korzystając z tego samego konta.</translation>
 <translation id="6915252145142862992">To jest druga instalacja Brave. Nie można ustawić jej jako przeglądarki domyślnej.</translation>
 <translation id="7685904775439037072">Gdy Brave będzie mieć dostęp, strony będą mogły prosić Cię o dostęp.</translation>
+<translation id="828406390101464081">Na te konta nie zalogowano się w żadnym profilu Brave. Jeśli chcesz używać konta w innym profilu, najpierw go usuń.</translation>
 <translation id="9067428552314418522">Ten plik jest niebezpieczny, dlatego został zablokowany przez Brave.</translation>
 <translation id="8207657266087451193">Jeśli obraz nie ma przydatnego opisu, Brave spróbuje go dla Ciebie stworzyć. W tym celu obrazy zostaną wysłane do Brave. W każdej chwili możesz wyłączyć tę funkcję w ustawieniach.</translation>
 <translation id="8622246347342688645">Brave nie może sprawdzić haseł, jeśli się nie zalogujesz</translation>
@@ -292,4 +292,5 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację}=1{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację. Okno prywatne nie otworzy się ponownie.}few{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację. # okna prywatne nie otworzą się ponownie.}many{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację. # okien prywatnych nie otworzy się ponownie.}other{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację. # okna prywatne nie otworzą się ponownie.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację}=1{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację. Okno prywatne nie otworzy się ponownie.}few{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację. # okna prywatne nie otworzą się ponownie.}many{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację. # okien prywatnych nie otworzy się ponownie.}other{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację. # okna prywatne nie otworzą się ponownie.}}</translation>
 <translation id="7914115000169617076">Prawie gotowe! Uruchom Brave ponownie, by ukończyć aktualizację. Prywatne okna nie otworzą się ponownie.</translation>
+<translation id="2176087127109773485">Możesz zarządzać łańcuchami synchronizacji, do których się logujesz. Twoje łańcuchy synchronizacji Brave są używane także w przeglądarce Brave, sklepie Play, Gmailu i w innych miejscach. Jeśli chcesz dodać konto innego użytkownika, np. członka rodziny, dodaj nowy profil do Twojego <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
 </translationbundle>

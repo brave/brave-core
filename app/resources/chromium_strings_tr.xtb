@@ -99,7 +99,6 @@
 <translation id="9183662282810237335">Yine de Brave'dan çıkılsın mı?</translation>
 <translation id="4065288863231444640">Brave'un Arka Planda Çalışmasına İzin Ver</translation>
 <translation id="8148611988012584308">Brave'u özelleştirin ve kontrol edin</translation>
-<translation id="1201005444605297066">Bu sayfa, oturum açtığınız Brave hesaplarınızı yönetmenize olanak sağlar. Bu hesaplar Brave tarayıcı ve Play Store uygulamalarının yanı sıra Gmail, Drive ve YouTube gibi hizmetlerde de kullanılabilir. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Brave'a hoş geldiniz; yeni tarayıcı penceresi açıldı</translation>
 <translation id="2633397153656205379">Brave güncellenmedi. Bir sorun oluştu. <ph name="BEGIN_LINK"/>Brave güncelleme sorunlarını ve başarısız güncellemeleri düzeltin.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Yeni bir Brave profilinde devam edilsin mi?</translation>
@@ -244,6 +243,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="2925193881330501265">Brave'da <ph name="USER_EMAIL_ADDRESS"/> olarak oturum açtınız. Tekrar oturum açmak için lütfen aynı hesabı kullanın.</translation>
 <translation id="6915252145142862992">Bu, Brave'un ikincil bir yüklemesidir ve varsayılan tarayıcınız yapılamaz.</translation>
 <translation id="7685904775439037072">Brave erişim izni aldıktan sonra, web siteleri de erişim için sizden izin isteyebilecek.</translation>
+<translation id="828406390101464081">Aşağıdaki hesaplar hiçbir Brave profilinde oturum açmamış. Başka profildeki bir hesabı kullanmak istiyorsanız önce bu profili kaldırın.</translation>
 <translation id="9067428552314418522">Bu dosya tehlikeli olduğu için Brave tarafından engellendi.</translation>
 <translation id="8207657266087451193">Bir resmin işe yarar bir açıklaması yoksa, Brave sizin için bir açıklama sağlamaya çalışır. Açıklama oluşturmak için resimler Brave'a gönderilir. Bu özelliği istediğiniz zaman ayarlardan kapatabilirsiniz.</translation>
 <translation id="8622246347342688645">Oturum açmadığınız için Brave, şifrelerinizi kontrol edemiyor</translation>
@@ -293,4 +293,5 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Yöneticiniz bu güncellemeyi uygulamak için Brave'u yeniden başlatmanızı istiyor}=1{Yöneticiniz bu güncellemeyi uygulamak için Brave'u yeniden başlatmanızı istiyor. Gizli pencereniz yeniden açılmayacak.}other{Yöneticiniz bu güncellemeyi uygulamak için Brave'u yeniden başlatmanızı istiyor. # Gizli pencereniz yeniden açılmayacak.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Yöneticiniz bir güncellemeyi uygulamak için Brave'u yeniden başlatmanızı gerektiriyor}=1{Yöneticiniz bir güncellemeyi uygulamak için Brave'u yeniden başlatmanızı gerektiriyor. Gizli pencereniz yeniden açılmayacak.}other{Yöneticiniz bir güncellemeyi uygulamak için Brave'u yeniden başlatmanızı gerektiriyor. # Gizli pencereniz yeniden açılmayacak.}}</translation>
 <translation id="7914115000169617076">Güncel hale gelmek üzere! Güncellemenin tamamlanması için Brave'u yeniden başlatın. Özel pencereler yeniden açılmayacak.</translation>
+<translation id="2176087127109773485">Oturumu açılmış Brave senkronizasyon zincirlerinizi yönetebilirsiniz. Brave senkronizasyon zincirleriniz Brave tarayıcısı, Play Store, Gmail ve daha fazlası için kullanılır. Bir aile üyesi gibi başka biri için bir hesap eklemek istiyorsanız bunun yerine <ph name="DEVICE_TYPE"/> yeni bir profil ekleyin. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
 </translationbundle>

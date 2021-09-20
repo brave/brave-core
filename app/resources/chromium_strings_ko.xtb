@@ -103,7 +103,6 @@
 <translation id="9183662282810237335">Brave을 종료하시겠습니까?</translation>
 <translation id="4065288863231444640">백그라운드에서 Brave을 실행</translation>
 <translation id="8148611988012584308">Brave 맞춤설정 및 제어</translation>
-<translation id="1201005444605297066">이 페이지에서는 로그인된 Brave 계정을 관리할 수 있습니다. Gmail, Drive, YouTube 등의 서비스와 Brave 브라우저, Play 스토어 앱에서 계정을 사용할 수 있습니다. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Brave에 오신 것을 환영합니다. 새 브라우저 창이 열렸습니다</translation>
 <translation id="2633397153656205379">문제가 발생하여 Brave을 업데이트할 수 없습니다. <ph name="BEGIN_LINK"/>Brave 업데이트 문제 및 업데이트 실패 문제 해결하기<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">새 Brave 프로필로 계속하시겠습니까?</translation>
@@ -249,6 +248,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="2925193881330501265"><ph name="USER_EMAIL_ADDRESS"/>(으)로 Brave에 로그인되어 있습니다. 같은 계정으로 다시 로그인해 주세요.</translation>
 <translation id="6915252145142862992">Brave의 보조 설치이며 기본 브라우저로 설정할 수 없습니다.</translation>
 <translation id="7685904775439037072">Brave에 액세스 권한을 부여하면 웹사이트에서 액세스 권한을 요청할 수 있게 됩니다.</translation>
+<translation id="828406390101464081">다음 계정은 어느 Brave 프로필에도 로그인하지 않았습니다. 다른 프로필에서 계정을 사용하려면 먼저 프로필을 삭제하세요</translation>
 <translation id="9067428552314418522">이 파일은 위험하므로 Brave에서 차단했습니다.</translation>
 <translation id="8207657266087451193">이미지에 유용한 설명이 없으면 Brave에서 자동으로 설명을 제공하려고 시도합니다. 설명을 생성하기 위해 이미지가 Brave로 전송됩니다. 이 기능은 언제든지 설정에서 사용 중지할 수 있습니다.</translation>
 <translation id="8622246347342688645">로그인되어 있지 않으므로 Brave에서 비밀번호를 확인할 수 없습니다.</translation>
@@ -298,4 +298,5 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다.}=1{관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다. 시크릿 창이 다시 열리지 않습니다.}other{관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다. 시크릿 창 #개가 다시 열리지 않습니다.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{관리자의 요구에 따라 업데이트를 적용하려면 Brave을 다시 실행해야 합니다.}=1{관리자의 요구에 따라 업데이트를 적용하려면 Brave을 다시 실행해야 합니다. 시크릿 창이 다시 열리지 않습니다.}other{관리자의 요구에 따라 업데이트를 적용하려면 Brave을 다시 실행해야 합니다. 시크릿 창 #개가 다시 열리지 않습니다.}}</translation>
 <translation id="7914115000169617076">업데이트가 거의 완료되었습니다. 업데이트를 마치려면 Brave을 다시 실행하세요. 비공개 창은 다시 열리지 않습니다.</translation>
+<translation id="2176087127109773485">귀하의 로그인된 Brave 동기화 체인을 관리할 수 있습니다. Brave 동기화 체인은 Brave 브라우저, Play 스토어, Gmail 등에 사용됩니다. 가족 구성원 등 다른 사람을 위한 계정을 추가하려면 <ph name="DEVICE_TYPE"/>에 새 프로필을 추가하세요. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 </translationbundle>

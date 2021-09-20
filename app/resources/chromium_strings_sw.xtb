@@ -103,7 +103,6 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="9183662282810237335">Ungependa kufunga Brave?</translation>
 <translation id="4065288863231444640">Ruhusu Brave itumike Chinichini</translation>
 <translation id="8148611988012584308">Dhibiti na ugeuze Brave ikufae</translation>
-<translation id="1201005444605297066">Ukurasa huu hukuwezesha kudhibiti akaunti zako za Brave ulizotumia kuingia katika tovuti na programu. Akaunti hizi zitapatikana katika kivinjari cha Brave na programu za Duka la Google Play na pia katika huduma kama vile Gmail, Hifadhi na YouTube. <ph name="LINK_BEGIN"/>Pata maelezo zaidi<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Karibu kwenye Brave; dirisha jipya la kivinjari limefunguliwa</translation>
 <translation id="2633397153656205379">Brave haijasasishwa, hitilafu fulani imetokea. <ph name="BEGIN_LINK"/>Rekebisha matatizo ya sasisho la Brave na masasisho ambayo hayakuwekwa.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Ungependa kutumia wasifu mpya kwenye Brave?</translation>
@@ -249,6 +248,7 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="2925193881330501265">Uliingia kwenye Brave kama <ph name="USER_EMAIL_ADDRESS"/>. Tafadhali tumia akaunti hiyo hiyo kuingia tena.</translation>
 <translation id="6915252145142862992">Huu ni usakinishaji wa pili wa Brave, na haiwezi kufanywa kuwa kivinjari chako chaguomsingi.</translation>
 <translation id="7685904775439037072">Brave itakapopata idhini, tovuti zitaweza kukuomba idhini ya kufikia.</translation>
+<translation id="828406390101464081">Akaunti zifuatazo hazipo kwenye wasifu wowote wa Brave. Iwapo ungependa kutumia akaunti iliyo kwenye wasifu mwingine, ondoa wasifu huo kwanza.</translation>
 <translation id="9067428552314418522">Faili hii ni hatari, kwa hivyo Brave imeizuia.</translation>
 <translation id="8207657266087451193">Ikiwa picha haina ufafanuzi muhimu, Brave itajaribu kukuwekea. Ili kuweka ufafanuzi, tutatuma picha kwa Brave. Unaweza kuzima mipangilio hii wakati wowote.</translation>
 <translation id="8622246347342688645">Brave imeshindwa kukagua manenosiri yako kwa sababu hujaingia katika akaunti</translation>
@@ -298,4 +298,5 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Msimamizi wako anataka ufungue Brave tena ili utumie sasisho hili}=1{Msimamizi wako anataka ufungue Brave tena ili utumie sasisho hili. Haitafungua upya dirisha fiche.}other{Msimamizi wako anataka ufungue Brave tena ili utumie sasisho hili. Haitafungua upya madirisha # fiche.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Msimamizi wako anataka ufungue Brave tena ili utumie sasisho}=1{Msimamizi wako anataka ufungue Brave tena ili utumie sasisho. Haitafungua upya dirisha fiche.}other{Msimamizi wako anataka ufungue Brave tena ili utumie sasisho. Haitafungua upya madirisha # fiche.}}</translation>
 <translation id="7914115000169617076">Inaelekea kukamilisha mchakato wa kusasisha! Fungua tena Brave ili ukamilishe mchakato wa kusasisha. Haitafungua upya madirisha za faragha.</translation>
+<translation id="2176087127109773485">Unaweza kudhibiti minyororo yako ya usawazishaji uliyoingia katika Brave. Minyororo yako ya usawazishaji ya Brave hutumiwa kwa ajili ya kivinjari cha Brave, Play Store, Gmail, na zaidi. Ikiwa unataka kuongeza akaunti ya mtu mwingine, kama vile mwanafamilia, ongeza wasifu mpya kwenye <ph name="DEVICE_TYPE"/> badala yake. <ph name="LINK_BEGIN"/>Pata maelezo zaidi<ph name="LINK_END"/></translation>
 </translationbundle>

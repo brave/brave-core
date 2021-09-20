@@ -99,7 +99,6 @@
 <translation id="9183662282810237335">¿Deseas salir de Brave de todos modos?</translation>
 <translation id="4065288863231444640">Permitir que Brave se ejecute en segundo plano</translation>
 <translation id="8148611988012584308">Personaliza y controla Brave</translation>
-<translation id="1201005444605297066">Esta página te permite administrar tus Cuentas de Brave a las que accediste. Tus cuentas estarán disponibles en el navegador Brave y las apps de Play Store, además de los servicios como Gmail, Drive y YouTube. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Te damos la bienvenida a Brave; se abrió una nueva ventana del navegador</translation>
 <translation id="2633397153656205379">No se actualizó Brave porque se produjo un error. <ph name="BEGIN_LINK"/>Soluciona los problemas de actualización y las actualizaciones con error de Brave.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">¿Deseas continuar en un nuevo perfil de Brave?</translation>
@@ -241,6 +240,7 @@
 <translation id="2925193881330501265">Accediste a Brave con <ph name="USER_EMAIL_ADDRESS"/>. Usa la misma cuenta para volver a acceder.</translation>
 <translation id="6915252145142862992">Como esta es una instalación secundaria de Brave, no puede establecerse como tu navegador predeterminado.</translation>
 <translation id="7685904775439037072">Una vez que Brave tenga acceso, los sitios web podrán solicitarte acceso.</translation>
+<translation id="828406390101464081">No se accedió a ningún perfil de Brave con las siguientes cuentas. Si quieres usar una cuenta en otro perfil, primero quita ese perfil.</translation>
 <translation id="9067428552314418522">Brave bloqueó este archivo porque es peligroso.</translation>
 <translation id="8207657266087451193">Si una imagen no tiene una descripción útil, Brave intentará proporcionarte una. Para crear descripciones, se envían las imágenes a Brave. Puedes desactivar esta opción en la configuración en cualquier momento.</translation>
 <translation id="8622246347342688645">Brave no puede revisar las contraseñas porque no accediste a tu cuenta</translation>
@@ -290,4 +290,5 @@
 <translation id="3829358914761176693">{COUNT,plural, =0{Tu administrador solicita que reinicies Brave para aplicar esta actualización}=1{Tu administrador solicita que reinicies Brave para aplicar esta actualización. No se volverá a abrir la ventana de incógnito.}other{Tu administrador solicita que reinicies Brave para aplicar esta actualización. No se volverán a abrir las # ventanas de incógnito.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Tu administrador necesita que reinicies Brave para aplicar una actualización}=1{Tu administrador necesita que reinicies Brave para aplicar una actualización. No se volverá a abrir la ventana de incógnito.}other{Tu administrador necesita que reinicies Brave para aplicar una actualización. No se volverán a abrir las # ventanas de incógnito.}}</translation>
 <translation id="7914115000169617076">Falta poco para finalizar el proceso. Reinicia Brave para completar la actualización. No se volverán a abrir las ventanas privadas.</translation>
+<translation id="2176087127109773485">Puedes administrar tus cadenas de sincronización de Brave conectadas. Tus cadenas de sincronización de Brave se usan en el navegador de Brave, en Play Store, en Gmail, etc. Si quieres agregar una cuenta de otra persona, como un familiar, agrega un perfil nuevo en tu <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 </translationbundle>

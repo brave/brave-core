@@ -101,7 +101,6 @@
 <translation id="9183662282810237335">Biztosan kilép a Braveból?</translation>
 <translation id="4065288863231444640">A Brave futhat a háttérben</translation>
 <translation id="8148611988012584308">A Brave személyre szabása és beállításai</translation>
-<translation id="1201005444605297066">Ezen az oldalon kezelheti a bejelentkezett Brave-fiókjait. Ezeket a fiókokat használhatja majd a Brave böngészőben és a Play Áruház alkalmazásaiban, valamint olyan szolgáltatásokban, mint a Gmail, a Drive és a YouTube. <ph name="LINK_BEGIN"/>További információ<ph name="LINK_END"/>.</translation>
 <translation id="7084397798469173252">Üdvözöljük a Braveban; új böngészőablak megnyitva</translation>
 <translation id="2633397153656205379">Ismeretlen hiba történt, ezért a Brave nem frissült. <ph name="BEGIN_LINK"/>A Brave frissítési problémáinak megoldása.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Biztosan új Brave-profilban folytatja?</translation>
@@ -244,6 +243,7 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="2925193881330501265"><ph name="USER_EMAIL_ADDRESS"/> néven volt bejelentkezve a Braveba. Kérjük, ugyanazzal a fiókkal jelentkezzen be újra.</translation>
 <translation id="6915252145142862992">Ez a Brave második telepítése, amelyet nem állíthat be az alapértelmezett böngészővé.</translation>
 <translation id="7685904775439037072">Miután hozzáférést biztosított a Bravenak, a webhelyek is hozzáférést kérhetnek.</translation>
+<translation id="828406390101464081">A következő fiókok nincsenek egyetlen Brave-profilba sem bejelentkezve. Ha másik profilban szeretné használni az adott fiókot, előbb távolítsa el a szóban forgó profilt.</translation>
 <translation id="9067428552314418522">Ez a fájl veszélyes, ezért a Brave letiltotta.</translation>
 <translation id="8207657266087451193">Ha valamelyik kép nem rendelkezik hasznos leírással, akkor a Brave igyekszik leírást adni róla. A Brave automatikusan megkapja a leírások létrehozásához szükséges képeket. A funkciót a beállítások között bármikor kikapcsolhatja.</translation>
 <translation id="8622246347342688645">A Brave nem tudja ellenőrizni az Ön jelszavait, mert nincs bejelentkezve</translation>
@@ -293,4 +293,5 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Rendszergazdája arra kéri, hogy indítsa újra a Braveot a frissítés alkalmazásához.}=1{Rendszergazdája arra kéri, hogy indítsa újra a Braveot a frissítés alkalmazásához. Az inkognitóablak nem fog újra megnyílni.}other{Rendszergazdája arra kéri, hogy indítsa újra a Braveot a frissítés alkalmazásához. A(z) # inkognitóablak nem fog újra megnyílni.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{A rendszergazda előírta, hogy újra kell indítania a Braveot a frissítés alkalmazásához.}=1{A rendszergazda előírta, hogy újra kell indítania a Braveot a frissítés alkalmazásához. Az inkognitóablak nem fog újra megnyílni.}other{A rendszergazda előírta, hogy újra kell indítania a Braveot a frissítés alkalmazásához. A(z) # inkognitóablak nem fog újra megnyílni.}}</translation>
 <translation id="7914115000169617076">Már majdnem naprakész! Indítsa újra a Braveot a frissítés befejezéséhez. A privát ablakok nem fognak újra megnyílni.</translation>
+<translation id="2176087127109773485">Kezelheti a bejelentkezett Brave-láncait. A Brave szinkronizációs láncokat a Brave böngésző, a Play Áruház, a Gmail, és még sok más alkalmazás használja. Ha valaki más számára is szeretne fiókot hozzáadni, például egy családtagnak, akkor adjon hozzá egy új profilt ehhez: <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Tudjon meg többet<ph name="LINK_END"/></translation>
 </translationbundle>

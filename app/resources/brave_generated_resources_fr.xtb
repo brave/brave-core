@@ -81,6 +81,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="7895302206188277628">Contenu du lien</translation>
 <translation id="3654831858282189202">Publier avec la clé IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importer le texte sélectionné sur IPFS</translation>
 <translation id="6925604404524625582">Importer et copier le lien vers un instantané IPFS</translation>
 <translation id="1434416574322382019">Nouvelle Fenêtre Privée avec Tor</translation>
 <translation id="4703780849509456860">Ouvrir le Lien dans une Fenêtre Privée avec Tor</translation>
@@ -209,7 +210,6 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="6476061084931271248">Redémarrer le nœud pour appliquer les modifications</translation>
 <translation id="3754226427671882382">Redémarrer le nœud</translation>
 <translation id="949667118776341807">Renouveler</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Ce nom n'est pas valide</translation>
 <translation id="6758961763875471084">Modifier la liste des pairs</translation>
 <translation id="1295874070797049002">Exporter la clé</translation>
@@ -240,6 +240,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="8655170717758778983">Rediriger automatiquement vers la page IPFS via DNSLink lorsque cela est possible</translation>
 <translation id="2233724520223030977">Utiliser automatiquement DNSLink pour accéder à la version IPFS d'un site lorsque cela est possible</translation>
 <translation id="6554397389149987360">Utilise le composant Hangouts pour activer le partage d'écran et d'autres fonctionnalités dans le navigateur.</translation>
+<translation id="7878791177459550035">Le routeur multimédia active la fonctionnalité de diffusion dans le navigateur.</translation>
 <translation id="9156965752763025780">Vos modifications seront prises en compte au prochain redémarrage de Brave.</translation>
 <translation id="7179921470347911571">Relancer maintenant</translation>
 <translation id="8068526464562249859">Utilise l'extension compagnon IPFS pour une prise en charge IPFS améliorée dans Brave, y compris l'accès aux tâches IPFS courantes depuis la barre de votre navigateur.</translation>
@@ -350,7 +351,23 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
         Vous pouvez lire <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>des instructions sur la façon de télécharger et de compiler vous-même<ph name="END_LINK_BUILD_INSTRUCTIONS"/> le code source spécifique <ph name="BEGIN_LINK_SOURCE_CODE"/>utilisé pour créer cette copie<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Ajouter tous les onglets aux favoris...</translation>
 <translation id="2336228925368920074">Ajouter tous les onglets aux favoris...</translation>
+<translation id="4235920711083356755">Afficher le bouton VPN</translation>
+<translation id="4070612712151038707">Affiche le bouton VPN dans la barre d'outils</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">À propos de Brave VPN</translation>
+<translation id="4378551569595875038">Connexion...</translation>
+<translation id="3368922792935385530">Connecté</translation>
+<translation id="1536754031901697553">Déconnexion…</translation>
+<translation id="8030169304546394654">Déconnecté</translation>
+<translation id="1863950594388384201">Afficher le bouton VPN dans la barre d'outils</translation>
+<translation id="5187139277471084437">Masquer le bouton VPN dans la barre d'outils</translation>
+<translation id="8041089156583427627">Envoyer</translation>
+<translation id="4049186905514157504">Gérer mon forfait</translation>
+<translation id="7570585565843385325">Afficher le bouton VPN dans la barre d'outils</translation>
+<translation id="5310426188697803101">Masquer le bouton VPN dans la barre d'outils</translation>
+<translation id="945522503751344254">Envoyer le commentaire</translation>
+<translation id="3015685033234401792">Gérer mon forfait</translation>
 <translation id="796831669370432378">Pour ajouter un signet, cliquez sur le bouton signet à côté de la barre d'adresse</translation>
 <translation id="4989337484121655457">Accès complet au disque requis</translation>
 <translation id="8025559074845816210">Brave a besoin d'un accès complet au disque pour importer vos signets depuis Safari.</translation>
