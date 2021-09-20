@@ -14,7 +14,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/brave_browser_process.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/download/background_download_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -23,7 +22,6 @@
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "components/keyed_service/core/simple_dependency_manager.h"
 #include "components/keyed_service/core/simple_keyed_service_factory.h"
-#include "content/public/browser/browser_context.h"
 
 using brave_shields::AdBlockSubscriptionDownloadManager;
 
