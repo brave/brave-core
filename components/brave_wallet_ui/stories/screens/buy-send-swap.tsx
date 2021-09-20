@@ -26,6 +26,7 @@ export interface Props {
   swapFromAsset: AccountAssetOptionType
   selectedNetwork: EthereumChain
   selectedAccount: UserAccountType
+  selectedTab: BuySendSwapTypes
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
   orderExpiration: ExpirationPresetObjectType
@@ -57,6 +58,7 @@ export interface Props {
   onSetToAmount: (value: string) => void
   onSelectPresetFromAmount: (percent: number) => void
   onSelectPresetSendAmount: (percent: number) => void
+  onSelectTab: (tab: BuySendSwapTypes) => void
 }
 
 function BuySendSwap (props: Props) {
@@ -68,6 +70,7 @@ function BuySendSwap (props: Props) {
     swapFromAsset,
     selectedNetwork,
     selectedAccount,
+    selectedTab,
     exchangeRate,
     slippageTolerance,
     orderExpiration,
@@ -98,16 +101,16 @@ function BuySendSwap (props: Props) {
     onSetToAddress,
     onSetToAmount,
     onSelectPresetFromAmount,
-    onSelectPresetSendAmount
+    onSelectPresetSendAmount,
+    onSelectTab
   } = props
-  const [selectedTab, setSelectedTab] = React.useState<BuySendSwapTypes>('buy')
 
   React.useMemo(() => {
     if (selectedTab === 'buy' && !BuySupportedChains.includes(selectedNetwork.chainId)) {
-      setSelectedTab('send')
+      onSelectTab('send')
     }
     if (selectedTab === 'swap' && !SwapSupportedChains.includes(selectedNetwork.chainId)) {
-      setSelectedTab('send')
+      onSelectTab('send')
     }
   }, [selectedNetwork, selectedTab, BuySupportedChains])
 
@@ -120,7 +123,7 @@ function BuySendSwap (props: Props) {
   }, [SwapSupportedChains, selectedNetwork])
 
   const changeTab = (tab: BuySendSwapTypes) => () => {
-    setSelectedTab(tab)
+    onSelectTab(tab)
   }
 
   return (

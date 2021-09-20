@@ -39,7 +39,8 @@ import {
   TokenInfo,
   UpdateAccountNamePayloadType,
   EthereumChain,
-  WalletRoutes
+  WalletRoutes,
+  BuySendSwapTypes
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -118,6 +119,7 @@ function Container (props: Props) {
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
   const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
+  const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
 
   // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
   const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
@@ -600,6 +602,7 @@ function Container (props: Props) {
             swapFromAsset={fromAsset}
             selectedNetwork={selectedNetwork}
             selectedAccount={selectedAccount}
+            selectedTab={selectedWidgetTab}
             exchangeRate={exchangeRate}
             buyAmount={buyAmount}
             sendAmount={sendAmount}
@@ -631,6 +634,7 @@ function Container (props: Props) {
             onSelectAccount={onSelectAccount}
             onToggleOrderType={onToggleOrderType}
             onSelectAsset={onSelectTransactAsset}
+            onSelectTab={setSelectedWidgetTab}
           />
         </WalletWidgetStandIn>
       }
