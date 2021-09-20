@@ -10,7 +10,6 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/test/base/testing_brave_browser_process.h"
 
 namespace tor {
 class BraveTorClientUpdater;
