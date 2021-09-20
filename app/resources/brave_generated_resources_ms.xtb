@@ -209,7 +209,6 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="6476061084931271248">Mulakan semula nod untuk menggunakan perubahan</translation>
 <translation id="3754226427671882382">Mulakan semula nod</translation>
 <translation id="949667118776341807">Putar</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Nama ini tidak sah</translation>
 <translation id="6758961763875471084">Ubah suai senarai rakan</translation>
 <translation id="1295874070797049002">Eksport kekunci</translation>
@@ -240,6 +239,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="8655170717758778983">Ubah hala ke halaman IPFS secara automatik melalui DNSLink apabila mungkin</translation>
 <translation id="2233724520223030977">Mengunakan DNSLink secara automatik untuk menavigasi ke versi IPFS laman web apabila mungkin</translation>
 <translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mendayakan perkongsian skrin dan lain-lain ciri dalam pelayar.</translation>
+<translation id="7878791177459550035">Penghala media mendayakan ciri siaran dalam pelayar.</translation>
 <translation id="9156965752763025780">Perubahan anda akan dilaksanakan apabila anda melancarkan semula Brave pada masa hadapan.</translation>
 <translation id="7179921470347911571">Lancarkan Semula Sekarang</translation>
 <translation id="8068526464562249859">Menggunakan sambungan Teman IPFS untuk sokongan IPFS dirangsang dalam Brave, termasuk akses kepada tugasan IPFS umum daripada bar pelayar anda.</translation>
@@ -350,7 +350,23 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
         Anda boleh membaca <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>arahan tentang cara  untuk memuat turun dan membina untuk diri anda sendiri<ph name="END_LINK_BUILD_INSTRUCTIONS"/> kod sumber <ph name="BEGIN_LINK_SOURCE_CODE"/>khusus yang digunakan untuk mencipta salinan ini<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Tanda halaman semua tab...</translation>
 <translation id="2336228925368920074">Tanda Halaman Semua Tab...</translation>
+<translation id="4235920711083356755">Tunjukkan butang VPN</translation>
+<translation id="4070612712151038707">Menunjukkan butang VPN dalam bar alat</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">VPN Brave</translation>
+<translation id="2345974803401546682">Perihal VPN Brave</translation>
+<translation id="4378551569595875038">Menyambung...</translation>
+<translation id="3368922792935385530">Disambungkan</translation>
+<translation id="1536754031901697553">Memutuskan sambungan...</translation>
+<translation id="8030169304546394654">Sambungan Terputus</translation>
+<translation id="1863950594388384201">Tunjukkan Butang VPN dalam Bar Alat</translation>
+<translation id="5187139277471084437">Sembunyikan Butang VPN dalam Bar Alat</translation>
+<translation id="8041089156583427627">Hantar Maklum Balas</translation>
+<translation id="4049186905514157504">Urus Pelan Saya</translation>
+<translation id="7570585565843385325">Tunjukkan butang VPM dalam bar alat</translation>
+<translation id="5310426188697803101">Sembunyikan butang VPN dalam bar alat</translation>
+<translation id="945522503751344254">Hantar maklum balas</translation>
+<translation id="3015685033234401792">Urus pelan saya</translation>
 <translation id="796831669370432378">Untuk menambahkan penanda buku, klik butang penanda buku di sebelah palang alamat</translation>
 <translation id="4989337484121655457">Akses Cakera Penuh diperlukan</translation>
 <translation id="8025559074845816210">Brave memerlukan Akses Cakera Penuh untuk mengimport Tanda Buku anda daripada Safari.</translation>

@@ -18,6 +18,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="5616153642055197778">Dostupna je nova, bezbednija verzija Brave-a.</translation>
 <translation id="6797402139308059782">Neka Brave radi u pozadini</translation>
 <translation id="5875673934455379806">Ponovo instaliraj Brave</translation>
+<translation id="2176087127109773485">Možete da upravljate Brave nalozima na koje ste prijavljeni. Brave nalozi se koriste za Brave pregledač, Play prodavnicu, Gmail i drugo. Ako želite da dodate nalog za nekog drugog, npr. člana porodice, umesto toga dodajte novu osobu na svoj uređaj <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="4528406859989804913">Prijavljujete se pomoću naloga kojim se upravlja i dajete njegovom administratoru kontrolu nad Brave profilom. Brave podaci, kao što su aplikacije, obeleživači, istorija, lozinke i druga podešavanja, biće trajno povezani sa nalogom <ph name="USER_NAME"/>. Moći ćete da izbrišete te podatke preko Kontrolne table Brave naloga, ali nećete moći da ih povežete sa nekim drugim nalogom. Možete opcionalno da napravite novi profil da bi postojeći Brave podaci ostali odvojeni. <ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">Kada to uključite, možete da se prijavljujete na Brave sajtove, kao što je Gmail, ali se ne prijavljujete u Brave</translation>
 <translation id="189297655255130768">Brave ne reaguje. Želite li da ga odmah ponovo pokrenete?</translation>
@@ -103,7 +104,6 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="9183662282810237335">Želite li ipak da zatvorite Brave?</translation>
 <translation id="4065288863231444640">Neka Brave radi u pozadini</translation>
 <translation id="8148611988012584308">Prilagodite i kontrolišite Brave</translation>
-<translation id="1201005444605297066">Ova stranica vam omogućava da upravljate Brave nalozima na koje ste prijavljeni. Nalozi će biti dostupni u Brave pregledaču i aplikacijama iz Play prodavnice, kao i u uslugama kao što su Gmail, Disk i YouTube. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Dobro došli u Brave; otvoren je novi prozor pregledača</translation>
 <translation id="2633397153656205379">Brave se nije ažurirao. Došlo je do greške. <ph name="BEGIN_LINK"/>Otklonite probleme sa ažuriranjem Brave-a i neuspela ažuriranja.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Želite da nastavite na novom Brave profilu?</translation>
@@ -250,6 +250,7 @@ Brave ne može da vrati podešavanja.</translation>
 <translation id="2925193881330501265">Bili ste prijavljeni na Brave kao <ph name="USER_EMAIL_ADDRESS"/>. Koristite isti nalog da biste se ponovo prijavili.</translation>
 <translation id="6915252145142862992">Ovo je sekundarna instalacija Brave-a pa ne možete da ga podesite kao podrazumevani pregledač.</translation>
 <translation id="7685904775439037072">Kada Brave dobije pristup, veb-sajtovi će moći da zatraže pristup.</translation>
+<translation id="828406390101464081">Sledeći nalozi nisu prijavljeni ni na jedan Brave profil. Ako želite da koristite nalog na drugom profilu, uklonite prvo taj profil.</translation>
 <translation id="9067428552314418522">Ova datoteka je opasna, pa ju je Brave blokirao.</translation>
 <translation id="8207657266087451193">Ako slika nema koristan opis, Brave će probati da vam ga pruži. Slike se šalju Brave-u radi pravljenja opisa. To možete da isključite u podešavanjima u svakom trenutku.</translation>
 <translation id="8622246347342688645">Brave ne može da vam proverava lozinke zato što niste prijavljeni</translation>

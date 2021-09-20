@@ -103,7 +103,6 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="9183662282810237335">Lumabas pa rin sa Brave?</translation>
 <translation id="4065288863231444640">Hayaang Tumakbo ang Brave sa Background</translation>
 <translation id="8148611988012584308">I-customize at kontrolin ang Brave</translation>
-<translation id="1201005444605297066">Binibigyang-daan ka ng page na ito na pamahalaan ang iyong mga naka-sign in na Brave account. Magiging available ang mga account na ito sa Brave browser at mga Play Store app, pati na rin sa mga serbisyong tulad ng Gmail, Drive, at YouTube. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Welcome sa Brave; binuksan ang bagong window ng browser</translation>
 <translation id="2633397153656205379">Hindi na-update ang Brave, nagkaproblema. <ph name="BEGIN_LINK"/>Ayusin ang mga problema sa pag-update ng Brave at ang mga hindi naisagawang pag-update dito.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Magpatuloy sa bagong profile sa Brave?</translation>
@@ -249,6 +248,7 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="2925193881330501265">Naka-sign in ka sa Brave bilang <ph name="USER_EMAIL_ADDRESS"/>. Pakigamit ang parehong account upang mag-sign in muli.</translation>
 <translation id="6915252145142862992">Pangalawang pag-install ito ng Brave at hindi ito maaaring gawing iyong default na browser.</translation>
 <translation id="7685904775439037072">Kapag mayroon nang access ang Brave, makakahingi na ang mga website ng access sa iyo.</translation>
+<translation id="828406390101464081">Hindi naka-sign in sa anumang profile sa Brave ang mga sumusunod na account. Kung gusto mong gumamit ng account sa ibang profile, alisin muna ang profile na iyon.</translation>
 <translation id="9067428552314418522">Mapanganib ang file na ito, kaya na-block ito ng Brave.</translation>
 <translation id="8207657266087451193">Kung hindi sapat ang deskripsyon ng isang larawan, susubukan ng Brave na ayusin ito para sa iyo. Para gumawa ng mga deskripsyon, ipinapadala ang mga larawan sa Brave. Puwede mo itong i-off sa mga setting anumang oras.</translation>
 <translation id="8622246347342688645">Hindi masusuri ng Brave ang iyong mga password dahil hindi ka naka-sign in</translation>
@@ -298,4 +298,5 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Hinihiling ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang update na ito}=1{Hinihiling ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang update na ito. Hindi bubukas ulit ang iyong Incognito window.}one{Hinihiling ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang update na ito. Hindi bubukas ulit ang iyong # Incognito window.}other{Hinihiling ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang update na ito. Hindi bubukas ulit ang iyong # na Incognito window.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Ipinag-aatas ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang isang update}=1{Ipinag-aatas ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang isang update. Hindi bubukas ulit ang iyong Incognito window.}one{Ipinag-aatas ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang isang update. Hindi bubukas ulit ang iyong # Incognito window.}other{Ipinag-aatas ng iyong administrator na ilunsad mo ulit ang Brave para mailapat ang isang update. Hindi bubukas ulit ang iyong # na Incognito window.}}</translation>
 <translation id="7914115000169617076">Malapit nang maging up to date! Ilunsad ulit ang Brave para tapusin ang pag-update. Hindi bubukas ulit ang mga pribadong window.</translation>
+<translation id="2176087127109773485">Maaari mong pamahalaan ang iyong mga naka-sign in na chain ng pag-sync ng Brave. Ginagamit ang iyong mga chain ng pag-sync ng Brave para sa Brave browser, Play Store, Gmail, at higit pa. Kung gusto mong magdagdag ng account para sa iba pang tao, tulad ng miyembro ng pamilya, magdagdag na lang ng bagong profile sa iyong <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 </translationbundle>

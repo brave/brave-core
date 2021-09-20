@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">Sprečava oglase &amp; tragača da se učitaju i pojavljuju na veb-sajtovima</translation>
 <translation id="1680858055899097121">Ne zadržavaj kartice između sesija pregledanja</translation>
 <translation id="7142548388914389999">Dopušta analitiku proizvoda koji čuva privatnost (P3A)</translation>
-<translation id="5254037869598726291">Ova potpuno anonimna informacija pomaže Brave-u da procenjuje ukupno korišćenje određenih karakteristika i čini ih boljim za vas.</translation>
+<translation id="4272190451231642425">Automatski šalji izveštaje o otkazivanju</translation>
+<translation id="2239766974964486304">Izveštaji o otkazivanju pomažu kompaniji Brave da poboljša stabilnost proizvoda za sve korisnike.</translation>
 <translation id="7977176350719484850">Procenjeni sačuvani podaci</translation>
 <translation id="9008534313521214777">Istočno standardno vreme\nsačuvano</translation>
 <translation id="6572660632052512096">Režim radne površine</translation>
@@ -478,7 +479,7 @@ meseca...</translation>
 <translation id="1078265935778232285">Dobro došli u Brave pregledač</translation>
 <translation id="6824713633331856331">Pomozite nam da učimo anonimno</translation>
 <translation id="6116685031674149112">Brave štiti vašu privatnost i ceni vašu saglasnost za sledeće:</translation>
-<translation id="4394483075076204916">Pomozite da se poboljša Brave šaljući izveštaje o padovima i potpuno automatizovano, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Pomozite da se poboljša Brave šaljući potpuno anonimno <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">analitika privatnog proizvoda.</translation>
 <translation id="5187052478998910855">Treba vam osveženje za nagrade?</translation>
 <translation id="8622329973403382303">Krenite u kratku turneju da biste razjasnili kako se ulazi u istoriju kao Rewards rok zvezda!</translation>
@@ -561,7 +562,6 @@ meseca...</translation>
 <translation id="1144810021918451336">Ne štiti vas od opasnih veb lokacija, preuzimanja i proširenja.</translation>
 <translation id="745115390910697838">Fraze se ne poklapaju, pokušajte ponovo.</translation>
 <translation id="2360588547830602174">Obnavljanje naloga nije uspelo. Pokušajte ponovo.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Tržišna cena u ETH</translation>
 <translation id="5593852897152820572">Cena u ETH</translation>
 <translation id="6748108480210050150">Od</translation>
@@ -595,4 +595,5 @@ meseca...</translation>
 <translation id="8967036623785635603">Izmenite vidljiva sredstva</translation>
 <translation id="5050890334032852465">Sačuvajte listu za pregled naloga</translation>
 <translation id="7755766175599167100">Pretražite tokene</translation>
+<translation id="3835223348537121988">Bilans:</translation>
 </translationbundle>

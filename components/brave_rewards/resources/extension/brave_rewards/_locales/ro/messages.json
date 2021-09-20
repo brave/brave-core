@@ -1,685 +1,382 @@
 {
-  "braveRewards": {
-    "message": "Recompense Brave",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "Rezumat",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "Începeți să câștigați acum!",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "Indiciu",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "Recompense intrare",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "Creator neconfirmat",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "Sunteți plătiți pentru vizualizarea reclamelor și plătiți mai departe pentru sprijinirea creatorilor preferați de conținut.",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "Creator confirmat",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "Acum puteți câștiga token-uri pentru vizualizarea reclamelor care respectă confidențialitatea.",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "Reîmprospătați starea",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "Acum puteți câștiga puncte pentru că urmăriți reclame care respectă confidențialitatea.",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "Citiți care sunt îmbunătățirile",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "Aflați mai multe",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "Am actualizat foarte mult Brave Rewards.",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "Pregătiți-vă să experimentați următorul Internet.",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "Portofelul dumneavoastră",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "Subvenții",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "Detalii",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "on": {
-    "message": "pornit",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "Creator Brave verificat",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "Atenție",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "Contribuție lunară",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "Includeți în contribuție automată",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "Trimite o plată...",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "Activează indicii",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "pentru",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "Rezumat ",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "Aprilie",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "August",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "Decembrie",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "Februarie",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "Ianuarie",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "Iulie",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "Iunie",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "Martie",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "Mai",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "Noiembrie",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "Octombrie",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "Septembrie",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "Granturi de $currency$",
-    "description": "Title for grant notification",
+  "platformPublisherTitle": {
+    "message": "$name$ pe $platform$",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "Granturi Token Revendicate",
-    "description": "Title for grant section in wallet summary"
+  "attention": {
+    "message": "Atenție",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "Câștiguri din Reclame",
-    "description": "Title for ads section in wallet summary"
+  "sendTip": {
+    "message": "Trimiteți bacșiș",
+    "description": ""
   },
-  "rewardsContribute": {
-    "message": "Contribuție automată",
-    "description": "Title for auto contribute section in wallet summary"
+  "includeInAutoContribute": {
+    "message": "Includeți în contribuție automată",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "Cadouri bănești o singură dată",
-    "description": "Title for one-time tips section in wallet summary"
-  },
-  "expiresOn": {
-    "message": "expiră pe",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
-  },
-  "recurringDonations": {
-    "message": "Contribuții lunare",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "Dezactivat",
-    "description": "Label used in toggle indicating that toggle is off"
+  "monthlyContribution": {
+    "message": "Contribuție lunară",
+    "description": ""
   },
   "ok": {
-    "message": "ok",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "Acum puteți câștiga bani vizualizând reclame.",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "Reclame Brave",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "Contribuție automată",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "Ați contribuit cu $amount$ $currency$",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "Aveți o ofertă care vă așteaptă.",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "Fă o copie acum",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "Rezervă Portofel",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "Vă rugăm efectuați o copie de rezervă pentru portofelul Brave.",
-    "description": "Description for backup wallet notification"
-  },
-  "learnMore": {
-    "message": "Aflați mai multe",
-    "description": "Notification button text to learn more about a specific use-case"
-  },
-  "mismatchedProviderAccountsTitle": {
-    "message": "Eroare: alt cont",
-    "description": "Title for mismatched provider accounts notification"
-  },
-  "mismatchedProviderAccountsNotification": {
-    "message": "Hmm, se pare că portofelul dvs. Brave Rewards a fost confirmat deja cu un alt cont $name$. Încercați să realizați confirmarea din nou utilizând celălalt cont.",
-    "description": "Description for mismatched provider accounts notification",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "upholdBATNotAllowedForUserTitle": {
-    "message": "Eroare: token-ul BAT nu este disponibil",
-    "description": "Title for BAT not allowed for user notification"
-  },
-  "upholdBATNotAllowedForUserNotification": {
-    "message": "Uphold nu acceptă încă BAT în regiunea dvs.",
-    "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserTitle": {
-    "message": "Eroare: cont blocat",
-    "description": "Title for blocked user notification"
-  },
-  "upholdBlockedUserNotification": {
-    "message": "Contul dvs. Uphold este blocat în prezent.",
-    "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserTitle": {
-    "message": "Eroare: cont în așteptare",
-    "description": "Title for pending user notification"
-  },
-  "upholdPendingUserNotification": {
-    "message": "Contul dvs. Uphold este încă în așteptare.",
-    "description": "Description for pending user notification"
-  },
-  "upholdRestrictedUserTitle": {
-    "message": "Eroare: cont restricționat",
-    "description": "Title for restricted user notification"
-  },
-  "upholdRestrictedUserNotification": {
-    "message": "Contul dvs. Uphold este restricționat în prezent.",
-    "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Limita dispozitivului a fost atinsă",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Portofelul dvs. nu poate fi confirmat deoarece ați atins limita maximă de dispozitive confirmate.",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "Contul tău Brave Rewards așteaptă o depunere.",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "Fonduri insuficiente",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "Creare portofel",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "A apărut o problemă la procesarea contribuției dumneavoastră.",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "Plata dvs. lunară programată pentru Contribuția automată și contribuțiile lunare nu a putut fi finalizată din cauza fondurilor insuficiente. Vom încerca din nou peste 30 de zile.",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "Imposibil de trimis plata. Te rugăm să încerci din nou mai târziu.",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "Încă nu există activități...",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "Trageți iconița BAT pe",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "Dovediți că sunteți o persoană!",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "țintă.",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "Hmm… Nu Chiar. Încercați Din Nou.",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "Revendică",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "Grant Token Gratuit",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "Data Expirării Grantului",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
     "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "Brave Rewards are o problemă. Vă rugăm încercați din nou mai târziu.",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "Hopa, ceva nu funcționează. Vă rugăm încercați din nou mai târziu.",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "Reîmprospătați starea",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "Neverificat încă",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "Acest creator nu este configurat în prezent pentru a primi contribuții din portofelul dvs. Orice plată pe care o faceți va rămâne în așteptare în portofel și se va reîncerca automat efectuarea acesteia timp de 90 de zile.",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "Aflați mai multe.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "Ați alocat {{reservedAmount}} {{currency}} pentru creatori care nu s-au înregistrat încă pentru a primi contribuții. Browserul dumneavoastră va încerca în continuare să contribuie până când aceștia sunt verificați sau până când trec 90 de zile.",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "Aflați mai multe.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "Dezactivat",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "Setări",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "În prezent nu acumulați beneficii Rewards în timp ce navigați. Reporniți Rewards",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "Brave Rewards reprezintă",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "Crearea portofelului a eșuat",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "Încearcă din nou",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "Adaugă fonduri",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "Setări recompense",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "Recompensele dvs. din reclame sunt aici!",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "și",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "Fiți răsplătit pentru răsfoire!",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "Câștigă vizualizând anunțuri care respectă confidențialitate și plătește pentru a sprijini creatorii de conținut care îți plac.",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "Activează recompense Brave",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "Politica de Confidențialitate",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "Prin apăsarea 'Activează Brave Rewards', dovedești că ai citit și ești de acord cu",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "Termeni Servicii",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "Bine ai revenit!",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "Contribuțiile dvs. lunare au fost procesate!",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "Contribuții și bacșișuri",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": "Făcând clic pe „Alăturați-vă Rewards” dați de înțeles că ați citit și sunteți de acord cu",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "BAT",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "turnOnAds": {
-    "message": "Activare Ads",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "câștigați din reclame",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "Dă un bacșiș acestui tweet",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "Indiciu",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "Dați bacșiș pentru această postare",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "Indiciu",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "Trimiteți o plată",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "Indiciu",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "Creatorul $name$ a fost verificat recent",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "Aveți bacșișuri în așteptare din cauza fondurilor insuficiente",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "Contribuție în așteptare",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "Este ziua dumneavoastră norocoasă!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "Grantul dvs. de $currency$ este pe drum.",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "Grant Token Gratuit",
-    "description": "Token title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "Ați câștigat o Recompensă Reclame!",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "Recompensa este pe drum spre portofelul dumneavoastră de Recompense Brave.",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "Suma de Recompense",
-    "description": "Token title on success screen for ads"
-  },
-  "walletButtonDisconnected":  {
-    "message": "Deconectat",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "Verificare portofel",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "Portofelul a fost verificat",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "Accesați contul dvs.  $provider$",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletLogInWithProvider":  {
-    "message": "Conectați-vă la contul dvs. $provider$ ",
-    "description": "CTA to log in with a wallet provider",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "Deconectare de la Brave Rewards",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "Verificat",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "Portofelul dvs. este verificat!",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "Felicitări! Portofelul dvs. $name$ a fost verificat cu succes și este gata pentru depunerea și retragerea de fonduri.",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "Vai, portofelul dvs. nu poate fi accesat.",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "Nu vă faceți griji. Acest lucru se poate întâmpla din diverse motive care țin de securitate. Reconectați-vă portofelul și problema va fi rezolvată.",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "Acest Creator verificat Brave nu și-a configurat contul încă pentru a primi contribuții de la utilizatorii Brave. Toate plățile pe care le trimiteți vor rămâne în portofelul dvs. până când finalizează acest proces.",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "Finalizați verificarea portofelului",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "Setați...",
-    "description": "Button text for setting monthly contribution"
+    "message": "Setați",
+    "description": ""
   },
-  "tokens":  {
-    "message": "token-uri",
-    "description": "Standard tokens text"
-  },
-  "point":  {
-    "message": "Punct",
-    "description": "BAT Point text"
-  },
-  "token":  {
-    "message": "Indicativ",
-    "description": "BAT Token text"
-  },
-  "tokenGrants":  {
-    "message": "Donații în jetoane",
-    "description": "BAT Tokens Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "Bună ziua, $name$!",
-    "description": "Greetings for external wallet popup",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
-      }
-    }
-  },
-  "cancel":  {
-    "message": "Anulează",
-    "description": "Text for cancel button"
-  },
-  "changeAmount":  {
+  "changeAmount": {
     "message": "Schimbă suma",
-    "description": "Button text for changing monthly contribution amount"
+    "description": ""
   },
-  "login":  {
-    "message": "Conectați-vă",
-    "description": "Text for login button"
+  "cancel": {
+    "message": "Anulează",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "Dacă vă confirmați portofelul, puteți să vă gestionați fondurile mai eficient.",
-    "description": "Text for login button"
+  "grantCaptchaTitle": {
+    "message": "Confirmați că sunteți o persoană",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "Aveți nevoie de cel puțin $amount$ BAT pentru a vă crea un cont Uphold. Dacă aveți deja un cont Uphold confirmat, accesați pagina de conectare.",
-    "description": "Text for login button",
+  "grantCaptchaFailedTitle": {
+    "message": "Hmm… Nu Chiar. Încercați Din Nou.",
+    "description": ""
+  },
+  "grantCaptchaHint": {
+    "message": "Inserați pictograma BAT în ținta $hint$.",
+    "description": "",
     "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "walletConnected":  {
-    "message": "Conectată",
-    "description": "Status button that tells user that he is connected"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "Este ziua dumneavoastră norocoasă!",
+    "description": ""
   },
-  "walletDisconnected":  {
-    "message": "Deconectat",
-    "description": "Status button that tells user that he is disconnected"
+  "grantCaptchaPassedTextUGP": {
+    "message": "Grantul token-ului dumneavoastră trebuie să sosească.",
+    "description": ""
   },
-  "walletPending":  {
-    "message": "În așteptare",
-    "description": "Status button that tells user that he is currently pending"
+  "grantCaptchaAmountUGP": {
+    "message": "Grant Token Gratuit",
+    "description": ""
   },
-  "walletVerificationNote3":  {
-    "message": "Notă: tranzacțiile dvs. vor fi vizibile pentru $provider$ după ce autorizați; de exemplu, vor putea vedea destinatarul și suma bacșișurilor.",
-    "description": "Displayed in login modal for external wallet providers",
+  "grantCaptchaPassedTitleAds": {
+    "message": "Ați câștigat o Recompensă Reclame!",
+    "description": ""
+  },
+  "grantCaptchaPassedTextAds": {
+    "message": "Recompensa este pe drum spre portofelul dumneavoastră de Recompense Brave.",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "Suma de Recompense",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "Data Expirării Grantului",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "Hopa, ceva nu funcționează. Vă rugăm încercați din nou mai târziu.",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "Brave Rewards are o problemă. Vă rugăm încercați din nou mai târziu.",
+    "description": ""
+  },
+  "walletAccountLink": {
+    "message": "Accesați contul meu $provider$",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "Adaugă fonduri",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "Contribuție automată",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "Accesați $provider$ pentru finalizarea verificării",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Finalizați confirmarea identității pentru a începe să primiți recompense.",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "Deconectat",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "Deconectare de la Brave Rewards",
+    "description": ""
+  },
+  "walletEstimatedEarnings": {
+    "message": "Venituri estimate",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "Conectați-vă la contul dvs. $provider$ ",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "Plăți lunare",
+    "description": ""
+  },
+  "walletMyWallet": {
+    "message": "Portofelul meu",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "Cadouri bănești o singură dată",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "În așteptare",
+    "description": ""
+  },
+  "walletPendingRewardsText": {
+    "message": "$amount$ ajung în $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "walletRewardsFromAds": {
+    "message": "Recompense din reclame",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "Rezumat ",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "Verificat",
+    "description": ""
+  },
+  "walletVerify": {
+    "message": "Verificare portofel",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "Soldul dumneavoastră",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "Adaugă fonduri",
+    "description": ""
+  },
+  "notificationLearnMore": {
+    "message": "Aflați mai multe",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "Reconectați-vă",
+    "description": ""
+  },
+  "notificationClaim": {
+    "message": "Revendică",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "Fonduri insuficiente",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "Contul tău Brave Rewards așteaptă o depunere.",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "Contribuție automată",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "Ați contribuit cu $amount$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "Portofel de rezervă",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Vă rugăm efectuați o copie de rezervă pentru portofelul Brave.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Creați o copie de rezervă acum",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "Portofelul dvs. este deconectat",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "Acest lucru se întâmplă pentru a vă menține contul în siguranță. Dați clic mai jos pentru a vă reconecta acum.",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "Reconectați-vă",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "Portofelul dvs. este verificat!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Portofelul $provider$ a fost confirmat cu succes și este pregătit pentru depunerea și retragerea de fonduri.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "Donații în jetoane",
+    "description": ""
+  },
+  "notificationTokenGrantText": {
+    "message": "Aveți o ofertă care vă așteaptă.",
+    "description": ""
+  },
+  "notificationAdGrantTitle": {
+    "message": "Venituri încasate din reclame",
+    "description": ""
+  },
+  "notificationAdGrantText": {
+    "message": "Recompensele din reclamele Brave Private sunt aici!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Contribuție lunară eșuată",
+    "description": ""
+  },
+  "notificationInsufficientFundsText": {
+    "message": "Plata dvs. lunară programată pentru Contribuția automată și contribuțiile lunare nu a putut fi finalizată din cauza fondurilor insuficiente. Vom încerca din nou peste 30 de zile.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "A apărut o problemă la procesarea contribuției dumneavoastră.",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "Contribuții și bacșișuri",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "Contribuțiile dvs. lunare au fost procesate.",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "Contribuție în așteptare",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "Creatorul $publisher_name$ a fost verificat recent",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "Fonduri insuficiente",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "Aveți bacșișuri în așteptare din cauza fondurilor insuficiente",
+    "description": ""
+  },
+  "notificationWalletLinkingFailedTitle": {
+    "message": "Asocierea portofelului a eșuat",
+    "description": ""
+  },
+  "notificationDeviceLimitReachedText": {
+    "message": "Portofelul dvs. nu poate fi confirmat deoarece ați atins limita maximă de dispozitive confirmate.",
+    "description": ""
+  },
+  "notificationMismatchedProviderAccountsText": {
+    "message": "Se pare că portofelul dvs. Brave Rewards a fost confirmat deja cu un alt cont $provider$. Încercați să realizați confirmarea din nou utilizând celălalt cont.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationUpholdBatNotSupportedText": {
+    "message": "Uphold nu acceptă încă BAT în regiunea dvs.",
+    "description": ""
+  },
+  "notificationUpholdUserBlockedText": {
+    "message": "Contul dvs. Uphold este blocat în prezent.",
+    "description": ""
+  },
+  "notificationUpholdUserPendingText": {
+    "message": "Contul dvs. Uphold este încă în așteptare.",
+    "description": ""
+  },
+  "notificationUpholdUserRestrictedText": {
+    "message": "Contul dvs. Uphold este restricționat în prezent.",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "Câștigați tokenuri și dăruiți",
@@ -854,5 +551,29 @@
         "content": "$2"
       }
     }
+  },
+  "captchaMaxAttemptsExceededText": {
+    "message": "Se pare că nu funcționează, reclamele Brave vor rămâne întrerupte. Contactați-ne dacă aveți nevoie de ajutor cu modulul captcha.",
+    "description": ""
+  },
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "Nr. max. de încercări depășite",
+    "description": ""
+  },
+  "captchaSolvedTitle": {
+    "message": "Rezolvat!",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "Reclamele și veniturile se vor relua. Mulțumim pentru ajutorul acordat pentru protejarea recompenselor Brave și pentru reclamele bazate pe confidențialitate.",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "Contactați echipa de asistență",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "Închide",
+    "description": ""
   }
 }

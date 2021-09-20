@@ -209,7 +209,6 @@
 <translation id="6476061084931271248">برای اعمال تغییرات، گره را مجدداً راه‌اندازی کنید</translation>
 <translation id="3754226427671882382">راه‌اندازی مجدد گره</translation>
 <translation id="949667118776341807">چرخش</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">این نام معتبر نیست</translation>
 <translation id="6758961763875471084">تغییر فهرست همتایان</translation>
 <translation id="1295874070797049002">کلید صدور</translation>
@@ -240,6 +239,7 @@
 <translation id="8655170717758778983">درصورت امکان، به‌طور خودکار ازطریق DNSLink به صفحات IPFS هدایت می‌شود</translation>
 <translation id="2233724520223030977">به‌طور خودکار از DNSLink استفاده می‌کند تا درصورت امکان به نسخه IPFS پیمایش کند</translation>
 <translation id="6554397389149987360">از مؤلفه‌های Hangouts برای فعال کردن اشتراک‌گذاری صفحه و سایر ویژگی‌ها در مرورگر استفاده می‌کند.</translation>
+<translation id="7878791177459550035">روتر رسانه قابلیت پخش را در مرورگر ممکن می‌سازد.</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
 <translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
 <translation id="8068526464562249859">برای پشتیبانی بهبودیافته IPFS در Brave (از جمله دسترسی به کارهای معمول IPFS از نوار مرورگر)، از افزونه همراه IPFS استفاده می‌کند.</translation>
@@ -350,7 +350,23 @@
 شما می‌توانید <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>دستورالعمل‌های مربوط به نحوه دانلود و ایجاد<ph name="END_LINK_BUILD_INSTRUCTIONS"/> کد منبع مشخص <ph name="BEGIN_LINK_SOURCE_CODE"/>استفاده‌شده برای ایجاد این نسخه را مطالعه کنید<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">نشانک‌گذاری همه برگه‌ها...</translation>
 <translation id="2336228925368920074">نشانک‌گذاری همه برگه‌ها...</translation>
+<translation id="4235920711083356755">نمایش دکمه VPN</translation>
+<translation id="4070612712151038707">دکمه VPN را در نوار ابزار نمایش می‌دهد</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">درباره Brave VPN</translation>
+<translation id="4378551569595875038">در حال اتصال...</translation>
+<translation id="3368922792935385530">متصل</translation>
+<translation id="1536754031901697553">درحال قطع اتصال...</translation>
+<translation id="8030169304546394654">ارتباط قطع شد</translation>
+<translation id="1863950594388384201">نمایش دکمه VPN در نوار ابزار</translation>
+<translation id="5187139277471084437">پنهان کردن دکمه VPN در نوار ابزار</translation>
+<translation id="8041089156583427627">ارسال بازخورد</translation>
+<translation id="4049186905514157504">مدیریت طرح من</translation>
+<translation id="7570585565843385325">نمایش دکمه VPN در نوار ابزار</translation>
+<translation id="5310426188697803101">پنهان کردن دکمه VPN در نوار ابزار</translation>
+<translation id="945522503751344254">ارسال بازخورد</translation>
+<translation id="3015685033234401792">مدیریت طرح من</translation>
 <translation id="796831669370432378">برای افزودن نشانک، روی دکمه نشانک در کنار نوار نشانی کلیک کنید</translation>
 <translation id="4989337484121655457">دسترسی کامل به دیسک الزامی است</translation>
 <translation id="8025559074845816210">Brave برای وارد کردن «نشانک‌ها» از Safari، به مجوز دسترسی کامل به دیسک نیاز دارد.</translation>

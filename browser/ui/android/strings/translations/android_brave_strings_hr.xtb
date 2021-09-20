@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">Sprječava se učitavanje i prikazivanje elemenata za praćenje &amp; oglasa na mrežnim stranicama</translation>
 <translation id="1680858055899097121">Ne zadržavaj kartice između sesija pregledavanja</translation>
 <translation id="7142548388914389999">Dopusti analitiku proizvoda kojom se čuva privatnost (P3A)</translation>
-<translation id="5254037869598726291">Ovim potpuno anonimnim informacijama omogućava se društvu Brave procjenjivanje i poboljšavanje ukupne uporabe određenih značajki.</translation>
+<translation id="4272190451231642425">Automatski šalji izvješća o padu programa</translation>
+<translation id="2239766974964486304">Izvješćima o padu programa pomaže se društvu Brave poboljšati stabilnost proizvoda za sve korisnike.</translation>
 <translation id="7977176350719484850">Procjena smanjenog broja\npodataka</translation>
 <translation id="9008534313521214777">Procjena ušteđenog\nvremena</translation>
 <translation id="6572660632052512096">Način radne površine</translation>
@@ -475,7 +476,7 @@ dok se ne provjere ili do isteka 90 dana.</translation>
 <translation id="1078265935778232285">Dobro došli u preglednik Brave</translation>
 <translation id="6824713633331856331">Pomognite nam anonimno saznati</translation>
 <translation id="6116685031674149112">Preglednikom Brave štiti se vaša privatnost i\ncijeni vaša privola za sljedeće stavke:</translation>
-<translation id="4394483075076204916">Pomognite unaprijediti preglednik Brave slanjem izvješća o rušenju u potpuno anonimnom formatu, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Pomognite poboljšati preglednik Brave slanjem potpuno anonimnog <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">privatna analitika proizvoda.</translation>
 <translation id="5187052478998910855">Trebate podsjetnik na Rewards?</translation>
 <translation id="8622329973403382303">Krenite u kratki obilazak kako biste razjasnili kako se ulazi u povijest kao zvijezda Rewards!</translation>
@@ -558,7 +559,6 @@ dok se ne provjere ili do isteka 90 dana.</translation>
 <translation id="1144810021918451336">Ne štiti vas od opasnih mrežnih mjesta, preuzimanja i proširenja.</translation>
 <translation id="745115390910697838">Rečenice se ne podudaraju. Pokušajte ponovno.</translation>
 <translation id="2360588547830602174">Oporavak računa nije uspio. Pokušajte ponovno.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Tržišna cijena u valuti ETH</translation>
 <translation id="5593852897152820572">Cijena u valuti ETH</translation>
 <translation id="6748108480210050150">Pošiljatelj</translation>
@@ -592,4 +592,5 @@ dok se ne provjere ili do isteka 90 dana.</translation>
 <translation id="8967036623785635603">Uredi vidljivu imovinu</translation>
 <translation id="5050890334032852465">Spremi popis za gledanje računa</translation>
 <translation id="7755766175599167100">Pretraži tokene</translation>
+<translation id="3835223348537121988">Stanje:</translation>
 </translationbundle>

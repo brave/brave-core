@@ -8,15 +8,15 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "up",
+    "message": "செயலில்",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "down",
+    "message": "முடக்கத்தில்",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "for this site",
+    "message": "இத்தளத்திற்கு",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
@@ -28,7 +28,7 @@
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Report a broken site",
+    "message": "உடைந்த தளத்தைப் புகாரளி",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
@@ -36,27 +36,27 @@
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Item blocked",
+    "message": "உருப்படி தடுக்கப்பட்டது",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {
-    "message": "and",
+    "message": "மற்றும்",
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "connections upgraded",
+    "message": "இணைப்புகள் தரமுயர்த்தப்பட்டன",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
-    "message": "connection upgraded",
+    "message": "இணைப்பு தரமுயர்த்தப்பட்டது",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Cross-site trackers blocked",
+    "message": "குறுக்கு-தள தடமிகள் தடுக்கப்பட்டன",
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked",
+    "message": "தடமிகள் & விளம்பரங்கள் தடுக்கப்பட்டன",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
@@ -64,19 +64,19 @@
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (standard)",
+    "message": "தடமிகள் & விளம்பரங்கள் தடுக்கப்பட்டன (தரநிலை)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Allow all trackers & ads",
+    "message": "தடமிகள் & விளம்பரங்களை அனுமதி",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Connections upgraded to HTTPS",
+    "message": "இணைப்புகள் HTTPS-க்கு தரமுயர்த்தப்பட்டன",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "Connection upgraded to HTTPS",
+    "message": "இணைப்பு HTTPS-க்கு தரமுயர்த்தப்பட்டது",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
@@ -92,7 +92,7 @@
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "எல்லா நினைவிகளும் அனுமதிக்கப்பட்டது",
+    "message": "எல்லா நினைவிகளும் அனுமதிக்கப்பட்டன",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
@@ -132,7 +132,7 @@
     "description": "Message for the resources blocked *block all* option"
   },
   "allowAll": {
-    "message": "எல்லாம் அனுமதி",
+    "message": "அனைத்தையும் அனுமதி",
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
@@ -144,11 +144,11 @@
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Blocked once",
+    "message": "ஒருமுறை தடுக்கப்பட்டது",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Allowed once",
+    "message": "ஒருமுறை அனுமதிக்கப்பட்டது",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
@@ -176,7 +176,7 @@
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Block element",
+    "message": "அங்கத்தைத் தடு",
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {

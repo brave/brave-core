@@ -95,6 +95,7 @@
 <translation id="129863573139666797"><ph name="BEGIN_LINK"/>اپنی کوکیز صاف کرنے کی کوشش کریں<ph name="END_LINK"/></translation>
 <translation id="1301324364792935241">‏اپنی محفوظ DNS ترتیبات چیک کریں</translation>
 <translation id="1307966114820526988">فرسودہ خصوصیات</translation>
+<translation id="1312803275555673949">کون سا ثبوت اس کو سپورٹ کرتا ہے؟</translation>
 <translation id="131405271941274527">‏آپ کے NFC آلہ پر تھپتھپاتے وقت <ph name="URL"/> معلومات بھیجنا اور وصول کرنا چاہتا ہے</translation>
 <translation id="1314509827145471431">دائیں طرف باندھیں</translation>
 <translation id="1319245136674974084">اس ایپ کیلئے دوبارہ نہ پوچھیں</translation>
@@ -138,6 +139,7 @@
 <translation id="1422930527989633628">سائٹ قریبی بلوٹوتھ آلات کو دریافت کرنے کیلئے پوچھ سکتی ہے</translation>
 <translation id="1426410128494586442">ہاں</translation>
 <translation id="1428146450423315676">اسٹیکر 7</translation>
+<translation id="1428729058023778569">‏آپ یہ وارننگ اس لیے دیکھ رہے ہیں کیونکہ یہ سائٹ HTTPS کو سپورٹ نہیں کرتی ہے۔ <ph name="BEGIN_LEARN_MORE_LINK"/>مزید جانیں<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1430915738399379752">پرنٹ کریں</translation>
 <translation id="1436185428532214179">سائٹ آپ کے آلے پر موجود فائلز یا فولڈرز میں ترمیم کرنے کیلئے پوچھ سکتی ہے</translation>
 <translation id="1442386063175183758">دایاں گیٹ فولڈ</translation>
@@ -469,6 +471,7 @@
 <translation id="2595719060046994702">یہ آلہ اور اکاؤنٹ کسی کمپنی یا دوسری تنظیم کے زیر انتظام نہیں ہیں۔</translation>
 <translation id="2597378329261239068">یہ دستاویز پاس ورڈ کے ذریعہ تحفظ یافتہ ہے۔  براہ کرم ایک پاس ورڈ درج کریں۔</translation>
 <translation id="2609632851001447353">تغیرات</translation>
+<translation id="2610561535971892504">کلک کر کے کاپی کریں</translation>
 <translation id="2618023639789766142">C10 ‎(Envelope‎)‎</translation>
 <translation id="2625385379895617796">آپ کی گھڑی آگے ہے</translation>
 <translation id="262745152991669301">‏سائٹ USB آلات سے منسلک ہونے کیلئے پوچھ سکتی ہے</translation>
@@ -498,6 +501,7 @@
 <translation id="2701514975700770343">نیچے رکھیں</translation>
 <translation id="2702801445560668637">پڑھنے کی فہرست</translation>
 <translation id="2704283930420550640">قدر فارمیٹ سے مماثل نہیں ہے۔</translation>
+<translation id="2704606927547763573">کاپی کیا</translation>
 <translation id="2705137772291741111">اس سائٹ کی محفوظ کردہ (کیش کردہ) کاپی کو پڑھا نہیں جا سکا۔</translation>
 <translation id="2709516037105925701">آٹو فل</translation>
 <translation id="2713444072780614174">سفید</translation>
@@ -630,8 +634,10 @@
 <translation id="3229041911291329567">آپ کے آلے اور براؤزر کے بارے میں ورژن کی معلومات</translation>
 <translation id="323107829343500871">‏<ph name="CREDIT_CARD"/> کا CVC درج کریں</translation>
 <translation id="3234666976984236645">اس سائٹ پر اہم مواد کا ہمیشہ پتا لگائیں</translation>
+<translation id="3240791268468473923">ادائیگی کی اسناد محفوظ کریں کوئی مماثل اسناد نہیں کی شیٹ کھلی ہوئی ہے</translation>
 <translation id="3249845759089040423">دلکش</translation>
 <translation id="3252266817569339921">فرانسيسی</translation>
+<translation id="3257954757204451555">اس معلومات کے پیچھے کون ہے؟</translation>
 <translation id="6900454207575412115">‏<ph name="CREATE_GOOGLE_CALENDAR_EVENT_FOCUSED_FRIENDLY_MATCH_TEXT"/>، Brave کیلنڈر میں تیزی سے ایک نیا ایونٹ تخلیق کرنے کیلئے Tab، پھر Enter دبائیں</translation>
 <translation id="3266793032086590337">قدر (متضاد)</translation>
 <translation id="3268451620468152448">کھلے ٹیبز</translation>
@@ -642,6 +648,7 @@
 <translation id="3282497668470633863">کارڈ پر نام شامل کریں</translation>
 <translation id="3286372614333682499">پورٹریٹ</translation>
 <translation id="3287510313208355388">آن لائن ہونے پر ڈاؤن لوڈ کریں</translation>
+<translation id="3288238092761586174">آپ کی ادائیگی کی تصدیق کے لیے <ph name="URL"/> کو اضافی اقدامات کرنے کی ضرورت پڑ سکتی ہے</translation>
 <translation id="3293642807462928945"><ph name="POLICY_NAME"/> پالیسی کے بارے میں مزید جانیں</translation>
 <translation id="5894665462526421022">‏Brave ترتیبات میں اپنے پاس ورڈز دیکھیں اور ان کا نظم کریں</translation>
 <translation id="3303855915957856445">تلاش کے کوئی نتائج نہیں ملے</translation>
@@ -692,6 +699,7 @@
 <translation id="3432601291244612633">صفحہ بند کریں</translation>
 <translation id="3435738964857648380">سیکیورٹی</translation>
 <translation id="4527130811319726464">‏اپنے Brave اکاؤنٹ میں محفوظ کردہ پاس ورڈ کا استعمال کریں</translation>
+<translation id="3440783957068352691">مربع</translation>
 <translation id="3443726618221119081">Juuro-Ku-Kai</translation>
 <translation id="3447661539832366887">اس آلہ کے مالک نے ڈائناسور گیم کو آف کر دیا ہے۔</translation>
 <translation id="3447884698081792621">سرٹیفیکیٹ دکھائیں (<ph name="ISSUER"/> کی جانب سے جاری کردہ)</translation>
@@ -974,11 +982,14 @@
 <translation id="4434045419905280838">پوپ اپس اور ری ڈائریکٹس</translation>
 <translation id="4435702339979719576">Postcard)‎</translation>
 <translation id="443673843213245140">پراکسی کا استعمال غیر فعال کر دیا گیا ہے لیکن ایک واضح پراکسی کنفیگریشن متعین کی گئی ہے۔</translation>
+<translation id="4450893287417543264">دوبارہ نہ دکھائیں</translation>
 <translation id="4451135742916150903">‏سائٹ HID آلات سے منسلک ہونے کیلئے پوچھ سکتی ہے</translation>
 <translation id="4460315069258617173">اس سائٹ کیلئے آپ کے ذریعے ٹیبز کو بند کرنے تک اجازت ہے</translation>
 <translation id="4464826014807964867">آپ کی تنظیم کے ذریعے دی گئی معلومات والی ویب سائٹس</translation>
+<translation id="4465818729556336129">یہ دستاویز رازدارانہ ہے اور آپ کے منتظم کے ذریعہ پرنٹنگ کا مشورہ نہیں دیا گیا ہے۔</translation>
 <translation id="4476953670630786061">یہ فارم محفوظ نہیں ہے۔ آٹو فل کو آف کر دیا گیا ہے۔</translation>
 <translation id="4477350412780666475">اگلا ٹریک</translation>
+<translation id="4481394504112738036">رازدارانہ فائل</translation>
 <translation id="4482953324121162758">اس سائٹ کا ترجمہ نہیں کیا جائے گا۔</translation>
 <translation id="4490717597759821841">A7</translation>
 <translation id="3966104135245031874">‏مطابقت پذیر کردہ پاس ورڈز کو اپنے Brave اکاؤنٹ کے ساتھ مرموز کریں</translation>
@@ -1028,7 +1039,6 @@
 <translation id="4677585247300749148"><ph name="URL"/> ایکسیسبیلٹی کے ایونٹس کا جواب دینا چاہتا ہے</translation>
 <translation id="8197094463444457125">Brave Slides</translation>
 <translation id="468314109939257734">اپنا ورچوئل کارڈ نمبر دیکھیں</translation>
-<translation id="4690462567478992370">ایک غلط سرٹیفیکیٹ کا استعمال روکیں</translation>
 <translation id="4691835149146451662">Architecture-A ‎(Envelope‎)‎</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
 <translation id="4702504834785592287">سائیڈ</translation>
@@ -1069,7 +1079,6 @@
 <translation id="4800132727771399293">‏اپنی اختتامی تاریخ اور CVC چیک کریں اور دوبارہ کوشش کریں</translation>
 <translation id="480334179571489655">اصل پالیسی کی خرابی</translation>
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
-<translation id="8896585555528145662">‏آپ ابھی <ph name="SITE"/> ملاحظہ نہیں کر سکتے ہیں کیونکہ ویب سائٹ نے جلد بازی والی اسنادات بھیجی ہیں جس پر Brave کارروائی نہیں کر سکتا ہے۔ نیٹ ورک کی خرابیاں اور حملے عموماً عارضی ہوتے ہیں لہذا یہ صفحہ شاید بعد میں کام کرے گا۔</translation>
 <translation id="4809079943450490359">آپ کے آلہ کے منتظم کی طرف سے ہدایات:</translation>
 <translation id="4813512666221746211">نیٹ ورک کی خرابی</translation>
 <translation id="4816492930507672669">صفحہ میں فٹ کریں</translation>
@@ -1078,6 +1087,7 @@
 <translation id="4825507807291741242">طاقتور</translation>
 <translation id="4838327282952368871">خیالی</translation>
 <translation id="484462545196658690">خودکار</translation>
+<translation id="4849865131988503897">درستگی چیک کریں</translation>
 <translation id="4850886885716139402">دیکھیں</translation>
 <translation id="485316830061041779">جرمن</translation>
 <translation id="4854362297993841467">ڈیلیوری کا یہ طریقہ دستیاب نہیں ہے۔ کوئی دوسرا طریقہ آزمائیں۔</translation>
@@ -1179,6 +1189,7 @@
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">مشین</translation>
 <translation id="5179510805599951267"><ph name="ORIGINAL_LANGUAGE"/> میں نہیں ہے؟ اس خرابی کی اطلاع دیں</translation>
+<translation id="51918995459521422"><ph name="ORIGIN"/> متعدد فائلز ڈاؤن لوڈ کرنا چاہتا ہے</translation>
 <translation id="519422657042045905">تشریح دستیاب نہیں ہے</translation>
 <translation id="5201306358585911203">اس صفحے پر انضمام کردہ ایک صفحے کے مطابق</translation>
 <translation id="5205222826937269299">نام مطلوب ہے</translation>
@@ -1347,7 +1358,6 @@
 <translation id="3985758120980526872">‏Brave کو وہ پاس ورڈ مل گیا جو آپ نے ابھی ڈیٹا کی خلاف ورزی میں استعمال کیا ہے۔ ہم اس پاس ورڈ کو ابھی تبدیل کرنے کی تجویز کرتے ہیں۔</translation>
 <translation id="5803412860119678065">کیا آپ اپنے <ph name="CARD_DETAIL"/> کو پُر کرنا چاہتے ہیں؟</translation>
 <translation id="5804241973901381774">اجازتیں</translation>
-<translation id="5804427196348435412">‏NFC آلات استعمال کریں</translation>
 <translation id="5810442152076338065">ایک فرسودہ سائفر سوئٹ کا استعمال کر کے <ph name="DOMAIN"/> کا آپ کا کنکشن مرموز کیا گیا ہے۔</translation>
 <translation id="5813119285467412249">&amp;دوبارہ شامل کریں</translation>
 <translation id="5817918615728894473">جوڑا بنائيں</translation>
@@ -1423,6 +1433,7 @@
 <translation id="6051221802930200923">آپ ابھی <ph name="SITE"/> ملاحظہ نہیں کر سکتے ہیں کیونکہ ویب سائٹ سرٹیفکیٹ پننگ کا استعمال کرتی ہے۔ نیٹ ورک کی خرابیاں اور حملے عام طور پر عارضی ہوتے ہیں، لہذا یہ صفحہ شاید بعد میں کام کرے گا۔</translation>
 <translation id="6051898664905071243">صفحے کی تعداد:</translation>
 <translation id="6052284303005792909">•</translation>
+<translation id="6055888660316801977">ادائیگی کی اسناد محفوظ کریں کوئی مماثل اسناد نہیں کی شیٹ</translation>
 <translation id="6058977677006700226">اپنے تمام آلات پر اپنے کارڈز استعمال کریں؟</translation>
 <translation id="6059925163896151826">‏USB آلات</translation>
 <translation id="6060009363608157444">‏DnsOverHttps وضع غلط ہے۔</translation>
@@ -1501,6 +1512,7 @@
 <translation id="6389470377220713856">کارڈ پر نام</translation>
 <translation id="6390200185239044127">‏نصف Z-فولڈ</translation>
 <translation id="6390662030813198813">Engineering-E</translation>
+<translation id="6391700400718590966">ادائیگی کی اسناد محفوظ کریں کوئی مماثل اسناد نہیں کی شیٹ بند ہے</translation>
 <translation id="6393956493820063117">منتظم کی پالیسی کے ذریعے <ph name="ORIGIN_NAME"/> سے اس مقام پر پیسٹ کرنا مسدود کر دیا گیا ہے</translation>
 <translation id="6398765197997659313">پوری سکرین سے خارج ہوں</translation>
 <translation id="6401136357288658127">یہ پالیسی فرسودہ ہے۔ اس کی بجائے، آپ کو <ph name="NEW_POLICY"/> پالیسی کا استعمال کرنا چاہیے۔</translation>
@@ -1581,7 +1593,6 @@
 <translation id="6689249931105087298">سیاہ پوائنٹ کمپریشن کے ساتھ متعلقہ</translation>
 <translation id="5406652219015697259">‏آپ کے سائن ان ہونے کی وجہ سے Brave آپ کے کارڈز کو آپ کے Brave اکاؤنٹ میں محفوظ کرنے کی پیشکش کر رہا ہے۔ آپ اس برتاؤ کو ترتیبات میں تبدیل کر سکتے ہیں۔ کارڈ ہولڈر کے نام کا تعلق آپ کے اکاؤنٹ سے ہے۔</translation>
 <translation id="6698381487523150993">بنا دی گئی:</translation>
-<translation id="6699188552522342100">کیا یہ ویب سائٹ درست ہے؟</translation>
 <translation id="6702919718839027939">پیش کریں</translation>
 <translation id="6710213216561001401">گزشتہ</translation>
 <translation id="6710594484020273272">&lt;تلاش کی اصطلاح ٹائپ کریں&gt;</translation>
@@ -1589,6 +1600,7 @@
 <translation id="6711464428925977395">پراکسی سرور میں کچھ غلط ہے یا پتہ درست نہیں ہے۔</translation>
 <translation id="6716672519412350405">‏<ph name="URL"/> آپ کے اطراف کا 3D نقشہ تخلیق اور کیمرے کی پوزیشن ٹریک کرنا چاہتا ہے</translation>
 <translation id="6718612893943028815">کیمرا استعمال کریں؟</translation>
+<translation id="6721678857435001674">اپنی سیکیورٹی کلید کا برانڈ اور ماڈل دیکھیں</translation>
 <translation id="6738516213925468394">آپ کے ڈیٹا کی آپ کے <ph name="BEGIN_LINK"/>مطابقت پذیر پاس فریز<ph name="END_LINK"/> کے ساتھ <ph name="TIME"/> کو مرموز کاری کی گئی تھی۔ مطابقت پذیری شروع کرنے کیلئے اسے درج کریں۔</translation>
 <translation id="674375294223700098">سرور سرٹیفکیٹ میں نامعلوم خرابی۔</translation>
 <translation id="6744009308914054259">کنکشن کا انتظار کرنے کے دوران، آف لائن مضامین پڑھنے کے لیے آپ ڈاؤن لوڈز ملاحظہ کر سکتے ہیں۔</translation>
@@ -1625,13 +1637,13 @@
 <translation id="6898699227549475383">‏تنظیم (O)</translation>
 <translation id="6907293445143367439"><ph name="SITE_NAME"/> کو اس کی اجازت دیں:</translation>
 <translation id="6910240653697687763">‏<ph name="URL"/> آپ کے MIDI آلات کا پورا کنٹرول حاصل کرنا چاہتا ہے</translation>
+<translation id="691024665142758461">متعدد فائلیں ڈاؤن لوڈ کریں</translation>
 <translation id="6915804003454593391">صارف:</translation>
 <translation id="6722453239914327220">‏یہ نام آپ کے Brave اکاؤنٹ سے ہے</translation>
 <translation id="6944692733090228304">آپ نے اپنا پاس ورڈ ایک ایسی سائٹ پر درج کیا ہے جو <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> کے زیر انتظام نہیں ہے۔ اپنے اکاؤنٹ کے تحفظ کے لیے، دیگر ایپس اور سائٹس پر اپنا پاس ورڈ دوبارہ استعمال نہ کریں۔</translation>
 <translation id="6945221475159498467">منتخب کریں</translation>
 <translation id="6948051842255602737">گیم ختم، آپ کا اسکور <ph name="SCORE"/> ہے۔</translation>
 <translation id="6948701128805548767">پِک اپ کے طریقے اور ضروریات دیکھنے کیلئے، ایک پتہ منتخب کریں</translation>
-<translation id="6949479070119158594">‏آپ یہ وارننگ اس لیے دیکھ رہے ہیں کیونکہ یہ سائٹ HTTPS کو سپورٹ نہیں کرتی ہے۔</translation>
 <translation id="6949872517221025916">پاس ورڈ دوبارہ ترتیب دیں</translation>
 <translation id="6950684638814147129">‏JSON قدر پارس کرنے میں خرابی: <ph name="ERROR"/></translation>
 <translation id="695140971690006676">تمام کو ری سیٹ کریں</translation>
@@ -1709,6 +1721,7 @@
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> سیکیورٹی کے معیارات کی پابندی نہیں کرتا ہے۔</translation>
 <translation id="7210993021468939304">‏کنٹینر کے اندر Linux کی سرگرمی اور کنٹینر کے اندر Linux ایپ کو انسٹال کرکے چلا سکتا ہے</translation>
 <translation id="721197778055552897">اس مسئلہ کے بارے میں <ph name="BEGIN_LINK"/>مزید جانیں<ph name="END_LINK"/>۔</translation>
+<translation id="7215025035562547931">درستگی پر غور کرنے کیلئے تھوڑا سا وقت نکالیں</translation>
 <translation id="7217745192097460130">‏اپنی خریداری کی توثیق اور اسے مکمل کرنے کے لئے Touch ID کا استعمال کریں؟</translation>
 <translation id="7219179957768738017">کنکشن <ph name="SSL_VERSION"/> کا استعمال کرتا ہے۔</translation>
 <translation id="7220786058474068424">کارروائی ہورہی ہے</translation>
@@ -1934,10 +1947,12 @@
 <translation id="7961015016161918242">کبھی نہیں</translation>
 <translation id="7966803981046576691">جاب اکاؤنٹ کی قسم</translation>
 <translation id="79682505114836835">قدر "<ph name="VALUE"/>" ایک غلط ہیکس رنگ ہے۔</translation>
+<translation id="7970392640816874403">دوسرے ذرائع کیا کہتے ہیں؟</translation>
 <translation id="7976214039405368314">بہت زیادہ درخواستیں</translation>
 <translation id="7977538094055660992">آؤٹ پٹ آلہ</translation>
 <translation id="7977894662897852582">Edp</translation>
 <translation id="798134797138789862">سائٹ ورچوئل رئیلٹی آلات اور ڈیٹا استعمال کرنے کیلئے پوچھ سکتی ہے</translation>
+<translation id="8896585555528145662">‏آپ ابھی <ph name="SITE"/> ملاحظہ نہیں کر سکتے ہیں کیونکہ ویب سائٹ نے جلد بازی والی اسنادات بھیجی ہیں جس پر Brave کارروائی نہیں کر سکتا ہے۔ نیٹ ورک کی خرابیاں اور حملے عموماً عارضی ہوتے ہیں لہذا یہ صفحہ شاید بعد میں کام کرے گا۔</translation>
 <translation id="79859296434321399">‏افزودہ حقیقت کا مواد دیکھنے کیلئے، ARCore کو انسٹال کریں</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">باندھیں</translation>
@@ -2000,7 +2015,6 @@
 <translation id="8202370299023114387">تصادم</translation>
 <translation id="8206978196348664717">Prc4 ‎(Envelope‎)‎</translation>
 <translation id="8211406090763984747">کنکشن محفوظ ہے</translation>
-<translation id="8213464188712611711">میموریز</translation>
 <translation id="8218327578424803826">تفویض کردہ مقام</translation>
 <translation id="8220146938470311105">C7/C6 ‎(Envelope‎)‎</translation>
 <translation id="3272614036080146686">‏آپ نے ابھی ایک پُرفریب سائٹ پر اپنا پاس ورڈ درج کیا ہے۔ Brave <ph name="WEBSITE_1"/> اور دیگر ایسی سائٹس پر جا کر ابھی پاس ورڈ بدلنے کی تجویز کرتا ہے جہاں آپ اسے استعمال کرتے ہیں۔</translation>
@@ -2245,6 +2259,7 @@
 <translation id="9154194610265714752">اپ ڈیٹ کر دیا گیا</translation>
 <translation id="9157595877708044936">تشکیل دیا جا رہا ہے…</translation>
 <translation id="9158625974267017556">C6 ‎(Envelope‎)‎</translation>
+<translation id="9164029392738894042">درستگی چیک کریں</translation>
 <translation id="9168814207360376865">سائٹس کو یہ چیک کرنے کی اجازت دیں کہ آیا آپ نے ادائیگی کے طریقوں کو محفوظ کیا ہے</translation>
 <translation id="9169664750068251925">اس سائٹ پر ہمیشہ مسدود کر دیں</translation>
 <translation id="9169931577761441333"><ph name="APP_NAME"/> کو ہوم اسکرین میں شامل کریں</translation>

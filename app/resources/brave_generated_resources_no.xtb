@@ -188,7 +188,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="6476061084931271248">Start noden på nytt for å aktivere endringene</translation>
 <translation id="3754226427671882382">Start noden på nytt</translation>
 <translation id="949667118776341807">Roter</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Dette navnet er ugyldig</translation>
 <translation id="6758961763875471084">Endre listen over peers</translation>
 <translation id="1295874070797049002">Eksporter nøkkel</translation>
@@ -219,6 +218,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8655170717758778983">Viderekoble automatisk til IPFS-sider via DNSLink når det er mulig</translation>
 <translation id="2233724520223030977">Bruker automatisk DNSLink for å navigere til IPFS-versjoner av nettsteder når det er mulig</translation>
 <translation id="6554397389149987360">Bruk Hangouts-komponenten for å aktivere skjermdeling og andre funksjoner i nettleseren.</translation>
+<translation id="7878791177459550035">Mediaruteren slår på cast-funksjonen i nettleseren.</translation>
 <translation id="9156965752763025780">Endringene dine trer i kraft neste gang du starter Brave.</translation>
 <translation id="7179921470347911571">Start på nytt nå</translation>
 <translation id="8068526464562249859">Bruker IPFS Companion-programutvidelsen for forbedret IPFS-støtte i Brave, inkludert tilgang til vanlige IPFS-oppgaver fra topplinjemenyen i nettleseren din.</translation>
@@ -329,7 +329,23 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
         Du kan lese <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>hvordan du laster ned <ph name="END_LINK_BUILD_INSTRUCTIONS"/> den spesifikke <ph name="BEGIN_LINK_SOURCE_CODE"/>kildekoden som ble brukt til å lage dette eksemplaret<ph name="END_LINK_SOURCE_CODE"/>, og bygge den selv.</translation>
 <translation id="4474155171896946103">Bokmerk alle fanene</translation>
 <translation id="2336228925368920074">Legg inn bokmerke for alle åpne faner</translation>
+<translation id="4235920711083356755">Vis VPN-knappen</translation>
+<translation id="4070612712151038707">Viser VPN-knappen i verktøylinjen</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">om Brave VPM</translation>
+<translation id="4378551569595875038">Kobler til …</translation>
+<translation id="3368922792935385530">Tilkoblet</translation>
+<translation id="1536754031901697553">Kobler fra …</translation>
+<translation id="8030169304546394654">Koblet fra</translation>
+<translation id="1863950594388384201">Vis VPN-knappen i verktøylinjen</translation>
+<translation id="5187139277471084437">Skjul VPN-knappen i verktøylinjen</translation>
+<translation id="8041089156583427627">Send tilbakemelding</translation>
+<translation id="4049186905514157504">Administrer abonnementet ditt</translation>
+<translation id="7570585565843385325">Vis VPN-knappen i verktøylinjen</translation>
+<translation id="5310426188697803101">Skjul VPN-knappen i verktøylinjen</translation>
+<translation id="945522503751344254">Gi tilbakemelding</translation>
+<translation id="3015685033234401792">Administrer planen din</translation>
 <translation id="796831669370432378">For å legge til bokmerker, klikk på bokmerkeknappen ved siden av adressefeltet.</translation>
 <translation id="4989337484121655457">Fullstendig disktilgang kreves</translation>
 <translation id="8025559074845816210">Brave trenger fullstendig disktilgang for å importere bokmerkene dine fra Safari.</translation>

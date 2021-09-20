@@ -101,7 +101,6 @@
 <translation id="9183662282810237335">Vil du avslutte Brave likevel?</translation>
 <translation id="4065288863231444640">La Brave kjøre i bakgrunnen</translation>
 <translation id="8148611988012584308">Tilpass og kontrollér Brave</translation>
-<translation id="1201005444605297066">På denne siden kan du administrere de påloggede Brave-kontoene dine. Kontoene blir tilgjengelige i apper i Brave-nettleseren og Play-butikken samt tjenester som Gmail, Disk og YouTube. <ph name="LINK_BEGIN"/>Finn ut mer<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Velkommen til Brave – et nytt nettleservindu er åpnet</translation>
 <translation id="2633397153656205379">Brave ble ikke oppdatert. Noe gikk galt. <ph name="BEGIN_LINK"/>Løs problemer med Brave-oppdateringer og mislykkede oppdateringer.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Vil du fortsette i en ny Brave-profil?</translation>
@@ -246,6 +245,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="2925193881330501265">Du ble logget på Brave som <ph name="USER_EMAIL_ADDRESS"/>. Du må logge deg på igjen med samme konto.</translation>
 <translation id="6915252145142862992">Dette er en sekundær installering av Brave. Den kan ikke brukes som standardnettleser.</translation>
 <translation id="7685904775439037072">Når Brave har fått tilgang, kan nettsteder spørre deg om tilgang.</translation>
+<translation id="828406390101464081">Disse kontoene er ikke logget på noen Brave-profiler. Hvis du vil bruke en konto på en annen profil, fjerner du den profilen først.</translation>
 <translation id="9067428552314418522">Denne filen er farlig, så Brave har blokkert den.</translation>
 <translation id="8207657266087451193">Hvis et bilde ikke har noen nyttig beskrivelse, prøver Brave å finne en til deg. For å opprette beskrivelser blir bilder sendt til Brave. Du kan slå av dette i innstillingene når som helst.</translation>
 <translation id="8622246347342688645">Brave kan ikke sjekke passordene dine, siden du ikke er logget på</translation>
@@ -295,4 +295,5 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen}=1{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen. Inkognitovinduet ditt blir ikke gjenåpnet.}other{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering}=1{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering. Inkognitovinduet ditt blir ikke gjenåpnet.}other{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
 <translation id="7914115000169617076">Nesten ferdig oppdatert! Start Brave på nytt for å fullføre oppdateringen. Private vinduer blir ikke gjenåpnet.</translation>
+<translation id="2176087127109773485">Du kan administrere innloggede Brave-synkroniseringskjeder. Brave-synkroniseringskjedene brukes for Brave-nettleseren, Play Store, Gmail med mer. Hvis du vil legge inn en konto for noen andre, for eksempel en i familien, må du legge til en ny profil i <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Finn ut mer<ph name="LINK_END"/></translation>
 </translationbundle>

@@ -101,7 +101,6 @@
 <translation id="9183662282810237335">Vols sortir de Brave igualment?</translation>
 <translation id="4065288863231444640">Permet que Brave s'executi en segon pla</translation>
 <translation id="8148611988012584308">Personalitza i controla Brave</translation>
-<translation id="1201005444605297066">En aquesta pàgina pots gestionar els Comptes de Brave en què tinguis la sessió iniciada. Aquests comptes estaran disponibles al navegador Brave i a les aplicacions de Play Store, i també en serveis com ara Gmail, Drive i YouTube. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Et donem la benvinguda a Brave; s'ha obert una altra finestra del navegador</translation>
 <translation id="2633397153656205379">No s'ha actualitzat Brave. S'ha produït un error. <ph name="BEGIN_LINK"/>Soluciona els problemes i errors d'actualització de Brave<ph name="END_LINK"/>.</translation>
 <translation id="3679799810790990472">Vols continuar en un perfil de Brave nou?</translation>
@@ -246,6 +245,7 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="2925193881330501265">Teníeu la sessió iniciada a Brave com a <ph name="USER_EMAIL_ADDRESS"/>. Utilitzeu el mateix compte per tornar a iniciar-hi la sessió.</translation>
 <translation id="6915252145142862992">Aquesta és una instal·lació secundària de Brave i no pot definir-se com a navegador predeterminat.</translation>
 <translation id="7685904775439037072">Un cop Brave tingui accés, els llocs web et podran demanar accés.</translation>
+<translation id="828406390101464081">Els següents comptes no tenen la sessió iniciada en cap perfil de Brave. Si vols utilitzar un compte en un altre perfil, primer has de suprimir aquest perfil.</translation>
 <translation id="9067428552314418522">Brave ha bloquejat aquest fitxer perquè és perillós.</translation>
 <translation id="8207657266087451193">Si una imatge no té una descripció útil, Brave provarà d'oferir-te'n una. Per crear les descripcions, les imatges s'envien a Brave. Pots desactivar aquesta funció en qualsevol moment a la configuració.</translation>
 <translation id="8622246347342688645">Brave no pot comprovar les teves contrasenyes perquè no tens la sessió iniciada</translation>
@@ -295,4 +295,5 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{L'administrador et demana que reiniciïs Brave per aplicar aquesta actualització}=1{L'administrador et demana que reiniciïs Brave per aplicar aquesta actualització. La finestra d'incògnit no es tornarà a obrir.}other{L'administrador et demana que reiniciïs Brave per aplicar aquesta actualització. Les # finestres d'incògnit no es tornaran a obrir.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{L'administrador necessita que reiniciïs Brave per aplicar una actualització}=1{L'administrador necessita que reiniciïs Brave per aplicar una actualització. La finestra d'incògnit no es tornarà a obrir.}other{L'administrador necessita que reiniciïs Brave per aplicar una actualització. Les # finestres d'incògnit no es tornaran a obrir.}}</translation>
 <translation id="7914115000169617076">Gairebé has acabat amb l'actualització. Reinicia Brave per completar-la. Les Finestres Privades no es tornaran a obrir.</translation>
+<translation id="2176087127109773485">Pots gestionar les teves cadenes de sincronització de Brave en què hagis iniciat sessió. Les cadenes de sincronització de Brave s'utilitzen per al navegador de Brave, Play Store, Gmail, etc. Si vols afegir un compte per una altra persona, com ara un familiar, afegeix un perfil nou al teu <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
 </translationbundle>

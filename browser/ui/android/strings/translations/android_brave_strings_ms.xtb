@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">Menghalang penjejak &amp; iklan daripada dimuatkan dan dipaparkan di laman web</translation>
 <translation id="1680858055899097121">Jangan kekalkan tab antara sesi pelayaran</translation>
 <translation id="7142548388914389999">Benarkan analitik produk pengekalan privasi (P3A)</translation>
-<translation id="5254037869598726291">Maklumat tanpa nama sepenuhnya ini membantu Brave menganggarkan penggunaan keseluruhan ciri tertentu dan menjadikannya lebih baik untuk anda.</translation>
+<translation id="4272190451231642425">Hantar laporan nahas secara automatik</translation>
+<translation id="2239766974964486304">Laporan nahas membantu Brave meningkatkan kestabilan produk untuk semua pengguna.</translation>
 <translation id="7977176350719484850">Anggaran Data\nDijimatkan</translation>
 <translation id="9008534313521214777">Anggaran Masa\nDijimat</translation>
 <translation id="6572660632052512096">Mod Desktop</translation>
@@ -479,7 +480,7 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="1078265935778232285">Selamat datang ke Pelayar Brave</translation>
 <translation id="6824713633331856331">Bantu kami belajar tanpa nama</translation>
 <translation id="6116685031674149112">Brave melindungi privasi anda dan\nmenghargai kebenaran anda kepada yang berikut:</translation>
-<translation id="4394483075076204916">Bantu menambahbaik Brave dengan menghantar laporan ranap dan tanpa nama sepenuhnya, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Bantu tingkatkan Brave dengan menghantar tanpa nama sepenuhnya <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">analitik produk peribadi.</translation>
 <translation id="5187052478998910855">Perlukan penerangan semula tentang Ganjaran?</translation>
 <translation id="8622329973403382303">Teroka untuk mempelajari bagaimana caranya untuk mencatat nama dalam sejarah sebagai bintang rock Ganjaran!</translation>
@@ -562,7 +563,6 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="1144810021918451336">Tidak melindungi anda daripada laman web, muat turun, dan sambungan berbahaya.</translation>
 <translation id="745115390910697838">Frasa tidak sepadan, Sila cuba lagi.</translation>
 <translation id="2360588547830602174">Pemulihan akaun gagal. Sila cuba lagi.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Harga Pasaran di ETH</translation>
 <translation id="5593852897152820572">Harga dalam ETH</translation>
 <translation id="6748108480210050150">Daripada</translation>
@@ -596,4 +596,5 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="8967036623785635603">Edit aset yang kelihatan</translation>
 <translation id="5050890334032852465">Simpan senarai tonton akaun</translation>
 <translation id="7755766175599167100">Cari token</translation>
+<translation id="3835223348537121988">Baki:</translation>
 </translationbundle>

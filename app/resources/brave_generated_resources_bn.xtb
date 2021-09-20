@@ -210,7 +210,6 @@
 <translation id="6476061084931271248">পরিবর্তনগুলি প্রয়োগ করার জন্য নোড রিস্টার্ট করুন</translation>
 <translation id="3754226427671882382">নোড রিস্টার্ট করুন</translation>
 <translation id="949667118776341807">ঘোরান</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">এই নামটি বৈধ নয়</translation>
 <translation id="6758961763875471084">পীয়ার তালিকা সম্পাদনা করুন</translation>
 <translation id="1295874070797049002">কী রপ্তানী করুন</translation>
@@ -241,6 +240,7 @@
 <translation id="8655170717758778983">যখন সম্ভব DNSLink এর মাধ্যমে IPFS পেজগুলোতে স্বয়ংক্রিয়ভাবে পুনঃনির্দেশ (রিডাইরেক্ট) করুন</translation>
 <translation id="2233724520223030977">কোন ওয়েবসাইটের IPFS সংস্করণে নিয়ে যেতে যখনই সম্ভব স্বয়ংক্রিয়ভাবে DNSLink ব্যবহার করে</translation>
 <translation id="6554397389149987360">ব্রাউজারে স্ক্রিন শেয়ারিং এবং অন্যান্য বৈশিষ্ট্য সক্ষম করতে Hangouts উপাদানগুলি ব্যবহার করে।</translation>
+<translation id="7878791177459550035">মিডিয়া রাউটার ব্রাউজারটিতে কাস্টের বৈশিষ্ট্য সক্রিয় করেছে।</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
 <translation id="7179921470347911571">এখনই রিলঞ্চ করুন</translation>
 <translation id="8068526464562249859">আপনার ব্রাউজার বার থেকে সাধারণ IPFS কার্যগুলিতে অ্যাক্সেস সহ ব্র্যাভে উন্নত IPFS সমর্থনের জন্য IPFS কমপেনিয়ান এক্সটেনশন ব্যবহার করে।</translation>
@@ -351,7 +351,23 @@
 আপনি <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>নিজের জন্য কিভাবে ডাউনলোড ও গঠন করতে হয় সে সংক্রান্ত নির্দেশনাটি পড়তে পারেন<ph name="END_LINK_BUILD_INSTRUCTIONS"/> সুনির্দিষ্ট <ph name="BEGIN_LINK_SOURCE_CODE"/>সোর্স কোড ব্যবহার করা হয়েছে এই কপিটি তৈরি করতে<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">সব কটি ট্যাব বুকমার্ক করুন...</translation>
 <translation id="2336228925368920074">সকল ট্যাব বুকমার্ক করুন...</translation>
+<translation id="4235920711083356755">VPN বোতাম দেখান</translation>
+<translation id="4070612712151038707">টুলবারে VPN বোতামটি দেখায়</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Brave VPN সম্পর্কে</translation>
+<translation id="4378551569595875038">সংযুক্ত হচ্ছে...</translation>
+<translation id="3368922792935385530">সংযুক্ত</translation>
+<translation id="1536754031901697553">ডিসকানেক্ট করা হচ্ছে...</translation>
+<translation id="8030169304546394654">সংযোগবিচ্ছিন্ন</translation>
+<translation id="1863950594388384201">টুলবারে VPN বোতাম দেখান</translation>
+<translation id="5187139277471084437">টুলবারে VPN বোতাম লুকোন</translation>
+<translation id="8041089156583427627">প্রতিক্রিয়া পাঠান</translation>
+<translation id="4049186905514157504">আমার প্ল্যান নিয়ন্ত্রণ করুন</translation>
+<translation id="7570585565843385325">টুলবারে VPN বোতাম দেখান</translation>
+<translation id="5310426188697803101">টুলবারে VPN বোতাম লুকোন</translation>
+<translation id="945522503751344254">মতামত জানান</translation>
+<translation id="3015685033234401792">আমার প্ল্যান নিয়ন্ত্রণ করুন</translation>
 <translation id="796831669370432378">একটি বুকমার্ক যোগ করতে, ঠিকানার বারের ঠিক পরে বুকমার্ক বোতামটি ক্লিক করুন</translation>
 <translation id="4989337484121655457">সম্পূর্ণ ডিস্ক-এর ব্যবহার-যোগ্যতা প্রয়োজন</translation>
 <translation id="8025559074845816210">Safari থেকে আপনার বুকমার্কগুলি আমদানি করতে ব্রেভ-এর সম্পূর্ণ ডিস্ক-এর ব্যবহার-যোগ্যতা প্রয়োজন।</translation>

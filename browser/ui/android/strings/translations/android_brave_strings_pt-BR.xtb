@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">Impede que rastreadores e anúncios sejam carregados e exibidos em páginas da web</translation>
 <translation id="1680858055899097121">Não mantenha abas entre as sessões de navegação</translation>
 <translation id="7142548388914389999">Permitir a análise de produtos com preservação da privacidade (P3A)</translation>
-<translation id="5254037869598726291">Essas informações totalmente anonimizadas ajudam o Brave a estimar o uso geral de determinados recursos e aprimorá-los para você.</translation>
+<translation id="4272190451231642425">Enviar relatórios de falhas automaticamente</translation>
+<translation id="2239766974964486304">Os relatórios de falhas ajudam o Brave a melhorar a estabilidade do produto para todos os usuários.</translation>
 <translation id="7977176350719484850">Est. de dados\neconomizados</translation>
 <translation id="9008534313521214777">Est. tempo\neconomizado</translation>
 <translation id="6572660632052512096">Modo Desktop</translation>
@@ -478,7 +479,7 @@
 <translation id="1078265935778232285">Bem-vindo ao Navegador Brave</translation>
 <translation id="6824713633331856331">Ajude-nos a entender anonimamente</translation>
 <translation id="6116685031674149112">O Brave protege sua privacidade e\nagradece seu consentimento para o seguinte:</translation>
-<translation id="4394483075076204916">Ajude a melhorar o Brave enviando relatórios de falhas e <ph name="PRIVATE_PRODUCT_ANALYSIS"/> totalmente anônimos</translation>
+<translation id="4394483075076204916">Ajude a melhorar o Brave enviando <ph name="PRIVATE_PRODUCT_ANALYSIS"/> de modo totalmente anônimo</translation>
 <translation id="6478996494082389936">análise privada de produtos.</translation>
 <translation id="5187052478998910855">Precisando de uma atualização sobre as Recompensas?</translation>
 <translation id="8622329973403382303">Faça um tour rápido para relembrar como isso funciona e entre para a história como um astro do rock das Recompensas!</translation>
@@ -561,7 +562,6 @@
 <translation id="1144810021918451336">Não o protege contra sites, downloads e extensões nocivos</translation>
 <translation id="745115390910697838">As frases não correspondem. Tente novamente.</translation>
 <translation id="2360588547830602174">Houve uma falha na recuperação da conta. Tente novamente.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Preço de mercado em ETH</translation>
 <translation id="5593852897152820572">Preço em ETH</translation>
 <translation id="6748108480210050150">De</translation>
@@ -595,4 +595,5 @@
 <translation id="8967036623785635603">Editar ativos visíveis</translation>
 <translation id="5050890334032852465">Salvar lista de interesses de contas</translation>
 <translation id="7755766175599167100">Pesquisar tokens</translation>
+<translation id="3835223348537121988">Saldo:</translation>
 </translationbundle>

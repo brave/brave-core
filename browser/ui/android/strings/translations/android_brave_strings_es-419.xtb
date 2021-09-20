@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">Evita que los rastreadores y anuncios se carguen y muestren en las páginas web.</translation>
 <translation id="1680858055899097121">No recuperar las pestañas al abrir una nueva sesión de navegación</translation>
 <translation id="7142548388914389999">Permitir análisis de productos que preservan la privacidad (P3A)</translation>
-<translation id="5254037869598726291">Esta información completamente anonimizada ayuda a Brave a calcular el uso general de ciertas funciones y a mejorarlo para usted.</translation>
+<translation id="4272190451231642425">Enviar automáticamente informes de errores</translation>
+<translation id="2239766974964486304">Los informes de errores ayudan a Brave a mejorar la estabilidad de los productos para todos los usuarios.</translation>
 <translation id="7977176350719484850">Datos\nahorrados est.</translation>
 <translation id="9008534313521214777">Tiempo ahorrado estimado</translation>
 <translation id="6572660632052512096">Modo de escritorio</translation>
@@ -469,7 +470,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="1078265935778232285">Te damos la bienvenida a Brave</translation>
 <translation id="6824713633331856331">Ayúdanos a aprender de forma anónima</translation>
 <translation id="6116685031674149112">Brave protege tu privacidad y\nagradece tu consentimiento en cuanto a lo siguiente:</translation>
-<translation id="4394483075076204916">Ayuda a mejorar Brave al enviar informes sobre fallos y, de forma completamente anónima, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Ayuda a mejorar Brave enviando <ph name="PRIVATE_PRODUCT_ANALYSIS"/> de forma totalmente anónima</translation>
 <translation id="6478996494082389936">análisis de productos privados.</translation>
 <translation id="5187052478998910855">¿Necesitas actualizarte en cuanto a Rewards?</translation>
 <translation id="8622329973403382303">¡Haz un recorrido rápido para repasar cómo funciona y pasar a la historia como una estrella de Rewards!</translation>
@@ -552,7 +553,6 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="1144810021918451336">No te protege frente a sitios web, descargas o extensiones peligrosos.</translation>
 <translation id="745115390910697838">Las frases no coincidieron. Inténtalo de nuevo.</translation>
 <translation id="2360588547830602174">La recuperación de la cuenta ha fallado. Inténtalo de nuevo.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Precio del mercado en ETH</translation>
 <translation id="5593852897152820572">Precio en ETH</translation>
 <translation id="6748108480210050150">De</translation>
@@ -586,4 +586,5 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="8967036623785635603">Editar activos visibles</translation>
 <translation id="5050890334032852465">Guardar lista de seguimiento de la cuenta</translation>
 <translation id="7755766175599167100">Buscar tokens</translation>
+<translation id="3835223348537121988">Saldo:</translation>
 </translationbundle>

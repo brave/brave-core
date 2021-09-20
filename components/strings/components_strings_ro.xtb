@@ -95,6 +95,7 @@
 <translation id="129863573139666797"><ph name="BEGIN_LINK"/>Șterge cookie-urile<ph name="END_LINK"/></translation>
 <translation id="1301324364792935241">Verifică setările pentru DNS securizat</translation>
 <translation id="1307966114820526988">Funcții învechite</translation>
+<translation id="1312803275555673949">Ce dovezi există?</translation>
 <translation id="131405271941274527"><ph name="URL"/> dorește să trimită și să primească informații când atingi telefonul de pe un dispozitiv NFC</translation>
 <translation id="1314509827145471431">Legare în dreapta</translation>
 <translation id="1319245136674974084">Nu mai întreba pentru această aplicație</translation>
@@ -137,6 +138,7 @@
 <translation id="1422930527989633628">Poate solicita permisiunea să descopere dispozitive Bluetooth din apropiere</translation>
 <translation id="1426410128494586442">Da</translation>
 <translation id="1428146450423315676">Receptorul de hârtie 7</translation>
+<translation id="1428729058023778569">Avertismentul se afișează deoarece acest site nu acceptă HTTPS. <ph name="BEGIN_LEARN_MORE_LINK"/>Află mai multe<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1430915738399379752">Printează</translation>
 <translation id="1436185428532214179">Poate solicita permisiunea de a modifica fișiere și dosare de pe dispozitiv</translation>
 <translation id="1442386063175183758">Îndoire tip fereastră spre dreapta</translation>
@@ -464,6 +466,7 @@
 <translation id="2595719060046994702">Dispozitivul și contul nu sunt gestionate de o companie sau o altă organizație.</translation>
 <translation id="2597378329261239068">Acest document este protejat cu parolă. Introdu o parolă.</translation>
 <translation id="2609632851001447353">Modificări</translation>
+<translation id="2610561535971892504">Dă clic pentru a copia</translation>
 <translation id="2618023639789766142">C10 (Plic)</translation>
 <translation id="2625385379895617796">Ora este setată în viitor</translation>
 <translation id="262745152991669301">Poate solicita permisiunea de a se conecta la dispozitive USB</translation>
@@ -493,6 +496,7 @@
 <translation id="2701514975700770343">Cu fața în jos</translation>
 <translation id="2702801445560668637">Listă de lectură</translation>
 <translation id="2704283930420550640">Valoarea nu se potrivește cu formatul.</translation>
+<translation id="2704606927547763573">Copiat</translation>
 <translation id="2705137772291741111">Copia salvată (în memoria cache) a acestui site nu a putut fi citită.</translation>
 <translation id="2709516037105925701">Completare automată</translation>
 <translation id="2713444072780614174">Alb</translation>
@@ -623,8 +627,10 @@
 <translation id="3229041911291329567">Informații despre versiunea dispozitivului și browserului</translation>
 <translation id="323107829343500871">Introdu codul CVC pentru <ph name="CREDIT_CARD"/></translation>
 <translation id="3234666976984236645">Detectează întotdeauna conținutul important pe acest site</translation>
+<translation id="3240791268468473923">Foaia „Datele de conectare pentru plăți securizate nu corespund datelor de conectare” este deschisă</translation>
 <translation id="3249845759089040423">Șic</translation>
 <translation id="3252266817569339921">Franceză</translation>
+<translation id="3257954757204451555">De unde provin aceste informații?</translation>
 <translation id="6900454207575412115"><ph name="CREATE_GOOGLE_CALENDAR_EVENT_FOCUSED_FRIENDLY_MATCH_TEXT"/>, apasă pe Tab, apoi pe Enter pentru a crea rapid un eveniment în Brave Calendar</translation>
 <translation id="3266793032086590337">Valoare (conflictuală)</translation>
 <translation id="3268451620468152448">File deschise</translation>
@@ -635,6 +641,7 @@
 <translation id="3282497668470633863">Adaugă numele de pe card</translation>
 <translation id="3286372614333682499">portret</translation>
 <translation id="3287510313208355388">Descarcă când ești online</translation>
+<translation id="3288238092761586174">Poate fi necesar ca <ph name="URL"/> să parcurgă câțiva pași suplimentari pentru a confirma plata</translation>
 <translation id="3293642807462928945">Află mai multe despre politica <ph name="POLICY_NAME"/></translation>
 <translation id="5894665462526421022">Afișează și gestionează parolele din setările Brave</translation>
 <translation id="3303855915957856445">Nu s-au găsit rezultate de căutare</translation>
@@ -685,6 +692,7 @@
 <translation id="3432601291244612633">Închide pagina</translation>
 <translation id="3435738964857648380">Securitate</translation>
 <translation id="4527130811319726464">Folosește parolele salvate în Contul tău Brave</translation>
+<translation id="3440783957068352691">pătrată</translation>
 <translation id="3443726618221119081">Juuro-Ku-Kai</translation>
 <translation id="3447661539832366887">Proprietarul acestui dispozitiv a dezactivat jocul cu dinozaurul.</translation>
 <translation id="3447884698081792621">Afișează certificatul (emis de <ph name="ISSUER"/>)</translation>
@@ -966,11 +974,14 @@
 <translation id="4434045419905280838">Ferestre pop-up și redirecționări</translation>
 <translation id="4435702339979719576">Carte poștală)</translation>
 <translation id="443673843213245140">Utilizarea unui proxy este dezactivată, dar o configurare proxy este specificată în mod explicit.</translation>
+<translation id="4450893287417543264">Nu mai afișa</translation>
 <translation id="4451135742916150903">Poate solicita permisiunea de a se conecta la dispozitive HID</translation>
 <translation id="4460315069258617173">Permisă până când închizi filele pentru acest site</translation>
 <translation id="4464826014807964867">Site-uri cu informații de la organizația ta</translation>
+<translation id="4465818729556336129">Documentul este confidențial și administratorul nu recomandă printarea acestuia</translation>
 <translation id="4476953670630786061">Acest formular nu este sigur. Completarea automată a fost dezactivată.</translation>
 <translation id="4477350412780666475">Melodia următoare</translation>
+<translation id="4481394504112738036">Fișier confidențial</translation>
 <translation id="4482953324121162758">Acest site nu va fi tradus.</translation>
 <translation id="4490717597759821841">A7</translation>
 <translation id="3966104135245031874">Criptează parolele sincronizate folosind Contul Brave</translation>
@@ -1019,7 +1030,6 @@
 <translation id="4677585247300749148"><ph name="URL"/> dorește să răspundă evenimentelor de accesibilitate</translation>
 <translation id="8197094463444457125">Prezentări Brave</translation>
 <translation id="468314109939257734">Vezi numărul de card virtual</translation>
-<translation id="4690462567478992370">Nu mai folosi un certificat nevalid</translation>
 <translation id="4691835149146451662">Architecture-A (Plic)</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
 <translation id="4702504834785592287">Lateral</translation>
@@ -1059,7 +1069,6 @@
 <translation id="4800132727771399293">Verifică data de expirare și codul CVC și încearcă din nou</translation>
 <translation id="480334179571489655">Eroare de politică de origine</translation>
 <translation id="4803924862070940586"><ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
-<translation id="8896585555528145662">Nu poți accesa acum site-ul <ph name="SITE"/>, deoarece acesta a trimis date de conectare într-un format necunoscut, pe care Brave nu le poate procesa. Erorile de rețea și atacurile sunt de obicei temporare și probabil că această pagină va funcționa mai târziu.</translation>
 <translation id="4809079943450490359">Instrucțiuni de la administratorul dispozitivului:</translation>
 <translation id="4813512666221746211">Eroare de rețea</translation>
 <translation id="4816492930507672669">Încadrați în pagină</translation>
@@ -1068,6 +1077,7 @@
 <translation id="4825507807291741242">Puternic</translation>
 <translation id="4838327282952368871">Visare</translation>
 <translation id="484462545196658690">Automat</translation>
+<translation id="4849865131988503897">Verificarea preciziei</translation>
 <translation id="4850886885716139402">Afișează</translation>
 <translation id="485316830061041779">Germană</translation>
 <translation id="4854362297993841467">Această metodă de livrare nu este disponibilă. Încearcă altă metodă.</translation>
@@ -1168,6 +1178,7 @@
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">Computer</translation>
 <translation id="5179510805599951267">Nu este în <ph name="ORIGINAL_LANGUAGE"/>? Semnalează această eroare.</translation>
+<translation id="51918995459521422"><ph name="ORIGIN"/> vrea să descarce mai multe fișiere</translation>
 <translation id="519422657042045905">Adnotarea nu este disponibilă</translation>
 <translation id="5201306358585911203">O pagină încorporată de pe această pagină afișează mesajul</translation>
 <translation id="5205222826937269299">Numele este obligatoriu</translation>
@@ -1336,7 +1347,6 @@
 <translation id="3985758120980526872">Brave a găsit parola pe care tocmai ai folosit-o într-o încălcare a securității datelor. Îți recomandăm să schimbi acum parola.</translation>
 <translation id="5803412860119678065">Dorești să completezi datele <ph name="CARD_DETAIL"/>?</translation>
 <translation id="5804241973901381774">Permisiuni</translation>
-<translation id="5804427196348435412">Folosește dispozitive NFC</translation>
 <translation id="5810442152076338065">Conexiunea la <ph name="DOMAIN"/> este criptată folosind o suită de codificare învechită.</translation>
 <translation id="5813119285467412249">&amp;Repetați adăugarea</translation>
 <translation id="5817918615728894473">Asociază</translation>
@@ -1412,6 +1422,7 @@
 <translation id="6051221802930200923">Nu poți accesa <ph name="SITE"/> acum, deoarece site-ul folosește fixarea certificatelor. Erorile de rețea și atacurile sunt de obicei temporare și probabil că această pagină va funcționa mai târziu.</translation>
 <translation id="6051898664905071243">Numărul de pagini:</translation>
 <translation id="6052284303005792909">•</translation>
+<translation id="6055888660316801977">Foaia „Datele de conectare pentru plăți securizate nu corespund datelor de conectare”</translation>
 <translation id="6058977677006700226">Folosești cardurile pe toate dispozitivele?</translation>
 <translation id="6059925163896151826">Dispozitive USB</translation>
 <translation id="6060009363608157444">Mod DnsOverHttps nevalid.</translation>
@@ -1488,6 +1499,7 @@
 <translation id="6389470377220713856">Nume de pe card</translation>
 <translation id="6390200185239044127">Îndoire în Z la jumătate</translation>
 <translation id="6390662030813198813">Engineering-E</translation>
+<translation id="6391700400718590966">Foaia „Datele de conectare pentru plăți securizate nu corespund datelor de conectare” este închisă</translation>
 <translation id="6393956493820063117">Inserarea de pe <ph name="ORIGIN_NAME"/> în această locație a fost blocată de politica implementată de administrator</translation>
 <translation id="6398765197997659313">Ieși din ecranul complet</translation>
 <translation id="6401136357288658127">Această politică este învechită. Ar trebui să folosești politica <ph name="NEW_POLICY"/>.</translation>
@@ -1567,7 +1579,6 @@
 <translation id="6689249931105087298">Relativă cu comprimarea punctelor negre</translation>
 <translation id="5406652219015697259">Brave oferă salvarea cardurilor în Contul Brave pentru că te-ai conectat. Poți schimba acest comportament în setări. Numele titularului de card vine din contul tău.</translation>
 <translation id="6698381487523150993">Creat:</translation>
-<translation id="6699188552522342100">Site-ul oferă informații corecte?</translation>
 <translation id="6702919718839027939">Prezentare</translation>
 <translation id="6710213216561001401">Înapoi</translation>
 <translation id="6710594484020273272">&lt;Introdu termenul de căutare&gt;</translation>
@@ -1575,6 +1586,7 @@
 <translation id="6711464428925977395">A apărut o problemă la serverul proxy sau adresa nu este corectă.</translation>
 <translation id="6716672519412350405"><ph name="URL"/> dorește să creeze o hartă 3D a lucrurilor din jurul tău și să urmărească poziția camerei video</translation>
 <translation id="6718612893943028815">Folosești camera foto?</translation>
+<translation id="6721678857435001674">să vadă marca și modelul cheii de securitate</translation>
 <translation id="6738516213925468394">Datele au fost criptate cu <ph name="BEGIN_LINK"/>expresia de acces pentru sincronizare<ph name="END_LINK"/> la <ph name="TIME"/>. Introdu expresia de acces pentru a începe sincronizarea.</translation>
 <translation id="674375294223700098">Eroare de certificat de server necunoscută.</translation>
 <translation id="6744009308914054259">În timp ce aștepți o conexiune, poți accesa Descărcările pentru a citi articole offline.</translation>
@@ -1611,13 +1623,13 @@
 <translation id="6898699227549475383">Organizația (O)</translation>
 <translation id="6907293445143367439">Permite ca <ph name="SITE_NAME"/> să:</translation>
 <translation id="6910240653697687763">Adresa <ph name="URL"/> dorește să preia controlul complet asupra dispozitivelor MIDI</translation>
+<translation id="691024665142758461">să descarce mai multe fișiere</translation>
 <translation id="6915804003454593391">Utilizator:</translation>
 <translation id="6722453239914327220">Acest nume provine din Contul tău Brave</translation>
 <translation id="6944692733090228304">Ai introdus parola pe un site care nu este gestionat de <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/>. Pentru a proteja contul, nu folosi aceeași parolă pentru alte aplicații și site-uri.</translation>
 <translation id="6945221475159498467">Selectează</translation>
 <translation id="6948051842255602737">Jocul s-a terminat. Scorul tău este de <ph name="SCORE"/>.</translation>
 <translation id="6948701128805548767">Pentru a vedea metodele de preluare și cerințele, selectează o adresă</translation>
-<translation id="6949479070119158594">Avertismentul se afișează deoarece acest site nu acceptă HTTPS.</translation>
 <translation id="6949872517221025916">Resetează parola</translation>
 <translation id="6950684638814147129">Eroare la analizarea valorii JSON: <ph name="ERROR"/></translation>
 <translation id="695140971690006676">Resetează-le pe toate</translation>
@@ -1694,6 +1706,7 @@
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> nu respectă standardele de securitate.</translation>
 <translation id="7210993021468939304">activitatea Linux din container și pot să instaleze și să ruleze aplicații Linux în container</translation>
 <translation id="721197778055552897"><ph name="BEGIN_LINK"/>Află mai multe<ph name="END_LINK"/> despre această problemă.</translation>
+<translation id="7215025035562547931">Evaluează corectitudinea informațiilor</translation>
 <translation id="7217745192097460130">Folosești Touch ID ca să confirmi și finalizezi achiziția?</translation>
 <translation id="7219179957768738017">Conexiunea utilizează <ph name="SSL_VERSION"/>.</translation>
 <translation id="7220786058474068424">Se procesează</translation>
@@ -1916,10 +1929,12 @@ Detalii suplimentare:
 <translation id="7961015016161918242">Niciodată</translation>
 <translation id="7966803981046576691">Tipul contului sarcinii</translation>
 <translation id="79682505114836835">Valoarea <ph name="VALUE"/> este o culoare hexazecimală nevalidă.</translation>
+<translation id="7970392640816874403">Ce spun alte surse?</translation>
 <translation id="7976214039405368314">Prea multe solicitări</translation>
 <translation id="7977538094055660992">Dispozitiv de ieșire</translation>
 <translation id="7977894662897852582">Edp</translation>
 <translation id="798134797138789862">Poate solicita permisiunea de a folosi dispozitive de realitate virtuală și date conexe</translation>
+<translation id="8896585555528145662">Nu puteți accesa acum site-ul <ph name="SITE"/>, deoarece acesta a trimis date de conectare într-un format necunoscut, pe care Brave nu le poate procesa. Erorile de rețea și atacurile sunt de obicei temporare și probabil că această pagină va funcționa mai târziu.</translation>
 <translation id="79859296434321399">Pentru a vedea conținut din realitatea augmentată, instalează ARCore</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">Legare</translation>
@@ -1982,7 +1997,6 @@ Detalii suplimentare:
 <translation id="8202370299023114387">Conflict</translation>
 <translation id="8206978196348664717">Prc4 (Plic)</translation>
 <translation id="8211406090763984747">Conexiunea este securizată</translation>
-<translation id="8213464188712611711">Amintiri</translation>
 <translation id="8218327578424803826">Locație atribuită:</translation>
 <translation id="8220146938470311105">C7/C6 (Plic)</translation>
 <translation id="3272614036080146686">Ai introdus parola pe un site înșelător. Brave recomandă să accesezi <ph name="WEBSITE_1"/> și alte site-uri pe care folosești această parolă și să o schimbi acum.</translation>
@@ -2225,6 +2239,7 @@ Detalii suplimentare:
 <translation id="9154194610265714752">Actualizat</translation>
 <translation id="9157595877708044936">Se configurează...</translation>
 <translation id="9158625974267017556">C6 (Plic)</translation>
+<translation id="9164029392738894042">Verificarea preciziei</translation>
 <translation id="9168814207360376865">Permite site-urilor să verifice dacă ai salvat metode de plată</translation>
 <translation id="9169664750068251925">Blocați întotdeauna pe acest site</translation>
 <translation id="9169931577761441333">Adaugă <ph name="APP_NAME"/> la ecranul de pornire</translation>
