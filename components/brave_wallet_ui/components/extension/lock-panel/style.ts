@@ -47,3 +47,22 @@ export const Column = styled.div`
   width: 250px;
   margin-bottom: 8px;
 `
+
+export const RestoreButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 19px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.text03};
+  margin-top: 12px;
+`

@@ -149,7 +149,7 @@ handler.on(PanelActions.setupWallet.getType(), async (store) => {
 })
 
 handler.on(PanelActions.expandWallet.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet' }, () => {
+  chrome.tabs.create({ url: 'chrome://wallet/crypto' }, () => {
     if (chrome.runtime.lastError) {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
@@ -157,15 +157,15 @@ handler.on(PanelActions.expandWallet.getType(), async (store) => {
 })
 
 handler.on(PanelActions.openWalletApps.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet#apps' }, () => {
+  chrome.tabs.create({ url: 'chrome://wallet/crypto/apps' }, () => {
     if (chrome.runtime.lastError) {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
   })
 })
 
-handler.on(PanelActions.restoreWallet.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet#restore' }, () => {
+handler.on(PanelActions.expandRestoreWallet.getType(), async (store) => {
+  chrome.tabs.create({ url: 'chrome://wallet/crypto/restore-wallet' }, () => {
     if (chrome.runtime.lastError) {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }

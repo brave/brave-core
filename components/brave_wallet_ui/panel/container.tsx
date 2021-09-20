@@ -242,7 +242,7 @@ function Container (props: Props) {
     }
   }
   const onRestore = () => {
-    props.walletPanelActions.restoreWallet()
+    props.walletPanelActions.expandRestoreWallet()
   }
   const onSetup = () => {
     props.walletPanelActions.setupWallet()
@@ -350,6 +350,7 @@ function Container (props: Props) {
             onSubmit={unlockWallet}
             disabled={inputValue === ''}
             onPasswordChanged={handlePasswordChanged}
+            onClickRestore={onRestore}
           />
         </StyledExtensionWrapper>
       </PanelWrapper>

@@ -4,7 +4,6 @@ import {
   // SideNav,
   WalletPageLayout,
   WalletSubViewLayout,
-  CryptoView,
   LockScreen,
   OnboardingRestore
 } from '../components/desktop'
@@ -26,6 +25,7 @@ import {
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
+import CryptoStoryView from './screens/crypto-story-view'
 
 // import { NavOptions } from '../options/side-nav-options'
 import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
@@ -676,7 +676,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               recoveryPhrase={recoveryPhrase}
                             />
                           ) : (
-                            <CryptoView
+                            <CryptoStoryView
                               onLockWallet={lockWallet}
                               needsBackup={needsBackup}
                               onShowBackup={onShowBackup}
