@@ -334,14 +334,15 @@ void EthJsonRpcController::GetERC20TokenBalance(
     const std::string& contract,
     const std::string& address,
     EthJsonRpcController::GetERC20TokenBalanceCallback callback) {
-  auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnGetERC20TokenBalance,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   std::string data;
   if (!erc20::BalanceOf(address, &data)) {
     std::move(callback).Run(false, "");
     return;
   }
+
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetERC20TokenBalance,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   Request(eth_call("", contract, "", "", "", data, "latest"), true,
           std::move(internal_callback));
 }
@@ -367,14 +368,14 @@ void EthJsonRpcController::EnsProxyReaderGetResolverAddress(
     const std::string& contract_address,
     const std::string& domain,
     UnstoppableDomainsProxyReaderGetManyCallback callback) {
-  auto internal_callback = base::BindOnce(
-      &EthJsonRpcController::OnEnsProxyReaderGetResolverAddress,
-      weak_ptr_factory_.GetWeakPtr(), std::move(callback), domain);
   std::string data;
   if (!ens::GetResolverAddress(domain, &data)) {
     std::move(callback).Run(false, "");
   }
 
+  auto internal_callback = base::BindOnce(
+      &EthJsonRpcController::OnEnsProxyReaderGetResolverAddress,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback), domain);
   Request(eth_call("", contract_address, "", "", "", data, "latest"), true,
           std::move(internal_callback));
 }
@@ -408,14 +409,14 @@ bool EthJsonRpcController::EnsProxyReaderResolveAddress(
     const std::string& contract_address,
     const std::string& domain,
     UnstoppableDomainsProxyReaderGetManyCallback callback) {
-  auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnEnsProxyReaderResolveAddress,
-                     base::Unretained(this), std::move(callback));
   std::string data;
   if (!ens::GetContentHashAddress(domain, &data)) {
     return false;
   }
 
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnEnsProxyReaderResolveAddress,
+                     base::Unretained(this), std::move(callback));
   Request(eth_call("", contract_address, "", "", "", data, "latest"), true,
           std::move(internal_callback));
   return true;
@@ -444,14 +445,14 @@ void EthJsonRpcController::UnstoppableDomainsProxyReaderGetMany(
     const std::string& domain,
     const std::vector<std::string>& keys,
     UnstoppableDomainsProxyReaderGetManyCallback callback) {
-  auto internal_callback = base::BindOnce(
-      &EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany,
-      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   std::string data;
   if (!unstoppable_domains::GetMany(keys, domain, &data)) {
     std::move(callback).Run(false, "");
   }
 
+  auto internal_callback = base::BindOnce(
+      &EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   Request(eth_call("", contract_address, "", "", "", data, "latest"), true,
           std::move(internal_callback));
 }
