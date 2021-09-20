@@ -102,7 +102,7 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
   void SwitchToNextResponse() {
     url_loader_factory_.ClearResponses();
     url_loader_factory_.AddResponse(
-        "http://localhost:7545/",
+        brave_wallet::GetNetworkURL(prefs(), mojom::kLocalhostChainId).spec(),
         "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0000000000000000000000"
         "0000000000000000000000000000000000000000200000000000000000000000000"
         "000000000000000000000000000000000000026e3010170122008ab7bf21b738283"
@@ -116,8 +116,11 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
   }
 
   void SetRegistrarResponse() {
+    auto localhost_url_spec =
+        brave_wallet::GetNetworkURL(prefs(), mojom::kLocalhostChainId).spec();
+
     url_loader_factory_.AddResponse(
-        "http://localhost:7545/",
+        localhost_url_spec,
         "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x00000"
         "0000000000000000000226159d592e2b063810a10ebf6dcbada94ed68b8\"}");
   }
