@@ -69,16 +69,25 @@ void BraveWalletImporterDelegateImpl::ImportFromBraveCryptoWallet(
     return;
   }
 
-  extension_registry_observer_.Observe(ExtensionRegistry::Get(context_));
+  ExtensionRegistry* registry = ExtensionRegistry::Get(context_);
+  const Extension* extension =
+      registry->GetInstalledExtension(ethereum_remote_client_extension_id);
+  // crypto wallet is not loaded
+  if (!extension) {
+    EthereumRemoteClientService* service =
+        EthereumRemoteClientServiceFactory::GetInstance()->GetForContext(
+            context_);
+    service->MaybeLoadCryptoWalletsExtension(base::BindOnce(
+        &BraveWalletImporterDelegateImpl::OnCryptoWalletLoaded,
+        weak_ptr_factory_.GetWeakPtr(), std::move(callback), true));
+  } else {
+    OnCryptoWalletLoaded(std::move(callback), false);
+  }
 
-  EthereumRemoteClientService* service =
-      EthereumRemoteClientServiceFactory::GetInstance()->GetForContext(
-          context_);
-  service->MaybeLoadCryptoWalletsExtension(base::DoNothing());
-  callback_ = std::move(callback);
   password_ = password;
   new_password_ = new_password;
 }
+
 void BraveWalletImporterDelegateImpl::ImportFromMetamask(
     const std::string& password,
     const std::string& new_password,
@@ -104,23 +113,26 @@ void BraveWalletImporterDelegateImpl::ImportFromMetamask(
   new_password_ = new_password;
 }
 
-void BraveWalletImporterDelegateImpl::OnExtensionLoaded(
-    content::BrowserContext* browser_context,
-    const extensions::Extension* extension) {
-  // Wait for reinstall as normal extension
-  if (extension->location() == ManifestLocation::kComponent ||
-      extension->id() != ethereum_remote_client_extension_id) {
+void BraveWalletImporterDelegateImpl::OnCryptoWalletLoaded(
+    ImportFromMetamaskCallback callback,
+    bool should_unload) {
+  ExtensionRegistry* registry = ExtensionRegistry::Get(context_);
+  const Extension* extension =
+      registry->GetInstalledExtension(ethereum_remote_client_extension_id);
+  if (!extension) {
+    std::move(callback).Run(false);
     return;
   }
-  extension_registry_observer_.Reset();
 
-  GetLocalStorage(extension, std::move(callback_));
+  GetLocalStorage(extension, std::move(callback));
 
-  EthereumRemoteClientService* service =
-      EthereumRemoteClientServiceFactory::GetInstance()->GetForContext(
-          context_);
-  DCHECK(service);
-  service->RemoveCryptoWalletExtension();
+  if (should_unload) {
+    EthereumRemoteClientService* service =
+        EthereumRemoteClientServiceFactory::GetInstance()->GetForContext(
+            context_);
+    DCHECK(service);
+    service->RemoveCryptoWalletExtension();
+  }
 }
 
 void BraveWalletImporterDelegateImpl::GetLocalStorage(
@@ -157,6 +169,17 @@ void BraveWalletImporterDelegateImpl::OnGetLocalStorage(
     std::unique_ptr<base::DictionaryValue> dict) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   EnsureConnected();
+  DCHECK(!password_.empty() && !new_password_.empty());
+
+  const std::string* argon_params_str =
+      dict->FindStringPath("data.KeyringController.argonParams");
+  // TODO(darkdh): Introduce argon2 deps so we can decrypt 24 words of legacy
+  // encrypted mnemonic
+  if (argon_params_str) {
+    VLOG(1) << "legacy brave crypto wallet is not supported";
+    std::move(callback).Run(false);
+    return;
+  }
 
   const std::string* vault_str =
       dict->FindStringPath("data.KeyringController.vault");
@@ -197,7 +220,7 @@ void BraveWalletImporterDelegateImpl::OnGetLocalStorage(
 
   std::unique_ptr<PasswordEncryptor> encryptor =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          password_, ToSpan(salt_decoded), 10000, 256);
+          std::move(password_), ToSpan(salt_decoded), 10000, 256);
   DCHECK(encryptor);
 
   std::vector<uint8_t> decrypted_keyrings;
@@ -238,7 +261,7 @@ void BraveWalletImporterDelegateImpl::OnGetLocalStorage(
   }
 
   keyring_controller_->RestoreWallet(
-      *mnemonic, new_password_, false,
+      *mnemonic, std::move(new_password_), false,
       base::BindOnce(
           [](ImportFromBraveCryptoWalletCallback callback,
              bool is_valid_mnemonic) {

@@ -13,10 +13,9 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_importer_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "extensions/browser/extension_registry.h"
-#include "extensions/browser/extension_registry_observer.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 class ValueStore;
@@ -31,8 +30,7 @@ class Extension;
 
 namespace brave_wallet {
 
-class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate,
-                                        extensions::ExtensionRegistryObserver {
+class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate {
  public:
   explicit BraveWalletImporterDelegateImpl(content::BrowserContext* context);
   BraveWalletImporterDelegateImpl(const BraveWalletImporterDelegateImpl&) =
@@ -50,8 +48,8 @@ class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate,
                           ImportFromMetamaskCallback callback) override;
 
  private:
-  void OnExtensionLoaded(content::BrowserContext* browser_context,
-                         const extensions::Extension* extension) override;
+  void OnCryptoWalletLoaded(ImportFromMetamaskCallback callback,
+                            bool should_unload);
 
   void GetLocalStorage(const extensions::Extension* extension,
                        ImportFromBraveCryptoWalletCallback callback);
@@ -61,15 +59,10 @@ class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate,
   void EnsureConnected();
   void OnConnectionError();
 
-  base::ScopedObservation<extensions::ExtensionRegistry,
-                          extensions::ExtensionRegistryObserver>
-      extension_registry_observer_{this};
-
   mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
   content::BrowserContext* context_;
   std::string password_;
   std::string new_password_;
-  ImportFromBraveCryptoWalletCallback callback_;
   scoped_refptr<extensions::Extension> extension_;
   base::WeakPtrFactory<BraveWalletImporterDelegateImpl> weak_ptr_factory_;
 };
