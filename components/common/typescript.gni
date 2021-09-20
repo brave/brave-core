@@ -32,6 +32,7 @@ brave_common_web_compile_inputs = [
 
   # typescript config changes warrant a re-build of all typescript builds
   "//brave/tsconfig.json",
+  "//brave/tsconfig-webpack.json",
 
   # modifying npm dependencies warrants a re-build of all webpack
   # and typescript builds
