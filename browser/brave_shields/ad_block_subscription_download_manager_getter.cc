@@ -80,7 +80,11 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
         profile_manager->user_data_dir().Append(
             profile_manager->GetInitialProfileDir()));
     if (profile) {
-      GetDownloadManager(profile);
+      base::ThreadTaskRunnerHandle::Get()->PostTask(
+          FROM_HERE,
+          base::BindOnce(
+              &AdBlockSubscriptionDownloadManagerGetterImpl::GetDownloadManager,
+              base::Unretained(this), profile));
     } else {
       g_browser_process->profile_manager()->AddObserver(this);
     }
