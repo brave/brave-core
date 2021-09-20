@@ -93,10 +93,6 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
     }
   }
 
-  ~AdBlockSubscriptionDownloadManagerGetterImpl() override {
-    g_browser_process->profile_manager()->RemoveObserver(this);
-  }
-
  private:
   void OnProfileAdded(Profile* profile) override {
     base::ThreadTaskRunnerHandle::Get()->PostTask(FROM_HERE, base::BindOnce(&AdBlockSubscriptionDownloadManagerGetterImpl::MaybeGetDownloadManager, AsWeakPtr()));
