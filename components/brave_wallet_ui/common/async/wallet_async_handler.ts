@@ -89,10 +89,10 @@ async function refreshWalletInfo (store: Store) {
   const visibleTokensInfo = await Promise.all(visibleTokensPayload.map(async (i) => {
     const ercTokenRegistry = (await getAPIProxy()).ercTokenRegistry
     const info = await ercTokenRegistry.getTokenByContract(i)
-    const icon = AssetOptions.find((a) => info.token.symbol === a.symbol)?.icon
+    const icon = AssetOptions.find((a) => info.token.symbol === a.symbol)?.icon ?? ''
     return { ...info.token, icon: icon }
-  }))
-  if (visibleTokensInfo[0]) {
+  })).catch((e) => [])
+  if (visibleTokensInfo.length !== 0) {
     store.dispatch(WalletActions.setVisibleTokensInfo(visibleTokensInfo))
   } else {
     store.dispatch(WalletActions.setVisibleTokensInfo(InitialVisibleTokenInfo))
