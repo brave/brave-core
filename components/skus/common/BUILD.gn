@@ -1,0 +1,9 @@
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("mojom") {
+  sources = [
+    "skus_sdk.mojom",
+  ]
+
+  deps = [ "//mojo/public/mojom/base" ]
+}

@@ -20,7 +20,6 @@ brave_blink_sub_modules = [
 brave_static_idl_files_in_modules = [
   "//brave/third_party/blink/renderer/modules/brave/brave.idl",
   "//brave/third_party/blink/renderer/modules/brave/navigator_brave.idl",
-  "//brave/third_party/blink/renderer/modules/brave/skus/skus.idl",
   "//brave/third_party/blink/renderer/modules/global_privacy_control/navigator_global_privacy_control.idl",
 ]
 
@@ -29,6 +28,4 @@ brave_static_idl_files_in_modules = [
 brave_generated_interface_sources_in_modules = [
   "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_brave.h",
   "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_brave.cc",
-  "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_skus.h",
-  "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_skus.cc",
 ]

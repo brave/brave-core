@@ -49,6 +49,8 @@
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/skus/browser/skus_sdk_impl.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -287,6 +289,25 @@ void BindBraveSearchDefaultHost(
   }
 }
 
+void BindSkuSdkImpl(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<skus::mojom::SkusSdk> receiver) {
+  auto* context = frame_host->GetBrowserContext();
+  auto* profile = Profile::FromBrowserContext(context);
+  if (brave::IsRegularProfile(profile)) {
+    mojo::MakeSelfOwnedReceiver(
+        std::make_unique<brave_rewards::SkusSdkImpl>(profile->GetPrefs()),
+        std::move(receiver));
+  } else {
+    // TODO - finish me
+
+    // Dummy API which always returns false for private contexts.
+    // mojo::MakeSelfOwnedReceiver(
+    //     std::make_unique<brave_search::BraveSearchDefaultHostPrivate>(),
+    //     std::move(receiver));
+  }
+}
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient()
@@ -390,6 +411,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     map->Add<brave_search::mojom::BraveSearchDefault>(
         base::BindRepeating(&BindBraveSearchDefaultHost));
   }
+  map->Add<skus::mojom::SkusSdk>(
+        base::BindRepeating(&BindSkuSdkImpl));
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (brave_wallet::IsNativeWalletEnabled()) {
     map->Add<brave_wallet::mojom::BraveWalletProvider>(

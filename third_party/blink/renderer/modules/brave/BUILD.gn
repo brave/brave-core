@@ -11,11 +11,5 @@ blink_modules_sources("brave") {
     "brave.h",
     "navigator_brave.cc",
     "navigator_brave.h",
-    "skus/skus.cc",
-    "skus/skus.h",
-  ]
-
-  deps = [
-    "//brave/components/skus",
   ]
 }

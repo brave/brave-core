@@ -6,16 +6,21 @@
 #ifndef BRAVE_COMPONENTS_SKUS_SKUS_
 #define BRAVE_COMPONENTS_SKUS_SKUS_
 
-#include "brave/components/skus/service_sandbox_type.h"
-#include "brave/components/skus/skus_sdk_caller.mojom.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
+
+class PrefService;
 
 namespace brave_rewards {
 
-class SkusSdkCallerImpl : public skus_sdk_caller::mojom::SkusSdkCaller {
+class SkusSdkImpl final : public skus::mojom::SkusSdk {
+ public:
+  SkusSdkImpl(const SkusSdkImpl&) = delete;
+  SkusSdkImpl& operator=(const SkusSdkImpl&) = delete;
+
+  SkusSdkImpl(PrefService* prefs);
+
   void StartRefreshOrder(uint32_t order_id) override;
   void StartFetchOrderCredentials(uint32_t order_id) override;
-
-
 };
 
 }  // namespace brave_rewards

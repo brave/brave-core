@@ -12,7 +12,6 @@
 
 namespace blink {
 
-class Skus;
 class ScriptPromise;
 class ScriptState;
 
@@ -23,12 +22,6 @@ class MODULES_EXPORT Brave final
  public:
   Brave() = default;
   ScriptPromise isBrave(ScriptState*);
-  Skus* skus();
-
-  void Trace(blink::Visitor*) const override;
-
- private:
-  Member<Skus> skus_;
 };
 
 }  // namespace blink
