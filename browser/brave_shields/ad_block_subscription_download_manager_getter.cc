@@ -86,6 +86,10 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
     }
   }
 
+  ~AdBlockSubscriptionDownloadManagerGetterImpl() override {
+    g_browser_process->profile_manager()->RemoveObserver(this);
+  }
+
  private:
   void OnProfileAdded(Profile* profile) override {
     auto* profile_manager = g_browser_process->profile_manager();
