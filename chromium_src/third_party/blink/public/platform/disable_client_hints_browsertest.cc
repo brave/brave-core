@@ -22,7 +22,13 @@
 #include "third_party/blink/public/common/client_hints/client_hints.h"
 #include "third_party/blink/public/common/features.h"
 
+namespace {
 const char kClientHints[] = "/ch.html";
+const std::vector<base::Feature> kTestFeatures = {
+    blink::features::kLangClientHintHeader,
+    blink::features::kViewportHeightClientHintHeader,
+};
+}  // namespace
 
 class ClientHintsBrowserTest : public InProcessBrowserTest,
                                public ::testing::WithParamInterface<bool> {
@@ -46,17 +52,15 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
 
   ~ClientHintsBrowserTest() override {}
 
-  bool IsLangClientHintHeaderEnabled() { return GetParam(); }
+  bool IsClientHintHeaderEnabled() { return GetParam(); }
 
   void SetUp() override {
-    if (IsLangClientHintHeaderEnabled()) {
-      // Test that even with Lang CH feature enabled, there is no header.
-      scoped_feature_list_.InitAndEnableFeature(
-          blink::features::kLangClientHintHeader);
-    } else {
-      scoped_feature_list_.InitAndDisableFeature(
-          blink::features::kLangClientHintHeader);
-    }
+    // Test that even with Lang CH feature enabled, there is no header.
+    scoped_feature_list_.InitWithFeatures(
+        IsClientHintHeaderEnabled() ? kTestFeatures
+                                    : std::vector<base::Feature>(),
+        IsClientHintHeaderEnabled() ? std::vector<base::Feature>()
+                                    : kTestFeatures);
     InProcessBrowserTest::SetUp();
   }
 
@@ -92,9 +96,10 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
 };
 
 IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
-  EXPECT_EQ(
-      IsLangClientHintHeaderEnabled(),
-      base::FeatureList::IsEnabled(blink::features::kLangClientHintHeader));
+  for (const auto& feature : kTestFeatures) {
+    EXPECT_EQ(IsClientHintHeaderEnabled(),
+              base::FeatureList::IsEnabled(feature));
+  }
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), client_hints_url()));
   EXPECT_EQ(0u, count_client_hints_headers_seen());
 }
