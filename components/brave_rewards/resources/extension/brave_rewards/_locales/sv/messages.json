@@ -1,382 +1,685 @@
 {
-  "summary": {
-    "message": "Sammanfattning",
-    "description": ""
+  "braveRewards": {
+    "message": "Brave Rewards",
+    "description": "Title in welcome screen for the panel"
   },
-  "tip": {
-    "message": "Dricks",
-    "description": ""
+  "welcomeButtonTextOne": {
+    "message": "Börja tjäna nu!",
+    "description": "CTA on welcome screen in the panel, existing users"
   },
-  "unverifiedCreator": {
-    "message": "Overifierad skapare",
-    "description": ""
+  "welcomeButtonTextTwo": {
+    "message": "Gå med i Rewards",
+    "description": "CTA on welcome screen in the panel, new users"
   },
-  "verifiedCreator": {
-    "message": "Verifierad skapare",
-    "description": ""
+  "welcomeDescOne": {
+    "message": "Få betalt för att titta på annonser och betala vidare till dina favorit-innehållskreatörer.",
+    "description": "Entry text for welcome screen in the panel, existing user"
   },
-  "refreshStatus": {
-    "message": "Uppdatera status",
-    "description": ""
+  "welcomeDescTwo": {
+    "message": "Nu kan du tjäna token genom att titta på annonser som respekterar din integritet.",
+    "description": "Entry text for welcome screen in the panel, new user"
   },
-  "platformPublisherTitle": {
-    "message": "$name$ på $platform$",
+  "welcomeDescPoints": {
+    "message": "Nu kan du tjäna poäng genom att titta på annonser som respekterar din integritet.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
+  "welcomeFooterTextOne": {
+    "message": "Kolla in vad som har förbättrats",
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Läs mer",
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
+  },
+  "welcomeHeaderOne": {
+    "message": "Vi har gjort en stor uppgradering av Brave Rewards.",
+    "description": "Main header title for welcome screen in the panel, existing user"
+  },
+  "welcomeHeaderTwo": {
+    "message": "Förbered dig på att uppleva det nya Internet.",
+    "description": "Main header title for welcome screen in the panel, new user"
+  },
+  "yourWallet": {
+    "message": "Din plånbok",
+    "description": "Title of wallet section where we display data about wallet"
+  },
+  "grants": {
+    "message": "Tilldelningar",
+    "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "Detaljer",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "on": {
+    "message": "på",
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
+  },
+  "verifiedPublisher": {
+    "message": "Skapare som verifierats av Brave",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Observation",
+    "description": "Label for auto contribute table attention for the publisher"
+  },
+  "donateMonthly": {
+    "message": "Månatligt bidrag",
+    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
+  },
+  "includeInAuto": {
+    "message": "Inkludera i automatiska bidrag",
+    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
+  },
+  "donateNow": {
+    "message": "Skicka dricks...",
+    "description": "CTA for sending tip form site banner"
+  },
+  "enableTips": {
+    "message": "Aktivera dricks",
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
+  },
+  "for": {
+    "message": "för",
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
+  },
+  "rewardsSummary": {
+    "message": "Sammanfattning av Rewards",
+    "description": "Section title in wallet panel, which contains monthly rewards summary"
+  },
+  "monthApr": {
+    "message": "April",
+    "description": "Month"
+  },
+  "monthAug": {
+    "message": "Augusti",
+    "description": "Month"
+  },
+  "monthDec": {
+    "message": "December",
+    "description": "Month"
+  },
+  "monthFeb": {
+    "message": "Februari",
+    "description": "Month"
+  },
+  "monthJan": {
+    "message": "Januari",
+    "description": "Month"
+  },
+  "monthJul": {
+    "message": "Juli",
+    "description": "Month"
+  },
+  "monthJun": {
+    "message": "Juni",
+    "description": "Month"
+  },
+  "monthMar": {
+    "message": "Mars",
+    "description": "Month"
+  },
+  "monthMay": {
+    "message": "Maj",
+    "description": "Month"
+  },
+  "monthNov": {
+    "message": "November",
+    "description": "Month"
+  },
+  "monthOct": {
+    "message": "Oktober",
+    "description": "Month"
+  },
+  "monthSep": {
+    "message": "September",
+    "description": "Month"
+  },
+  "tokenGrant": {
+    "message": "$currency$-bidrag",
+    "description": "Title for grant notification",
     "placeholders": {
-      "name": {
-        "content": "$1"
-      },
-      "platform": {
-        "content": "$2"
+      "currency": {
+        "content": "$1",
+        "example": "Token"
       }
     }
   },
-  "attention": {
-    "message": "Observation",
-    "description": ""
+  "tokenGrantClaimed": {
+    "message": "Tilldelning av token utnyttjades",
+    "description": "Title for grant section in wallet summary"
   },
-  "sendTip": {
-    "message": "Skicka dricks",
-    "description": ""
+  "earningsAds": {
+    "message": "Intäkter från annonser",
+    "description": "Title for ads section in wallet summary"
   },
-  "includeInAutoContribute": {
-    "message": "Inkludera i automatiska bidrag",
-    "description": ""
+  "rewardsContribute": {
+    "message": "Bidra automatiskt",
+    "description": "Title for auto contribute section in wallet summary"
   },
-  "monthlyContribution": {
-    "message": "Månatligt bidrag",
-    "description": ""
+  "oneTimeDonation": {
+    "message": "Engångsdricks",
+    "description": "Title for one-time tips section in wallet summary"
+  },
+  "expiresOn": {
+    "message": "går ut den",
+    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
+  },
+  "recurringDonations": {
+    "message": "Månatliga bidrag",
+    "description": "Title for monthly contributions section in wallet summary"
+  },
+  "off": {
+    "message": "Av",
+    "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
+    "message": "ok",
+    "description": "Used in notification to dismiss notification"
+  },
+  "braveAdsLaunchMsg": {
+    "message": "Nu kan du tjäna pengar på att se annonser.",
+    "description": "Message for ads launch notification"
+  },
+  "braveAdsTitle": {
+    "message": "Brave annonser",
+    "description": "Notification title when we display info about ads"
+  },
+  "braveContributeTitle": {
+    "message": "Bidra automatiskt",
+    "description": "Notification title when we display info about auto contribution"
+  },
+  "contributeNotificationSuccess": {
+    "message": "Du har bidragit med $amount$ $currency$",
+    "description": "We show this string in the notification when contribution is successful",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "Du har ett bidrag som väntar på dig.",
+    "description": "Description for new grant notification"
+  },
+  "backupNow": {
+    "message": "Säkerhetskopiera nu",
+    "description": "Notification button text when we ask user to backup wallet"
+  },
+  "backupWalletTitle": {
+    "message": "Säkerhetskopiera plånbok",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Säkerhetskopiera din Brave-plånbok.",
+    "description": "Description for backup wallet notification"
+  },
+  "learnMore": {
+    "message": "Läs mer",
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Fel: Ett annat konto",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Hmm, det ser ut som att din Brave Rewards-plånbok redan har verifierats med ett annat $name$-konto. Försök verifiera igen med ditt tidigare konto.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "upholdBATNotAllowedForUserTitle": {
+    "message": "Fel: BAT är inte tillgänglig",
+    "description": "Title for BAT not allowed for user notification"
+  },
+  "upholdBATNotAllowedForUserNotification": {
+    "message": "BAT stöds ännu inte i din region på Uphold.",
+    "description": "Description for BAT not allowed for user notification"
+  },
+  "upholdBlockedUserTitle": {
+    "message": "Fel: Blockerat konto",
+    "description": "Title for blocked user notification"
+  },
+  "upholdBlockedUserNotification": {
+    "message": "Ditt konto på Uphold är blockerat för närvarande.",
+    "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserTitle": {
+    "message": "Fel: Väntande konto",
+    "description": "Title for pending user notification"
+  },
+  "upholdPendingUserNotification": {
+    "message": "Ditt konto på Uphold väntar fortfarande.",
+    "description": "Description for pending user notification"
+  },
+  "upholdRestrictedUserTitle": {
+    "message": "Fel: Begränsat konto",
+    "description": "Title for restricted user notification"
+  },
+  "upholdRestrictedUserNotification": {
+    "message": "Ditt konto på Uphold är begränsat för närvarande.",
+    "description": "Description for restricted user notification"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Enhetsgräns uppnådd",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Din plånbok kan inte verifieras eftersom du har nått maxgränsen för verifierade enheter.",
+    "description": "Description for device limit reached notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Det återstår att sätta in pengar på ditt Brave Rewards-konto. ",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Otillräckliga medel",
+    "description": "Title for insufficient funds notification"
+  },
+  "braveRewardsCreatingText": {
+    "message": "Skapar plånbok",
+    "description": "Used in a button displaying wallet creation process"
+  },
+  "contributeNotificationError": {
+    "message": "Det gick inte att behandla ditt bidrag.",
+    "description": "We show this string in notification when contribution fails"
+  },
+  "contributeNotificationNotEnoughFunds": {
+    "message": "Din planerade månatliga betalning för Autobidrag och månatliga bidrag kan inte genomföras på grund av otillräckliga medel. Vi försöker på nytt om 30 dagar.",
+    "description": "We show this string in the notification when you don't have enough funds for contribution"
+  },
+  "contributeNotificationTipError": {
+    "message": "Det gick inte att skicka dricks. Försök igen senare. ",
+    "description": "We show this string in notification when tip fails"
+  },
+  "noActivity": {
+    "message": "Ingen aktivitet än...",
+    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Dra BAT-ikonen till",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaProveHuman": {
+    "message": "Bevisa att du är en människa!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "mål.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Hmm… Inte direkt. Försök igen.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Hämta",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Tilldelning av gratis token",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Medgivandets utgångsdatum",
+    "description": "Grant expiry label"
+  },
+  "grantGeneralErrorButton": {
     "message": "OK",
-    "description": ""
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Brave Rewards har problem. Försök igen senare.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Oj, något gick fel. Försök igen senare.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "unVerifiedCheck": {
+    "message": "Uppdatera status",
+    "description": "Text of link that allows to check verified status of unverified publisher"
+  },
+  "unVerifiedPublisher": {
+    "message": "Ännu inte verifierad",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Den här innehållsskaparen har inte ställt in att kunna ta emot dricks från din plånbok. Om du dricksar reserveras beloppet som väntande och nya försök görs i 90 dagar.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Lär dig mer.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Du har tilldelat {{reservedAmount}} {{currency}} till skapare som ännu inte registrerat sig för att ta emot bidrag. Din webbläsare kommer att fortsätta försöka bidra till dess de bekräftats eller till dess 90 dagar gått.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Lär dig mer.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Av",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Inställningar.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "Just nu samlar du inte på dig några Rewards medan du surfar. Aktivera Rewards igen på",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Brave Rewards är",
+    "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Det gick inte att skapa plånboken",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Försök igen",
+    "description": "Button for re-try after wallet creation failed"
+  },
+  "addFunds": {
+    "message": "Fyll på pengar ",
+    "description": "Button for adding funds"
+  },
+  "rewardsSettings": {
+    "message": "Inställningar för Rewards",
+    "description": "Button for opening settings page"
+  },
+  "earningsClaimDefault": {
+    "message": "Dina belöningar från annonser har kommit!",
+    "description": "Panel notification text for Ads grant"
+  },
+  "and": {
+    "message": "och",
+    "description": "The word 'and'"
+  },
+  "braveRewardsSubTitle": {
+    "message": "Bli belönad för att surfa!",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "disabledPanelTextTwo": {
+    "message": "Tjäna pengar på att se annonser som värnar integriteten, och betala vidare för att stödja innehållsskapare du älskar. ",
+    "description": "Text block for wallet disabled panel"
+  },
+  "enableRewards": {
+    "message": "Aktivera Brave Rewards",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "privacyPolicy": {
+    "message": "Integritetspolicy",
+    "description": "Privacy Policy"
+  },
+  "serviceText": {
+    "message": "Genom att klicka på \"Aktivera Brave Rewards\" visar du att du har läst och godkänner ",
+    "description": "Terms of service main text"
+  },
+  "termsOfService": {
+    "message": "Användarvillkor",
+    "description": "Terms of Service"
+  },
+  "welcomeBack": {
+    "message": "Välkommen tillbaka!",
+    "description": "Title message for wallet disabled panel"
+  },
+  "tipsProcessedNotification": {
+    "message": "Dina månatliga bidrag har behandlats!",
+    "description": "Message for monthly contributions processed notification"
+  },
+  "contributionTips": {
+    "message": "Bidrag & dricks",
+    "description": "Title for monthly contributions processed notification"
+  },
+  "serviceTextPanelWelcome": {
+    "message": "Genom att klicka på 'Gå med i Rewards', visar du att du har läst och godkänner ",
+    "description": "Terms of service panel opt-in text"
+  },
+  "bat": {
+    "message": "BAT",
+    "description": "BAT text for displaying converted tip amount."
+  },
+  "turnOnAds": {
+    "message": "Aktivera annonser",
+    "description": "Prompt to turn on Ads via notification"
+  },
+  "adsEarnings": {
+    "message": "förtjänst från annonser",
+    "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "Ge dricks till denna tweet",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "Dricks",
+    "description": "Icon label for Twitter tips"
+  },
+  "redditTipsHoverText": {
+    "message": "Ge detta inlägg dricks",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Dricks",
+    "description": "Icon label for Reddit tips"
+  },
+  "githubTipsHoverText": {
+    "message": "Skicka dricks",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Dricks",
+    "description": "Icon label for GitHub tips"
+  },
+  "verifiedPublisherNotification": {
+    "message": "Skaparen $name$ verifierades nyligen",
+    "description": "Notification text that tells user which publisher just verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "brave.com"
+      }
+    }
+  },
+  "pendingNotEnoughFundsNotification": {
+    "message": "Du har dricks som väntar eftersom det inte finns tillräckliga medel",
+    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
+  },
+  "pendingContributionTitle": {
+    "message": "Pågående bidrag",
+    "description": "Notification title for pending contribution type"
+  },
+  "grantFinishTitleUGP": {
+    "message": "Det är din lyckodag!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "grantFinishTextUGP": {
+    "message": "Din $currency$-belöning är på väg.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
+  },
+  "grantFinishTokenTitleUGP": {
+    "message": "Tilldelning av gratis token",
+    "description": "Token title on success screen"
+  },
+  "grantFinishTitleAds": {
+    "message": "Du har tjänat ihop en annonsbelöning!",
+    "description": "Cosmetic text upon captcha success for ads"
+  },
+  "grantFinishTextAds": {
+    "message": "Din belöning är på väg till din Brave Rewards-plånbok.",
+    "description": "Cosmetic text indicating ads funds are on the way"
+  },
+  "grantFinishTokenTitleAds": {
+    "message": "Din belöningssumma",
+    "description": "Token title on success screen for ads"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Frånkopplad",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Verifiera plånbok",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Plånbok verifierad",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToProvider":  {
+    "message": "Gå till ditt $provider$-konto ",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Logga in på ditt $provider$-konto",
+    "description": "CTA to log in with a wallet provider",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnect":  {
+    "message": "Frånkoppla Brave Rewards",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerified":  {
+    "message": "Verifierad",
+    "description": "Status button that tells user that he is verified"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Plånboken har verifierats!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Grattis! Plånboken $name$ har verifierats. Du kan nu sätta in och ta ut tillgångar från den.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Hoppsan! Det går inte att nå plånboken.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Ingen fara. Många olika säkerhetsmekanismer kan medföra detta. Du löser problemet genom att ansluta din plånbok på nytt. ",
+    "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Den här bekräftade skaparen hos Brave har ännu inte ställt in sitt konto för att kunna ta emot bidrag från Braves användare. Den dricks du skickar kommer att finnas kvar i din plånbok till dess de slutför denna process.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Slutför verifiering av plånbok",
+    "description": "CTA for completing wallet verification"
   },
   "set": {
-    "message": "Ange",
-    "description": ""
+    "message": "Ställ in ...",
+    "description": "Button text for setting monthly contribution"
   },
-  "changeAmount": {
-    "message": "Ändra summa",
-    "description": ""
+  "tokens":  {
+    "message": "token",
+    "description": "Standard tokens text"
   },
-  "cancel": {
-    "message": "Avbryt",
-    "description": ""
+  "point":  {
+    "message": "Poäng",
+    "description": "BAT Point text"
   },
-  "grantCaptchaTitle": {
-    "message": "Bekräfta att du är en människa",
-    "description": ""
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
   },
-  "grantCaptchaFailedTitle": {
-    "message": "Hmm… Inte direkt. Försök igen.",
-    "description": ""
-  },
-  "grantCaptchaHint": {
-    "message": "Dra BAT-ikonen till målet $hint$.",
-    "description": "",
-    "placeholders": {
-      "hint": {
-        "content": "$1"
-      }
-    }
-  },
-  "grantCaptchaPassedTitleUGP": {
-    "message": "Det är din lyckodag!",
-    "description": ""
-  },
-  "grantCaptchaPassedTextUGP": {
-    "message": "Din tilldelning av token är på väg.",
-    "description": ""
-  },
-  "grantCaptchaAmountUGP": {
-    "message": "Tilldelning av gratis token",
-    "description": ""
-  },
-  "grantCaptchaPassedTitleAds": {
-    "message": "Du har tjänat ihop en annonsbelöning!",
-    "description": ""
-  },
-  "grantCaptchaPassedTextAds": {
-    "message": "Din belöning är på väg till din Brave Rewards-plånbok.",
-    "description": ""
-  },
-  "grantCaptchaAmountAds": {
-    "message": "Din belöningssumma",
-    "description": ""
-  },
-  "grantCaptchaExpiration": {
-    "message": "Medgivandets utgångsdatum",
-    "description": ""
-  },
-  "grantCaptchaErrorTitle": {
-    "message": "Oj, något gick fel. Försök igen senare.",
-    "description": ""
-  },
-  "grantCaptchaErrorText": {
-    "message": "Brave Rewards har problem. Försök igen senare.",
-    "description": ""
-  },
-  "walletAccountLink": {
-    "message": "Gå till mitt $provider$-konto",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletAddFunds": {
-    "message": "Sätt in pengar",
-    "description": ""
-  },
-  "walletAutoContribute": {
-    "message": "Bidra automatiskt",
-    "description": ""
-  },
-  "walletCompleteVerificationLink": {
-    "message": "Gå till $provider$ för att slutföra verifieringen",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Slutför identitetsverifieringen för att börja ta emot belöningar.",
-    "description": ""
-  },
-  "walletDisconnected": {
-    "message": "Frånkopplad",
-    "description": ""
-  },
-  "walletDisconnectLink": {
-    "message": "Frånkoppla Brave Rewards",
-    "description": ""
-  },
-  "walletEstimatedEarnings": {
-    "message": "Beräknade intäkter",
-    "description": ""
-  },
-  "walletLogIntoYourAccount": {
-    "message": "Logga in på ditt $provider$-konto",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletMonthlyTips": {
-    "message": "Månatliga dricks",
-    "description": ""
-  },
-  "walletMyWallet": {
-    "message": "Min plånbok",
-    "description": ""
-  },
-  "walletOneTimeTips": {
-    "message": "Engångsdricks",
-    "description": ""
-  },
-  "walletPending": {
-    "message": "Väntande",
-    "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ anländer om $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
-  },
-  "walletRewardsFromAds": {
-    "message": "Belöningar från Ads",
-    "description": ""
-  },
-  "walletRewardsSummary": {
-    "message": "Sammanfattning av Rewards",
-    "description": ""
-  },
-  "walletVerified": {
-    "message": "Verifierad",
-    "description": ""
-  },
-  "walletVerify": {
-    "message": "Verifiera plånbok",
-    "description": ""
-  },
-  "walletYourBalance": {
-    "message": "Ditt saldo",
-    "description": ""
-  },
-  "notificationAddFunds": {
-    "message": "Sätt in pengar",
-    "description": ""
-  },
-  "notificationLearnMore": {
-    "message": "Läs mer",
-    "description": ""
-  },
-  "notificationReconnect": {
-    "message": "Återanslut",
-    "description": ""
-  },
-  "notificationClaim": {
-    "message": "Hämta",
-    "description": ""
-  },
-  "notificationAddFundsTitle": {
-    "message": "Otillräckliga medel",
-    "description": ""
-  },
-  "notificationAddFundsText": {
-    "message": "Det återstår att sätta in pengar på ditt Brave Rewards-konto. ",
-    "description": ""
-  },
-  "notificationAutoContributeCompletedTitle": {
-    "message": "Bidra automatiskt",
-    "description": ""
-  },
-  "notificationAutoContributeCompletedText": {
-    "message": "Du har bidragit med $amount$.",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationBackupWalletTitle": {
-    "message": "Säkerhetskopiera plånbok",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Säkerhetskopiera din Brave-plånbok.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Säkerhetskopiera nu",
-    "description": ""
-  },
-  "notificationWalletDisconnectedTitle": {
-    "message": "Din plånbok är utloggad",
-    "description": ""
-  },
-  "notificationWalletDisconnectedText": {
-    "message": "Detta kan hända för att hålla ditt konto säkert. Klicka nedan för att återansluta nu.",
-    "description": ""
-  },
-  "notificationWalletDisconnectedAction": {
-    "message": "Återanslut",
-    "description": ""
-  },
-  "notificationWalletVerifiedTitle": {
-    "message": "Plånboken har verifierats!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "$provider$-plånboken har verifierats. Du kan nu sätta in och ta ut tillgångar från den.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationTokenGrantTitle": {
+  "tokenGrants":  {
     "message": "Tilldelning av token",
-    "description": ""
+    "description": "BAT Tokens Grant Text"
   },
-  "notificationTokenGrantText": {
-    "message": "Du har ett bidrag som väntar på dig.",
-    "description": ""
-  },
-  "notificationAdGrantTitle": {
-    "message": "Annonsintäkter erhållna",
-    "description": ""
-  },
-  "notificationAdGrantText": {
-    "message": "Dina belöningar från Brave Private Ads har kommit!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Månatligt bidrag misslyckades",
-    "description": ""
-  },
-  "notificationInsufficientFundsText": {
-    "message": "Din planerade månatliga betalning för Autobidrag och månatliga bidrag kan inte genomföras på grund av otillräckliga medel. Vi försöker på nytt om 30 dagar.",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedText": {
-    "message": "Det gick inte att behandla ditt bidrag.",
-    "description": ""
-  },
-  "notificationMonthlyTipCompletedTitle": {
-    "message": "Bidrag och dricks",
-    "description": ""
-  },
-  "notificationMonthlyTipCompletedText": {
-    "message": "Dina månatliga bidrag har behandlats.",
-    "description": ""
-  },
-  "notificationPublisherVerifiedTitle": {
-    "message": "Väntande bidrag",
-    "description": ""
-  },
-  "notificationPublisherVerifiedText": {
-    "message": "Skaparen $publisher_name$ verifierades nyligen.",
-    "description": "",
+  "greetingsVerified":  {
+    "message": "Hej, $name$!",
+    "description": "Greetings for external wallet popup",
     "placeholders": {
-      "publisher_name": {
-        "content": "$1"
+      "name": {
+        "content": "$1",
+        "example": "John"
       }
     }
   },
-  "notificationPendingTipFailedTitle": {
-    "message": "Otillräckliga medel",
-    "description": ""
+  "cancel":  {
+    "message": "Avbryt",
+    "description": "Text for cancel button"
   },
-  "notificationPendingTipFailedText": {
-    "message": "Du har dricks som väntar eftersom det inte finns tillräckliga medel",
-    "description": ""
+  "changeAmount":  {
+    "message": "Ändra summa",
+    "description": "Button text for changing monthly contribution amount"
   },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Länkning av plånbok misslyckades",
-    "description": ""
+  "login":  {
+    "message": "Inloggning",
+    "description": "Text for login button"
   },
-  "notificationDeviceLimitReachedText": {
-    "message": "Din plånbok kan inte verifieras eftersom du har nått maxgränsen för verifierade enheter.",
-    "description": ""
+  "loginMessageTitle":  {
+    "message": "Genom att verifiera plånboken kan du hantera dina pengar mer effektivt.",
+    "description": "Text for login button"
   },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Det ser ut som att din Brave Rewards-plånbok redan har verifierats med ett annat $provider$-konto. Försök verifiera igen med ditt tidigare konto.",
-    "description": "",
+  "loginMessageText":  {
+    "message": "Du måste ha minst $amount$ BAT för att skapa ett Uphold-konto. Vänligen försök igen senare. Fortsätt att logga in om du redan har ett verifierat Uphold-konto.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
+  },
+  "walletConnected":  {
+    "message": "Ansluten",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletDisconnected":  {
+    "message": "Frånkopplad",
+    "description": "Status button that tells user that he is disconnected"
+  },
+  "walletPending":  {
+    "message": "Väntande",
+    "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Obs! Dina transaktioner blir synliga för $provider$ när du auktoriserar. Till exempel kommer de att kunna se mottagaren och beloppet för dina tips.",
+    "description": "Displayed in login modal for external wallet providers",
     "placeholders": {
       "provider": {
-        "content": "$1"
+        "content": "$1",
+        "example": "Uphold"
       }
     }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT stöds ännu inte i din region på Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Ditt konto på Uphold är blockerat för närvarande.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Ditt konto på Uphold väntar fortfarande.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Ditt konto på Uphold är begränsat för närvarande.",
-    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "Tjäna tokens och ge tillbaka",
@@ -551,29 +854,5 @@
         "content": "$2"
       }
     }
-  },
-  "captchaMaxAttemptsExceededText": {
-    "message": "Det ser ut som att detta inte fungerar, Brave-annonser kommer att förbli pausade. Kontakta oss om du behöver hjälp med captcha.",
-    "description": ""
-  },
-  "captchaMaxAttemptsExceededTitle": {
-    "message": "Maximalt antal försök har överskridits",
-    "description": ""
-  },
-  "captchaSolvedTitle": {
-    "message": "Löst!",
-    "description": ""
-  },
-  "captchaSolvedText": {
-    "message": "Annonser och intäkter återupptas nu. Tack för att du hjälper oss att skydda Brave Rewards och sekretessbaserade annonser.",
-    "description": ""
-  },
-  "captchaContactSupport": {
-    "message": "Kontakta support",
-    "description": ""
-  },
-  "captchaDismiss": {
-    "message": "Ta bort permanent",
-    "description": ""
   }
 }

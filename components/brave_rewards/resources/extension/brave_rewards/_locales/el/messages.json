@@ -1,382 +1,685 @@
 {
-  "summary": {
-    "message": "Περίληψη",
-    "description": ""
+  "braveRewards": {
+    "message": "Ανταμοιβές Brave",
+    "description": "Title in welcome screen for the panel"
   },
-  "tip": {
-    "message": "Φιλοδώρημα",
-    "description": ""
+  "welcomeButtonTextOne": {
+    "message": "Ξεκινήστε να Κερδίζετε Τώρα! ",
+    "description": "CTA on welcome screen in the panel, existing users"
   },
-  "unverifiedCreator": {
-    "message": "Μη επαληθευμένος Δημιουργός",
-    "description": ""
+  "welcomeButtonTextTwo": {
+    "message": "Συμμετοχή σε Ανταμοιβές",
+    "description": "CTA on welcome screen in the panel, new users"
   },
-  "verifiedCreator": {
-    "message": "Επαληθευμένος δημιουργός",
-    "description": ""
+  "welcomeDescOne": {
+    "message": "Πληρώσου για να βλέπεις διαφημίσεις και ανταπόδωσε το για να στηρίξεις τους αγαπημένους σου δημιουργούς περιεχομένου.",
+    "description": "Entry text for welcome screen in the panel, existing user"
   },
-  "refreshStatus": {
-    "message": "Ανανέωση Κατάστασης",
-    "description": ""
+  "welcomeDescTwo": {
+    "message": "Μπορείτε τώρα να κερδίζετε μάρκες για να παρακολουθείτε διαφημίσεις που σέβονται την ιδιωτικότητα.",
+    "description": "Entry text for welcome screen in the panel, new user"
   },
-  "platformPublisherTitle": {
-    "message": "$name$ στο $platform$",
+  "welcomeDescPoints": {
+    "message": "Τώρα μπορείτε να κερδίζετε πόντους για την παρακολούθηση διαφημίσεων που σέβονται την ιδιωτικότητα.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
+  "welcomeFooterTextOne": {
+    "message": "Δείτε τι έχει βελτιωθεί",
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Μάθετε περισσότερα",
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
+  },
+  "welcomeHeaderOne": {
+    "message": "Έχουμε κάνει μια μεγάλη αναβάθμιση των Ανταμοιβών Brave.",
+    "description": "Main header title for welcome screen in the panel, existing user"
+  },
+  "welcomeHeaderTwo": {
+    "message": "Ετοιμάσου να βιώσεις το επόμενο διαδίκτυο.·",
+    "description": "Main header title for welcome screen in the panel, new user"
+  },
+  "yourWallet": {
+    "message": "Το πορτοφόλι σας",
+    "description": "Title of wallet section where we display data about wallet"
+  },
+  "grants": {
+    "message": "Επιχορηγήσεις ",
+    "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "Λεπτομέρειες",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "on": {
+    "message": "ανοιχτό ",
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
+  },
+  "verifiedPublisher": {
+    "message": "Επικυρωμένος Δημιουργός Brave ",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Προσοχή",
+    "description": "Label for auto contribute table attention for the publisher"
+  },
+  "donateMonthly": {
+    "message": "Μηνιαία Συνεισφορά",
+    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
+  },
+  "includeInAuto": {
+    "message": "Συμπερίληψη στο Auto-Contribute",
+    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
+  },
+  "donateNow": {
+    "message": "Στείλτε ένα Φιλοδώρημα",
+    "description": "CTA for sending tip form site banner"
+  },
+  "enableTips": {
+    "message": "Ενεργοποίηση Φιλοδωρημάτων",
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
+  },
+  "for": {
+    "message": "για",
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
+  },
+  "rewardsSummary": {
+    "message": "Σύνοψη Ανταμοιβών",
+    "description": "Section title in wallet panel, which contains monthly rewards summary"
+  },
+  "monthApr": {
+    "message": "Απρίλιος",
+    "description": "Month"
+  },
+  "monthAug": {
+    "message": "Αύγουστος ",
+    "description": "Month"
+  },
+  "monthDec": {
+    "message": "Δεκέμβριος",
+    "description": "Month"
+  },
+  "monthFeb": {
+    "message": "Φεβρουάριος",
+    "description": "Month"
+  },
+  "monthJan": {
+    "message": "Ιανουάριος",
+    "description": "Month"
+  },
+  "monthJul": {
+    "message": "Ιούλιος",
+    "description": "Month"
+  },
+  "monthJun": {
+    "message": "Ιούνιος",
+    "description": "Month"
+  },
+  "monthMar": {
+    "message": "Μάρτιος",
+    "description": "Month"
+  },
+  "monthMay": {
+    "message": "Μάιος",
+    "description": "Month"
+  },
+  "monthNov": {
+    "message": "Νοέμβριος",
+    "description": "Month"
+  },
+  "monthOct": {
+    "message": "Οκτώβριος ",
+    "description": "Month"
+  },
+  "monthSep": {
+    "message": "Σεπτέμβριος ",
+    "description": "Month"
+  },
+  "tokenGrant": {
+    "message": "Επιχορηγήσεις $currency$",
+    "description": "Title for grant notification",
     "placeholders": {
-      "name": {
-        "content": "$1"
-      },
-      "platform": {
-        "content": "$2"
+      "currency": {
+        "content": "$1",
+        "example": "Token"
       }
     }
   },
-  "attention": {
-    "message": "Προσοχή",
-    "description": ""
+  "tokenGrantClaimed": {
+    "message": "Το Κέρμα Επιχορηγήσεων Αποκτήθηκε",
+    "description": "Title for grant section in wallet summary"
   },
-  "sendTip": {
-    "message": "Αποστολή Φιλοδωρήματος",
-    "description": ""
+  "earningsAds": {
+    "message": "Κέρδη από Διαφημίσεις",
+    "description": "Title for ads section in wallet summary"
   },
-  "includeInAutoContribute": {
-    "message": "Συμπερίληψη στο Auto-Contribute",
-    "description": ""
+  "rewardsContribute": {
+    "message": "Auto-Contribute",
+    "description": "Title for auto contribute section in wallet summary"
   },
-  "monthlyContribution": {
-    "message": "Μηνιαία Συνεισφορά",
-    "description": ""
+  "oneTimeDonation": {
+    "message": "Φιλοδώρημα για μια φορά",
+    "description": "Title for one-time tips section in wallet summary"
+  },
+  "expiresOn": {
+    "message": "λήγει στις",
+    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
+  },
+  "recurringDonations": {
+    "message": "Μηνιαίες Συνεισφορές",
+    "description": "Title for monthly contributions section in wallet summary"
+  },
+  "off": {
+    "message": "Απενεργοποιημένη",
+    "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
+    "message": "Εντάξει",
+    "description": "Used in notification to dismiss notification"
+  },
+  "braveAdsLaunchMsg": {
+    "message": "Τώρα μπορείτε να κερδίσετε βλέποντας διαφημίσεις.",
+    "description": "Message for ads launch notification"
+  },
+  "braveAdsTitle": {
+    "message": "Διαφημίσεις Brave",
+    "description": "Notification title when we display info about ads"
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": "Notification title when we display info about auto contribution"
+  },
+  "contributeNotificationSuccess": {
+    "message": "Έχετε συνεισφέρει $amount$ $currency$",
+    "description": "We show this string in the notification when contribution is successful",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "Μία χορηγία σε περιμένει.",
+    "description": "Description for new grant notification"
+  },
+  "backupNow": {
+    "message": "Δημιουργία Αντιγράφου Ασφαλείας Τώρα",
+    "description": "Notification button text when we ask user to backup wallet"
+  },
+  "backupWalletTitle": {
+    "message": "Εφεδρικό Πορτοφόλι",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Παρακαλώ κρατήστε αντίγραφο ασφαλείας του Brave πορτοφολιού σας.",
+    "description": "Description for backup wallet notification"
+  },
+  "learnMore": {
+    "message": "Μάθετε περισσότερα",
+    "description": "Notification button text to learn more about a specific use-case"
+  },
+  "mismatchedProviderAccountsTitle": {
+    "message": "Σφάλμα: Διαφορετικός λογαριασμός",
+    "description": "Title for mismatched provider accounts notification"
+  },
+  "mismatchedProviderAccountsNotification": {
+    "message": "Φαίνεται ότι το πορτοφόλι σας Brave Rewards έχει επαληθευτεί μέσω άλλου λογαριασμού $name$. Παρακαλούμε, προσπαθήστε να το επαληθεύσετε ξανά, χρησιμοποιώντας τον προηγούμενο λογαριασμό σας.",
+    "description": "Description for mismatched provider accounts notification",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "upholdBATNotAllowedForUserTitle": {
+    "message": "Σφάλμα: BAT μη διαθέσιμο",
+    "description": "Title for BAT not allowed for user notification"
+  },
+  "upholdBATNotAllowedForUserNotification": {
+    "message": "Το BAT δεν υποστηρίζεται ακόμα στην περιοχή σας στο Uphold.",
+    "description": "Description for BAT not allowed for user notification"
+  },
+  "upholdBlockedUserTitle": {
+    "message": "Σφάλμα: Αποκλεισμένος λογαριασμός",
+    "description": "Title for blocked user notification"
+  },
+  "upholdBlockedUserNotification": {
+    "message": "Ο λογαριασμός στο Uphold είναι προς το παρόν αποκλεισμένος.",
+    "description": "Description for blocked user notification"
+  },
+  "upholdPendingUserTitle": {
+    "message": "Σφάλμα: Λογαριασμός σε εκκρεμότητα",
+    "description": "Title for pending user notification"
+  },
+  "upholdPendingUserNotification": {
+    "message": "Ο λογαριασμός σας στο Uphold εκκρεμεί ακόμα.",
+    "description": "Description for pending user notification"
+  },
+  "upholdRestrictedUserTitle": {
+    "message": "Σφάλμα: Περιορισμένος λογαριασμός",
+    "description": "Title for restricted user notification"
+  },
+  "upholdRestrictedUserNotification": {
+    "message": "Ο λογαριασμός σας στο Uphold είναι προς το παρόν περιορισμένος.",
+    "description": "Description for restricted user notification"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Φτάσατε το Όριο Συσκευών",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Δεν είναι δυνατή η επαλήθευση του πορτοφολιού σας, επειδή έχετε φτάσει το μέγιστο όριο επαληθευμένων συσκευών.",
+    "description": "Description for device limit reached notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Ο λογαριασμός σας Ανταμοιβών Brave αναμένει μια κατάθεση.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Ανεπαρκείς Πόροι",
+    "description": "Title for insufficient funds notification"
+  },
+  "braveRewardsCreatingText": {
+    "message": "Δημιουργία πορτοφολιού",
+    "description": "Used in a button displaying wallet creation process"
+  },
+  "contributeNotificationError": {
+    "message": "Παρουσιάστηκε σφάλμα κατά την επεξεργασία της εισφοράς σου.",
+    "description": "We show this string in notification when contribution fails"
+  },
+  "contributeNotificationNotEnoughFunds": {
+    "message": "Η προγραμματισμένη μηνιαία πληρωμή σας για την Αυτόματη-Συνεισφορά και οι μηνιαίες συνεισφορές δεν ήταν δυνατόν να ολοκληρωθούν λόγω ανεπαρκών κεφαλαίων. Θα προσπαθήσουμε ξανά σε 30 ημέρες.",
+    "description": "We show this string in the notification when you don't have enough funds for contribution"
+  },
+  "contributeNotificationTipError": {
+    "message": "Αδυναμία αποστολής της υπόδειξής σας. Παρακαλούμε, δοκιμάστε πάλι αργότερα.",
+    "description": "We show this string in notification when tip fails"
+  },
+  "noActivity": {
+    "message": "Δεν υπάρχουν δραστηριότητες ακόμα...",
+    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Σύρετε το εικονίδιο BAT στο\n",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaProveHuman": {
+    "message": "Αποδείξτε ότι είστε άνθρωπος!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "στόχος.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Χμμ... Όχι ακριβώς. Προσπάθησε ξανά.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Αποκτήστε",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Δωρεάν Χορηγία Τόκεν",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Ημερομηνία Λήξης Χορηγίας",
+    "description": "Grant expiry label"
+  },
+  "grantGeneralErrorButton": {
     "message": "OK",
-    "description": ""
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Οι Brave ανταμοιβές παρουσιάζουν κάποιο πρόβλημα. Παρακαλώ προσπαθήστε ξανά αργότερα.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Ωχ, κάτι πήγε λάθος. Παρακαλώ προσπαθήστε ξανά αργότερα.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "unVerifiedCheck": {
+    "message": "Ανανέωση Κατάστασης",
+    "description": "Text of link that allows to check verified status of unverified publisher"
+  },
+  "unVerifiedPublisher": {
+    "message": "Δεν έχει ακόμη επαληθευτεί",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Αυτός ο δημιουργός δεν διαθέτει ακόμα κατάλληλη διαμόρφωση για να λαμβάνει φιλοδωρήματα από το πορτοφόλι σας. Αν στείλετε κάποιο φιλοδώρημα, αυτό θα παραμείνει στο πορτοφόλι σας και θα επαναλαμβάνεται αυτόματα επί 90 ημέρες.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Μάθετε περισσότερα.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Έχετε ορίσει {{reservedAmount}} {{currency}} για δημιουργούς που δεν έχουν ακόμη εγγραφεί για να λαμβάνουν συνεισφορές. Το πρόγραμμα περιήγησής σας θα συνεχίσει να προσπαθεί για τη συνεισφορά μέχρι να γίνει επαλήθευσή τους ή μέχρι να περάσουν 90 ημέρες.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Μάθετε περισσότερα.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Απενεργοποιημένη",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Ρυθμίσεις.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "Δεν κερδίζετε τη στιγμή αυτή κανένα πλεονέκτημα Ανταμοιβής κατά την περιήγηση. Ενεργοποιήστε ξανά τις Ανταμοιβές ",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Η Brave ανταμοιβή είναι",
+    "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Αποτυχία δημιουργίας πορτοφολιού",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Προσπαθήστε ξανά",
+    "description": "Button for re-try after wallet creation failed"
+  },
+  "addFunds": {
+    "message": "Προσθέστε κεφάλαια",
+    "description": "Button for adding funds"
+  },
+  "rewardsSettings": {
+    "message": "Ρυθμίσεις Ανταμοιβών",
+    "description": "Button for opening settings page"
+  },
+  "earningsClaimDefault": {
+    "message": "Οι ανταμοιβές σας από τις Διαφημίσεις είναι εδώ!",
+    "description": "Panel notification text for Ads grant"
+  },
+  "and": {
+    "message": "και",
+    "description": "The word 'and'"
+  },
+  "braveRewardsSubTitle": {
+    "message": "Ανταμειφθείτε, επειδή κάνετε Περιήγηση!",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "disabledPanelTextTwo": {
+    "message": "Κερδίστε με την προβολή διαφημίσεων που σέβονται το απόρρητο και πληρώστε για να υποστηρίξετε δημιουργούς περιεχομένου που αγαπάτε.",
+    "description": "Text block for wallet disabled panel"
+  },
+  "enableRewards": {
+    "message": "Ενεργοποίηση Ανταμοιβών Brave",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "privacyPolicy": {
+    "message": "Πολιτική Απορρήτου",
+    "description": "Privacy Policy"
+  },
+  "serviceText": {
+    "message": "Κάνοντας κλικ στο 'Ενεργοποίηση Ανταμοιβών Brave', υποδηλώνετε ότι έχετε διαβάσει και συμφωνείτε με",
+    "description": "Terms of service main text"
+  },
+  "termsOfService": {
+    "message": "Όροι Υπηρεσίας",
+    "description": "Terms of Service"
+  },
+  "welcomeBack": {
+    "message": "Καλώς Ήλθατε και Πάλι!",
+    "description": "Title message for wallet disabled panel"
+  },
+  "tipsProcessedNotification": {
+    "message": "Οι μηνιαίες σας συνεισφορές έχουν υποβληθεί σε επεξεργασία!",
+    "description": "Message for monthly contributions processed notification"
+  },
+  "contributionTips": {
+    "message": "Συνεισφορές & Φιλοδωρήματα",
+    "description": "Title for monthly contributions processed notification"
+  },
+  "serviceTextPanelWelcome": {
+    "message": "Πατώντας 'Συμμετοχή σε Ανταμοιβές' δηλώνετε ότι έχετε διαβάσει και συμφωνήσει με ",
+    "description": "Terms of service panel opt-in text"
+  },
+  "bat": {
+    "message": "BAT",
+    "description": "BAT text for displaying converted tip amount."
+  },
+  "turnOnAds": {
+    "message": "Ενεργοποιήστε τις Διαφημίσεις",
+    "description": "Prompt to turn on Ads via notification"
+  },
+  "adsEarnings": {
+    "message": "κέρδη από διαφημίσεις",
+    "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "Δώστε φιλοδώρημα για αυτήν την ανάρτηση Twitter",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "Φιλοδώρημα",
+    "description": "Icon label for Twitter tips"
+  },
+  "redditTipsHoverText": {
+    "message": "Βραβεύστε αυτή την δημοσίευση",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Φιλοδώρημα",
+    "description": "Icon label for Reddit tips"
+  },
+  "githubTipsHoverText": {
+    "message": "Στείλτε ένα Φιλοδώρημα",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Φιλοδώρημα",
+    "description": "Icon label for GitHub tips"
+  },
+  "verifiedPublisherNotification": {
+    "message": "Ο δημιουργός $name$ επικυρώθηκε πρόσφατα",
+    "description": "Notification text that tells user which publisher just verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "brave.com"
+      }
+    }
+  },
+  "pendingNotEnoughFundsNotification": {
+    "message": "Έχετε εκκρεμείς βραβεύσεις λόγω ανεπαρκούς υπολοίπου",
+    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
+  },
+  "pendingContributionTitle": {
+    "message": "Εκκρεμής Συνεισφορά",
+    "description": "Notification title for pending contribution type"
+  },
+  "grantFinishTitleUGP": {
+    "message": "Είναι η τυχερή σας μέρα!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "grantFinishTextUGP": {
+    "message": "Η επιχορήγησή σας $currency$ είναι καθ' οδόν.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
+  },
+  "grantFinishTokenTitleUGP": {
+    "message": "Δωρεάν Χορηγία Τόκεν",
+    "description": "Token title on success screen"
+  },
+  "grantFinishTitleAds": {
+    "message": "Κερδίσατε μια Ανταμοιβή Διαφημίσεων!",
+    "description": "Cosmetic text upon captcha success for ads"
+  },
+  "grantFinishTextAds": {
+    "message": "Η Ανταμοιβή σας βρίσκεται καθ' οδόν για το πορτοφόλι σας Ανταμοιβών Brave.",
+    "description": "Cosmetic text indicating ads funds are on the way"
+  },
+  "grantFinishTokenTitleAds": {
+    "message": "Το Ποσό Ανταμοιβής Σας",
+    "description": "Token title on success screen for ads"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Αποσυνδέθηκε",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Επαλήθευση Πορτοφολιού",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Πορτοφόλι Επαληθεύτηκε",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToProvider":  {
+    "message": "Μεταβείτε στον λογαριασμό σας $provider$",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletLogInWithProvider":  {
+    "message": "Συνδεθείτε στον λογαριασμό σας $provider$",
+    "description": "CTA to log in with a wallet provider",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnect":  {
+    "message": "Αποσύνδεση από τις Ανταμοιβές Brave",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerified":  {
+    "message": "Επαληθεύτηκε",
+    "description": "Status button that tells user that he is verified"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Το πορτοφόλι σας επαληθεύτηκε!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Συγχαρητήρια! Το πορτοφόλι σας $name$ επαληθεύτηκε με επιτυχία και είναι έτοιμο για να προσθέτετε και να αποσύρετε χρήματα.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Ωχ! Το πορτοφόλι σας δεν είναι προσβάσιμο.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Μην ανησυχείτε. Αυτό μπορεί να συμβεί για διάφορους λόγους. Επανασυνδέοντας το πορτοφόλι σας θα λυθεί το πρόβλημα.",
+    "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Αυτός ο Επαληθευμένος Δημιουργός Brave δεν έχει ακόμη διαμορφώσει τον λογαριασμό του για να λαμβάνει συνεισφορές από Χρήστες Brave. Οποιαδήποτε φιλοδωρήματα στέλνετε, θα παραμένουν στο πορτοφόλι σας μέχρι να ολοκληρώσει αυτήν την διαδικασία.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Ολοκλήρωση επαλήθευσης πορτοφολιού",
+    "description": "CTA for completing wallet verification"
   },
   "set": {
-    "message": "Ρύθμιση",
-    "description": ""
+    "message": "Ορίστε...",
+    "description": "Button text for setting monthly contribution"
   },
-  "changeAmount": {
-    "message": "Αλλαγή ποσού",
-    "description": ""
+  "tokens":  {
+    "message": "διακριτικά",
+    "description": "Standard tokens text"
   },
-  "cancel": {
+  "point":  {
+    "message": "Πόντος",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "Διακριτικό",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Κέρμα Επιχορηγήσεων",
+    "description": "BAT Tokens Grant Text"
+  },
+  "greetingsVerified":  {
+    "message": "Γεια σας, $name$!",
+    "description": "Greetings for external wallet popup",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "John"
+      }
+    }
+  },
+  "cancel":  {
     "message": "Ακύρωση",
-    "description": ""
+    "description": "Text for cancel button"
   },
-  "grantCaptchaTitle": {
-    "message": "Επιβεβαιώστε ότι είσαστε άνθρωπος",
-    "description": ""
+  "changeAmount":  {
+    "message": "Αλλαγή ποσού",
+    "description": "Button text for changing monthly contribution amount"
   },
-  "grantCaptchaFailedTitle": {
-    "message": "Χμμ... Όχι ακριβώς. Προσπάθησε ξανά.",
-    "description": ""
+  "login":  {
+    "message": "Σύνδεση",
+    "description": "Text for login button"
   },
-  "grantCaptchaHint": {
-    "message": "Σύρετε το εικονίδιο BAT στον στόχο $hint$.",
-    "description": "",
+  "loginMessageTitle":  {
+    "message": "Η επαλήθευση του πορτοφολιού σάς επιτρέπει να διαχειρίζεστε τα χρήματά σας πιο αποτελεσματικά.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Πρέπει να έχετε ελάχιστο $amount$ BAT για να δημιουργήσετε έναν Upholod λογαριασμό. Αν έχετε ήδη επαληθευμένο λογαριασμό, συνεχίστε για να συνδεθείτε.",
+    "description": "Text for login button",
     "placeholders": {
-      "hint": {
-        "content": "$1"
+      "amount": {
+        "content": "$1",
+        "example": "15"
       }
     }
   },
-  "grantCaptchaPassedTitleUGP": {
-    "message": "Είναι η τυχερή σας μέρα!",
-    "description": ""
+  "walletConnected":  {
+    "message": "Σε σύνδεση",
+    "description": "Status button that tells user that he is connected"
   },
-  "grantCaptchaPassedTextUGP": {
-    "message": "Σε λίγο θα λάβετε την τοκέν χορηγία σας.",
-    "description": ""
-  },
-  "grantCaptchaAmountUGP": {
-    "message": "Δωρεάν Χορηγία Τόκεν",
-    "description": ""
-  },
-  "grantCaptchaPassedTitleAds": {
-    "message": "Κερδίσατε μια Ανταμοιβή Διαφημίσεων!",
-    "description": ""
-  },
-  "grantCaptchaPassedTextAds": {
-    "message": "Η Ανταμοιβή σας βρίσκεται καθ' οδόν για το πορτοφόλι σας Ανταμοιβών Brave.",
-    "description": ""
-  },
-  "grantCaptchaAmountAds": {
-    "message": "Το Ποσό Ανταμοιβής Σας",
-    "description": ""
-  },
-  "grantCaptchaExpiration": {
-    "message": "Ημερομηνία Λήξης Χορηγίας",
-    "description": ""
-  },
-  "grantCaptchaErrorTitle": {
-    "message": "Ωχ, κάτι πήγε λάθος. Παρακαλώ προσπαθήστε ξανά αργότερα.",
-    "description": ""
-  },
-  "grantCaptchaErrorText": {
-    "message": "Οι Brave ανταμοιβές παρουσιάζουν κάποιο πρόβλημα. Παρακαλώ προσπαθήστε ξανά αργότερα.",
-    "description": ""
-  },
-  "walletAccountLink": {
-    "message": "Μεταβείτε στον $provider$ λογαριασμό σας ",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletAddFunds": {
-    "message": "Προσθήκη Κεφαλαίων",
-    "description": ""
-  },
-  "walletAutoContribute": {
-    "message": "Auto-Contribute",
-    "description": ""
-  },
-  "walletCompleteVerificationLink": {
-    "message": "Πηγαίνετε στο $provider$ για να ολοκληρώσετε την επαλήθευση.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Για να αρχίσετε να λαμβάνετε Rewards, πρέπει να ολοκληρώσετε την επαλήθευση ταυτότητας",
-    "description": ""
-  },
-  "walletDisconnected": {
+  "walletDisconnected":  {
     "message": "Αποσυνδέθηκε",
-    "description": ""
+    "description": "Status button that tells user that he is disconnected"
   },
-  "walletDisconnectLink": {
-    "message": "Αποσύνδεση από τις Ανταμοιβές Brave",
-    "description": ""
-  },
-  "walletEstimatedEarnings": {
-    "message": "Εκτιμώμενα κέρδη",
-    "description": ""
-  },
-  "walletLogIntoYourAccount": {
-    "message": "Συνδεθείτε στον λογαριασμό σας $provider$",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletMonthlyTips": {
-    "message": "Μηνιαία Tips",
-    "description": ""
-  },
-  "walletMyWallet": {
-    "message": "Το πορτοφόλι μου",
-    "description": ""
-  },
-  "walletOneTimeTips": {
-    "message": "Φιλοδώρημα για μια φορά",
-    "description": ""
-  },
-  "walletPending": {
+  "walletPending":  {
     "message": "Εκκρεμεί",
-    "description": ""
+    "description": "Status button that tells user that he is currently pending"
   },
-  "walletPendingRewardsText": {
-    "message": "Το ποσό $amount$ φτάνει σε $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
-  },
-  "walletRewardsFromAds": {
-    "message": "Brave Rewards από διαφημίσεις Brave Ads",
-    "description": ""
-  },
-  "walletRewardsSummary": {
-    "message": "Σύνοψη Ανταμοιβών",
-    "description": ""
-  },
-  "walletVerified": {
-    "message": "Επαληθεύτηκε",
-    "description": ""
-  },
-  "walletVerify": {
-    "message": "Επαλήθευση Πορτοφολιού",
-    "description": ""
-  },
-  "walletYourBalance": {
-    "message": "Το Υπόλοιπό Σας",
-    "description": ""
-  },
-  "notificationAddFunds": {
-    "message": "Προσθήκη Κεφαλαίων",
-    "description": ""
-  },
-  "notificationLearnMore": {
-    "message": "Μάθετε περισσότερα",
-    "description": ""
-  },
-  "notificationReconnect": {
-    "message": "Επανάληψη σύνδεσης",
-    "description": ""
-  },
-  "notificationClaim": {
-    "message": "Αποκτήστε",
-    "description": ""
-  },
-  "notificationAddFundsTitle": {
-    "message": "Ανεπαρκείς Πόροι",
-    "description": ""
-  },
-  "notificationAddFundsText": {
-    "message": "Ο λογαριασμός σας Ανταμοιβών Brave αναμένει μια κατάθεση.",
-    "description": ""
-  },
-  "notificationAutoContributeCompletedTitle": {
-    "message": "Auto-Contribute",
-    "description": ""
-  },
-  "notificationAutoContributeCompletedText": {
-    "message": "Έχετε συνεισφέρει $amount$.",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationBackupWalletTitle": {
-    "message": "Δημιουργία αντιγράφου ασφαλείας πορτοφολιού",
-    "description": ""
-  },
-  "notificationBackupWalletText": {
-    "message": "Παρακαλώ κρατήστε αντίγραφο ασφαλείας του Brave πορτοφολιού σας.",
-    "description": ""
-  },
-  "notificationBackupWalletAction": {
-    "message": "Δημιουργήστε αντίγραφο ασφαλείας τώρα",
-    "description": ""
-  },
-  "notificationWalletDisconnectedTitle": {
-    "message": "Το πορτοφόλι σας έχει αποσυνδεθεί",
-    "description": ""
-  },
-  "notificationWalletDisconnectedText": {
-    "message": "Αυτό μπορεί να συμβαίνει με σκοπό την προστασία του λογαριασμού σας. Κάντε κλικ παρακάτω για να συνδεθείτε ξανά τώρα.",
-    "description": ""
-  },
-  "notificationWalletDisconnectedAction": {
-    "message": "Επανάληψη σύνδεσης",
-    "description": ""
-  },
-  "notificationWalletVerifiedTitle": {
-    "message": "Το πορτοφόλι σας επαληθεύτηκε!",
-    "description": ""
-  },
-  "notificationWalletVerifiedText": {
-    "message": "Το πορτοφόλι σας $provider$ επαληθεύτηκε με επιτυχία και είναι έτοιμο για προσθήκη και ανάληψη κεφαλαίων.",
-    "description": "",
+  "walletVerificationNote3":  {
+    "message": "Σημείωση: Οι συναλλαγές σας θα είναι ορατές στον $provider$ μόλις εξουσιοδοτήσετε. Για παράδειγμα, θα είναι ορατά ο παραλήπτης και το ποσό των φιλοδωρημάτων σας.",
+    "description": "Displayed in login modal for external wallet providers",
     "placeholders": {
       "provider": {
-        "content": "$1"
+        "content": "$1",
+        "example": "Uphold"
       }
     }
-  },
-  "notificationTokenGrantTitle": {
-    "message": "Επιχορηγήσεις διακριτικών (Token)",
-    "description": ""
-  },
-  "notificationTokenGrantText": {
-    "message": "Μία χορηγία σε περιμένει.",
-    "description": ""
-  },
-  "notificationAdGrantTitle": {
-    "message": "Έγινε παραλαβή των κερδών από διαφημίσεις",
-    "description": ""
-  },
-  "notificationAdGrantText": {
-    "message": "Τα Rewards από τις διαφημίσεις Brave Private Ads είναι εδώ!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Η μηνιαία συνεισφορά απέτυχε",
-    "description": ""
-  },
-  "notificationInsufficientFundsText": {
-    "message": "Η προγραμματισμένη μηνιαία πληρωμή σας για την Αυτόματη-Συνεισφορά και οι μηνιαίες συνεισφορές δεν ήταν δυνατόν να ολοκληρωθούν λόγω ανεπαρκών κεφαλαίων. Θα προσπαθήσουμε ξανά σε 30 ημέρες.",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedText": {
-    "message": "Παρουσιάστηκε σφάλμα κατά την επεξεργασία της εισφοράς σου.",
-    "description": ""
-  },
-  "notificationMonthlyTipCompletedTitle": {
-    "message": "Συνεισφορές και συμβουλές",
-    "description": ""
-  },
-  "notificationMonthlyTipCompletedText": {
-    "message": "Έγινε επεξεργασία των μηνιαίων συνεισφορών σας.",
-    "description": ""
-  },
-  "notificationPublisherVerifiedTitle": {
-    "message": "Εκκρεμεί συνεισφορά",
-    "description": ""
-  },
-  "notificationPublisherVerifiedText": {
-    "message": "Ο Δημιουργός $publisher_name$ επαληθεύτηκε πρόσφατα.",
-    "description": "",
-    "placeholders": {
-      "publisher_name": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationPendingTipFailedTitle": {
-    "message": "Ανεπαρκή κεφάλαια",
-    "description": ""
-  },
-  "notificationPendingTipFailedText": {
-    "message": "Έχετε εκκρεμείς βραβεύσεις λόγω ανεπαρκούς υπολοίπου",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Η σύνδεση του πορτοφολιού απέτυχε",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Δεν είναι δυνατή η επαλήθευση του πορτοφολιού σας, επειδή έχετε φτάσει το μέγιστο όριο επαληθευμένων συσκευών.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Φαίνεται ότι το πορτοφόλι σας Brave Rewards έχει ήδη επαληθευτεί με άλλο λογαριασμό$provider$. Προσπαθήστε να το επαληθεύσετε ξανά, χρησιμοποιώντας τον προηγούμενο λογαριασμό σας.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "Το BAT δεν υποστηρίζεται ακόμα στην περιοχή σας στο Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Ο λογαριασμός στο Uphold είναι προς το παρόν αποκλεισμένος.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Ο λογαριασμός σας στο Uphold εκκρεμεί ακόμα.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Ο λογαριασμός σας στο Uphold είναι προς το παρόν περιορισμένος.",
-    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "Κερδίστε μάρκες και δώστε πίσω",
@@ -551,29 +854,5 @@
         "content": "$2"
       }
     }
-  },
-  "captchaMaxAttemptsExceededText": {
-    "message": "Δεν φαίνεται να λειτουργεί. Οι διαφημίσεις Brave Ads θα παραμείνουν ανενεργές. Επικοινωνήστε μαζί μας, αν χρειάζεστε βοήθεια με το captcha.",
-    "description": ""
-  },
-  "captchaMaxAttemptsExceededTitle": {
-    "message": "Υπέρβαση μέγιστων προσπαθειών",
-    "description": ""
-  },
-  "captchaSolvedTitle": {
-    "message": "Λύθηκε!",
-    "description": ""
-  },
-  "captchaSolvedText": {
-    "message": "Οι διαφημίσεις και τα κέρδη τώρα θα συνεχίσουν. Σας ευχαριστούμε που μας βοηθάτε να προστατεύσουμε το Brave Rewards και τις διαφημίσεις με βάση το απόρρητο.",
-    "description": ""
-  },
-  "captchaContactSupport": {
-    "message": "Επικοινωνήστε με την υποστήριξη",
-    "description": ""
-  },
-  "captchaDismiss": {
-    "message": "Παράβλεψη",
-    "description": ""
   }
 }

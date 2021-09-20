@@ -372,12 +372,12 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="7427567994475794038">Aktivér Databeskyttelsesrapporter for at se hvor mange trackere og rekalmer der er blevet blokeret de sidste tre timer.</translation>
 <translation id="2053891538879944400">Du sparede <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave-browseren.</translation>
 <translation id="8640064498452534195">Aktivér databeskyttelsesrapporter for at se hvor meget data du har sparet</translation>
-<translation id="2252497442547961651">Modig browser bruger i gennemsnit 40% mindre batteri. &#128267;</translation>
+<translation id="2252497442547961651">Modig browser bruger i gennemsnit 40% mindre batteri. 🔋</translation>
 <translation id="1945330434665345785">Du blokerede <ph name="COUNT"/> trackere og reklamer med Brave-browseren sidste uge.</translation>
 <translation id="2883868922264431515">Optjen tokens ved at se datarespekterende reklamer og støtte dine yndlingshjemmesider.</translation>
-<translation id="5678925890616256956">Nice! Du har blokeret 250 trackere&amp; annoncer med Brave browser.&#128293;</translation>
-<translation id="9199047775708635708">Pæn! Du har sparet 10 MB med Brave browser.&#128267;</translation>
-<translation id="1880168210969863408">Nice! Du har sparet 10 min. Indlæsningstid med Brave browser.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Nice! Du har blokeret 250 trackere&amp; annoncer med Brave browser.🔥</translation>
+<translation id="9199047775708635708">Pæn! Du har sparet 10 MB med Brave browser.🔋</translation>
+<translation id="1880168210969863408">Nice! Du har sparet 10 min. Indlæsningstid med Brave browser.💨💨</translation>
 <translation id="7408493389591475748">Begynd at browse for at se databeskyttelsesrapportering</translation>
 <translation id="9080777565335515917">Indstil Brave som din standardbrowser for privat og sikker browsing.</translation>
 <translation id="1390943217516275883">Tillader Brave at vise dine databeskyttelsesstatistikker</translation>
@@ -597,4 +597,6 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="5050890334032852465">Gem kontoens overvågningsliste</translation>
 <translation id="7755766175599167100">Søg i tokens</translation>
 <translation id="3835223348537121988">Saldo:</translation>
+<translation id="5254037869598726291">Disse anonyme informationer hjælper kun Brave med at anslå det generelle forbrug af visse funktioner og gøre servicen endnu bedre.</translation>
+<translation id="1530109021798294736">Mainnet</translation>
 </translationbundle>
