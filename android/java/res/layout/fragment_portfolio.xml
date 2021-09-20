@@ -251,7 +251,7 @@
                 android:id="@+id/edit_visible_assets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:layout_marginStart="25dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/crypto_wallet_blue_button"

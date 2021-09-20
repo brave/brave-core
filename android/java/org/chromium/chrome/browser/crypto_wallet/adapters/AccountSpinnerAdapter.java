@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class AccountSpinnerAdapter extends BaseAdapter {
     Context context;
@@ -47,6 +48,14 @@ public class AccountSpinnerAdapter extends BaseAdapter {
         return "";
     }
 
+    public int getPictureAtPosition(int position) {
+        if (position < pictures.length) {
+            return pictures[position];
+        }
+
+        return -1;
+    }
+
     @Override
     public int getCount() {
         return accountNames.length;
@@ -70,18 +79,8 @@ public class AccountSpinnerAdapter extends BaseAdapter {
         TextView value = (TextView) view.findViewById(R.id.account_value_text);
         icon.setImageResource(pictures[i]);
         name.setText(accountNames[i]);
-        value.setText(stripTitle(accountTitles[i]));
+        value.setText(Utils.stripAccountAddress(accountTitles[i]));
 
         return view;
-    }
-
-    private String stripTitle(String title) {
-        String newTitle = "";
-
-        if (title.length() > 6) {
-            newTitle = title.substring(0, 6) + "***" + title.substring(title.length() - 5);
-        }
-
-        return newTitle;
     }
 }

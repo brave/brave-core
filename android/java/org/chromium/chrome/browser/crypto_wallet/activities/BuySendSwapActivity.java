@@ -22,19 +22,24 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.EthTxController;
+import org.chromium.brave_wallet.mojom.EthTxControllerObserver;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
+import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
+import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -75,6 +80,29 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
     }
 
+    private class EthTxControllerObserverImpl implements EthTxControllerObserver {
+        private BuySendSwapActivity mParentActivity;
+
+        public EthTxControllerObserverImpl(BuySendSwapActivity parentActivity) {
+            mParentActivity = parentActivity;
+        }
+
+        @Override
+        public void onNewUnapprovedTx(TransactionInfo txInfo) {
+            assert mParentActivity != null;
+            mParentActivity.showApproveTransactionDialog(txInfo);
+        }
+
+        @Override
+        public void onTransactionStatusChanged(TransactionInfo txInfo) {}
+
+        @Override
+        public void close() {}
+
+        @Override
+        public void onConnectionError(MojoException e) {}
+    }
+
     private ErcTokenRegistry mErcTokenRegistry;
     private EthJsonRpcController mEthJsonRpcController;
     private EthTxController mEthTxController;
@@ -82,6 +110,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private ActivityType mActivityType;
     private AccountSpinnerAdapter mCustomAccountAdapter;
     private double mConvertedBalance;
+    private EthTxControllerObserverImpl mEthTxControllerObserver;
+    private AssetRatioController mAssetRatioController;
 
     @Override
     protected void onDestroy() {
@@ -140,6 +170,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         InitEthJsonRpcController();
         InitEthTxController();
         InitKeyringController();
+        InitAssetRatioController();
 
         if (mEthJsonRpcController != null) {
             mEthJsonRpcController.getChainId(
@@ -313,8 +344,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 String value = fromValueText.getText().toString();
                 // TODO(sergz): Some kind of validation that we have enough balance
                 // TODO(sergz): Get gas price
-                TxData data = Utils.getTxData("0x1", "0x2FBF9BEDA5F0", "0x2FBF9BEDA5F1", to,
-                        Utils.toHexWei(value), new byte[0]);
+                TxData data = Utils.getTxData(
+                        "0x1", "0x20000000000", "0xFDE8", to, Utils.toHexWei(value), new byte[0]);
                 Spinner accountSpinner = findViewById(R.id.accounts_spinner);
                 String from = mCustomAccountAdapter.getTitleAtPosition(
                         accountSpinner.getSelectedItemPosition());
@@ -322,7 +353,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                     mEthTxController.addUnapprovedTransaction(data, from,
                             (success, tx_meta_id, error_message)
                                     -> {
-                                            // TODO(sergz): Add an observer and approve transaction
+                                            // Do nothing here ass we will receive an
+                                            // unapproved transaction in
+                                            // EthTxControllerObserverImpl
                                     });
                 }
             }
@@ -352,6 +385,29 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         });
     }
 
+    public void showApproveTransactionDialog(TransactionInfo txInfo) {
+        if (mEthJsonRpcController == null) {
+            assert mEthJsonRpcController != null;
+            return;
+        }
+        mEthJsonRpcController.getChainId(chainId -> {
+            String chainName = Utils.getNetworkText(this, chainId).toString();
+            Spinner accountSpinner = findViewById(R.id.accounts_spinner);
+            String accountName = mCustomAccountAdapter.getNameAtPosition(
+                    accountSpinner.getSelectedItemPosition());
+            int accountPic = mCustomAccountAdapter.getPictureAtPosition(
+                    accountSpinner.getSelectedItemPosition());
+            String txType = getText(R.string.send).toString();
+            TextView assetDropDown = findViewById(R.id.from_asset_text);
+            String asset = assetDropDown.getText().toString();
+            ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment =
+                    ApproveTxBottomSheetDialogFragment.newInstance(
+                            chainName, txInfo, accountName, accountPic, txType, asset);
+            approveTxBottomSheetDialogFragment.show(
+                    getSupportFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
+        });
+    }
+
     public void updateBuySendAsset(String asset) {
         TextView assetDropDown = findViewById(R.id.from_asset_text);
         assetDropDown.setText(asset);
@@ -367,10 +423,29 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mEthJsonRpcController = null;
         mEthTxController = null;
         mKeyringController = null;
+        mAssetRatioController = null;
+        InitAssetRatioController();
         InitErcTokenRegistry();
         InitEthJsonRpcController();
         InitEthTxController();
         InitKeyringController();
+    }
+
+    public AssetRatioController getAssetRatioController() {
+        return mAssetRatioController;
+    }
+
+    public EthTxController getEthTxController() {
+        return mEthTxController;
+    }
+
+    private void InitAssetRatioController() {
+        if (mAssetRatioController != null) {
+            return;
+        }
+
+        mAssetRatioController =
+                AssetRatioControllerFactory.getInstance().getAssetRatioController(this);
     }
 
     private void InitKeyringController() {
@@ -404,6 +479,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
 
         mEthTxController = EthTxControllerFactory.getInstance().getEthTxController(this);
+        mEthTxControllerObserver = new EthTxControllerObserverImpl(this);
+        mEthTxController.addObserver(mEthTxControllerObserver);
     }
 
     @Override

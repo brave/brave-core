@@ -25,7 +25,9 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.ui.widget.Toast;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -196,8 +198,10 @@ public class Utils {
             number = number.substring(2);
         }
         BigInteger bigNumber = new BigInteger(number, 16);
-        BigInteger[] res = bigNumber.divideAndRemainder(new BigInteger("1000000000000000000"));
-        String resStr = res[0].toString() + "." + res[1].toString();
+        BigInteger divider = new BigInteger("1000000000000000000");
+        BigDecimal bDecimal = new BigDecimal(bigNumber);
+        BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider), MathContext.DECIMAL32);
+        String resStr = bDecimalRes.toPlainString();
 
         return Double.valueOf(resStr);
     }
@@ -230,5 +234,15 @@ public class Utils {
         res.data = data;
 
         return res;
+    }
+
+    public static String stripAccountAddress(String address) {
+        String newAddress = "";
+
+        if (address.length() > 6) {
+            newAddress = address.substring(0, 6) + "***" + address.substring(address.length() - 5);
+        }
+
+        return newAddress;
     }
 }

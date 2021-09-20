@@ -13,31 +13,38 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.fragments.AccountsFragment;
-import org.chromium.chrome.browser.crypto_wallet.fragments.PortfolioFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.TxDetailsFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.TxFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
+public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
     private List<String> mTitles;
+    private TransactionInfo mTxInfo;
+    private String mAsset;
+    private double mTotalPrice;
 
-    public CryptoFragmentPageAdapter(FragmentManager fm, Activity activity) {
+    public ApproveTxFragmentPageAdapter(FragmentManager fm, TransactionInfo txInfo, String asset,
+            double totalPrice, Activity activity) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        mTitles = new ArrayList<>(Arrays.asList(activity.getText(R.string.portfolio).toString(),
-                activity.getText(R.string.apps).toString(),
-                activity.getText(R.string.accounts).toString()));
+        mTxInfo = txInfo;
+        mAsset = asset;
+        mTotalPrice = totalPrice;
+        mTitles = new ArrayList<>(Arrays.asList(activity.getText(R.string.transaction).toString(),
+                activity.getText(R.string.transaction_details).toString()));
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        if (position == 2) {
-            return AccountsFragment.newInstance();
+        if (position == 0) {
+            return TxFragment.newInstance(mTxInfo, mAsset, mTotalPrice);
         } else {
-            return PortfolioFragment.newInstance();
+            return TxDetailsFragment.newInstance(mTxInfo);
         }
     }
 
