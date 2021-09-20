@@ -95,6 +95,7 @@ bool ParseTokenList(const std::string& json,
     if (!ParseResultFromDict(erc_token_value, "name", &erc_token->name)) {
       return false;
     }
+    ParseResultFromDict(erc_token_value, "logo", &erc_token->logo);
 
     absl::optional<int> decimals_opt = erc_token_value->FindIntKey("decimals");
     if (decimals_opt)

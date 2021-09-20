@@ -162,6 +162,11 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
     }
     tokenPtr->symbol = value->GetString();
 
+    value = token.FindKey("logo");
+    if (value && value->is_string()) {
+      tokenPtr->logo = value->GetString();
+    }
+
     value = token.FindKey("is_erc20");
     if (!value || !value->is_bool()) {
       continue;
@@ -228,6 +233,7 @@ void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
   value.SetKey("contract_address", base::Value(checksum_address));
   value.SetKey("name", base::Value(token->name));
   value.SetKey("symbol", base::Value(token->symbol));
+  value.SetKey("logo", base::Value(token->logo));
   value.SetKey("is_erc20", base::Value(token->is_erc20));
   value.SetKey("is_erc721", base::Value(token->is_erc721));
   value.SetKey("decimals", base::Value(token->decimals));
