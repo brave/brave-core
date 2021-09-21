@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -55,6 +56,29 @@ public class AddAccountActivity
                         }
                     });
                 }
+            }
+        });
+
+        TextView importBtn = findViewById(R.id.import_btn);
+        importBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText privateKeyControl = findViewById(R.id.import_account_text);
+                String privateKey = privateKeyControl.getText().toString();
+                if (mKeyringController == null || privateKey.length() == 0) {
+                    return;
+                }
+                mKeyringController.importAccount(
+                        addAccountText.getText().toString(), privateKey, (result, address) -> {
+                            if (result) {
+                                Intent returnIntent = new Intent();
+                                returnIntent.putExtra("result", result);
+                                setResult(Activity.RESULT_OK, returnIntent);
+                                finish();
+                            } else {
+                                addAccountText.setError(getString(R.string.password_error));
+                            }
+                        });
             }
         });
 

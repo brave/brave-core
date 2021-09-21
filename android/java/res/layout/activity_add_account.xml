@@ -98,6 +98,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/import_text"
                 android:padding="16dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:textColor="@color/wallet_text_color"
                 android:gravity="center_horizontal"/>
 
