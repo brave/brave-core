@@ -1844,7 +1844,7 @@ until they verify, or until 90 days have passed.
       Enter your password to unlock
     </message>
     <message name="IDS_PASSWORD_TEXT" desc="Brave Wallet onboarding text">
-      Password must be at least 7 characters containg at least one number and a special character
+      Password must be at least 7 characters containing at least one number and a special character
     </message>
     <message name="IDS_BRAVE_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
       Does not protect you against dangerous websites, downloads, and extensions.
