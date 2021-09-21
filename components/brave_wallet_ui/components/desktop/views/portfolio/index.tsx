@@ -66,10 +66,12 @@ export interface Props {
   onChangeTimeline: (path: AssetPriceTimeframe) => void
   onSelectAsset: (asset: TokenInfo | undefined) => void
   onClickAddAccount: () => void
-  onUpdateVisibleTokens: (contractAddress: string, visible: boolean) => void
   fetchFullTokenList: () => void
   onSelectNetwork: (network: EthereumChain) => void
-  onAddCustomToken: (tokenName: string, tokenSymbol: string, tokenContractAddress: string, tokenDecimals: number) => void
+  onAddUserAsset: (token: TokenInfo) => void
+  onSetUserAssetVisible: (contractAddress: string, isVisible: boolean) => void
+  onRemoveUserAsset: (contractAddress: string) => void
+  addUserAssetError: boolean
   selectedNetwork: EthereumChain
   networkList: EthereumChain[]
   userAssetList: AccountAssetOptionType[]
@@ -86,7 +88,6 @@ export interface Props {
   isLoading: boolean
   fullAssetList: TokenInfo[]
   userVisibleTokensInfo: TokenInfo[]
-  userWatchList: string[]
   isFetchingPortfolioPriceHistory: boolean
   transactionSpotPrices: AssetPriceInfo[]
 }
@@ -98,13 +99,14 @@ const Portfolio = (props: Props) => {
     onSelectAsset,
     onClickAddAccount,
     onSelectNetwork,
-    onUpdateVisibleTokens,
     fetchFullTokenList,
-    onAddCustomToken,
+    onAddUserAsset,
+    onSetUserAssetVisible,
+    onRemoveUserAsset,
+    addUserAssetError,
     userVisibleTokensInfo,
     selectedNetwork,
     fullAssetList,
-    userWatchList,
     portfolioPriceHistory,
     selectedAssetPriceHistory,
     selectedUSDAssetPrice,
@@ -353,6 +355,7 @@ const Portfolio = (props: Props) => {
               fiatBalance={item.fiatBalance}
               symbol={item.asset.symbol}
               icon={item.asset.icon}
+              isVisible={item.asset.visible}
             />
           )}
           <ButtonRow>
@@ -366,12 +369,13 @@ const Portfolio = (props: Props) => {
       }
       {showVisibleAssetsModal &&
         <EditVisibleAssetsModal
-          userAssetList={userAssetList}
-          onUpdateVisibleTokens={onUpdateVisibleTokens}
           fullAssetList={fullAssetList}
-          userWatchList={userWatchList}
+          userVisibleTokensInfo={userVisibleTokensInfo}
+          addUserAssetError={addUserAssetError}
           onClose={toggleShowVisibleAssetModal}
-          onAddCustomToken={onAddCustomToken}
+          onAddUserAsset={onAddUserAsset}
+          onSetUserAssetVisible={onSetUserAssetVisible}
+          onRemoveUserAsset={onRemoveUserAsset}
         />
       }
     </StyledWrapper>

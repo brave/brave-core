@@ -8,10 +8,12 @@ import {
   InitializedPayloadType,
   UnlockWalletPayloadType,
   ChainChangedEventPayloadType,
-  SetInitialVisibleTokensPayloadType,
   NewUnapprovedTxAdded,
   UnapprovedTxUpdated,
-  TransactionStatusChanged
+  TransactionStatusChanged,
+  AddUserAssetPayloadType,
+  SetUserAssetVisiblePayloadType,
+  RemoveUserAssetPayloadType
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -37,9 +39,10 @@ export const unlockWallet = createAction<UnlockWalletPayloadType>('unlockWallet'
 export const addFavoriteApp = createAction<AppObjectType>('addFavoriteApp')
 export const removeFavoriteApp = createAction<AppObjectType>('removeFavoriteApp')
 export const hasIncorrectPassword = createAction<boolean>('hasIncorrectPassword')
-export const setInitialVisibleTokens = createAction<SetInitialVisibleTokensPayloadType>('setInitialVisibleTokens')
-export const updateVisibleTokens = createAction<string[]>('updateVisibleTokens')
-export const setVisibleTokens = createAction<string[]>('setVisibleTokens')
+export const addUserAsset = createAction<AddUserAssetPayloadType>('addUserAsset')
+export const addUserAssetError = createAction<boolean>('addUserAssetError')
+export const removeUserAsset = createAction<RemoveUserAssetPayloadType>('removeUserAsset')
+export const setUserAssetVisible = createAction<SetUserAssetVisiblePayloadType>('setUserAssetVisible')
 export const setVisibleTokensInfo = createAction<TokenInfo[]>('setVisibleTokensInfo')
 export const selectAccount = createAction<WalletAccountType>('selectAccount')
 export const selectNetwork = createAction<EthereumChain>('selectNetwork')

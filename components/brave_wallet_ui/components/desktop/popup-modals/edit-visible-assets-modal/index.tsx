@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {
-  TokenInfo,
-  AccountAssetOptionType
+  TokenInfo
 } from '../../../../constants/types'
 import {
   PopupModal,
@@ -24,68 +23,91 @@ import {
   InputLabel,
   Input,
   Divider,
-  ButtonRow
+  ButtonRow,
+  ErrorText
 } from './style'
 
 export interface Props {
   onClose: () => void
-  onUpdateVisibleTokens: (contractAddress: string, visible: boolean) => void
-  onAddCustomToken: (tokenName: string, tokenSymbol: string, tokenContractAddress: string, tokenDecimals: number) => void
+  onAddUserAsset: (token: TokenInfo) => void
+  onSetUserAssetVisible: (contractAddress: string, isVisible: boolean) => void
+  onRemoveUserAsset: (contractAddress: string) => void
+  addUserAssetError: boolean
   fullAssetList: TokenInfo[]
-  userAssetList: AccountAssetOptionType[]
-  userWatchList: string[]
+  userVisibleTokensInfo: TokenInfo[]
 }
 
 const EditVisibleAssetsModal = (props: Props) => {
   const {
-    userWatchList,
     fullAssetList,
-    userAssetList,
+    userVisibleTokensInfo,
+    addUserAssetError,
     onClose,
-    onAddCustomToken,
-    onUpdateVisibleTokens
+    onAddUserAsset,
+    onRemoveUserAsset,
+    onSetUserAssetVisible
   } = props
-  const watchlist = React.useMemo(() => {
-    const visibleList = userAssetList.map((item) => { return item.asset })
-    const notVisibleList = fullAssetList.filter((item) => !userWatchList.includes(item.contractAddress))
-    return [...visibleList, ...notVisibleList]
-  }, [fullAssetList, userWatchList, userAssetList])
-  const [filteredWatchlist, setFilteredWatchlist] = React.useState<TokenInfo[]>([])
+
+  const [filteredTokenList, setFilteredTokenList] = React.useState<TokenInfo[]>([])
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [searchValue, setSearchValue] = React.useState<string>('')
-  const [selectedWatchlist, setSelectedWatchlist] = React.useState<string[]>(userWatchList)
   const [showAddCustomToken, setShowAddCustomToken] = React.useState<boolean>(false)
   const [tokenName, setTokenName] = React.useState<string>('')
   const [tokenSymbol, setTokenSymbol] = React.useState<string>('')
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
   const [tokenDecimals, setTokenDecimals] = React.useState<string>('')
-  const [foundToken, setFoundToken] = React.useState<string>('')
+  const [foundToken, setFoundToken] = React.useState<TokenInfo>()
+  const [hasError, setHasError] = React.useState<boolean>(false)
 
   const handleTokenNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (hasError) {
+      setHasError(false)
+    }
     setTokenName(event.target.value)
   }
 
   const handleTokenSymbolChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (hasError) {
+      setHasError(false)
+    }
     setTokenSymbol(event.target.value)
   }
 
   const handleTokenAddressChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (hasError) {
+      setHasError(false)
+    }
     setTokenContractAddress(event.target.value)
   }
 
   const handleTokenDecimalsChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (hasError) {
+      setHasError(false)
+    }
     setTokenDecimals(event.target.value)
   }
 
-  React.useMemo(() => {
-    setFilteredWatchlist(watchlist)
-  }, [watchlist])
+  const tokenList = React.useMemo(() => {
+    const visibleContracts = userVisibleTokensInfo.map((token) => token.contractAddress)
+    const notVisibleList = fullAssetList.filter((token) => !visibleContracts.includes(token.contractAddress))
+    return [...userVisibleTokensInfo, ...notVisibleList]
+  }, [fullAssetList, userVisibleTokensInfo])
 
-  const filterWatchlist = (event: any) => {
+  React.useMemo(() => {
+    setFilteredTokenList(tokenList)
+    if (!addUserAssetError) {
+      setShowAddCustomToken(false)
+    }
+    setHasError(addUserAssetError)
+    setIsLoading(false)
+  }, [tokenList, addUserAssetError])
+
+  const filterWatchlist = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const search = event.target.value
     if (search === '') {
-      setFilteredWatchlist(watchlist)
+      setFilteredTokenList(tokenList)
     } else {
-      const filteredList = watchlist.filter((item) => {
+      const filteredList = tokenList.filter((item) => {
         return (
           item.name.toLowerCase() === search.toLowerCase() ||
           item.name.toLowerCase().startsWith(search.toLowerCase()) ||
@@ -94,31 +116,56 @@ const EditVisibleAssetsModal = (props: Props) => {
           item.contractAddress.toLocaleLowerCase() === search.toLowerCase()
         )
       })
-      setFilteredWatchlist(filteredList)
+      setFilteredTokenList(filteredList)
     }
     setSearchValue(search)
-  }
+  }, [tokenList])
 
   const onClickAddCustomToken = () => {
-    if (foundToken !== '') {
-      onUpdateVisibleTokens(foundToken, true)
+    if (foundToken) {
+      onAddUserAsset(foundToken)
     } else {
-      onAddCustomToken(tokenName, tokenSymbol, tokenContractAddress, Number(tokenDecimals))
+      const newToken: TokenInfo = {
+        contractAddress: tokenContractAddress,
+        decimals: Number(tokenDecimals),
+        isErc20: true,
+        isErc721: false,
+        name: tokenName,
+        symbol: tokenSymbol,
+        logo: '',
+        visible: true
+      }
+      onAddUserAsset(newToken)
     }
+    setIsLoading(true)
   }
 
-  const onCheckWatchlistItem = (key: string, selected: boolean) => {
-    if (selected) {
-      const newList = [...selectedWatchlist, key]
-      setSelectedWatchlist(newList)
-    } else {
-      const newList = selectedWatchlist.filter((id) => id !== key)
-      setSelectedWatchlist(newList)
-    }
+  const isAssetSelected = (token: TokenInfo): boolean => {
+    const isUserToken = userVisibleTokensInfo.map(e => e.contractAddress).includes(token.contractAddress)
+    return (isUserToken && token.visible) ?? false
   }
 
-  const isAssetSelected = (key: string): boolean => {
-    return selectedWatchlist.includes(key)
+  const isCustomToken = React.useCallback((token: TokenInfo): boolean => {
+    const assetListContracts = fullAssetList.map((token) => token.contractAddress)
+    if (token.isErc20) {
+      return !assetListContracts.includes(token.contractAddress)
+    } else {
+      return false
+    }
+  }, [fullAssetList])
+
+  const onCheckWatchlistItem = (key: string, selected: boolean, token: TokenInfo, isCustom: boolean) => {
+    const isUserToken = userVisibleTokensInfo.includes(token)
+    if (isUserToken) {
+      if (isCustom) {
+        selected ? onSetUserAssetVisible(token.contractAddress, true) : onSetUserAssetVisible(token.contractAddress, false)
+      } else {
+        selected ? onAddUserAsset(token) : onRemoveUserAsset(token.contractAddress)
+      }
+    } else {
+      onAddUserAsset(token)
+    }
+    setIsLoading(true)
   }
 
   const toggleShowAddCustomToken = () => {
@@ -135,19 +182,21 @@ const EditVisibleAssetsModal = (props: Props) => {
     toggleShowAddCustomToken()
   }
 
+  const onRemoveAsset = (token: TokenInfo) => {
+    setIsLoading(true)
+    onRemoveUserAsset(token.contractAddress)
+  }
+
   const isDisabled = React.useMemo(() => {
-    const foundToken = fullAssetList.find((token) => token.contractAddress.toLowerCase() === tokenContractAddress.toLowerCase())
-    if (foundToken) {
-      setFoundToken(foundToken.contractAddress)
-      setTokenName(foundToken.name)
-      setTokenSymbol(foundToken.symbol)
-      setTokenDecimals(foundToken.decimals.toString())
+    const token = fullAssetList.find((token) => token.contractAddress.toLowerCase() === tokenContractAddress.toLowerCase())
+    if (token) {
+      setFoundToken(token)
+      setTokenName(token.name)
+      setTokenSymbol(token.symbol)
+      setTokenDecimals(token.decimals.toString())
       return true
     } else {
-      setFoundToken('')
-      setTokenName('')
-      setTokenSymbol('')
-      setTokenDecimals('')
+      setFoundToken(undefined)
       return false
     }
   }, [tokenContractAddress, fullAssetList])
@@ -158,57 +207,61 @@ const EditVisibleAssetsModal = (props: Props) => {
         <Divider />
       }
       <StyledWrapper>
-        {showAddCustomToken ? (
-          <FormWrapper>
-            <InputLabel>{locale.watchListTokenName}</InputLabel>
-            <Input
-              value={tokenName}
-              onChange={handleTokenNameChanged}
-              disabled={isDisabled}
-            />
-            <InputLabel>{locale.watchListTokenAddress}</InputLabel>
-            <Input
-              value={tokenContractAddress}
-              onChange={handleTokenAddressChanged}
-            />
-            <InputLabel>{locale.watchListTokenSymbol}</InputLabel>
-            <Input
-              value={tokenSymbol}
-              onChange={handleTokenSymbolChanged}
-              disabled={isDisabled}
-            />
-            <InputLabel>{locale.watchListTokenDecimals}</InputLabel>
-            <Input
-              value={tokenDecimals}
-              onChange={handleTokenDecimalsChanged}
-              disabled={isDisabled}
-              type='number'
-            />
-            <ButtonRow>
-              <NavButton
-                onSubmit={onClickCancel}
-                text={locale.backupButtonCancel}
-                buttonType='secondary'
-              />
-              <NavButton
-                onSubmit={onClickAddCustomToken}
-                text={locale.watchListAdd}
-                buttonType='primary'
-                disabled={
-                  tokenName === ''
-                  || tokenSymbol === ''
-                  || tokenDecimals === ''
-                  || tokenContractAddress === ''
-                }
-              />
-            </ButtonRow>
-          </FormWrapper>
+        {fullAssetList.length === 0 || isLoading ? (
+          <LoadingWrapper>
+            <LoadIcon />
+          </LoadingWrapper>
         ) : (
           <>
-            {fullAssetList.length === 0 ? (
-              <LoadingWrapper>
-                <LoadIcon />
-              </LoadingWrapper>
+            {showAddCustomToken ? (
+              <FormWrapper>
+                <InputLabel>{locale.watchListTokenName}</InputLabel>
+                <Input
+                  value={tokenName}
+                  onChange={handleTokenNameChanged}
+                  disabled={isDisabled}
+                />
+                <InputLabel>{locale.watchListTokenAddress}</InputLabel>
+                <Input
+                  value={tokenContractAddress}
+                  onChange={handleTokenAddressChanged}
+                />
+                <InputLabel>{locale.watchListTokenSymbol}</InputLabel>
+                <Input
+                  value={tokenSymbol}
+                  onChange={handleTokenSymbolChanged}
+                  disabled={isDisabled}
+                />
+                <InputLabel>{locale.watchListTokenDecimals}</InputLabel>
+                <Input
+                  value={tokenDecimals}
+                  onChange={handleTokenDecimalsChanged}
+                  disabled={isDisabled}
+                  type='number'
+                />
+                {hasError &&
+                  <ErrorText>{locale.watchListError}</ErrorText>
+                }
+                <ButtonRow>
+                  <NavButton
+                    onSubmit={onClickCancel}
+                    text={locale.backupButtonCancel}
+                    buttonType='secondary'
+                  />
+                  <NavButton
+                    onSubmit={onClickAddCustomToken}
+                    text={locale.watchListAdd}
+                    buttonType='primary'
+                    disabled={
+                      tokenName === ''
+                      || tokenSymbol === ''
+                      || tokenDecimals === ''
+                      || tokenContractAddress === ''
+                      || !tokenContractAddress.toLowerCase().startsWith('0x')
+                    }
+                  />
+                </ButtonRow>
+              </FormWrapper>
             ) : (
               <>
                 <SearchBar
@@ -218,19 +271,17 @@ const EditVisibleAssetsModal = (props: Props) => {
                 />
                 <WatchlistScrollContainer>
                   <>
-                    {filteredWatchlist.map((item) =>
+                    {filteredTokenList.map((token) =>
                       <AssetWatchlistItem
-                        key={item.contractAddress}
-                        id={item.contractAddress}
-                        assetBalance='0'
-                        icon={item.icon}
-                        name={item.name}
-                        symbol={item.symbol}
-                        isSelected={isAssetSelected(item.contractAddress)}
+                        key={token.contractAddress}
+                        isCustom={isCustomToken(token)}
+                        token={token}
+                        onRemoveAsset={onRemoveAsset}
+                        isSelected={isAssetSelected(token)}
                         onSelectAsset={onCheckWatchlistItem}
                       />
                     )}
-                    {filteredWatchlist.length === 0 &&
+                    {filteredTokenList.length === 0 &&
                       <NoAssetRow>
                         {searchValue.toLowerCase().startsWith('0x') ? (
                           <NoAssetButton onClick={onClickSuggestAdd}>{locale.watchListAdd} {searchValue} {locale.watchListSuggestion}</NoAssetButton>

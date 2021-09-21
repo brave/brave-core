@@ -48,7 +48,6 @@ async function refreshWalletInfo (store: Store) {
 handler.on(WalletPageActions.createWallet.getType(), async (store, payload: CreateWalletPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.createWallet(payload.password)
-  store.dispatch(WalletActions.setInitialVisibleTokens({ visibleAssets: ['eth', '0x0D8775F648430679A709E98d2b0Cb6250d2887EF'] }))
   store.dispatch(WalletPageActions.walletCreated({ mnemonic: result.mnemonic }))
 })
 
@@ -59,7 +58,6 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store, payload: Res
     store.dispatch(WalletPageActions.hasMnemonicError(!result.isValidMnemonic))
     return
   }
-  store.dispatch(WalletActions.setInitialVisibleTokens({ visibleAssets: ['eth', '0x0D8775F648430679A709E98d2b0Cb6250d2887EF'] }))
   await keyringController.notifyWalletBackupComplete()
   await refreshWalletInfo(store)
   store.dispatch(WalletPageActions.setShowIsRestoring(false))

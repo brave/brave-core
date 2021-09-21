@@ -18,21 +18,26 @@ export interface Props {
   icon?: string
   assetBalance: string
   fiatBalance: string
+  isVisible?: boolean
 }
 
 const PortfolioAssetItem = (props: Props) => {
-  const { name, assetBalance, fiatBalance, icon, symbol, action } = props
+  const { name, assetBalance, fiatBalance, icon, symbol, isVisible, action } = props
   return (
-    <StyledWrapper onClick={action}>
-      <NameAndIcon>
-        <AssetIcon icon={icon ? icon : ''} />
-        <AssetName>{name}</AssetName>
-      </NameAndIcon>
-      <BalanceColumn>
-        <FiatBalanceText>${formatPrices(Number(fiatBalance))}</FiatBalanceText>
-        <AssetBalanceText>{Number(assetBalance).toFixed(4)} {symbol}</AssetBalanceText>
-      </BalanceColumn>
-    </StyledWrapper>
+    <>
+      {isVisible &&
+        <StyledWrapper onClick={action}>
+          <NameAndIcon>
+            <AssetIcon icon={icon ? icon : ''} />
+            <AssetName>{name}</AssetName>
+          </NameAndIcon>
+          <BalanceColumn>
+            <FiatBalanceText>${formatPrices(Number(fiatBalance))}</FiatBalanceText>
+            <AssetBalanceText>{Number(assetBalance).toFixed(4)} {symbol}</AssetBalanceText>
+          </BalanceColumn>
+        </StyledWrapper>
+      }
+    </>
   )
 }
 
