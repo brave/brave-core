@@ -40,6 +40,12 @@
         "../out/Static/gen/*",
         "../out/Release/gen/*",
         "../out/Debug/gen/*",
+      ],
+      "chrome://resources/*": [
+        "../out/Component/gen/ui/webui/resources/preprocessed/*",
+        "../out/Static/gen/ui/webui/resources/preprocessed/*",
+        "../out/Release/gen/ui/webui/resources/preprocessed/*",
+        "../out/Debug/gen/ui/webui/resources/preprocessed/*",
       ]
     },
     "typeRoots": [

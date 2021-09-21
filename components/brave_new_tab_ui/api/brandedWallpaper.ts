@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { sendWithPromise } from '../../common/cr'
+import { sendWithPromise } from 'chrome://resources/js/cr.m'
 
 export function getBrandedWallpaper (): Promise<undefined | NewTab.BrandedWallpaper> {
-  return sendWithPromise<undefined | NewTab.BrandedWallpaper>('getBrandedWallpaperData')
+  return sendWithPromise('getBrandedWallpaperData')
 }
 
 export function registerViewCount (): Promise<void> {
-  return sendWithPromise<void>('registerNewTabPageView')
+  return sendWithPromise('registerNewTabPageView')
 }
 
 export function brandedWallpaperLogoClicked (data: NewTab.BrandedWallpaper | undefined) {

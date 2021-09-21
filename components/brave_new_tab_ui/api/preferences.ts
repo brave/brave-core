@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { addWebUIListener, sendWithPromise } from '../../common/cr'
+import { addWebUIListener, sendWithPromise } from 'chrome://resources/js/cr.m'
 
 //
 // Manages get and set of NTP preference data
@@ -15,7 +15,7 @@ import { addWebUIListener, sendWithPromise } from '../../common/cr'
 type PreferencesUpdatedHandler = (prefData: NewTab.Preferences) => void
 
 export function getPreferences (): Promise<NewTab.Preferences> {
-  return sendWithPromise<NewTab.Preferences>('getNewTabPagePreferences')
+  return sendWithPromise('getNewTabPagePreferences')
 }
 
 function sendSavePref (key: string, value: any) {

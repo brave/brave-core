@@ -57,6 +57,7 @@ module.exports = {
     "\\.(css|less)$": "identity-obj-proxy",
     "^brave-ui$": "<rootDir>/node_modules/brave-ui/src",
     "^brave-ui\\/(.*)": "<rootDir>/node_modules/brave-ui/src/$1",
-    "^chrome:\/\/resources\\/(.*)": "<rootDir>/.storybook/chrome-resources-mock/$1"
+    "^chrome:\/\/resources\\/(.*)": "<rootDir>/.storybook/chrome-resources-mock/$1",
+    "^gen\\/(.*)": "<rootDir>/.storybook/gen-mock/$1"
   }
 }

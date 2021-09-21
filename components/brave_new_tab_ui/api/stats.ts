@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import * as Cr from '../../common/cr'
+import * as Cr from 'chrome://resources/js/cr.m'
 
 //
 // Manages get and update of stats data
@@ -23,7 +23,7 @@ export type Stats = {
 type StatsUpdatedHandler = (statsData: Stats) => void
 
 export function getStats (): Promise<Stats> {
-  return Cr.sendWithPromise<Stats>('getNewTabPageStats')
+  return Cr.sendWithPromise('getNewTabPageStats')
 }
 
 export function addChangeListener (listener: StatsUpdatedHandler): void {
