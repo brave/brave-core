@@ -2209,6 +2209,48 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PURCHASED_FAILED" desc="Brave Vpn in app purchase message">
       ERROR!!\nPurchased failed..
     </message>
+    <message name="IDS_REJECT" desc="Brave crypto wallet button reject">
+      Reject
+    </message>
+    <message name="IDS_APPROVE" desc="Brave crypto wallet button approve">
+      Approve
+    </message>
+    <message name="IDS_GAS_FEE" desc="Brave crypto wallet gas fee information">
+      Gas Fee
+    </message>
+    <message name="IDS_TOTAL" desc="Brave crypto wallet total amount for a transaction">
+      Total
+    </message>
+    <message name="IDS_AMOUNT_PLUS_GAS" desc="Brave crypto wallet total amount plus gas cost for a transaction">
+      Amount + Gas
+    </message>
+    <message name="IDS_TRANSACTION" desc="Brave crypto wallet transaction title">
+      Transaction
+    </message>
+    <message name="IDS_TRANSACTION_DETAILS" desc="Brave crypto wallet transaction details section">
+      Details
+    </message>
+    <message name="IDS_PORTFOLIO" desc="Brave crypto wallet section Portfolio">
+      Portfolio
+    </message>
+    <message name="IDS_APPS" desc="Brave crypto wallet section Apps">
+      Apps
+    </message>
+    <message name="IDS_CRYPTO_WALLET_FROM_TO" desc="From address -> to address" translateable="false">
+      <ph name="FROM">%1$s<ex>0xabcd...</ex></ph> -> <ph name="TO">%2$s<ex>0xabcd...</ex></ph>
+    </message>
+    <message name="IDS_CRYPTO_WALLET_AMOUNT_ASSET" desc="Amount Asset" translateable="false">
+      <ph name="AMOUNT">%1$s<ex>0.0001</ex></ph> <ph name="ASSET">%2$s<ex>ETH</ex></ph>
+    </message>
+    <message name="IDS_CRYPTO_WALLET_AMOUNT_FIAT" desc="$amount_fiat" translateable="false">
+      $<ph name="AMOUNT">%1$s<ex>3.08</ex></ph>
+    </message>
+    <message name="IDS_CRYPTO_WALLET_GAS_FEE_AMOUNT" desc="Gas fee ETH" translateable="false">
+      <ph name="AMOUNT">%1$s<ex>0.0000015</ex></ph> ETH
+    </message>
+    <message name="IDS_CRYPTO_WALLET_TOTAL_AMOUNT" desc="amount asset + amount gas fee" translateable="false">
+      <ph name="AMOUNT">%1$s<ex>0.0015</ex></ph> <ph name="ASSET">%2$s<ex>ETH</ex></ph> + <ph name="GAS_FEE">%3$s<ex>0.00000015</ex></ph> ETH
+    </message>
     </messages>
   </release>
 </grit>
