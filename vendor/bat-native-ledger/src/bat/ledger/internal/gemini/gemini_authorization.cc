@@ -157,12 +157,14 @@ void GeminiAuthorization::OnFetchRecipientId(
     return;
   }
 
-  auto wallet_ptr = ledger_->gemini()->GetWallet();
-  wallet_ptr->address = recipient_id;
-  ledger_->gemini()->SetWallet(wallet_ptr->Clone());
+  if (recipient_id.empty()) {
+    BLOG(0, "Recipient ID is empty!");
+    callback(type::Result::LEDGER_ERROR, {});
+    return;
+  }
 
   auto url_callback = std::bind(&GeminiAuthorization::OnPostAccount, this, _1,
-                                _2, _3, token, callback);
+                                _2, _3, token, recipient_id, callback);
   gemini_server_->post_account()->Request(token, url_callback);
 }
 
@@ -171,6 +173,7 @@ void GeminiAuthorization::OnPostAccount(
     const std::string& linking_info,
     const std::string& name,
     const std::string& token,
+    const std::string& recipient_id,
     ledger::ExternalWalletAuthorizationCallback callback) {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
@@ -192,15 +195,17 @@ void GeminiAuthorization::OnPostAccount(
 
   ledger_->gemini()->SetWallet(wallet_ptr->Clone());
 
-  auto url_callback =
-      std::bind(&GeminiAuthorization::OnClaimWallet, this, _1, token, callback);
-  promotion_server_->post_claim_gemini()->Request(
-      linking_info, wallet_ptr->address, url_callback);
+  auto url_callback = std::bind(&GeminiAuthorization::OnClaimWallet, this, _1,
+                                token, recipient_id, callback);
+
+  promotion_server_->post_claim_gemini()->Request(linking_info, recipient_id,
+                                                  url_callback);
 }
 
 void GeminiAuthorization::OnClaimWallet(
     const type::Result result,
     const std::string& token,
+    const std::string& recipient_id,
     ledger::ExternalWalletAuthorizationCallback callback) {
   auto wallet_ptr = ledger_->gemini()->GetWallet();
   if (!wallet_ptr) {
@@ -208,9 +213,10 @@ void GeminiAuthorization::OnClaimWallet(
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
+  DCHECK(!recipient_id.empty());
   const std::string event_text = std::string(constant::kWalletGemini) +
-                                 (!wallet_ptr->address.empty() ? "/" : "") +
-                                 wallet_ptr->address.substr(0, 5);
+                                 (!recipient_id.empty() ? "/" : "") +
+                                 recipient_id.substr(0, 5);
 
   if (result == type::Result::ALREADY_EXISTS) {
     BLOG(0, "Wallet linking limit reached!");
@@ -238,6 +244,8 @@ void GeminiAuthorization::OnClaimWallet(
     callback(type::Result::LEDGER_ERROR, {});
     return;
   }
+
+  wallet_ptr->address = recipient_id;
 
   switch (wallet_ptr->status) {
     case type::WalletStatus::NOT_CONNECTED:
