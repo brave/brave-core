@@ -44,41 +44,19 @@ class AdNotificationPopup : public views::WidgetDelegateView,
                             public gfx::AnimationDelegate,
                             public display::DisplayObserver {
  public:
-  // Creates instance of AdNotificationPopup. Can be used in tests to specify
-  // AdNotificationPopup instance which is created on AdNotificationPopup::Show
-  // call.
-  class PopupInstanceFactory {
-   public:
-    virtual ~PopupInstanceFactory();
-
-    virtual AdNotificationPopup* CreateInstance(
-        Profile* profile,
-        const AdNotification& ad_notification) = 0;
-  };
-
   METADATA_HEADER(AdNotificationPopup);
 
-  explicit AdNotificationPopup(Profile* profile,
-                               const AdNotification& ad_notification);
+  AdNotificationPopup(Profile* profile, const AdNotification& ad_notification);
   ~AdNotificationPopup() override;
 
   // Show the notification popup view for the given |profile| and
   // |ad_notification|
   static void Show(Profile* profile, const AdNotification& ad_notification);
 
-  // Show the notification popup view for the given |profile| and
-  // |ad_notification|. Popup instance is created using |popup_factory|
-  static void Show(Profile* profile,
-                   const AdNotification& ad_notification,
-                   PopupInstanceFactory* popup_factory);
-
   // Close the notification popup view for the given |notification_id|.
   // |by_user| is true if the notification popup was closed by the user,
   // otherwise false
   static void Close(const std::string& notification_id, const bool by_user);
-
-  // Close the widget for the given |notification_id|
-  static void CloseWidget(const std::string& notification_id);
 
   // User clicked the notification popup view for the given |notification_id|
   static void OnClick(const std::string& notification_id);
@@ -110,6 +88,8 @@ class AdNotificationPopup : public views::WidgetDelegateView,
   void AnimationEnded(const gfx::Animation* animation) override;
   void AnimationProgressed(const gfx::Animation* animation) override;
   void AnimationCanceled(const gfx::Animation* animation) override;
+
+  void ClosePopup();
 
  private:
   enum class AnimationState {

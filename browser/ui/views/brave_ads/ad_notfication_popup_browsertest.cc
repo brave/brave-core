@@ -22,48 +22,11 @@
 
 namespace brave_ads {
 
-namespace {
-
-class MockAdNotificationPopup : public AdNotificationPopup {
- public:
-  MockAdNotificationPopup(Profile* profile,
-                          const AdNotification& ad_notification)
-      : AdNotificationPopup(profile, ad_notification) {}
-
-  void OnThemeChanged() override {
-    AdNotificationPopup::OnThemeChanged();
-    OnThemeChangedMock();
-  }
-
-  MOCK_METHOD0(OnThemeChangedMock, void());
-};
-
-class TestPopupInstanceFactory
-    : public AdNotificationPopup::PopupInstanceFactory {
- public:
-  ~TestPopupInstanceFactory() override = default;
-
-  AdNotificationPopup* CreateInstance(
-      Profile* profile,
-      const AdNotification& ad_notification) override {
-    popup_ = new MockAdNotificationPopup(profile, ad_notification);
-    return popup_;
-  }
-
-  MockAdNotificationPopup* get_popup() { return popup_; }
-
- private:
-  MockAdNotificationPopup* popup_ = nullptr;
-};
-
-}  // namespace
-
 class AdNotificationPopupBrowserTest : public InProcessBrowserTest {
  public:
   AdNotificationPopupBrowserTest() {
-    feature_list_.InitAndEnableFeatureWithParameters(
-        brave_ads::features::kAdNotifications,
-        {{"should_show_custom_notifications", "true"}});
+    feature_list_.InitAndEnableFeature(
+        brave_ads::features::kCustomAdNotifications);
   }
 
   void SetUp() override {
@@ -87,42 +50,24 @@ class AdNotificationPopupBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(AdNotificationPopupBrowserTest, CheckThemeChanged) {
-  WidgetSnapshotChecker widget_checker;
-  TestPopupInstanceFactory test_factory;
-  auto check_ads_popup_snapshot = [&widget_checker, &test_factory,
-                                   this](const std::string& id) {
-    AdNotification notification(id, u"test", u"test", {});
-    AdNotificationPopup::Show(browser()->profile(), notification,
-                              &test_factory);
-    MockAdNotificationPopup* mock_popup = test_factory.get_popup();
-    ASSERT_TRUE(mock_popup);
-
-    ASSERT_NO_FATAL_FAILURE(
-        widget_checker.CaptureAndCheckSnapshot(mock_popup->GetWidget()));
-  };
-
   // Check appearance in light theme.
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  std::string notification_id = "id_light";
-  check_ads_popup_snapshot(notification_id);
-  AdNotificationPopup::CloseWidget(notification_id);
+  std::string notification_id = "notification_id";
+  AdNotification notification("id", u"test", u"test", {});
+  AdNotificationPopup* popup =
+      new AdNotificationPopup(browser()->profile(), notification);
+  WidgetSnapshotChecker widget_checker;
+  EXPECT_NO_FATAL_FAILURE(
+      widget_checker.CaptureAndCheckSnapshot(popup->GetWidget()));
 
-  // Check appearance in light theme.
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
-  notification_id = "id_dark";
-  check_ads_popup_snapshot(notification_id);
+  // Check appearance in dark theme.
+  EXPECT_NO_FATAL_FAILURE(
+      widget_checker.CaptureAndCheckSnapshot(popup->GetWidget()));
 
-  // Check that OnThemeChanged() is called on browser theme change.
-  base::RunLoop run_loop;
-  EXPECT_CALL(*test_factory.get_popup(), OnThemeChangedMock())
-      .WillOnce([&run_loop]() { run_loop.Quit(); });
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  run_loop.Run();
-
-  AdNotificationPopup::CloseWidget(notification_id);
+  popup->ClosePopup();
 }
 
 }  // namespace brave_ads

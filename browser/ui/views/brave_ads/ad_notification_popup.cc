@@ -68,18 +68,6 @@ constexpr int kShadowElevation = 0;
 constexpr int kCornerRadius = 0;
 #endif  // defined(OS_WIN)
 
-class DefaultPopupInstanceFactory
-    : public AdNotificationPopup::PopupInstanceFactory {
- public:
-  ~DefaultPopupInstanceFactory() override = default;
-
-  AdNotificationPopup* CreateInstance(
-      Profile* profile,
-      const AdNotification& ad_notification) override {
-    return new AdNotificationPopup(profile, ad_notification);
-  }
-};
-
 SkColor GetLightModeBackgroundColor() {
   return SkColorSetRGB(0xed, 0xf0, 0xf2);
 }
@@ -107,8 +95,6 @@ void AdjustBoundsAndSnapToFitWorkAreaForWidget(views::Widget* widget) {
 }
 
 }  // namespace
-
-AdNotificationPopup::PopupInstanceFactory::~PopupInstanceFactory() = default;
 
 AdNotificationPopup::AdNotificationPopup(Profile* profile,
                                          const AdNotification& ad_notification)
@@ -139,22 +125,13 @@ AdNotificationPopup::~AdNotificationPopup() {
 // static
 void AdNotificationPopup::Show(Profile* profile,
                                const AdNotification& ad_notification) {
-  DefaultPopupInstanceFactory default_factory;
-  Show(profile, ad_notification, &default_factory);
-}
-
-// static
-void AdNotificationPopup::Show(Profile* profile,
-                               const AdNotification& ad_notification,
-                               PopupInstanceFactory* popup_factory) {
   DCHECK(profile);
-  DCHECK(popup_factory);
 
   const std::string& id = ad_notification.id();
 
   DCHECK(!g_ad_notification_popups[id]);
   g_ad_notification_popups[id] =
-      popup_factory->CreateInstance(profile, ad_notification);
+      new AdNotificationPopup(profile, ad_notification);
 
   AdNotificationDelegate* delegate = ad_notification.delegate();
   if (delegate) {
@@ -180,20 +157,7 @@ void AdNotificationPopup::Close(const std::string& notification_id,
     delegate->OnClose(by_user);
   }
 
-  popup->FadeOut();
-}
-
-// static
-void AdNotificationPopup::CloseWidget(const std::string& notification_id) {
-  DCHECK(!notification_id.empty());
-  if (!g_ad_notification_popups[notification_id]) {
-    return;
-  }
-
-  AdNotificationPopup* popup = g_ad_notification_popups[notification_id];
-  DCHECK(popup);
-
-  popup->CloseWidgetView();
+  popup->ClosePopup();
 }
 
 // static
@@ -210,7 +174,7 @@ void AdNotificationPopup::OnClick(const std::string& notification_id) {
     delegate->OnClick();
   }
 
-  popup->FadeOut();
+  popup->ClosePopup();
 }
 
 // static
@@ -318,9 +282,6 @@ void AdNotificationPopup::OnWidgetBoundsChanged(views::Widget* widget,
 void AdNotificationPopup::AnimationEnded(const gfx::Animation* animation) {
   UpdateAnimation();
 
-  const std::string notification_id = ad_notification_.id();
-  DCHECK(!notification_id.empty());
-
   switch (animation_state_) {
     case AnimationState::kIdle: {
       break;
@@ -333,7 +294,7 @@ void AdNotificationPopup::AnimationEnded(const gfx::Animation* animation) {
 
     case AnimationState::kFadeOut: {
       animation_state_ = AnimationState::kIdle;
-      CloseWidget(notification_id);
+      CloseWidgetView();
       break;
     }
   }
@@ -345,6 +306,10 @@ void AdNotificationPopup::AnimationProgressed(const gfx::Animation* animation) {
 
 void AdNotificationPopup::AnimationCanceled(const gfx::Animation* animation) {
   UpdateAnimation();
+}
+
+void AdNotificationPopup::ClosePopup() {
+  FadeOut();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
