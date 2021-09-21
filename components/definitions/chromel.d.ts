@@ -343,7 +343,6 @@ declare namespace chrome.braveShields {
 declare namespace chrome.braveWallet {
   const promptToEnableWallet: (tabId: number | undefined) => void
   const ready: () => void
-  const shouldCheckForDapps: (callback: (dappDetection: boolean) => void) => void
   const shouldPromptForSetup: (callback: (dappDetection: boolean) => void) => void
   const loadUI: (callback: () => void) => void
   const isNativeWalletEnabled: (callback: (enabled: boolean) => void) => void

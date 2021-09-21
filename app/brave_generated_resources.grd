@@ -795,8 +795,8 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_METAMASK" desc="Select control value for which web3 provider to use">
         MetaMask
       </message>
-      <message name="IDS_SETTINGS_BRAVE_WEB3_PROVIDER_DESC" desc="The description for Brave web3 provider select control in settings">
-        Ethereum provider for using Dapps
+      <message name="IDS_SETTINGS_DEFAULT_WALLET_DESC" desc="The default cryptocurrency wallet">
+        Default cryptocurrency wallet
       </message>
       <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for showing the Brave wallet panel icon on the toolbar">
         Show Brave Wallet icon on toolbar

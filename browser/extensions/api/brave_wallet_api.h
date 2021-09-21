@@ -44,15 +44,6 @@ class BraveWalletNotifyWalletUnlockFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveWalletShouldCheckForDappsFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.shouldCheckForDapps", UNKNOWN)
-
- protected:
-  ~BraveWalletShouldCheckForDappsFunction() override {}
-  ResponseAction Run() override;
-};
-
 class BraveWalletLoadUIFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveWallet.loadUI", UNKNOWN)

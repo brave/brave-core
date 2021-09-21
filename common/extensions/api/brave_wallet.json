@@ -44,22 +44,6 @@
           }
         ]
       }, {
-        "name": "shouldCheckForDapps",
-        "type": "function",
-        "description": "Called to determine if dapp detection should be performed",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "dappDetection",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      }, {
         "name": "notifyWalletUnlock",
         "type": "function",
         "description": "Called to notify Brave that the wallet was unlocked",
