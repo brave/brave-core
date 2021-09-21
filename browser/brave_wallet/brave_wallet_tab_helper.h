@@ -33,9 +33,14 @@ class BraveWalletTabHelper
   void ShowApproveWalletBubble();
   void CloseBubble();
   bool IsShowingBubble();
+  void ClosePanelOnDeactivate(bool close);
   bool IsBubbleClosedForTesting();
+  content::WebContents* GetBubbleWebContentsForTesting();
   void SetShowBubbleCallbackForTesting(base::OnceClosure callback) {
     show_bubble_callback_for_testing_ = std::move(callback);
+  }
+  bool CloseOnDeactivateForTesting() const {
+    return close_on_deactivate_for_testing_;
   }
 #endif
 
@@ -45,6 +50,7 @@ class BraveWalletTabHelper
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
   GURL GetBubbleURL();
   base::OnceClosure show_bubble_callback_for_testing_;
+  bool close_on_deactivate_for_testing_ = true;
   GURL GetApproveBubbleURL();
   std::unique_ptr<WalletBubbleManagerDelegate> wallet_bubble_manager_delegate_;
 #endif

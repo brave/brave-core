@@ -34,6 +34,12 @@ BraveWalletTabHelper::~BraveWalletTabHelper() {
 }
 
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
+void BraveWalletTabHelper::ClosePanelOnDeactivate(bool close) {
+  if (wallet_bubble_manager_delegate_)
+    wallet_bubble_manager_delegate_->CloseOnDeactivate(close);
+  close_on_deactivate_for_testing_ = close;
+}
+
 void BraveWalletTabHelper::ShowBubble() {
   wallet_bubble_manager_delegate_ =
       WalletBubbleManagerDelegate::Create(web_contents_, GetBubbleURL());
@@ -97,6 +103,10 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
   DCHECK(webui_url.is_valid());
 
   return webui_url;
+}
+
+content::WebContents* BraveWalletTabHelper::GetBubbleWebContentsForTesting() {
+  return wallet_bubble_manager_delegate_->GetWebContentsForTesting();
 }
 
 GURL BraveWalletTabHelper::GetApproveBubbleURL() {

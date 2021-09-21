@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/wallet_bubble_manager_delegate_impl.h"
 
+#include <utility>
+
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -29,6 +31,41 @@ content::WebContents* GetActiveWebContents() {
 
 namespace brave_wallet {
 
+template <typename T>
+class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T> {
+ public:
+  BraveWebUIBubbleManagerT(views::View* anchor_view,
+                           Profile* profile,
+                           const GURL& webui_url,
+                           int task_manager_string_id,
+                           bool enable_extension_apis = false)
+      : WebUIBubbleManagerT<T>(anchor_view,
+                               profile,
+                               webui_url,
+                               task_manager_string_id,
+                               enable_extension_apis) {}
+  base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog() override {
+    auto bubble_view = WebUIBubbleManagerT<T>::CreateWebUIBubbleDialog();
+    bubble_view_ = bubble_view.get();
+    web_ui_contents_for_testing_ = bubble_view_->web_view()->GetWebContents();
+    return std::move(bubble_view);
+  }
+
+  void SetCloseOnDeactivate(bool close) {
+    if (bubble_view_) {
+      bubble_view_->set_close_on_deactivate(close);
+    }
+  }
+
+  content::WebContents* GetWebContentsForTesting() {
+    return web_ui_contents_for_testing_;
+  }
+
+ private:
+  WebUIBubbleDialogView* bubble_view_ = nullptr;
+  content::WebContents* web_ui_contents_for_testing_ = nullptr;
+};
+
 // static
 std::unique_ptr<WalletBubbleManagerDelegate>
 WalletBubbleManagerDelegate::Create(content::WebContents* web_contents,
@@ -48,9 +85,10 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
                                  ->GetWalletButtonAnchorView();
   DCHECK(anchor_view);
 
-  webui_bubble_manager_ = std::make_unique<WebUIBubbleManagerT<WalletPanelUI>>(
-      anchor_view, browser->profile(), webui_url_,
-      IDS_ACCNAME_BRAVE_WALLET_BUTTON, true);
+  webui_bubble_manager_ =
+      std::make_unique<BraveWebUIBubbleManagerT<WalletPanelUI>>(
+          anchor_view, browser->profile(), webui_url_,
+          IDS_ACCNAME_BRAVE_WALLET_BUTTON, true);
 }
 
 WalletBubbleManagerDelegateImpl::~WalletBubbleManagerDelegateImpl() = default;
@@ -64,6 +102,14 @@ void WalletBubbleManagerDelegateImpl::ShowBubble() {
   webui_bubble_manager_->ShowBubble();
 }
 
+void WalletBubbleManagerDelegateImpl::CloseOnDeactivate(bool close) {
+  webui_bubble_manager_->SetCloseOnDeactivate(close);
+}
+
+content::WebContents*
+WalletBubbleManagerDelegateImpl::GetWebContentsForTesting() {
+  return webui_bubble_manager_->GetWebContentsForTesting();
+}
 void WalletBubbleManagerDelegateImpl::CloseBubble() {
   webui_bubble_manager_->CloseBubble();
 }

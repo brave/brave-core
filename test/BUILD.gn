@@ -776,6 +776,7 @@ if (!is_android) {
         "//brave/browser/brave_wallet/asset_ratio_controller_browsertest.cc",
         "//brave/browser/brave_wallet/brave_wallet_ethereum_chain_browsertest.cc",
         "//brave/browser/brave_wallet/brave_wallet_event_emitter_browsertest.cc",
+        "//brave/browser/brave_wallet/brave_wallet_tab_helper_browsertest.cc",
         "//brave/browser/brave_wallet/swap_controller_browsertest.cc",
         "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc",
         "//brave/browser/ui/webui/brave_wallet/wallet_panel_ui_browsertest.cc",
