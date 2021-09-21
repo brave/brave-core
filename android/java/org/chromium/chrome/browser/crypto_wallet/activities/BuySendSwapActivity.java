@@ -98,6 +98,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         public void onTransactionStatusChanged(TransactionInfo txInfo) {}
 
         @Override
+        public void onUnapprovedTxUpdated(TransactionInfo txInfo) {}
+
+        @Override
         public void close() {}
 
         @Override
