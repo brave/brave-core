@@ -27,7 +27,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_browser_tests --filter=RewardsStateBrowserTest.*
+// npm run test -- brave_browser_tests --filter=RewardsStateBrowserTest*
 
 namespace rewards_browsertest {
 
@@ -435,6 +435,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -465,6 +466,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -495,6 +497,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -525,6 +528,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -555,6 +559,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -585,6 +590,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -615,6 +621,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -645,6 +652,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -675,6 +683,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -705,6 +714,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -735,6 +745,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -765,6 +776,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -795,6 +807,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -825,6 +838,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -855,6 +869,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -885,6 +900,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -915,6 +931,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -945,6 +962,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -975,6 +993,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -1005,6 +1024,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -1035,6 +1055,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -1065,6 +1086,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -1095,6 +1117,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":"",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"
@@ -1125,6 +1148,7 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("withdraw_url":""})"},
             std::string{
                 R"({"account_url":")" _UPHOLD_URL_ R"(/dashboard",)"
+                R"("activity_url":"",)"
                 R"("add_url":")" _UPHOLD_URL_ R"(/signup/step2?application_id=)" _UPHOLD_CLIENT_ID_ R"(&intention=kyc",)"
                 R"("address":"",)"
                 R"("code_verifier":"",)"

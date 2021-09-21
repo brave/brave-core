@@ -478,7 +478,8 @@ class PageWallet extends React.Component<Props, State> {
   getBalanceToken = (key: string) => {
     const {
       monthlyReport,
-      parameters
+      parameters,
+      externalWallet
     } = this.props.rewardsData
 
     let value = 0.0
@@ -488,7 +489,8 @@ class PageWallet extends React.Component<Props, State> {
 
     return {
       value: value.toFixed(3),
-      converted: utils.convertBalance(value, parameters.rate)
+      converted: utils.convertBalance(value, parameters.rate),
+      link: externalWallet && externalWallet.status === 2 /* VERIFIED */ && key === 'ads' ? externalWallet.activityUrl : undefined
     }
   }
 

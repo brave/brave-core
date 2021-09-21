@@ -131,6 +131,18 @@ TEST_F(BitflyerUtilTest, GetWithdrawUrl) {
   ASSERT_EQ(result, BITFLYER_STAGING_URL "/ex/Home?login=1");
 }
 
+TEST_F(BitflyerUtilTest, GetActivityUrl) {
+  // production
+  ledger::_environment = type::Environment::PRODUCTION;
+  std::string result = bitflyer::GetActivityUrl();
+  ASSERT_EQ(result, std::string(kUrlProduction) + "/ja-jp/ex/tradehistory");
+
+  // staging
+  ledger::_environment = type::Environment::STAGING;
+  result = bitflyer::GetActivityUrl();
+  ASSERT_EQ(result, BITFLYER_STAGING_URL "/ja-jp/ex/tradehistory");
+}
+
 TEST_F(BitflyerUtilTest, GetWallet) {
   // no wallet
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBitflyer))

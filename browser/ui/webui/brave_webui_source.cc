@@ -581,6 +581,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "done", IDS_BRAVE_UI_DONE },
         { "earningsAds", IDS_BRAVE_UI_EARNINGS_ADS },
         { "earningsClaimDefault", IDS_BRAVE_UI_EARNINGS_CLAIM_DEFAULT },
+        { "earningsViewDepositHistory", IDS_BRAVE_UI_EARNINGS_VIEW_DEPOSIT_HISTORY },            // NOLINT
         { "enableTips", IDS_BRAVE_UI_ENABLE_TIPS },
         { "excludeSite", IDS_BRAVE_UI_EXCLUDE_SITE },
         { "excludedSitesText", IDS_BRAVE_UI_EXCLUDED_SITES },

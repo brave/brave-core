@@ -177,6 +177,25 @@ TEST_F(UpholdUtilTest, GetSecondStepVerify) {
             "?application_id=" UPHOLD_STAGING_CLIENT_ID "&intention=kyc");
 }
 
+TEST_F(UpholdUtilTest, GetActivityUrl) {
+  // empty string
+  std::string result = uphold::GetActivityUrl("");
+  ASSERT_EQ(result, "");
+
+  // production
+  ledger::_environment = type::Environment::PRODUCTION;
+  result = uphold::GetActivityUrl("9324i5i32459i");
+  ASSERT_EQ(result,
+            "https://uphold.com/dashboard/cards/9324i5i32459i/activity");
+
+  // staging
+  ledger::_environment = type::Environment::STAGING;
+  result = uphold::GetActivityUrl("9324i5i32459i");
+  ASSERT_EQ(result,
+            "https://wallet-sandbox.uphold.com/dashboard/cards/9324i5i32459i/"
+            "activity");
+}
+
 TEST_F(UpholdUtilTest, GetWallet) {
   // no wallet
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))

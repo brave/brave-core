@@ -29,3 +29,12 @@ export const StyledContentWrapper = styled('div')<{}>`
   flex: 1 1;
   text-align: right;
 `
+
+export const StyledLink = styled('a')<{}>`
+  cursor: pointer;
+  display: inline-block;
+  color: ${p => p.theme.color.subtleActive};
+  font-size: 13px;
+  font-weight: normal;
+  letter-spacing: 0;
+`

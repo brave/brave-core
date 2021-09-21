@@ -159,6 +159,7 @@ struct ExternalWallet {
   string member_id;
   string account_url;
   string login_url;
+  string activity_url;
   map<string, double> fees;
 };
 

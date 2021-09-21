@@ -51,6 +51,8 @@ std::string GetSecondStepVerify();
 
 std::string GetAccountUrl();
 
+std::string GetActivityUrl(const std::string& address);
+
 type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
 
 std::string GenerateVerifyLink(type::ExternalWalletPtr wallet);

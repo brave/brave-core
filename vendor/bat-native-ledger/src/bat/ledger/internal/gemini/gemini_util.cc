@@ -84,6 +84,10 @@ std::string GetAccountUrl() {
   return GetUrl();
 }
 
+std::string GetActivityUrl() {
+  return base::StringPrintf("%s/balances", GetUrl().c_str());
+}
+
 type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
   if (!wallet) {
     return nullptr;
@@ -111,6 +115,7 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
   wallet->verify_url = auth_url;
   wallet->account_url = GetAccountUrl();
   wallet->login_url = auth_url;
+  wallet->activity_url = GetActivityUrl();
 
   return wallet;
 }

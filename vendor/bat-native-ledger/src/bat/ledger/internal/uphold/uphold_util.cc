@@ -111,6 +111,17 @@ std::string GetAccountUrl() {
   return base::StringPrintf("%s/dashboard", url.c_str());
 }
 
+std::string GetActivityUrl(const std::string& address) {
+  std::string url;
+
+  if (!address.empty()) {
+    url = base::StringPrintf("%s/dashboard/cards/%s/activity", GetUrl().c_str(),
+                             address.c_str());
+  }
+
+  return url;
+}
+
 type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
   if (!wallet) {
     return nullptr;
@@ -146,6 +157,7 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
   wallet->verify_url = GenerateVerifyLink(wallet->Clone());
   wallet->account_url = GetAccountUrl();
   wallet->login_url = GetAuthorizeUrl(wallet->one_time_string, false);
+  wallet->activity_url = GetActivityUrl(wallet->address);
 
   return wallet;
 }

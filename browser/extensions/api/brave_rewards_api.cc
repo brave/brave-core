@@ -1047,6 +1047,7 @@ void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
   data.SetStringKey("userName", wallet->user_name);
   data.SetStringKey("accountUrl", wallet->account_url);
   data.SetStringKey("loginUrl", wallet->login_url);
+  data.SetStringKey("activityUrl", wallet->activity_url);
 
   Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(data)));
 }

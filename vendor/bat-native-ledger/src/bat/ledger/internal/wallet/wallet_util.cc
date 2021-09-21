@@ -112,6 +112,11 @@ type::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
     wallet->login_url = *login_url;
   }
 
+  auto* activity_url = dictionary->FindStringKey("activity_url");
+  if (activity_url) {
+    wallet->activity_url = *activity_url;
+  }
+
   auto* fees = dictionary->FindDictKey("fees");
   if (fees) {
     base::DictionaryValue* fees_dictionary;
@@ -169,6 +174,7 @@ bool SetWallet(LedgerImpl* ledger,
   new_wallet.SetStringKey("withdraw_url", wallet->withdraw_url);
   new_wallet.SetStringKey("account_url", wallet->account_url);
   new_wallet.SetStringKey("login_url", wallet->login_url);
+  new_wallet.SetStringKey("activity_url", wallet->activity_url);
   new_wallet.SetKey("fees", std::move(fees));
 
   std::string json;
