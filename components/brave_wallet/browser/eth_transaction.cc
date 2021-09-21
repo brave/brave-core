@@ -138,7 +138,7 @@ absl::optional<EthTransaction> EthTransaction::FromValue(
 }
 
 std::vector<uint8_t> EthTransaction::GetMessageToSign(
-    uint256_t chain_id) const {
+    uint256_t chain_id, bool hash) const {
   base::ListValue list;
   list.Append(RLPUint256ToBlobValue(nonce_));
   list.Append(RLPUint256ToBlobValue(gas_price_));
@@ -153,7 +153,8 @@ std::vector<uint8_t> EthTransaction::GetMessageToSign(
   }
 
   const std::string message = RLPEncode(std::move(list));
-  return KeccakHash(std::vector<uint8_t>(message.begin(), message.end()));
+  auto result = std::vector<uint8_t>(message.begin(), message.end());
+  return hash ? KeccakHash(result) : result;
 }
 
 std::string EthTransaction::GetSignedTransaction() const {

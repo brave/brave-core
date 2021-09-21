@@ -11,7 +11,6 @@ import {
   SelectWrapper
 } from './style'
 import {
-  HardwareWallet,
   HardwareWalletAccount,
   HardwareWalletDerivationPathLocaleMapping,
   HardwareWalletDerivationPathsMapping
@@ -23,7 +22,7 @@ import { SearchBar } from '../../../../shared'
 import { DisclaimerText } from '../style'
 
 interface Props {
-  hardwareWallet: HardwareWallet
+  hardwareWallet: string
   accounts: Array<HardwareWalletAccount>
   onLoadMore: () => void
   selectedDerivationPaths: string[]

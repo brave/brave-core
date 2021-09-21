@@ -7,9 +7,12 @@
 const { EventEmitter } = require('events')
 
 import {
-  HardwareWallet,
   LedgerDerivationPaths
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
+
+import {
+  kLedgerHardwareVendor
+} from '../../constants/types'
 
 import Eth from '@ledgerhq/hw-app-eth'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
@@ -20,7 +23,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
   }
 
   type = () => {
-    return HardwareWallet.Ledger
+    return kLedgerHardwareVendor
   }
 
   getAccounts = (from: number, to: number, scheme: string) => {
@@ -50,6 +53,13 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     }
     this.app = new Eth(await TransportWebHID.create())
     return this.isUnlocked()
+  }
+
+  signTransaction = async (path: string, rawTxHex: string) => {
+    if (!this.isUnlocked() && !(await this.unlock())) {
+      return new Error('Unable to unlock device, try to reconnect')
+    }
+    return this.app.signTransaction(path, rawTxHex)
   }
 
   /* PRIVATE METHODS */

@@ -69,6 +69,9 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
       const std::string& gas_price,
       const std::string& gas_limit,
       SetGasPriceAndLimitForUnapprovedTransactionCallback callback) override;
+  void GetMessageToSignFromTxData1559(
+      mojom::TxData1559Ptr tx_data,
+      GetMessageToSignFromTxData1559Callback callback) override;
 
   void AddObserver(
       ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) override;

@@ -1439,17 +1439,17 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
         EXPECT_EQ(accounts[0]->address, "0x111");
         EXPECT_EQ(accounts[0]->name, "name 1");
         EXPECT_EQ(accounts[0]->is_imported, false);
-        EXPECT_EQ(accounts[0]->is_ledger, true);
+        ASSERT_TRUE(accounts[0]->hardware);
 
         EXPECT_EQ(accounts[1]->address, "0x264");
         EXPECT_EQ(accounts[1]->name, "name 2");
         EXPECT_EQ(accounts[1]->is_imported, false);
-        EXPECT_EQ(accounts[1]->is_ledger, true);
+        ASSERT_TRUE(accounts[1]->hardware);
 
         EXPECT_EQ(accounts[2]->address, "0xEA0");
         EXPECT_EQ(accounts[2]->name, "name 3");
         EXPECT_EQ(accounts[2]->is_imported, false);
-        EXPECT_EQ(accounts[2]->is_ledger, true);
+        ASSERT_TRUE(accounts[2]->hardware);
 
         callback_called = true;
       }));
@@ -1482,7 +1482,7 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
         EXPECT_EQ(accounts[0]->address, "0xEA0");
         EXPECT_EQ(accounts[0]->name, "name 3");
         EXPECT_EQ(accounts[0]->is_imported, false);
-        EXPECT_EQ(accounts[0]->is_ledger, true);
+        ASSERT_TRUE(accounts[0]->hardware);
 
         callback_called = true;
       }));

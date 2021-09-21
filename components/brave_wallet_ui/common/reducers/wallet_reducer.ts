@@ -69,8 +69,8 @@ const defaultState: WalletState = {
 const reducer = createReducer<WalletState>({}, defaultState)
 
 const getAccountType = (info: AccountInfo) => {
-  if (info.isLedger) {
-    return 'Ledger'
+  if (info.hardware) {
+    return info.hardware.vendor
   }
   return info.isImported ? 'Secondary' : 'Primary'
 }

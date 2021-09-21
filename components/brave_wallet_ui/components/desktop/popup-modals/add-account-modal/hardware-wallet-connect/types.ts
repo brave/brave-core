@@ -1,9 +1,9 @@
 import locale from '../../../../../constants/locale'
 
-export enum HardwareWallet {
-  Ledger = 'Ledger',
-  Trezor = 'Trezor'
-}
+import {
+  kLedgerHardwareVendor,
+  kTrezorHardwareVendor
+} from '../../../../../constants/types'
 
 export enum LedgerDerivationPaths {
   LedgerLive = 'ledger-live',
@@ -21,13 +21,12 @@ export const HardwareWalletDerivationPathLocaleMapping = {
 }
 
 export const HardwareWalletDerivationPathsMapping = {
-  [HardwareWallet.Ledger]: LedgerDerivationPaths,
-  [HardwareWallet.Trezor]: TrezorDerivationPaths
+  [kLedgerHardwareVendor]: LedgerDerivationPaths,
+  [kTrezorHardwareVendor]: TrezorDerivationPaths
 }
 
 export interface HardwareWalletConnectOpts {
-  hardware: HardwareWallet
-
+  hardware: string
   // TODO: add currency and network as enums
   // currency: string
   // network: string

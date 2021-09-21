@@ -11,8 +11,8 @@ import 'gen/brave/components/brave_wallet/common/brave_wallet.mojom-lite.js'
 import * as WalletActions from '../common/actions/wallet_actions'
 import LedgerBridgeKeyring from '../common/ledgerjs/eth_ledger_bridge_keyring'
 import {
-  HardwareWallet
-} from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
+  kLedgerHardwareVendor
+} from '../constants/types'
 
 // TODO(petemill): Convert this module to Typescript, and import
 // es-module versions of mojom bindings, e.g.
@@ -66,7 +66,7 @@ export default class WalletApiProxy {
   }
 
   getKeyringsByType(type) {
-    if (type == HardwareWallet.Ledger) {
+    if (type == kLedgerHardwareVendor) {
       return this.ledgerHardwareKeyring;
     }
     return this.keyringController;

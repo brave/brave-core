@@ -57,7 +57,7 @@ class EthTransaction {
   // return
   // keccack(rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0])
   // Support EIP-155 chain id
-  virtual std::vector<uint8_t> GetMessageToSign(uint256_t chain_id) const;
+  virtual std::vector<uint8_t> GetMessageToSign(uint256_t chain_id, bool hash = true) const;
 
   // return rlp([nonce, gasPrice, gasLimit, to, value, data, v, r, s])
   virtual std::string GetSignedTransaction() const;
