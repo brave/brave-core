@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index c25d483469dbc2580f12340daefb85f085b4e127..d9ac59a39c9bade1f6eecd396c4da33fd7d121c0 100644
+index c25d483469dbc2580f12340daefb85f085b4e127..a78f9112b8948f2ee2583980af034df22d4dee05 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -164,6 +164,7 @@ if (!is_android && !is_mac) {
@@ -61,14 +61,14 @@ index c25d483469dbc2580f12340daefb85f085b4e127..d9ac59a39c9bade1f6eecd396c4da33f
      if (is_chrome_branded) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
-@@ -665,6 +671,7 @@ if (is_win) {
+@@ -663,6 +669,7 @@ if (is_win) {
+         info_plist_target = invoker.info_plist_target
+       } else {
          info_plist_target = ":chrome_helper_plist"
++        info_plist_target = ":brave_helper_plist"
        }
  
-+      info_plist_target = ":brave_helper_plist"
        extra_substitutions = [
-         "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
-         "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
 @@ -1137,6 +1144,7 @@ if (is_win) {
      if (is_chrome_branded) {
        bundle_deps += [ ":preinstalled_apps" ]
