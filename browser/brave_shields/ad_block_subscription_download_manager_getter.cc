@@ -67,10 +67,11 @@ class AdBlockSubscriptionDownloadManagerFactory
   DISALLOW_COPY_AND_ASSIGN(AdBlockSubscriptionDownloadManagerFactory);
 };
 
+// Allows the adblock component to retrieve a pointer to an
+// AdBlockSubscriptionDownloadManager once it's available, and deletes itself
+// on completion.
 class AdBlockSubscriptionDownloadManagerGetterImpl
-    : public ProfileManagerObserver,
-      public base::SupportsWeakPtr<
-          AdBlockSubscriptionDownloadManagerGetterImpl> {
+    : public ProfileManagerObserver {
  public:
   AdBlockSubscriptionDownloadManagerGetterImpl(
       base::OnceCallback<void(AdBlockSubscriptionDownloadManager*)> callback)
@@ -100,7 +101,7 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
         FROM_HERE,
         base::BindOnce(&AdBlockSubscriptionDownloadManagerGetterImpl::
                            MaybeGetDownloadManager,
-                       AsWeakPtr()));
+                       weak_factory_.GetWeakPtr()));
   }
 
   void OnProfileManagerDestroying() override {
@@ -109,6 +110,8 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
   }
 
   base::OnceCallback<void(AdBlockSubscriptionDownloadManager*)> callback_;
+  base::WeakPtrFactory<AdBlockSubscriptionDownloadManagerGetterImpl>
+      weak_factory_{this};
 };
 
 }  // namespace
