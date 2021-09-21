@@ -21,11 +21,14 @@
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_browser_context.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -54,6 +57,41 @@ void AddUnapprovedTransactionFailureCallback(bool* callback_called,
   EXPECT_FALSE(error_message.empty());
   *callback_called = true;
 }
+
+class TestEthTxControllerObserver
+    : public brave_wallet::mojom::EthTxControllerObserver {
+ public:
+  TestEthTxControllerObserver(const std::string& expected_gas_price,
+                              const std::string& expected_gas_limit)
+      : expected_gas_price_(expected_gas_price),
+        expected_gas_limit_(expected_gas_limit) {}
+
+  void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx) override {}
+
+  void OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx) override {
+    EXPECT_EQ(tx->tx_data->base_data->gas_price,
+              base::ToLowerASCII(expected_gas_price_));
+    EXPECT_EQ(tx->tx_data->base_data->gas_limit,
+              base::ToLowerASCII(expected_gas_limit_));
+    tx_updated_ = true;
+  }
+
+  void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx) override {}
+
+  bool TxUpdated() { return tx_updated_; }
+
+  mojo::PendingRemote<brave_wallet::mojom::EthTxControllerObserver>
+  GetReceiver() {
+    return observer_receiver_.BindNewPipeAndPassRemote();
+  }
+
+ private:
+  std::string expected_gas_price_;
+  std::string expected_gas_limit_;
+  bool tx_updated_ = false;
+  mojo::Receiver<brave_wallet::mojom::EthTxControllerObserver>
+      observer_receiver_{this};
+};
 
 class EthTxControllerUnitTest : public testing::Test {
  public:
@@ -309,6 +347,94 @@ TEST_F(EthTxControllerUnitTest,
   // Default value will be used.
   EXPECT_EQ(tx_meta->tx->gas_price(), kDefaultSendEthGasPrice);
   EXPECT_EQ(tx_meta->tx->gas_limit(), kDefaultSendEthGasLimit);
+}
+
+TEST_F(EthTxControllerUnitTest, SetGasPriceAndLimitForUnapprovedTransaction) {
+  auto tx_data =
+      mojom::TxData::New("0x06", "" /* gas_price*/, "" /* gas_limit */,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", std::vector<uint8_t>());
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapprovedTransaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  // Default value will be used.
+  EXPECT_EQ(tx_meta->tx->gas_price(), kDefaultSendEthGasPrice);
+  EXPECT_EQ(tx_meta->tx->gas_limit(), kDefaultSendEthGasLimit);
+
+  // Fail if transaction is not found.
+  callback_called = false;
+  eth_tx_controller_->SetGasPriceAndLimitForUnapprovedTransaction(
+      "not_exist", Uint256ValueToHex(kDefaultSendEthGasPrice),
+      Uint256ValueToHex(kDefaultSendEthGasLimit),
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Fail if passing an empty gas limit.
+  callback_called = false;
+  eth_tx_controller_->SetGasPriceAndLimitForUnapprovedTransaction(
+      tx_meta_id, "", Uint256ValueToHex(kDefaultSendEthGasLimit),
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Fail if passing an empty gas price.
+  callback_called = false;
+  eth_tx_controller_->SetGasPriceAndLimitForUnapprovedTransaction(
+      tx_meta_id, Uint256ValueToHex(kDefaultSendEthGasPrice), "",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  const std::string update_gas_price_hex_string = "0x20000000000";
+  const std::string update_gas_limit_hex_string = "0xFDE8";
+
+  uint256_t update_gas_price;
+  EXPECT_TRUE(
+      HexValueToUint256(update_gas_price_hex_string, &update_gas_price));
+  uint256_t update_gas_limit;
+  EXPECT_TRUE(
+      HexValueToUint256(update_gas_limit_hex_string, &update_gas_limit));
+
+  TestEthTxControllerObserver observer(update_gas_price_hex_string,
+                                       update_gas_limit_hex_string);
+  eth_tx_controller_->AddObserver(observer.GetReceiver());
+
+  callback_called = false;
+  eth_tx_controller_->SetGasPriceAndLimitForUnapprovedTransaction(
+      tx_meta_id, update_gas_price_hex_string, update_gas_limit_hex_string,
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_TRUE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(observer.TxUpdated());
+
+  // Get the updated TX.
+  tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->tx->gas_price(), update_gas_price);
+  EXPECT_EQ(tx_meta->tx->gas_limit(), update_gas_limit);
 }
 
 TEST_F(EthTxControllerUnitTest, ValidateTxData) {

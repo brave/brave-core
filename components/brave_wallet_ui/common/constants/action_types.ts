@@ -34,6 +34,10 @@ export type NewUnapprovedTxAdded = {
   txInfo: TransactionInfo
 }
 
+export type UnapprovedTxUpdated = {
+  txInfo: TransactionInfo
+}
+
 export type TransactionStatusChanged = {
   txInfo: TransactionInfo
 }

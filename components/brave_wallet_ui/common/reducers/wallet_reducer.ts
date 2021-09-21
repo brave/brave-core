@@ -25,6 +25,7 @@ import {
 } from '../../constants/types'
 import {
   NewUnapprovedTxAdded,
+  UnapprovedTxUpdated,
   TransactionStatusChanged,
   InitializedPayloadType
 } from '../constants/action_types'
@@ -272,6 +273,22 @@ reducer.on(WalletActions.newUnapprovedTxAdded, (state: any, payload: NewUnapprov
   }
 
   if (state.pendingTransactions.length === 0) {
+    newState.selectedPendingTransaction = payload.txInfo
+  }
+
+  return newState
+})
+
+reducer.on(WalletActions.unapprovedTxUpdated, (state: any, payload: UnapprovedTxUpdated) => {
+  const newState = { ...state }
+
+  const index = state.pendingTransactions.findIndex(
+    (tx: TransactionInfo) => tx.id === payload.txInfo.id)
+  if (index !== -1) {
+    newState.pendingTransactions[index] = payload.txInfo
+  }
+
+  if (state.selectedPendingTransaction.id === payload.txInfo.id) {
     newState.selectedPendingTransaction = payload.txInfo
   }
 
