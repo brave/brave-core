@@ -12,8 +12,7 @@
 #include "brave/ios/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_controller_factory.h"
-#include "brave/ios/components/keyed_service/keyed_service_factory_wrapper+private.h"
-#include "components/keyed_service/ios/browser_state_dependency_manager.h"
+#include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)

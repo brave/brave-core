@@ -41,7 +41,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/api/ledger/rewards_notification.h",
   "//brave/ios/browser/api/ledger/promotion_solution.h",
   "$root_gen_dir/brave/ios/browser/api/ledger/ledger.mojom.objc.h",
-  "//brave/ios/components/keyed_service/keyed_service_factory_wrapper.h",
+  "//brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h",
 ]
 
 action("brave_core_umbrella_header") {
