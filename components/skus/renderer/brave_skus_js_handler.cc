@@ -57,6 +57,8 @@ void BraveSkusJSHandler::ResetRemote(content::RenderFrame* render_frame) {
 void BraveSkusJSHandler::BindFunctionsToObject(v8::Isolate* isolate,
                                                v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
+
+  // window.brave
   v8::Local<v8::Object> brave_obj;
   v8::Local<v8::Value> brave_value;
   if (!global->Get(context, gin::StringToV8(isolate, "brave"))
@@ -68,8 +70,23 @@ void BraveSkusJSHandler::BindFunctionsToObject(v8::Isolate* isolate,
   } else {
     brave_obj = brave_value->ToObject(context).ToLocalChecked();
   }
+
+  // window.brave.skus
+  v8::Local<v8::Object> skus_obj;
+  v8::Local<v8::Value> skus_value;
+  if (!brave_obj->Get(context, gin::StringToV8(isolate, "skus"))
+           .ToLocal(&skus_value) ||
+      !skus_value->IsObject()) {
+    skus_obj = v8::Object::New(isolate);
+    brave_obj->Set(context, gin::StringToSymbol(isolate, "skus"), skus_obj)
+        .Check();
+  } else {
+    skus_obj = skus_value->ToObject(context).ToLocalChecked();
+  }
+
+  // window.brave.skus.refresh_order
   BindFunctionToObject(
-      isolate, brave_obj, "refresh_order",
+      isolate, skus_obj, "refresh_order",
       base::BindRepeating(&BraveSkusJSHandler::RefreshOrder,
                           base::Unretained(this), isolate));
 }
@@ -90,7 +107,7 @@ void BraveSkusJSHandler::BindFunctionToObject(
 }
 
 v8::Local<v8::Promise> BraveSkusJSHandler::RefreshOrder(v8::Isolate* isolate,
-                                                        uint32_t order_id) {
+                                                        std::string order_id) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
 

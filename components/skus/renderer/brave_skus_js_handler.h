@@ -42,7 +42,8 @@ class BraveSkusJSHandler {
   bool EnsureConnected();
 
   // A function to be called from JS
-  v8::Local<v8::Promise> RefreshOrder(v8::Isolate* isolate, uint32_t order_id);
+  v8::Local<v8::Promise> RefreshOrder(v8::Isolate* isolate,
+                                      std::string order_id);
   void OnRefreshOrder(v8::Global<v8::Promise::Resolver> promise_resolver,
                       v8::Isolate* isolate,
                       v8::Global<v8::Context> context_old,

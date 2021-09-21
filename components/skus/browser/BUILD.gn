@@ -7,14 +7,18 @@ static_library("browser") {
   sources = [
     "skus_sdk_impl.h",
     "skus_sdk_impl.cc",
-    #"br-rs/brave-rewards-cxx/src/cxx.h",
-    #"br-rs/brave-rewards-cxx/src/shim.hpp",
-    #"br-rs/brave-rewards-cxx/src/wrapper.cpp",
-    #"br-rs/brave-rewards-cxx/src/wrapper.hpp",
+    "br-rs/brave-rewards-cxx/src/cxx.h",
+    "br-rs/brave-rewards-cxx/src/shim.hpp",
+    "br-rs/brave-rewards-cxx/src/wrapper.cpp",
+    "br-rs/brave-rewards-cxx/src/wrapper.hpp",
   ]
 
   deps = [
     "//brave/components/skus/common:mojom",
     "//components/prefs",
   ]
+
+  # TODO: this config should only be applying to the
+  # auto-generated rust files (wrapper.cpp, etc)
+  configs -= [ "//build/config/clang:find_bad_constructs" ]
 }

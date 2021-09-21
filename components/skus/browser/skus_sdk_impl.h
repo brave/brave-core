@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_SKUS_SKUS_
 #define BRAVE_COMPONENTS_SKUS_SKUS_
 
+#include <string>
+
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 
 class PrefService;
@@ -19,8 +21,13 @@ class SkusSdkImpl final : public skus::mojom::SkusSdk {
 
   SkusSdkImpl(PrefService* prefs);
 
-  void RefreshOrder(uint32_t order_id, RefreshOrderCallback callback) override;
-  void FetchOrderCredentials(uint32_t order_id) override;
+  void RefreshOrder(const std::string& order_id,
+                    RefreshOrderCallback callback) override;
+  void FetchOrderCredentials(const std::string& order_id) override;
+
+  // TODO: re-implement when setting preferences
+  // private:
+  //  PrefService* prefs_;
 };
 
 }  // namespace brave_rewards
