@@ -95,6 +95,7 @@
 <translation id="129863573139666797"><ph name="BEGIN_LINK"/>Մաքրեք ձեր քուքիները<ph name="END_LINK"/></translation>
 <translation id="1301324364792935241">Ստուգեք ձեր ապահով DNS-ի կարգավորումները</translation>
 <translation id="1307966114820526988">Հնացած գործառույթներ</translation>
+<translation id="1312803275555673949">Ինչո՞վ է դա հաստատվում</translation>
 <translation id="131405271941274527"><ph name="URL"/> կայքը թույլտվություն է խնդրում՝ NFC-ի միջոցով տվյալներ փոխանակելու համար։</translation>
 <translation id="1314509827145471431">Ամրակար աջ կողմում</translation>
 <translation id="1319245136674974084">Այլևս չհարցնել այս հավելվածի համար</translation>
@@ -138,6 +139,7 @@
 <translation id="1422930527989633628">Կարող է հայցել մոտակա Bluetooth սարքերը հայտնաբերելու թույլտվություն</translation>
 <translation id="1426410128494586442">Այո</translation>
 <translation id="1428146450423315676">Շեղջիչ 7</translation>
+<translation id="1428729058023778569">Դուք տեսնում եք այս նախազգուշացումը, քանի որ կայքը չի աջակցում HTTPS-ը։ <ph name="BEGIN_LEARN_MORE_LINK"/>Իմանալ ավելին<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1430915738399379752">Տպում</translation>
 <translation id="1436185428532214179">Կարող է հայցել ձեր սարքի ֆայլերն ու պանակները փոփոխելու թույլտվություն</translation>
 <translation id="1442386063175183758">Աջ քառորդի ծալում</translation>
@@ -469,6 +471,7 @@
 <translation id="2595719060046994702">Այս սարքը և հաշիվը չեն կառավարվում որևէ ընկերության կամ կազմակերպության կողմից:</translation>
 <translation id="2597378329261239068">Այս փաստաթուղթը գաղտնաբառով պաշտպանված է: Մուտքագրեք գաղտնաբառը:</translation>
 <translation id="2609632851001447353">Տարբերակներ</translation>
+<translation id="2610561535971892504">Սեղմել՝ պատճենելու համար</translation>
 <translation id="2618023639789766142">C10 (ծրար)</translation>
 <translation id="2625385379895617796">Ձեր ժամացույցը առաջ է ընկել</translation>
 <translation id="262745152991669301">Կարող է հայցել USB սարքերին միանալու թույլտվություն</translation>
@@ -498,6 +501,7 @@
 <translation id="2701514975700770343">Երեսի կողմով ներքև</translation>
 <translation id="2702801445560668637">Ընթերցանության ցանկ</translation>
 <translation id="2704283930420550640">Արժեքը չի համապատասխանում ձևաչափին:</translation>
+<translation id="2704606927547763573">Պատճենվեց</translation>
 <translation id="2705137772291741111">Այս կայքի պահված (քեշավորված) պատճենն անընթեռնելի էր:</translation>
 <translation id="2709516037105925701">Ինքնալցում</translation>
 <translation id="2713444072780614174">Սպիտակ</translation>
@@ -629,8 +633,10 @@
 <translation id="3229041911291329567">Ձեր սարքի և դիտարկիչի տարբերակի մասին տեղեկությունները</translation>
 <translation id="323107829343500871">Մուտքագրեք <ph name="CREDIT_CARD"/> քարտի CVC կոդը</translation>
 <translation id="3234666976984236645">Միշտ հատկորոշել կարևոր բովանդակությունը այս կայքում</translation>
+<translation id="3240791268468473923">Բացվել է պատուհան, որը ցուցադրում է անվտանգ վճարման տվյալների անհամապատասխանությունը տվյալների աղյուսակի հետ</translation>
 <translation id="3249845759089040423">Նորաձև</translation>
 <translation id="3252266817569339921">Ֆրանսիական</translation>
+<translation id="3257954757204451555">Ո՞վ է տրամադրել այս տեղեկությունները</translation>
 <translation id="6900454207575412115"><ph name="CREATE_GOOGLE_CALENDAR_EVENT_FOCUSED_FRIENDLY_MATCH_TEXT"/>։ Brave Օրացույցում արագ միջոցառում ստեղծելու համար սեղմեք Tab, ապա՝ Enter։</translation>
 <translation id="3266793032086590337">Արժեքը (հակասական)</translation>
 <translation id="3268451620468152448">Բաց ներդիրները</translation>
@@ -641,6 +647,7 @@
 <translation id="3282497668470633863">Ավելացրեք քարտապանի անունը</translation>
 <translation id="3286372614333682499">ուղղաձիգ</translation>
 <translation id="3287510313208355388">Ներբեռնել, երբ կապը վերականգնվի</translation>
+<translation id="3288238092761586174"><ph name="URL"/> կայքը կարող է լրացուցիչ քայլեր կատարել՝ ձեր վճարումը հաստատելու համար</translation>
 <translation id="3293642807462928945">Իմանալ ավելին <ph name="POLICY_NAME"/> կանոնի մասին</translation>
 <translation id="5894665462526421022">Դիտեք և կառավարեք ձեր գաղտնաբառերը Brave-ի կարգավորումներում</translation>
 <translation id="3303855915957856445">Որոնման արդյունքներ չկան</translation>
@@ -691,6 +698,7 @@
 <translation id="3432601291244612633">Փակել էջը</translation>
 <translation id="3435738964857648380">Անվտանգություն</translation>
 <translation id="4527130811319726464">Օգտագործեք Brave հաշվում պահված գաղտնաբառերը</translation>
+<translation id="3440783957068352691">քառակուսի</translation>
 <translation id="3443726618221119081">Juuro-Ku-Kai</translation>
 <translation id="3447661539832366887">Սարքի սեփականատերն անջատել է Dinosaur խաղը:</translation>
 <translation id="3447884698081792621">Ցուցադրել հավաստագիրը (թողարկող՝ <ph name="ISSUER"/>)</translation>
@@ -991,11 +999,14 @@
 <translation id="4434045419905280838">Ելնող պատուհաններ և վերահղում</translation>
 <translation id="4435702339979719576">Postcard)</translation>
 <translation id="443673843213245140">Պրոքսի-սերվերի օգտագործումն անջատված է, բայց հատկորոշված է ուղղակի կազմաձևում:</translation>
+<translation id="4450893287417543264">Այլևս ցույց չտալ</translation>
 <translation id="4451135742916150903">Կարող է հայցել HID սարքերին միանալու թույլտվություն</translation>
 <translation id="4460315069258617173">Թույլատրված է, քանի դեռ չեք փակել այս կայքի ներդիրները</translation>
 <translation id="4464826014807964867">Կայքեր՝ ձեր կազմակերպությունից ստացած տեղեկություններով</translation>
+<translation id="4465818729556336129">Սա գաղտնի փաստաթուղթ է, այդ իսկ պատճառով ձեր ադմինիստրատորը խորհուրդ չի տալիս այն տպել։</translation>
 <translation id="4476953670630786061">Այս ձևն ապահով չէ։ Ինքնալրացումն անջատվել է։</translation>
 <translation id="4477350412780666475">Հաջորդ կատարումը</translation>
+<translation id="4481394504112738036">Գաղտնի ֆայլ</translation>
 <translation id="4482953324121162758">Այս կայքը չի թարգմանվի:</translation>
 <translation id="4490717597759821841">A7</translation>
 <translation id="3966104135245031874">Գաղտնագրել համաժամացված գաղտնաբառերը Brave հաշվի միջոցով</translation>
@@ -1045,7 +1056,6 @@
 <translation id="4677585247300749148"><ph name="URL"/> կայքն ուզում է օգտագործել հատուկ գործողությունները</translation>
 <translation id="8197094463444457125">Brave Սլայդներ</translation>
 <translation id="468314109939257734">Դիտել ձեր վիրտուալ քարտի համարը</translation>
-<translation id="4690462567478992370">Դադարեցնել անվավեր վկայագրի օգտագործումը</translation>
 <translation id="4691835149146451662">Architecture-A (ծրար)</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
 <translation id="4702504834785592287">Կողմ</translation>
@@ -1086,7 +1096,6 @@
 <translation id="4800132727771399293">Ստուգեք սպառման ժամկետն ու CVC կոդը և նորից փորձեք</translation>
 <translation id="480334179571489655">Սկզբնական կանոնի սխալ</translation>
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
-<translation id="8896585555528145662">Այս պահին չեք կարող այցելել <ph name="SITE"/>, քանի որ կայքը կոդավորված մուտքային տվյալներ է ուղարկել, որոնք Brave-ը չի կարող մշակել: Ցանցային սխալներն ու հարձակումները սովորաբար ժամանակավոր բնույթ են կրում, ուստի, հավանաբար, այս էջը մատչելի կլինի ավելի ուշ:</translation>
 <translation id="4809079943450490359">Հրահանգներ ձեր սարքի ադմինիստրատորի կողմից՝</translation>
 <translation id="4813512666221746211">Ցանցի սխալ</translation>
 <translation id="4816492930507672669">Հարմարեցնել էջին</translation>
@@ -1095,6 +1104,7 @@
 <translation id="4825507807291741242">Հզոր</translation>
 <translation id="4838327282952368871">Երազային</translation>
 <translation id="484462545196658690">Ավտոմատ</translation>
+<translation id="4849865131988503897">Ճշգրտության ստուգում</translation>
 <translation id="4850886885716139402">Տեսք</translation>
 <translation id="485316830061041779">Գերմանական</translation>
 <translation id="4854362297993841467">Առաքման տվյալ եղանակը հասանելի չէ: Ընտրեք այլ եղանակ:</translation>
@@ -1197,6 +1207,7 @@
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">Համակարգիչ</translation>
 <translation id="5179510805599951267"><ph name="ORIGINAL_LANGUAGE"/> չէ՞: Հաղորդեք սխալի մասին</translation>
+<translation id="51918995459521422"><ph name="ORIGIN"/> հավելվածն ուզում է ներբեռնել մի քանի ֆայլ</translation>
 <translation id="519422657042045905">Ծանոթագրությունը հասանելի չէ</translation>
 <translation id="5201306358585911203">Հաղորդագրություն այս կայքում ներկառուցված էջից</translation>
 <translation id="5205222826937269299">Անունը պարտադիր է</translation>
@@ -1365,7 +1376,6 @@
 <translation id="3985758120980526872">Brave-ը հայտնաբերել է, որ գաղտնաբառը, որ հենց նոր օգտագործեցիք, կոտրվել է տվյալների արտահոսքի պատճառով։ Խորհուրդ ենք տալիս անհապաղ փոխել այս գաղտնաբառը։</translation>
 <translation id="5803412860119678065">Ուզո՞ւմ եք լրացնել ձեր <ph name="CARD_DETAIL"/> քարտի տվյալները:</translation>
 <translation id="5804241973901381774">Թույլտվություններ</translation>
-<translation id="5804427196348435412">Օգտագործել NFC սարքերը</translation>
 <translation id="5810442152076338065">Կապակցումը <ph name="DOMAIN"/>-ի հետ օգտագործում է հնացած գաղտնագրում:</translation>
 <translation id="5813119285467412249">&amp;Վերարկել հավելումը</translation>
 <translation id="5817918615728894473">Զուգակցել</translation>
@@ -1441,6 +1451,7 @@
 <translation id="6051221802930200923">Այս պահին չեք կարող այցելել <ph name="SITE"/> կայք, քանի որ այն օգտագործում է հավաստագրի ամրացում։ Ցանցային սխալներն ու հարձակումները սովորաբար ժամանակավոր բնույթ են կրում, և հավանաբար այս էջը հասանելի կլինի ավելի ուշ:</translation>
 <translation id="6051898664905071243">Էջերի քանակը՝</translation>
 <translation id="6052284303005792909">•</translation>
+<translation id="6055888660316801977">Անվտանգ վճարման տվյալները չեն համապատասխանում տվյալների աղյուսակին</translation>
 <translation id="6058977677006700226">Օգտագործե՞լ քարտերը ձեր բոլոր սարքերում</translation>
 <translation id="6059925163896151826">USB սարքեր</translation>
 <translation id="6060009363608157444">DnsOverHttps ռեժիմն անվավեր է:</translation>
@@ -1518,6 +1529,7 @@
 <translation id="6389470377220713856">Քարտատիրոջ անունը</translation>
 <translation id="6390200185239044127">Զիգզագաձև ծալում կիսով չափ</translation>
 <translation id="6390662030813198813">Engineering-E</translation>
+<translation id="6391700400718590966">Փակվել է պատուհան, որը ցուցադրում է անվտանգ վճարման տվյալների անհամապատասխանությունը տվյալների աղյուսակի հետ</translation>
 <translation id="6393956493820063117">Դուք չեք կարող <ph name="ORIGIN_NAME"/> կայքից բովանդակություն տեղադրել այստեղ, քանի որ ադմինիստրատորն արգելափակել է այդ հնարավորությունը։</translation>
 <translation id="6398765197997659313">Ելնել լիաէկրան ռեժիմից</translation>
 <translation id="6401136357288658127">Այս կանոնը հնացել է: Փոխարենն օգտագործեք <ph name="NEW_POLICY"/> կանոնը։</translation>
@@ -1598,7 +1610,6 @@
 <translation id="6689249931105087298">Հարաբերական՝ սև կետի սեղմումով</translation>
 <translation id="5406652219015697259">Brave-ն առաջարկում է պահել քարտերը ձեր Brave հաշվում, քանի որ դուք մտել եք հաշիվ: Այս գործառույթը կարող եք փոխել կարգավորումներում։ Քարտապանի անունը վերցվել է ձեր հաշվից:</translation>
 <translation id="6698381487523150993">Ստեղծվել է`</translation>
-<translation id="6699188552522342100">Այս կայքի տեղեկությունները ճի՞շտ են:</translation>
 <translation id="6702919718839027939">Ներկայացում</translation>
 <translation id="6710213216561001401">Նախորդը</translation>
 <translation id="6710594484020273272">&lt;Մուտքագրեք որոնման հարցումը&gt;</translation>
@@ -1606,6 +1617,7 @@
 <translation id="6711464428925977395">Միջնորդ սերվերի հետ ինչ-որ բան այն չէ, կամ հասցեն սխալ է:</translation>
 <translation id="6716672519412350405"><ph name="URL"/> կայքն ուզում է ստեղծել ձեր շրջակայքի եռաչափ քարտեզը և հետագծել տեսախցիկի դիրքը</translation>
 <translation id="6718612893943028815">Օգտագործե՞լ տեսախցիկը</translation>
+<translation id="6721678857435001674">Տեսնել անվտանգության բանալու արտադրողի և մոդելի անունը</translation>
 <translation id="6738516213925468394">Ձեր տվյալները գաղտնագրվել են <ph name="BEGIN_LINK"/>համաժամացման ձեր անցաբառի<ph name="END_LINK"/> միջոցով (<ph name="TIME"/>): Համաժամացումը սկսելու համար մուտքագրեք անցաբառը:</translation>
 <translation id="674375294223700098">Սերվերի վկայագրի անհայտ սխալ:</translation>
 <translation id="6744009308914054259">Քանի դեռ կապը չի վերականգնվել, դուք կարող եք անցնել «Ներբեռնումներ» բաժին և կարդալ առցանց հոդվածները:</translation>
@@ -1642,13 +1654,13 @@
 <translation id="6898699227549475383">Կազմակերպություն (O)</translation>
 <translation id="6907293445143367439">Թույլ տալ <ph name="SITE_NAME"/> կայքին՝</translation>
 <translation id="6910240653697687763"><ph name="URL"/> կայքն ուզում է ամբողջովին վերահսկել ձեր MIDI սարքերը</translation>
+<translation id="691024665142758461">Ներբեռնել մի քանի ֆայլ</translation>
 <translation id="6915804003454593391">Օգտատեր`</translation>
 <translation id="6722453239914327220">Այս անունը վերցված է ձեր Brave հաշվից</translation>
 <translation id="6944692733090228304">Դուք մուտքագրել եք գաղտնաբառը մի կայքում, որը չի կառավարվում <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/>-ի կողմից: Ձեր հաշիվը պաշտպանելու համար խորհուրդ ենք տալիս չօգտագործել այդ գաղտնաբառն այլ հավելվածներում և կայքերում:</translation>
 <translation id="6945221475159498467">Ընտրել</translation>
 <translation id="6948051842255602737">Խաղն ավարտված է։ Ձեր արդյունքն է <ph name="SCORE"/>։</translation>
 <translation id="6948701128805548767">Ընդունման եղանակներն ու պայմանները տեսնելու համար ընտրեք հասցե</translation>
-<translation id="6949479070119158594">Դուք տեսնում եք այս նախազգուշացումը, քանի որ կայքը չի աջակցում HTTPS-ը։</translation>
 <translation id="6949872517221025916">Գաղտնաբառի վերակայում</translation>
 <translation id="6950684638814147129">Չհաջողվեց վերլուծել JSON արժեքը՝ <ph name="ERROR"/></translation>
 <translation id="695140971690006676">Զրոյացնել բոլորը</translation>
@@ -1726,6 +1738,7 @@
 <translation id="7210863904660874423"><ph name="HOST_NAME"/>-ը չի հետևում անվտանգության չափորոշիչներին:</translation>
 <translation id="7210993021468939304">Տեսնում է Լինուքսի գործողությունները կոնտեյներում և կարող է տեղադրել ու գործարկել Լինուքսի հավելվածներ կոնտեյներից</translation>
 <translation id="721197778055552897"><ph name="BEGIN_LINK"/>Իմանալ ավելին<ph name="END_LINK"/> այս խնդրի մասին:</translation>
+<translation id="7215025035562547931">Գնահատեք տվյալների ճշգրտությունը</translation>
 <translation id="7217745192097460130">Հաստատե՞լ և ավարտել ձեր գնումը Touch ID-ի միջոցով</translation>
 <translation id="7219179957768738017">Կապակցումն օգտագործում է <ph name="SSL_VERSION"/>:</translation>
 <translation id="7220786058474068424">Մշակվում է</translation>
@@ -1951,10 +1964,12 @@
 <translation id="7961015016161918242">Երբեք</translation>
 <translation id="7966803981046576691">Առաջադրանքի հաշվի տեսակը</translation>
 <translation id="79682505114836835">«<ph name="VALUE"/>» արժեքը անվավեր HEX գույն է։</translation>
+<translation id="7970392640816874403">Ի՞նչ են ասում մյուս աղբյուրները</translation>
 <translation id="7976214039405368314">Չափազանց շատ հարցումներ</translation>
 <translation id="7977538094055660992">Արտածման սարք</translation>
 <translation id="7977894662897852582">Edp</translation>
 <translation id="798134797138789862">Կարող է հայցել վիրտուալ իրականության ձեր սարքերն ու տվյալները օգտագործելու թույլտվություն</translation>
+<translation id="8896585555528145662">Այս պահին չեք կարող այցելել <ph name="SITE"/>, քանի որ կայքը կոդավորված հավատարմագրեր է ուղարկել, որոնք Brave-ը չի կարող մշակել: Ցանցային սխալներն ու հարձակումները սովորաբար ժամանակավոր բնույթ են կրում, ուստի, հավանաբար, այս էջը մատչելի կլինի ավելի ուշ:</translation>
 <translation id="79859296434321399">Լրացված իրականության ռեժիմում բովանդակությունը դիտելու համար տեղադրեք ARCore հավելվածը</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">Ամրակար</translation>
@@ -2017,7 +2032,6 @@
 <translation id="8202370299023114387">Հակասություն</translation>
 <translation id="8206978196348664717">Prc4 (ծրար)</translation>
 <translation id="8211406090763984747">Կապն անվտանգ է</translation>
-<translation id="8213464188712611711">Հիշողություններ</translation>
 <translation id="8218327578424803826">Նշանակված տեղադրություն՝</translation>
 <translation id="8220146938470311105">C7/C6 (ծրար)</translation>
 <translation id="3272614036080146686">Դուք հենց նոր մուտքագրեցիք ձեր գաղտնաբառը կասկածելի կայքում։ Խորհուրդ ենք տալիս փոխել ձեր գաղտնաբառը, որն օգտագործում եք <ph name="WEBSITE_1"/> և այլ կայքերում։</translation>
@@ -2263,6 +2277,7 @@
 <translation id="9154194610265714752">Թարմացված է</translation>
 <translation id="9157595877708044936">Տեղակայում…</translation>
 <translation id="9158625974267017556">C6 (ծրար)</translation>
+<translation id="9164029392738894042">Ճշգրտության ստուգում</translation>
 <translation id="9168814207360376865">Թույլ տալ կայքերին ստուգել՝ արդյոք պահված վճարման եղանակներ ունեք</translation>
 <translation id="9169664750068251925">Միշտ արգելափակել այս կայքում</translation>
 <translation id="9169931577761441333">Ավելացնել «<ph name="APP_NAME"/>» հավելվածը հիմնական էկրանին</translation>

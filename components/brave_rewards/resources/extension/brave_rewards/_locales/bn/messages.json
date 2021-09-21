@@ -1,685 +1,382 @@
 {
-  "braveRewards": {
-    "message": "Brave রিওয়ার্ডস",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "সংক্ষিপ্তসার",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "এখনি রোজগার করা শুরু করুন!",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "দান",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "রিওয়ার্ডসে যোগদান করুন",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "অযাচাইকৃত স্রষ্টা",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "বিজ্ঞাপন দেখার জন্য টোকেন উপার্জন করুন এবং আপনার পছন্দের বিষয়বস্তু প্রস্তুতকারদের তা মূল্য হিসেবে প্রদান করুন|",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "যাচাই করা স্রষ্টা",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "আপনি এখন গোপনীয়তা কেন্দ্রিক Brave বিজ্ঞাপন দেখে টোকেন উপার্জন করতে পারেন| আপনার অবদান একই থাকে|",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "রিফ্রেশের স্থিতি",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "গোপনীয়তাকে-সম্মান জানায় এমন বিজ্ঞপানগুলিকে দেখার জন্য আপনি এখন পয়েন্টগুলি উপার্জন করতে পারেন৷",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "কি উন্নতি হয়েছে তা পরীক্ষা করুন",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "আরও জানুন",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "আমরা Brave পুরস্কারগুলিকে একটি বড় আপগ্রেড প্রদান করেছি|",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "পরবর্তী ইন্টারনেটের অভিজ্ঞতা করতে প্রস্তুত হন|",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "আপনার ওয়ালেট",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "মঞ্জুরিসমূহ",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "বিস্তারিত বিবরণগুলি",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "on": {
-    "message": "চালু",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "Brave যাচাইকৃত স্রষ্টা",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "মনোযোগ",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "মাসিক অবদান",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "স্বয়ংক্রিয়ভাবে অবদান রাখায় অন্তর্ভুক্ত করুন",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "পরামর্শ পাঠান...",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "পরামর্শ সক্ষম করুন",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "এর জন্য",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "রিওয়ার্ডসের সংক্ষিপ্তসার",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "এপ্রিল",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "আগস্ট",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "ডিসেম্বর",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "ফেব্রুয়ারী",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "জানুয়ারী",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "জুলাই",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "জুন",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "মার্চ",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "মে",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "নভেম্বর",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "অক্টোবর",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "সেপ্টেম্বর",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "$currency$ অনুদান",
-    "description": "Title for grant notification",
+  "platformPublisherTitle": {
+    "message": "$platform$ এ $name$",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "মঞ্জুরি দেওয়া টোকেনের দাবি করা হয়েছে",
-    "description": "Title for grant section in wallet summary"
+  "attention": {
+    "message": "মনোযোগ",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "Brave বিজ্ঞাপন থেকে করা উপার্জন",
-    "description": "Title for ads section in wallet summary"
+  "sendTip": {
+    "message": "টিপ পাঠান",
+    "description": ""
   },
-  "rewardsContribute": {
-    "message": "স্বতঃ-প্রদান",
-    "description": "Title for auto contribute section in wallet summary"
+  "includeInAutoContribute": {
+    "message": "স্বয়ংক্রিয়ভাবে অবদান রাখায় অন্তর্ভুক্ত করুন",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "একবারের দান/পরামর্শ",
-    "description": "Title for one-time tips section in wallet summary"
-  },
-  "expiresOn": {
-    "message": "মেয়াদোত্তীর্ণ হচ্ছে এততে",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
-  },
-  "recurringDonations": {
-    "message": "মাসিক অবদানসমূহ",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "বন্ধ করুন",
-    "description": "Label used in toggle indicating that toggle is off"
+  "monthlyContribution": {
+    "message": "মাসিক অবদান",
+    "description": ""
   },
   "ok": {
     "message": "ঠিক আছে",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "এখন আপনি বিজ্ঞাপন দেখে উপার্জন করতে পারেন।",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "Brave বিজ্ঞাপন",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "স্বতঃ-প্রদান",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "আপনি $amount$ $currency$ অনুদান দিয়েছেন",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "একটি অনুদান আপনার জন্য অপেক্ষা করছে।",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "এখনই ব্যাকআপ নিন",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "ওয়ালেটের ব্যাকআপ নিন",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "অনুগ্রহ করে আপনার Brave ওয়ালেটটিতে ব্যাকআপ নিন।",
-    "description": "Description for backup wallet notification"
-  },
-  "learnMore": {
-    "message": "আরও জানুন",
-    "description": "Notification button text to learn more about a specific use-case"
-  },
-  "mismatchedProviderAccountsTitle": {
-    "message": "ত্রুটি: ভিন্ন অ্যাকাউন্ট",
-    "description": "Title for mismatched provider accounts notification"
-  },
-  "mismatchedProviderAccountsNotification": {
-    "message": "হুম, মনে হচ্ছে আপনার Brave Rewards ওয়ালেট ইতিমধ্যেই যাচাই করা হয়েছে অন্য একটি $name$ অ্যাকাউন্টের সাথে। আপনার আগের অ্যাকাউন্ট ব্যবহার করে আবার যাচাই করার চেষ্টা করুন।",
-    "description": "Description for mismatched provider accounts notification",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "upholdBATNotAllowedForUserTitle": {
-    "message": "ত্রুটি: BAT উপলভ্য নয়",
-    "description": "Title for BAT not allowed for user notification"
-  },
-  "upholdBATNotAllowedForUserNotification": {
-    "message": "আপনার অঞ্চলে আপহোল্ডে BAT এখনও সমর্থিত নয়।",
-    "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserTitle": {
-    "message": "ত্রুটি: ব্লক থাকা অ্যাকাউন্ট",
-    "description": "Title for blocked user notification"
-  },
-  "upholdBlockedUserNotification": {
-    "message": "আপহোল্ডে আপনার অ্যাকাউন্ট বর্তমানে ব্লক রয়েছে।",
-    "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserTitle": {
-    "message": "ত্রুটি: বাকি থাকা অ্যাকাউন্ট",
-    "description": "Title for pending user notification"
-  },
-  "upholdPendingUserNotification": {
-    "message": "আপহোল্ডে আপনার অ্যাকাউন্ট এখনও বাকি রয়েছে।",
-    "description": "Description for pending user notification"
-  },
-  "upholdRestrictedUserTitle": {
-    "message": "ত্রুটি: সীমাবদ্ধ অ্যাকাউন্ট",
-    "description": "Title for restricted user notification"
-  },
-  "upholdRestrictedUserNotification": {
-    "message": "আপহোল্ডে আপনার অ্যাকাউন্ট বর্তমানে সীমাবদ্ধ।",
-    "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "ডিভাইসের সীমায় পৌঁছেছে",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "আপনি যাচাইকৃত ডিভাইসের সংখ্যার সর্বোচ্চ সীমায় পৌঁছেছেন বিধায় আপনার ওয়ালেটটি ভেরিফাই করা যাবে না।",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "আপনার Brave পুরস্কারের অ্যাকাউন্ট একটি জমার জন্য অপেক্ষা করছে।",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "অপর্যাপ্ত তহবিল",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "ওয়ালেট তৈরি করা হচ্ছে",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "আপনার অনুদান প্রক্রিয়া করার সময় একটি সমস্যা হয়েছে।",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "পর্যাপ্ত ফান্ড না থাকার কারণে আপনার স্বতঃ-প্রদান এবং মাসিক অবদানগুলির জন্য আপনার নির্ধারিত মাসিক অর্থপ্রদান সম্পূর্ণ করা যায়নি৷ আমরা 30 দিনের মধ্যে আবার চেষ্টা করব।",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "আপনার বখশিশ পাঠানো যায়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "এখনও কোনো ক্রিয়াকলাপ নেই...",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "এতে BAT আইকনটি টেনে আনুন",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "আপনি যে মানুষ তার প্রমাণ দিন!",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "লক্ষ্য।",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "হুম... ঠিক নয়। আবার চেষ্টা করুন।",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "দাবি",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "মুক্ত টোকেন মঞ্জুরি",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "মেয়াদত্তির্ণের তারিখ মঞ্জুর করুন",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
-    "message": "ঠিক আছে",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "Brave পুরস্কারে একটি সমস্যা হচ্ছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "ওহো, কিছু ভুল হয়েছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "রিফ্রেশের স্থিতি",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "এখনও যাচাই করা হয়নি",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "এই স্রষ্টা বর্তমানে আপনার ওয়ালেট থেকে টিপগুলি পাওয়ার জন্য কনফিগার করা নেই। আপনার করা যে কোনও টিপ আপনার ওয়ালেটে পড়ে থাকবে এবং 90 দিন পরে স্বয়ংক্রিয়ভাবে পুনঃপ্রচেষ্টা করবে।",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "আরও জানুন।",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "অবদানগুলি পাওয়ার জন্য যে নির্মাতারা এখনও সাইন আপ করেননি আপনি তাদের জন্য {{reservedAmount}} {{currency}} নির্ধারণ করেছেন। তারা যাচাই না করা পর্যন্ত বা 90 দিন পেরিয়ে না যাওয়া পর্যন্ত আপনার ব্রাউজার অবদান রাখার চেষ্টা চালিয়ে যাবে।",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "আরও জানুন।",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "বন্ধ করুন",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "সেটিংস।",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "আপনি বর্তমানে ব্রাউজ করার সময় কোনও Rewards সুবিধা উপচিত করছেন না। এতে Rewards ফেরত চান",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "Brave রিওয়ার্ডস হল",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "ওয়ালেট তৈরি ব্যর্থ হয়েছে",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "আবার চেষ্টা করুন",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "ফান্ড যোগ করুন",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "পুরস্কারের সেটিংস",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "বিজ্ঞাপনগুলির থেকে পাওয়া আপনার পুরস্কারগুলি এখানে!",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "এবং",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "ব্রাউজ করার জন্য পুরস্কৃত হন!",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "গোপনীয়তাকে-সম্মান করা বিজ্ঞাপনগুলি দেখার দ্বারা আয় করুন, এবং আপনার পছন্দের কন্টেন্ট স্রষ্টাকে সমর্থন করতে তাকে প্রদান করুন।",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "Brave রিওয়ার্ডস সক্ষম করুন",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "সম্মত হয়েছেন",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "'Brave পুরস্কারগুলি সক্রিয় করুন' এ ক্লিক করে, আপনি নির্দেশ করছেন যে আপনি এটি পড়েছেন এবং গোপনীয়তা নীতির সাথে",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "পরিষেবার শর্তাবলী",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "পুনরায় স্বাগত!",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "আপনার মাসিক অবদানগুলি প্রক্রিয়াকৃত করা হয়েছে!",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "অবদান এবং পরামর্শগুলি",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": "'পুরষ্কারগুলিতে যোগ দিন' ক্লিক করে আপনি সূচিত করছেন যে আপনি এটি পড়েছেন এবং এর সাথে সম্মত",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "BAT",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "turnOnAds": {
-    "message": "বিজ্ঞাপনগুলি চালু করুন",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "বিজ্ঞাপন থেকে অর্জিত",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "এই সাইটে প্রতি মাসে দান করুন",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "দান",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "এই পোস্টটিকে উপহার দিন",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "দান",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "একটি পরামর্শ পাঠান",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "দান",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "স্রষ্টা $name$ সম্প্রতি যাচাইকৃত হয়েছেন",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "অপর্যাপ্ত ফান্ডের জন্য আপনার পরামর্শ বাকি আছে",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "অবদান মুলতুবি রয়েছে",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "আজ আপনার লাকি দিন!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "আপনার $currency$ অনুদান আসতে চলেছে৷",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "মুক্ত টোকেন মঞ্জুরি",
-    "description": "Token title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "আপনি একটি বিজ্ঞাপনের পুরস্কার উপার্জন করেছেন!",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "আপনার পুরস্কারগুলি আপনার Brave পুরস্কারের ওয়ালেটে আসছে।",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "আপনার পুরস্কারের অর্থরাশি",
-    "description": "Token title on success screen for ads"
-  },
-  "walletButtonDisconnected":  {
-    "message": "সংযোগবিচ্ছিন্ন",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "ওয়ালেট যাচাই করুন",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "ওয়ালেট যাচাই করা হয়েছে",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "আপনার $provider$ অ্যাকাউন্টে যান",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletLogInWithProvider":  {
-    "message": "আপনার $provider$ অ্যাকাউন্টে লগইন করুন",
-    "description": "CTA to log in with a wallet provider",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "Brave পুরষ্কারগুলি থেকে সংযোগ বিচ্ছিন্ন করুন",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "যাচাইকৃত",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "আপনার ওয়লেট যাচাইকরণ করা হয়েছে!",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "অভিনন্দন! আপনার $name$ ওয়ালেট সফলভাবে যাচাই করা হয়েছে এবং এটি ফান্ড যোগ ও তুলে নিতে প্রস্তুত।",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "ওহো। আপনার ওয়ালেটে পৌঁছানো যাচ্ছে না।",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "চিন্তা করবেন না। এটি বিভিন্ন সুরক্ষা সম্পর্কিত বিষয় থেকে হতে পারে। আপনার ওয়ালেট আবার সংযোগ করলে এই সমস্যাটির সমাধান হয়ে যাবে।",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "এই Brave যাচাইকৃত নির্মাতাগণ Brave ব্যবহারকারীদের থেকে অবদানগুলি পেতে এখনও তাদের অ্যকাউন্ট কনফিগার করেন নি। আপনার পাঠানো যে কোনও টিপস তারা প্রক্রিয়াটি সম্পূর্ণ না করা অবধি আপনার ওয়ালেটে থেকে যাবে।",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "সম্পূর্ণ ওয়ালেট যাচাইকরণ",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "সেট করুন...",
-    "description": "Button text for setting monthly contribution"
+    "message": "সেট করুন",
+    "description": ""
   },
-  "tokens":  {
-    "message": "টোকেনসমূহ",
-    "description": "Standard tokens text"
-  },
-  "point":  {
-    "message": "পয়েন্ট",
-    "description": "BAT Point text"
-  },
-  "token":  {
-    "message": "টোকেন",
-    "description": "BAT Token text"
-  },
-  "tokenGrants":  {
-    "message": "টোকেন মঞ্জুরি",
-    "description": "BAT Tokens Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "হ্যালো, $name$!",
-    "description": "Greetings for external wallet popup",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
-      }
-    }
-  },
-  "cancel":  {
-    "message": "বাতিল করুন",
-    "description": "Text for cancel button"
-  },
-  "changeAmount":  {
+  "changeAmount": {
     "message": "অর্থরাশি পরিবর্তন করুন",
-    "description": "Button text for changing monthly contribution amount"
+    "description": ""
   },
-  "login":  {
-    "message": "লগ-ইন করুন",
-    "description": "Text for login button"
+  "cancel": {
+    "message": "বাতিল করুন",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "ওয়ালেট যাচাই করলে আপনি আপনার ফান্ড আরো সুদক্ষভাবে পরিচালনা করতে পারবেন।",
-    "description": "Text for login button"
+  "grantCaptchaTitle": {
+    "message": "আপনি যে মানুষ তা নিশ্চিত করুন",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "একটি ওয়ালেট তৈরি করতে এবং তা বজায় রাখতে আপনার $amount$ BAT এর একটি ন্যুনতম ব্যালেন্স লাগবে। আপনার ইতিমধ্যে একটি যাচাইকৃত আপহোল্ড অ্যাকাউন্ট থাকলে, লগইন করা অবিরত রাখুন।",
-    "description": "Text for login button",
+  "grantCaptchaFailedTitle": {
+    "message": "হুম... ঠিক নয়। আবার চেষ্টা করুন।",
+    "description": ""
+  },
+  "grantCaptchaHint": {
+    "message": "BAT আইকনটি $hint$ লক্ষ্যে টেনে আনুন।",
+    "description": "",
     "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "walletConnected":  {
-    "message": "সংযুক্ত",
-    "description": "Status button that tells user that he is connected"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "আজ আপনার লাকি দিন!",
+    "description": ""
   },
-  "walletDisconnected":  {
-    "message": "সংযোগবিচ্ছিন্ন",
-    "description": "Status button that tells user that he is disconnected"
+  "grantCaptchaPassedTextUGP": {
+    "message": "আপনার টোকেন অনুমোদন হচ্ছে।",
+    "description": ""
   },
-  "walletPending":  {
-    "message": "বিচারাধীন রয়েছে",
-    "description": "Status button that tells user that he is currently pending"
+  "grantCaptchaAmountUGP": {
+    "message": "মুক্ত টোকেন মঞ্জুরি",
+    "description": ""
   },
-  "walletVerificationNote3":  {
-    "message": "দ্রষ্টব্য: আপনি অনুমোদন দেওয়ার পর আপনার লেনদেনটি $provider$ এর কাছে দৃশ্যমান হবে; যেমন, তারা আপনার বখশিশের পরিমাণ কত এবং এর প্রাপক কে তা দেখতে পারবে।",
-    "description": "Displayed in login modal for external wallet providers",
+  "grantCaptchaPassedTitleAds": {
+    "message": "আপনি একটি বিজ্ঞাপনের পুরস্কার উপার্জন করেছেন!",
+    "description": ""
+  },
+  "grantCaptchaPassedTextAds": {
+    "message": "আপনার পুরস্কারগুলি আপনার Brave পুরস্কারের ওয়ালেটে আসছে।",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "আপনার পুরস্কারের অর্থরাশি",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "মেয়াদত্তির্ণের তারিখ মঞ্জুর করুন",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "ওহো, কিছু ভুল হয়েছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "Brave পুরস্কারে একটি সমস্যা হচ্ছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
+    "description": ""
+  },
+  "walletAccountLink": {
+    "message": "আমার $provider$ অ্যাকাউন্টে যান",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "অর্থ যোগ করুন",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "স্বতঃ-প্রদান",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "যাচাইকরণ সম্পূর্ণ করতে $provider$ এ যান",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "পুরস্কার পেতে অনুগ্রহ করে পরিচয়ের যাচাইকরণ সম্পূর্ণ করুন।",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "সংযোগবিচ্ছিন্ন",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "Brave পুরষ্কারগুলি থেকে সংযোগ বিচ্ছিন্ন করুন",
+    "description": ""
+  },
+  "walletEstimatedEarnings": {
+    "message": "আনুমানিক উপার্জন",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "আপনার $provider$ অ্যাকাউন্টে লগইন করুন",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "মাসিক পরামর্শ",
+    "description": ""
+  },
+  "walletMyWallet": {
+    "message": "আমার ওয়ালেট",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "একবারের দান/পরামর্শ",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "বিচারাধীন রয়েছে",
+    "description": ""
+  },
+  "walletPendingRewardsText": {
+    "message": "$days$-তে $amount$ আসছে",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "walletRewardsFromAds": {
+    "message": "বিজ্ঞাপন থেকে পুরস্কার",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "রিওয়ার্ডসের সংক্ষিপ্তসার",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "যাচাইকৃত",
+    "description": ""
+  },
+  "walletVerify": {
+    "message": "ওয়ালেট যাচাই করুন",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "আপনার ব্যালেন্স",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "অর্থ যোগ করুন",
+    "description": ""
+  },
+  "notificationLearnMore": {
+    "message": "আরও জানুন",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "পুনঃসংযোগ করুন",
+    "description": ""
+  },
+  "notificationClaim": {
+    "message": "দাবি",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "অপর্যাপ্ত তহবিল",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "আপনার Brave পুরস্কারের অ্যাকাউন্ট একটি জমার জন্য অপেক্ষা করছে।",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "স্বতঃ-প্রদান",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "আবনি $amount$-এ অনুদান দিয়েছেন।",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "ওয়ালেটের ব্যাকআপ নিন",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "অনুগ্রহ করে আপনার Brave ওয়ালেটটিতে ব্যাকআপ নিন।",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "এখনওই ব্যাকআপ নিন ",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "আপনি ওয়ালেট থেকে লগআউট করেছেন",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "এটি আপনার অ্যাকাউন্ট নিরাপদ রাখার জন্য হতে পারে। এখন আবার সংযোগ করতে নিচে ক্লিক করুন।",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "পুনঃসংযোগ করুন",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "আপনার ওয়লেট যাচাইকরণ করা হয়েছে!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "আপনার $provider$ ওয়ালেট সফলভাবে যাচাই করা হয়েছে এবং এটি ফান্ড যোগ করতে ও তোলার জন্য প্রস্তুত।",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "টোকেন মঞ্জুর হয়েছে",
+    "description": ""
+  },
+  "notificationTokenGrantText": {
+    "message": "একটি অনুদান আপনার জন্য অপেক্ষা করছে।",
+    "description": ""
+  },
+  "notificationAdGrantTitle": {
+    "message": "বিজ্ঞাপনের উপার্জন গৃহীত হয়েছে",
+    "description": ""
+  },
+  "notificationAdGrantText": {
+    "message": "Brave Private Ads থেকে পাওয়া আপনার পুরস্কারগুলো রইল এখানে!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "মাসিক অনুদান ব্যর্থ হয়েছে",
+    "description": ""
+  },
+  "notificationInsufficientFundsText": {
+    "message": "পর্যাপ্ত ফান্ড না থাকার কারণে আপনার স্বতঃ-প্রদান এবং মাসিক অবদানগুলির জন্য আপনার নির্ধারিত মাসিক অর্থপ্রদান সম্পূর্ণ করা যায়নি৷ আমরা 30 দিনের মধ্যে আবার চেষ্টা করব।",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "আপনার অনুদান প্রক্রিয়া করার সময় একটি সমস্যা হয়েছে।",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "অনুদান ও পরামর্শ",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "আপনার মাসিক অনুদানগুলোর প্রক্রিয়াকরণ করা হয়েছে।",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "মুলতুবি থাকা অনুদান",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "স্রষ্টা $publisher_name$-কে সম্প্রতি যাচাই করা হয়েছে।",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "অপর্যাপ্ত ফান্ড",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "অপর্যাপ্ত ফান্ডের জন্য আপনার পরামর্শ বাকি আছে",
+    "description": ""
+  },
+  "notificationWalletLinkingFailedTitle": {
+    "message": "ওয়ালেট লিঙ্ক করার কাজটি ব্যর্থ হয়েছে",
+    "description": ""
+  },
+  "notificationDeviceLimitReachedText": {
+    "message": "আপনি যাচাইকৃত ডিভাইসের সংখ্যার সর্বোচ্চ সীমায় পৌঁছেছেন বিধায় আপনার ওয়ালেটটি ভেরিফাই করা যাবে না।",
+    "description": ""
+  },
+  "notificationMismatchedProviderAccountsText": {
+    "message": "দেখে মনে হচ্ছে Brave Rewards-এর ওয়ালেট অন্য $provider$ অ্যাকাউন্ট দিয়ে ইতিমধ্যে যাচাই করা হয়েছে। অনুগ্রহ করে আপনার আগের অ্যাকাউন্ট ব্যবহার করে আবার যাচাই করার চেষ্টা করুন।",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationUpholdBatNotSupportedText": {
+    "message": "আপনার অঞ্চলে আপহোল্ডে BAT এখনও সমর্থিত নয়।",
+    "description": ""
+  },
+  "notificationUpholdUserBlockedText": {
+    "message": "আপহোল্ডে আপনার অ্যাকাউন্ট বর্তমানে ব্লক রয়েছে।",
+    "description": ""
+  },
+  "notificationUpholdUserPendingText": {
+    "message": "আপহোল্ডে আপনার অ্যাকাউন্ট এখনও বাকি রয়েছে।",
+    "description": ""
+  },
+  "notificationUpholdUserRestrictedText": {
+    "message": "আপহোল্ডে আপনার অ্যাকাউন্ট বর্তমানে সীমাবদ্ধ।",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "টোকেন উপার্জন করুন এবং ফিরিয়ে দিন",
@@ -854,5 +551,29 @@
         "content": "$2"
       }
     }
+  },
+  "captchaMaxAttemptsExceededText": {
+    "message": "মনে হচ্ছে এটায় কাজ হচ্ছে না, Brave ads বিরততেই থাকবে। ক্যাপচা নিয়ে আপনার সাহায্যের প্রয়োজন হলে আমাদের সঙ্গে যোগাযোগ করুন।",
+    "description": ""
+  },
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "সর্বোচ্চ প্রচেষ্টা অতিক্রম করেছে",
+    "description": ""
+  },
+  "captchaSolvedTitle": {
+    "message": "মীমাংসিত!",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "বিজ্ঞাপন ও উপার্জন এখন আবার শুরু হবে। Brave Rewards এবং গোপনীয়তা-নির্ভর বিজ্ঞাপন সুরক্ষিত করতে আমাদের সাহায্যের জন্য ধন্যবাদ।",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "সহায়তায় যোগাযোগ করুন",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "খারিজ",
+    "description": ""
   }
 }

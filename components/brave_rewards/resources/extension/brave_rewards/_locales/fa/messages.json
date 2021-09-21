@@ -1,685 +1,382 @@
 {
-  "braveRewards": {
-    "message": "پاداش‌های Brave",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "خلاصه",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "همین‌حالا پاداش گرفتن را شروع کنید!",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "نکته",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "پیوستن به «پاداش‌ها»",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "پدیدآورنده تأییدنشده",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "با دیدن آگهی پاداش دریافت کنید و با بازارسال آن از پدیدآورندگان محتوایی که دوست دارید حمایت کنید.",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "پدیدآورنده تأییدشده",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "اکنون می‌توانید برای تماشای آگهی‌های رعایت‌کننده حریم خصوصی، توکن دریافت کنید.",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "تازه‌سازی وضعیت",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "اکنون می‌توانید برای تماشای آگهی‌های رعایت‌کننده حریم خصوصی، امتیاز دریافت کنید.",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "ببینید چه چیزی بهبود یافته است",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "بیشتر بدانید",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "«پاداش‌های Brave» را ارتقای قابل توجهی داده‌ایم.",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "آماده تجربه کردن اینترنت نسل بعد باشید.",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "کیف پول شما",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "امتیازها",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "جزئیات",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "on": {
-    "message": "روشن",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "سازنده موردتأیید Brave",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "توجه",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "کمک ماهانه",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "لحاظ کردن در کمک خودکار",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "ارسال انعام…",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "فعال کردن انعام",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "برای",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "خلاصه پاداش‌ها",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "آوریل",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "اوت",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "دسامبر",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "فوریه",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "ژانویه",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "ژوئیه",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "ژوئن",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "مارس",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "مه",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "نوامبر",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "اکتبر",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "سپتامبر",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "$currency$ هدیه",
-    "description": "Title for grant notification",
+  "platformPublisherTitle": {
+    "message": "$name$ در $platform$",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "امتیازهای توکن مطالبه شد",
-    "description": "Title for grant section in wallet summary"
+  "attention": {
+    "message": "توجه",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "درآمد از آگهی‌ها",
-    "description": "Title for ads section in wallet summary"
+  "sendTip": {
+    "message": "ارسال انعام",
+    "description": ""
   },
-  "rewardsContribute": {
-    "message": "کمک خودکار",
-    "description": "Title for auto contribute section in wallet summary"
+  "includeInAutoContribute": {
+    "message": "لحاظ کردن در کمک خودکار",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "انعام یک‌باره",
-    "description": "Title for one-time tips section in wallet summary"
-  },
-  "expiresOn": {
-    "message": "تاریخ انقضا",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
-  },
-  "recurringDonations": {
-    "message": "کمک‌های ماهانه",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "خاموش",
-    "description": "Label used in toggle indicating that toggle is off"
+  "monthlyContribution": {
+    "message": "کمک ماهانه",
+    "description": ""
   },
   "ok": {
-    "message": "تأیید",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "اکنون می‌توانید با مشاهده آگهی‌ها، دریافت کنید.",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "آگهی‌های Brave",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "کمک خودکار",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "$amount$ $currency$ کمک کرده‌اید",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "امتیازی در انتظار شما است.",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "پشتیبان‌گیری در همین لحظه",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "از کیف پولتان پشتیبان‌گیری کنید",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "لطفاً از کیف پول Brave‌ خود پشتیبان‌گیری کنید.",
-    "description": "Description for backup wallet notification"
-  },
-  "learnMore": {
-    "message": "بیشتر بدانید",
-    "description": "Notification button text to learn more about a specific use-case"
-  },
-  "mismatchedProviderAccountsTitle": {
-    "message": "خطا: حساب متفاوت",
-    "description": "Title for mismatched provider accounts notification"
-  },
-  "mismatchedProviderAccountsNotification": {
-    "message": "هوم، به نظر می‌رسد کیف پول Brave Rewards شما قبلاً با یک حساب $name$ دیگر تأیید شده است. لطفاً با استفاده از حساب قبلی خود دوباره تأیید کنید.",
-    "description": "Description for mismatched provider accounts notification",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "upholdBATNotAllowedForUserTitle": {
-    "message": "خطا: توکن بت دردسترس نیست",
-    "description": "Title for BAT not allowed for user notification"
-  },
-  "upholdBATNotAllowedForUserNotification": {
-    "message": "توکن بت هنوز در منطقه شما در Uphold پشتیبانی نمی‌شود.",
-    "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserTitle": {
-    "message": "خطا: حساب مسدودشده",
-    "description": "Title for blocked user notification"
-  },
-  "upholdBlockedUserNotification": {
-    "message": "درحال‌حاضر حسابتان در Uphold مسدود شده است.",
-    "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserTitle": {
-    "message": "خطا: حساب درانتظار تأیید",
-    "description": "Title for pending user notification"
-  },
-  "upholdPendingUserNotification": {
-    "message": "حسابتان در Uphold هنوز تأیید نشده است.",
-    "description": "Description for pending user notification"
-  },
-  "upholdRestrictedUserTitle": {
-    "message": "خطا: حساب محدودشده",
-    "description": "Title for restricted user notification"
-  },
-  "upholdRestrictedUserNotification": {
-    "message": "درحال‌حاضر حسابتان در Uphold محدود شده است.",
-    "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "دستگاه به حداکثر مجاز رسیده است",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "کیف پول شما تأیید نشد زیرا به حداکثر مجاز دستگاه تأییدشده رسیده‌اید.",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "حساب «پاداش‌های Brave» منتظر سپرده است.",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "سرمایه ناکافی",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "ایجاد کیف پول",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "مشکلی در پردازش کمکتان وجود داشت.",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "به‌دلیل کافی نبودن وجه، انجام دادن پرداخت ماهیانه زمان‌بندی‌شده شما برای کمک خودکار و کمک‌های ماهانه امکان‌پذیر نبود. 30 روز دیگر دوباره تلاش خواهیم کرد.",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "انعامتان ارسال نشد. لطفاً بعداً امتحان کنید.",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "هنوز هیچ فعالیتی وجود ندارد…",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "نماد BAT را به اینجا بکشید:",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "ثابت کنید انسان هستید!",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "هدف.",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "اوووم...نه کاملاً. دوباره امتحان کنید.",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "مطالبه",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "امتیاز توکن رایگان",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "تاریخ انقضای امتیاز",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
     "message": "قبول",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "«پاداش‌های Brave» با مشکل روبرو است. لطفاً بعداً دوباره امتحان کنید.",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "متأسفیم، مشکلی پیش آمد. لطفاً بعداً دوباره امتحان کنید.",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "تازه‌سازی وضعیت",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "هنوز تأیید نشده است",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "این پدیدآورنده در حال حاضر برای دریافت انعام‌ها از کیف پول شما پیکربندی نشده است. هر انعامی که شما بدهید به حالت معوق در کیف پولتان باقی می‌ماند و به‌طور خودکار به‌مدت 90 روز تلاش مجدد انجام خواهد شد.",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "بیشتر بدانید.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "{{reservedAmount}} {{currency}} را برای پدیدآورندگانی در نظر گرفته‌اید که هنوز جهت دریافت کمک مالی ثبت نام نکرده‌اند. مرورگرتان تا زمانی‌که آنها کمک را تأیید کنند، یا تا 90 روز، به تلاش برای انجام کمک مالی ادامه می‌دهد.",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "بیشتر بدانید.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "خاموش",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "تنظیمات.",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "درحال‌حاضر از مزایای «پاداش‌ها» هنگام مرور بهره‌مند نمی‌شوید. «پاداش‌ها» را اینجا روشن کنید:",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "«پاداش‌های Brave»",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "کیف پول ایجاد نشد",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "سعی مجدد",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "افزودن وجه",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "تنظیمات پاداش",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "پاداش‌های شما از «آگهی‌ها» اینجا است!",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "و",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "با مرور کردن، پاداش دریافت کنید!",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "با دیدن آگهی‌هایی که حریم خصوصی را رعایت می‌کنند پاداش دریافت کنید و از پدیدآورندگان محتوایی که دوست دارید حمایت مالی کنید.",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "فعال کردن «پاداش‌های Brave»",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "خط‌مشی حریم‌خصوصی",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "با کلیک کردن روی «فعال کردن پاداش‌های Brave»، مشخص می‌کنید که موارد زیر را خوانده‌اید و با آن‌ها موافق هستید",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "شرایط خدمات",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "بازگشت شما را خوش‌آمد می‌گوییم!",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "کمک‌های ماهانه شما پردازش شده است!",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "مشارکت و انعام",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": "با کلیک کردن روی «پیوستن به پاداش‌ها»، مشخص می‌کنید که موارد زیر را خوانده‌اید و با آن‌ها موافق هستید",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "BAT",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "turnOnAds": {
-    "message": "روشن کردن آگهی‌ها",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "دریافت‌شده از آگهی‌ها",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "به این توییت انعام دهید",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "انعام",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "انعام دادن به این پست",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "انعام",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "ارسال یک انعام",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "انعام",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "سازنده $name$ به‌تازگی تأیید شد",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "به‌دلیل سرمایه ناکافی، نکات معلقی دارید",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "مشارکت در حال انتظار",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "روز شانستان است!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "هدیه $currency$ شما در راه است.",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "امتیاز توکن رایگان",
-    "description": "Token title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "شما «پاداش آگهی‌ها» را کسب کرده‌اید.",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "پاداش شما در حال انتقال به کیف پول «پاداش‌های Brave» شما است.",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "مقدار پاداش شما",
-    "description": "Token title on success screen for ads"
-  },
-  "walletButtonDisconnected":  {
-    "message": "ارتباط قطع شد",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "تأیید کیف پول",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "کیف پول تأیید شد!‍",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "به حساب $provider$ خود بروید",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletLogInWithProvider":  {
-    "message": "به حساب $provider$ خود وارد شوید",
-    "description": "CTA to log in with a wallet provider",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "قطع ارتباط از پاداش‌های Brave",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "تأیید شد",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "کیف پول شما تأیید شد!",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "تبریک! کیف پول $name$ باموفقیت تأیید شد و برای افزودن و برداشتن سرمایه آماده است. ",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "واای. کیف پول شما غیرقابل دسترسی است.",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "نگران نباشید. این مورد ممکن است به دلایل امنیتی مختلف روی دهد. اتصال دوباره کیف پولتان این مشکل را حل می کند.",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "این «پدیدآورنده تأییدشده Brave» هنوز حسابش را تنظیم نکرده است تا از کاربران Brave کمک مالی دریافت کند. هر انعامی که ارسال می‌کنید تا زمانی که این روند کامل نشود، در کیف پولتان باقی می‌ماند.",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "تکمیل تأیید کیف پول",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "تنظیم...",
-    "description": "Button text for setting monthly contribution"
+    "message": "تنظیم",
+    "description": ""
   },
-  "tokens":  {
-    "message": "توکن‌ها",
-    "description": "Standard tokens text"
-  },
-  "point":  {
-    "message": "امتیاز",
-    "description": "BAT Point text"
-  },
-  "token":  {
-    "message": "توکن",
-    "description": "BAT Token text"
-  },
-  "tokenGrants":  {
-    "message": "امتیازهای توکن",
-    "description": "BAT Tokens Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "سلام، $name$!",
-    "description": "Greetings for external wallet popup",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
-      }
-    }
-  },
-  "cancel":  {
-    "message": "لغو",
-    "description": "Text for cancel button"
-  },
-  "changeAmount":  {
+  "changeAmount": {
     "message": "تغییر مقدار",
-    "description": "Button text for changing monthly contribution amount"
+    "description": ""
   },
-  "login":  {
-    "message": "ورود به سیستم",
-    "description": "Text for login button"
+  "cancel": {
+    "message": "لغو",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "تأیید کیف پول به شما امکان می‌دهد سرمایه‌های خود را کارآمدتر مدیریت کنید.",
-    "description": "Text for login button"
+  "grantCaptchaTitle": {
+    "message": "انسان بودنتان را اثبات کنید",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "برای ایجاد حساب Uphold، باید حداقل $amount$BAT داشته باشید. اگر ازقبل حساب Uphold تأییدشده‌ای دارید، ورود به سیستم را ادامه دهید.",
-    "description": "Text for login button",
+  "grantCaptchaFailedTitle": {
+    "message": "اوووم...نه کاملاً. دوباره امتحان کنید.",
+    "description": ""
+  },
+  "grantCaptchaHint": {
+    "message": "آیکون BAT را به هدف $hint$ بکشید.",
+    "description": "",
     "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "walletConnected":  {
-    "message": "متصل",
-    "description": "Status button that tells user that he is connected"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "روز شانستان است!",
+    "description": ""
   },
-  "walletDisconnected":  {
-    "message": "ارتباط قطع شد",
-    "description": "Status button that tells user that he is disconnected"
+  "grantCaptchaPassedTextUGP": {
+    "message": "امتیاز توکن شما در راه است.",
+    "description": ""
   },
-  "walletPending":  {
-    "message": "معوق",
-    "description": "Status button that tells user that he is currently pending"
+  "grantCaptchaAmountUGP": {
+    "message": "امتیاز توکن رایگان",
+    "description": ""
   },
-  "walletVerificationNote3":  {
-    "message": "توجه: بعدازاینکه مجوز دهید، تراکنش‌هایتان برای $provider$ قابل مشاهده خواهند بود؛ برای مثال، Uphold می‌تواند گیرنده و مقدار انعام را ببیند.",
-    "description": "Displayed in login modal for external wallet providers",
+  "grantCaptchaPassedTitleAds": {
+    "message": "شما «پاداش آگهی‌ها» را کسب کرده‌اید.",
+    "description": ""
+  },
+  "grantCaptchaPassedTextAds": {
+    "message": "پاداش شما در حال انتقال به کیف پول «پاداش‌های Brave» شما است.",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "مقدار پاداش شما",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "تاریخ انقضای امتیاز",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "متأسفیم، مشکلی پیش آمد. لطفاً بعداً دوباره امتحان کنید.",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "«پاداش‌های Brave» با مشکل روبرو است. لطفاً بعداً دوباره امتحان کنید.",
+    "description": ""
+  },
+  "walletAccountLink": {
+    "message": "رفتن به حساب $provider$ من",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "افزودن سرمایه",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "کمک خودکار",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "برای تکمیل تأیید هویت، به $provider$ بروید",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "به‌منظور شروع دریافت پاداش‌ها، لطفاً تأیید هویت را انجام دهید.",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "ارتباط قطع شد",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "قطع ارتباط از پاداش‌های Brave",
+    "description": ""
+  },
+  "walletEstimatedEarnings": {
+    "message": "درآمدهای تخمینی",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "به حساب $provider$ خود وارد شوید",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "انعام ماهانه",
+    "description": ""
+  },
+  "walletMyWallet": {
+    "message": "کیف پول من",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "انعام یک‌باره",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "معوق",
+    "description": ""
+  },
+  "walletPendingRewardsText": {
+    "message": "$amount$ ظرف $days$ دریافت می‌شود",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "walletRewardsFromAds": {
+    "message": "پاداش‌های حاصل از آگهی‌ها",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "خلاصه پاداش‌ها",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "تأیید شد",
+    "description": ""
+  },
+  "walletVerify": {
+    "message": "تأیید کیف پول",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "موجودی شما",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "افزودن سرمایه",
+    "description": ""
+  },
+  "notificationLearnMore": {
+    "message": "بیشتر بدانید",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "اتصال مجدد",
+    "description": ""
+  },
+  "notificationClaim": {
+    "message": "مطالبه",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "سرمایه ناکافی",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "حساب «پاداش‌های Brave» منتظر سپرده است.",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "کمک خودکار",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "شما $amount$ کمک کرده‌اید.",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "کیف پول پشتیبان",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "لطفاً از کیف پول Brave‌ خود پشتیبان‌گیری کنید.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "حالا پشتیبان بگیرید",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "کیف پول شما از سیستم خارج شده است",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "این اتفاق ممکن است برای امن نگه داشتن حساب شما بیفتد. روی قسمت زیر کلیک کنید تا اکنون دوباره متصل شوید.",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "اتصال مجدد",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "کیف پول شما تأیید شد!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "کیف پول $provider$ با موفقیت تأیید شد و آماده افزودن و برداشت وجوه است.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "امتیازهای توکن",
+    "description": ""
+  },
+  "notificationTokenGrantText": {
+    "message": "امتیازی در انتظار شما است.",
+    "description": ""
+  },
+  "notificationAdGrantTitle": {
+    "message": "درآمدهای حاصل از آگهی‌ها دریافت شد",
+    "description": ""
+  },
+  "notificationAdGrantText": {
+    "message": "پاداش‌های شما از «آگهی‌های خصوصی Brave» از راه رسیدند!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "کمک ماهانه انجام نشد",
+    "description": ""
+  },
+  "notificationInsufficientFundsText": {
+    "message": "به‌دلیل کافی نبودن وجه، انجام دادن پرداخت ماهیانه زمان‌بندی‌شده شما برای کمک خودکار و کمک‌های ماهانه امکان‌پذیر نبود. 30 روز دیگر دوباره تلاش خواهیم کرد.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "مشکلی در پردازش کمکتان وجود داشت.",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "کمک‌ها و انعام",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "کمک‌های ماهانه شما پردازش شده است!",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "کمک معوق",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "$publisher_name$ پدیدآورنده اخیراً تأیید شد.",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "وجه ناکافی است",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "به‌دلیل سرمایه ناکافی، نکات معلقی دارید",
+    "description": ""
+  },
+  "notificationWalletLinkingFailedTitle": {
+    "message": "کیف پول پیوند داده نشد",
+    "description": ""
+  },
+  "notificationDeviceLimitReachedText": {
+    "message": "کیف پول شما تأیید نشد زیرا به حداکثر مجاز دستگاه تأییدشده رسیده‌اید.",
+    "description": ""
+  },
+  "notificationMismatchedProviderAccountsText": {
+    "message": "به نظر می‌رسد کیف پول «پاداش‌های Brave» شما قبلاً با یک حساب $provider$ دیگر تأیید شده است. لطفاً با استفاده از حساب قبلی خود، دوباره تأیید کنید.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationUpholdBatNotSupportedText": {
+    "message": "توکن بت هنوز در منطقه شما در Uphold پشتیبانی نمی‌شود.",
+    "description": ""
+  },
+  "notificationUpholdUserBlockedText": {
+    "message": "درحال‌حاضر حسابتان در Uphold مسدود شده است.",
+    "description": ""
+  },
+  "notificationUpholdUserPendingText": {
+    "message": "حسابتان در Uphold هنوز تأیید نشده است.",
+    "description": ""
+  },
+  "notificationUpholdUserRestrictedText": {
+    "message": "درحال‌حاضر حسابتان در Uphold محدود شده است.",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "کسب توکن و برگرداندن",
@@ -854,5 +551,29 @@
         "content": "$2"
       }
     }
+  },
+  "captchaMaxAttemptsExceededText": {
+    "message": "به نظر می‌رسد که این مورد کار نمی‌کند. آگهی‌های Brave در حالت توقف موقت باقی خواهد ماند. اگر در کپچا به کمک نیاز دارید، با ما تماس بگیرید.",
+    "description": ""
+  },
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "تعداد تلاش‌ها به حداکثر مجاز رسیده است",
+    "description": ""
+  },
+  "captchaSolvedTitle": {
+    "message": "حل شد!",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "آگهی‌ها و درآمدها اکنون ادامه خواهند یافت. سپاسگزاریم از اینکه به ما کمک می‌کنید از «پاداش‌های Brave» و آگهی‌های مبتنی بر حریم خصوصی محافظت کنیم.",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "تماس با پشتیبانی",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "لغو کردن",
+    "description": ""
   }
 }

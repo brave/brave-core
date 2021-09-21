@@ -209,7 +209,6 @@
 <translation id="6476061084931271248">변경사항을 적용하려면 노드 재시작 필요</translation>
 <translation id="3754226427671882382">노드 재시작</translation>
 <translation id="949667118776341807">로테이션</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">유효하지 않은 이름</translation>
 <translation id="6758961763875471084">피어 목록 수정</translation>
 <translation id="1295874070797049002">키 내보내기</translation>
@@ -240,6 +239,7 @@
 <translation id="8655170717758778983">가능한 경우 DNSLink를 통해 IPFS 페이지로 자동으로 리다이렉트</translation>
 <translation id="2233724520223030977">가능한 경우, 자동으로 DNSLink를 사용하여 웹 사이트의 IPFS 버전으로 이동합니다.</translation>
 <translation id="6554397389149987360">화면 공유와 다른 기능들을 브라우저에서 사용하시려면 행아웃 요소들을 사용하세요.</translation>
+<translation id="7878791177459550035">미디어 라우터가 브라우저 내  전송 기능을 활성화합니다.</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="8068526464562249859">브라우저 바에서 공통 IPFS 태스크에 접근할 수 있는 기능 등 Brave에서의 보다 향상된 IPFS 지원을 위해 IPFS 컴패니언 확장 기능을 사용합니다.</translation>
@@ -350,7 +350,23 @@
         귀하는 <ph name="BEGIN_LINK_SOURCE_CODE"/>이 사본을 만드는 데 사용되는 특정 소스 코드<ph name="END_LINK_SOURCE_CODE"/>를 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>다운로드하고 구축하는 방법에 대한 지침<ph name="END_LINK_BUILD_INSTRUCTIONS"/>을 읽으실 수 있습니다.</translation>
 <translation id="4474155171896946103">모든 탭 북마크...</translation>
 <translation id="2336228925368920074">모든 탭 북마크...</translation>
+<translation id="4235920711083356755">VPN 버튼 표시</translation>
+<translation id="4070612712151038707">툴바에 VPN 버튼 표시</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Brave VPN 정보</translation>
+<translation id="4378551569595875038">연결 중...</translation>
+<translation id="3368922792935385530">연결됨</translation>
+<translation id="1536754031901697553">연결을 해제하는 중...</translation>
+<translation id="8030169304546394654">연결 해제됨</translation>
+<translation id="1863950594388384201">툴바에 VPN 버튼 표시</translation>
+<translation id="5187139277471084437">툴바에서 VPN 버튼 숨기기</translation>
+<translation id="8041089156583427627">의견 보내기</translation>
+<translation id="4049186905514157504">내 플랜 관리</translation>
+<translation id="7570585565843385325">툴바에 VPN 버튼 표시</translation>
+<translation id="5310426188697803101">툴바에서 VPN 버튼 숨기기</translation>
+<translation id="945522503751344254">의견 보내기</translation>
+<translation id="3015685033234401792">내 플랜 관리</translation>
 <translation id="796831669370432378">북마크를 추가하려면 주소 표시줄 옆에 있는 북마크 버튼을 클릭하세요</translation>
 <translation id="4989337484121655457">전체 디스크 액세스 권한(Full Disk Access) 필요</translation>
 <translation id="8025559074845816210">Safari에서 책갈피를 가져오려면 Brave에 전체 디스크 액세스 권한(Full Disk Access)이 필요합니다.</translation>

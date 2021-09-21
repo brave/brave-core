@@ -210,7 +210,6 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="6476061084931271248">Reštartovať uzol pre uplatnenie zmien</translation>
 <translation id="3754226427671882382">Reštartovať uzol</translation>
 <translation id="949667118776341807">Otočiť</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Tento názov je neplatný</translation>
 <translation id="6758961763875471084">Upraviť zoznam klientov</translation>
 <translation id="1295874070797049002">Exportovať kľúč</translation>
@@ -242,6 +241,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="8655170717758778983">Ak je to možné, automaticky presmerovať na stránky IPFS prostredníctvom služby DNSLink</translation>
 <translation id="2233724520223030977">Ak je to možné, automaticky použiť server DNSLink na prechod na verziu webovej stránky s IPFS</translation>
 <translation id="6554397389149987360">Používa komponenty služby Hangouts, ktoré umožňujú zdieľanie obrazovky a ďalšie funkcie v prehliadači.</translation>
+<translation id="7878791177459550035">Mediálny router umožňuje v prehliadači funkciu vysielania.</translation>
 <translation id="9156965752763025780">Zmeny sa prejavia pri nasledujúcom reštartovaní prehliadača Brave.</translation>
 <translation id="7179921470347911571">Spustiť ešte raz</translation>
 <translation id="8068526464562249859">Používa rozšírenie Spoločník IPFS na vylepšenú podporu protokolu IPFS v aplikácii Brave vrátane prístupu k bežným úlohám protokolu IPFS z panela prehľadávača.</translation>
@@ -352,7 +352,23 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
         Môžete si prečítať <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>pokyny na stiahnutie a buildovanie pre sebaf<ph name="END_LINK_BUILD_INSTRUCTIONS"/> špecifický <ph name="BEGIN_LINK_SOURCE_CODE"/>zdrojový kód použitý na vytvorenie tejto kópie<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Všetky karty uložiť ako záložky...</translation>
 <translation id="2336228925368920074">Všetky karty uložiť ako záložky...</translation>
+<translation id="4235920711083356755">Zobraziť tlačidlo VPN</translation>
+<translation id="4070612712151038707">Zobraziť tlačidlo VPN na paneli s nástrojmi</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">O Brave VPN</translation>
+<translation id="4378551569595875038">Pripája sa...</translation>
+<translation id="3368922792935385530">Pripojené</translation>
+<translation id="1536754031901697553">Odpája sa...</translation>
+<translation id="8030169304546394654">Prerušené spojenie</translation>
+<translation id="1863950594388384201">Zobraziť tlačidlo VPN na paneli s nástrojmi</translation>
+<translation id="5187139277471084437">Skryť tlačidlo VPN na paneli s nástrojmi</translation>
+<translation id="8041089156583427627">Odoslať spätnú väzbu</translation>
+<translation id="4049186905514157504">Spravovať môj plán</translation>
+<translation id="7570585565843385325">Zobraziť tlačidlo VPN na paneli s nástrojmi</translation>
+<translation id="5310426188697803101">Skryť tlačidlo VPN na paneli s nástrojmi</translation>
+<translation id="945522503751344254">Poslať spätnú väzbu</translation>
+<translation id="3015685033234401792">Spravovať môj plán</translation>
 <translation id="796831669370432378">Ak chcete pridať záložku, kliknite na tlačidlo záložky vedľa panela s adresou</translation>
 <translation id="4989337484121655457">Vyžadanie úplného prístupu na disk</translation>
 <translation id="8025559074845816210">Brave potrebuje na import vašich záložiek zo Safari  úplný prístup na disk.</translation>

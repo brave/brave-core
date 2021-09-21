@@ -209,7 +209,6 @@
 <translation id="6476061084931271248">ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಲು ನೋಡ್ ಮರುಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="3754226427671882382">ನೋಡ್ ಮರುಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="949667118776341807">ತಿರುಗಿಸಿ</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">ಸ್ಪೀಡ್‌ರೀಡರ್‌ನಲ್ಲಿಈ ಹೆಸರು</translation>
 <translation id="6758961763875471084">ಪೀರ್ ಪಟ್ಟಿ ಮಾರ್ಪಡಿಸಿ</translation>
 <translation id="1295874070797049002">ರಫ್ತು ಕೀ</translation>
@@ -240,6 +239,7 @@
 <translation id="8655170717758778983">ಸಾಧ್ಯವಿರುವಾಗ, DNS ಲಿಂಕ್ ಮೂಲಕ IPFS ಪುಟಗಳಿಗೆ ಸ್ವಯಂಚಾಲಿತ ಮರುನಿರ್ದೇಶನ</translation>
 <translation id="2233724520223030977">ಸಾಧ್ಯವಿರುವಾಗ, DNSLink ಲಿಂಕ್ ಮೂಲಕ IPFS ಪುಟಗಳಿಗೆ ಸ್ವಯಂಚಾಲಿತ ಮರುನಿರ್ದೇಶನ</translation>
 <translation id="6554397389149987360">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಪರದೆ ಹಂಚಿಕೆ ಮತ್ತು ಇತರ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು Hangouts ಅಂಶವನ್ನು ಬಳಸುತ್ತದೆ.</translation>
+<translation id="7878791177459550035">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಕಾಸ್ಟ್ ಫೀಚರ್ ಅನ್ನು ಮೀಡಿಯಾ ರೂಟರ್ ಸಕ್ರಿಯಗೊಳಿಸುತ್ತದೆ.</translation>
 <translation id="9156965752763025780">ನೀವು ಮುಂದಿನ ಬಾರಿ Brave ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿದಾಗ ನಿಮ್ಮ ಬದಲಾವಣೆಗಳು ಕಾರ್ಯಗತಗೊಳ್ಳುತ್ತವೆ.</translation>
 <translation id="7179921470347911571">ಇದೀಗ ಮರುಆರಂಭಿಸಿ</translation>
 <translation id="8068526464562249859">ನಿಮ್ಮ ಬ್ರೌಸರ್ ಬಾರ್‌ನಿಂದ ಸಾಮಾನ್ಯ IPFS ಕಾರ್ಯಗಳಿಗೆ ಪ್ರವೇಶವನ್ನು ಒಳಗೊಂಡು, Brave ನಲ್ಲಿ ವರ್ಧಿತ IPFS ಬೆಂಬಲಕ್ಕಾಗಿ IPFS ಕಂಪಾನಿಯನ್ ವಿಸ್ತರಣೆಯನ್ನು ಬಳಸುತ್ತದೆ.</translation>
@@ -350,7 +350,23 @@
         ನೀವು <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ಡೌನ್‌ಲೋಡ್ ಮಾಡುವುದು ಹೇಗೆ ಮತ್ತು ಸ್ವತಃ ನಿರ್ಮಿಸಿಕೊಳ್ಳುವುದು ಹೇಗೆ ಎಂಬುದರ ಕುರಿತು ಸೂಚನೆಗಳನ್ನು<ph name="END_LINK_BUILD_INSTRUCTIONS"/> ಓದಬಹುದು <ph name="BEGIN_LINK_SOURCE_CODE"/>ಈ ಕಾಪಿಯನ್ನು ರಚಿಸಲು ನಿರ್ದಿಷ್ಟ ಸೋರ್ಸ್ ಕೋಡ್ ಅನ್ನು ಬಳಸಲಾಗುತ್ತದೆ<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">ಎಲ್ಲಾ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡು...</translation>
 <translation id="2336228925368920074">ಎಲ್ಲಾ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡಿ...</translation>
+<translation id="4235920711083356755">VPN ಬಟನ್‌ ತೋರಿಸು</translation>
+<translation id="4070612712151038707">ಟೂಲ್‌ಬಾರ್‌ನಲ್ಲಿ VPN ಬಟನ್ ತೋರಿಸುತ್ತದೆ</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Brave VPN ಕುರಿತು</translation>
+<translation id="4378551569595875038">ಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ...</translation>
+<translation id="3368922792935385530">ಸಂಪರ್ಕಿಸಲಾಗಿದೆ</translation>
+<translation id="1536754031901697553">ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗುತ್ತಿದೆ...</translation>
+<translation id="8030169304546394654">ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗಿದೆ</translation>
+<translation id="1863950594388384201">ಟೂಲ್‌ಬಾರ್‌ನಲ್ಲಿ VPN ಬಟನ್ ತೋರಿಸಿ</translation>
+<translation id="5187139277471084437">ಟೂಲ್‌ಬಾರ್‌ನಲ್ಲಿ VPN ಬಟನ್ ಮರೆಮಾಡಿ</translation>
+<translation id="8041089156583427627">ಪ್ರತಿಕ್ರಿಯೆ ಕಳುಹಿಸಿ</translation>
+<translation id="4049186905514157504">ನನ್ನ ಪ್ಲಾನ್ ನಿರ್ವಹಿಸಿ</translation>
+<translation id="7570585565843385325">ಟೂಲ್‌ಬಾರ್‌ನಲ್ಲಿ VPN ಬಟನ್ ತೋರಿಸಿ</translation>
+<translation id="5310426188697803101">ಟೂಲ್‌ಬಾರ್‌ನಲ್ಲಿ VPN ಬಟನ್ ಮರೆಮಾಡಿ</translation>
+<translation id="945522503751344254">ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ಕಳುಹಿಸಿ</translation>
+<translation id="3015685033234401792">ನನ್ನ ಪ್ಲಾನ್ ನಿರ್ವಹಿಸಿ</translation>
 <translation id="796831669370432378">ಬುಕ್‌ಮಾರ್ಕ್ ಅನ್ನು ಸೇರಿಸಲು, ವಿಳಾಸ ಪಟ್ಟಿಯ ಪಕ್ಕದಲ್ಲಿರುವ ಬುಕ್‌ಮಾರ್ಕ್ ಬಟನ್ ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ</translation>
 <translation id="4989337484121655457">ಪೂರ್ಣ ಡಿಸ್ಕ್ ಪ್ರವೇಶ ಅಗತ್ಯವಿದೆ</translation>
 <translation id="8025559074845816210">ನಿಮ್ಮ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಸಫಾರಿಯಿಂದ ಆಮದು ಮಾಡಿಕೊಳ್ಳಲು Brave ಗೆ ಪೂರ್ಣ ಡಿಸ್ಕ್ ಪ್ರವೇಶದ ಅಗತ್ಯವಿದೆ.</translation>

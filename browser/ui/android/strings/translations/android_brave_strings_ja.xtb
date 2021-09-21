@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">トラッカーや広告の読み込みやウェブページでの表示を防ぎます</translation>
 <translation id="1680858055899097121">セッション間でタブを保持しない</translation>
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
-<translation id="5254037869598726291">この完全に匿名化された情報は、Braveが特定の機能の全体的な使用状況を推定し、ユーザーエクスペリエンスを向上するために役立ちます。</translation>
+<translation id="4272190451231642425">クラッシュレポートを自動送信する</translation>
+<translation id="2239766974964486304">クラッシュレポートにより、すべてのユーザーのBrave製品の安定性を向上できます。</translation>
 <translation id="7977176350719484850">節約できた\n通信量 (推定)</translation>
 <translation id="9008534313521214777">節約できた\n時間(推定)</translation>
 <translation id="6572660632052512096">デスクトップモード</translation>
@@ -479,8 +480,7 @@
 <translation id="1078265935778232285">Braveブラウザへようこそ</translation>
 <translation id="6824713633331856331">匿名での学習にご協力ください</translation>
 <translation id="6116685031674149112">Braveはあなたのプライバシーを保護し、以下へのあなたの同意に感謝します：</translation>
-<translation id="4394483075076204916">クラッシュレポートと完全に匿名化された
-<ph name="PRIVATE_PRODUCT_ANALYSIS"/>を送信することで、Braveの改善にご協力ください</translation>
+<translation id="4394483075076204916">完全に匿名化された<ph name="PRIVATE_PRODUCT_ANALYSIS"/>を送信して、Braveの改善にご協力ください</translation>
 <translation id="6478996494082389936">プライバシーを保護した製品分析</translation>
 <translation id="5187052478998910855">Rewardsについておさらいが必要ですか？</translation>
 <translation id="8622329973403382303">クイックツアーをご覧になり、Rewardsの達人として歴史に名を残すための仕組みをマスターしてください！</translation>
@@ -563,7 +563,6 @@
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
 <translation id="745115390910697838">フレーズが一致しません。もう一度お試しください。</translation>
 <translation id="2360588547830602174">アカウントの復元に失敗しました。もう一度お試しください。</translation>
-<translation id="1530109021798294736">メインネット</translation>
 <translation id="990936698620790924">市場価格 (ETH)</translation>
 <translation id="5593852897152820572">ETH価格</translation>
 <translation id="6748108480210050150">送信元</translation>
@@ -597,4 +596,5 @@
 <translation id="8967036623785635603">公開アセットの編集</translation>
 <translation id="5050890334032852465">アカウントのウォッチリストを保存</translation>
 <translation id="7755766175599167100">トークンの検索</translation>
+<translation id="3835223348537121988">残高:</translation>
 </translationbundle>

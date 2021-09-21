@@ -1,685 +1,382 @@
 {
-  "braveRewards": {
-    "message": "Brave Rewards",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "Ringkasan",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "Mula Dapatkan Sekarang!",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "Tip",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "Sertai Rewards",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "Pencipta Tidak Disahkan",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "Dapatkan bayaran dengan melihat iklan dan bayar untuk menyokong pencipta kandungan kegemaran anda.",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "Pencipta Disahkan",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "Anda sekarang boleh memperoleh token dengan menonton iklan yang menghormati privasi",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "Segar Semula Status",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "Anda kini boleh memperoleh mata kerana menonton iklan yang menghormati privasi.",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "Lihat peningkatan yang telah dilakukan",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "Ketahui Lebih Lanjut",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "Kami telah melakukan peningkatan yang besar kepada Brave Rewards.",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "Bersiap sedia untuk merasai pengalaman Internet seterusnya.",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "Dompet anda",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "Pemberian",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "Butiran",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "on": {
-    "message": "pada",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "Pencipta yang Disahkan oleh Brave",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "Perhatian",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "Sumbangan Bulanan",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "Masukkan dalam Sumbangan Automatik",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "Hantar Tip...",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "Aktifkan Tip",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "untuk",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "Ringkasan Ganjaran",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "April",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "Ogos",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "Disember",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "Februari",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "Januari",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "Julai",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "Jun",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "Mac",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "Mei",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "November",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "Oktober",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "September",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "Geran $currency$",
-    "description": "Title for grant notification",
+  "platformPublisherTitle": {
+    "message": "$name$ di $platform$",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "Pemberian Token Dituntut",
-    "description": "Title for grant section in wallet summary"
+  "attention": {
+    "message": "Perhatian",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "Pendapatan daripada Iklan",
-    "description": "Title for ads section in wallet summary"
+  "sendTip": {
+    "message": "Hantar Petua",
+    "description": ""
   },
-  "rewardsContribute": {
-    "message": "Auto-Sumbang",
-    "description": "Title for auto contribute section in wallet summary"
+  "includeInAutoContribute": {
+    "message": "Masukkan dalam Sumbangan Automatik",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "Tip Sekali Guna",
-    "description": "Title for one-time tips section in wallet summary"
-  },
-  "expiresOn": {
-    "message": "tamat tempoh pada",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
-  },
-  "recurringDonations": {
+  "monthlyContribution": {
     "message": "Sumbangan Bulanan",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "Dimatikan",
-    "description": "Label used in toggle indicating that toggle is off"
+    "description": ""
   },
   "ok": {
-    "message": "ok",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "Kini anda boleh mendapatkan bayaran dengan menonton iklan.",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "Iklan Brave ",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "Auto-Sumbang",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "Anda telah menyumbang sebanyak $amount$ $currency$",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "Anda mempunyai pemberian menanti anda.",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "Sandar sekarang",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "Sandar Dompet",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "Sila sandarkan dompet Brave anda.",
-    "description": "Description for backup wallet notification"
-  },
-  "learnMore": {
-    "message": "Ketahui Lebih Lanjut",
-    "description": "Notification button text to learn more about a specific use-case"
-  },
-  "mismatchedProviderAccountsTitle": {
-    "message": "Ralat: Akaun berbeza",
-    "description": "Title for mismatched provider accounts notification"
-  },
-  "mismatchedProviderAccountsNotification": {
-    "message": "Hmm, nampaknya dompet Brave Rewards anda telah disahkan menggunakan akaun $name$ lain. Sila cuba mengesahkan sekali lagi menggunakan akaun anda yang sebelum ini.",
-    "description": "Description for mismatched provider accounts notification",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "upholdBATNotAllowedForUserTitle": {
-    "message": "Ralat: BAT tidak tersedia",
-    "description": "Title for BAT not allowed for user notification"
-  },
-  "upholdBATNotAllowedForUserNotification": {
-    "message": "BAT belum lagi disokong di rantau anda di Uphold.",
-    "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserTitle": {
-    "message": "Ralat: Akaun disekat",
-    "description": "Title for blocked user notification"
-  },
-  "upholdBlockedUserNotification": {
-    "message": "Akaun anda di Uphold disekat pada masa ini.",
-    "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserTitle": {
-    "message": "Ralat: Akaun belum selesai",
-    "description": "Title for pending user notification"
-  },
-  "upholdPendingUserNotification": {
-    "message": "Akaun anda di Uphold masih belum selesai.",
-    "description": "Description for pending user notification"
-  },
-  "upholdRestrictedUserTitle": {
-    "message": "Ralat: Akaun dihadkan",
-    "description": "Title for restricted user notification"
-  },
-  "upholdRestrictedUserNotification": {
-    "message": "Akaun anda di Uphold dihad pada masa ini.",
-    "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Had Peranti Dicapai",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Dompet anda tidak dapat disahkan kerana anda telah mencapai had maksimum peranti yang disahkan.",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "Akaun Brave Rewards anda sedang menunggu deposit.",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "Dana Tidak Mencukupi",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "Mencipta dompet",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "Terdapat beberapa masalah memproses sumbangan anda.",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "Bayaran bulanan anda yang dijadualkan untuk Auto-Contribute dan sumbangan bulanan tidak dapat dilakukan kerana dana tidak mencukupi. Kami akan cuba lagi dalam masa 30 hari.",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "Tidak boleh menghantar tip. Sila cuba lagi kemudian.",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "Tiada aktiviti lagi...",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "Seret Ikon BAT ke",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "Buktikan yang anda seorang manusia!",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "sasaran.",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "Hmm...Tidak Tepat. Sila Cuba Lagi.",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "Tuntut",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "Pemberian Token Percuma",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "Tarikh Luput Pemberian",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
     "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "Ganjaran Brave mengalami masalah. Sila cuba sebentar lagi.",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "Maaf, berlaku kesilapan. Sila cuba sebentar lagi.",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "Segar Semula Status",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "Masih belum disahkan",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "Pencipta ini pada masa ini tidakdikonfigurasi untuk menerima tip dari dompet anda. Sebarang tip yang anda buat akan kekal di dalam dompet anda dan cuba semula secara aotomatik selama 90 hari.",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "Ketahui lebih lanjut.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "Anda telah memperuntukkan {{reservedAmount}} {{currency}} untuk pencipta yang belum lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus menyumbang hinggalah mereka mengesahkan akaun mereka, atau hinggalah 90 hari berlalu.",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "Ketahui lebih lanjut.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "Dimatikan",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "Tetapan.",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "Pada masa ini, anda tidak memperolehi sebarang manfaat Ganjaran semasa menyemak imbas. Pasangkan kembali ciri Ganjaran di",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "Ganjaran Brave ialah",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "Penghasilan dompet gagal",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "Cuba lagi",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "Tambah dana",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "Tetapan Ganjaran",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "Ganjaran anda daripada Iklan sudah diterima!",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "dan",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "Dapatkan Ganjaran kerana Melayari!",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "Peroleh pendapatan dengan menonton iklan yang menghormati privasi, dan lakukan kebaikan kepada orang lain untuk menyokong pencipta kandungan yang anda suka.",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "Aktifkan Brave Rewards",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "Dasar Privasi",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "Dengan klik pada 'Aktifkan Brave Rewards', anda menunjukkan bahawa anda telah membaca dan bersetuju dengan ",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "Syarat Perkhidmatan",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "Selamat Kembali!",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "Sumbangan bulanan anda telah diproses!",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "Sumbangan & Tip",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": "Dengan mengklik 'Sertai Ganjaran', anda menunjukkan yang anda telah membaca dan bersetuju dengan",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "BAT",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "turnOnAds": {
-    "message": "Hidupkan Iklan",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "diperoleh daripada iklan",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "Berikan tip untuk kicauan ini",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "Tip",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "Berikan tip untuk kiriman ini",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "Tip",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "Hantar Tip",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "Tip",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "Pencipta $name$ disahkan baru-baru ini",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "Anda mempunyai tip menunggu kerana dana yang tidak mencukupi",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "Sumbangan Yang Belum Selesai",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "Ini hari bertuah anda!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "Geran $currency$ anda sedang dalam perjalanan.",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "Pemberian Token Percuma",
-    "description": "Token title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "Anda telah memperoleh Ganjaran Iklan!",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "Ganjaran anda dalam perjalanan ke dompet Ganjaran Brave anda.",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "Amaun Ganjaran Anda",
-    "description": "Token title on success screen for ads"
-  },
-  "walletButtonDisconnected":  {
-    "message": "Sambungan Terputus",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "Sahkan Dompet",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "Dompet Disahkan",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "Pergi ke akaun $provider$ anda",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletLogInWithProvider":  {
-    "message": "Log masuk ke akaun$provider$ anda",
-    "description": "CTA to log in with a wallet provider",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "Putuskan daripada Brave Rewards",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "Disahkan",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "Dompet anda telah disahkan!",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "Tahniah! Dompet $name$ anda telah berjaya disahkan dan bersedia untuk menambah dan mengeluarkan dana.",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "Alamak. Dompet anda tidak dapat dicapai.",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "Jangan bimbang. Ini boleh berlaku atas pelbagai sebab keselamatan. Menghubungkan semula dompet anda akan menyelesaikan isu ini.",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "Pencipta Disahkan Brave ini belum lagi mengkonfigurasikan akaun mereka untuk menerima sumbangan daripada Pengguna Brave. Sebarang tip yang anda hantar akan masih ada di dompet anda selagi mereka belum menyelesaikan proses ini.",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "Lengkapkan pengesahan dompet",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "Tetapkan...",
-    "description": "Button text for setting monthly contribution"
+    "message": "Tetapkan",
+    "description": ""
   },
-  "tokens":  {
-    "message": "token",
-    "description": "Standard tokens text"
-  },
-  "point":  {
-    "message": "Mata",
-    "description": "BAT Point text"
-  },
-  "token":  {
-    "message": "Token",
-    "description": "BAT Token text"
-  },
-  "tokenGrants":  {
-    "message": "Pemberian Token",
-    "description": "BAT Tokens Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "Helo, $name$!",
-    "description": "Greetings for external wallet popup",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
-      }
-    }
-  },
-  "cancel":  {
-    "message": "Batal",
-    "description": "Text for cancel button"
-  },
-  "changeAmount":  {
+  "changeAmount": {
     "message": "Tukar jumlah",
-    "description": "Button text for changing monthly contribution amount"
+    "description": ""
   },
-  "login":  {
-    "message": "Log masuk",
-    "description": "Text for login button"
+  "cancel": {
+    "message": "Batal",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "Menentusahkan dompet membolehkan anda menguruskan dana anda dengan lebih berkesan.",
-    "description": "Text for login button"
+  "grantCaptchaTitle": {
+    "message": "Sahkan anda seorang manusia",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "Anda perlu mempunyai minimum $amount$ BAT untuk mencipta akaun Uphold. Jika anda telah mempunyai akaun Uphold yang telah disahkan, terus ke log masuk.",
-    "description": "Text for login button",
+  "grantCaptchaFailedTitle": {
+    "message": "Hmm...Tidak Tepat. Sila Cuba Lagi.",
+    "description": ""
+  },
+  "grantCaptchaHint": {
+    "message": "Seret ikon BAT ke sasaran $hint$.",
+    "description": "",
     "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "walletConnected":  {
-    "message": "Disambungkan",
-    "description": "Status button that tells user that he is connected"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "Ini hari bertuah anda!",
+    "description": ""
   },
-  "walletDisconnected":  {
-    "message": "Sambungan Terputus",
-    "description": "Status button that tells user that he is disconnected"
+  "grantCaptchaPassedTextUGP": {
+    "message": "Pemberian token anda sedang dilaksanakan.",
+    "description": ""
   },
-  "walletPending":  {
-    "message": "Menunggu",
-    "description": "Status button that tells user that he is currently pending"
+  "grantCaptchaAmountUGP": {
+    "message": "Pemberian Token Percuma",
+    "description": ""
   },
-  "walletVerificationNote3":  {
-    "message": "Perhatian: Urus niaga anda akan dapat dilihat oleh $provider$ selepas anda memberi kebenaran, sebagai contoh, mereka boleh melihat penerima dan jumlah tip yang anda berikan.",
-    "description": "Displayed in login modal for external wallet providers",
+  "grantCaptchaPassedTitleAds": {
+    "message": "Anda telah memperoleh Ganjaran Iklan!",
+    "description": ""
+  },
+  "grantCaptchaPassedTextAds": {
+    "message": "Ganjaran anda dalam perjalanan ke dompet Ganjaran Brave anda.",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "Amaun Ganjaran Anda",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "Tarikh Luput Pemberian",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "Maaf, berlaku kesilapan. Sila cuba sebentar lagi.",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "Ganjaran Brave mengalami masalah. Sila cuba sebentar lagi.",
+    "description": ""
+  },
+  "walletAccountLink": {
+    "message": "Pergi ke akaun $provider$ saya",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "Tambah Dana",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "Auto-Sumbang",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "Pergi ke $provider$ untuk melengkapkan pengesahan",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Sila lengkapkan pengesahan identiti untuk mula menerima ganjaran.",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "Sambungan Terputus",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "Putuskan daripada Brave Rewards",
+    "description": ""
+  },
+  "walletEstimatedEarnings": {
+    "message": "Pendapatan Anggaran",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "Log masuk ke akaun$provider$ anda",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "Tip Bulanan",
+    "description": ""
+  },
+  "walletMyWallet": {
+    "message": "Dompet Saya",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "Tip Sekali Guna",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "Menunggu",
+    "description": ""
+  },
+  "walletPendingRewardsText": {
+    "message": "$amount$ akan tiba dalam $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "walletRewardsFromAds": {
+    "message": "Ganjaran dari Iklan",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "Ringkasan Ganjaran",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "Disahkan",
+    "description": ""
+  },
+  "walletVerify": {
+    "message": "Sahkan Dompet",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "Baki Anda",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "Tambah Dana",
+    "description": ""
+  },
+  "notificationLearnMore": {
+    "message": "Ketahui Lebih Lanjut",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "Sambung semula",
+    "description": ""
+  },
+  "notificationClaim": {
+    "message": "Tuntut",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "Dana Tidak Mencukupi",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "Akaun Brave Rewards anda sedang menunggu deposit.",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "Auto-Sumbang",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "Anda telah menyumbang $amount$.",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "Dompet sandaran",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Sila sandarkan dompet Brave anda.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Buat sandaran sekarang",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "Dompet anda dilog keluar",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "Ini boleh berlaku untuk memastikan akaun anda selamat. Klik di bawah untuk menyambung semula sekarang.",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "Sambung semula",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "Dompet anda telah disahkan!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Dompet$provider$ anda telah berjaya disahkan dan sedia untuk menambah dan mengeluarkan dana.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "Geran token",
+    "description": ""
+  },
+  "notificationTokenGrantText": {
+    "message": "Anda mempunyai pemberian menanti anda.",
+    "description": ""
+  },
+  "notificationAdGrantTitle": {
+    "message": "Pendapatan iklan diterima",
+    "description": ""
+  },
+  "notificationAdGrantText": {
+    "message": "Ganjaran anda untuk Brave Private Ads sudah tiba!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Sumbangan bulanan gagal",
+    "description": ""
+  },
+  "notificationInsufficientFundsText": {
+    "message": "Bayaran bulanan anda yang dijadualkan untuk Auto-Contribute dan sumbangan bulanan tidak dapat dilakukan kerana dana tidak mencukupi. Kami akan cuba lagi dalam masa 30 hari.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "Terdapat beberapa masalah memproses sumbangan anda.",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "Sumbangan dan tip",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "Sumbangan bulanan anda telah diproses.",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "Sumbangan belum selesai",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "Pencipta$publisher_name$ disahkan baru-baru  ini.",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "Dana tidak mencukupi",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "Anda mempunyai tip menunggu kerana dana yang tidak mencukupi",
+    "description": ""
+  },
+  "notificationWalletLinkingFailedTitle": {
+    "message": "Pemautan dompet gagal",
+    "description": ""
+  },
+  "notificationDeviceLimitReachedText": {
+    "message": "Dompet anda tidak dapat disahkan kerana anda telah mencapai had maksimum peranti yang disahkan.",
+    "description": ""
+  },
+  "notificationMismatchedProviderAccountsText": {
+    "message": "Nampaknya dompet Brave Rewards anda telah disahkan dengan akaun $provider$  yang lain. Sila cuba sahkan sekali lagi menggunakan akaun anda yang sebelumnya.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationUpholdBatNotSupportedText": {
+    "message": "BAT belum lagi disokong di rantau anda di Uphold.",
+    "description": ""
+  },
+  "notificationUpholdUserBlockedText": {
+    "message": "Akaun anda di Uphold disekat pada masa ini.",
+    "description": ""
+  },
+  "notificationUpholdUserPendingText": {
+    "message": "Akaun anda di Uphold masih belum selesai.",
+    "description": ""
+  },
+  "notificationUpholdUserRestrictedText": {
+    "message": "Akaun anda di Uphold dihad pada masa ini.",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "Dapatkan Token & Beri Balik",
@@ -854,5 +551,29 @@
         "content": "$2"
       }
     }
+  },
+  "captchaMaxAttemptsExceededText": {
+    "message": "Nampaknya ini tidak berfungsi, Brave ads akan dijeda. Hubungi kami jika anda memerlukan bantuan dengan captcha.",
+    "description": ""
+  },
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "Percubaan maksimum dilepasi",
+    "description": ""
+  },
+  "captchaSolvedTitle": {
+    "message": "Diselesaikan!",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "Iklan dan pendapatan kini akan disambung semula. Terima kasih kerana membantu kami melindungi Brave Rewards dan iklan berdasarkan privasi.",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "Hubungi sokongan",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "Singkirkan",
+    "description": ""
   }
 }

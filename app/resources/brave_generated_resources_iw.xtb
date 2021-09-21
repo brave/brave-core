@@ -211,7 +211,6 @@
 <translation id="6476061084931271248">הפעל מחדש את הצומת כדי להחיל את השינויים</translation>
 <translation id="3754226427671882382">הפעל מחדש את הצומת</translation>
 <translation id="949667118776341807">סובב</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">שם זה אינו חוקי</translation>
 <translation id="6758961763875471084">ערוך שינויים ברשימת העמיתים</translation>
 <translation id="1295874070797049002">יצא מפתח</translation>
@@ -243,6 +242,7 @@
 <translation id="8655170717758778983">מנותב אוטומטית לדפי IPFS באמצעות DNSLink כשהדבר אפשרי</translation>
 <translation id="2233724520223030977">משתמש אוטומטית ב-DNSLink כדי לנווט לגרסת IPFS של אתר כשהדבר אפשרי</translation>
 <translation id="6554397389149987360">משתמש ברכיב Hangouts כדי לאפשר שיתוף מסך ותכונות אחרות בדפדפן.</translation>
+<translation id="7878791177459550035">נתב מדיה הופך את תכונת ההעברה לזמינה בדפדפן.</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
 <translation id="7179921470347911571">הפעלה מחדש כעת</translation>
 <translation id="8068526464562249859">משתמש בתוסף IPFS Companion לתמיכה משופרת ב- IPFS ב- Brave, כולל גישה למשימות IPFS נפוצות מסרגל הדפדפן שלך.</translation>
@@ -352,7 +352,23 @@
 <translation id="191143826155037518">Brave זמין עבורך תחת <ph name="BEGIN_LINK_MPL"/> הרישיון הציבורי של מוזילה 2.0<ph name="END_LINK_MPL"/> (MPL) אשר כולל <ph name="BEGIN_LINK_OSS"/> תוכנת קוד פתוח<ph name="END_LINK_OSS"/> תחת מגוון רישיונות אחרים. באפשרותך לקרוא <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/> הנחיות כיצד להוריד ולבנות בעצמך<ph name="END_LINK_BUILD_INSTRUCTIONS"/> את <ph name="BEGIN_LINK_SOURCE_CODE"/>קוד המקור הספציפי בו נעשה שימוש כדי ליצור עותק זה <ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">צור סימניה לכל הכרטיסיות...</translation>
 <translation id="2336228925368920074">צור סימניה לכל הכרטיסיות...</translation>
+<translation id="4235920711083356755">הצג את לחצן VPN</translation>
+<translation id="4070612712151038707">מציג את לחצן VPN בסרגל הכלים</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">אודות Brave VPN</translation>
+<translation id="4378551569595875038">מתחבר...</translation>
+<translation id="3368922792935385530">מחובר</translation>
+<translation id="1536754031901697553">מתנתק...</translation>
+<translation id="8030169304546394654">מנותק</translation>
+<translation id="1863950594388384201">הצג את לחצן VPN בסרגל הכלים</translation>
+<translation id="5187139277471084437">הסתר את לחצן VPN בסרגל הכלים</translation>
+<translation id="8041089156583427627">שליחת משוב</translation>
+<translation id="4049186905514157504">ניהול התוכנית שלי</translation>
+<translation id="7570585565843385325">הצג את לחצן VPN בסרגל הכלים</translation>
+<translation id="5310426188697803101">הסתר את לחצן VPN בסרגל הכלים</translation>
+<translation id="945522503751344254">שליחת משוב</translation>
+<translation id="3015685033234401792">ניהול התוכנית שלי</translation>
 <translation id="796831669370432378">כדי להוסיף סימנייה, לחצו על כפתור הסימנייה שליד שורת הכתובת</translation>
 <translation id="4989337484121655457">דרושה גישה מלאה לדיסק</translation>
 <translation id="8025559074845816210">Brave זקוק לגישה מלאה לדיסק כדי לייבא את הסימניות שלך מ-Safari.</translation>

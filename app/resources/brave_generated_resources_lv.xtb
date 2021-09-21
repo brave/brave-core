@@ -210,7 +210,6 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="6476061084931271248">Restartējiet mezglu, lai izmaiņas stātos spēkā</translation>
 <translation id="3754226427671882382">Restartēt mezglu</translation>
 <translation id="949667118776341807">Pagriezt</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Šis nosaukums nav derīgs</translation>
 <translation id="6758961763875471084">Modificēt vienrangu sarakstu</translation>
 <translation id="1295874070797049002">Eksportēt atslēgu</translation>
@@ -242,6 +241,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="8655170717758778983">Automātiski pārvirzīt uz IPFS lapām, izmantojot DNSLink, kad iespējams</translation>
 <translation id="2233724520223030977">Automātiski izmanto DNSLink, lai dotos uz tīmekļa vietnes IPFS versiju, kad iespējams</translation>
 <translation id="6554397389149987360">Izmanto funkcijas Hangouts elementu, lai pārlūkprogrammā iespējotu ekrāna kopīgošanu un citas funkcijas.</translation>
+<translation id="7878791177459550035">Multivides maršrutētājs pārlūkā nodrošina apraides funkciju.</translation>
 <translation id="9156965752763025780">Izmaiņas stāsies spēkā, kad restartēsiet Brave.</translation>
 <translation id="7179921470347911571">Restartēt tūlīt</translation>
 <translation id="8068526464562249859">Izmanto IPFS kompanjona paplašinājumu, lai atbalstītu IPFS lietošanu Brave pārlūkprogrammā, iekļaujot piekļuvi parastajiem IPFS uzdevumiem no pārlūkprogrammas joslas.</translation>
@@ -352,7 +352,23 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
         Varat izlasīt <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>norādījumus un uzzināt, kā pašam izveidot<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>pirmkodu, kas izmantots šī eksemplāra izveidošanai<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Saglabāt visas cilnes kā grāmatzīmes...</translation>
 <translation id="2336228925368920074">Saglabāt visas cilnes kā grāmatzīmes...</translation>
+<translation id="4235920711083356755">Rādīt VPN pogu</translation>
+<translation id="4070612712151038707">Rāda VPN pogu rīkjoslā</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Par Brave VPN</translation>
+<translation id="4378551569595875038">Notiek pievienošana...</translation>
+<translation id="3368922792935385530">pievienots</translation>
+<translation id="1536754031901697553">Notiek atvienošana...</translation>
+<translation id="8030169304546394654">Atvienots</translation>
+<translation id="1863950594388384201">Rādīt VPN pogu rīkjoslā</translation>
+<translation id="5187139277471084437">Slēpt VPN pogu rīkjoslā</translation>
+<translation id="8041089156583427627">Sūtīt atsauksmes</translation>
+<translation id="4049186905514157504">Pārvaldīt plānu</translation>
+<translation id="7570585565843385325">Rādīt VPN pogu rīkjoslā</translation>
+<translation id="5310426188697803101">Slēpt VPN pogu rīkjoslā</translation>
+<translation id="945522503751344254">Sūtīt atsauksmes</translation>
+<translation id="3015685033234401792">Pārvaldīt plānu</translation>
 <translation id="796831669370432378">Lai pievienotu grāmatzīmi, klikšķinet uz grāmatzīmes pogas, kas atrodas blakus adrešu joslai</translation>
 <translation id="4989337484121655457">Nepieciešama pilnīga piekļuve diskam</translation>
 <translation id="8025559074845816210">Brave ir nepieciešama pilnīga piekļuve diskam, lai importētu jūsu grāmatzīmes no Safari.</translation>

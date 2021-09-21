@@ -101,7 +101,6 @@
 <translation id="9183662282810237335">Ieși din Brave oricum?</translation>
 <translation id="4065288863231444640">Permite Brave să ruleze în fundal</translation>
 <translation id="8148611988012584308">Personalizați și controlați Brave</translation>
-<translation id="1201005444605297066">În această pagină poți să gestionezi conturile Brave la care te-ai conectat. Conturile vor fi disponibile în browserul Brave și în aplicații din Magazinul Play, precum și în servicii cum ar fi Gmail, Drive și YouTube. <ph name="LINK_BEGIN"/>Află mai multe<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Bun venit la Brave; fereastră de browser nouă deschisă</translation>
 <translation id="2633397153656205379">Brave nu s-a actualizat. A apărut o eroare. <ph name="BEGIN_LINK"/>Remediază problemele de actualizare și actualizările nereușite în Brave.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Continui cu un profil Brave nou?</translation>
@@ -246,6 +245,7 @@ Brave nu poate recupera setările.</translation>
 <translation id="2925193881330501265">Ați fost conectat(ă) la Brave ca <ph name="USER_EMAIL_ADDRESS"/>. Utilizați același cont pentru a vă conecta din nou.</translation>
 <translation id="6915252145142862992">Aceasta este o instalare secundară a browserului Brave și nu poate fi setat ca browser prestabilit.</translation>
 <translation id="7685904775439037072">Odată ce Brave are acces, site-urile web îți vor putea solicita accesul.</translation>
+<translation id="828406390101464081">Următoarele conturi nu sunt conectate la niciun profil Brave. Dacă vrei să folosești un cont într-un alt profil, mai întâi elimină profilul respectiv.</translation>
 <translation id="9067428552314418522">Fișierul este periculos, așadar Brave l-a blocat.</translation>
 <translation id="8207657266087451193">Dacă o imagine nu are o descriere utilă, Brave va încerca să o completeze. Pentru a crea descrieri, imaginile sunt trimise la Brave. Poți dezactiva această opțiune oricând din setări.</translation>
 <translation id="8622246347342688645">Brave nu îți poate verifica parolele, deoarece nu te-ai conectat</translation>
@@ -295,4 +295,5 @@ Brave nu poate recupera setările.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administratorul solicită să relansezi Brave pentru a aplica această actualizare}=1{Administratorul solicită să relansezi Brave pentru a aplica această actualizare. Fereastra incognito nu se va mai deschide.}few{Administratorul solicită să relansezi Brave pentru a aplica această actualizare. Cele # ferestre incognito nu se vor mai deschide.}other{Administratorul solicită să relansezi Brave pentru a aplica această actualizare. Cele # de ferestre incognito nu se vor mai deschide.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administratorul solicită să relansezi Brave pentru a aplica o actualizare}=1{Administratorul solicită să relansezi Brave pentru a aplica o actualizare. Fereastra incognito nu se va mai deschide.}few{Administratorul solicită să relansezi Brave pentru a aplica o actualizare. Cele # ferestre incognito nu se vor mai deschide.}other{Administratorul solicită să relansezi Brave pentru a aplica o actualizare. Cele # de ferestre incognito nu se vor mai deschide.}}</translation>
 <translation id="7914115000169617076">Actualizarea este aproape gata! Relansează Brave pentru a finaliza actualizarea. Ferestrele private nu se vor redeschide.</translation>
+<translation id="2176087127109773485">Puteți gestiona lanțurile de sincronizare conectate Brave. Acestea se utilizează pentru browser-ul Brave, Play Store, Gmail și altele. Dacă doriți să adăugați un cont pentru o altă persoană, precum un membru al familiei, adăugați un nou profil în <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Aflați mai multe<ph name="LINK_END"/></translation>
 </translationbundle>

@@ -18,6 +18,7 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="5616153642055197778">Brave-en bertsio berriagoa eta seguruagoa erabilgarri dago.</translation>
 <translation id="6797402139308059782">Onartu Brave atzeko planoan abiaraztea</translation>
 <translation id="5875673934455379806">Instalatu berriro Brave</translation>
+<translation id="2176087127109773485">Saioa hasita daukaten Brave-ko kontuak kudea ditzakezu. Brave-ko kontuak Brave arakatzaile, Play Store, Gmail eta abarrerako erabiltzen dira. Kontu bat beste norbaitentzat gehitu nahi baduzu (adibidez, familiako kide batentzat), gehitu beste pertsona bat <ph name="DEVICE_TYPE"/> gailuan. <ph name="LINK_BEGIN"/>Lortu informazio gehiago<ph name="LINK_END"/></translation>
 <translation id="4528406859989804913">Kontu kudeatu batekin hasten ari zara saioa eta kontuaren administratzaileari zure Brave profila kontrolatzeko ahalmena ematera zoaz. Brave aplikazioan dituzun datuak, esaterako, aplikazioak, laster-markak, historia, pasahitzak eta beste ezarpen batzuk betiko lotuko zaizkio <ph name="USER_NAME"/> erabiltzaileari. Brave-ko kontuetako Panelaren bidez ezabatu ahalko dituzu datu horiek, baina ezingo dituzu beste kontu batekin lotu. <ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">Aukera hau desaktibatzen baduzu, Brave-ren webguneetan saioa hasi ahalko duzu (adibidez, Gmail-en) Brave-en saioa hasi beharrik gabe</translation>
 <translation id="189297655255130768">Brave-ek ez du eranzuten. Berrabiarazi nahi duzu?</translation>
@@ -103,7 +104,6 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="9183662282810237335">Brave-etik irten nahi duzu hala ere?</translation>
 <translation id="4065288863231444640">Onartu Brave atzeko planoan abiaraztea</translation>
 <translation id="8148611988012584308">Pertsonalizatu eta kontrolatu Brave</translation>
-<translation id="1201005444605297066">Orri honen bitartez, saioa hasita daukaten Brave-ko kontuak kudea ditzakezu. Horrela, erabilgarri izango dituzu Brave arakatzailean eta Play Store-ko aplikazioetan, baita beste zerbitzu batzuetan ere: Gmail, Drive, YouTube eta abar. <ph name="LINK_BEGIN"/>Lortu informazio gehiago<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Ongi etorri Brave-era; beste leiho bat ireki da arakatzailean</translation>
 <translation id="2633397153656205379">Brave ez da eguneratu arazoren bat izan delako. <ph name="BEGIN_LINK"/>Konpondu Brave eguneratzeko arazoak eta huts egindako eguneratzeak.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Brave-eko beste profil batean egin nahi duzu aurrera?</translation>
@@ -249,6 +249,7 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="2925193881330501265">Brave-en <ph name="USER_EMAIL_ADDRESS"/> gisa hasi duzu saioa. Saioa berriro hasteko, erabili hasiera batean erabilitako kontu bera.</translation>
 <translation id="6915252145142862992">Brave-en bigarren mailako instalazio bat da hau; beraz, ezin duzu ezarri arakatzaile lehenetsi gisa.</translation>
 <translation id="7685904775439037072">Brave-ek sarbidea duenean, webguneek sarbidea eskatuko dizute.</translation>
+<translation id="828406390101464081">Kontu hauek ez dute hasi saioa Brave-eko inongo profiletan. Beste profil bateko kontu bat erabili nahi baduzu, kendu lehenik profil hori.</translation>
 <translation id="9067428552314418522">Fitxategia arriskutsua da; horregatik, blokeatu egin du Brave-ek.</translation>
 <translation id="8207657266087451193">Irudiren batek ez badu azalpen lagungarririk, halako bat lortzen ahaleginduko da Brave. Azalpen horiek sortzeko, irudiak Brave-ri bidaltzen zaizkio. Aukera hori desaktibatu nahi baduzu, joan ezarpenetara.</translation>
 <translation id="8622246347342688645">Brave-ek ezin ditu egiaztatu pasahitzak saioa hasi ez duzulako</translation>

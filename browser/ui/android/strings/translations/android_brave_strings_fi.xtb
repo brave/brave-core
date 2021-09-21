@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">Estää seuraajia ja mainoksia lataamasta ja näkymästä verkkosivuilla</translation>
 <translation id="1680858055899097121">Älä säilytä välilehtiä selausistuntojen välillä</translation>
 <translation id="7142548388914389999">Salli yksityisyyden säilyttävä tuoteanalytiikka (P3A)</translation>
-<translation id="5254037869598726291">Nämä täysin anonymisoidut tiedot auttavat Bravea arvioimaan tiettyjen ominaisuuksien kokonaiskäytön ja tekemään niistä parempia sinulle.</translation>
+<translation id="4272190451231642425">Lähetä virheraportit automaattisesti</translation>
+<translation id="2239766974964486304">Virheraporttien avulla Brave voi parantaa tuotteen vakautta kaikille käyttäjille.</translation>
 <translation id="7977176350719484850">Tallennettuja\ntietoja keskimäärin</translation>
 <translation id="9008534313521214777">Arvioitu säästetty\naika</translation>
 <translation id="6572660632052512096">Työpöytätila</translation>
@@ -481,7 +482,7 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="1078265935778232285">Tervetuloa Brave-selaimeen</translation>
 <translation id="6824713633331856331">Auta meitä kehittymään nimettömästi</translation>
 <translation id="6116685031674149112">Brave suojaa yksityisyyttäsi ja\npyytäisi sinua hyväksymään seuraavan:</translation>
-<translation id="4394483075076204916">Auta kehittämään Bravea lähettämällä kaatumisraportteja sekä täysin nimettömiä <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Auta parantamaan Bravea lähettämällä täysin anonymisoitu <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">yksityistuoteanalytiikka.</translation>
 <translation id="5187052478998910855">Tarvitsetko kertausta Rewardsin toiminnasta?</translation>
 <translation id="8622329973403382303">Käy pikakierroksella kerrataksesi, kuinka voit siirtyä historiassa alaspäin Rewards-ammattilaisen tavoin!</translation>
@@ -564,7 +565,6 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="1144810021918451336">Ei suojele sinua vaarallisilta verkkosivustoilta, latauksilta ja laajennuksilta.</translation>
 <translation id="745115390910697838">Lauseet eivät täsmää. Yritä uudelleen.</translation>
 <translation id="2360588547830602174">Tilin palautus epäonnistui. Yritä uudelleen.</translation>
-<translation id="1530109021798294736">Pääverkko</translation>
 <translation id="990936698620790924">Markkinahinta Ethereumeissa</translation>
 <translation id="5593852897152820572">Hinta Ethereumeissa</translation>
 <translation id="6748108480210050150">Alkaen</translation>
@@ -598,4 +598,5 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="8967036623785635603">Muokkaa näkyviä omaisuuseriä</translation>
 <translation id="5050890334032852465">Tallenna tilin seurantalista</translation>
 <translation id="7755766175599167100">Hae tokeneista</translation>
+<translation id="3835223348537121988">Saldo:</translation>
 </translationbundle>
