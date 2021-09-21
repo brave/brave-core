@@ -202,6 +202,8 @@ export interface PageState {
   importError: boolean
   showAddModal: boolean
   swapQuote?: SwapResponse
+  isBraveCryptoWalletInstalled: boolean
+  isMetamaskInstalled: boolean
 }
 
 export interface WalletPageState {

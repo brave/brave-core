@@ -84,3 +84,8 @@ export type SwapParamsPayloadType = {
   networkChainId: string,
   full: boolean
 }
+
+export type ImportFromExternalWalletPayloadType = {
+  password: string,
+  newPassword: string
+}

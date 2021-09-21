@@ -18,7 +18,8 @@ import {
   RemoveHardwareAccountPayloadType,
   ViewPrivateKeyPayloadType,
   ImportAccountFromJsonPayloadType,
-  SwapParamsPayloadType
+  SwapParamsPayloadType,
+  ImportFromExternalWalletPayloadType
 } from '../constants/action_types'
 import {
   HardwareWalletAccount
@@ -52,3 +53,8 @@ export const addHardwareAccounts = createAction<HardwareWalletAccount[]>('addHar
 export const removeHardwareAccount = createAction<RemoveHardwareAccountPayloadType>('removeHardwareAccount')
 export const fetchSwapQuote = createAction<SwapParamsPayloadType>('fetchSwapQuote')
 export const setSwapQuote = createAction<SwapResponse>('setSwapQuote')
+export const checkWalletsToImport = createAction('checkWalletsToImport')
+export const setBraveCryptoWalletInstalled = createAction<boolean>('setBraveCryptoWalletInstalled')
+export const setMetamaskInstalled = createAction<boolean>('setMetamaskInstalled')
+export const importFromBraveCryptoWallet = createAction<ImportFromExternalWalletPayloadType>('importFromBraveCryptoWallet')
+export const importFromMetamask = createAction<ImportFromExternalWalletPayloadType>('importFromMetamask')

@@ -107,7 +107,9 @@ function Container (props: Props) {
     privateKey,
     importError,
     showAddModal,
-    swapQuote
+    swapQuote,
+    isBraveCryptoWalletInstalled,
+    isMetamaskInstalled
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
@@ -550,11 +552,17 @@ function Container (props: Props) {
   }
 
   const onImportBraveLegacy = (password: string) => {
-    // Logic here to import a detected Brave Legacy Wallet
+    // TODO(Douglashdaniel): Use different set of password for new password
+    props.walletPageActions.importFromBraveCryptoWallet({ password, newPassword: password })
   }
 
   const onImportMetaMask = (password: string) => {
-    // Logic here to import a detected MetaMask Wallet
+    // TODO(Douglashdaniel): Use different set of password for new password
+    props.walletPageActions.importFromMetamask({ password, newPassword: password })
+  }
+
+  const checkWalletsToImport = () => {
+    props.walletPageActions.checkWalletsToImport()
   }
 
   const onAddCustomToken = (
@@ -579,6 +587,7 @@ function Container (props: Props) {
     }
     // If wallet is not yet created will Route to Onboarding
     if ((!isWalletCreated || setupStillInProgress) && walletLocation !== WalletRoutes.Restore) {
+      checkWalletsToImport()
       history.push(WalletRoutes.Onboarding)
       // If wallet is created will Route to login
     } else if (isWalletLocked && walletLocation !== WalletRoutes.Restore) {
@@ -633,8 +642,8 @@ function Container (props: Props) {
               onSubmit={completeWalletSetup}
               onShowRestore={onToggleShowRestore}
               // Pass a boolean if either wallet is detected
-              braveLegacyWalletDetected={false}
-              metaMaskWalletDetected={false}
+              braveLegacyWalletDetected={isBraveCryptoWalletInstalled}
+              metaMaskWalletDetected={isMetamaskInstalled}
               // Pass a boolean if it failed to import
               hasImportError={false}
               onImportBraveLegacy={onImportBraveLegacy}

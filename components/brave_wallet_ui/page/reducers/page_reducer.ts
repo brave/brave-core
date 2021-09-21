@@ -34,7 +34,9 @@ const defaultState: PageState = {
   isFetchingPriceHistory: false,
   showIsRestoring: false,
   setupStillInProgress: false,
-  swapQuote: undefined
+  swapQuote: undefined,
+  isBraveCryptoWalletInstalled: false,
+  isMetamaskInstalled: false
 }
 
 const reducer = createReducer<PageState>({}, defaultState)
@@ -148,6 +150,20 @@ reducer.on(Actions.setSwapQuote, (state: PageState, payload: SwapResponse) => {
   return {
     ...state,
     swapQuote: payload
+  }
+})
+
+reducer.on(Actions.setBraveCryptoWalletInstalled, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    isBraveCryptoWalletInstalled: payload
+  }
+})
+
+reducer.on(Actions.setMetamaskInstalled, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    isMetamaskInstalled: payload
   }
 })
 
