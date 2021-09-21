@@ -211,7 +211,7 @@
 <translation id="6476061084931271248">重启节点来应用更改</translation>
 <translation id="3754226427671882382">重启节点</translation>
 <translation id="949667118776341807">旋转</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">此名称无效</translation>
 <translation id="6758961763875471084">修改对等列表</translation>
 <translation id="1295874070797049002">导出密钥</translation>
@@ -243,6 +243,7 @@
 <translation id="8655170717758778983">可能时通过 DNSLink 自动重定向到 IPFS 页面</translation>
 <translation id="2233724520223030977">在可能的情况下自动使用 DNSLink 导航到网站的 IPFS 版本</translation>
 <translation id="6554397389149987360">使用环聊组件在浏览器中启用屏幕共享和其他功能。</translation>
+<translation id="7878791177459550035">媒体路由器在浏览器中启用投射功能。</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
 <translation id="8068526464562249859">在 Brave 中使用 IPFS Companion 扩展来增强 IPFS 支持（包括从浏览器栏中访问常见的 IPFS 任务）。</translation>
@@ -353,7 +354,23 @@
         您可以自己阅读一下 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>有关如何自行下载和构建<ph name="END_LINK_BUILD_INSTRUCTIONS"/>用来创建此副本的特定 <ph name="BEGIN_LINK_SOURCE_CODE"/>源代码的说明<ph name="END_LINK_SOURCE_CODE"/>。</translation>
 <translation id="4474155171896946103">为所有标签页添加书签...</translation>
 <translation id="2336228925368920074">为所有标签页添加书签...</translation>
+<translation id="4235920711083356755">显示 VPN 按钮</translation>
+<translation id="4070612712151038707">显示工具栏中的 VPN 按钮</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave 的 VPN</translation>
+<translation id="2345974803401546682">关于 Brave VPN</translation>
+<translation id="4378551569595875038">正在连接…</translation>
+<translation id="3368922792935385530">已连接</translation>
+<translation id="1536754031901697553">正在断开连接…</translation>
+<translation id="8030169304546394654">已断开连接</translation>
+<translation id="1863950594388384201">显示工具栏中的 VPN 按钮</translation>
+<translation id="5187139277471084437">隐藏工具栏中的 VPN 按钮</translation>
+<translation id="8041089156583427627">发送反馈</translation>
+<translation id="4049186905514157504">管理我的计划</translation>
+<translation id="7570585565843385325">显示工具栏中的 VPN 按钮</translation>
+<translation id="5310426188697803101">隐藏工具栏中的 VPN 按钮</translation>
+<translation id="945522503751344254">发送反馈</translation>
+<translation id="3015685033234401792">管理我的计划</translation>
 <translation id="796831669370432378">要添加书签，请点击地址栏旁边的书签按钮</translation>
 <translation id="4989337484121655457">需要完全的磁盘访问权限</translation>
 <translation id="8025559074845816210">Brave  需要完全的磁盘访问权限才能从 Safari 导入书签。</translation>
@@ -365,4 +382,5 @@
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
 <translation id="2273851479262317744">将 Brave 设为默认浏览器</translation>
 <translation id="8581710194025054669">为了确保最佳的在线隐私，可以考虑将 Brave 设置为您电脑上的默认浏览器。将 Brave 设为默认浏览器后，您点击的任何网络链接都将享有 Brave 的隐私保护功能。</translation>
+<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 </translationbundle>

@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">Megakadályozza a nyomkövetők és hirdetések betöltését és megjelenítését a weboldalakon</translation>
 <translation id="1680858055899097121">Új böngészés kezdésekor ne maradjanak nyitva az előzőleg megnyitott fülek</translation>
 <translation id="7142548388914389999">Az adatvédelmet megőrző termékelemzés (P3A) engedélyezése</translation>
-<translation id="5254037869598726291">Ez a teljes mértékben anonimizált adat segít a Brave-nek megbecsülni bizonyos funkciók használatát, valamint fejleszteni a szolgáltatást.</translation>
+<translation id="4272190451231642425">Hibajelentések automatikus küldése</translation>
+<translation id="2239766974964486304">A hibajelentések segítenek, hogy a Brave minden felhasználó számára ugyanazt nyújtsa.</translation>
 <translation id="7977176350719484850">Becs. adatok\nmentve</translation>
 <translation id="9008534313521214777">Becsült megtakarított\nidő</translation>
 <translation id="6572660632052512096">Asztali mód</translation>
@@ -370,12 +371,12 @@ hónapban...</translation>
 <translation id="7427567994475794038">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi hirdetés és követő lett letiltva az elmúlt 3 órában.</translation>
 <translation id="2053891538879944400"><ph name="DATA"/> <ph name="DATA_TEXT"/> adatot spóroltál a Brave böngészővel.</translation>
 <translation id="8640064498452534195">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi adatot spóroltál.</translation>
-<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.&#128267;</translation>
+<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.🔋</translation>
 <translation id="1945330434665345785">Az elmúlt héten <ph name="COUNT"/> követőt és reklámot blokkoltál a Brave böngészővel.</translation>
 <translation id="2883868922264431515">Szerezz tokeneket magánéletet tiszteletben tartó reklámok nézésével, és támogasd kedvenc weboldalaidat.</translation>
-<translation id="5678925890616256956">Remek! Blokkolt 250 követőt &amp; hirdetést a Brave böngészővel.&#128293;</translation>
+<translation id="5678925890616256956">Remek! Blokkolt 250 követőt &amp; hirdetést a Brave böngészővel.🔥</translation>
 <translation id="9199047775708635708">Nagyszerű! Már 10MB-ot takarított meg a Brave böngészővel.</translation>
-<translation id="1880168210969863408">Nagyszerű! 10 perc töltési időt spórolt meg a Brave böngészővel.&#128168;&#128168;</translation>
+<translation id="1880168210969863408">Nagyszerű! 10 perc töltési időt spórolt meg a Brave böngészővel.💨💨</translation>
 <translation id="7408493389591475748">Az adatvédelmi jelentés megtekintéséhez kezdj el böngészni</translation>
 <translation id="9080777565335515917">Tedd a Brave-et alapértelmezett böngésződdé, hogy a böngészés privát és biztonságos legyen.</translation>
 <translation id="1390943217516275883">Engedélyezi, hogy a Brave megmutassa adatvédelmi statisztikáidat</translation>
@@ -478,7 +479,7 @@ hónapban...</translation>
 <translation id="1078265935778232285">Üdvözöljük a Brave böngészőben</translation>
 <translation id="6824713633331856331">Segíts fejlődnünk névtelenül</translation>
 <translation id="6116685031674149112">A Brave vigyáz adataidra, és\nhálás, hogy elfogadtad a következőket:</translation>
-<translation id="4394483075076204916">Segíthetsz a Brave fejlesztésében összeomlási jelentések és teljesen névtelen <ph name="PRIVATE_PRODUCT_ANALYSIS"/> küldésével</translation>
+<translation id="4394483075076204916">Segíthet a Brave fejlesztésében teljesen névtelen <ph name="PRIVATE_PRODUCT_ANALYSIS"/> küldésével</translation>
 <translation id="6478996494082389936">privát termékelemzés.</translation>
 <translation id="5187052478998910855">Kell egy kis frissítés a Rewardsot illetően?</translation>
 <translation id="8622329973403382303">Nézz meg egy gyors bemutatót, hogy tisztázódjon, hogyan működik, és Rewards rocksztárként jegyezhessen fel a történelem!</translation>
@@ -561,7 +562,6 @@ hónapban...</translation>
 <translation id="1144810021918451336">Nem védi meg a veszélyes webhelyek, letöltések és bővítmények ellen.</translation>
 <translation id="745115390910697838">A kifejezések nem egyeznek. Próbáld meg újra.</translation>
 <translation id="2360588547830602174">A fiók helyreállítása sikertelen volt. Próbáld meg újra.</translation>
-<translation id="1530109021798294736">Mainnet (végleges hálózat)</translation>
 <translation id="990936698620790924">Piaci ár ETH-ban</translation>
 <translation id="5593852897152820572">Ár ETH-ban</translation>
 <translation id="6748108480210050150">Feladó</translation>
@@ -595,4 +595,7 @@ hónapban...</translation>
 <translation id="8967036623785635603">Látható eszközök szerkesztése</translation>
 <translation id="5050890334032852465">Számla figyelőlistájának elmentése</translation>
 <translation id="7755766175599167100">Token keresése</translation>
+<translation id="3835223348537121988">Egyenleg:</translation>
+<translation id="5254037869598726291">Ez a teljes mértékben anonimizált adat segít a Brave-nek megbecsülni bizonyos funkciók használatát, valamint fejleszteni a szolgáltatást.</translation>
+<translation id="1530109021798294736">Mainnet (végleges hálózat)</translation>
 </translationbundle>

@@ -101,7 +101,6 @@
 <translation id="9183662282810237335">Tetap keluar dari Brave?</translation>
 <translation id="4065288863231444640">Jalankan Brave di Background</translation>
 <translation id="8148611988012584308">Menyesuaikan dan mengontrol Brave</translation>
-<translation id="1201005444605297066">Halaman ini memungkinkan Anda mengelola Akun Brave yang Anda gunakan untuk login. Akun ini akan tersedia di browser Brave dan aplikasi Play Store, serta berbagai layanan seperti Gmail, Drive, dan YouTube. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Selamat datang di Brave; jendela browser baru terbuka</translation>
 <translation id="2633397153656205379">Brave tidak dapat diupdate, terjadi error. <ph name="BEGIN_LINK"/>Perbaiki masalah update Brave dan update yang gagal.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Lanjutkan di profil Brave baru?</translation>
@@ -247,6 +246,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="2925193881330501265">Anda telah masuk ke Brave sebagai <ph name="USER_EMAIL_ADDRESS"/>. Gunakan akun yang sama untuk masuk kembali.</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan Brave sekunder, dan tidak dapat digunakan sebagai browser default.</translation>
 <translation id="7685904775439037072">Setelah Brave memiliki akses, situs dapat meminta akses dari Anda.</translation>
+<translation id="828406390101464081">Akun berikut tidak login ke profil Brave mana pun. Jika Anda ingin menggunakan akun di profil lain, hapus profil tersebut terlebih dahulu.</translation>
 <translation id="9067428552314418522">File ini berbahaya, jadi Brave telah memblokirnya.</translation>
 <translation id="8207657266087451193">Jika gambar tidak memiliki deskripsi yang berguna, Brave akan mencoba memberikan deskripsi untuk Anda. Untuk membuat deskripsi, gambar akan dikirim ke Brave. Anda dapat menonaktifkannya kapan saja di setelan.</translation>
 <translation id="8622246347342688645">Brave tidak dapat memeriksa sandi karena Anda tidak login</translation>
@@ -296,4 +296,5 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administrator meminta Anda meluncurkan kembali Brave untuk menerapkan update ini}=1{Administrator meminta Anda meluncurkan kembali Brave untuk menerapkan update ini. Jendela samaran Anda tidak akan dibuka kembali.}other{Administrator meminta Anda meluncurkan kembali Brave untuk menerapkan update ini. # jendela samaran Anda tidak akan dibuka kembali.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administrator mewajibkan Anda meluncurkan kembali Brave untuk menerapkan update}=1{Administrator mewajibkan Anda meluncurkan kembali Brave untuk menerapkan update. Jendela samaran Anda tidak akan dibuka kembali.}other{Administrator mewajibkan Anda meluncurkan kembali Brave untuk menerapkan update. # jendela samaran Anda tidak akan dibuka kembali.}}</translation>
 <translation id="7914115000169617076">Update hampir selesai. Luncurkan ulang Brave untuk menyelesaikan update. Jendela Pribadi tidak akan dibuka kembali.</translation>
+<translation id="2176087127109773485">Anda dapat mengatur rantai sinkronisasi Brave yang Anda masuki. Rantai sinkronisasi Brave Anda digunakan untuk peramban Brave, Play Store, Gmail, dan banyak lagi. Jika Anda ingin menambahkan akun untuk orang lain, misalnya anggota keluarga, tambahkan profil baru ke <ph name="DEVICE_TYPE"/> Anda. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 </translationbundle>

@@ -103,7 +103,6 @@
 <translation id="9183662282810237335">Queres saír de Brave de todas formas?</translation>
 <translation id="4065288863231444640">Deixar que Brave se execute en segundo plano</translation>
 <translation id="8148611988012584308">Personaliza e controla Brave</translation>
-<translation id="1201005444605297066">Desde esta páxina podes xestionar as contas de Brave coas que teñas a sesión iniciada. Estas contas estarán dispoñibles no navegador Brave e nas aplicacións de Play Store, así como noutros servizos (por exemplo, Gmail, Drive e YouTube). <ph name="LINK_BEGIN"/>Máis información<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Dámosche a benvida a Brave. Abriuse unha nova ventá do navegador</translation>
 <translation id="2633397153656205379">Brave non se actualizou, xa que se produciu un erro. <ph name="BEGIN_LINK"/>Soluciona os problemas de actualización de Brave e as actualizacións que non se puidesen realizar<ph name="END_LINK"/>.</translation>
 <translation id="3679799810790990472">Queres continuar nun perfil de Brave novo?</translation>
@@ -178,7 +177,7 @@
 <translation id="3205074487970075628">Brave está utilizando a túa cámara.</translation>
 <translation id="1819119299840995223">Hai outra operación en Brave que está en progreso. Téntao de novo máis tarde.</translation>
 <translation id="8616874628011103667">Agora é máis fácil utilizar Brave coa túa conta de Brave e en ordenadores compartidos.</translation>
-<translation id="335632367599648646">Estás seguro de que queres desinstalar Brave?</translation>
+<translation id="335632367599648646">Seguro que queres desinstalar Brave?</translation>
 <translation id="6373767849825830651">Brave é un navegador web que executa páxinas web e aplicacións a gran velocidade. É rápido, estable e fácil de utilizar. Brave permíteche navegar na web de forma máis segura, xa que inclúe protección contra malware e phishing.</translation>
 <translation id="2644798301485385923">Sistema Chrome OS</translation>
 <translation id="1684121725014454063">Dámosche a benvida aos perfís de Brave</translation>
@@ -248,6 +247,7 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="2925193881330501265">Iniciaches sesión en Brave como <ph name="USER_EMAIL_ADDRESS"/>. Utiliza a mesma conta para iniciar sesión de novo.</translation>
 <translation id="6915252145142862992">Esta é unha instalación secundaria de Brave e non se pode converter no teu navegador predeterminado.</translation>
 <translation id="7685904775439037072">Unha vez que Brave teña acceso, os sitios web poderán solicitalo tamén.</translation>
+<translation id="828406390101464081">As seguintes contas non teñen a sesión iniciada en ningún perfil de Brave. Se queres usar unha conta noutro perfil, primeiro elimina ese perfil.</translation>
 <translation id="9067428552314418522">Este ficheiro é perigoso, así que Brave bloqueouno.</translation>
 <translation id="8207657266087451193">Se unha imaxe non ten unha descrición útil, Brave tentará proporcionarche unha. Para crear descricións, envíanse imaxes a Brave. Podes desactivar esta función na configuración cando queiras.</translation>
 <translation id="8622246347342688645">Brave non puido comprobar os teus contrasinais porque non iniciaches sesión</translation>
@@ -297,4 +297,5 @@ Brave non pode recuperar a túa configuración.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{O teu administrador pídeche que reinicies Brave para aplicar esta actualización}=1{O teu administrador pídeche que reinicies Brave para aplicar esta actualización. A ventá do modo de incógnito non se volverá abrir.}other{O teu administrador pídeche que reinicies Brave para aplicar esta actualización. As # ventás do modo de incógnito non se volverán abrir.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{O teu administrador require que reinicies Brave para aplicar unha actualización}=1{O teu administrador require que reinicies Brave para aplicar unha actualización. A ventá do modo de incógnito non se volverá abrir.}other{O teu administrador require que reinicies Brave para aplicar unha actualización. As # ventás do modo de incógnito non se volverán abrir.}}</translation>
 <translation id="7914115000169617076">A actualización está a piques de rematar. Reinicia Brave para completala. As ventás privadas non se volverán abrir.</translation>
+<translation id="2176087127109773485">Podes xestionar as túas cadeas de sincronización de Brave conectadas. As túas cadeas de sincronización de Brave empréganse no navegador de Brave, Play Store, Gmail e noutras moitas plataformas. Se desexas engadir a conta doutra persoa, como pode ser un familiar, engade un novo perfil no teu <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Máis información<ph name="LINK_END"/></translation>
 </translationbundle>

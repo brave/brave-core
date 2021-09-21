@@ -101,7 +101,6 @@
 <translation id="9183662282810237335">Brave trotzdem beenden?</translation>
 <translation id="4065288863231444640">Brave im Hintergrund ausführen</translation>
 <translation id="8148611988012584308">Brave anpassen und einstellen</translation>
-<translation id="1201005444605297066">Auf dieser Seite können Sie Ihre angemeldeten Brave-Konten verwalten. Diese Konten sind im Brave-Browser, in Play Store-Apps und in Diensten wie Gmail, Google Drive und YouTube verfügbar. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Willkommen bei Brave; neues Browserfenster geöffnet</translation>
 <translation id="2633397153656205379">Brave wurde aufgrund eines Fehlers nicht aktualisiert. Wie Sie Updateprobleme und Fehler bei der Aktualisierung von Brave beheben, <ph name="BEGIN_LINK"/>erfahren Sie hier<ph name="END_LINK"/>.</translation>
 <translation id="3679799810790990472">Mit einem neuen Brave-Profil fortfahren?</translation>
@@ -245,6 +244,7 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="2925193881330501265">Sie waren in Brave als <ph name="USER_EMAIL_ADDRESS"/> angemeldet. Melden Sie sich bitte wieder mit demselben Konto an.</translation>
 <translation id="6915252145142862992">Dies ist eine Zweitinstallation, daher kann Brave nicht als Standardbrowser festgelegt werden.</translation>
 <translation id="7685904775439037072">Sobald Brave Zugriff hat, können Websites Sie um Zugriff bitten.</translation>
+<translation id="828406390101464081">Folgende Konten sind nicht in einem Brave-Profil angemeldet. Wenn Sie ein Konto in einem anderen Profil verwenden möchten, entfernen Sie zuerst dieses Profil.</translation>
 <translation id="9067428552314418522">Diese Datei ist schädlich und wurde von Brave blockiert.</translation>
 <translation id="8207657266087451193">Wenn ein Bild keine brauchbare Beschreibung hat, versucht Brave, eine für Sie zu finden. Damit entsprechende Beschreibungen erstellt werden können, werden die Bilder an Brave gesendet. Sie können dies jederzeit in den Einstellungen deaktivieren.</translation>
 <translation id="8622246347342688645">Brave kann Ihre Passwörter nicht prüfen, da Sie nicht angemeldet sind</translation>
@@ -294,4 +294,5 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Laut Ihrem Administrator sollten Sie Brave neu starten, um dieses Update durchzuführen}=1{Laut Ihrem Administrator sollten Sie Brave neu starten, um dieses Update durchzuführen. Ihr Inkognitofenster wird nicht wieder geöffnet.}other{Laut Ihrem Administrator sollten Sie Brave neu starten, um dieses Update durchzuführen. Ihre # Inkognitofenster werden nicht wieder geöffnet.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Laut Ihrem Administrator müssen Sie Brave neu starten, um ein Update durchzuführen}=1{Laut Ihrem Administrator müssen Sie Brave neu starten, um ein Update durchzuführen. Ihr Inkognitofenster wird nicht wieder geöffnet.}other{Laut Ihrem Administrator müssen Sie Brave neu starten, um ein Update durchzuführen. Ihre # Inkognitofenster werden nicht wieder geöffnet.}}</translation>
 <translation id="7914115000169617076">Fast geschafft! Brave zum Abschluss der Aktualisierung neu starten. Privaten Fenstern werden nicht wieder geöffnet.</translation>
+<translation id="2176087127109773485">Sie können Ihre angemeldeten Brave-Sync-Ketten verwalten. Ihre Brave-Sync-Ketten werden für den Brave Browser, den Play Store, Gmail und mehr verwendet. Wenn Sie ein Konto für jemand anderes (wie etwa ein Familienmitglied) hinzufügen möchten, fügen Sie stattdessen ein neues Profil zu Ihrem <ph name="DEVICE_TYPE"/> hinzu. <ph name="LINK_BEGIN"/>Mehr erfahren<ph name="LINK_END"/></translation>
 </translationbundle>

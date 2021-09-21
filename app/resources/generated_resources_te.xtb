@@ -6,15 +6,17 @@
 <translation id="1003088604756913841">కొత్త <ph name="APP"/> విండోలో లింక్‍ను తెరువు</translation>
 <translation id="100323615638474026">USB పరికరం (<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>)</translation>
 <translation id="1004218526896219317">సైట్ యాక్సెస్</translation>
+<translation id="100524763483954942">సెట్టింగ్‌లకు తిరిగి వెళ్లండి</translation>
 <translation id="1005274289863221750">మీ మైక్రోఫోన్ మరియు కెమెరాను ఉపయోగించండి</translation>
 <translation id="1005333234656240382">ADB డీబగ్గింగ్‌ను ఎనేబుల్ చేయాలా?</translation>
 <translation id="1006873397406093306">సైట్‌లలోని మీ డేటాను ఈ ఎక్స్‌టెన్షన్ చదవగలదు, అలాగే మార్చగలదు. ఏయే సైట్‌లను ఎక్స్‌టెన్షన్ యాక్సెస్ చేయవచ్చన్నది మీరు నియంత్రించవచ్చు.</translation>
 <translation id="1008186147501209563">బుక్‌మార్క్‌లను ఎగుమతి చేయండి</translation>
 <translation id="1008557486741366299">ఇప్పుడు కాదు</translation>
+<translation id="1009476156254802388"><ph name="WEB_DRIVE"/> లొకేషన్</translation>
 <translation id="1010498023906173788">ఈ ట్యాబ్ ఒక సీరియల్ పోర్ట్‌కు కనెక్ట్ చేయబడింది.</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{పేజీ ప్రతిస్పందించడం లేదు}other{పేజీలు ప్రతిస్పందించడం లేదు}}</translation>
 <translation id="1011355516189274711">టెక్ట్స్-టు-స్పీచ్ వాల్యూమ్</translation>
-<translation id="1012794136286421601">మీ డాక్స్, షీట్‌లు, స్లయిడ్‌లు మరియు డ్రాయింగ్‌ల ఫైళ్లు సమకాలీకరించబడుతున్నాయి. వీటిని ఆన్‌లైన్ లేదా ఆఫ్‌లైన్‌లో యాక్సెస్ చేయడానికి Brave డిస్క్ యాప్‌ని తెరవండి.</translation>
+<translation id="1012794136286421601">మీ డాక్స్, షీట్‌లు, స్లయిడ్‌లు మరియు డ్రాయింగ్‌ల ఫైళ్లు సమకాలీకరించబడుతున్నాయి. వీటిని ఆన్‌లైన్ లేదా ఆఫ్‌లైన్‌లో యాక్సెస్ చేయడానికి Google Drive యాప్‌ని తెరవండి.</translation>
 <translation id="1012876632442809908">USB-C పరికరం (ముందువైపు పోర్ట్)</translation>
 <translation id="1015041505466489552">TrackPoint</translation>
 <translation id="1015318665228971643">ఫోల్డర్ పేరును ఎడిట్ చేయండి</translation>
@@ -30,7 +32,6 @@
 <translation id="1032605640136438169">దయచేసి కొత్త నిబంధనలను రివ్యూ చేయండి</translation>
 <translation id="103279545524624934">Android యాప్‌లను ప్రారంభించడానికి డిస్క్ స్థలాన్ని ఖాళీ చేయండి.</translation>
 <translation id="1033780634303702874">మీ క్రమానుసార పరికరాలను యాక్సెస్ చేయడం</translation>
-<translation id="1034942643314881546">యాప్‌లను రూపొందించడానికి adbని ఎనేబుల్ చేయడాన్ని వివరించే దృష్టాంత చిత్రం</translation>
 <translation id="1036348656032585052">ఆఫ్ చేయి</translation>
 <translation id="1036511912703768636">ఈ USB పరికరాల్లో వేటికైనా యాక్సెస్</translation>
 <translation id="1036982837258183574">పూర్తి స్క్రీన్‌ నుండి నిష్క్రమించడానికి |<ph name="ACCELERATOR"/>| నొక్కండి</translation>
@@ -99,6 +100,7 @@
 <translation id="1103523840287552314">ఎల్లప్పుడూ <ph name="LANGUAGE"/>ను అనువదించు</translation>
 <translation id="1108600514891325577">&amp;ఆపు</translation>
 <translation id="1110155001042129815">వేచి ఉండండి</translation>
+<translation id="1111781754511998498">Projector</translation>
 <translation id="1112420131909513020">బ్యాక్‌గ్రౌండ్‌ ట్యాబ్ బ్లూటూత్‌ను ఉపయోగిస్తోంది</translation>
 <translation id="1113892970288677790">నిర్వహిత ఆర్ట్‌వర్క్, ఇమేజ్‌లను ఎంచుకోండి</translation>
 <translation id="1114102982691049955"><ph name="PRINTER_MANUFACTURER"/> <ph name="PRINTER_MODEL"/> (USB)</translation>
@@ -134,7 +136,6 @@
 <translation id="1139923033416533844">మెమరీ వినియోగం</translation>
 <translation id="1140351953533677694">మీ బ్లూటూత్‌ను, క్రమానుసార పరికరాలను యాక్సెస్‌ చేయడం</translation>
 <translation id="114036956334641753">ఆడియో మరియు శీర్షికలు</translation>
-<translation id="1140746652461896221">మీరు సందర్శించే ఏ పేజీలో అయినా కంటెంట్‌ని బ్లాక్ చేయండి</translation>
 <translation id="1143142264369994168">సర్టిఫికెట్ సంతకందారు</translation>
 <translation id="6046800399974545535">{NUM_MINS,plural, =1{Brave మీ కంప్యూటర్‌లో హానికరమైన సాఫ్ట్‌వేర్‌ను కనుగొనలేదు • 1 నిమిషం క్రితం చెక్ చేయబడింది}other{Brave మీ కంప్యూటర్‌లో హానికరమైన సాఫ్ట్‌వేర్‌ను కనుగొనలేదు • {NUM_MINS} నిమిషాల క్రితం చెక్ చేయబడింది}}</translation>
 <translation id="1145593918056169051">ప్రింటర్ ఆపివేయబడింది</translation>
@@ -159,6 +160,7 @@
 <translation id="1165039591588034296">ఎర్రర్</translation>
 <translation id="1166212789817575481">కుడివైపు టాబ్‌లను మూసివెయ్యి</translation>
 <translation id="1166583374608765787">పేరుకు సంబంధించిన అప్‌డేట్‌ను రివ్యూ చేయండి</translation>
+<translation id="1166596238782048887"><ph name="TAB_TITLE"/>, <ph name="DESK_TITLE"/> డెస్క్‌కు సంబంధించినది</translation>
 <translation id="1168020859489941584"><ph name="TIME_REMAINING"/>లో తెరవబడుతోంది...</translation>
 <translation id="1170288591054440704">సైట్ మీ పరికరంలో ఇన్‌స్టాల్ చేసిన ఫాంట్‌లు ఉపయోగించాల్సినప్పుడు అనుమతి అడగాలి</translation>
 <translation id="1171135284592304528">కీబోర్డ్ దృష్టి కేంద్రీకరణ గల ఆబ్జెక్ట్ మారినప్పుడు దానిని హైలైట్ చేస్తుంది</translation>
@@ -237,6 +239,7 @@
 <translation id="1246863218384630739"><ph name="VM_NAME"/>‌ను ఇన్‌స్టాల్ చేయడం సాధ్యపడలేదు: ఇమేజ్ URL <ph name="HTTP_ERROR"/> ఎర్రర్ కోడ్‌ను అందించింది. దయచేసి మీ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి.</translation>
 <translation id="1251366534849411931">తెరిచి ఉన్న వంకర కలుపు ఉండాలి: <ph name="ERROR_LINE"/></translation>
 <translation id="1251480783646955802">దీని వలన సైట్‌లు, ఇన్‌స్టాల్ చేయబడిన యాప్‌లు స్టోర్ చేసిన <ph name="TOTAL_USAGE"/> డేటా తొలగిపోతుంది.</translation>
+<translation id="1251578593170406502">మొబైల్ డేటా నెట్‌వర్క్‌ల కోసం స్కాన్ చేస్తోంది...</translation>
 <translation id="125220115284141797">ఆటోమేటిక్ సెట్టింగ్</translation>
 <translation id="1252987234827889034">ప్రొఫైల్ ఎర్రర్ ఏర్పడింది</translation>
 <translation id="1254593899333212300">ప్రత్యక్ష ఇంటర్నెట్ కనెక్షన్</translation>
@@ -265,7 +268,7 @@
 <translation id="1280965841156951489">ఎడిటింగ్‌ను అనుమతించు</translation>
 <translation id="1282465000333679776">సిస్టమ్ ఆడియోను షేర్ చేయండి</translation>
 <translation id="1285320974508926690">ఈ సైట్‌ను ఎప్పటికీ అనువదించవద్దు</translation>
-<translation id="1285484354230578868">మీ Brave డిస్క్ ఖాతాలో డేటాను నిల్వ చేయండి</translation>
+<translation id="1285484354230578868">మీ Google Drive ఖాతాలో డేటాను నిల్వ చేయండి</translation>
 <translation id="1285625592773741684">ప్రస్తుతం డేటా వినియోగం మొబైల్ డేటా ద్వారా జరిగేలా సెట్ చేయబడి ఉంది</translation>
 <translation id="1288037062697528143">రాత్రి కాంతి, సూర్యాస్తమయ సమయానికి ఆటోమేటిక్‌గా ఆన్ అవుతుంది</translation>
 <translation id="1288300545283011870">ప్రసంగ లక్షణాలు</translation>
@@ -281,7 +284,6 @@
 <translation id="1301135395320604080"><ph name="ORIGIN"/> కింది ఫైళ్లను సవరించగలదు</translation>
 <translation id="1302227299132585524">Apple ఈవెంట్‌ల నుండి JavaScriptని అనుమతించు</translation>
 <translation id="1303101771013849280">HTML ఫైల్‌ని బుక్‌మార్క్ చేస్తుంది</translation>
-<translation id="1303178898338186101">Google Playను చేరుకోవడం సాధ్యపడలేదు. ఎర్రర్ కోడ్: <ph name="ERROR_CODE"/>.</translation>
 <translation id="1303671224831497365">బ్లూటూత్ పరికరాలు ఏవీ కనుగొనబడలేదు</translation>
 <translation id="130491383855577612">Linux యాప్‌లు, ఫైళ్లు విజయంతంగా భర్తీ చేయబడ్డాయి</translation>
 <translation id="1306390193749326011">మీరు ఈ పేజీలో మళ్లీ <ph name="MODULE_NAME"/> చూడలేరు</translation>
@@ -322,6 +324,7 @@
 <translation id="1347512539447549782">Linux స్టోరేజ్</translation>
 <translation id="1347975661240122359">బ్యాటరీ <ph name="BATTERY_LEVEL"/>% ఉన్నప్పుడు అప్‌డేట్ ప్రారంభమవుతుంది.</translation>
 <translation id="1353275871123211385">యాప్ ఆమోదం, పరికర వినియోగ వ్యవధిపై పరిమితుల వంటి తల్లిదండ్రుల కంట్రోల్స్‌ను ఉపయోగించడానికి, చిన్నారి వద్ద తల్లి/తండ్రి ద్వారా మేనేజ్ చేయబడే Brave ఖాతా ఉండాలి. Brave Classroom వంటి టూల్స్‌కు స్కూల్ ఖాతాను తర్వాత జోడించవచ్చు.</translation>
+<translation id="135389172849514421">ఆఫ్‌లైన్‌లో పని చేస్తుంది</translation>
 <translation id="6580983683519551561">PPDని కనుగొనడం సాధ్యం కాదు. మీ Bravebook ఇంటర్నెట్‌కు కనెక్ట్ అయ్యి ఉందని నిర్ధారించుకుని, ఆపై మళ్లీ ప్రయత్నించండి.</translation>
 <translation id="1354045473509304750">మీ కెమెరాను ఉపయోగించడానికి, తరలించడానికి <ph name="HOST"/>ను అనుమతించడాన్ని కొనసాగించండి</translation>
 <translation id="1355088139103479645">మొత్తం డేటాను తొలగించాలా?</translation>
@@ -401,7 +404,6 @@
 <translation id="142758023928848008">స్టిక్కీ కీలను ప్రారంభించు (క్రమానుసారంగా కీబోర్డ్ షార్ట్‌క‌ట్‌ల‌ను టైప్ చేయడం ద్వారా వాటిని అమలు చేయడానికి)</translation>
 <translation id="142765311413773645"><ph name="APP_NAME"/> లైసెన్స్ గడువు ముగిసింది</translation>
 <translation id="1429300045468813835">అన్నీ తీసివేయబడ్డాయి</translation>
-<translation id="143027896309062157">మీ కంప్యూటర్‌లో మరియు మీరు సందర్శించే వెబ్‌సైట్‌ల్లో మీ మొత్తం డేటాను చదవడం మరియు మార్చడం</translation>
 <translation id="1430915738399379752">ప్రింట్</translation>
 <translation id="1431188203598586230">చివరి సాఫ్ట్‌వేర్ అప్‌డేట్</translation>
 <translation id="1431432486300429272">శోధన మరియు ఇతర Brave సర్వీస్‌లను వ్యక్తిగతీకరించడం కోసం Brave మీ బ్రౌజింగ్ చరిత్రను ఉపయోగించవచ్చు. మీరు లేదా మీ తల్లి/తండ్రి దీన్ని ఎప్పుడైనా myaccount.google.com/activitycontrols/searchలో మార్చవచ్చు</translation>
@@ -410,7 +412,6 @@
 <translation id="1434696352799406980">దీని వలన మీ ప్రారంభ పేజీ, కొత్త ట్యాబ్ పేజీ, సెర్చ్ ఇంజిన్, పిన్ చేసిన ట్యాబ్‌లు రీసెట్ చేయబడతాయి. అంతే కాక, అన్ని ఎక్స్‌టెన్ష‌న్‌లను డిజేబుల్ చేసి, కుక్కీల వంటి తాత్కాలిక డేటాను తొలగిస్తుంది. మీ బుక్‌మార్క్‌లు, హిస్టరీ, సేవ్ చేసిన పాస్‌వర్డ్‌లు తొలగించబడవు.</translation>
 <translation id="1434886155212424586">హోమ్‌పేజీ అనేది కొత్త ట్యాబ్ పేజీ</translation>
 <translation id="1436390408194692385"><ph name="TICKET_TIME_LEFT"/> పాటు చెల్లుబాటు అవుతుంది</translation>
-<translation id="1436671784520050284">సెటప్‌ని కొనసాగించు</translation>
 <translation id="1436784010935106834">తీసివేయబడింది</translation>
 <translation id="1437986450143295708">సమస్యను వివరంగా వివరించండి</translation>
 <translation id="144283815522798837"><ph name="NUMBER_OF_ITEMS_SELECTED"/> ఎంచుకోబడింది/ఎంచుకోబడ్డాయి</translation>
@@ -446,6 +447,7 @@
 <translation id="1476088332184200792">మీ పరికరానికి కాపీ చేయండి</translation>
 <translation id="1476607407192946488">&amp;భాష సెట్టింగ్‌లు</translation>
 <translation id="1477446329585670721">మీ స్మార్ట్ కార్డ్‌ను ఇన్‌సర్ట్ చేసి ఉంచమని <ph name="DOMAIN"/> మిమ్మల్ని కోరుతుంది.</translation>
+<translation id="1477654881618305065">మీరు ఈ కంటెంట్‌ను షేర్ చేయడానికి మీ సంస్థ అనుమతించదు. మీకు సహాయం అవసరమైతే, మీ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి.</translation>
 <translation id="1478340334823509079">వివరాలు: <ph name="FILE_NAME"/></translation>
 <translation id="1478607704480248626">ఇన్‌స్టాలేషన్ ప్రారంభించబడలేదు</translation>
 <translation id="1480571698637441426">మీరు ప్రశ్నలు అడిగినప్పుడు అనుకూలమైన సమాధానాలను పొందడానికి, మీ స్క్రీన్‌పై ఉన్న దాని స్క్రీన్‌షాట్‌ను యాక్సెస్ చేయడానికి మీ Assistantను అనుమతించండి. ఇందులో ప్లే అవుతున్న పాటలు లేదా వీడియోల గురించి సమాచారం కూడా ఉండవచ్చు.</translation>
@@ -533,6 +535,7 @@
 <translation id="156793199942386351">'<ph name="ACTION"/>' చర్యకు '<ph name="CURRENTKEY"/>' ఇప్పటికే కేటాయించబడింది. <ph name="RESPONSE"/> కోసం ఏదైనా కీని నొక్కండి.</translation>
 <translation id="1567993339577891801">JavaScript కన్సోల్</translation>
 <translation id="1568323446248056064">ప్రదర్శన పరికరం సెట్టింగ్‌లను తెరవండి</translation>
+<translation id="1570604804919108255">నోటిఫికేషన్‌లను అన్‌మ్యూట్ చేయండి</translation>
 <translation id="1571738973904005196">ట్యాబ్‌ను చూడండి: <ph name="TAB_ORIGIN"/></translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (అతిథి)</translation>
 <translation id="1572266655485775982">Wi-Fiని ప్రారంభించు</translation>
@@ -583,11 +586,13 @@
 <translation id="1617765145568323981">{NUM_FILES,plural, =0{మీ సంస్థకు చెందిన భద్రతా పాలసీలతో ఈ డేటాను తనిఖీ చేస్తోంది...}=1{మీ సంస్థకు చెందిన భద్రతా పాలసీలతో ఈ ఫైల్‌ను తనిఖీ చేస్తోంది...}other{మీ సంస్థకు చెందిన భద్రతా పాలసీలతో ఈ ఫైల్స్‌ను తనిఖీ చేస్తోంది...}}</translation>
 <translation id="1618102204889321535"><ph name="CURRENT_CHARACTER_COUNT"/>/<ph name="MAX_CHARACTER_COUNT"/></translation>
 <translation id="1618268899808219593">స&amp;హాయ కేంద్రం</translation>
+<translation id="1619879934359211038">Google Playకు కనెక్ట్ చేయడం సాధ్యపడలేదు. మీ నెట్‌వర్క్ కనెక్షన్‌ను చెక్ చేసి, మళ్లీ ట్రై చేయండి. ఎర్రర్ కోడ్: <ph name="ERROR_CODE"/>.</translation>
 <translation id="1620307519959413822">పాస్‌వర్డ్ తప్పు. మళ్లీ ప్రయత్నించండి లేదా రీసెట్ చేయడానికి 'పాస్‌వర్డ్‌ను మర్చిపోయాను' క్లిక్ చేయండి.</translation>
 <translation id="1620510694547887537">కెమెరా</translation>
 <translation id="1621485112342885423">మీ కార్ట్‌లు</translation>
 <translation id="1621729191093924223">మైక్రోఫోన్ అవసరం అయ్యే ఫీచర్‌లు పని చేయవు</translation>
 <translation id="1621831347985899379"><ph name="DEVICE_TYPE"/> డేటా తొలగించబడుతుంది</translation>
+<translation id="1621984899599015181">షేరింగ్‌కు సంబంధించిన ఆప్షన్‌లను మీ సంస్థ మేనేజ్ చేస్తుంది. కొన్ని ఐటెమ్‌లు దాచబడి ఉండవచ్చు.</translation>
 <translation id="1622054403950683339">Wi-Fi నెట్‌వర్క్‌ను విస్మరించు</translation>
 <translation id="1623132449929929218">చిత్రాలు ప్రస్తుతం అందుబాటులో లేవు. వాల్‌పేపర్ సేకరణలను చూడటానికి, దయచేసి ఇంటర్నెట్‌కు మళ్లీ కనెక్ట్ చేయండి.</translation>
 <translation id="1623723619460186680">నీలి రంగును తగ్గించడం</translation>
@@ -614,11 +619,13 @@
 <translation id="1640235262200048077"><ph name="IME_NAME"/> ఇంకా యాప్‌లలో పనిచేయడం లేదు</translation>
 <translation id="1640283014264083726">RSA ఎన్‌క్రిప్షన్‌తో PKCS #1 MD4</translation>
 <translation id="1641113438599504367">సురక్షిత బ్రౌజింగ్</translation>
+<translation id="1642492862748815878"><ph name="DEVICE"/>కు, ఇంకా <ph name="NUMBER_OF_DEVICES"/> ఇతర బ్లూటూత్ పరికరాలకు కనెక్ట్ చేయబడింది</translation>
 <translation id="1642494467033190216">ఇతర డీబగ్గింగ్ ఫీచ‌ర్‌లను ప్రారంభించడానికి ముందు rootfs రక్షణను తీసివేసి, పునఃప్రారంభించాలి.</translation>
 <translation id="1643072738649235303">SHA-1తో X9.62 ECDSA సంతకం</translation>
 <translation id="1643921258693943800">సమీప షేరింగ్‌ను ఉపయోగించడానికి, బ్లూటూత్, Wi-Fiను ఆన్ చేయండి</translation>
 <translation id="1644574205037202324">హిస్టరీ</translation>
 <translation id="1645516838734033527">మీ <ph name="DEVICE_TYPE"/>ను సురక్షితంగా ఉంచడానికి, Smart Lockకు మీ ఫోన్‌లో ఒక స్క్రీన్ లాక్ అవసరం.</translation>
+<translation id="1646793251510634025">సెర్చ్, బ్రౌజింగ్ ఆప్టిమైజేషన్ కోసం సెట్టింగ్‌లను రివ్యూ చేయండి</translation>
 <translation id="1646982517418478057">దయచేసి ఈ ప్రమాణపత్రాన్ని గుప్తీకరించడానికి పాస్‌వర్డ్‌ను నమోదు చేయండి</translation>
 <translation id="1648528859488547844">స్థానాన్ని గుర్తించడానికి Wi‑Fi లేదా మొబైల్ నెట్‌వర్క్‌లను ఉపయోగించండి</translation>
 <translation id="164936512206786300">బ్లూటూత్ పరికరాన్ని అన్‌పెయిర్ చేయండి</translation>
@@ -684,6 +691,7 @@
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="1709106626015023981"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (స్థానికం)</translation>
 <translation id="1709217939274742847">ప్రామాణీకరణ కోసం ఉపయోగించాల్సిన టిక్కెట్‌ను ఎంచుకోండి. <ph name="LINK_BEGIN"/>మరింత తెలుసుకోండి<ph name="LINK_END"/></translation>
+<translation id="1709762881904163296">నెట్‌వర్క్ సెట్టింగ్‌లు</translation>
 <translation id="1709972045049031556">షేర్ చేయడం సాధ్యపడలేదు</translation>
 <translation id="1711935594505774770">దీని వలన <ph name="SITE_GROUP_NAME"/> స్టోర్ చేసిన మొత్తం డేటా, కుక్కీలు, దీని పరిధిలో ఉన్న సైట్‌లు, ఇన్‌స్టాల్ చేయబడిన యాప్‌లన్నీ తొలగిపోయాయి</translation>
 <translation id="1714644264617423774">మీ పరికరాన్ని సులభంగా ఉపయోగించడానికి యాక్సెస్‌ ఫీచ‌ర్‌ల‌ను ఎనేబుల్ చేయండి. <ph name="LINK_BEGIN"/>మరింత తెలుసుకోండి<ph name="LINK_END"/></translation>
@@ -694,7 +702,6 @@
 <translation id="1721312023322545264">ఈ సైట్‌ని సందర్శించడానికి మీకు <ph name="NAME"/> నుండి అనుమతి అవసరం</translation>
 <translation id="1722460139690167654">మీ <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> నిర్వహణ<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/> ద్వారా చేయబడుతోంది</translation>
 <translation id="1723824996674794290">&amp;కొత్త విండో</translation>
-<translation id="1725149567830788547">&amp;నియంత్రణలను చూపించు</translation>
 <translation id="1725562816265788801">ట్యాబ్ స్క్రోలింగ్</translation>
 <translation id="1727662110063605623"><ph name="USB_DEVICE_NAME"/>ను Parallels Desktop లేదా Linuxకు కనెక్ట్ చేయడానికి సెట్టింగ్‌లను తెరవండి</translation>
 <translation id="1729533290416704613">ఓమ్నిబాక్స్ నుండి వెతికేటప్పుడు చూపబడే పేజీని కూడా ఇది నియంత్రిస్తుంది.</translation>
@@ -747,7 +754,6 @@
 <translation id="1776883657531386793"><ph name="OID"/>: <ph name="INFO"/></translation>
 <translation id="1778457539567749232">చదవనిదిగా మార్క్ చేస్తుంది</translation>
 <translation id="1778991607452011493">డీబగ్ లాగ్‌లను పంపండి (సిఫార్సు చేయబడింది)</translation>
-<translation id="5781127179210503598">ఈ పేజీ మీరు సైన్ ఇన్ చేసిన Brave ఖాతాలను మేనేజ్ చేయడానికి అనుమతిస్తుంది. <ph name="LINK_BEGIN"/>మరింత తెలుసుకోండి<ph name="LINK_END"/></translation>
 <translation id="1779468444204342338">కనిష్ఠం</translation>
 <translation id="1779652936965200207">దయచేసి "<ph name="DEVICE_NAME"/>"లో ఈ పాస్‌కీని నమోదు చేయండి:</translation>
 <translation id="177989070088644880">యాప్ (<ph name="ANDROID_PACKAGE_NAME"/>)</translation>
@@ -830,6 +836,7 @@
 <translation id="1850508293116537636">&amp;సవ్యదిశలో తిప్పు</translation>
 <translation id="1852141627593563189">హానికరమైన సాఫ్ట్‌వేర్‌ను కనుగొనండి</translation>
 <translation id="1852799913675865625">ఫైల్‌ను చదవడానికి ప్రయత్నించడంలో ఎర్రర్ ఏర్పడింది: <ph name="ERROR_TEXT"/>.</translation>
+<translation id="1854049213067042715">మీరు ఆపిన చోటు నుండే కొనసాగించండి. మీరు సెట్టింగ్‌లలో, యాప్‌లు ఆటోమేటిక్‌గా రీస్టోర్ అవ్వడానికి వాటిని సెట్ చేయవచ్చు లేదా 'రీస్టోర్ చేయండి'ని ఆఫ్ చేయవచ్చు.</translation>
 <translation id="1854180393107901205">ప్రసారాన్ని ఆపివేయి</translation>
 <translation id="1855079636134697549">కెమెరా ఆన్ చేయబడింది</translation>
 <translation id="1856715684130786728">స్థానాన్ని జోడించు...</translation>
@@ -916,6 +923,7 @@
 <translation id="1937774647013465102"><ph name="ARCHITECTURE_DEVICE"/> అయిన ఈ పరికరంతో <ph name="ARCHITECTURE_CONTAINER"/> రకమైన కంటెయినర్ ఆర్కిటెక్చర్‌ను దిగుమతి చేయడం సాధ్యపడదు. మీరు ఈ కంటెయినర్‌ను వేరే పరికరంలోకి పునరుద్ధరించడం ప్రయత్నించవచ్చు లేదా ఈ కంటెయినర్ చిత్రంలోని ఫైళ్లను "ఫైల్స్ యాప్"లో తెరవడం ద్వారా యాక్సెస్ చేయవచ్చు.</translation>
 <translation id="1938351510777341717">బాహ్య ఆదేశం</translation>
 <translation id="1940546824932169984">కనెక్ట్ చేయబడిన డివైజ్‌లు</translation>
+<translation id="1942128823046546853">అన్ని వెబ్‌సైట్‌లలో మీ మొత్తం డేటాను చదవడం, మార్చడం</translation>
 <translation id="1942600407708803723">కవర్ మూసి ఉన్నప్పుడు షట్ డౌన్ స్థితికి వెళ్లు</translation>
 <translation id="1944528062465413897">బ్లూటూత్ పెయిరింగ్ కోడ్:</translation>
 <translation id="1944921356641260203">అప్‌డేట్ కనుగొనబడింది</translation>
@@ -932,6 +940,7 @@
 <translation id="1963976881984600709">ప్రామాణిక రక్షణ</translation>
 <translation id="196425401113508486">కదులుతున్నప్పుడు కర్సర్‌ను హైలైట్ చేయండి</translation>
 <translation id="1965624977906726414">ప్రత్యేక అనుమతులు లేవు.</translation>
+<translation id="1966497651828975688">నెట్‌వర్క్ కనెక్షన్ పోయింది. దయచేసి మీ నెట్‌వర్క్ కనెక్షన్‌ను చెక్ చేయండి లేదా మరో Wi-Fi నెట్‌వర్క్‌ను ట్రై చేయండి.</translation>
 <translation id="1969654639948595766">WebRTC వచన లాగ్ లు( <ph name="WEBRTC_TEXT_LOG_COUNT"/> )</translation>
 <translation id="1970368523891847084">వీడియో మోడ్‌లోకి ప్రవేశించింది</translation>
 <translation id="197288927597451399">ఉంచు</translation>
@@ -948,6 +957,7 @@
 <translation id="1979095679518582070">ఈ ఫీచర్‌ను ఆఫ్ చేయడం వలన సిస్టమ్ అప్‌డేట్‌లు, భద్రత లాంటి ముఖ్యమైన సర్వీస్‌లకు అవసరమైన సమాచారాన్ని పంపగల ఈ పరికర సామర్థ్యం ప్రభావితం కాదు.</translation>
 <translation id="1979280758666859181">మీరు <ph name="PRODUCT_NAME"/> పాత వెర్షన్ ఉన్న ఛానెల్‌కు మారుతున్నారు. ఈ ఛానెల్ వెర్షన్, మీ పరికరంలో ప్రస్తుతం ఇన్‌స్టాల్ అయిన వెర్షన్‌కు సరిపోలినప్పుడు ఛానెల్ మార్పు వర్తిస్తుంది.</translation>
 <translation id="197989455406964291">ఎన్‌క్రిప్షన్ రకానికి KDC మద్దతు లేదు</translation>
+<translation id="1981434377190976112">అన్ని వెబ్‌సైట్‌లలో మీ మొత్తం డేటాను చదవడం</translation>
 <translation id="1983497378699148207">Linuxను సెట్ చేయడాన్ని ముగించడానికి, Chrome OSను అప్‌డేట్ చేసి, మళ్లీ ట్రై చేయండి.</translation>
 <translation id="1984417487208496350">రక్షణ లేదు (సిఫార్సు చేయడం లేదు)</translation>
 <translation id="1987317783729300807">ఖాతాలు</translation>
@@ -956,6 +966,7 @@
 <translation id="1989113344093894667">కంటెంట్‌ను క్యాప్చర్ చేయడం సాధ్యం కాదు</translation>
 <translation id="1990046457226896323">స్పీచ్ ఫైళ్లు డౌన్‌లోడ్ చేయబడ్డాయి</translation>
 <translation id="1990512225220753005">ఈ పేజీలో షార్ట్‌కట్‌లను చూపవద్దు</translation>
+<translation id="199191324030140441">'అంతరాయం కలిగించవద్దు'ను ఆఫ్ చేయండి</translation>
 <translation id="1992397118740194946">సెట్ చెయ్యలేదు</translation>
 <translation id="1992924914582925289">పరికరం నుండి తీసివేయి</translation>
 <translation id="1994173015038366702">సైట్ URL</translation>
@@ -997,6 +1008,7 @@
 
 మీ పరికరంలో Family Link యాప్ ఇన్‌స్టాల్ చేయడం ద్వారా మీరు ఈ ఖాతా సెట్టింగ్‌లను నిర్వహించవచ్చు.  మీకు ఇమెయిల్‌లో సూచనలను పంపాము.</translation>
 <translation id="2040460856718599782">అయ్యో!  మిమ్మల్ని ప్రామాణీకరించడానికి ప్రయత్నిస్తున్నప్పుడు ఏదో తప్పు జరిగింది. దయచేసి మీ సైన్-ఇన్ ప్రమాణాలను ఒకటికి రెండుసార్లు తనిఖీ చేసుకుని మళ్లీ ప్రయత్నించండి.</translation>
+<translation id="2040894699575719559">లొకేషన్ బ్లాక్ చేయబడింది</translation>
 <translation id="2042279886444479655">యాక్టివ్ ప్రొఫైల్‌లు</translation>
 <translation id="2044014337866019681">సెషన్‌ను అన్‌లాక్ చేయడానికి, మీరు <ph name="ACCOUNT"/>ను వెరిఫై చేస్తున్నారని దయచేసి నిర్ధారించుకోండి.</translation>
 <translation id="204497730941176055">Microsoft సర్టిఫికెట్ టెంప్లేట్ పేరు</translation>
@@ -1137,6 +1149,7 @@
 <translation id="2175927920773552910">QR కోడ్</translation>
 <translation id="2178614541317717477">CA రాజీ</translation>
 <translation id="2179416702468739594">అందుబాటులో ఉన్న ప్రొఫైల్‌ల కోసం వెతుకుతోంది. ఇది మీ మొబైల్ నెట్‌వర్క్ కొన్ని నిముషాలు డిస్‌కనెక్ట్ కావడానికి కారణం కావచ్చు.</translation>
+<translation id="2180620921879609685">ఏ పేజీలోనైనా కంటెంట్‌ను బ్లాక్ చేయడం</translation>
 <translation id="2182058453334755893">మీ క్లిప్‌బోర్డ్‌కు కాపీ చేయబడింది</translation>
 <translation id="8098574385249290065">సైట్‌లు ధ్వనిని ఎప్పుడు ప్లే చేయాలనేది Brave ఎంచుకునేలా సెట్ చేయండి (సిఫార్సు చేయబడింది)</translation>
 <translation id="2186711480981247270">మరో పరికరం నుండి పేజీ షేర్ చేయబడింది</translation>
@@ -1231,6 +1244,7 @@
 <translation id="2278668501808246459">కంటైనర్ మేనేజర్‌ను ప్రారంభిస్తోంది</translation>
 <translation id="2280486287150724112">కుడి అంచు</translation>
 <translation id="2282146716419988068">GPU ప్రాసెస్</translation>
+<translation id="2285109769884538519">{COUNT,plural, =0{అన్నింటినీ కొత్త ట్యాబ్ గ్రూప్‌లో తెరవండి}=1{కొత్త ట్యాబ్ గ్రూప్‌లో తెరవండి}other{అన్నింటినీ ({COUNT}) కొత్త ట్యాబ్ గ్రూప్‌లో తెరవండి}}</translation>
 <translation id="2285942871162473373">మీ వేలిముద్రను గుర్తించలేకపోయాము. మళ్లీ ట్రై చేయండి.</translation>
 <translation id="2287944065963043964">లాగిన్ స్క్రీన్</translation>
 <translation id="2288181517385084064">వీడియో రికార్డర్‌కు మార్చు</translation>
@@ -1350,7 +1364,6 @@
 <translation id="2392369802118427583">సక్రియం చేయి</translation>
 <translation id="2393136602862631930">మీ Bravebookలో <ph name="APP_NAME"/>ను సెటప్ చేయండి</translation>
 <translation id="2395616325548404795">మీ <ph name="DEVICE_TYPE"/> ఎంటర్‌ప్రైజ్ నిర్వహణ కోసం విజయవంతంగా నమోదు చేయబడింది, కానీ దాని లక్షణ మరియు స్థాన సమాచారాన్ని పంపడంలో విఫలమైంది. దయచేసి ఈ పరికరం కోసం ఈ సమాచారాన్ని మీ నిర్వాహక కన్సోల్ నుండి మాన్యువల్‌గా నమోదు చేయండి.</translation>
-<translation id="2396387085693598316">మీ అడ్మిన్ "<ph name="EXTENSION_NAME"/>"ను బ్లాక్ చేశారు</translation>
 <translation id="2396783860772170191">4 అంకెల పిన్ (0000-9999) నమోదు చేయండి</translation>
 <translation id="2398546389094871088">మీ పరికరాన్ని పవర్‌వాష్ చేయడం ద్వారా మీ eSIM ప్రొఫైల్‌లు తీసివేయబడవు. ఈ ప్రొఫైల్‌లను మాన్యువల్‌గా తీసివేయడానికి <ph name="LINK_BEGIN"/>మొబైల్ సెట్టింగ్‌ల<ph name="LINK_END"/>కు వెళ్ళండి.</translation>
 <translation id="2399699884460174994">నోటిఫికేషన్‌లు ఆన్ చేయబడ్డాయి</translation>
@@ -1359,6 +1372,7 @@
 <translation id="2406153734066939945">ఈ ప్రొఫైల్‌ను, దానిలోని డేటాను తొలగించాలా?</translation>
 <translation id="2408018932941436077">కార్డ్ సేవ్ అవుతోంది</translation>
 <translation id="2408955596600435184">మీ PINని నమోదు చేయండి</translation>
+<translation id="2410754283952462441">ఖాతాను ఎంచుకోండి</translation>
 <translation id="241082044617551207">తెలియని ప్లగ్ఇన్‌</translation>
 <translation id="2412593942846481727">అప్‌డేట్ అందుబాటులో ఉంది</translation>
 <translation id="2412753904894530585">Kerberos</translation>
@@ -1462,10 +1476,12 @@
 <translation id="2509495747794740764">స్కేల్ ప్రమాణం తప్పనిసరిగా 10 మరియు 200 మధ్య ఉండే సంఖ్య అయ్యి ఉండాలి.</translation>
 <translation id="2509566264613697683">8x</translation>
 <translation id="2510988373360790637">బ్లూటూత్ పరికరాన్ని విస్మరించండి</translation>
+<translation id="2512065992892294946"><ph name="LANGUAGE"/> (ఎంచుకోబడింది)</translation>
 <translation id="2513396635448525189">లాగిన్ ఇమేజ్</translation>
 <translation id="2514326558286966059">మీ వేలిముద్రతో మరింత వేగంగా అన్‌లాక్ చేయండి</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="2515807442171220586">మరొక స్విచ్‌ను కేటాయించండి</translation>
+<translation id="251722524540674480">మీ యూజర్‌నేమ్‌ను నిర్ధారించండి</translation>
 <translation id="2517472476991765520">స్కాన్ చేయి</translation>
 <translation id="2518024842978892609">మీ క్లయింట్ స‌ర్టిఫికెట్‌లను ఉపయోగించడానికి అనుమతి</translation>
 <translation id="2519517390894391510">సర్టిఫికెట్ ప్రొఫైల్ పేరు</translation>
@@ -1474,12 +1490,12 @@
 <translation id="252219247728877310">అంశం నవీకరించబడలేదు</translation>
 <translation id="284843628681142937">మీరు సందర్శించే పేజీల URLలను Braveకి పంపుతుంది</translation>
 <translation id="8181884647588958753">హానికరమైన సాఫ్ట్‌వేర్ కోసం Brave మీ కంప్యూటర్‌ను చెక్ చేస్తోంది...</translation>
-<translation id="2526277209479171883">ఇన్‌స్టాల్ చేసి, కొనసాగించండి</translation>
 <translation id="2526590354069164005">డెస్క్‌టాప్</translation>
 <translation id="2526619973349913024">అప్‌డేట్‌ కోసం తనిఖీ చేయి</translation>
 <translation id="2527167509808613699">ఎలాంటి కనెక్షన్ అయినా</translation>
 <translation id="2530166226437958497">పరిష్కార ప్రక్రియ</translation>
 <translation id="2532589005999780174">అధిక కాంట్రాస్ట్ మోడ్</translation>
+<translation id="2533649878691950253">మీ ఖచ్చితమైన లొకేషన్‌ను తెలుసుకోకుండా ఈ సైట్ బ్లాక్ చేయబడింది, ఎందుకంటే మీరు దీన్ని అనుమతించరు</translation>
 <translation id="253434972992662860">&amp;పాజ్ చేయి</translation>
 <translation id="253557089021624350">సక్రియ కార్యాచరణల గణన</translation>
 <translation id="2535799430745250929">సెల్యులార్ నెట్‌వర్క్ ఏదీ లేదు</translation>
@@ -1500,6 +1516,7 @@
 <translation id="2549985041256363841">రికార్డింగ్‌ను ప్రారంభించు</translation>
 <translation id="2550212893339833758">వినిమయం చేసిన మెమరీ</translation>
 <translation id="2550596535588364872"><ph name="EXTENSION_NAME"/>ని <ph name="FILE_NAME"/> తెరవడానికి అనుమతించాలా?</translation>
+<translation id="2552230905527343195">ప్రస్తుత ట్యాబ్‌ను జోడించడం సాధ్యం కాదు</translation>
 <translation id="2552966063069741410">సమయ మండలి</translation>
 <translation id="2553290675914258594">వెరిఫై చేయబడిన యాక్సెస్</translation>
 <translation id="2553340429761841190"><ph name="NETWORK_ID"/>కు కనెక్ట్ చెయ్యడానికి <ph name="PRODUCT_NAME"/>కి సాధ్యం కాలేదు. దయచేసి మరొక నెట్‌వర్క్‌ని ఎంచుకోండి లేదా మళ్ళీ ప్రయత్నిచండి.</translation>
@@ -1515,7 +1532,6 @@
 <translation id="2575247648642144396">ప్రస్తుత పేజీలో ఎక్స్‌టెన్ష‌న్‌ను అమలు చేయగలిగినప్పుడు ఈ చిహ్నం కనిపిస్తుంది. చిహ్నంపై క్లిక్ చేయడం ద్వారా లేదా <ph name="EXTENSION_SHORTCUT"/>ను నొక్కడం ద్వారా ఈ ఎక్స్‌టెన్ష‌న్‌ను ఉపయోగించండి.</translation>
 <translation id="2575441894380764255">అనుచితమైన లేదా తప్పుదారి పట్టించే యాడ్‌లను చూపించడానికి అనుమతి లేదు.</translation>
 <translation id="257779572837908839">మీటింగ్‌ల కోసం Bravebox వలె సెటప్ చేయండి</translation>
-<translation id="2579232805407578790">సర్వర్‌తో కనెక్ట్ చేయడం సాధ్యపడలేదు. దయచేసి మీ నెట్‌వర్క్ కనెక్షన్‌ను చెక్ చేసి, మళ్లీ ట్రై చేయండి. సమస్య కొనసాగినట్లయితే, మీ Bravebookను రీస్టార్ట్ చేయండి. ఎర్రర్ కోడ్: <ph name="ERROR_CODE"/>.</translation>
 <translation id="2580889980133367162">బహుళ ఫైళ్లను డౌన్‌లోడ్ చేయడానికి <ph name="HOST"/>ను ఎల్లప్పుడూ అనుమతించు</translation>
 <translation id="258095186877893873">ఎక్కువ</translation>
 <translation id="2582253231918033891"><ph name="PRODUCT_NAME"/> <ph name="PRODUCT_VERSION"/> (ప్లాట్‌ఫారమ్ <ph name="PLATFORM_VERSION"/>) <ph name="DEVICE_SERIAL_NUMBER"/></translation>
@@ -1569,6 +1585,7 @@
 <translation id="2635276683026132559">సంతకం చేస్తోంది</translation>
 <translation id="2636625531157955190">చిత్రాన్ని Brave యాక్సెస్ చేయడం సాధ్యపడదు.</translation>
 <translation id="2637400434494156704">పిన్ తప్పు. మీకు 1 ప్రయత్నం మిగిలి ఉంది.</translation>
+<translation id="2638286699381354126">అప్‌డేట్‌...</translation>
 <translation id="2638662041295312666">సైన్ ఇన్ ఇమేజ్</translation>
 <translation id="2640549051766135490"><ph name="TITLE"/> <ph name="DESC"/> ఆల్బమ్ ఎంచుకోబడింది</translation>
 <translation id="264083724974021997">మీ ఫోన్‌కు కనెక్ట్ చేయండి - డైలాగ్</translation>
@@ -1665,6 +1682,7 @@
 <translation id="2738771556149464852">తరువాత కాదు</translation>
 <translation id="2739191690716947896">డీబగ్</translation>
 <translation id="2739240477418971307">మీ యాక్సెస్‌ సెట్టింగ్‌లను మార్చడం</translation>
+<translation id="2739965161385757621">నా సెట్టింగ్‌ల రివ్యూ</translation>
 <translation id="274029851662193272">కిందికి ఉన్నట్లుగా</translation>
 <translation id="2740531572673183784">సరే</translation>
 <translation id="2741713322780029189">రికవరీ టెర్మినల్‌ను తెరువు</translation>
@@ -1788,6 +1806,7 @@
 <translation id="2864601841139725659">మీ ప్రొఫైల్ చిత్రాన్ని సెట్ చేయండి</translation>
 <translation id="2865919525181940183">ప్రస్తుతం స్క్రీన్‌పై ఉన్న ప్రోగ్రామ్‌ల స్క్రీన్‌షాట్</translation>
 <translation id="286674810810214575">పవర్ మూలాలను తనిఖీ చేస్తోంది...</translation>
+<translation id="2866876751734765554">గోప్యతా రివ్యూ</translation>
 <translation id="2867768963760577682">పిన్ చేసిన ట్యాబ్ లాగా తెరువు</translation>
 <translation id="2868746137289129307">ఈ ఎక్స్‌టెన్షన్ చాలా పాతది, బిజినెస్ విధానం కారణంగా నిలిపివేయబడింది. అయితే, కొత్త వెర్షన్ అందుబాటులో ఉన్నప్పుడు ఇది ఆటోమేటిక్‌గా ప్రారంభించబడవచ్చు.</translation>
 <translation id="2870560284913253234">సైట్</translation>
@@ -1810,6 +1829,7 @@
 <translation id="2885378588091291677">విధి సంచాలకులు</translation>
 <translation id="2885729872133513017">సర్వర్ ప్రతిస్పందనను డీకోడ్ చేస్తుండగా సమస్య ఏర్పడింది.</translation>
 <translation id="2886771036282400576">• <ph name="PERMISSION"/></translation>
+<translation id="288734198558082692"><ph name="DEVICE"/>, ఇంకా మరో <ph name="NUMBER_OF_DEVICES"/></translation>
 <translation id="2889064240420137087">దీనితో లింక్ తెరువు...</translation>
 <translation id="2891922230654533301"><ph name="APP_NAME"/>కు సైన్ ఇన్ చేయడానికి మీ పరికరాన్ని ఉపయోగించాలా?</translation>
 <translation id="2893168226686371498">ఆటోమేటిక్ బ్రౌజర్</translation>
@@ -1829,6 +1849,7 @@
     సర్వర్ మెసేజ్‌: <ph name="SERVER_MSG"/></translation>
 <translation id="2908162660801918428">డైరెక్టరీ ద్వారా మీడియా గ్యాలరీని జోడించండి</translation>
 <translation id="2908358077082926882">కేటాయింపును తీసివేసి, <ph name="RESPONSE"/> కోసం "<ph name="CURRENTKEY"/>"ని మళ్లీ నొక్కండి</translation>
+<translation id="2909506265808101667">Brave సర్వీస్‌లతో కనెక్ట్ చేయడం సాధ్యం కాలేదు. మీ నెట్‌వర్క్ కనెక్షన్‌ను చెక్ చేసి, మళ్లీ ట్రై చేయండి. ఎర్రర్ కోడ్: <ph name="ERROR_CODE"/>.</translation>
 <translation id="2910318910161511225">నెట్‌వర్క్‌కి కనెక్ట్ చేసి మళ్లీ ప్రయత్నించండి</translation>
 <translation id="291056154577034373">చదవనివి</translation>
 <translation id="2910718431259223434">ఏదో తప్పు జరిగింది. దయచేసి మళ్లీ ట్రై చేయండి లేదా మీ పరికర ఓనర్‌ను లేదా అడ్మినిస్ట్రేట‌ర్‌ను సంప్రదించండి. ఎర్రర్ కోడ్: <ph name="ERROR_CODE"/>.</translation>
@@ -1961,6 +1982,7 @@
 <translation id="3037754279345160234">డొమైన్‌లో చేరడానికి కాన్ఫిగరేషన్‌ను అన్వయించడం సాధ్యపడలేదు. దయచేసి మీ నిర్వాహకుడిని సంప్రదించండి.</translation>
 <translation id="3038612606416062604">ఒక ప్రింటర్‌ను మాన్యువల్‌గా జోడించండి</translation>
 <translation id="3039491566278747710">పరికరంలో ఆఫ్‌లైన్ విధానాన్ని ఇన్‌స్టాల్ చేయడంలో విఫలమైంది.</translation>
+<translation id="3043218608271070212"><ph name="GROUP_NAME"/> - <ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="3043581297103810752"><ph name="ORIGIN"/> నుండి</translation>
 <translation id="3045447014237878114">ఈ సైట్ పలు ఫైళ్లను ఆటోమేటిక్‌గా డౌన్‌లోడ్ చేసింది</translation>
 <translation id="3046178388369461825">Linux డిస్క్ స్పేస్ చాలా తక్కువగా ఉంది</translation>
@@ -2166,6 +2188,7 @@
 <translation id="3288047731229977326">డెవలపర్ మోడ్‌లో అమలవుతున్న ఎక్స్‌టెన్ష‌న్‌లు మీ కంప్యూటర్‌కు హాని కలిగించవచ్చు. మీరు డెవలపర్ కాకపోతే, సురక్షితంగా ఉంచడానికి డెవలపర్ మోడ్‌లో అమలవుతున్న ఈ ఎక్స్‌టెన్ష‌న్‌లను నిలిపివేయాలి.</translation>
 <translation id="3289668031376215426">ఆటోమెటిక్ క్యాపిటలైజేషన్</translation>
 <translation id="3289856944988573801">అప్‌డేట్‌ల కోసం తనిఖీ చేయడానికి, దయచేసి ఈథర్‌నెట్ లేదా Wi-Fiని ఉపయోగించండి.</translation>
+<translation id="3291436823898732747">మెరుగైన బ్రౌజింగ్: ఉదాహరణకు, మీరు టైప్ చేయడం ప్రారంభించడానికి ముందు ఓమ్నిబాక్స్‌లో సూచనలను పొందడం</translation>
 <translation id="3293644607209440645">ఈ పేజీని పంపండి</translation>
 <translation id="32939749466444286">Linux కంటైనర్ ప్రారంభించబడలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.</translation>
 <translation id="3294437725009624529">అతిథి</translation>
@@ -2187,8 +2210,8 @@
 <translation id="3308852433423051161">Brave సహాయకం లోడ్ అవుతోంది...</translation>
 <translation id="3309330461362844500">సర్టిఫికెట్ ప్రొఫైల్ ID</translation>
 <translation id="3311445899360743395">ఈ యాప్‌తో అనుబంధించబడిన డేటా ఈ పరికరం నుండి తీసివేయబడవచ్చు.</translation>
-<translation id="3312424061798279731">ప్రారంభించబడిన భాషలు</translation>
 <translation id="3313622045786997898">సర్టిఫికెట్ సంతకం విలువ</translation>
+<translation id="3313950410573257029">కనెక్షన్‌ను చెక్ చేయండి</translation>
 <translation id="3315158641124845231"><ph name="PRODUCT_NAME"/>ను దాచిపెట్టు</translation>
 <translation id="3315442055907669208">రీడర్ మోడ్‌లోకి ఎంటర్ అవ్వండి</translation>
 <translation id="3317459757438853210">రెండు-వైపులా ఉండేది</translation>
@@ -2235,6 +2258,7 @@
 <translation id="337286756654493126">మీరు అప్లికేషన్‌లో తెరిచే ఫోల్డర్‌లను చదవండి</translation>
 <translation id="3378572629723696641">ఈ ఎక్స్‌టెన్షన్‌ పాడై ఉండవచ్చు.</translation>
 <translation id="337920581046691015"><ph name="PRODUCT_NAME"/> వ్యవస్థాపించబడుతుంది.</translation>
+<translation id="337995611229308295">సర్వర్‌తో కనెక్ట్ చేయడం సాధ్యపడలేదు. దయచేసి మీ నెట్‌వర్క్ కనెక్షన్‌ను చెక్ చేసి, మళ్లీ ట్రై చేయండి. మీకు ఇంకా సమస్య ఉంటే, మీ Bravebookను రీస్టార్ట్ చేయడానికి ట్రై చేయండి.</translation>
 <translation id="3380365263193509176">తెలియని ఎర్రర్</translation>
 <translation id="3382073616108123819">అయ్యో!  ఈ పరికరం కోసం పరికర ఐడెంటిఫైయర్‌లను నిశ్చయించడంలో సిస్టమ్ విఫలమైంది.</translation>
 <translation id="3382200254148930874">పర్యవేక్షణను ఆపివేస్తోంది...</translation>
@@ -2312,6 +2336,7 @@
 <translation id="3446274660183028131">Windowsను ఇన్‌స్టాల్ చేయడానికి, దయచేసి parallels desktopను ప్రారంభించండి.</translation>
 <translation id="344630545793878684">అనేక వెబ్‌సైట్‌ల్లోని మీ డేటాను చదవండి</translation>
 <translation id="3446650212859500694">ఈ ఫైల్‌లో గోప్యమైన కంటెంట్ ఉంది</translation>
+<translation id="3446827946208017735">అత్యంత ముఖ్యమైన గోప్యతా సెట్టింగ్‌లను ఒకే చోట అర్ధం చేసుకుని రివ్యూ చేయండి</translation>
 <translation id="3448086340637592206">Brave, Chrome OS అదనపు నిబంధనలు</translation>
 <translation id="3448492834076427715">ఖాతాను అప్‌డేట్ చేయి</translation>
 <translation id="3449393517661170867">ట్యాబ్‌లు ఉన్న కొత్త విండో</translation>
@@ -2345,6 +2370,7 @@
 <translation id="3476303763173086583">వినియోగం &amp; విశ్లేషణల డేటాను పంపండి. సమస్య విశ్లేషణ, పరికరం, యాప్ వినియోగ డేటాను ఆటోమేటిక్‌గా Braveకి పంపడం ద్వారా మీ చిన్నారి Android అనుభవాన్ని మెరుగుపరచడంలో సహాయపడండి. ఇది మీ చిన్నారి గురించి గుర్తించడానికి ఉపయోగించబడదు, ఇది కేవలం సిస్టమ్, యాప్ స్థిరత్వానికి, ఇతర మెరుగుదలలకు సహాయపడుతుంది. కొంత సముదాయ డేటా కూడా Brave యాప్‌లకు, అలాగే Android డెవలపర్‌ల లాంటి భాగస్వాములకు సహాయపడుతుంది. ఈ <ph name="BEGIN_LINK1"/>సెట్టింగ్‌<ph name="END_LINK1"/>ని యజమాని అమలు చేశారు. ఈ పరికరానికి సంబంధించిన విశ్లేషణ, వినియోగ డేటాను Braveకి పంపేలా యజమాని ఎంచుకోవచ్చు. మీ చిన్నారి కోసం అదనపు వెబ్ &amp; యాప్ యాక్టివిటీ సెట్టింగ్‌ను ఆన్ చేసినట్లయితే, ఈ డేటా వారి Brave ఖాతాలో సేవ్ చేయబడవచ్చు. <ph name="BEGIN_LINK2"/>మరింత తెలుసుకోండి<ph name="END_LINK2"/></translation>
 <translation id="347670947055184738">అయ్యో! మీ పరికరానికి సంబంధించిన విధానాన్ని పొందడంలో సిస్టమ్ విఫలమైంది.</translation>
 <translation id="347785443197175480">మీ కెమెరా మరియు మైక్రోఫోన్‌ను యాక్సెస్ చేయడానికి <ph name="HOST"/>ను అనుమతించడాన్ని కొనసాగించండి</translation>
+<translation id="3478813605045578676">ఇన్‌స్టాలేషన్ తర్వాత మాత్రమే ఎన్‌రోల్‌మెంట్ జరుగుతుంది. ఈ పరికరాన్ని మేనేజ్ చేయడానికి, మొదట CloudReadyని ఇన్‌స్టాల్ చేయండి.</translation>
 <translation id="3479552764303398839">ఇప్పుడు కాదు</translation>
 <translation id="3479685872808224578">ప్రింట్ సర్వర్‌ని కనుగొనలేకపోయింది. దయచేసి అడ్రస్‌ను తనిఖీ చేసి, ఆపై మళ్లీ ప్రయత్నించండి.</translation>
 <translation id="3480612136143976912">లైవ్ క్యాప్షన్ కోసం క్యాప్షన్ సైజ్‌ను, స్టయిల్‌ను అనుకూలంగా మార్చండి. ఈ సెట్టింగ్‌ను కొన్ని యాప్‌లు, సైట్‌లు కూడా ఉపయోగిస్తాయి.</translation>
@@ -2364,6 +2390,7 @@
 <translation id="3495496470825196617">ఛార్జింగ్‌లో ఉన్నప్పుడు ఇన్‌యాక్టివ్ పవర్</translation>
 <translation id="3908743412684152579">Brave సహాయకం సెట్టింగ్‌లు</translation>
 <translation id="3496213124478423963">దూరంగా జూమ్ చేయి</translation>
+<translation id="3496238553815913323"><ph name="LANGUAGE"/> (ఎంచుకోబడలేదు)</translation>
 <translation id="3497501929010263034"><ph name="VENDOR_NAME"/> నుండి USB పరికరం (ప్రోడక్ట్ <ph name="PRODUCT_ID"/>)</translation>
 <translation id="3497560059572256875">డూడుల్‌ని షేర్ చేయి</translation>
 <translation id="3498215018399854026">మేము ప్రస్తుతం మీ తల్లి/తండ్రిని సంప్రదించలేకపోయాము. దయచేసి మళ్లీ ప్రయత్నించండి.</translation>
@@ -2527,7 +2554,7 @@
 <translation id="3683524264665795342"><ph name="APP_NAME"/> స్క్రీన్ షేరింగ్ రిక్వెస్ట్‌</translation>
 <translation id="3685598397738512288">Linux USB ప్రాధాన్యతలు</translation>
 <translation id="368789413795732264">ఫైల్‌ను వ్రాయడానికి ప్రయత్నించడంలో ఎర్రర్ జరిగింది: <ph name="ERROR_TEXT"/>.</translation>
-<translation id="3688507211863392146">మీరు అప్లికేషన్‌లో తెరిచే ఫైళ్లు మరియు ఫోల్డర్‌లలో వ్రాయండి</translation>
+<translation id="3688507211863392146">మీరు అప్లికేషన్‌లో తెరిచే ఫైళ్లు మరియు ఫోల్డర్‌లలో రాయండి</translation>
 <translation id="3688526734140524629">ఛానెల్‌ను మార్చు</translation>
 <translation id="3688578402379768763">తాజాగా ఉంది</translation>
 <translation id="3688794912214798596">భాషలను మార్చండి...</translation>
@@ -2558,17 +2585,16 @@
 <translation id="3711931198657368127">అతికించి <ph name="URL"/>కు వెళ్ళండి</translation>
 <translation id="3711945201266135623">ప్రింట్ సర్వర్‌లో <ph name="NUM_PRINTERS"/> ప్రింటర్‌లు కనుగొనబడ్డాయి</translation>
 <translation id="3712050472459130149">ఖాతాను అప్‌డేట్ చేయడం అవసరం</translation>
-<translation id="3910561287607745583">మీ Brave ఖాతాతో మొబైల్ డేటా కనెక్షన్‌ ఉన్న ఇతర పరికరాలను గుర్తించడానికి ఈ పరికరాన్ని అనుమతించండి</translation>
 <translation id="3712897371525859903">&amp;లాగా పేజీని సేవ్ చేయి</translation>
 <translation id="371300529209814631">వెనుకకు/ముందుకు</translation>
 <translation id="3713047097299026954">ఈ 'సెక్యూరిటీ కీ'లో ఎటువంటి సైన్-ఇన్ డేటా లేదు</translation>
 <translation id="3714195043138862580">ఈ డెమో పరికరం కేటాయింపు తీసివేత స్థితిలో ఉంచబడింది.</translation>
 <translation id="3714633008798122362">వెబ్ క్యాలెండర్</translation>
-<translation id="3716758537211256894">'నా నెట్‌వర్క్‌'ను చెక్ చేయండి</translation>
 <translation id="3719826155360621982">హోమ్‌పేజీ</translation>
 <translation id="372062398998492895">CUPS</translation>
 <translation id="8397843425685839889">మీరు మరియు Brave</translation>
 <translation id="3722108462506185496">వర్చువల్ మెషిన్ సేవను ప్రారంభించడంలో ఎర్రర్ ఏర్పడింది. దయచేసి మళ్లీ ప్రయత్నించండి.</translation>
+<translation id="3727144509609414201">అందుబాటులో ఉన్న Wi-Fi నెట్‌వర్క్‌లు</translation>
 <translation id="3727187387656390258">పాప్‌అప్‌ను పర్యవేక్షించు</translation>
 <translation id="372722114124766626">ఒకసారి మాత్రమే</translation>
 <translation id="3727473233247516571">వెనుకకు-ముందుకు కాష్ సబ్‌ఫ్రేమ్: <ph name="BACK_FORWARD_CACHE_PAGE_URL"/></translation>
@@ -2614,7 +2640,6 @@
 <translation id="377050016711188788">ఐస్‌క్రీమ్</translation>
 <translation id="3771290962915251154">తల్లిదండ్రుల నియంత్రణలు ఆన్‌లో ఉన్నందున ఈ సెట్టింగ్ డిజేబుల్ చేయబడింది</translation>
 <translation id="3771294271822695279">వీడియో ఫైళ్లు</translation>
-<translation id="3772609330847318323"><ph name="ORIGIN"/> కోసం పాస్‌వర్డ్‌ను అప్‌డేట్ చేయండి</translation>
 <translation id="3775432569830822555">SSL సర్వర్ సర్టిఫికెట్</translation>
 <translation id="3775705724665058594">మీ పరికరాలకు పంపండి</translation>
 <translation id="3776508619697147021">అనేక ఫైళ్లను ఆటోమేటిక్‌గా డౌన్‌లోడ్ చేయడానికి సైట్‌లు అడగవచ్చు</translation>
@@ -2646,7 +2671,6 @@
 <translation id="3797900183766075808">“<ph name="SEARCH_TERMS"/>” కోసం <ph name="SEARCH_ENGINE"/>లో &amp;శోధించండి</translation>
 <translation id="3798449238516105146">వెర్షన్</translation>
 <translation id="3799128412641261490">స్విచ్ యాక్సెస్ సెట్టింగ్‌లు</translation>
-<translation id="3799903419983101749">మీరు ఆపిన చోటు నుండే కొనసాగించండి. సెట్టింగ్‌లలో యాప్‌లు ఆటోమేటిక్‌గా రీస్టోర్ అవ్వడానికి మీరు వాటిని సెట్ చేయవచ్చు.</translation>
 <translation id="3800806661949714323">అన్నీ చూపు (సిఫార్సు చేయబడింది)</translation>
 <translation id="380329542618494757">పేరు</translation>
 <translation id="3803345858388753269">వీడియో క్వాలిటీ</translation>
@@ -2735,6 +2759,8 @@
 <translation id="3884152383786131369">అనేక భాషలలో అందుబాటులో ఉన్న వెబ్ కంటెంట్, ఈ లిస్ట్‌లోని మొదటి సపోర్ట్ చేసే భాషను ఉపయోగిస్తుంది. ఈ ప్రాధాన్యతలు మీ బ్రౌజర్ సెట్టింగ్‌లతో సింక్ చేయబడతాయి. <ph name="BEGIN_LINK_LEARN_MORE"/>మరింత తెలుసుకోండి<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3885112598747515383">అప్‌డేట్‌లను మీ అడ్మినిస్ట్రేటర్ మేనేజ్ చేస్తారు</translation>
 <translation id="3886446263141354045">మీరు ఈ సైట్‌ను యాక్సెస్ చేయడానికి చేసిన రిక్వెస్ట్‌ <ph name="NAME"/>కు పంపబడింది</translation>
+<translation id="3887022758415973389">పరికర లిస్ట్‌ను చూడండి</translation>
+<translation id="3888053818972567950"><ph name="WEB_DRIVE"/> కనెక్షన్</translation>
 <translation id="3888550877729210209"><ph name="LOCK_SCREEN_APP_NAME"/>తో గమనికలు రూపొందిస్తున్నారు</translation>
 <translation id="3888586133700543064">మీ Assistant సమస్యను మెరుగ్గా అర్థం చేసుకోవడంలో ఈ సమాచారం మాకు సహాయపడుతుంది. ఇది 90 రోజుల పాటు స్టోర్ చేయబడుతుంది, అలాగే తగిన ఇంజినీరింగ్, ఫీడ్‌బ్యాక్ టీమ్‌లు మాత్రమే దీనిని యాక్సెస్ చేయగలవు.</translation>
 <translation id="3518294595762833244">Wi-Fi సింక్‌ను ఉపయోగించడానికి Brave సింక్‌ను ఆన్ చేయండి</translation>
@@ -2760,6 +2786,7 @@
 <translation id="3905761538810670789">యాప్‌ను సరి చేయి</translation>
 <translation id="3908393983276948098"><ph name="PLUGIN_NAME"/> కాలం చెల్లినది</translation>
 <translation id="3908501907586732282">ఎక్స్‌టెన్ష‌న్‌ను ప్రారంభించు</translation>
+<translation id="3909701002594999354">అన్ని కంట్రోల్‌లను చూడండి</translation>
 <translation id="3909791450649380159">క&amp;త్తిరించు</translation>
 <translation id="39103738135459590">యాక్టివేషన్ కోడ్</translation>
 <translation id="3911824782900911339">కొత్త‌ ట్యాబ్ పేజీ</translation>
@@ -2858,6 +2885,7 @@
 <translation id="3994374631886003300">మీ <ph name="DEVICE_TYPE"/>ను అన్‌లాక్ చేయడానికి, మీ ఫోన్‌ను అన్‌లాక్ చేసి దానిని దగ్గరికి తీసుకురండి.</translation>
 <translation id="3994878504415702912">&amp;జూమ్ చేయి</translation>
 <translation id="3995138139523574647">USB-C పరికరం (కుడివైపు వెనుక పోర్ట్)</translation>
+<translation id="3999533068584271567">నెట్‌వర్క్ కనెక్షన్‌ను ఏర్పాటు చేయడం సాధ్యపడలేదు. దయచేసి మీ నెట్‌వర్క్ కనెక్షన్‌ను చెక్ చేసి, మళ్లీ ట్రై చేయండి.</translation>
 <translation id="4002329649066944389">సైట్‌కు ప్రత్యేకమైన మినహాయింపులను మేనేజ్ చేయండి</translation>
 <translation id="4002440992267487163">పిన్ సెటప్</translation>
 <translation id="4005817994523282006">సమయ మండలి గుర్తింపు పద్ధతి</translation>
@@ -2902,7 +2930,6 @@
 <translation id="4057896668975954729">స్టోర్‌లో చూడండి</translation>
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="4058793769387728514">పత్రాన్ని ఇప్పుడు తనిఖీ చేయి</translation>
-<translation id="406070391919917862">నేపథ్య యాప్‌లు</translation>
 <translation id="4061374428807229313">షేర్ చేయడానికి, Files యాప్‌లోని ఫోల్డర్‌పై కుడి క్లిక్ చేయండి, తర్వాత "Parallels desktopతో షేర్ చేయి"ని ఎంచుకోండి.</translation>
 <translation id="406213378265872299">అనుకూలంగా మార్చిన ప్రవర్తనలు</translation>
 <translation id="4062561150282203854">మీ <ph name="DEVICE_TYPE"/> యాప్‌లు, సెట్టింగ్‌లు, ఇంకా మరిన్నింటిని సింక్ చేయండి</translation>
@@ -2993,6 +3020,7 @@
 <translation id="4158364720893025815">పాస్</translation>
 <translation id="4159681666905192102">ఇది <ph name="CUSTODIAN_EMAIL"/> మరియు <ph name="SECOND_CUSTODIAN_EMAIL"/> నిర్వహించే చిన్నపిల్లల ఖాతా.</translation>
 <translation id="4163560723127662357">తెలియని కీబోర్డ్</translation>
+<translation id="4165942112764990069"><ph name="USER_EMAIL"/>, చెల్లుబాటులో ఉన్న సంస్థకు చెందినది కాదు. మీ అడ్మినిస్ట్రేటర్‌ను కాంటాక్ట్ చేయండి. మీరు అడ్మినిస్ట్రేటర్ అయితే, ఈ సైట్‌ను సందర్శించడం ద్వారా మీరు మీ సంస్థను సెటప్ చేయవచ్చు: g.co/BraveEnterpriseAccount</translation>
 <translation id="4167686856635546851">వీడియో గేమ్‌లు లేదా వెబ్ ఫారమ్‌లు వంటి డిస్‌ప్లే ఇంటరాక్టివ్ ఫీచర్‌ల కోసం సాధారణంగా సైట్‌లు JavaScriptను ఉపయోగించుకుంటాయి</translation>
 <translation id="4168015872538332605"><ph name="PRIMARY_EMAIL"/>కు సంబంధించిన కొన్ని సెట్టింగ్‌లు మీతో షేర్‌ చేయబడుతున్నాయి. ఈ సెట్టింగ్‌లు బహుళ సైన్-ఇన్‌ను ఉపయోగించేటప్పుడు మాత్రమే మీ ఖాతాను ప్రభావితం చేస్తాయి.</translation>
 <translation id="4169535189173047238">అనుమతించవద్దు</translation>
@@ -3109,6 +3137,7 @@
 <translation id="3047737257561987312">{COUNT,plural, =1{1 Brave ఖాతా}other{<ph name="EXTRA_ACCOUNTS"/> Brave ఖాతాలు}}</translation>
 <translation id="4312866146174492540">బ్లాక్ చేయి (డిఫాల్ట్)</translation>
 <translation id="4314815835985389558">సింక్‌ను నిర్వహించండి</translation>
+<translation id="4315933848520197627">ఖాతాను అన్‌లింక్ చేయండి</translation>
 <translation id="4316850752623536204">డెవలపర్ వెబ్‌సైట్</translation>
 <translation id="4317820549299924617">వెరిఫికేషన్ విజయవంతం కాలేదు</translation>
 <translation id="4320177379694898372">ఇంటర్నెట్ కనెక్షన్ లేదు</translation>
@@ -3149,6 +3178,7 @@
 <translation id="4364830672918311045">నోటిఫికేషన్‌లను ప్రదర్శించడం</translation>
 <translation id="4366138410738374926">ప్రింట్ చేయడం ప్రారంభమైంది</translation>
 <translation id="4370975561335139969">మీరు నమోదు చేసిన ఇమెయిల్, పాస్‌వర్డ్ సరిపోలలేదు</translation>
+<translation id="4371452868325715552">సర్వర్‌తో కనెక్ట్ చేయడం సాధ్యపడలేదు. దయచేసి మీ నెట్‌వర్క్ కనెక్షన్‌ను చెక్ చేసి, మళ్లీ ట్రై చేయండి. మీకు ఇంకా సమస్య ఉంటే, మీ Bravebookను రీస్టార్ట్ చేయడానికి ట్రై చేయండి. ఎర్రర్ కోడ్: <ph name="ERROR_CODE"/>.</translation>
 <translation id="4373966964907728675">డెస్క్‌టాప్‌ను ప్రసారం చేస్తున్నాము</translation>
 <translation id="4374831787438678295">Linux ఇన్‌స్టాలర్</translation>
 <translation id="4375035964737468845">డౌన్‌లోడ్ చేసిన పైల్‌లను తెరవండి</translation>
@@ -3164,6 +3194,7 @@
 <translation id="4384312707950789900">ప్రాధాన్య నెట్‌వర్క్‌లకు జోడించు</translation>
 <translation id="4384652540891215547">ఎక్స్‌టెన్షన్‌ను యాక్టివేట్ చేయండి</translation>
 <translation id="438503109373656455">సారటోగా</translation>
+<translation id="4385146930797718821">స్క్రీన్‌షాట్ క్లిప్‌బోర్డ్‌కు కాపీ చేయబడింది</translation>
 <translation id="4385905942116811558">బ్లూటూత్, అలాగే USB పరికరాల కోసం సెర్చ్ చేస్తోంది</translation>
 <translation id="4387890294700445764">చోరీకి గురైన పాస్‌వర్డ్‌లు</translation>
 <translation id="4389091756366370506">వినియోగదారు <ph name="VALUE"/></translation>
@@ -3212,7 +3243,6 @@
 <translation id="443454694385851356">లెగసీ (అసురక్షితం)</translation>
 <translation id="443475966875174318">అనుకూలంగా లేని అప్లికేషన్‌లను అప్‌డేట్ చేయండి లేదా తీసివేయండి</translation>
 <translation id="4438043733494739848">పారదర్శకత</translation>
-<translation id="9154782952206115436"><ph name="USERNAME"/> <ph name="MASKED_PASSWORD"/>, మీ <ph name="ACCOUNT"/> Brave ఖాతాలో సేవ్ చేయబడుతుంది</translation>
 <translation id="4440097423000553826"><ph name="WEBSITE"/> మీ ఫోన్‌కు నోటిఫికేషన్‌ను పంపింది. అది మీరేనని నిర్ధారించడానికి, “<ph name="NOTIFICATIONTITLE"/>” నోటిఫికేషన్‌ను ట్యాప్ చేసి, దశలను ఫాలో అవ్వండి.</translation>
 <translation id="4441124369922430666">మెషీన్ ప్రారంభించబడినప్పుడు ఆటోమేటిక్‌గా ఈ యాప్ ప్రారంభించబడాలని మీరు కోరుకుంటున్నారా?</translation>
 <translation id="4441147046941420429">కొనసాగించడానికి, మీ పరికరం నుండి సెక్యూరిటీ కీని తీసివేసి, ఆ తర్వాత చొప్పించి, ఆపై దానిని తాకండి</translation>
@@ -3374,10 +3404,10 @@
 <translation id="4596295440756783523">మీకు ఫైల్‌లో ఈ సర్వర్‌లను గుర్తించే ప్రమాణపత్రాలు ఉన్నాయి</translation>
 <translation id="4598556348158889687">నిల్వ నిర్వహణ</translation>
 <translation id="4598776695426288251">బహుళ పరికరాల ద్వారా Wi-Fi అందుబాటులో ఉంది</translation>
+<translation id="4601426376352205922">చదవనిదిగా మార్క్ చేయండి</translation>
 <translation id="4602466770786743961">మీ కెమెరా మరియు మైక్రోఫోన్‌ను యాక్సెస్ చేయడానికి <ph name="HOST"/>ను ఎల్లప్పుడూ అనుమతించండి</translation>
 <translation id="4606551464649945562">మీ పరిసరాల 3D మ్యాప్‌ను రూపొందించడానికి లేదా కెమెరా పొజిషన్‌ను ట్రాక్ చేయడానికి సైట్‌లను అనుమతించవద్దు</translation>
 <translation id="4608500690299898628">&amp;కనుగొను...</translation>
-<translation id="4608520674724523647">విజయవంతమైన నమోదు ఉదాహరణ</translation>
 <translation id="4608703838363792434"><ph name="FILE_NAME"/>లో గోప్యమైన కంటెంట్ ఉంది</translation>
 <translation id="4609987916561367134">JavaScriptను ఉపయోగించడానికి అనుమతించబడింది</translation>
 <translation id="4610162781778310380"><ph name="PLUGIN_NAME"/>‌కు ఎర్రర్ ఎదురైంది</translation>
@@ -3439,6 +3469,7 @@
 <translation id="4662373422909645029">మారుపేరులో అంకెలు ఉండరాదు</translation>
 <translation id="4662788913887017617">ఈ బుక్‌మార్క్‌ను మీ iPhoneతో షేర్ చేయండి</translation>
 <translation id="4663373278480897665">కెమెరా అనుమతించబడింది</translation>
+<translation id="4664289193573249666">Chrome OS సెట్టింగ్‌లలో సురక్షిత DNSను మేనేజ్ చేయండి</translation>
 <translation id="4664482161435122549">PKCS #12 ఎగుమతి ఎర్రర్</translation>
 <translation id="4665014895760275686">తయారీదారు</translation>
 <translation id="4665446389743427678"><ph name="SITE"/> ద్వారా నిల్వ చేయబడిన మొత్తం డేటా తొలగించబడుతుంది.</translation>
@@ -3518,6 +3549,7 @@
 <translation id="4770119228883592393">అనుమతి కోసం రిక్వెస్ట్ చేశారు, ప్రతిస్పందించడానికి ⌘ + ఆప్షన్ + కింది వైపు బాణం గుర్తును నొక్కండి</translation>
 <translation id="4773112038801431077">Linuxను అప్‌గ్రేడ్ చేయండి</translation>
 <translation id="477647109558161443">డెస్క్‌టాప్ షార్ట్‌కట్‍ను క్రియేట్ చేయండి</translation>
+<translation id="4776594120007763294">'తర్వాత చదవండి' మెనూకు పేజీని జోడించడానికి, బటన్‌ను క్లిక్ చేయండి</translation>
 <translation id="4776917500594043016"><ph name="USER_EMAIL_ADDRESS"/> కోసం పాస్‌వర్డ్</translation>
 <translation id="4777458362738635055">ఈ పరికరాన్ని వాడే ఇతర యూజర్‌లు ఈ నెట్‌వర్క్‌ను ఉపయోగించగలరు</translation>
 <translation id="4777825441726637019">Play స్టోర్</translation>
@@ -3565,6 +3597,7 @@
 <translation id="4827904420700932487">ఈ ఇమేజ్ కోసం QR కోడ్‌ను క్రియేట్ చేయండి</translation>
 <translation id="482952334869563894"><ph name="VENDOR_ID"/> నుండి USB పరికరాలు</translation>
 <translation id="4829768588131278040">PINని సెటప్ చేయి</translation>
+<translation id="4830026649400230050">అర్హత గల అన్ని డౌన్‌లోడ్‌లు మీ సంస్థ <ph name="WEB_DRIVE"/> ఖాతాకు పంపబడతాయి.</translation>
 <translation id="4830121310592638841">సైట్ మీ స్క్రీన్‌లలో విండోలను తెరిచి, ఉంచాలనుకున్నప్పుడు అనుమతి అడగాలి</translation>
 <translation id="4830502475412647084">OS అప్‌డేట్‌ ఇన్‌స్టాల్ చేయబడుతుంది</translation>
 <translation id="4830573902900904548"><ph name="NETWORK_NAME"/>ను ఉపయోగించి మీ <ph name="DEVICE_TYPE"/> ఇంటర్నెట్‌కి కనెక్ట్ చేయలేకపోయింది. దయచేసి మరో నెట్‌వర్క్‌ను ఎంచుకోండి. <ph name="LEARN_MORE_LINK_START"/>మరింత తెలుసుకోండి<ph name="LEARN_MORE_LINK_END"/></translation>
@@ -3643,7 +3676,6 @@
 <translation id="490051679772058907"><ph name="REFRESH_RATE"/> Hz - ఇంటర్లేస్ చేయబడింది</translation>
 <translation id="4901309472892185668"><ph name="EXPERIMENT_NAME"/> ప్రయోగానికి ప్రయోగ స్థితిని ఎంచుకోండి.</translation>
 <translation id="49027928311173603">సర్వర్ నుండి డౌన్‌లోడ్ చేసిన విధానం చెల్లదు: <ph name="VALIDATION_ERROR"/>.</translation>
-<translation id="3073689951164015877">అజ్ఞాత మోడ్‌లో హిస్టరీ సేవ్ అవ్వదు</translation>
 <translation id="4906490889887219338">నెట్‌వర్క్ ఫైల్ షేర్‌లను సెటప్ చేయండి లేదా నిర్వహించండి. <ph name="LINK_BEGIN"/>మరింత తెలుసుకోండి<ph name="LINK_END"/></translation>
 <translation id="4907161631261076876">ఈ ఫైల్ సాధారణ పద్ధతిలో డౌన్‌లోడ్ కాలేదు, ఇది అపాయకరమైనది కావచ్చు.</translation>
 <translation id="4907306957610201395">అనుమతి వర్గం</translation>
@@ -3698,11 +3730,12 @@
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="4961361269522589229">వంటకం ఐడియాలు</translation>
 <translation id="496185450405387901">మీ నిర్వాహకులు ఈ యాప్‌ను ఇన్‌స్టాల్ చేశారు.</translation>
+<translation id="4963789650715167449">ప్రస్తత ట్యాబ్‌ను తీసివేయండి</translation>
 <translation id="4964455510556214366">అమరిక</translation>
 <translation id="496446150016900060">మీ ఫోన్‌తో Wi-Fi నెట్‌వర్క్‌లను సింక్ చేయండి</translation>
 <translation id="4965808351167763748">Hangouts Meetను అమలు చేసేలా ఈ పరికరాన్ని ఖచ్చితంగా సెటప్ చేయాలని అనుకుంటున్నారా?</translation>
 <translation id="4304377874648098617">మీరు అజ్ఞాత మోడ్‌లో ఉన్నారు</translation>
-<translation id="496888482094675990">మీరు Brave డిస్క్, బాహ్య నిల్వ లేదా మీ Chrome OS పరికరంలో సేవ్ చేసిన ఫైళ్లకు ఫైల్స్ యాప్‌, శీఘ్ర యాక్సెస్‌ను అందిస్తుంది.</translation>
+<translation id="496888482094675990">మీరు Google Drive, బాహ్య నిల్వ లేదా మీ Chrome OS పరికరంలో సేవ్ చేసిన ఫైళ్లకు ఫైల్స్ యాప్‌, శీఘ్ర యాక్సెస్‌ను అందిస్తుంది.</translation>
 <translation id="4971412780836297815">పూర్తవగానే తెరువు</translation>
 <translation id="7307583170263691471">ప్రమాదకరమైన వెబ్‌సైట్‌లు, డౌన్‌లోడ్‌లు, ఎక్స్‌టెన్షన్‌ల నుండి మరింత వేగవంతమైన, క్రియాశీలమైన రక్షణ. పాస్‌వర్డ్ ఉల్లంఘనల గురించి మిమ్మల్ని హెచ్చరిస్తుంది. బ్రౌజింగ్ డేటాను Braveకు పంపాల్సి ఉంటుంది.</translation>
 <translation id="4972129977812092092">ప్రింటర్‌ను ఎడిట్ చేయండి</translation>
@@ -3728,6 +3761,7 @@
 <translation id="4996851818599058005">{NUM_VMS,plural, =0{<ph name="VM_TYPE"/> వర్చువల్ మెషీన్‌లు ఏవీ కనుగొనబడలేదు}=1{1 <ph name="VM_TYPE"/> వర్చువల్ మెషీన్‌ కనుగొనబడింది: <ph name="VM_NAME_LIST"/>}other{{NUM_VMS} <ph name="VM_TYPE"/> వర్చువల్ మెషీన్‌లు కనుగొనబడ్డాయి: <ph name="VM_NAME_LIST"/>}}</translation>
 <translation id="4997086284911172121">ఇంటర్నెట్ కనెక్షన్ లేదు.</translation>
 <translation id="4998430619171209993">ఆన్‌లో ఉంది</translation>
+<translation id="4999804342505941663">'అంతరాయం కలిగించవద్దు'ను ఆన్ చేయండి</translation>
 <translation id="5000922062037820727">బ్లాక్ చేయబడింది (సిఫార్సు చేయబడింది)</translation>
 <translation id="5005498671520578047">పాస్‌వర్డ్ కాపీచేయడం</translation>
 <translation id="5006218871145547804">Crostini Android యాప్ ADB</translation>
@@ -3768,6 +3802,7 @@
 <translation id="5050330054928994520">TTS</translation>
 <translation id="5051836348807686060">మీరు ఎంచుకున్న భాషలకు స్పెల్‌చెక్ మద్దతు లేదు</translation>
 <translation id="5052499409147950210">సైట్‌ను ఎడిట్ చేయండి</translation>
+<translation id="505347685865235222">పేరు లేని గ్రూప్ - <ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="8364458882768727272">Brave Lensతో ఇమేజ్‌ను సెర్చ్ చేయండి</translation>
 <translation id="5056950756634735043">కంటైనర్‌కు కనెక్ట్ చేస్తోంది</translation>
 <translation id="5057110919553308744">మీరు ఎక్స్‌టెన్షన్ క్లిక్ చేసినప్పుడు</translation>
@@ -3783,6 +3818,7 @@
 <translation id="5067867186035333991"><ph name="HOST"/> మీ మైక్రోఫోన్‌ను యాక్సెస్ చేయాలనుకుంటే నాకు తెలియజేయి</translation>
 <translation id="5068918910148307423">డేటాను పంపడం మరియు స్వీకరించడం పూర్తి చేయడానికి ఇటీవల మూసివేసిన సైట్‌లను అనుమతించవద్దు</translation>
 <translation id="5068919226082848014">పిజ్జా</translation>
+<translation id="5070710277167211639">నావిగేషన్‌లు HTTPSకు అప్‌గ్రేడ్ చేయబడతాయి, దాన్ని సపోర్ట్ చేయని సైట్‌లు లోడ్ కావడానికి ముందు మీకు హెచ్చరిక వస్తుంది</translation>
 <translation id="5070773577685395116">ఇది అర్థం కాలేదు?</translation>
 <translation id="5071892329440114717">స్టాండర్డ్ భద్రతా వివరాలను చూపించు</translation>
 <translation id="5072052264945641674">కర్సర్ పరిమాణాన్ని సర్దుబాటు చేయి</translation>
@@ -3891,7 +3927,6 @@
 <translation id="5190926251776387065">పోర్ట్‌ను యాక్టివేట్ చేయండి</translation>
 <translation id="5191094172448199359">మీరు ఎంటర్ చేసిన పిన్‌లు మ్యాచ్ అవ్వడం లేదు</translation>
 <translation id="5191251636205085390">థర్డ్-పార్టీ కుక్కీలను భర్తీ చేయడానికి, అలాగే వాటిని కంట్రోల్ చేయడానికి ఉద్దేశించిన కొత్త టెక్నాలిజీల గురించి తెలుసుకోండి</translation>
-<translation id="51918995459521422"><ph name="ORIGIN"/> పలు ఫైళ్లను డౌన్‌లోడ్ చేయాలనుకుంటోంది</translation>
 <translation id="5192062846343383368">మీ పర్యవేక్షణ సెట్టింగ్‌లను చూడడానికి Family Link యాప్‌ను తెరవండి</translation>
 <translation id="5193988420012215838">మీ క్లిప్‌బోర్డ్‌కు కోడ్ కాపీ చేయబడింది</translation>
 <translation id="3610571162330520499">ఇది అజ్ఞాత విండోలను మాత్రమే ప్రభావితం చేస్తుంది</translation>
@@ -3907,6 +3942,7 @@
 <translation id="520621735928254154">ప్రమాణపత్ర దిగుమతి లోపం</translation>
 <translation id="7485307793427476822">{COUNT,plural, =1{చోరీకి గురైన పాస్‌వర్డ్ విజయవంతంగా మార్చబడింది. మీ వద్ద మరో # చోరీకి గురైన పాస్‌వర్డ్ ఉంది. ఇప్పుడే, ఈ పాస్‌వర్డ్‌ను తనిఖీ చేయమని Brave సిఫార్సు చేస్తోంది.}other{చోరీకి గురైన పాస్‌వర్డ్ విజయవంతంగా మార్చబడింది. మీ వద్ద మరో # చోరీకి గురైన పాస్‌వర్డ్‌లు ఉన్నాయి. ఇప్పుడే, ఈ పాస్‌వర్డ్‌లను తనిఖీ చేయమని Brave సిఫార్సు చేస్తోంది.}}</translation>
 <translation id="5207949376430453814">వచన కర్సర్ గుర్తును హైలైట్ చేయి</translation>
+<translation id="5208548918290612795"><ph name="WEB_DRIVE"/> ప్రామాణీకరణ టోకెన్‌ను స్టోర్ చేస్తోంది</translation>
 <translation id="5247681254378595620">ప్రస్తుతం తెరిచిన ట్యాబ్‌లలో సెర్చ్ చేయడానికి టాప్ Brave UIలోని పాప్‌అప్ బబుల్‌ను ఎనేబుల్ చేయండి.</translation>
 <translation id="5209320130288484488">పరికరాలు కనుగొనబడలేదు</translation>
 <translation id="5210365745912300556">ట్యాబ్‌ను మూసివేయి</translation>
@@ -3936,7 +3972,6 @@
 <translation id="5235750401727657667">కొత్త ట్యాబ్‌ను తెరిచేటప్పుడు మీరు చూసే పేజీని భర్తీ చేయండి</translation>
 <translation id="6465706586789214771">మీ పరికరాలన్నిటిలో వాటిని సులభంగా ఉపయోగించడానికి, వాటిని మీరు మీ Brave ఖాతాకు తరలించవచ్చు</translation>
 <translation id="5238278114306905396">"<ph name="EXTENSION_NAME"/>" యాప్ ఆటోమేటిక్‌గా తీసివేయబడింది.</translation>
-<translation id="5241128660650683457">మీరు సందర్శించే వెబ్‌సైట్‌ల్లోని మీ మొత్తం డేటాను చదవండి</translation>
 <translation id="5242724311594467048">"<ph name="EXTENSION_NAME"/>"ను ప్రారంభించాలా?</translation>
 <translation id="5243522832766285132">దయచేసి కొన్ని నిమిషాల్లో మళ్లీ ప్రయత్నించండి</translation>
 <translation id="5244474230056479698"><ph name="EMAIL"/> ఖాతాకు సింక్ చేస్తోంది</translation>
@@ -4009,6 +4044,7 @@
 <translation id="5315738755890845852">అదనపు వంకర కలుపు: <ph name="ERROR_LINE"/></translation>
 <translation id="5317780077021120954">సేవ్ చేయి</translation>
 <translation id="989239400026154074">Braveను Brave సిఫార్సు చేస్తోంది</translation>
+<translation id="5319712128756744240">కొత్త పరికరాన్ని పెయిర్ చేయండి</translation>
 <translation id="5320135788267874712">కొత్త పరికరం పేరు</translation>
 <translation id="532247166573571973">సర్వర్ అందుబాటులో లేకపోవచ్చు. తర్వాత మళ్లీ ప్రయత్నించండి.</translation>
 <translation id="5324300749339591280">యాప్‌ల లిస్ట్</translation>
@@ -4110,10 +4146,12 @@
 <translation id="5442550868130618860">స్వీయ-అప్‌డేట్‌ని ఆన్ చేయి</translation>
 <translation id="5445400788035474247">10x</translation>
 <translation id="5446983216438178612">సంస్థ కోసం కలిగి ఉన్న ప్రమాణపత్రాలను చూపు</translation>
+<translation id="5447384712203291074"><ph name="ITEM_COUNT_MULTIPLE"/> ఐటెమ్‌లు</translation>
 <translation id="5448293924669608770">అయ్యో, సైన్ ఇన్ చేయడంలో ఏదో తప్పు జరిగింది</translation>
 <translation id="5449551289610225147">పాస్‌వర్డ్ చెల్లదు</translation>
 <translation id="5449588825071916739">అన్ని ట్యాబ్‌లను బుక్‌మార్క్ చేయి</translation>
 <translation id="5449716055534515760">&amp;విండో మూసివెయ్యి</translation>
+<translation id="5452976525201205853"><ph name="LANGUAGE"/> (ఆఫ్‌లైన్‌లో పని చేస్తుంది)</translation>
 <translation id="5454166040603940656"><ph name="PROVIDER"/>తో</translation>
 <translation id="5457113250005438886">చెల్లదు</translation>
 <translation id="5457459357461771897">మీ కంప్యూటర్‌లోని ఫోటోలు, సంగీతం మరియు ఇతర మీడియాను చదవడం మరియు తొలగించడం</translation>
@@ -4179,6 +4217,7 @@
 <translation id="5505307013568720083">ఇంక్ లేదు</translation>
 <translation id="5505794066310932198">టోగుల్ కమాండర్</translation>
 <translation id="5507756662695126555">అంగీకరించడం</translation>
+<translation id="5507795078844206688">మీరు వెళ్లే పేజీల URL, ఉదా. https://www.google.com</translation>
 <translation id="5509693895992845810">&amp;ఇలా సేవ్ చేయి...</translation>
 <translation id="5509914365760201064">జారీచేసినవారు: <ph name="CERTIFICATE_AUTHORITY"/></translation>
 <translation id="6849870115130610913">Brave నుండి చిత్ర వివరణలను పొందండి</translation>
@@ -4231,6 +4270,7 @@
 <translation id="5565735124758917034">సక్రియం</translation>
 <translation id="5567989639534621706">అప్లికేషన్ కాష్‌లు</translation>
 <translation id="5568069709869097550">సైన్ ఇన్ చేయడం సాధ్యపడలేదు</translation>
+<translation id="5571092938913434726">గ్లోబల్ మీడియా నియంత్రణలు</translation>
 <translation id="5571832155627049070">మీ ప్రొఫైల్‌ను తగినట్టుగా మార్చుకోండి</translation>
 <translation id="1254756632288991504">దయచేసి Braveను ప్రారంభించి, దానికి సైన్ ఇన్ చేయండి, అప్పుడు ఈ సైట్‌ను యాక్సెస్ చేయడానికి మీకు అనుమతి ఉందో లేదో Brave తనిఖీ చేయగలదు.</translation>
 <translation id="5575528586625653441">డెమో నమోదు రిక్వెస్ట్‌కు సంబంధించి ఒక సమస్య ఏర్పడింది.</translation>
@@ -4417,6 +4457,7 @@
 <translation id="5790651917470750848">పోర్ట్ ఫార్వర్డ్ ఇప్పటికే ఉంది</translation>
 <translation id="5792728279623964091">దయచేసి మీ పవర్ బటన్‌పై నొక్కండి</translation>
 <translation id="5793339252089865437">మీరు మీ మొబైల్ నెట్‌వర్క్ ద్వారా అప్‌డేట్‌ని డౌన్‌లోడ్ చేసినట్లయితే, అధిక ఛార్జ్‌లు చెల్లించాల్సి రావచ్చు.</translation>
+<translation id="5794034487966529952"><ph name="DESK_TITLE"/> డెస్క్‌లో <ph name="NUM_BROWSERS"/> బ్రౌజర్ విండోలు తెరిచి ఉన్నాయి</translation>
 <translation id="5794414402486823030">ఎల్లప్పుడూ సిస్టమ్ వ్యూయర్‌తో తెరువు</translation>
 <translation id="5794700615121138172">Linux షేర్ చేసిన ఫోల్డర్‌లు</translation>
 <translation id="7397305826909094212">అన్ని Brave యాప్‌ల నుండి నిష్క్రమించు</translation>
@@ -4432,6 +4473,7 @@
 <translation id="5805697420284793859">విండో మేనేజర్</translation>
 <translation id="5806773519584576205">0° (డిఫాల్ట్)</translation>
 <translation id="5810809306422959727">తల్లిదండ్రుల నియంత్రణల కోసం ఈ ఖాతాకు అర్హత లేదు</translation>
+<translation id="2714877654978324555">వెబ్‌సైట్ నోటిఫికేషన్‌ల కోసం, <ph name="LINK_BEGIN"/>Brave సెట్టింగ్‌ల<ph name="LINK_END"/>కు వెళ్లండి</translation>
 <translation id="5812674658566766066">అన్నీ విస్తరించు</translation>
 <translation id="5815645614496570556">X.400 అడ్రస్‌</translation>
 <translation id="5816434091619127343">అభ్యర్ధించిన ప్రింటర్ మార్పులు ప్రింటర్‌ను నిరుపయోగంగా చేస్తాయి.</translation>
@@ -4488,6 +4530,7 @@
 <translation id="5869522115854928033">సేవ్  చేసిన పాస్‌వర్డ్‌లు</translation>
 <translation id="5870086504539785141">యాక్సెస్‌ మెనూను మూసివేయండి</translation>
 <translation id="5870155679953074650">క్లిష్టమైన లోపాలు</translation>
+<translation id="5875534259258494936">స్క్రీన్ షేరింగ్ ముగిసింది</translation>
 <translation id="5876576639916258720">రన్ అవుతోంది...</translation>
 <translation id="5876851302954717356">కుడివైపున కొత్త ట్యాబ్</translation>
 <translation id="5877064549588274448">ఛానెల్ మార్చబడింది. మార్పులను వర్తింపజేయడానికి మీ పరికరాన్ని పునఃప్రారంభించండి.</translation>
@@ -4529,7 +4572,6 @@
     ఈ చిత్రం Bravebook సైన్ ఇన్ స్క్రీన్ మరియు లాక్ స్క్రీన్‌లలో చూపబడుతుంది.</translation>
 <translation id="5925147183566400388">సర్టిఫికేషన్ ప్రాక్టీస్ ప్రకటన పాయింటర్</translation>
 <translation id="539658326146969381">PDF ఫైళ్లను ఆటోమేటిక్‌గా Braveలో తెరవడానికి బదులుగా వాటిని డౌన్‌లోడ్ చేసుకోండి</translation>
-<translation id="5931146425219109062">మీరు సందర్శించే వెబ్‌సైట్‌ల్లో మీ మొత్తం డేటాను చదవడం మరియు మార్చడం</translation>
 <translation id="5932124097031739492">Linux విజయవంతంగా అప్‌గ్రేడ్ చేయబడింది.</translation>
 <translation id="5932224571077948991">సైట్ అనుచితమైన లేదా తప్పుదారి పట్టించే ప్రకటనలను చూపుతుంది</translation>
 <translation id="59324397759951282"><ph name="MANUFACTURER_NAME"/> యొక్క USB పరికరం</translation>
@@ -4567,8 +4609,8 @@
 <translation id="5963117322306686970">ట్యాబ్‌లను కలిపి గ్రూప్ చేయడానికి, ట్యాబ్‌పై కుడి క్లిక్ ఇవ్వండి</translation>
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (<ph name="NUM_KILOBYTES_LIVE"/> మిగిలి ఉన్నాయి)</translation>
 <translation id="5964113968897211042">{COUNT,plural, =0{అన్నింటినీ &amp;కొత్త విండోలో తెరువు}=1{&amp;కొత్త విండోలో తెరువు}other{అన్నింటినీ ({COUNT}) &amp;కొత్త విండోలో తెరువు}}</translation>
-<translation id="5964328685964290415">అన్ని నావిగేషన్‌లు HTTPSకు అప్‌గ్రేడ్ చేయబడతాయి, దాన్ని సపోర్ట్ చేయని సైట్‌లు లోడ్ కావడానికి ముందు మీకు హెచ్చరిక వస్తుంది</translation>
 <translation id="5965661248935608907">ఇది, మీరు హోమ్ బటన్‌ను క్లిక్ చేసేటప్పుడు లేదా ఓమ్నిబాక్స్‌ నుండి శోధించేటప్పుడు చూపబడే పేజీని కూడా నియంత్రిస్తుంది.</translation>
+<translation id="5968022600320704045">సెర్చ్ ఫలితాలు ఏవీ లేవు</translation>
 <translation id="5969419185858894314"><ph name="FOLDERNAME"/>లో ఫైళ్లను <ph name="ORIGIN"/> చూడగలదు</translation>
 <translation id="5969728632630673489">కీబోర్డ్ షార్ట్‌కట్ నోటిస్‌ను విస్మరించారు</translation>
 <translation id="5971037678316050792">బ్లూటూత్ అడాప్టర్ స్థితిని, జత చేసే విధానాన్ని నియంత్రించడానికి అనుమతి</translation>
@@ -4587,6 +4629,7 @@
 <translation id="5976609451147284762">ఈ ఆప్షన్ డేటా ప్లాన్ లేదా మొబైల్ నెట్‌వర్క్ డాంగిల్ కలిగిన, లేదా పోర్టబుల్ హాట్‌స్పాట్‌కు టెథరింగ్ చేస్తున్న Bravebookలకు వర్తిస్తుంది</translation>
 <translation id="5979421442488174909"><ph name="LANGUAGE"/>కు &amp;అనువదించు</translation>
 <translation id="5979469435153841984">పేజీలను బుక్‌మార్క్ చేయాలంటే, అడ్రస్‌ బార్‌లో ఉన్న నక్షత్రాన్ని క్లిక్ చేయండి</translation>
+<translation id="5983831175889857946">రివ్యూ పూర్తయింది!</translation>
 <translation id="5984222099446776634">ఇటీవల సందర్శించినవి</translation>
 <translation id="5985458664595100876">URL ఫార్మాట్ చెల్లదు. మద్దతు ఉన్న ఫార్మాట్‌లు \\server\share మరియు smb://server/share.</translation>
 <translation id="598810097218913399">కేటాయింపును తీసివేయండి</translation>
@@ -4596,6 +4639,7 @@
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{వెబ్‌ను బ్రౌజ్ చేస్తూనే ఉండడాన్ని నిర్ధారించడానికి, మీ నిర్వాహకుడిని ఈ అప్లికేషన్‌ను తీసివేయమని కోరండి.}other{వెబ్‌ను బ్రౌజ్ చేస్తూనే ఉండడాన్ని నిర్ధారించడానికి, మీ నిర్వాహకుడిని ఈ అప్లికేషన్‌లను తీసివేయమని కోరండి.}}</translation>
 <translation id="5997337190805127100">సైట్ యాక్సెస్ గురించి మరింత తెలుసుకోండి</translation>
 <translation id="6000758707621254961">'<ph name="SEARCH_TEXT"/>' అనే దానికి <ph name="RESULT_COUNT"/> ఫలితాలు లభించాయి</translation>
+<translation id="6001839398155993679">ప్రారంభిద్దాం</translation>
 <translation id="6002210667729577411">గ్రూప్‌ను కొత్త విండోకు తరలించు</translation>
 <translation id="4448813628683709282">మీ Brave ఖాతా నుండి పాస్‌వర్డ్ తొలగించబడింది</translation>
 <translation id="6002458620803359783">ప్రాధాన్య వాయిస్‌లు</translation>
@@ -4605,6 +4649,7 @@
 <translation id="6007240208646052708">మీ భాషలో వాయిస్ శోధన అందుబాటులో లేదు.</translation>
 <translation id="6011193465932186973">వేలిముద్ర</translation>
 <translation id="6011449291337289699">సైట్ డేటాను తీసివేయండి</translation>
+<translation id="6011908034087870826"><ph name="DEVICE_NAME"/>కు లింక్‌ను పంపుతోంది</translation>
 <translation id="6013027779243312217">మీ ఆడియో, వీడియోకు క్యాప్షన్‌లను పొందండి</translation>
 <translation id="6015796118275082299">సంవత్సరం</translation>
 <translation id="6016178549409952427"><ph name="TOTAL_ELEMENTS"/>లో <ph name="CURRENT_ELEMENT"/>వ అదనపు కంటెంట్‌కు నావిగేట్ చేయండి</translation>
@@ -4782,6 +4827,7 @@
 <translation id="6208725777148613371"><ph name="WEB_DRIVE"/>‌లో సేవ్ చేయడం సాధ్యం కాలేదు - <ph name="INTERRUPT_REASON"/></translation>
 <translation id="6209838773933913227">కాంపొనెంట్ అప్‌డేట్ అవుతోంది</translation>
 <translation id="6209908325007204267">మీ పరికరంలో Brave ఎంటర్‌ప్రైజ్ అప్‌గ్రేడ్ ఉంది, కానీ మీ యూజర్‌నేమ్ ఏ ఎంటర్‌ప్రైజ్ ఖాతాకు అనుబంధించబడి లేదు. వేరొక పరికరంలో g.co/BraveEnterpriseAccountను సందర్శించడం ద్వారా దయచేసి ఒక ఎంటర్‌ప్రైజ్ ఖాతాను క్రియేట్ చేయండి.</translation>
+<translation id="621172521139737651">{COUNT,plural, =0{అన్నింటినీ కొత్త ట్యాబ్ గ్రూప్‌లో తెరవండి}=1{కొత్త ట్యాబ్ గ్రూప్‌లో తెరవండి}other{అన్నింటినీ ({COUNT}) కొత్త ట్యాబ్ గ్రూప్‌లో తెరవండి}}</translation>
 <translation id="6212039847102026977">అధునాతన నెట్‌వర్క్ లక్షణాలను చూపు</translation>
 <translation id="6212168817037875041">ప్రదర్శనను ఆఫ్ చేయండి</translation>
 <translation id="6212752530110374741">లింక్‌ను ఇమెయిల్ చేయి</translation>
@@ -4873,6 +4919,7 @@
 <translation id="6294759976468837022">ఆటో-స్కాన్ వేగం</translation>
 <translation id="6295158916970320988">అన్ని సైట్‌లు</translation>
 <translation id="6295855836753816081">సేవ్ చేస్తోంది...</translation>
+<translation id="629730747756840877">ఖాతా</translation>
 <translation id="6298962879096096191">Android యాప్‌లను ఇన్‌స్టాల్ చేయడానికి Google Play‌ను ఉపయోగిస్తుంది</translation>
 <translation id="6300177430812514606">డేటాను పంపడాన్ని లేదా అందుకోవడాన్ని పూర్తి చేయడానికి అనుమతించబడలేదు</translation>
 <translation id="630065524203833229">ని&amp;ష్క్రమించు</translation>
@@ -4915,7 +4962,6 @@
 <translation id="6336038146639916978"><ph name="MANAGER"/>, ADB డీబగ్గింగ్‌ను డిజేబుల్ చేసింది. ఇది మీ <ph name="DEVICE_TYPE"/>ను 24 గంటలలో రీసెట్ చేస్తుంది. మీరు ఉంచాలనుకునే ఫైళ్లను బ్యాకప్ చేసుకోండి.</translation>
 <translation id="6338981933082930623">అన్నీ సైట్‌లు మీకు ఎటువంటి యాడ్‌లనైనా చూపించగలవు</translation>
 <translation id="6339668969738228384"><ph name="USER_EMAIL_ADDRESS"/> కోసం కొత్త ప్రొఫైల్‌ను సృష్టించు</translation>
-<translation id="6340017061976355871">సర్వర్‌కి కనెక్ట్ చేయడం సాధ్యం కాలేదు. దయచేసి మీ నెట్‌వర్క్ కనెక్షన్‌ను తనిఖీ చేసి, మళ్లీ ప్రయత్నించండి. సమస్య కొనసాగినట్లయితే, మీ Bravebookను పునఃప్రారంభించండి.</translation>
 <translation id="6340071272923955280">ఇంటర్నెట్ ముద్రణ ప్రోటోకాల్ (IPPS)</translation>
 <translation id="6340526405444716530">వ్యక్తిగతీకరణ</translation>
 <translation id="6341850831632289108">మీ భౌతిక స్థానాన్ని గుర్తించండి</translation>
@@ -5030,10 +5076,10 @@
 <translation id="6468485451923838994">ఫాంట్‌లు</translation>
 <translation id="6468773105221177474"><ph name="FILE_COUNT"/> ఫైళ్లు</translation>
 <translation id="6469557521904094793">సెల్యూలార్ నెట్‌వర్క్ ఆన్ చేయడం</translation>
+<translation id="6470823736074966819">నోటిఫికేషన్‌లను మ్యూట్ చేయండి</translation>
 <translation id="6472893788822429178">హోమ్ బటన్‌ను చూపించు</translation>
-<translation id="6473842110411557830">పవర్‌వాష్ దృష్టాంత చిత్రం</translation>
 <translation id="6474498546677193336">ఒక యాప్ ఈ ఫోల్డర్‌ను ఉపయోగిస్తోంది కాబట్టి షేరింగ్‌ను తీసివేయలేకపోయాము. Linux మళ్లీ షట్ డౌన్ అయినప్పుడు ఫోల్డర్ షేరింగ్ తీసివేయబడుతుంది.</translation>
-<translation id="6474884162850599008">Brave డిస్క్ ఖాతాను డిస్‌కనెక్ట్ చేయి</translation>
+<translation id="6474884162850599008">Google Drive ఖాతాను డిస్‌కనెక్ట్ చేయి</translation>
 <translation id="6475294023568239942">సెట్టింగ్‌లలో డిస్క్ స్పేస్‌ను ఖాళీ చేయండి లేదా Linux డిస్క్ పరిమాణం మార్చండి</translation>
 <translation id="6476138569087741884">ఫుల్ స్క్రీన్ జూమ్ స్థాయి</translation>
 <translation id="6477822444490674459">వర్క్ ప్రొఫైల్ ఉన్న ఫోన్‌లలో నోటిఫికేషన్ సింకింగ్‌కు సపోర్ట్ ఉండదు. <ph name="LINK_BEGIN"/>మరింత తెలుసుకోండి<ph name="LINK_END"/></translation>
@@ -5077,6 +5123,7 @@
 <translation id="6521214596282732365">సైట్‌లు సాధారణంగా మీ ఫాంట్‌లను ఉపయోగించుకుంటాయి, తద్వారా ఆన్‌లైన్ డిజైన్, గ్రాఫిక్స్ టూల్స్‌తో మీరు అధిక క్వాలిటీ గల కంటెంట్‌ను క్రియేట్ చేయవచ్చు</translation>
 <translation id="652492607360843641">మీరు <ph name="NETWORK_TYPE"/> నెట్‌వర్క్‌కు కనెక్ట్ చేయబడ్డారు.</translation>
 <translation id="6527303717912515753">భాగస్వామ్యం చేయి</translation>
+<translation id="6528179044667508675">అంతరాయం వద్దు</translation>
 <translation id="3700405816184340252">Brave చరిత్ర</translation>
 <translation id="6530186581263215931">ఈ సెట్టింగ్‌లు మీ నిర్వాహకుడి ద్వారా అమలు చేయబడ్డాయి</translation>
 <translation id="6531282281159901044">అపాయకరమైన ఫైల్‌ను అలాగే ఉంచు</translation>
@@ -5123,6 +5170,7 @@
 <translation id="657402800789773160">ఈ పేజీని &amp;రీలోడ్ చేయి</translation>
 <translation id="6577284282025554716">డౌన్‌లోడ్ రద్దు చేయబడింది: <ph name="FILE_NAME"/></translation>
 <translation id="657866106756413002">నెట్‌వర్క్ హెల్త్ స్నాప్‌షాట్</translation>
+<translation id="6579369886355986318">అన్ని కంట్రోల్‌లను చూడండి</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> - డెస్క్‌టాప్‌ కంటెంట్‌ షేర్ చేయబడింది</translation>
 <translation id="6580203076670148210">స్కానింగ్ వేగం</translation>
 <translation id="6582080224869403177">మీ భద్రతను అప్‌గ్రేడ్ చేయడానికి మీ <ph name="DEVICE_TYPE"/>ని రీసెట్ చేయండి</translation>
@@ -5163,7 +5211,6 @@
 <translation id="6619243162837544323">నెట్‌వర్క్ స్థితి</translation>
 <translation id="6619801788773578757">కియోస్క్ అప్లికేషన్‌ని జోడించండి</translation>
 <translation id="6619990499523117484">మీ PINను నిర్ధారించండి</translation>
-<translation id="6621715389962683284">నెట్‌వర్క్ కనెక్షన్‌ను ఏర్పాటు చేయడం సాధ్యపడలేదు.</translation>
 <translation id="6622980291894852883">చిత్రాలను నిరోధించడాన్ని కొనసాగించు</translation>
 <translation id="6623589891453322342">ఫైల్ హ్యాండ్లర్‌లు</translation>
 <translation id="6624535038674360844"><ph name="FILE_NAME"/>, గోప్యమైన, లేదా హానికరమైన కంటెంట్‌ను కలిగి ఉంది. పరిష్కరించమని ఫైల్ యజమానిని అడగండి.</translation>
@@ -5239,7 +5286,6 @@
 <translation id="6700480081846086223"><ph name="HOST_NAME"/>ని ప్రసారం చేయండి</translation>
 <translation id="6701535245008341853">ప్రొఫైల్‌ను పొందడం సాధ్యం కాలేదు.</translation>
 <translation id="6702639462873609204">&amp;సవరించు...</translation>
-<translation id="6703966911896067184">నమోదు ఎర్రర్ ఉదాహరణ</translation>
 <translation id="6706210727756204531">పరిధి</translation>
 <translation id="6707389671160270963">SSL క్లయింట్ సర్టిఫికెట్</translation>
 <translation id="6709002550153567782">{NUM_PAGES,plural, =0{<ph name="PAGE_TITLE"/>}=1{<ph name="PAGE_TITLE"/>, 1 ఇతర ట్యాబ్}other{<ph name="PAGE_TITLE"/>, # ఇతర ట్యాబ్‌లు}}</translation>
@@ -5251,7 +5297,6 @@
 <translation id="6715803357256707211">మీ Linux అప్లికేషన్ ఇన్‌స్టాలేషన్ సమయంలో ఎర్రర్ ఏర్పడింది. వివరాల కోసం నోటిఫికేషన్‌పై క్లిక్ చేయండి.</translation>
 <translation id="671619610707606484">దీనివలన సైట్‌లు స్టోర్ చేసిన <ph name="TOTAL_USAGE"/> డేటా తొలగిపోతుంది</translation>
 <translation id="671928215901716392">స్క్రీన్‌ను లాక్ చేయి</translation>
-<translation id="6721678857435001674">మీ భద్రతా కీ యొక్క తయారీదారు బ్రాండ్ పేరు మరియు మోడల్‌ని చూడండి</translation>
 <translation id="6721972322305477112">&amp;ఫైల్</translation>
 <translation id="672208878794563299">ఈ సైట్ తర్వాతి సారి మళ్లీ అడుగుతుంది.</translation>
 <translation id="6723661294526996303">బుక్‌మార్క్‌లను మరియు సెట్టింగులను దిగుమతి చేయి...</translation>
@@ -5341,6 +5386,7 @@
 <translation id="6812349420832218321"><ph name="PRODUCT_NAME"/> రూట్‌గా రన్ చేయలేదు.</translation>
 <translation id="6812841287760418429">మార్పులను ఉంచు</translation>
 <translation id="6813907279658683733">పూర్తి స్క్రీన్</translation>
+<translation id="8345824141715130645">మీరు Brave తో ఏమి షేర్ చేస్తారు</translation>
 <translation id="6817174620439930047">MIDI పరికరాలను యాక్సెస్ చేయడానికి సిస్టమ్ విశిష్ట మెసేజ్‌లను సైట్ ఉపయోగించాలనుకున్నప్పుడు అడుగు (సిఫార్సు చేయబడింది)</translation>
 <translation id="6818198425579322765">పేజీని అనువదించాల్సిన భాష</translation>
 <translation id="6818802132960437751">అంతర్నిర్మిత వైరస్ రక్షణ</translation>
@@ -5360,7 +5406,6 @@
 <translation id="6833479554815567477">గ్రూప్ నుండి ట్యాబ్ తొలగించబడింది <ph name="GROUP_NAME"/> - <ph name="GROUP_CONTENTS"/></translation>
 <translation id="683373380308365518">స్మార్ట్ మరియు సురక్షిత బ్రౌజర్‌కు మారండి</translation>
 <translation id="6834652994408928492">సూర్యాస్తమయ సమయానికి డార్క్ మోడ్ ఆటోమేటిక్‌గా ఆన్ అవుతుంది</translation>
-<translation id="683540480453879381"><ph name="FILE_EXTENSIONS"/> ఫైళ్లను తెరవాలి</translation>
 <translation id="6835762382653651563">దయచేసి మీ <ph name="DEVICE_TYPE"/>ని అప్‌డేట్ చేయడానికి ఇంటర్నెట్‌కి కనెక్ట్ చేయండి.</translation>
 <translation id="6838034009068684089">సైట్ మీ స్క్రీన్‌లలో విండోలను తెరిచి, ఉంచాలనుకున్నప్పుడు అనుమతి అడగాలి (సిఫార్సు చేయబడినది)</translation>
 <translation id="6839225236531462745">ప్రమాణపత్రం తొలగింపు లోపం</translation>
@@ -5386,6 +5431,7 @@
 <translation id="6855892664589459354">Crostini బ్యాకప్ చేసి, పునరుద్ధరించడం</translation>
 <translation id="6856348640027512653">వర్చువల్ రియాలిటీ పరికరాలు లేదా డేటాను ఉపయోగించడానికి అనుమతించబడలేదు</translation>
 <translation id="6856623341093082836">మీ టచ్‌స్క్రీన్ ఖచ్చితత్వాన్ని సెటప్ చేసి సర్దుబాటు చేయండి</translation>
+<translation id="6856850379840757744">దీనిని ఆన్ చేసినప్పుడు, నోటిఫికేషన్‌లు అన్నీ మ్యూట్ చేయబడతాయి</translation>
 <translation id="6857145580237920905">పవర్‌వాష్‌కు ముందుగానే eSIM ప్రొఫైల్‌లను తీసివేయండి</translation>
 <translation id="6857699260879628349">కాన్ఫిగరేషన్ సమాచారాన్ని పొందండి</translation>
 <translation id="6857725247182211756"><ph name="SECONDS"/> సెక</translation>
@@ -5426,9 +5472,7 @@
 <translation id="6904655473976120856">నిష్క్రమించడానికి యాప్ బటన్ నొక్కండి</translation>
 <translation id="6909422577741440844">ఈ పరికరం నుండి అందుకోవాలని అనుకుంటున్నారా?</translation>
 <translation id="6910211073230771657">తొలగించబడింది</translation>
-<translation id="691024665142758461">బహుళ ఫైళ్లను డౌన్‌లోడ్ చేయాలనుకుంటోంది</translation>
 <translation id="691106080621596509">దీని వలన <ph name="SITE_GROUP_NAME"/> స్టోర్ చేసిన మొత్తం డేటా, కుక్కీలు, దీని పరిధిలో ఉన్న సైట్‌లు, ఇన్‌స్టాల్ చేయబడిన యాప్‌లు, మొత్తం అన్నీ తొలగిపోతాయి</translation>
-<translation id="6911324888870229398">నెట్‌వర్క్ కనెక్షన్ పోయింది. దయచేసి మీ కనెక్షన్‌ని తనిఖీ చేయండి లేదా మరో Wi-Fi నెట్‌వర్క్‌తో ప్రయత్నించండి.</translation>
 <translation id="6911734910326569517">మెమరీ ఫుట్‌ప్రింట్</translation>
 <translation id="6912007319859991306">సెల్యూలార్ SIM పిన్</translation>
 <translation id="691289340230098384">క్యాప్షన్ ప్రాధాన్యతలు</translation>
@@ -5439,7 +5483,6 @@
 <translation id="6921104647315081813">యాక్టివిటీలను తీసివేయి</translation>
 <translation id="692114467174262153"><ph name="ALTERNATIVE_BROWSER_NAME"/>ను తెరవలేకపోయింది</translation>
 <translation id="6922128026973287222">Brave డేటా సేవర్‌ను ఉపయోగించి డేటాను ఆదా చేయండి. వేగంగా బ్రౌజ్ చేయండి. మరింత తెలుసుకోవడానికి క్లిక్ చేయండి.</translation>
-<translation id="6922570474772078053">ఆఫ్ చేస్తోంది</translation>
 <translation id="6922745772873733498">ముద్రించడానికి పిన్‌ను నమోదు చేయండి</translation>
 <translation id="6922763095098248079">మీ పరికరం మీ సంస్థ ద్వారా మేనేజ్ చేయబడుతుంది. ఈ పరికరంలో ఎలాంటి ప్రొఫైల్‌లోని డేటాను అయినా అడ్మినిస్ట్రేటర్‌లు యాక్సెస్ చేయగలరు.</translation>
 <translation id="6923132443355966645">స్క్రోల్ / క్లిక్</translation>
@@ -5565,6 +5608,7 @@
 <translation id="7044124535091449260">సైట్ యాక్సెస్ గురించి మరింత తెలుసుకోండి</translation>
 <translation id="7044606776288350625">డేటా సింక్</translation>
 <translation id="7047059339731138197">నేపథ్యాన్ని ఎంచుకోండి</translation>
+<translation id="7048457618657122233"><ph name="SHARE_TARGET"/>కు లింక్‌ను షేర్ చేయండి</translation>
 <translation id="7049293980323620022">ఫైల్ అలాగే ఉంచాలా?</translation>
 <translation id="7052237160939977163">పనితీరు గుర్తింపు డేటాను పంపు</translation>
 <translation id="7053983685419859001">నిరోధించు</translation>
@@ -5599,11 +5643,12 @@
 <translation id="7078120482318506217">అన్ని నెట్‌వర్క్‌లు</translation>
 <translation id="708060913198414444">ఆడియో అడ్రస్‌ను కా&amp;పీ చేయి</translation>
 <translation id="1439926347196400598">ఆడియోను రికార్డ్ చేయడానికి Braveను అనుమతించాలా?</translation>
-<translation id="7085805695634549980">Brave సర్వీస్‌లతో కనెక్ట్ చేయడం సాధ్యం కాలేదు. ఎర్రర్ కోడ్: <ph name="ERROR_CODE"/>.</translation>
 <translation id="7086672505018440886">ఆర్కైవ్‌లో Brave లాగ్ ఫైళ్లను చేర్చండి.</translation>
 <translation id="7088434364990739311">అప్‌డేట్‌ తనిఖీ ప్రారంభం విఫలమైంది (ఎర్ర‌ర్‌ కోడ్ <ph name="ERROR"/>).</translation>
 <translation id="7088561041432335295">జిప్ ఆర్కైవర్ - ఫైళ్ల‌ యాప్‌‌లో జిప్ ఫైళ్లను తెరవండి మరియు ప్యాక్ చేయండి.</translation>
 <translation id="7088674813905715446">నిర్వాహకులు, ఈ పరికరాన్ని కేటాయించబడని స్థితిలో ఉంచారు. దీనిని నమోదు కోసం ప్రారంభించడానికి, ఈ పరికరాన్ని పెండింగ్ స్థితిలో ఉంచమని దయచేసి మీ నిర్వాహకులను కోరండి.</translation>
+<translation id="7093220653036489319">క్విక్ ఆన్సర్స్</translation>
+<translation id="7093416310351037609">డేటా భద్రత, సెక్యూరిటీ కోసం, మీ సంస్థ అవసరాల ప్రకారం అర్హత ఉన్న డౌన్‌లోడ్‌లు సంస్థకు సంబంధించిన <ph name="WEB_DRIVE"/>లో సేవ్ అవ్వాలి.</translation>
 <translation id="7093434536568905704">GTK+</translation>
 <translation id="7093866338626856921">ఈ పేర్లు గల పరికరాలతో డేటాను ఇచ్చిపుచ్చుకోవడానికి అనుమతి: <ph name="HOSTNAMES"/></translation>
 <translation id="7098389117866926363">USB-C పరికరం (వెనుక భాగంలో ఎడమ పోర్ట్)</translation>
@@ -5618,6 +5663,7 @@
 <translation id="7109543803214225826">షార్ట్‌కట్ తీసివేయబడింది</translation>
 <translation id="7110644433780444336">{NUM_TABS,plural, =1{ట్యాబ్‌ను గ్రూప్‌నకు జోడించు}other{ట్యాబ్‌లను గ్రూప్‌నకు జోడించు}}</translation>
 <translation id="7111822978084196600">ఈ విండోకు పేరు పెట్టండి</translation>
+<translation id="7113102733263608554"><ph name="ITEM_COUNT_ONE"/> ఐటెమ్</translation>
 <translation id="7113502843173351041">మీ ఇమెయిల్ అడ్రస్‌ను తెలియపరచడానికి అనుమతి</translation>
 <translation id="7114054701490058191">పాస్‌‌వర్డ్‌లు సరిపోలలేదు</translation>
 <translation id="7114648273807173152">మీ Brave ఖాతాకు సైన్ ఇన్ చేయడం కోసం Smart Lockని ఉపయోగించడానికి, సెట్టింగ్‌లు &gt; కనెక్ట్ చేసిన పరికరాలు &gt; మీ ఫోన్ &gt; Smart Lockకు వెళ్లండి.</translation>
@@ -5626,6 +5672,7 @@
 <translation id="7117247127439884114">మళ్ళీ సైన్ ఇన్ చేయండి...</translation>
 <translation id="711840821796638741">నిర్వహించబడే బుక్‌మార్క్‌లను చూపు</translation>
 <translation id="711902386174337313">మీ సైన్-ఇన్ చేసిన పరికరాల యొక్క లిస్ట్‌ను చదవడం</translation>
+<translation id="8651796563067586593">మీరు సైన్ ఇన్ చేసిన Brave ఖాతాలను మేనేజ్ చేయడానికి ఈ పేజీ మిమ్మల్ని అనుమతిస్తుంది. <ph name="LINK_BEGIN"/>మరింత తెలుసుకోండి<ph name="LINK_END"/></translation>
 <translation id="5450502361144700252">VPN కనెక్ట్ చేయకపోతే Brave బ్రౌజర్, Android ట్రాఫిక్ బ్లాక్ చేయబడతాయి</translation>
 <translation id="7120865473764644444">సింక్ సర్వర్‌కు కనెక్ట్ చేయడం సాధ్యపడలేదు. మళ్లీ ప్రయత్నిస్తోంది...</translation>
 <translation id="7121438501124788993">డెవలపర్ మోడ్</translation>
@@ -5659,7 +5706,6 @@
 <translation id="7168109975831002660">కనిష్ఠ ఫాంట్ పరిమాణం</translation>
 <translation id="7170236477717446850">ప్రొఫైల్ ఫోటో</translation>
 <translation id="7171259390164035663">నమోదు చేసుకోవద్దు</translation>
-<translation id="7171559745792467651">మీ ఇతర పరికరాల నుండి యాప్‌లను ఇన్‌స్టాల్ చేయండి</translation>
 <translation id="7172470549472604877">{NUM_TABS,plural, =1{ట్యాబ్‌ను కొత్త గ్రూప్‌నకు జోడించు}other{ట్యాబ్‌లను కొత్త గ్రూప్‌నకు జోడించు}}</translation>
 <translation id="7173114856073700355">సెట్టింగ్‌లను తెరువు</translation>
 <translation id="7174199383876220879">కొత్తది! మీ సంగీతం, వీడియోలు ఇంకా మరిన్నింటిని నియంత్రిస్తుంది.</translation>
@@ -5680,7 +5726,6 @@
 <translation id="7196020411877309443">నేను దీనిని ఎందుకు చూస్తున్నాను?</translation>
 <translation id="7196913789568937443">Brave డిస్క్‌కు బ్యాకప్ చేయండి. ఏ సమయంలో అయినా సులభంగా మీ డేటాని పునరుద్ధరించండి లేదా పరికరాన్ని మార్చండి. ఈ బ్యాకప్‌లో యాప్ డేటా ఉంటుంది. బ్యాకప్‌లు Braveకి అప్‌లోడ్ చేయబడతాయి మరియు మీ Brave ఖాతా పాస్‌వర్డ్‌ని ఉపయోగించి ఎన్‌క్రిప్ట్ చేయబడతాయి. <ph name="BEGIN_LINK1"/>మరింత తెలుసుకోండి<ph name="END_LINK1"/></translation>
 <translation id="96037229054033864">మీరు బ్రౌజ్ చేసే ప్రతిసారి Brave శోధన మరియు Brave స్మార్ట్‌లను పొందండి</translation>
-<translation id="7197632491113152433">మేము ఈ పరికరంలో ఉపయోగించగల <ph name="NUMBER_OF_APPS"/> యాప్‌లను మీ ఖాతాలో కనుగొన్నాము.</translation>
 <translation id="7198503619164954386">మీరు ఎంటర్ప్రైజ్-ఎన్‌రోల్ చేసిన పరికరంలో ఉండాలి</translation>
 <translation id="7199158086730159431">సహా&amp;యం పొందండి</translation>
 <translation id="7200083590239651963">కాన్ఫిగరేషన్‌‌ను ఎంచుకోండి</translation>
@@ -5779,7 +5824,6 @@
 <translation id="7307129035224081534">పాజ్ చేయబడింది</translation>
 <translation id="7308436126008021607">బ్యాక్‌గ్రౌండ్ సింక్</translation>
 <translation id="7308643132139167865">వెబ్‌సైట్ భాషలు</translation>
-<translation id="7309257895202129721">&amp;నియంత్రణలను చూపించు</translation>
 <translation id="7310598146671372464">లాగిన్ చేయడం విఫలమైంది. పేర్కొనబడిన Kerberos ఎన్‌క్రిప్షన్ రకాలకు ఈ సర్వర్ మద్దతు ఇవ్వదు. దయచేసి మీ నిర్వాహకుడిని సంప్రదించండి.</translation>
 <translation id="7320213904474460808">ఆటోమేటిక్ సెట్టింగ్ నెట్‌వర్క్</translation>
 <translation id="7321545336522791733">సర్వర్ అందుబాటులో లేదు</translation>
@@ -5837,11 +5881,11 @@
 <translation id="7374376573160927383">USB పరికరాలను మేనేజ్ చేయండి</translation>
 <translation id="7374461526650987610">ప్రోటోకాల్ నిర్వాహకులు</translation>
 <translation id="7375235221357833624">{0,plural, =1{ఒక గంట లోపు పరికరాన్ని అప్‌డేట్ చేయండి}other{# గంటల లోపు పరికరాన్ని అప్‌డేట్ చేయండి}}</translation>
+<translation id="7376543451826039186">వేగవంతమైన బ్రౌజింగ్: ఉదాహరణకు, ప్రస్తుత పేజీ కంటెంట్‌ను బట్టి తర్వాతి పేజీ నిర్దిష్ట కంటెంట్‌ను ముందుగానే లోడ్ చేస్తుంది</translation>
 <translation id="7376553024552204454">మౌస్ కర్సర్ జరుగుతున్నప్పుడు దానిని హైలైట్ చేయి</translation>
 <translation id="737728204345822099">ఈ సైట్‌కు మీ సందర్శన గురించిన సమాచారం మీ సెక్యూరిటీ కీలో రికార్డ్ చేయబడుతుంది.</translation>
 <translation id="7377451353532943397">సెన్సార్ యాక్సెస్‌ను బ్లాక్ చేయడం కొనసాగించు</translation>
 <translation id="7378611153938412599">బలహీనమైన పాస్‌వర్డ్‌లను ఊహించడం చాలా సులభం. మీరు శక్తివంతమైన పాస్‌వర్డ్‌లను క్రియేట్ చేస్తున్నారని నిర్ధారించుకోండి. <ph name="BEGIN_LINK"/>మరిన్ని భద్రతా చిట్కాలను చూడండి.<ph name="END_LINK"/></translation>
-<translation id="7378812711085314936">డేటా కనెక్షన్‌ను పొందండి</translation>
 <translation id="7380622428988553498">పరికరం పేరులో చెల్లని అక్షరాలు ఉన్నాయి</translation>
 <translation id="7380768571499464492"><ph name="PRINTER_NAME"/> అప్‌డేట్ చేయబడింది</translation>
 <translation id="73843634555824551">ఇన్‌పుట్‌లు, కీబోర్డ్‌లు</translation>
@@ -5893,6 +5937,7 @@
 <translation id="7427798576651127129"><ph name="DEVICE_NAME"/> నుండి కాల్ చేయండి</translation>
 <translation id="7431719494109538750">HID పరికరాలు ఏవీ కనుగొనబడలేదు</translation>
 <translation id="7431991332293347422">శోధనలు మరియు మరిన్నింటిని వ్యక్తిగతీకరించడానికి మీ బ్రౌజింగ్ చరిత్ర ఎలా ఉపయోగించబడుతుందో నియంత్రించండి</translation>
+<translation id="7432200167665670017">"<ph name="EXTENSION_NAME"/>" - యాప్ ID <ph name="EXTENSION_ID"/>ను మీ అడ్మిన్ బ్లాక్ చేశారు</translation>
 <translation id="7433708794692032816">మీ <ph name="DEVICE_TYPE"/>ను ఉపయోగిస్తూ ఉండటానికి స్మార్ట్ కార్డ్‌ను ఇన్‌సర్ట్ చేయండి</translation>
 <translation id="7433957986129316853">అలాగే ఉంచండి</translation>
 <translation id="7434509671034404296">డెవలపర్</translation>
@@ -5922,6 +5967,7 @@
 <translation id="7460045493116006516">మీరు ప్రస్తుతం ఇన్‌స్టాల్ చేసుకున్న థీమ్</translation>
 <translation id="7461924472993315131">పిన్ చేయి</translation>
 <translation id="746216226901520237">తదుపరిసారి మీ ఫోన్ మీ <ph name="DEVICE_TYPE"/>‌ను అన్‌లాక్ చేస్తుంది. మీరు సెట్టింగ్‌లలో Smart Lockను ఆఫ్ చేయవచ్చు.</translation>
+<translation id="1919264590417477575">దీనిని మీ Brave ఖాతా, <ph name="ACCOUNT"/>లో సేవ్ చేయండి</translation>
 <translation id="7465522323587461835">{NUM_OPEN_TABS,plural, =1{# ట్యాబ్ తెరిచి, ట్యాబ్‌ స్ట్రిప్‌ను టోగుల్ చేయడానికి నొక్కండి}other{# ట్యాబ్‌లు తెరిచి, ట్యాబ్‌ స్ట్రిప్‌ను టోగుల్ చేయడానికి నొక్కండి}}</translation>
 <translation id="7465635034594602553">ఏదో తప్పు జరిగింది. దయచేసి కొద్ది నిమిషాలు వేచి ఉండి, <ph name="APP_NAME"/>ను మళ్లీ రన్ చేయండి.</translation>
 <translation id="7465778193084373987">Netscape సర్టిఫికెట్ రద్దు URL</translation>
@@ -5941,6 +5987,7 @@
 <translation id="5492087417588158896">మీరు మీ Brave ఖాతాతో సైన్ ఇన్ చేసిన Chrome OS పరికరాల అంతటా మీ యాప్‌లు, సెట్టింగ్‌లు సింక్ చేయబడతాయి. బ్రౌజర్ సింక్ ఆప్షన్‌ల కోసం, <ph name="LINK_BEGIN"/>Brave సెట్టింగ్‌ల<ph name="LINK_END"/>కు వెళ్లండి.</translation>
 <translation id="7478658909253570368">సీరియల్ పోర్ట్‌లకు కనెక్ట్ చేయడానికి సైట్‌లను అనుమతించకండి</translation>
 <translation id="7479221278376295180">నిల్వ వినియోగ అవలోకనం</translation>
+<translation id="747981547666531654"><ph name="FIRST_DEVICE"/>, <ph name="SECOND_DEVICE"/> అనే పేర్లతో ఉన్న బ్లూటూత్ పరికరాలకు కనెక్ట్ చేయబడింది</translation>
 <translation id="7481312909269577407">ఫార్వర్డ్</translation>
 <translation id="7481358317100446445">సిద్ధం</translation>
 <translation id="748138892655239008">సర్టిఫికెట్ ఆధార పరిమితులు</translation>
@@ -5969,6 +6016,7 @@
 <translation id="7509539379068593709">యాప్‌ను అన్‌ఇన్‌స్టాల్ చేయండి</translation>
 <translation id="7511415964832680006">ఆన్ చేసినప్పుడు, సైట్‌లు వారి కంటెంట్, అలాగే సర్వీస్‌లను అందించడం కోసం, ఇక్కడ చూపిన గోప్యతా-సంరక్షణ పద్ధతులను ఉపయోగించవచ్చు. వీటిలో క్రాస్-సైట్ ట్రాకింగ్ ప్రత్యామ్నాయాలు కలిగి ఉంటాయి. కాలానుగుణంగా మరిన్ని ట్రయల్‌లు జోడించబడవచ్చు.</translation>
 <translation id="7513029293694390567">నిల్వ చేసిన ఆధారాలను ఉపయోగించి ఆటోమేటిక్‌గా వెబ్‌సైట్‌లకు సైన్ ఇన్ చేస్తుంది. దీన్ని నిలిపివేస్తే, మీరు వెబ్‌సైట్‌కు సైన్ ఇన్ చేసే ప్రతిసారి నిర్ధారణ కోసం మిమ్మల్ని అడుగుతుంది.</translation>
+<translation id="7514236770834963598">అత్యంత ముఖ్యమైన గోప్యత, సెక్యూరిటీ కంట్రోల్స్ కోసం మీ ప్రస్తుత సెట్టింగ్‌లను రివ్యూ చేయండి</translation>
 <translation id="7514239104543605883">మీ పరికరానికి కాపీ చేయండి</translation>
 <translation id="7514365320538308">డౌన్‌లోడ్ చేయి</translation>
 <translation id="7514417110442087199">కేటాయింపును జోడించండి</translation>
@@ -5982,6 +6030,7 @@
 <translation id="7525625923260515951">ఎంచుకున్న టెక్స్ట్‌ను వినండి</translation>
 <translation id="7526658513669652747">{NUM_DOWNLOADS,plural, =1{మరో 1}other{మరో {NUM_DOWNLOADS}}}</translation>
 <translation id="7526989658317409655">ప్లేస్‌హోల్డర్</translation>
+<translation id="8558561050457784652">మీ Brave ఖాతా <ph name="ACCOUNT"/>లో దానిని అప్‌డేట్ చేయండి</translation>
 <translation id="7529411698175791732">మీ ఇంటర్నెట్ కనెక్షన్‌ను తనిఖీ చేయండి. సమస్య కొనసాగితే, సైన్ అవుట్ చేసి, మళ్లీ సైన్ ఇన్ చేయడాన్ని ప్రయత్నించండి.</translation>
 <translation id="7529876053219658589">{0,plural, =1{గెస్ట్ విండోను మూసివేయండి}other{గెస్ట్ విండోను మూసివేయండి}}</translation>
 <translation id="7530016656428373557">వాట్‌లలో తరుగుదల రేట్</translation>
@@ -5989,6 +6038,7 @@
 <translation id="7531771599742723865">పరికరం వినియోగంలో ఉంది</translation>
 <translation id="7531779363494549572">సెట్టింగ్‌లు &gt; యాప్‌లు &amp; నోటిఫికేషన్‌లు &gt; నోటిఫికేషన్‌లలోకి వెళ్లండి.</translation>
 <translation id="7532009420053991888"><ph name="LINUX_APP_NAME"/> స్పందించడం లేదు. యాప్‌ను మూసివేయడానికి "బలవంతంగా మూసివేయి" ఎంచుకోండి.</translation>
+<translation id="7070305978939333489">మీ పరికరం నుండి అజ్ఞాత మోడ్‌లో ఉన్న బ్రౌజింగ్ హిస్టరీని క్లియర్ చేయడానికి, అన్ని అజ్ఞాత ట్యాబ్‌లను మూసివేయండి</translation>
 <translation id="7535791657097741517">లేత రంగు రూపాన్ని ఆన్ చేయండి</translation>
 <translation id="7537451260744431038">మీ బ్రౌజింగ్ అనుభవాన్ని మెరుగుపరచడానికి సైట్‌లు కుక్కీలను ఉపయోగించలేవు, ఉదాహరణకు, మిమ్మల్ని సైన్ ఇన్ చేసి ఉంచడం, మీ షాపింగ్ కార్ట్‌లో ఐటెమ్‌లను గుర్తు చేయడం లాంటివి</translation>
 <translation id="753769905878158714">అడ్రస్ బార్‌లో, మీరు సెర్చ్ చేయాలనుకుంటున్న వెబ్‌సైట్ కీవర్డ్‌ను ఎంటర్ చేయండి. ఆపై, కొనసాగించడానికి కీబోర్డ్ షార్ట్‌కట్‌ను ఉపయోగించండి.</translation>
@@ -6092,6 +6142,7 @@
 <translation id="7639914187072011620">సర్వర్ నుండి SAML మళ్లింపు URLను పొందడంలో విఫలమైంది</translation>
 <translation id="764017888128728"><ph name="PASSWORD_MANAGER_BRAND"/> మీరు సేవ్ చేసిన పాస్‌వర్డ్‌లతో అర్హత ఉన్న సైట్‌లకు మిమ్మల్ని ఆటోమేటిక్‌గా సైన్ ఇన్ చేస్తుంది.</translation>
 <translation id="7641513591566880111">కొత్త ప్రొఫైల్ పేరు</translation>
+<translation id="764178579712141045"><ph name="USER_EMAIL"/> జోడించబడింది</translation>
 <translation id="7642778300616172920">సున్నితమైన కంటెంట్‌ను దాచు</translation>
 <translation id="7643842463591647490">{0,plural, =1{# తెరిచిన విండో ఉంది}other{# తెరిచిన విండోలు ఉన్నాయి}}</translation>
 <translation id="7643932971554933646">ఫైళ్లను చూడటానికి సైట్‌ను అనుమతించాలా?</translation>
@@ -6144,7 +6195,6 @@
 <translation id="1669729672557072907">మీ యాప్‌లను సృష్టించి, పరీక్షించడానికి Android డీబగ్ బ్రిడ్జ్ (ADB)ను ప్రారంభించండి. ఈ చర్య వలన Brave ద్వారా ధృవీకరించబడని Android యాప్‌ల ఇన్‌స్టాలేషన్ అనుమతించబడుతుందని, దీనిని నిలిపివేయడానికి ఫ్యాక్టరీ రీసెట్ చేయాల్సి ఉంటుందని గుర్తుంచుకోండి.</translation>
 <translation id="7685049629764448582">JavaScript మెమరీ</translation>
 <translation id="7685087414635069102">పిన్ అవసరం</translation>
-<translation id="768549422429443215">భాషలను జోడించండి లేదా లిస్ట్‌ క్రమాన్ని మళ్లీ మార్చండి.</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
 <translation id="7690294790491645610">కొత్త పాస్‌వర్డ్‌ను నిర్ధారించండి</translation>
 <translation id="7690378713476594306">లిస్ట్‌ నుండి ఎంచుకోండి</translation>
@@ -6279,7 +6329,6 @@
 <translation id="782590969421016895">ప్రస్తుత పేజీలను ఉపయోగించండి</translation>
 <translation id="7826249772873145665">ADB డీబగ్గింగ్ డిజేబుల్ చేయబడింది</translation>
 <translation id="7826254698725248775">వైరుధ్యమైన పరికర ఐడెంటిఫైయర్.</translation>
-<translation id="7826346148677309647">మీరు Play Storeలో మీ పరికరం కోసం మరిన్ని యాప్‌లను కనుగొనవచ్చు.</translation>
 <translation id="7826790948326204519"><ph name="BEGIN_H3"/>డీబగ్గింగ్ ఫీచర్‌లు<ph name="END_H3"/>
     <ph name="BR"/>
      మీరు మీ పరికరంలో అనుకూల కోడ్‌ను ఇన్‌స్టాల్ చేయడానికి మరియు పరీక్షించడానికి మీ Chrome OS పరికరంలో డీబగ్గింగ్ ఫీచర్‌లను ఆరంభించవచ్చు. వీటిని చేయడానికి ఇది మిమ్మల్ని అనుమతిస్తుంది:<ph name="BR"/>
@@ -6313,6 +6362,7 @@
 <translation id="7841134249932030522">డార్క్ మోడ్‌ను ఎనేబుల్ చేయండి</translation>
 <translation id="7842692330619197998">మీరు కొత్త ఖాతాను సృష్టించాలనుకుంటే g.co/BraveEnterpriseAccount లింక్‌ను సందర్శించండి.</translation>
 <translation id="784273751836026224">Linuxను అన్ఇన్‌స్టాల్ చేయండి</translation>
+<translation id="7843786652787044762"><ph name="WEB_DRIVE"/>కు సైన్ ఇన్ చేయండి</translation>
 <translation id="7844992432319478437">డిఫ్‌ను నవీకరిస్తోంది</translation>
 <translation id="7846634333498149051">కీబోర్డ్</translation>
 <translation id="7847212883280406910"><ph name="IDS_SHORT_PRODUCT_OS_NAME"/>కు మారడానికి Ctrl + Alt + S నొక్కండి</translation>
@@ -6357,6 +6407,7 @@
 <translation id="7886605625338676841">eSIM</translation>
 <translation id="7887334752153342268">నకిలీ</translation>
 <translation id="7887864092952184874">బ్లూటూత్ మౌస్ జత చేయబడింది</translation>
+<translation id="7889371445710865055">డిక్టేషన్ భాషను మార్చండి</translation>
 <translation id="7890147169288018054">మీ IP లేదా MAC అడ్రస్ వంటి నెట్‌వర్క్ సమాచారాన్ని చూడండి</translation>
 <translation id="7893008570150657497">మీ కంప్యూటర్ నుండి ఫోటోలు, సంగీతం మరియు ఇతర మీడియాను యాక్సెస్ చేయండి</translation>
 <translation id="7893153962594818789">ఈ <ph name="DEVICE_TYPE"/>లో బ్లూటూత్ ఆఫ్‌లో ఉంది. మీ పాస్‌వర్డ్‌ను నమోదు చేసి బ్లూటూత్‌ను ఆన్ చేయండి.</translation>
@@ -6366,6 +6417,7 @@
 <translation id="7898725031477653577">ఎల్లప్పుడూ అనువదించు</translation>
 <translation id="790040513076446191">గోప్యత సంబంధ సెట్టింగ్‌లను మ్యానిపులేట్ చేయండి</translation>
 <translation id="7901405293566323524">ఫోన్ హబ్</translation>
+<translation id="8111575430604432614">పేజీ గణాంకాలను ఉపయోగించి Brave మెరుగుపరచబడింది</translation>
 <translation id="7903345046358933331">పేజీ ప్రతిస్పందించడం లేదు. మీరు అది ప్రతిస్పందించే వరకు వేచి ఉండవచ్చు లేదా దాన్ని మూసివేయవచ్చు.</translation>
 <translation id="7903742244674067440">మీకు ఫైల్‌లో ఈ ప్రమాణపత్రం అధికారాలను గుర్తించే ప్రమాణపత్రాలు ఉన్నాయి</translation>
 <translation id="7903859912536385558">స్థిరమైనది (విశ్వసనీయ టెస్టర్)</translation>
@@ -6563,6 +6615,7 @@
 <translation id="810068641062493918"><ph name="LANGUAGE"/> ఎంచుకోబడింది. ఎంపిక రద్దు చేయడానికి 'Search + Space'ను నొక్కండి.</translation>
 <translation id="810185532889603849">అనుకూల రంగు</translation>
 <translation id="8101987792947961127">తరువాత రీబూట్‌లో పవర్‌వాష్ అవసరం</translation>
+<translation id="81020759409809034">స్థానిక లొకేషన్</translation>
 <translation id="8102139037507939978">system_logs.txt నుండి వ్యక్తిగతంగా గుర్తించగలిగే సమాచారాన్ని తొలగించండి.</translation>
 <translation id="8104088837833760645">eSIM ప్రొఫైల్‌ను డౌన్‌లోడ్ చేయండి</translation>
 <translation id="8107015733319732394">మీ <ph name="DEVICE_TYPE"/>లో Google Play స్టోర్‌ని ఇన్‌స్టాల్ చేస్తోంది. ఇందుకు కొన్ని నిమిషాలు పట్టవచ్చు.</translation>
@@ -6597,6 +6650,7 @@
 <translation id="8138217203226449454">మీరు మీ సెర్చ్ ప్రొవైడర్‌ను మార్చాలనుకున్నారా?</translation>
 <translation id="8138997515734480534"><ph name="VM_NAME"/> స్టేటస్</translation>
 <translation id="8139447493436036221">Google Drive ఫైళ్లు</translation>
+<translation id="8140070492745508800"><ph name="FIRST_DEVICE"/>, <ph name="SECOND_DEVICE"/></translation>
 <translation id="8141584439523427891">ఇప్పుడు ప్రత్యామ్నాయ బ్రౌజర్‌లో తెరుస్తోంది</translation>
 <translation id="8141725884565838206">మీ పాస్‌వర్డ్‌లను నిర్వహించండి</translation>
 <translation id="814204052173971714">{COUNT,plural, =1{వీడియో}other{# వీడియోలు}}</translation>
@@ -6727,6 +6781,7 @@
 <translation id="826905130698769948">చెల్లని క్లయింట్ సర్టిఫికెట్</translation>
 <translation id="8270242299912238708">PDF పత్రాలు</translation>
 <translation id="827097179112817503">హోమ్ బటన్‌ను చూపు</translation>
+<translation id="8271268254812352141">మీరు టెక్స్ట్‌ను కుడి క్లిక్ చేసినప్పుడు లేదా తాకి, నొక్కి ఉంచినప్పుడు నిర్వచనాలు, అనువాదాలు, లేదా యూనిట్ మార్పిడులను పొందండి. <ph name="LINK_BEGIN"/>వెబ్‌సైట్ భాషల<ph name="LINK_END"/>లో అనువాద భాషలను అనుకూలీకరించండి.</translation>
 <translation id="8271379370373330993">తల్లిదండ్రులారా, తర్వాత కొన్ని దశలు మీ కోసం. ఖాతాను సెటప్ చేసిన తర్వాత మీరు <ph name="DEVICE_TYPE"/>ను చిన్నారికి తిరిగి ఇవ్వవచ్చు.</translation>
 <translation id="8272443605911821513">"మరిన్ని సాధనాలు" మెనూలోని ఎక్స్‌టెన్షన్‌లను క్లిక్ చేయడం ద్వారా మీ ఎక్స్‌టెన్షన్‌లను నిర్వహించండి.</translation>
 <translation id="8274332263553132018">ఫైల్‌ను ప్రసారం చేయండి</translation>
@@ -6770,6 +6825,7 @@
 <translation id="8321837372750396788"><ph name="MANAGER"/> ఈ <ph name="DEVICE_TYPE"/>ను మేనేజ్ చేస్తుంది.</translation>
 <translation id="8322814362483282060">మీ మైక్రోఫోన్‌ను యాక్సెస్‌ చేయనీయకుండా ఈ పేజీ బ్లాక్ చేయబడింది.</translation>
 <translation id="8323167517179506834">URLను టైప్ చేయండి</translation>
+<translation id="8323317289166663449">మీ కంప్యూటర్‌లో, అన్ని వెబ్‌సైట్‌లలో మీ మొత్తం డేటాను చదవడం, మార్చడం</translation>
 <translation id="8324784016256120271">వివిధ సైట్‌లలో మీ బ్రౌజింగ్ యాక్టివిటీని చూడటానికి, ఉదాహరణకు, యాడ్‌లను వ్యక్తిగతీకరించడానికి, సైట్‌లు కుక్కీలను ఉపయోగించవచ్చు</translation>
 <translation id="8325413836429495820">మీ క్లిప్‌బోర్డ్‌ను చూడటానికి అనుమతించబడలేదు</translation>
 <translation id="8326478304147373412">PKCS #7, సర్టిఫికెట్ చైన్</translation>
@@ -6812,6 +6868,7 @@
 <translation id="8376384591331888629">ఈ సైట్‌లో థర్డ్ పార్టీ కుకీలు చేర్చబడుతున్నాయి</translation>
 <translation id="8376451933628734023">ఇది వేరే యాప్ అని మీరు అనుకునేలా మిమ్మల్ని ఈ వెబ్ యాప్ మోసగించడానికి ట్రై చేస్తున్నట్లయితే, దాన్ని అన్‌ఇన్‌స్టాల్ చేయండి.</translation>
 <translation id="8378714024927312812">మీ సంస్థ ద్వారా నిర్వహించబడుతున్నవి</translation>
+<translation id="8379156816349755485">సైన్ ఇన్ చేసిన తర్వాత, ప్రత్యేకమైన ప్రామాణీకరణ టోకెన్ స్టోర్ చేయబడుతుంది, ఇంకా అది భవిష్యత్తులో అర్హత ఉన్న డౌన్‌లోడ్‌ల కోసం ఉపయోగించబడుతుంది.</translation>
 <translation id="8379878387931047019">ఈ వెబ్‌సైట్ అభ్యర్థించిన భద్రతా కీ రకానికి ఈ పరికరం మద్దతు ఇవ్వదు</translation>
 <translation id="8379991678458444070">ఈ పేజీని బుక్‌మార్క్ చేయడం ద్వారా ఇక్కడికి క్షణాల్లో తిరిగి రండి</translation>
 <translation id="8382913212082956454">&amp;ఇమెయిల్ అడ్రస్‌ను కాపీ చేయండి</translation>
@@ -6824,6 +6881,7 @@
 <translation id="8392364544846746346">మీ పరికరంలోని ఫైళ్లు లేదా ఫోల్డర్‌లను సైట్ సవరించాలనుకున్నప్పుడు అనుమతిని అడుగుతుంది</translation>
 <translation id="8392451568018454956"><ph name="USER_EMAIL_ADDRESS"/> కోసం ఎంపికల మెనూ</translation>
 <translation id="8393511274964623038">ప్లగ్ఇన్‌‌ను ఆపివేయి</translation>
+<translation id="839363317075970734">బ్లూటూత్ పరికర వివరాలు</translation>
 <translation id="8393700583063109961">మెసేజ్‌ను పంపండి</translation>
 <translation id="8397825320644530257">కనెక్ట్ చేసిన ఫోన్‌ను డిస్‌కనెక్ట్ చేయండి</translation>
 <translation id="8398877366907290961">ఏవైనా కొనసాగు</translation>
@@ -6845,6 +6903,7 @@
 <translation id="8425492902634685834">టాస్క్‌బార్‌కి పిన్ చేయి</translation>
 <translation id="8425768983279799676">మీరు మీ పిన్‌ని ఉపయోగించి మీ పరికరాన్ని అన్‌లాక్ చేయవచ్చు.</translation>
 <translation id="8426713856918551002">ప్రారంభించబడుతోంది</translation>
+<translation id="8427213022735114808">మీరు రాయాలనుకునేది Braveకి చెబితే చాలు వెంటనే వచన రూపంలోకి మారుస్తుంది.</translation>
 <translation id="8427292751741042100">ఏదైనా హోస్ట్‌లో పొందుపరచబడింది</translation>
 <translation id="8428213095426709021">సెట్టింగ్‌లు</translation>
 <translation id="8428271547607112339">పాఠశాల ఖాతాను జోడించండి</translation>
@@ -6864,7 +6923,6 @@
 <translation id="8448729345478502352">మీ స్క్రీన్‌లోని అంశాలను చిన్నవిగా లేదా పెద్దవిగా చేయండి</translation>
 <translation id="8449008133205184768">శైలిని పేస్ట్ చేసి, సరిపోల్చు</translation>
 <translation id="8449036207308062757">నిల్వను నిర్వహించు</translation>
-<translation id="8455026683977728932">ADB దృష్టాంత చిత్రాన్ని ఎనేబుల్ చేయడంలో విఫలమైంది</translation>
 <translation id="8456512334795994339">పని, ఆటకు సంబంధించిన యాప్‌లను కనుగొనండి</translation>
 <translation id="8456761643544401578">ఆటోమేటిక్ డార్క్ మోడ్</translation>
 <translation id="845702320058262034">కనెక్ట్ చేయడం సాధ్యపడదు. మీ ఫోన్‌లో బ్లూటూత్ ఆన్ చేసి ఉందని నిర్ధారించుకోండి.</translation>
@@ -7069,6 +7127,7 @@
 <translation id="504499211143662559">మీ కంప్యూటర్‌లో హానికరమైన సాప్ఠ్‌వేర్‌ను Brave కనుగొన్నది</translation>
 <translation id="8682730193597992579"><ph name="PRINTER_NAME"/> కనెక్ట్ చేయబడింది మరియు సిద్ధంగా ఉంది</translation>
 <translation id="8683081248374354009">గ్రూప్‌ను రీసెట్ చేయండి</translation>
+<translation id="8683526617475118045">మీరు ఏమి పొందుతారు</translation>
 <translation id="8688672835843460752">అందుబాటులో ఉంది</translation>
 <translation id="8690129572193755009">ప్రోటోకాల్‌లను హ్యాండిల్ చేయడానికి సైట్‌లు అడగగలవు</translation>
 <translation id="8695139659682234808">సెటప్ పూర్తి అయ్యాక తల్లిదండ్రుల నియంత్రణలను జోడించండి</translation>
@@ -7122,6 +7181,7 @@
 <translation id="8737685506611670901"><ph name="REPLACED_HANDLER_TITLE"/>కి బదులుగా <ph name="PROTOCOL"/> లింక్‌లను తెరవాలనుకుంటోంది</translation>
 <translation id="8737709691285775803">షిల్</translation>
 <translation id="8737914367566358838">పేజీని అనువదించడానికి భాషను ఎంచుకోండి</translation>
+<translation id="1164245454225383184">బ్రౌజింగ్ ప్రవర్తనను అర్థం చేసుకోవడానికి URLలు Braveతో షేర్ చేయబడతాయి</translation>
 <translation id="8740247629089392745">మీరు ఈ Bravebookను <ph name="SUPERVISED_USER_NAME"/>కు ఇవ్వవచ్చు. సెటప్ దాదాపు పూర్తయింది, మరిన్ని విషయాలను తెలుసుకునే సమయం ఆసన్నమైంది.</translation>
 <translation id="8741944563400125534">స్విచ్ యాక్సెస్ సెటప్ గైడ్</translation>
 <translation id="8742998548129056176">మీ పరికరం గురించి, మీరు దానిని ఉపయోగించే పద్ధతి గురించి (బ్యాటరీ స్థాయి, సిస్టమ్, యాప్‌ల యాక్టివిటీ, ఎర్రర్‌ల లాంటివి) తెలియజేసే సాధారణ సమాచారం. Androidను మెరుగుపరచడం కోసం ఈ డేటా ఉపయోగించబడుతుంది. కొంత ఏకీకృత సమాచారం- Brave యాప్‌లు, Android డెవలపర్‌ల వంటి భాగస్వాముల యాప్‌లను, ఉత్పత్తులను మెరుగుపరచడంలో సహాయపడుతుంది.</translation>
@@ -7142,6 +7202,7 @@
 <translation id="8756969031206844760">పాస్‌వర్డ్‌ను అప్‌డేట్ చేయాలా?</translation>
 <translation id="8757090071857742562">డెస్క్‌టాప్‌ను ప్రసారం చేయడం సాధ్యపడలేదు.  మీ స్క్రీన్‌ను షేర్‌ చేయడం ప్రారంభించడానికి మీరు ప్రాంప్ట్‌ను నిర్ధారించారో లేదో సరిచూసుకోవడానికి తనిఖీ చేయండి.</translation>
 <translation id="8757203080302669031">ఈ ట్యాబ్ బ్లూటూత్ పరికరాల కోసం యాక్టివ్‌గా స్కానింగ్ చేస్తోంది.</translation>
+<translation id="8757368836647541092"><ph name="USER_NAME_OR_EMAIL"/> తీసివేయబడ్డారు</translation>
 <translation id="8758418656925882523">డిక్టేషన్‌ను ప్రారంభించండి (టైప్ చేయడానికి మాట్లాడండి)</translation>
 <translation id="8759408218731716181">బహుళ సైన్-ఇన్‌ను సెటప్ చేయలేరు</translation>
 <translation id="8759753423332885148">మరింత తెలుసుకోండి.</translation>
@@ -7299,6 +7360,7 @@
 <translation id="3499452739340047976">Brave Lens సహాయంతో ఇమేజ్‌లను సెర్చ్ చేయడానికి లాగండి</translation>
 <translation id="8909833622202089127">సైట్ మీ స్థానాన్ని ట్రాక్ చేస్తోంది</translation>
 <translation id="5849608398437058285">మీ బుక్‌మార్క్‌లు, చరిత్ర, పాస్‌వర్డ్‌లు, ఇతర సెట్టింగ్‌ల‌లో మార్పులు మీ Brave ఖాతాకు ఇకపై సింక్ చేయ‌బడవు. అయినప్పటికీ, ఇప్పటికే ఉన్న మీ డేటా Brave ఖాతాలో నిల్వ చేయబడుతుంది. <ph name="BEGIN_LINK"/>Brave డాష్‌బోర్డ్<ph name="END_LINK"/>లో నిర్వహించబడుతుంది.</translation>
+<translation id="8910987510378294980">పరికర లిస్ట్‌ను దాచండి</translation>
 <translation id="2684652081942622950">Brave ఖాతా</translation>
 <translation id="8912793549644936705">విస్తరించు</translation>
 <translation id="8912810933860534797">ఆటోమేటిక్ స్కాన్‌ను ప్రారంభించు</translation>
@@ -7414,6 +7476,7 @@
 <translation id="9033765790910064284">ఏమైనప్పటికీ కొనసాగించు</translation>
 <translation id="9033857511263905942">&amp;అతికించు</translation>
 <translation id="903480517321259405">PINను మళ్లీ టైప్ చేయండి</translation>
+<translation id="9037054491984310631"><ph name="DEVICE"/> అనే పేరుతో ఉన్న బ్లూటూత్ పరికరానికి కనెక్ట్ చేయబడింది</translation>
 <translation id="9037640663275993951">పరికరానికి అనుమతి లేదు</translation>
 <translation id="9037818663270399707">మొత్తం నెట్‌వర్క్ ట్రాఫిక్‌కు మీ కనెక్షన్ ప్రైవేట్ కాదు</translation>
 <translation id="9037965129289936994">అసలైనది చూపు</translation>
@@ -7458,6 +7521,7 @@
 <translation id="9078193189520575214">మార్పులు వర్తించేలా చేయడం జరుగుతోంది...</translation>
 <translation id="9078316009970372699">తక్షణ టెథెరింగ్ డిజేబుల్ చేయడం</translation>
 <translation id="9079267182985899251">త్వరలో ఈ ఆప్షన్ సపోర్ట్ చేయదు. ట్యాబ్‌ను పిన్ చేయడానికి, <ph name="GOOGLE_MEET"/>ను ఉపయోగించండి.</translation>
+<translation id="1961291599064731706">మీరు సందర్శించే సైట్‌లు అజ్ఞాత మోడ్‌లో సేవ్ చేయబడవు</translation>
 <translation id="9084064520949870008">విండో లాగా తెరువు</translation>
 <translation id="9085256200913095638">ఎంపిక చేసిన ట్యాబ్‌కు నకిలీని రూపొందించు</translation>
 <translation id="9085776959277692427"><ph name="LANGUAGE"/> ఎంచుకోబడలేదు. ఎంచుకోవడానికి 'Search + Space'ను నొక్కండి.</translation>
@@ -7493,6 +7557,7 @@
 <translation id="3305719257762727419"><ph name="FILE_NAME"/> ప్రమాదకరమైనది కావచ్చు. స్కానింగ్ కోసం Braveకు పంపాలా?</translation>
 <translation id="9112987648460918699">కనుగొను...</translation>
 <translation id="9113240369465613386">బేసి సంఖ్య పేజీలు మాత్రమే</translation>
+<translation id="9113469270512809735">ఇటీవల మూసివేసిన ఐటెమ్‌లను టోగుల్ చేయండి</translation>
 <translation id="9114663181201435112">సులభంగా సైన్ ఇన్ చేయండి</translation>
 <translation id="9115675100829699941">&amp;బుక్‌మార్క్‌లు</translation>
 <translation id="9116465289595958864">చివరిగా సవరించినది</translation>
@@ -7555,7 +7620,6 @@
 <translation id="917510707618656279">బ్లూటూత్ పరికరాలను సైట్ యాక్సెస్ చేయాలన్నప్పుడు అనుమతి అడగాలి</translation>
 <translation id="9176476835295860688">వినియోగం &amp; విశ్లేషణల డేటాను పంపండి. ఈ పరికరం ప్రస్తుతం సమస్య విశ్లేషణ, అలాగే పరికర, యాప్ వినియోగ డేటాను ఆటోమేటిక్‌గా Braveకి పంపుతుంది.  ఇది సిస్టమ్, యాప్ స్థిరత్వానికి, అలాగే ఇతర మెరుగుదలలకు సహాయపడుతుంది. కొంత సముదాయ డేటా కూడా Brave యాప్‌లకు, అలాగే Android డెవలపర్‌ల లాంటి భాగస్వాములకు సహాయపడుతుంది. ఈ <ph name="BEGIN_LINK1"/>సెట్టింగ్‌<ph name="END_LINK1"/>ని యజమాని అమలు చేశారు. మీ అదనపు వెబ్ &amp; యాప్ యాక్టివిటీ సెట్టింగ్‌ను ఆన్ చేసినట్లయితే, ఈ డేటా మీ Brave ఖాతాలో సేవ్ చేయబడవచ్చు. <ph name="BEGIN_LINK2"/>మరింత తెలుసుకోండి<ph name="END_LINK2"/></translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> - బ్లూటూత్ పరికరం కనెక్ట్ చేయబడింది</translation>
-<translation id="9176817945195089764"><ph name="DOMAIN"/> చెల్లుబాటులో ఉన్న సంస్థ కాదు. మీ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి. మీరు అడ్మినిస్ట్రేటర్ అయితే, ఈ సైట్‌ను సందర్శించడం ద్వారా మీరు మీ సంస్థను సెటప్ చేయవచ్చు: g.co/BraveEnterpriseAccount</translation>
 <translation id="9179524979050048593">సైన్ ఇన్ స్క్రీన్ యూజర్‌నేమ్</translation>
 <translation id="9180281769944411366">ఈ ప్రాసెస్‌కు కొన్ని నిమిషాలు పట్టవచ్చు. Linux కంటైనర్ ప్రారంభం అవుతోంది.</translation>
 <translation id="9180380851667544951">సైట్ మీ స్క్రీన్‌ను షేర్ చేయవచ్చు</translation>

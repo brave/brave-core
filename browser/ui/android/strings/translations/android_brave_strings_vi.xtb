@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">Ngăn các trình theo dõi &amp; quảng cáo tải và hiển thị trên các trang web</translation>
 <translation id="1680858055899097121">Đừng giữ nguyên các tab giữa các phiên duyệt</translation>
 <translation id="7142548388914389999">Cho phép phân tích sản phẩm bảo toàn quyền riêng tư (P3A)</translation>
-<translation id="5254037869598726291">Thông tin được ẩn danh hóa hoàn toàn này giúp Brave đánh giá việc sử dụng tổng thể các tính năng nhất định và cải thiện việc sử dụng cho bạn.</translation>
+<translation id="4272190451231642425">Tự động gửi báo cáo sự cố</translation>
+<translation id="2239766974964486304">Báo cáo sự cố giúp Brave cải thiện độ ổn định của sản phẩm cho tất cả người dùng.</translation>
 <translation id="7977176350719484850">Dữ liệu ước tính\ntiết kiệm được</translation>
 <translation id="9008534313521214777">Thời gian Ước tính\nTiết kiệm được</translation>
 <translation id="6572660632052512096">Chế độ cho máy tính để bàn</translation>
@@ -370,12 +371,12 @@ tháng này...</translation>
 <translation id="7427567994475794038">Hãy bật Báo cáo Quyền riêng tư để xem số lượng trình theo dõi &amp; quảng cáo đã bị chặn trong 3 giờ qua.</translation>
 <translation id="2053891538879944400">Bạn đã tiết kiệm <ph name="DATA"/> <ph name="DATA_TEXT"/> dữ liệu bằng trình duyệt Brave.</translation>
 <translation id="8640064498452534195">Bật Báo cáo Quyền riêng tư để xem lượng dữ liệu mà bạn đã tiết kiệm được.</translation>
-<translation id="2252497442547961651">Trình duyệt Brave có mức sử dụng pin trung bình ít hơn 40%.&#128267;</translation>
+<translation id="2252497442547961651">Trình duyệt Brave có mức sử dụng pin trung bình ít hơn 40%.🔋</translation>
 <translation id="1945330434665345785">Tuần trước, bạn đã chặn <ph name="COUNT"/> trình theo dõi &amp; quảng cáo bằng trình duyệt Brave.</translation>
 <translation id="2883868922264431515">Kiếm token bằng cách xem quảng cáo tôn trọng quyền riêng tư và hỗ trợ các trang web yêu thích của bạn.</translation>
-<translation id="5678925890616256956">Tuyệt! Bạn đã chặn 250 trình theo dõi &amp; quảng cáo bằng trình duyệt Brave.&#128293;</translation>
-<translation id="9199047775708635708">Tuyệt! Bạn đã tiết kiệm được 10MB với trình duyệt Brave.&#128267;</translation>
-<translation id="1880168210969863408">Tuyệt! Bạn đã tiết kiệm được 10 Phút thời gian tải với trình duyệt Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Tuyệt! Bạn đã chặn 250 trình theo dõi &amp; quảng cáo bằng trình duyệt Brave.🔥</translation>
+<translation id="9199047775708635708">Tuyệt! Bạn đã tiết kiệm được 10MB với trình duyệt Brave.🔋</translation>
+<translation id="1880168210969863408">Tuyệt! Bạn đã tiết kiệm được 10 Phút thời gian tải với trình duyệt Brave.💨💨</translation>
 <translation id="7408493389591475748">Bắt đầu duyệt web để xem báo cáo quyền riêng tư</translation>
 <translation id="9080777565335515917">Đặt Brave làm trình duyệt mặc định của bạn để duyệt web an toàn và bảo mật.</translation>
 <translation id="1390943217516275883">Cho phép Brave hiển thị số liệu thống kê về quyền riêng tư của bạn</translation>
@@ -478,7 +479,7 @@ tháng này...</translation>
 <translation id="1078265935778232285">Chào mừng bạn đến với Trình duyệt Brave</translation>
 <translation id="6824713633331856331">Giúp chúng tôi bí mật tìm hiểu</translation>
 <translation id="6116685031674149112">Brave bảo vệ quyền riêng tư của bạn và\nmong bạn đồng ý những điều sau:</translation>
-<translation id="4394483075076204916">Giúp cải thiện Brave bằng cách gửi báo cáo sự cố và hoàn toàn ẩn danh, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Giúp cải thiện Brave bằng cách gửi hoàn toàn ẩn danh <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">phân tích sản phẩm riêng tư.</translation>
 <translation id="5187052478998910855">Cần điều gì đó mới mẻ trong Rewards?</translation>
 <translation id="8622329973403382303">Hãy tham gia một hành trình ngắn nhằm tìm hiểu cách thức hoạt động của nó để đi vào lịch sử với tư cách là một ngôi sao nhạc rock trong mục Phần thưởng!</translation>
@@ -561,7 +562,6 @@ tháng này...</translation>
 <translation id="1144810021918451336">Không bảo vệ bạn khỏi các trang web, nội dung tải xuống và tiện ích mở rộng nguy hiểm.</translation>
 <translation id="745115390910697838">Các cụm từ không khớp. Vui lòng thử lại.</translation>
 <translation id="2360588547830602174">Khôi phục tài khoản không thành công. Vui lòng thử lại.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Giá thị trường tính bằng ETH</translation>
 <translation id="5593852897152820572">Giá tính bằng ETH</translation>
 <translation id="6748108480210050150">Từ</translation>
@@ -595,4 +595,7 @@ tháng này...</translation>
 <translation id="8967036623785635603">Chỉnh sửa tài sản hiển thị</translation>
 <translation id="5050890334032852465">Lưu danh sách theo dõi tài khoản</translation>
 <translation id="7755766175599167100">Tìm kiếm token</translation>
+<translation id="3835223348537121988">Số dư:</translation>
+<translation id="5254037869598726291">Thông tin được ẩn danh hóa hoàn toàn này giúp Brave đánh giá việc sử dụng tổng thể các tính năng nhất định và cải thiện việc sử dụng cho bạn.</translation>
+<translation id="1530109021798294736">Mainnet</translation>
 </translationbundle>

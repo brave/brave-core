@@ -95,6 +95,7 @@
 <translation id="129863573139666797"><ph name="BEGIN_LINK"/>ລອງລຶບລ້າງຄຸກກີ້ຂອງທ່ານ<ph name="END_LINK"/></translation>
 <translation id="1301324364792935241">ກວດເບິ່ງການຕັ້ງຄ່າ DNS ທີ່ປອດໄພຂອງທ່ານ</translation>
 <translation id="1307966114820526988">ຄຸນສົມບັດທີ່ເຊົາຮອງຮັບແລ້ວ</translation>
+<translation id="1312803275555673949">ມີຫຼັກຖານໃດສະໜັບສະໜຸນມັນ?</translation>
 <translation id="131405271941274527"><ph name="URL"/> ຕ້ອງການສົ່ງ ແລະ ຮັບຂໍ້ມູນເມື່ອທ່ານແຕະໂທລະສັບຂອງທ່ານໃນອຸປະກອນ NFC</translation>
 <translation id="1314509827145471431">ຫຍິບເຫຼັ້ມເບື້ອງຂວາ</translation>
 <translation id="1319245136674974084">ບໍ່ຕ້ອງຖາມອີກສຳລັບແອັບນີ້</translation>
@@ -138,6 +139,7 @@
 <translation id="1422930527989633628">ສາມາດຂໍຄົ້ນພົບອຸປະກອນ Bluetooth ທີ່ຢູ່ໃກ້ຄຽງ</translation>
 <translation id="1426410128494586442">ແມ່ນແລ້ວ</translation>
 <translation id="1428146450423315676">ສະແຕັກເກີ້ 7</translation>
+<translation id="1428729058023778569">ທ່ານເຫັນຄຳເຕືອນນີ້ເນື່ອງຈາກເວັບໄຊນີ້ບໍ່ຮອງຮັບ HTTPS. <ph name="BEGIN_LEARN_MORE_LINK"/>ສຶກສາເພີ່ມເຕີມ<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1430915738399379752">ພິມ</translation>
 <translation id="1436185428532214179">ສາມາດຂໍແກ້ໄຂໄຟລ໌ ແລະ ໂຟນເດີຢູ່ອຸປະກອນຂອງທ່ານ</translation>
 <translation id="1442386063175183758">ພັບທົບເບື້ອງຂວາ</translation>
@@ -469,6 +471,7 @@
 <translation id="2595719060046994702">ອຸປະກອນ ແລະ ບັນຊີນີ້ບໍ່ຖືກຈັດການໂດຍບໍລິສັດ ຫຼື ອົງການຈັດຕັ້ງອື່ນ.</translation>
 <translation id="2597378329261239068">ເອກະສານນີ້ມີລະຫັດຜ່ານປ້ອງກັນໄວ້. ກະລຸນາໃສ່ລະຫັດຜ່ານ.</translation>
 <translation id="2609632851001447353">ການ​ປ່ຽນ​ແປງ</translation>
+<translation id="2610561535971892504">ຄລິກເພື່ອສຳເນົາ</translation>
 <translation id="2618023639789766142">C10 (ຊອງຈົດໝາຍ)</translation>
 <translation id="2625385379895617796">ໂມງ​ຂອ​ງ​ທ່ານ​ໄວ</translation>
 <translation id="262745152991669301">ສາມາດຂໍເຊື່ອມຕໍ່ຫາອຸປະກອນ USB ໄດ້</translation>
@@ -498,6 +501,7 @@
 <translation id="2701514975700770343">ຂວ້າມລົງ</translation>
 <translation id="2702801445560668637">ລາຍການທີ່ຈະອ່ານ</translation>
 <translation id="2704283930420550640">ຄ່າບໍ່ກົງກັບຮູບແບບ.</translation>
+<translation id="2704606927547763573">ອັດ​ສຳ​ເນົາ​ແລ້ວ</translation>
 <translation id="2705137772291741111">ສຳເນົາທີ່ບັນທຶກໄວ້ຂອງເວັບໄຊນີ້ບໍ່ສາມາດອ່ານໄດ້.</translation>
 <translation id="2709516037105925701">ຕື່ມອັດຕະໂນມັດ</translation>
 <translation id="2713444072780614174">ສີ​ຂາວ</translation>
@@ -629,8 +633,10 @@
 <translation id="3229041911291329567">ຂໍ້ມູນເວີຊັນກ່ຽວກັບອຸປະກອນ ແລະ ໂປຣແກຣມທ່ອງເວັບຂອງທ່ານ</translation>
 <translation id="323107829343500871">ປ້ອນ CVC ສຳລັບ <ph name="CREDIT_CARD"/></translation>
 <translation id="3234666976984236645">ກວດ​ຫາ​ເນື້ອ​ໃນ​ສຳ​ຄັນ​ຢູ່​ເທິງ​ເວັບ​ໄຊ​ທ໌​ນີ້​ທຸກ​ຄັ້ງ</translation>
+<translation id="3240791268468473923">ເປີດຊີດຂໍ້ມູນການເຂົ້າສູ່ລະບົບການຈ່າຍເງິນທີ່ປອດໄພທີ່ບໍ່ມີຂໍ້ມູນການເຂົ້າສູ່ລະບົບທີ່ກົງກັນແລ້ວ</translation>
 <translation id="3249845759089040423">ກຣູຟີ</translation>
 <translation id="3252266817569339921">ພາສາຝຣັ່ງ</translation>
+<translation id="3257954757204451555">ໃຜຢູ່ເບື້ອງຫຼັງຂໍ້ມູນນີ້?</translation>
 <translation id="6900454207575412115"><ph name="CREATE_GOOGLE_CALENDAR_EVENT_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ກົດ Tab ຈາກນັ້ນກົດ Enter ເພື່ອສ້າງນັດໝາຍໃໝ່ໃນ Brave ປະຕິທິນໄດ້ຢ່າງວ່ອງໄວ</translation>
 <translation id="3266793032086590337">ຄ່າ (ຂັດແຍ່ງ)</translation>
 <translation id="3268451620468152448">ເປີດ​ແຖບ</translation>
@@ -641,6 +647,7 @@
 <translation id="3282497668470633863">ເພີ່ມຊື່ໃນບັດ</translation>
 <translation id="3286372614333682499">ແນວຕັ້ງ</translation>
 <translation id="3287510313208355388">ດາວໂຫຼດເມື່ອອອນລາຍ</translation>
+<translation id="3288238092761586174"><ph name="URL"/> ອາດຕ້ອງເຮັດຂັ້ນຕອນເພີ່ມເຕີມເພື່ອຢັ້ງຢືນການຈ່າຍເງິນຂອງທ່ານ</translation>
 <translation id="3293642807462928945">ສຶກສາເພີ່ມເຕີມກ່ຽວກັບນະໂຍບາຍ <ph name="POLICY_NAME"/></translation>
 <translation id="5894665462526421022">ເບິ່ງ ແລະ ຈັດການລະຫັດຜ່ານຂອງທ່ານໃນການຕັ້ງຄ່າ Brave</translation>
 <translation id="3303855915957856445">ບໍ່ພົບຜົນການຊອກຫາໃດໆ</translation>
@@ -691,6 +698,7 @@
 <translation id="3432601291244612633">ປິດໜ້າ</translation>
 <translation id="3435738964857648380">ຄວາມ​ປອດ​ໄພ</translation>
 <translation id="4527130811319726464">ໃຊ້ລະຫັດຜ່ານທີ່ບັນທຶກໄວ້ໃນບັນຊີ Brave ຂອງທ່ານ</translation>
+<translation id="3440783957068352691">ສີ່ຫຼ່ຽມ</translation>
 <translation id="3443726618221119081">Juuro-Ku-Kai</translation>
 <translation id="3447661539832366887">ເຈົ້າ​ຂອງ​ອຸ​ປະ​ກອນ​ນີ້​ປິດ​ເກມ​ໄດ​ໂນ​ເສົາ​ໄວ້.</translation>
 <translation id="3447884698081792621">ສະແດງໃບຮັບຮອງ (ທີ່ອອກໃຫ້ໂດຍ <ph name="ISSUER"/>)</translation>
@@ -973,11 +981,14 @@
 <translation id="4434045419905280838">ປັອບອັບ ແລະ ການປ່ຽນເສັ້ນທາງ</translation>
 <translation id="4435702339979719576">ໂພສກາດ)</translation>
 <translation id="443673843213245140">ການໃຊ້ພຣັອກຊີປິດໃຊ້ງານແລ້ວ ແຕ່ການປັບຕັ້ງພຣັອກຊີຈະແຈ້ງໄດ້ຮັບການລະບຸ.</translation>
+<translation id="4450893287417543264">ຢ່າສະແດງອີກ</translation>
 <translation id="4451135742916150903">ສາມາດຂໍເຊື່ອມຕໍ່ຫາອຸປະກອນ HID ໄດ້</translation>
 <translation id="4460315069258617173">ອະນຸຍາດຈົນກວ່າທ່ານຈະປິດແຖບສຳລັບເວັບໄຊນີ້</translation>
 <translation id="4464826014807964867">ເວັບໄຊພ້ອມຂໍ້ມູນຈາກອົງການຂອງທ່ານ</translation>
+<translation id="4465818729556336129">ເອກະສານນີ້ເປັນຂໍ້ມູນລັບ ແລະ ຜູ້ເບິ່ງແຍງລະບົບຂອງທ່ານບໍ່ແນະນຳໃຫ້ພິມ.</translation>
 <translation id="4476953670630786061">ແບບຟອມບໍ່ປອດໄພ. ລະບົບໄດ້ປິດການຕື່ມຂໍ້ມູນອັດຕະໂນມັດແລ້ວ.</translation>
 <translation id="4477350412780666475">ເພງຕໍ່ໄປ</translation>
+<translation id="4481394504112738036">ໄຟລ໌ຂໍ້ມູນລັບ</translation>
 <translation id="4482953324121162758">ລະບົບຈະບໍ່ແປເວັບໄຊນີ້.</translation>
 <translation id="4490717597759821841">A7</translation>
 <translation id="3966104135245031874">ເຂົ້າລະຫັດລະຫັດຜ່ານທີ່ຊິ້ງຂໍ້ມູນໄວ້ດ້ວຍບັນຊີ Brave ຂອງທ່ານ</translation>
@@ -1027,7 +1038,6 @@
 <translation id="4677585247300749148"><ph name="URL"/> ຕ້ອງການຕອບສະໜອງກັບເຫດການຊ່ວຍເຂົ້າເຖິງ</translation>
 <translation id="8197094463444457125">Brave Slides</translation>
 <translation id="468314109939257734">ເບິ່ງໝາຍເລກບັດສະເໝືອນຂອງທ່ານ</translation>
-<translation id="4690462567478992370">ຢຸດ​ການ​ໃຊ້​ໃບ​ຢັ້ງ​ຢືນ​ທີ່ໃຊ້ບໍ່ໄດ້</translation>
 <translation id="4691835149146451662">Architecture-A (ຊອງຈົດໝາຍ)</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
 <translation id="4702504834785592287">ດ້ານຂ້າງ</translation>
@@ -1068,7 +1078,6 @@
 <translation id="4800132727771399293">ກວດ​ເບິ່ງວັນ​ໝົດ​ອາ​ຍຸ ແລະ CVC ຂອງ​ທ່ານ ແລະ​ລອງ​ໃໝ່​ອີກ</translation>
 <translation id="480334179571489655">ຂໍ້ຜິດພາດຂອງນະໂຍບາຍຕົ້ນທາງ</translation>
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
-<translation id="8896585555528145662">ທ່ານບໍ່ສາມາດເຂົ້າເບິ່ງ <ph name="SITE"/> ໄດ້ໃນຂະນະນີ້ ເພາະວ່າເວັບໄຊໄດ້ສົ່ງຂໍ້ມູນປະຈໍາຕົວທີ່ສັບສົນທີ່ Brave ບໍ່ສາມາດປະມວນຜົນໄດ້. ໂດຍປົກກະຕິແລ້ວ ຄວາມຜິດພາດ ແລະການໂຈມຕີທາງເຄືອຂ່າຍຈະເກີດຂຶ້ນພຽງຊົ່ວຄາວເທົ່ານັ້ນ, ສະນັ້ນ ໜ້າເວັບນີ້ຈະໃຊ້ໄດ້ໃນພາຍຫຼັງ.</translation>
 <translation id="4809079943450490359">ຄຳແນະນຳຈາກຜູ້ເບິ່ງແຍງລະບົບອຸປະກອນຂອງທ່ານ:</translation>
 <translation id="4813512666221746211">ເຄືອຂ່າຍຜິດພາດ</translation>
 <translation id="4816492930507672669">ຈັດພໍດີກັບຫນ້າ</translation>
@@ -1077,6 +1086,7 @@
 <translation id="4825507807291741242">ຊົງພະລັງ</translation>
 <translation id="4838327282952368871">ຊວນຝັນ</translation>
 <translation id="484462545196658690">ອັດຕະໂນມັດ</translation>
+<translation id="4849865131988503897">ກວດສອບຄວາມຖືກຕ້ອງ</translation>
 <translation id="4850886885716139402">ເບິ່ງ</translation>
 <translation id="485316830061041779">ພາສາເຢຍລະມັນ</translation>
 <translation id="4854362297993841467">ວິທີການສົ່ງນີ້ບໍ່ສາມາດໃຊ້ໄດ້. ລອງວິທີອື່ນ.</translation>
@@ -1178,6 +1188,7 @@
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">ເຄື່ອງຈັກ</translation>
 <translation id="5179510805599951267">ບໍ່ເປັນ <ph name="ORIGINAL_LANGUAGE"/> ບໍ? ລາຍງານຄວາມຜິດພາດນີ້</translation>
+<translation id="51918995459521422"><ph name="ORIGIN"/> ຕ້ອງການດາວໂຫຼດຫຼາຍໄຟລ໌</translation>
 <translation id="519422657042045905">ຄຳອະທິບາຍປະກອບບໍ່ສາມາດໃຊ້ໄດ້</translation>
 <translation id="5201306358585911203">ໜ້າຝັງຕິດໃນໜ້ານີ້ບອກວ່າ</translation>
 <translation id="5205222826937269299">ຈຳເປັນຕ້ອງມີຊື່</translation>
@@ -1346,7 +1357,6 @@
 <translation id="3985758120980526872">Brave ພົບລະຫັດຜ່ານທີ່ທ່ານຫາກໍໃຊ້ໄປນັ້ນໃນການຮົ່ວໄຫຼຂໍ້ມູນ. ພວກເຮົາແນະນຳໃຫ້ປ່ຽນລະຫັດຜ່ານດຽວນີ້.</translation>
 <translation id="5803412860119678065">ທ່ານຕ້ອງການຕື່ມຂໍ້ມູນ <ph name="CARD_DETAIL"/> ຂອງທ່ານບໍ?</translation>
 <translation id="5804241973901381774">ການ​ອະ​ນຸ​ຍາດ</translation>
-<translation id="5804427196348435412">ໃຊ້ອຸປະກອນ NFC</translation>
 <translation id="5810442152076338065">ການ​ເຊື່ອມ​ຕໍ່​ຂອງ​ທ່ານ​ກັບ <ph name="DOMAIN"/> ຖືກ​ເຂົ້າ​ລະ​ຫັດ​ດ້ວຍ​ການ​ໃສ່​ຊຸດ​ລະ​ຫັດ​ລັບ​ຫຼ້າ​ສະ​ໄໝ.</translation>
 <translation id="5813119285467412249">​ເຮັດ​ຄືນ​ຄຳ​ສັ່ງ​ເພີ່ມ</translation>
 <translation id="5817918615728894473">ຈັບ​ຄູ່</translation>
@@ -1422,6 +1432,7 @@
 <translation id="6051221802930200923">ທ່ານບໍ່ສາມາດເຂົ້າເບິ່ງ <ph name="SITE"/> ໄດ້ໃນຂະນະນີ້ ເພາະວ່າເວັບໄຊນີ້ໃຊ້ການປັກໝຸດໃບຢັ້ງຢືນ. ໂດຍປົກກະຕິແລ້ວ ຂໍ້ຜິດພາດ ແລະ ການໂຈມຕີທາງເຄືອຂ່າຍແມ່ນຊົ່ວຄາວເທົ່ານັ້ນ, ສະນັ້ນ ໜ້ານີ້ອາດຈະໃຊ້ໄດ້ໃນພາຍຫຼັງ.</translation>
 <translation id="6051898664905071243">ຈຳນວນໜ້າ:</translation>
 <translation id="6052284303005792909">•</translation>
+<translation id="6055888660316801977">ຊີດຂໍ້ມູນການເຂົ້າສູ່ລະບົບການຈ່າຍເງິນທີ່ປອດໄພທີ່ບໍ່ມີຂໍ້ມູນການເຂົ້າສູ່ລະບົບທີ່ກົງກັນ</translation>
 <translation id="6058977677006700226">ໃຊ້ບັດຂອງທ່ານຢູ່ໃນອຸປະກອນຂອງທ່ານທັງໝົດບໍ?</translation>
 <translation id="6059925163896151826">ອຸປະກອນ USB</translation>
 <translation id="6060009363608157444">ໂໝດ DnsOverHttps ບໍ່ຖືກຕ້ອງ.</translation>
@@ -1499,6 +1510,7 @@
 <translation id="6389470377220713856">ຊື່​ຢູ່ໃນ​ບັດ</translation>
 <translation id="6390200185239044127">ພັບເຄິ່ງແບບໂຕ Z</translation>
 <translation id="6390662030813198813">Engineering-E</translation>
+<translation id="6391700400718590966">ປິດຊີດຂໍ້ມູນການເຂົ້າສູ່ລະບົບການຈ່າຍເງິນທີ່ປອດໄພທີ່ບໍ່ມີຂໍ້ມູນການເຂົ້າສູ່ລະບົບທີ່ກົງກັນແລ້ວ</translation>
 <translation id="6393956493820063117">ນະໂຍບາຍຂອງຜູ້ເບິ່ງແຍງລະບົບບລັອກການວາງຈາກ <ph name="ORIGIN_NAME"/> ໃສ່ຕຳແໜ່ງນີ້ໄວ້</translation>
 <translation id="6398765197997659313">ອອກຈາກເຕັມໜ້າຈໍ</translation>
 <translation id="6401136357288658127">ເຊົາຮອງຮັບນະໂຍບາຍນີ້ແລ້ວ. ທ່ານຄວນໃຊ້ນະໂຍບາຍ <ph name="NEW_POLICY"/> ນີ້ແທນ.</translation>
@@ -1579,7 +1591,6 @@
 <translation id="6689249931105087298">ສຳພັນກັບການບີບຈຸດສີດຳ</translation>
 <translation id="5406652219015697259">Brave ກຳລັງສະເໜີບັນທຶກບັດຂອງທ່ານໄວ້ໃນບັນຊີ Brave ຂອງທ່ານ ເພາະວ່າທ່ານເຂົ້າສູ່ລະບົບຢູ່. ທ່ານສາມາດປ່ຽນພຶດຕິກຳນີ້ໄດ້ໃນການຕັ້ງຄ່າ. ຊື່ຜູ້ຖືບັດມາຈາກບັນຊີຂອງທ່ານ.</translation>
 <translation id="6698381487523150993">ສ້າງຂຶ້ນແລ້ວ:</translation>
-<translation id="6699188552522342100">ເວັບໄຊນີ້ຖືກຕ້ອງບໍ່?</translation>
 <translation id="6702919718839027939">ປັດຈຸບັນ</translation>
 <translation id="6710213216561001401">ຜ່ານມາ</translation>
 <translation id="6710594484020273272">&lt;ພິມຄຳສັບການຄົ້ນຫາ&gt;</translation>
@@ -1587,6 +1598,7 @@
 <translation id="6711464428925977395">ມີບາງຢ່າງຜິດພາດກັບເຊີບເວີພຣັອກຊີ ຫຼື ທີ່ຢູ່ບໍ່ຖືກຕ້ອງ.</translation>
 <translation id="6716672519412350405"><ph name="URL"/> ຕ້ອງການສ້າງແຜນທີ່ 3 ມິຕິຂອງສິ່ງທີ່ຢູ່ອ້ອມຂ້າງຕົວທ່ານ ແລະ ຕິດຕາມຕຳແໜ່ງກ້ອງ</translation>
 <translation id="6718612893943028815">ໃຊ້ກ້ອງຖ່າຍຮູບບໍ?</translation>
+<translation id="6721678857435001674">ເບິ່ງຍີ່ຫໍ້ ແລະ ລຸ້ນຂອງກະແຈຄວາມປອດໄພຂອງທ່ານ</translation>
 <translation id="6738516213925468394">ຂໍ້ມູນຂອງທ່ານຖືກເຂົ້າລະຫັດໄວ້ດ້ວຍ <ph name="BEGIN_LINK"/>ລະຫັດຜ່ານການຊິ້ງຂໍ້ມູນ<ph name="END_LINK"/> ເມື່ອ <ph name="TIME"/>. ກະລຸນາປ້ອນມັນເພື່ອເລີ່ມການຊິ້ງຂໍ້ມູນ</translation>
 <translation id="674375294223700098">ໃບຢັ້ງຢືນເຊີບເວີບໍ່ຮູ້ຈັກຜິດພາດ.</translation>
 <translation id="6744009308914054259">ໃນຂະນະທີ່ລໍຖ້າການເຊື່ອມຕໍ່, ທ່ານສາມາດເຂົ້າຫາການດາວໂຫຼດເພື່ອອ່ານບົດຄວາມອອບລາຍໄດ້.</translation>
@@ -1623,13 +1635,13 @@
 <translation id="6898699227549475383">ອົງການຈັດຕັ້ງ (O)</translation>
 <translation id="6907293445143367439">ອະນຸຍາດໃຫ້ <ph name="SITE_NAME"/> ສາມາດ:</translation>
 <translation id="6910240653697687763"><ph name="URL"/> ຕ້ອງການໄດ້ຮັບການຄວບຄຸມເຕັມຕໍ່ກັບອຸປະກອນ MIDI ຂອງທ່ານ</translation>
+<translation id="691024665142758461">ດາວໂຫຼດຫຼາຍໄຟລ໌</translation>
 <translation id="6915804003454593391">ຜູ້​ໃຊ້​:</translation>
 <translation id="6722453239914327220">ຊື່ນີ້ມາຈາກບັນຊີ Brave ຂອງທ່ານ</translation>
 <translation id="6944692733090228304">ທ່ານໄດ້ປ້ອນລະຫັດຜ່ານຂອງທ່ານໃນເວັບໄຊທີ່ບໍ່ຖືກຈັດການໂດຍ <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/>. ເພື່ອປົກປ້ອງບັນຊີຂອງທ່ານ, ກະລຸນາຢ່ານຳລະຫັດຜ່ານຂອງທ່ານມາໃຊ້ໃໝ່ຢູ່ໃນແອັບ ແລະ ເວັບໄຊອື່ນ.</translation>
 <translation id="6945221475159498467">ເລືອກ</translation>
 <translation id="6948051842255602737">ເກມຈົບແລ້ວ, ຄະແນນຂອງທ່ານແມ່ນ <ph name="SCORE"/>.</translation>
 <translation id="6948701128805548767">ເພື່ອເບິ່ງວິທີ ແລະ ຂໍ້ກຳນົດການຮັບເຄື່ອງ, ກະລຸນາເລືອກທີ່ຢູ່</translation>
-<translation id="6949479070119158594">ທ່ານເຫັນຄຳເຕືອນນີ້ເນື່ອງຈາກເວັບໄຊນີ້ບໍ່ຮອງຮັບ HTTPS.</translation>
 <translation id="6949872517221025916">ຣີເຊັດລະຫັດຜ່ານ</translation>
 <translation id="6950684638814147129">ເກີດຄວາມຜິດພາດໃນເວລາແຍກວິເຄາະຄ່າ JSON: <ph name="ERROR"/></translation>
 <translation id="695140971690006676">ຣິເຊັດທັງໝົດ</translation>
@@ -1707,6 +1719,7 @@
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> ບໍ່ປະຕິບັດຕາມມາດຕະຖານຄວາມປອດໄພ.</translation>
 <translation id="7210993021468939304">ການເຄື່ອນໄຫວ Linux ພາຍໃນກ່ອງບັນຈຸ ແລະ ສາມາດຕິດຕັ້ງ ແລະ ເປີດໃຊ້ແອັບ Linux ພາຍໃນກ່ອງບັນຈຸໄດ້</translation>
 <translation id="721197778055552897"><ph name="BEGIN_LINK"/>ຮຽນ​ຮູ້​ເພີ່ມ​ເຕີມ<ph name="END_LINK"/> ກ່ຽວ​ກັບ​ບັນ​ຫາ​ນີ້​.</translation>
+<translation id="7215025035562547931">ໃຊ້ເວລາເລັກນ້ອຍເພື່ອພິຈາລະນາຄວາມຖືກຕ້ອງ</translation>
 <translation id="7217745192097460130">ໃຊ້ Touch ID ເພື່ອຢັ້ງຢືນ ແລະ ເຮັດສຳເລັດການຊື້ຂອງທ່ານບໍ?</translation>
 <translation id="7219179957768738017">ການເຊື່ອມຕໍ່ໃຊ້ <ph name="SSL_VERSION"/>.</translation>
 <translation id="7220786058474068424">ກຳລັງດຳເນີນການ</translation>
@@ -1932,10 +1945,12 @@
 <translation id="7961015016161918242">ບໍ່​ເລີຍ</translation>
 <translation id="7966803981046576691">ປະເພດບັນຊີວຽກ</translation>
 <translation id="79682505114836835">ຄ່າ "<ph name="VALUE"/>" ເປັນສີ hex ທີ່ບໍ່ຖືກຕ້ອງ.</translation>
+<translation id="7970392640816874403">ແຫຼ່ງຂໍ້ມູນອື່ນລະບຸແນວໃດ?</translation>
 <translation id="7976214039405368314">ມີການຮ້ອງຂໍຫຼາຍເກີນໄປ</translation>
 <translation id="7977538094055660992">ອຸປະກອນເຈ້ຍອອກ</translation>
 <translation id="7977894662897852582">Edp</translation>
 <translation id="798134797138789862">ສາມາດຂໍໃຊ້ອຸປະກອນເວີຊົວ ຣິອາລິຕີ ແລະ ຂໍ້ມູນ</translation>
+<translation id="8896585555528145662">ທ່ານບໍ່ສາມາດເຂົ້າເບິ່ງ <ph name="SITE"/> ໄດ້ດຽວນີ້ ເພາະວ່າເວັບໄຊທ໌ໄດ້ສົ່ງການຢັ້ງຢືນລົບກວນທີ່ Brave ບໍ່ສາມາດປະມວນຜົນໄດ້. ໂດຍປົກກະຕິນັ້ນ ຄວາມຂັດຂ້ອງຂອງເຄືອຂ່າຍ ແລະການໂຈມຕີເຄືອຂ່າຍຈະຊົ່ວຄາວເທົ່ານັ້ນ, ດັ່ງນັ້ນ ໜ້ານີ້ອາດຈະກັບມາໃຊ້ງານໄດ້ໃນພາຍຫຼັງ.</translation>
 <translation id="79859296434321399">ເພື່ອເບິ່ງເນື້ອຫາອາກິວເມັນ ຣີອາລິຕີ, ກະລຸນາຕິດຕັ້ງ ARCore ກ່ອນ</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">ຫບິບເຫຼັ້ມ</translation>
@@ -1998,7 +2013,6 @@
 <translation id="8202370299023114387">ຂັດແຍ່ງ</translation>
 <translation id="8206978196348664717">Prc4 (ຊອງຈົດໝາຍ)</translation>
 <translation id="8211406090763984747">ການເຊື່ອມຕໍ່ປອດໄພດີ</translation>
-<translation id="8213464188712611711">ຄວາມຊົງຈຳ</translation>
 <translation id="8218327578424803826">ທີ່​ຕັ້ງ​ທີ່​ກຳ​ນົດ​ໃຫ້</translation>
 <translation id="8220146938470311105">C7/C6 (ຊອງຈົດໝາຍ)</translation>
 <translation id="3272614036080146686">ທ່ານຫາກໍປ້ອນລະຫັດຜ່ານຂອງທ່ານໃສ່ເວັບໄຊຫຼອກລວງ. Brave ຂໍແນະນຳໃຫ້ໄປທີ່ <ph name="WEBSITE_1"/> ແລະ ເວັບໄຊອື່ນໆທີ່ທ່ານໃຊ້ລະຫັດຜ່ານນີ້ ແລ້ວປ່ຽນມັນຕອນນີ້ເລີຍ.</translation>
@@ -2242,6 +2256,7 @@
 <translation id="9154194610265714752">ອັບເດດແລ້ວ</translation>
 <translation id="9157595877708044936">ກໍາລັງ​ຕັ້ງ...</translation>
 <translation id="9158625974267017556">C6 (ຊອງຈົດໝາຍ)</translation>
+<translation id="9164029392738894042">ກວດສອບຄວາມຖືກຕ້ອງ</translation>
 <translation id="9168814207360376865">ອະນຸຍາດໃຫ້ເວັບໄຊກວດເບິ່ງວ່າທ່ານມີວິທີການຈ່າຍເງິນທີ່ບັນທຶກໄວ້ຫຼືບໍ່</translation>
 <translation id="9169664750068251925">ບລັອກເວັບໄຊທ໌ນີ້ຢູ່ສະເໝີ</translation>
 <translation id="9169931577761441333">ເພີ່ມ <ph name="APP_NAME"/> ໃສ່ໜ້າຈໍຫຼັກ</translation>

@@ -101,7 +101,6 @@
 <translation id="9183662282810237335">Keluar daripada Brave juga?</translation>
 <translation id="4065288863231444640">Benarkan Brave Dijalankan dalam Latar Belakang</translation>
 <translation id="8148611988012584308">Sesuaikan dan kawal Brave</translation>
-<translation id="1201005444605297066">Halaman ini membolehkan anda mengurus akaun Brave anda yang dilog masuk. Akaun ini akan tersedia dalam penyemak imbas Brave dan apl Gedung Play, serta perkhidmatan seperti Gmail, Drive dan YouTube. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Selamat datang ke Brave; tetingkap penyemak imbas baharu dibuka</translation>
 <translation id="2633397153656205379">Brave tidak dikemas kini, kesilapan telah berlaku. <ph name="BEGIN_LINK"/>Selesaikan masalah kemas kini dan kegagalan kemas kini Brave.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Teruskan dalam profil Brave baharu?</translation>
@@ -247,6 +246,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="2925193881330501265">Anda telah log masuk ke Brave sebagai <ph name="USER_EMAIL_ADDRESS"/>. Sila gunakan akaun yang sama untuk log masuk lagi.</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan kedua Brave dan tidak boleh dijadikan penyemak imbas lalai anda.</translation>
 <translation id="7685904775439037072">Sebaik sahaja Brave mendapat akses, tapak web akan dapat meminta akses daripada anda.</translation>
+<translation id="828406390101464081">Akaun berikut tidak dilog masuk ke mana-mana profil Brave. Jika anda ingin menggunakan akaun dalam profil lain, alih keluar profil tersebut dahulu.</translation>
 <translation id="9067428552314418522">Fail ini berbahaya, maka Brave telah menyekatnya.</translation>
 <translation id="8207657266087451193">Jika imej tiada perihalan yang berguna, Brave akan cuba memberikan perihalan untuk anda. Untuk membuat perihalan, imej dihantar kepada Brave. Anda boleh mematikan pilihan ini dalam tetapan pada bila-bila masa.</translation>
 <translation id="8622246347342688645">Brave tidak dapat menyemak kata laluan anda kerana anda tidak log masuk</translation>
@@ -296,4 +296,5 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini}=1{Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini. Tetingkap Inkognito anda tidak dapat dibuka semula.}other{Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini. # tetingkap Inkognito anda tidak dapat dibuka semula.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Pentadbir anda menghendaki anda melancarkan semula Brave untuk menggunakan kemas kini}=1{Pentadbir anda menghendaki anda melancarkan semula Brave untuk menggunakan kemas kini. Tetingkap Inkognito anda tidak dapat dibuka semula.}other{Pentadbir anda menghendaki anda melancarkan semula Brave untuk menggunakan kemas kini. # tetingkap Inkognito anda tidak dapat dibuka semula.}}</translation>
 <translation id="7914115000169617076">Kemas kini hampir selesai! Lancarkan semula Brave untuk menyelesaikan kemas kini. Tetingkap Peribadi tidak dapat dibuka semula.</translation>
+<translation id="2176087127109773485">Anda boleh menguruskan rantaian penyegerakan Brave yang anda daftar masuk. Rantaian penyegerakan Brave anda digunakan untuk pelayar Brave, Play Store, Gmail dan banyak lagi. Sekiranya anda ingin menambah akaun untuk orang lain, seperti ahli keluarga, tambahkan profil baharu ke <ph name="DEVICE_TYPE"/> anda. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 </translationbundle>

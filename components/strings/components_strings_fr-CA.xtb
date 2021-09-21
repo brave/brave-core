@@ -95,6 +95,7 @@
 <translation id="129863573139666797"><ph name="BEGIN_LINK"/>Essayez d'effacer vos témoins<ph name="END_LINK"/></translation>
 <translation id="1301324364792935241">Vérifiez les paramètres de DNS sécurisés</translation>
 <translation id="1307966114820526988">Fonctionnalités obsolètes</translation>
+<translation id="1312803275555673949">Par quelles preuves est-ce appuyé?</translation>
 <translation id="131405271941274527"><ph name="URL"/> souhaite vous envoyer et recevoir de l'information lorsque vous touchez votre téléphone sur un appareil CCP</translation>
 <translation id="1314509827145471431">Reliure à droite</translation>
 <translation id="1319245136674974084">Ne plus me poser la question pour cette application</translation>
@@ -137,6 +138,7 @@
 <translation id="1422930527989633628">Les sites peuvent demander à découvrir les appareils Bluetooth à proximité</translation>
 <translation id="1426410128494586442">Oui</translation>
 <translation id="1428146450423315676">Empileur 7</translation>
+<translation id="1428729058023778569">Cette mise en garde s'affiche parce que ce site ne prend pas en charge le protocole HTTPS. <ph name="BEGIN_LEARN_MORE_LINK"/>En savoir plus<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1430915738399379752">Imprimer</translation>
 <translation id="1436185428532214179">Les sites peuvent demander à modifier les fichiers et les dossiers de votre appareil</translation>
 <translation id="1442386063175183758">Pli du volet droit</translation>
@@ -460,6 +462,7 @@
 <translation id="2595719060046994702">Cet appareil et ce compte ne sont pas gérés par une entreprise ou une autre organisation.</translation>
 <translation id="2597378329261239068">Ce document est protégé par un mot de passe. Veuillez entrer ce mot de passe.</translation>
 <translation id="2609632851001447353">Variations</translation>
+<translation id="2610561535971892504">Cliquer pour copier</translation>
 <translation id="2618023639789766142">Enveloppe C10</translation>
 <translation id="2625385379895617796">Votre horloge avance</translation>
 <translation id="262745152991669301">Les sites peuvent demander à se connecter à des appareils USB</translation>
@@ -489,6 +492,7 @@
 <translation id="2701514975700770343">Face vers le bas</translation>
 <translation id="2702801445560668637">Liste de lecture</translation>
 <translation id="2704283930420550640">La valeur ne correspond pas au format.</translation>
+<translation id="2704606927547763573">Copié</translation>
 <translation id="2705137772291741111">La copie sauvegardée (mise en cache) de ce site était illisible.</translation>
 <translation id="2709516037105925701">Remplissage automatique</translation>
 <translation id="2713444072780614174">Blanc</translation>
@@ -619,8 +623,10 @@
 <translation id="3229041911291329567">Renseignements sur la version de votre appareil et de votre navigateur</translation>
 <translation id="323107829343500871">Entrez le code de vérification de carte (CVC) pour <ph name="CREDIT_CARD"/></translation>
 <translation id="3234666976984236645">Toujours détecter le contenu important sur ce site</translation>
+<translation id="3240791268468473923">La zone de contenu dans le bas de l'écran indiquant qu'aucun authentifiant ne correspond au paiement sécurisé est ouverte</translation>
 <translation id="3249845759089040423">Pimpant</translation>
 <translation id="3252266817569339921">Français</translation>
+<translation id="3257954757204451555">Qui est derrière cette information?</translation>
 <translation id="6900454207575412115"><ph name="CREATE_GOOGLE_CALENDAR_EVENT_FOCUSED_FRIENDLY_MATCH_TEXT"/>, appuyez sur Tabulation, puis sur Entrée pour rapidement créer un événement dans Brave Agenda</translation>
 <translation id="3266793032086590337">Valeur (conflit)</translation>
 <translation id="3268451620468152448">Onglets ouverts</translation>
@@ -631,6 +637,7 @@
 <translation id="3282497668470633863">Ajouter le nom sur la carte</translation>
 <translation id="3286372614333682499">portrait</translation>
 <translation id="3287510313208355388">Télécharger en ligne</translation>
+<translation id="3288238092761586174"><ph name="URL"/> pourrait devoir prendre des mesures supplémentaires pour vérifier votre paiement</translation>
 <translation id="3293642807462928945">En savoir plus sur la politique <ph name="POLICY_NAME"/></translation>
 <translation id="5894665462526421022">Affichez et gérez vos mots de passe dans les paramètres de Brave</translation>
 <translation id="3303855915957856445">Aucun résultat de recherche n'a été trouvé</translation>
@@ -681,6 +688,7 @@
 <translation id="3432601291244612633">Fermer la page</translation>
 <translation id="3435738964857648380">Sécurité</translation>
 <translation id="4527130811319726464">Utiliser les mots de passe enregistrés dans votre compte Brave</translation>
+<translation id="3440783957068352691">carrée</translation>
 <translation id="3443726618221119081">Jurro Ku Kai</translation>
 <translation id="3447661539832366887">Le propriétaire de cet appareil a désactivé le jeu dinosaure.</translation>
 <translation id="3447884698081792621">Afficher le certificat (délivré par <ph name="ISSUER"/>)</translation>
@@ -957,11 +965,14 @@
 <translation id="4434045419905280838">Fenêt. context. et redirections</translation>
 <translation id="4435702339979719576">Carte postale</translation>
 <translation id="443673843213245140">L'utilisation d'un mandataire est désactivée, mais une configuration de mandataire explicite est spécifiée.</translation>
+<translation id="4450893287417543264">Ne plus afficher</translation>
 <translation id="4451135742916150903">Les sites peuvent demander à se connecter à des appareils HID</translation>
 <translation id="4460315069258617173">Autorisée jusqu'à ce que vous fermiez tous les onglets pour ce site</translation>
 <translation id="4464826014807964867">Sites Web avec des données fournies par votre organisation</translation>
+<translation id="4465818729556336129">Ce document est confidentiel et son impression n'est pas conseillée par votre administrateur.</translation>
 <translation id="4476953670630786061">Ce formulaire n'est pas sécurisé. Le remplissage automatique a été désactivé.</translation>
 <translation id="4477350412780666475">Chanson suivante</translation>
+<translation id="4481394504112738036">Fichier confidentiel</translation>
 <translation id="4482953324121162758">Ce site ne sera pas traduit.</translation>
 <translation id="4490717597759821841">A7</translation>
 <translation id="3966104135245031874">Chiffrer les mots de passe synchronisés avec votre compte Brave</translation>
@@ -1010,7 +1021,6 @@
 <translation id="4677585247300749148">L'URL <ph name="URL"/> veut répondre aux événements d'accessibilité</translation>
 <translation id="8197094463444457125">Brave Présentations</translation>
 <translation id="468314109939257734">Afficher votre numéro de carte virtuelle</translation>
-<translation id="4690462567478992370">Arrêter d'utiliser un certificat non valide</translation>
 <translation id="4691835149146451662">Enveloppe Architecture A</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
 <translation id="4702504834785592287">Côté</translation>
@@ -1050,7 +1060,6 @@
 <translation id="4800132727771399293">Vérifiez votre CVC et la date d'expiration, puis réessayez.</translation>
 <translation id="480334179571489655">Erreur de politique d'origine</translation>
 <translation id="4803924862070940586"><ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
-<translation id="8896585555528145662">Vous ne pouvez pas consulter le site <ph name="SITE"/> pour le moment, car il a envoyé des authentifiants brouillés qui ne peuvent être traités par Brave Brave. Les erreurs réseau et les attaques sont généralement temporaires. Vous devriez donc pouvoir accéder à cette page plus tard.</translation>
 <translation id="4809079943450490359">Instructions de l'administrateur de votre appareil :</translation>
 <translation id="4813512666221746211">Erreur réseau</translation>
 <translation id="4816492930507672669">Ajuster à la page</translation>
@@ -1059,6 +1068,7 @@
 <translation id="4825507807291741242">Puissant</translation>
 <translation id="4838327282952368871">Rêveur</translation>
 <translation id="484462545196658690">Auto</translation>
+<translation id="4849865131988503897">Contrôle d'exactitude</translation>
 <translation id="4850886885716139402">Affichage</translation>
 <translation id="485316830061041779">Allemand</translation>
 <translation id="4854362297993841467">Ce mode de livraison n'est pas disponible. Essayez un autre mode.</translation>
@@ -1159,6 +1169,7 @@
 <translation id="5171689220826475070">Pli en éventail, Europe</translation>
 <translation id="5172758083709347301">Machine</translation>
 <translation id="5179510805599951267">Cette page n'est pas rédigée en <ph name="ORIGINAL_LANGUAGE"/>? Signaler l'erreur.</translation>
+<translation id="51918995459521422"><ph name="ORIGIN"/> veut télécharger plusieurs fichiers</translation>
 <translation id="519422657042045905">Le mode d'annotation n'est pas accessible</translation>
 <translation id="5201306358585911203">Une page intégrée de cette page indique</translation>
 <translation id="5205222826937269299">Vous devez indiquer un nom</translation>
@@ -1327,7 +1338,6 @@
 <translation id="3985758120980526872">Brave a trouvé le mot de passe que vous venez juste d'utiliser dans une violation de données. Nous vous recommandons de changer ce mot de passe maintenant.</translation>
 <translation id="5803412860119678065">Voulez-vous fournir les renseignements concernant votre carte <ph name="CARD_DETAIL"/>?</translation>
 <translation id="5804241973901381774">Autorisations</translation>
-<translation id="5804427196348435412">Utiliser des appareils CCP</translation>
 <translation id="5810442152076338065">Votre connexion au domaine <ph name="DOMAIN"/> est protégée par une suite de chiffrement obsolète.</translation>
 <translation id="5813119285467412249">&amp;Rétablir l'ajout</translation>
 <translation id="5817918615728894473">Associer</translation>
@@ -1403,6 +1413,7 @@
 <translation id="6051221802930200923">Vous ne pouvez pas consulter le site <ph name="SITE"/> pour le moment, car le site Web utilise l'épinglage de certificat. Les erreurs réseau et les attaques sont généralement temporaires. Vous devriez donc pouvoir accéder à cette page plus tard.</translation>
 <translation id="6051898664905071243">Nombre de pages :</translation>
 <translation id="6052284303005792909">•</translation>
+<translation id="6055888660316801977">Feuille d'authentification pour l'authentifiant de paiement sécurisé qui ne correspond pas</translation>
 <translation id="6058977677006700226">Utiliser vos cartes sur tous vos appareils?</translation>
 <translation id="6059925163896151826">Appareils USB</translation>
 <translation id="6060009363608157444">Mode DnsOverHttps incorrect.</translation>
@@ -1479,6 +1490,7 @@
 <translation id="6389470377220713856">Nom sur carte</translation>
 <translation id="6390200185239044127">Demi-feuille de pli en Z</translation>
 <translation id="6390662030813198813">Ingénierie E</translation>
+<translation id="6391700400718590966">L'authentifiant de paiement sécurisé ne correspond pas, la feuille d'authentification est fermée</translation>
 <translation id="6393956493820063117">La politique de l'administrateur bloque le collage de contenu provenant de <ph name="ORIGIN_NAME"/> à cet endroit</translation>
 <translation id="6398765197997659313">Quitter le mode plein écran</translation>
 <translation id="6401136357288658127">Cette politique est obsolète. Vous devriez utiliser la politique <ph name="NEW_POLICY"/> à la place.</translation>
@@ -1558,7 +1570,6 @@
 <translation id="6689249931105087298">Valeur relative avec compression des points noirs</translation>
 <translation id="5406652219015697259">Brave vous propose d'enregistrer vos cartes dans votre compte Brave parce que vous y êtes connecté. Vous pouvez modifier ce comportement dans les paramètres. Le nom du détenteur de la carte provient de votre compte.</translation>
 <translation id="6698381487523150993">Créé :</translation>
-<translation id="6699188552522342100">S'agit-il du bon site Web?</translation>
 <translation id="6702919718839027939">Présentation</translation>
 <translation id="6710213216561001401">Précédent</translation>
 <translation id="6710594484020273272">&lt;Entrez un terme de recherche&gt;</translation>
@@ -1566,6 +1577,7 @@
 <translation id="6711464428925977395">Un problème est survenu avec le serveur mandataire, ou l'adresse est incorrecte.</translation>
 <translation id="6716672519412350405"><ph name="URL"/> souhaite créer une carte 3D de votre environnement et faire le suivi de la position de l'appareil photo</translation>
 <translation id="6718612893943028815">Utiliser la caméra?</translation>
+<translation id="6721678857435001674">Voir la marque et le modèle de votre clé de sécurité</translation>
 <translation id="6738516213925468394">Vos données ont été chiffrées avec votre <ph name="BEGIN_LINK"/>phrase de passe de synchronisation<ph name="END_LINK"/> le <ph name="TIME"/>. Veuillez l'entrer pour commencer la synchronisation.</translation>
 <translation id="674375294223700098">Erreur inconnue de certificat de serveur.</translation>
 <translation id="6744009308914054259">En attendant la connexion, vous pouvez consulter vos téléchargements pour lire des articles hors connexion.</translation>
@@ -1602,13 +1614,13 @@
 <translation id="6898699227549475383">Organisation (O)</translation>
 <translation id="6907293445143367439">Accorder les autorisations suivantes à <ph name="SITE_NAME"/> :</translation>
 <translation id="6910240653697687763">L'URL <ph name="URL"/> veut obtenir le plein contrôle de vos appareils MIDI</translation>
+<translation id="691024665142758461">Télécharger plusieurs fichiers</translation>
 <translation id="6915804003454593391">Utilisateur :</translation>
 <translation id="6722453239914327220">Ce nom provient de votre compte Brave</translation>
 <translation id="6944692733090228304">Vous avez entré votre mot de passe sur un site non géré par <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/>. Pour protéger votre compte, ne réutilisez pas votre mot de passe dans d'autres applications ni sur d'autres sites.</translation>
 <translation id="6945221475159498467">Sélectionner</translation>
 <translation id="6948051842255602737">Partie terminée, votre pointage est de <ph name="SCORE"/>.</translation>
 <translation id="6948701128805548767">Pour voir les exigences et les modes de ramassage, sélectionnez une adresse</translation>
-<translation id="6949479070119158594">Cette mise en garde s'affiche parce que ce site ne prend pas en charge le protocole HTTPS.</translation>
 <translation id="6949872517221025916">Réinitialiser votre mot de passe</translation>
 <translation id="6950684638814147129">Erreur lors de l'analyse de la valeur JSON : <ph name="ERROR"/></translation>
 <translation id="695140971690006676">Tout réinitialiser</translation>
@@ -1685,6 +1697,7 @@
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> ne respecte pas les normes en matière de sécurité.</translation>
 <translation id="7210993021468939304">Activité Linux dans le conteneur, et peut installer et exécuter des applications Linux dans le conteneur</translation>
 <translation id="721197778055552897"><ph name="BEGIN_LINK"/>En apprendre davantage<ph name="END_LINK"/> au sujet de ce problème.</translation>
+<translation id="7215025035562547931">Prenez un instant pour réfléchir à la fiabilité de ces renseignements</translation>
 <translation id="7217745192097460130">Utiliser Touch ID pour vérifier et effectuer votre achat?</translation>
 <translation id="7219179957768738017">La connexion utilise <ph name="SSL_VERSION"/>.</translation>
 <translation id="7220786058474068424">Traitement en cours</translation>
@@ -1907,10 +1920,12 @@ Détails supplémentaires :
 <translation id="7961015016161918242">Jamais</translation>
 <translation id="7966803981046576691">Type de compte de travail</translation>
 <translation id="79682505114836835">La couleur hexadécimale « <ph name="VALUE"/> » est incorrecte.</translation>
+<translation id="7970392640816874403">Que disent les autres sources?</translation>
 <translation id="7976214039405368314">Trop de demandes</translation>
 <translation id="7977538094055660992">Appareil de sortie</translation>
 <translation id="7977894662897852582">EDP</translation>
 <translation id="798134797138789862">Les sites peuvent demander à utiliser des données et des appareils de réalité virtuelle</translation>
+<translation id="8896585555528145662">Vous ne pouvez pas consulter le site <ph name="SITE"/> pour le moment, car il a envoyé des identifiants brouillés qui ne peuvent être traités par Brave. Les erreurs réseau et les attaques sont généralement temporaires. Vous devriez donc pouvoir accéder à cette page plus tard.</translation>
 <translation id="79859296434321399">Pour regarder du contenu de réalité augmentée, installez ARCore</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">Reliure</translation>
@@ -1973,7 +1988,6 @@ Détails supplémentaires :
 <translation id="8202370299023114387">Conflit</translation>
 <translation id="8206978196348664717">Enveloppe Prc4</translation>
 <translation id="8211406090763984747">Connexion sécurisée</translation>
-<translation id="8213464188712611711">Souvenirs</translation>
 <translation id="8218327578424803826">Emplacement attribué :</translation>
 <translation id="8220146938470311105">Enveloppe C7/C6</translation>
 <translation id="3272614036080146686">Vous venez d'entrer votre mot de passe sur un site trompeur. Brave vous recommande de visiter <ph name="WEBSITE_1"/>, ainsi que tout autre site sur lequel vous avez utilisé ce mot de passe, puis de le changer maintenant.</translation>
@@ -2215,6 +2229,7 @@ Détails supplémentaires :
 <translation id="9154194610265714752">Mis à jour</translation>
 <translation id="9157595877708044936">Configuration en cours...</translation>
 <translation id="9158625974267017556">Enveloppe C6</translation>
+<translation id="9164029392738894042">Contrôle d'exactitude</translation>
 <translation id="9168814207360376865">Autoriser les sites à vérifier si des modes de paiement sont enregistrés</translation>
 <translation id="9169664750068251925">Toujours bloquer pour ce site</translation>
 <translation id="9169931577761441333">Ajoutez <ph name="APP_NAME"/> à l'écran d'accueil</translation>

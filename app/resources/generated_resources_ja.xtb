@@ -6,11 +6,13 @@
 <translation id="1003088604756913841">新しい <ph name="APP"/> ウィンドウでリンクを開く</translation>
 <translation id="100323615638474026">USB デバイス（<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>）</translation>
 <translation id="1004218526896219317">サイトへのアクセス</translation>
+<translation id="100524763483954942">設定に戻る</translation>
 <translation id="1005274289863221750">マイクとカメラを使用する</translation>
 <translation id="1005333234656240382">ADB デバッグを有効にしますか？</translation>
 <translation id="1006873397406093306">この拡張機能は、サイト上でユーザー自身のデータを読み取りおよび変更できます。ユーザーは、拡張機能がアクセスできるサイトを管理することができます。</translation>
 <translation id="1008186147501209563">ブックマークをエクスポート</translation>
 <translation id="1008557486741366299">後で</translation>
+<translation id="1009476156254802388"><ph name="WEB_DRIVE"/> 内の場所</translation>
 <translation id="1010498023906173788">このタブはシリアルポートに接続しています。</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{ページが応答しません}other{ページが応答しません}}</translation>
 <translation id="1011355516189274711">テキスト読み上げの音量</translation>
@@ -30,7 +32,6 @@
 <translation id="1032605640136438169">新しい利用規約をご確認ください</translation>
 <translation id="103279545524624934">Android アプリを起動できるようにディスク領域を解放します。</translation>
 <translation id="1033780634303702874">シリアル デバイスへのアクセス</translation>
-<translation id="1034942643314881546">ADB によるアプリのイラストレーション作成を有効にする</translation>
 <translation id="1036348656032585052">オフにする</translation>
 <translation id="1036511912703768636">これらの USB デバイスへのアクセス</translation>
 <translation id="1036982837258183574">全画面表示を終了するには |<ph name="ACCELERATOR"/>| を押します</translation>
@@ -97,6 +98,7 @@
 <translation id="1103523840287552314"><ph name="LANGUAGE"/>を常に翻訳</translation>
 <translation id="1108600514891325577">停止(&amp;S)</translation>
 <translation id="1110155001042129815">待機</translation>
+<translation id="1111781754511998498">プロジェクター</translation>
 <translation id="1112420131909513020">バックグラウンドのタブで Bluetooth が使用されています</translation>
 <translation id="1113892970288677790">アートワークや画像のライブラリから選択してください</translation>
 <translation id="1114102982691049955"><ph name="PRINTER_MANUFACTURER"/> <ph name="PRINTER_MODEL"/>（USB）</translation>
@@ -132,7 +134,6 @@
 <translation id="1139923033416533844">メモリ使用状況</translation>
 <translation id="1140351953533677694">Bluetooth デバイスとシリアル デバイスへのアクセス</translation>
 <translation id="114036956334641753">音声、字幕</translation>
-<translation id="1140746652461896221">アクセスするあらゆるページのコンテンツをブロックする</translation>
 <translation id="1143142264369994168">証明書の署名者</translation>
 <translation id="6046800399974545535">{NUM_MINS,plural, =1{お使いのパソコンに有害なソフトウェアは見つかりませんでした • 前回の確認: 1 分前}other{お使いのパソコンに有害なソフトウェアは見つかりませんでした • 前回の確認: {NUM_MINS} 分前}}</translation>
 <translation id="1145593918056169051">プリンタが停止しました</translation>
@@ -157,6 +158,7 @@
 <translation id="1165039591588034296">エラー</translation>
 <translation id="1166212789817575481">右側のタブを閉じる</translation>
 <translation id="1166583374608765787">新しい名前を確認</translation>
+<translation id="1166596238782048887"><ph name="TAB_TITLE"/> はデスク <ph name="DESK_TITLE"/> に含まれています</translation>
 <translation id="1168020859489941584">後 <ph name="TIME_REMAINING"/>でファイルが開きます...</translation>
 <translation id="1170288591054440704">サイトがデバイスにインストールされたフォントを使おうとしたときに確認する</translation>
 <translation id="1171135284592304528">キーボード フォーカスの移動に合わせて項目を強調表示する</translation>
@@ -235,6 +237,7 @@
 <translation id="1246863218384630739"><ph name="VM_NAME"/> をインストールできませんでした: 画像 URL から <ph name="HTTP_ERROR"/> エラーが返されました。管理者にお問い合わせください。</translation>
 <translation id="1251366534849411931">開始の中かっこがありません: <ph name="ERROR_LINE"/></translation>
 <translation id="1251480783646955802">サイトにより保存された <ph name="TOTAL_USAGE"/> のデータとインストールされたアプリが削除されます</translation>
+<translation id="1251578593170406502">モバイルデータ ネットワークをスキャンしています...</translation>
 <translation id="125220115284141797">デフォルト</translation>
 <translation id="1252987234827889034">プロフィール エラーが発生しました</translation>
 <translation id="1254593899333212300">インターネットへの直接接続</translation>
@@ -279,7 +282,6 @@
 <translation id="1301135395320604080"><ph name="ORIGIN"/> は次のファイルを編集できます</translation>
 <translation id="1302227299132585524">Apple Events からの JavaScript を許可</translation>
 <translation id="1303101771013849280">HTML ファイルをブックマークに登録</translation>
-<translation id="1303178898338186101">Google Play に接続できませんでした。エラーコード: <ph name="ERROR_CODE"/>。</translation>
 <translation id="1303671224831497365">Bluetooth デバイスが見つかりませんでした</translation>
 <translation id="130491383855577612">Linux のアプリとファイルが正常に置き換えられました</translation>
 <translation id="1306390193749326011">今後このページに <ph name="MODULE_NAME"/> を表示しないよう設定しました</translation>
@@ -320,6 +322,7 @@
 <translation id="1347512539447549782">Linux ストレージ</translation>
 <translation id="1347975661240122359">更新は、<ph name="BATTERY_LEVEL"/>% まで充電されたときに開始されます。</translation>
 <translation id="1353275871123211385">アプリの許可や利用時間の上限など、保護者による使用制限を設定するには、保護者が管理するお子様用の Brave アカウントが必要です。Brave Classroom などのツールを使用するための学校用アカウントは、後で追加できます。</translation>
+<translation id="135389172849514421">オフラインで利用可能</translation>
 <translation id="6580983683519551561">PPD が見つかりません。Bravebook がオンラインになっていることを確認して、もう一度お試しください。</translation>
 <translation id="1354045473509304750"><ph name="HOST"/> によるカメラの使用と移動を引き続き許可する</translation>
 <translation id="1355088139103479645">すべてのデータを削除しますか？</translation>
@@ -399,7 +402,6 @@
 <translation id="142758023928848008">スティッキー キーを有効にする（キーを順に押してキーボード ショートカットを実行します）</translation>
 <translation id="142765311413773645"><ph name="APP_NAME"/> のライセンスの有効期限が切れています</translation>
 <translation id="1429300045468813835">すべて消去</translation>
-<translation id="143027896309062157">自分のパソコンとアクセスしたウェブサイト上にある自分の全データの読み取りと変更</translation>
 <translation id="1430915738399379752">印刷</translation>
 <translation id="1431188203598586230">最後のソフトウェア アップデート</translation>
 <translation id="1431432486300429272">検索やその他の Brave サービスをカスタマイズする目的で、Brave が閲覧履歴を使用することがあります。この設定は保護者が myaccount.google.com/activitycontrols/search でいつでも変更できます。</translation>
@@ -408,7 +410,6 @@
 <translation id="1434696352799406980">起動ページ、新しいタブページ、検索エンジン、固定タブをリセットします。また、すべての拡張機能を無効にし、Cookie などの一時データを削除します。ただし、ブックマーク、履歴、保存したパスワードはそのまま残ります。</translation>
 <translation id="1434886155212424586">ホームページは新しいタブのページです</translation>
 <translation id="1436390408194692385">有効期限まであと <ph name="TICKET_TIME_LEFT"/></translation>
-<translation id="1436671784520050284">設定を続行</translation>
 <translation id="1436784010935106834">削除しました</translation>
 <translation id="1437986450143295708">問題の内容を詳しくご説明ください</translation>
 <translation id="144283815522798837"><ph name="NUMBER_OF_ITEMS_SELECTED"/> 個のアイテムを選択しました</translation>
@@ -443,6 +444,7 @@
 <translation id="1476088332184200792">デバイスにコピー</translation>
 <translation id="1476607407192946488">言語設定(&amp;L)</translation>
 <translation id="1477446329585670721"><ph name="DOMAIN"/> では必ずスマートカードを挿入した状態にしてください。</translation>
+<translation id="1477654881618305065">お客様の組織では、このコンテンツの共有は許可されていません。サポートが必要な場合は、管理者にお問い合わせください。</translation>
 <translation id="1478340334823509079">詳細: <ph name="FILE_NAME"/></translation>
 <translation id="1478607704480248626">インストールが有効になっていません</translation>
 <translation id="1480571698637441426">質問したときに適切な回答が得られるようにするには、画面上の情報のスクリーンショットへのアクセスをアシスタントに許可してください。これには再生中の曲や動画に関する情報も含まれます。</translation>
@@ -529,6 +531,7 @@
 <translation id="156793199942386351">「<ph name="CURRENTKEY"/>」キーはすでに「<ph name="ACTION"/>」に割り当てられています。<ph name="RESPONSE"/>には、いずれかのキーを押してください。</translation>
 <translation id="1567993339577891801">JavaScript コンソール</translation>
 <translation id="1568323446248056064">ディスプレイのデバイス設定を開く</translation>
+<translation id="1570604804919108255">通知のミュートを解除する</translation>
 <translation id="1571738973904005196">タブを表示: <ph name="TAB_ORIGIN"/></translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/>（ゲスト）</translation>
 <translation id="1572266655485775982">Wi-Fi の有効化</translation>
@@ -579,11 +582,13 @@
 <translation id="1617765145568323981">{NUM_FILES,plural, =0{組織のセキュリティ ポリシーに沿ってこのデータをチェックしています...}=1{組織のセキュリティ ポリシーに沿ってこのファイルをチェックしています...}other{組織のセキュリティ ポリシーに沿ってこれらのファイルをチェックしています...}}</translation>
 <translation id="1618102204889321535"><ph name="CURRENT_CHARACTER_COUNT"/> / <ph name="MAX_CHARACTER_COUNT"/></translation>
 <translation id="1618268899808219593">ヘルプセンター(&amp;E)</translation>
+<translation id="1619879934359211038">Google Play に接続できませんでした。ネットワーク接続を確認してからもう一度お試しください。エラーコード: <ph name="ERROR_CODE"/>。</translation>
 <translation id="1620307519959413822">パスワードが正しくありません。もう一度入力するか、[パスワードをお忘れの場合] をクリックしてパスワードをリセットしてください。</translation>
 <translation id="1620510694547887537">カメラ</translation>
 <translation id="1621485112342885423">カートのアイテム</translation>
 <translation id="1621729191093924223">マイクを必要とする機能は動作しなくなります</translation>
 <translation id="1621831347985899379"><ph name="DEVICE_TYPE"/> のデータが削除されます</translation>
+<translation id="1621984899599015181">共有オプションは組織によって管理されています。一部のアイテムは表示されていない可能性があります。</translation>
 <translation id="1622054403950683339">Wi-Fi ネットワークの削除</translation>
 <translation id="1623132449929929218">現在画像を利用することができません。壁紙のコレクションを表示するには、インターネットに接続しなおしてください。</translation>
 <translation id="1623723619460186680">ブルーライトの軽減</translation>
@@ -610,11 +615,13 @@
 <translation id="1640235262200048077"><ph name="IME_NAME"/> は現在のところ Linux アプリでは使用できません</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 with RSA 暗号化</translation>
 <translation id="1641113438599504367">セーフ ブラウジング</translation>
+<translation id="1642492862748815878"><ph name="DEVICE"/> および <ph name="NUMBER_OF_DEVICES"/> 個の他の Bluetooth デバイスに接続しました</translation>
 <translation id="1642494467033190216">他のデバッグ機能を有効にするには、その前に rootfs の保護を削除して再起動する必要があります。</translation>
 <translation id="1643072738649235303">X9.62 ECDSA 署名（SHA-1）</translation>
 <translation id="1643921258693943800">ニアバイシェアを使用するには、Bluetooth と Wi-Fi をオンにしてください</translation>
 <translation id="1644574205037202324">履歴</translation>
 <translation id="1645516838734033527"><ph name="DEVICE_TYPE"/> を安全に保つため、Smart Lock を使用するにはスマートフォンで画面ロックが設定されていることが要件となります。</translation>
+<translation id="1646793251510634025">検索とブラウジングの最適化の設定の確認</translation>
 <translation id="1646982517418478057">この証明書の暗号化に使用するパスワードを入力してください</translation>
 <translation id="1648528859488547844">Wi‑Fi またはモバイル ネットワークを使用して現在地を特定する</translation>
 <translation id="164936512206786300">Bluetooth デバイスのペア設定の解除</translation>
@@ -672,6 +679,7 @@
 <translation id="1708713382908678956"><ph name="NAME_PH"/>（ID: <ph name="ID_PH"/>）</translation>
 <translation id="1709106626015023981"><ph name="WIDTH"/>x<ph name="HEIGHT"/>（ネイティブ）</translation>
 <translation id="1709217939274742847">認証に使用するチケットを選択します。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
+<translation id="1709762881904163296">ネットワーク設定</translation>
 <translation id="1709972045049031556">共有できません</translation>
 <translation id="1711935594505774770"><ph name="SITE_GROUP_NAME"/> とその下位のすべてのサイトにより保存されたすべてのデータと Cookie、インストールされたアプリが削除されます</translation>
 <translation id="1714644264617423774">ユーザー補助機能を有効にするとデバイスが使いやすくなります。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
@@ -682,7 +690,6 @@
 <translation id="1721312023322545264">このサイトにアクセスするには <ph name="NAME"/> さんの許可が必要です</translation>
 <translation id="1722460139690167654">ご使用の <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> は <ph name="ENROLLMENT_DOMAIN"/> によって管理されています<ph name="END_LINK"/></translation>
 <translation id="1723824996674794290">新しいウィンドウ(&amp;N)</translation>
-<translation id="1725149567830788547">コントロールを表示(&amp;C)</translation>
 <translation id="1725562816265788801">タブスクロール</translation>
 <translation id="1727662110063605623">[設定] を開いて <ph name="USB_DEVICE_NAME"/> を Parallels Desktop または Linux に接続します</translation>
 <translation id="1729533290416704613">この拡張機能では、アドレスバーからの検索時に表示されるページも制御されます。</translation>
@@ -735,7 +742,6 @@
 <translation id="1776883657531386793"><ph name="OID"/>: <ph name="INFO"/></translation>
 <translation id="1778457539567749232">未読にする</translation>
 <translation id="1778991607452011493">デバッグログを送信する（推奨）</translation>
-<translation id="5781127179210503598">このページでは、ログインする Brave アカウントを管理できます。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="1779468444204342338">最小</translation>
 <translation id="1779652936965200207">「<ph name="DEVICE_NAME"/>」でこのパスキーを入力してください:</translation>
 <translation id="177989070088644880">アプリ（<ph name="ANDROID_PACKAGE_NAME"/>）</translation>
@@ -817,6 +823,7 @@
 <translation id="1850508293116537636">時計回りに回転(&amp;C)</translation>
 <translation id="1852141627593563189">有害なソフトウェアの検出</translation>
 <translation id="1852799913675865625">ファイルの読み込み中にエラーが発生しました: <ph name="ERROR_TEXT"/></translation>
+<translation id="1854049213067042715">中断したところから続行します。[設定] で、起動時に常に復元するか、復元をオフにするようアプリを設定できます。</translation>
 <translation id="1854180393107901205">キャストを停止</translation>
 <translation id="1855079636134697549">カメラがオンになりました</translation>
 <translation id="1856715684130786728">位置情報を追加...</translation>
@@ -902,6 +909,7 @@
 <translation id="1937774647013465102">このデバイス（<ph name="ARCHITECTURE_DEVICE"/>）でコンテナのアーキテクチャ タイプ <ph name="ARCHITECTURE_CONTAINER"/> をインポートできません。このコンテナを別のデバイスに復元できるかお試しださい。または、ファイルアプリを開いて、このコンテナ イメージ内のファイルにアクセスすることも可能です。</translation>
 <translation id="1938351510777341717">外部コマンド</translation>
 <translation id="1940546824932169984">接続済みのデバイス</translation>
+<translation id="1942128823046546853">すべてのウェブサイト上にある自分の全データの読み取りと変更</translation>
 <translation id="1942600407708803723">ディスプレイを閉じたときにシャットダウンする</translation>
 <translation id="1944528062465413897">Bluetooth ペア設定コード:</translation>
 <translation id="1944921356641260203">アップデートが見つかりました</translation>
@@ -918,6 +926,7 @@
 <translation id="1963976881984600709">標準保護機能</translation>
 <translation id="196425401113508486">移動中のカーソルをハイライト表示する</translation>
 <translation id="1965624977906726414">特別な権限はありません。</translation>
+<translation id="1966497651828975688">ネットワーク接続が切断されました。ネットワーク接続を確認するか、別の Wi-Fi ネットワークをお試しください。</translation>
 <translation id="1969654639948595766">WebRTC テキストログ（<ph name="WEBRTC_TEXT_LOG_COUNT"/>）</translation>
 <translation id="1970368523891847084">動画モードに切り替えました</translation>
 <translation id="197288927597451399">保存</translation>
@@ -934,6 +943,7 @@
 <translation id="1979095679518582070">この機能を OFF にしても、システム アップデートやセキュリティといった重要なサービスで必要な情報はデバイスから引き続き送信されます。</translation>
 <translation id="1979280758666859181">古いバージョンの <ph name="PRODUCT_NAME"/> のチャンネルに変更しようとしています。このチャンネル変更は、チャンネルのバージョンとお使いのデバイスにインストールされているバージョンとが一致したときに適用されます。</translation>
 <translation id="197989455406964291">KDC でサポートされていない暗号化タイプです</translation>
+<translation id="1981434377190976112">すべてのウェブサイト上にある自分の全データの読み取り</translation>
 <translation id="1983497378699148207">Linux の設定を完了するには、Chrome OS を更新してからもう一度お試しください。</translation>
 <translation id="1984417487208496350">保護なし（推奨されません）</translation>
 <translation id="1987317783729300807">アカウント</translation>
@@ -942,6 +952,7 @@
 <translation id="1989113344093894667">コンテンツをキャプチャできません</translation>
 <translation id="1990046457226896323">読み上げファイルをダウンロードしました</translation>
 <translation id="1990512225220753005">このページではショートカットを表示しません</translation>
+<translation id="199191324030140441">サイレント モードをオフにする</translation>
 <translation id="1992397118740194946">未設定</translation>
 <translation id="1992924914582925289">デバイスから削除</translation>
 <translation id="1994173015038366702">サイトの URL</translation>
@@ -983,6 +994,7 @@
 
 デバイスにファミリー リンク アプリをインストールすると、このアカウントの設定を管理できます。手順を記載したメールをお送りしましたので、ご確認ください。</translation>
 <translation id="2040460856718599782">ユーザー認証時に問題が発生しました。ログイン情報をお確かめのうえ、もう一度お試しください。</translation>
+<translation id="2040894699575719559">位置情報がブロックされています</translation>
 <translation id="2042279886444479655">有効なプロファイル</translation>
 <translation id="2044014337866019681">セッションのロックを解除するには、<ph name="ACCOUNT"/> の確認を行ってください。</translation>
 <translation id="204497730941176055">Microsoft 証明書テンプレート名</translation>
@@ -1122,6 +1134,7 @@
 <translation id="2175927920773552910">QR コード</translation>
 <translation id="2178614541317717477">認証局が侵害された</translation>
 <translation id="2179416702468739594">使用可能なプロファイルを検出しています。これにより、モバイル ネットワークが数分切断されることがあります。</translation>
+<translation id="2180620921879609685">任意のページのコンテンツをブロック</translation>
 <translation id="2182058453334755893">クリップボードにコピーされました</translation>
 <translation id="8098574385249290065">サイトで音声が再生される可能性がある場合、Brave で自動的に許可またはブロックする（推奨）</translation>
 <translation id="2186711480981247270">別のデバイスから共有されたページ</translation>
@@ -1212,6 +1225,7 @@
 <translation id="2278668501808246459">コンテナ マネージャーを起動しています</translation>
 <translation id="2280486287150724112">右余白</translation>
 <translation id="2282146716419988068">GPU プロセス</translation>
+<translation id="2285109769884538519">{COUNT,plural, =0{すべてを新しいタブグループで開く(&amp;N)}=1{新しいタブグループで開く(&amp;N)}other{すべて（{COUNT} 個）を新しいタブグループで開く(&amp;N)}}</translation>
 <translation id="2285942871162473373">指紋を認識できませんでした。もう一度お試しください。</translation>
 <translation id="2287944065963043964">ログイン画面</translation>
 <translation id="2288181517385084064">動画レコーダーに切り替え</translation>
@@ -1330,7 +1344,6 @@
 <translation id="2392369802118427583">有効にする</translation>
 <translation id="2393136602862631930">Bravebook で <ph name="APP_NAME"/> を設定</translation>
 <translation id="2395616325548404795">この <ph name="DEVICE_TYPE"/> は組織の管理対象として登録されましたが、アセットと位置情報を送信できませんでした。このデバイスの管理コンソールで、この情報を手動で入力してください。</translation>
-<translation id="2396387085693598316">「<ph name="EXTENSION_NAME"/>」は管理者によってブロックされています</translation>
 <translation id="2396783860772170191">4 桁の PIN（0000～9999）を入力してください</translation>
 <translation id="2398546389094871088">デバイスで Powerwash を実行しても eSIM プロファイルは削除されません。[<ph name="LINK_BEGIN"/>モバイル設定<ph name="LINK_END"/>] で次のプロファイルを手動で削除してください。</translation>
 <translation id="2399699884460174994">通知をオンにしました</translation>
@@ -1339,6 +1352,7 @@
 <translation id="2406153734066939945">このプロフィールとデータを削除しますか？</translation>
 <translation id="2408018932941436077">カードを保存しています</translation>
 <translation id="2408955596600435184">PIN を入力してください</translation>
+<translation id="2410754283952462441">アカウントの選択</translation>
 <translation id="241082044617551207">不明なプラグイン</translation>
 <translation id="2412593942846481727">アップデートが利用可能</translation>
 <translation id="2412753904894530585">Kerberos</translation>
@@ -1442,10 +1456,12 @@
 <translation id="2509495747794740764">倍率は 10～200 の数値で指定してください。</translation>
 <translation id="2509566264613697683">8 倍</translation>
 <translation id="2510988373360790637">Bluetooth デバイスとのペア設定の解除</translation>
+<translation id="2512065992892294946"><ph name="LANGUAGE"/>（選択済み）</translation>
 <translation id="2513396635448525189">ログイン画像</translation>
 <translation id="2514326558286966059">指紋を使ってロックをすばやく解除できます</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="2515807442171220586">スイッチをさらに 1 つ割り当てる</translation>
+<translation id="251722524540674480">ユーザー名の確認</translation>
 <translation id="2517472476991765520">スキャン</translation>
 <translation id="2518024842978892609">ユーザーのクライアント証明書の使用</translation>
 <translation id="2519517390894391510">証明書プロファイル名</translation>
@@ -1454,12 +1470,12 @@
 <translation id="252219247728877310">コンポーネント未更新</translation>
 <translation id="284843628681142937">アクセスしたページの URL を Brave に送信します</translation>
 <translation id="8181884647588958753">お使いのパソコンに有害なソフトウェアがないか確認しています...</translation>
-<translation id="2526277209479171883">インストールして続行</translation>
 <translation id="2526590354069164005">デスクトップ</translation>
 <translation id="2526619973349913024">アップデートを確認</translation>
 <translation id="2527167509808613699">あらゆる種類の接続</translation>
 <translation id="2530166226437958497">トラブルシューティング</translation>
 <translation id="2532589005999780174">ハイコントラスト モード</translation>
+<translation id="2533649878691950253">通常、正確な位置情報の共有が許可されていないため、このサイトでも許可されていません</translation>
 <translation id="253434972992662860">一時停止(&amp;P)</translation>
 <translation id="253557089021624350">キープアライブ カウント</translation>
 <translation id="2535799430745250929">モバイル ネットワークがありません</translation>
@@ -1480,6 +1496,7 @@
 <translation id="2549985041256363841">撮影を開始</translation>
 <translation id="2550212893339833758">スワップ対象メモリ</translation>
 <translation id="2550596535588364872"><ph name="EXTENSION_NAME"/> が <ph name="FILE_NAME"/> を開くことを許可しますか？</translation>
+<translation id="2552230905527343195">現在のタブは追加できません</translation>
 <translation id="2552966063069741410">タイムゾーン</translation>
 <translation id="2553290675914258594">確認済みアクセス</translation>
 <translation id="2553340429761841190"><ph name="PRODUCT_NAME"/> は <ph name="NETWORK_ID"/> に接続できませんでした。別のネットワークを選択するか、もう一度お試しください。</translation>
@@ -1495,7 +1512,6 @@
 <translation id="2575247648642144396">このアイコンは、表示中のページで拡張機能が使用できる場合に表示されます。この拡張機能を使用するには、アイコンをクリックするか、<ph name="EXTENSION_SHORTCUT"/> を押します。</translation>
 <translation id="2575441894380764255">煩わしい広告や誤解を招く広告の表示を許可しないサイト</translation>
 <translation id="257779572837908839">Bravebox for meetings として設定</translation>
-<translation id="2579232805407578790">サーバーに接続できませんでした。ネットワーク接続を確認してからもう一度お試しください。問題が解決しない場合は、Bravebook を再起動してください。エラーコード: <ph name="ERROR_CODE"/>。</translation>
 <translation id="2580889980133367162">複数のファイルをダウンロードすることを <ph name="HOST"/> に常に許可する</translation>
 <translation id="258095186877893873">長い</translation>
 <translation id="2582253231918033891"><ph name="PRODUCT_NAME"/> <ph name="PRODUCT_VERSION"/>（プラットフォーム <ph name="PLATFORM_VERSION"/>）<ph name="DEVICE_SERIAL_NUMBER"/></translation>
@@ -1549,6 +1565,7 @@
 <translation id="2635276683026132559">署名</translation>
 <translation id="2636625531157955190">Brave から画像にアクセスできません。</translation>
 <translation id="2637400434494156704">PIN が正しくありません。あと 1 回試行できます。</translation>
+<translation id="2638286699381354126">更新...</translation>
 <translation id="2638662041295312666">サインイン画像</translation>
 <translation id="2640549051766135490">アルバム「<ph name="TITLE"/>」の <ph name="DESC"/>を選択中</translation>
 <translation id="264083724974021997">電話に接続 - ダイアログ</translation>
@@ -1645,6 +1662,7 @@
 <translation id="2738771556149464852">終了時刻</translation>
 <translation id="2739191690716947896">デバッグ</translation>
 <translation id="2739240477418971307">ユーザー補助設定の変更</translation>
+<translation id="2739965161385757621">設定を確認</translation>
 <translation id="274029851662193272">沈み彫り</translation>
 <translation id="2740531572673183784">OK</translation>
 <translation id="2741713322780029189">リカバリ ターミナルを開く</translation>
@@ -1768,6 +1786,7 @@
 <translation id="2864601841139725659">プロフィール画像の設定</translation>
 <translation id="2865919525181940183">現在画面に表示されているプログラムのスクリーンショット</translation>
 <translation id="286674810810214575">電源を確認しています...</translation>
+<translation id="2866876751734765554">プライバシーの確認</translation>
 <translation id="2867768963760577682">固定されたタブとして開く</translation>
 <translation id="2868746137289129307">この拡張機能は古く、企業のポリシーによって無効にされました。新しいバージョンが利用可能になったときに自動的に有効になる可能性があります。</translation>
 <translation id="2870560284913253234">サイト</translation>
@@ -1790,6 +1809,7 @@
 <translation id="2885378588091291677">タスク マネージャ</translation>
 <translation id="2885729872133513017">サーバーの応答をデコード中に問題が発生しました。</translation>
 <translation id="2886771036282400576">• <ph name="PERMISSION"/></translation>
+<translation id="288734198558082692"><ph name="DEVICE"/> とその他 <ph name="NUMBER_OF_DEVICES"/> 個のデバイス</translation>
 <translation id="2889064240420137087">次のプログラムでリンクを開く...</translation>
 <translation id="2891922230654533301">デバイスを使用して <ph name="APP_NAME"/> にログインしますか？</translation>
 <translation id="2893168226686371498">既定のブラウザ</translation>
@@ -1808,6 +1828,7 @@
     サーバー メッセージ: <ph name="SERVER_MSG"/></translation>
 <translation id="2908162660801918428">メディア ギャラリーをディレクトリ単位で追加</translation>
 <translation id="2908358077082926882">割り当てを削除して<ph name="RESPONSE"/>には、もう一度「<ph name="CURRENTKEY"/>」キーを押してください</translation>
+<translation id="2909506265808101667">Brave サービスに接続できませんでした。ネットワーク接続を確認してからもう一度お試しください。エラーコード: <ph name="ERROR_CODE"/>。</translation>
 <translation id="2910318910161511225">ネットワークに接続してから、もう一度お試しください</translation>
 <translation id="291056154577034373">未読</translation>
 <translation id="2910718431259223434">エラーが発生しました。もう一度お試しいただくか、デバイス所有者または管理者にお問い合わせください。エラーコード: <ph name="ERROR_CODE"/>。</translation>
@@ -1940,6 +1961,7 @@
 <translation id="3037754279345160234">ドメインの参加設定を解析できません。管理者にお問い合わせください。</translation>
 <translation id="3038612606416062604">プリンタを手動で追加</translation>
 <translation id="3039491566278747710">オフライン ポリシーをデバイスにインストールできませんでした。</translation>
+<translation id="3043218608271070212"><ph name="GROUP_NAME"/> - <ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="3043581297103810752"><ph name="ORIGIN"/> より</translation>
 <translation id="3045447014237878114">このサイトで複数のファイルが自動的にダウンロードされました</translation>
 <translation id="3046178388369461825">Linux ディスクの空き容量が非常に少なくなっています</translation>
@@ -2145,6 +2167,7 @@
 <translation id="3288047731229977326">デベロッパー モードで実行される拡張機能はパソコンにダメージを与える恐れがあります。デベロッパーでない場合は、安全のため、デベロッパー モードで実行されているこれらの拡張機能を無効にしてください。</translation>
 <translation id="3289668031376215426">自動大文字変換</translation>
 <translation id="3289856944988573801">アップデートの有無を確認するには、イーサネットまたは Wi-Fi を使用してください。</translation>
+<translation id="3291436823898732747">ブラウジング機能が向上: たとえば、アドレスバーで文字を入力し始める前に検索候補が表示されます</translation>
 <translation id="3293644607209440645">このページを送信</translation>
 <translation id="32939749466444286">Linux コンテナを起動できませんでした。もう一度お試しください。</translation>
 <translation id="3294437725009624529">ゲスト</translation>
@@ -2166,8 +2189,8 @@
 <translation id="3308852433423051161">Brave アシスタントを読み込んでいます...</translation>
 <translation id="3309330461362844500">証明書プロファイル ID</translation>
 <translation id="3311445899360743395">このアプリに関連付けられているデータはこのデバイスから削除されます。</translation>
-<translation id="3312424061798279731">有効な言語</translation>
 <translation id="3313622045786997898">証明書の署名値</translation>
+<translation id="3313950410573257029">接続を確認</translation>
 <translation id="3315158641124845231"><ph name="PRODUCT_NAME"/> を隠す</translation>
 <translation id="3315442055907669208">リーダーモードを開始</translation>
 <translation id="3317459757438853210">両面印刷</translation>
@@ -2214,6 +2237,7 @@
 <translation id="337286756654493126">アプリケーションで開いたフォルダに書き込む</translation>
 <translation id="3378572629723696641">この拡張機能は破損している可能性があります。</translation>
 <translation id="337920581046691015"><ph name="PRODUCT_NAME"/> がインストールされます。</translation>
+<translation id="337995611229308295">サーバーに接続できませんでした。ネットワーク接続を確認してからもう一度お試しください。引き続き問題が解決しない場合は、Bravebook を再起動してみてください。</translation>
 <translation id="3380365263193509176">不明なエラー</translation>
 <translation id="3382073616108123819">このデバイスのデバイス識別子を特定できませんでした。</translation>
 <translation id="3382200254148930874">管理機能を停止しています...</translation>
@@ -2291,6 +2315,7 @@
 <translation id="3446274660183028131">Windows をインストールするには Parallels Desktop を起動してください。</translation>
 <translation id="344630545793878684">多数のウェブサイトでのユーザーデータの読み取り</translation>
 <translation id="3446650212859500694">このファイルにはデリケートなコンテンツが含まれています</translation>
+<translation id="3446827946208017735">最も重要なプライバシー設定を 1 か所で確認して変更できます</translation>
 <translation id="3448086340637592206">Brave および Chrome OS 追加利用規約</translation>
 <translation id="3448492834076427715">アカウントを更新</translation>
 <translation id="3449393517661170867">新規タブ付きウィンドウ</translation>
@@ -2324,6 +2349,7 @@
 <translation id="3476303763173086583">使用状況データや診断データを送信します。診断データやデバイスとアプリの使用状況データを Brave に自動送信して、お子様向けの Android 機能の向上にご協力ください。この情報を使ってお子様個人が特定されることはありません。この情報は、システムとアプリの安定性の向上やその他の機能の改善に役立てられます。また、Brave のアプリやパートナー（Android デベロッパーなど）も、集計データとしてこの情報を活用します。この<ph name="BEGIN_LINK1"/>設定<ph name="END_LINK1"/>は所有者によって管理されています。このデバイスの診断データや使用状況データを Brave に送信するよう所有者が設定している可能性があります。お子様の [その他のウェブとアプリのアクティビティ] の設定がオンになっている場合、このデータはお子様の Brave アカウントに保存されます。<ph name="BEGIN_LINK2"/>詳細<ph name="END_LINK2"/></translation>
 <translation id="347670947055184738">デバイスのポリシーを取得できませんでした。</translation>
 <translation id="347785443197175480"><ph name="HOST"/> によるカメラとマイクへのアクセスを引き続き許可する</translation>
+<translation id="3478813605045578676">登録はインストールした後に行うことができます。このデバイスを管理するには、CloudReady を先にインストールしてください。</translation>
 <translation id="3479552764303398839">後で</translation>
 <translation id="3479685872808224578">プリント サーバーを検出できませんでした。アドレスを確認してから、もう一度お試しください。</translation>
 <translation id="3480612136143976912">自動字幕起こしの字幕のサイズとスタイルをカスタマイズできます。一部のアプリとサイトでもこの設定が使用されます。</translation>
@@ -2343,6 +2369,7 @@
 <translation id="3495496470825196617">充電時のアイドル設定</translation>
 <translation id="3908743412684152579">Brave アシスタントの設定</translation>
 <translation id="3496213124478423963">縮小</translation>
+<translation id="3496238553815913323"><ph name="LANGUAGE"/>（未選択）</translation>
 <translation id="3497501929010263034"><ph name="VENDOR_NAME"/> 製 USB デバイス（製品 <ph name="PRODUCT_ID"/>）</translation>
 <translation id="3497560059572256875">Doodle を共有</translation>
 <translation id="3498215018399854026">現在、保護者にたずねることができません。もう一度お試しください。</translation>
@@ -2537,17 +2564,16 @@
 <translation id="3711931198657368127">貼り付けて <ph name="URL"/> に移動</translation>
 <translation id="3711945201266135623">プリント サーバーで <ph name="NUM_PRINTERS"/> 個のプリンタが見つかりました</translation>
 <translation id="3712050472459130149">アカウントの更新が必要です</translation>
-<translation id="3910561287607745583">同じ Brave アカウントでモバイルデータ接続を利用している他のデバイスを自動検出する</translation>
 <translation id="3712897371525859903">名前を付けてページを保存(&amp;A)...</translation>
 <translation id="371300529209814631">戻る / 進む</translation>
 <translation id="3713047097299026954">このセキュリティ キーにはログインデータが保存されていません</translation>
 <translation id="3714195043138862580">このデモデバイスはプロビジョニングを解除されている状態です。</translation>
 <translation id="3714633008798122362">ウェブ カレンダー</translation>
-<translation id="3716758537211256894">ネットワークを確認</translation>
 <translation id="3719826155360621982">トップページ</translation>
 <translation id="372062398998492895">CUPS</translation>
 <translation id="8397843425685839889">Brave の設定</translation>
 <translation id="3722108462506185496">仮想マシンサービスの起動中にエラーが発生しました。もう一度お試しください。</translation>
+<translation id="3727144509609414201">利用可能な Wi-Fi ネットワーク</translation>
 <translation id="3727187387656390258">ポップアップを検証</translation>
 <translation id="372722114124766626">今回のみ</translation>
 <translation id="3727473233247516571">バックフォワード キャッシュのサブフレーム: <ph name="BACK_FORWARD_CACHE_PAGE_URL"/></translation>
@@ -2593,7 +2619,6 @@
 <translation id="377050016711188788">アイスクリーム</translation>
 <translation id="3771290962915251154">保護者による使用制限が有効なため、この設定は無効になっています</translation>
 <translation id="3771294271822695279">動画ファイル</translation>
-<translation id="3772609330847318323"><ph name="ORIGIN"/> のパスワードを更新してください</translation>
 <translation id="3775432569830822555">SSL サーバー証明書</translation>
 <translation id="3775705724665058594">お使いのデバイスに送信</translation>
 <translation id="3776508619697147021">サイトが複数のファイルの自動ダウンロードを要求できるようにする</translation>
@@ -2625,7 +2650,6 @@
 <translation id="3797900183766075808"><ph name="SEARCH_ENGINE"/> で「<ph name="SEARCH_TERMS"/>」を検索(&amp;S)</translation>
 <translation id="3798449238516105146">バージョン</translation>
 <translation id="3799128412641261490">スイッチ アクセスの設定</translation>
-<translation id="3799903419983101749">中断したところから続行します。[設定] で、自動的に復元されるようにアプリを設定できます。</translation>
 <translation id="3800806661949714323">すべてを表示（推奨）</translation>
 <translation id="380329542618494757">名前</translation>
 <translation id="3803345858388753269">画質</translation>
@@ -2713,6 +2737,8 @@
 <translation id="3884152383786131369">複数の言語に対応しているウェブ コンテンツでは、次のリストの最初にある対応言語が使用されます。これらの設定はブラウザの設定と同期されています。<ph name="BEGIN_LINK_LEARN_MORE"/>詳細<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3885112598747515383">更新は管理者によって管理されています</translation>
 <translation id="3886446263141354045">このサイトへのアクセス リクエストを <ph name="NAME"/> さんに送信しました</translation>
+<translation id="3887022758415973389">デバイスリストを表示する</translation>
+<translation id="3888053818972567950"><ph name="WEB_DRIVE"/> に接続</translation>
 <translation id="3888550877729210209"><ph name="LOCK_SCREEN_APP_NAME"/> でメモをとる</translation>
 <translation id="3888586133700543064">アシスタントで発生した問題を詳しく把握するために、情報の提供をお願いいたします。ご提供いただいた情報は最大 90 日間保存され、エンジニアリングとフィードバックの担当者のみが閲覧します。</translation>
 <translation id="3518294595762833244">Wi-Fi 同期を使用するには Brave 同期をオンにしてください</translation>
@@ -2737,6 +2763,7 @@
 <translation id="3905761538810670789">アプリを修復</translation>
 <translation id="3908393983276948098"><ph name="PLUGIN_NAME"/> は期限切れです</translation>
 <translation id="3908501907586732282">拡張機能を有効にする</translation>
+<translation id="3909701002594999354">すべてのコントロールを表示(&amp;C)</translation>
 <translation id="3909791450649380159">切り取り(&amp;T)</translation>
 <translation id="39103738135459590">アクティベーション コード</translation>
 <translation id="3911824782900911339">新しいタブ ページ</translation>
@@ -2835,6 +2862,7 @@
 <translation id="3994374631886003300"><ph name="DEVICE_TYPE"/> のロックを解除するには、スマートフォンのロックを解除してデバイスに近づけます。</translation>
 <translation id="3994878504415702912">ズーム(&amp;Z)</translation>
 <translation id="3995138139523574647">USB-C デバイス（右奥のポート）</translation>
+<translation id="3999533068584271567">ネットワーク接続を確立できません。ネットワーク接続を確認してからもう一度お試しください。</translation>
 <translation id="4002329649066944389">サイト固有の例外の管理</translation>
 <translation id="4002440992267487163">PIN の設定</translation>
 <translation id="4005817994523282006">タイムゾーンの検出方法</translation>
@@ -2879,7 +2907,6 @@
 <translation id="4057896668975954729">ストアで見る</translation>
 <translation id="4058720513957747556">AppSocket（TCP/IP）</translation>
 <translation id="4058793769387728514">書類を今すぐチェック</translation>
-<translation id="406070391919917862">バックグラウンド アプリ</translation>
 <translation id="4061374428807229313">共有するには、ファイルアプリでフォルダを右クリックし、[Parallels Desktop と共有] を選択します。</translation>
 <translation id="406213378265872299">動作のカスタマイズ</translation>
 <translation id="4062561150282203854"><ph name="DEVICE_TYPE"/> のアプリや設定などを同期します</translation>
@@ -2970,6 +2997,7 @@
 <translation id="4158364720893025815">合格</translation>
 <translation id="4159681666905192102">これは <ph name="CUSTODIAN_EMAIL"/> と <ph name="SECOND_CUSTODIAN_EMAIL"/> によって管理されている子供向けのアカウントです。</translation>
 <translation id="4163560723127662357">不明なキーボード</translation>
+<translation id="4165942112764990069"><ph name="USER_EMAIL"/> は有効な組織に属していません。管理者にお問い合わせください。管理者の方は、g.co/BraveEnterpriseAccount で組織を設定していただけます。</translation>
 <translation id="4167686856635546851">多くのサイトは、インタラクティブなビデオゲームやウェブフォームなどを表示するために JavaScript を使用します。</translation>
 <translation id="4168015872538332605"><ph name="PRIMARY_EMAIL"/> に帰属する設定の一部を共有しています。これらの設定は、マルチログインを使用した場合にのみこのアカウントに適用されます。</translation>
 <translation id="4169535189173047238">許可しない</translation>
@@ -3085,6 +3113,7 @@
 <translation id="3047737257561987312">{COUNT,plural, =1{1 件の Brave アカウント}other{<ph name="EXTRA_ACCOUNTS"/> 件の Brave アカウント}}</translation>
 <translation id="4312866146174492540">ブロック（デフォルト）</translation>
 <translation id="4314815835985389558">同期の管理</translation>
+<translation id="4315933848520197627">アカウントのリンク解除</translation>
 <translation id="4316850752623536204">デベロッパーのウェブサイト</translation>
 <translation id="4317820549299924617">確認が失敗しました</translation>
 <translation id="4320177379694898372">インターネットに接続されていません</translation>
@@ -3125,6 +3154,7 @@
 <translation id="4364830672918311045">通知を表示</translation>
 <translation id="4366138410738374926">印刷を開始しました</translation>
 <translation id="4370975561335139969">入力したメールアドレスとパスワードが一致しません</translation>
+<translation id="4371452868325715552">サーバーに接続できませんでした。ネットワーク接続を確認してからもう一度お試しください。引き続き問題が解決しない場合は、Bravebook を再起動してみてください。エラーコード: <ph name="ERROR_CODE"/>。</translation>
 <translation id="4373966964907728675">デスクトップをキャスト中</translation>
 <translation id="4374831787438678295">Linux インストーラ</translation>
 <translation id="4375035964737468845">ダウンロードしたファイルを開く</translation>
@@ -3140,6 +3170,7 @@
 <translation id="4384312707950789900">優先ネットワークに追加</translation>
 <translation id="4384652540891215547">拡張機能を有効にする</translation>
 <translation id="438503109373656455">サラトガ</translation>
+<translation id="4385146930797718821">スクリーンショットをクリップボードにコピーしました</translation>
 <translation id="4385905942116811558">Bluetooth デバイスと USB デバイスを探しています</translation>
 <translation id="4387890294700445764">不正使用されたパスワード</translation>
 <translation id="4389091756366370506">ユーザー <ph name="VALUE"/></translation>
@@ -3188,7 +3219,6 @@
 <translation id="443454694385851356">以前の暗号化タイプ（安全ではありません）</translation>
 <translation id="443475966875174318">互換性のないアプリケーションの更新または削除</translation>
 <translation id="4438043733494739848">透明</translation>
-<translation id="9154782952206115436"><ph name="USERNAME"/> さんのパスワード <ph name="MASKED_PASSWORD"/> は Brave アカウント（<ph name="ACCOUNT"/>）に保存されます</translation>
 <translation id="4440097423000553826"><ph name="WEBSITE"/> からスマートフォンに通知が送信されました。「<ph name="NOTIFICATIONTITLE"/>」通知をタップし、表示されている手順に沿って本人確認を行ってください。</translation>
 <translation id="4441124369922430666">マシンの起動時にこのアプリを自動的に起動しますか？</translation>
 <translation id="4441147046941420429">続行するには、デバイスからセキュリティ キーを取り外し、もう一度差し込んでからタッチしてください</translation>
@@ -3348,10 +3378,10 @@
 <translation id="4596295440756783523">これらのサーバーを識別する証明書がファイルに格納されています</translation>
 <translation id="4598556348158889687">ストレージ管理</translation>
 <translation id="4598776695426288251">複数のデバイスから Wi-Fi に接続できます</translation>
+<translation id="4601426376352205922">未読にする</translation>
 <translation id="4602466770786743961"><ph name="HOST"/> によるカメラとマイクへのアクセスを常に許可する</translation>
 <translation id="4606551464649945562">サイトに周囲の 3D マップの作成またはカメラ位置の追跡を許可しない</translation>
 <translation id="4608500690299898628">検索(&amp;F)...</translation>
-<translation id="4608520674724523647">登録が完了したことを示す画像</translation>
 <translation id="4608703838363792434"><ph name="FILE_NAME"/> にはデリケートなコンテンツが含まれています</translation>
 <translation id="4609987916561367134">JavaScript の使用を許可するサイト</translation>
 <translation id="4610162781778310380"><ph name="PLUGIN_NAME"/> でエラーが発生しました</translation>
@@ -3412,6 +3442,7 @@
 <translation id="4662373422909645029">ニックネームに数字を含めることはできません</translation>
 <translation id="4662788913887017617">このブックマークは iPhone と共有できます</translation>
 <translation id="4663373278480897665">カメラを使用できます</translation>
+<translation id="4664289193573249666">Chrome OS の設定でセキュア DNS を管理する</translation>
 <translation id="4664482161435122549">PKCS #12 エクスポート エラー</translation>
 <translation id="4665014895760275686">メーカー</translation>
 <translation id="4665446389743427678"><ph name="SITE"/> で保存されたすべてのデータが削除されます。</translation>
@@ -3491,6 +3522,7 @@
 <translation id="4770119228883592393">権限がリクエストされました。対応するには、⌘+option+下矢印キーを押してください</translation>
 <translation id="4773112038801431077">Linux のアップグレード</translation>
 <translation id="477647109558161443">デスクトップ ショートカットを作成</translation>
+<translation id="4776594120007763294">ページを追加して後で読むには、ボタンをクリックしてください</translation>
 <translation id="4776917500594043016"><ph name="USER_EMAIL_ADDRESS"/> のパスワード</translation>
 <translation id="4777458362738635055">このデバイスの他のユーザーもこのネットワークを使用できます</translation>
 <translation id="4777825441726637019">Play ストア</translation>
@@ -3538,6 +3570,7 @@
 <translation id="4827904420700932487">この画像の QR コードを作成</translation>
 <translation id="482952334869563894">ベンダー <ph name="VENDOR_ID"/> の USB デバイス</translation>
 <translation id="4829768588131278040">PIN を設定</translation>
+<translation id="4830026649400230050">対象となるすべてのダウンロードは、組織の <ph name="WEB_DRIVE"/> アカウントに送られます。</translation>
 <translation id="4830121310592638841">サイトから画面上にウィンドウを開いて配置することを求められたときに確認する</translation>
 <translation id="4830502475412647084">OS アップデートのインストール中</translation>
 <translation id="4830573902900904548">お使いの <ph name="DEVICE_TYPE"/> から <ph name="NETWORK_NAME"/> を使用してインターネットに接続できません。別のネットワークを選択してください。<ph name="LEARN_MORE_LINK_START"/>詳細<ph name="LEARN_MORE_LINK_END"/></translation>
@@ -3669,6 +3702,7 @@
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="4961361269522589229">レシピ</translation>
 <translation id="496185450405387901">このアプリは管理者によってインストールされています。</translation>
+<translation id="4963789650715167449">現在のタブを削除</translation>
 <translation id="4964455510556214366">配置</translation>
 <translation id="496446150016900060">Wi-Fi ネットワークをスマートフォンと同期する</translation>
 <translation id="4965808351167763748">このデバイスでハングアウト Meet を実行するように設定してもよろしいですか？</translation>
@@ -3698,6 +3732,7 @@
 <translation id="4996851818599058005">{NUM_VMS,plural, =0{<ph name="VM_TYPE"/> VM は見つかりませんでした}=1{1 件の <ph name="VM_TYPE"/> VM が見つかりました: <ph name="VM_NAME_LIST"/>}other{{NUM_VMS} 件の <ph name="VM_TYPE"/> VM が見つかりました: <ph name="VM_NAME_LIST"/>}}</translation>
 <translation id="4997086284911172121">インターネットに接続されていません。</translation>
 <translation id="4998430619171209993">オン</translation>
+<translation id="4999804342505941663">サイレント モードをオンにする</translation>
 <translation id="5000922062037820727">ブロック（推奨）</translation>
 <translation id="5005498671520578047">パスワードのコピー</translation>
 <translation id="5006218871145547804">Crostini Android アプリ ADB</translation>
@@ -3738,6 +3773,7 @@
 <translation id="5050330054928994520">TTS</translation>
 <translation id="5051836348807686060">選択した言語ではスペルチェックを使用できません</translation>
 <translation id="5052499409147950210">サイトの編集</translation>
+<translation id="505347685865235222">名前のないグループ - <ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="8364458882768727272">Brave レンズで画像を検索</translation>
 <translation id="5056950756634735043">コンテナに接続しています</translation>
 <translation id="5057110919553308744">拡張機能をクリックしたとき</translation>
@@ -3753,6 +3789,7 @@
 <translation id="5067867186035333991"><ph name="HOST"/> がマイクへのアクセスを必要としているときは確認画面を表示する</translation>
 <translation id="5068918910148307423">最近閉じたサイトがデータの送受信を完了できないようにする</translation>
 <translation id="5068919226082848014">ピザ</translation>
+<translation id="5070710277167211639">移動先を HTTPS にアップグレードし、HTTPS をサポートしていないサイトは読み込む前に警告を表示します</translation>
 <translation id="5070773577685395116">通知が届かない場合</translation>
 <translation id="5071892329440114717">標準保護機能の詳細を表示</translation>
 <translation id="5072052264945641674">カーソルのサイズを調整</translation>
@@ -3859,7 +3896,6 @@
 <translation id="5190926251776387065">ポートを有効にする</translation>
 <translation id="5191094172448199359">入力した PIN が一致しません</translation>
 <translation id="5191251636205085390">サードパーティの Cookie に代わる新しい技術の詳細と管理方法について</translation>
-<translation id="51918995459521422"><ph name="ORIGIN"/> で複数のファイルがダウンロードされようとしています</translation>
 <translation id="5192062846343383368">管理設定を確認するにはファミリー リンク アプリを開いてください</translation>
 <translation id="5193988420012215838">クリップボードにコピーされました</translation>
 <translation id="5197255632782567636">インターネット</translation>
@@ -3874,6 +3910,7 @@
 <translation id="520621735928254154">証明書のインポート エラー</translation>
 <translation id="7485307793427476822">{COUNT,plural, =1{不正使用されたパスワードを変更しました。不正使用されたパスワードは他にも # 件あります。このパスワードを今すぐ確認することをおすすめします。}other{不正使用されたパスワードを変更しました。不正使用されたパスワードは他にも # 件あります。これらのパスワードを今すぐ確認することをおすすめします。}}</translation>
 <translation id="5207949376430453814">テキスト カーソルをハイライト表示する</translation>
+<translation id="5208548918290612795"><ph name="WEB_DRIVE"/> 認証トークンの保存</translation>
 <translation id="5247681254378595620">Brave UI 上部のポップアップ バブルで、現在開いているタブを検索できるようにします。</translation>
 <translation id="5209320130288484488">デバイスが見つかりませんでした</translation>
 <translation id="5210365745912300556">タブを閉じる</translation>
@@ -3902,7 +3939,6 @@
 <translation id="5235750401727657667">新しいタブを開いたときの表示ページを変更する</translation>
 <translation id="6465706586789214771">これらのパスワードを Brave アカウントに移動すると、お持ちのすべてのデバイスで簡単に使用できるようになります</translation>
 <translation id="5238278114306905396">アプリ「<ph name="EXTENSION_NAME"/>」は自動的に削除されました。</translation>
-<translation id="5241128660650683457">アクセスしたウェブサイトでのすべてのユーザーデータの読み取り</translation>
 <translation id="5242724311594467048">「<ph name="EXTENSION_NAME"/>」を有効にしますか？</translation>
 <translation id="5243522832766285132">しばらくしてからもう一度お試しください</translation>
 <translation id="5244474230056479698"><ph name="EMAIL"/> に同期しています</translation>
@@ -3975,6 +4011,7 @@
 <translation id="5315738755890845852">余分な中かっこがあります: <ph name="ERROR_LINE"/></translation>
 <translation id="5317780077021120954">保存</translation>
 <translation id="989239400026154074">Brave は Brave を推奨しています</translation>
+<translation id="5319712128756744240">新しいデバイスとペア設定</translation>
 <translation id="5320135788267874712">新しいデバイス名</translation>
 <translation id="532247166573571973">サーバーへのアクセスに問題が起こっている可能性があります。しばらくしてからもう一度お試しください。</translation>
 <translation id="5324300749339591280">アプリのリスト</translation>
@@ -4075,10 +4112,12 @@
 <translation id="5442550868130618860">自動更新を有効にする</translation>
 <translation id="5445400788035474247">10 倍</translation>
 <translation id="5446983216438178612">組織の証明書を表示</translation>
+<translation id="5447384712203291074"><ph name="ITEM_COUNT_MULTIPLE"/> 個のアイテム</translation>
 <translation id="5448293924669608770">ログイン エラーが発生しました</translation>
 <translation id="5449551289610225147">パスワードが無効です</translation>
 <translation id="5449588825071916739">すべてのタブをブックマークに追加する</translation>
 <translation id="5449716055534515760">ウィンドウを閉じる(&amp;D)</translation>
+<translation id="5452976525201205853"><ph name="LANGUAGE"/>（オフラインで利用可能）</translation>
 <translation id="5454166040603940656">- <ph name="PROVIDER"/></translation>
 <translation id="5457113250005438886">無効</translation>
 <translation id="5457459357461771897">パソコンからの写真、音楽、その他のメディアの読み取りと削除</translation>
@@ -4144,6 +4183,7 @@
 <translation id="5505307013568720083">インクがありません</translation>
 <translation id="5505794066310932198">コマンダーを切り替え</translation>
 <translation id="5507756662695126555">否認防止</translation>
+<translation id="5507795078844206688">アクセスしたページの URL（例: https://www.google.com）</translation>
 <translation id="5509693895992845810">別名で保存(&amp;A)...</translation>
 <translation id="5509914365760201064">発行元: <ph name="CERTIFICATE_AUTHORITY"/></translation>
 <translation id="6849870115130610913">Brave から画像の説明を取得</translation>
@@ -4196,6 +4236,7 @@
 <translation id="5565735124758917034">有効</translation>
 <translation id="5567989639534621706">アプリケーション キャッシュ</translation>
 <translation id="5568069709869097550">ログインできない</translation>
+<translation id="5571092938913434726">グローバル メディア コントロール</translation>
 <translation id="5571832155627049070">プロファイルのカスタマイズ</translation>
 <translation id="1254756632288991504">このサイトへのアクセス権があるかどうかを Brave で確認できるように、Brave を起動してログインしてください。</translation>
 <translation id="5575528586625653441">デモ登録リクエストで問題が発生しました。</translation>
@@ -4381,6 +4422,7 @@
 <translation id="5790651917470750848">ポート転送はすでに設定されています</translation>
 <translation id="5792728279623964091">電源ボタンをタップしてください</translation>
 <translation id="5793339252089865437">モバイル ネットワーク経由でアップデートをダウンロードすると、追加料金が発生する可能性があります。</translation>
+<translation id="5794034487966529952">デスク「<ph name="DESK_TITLE"/>」には <ph name="NUM_BROWSERS"/> 個のブラウザ ウィンドウが開いています</translation>
 <translation id="5794414402486823030">常にシステム ビューアで開く</translation>
 <translation id="5794700615121138172">Linux の共有フォルダ</translation>
 <translation id="7397305826909094212">すべての Brave アプリを終了</translation>
@@ -4396,6 +4438,7 @@
 <translation id="5805697420284793859">ウィンドウ マネージャ</translation>
 <translation id="5806773519584576205">0°（デフォルト）</translation>
 <translation id="5810809306422959727">このアカウントでは保護者による使用制限を設定できません</translation>
+<translation id="2714877654978324555">ウェブサイトからの通知については、<ph name="LINK_BEGIN"/>Brave の設定<ph name="LINK_END"/>をご覧ください</translation>
 <translation id="5812674658566766066">すべて展開</translation>
 <translation id="5815645614496570556">X.400 アドレス</translation>
 <translation id="5816434091619127343">リクエストされた変更を行うと、プリンタを使用できなくります。</translation>
@@ -4452,6 +4495,7 @@
 <translation id="5869522115854928033">保存したパスワード</translation>
 <translation id="5870086504539785141">ユーザー補助メニューを閉じる</translation>
 <translation id="5870155679953074650">ハードの障害数</translation>
+<translation id="5875534259258494936">画面共有を終了しました</translation>
 <translation id="5876576639916258720">実行中...</translation>
 <translation id="5876851302954717356">右隣に新しいタブを開く</translation>
 <translation id="5877064549588274448">チャンネルが変更されました。変更を適用するには、デバイスを再起動してください。</translation>
@@ -4493,7 +4537,6 @@
     この画像は Bravebook のログイン画面とロック画面に表示されます。</translation>
 <translation id="5925147183566400388">CPS（認証実施規定）ポインタ</translation>
 <translation id="539658326146969381">PDF ファイルを Brave で自動的に開く代わりにダウンロードする</translation>
-<translation id="5931146425219109062">アクセスしたウェブサイト上にある自分の全データの読み取りと変更</translation>
 <translation id="5932124097031739492">Linux のアップグレードが完了しました。</translation>
 <translation id="5932224571077948991">このサイトでは煩わしい広告や誤解を招く広告が表示されます</translation>
 <translation id="59324397759951282"><ph name="MANUFACTURER_NAME"/> の USB デバイス</translation>
@@ -4531,8 +4574,8 @@
 <translation id="5963117322306686970">タブをグループ化するには、タブを右クリックしてください</translation>
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/>（最大 <ph name="NUM_KILOBYTES_LIVE"/>）</translation>
 <translation id="5964113968897211042">{COUNT,plural, =0{すべてを新しいウィンドウで開く(&amp;N)}=1{新しいウィンドウで開く(&amp;N)}other{すべて（{COUNT} 個）を新しいウィンドウで開く(&amp;N)}}</translation>
-<translation id="5964328685964290415">移動先をすべて HTTPS にアップグレードし、HTTPS をサポートしていないサイトは読み込む前に警告を表示します</translation>
 <translation id="5965661248935608907">この拡張機能では、ホーム ボタンのクリック時、またはアドレスバーからの検索時に表示されるページも制御されます。</translation>
+<translation id="5968022600320704045">検索結果はありません</translation>
 <translation id="5969419185858894314"><ph name="ORIGIN"/> は「<ph name="FOLDERNAME"/>」のファイルを表示できます</translation>
 <translation id="5969728632630673489">キーボード ショートカットの通知を非表示にしました</translation>
 <translation id="5971037678316050792">Bluetooth アダプタの状態とペア設定の制御</translation>
@@ -4550,6 +4593,7 @@
 <translation id="5976609451147284762">このオプションは、データプランやモバイル ネットワーク ドングル、またはモバイル アクセス ポイントのテザリングを使用する Bravebook に適用されます。</translation>
 <translation id="5979421442488174909"><ph name="LANGUAGE"/>に翻訳(&amp;T)</translation>
 <translation id="5979469435153841984">ページをブックマークするには、アドレスバーのスターアイコンをクリックしてください</translation>
+<translation id="5983831175889857946">確認が完了しました。</translation>
 <translation id="5984222099446776634">最近のアクセス</translation>
 <translation id="5985458664595100876">URL の形式が無効です。サポートされている形式は \\server\share と smb://server/share です。</translation>
 <translation id="598810097218913399">割り当てを解除</translation>
@@ -4559,6 +4603,7 @@
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{今後もウェブ ブラウジングを続けられるように、管理者にこのアプリケーションの削除を依頼してください。}other{今後もウェブ ブラウジングを続けられるように、管理者にこれらのアプリケーションの削除を依頼してください。}}</translation>
 <translation id="5997337190805127100">サイトアクセスの詳細</translation>
 <translation id="6000758707621254961">「<ph name="SEARCH_TEXT"/>」に対する <ph name="RESULT_COUNT"/> 件の検索結果</translation>
+<translation id="6001839398155993679">開始する</translation>
 <translation id="6002210667729577411">グループを新しいウィンドウに移動</translation>
 <translation id="4448813628683709282">Brave アカウントからパスワードを削除しました</translation>
 <translation id="6002458620803359783">使用する音声</translation>
@@ -4568,6 +4613,7 @@
 <translation id="6007240208646052708">お使いの言語では音声検索はご利用いただけません。</translation>
 <translation id="6011193465932186973">指紋</translation>
 <translation id="6011449291337289699">サイトデータの削除</translation>
+<translation id="6011908034087870826">リンクを <ph name="DEVICE_NAME"/> に送信しています</translation>
 <translation id="6013027779243312217">音声と動画の字幕を生成します</translation>
 <translation id="6015796118275082299">年</translation>
 <translation id="6016178549409952427">追加コンテンツ <ph name="TOTAL_ELEMENTS"/> 件中 <ph name="CURRENT_ELEMENT"/> 件目に移動します</translation>
@@ -4745,6 +4791,7 @@
 <translation id="6208725777148613371"><ph name="WEB_DRIVE"/> に保存できませんでした - <ph name="INTERRUPT_REASON"/></translation>
 <translation id="6209838773933913227">コンポーネントを更新しています</translation>
 <translation id="6209908325007204267">デバイスには Brave Enterprise Upgrade が含まれていますが、ユーザー名が Enterprise アカウントに関連付けられていません。サブデバイスで g.co/BraveEnterpriseAccount にアクセスし、Enterprise アカウントを作成してください。</translation>
+<translation id="621172521139737651">{COUNT,plural, =0{すべてを新しいタブグループで開く(&amp;N)}=1{新しいタブグループで開く(&amp;N)}other{すべて（{COUNT} 個）を新しいタブグループで開く(&amp;N)}}</translation>
 <translation id="6212039847102026977">ネットワークの詳細プロパティを表示</translation>
 <translation id="6212168817037875041">画面をオフにする</translation>
 <translation id="6212752530110374741">リンクをメールで送信</translation>
@@ -4836,6 +4883,7 @@
 <translation id="6294759976468837022">自動スキャンの速度</translation>
 <translation id="6295158916970320988">すべてのサイト</translation>
 <translation id="6295855836753816081">保存しています...</translation>
+<translation id="629730747756840877">アカウント</translation>
 <translation id="6298962879096096191">Google Play を使用して Android アプリをインストールします</translation>
 <translation id="6300177430812514606">データの送受信の完了を許可しないサイト</translation>
 <translation id="630065524203833229">終了(&amp;X)</translation>
@@ -4878,7 +4926,6 @@
 <translation id="6336038146639916978"><ph name="MANAGER"/> により ADB デバッグが無効になりました。<ph name="DEVICE_TYPE"/> は 24 時間以内にリセットされます。必要なファイルがあればバックアップしてください。</translation>
 <translation id="6338981933082930623">すべてのサイトであらゆる広告を表示できるようにする</translation>
 <translation id="6339668969738228384"><ph name="USER_EMAIL_ADDRESS"/> の新しいプロフィールを作成します</translation>
-<translation id="6340017061976355871">サーバーに接続できませんでした。ネットワーク接続を確認してもう一度お試しください。問題が解決しない場合は、Bravebook を再起動してください。</translation>
 <translation id="6340071272923955280">インターネット印刷プロトコル（IPPS）</translation>
 <translation id="6340526405444716530">カスタマイズ</translation>
 <translation id="6341850831632289108">現在地を検出する</translation>
@@ -4993,8 +5040,8 @@
 <translation id="6468485451923838994">フォント</translation>
 <translation id="6468773105221177474"><ph name="FILE_COUNT"/> 個のファイル</translation>
 <translation id="6469557521904094793">モバイル ネットワークをオンにする</translation>
+<translation id="6470823736074966819">通知をミュートする</translation>
 <translation id="6472893788822429178">ホーム ボタンを表示する</translation>
-<translation id="6473842110411557830">Powerwash の説明図</translation>
 <translation id="6474498546677193336">このフォルダを使用しているアプリケーションがあるため、共有を停止できませんでした。次回 Linux をシャットダウンするときに、フォルダの共有を停止します。</translation>
 <translation id="6474884162850599008">Brave ドライブ アカウントを切断する</translation>
 <translation id="6475294023568239942">ディスクの空き領域を確保するか、設定で Linux ディスクのサイズを変更してください</translation>
@@ -5040,6 +5087,7 @@
 <translation id="6521214596282732365">多くのサイトはデバイスのフォントを使用して、オンラインのデザインツールや画像編集ツールで高品質のコンテンツを作成できるようにしています</translation>
 <translation id="652492607360843641"><ph name="NETWORK_TYPE"/> ネットワークに接続しています。</translation>
 <translation id="6527303717912515753">共有</translation>
+<translation id="6528179044667508675">サイレント</translation>
 <translation id="3700405816184340252">Brave 履歴</translation>
 <translation id="6530186581263215931">管理者が行った設定です</translation>
 <translation id="6531282281159901044">危険なファイルを保存</translation>
@@ -5086,6 +5134,7 @@
 <translation id="657402800789773160">ページを再読み込み(&amp;R)</translation>
 <translation id="6577284282025554716"><ph name="FILE_NAME"/> のダウンロードがキャンセルされました</translation>
 <translation id="657866106756413002">ネットワーク健全性のスナップショット</translation>
+<translation id="6579369886355986318">すべてのコントロールを表示(&amp;C)</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> - パソコンのコンテンツが共有されています</translation>
 <translation id="6580203076670148210">スキャンの速度</translation>
 <translation id="6582080224869403177">セキュリティをアップグレードするには <ph name="DEVICE_TYPE"/> をリセットしてください。</translation>
@@ -5125,7 +5174,6 @@
 <translation id="6619243162837544323">ネットワークの状態</translation>
 <translation id="6619801788773578757">キオスク アプリケーションを追加</translation>
 <translation id="6619990499523117484">PIN を確認してください</translation>
-<translation id="6621715389962683284">ネットワーク接続を確立できません。</translation>
 <translation id="6622980291894852883">画像を引き続きブロックする</translation>
 <translation id="6623589891453322342">ファイル ハンドラ</translation>
 <translation id="6624535038674360844"><ph name="FILE_NAME"/> はデリケートなコンテンツまたは危険なコンテンツです。所有者に修正するよう依頼してください。</translation>
@@ -5201,7 +5249,6 @@
 <translation id="6700480081846086223"><ph name="HOST_NAME"/> をキャストします</translation>
 <translation id="6701535245008341853">プロフィールを取得できませんでした。</translation>
 <translation id="6702639462873609204">編集(&amp;E)...</translation>
-<translation id="6703966911896067184">登録エラーを示す画像</translation>
 <translation id="6706210727756204531">範囲</translation>
 <translation id="6707389671160270963">SSL クライアント証明書</translation>
 <translation id="6709002550153567782">{NUM_PAGES,plural, =0{<ph name="PAGE_TITLE"/>}=1{<ph name="PAGE_TITLE"/>、他 1 個のタブ}other{<ph name="PAGE_TITLE"/>、他 # 個のタブ}}</translation>
@@ -5213,7 +5260,6 @@
 <translation id="6715803357256707211">Linux アプリケーションのインストール中にエラーが発生しました。詳細を確認するには通知をクリックしてください。</translation>
 <translation id="671619610707606484">サイトにより保存された <ph name="TOTAL_USAGE"/> のデータが削除されます</translation>
 <translation id="671928215901716392">画面をロック</translation>
-<translation id="6721678857435001674">セキュリティ キーのメーカーとモデルの読み取り</translation>
 <translation id="6721972322305477112">ファイル(&amp;F)</translation>
 <translation id="672208878794563299">次回、このサイトからもう一度許可を求められます。</translation>
 <translation id="6723661294526996303">ブックマークと設定をインポート...</translation>
@@ -5302,6 +5348,7 @@
 <translation id="6812349420832218321"><ph name="PRODUCT_NAME"/> を root で実行することはできません。</translation>
 <translation id="6812841287760418429">変更を保持</translation>
 <translation id="6813907279658683733">画面全体</translation>
+<translation id="8345824141715130645">Brave と共有される情報</translation>
 <translation id="6817174620439930047">サイトがシステム エクスクルーシブ メッセージを使用して MIDI デバイスにアクセスする際に確認する（推奨）</translation>
 <translation id="6818198425579322765">翻訳するページの言語</translation>
 <translation id="6818802132960437751">組み込みのウィルス対策</translation>
@@ -5321,7 +5368,6 @@
 <translation id="6833479554815567477">タブを <ph name="GROUP_NAME"/> グループから削除しました - <ph name="GROUP_CONTENTS"/></translation>
 <translation id="683373380308365518">スマートで安全なブラウザをぜひご利用ください</translation>
 <translation id="6834652994408928492">ダークモードは日の入り時刻に自動的にオンになります</translation>
-<translation id="683540480453879381"><ph name="FILE_EXTENSIONS"/> ファイルを開く</translation>
 <translation id="6835762382653651563"><ph name="DEVICE_TYPE"/> を更新するにはインターネットに接続してください。</translation>
 <translation id="6838034009068684089">サイトから画面上にウィンドウを開いて配置することを求められたときに確認する（推奨）</translation>
 <translation id="6839225236531462745">証明書削除エラー</translation>
@@ -5347,6 +5393,7 @@
 <translation id="6855892664589459354">Crostini のバックアップと復元</translation>
 <translation id="6856348640027512653">バーチャル リアリティのデバイスやデータの使用を許可しないサイト</translation>
 <translation id="6856623341093082836">タッチスクリーンをを設定し、精度を調整します</translation>
+<translation id="6856850379840757744">オンにした場合は、すべての通知を静かな方法で行います</translation>
 <translation id="6857145580237920905">Powerwash を実行する前に eSIM プロファイルを削除してください</translation>
 <translation id="6857699260879628349">設定情報を取得</translation>
 <translation id="6857725247182211756"><ph name="SECONDS"/> 秒</translation>
@@ -5386,9 +5433,7 @@
 <translation id="6904655473976120856">終了するには [アプリ] ボタンを押します</translation>
 <translation id="6909422577741440844">このデバイスから受信しますか？</translation>
 <translation id="6910211073230771657">削除済み</translation>
-<translation id="691024665142758461">複数ファイルのダウンロード</translation>
 <translation id="691106080621596509"><ph name="SITE_GROUP_NAME"/> とその下位のすべてのサイトにより保存されたすべてのデータと Cookie、インストールされたアプリが削除されます</translation>
-<translation id="6911324888870229398">ネットワーク接続が切断されました。接続を確認するか、別の Wi-Fi ネットワークをお試しください。</translation>
 <translation id="6911734910326569517">メモリ使用量</translation>
 <translation id="6912007319859991306">モバイル SIM PIN</translation>
 <translation id="691289340230098384">字幕の設定</translation>
@@ -5399,7 +5444,6 @@
 <translation id="6921104647315081813">アクティビティを削除</translation>
 <translation id="692114467174262153"><ph name="ALTERNATIVE_BROWSER_NAME"/> を開けませんでした</translation>
 <translation id="6922128026973287222">Brave データセーバーを使うとデータの保存や閲覧が速くなります。クリックして詳細をご確認ください。</translation>
-<translation id="6922570474772078053">オフになっています</translation>
 <translation id="6922745772873733498">印刷するには PIN を入力してください</translation>
 <translation id="6922763095098248079">このデバイスは組織によって管理されています。管理者はこのデバイスの任意のプロファイルのデータにアクセスできます。</translation>
 <translation id="6923132443355966645">スクロール / クリック</translation>
@@ -5523,6 +5567,7 @@
 <translation id="7044124535091449260">サイトアクセスの詳細</translation>
 <translation id="7044606776288350625">同期データ</translation>
 <translation id="7047059339731138197">背景を選択します</translation>
+<translation id="7048457618657122233"><ph name="SHARE_TARGET"/> へのリンクを共有</translation>
 <translation id="7049293980323620022">ファイルを保存しますか？</translation>
 <translation id="7052237160939977163">パフォーマンス追跡データを送信する</translation>
 <translation id="7053983685419859001">ブロック</translation>
@@ -5556,11 +5601,12 @@
 <translation id="7078120482318506217">すべてのネットワーク</translation>
 <translation id="708060913198414444">オーディオ アドレスをコピー(&amp;C)</translation>
 <translation id="1439926347196400598">Brave に録音を許可しますか？</translation>
-<translation id="7085805695634549980">Brave サービスに接続できませんでした。エラーコード: <ph name="ERROR_CODE"/>。</translation>
 <translation id="7086672505018440886">アーカイブに Brave ログファイルを含める。</translation>
 <translation id="7088434364990739311">更新チェックを起動できませんでした（エラー コード <ph name="ERROR"/>）。</translation>
 <translation id="7088561041432335295">Zip アーカイブ ツール - ファイルアプリ内で ZIP ファイルを開いたり作成したりできます。</translation>
 <translation id="7088674813905715446">このデバイスは、管理者によりプロビジョニングを解除されている状態です。このデバイスを登録できるようにするには、デバイスを待機状態にするよう管理者に依頼してください。</translation>
+<translation id="7093220653036489319">クイック アンサー</translation>
+<translation id="7093416310351037609">お客様の組織では、データの安全性とセキュリティを確保するため、対象となるすべてのダウンロードを組織の <ph name="WEB_DRIVE"/> アカウントに保存することが要件となっています。</translation>
 <translation id="7093434536568905704">GTK+</translation>
 <translation id="7093866338626856921">デバイス <ph name="HOSTNAMES"/> とのデータ交換</translation>
 <translation id="7098389117866926363">USB-C デバイス（背面左のポート）</translation>
@@ -5575,6 +5621,7 @@
 <translation id="7109543803214225826">ショートカットを削除しました</translation>
 <translation id="7110644433780444336">{NUM_TABS,plural, =1{タブをグループに追加}other{タブをグループに追加}}</translation>
 <translation id="7111822978084196600">このウィンドウに名前を付ける</translation>
+<translation id="7113102733263608554"><ph name="ITEM_COUNT_ONE"/> 個のアイテム</translation>
 <translation id="7113502843173351041">メールアドレスの読み取り</translation>
 <translation id="7114054701490058191">パスワードが一致しません</translation>
 <translation id="7114648273807173152">Smart Lock を使用して Brave アカウントにログインするには、[設定] &gt; [接続済みのデバイス] &gt; [スマートフォン] &gt; [Smart Lock] に移動します。</translation>
@@ -5583,6 +5630,7 @@
 <translation id="7117247127439884114">もう一度ログインする...</translation>
 <translation id="711840821796638741">管理対象のブックマークを表示</translation>
 <translation id="711902386174337313">ログインしたデバイスのリストの読み取り</translation>
+<translation id="8651796563067586593">このページでは、ログインする Brave アカウントを管理できます。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="5450502361144700252">VPN に接続されていないとき、Brave ブラウザと Android のトラフィックはブロックされます</translation>
 <translation id="7120865473764644444">同期サーバーに接続できませんでした。再試行しています...</translation>
 <translation id="7121438501124788993">デベロッパー モード</translation>
@@ -5616,7 +5664,6 @@
 <translation id="7168109975831002660">最小フォント サイズ</translation>
 <translation id="7170236477717446850">プロフィール写真</translation>
 <translation id="7171259390164035663">登録しない</translation>
-<translation id="7171559745792467651">他のデバイスでインストールしたアプリ</translation>
 <translation id="7172470549472604877">{NUM_TABS,plural, =1{タブを新しいグループに追加}other{タブを新しいグループに追加}}</translation>
 <translation id="7173114856073700355">設定を開く</translation>
 <translation id="7174199383876220879">New! 音楽や動画などを操作できます。</translation>
@@ -5637,7 +5684,6 @@
 <translation id="7196020411877309443">このウィンドウが表示される理由</translation>
 <translation id="7196913789568937443">Brave ドライブにバックアップします。これにより、いつでも簡単にデータを復元したりデバイスを切り替えたりできます。バックアップ対象にはアプリのデータが含まれます。バックアップ データは Brave にアップロードされ、Brave アカウントのパスワードを使って暗号化されます。<ph name="BEGIN_LINK1"/>詳細<ph name="END_LINK1"/></translation>
 <translation id="96037229054033864">Brave 検索や Brave の最先端技術をブラウジングで活用できます</translation>
-<translation id="7197632491113152433">お使いのアカウントから、このデバイスで使用できるアプリが <ph name="NUMBER_OF_APPS"/> 個見つかりました。</translation>
 <translation id="7198503619164954386">企業登録のデバイスを使用する必要があります</translation>
 <translation id="7199158086730159431">ヘルプ(&amp;E)</translation>
 <translation id="7200083590239651963">設定の選択</translation>
@@ -5736,7 +5782,6 @@
 <translation id="7307129035224081534">一時停止中</translation>
 <translation id="7308436126008021607">バックグラウンド同期</translation>
 <translation id="7308643132139167865">ウェブサイトの言語</translation>
-<translation id="7309257895202129721">コントロールを表示(&amp;C)</translation>
 <translation id="7310598146671372464">ログインできませんでした。指定した Kerberos 暗号化タイプがサーバーでサポートされていません。管理者にお問い合わせください。</translation>
 <translation id="7320213904474460808">デフォルトのネットワーク</translation>
 <translation id="7321545336522791733">サーバーにアクセスできません</translation>
@@ -5794,11 +5839,11 @@
 <translation id="7374376573160927383">USB デバイスを管理する</translation>
 <translation id="7374461526650987610">プロトコル ハンドラ</translation>
 <translation id="7375235221357833624">{0,plural, =1{1 時間以内にデバイスを更新してください}other{# 時間以内にデバイスを更新してください}}</translation>
+<translation id="7376543451826039186">高速ブラウジング: たとえば、現在のページに基づいて、特定のコンテンツが追加で事前に読み込まれます</translation>
 <translation id="7376553024552204454">移動時にマウスカーソルを強調表示する</translation>
 <translation id="737728204345822099">このサイトへのアクセスの記録がセキュリティ キーに保存される可能性があります。</translation>
 <translation id="7377451353532943397">センサーへのアクセスを引き続きブロックする</translation>
 <translation id="7378611153938412599">脆弱なパスワードは簡単に推測されてしまいます。安全なパスワードを作成してください。<ph name="BEGIN_LINK"/>セキュリティに関する他のヒントを見る<ph name="END_LINK"/></translation>
-<translation id="7378812711085314936">データ接続を行う</translation>
 <translation id="7380622428988553498">デバイス名に無効な文字が含まれています</translation>
 <translation id="7380768571499464492">更新: <ph name="PRINTER_NAME"/></translation>
 <translation id="73843634555824551">入力とキーボード</translation>
@@ -5850,6 +5895,7 @@
 <translation id="7427798576651127129"><ph name="DEVICE_NAME"/> から発信</translation>
 <translation id="7431719494109538750">HID デバイスは見つかりませんでした</translation>
 <translation id="7431991332293347422">検索などのカスタマイズを目的とした閲覧履歴の使用方法を設定</translation>
+<translation id="7432200167665670017">「<ph name="EXTENSION_NAME"/>」（アプリ ID: <ph name="EXTENSION_ID"/>）は管理者によってブロックされています</translation>
 <translation id="7433708794692032816"><ph name="DEVICE_TYPE"/> を引き続き使用するにはスマートカードを挿入してください</translation>
 <translation id="7433957986129316853">そのままにする</translation>
 <translation id="7434509671034404296">開発 / 管理</translation>
@@ -5879,6 +5925,7 @@
 <translation id="7460045493116006516">インストールした現在のテーマ</translation>
 <translation id="7461924472993315131">固定</translation>
 <translation id="746216226901520237">次回から、スマートフォンで <ph name="DEVICE_TYPE"/> のロックを解除できます。Smart Lock を無効にするには [設定] をご利用ください。</translation>
+<translation id="1919264590417477575"><ph name="ACCOUNT"/> の Brave アカウントに保存します</translation>
 <translation id="7465522323587461835">{NUM_OPEN_TABS,plural, =1{現在開いているタブは # 個で、このボタンを押すとタブバーを切り替えます}other{現在開いているタブは # 個で、このボタンを押すとタブバーを切り替えます}}</translation>
 <translation id="7465635034594602553">エラーが発生しました。数分後にもう一度 <ph name="APP_NAME"/> を実行してください。</translation>
 <translation id="7465778193084373987">Netscape 証明書取り消し URL</translation>
@@ -5898,6 +5945,7 @@
 <translation id="5492087417588158896">Brave アカウントでログインしているすべての Chrome OS デバイス間で、アプリや設定が同期されます。ブラウザの同期オプションについては、<ph name="LINK_BEGIN"/>Brave の設定<ph name="LINK_END"/>をご覧ください。</translation>
 <translation id="7478658909253570368">サイトにシリアルポートへの接続を許可しない</translation>
 <translation id="7479221278376295180">ストレージ使用状況</translation>
+<translation id="747981547666531654"><ph name="FIRST_DEVICE"/> および <ph name="SECOND_DEVICE"/> という名前の Bluetooth デバイスに接続しました</translation>
 <translation id="7481312909269577407">進む</translation>
 <translation id="7481358317100446445">準備完了</translation>
 <translation id="748138892655239008">証明書の基本制約</translation>
@@ -5926,6 +5974,7 @@
 <translation id="7509539379068593709">アプリをアンインストール</translation>
 <translation id="7511415964832680006">オンにすると、サイトでコンテンツやサービスを提供する際に、ここで示されているプライバシー保護技術が使用される場合があります。これには、クロスサイト トラッキングの代わりとなる技術も含まれます。今後、試用版の技術がさらに追加される可能性があります。</translation>
 <translation id="7513029293694390567">保存されている認証情報を使用してウェブサイトに自動的にログインします。この機能が無効になっている場合は、ウェブサイトにログインするときに毎回確認を求められます。</translation>
+<translation id="7514236770834963598">プライバシーとセキュリティの最も重要な設定を確認しましょう</translation>
 <translation id="7514239104543605883">デバイスにコピー</translation>
 <translation id="7514365320538308">ダウンロード</translation>
 <translation id="7514417110442087199">割り当てを追加</translation>
@@ -5939,6 +5988,7 @@
 <translation id="7525625923260515951">選択したテキストを読み上げます</translation>
 <translation id="7526658513669652747">{NUM_DOWNLOADS,plural, =1{他 1 件}other{他 {NUM_DOWNLOADS} 件}}</translation>
 <translation id="7526989658317409655">プレースホルダ</translation>
+<translation id="8558561050457784652"><ph name="ACCOUNT"/> の Brave アカウントで更新できます</translation>
 <translation id="7529411698175791732">インターネット接続を確認してください。問題が解消しない場合は、ログアウトして再度ログインしてみてください。</translation>
 <translation id="7529876053219658589">{0,plural, =1{ゲストモードを終了}other{ゲストモードを終了}}</translation>
 <translation id="7530016656428373557">放電率（ワット）</translation>
@@ -6049,6 +6099,7 @@
 <translation id="7639914187072011620">サーバーから SAML リダイレクト URL を取得できませんでした</translation>
 <translation id="764017888128728"><ph name="PASSWORD_MANAGER_BRAND"/> では、保存したパスワードを使って対象となるサイトへの自動ログインが行われます。</translation>
 <translation id="7641513591566880111">新しいプロファイル名</translation>
+<translation id="764178579712141045"><ph name="USER_EMAIL"/> を追加しました</translation>
 <translation id="7642778300616172920">プライベートな内容を表示しない</translation>
 <translation id="7643842463591647490">{0,plural, =1{開いているウィンドウ # 個}other{開いているウィンドウ # 個}}</translation>
 <translation id="7643932971554933646">サイトにファイルの読み取りを許可しますか？</translation>
@@ -6100,7 +6151,6 @@
 <translation id="1669729672557072907">アプリを作成してテストするには、Android Debug Bridge（ADB）を有効にします。この操作を行うと、Brave が確認していない Android アプリのインストールが許可されます。無効にする場合は、出荷時の設定へのリセットが必要になります。</translation>
 <translation id="7685049629764448582">JavaScript メモリ</translation>
 <translation id="7685087414635069102">PIN が必要です</translation>
-<translation id="768549422429443215">言語を追加するか、リストを並べ替えます。</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/>（<ph name="DEVICE_PATH"/>）</translation>
 <translation id="7690294790491645610">新しいパスワードの確認入力</translation>
 <translation id="7690378713476594306">リストから選択</translation>
@@ -6236,7 +6286,6 @@
 <translation id="782590969421016895">現在のページを使用</translation>
 <translation id="7826249772873145665">ADB デバッグが無効になりました</translation>
 <translation id="7826254698725248775">競合するデバイス識別子です。</translation>
-<translation id="7826346148677309647">Play ストアでは他にもお使いのデバイス用のアプリを探すことができます。</translation>
 <translation id="7826790948326204519"><ph name="BEGIN_H3"/>デバッグ機能<ph name="END_H3"/>
     <ph name="BR"/>
     Chrome OS デバイスでは、カスタムコードをインストールしてテストする目的でデバッグ機能を有効にできます。デバッグ機能を使うと次のことが可能です。<ph name="BR"/>
@@ -6270,6 +6319,7 @@
 <translation id="7841134249932030522">ダークモードを有効にする</translation>
 <translation id="7842692330619197998">新しいアカウントを作成するには、g.co/BraveEnterpriseAccount にアクセスします。</translation>
 <translation id="784273751836026224">Linux のアンインストール</translation>
+<translation id="7843786652787044762"><ph name="WEB_DRIVE"/> にログイン</translation>
 <translation id="7844992432319478437">差分の更新中</translation>
 <translation id="7846634333498149051">キーボード</translation>
 <translation id="7847212883280406910"><ph name="IDS_SHORT_PRODUCT_OS_NAME"/> に切り替えるには Ctrl + Alt+ S キーを押します</translation>
@@ -6313,6 +6363,7 @@
 <translation id="7886605625338676841">eSIM</translation>
 <translation id="7887334752153342268">タブを複製</translation>
 <translation id="7887864092952184874">Bluetooth マウスがペア設定されました</translation>
+<translation id="7889371445710865055">音声入力の言語を変更</translation>
 <translation id="7890147169288018054">IP や MAC アドレスなどのネットワーク情報を読み取る</translation>
 <translation id="7893008570150657497">パソコンから画像、音楽、その他のメディアにアクセスする</translation>
 <translation id="7893153962594818789">この <ph name="DEVICE_TYPE"/> では Bluetooth がオフになっています。パスワードを入力し、Bluetooth をオンにしてください。</translation>
@@ -6322,6 +6373,7 @@
 <translation id="7898725031477653577">常に翻訳する</translation>
 <translation id="790040513076446191">プライバシー関連設定を操作する</translation>
 <translation id="7901405293566323524">Phone Hub</translation>
+<translation id="8111575430604432614">ページの各種指標に基づいて Brave の機能が強化されます</translation>
 <translation id="7903345046358933331">ページが応答していません。応答があるまで待つか、終了することができます。</translation>
 <translation id="7903742244674067440">これらの認証局を識別する証明書がファイルに格納されています</translation>
 <translation id="7903859912536385558">安定版（Trusted Tester）</translation>
@@ -6521,6 +6573,7 @@
 <translation id="810068641062493918">「<ph name="LANGUAGE"/>」が選択されています。選択を解除するには検索+Space キーを押してください。</translation>
 <translation id="810185532889603849">カスタム色</translation>
 <translation id="8101987792947961127">次回の再起動時に Powerwash が必要</translation>
+<translation id="81020759409809034">ローカルの場所</translation>
 <translation id="8102139037507939978">system_logs.txt から個人を特定できる情報を削除する。</translation>
 <translation id="8104088837833760645">eSIM プロファイルのダウンロード</translation>
 <translation id="8107015733319732394"><ph name="DEVICE_TYPE"/> に Google Play ストアをインストールしています。この処理には数分かかる可能性があります。</translation>
@@ -6555,6 +6608,7 @@
 <translation id="8138217203226449454">検索プロバイダを変更するつもりでしたか？</translation>
 <translation id="8138997515734480534"><ph name="VM_NAME"/> ステータス</translation>
 <translation id="8139447493436036221">Brave ドライブのファイル</translation>
+<translation id="8140070492745508800"><ph name="FIRST_DEVICE"/>、<ph name="SECOND_DEVICE"/></translation>
 <translation id="8141584439523427891">まもなく代替ブラウザで開きます</translation>
 <translation id="8141725884565838206">パスワードを管理する</translation>
 <translation id="814204052173971714">{COUNT,plural, =1{動画}other{# 件の動画}}</translation>
@@ -6685,6 +6739,7 @@
 <translation id="826905130698769948">クライアント証明書が無効です</translation>
 <translation id="8270242299912238708">PDF ドキュメント</translation>
 <translation id="827097179112817503">ホームボタンを表示する</translation>
+<translation id="8271268254812352141">テキストを右クリックまたは長押しすると、定義、翻訳、単位変換を確認できます。<ph name="LINK_BEGIN"/>ウェブサイトの言語<ph name="LINK_END"/>で翻訳言語をカスタマイズできます。</translation>
 <translation id="8271379370373330993">この後、保護者の方用の手順がいくつか続きます。お子様に <ph name="DEVICE_TYPE"/> を渡す前に、アカウント設定を終えてください。</translation>
 <translation id="8272443605911821513">拡張機能を管理するには、[その他のツール] メニューの [拡張機能] をクリックします。</translation>
 <translation id="8274332263553132018">ファイルをキャスト</translation>
@@ -6728,6 +6783,7 @@
 <translation id="8321837372750396788">この <ph name="DEVICE_TYPE"/> は <ph name="MANAGER"/> で管理されます。</translation>
 <translation id="8322814362483282060">このページはマイクへのアクセスを禁止されています。</translation>
 <translation id="8323167517179506834">URL を入力してください</translation>
+<translation id="8323317289166663449">自分のパソコンとすべてのウェブサイト上にある自分の全データの読み取りと変更</translation>
 <translation id="8324784016256120271">サイトは、Cookie を使用して別のサイトでのあなたの閲覧アクティビティを確認できます（広告のカスタマイズなどが行えます）</translation>
 <translation id="8325413836429495820">クリップボードの読み取りを許可しないサイト</translation>
 <translation id="8326478304147373412">PKCS #7、証明書チェーン</translation>
@@ -6770,6 +6826,7 @@
 <translation id="8376384591331888629">このサイトでサードパーティの Cookie を許可する</translation>
 <translation id="8376451933628734023">このウェブアプリが別のアプリになりすまそうとしている場合は、アンインストールしてください。</translation>
 <translation id="8378714024927312812">組織によって管理されています</translation>
+<translation id="8379156816349755485">ログインすると、固有の認証トークンが保存され、以降のすべての対象となるダウンロードで使用されます。</translation>
 <translation id="8379878387931047019">このデバイスでは、このウェブサイトからリクエストされているセキュリティ キーのタイプはサポートされていません。</translation>
 <translation id="8379991678458444070">このタブをブックマークに追加すると、すばやくこのタブに戻ることができます</translation>
 <translation id="8382913212082956454">メール アドレスをコピー(&amp;E)</translation>
@@ -6782,6 +6839,7 @@
 <translation id="8392364544846746346">サイトがデバイスのファイルやフォルダを編集しようとしたときに確認する</translation>
 <translation id="8392451568018454956"><ph name="USER_EMAIL_ADDRESS"/> のオプション メニュー</translation>
 <translation id="8393511274964623038">プラグインを停止</translation>
+<translation id="839363317075970734">Bluetooth デバイスの詳細</translation>
 <translation id="8393700583063109961">メッセージを送信</translation>
 <translation id="8397825320644530257">接続済みスマートフォンの切断</translation>
 <translation id="8398877366907290961">このまま続行</translation>
@@ -6803,6 +6861,7 @@
 <translation id="8425492902634685834">タスクバーに固定</translation>
 <translation id="8425768983279799676">PIN を使用してデバイスのロックを解除できます。</translation>
 <translation id="8426713856918551002">有効にしています</translation>
+<translation id="8427213022735114808">音声入力では、テキスト欄で音声入力できるように Brave に音声を送信します。</translation>
 <translation id="8427292751741042100">ホストに埋め込まれたページ</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="8428271547607112339">学校用アカウントを追加</translation>
@@ -6822,7 +6881,6 @@
 <translation id="8448729345478502352">アイテムの表示サイズを変更します</translation>
 <translation id="8449008133205184768">ペーストしてスタイルを合わせる</translation>
 <translation id="8449036207308062757">ストレージを管理</translation>
-<translation id="8455026683977728932">ADB のイラストレーションを有効にできませんでした。</translation>
 <translation id="8456512334795994339">仕事や遊びに使えるおすすめのアプリ</translation>
 <translation id="8456761643544401578">ダークモードを自動的に設定する</translation>
 <translation id="845702320058262034">接続できません。スマートフォンの Bluetooth がオンになっていることを確認してください。</translation>
@@ -7027,6 +7085,7 @@
 <translation id="504499211143662559">お使いのパソコンに有害なソフトウェアが見つかりました</translation>
 <translation id="8682730193597992579"><ph name="PRINTER_NAME"/> が接続され、準備が整いました</translation>
 <translation id="8683081248374354009">グループをリセット</translation>
+<translation id="8683526617475118045">メリット</translation>
 <translation id="8688672835843460752">使用可能</translation>
 <translation id="8690129572193755009">サイトがプロトコルの処理を要求できるようにする</translation>
 <translation id="8695139659682234808">セットアップ後に保護者による使用制限を設定できます</translation>
@@ -7080,6 +7139,7 @@
 <translation id="8737685506611670901"><ph name="REPLACED_HANDLER_TITLE"/> の代わりに「<ph name="PROTOCOL"/>」リンクを開く</translation>
 <translation id="8737709691285775803">サクラ</translation>
 <translation id="8737914367566358838">ページを翻訳する言語を選択してください</translation>
+<translation id="1164245454225383184">閲覧行動の把握のために URL が Brave と共有されます</translation>
 <translation id="8740247629089392745">この Bravebook を <ph name="SUPERVISED_USER_NAME"/> に渡す準備ができました。設定はあと少しで完了です。</translation>
 <translation id="8741944563400125534">スイッチ アクセス設定ガイド</translation>
 <translation id="8742998548129056176">送信されるのは、お使いのデバイスと使用状況に関する一般的な情報（電池残量、システムやアプリのアクティビティ、エラーなど）です。この情報は Android の改善に使用され、統計情報の一部は、Brave アプリや、Android デベロッパーなどのパートナーが開発するアプリやサービスの品質改善にも役立てられます。</translation>
@@ -7100,6 +7160,7 @@
 <translation id="8756969031206844760">パスワードを更新しますか？</translation>
 <translation id="8757090071857742562">デスクトップをキャストできません。画面共有の開始を確認するメッセージで同意したかどうかを確認してください。</translation>
 <translation id="8757203080302669031">このタブでは Bluetooth デバイスのスキャンを実行中です。</translation>
+<translation id="8757368836647541092"><ph name="USER_NAME_OR_EMAIL"/> を削除しました</translation>
 <translation id="8758418656925882523">音声入力を有効にする</translation>
 <translation id="8759408218731716181">マルチログインを設定できません</translation>
 <translation id="8759753423332885148">詳細</translation>
@@ -7256,6 +7317,7 @@
 <translation id="3499452739340047976">ドラッグして Brave レンズで画像を検索</translation>
 <translation id="8909833622202089127">サイトで現在地が追跡されています</translation>
 <translation id="5849608398437058285">ブックマーク、履歴、パスワードなどの設定に行った変更は Brave アカウントと同期されなくなります。ただし、既存のデータは Brave アカウントに保存され、<ph name="BEGIN_LINK"/>Brave ダッシュボード<ph name="END_LINK"/>で管理できます。</translation>
+<translation id="8910987510378294980">デバイスリストを非表示にする</translation>
 <translation id="2684652081942622950">Brave アカウントを使用</translation>
 <translation id="8912793549644936705">拡大</translation>
 <translation id="8912810933860534797">自動スキャンを有効にする</translation>
@@ -7370,6 +7432,7 @@
 <translation id="9033765790910064284">続行</translation>
 <translation id="9033857511263905942">貼り付け(&amp;P)</translation>
 <translation id="903480517321259405">もう一度 PIN を入力してください</translation>
+<translation id="9037054491984310631"><ph name="DEVICE"/> という名前の Bluetooth デバイスに接続しました</translation>
 <translation id="9037640663275993951">デバイスは許可されていません</translation>
 <translation id="9037818663270399707">この接続ではすべてのネットワーク トラフィックのプライバシーが保護されません</translation>
 <translation id="9037965129289936994">原文のページを表示</translation>
@@ -7448,6 +7511,7 @@
 <translation id="3305719257762727419"><ph name="FILE_NAME"/> は危害を及ぼす可能性があります。Brave に送信してスキャンしますか？</translation>
 <translation id="9112987648460918699">検索...</translation>
 <translation id="9113240369465613386">奇数のページのみ</translation>
+<translation id="9113469270512809735">最近閉じたアイテムを切り替える</translation>
 <translation id="9114663181201435112">簡単にログイン</translation>
 <translation id="9115675100829699941">ブックマーク(&amp;B)</translation>
 <translation id="9116465289595958864">最終更新</translation>
@@ -7510,7 +7574,6 @@
 <translation id="917510707618656279">サイトから Bluetooth デバイスへのアクセスを求められたときに確認する</translation>
 <translation id="9176476835295860688">使用状況データや診断データを送信します。このデバイスは現在、診断データやデバイスとアプリの使用状況データを Brave に自動送信するように設定されています。この情報は、システムとアプリの安定性の向上やその他の機能の改善に役立てられます。また、Brave のアプリやパートナー（Android デベロッパーなど）も、集計データとしてこの情報を活用します。この<ph name="BEGIN_LINK1"/>設定<ph name="END_LINK1"/>は所有者によって管理されています。[その他のウェブとアプリのアクティビティ] の設定がオンになっている場合、このデータは Brave アカウントに保存されます。<ph name="BEGIN_LINK2"/>詳細<ph name="END_LINK2"/></translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> - Bluetooth デバイスに接続されています</translation>
-<translation id="9176817945195089764"><ph name="DOMAIN"/> は有効な組織ではありません。管理者にお問い合わせください。管理者の方は、g.co/BraveEnterpriseAccount で組織を設定していただけます。</translation>
 <translation id="9179524979050048593">ログイン画面のユーザー名</translation>
 <translation id="9180281769944411366">この処理には数分かかることがあります。Linux コンテナを起動します。</translation>
 <translation id="9180380851667544951">サイトに画面の共有が許可されています</translation>
@@ -7644,7 +7707,6 @@
 <translation id="6945695820322143954">この拡張機能は、ウェブストアのポリシーに違反しています。</translation>
 <translation id="1676595396635191120">新しいプライベートウィンドウ</translation>
 <translation id="5094764494104066239">ブックマーク バーを常に表示</translation>
-<translation id="3073689951164015877">プライベートモードで履歴は保存されません</translation>
 <translation id="5760418762676108038">新しいプライベートウィンドウ</translation>
 <translation id="5298187053819934487">プライベートモードを終了した後、サインイン情報はこのデバイスに保存されます。このデバイスで、もう一度このウェブサイトにサインインできます。</translation>
 <translation id="5186185447130319458">プライベート</translation>
@@ -7652,6 +7714,8 @@
 <translation id="1001131747196960052">プライベートウィンドウを閉じる</translation>
 <translation id="4466778299493212338">データをクリアするには、すべてのプライベートウィンドウを閉じます</translation>
 <translation id="3610571162330520499">プライベートウィンドウでのみ影響があります</translation>
+<translation id="1961291599064731706">プライベートモードでは、訪問サイトは保存されません</translation>
+<translation id="7070305978939333489">デバイスのプライベートモードの閲覧履歴をクリアするには、すべてのプライベートタブを閉じます</translation>
 <translation id="433830930456392967">{COUNT, plural,
           =0 {すべて&amp;プライベートウィンドウで開く}
           =1 {すべて&amp;プライベートウィンドウで開く}

@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">מניעת טעינת תוכנות מעקב ופרסומות</translation>
 <translation id="1680858055899097121">אל תשמר כרטיסיות בין הפעלות גלישה</translation>
 <translation id="7142548388914389999">אפשר ניתוח מוצרים השומר על פרטיות (P3A)</translation>
-<translation id="5254037869598726291">המידע הזה הוא אנונימי לחלוטין ומסייע ל-Brave להעריך את השימוש הכולל בתכונות מסוימות, כדי לשפר את חוויית המשתמש.</translation>
+<translation id="4272190451231642425">שלח דוחות קריסה באופן אוטומטי</translation>
+<translation id="2239766974964486304">דוחות קריסה עוזרים ל-Brave לשפר את יציבות המוצר עבור כל המשתמשים.</translation>
 <translation id="7977176350719484850">הערכת נתונים/n שנשמרו</translation>
 <translation id="9008534313521214777">זמן מוערך\n שנשמר</translation>
 <translation id="6572660632052512096">מצב שולחן עבודה</translation>
@@ -373,12 +374,12 @@
 <translation id="7427567994475794038">הפעילו דוחות פרטיות כדי לראות כמה עוקבים &amp; פרסומות נחסמו ב-3 השעות האחרונות.</translation>
 <translation id="2053891538879944400">חסכתם <ph name="DATA"/> <ph name="DATA_TEXT"/> נתונים עם דפדפן Brave.</translation>
 <translation id="8640064498452534195">הפעילו דוחות פרטיות כדי לראות כמה נתונים חסכתם.</translation>
-<translation id="2252497442547961651">הדפדפן Brave משתמש בממוצא ב-40% פחות סוללה.&#128267;</translation>
+<translation id="2252497442547961651">הדפדפן Brave משתמש בממוצא ב-40% פחות סוללה.🔋</translation>
 <translation id="1945330434665345785">חסמתם <ph name="COUNT"/> עוקבים &amp; פרסומות עם דפדפן Brave בשבוע האחרון.</translation>
 <translation id="2883868922264431515">הרוויחו טוקנים על ידי הצגת מודעות השומרות על הפרטיות ותמכו באתרים האהובים עליכם.</translation>
-<translation id="5678925890616256956">יפה! חסמת 250 עוקבים ופרסומות amp;amp; באמצעות הדפדפן Brave.&#128293;</translation>
-<translation id="9199047775708635708">יפה! חסכת 10MB באמצעות הדפדפן Brave.&#128267;</translation>
-<translation id="1880168210969863408">יפה! חסכת 10 דקות של זמן טעינה באמצעות הדפדפן Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">יפה! חסמת 250 עוקבים ופרסומות amp;amp; באמצעות הדפדפן Brave.🔥</translation>
+<translation id="9199047775708635708">יפה! חסכת 10MB באמצעות הדפדפן Brave.🔋</translation>
+<translation id="1880168210969863408">יפה! חסכת 10 דקות של זמן טעינה באמצעות הדפדפן Brave.💨💨</translation>
 <translation id="7408493389591475748">התחל לגלוש כדי לראות דוחות פרטיות</translation>
 <translation id="9080777565335515917">הגדירו את Brave כדפדפן ברירת המחדל שלכם לגלישה פרטית ומאובטחת.</translation>
 <translation id="1390943217516275883">מאפשר ל-Brave להציג את סטטיסטיקת הפרטיות שלכם</translation>
@@ -481,7 +482,7 @@
 <translation id="1078265935778232285">ברוכים הבאים לדפדפן Brave</translation>
 <translation id="6824713633331856331">עזרו לנו ללמוד באופן אנונימי</translation>
 <translation id="6116685031674149112">Brave מגן על פרטיותכם\nומעריך את הסכמתכם לדברים הבאים:</translation>
-<translation id="4394483075076204916">עזרו לשפר את Brave על ידי שליחת דוחות קריסה ואנונימי לחלוטין, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">עזור לנו לשפר את Brave על ידי שליחת <ph name="PRIVATE_PRODUCT_ANALYSIS"/> אנונימי לחלוטין</translation>
 <translation id="6478996494082389936">אנליטיקס מוצר פרטי.</translation>
 <translation id="5187052478998910855">זקוקים לרענון לגבי Rewards?</translation>
 <translation id="8622329973403382303">ערכו סיור מהיר כדי לרענן ידיעתכם לגבי איך זה עובד להיכנס להיסטוריה בתור כוכב רוק של Rewards!</translation>
@@ -564,7 +565,6 @@
 <translation id="1144810021918451336">אינו מגן מפני אתרים הורדות והרחבות שעלולים לסכן אותך.</translation>
 <translation id="745115390910697838">ביטויים לא תואמים, יש לנסות שוב.</translation>
 <translation id="2360588547830602174">שחזור חשבון נכשלה. נסה שוב.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">מחיר השוק ב- ETH</translation>
 <translation id="5593852897152820572">מחיר ב- ETH</translation>
 <translation id="6748108480210050150">מאת</translation>
@@ -598,4 +598,7 @@
 <translation id="8967036623785635603">ערוך נכסים גלויים</translation>
 <translation id="5050890334032852465">שמור רשימת צפייה של החשבון</translation>
 <translation id="7755766175599167100">חפש אסימונים</translation>
+<translation id="3835223348537121988">יתרה:</translation>
+<translation id="5254037869598726291">המידע הזה הוא אנונימי לחלוטין ומסייע ל-Brave להעריך את השימוש הכולל בתכונות מסוימות, כדי לשפר את חוויית המשתמש.</translation>
+<translation id="1530109021798294736">Mainnet</translation>
 </translationbundle>

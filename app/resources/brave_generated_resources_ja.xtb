@@ -210,7 +210,6 @@
 <translation id="6476061084931271248">変更を適用するにはノードを再起動します</translation>
 <translation id="3754226427671882382">ノードを再起動</translation>
 <translation id="949667118776341807">ローテーション</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">この名前は無効です</translation>
 <translation id="6758961763875471084">ピアリストを修正</translation>
 <translation id="1295874070797049002">キーのエクスポート</translation>
@@ -241,6 +240,7 @@
 <translation id="8655170717758778983">可能な場合は、DNSLink経由でIPFSページに自動的にリダイレクトする</translation>
 <translation id="2233724520223030977">可能な場合、DNSLinkを自動的に使用してウェブサイトのIPFSバージョンに移動する</translation>
 <translation id="6554397389149987360">ハングアウトコンポーネントでスクリーン共有やその他の機能を有効にします</translation>
+<translation id="7878791177459550035">メディアルーターは、ブラウザのキャスト機能を有効にします。</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="8068526464562249859">ブラウザーバーからの一般的なIPFSタスクにアクセスするなど、BraveでのIPFSサポートを強化するために「IPFS Companion」拡張機能を使用します。</translation>
@@ -351,7 +351,23 @@
 <ph name="BEGIN_LINK_SOURCE_CODE"/>このコピーの作成に使われた特定のソースコード<ph name="END_LINK_SOURCE_CODE"/>を<ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ダウンロードして、自分で構築する方法については説明書<ph name="END_LINK_BUILD_INSTRUCTIONS"/>をお読みください。</translation>
 <translation id="4474155171896946103">すべてのタブをブックマークに追加...</translation>
 <translation id="2336228925368920074">すべてのタブをブックマークに追加...</translation>
+<translation id="4235920711083356755">VPNボタンを表示</translation>
+<translation id="4070612712151038707">ツールバーにVPNボタンを表示します</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Brave VPNについて</translation>
+<translation id="4378551569595875038">Connecting...</translation>
+<translation id="3368922792935385530">接続済み</translation>
+<translation id="1536754031901697553">切断しています...</translation>
+<translation id="8030169304546394654">切断されました</translation>
+<translation id="1863950594388384201">ツールバーにVPNボタンを表示</translation>
+<translation id="5187139277471084437">ツールバーにVPNボタンを非表示</translation>
+<translation id="8041089156583427627">フィードバックを送信</translation>
+<translation id="4049186905514157504">プランの管理</translation>
+<translation id="7570585565843385325">ツールバーにVPNボタンを表示</translation>
+<translation id="5310426188697803101">ツールバーにVPNボタンを非表示</translation>
+<translation id="945522503751344254">フィードバックを送信</translation>
+<translation id="3015685033234401792">プランの管理</translation>
 <translation id="796831669370432378">ブックマークを追加するには、アドレスバーの横にあるブックマークボタンをクリックしてください</translation>
 <translation id="4989337484121655457">フルディスクアクセスが必要です</translation>
 <translation id="8025559074845816210">Safariからあなたのブックマークをインポートするために、Braveは「フルディスクアクセス」が必要です。</translation>
@@ -363,4 +379,5 @@
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="2273851479262317744">Braveをデフォルトのブラウザとして設定</translation>
 <translation id="8581710194025054669">オンラインでのプライバシーを確保するには、Braveをコンピューターのデフォルトブラウザとして設定しましょう。Braveをデフォルトにすると、クリックしたすべてのウェブリンクがBraveでプライバシー保護されて開きます。</translation>
+<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 </translationbundle>

@@ -101,7 +101,6 @@
 <translation id="9183662282810237335">Želite li ipak zatvoriti Brave?</translation>
 <translation id="4065288863231444640">Neka Brave radi u pozadini</translation>
 <translation id="8148611988012584308">Prilagodite Brave i upravljajte njime</translation>
-<translation id="1201005444605297066">Na ovoj stranici možete upravljati Brave računima na koje ste prijavljeni. Ti će računi biti dostupni u aplikacijama preglednika Brave i Trgovine Play te na uslugama kao što su Gmail, Disk i YouTube. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Dobro došli u Brave; otvorio se novi prozor preglednika</translation>
 <translation id="2633397153656205379">Brave se nije ažurirao zbog pogreške. <ph name="BEGIN_LINK"/>Riješite probleme s ažuriranjem i neuspjela ažuriranja Bravea.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Želite li nastaviti na novom profilu u Braveu?</translation>
@@ -247,6 +246,7 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="2925193881330501265">Bili ste prijavljeni na Brave kao <ph name="USER_EMAIL_ADDRESS"/>. Prijavite se ponovo istim računom.</translation>
 <translation id="6915252145142862992">Ovo je sekundarna instalacija Bravea, pa on ne može biti vaš zadani preglednik.</translation>
 <translation id="7685904775439037072">Kada Brave dobije pristup, web-lokacije će vas moći tražiti pristup.</translation>
+<translation id="828406390101464081">Računi u nastavku nisu prijavljeni ni na jedan Brave profil. Ako želite koristiti račun na drugom profilu, prvo uklonite taj profil.</translation>
 <translation id="9067428552314418522">Datoteka je opasna i Brave ju je blokirao.</translation>
 <translation id="8207657266087451193">Ako slika nema koristan opis, Brave će ga pokušati pružiti. Da bi se izradili opisi, slike se šalju Braveu. To možete isključiti u bilo kojem trenutku u postavkama.</translation>
 <translation id="8622246347342688645">Brave ne može provjeriti vaše zaporke jer niste prijavljeni</translation>
@@ -296,4 +296,5 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Vaš administrator traži da ponovno pokrenete Brave radi primjene tog ažuriranja}=1{Vaš administrator traži da ponovno pokrenete Brave radi primjene tog ažuriranja. Anonimni se prozor neće ponovno otvoriti.}one{Vaš administrator traži da ponovno pokrenete Brave radi primjene tog ažuriranja. Vaš # anonimni prozor neće se ponovno otvoriti.}few{Vaš administrator traži da ponovno pokrenete Brave radi primjene tog ažuriranja. Vaša # anonimna prozora neće se ponovno otvoriti.}other{Vaš administrator traži da ponovno pokrenete Brave radi primjene tog ažuriranja. Vaših # anonimnih prozora neće se ponovno otvoriti.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Vaš administrator zahtijeva da ponovno pokrenete Brave radi primjene ažuriranja}=1{Vaš administrator zahtijeva da ponovno pokrenete Brave radi primjene ažuriranja. Anonimni se prozor neće ponovno otvoriti.}one{Vaš administrator zahtijeva da ponovno pokrenete Brave radi primjene ažuriranja. Vaš # anonimni prozor neće se ponovno otvoriti.}few{Vaš administrator zahtijeva da ponovno pokrenete Brave radi primjene ažuriranja. Vaša # anonimna prozora neće se ponovno otvoriti.}other{Vaš administrator zahtijeva da ponovno pokrenete Brave radi primjene ažuriranja. Vaših # anonimnih prozora neće se ponovno otvoriti.}}</translation>
 <translation id="7914115000169617076">Ažuriranje je skoro gotovo! Ponovo pokrenite Brave da biste završili ažuriranje. Privatni se prozori neće se ponovno otvoriti.</translation>
+<translation id="2176087127109773485">Možete upravljati svojim prijavljenim sinkroniziranim lancima Brave. Vaši sinkronizirani lanci Brave upotrebljavaju se za preglednik Brave, trgovinu Play Store, uslugu Gmail i više. Ako želite dodati račun za nekog drugog kao primjerice člana obitelji, dodajte novi profil svom <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Saznaj više<ph name="LINK_END"/></translation>
 </translationbundle>
