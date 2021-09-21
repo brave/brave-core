@@ -19,13 +19,12 @@ if (App !== undefined) {
   // don't need to pay the loading cost on each page.
   chrome.tabs.onUpdated.addListener((tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
     if (tab.id) {
-      const isEnabled = APP.modules['web-discovery-project'].isEnabled
       const urlMatches = (): boolean => {
         const url = tab.url || tab.pendingUrl || ''
         return url ? !/chrome:\/\//.test(url) : false
       }
       // We inject on `complete` since multiple `loading` events can fire.
-      if (isEnabled && changeInfo.status === 'complete' && urlMatches()) {
+      if (APP.isRunning && (changeInfo.status === 'complete') && urlMatches()) {
         chrome.tabs.executeScript(tab.id, {
           file: 'bundles/web-discovery-content-script.bundle.js',
           matchAboutBlank: false,
