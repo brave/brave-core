@@ -97,7 +97,7 @@ export const addFunds = styled.div`
   button {
     background: rgba(255, 255, 255, 0.24);
 
-    &:active {
+    &:hover {
       background: rgba(255, 255, 255, 0.30);
     }
   }
@@ -114,10 +114,6 @@ export const addFunds = styled.div`
 export const viewStatement = styled.div`
   button {
     padding: 6px 13px;
-
-    &:active {
-      background: rgba(255, 255, 255, 0.05);
-    }
   }
 
   .icon {

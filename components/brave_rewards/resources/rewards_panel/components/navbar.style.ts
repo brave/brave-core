@@ -61,6 +61,10 @@ export const root = styled.div`
     .selected button {
       color: var(--brave-palette-blurple400);
     }
+
+    button[disabled] {
+      color: inherit;
+    }
   }
 `
 
