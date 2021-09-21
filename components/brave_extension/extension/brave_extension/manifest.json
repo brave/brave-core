@@ -55,18 +55,10 @@
       ],
       "run_at": "document_start",
       "all_frames": true
-    },
-    {
-      "matches": [
-        "*://*/*"
-      ],
-      "run_at": "document_start",
-      "js": [
-        "bundles/web-discovery-content-script.bundle.js"
-      ]
     }
   ],
   "permissions": [
+    "activeTab",
     "alarms",
     "contentSettings",
     "contextMenus",
