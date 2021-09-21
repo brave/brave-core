@@ -15,7 +15,6 @@ source_set("factory") {
   deps = [
     "//base",
     "//brave/components/brave_wallet/browser",
-    "//brave/components/brave_wallet/common/buildflags",
     "//components/user_prefs",
   ]
 }

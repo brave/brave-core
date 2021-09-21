@@ -12,6 +12,7 @@
 #include "brave/components/brave_wallet/factory/eth_tx_controller_factory_helper.h"
 #include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
+#include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
