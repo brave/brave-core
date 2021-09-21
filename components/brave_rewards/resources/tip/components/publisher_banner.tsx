@@ -19,8 +19,7 @@ import {
   PublisherStatus,
   ExternalWalletInfo,
   ExternalWalletStatus,
-  MediaMetaData,
-  BalanceInfo
+  MediaMetaData
 } from '../lib/interfaces'
 
 import { HostContext } from '../lib/host_context'
@@ -162,11 +161,12 @@ function getVerifiedIcon (publisherInfo: PublisherInfo) {
 
 function showUnverifiedNotice (
   publisherInfo: PublisherInfo,
-  balanceInfo?: BalanceInfo,
   externalWalletInfo?: ExternalWalletInfo
 ) {
-  // Show the notice if the publisher is not registered
-  if (publisherInfo.status === PublisherStatus.NOT_VERIFIED) {
+  // Show the notice if the publisher is not registered, or if the publisher
+  // does not have a verified payment address
+  if (publisherInfo.status === PublisherStatus.NOT_VERIFIED ||
+      publisherInfo.status === PublisherStatus.CONNECTED) {
     return true
   }
 
@@ -192,28 +192,22 @@ function showUnverifiedNotice (
       return externalWalletInfo.type !== 'gemini'
   }
 
-  // Show the notice if the user does not have any brave funds
-  const hasBraveFunds = Boolean(balanceInfo && (
-    balanceInfo.wallets['anonymous'] ||
-    balanceInfo.wallets['blinded']))
-
-  return !hasBraveFunds
+  return false
 }
 
 function getUnverifiedNotice (
   locale: Locale,
   publisherInfo: PublisherInfo,
-  balanceInfo: BalanceInfo | undefined,
   walletInfo: ExternalWalletInfo | undefined
 ) {
-  if (!showUnverifiedNotice(publisherInfo, balanceInfo, walletInfo)) {
+  if (!showUnverifiedNotice(publisherInfo, walletInfo)) {
     return null
   }
 
   const { getString } = locale
 
-  const text = getString(publisherInfo.status === PublisherStatus.CONNECTED
-    ? 'siteBannerConnectedText'
+  const text = getString(publisherInfo.status === PublisherStatus.NOT_VERIFIED
+    ? 'siteBannerNoticeNotRegistered'
     : 'siteBannerNoticeText')
 
   return (
@@ -330,15 +324,12 @@ export function PublisherBanner () {
 
   const [publisherInfo, setPublisherInfo] = React.useState(
     host.state.publisherInfo)
-  const [balanceInfo, setBalanceInfo] = React.useState(
-    host.state.balanceInfo)
   const [walletInfo, setWalletInfo] = React.useState(
     host.state.externalWalletInfo)
 
   React.useEffect(() => {
     return host.addListener((state) => {
       setPublisherInfo(state.publisherInfo)
-      setBalanceInfo(state.balanceInfo)
       setWalletInfo(state.externalWalletInfo)
     })
   }, [host])
@@ -377,7 +368,7 @@ export function PublisherBanner () {
           <style.socialLinks>
             {getSocialLinks(publisherInfo)}
           </style.socialLinks>
-          {getUnverifiedNotice(locale, publisherInfo, balanceInfo, walletInfo)}
+          {getUnverifiedNotice(locale, publisherInfo, walletInfo)}
           <style.title>
             {getTitle(locale, publisherInfo, mediaMetaData)}
           </style.title>
