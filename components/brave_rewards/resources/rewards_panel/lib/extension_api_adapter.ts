@@ -154,7 +154,8 @@ export function getRewardsSummaryData () {
         adEarnings: balanceReport.ads,
         autoContributions: balanceReport.contribute,
         oneTimeTips: balanceReport.tips,
-        monthlyTips: balanceReport.monthly
+        monthlyTips: balanceReport.monthly,
+        pendingTips: 0
       })
     })
   })

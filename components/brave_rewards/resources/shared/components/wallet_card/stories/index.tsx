@@ -40,7 +40,8 @@ export function Wallet () {
     adEarnings: 10,
     autoContributions: 10,
     oneTimeTips: -2,
-    monthlyTips: -19
+    monthlyTips: -19,
+    pendingTips: 8
   }
 
   const externalWallet: ExternalWallet = {
@@ -68,6 +69,7 @@ export function Wallet () {
             showSummary={knobs.boolean('Show Summary', true)}
             summaryData={summaryData}
             onExternalWalletAction={actionLogger('onExternalWalletAction')}
+            onViewPendingTips={actionLogger('onViewPendingTips')}
             onViewStatement={actionLogger('onViewStatement')}
           />
         </div>
