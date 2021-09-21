@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_VIEW_H_
-#define BRAVE_BROWSER_UI_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_VIEW_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_VIEW_H_
 
 #include <string>
 
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
-#include "brave/browser/ui/brave_tooltips/brave_tooltip_label_button.h"
+#include "brave/browser/ui/views/brave_tooltips/brave_tooltip_label_button.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/view.h"
 
@@ -96,4 +96,4 @@ class BraveTooltipView : public views::View {
 
 }  // namespace brave_tooltips
 
-#endif  // BRAVE_BROWSER_UI_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_VIEW_H_

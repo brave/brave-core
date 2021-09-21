@@ -9,55 +9,20 @@ import("//testing/test.gni")
 import("//ui/base/ui_features.gni")
 
 source_set("brave_tooltips") {
-  deps = [ "//base" ]
-
   sources = [
+    "bounds_util.cc",
+    "bounds_util.h",
     "brave_tooltip.cc",
     "brave_tooltip.h",
     "brave_tooltip_attributes.cc",
     "brave_tooltip_attributes.h",
+    "brave_tooltip_delegate.h",
+    "brave_tooltip_popup_handler.h",
   ]
 
-  if (is_win || is_linux || is_mac) {
-    deps += [
-      "//brave/app:brave_generated_resources_grit",
-      "//brave/app/vector_icons",
-      "//brave/browser/profiles:util",
-      "//components/prefs",
-      "//skia",
-      "//ui/accessibility",
-      "//ui/base",
-      "//ui/compositor",
-      "//ui/display",
-      "//ui/gfx",
-      "//ui/native_theme",
-      "//ui/views",
-    ]
-
-    if (is_win) {
-      deps += [
-        "//ui/aura",
-        "//ui/wm/public",
-      ]
-    }
-
-    sources += [
-      "bounds_util.cc",
-      "bounds_util.h",
-      "brave_tooltip_delegate.h",
-      "brave_tooltip_label_button.cc",
-      "brave_tooltip_label_button.h",
-      "brave_tooltip_popup.cc",
-      "brave_tooltip_popup.h",
-      "brave_tooltip_view.cc",
-      "brave_tooltip_view.h",
-    ]
-
-    if (is_mac) {
-      frameworks = [
-        "AppKit.framework",
-        "Foundation.framework",
-      ]
-    }
-  }
+  deps = [
+    "//base",
+    "//ui/display",
+    "//ui/gfx",
+  ]
 }

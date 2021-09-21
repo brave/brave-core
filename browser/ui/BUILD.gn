@@ -302,7 +302,10 @@ source_set("ui") {
   ]
 
   if (toolkit_views) {
-    deps += [ "//brave/browser/ui/views/brave_ads" ]
+    deps += [
+      "//brave/browser/ui/views/brave_ads",
+      "//brave/browser/ui/views/brave_tooltips",
+    ]
   }
 
   # This is no longer compiled into Chromium on Android, but we still

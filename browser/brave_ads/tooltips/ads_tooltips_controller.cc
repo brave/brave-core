@@ -8,8 +8,9 @@
 #include <memory>
 #include <utility>
 
+#include "brave/browser/brave_ads/tooltips/ads_captcha_tooltip.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_attributes.h"
-#include "brave/browser/ui/brave_tooltips/brave_tooltip_popup.h"
+#include "brave/browser/ui/brave_tooltips/brave_tooltip_popup_handler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -49,27 +50,17 @@ void AdsTooltipsController::ShowCaptchaTooltip(
   // handler
   captcha_tooltip->set_delegate(AsWeakPtr());
 
-  const std::string tooltip_id = captcha_tooltip->id();
-  DCHECK(!tooltip_popups_[tooltip_id]);
-  tooltip_popups_[tooltip_id] = new brave_tooltips::BraveTooltipPopup(
-      profile_, std::move(captcha_tooltip));
+  brave_tooltips::BraveTooltipPopupHandler::Show(profile_,
+                                                 std::move(captcha_tooltip));
 }
 
 void AdsTooltipsController::CloseCaptchaTooltip() {
-  if (!tooltip_popups_[kScheduledCaptchaTooltipId]) {
-    return;
-  }
-
-  tooltip_popups_[kScheduledCaptchaTooltipId]->Close(false);
+  brave_tooltips::BraveTooltipPopupHandler::Close(kScheduledCaptchaTooltipId);
 }
 
 void AdsTooltipsController::OnTooltipWidgetDestroyed(
     const std::string& tooltip_id) {
-  DCHECK(!tooltip_id.empty());
-
-  // Note: The pointed-to BraveTooltipPopup members are deallocated by their
-  // containing Widgets
-  tooltip_popups_.erase(tooltip_id);
+  brave_tooltips::BraveTooltipPopupHandler::Destroy(kScheduledCaptchaTooltipId);
 }
 
 }  // namespace brave_ads

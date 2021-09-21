@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_LABEL_BUTTON_H_
-#define BRAVE_BROWSER_UI_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_LABEL_BUTTON_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_LABEL_BUTTON_H_
+#define BRAVE_BROWSER_UI_VIEWS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_LABEL_BUTTON_H_
+
+#include <string>
 
 #include "ui/views/controls/button/label_button.h"
 
@@ -30,4 +32,4 @@ class BraveTooltipLabelButton : public views::LabelButton {
 
 }  // namespace brave_tooltips
 
-#endif  // BRAVE_BROWSER_UI_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_LABEL_BUTTON_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_LABEL_BUTTON_H_
