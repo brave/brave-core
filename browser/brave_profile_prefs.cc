@@ -328,7 +328,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(kERCPrefVersion, 0);
   registry->RegisterStringPref(kERCAES256GCMSivNonce, "");
   registry->RegisterStringPref(kERCEncryptedSeed, "");
-  registry->RegisterBooleanPref(kERCLoadCryptoWalletsOnStartup, false);
   registry->RegisterBooleanPref(kERCOptedIntoCryptoWallets, false);
 #endif
 

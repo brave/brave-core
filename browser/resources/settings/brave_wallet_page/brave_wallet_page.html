@@ -33,18 +33,6 @@
       </settings-dropdown-menu>
     </div>
 <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
-    <settings-toggle-button id="braveWalletEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.load_on_startup}}"
-        label="$i18n{loadCryptoWalletsOnStartupDescDeprecated}">
-</template>
-<template is="dom-if" if="[[!isNativeWalletEnabled_]]" restamp>
-    <settings-toggle-button id="braveWalletEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.load_on_startup}}"
-        label="$i18n{loadCryptoWalletsOnStartupDesc}">
-</template>
-<template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
     <settings-toggle-button id="showBraveWalletIconOnToolbar"
         class="cr-row"
         pref="{{prefs.brave.wallet.show_wallet_icon_on_toolbar}}"
