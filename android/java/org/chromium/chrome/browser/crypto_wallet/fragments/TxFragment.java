@@ -66,7 +66,7 @@ public class TxFragment extends Fragment {
 
         TextView gasFeeAmount = view.findViewById(R.id.gas_fee_amount);
         gasFeeAmount.setText(
-                String.format("%.8f", Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice)));
+                String.format("%.8f", Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice)) + " ETH");
         TextView totalAmount = view.findViewById(R.id.total_amount);
         totalAmount.setText(String.format("%.8f", Utils.fromHexWei(mTxInfo.txData.baseData.value))
                 + " " + mAsset + " + "

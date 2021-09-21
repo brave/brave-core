@@ -343,9 +343,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 TextView fromValueText = findViewById(R.id.from_value_text);
                 String value = fromValueText.getText().toString();
                 // TODO(sergz): Some kind of validation that we have enough balance
-                // TODO(sergz): Get gas price
-                TxData data = Utils.getTxData(
-                        "0x1", "0x20000000000", "0xFDE8", to, Utils.toHexWei(value), new byte[0]);
+                TxData data =
+                        Utils.getTxData("0x1", "", "", to, Utils.toHexWei(value), new byte[0]);
                 Spinner accountSpinner = findViewById(R.id.accounts_spinner);
                 String from = mCustomAccountAdapter.getTitleAtPosition(
                         accountSpinner.getSelectedItemPosition());
