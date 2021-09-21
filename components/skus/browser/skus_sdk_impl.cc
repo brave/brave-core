@@ -59,15 +59,20 @@ namespace brave_rewards {
 // }
 
 SkusSdkImpl::SkusSdkImpl(PrefService* prefs) {
-  // TODO: fill me in...
+  // TODO: fill me in
 }
 
-void SkusSdkImpl::StartRefreshOrder(uint32_t order_id) {
+void SkusSdkImpl::RefreshOrder(uint32_t order_id,
+                               RefreshOrderCallback callback) {
   LOG(ERROR) << "BSC]] LOL INSIDE THE BROWSER PROCESS! ORDERID=" << order_id;
+
+  // TODO: fill me in
+
+  std::move(callback).Run("{\"demo\":\"true\"}");
 }
 
-void SkusSdkImpl::StartFetchOrderCredentials(uint32_t order_id) {
-
+void SkusSdkImpl::FetchOrderCredentials(uint32_t order_id) {
+  // TODO: fill me in
 }
 
 } // namespace brave_rewards

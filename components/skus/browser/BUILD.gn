@@ -15,5 +15,6 @@ static_library("browser") {
 
   deps = [
     "//brave/components/skus/common:mojom",
+    "//components/prefs",
   ]
 }

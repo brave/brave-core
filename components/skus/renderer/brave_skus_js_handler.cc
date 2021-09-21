@@ -22,8 +22,7 @@
 
 namespace brave_rewards {
 
-BraveSkusJSHandler::BraveSkusJSHandler(
-    content::RenderFrame* render_frame)
+BraveSkusJSHandler::BraveSkusJSHandler(content::RenderFrame* render_frame)
     : render_frame_(render_frame) {}
 
 BraveSkusJSHandler::~BraveSkusJSHandler() = default;
@@ -49,16 +48,14 @@ void BraveSkusJSHandler::AddJavaScriptObjectToFrame(
   BindFunctionsToObject(isolate, context);
 }
 
-void BraveSkusJSHandler::ResetRemote(
-    content::RenderFrame* render_frame) {
+void BraveSkusJSHandler::ResetRemote(content::RenderFrame* render_frame) {
   render_frame_ = render_frame;
   skus_sdk_.reset();
   EnsureConnected();
 }
 
-void BraveSkusJSHandler::BindFunctionsToObject(
-    v8::Isolate* isolate,
-    v8::Local<v8::Context> context) {
+void BraveSkusJSHandler::BindFunctionsToObject(v8::Isolate* isolate,
+                                               v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Object> brave_obj;
   v8::Local<v8::Value> brave_value;
@@ -73,9 +70,8 @@ void BraveSkusJSHandler::BindFunctionsToObject(
   }
   BindFunctionToObject(
       isolate, brave_obj, "refresh_order",
-      base::BindRepeating(
-          &BraveSkusJSHandler::RefreshOrder,
-          base::Unretained(this), isolate));
+      base::BindRepeating(&BraveSkusJSHandler::RefreshOrder,
+                          base::Unretained(this), isolate));
 }
 
 template <typename Sig>
@@ -93,23 +89,47 @@ void BraveSkusJSHandler::BindFunctionToObject(
       .Check();
 }
 
-
-void BraveSkusJSHandler::RefreshOrder(
-    v8::Isolate* isolate) {
+v8::Local<v8::Promise> BraveSkusJSHandler::RefreshOrder(v8::Isolate* isolate,
+                                                        uint32_t order_id) {
   if (!EnsureConnected())
-    return;
-  auto* web_frame = render_frame_->GetWebFrame();
-  // Prevent site from calling this in response to a DOM event or Timer.
-  if (web_frame->HasTransientUserActivation()) {
-    // TODO: get real argument
-    skus_sdk_->StartRefreshOrder(123);
-  } else {
-    blink::WebString message =
-        "setIsDefaultSearchProvider: "
-        "API can only be initiated by a user gesture.";
-    web_frame->AddMessageToConsole(blink::WebConsoleMessage(
-        blink::mojom::ConsoleMessageLevel::kWarning, message));
+    return v8::Local<v8::Promise>();
+
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+  if (resolver.IsEmpty()) {
+    return v8::Local<v8::Promise>();
   }
+
+  auto promise_resolver(
+      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
+  auto context_old(
+      v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+
+  skus_sdk_->RefreshOrder(
+      order_id,
+      base::BindOnce(&BraveSkusJSHandler::OnRefreshOrder,
+                     base::Unretained(this), std::move(promise_resolver),
+                     isolate, std::move(context_old)));
+
+  return resolver.ToLocalChecked()->GetPromise();
+}
+
+void BraveSkusJSHandler::OnRefreshOrder(
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    v8::Global<v8::Context> context_old,
+    const std::string& response) {
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = context_old.Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
+  v8::Local<v8::String> result;
+  result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+
+  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
 }
 
 }  // namespace brave_rewards

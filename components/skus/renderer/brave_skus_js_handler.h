@@ -17,7 +17,6 @@
 #include "url/gurl.h"
 #include "v8/include/v8.h"
 
-
 namespace brave_rewards {
 
 class BraveSkusJSHandler {
@@ -43,7 +42,11 @@ class BraveSkusJSHandler {
   bool EnsureConnected();
 
   // A function to be called from JS
-  void RefreshOrder(v8::Isolate* isolate);
+  v8::Local<v8::Promise> RefreshOrder(v8::Isolate* isolate, uint32_t order_id);
+  void OnRefreshOrder(v8::Global<v8::Promise::Resolver> promise_resolver,
+                      v8::Isolate* isolate,
+                      v8::Global<v8::Context> context_old,
+                      const std::string& response);
 
   content::RenderFrame* render_frame_;
   mojo::Remote<skus::mojom::SkusSdk> skus_sdk_;
