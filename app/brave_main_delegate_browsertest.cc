@@ -102,6 +102,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kIdleDetection,
     &features::kNotificationTriggers,
     &features::kPrivacySandboxSettings2,
+#if !defined(OS_ANDROID)
+    &features::kSettingsLandingPageRedesign,
+#endif
     &features::kSignedExchangePrefetchCacheForNavigations,
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,
