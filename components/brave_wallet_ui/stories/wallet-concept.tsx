@@ -650,7 +650,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             {needsOnboarding ?
               (
                 <Onboarding
-                  hasImportError={hasPasswordError}
+                  hasImportError={importError}
                   recoveryPhrase={recoveryPhrase}
                   onSubmit={completeWalletSetup}
                   onPasswordProvided={passwordProvided}
@@ -659,6 +659,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                   metaMaskWalletDetected={true}
                   onImportMetaMask={onImportWallet}
                   onImportBraveLegacy={onImportWallet}
+                  onSetImportError={onSetImportError}
                 />
               ) : (
                 <>

@@ -13,6 +13,7 @@ export interface Props {
   metaMaskWalletDetected: boolean
   braveLegacyWalletDetected: boolean
   hasImportError: boolean
+  onSetImportError: (hasError: boolean) => void
   onPasswordProvided: (password: string) => void
   onImportMetaMask: (password: string) => void
   onImportBraveLegacy: (password: string) => void
@@ -26,6 +27,7 @@ function Onboarding (props: Props) {
     metaMaskWalletDetected,
     braveLegacyWalletDetected,
     hasImportError,
+    onSetImportError,
     onPasswordProvided,
     onSubmit,
     onShowRestore,
@@ -66,6 +68,9 @@ function Onboarding (props: Props) {
   }
 
   const handlePasswordChanged = (value: string) => {
+    if (hasImportError) {
+      onSetImportError(false)
+    }
     setPassword(value)
   }
 

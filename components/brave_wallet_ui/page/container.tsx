@@ -641,13 +641,12 @@ function Container (props: Props) {
               onPasswordProvided={passwordProvided}
               onSubmit={completeWalletSetup}
               onShowRestore={onToggleShowRestore}
-              // Pass a boolean if either wallet is detected
               braveLegacyWalletDetected={isBraveCryptoWalletInstalled}
               metaMaskWalletDetected={isMetamaskInstalled}
-              // Pass a boolean if it failed to import
-              hasImportError={false}
+              hasImportError={importError}
               onImportBraveLegacy={onImportBraveLegacy}
               onImportMetaMask={onImportMetaMask}
+              onSetImportError={onSetImportError}
             />
           </Route>
           <Route path={WalletRoutes.Unlock} exact={true}>
