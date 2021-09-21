@@ -49,6 +49,7 @@ import org.chromium.mojo.system.MojoException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class BuySendSwapActivity extends AsyncInitializationActivity
@@ -229,7 +230,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             TextView fromBalanceText = findViewById(R.id.from_balance_text);
             mConvertedBalance = Utils.fromHexWei(balance);
             fromBalanceText.setText(getText(R.string.crypto_wallet_balance) + " "
-                    + String.format("%.4f", mConvertedBalance));
+                    + String.format(Locale.getDefault(), "%.4f", mConvertedBalance));
         });
     }
 
@@ -378,7 +379,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 }
 
                 TextView fromValueText = findViewById(R.id.from_value_text);
-                fromValueText.setText(String.format("%f", amountToGet));
+                fromValueText.setText(String.format(Locale.getDefault(), "%f", amountToGet));
                 radioPerPercent.clearCheck();
             }
         });

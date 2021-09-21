@@ -27,6 +27,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.ViewHolder> {
     public enum AdapterType {
@@ -184,10 +185,10 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         if (text.isEmpty()) {
             walletListItemModelList.addAll(walletListItemModelListCopy);
         } else {
-            text = text.toLowerCase();
+            text = text.toLowerCase(Locale.getDefault());
             for (WalletListItemModel item : walletListItemModelListCopy) {
-                if (item.getTitle().toLowerCase().contains(text)
-                        || item.getSubTitle().toLowerCase().contains(text)) {
+                if (item.getTitle().toLowerCase(Locale.getDefault()).contains(text)
+                        || item.getSubTitle().toLowerCase(Locale.getDefault()).contains(text)) {
                     walletListItemModelList.add(item);
                 }
             }

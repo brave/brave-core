@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class SmoothLineChartEquallySpaced extends View {
@@ -85,7 +86,7 @@ public class SmoothLineChartEquallySpaced extends View {
         for (int index = 0; index < data.length; index++) {
             mValues[index] = Float.parseFloat(data[index].price);
             Date date = new Date(data[index].date.microseconds / 1000);
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
             mDates[index] = dateFormat.format(date);
         }
 
@@ -111,7 +112,7 @@ public class SmoothLineChartEquallySpaced extends View {
         }
         for (int index = 0; index < mValues.length; index++) {
             Date date = new Date();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
             mDates[index] = dateFormat.format(date);
         }
 

@@ -40,6 +40,7 @@
                     android:textColor="@color/brave_blue_tint_color"
                     android:text="@string/edit"
                     android:clickable="true"
+                    android:focusable="true"
                     android:textSize="14sp" />
 
                 <TextView

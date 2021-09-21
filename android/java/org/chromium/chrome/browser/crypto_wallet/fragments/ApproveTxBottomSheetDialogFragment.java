@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +36,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+
+import java.util.Locale;
 
 public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragment {
     public static final String TAG_FRAGMENT = ApproveTxBottomSheetDialogFragment.class.getName();
@@ -131,16 +132,19 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
         icon.setImageResource(mAccountPic);
         TextView fromTo = view.findViewById(R.id.from_to);
-        fromTo.setText(
-                mAccountName + " -> " + Utils.stripAccountAddress(mTxInfo.txData.baseData.to));
+        fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
+                mAccountName, Utils.stripAccountAddress(mTxInfo.txData.baseData.to)));
         TextView txType = view.findViewById(R.id.tx_type);
         txType.setText(mTxType);
         TextView amountAsset = view.findViewById(R.id.amount_asset);
-        amountAsset.setText(String.format("%.4f", Utils.fromHexWei(mTxInfo.txData.baseData.value))
-                + " " + mAsset);
+        amountAsset.setText(
+                String.format(getResources().getString(R.string.crypto_wallet_amount_asset),
+                        String.format(Locale.getDefault(), "%.4f",
+                                Utils.fromHexWei(mTxInfo.txData.baseData.value)),
+                        mAsset));
         AssetRatioController assetRatioController = getAssetRatioController();
         if (assetRatioController != null) {
-            String[] assets = {mAsset.toLowerCase()};
+            String[] assets = {mAsset.toLowerCase(Locale.getDefault())};
             String[] toCurr = {"usd"};
             assetRatioController.getPrice(
                     assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
@@ -151,7 +155,9 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                         double price = Double.valueOf(values[0].price);
                         mTotalPrice = value * price;
                         TextView amountFiat = view.findViewById(R.id.amount_fiat);
-                        amountFiat.setText("$" + String.format("%.2f", mTotalPrice));
+                        amountFiat.setText(String.format(
+                                getResources().getString(R.string.crypto_wallet_amount_fiat),
+                                String.format(Locale.getDefault(), "%.2f", mTotalPrice)));
                         ViewPager viewPager = view.findViewById(R.id.navigation_view_pager);
                         ApproveTxFragmentPageAdapter adapter =
                                 new ApproveTxFragmentPageAdapter(getChildFragmentManager(), mTxInfo,
@@ -175,18 +181,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         approve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EthTxController ethTxController = getEthTxController();
-                if (ethTxController == null) {
-                    return;
-                }
-                ethTxController.approveTransaction(mTxInfo.id, success -> {
-                    assert success;
-                    if (!success) {
-                        return;
-                    }
-                    mApproved = true;
-                    dismiss();
-                });
+                approveTransaction();
             }
         });
     }
@@ -202,6 +197,21 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 return;
             }
             mRejected = true;
+            dismiss();
+        });
+    }
+
+    private void approveTransaction() {
+        EthTxController ethTxController = getEthTxController();
+        if (ethTxController == null) {
+            return;
+        }
+        ethTxController.approveTransaction(mTxInfo.id, success -> {
+            assert success;
+            if (!success) {
+                return;
+            }
+            mApproved = true;
             dismiss();
         });
     }

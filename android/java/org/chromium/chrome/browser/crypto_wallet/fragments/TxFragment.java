@@ -5,11 +5,9 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -17,8 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
@@ -28,6 +24,8 @@ import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+
+import java.util.Locale;
 
 public class TxFragment extends Fragment {
     private TransactionInfo mTxInfo;
@@ -66,12 +64,17 @@ public class TxFragment extends Fragment {
 
         TextView gasFeeAmount = view.findViewById(R.id.gas_fee_amount);
         gasFeeAmount.setText(
-                String.format("%.8f", Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice)) + " ETH");
+                String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
+                        String.format(Locale.getDefault(), "%.8f",
+                                Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice))));
         TextView totalAmount = view.findViewById(R.id.total_amount);
-        totalAmount.setText(String.format("%.8f", Utils.fromHexWei(mTxInfo.txData.baseData.value))
-                + " " + mAsset + " + "
-                + String.format("%.8f", Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice))
-                + " ETH");
+        totalAmount.setText(
+                String.format(getResources().getString(R.string.crypto_wallet_total_amount),
+                        String.format(Locale.getDefault(), "%.8f",
+                                Utils.fromHexWei(mTxInfo.txData.baseData.value)),
+                        mAsset,
+                        String.format(Locale.getDefault(), "%.8f",
+                                Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice))));
         AssetRatioController assetRatioController = getAssetRatioController();
         if (assetRatioController != null) {
             String[] assets = {"eth"};
@@ -85,10 +88,14 @@ public class TxFragment extends Fragment {
                         double price = Double.valueOf(values[0].price);
                         double totalPrice = value * price;
                         TextView gasFeeAmountFiat = view.findViewById(R.id.gas_fee_amount_fiat);
-                        gasFeeAmountFiat.setText("$" + String.format("%.2f", totalPrice));
+                        gasFeeAmountFiat.setText(String.format(
+                                getResources().getString(R.string.crypto_wallet_amount_fiat),
+                                String.format(Locale.getDefault(), "%.2f", totalPrice)));
                         double totalAmountPlusGas = totalPrice + mTotalPrice;
                         TextView totalAmountFiat = view.findViewById(R.id.total_amount_fiat);
-                        totalAmountFiat.setText("$" + String.format("%.2f", totalAmountPlusGas));
+                        totalAmountFiat.setText(String.format(
+                                getResources().getString(R.string.crypto_wallet_amount_fiat),
+                                String.format(Locale.getDefault(), "%.2f", totalAmountPlusGas)));
                     });
         }
 

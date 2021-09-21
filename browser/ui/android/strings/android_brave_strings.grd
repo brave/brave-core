@@ -2236,6 +2236,21 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_APPS" desc="Brave crypto wallet section Apps">
       Apps
     </message>
+    <message name="IDS_CRYPTO_WALLET_FROM_TO" desc="From address -> to address" translateable="false">
+      <ph name="FROM">%1$s<ex>0xabcd...</ex></ph> -> <ph name="TO">%2$s<ex>0xabcd...</ex></ph>
+    </message>
+    <message name="IDS_CRYPTO_WALLET_AMOUNT_ASSET" desc="Amount Asset" translateable="false">
+      <ph name="AMOUNT">%1$s<ex>0.0001</ex></ph> <ph name="ASSET">%2$s<ex>ETH</ex></ph>
+    </message>
+    <message name="IDS_CRYPTO_WALLET_AMOUNT_FIAT" desc="$amount_fiat" translateable="false">
+      $<ph name="AMOUNT">%1$s<ex>3.08</ex></ph>
+    </message>
+    <message name="IDS_CRYPTO_WALLET_GAS_FEE_AMOUNT" desc="Gas fee ETH" translateable="false">
+      <ph name="AMOUNT">%1$s<ex>0.0000015</ex></ph> ETH
+    </message>
+    <message name="IDS_CRYPTO_WALLET_TOTAL_AMOUNT" desc="amount asset + amount gas fee" translateable="false">
+      <ph name="AMOUNT">%1$s<ex>0.0015</ex></ph> <ph name="ASSET">%2$s<ex>ETH</ex></ph> + <ph name="GAS_FEE">%3$s<ex>0.00000015</ex></ph> ETH
+    </message>
     </messages>
   </release>
 </grit>

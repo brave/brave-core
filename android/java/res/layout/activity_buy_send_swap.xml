@@ -2,7 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="HardcodedText"
+    tools:ignore="HardcodedText,Autofill,LabelFor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/wallet_bg"
@@ -96,6 +96,7 @@
                       android:id="@+id/from_value_text"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
+                      android:inputType="text"
                       android:textColor="@color/wallet_text_color"
                       android:textSize="20sp"/>
 
@@ -246,6 +247,7 @@
                     android:id="@+id/to_value_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:textColor="@color/wallet_text_color"
                     android:textSize="20sp"/>
 
@@ -365,6 +367,7 @@
                     android:id="@+id/limit_price_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:visibility="gone"
                     android:hint="0"
                     android:textColor="@color/wallet_text_color"
