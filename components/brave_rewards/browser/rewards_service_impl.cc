@@ -1934,22 +1934,19 @@ void RewardsServiceImpl::OnPublisherBanner(
   std::move(callback).Run(std::move(banner));
 }
 
-void RewardsServiceImpl::OnSaveRecurringTip(
-    SaveRecurringTipCallback callback,
-    const ledger::type::Result result) {
-  bool success = result == ledger::type::Result::LEDGER_OK;
-
+void RewardsServiceImpl::OnSaveRecurringTip(OnTipCallback callback,
+                                            ledger::type::Result result) {
   for (auto& observer : observers_) {
-    observer.OnRecurringTipSaved(this, success);
+    observer.OnRecurringTipSaved(this,
+                                 result == ledger::type::Result::LEDGER_OK);
   }
 
-  std::move(callback).Run(success);
+  std::move(callback).Run(result);
 }
 
-void RewardsServiceImpl::SaveRecurringTip(
-    const std::string& publisher_key,
-    const double amount,
-    SaveRecurringTipCallback callback) {
+void RewardsServiceImpl::SaveRecurringTip(const std::string& publisher_key,
+                                          double amount,
+                                          OnTipCallback callback) {
   if (!Connected()) {
     return;
   }
@@ -1960,10 +1957,8 @@ void RewardsServiceImpl::SaveRecurringTip(
   info->created_at = GetCurrentTimestamp();
 
   bat_ledger_->SaveRecurringTip(
-      std::move(info),
-      base::BindOnce(&RewardsServiceImpl::OnSaveRecurringTip,
-                     AsWeakPtr(),
-                     std::move(callback)));
+      std::move(info), base::BindOnce(&RewardsServiceImpl::OnSaveRecurringTip,
+                                      AsWeakPtr(), std::move(callback)));
 }
 
 void RewardsServiceImpl::OnMediaInlineInfoSaved(
@@ -2505,23 +2500,22 @@ void RewardsServiceImpl::OnTipPublisherSaved(
     return;
   }
 
-  OnTip(publisher_key, amount, recurring);
+  OnTip(publisher_key, amount, recurring, base::DoNothing());
 }
 
-void RewardsServiceImpl::OnTip(
-    const std::string& publisher_key,
-    const double amount,
-    const bool recurring) {
+void RewardsServiceImpl::OnTip(const std::string& publisher_key,
+                               double amount,
+                               bool recurring,
+                               OnTipCallback callback) {
   if (!Connected()) {
     return;
   }
 
   if (recurring) {
-    SaveRecurringTip(publisher_key, amount, base::DoNothing());
-    return;
+    return SaveRecurringTip(publisher_key, amount, std::move(callback));
   }
 
-  bat_ledger_->OneTimeTip(publisher_key, amount, base::DoNothing());
+  bat_ledger_->OneTimeTip(publisher_key, amount, std::move(callback));
 }
 
 bool RewardsServiceImpl::Connected() const {

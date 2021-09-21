@@ -618,6 +618,7 @@
       <message name="IDS_BRAVE_REWARDS_TIP_CUSTOM_TIP_TEXT" desc="">You are about to tip</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ERROR_HAS_OCCURRED" desc="">A wild bug has appeared</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ERROR_SERVER_CONNECTION" desc="">Server connection error</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_ERROR_TIP_FAILED" desc="">There was a problem sending your tip.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ERROR_TRY_AGAIN" desc="">Please close and reopen the tipping banner to try again.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_EXAMPLE_TIP_AMOUNT" desc="">e.g. <ph name="AMOUNT">$1<ex>12.75</ex></ph></message>
       <message name="IDS_BRAVE_REWARDS_TIP_MINIMUM_TIP_AMOUNT" desc="">Minimum tip amount is <ph name="AMOUNT">$1<ex>0.25</ex></ph> <ph name="CURRENCY">$2<ex>BAT</ex></ph></message>

@@ -91,6 +91,19 @@ export function createHost (): Host {
       stateManager.update({ externalWalletInfo })
     },
 
+    tipProcessed (amount: number) {
+      stateManager.update({
+        tipProcessed: true,
+        tipAmount: amount
+      })
+    },
+
+    tipFailed () {
+      stateManager.update({
+        hostError: { type: 'ERR_TIP_FAILED' }
+      })
+    },
+
     publisherBannerUpdated (publisherInfo: PublisherInfo) {
       stateManager.update({ publisherInfo })
     },
@@ -235,10 +248,16 @@ export function createHost (): Host {
         kind === 'monthly' ? true : false
       ])
 
-      stateManager.update({
-        tipProcessed: true,
-        tipAmount: amount
-      })
+      // Gemini currently has up to a 10-minute delay on the balance
+      // actually being moved from the user's account.
+      // If the tipping banner doesn't hear back within 3 seconds,
+      // we consider the transaction as non-errored and show the success UI.
+      setTimeout(() => {
+        stateManager.update({
+          tipProcessed: true,
+          tipAmount: amount
+        })
+      }, 3000)
     },
 
     shareTip (target: ShareTarget) {

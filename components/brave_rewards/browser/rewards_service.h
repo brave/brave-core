@@ -52,7 +52,6 @@ using GetReconcileStampCallback = base::OnceCallback<void(uint64_t)>;
 using GetPendingContributionsTotalCallback = base::OnceCallback<void(double)>;
 using GetRewardsInternalsInfoCallback =
     base::OnceCallback<void(ledger::type::RewardsInternalsInfoPtr info)>;
-using SaveRecurringTipCallback = base::OnceCallback<void(bool)>;
 using GetRecurringTipsCallback =
     base::OnceCallback<void(ledger::type::PublisherInfoList list)>;
 using GetOneTimeTipsCallback =
@@ -132,6 +131,8 @@ using GetBraveWalletCallback =
 
 using GetWalletPassphraseCallback =
     base::OnceCallback<void(const std::string&)>;
+
+using OnTipCallback = base::OnceCallback<void(ledger::type::Result)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -215,10 +216,10 @@ class RewardsService : public KeyedService {
       GetAutoContributionAmountCallback callback) = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id,
                                   GetPublisherBannerCallback callback) = 0;
-  virtual void OnTip(
-      const std::string& publisher_key,
-      const double amount,
-      const bool recurring) = 0;
+  virtual void OnTip(const std::string& publisher_key,
+                     double amount,
+                     bool recurring,
+                     OnTipCallback callback) = 0;
 
   // Used in importer from muon days
   virtual void OnTip(
@@ -262,10 +263,9 @@ class RewardsService : public KeyedService {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
-  virtual void SaveRecurringTip(
-      const std::string& publisher_key,
-      const double amount,
-      SaveRecurringTipCallback callback) = 0;
+  virtual void SaveRecurringTip(const std::string& publisher_key,
+                                double amount,
+                                OnTipCallback callback) = 0;
 
   virtual const RewardsNotificationService::RewardsNotificationsMap&
   GetAllNotifications() = 0;

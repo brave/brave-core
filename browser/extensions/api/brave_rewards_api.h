@@ -258,7 +258,7 @@ class BraveRewardsSaveRecurringTipFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnSaveRecurringTip(bool success);
+  void OnSaveRecurringTip(ledger::type::Result result);
 };
 
 class BraveRewardsRemoveRecurringTipFunction :

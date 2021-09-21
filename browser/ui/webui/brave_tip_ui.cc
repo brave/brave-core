@@ -89,6 +89,8 @@ class TipMessageHandler : public WebUIMessageHandler,
   void FetchBalance(const base::ListValue* args);
 
   // Rewards service callbacks
+  void OnTipCallback(double amount, ledger::type::Result result);
+
   void GetReconcileStampCallback(uint64_t reconcile_stamp);
 
   void GetAutoContributeAmountCallback(double amount);
@@ -331,7 +333,9 @@ void TipMessageHandler::OnTip(const base::ListValue* args) {
   if (recurring && amount <= 0) {
     rewards_service_->RemoveRecurringTip(publisher_key);
   } else if (amount > 0) {
-    rewards_service_->OnTip(publisher_key, amount, recurring);
+    rewards_service_->OnTip(publisher_key, amount, recurring,
+                            base::BindOnce(&TipMessageHandler::OnTipCallback,
+                                           weak_factory_.GetWeakPtr(), amount));
   }
 }
 
@@ -521,6 +525,15 @@ void TipMessageHandler::GetPublisherBannerCallback(
   }
 
   FireWebUIListener("publisherBannerUpdated", result);
+}
+
+void TipMessageHandler::OnTipCallback(double amount,
+                                      ledger::type::Result result) {
+  if (IsJavascriptAllowed()) {
+    result == ledger::type::Result::LEDGER_OK
+        ? FireWebUIListener("tipProcessed", base::Value(amount))
+        : FireWebUIListener("tipFailed");
+  }
 }
 
 void TipMessageHandler::GetReconcileStampCallback(uint64_t reconcile_stamp) {

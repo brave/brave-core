@@ -19,6 +19,7 @@ import { FormSubmitButton } from './form_submit_button'
 import { SadFaceIcon } from './icons/sad_face'
 import { PaperAirplaneIcon } from './icons/paper_airplane_icon'
 import { CalendarIcon } from './icons/calendar_icon'
+import { LoadingIcon } from '../../shared/components/icons/loading_icon'
 
 import * as style from './bat_tip_form.style'
 
@@ -63,6 +64,7 @@ export function BatTipForm (props: Props) {
     host.state.rewardsParameters)
 
   const [tipAmount, setTipAmount] = React.useState(props.defaultTipAmount)
+  const [tipProcessing, setTipProcessing] = React.useState(false)
   const [showCustomInput, setShowCustomInput] = React.useState(false)
   const [hasCustomAmount, setHasCustomAmount] = React.useState(false)
 
@@ -103,6 +105,7 @@ export function BatTipForm (props: Props) {
   }
 
   const onSubmitTip = () => {
+    setTipProcessing(true)
     props.onSubmitTip(tipAmount)
   }
 
@@ -186,13 +189,17 @@ export function BatTipForm (props: Props) {
             </FormSubmitButton>
           :
             <FormSubmitButton onClick={onSubmitTip}>
-              <span className={`submit-${props.tipKind}`}>
-                {
-                  props.tipKind === 'monthly'
-                    ? <><CalendarIcon /> {getString('doMonthly')}</>
-                    : <><PaperAirplaneIcon /> {getString('sendDonation')}</>
-                }
-              </span>
+              {
+                tipProcessing
+                  ? <LoadingIcon />
+                  : <span className={`submit-${props.tipKind}`}>
+                      {
+                        props.tipKind === 'monthly'
+                          ? <><CalendarIcon /> {getString('doMonthly')}</>
+                          : <><PaperAirplaneIcon /> {getString('sendDonation')}</>
+                      }
+                    </span>
+              }
             </FormSubmitButton>
         }
       </style.footer>
