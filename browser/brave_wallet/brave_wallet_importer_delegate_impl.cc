@@ -20,6 +20,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "extensions/browser/api/storage/backend_task_runner.h"
 #include "extensions/browser/api/storage/storage_frontend.h"
+#include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/browser/value_store/value_store.h"
@@ -57,6 +58,22 @@ BraveWalletImporterDelegateImpl::BraveWalletImporterDelegateImpl(
 
 BraveWalletImporterDelegateImpl::~BraveWalletImporterDelegateImpl() = default;
 
+void BraveWalletImporterDelegateImpl::IsBraveCryptoWalletInstalled(
+    IsBraveCryptoWalletInstalledCallback callback) {
+  if (!IsBraveCryptoWalletInstalledInternal())
+    std::move(callback).Run(false);
+  else
+    std::move(callback).Run(true);
+}
+
+void BraveWalletImporterDelegateImpl::IsMetamaskInstalled(
+    IsMetamaskInstalledCallback callback) {
+  if (!GetMetamask())
+    std::move(callback).Run(false);
+  else
+    std::move(callback).Run(true);
+}
+
 void BraveWalletImporterDelegateImpl::ImportFromBraveCryptoWallet(
     const std::string& password,
     const std::string& new_password,
@@ -64,19 +81,19 @@ void BraveWalletImporterDelegateImpl::ImportFromBraveCryptoWallet(
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   DCHECK(context_);
 
-  if (password.empty() || new_password.empty()) {
+  if (password.empty() || new_password.empty() ||
+      !IsBraveCryptoWalletInstalledInternal()) {
     std::move(callback).Run(false);
     return;
   }
 
-  ExtensionRegistry* registry = ExtensionRegistry::Get(context_);
-  const Extension* extension =
-      registry->GetInstalledExtension(ethereum_remote_client_extension_id);
+  const Extension* extension = GetBraveCryptoWallet();
   // crypto wallet is not loaded
   if (!extension) {
     EthereumRemoteClientService* service =
         EthereumRemoteClientServiceFactory::GetInstance()->GetForContext(
             context_);
+    DCHECK(service);
     service->MaybeLoadCryptoWalletsExtension(base::BindOnce(
         &BraveWalletImporterDelegateImpl::OnCryptoWalletLoaded,
         weak_ptr_factory_.GetWeakPtr(), std::move(callback), true));
@@ -100,9 +117,7 @@ void BraveWalletImporterDelegateImpl::ImportFromMetamask(
     return;
   }
 
-  ExtensionRegistry* registry = ExtensionRegistry::Get(context_);
-  const Extension* extension =
-      registry->GetInstalledExtension(metamask_extension_id);
+  const Extension* extension = GetMetamask();
   if (!extension) {
     std::move(callback).Run(false);
     return;
@@ -116,9 +131,7 @@ void BraveWalletImporterDelegateImpl::ImportFromMetamask(
 void BraveWalletImporterDelegateImpl::OnCryptoWalletLoaded(
     ImportFromMetamaskCallback callback,
     bool should_unload) {
-  ExtensionRegistry* registry = ExtensionRegistry::Get(context_);
-  const Extension* extension =
-      registry->GetInstalledExtension(ethereum_remote_client_extension_id);
+  const Extension* extension = GetBraveCryptoWallet();
   if (!extension) {
     std::move(callback).Run(false);
     return;
@@ -268,6 +281,40 @@ void BraveWalletImporterDelegateImpl::OnGetLocalStorage(
             std::move(callback).Run(is_valid_mnemonic);
           },
           std::move(callback)));
+}
+
+bool BraveWalletImporterDelegateImpl::IsLegacyBraveCryptoWallet() const {
+  EthereumRemoteClientService* service =
+      EthereumRemoteClientServiceFactory::GetInstance()->GetForContext(
+          context_);
+  DCHECK(service);
+  // service->IsCryptoWalletsSetup is only for legacy 24 words mnemonic wallet
+  return service->IsCryptoWalletsSetup();
+}
+
+bool BraveWalletImporterDelegateImpl::IsBraveCryptoWalletInstalledInternal()
+    const {
+  if (!extensions::ExtensionPrefs::Get(context_)->HasPrefForExtension(
+          ethereum_remote_client_extension_id))
+    return false;
+  // TODO(darkdh): block legacy wallet until we support decrypting its mnemonic
+  if (IsLegacyBraveCryptoWallet())
+    return false;
+  return true;
+}
+
+const Extension* BraveWalletImporterDelegateImpl::GetBraveCryptoWallet() {
+  ExtensionRegistry* registry = ExtensionRegistry::Get(context_);
+  if (!registry)
+    return nullptr;
+  return registry->GetInstalledExtension(ethereum_remote_client_extension_id);
+}
+
+const Extension* BraveWalletImporterDelegateImpl::GetMetamask() {
+  ExtensionRegistry* registry = ExtensionRegistry::Get(context_);
+  if (!registry)
+    return nullptr;
+  return registry->GetInstalledExtension(metamask_extension_id);
 }
 
 void BraveWalletImporterDelegateImpl::EnsureConnected() {

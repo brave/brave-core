@@ -39,6 +39,9 @@ class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate {
       const BraveWalletImporterDelegateImpl&) = delete;
   ~BraveWalletImporterDelegateImpl() override;
 
+  void IsBraveCryptoWalletInstalled(
+      IsBraveCryptoWalletInstalledCallback callback) override;
+  void IsMetamaskInstalled(IsMetamaskInstalledCallback callback) override;
   void ImportFromBraveCryptoWallet(
       const std::string& password,
       const std::string& new_password,
@@ -55,6 +58,11 @@ class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate {
                        ImportFromBraveCryptoWalletCallback callback);
   void OnGetLocalStorage(ImportFromBraveCryptoWalletCallback callback,
                          std::unique_ptr<base::DictionaryValue> dict);
+
+  bool IsLegacyBraveCryptoWallet() const;
+  bool IsBraveCryptoWalletInstalledInternal() const;
+  const extensions::Extension* GetBraveCryptoWallet();
+  const extensions::Extension* GetMetamask();
 
   void EnsureConnected();
   void OnConnectionError();

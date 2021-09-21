@@ -316,6 +316,22 @@ void BraveWalletService::SetUserAssetVisible(
   std::move(callback).Run(true);
 }
 
+void BraveWalletService::IsBraveCryptoWalletInstalled(
+    IsBraveCryptoWalletInstalledCallback callback) {
+  if (delegate_)
+    delegate_->IsBraveCryptoWalletInstalled(std::move(callback));
+  else
+    std::move(callback).Run(false);
+}
+
+void BraveWalletService::IsMetamaskInstalled(
+    IsMetamaskInstalledCallback callback) {
+  if (delegate_)
+    delegate_->IsMetamaskInstalled(std::move(callback));
+  else
+    std::move(callback).Run(false);
+}
+
 void BraveWalletService::ImportFromBraveCryptoWallet(
     const std::string& password,
     const std::string& new_password,
@@ -323,6 +339,8 @@ void BraveWalletService::ImportFromBraveCryptoWallet(
   if (delegate_)
     delegate_->ImportFromBraveCryptoWallet(password, new_password,
                                            std::move(callback));
+  else
+    std::move(callback).Run(false);
 }
 
 void BraveWalletService::ImportFromMetamask(
@@ -331,6 +349,8 @@ void BraveWalletService::ImportFromMetamask(
     ImportFromMetamaskCallback callback) {
   if (delegate_)
     delegate_->ImportFromMetamask(password, new_password, std::move(callback));
+  else
+    std::move(callback).Run(false);
 }
 
 }  // namespace brave_wallet

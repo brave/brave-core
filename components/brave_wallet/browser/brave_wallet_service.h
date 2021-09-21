@@ -50,6 +50,9 @@ class BraveWalletService : public KeyedService,
                            const std::string& chain_id,
                            bool visible,
                            SetUserAssetVisibleCallback callback) override;
+  void IsBraveCryptoWalletInstalled(
+      IsBraveCryptoWalletInstalledCallback callback) override;
+  void IsMetamaskInstalled(IsMetamaskInstalledCallback callback) override;
   void ImportFromBraveCryptoWallet(
       const std::string& password,
       const std::string& new_password,

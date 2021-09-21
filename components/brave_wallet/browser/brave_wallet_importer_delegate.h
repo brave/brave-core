@@ -14,6 +14,8 @@ namespace brave_wallet {
 
 class BraveWalletImporterDelegate {
  public:
+  using IsBraveCryptoWalletInstalledCallback = base::OnceCallback<void(bool)>;
+  using IsMetamaskInstalledCallback = base::OnceCallback<void(bool)>;
   using ImportFromBraveCryptoWalletCallback = base::OnceCallback<void(bool)>;
   using ImportFromMetamaskCallback = base::OnceCallback<void(bool)>;
 
@@ -23,6 +25,9 @@ class BraveWalletImporterDelegate {
       delete;
   virtual ~BraveWalletImporterDelegate() = default;
 
+  virtual void IsBraveCryptoWalletInstalled(
+      IsBraveCryptoWalletInstalledCallback callback);
+  virtual void IsMetamaskInstalled(IsMetamaskInstalledCallback callback);
   virtual void ImportFromBraveCryptoWallet(
       const std::string& password,
       const std::string& new_password,
