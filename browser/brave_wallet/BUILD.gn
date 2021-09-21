@@ -14,6 +14,8 @@ source_set("brave_wallet") {
     "brave_wallet_context_utils.h",
     "brave_wallet_service_factory.cc",
     "brave_wallet_service_factory.h",
+    "erc_token_images_source.cc",
+    "erc_token_images_source.h",
     "eth_tx_controller_factory.cc",
     "eth_tx_controller_factory.h",
     "keyring_controller_factory.cc",
@@ -33,6 +35,7 @@ source_set("brave_wallet") {
     "//content/public/browser",
     "//extensions/buildflags",
     "//services/network/public/cpp",
+    "//third_party/abseil-cpp:absl",
   ]
   if (is_android) {
     sources += [
@@ -106,6 +109,7 @@ source_set("unit_tests") {
   sources = [
     "brave_wallet_service_unittest.cc",
     "brave_wallet_tab_helper_unittest.cc",
+    "erc_token_images_source_unittest.cc",
     "eth_nonce_tracker_unittest.cc",
     "eth_pending_tx_tracker_unittest.cc",
     "eth_tx_state_manager_unittest.cc",
@@ -116,6 +120,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:tab_helper",
+    "//brave/common",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//brave/components/brave_wallet/common",

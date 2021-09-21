@@ -17,12 +17,14 @@
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -39,10 +41,11 @@ const uint8_t kWalletDataFilesSha2Hash[] = {
     0x49, 0xb8, 0x4c, 0x9d, 0x8e, 0xeb, 0xb3, 0xbd, 0x55, 0xdc, 0xf7,
     0xc0, 0x3e, 0x9b, 0x2a, 0xc2, 0xf5, 0x6a, 0x37, 0x71, 0x67};
 const char kWalletDataFilesDisplayName[] = "Brave Wallet data files";
-const char kWalletBaseDirectory[] = "BraveWallet";
 
 static_assert(base::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
               "Wrong hash length");
+
+absl::optional<base::Version> last_installed_wallet_version;
 
 }  // namespace
 
@@ -105,6 +108,7 @@ void WalletDataFilesInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     std::unique_ptr<base::DictionaryValue> manifest) {
+  last_installed_wallet_version = version;
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
       base::BindOnce(&WalletDataFilesInstallerPolicy::TokenListReady,
@@ -182,6 +186,10 @@ void RegisterWalletDataFilesComponent(
             std::make_unique<WalletDataFilesInstallerPolicy>());
     installer->Register(cus, base::OnceClosure());
   }
+}
+
+absl::optional<base::Version> GetLastInstalledWalletVersion() {
+  return last_installed_wallet_version;
 }
 
 }  // namespace brave_wallet

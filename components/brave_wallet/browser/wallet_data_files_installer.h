@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_WALLET_DATA_FILES_INSTALLER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_WALLET_DATA_FILES_INSTALLER_H_
 
+#include "base/version.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
 namespace component_updater {
 class ComponentUpdateService;
 }
@@ -14,6 +17,7 @@ namespace brave_wallet {
 
 void RegisterWalletDataFilesComponent(
     component_updater::ComponentUpdateService* cus);
+absl::optional<base::Version> GetLastInstalledWalletVersion();
 
 }  // namespace brave_wallet
 
