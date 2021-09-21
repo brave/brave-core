@@ -21,6 +21,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -28,7 +29,7 @@
                     android:paddingEnd="16dp"
                     android:paddingTop="16dp"
                     android:layout_marginBottom="8dp"
-                    android:text="$12,453.17"
+                    android:text="@string/brave_wallet_portfolio_balance_updating"
                     android:textColor="@color/wallet_text_color"
                     android:textStyle="bold"
                     android:textSize="32sp" />
@@ -90,6 +91,7 @@
                 android:orientation="horizontal">
 
                 <RadioGroup
+                    android:id="@+id/portfolio_duration_radio_group"
                     tools:ignore="UselessParent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
