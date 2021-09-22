@@ -57,10 +57,7 @@ class CosmeticFiltersJSHandler {
   // A function to be called from JS
   void HiddenClassIdSelectors(const std::string& input);
 
-  void OnUrlCosmeticResources(base::OnceClosure callback,
-                              bool enabled,
-                              bool first_party_enabled,
-                              base::Value result);
+  void OnUrlCosmeticResources(base::OnceClosure callback, base::Value result);
   void CSSRulesRoutine(base::DictionaryValue* resources_dict);
   void OnHiddenClassIdSelectors(base::Value result);
   bool OnIsFirstParty(const std::string& url_string);

@@ -12,7 +12,9 @@
 #include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated_map.h"
+#include "components/content_settings/renderer/content_settings_agent_impl.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
@@ -305,6 +307,17 @@ void CosmeticFiltersJSHandler::ProcessURL(const GURL& url,
   if (!EnsureConnected() || url_.is_empty() || !url_.is_valid())
     return;
 
+  auto* content_settings =
+      static_cast<content_settings::BraveContentSettingsAgentImpl*>(
+          content_settings::ContentSettingsAgentImpl::Get(render_frame_));
+
+  if (!content_settings->IsCosmeticFilteringEnabled(url_)) {
+    return;
+  }
+
+  enabled_1st_party_cf_ =
+      content_settings->IsFirstPartyCosmeticFilteringEnabled(url_);
+
   cosmetic_filters_resources_->UrlCosmeticResources(
       url_.spec(),
       base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
@@ -313,12 +326,9 @@ void CosmeticFiltersJSHandler::ProcessURL(const GURL& url,
 
 void CosmeticFiltersJSHandler::OnUrlCosmeticResources(
     base::OnceClosure callback,
-    bool enabled,
-    bool first_party_enabled,
     base::Value result) {
-  if (!enabled || !EnsureConnected())
+  if (!EnsureConnected())
     return;
-  enabled_1st_party_cf_ = first_party_enabled;
   resources_dict_ = base::DictionaryValue::From(
       base::Value::ToUniquePtrValue(std::move(result)));
   std::move(callback).Run();

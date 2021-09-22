@@ -36,6 +36,10 @@ struct StructTraits<
       const RendererContentSettingRules& r) {
     return r.brave_shields_rules;
   }
+  static const std::vector<ContentSettingPatternSource>&
+  cosmetic_filtering_rules(const RendererContentSettingRules& r) {
+    return r.cosmetic_filtering_rules;
+  }
 
   static bool Read(
       content_settings::mojom::RendererContentSettingRulesDataView data,

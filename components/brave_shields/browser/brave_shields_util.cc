@@ -219,13 +219,6 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
   }
 }
 
-bool ShouldDoCosmeticFiltering(HostContentSettingsMap* map, const GURL& url) {
-  return base::FeatureList::IsEnabled(
-             features::kBraveAdblockCosmeticFiltering) &&
-         GetBraveShieldsEnabled(map, url) &&
-         (GetCosmeticFilteringControlType(map, url) != ControlType::ALLOW);
-}
-
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url) {
   const ControlType type = GetCosmeticFilteringControlType(map, url);

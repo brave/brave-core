@@ -7,7 +7,5 @@ interface CosmeticFiltersResources {
   HiddenClassIdSelectors(string input, array<string> exceptions) => (
       mojo_base.mojom.Value result);
 
-  UrlCosmeticResources(string url) => (bool enabled,
-                                       bool first_party_enabled,
-                                       mojo_base.mojom.Value result);
+  UrlCosmeticResources(string url) => (mojo_base.mojom.Value result);
 };
