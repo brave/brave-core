@@ -312,6 +312,7 @@ const locale = {
   // Transaction List Item
   transactionSent: 'sent',
   transactionReceived: 'received',
+  transactionExplorerMissing: 'No block explorer url defined.',
   transactionExplorer: 'View on Block Explorer',
   transactionPlaceholder: 'Transactions will appear here'
 }

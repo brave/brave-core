@@ -158,10 +158,6 @@ const Portfolio = (props: Props) => {
     }
   }
 
-  const moreDetails = () => {
-    alert('Will Show More Details Popover!!')
-  }
-
   const selectAsset = (asset: TokenInfo) => () => {
     onSelectAsset(asset)
     toggleNav()
@@ -307,12 +303,12 @@ const Portfolio = (props: Props) => {
           {accounts.map((account) =>
             <PortfolioAccountItem
               key={account.address}
-              action={moreDetails}
               assetTicker={selectedAsset.symbol}
               name={account.name}
               address={account.address}
               fiatBalance={getFiatBalance(account, selectedAsset)}
               assetBalance={getAssetBalance(account, selectedAsset)}
+              selectedNetwork={selectedNetwork}
             />
           )}
           <ButtonRow>

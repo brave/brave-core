@@ -140,9 +140,11 @@ const PortfolioTransactionItem = (props: Props) => {
 
   const onClickViewOnBlockExplorer = () => {
     const exporerURL = selectedNetwork.blockExplorerUrls[0]
-    const url = `${exporerURL}/${transaction.txHash}`
-    if (url) {
+    if (exporerURL && transaction.txHash) {
+      const url = `${exporerURL}/tx/${transaction.txHash}`
       window.open(url, '_blank')
+    } else {
+      alert(locale.transactionExplorerMissing)
     }
   }
 
