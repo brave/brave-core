@@ -7,7 +7,6 @@ import Foundation
 import SwiftUI
 
 /// The initial wallet controller to present when the user wants to view their wallet
-@available(iOS 14.0, *)
 public class WalletHostingViewController: UIHostingController<CryptoView> {
   
   public init(

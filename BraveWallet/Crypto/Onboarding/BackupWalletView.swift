@@ -7,7 +7,6 @@ import Foundation
 import SwiftUI
 import BraveUI
 
-@available(iOS 14.0, *)
 struct BackupWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
   @State private var acknowledgedWarning: Bool = false
@@ -60,7 +59,6 @@ struct BackupWalletView: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct BackupWalletView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {

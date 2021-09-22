@@ -6,7 +6,6 @@
 import SwiftUI
 import BraveUI
 
-@available(iOS 14.0, *)
 struct AddAccountView: View {
   @ObservedObject var keyringStore: KeyringStore
   
@@ -189,7 +188,6 @@ struct AddAccountView: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct AddAccountView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {

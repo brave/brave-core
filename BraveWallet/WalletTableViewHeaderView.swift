@@ -10,7 +10,6 @@ import SwiftUI
 import BraveUI
 import SPMLibraries
 
-@available(iOS 14.0, *)
 struct WalletListHeaderView<Title: View, Subtitle: View>: View {
   var title: Title
   var subtitle: Subtitle
@@ -47,7 +46,6 @@ struct WalletListHeaderView<Title: View, Subtitle: View>: View {
   }
 }
 
-@available(iOS 14.0, *)
 extension WalletListHeaderView where Title == Text, Subtitle == Text {
   init(title: Text, subtitle: Text) {
     self.title = title
@@ -55,7 +53,6 @@ extension WalletListHeaderView where Title == Text, Subtitle == Text {
   }
 }
 
-@available(iOS 14.0, *)
 extension WalletListHeaderView where Subtitle == EmptyView {
   init(@ViewBuilder title: () -> Title) {
     self.title = title()
@@ -63,7 +60,6 @@ extension WalletListHeaderView where Subtitle == EmptyView {
   }
 }
 
-@available(iOS 14.0, *)
 extension WalletListHeaderView where Title == Text, Subtitle == EmptyView {
   init(title: Text) {
     self.title = title

@@ -9,7 +9,6 @@ import SwiftUI
 import BraveCore
 import BraveUI
 
-@available(iOS 14.0, *)
 struct AssetDetailView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: EthNetworkStore
@@ -22,10 +21,7 @@ struct AssetDetailView: View {
           networkStore: networkStore,
           currency: Currency(image: .init(), name: "Basic Attention Token", symbol: "BAT", cost: 0.999444)
         )
-        .listRowInsets(.zero)
-        .textCase(.none)
-        .font(.body)
-        .foregroundColor(.primary)
+        .resetListHeaderStyle()
         .padding(.horizontal, -16) // inset grouped layout margins workaround
       ) {
       }
@@ -65,7 +61,6 @@ struct AssetDetailView: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct CurrencyDetailView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {

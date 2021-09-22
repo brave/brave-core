@@ -9,7 +9,6 @@ import BraveCore
 import CoreImage
 import CoreImage.CIFilterBuiltins
 
-@available(iOS 14.0, *)
 struct AccountDetailsView: View {
   @ObservedObject var keyringStore: KeyringStore
   var account: BraveWallet.AccountInfo
@@ -106,7 +105,6 @@ struct AccountDetailsView: View {
   }
 }
 
-@available(iOS 14.0, *)
 private struct AccountDetailsHeaderView: View {
   var address: String
   
@@ -154,7 +152,6 @@ private struct AccountDetailsHeaderView: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct AccountDetailsViewController_Previews: PreviewProvider {
   static var previews: some View {
     AccountDetailsView(

@@ -8,7 +8,6 @@ import SwiftUI
 import Introspect
 import BraveUI
 
-@available(iOS 14.0, *)
 struct SetupCryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
   
@@ -52,7 +51,6 @@ struct SetupCryptoView: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct SetupCryptoView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {

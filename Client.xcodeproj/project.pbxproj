@@ -213,6 +213,7 @@
 		27036F9C25684F9F004EF6B6 /* AdContentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036F9725684F9F004EF6B6 /* AdContentButton.swift */; };
 		2703BE8B24F4508E00CBE6CD /* CreatePDFActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2703BE8A24F4508E00CBE6CD /* CreatePDFActivity.swift */; };
 		270A0F392605267D0091D880 /* LegacyWalletTransferStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270A0F382605267D0091D880 /* LegacyWalletTransferStatusButton.swift */; };
+		270E37DB26F5177B00C73C29 /* ResetListStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E37DA26F5177B00C73C29 /* ResetListStyleModifier.swift */; };
 		270E5F1326F29C320024C70E /* UIKitNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E5F1226F29C320024C70E /* UIKitNavigationView.swift */; };
 		270E5F3226F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */; };
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
@@ -227,7 +228,7 @@
 		271F689326EBD27E00AA2A50 /* TestContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685326EBD27C00AA2A50 /* TestContent.swift */; };
 		271F689426EBD27E00AA2A50 /* PreviewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685426EBD27C00AA2A50 /* PreviewModifiers.swift */; };
 		271F689526EBD27E00AA2A50 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 271F685526EBD27C00AA2A50 /* Preview Assets.xcassets */; };
-		271F689626EBD27E00AA2A50 /* CryptoSwapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685826EBD27D00AA2A50 /* CryptoSwapView.swift */; };
+		271F689626EBD27E00AA2A50 /* SwapCryptoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685826EBD27D00AA2A50 /* SwapCryptoView.swift */; };
 		271F689726EBD27E00AA2A50 /* CryptoPagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685926EBD27D00AA2A50 /* CryptoPagesViewController.swift */; };
 		271F689826EBD27E00AA2A50 /* EthNetworkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685B26EBD27D00AA2A50 /* EthNetworkStore.swift */; };
 		271F689926EBD27E00AA2A50 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685C26EBD27D00AA2A50 /* Address.swift */; };
@@ -292,6 +293,7 @@
 		2726636924944BFA0056CFE1 /* BraveNewsOptInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2726636824944BFA0056CFE1 /* BraveNewsOptInView.swift */; };
 		2726637324981B600056CFE1 /* FeedSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2726637224981B5F0056CFE1 /* FeedSectionHeaderView.swift */; };
 		2727369B24A65F650096DCB9 /* UIActionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2727369A24A65F650096DCB9 /* UIActionExtensions.swift */; };
+		2729E7D326F502AC00200648 /* AccountPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2729E7D226F502AC00200648 /* AccountPicker.swift */; };
 		27384CAE254360120086922F /* OnboardingRewardsAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6C232BF9C200BDE662 /* OnboardingRewardsAgreementView.swift */; };
 		273EB3A72422AB24002A8AAF /* PaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9616E6A240EE43F00667C2D /* PaymentRequest.swift */; };
 		273FCB9A25A7BC5500F279B5 /* BraveNewsDebugSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FCB9925A7BC5500F279B5 /* BraveNewsDebugSettingsController.swift */; };
@@ -1737,6 +1739,7 @@
 		27036F9725684F9F004EF6B6 /* AdContentButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdContentButton.swift; sourceTree = "<group>"; };
 		2703BE8A24F4508E00CBE6CD /* CreatePDFActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePDFActivity.swift; sourceTree = "<group>"; };
 		270A0F382605267D0091D880 /* LegacyWalletTransferStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyWalletTransferStatusButton.swift; sourceTree = "<group>"; };
+		270E37DA26F5177B00C73C29 /* ResetListStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetListStyleModifier.swift; sourceTree = "<group>"; };
 		270E5F1226F29C320024C70E /* UIKitNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitNavigationView.swift; sourceTree = "<group>"; };
 		270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWalletSwiftUIExtensions.swift; sourceTree = "<group>"; };
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
@@ -1759,7 +1762,7 @@
 		271F685326EBD27C00AA2A50 /* TestContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestContent.swift; sourceTree = "<group>"; };
 		271F685426EBD27C00AA2A50 /* PreviewModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewModifiers.swift; sourceTree = "<group>"; };
 		271F685526EBD27C00AA2A50 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		271F685826EBD27D00AA2A50 /* CryptoSwapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoSwapView.swift; sourceTree = "<group>"; };
+		271F685826EBD27D00AA2A50 /* SwapCryptoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapCryptoView.swift; sourceTree = "<group>"; };
 		271F685926EBD27D00AA2A50 /* CryptoPagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoPagesViewController.swift; sourceTree = "<group>"; };
 		271F685B26EBD27D00AA2A50 /* EthNetworkStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EthNetworkStore.swift; sourceTree = "<group>"; };
 		271F685C26EBD27D00AA2A50 /* Address.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
@@ -1817,6 +1820,7 @@
 		2726636824944BFA0056CFE1 /* BraveNewsOptInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveNewsOptInView.swift; sourceTree = "<group>"; };
 		2726637224981B5F0056CFE1 /* FeedSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSectionHeaderView.swift; sourceTree = "<group>"; };
 		2727369A24A65F650096DCB9 /* UIActionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIActionExtensions.swift; sourceTree = "<group>"; };
+		2729E7D226F502AC00200648 /* AccountPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPicker.swift; sourceTree = "<group>"; };
 		273FCB9925A7BC5500F279B5 /* BraveNewsDebugSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveNewsDebugSettingsController.swift; sourceTree = "<group>"; };
 		274398E124E4827800E79605 /* FeedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCard.swift; sourceTree = "<group>"; };
 		274398E424E4829900E79605 /* FeedFillStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFillStrategy.swift; sourceTree = "<group>"; };
@@ -3565,7 +3569,7 @@
 		271F685626EBD27C00AA2A50 /* Crypto */ = {
 			isa = PBXGroup;
 			children = (
-				271F685726EBD27D00AA2A50 /* Swap */,
+				271F685726EBD27D00AA2A50 /* BuySwapSwap */,
 				271F685926EBD27D00AA2A50 /* CryptoPagesViewController.swift */,
 				271F685A26EBD27D00AA2A50 /* Stores */,
 				271F685E26EBD27D00AA2A50 /* CryptoView.swift */,
@@ -3581,12 +3585,13 @@
 			path = Crypto;
 			sourceTree = "<group>";
 		};
-		271F685726EBD27D00AA2A50 /* Swap */ = {
+		271F685726EBD27D00AA2A50 /* BuySwapSwap */ = {
 			isa = PBXGroup;
 			children = (
-				271F685826EBD27D00AA2A50 /* CryptoSwapView.swift */,
+				271F685826EBD27D00AA2A50 /* SwapCryptoView.swift */,
+				2729E7D226F502AC00200648 /* AccountPicker.swift */,
 			);
-			path = Swap;
+			path = BuySwapSwap;
 			sourceTree = "<group>";
 		};
 		271F685A26EBD27D00AA2A50 /* Stores */ = {
@@ -4254,6 +4259,7 @@
 				271F688726EBD27D00AA2A50 /* OSAvailabilityModifier.swift */,
 				271F68D126EBD35100AA2A50 /* PopupView.swift */,
 				271F688826EBD27D00AA2A50 /* HostingTableViewCell.swift */,
+				270E37DA26F5177B00C73C29 /* ResetListStyleModifier.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -4454,7 +4460,6 @@
 				E65075501E37F6D1006961AC /* UIViewExtensions.swift */,
 				C817B34C1FC609500086018E /* UIScrollViewSwizzled.swift */,
 				A1AD4BE020C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift */,
-				A1AD4BE220C0861D007A6EA1 /* UIBarButtonItemExtensions.swift */,
 				595E0EE021CAEF5B00813D49 /* FileManagerExtension.swift */,
 				592F521D2217327B0078395E /* HttpCookieExtension.swift */,
 				5D8AE6AE230C76B60096C845 /* AppearanceExtensions.swift */,
@@ -7278,7 +7283,7 @@
 				271F689B26EBD27E00AA2A50 /* CryptoView.swift in Sources */,
 				271F689826EBD27E00AA2A50 /* EthNetworkStore.swift in Sources */,
 				271F68AD26EBD27E00AA2A50 /* VerifyRecoveryPhraseView.swift in Sources */,
-				271F689626EBD27E00AA2A50 /* CryptoSwapView.swift in Sources */,
+				271F689626EBD27E00AA2A50 /* SwapCryptoView.swift in Sources */,
 				271F689426EBD27E00AA2A50 /* PreviewModifiers.swift in Sources */,
 				271F68A826EBD27E00AA2A50 /* PortfolioViewController.swift in Sources */,
 				271F68BD26EBD27E00AA2A50 /* Blockies.swift in Sources */,
@@ -7297,6 +7302,7 @@
 				271F68AB26EBD27E00AA2A50 /* AssetDetailView.swift in Sources */,
 				271F68C026EBD27E00AA2A50 /* WalletTableViewHeaderView.swift in Sources */,
 				271F68A726EBD27E00AA2A50 /* BackupNotifyView.swift in Sources */,
+				2729E7D326F502AC00200648 /* AccountPicker.swift in Sources */,
 				271F68A426EBD27E00AA2A50 /* AccountsView.swift in Sources */,
 				271F68AC26EBD27E00AA2A50 /* AssetDetailHeaderView.swift in Sources */,
 				271F689A26EBD27E00AA2A50 /* KeyringStore.swift in Sources */,
@@ -7344,6 +7350,7 @@
 				271F68D426EBD3FC00AA2A50 /* UIFontExtensions.swift in Sources */,
 				276A790A244660B100AC9446 /* SpringButton.swift in Sources */,
 				278C46A023F1ED340083347F /* LinkLabel.swift in Sources */,
+				270E37DB26F5177B00C73C29 /* ResetListStyleModifier.swift in Sources */,
 				271F68C626EBD29500AA2A50 /* HostingTableViewCell.swift in Sources */,
 				27B33D5826556E7300F3D274 /* BraveButtonStyle.swift in Sources */,
 				27953F7423F5B04500B4B595 /* ViewLabel.swift in Sources */,
@@ -8140,7 +8147,6 @@
 				4422D54C21BFFB7E00BF1855 /* strutil.cc in Sources */,
 				CA8D5C1C26D7CF04009BF13D /* PlaylistCarplayManager.swift in Sources */,
 				59A68D66379CFA85C4EAF00B /* TwoLineCell.swift in Sources */,
-				A1AD4BE320C0861D007A6EA1 /* UIBarButtonItemExtensions.swift in Sources */,
 				C6D267522136800100465DFA /* PrivateBrowsingManager.swift in Sources */,
 				0A4B012220D02F26004D4011 /* TabBarCell.swift in Sources */,
 				27FD2CAC2146C31C00A5A779 /* FindInPageActivity.swift in Sources */,

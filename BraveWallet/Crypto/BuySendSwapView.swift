@@ -44,9 +44,11 @@ struct BuySendSwapView: View {
             Text(action.title)
               .foregroundColor(Color(.bravePrimary))
               .font(.headline)
+              .multilineTextAlignment(.leading)
             Text(action.description)
               .foregroundColor(Color(.braveLabel))
               .font(.footnote)
+              .multilineTextAlignment(.leading)
           }
           .padding([.leading, .trailing], 20)
         }
@@ -66,7 +68,7 @@ struct BuySendSwapView_Previews: PreviewProvider {
   static var previews: some View {
     BuySendSwapView(action: { _ in })
       .previewLayout(.sizeThatFits)
-      .previewColorSchemes()
+//      .previewColorSchemes()
       .previewSizeCategories([.large, .accessibilityLarge])
   }
 }

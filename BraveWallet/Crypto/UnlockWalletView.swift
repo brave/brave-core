@@ -6,7 +6,6 @@
 import SwiftUI
 import BraveUI
 
-@available(iOS 14.0, *)
 struct UnlockWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
   
@@ -96,7 +95,6 @@ struct UnlockWalletView: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct CryptoUnlockView_Previews: PreviewProvider {
   static var previews: some View {
     UnlockWalletView(keyringStore: .previewStore)

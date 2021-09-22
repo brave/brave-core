@@ -10,7 +10,6 @@ import BraveCore
 import Introspect
 import BraveUI
 
-@available(iOS 14.0, *)
 public struct CryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: EthNetworkStore

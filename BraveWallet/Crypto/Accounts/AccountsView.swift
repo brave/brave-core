@@ -7,8 +7,8 @@ import UIKit
 import BraveCore
 import Combine
 import SwiftUI
+import BraveUI
 
-@available(iOS 14.0, *)
 struct AccountsView: View {
   @ObservedObject var keyringStore: KeyringStore
   @State private var navigationController: UINavigationController?
@@ -51,10 +51,7 @@ struct AccountsView: View {
     List {
       Section(
         header: AccountsHeaderView(keyringStore: keyringStore)
-          .listRowInsets(.zero)
-          .textCase(.none)
-          .font(.body)
-          .foregroundColor(.primary)
+          .resetListHeaderStyle()
       ) {
       }
       Section(
@@ -104,7 +101,6 @@ struct AccountsView: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct AccountsViewController_Previews: PreviewProvider {
   static var previews: some View {
     Group {

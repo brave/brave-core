@@ -67,5 +67,17 @@ extension AppDelegate {
             .textColor = .braveLabel
         
         UITextField.appearance().textColor = .braveLabel
+        
+        UISegmentedControl.appearance().do {
+            $0.selectedSegmentTintColor = .init(dynamicProvider: {
+                if $0.userInterfaceStyle == .dark {
+                    return .secondaryButtonTint
+                }
+                return .white
+            })
+            $0.backgroundColor = .secondaryBraveBackground
+            $0.setTitleTextAttributes([.foregroundColor: UIColor.bravePrimary], for: .selected)
+            $0.setTitleTextAttributes([.foregroundColor: UIColor.braveLabel], for: .normal)
+        }
     }
 }

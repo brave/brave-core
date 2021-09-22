@@ -13,7 +13,7 @@ private struct PreviewColorSchemeIteratorModifier: ViewModifier {
     ForEach(schemes, id: \.self) { scheme in
       content
         .background(Color(.braveBackground))
-        .environment(\.colorScheme, scheme)
+        .preferredColorScheme(scheme)
         .previewDisplayName(String(describing: scheme).capitalized)
     }
   }

@@ -7,7 +7,6 @@ import SwiftUI
 import Algorithms
 
 /// Displays a grid of recovery words
-@available(iOS 14.0, *)
 struct RecoveryPhraseGrid<Word: Hashable, ID: Hashable, Content: View>: View {
   @Environment(\.sizeCategory) private var sizeCategory
   
@@ -47,7 +46,6 @@ struct RecoveryPhraseGrid<Word: Hashable, ID: Hashable, Content: View>: View {
   }
 }
 
-@available(iOS 14.0, *)
 struct RecoveryPhraseGrid_Previews: PreviewProvider {
   static let data: [String] = [
     "Tomato", "Green", "Velvet", "Span",

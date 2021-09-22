@@ -19,7 +19,6 @@ struct Candle: DataPoint, Equatable {
   var value: CGFloat
 }
 
-@available(iOS 14.0, *)
 struct PortfolioView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: EthNetworkStore
@@ -61,10 +60,7 @@ struct PortfolioView: View {
       Section(
         header: listHeader
           .padding(.horizontal, -16) // inset grouped layout margins workaround
-          .listRowInsets(.zero)
-          .textCase(.none)
-          .font(.body)
-          .foregroundColor(.primary)
+          .resetListHeaderStyle()
       ) {
       }
       Section(
@@ -86,7 +82,6 @@ struct PortfolioView: View {
   }
 }
 
-@available(iOS 14.0, *)
 struct BalanceHeaderView: View {
   var balance: String
   @ObservedObject var networkStore: EthNetworkStore
@@ -185,7 +180,6 @@ struct BalanceHeaderView: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct PortfolioViewController_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {

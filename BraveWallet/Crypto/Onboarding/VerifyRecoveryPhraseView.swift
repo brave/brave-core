@@ -7,7 +7,6 @@ import Foundation
 import SwiftUI
 import BraveUI
 
-@available(iOS 14.0, *)
 struct VerifyRecoveryPhraseView: View {
   @ObservedObject var keyringStore: KeyringStore
   
@@ -110,7 +109,6 @@ struct VerifyRecoveryPhraseView: View {
   }
 }
 
-@available(iOS 14.0, *)
 private struct SelectedWordsBox: View {
   var recoveryWords: [RecoveryWord]
   @Binding var selectedWords: [RecoveryWord]
@@ -207,7 +205,6 @@ private struct SelectedWordsBox: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct VerifyRecoveryPhraseView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {

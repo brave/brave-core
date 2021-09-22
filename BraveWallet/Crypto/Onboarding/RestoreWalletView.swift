@@ -7,7 +7,6 @@ import Foundation
 import SwiftUI
 import BraveUI
 
-@available(iOS 14.0, *)
 struct RestoreWalletContainerView: View {
   @ObservedObject var keyringStore: KeyringStore
   
@@ -26,7 +25,6 @@ struct RestoreWalletContainerView: View {
   }
 }
 
-@available(iOS 14.0, *)
 private struct RestoreWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
   
@@ -193,7 +191,6 @@ private struct RestoreWalletView: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct RestoreWalletView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {

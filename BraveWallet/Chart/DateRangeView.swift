@@ -7,7 +7,6 @@ import Foundation
 import SwiftUI
 import BraveCore
 
-@available(iOS 14.0, *)
 struct DateRangeView: View {
   @Binding var selectedRange: BraveWallet.AssetPriceTimeframe
   @Environment(\.sizeCategory) private var sizeCategory
