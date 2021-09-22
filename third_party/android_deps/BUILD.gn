@@ -3,6 +3,7 @@ import("//build/config/android/rules.gni")
 group("android_deps") {
   public_deps = [
     ":com_airbnb_android_java",
+    ":com_android_billingclient_java",
     ":com_android_installreferrer_java",
     ":google_play_services_safetynet_java",
   ]
@@ -24,4 +25,10 @@ android_aar_prebuilt("com_airbnb_android_java") {
   aar_path = "libs/com_airbnb_android/lottie-3.0.3.aar"
   info_path = "libs/com_airbnb_android/com_airbnb_android.info"
   deps = [ "//third_party/androidx:androidx_appcompat_appcompat_java" ]
+}
+
+android_aar_prebuilt("com_android_billingclient_java") {
+  aar_path = "libs/com_android_billingclient/billing-4.0.0.aar"
+  info_path = "libs/com_android_billingclient/com_android_billingclient.info"
+  ignore_manifest = true
 }

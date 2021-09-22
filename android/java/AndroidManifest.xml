@@ -88,6 +88,31 @@
     tools:ignore="LockedOrientationActivity"/>
 
 <activity
+    android:name="org.chromium.chrome.browser.vpn.BraveVpnPlansActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:noHistory="true"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity"/>
+
+<activity
+    android:name="org.chromium.chrome.browser.vpn.BraveVpnProfileActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity"/>
+
+<activity
+    android:name="org.chromium.chrome.browser.vpn.BraveVpnParentActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity"/>
+
+<activity
+    android:name="org.chromium.chrome.browser.vpn.BraveVpnSupportActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity"/>
+
+<activity
     android:name="org.chromium.chrome.browser.widget.crypto.binance.BinanceActivity"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen"
     android:exported="true">
@@ -105,6 +130,12 @@
     android:label="@string/settings"
     android:exported="false">
 </activity>
+
+<activity android:name="com.android.billingclient.api.ProxyBillingActivity"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen.Transparent"
+    android:exported="false"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity"/>
 
 <!-- Upgrade related -->
 <receiver android:name="org.chromium.chrome.browser.upgrade.BravePackageReplacedBroadcastReceiver"

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2021 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BraveVpnSupportActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/vpn_hostname_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:text="@string/vpn_hostname" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/subscription_type_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:text="@string/subscription_type" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/app_receipt_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:text="@string/app_version" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/app_version_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:text="@string/app_version" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/timezone_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:text="@string/timezone" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/network_type_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:text="@string/network_type" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/cellular_carrier_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:text="@string/cellular_carrier" />
+
+        <TextView
+            android:id="@+id/other_issues_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:drawablePadding="32dp"
+            app:drawableEndCompat="@drawable/ic_toggle_down"
+            android:text="@string/other_issues"/>
+
+        <LinearLayout
+            android:id="@+id/other_issues_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/other_issue_checkbox_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cannot_connect_to_vpn"
+            android:layoutDirection="rtl"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/other_issue_checkbox_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_internet"
+            android:layoutDirection="rtl"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/other_issue_checkbox_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/slow_connection"
+            android:layoutDirection="rtl"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/other_issue_checkbox_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/website_doesnt_work"
+            android:layoutDirection="rtl"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/other_issue_checkbox_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/other"
+            android:layoutDirection="rtl"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_continue_to_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/orange_rounded_button"
+            android:text="@string/continue_to_email"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/vpn_support_text"/>
+
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

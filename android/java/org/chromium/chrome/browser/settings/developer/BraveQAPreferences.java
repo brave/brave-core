@@ -39,6 +39,7 @@ import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.BraveDbUtil;
+import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
@@ -69,6 +70,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private static final int MAX_ADS = 50;
     private static final int DEFAULT_ADS_PER_HOUR = 2;
 
+    private ChromeSwitchPreference mBraveVpnFeature;
     private ChromeSwitchPreference mIsStagingServer;
     private ChromeSwitchPreference mIsSyncStagingServer;
     private ChromeSwitchPreference mMaximizeAdsNumber;
@@ -87,6 +89,12 @@ public class BraveQAPreferences extends BravePreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SettingsUtils.addPreferencesFromResource(this, R.xml.qa_preferences);
+
+        mBraveVpnFeature =
+                (ChromeSwitchPreference) findPreference(BraveVpnPrefUtils.PREF_BRAVE_VPN_FEATURE);
+        if (mBraveVpnFeature != null) {
+            mBraveVpnFeature.setOnPreferenceChangeListener(this);
+        }
 
         mIsStagingServer = (ChromeSwitchPreference) findPreference(PREF_USE_REWARDS_STAGING_SERVER);
         if (mIsStagingServer != null) {
@@ -279,7 +287,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
             enableMaximumAdsNumber((boolean) newValue);
         } else if (PREF_QA_DEBUG_NTP.equals(preference.getKey())
                 || PREF_USE_SYNC_STAGING_SERVER.equals(preference.getKey())
-                || PREF_QA_VLOG_REWARDS.equals(preference.getKey())) {
+                || PREF_QA_VLOG_REWARDS.equals(preference.getKey())
+                || BraveVpnPrefUtils.PREF_BRAVE_VPN_FEATURE.equals(preference.getKey())) {
             setOnPreferenceValue(preference.getKey(), (boolean)newValue);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         }
