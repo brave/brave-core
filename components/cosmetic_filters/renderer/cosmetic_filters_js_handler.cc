@@ -292,20 +292,6 @@ void CosmeticFiltersJSHandler::ProcessURL(const GURL& url,
   if (!EnsureConnected() || url_.is_empty() || !url_.is_valid())
     return;
 
-  cosmetic_filters_resources_->ShouldDoCosmeticFiltering(
-      url_.spec(),
-      base::BindOnce(&CosmeticFiltersJSHandler::OnShouldDoCosmeticFiltering,
-                     base::Unretained(this), std::move(callback)));
-}
-
-void CosmeticFiltersJSHandler::OnShouldDoCosmeticFiltering(
-    base::OnceClosure callback,
-    bool enabled,
-    bool first_party_enabled) {
-  if (!enabled || !EnsureConnected())
-    return;
-
-  enabled_1st_party_cf_ = first_party_enabled;
   cosmetic_filters_resources_->UrlCosmeticResources(
       url_.spec(),
       base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
@@ -314,7 +300,12 @@ void CosmeticFiltersJSHandler::OnShouldDoCosmeticFiltering(
 
 void CosmeticFiltersJSHandler::OnUrlCosmeticResources(
     base::OnceClosure callback,
+    bool enabled,
+    bool first_party_enabled,
     base::Value result) {
+  if (!enabled || !EnsureConnected())
+    return;
+  enabled_1st_party_cf_ = first_party_enabled;
   resources_dict_ = base::DictionaryValue::From(
       base::Value::ToUniquePtrValue(std::move(result)));
   std::move(callback).Run();

@@ -80,32 +80,35 @@ void CosmeticFiltersResources::HiddenClassIdSelectorsOnUI(
 }
 
 void CosmeticFiltersResources::UrlCosmeticResourcesOnUI(
-    UrlCosmeticResourcesCallback callback,
+    base::OnceCallback<void(base::Value)> callback,
     absl::optional<base::Value> resources) {
   std::move(callback).Run(resources ? std::move(resources.value())
                                     : base::Value());
 }
 
-void CosmeticFiltersResources::ShouldDoCosmeticFiltering(
-    const std::string& url,
-    ShouldDoCosmeticFilteringCallback callback) {
-  bool enabled =
-      brave_shields::ShouldDoCosmeticFiltering(settings_map_, GURL(url));
-  bool first_party_enabled =
-      brave_shields::IsFirstPartyCosmeticFilteringEnabled(settings_map_,
-                                                          GURL(url));
-  std::move(callback).Run(enabled, first_party_enabled);
-}
-
 void CosmeticFiltersResources::UrlCosmeticResources(
     const std::string& url,
     UrlCosmeticResourcesCallback callback) {
+  bool enabled =
+      brave_shields::ShouldDoCosmeticFiltering(settings_map_, GURL(url));
+
+  if (!enabled) {
+    std::move(callback).Run(enabled, false, base::Value());
+    return;
+  }
+
+  bool first_party_enabled =
+      brave_shields::IsFirstPartyCosmeticFilteringEnabled(settings_map_,
+                                                          GURL(url));
+
   ad_block_service_->GetTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&brave_shields::AdBlockService::UrlCosmeticResources,
                      base::Unretained(ad_block_service_), url),
-      base::BindOnce(&CosmeticFiltersResources::UrlCosmeticResourcesOnUI,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(
+          &CosmeticFiltersResources::UrlCosmeticResourcesOnUI,
+          weak_factory_.GetWeakPtr(),
+          base::BindOnce(std::move(callback), enabled, first_party_enabled)));
 }
 
 }  // namespace cosmetic_filters
