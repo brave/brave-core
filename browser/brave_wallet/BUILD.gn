@@ -29,6 +29,7 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/factory",
     "//chrome/browser/profiles:profiles",
     "//components/keyed_service/content:content",
     "//components/user_prefs",

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_BRAVE_WALLET_ASSET_RATIO_CONTROLLER_FACTORY_H_
-#define BRAVE_IOS_BROWSER_BRAVE_WALLET_ASSET_RATIO_CONTROLLER_FACTORY_H_
+#ifndef BRAVE_IOS_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_FACTORY_H_
+#define BRAVE_IOS_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_FACTORY_H_
 
 #include <memory>
 
@@ -21,19 +21,19 @@ class BrowserState;
 
 namespace brave_wallet {
 
-class AssetRatioControllerFactory : public BrowserStateKeyedServiceFactory {
+class BraveWalletServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
   // Creates the service if it doesn't exist already for |browser_state|.
-  static mojom::AssetRatioController* GetForBrowserState(
+  static mojom::BraveWalletService* GetForBrowserState(
       ChromeBrowserState* browser_state);
 
-  static AssetRatioControllerFactory* GetInstance();
+  static BraveWalletServiceFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<AssetRatioControllerFactory>;
+  friend struct base::DefaultSingletonTraits<BraveWalletServiceFactory>;
 
-  AssetRatioControllerFactory();
-  ~AssetRatioControllerFactory() override;
+  BraveWalletServiceFactory();
+  ~BraveWalletServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory:
   // BrowserStateKeyedServiceFactory implementation.
@@ -43,11 +43,11 @@ class AssetRatioControllerFactory : public BrowserStateKeyedServiceFactory {
   web::BrowserState* GetBrowserStateToUse(
       web::BrowserState* context) const override;
 
-  AssetRatioControllerFactory(const AssetRatioControllerFactory&) = delete;
-  AssetRatioControllerFactory& operator=(const AssetRatioControllerFactory&) =
+  BraveWalletServiceFactory(const BraveWalletServiceFactory&) = delete;
+  BraveWalletServiceFactory& operator=(const BraveWalletServiceFactory&) =
       delete;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_ASSET_RATIO_CONTROLLER_FACTORY_H_
+#endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_FACTORY_H_

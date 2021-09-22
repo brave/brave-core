@@ -1,0 +1,20 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(brave_wallet_enabled)
+
+source_set("factory") {
+  sources = [
+    "eth_tx_controller_factory_helper.cc",
+    "eth_tx_controller_factory_helper.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/browser",
+    "//components/user_prefs",
+  ]
+}

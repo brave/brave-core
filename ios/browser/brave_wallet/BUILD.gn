@@ -4,20 +4,31 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("brave_wallet") {
-  check_includes = false
-
+  configs += [ "//build/config/compiler:enable_arc" ]
   sources = [
     "asset_ratio_controller_factory.cc",
     "asset_ratio_controller_factory.h",
+    "brave_wallet_factory_wrappers.h",
+    "brave_wallet_factory_wrappers.mm",
+    "brave_wallet_service_factory.cc",
+    "brave_wallet_service_factory.h",
     "eth_json_rpc_controller_factory.cc",
     "eth_json_rpc_controller_factory.h",
+    "eth_tx_controller_factory.cc",
+    "eth_tx_controller_factory.h",
     "keyring_controller_factory.cc",
     "keyring_controller_factory.h",
+    "swap_controller_factory.cc",
+    "swap_controller_factory.h",
   ]
   deps = [
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/factory",
+    "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
+    "//brave/ios/browser/keyed_service",
+    "//components/keyed_service/core",
     "//components/keyed_service/ios:ios",
     "//ios/chrome/browser/browser_state",
     "//services/network/public/cpp",
