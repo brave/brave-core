@@ -84,6 +84,11 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "URL": "https://github.com/brave/hashset-cpp",
             "License": "MPL-2.0",
         },
+        os.path.join('brave', 'vendor', 'web-discovery-project'): {
+            "Name": "Web Discovery Project",
+            "URL": "https://github.com/brave/web-discovery-project",
+            "License": "MPL-2.0",
+        },
         os.path.join('brave', 'vendor', 'omaha'): {
             "Name": "Omaha",
             "URL": "https://github.com/brave/omaha",
@@ -132,7 +137,7 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
 
 def CheckBraveMissingLicense(target_os, path, error):
     if path.startswith('brave'):
-        if (target_os == 'android'):
+        if target_os == 'android':
             if path in DESKTOP_ONLY_PATHS:
                 return  # Desktop failures are not relevant on Android.
         else:

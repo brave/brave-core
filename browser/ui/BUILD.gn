@@ -256,6 +256,7 @@ source_set("ui") {
     "//brave/components/brave_rewards/resources:internals_generated_resources",
     "//brave/components/brave_rewards/resources:page_generated_resources",
     "//brave/components/brave_rewards/resources:tip_generated_resources",
+    "//brave/components/brave_search/common",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_vpn/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
