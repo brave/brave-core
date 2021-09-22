@@ -1,0 +1,13 @@
+diff --git a/components/translate/core/browser/translate_download_manager.h b/components/translate/core/browser/translate_download_manager.h
+index f16c4fe95aa5ceaeaeb9f2ef80da6897e5c3495b..3f343e861d9949c68e50c33d88a548eb92301eb7 100644
+--- a/components/translate/core/browser/translate_download_manager.h
++++ b/components/translate/core/browser/translate_download_manager.h
+@@ -93,7 +93,7 @@ class TranslateDownloadManager {
+   // translation server.
+   void SetTranslateScriptExpirationDelay(int delay_ms);
+ 
+- private:
++ protected:
+   friend struct base::DefaultSingletonTraits<TranslateDownloadManager>;
+   TranslateDownloadManager();
+   virtual ~TranslateDownloadManager();

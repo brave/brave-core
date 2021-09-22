@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/translate/translate_bubble_model_impl.h b/chrome/browser/ui/translate/translate_bubble_model_impl.h
+index ff47dc427ba475e2c7b417cfb7218878e296afd6..430a2472f5fab83ea1c9e8fd77eaaf06bb0e0b93 100644
+--- a/chrome/browser/ui/translate/translate_bubble_model_impl.h
++++ b/chrome/browser/ui/translate/translate_bubble_model_impl.h
+@@ -12,6 +12,8 @@
+ #include "chrome/browser/ui/translate/translate_bubble_model.h"
+ #include "chrome/browser/ui/translate/translate_bubble_view_state_transition.h"
+ 
++#define TranslateUIDelegate BraveTranslateUIDelegate
++
+ namespace translate {
+ class TranslateUIDelegate;
+ }
+@@ -69,4 +71,6 @@ class TranslateBubbleModelImpl : public TranslateBubbleModel {
+   DISALLOW_COPY_AND_ASSIGN(TranslateBubbleModelImpl);
+ };
+ 
++#undef TranslateUIDelegate
++
+ #endif  // CHROME_BROWSER_UI_TRANSLATE_TRANSLATE_BUBBLE_MODEL_IMPL_H_

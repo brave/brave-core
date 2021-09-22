@@ -1,0 +1,13 @@
+diff --git a/components/translate/core/browser/translate_language_list.h b/components/translate/core/browser/translate_language_list.h
+index 4d72652467c9269946ccb751775bcee6499c5115..49bbb529626a1517a283f6af8a9398064f444986 100644
+--- a/components/translate/core/browser/translate_language_list.h
++++ b/components/translate/core/browser/translate_language_list.h
+@@ -74,7 +74,7 @@ class TranslateLanguageList {
+   // static const values shared with our browser tests.
+   static const char kTargetLanguagesKey[];
+ 
+- private:
++ protected:
+   FRIEND_TEST_ALL_PREFIXES(TranslateLanguageListTest, IsSupportedLanguage);
+   FRIEND_TEST_ALL_PREFIXES(TranslateLanguageListTest, SetSupportedLanguages);
+   FRIEND_TEST_ALL_PREFIXES(TranslateLanguageListTest, TranslateLanguageUrl);

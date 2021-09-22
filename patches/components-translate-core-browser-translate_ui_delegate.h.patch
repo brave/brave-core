@@ -1,0 +1,13 @@
+diff --git a/components/translate/core/browser/translate_ui_delegate.h b/components/translate/core/browser/translate_ui_delegate.h
+index 25950625178a310f52f8bc29db29e9ee8acc1c14..f145afc03cfa1c18bee2ecf172dedb1766152288 100644
+--- a/components/translate/core/browser/translate_ui_delegate.h
++++ b/components/translate/core/browser/translate_ui_delegate.h
+@@ -153,7 +153,7 @@ class TranslateUIDelegate {
+   // languages data.
+   void MaybeSetContentLanguages();
+ 
+- private:
++ protected:
+   FRIEND_TEST_ALL_PREFIXES(TranslateUIDelegateTest, GetPageHost);
+   FRIEND_TEST_ALL_PREFIXES(TranslateUIDelegateTest, MaybeSetContentLanguages);
+ 
