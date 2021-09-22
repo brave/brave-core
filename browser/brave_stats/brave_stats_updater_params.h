@@ -77,7 +77,6 @@ class BraveStatsUpdaterParams {
 
   std::string BooleanToString(bool bool_value) const;
 
-  uint8_t UsageBitstringFromTimestamp(const base::Time& time) const;
   std::string GetDateAsYMD(const base::Time& time) const;
   std::string GetCurrentDateAsYMD() const;
   std::string GetLastMondayAsYMD() const;
@@ -89,7 +88,7 @@ class BraveStatsUpdaterParams {
   static void SetCurrentTimeForTest(const base::Time& current_time);
   static void SetFirstRunForTest(bool first_run);
   // Returns the timestamp of the browsers first run
-  static base::Time GetFirstRunTime(PrefService *pref_service);
+  static base::Time GetFirstRunTime(PrefService* pref_service);
 
   DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdaterParams);
 };

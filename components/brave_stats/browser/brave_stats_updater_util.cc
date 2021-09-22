@@ -30,11 +30,11 @@ std::string GetPlatformIdentifier() {
   else
     return "winx64-bc";
 #elif defined(OS_MAC)
-  #if defined(ARCH_CPU_X86_64)
-    return "osx-bc";
-  #elif defined(ARCH_CPU_ARM64)
-    return "osxarm64-bc";
-  #endif
+#if defined(ARCH_CPU_X86_64)
+  return "osx-bc";
+#elif defined(ARCH_CPU_ARM64)
+  return "osxarm64-bc";
+#endif
 #elif defined(OS_ANDROID)
   return "android-bc";
 #elif defined(OS_LINUX)
@@ -86,6 +86,43 @@ std::string GetAPIKey() {
     env->GetVar("BRAVE_STATS_API_KEY", &api_key);
 
   return api_key;
+}
+
+// This is a helper method for dealing with timestamps set by other services in
+// the browser. This method makes the assumption that enabling the service
+// required a user interaction, and thus the uasge ping for the current day has
+// already fired. All calculations for daily, weekly, and monthly are made using
+// yesterday's timestamp as reference.
+//
+// The method returns a bitstring with the following values according to the
+// timestamp. All unannotated fields are unused.
+//
+// 0b00000000
+//        |||
+//        |||_____ Daily
+//        ||______ Weekly
+//        |_______ Monthly
+uint8_t UsageBitstringFromTimestamp(const base::Time& time,
+                                    const base::Time& now) {
+  base::Time::Exploded target_exploded;
+  time.LocalExplode(&target_exploded);
+  uint8_t enabled_bitset = IsInactiveUser;
+
+  base::Time yesterday = now - base::TimeDelta::FromDays(1);
+  base::Time::Exploded yesterday_exploded;
+  yesterday.LocalExplode(&yesterday_exploded);
+  if (yesterday_exploded.year == target_exploded.year) {
+    if (yesterday_exploded.month == target_exploded.month) {
+      enabled_bitset |= IsMonthlyUser;
+      if (GetIsoWeekNumber(time) == GetIsoWeekNumber(yesterday)) {
+        enabled_bitset |= IsWeeklyUser;
+        if (yesterday_exploded.day_of_month == target_exploded.day_of_month) {
+          enabled_bitset |= IsDailyUser;
+        }
+      }
+    }
+  }
+  return enabled_bitset;
 }
 
 }  // namespace brave_stats

@@ -491,8 +491,9 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringDaily) {
       GetLocalState(), GetProfilePrefs(), brave_stats::ProcessArch::kArchSkip,
       kToday, kThisWeek, kThisMonth);
   // Note: daily implies weekly and monthly
-  EXPECT_EQ(0b111, brave_stats_updater_params.UsageBitstringFromTimestamp(
-                       last_used_timestamp));
+  EXPECT_EQ(0b111, brave_stats::UsageBitstringFromTimestamp(
+                       last_used_timestamp,
+                       brave_stats_updater_params.GetCurrentTimeNow()));
 }
 
 TEST_F(BraveStatsUpdaterTest, UsageBitstringWeekly) {
@@ -507,8 +508,9 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringWeekly) {
       GetLocalState(), GetProfilePrefs(), brave_stats::ProcessArch::kArchSkip,
       kToday, kThisWeek, kThisMonth);
   // Note: Weekly implies monthly
-  EXPECT_EQ(0b110, brave_stats_updater_params.UsageBitstringFromTimestamp(
-                       last_used_timestamp));
+  EXPECT_EQ(0b110, brave_stats::UsageBitstringFromTimestamp(
+                       last_used_timestamp,
+                       brave_stats_updater_params.GetCurrentTimeNow()));
 }
 
 TEST_F(BraveStatsUpdaterTest, UsageBitstringMonthly) {
@@ -522,8 +524,9 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringMonthly) {
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), GetProfilePrefs(), brave_stats::ProcessArch::kArchSkip,
       kToday, kThisWeek, kThisMonth);
-  EXPECT_EQ(0b100, brave_stats_updater_params.UsageBitstringFromTimestamp(
-                       last_used_timestamp));
+  EXPECT_EQ(0b100, brave_stats::UsageBitstringFromTimestamp(
+                       last_used_timestamp,
+                       brave_stats_updater_params.GetCurrentTimeNow()));
 }
 
 TEST_F(BraveStatsUpdaterTest, UsageBitstringInactive) {
@@ -537,6 +540,7 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringInactive) {
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
       GetLocalState(), GetProfilePrefs(), brave_stats::ProcessArch::kArchSkip,
       kToday, kThisWeek, kThisMonth);
-  EXPECT_EQ(0b000, brave_stats_updater_params.UsageBitstringFromTimestamp(
-                       last_used_timestamp));
+  EXPECT_EQ(0b000, brave_stats::UsageBitstringFromTimestamp(
+                       last_used_timestamp,
+                       brave_stats_updater_params.GetCurrentTimeNow()));
 }
