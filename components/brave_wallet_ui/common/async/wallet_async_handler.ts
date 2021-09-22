@@ -19,9 +19,10 @@ import {
   WalletState,
   WalletPanelState,
   AssetPriceTimeframe,
-  SendTransactionParam,
+  SendTransactionParams,
   TransactionInfo,
-  WalletAccountType
+  WalletAccountType,
+  ER20TransferParams
 } from '../../constants/types'
 import { AssetOptions } from '../../options/asset-options'
 import { GetNetworkInfo } from '../../utils/network-utils'
@@ -251,21 +252,17 @@ handler.on(WalletActions.selectPortfolioTimeline.getType(), async (store, payloa
   await getTokenPriceHistory(store)
 })
 
-handler.on(WalletActions.sendTransaction.getType(), async (store, payload: SendTransactionParam) => {
+handler.on(WalletActions.sendTransaction.getType(), async (store, payload: SendTransactionParams) => {
   const apiProxy = await getAPIProxy()
-  let txData: any
 
-  if (payload.contractAddress === 'eth') {
-    txData = apiProxy.makeTxData('0x1' /* nonce */, payload.gasPrice, payload.gasLimit, payload.to, payload.value, [])
-  } else {
-    const transferDataResult = await apiProxy.ethTxController.makeERC20TransferData(payload.to, payload.value)
-    if (!transferDataResult.success) {
-      console.log('Failed making ERC20 transfer data, to: ', payload.to, ', value: ', payload.value)
-      return
-    }
-
-    txData = apiProxy.makeTxData('0x1' /* nonce */, payload.gasPrice, payload.gasLimit, payload.contractAddress, '0x0', transferDataResult.data)
-  }
+  const txData = apiProxy.makeTxData(
+      '0x1' /* nonce */,
+      payload.gasPrice || '',  // Estimated by eth_tx_controller if value is ''
+      payload.gas || '',  // Estimated by eth_tx_controller if value is ''
+      payload.to,
+      payload.value,
+      payload.data || []
+  )
 
   const addResult = await apiProxy.ethTxController.addUnapprovedTransaction(txData, payload.from)
   if (!addResult.success) {
@@ -274,6 +271,24 @@ handler.on(WalletActions.sendTransaction.getType(), async (store, payload: SendT
   }
 
   await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.sendERC20Transfer.getType(), async (store, payload: ER20TransferParams) => {
+  const apiProxy = await getAPIProxy()
+  const { data, success } = await apiProxy.ethTxController.makeERC20TransferData(payload.to, payload.value)
+  if (!success) {
+    console.log('Failed making ERC20 transfer data, to: ', payload.to, ', value: ', payload.value)
+    return
+  }
+
+  await store.dispatch(WalletActions.sendTransaction({
+    from: payload.from,
+    to: payload.contractAddress,
+    gas: payload.gas,
+    gasPrice: payload.gasPrice,
+    value: '0x0',
+    data
+  }))
 })
 
 handler.on(WalletActions.approveTransaction.getType(), async (store, txInfo: TransactionInfo) => {

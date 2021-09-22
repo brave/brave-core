@@ -111,7 +111,7 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       name: 'Ethereum',
       symbol: 'ETH',
       icon: ETHIconUrl,
-      isErc20: true,
+      isErc20: false,
       isErc721: false,
       decimals: 18
     },

@@ -139,7 +139,13 @@ function Container (props: Props) {
     setExchangeRate(formatBalance(price, 0))
   }, [swapQuote])
 
-  const onSwapParamsChange = (changeInToOrFrom: ToOrFromType, asset?: AccountAssetOptionType, amount?: string, slippage?: SlippagePresetObjectType) => {
+  const onSwapParamsChange = (
+    changeInToOrFrom: ToOrFromType,
+    asset?: AccountAssetOptionType,
+    amount?: string,
+    slippage?: SlippagePresetObjectType,
+    full: boolean = false
+  ) => {
     if (selectedWidgetTab !== 'swap') {
       return
     }
@@ -179,7 +185,7 @@ function Container (props: Props) {
       accountAddress: selectedAccount.address,
       slippageTolerance: slippage ?? slippageTolerance,
       networkChainId: selectedNetwork.chainId,
-      full: false
+      full
     })
   }
 
@@ -481,19 +487,21 @@ function Container (props: Props) {
   }
 
   const onSubmitSwap = () => {
-    // TODO (DOUGLAS): logic Here to submit a swap transaction
+    onSwapParamsChange('from', undefined, undefined, undefined, true)
   }
 
   const onSubmitSend = () => {
-    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === fromAsset.asset.symbol)
-    // Gas price and limit will be filled with suggestions in eth_tx_controller.
-    props.walletActions.sendTransaction({
+    fromAsset.asset.isErc20 && props.walletActions.sendERC20Transfer({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWeiHex(sendAmount, asset?.decimals ?? 0),
-      contractAddress: asset?.contractAddress ?? '',
-      gasPrice: '',
-      gasLimit: ''
+      value: toWeiHex(sendAmount, fromAsset.asset.decimals),
+      contractAddress: fromAsset.asset.contractAddress
+    })
+
+    !fromAsset.asset.isErc20 && props.walletActions.sendTransaction({
+      from: selectedAccount.address,
+      to: toAddress,
+      value: toWeiHex(sendAmount, fromAsset.asset.decimals)
     })
   }
 

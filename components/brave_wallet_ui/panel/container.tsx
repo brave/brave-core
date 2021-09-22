@@ -173,15 +173,17 @@ function Container (props: Props) {
   }
 
   const onSubmitSend = () => {
-    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === selectedAsset.asset.symbol)
-    // Gas price and limit will be filled with suggestions in eth_tx_controller.
-    props.walletActions.sendTransaction({
+    selectedAsset.asset.isErc20 && props.walletActions.sendERC20Transfer({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWeiHex(sendAmount, asset?.decimals ?? 0),
-      contractAddress: asset?.contractAddress ?? '',
-      gasPrice: '',
-      gasLimit: ''
+      value: toWeiHex(sendAmount, selectedAsset.asset.decimals),
+      contractAddress: selectedAsset.asset.contractAddress
+    })
+
+    !selectedAsset.asset.isErc20 && props.walletActions.sendTransaction({
+      from: selectedAccount.address,
+      to: toAddress,
+      value: toWeiHex(sendAmount, selectedAsset.asset.decimals)
     })
   }
 

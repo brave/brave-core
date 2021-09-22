@@ -391,13 +391,22 @@ export interface PortfolioTokenHistoryAndInfo {
   token: AccountAssetOptionType
 }
 
-export interface SendTransactionParam {
+export interface SendTransactionParams {
   from: string
   to: string
+  gas?: string
+  gasPrice?: string
   value: string
+  data?: number[]
+}
+
+export interface ER20TransferParams {
+  from: string
+  to: string
   contractAddress: string
-  gasPrice: string
-  gasLimit: string
+  gas?: string
+  gasPrice?: string
+  value: string
 }
 
 export interface CreateWalletReturnInfo {
