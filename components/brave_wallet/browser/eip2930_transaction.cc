@@ -150,8 +150,8 @@ Eip2930Transaction::ValueToAccessList(const base::Value& value) {
   return access_list;
 }
 
-std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(
-    uint256_t chain_id, bool hash) const {
+std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(uint256_t chain_id,
+                                                          bool hash) const {
   std::vector<uint8_t> result;
   result.push_back(type_);
 

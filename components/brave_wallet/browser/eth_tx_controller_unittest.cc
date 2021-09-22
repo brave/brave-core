@@ -504,4 +504,68 @@ TEST_F(EthTxControllerUnitTest, ValidateTxData1559) {
       &error_message));
 }
 
+TEST_F(EthTxControllerUnitTest, ProcessLedgerSignature) {
+  auto tx_data =
+      mojom::TxData::New("0x06", "" /* gas_price */, "" /* gas_limit */,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapprovedTransaction(
+      tx_data.Clone(), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  callback_called = false;
+  eth_tx_controller_->ProcessLedgerSignature(
+      tx_meta_id, "0x00",
+      "93b9121e82df014428924df439ff044f89c205dd76a194f8b11f50d2eade744e",
+      "7aa705c9144742836b7fbbd0745c57f67b60df7b8d1790fe59f91ed8d2bfc11d",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_TRUE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(callback_called);
+}
+
+TEST_F(EthTxControllerUnitTest, ProcessLedgerSignatureFail) {
+  auto tx_data =
+      mojom::TxData::New("0x06", "" /* gas_price */, "" /* gas_limit */,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapprovedTransaction(
+      tx_data.Clone(), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  callback_called = false;
+  eth_tx_controller_->ProcessLedgerSignature(
+      tx_meta_id, "0x00", "9ff044f89c205dd76a194f8b11f50d2eade744e", "",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(callback_called);
+
+  callback_called = false;
+  eth_tx_controller_->ProcessLedgerSignature(
+      "-1", "0x00", "9ff044f89c205dd76a194f8b11f50d2eade744e", "",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(callback_called);
+}
+
 }  //  namespace brave_wallet

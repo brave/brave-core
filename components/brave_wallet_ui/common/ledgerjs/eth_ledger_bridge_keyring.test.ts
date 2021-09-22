@@ -7,9 +7,12 @@
 import LedgerBridgeKeyring from './eth_ledger_bridge_keyring'
 
 import {
-  HardwareWallet,
   LedgerDerivationPaths
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
+
+import {
+  kLedgerHardwareVendor
+} from '../../constants/types'
 
 class MockApp {
   async getAddress (path: string) {
@@ -59,7 +62,7 @@ test('Extracting accounts from legacy device', () => {
 
 test('Check ledger bridge type', () => {
   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-  return expect(ledgerHardwareKeyring.type()).toStrictEqual(HardwareWallet.Ledger)
+  return expect(ledgerHardwareKeyring.type()).toStrictEqual(kLedgerHardwareVendor)
 })
 
 test('Check locks for device', () => {

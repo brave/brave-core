@@ -472,7 +472,16 @@ export interface ApproveTransactionReturnInfo {
   status: boolean
 }
 
+export interface ProcessLedgerSignatureReturnInfo {
+  status: boolean
+}
+
 export interface GetMessageToSignFromTxData1559ReturnInfo {
+  success: boolean
+  message: string
+}
+
+export interface GetMessageToSignFromTxDataReturnInfo {
   success: boolean
   message: string
 }
@@ -520,7 +529,8 @@ export interface EthTxController {
   makeERC20TransferData: (toAddress: string, amount: string) => Promise<MakeERC20TransferDataReturnInfo>
   makeERC20ApproveData: (spenderAddress: string, amount: string) => Promise<MakeERC20ApproveDataReturnInfo>
   getAllTransactionInfo: (fromAddress: string) => Promise<GetAllTransactionInfoReturnInfo>
-  getMessageToSignFromTxData1559: (txData: TxData1559) => Promise<GetMessageToSignFromTxData1559ReturnInfo>
+  getMessageToSignFromTxData: (txMetaId: string) => Promise<GetMessageToSignFromTxDataReturnInfo>
+  processLedgerSignature: (txMetaId: string, v: string, r: string, s: string) => Promise<ProcessLedgerSignatureReturnInfo>
 }
 
 export interface EthJsonRpcController {

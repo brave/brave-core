@@ -66,7 +66,7 @@ async function getTokenPriceHistory (store: Store) {
   store.dispatch(WalletActions.portfolioPriceHistoryUpdated(result))
 }
 
-async function GetHardwareAccountInfo (address: string) {
+async function findHardwareAccountInfo (address: string) {
   const apiProxy = await getAPIProxy()
   const hardwareAccounts = await apiProxy.keyringController.getHardwareAccounts()
   for (const account of hardwareAccounts.accounts) {
@@ -296,12 +296,13 @@ handler.on(WalletActions.sendERC20Transfer.getType(), async (store, payload: ER2
 
 handler.on(WalletActions.approveTransaction.getType(), async (store, txInfo: TransactionInfo) => {
   const apiProxy = await getAPIProxy()
-  const hardwareAccount = await GetHardwareAccountInfo(txInfo.fromAddress)
+  const hardwareAccount = await findHardwareAccountInfo(txInfo.fromAddress)
   if (hardwareAccount && hardwareAccount.hardware) {
-    const { success, message } = await apiProxy.ethTxController.getMessageToSignFromTxData1559(txInfo.txData)
+    const { success, message } = await apiProxy.ethTxController.getMessageToSignFromTxData(txInfo.id)
     if (success) {
       let deviceKeyring = await apiProxy.getKeyringsByType(hardwareAccount.hardware.vendor)
-      console.log(await deviceKeyring.signTransaction(hardwareAccount.hardware.path, message.replace('0x', '')))
+      const { v, r, s } = await deviceKeyring.signTransaction(hardwareAccount.hardware.path, message.replace('0x', ''))
+      await apiProxy.ethTxController.processLedgerSignature(txInfo.id, '0x' + v, r, s)
       await refreshWalletInfo(store)
       return
     }

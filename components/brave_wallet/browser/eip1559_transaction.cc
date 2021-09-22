@@ -114,8 +114,8 @@ absl::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
   return tx;
 }
 
-std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(
-    uint256_t chain_id, bool hash) const {
+std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(uint256_t chain_id,
+                                                          bool hash) const {
   std::vector<uint8_t> result;
   result.push_back(type_);
 

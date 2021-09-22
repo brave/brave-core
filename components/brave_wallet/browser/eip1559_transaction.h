@@ -32,7 +32,8 @@ class Eip1559Transaction : public Eip2930Transaction {
 
   // keccak256(0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas,
   // gasLimit, destination, value, data, access_list]))
-  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id = 0, bool hash = true) const override;
+  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id = 0,
+                                        bool hash = true) const override;
 
   // 0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit,
   // destination, value, data, accessList, signatureYParity, signatureR,
