@@ -21,7 +21,9 @@
     "elementPicker.js"
   ],
   "background": {
-    "scripts": ["out/brave_extension_background.bundle.js"],
+    "scripts": [
+      "out/brave_extension_background.bundle.js"
+    ],
     "persistent": true
   },
   "externally_connectable": {
@@ -56,6 +58,7 @@
     }
   ],
   "permissions": [
+    "activeTab",
     "alarms",
     "contentSettings",
     "contextMenus",
@@ -69,9 +72,11 @@
     "webRequest",
     "*://*/*",
     "chrome://favicon/*",
+    "webRequestBlocking",
+    "unlimitedStorage",
     "<all_urls>"
   ],
-  "content_security_policy": "default-src 'self'; font-src 'self' data:; script-src 'self'; style-src 'unsafe-inline'; img-src 'self' data: chrome://favicon/; connect-src https://pcdn.brave.com https://brave-today-cdn.brave.com https://pcdn.bravesoftware.com https://brave-today-cdn.bravesoftware.com https://pcdn.brave.software https://brave-today-cdn.brave.software https://api.twitter.com 'self';",
+  "content_security_policy": "default-src 'self'; font-src 'self' data:; script-src 'self' 'wasm-eval'; style-src 'unsafe-inline'; img-src 'self' data: chrome://favicon/; connect-src * data: blob: filesystem:;",
   "incognito": "split",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAupOLMy5Fd4dCSOtjcApsAQOnuBdTs+OvBVt/3P93noIrf068x0xXkvxbn+fpigcqfNamiJ5CjGyfx9zAIs7zcHwbxjOw0Uih4SllfgtK+svNTeE0r5atMWE0xR489BvsqNuPSxYJUmW28JqhaSZ4SabYrRx114KcU6ko7hkjyPkjQa3P+chStJjIKYgu5tWBiMJp5QVLelKoM+xkY6S7efvJ8AfajxCViLGyDQPDviGr2D0VvIBob0D1ZmAoTvYOWafcNCaqaejPDybFtuLFX3pZBqfyOCyyzGhucyCmfBXJALKbhjRAqN5glNsUmGhhPK87TuGATQfVuZtenMvXMQIDAQAB"
 }
