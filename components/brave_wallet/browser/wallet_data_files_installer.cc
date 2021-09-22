@@ -17,6 +17,7 @@
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
@@ -41,6 +42,7 @@ const uint8_t kWalletDataFilesSha2Hash[] = {
     0x49, 0xb8, 0x4c, 0x9d, 0x8e, 0xeb, 0xb3, 0xbd, 0x55, 0xdc, 0xf7,
     0xc0, 0x3e, 0x9b, 0x2a, 0xc2, 0xf5, 0x6a, 0x37, 0x71, 0x67};
 const char kWalletDataFilesDisplayName[] = "Brave Wallet data files";
+const char kComponentId[] = "bbckkcdiepaecefgfnibemejliemjnio";
 
 static_assert(base::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
               "Wrong hash length");
@@ -184,7 +186,11 @@ void RegisterWalletDataFilesComponent(
     auto installer =
         base::MakeRefCounted<component_updater::ComponentInstaller>(
             std::make_unique<WalletDataFilesInstallerPolicy>());
-    installer->Register(cus, base::OnceClosure());
+    installer->Register(
+        cus, base::BindOnce([]() {
+          brave_component_updater::BraveOnDemandUpdater::GetInstance()
+              ->OnDemandUpdate(kComponentId);
+        }));
   }
 }
 
