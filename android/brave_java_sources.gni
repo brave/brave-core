@@ -311,6 +311,7 @@ brave_components_browser_ui_site_settings_android_java = [
   "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources.java",
   "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveSingleCategorySettings.java",
   "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveSingleWebsiteSettings.java",
+  "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveSiteSettingsCategory.java",
   "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveSiteSettingsPreferencesBase.java",
   "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveWebsite.java",
   "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveWebsitePermissionsFetcher.java",

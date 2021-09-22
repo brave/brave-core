@@ -19,9 +19,6 @@ public class BraveSingleWebsiteSettingsClassAdapter extends BraveClassVisitor {
         changeMethodOwner(sSingleWebsiteSettingsClassName, "getPreferenceKey", sBraveSingleWebsiteSettingsClassName);
         changeMethodOwner(sSingleWebsiteSettingsClassName, "setupContentSettingsPreferences", sBraveSingleWebsiteSettingsClassName);
 
-        makePublicMethod(sSingleWebsiteSettingsClassName, "isActionableContentSettingsEnabled");
-        changeMethodOwner(sBraveSingleWebsiteSettingsClassName, "isActionableContentSettingsEnabled", sSingleWebsiteSettingsClassName);
-
         makePublicMethod(sSingleWebsiteSettingsClassName, "setupContentSettingsPreference");
         changeMethodOwner(sBraveSingleWebsiteSettingsClassName, "setupContentSettingsPreference", sSingleWebsiteSettingsClassName);
     }

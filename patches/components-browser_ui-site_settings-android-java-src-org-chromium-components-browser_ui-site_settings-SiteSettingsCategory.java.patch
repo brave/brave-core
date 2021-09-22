@@ -24,21 +24,3 @@ index 5c0f84d697b29..0944d227e28c5 100644
      }
  
      private final BrowserContextHandle mBrowserContextHandle;
-@@ -193,6 +194,8 @@ public class SiteSettingsCategory {
-                 return ContentSettingsType.VR;
-             // case Type.ALL_SITES
-             // case Type.USE_STORAGE
-+            case Type.AUTOPLAY:
-+                return ContentSettingsType.AUTOPLAY;
-             default:
-                 return -1; // Conversion unavailable.
-         }
-@@ -264,6 +267,8 @@ public class SiteSettingsCategory {
-                 return "use_storage";
-             case Type.VIRTUAL_REALITY:
-                 return "virtual_reality";
-+            case Type.AUTOPLAY:
-+                return "autoplay";
-             default:
-                 assert false;
-                 return "";

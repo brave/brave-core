@@ -35,9 +35,7 @@ public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
     }
 
     public void setupContentSettingsPreferences() {
-        Preference preference = isActionableContentSettingsEnabled()
-                ? new ChromeSwitchPreference(getStyledContext())
-                : new ListPreference(getStyledContext());
+        Preference preference = new ChromeSwitchPreference(getStyledContext());
         preference.setKey(getPreferenceKey(ContentSettingsType.AUTOPLAY));
 
         setUpAutoplayPreference(preference);
@@ -71,11 +69,5 @@ public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
 
     private Context getStyledContext() {
         return getPreferenceManager().getContext();
-    }
-
-    // Placeholders
-    private static boolean isActionableContentSettingsEnabled() {
-        assert (false);
-        return false;
     }
 }

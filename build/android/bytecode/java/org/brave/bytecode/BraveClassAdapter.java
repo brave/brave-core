@@ -41,6 +41,7 @@ public class BraveClassAdapter {
         chain = new BraveShareDelegateImplClassAdapter(chain);
         chain = new BraveSingleCategorySettingsClassAdapter(chain);
         chain = new BraveSingleWebsiteSettingsClassAdapter(chain);
+        chain = new BraveSiteSettingsCategoryClassAdapter(chain);
         chain = new BraveSiteSettingsDelegateClassAdapter(chain);
         chain = new BraveStatusMediatorClassAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);

@@ -74,6 +74,8 @@ import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
+import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
+import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.permissions.PermissionDialogController;
@@ -319,8 +321,6 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
                 "setupContentSettingsPreferences", false, null));
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
-                "isActionableContentSettingsEnabled", false, null));
-        Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
                 "setupContentSettingsPreference", false, null));
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
                 "setContentSetting", false, null));
@@ -336,15 +336,11 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources",
                         "getResourceItem", true,
-                        Class.forName("org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"), int.class));
-
-        // NOTE: Add new checks above. For each new check in this method add proguard exception in
-        // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
-        // section. Both test and regular apks should have the same exceptions.
+                        getClassForPath("org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"), int.class));
         Assert.assertTrue(
                 methodExists("org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
                         "getResourceItem", true,
-                        Class.forName("org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"), int.class));
+                        getClassForPath("org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"), int.class));
         Assert.assertTrue(
                 methodExists("org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
                         "getAddExceptionDialogMessage", true, String.class));
@@ -371,10 +367,13 @@ public class BytecodeTest {
                         "getAddress", true, WebsiteAddress.class));
         Assert.assertTrue(
                 methodExists("org/chromium/components/browser_ui/site_settings/Website",
-                        "setContentSettingException", true, void.class));
+                        "setContentSettingException", true, void.class, int.class, ContentSettingException.class));
         Assert.assertTrue(
                 methodExists("org/chromium/components/browser_ui/site_settings/Website",
-                        "setContentSetting", true, void.class, BrowserContextHandle.class));
+                        "setContentSetting", true, void.class, BrowserContextHandle.class, int.class, int.class));
+        // NOTE: Add new checks above. For each new check in this method add proguard exception in
+        // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
+        // section. Both test and regular apks should have the same exceptions.
     }
 
     @Test
@@ -624,10 +623,10 @@ public class BytecodeTest {
                 "mSearchEngineAdapter"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
-                "mCategory"));
+                "mCategory", true, SiteSettingsCategory.class));
         Assert.assertTrue(fieldExists(
                 "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
-                "mSite"));
+                "mSite", true, Website.class));
     }
 
     @Test
@@ -716,13 +715,22 @@ public class BytecodeTest {
     }
 
     private boolean fieldExists(String className, String fieldName) {
+        return fieldExists(className, fieldName, false, null);
+    }
+
+    private boolean fieldExists(String className, String fieldName, Boolean checkTypes,
+            Class<?> fieldType) {
         Class c = getClassForPath(className);
         if (c == null) {
             return false;
         }
         for (Field f : c.getDeclaredFields()) {
             if (f.getName().equals(fieldName)) {
-                return true;
+                if (checkTypes) {
+                    if (fieldType != null && f.getType().equals(fieldType))
+                        return true;
+                } else
+                    return true;
             }
         }
         return false;

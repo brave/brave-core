@@ -1,0 +1,5 @@
+include_rules = [
+  "+../../../../../components/browser_ui/site_settings/android",
+  "+components/browser_ui/site_settings/android",
+  "+components/permissions",
+]

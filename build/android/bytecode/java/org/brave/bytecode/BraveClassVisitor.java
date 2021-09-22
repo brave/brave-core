@@ -166,11 +166,7 @@ class BraveClassVisitor extends ClassVisitor {
                 mMakePublicMethods.entrySet()) {
             String entryClassName = entry.getKey();
             ArrayList<String> methodNames = entry.getValue();
-            // Why className.contains(entryClassName)? This seems erroneous
-            if (methodNames.contains(methodName) && className.equals(entryClassName) != className.contains(entryClassName)) {
-                   System.out.println("Warning: class name " + className + " may not be written correctly!");
-            }
-            return className.contains(entryClassName) &&
+            return className.equals(entryClassName) &&
                    methodNames.contains(methodName);
         }
 
@@ -289,16 +285,11 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     private boolean shouldMakeNonFinalClass(String className) {
-        int idx = mMakeNonFinalClasses.indexOf(className);
-        if (idx != -1)
-            return true;
-
-        return false;
+        return mMakeNonFinalClasses.contains(className);
     }
 
     protected void makeNonFinalClass(String className) {
-        int idx = mMakeNonFinalClasses.indexOf(className);
-        if (idx == -1)
+        if (!mMakeNonFinalClasses.contains(className))
             mMakeNonFinalClasses.add(className);
     }
 
