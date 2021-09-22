@@ -299,39 +299,30 @@ void CosmeticFiltersJSHandler::OnRemoteDisconnect() {
   EnsureConnected();
 }
 
-void CosmeticFiltersJSHandler::ProcessURL(const GURL& url,
-                                          base::OnceClosure callback) {
+bool CosmeticFiltersJSHandler::ProcessURL(const GURL& url) {
   resources_dict_.reset();
   url_ = url;
   // Trivially, don't make exceptions for malformed URLs.
   if (!EnsureConnected() || url_.is_empty() || !url_.is_valid())
-    return;
+    return false;
 
   auto* content_settings =
       static_cast<content_settings::BraveContentSettingsAgentImpl*>(
           content_settings::ContentSettingsAgentImpl::Get(render_frame_));
 
   if (!content_settings->IsCosmeticFilteringEnabled(url_)) {
-    return;
+    return false;
   }
 
   enabled_1st_party_cf_ =
       content_settings->IsFirstPartyCosmeticFilteringEnabled(url_);
 
-  cosmetic_filters_resources_->UrlCosmeticResources(
-      url_.spec(),
-      base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
-                     base::Unretained(this), std::move(callback)));
-}
-
-void CosmeticFiltersJSHandler::OnUrlCosmeticResources(
-    base::OnceClosure callback,
-    base::Value result) {
-  if (!EnsureConnected())
-    return;
+  base::Value result;
+  cosmetic_filters_resources_->UrlCosmeticResources(url_.spec(), &result);
   resources_dict_ = base::DictionaryValue::From(
       base::Value::ToUniquePtrValue(std::move(result)));
-  std::move(callback).Run();
+
+  return true;
 }
 
 void CosmeticFiltersJSHandler::ApplyRules() {

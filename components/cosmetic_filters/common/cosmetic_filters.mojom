@@ -7,5 +7,6 @@ interface CosmeticFiltersResources {
   HiddenClassIdSelectors(string input, array<string> exceptions) => (
       mojo_base.mojom.Value result);
 
+  [Sync]
   UrlCosmeticResources(string url) => (mojo_base.mojom.Value result);
 };

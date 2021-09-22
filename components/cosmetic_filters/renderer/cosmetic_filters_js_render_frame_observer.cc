@@ -51,8 +51,7 @@ CosmeticFiltersJsRenderFrameObserver::CosmeticFiltersJsRenderFrameObserver(
           render_frame),
       isolated_world_id_(isolated_world_id),
       native_javascript_handle_(
-          new CosmeticFiltersJSHandler(render_frame, isolated_world_id)),
-      ready_(new base::OneShotEvent()) {}
+          new CosmeticFiltersJSHandler(render_frame, isolated_world_id)) {}
 
 CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() {}
 
@@ -64,7 +63,7 @@ void CosmeticFiltersJsRenderFrameObserver::DidStartNavigation(
 
 void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
     blink::WebDocumentLoader* document_loader) {
-  ready_.reset(new base::OneShotEvent());
+  should_inject_ = false;
   // invalidate weak pointers on navigation so we don't get callbacks from the
   // previous url load
   weak_factory_.InvalidateWeakPtrs();
@@ -78,28 +77,21 @@ void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
   if (!url_.SchemeIsHTTPOrHTTPS())
     return;
 
-  native_javascript_handle_->ProcessURL(
-      url_, base::BindOnce(&CosmeticFiltersJsRenderFrameObserver::OnProcessURL,
-                           weak_factory_.GetWeakPtr()));
+  bool continue_with_cf = native_javascript_handle_->ProcessURL( url_);
+
+  if (continue_with_cf) {
+    should_inject_ = true;
+  }
 }
 
 void CosmeticFiltersJsRenderFrameObserver::RunScriptsAtDocumentStart() {
-  if (ready_->is_signaled()) {
+  if (should_inject_) {
     ApplyRules();
-  } else {
-    ready_->Post(
-        FROM_HERE,
-        base::BindOnce(&CosmeticFiltersJsRenderFrameObserver::ApplyRules,
-                       weak_factory_.GetWeakPtr()));
   }
 }
 
 void CosmeticFiltersJsRenderFrameObserver::ApplyRules() {
   native_javascript_handle_->ApplyRules();
-}
-
-void CosmeticFiltersJsRenderFrameObserver::OnProcessURL() {
-  ready_->Signal();
 }
 
 void CosmeticFiltersJsRenderFrameObserver::DidCreateScriptContext(

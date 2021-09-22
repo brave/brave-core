@@ -51,7 +51,6 @@ class CosmeticFiltersJsRenderFrameObserver
   void RunScriptsAtDocumentStart();
 
  private:
-  void OnProcessURL();
   void ApplyRules();
 
   // RenderFrameObserver implementation.
@@ -65,7 +64,7 @@ class CosmeticFiltersJsRenderFrameObserver
 
   GURL url_;
 
-  std::unique_ptr<base::OneShotEvent> ready_;
+  bool should_inject_ = false;
 
   base::WeakPtrFactory<CosmeticFiltersJsRenderFrameObserver> weak_factory_{
       this};
