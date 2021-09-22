@@ -293,7 +293,7 @@ OBJC_EXPORT
                        (void (^)(LedgerBalanceReportInfo* _Nullable info))
                            completion;
 
-@property(nonatomic, readonly)
+@property(nonatomic, nullable, readonly)
     LedgerAutoContributeProperties* autoContributeProperties;
 
 #pragma mark - Misc
@@ -303,7 +303,7 @@ OBJC_EXPORT
        referrerURL:(nullable NSURL*)referrerURL;
 
 - (void)rewardsInternalInfo:
-    (void(NS_NOESCAPE ^)(LedgerRewardsInternalsInfo* _Nullable info))completion;
+    (void (^)(LedgerRewardsInternalsInfo* _Nullable info))completion;
 
 - (void)allContributions:
     (void (^)(NSArray<LedgerContributionInfo*>* contributions))completion;
