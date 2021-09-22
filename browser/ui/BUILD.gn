@@ -535,6 +535,8 @@ source_set("ui") {
       "wallet_bubble_manager_delegate_impl.h",
       "webui/brave_wallet/page_handler/wallet_page_handler.cc",
       "webui/brave_wallet/page_handler/wallet_page_handler.h",
+      "webui/brave_wallet/wallet_common_ui.cc",
+      "webui/brave_wallet/wallet_common_ui.h",
       "webui/brave_wallet/wallet_page_ui.cc",
       "webui/brave_wallet/wallet_page_ui.h",
       "webui/brave_wallet/wallet_panel_ui.cc",

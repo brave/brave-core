@@ -52,6 +52,9 @@ static base::NoDestructor<std::vector<mojom::ERCToken>> kBuyTokens(
      {"", "Palm DAI", "", true, false, "PDAI", 0, true},
      {"", "Matic USDC", "", true, false, "MUSDC", 0, true}});
 
+const char kWalletBaseDirectory[] = "BraveWallet";
+const char kImageSourceHost[] = "erc-token-images";
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_
