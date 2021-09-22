@@ -467,7 +467,15 @@ class NewTabPageViewController: UIViewController {
             if let section = layout.braveNewsSection, collectionView.numberOfItems(inSection: section) != 0 {
                 collectionView.deleteItems(at: [IndexPath(item: 0, section: section)])
             }
-            collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
+            
+            // We check if first item exists before scrolling up to it.
+            // This should never happen since first item is our shields stats view.
+            // However we saw it crashing in XCode logs, see #4202.
+            let firstItemIndexPath = IndexPath(item: 0, section: 0)
+            if collectionView.dataSource?
+                .collectionView(collectionView, cellForItemAt: firstItemIndexPath) != nil {
+                collectionView.scrollToItem(at: firstItemIndexPath, at: .top, animated: true)
+            }
             collectionView.verticalScrollIndicatorInsets = .zero
             UIView.animate(withDuration: 0.25) {
                 self.feedOverlayView.headerView.alpha = 0.0
