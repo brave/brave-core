@@ -68,6 +68,7 @@ static_library("brave_vpn") {
     deps += [
       ":brave_vpn_internal",
       ":mojom",
+      "//third_party/icu",
     ]
   }
 }
@@ -93,12 +94,18 @@ source_set("unit_tests") {
   if (enable_brave_vpn) {
     testonly = true
 
-    sources = [ "brave_vpn_unittest.cc" ]
+    sources = []
+
+    # Currently, tests are for desktop only (fails on Android).
+    if (is_win || is_mac) {
+      sources += [ "brave_vpn_unittest.cc" ]
+    }
 
     deps = [
       ":brave_vpn",
       "//base",
       "//content/test:test_support",
+      "//services/network:test_support",
       "//testing/gtest",
     ]
   }
