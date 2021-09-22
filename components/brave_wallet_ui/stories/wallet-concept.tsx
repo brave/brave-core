@@ -599,8 +599,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     })
   }
 
-  const onImportWallet = () => {
-    completeWalletSetup(false)
+  const onImportWallet = (password: string) => {
+    if (password !== 'password') {
+      setImportError(true)
+    }
   }
 
   const onAddHardwareAccounts = (accounts: HardwareWalletAccount[]) => {

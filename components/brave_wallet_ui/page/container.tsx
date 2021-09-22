@@ -143,17 +143,17 @@ function Container (props: Props) {
   }, [swapQuote])
 
   const onSwapParamsChange = React.useCallback((
-      state: {
-        fromAmount: string,
-        toAmount: string
-      },
-      overrides: {
-        toOrFrom: ToOrFromType
-        asset?: AccountAssetOptionType
-        amount?: string
-        slippageTolerance?: SlippagePresetObjectType
-      },
-      full: boolean = false
+    state: {
+      fromAmount: string,
+      toAmount: string
+    },
+    overrides: {
+      toOrFrom: ToOrFromType
+      asset?: AccountAssetOptionType
+      amount?: string
+      slippageTolerance?: SlippagePresetObjectType
+    },
+    full: boolean = false
   ) => {
     if (selectedWidgetTab !== 'swap') {
       return
@@ -164,15 +164,15 @@ function Container (props: Props) {
 
     if (overrides.toOrFrom === 'from') {
       fromAmountWei = toWei(
-          overrides.amount ?? state.fromAmount,
-          fromAsset.asset.decimals
+        overrides.amount ?? state.fromAmount,
+        fromAsset.asset.decimals
       )
     }
 
     if (overrides.toOrFrom === 'to') {
       toAmountWei = toWei(
-          overrides.amount ?? state.toAmount,
-          toAsset.asset.decimals
+        overrides.amount ?? state.toAmount,
+        toAsset.asset.decimals
       )
     }
 
@@ -547,14 +547,12 @@ function Container (props: Props) {
     props.walletPageActions.doneViewingPrivateKey()
   }
 
-  const onImportCryptoWallets = (password: string) => {
-    // TODO(Douglashdaniel): Use different set of password for new password
-    props.walletPageActions.importFromCryptoWallets({ password, newPassword: password })
+  const onImportCryptoWallets = (password: string, newPassword: string) => {
+    props.walletPageActions.importFromCryptoWallets({ password, newPassword })
   }
 
-  const onImportMetaMask = (password: string) => {
-    // TODO(Douglashdaniel): Use different set of password for new password
-    props.walletPageActions.importFromMetaMask({ password, newPassword: password })
+  const onImportMetaMask = (password: string, newPassword: string) => {
+    props.walletPageActions.importFromMetaMask({ password, newPassword })
   }
 
   const checkWalletsToImport = () => {

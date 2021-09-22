@@ -158,10 +158,10 @@ function OnboardingRestore (props: Props) {
               error={locale.createPasswordError}
             />
             <PasswordInput
-              placeholder={locale.createPasswordInput2}
+              placeholder={locale.confirmPasswordInput}
               onChange={handleConfirmPasswordChanged}
               hasError={checkConfirmedPassword}
-              error={locale.createPasswordError2}
+              error={locale.confirmPasswordError}
               onKeyDown={handleKeyDown}
             />
           </InputColumn>

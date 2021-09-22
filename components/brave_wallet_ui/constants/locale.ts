@@ -109,11 +109,11 @@ const locale = {
 
   // Create Password
   createPasswordTitle: 'Secure your crypto with a password',
-  createPasswordDescription: 'Password must be at least 7 characters containing at least one number and a special character',
+  createPasswordDescription: 'Passwords must be at least 7 characters containing at least one number and a special character.',
   createPasswordInput: 'Password',
-  createPasswordInput2: 'Re-Type Password',
-  createPasswordError: 'Password must be 7 or more characters',
-  createPasswordError2: 'Re-typed password does not match',
+  confirmPasswordInput: 'Re-Type Password',
+  createPasswordError: 'Passwords must be at least 7 characters containing at least one number and a special character.',
+  confirmPasswordError: 'Re-typed password does not match',
 
   // Lock Screen
   lockScreenTitle: 'Enter password to unlock wallet',
@@ -295,6 +295,11 @@ const locale = {
   connectWithSiteDescription2: 'permitted accounts (required)',
   connectWithSiteNext: 'Next',
   connectWithSiteHeaderTitle: 'Connect With Brave Wallet',
+
+  // Import from external wallets
+  braveWalletImportFromExternalNewPassword: 'A more secure password is required for Brave Wallet',
+  braveWalletImportFromExternalCreatePassword: 'Set a Brave Wallet password',
+  braveWalletImportFromExternalPasswordCheck: 'Use the same password',
 
   // Import from MetaMask
   importMetaMaskTitle: 'Import from MetaMask',

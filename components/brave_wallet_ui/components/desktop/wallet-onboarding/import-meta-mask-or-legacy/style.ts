@@ -5,6 +5,8 @@ import AIcon from '../../../../assets/svg-icons/import-arrow-icon.svg'
 
 interface StyleProps {
   isMetaMask: boolean
+  needsNewPassword: boolean
+  useSamePasswordVerified: boolean
 }
 
 export const StyledWrapper = styled.div`
@@ -47,13 +49,13 @@ export const PageIcons = styled.div`
   margin-bottom: 24px;
 `
 
-export const InputColumn = styled.div`
+export const InputColumn = styled.div<Partial<StyleProps>>`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   width: 250px;
-  margin-bottom: 28px;
+  margin-bottom: ${(p) => p.useSamePasswordVerified ? '0px' : '25px'};
 `
 
 export const MetaMaskIcon = styled.div`
@@ -63,7 +65,7 @@ export const MetaMaskIcon = styled.div`
   margin-right: 4px;
 `
 
-export const BraveIcon = styled.div<StyleProps>`
+export const BraveIcon = styled.div<Partial<StyleProps>>`
   width: ${(p) => p.isMetaMask ? '82px' : '118px'};
   height: ${(p) => p.isMetaMask ? '94px' : '135px'};
   background: url(${BIcon});
@@ -92,4 +94,25 @@ export const LostButton = styled.button`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
   margin-top: 35px;
+`
+
+export const PasswordTitle = styled.span<Partial<StyleProps>>`
+  width: 295px;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+  color: ${(p) => p.needsNewPassword ? p.theme.color.errorText : p.theme.color.text02};
+  letter-spacing: 0.04em;
+  margin-bottom: ${(p) => p.needsNewPassword ? '12px' : '6px'};
+`
+
+export const CheckboxRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  margin-bottom: 6px;
+  width: 250px;
 `
