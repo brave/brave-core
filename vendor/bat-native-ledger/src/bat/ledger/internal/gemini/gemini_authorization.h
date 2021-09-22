@@ -33,6 +33,7 @@ class GeminiAuthorization {
                      const std::string& linking_info,
                      const std::string& name,
                      const std::string& token,
+                     const std::string& recipient_id,
                      ledger::ExternalWalletAuthorizationCallback callback);
 
   void OnAuthorize(const type::Result result,
@@ -41,6 +42,7 @@ class GeminiAuthorization {
 
   void OnClaimWallet(const type::Result result,
                      const std::string& token,
+                     const std::string& recipient_id,
                      ledger::ExternalWalletAuthorizationCallback callback);
 
   void OnFetchRecipientId(const type::Result result,

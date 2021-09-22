@@ -361,6 +361,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       if (data.result === 26) {
         // User has reached device linking limit; no need to show modal, as we
         // posted a notification for this
+        ui.modalRedirect = 'hide'
         break
       }
 
