@@ -35,7 +35,8 @@ export function getInitialState (): HostState {
       adEarnings: 0,
       autoContributions: 0,
       oneTimeTips: 0,
-      monthlyTips: 0
+      monthlyTips: 0,
+      pendingTips: 0
     },
     notifications: []
   }

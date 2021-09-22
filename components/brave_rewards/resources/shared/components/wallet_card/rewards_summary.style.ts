@@ -4,6 +4,8 @@
 
 import styled from 'styled-components'
 
+import * as mixins from '../../lib/css_mixins'
+
 export const root = styled.div``
 
 export const header = styled.div`
@@ -29,10 +31,58 @@ export const body = styled.div`
   background: var(--brave-palette-white);
   border-radius: 0 0 8px 8px;
   overflow: hidden;
+  padding-top: 6px;
 
   .brave-theme-dark & {
     background: rgb(23, 23, 31, 0.62);
     color: var(--brave-palette-grey000);
+  }
+`
+
+export const pendingTips = styled.div`
+  margin: 0 16px;
+  padding: 8px 0 14px;
+  display: flex;
+
+  border-bottom: solid 1px var(--brave-palette-neutral200);
+
+  .brave-theme-dark & {
+    border-color: var(--brave-palette-neutral600);
+  }
+`
+
+export const pendingAmount = styled.div`
+  .amount {
+    font-weight: 600;
+    color: #b13c7a;
+  }
+`
+
+export const pendingText = styled.div`
+  flex: 1 1 auto;
+  padding-left: 4px;
+  font-size: 12px;
+  color: var(--brave-palette-neutral600);
+
+  .brave-theme-dark & {
+    color: var(--brave-palette-grey400);
+  }
+`
+
+export const pendingAction = styled.div`
+  button {
+    ${mixins.buttonReset}
+    font-weight: 600;
+    color: var(--brave-color-brandBat);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    .brave-theme-dark & {
+      color: var(--brave-palette-blurple300);
+    }
   }
 `
 
@@ -71,10 +121,6 @@ export const dataTable = styled.div`
         color: var(--brave-palette-neutral400);
       }
     }
-  }
-
-  tr:first-child td {
-    padding-top: 16px;
   }
 
   tr:nth-child(1) td.amount {
