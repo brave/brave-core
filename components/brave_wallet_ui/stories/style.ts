@@ -21,7 +21,7 @@ export const StyledExtensionWrapperLonger = styled.div`
   border-radius: 4px;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
   width: 320px;
-  height: 475px;
+  height: 500px;
 `
 
 export const ChildComponentWrapper = styled.div`

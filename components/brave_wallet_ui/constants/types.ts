@@ -180,7 +180,6 @@ export interface PanelState {
   panelTitle: string
   tabId: number
   connectingAccounts: string[]
-  showSignTransaction: boolean
   networkPayload: EthereumChain
 }
 
