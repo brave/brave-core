@@ -15,16 +15,6 @@ class Profile;
 namespace extensions {
 namespace api {
 
-class BraveWalletPromptToEnableWalletFunction :
-    public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.promptToEnableWallet", UNKNOWN)
-
- protected:
-  ~BraveWalletPromptToEnableWalletFunction() override {}
-  ResponseAction Run() override;
-};
-
 class BraveWalletReadyFunction :
     public ExtensionFunction {
  public:

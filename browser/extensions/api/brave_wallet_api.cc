@@ -52,33 +52,6 @@ namespace extensions {
 namespace api {
 
 ExtensionFunction::ResponseAction
-BraveWalletPromptToEnableWalletFunction::Run() {
-  std::unique_ptr<brave_wallet::PromptToEnableWallet::Params> params(
-      brave_wallet::PromptToEnableWallet::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  if (browser_context()->IsTor()) {
-    return RespondNow(Error("Not available in Tor context"));
-  }
-
-  // Get web contents for this tab
-  content::WebContents* contents = nullptr;
-  if (!ExtensionTabUtil::GetTabById(
-        params->tab_id,
-        Profile::FromBrowserContext(browser_context()),
-        include_incognito_information(),
-        nullptr,
-        nullptr,
-        &contents,
-        nullptr)) {
-    return RespondNow(Error(tabs_constants::kTabNotFoundError,
-                            base::NumberToString(params->tab_id)));
-  }
-
-  return RespondNow(NoArguments());
-}
-
-ExtensionFunction::ResponseAction
 BraveWalletReadyFunction::Run() {
   if (browser_context()->IsTor()) {
     return RespondNow(Error("Not available in Tor context"));
