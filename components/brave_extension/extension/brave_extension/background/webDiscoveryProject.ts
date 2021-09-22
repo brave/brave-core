@@ -7,7 +7,6 @@ import { App } from '../../../../../vendor/web-discovery-project/build'
 
 declare var window: any
 
-
 function onCommitted (details: chrome.webNavigation.WebNavigationTransitionCallbackDetails) {
   // Only inject if page is acceptable protocol (to skip internal pages like
   // devtools://, brave://, etc.). We also make sure to only inject if we
@@ -27,7 +26,6 @@ function onCommitted (details: chrome.webNavigation.WebNavigationTransitionCallb
     })
   }
 }
-
 
 if (App !== undefined) {
   const APP = new App({
