@@ -17,20 +17,20 @@ if (App !== undefined) {
 
   // Dynamically inject WDP content script so that users with the pref disabled
   // don't need to pay the loading cost on each page.
-  chrome.tabs.onUpdated.addListener((tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
-    if (tab.id) {
-      const urlMatches = (): boolean => {
-        const url = tab.url || tab.pendingUrl || ''
-        return url ? !/chrome:\/\//.test(url) : false
-      }
-      // We inject on `complete` since multiple `loading` events can fire.
-      if (APP.isRunning && (changeInfo.status === 'complete') && urlMatches()) {
-        chrome.tabs.executeScript(tab.id, {
-          file: 'bundles/web-discovery-content-script.bundle.js',
-          matchAboutBlank: false,
-          runAt: 'document_start'
-        }, () => { /* Deliberately left blank */ })
-      }
+  chrome.webNavigation.onCommitted.addListener((details: chrome.webNavigation.WebNavigationTransitionCallbackDetails) => {
+    // We skip injecting on bfcache load since it will cause us to double
+    // inject.
+    const isBfCache = details.transitionQualifiers.includes('forward_back')
+    if (APP.isRunning && !isBfCache && !/chrome:\/\//.test(details.url)) {
+      chrome.tabs.executeScript(details.tabId, {
+        file: 'bundles/web-discovery-content-script.bundle.js',
+        matchAboutBlank: false,
+        runAt: 'document_end'
+      }, () => {
+        if (chrome.runtime.lastError) {
+          console.warn('[web-discovery-project] Could not inject script:', chrome.runtime.lastError)
+        }
+      })
     }
   })
 
