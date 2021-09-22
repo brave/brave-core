@@ -21,7 +21,8 @@ struct AddAccountView: View {
   private func addAccount() {
     if privateKey.isEmpty {
       // Add normal account
-      keyringStore.addPrimaryAccount(name) { success in
+      let accountName = name.isEmpty ? "Account \(keyringStore.keyring.accountInfos.filter(\.isPrimary).count + 1)" : name 
+      keyringStore.addPrimaryAccount(accountName) { success in
         // TODO: Error state
         if success {
           presentationMode.dismiss()
@@ -35,10 +36,11 @@ struct AddAccountView: View {
           failedToImport = true
         }
       }
+      let accountName = name.isEmpty ? "Secondary Account \(keyringStore.keyring.accountInfos.filter(\.isImported).count + 1)" : name // NSLocalizedString
       if isJSONImported {
-        keyringStore.addSecondaryAccount(name, json: privateKey, password: originPassword, completion: handler)
+        keyringStore.addSecondaryAccount(accountName, json: privateKey, password: originPassword, completion: handler)
       } else {
-        keyringStore.addSecondaryAccount(name, privateKey: privateKey, completion: handler)
+        keyringStore.addSecondaryAccount(accountName, privateKey: privateKey, completion: handler)
       }
     }
   }
@@ -48,7 +50,7 @@ struct AddAccountView: View {
       return false
     }
     do {
-      let _ = try JSONSerialization.jsonObject(with: data, options: [])
+      _ = try JSONSerialization.jsonObject(with: data, options: [])
       return true
     } catch {
       return false
@@ -93,7 +95,6 @@ struct AddAccountView: View {
         Text("Add")
       }
       .buttonStyle(BraveFilledButtonStyle(size: .small))
-      .disabled(name.isEmpty)
     )
     .toolbar {
       ToolbarItemGroup(placement: .cancellationAction) {
@@ -128,7 +129,7 @@ struct AddAccountView: View {
         }
       }
     ) {
-      TextField("Account 2", text: $name) // NSLocalizedString
+      TextField("Enter account name", text: $name) // NSLocalizedString
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }

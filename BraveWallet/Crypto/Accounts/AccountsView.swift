@@ -14,7 +14,7 @@ struct AccountsView: View {
   @State private var navigationController: UINavigationController?
   
   private var primaryAccounts: [BraveWallet.AccountInfo] {
-    keyringStore.keyring.accountInfos.filter { !$0.isImported }
+    keyringStore.keyring.accountInfos.filter(\.isPrimary)
   }
   
   private var secondaryAccounts: [BraveWallet.AccountInfo] {
