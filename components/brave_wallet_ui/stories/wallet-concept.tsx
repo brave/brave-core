@@ -491,6 +491,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     }
   }
 
+  const onSwapQuoteRefresh = () => {
+    console.log('Refreshing swap quote')
+  }
+
   const onSubmitSwap = () => {
     alert('Submit Swap Transaction')
   }
@@ -758,6 +762,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             fromAssetBalance={fromAssetBalance}
             toAssetBalance={toAssetBalance}
             toAddress={toAddress}
+            isSwapSubmitDisabled={false}
             onSubmitBuy={onSubmitBuy}
             onSetBuyAmount={onSetBuyAmount}
             onSetSendAmount={onSetSendAmount}
@@ -781,6 +786,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             sendAssetOptions={AccountAssetOptions}
             swapAssetOptions={AccountAssetOptions}
             networkList={mockNetworks}
+            onSwapQuoteRefresh={onSwapQuoteRefresh}
           />
         </WalletWidgetStandIn>
       }

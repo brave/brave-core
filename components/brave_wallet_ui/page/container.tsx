@@ -59,7 +59,7 @@ import {
 
 import { onConnectHardwareWallet, getBalance } from '../common/async/wallet_async_handler'
 
-import { formatBalance, toWei } from '../utils/format-balances'
+import { formatBalance, toWei, toWeiHex } from '../utils/format-balances'
 
 type Props = {
   wallet: WalletState
@@ -105,7 +105,8 @@ function Container (props: Props) {
     isFetchingPriceHistory,
     privateKey,
     importError,
-    showAddModal
+    showAddModal,
+    swapQuote
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
@@ -124,13 +125,88 @@ function Container (props: Props) {
   // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
   const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
   const [toAsset, setToAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[1])
+
+  React.useEffect(() => {
+    if (!swapQuote) {
+      setFromAmount('')
+      setToAmount('')
+      return
+    }
+
+    const { buyAmount, sellAmount, price } = swapQuote
+    setFromAmount(formatBalance(sellAmount, fromAsset.asset.decimals))
+    setToAmount(formatBalance(buyAmount, toAsset.asset.decimals))
+    setExchangeRate(formatBalance(price, 0))
+  }, [swapQuote])
+
+  const onSwapParamsChange = (changeInToOrFrom: ToOrFromType, asset?: AccountAssetOptionType, amount?: string, slippage?: SlippagePresetObjectType) => {
+    if (selectedWidgetTab !== 'swap') {
+      return
+    }
+
+    let fromAmountWei
+    let toAmountWei
+
+    if (changeInToOrFrom === 'from') {
+      fromAmountWei = toWei(
+        amount ?? fromAmount,
+        fromAsset.asset.decimals
+      )
+    }
+
+    if (changeInToOrFrom === 'to') {
+      toAmountWei = toWei(
+          amount ?? toAmount,
+          toAsset.asset.decimals
+      )
+    }
+
+    if (changeInToOrFrom === 'to' && toAmountWei === '0') {
+      setFromAmount('')
+      return
+    }
+
+    if (changeInToOrFrom === 'from' && fromAmountWei === '0') {
+      setToAmount('')
+      return
+    }
+
+    props.walletPageActions.fetchSwapQuote({
+      fromAsset: changeInToOrFrom === 'from' && asset !== undefined ? asset : fromAsset,
+      fromAssetAmount: fromAmountWei,
+      toAsset: changeInToOrFrom === 'to' && asset !== undefined ? asset : toAsset,
+      toAssetAmount: toAmountWei,
+      accountAddress: selectedAccount.address,
+      slippageTolerance: slippage ?? slippageTolerance,
+      networkChainId: selectedNetwork.chainId,
+      full: false
+    })
+  }
+
+  const onSwapQuoteRefresh = () => onSwapParamsChange('from')
+
+  const isSwapButtonDisabled = () => {
+    if (!swapQuote) {
+      return true
+    }
+
+    if (toWei(toAmount, toAsset.asset.decimals) === '0') {
+      return true
+    }
+
+    return toWei(fromAmount, fromAsset.asset.decimals) === '0'
+  }
+
   const onSelectTransactAsset = (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {
       setFromAsset(asset)
     } else {
       setToAsset(asset)
     }
+
+    onSwapParamsChange(toOrFrom, asset)
   }
+
   const flipSwapAssets = () => {
     setFromAsset(toAsset)
     setToAsset(fromAsset)
@@ -154,6 +230,7 @@ function Container (props: Props) {
 
   const onSetFromAmount = (value: string) => {
     setFromAmount(value)
+    onSwapParamsChange('from', undefined, value)
   }
 
   const onSetSendAmount = (value: string) => {
@@ -162,6 +239,7 @@ function Container (props: Props) {
 
   const onSetToAmount = (value: string) => {
     setToAmount(value)
+    onSwapParamsChange('to', undefined, value)
   }
 
   const onSetExchangeRate = (value: string) => {
@@ -174,6 +252,7 @@ function Container (props: Props) {
 
   const onSelectSlippageTolerance = (slippage: SlippagePresetObjectType) => {
     setSlippageTolerance(slippage)
+    onSwapParamsChange('from', undefined, undefined, slippage)
   }
 
   const onToggleOrderType = () => {
@@ -411,7 +490,7 @@ function Container (props: Props) {
     props.walletActions.sendTransaction({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWei(sendAmount, asset?.decimals ?? 0),
+      value: toWeiHex(sendAmount, asset?.decimals ?? 0),
       contractAddress: asset?.contractAddress ?? '',
       gasPrice: '',
       gasLimit: ''
@@ -616,6 +695,7 @@ function Container (props: Props) {
             buyAssetOptions={WyreAccountAssetOptions}
             sendAssetOptions={selectedAccount.tokens}
             swapAssetOptions={AccountAssetOptions}
+            isSwapSubmitDisabled={isSwapButtonDisabled()}
             onSetBuyAmount={onSetBuyAmount}
             onSetToAddress={onSetToAddress}
             onSelectExpiration={onSelectExpiration}
@@ -635,6 +715,7 @@ function Container (props: Props) {
             onToggleOrderType={onToggleOrderType}
             onSelectAsset={onSelectTransactAsset}
             onSelectTab={setSelectedWidgetTab}
+            onSwapQuoteRefresh={onSwapQuoteRefresh}
           />
         </WalletWidgetStandIn>
       }

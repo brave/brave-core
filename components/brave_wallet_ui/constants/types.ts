@@ -201,6 +201,7 @@ export interface PageState {
   showIsRestoring: boolean
   importError: boolean
   showAddModal: boolean
+  swapQuote?: SwapResponse
 }
 
 export interface WalletPageState {

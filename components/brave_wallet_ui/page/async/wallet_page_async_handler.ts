@@ -17,12 +17,14 @@ import {
   RemoveImportedAccountPayloadType,
   RemoveHardwareAccountPayloadType,
   ViewPrivateKeyPayloadType,
-  ImportAccountFromJsonPayloadType
+  ImportAccountFromJsonPayloadType,
+  SwapParamsPayloadType
 } from '../constants/action_types'
 import {
   HardwareWalletAccount
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
+import getSwapConfig from '../../constants/swap.config'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -149,6 +151,40 @@ handler.on(WalletPageActions.removeHardwareAccount.getType(), async (store, payl
 handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store, payload: NewUnapprovedTxAdded) => {
   const pageHandler = (await getAPIProxy()).pageHandler
   await pageHandler.showApprovePanelUI()
+})
+
+handler.on(WalletPageActions.fetchSwapQuote.getType(), async (store, payload: SwapParamsPayloadType) => {
+  const swapController = (await getAPIProxy()).swapController
+
+  const {
+    fromAsset,
+    fromAssetAmount,
+    toAsset,
+    toAssetAmount,
+    accountAddress,
+    slippageTolerance,
+    full
+  } = payload
+
+  const config = getSwapConfig(payload.networkChainId)
+
+  const swapParams = {
+    takerAddress: accountAddress,
+    sellAmount: fromAssetAmount || '',
+    buyAmount: toAssetAmount || '',
+    buyToken: toAsset.asset.contractAddress || toAsset.asset.symbol,
+    sellToken: fromAsset.asset.contractAddress || fromAsset.asset.symbol,
+    buyTokenPercentageFee: config.buyTokenPercentageFee,
+    slippagePercentage: slippageTolerance.slippage / 100,
+    feeRecipient: config.feeRecipient,
+    gasPrice: ''
+  }
+
+  const quote = await (
+    full ? swapController.getTransactionPayload(payload) : swapController.getPriceQuote(swapParams)
+  )
+
+  quote.success && store.dispatch(WalletPageActions.setSwapQuote(quote.response))
 })
 
 // TODO(bbondy): Remove - Example usage:

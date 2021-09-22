@@ -40,6 +40,7 @@ export interface Props {
   buyAssetOptions: AccountAssetOptionType[]
   sendAssetOptions: AccountAssetOptionType[]
   swapAssetOptions: AccountAssetOptionType[]
+  isSwapSubmitDisabled: boolean
   onSubmitBuy: (asset: AccountAssetOptionType) => void
   onSubmitSend: () => void
   onSubmitSwap: () => void
@@ -59,6 +60,7 @@ export interface Props {
   onSelectPresetFromAmount: (percent: number) => void
   onSelectPresetSendAmount: (percent: number) => void
   onSelectTab: (tab: BuySendSwapTypes) => void
+  onSwapQuoteRefresh: () => void
 }
 
 function BuySendSwap (props: Props) {
@@ -84,6 +86,7 @@ function BuySendSwap (props: Props) {
     buyAssetOptions,
     sendAssetOptions,
     swapAssetOptions,
+    isSwapSubmitDisabled,
     onSubmitBuy,
     onSubmitSend,
     onSubmitSwap,
@@ -102,7 +105,8 @@ function BuySendSwap (props: Props) {
     onSetToAmount,
     onSelectPresetFromAmount,
     onSelectPresetSendAmount,
-    onSelectTab
+    onSelectTab,
+    onSwapQuoteRefresh
   } = props
 
   React.useMemo(() => {
@@ -150,6 +154,7 @@ function BuySendSwap (props: Props) {
           toAmount={toAmount}
           fromAssetBalance={fromAssetBalance}
           toAssetBalance={toAssetBalance}
+          isSubmitDisabled={isSwapSubmitDisabled}
           onSubmitSwap={onSubmitSwap}
           flipSwapAssets={flipSwapAssets}
           onSelectNetwork={onSelectNetwork}
@@ -163,6 +168,7 @@ function BuySendSwap (props: Props) {
           onSetToAmount={onSetToAmount}
           onSelectPresetAmount={onSelectPresetFromAmount}
           assetOptions={swapAssetOptions}
+          onQuoteRefresh={onSwapQuoteRefresh}
         />
       }
       {selectedTab === 'send' &&

@@ -55,7 +55,7 @@ import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { GetNetworkInfo } from '../utils/network-utils'
 
-import { formatBalance, toWei } from '../utils/format-balances'
+import { formatBalance, toWeiHex } from '../utils/format-balances'
 
 type Props = {
   panel: PanelState
@@ -178,7 +178,7 @@ function Container (props: Props) {
     props.walletActions.sendTransaction({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWei(sendAmount, asset?.decimals ?? 0),
+      value: toWeiHex(sendAmount, asset?.decimals ?? 0),
       contractAddress: asset?.contractAddress ?? '',
       gasPrice: '',
       gasLimit: ''
