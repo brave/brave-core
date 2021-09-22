@@ -5,7 +5,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 public struct WalletSettingsView: View {
   @ObservedObject var keyringStore: KeyringStore
   
@@ -43,7 +42,6 @@ public struct WalletSettingsView: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct WalletSettingsView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {

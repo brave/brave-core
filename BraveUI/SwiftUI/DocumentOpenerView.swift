@@ -13,7 +13,6 @@ import UniformTypeIdentifiers
 /// approach, but at least works properly
 ///
 /// - note: Changing `allowedContentTypes` will do nothing once the picker has been presented
-@available(iOS 14.0, *)
 public struct DocumentOpenerView: UIViewControllerRepresentable {
   public let allowedContentTypes: [UTType]
   public var allowsMultipleSelection: Bool

@@ -8,7 +8,6 @@ import SwiftUI
 import BraveCore
 import BraveUI
 
-@available(iOS 14.0, *)
 struct AssetDetailHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: EthNetworkStore
@@ -145,7 +144,6 @@ struct AssetDetailHeaderView: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct CurrencyDetailHeaderView_Previews: PreviewProvider {
   static var previews: some View {
     AssetDetailHeaderView(

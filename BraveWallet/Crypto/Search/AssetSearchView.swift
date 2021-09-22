@@ -7,7 +7,6 @@ import Foundation
 import SwiftUI
 import BraveCore
 
-@available(iOS 14.0, *)
 struct AssetSearchView: View {
   var tokenRegistry: BraveWalletERCTokenRegistry
   @State private var allTokens: [BraveWallet.ERCToken] = []

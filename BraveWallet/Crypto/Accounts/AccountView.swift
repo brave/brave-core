@@ -12,10 +12,12 @@ struct AccountView: View {
   /// The account name describing what the account is for
   var name: String
   
+  @ScaledMetric private var avatarSize = 40.0
+  
   var body: some View {
     HStack {
       Blockie(address: address)
-        .frame(width: 40, height: 40)
+        .frame(width: avatarSize, height: avatarSize)
       VStack(alignment: .leading, spacing: 2) {
         Text(name)
           .fontWeight(.semibold)
@@ -38,7 +40,7 @@ struct AccountView_Previews: PreviewProvider {
       name: "Account 1"
     )
     .previewLayout(.sizeThatFits)
-    .previewColorSchemes()
+    .previewSizeCategories()
   }
 }
 #endif

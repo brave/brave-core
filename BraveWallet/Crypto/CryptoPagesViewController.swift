@@ -10,7 +10,6 @@ import BraveCore
 import PanModal
 import BraveUI
 
-@available(iOS 14.0, *)
 class CryptoPagesViewController: TabbedPageViewController {
   private let keyringStore: KeyringStore
   private let networkStore: EthNetworkStore
@@ -99,8 +98,24 @@ class CryptoPagesViewController: TabbedPageViewController {
   
   @objc private func tappedSwapButton() {
     let controller = FixedHeightHostingPanModalController(
-      rootView: BuySendSwapView(action: { action in
-      
+      rootView: BuySendSwapView(action: { [weak self] action in
+        guard let self = self else { return }
+        switch action {
+        case .buy:
+          break
+        case .send:
+          break
+        case .swap:
+          let controller = UIHostingController(
+            rootView: SwapCryptoView(
+              keyringStore: self.keyringStore,
+              ethNetworkStore: self.networkStore
+            )
+          )
+          self.dismiss(animated: true) {
+            self.present(controller, animated: true)
+          }
+        }
       })
     )
     presentPanModal(

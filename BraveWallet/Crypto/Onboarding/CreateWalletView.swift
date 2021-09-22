@@ -8,7 +8,6 @@ import SwiftUI
 import LocalAuthentication
 import BraveUI
 
-@available(iOS 14.0, *)
 struct CreateWalletContainerView: View {
   @ObservedObject var keyringStore: KeyringStore
   
@@ -27,7 +26,6 @@ struct CreateWalletContainerView: View {
   }
 }
 
-@available(iOS 14.0, *)
 private struct CreateWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
   
@@ -181,7 +179,6 @@ private struct BiometricsPromptView: UIViewControllerRepresentable {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct CreateWalletView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {

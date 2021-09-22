@@ -12,7 +12,6 @@ extension BraveWallet.EthereumChain {
   }
 }
 
-@available(iOS 14.0, *)
 struct NetworkPicker: View {
   var networks: [BraveWallet.EthereumChain]
   @Binding var selectedNetwork: BraveWallet.EthereumChain
@@ -44,7 +43,6 @@ struct NetworkPicker: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct NetworkPicker_Previews: PreviewProvider {
   static var previews: some View {
     NetworkPicker(networks: [.mainnet, .rinkeby, .ropsten], selectedNetwork: .constant(.mainnet))

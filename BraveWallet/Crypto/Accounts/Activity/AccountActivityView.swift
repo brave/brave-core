@@ -8,7 +8,6 @@ import BraveCore
 import SwiftUI
 import BraveUI
 
-@available(iOS 14.0, *)
 struct AccountActivityView: View {
   @ObservedObject var keyringStore: KeyringStore
   var account: BraveWallet.AccountInfo
@@ -82,7 +81,6 @@ struct AccountActivityView: View {
   }
 }
 
-@available(iOS 14.0, *)
 private struct AccountActivityHeaderView: View {
   var account: BraveWallet.AccountInfo
   var action: (_ tappedEdit: Bool) -> Void
@@ -123,7 +121,6 @@ private struct AccountActivityHeaderView: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct AccountActivityView_Previews: PreviewProvider {
   static var previews: some View {
     AccountActivityView(

@@ -5,7 +5,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct AccountsHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
   
@@ -58,7 +57,6 @@ struct AccountsHeaderView: View {
 }
 
 #if DEBUG
-@available(iOS 14.0, *)
 struct AccountsHeaderView_Previews: PreviewProvider {
   static var previews: some View {
     AccountsHeaderView(keyringStore: .previewStore)
