@@ -6,13 +6,15 @@
 #include "base/feature_list.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 
-#define BRAVE_GET_RENDER_CONTENT_SETTING_RULES                             \
-  map->GetSettingsForOneType(ContentSettingsType::AUTOPLAY,                \
-                             &(rules->autoplay_rules));                    \
-  map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2, \
-                             &(rules->fingerprinting_rules));              \
-  map->GetSettingsForOneType(ContentSettingsType::BRAVE_SHIELDS,           \
-                             &(rules->brave_shields_rules));
+#define BRAVE_GET_RENDER_CONTENT_SETTING_RULES                              \
+  map->GetSettingsForOneType(ContentSettingsType::AUTOPLAY,                 \
+                             &(rules->autoplay_rules));                     \
+  map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2,  \
+                             &(rules->fingerprinting_rules));               \
+  map->GetSettingsForOneType(ContentSettingsType::BRAVE_SHIELDS,            \
+                             &(rules->brave_shields_rules));                \
+  map->GetSettingsForOneType(ContentSettingsType::BRAVE_COSMETIC_FILTERING, \
+                             &(rules->cosmetic_filtering_rules));
 
 #include "../../../../../../components/content_settings/core/browser/content_settings_utils.cc"
 

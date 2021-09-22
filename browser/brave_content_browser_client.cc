@@ -209,17 +209,9 @@ void BindCosmeticFiltersResources(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
         receiver) {
-  auto* web_contents = content::WebContents::FromRenderFrameHost(frame_host);
-  if (!web_contents)
-    return;
-
-  auto* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  auto* settings_map = HostContentSettingsMapFactory::GetForProfile(profile);
-
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<cosmetic_filters::CosmeticFiltersResources>(
-          settings_map, g_brave_browser_process->ad_block_service()),
+          g_brave_browser_process->ad_block_service()),
       std::move(receiver));
 }
 

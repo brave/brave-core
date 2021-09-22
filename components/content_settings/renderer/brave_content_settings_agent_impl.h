@@ -40,6 +40,10 @@ class BraveContentSettingsAgentImpl
                                 std::unique_ptr<Delegate> delegate);
   ~BraveContentSettingsAgentImpl() override;
 
+  bool IsCosmeticFilteringEnabled(const GURL& url) override;
+
+  bool IsFirstPartyCosmeticFilteringEnabled(const GURL& url) override;
+
  protected:
   bool AllowScript(bool enabled_per_settings) override;
   bool AllowScriptFromSource(bool enabled_per_settings,
