@@ -308,6 +308,7 @@ const locale = {
   connectHardwarePanelDisconnected: 'disconnected',
   connectHardwarePanelInstructions: 'Instructions',
   connectHardwarePanelConnect: 'Connect your',
+  connectHardwarePanelConfirmation: 'Device requires transaction confirmation',
 
   // Transaction List Item
   transactionSent: 'sent',

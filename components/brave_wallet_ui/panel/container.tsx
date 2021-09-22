@@ -383,6 +383,8 @@ function Container (props: Props) {
             onCancel={onCancelConnectHardwareWallet}
             isConnected={false}
             walletName='Ledger 1'
+            // Pass a boolean true here to show needs Transaction Confirmation state
+            requestingConfirmation={false}
           />
         </StyledExtensionWrapper>
       </PanelWrapper>

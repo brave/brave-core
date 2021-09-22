@@ -17,10 +17,11 @@ export interface Props {
   onCancel: () => void
   isConnected: boolean
   walletName: string
+  requestingConfirmation: boolean
 }
 
 function ConnectHardwareWalletPanel (props: Props) {
-  const { onCancel, walletName, isConnected } = props
+  const { onCancel, walletName, isConnected, requestingConfirmation } = props
 
   const onClickInstructions = () => {
     window.open('https://support.brave.com/hc/en-us/articles/4409309138701', '_blank')
@@ -32,7 +33,7 @@ function ConnectHardwareWalletPanel (props: Props) {
         <Indicator isConnected={isConnected} />
         <Description>{walletName} {isConnected ? locale.connectHardwarePanelConnected : locale.connectHardwarePanelDisconnected}</Description>
       </ConnectionRow>
-      <Title>{locale.connectHardwarePanelConnect} {walletName}</Title>
+      <Title>{requestingConfirmation ? locale.connectHardwarePanelConfirmation : locale.connectHardwarePanelConnect} {walletName}</Title>
       <InstructionsButton onClick={onClickInstructions}>{locale.connectHardwarePanelInstructions}</InstructionsButton>
       <PageIcon />
       <ButtonWrapper>
