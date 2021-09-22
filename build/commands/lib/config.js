@@ -427,6 +427,7 @@ Config.prototype.buildArgs = function () {
     args.ios_enable_share_extension = false
     args.ios_enable_credential_provider_extension = false
     args.ios_enable_widget_kit_extension = false
+    args.ios_enable_screen_time = false
 
     args.ios_provider_target = "//brave/ios/browser/providers:brave_providers"
 
