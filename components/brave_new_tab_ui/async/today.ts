@@ -67,7 +67,7 @@ handler.on<Actions.ReadFeedItemPayload>(Actions.readFeedItem.getType(), async (s
   ]
   if (payload.isPromoted) {
     backendArgs.push(
-      payload.item.url_hash,
+      payload.promotedUUID,
       (payload.item as BraveToday.PromotedArticle).creative_instance_id,
       payload.isPromoted
     )
@@ -90,10 +90,10 @@ handler.on<Actions.ReadFeedItemPayload>(Actions.readFeedItem.getType(), async (s
   }
 })
 
-handler.on<BraveToday.PromotedArticle>(Actions.promotedItemViewed.getType(), async (store, item) => {
+handler.on<Actions.PromotedItemViewedPayload>(Actions.promotedItemViewed.getType(), async (store, payload) => {
   chrome.send('todayOnPromotedCardView', [
-    item.creative_instance_id,
-    item.url_hash
+    payload.item.creative_instance_id,
+    payload.uuid
   ])
 })
 
