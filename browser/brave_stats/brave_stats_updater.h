@@ -12,6 +12,8 @@
 #include "base/callback.h"
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/observer_list.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_observer.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "url/gurl.h"
@@ -43,6 +45,9 @@ class BraveStatsUpdater : public ProfileManagerObserver {
  public:
   explicit BraveStatsUpdater(PrefService* pref_service);
   ~BraveStatsUpdater() override;
+
+  void AddObserver(BraveStatsUpdaterObserver* observer);
+  void RemoveObserver(BraveStatsUpdaterObserver* observer);
 
   void Start();
   void Stop();
@@ -99,6 +104,7 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   std::unique_ptr<base::RepeatingTimer> server_ping_periodic_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::RepeatingClosure stats_preconditions_barrier_;
+  base::ObserverList<BraveStatsUpdaterObserver> observers_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdater);
 };

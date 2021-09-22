@@ -6,6 +6,7 @@ static_library("browser") {
   defines = [ "BRAVE_STATS_API_KEY=\"$brave_stats_api_key\"" ]
 
   sources = [
+    "brave_stats_updater_observer.h",
     "brave_stats_updater_util.cc",
     "brave_stats_updater_util.h",
   ]

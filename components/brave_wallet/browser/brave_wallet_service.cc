@@ -414,4 +414,6 @@ void BraveWalletService::MigrateUserAssetEthContractAddress(
   prefs->SetBoolean(kBraveWalletUserAssetEthContractAddressMigrated, true);
 }
 
+void BraveWalletService::OnStatsPingFired() {}
+
 }  // namespace brave_wallet

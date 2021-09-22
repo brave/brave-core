@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/gtest_prod_util.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_observer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -24,7 +25,8 @@ namespace brave_wallet {
 class BraveWalletServiceDelegate;
 
 class BraveWalletService : public KeyedService,
-                           public mojom::BraveWalletService {
+                           public mojom::BraveWalletService,
+                           public brave_stats::BraveStatsUpdaterObserver {
  public:
   explicit BraveWalletService(
       std::unique_ptr<BraveWalletServiceDelegate> delegate,
@@ -71,6 +73,9 @@ class BraveWalletService : public KeyedService,
       const std::string& origin,
       const std::string& account,
       ResetEthereumPermissionCallback callback) override;
+
+  // brave_stats::BraveStatsUpdaterObserver:
+  void OnStatsPingFired() override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
