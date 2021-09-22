@@ -19,7 +19,7 @@ export const verifyWallet = styled.div`
     border: none;
     cursor: pointer;
 
-    &:active {
+    &:hover {
       background: rgba(255, 255, 255, 0.30);
     }
   }
@@ -29,22 +29,6 @@ export const verifyWallet = styled.div`
     height: auto;
     vertical-align: middle;
     margin-left: 8px;
-    margin-bottom: 2px;
-  }
-`
-
-export const reconnectWallet = styled.div`
-  button.connect {
-    font-size: 12px;
-    line-height: 18px;
-    padding: 6px 10px;
-  }
-
-  .icon {
-    height: 17px;
-    width: auto;
-    vertical-align: middle;
-    margin-right: 6px;
     margin-bottom: 2px;
   }
 `
