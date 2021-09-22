@@ -148,5 +148,8 @@ source_set("unit_tests") {
       ":brave_wallet_delegate",
       "//brave/components/brave_wallet/common:common_constants",
     ]
+    if (enable_extensions) {
+      sources += [ "brave_wallet_importer_delegate_impl_unittest.cc" ]
+    }
   }
 }

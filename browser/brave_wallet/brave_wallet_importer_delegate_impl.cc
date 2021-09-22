@@ -94,15 +94,13 @@ void BraveWalletImporterDelegateImpl::ImportFromBraveCryptoWallet(
         EthereumRemoteClientServiceFactory::GetInstance()->GetForContext(
             context_);
     DCHECK(service);
-    service->MaybeLoadCryptoWalletsExtension(base::BindOnce(
-        &BraveWalletImporterDelegateImpl::OnCryptoWalletLoaded,
-        weak_ptr_factory_.GetWeakPtr(), std::move(callback), true));
+    service->MaybeLoadCryptoWalletsExtension(
+        base::BindOnce(&BraveWalletImporterDelegateImpl::OnCryptoWalletLoaded,
+                       weak_ptr_factory_.GetWeakPtr(), password, new_password,
+                       std::move(callback), true));
   } else {
-    OnCryptoWalletLoaded(std::move(callback), false);
+    OnCryptoWalletLoaded(password, new_password, std::move(callback), false);
   }
-
-  password_ = password;
-  new_password_ = new_password;
 }
 
 void BraveWalletImporterDelegateImpl::ImportFromMetamask(
@@ -123,12 +121,12 @@ void BraveWalletImporterDelegateImpl::ImportFromMetamask(
     return;
   }
 
-  GetLocalStorage(extension, std::move(callback));
-  password_ = password;
-  new_password_ = new_password;
+  GetLocalStorage(extension, password, new_password, std::move(callback));
 }
 
 void BraveWalletImporterDelegateImpl::OnCryptoWalletLoaded(
+    const std::string& password,
+    const std::string& new_password,
     ImportFromMetamaskCallback callback,
     bool should_unload) {
   const Extension* extension = GetBraveCryptoWallet();
@@ -137,7 +135,7 @@ void BraveWalletImporterDelegateImpl::OnCryptoWalletLoaded(
     return;
   }
 
-  GetLocalStorage(extension, std::move(callback));
+  GetLocalStorage(extension, password, new_password, std::move(callback));
 
   if (should_unload) {
     EthereumRemoteClientService* service =
@@ -150,6 +148,8 @@ void BraveWalletImporterDelegateImpl::OnCryptoWalletLoaded(
 
 void BraveWalletImporterDelegateImpl::GetLocalStorage(
     const extensions::Extension* extension,
+    const std::string& password,
+    const std::string& new_password,
     ImportFromBraveCryptoWalletCallback callback) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
@@ -174,21 +174,29 @@ void BraveWalletImporterDelegateImpl::GetLocalStorage(
               base::SequencedTaskRunnerHandle::Get(),
               base::BindOnce(
                   &BraveWalletImporterDelegateImpl ::OnGetLocalStorage,
-                  weak_ptr_factory_.GetWeakPtr(), std::move(callback)))));
+                  weak_ptr_factory_.GetWeakPtr(), password, new_password,
+                  std::move(callback)))));
 }
 
 void BraveWalletImporterDelegateImpl::OnGetLocalStorage(
+    const std::string& password,
+    const std::string& new_password,
     ImportFromBraveCryptoWalletCallback callback,
     std::unique_ptr<base::DictionaryValue> dict) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   EnsureConnected();
-  DCHECK(!password_.empty() && !new_password_.empty());
 
-  const std::string* argon_params_str =
-      dict->FindStringPath("data.KeyringController.argonParams");
+  if (password.empty() || new_password.empty()) {
+    VLOG(1) << "password or new password is empty";
+    std::move(callback).Run(false);
+    return;
+  }
+
+  const base::Value* argon_params_value =
+      dict->FindPath("data.KeyringController.argonParams");
   // TODO(darkdh): Introduce argon2 deps so we can decrypt 24 words of legacy
   // encrypted mnemonic
-  if (argon_params_str) {
+  if (argon_params_value) {
     VLOG(1) << "legacy brave crypto wallet is not supported";
     std::move(callback).Run(false);
     return;
@@ -211,29 +219,33 @@ void BraveWalletImporterDelegateImpl::OnGetLocalStorage(
   auto* iv_str = vault->FindStringKey("iv");
   auto* salt_str = vault->FindStringKey("salt");
   if (!data_str || !iv_str || !salt_str) {
+    VLOG(1) << "data or iv or salt is missing";
     std::move(callback).Run(false);
     return;
   }
 
   std::string salt_decoded;
   if (!base::Base64Decode(*salt_str, &salt_decoded)) {
+    VLOG(1) << "base64 decode failed: " << *salt_str;
     std::move(callback).Run(false);
     return;
   }
   std::string iv_decoded;
   if (!base::Base64Decode(*iv_str, &iv_decoded)) {
+    VLOG(1) << "base64 decode failed: " << *iv_str;
     std::move(callback).Run(false);
     return;
   }
   std::string data_decoded;
   if (!base::Base64Decode(*data_str, &data_decoded)) {
+    VLOG(1) << "base64 decode failed: " << *data_str;
     std::move(callback).Run(false);
     return;
   }
 
   std::unique_ptr<PasswordEncryptor> encryptor =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          std::move(password_), ToSpan(salt_decoded), 10000, 256);
+          password, ToSpan(salt_decoded), 10000, 256);
   DCHECK(encryptor);
 
   std::vector<uint8_t> decrypted_keyrings;
@@ -273,8 +285,13 @@ void BraveWalletImporterDelegateImpl::OnGetLocalStorage(
     break;
   }
 
+  if (!mnemonic) {
+    VLOG(0) << "Failed to find mnemonic in decrypted keyrings";
+    std::move(callback).Run(false);
+  }
+
   keyring_controller_->RestoreWallet(
-      *mnemonic, std::move(new_password_), false,
+      *mnemonic, new_password, false,
       base::BindOnce(
           [](ImportFromBraveCryptoWalletCallback callback,
              bool is_valid_mnemonic) {
