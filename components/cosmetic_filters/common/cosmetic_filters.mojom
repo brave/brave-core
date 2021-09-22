@@ -3,10 +3,11 @@ module cosmetic_filters.mojom;
 import "mojo/public/mojom/base/values.mojom";
 
 interface CosmeticFiltersResources {
-  ShouldDoCosmeticFiltering(string url) => (bool enabled,
-                                            bool first_party_enabled);
-  UrlCosmeticResources(string url) => (mojo_base.mojom.Value result);
   // Receives an input string which is JSON object.
   HiddenClassIdSelectors(string input, array<string> exceptions) => (
       mojo_base.mojom.Value result);
+
+  UrlCosmeticResources(string url) => (bool enabled,
+                                       bool first_party_enabled,
+                                       mojo_base.mojom.Value result);
 };
