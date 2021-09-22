@@ -566,7 +566,14 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
                                  toSection: .recentSearches)
         }
         
-        dataSource.apply(snapshot, animatingDifferences: false)
+        if #available(iOS 14.0, *) {
+            dataSource.apply(snapshot, animatingDifferences: false)
+        } else {
+            // On iOS13 the app leaks memory and crashes, adding small delay helps.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.dataSource.apply(snapshot, animatingDifferences: false)
+            }
+        }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
