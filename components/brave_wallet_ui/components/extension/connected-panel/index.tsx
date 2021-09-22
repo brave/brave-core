@@ -73,7 +73,7 @@ const ConnectedPanel = (props: Props) => {
   }
 
   const bg = React.useMemo(() => {
-    return background({ seed: selectedAccount.address })
+    return background({ seed: selectedAccount.address.toLowerCase() })
   }, [selectedAccount.address])
 
   const orb = React.useMemo(() => {
