@@ -17,6 +17,10 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/page_action/page_action_icon_type.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
@@ -30,8 +34,19 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
 const char kTestHost[] = "theguardian.com";
+
+// The path is not readable. None of the URL components match the heuristic so
+// the SpeedreaderThrottle is never created.
 const char kTestPageSimple[] = "/simple.html";
+
+// The URL path appears readable and the page has text content. This is used to
+// test distillation in the common case.
 const char kTestPageReadable[] = "/articles/guardian.html";
+
+// The URL path appears readable but the page has no text content. This is used
+// to test the case where Speedreader aborts.
+const char kTestPageFakeReadable[] = "/articles/fake.html";
+
 const base::FilePath::StringPieceType kTestWhitelist =
     FILE_PATH_LITERAL("speedreader_whitelist.json");
 
@@ -116,6 +131,12 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   }
 
+  PageActionIconView* SpeedreaderIcon() {
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->toolbar_button_provider()
+        ->GetPageActionIconView(PageActionIconType::kReaderMode);
+  }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
   net::EmbeddedTestServer https_server_;
@@ -126,6 +147,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
   NavigateToPageSynchronously(kTestPageReadable);
   EXPECT_TRUE(
       speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_TRUE(SpeedreaderIcon()->GetVisible());
 
   Profile* profile = browser()->profile();
 
@@ -143,6 +165,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
   restore_observer.Wait();
   EXPECT_TRUE(
       speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_TRUE(SpeedreaderIcon()->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, NavigationNostickTest) {
@@ -150,16 +173,20 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, NavigationNostickTest) {
   NavigateToPageSynchronously(kTestPageSimple);
   EXPECT_FALSE(
       speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_FALSE(SpeedreaderIcon()->GetVisible());
+
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(
       speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_TRUE(SpeedreaderIcon()->GetVisible());
 
   // Ensure distill state doesn't stick when we back-navigate from a readable
   // page to a non-readable one.
   GoBack(browser());
   EXPECT_FALSE(
       speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_FALSE(SpeedreaderIcon()->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
@@ -167,10 +194,22 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
   NavigateToPageSynchronously(kTestPageReadable);
   EXPECT_TRUE(
       speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_TRUE(SpeedreaderIcon()->GetVisible());
+
   tab_helper()->MaybeToggleEnabledForSite(false);
   EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
   EXPECT_FALSE(
       speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  // Disabled sites show the icon
+  EXPECT_TRUE(SpeedreaderIcon()->GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TestFakeReadable) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageFakeReadable);
+  EXPECT_FALSE(
+      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_FALSE(SpeedreaderIcon()->GetVisible());
 }
 
 // disabled in https://github.com/brave/brave-browser/issues/11328
