@@ -6,7 +6,10 @@
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 
 #include "base/bind.h"
+#include "base/feature_list.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "content/public/renderer/render_frame.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/platform/web_isolated_world_info.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -78,9 +81,17 @@ void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
   if (!url_.SchemeIsHTTPOrHTTPS())
     return;
 
-  native_javascript_handle_->ProcessURL(
-      url_, base::BindOnce(&CosmeticFiltersJsRenderFrameObserver::OnProcessURL,
-                           weak_factory_.GetWeakPtr()));
+  if (base::FeatureList::IsEnabled(
+          ::brave_shields::features::kCosmeticFilteringSyncLoad)) {
+    if (native_javascript_handle_->ProcessURL(url_, absl::nullopt)) {
+      ready_->Signal();
+    }
+  } else {
+    native_javascript_handle_->ProcessURL(
+        url_, absl::make_optional(base::BindOnce(
+                  &CosmeticFiltersJsRenderFrameObserver::OnProcessURL,
+                  weak_factory_.GetWeakPtr())));
+  }
 }
 
 void CosmeticFiltersJsRenderFrameObserver::RunScriptsAtDocumentStart() {

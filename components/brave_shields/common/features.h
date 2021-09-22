@@ -20,6 +20,7 @@ extern const base::Feature kBraveAdblockCspRules;
 extern const base::Feature kBraveDomainBlock;
 extern const base::Feature kBraveExtensionNetworkBlocking;
 extern const base::Feature kBraveDarkModeBlock;
+extern const base::Feature kCosmeticFilteringSyncLoad;
 }  // namespace features
 }  // namespace brave_shields
 
