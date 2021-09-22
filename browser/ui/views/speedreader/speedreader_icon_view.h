@@ -8,11 +8,13 @@
 
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class PrefService;
 
-class SpeedreaderIconView : public PageActionIconView {
+class SpeedreaderIconView : public PageActionIconView,
+                            public content::WebContentsObserver {
  public:
   METADATA_HEADER(SpeedreaderIconView);
   SpeedreaderIconView(CommandUpdater* command_updater,
@@ -30,6 +32,9 @@ class SpeedreaderIconView : public PageActionIconView {
   views::BubbleDialogDelegate* GetBubble() const override;
   std::u16string GetTextForTooltipAndAccessibleName() const override;
   void UpdateImpl() override;
+
+  // content::WebContentsObserver
+  void DidStopLoading() override;
 
  private:
   speedreader::DistillState GetDistillState() const;

@@ -96,30 +96,6 @@ void SpeedreaderTabHelper::SingleShotSpeedreader() {
   }
 }
 
-bool SpeedreaderTabHelper::MaybeUpdateCachedState(
-    content::NavigationHandle* handle) {
-  auto* entry = handle->GetNavigationEntry();
-  if (!entry) {
-    return false;
-  }
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-  DCHECK(profile);
-  auto* speedreader_service = SpeedreaderServiceFactory::GetForProfile(profile);
-
-  bool cached = false;
-  DistillState state =
-      SpeedreaderExtendedInfoHandler::GetCachedMode(entry, speedreader_service);
-  if (state != DistillState::kUnknown) {
-    cached = true;
-    distill_state_ = state;
-  }
-  if (!cached) {
-    SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
-  }
-  return cached;
-}
-
 void SpeedreaderTabHelper::UpdateActiveState(
     content::NavigationHandle* handle) {
   DCHECK(handle);
@@ -159,18 +135,14 @@ void SpeedreaderTabHelper::SetNextRequestState(DistillState state) {
 void SpeedreaderTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsInMainFrame()) {
-    if (!MaybeUpdateCachedState(navigation_handle)) {
-      UpdateActiveState(navigation_handle);
-    }
+    UpdateActiveState(navigation_handle);
   }
 }
 
 void SpeedreaderTabHelper::DidRedirectNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsInMainFrame()) {
-    if (!MaybeUpdateCachedState(navigation_handle)) {
-      UpdateActiveState(navigation_handle);
-    }
+    UpdateActiveState(navigation_handle);
   }
 }
 
@@ -212,16 +184,29 @@ void SpeedreaderTabHelper::HideBubble() {
   }
 }
 
-void SpeedreaderTabHelper::OnDistillComplete() {
-  // Perform a state transition
-  if (distill_state_ == DistillState::kSpeedreaderModePending) {
-    distill_state_ = DistillState::kSpeedreaderMode;
-  } else if (distill_state_ == DistillState::kReaderModePending) {
-    distill_state_ = DistillState::kReaderMode;
-  } else {
-    // We got here via an already cached page.
-    DCHECK(distill_state_ == DistillState::kSpeedreaderMode ||
-           distill_state_ == DistillState::kReaderMode);
+void SpeedreaderTabHelper::OnDistillComplete(DistillStatus status) {
+  if (status == DistillStatus::FAIL) {
+    distill_state_ = DistillState::kNone;
+    return;
+  }
+
+  if (status == DistillStatus::CHECK_CACHE) {
+    auto* entry = web_contents()->GetController().GetLastCommittedEntry();
+    if (entry && SpeedreaderExtendedInfoHandler::IsCached(entry)) {
+      status = DistillStatus::SUCCESS;
+    }
+  }
+
+  if (status == DistillStatus::SUCCESS) {
+    // Perform a state transition
+    if (distill_state_ == DistillState::kSpeedreaderModePending) {
+      distill_state_ = DistillState::kSpeedreaderMode;
+    } else if (distill_state_ == DistillState::kReaderModePending) {
+      distill_state_ = DistillState::kReaderMode;
+    } else {
+      DCHECK(distill_state_ == DistillState::kSpeedreaderMode ||
+             distill_state_ == DistillState::kReaderMode);
+    }
   }
 }
 

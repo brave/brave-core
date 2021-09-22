@@ -119,8 +119,12 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
   void OnBodyWritable(MojoResult);
   void MaybeLaunchSpeedreader();
 
+  struct DistillResult {
+    std::string body;
+    bool success;
+  };
   // Gets either distilled or untouched body.
-  void CompleteLoading(std::string body);
+  void CompleteLoading(DistillResult distill_result);
   void CompleteSending();
   void SendReceivedBodyToClient();
 
@@ -147,6 +151,7 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
   // Note that this could be replaced by a distilled version.
   std::string buffered_body_;
   size_t bytes_remaining_in_buffer_;
+  bool distill_succeeded_ = false;
 
   mojo::ScopedDataPipeConsumerHandle body_consumer_handle_;
   mojo::ScopedDataPipeProducerHandle body_producer_handle_;

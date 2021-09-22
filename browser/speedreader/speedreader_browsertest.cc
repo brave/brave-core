@@ -139,6 +139,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
   chrome::OpenWindowWithRestoredTabs(profile);
   EXPECT_EQ(1u, BrowserList::GetInstance()->size());
   SelectFirstBrowser();
+  content::TestNavigationObserver restore_observer(ActiveWebContents());
+  restore_observer.Wait();
   EXPECT_TRUE(
       speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
 }

@@ -81,7 +81,6 @@ class SpeedreaderTabHelper
   // committed to the WebContents.
   bool IsEnabledForSite(const GURL& url);
 
-  bool MaybeUpdateCachedState(content::NavigationHandle* handle);
   void UpdateActiveState(content::NavigationHandle* handle);
   void SetNextRequestState(DistillState state);
 
@@ -93,7 +92,7 @@ class SpeedreaderTabHelper
   void DidStopLoading() override;
 
   // SpeedreaderResultDelegate:
-  void OnDistillComplete() override;
+  void OnDistillComplete(DistillStatus status) override;
 
   bool single_shot_next_request_ =
       false;  // run speedreader once on next page load

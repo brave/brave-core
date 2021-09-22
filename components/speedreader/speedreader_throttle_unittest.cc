@@ -30,7 +30,7 @@ constexpr char kTestProfileName[] = "TestProfile";
 
 class TestSpeedreaderResultDelegate : public SpeedreaderResultDelegate {
  protected:
-  void OnDistillComplete() override {}
+  void OnDistillComplete(DistillStatus status) override {}
 };
 
 }  // anonymous namespace

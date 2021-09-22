@@ -260,7 +260,7 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
               int written = rewriter->Write(data.c_str(), data.length());
               // Error occurred
               if (written != 0) {
-                return data;
+                return DistillResult{data, false};
               }
 
               rewriter->End();
@@ -270,10 +270,9 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
               // explicit signal back from rewriter to indicate if content was
               // found
               if (transformed.length() < 1024) {
-                return data;
+                return DistillResult{data, false};
               }
-
-              return stylesheet + transformed;
+              return DistillResult{stylesheet + transformed, true};
             },
             std::move(buffered_body_),
             rewriter_service_->MakeRewriter(response_url_),
@@ -282,10 +281,10 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
                        weak_factory_.GetWeakPtr()));
     return;
   }
-  CompleteLoading(std::move(buffered_body_));
+  CompleteLoading(DistillResult{std::move(buffered_body_), true});
 }
 
-void SpeedReaderURLLoader::CompleteLoading(std::string body) {
+void SpeedReaderURLLoader::CompleteLoading(DistillResult distill_result) {
   DCHECK_EQ(State::kLoading, state_);
   state_ = State::kSending;
 
@@ -294,7 +293,8 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
     return;
   }
 
-  buffered_body_ = std::move(body);
+  buffered_body_ = std::move(distill_result.body);
+  distill_succeeded_ = distill_result.success;
   bytes_remaining_in_buffer_ = buffered_body_.size();
 
   throttle_->Resume();
@@ -335,8 +335,17 @@ void SpeedReaderURLLoader::CompleteSending() {
     // TODO(keur, iefremov): This API could probably be improved with an enum
     // indicating distill success, distill fail, load from cache.
     // |complete_status_| has an |exists_in_cache| field.
-    if (delegate_)
-      delegate_->OnDistillComplete();
+    if (delegate_) {
+      DistillStatus status;
+      if (distill_succeeded_) {
+        status = DistillStatus::SUCCESS;
+      } else if (!distill_succeeded_ && complete_status_->exists_in_cache) {
+        status = DistillStatus::CHECK_CACHE;
+      } else {
+        status = DistillStatus::FAIL;
+      }
+      delegate_->OnDistillComplete(status);
+    }
   }
 
   body_consumer_watcher_.Cancel();

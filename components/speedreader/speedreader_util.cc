@@ -60,9 +60,7 @@ bool PageStateIsDistilled(DistillState state) {
 }
 
 bool PageWantsDistill(DistillState state) {
-  return state == DistillState::kReaderMode ||
-         state == DistillState::kSpeedreaderMode ||
-         state == DistillState::kReaderModePending ||
+  return state == DistillState::kReaderModePending ||
          state == DistillState::kSpeedreaderModePending;
 }
 

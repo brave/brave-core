@@ -47,30 +47,23 @@ void SpeedreaderExtendedInfoHandler::PersistMode(
     case DistillState::kReaderMode:
     case DistillState::kSpeedreaderMode:
       data = std::make_unique<SpeedreaderNavigationData>(kPageSavedDistilled);
+      entry->SetUserData(kSpeedreaderKey, std::move(data));
       break;
     default:
+      SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
       return;
   }
-
-  entry->SetUserData(kSpeedreaderKey, std::move(data));
 }
 
 // static
-DistillState SpeedreaderExtendedInfoHandler::GetCachedMode(
-    content::NavigationEntry* entry,
-    SpeedreaderService* service) {
+bool SpeedreaderExtendedInfoHandler::IsCached(content::NavigationEntry* entry) {
   DCHECK(entry);
   auto* data = static_cast<SpeedreaderNavigationData*>(
       entry->GetUserData(kSpeedreaderKey));
-  if (!data) {
-    return DistillState::kUnknown;
+  if (!data || data->value.empty()) {
+    return false;
   }
-  if (data->value == kPageSavedDistilled) {
-    return service->IsEnabled() ? DistillState::kSpeedreaderMode
-                                : DistillState::kReaderMode;
-  } else {
-    return DistillState::kUnknown;
-  }
+  return (data->value == kPageSavedDistilled);
 }
 
 // static

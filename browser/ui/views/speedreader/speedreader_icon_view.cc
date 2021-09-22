@@ -91,6 +91,9 @@ void SpeedreaderIconView::UpdateImpl() {
           BraveThemeProperties::COLOR_SPEEDREADER_ICON));
     SetVisible(true);
   }
+
+  // Notify the icon to check distillation status again on DidStopLoading()
+  Observe(contents);
 }
 
 const gfx::VectorIcon& SpeedreaderIconView::GetVectorIcon() const {
@@ -147,6 +150,10 @@ DistillState SpeedreaderIconView::GetDistillState() const {
       state = tab_helper->PageDistillState();
   }
   return state;
+}
+
+void SpeedreaderIconView::DidStopLoading() {
+  Update();
 }
 
 BEGIN_METADATA(SpeedreaderIconView, PageActionIconView)

@@ -30,10 +30,7 @@ class SpeedreaderExtendedInfoHandler : public sessions::ExtendedInfoHandler {
   // Persist the current speedreader state to NavigationEntry
   static void PersistMode(content::NavigationEntry* entry, DistillState state);
 
-  // Retrieve cached speedreader state from NavigationEntry. Returns
-  // DistillState::kUnknown if not cached.
-  static DistillState GetCachedMode(content::NavigationEntry* entry,
-                                    SpeedreaderService* service);
+  static bool IsCached(content::NavigationEntry* entry);
 
   // Clear the NavigationEntry speedreader state
   static void ClearPersistedData(content::NavigationEntry* entry);
