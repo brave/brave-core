@@ -131,28 +131,38 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         networkName.setText(mNetworkName);
         ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
         icon.setImageResource(mAccountPic);
+        String valueToConvert = mTxInfo.txData.baseData.value;
+        String to = mTxInfo.txData.baseData.to;
+        if (!mAsset.equals("ETH") && mTxInfo.txArgs.length > 1) {
+            valueToConvert = mTxInfo.txArgs[1];
+            to = mTxInfo.txArgs[0];
+        }
         TextView fromTo = view.findViewById(R.id.from_to);
         fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
-                mAccountName, Utils.stripAccountAddress(mTxInfo.txData.baseData.to)));
+                mAccountName, Utils.stripAccountAddress(to)));
         TextView txType = view.findViewById(R.id.tx_type);
         txType.setText(mTxType);
         TextView amountAsset = view.findViewById(R.id.amount_asset);
-        amountAsset.setText(
-                String.format(getResources().getString(R.string.crypto_wallet_amount_asset),
-                        String.format(Locale.getDefault(), "%.4f",
-                                Utils.fromHexWei(mTxInfo.txData.baseData.value)),
-                        mAsset));
+        amountAsset.setText(String.format(
+                getResources().getString(R.string.crypto_wallet_amount_asset),
+                String.format(Locale.getDefault(), "%.4f", Utils.fromHexWei(valueToConvert)),
+                mAsset));
         AssetRatioController assetRatioController = getAssetRatioController();
         if (assetRatioController != null) {
             String[] assets = {mAsset.toLowerCase(Locale.getDefault())};
             String[] toCurr = {"usd"};
             assetRatioController.getPrice(
                     assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
-                        if (!success || values.length == 0) {
-                            return;
+                        String valueFiat = "0";
+                        if (values.length != 0) {
+                            valueFiat = values[0].price;
                         }
-                        double value = Utils.fromHexWei(mTxInfo.txData.baseData.value);
-                        double price = Double.valueOf(values[0].price);
+                        String valueAsset = mTxInfo.txData.baseData.value;
+                        if (!mAsset.equals("ETH") && mTxInfo.txArgs.length > 1) {
+                            valueAsset = mTxInfo.txArgs[1];
+                        }
+                        double value = Utils.fromHexWei(valueAsset);
+                        double price = Double.valueOf(valueFiat);
                         mTotalPrice = value * price;
                         TextView amountFiat = view.findViewById(R.id.amount_fiat);
                         amountFiat.setText(String.format(

@@ -67,14 +67,16 @@ public class TxFragment extends Fragment {
                 String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
                         String.format(Locale.getDefault(), "%.8f",
                                 Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice))));
+        String valueAsset = mTxInfo.txData.baseData.value;
+        if (!mAsset.equals("ETH") && mTxInfo.txArgs.length > 1) {
+            valueAsset = mTxInfo.txArgs[1];
+        }
         TextView totalAmount = view.findViewById(R.id.total_amount);
-        totalAmount.setText(
-                String.format(getResources().getString(R.string.crypto_wallet_total_amount),
-                        String.format(Locale.getDefault(), "%.8f",
-                                Utils.fromHexWei(mTxInfo.txData.baseData.value)),
-                        mAsset,
-                        String.format(Locale.getDefault(), "%.8f",
-                                Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice))));
+        totalAmount.setText(String.format(
+                getResources().getString(R.string.crypto_wallet_total_amount),
+                String.format(Locale.getDefault(), "%.8f", Utils.fromHexWei(valueAsset)), mAsset,
+                String.format(Locale.getDefault(), "%.8f",
+                        Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice))));
         AssetRatioController assetRatioController = getAssetRatioController();
         if (assetRatioController != null) {
             String[] assets = {"eth"};

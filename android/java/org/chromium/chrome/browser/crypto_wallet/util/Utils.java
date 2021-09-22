@@ -197,6 +197,9 @@ public class Utils {
         if (number.startsWith("0x")) {
             number = number.substring(2);
         }
+        if (number.isEmpty()) {
+            return 0;
+        }
         BigInteger bigNumber = new BigInteger(number, 16);
         BigInteger divider = new BigInteger("1000000000000000000");
         BigDecimal bDecimal = new BigDecimal(bigNumber);

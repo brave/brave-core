@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.EthTxController;
@@ -116,6 +117,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private double mConvertedBalance;
     private EthTxControllerObserverImpl mEthTxControllerObserver;
     private AssetRatioController mAssetRatioController;
+    private ErcToken mCurrentErcToken;
 
     @Override
     protected void onDestroy() {
@@ -223,18 +225,33 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     public void onNothingSelected(AdapterView<?> arg0) {}
 
     private void updateBalance(String address) {
+        assert mEthJsonRpcController != null;
         if (mEthJsonRpcController == null) {
             return;
         }
-        mEthJsonRpcController.getBalance(address, (success, balance) -> {
-            if (!success) {
-                return;
-            }
-            TextView fromBalanceText = findViewById(R.id.from_balance_text);
-            mConvertedBalance = Utils.fromHexWei(balance);
-            fromBalanceText.setText(getText(R.string.crypto_wallet_balance) + " "
-                    + String.format(Locale.getDefault(), "%.4f", mConvertedBalance));
-        });
+        if (mCurrentErcToken == null || mCurrentErcToken.contractAddress.equals("eth")) {
+            mEthJsonRpcController.getBalance(address, (success, balance) -> {
+                if (!success) {
+                    return;
+                }
+                populateBalance(balance);
+            });
+        } else {
+            mEthJsonRpcController.getErc20TokenBalance(
+                    mCurrentErcToken.contractAddress, address, (success, balance) -> {
+                        if (!success) {
+                            return;
+                        }
+                        populateBalance(balance);
+                    });
+        }
+    }
+
+    private void populateBalance(String balance) {
+        TextView fromBalanceText = findViewById(R.id.from_balance_text);
+        mConvertedBalance = Utils.fromHexWei(balance);
+        fromBalanceText.setText(getText(R.string.crypto_wallet_balance) + " "
+                + String.format(Locale.getDefault(), "%.4f", mConvertedBalance));
     }
 
     private int getIndexOf(Spinner spinner, String chainId) {
@@ -345,21 +362,18 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                     return;
                 }
                 TextView fromValueText = findViewById(R.id.from_value_text);
-                String value = fromValueText.getText().toString();
                 // TODO(sergz): Some kind of validation that we have enough balance
-                TxData data =
-                        Utils.getTxData("0x1", "", "", to, Utils.toHexWei(value), new byte[0]);
+                String value = fromValueText.getText().toString();
                 Spinner accountSpinner = findViewById(R.id.accounts_spinner);
                 String from = mCustomAccountAdapter.getTitleAtPosition(
                         accountSpinner.getSelectedItemPosition());
-                if (mEthTxController != null) {
-                    mEthTxController.addUnapprovedTransaction(data, from,
-                            (success, tx_meta_id, error_message)
-                                    -> {
-                                            // Do nothing here ass we will receive an
-                                            // unapproved transaction in
-                                            // EthTxControllerObserverImpl
-                                    });
+                if (mCurrentErcToken == null || mCurrentErcToken.contractAddress.equals("eth")) {
+                    TxData data =
+                            Utils.getTxData("0x1", "", "", to, Utils.toHexWei(value), new byte[0]);
+                    addUnapprovedTransaction(data, from);
+                } else {
+                    addUnapprovedTransactionERC20(
+                            to, Utils.toHexWei(value), from, mCurrentErcToken.contractAddress);
                 }
             }
         });
@@ -388,6 +402,35 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         });
     }
 
+    private void addUnapprovedTransaction(TxData data, String from) {
+        assert mEthTxController != null;
+        if (mEthTxController == null) {
+            return;
+        }
+        mEthTxController.addUnapprovedTransaction(data, from,
+                (success, tx_meta_id, error_message)
+                        -> {
+                                // Do nothing here ass we will receive an
+                                // unapproved transaction in
+                                // EthTxControllerObserverImpl
+                        });
+    }
+
+    private void addUnapprovedTransactionERC20(
+            String to, String value, String from, String contractAddress) {
+        assert mEthTxController != null;
+        if (mEthTxController == null) {
+            return;
+        }
+        mEthTxController.makeErc20TransferData(to, value, (success, data) -> {
+            if (!success || data.length == 0) {
+                return;
+            }
+            TxData txData = Utils.getTxData("0x1", "", "", contractAddress, "0x0", data);
+            addUnapprovedTransaction(txData, from);
+        });
+    }
+
     public void showApproveTransactionDialog(TransactionInfo txInfo) {
         if (mEthJsonRpcController == null) {
             assert mEthJsonRpcController != null;
@@ -411,9 +454,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         });
     }
 
-    public void updateBuySendAsset(String asset) {
+    public void updateBuySendAsset(String asset, ErcToken ercToken) {
         TextView assetDropDown = findViewById(R.id.from_asset_text);
         assetDropDown.setText(asset);
+        mCurrentErcToken = ercToken;
+        Spinner accountSpinner = findViewById(R.id.accounts_spinner);
+        updateBalance(
+                mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition()));
     }
 
     public ErcTokenRegistry getErcTokenRegistry() {
