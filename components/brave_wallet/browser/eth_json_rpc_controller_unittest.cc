@@ -46,6 +46,29 @@ void UpdateCustomNetworks(PrefService* prefs,
   }
 }
 
+void OnRequestResponse(
+    bool* callback_called,
+    bool expected_success,
+    const std::string& expected_response,
+    const int status,
+    const std::string& response,
+    const base::flat_map<std::string, std::string>& headers) {
+  *callback_called = true;
+  bool success = status == 200;
+  EXPECT_EQ(expected_response, response);
+  EXPECT_EQ(expected_success, success);
+}
+
+void OnStringResponse(bool* callback_called,
+                      bool expected_success,
+                      const std::string& expected_response,
+                      bool success,
+                      const std::string& response) {
+  *callback_called = true;
+  EXPECT_EQ(expected_response, response);
+  EXPECT_EQ(expected_success, success);
+}
+
 class FakeEthereumChainObserver
     : public brave_wallet::mojom::EthJsonRpcControllerObserver {
  public:
@@ -82,15 +105,30 @@ namespace brave_wallet {
 class EthJsonRpcControllerUnitTest : public testing::Test {
  public:
   EthJsonRpcControllerUnitTest()
-      : browser_context_(new content::TestBrowserContext()) {
-    shared_url_loader_factory_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &url_loader_factory_);
-    auto resource_request = base::BindRepeating(
-        &EthJsonRpcControllerUnitTest::ResourceRequest, this);
-    url_loader_factory_.SetInterceptor(std::move(resource_request));
+      : browser_context_(new content::TestBrowserContext()),
+        shared_url_loader_factory_(
+            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+                &url_loader_factory_)) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(
+              brave_wallet::GetNetworkURL(prefs(), mojom::kLocalhostChainId)
+                  .spec(),
+              "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+              "\"0x000000000000000000000000000000000000000000000000000000000000"
+              "0020000000000000000000000000000000000000000000000000000000000000"
+              "0026e3010170122008ab7bf21b73828364305ef6b7c676c1f5a73e18ab4f93be"
+              "ec7e21e0bc84010e000000000000000000000000000000000000000000000000"
+              "0000\"}");
+        }));
+
     user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
+
+    rpc_controller_.reset(
+        new EthJsonRpcController(shared_url_loader_factory_, &prefs_));
+    rpc_controller_->SetNetwork(brave_wallet::mojom::kLocalhostChainId);
   }
 
   ~EthJsonRpcControllerUnitTest() override = default;
@@ -98,22 +136,8 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
     return shared_url_loader_factory_;
   }
+
   PrefService* prefs() { return &prefs_; }
-  void SwitchToNextResponse() {
-    url_loader_factory_.ClearResponses();
-    url_loader_factory_.AddResponse(
-        brave_wallet::GetNetworkURL(prefs(), mojom::kLocalhostChainId).spec(),
-        "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0000000000000000000000"
-        "0000000000000000000000000000000000000000200000000000000000000000000"
-        "000000000000000000000000000000000000026e3010170122008ab7bf21b738283"
-        "64305ef6b7c676c1f5a73e18ab4f93beec7e21e0bc84010e0000000000000000000"
-        "000000000000000000000000000000000\"}");
-  }
-  static void ResourceRequest(EthJsonRpcControllerUnitTest* controller,
-                              const network::ResourceRequest& request) {
-    if (controller)
-      controller->SwitchToNextResponse();
-  }
 
   void SetRegistrarResponse() {
     auto localhost_url_spec =
@@ -123,6 +147,23 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
         localhost_url_spec,
         "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x00000"
         "0000000000000000000226159d592e2b063810a10ebf6dcbada94ed68b8\"}");
+  }
+
+  void SetInterceptor(const std::string& content) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, content](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), content);
+        }));
+  }
+
+  void SetErrorInterceptor() {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), "",
+                                          net::HTTP_REQUEST_TIMEOUT);
+        }));
   }
 
   void ValidateStartWithNetwork(const std::string& chain_id,
@@ -138,6 +179,9 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
     ASSERT_TRUE(callback_is_called);
   }
 
+ protected:
+  std::unique_ptr<EthJsonRpcController> rpc_controller_;
+
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
   std::unique_ptr<content::TestBrowserContext> browser_context_;
@@ -147,17 +191,15 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
 };
 
 TEST_F(EthJsonRpcControllerUnitTest, SetNetwork) {
-  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
-
   std::vector<mojom::EthereumChainPtr> networks;
   brave_wallet::GetAllKnownChains(&networks);
   for (const auto& network : networks) {
     bool callback_is_called = false;
-    controller.SetNetwork(network->chain_id);
+    rpc_controller_->SetNetwork(network->chain_id);
     EXPECT_EQ(network->chain_id,
               prefs()->GetString(kBraveWalletCurrentChainId));
     const std::string& expected_id = network->chain_id;
-    controller.GetChainId(base::BindLambdaForTesting(
+    rpc_controller_->GetChainId(base::BindLambdaForTesting(
         [&callback_is_called, &expected_id](const std::string& chain_id) {
           EXPECT_EQ(chain_id, expected_id);
           callback_is_called = true;
@@ -166,7 +208,7 @@ TEST_F(EthJsonRpcControllerUnitTest, SetNetwork) {
 
     callback_is_called = false;
     const std::string& expected_url = network->rpc_urls.front();
-    controller.GetNetworkUrl(base::BindLambdaForTesting(
+    rpc_controller_->GetNetworkUrl(base::BindLambdaForTesting(
         [&callback_is_called, &expected_url](const std::string& spec) {
           EXPECT_EQ(GURL(spec).GetOrigin(), GURL(expected_url).GetOrigin());
           callback_is_called = true;
@@ -191,12 +233,10 @@ TEST_F(EthJsonRpcControllerUnitTest, SetCustomNetwork) {
   values.push_back(brave_wallet::EthereumChainToValue(chain_ptr2));
   UpdateCustomNetworks(prefs(), &values);
 
-  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
-
   bool callback_is_called = false;
-  controller.SetNetwork(chain1.chain_id);
+  rpc_controller_->SetNetwork(chain1.chain_id);
   const std::string& expected_id = chain1.chain_id;
-  controller.GetChainId(base::BindLambdaForTesting(
+  rpc_controller_->GetChainId(base::BindLambdaForTesting(
       [&callback_is_called, &expected_id](const std::string& chain_id) {
         EXPECT_EQ(chain_id, expected_id);
         callback_is_called = true;
@@ -204,7 +244,7 @@ TEST_F(EthJsonRpcControllerUnitTest, SetCustomNetwork) {
   ASSERT_TRUE(callback_is_called);
   callback_is_called = false;
   const std::string& expected_url = chain1.rpc_urls.front();
-  controller.GetNetworkUrl(base::BindLambdaForTesting(
+  rpc_controller_->GetNetworkUrl(base::BindLambdaForTesting(
       [&callback_is_called, &expected_url](const std::string& spec) {
         EXPECT_EQ(GURL(spec).GetOrigin(), GURL(expected_url).GetOrigin());
         callback_is_called = true;
@@ -228,11 +268,10 @@ TEST_F(EthJsonRpcControllerUnitTest, GetAllNetworks) {
   values.push_back(brave_wallet::EthereumChainToValue(chain_ptr2));
   UpdateCustomNetworks(prefs(), &values);
 
-  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
   std::vector<mojom::EthereumChainPtr> expected_chains;
   brave_wallet::GetAllChains(prefs(), &expected_chains);
   bool callback_is_called = false;
-  controller.GetAllNetworks(base::BindLambdaForTesting(
+  rpc_controller_->GetAllNetworks(base::BindLambdaForTesting(
       [&callback_is_called,
        &expected_chains](std::vector<mojom::EthereumChainPtr> chains) {
         EXPECT_EQ(expected_chains.size(), chains.size());
@@ -247,11 +286,10 @@ TEST_F(EthJsonRpcControllerUnitTest, GetAllNetworks) {
 }
 
 TEST_F(EthJsonRpcControllerUnitTest, ResolveENSDomain) {
-  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
-  controller.SetNetwork(brave_wallet::mojom::kLocalhostChainId);
+  rpc_controller_->SetNetwork(brave_wallet::mojom::kLocalhostChainId);
   SetRegistrarResponse();
   base::RunLoop run;
-  controller.EnsProxyReaderGetResolverAddress(
+  rpc_controller_->EnsProxyReaderGetResolverAddress(
       "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e", "blocktimer.dappstar.eth",
       base::BindOnce(
           [](base::OnceClosure done, bool status, const std::string& result) {
@@ -293,13 +331,12 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainApproved) {
   brave_wallet::mojom::EthereumChain chain(
       "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
       {"https://url1.com"}, "symbol_name", "symbol", 11);
-  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
 
   base::RunLoop loop;
   std::unique_ptr<FakeEthereumChainObserver> observer(
       new FakeEthereumChainObserver(loop.QuitClosure(), "0x111", true));
 
-  controller.AddObserver(observer->GetReceiver());
+  rpc_controller_->AddObserver(observer->GetReceiver());
 
   mojo::PendingRemote<brave_wallet::mojom::EthJsonRpcControllerObserver>
       receiver;
@@ -309,7 +346,7 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainApproved) {
   bool callback_is_called = false;
   bool expected = true;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
-  controller.AddEthereumChain(
+  rpc_controller_->AddEthereumChain(
       chain.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&callback_is_called, &expected](
                                      const std::string& chain_id, bool added) {
@@ -317,12 +354,12 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainApproved) {
         EXPECT_EQ(added, expected);
         callback_is_called = true;
       }));
-  controller.AddEthereumChainRequestCompleted("0x111", true);
+  rpc_controller_->AddEthereumChainRequestCompleted("0x111", true);
   loop.Run();
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
   callback_is_called = false;
-  controller.AddEthereumChainRequestCompleted("0x111", true);
+  rpc_controller_->AddEthereumChainRequestCompleted("0x111", true);
   ASSERT_FALSE(callback_is_called);
 }
 
@@ -330,13 +367,12 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainRejected) {
   brave_wallet::mojom::EthereumChain chain(
       "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
       {"https://url1.com"}, "symbol_name", "symbol", 11);
-  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
 
   base::RunLoop loop;
   std::unique_ptr<FakeEthereumChainObserver> observer(
       new FakeEthereumChainObserver(loop.QuitClosure(), "0x111", false));
 
-  controller.AddObserver(observer->GetReceiver());
+  rpc_controller_->AddObserver(observer->GetReceiver());
 
   mojo::PendingRemote<brave_wallet::mojom::EthJsonRpcControllerObserver>
       receiver;
@@ -346,7 +382,7 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainRejected) {
   bool callback_is_called = false;
   bool expected = true;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
-  controller.AddEthereumChain(
+  rpc_controller_->AddEthereumChain(
       chain.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&callback_is_called, &expected](
                                      const std::string& chain_id, bool added) {
@@ -354,12 +390,12 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainRejected) {
         EXPECT_EQ(added, expected);
         callback_is_called = true;
       }));
-  controller.AddEthereumChainRequestCompleted("0x111", false);
+  rpc_controller_->AddEthereumChainRequestCompleted("0x111", false);
   loop.Run();
   ASSERT_TRUE(callback_is_called);
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
   callback_is_called = false;
-  controller.AddEthereumChainRequestCompleted("0x111", true);
+  rpc_controller_->AddEthereumChainRequestCompleted("0x111", true);
   ASSERT_FALSE(callback_is_called);
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
 }
@@ -368,12 +404,11 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainError) {
   brave_wallet::mojom::EthereumChain chain(
       "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
       {"https://url1.com"}, "symbol_name", "symbol", 11);
-  EthJsonRpcController controller(shared_url_loader_factory(), prefs());
 
   bool callback_is_called = false;
   bool expected = true;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
-  controller.AddEthereumChain(
+  rpc_controller_->AddEthereumChain(
       chain.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&callback_is_called, &expected](
                                      const std::string& chain_id, bool added) {
@@ -391,7 +426,7 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainError) {
 
   bool second_callback_is_called = false;
   bool second_expected = false;
-  controller.AddEthereumChain(
+  rpc_controller_->AddEthereumChain(
       chain2.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&second_callback_is_called, &second_expected](
                                      const std::string& chain_id, bool added) {
@@ -406,7 +441,7 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainError) {
   // same chain, other origin
   bool third_callback_is_called = false;
   bool third_expected = false;
-  controller.AddEthereumChain(
+  rpc_controller_->AddEthereumChain(
       chain.Clone(), GURL("https://others.com"),
       base::BindLambdaForTesting([&third_callback_is_called, &third_expected](
                                      const std::string& chain_id, bool added) {
@@ -424,6 +459,138 @@ TEST_F(EthJsonRpcControllerUnitTest, StartWithNetwork) {
   ValidateStartWithNetwork("SomeBadChainId", std::string());
   ValidateStartWithNetwork(brave_wallet::mojom::kRopstenChainId,
                            brave_wallet::mojom::kRopstenChainId);
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, Request) {
+  bool callback_called = false;
+  const std::string request =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_blockNumber\",\"params\":"
+      "[]}";
+  const std::string expected_response =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}";
+  SetInterceptor(expected_response);
+  rpc_controller_->Request(
+      request, true,
+      base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
+                     expected_response));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetErrorInterceptor();
+  rpc_controller_->Request(request, true,
+                           base::BindOnce(&OnRequestResponse, &callback_called,
+                                          false /* success */, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, GetBalance) {
+  bool callback_called = false;
+  SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}");
+  rpc_controller_->GetBalance(
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&OnStringResponse, &callback_called, true, "0xb539d5"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetErrorInterceptor();
+  rpc_controller_->GetBalance(
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, GetERC20TokenBalance) {
+  bool callback_called = false;
+  SetInterceptor(
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "\"0x00000000000000000000000000000000000000000000000166e12cfce39a0000\""
+      "}");
+
+  rpc_controller_->GetERC20TokenBalance(
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&OnStringResponse, &callback_called, true,
+                     "0x00000000000000000000000000000000000000000000000166e12cf"
+                     "ce39a0000"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetErrorInterceptor();
+  rpc_controller_->GetERC20TokenBalance(
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Invalid input should fail.
+  callback_called = false;
+  rpc_controller_->GetERC20TokenBalance(
+      "", "", base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, UnstoppableDomainsProxyReaderGetMany) {
+  bool callback_called = false;
+  SetInterceptor(
+      "{\"jsonrpc\":\"2.0\",\"id\": \"0\",\"result\": "
+      "\"0x00000000000000000000000000000000000000000000000000000000000000200000"
+      "000000000000000000000000000000000000000000000000000000000004000000000000"
+      "000000000000000000000000000000000000000000000000008000000000000000000000"
+      "000000000000000000000000000000000000000000a00000000000000000000000000000"
+      "000000000000000000000000000000000100000000000000000000000000000000000000"
+      "000000000000000000000000012000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000000002e516d5772644e4a574d62765278787a4c686f6a564b614244737753344b4e"
+      "564d374c766a734e3751624472766b610000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000\"}");
+
+  rpc_controller_->UnstoppableDomainsProxyReaderGetMany(
+      "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5" /* contract_address */,
+      "brave.crypto" /* domain */,
+      {"dweb.ipfs.hash", "ipfs.html.value", "browser.redirect_url",
+       "ipfs.redirect_domain.value"} /* keys */,
+      base::BindOnce(
+          &OnStringResponse, &callback_called, true,
+          "0x0000000000000000000000000000000000000000000000000000000000000020"
+          "0000000000000000000000000000000000000000000000000000000000000004"
+          "0000000000000000000000000000000000000000000000000000000000000080"
+          "00000000000000000000000000000000000000000000000000000000000000a0"
+          "0000000000000000000000000000000000000000000000000000000000000100"
+          "0000000000000000000000000000000000000000000000000000000000000120"
+          "0000000000000000000000000000000000000000000000000000000000000000"
+          "000000000000000000000000000000000000000000000000000000000000002e"
+          "516d5772644e4a574d62765278787a4c686f6a564b614244737753344b4e564d"
+          "374c766a734e3751624472766b61000000000000000000000000000000000000"
+          "0000000000000000000000000000000000000000000000000000000000000000"
+          "0000000000000000000000000000000000000000000000000000000000000000"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetErrorInterceptor();
+  rpc_controller_->UnstoppableDomainsProxyReaderGetMany(
+      "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5" /* contract_address */,
+      "brave.crypto" /* domain */,
+      {"dweb.ipfs.hash", "ipfs.html.value", "browser.redirect_url",
+       "ipfs.redirect_domain.value"} /* keys */,
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  rpc_controller_->UnstoppableDomainsProxyReaderGetMany(
+      "", "", std::vector<std::string>(),
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
 }
 
 }  // namespace brave_wallet
