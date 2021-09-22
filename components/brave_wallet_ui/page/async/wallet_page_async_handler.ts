@@ -211,9 +211,6 @@ handler.on(WalletPageActions.fetchSwapQuote.getType(), async (store, payload: Sw
 
 // TODO(bbondy): Remove - Example usage:
 //
-// Swap API
-// import { SwapParams } from '../../constants/types'
-//
 // Interacting with the token registry
 // const ercTokenRegistry = (await getAPIProxy()).ercTokenRegistry
 // const val1 = await ercTokenRegistry.getAllTokens()

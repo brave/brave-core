@@ -60,6 +60,7 @@ import {
 import { onConnectHardwareWallet, getBalance } from '../common/async/wallet_async_handler'
 
 import { formatBalance, toWei, toWeiHex } from '../utils/format-balances'
+import { debounce } from '../../common/debounce'
 
 type Props = {
   wallet: WalletState
@@ -139,12 +140,18 @@ function Container (props: Props) {
     setExchangeRate(formatBalance(price, 0))
   }, [swapQuote])
 
-  const onSwapParamsChange = (
-    changeInToOrFrom: ToOrFromType,
-    asset?: AccountAssetOptionType,
-    amount?: string,
-    slippage?: SlippagePresetObjectType,
-    full: boolean = false
+  const onSwapParamsChange = React.useCallback((
+      state: {
+        fromAmount: string,
+        toAmount: string
+      },
+      overrides: {
+        toOrFrom: ToOrFromType
+        asset?: AccountAssetOptionType
+        amount?: string
+        slippageTolerance?: SlippagePresetObjectType
+      },
+      full: boolean = false
   ) => {
     if (selectedWidgetTab !== 'swap') {
       return
@@ -153,43 +160,52 @@ function Container (props: Props) {
     let fromAmountWei
     let toAmountWei
 
-    if (changeInToOrFrom === 'from') {
+    if (overrides.toOrFrom === 'from') {
       fromAmountWei = toWei(
-        amount ?? fromAmount,
-        fromAsset.asset.decimals
+          overrides.amount ?? state.fromAmount,
+          fromAsset.asset.decimals
       )
     }
 
-    if (changeInToOrFrom === 'to') {
+    if (overrides.toOrFrom === 'to') {
       toAmountWei = toWei(
-          amount ?? toAmount,
+          overrides.amount ?? state.toAmount,
           toAsset.asset.decimals
       )
     }
 
-    if (changeInToOrFrom === 'to' && toAmountWei === '0') {
+    if (overrides.toOrFrom === 'to' && toAmountWei === '0') {
       setFromAmount('')
       return
     }
 
-    if (changeInToOrFrom === 'from' && fromAmountWei === '0') {
+    if (overrides.toOrFrom === 'from' && fromAmountWei === '0') {
       setToAmount('')
       return
     }
 
     props.walletPageActions.fetchSwapQuote({
-      fromAsset: changeInToOrFrom === 'from' && asset !== undefined ? asset : fromAsset,
+      fromAsset: overrides.toOrFrom === 'from' && overrides.asset !== undefined ? overrides.asset : fromAsset,
       fromAssetAmount: fromAmountWei,
-      toAsset: changeInToOrFrom === 'to' && asset !== undefined ? asset : toAsset,
+      toAsset: overrides.toOrFrom === 'to' && overrides.asset !== undefined ? overrides.asset : toAsset,
       toAssetAmount: toAmountWei,
       accountAddress: selectedAccount.address,
-      slippageTolerance: slippage ?? slippageTolerance,
+      slippageTolerance: overrides.slippageTolerance ?? slippageTolerance,
       networkChainId: selectedNetwork.chainId,
       full
     })
-  }
+  }, [selectedWidgetTab, selectedAccount, selectedNetwork])
 
-  const onSwapQuoteRefresh = () => onSwapParamsChange('from')
+  const onSwapQuoteRefresh = () => onSwapParamsChange(
+    { fromAmount, toAmount },
+    { toOrFrom: 'from' }
+  )
+
+  const onSwapParamsChangeDebounced = React.useCallback(
+    // @ts-ignore
+    debounce(onSwapParamsChange, 400),
+    [onSwapParamsChange]
+  )
 
   const isSwapButtonDisabled = () => {
     if (!swapQuote) {
@@ -210,7 +226,10 @@ function Container (props: Props) {
       setToAsset(asset)
     }
 
-    onSwapParamsChange(toOrFrom, asset)
+    onSwapParamsChange(
+      { fromAmount, toAmount },
+      { toOrFrom, asset }
+    )
   }
 
   const flipSwapAssets = () => {
@@ -236,7 +255,10 @@ function Container (props: Props) {
 
   const onSetFromAmount = (value: string) => {
     setFromAmount(value)
-    onSwapParamsChange('from', undefined, value)
+    onSwapParamsChangeDebounced(
+      { fromAmount, toAmount },
+      { toOrFrom: 'from', amount: value }
+    )
   }
 
   const onSetSendAmount = (value: string) => {
@@ -245,7 +267,10 @@ function Container (props: Props) {
 
   const onSetToAmount = (value: string) => {
     setToAmount(value)
-    onSwapParamsChange('to', undefined, value)
+    onSwapParamsChangeDebounced(
+      { fromAmount, toAmount },
+      { toOrFrom: 'to', amount: value }
+    )
   }
 
   const onSetExchangeRate = (value: string) => {
@@ -258,7 +283,10 @@ function Container (props: Props) {
 
   const onSelectSlippageTolerance = (slippage: SlippagePresetObjectType) => {
     setSlippageTolerance(slippage)
-    onSwapParamsChange('from', undefined, undefined, slippage)
+    onSwapParamsChange(
+      { fromAmount, toAmount },
+      { toOrFrom: 'from', slippageTolerance: slippage }
+    )
   }
 
   const onToggleOrderType = () => {
@@ -487,7 +515,11 @@ function Container (props: Props) {
   }
 
   const onSubmitSwap = () => {
-    onSwapParamsChange('from', undefined, undefined, undefined, true)
+    onSwapParamsChange(
+      { fromAmount, toAmount },
+      { toOrFrom: 'from' },
+      true
+    )
   }
 
   const onSubmitSend = () => {
