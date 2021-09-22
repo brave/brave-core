@@ -550,17 +550,6 @@ if (!is_android && !is_ios) {
   }
 }
 
-group("brave_browser_tests_deps") {
-  testonly = true
-
-  # force these to build for tests
-  deps = [
-    "//brave",
-    "//brave:browser_dependencies",
-    "//brave:child_dependencies",
-  ]
-}
-
 static_library("browser_test_support") {
   testonly = true
   public_deps = [ "//chrome/test:test_support" ]
@@ -885,7 +874,6 @@ if (!is_android) {
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
     deps += [
-      ":brave_browser_tests_deps",
       "//brave/app:brave_generated_resources_grit",
       "//brave/app:command_ids",
       "//brave/app/theme:brave_theme_resources_grit",
