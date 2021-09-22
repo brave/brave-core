@@ -48,12 +48,6 @@ class CosmeticFiltersResources final
                             UrlCosmeticResourcesCallback callback) override;
 
  private:
-  void HiddenClassIdSelectorsOnUI(HiddenClassIdSelectorsCallback callback,
-                                  absl::optional<base::Value> resources);
-
-  void UrlCosmeticResourcesOnUI(base::OnceCallback<void(base::Value)> callback,
-                                absl::optional<base::Value> resources);
-
   brave_shields::AdBlockService* ad_block_service_;  // Not owned
 
   base::WeakPtrFactory<CosmeticFiltersResources> weak_factory_;
