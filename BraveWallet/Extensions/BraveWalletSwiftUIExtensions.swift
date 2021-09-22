@@ -11,6 +11,9 @@ extension BraveWallet.AccountInfo: Identifiable {
   public var id: String {
     address
   }
+  public var isPrimary: Bool {
+    !isImported && !isLedger
+  }
 }
 
 extension BraveWallet.TransactionInfo: Identifiable {
