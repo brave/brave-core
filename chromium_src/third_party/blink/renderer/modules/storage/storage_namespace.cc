@@ -10,11 +10,10 @@
 
 #define GetStorageKey GetEphemeralStorageKeyOrStorageKey
 
-#define OpenLocalStorage                                            \
-  OpenLocalStorage(                                                 \
-      local_dom_window.GetEphemeralStorageOriginOrSecurityOrigin(), \
-      std::move(receiver));                                         \
-  if (false)                                                        \
+#define OpenLocalStorage                                                  \
+  OpenLocalStorage(local_dom_window.GetEphemeralStorageKeyOrStorageKey(), \
+                   std::move(receiver));                                  \
+  if (false)                                                              \
   controller_->dom_storage()->OpenLocalStorage
 
 #include "../../../../../../../third_party/blink/renderer/modules/storage/storage_namespace.cc"
