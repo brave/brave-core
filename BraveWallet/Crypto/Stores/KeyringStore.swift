@@ -154,6 +154,18 @@ public class KeyringStore: ObservableObject {
     Self.resetKeychainStoredPassword()
   }
   
+  func privateKey(for account: BraveWallet.AccountInfo, completion: @escaping (String?) -> Void) {
+    if account.isPrimary {
+      controller.privateKey(forDefaultKeyringAccount: account.address) { success, key in
+        completion(success ? key : nil)
+      }
+    } else {
+      controller.privateKey(forImportedAccount: account.address) { success, key in
+        completion(success ? key : nil)
+      }
+    }
+  }
+  
   // MARK: - Keychain
   
   private static let passwordKeychainKey = "brave-wallet-password"
