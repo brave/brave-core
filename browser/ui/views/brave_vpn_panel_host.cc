@@ -36,3 +36,7 @@ void BraveVPNPanelHost::ShowBraveVPNPanel() {
 
   webui_bubble_manager_->ShowBubble();
 }
+
+void BraveVPNPanelHost::ResetBubbleManager() {
+  webui_bubble_manager_.reset();
+}
