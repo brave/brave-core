@@ -259,7 +259,8 @@ bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context) {
       ProxyServiceFactory::CreatePrefProxyConfigTrackerOfProfile(
           profile->GetPrefs(), nullptr);
   std::unique_ptr<net::ProxyConfigService> proxy_config_service =
-      ProxyServiceFactory::CreateProxyConfigService(config_tracker.get());
+      ProxyServiceFactory::CreateProxyConfigService(config_tracker.get(),
+                                                    profile);
 
   net::ProxyConfigWithAnnotation config;
   net::ProxyConfigService::ConfigAvailability availability =
