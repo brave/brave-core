@@ -632,7 +632,7 @@ const util = {
     return needsUpdate
   },
 
-  gclientSync: (forceReset = false, cleanup = false, braveCoreRef = null, options = {}) => {
+  gclientSync: (forceReset = false, cleanup = false, braveCoreRef = null, shouldCheckChromiumVersion = true, options = {}) => {
     let reset = forceReset
 
     // base args
@@ -674,7 +674,12 @@ const util = {
       reset = true
     }
 
-    if (forceReset || util.shouldUpdateChromium()) {
+    if (!shouldCheckChromiumVersion) {
+      const chromiumNeedsUpdate = util.shouldUpdateChromium()
+      if (chromiumNeedsUpdate) {
+        console.warn(chalk.yellow.bold('Chromium needed update but received the flag to skip performing the update. Working directory may not compile correctly.'))
+      }
+    } else if (forceReset || util.shouldUpdateChromium()) {
       args = [...args, ...chromiumArgs]
       reset = true
       didUpdateChromium = true
