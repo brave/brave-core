@@ -32,6 +32,7 @@ brave_common_web_compile_inputs = [
 
   # typescript config changes warrant a re-build of all typescript builds
   "//brave/tsconfig.json",
+  "//brave/tsconfig-webpack.json",
 
   # modifying npm dependencies warrants a re-build of all webpack
   # and typescript builds
@@ -87,8 +88,9 @@ template("transpile_web_ui") {
     }
 
     deps = [
-      # Ensure chrome://resources/js files are generated
-      "//ui/webui/resources/js:preprocess",
+      # Ensure chrome://resources/js file and typescript definitions are
+      # generated
+      "//ui/webui/resources:library",
     ]
     if (defined(invoker.deps)) {
       deps += invoker.deps

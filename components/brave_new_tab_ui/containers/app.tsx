@@ -12,7 +12,7 @@ import NewPrivateTabPage from './privateTab'
 import NewTabPage from './newTab'
 
 // Utils
-import { sendWithPromise } from '../../common/cr'
+import { sendWithPromise } from 'chrome://resources/js/cr.m'
 import * as PreferencesAPI from '../api/preferences'
 import { getActionsForDispatch } from '../api/getActions'
 
@@ -35,7 +35,7 @@ interface Props {
 }
 
 const getBraveNewsDisplayAd: GetDisplayAdContent = function GetBraveNewsDisplayAd () {
-  return sendWithPromise<BraveToday.DisplayAd | null>('todayGetDisplayAd')
+  return sendWithPromise('todayGetDisplayAd')
 }
 
 function DefaultPage (props: Props) {

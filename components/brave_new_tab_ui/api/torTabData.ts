@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import * as Cr from '../../common/cr'
+import * as Cr from 'chrome://resources/js/cr.m'
 
 export type TorTabData = {
   torCircuitEstablished: boolean,
@@ -13,7 +13,7 @@ export type TorTabData = {
 type TorTabDataUpdatedHandler = (data: TorTabData) => void
 
 export function getTorTabData (): Promise<TorTabData> {
-  return Cr.sendWithPromise<TorTabData>('getNewTabPageTorProperties')
+  return Cr.sendWithPromise('getNewTabPageTorProperties')
 }
 
 export function addChangeListener (listener: TorTabDataUpdatedHandler): void {

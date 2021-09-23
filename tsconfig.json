@@ -23,7 +23,30 @@
     "baseUrl": ".",
     "paths": {
       "brave-ui": ["node_modules/brave-ui/src"],
-      "brave-ui/*": ["node_modules/brave-ui/src/*"]
+      "brave-ui/*": ["node_modules/brave-ui/src/*"],
+      "gen/*": [
+        // This list of paths in the format [configuration]/gen is not used at compile-time
+        // since we don't want results from 1 compilation to affect another.
+        // However, we specify them all here for developer design / coding time
+        // intellisense support. They get overriden at compile-time in
+        // webpack.config.js.
+        // TODO(petemill): The ordering here can get problematic for devs
+        // who have more than 1 build type at a time, since if the file exists
+        // at the first path, it will be used for Type analysis instead of the second
+        // path, even if it's more recent. We should investigate a design-time
+        // command which would generate a base tsconfig file for developer IDEs
+        // using the target of their choosing and not be committed to source control.
+        "../out/Component/gen/*",
+        "../out/Static/gen/*",
+        "../out/Release/gen/*",
+        "../out/Debug/gen/*",
+      ],
+      "chrome://resources/*": [
+        "../out/Component/gen/ui/webui/resources/preprocessed/*",
+        "../out/Static/gen/ui/webui/resources/preprocessed/*",
+        "../out/Release/gen/ui/webui/resources/preprocessed/*",
+        "../out/Debug/gen/ui/webui/resources/preprocessed/*",
+      ]
     },
     "typeRoots": [
       "./node_modules/@types",
