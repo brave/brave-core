@@ -176,6 +176,23 @@ class BraveWalletServiceUnitTest : public testing::Test {
     base::RunLoop().RunUntilIdle();
   }
 
+  void SetDefaultWallet(mojom::DefaultWallet default_wallet) {
+    service_->SetDefaultWallet(default_wallet);
+  }
+
+  mojom::DefaultWallet GetDefaultWallet() {
+    mojom::DefaultWallet default_wallet;
+    bool callback_called = false;
+    service_->GetDefaultWallet(
+        base::BindLambdaForTesting([&](mojom::DefaultWallet v) {
+          callback_called = true;
+          default_wallet = v;
+        }));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+    return default_wallet;
+  }
+
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<BraveWalletService> service_;
@@ -535,6 +552,23 @@ TEST_F(BraveWalletServiceUnitTest, GetChecksumAddress) {
   addr = service_->GetChecksumAddress(
       "06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1");
   EXPECT_FALSE(addr.has_value());
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultWallet) {
+  SetDefaultWallet(mojom::DefaultWallet::BraveWallet);
+  EXPECT_EQ(GetDefaultWallet(), mojom::DefaultWallet::BraveWallet);
+
+  SetDefaultWallet(mojom::DefaultWallet::CryptoWallets);
+  EXPECT_EQ(GetDefaultWallet(), mojom::DefaultWallet::CryptoWallets);
+
+  SetDefaultWallet(mojom::DefaultWallet::None);
+  EXPECT_EQ(GetDefaultWallet(), mojom::DefaultWallet::None);
+
+  SetDefaultWallet(mojom::DefaultWallet::Metamask);
+  EXPECT_EQ(GetDefaultWallet(), mojom::DefaultWallet::Metamask);
+
+  SetDefaultWallet(mojom::DefaultWallet::Ask);
+  EXPECT_EQ(GetDefaultWallet(), mojom::DefaultWallet::Ask);
 }
 
 }  // namespace brave_wallet

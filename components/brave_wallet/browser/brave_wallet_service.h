@@ -60,6 +60,8 @@ class BraveWalletService : public KeyedService,
   void ImportFromMetaMask(const std::string& password,
                           const std::string& new_password,
                           ImportFromMetaMaskCallback callback) override;
+  void GetDefaultWallet(GetDefaultWalletCallback callback) override;
+  void SetDefaultWallet(mojom::DefaultWallet default_wallet) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
