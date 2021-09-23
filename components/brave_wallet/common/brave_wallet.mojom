@@ -355,3 +355,11 @@ interface BraveWalletService {
   ImportFromCryptoWallets(string password, string newPassword) => (bool success);
   ImportFromMetaMask(string password, string newPassword) => (bool success);
 };
+
+enum DefaultWallet {
+  Ask,
+  None,
+  CryptoWallets,
+  Metamask,
+  BraveWallet
+};

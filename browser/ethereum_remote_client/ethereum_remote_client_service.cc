@@ -19,9 +19,9 @@
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_delegate.h"
 #include "brave/browser/ethereum_remote_client/pref_names.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -262,7 +262,7 @@ void EthereumRemoteClientService::RemoveUnusedWeb3ProviderContentScripts() {
     return;
   }
   auto* registry = extensions::ExtensionRegistry::Get(context_);
-  auto provider = static_cast<brave_wallet::Web3ProviderTypes>(
+  auto provider = static_cast<brave_wallet::mojom::DefaultWallet>(
       prefs->GetInteger(kBraveWalletWeb3Provider));
 
   auto* erc_extension = registry->enabled_extensions().GetByID(
@@ -285,12 +285,12 @@ void EthereumRemoteClientService::RemoveUnusedWeb3ProviderContentScripts() {
   // We can't have 2 web3 providers, we:
   // 1) Check if MetaMask content scripts are disabled, if so, enable them.
   // 2) Check if CryptoWallets content scripts are enabled, if so, disable them.
-  if (provider == brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS) {
+  if (provider == brave_wallet::mojom::DefaultWallet::CryptoWallets) {
     if (erc_extension) {
       user_script_manager->OnExtensionLoaded(context_, erc_extension);
     }
-  } else if (provider != brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS &&
-             provider != brave_wallet::Web3ProviderTypes::BRAVE_WALLET) {
+  } else if (provider != brave_wallet::mojom::DefaultWallet::CryptoWallets &&
+             provider != brave_wallet::mojom::DefaultWallet::BraveWallet) {
     if (metamask_extension) {
       user_script_manager->OnExtensionLoaded(context_, metamask_extension);
     }
@@ -309,7 +309,7 @@ void EthereumRemoteClientService::OnExtensionInstalled(
     PrefService* prefs = user_prefs::UserPrefs::Get(context_);
     prefs->SetInteger(
         kBraveWalletWeb3Provider,
-        static_cast<int>(brave_wallet::Web3ProviderTypes::METAMASK));
+        static_cast<int>(brave_wallet::mojom::DefaultWallet::Metamask));
     RemoveUnusedWeb3ProviderContentScripts();
   }
 }
@@ -339,15 +339,15 @@ void EthereumRemoteClientService::OnExtensionUninstalled(
     extensions::UninstallReason reason) {
   if (extension->id() == metamask_extension_id) {
     PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-    auto provider = static_cast<brave_wallet::Web3ProviderTypes>(
+    auto provider = static_cast<brave_wallet::mojom::DefaultWallet>(
         prefs->GetInteger(kBraveWalletWeb3Provider));
-    if (provider == brave_wallet::Web3ProviderTypes::METAMASK)
+    if (provider == brave_wallet::mojom::DefaultWallet::Metamask)
       prefs->SetInteger(
           kBraveWalletWeb3Provider,
           static_cast<int>(
               brave_wallet::IsNativeWalletEnabled()
-                  ? brave_wallet::Web3ProviderTypes::BRAVE_WALLET
-                  : brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS));
+                  ? brave_wallet::mojom::DefaultWallet::BraveWallet
+                  : brave_wallet::mojom::DefaultWallet::CryptoWallets));
     RemoveUnusedWeb3ProviderContentScripts();
   }
 }
@@ -372,9 +372,9 @@ bool EthereumRemoteClientService::IsCryptoWalletsReady() const {
 
 bool EthereumRemoteClientService::ShouldShowLazyLoadInfobar() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  auto provider = static_cast<brave_wallet::Web3ProviderTypes>(
+  auto provider = static_cast<brave_wallet::mojom::DefaultWallet>(
       prefs->GetInteger(kBraveWalletWeb3Provider));
-  return provider == brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS &&
+  return provider == brave_wallet::mojom::DefaultWallet::CryptoWallets &&
          !IsCryptoWalletsReady();
 }
 

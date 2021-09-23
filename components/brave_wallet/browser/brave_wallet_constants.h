@@ -14,14 +14,6 @@
 
 namespace brave_wallet {
 
-enum class Web3ProviderTypes {
-  ASK,
-  NONE,
-  CRYPTO_WALLETS,
-  METAMASK,
-  BRAVE_WALLET
-};
-
 extern const char kAssetRatioBaseURL[];
 extern const char kSwapBaseURL[];
 

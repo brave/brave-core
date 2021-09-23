@@ -16,9 +16,9 @@
 #include "brave/browser/ethereum_remote_client/pref_names.h"
 #include "brave/browser/extensions/ethereum_remote_client_util.h"
 #include "brave/common/extensions/api/brave_wallet.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -39,7 +39,7 @@ EthereumRemoteClientService* GetEthereumRemoteClientService(
 }
 
 base::Value MakeSelectValue(const std::u16string& name,
-                            ::brave_wallet::Web3ProviderTypes value) {
+                            ::brave_wallet::mojom::DefaultWallet value) {
   base::Value item(base::Value::Type::DICTIONARY);
   item.SetKey("value", base::Value(static_cast<int>(value)));
   item.SetKey("name", base::Value(name));
@@ -85,14 +85,14 @@ BraveWalletLoadUIFunction::Run() {
   // the new Brave Wallet is not the default, then
   // set the Dapp provider to Crypto Wallets.
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto provider = static_cast<::brave_wallet::Web3ProviderTypes>(
+  auto provider = static_cast<::brave_wallet::mojom::DefaultWallet>(
       profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
   auto* registry = extensions::ExtensionRegistry::Get(profile);
   if (!registry->ready_extensions().Contains(metamask_extension_id) &&
-      provider != ::brave_wallet::Web3ProviderTypes::BRAVE_WALLET) {
+      provider != ::brave_wallet::mojom::DefaultWallet::BraveWallet) {
     profile->GetPrefs()->SetInteger(
         kBraveWalletWeb3Provider,
-        static_cast<int>(::brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS));
+        static_cast<int>(::brave_wallet::mojom::DefaultWallet::CryptoWallets));
   }
   profile->GetPrefs()->SetBoolean(kERCOptedIntoCryptoWallets, true);
   service->MaybeLoadCryptoWalletsExtension(
@@ -182,19 +182,19 @@ BraveWalletResetWalletFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveWalletGetWeb3ProviderFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto provider = static_cast<::brave_wallet::Web3ProviderTypes>(
+  auto provider = static_cast<::brave_wallet::mojom::DefaultWallet>(
       profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
   std::string extension_id;
-  if (provider == ::brave_wallet::Web3ProviderTypes::BRAVE_WALLET) {
+  if (provider == ::brave_wallet::mojom::DefaultWallet::BraveWallet) {
     // This API is used so an extension can know when to prompt to
     // be the default Dapp provider. Since the new wallet is not an
     // extension at all, we can just re-use the Crypto Wallets ID.
     // We also don't want to prompt in Crypto Wallets when it's set
     // to Brave Wallet.
     extension_id = ethereum_remote_client_extension_id;
-  } else if (provider == ::brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS) {
+  } else if (provider == ::brave_wallet::mojom::DefaultWallet::CryptoWallets) {
     extension_id = ethereum_remote_client_extension_id;
-  } else if (provider == ::brave_wallet::Web3ProviderTypes::METAMASK) {
+  } else if (provider == ::brave_wallet::mojom::DefaultWallet::Metamask) {
     extension_id = metamask_extension_id;
   }
   return RespondNow(OneArgument(base::Value(extension_id)));
@@ -209,27 +209,27 @@ BraveWalletGetWeb3ProviderListFunction::Run() {
   if (new_wallet) {
     list.Append(MakeSelectValue(
         l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE),
-        ::brave_wallet::Web3ProviderTypes::BRAVE_WALLET));
+        ::brave_wallet::mojom::DefaultWallet::BraveWallet));
   } else {
     list.Append(MakeSelectValue(
         l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_ASK),
-        ::brave_wallet::Web3ProviderTypes::ASK));
+        ::brave_wallet::mojom::DefaultWallet::Ask));
   }
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(
           new_wallet ? IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS_DEPRECATED
                      : IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS),
-      ::brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS));
+      ::brave_wallet::mojom::DefaultWallet::CryptoWallets));
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* registry = extensions::ExtensionRegistry::Get(profile);
   if (registry->ready_extensions().Contains(metamask_extension_id)) {
     list.Append(MakeSelectValue(
         l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_METAMASK),
-        ::brave_wallet::Web3ProviderTypes::METAMASK));
+        ::brave_wallet::mojom::DefaultWallet::Metamask));
   }
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),
-      ::brave_wallet::Web3ProviderTypes::NONE));
+      ::brave_wallet::mojom::DefaultWallet::None));
   std::string json_string;
   base::JSONWriter::Write(list, &json_string);
   return RespondNow(OneArgument(base::Value(json_string)));
