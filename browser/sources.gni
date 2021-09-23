@@ -30,6 +30,7 @@ import("//brave/browser/themes/sources.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -125,6 +126,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_sync:network_time_helper",
   "//brave/components/brave_sync:prefs",
   "//brave/components/brave_talk",
+  "//brave/components/brave_vpn/buildflags",
   "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/brave_wayback_machine:buildflags",
   "//brave/components/brave_webtorrent/browser/buildflags",
@@ -213,6 +215,10 @@ if (brave_wallet_enabled) {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
   ]
+}
+
+if (enable_brave_vpn) {
+  brave_chrome_browser_deps += [ "//brave/components/brave_vpn" ]
 }
 
 if (ethereum_remote_client_enabled) {

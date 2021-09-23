@@ -9,6 +9,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 #include "brave/components/brave_vpn/features.h"
+#include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/test/test_shared_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -17,7 +18,8 @@ class BraveVPNTest : public testing::Test {
  public:
   void SetUp() override {
     service_ = std::make_unique<BraveVpnServiceDesktop>(
-        base::MakeRefCounted<network::TestSharedURLLoaderFactory>());
+        base::MakeRefCounted<network::TestSharedURLLoaderFactory>(),
+        &pref_service_);
   }
 
   std::string GetRegionsData() {
@@ -134,6 +136,7 @@ class BraveVPNTest : public testing::Test {
   }
 
   content::BrowserTaskEnvironment task_environment_;
+  TestingPrefServiceSimple pref_service_;
   std::unique_ptr<BraveVpnServiceDesktop> service_;
 };
 
