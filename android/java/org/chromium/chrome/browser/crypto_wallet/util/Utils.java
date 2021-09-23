@@ -25,6 +25,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.ui.widget.Toast;
 
+import java.lang.NumberFormatException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
@@ -209,6 +210,27 @@ public class Utils {
         return Double.valueOf(resStr);
     }
 
+    public static double fromHexWeiToGWEI(String number) {
+        try {
+            if (number.equals("0x0")) {
+                return 0;
+            }
+            if (number.startsWith("0x")) {
+                number = number.substring(2);
+            }
+            if (number.isEmpty()) {
+                return 0;
+            }
+            BigInteger bigNumber = new BigInteger(number, 16);
+            String resStr = bigNumber.toString();
+
+            return Double.valueOf(resStr);
+        } catch (NumberFormatException exc) {
+        }
+
+        return 0;
+    }
+
     public static String toHexWei(String number) {
         if (number.isEmpty()) {
             return "0x0";
@@ -224,6 +246,23 @@ public class Utils {
         BigInteger res = bigNumber.multiply(new BigInteger(multiplier));
 
         return "0x" + res.toString(16);
+    }
+
+    public static String toHexWeiFromGWEI(String number) {
+        try {
+            if (number.isEmpty()) {
+                return "0x0";
+            }
+            int dotPosition = number.indexOf(".");
+            if (dotPosition != -1) {
+                number = number.substring(0, dotPosition);
+            }
+            BigInteger bigNumber = new BigInteger(number, 10);
+            return "0x" + bigNumber.toString(16);
+        } catch (NumberFormatException exc) {
+        }
+
+        return "0x0";
     }
 
     public static TxData getTxData(
