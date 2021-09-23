@@ -37,7 +37,7 @@ class SessionData: NSObject, NSSecureCoding {
     **/
     init(currentPage: Int, urls: [URL], lastUsedTime: Timestamp) {
         self.currentPage = currentPage
-        self.urls = urls
+        self.urls = SessionData.updateSessionURLs(urls: urls)
         self.lastUsedTime = lastUsedTime
 
         assert(!urls.isEmpty, "Session has at least one entry")
@@ -66,5 +66,16 @@ class SessionData: NSObject, NSSecureCoding {
     
     static var supportsSecureCoding: Bool {
         return true
+    }
+    
+    private static func updateSessionURLs(urls: [URL]) -> [URL] {
+        return urls.compactMap { url in
+            if PrivilegedRequest.isWebServerRequest(url: url),
+               PrivilegedRequest.isPrivileged(url: url),
+               let strippedURL = PrivilegedRequest.removePrivileges(url: url) {
+                return strippedURL
+            }
+            return url
+        }
     }
 }

@@ -11,7 +11,16 @@ import Shared
 struct SessionRestoreHandler {
     static func register(_ webServer: WebServer) {
         // Register the handler that accepts /about/sessionrestore?history=...&currentpage=... requests.
-        webServer.registerHandlerForMethod("GET", module: "about", resource: "sessionrestore") { _ in
+        webServer.registerHandlerForMethod("GET", module: "about", resource: "sessionrestore") { request in
+            
+            // Session Restore should only ever be called from a privileged request
+            // This is because we need to inject the `RESTORE_TOKEN` into the page.
+            // Therefore, we don't want to leak it to a malicious page
+            guard let query = request?.query,
+                      query[PrivilegedRequest.key] == PrivilegedRequest.token else {
+                return GCDWebServerResponse(statusCode: 404)
+            }
+            
             if let sessionRestorePath = Bundle.main.path(forResource: "SessionRestore", ofType: "html") {
                 do {
                     var sessionRestoreString = try String(contentsOfFile: sessionRestorePath)
@@ -22,6 +31,8 @@ struct SessionRestoreHandler {
 
                     let securityToken = UserScriptManager.messageHandlerToken.uuidString
                     sessionRestoreString = sessionRestoreString.replacingOccurrences(of: "%SECURITY_TOKEN%", with: securityToken, options: .literal)
+                    sessionRestoreString = sessionRestoreString.replacingOccurrences(of: "%SESSION_RESTORE_KEY%", with: PrivilegedRequest.key, options: .literal)
+                    sessionRestoreString = sessionRestoreString.replacingOccurrences(of: "%SESSION_RESTORE_TOKEN%", with: PrivilegedRequest.token, options: .literal)
 
                     return GCDWebServerDataResponse(html: sessionRestoreString)
                 } catch _ {}

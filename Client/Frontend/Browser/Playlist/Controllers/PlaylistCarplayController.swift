@@ -54,8 +54,11 @@ class PlaylistCarplayController: NSObject {
     }
     
     func observePlayerStates() {
-        player.publisher(for: .play).sink { _ in
+        player.publisher(for: .play).sink { event in
             MPNowPlayingInfoCenter.default().playbackState = .playing
+            var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo ?? [:]
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = event.mediaPlayer.rate
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
         }.store(in: &playerStateObservers)
         
         player.publisher(for: .pause).sink { _ in
@@ -66,8 +69,8 @@ class PlaylistCarplayController: NSObject {
             MPNowPlayingInfoCenter.default().playbackState = .stopped
         }.store(in: &playerStateObservers)
         
-        player.publisher(for: .changePlaybackRate).sink { [weak self] _ in
-            MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = self?.player.rate
+        player.publisher(for: .changePlaybackRate).sink { event in
+            MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = event.mediaPlayer.rate
         }.store(in: &playerStateObservers)
         
         player.publisher(for: .previousTrack).sink { [weak self] _ in
@@ -81,6 +84,13 @@ class PlaylistCarplayController: NSObject {
         player.publisher(for: .finishedPlaying).sink { [weak self] event in
             event.mediaPlayer.pause()
             event.mediaPlayer.seek(to: .zero)
+            
+            var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+            nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackProgress] = 0.0
+            nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0.0
+            nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = 0.0
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            
             self?.onNextTrack(isUserInitiated: false)
         }.store(in: &playerStateObservers)
     }
@@ -90,27 +100,16 @@ class PlaylistCarplayController: NSObject {
             guard let self = self else { return }
             
             self.playlistItemIds = PlaylistManager.shared.allItems.map { $0.pageSrc }
-            self.contentManager.beginUpdates()
-            self.contentManager.endUpdates()
             
             // FOR SOME REASON ON SIMULATOR,
             // CALLING THIS DOES NOT UPDATE THE UI!!
             // WE WILL GET A CRASH ON SIMULATOR HERE!
             // SEE: https://developer.apple.com/forums/thread/112101
+            
             self.contentManager.reloadData()
         }
         
-        PlaylistManager.shared.contentWillChange
-        .sink { _ in
-            reloadData()
-        }.store(in: &playlistObservers)
-        
         PlaylistManager.shared.contentDidChange
-        .sink { _ in
-            reloadData()
-        }.store(in: &playlistObservers)
-        
-        PlaylistManager.shared.objectDidChange
         .sink { _ in
             reloadData()
         }.store(in: &playlistObservers)
@@ -138,7 +137,14 @@ extension PlaylistCarplayController: MPPlayableContentDelegate {
                     return
                 }
                 
-                self.contentManager.nowPlayingIdentifiers = [mediaItem.pageSrc]
+                // Item is already playing.
+                // Show now-playing screen and don't restart playback.
+                if PlaylistCarplayManager.shared.currentlyPlayingItemIndex == indexPath.item ||
+                    PlaylistCarplayManager.shared.currentPlaylistItem?.src == mediaItem.src {
+                    completionHandler(nil)
+                    return
+                }
+                
                 self.playItem(item: mediaItem) { [weak self] error in
                     PlaylistCarplayManager.shared.currentPlaylistItem = nil
                     
@@ -251,6 +257,7 @@ extension PlaylistCarplayController {
            let item = PlaylistManager.shared.itemAtIndex(index) {
             PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
             playItem(item: item) { [weak self] error in
+                PlaylistCarplayManager.shared.currentPlaylistItem = nil
                 guard let self = self else { return }
                 
                 switch error {
@@ -261,6 +268,7 @@ extension PlaylistCarplayController {
                     self.displayExpiredResourceError(item: item)
                 case .none:
                     PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+                    PlaylistCarplayManager.shared.currentPlaylistItem = item
                     self.updateLastPlayedItem(item: item)
                 case .cancelled:
                     log.debug("User Cancelled Playlist Playback")
@@ -279,7 +287,7 @@ extension PlaylistCarplayController {
             if isAtEnd {
                 player.pictureInPictureController?.delegate = nil
                 player.pictureInPictureController?.stopPictureInPicture()
-                player.stop()
+                player.pause()
 
                 PlaylistCarplayManager.shared.playlistController = nil
                 return
@@ -296,6 +304,7 @@ extension PlaylistCarplayController {
         if index >= 0,
            let item = PlaylistManager.shared.itemAtIndex(index) {
             self.playItem(item: item) { [weak self] error in
+                PlaylistCarplayManager.shared.currentPlaylistItem = nil
                 guard let self = self else { return }
 
                 switch error {
@@ -313,6 +322,7 @@ extension PlaylistCarplayController {
                     }
                 case .none:
                     PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+                    PlaylistCarplayManager.shared.currentPlaylistItem = item
                     self.updateLastPlayedItem(item: item)
                 case .cancelled:
                     log.debug("User Cancelled Playlist Playback")

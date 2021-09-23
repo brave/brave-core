@@ -6,6 +6,7 @@ import UIKit
 import CoreData
 import Data
 import Shared
+import BraveCore
 
 private let log = Logger.browserLogger
 
@@ -51,9 +52,9 @@ class AddEditBookmarkTableViewController: UITableViewController {
         case .addFolder(let title), .addFolderUsingTabs(title: let title, _):
             return FolderDetailsViewTableViewCell(title: title, viewHeight: UX.cellHeight)
         case .editBookmark(let bookmark), .editFavorite(let bookmark):
-            return BookmarkDetailsView(title: bookmark.title, url: bookmark.url)
+            return BookmarkDetailsView(title: bookmark.titleUrlNodeTitle, url: bookmark.titleUrlNodeUrl?.absoluteString)
         case .editFolder(let folder):
-            return FolderDetailsViewTableViewCell(title: folder.title, viewHeight: UX.cellHeight)
+            return FolderDetailsViewTableViewCell(title: folder.titleUrlNodeTitle, viewHeight: UX.cellHeight)
         }
     }()
     
@@ -140,6 +141,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     
     private var frc: BookmarksV2FetchResultsController?
     private let mode: BookmarkEditMode
+    private let bookmarkAPI: BraveBookmarksAPI
     
     private var presentationMode: DataSourcePresentationMode
     
@@ -148,15 +150,16 @@ class AddEditBookmarkTableViewController: UITableViewController {
     private var rootFolderName: String
     private var rootFolderId: Int = 0 // MobileBookmarks Folder Id
     
-    init(mode: BookmarkEditMode) {
+    init(bookmarkAPI: BraveBookmarksAPI, mode: BookmarkEditMode) {
+        self.bookmarkAPI = bookmarkAPI
         self.mode = mode
         
         saveLocation = mode.initialSaveLocation
         presentationMode = .currentSelection
-        frc = Bookmarkv2.foldersFrc(excludedFolder: mode.folder)
-        rootFolderName = Bookmarkv2.mobileNode()?.displayTitle ?? Strings.bookmarkRootLevelCellTitle
+        frc = bookmarkAPI.foldersFrc(excludedFolder: mode.folder)
+        rootFolderName = bookmarkAPI.mobileNode?.titleUrlNodeTitle ?? Strings.bookmarkRootLevelCellTitle
         
-        if let mobileFolderId = Bookmarkv2.mobileNode()?.objectID {
+        if let mobileFolderId = bookmarkAPI.mobileNode?.objectID {
             rootFolderId = mobileFolderId
         } else {
             log.error("Invalid MobileBookmarks Folder Id")
@@ -212,7 +215,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     // MARK: - Getting data
     
     /// Bookmark with a level of indentation
-    private typealias IndentedFolder = (folder: Bookmarkv2, indentationLevel: Int)
+    private typealias IndentedFolder = (folder: BookmarkNode, indentationLevel: Int)
     
     /// Main data source
     private var sortedFolders = [IndentedFolder]()
@@ -268,32 +271,32 @@ class AddEditBookmarkTableViewController: UITableViewController {
             
             switch saveLocation {
             case .rootLevel:
-                Bookmarkv2.add(url: url, title: title)
+                bookmarkAPI.add(url: url, title: title)
             case .favorites:
                 Favorite.add(url: url, title: title)
             case .folder(let folder):
-                Bookmarkv2.add(url: url, title: title, parentFolder: folder)
+                bookmarkAPI.add(url: url, title: title, parentFolder: folder)
             }
         case .addFolder(_):
             switch saveLocation {
             case .rootLevel:
-                Bookmarkv2.addFolder(title: title)
+                bookmarkAPI.addFolder(title: title)
             case .favorites:
                 assertionFailure("Folders can't be saved to favorites")
             case .folder(let folder):
-                Bookmarkv2.addFolder(title: title, parentFolder: folder)
+                bookmarkAPI.addFolder(title: title, parentFolder: folder)
             }
         case .addFolderUsingTabs(_, tabList: let tabs):
             switch saveLocation {
             case .rootLevel:
-                if let newFolder = Bookmarkv2.addFolder(title: title) {
-                    addListOfBookmarks(tabs, parentFolder: Bookmarkv2(newFolder))
+                if let newFolder = bookmarkAPI.addFolder(title: title) {
+                    addListOfBookmarks(tabs, parentFolder: newFolder)
                 }
             case .favorites:
                 assertionFailure("Folders can't be saved to favorites")
             case .folder(let folder):
-                if let newFolder = Bookmarkv2.addFolder(title: title, parentFolder: folder) {
-                    addListOfBookmarks(tabs, parentFolder: Bookmarkv2(newFolder))
+                if let newFolder = bookmarkAPI.addFolder(title: title, parentFolder: folder) {
+                    addListOfBookmarks(tabs, parentFolder: newFolder)
                 }
             }
         case .editBookmark(let bookmark):
@@ -302,28 +305,28 @@ class AddEditBookmarkTableViewController: UITableViewController {
                     return earlyReturn()
             }
             
-            if !bookmark.existsInPersistentStore() { break }
+            if !bookmark.existsInPersistentStore { break }
             
             switch saveLocation {
             case .rootLevel:
-                bookmark.updateWithNewLocation(customTitle: title, url: url, location: nil)
+                bookmarkAPI.updateWithNewLocation(bookmark, customTitle: title, url: url, location: nil)
             case .favorites:
-                bookmark.delete()
+                bookmarkAPI.removeBookmark(bookmark)
                 Favorite.add(url: url, title: title)
             case .folder(let folder):
-                bookmark.updateWithNewLocation(customTitle: title, url: url, location: folder)
+                bookmarkAPI.updateWithNewLocation(bookmark, customTitle: title, url: url, location: folder)
             }
             
         case .editFolder(let folder):
-            if !folder.existsInPersistentStore() { break }
+            if !folder.existsInPersistentStore { break }
             
             switch saveLocation {
             case .rootLevel:
-                folder.updateWithNewLocation(customTitle: title, url: nil, location: nil)
+                bookmarkAPI.updateWithNewLocation(folder, customTitle: title, url: nil, location: nil)
             case .favorites:
                 assertionFailure("Folders can't be saved to favorites")
             case .folder(let folderSaveLocation):
-                folder.updateWithNewLocation(customTitle: title, url: nil, location: folderSaveLocation)
+                bookmarkAPI.updateWithNewLocation(folder, customTitle: title, url: nil, location: folderSaveLocation)
             }
             
         case .editFavorite(let favorite):
@@ -332,17 +335,17 @@ class AddEditBookmarkTableViewController: UITableViewController {
                     return earlyReturn()
             }
             
-            if !favorite.existsInPersistentStore() { break }
+            if !favorite.existsInPersistentStore { break }
             
             switch saveLocation {
             case .rootLevel:
-                favorite.delete()
-                Bookmarkv2.add(url: url, title: title)
+                bookmarkAPI.removeBookmark(favorite)
+                bookmarkAPI.add(url: url, title: title)
             case .favorites:
                 favorite.update(customTitle: title, url: url)
             case .folder(let folder):
-                favorite.delete()
-                Bookmarkv2.add(url: url, title: title, parentFolder: folder)
+                bookmarkAPI.removeBookmark(favorite)
+                bookmarkAPI.add(url: url, title: title, parentFolder: folder)
             }
         }
         
@@ -356,20 +359,20 @@ class AddEditBookmarkTableViewController: UITableViewController {
         }
     }
     
-    private func addListOfBookmarks(_ tabs: [Tab], parentFolder: Bookmarkv2? = nil) {
+    private func addListOfBookmarks(_ tabs: [Tab], parentFolder: BookmarkNode? = nil) {
         isLoading = true
         
         for tab in tabs {
             if PrivateBrowsingManager.shared.isPrivateBrowsing {
                 if let url = tab.url, url.isWebPage(), !url.isAboutHomeURL {
-                    Bookmarkv2.add(url: url, title: tab.title, parentFolder: parentFolder)
+                    bookmarkAPI.add(url: url, title: tab.title, parentFolder: parentFolder)
                 }
             } else {
                 if let tabID = tab.id {
                     let fetchedTab = TabMO.get(fromId: tabID)
                     
                     if let urlString = fetchedTab?.url, let url = URL(string: urlString), url.isWebPage(), !url.isAboutHomeURL {
-                        Bookmarkv2.add(url: url,
+                        bookmarkAPI.add(url: url,
                                        title: fetchedTab?.title ?? tab.title ?? tab.lastTitle,
                                        parentFolder: parentFolder)
                     }
@@ -429,7 +432,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     }
     
     private func showNewFolderVC() {
-        let vc = AddEditBookmarkTableViewController(mode: .addFolder(title: Strings.newFolderDefaultName))
+        let vc = AddEditBookmarkTableViewController(bookmarkAPI: bookmarkAPI, mode: .addFolder(title: Strings.newFolderDefaultName))
         navigationController?.pushViewController(vc, animated: true)
     }
 
@@ -442,7 +445,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
             case .favorites: return favoritesCell
             case .folder(let folder):
                 let cell = IndentedImageTableViewCell(image: #imageLiteral(resourceName: "menu_folder").template)
-                cell.folderName.text = folder.displayTitle
+                cell.folderName.text = folder.titleUrlNodeTitle
                 cell.tag = folderCellTag
                 return cell
             }
@@ -460,12 +463,12 @@ class AddEditBookmarkTableViewController: UITableViewController {
             
             let indentedFolder = sortedFolders[row - specialButtonsCount]
             
-            cell.folderName.text = indentedFolder.folder.displayTitle
+            cell.folderName.text = indentedFolder.folder.titleUrlNodeTitle
             cell.indentationLevel = indentedFolder.indentationLevel
             
             // Folders with children folders have a different icon
-            let hasChildrenFolders = indentedFolder.folder.children?.contains(where: { $0.isFolder })
-            if indentedFolder.folder.parent == nil {
+            let hasChildrenFolders = indentedFolder.folder.children.contains(where: { $0.isFolder })
+            if indentedFolder.folder.parentNode == nil {
                 cell.customImage.image = #imageLiteral(resourceName: "menu_bookmarks").template
             } else {
                 cell.customImage.image = (hasChildrenFolders == true ? #imageLiteral(resourceName: "menu_folder_open") : #imageLiteral(resourceName: "menu_folder")).template

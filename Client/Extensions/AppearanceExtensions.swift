@@ -17,12 +17,20 @@ extension AppDelegate {
     func applyAppearanceDefaults() {
         UIToolbar.appearance().do {
             $0.tintColor = .braveOrange
-            $0.standardAppearance = {
+            let appearance: UIToolbarAppearance = {
                 let appearance = UIToolbarAppearance()
-                appearance.configureWithDefaultBackground()
+                appearance.configureWithOpaqueBackground()
                 appearance.backgroundColor = .braveBackground
+                appearance.backgroundEffect = nil
                 return appearance
             }()
+            $0.standardAppearance = appearance
+            $0.compactAppearance = appearance
+            #if swift(>=5.5)
+            if #available(iOS 15.0, *) {
+                $0.scrollEdgeAppearance = appearance
+            }
+            #endif
         }
         
         UINavigationBar.appearance().do {

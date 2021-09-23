@@ -114,6 +114,9 @@ class FavoritesViewController: UIViewController {
         hasPasteboardURL = UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs
         
         KeyboardHelper.defaultHelper.addDelegate(self)
+        
+        Preferences.Search.shouldShowRecentSearches.observe(from: self)
+        Preferences.Search.shouldShowRecentSearchesOptIn.observe(from: self)
     }
     
     @available(*, unavailable)
@@ -148,7 +151,7 @@ class FavoritesViewController: UIViewController {
             self?.supplementaryViewProvider(collectionView: collectionView, kind: kind, indexPath: indexPath)
         }
         
-        initialSnapshotSetup()
+        updateUIWithSnapshot()
     }
     
     override func viewDidLayoutSubviews() {
@@ -522,6 +525,12 @@ extension FavoritesViewController {
     }
 }
 
+extension FavoritesViewController: PreferencesObserver {
+    func preferencesDidChange(for key: String) {
+        updateUIWithSnapshot()
+    }
+}
+
 // MARK: - Diffable data source + NSFetchedResultsControllerDelegate
 extension FavoritesViewController: NSFetchedResultsControllerDelegate {
     private var favoritesSectionExists: Bool {
@@ -532,8 +541,7 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
         availableSections.contains(.recentSearches)
     }
     
-    /// Performs first frc fetches and handles setting first snaphot.
-    private func initialSnapshotSetup() {
+    private func updateUIWithSnapshot() {
         do {
             try favoritesFRC.performFetch()
         } catch {
@@ -558,7 +566,14 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
                                  toSection: .recentSearches)
         }
         
-        dataSource.apply(snapshot, animatingDifferences: false)
+        if #available(iOS 14.0, *) {
+            dataSource.apply(snapshot, animatingDifferences: false)
+        } else {
+            // On iOS13 the app leaks memory and crashes, adding small delay helps.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.dataSource.apply(snapshot, animatingDifferences: false)
+            }
+        }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,

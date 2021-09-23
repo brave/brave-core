@@ -108,6 +108,7 @@ private class StatusLabelView: UIStackView {
     private let imageView = UIImageView().then {
         $0.tintColor = .braveLabel
         $0.setContentHuggingPriority(.required, for: .horizontal)
+        $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
     
     private let label = UILabel().then {

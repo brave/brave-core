@@ -7,6 +7,7 @@ import Foundation
 import Static
 import Shared
 import BraveShared
+import BraveCore
 
 private let log = Logger.browserLogger
 
@@ -14,11 +15,13 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     let profile: Profile
     let tabManager: TabManager
     let feedDataSource: FeedDataSource
+    let historyAPI: BraveHistoryAPI
     
-    init(profile: Profile, tabManager: TabManager, feedDataSource: FeedDataSource) {
+    init(profile: Profile, tabManager: TabManager, feedDataSource: FeedDataSource, historyAPI: BraveHistoryAPI) {
         self.profile = profile
         self.tabManager = tabManager
         self.feedDataSource = feedDataSource
+        self.historyAPI = historyAPI
         super.init(style: .insetGrouped)
     }
     
@@ -116,7 +119,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     
     private lazy var clearables: [(clearable: Clearable, checked: Bool)] = {
         var alwaysVisible: [(clearable: Clearable, checked: Bool)] =
-            [(HistoryClearable(), true),
+            [(HistoryClearable(historyAPI: self.historyAPI), true),
              (CacheClearable(), true),
              (CookiesAndCacheClearable(), true),
              (PasswordsClearable(profile: self.profile), true),
