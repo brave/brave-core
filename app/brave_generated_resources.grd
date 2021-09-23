@@ -1203,7 +1203,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Web Discovery Project
       </message>
       <message name="IDS_SETTINGS_WEB_DISCOVERY_SUBLABEL" desc="Description that shows under main toggle setting for Web Discovery">
-        Anonymously contribute signals about web searches and webpages to refine Brave Search.
+        Contribute some anonymous search &amp; browsing data to refine Brave Search.
       </message>
 
       <!-- Brave Tooltips -->
