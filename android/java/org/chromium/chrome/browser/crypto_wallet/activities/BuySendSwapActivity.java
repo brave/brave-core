@@ -229,7 +229,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         if (mEthJsonRpcController == null) {
             return;
         }
-        if (mCurrentErcToken == null || mCurrentErcToken.contractAddress.equals("eth")) {
+        if (mCurrentErcToken == null || mCurrentErcToken.contractAddress.isEmpty()) {
             mEthJsonRpcController.getBalance(address, (success, balance) -> {
                 if (!success) {
                     return;
@@ -367,7 +367,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 Spinner accountSpinner = findViewById(R.id.accounts_spinner);
                 String from = mCustomAccountAdapter.getTitleAtPosition(
                         accountSpinner.getSelectedItemPosition());
-                if (mCurrentErcToken == null || mCurrentErcToken.contractAddress.equals("eth")) {
+                if (mCurrentErcToken == null || mCurrentErcToken.contractAddress.isEmpty()) {
                     TxData data =
                             Utils.getTxData("0x1", "", "", to, Utils.toHexWei(value), new byte[0]);
                     addUnapprovedTransaction(data, from);
@@ -423,7 +423,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             return;
         }
         mEthTxController.makeErc20TransferData(to, value, (success, data) -> {
-            if (!success || data.length == 0) {
+            if (!success) {
                 return;
             }
             TxData txData = Utils.getTxData("0x1", "", "", contractAddress, "0x0", data);

@@ -30,6 +30,7 @@ import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.EthTxController;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.R;
@@ -133,7 +134,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         icon.setImageResource(mAccountPic);
         String valueToConvert = mTxInfo.txData.baseData.value;
         String to = mTxInfo.txData.baseData.to;
-        if (!mAsset.equals("ETH") && mTxInfo.txArgs.length > 1) {
+        if (mTxInfo.txType == TransactionType.ERC20_TRANSFER && mTxInfo.txArgs.length > 1) {
             valueToConvert = mTxInfo.txArgs[1];
             to = mTxInfo.txArgs[0];
         }
@@ -158,7 +159,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                             valueFiat = values[0].price;
                         }
                         String valueAsset = mTxInfo.txData.baseData.value;
-                        if (!mAsset.equals("ETH") && mTxInfo.txArgs.length > 1) {
+                        if (mTxInfo.txType == TransactionType.ERC20_TRANSFER
+                                && mTxInfo.txArgs.length > 1) {
                             valueAsset = mTxInfo.txArgs[1];
                         }
                         double value = Utils.fromHexWei(valueAsset);

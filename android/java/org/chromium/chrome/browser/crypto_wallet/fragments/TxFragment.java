@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.R;
@@ -68,7 +69,7 @@ public class TxFragment extends Fragment {
                         String.format(Locale.getDefault(), "%.8f",
                                 Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice))));
         String valueAsset = mTxInfo.txData.baseData.value;
-        if (!mAsset.equals("ETH") && mTxInfo.txArgs.length > 1) {
+        if (mTxInfo.txType == TransactionType.ERC20_TRANSFER && mTxInfo.txArgs.length > 1) {
             valueAsset = mTxInfo.txArgs[1];
         }
         TextView totalAmount = view.findViewById(R.id.total_amount);

@@ -168,7 +168,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         ErcToken eth = new ErcToken();
         eth.name = "Ethereum";
         eth.symbol = "ETH";
-        eth.contractAddress = "eth";
+        eth.contractAddress = "";
         WalletListItemModel itemModelEth =
                 new WalletListItemModel(R.drawable.ic_eth, eth.name, eth.symbol, "", "");
         itemModelEth.setErcToken(eth);
