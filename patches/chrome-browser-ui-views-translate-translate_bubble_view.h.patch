@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/translate/translate_bubble_view.h b/chrome/browser/ui/views/translate/translate_bubble_view.h
-index 250d5f6fbf6719e1c3b9a206134d12e78e1f2c41..400573ff3b16740e8934544fe66ccc35e5fc4ec0 100644
+index a68a24955742c301dac5e10532c51af6d9e42824..b472ecf0a88b1c5e31ed3e244237c4ede14335fd 100644
 --- a/chrome/browser/ui/views/translate/translate_bubble_view.h
 +++ b/chrome/browser/ui/views/translate/translate_bubble_view.h
-@@ -118,6 +118,7 @@ class TranslateBubbleView : public LocationBarBubbleDelegateView,
+@@ -121,6 +121,7 @@ class TranslateBubbleView : public LocationBarBubbleDelegateView,
  
    // Returns the current view state.
    TranslateBubbleModel::ViewState GetViewState() const;
