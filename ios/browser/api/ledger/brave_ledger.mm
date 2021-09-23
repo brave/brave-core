@@ -741,9 +741,8 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
 - (void)listActivityInfoFromStart:(unsigned int)start
                             limit:(unsigned int)limit
                            filter:(LedgerActivityInfoFilter*)filter
-                       completion:
-                           (void(NS_NOESCAPE ^)(NSArray<LedgerPublisherInfo*>*))
-                               completion {
+                       completion:(void (^)(NSArray<LedgerPublisherInfo*>*))
+                                      completion {
   auto cppFilter =
       filter ? filter.cppObjPtr : ledger::type::ActivityInfoFilter::New();
   if (filter.excluded == LedgerExcludeFilterFilterExcluded) {
@@ -1134,9 +1133,12 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
       });
 }
 
-- (LedgerAutoContributeProperties*)autoContributeProperties {
+- (nullable LedgerAutoContributeProperties*)autoContributeProperties {
   ledger::type::AutoContributePropertiesPtr props =
       ledger->GetAutoContributeProperties();
+  if (!props) {
+    return nil;
+  }
   return [[LedgerAutoContributeProperties alloc]
       initWithAutoContributePropertiesPtr:std::move(props)];
 }
@@ -1232,8 +1234,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
 }
 
 - (void)rewardsInternalInfo:
-    (void(NS_NOESCAPE ^)(LedgerRewardsInternalsInfo* _Nullable info))
-        completion {
+    (void (^)(LedgerRewardsInternalsInfo* _Nullable info))completion {
   ledger->GetRewardsInternalsInfo(
       ^(ledger::type::RewardsInternalsInfoPtr info) {
         auto bridgedInfo = info.get() != nullptr
