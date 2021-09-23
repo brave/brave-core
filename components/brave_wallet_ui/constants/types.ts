@@ -556,11 +556,21 @@ export interface SetUserAssetVisibleReturnInfo {
   success: boolean
 }
 
+export enum DefaultWallet {
+  Ask,
+  None,
+  CryptoWallets,
+  Metamask,
+  BraveWallet
+}
+
 export interface BraveWalletService {
   getUserAssets: (chainId: string) => Promise<GetUserAssetsReturnInfo>
   addUserAsset: (token: TokenInfo, chainId: string) => Promise<AddUserAssetReturnInfo>
   removeUserAsset: (contractAddress: string, chainId: string) => Promise<RemoveUserAssetReturnInfo>
   setUserAssetVisible: (contractAddress: string, chainId: string, visible: boolean) => Promise<SetUserAssetVisibleReturnInfo>
+  getDefaultWallet: () => Promise<DefaultWallet>
+  setDefaultWallet: (defaultWallet: DefaultWallet) => Promise<void>
 }
 
 export interface RecoveryObject {
