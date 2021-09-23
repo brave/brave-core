@@ -234,6 +234,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #endif
     autofill::features::kAutofillEnableAccountWalletStorage.name,
     autofill::features::kAutofillServerCommunication.name,
+    blink::features::kComputePressure.name,
     blink::features::kConversionMeasurement.name,
     blink::features::kFledgeInterestGroupAPI.name,
     blink::features::kFledgeInterestGroups.name,

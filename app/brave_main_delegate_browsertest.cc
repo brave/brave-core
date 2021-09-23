@@ -87,6 +87,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #endif
     &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillServerCommunication,
+    &blink::features::kComputePressure,
     &blink::features::kConversionMeasurement,
     &blink::features::kFledgeInterestGroupAPI,
     &blink::features::kFledgeInterestGroups,
