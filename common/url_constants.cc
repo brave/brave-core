@@ -26,4 +26,4 @@ const char kSpeedreaderLearnMoreUrl[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360045031392-What-is-SpeedReader";
 const char kWebDiscoveryLearnMoreUrl[] =
-    "https://support.brave.com/hc/en-us/sections/4404610963469-Search";
+    "https://brave.com/browser/privacy/#web-discovery-project";
