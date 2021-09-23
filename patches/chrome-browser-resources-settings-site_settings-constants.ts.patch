@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/site_settings/constants.ts b/chrome/browser/resources/settings/site_settings/constants.ts
+index 15e1c54335675d712a050944e927cb13c3663b1c..bcdaa665b8c462237cb2f161c4e4a21272111af1 100644
+--- a/chrome/browser/resources/settings/site_settings/constants.ts
++++ b/chrome/browser/resources/settings/site_settings/constants.ts
+@@ -46,6 +46,7 @@ export enum ContentSettingsTypes {
+   // The following item is not in the C++ kContentSettingsTypeGroupNames, but it
+   // is used everywhere where ContentSettingsTypes is used in JS.
+   PDF_DOCUMENTS = 'pdfDocuments',
++  AUTOPLAY = 'autoplay', ETHEREUM = 'ethereum',
+ }
+ 
+ /**

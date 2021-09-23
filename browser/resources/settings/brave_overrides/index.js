@@ -11,8 +11,6 @@
 
 import './config.js'
 import { ContentSettingsTypes } from '../site_settings/constants.js'
-ContentSettingsTypes.AUTOPLAY = 'autoplay',
-ContentSettingsTypes.ETHEREUM = 'ethereum'
 import './about_page.js'
 import './appearance_page.js'
 import './basic_page.js'
