@@ -16,7 +16,7 @@ export interface Props {
   onSetImportError: (hasError: boolean) => void
   onPasswordProvided: (password: string) => void
   onImportMetaMask: (password: string) => void
-  onImportBraveLegacy: (password: string) => void
+  onImportCryptoWallets: (password: string) => void
   onSubmit: (recoveryVerified: boolean) => void
   onShowRestore: () => void
 }
@@ -32,7 +32,7 @@ function Onboarding (props: Props) {
     onSubmit,
     onShowRestore,
     onImportMetaMask,
-    onImportBraveLegacy
+    onImportCryptoWallets
   } = props
   const [onboardingStep, setOnboardingStep] = React.useState<WalletOnboardingSteps>(WalletOnboardingSteps.OnboardingWelcome)
   const [password, setPassword] = React.useState<string>('')
@@ -40,7 +40,7 @@ function Onboarding (props: Props) {
 
   const nextStep = () => {
     if (onboardingStep === WalletOnboardingSteps.OnboardingWelcome && braveLegacyWalletDetected) {
-      setOnboardingStep(WalletOnboardingSteps.OnboardingImportBraveLegacy)
+      setOnboardingStep(WalletOnboardingSteps.OnboardingImportCryptoWallets)
       return
     }
     if (onboardingStep === WalletOnboardingSteps.OnboardingBackupWallet) {
@@ -54,7 +54,7 @@ function Onboarding (props: Props) {
   }
 
   const onBack = () => {
-    if (onboardingStep === WalletOnboardingSteps.OnboardingImportBraveLegacy
+    if (onboardingStep === WalletOnboardingSteps.OnboardingImportCryptoWallets
       || onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask) {
       setOnboardingStep(WalletOnboardingSteps.OnboardingWelcome)
       setPassword('')
@@ -86,7 +86,7 @@ function Onboarding (props: Props) {
     if (onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask) {
       onImportMetaMask(password)
     } else {
-      onImportBraveLegacy(password)
+      onImportCryptoWallets(password)
     }
   }
 
@@ -94,7 +94,7 @@ function Onboarding (props: Props) {
     if (
       onboardingStep === WalletOnboardingSteps.OnboardingCreatePassword
       || onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask
-      || onboardingStep === WalletOnboardingSteps.OnboardingImportBraveLegacy
+      || onboardingStep === WalletOnboardingSteps.OnboardingImportCryptoWallets
     ) {
       return true
     } else {
@@ -127,7 +127,7 @@ function Onboarding (props: Props) {
   }
 
   const isImporting = onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask
-    || onboardingStep === WalletOnboardingSteps.OnboardingImportBraveLegacy
+    || onboardingStep === WalletOnboardingSteps.OnboardingImportCryptoWallets
 
   return (
     <>

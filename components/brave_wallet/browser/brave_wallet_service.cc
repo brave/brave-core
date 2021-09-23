@@ -316,39 +316,39 @@ void BraveWalletService::SetUserAssetVisible(
   std::move(callback).Run(true);
 }
 
-void BraveWalletService::IsBraveCryptoWalletInstalled(
-    IsBraveCryptoWalletInstalledCallback callback) {
+void BraveWalletService::IsCryptoWalletsInstalled(
+    IsCryptoWalletsInstalledCallback callback) {
   if (delegate_)
-    delegate_->IsBraveCryptoWalletInstalled(std::move(callback));
+    delegate_->IsCryptoWalletsInstalled(std::move(callback));
   else
     std::move(callback).Run(false);
 }
 
-void BraveWalletService::IsMetamaskInstalled(
-    IsMetamaskInstalledCallback callback) {
+void BraveWalletService::IsMetaMaskInstalled(
+    IsMetaMaskInstalledCallback callback) {
   if (delegate_)
-    delegate_->IsMetamaskInstalled(std::move(callback));
+    delegate_->IsMetaMaskInstalled(std::move(callback));
   else
     std::move(callback).Run(false);
 }
 
-void BraveWalletService::ImportFromBraveCryptoWallet(
+void BraveWalletService::ImportFromCryptoWallets(
     const std::string& password,
     const std::string& new_password,
-    ImportFromBraveCryptoWalletCallback callback) {
+    ImportFromCryptoWalletsCallback callback) {
   if (delegate_)
-    delegate_->ImportFromBraveCryptoWallet(password, new_password,
-                                           std::move(callback));
+    delegate_->ImportFromCryptoWallets(password, new_password,
+                                       std::move(callback));
   else
     std::move(callback).Run(false);
 }
 
-void BraveWalletService::ImportFromMetamask(
+void BraveWalletService::ImportFromMetaMask(
     const std::string& password,
     const std::string& new_password,
-    ImportFromMetamaskCallback callback) {
+    ImportFromMetaMaskCallback callback) {
   if (delegate_)
-    delegate_->ImportFromMetamask(password, new_password, std::move(callback));
+    delegate_->ImportFromMetaMask(password, new_password, std::move(callback));
   else
     std::move(callback).Run(false);
 }

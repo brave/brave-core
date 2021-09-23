@@ -112,7 +112,7 @@ export const _Onboarding = () => {
           braveLegacyWalletDetected={true}
           metaMaskWalletDetected={true}
           onImportMetaMask={complete}
-          onImportBraveLegacy={complete}
+          onImportCryptoWallets={complete}
           onSetImportError={onSetImportError}
         />
       </WalletSubViewLayout>

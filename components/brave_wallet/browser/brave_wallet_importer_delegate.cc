@@ -9,24 +9,24 @@
 
 namespace brave_wallet {
 
-void BraveWalletImporterDelegate::IsBraveCryptoWalletInstalled(
-    IsBraveCryptoWalletInstalledCallback callback) {
+void BraveWalletImporterDelegate::IsCryptoWalletsInstalled(
+    IsCryptoWalletsInstalledCallback callback) {
   std::move(callback).Run(false);
 }
-void BraveWalletImporterDelegate::IsMetamaskInstalled(
-    IsMetamaskInstalledCallback callback) {
+void BraveWalletImporterDelegate::IsMetaMaskInstalled(
+    IsMetaMaskInstalledCallback callback) {
   std::move(callback).Run(false);
 }
-void BraveWalletImporterDelegate::ImportFromBraveCryptoWallet(
+void BraveWalletImporterDelegate::ImportFromCryptoWallets(
     const std::string& password,
     const std::string& new_password,
-    ImportFromBraveCryptoWalletCallback callback) {
+    ImportFromCryptoWalletsCallback callback) {
   std::move(callback).Run(false);
 }
-void BraveWalletImporterDelegate::ImportFromMetamask(
+void BraveWalletImporterDelegate::ImportFromMetaMask(
     const std::string& password,
     const std::string& new_password,
-    ImportFromMetamaskCallback callback) {
+    ImportFromMetaMaskCallback callback) {
   std::move(callback).Run(false);
 }
 

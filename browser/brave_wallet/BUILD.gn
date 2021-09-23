@@ -1,3 +1,4 @@
+import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
@@ -76,6 +77,7 @@ source_set("brave_wallet_delegate") {
     deps += [
       "//brave/browser/brave_wallet",
       "//brave/browser/brave_wallet:tab_helper",
+      "//brave/browser/ethereum_remote_client/buildflags",
       "//brave/browser/ui",
       "//brave/components/brave_wallet/common:mojom",
       "//chrome/browser/ui",
@@ -89,11 +91,15 @@ source_set("brave_wallet_delegate") {
         "brave_wallet_importer_delegate_impl.h",
       ]
       deps += [
-        "//brave/browser/ethereum_remote_client",
-        "//brave/browser/ethereum_remote_client:browser",
         "//extensions/browser",
         "//extensions/common",
       ]
+      if (ethereum_remote_client_enabled) {
+        deps += [
+          "//brave/browser/ethereum_remote_client",
+          "//brave/browser/ethereum_remote_client:browser",
+        ]
+      }
     }
   }
 }

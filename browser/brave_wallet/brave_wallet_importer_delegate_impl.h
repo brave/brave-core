@@ -39,37 +39,37 @@ class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate {
       const BraveWalletImporterDelegateImpl&) = delete;
   ~BraveWalletImporterDelegateImpl() override;
 
-  void IsBraveCryptoWalletInstalled(
-      IsBraveCryptoWalletInstalledCallback callback) override;
-  void IsMetamaskInstalled(IsMetamaskInstalledCallback callback) override;
-  void ImportFromBraveCryptoWallet(
+  void IsCryptoWalletsInstalled(
+      IsCryptoWalletsInstalledCallback callback) override;
+  void IsMetaMaskInstalled(IsMetaMaskInstalledCallback callback) override;
+  void ImportFromCryptoWallets(
       const std::string& password,
       const std::string& new_password,
-      ImportFromBraveCryptoWalletCallback callback) override;
-  void ImportFromMetamask(const std::string& password,
+      ImportFromCryptoWalletsCallback callback) override;
+  void ImportFromMetaMask(const std::string& password,
                           const std::string& new_password,
-                          ImportFromMetamaskCallback callback) override;
+                          ImportFromMetaMaskCallback callback) override;
 
  private:
   friend class BraveWalletImporterDelegateImplUnitTest;
-  void OnCryptoWalletLoaded(const std::string& password,
-                            const std::string& new_password,
-                            ImportFromMetamaskCallback callback,
-                            bool should_unload);
+  void OnCryptoWalletsLoaded(const std::string& password,
+                             const std::string& new_password,
+                             ImportFromCryptoWalletsCallback callback,
+                             bool should_unload);
 
   void GetLocalStorage(const extensions::Extension* extension,
                        const std::string& password,
                        const std::string& new_password,
-                       ImportFromBraveCryptoWalletCallback callback);
+                       ImportFromCryptoWalletsCallback callback);
   void OnGetLocalStorage(const std::string& password,
                          const std::string& new_password,
-                         ImportFromBraveCryptoWalletCallback callback,
+                         ImportFromCryptoWalletsCallback callback,
                          std::unique_ptr<base::DictionaryValue> dict);
 
-  bool IsLegacyBraveCryptoWallet() const;
-  bool IsBraveCryptoWalletInstalledInternal() const;
-  const extensions::Extension* GetBraveCryptoWallet();
-  const extensions::Extension* GetMetamask();
+  bool IsLegacyCryptoWallets() const;
+  bool IsCryptoWalletsInstalledInternal() const;
+  const extensions::Extension* GetCryptoWallets();
+  const extensions::Extension* GetMetaMask();
 
   void EnsureConnected();
   void OnConnectionError();

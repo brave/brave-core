@@ -153,21 +153,21 @@ handler.on(WalletPageActions.removeHardwareAccount.getType(), async (store, payl
 
 handler.on(WalletPageActions.checkWalletsToImport.getType(), async (store) => {
   const braveWalletService = (await getAPIProxy()).braveWalletService
-  const cwResult = await braveWalletService.isBraveCryptoWalletInstalled()
-  const mmResult = await braveWalletService.isMetamaskInstalled()
-  store.dispatch(WalletPageActions.setBraveCryptoWalletInstalled(cwResult.installed))
-  store.dispatch(WalletPageActions.setMetamaskInstalled(mmResult.installed))
+  const cwResult = await braveWalletService.isCryptoWalletsInstalled()
+  const mmResult = await braveWalletService.isMetaMaskInstalled()
+  store.dispatch(WalletPageActions.setCryptoWalletsInstalled(cwResult.installed))
+  store.dispatch(WalletPageActions.setMetaMaskInstalled(mmResult.installed))
 })
 
-handler.on(WalletPageActions.importFromBraveCryptoWallet.getType(), async (store, payload: ImportFromExternalWalletPayloadType) => {
+handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store, payload: ImportFromExternalWalletPayloadType) => {
   const braveWalletService = (await getAPIProxy()).braveWalletService
-  const result = await braveWalletService.importFromBraveCryptoWallet(payload.password, payload.newPassword)
+  const result = await braveWalletService.importFromCryptoWallets(payload.password, payload.newPassword)
   store.dispatch(WalletPageActions.setImportError(!result.success))
 })
 
-handler.on(WalletPageActions.importFromMetamask.getType(), async (store, payload: ImportFromExternalWalletPayloadType) => {
+handler.on(WalletPageActions.importFromMetaMask.getType(), async (store, payload: ImportFromExternalWalletPayloadType) => {
   const braveWalletService = (await getAPIProxy()).braveWalletService
-  const result = await braveWalletService.importFromMetamask(payload.password, payload.newPassword)
+  const result = await braveWalletService.importFromMetaMask(payload.password, payload.newPassword)
   store.dispatch(WalletPageActions.setImportError(!result.success))
 })
 

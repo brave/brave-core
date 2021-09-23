@@ -108,8 +108,8 @@ function Container (props: Props) {
     importError,
     showAddModal,
     swapQuote,
-    isBraveCryptoWalletInstalled,
-    isMetamaskInstalled
+    isCryptoWalletsInstalled,
+    isMetaMaskInstalled
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
@@ -551,14 +551,14 @@ function Container (props: Props) {
     props.walletPageActions.doneViewingPrivateKey()
   }
 
-  const onImportBraveLegacy = (password: string) => {
+  const onImportCryptoWallets = (password: string) => {
     // TODO(Douglashdaniel): Use different set of password for new password
-    props.walletPageActions.importFromBraveCryptoWallet({ password, newPassword: password })
+    props.walletPageActions.importFromCryptoWallets({ password, newPassword: password })
   }
 
   const onImportMetaMask = (password: string) => {
     // TODO(Douglashdaniel): Use different set of password for new password
-    props.walletPageActions.importFromMetamask({ password, newPassword: password })
+    props.walletPageActions.importFromMetaMask({ password, newPassword: password })
   }
 
   const checkWalletsToImport = () => {
@@ -641,10 +641,10 @@ function Container (props: Props) {
               onPasswordProvided={passwordProvided}
               onSubmit={completeWalletSetup}
               onShowRestore={onToggleShowRestore}
-              braveLegacyWalletDetected={isBraveCryptoWalletInstalled}
-              metaMaskWalletDetected={isMetamaskInstalled}
+              braveLegacyWalletDetected={isCryptoWalletsInstalled}
+              metaMaskWalletDetected={isMetaMaskInstalled}
               hasImportError={importError}
-              onImportBraveLegacy={onImportBraveLegacy}
+              onImportCryptoWallets={onImportCryptoWallets}
               onImportMetaMask={onImportMetaMask}
               onSetImportError={onSetImportError}
             />

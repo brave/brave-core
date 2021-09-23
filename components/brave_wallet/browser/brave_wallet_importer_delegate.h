@@ -14,10 +14,10 @@ namespace brave_wallet {
 
 class BraveWalletImporterDelegate {
  public:
-  using IsBraveCryptoWalletInstalledCallback = base::OnceCallback<void(bool)>;
-  using IsMetamaskInstalledCallback = base::OnceCallback<void(bool)>;
-  using ImportFromBraveCryptoWalletCallback = base::OnceCallback<void(bool)>;
-  using ImportFromMetamaskCallback = base::OnceCallback<void(bool)>;
+  using IsCryptoWalletsInstalledCallback = base::OnceCallback<void(bool)>;
+  using IsMetaMaskInstalledCallback = base::OnceCallback<void(bool)>;
+  using ImportFromCryptoWalletsCallback = base::OnceCallback<void(bool)>;
+  using ImportFromMetaMaskCallback = base::OnceCallback<void(bool)>;
 
   BraveWalletImporterDelegate() = default;
   BraveWalletImporterDelegate(const BraveWalletImporterDelegate&) = delete;
@@ -25,16 +25,16 @@ class BraveWalletImporterDelegate {
       delete;
   virtual ~BraveWalletImporterDelegate() = default;
 
-  virtual void IsBraveCryptoWalletInstalled(
-      IsBraveCryptoWalletInstalledCallback callback);
-  virtual void IsMetamaskInstalled(IsMetamaskInstalledCallback callback);
-  virtual void ImportFromBraveCryptoWallet(
+  virtual void IsCryptoWalletsInstalled(
+      IsCryptoWalletsInstalledCallback callback);
+  virtual void IsMetaMaskInstalled(IsMetaMaskInstalledCallback callback);
+  virtual void ImportFromCryptoWallets(
       const std::string& password,
       const std::string& new_password,
-      ImportFromBraveCryptoWalletCallback callback);
-  virtual void ImportFromMetamask(const std::string& password,
+      ImportFromCryptoWalletsCallback callback);
+  virtual void ImportFromMetaMask(const std::string& password,
                                   const std::string& new_password,
-                                  ImportFromMetamaskCallback callback);
+                                  ImportFromMetaMaskCallback callback);
 };
 
 }  // namespace brave_wallet

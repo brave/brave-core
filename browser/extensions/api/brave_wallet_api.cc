@@ -109,7 +109,7 @@ BraveWalletShouldPromptForSetupFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* service = GetEthereumRemoteClientService(browser_context());
   bool should_prompt =
-      !service->IsCryptoWalletsSetup() &&
+      !service->IsLegacyCryptoWalletsSetup() &&
       !profile->GetPrefs()->GetBoolean(kERCOptedIntoCryptoWallets);
   return RespondNow(OneArgument(base::Value(should_prompt)));
 }

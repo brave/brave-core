@@ -15,7 +15,7 @@ class EthereumRemoteClientDelegate {
   virtual ~EthereumRemoteClientDelegate() = default;
   virtual void MaybeLoadCryptoWalletsExtension(
       content::BrowserContext* context) = 0;
-  virtual void RemoveCryptoWalletExtension(
+  virtual void UnloadCryptoWalletsExtension(
       content::BrowserContext* context) = 0;
 };
 

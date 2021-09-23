@@ -60,12 +60,12 @@ class EthereumRemoteClientService
   void ResetCryptoWallets();
   std::string GetWalletSeed(std::vector<uint8_t> key);
   std::string GetBitGoSeed(std::vector<uint8_t> key);
-  bool IsCryptoWalletsSetup() const;
+  bool IsLegacyCryptoWalletsSetup() const;
   bool IsCryptoWalletsReady() const;
   bool ShouldShowLazyLoadInfobar() const;
   void MaybeLoadCryptoWalletsExtension(LoadUICallback callback);
   void CryptoWalletsExtensionReady();
-  void RemoveCryptoWalletExtension();
+  void UnloadCryptoWalletsExtension();
 
   static std::string GetEthereumRemoteClientSeedFromRootSeed(
       const std::string& seed);

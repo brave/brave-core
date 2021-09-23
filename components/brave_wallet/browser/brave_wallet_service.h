@@ -50,16 +50,16 @@ class BraveWalletService : public KeyedService,
                            const std::string& chain_id,
                            bool visible,
                            SetUserAssetVisibleCallback callback) override;
-  void IsBraveCryptoWalletInstalled(
-      IsBraveCryptoWalletInstalledCallback callback) override;
-  void IsMetamaskInstalled(IsMetamaskInstalledCallback callback) override;
-  void ImportFromBraveCryptoWallet(
+  void IsCryptoWalletsInstalled(
+      IsCryptoWalletsInstalledCallback callback) override;
+  void IsMetaMaskInstalled(IsMetaMaskInstalledCallback callback) override;
+  void ImportFromCryptoWallets(
       const std::string& password,
       const std::string& new_password,
-      ImportFromBraveCryptoWalletCallback callback) override;
-  void ImportFromMetamask(const std::string& password,
+      ImportFromCryptoWalletsCallback callback) override;
+  void ImportFromMetaMask(const std::string& password,
                           const std::string& new_password,
-                          ImportFromMetamaskCallback callback) override;
+                          ImportFromMetaMaskCallback callback) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);

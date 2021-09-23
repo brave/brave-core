@@ -174,7 +174,7 @@ void BraveComponentLoader::AddEthereumRemoteClientExtensionOnStartup() {
   }
 }
 
-void BraveComponentLoader::RemoveEthereumRemoteClientExtension() {
+void BraveComponentLoader::UnloadEthereumRemoteClientExtension() {
   extensions::ExtensionService* service =
       extensions::ExtensionSystem::Get(profile_)->extension_service();
   DCHECK(service);

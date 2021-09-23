@@ -369,7 +369,7 @@ void EthereumRemoteClientService::CryptoWalletsExtensionReady() {
 }
 #endif
 
-bool EthereumRemoteClientService::IsCryptoWalletsSetup() const {
+bool EthereumRemoteClientService::IsLegacyCryptoWalletsSetup() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   return prefs->HasPrefPath(kERCAES256GCMSivNonce) &&
          prefs->HasPrefPath(kERCEncryptedSeed);
@@ -401,8 +401,8 @@ void EthereumRemoteClientService::MaybeLoadCryptoWalletsExtension(
 #endif
 }
 
-void EthereumRemoteClientService::RemoveCryptoWalletExtension() {
+void EthereumRemoteClientService::UnloadCryptoWalletsExtension() {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  ethereum_remote_client_delegate_->RemoveCryptoWalletExtension(context_);
+  ethereum_remote_client_delegate_->UnloadCryptoWalletsExtension(context_);
 #endif
 }
