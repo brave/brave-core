@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     var rootViewController: UIViewController!
     weak var profile: Profile?
     var tabManager: TabManager!
-    var braveCore: BraveCoreMain?
+    var braveCore = BraveCoreMain()
 
     weak var application: UIApplication?
     var launchOptions: [AnyHashable: Any]?
@@ -58,8 +58,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // Hold references to willFinishLaunching parameters for delayed app launch
         self.application = application
         self.launchOptions = launchOptions
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window!.backgroundColor = .black
         
         // Brave Core Initialization
         BraveCoreMain.setLogHandler { severity, file, line, messageStartIndex, message in
@@ -84,10 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             return true
         }
         
-        self.braveCore = BraveCoreMain()
-        self.braveCore?.setUserAgent(UserAgent.mobile)
-        
-        SceneObserver.setupApplication(window: self.window!)
+        braveCore.setUserAgent(UserAgent.mobile)
 
         AdBlockStats.shared.startLoading()
         HttpsEverywhereStats.shared.startLoading()
@@ -177,7 +172,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // the simulator via Xcode will count as a "crash" and lead to restore popups in the subsequent launch
         let crashedLastSession = !Preferences.AppState.backgroundedCleanly.value && AppConstants.buildChannel != .debug
         Preferences.AppState.backgroundedCleanly.value = false
-        browserViewController = BrowserViewController(profile: self.profile!, tabManager: self.tabManager, crashedLastSession: crashedLastSession)
+
+        // TODO: Remove brave-core APIs force-unwrapping after IOS-4166 merged
+        // History API and Bookmarks API should not be nullable on brave-core side
+        browserViewController = BrowserViewController(
+            profile: self.profile!,
+            tabManager: self.tabManager,
+            historyAPI: braveCore.historyAPI!,
+            bookmarkAPI: braveCore.bookmarksAPI!,
+            crashedLastSession: crashedLastSession)
         browserViewController.edgesForExtendedLayout = []
 
         // Add restoration class, the factory that will return the ViewController we will restore with.
@@ -190,13 +193,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         navigationController.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
         rootViewController = navigationController
 
-        self.window!.rootViewController = rootViewController
-
-        windowProtection = WindowProtection(window: window!)
         SystemUtils.onFirstRun()
         
         // Schedule Brave Core Priority Tasks
-        self.braveCore?.scheduleLowPriorityStartupTasks()
+        braveCore.scheduleLowPriorityStartupTasks()
         browserViewController.removeScheduledAdGrantReminders()
 
         log.info("startApplication end")
@@ -216,7 +216,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         // Clean up BraveCore
         BraveSyncAPI.removeAllObservers()
-        self.braveCore = nil
     }
 
     /**
@@ -261,21 +260,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     }
     
     private var cancellables: Set<AnyCancellable> = []
-    
-    private var expectedThemeOverride: UIUserInterfaceStyle {
-        let themeOverride = DefaultTheme(
-            rawValue: Preferences.General.themeNormalMode.value
-        )?.userInterfaceStyleOverride ?? .unspecified
-        let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-        return isPrivateBrowsing ? .dark : themeOverride
-    }
-    
-    private func updateTheme() {
-        guard let window = window else { return }
-        UIView.transition(with: window, duration: 0.15, options: [.transitionCrossDissolve], animations: {
-            window.overrideUserInterfaceStyle = self.expectedThemeOverride
-        }, completion: nil)
-    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // IAPs can trigger on the app as soon as it launches,
@@ -311,23 +295,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         UIScrollView.doBadSwizzleStuff()
         applyAppearanceDefaults()
-        
-        Preferences.General.themeNormalMode.objectWillChange
-            .merge(with: PrivateBrowsingManager.shared.objectWillChange)
-            .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
-                self?.updateTheme()
-            }
-            .store(in: &cancellables)
-        
-        window?.overrideUserInterfaceStyle = expectedThemeOverride
-        window?.tintColor = UIColor {
-            if $0.userInterfaceStyle == .dark {
-                return .braveLighterBlurple
-            }
-            return .braveBlurple
-        }
-        window?.makeKeyAndVisible()
 
         if Preferences.Rewards.isUsingBAP.value == nil {
             Preferences.Rewards.isUsingBAP.value = Locale.current.regionCode == "JP"
@@ -737,5 +704,21 @@ extension AppDelegate: MFMailComposeViewControllerDelegate {
         // Dismiss the view controller and start the app up
         controller.dismiss(animated: true, completion: nil)
         startApplication(application!, withLaunchOptions: self.launchOptions)
+    }
+}
+
+extension AppDelegate {
+    // MARK: UISceneSession Lifecycle
+
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        // Called when a new scene session is being created.
+        // Use this method to select a configuration to create the new scene with.
+        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    }
+
+    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
+        // Called when the user discards a scene session.
+        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
+        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 }

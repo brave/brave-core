@@ -8,6 +8,7 @@ import BraveShared
 import Storage
 import Data
 import CoreData
+import BraveCore
 
 class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol {
     
@@ -22,6 +23,8 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         $0.hidesWhenStopped = true
         $0.isHidden = true
     }
+
+    private let historyAPI: BraveHistoryAPI
     
     var historyFRC: HistoryV2FetchResultsController?
     
@@ -30,11 +33,12 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     
     var isHistoryRefreshing = false
     
-    init(isPrivateBrowsing: Bool) {
+    init(isPrivateBrowsing: Bool, historyAPI: BraveHistoryAPI) {
         self.isPrivateBrowsing = isPrivateBrowsing
+        self.historyAPI = historyAPI
         super.init(nibName: nil, bundle: nil)
         
-        historyFRC = Historyv2.frc()
+        historyFRC = historyAPI.frc()
         historyFRC?.delegate = self
     }
     
@@ -72,7 +76,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
                 spinner.startAnimating()
                 isHistoryRefreshing = true
 
-                Historyv2.waitForHistoryServiceLoaded { [weak self] in
+                historyAPI.waitForHistoryServiceLoaded { [weak self] in
                     guard let self = self else { return }
                     
                     self.reloadData() {
@@ -88,7 +92,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     private func reloadData(_ completion: @escaping () -> Void) {
         // Recreate the frc if it was previously removed
         if historyFRC == nil {
-            historyFRC = Historyv2.frc()
+            historyFRC = historyAPI.frc()
             historyFRC?.delegate = self
         }
         
@@ -169,8 +173,8 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         
         alert.addAction(UIAlertAction(title: Strings.History.historyClearActionTitle, style: .destructive, handler: { _ in
             DispatchQueue.main.async {
-                Historyv2.deleteAll { [weak self] in
-                    self?.refreshHistory()
+                self.historyAPI.removeAll {
+                    self.refreshHistory()
                 }
             }
         }))
@@ -205,7 +209,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         
         cell.do {
             $0.backgroundColor = UIColor.clear
-            $0.setLines(historyItem.title, detailText: historyItem.url)
+            $0.setLines(historyItem.title, detailText: historyItem.url.absoluteString)
             
             $0.imageView?.contentMode = .scaleAspectFit
             $0.imageView?.image = FaviconFetcher.defaultFaviconImage
@@ -215,7 +219,10 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
             $0.imageView?.layer.cornerCurve = .continuous
             $0.imageView?.layer.masksToBounds = true
             
-            if let domain = historyItem.domain, let url = domain.url?.asURL {
+            let domain = Domain.getOrCreate(forUrl: historyItem.url,
+                                            persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+            
+            if let url = domain.url?.asURL {
                 cell.imageView?.loadFavicon(
                     for: url,
                     domain: domain,
@@ -232,7 +239,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let historyItem = historyFRC?.object(at: indexPath) else { return }
         
-        if let historyURL = historyItem.url, let url = URL(string: historyURL) {
+        if let url = URL(string: historyItem.url.absoluteString) {
             dismiss(animated: true) {
                 self.toolbarUrlActionsDelegate?.select(url: url, visitType: .typed)
             }
@@ -245,7 +252,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         guard gesture.state == .began,
               let cell = gesture.view as? UITableViewCell,
               let indexPath = tableView.indexPath(for: cell),
-              let urlString = historyFRC?.object(at: indexPath)?.url else {
+              let urlString = historyFRC?.object(at: indexPath)?.url.absoluteString else {
             return
         }
         
@@ -268,7 +275,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         switch editingStyle {
             case .delete:
                 guard let historyItem = historyFRC?.object(at: indexPath) else { return }
-                historyItem.delete()
+                historyAPI.removeHistory(historyItem)
                 
                 refreshHistory()
             default:

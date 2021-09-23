@@ -18,19 +18,34 @@
    */
   (function () {
       const SECURITY_TOKEN = "%SECURITY_TOKEN%"
+      const SESSION_RESTORE_KEY = "%SESSION_RESTORE_KEY%"
+      const SESSION_RESTORE_TOKEN = "%SESSION_RESTORE_TOKEN%"
 
       function getRestoreURL(url) {
-          // If the url already points to an error page just return the url as is
-          if (url.indexOf(document.location.origin + '/errors/error.html') === 0) {
-               return url;
-           }
+          // If the url already points to an error page or session restore page,
+          // just return the url as is
+          if (url.startsWith(document.location.origin + '/errors/error.html') ||
+              url.startsWith(document.location.origin + '/about/sessionrestore.html')) {
+              const newURL = new URL(url);
+              newURL.searchParams.set(SESSION_RESTORE_KEY, SESSION_RESTORE_TOKEN);
+              return newURL.toString();
+          }
+          
           // Otherwise, push an error page to trigger a redirect when loaded.
-          return '/errors/error.html?url=' + escape(url);
+          //return document.location.origin + '/errors/error.html?url=' + escape(url);
+          
+          const newURL = new URL(document.location.origin + '/errors/error.html');
+          newURL.searchParams.set('url', url);
+          newURL.searchParams.set(SESSION_RESTORE_KEY, SESSION_RESTORE_TOKEN);
+          return newURL.toString();
       }
-      var index = document.location.href.search("history");
+      
+      // Parse the query parameters
+      var queryParameters = new URLSearchParams(document.location.href);
+      
       // Pull the session out of the history query argument.
       // The session is a JSON-stringified array of all URLs to restore for this tab, plus the last active index.
-      var sessionRestoreComponents = JSON.parse(unescape(document.location.href.substring(index + "history=".length)));
+      var sessionRestoreComponents = JSON.parse(unescape(queryParameters.get('history')));
       var urlList = sessionRestoreComponents['history'];
       var currentPage = sessionRestoreComponents['currentPage'];
       // First, replace the session restore page (this page) with the first URL to be restored.

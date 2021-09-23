@@ -63,7 +63,7 @@ final public class PlaylistItem: NSManagedObject, CRUD {
     }
     
     public static func itemExists(_ item: PlaylistInfo) -> Bool {
-        if let count = PlaylistItem.count(predicate: NSPredicate(format: "pageSrc == %@", item.pageSrc)), count > 0 {
+        if let count = PlaylistItem.count(predicate: NSPredicate(format: "pageSrc == %@ OR mediaSrc == %@", item.pageSrc, item.src)), count > 0 {
             return true
         }
         return false
@@ -84,7 +84,7 @@ final public class PlaylistItem: NSManagedObject, CRUD {
     public static func updateItem(_ item: PlaylistInfo, completion: (() -> Void)? = nil) {
         if itemExists(item) {
             DataController.perform(context: .new(inMemory: false), save: false) { context in
-                if let existingItem = PlaylistItem.first(where: NSPredicate(format: "pageSrc == %@", item.pageSrc), context: context) {
+                if let existingItem = PlaylistItem.first(where: NSPredicate(format: "pageSrc == %@ OR mediaSrc == %@", item.pageSrc, item.src), context: context) {
                     existingItem.name = item.name
                     existingItem.pageTitle = item.pageTitle
                     existingItem.pageSrc = item.pageSrc

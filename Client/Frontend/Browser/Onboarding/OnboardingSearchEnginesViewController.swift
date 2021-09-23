@@ -100,6 +100,10 @@ extension OnboardingSearchEnginesViewController: UITableViewDataSource {
         return 1
     }
     
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        .leastNormalMagnitude
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SearchEngineCell.self), for: indexPath) as? SearchEngineCell else {
             return SearchEngineCell()

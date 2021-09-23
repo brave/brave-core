@@ -23,7 +23,6 @@ import NetworkExtension
 import YubiKit
 import FeedKit
 import SwiftUI
-import GameController
 import class Combine.AnyCancellable
 
 private let log = Logger.browserLogger
@@ -96,6 +95,8 @@ class BrowserViewController: UIViewController {
     weak var tabTrayController: TabTrayController!
     let profile: Profile
     let tabManager: TabManager
+    let historyAPI: BraveHistoryAPI
+    let bookmarkAPI: BraveBookmarksAPI
     
     /// Whether last session was a crash or not
     fileprivate let crashedLastSession: Bool
@@ -181,10 +182,16 @@ class BrowserViewController: UIViewController {
     //let benchmarkBlockingDataSource = BlockingSummaryDataSource()
     var benchmarkBlockingDataSource: BlockingSummaryDataSource?
 
-    init(profile: Profile, tabManager: TabManager, crashedLastSession: Bool,
+    init(profile: Profile,
+         tabManager: TabManager,
+         historyAPI: BraveHistoryAPI,
+         bookmarkAPI: BraveBookmarksAPI,
+         crashedLastSession: Bool,
          safeBrowsingManager: SafeBrowsing? = SafeBrowsing()) {
         self.profile = profile
         self.tabManager = tabManager
+        self.historyAPI = historyAPI
+        self.bookmarkAPI = bookmarkAPI
         self.readerModeCache = ReaderMode.cache(for: tabManager.selectedTab)
         self.crashedLastSession = crashedLastSession
         self.safeBrowsing = safeBrowsingManager
@@ -1487,7 +1494,18 @@ class BrowserViewController: UIViewController {
         guard let tab = tabManager.selectedTab else { return }
         
         updateRewardsButtonState()
-        updatePlaylistURLBar(tab: tab, state: tab.playlistItemState, item: tab.playlistItem)
+        
+        DispatchQueue.main.async {
+            if let item = tab.playlistItem {
+                if PlaylistItem.itemExists(item) {
+                    self.updatePlaylistURLBar(tab: tab, state: .existingItem, item: item)
+                } else {
+                    self.updatePlaylistURLBar(tab: tab, state: .newItem, item: item)
+                }
+            } else {
+                self.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
+            }
+        }
         
         topToolbar.currentURL = tab.url?.displayURL
         if tabManager.selectedTab === tab {
@@ -1545,29 +1563,18 @@ class BrowserViewController: UIViewController {
         openURLInNewTab(nil, isPrivate: isPrivate, isPrivileged: true)
         let freshTab = tabManager.selectedTab
         
-        // Focus field if requested and background images are not supported or there is hardware keyboard connected
-        if attemptLocationFieldFocus || isHardwareKeyboardConnected() {
+        // Focus field only if requested and background images are not supported
+        if attemptLocationFieldFocus {
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
                 // Without a delay, the text field fails to become first responder
                 // Check that the newly created tab is still selected.
                 // This let's the user spam the Cmd+T button without lots of responder changes.
                 guard freshTab == self.tabManager.selectedTab else { return }
-                // submit location if there's search query or just focus on location otherwise
                 if let text = searchText {
                     self.topToolbar.submitLocation(text)
-                } else {
-                    self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
                 }
             }
         }
-    }
-        
-    func isHardwareKeyboardConnected() -> Bool {
-        if #available(iOS 14.0, *) {
-            let bool = GCKeyboard.coalesced != nil
-            return bool
-        }
-        return false
     }
     
     func clearHistoryAndOpenNewTab() {
@@ -1844,15 +1851,15 @@ class BrowserViewController: UIViewController {
                 runScriptsOnWebView(webView)
                 
                 // Only add history of a url which is not a localhost url
-                if !tab.isPrivate {
+                if !tab.isPrivate, !PrivilegedRequest.isWebServerRequest(url: url) {
                     // The visitType is checked If it is "typed" or not to determine the History object we are adding
                     // should be synced or not. This limitation exists on browser side so we are aligning with this
                     if let visitType =
                         typedNavigation.first(where: { $0.key.typedDisplayString == url.typedDisplayString })?.value,
                        visitType == .typed {
-                        Historyv2.add(url: url, title: tab.title ?? "", dateAdded: Date())
+                        historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date())
                     } else {
-                        Historyv2.add(url: url, title: tab.title ?? "", dateAdded: Date(), isURLTyped: false)
+                        historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date(), isURLTyped: false)
                     }
                 }
             }

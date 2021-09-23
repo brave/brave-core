@@ -84,6 +84,10 @@ public struct AppConstants {
         }
         return scheme
     }()
+    
+    public static let webServerPort: Int = {
+        AppConstants.buildChannel.isPublic ? 6571 : Int.random(in: 6572..<6600)
+    }()
 
     public static let prefSendUsageData = "settings.sendUsageData"
 

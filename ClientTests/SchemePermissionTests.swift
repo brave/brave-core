@@ -6,6 +6,7 @@
 import Foundation
 import XCTest
 import Storage
+import BraveCore
 
 @testable import Client
 
@@ -59,9 +60,18 @@ class SchemePermissionTests: XCTestCase {
         imageStore = try! DiskImageStore(files: MockFiles(), namespace: "MockTabManagerScreenshots", quality: 1)
         tabManager = TabManager(prefs: profile.prefs, imageStore: imageStore)
         
+        guard let appDelegate = UIApplication.shared.delegate as? TestAppDelegate else {
+            return
+        }
+        
+        historyAPI = appDelegate.braveCore.historyAPI
+        bookmarksAPI = appDelegate.braveCore.bookmarksAPI
+        
         subject = BrowserViewController(
             profile: profile,
             tabManager: tabManager,
+            historyAPI: historyAPI,
+            bookmarkAPI: bookmarksAPI,
             crashedLastSession: false)
     }
     
@@ -109,4 +119,6 @@ class SchemePermissionTests: XCTestCase {
     private var profile: Profile!
     private var tabManager: TabManager!
     private var imageStore: DiskImageStore!
+    private var historyAPI: BraveHistoryAPI!
+    private var bookmarksAPI: BraveBookmarksAPI!
 }
