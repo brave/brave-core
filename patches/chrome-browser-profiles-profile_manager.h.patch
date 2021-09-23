@@ -7,6 +7,6 @@ index d6120ff3abd2e780aaf416d7a27fa11fc2585d9f..880b6c42d09e09905d7a211b2a886db0
      do_final_services_init_ = do_final_services_init;
    }
 +  BRAVE_PROFILE_MANAGER_H
-
+ 
   private:
    friend class TestingProfileManager;
