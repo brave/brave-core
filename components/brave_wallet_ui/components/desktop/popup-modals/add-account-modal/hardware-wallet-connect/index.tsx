@@ -41,6 +41,16 @@ export default function (props: Props) {
     LedgerDerivationPaths.LedgerLive.toString()
   )
 
+  const getErrorMessage = (error: any) => {
+    if (error.statusCode && error.statusCode === 27404) {
+      return locale.connectHardwareInfo3
+    }
+    if (!error || !error.message) {
+      return locale.unknownInternalError
+    }
+    return error.message
+  }
+
   const onSelectedDerivationScheme = (scheme: string) => {
     setSelectedDerivationScheme(scheme)
     setAccounts([])
@@ -52,7 +62,7 @@ export default function (props: Props) {
     }).then((result) => {
       setAccounts(result)
     }).catch((error) => {
-      setConnectionError(error.message)
+      setConnectionError(getErrorMessage(error))
     })
   }
   const onConnectHardwareWallet = (hardware: HardwareWallet) => {
@@ -67,7 +77,7 @@ export default function (props: Props) {
       setAccounts([...accounts, ...result])
       setIsConnecting(false)
     }).catch((error) => {
-      setConnectionError(error.message)
+      setConnectionError(getErrorMessage(error))
       setIsConnecting(false)
     })
   }

@@ -28,8 +28,13 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       if (from < 0) {
         from = 0
       }
-      if (!this.isUnlocked() && !(await this.unlock())) {
-        return reject(new Error('Unable to unlock device, try to reconnect'))
+      try {
+        if (!this.isUnlocked() && !(await this.unlock())) {
+          return reject(new Error())
+        }
+      } catch (e) {
+        reject(e)
+        return
       }
       this._getAccounts(from, to, scheme).then(resolve).catch(reject)
     })

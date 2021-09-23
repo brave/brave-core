@@ -180,6 +180,7 @@ const locale = {
   switchHDPathTextHardwareWallet: 'Try switching HD path (above) if you cannot find the account you are looking for.',
   ledgerLiveDerivationPath: 'Ledger Live',
   ledgerLegacyDerivationPath: 'Legacy (MEW/MyCrypto)',
+  unknownInternalError: 'Unknown error, please reconnect device and try again',
 
   // Account Settings Modal
   accountSettingsDetails: 'Details',
