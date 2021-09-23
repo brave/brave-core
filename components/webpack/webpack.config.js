@@ -89,7 +89,7 @@ module.exports = async function (env, argv) {
       alias: pathMap,
       // For explanation of "chromeapp", see:
       // https://github.com/brave/brave-browser/issues/5587
-      aliasFields: ['chromeapp']
+      aliasFields: ['chromeapp', 'browser']
     },
     optimization: {
       // Define NO_CONCATENATE for analyzing module size.
