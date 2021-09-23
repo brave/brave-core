@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# pylint:disable=line-too-long
+# pylint:disable=line-too-long,consider-using-dict-items
 
 """
 On Android the `--output' switch to `npm run test', which produces xunit
@@ -19,6 +19,7 @@ import re
 import sys
 import json
 from operator import add
+from string import printable
 from functools import reduce
 
 def pick_iteration(test_case, iterations):
@@ -48,10 +49,12 @@ def transform(input_json):
         output[test_suite]['xml'] += f'<testcase name="{test_case}" time="{int(iteration["elapsed_time_ms"])/100.0}">'
         if iteration['status'] == 'SUCCESS':
             if iteration['output_snippet']:
-                output[test_suite]['xml'] += f"<system-out><![CDATA[{iteration['output_snippet']}]]></system-out>"
+                sanitized_output = ''.join(filter(lambda x: x in printable, iteration['output_snippet']))
+                output[test_suite]['xml'] += f"<system-out><![CDATA[{sanitized_output}]]></system-out>"
         else:
             output[test_suite]['failure_count'] += 1
-            output[test_suite]['xml'] += f'<failure message="failed"><![CDATA[{iteration["output_snippet"]}]]></failure>'
+            sanitized_output = ''.join(filter(lambda x: x in printable, iteration['output_snippet']))
+            output[test_suite]['xml'] += f'<failure message="failed"><![CDATA[{sanitized_output}]]></failure>'
         output[test_suite]['xml'] += "</testcase>"
     return output
 
