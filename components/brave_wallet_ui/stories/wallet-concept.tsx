@@ -21,7 +21,8 @@ import {
   ToOrFromType,
   EthereumChain,
   TokenInfo,
-  TransactionListInfo
+  TransactionListInfo,
+  BuySendSwapTypes
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
@@ -231,6 +232,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [toAmount, setToAmount] = React.useState('')
   const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
   const [importError, setImportError] = React.useState<boolean>(false)
+  const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
 
   const onToggleRestore = () => {
     setIsRestoring(!isRestoring)
@@ -487,6 +489,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     if (url) {
       window.open(url, '_blank')
     }
+  }
+
+  const onSwapQuoteRefresh = () => {
+    console.log('Refreshing swap quote')
   }
 
   const onSubmitSwap = () => {
@@ -748,6 +754,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             accounts={mockUserAccounts}
             selectedNetwork={selectedNetwork}
             selectedAccount={selectedAccount}
+            selectedTab={selectedWidgetTab}
             buyAmount={buyAmount}
             sendAmount={sendAmount}
             fromAmount={fromAmount}
@@ -755,6 +762,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             fromAssetBalance={fromAssetBalance}
             toAssetBalance={toAssetBalance}
             toAddress={toAddress}
+            isSwapSubmitDisabled={false}
             onSubmitBuy={onSubmitBuy}
             onSetBuyAmount={onSetBuyAmount}
             onSetSendAmount={onSetSendAmount}
@@ -773,10 +781,12 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             onSelectSlippageTolerance={onSelectSlippageTolerance}
             onSelectPresetFromAmount={onSelectPresetFromAmount}
             onSelectPresetSendAmount={onSelectPresetSendAmount}
+            onSelectTab={setSelectedWidgetTab}
             buyAssetOptions={WyreAccountAssetOptions}
             sendAssetOptions={AccountAssetOptions}
             swapAssetOptions={AccountAssetOptions}
             networkList={mockNetworks}
+            onSwapQuoteRefresh={onSwapQuoteRefresh}
           />
         </WalletWidgetStandIn>
       }

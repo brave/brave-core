@@ -107,26 +107,26 @@ export const NewAssetOptions: TokenInfo[] = [
 export const AccountAssetOptions: AccountAssetOptionType[] = [
   {
     asset: {
-      contractAddress: '1',
+      contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
       name: 'Ethereum',
       symbol: 'ETH',
       icon: ETHIconUrl,
-      isErc20: true,
+      isErc20: false,
       isErc721: false,
-      decimals: 8
+      decimals: 18
     },
     assetBalance: '0',
     fiatBalance: '0'
   },
   {
     asset: {
-      contractAddress: '2',
+      contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
       name: 'Basic Attention Token',
       symbol: 'BAT',
       icon: BATIconUrl,
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 18
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -172,13 +172,13 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
   },
   {
     asset: {
-      contractAddress: '6',
+      contractAddress: '0xE41d2489571d322189246DaFA5ebDe1F4699F498',
       name: '0x',
       symbol: 'ZRX',
       icon: ZRXIconUrl,
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 18
     },
     assetBalance: '0',
     fiatBalance: '0'

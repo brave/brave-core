@@ -9,7 +9,6 @@ import locale from '../../../constants/locale'
 import {
   RefreshButton,
   RefreshIcon,
-  MarketLimitButton,
   FromBalanceText,
   AssetIcon,
   AssetButton,
@@ -72,7 +71,6 @@ function SwapInputComponent (props: Props) {
     onSelectPresetAmount,
     onSelectSlippageTolerance,
     onSelectExpiration,
-    onToggleOrderType,
     onShowSelection
   } = props
   const [spin, setSpin] = React.useState<number>(0)
@@ -154,9 +152,12 @@ function SwapInputComponent (props: Props) {
         <>
           <Row>
             <FromBalanceText componentType={componentType}>{getTitle()}</FromBalanceText>
-            {componentType === 'exchange' &&
-              <MarketLimitButton onClick={onToggleOrderType}>{orderType === 'market' ? locale.swapLimit : locale.swapMarket}</MarketLimitButton>
-            }
+
+            {/* Limit orders on Swap are currently disabled.
+              componentType === 'exchange' &&
+                <MarketLimitButton onClick={onToggleOrderType}>{orderType === 'market' ? locale.swapLimit : locale.swapMarket}</MarketLimitButton>
+            */}
+
             {componentType !== 'exchange' && componentType !== 'toAddress' && componentType !== 'buyAmount' &&
               <FromBalanceText>{locale.balance}: {selectedAssetBalance}</FromBalanceText>
             }

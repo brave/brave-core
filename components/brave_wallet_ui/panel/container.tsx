@@ -55,7 +55,7 @@ import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { GetNetworkInfo } from '../utils/network-utils'
 
-import { formatBalance, toWei } from '../utils/format-balances'
+import { formatBalance, toWeiHex } from '../utils/format-balances'
 
 type Props = {
   panel: PanelState
@@ -173,15 +173,17 @@ function Container (props: Props) {
   }
 
   const onSubmitSend = () => {
-    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === selectedAsset.asset.symbol)
-    // Gas price and limit will be filled with suggestions in eth_tx_controller.
-    props.walletActions.sendTransaction({
+    selectedAsset.asset.isErc20 && props.walletActions.sendERC20Transfer({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWei(sendAmount, asset?.decimals ?? 0),
-      contractAddress: asset?.contractAddress ?? '',
-      gasPrice: '',
-      gasLimit: ''
+      value: toWeiHex(sendAmount, selectedAsset.asset.decimals),
+      contractAddress: selectedAsset.asset.contractAddress
+    })
+
+    !selectedAsset.asset.isErc20 && props.walletActions.sendTransaction({
+      from: selectedAccount.address,
+      to: toAddress,
+      value: toWeiHex(sendAmount, selectedAsset.asset.decimals)
     })
   }
 

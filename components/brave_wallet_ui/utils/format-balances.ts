@@ -23,5 +23,10 @@ export const formatFiatBalance = (balance: string, decimals: number, price: stri
 
 export const toWei = (value: string, decimals: number) => {
   const result = new BigNumber(value).multipliedBy(10 ** decimals)
+  return result.isNaN() ? '0' : result.toFixed(0)
+}
+
+export const toWeiHex = (value: string, decimals: number) => {
+  const result = new BigNumber(value).multipliedBy(10 ** decimals)
   return (result.isNaN()) ? '0x0' : '0x' + result.toString(16)
 }

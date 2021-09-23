@@ -31,6 +31,7 @@ export interface Props {
   fromAssetBalance: string
   toAssetBalance: string
   assetOptions: AccountAssetOptionType[]
+  isSubmitDisabled: boolean
   onSubmitSwap: () => void
   flipSwapAssets: () => void
   onSelectNetwork: (network: EthereumChain) => void
@@ -43,6 +44,7 @@ export interface Props {
   onSetFromAmount: (value: string) => void
   onSetToAmount: (value: string) => void
   onSelectPresetAmount: (percent: number) => void
+  onQuoteRefresh: () => void
 }
 
 function SwapTab (props: Props) {
@@ -62,6 +64,7 @@ function SwapTab (props: Props) {
     fromAssetBalance,
     toAssetBalance,
     assetOptions,
+    isSubmitDisabled,
     onSubmitSwap,
     flipSwapAssets,
     onSelectNetwork,
@@ -73,7 +76,8 @@ function SwapTab (props: Props) {
     onSetExchangeRate,
     onSetFromAmount,
     onSetToAmount,
-    onSelectPresetAmount
+    onSelectPresetAmount,
+    onQuoteRefresh
   } = props
   const [swapView, setSwapView] = React.useState<BuySendSwapViewTypes>('swap')
   const [isSelectingAsset, setIsSelectingAsset] = React.useState<ToOrFromType>('from')
@@ -142,6 +146,7 @@ function SwapTab (props: Props) {
             exchangeRate={exchangeRate}
             slippageTolerance={slippageTolerance}
             orderExpiration={orderExpiration}
+            isSubmitDisabled={isSubmitDisabled}
             onInputChange={onInputChange}
             onFlipAssets={flipSwapAssets}
             onSubmitSwap={onSubmitSwap}
@@ -153,6 +158,7 @@ function SwapTab (props: Props) {
             onFilterAssetList={onFilterAssetList}
             fromAssetBalance={fromAssetBalance}
             toAssetBalance={toAssetBalance}
+            onQuoteRefresh={onQuoteRefresh}
           />
         </>
       }

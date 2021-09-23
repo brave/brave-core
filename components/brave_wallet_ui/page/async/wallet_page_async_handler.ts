@@ -17,12 +17,16 @@ import {
   RemoveImportedAccountPayloadType,
   RemoveHardwareAccountPayloadType,
   ViewPrivateKeyPayloadType,
-  ImportAccountFromJsonPayloadType
+  ImportAccountFromJsonPayloadType,
+  SwapParamsPayloadType
 } from '../constants/action_types'
 import {
   HardwareWalletAccount
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
+import getSwapConfig from '../../constants/swap.config'
+import { toWeiHex } from '../../utils/format-balances'
+import { hexStrToNumberArray } from '../../utils/hex-utils'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -151,35 +155,61 @@ handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store, payload: 
   await pageHandler.showApprovePanelUI()
 })
 
+handler.on(WalletPageActions.fetchSwapQuote.getType(), async (store, payload: SwapParamsPayloadType) => {
+  const swapController = (await getAPIProxy()).swapController
+
+  const {
+    fromAsset,
+    fromAssetAmount,
+    toAsset,
+    toAssetAmount,
+    accountAddress,
+    slippageTolerance,
+    full
+  } = payload
+
+  const config = getSwapConfig(payload.networkChainId)
+
+  const swapParams = {
+    takerAddress: accountAddress,
+    sellAmount: fromAssetAmount || '',
+    buyAmount: toAssetAmount || '',
+    buyToken: toAsset.asset.contractAddress || toAsset.asset.symbol,
+    sellToken: fromAsset.asset.contractAddress || fromAsset.asset.symbol,
+    buyTokenPercentageFee: config.buyTokenPercentageFee,
+    slippagePercentage: slippageTolerance.slippage / 100,
+    feeRecipient: config.feeRecipient,
+    gasPrice: ''
+  }
+
+  const quote = await (
+    full ? swapController.getTransactionPayload(swapParams) : swapController.getPriceQuote(swapParams)
+  )
+  quote.success && await store.dispatch(WalletPageActions.setSwapQuote(quote.response))
+
+  if (full && quote.success) {
+    const {
+      to,
+      data,
+      value,
+      estimatedGas,
+      gasPrice
+    } = quote.response
+
+    const params = {
+      from: accountAddress,
+      to,
+      value: toWeiHex(value, 0),
+      gas: toWeiHex(estimatedGas, 0),
+      gasPrice: toWeiHex(gasPrice, 0),
+      data: hexStrToNumberArray(data)
+    }
+
+    store.dispatch(WalletActions.sendTransaction(params))
+  }
+})
+
 // TODO(bbondy): Remove - Example usage:
-//
-// Swap API
-// import { SwapParams } from '../../constants/types'
-// const swapController = (await getAPIProxy()).swapController
-// var swap_response = await swapController.getPriceQuote({
-//   takerAddress: '',
-//   sellAmount: '',
-//   buyAmount: '1000000000000000000000',
-//   buyToken: 'ETH',
-//   sellToken: 'DAI',
-//   buyTokenPercentageFee: 0,
-//   slippagePercentage: 0,
-//   feeRecipient: '',
-//   gasPrice: ''
-// })
-// console.log('wallet price quote: ', swap_response)
-//  var swap_response2 = await swapController.getTransactionPayload({
-//   takerAddress: '',
-//   sellAmount: '',
-//   buyAmount: '1000000000000000000000',
-//   buyToken: 'ETH',
-//   sellToken: 'DAI',
-//   buyTokenPercentageFee: 0,
-//   slippagePercentage: 0,
-//   feeRecipient: '',
-//   gasPrice: ''
-// })
-// console.log(swap_response2)
 //
 // Interacting with the token registry
 // const ercTokenRegistry = (await getAPIProxy()).ercTokenRegistry
