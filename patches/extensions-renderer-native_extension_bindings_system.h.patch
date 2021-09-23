@@ -1,11 +1,11 @@
 diff --git a/extensions/renderer/native_extension_bindings_system.h b/extensions/renderer/native_extension_bindings_system.h
-index 05a6a2b91e39f57a49a29f54d10b5df983dc02a7..9ea765e3dfaab24ffb738e8c6ea54249a4c6a35e 100644
+index 4a92997f1a7488e86ee89799b3ad50310acefc69..cbd6e5cd8015958f8be4fc369195e97879ec629d 100644
 --- a/extensions/renderer/native_extension_bindings_system.h
 +++ b/extensions/renderer/native_extension_bindings_system.h
-@@ -34,7 +34,7 @@ class NativeExtensionBindingsSystem {
-  public:
-   explicit NativeExtensionBindingsSystem(
-       std::unique_ptr<IPCMessageSender> ipc_message_sender);
+@@ -39,7 +39,7 @@ class NativeExtensionBindingsSystem {
+   NativeExtensionBindingsSystem& operator=(
+       const NativeExtensionBindingsSystem&) = delete;
+ 
 -  ~NativeExtensionBindingsSystem();
 +  virtual ~NativeExtensionBindingsSystem();
  
