@@ -8,11 +8,28 @@
 
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 
+namespace absl {
+template <typename T>
+class optional;
+}  // namespace absl
+
+namespace base {
+class Time;
+}
+
 namespace ads {
 
 struct AdInfo;
+struct CreativeAdInfo;
 
 bool HasFiredAdViewedEvent(const AdInfo& ad, const AdEventList& ad_events);
+
+absl::optional<base::Time> GetLastSeenAdTime(const AdEventList& ad_events,
+                                             const CreativeAdInfo& creative_ad);
+
+absl::optional<base::Time> GetLastSeenAdvertiserTime(
+    const AdEventList& ad_events,
+    const CreativeAdInfo& creative_ad);
 
 }  // namespace ads
 

@@ -17,6 +17,20 @@ SegmentList GetTopParentChildSegments(const UserModelInfo& user_model);
 
 SegmentList GetTopParentSegments(const UserModelInfo& user_model);
 
+SegmentList GetTopParentChildInterestSegments(const UserModelInfo& user_model);
+
+SegmentList GetTopParentInterestSegments(const UserModelInfo& user_model);
+
+SegmentList GetTopParentChildLatentInterestSegments(
+    const UserModelInfo& user_model);
+
+SegmentList GetTopParentLatentInterestSegments(const UserModelInfo& user_model);
+
+SegmentList GetTopParentChildPurchaseIntentSegments(
+    const UserModelInfo& user_model);
+
+SegmentList GetTopParentPurchaseIntenSegments(const UserModelInfo& user_model);
+
 }  // namespace ad_targeting
 }  // namespace ads
 

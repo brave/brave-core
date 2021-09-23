@@ -10,6 +10,7 @@
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
 #include "net/http/http_status_code.h"

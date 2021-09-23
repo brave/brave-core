@@ -12,6 +12,7 @@
 #include "bat/ads/internal/account/wallet/wallet.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/statement_info.h"
 #include "net/http/http_status_code.h"

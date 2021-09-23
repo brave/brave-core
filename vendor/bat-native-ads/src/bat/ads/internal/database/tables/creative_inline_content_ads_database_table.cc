@@ -189,7 +189,7 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
                 std::placeholders::_1, creative_instance_id, callback));
 }
 
-void CreativeInlineContentAds::GetForSegments(
+void CreativeInlineContentAds::GetForSegmentsAndDimensions(
     const SegmentList& segments,
     const std::string& dimensions,
     GetCreativeInlineContentAdsCallback callback) {
@@ -290,8 +290,104 @@ void CreativeInlineContentAds::GetForSegments(
 
   AdsClientHelper::Get()->RunDBTransaction(
       std::move(transaction),
-      std::bind(&CreativeInlineContentAds::OnGetForSegments, this,
+      std::bind(&CreativeInlineContentAds::OnGetForSegmentsAndDimensions, this,
                 std::placeholders::_1, segments, callback));
+}
+
+void CreativeInlineContentAds::GetForDimensions(
+    const std::string& dimensions,
+    GetCreativeInlineContentAdsForDimensionsCallback callback) {
+  if (dimensions.empty()) {
+    callback(/* success */ true, {});
+    return;
+  }
+
+  const std::string query = base::StringPrintf(
+      "SELECT "
+      "cbna.creative_instance_id, "
+      "cbna.creative_set_id, "
+      "cbna.campaign_id, "
+      "cam.start_at_timestamp, "
+      "cam.end_at_timestamp, "
+      "cam.daily_cap, "
+      "cam.advertiser_id, "
+      "cam.priority, "
+      "ca.conversion, "
+      "ca.per_day, "
+      "ca.per_week, "
+      "ca.per_month, "
+      "ca.total_max, "
+      "ca.value, "
+      "ca.split_test_group, "
+      "s.segment, "
+      "gt.geo_target, "
+      "ca.target_url, "
+      "cbna.title, "
+      "cbna.description, "
+      "cbna.image_url, "
+      "cbna.dimensions, "
+      "cbna.cta_text, "
+      "cam.ptr, "
+      "dp.dow, "
+      "dp.start_minute, "
+      "dp.end_minute "
+      "FROM %s AS cbna "
+      "INNER JOIN campaigns AS cam "
+      "ON cam.campaign_id = cbna.campaign_id "
+      "INNER JOIN segments AS s "
+      "ON s.creative_set_id = cbna.creative_set_id "
+      "INNER JOIN creative_ads AS ca "
+      "ON ca.creative_instance_id = cbna.creative_instance_id "
+      "INNER JOIN geo_targets AS gt "
+      "ON gt.campaign_id = cbna.campaign_id "
+      "INNER JOIN dayparts AS dp "
+      "ON dp.campaign_id = cbna.campaign_id "
+      "AND cbna.dimensions = '%s' "
+      "AND %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
+      GetTableName().c_str(), dimensions.c_str(),
+      TimeAsTimestampString(base::Time::Now()).c_str());
+
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
+  command->command = query;
+
+  command->record_bindings = {
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // campaign_id
+      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // start_at_timestamp
+      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // end_at_timestamp
+      mojom::DBCommand::RecordBindingType::INT_TYPE,     // daily_cap
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
+      mojom::DBCommand::RecordBindingType::INT_TYPE,     // priority
+      mojom::DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
+      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_day
+      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_week
+      mojom::DBCommand::RecordBindingType::INT_TYPE,     // per_month
+      mojom::DBCommand::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // split_test_group
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // segment
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // target_url
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // title
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // description
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // image_url
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // dimensions
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // cta_text
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // ptr
+      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // dayparts->dow
+      mojom::DBCommand::RecordBindingType::INT_TYPE,  // dayparts->start_minute
+      mojom::DBCommand::RecordBindingType::INT_TYPE   // dayparts->end_minute
+  };
+
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
+  transaction->commands.push_back(std::move(command));
+
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&CreativeInlineContentAds::OnGetForDimensions, this,
+                std::placeholders::_1, callback));
 }
 
 void CreativeInlineContentAds::GetAll(
@@ -490,7 +586,7 @@ void CreativeInlineContentAds::OnGetForCreativeInstanceId(
            creative_inline_content_ad);
 }
 
-void CreativeInlineContentAds::OnGetForSegments(
+void CreativeInlineContentAds::OnGetForSegmentsAndDimensions(
     mojom::DBCommandResponsePtr response,
     const SegmentList& segments,
     GetCreativeInlineContentAdsCallback callback) {
@@ -511,6 +607,28 @@ void CreativeInlineContentAds::OnGetForSegments(
   }
 
   callback(/* success */ true, segments, creative_inline_content_ads);
+}
+
+void CreativeInlineContentAds::OnGetForDimensions(
+    mojom::DBCommandResponsePtr response,
+    GetCreativeInlineContentAdsForDimensionsCallback callback) {
+  if (!response ||
+      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Failed to get creative inline content ads");
+    callback(/* success */ false, {});
+    return;
+  }
+
+  CreativeInlineContentAdList creative_inline_content_ads;
+
+  for (const auto& record : response->result->get_records()) {
+    const CreativeInlineContentAdInfo creative_inline_content_ad =
+        GetFromRecord(record.get());
+
+    creative_inline_content_ads.push_back(creative_inline_content_ad);
+  }
+
+  callback(/* success */ true, creative_inline_content_ads);
 }
 
 void CreativeInlineContentAds::OnGetAll(

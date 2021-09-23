@@ -7,6 +7,7 @@
 
 #include "base/json/json_reader.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_file_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

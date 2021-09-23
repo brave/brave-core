@@ -14,6 +14,7 @@
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -298,6 +299,103 @@ TEST_F(BatAdsEligibleInlineContentAdsTest, GetAdsForUnmatchedDimensions) {
           const CreativeInlineContentAdList& creative_inline_content_ads) {
         EXPECT_EQ(expected_creative_inline_content_ads,
                   creative_inline_content_ads);
+      });
+
+  // Assert
+}
+
+TEST_F(BatAdsEligibleInlineContentAdsTest, GetV2WithoutAds) {
+  // Arrange
+  const SegmentList interest_segments = {"interest-foo", "interest-bar"};
+  const SegmentList purchase_intent_segments = {"intent-foo", "intent-bar"};
+  const ad_targeting::UserModelInfo user_model =
+      ad_targeting::BuildUserModel(interest_segments, purchase_intent_segments);
+
+  // Act
+  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  resource::AntiTargeting anti_targeting_resource;
+  inline_content_ads::EligibleAds eligible_ads(&subdivision_targeting,
+                                               &anti_targeting_resource);
+
+  eligible_ads.GetV2(
+      user_model, "200x100",
+      [=](const bool was_allowed,
+          const absl::optional<CreativeInlineContentAdInfo>& ad) {
+        EXPECT_EQ(absl::nullopt, ad);
+      });
+
+  // Assert
+}
+
+TEST_F(BatAdsEligibleInlineContentAdsTest, GetV2WithEmptySegments) {
+  // Arrange
+  CreativeInlineContentAdList creative_inline_content_ads;
+
+  const CreativeInlineContentAdInfo creative_inline_content_ad_1 =
+      GetCreativeInlineContentAdForSegment("foo");
+  creative_inline_content_ads.push_back(creative_inline_content_ad_1);
+
+  const CreativeInlineContentAdInfo creative_inline_content_ad_2 =
+      GetCreativeInlineContentAdForSegment("foo-bar");
+  creative_inline_content_ads.push_back(creative_inline_content_ad_2);
+
+  Save(creative_inline_content_ads);
+
+  const SegmentList interest_segments = {};
+  const SegmentList purchase_intent_segments = {};
+  const ad_targeting::UserModelInfo user_model =
+      ad_targeting::BuildUserModel(interest_segments, purchase_intent_segments);
+
+  // Act
+  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  resource::AntiTargeting anti_targeting_resource;
+  inline_content_ads::EligibleAds eligible_ads(&subdivision_targeting,
+                                               &anti_targeting_resource);
+
+  const CreativeInlineContentAdInfo expected_ad = creative_inline_content_ad_2;
+
+  eligible_ads.GetV2(
+      user_model, "200x100",
+      [=](const bool was_allowed,
+          const absl::optional<CreativeInlineContentAdInfo>& ad) {
+        EXPECT_TRUE(ad);
+      });
+
+  // Assert
+}
+
+TEST_F(BatAdsEligibleInlineContentAdsTest, GetV2) {
+  // Arrange
+  CreativeInlineContentAdList creative_inline_content_ads;
+
+  const CreativeInlineContentAdInfo creative_inline_content_ad_1 =
+      GetCreativeInlineContentAdForSegment("foo-bar1");
+  creative_inline_content_ads.push_back(creative_inline_content_ad_1);
+
+  const CreativeInlineContentAdInfo creative_inline_content_ad_2 =
+      GetCreativeInlineContentAdForSegment("foo-bar3");
+  creative_inline_content_ads.push_back(creative_inline_content_ad_2);
+
+  Save(creative_inline_content_ads);
+
+  const SegmentList interest_segments = {"foo-bar3"};
+  const SegmentList purchase_intent_segments = {"foo-bar1", "foo-bar2"};
+  const ad_targeting::UserModelInfo user_model =
+      ad_targeting::BuildUserModel(interest_segments, purchase_intent_segments);
+
+  // Act
+  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  resource::AntiTargeting anti_targeting_resource;
+  inline_content_ads::EligibleAds eligible_ads(&subdivision_targeting,
+                                               &anti_targeting_resource);
+
+  const CreativeInlineContentAdInfo expected_ad = creative_inline_content_ad_2;
+
+  eligible_ads.GetV2(
+      user_model, "200x100",
+      [=](const bool was_allowed,
+          const absl::optional<CreativeInlineContentAdInfo>& ad) {
+        EXPECT_TRUE(ad);
       });
 
   // Assert

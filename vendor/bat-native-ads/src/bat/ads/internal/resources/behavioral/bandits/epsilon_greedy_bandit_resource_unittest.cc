@@ -9,6 +9,7 @@
 
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_file_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

@@ -10,7 +10,8 @@ namespace ads {
 CreativeAdNotificationInfo::CreativeAdNotificationInfo() = default;
 
 CreativeAdNotificationInfo::CreativeAdNotificationInfo(
-    const CreativeAdNotificationInfo& info) = default;
+    const CreativeAdInfo& creative_ad)
+    : CreativeAdInfo(creative_ad) {}
 
 CreativeAdNotificationInfo::~CreativeAdNotificationInfo() = default;
 

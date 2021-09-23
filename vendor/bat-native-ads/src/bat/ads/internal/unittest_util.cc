@@ -5,29 +5,22 @@
 
 #include "bat/ads/internal/unittest_util.h"
 
-#include "base/base_paths.h"
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
 #include "base/notreached.h"
-#include "base/path_service.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "base/time/time.h"
-#include "base/time/time_to_iso8601.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/database.h"
 #include "bat/ads/internal/ads_client_mock.h"
-#include "bat/ads/internal/time_formatting_util.h"
-#include "bat/ads/internal/url_util.h"
+#include "bat/ads/internal/unittest_file_util.h"
+#include "bat/ads/internal/unittest_tag_parser_util.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/pref_names.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
-#include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
-#include "url/url_constants.h"
 
 using ::testing::_;
 using ::testing::Invoke;
@@ -42,127 +35,6 @@ static std::map<std::string, uint16_t> g_url_endpoint_indexes;
 static std::map<std::string, std::vector<uint64_t>> g_ad_events;
 
 static std::map<std::string, std::string> g_prefs;
-
-const char kNowTagValue[] = "now";
-const char kDistantPastTagValue[] = "distant_past";
-const char kDistantFutureTagValue[] = "distant_future";
-const char kFromSecondsTagValue[] = "seconds";
-const char kFromMinutesTagValue[] = "minutes";
-const char kFromHoursTagValue[] = "hours";
-const char kFromDaysTagValue[] = "days";
-
-bool ParseTimeDelta(const std::string& value, base::TimeDelta* time_delta) {
-  DCHECK(time_delta);
-
-  const std::vector<std::string> components = base::SplitString(
-      value, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-
-  int offset;
-  if (!base::StringToInt(components.at(0), &offset)) {
-    return false;
-  }
-
-  const std::string period = components.at(1);
-  if (period == kFromSecondsTagValue) {
-    *time_delta = base::TimeDelta::FromSeconds(offset);
-  } else if (period == kFromMinutesTagValue) {
-    *time_delta = base::TimeDelta::FromMinutes(offset);
-  } else if (period == kFromHoursTagValue) {
-    *time_delta = base::TimeDelta::FromHours(offset);
-  } else if (period == kFromDaysTagValue) {
-    *time_delta = base::TimeDelta::FromDays(offset);
-  } else {
-    return false;
-  }
-
-  return true;
-}
-
-bool ParseTimeTag(std::string* value) {
-  DCHECK(value);
-
-  base::Time time;
-
-  if (*value == kNowTagValue) {
-    time = Now();
-  } else if (*value == kDistantPastTagValue) {
-    time = DistantPast();
-  } else if (*value == kDistantFutureTagValue) {
-    time = DistantFuture();
-  } else if (re2::RE2::FullMatch(*value,
-                                 "[-+]?[0-9]*.*(seconds|minutes|hours|days)")) {
-    base::TimeDelta time_delta;
-
-    if (!ParseTimeDelta(*value, &time_delta)) {
-      return false;
-    }
-
-    time = Now() + time_delta;
-  } else {
-    return false;
-  }
-
-  *value = base::TimeToISO8601(time);
-
-  return true;
-}
-
-std::vector<std::string> ParseTagsForText(std::string* text) {
-  DCHECK(text);
-
-  re2::StringPiece text_string_piece(*text);
-  RE2 r("<(.*)>");
-
-  std::vector<std::string> tags;
-
-  std::string tag;
-  while (RE2::FindAndConsume(&text_string_piece, r, &tag)) {
-    tag = base::ToLowerASCII(tag);
-    tags.push_back(tag);
-  }
-
-  return tags;
-}
-
-void ReplaceTagsForText(std::string* text,
-                        const std::vector<std::string>& tags) {
-  DCHECK(text);
-
-  for (const auto& tag : tags) {
-    const std::vector<std::string> components = base::SplitString(
-        tag, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-
-    if (components.size() != 2) {
-      FAIL() << "Invalid tag: " << tag;
-      return;
-    }
-
-    const std::string key = components.at(0);
-    std::string value = components.at(1);
-
-    if (key == "time") {
-      if (!ParseTimeTag(&value)) {
-        FAIL() << "Invalid tag: " << tag;
-        return;
-      }
-    } else {
-      FAIL() << "Unknown tag: " << tag;
-      return;
-    }
-
-    const std::string enclosed_tag = base::StringPrintf("<%s>", tag.c_str());
-    const std::string escaped_enclosed_tag = RE2::QuoteMeta(enclosed_tag);
-
-    RE2::Replace(text, escaped_enclosed_tag, value);
-  }
-}
-
-void ParseAndReplaceTagsForText(std::string* text) {
-  DCHECK(text);
-
-  const std::vector<std::string> tags = ParseTagsForText(text);
-  ReplaceTagsForText(text, tags);
-}
 
 std::string GetUuid(const std::string& name) {
   const ::testing::TestInfo* const test_info =
@@ -404,56 +276,6 @@ void MockDefaultPrefs(const std::unique_ptr<AdsClientMock>& mock) {
 }
 
 }  // namespace
-
-base::FilePath GetDataPath() {
-  base::FilePath path;
-  base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
-  path = path.AppendASCII("brave");
-  path = path.AppendASCII("vendor");
-  path = path.AppendASCII("bat-native-ads");
-  path = path.AppendASCII("data");
-  return path;
-}
-
-base::FilePath GetTestPath() {
-  base::FilePath path = GetDataPath();
-  path = path.AppendASCII("test");
-  return path;
-}
-
-absl::optional<std::string> ReadFileFromTestPathToString(
-    const std::string& name) {
-  base::FilePath path = GetTestPath();
-  path = path.AppendASCII(name);
-
-  std::string value;
-  if (!base::ReadFileToString(path, &value)) {
-    return absl::nullopt;
-  }
-
-  ParseAndReplaceTagsForText(&value);
-
-  return value;
-}
-
-base::FilePath GetResourcesPath() {
-  base::FilePath path = GetDataPath();
-  path = path.AppendASCII("resources");
-  return path;
-}
-
-absl::optional<std::string> ReadFileFromResourcePathToString(
-    const std::string& name) {
-  base::FilePath path = GetResourcesPath();
-  path = path.AppendASCII(name);
-
-  std::string value;
-  if (!base::ReadFileToString(path, &value)) {
-    return absl::nullopt;
-  }
-
-  return value;
-}
 
 void SetEnvironment(const mojom::Environment environment) {
   g_environment = environment;
@@ -756,56 +578,6 @@ void MockPrefs(const std::unique_ptr<AdsClientMock>& mock) {
   MockClearPref(mock);
 
   MockDefaultPrefs(mock);
-}
-
-int64_t TimestampFromDateString(const std::string& date) {
-  return TimeFromDateString(date).ToDoubleT();
-}
-
-base::Time TimeFromDateString(const std::string& date) {
-  base::Time time;
-  if (!base::Time::FromUTCString(date.c_str(), &time)) {
-    return time;
-  }
-
-  return time.UTCMidnight() + base::TimeDelta::FromDays(1) -
-         base::TimeDelta::FromMilliseconds(1);
-}
-
-int64_t DistantPastAsTimestamp() {
-  return 0;  // Thursday, 1 January 1970 00:00:00
-}
-
-base::Time DistantPast() {
-  return base::Time::FromDoubleT(DistantPastAsTimestamp());
-}
-
-std::string DistantPastAsISO8601() {
-  return base::TimeToISO8601(DistantPast());
-}
-
-int64_t NowAsTimestamp() {
-  return static_cast<int64_t>(Now().ToDoubleT());
-}
-
-base::Time Now() {
-  return base::Time::Now();
-}
-
-std::string NowAsISO8601() {
-  return base::TimeToISO8601(Now());
-}
-
-int64_t DistantFutureAsTimestamp() {
-  return 4102444799;  // Thursday, 31 December 2099 23:59:59
-}
-
-base::Time DistantFuture() {
-  return base::Time::FromDoubleT(DistantFutureAsTimestamp());
-}
-
-std::string DistantFutureAsISO8601() {
-  return base::TimeToISO8601(DistantFuture());
 }
 
 }  // namespace ads

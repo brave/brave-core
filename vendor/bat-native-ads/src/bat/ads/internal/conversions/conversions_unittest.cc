@@ -15,6 +15,7 @@
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
 #include "bat/ads/internal/resources/conversions/conversions_resource.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/pref_names.h"
 

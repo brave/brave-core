@@ -16,6 +16,10 @@ namespace inline_content_ads {
 using GetEligibleAdsCallback =
     std::function<void(const bool, const CreativeInlineContentAdList&)>;
 
+using GetEligibleAdsV2Callback =
+    std::function<void(const bool,
+                       const absl::optional<CreativeInlineContentAdInfo>&)>;
+
 }  // namespace inline_content_ads
 }  // namespace ads
 

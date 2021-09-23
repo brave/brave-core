@@ -24,6 +24,10 @@ using GetCreativeInlineContentAdsCallback =
                        const SegmentList& segments,
                        const CreativeInlineContentAdList& ads)>;
 
+using GetCreativeInlineContentAdsForDimensionsCallback =
+    std::function<void(const bool success,
+                       const CreativeInlineContentAdList& ads)>;
+
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CREATIVE_INLINE_CONTENT_ADS_DATABASE_TABLE_ALIASES_H_

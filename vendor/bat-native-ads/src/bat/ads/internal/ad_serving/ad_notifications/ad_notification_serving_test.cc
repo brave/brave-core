@@ -5,11 +5,15 @@
 
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 
+#include <map>
 #include <string>
 
 #include "base/guid.h"
+#include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/bundle/creative_ad_notification_unittest_util.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
+#include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -61,34 +65,6 @@ class BatAdsAdNotificationServingTest : public UnitTestBase {
   void RecordUserActivityEvents() {
     UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
     UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
-  }
-
-  CreativeAdNotificationInfo GetCreativeAdNotification() {
-    CreativeAdNotificationInfo creative_ad_notification;
-
-    creative_ad_notification.creative_instance_id = base::GenerateGUID();
-    creative_ad_notification.creative_set_id = base::GenerateGUID();
-    creative_ad_notification.campaign_id = base::GenerateGUID();
-    creative_ad_notification.start_at_timestamp = DistantPastAsTimestamp();
-    creative_ad_notification.end_at_timestamp = DistantFutureAsTimestamp();
-    creative_ad_notification.daily_cap = 1;
-    creative_ad_notification.advertiser_id = base::GenerateGUID();
-    creative_ad_notification.priority = 1;
-    creative_ad_notification.ptr = 1.0;
-    creative_ad_notification.per_day = 1;
-    creative_ad_notification.per_week = 1;
-    creative_ad_notification.per_month = 1;
-    creative_ad_notification.total_max = 1;
-    creative_ad_notification.value = 1.0;
-    creative_ad_notification.segment = "untargeted";
-    creative_ad_notification.geo_targets = {"US"};
-    creative_ad_notification.target_url = "https://brave.com";
-    CreativeDaypartInfo daypart;
-    creative_ad_notification.dayparts = {daypart};
-    creative_ad_notification.title = "Test Ad Title";
-    creative_ad_notification.body = "Test Ad Body";
-
-    return creative_ad_notification;
   }
 
   void ServeAd() {
@@ -165,6 +141,39 @@ TEST_F(BatAdsAdNotificationServingTest,
   EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
 
   // Act
+  ServeAd();
+
+  // Assert
+}
+
+TEST_F(BatAdsAdNotificationServingTest, ServeAdWithAdServingVersion2) {
+  // Arrange
+  RecordUserActivityEvents();
+
+  CreativeAdNotificationList creative_ad_notifications;
+  const CreativeAdNotificationInfo creative_ad_notification =
+      GetCreativeAdNotification();
+  creative_ad_notifications.push_back(creative_ad_notification);
+  Save(creative_ad_notifications);
+
+  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  resource::AntiTargeting anti_targeting_resource;
+  ad_notifications::AdServing ad_serving(&subdivision_targeting,
+                                         &anti_targeting_resource);
+
+  std::map<std::string, std::string> ad_serving_parameters;
+  ad_serving_parameters["ad_serving_version"] = 2;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(
+      {{features::kAdServing, ad_serving_parameters}}, {});
+
+  // Act
+  EXPECT_CALL(*ads_client_mock_,
+              ShowNotification(DoesMatchCreativeInstanceId(
+                  creative_ad_notification.creative_instance_id)))
+      .Times(1);
+
   ServeAd();
 
   // Assert
