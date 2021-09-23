@@ -7,11 +7,11 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_H_
 
 #include "base/check_op.h"
+#include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
-class RedeemUnblindedTokenDelegate;
 struct ConfirmationInfo;
 
 namespace privacy {

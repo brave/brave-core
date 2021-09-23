@@ -50,10 +50,10 @@ class ADS_EXPORT AdsClient {
   // specified |timestamp|
   virtual void RecordAdEvent(const std::string& ad_type,
                              const std::string& confirmation_type,
-                             const uint64_t timestamp) const = 0;
+                             const double timestamp) const = 0;
 
   // Get a list of ad events for the specified |ad_type| and |confirmation_type|
-  virtual std::vector<uint64_t> GetAdEvents(
+  virtual std::vector<double> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const = 0;
 

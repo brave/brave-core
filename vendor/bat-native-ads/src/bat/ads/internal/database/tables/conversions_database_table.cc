@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
 
-#include <cstdint>
 #include <utility>
 
 #include "base/check.h"
@@ -69,9 +68,9 @@ void Conversions::GetAll(GetConversionsCallback callback) {
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // type
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // url_pattern
       mojom::DBCommand::RecordBindingType::
-          STRING_TYPE,                                 // advertiser_public_key
-      mojom::DBCommand::RecordBindingType::INT_TYPE,   // observation_window
-      mojom::DBCommand::RecordBindingType::INT64_TYPE  // expiry_timestamp
+          STRING_TYPE,                                  // advertiser_public_key
+      mojom::DBCommand::RecordBindingType::INT_TYPE,    // observation_window
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE  // expire_at
   };
 
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
@@ -156,7 +155,7 @@ int Conversions::BindParameters(mojom::DBCommand* command,
     BindString(command, index++, conversion.url_pattern);
     BindString(command, index++, conversion.advertiser_public_key);
     BindInt(command, index++, conversion.observation_window);
-    BindInt64(command, index++, conversion.expiry_timestamp);
+    BindDouble(command, index++, conversion.expire_at.ToDoubleT());
 
     count++;
   }
@@ -211,7 +210,7 @@ ConversionInfo Conversions::GetConversionFromRecord(
   info.url_pattern = ColumnString(record, 2);
   info.advertiser_public_key = ColumnString(record, 3);
   info.observation_window = ColumnInt(record, 4);
-  info.expiry_timestamp = ColumnInt64(record, 5);
+  info.expire_at = base::Time::FromDoubleT(ColumnDouble(record, 5));
 
   return info;
 }

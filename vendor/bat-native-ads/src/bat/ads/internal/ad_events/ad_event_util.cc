@@ -42,7 +42,7 @@ absl::optional<base::Time> GetLastSeenAdTime(
     return absl::nullopt;
   }
 
-  return base::Time::FromDoubleT(static_cast<double>(iter->timestamp));
+  return iter->created_at;
 }
 
 absl::optional<base::Time> GetLastSeenAdvertiserTime(
@@ -59,7 +59,7 @@ absl::optional<base::Time> GetLastSeenAdvertiserTime(
     return absl::nullopt;
   }
 
-  return base::Time::FromDoubleT(static_cast<double>(iter->timestamp));
+  return iter->created_at;
 }
 
 }  // namespace ads

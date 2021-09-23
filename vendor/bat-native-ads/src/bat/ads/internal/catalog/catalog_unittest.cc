@@ -156,7 +156,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     conversion.type = "postview";
     conversion.url_pattern = "https://www.brave.com/1/*";
     conversion.observation_window = 30;
-    conversion.expiry_timestamp = 4105036799;
+    conversion.expire_at = TimestampToTime(4105036799);
     conversions.push_back(conversion);
 
     // Creative Sets
@@ -343,7 +343,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     conversion.url_pattern = "https://www.brave.com/2/*";
     conversion.observation_window = 7;
     conversion.advertiser_public_key = "";
-    conversion.expiry_timestamp = 4103049599;
+    conversion.expire_at = TimestampToTime(4103049599);
     conversions.push_back(conversion);
 
     // Creative Sets

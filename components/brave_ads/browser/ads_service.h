@@ -54,11 +54,8 @@ using OnToggleFlagAdCallback =
 using OnGetInlineContentAdCallback = base::OnceCallback<
     void(const bool, const std::string&, const base::DictionaryValue&)>;
 
-using GetAccountStatementCallback = base::OnceCallback<void(const bool,
-                                                            const int64_t,
-                                                            const int,
-                                                            const double,
-                                                            const double)>;
+using GetAccountStatementCallback = base::OnceCallback<
+    void(const bool, const double, const int, const double, const double)>;
 
 using GetAdDiagnosticsCallback =
     base::OnceCallback<void(const bool, const std::string&)>;
@@ -150,8 +147,8 @@ class AdsService : public KeyedService {
 
   virtual void ReconcileAdRewards() = 0;
 
-  virtual void GetAdsHistory(const uint64_t from_timestamp,
-                             const uint64_t to_timestamp,
+  virtual void GetAdsHistory(const double from_timestamp,
+                             const double to_timestamp,
                              OnGetAdsHistoryCallback callback) = 0;
 
   virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;

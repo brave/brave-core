@@ -7,7 +7,6 @@
 
 #include <cstdint>
 #include <functional>
-#include <limits>
 #include <string>
 #include <vector>
 
@@ -131,29 +130,13 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
         info.creative_set_id = creative_set.creative_set_id;
         info.campaign_id = campaign.campaign_id;
         info.advertiser_id = campaign.advertiser_id;
-
-        base::Time start_at_time;
-        if (base::Time::FromUTCString(campaign.start_at.c_str(),
-                                      &start_at_time)) {
-          info.start_at_timestamp =
-              static_cast<int64_t>(start_at_time.ToDoubleT());
-        } else {
-          info.start_at_timestamp = std::numeric_limits<int64_t>::min();
-
-          BLOG(1, "Creative set id " << creative_set.creative_set_id
-                                     << " has an invalid startAt timestamp");
+        if (!base::Time::FromUTCString(campaign.start_at.c_str(),
+                                       &info.start_at)) {
+          info.start_at = base::Time();
         }
-
-        base::Time end_at_time;
-        if (base::Time::FromUTCString(campaign.end_at.c_str(), &end_at_time)) {
-          info.end_at_timestamp = static_cast<int64_t>(end_at_time.ToDoubleT());
-        } else {
-          info.end_at_timestamp = std::numeric_limits<int64_t>::max();
-
-          BLOG(1, "Creative set id " << creative_set.creative_set_id
-                                     << " has an invalid endAt timestamp");
+        if (!base::Time::FromUTCString(campaign.end_at.c_str(), &info.end_at)) {
+          info.end_at = base::Time();
         }
-
         info.daily_cap = campaign.daily_cap;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
@@ -216,29 +199,13 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
         info.creative_set_id = creative_set.creative_set_id;
         info.campaign_id = campaign.campaign_id;
         info.advertiser_id = campaign.advertiser_id;
-
-        base::Time start_at_time;
-        if (base::Time::FromUTCString(campaign.start_at.c_str(),
-                                      &start_at_time)) {
-          info.start_at_timestamp =
-              static_cast<int64_t>(start_at_time.ToDoubleT());
-        } else {
-          info.start_at_timestamp = std::numeric_limits<int64_t>::min();
-
-          BLOG(1, "Creative set id " << creative_set.creative_set_id
-                                     << " has an invalid startAt timestamp");
+        if (!base::Time::FromUTCString(campaign.start_at.c_str(),
+                                       &info.start_at)) {
+          info.start_at = base::Time();
         }
-
-        base::Time end_at_time;
-        if (base::Time::FromUTCString(campaign.end_at.c_str(), &end_at_time)) {
-          info.end_at_timestamp = static_cast<int64_t>(end_at_time.ToDoubleT());
-        } else {
-          info.end_at_timestamp = std::numeric_limits<int64_t>::max();
-
-          BLOG(1, "Creative set id " << creative_set.creative_set_id
-                                     << " has an invalid endAt timestamp");
+        if (!base::Time::FromUTCString(campaign.end_at.c_str(), &info.end_at)) {
+          info.end_at = base::Time();
         }
-
         info.daily_cap = campaign.daily_cap;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
@@ -304,29 +271,13 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
         info.creative_set_id = creative_set.creative_set_id;
         info.campaign_id = campaign.campaign_id;
         info.advertiser_id = campaign.advertiser_id;
-
-        base::Time start_at_time;
-        if (base::Time::FromUTCString(campaign.start_at.c_str(),
-                                      &start_at_time)) {
-          info.start_at_timestamp =
-              static_cast<int64_t>(start_at_time.ToDoubleT());
-        } else {
-          info.start_at_timestamp = std::numeric_limits<int64_t>::min();
-
-          BLOG(1, "Creative set id " << creative_set.creative_set_id
-                                     << " has an invalid startAt timestamp");
+        if (!base::Time::FromUTCString(campaign.start_at.c_str(),
+                                       &info.start_at)) {
+          info.start_at = base::Time();
         }
-
-        base::Time end_at_time;
-        if (base::Time::FromUTCString(campaign.end_at.c_str(), &end_at_time)) {
-          info.end_at_timestamp = static_cast<int64_t>(end_at_time.ToDoubleT());
-        } else {
-          info.end_at_timestamp = std::numeric_limits<int64_t>::max();
-
-          BLOG(1, "Creative set id " << creative_set.creative_set_id
-                                     << " has an invalid endAt timestamp");
+        if (!base::Time::FromUTCString(campaign.end_at.c_str(), &info.end_at)) {
+          info.end_at = base::Time();
         }
-
         info.daily_cap = campaign.daily_cap;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
@@ -389,29 +340,13 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
         info.creative_set_id = creative_set.creative_set_id;
         info.campaign_id = campaign.campaign_id;
         info.advertiser_id = campaign.advertiser_id;
-
-        base::Time start_at_time;
-        if (base::Time::FromUTCString(campaign.start_at.c_str(),
-                                      &start_at_time)) {
-          info.start_at_timestamp =
-              static_cast<int64_t>(start_at_time.ToDoubleT());
-        } else {
-          info.start_at_timestamp = std::numeric_limits<int64_t>::min();
-
-          BLOG(1, "Creative set id " << creative_set.creative_set_id
-                                     << " has an invalid startAt timestamp");
+        if (!base::Time::FromUTCString(campaign.start_at.c_str(),
+                                       &info.start_at)) {
+          info.start_at = base::Time();
         }
-
-        base::Time end_at_time;
-        if (base::Time::FromUTCString(campaign.end_at.c_str(), &end_at_time)) {
-          info.end_at_timestamp = static_cast<int64_t>(end_at_time.ToDoubleT());
-        } else {
-          info.end_at_timestamp = std::numeric_limits<int64_t>::max();
-
-          BLOG(1, "Creative set id " << creative_set.creative_set_id
-                                     << " has an invalid endAt timestamp");
+        if (!base::Time::FromUTCString(campaign.end_at.c_str(), &info.end_at)) {
+          info.end_at = base::Time();
         }
-
         info.daily_cap = campaign.daily_cap;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;

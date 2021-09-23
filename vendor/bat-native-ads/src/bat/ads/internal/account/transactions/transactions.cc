@@ -16,15 +16,14 @@
 namespace ads {
 namespace transactions {
 
-TransactionList GetCleared(const int64_t from_timestamp,
-                           const int64_t to_timestamp) {
+TransactionList GetCleared(const base::Time& from, const base::Time& to) {
   TransactionList transactions = ConfirmationsState::Get()->GetTransactions();
 
   const auto iter = std::remove_if(
       transactions.begin(), transactions.end(),
-      [from_timestamp, to_timestamp](const TransactionInfo& transaction) {
-        return transaction.timestamp < from_timestamp ||
-               transaction.timestamp > to_timestamp;
+      [&from, &to](const TransactionInfo& transaction) {
+        const base::Time time = base::Time::FromDoubleT(transaction.timestamp);
+        return time < from || time > to;
       });
 
   transactions.erase(iter, transactions.end());
@@ -95,7 +94,7 @@ void Add(const double estimated_redemption_value,
          const ConfirmationInfo& confirmation) {
   TransactionInfo transaction;
 
-  transaction.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  transaction.timestamp = base::Time::Now().ToDoubleT();
   transaction.estimated_redemption_value = estimated_redemption_value;
   transaction.confirmation_type = std::string(confirmation.type);
 

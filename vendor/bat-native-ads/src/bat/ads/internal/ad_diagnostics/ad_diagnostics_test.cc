@@ -5,11 +5,12 @@
 
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics.h"
 
-#include <cstdint>
 #include <string>
 
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
+#include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_util.h"
 #include "bat/ads/internal/ad_diagnostics/ads_enabled_ad_diagnostics_entry.h"
@@ -19,6 +20,8 @@
 #include "bat/ads/internal/ad_diagnostics/locale_ad_diagnostics_entry.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
+#include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=AdDiagnosticsTest.*
@@ -75,15 +78,19 @@ TEST_F(AdDiagnosticsTest, CatalogPrefs) {
   const std::string catalog_id = "catalog_id";
   AdsClientHelper::Get()->SetStringPref(prefs::kCatalogId, catalog_id);
 
-  const base::Time catalog_update_time = base::Time::Now();
-  AdsClientHelper::Get()->SetInt64Pref(
-      prefs::kCatalogLastUpdated,
-      static_cast<int64_t>(catalog_update_time.ToDoubleT()));
-  const std::string update_time_str =
-      base::UTF16ToUTF8(base::TimeFormatShortDateAndTime(catalog_update_time));
+  const double catalog_last_updated_timestamp = NowAsTimestamp();
+  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
+                                        catalog_last_updated_timestamp);
+
+  const base::Time catalog_last_updated_time =
+      TimestampToTime(catalog_last_updated_timestamp);
+
+  const std::string formatted_catalog_last_updated_time = base::UTF16ToUTF8(
+      base::TimeFormatShortDateAndTime(catalog_last_updated_time));
 
   // Act & Assert
-  GetAds()->GetAdDiagnostics([&catalog_id, &update_time_str](
+  GetAds()->GetAdDiagnostics([&catalog_id,
+                              &formatted_catalog_last_updated_time](
                                  const bool success, const std::string& json) {
     ASSERT_TRUE(success);
     const auto json_value = base::JSONReader::Read(json);
@@ -93,7 +100,7 @@ TEST_F(AdDiagnosticsTest, CatalogPrefs) {
               GetDiagnosticsValueByKey(*json_value,
                                        CatalogIdAdDiagnosticsEntry().GetKey()));
     EXPECT_EQ(
-        update_time_str,
+        formatted_catalog_last_updated_time,
         GetDiagnosticsValueByKey(
             *json_value, CatalogLastUpdatedAdDiagnosticsEntry().GetKey()));
   });

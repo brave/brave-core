@@ -44,8 +44,8 @@ class BatAdsClientMojoBridge
 
   void RecordAdEvent(const std::string& ad_type,
                      const std::string& confirmation_type,
-                     const uint64_t timestamp) const override;
-  std::vector<uint64_t> GetAdEvents(
+                     const double timestamp) const override;
+  std::vector<double> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
   void ResetAdEvents() const override;

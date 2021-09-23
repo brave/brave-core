@@ -28,7 +28,7 @@ interface BatAdsClient {
   [Sync]
   CanShowBackgroundNotifications() => (bool can_show);
   [Sync]
-  GetAdEvents(string ad_type, string confirmation_type) => (array<uint64> ad_events);
+  GetAdEvents(string ad_type, string confirmation_type) => (array<double> ad_events);
   [Sync]
   LoadResourceForId(string id) => (string value);
   [Sync]
@@ -46,7 +46,7 @@ interface BatAdsClient {
 
   ShowNotification(string json);
   CloseNotification(string uuid);
-  RecordAdEvent(string ad_type, string confirmation_type, uint64 timestamp);
+  RecordAdEvent(string ad_type, string confirmation_type, double timestamp);
   ResetAdEvents();
   UrlRequest(ads.mojom.UrlRequest request) => (ads.mojom.UrlResponse response);
   Save(string name, string value) => (bool success);
@@ -95,7 +95,7 @@ interface BatAds {
   RemoveAllHistory() => (bool success);
   OnWalletUpdated(string payment_id, string seed);
   ReconcileAdRewards();
-  GetAdsHistory(uint64 from_timestamp, uint64 to_timestamp) => (string json);
+  GetAdsHistory(double from_timestamp, double to_timestamp) => (string json);
   GetAccountStatement() => (bool success, string json);
   GetAdDiagnostics() => (bool success, string json);
   ToggleAdThumbUp(string creative_instance_id, string creative_set_id, int32 action) => (string creative_instance_id, int32 action);

@@ -11,6 +11,7 @@
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info_aliases.h"
 #include "bat/ads/internal/timer.h"
+#include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace base {
@@ -19,8 +20,6 @@ class TimeDelta;
 }  // namespace base
 
 namespace ads {
-
-class RedeemUnblindedPaymentTokensDelegate;
 
 class RedeemUnblindedPaymentTokens final {
  public:

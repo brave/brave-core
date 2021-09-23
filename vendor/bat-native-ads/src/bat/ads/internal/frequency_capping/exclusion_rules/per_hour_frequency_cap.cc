@@ -44,10 +44,10 @@ std::string PerHourFrequencyCap::GetLastMessage() const {
 }
 
 bool PerHourFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
-  const std::deque<uint64_t> history =
-      GetTimestampHistoryForAdEvents(ad_events);
+  const std::deque<base::Time> history = GetHistoryForAdEvents(ad_events);
 
-  const uint64_t time_constraint = base::Time::kSecondsPerHour;
+  const base::TimeDelta time_constraint =
+      base::TimeDelta::FromSeconds(base::Time::kSecondsPerHour);
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
                                                        kPerHourFrequencyCap);

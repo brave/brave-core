@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TIME_FORMATTING_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TIME_FORMATTING_UTIL_H_
 
-#include <cstdint>
 #include <string>
 
 namespace base {
@@ -18,13 +17,13 @@ namespace ads {
 std::string LongFriendlyDateAndTime(const base::Time& time,
                                     const bool use_sentence_style = true);
 
-std::string LongFriendlyDateAndTime(const int64_t timestamp,
+std::string LongFriendlyDateAndTime(const double timestamp,
                                     const bool use_sentence_style = true);
 
 std::string FriendlyDateAndTime(const base::Time& time,
                                 const bool use_sentence_style = true);
 
-std::string FriendlyDateAndTime(const int64_t timestamp,
+std::string FriendlyDateAndTime(const double timestamp,
                                 const bool use_sentence_style = true);
 
 std::string TimeAsTimestampString(const base::Time& time);

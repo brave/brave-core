@@ -5,10 +5,8 @@
 
 #include "bat/ads/ad_event_history.h"
 
-#include <cstdint>
-
 #include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -20,12 +18,6 @@ class BatAdsAdEventHistoryTest : public UnitTestBase {
 
   ~BatAdsAdEventHistoryTest() override = default;
 
-  uint64_t Now() {
-    const uint64_t timestamp =
-        static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-    return timestamp;
-  }
-
   void RecordAdEvent(const AdType& ad_type,
                      const ConfirmationType& confirmation_type) {
     const std::string ad_type_as_string = std::string(ad_type);
@@ -33,14 +25,14 @@ class BatAdsAdEventHistoryTest : public UnitTestBase {
     const std::string confirmation_type_as_string =
         std::string(confirmation_type);
 
-    const uint64_t timestamp = Now();
+    const double timestamp = NowAsTimestamp();
 
     ad_event_history_.Record(ad_type_as_string, confirmation_type_as_string,
         timestamp);
   }
 
-  std::vector<uint64_t> GetAdEvent(const AdType& ad_type,
-                                   const ConfirmationType& confirmation_type) {
+  std::vector<double> GetAdEvent(const AdType& ad_type,
+                                 const ConfirmationType& confirmation_type) {
     const std::string ad_type_as_string = std::string(ad_type);
 
     const std::string confirmation_type_as_string =
@@ -58,12 +50,12 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForNewType) {
   RecordAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
 
   // Act
-  const std::vector<uint64_t> history =
+  const std::vector<double> history =
       GetAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
 
   // Assert
-  const uint64_t timestamp = Now();
-  const std::vector<uint64_t> expected_history = {timestamp};
+  const double timestamp = NowAsTimestamp();
+  const std::vector<double> expected_history = {timestamp};
   EXPECT_EQ(expected_history, history);
 }
 
@@ -73,12 +65,12 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForExistingType) {
   RecordAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
 
   // Act
-  const std::vector<uint64_t> history =
+  const std::vector<double> history =
       GetAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
 
   // Assert
-  const uint64_t timestamp = Now();
-  const std::vector<uint64_t> expected_history = {timestamp, timestamp};
+  const double timestamp = NowAsTimestamp();
+  const std::vector<double> expected_history = {timestamp, timestamp};
   EXPECT_EQ(expected_history, history);
 }
 
@@ -88,12 +80,12 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleTypes) {
   RecordAdEvent(AdType::kNewTabPageAd, ConfirmationType::kClicked);
 
   // Act
-  const std::vector<uint64_t> history =
+  const std::vector<double> history =
       GetAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
 
   // Assert
-  const uint64_t timestamp = Now();
-  const std::vector<uint64_t> expected_history = {timestamp};
+  const double timestamp = NowAsTimestamp();
+  const std::vector<double> expected_history = {timestamp};
   EXPECT_EQ(expected_history, history);
 }
 
@@ -101,17 +93,18 @@ TEST_F(BatAdsAdEventHistoryTest, PurgeHistoryOlderThan) {
   // Arrange
   RecordAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
 
-  FastForwardClockBy(base::TimeDelta::FromDays(1));
+  FastForwardClockBy(base::TimeDelta::FromDays(1) +
+                     base::TimeDelta::FromSeconds(1));
 
   RecordAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
 
   // Act
-  const std::vector<uint64_t> history =
+  const std::vector<double> history =
       GetAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
 
   // Assert
-  const uint64_t timestamp = Now();
-  const std::vector<uint64_t> expected_history = {timestamp};
+  const double timestamp = NowAsTimestamp();
+  const std::vector<double> expected_history = {timestamp};
   EXPECT_EQ(expected_history, history);
 }
 

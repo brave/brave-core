@@ -17,7 +17,7 @@ NewTabPageAdsPerDayFrequencyCap::NewTabPageAdsPerDayFrequencyCap() = default;
 NewTabPageAdsPerDayFrequencyCap::~NewTabPageAdsPerDayFrequencyCap() = default;
 
 bool NewTabPageAdsPerDayFrequencyCap::ShouldAllow() {
-  const std::deque<uint64_t> history =
+  const std::deque<base::Time> history =
       GetAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
@@ -33,9 +33,9 @@ std::string NewTabPageAdsPerDayFrequencyCap::GetLastMessage() const {
 }
 
 bool NewTabPageAdsPerDayFrequencyCap::DoesRespectCap(
-    const std::deque<uint64_t>& history) {
-  const uint64_t time_constraint =
-      base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
+    const std::deque<base::Time>& history) {
+  const base::TimeDelta time_constraint = base::TimeDelta::FromSeconds(
+      base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
 
   const uint64_t cap = features::GetMaximumNewTabPageAdsPerDay();
 

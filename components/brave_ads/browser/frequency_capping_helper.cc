@@ -17,18 +17,18 @@ FrequencyCappingHelper* FrequencyCappingHelper::GetInstance() {
 
 void FrequencyCappingHelper::RecordAdEvent(const std::string& ad_type,
                                            const std::string& confirmation_type,
-                                           const uint64_t timestamp) {
-  ad_event_history_.Record(ad_type, confirmation_type, timestamp);
+                                           const double timestamp) {
+  history_.Record(ad_type, confirmation_type, timestamp);
 }
 
-std::vector<uint64_t> FrequencyCappingHelper::GetAdEvents(
+std::vector<double> FrequencyCappingHelper::GetAdEvents(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
-  return ad_event_history_.Get(ad_type, confirmation_type);
+  return history_.Get(ad_type, confirmation_type);
 }
 
 void FrequencyCappingHelper::ResetAdEvents() {
-  ad_event_history_.Reset();
+  history_.Reset();
 }
 
 }  // namespace brave_ads

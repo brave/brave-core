@@ -70,7 +70,7 @@ bool UserActivity::HasInstance() {
 void UserActivity::RecordEvent(const UserActivityEventType event_type) {
   UserActivityEventInfo user_activity_event;
   user_activity_event.type = event_type;
-  user_activity_event.time = base::Time::Now();
+  user_activity_event.created_at = base::Time::Now();
 
   history_.push_back(user_activity_event);
 
@@ -127,7 +127,7 @@ UserActivityEventList UserActivity::GetHistoryForTimeWindow(
   const auto iter =
       std::remove_if(filtered_history.begin(), filtered_history.end(),
                      [&time](const UserActivityEventInfo& event) {
-                       return event.time < time;
+                       return event.created_at < time;
                      });
 
   filtered_history.erase(iter, filtered_history.end());

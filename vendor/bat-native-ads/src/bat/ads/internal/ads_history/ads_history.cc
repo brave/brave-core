@@ -8,6 +8,7 @@
 #include <deque>
 #include <memory>
 
+#include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_history_info.h"
@@ -28,14 +29,13 @@ namespace history {
 
 AdsHistoryInfo Get(const AdsHistoryFilterType filter_type,
                    const AdsHistorySortType sort_type,
-                   const uint64_t from_timestamp,
-                   const uint64_t to_timestamp) {
+                   const base::Time& from,
+                   const base::Time& to) {
   std::deque<AdHistoryInfo> ads_history = Client::Get()->GetAdsHistory();
 
   const auto date_range_filter = std::make_unique<AdsHistoryDateRangeFilter>();
   if (date_range_filter) {
-    ads_history =
-        date_range_filter->Apply(ads_history, from_timestamp, to_timestamp);
+    ads_history = date_range_filter->Apply(ads_history, from, to);
   }
 
   const auto filter = AdsHistoryFilterFactory::Build(filter_type);

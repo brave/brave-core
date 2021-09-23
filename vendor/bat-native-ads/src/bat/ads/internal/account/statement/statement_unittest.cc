@@ -88,22 +88,21 @@ TEST_F(BatAdsStatementTest, GetForThisMonth) {
   const WalletInfo wallet = GetWallet();
   GetAdRewards()->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("18 November 2020"));
+  AdvanceClock(TimeFromUTCString("18 November 2020"));
   AddTransactions(7);
 
   // Act
-  const StatementInfo statement =
-      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
+  const StatementInfo statement = statement_->Get(DistantPast(), Now());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.next_payment_date =
-      TimestampFromDateString("5 December 2020");
+      UTCTimeStringToTimestamp("5 December 2020");
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 48.0;
   expected_statement.earnings_last_month = 0.0;
   expected_statement.cleared_transactions =
-      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
+      transactions::GetCleared(DistantPast(), Now());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -128,21 +127,20 @@ TEST_F(BatAdsStatementTest, GetForThisMonthWithInternalServerErrorForPayments) {
   const WalletInfo wallet = GetWallet();
   GetAdRewards()->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("18 November 2020"));
+  AdvanceClock(TimeFromUTCString("18 November 2020"));
 
   // Act
-  const StatementInfo statement =
-      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
+  const StatementInfo statement = statement_->Get(DistantPast(), Now());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.next_payment_date =
-      TimestampFromDateString("5 January 2021");
+      UTCTimeStringToTimestamp("5 January 2021");
   expected_statement.ads_received_this_month = 0;
   expected_statement.earnings_this_month = 0.0;
   expected_statement.earnings_last_month = 0.0;
   expected_statement.cleared_transactions =
-      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
+      transactions::GetCleared(DistantPast(), Now());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -167,21 +165,20 @@ TEST_F(BatAdsStatementTest, GetForThisMonthWithInvalidJsonForPayments) {
   const WalletInfo wallet = GetWallet();
   GetAdRewards()->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("18 November 2020"));
+  AdvanceClock(TimeFromUTCString("18 November 2020"));
 
   // Act
-  const StatementInfo statement =
-      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
+  const StatementInfo statement = statement_->Get(DistantPast(), Now());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.next_payment_date =
-      TimestampFromDateString("5 January 2021");
+      UTCTimeStringToTimestamp("5 January 2021");
   expected_statement.ads_received_this_month = 0;
   expected_statement.earnings_this_month = 0.0;
   expected_statement.earnings_last_month = 0.0;
   expected_statement.cleared_transactions =
-      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
+      transactions::GetCleared(DistantPast(), Now());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -220,24 +217,23 @@ TEST_F(BatAdsStatementTest, GetForPastTwoMonths) {
   const WalletInfo wallet = GetWallet();
   GetAdRewards()->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("21 October 2020"));
+  AdvanceClock(TimeFromUTCString("21 October 2020"));
   AddTransactions(14);
-  AdvanceClock(TimeFromDateString("30 November 2020"));
+  AdvanceClock(TimeFromUTCString("30 November 2020"));
   AddTransactions(7);
 
   // Act
-  const StatementInfo statement =
-      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
+  const StatementInfo statement = statement_->Get(DistantPast(), Now());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.next_payment_date =
-      TimestampFromDateString("5 December 2020");
+      UTCTimeStringToTimestamp("5 December 2020");
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 27.35;
   expected_statement.earnings_last_month = 20.65;
   expected_statement.cleared_transactions =
-      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
+      transactions::GetCleared(DistantPast(), Now());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -276,24 +272,23 @@ TEST_F(BatAdsStatementTest, GetForPastTwoMonthsSplitOverTwoYears) {
   const WalletInfo wallet = GetWallet();
   GetAdRewards()->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("25 December 2019"));
+  AdvanceClock(TimeFromUTCString("25 December 2019"));
   AddTransactions(14);
-  AdvanceClock(TimeFromDateString("1 January 2020"));
+  AdvanceClock(TimeFromUTCString("3 January 2020"));
   AddTransactions(7);
 
   // Act
-  const StatementInfo statement =
-      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
+  const StatementInfo statement = statement_->Get(DistantPast(), Now());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.next_payment_date =
-      TimestampFromDateString("5 January 2020");
+      UTCTimeStringToTimestamp("5 January 2020");
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 27.35;
   expected_statement.earnings_last_month = 20.65;
   expected_statement.cleared_transactions =
-      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
+      transactions::GetCleared(DistantPast(), Now());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -335,24 +330,23 @@ TEST_F(BatAdsStatementTest,
   GetAdRewards()->MaybeReconcile(wallet);
   GetAdRewards()->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("21 October 2020"));
+  AdvanceClock(TimeFromUTCString("21 October 2020"));
   AddTransactions(35);
-  AdvanceClock(TimeFromDateString("18 November 2020"));
+  AdvanceClock(TimeFromUTCString("18 November 2020"));
   AddTransactions(7);
 
   // Act
-  const StatementInfo statement =
-      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
+  const StatementInfo statement = statement_->Get(DistantPast(), Now());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.next_payment_date =
-      TimestampFromDateString("5 December 2020");
+      UTCTimeStringToTimestamp("5 December 2020");
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 27.35;
   expected_statement.earnings_last_month = 20.65;
   expected_statement.cleared_transactions =
-      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
+      transactions::GetCleared(DistantPast(), Now());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);

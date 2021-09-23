@@ -6,19 +6,22 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_FREQUENCY_CAPPING_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_FREQUENCY_CAPPING_UTIL_H_
 
-#include <cstdint>
 #include <deque>
 
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 
+namespace base {
+class Time;
+class TimeDelta;
+}  // namespace base
+
 namespace ads {
 
-std::deque<uint64_t> GetTimestampHistoryForAdEvents(
-    const AdEventList& ad_events);
+std::deque<base::Time> GetHistoryForAdEvents(const AdEventList& ad_events);
 
 bool DoesHistoryRespectCapForRollingTimeConstraint(
-    const std::deque<uint64_t>& history,
-    const uint64_t time_constraint_in_seconds,
+    const std::deque<base::Time>& history,
+    const base::TimeDelta& time_constraint,
     const uint64_t cap);
 
 }  // namespace ads

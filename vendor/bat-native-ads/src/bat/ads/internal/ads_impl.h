@@ -190,8 +190,8 @@ class AdsImpl final : public Ads,
 
   AdsHistoryInfo GetAdsHistory(const AdsHistoryFilterType filter_type,
                                const AdsHistorySortType sort_type,
-                               const uint64_t from_timestamp,
-                               const uint64_t to_timestamp) override;
+                               const double from_timestamp,
+                               const double to_timestamp) override;
 
   void GetAccountStatement(GetAccountStatementCallback callback) override;
 

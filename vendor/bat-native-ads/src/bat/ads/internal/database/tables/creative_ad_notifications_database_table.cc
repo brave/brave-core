@@ -6,7 +6,6 @@
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 
 #include <algorithm>
-#include <cstdint>
 #include <utility>
 #include <vector>
 
@@ -157,8 +156,8 @@ void CreativeAdNotifications::GetForSegments(
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // start_at_timestamp
-      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // end_at_timestamp
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // start_at
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // end_at
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // daily_cap
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // priority
@@ -239,8 +238,8 @@ void CreativeAdNotifications::GetAll(
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // start_at_timestamp
-      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // end_at_timestamp
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // start_at
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // end_at
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // daily_cap
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // priority
@@ -406,8 +405,10 @@ CreativeAdNotificationInfo CreativeAdNotifications::GetFromRecord(
   creative_ad_notification.creative_instance_id = ColumnString(record, 0);
   creative_ad_notification.creative_set_id = ColumnString(record, 1);
   creative_ad_notification.campaign_id = ColumnString(record, 2);
-  creative_ad_notification.start_at_timestamp = ColumnInt64(record, 3);
-  creative_ad_notification.end_at_timestamp = ColumnInt64(record, 4);
+  creative_ad_notification.start_at =
+      base::Time::FromDoubleT(ColumnDouble(record, 3));
+  creative_ad_notification.end_at =
+      base::Time::FromDoubleT(ColumnDouble(record, 4));
   creative_ad_notification.daily_cap = ColumnInt(record, 5);
   creative_ad_notification.advertiser_id = ColumnString(record, 6);
   creative_ad_notification.priority = ColumnInt(record, 7);

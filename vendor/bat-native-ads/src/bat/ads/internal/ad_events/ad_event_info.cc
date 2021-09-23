@@ -8,7 +8,9 @@
 namespace ads {
 
 AdEventInfo::AdEventInfo() = default;
+
 AdEventInfo::AdEventInfo(const AdEventInfo& info) = default;
+
 AdEventInfo::~AdEventInfo() = default;
 
 }  // namespace ads

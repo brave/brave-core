@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/legacy_migration/legacy_conversion_migration.h"
 
-#include <cstdint>
 #include <string>
 
 #include "base/check.h"
@@ -28,7 +27,7 @@ namespace {
 const char kFilename[] = "ad_conversions.json";
 
 const char kListKey[] = "ad_conversions";
-const char kTimestampKey[] = "timestamp_in_seconds";
+const char kTimestampKey[] = "timestamp";
 const char kCreativeSetIdKey[] = "creative_set_id";
 const char kCreativeInstanceIdKey[] = "uuid";
 
@@ -42,8 +41,8 @@ absl::optional<ConversionQueueItemInfo> GetFromDictionary(
     return absl::nullopt;
   }
 
-  int64_t timestamp;
-  if (!base::StringToInt64(*timestamp_value, &timestamp)) {
+  double timestamp;
+  if (!base::StringToDouble(*timestamp_value, &timestamp)) {
     return absl::nullopt;
   }
 
@@ -64,7 +63,7 @@ absl::optional<ConversionQueueItemInfo> GetFromDictionary(
   ConversionQueueItemInfo conversion_queue_item;
   conversion_queue_item.creative_set_id = *creative_set_id_value;
   conversion_queue_item.creative_instance_id = *creative_instance_id_value;
-  conversion_queue_item.timestamp = base::Time::FromDoubleT(timestamp);
+  conversion_queue_item.confirm_at = base::Time::FromDoubleT(timestamp);
 
   return conversion_queue_item;
 }

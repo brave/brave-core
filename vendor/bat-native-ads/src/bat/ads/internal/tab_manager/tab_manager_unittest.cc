@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/internal/user_activity/user_activity_event_info.h"
 
@@ -81,7 +82,7 @@ TEST_F(BatAdsTabManagerTest, OpenedNewTabUserActivityEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -102,7 +103,7 @@ TEST_F(BatAdsTabManagerTest, FocusedOnExistingTabUserActivityEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kFocusedOnExistingTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -202,7 +203,7 @@ TEST_F(BatAdsTabManagerTest,
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -241,10 +242,10 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenUpdatingExistingTab) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
   event.type = UserActivityEventType::kTabUpdated;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -277,10 +278,10 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenClosingTab) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
   event.type = UserActivityEventType::kClosedTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -312,10 +313,10 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenPlayingMedia) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
   event.type = UserActivityEventType::kPlayedMedia;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -349,10 +350,10 @@ TEST_F(BatAdsTabManagerTest, DoNotRecordEventWhenAlreadyPlayingMedia) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
   event.type = UserActivityEventType::kPlayedMedia;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -386,13 +387,13 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenStoppedPlayingMedia) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
   event.type = UserActivityEventType::kPlayedMedia;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
   event.type = UserActivityEventType::kStoppedPlayingMedia;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);

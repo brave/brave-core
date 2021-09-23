@@ -6,25 +6,30 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_UNITTEST_TIME_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_UNITTEST_TIME_UTIL_H_
 
-#include <cstdint>
 #include <string>
 
-#include "base/time/time.h"
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
-int64_t TimestampFromDateString(const std::string& date);
-base::Time TimeFromDateString(const std::string& date);
+base::Time TimeFromUTCString(const std::string& time_string);
+double UTCTimeStringToTimestamp(const std::string& time_string);
 
-int64_t DistantPastAsTimestamp();
+base::Time TimestampToTime(const double timestamp);
+double TimeToTimestamp(const base::Time& time);
+
+base::Time MinTime();
+base::Time MaxTime();
+
 base::Time DistantPast();
 std::string DistantPastAsISO8601();
 
-int64_t NowAsTimestamp();
+double NowAsTimestamp();
 base::Time Now();
 std::string NowAsISO8601();
 
-int64_t DistantFutureAsTimestamp();
 base::Time DistantFuture();
 std::string DistantFutureAsISO8601();
 

@@ -388,13 +388,16 @@ void AdsImpl::ReconcileAdRewards() {
 
 AdsHistoryInfo AdsImpl::GetAdsHistory(const AdsHistoryFilterType filter_type,
                                       const AdsHistorySortType sort_type,
-                                      const uint64_t from_timestamp,
-                                      const uint64_t to_timestamp) {
+                                      const double from_timestamp,
+                                      const double to_timestamp) {
   if (!IsInitialized()) {
     return {};
   }
 
-  return history::Get(filter_type, sort_type, from_timestamp, to_timestamp);
+  const base::Time from = base::Time::FromDoubleT(from_timestamp);
+  const base::Time to = base::Time::FromDoubleT(to_timestamp);
+
+  return history::Get(filter_type, sort_type, from, to);
 }
 
 void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
@@ -405,10 +408,10 @@ void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
     return;
   }
 
-  const int64_t to_timestamp =
-      static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  const base::Time distant_past;
+  const base::Time now = base::Time::Now();
 
-  statement = account_->GetStatement(0, to_timestamp);
+  statement = account_->GetStatement(distant_past, now);
 
   callback(/* success */ true, statement);
 }

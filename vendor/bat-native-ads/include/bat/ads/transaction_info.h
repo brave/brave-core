@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_TRANSACTION_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_TRANSACTION_INFO_H_
 
-#include <cstdint>
 #include <string>
 
 #include "bat/ads/export.h"
@@ -26,7 +25,7 @@ struct ADS_EXPORT TransactionInfo final {
   bool operator==(const TransactionInfo& rhs) const;
   bool operator!=(const TransactionInfo& rhs) const;
 
-  int64_t timestamp = 0;
+  double timestamp = 0.0;
   double estimated_redemption_value = 0.0;
   std::string confirmation_type;
 

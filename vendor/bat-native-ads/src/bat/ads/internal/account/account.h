@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 
-#include <cstdint>
 #include <memory>
 #include <string>
 
@@ -17,6 +16,10 @@
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info_aliases.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
@@ -54,8 +57,8 @@ class Account final : public AdRewardsDelegate,
   void Deposit(const std::string& creative_instance_id,
                const ConfirmationType& confirmation_type);
 
-  StatementInfo GetStatement(const int64_t from_timestamp,
-                             const int64_t to_timestamp) const;
+  StatementInfo GetStatement(const base::Time& from,
+                             const base::Time& to) const;
 
   void Reconcile();
 

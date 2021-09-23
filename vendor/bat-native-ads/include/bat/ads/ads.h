@@ -188,8 +188,8 @@ class ADS_EXPORT Ads {
   // |AdsHistoryInfo|
   virtual AdsHistoryInfo GetAdsHistory(const AdsHistoryFilterType filter_type,
                                        const AdsHistorySortType sort_type,
-                                       const uint64_t from_timestamp,
-                                       const uint64_t to_timestamp) = 0;
+                                       const double from_timestamp,
+                                       const double to_timestamp) = 0;
 
   // Should be called to get the statement of accounts. The callback takes one
   // argument - |StatementInfo| which contains next payment date, ads received

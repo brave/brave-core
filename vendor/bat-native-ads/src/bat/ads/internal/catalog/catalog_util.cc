@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/catalog/catalog_util.h"
 
-#include <cstdint>
-
 #include "base/time/time.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -26,10 +24,11 @@ bool DoesCatalogExist() {
 bool HasCatalogExpired() {
   const base::Time now = base::Time::Now();
 
-  const int64_t catalog_last_updated =
-      AdsClientHelper::Get()->GetInt64Pref(prefs::kCatalogLastUpdated);
+  const double catalog_last_updated_timestamp =
+      AdsClientHelper::Get()->GetDoublePref(prefs::kCatalogLastUpdated);
 
-  const base::Time time = base::Time::FromDoubleT(catalog_last_updated);
+  const base::Time time =
+      base::Time::FromDoubleT(catalog_last_updated_timestamp);
 
   if (now < time + base::TimeDelta::FromDays(kCatalogLifespanInDays)) {
     return false;

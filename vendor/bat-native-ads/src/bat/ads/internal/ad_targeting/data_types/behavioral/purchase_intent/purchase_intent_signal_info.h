@@ -8,6 +8,7 @@
 
 #include <cstdint>
 
+#include "base/time/time.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 
 namespace ads {
@@ -19,7 +20,7 @@ struct PurchaseIntentSignalInfo final {
   PurchaseIntentSignalInfo(const PurchaseIntentSignalInfo& info);
   ~PurchaseIntentSignalInfo();
 
-  uint64_t timestamp_in_seconds = 0;
+  base::Time created_at;
   SegmentList segments;
   uint16_t weight = 0;
 };

@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/conversions/conversions.h"
 
-#include <cstdint>
 #include <memory>
 
 #include "base/strings/stringprintf.h"
@@ -41,11 +40,8 @@ class BatAdsConversionsTest : public UnitTestBase {
         conversions, [](const bool success) { ASSERT_TRUE(success); });
   }
 
-  int64_t CalculateExpiryTimestamp(const int observation_window) {
-    base::Time time = base::Time::Now();
-    time += base::TimeDelta::FromDays(observation_window);
-
-    return static_cast<int64_t>(time.ToDoubleT());
+  base::Time CalculateExpireAtTime(const int observation_window) {
+    return Now() + base::TimeDelta::FromDays(observation_window);
   }
 
   void FireAdEvent(const std::string& creative_set_id,
@@ -54,8 +50,8 @@ class BatAdsConversionsTest : public UnitTestBase {
     ad_event.type = AdType::kAdNotification;
     ad_event.creative_instance_id = "7a3b6d9f-d0b7-4da6-8988-8d5b8938c94f";
     ad_event.creative_set_id = creative_set_id;
-    ad_event.timestamp = NowAsTimestamp();
     ad_event.confirmation_type = confirmation_type;
+    ad_event.created_at = Now();
 
     LogAdEvent(ad_event, [](const bool success) { ASSERT_TRUE(success); });
   }
@@ -79,8 +75,7 @@ TEST_F(BatAdsConversionsTest, ShouldNotAllowConversionTracking) {
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foobar.com/*";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -110,8 +105,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAd) {
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -147,8 +141,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedAd) {
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/*/baz";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -185,8 +178,8 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
   conversion_1.type = "postview";
   conversion_1.url_pattern = "https://www.foo.com/*";
   conversion_1.observation_window = 3;
-  conversion_1.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion_1.observation_window);
+  conversion_1.expire_at =
+      CalculateExpireAtTime(conversion_1.observation_window);
   conversions.push_back(conversion_1);
 
   ConversionInfo conversion_2;
@@ -194,8 +187,8 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
   conversion_2.type = "postclick";
   conversion_2.url_pattern = "https://www.foo.com/*/baz";
   conversion_2.observation_window = 3;
-  conversion_2.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion_2.observation_window);
+  conversion_2.expire_at =
+      CalculateExpireAtTime(conversion_2.observation_window);
   conversions.push_back(conversion_2);
 
   SaveConversions(conversions);
@@ -243,8 +236,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*bar*";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -281,8 +273,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/bar";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -318,8 +309,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/bar";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -374,8 +364,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -414,8 +403,7 @@ TEST_F(BatAdsConversionsTest,
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/bar/*";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -447,8 +435,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
   conversion.type = "postview";
   conversion.url_pattern = "https://*.bar.com/*";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -487,8 +474,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/b*r/*";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -522,8 +508,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
   conversion.type = "postview";
   conversion.url_pattern = "https://foo.com/baz";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -561,8 +546,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
   conversion.type = "postview";
   conversion.url_pattern = "https://foo.com/bar";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -600,8 +584,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
   conversion.type = "postview";
   conversion.url_pattern = "https://foo.com/qux";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -644,8 +627,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
   conversion.type = "postview";
   conversion.url_pattern = "https://brave.com/thankyou";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -689,8 +671,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
   conversion.type = "postview";
   conversion.url_pattern = "https://brave.com/foobar";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -735,8 +716,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   conversion.type = "postview";
   conversion.url_pattern = "https://brave.com/foobar?conversion_id=*";
   conversion.observation_window = 3;
-  conversion.expiry_timestamp =
-      CalculateExpiryTimestamp(conversion.observation_window);
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
   conversions.push_back(conversion);
 
   SaveConversions(conversions);

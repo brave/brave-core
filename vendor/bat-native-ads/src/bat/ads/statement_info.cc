@@ -5,8 +5,6 @@
 
 #include "bat/ads/statement_info.h"
 
-#include <cstdint>
-
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -24,7 +22,7 @@ StatementInfo::StatementInfo(const StatementInfo& info) = default;
 StatementInfo::~StatementInfo() = default;
 
 bool StatementInfo::operator==(const StatementInfo& rhs) const {
-  return next_payment_date == rhs.next_payment_date &&
+  return DoubleEquals(next_payment_date, rhs.next_payment_date) &&
          ads_received_this_month == rhs.ads_received_this_month &&
          DoubleEquals(earnings_this_month, rhs.earnings_this_month) &&
          DoubleEquals(earnings_last_month, rhs.earnings_last_month) &&
@@ -95,7 +93,7 @@ bool StatementInfo::FromJson(const std::string& json) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-uint64_t StatementInfo::GetNextPaymentDateFromDictionary(
+double StatementInfo::GetNextPaymentDateFromDictionary(
     base::DictionaryValue* dictionary) const {
   DCHECK(dictionary);
 
@@ -104,12 +102,12 @@ uint64_t StatementInfo::GetNextPaymentDateFromDictionary(
     return 0;
   }
 
-  uint64_t value_as_uint64 = 0;
-  if (!base::StringToUint64(*value, &value_as_uint64)) {
-    return 0;
+  double value_as_double = 0.0;
+  if (!base::StringToDouble(*value, &value_as_double)) {
+    return 0.0;
   }
 
-  return value_as_uint64;
+  return value_as_double;
 }
 
 uint64_t StatementInfo::GetAdsReceivedThisMonthFromDictionary(

@@ -6,8 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSION_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSION_INFO_H_
 
-#include <cstdint>
 #include <string>
+
+#include "base/time/time.h"
 
 namespace ads {
 
@@ -24,7 +25,7 @@ struct ConversionInfo final {
   std::string url_pattern;
   std::string advertiser_public_key;
   int observation_window = 0;
-  int64_t expiry_timestamp = 0;
+  base::Time expire_at;
 };
 
 }  // namespace ads

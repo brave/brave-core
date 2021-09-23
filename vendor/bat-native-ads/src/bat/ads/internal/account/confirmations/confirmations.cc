@@ -125,7 +125,7 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   confirmation.id = base::GenerateGUID();
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = confirmation_type;
-  confirmation.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  confirmation.created_at = base::Time::Now();
 
   if (ShouldRewardUser() &&
       !ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
@@ -284,7 +284,7 @@ void Confirmations::OnFailedToRedeemUnblindedToken(
               << std::string(confirmation.type));
 
   if (should_retry) {
-    if (!confirmation.created) {
+    if (!confirmation.was_created) {
       CreateNewConfirmationAndAppendToRetryQueue(confirmation);
     } else {
       AppendToRetryQueue(confirmation);

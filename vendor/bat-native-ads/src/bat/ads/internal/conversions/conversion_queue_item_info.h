@@ -26,7 +26,7 @@ struct ConversionQueueItemInfo final {
   std::string advertiser_id;
   std::string conversion_id;
   std::string advertiser_public_key;
-  base::Time timestamp;
+  base::Time confirm_at;
 
   bool IsValid() const;
 };

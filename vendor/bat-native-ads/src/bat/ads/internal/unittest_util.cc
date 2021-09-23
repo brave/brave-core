@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/unittest_util.h"
 
+#include <cstdint>
+
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
@@ -32,7 +34,7 @@ namespace {
 
 static std::map<std::string, uint16_t> g_url_endpoint_indexes;
 
-static std::map<std::string, std::vector<uint64_t>> g_ad_events;
+static std::map<std::string, std::vector<double>> g_ad_events;
 
 static std::map<std::string, std::string> g_prefs;
 
@@ -268,7 +270,7 @@ void MockDefaultPrefs(const std::unique_ptr<AdsClientMock>& mock) {
   mock->SetStringPref(prefs::kCatalogId, "");
   mock->SetIntegerPref(prefs::kCatalogVersion, 1);
   mock->SetInt64Pref(prefs::kCatalogPing, 7200000);
-  mock->SetInt64Pref(prefs::kCatalogLastUpdated, DistantPastAsTimestamp());
+  mock->SetDoublePref(prefs::kCatalogLastUpdated, DistantPast().ToDoubleT());
 
   mock->SetDoublePref(prefs::kUnreconciledTransactions, 0.0);
 
@@ -381,7 +383,7 @@ void MockRecordAdEvent(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, RecordAdEvent(_, _, _))
       .WillByDefault(Invoke([](const std::string& ad_type,
                                const std::string& confirmation_type,
-                               const uint64_t timestamp) {
+                               const double timestamp) {
         DCHECK(!ad_type.empty());
         DCHECK(!confirmation_type.empty());
 
@@ -401,7 +403,7 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetAdEvents(_, _))
       .WillByDefault(Invoke(
           [](const std::string& ad_type,
-             const std::string& confirmation_type) -> std::vector<uint64_t> {
+             const std::string& confirmation_type) -> std::vector<double> {
             DCHECK(!ad_type.empty());
             DCHECK(!confirmation_type.empty());
 

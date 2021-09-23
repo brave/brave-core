@@ -153,24 +153,21 @@ bool CatalogInfo::FromJson(const std::string& json,
         conversion.type = conversion_node["type"].GetString();
         conversion.url_pattern = conversion_node["urlPattern"].GetString();
         conversion.observation_window =
-            conversion_node["observationWindow"].GetUint();
+            conversion_node["observationWindow"].GetInt();
 
         if (conversion_node.HasMember("conversionPublicKey")) {
           conversion.advertiser_public_key =
               conversion_node["conversionPublicKey"].GetString();
         }
 
-        base::Time end_at_timestamp;
+        base::Time end_at_time;
         if (!base::Time::FromUTCString(campaign_info.end_at.c_str(),
-                                       &end_at_timestamp)) {
+                                       &end_at_time)) {
           continue;
         }
 
-        base::Time expiry_timestamp =
-            end_at_timestamp +
-            base::TimeDelta::FromDays(conversion.observation_window);
-        conversion.expiry_timestamp =
-            static_cast<int64_t>(expiry_timestamp.ToDoubleT());
+        conversion.expire_at = end_at_time + base::TimeDelta::FromDays(
+                                                 conversion.observation_window);
 
         creative_set_info.conversions.push_back(conversion);
       }

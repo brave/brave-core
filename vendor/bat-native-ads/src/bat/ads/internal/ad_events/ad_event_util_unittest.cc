@@ -92,9 +92,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTime) {
       GetLastSeenAdTime(ad_events, creative_ad_notification_1);
 
   // Assert
-  const base::Time expected_timestamp = now - base::TimeDelta::FromHours(6);
-  const base::Time expected_ad_last_seen = base::Time::FromDoubleT(
-      static_cast<int64_t>(expected_timestamp.ToDoubleT()));
+  const base::Time expected_ad_last_seen = now - base::TimeDelta::FromHours(6);
   EXPECT_EQ(expected_ad_last_seen, ad_last_seen.value());
 }
 
@@ -179,10 +177,8 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTime) {
       GetLastSeenAdvertiserTime(ad_events, creative_ad_notification_3);
 
   // Assert
-  const base::Time expected_timestamp = now - base::TimeDelta::FromHours(3);
-  const absl::optional<base::Time> expected_advertiser_last_seen =
-      base::Time::FromDoubleT(
-          static_cast<int64_t>(expected_timestamp.ToDoubleT()));
+  const base::Time expected_advertiser_last_seen =
+      now - base::TimeDelta::FromHours(3);
   EXPECT_EQ(expected_advertiser_last_seen, advertiser_last_seen.value());
 }
 

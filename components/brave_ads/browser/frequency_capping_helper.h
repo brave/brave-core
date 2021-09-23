@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_FREQUENCY_CAPPING_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_FREQUENCY_CAPPING_HELPER_H_
 
-#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -21,10 +20,10 @@ class FrequencyCappingHelper {
 
   void RecordAdEvent(const std::string& ad_type,
                      const std::string& confirmation_type,
-                     const uint64_t timestamp);
+                     const double timestamp);
 
-  std::vector<uint64_t> GetAdEvents(const std::string& ad_type,
-                                    const std::string& confirmation_type) const;
+  std::vector<double> GetAdEvents(const std::string& ad_type,
+                                  const std::string& confirmation_type) const;
 
   void ResetAdEvents();
 
@@ -34,7 +33,7 @@ class FrequencyCappingHelper {
   FrequencyCappingHelper();
   ~FrequencyCappingHelper();
 
-  ads::AdEventHistory ad_event_history_;
+  ads::AdEventHistory history_;
 
   FrequencyCappingHelper(const FrequencyCappingHelper&) = delete;
   FrequencyCappingHelper& operator=(const FrequencyCappingHelper&) = delete;

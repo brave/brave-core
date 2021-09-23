@@ -28,7 +28,6 @@
 #include "bat/ads/internal/server/ads_server_util.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
-#include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "net/http/http_status_code.h"

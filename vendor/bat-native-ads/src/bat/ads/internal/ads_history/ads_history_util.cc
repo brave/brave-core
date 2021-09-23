@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/ads_history/ads_history_util.h"
 
-#include <cstdint>
-
 #include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
@@ -22,8 +20,7 @@ AdHistoryInfo BuildAdHistory(const AdInfo& ad,
                              const std::string& body) {
   AdHistoryInfo ad_history;
 
-  ad_history.timestamp_in_seconds =
-      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  ad_history.timestamp = base::Time::Now().ToDoubleT();
 
   ad_history.ad_content.type = ad.type;
   ad_history.ad_content.uuid = ad.uuid;

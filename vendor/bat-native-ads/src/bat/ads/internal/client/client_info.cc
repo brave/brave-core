@@ -43,10 +43,9 @@ bool ClientInfo::FromJson(const std::string& json) {
 #if !defined(OS_IOS)
   if (document.HasMember("adsShownHistory")) {
     for (const auto& ad_shown : document["adsShownHistory"].GetArray()) {
-      // adsShownHistory used to be an array of timestamps, so if
-      // that's what we have here don't import them and we'll just
-      // start fresh.
-      if (ad_shown.IsUint64()) {
+      // adsShownHistory used to be an array of timestamps, so if that's what we
+      // have here don't import them and we'll just start fresh.
+      if (ad_shown.IsInt64()) {
         continue;
       }
       AdHistoryInfo ad_history;
@@ -107,8 +106,8 @@ bool ClientInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("nextCheckServeAd")) {
-    next_ad_serving_interval_timestamp =
-        document["nextCheckServeAd"].GetUint64();
+    const double timestamp = document["nextCheckServeAd"].GetDouble();
+    serve_next_ad_at = base::Time::FromDoubleT(timestamp);
   }
 
   if (document.HasMember("textClassificationProbabilitiesHistory")) {
@@ -194,7 +193,7 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& state) {
   writer->EndObject();
 
   writer->String("nextCheckServeAd");
-  writer->Uint64(state.next_ad_serving_interval_timestamp);
+  writer->Double(static_cast<double>(state.serve_next_ad_at.ToDoubleT()));
 
   writer->String("textClassificationProbabilitiesHistory");
   writer->StartArray();

@@ -252,8 +252,8 @@ void SubdivisionTargeting::Retry() {
 }
 
 void SubdivisionTargeting::FetchAfterDelay() {
-  const uint64_t ping = g_is_debug ? kDebugFetchSubdivisionTargetingPing
-                                   : kFetchSubdivisionTargetingPing;
+  const int64_t ping = g_is_debug ? kDebugFetchSubdivisionTargetingPing
+                                  : kFetchSubdivisionTargetingPing;
 
   const base::TimeDelta delay = base::TimeDelta::FromSeconds(ping);
 

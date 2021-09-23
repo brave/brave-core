@@ -5,14 +5,13 @@
 
 #include "bat/ads/internal/ads_history/ads_history_util.h"
 
-#include <cstdint>
-
 #include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/internal/url_util.h"
 
@@ -46,9 +45,7 @@ TEST_F(BatAdsAdsHistoryUtilTest, BuildAd) {
   // Assert
   AdHistoryInfo expected_ad_history;
 
-  expected_ad_history.timestamp_in_seconds =
-      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-
+  expected_ad_history.timestamp = NowAsTimestamp();
   expected_ad_history.ad_content.type = ad.type;
   expected_ad_history.ad_content.uuid = ad.uuid;
   expected_ad_history.ad_content.creative_instance_id = ad.creative_instance_id;

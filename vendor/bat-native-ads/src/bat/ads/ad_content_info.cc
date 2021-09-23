@@ -11,7 +11,9 @@
 namespace ads {
 
 AdContentInfo::AdContentInfo() = default;
+
 AdContentInfo::AdContentInfo(const AdContentInfo& info) = default;
+
 AdContentInfo::~AdContentInfo() = default;
 
 bool AdContentInfo::operator==(const AdContentInfo& rhs) const {

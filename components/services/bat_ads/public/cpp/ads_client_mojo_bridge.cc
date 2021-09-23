@@ -90,7 +90,7 @@ void AdsClientMojoBridge::ShouldShowNotifications(
 
 bool AdsClientMojoBridge::GetAdEvents(const std::string& ad_type,
                                       const std::string& confirmation_type,
-                                      std::vector<uint64_t>* out_ad_events) {
+                                      std::vector<double>* out_ad_events) {
   DCHECK(out_ad_events);
   *out_ad_events = ads_client_->GetAdEvents(ad_type, confirmation_type);
   return true;
@@ -282,7 +282,7 @@ void AdsClientMojoBridge::CloseNotification(
 
 void AdsClientMojoBridge::RecordAdEvent(const std::string& ad_type,
                                         const std::string& confirmation_type,
-                                        const uint64_t timestamp) {
+                                        const double timestamp) {
   ads_client_->RecordAdEvent(ad_type, confirmation_type, timestamp);
 }
 

@@ -61,7 +61,7 @@ TEST_F(BatAdsAdRewardsIssue17412IntegrationTest, GetAdRewards) {
 
   InitializeAds();
 
-  AdvanceClock(TimeFromDateString("8 August 2021"));
+  AdvanceClock(TimeFromUTCString("8 August 2021"));
 
   // Act
   GetAds()->GetAccountStatement(
@@ -70,7 +70,7 @@ TEST_F(BatAdsAdRewardsIssue17412IntegrationTest, GetAdRewards) {
 
         StatementInfo expected_statement;
         expected_statement.next_payment_date =
-            TimestampFromDateString("5 September 2021");
+            UTCTimeStringToTimestamp("5 September 2021");
 
         // Calculated from earnings in April configured in
         // |data/test/confirmations.json|

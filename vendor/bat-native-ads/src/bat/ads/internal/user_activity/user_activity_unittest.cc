@@ -6,6 +6,7 @@
 #include "bat/ads/internal/user_activity/user_activity.h"
 
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -45,7 +46,7 @@ TEST_F(BatAdsUserActivityTest, RecordLaunchedBrowserEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -67,7 +68,7 @@ TEST_F(BatAdsUserActivityTest, RecordBrowserDidBecomeActiveEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -89,7 +90,7 @@ TEST_F(BatAdsUserActivityTest, RecordBrowserDidEnterBackgroundEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -112,7 +113,7 @@ TEST_F(BatAdsUserActivityTest,
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -134,7 +135,7 @@ TEST_F(BatAdsUserActivityTest, RecordClickedBookmarkEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -156,7 +157,7 @@ TEST_F(BatAdsUserActivityTest, RecordClickedHomePageButtonEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -177,7 +178,7 @@ TEST_F(BatAdsUserActivityTest, RecordClickedLinkEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -199,7 +200,7 @@ TEST_F(BatAdsUserActivityTest, RecordClickedReloadButtonEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -220,7 +221,7 @@ TEST_F(BatAdsUserActivityTest, RecordClosedTabEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -242,7 +243,7 @@ TEST_F(BatAdsUserActivityTest, RecordFocusedOnExistingTabEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -264,7 +265,7 @@ TEST_F(BatAdsUserActivityTest, RecordGeneratedKeywordEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -286,7 +287,7 @@ TEST_F(BatAdsUserActivityTest, RecordNewNavigationEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -308,7 +309,7 @@ TEST_F(BatAdsUserActivityTest, RecordOpenedLinkFromExternalApplicationEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -329,7 +330,7 @@ TEST_F(BatAdsUserActivityTest, RecordOpenedNewTabEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -350,7 +351,7 @@ TEST_F(BatAdsUserActivityTest, RecordPlayedMediaEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -372,7 +373,7 @@ TEST_F(BatAdsUserActivityTest, RecordStoppedPlayingMediaEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -394,7 +395,7 @@ TEST_F(BatAdsUserActivityTest, RecordSubmittedFormEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -415,7 +416,7 @@ TEST_F(BatAdsUserActivityTest, RecordTabUpdatedEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -437,7 +438,7 @@ TEST_F(BatAdsUserActivityTest, RecordTypedAndSelectedNonUrlEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -460,7 +461,7 @@ TEST_F(BatAdsUserActivityTest,
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -481,7 +482,7 @@ TEST_F(BatAdsUserActivityTest, RecordTypedUrlEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -503,7 +504,7 @@ TEST_F(BatAdsUserActivityTest, RecordUsedAddressBarEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -537,7 +538,7 @@ TEST_F(BatAdsUserActivityTest, GetHistoryForTimeWindow) {
 
   AdvanceClock(base::TimeDelta::FromHours(1));
 
-  const base::Time time = base::Time::Now();
+  const base::Time time = Now();
 
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTabUpdated);
   UserActivity::Get()->RecordEvent(
@@ -558,20 +559,20 @@ TEST_F(BatAdsUserActivityTest, GetHistoryForTimeWindow) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kTabUpdated;
-  event.time = time;
+  event.created_at = time;
   expected_events.push_back(event);
   event.type = UserActivityEventType::kTypedAndSelectedNonUrl;
-  event.time = time;
+  event.created_at = time;
   expected_events.push_back(event);
   event.type =
       UserActivityEventType::kTypedKeywordOtherThanDefaultSearchProvider;
-  event.time = time;
+  event.created_at = time;
   expected_events.push_back(event);
   event.type = UserActivityEventType::kTypedUrl;
-  event.time = time;
+  event.created_at = time;
   expected_events.push_back(event);
   event.type = UserActivityEventType::kUsedAddressBar;
-  event.time = time;
+  event.created_at = time;
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -597,12 +598,12 @@ TEST_F(BatAdsUserActivityTest, MaximumHistoryEntries) {
 
   for (int i = 0; i < kMaximumHistoryEntries - 1; i++) {
     event.type = event_type;
-    event.time = base::Time::Now();
+    event.created_at = Now();
     expected_events.push_back(event);
   }
 
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);

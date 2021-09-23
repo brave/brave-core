@@ -5,8 +5,6 @@
 
 #include "bat/ads/ad_event_history.h"
 
-#include <cstdint>
-
 #include "base/check.h"
 #include "base/time/time.h"
 
@@ -19,19 +17,18 @@ std::string GetId(const std::string& ad_type,
   return ad_type + confirmation_type;
 }
 
-void PurgeHistoryOlderThan(std::vector<uint64_t>* timestamps,
+void PurgeHistoryOlderThan(std::vector<double>* history,
                            const base::TimeDelta& time_delta) {
-  DCHECK(timestamps);
+  DCHECK(history);
 
   const base::Time past = base::Time::Now() - time_delta;
 
-  const auto iter =
-      std::remove_if(timestamps->begin(), timestamps->end(),
-                     [&past](const uint64_t timestamp) {
-                       return base::Time::FromDoubleT(timestamp) < past;
-                     });
+  const auto iter = std::remove_if(
+      history->begin(), history->end(), [&past](const double timestamp) {
+        return base::Time::FromDoubleT(timestamp) < past;
+      });
 
-  timestamps->erase(iter, timestamps->end());
+  history->erase(iter, history->end());
 }
 
 }  // namespace
@@ -42,7 +39,7 @@ AdEventHistory::~AdEventHistory() = default;
 
 void AdEventHistory::Record(const std::string& ad_type,
                             const std::string& confirmation_type,
-                            const uint64_t timestamp) {
+                            const double timestamp) {
   const std::string id = GetId(ad_type, confirmation_type);
   DCHECK(!id.empty());
 
@@ -58,7 +55,7 @@ void AdEventHistory::Record(const std::string& ad_type,
   PurgeHistoryOlderThan(&iter->second, time_delta);
 }
 
-std::vector<uint64_t> AdEventHistory::Get(
+std::vector<double> AdEventHistory::Get(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
   const std::string id = GetId(ad_type, confirmation_type);
