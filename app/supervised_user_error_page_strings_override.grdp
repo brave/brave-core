@@ -3,4 +3,7 @@
       <message name="IDS_BLOCK_INTERSTITIAL_MESSAGE_SUPERVISED_USERS_DEPRECATED" desc="Message to be shown to a supervised user directing them to the supervisor.">
         Questions? Contact the profile who supervises your profile.
       </message>
+      <message name="IDS_BLOCK_INTERSTITIAL_ASK_IN_PERSON_BUTTON" desc="A button to show a dialog to request access to blocked sites.">
+        Ask in profile
+      </message>
       </grit-part>

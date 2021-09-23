@@ -1383,6 +1383,18 @@
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_CLEAR_ON_EXIT_FEATURE_DESCRIPTION2" desc="A part of the feature description of 'clear cookies on exit' card in the privacy review.">
     Sites you visit can still remember your information until you close Brave
   </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_HISTORY_SYNC_CARD_HEADER" desc="Header of the history sync card in the privacy review.">
+    Review whether to sync history
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_HISTORY_SYNC_FEATURE_DESCRIPTION1" desc="A part of the feature description of history sync in the privacy review.">
+    You can continue your browsing session on any of your synced devices
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_HISTORY_SYNC_FEATURE_DESCRIPTION2" desc="A part of the feature description of history sync in the privacy review.">
+    You'll see your Brave history on all your synced devices
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_HISTORY_SYNC_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of history sync in the privacy review.">
+    The URLs you visit are saved to your Brave sync chain
+  </message>
 
   <!-- Safety check -->
   <message name="IDS_SETTINGS_SAFETY_CHECK_SECTION_TITLE" desc="'Safety check' is a noun phrase (sentence case). 'Safety check' refers to an area of the Settings page where users can quickly check whether their safety-related settings are fully protecting them.">
@@ -2515,6 +2527,12 @@
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_EXCEPTIONS" desc="Title of the list containing site exceptions always blocking them from using cookies">
     Sites that can never use cookies
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_APP_PROTOCOL_HANDLERS" desc="Label for the app protocol handlers (e.g. mailto) in site settings.">
+    Apps
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_APP_APPROVED_PROTOCOL_HANDLERS_DESCRIPTION" desc="Description of the approved protocol handlers list registered with the OS, where the user has previously permitted the app to handle the protocol.">
+    Apps listed below can handle protocol links as well. Other apps will ask for permission.
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES_ASK" desc="The ask label for HID devices in site settings.">
     Ask when a site wants to access HID devices
