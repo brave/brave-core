@@ -16,12 +16,19 @@
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
 #include "base/values.h"
+#include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/brave_vpn/switches.h"
+#include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
 
 namespace {
 
 constexpr char kBraveVPNEntryName[] = "BraveVPN";
+
+constexpr char kRegionContinentKey[] = "continent";
+constexpr char kRegionNameKey[] = "name";
+constexpr char kRegionNamePrettyKey[] = "name_pretty";
 
 bool GetVPNCredentialsFromSwitch(brave_vpn::BraveVPNConnectionInfo* info) {
   DCHECK(info);
@@ -52,8 +59,9 @@ brave_vpn::BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI() {
 }  // namespace
 
 BraveVpnServiceDesktop::BraveVpnServiceDesktop(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : BraveVpnService(url_loader_factory) {
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* prefs)
+    : BraveVpnService(url_loader_factory), prefs_(prefs) {
   observed_.Observe(GetBraveVPNConnectionAPI());
 
   GetBraveVPNConnectionAPI()->set_target_vpn_entry_name(kBraveVPNEntryName);
@@ -370,4 +378,40 @@ void BraveVpnServiceDesktop::GetAllRegions(GetAllRegionsCallback callback) {
 
 void BraveVpnServiceDesktop::GetDeviceRegion(GetDeviceRegionCallback callback) {
   std::move(callback).Run(device_region_.Clone());
+}
+
+void BraveVpnServiceDesktop::GetSelectedRegion(
+    GetSelectedRegionCallback callback) {
+  auto* preference =
+      prefs_->FindPreference(brave_vpn::prefs::kBraveVPNSelectedRegion);
+  if (preference->IsDefaultValue()) {
+    // Gives device region if there is no cached selected region.
+    std::move(callback).Run(device_region_.Clone());
+    return;
+  }
+
+  auto* region_value = preference->GetValue();
+  const std::string* continent =
+      region_value->FindStringKey(kRegionContinentKey);
+  const std::string* name = region_value->FindStringKey(kRegionNameKey);
+  const std::string* name_pretty =
+      region_value->FindStringKey(kRegionNamePrettyKey);
+  if (!continent || !name || !name_pretty) {
+    // Gives device region if invalid data is cached.
+    std::move(callback).Run(device_region_.Clone());
+    return;
+  }
+
+  brave_vpn::mojom::Region region(*continent, *name, *name_pretty);
+  std::move(callback).Run(region.Clone());
+}
+
+void BraveVpnServiceDesktop::SetSelectedRegion(
+    brave_vpn::mojom::RegionPtr region_ptr) {
+  DictionaryPrefUpdate update(prefs_,
+                              brave_vpn::prefs::kBraveVPNSelectedRegion);
+  base::Value* dict = update.Get();
+  dict->SetStringKey(kRegionContinentKey, region_ptr->continent);
+  dict->SetStringKey(kRegionNameKey, region_ptr->name);
+  dict->SetStringKey(kRegionNamePrettyKey, region_ptr->name_pretty);
 }

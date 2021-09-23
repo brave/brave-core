@@ -37,6 +37,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/pref_names.h"
 #endif
 
 namespace {
@@ -171,7 +172,7 @@ void BraveToolbarView::Init() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNEnabled()) {
     show_brave_vpn_button_.Init(
-        kBraveVPNShowButton, profile->GetPrefs(),
+        brave_vpn::prefs::kBraveVPNShowButton, profile->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::OnVPNButtonVisibilityChanged,
                             base::Unretained(this)));
     brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(browser()),

@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/scoped_observation.h"
-#include "brave/components/brave_vpn/brave_vpn.mojom-shared.h"
 #include "brave/components/brave_vpn/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
@@ -23,6 +22,8 @@ namespace base {
 class Value;
 }  // namespace base
 
+class PrefService;
+
 typedef brave_vpn::mojom::ConnectionState ConnectionState;
 
 class BraveVpnServiceDesktop
@@ -30,8 +31,9 @@ class BraveVpnServiceDesktop
       public brave_vpn::BraveVPNOSConnectionAPI::Observer,
       public brave_vpn::mojom::ServiceHandler {
  public:
-  explicit BraveVpnServiceDesktop(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  BraveVpnServiceDesktop(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* prefs);
   ~BraveVpnServiceDesktop() override;
 
   BraveVpnServiceDesktop(const BraveVpnServiceDesktop&) = delete;
@@ -58,6 +60,8 @@ class BraveVpnServiceDesktop
   void CreateVPNConnection() override;
   void GetAllRegions(GetAllRegionsCallback callback) override;
   void GetDeviceRegion(GetDeviceRegionCallback callback) override;
+  void GetSelectedRegion(GetSelectedRegionCallback callback) override;
+  void SetSelectedRegion(brave_vpn::mojom::RegionPtr region) override;
 
  private:
   friend class BraveAppMenuBrowserTest;
@@ -93,6 +97,7 @@ class BraveVpnServiceDesktop
     is_purchased_user_ = purchased;
   }
 
+  PrefService* prefs_ = nullptr;
   std::vector<brave_vpn::mojom::Region> regions_;
   brave_vpn::mojom::Region device_region_;
   ConnectionState state_ = ConnectionState::DISCONNECTED;

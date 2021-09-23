@@ -68,7 +68,6 @@ source_set("pref_names") {
   ]
 
   deps = [
-    "//brave/components/brave_vpn/buildflags",
     "//components/gcm_driver:gcm_buildflags",
     "//extensions/buildflags:buildflags",
   ]

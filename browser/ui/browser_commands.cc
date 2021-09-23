@@ -40,6 +40,10 @@
 #include "brave/components/tor/tor_profile_service.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/pref_names.h"
+#endif
+
 using content::WebContents;
 
 namespace {
@@ -121,8 +125,8 @@ void ShowBraveVPNBubble(Browser* browser) {
 void ToggleBraveVPNButton(Browser* browser) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   auto* prefs = browser->profile()->GetPrefs();
-  const bool show = prefs->GetBoolean(kBraveVPNShowButton);
-  prefs->SetBoolean(kBraveVPNShowButton, !show);
+  const bool show = prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
+  prefs->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, !show);
 #endif
 }
 

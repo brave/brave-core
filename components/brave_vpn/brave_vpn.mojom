@@ -43,6 +43,8 @@ interface ServiceHandler {
   Disconnect();
   GetAllRegions() => (array<Region> regions);
   GetDeviceRegion() => (Region device_region);
+  GetSelectedRegion() => (Region current_region);
+  SetSelectedRegion(Region region);
 };
 
 // WebUI-side handler for requests from the browser.

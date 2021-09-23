@@ -19,6 +19,7 @@ if (enable_brave_vpn) {
     "//brave/components/brave_vpn",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
+    "//components/user_prefs",
     "//content/public/browser",
   ]
 

@@ -129,6 +129,10 @@
 using extensions::FeatureSwitch;
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/pref_names.h"
+#endif
+
 namespace brave {
 
 void RegisterProfilePrefsForMigration(
@@ -174,7 +178,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_sync::Prefs::RegisterProfilePrefs(registry);
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  registry->RegisterBooleanPref(kBraveVPNShowButton, true);
+  brave_vpn::prefs::RegisterProfilePrefs(registry);
 #endif
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.

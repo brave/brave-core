@@ -8,6 +8,7 @@
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 
@@ -55,7 +56,8 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
 
 #if defined(OS_WIN) || defined(OS_MAC)
-  return new BraveVpnServiceDesktop(shared_url_loader_factory);
+  return new BraveVpnServiceDesktop(shared_url_loader_factory,
+                                    user_prefs::UserPrefs::Get(context));
 #endif
 
 #if defined(OS_ANDROID)

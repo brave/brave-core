@@ -20,12 +20,15 @@ static_library("brave_vpn") {
     "brave_vpn_utils.h",
     "features.cc",
     "features.h",
+    "pref_names.cc",
+    "pref_names.h",
   ]
 
   deps = [
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
     "//components/keyed_service/core",
+    "//components/prefs",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//url",
@@ -104,6 +107,7 @@ source_set("unit_tests") {
     deps = [
       ":brave_vpn",
       "//base",
+      "//components/prefs:test_support",
       "//content/test:test_support",
       "//services/network:test_support",
       "//testing/gtest",

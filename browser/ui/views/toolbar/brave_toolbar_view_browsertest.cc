@@ -34,6 +34,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 #include "brave/components/brave_vpn/features.h"
+#include "brave/components/brave_vpn/pref_names.h"
 #endif
 
 // An observer that returns back to test code after a new profile is
@@ -89,13 +90,13 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, VPNButtonVisibility) {
   auto* prefs = browser()->profile()->GetPrefs();
 
   // Button is visible by default.
-  EXPECT_TRUE(prefs->GetBoolean(kBraveVPNShowButton));
+  EXPECT_TRUE(prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton));
   EXPECT_TRUE(toolbar->brave_vpn_button()->GetVisible());
   EXPECT_EQ(browser_view->GetAnchorViewForBraveVPNPanel(),
             toolbar->brave_vpn_button());
 
   // Hide button.
-  prefs->SetBoolean(kBraveVPNShowButton, false);
+  prefs->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, false);
   EXPECT_FALSE(toolbar->brave_vpn_button()->GetVisible());
   EXPECT_EQ(browser_view->GetAnchorViewForBraveVPNPanel(),
             static_cast<views::View*>(toolbar->app_menu_button()));
