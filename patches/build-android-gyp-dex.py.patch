@@ -1,8 +1,8 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index cac97985085897dbfdf27cd53c8523a3e34b3859..5ec306a9ff40267b7f9a97a88b0d06699e636e4b 100755
+index 79304a6392efe61f334d8623367a1a955532003b..44295209e78275ede3b8c55b68cfc71bc1ebc86d 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
-@@ -48,6 +48,7 @@ _IGNORE_WARNINGS = (
+@@ -49,6 +49,7 @@ _IGNORE_WARNINGS = (
      # Only relevant for R8 when optimizing an app that doesn't use proto.
      r'Ignoring -shrinkunusedprotofields since the protobuf-lite runtime is',
  )

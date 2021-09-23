@@ -1,8 +1,8 @@
 diff --git a/net/socket/socks5_client_socket.h b/net/socket/socks5_client_socket.h
-index 58f3d1285ccb685ac9cec62e9cf1b4e1e6b7f024..ccd68a660051632d229d1eb96ec1686ddfe13a4d 100644
+index 55b5afcf02b3b0718e4afa5281b20bae0a30ba2a..8bb3c5498efc3d0cd49397eb106a0039052630d8 100644
 --- a/net/socket/socks5_client_socket.h
 +++ b/net/socket/socks5_client_socket.h
-@@ -77,11 +77,14 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocket : public StreamSocket {
+@@ -80,11 +80,14 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocket : public StreamSocket {
    int GetLocalAddress(IPEndPoint* address) const override;
  
   private:
@@ -17,7 +17,7 @@ index 58f3d1285ccb685ac9cec62e9cf1b4e1e6b7f024..ccd68a660051632d229d1eb96ec1686d
      STATE_HANDSHAKE_WRITE,
      STATE_HANDSHAKE_WRITE_COMPLETE,
      STATE_HANDSHAKE_READ,
-@@ -116,6 +119,13 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocket : public StreamSocket {
+@@ -119,6 +122,13 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocket : public StreamSocket {
    int DoGreetReadComplete(int result);
    int DoGreetWrite();
    int DoGreetWriteComplete(int result);

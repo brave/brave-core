@@ -1,8 +1,8 @@
 diff --git a/third_party/crashpad/crashpad/util/net/http_transport_win.cc b/third_party/crashpad/crashpad/util/net/http_transport_win.cc
-index a91d2d2239a724880dd963080062489adb09dcf8..ed1a3e52dfd7c66d412cabd6bec27ca544dcb68d 100644
+index cb04c2e9300f812c40e0507d948cd29b1bc28b5a..0d0c00badad22aaac0da15bed3f59a766e2fb0c0 100644
 --- a/third_party/crashpad/crashpad/util/net/http_transport_win.cc
 +++ b/third_party/crashpad/crashpad/util/net/http_transport_win.cc
-@@ -156,6 +156,8 @@ bool HTTPTransportWin::ExecuteSynchronously(std::string* response_body) {
+@@ -157,6 +157,8 @@ bool HTTPTransportWin::ExecuteSynchronously(std::string* response_body) {
      return false;
    }
  
