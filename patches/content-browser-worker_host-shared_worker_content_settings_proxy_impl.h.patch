@@ -1,0 +1,12 @@
+diff --git a/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h b/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h
+index 47d86c14900d5b26477a8b84371867c8161bf709..11be6f388c5e6e542ee6ff2a9f46484256ae85d2 100644
+--- a/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h
++++ b/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h
+@@ -38,6 +38,7 @@ class CONTENT_EXPORT SharedWorkerContentSettingsProxyImpl
+   void AllowWebLocks(AllowCacheStorageCallback callback) override;
+   void RequestFileSystemAccessSync(
+       RequestFileSystemAccessSyncCallback callback) override;
++  void AllowFingerprinting(AllowFingerprintingCallback callback) override;
+ 
+  private:
+   const url::Origin origin_;

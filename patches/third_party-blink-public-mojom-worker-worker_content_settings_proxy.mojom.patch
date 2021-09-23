@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/public/mojom/worker/worker_content_settings_proxy.mojom b/third_party/blink/public/mojom/worker/worker_content_settings_proxy.mojom
+index b2629579ad0c02eafb44ff0d62f0ad4c74d96b38..4dbdfc859f76ea133576f7a6357c153998b3a604 100644
+--- a/third_party/blink/public/mojom/worker/worker_content_settings_proxy.mojom
++++ b/third_party/blink/public/mojom/worker/worker_content_settings_proxy.mojom
+@@ -28,4 +28,7 @@ interface WorkerContentSettingsProxy {
+   // Returns whether the worker is allowed access to the file system.
+   [Sync]
+   RequestFileSystemAccessSync() => (bool result);
++
++  // Returns whether the worker is allowed access to privileged functions that could be used for fingerprinting.
++  AllowFingerprinting() => (bool result);
+ };

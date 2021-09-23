@@ -1,0 +1,18 @@
+diff --git a/content/public/browser/content_browser_client.cc b/content/public/browser/content_browser_client.cc
+index 997125e855c0f6393251193fa86c90d179cd9eb9..ff9f36fcd9a264b21bc4d1c34c2ff365e538d7f7 100644
+--- a/content/public/browser/content_browser_client.cc
++++ b/content/public/browser/content_browser_client.cc
+@@ -428,6 +428,13 @@ bool ContentBrowserClient::AllowWorkerWebLocks(
+   return true;
+ }
+ 
++bool ContentBrowserClient::AllowWorkerFingerprinting(
++    const GURL& url,
++    BrowserContext* browser_context,
++    const std::vector<GlobalRenderFrameHostId>& render_frames) {
++  return true;
++}
++
+ ContentBrowserClient::AllowWebBluetoothResult
+ ContentBrowserClient::AllowWebBluetooth(
+     content::BrowserContext* browser_context,

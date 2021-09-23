@@ -19,7 +19,7 @@ bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
     return true;
   blink::ExecutionContext* context = host->GetTopExecutionContext();
   blink::WebContentSettingsClient* settings =
-      brave::GetContentSettingsClientFor(context);
+    brave::GetContentSettingsClientFor(context);
   return !settings || settings->AllowFingerprinting(true);
 }
 
@@ -60,13 +60,59 @@ bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
     precision = 0;                                          \
   }
 
-#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER     \
-  if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&  \
-      !AllowFingerprintingForHost(Host()))              \
-    return WebGLAny(                                    \
-        script_state,                                   \
-        String(brave::BraveSessionCache::From(          \
-                   *(Host()->GetTopExecutionContext())) \
+#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER                        \
+  {                                                                        \
+    blink::CanvasRenderingContextHost* host = Host();                      \
+    if (!host)                                                             \
+      return WebGLAny(script_state, String("---HOST IS NULL---"));         \
+    blink::ExecutionContext* context = host->GetTopExecutionContext();     \
+    if (!context)                                                          \
+      return WebGLAny(script_state, String("---CONTEXT IS NULL---"));      \
+    blink::WebContentSettingsClient* settings =                            \
+        brave::GetContentSettingsClientFor(context);                       \
+    if (!settings)                                                         \
+      return WebGLAny(script_state, String("---SETTINGS IS NULL---"));     \
+    if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) { \
+      auto* frame = window->GetFrame();                                    \
+      if (!frame) {                                                        \
+        frame = window->GetDisconnectedFrame();                            \
+        if (frame)                                                         \
+          return WebGLAny(script_state,                                    \
+                          String("---CONTEXT IS DISCONNECTED FRAME---"));  \
+      }                                                                    \
+      if (frame)                                                           \
+        settings = frame->GetContentSettingsClient();                      \
+    } else if (context->IsWorkerGlobalScope()) {                           \
+      settings = blink::To<blink::WorkerGlobalScope>(context)              \
+                     ->ContentSettingsClient();                            \
+      if (!settings)                                                       \
+        return WebGLAny(script_state,                                      \
+                        String("---CONTEXT IS WORKERGLOBALSCOPE BUT ITS "  \
+                               "CONTENTSETTINGSCLIENT IS NULL---"));       \
+      BraveFarblingLevel level = settings->GetBraveFarblingLevel();        \
+      if (level == BraveFarblingLevel::MAXIMUM)                            \
+        return WebGLAny(script_state,                                      \
+                        String("---CONTEXT IS WORKERGLOBALSCOPE AND ITS "  \
+                               "CONTENTSETTINGSCLIENT IS VALID AND ITS "   \
+                               "FARBLING LEVEL IS MAXIMUM---"));           \
+      if (level == BraveFarblingLevel::BALANCED)                           \
+        return WebGLAny(script_state,                                      \
+                        String("---CONTEXT IS WORKERGLOBALSCOPE AND ITS "  \
+                               "CONTENTSETTINGSCLIENT IS VALID AND ITS "   \
+                               "FARBLING LEVEL IS BALANCED---"));          \
+      if (level == BraveFarblingLevel::OFF)                                \
+        return WebGLAny(script_state,                                      \
+                        String("---CONTEXT IS WORKERGLOBALSCOPE AND ITS "  \
+                               "CONTENTSETTINGSCLIENT IS VALID AND ITS "   \
+                               "FARBLING LEVEL IS OFF---"));               \
+    }                                                                      \
+  }                                                                        \
+  if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&                     \
+      !AllowFingerprintingForHost(Host()))                                 \
+    return WebGLAny(                                                       \
+        script_state,                                                      \
+        String(brave::BraveSessionCache::From(                             \
+                   *(Host()->GetTopExecutionContext()))                    \
                    .GenerateRandomString("UNMASKED_RENDERER_WEBGL", 8)));
 
 #define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR       \

@@ -358,6 +358,19 @@ bool BraveContentBrowserClient::BindAssociatedReceiverFromFrame(
   return false;
 }
 
+bool BraveContentBrowserClient::AllowWorkerFingerprinting(
+    const GURL& url,
+    content::BrowserContext* browser_context,
+    const std::vector<content::GlobalRenderFrameHostId>& render_frames) {
+  return false;
+#if 0
+  return embedder_support::AllowWorkerWebLocks(
+      url, CookieSettingsFactory::GetForProfile(
+               Profile::FromBrowserContext(browser_context))
+               .get());
+#endif
+}
+
 content::ContentBrowserClient::AllowWebBluetoothResult
 BraveContentBrowserClient::AllowWebBluetooth(
     content::BrowserContext* browser_context,

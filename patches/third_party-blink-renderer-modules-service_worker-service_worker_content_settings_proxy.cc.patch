@@ -1,0 +1,20 @@
+diff --git a/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.cc b/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.cc
+index 55a94517315de96fb1174896e687665fa90ee89c..e4adfa61727645b4fa9d29501fd91f6d2b49e781 100644
+--- a/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.cc
++++ b/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.cc
+@@ -30,6 +30,15 @@ bool ServiceWorkerContentSettingsProxy::AllowStorageAccessSync(
+   }
+ }
+ 
++bool ServiceWorkerContentSettingsProxy::AllowFingerprinting(
++    bool enabled_per_settings) {
++  if (!enabled_per_settings)
++    return false;
++  bool result = false;
++  GetService()->AllowFingerprinting(&result);
++  return result;
++}
++
+ // Use ThreadSpecific to ensure that |content_settings_instance_host| is
+ // destructed on worker thread.
+ // Each worker has a dedicated thread so this is safe.

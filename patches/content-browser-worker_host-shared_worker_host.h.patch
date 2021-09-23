@@ -1,0 +1,13 @@
+diff --git a/content/browser/worker_host/shared_worker_host.h b/content/browser/worker_host/shared_worker_host.h
+index d0665fc4f4dc6b48ee30534e76452384b68640fa..5a2501fdff14355c085c8041ce55e1eb86724215 100644
+--- a/content/browser/worker_host/shared_worker_host.h
++++ b/content/browser/worker_host/shared_worker_host.h
+@@ -117,6 +117,8 @@ class CONTENT_EXPORT SharedWorkerHost : public blink::mojom::SharedWorkerHost,
+   void AllowCacheStorage(const GURL& url,
+                          base::OnceCallback<void(bool)> callback);
+   void AllowWebLocks(const GURL& url, base::OnceCallback<void(bool)> callback);
++  void AllowFingerprinting(const GURL& url,
++                           base::OnceCallback<void(bool)> callback);
+ 
+   void CreateAppCacheBackend(
+       mojo::PendingReceiver<blink::mojom::AppCacheBackend> receiver);

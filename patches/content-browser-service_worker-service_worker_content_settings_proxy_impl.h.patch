@@ -1,0 +1,12 @@
+diff --git a/content/browser/service_worker/service_worker_content_settings_proxy_impl.h b/content/browser/service_worker/service_worker_content_settings_proxy_impl.h
+index 49a04df206daaf3a1bb7a12b0e79497c26210c39..571d5fe5e32f74b71f0b85d9d66f57aa27f70c29 100644
+--- a/content/browser/service_worker/service_worker_content_settings_proxy_impl.h
++++ b/content/browser/service_worker/service_worker_content_settings_proxy_impl.h
+@@ -40,6 +40,7 @@ class ServiceWorkerContentSettingsProxyImpl final
+   void AllowWebLocks(AllowCacheStorageCallback callback) override;
+   void RequestFileSystemAccessSync(
+       RequestFileSystemAccessSyncCallback callback) override;
++  void AllowFingerprinting(AllowFingerprintingCallback callback) override;
+ 
+  private:
+   const url::Origin origin_;

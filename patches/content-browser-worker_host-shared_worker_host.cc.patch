@@ -1,0 +1,19 @@
+diff --git a/content/browser/worker_host/shared_worker_host.cc b/content/browser/worker_host/shared_worker_host.cc
+index f51e6969e38155286f0cee54320725ee01188117..f1703e86173d495124e6353033290016738a471a 100644
+--- a/content/browser/worker_host/shared_worker_host.cc
++++ b/content/browser/worker_host/shared_worker_host.cc
+@@ -409,6 +409,14 @@ void SharedWorkerHost::AllowWebLocks(const GURL& url,
+       GetRenderFrameIDsForWorker()));
+ }
+ 
++void SharedWorkerHost::AllowFingerprinting(const GURL& url,
++                                     base::OnceCallback<void(bool)> callback) {
++  std::move(callback).Run(
++      GetContentClient()->browser()->AllowWorkerFingerprinting(
++          url, GetProcessHost()->GetBrowserContext(),
++          GetRenderFrameIDsForWorker()));
++}
++
+ void SharedWorkerHost::CreateAppCacheBackend(
+     mojo::PendingReceiver<blink::mojom::AppCacheBackend> receiver) {
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);

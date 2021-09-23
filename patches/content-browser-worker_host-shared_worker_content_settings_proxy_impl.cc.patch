@@ -1,0 +1,18 @@
+diff --git a/content/browser/worker_host/shared_worker_content_settings_proxy_impl.cc b/content/browser/worker_host/shared_worker_content_settings_proxy_impl.cc
+index 5f11b44d8f218a58f8745919e8c6bbc43d169f85..10cb2234f3c03104d2fc3efa2f5510bb2600db39 100644
+--- a/content/browser/worker_host/shared_worker_content_settings_proxy_impl.cc
++++ b/content/browser/worker_host/shared_worker_content_settings_proxy_impl.cc
+@@ -59,4 +59,13 @@ void SharedWorkerContentSettingsProxyImpl::RequestFileSystemAccessSync(
+   }
+ }
+ 
++void SharedWorkerContentSettingsProxyImpl::AllowFingerprinting(
++    AllowFingerprintingCallback callback) {
++  if (!origin_.opaque()) {
++    owner_->AllowFingerprinting(origin_.GetURL(), std::move(callback));
++  } else {
++    std::move(callback).Run(false);
++  }
++}
++
+ }  // namespace content

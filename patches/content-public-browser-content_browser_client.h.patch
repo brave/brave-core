@@ -1,8 +1,22 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index 65638e207d6bffd24a1121eb32c86545ba884007..e8e72db92e2b2796c23575bf2ca593189e6ffe15 100644
+index 65638e207d6bffd24a1121eb32c86545ba884007..d27e6769eb311c5d3fe56e4027398eb2d16a90b5 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -1868,6 +1868,7 @@ class CONTENT_EXPORT ContentBrowserClient {
+@@ -734,6 +734,13 @@ class CONTENT_EXPORT ContentBrowserClient {
+       BrowserContext* browser_context,
+       const std::vector<GlobalRenderFrameHostId>& render_frames);
+ 
++  // Allow the embedder to control if access to privileged functions that could
++  // be used by fingerprinting by a shared worker is allowed.
++  virtual bool AllowWorkerFingerprinting(
++      const GURL& url,
++      BrowserContext* browser_context,
++      const std::vector<GlobalRenderFrameHostId>& render_frames);
++
+   // Allow the embedder to control if access to CacheStorage by a shared worker
+   // is allowed.
+   virtual bool AllowWorkerCacheStorage(
+@@ -1868,6 +1875,7 @@ class CONTENT_EXPORT ContentBrowserClient {
    virtual ui::AXMode GetAXModeForBrowserContext(
        BrowserContext* browser_context);
  

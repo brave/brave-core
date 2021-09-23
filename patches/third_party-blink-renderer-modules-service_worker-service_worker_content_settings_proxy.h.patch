@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.h b/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.h
+index 375e5c943ea1ed1e42b950932d635cd4ebc40009..72b55ca4f6da3d7b247a4aa2ec7a17680d671a3d 100644
+--- a/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.h
++++ b/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.h
+@@ -31,6 +31,7 @@ class ServiceWorkerContentSettingsProxy final
+   // Asks the browser process about the settings.
+   // Blocks until the response arrives.
+   bool AllowStorageAccessSync(StorageType storage_type) override;
++  bool AllowFingerprinting(bool enabled_per_settings) override;
+ 
+  private:
+   // To ensure the returned pointer is destructed on the same thread
