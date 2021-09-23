@@ -558,7 +558,6 @@
 <translation id="7530570094705720669">Skapar plånbok.</translation>
 <translation id="1988679729106502285">OBS:</translation>
 <translation id="7979350009208995417">Den här innehållsskaparen har inte ställt in att kunna ta emot dricks från din plånbok. Om du dricksar reserveras beloppet som väntande och nya försök görs i 90 dagar.</translation>
-<translation id="7461596279975181413">Den här bekräftade skaparen hos Brave har ännu inte ställt in sitt konto för att kunna ta emot bidrag från Braves användare. Din webbläsare kommer att fortsätta bidra till dess de bekräftar eller till dess 90 dagar har gått.</translation>
 <translation id="3197752845651180812">Väntande bidrag</translation>
 <translation id="6964891561514920613">Visa alla väntande bidrag</translation>
 <translation id="4346944508027912677">Väntar till</translation>
@@ -783,7 +782,7 @@
 <translation id="5894023780213944778">Min plånbok</translation>
 <translation id="2613359062756190460">Engångsdricks</translation>
 <translation id="590733288489975971">Belöningar från Ads</translation>
-<translation id="3026978804849658576">Visa meddelande</translation>
+<translation id="3026978804849658576">Visa utdrag</translation>
 <translation id="8494748383523030337">Ditt saldo</translation>
 <translation id="7701466644604753106">Slå PÅ snabbläsaren</translation>
 <translation id="763042262431778831">Slå AV snabbläsaren</translation>
