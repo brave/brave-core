@@ -71,7 +71,7 @@
     "description": ""
   },
   "grantCaptchaHint": {
-    "message": "Arraste o ícone de BAT para o destino de $hint$.",
+    "message": "Arraste o ícone de BAT para o destino ($hint$).",
     "description": "",
     "placeholders": {
       "hint": {
@@ -297,7 +297,7 @@
     "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "Ganhos de anúncios recebidos",
+    "message": "Ganhos do Ads recebidos",
     "description": ""
   },
   "notificationAdGrantText": {

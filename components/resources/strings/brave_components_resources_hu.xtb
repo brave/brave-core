@@ -558,7 +558,6 @@
 <translation id="7530570094705720669">Pénztárca létrehozása</translation>
 <translation id="1988679729106502285">MEGJEGYZÉS:</translation>
 <translation id="7979350009208995417">Ez az alkotó még nem regisztrált, hogy hozzájárulásokat fogadjon a pénztárcádból. Minden borravaló, amit küldesz, a pénztárcádban marad függő állapotban, és annak feldolgozása többször automatikusan meg lesz kísérelve 90 napig.</translation>
-<translation id="7461596279975181413">Ez a Brave Igazolt Alkotó még nem állította be fiókjában, hogy a Brave Felhasználók hozzájárulásait fogadhassa. Böngésződ addig próbálkozik a hozzájárulás folyósításával, amíg nem igazolják magukat, de legfeljebb 90 napig.</translation>
 <translation id="3197752845651180812">Függőben lévő hozzájárulások</translation>
 <translation id="6964891561514920613">Minden függőben lévő hozzájárulás mutatása</translation>
 <translation id="4346944508027912677">Függőben eddig:</translation>
@@ -790,7 +789,7 @@
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="1148827340205946630">A felhasználó elutasította a kérelmet.</translation>
 <translation id="2403819048476450281">Érvénytelen paraméterek.</translation>
-<translation id="9161147058107529840">A várt, egyetlen objektumparaméter.</translation>
+<translation id="9161147058107529840">Egyetlen objektumparamétert várt.</translation>
 <translation id="1875861420974447980">Ez a láncazonosító már használatban van</translation>
 <translation id="167698752210114155">Belső hiba lépett fel</translation>
 <translation id="4641919696349069826">A kérelem már folyamatban van</translation>

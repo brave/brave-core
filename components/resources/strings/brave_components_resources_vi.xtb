@@ -558,7 +558,6 @@
 <translation id="7530570094705720669">Tạo ví</translation>
 <translation id="1988679729106502285">LƯU Ý:</translation>
 <translation id="7979350009208995417">Người sáng tạo này hiện không được định cấu hình để nhận tiền thưởng từ ví của bạn. Mọi tiền thưởng bạn trả sẽ vẫn chờ xử lý trong ví của bạn và tự động thử lại trong vòng 90 ngày.</translation>
-<translation id="7461596279975181413">Người sáng tạo được Brave xác minh này chưa định cấu hình tài khoản của họ để nhận các khoản đóng góp từ người dùng Brave. Trình duyệt của bạn sẽ vẫn cố gắng đóng góp cho đến khi họ xác minh hoặc sau khi 90 ngày trôi qua.</translation>
 <translation id="3197752845651180812">Đóng góp chờ xử lý</translation>
 <translation id="6964891561514920613">Hiển thị tất cả đóng góp đang chờ xử lý</translation>
 <translation id="4346944508027912677">Chờ xử lý đến khi</translation>
@@ -783,14 +782,14 @@
 <translation id="5894023780213944778">Ví của tôi</translation>
 <translation id="2613359062756190460">Tiền tip Một lần</translation>
 <translation id="590733288489975971">Rewards từ Ads</translation>
-<translation id="3026978804849658576">Xem tuyên bố</translation>
+<translation id="3026978804849658576">Xem sao kê</translation>
 <translation id="8494748383523030337">Số dư của bạn</translation>
 <translation id="7701466644604753106">BẬT Trình đọc tốc độ</translation>
 <translation id="763042262431778831">TẮT Trình đọc tốc độ</translation>
 <translation id="8488282162676695335">Ví Brave</translation>
 <translation id="1148827340205946630">Người dùng đã từ chối yêu cầu.</translation>
 <translation id="2403819048476450281">Thông số không hợp lệ.</translation>
-<translation id="9161147058107529840">Tham số đối tượng, đơn được mong đợi.</translation>
+<translation id="9161147058107529840">Mong đợi nhận một tham số đối tượng.</translation>
 <translation id="1875861420974447980">Mã chuỗi này hiện đang được sử dụng</translation>
 <translation id="167698752210114155">Đã xảy ra lỗi nội bộ</translation>
 <translation id="4641919696349069826">Một yêu cầu đang được thực hiện</translation>

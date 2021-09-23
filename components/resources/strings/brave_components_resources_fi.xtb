@@ -558,7 +558,6 @@
 <translation id="7530570094705720669">Luodaan lompakkoa</translation>
 <translation id="1988679729106502285">HUOMIO:</translation>
 <translation id="7979350009208995417">Tätä tekijää ei ole tällä hetkellä määritetty saamaan tippejä lompakostasi. Kaikki antamasi tipit pysyvät lompakossasi, ja niitä yritetään antaa automaattisesti 90 päivän ajan.</translation>
-<translation id="7461596279975181413">Tämä Braven vahvistettu tekijä ei ole vielä asettanut tiliään hyväksymään avustuksia Braven käyttäjiltä. Selaimesi yrittää avustamista kunnes tekijä todentaa itsensä tai 90 päivän raja tulee täyteen.</translation>
 <translation id="3197752845651180812">Odottavat lahjoitukset</translation>
 <translation id="6964891561514920613">Näytä kaikki odottavat lahjoitukset</translation>
 <translation id="4346944508027912677">Odotus päättyy</translation>
@@ -782,7 +781,7 @@
 <translation id="7577100371127227294">Kuukausittaiset tipit</translation>
 <translation id="5894023780213944778">Oma lompakkoni</translation>
 <translation id="2613359062756190460">Kertatipit</translation>
-<translation id="590733288489975971">Palkinnot mainoksista</translation>
+<translation id="590733288489975971">Palkinnot Ads-mainoksista</translation>
 <translation id="3026978804849658576">Näytä tiliote</translation>
 <translation id="8494748383523030337">Saldosi</translation>
 <translation id="7701466644604753106">Ota SpeedReader käyttöön</translation>
@@ -790,7 +789,7 @@
 <translation id="8488282162676695335">Brave-lompakko</translation>
 <translation id="1148827340205946630">Käyttäjä hylkäsi pyynnön.</translation>
 <translation id="2403819048476450281">Virheelliset parametrit.</translation>
-<translation id="9161147058107529840">Odotettu yksi objektiparametri.</translation>
+<translation id="9161147058107529840">Odotti yhtä objektiparametriä.</translation>
 <translation id="1875861420974447980">Tämä ketjun tunnus on käytössä</translation>
 <translation id="167698752210114155">Tapahtui sisäinen virhe</translation>
 <translation id="4641919696349069826">Pyyntö on jo käynnissä</translation>

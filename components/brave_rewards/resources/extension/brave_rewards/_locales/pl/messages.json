@@ -301,7 +301,7 @@
     "description": ""
   },
   "notificationAdGrantText": {
-    "message": "Twoje nagrody z prywatnych reklam Brave są tutaj!",
+    "message": "Twoje nagrody z Brave Private Ads są tutaj!",
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
@@ -565,7 +565,7 @@
     "description": ""
   },
   "captchaSolvedText": {
-    "message": "Reklamy i dochody zostaną teraz wznowione. Dziękujemy, że pomagasz nam  w ochronie Nagród Brave i reklam opartych na prywatności. ",
+    "message": "Reklamy i dochody zostaną teraz wznowione. Dziękujemy, że pomagasz nam  w ochronie Nagród Brave i reklam opartych na prywatności.",
     "description": ""
   },
   "captchaContactSupport": {

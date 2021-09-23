@@ -1357,7 +1357,7 @@ Privacy Sandbox 试用版功能尚处于积极开发阶段，目前只能在部�
           other {<ph name="TAB_COUNT_NORMAL"/>个隐私选项卡}}</translation>
 <translation id="40716919553748435">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> 个选项卡}
-          other {<ph name="TAB_COUNT_MANY"/> 个选项卡, <ph name="TAB_COUNT_INCOGNITO"/> 个隐私选项卡}}</translation>
+          other {<ph name="TAB_COUNT_MANY"/> 个选项卡，<ph name="TAB_COUNT_INCOGNITO"/> 个隐私选项卡}}</translation>
 <translation id="1982350477927404142">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> 个隐私选项卡会被关闭}
           other {<ph name="TAB_COUNT_MANY"/> 个隐私选项卡会被关闭}}</translation>
