@@ -302,6 +302,8 @@ void CosmeticFiltersJSHandler::OnRemoteDisconnect() {
 bool CosmeticFiltersJSHandler::ProcessURL(const GURL& url) {
   resources_dict_.reset();
   url_ = url;
+  enabled_1st_party_cf_ = false;
+
   // Trivially, don't make exceptions for malformed URLs.
   if (!EnsureConnected() || url_.is_empty() || !url_.is_valid())
     return false;

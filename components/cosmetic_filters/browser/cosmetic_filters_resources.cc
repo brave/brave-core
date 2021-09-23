@@ -18,7 +18,7 @@ namespace cosmetic_filters {
 
 CosmeticFiltersResources::CosmeticFiltersResources(
     brave_shields::AdBlockService* ad_block_service)
-    : ad_block_service_(ad_block_service), weak_factory_(this) {}
+    : ad_block_service_(ad_block_service) {}
 
 CosmeticFiltersResources::~CosmeticFiltersResources() {}
 
