@@ -462,6 +462,7 @@
 		27D67CED24D07EB800066D83 /* BraveNewsSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D67CEC24D07EB800066D83 /* BraveNewsSettingsViewController.swift */; };
 		27DCB9EC263764EF0067EF4A /* TabTrayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DCB9EB263764EF0067EF4A /* TabTrayCell.swift */; };
 		27DCB9EE263765430067EF4A /* TabTrayToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DCB9ED263765430067EF4A /* TabTrayToolbar.swift */; };
+		27DDE85926FBE09A00A70C3A /* AccountPrivateKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DDE85826FBE09A00A70C3A /* AccountPrivateKeyView.swift */; };
 		27E0652624CB69C700134946 /* brave-today-welcome-graphic.json in Resources */ = {isa = PBXBuildFile; fileRef = 27E0652524CB69C700134946 /* brave-today-welcome-graphic.json */; };
 		27E0652824CB6AE300134946 /* BraveNewsErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0652724CB6AE300134946 /* BraveNewsErrorView.swift */; };
 		27EA04C2249D4336004F5D2E /* FeedCardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EA04C1249D4336004F5D2E /* FeedCardContent.swift */; };
@@ -2072,6 +2073,7 @@
 		27D67CEC24D07EB800066D83 /* BraveNewsSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveNewsSettingsViewController.swift; sourceTree = "<group>"; };
 		27DCB9EB263764EF0067EF4A /* TabTrayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTrayCell.swift; sourceTree = "<group>"; };
 		27DCB9ED263765430067EF4A /* TabTrayToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTrayToolbar.swift; sourceTree = "<group>"; };
+		27DDE85826FBE09A00A70C3A /* AccountPrivateKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPrivateKeyView.swift; sourceTree = "<group>"; };
 		27E0652524CB69C700134946 /* brave-today-welcome-graphic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "brave-today-welcome-graphic.json"; sourceTree = "<group>"; };
 		27E0652724CB6AE300134946 /* BraveNewsErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveNewsErrorView.swift; sourceTree = "<group>"; };
 		27EA04C1249D4336004F5D2E /* FeedCardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCardContent.swift; sourceTree = "<group>"; };
@@ -3638,6 +3640,7 @@
 			isa = PBXGroup;
 			children = (
 				271F686726EBD27D00AA2A50 /* AccountDetailsView.swift */,
+				27DDE85826FBE09A00A70C3A /* AccountPrivateKeyView.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -7310,6 +7313,7 @@
 				271F68B026EBD27E00AA2A50 /* BackupRecoveryPhraseView.swift in Sources */,
 				271F68A926EBD27E00AA2A50 /* BuySendSwapView.swift in Sources */,
 				271F68C226EBD27E00AA2A50 /* SwapButton.swift in Sources */,
+				27DDE85926FBE09A00A70C3A /* AccountPrivateKeyView.swift in Sources */,
 				271F68AA26EBD27E00AA2A50 /* TransactionView.swift in Sources */,
 				271F689126EBD27E00AA2A50 /* TestEthRpcController.swift in Sources */,
 				271F689726EBD27E00AA2A50 /* CryptoPagesViewController.swift in Sources */,

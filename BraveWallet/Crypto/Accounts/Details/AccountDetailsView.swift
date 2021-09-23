@@ -7,7 +7,7 @@ import UIKit
 import SwiftUI
 import BraveCore
 import CoreImage
-import CoreImage.CIFilterBuiltins
+import CoreImage.CIFilterBuiltins // swiftlint:disable:this duplicate_imports
 
 struct AccountDetailsView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -55,6 +55,12 @@ struct AccountDetailsView: View {
                 isFieldFocused = tf.becomeFirstResponder()
               }
             }
+        }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        Section {
+          NavigationLink(destination: AccountPrivateKeyView(keyringStore: keyringStore, account: account)) {
+            Text("Private Key")
+          }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         if account.isImported {

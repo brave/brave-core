@@ -202,7 +202,7 @@ private class TestKeyringController: NSObject, BraveWalletKeyringController {
   }
   
   func privateKey(forDefaultKeyringAccount address: String, completion: @escaping (Bool, String) -> Void) {
-    completion(false, "")
+    completion(true, "807df4db569fab37cdf475a4bda779897f0f3dd9c5d90a2cb953c88ef762fd96")
   }
   
   func privateKey(forImportedAccount address: String, completion: @escaping (Bool, String) -> Void) {
