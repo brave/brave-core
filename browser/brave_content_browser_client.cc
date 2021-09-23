@@ -200,7 +200,6 @@ bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
 }
 
 void BindCosmeticFiltersResourcesOnTaskRunner(
-    content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
         receiver) {
   mojo::MakeSelfOwnedReceiver(
@@ -215,7 +214,7 @@ void BindCosmeticFiltersResources(
         receiver) {
   g_brave_browser_process->ad_block_service()->GetTaskRunner()->PostTask(
       FROM_HERE, base::BindOnce(&BindCosmeticFiltersResourcesOnTaskRunner,
-                                frame_host, std::move(receiver)));
+                                std::move(receiver)));
 }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

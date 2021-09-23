@@ -77,11 +77,7 @@ void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
   if (!url_.SchemeIsHTTPOrHTTPS())
     return;
 
-  bool continue_with_cf = native_javascript_handle_->ProcessURL( url_);
-
-  if (continue_with_cf) {
-    should_inject_ = true;
-  }
+  should_inject_ = native_javascript_handle_->ProcessURL(url_);
 }
 
 void CosmeticFiltersJsRenderFrameObserver::RunScriptsAtDocumentStart() {

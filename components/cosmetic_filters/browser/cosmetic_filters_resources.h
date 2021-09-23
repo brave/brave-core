@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/callback.h"
-#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -32,7 +31,8 @@ class CosmeticFiltersResources final
  public:
   CosmeticFiltersResources(const CosmeticFiltersResources&) = delete;
   CosmeticFiltersResources& operator=(const CosmeticFiltersResources&) = delete;
-  CosmeticFiltersResources(brave_shields::AdBlockService* ad_block_service);
+  explicit CosmeticFiltersResources(
+      brave_shields::AdBlockService* ad_block_service);
   ~CosmeticFiltersResources() override;
 
   // Sends back to renderer a response about rules that has to be applied
@@ -49,8 +49,6 @@ class CosmeticFiltersResources final
 
  private:
   brave_shields::AdBlockService* ad_block_service_;  // Not owned
-
-  base::WeakPtrFactory<CosmeticFiltersResources> weak_factory_;
 };
 
 }  // namespace cosmetic_filters
