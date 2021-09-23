@@ -131,9 +131,8 @@ extension BrowserViewController {
                     }
                     ForEach(activities, id: \.activityTitle) { activity in
                         MenuItemButton(icon: activity.activityImage?.template ?? UIImage(), title: activity.activityTitle ?? "") {
-                            browserViewController.dismiss(animated: true) {
-                                activity.perform()
-                            }
+                            browserViewController.dismiss(animated: true)
+                            activity.perform()
                         }
                     }
                 }
