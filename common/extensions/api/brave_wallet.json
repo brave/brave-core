@@ -13,16 +13,6 @@
     ],
     "functions": [
       {
-        "name": "promptToEnableWallet",
-        "type": "function",
-        "description": "Called when website detects a Dapp",
-        "parameters": [
-          {
-            "name": "tabID",
-            "type": "integer"
-          }
-        ]
-      }, {
         "name": "ready",
         "type": "function",
         "description": "Called by Crypto Wallets when it is ready",
@@ -38,22 +28,6 @@
             "parameters": [
               {
                 "name": "enabled",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      }, {
-        "name": "shouldCheckForDapps",
-        "type": "function",
-        "description": "Called to determine if dapp detection should be performed",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "dappDetection",
                 "type": "boolean"
               }
             ]

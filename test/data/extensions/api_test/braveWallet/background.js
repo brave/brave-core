@@ -153,8 +153,7 @@ function testBasics() {
       if (chrome.braveWallet &&
           chrome.braveWallet.shouldPromptForSetup &&
           chrome.braveWallet.notifyWalletUnlock &&
-          chrome.braveWallet.loadUI &&
-          chrome.braveWallet.promptToEnableWallet) {
+          chrome.braveWallet.loadUI) {
         chrome.test.succeed();
       } else {
         chrome.test.fail();
