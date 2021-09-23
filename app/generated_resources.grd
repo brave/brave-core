@@ -1083,6 +1083,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_NEW_TAB" desc="The text label of a menu item for opening a new tab">
             New &amp;tab
           </message>
+          <message name="IDS_NEW_INCOGNITO_TAB" desc="The text label of a menu item for opening a new private tab">
+            New Private &amp;tab
+          </message>
           <message name="IDS_SHOW_AS_TAB" desc="The text label for the Show As tab menu item">
             &amp;Show as tab
           </message>
@@ -1162,6 +1165,9 @@ are declared in tools/grit/grit_rule.gni.
         <if expr="use_titlecase">
           <message name="IDS_NEW_TAB" desc="In Title Case: The text label of a menu item for opening a new tab">
             New &amp;Tab
+          </message>
+          <message name="IDS_NEW_INCOGNITO_TAB" desc="In Title Case: The text label of a menu item for opening a new private tab">
+            New Private &amp;Tab
           </message>
           <message name="IDS_SHOW_AS_TAB" desc="In Title Case: The text label for the Show As tab menu item">
             &amp;Show As Tab
@@ -4067,7 +4073,7 @@ are declared in tools/grit/grit_rule.gni.
           Manage your apps, extensions, and themes
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_MDNS" desc="Permisson string for access to list of mDNS services on a network.">
-          Discover devices on your local network
+          Discover devices on your local network, like printers
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_NETWORK_STATE" desc="Permission string for network list access.">
           Access list of network connections
@@ -4248,7 +4254,19 @@ are declared in tools/grit/grit_rule.gni.
           Read information about your browser, OS, and device
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY" desc="Permission string for chrome.os.telemetry API.">
-          Read Chrome OS device information and device data. This information may be shared with your device manufacturer. Data handled by organizations other than Brave will follow their separate privacy policies
+          Read Chrome OS device information and device data.
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
+          Run diagnostic tests.
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_AND_DIAGNOSTICS" desc="Permission string for both chrome.os.{telemetry/diagnostics} APIs.">
+          Read Chrome OS device information, device data, and run diagnostic tests.
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_DEVICE_INFO_MAYBE_SHARED_WITH_MANUFACTURER" desc="Common permission string for chrome.os.{telemetry/diagnostics} APIs.">
+          This information may be shared with your device manufacturer. Data handled by organizations other than Brave will follow their separate privacy policies.
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
+          Read device and component serial numbers.
         </message>
       </if>
 
@@ -5756,11 +5774,26 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_PHOTOS_TITLE" desc="Title shown in the header of the photos module and various other UIs.">
         Brave Photos
       </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_HIDE_TODAY" desc="Label used to hide Brave Photos Memories from the new tab page for today.">
+        Hide memories for today
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_HIDDEN_TODAY" desc="Confirmation text shown when Brave Photos Memories were hidden from the new tab page for today.">
+        Memories hidden for today
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_DISABLE" desc="Label used to disable Brave Photos Memories from the new tab page.">
+        Never show memories
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_DISABLED" desc="Confirmation text shown when the Brave Photos Memories module is disabled from the new tab page.">
+        All memories hidden
+      </message>
       <message name="IDS_NTP_MODULES_PHOTOS_INFO" desc="Text shown in the body of the info dialog of the Photos module.">
         Your Memories from Brave Photos are shown here. They are visible only when you’re signed in.
         <ph name="BREAK">&lt;br&gt;</ph>
         <ph name="BREAK">&lt;br&gt;</ph>
         Manage what you see in your memories at <ph name="BEGIN_LINK">&lt;a href="https://photos.google.com/settings" target="_blank"&gt;</ph>photos.google.com/settings<ph name="END_LINK">&lt;/a&gt;</ph>.
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_EXPLORE" desc="Text to encourage users to explore Brave Photos in the new tab page.">
+        Explore more of your memories in Brave Photos
       </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
         Top picks for you
@@ -6982,7 +7015,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_MOVETOANOTHERNEWWINDOW" desc="The label for the Tab context item to move items to a new window from the 'Move tabs to another window' submenu.">
           New window
         </message>
-        <if expr="chromeos">
+        <if expr="chromeos or lacros">
           <message name="IDS_TAB_CXMENU_GROUPED_BY_DESK_MENU_ITEM_A11Y" desc="The a11y message for menu items in 'Move tabs to another window' when grouped by desk.">
             <ph name="TAB_TITLE">$1<ex>Brave News</ex></ph> belongs to desk <ph name="DESK_TITLE">$2<ex>School</ex></ph>
           </message>
@@ -10068,6 +10101,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Other Tab
         </message>
       </if>
+      <message name="IDS_DESKTOP_MEDIA_PICKER_EMPTY_PREVIEW" desc="Text shown instead of a preview image of a tab when the user hasn't yet selected a tab to screenshare.">
+        Select a tab to preview
+      </message>
 
       <message name="IDS_TAB_CAPTURE_TERMINATED_BY_POLICY_TITLE" desc="Title for a confirmation dialog shown on the captured tab when capture of that tab is terminated due to enterprise policy.">
         Screen sharing has ended
@@ -10992,12 +11028,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_CABLE_V2_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know how they can use Brave on their Android phone as a security key. The substring 'Use phone as a security key' refers to the string IDS_PHONE_AS_SECURITY_KEY_TEXT in Brave on Android.">
         Open Brave on your Android phone, and go to "Settings &gt; Passwords &gt; Use phone as a security key", and follow the instructions there.
-      </message>
-      <message name="IDS_WEBAUTHN_CABLE_QR_TITLE" desc="Title of a dialog that contains a QR-code for the user to scan with a mobile phone app. A QR Code is a type of barcode that can be read using a smartphone's camera.">
-        Add new phone
-      </message>
-      <message name="IDS_WEBAUTHN_CABLE_QR_DESCRIPTION" desc="Description text in a dialog that contains a QR-code for the user to scan with Brave on their Android phone. A QR Code is a type of barcode that can be read using a smartphone's camera. The substring 'Use phone as a security key' refers to the string IDS_PHONE_AS_SECURITY_KEY_TEXT in Brave on Android.">
-        To set up an Android phone to be used as a security key with this computer for the first time, open Brave on your phone and go to "Settings &gt; Passwords &gt; Use phone as a security key". Then tap "Connect new device" and scan this QR Code.
       </message>
 
       <!-- WebAuthn authenticator PIN entry/setup -->
