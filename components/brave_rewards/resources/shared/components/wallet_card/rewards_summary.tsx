@@ -21,6 +21,7 @@ export interface RewardsSummaryData {
   autoContributions: number
   oneTimeTips: number
   monthlyTips: number
+  pendingTips: number
 }
 
 interface Props {
@@ -30,6 +31,7 @@ interface Props {
   nextPaymentDate: number
   exchangeRate: number
   exchangeCurrency?: string
+  onViewPendingTips?: () => void
 }
 
 export function RewardsSummary (props: Props) {
@@ -57,6 +59,28 @@ export function RewardsSummary (props: Props) {
     )
   }
 
+  function renderPendingTips () {
+    if (!data.pendingTips || !props.onViewPendingTips) {
+      return null
+    }
+
+    return (
+      <style.pendingTips>
+        <style.pendingAmount>
+          <TokenAmount minimumFractionDigits={2} amount={data.pendingTips} />
+        </style.pendingAmount>
+        <style.pendingText>
+          {getString('walletPendingContributions')}
+        </style.pendingText>
+        <style.pendingAction>
+          <button onClick={props.onViewPendingTips}>
+            {getString('walletSeeAll')}
+          </button>
+        </style.pendingAction>
+      </style.pendingTips>
+    )
+  }
+
   return (
     <style.root>
       <style.header>
@@ -64,6 +88,7 @@ export function RewardsSummary (props: Props) {
         <div>{monthFormatter.format(Date.now())}</div>
       </style.header>
       <style.body>
+        {renderPendingTips()}
         <style.dataTable>
           <table>
             <tbody>

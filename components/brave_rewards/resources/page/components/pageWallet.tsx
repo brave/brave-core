@@ -822,7 +822,8 @@ class PageWallet extends React.Component<Props, State> {
       recoveryKey,
       externalWallet,
       parameters,
-      paymentId
+      paymentId,
+      pendingContributionTotal
     } = this.props.rewardsData
     const { total } = balance
     const { modalBackup } = ui
@@ -845,7 +846,8 @@ class PageWallet extends React.Component<Props, State> {
       adEarnings: balanceReport && balanceReport.ads || 0,
       autoContributions: balanceReport && balanceReport.contribute || 0,
       oneTimeTips: balanceReport && balanceReport.tips || 0,
-      monthlyTips: balanceReport && balanceReport.monthly || 0
+      monthlyTips: balanceReport && balanceReport.monthly || 0,
+      pendingTips: pendingContributionTotal || 0
     }
 
     return (
@@ -861,6 +863,7 @@ class PageWallet extends React.Component<Props, State> {
           showSummary={true}
           summaryData={summaryData}
           onExternalWalletAction={this.onExternalWalletAction}
+          onViewPendingTips={this.onModalPendingToggle}
           onViewStatement={this.onModalActivityToggle}
         />
         <ManageWalletButton onClick={this.onModalBackupOpen} />
