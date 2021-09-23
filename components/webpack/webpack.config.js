@@ -78,6 +78,7 @@ module.exports = async function (env, argv) {
   // Webpack config object
   return {
     devtool: argv.mode === 'development' ? '#inline-source-map' : false,
+    target: 'web',
     output: {
       path: process.env.TARGET_GEN_DIR,
       filename: '[name].bundle.js',
@@ -130,7 +131,11 @@ module.exports = async function (env, argv) {
         }]
     },
     node: {
-      fs: 'empty'
+      fs: 'empty',
+      child_process: 'empty',
+      crypto: 'empty',
+      net: 'empty',
+      tls: 'empty'
     }
   }
 }

@@ -13,6 +13,7 @@ import LedgerBridgeKeyring from '../common/ledgerjs/eth_ledger_bridge_keyring'
 import {
   HardwareWallet
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
+import TrezorKeyring from 'eth-trezor-keyring'
 
 // TODO(petemill): Convert this module to Typescript, and import
 // es-module versions of mojom bindings, e.g.
@@ -41,6 +42,7 @@ export default class WalletApiProxy {
     /** @type {!braveWallet.mojom.BraveWalletServiceRemote} */
     this.braveWalletService = new braveWallet.mojom.BraveWalletServiceRemote();
     this.ledgerHardwareKeyring = new LedgerBridgeKeyring();
+    this.trezorHardwareKeyring = new TrezorKeyring()
   }
 
   addEthJsonRpcControllerObserver(store) {
@@ -65,7 +67,8 @@ export default class WalletApiProxy {
     return txData
   }
 
-  getKeyringsByType(type) {
+  async getKeyringsByType(type) {
+    console.log(await this.trezorHardwareKeyring.unlock())
     if (type == HardwareWallet.Ledger) {
       return this.ledgerHardwareKeyring;
     }
