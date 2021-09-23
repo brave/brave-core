@@ -32,13 +32,10 @@
 #include "crypto/hkdf.h"
 #include "crypto/random.h"
 #include "crypto/symmetric_key.h"
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/browser/unloaded_extension_reason.h"
 #include "extensions/browser/user_script_manager.h"
-#endif
 
 EthereumRemoteClientService::EthereumRemoteClientService(
     content::BrowserContext* context,
@@ -59,10 +56,8 @@ EthereumRemoteClientService::EthereumRemoteClientService(
   // In case any web3 providers have already loaded content scripts at
   // this point.
   RemoveUnusedWeb3ProviderContentScripts();
-#if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_registry_observer_.Observe(
       extensions::ExtensionRegistry::Get(context));
-#endif
 }
 
 EthereumRemoteClientService::~EthereumRemoteClientService() {}
@@ -176,10 +171,8 @@ void EthereumRemoteClientService::SaveToPrefs(PrefService* prefs,
 }
 
 void EthereumRemoteClientService::ResetCryptoWallets() {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
   extensions::ExtensionPrefs::Get(context_)->DeleteExtensionPrefs(
       ethereum_remote_client_extension_id);
-#endif
 }
 
 // Generates a random 32 byte root seed and stores it in prefs
@@ -262,7 +255,6 @@ void EthereumRemoteClientService::RemoveUnusedWeb3ProviderContentScripts() {
 // We don't use ExtensionRegistryObserver and simply access the private methods
 // OnExtensionLoaded()/OnExtensionUnloaded() from UserScriptLoader instead since
 // we only want to load/unload the content scripts and not the extension.
-#if BUILDFLAG(ENABLE_EXTENSIONS)
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   auto* user_script_manager =
       extensions::ExtensionSystem::Get(context_)->user_script_manager();
@@ -303,14 +295,12 @@ void EthereumRemoteClientService::RemoveUnusedWeb3ProviderContentScripts() {
       user_script_manager->OnExtensionLoaded(context_, metamask_extension);
     }
   }
-#endif
 }
 
 void EthereumRemoteClientService::OnPreferenceChanged() {
   RemoveUnusedWeb3ProviderContentScripts();
 }
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
 void EthereumRemoteClientService::OnExtensionInstalled(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
@@ -367,7 +357,6 @@ void EthereumRemoteClientService::CryptoWalletsExtensionReady() {
     std::move(load_ui_callback_).Run();
   }
 }
-#endif
 
 bool EthereumRemoteClientService::IsLegacyCryptoWalletsSetup() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
@@ -376,13 +365,9 @@ bool EthereumRemoteClientService::IsLegacyCryptoWalletsSetup() const {
 }
 
 bool EthereumRemoteClientService::IsCryptoWalletsReady() const {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
   auto* registry = extensions::ExtensionRegistry::Get(context_);
   return registry->ready_extensions().Contains(
       ethereum_remote_client_extension_id);
-#else
-  return true;
-#endif
 }
 
 bool EthereumRemoteClientService::ShouldShowLazyLoadInfobar() const {
@@ -395,14 +380,10 @@ bool EthereumRemoteClientService::ShouldShowLazyLoadInfobar() const {
 
 void EthereumRemoteClientService::MaybeLoadCryptoWalletsExtension(
     LoadUICallback callback) {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
   load_ui_callback_ = std::move(callback);
   ethereum_remote_client_delegate_->MaybeLoadCryptoWalletsExtension(context_);
-#endif
 }
 
 void EthereumRemoteClientService::UnloadCryptoWalletsExtension() {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
   ethereum_remote_client_delegate_->UnloadCryptoWalletsExtension(context_);
-#endif
 }
