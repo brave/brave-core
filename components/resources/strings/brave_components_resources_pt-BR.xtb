@@ -558,7 +558,6 @@
 <translation id="7530570094705720669">Criando carteira</translation>
 <translation id="1988679729106502285">OBSERVAÇÃO:</translation>
 <translation id="7979350009208995417">No momento, este criador não está configurado para receber doações da sua carteira. Qualquer doação que você fizer ficará pendente na sua carteira, e novas tentativas serão realizadas automaticamente por 90 dias.</translation>
-<translation id="7461596279975181413">Este Criador Verificado do Brave ainda não configurou sua conta para receber contribuições de usuários do Brave. Seu navegador continuará tentando contribuir até que ele seja verificado ou até que passem 90 dias.</translation>
 <translation id="3197752845651180812">Contribuições pendentes</translation>
 <translation id="6964891561514920613">Mostrar todas as contribuições pendentes</translation>
 <translation id="4346944508027912677">Pendente até</translation>
@@ -782,7 +781,7 @@
 <translation id="7577100371127227294">Doações Mensais</translation>
 <translation id="5894023780213944778">Minha carteira</translation>
 <translation id="2613359062756190460">Doações Únicas</translation>
-<translation id="590733288489975971">Recompensas de anúncios</translation>
+<translation id="590733288489975971">Recompensas do Ads</translation>
 <translation id="3026978804849658576">Ver extrato</translation>
 <translation id="8494748383523030337">Seu saldo</translation>
 <translation id="7701466644604753106">LIGAR Speedreader</translation>

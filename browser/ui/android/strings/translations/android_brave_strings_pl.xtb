@@ -38,8 +38,8 @@
 <translation id="7142548388914389999">Zezwól na zastosowanie analizy produktów z zachowaniem prywatności (P3A)</translation>
 <translation id="4272190451231642425">Automatycznie wysyłaj raporty o awariach</translation>
 <translation id="2239766974964486304">Raporty o awariach pomagają Brave w poprawie stabilnosci produktu dla wszystkich użytkowników.</translation>
-<translation id="7977176350719484850">Szacowane dane\nie zapisane</translation>
-<translation id="9008534313521214777">Szacowany zaoszczędzony\nczas</translation>
+<translation id="7977176350719484850">Zaoszczędzony transfer danych</translation>
+<translation id="9008534313521214777">Zaoszczędzony czas</translation>
 <translation id="6572660632052512096">Wersja na komputer</translation>
 <translation id="1340503115760585811">Włącz wersję na komputer dla nowych kart</translation>
 <translation id="7924540991929826186">Korzystaj z wersji mobilnej dla nowych kart (rekomendowane)</translation>
@@ -360,7 +360,7 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="1274039301958114163">Powiadomienie o raporcie o prywatności</translation>
 <translation id="453601949003770390">Zablokowane skrypty śledzące i reklamy</translation>
 <translation id="1581614543353331529">Na razie brak danych do pokazania</translation>
-<translation id="2401984885421380890">Zablokowano narzędzia do monitorowania\ni reklamy</translation>
+<translation id="2401984885421380890">Zablokowane skrypty śledzące i reklamy</translation>
 <translation id="2662183408296991265">Oszczędzono dane\n(<ph name="DATA_SAVED"/>)</translation>
 <translation id="3180928261057583677">Dane zapisane (<ph name="DATA_SAVED"/>)</translation>
 <translation id="6814582232712814369">Oszczędzony czas</translation>
@@ -480,7 +480,7 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="1078265935778232285">Witaj w przeglądarce Brave</translation>
 <translation id="6824713633331856331">Pomóż nam uczyć się anonimowo</translation>
 <translation id="6116685031674149112">Brave chroni Twoją prywatność oraz docenia zgodę na następujące kwestie:</translation>
-<translation id="4394483075076204916">Pomóż wspierać Brave poprzez wysyłanie zupełnie anonimizowanych, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Pomóż wspierać Brave poprzez wysyłanie zupełnie anonimizowanych <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">analityka prywatnego produktu</translation>
 <translation id="5187052478998910855">Potrzebujesz powtórzenia w zakresie nagród?</translation>
 <translation id="8622329973403382303">Przejdź krótki kurs, aby dowiedzieć się, jak przejść do historii jako gwiazda nagród!</translation>

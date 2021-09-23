@@ -252,7 +252,7 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Lompakon varmuuskopio",
+    "message": "Varmuuskopioi lompakko",
     "description": ""
   },
   "notificationBackupWalletText": {
@@ -289,7 +289,7 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Token-lahjoitukset",
+    "message": "Lahjoitetut tokenit",
     "description": ""
   },
   "notificationTokenGrantText": {

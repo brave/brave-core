@@ -558,7 +558,6 @@
 <translation id="7530570094705720669">正在创建钱包</translation>
 <translation id="1988679729106502285">注：</translation>
 <translation id="7979350009208995417">此创建者当前尚未配置为接收来自您的钱包的赏金。您发送的任何赏金都将保留在您的钱包中，并每 90 天自动重试一次。</translation>
-<translation id="7461596279975181413">此 Brave 验证的创建者还未配置其账号以接收 Brave 用户捐款。您的浏览器将会继续尝试捐款，直到该用户通过验证，但不会超过 90 天。</translation>
 <translation id="3197752845651180812">待处理的捐款</translation>
 <translation id="6964891561514920613">显示所有待处理的捐款</translation>
 <translation id="4346944508027912677">待处理截止期限</translation>
@@ -785,7 +784,7 @@
 <translation id="5894023780213944778">我的钱包</translation>
 <translation id="2613359062756190460">一次赏金</translation>
 <translation id="590733288489975971">广告奖励</translation>
-<translation id="3026978804849658576">查看语句</translation>
+<translation id="3026978804849658576">查看月结单</translation>
 <translation id="8494748383523030337">您的余额</translation>
 <translation id="7701466644604753106">开启 Speedreader</translation>
 <translation id="763042262431778831">关闭 Speedreader</translation>

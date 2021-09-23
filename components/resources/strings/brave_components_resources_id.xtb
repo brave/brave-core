@@ -558,7 +558,6 @@
 <translation id="7530570094705720669">Membuat wallet</translation>
 <translation id="1988679729106502285">CATATAN:</translation>
 <translation id="7979350009208995417">Kreator ini saat ini tidak dikonfigurasikan untuk menerima tip dari dompet Anda. Setiap tip yang Anda berikan akan tetap ditunda di dompet Anda dan mencoba kembali secara otomatis selama 90 hari.</translation>
-<translation id="7461596279975181413">Pencipta Terverifikasi Brave ini belum mengkonfigurasi akunnya untuk menerima kontribusi dari pengguna Brave. Browser Anda akan terus mencoba untuk mengirim kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
 <translation id="3197752845651180812">Kontribusi tertunda</translation>
 <translation id="6964891561514920613">Tampilkan semua kontribusi tertunda</translation>
 <translation id="4346944508027912677">Tertunda sampai</translation>
@@ -782,8 +781,8 @@
 <translation id="7577100371127227294">Tip Bulanan</translation>
 <translation id="5894023780213944778">Dompet Saya</translation>
 <translation id="2613359062756190460">Tip Satu Kali</translation>
-<translation id="590733288489975971">Imbalan dari Iklan</translation>
-<translation id="3026978804849658576">Lihat pernyataan</translation>
+<translation id="590733288489975971">Imbalan dari Ads</translation>
+<translation id="3026978804849658576">Lihat rekening koran</translation>
 <translation id="8494748383523030337">Saldo Anda</translation>
 <translation id="7701466644604753106">NYALAKAN Speedreader</translation>
 <translation id="763042262431778831">MATIKAN Speedreader</translation>

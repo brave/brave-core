@@ -558,7 +558,6 @@
 <translation id="7530570094705720669">Creando monedero</translation>
 <translation id="1988679729106502285">AVISO:</translation>
 <translation id="7979350009208995417">Este creador aún no ha configurado la recepción de propinas de tu monedero. Cualquier propina que envíes se quedará pendiente en tu monedero y se volverá a intentar el pago durante 90 días.</translation>
-<translation id="7461596279975181413">Este Editor verificado por Brave aún no ha configurado su cuenta para recibir contribuciones de usuarios de Brave. Tu navegador seguirá intentando contribuir hasta que se verifiquen, o hasta que hayan pasado 90 días.</translation>
 <translation id="3197752845651180812">Contribuciones pendientes</translation>
 <translation id="6964891561514920613">Mostrar todas las contribuciones pendientes</translation>
 <translation id="4346944508027912677">Pendiente hasta</translation>
@@ -790,7 +789,7 @@
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="1148827340205946630">El usuario ha rechazado la solicitud.</translation>
 <translation id="2403819048476450281">Los parámetros no son válidos.</translation>
-<translation id="9161147058107529840">Debe ser un único parámetro de objeto.</translation>
+<translation id="9161147058107529840">Se esperaba un único parámetro de objeto.</translation>
 <translation id="1875861420974447980">Este identificador de cadena ya está en uso</translation>
 <translation id="167698752210114155">Ha ocurrido un error interno</translation>
 <translation id="4641919696349069826">Ya hay una solicitud en curso</translation>
