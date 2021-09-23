@@ -297,7 +297,8 @@ void EthereumRemoteClientService::RemoveUnusedWeb3ProviderContentScripts() {
     if (erc_extension) {
       user_script_manager->OnExtensionLoaded(context_, erc_extension);
     }
-  } else if (provider != brave_wallet::Web3ProviderTypes::NONE) {
+  } else if (provider != brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS &&
+             provider != brave_wallet::Web3ProviderTypes::BRAVE_WALLET) {
     if (metamask_extension) {
       user_script_manager->OnExtensionLoaded(context_, metamask_extension);
     }
@@ -323,7 +324,7 @@ void EthereumRemoteClientService::OnExtensionInstalled(
   }
 }
 
-void EthereumRemoteClientService::OnExtensionLoaded(
+void EthereumRemoteClientService::OnExtensionReady(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension) {
   if (extension->id() == metamask_extension_id ||

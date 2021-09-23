@@ -36,6 +36,8 @@
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/pref_names.h"
 #include "brave/browser/extensions/ethereum_remote_client_util.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
 using extensions::mojom::ManifestLocation;
@@ -162,10 +164,12 @@ void BraveComponentLoader::AddEthereumRemoteClientExtension() {
 }
 
 void BraveComponentLoader::AddEthereumRemoteClientExtensionOnStartup() {
-  // Only load if the eagerly load Crypto Wallets setting is on and there is a
-  // project id configured in the build.
+  // Only load Crypto Wallets if it is set as the default wallet
+  auto provider = static_cast<brave_wallet::Web3ProviderTypes>(
+      profile_prefs_->GetInteger(kBraveWalletWeb3Provider));
+
   if (HasInfuraProjectID() &&
-      profile_prefs_->GetBoolean(kERCLoadCryptoWalletsOnStartup)) {
+      provider == brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS) {
     AddEthereumRemoteClientExtension();
   }
 }

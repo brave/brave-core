@@ -14,10 +14,6 @@ transpile_web_ui("brave_extension") {
       rebase_path("background.ts"),
     ],
     [
-      "content_dapps",
-      rebase_path("content_dapps.ts"),
-    ],
-    [
       "content_element_picker",
       rebase_path("content_element_picker.ts"),
     ],

@@ -1,4 +1,3 @@
-import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -31,20 +30,6 @@ source_set("infobars") {
     "//ui/views",
     "//url",
   ]
-
-  if (ethereum_remote_client_enabled) {
-    sources += [
-      "crypto_wallets_infobar_delegate.cc",
-      "crypto_wallets_infobar_delegate.h",
-    ]
-
-    deps += [
-      "//brave/browser/ethereum_remote_client",
-      "//brave/common:pref_names",
-      "//components/user_prefs:user_prefs",
-      "//extensions/common:common_constants",
-    ]
-  }
 
   if (enable_ipfs) {
     deps += [

@@ -15,7 +15,6 @@
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
 #include "brave/browser/ethereum_remote_client/pref_names.h"
 #include "brave/browser/extensions/ethereum_remote_client_util.h"
-#include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
 #include "brave/common/extensions/api/brave_wallet.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -24,7 +23,6 @@
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/infobars/content/content_infobar_manager.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_registry.h"
@@ -52,46 +50,6 @@ base::Value MakeSelectValue(const std::u16string& name,
 
 namespace extensions {
 namespace api {
-
-ExtensionFunction::ResponseAction
-BraveWalletPromptToEnableWalletFunction::Run() {
-  std::unique_ptr<brave_wallet::PromptToEnableWallet::Params> params(
-      brave_wallet::PromptToEnableWallet::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  if (browser_context()->IsTor()) {
-    return RespondNow(Error("Not available in Tor context"));
-  }
-
-  // Get web contents for this tab
-  content::WebContents* contents = nullptr;
-  if (!ExtensionTabUtil::GetTabById(
-        params->tab_id,
-        Profile::FromBrowserContext(browser_context()),
-        include_incognito_information(),
-        nullptr,
-        nullptr,
-        &contents,
-        nullptr)) {
-    return RespondNow(Error(tabs_constants::kTabNotFoundError,
-                            base::NumberToString(params->tab_id)));
-  }
-
-  infobars::ContentInfoBarManager* infobar_manager =
-      infobars::ContentInfoBarManager::FromWebContents(contents);
-  if (infobar_manager) {
-    CryptoWalletsInfoBarDelegate::InfobarSubType subtype =
-        CryptoWalletsInfoBarDelegate::InfobarSubType::GENERIC_SETUP;
-    auto* service = GetEthereumRemoteClientService(browser_context());
-    if (service->ShouldShowLazyLoadInfobar()) {
-      subtype = CryptoWalletsInfoBarDelegate::InfobarSubType::
-          LOAD_CRYPTO_WALLETS;
-    }
-    CryptoWalletsInfoBarDelegate::Create(infobar_manager, subtype);
-  }
-
-  return RespondNow(NoArguments());
-}
 
 ExtensionFunction::ResponseAction
 BraveWalletReadyFunction::Run() {
@@ -154,30 +112,6 @@ BraveWalletShouldPromptForSetupFunction::Run() {
       !service->IsCryptoWalletsSetup() &&
       !profile->GetPrefs()->GetBoolean(kERCOptedIntoCryptoWallets);
   return RespondNow(OneArgument(base::Value(should_prompt)));
-}
-
-ExtensionFunction::ResponseAction
-BraveWalletShouldCheckForDappsFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (browser_context()->IsTor()) {
-    return RespondNow(OneArgument(base::Value(false)));
-  }
-  auto provider = static_cast<::brave_wallet::Web3ProviderTypes>(
-      profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
-  if (provider == ::brave_wallet::Web3ProviderTypes::BRAVE_WALLET) {
-    return RespondNow(OneArgument(base::Value(false)));
-  }
-  auto* registry = extensions::ExtensionRegistry::Get(profile);
-  bool has_metamask =
-      registry->ready_extensions().Contains(metamask_extension_id);
-
-  auto* service = GetEthereumRemoteClientService(browser_context());
-  bool dappDetection =
-      (provider == ::brave_wallet::Web3ProviderTypes::ASK && !has_metamask) ||
-      (provider == ::brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS &&
-       !service->IsCryptoWalletsReady());
-
-  return RespondNow(OneArgument(base::Value(dappDetection)));
 }
 
 ExtensionFunction::ResponseAction
