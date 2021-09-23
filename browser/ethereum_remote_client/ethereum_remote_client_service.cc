@@ -262,9 +262,7 @@ void EthereumRemoteClientService::RemoveUnusedWeb3ProviderContentScripts() {
     return;
   }
   auto* registry = extensions::ExtensionRegistry::Get(context_);
-  auto provider = static_cast<brave_wallet::mojom::DefaultWallet>(
-      prefs->GetInteger(kBraveWalletWeb3Provider));
-
+  auto provider = brave_wallet::GetDefaultWallet(prefs);
   auto* erc_extension = registry->enabled_extensions().GetByID(
       ethereum_remote_client_extension_id);
   if (erc_extension) {
@@ -307,9 +305,8 @@ void EthereumRemoteClientService::OnExtensionInstalled(
     bool is_update) {
   if (extension->id() == metamask_extension_id && !is_update) {
     PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-    prefs->SetInteger(
-        kBraveWalletWeb3Provider,
-        static_cast<int>(brave_wallet::mojom::DefaultWallet::Metamask));
+    brave_wallet::SetDefaultWallet(
+        prefs, brave_wallet::mojom::DefaultWallet::Metamask);
     RemoveUnusedWeb3ProviderContentScripts();
   }
 }
@@ -339,8 +336,7 @@ void EthereumRemoteClientService::OnExtensionUninstalled(
     extensions::UninstallReason reason) {
   if (extension->id() == metamask_extension_id) {
     PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-    auto provider = static_cast<brave_wallet::mojom::DefaultWallet>(
-        prefs->GetInteger(kBraveWalletWeb3Provider));
+    auto provider = brave_wallet::GetDefaultWallet(prefs);
     if (provider == brave_wallet::mojom::DefaultWallet::Metamask)
       prefs->SetInteger(
           kBraveWalletWeb3Provider,
@@ -372,8 +368,7 @@ bool EthereumRemoteClientService::IsCryptoWalletsReady() const {
 
 bool EthereumRemoteClientService::ShouldShowLazyLoadInfobar() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  auto provider = static_cast<brave_wallet::mojom::DefaultWallet>(
-      prefs->GetInteger(kBraveWalletWeb3Provider));
+  auto provider = brave_wallet::GetDefaultWallet(prefs);
   return provider == brave_wallet::mojom::DefaultWallet::CryptoWallets &&
          !IsCryptoWalletsReady();
 }

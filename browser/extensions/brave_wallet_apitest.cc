@@ -95,9 +95,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
     BraveWalletWeb3ProviderCryptoWallets) {
-  GetPrefs()->SetInteger(
-      kBraveWalletWeb3Provider,
-      static_cast<int>(brave_wallet::mojom::DefaultWallet::CryptoWallets));
+  brave_wallet::SetDefaultWallet(
+      GetPrefs(), brave_wallet::mojom::DefaultWallet::CryptoWallets);
   ResultCatcher catcher;
   const Extension* extension =
     LoadExtension(extension_dir_.AppendASCII("braveWallet"));
@@ -110,9 +109,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
     BraveWalletWeb3ProviderMetaMask) {
-  GetPrefs()->SetInteger(
-      kBraveWalletWeb3Provider,
-      static_cast<int>(brave_wallet::mojom::DefaultWallet::Metamask));
+  brave_wallet::SetDefaultWallet(GetPrefs(),
+                                 brave_wallet::mojom::DefaultWallet::Metamask);
   ResultCatcher catcher;
   const Extension* extension =
     LoadExtension(extension_dir_.AppendASCII("braveWallet"));
@@ -125,9 +123,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
     BraveWalletWeb3ProviderAsk) {
-  GetPrefs()->SetInteger(
-      kBraveWalletWeb3Provider,
-      static_cast<int>(brave_wallet::mojom::DefaultWallet::Ask));
+  brave_wallet::SetDefaultWallet(GetPrefs(),
+                                 brave_wallet::mojom::DefaultWallet::Ask);
   ResultCatcher catcher;
   const Extension* extension =
     LoadExtension(extension_dir_.AppendASCII("braveWallet"));
@@ -140,9 +137,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
     BraveWalletWeb3ProviderNone) {
-  GetPrefs()->SetInteger(
-      kBraveWalletWeb3Provider,
-      static_cast<int>(brave_wallet::mojom::DefaultWallet::None));
+  brave_wallet::SetDefaultWallet(GetPrefs(),
+                                 brave_wallet::mojom::DefaultWallet::None);
   ResultCatcher catcher;
   const Extension* extension =
     LoadExtension(extension_dir_.AppendASCII("braveWallet"));
@@ -155,9 +151,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
                        BraveWalletWeb3ProviderBraveWallet) {
-  GetPrefs()->SetInteger(
-      kBraveWalletWeb3Provider,
-      static_cast<int>(brave_wallet::mojom::DefaultWallet::BraveWallet));
+  brave_wallet::SetDefaultWallet(
+      GetPrefs(), brave_wallet::mojom::DefaultWallet::BraveWallet);
   ResultCatcher catcher;
   const Extension* extension =
       LoadExtension(extension_dir_.AppendASCII("braveWallet"));

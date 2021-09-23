@@ -17,7 +17,6 @@
 #include "brave/browser/extensions/ethereum_remote_client_util.h"
 #include "brave/common/extensions/api/brave_wallet.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
@@ -85,16 +84,15 @@ BraveWalletLoadUIFunction::Run() {
   // the new Brave Wallet is not the default, then
   // set the Dapp provider to Crypto Wallets.
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto provider = static_cast<::brave_wallet::mojom::DefaultWallet>(
-      profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
+  auto* prefs = profile->GetPrefs();
+  auto provider = ::brave_wallet::GetDefaultWallet(prefs);
   auto* registry = extensions::ExtensionRegistry::Get(profile);
   if (!registry->ready_extensions().Contains(metamask_extension_id) &&
       provider != ::brave_wallet::mojom::DefaultWallet::BraveWallet) {
-    profile->GetPrefs()->SetInteger(
-        kBraveWalletWeb3Provider,
-        static_cast<int>(::brave_wallet::mojom::DefaultWallet::CryptoWallets));
+    ::brave_wallet::SetDefaultWallet(
+        prefs, ::brave_wallet::mojom::DefaultWallet::CryptoWallets);
   }
-  profile->GetPrefs()->SetBoolean(kERCOptedIntoCryptoWallets, true);
+  prefs->SetBoolean(kERCOptedIntoCryptoWallets, true);
   service->MaybeLoadCryptoWalletsExtension(
       base::BindOnce(&BraveWalletLoadUIFunction::OnLoaded, this));
   return RespondLater();
@@ -182,8 +180,7 @@ BraveWalletResetWalletFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveWalletGetWeb3ProviderFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto provider = static_cast<::brave_wallet::mojom::DefaultWallet>(
-      profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
+  auto provider = ::brave_wallet::GetDefaultWallet(profile->GetPrefs());
   std::string extension_id;
   if (provider == ::brave_wallet::mojom::DefaultWallet::BraveWallet) {
     // This API is used so an extension can know when to prompt to

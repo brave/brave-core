@@ -108,6 +108,8 @@ GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id);
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
 mojom::EthereumChainPtr GetKnownChain(const std::string& chain_id);
 std::string GetNetworkId(PrefService* prefs, const std::string& chain_id);
+void SetDefaultWallet(PrefService* prefs, mojom::DefaultWallet default_wallet);
+mojom::DefaultWallet GetDefaultWallet(PrefService* prefs);
 
 }  // namespace brave_wallet
 

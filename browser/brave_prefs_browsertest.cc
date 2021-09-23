@@ -32,7 +32,6 @@
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #endif
 
@@ -111,8 +110,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 #endif
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_EQ(
-      chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
-          kBraveWalletWeb3Provider),
+      brave_wallet::GetDefaultWallet(
+          chrome_test_utils::GetProfile(this)->GetPrefs()),
       static_cast<int>(brave_wallet::IsNativeWalletEnabled()
                            ? brave_wallet::mojom::DefaultWallet::BraveWallet
                            : brave_wallet::mojom::DefaultWallet::Ask));

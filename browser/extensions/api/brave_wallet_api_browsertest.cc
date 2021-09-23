@@ -99,6 +99,10 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest {
     return WaitForLoadStop(active_contents());
   }
 
+  brave_wallet::mojom::DefaultWallet default_wallet() {
+    return brave_wallet::GetDefaultWallet(browser()->profile()->GetPrefs());
+  }
+
  private:
   scoped_refptr<const extensions::Extension> extension_;
 };
@@ -113,9 +117,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
   WaitForBraveExtensionAdded();
   AddFakeMetaMaskExtension(false);
   // Should auto select MetaMask
-  auto provider = static_cast<brave_wallet::mojom::DefaultWallet>(
-      browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
-  ASSERT_EQ(provider, brave_wallet::mojom::DefaultWallet::Metamask);
+  ASSERT_EQ(default_wallet(), brave_wallet::mojom::DefaultWallet::Metamask);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
@@ -124,12 +126,12 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
   AddFakeMetaMaskExtension(false);
   RemoveFakeMetaMaskExtension();
   // Should revert back to Ask
-  auto provider = static_cast<brave_wallet::mojom::DefaultWallet>(
-      browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
   if (brave_wallet::IsNativeWalletEnabled()) {
-    ASSERT_EQ(provider, brave_wallet::mojom::DefaultWallet::BraveWallet);
+    ASSERT_EQ(default_wallet(),
+              brave_wallet::mojom::DefaultWallet::BraveWallet);
   } else {
-    ASSERT_EQ(provider, brave_wallet::mojom::DefaultWallet::CryptoWallets);
+    ASSERT_EQ(default_wallet(),
+              brave_wallet::mojom::DefaultWallet::CryptoWallets);
   }
 }
 
@@ -139,15 +141,14 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
   // User installs MetaMask
   AddFakeMetaMaskExtension(false);
   // Then if the user explicitly manually sets it to Crypto Wallets
-  browser()->profile()->GetPrefs()->SetInteger(
-      kBraveWalletWeb3Provider,
-      static_cast<int>(brave_wallet::mojom::DefaultWallet::CryptoWallets));
+  brave_wallet::SetDefaultWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::CryptoWallets);
   // Then the user updates MetaMask
   AddFakeMetaMaskExtension(true);
   // It should not toggle the setting
-  auto provider = static_cast<brave_wallet::mojom::DefaultWallet>(
-      browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
-  ASSERT_EQ(provider, brave_wallet::mojom::DefaultWallet::CryptoWallets);
+  ASSERT_EQ(default_wallet(),
+            brave_wallet::mojom::DefaultWallet::CryptoWallets);
 }
 
 }  // namespace extensions

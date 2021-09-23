@@ -741,4 +741,13 @@ std::string GetNetworkId(PrefService* prefs, const std::string& chain_id) {
   return id;
 }
 
+mojom::DefaultWallet GetDefaultWallet(PrefService* prefs) {
+  return static_cast<brave_wallet::mojom::DefaultWallet>(
+      prefs->GetInteger(kBraveWalletWeb3Provider));
+}
+
+void SetDefaultWallet(PrefService* prefs, mojom::DefaultWallet default_wallet) {
+  prefs->SetInteger(kBraveWalletWeb3Provider, static_cast<int>(default_wallet));
+}
+
 }  // namespace brave_wallet
