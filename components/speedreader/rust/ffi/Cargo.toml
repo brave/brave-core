@@ -7,8 +7,6 @@ edition = "2018"
 [dependencies]
 speedreader = { path = "../lib/" }
 libc = "0.2.98"
-[patch.crates-io]
-cssparser = { git = 'https://github.com/AndriusA/rust-cssparser', branch = "glibc" }
 
 [profile.release]
 panic = "abort"

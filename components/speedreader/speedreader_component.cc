@@ -9,7 +9,6 @@
 
 #include "base/bind.h"
 #include "base/logging.h"
-#include "url/gurl.h"
 
 namespace speedreader {
 

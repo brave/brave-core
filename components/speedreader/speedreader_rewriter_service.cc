@@ -15,6 +15,7 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_component.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "components/grit/brave_components_resources.h"
@@ -90,7 +91,8 @@ bool SpeedreaderRewriterService::URLLooksReadable(const GURL& url) {
 
 std::unique_ptr<Rewriter> SpeedreaderRewriterService::MakeRewriter(
     const GURL& url) {
-  return speedreader_->MakeRewriter(url.spec(), backend_);
+  return speedreader_->MakeRewriter(url.spec(),
+                                    RewriterType::RewriterReadability);
 }
 
 const std::string& SpeedreaderRewriterService::GetContentStylesheet() {
