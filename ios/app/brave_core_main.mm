@@ -16,6 +16,7 @@
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
+#include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "components/history/core/browser/history_service.h"
@@ -45,6 +46,7 @@ static BraveCoreLogHandler _Nullable _logHandler = nil;
 }
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
+@property(nonatomic) BraveSyncAPI* syncAPI;
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
 @end
 
@@ -177,6 +179,14 @@ static bool CustomLogHandler(int severity,
                                       webHistoryService:web_history_service_];
   }
   return _historyAPI;
+}
+
+- (BraveSyncAPI*)syncAPI {
+  if (!_syncAPI) {
+    _syncAPI = [[BraveSyncAPI alloc]
+        initWithBrowserState:_mainBrowserState];
+  }
+  return _syncAPI;
 }
 
 - (BraveSyncProfileServiceIOS*)syncProfileService {
