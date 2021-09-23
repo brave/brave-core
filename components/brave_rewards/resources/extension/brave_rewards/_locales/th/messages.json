@@ -252,7 +252,7 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "กระเป๋าเงินสำรอง",
+    "message": "สำรองกระเป๋าเงิน",
     "description": ""
   },
   "notificationBackupWalletText": {
@@ -565,7 +565,7 @@
     "description": ""
   },
   "captchaSolvedText": {
-    "message": "Ads และรายได้จะกลับมาอีกครั้งแล้ว ขอบคุณที่ช่วยเราปกป้อง Brave Rewards และโฆษณาที่เคารพความเป็นส่วนตัว",
+    "message": "Ads และรายได้จะกลับมาอีกครั้งแล้ว ขอบคุณที่ช่วยเราปกป้อง Brave Rewards และโฆษณาที่รักษาความเป็นส่วนตัว",
     "description": ""
   },
   "captchaContactSupport": {

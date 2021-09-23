@@ -558,7 +558,6 @@
 <translation id="7530570094705720669">S'està creant la cartera</translation>
 <translation id="1988679729106502285">NOTA:</translation>
 <translation id="7979350009208995417">Aquest creador actualment no està configurat per rebre propines de la vostra cartera. Qualsevol propina que doneu quedarà pendent a la vostra cartera i es reintentarà automàticament durant 90 dies.</translation>
-<translation id="7461596279975181413">Aquest Creador Verificat de Brave encara no ha configurat el seu compte per a rebre contribucions d'usuaris de Brave. El vostre navegador seguirà intentant la contribució fins que es verifiqui, o bé fins que hagin passat 90 dies.</translation>
 <translation id="3197752845651180812">Contribucions pendents</translation>
 <translation id="6964891561514920613">Mostra totes les contribucions pendents</translation>
 <translation id="4346944508027912677">Pendent fins a</translation>
@@ -758,7 +757,7 @@
 <translation id="8914505352873092008">Ves a la pàgina de configuració d'IPFS</translation>
 <translation id="3465468510001693544">Diagnòstic d'IPFS</translation>
 <translation id="2527518382346359563">Ves a la pàgina de diagnòstic d'IPFS</translation>
-<translation id="8192016636169857406">Documents d'IPFS</translation>
+<translation id="8192016636169857406">Documentació d'IPFS</translation>
 <translation id="6863052043162730918">Ves a la pàgina de documents d'IPFS</translation>
 <translation id="3862600063748690056">Import d'IPFS completat</translation>
 <translation id="8263749381887932384">Import d'IPFS parcialment completat</translation>
@@ -783,7 +782,7 @@
 <translation id="5894023780213944778">La meva cartera</translation>
 <translation id="2613359062756190460">Propines d'una sola vegada</translation>
 <translation id="590733288489975971">Brave Rewards de Brave Ads</translation>
-<translation id="3026978804849658576">Visualitza la declaració</translation>
+<translation id="3026978804849658576">Visualitza l'extracte</translation>
 <translation id="8494748383523030337">El vostre Saldo</translation>
 <translation id="7701466644604753106">Activar el lector de velocitat</translation>
 <translation id="763042262431778831">Desactivar el lector de velocitat</translation>

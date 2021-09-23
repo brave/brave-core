@@ -71,7 +71,7 @@
     "description": ""
   },
   "grantCaptchaHint": {
-    "message": "Húzza a BAT ikont a $hint$ célpontra.",
+    "message": "Húzza a BAT ikont a(z) $hint$ célpontra.",
     "description": "",
     "placeholders": {
       "hint": {
@@ -297,7 +297,7 @@
     "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "Kapott hirdetési bevételek",
+    "message": "Kapott bevételek az Ads-ből",
     "description": ""
   },
   "notificationAdGrantText": {
@@ -565,7 +565,7 @@
     "description": ""
   },
   "captchaSolvedText": {
-    "message": "Az Ads és a bevételek visszaállnak. Köszönjük, hogy segít megvédeni a Brave Rewards-ot és a privát reklámokat.",
+    "message": "Az Ads és a bevételek visszaállnak. Köszönjük, hogy segít megvédeni a Brave Rewards-ot és az adatvédelmi beállításokhoz igazodó reklámokat.",
     "description": ""
   },
   "captchaContactSupport": {

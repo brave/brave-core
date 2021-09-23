@@ -88,7 +88,7 @@
     "description": ""
   },
   "grantCaptchaAmountUGP": {
-    "message": "無料の付与トークン",
+    "message": "無料のトークン付与",
     "description": ""
   },
   "grantCaptchaPassedTitleAds": {
@@ -104,7 +104,7 @@
     "description": ""
   },
   "grantCaptchaExpiration": {
-    "message": "付与ポイントの有効期限",
+    "message": "付与トークンの有効期限",
     "description": ""
   },
   "grantCaptchaErrorTitle": {
@@ -195,7 +195,7 @@
     }
   },
   "walletRewardsFromAds": {
-    "message": "AdsによるRewards",
+    "message": "Adsによる報酬",
     "description": ""
   },
   "walletRewardsSummary": {
@@ -268,7 +268,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedText": {
-    "message": "アカウントのセキュリティ保護で発生する場合があります。以下をクリックして再接続してください。",
+    "message": "アカウントのセキュリティを保護するためこの状態になる場合があります。以下をクリックして再接続してください。",
     "description": ""
   },
   "notificationWalletDisconnectedAction": {
@@ -297,7 +297,7 @@
     "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "広告報酬を受け取りました",
+    "message": "Adsの報酬を受け取りました",
     "description": ""
   },
   "notificationAdGrantText": {
@@ -309,7 +309,7 @@
     "description": ""
   },
   "notificationInsufficientFundsText": {
-    "message": "資金が不足しているため、あなたの自動支援への予定されていた毎月の支払いと毎月の支援が完了できませんでした。30日以内に再試行します。",
+    "message": "資金が不足しているため、予定されていた月次の自動支援の支払いと毎月の支援が完了できませんでした。30日以内に再試行します。",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -350,7 +350,7 @@
     "description": ""
   },
   "notificationDeviceLimitReachedText": {
-    "message": "　認証済みのデバイスの上限に達したため、あなたのウォレットを確認できません。",
+    "message": "認証済みのデバイスの上限に達したため、あなたのウォレットを確認できません。",
     "description": ""
   },
   "notificationMismatchedProviderAccountsText": {
@@ -573,7 +573,7 @@
     "description": ""
   },
   "captchaDismiss": {
-    "message": "Dismiss",
+    "message": "閉じる",
     "description": ""
   }
 }
