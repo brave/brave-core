@@ -164,9 +164,20 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         RecyclerView rvAssets = view.findViewById(R.id.rvAssets);
         walletCoinAdapter = new WalletCoinAdapter(mType);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+        // Add ETH as a first item always
+        ErcToken eth = new ErcToken();
+        eth.name = "Ethereum";
+        eth.symbol = "ETH";
+        eth.contractAddress = "";
+        WalletListItemModel itemModelEth =
+                new WalletListItemModel(R.drawable.ic_eth, eth.name, eth.symbol, "", "");
+        itemModelEth.setErcToken(eth);
+        walletListItemModelList.add(itemModelEth);
         for (int i = 0; i < tokens.length; i++) {
-            walletListItemModelList.add(new WalletListItemModel(
-                    R.drawable.ic_eth, tokens[i].name, tokens[i].symbol, "", ""));
+            WalletListItemModel itemModel = new WalletListItemModel(
+                    R.drawable.ic_eth, tokens[i].name, tokens[i].symbol, "", "");
+            itemModel.setErcToken(tokens[i]);
+            walletListItemModelList.add(itemModel);
         }
         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
         walletCoinAdapter.setOnWalletListItemClick(this);
@@ -211,7 +222,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment
             Activity activity = getActivity();
             if (activity instanceof BuySendSwapActivity && checkedAssets.size() > 0) {
                 ((BuySendSwapActivity) activity)
-                        .updateBuySendAsset(checkedAssets.get(0).getSubTitle());
+                        .updateBuySendAsset(checkedAssets.get(0).getSubTitle(),
+                                checkedAssets.get(0).getErcToken());
             }
         }
         dismiss();
