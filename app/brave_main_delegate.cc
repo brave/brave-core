@@ -252,7 +252,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #if !defined(OS_ANDROID)
     features::kSettingsLandingPageRedesign.name,
 #endif
-    features::kSignedExchangePrefetchCacheForNavigations.name,
     features::kSignedExchangeSubresourcePrefetch.name,
     features::kSubresourceWebBundles.name,
 #if defined(OS_ANDROID)
