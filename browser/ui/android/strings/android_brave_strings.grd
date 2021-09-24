@@ -2251,6 +2251,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_CRYPTO_WALLET_TOTAL_AMOUNT" desc="amount asset + amount gas fee" translateable="false">
       <ph name="AMOUNT">%1$s<ex>0.0015</ex></ph> <ph name="ASSET">%2$s<ex>ETH</ex></ph> + <ph name="GAS_FEE">%3$s<ex>0.00000015</ex></ph> ETH
     </message>
+    <message name="IDS_GAS_PRICE" desc="Brave crypto wallet gas limit edit box">
+      Gas Price(GWEI)
+    </message>
+    <message name="IDS_GAS_LIMIT" desc="Brave crypto wallet gas limit edit box">
+      Gas Limit(GWEI)
+    </message>
     </messages>
   </release>
 </grit>
