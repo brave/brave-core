@@ -6,17 +6,11 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_TOOLTIPS_ADS_TOOLTIPS_CONTROLLER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_TOOLTIPS_ADS_TOOLTIPS_CONTROLLER_H_
 
-#include <map>
 #include <string>
 
-#include "brave/browser/brave_ads/tooltips/ads_captcha_tooltip.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
+#include "brave/browser/ui/brave_tooltips/brave_tooltip_delegate.h"
 #include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
-
-namespace brave_tooltips {
-class BraveTooltipPopup;
-}  // namespace brave_tooltips
 
 class Profile;
 
@@ -45,8 +39,6 @@ class AdsTooltipsController : public AdsTooltipsDelegate,
   void OnTooltipWidgetDestroyed(const std::string& tooltip_id) override;
 
   Profile* profile_ = nullptr;  // NOT OWNED
-  std::map<std::string, brave_tooltips::BraveTooltipPopup* /* NOT OWNED */>
-      tooltip_popups_;
 };
 
 }  // namespace brave_ads

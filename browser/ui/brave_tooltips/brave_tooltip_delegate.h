@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 
 namespace brave_tooltips {

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_POPUP_H_
-#define BRAVE_BROWSER_UI_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_POPUP_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_POPUP_H_
+#define BRAVE_BROWSER_UI_VIEWS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_POPUP_H_
 
 #include <cstdint>
 #include <memory>
@@ -12,7 +12,7 @@
 
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
-#include "brave/browser/ui/brave_tooltips/brave_tooltip_view.h"
+#include "brave/browser/ui/views/brave_tooltips/brave_tooltip_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/display/display_observer.h"
 #include "ui/gfx/animation/animation_delegate.h"
@@ -52,9 +52,9 @@ class BraveTooltipView;
 //   ...
 //   popup->Close();
 //
-//   This creates and show a tooltip with the given attributes/controls. Button
-//   presseses will forward to the delegate (set via the BraveTooltip
-//   constructor). Finally, the tooltip is closed.
+// This creates and show a tooltip with the given attributes/controls. Button
+// presseses will forward to the delegate (set via the BraveTooltip
+// constructor). Finally, the tooltip is closed.
 class BraveTooltipPopup : public views::WidgetDelegateView,
                           public views::WidgetObserver,
                           public gfx::AnimationDelegate,
@@ -169,4 +169,4 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
 
 }  // namespace brave_tooltips
 
-#endif  // BRAVE_BROWSER_UI_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_POPUP_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_POPUP_H_
