@@ -43,20 +43,36 @@ export function PublisherCard () {
     return null
   }
 
-  function renderPendingBubble () {
+  function shouldRenderPendingBubble () {
     if (!publisherInfo) {
-      return null
+      return false
     }
 
-    const { supportedWalletProviders } = publisherInfo
+    const { registered, supportedWalletProviders } = publisherInfo
 
-    if (supportedWalletProviders.length > 0) {
-      if (!externalWallet) {
-        return null
-      }
-      if (supportedWalletProviders.includes(externalWallet.provider)) {
-        return null
-      }
+    // Show the bubble if the publisher is not registered.
+    if (!registered) {
+      return true
+    }
+
+    // Do not show the bubble if the publisher is registered and the user does
+    // not have an external wallet.
+    if (!externalWallet) {
+      return false
+    }
+
+    // Do not show the bubble if the publisher has a wallet provider address
+    // that matches the user's wallet provider.
+    if (supportedWalletProviders.includes(externalWallet.provider)) {
+      return false
+    }
+
+    return true
+  }
+
+  function renderPendingBubble () {
+    if (!publisherInfo || !shouldRenderPendingBubble()) {
+      return null
     }
 
     return (
