@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_WIN_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_WIN_H_
 
-#include <windows.h>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "base/win/object_watcher.h"
+#include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 
 namespace brave_vpn {
