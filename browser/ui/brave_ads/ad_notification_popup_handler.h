@@ -10,6 +10,10 @@
 
 class Profile;
 
+namespace gfx {
+class Vector2d;
+}
+
 namespace brave_ads {
 
 class AdNotification;
@@ -27,7 +31,14 @@ class AdNotificationPopupHandler final {
   static void Show(Profile* profile, const AdNotification& ad_notification);
 
   // Close the notification popup view for the given |notification_id|.
-  static void Close(const std::string& notification_id);
+  // |by_user| is true if the notification popup was closed by the user,
+  // otherwise false.
+  static void Close(const std::string& notification_id, bool by_user);
+
+  // Move the notification popup view for the given |notification_id| by a
+  // distance.
+  static void Move(const std::string& notification_id,
+                   const gfx::Vector2d& distance);
 };
 
 }  // namespace brave_ads

@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/brave_ads/ad_notification_popup.h"
 
-#include <map>
 #include <utility>
 
 #include "base/time/time.h"
@@ -46,11 +45,6 @@ namespace brave_ads {
 
 namespace {
 
-// TODO(https://github.com/brave/brave-browser/issues/14957): Decouple
-// AdNotificationPopup management to NotificationPopupCollection
-std::map<std::string, AdNotificationPopup* /* NOT OWNED */>
-    g_ad_notification_popups;
-
 bool g_disable_fade_in_animation_for_testing = false;
 
 constexpr SkColor kLightModeBorderColor = SkColorSetRGB(0xd5, 0xdb, 0xe2);
@@ -85,13 +79,14 @@ SkColor GetDarkModeBackgroundColor() {
   return bg_color;
 }
 
-void AdjustBoundsAndSnapToFitWorkAreaForWidget(views::Widget* widget) {
+void AdjustBoundsAndSnapToFitWorkAreaForWidget(views::Widget* widget,
+                                               const gfx::Rect& bounds) {
   DCHECK(widget);
 
-  gfx::Rect bounds = widget->GetWindowBoundsInScreen();
+  gfx::Rect fit_bounds = bounds;
   const gfx::NativeView native_view = widget->GetNativeView();
-  AdjustBoundsAndSnapToFitWorkAreaForNativeView(native_view, &bounds);
-  widget->SetBounds(bounds);
+  AdjustBoundsAndSnapToFitWorkAreaForNativeView(native_view, &fit_bounds);
+  widget->SetBounds(fit_bounds);
 }
 
 }  // namespace
@@ -120,70 +115,6 @@ AdNotificationPopup::~AdNotificationPopup() {
   if (screen) {
     screen->RemoveObserver(this);
   }
-}
-
-// static
-void AdNotificationPopup::Show(Profile* profile,
-                               const AdNotification& ad_notification) {
-  DCHECK(profile);
-
-  const std::string& id = ad_notification.id();
-
-  DCHECK(!g_ad_notification_popups[id]);
-  g_ad_notification_popups[id] =
-      new AdNotificationPopup(profile, ad_notification);
-
-  AdNotificationDelegate* delegate = ad_notification.delegate();
-  if (delegate) {
-    delegate->OnShow();
-  }
-}
-
-// static
-void AdNotificationPopup::Close(const std::string& notification_id,
-                                const bool by_user) {
-  DCHECK(!notification_id.empty());
-
-  if (!g_ad_notification_popups[notification_id]) {
-    return;
-  }
-
-  AdNotificationPopup* popup = g_ad_notification_popups[notification_id];
-  DCHECK(popup);
-
-  const AdNotification ad_notification = popup->GetAdNotification();
-  AdNotificationDelegate* delegate = ad_notification.delegate();
-  if (delegate) {
-    delegate->OnClose(by_user);
-  }
-
-  popup->ClosePopup();
-}
-
-// static
-void AdNotificationPopup::OnClick(const std::string& notification_id) {
-  DCHECK(!notification_id.empty());
-
-  DCHECK(g_ad_notification_popups[notification_id]);
-  AdNotificationPopup* popup = g_ad_notification_popups[notification_id];
-  DCHECK(popup);
-
-  const AdNotification ad_notification = popup->GetAdNotification();
-  AdNotificationDelegate* delegate = ad_notification.delegate();
-  if (delegate) {
-    delegate->OnClick();
-  }
-}
-
-// static
-gfx::Rect AdNotificationPopup::GetBounds(const std::string& notification_id) {
-  DCHECK(!notification_id.empty());
-
-  DCHECK(g_ad_notification_popups[notification_id]);
-  AdNotificationPopup* popup = g_ad_notification_popups[notification_id];
-  DCHECK(popup);
-
-  return popup->CalculateBounds();
 }
 
 // static
@@ -258,13 +189,6 @@ void AdNotificationPopup::OnThemeChanged() {
 void AdNotificationPopup::OnWidgetDestroyed(views::Widget* widget) {
   DCHECK(widget);
 
-  const std::string notification_id = ad_notification_.id();
-  DCHECK(!notification_id.empty());
-
-  // Note: The pointed-to AdNotificationPopup members are deallocated by their
-  // containing Widgets
-  g_ad_notification_popups.erase(notification_id);
-
   DCHECK(widget_observation_.IsObservingSource(widget));
   widget_observation_.Reset();
 }
@@ -306,6 +230,15 @@ void AdNotificationPopup::AnimationCanceled(const gfx::Animation* animation) {
   UpdateAnimation();
 }
 
+AdNotification AdNotificationPopup::GetAdNotification() const {
+  return ad_notification_;
+}
+
+void AdNotificationPopup::MovePopup(const gfx::Vector2d& distance) {
+  const gfx::Rect bounds = CalculateBounds() + distance;
+  AdjustBoundsAndSnapToFitWorkAreaForWidget(GetWidget(), bounds);
+}
+
 void AdNotificationPopup::ClosePopup() {
   FadeOut();
 }
@@ -330,10 +263,6 @@ void AdNotificationPopup::CreatePopup() {
   container_view->SetSize(ad_notification_view_->size());
 
   CreateWidgetView();
-}
-
-AdNotification AdNotificationPopup::GetAdNotification() const {
-  return ad_notification_;
 }
 
 gfx::Point AdNotificationPopup::GetDefaultOriginForSize(const gfx::Size& size) {
@@ -410,7 +339,8 @@ void AdNotificationPopup::RecomputeAlignment() {
     return;
   }
 
-  AdjustBoundsAndSnapToFitWorkAreaForWidget(GetWidget());
+  const gfx::Rect bounds = GetWidget()->GetWindowBoundsInScreen();
+  AdjustBoundsAndSnapToFitWorkAreaForWidget(GetWidget(), bounds);
 }
 
 const gfx::ShadowDetails& AdNotificationPopup::GetShadowDetails() const {
@@ -434,7 +364,8 @@ void AdNotificationPopup::CreateWidgetView() {
   if (!g_disable_fade_in_animation_for_testing) {
     widget->SetOpacity(0.0);
   }
-  AdjustBoundsAndSnapToFitWorkAreaForWidget(widget);
+  const gfx::Rect bounds = widget->GetWindowBoundsInScreen();
+  AdjustBoundsAndSnapToFitWorkAreaForWidget(widget, bounds);
   widget->ShowInactive();
 }
 

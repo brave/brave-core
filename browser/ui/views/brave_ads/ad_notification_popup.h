@@ -27,6 +27,7 @@ class Point;
 class Rect;
 class Size;
 struct ShadowDetails;
+class Vector2d;
 }  // namespace gfx
 
 namespace views {
@@ -48,21 +49,6 @@ class AdNotificationPopup : public views::WidgetDelegateView,
 
   AdNotificationPopup(Profile* profile, const AdNotification& ad_notification);
   ~AdNotificationPopup() override;
-
-  // Show the notification popup view for the given |profile| and
-  // |ad_notification|
-  static void Show(Profile* profile, const AdNotification& ad_notification);
-
-  // Close the notification popup view for the given |notification_id|.
-  // |by_user| is true if the notification popup was closed by the user,
-  // otherwise false
-  static void Close(const std::string& notification_id, const bool by_user);
-
-  // User clicked the notification popup view for the given |notification_id|
-  static void OnClick(const std::string& notification_id);
-
-  // Return the bounds for the given |notification_id|
-  static gfx::Rect GetBounds(const std::string& notification_id);
 
   // Disables fade in animation for snapshot tests.
   static void SetDisableFadeInAnimationForTesting(bool disable);
@@ -89,6 +75,8 @@ class AdNotificationPopup : public views::WidgetDelegateView,
   void AnimationProgressed(const gfx::Animation* animation) override;
   void AnimationCanceled(const gfx::Animation* animation) override;
 
+  AdNotification GetAdNotification() const;
+  void MovePopup(const gfx::Vector2d& distance);
   void ClosePopup();
 
  private:
@@ -108,7 +96,6 @@ class AdNotificationPopup : public views::WidgetDelegateView,
   void CreatePopup();
 
   AdNotification ad_notification_;
-  AdNotification GetAdNotification() const;
 
   gfx::Point GetDefaultOriginForSize(const gfx::Size& size);
   gfx::Point GetOriginForSize(const gfx::Size& size);
