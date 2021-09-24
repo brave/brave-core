@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import("//build/config/ios/config.gni")
 import("//build/config/sysroot.gni")
 
 rustc_target = ""
@@ -49,7 +50,11 @@ if (is_win) {
   }
 } else if (is_ios) {
   if (current_cpu == "arm64") {
-    rustc_target = "aarch64-apple-ios"
+    if (target_environment == "simulator") {
+      rustc_target = "aarch64-apple-ios-sim"
+    } else {
+      rustc_target = "aarch64-apple-ios"
+    }
   } else if (current_cpu == "x64") {
     rustc_target = "x86_64-apple-ios"
   }
