@@ -6,6 +6,7 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -42,6 +43,8 @@ class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {
         "MnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIs"
         "InQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUy"
         "WEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=";
+
+    confirmation.created_at = Now();
 
     return confirmation;
   }

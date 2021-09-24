@@ -47,13 +47,13 @@ void AdsClientIOS::CloseNotification(const std::string& uuid) {
 
 void AdsClientIOS::RecordAdEvent(const std::string& ad_type,
                                  const std::string& confirmation_type,
-                                 const uint64_t timestamp) const {
+                                 const double timestamp) const {
   [bridge_ recordAdEvent:ad_type
         confirmationType:confirmation_type
                timestamp:timestamp];
 }
 
-std::vector<uint64_t> AdsClientIOS::GetAdEvents(
+std::vector<double> AdsClientIOS::GetAdEvents(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
   return [bridge_ getAdEvents:ad_type confirmationType:confirmation_type];

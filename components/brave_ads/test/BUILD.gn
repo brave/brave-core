@@ -136,7 +136,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/idle_time_unittest.cc",
-    "//brave/vendor/bat-native-ads/src/bat/ads/internal/legacy_migration/legacy_migration_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/locale/country_code_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/locale/subdivision_code_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/data/text_data_unittest.cc",

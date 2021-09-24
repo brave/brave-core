@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_month_frequency_cap.h"
 
-#include <cstdint>
 #include <deque>
 
 #include "base/strings/stringprintf.h"
@@ -45,11 +44,10 @@ bool PerMonthFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
     return true;
   }
 
-  const std::deque<uint64_t> history =
-      GetTimestampHistoryForAdEvents(ad_events);
+  const std::deque<base::Time> history = GetHistoryForAdEvents(ad_events);
 
-  const uint64_t time_constraint =
-      28 * (base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
+  const base::TimeDelta time_constraint = base::TimeDelta::FromSeconds(
+      28 * (base::Time::kSecondsPerHour * base::Time::kHoursPerDay));
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
                                                        ad.per_month);

@@ -20,7 +20,6 @@
 #include "bat/ads/internal/logging_util.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/time_formatting_util.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
@@ -216,7 +215,7 @@ base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
 base::Time RedeemUnblindedPaymentTokens::CalculateNextTokenRedemptionDate() {
   const base::Time now = base::Time::Now();
 
-  uint64_t delay;
+  int64_t delay;
 
   if (!g_is_debug) {
     delay = kNextTokenRedemptionAfterSeconds;
@@ -224,7 +223,8 @@ base::Time RedeemUnblindedPaymentTokens::CalculateNextTokenRedemptionDate() {
     delay = kDebugNextTokenRedemptionAfterSeconds;
   }
 
-  const uint64_t rand_delay = brave_base::random::Geometric(delay);
+  const int64_t rand_delay =
+      static_cast<int64_t>(brave_base::random::Geometric(delay));
 
   return now + base::TimeDelta::FromSeconds(rand_delay);
 }

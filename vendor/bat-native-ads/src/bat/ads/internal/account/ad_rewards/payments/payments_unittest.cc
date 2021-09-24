@@ -23,10 +23,10 @@ class BatAdsPaymentsTest : public UnitTestBase {
 
   base::Time GetNextPaymentDate(const std::string& date,
                                 const std::string& next_token_redemption_date) {
-    const base::Time time = TimeFromDateString(date);
+    const base::Time time = TimeFromUTCString(date);
 
     const base::Time token_redemption_time =
-        TimeFromDateString(next_token_redemption_date);
+        TimeFromUTCString(next_token_redemption_date);
 
     return payments_->CalculateNextPaymentDate(time, token_redemption_time);
   }
@@ -211,7 +211,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 July 2019");
+      TimeFromUTCString("5 July 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -246,7 +246,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 July 2019");
+      TimeFromUTCString("5 July 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -276,7 +276,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 August 2019");
+      TimeFromUTCString("5 August 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -311,7 +311,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 August 2019");
+      TimeFromUTCString("5 August 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -346,7 +346,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 August 2019");
+      TimeFromUTCString("5 August 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -381,7 +381,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 July 2019");
+      TimeFromUTCString("5 July 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -416,7 +416,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 July 2019");
+      TimeFromUTCString("5 July 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -446,7 +446,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 August 2019");
+      TimeFromUTCString("5 August 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -481,7 +481,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 August 2019");
+      TimeFromUTCString("5 August 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -516,7 +516,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 August 2019");
+      TimeFromUTCString("5 August 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -551,7 +551,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 August 2019");
+      TimeFromUTCString("5 August 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -586,7 +586,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 August 2019");
+      TimeFromUTCString("5 August 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -616,7 +616,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 August 2019");
+      TimeFromUTCString("5 August 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -651,7 +651,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 August 2019");
+      TimeFromUTCString("5 August 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -686,7 +686,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 August 2019");
+      TimeFromUTCString("5 August 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -721,7 +721,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 September 2019");
+      TimeFromUTCString("5 September 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -756,7 +756,7 @@ TEST_F(
 
   // Assert
   const base::Time expected_next_payment_date =
-      TimeFromDateString("5 September 2019");
+      TimeFromUTCString("5 September 2019");
 
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -775,7 +775,7 @@ TEST_F(BatAdsPaymentsTest, TransactionCountForThisMonth) {
 
   payments_->SetFromJson(json);
 
-  const base::Time time = TimeFromDateString("6 June 2019");
+  const base::Time time = TimeFromUTCString("6 June 2019");
 
   // Act
   const PaymentInfo payment = payments_->GetForMonth(time);
@@ -803,7 +803,7 @@ TEST_F(BatAdsPaymentsTest, TransactionCountForThisMonthWithMultiplePayments) {
 
   payments_->SetFromJson(json);
 
-  const base::Time time = TimeFromDateString("6 June 2019");
+  const base::Time time = TimeFromUTCString("6 June 2019");
 
   // Act
   const PaymentInfo payment = payments_->GetForMonth(time);
@@ -832,7 +832,7 @@ TEST_F(BatAdsPaymentsTest,
 
   payments_->SetFromJson(json);
 
-  const base::Time time = TimeFromDateString("6 June 2019");
+  const base::Time time = TimeFromUTCString("6 June 2019");
 
   // Act
   const PaymentInfo payment = payments_->GetForMonth(time);
@@ -855,7 +855,7 @@ TEST_F(BatAdsPaymentsTest, InvalidValueForTransactionCount) {
 
   payments_->SetFromJson(json);
 
-  const base::Time time = TimeFromDateString("6 July 2019");
+  const base::Time time = TimeFromUTCString("6 July 2019");
 
   // Act
   const PaymentInfo payment = payments_->GetForMonth(time);
@@ -878,7 +878,7 @@ TEST_F(BatAdsPaymentsTest, InvalidTypeForTransactionCount) {
 
   payments_->SetFromJson(json);
 
-  const base::Time time = TimeFromDateString("6 July 2019");
+  const base::Time time = TimeFromUTCString("6 July 2019");
 
   // Act
   const PaymentInfo payment = payments_->GetForMonth(time);

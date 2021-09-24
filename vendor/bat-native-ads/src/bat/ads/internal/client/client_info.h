@@ -6,11 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_CLIENT_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_CLIENT_INFO_H_
 
-#include <cstdint>
 #include <deque>
 #include <map>
 #include <string>
 
+#include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
 #include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_aliases.h"
@@ -30,7 +30,7 @@ struct ClientInfo final {
   std::deque<AdHistoryInfo> ads_shown_history;
   std::map<std::string, std::map<std::string, bool>> seen_ads;
   std::map<std::string, std::map<std::string, bool>> seen_advertisers;
-  uint64_t next_ad_serving_interval_timestamp = 0;
+  base::Time serve_next_ad_at;
   ad_targeting::TextClassificationProbabilitiesList
       text_classification_probabilities;
   ad_targeting::PurchaseIntentSignalHistoryMap purchase_intent_signal_history;

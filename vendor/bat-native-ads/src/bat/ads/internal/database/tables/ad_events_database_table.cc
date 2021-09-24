@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 
-#include <cstdint>
 #include <utility>
 
 #include "base/check.h"
@@ -165,7 +164,7 @@ void AdEvents::RunTransaction(const std::string& query,
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
-      mojom::DBCommand::RecordBindingType::INT64_TYPE    // timestamp
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE   // created_at
   };
 
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
@@ -206,7 +205,7 @@ int AdEvents::BindParameters(mojom::DBCommand* command,
     BindString(command, index++, ad_event.creative_set_id);
     BindString(command, index++, ad_event.creative_instance_id);
     BindString(command, index++, ad_event.advertiser_id);
-    BindInt64(command, index++, ad_event.timestamp);
+    BindDouble(command, index++, ad_event.created_at.ToDoubleT());
 
     count++;
   }
@@ -263,7 +262,7 @@ AdEventInfo AdEvents::GetFromRecord(mojom::DBRecord* record) const {
   info.creative_set_id = ColumnString(record, 4);
   info.creative_instance_id = ColumnString(record, 5);
   info.advertiser_id = ColumnString(record, 6);
-  info.timestamp = ColumnInt64(record, 7);
+  info.created_at = base::Time::FromDoubleT(ColumnDouble(record, 7));
 
   return info;
 }

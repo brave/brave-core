@@ -65,7 +65,7 @@ class BackoffTimer final {
 
   Timer timer_;
 
-  uint64_t backoff_count_ = 0;
+  int64_t backoff_count_ = 0;
   base::TimeDelta max_backoff_delay_;
 };
 

@@ -7,6 +7,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -43,7 +44,7 @@ TEST_F(BatAdsDaypartFrequencyCapTest, AllowIfRightDayAndHours) {
   ad.creative_set_id = kCreativeSetId;
 
   base::Time::Exploded exploded;
-  base::Time::Now().LocalExplode(&exploded);
+  Now().LocalExplode(&exploded);
   const int current_time =
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
 
@@ -67,7 +68,7 @@ TEST_F(BatAdsDaypartFrequencyCapTest, AllowForMultipleDays) {
   ad.creative_set_id = kCreativeSetId;
 
   base::Time::Exploded exploded;
-  base::Time::Now().LocalExplode(&exploded);
+  Now().LocalExplode(&exploded);
   const int current_time =
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
 
@@ -90,7 +91,7 @@ TEST_F(BatAdsDaypartFrequencyCapTest, AllowIfOneMatchExists) {
   ad.creative_set_id = kCreativeSetId;
 
   base::Time::Exploded exploded;
-  base::Time::Now().LocalExplode(&exploded);
+  Now().LocalExplode(&exploded);
   const int current_time =
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
   std::string tomorrow_dow =
@@ -129,7 +130,7 @@ TEST_F(BatAdsDaypartFrequencyCapTest, DisallowIfNoMatches) {
   ad.creative_set_id = kCreativeSetId;
 
   base::Time::Exploded exploded;
-  base::Time::Now().LocalExplode(&exploded);
+  Now().LocalExplode(&exploded);
   const int current_time =
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
   std::string tomorrow_dow =
@@ -168,7 +169,7 @@ TEST_F(BatAdsDaypartFrequencyCapTest, DisallowIfWrongDay) {
   ad.creative_set_id = kCreativeSetId;
 
   base::Time::Exploded exploded;
-  base::Time::Now().LocalExplode(&exploded);
+  Now().LocalExplode(&exploded);
   const int current_time =
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
 
@@ -196,7 +197,7 @@ TEST_F(BatAdsDaypartFrequencyCapTest, DisallowIfWrongHours) {
   ad.creative_set_id = kCreativeSetId;
 
   base::Time::Exploded exploded;
-  base::Time::Now().LocalExplode(&exploded);
+  Now().LocalExplode(&exploded);
   const int current_time =
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
   std::string current_dow = base::NumberToString(exploded.day_of_week);

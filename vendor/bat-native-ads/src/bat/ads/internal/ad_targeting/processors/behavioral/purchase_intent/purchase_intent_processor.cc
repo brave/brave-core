@@ -34,7 +34,7 @@ void AppendIntentSignalToHistory(
     const PurchaseIntentSignalInfo& purchase_intent_signal) {
   for (const auto& segment : purchase_intent_signal.segments) {
     PurchaseIntentSignalHistoryInfo history;
-    history.timestamp_in_seconds = purchase_intent_signal.timestamp_in_seconds;
+    history.created_at = purchase_intent_signal.created_at;
     history.weight = purchase_intent_signal.weight;
 
     Client::Get()->AppendToPurchaseIntentSignalHistoryForSegment(segment,
@@ -120,8 +120,7 @@ PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(const GURL& url) const {
       const uint16_t keyword_weight =
           GetFunnelWeightForSearchQuery(search_query);
 
-      signal_info.timestamp_in_seconds =
-          static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+      signal_info.created_at = base::Time::Now();
       signal_info.segments = keyword_segments;
       signal_info.weight = keyword_weight;
     }
@@ -129,8 +128,7 @@ PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(const GURL& url) const {
     PurchaseIntentSiteInfo info = GetSite(url);
 
     if (!info.url_netloc.empty()) {
-      signal_info.timestamp_in_seconds =
-          static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+      signal_info.created_at = base::Time::Now();
       signal_info.segments = info.segments;
       signal_info.weight = info.weight;
     }

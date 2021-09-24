@@ -22,7 +22,7 @@ struct UserActivityEventInfo final {
   bool operator!=(const UserActivityEventInfo& rhs) const;
 
   UserActivityEventType type;
-  base::Time time;
+  base::Time created_at;
 };
 
 }  // namespace ads

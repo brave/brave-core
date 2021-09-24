@@ -36,7 +36,7 @@ class BatAdsEligibleAdNotificationsIssue17199Test : public UnitTestBase {
 
 TEST_F(BatAdsEligibleAdNotificationsIssue17199Test, GetEligibleAds) {
   // Arrange
-  AdvanceClock(TimeFromDateString("4 July 2021"));
+  AdvanceClock(TimeFromUTCString("4 July 2021"));
 
   // Act
   ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;

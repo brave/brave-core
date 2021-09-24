@@ -19,7 +19,7 @@ TransactionInfo::TransactionInfo(const TransactionInfo& info) = default;
 TransactionInfo::~TransactionInfo() = default;
 
 bool TransactionInfo::operator==(const TransactionInfo& rhs) const {
-  return timestamp == rhs.timestamp &&
+  return DoubleEquals(timestamp, rhs.timestamp) &&
          DoubleEquals(estimated_redemption_value,
                       rhs.estimated_redemption_value) &&
          confirmation_type == rhs.confirmation_type;
@@ -48,7 +48,7 @@ void TransactionInfo::FromDictionary(base::DictionaryValue* dictionary) {
   const std::string* timestamp_value =
       dictionary->FindStringKey("timestamp_in_seconds");
   if (timestamp_value) {
-    base::StringToInt64(*timestamp_value, &timestamp);
+    base::StringToDouble(*timestamp_value, &timestamp);
   }
 
   // Estimated redemption value

@@ -409,8 +409,8 @@ void AdsServiceImpl::ReconcileAdRewards() {
   bat_ads_->ReconcileAdRewards();
 }
 
-void AdsServiceImpl::GetAdsHistory(const uint64_t from_timestamp,
-                                   const uint64_t to_timestamp,
+void AdsServiceImpl::GetAdsHistory(const double from_timestamp,
+                                   const double to_timestamp,
                                    OnGetAdsHistoryCallback callback) {
   if (!connected()) {
     return;
@@ -1350,7 +1350,7 @@ void AdsServiceImpl::OnGetAdsHistory(OnGetAdsHistoryCallback callback,
     base::DictionaryValue dictionary;
 
     dictionary.SetKey("uuid", base::Value(std::to_string(uuid++)));
-    auto time = base::Time::FromDoubleT(item.timestamp_in_seconds);
+    auto time = base::Time::FromDoubleT(item.timestamp);
     auto js_time = time.ToJsTime();
     dictionary.SetKey("timestampInMilliseconds", base::Value(js_time));
 
@@ -1794,24 +1794,6 @@ void AdsServiceImpl::DisableAdsForUnsupportedCountryCodes(
   SetEnabled(false);
 }
 
-uint64_t AdsServiceImpl::MigrateTimestampToDoubleT(
-    const uint64_t timestamp_in_seconds) const {
-  if (timestamp_in_seconds < 10000000000) {
-    // Already migrated as DoubleT will never reach 10000000000 in our lifetime
-    // and legacy timestamps are above 10000000000
-    return timestamp_in_seconds;
-  }
-
-  // Migrate date to DoubleT
-  auto now = base::Time::Now();
-  auto now_in_seconds = static_cast<uint64_t>((now - base::Time()).InSeconds());
-
-  auto delta = timestamp_in_seconds - now_in_seconds;
-
-  auto date = now + base::TimeDelta::FromSeconds(delta);
-  return static_cast<uint64_t>(date.ToDoubleT());
-}
-
 void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
   if (!ShouldShowMyFirstAdNotification()) {
     return;
@@ -2031,12 +2013,12 @@ void AdsServiceImpl::CloseNotification(const std::string& uuid) {
 
 void AdsServiceImpl::RecordAdEvent(const std::string& ad_type,
                                    const std::string& confirmation_type,
-                                   const uint64_t timestamp) const {
+                                   const double timestamp) const {
   FrequencyCappingHelper::GetInstance()->RecordAdEvent(
       ad_type, confirmation_type, timestamp);
 }
 
-std::vector<uint64_t> AdsServiceImpl::GetAdEvents(
+std::vector<double> AdsServiceImpl::GetAdEvents(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
   return FrequencyCappingHelper::GetInstance()->GetAdEvents(ad_type,

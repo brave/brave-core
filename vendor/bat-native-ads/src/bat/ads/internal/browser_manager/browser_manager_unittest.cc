@@ -6,6 +6,7 @@
 #include "bat/ads/internal/browser_manager/browser_manager.h"
 
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/internal/user_activity/user_activity_event_info.h"
 
@@ -57,7 +58,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsActiveUserActivityEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kBrowserWindowIsActive;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -89,7 +90,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsInactiveUserActivityEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kBrowserWindowIsInactive;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -120,7 +121,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActiveUserActivityEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kBrowserWindowIsActive;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -152,7 +153,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackgroundUserActivityEvent) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kBrowserDidEnterBackground;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);

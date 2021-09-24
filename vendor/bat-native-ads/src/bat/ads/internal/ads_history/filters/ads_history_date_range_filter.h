@@ -6,8 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_HISTORY_FILTERS_ADS_HISTORY_DATE_RANGE_FILTER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_HISTORY_FILTERS_ADS_HISTORY_DATE_RANGE_FILTER_H_
 
-#include <cstdint>
 #include <deque>
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
@@ -19,8 +22,8 @@ class AdsHistoryDateRangeFilter final {
   ~AdsHistoryDateRangeFilter();
 
   std::deque<AdHistoryInfo> Apply(const std::deque<AdHistoryInfo>& history,
-                                  const uint64_t from_timestamp,
-                                  const uint64_t to_timestamp) const;
+                                  const base::Time& from,
+                                  const base::Time& to) const;
 };
 
 }  // namespace ads

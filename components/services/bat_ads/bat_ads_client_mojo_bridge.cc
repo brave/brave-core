@@ -89,7 +89,7 @@ void BatAdsClientMojoBridge::CloseNotification(
 
 void BatAdsClientMojoBridge::RecordAdEvent(const std::string& ad_type,
                                            const std::string& confirmation_type,
-                                           const uint64_t timestamp) const {
+                                           const double timestamp) const {
   if (!connected()) {
     return;
   }
@@ -97,14 +97,14 @@ void BatAdsClientMojoBridge::RecordAdEvent(const std::string& ad_type,
   bat_ads_client_->RecordAdEvent(ad_type, confirmation_type, timestamp);
 }
 
-std::vector<uint64_t> BatAdsClientMojoBridge::GetAdEvents(
+std::vector<double> BatAdsClientMojoBridge::GetAdEvents(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
   if (!connected()) {
     return {};
   }
 
-  std::vector<uint64_t> ad_events;
+  std::vector<double> ad_events;
   bat_ads_client_->GetAdEvents(ad_type, confirmation_type, &ad_events);
   return ad_events;
 }

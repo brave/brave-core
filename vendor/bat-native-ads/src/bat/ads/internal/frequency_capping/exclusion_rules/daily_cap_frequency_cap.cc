@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h"
 
-#include <cstdint>
 #include <deque>
 
 #include "base/strings/stringprintf.h"
@@ -40,11 +39,10 @@ std::string DailyCapFrequencyCap::GetLastMessage() const {
 
 bool DailyCapFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
                                           const CreativeAdInfo& ad) {
-  const std::deque<uint64_t> history =
-      GetTimestampHistoryForAdEvents(ad_events);
+  const std::deque<base::Time> history = GetHistoryForAdEvents(ad_events);
 
-  const uint64_t time_constraint =
-      base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
+  const base::TimeDelta time_constraint = base::TimeDelta::FromSeconds(
+      base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
                                                        ad.daily_cap);

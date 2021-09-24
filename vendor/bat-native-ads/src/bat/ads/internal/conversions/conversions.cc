@@ -43,12 +43,10 @@ const char kSearchInUrl[] = "url";
 
 bool HasObservationWindowForAdEventExpired(const int observation_window,
                                            const AdEventInfo& ad_event) {
-  const base::Time observation_window_time =
+  const base::Time time =
       base::Time::Now() - base::TimeDelta::FromDays(observation_window);
 
-  const base::Time time = base::Time::FromDoubleT(ad_event.timestamp);
-
-  if (observation_window_time < time) {
+  if (time < ad_event.created_at) {
     return false;
   }
 
@@ -365,8 +363,7 @@ void Conversions::AddItemToQueue(
     const AdEventInfo& ad_event,
     const VerifiableConversionInfo& verifiable_conversion) {
   AdEventInfo conversion_ad_event = ad_event;
-  conversion_ad_event.timestamp =
-      static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  conversion_ad_event.created_at = base::Time::Now();
   conversion_ad_event.confirmation_type = ConfirmationType::kConversion;
 
   LogAdEvent(conversion_ad_event, [](const bool success) {
@@ -386,9 +383,9 @@ void Conversions::AddItemToQueue(
   conversion_queue_item.conversion_id = verifiable_conversion.id;
   conversion_queue_item.advertiser_public_key =
       verifiable_conversion.public_key;
-  const int64_t rand_delay = brave_base::random::Geometric(
-      g_is_debug ? kDebugConvertAfterSeconds : kConvertAfterSeconds);
-  conversion_queue_item.timestamp =
+  const int64_t rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
+      g_is_debug ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
+  conversion_queue_item.confirm_at =
       base::Time::Now() + base::TimeDelta::FromSeconds(rand_delay);
 
   database::table::ConversionQueue database_table;
@@ -429,7 +426,7 @@ void Conversions::ProcessQueueItem(
       conversion_queue_item.creative_instance_id;
   const std::string advertiser_id = conversion_queue_item.advertiser_id;
   const std::string friendly_date_and_time =
-      LongFriendlyDateAndTime(conversion_queue_item.timestamp);
+      LongFriendlyDateAndTime(conversion_queue_item.confirm_at);
 
   if (!conversion_queue_item.IsValid()) {
     BLOG(1, "Failed to convert ad with campaign id "
@@ -480,11 +477,11 @@ void Conversions::StartTimer(
 
   base::TimeDelta delay;
 
-  if (now < conversion_queue_item.timestamp) {
-    delay = conversion_queue_item.timestamp - now;
+  if (now < conversion_queue_item.confirm_at) {
+    delay = conversion_queue_item.confirm_at - now;
   } else {
-    const int64_t rand_delay =
-        brave_base::random::Geometric(kExpiredConvertAfterSeconds);
+    const int64_t rand_delay = static_cast<int64_t>(
+        brave_base::random::Geometric(kExpiredConvertAfterSeconds));
     delay = base::TimeDelta::FromSeconds(rand_delay);
   }
 

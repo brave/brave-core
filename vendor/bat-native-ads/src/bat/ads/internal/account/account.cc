@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/account.h"
 
 #include "base/check.h"
+#include "base/time/time.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
@@ -92,10 +93,10 @@ void Account::Deposit(const std::string& creative_instance_id,
   confirmations_->Confirm(creative_instance_id, confirmation_type);
 }
 
-StatementInfo Account::GetStatement(const int64_t from_timestamp,
-                                    const int64_t to_timestamp) const {
-  DCHECK(to_timestamp >= from_timestamp);
-  return statement_->Get(from_timestamp, to_timestamp);
+StatementInfo Account::GetStatement(const base::Time& from,
+                                    const base::Time& to) const {
+  DCHECK(to >= from);
+  return statement_->Get(from, to);
 }
 
 void Account::Reconcile() {

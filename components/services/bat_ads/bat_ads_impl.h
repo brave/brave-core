@@ -115,10 +115,9 @@ class BatAdsImpl :
 
   void ReconcileAdRewards() override;
 
-  void GetAdsHistory(
-      const uint64_t from_timestamp,
-      const uint64_t to_timestamp,
-      GetAdsHistoryCallback callback) override;
+  void GetAdsHistory(const double from_timestamp,
+                     const double to_timestamp,
+                     GetAdsHistoryCallback callback) override;
 
   void GetAccountStatement(GetAccountStatementCallback callback) override;
 

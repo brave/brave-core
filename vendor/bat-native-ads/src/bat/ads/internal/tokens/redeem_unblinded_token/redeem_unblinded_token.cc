@@ -27,7 +27,6 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_dto_user_data_builder.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -51,7 +50,7 @@ RedeemUnblindedToken::~RedeemUnblindedToken() {
 void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
   BLOG(1, "Redeem unblinded token");
 
-  if (!confirmation.created) {
+  if (!confirmation.was_created) {
     CreateConfirmation(confirmation);
     return;
   }
@@ -102,7 +101,7 @@ void RedeemUnblindedToken::OnCreateConfirmation(
   }
 
   ConfirmationInfo new_confirmation = confirmation;
-  new_confirmation.created = true;
+  new_confirmation.was_created = true;
 
   FetchPaymentToken(new_confirmation);
 }
@@ -142,7 +141,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     }
 
     ConfirmationInfo new_confirmation = confirmation;
-    new_confirmation.created = false;
+    new_confirmation.was_created = false;
 
     OnFailedToRedeemUnblindedToken(new_confirmation, /* should_retry */ true);
     return;

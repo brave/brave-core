@@ -9,7 +9,9 @@ namespace ads {
 namespace ad_targeting {
 
 UserModelInfo::UserModelInfo() = default;
+
 UserModelInfo::UserModelInfo(const UserModelInfo& info) = default;
+
 UserModelInfo::~UserModelInfo() = default;
 
 }  // namespace ad_targeting

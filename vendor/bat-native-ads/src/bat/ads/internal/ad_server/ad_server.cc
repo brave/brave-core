@@ -135,10 +135,9 @@ void AdServer::SaveCatalog(const Catalog& catalog) {
   const int64_t catalog_ping = catalog.GetPing();
   AdsClientHelper::Get()->SetInt64Pref(prefs::kCatalogPing, catalog_ping);
 
-  const int64_t catalog_last_updated =
-      static_cast<int64_t>(base::Time::Now().ToDoubleT());
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kCatalogLastUpdated,
-                                       catalog_last_updated);
+  const double catalog_last_updated = base::Time::Now().ToDoubleT();
+  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
+                                        catalog_last_updated);
 
   Bundle bundle;
   bundle.BuildFromCatalog(catalog);

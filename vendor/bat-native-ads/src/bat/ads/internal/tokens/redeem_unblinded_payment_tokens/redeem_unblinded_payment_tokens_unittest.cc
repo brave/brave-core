@@ -13,6 +13,7 @@
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate_mock.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "net/http/http_status_code.h"
 
@@ -77,7 +78,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const base::Time time = base::Time::Now();
+  const base::Time time = Now();
   ConfirmationsState::Get()->SetNextTokenRedemptionDate(time);
 
   const privacy::UnblindedTokenList unblinded_tokens =
@@ -150,7 +151,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const base::Time time = base::Time::Now();
+  const base::Time time = Now();
   ConfirmationsState::Get()->SetNextTokenRedemptionDate(time);
 
   const privacy::UnblindedTokenList unblinded_tokens =
@@ -207,7 +208,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const base::Time time = base::Time::Now();
+  const base::Time time = Now();
   ConfirmationsState::Get()->SetNextTokenRedemptionDate(time);
 
   const privacy::UnblindedTokenList unblinded_tokens =
@@ -265,7 +266,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const base::Time time = base::Time::Now();
+  const base::Time time = Now();
   ConfirmationsState::Get()->SetNextTokenRedemptionDate(time);
 
   const privacy::UnblindedTokenList unblinded_tokens =
@@ -325,7 +326,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const base::Time time = base::Time::Now();
+  const base::Time time = Now();
   ConfirmationsState::Get()->SetNextTokenRedemptionDate(time);
 
   // Act
@@ -379,7 +380,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const base::Time time = base::Time::Now();
+  const base::Time time = Now();
   ConfirmationsState::Get()->SetNextTokenRedemptionDate(time);
 
   const privacy::UnblindedTokenList unblinded_tokens =

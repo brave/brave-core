@@ -105,7 +105,7 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) {
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // conversion_id
       mojom::DBCommand::RecordBindingType::
           STRING_TYPE,                                  // advertiser_public_key
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE  // timestamp
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE  // confirm_at
   };
 
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
@@ -152,7 +152,7 @@ void ConversionQueue::GetForCreativeInstanceId(
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // conversion_id
       mojom::DBCommand::RecordBindingType::
           STRING_TYPE,                                  // advertiser_public_key
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE  // timestamp
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE  // confirm_at
   };
 
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
@@ -223,7 +223,7 @@ int ConversionQueue::BindParameters(
     BindString(command, index++, conversion_queue_item.advertiser_id);
     BindString(command, index++, conversion_queue_item.conversion_id);
     BindString(command, index++, conversion_queue_item.advertiser_public_key);
-    BindDouble(command, index++, conversion_queue_item.timestamp.ToDoubleT());
+    BindDouble(command, index++, conversion_queue_item.confirm_at.ToDoubleT());
 
     count++;
   }
@@ -301,7 +301,7 @@ ConversionQueueItemInfo ConversionQueue::GetFromRecord(
   info.advertiser_id = ColumnString(record, 3);
   info.conversion_id = ColumnString(record, 4);
   info.advertiser_public_key = ColumnString(record, 5);
-  info.timestamp = base::Time::FromDoubleT(ColumnDouble(record, 6));
+  info.confirm_at = base::Time::FromDoubleT(ColumnDouble(record, 6));
 
   return info;
 }

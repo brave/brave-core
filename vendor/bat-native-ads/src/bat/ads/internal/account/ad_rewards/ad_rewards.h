@@ -10,6 +10,7 @@
 #include <memory>
 
 #include "base/check_op.h"
+#include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -22,7 +23,6 @@ class Value;
 
 namespace ads {
 
-class AdRewardsDelegate;
 class Payments;
 
 class AdRewards final {
@@ -37,7 +37,7 @@ class AdRewards final {
 
   void MaybeReconcile(const WalletInfo& wallet);
 
-  uint64_t GetNextPaymentDate() const;
+  double GetNextPaymentDate() const;
 
   uint64_t GetAdsReceivedThisMonth() const;
   uint64_t GetAdsReceivedForMonth(const base::Time& time) const;

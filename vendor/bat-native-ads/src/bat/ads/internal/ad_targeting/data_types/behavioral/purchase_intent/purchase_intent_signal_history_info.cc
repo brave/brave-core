@@ -11,6 +11,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/number_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -18,20 +19,20 @@ namespace ad_targeting {
 
 namespace {
 
-int64_t GetTimestamp(base::DictionaryValue* dictionary) {
+base::Time GetCreatedAtTime(base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
 
   const std::string* value = dictionary->FindStringKey("timestamp_in_seconds");
   if (!value) {
-    return 0;
+    return base::Time();
   }
 
-  int64_t value_as_int64 = 0;
-  if (!base::StringToInt64(*value, &value_as_int64)) {
-    return 0;
+  double value_as_double = 0;
+  if (!base::StringToDouble(*value, &value_as_double)) {
+    return base::Time();
   }
 
-  return value_as_int64;
+  return base::Time::FromDoubleT(value_as_double);
 }
 
 uint16_t GetWeight(base::DictionaryValue* dictionary) {
@@ -45,9 +46,9 @@ uint16_t GetWeight(base::DictionaryValue* dictionary) {
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo() = default;
 
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
-    const int64_t timestamp_in_seconds,
+    const base::Time& created_at,
     const uint16_t weight)
-    : timestamp_in_seconds(timestamp_in_seconds), weight(weight) {}
+    : created_at(created_at), weight(weight) {}
 
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
     const PurchaseIntentSignalHistoryInfo& info) = default;
@@ -56,7 +57,7 @@ PurchaseIntentSignalHistoryInfo::~PurchaseIntentSignalHistoryInfo() = default;
 
 bool PurchaseIntentSignalHistoryInfo::operator==(
     const PurchaseIntentSignalHistoryInfo& rhs) const {
-  return timestamp_in_seconds == rhs.timestamp_in_seconds &&
+  return DoubleEquals(created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
          weight == rhs.weight;
 }
 
@@ -69,7 +70,7 @@ std::string PurchaseIntentSignalHistoryInfo::ToJson() const {
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
   dictionary.SetKey("timestamp_in_seconds",
-                    base::Value(std::to_string(timestamp_in_seconds)));
+                    base::Value(std::to_string(created_at.ToDoubleT())));
 
   dictionary.SetKey("weight", base::Value(weight));
 
@@ -90,7 +91,8 @@ bool PurchaseIntentSignalHistoryInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  timestamp_in_seconds = GetTimestamp(dictionary);
+  created_at = GetCreatedAtTime(dictionary);
+
   weight = GetWeight(dictionary);
 
   return true;

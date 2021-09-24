@@ -16,8 +16,8 @@ CreativeAdInfo GetCreativeAd() {
   creative_ad.creative_instance_id = base::GenerateGUID();
   creative_ad.creative_set_id = base::GenerateGUID();
   creative_ad.campaign_id = base::GenerateGUID();
-  creative_ad.start_at_timestamp = DistantPastAsTimestamp();
-  creative_ad.end_at_timestamp = DistantFutureAsTimestamp();
+  creative_ad.start_at = DistantPast();
+  creative_ad.end_at = DistantFuture();
   creative_ad.daily_cap = 1;
   creative_ad.advertiser_id = base::GenerateGUID();
   creative_ad.priority = 1;

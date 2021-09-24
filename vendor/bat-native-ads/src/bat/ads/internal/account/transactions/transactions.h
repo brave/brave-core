@@ -6,8 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_
 
-#include <cstdint>
-
 #include "bat/ads/transaction_info_aliases.h"
 
 namespace base {
@@ -20,9 +18,7 @@ struct ConfirmationInfo;
 
 namespace transactions {
 
-TransactionList GetCleared(const int64_t from_timestamp,
-                           const int64_t to_timestamp);
-
+TransactionList GetCleared(const base::Time& from, const base::Time& to);
 TransactionList GetUncleared();
 
 uint64_t GetCountForMonth(const base::Time& time);

@@ -6,7 +6,6 @@
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
 
 #include <algorithm>
-#include <cstdint>
 #include <utility>
 #include <vector>
 
@@ -154,8 +153,8 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // start_at_timestamp
-      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // end_at_timestamp
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // start_at
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // end_at
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // daily_cap
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // priority
@@ -259,8 +258,8 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // start_at_timestamp
-      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // end_at_timestamp
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // start_at
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // end_at
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // daily_cap
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // priority
@@ -355,8 +354,8 @@ void CreativeInlineContentAds::GetForDimensions(
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // start_at_timestamp
-      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // end_at_timestamp
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // start_at
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // end_at
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // daily_cap
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // priority
@@ -443,8 +442,8 @@ void CreativeInlineContentAds::GetAll(
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // start_at_timestamp
-      mojom::DBCommand::RecordBindingType::INT64_TYPE,   // end_at_timestamp
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // start_at
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // end_at
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // daily_cap
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
       mojom::DBCommand::RecordBindingType::INT_TYPE,     // priority
@@ -668,8 +667,10 @@ CreativeInlineContentAdInfo CreativeInlineContentAds::GetFromRecord(
   creative_inline_content_ad.creative_instance_id = ColumnString(record, 0);
   creative_inline_content_ad.creative_set_id = ColumnString(record, 1);
   creative_inline_content_ad.campaign_id = ColumnString(record, 2);
-  creative_inline_content_ad.start_at_timestamp = ColumnInt64(record, 3);
-  creative_inline_content_ad.end_at_timestamp = ColumnInt64(record, 4);
+  creative_inline_content_ad.start_at =
+      base::Time::FromDoubleT(ColumnDouble(record, 3));
+  creative_inline_content_ad.end_at =
+      base::Time::FromDoubleT(ColumnDouble(record, 4));
   creative_inline_content_ad.daily_cap = ColumnInt(record, 5);
   creative_inline_content_ad.advertiser_id = ColumnString(record, 6);
   creative_inline_content_ad.priority = ColumnInt(record, 7);

@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 
+#include "bat/ads/internal/number_util.h"
+
 namespace ads {
 
 ConfirmationInfo::ConfirmationInfo()
@@ -21,7 +23,8 @@ bool ConfirmationInfo::operator==(const ConfirmationInfo& rhs) const {
          blinded_payment_token.encode_base64() ==
              rhs.blinded_payment_token.encode_base64() &&
          credential == rhs.credential && user_data == rhs.user_data &&
-         timestamp == rhs.timestamp && created == rhs.created;
+         DoubleEquals(created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
+         was_created == rhs.was_created;
 }
 
 bool ConfirmationInfo::operator!=(const ConfirmationInfo& rhs) const {
@@ -29,8 +32,8 @@ bool ConfirmationInfo::operator!=(const ConfirmationInfo& rhs) const {
 }
 
 bool ConfirmationInfo::IsValid() const {
-  if (id.empty() || type == ConfirmationType::kUndefined ||
-      creative_instance_id.empty()) {
+  if (id.empty() || creative_instance_id.empty() ||
+      type == ConfirmationType::kUndefined || created_at.is_null()) {
     return false;
   }
 

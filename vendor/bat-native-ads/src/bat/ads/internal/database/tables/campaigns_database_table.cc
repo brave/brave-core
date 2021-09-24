@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
 
-#include <cstdint>
 #include <functional>
 #include <utility>
 
@@ -85,8 +84,8 @@ int Campaigns::BindParameters(mojom::DBCommand* command,
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
     BindString(command, index++, creative_ad.campaign_id);
-    BindInt64(command, index++, creative_ad.start_at_timestamp);
-    BindInt64(command, index++, creative_ad.end_at_timestamp);
+    BindDouble(command, index++, creative_ad.start_at.ToDoubleT());
+    BindDouble(command, index++, creative_ad.end_at.ToDoubleT());
     BindInt(command, index++, creative_ad.daily_cap);
     BindString(command, index++, creative_ad.advertiser_id);
     BindInt(command, index++, creative_ad.priority);

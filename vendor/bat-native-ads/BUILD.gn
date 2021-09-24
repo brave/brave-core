@@ -621,8 +621,6 @@ source_set("ads") {
     "src/bat/ads/internal/json_helper.h",
     "src/bat/ads/internal/legacy_migration/legacy_conversion_migration.cc",
     "src/bat/ads/internal/legacy_migration/legacy_conversion_migration.h",
-    "src/bat/ads/internal/legacy_migration/legacy_migration_util.cc",
-    "src/bat/ads/internal/legacy_migration/legacy_migration_util.h",
     "src/bat/ads/internal/locale/country_code_anonymity_set.h",
     "src/bat/ads/internal/locale/country_code_util.cc",
     "src/bat/ads/internal/locale/country_code_util.h",

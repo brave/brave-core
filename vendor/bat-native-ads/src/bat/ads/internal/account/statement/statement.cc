@@ -18,9 +18,9 @@ Statement::Statement(AdRewards* ad_rewards) : ad_rewards_(ad_rewards) {
 
 Statement::~Statement() = default;
 
-StatementInfo Statement::Get(const int64_t from_timestamp,
-                             const int64_t to_timestamp) const {
-  DCHECK(to_timestamp >= from_timestamp);
+StatementInfo Statement::Get(const base::Time& from,
+                             const base::Time& to) const {
+  DCHECK(to >= from);
 
   StatementInfo statement;
 
@@ -29,12 +29,9 @@ StatementInfo Statement::Get(const int64_t from_timestamp,
   statement.ads_received_this_month = GetAdsReceivedThisMonth();
 
   statement.earnings_this_month = GetEarningsForThisMonth();
-
   statement.earnings_last_month = GetEarningsForLastMonth();
 
-  statement.cleared_transactions =
-      transactions::GetCleared(from_timestamp, to_timestamp);
-
+  statement.cleared_transactions = transactions::GetCleared(from, to);
   statement.uncleared_transactions = transactions::GetUncleared();
 
   return statement;

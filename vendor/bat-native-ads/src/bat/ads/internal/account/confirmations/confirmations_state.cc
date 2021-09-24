@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 
-#include <cstdint>
 #include <utility>
 
 #include "base/check_op.h"
@@ -17,7 +16,6 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/legacy_migration/legacy_migration_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
@@ -192,9 +190,9 @@ std::string ConfirmationsState::ToJson() {
   dictionary.SetKey("catalog_issuers", std::move(catalog_issuers_dictionary));
 
   // Next token redemption date
-  dictionary.SetKey("next_token_redemption_date_in_seconds",
-                    base::Value(std::to_string(static_cast<uint64_t>(
-                        next_token_redemption_date_.ToDoubleT()))));
+  dictionary.SetKey(
+      "next_token_redemption_date_in_seconds",
+      base::Value(std::to_string(next_token_redemption_date_.ToDoubleT())));
 
   // Confirmations
   base::Value failed_confirmations =
@@ -338,11 +336,11 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
     }
 
     confirmation_dictionary.SetKey(
-        "timestamp_in_seconds",
-        base::Value(std::to_string(confirmation.timestamp)));
+        "timestamp_in_seconds", base::Value(std::to_string(static_cast<double>(
+                                    confirmation.created_at.ToDoubleT()))));
 
     confirmation_dictionary.SetKey("created",
-                                   base::Value(confirmation.created));
+                                   base::Value(confirmation.was_created));
 
     list.Append(std::move(confirmation_dictionary));
   }
@@ -488,17 +486,18 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
     const std::string* timestamp =
         confirmation_dictionary->FindStringKey("timestamp_in_seconds");
     if (timestamp) {
-      int64_t timestamp_as_int64;
-      if (!base::StringToInt64(*timestamp, &timestamp_as_int64)) {
+      double timestamp_as_double;
+      if (!base::StringToDouble(*timestamp, &timestamp_as_double)) {
         continue;
       }
-      confirmation.timestamp = timestamp_as_int64;
+
+      confirmation.created_at = base::Time::FromDoubleT(timestamp_as_double);
     }
 
     // Created
     absl::optional<bool> created =
         confirmation_dictionary->FindBoolKey("created");
-    confirmation.created = created.value_or(true);
+    confirmation.was_created = created.value_or(true);
 
     new_failed_confirmations.push_back(confirmation);
   }
@@ -582,16 +581,12 @@ bool ConfirmationsState::GetTransactionsFromDictionary(
     const std::string* timestamp =
         transaction_dictionary->FindStringKey("timestamp_in_seconds");
     if (timestamp) {
-      int64_t timestamp_as_int64;
-      if (!base::StringToInt64(*timestamp, &timestamp_as_int64)) {
+      if (!base::StringToDouble(*timestamp, &transaction.timestamp)) {
         continue;
       }
-
-      transaction.timestamp = MigrateTimestampToDoubleT(timestamp_as_int64);
     } else {
       // timestamp missing, fallback to default
-      transaction.timestamp =
-          static_cast<int64_t>(base::Time::Now().ToDoubleT());
+      transaction.timestamp = base::Time::Now().ToDoubleT();
     }
 
     // Estimated redemption value
@@ -650,12 +645,12 @@ bool ConfirmationsState::ParseNextTokenRedemptionDateFromDictionary(
     return false;
   }
 
-  uint64_t value_as_uint64;
-  if (!base::StringToUint64(*value, &value_as_uint64)) {
+  double value_as_double;
+  if (!base::StringToDouble(*value, &value_as_double)) {
     return false;
   }
 
-  next_token_redemption_date_ = base::Time::FromDoubleT(value_as_uint64);
+  next_token_redemption_date_ = base::Time::FromDoubleT(value_as_double);
 
   return true;
 }

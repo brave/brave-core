@@ -181,10 +181,6 @@ base::Time Payments::CalculateNextPaymentDate(
   next_payment_date_exploded.month = month;
   next_payment_date_exploded.day_of_month =
       features::GetAdRewardsNextPaymentDay();
-  next_payment_date_exploded.hour = 23;
-  next_payment_date_exploded.minute = 59;
-  next_payment_date_exploded.second = 59;
-  next_payment_date_exploded.millisecond = 999;
 
   base::Time next_payment_date;
   const bool success = base::Time::FromUTCExploded(next_payment_date_exploded,

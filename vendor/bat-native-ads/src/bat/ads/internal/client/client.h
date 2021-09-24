@@ -98,8 +98,8 @@ class Client final {
                                    const AdType& type);
   void ResetAllSeenAdvertisersForType(const AdType& type);
 
-  void SetNextAdServingInterval(const base::Time& next_check_serve_ad_date);
-  base::Time GetNextAdServingInterval();
+  void SetServeNextAdAt(const base::Time& time);
+  base::Time GetServeNextAdAt();
 
   void AppendTextClassificationProbabilitiesToHistory(
       const ad_targeting::TextClassificationProbabilitiesMap& probabilities);

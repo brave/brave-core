@@ -109,14 +109,14 @@ void Client::AppendAdHistory(const AdHistoryInfo& ad_history) {
 
   client_->ads_shown_history.push_front(ad_history);
 
-  const uint64_t timestamp = static_cast<uint64_t>(
-      (base::Time::Now() - base::TimeDelta::FromDays(history::kForDays))
-          .ToDoubleT());
+  const base::Time distant_past =
+      base::Time::Now() - base::TimeDelta::FromDays(history::kForDays);
 
   const auto iter = std::remove_if(
       client_->ads_shown_history.begin(), client_->ads_shown_history.end(),
-      [timestamp](const AdHistoryInfo& ad_history) {
-        return ad_history.timestamp_in_seconds < timestamp;
+      [&distant_past](const AdHistoryInfo& ad_history) {
+        const base::Time time = base::Time::FromDoubleT(ad_history.timestamp);
+        return time < distant_past;
       });
 
   client_->ads_shown_history.erase(iter, client_->ads_shown_history.end());
@@ -506,20 +506,18 @@ void Client::ResetAllSeenAdvertisersForType(const AdType& type) {
   Save();
 }
 
-void Client::SetNextAdServingInterval(
-    const base::Time& next_check_serve_ad_date) {
+void Client::SetServeNextAdAt(const base::Time& time) {
   DCHECK(is_initialized_);
 
-  client_->next_ad_serving_interval_timestamp =
-      static_cast<uint64_t>(next_check_serve_ad_date.ToDoubleT());
+  client_->serve_next_ad_at = time;
 
   Save();
 }
 
-base::Time Client::GetNextAdServingInterval() {
+base::Time Client::GetServeNextAdAt() {
   DCHECK(is_initialized_);
 
-  return base::Time::FromDoubleT(client_->next_ad_serving_interval_timestamp);
+  return client_->serve_next_ad_at;
 }
 
 void Client::AppendTextClassificationProbabilitiesToHistory(

@@ -21,15 +21,15 @@ std::deque<AdHistoryInfo> GetUnsortedAdsHistory() {
   std::deque<AdHistoryInfo> ads_history;
 
   AdHistoryInfo ad_history;
-  ad_history.timestamp_in_seconds = 22222222222;
+  ad_history.timestamp = 22222222222;
   ads_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 33333333333;
+  ad_history.timestamp = 33333333333;
   ads_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 11111111111;
+  ad_history.timestamp = 11111111111;
   ads_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 55555555555;
+  ad_history.timestamp = 55555555555;
   ads_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 44444444444;
+  ad_history.timestamp = 44444444444;
   ads_history.push_back(ad_history);
 
   return ads_history;
@@ -60,15 +60,15 @@ TEST(BatAdsAdsHistorySortTest, DescendingSortOrder) {
   // Assert
   std::deque<AdHistoryInfo> expected_history;
   AdHistoryInfo ad_history;
-  ad_history.timestamp_in_seconds = 55555555555;
+  ad_history.timestamp = 55555555555;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 44444444444;
+  ad_history.timestamp = 44444444444;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 33333333333;
+  ad_history.timestamp = 33333333333;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 22222222222;
+  ad_history.timestamp = 22222222222;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 11111111111;
+  ad_history.timestamp = 11111111111;
   expected_history.push_back(ad_history);
 
   EXPECT_EQ(expected_history, history);
@@ -97,15 +97,15 @@ TEST(BatAdsAdsHistorySortTest, AscendingSortOrder) {
 
   std::deque<AdHistoryInfo> expected_history;
   AdHistoryInfo ad_history;
-  ad_history.timestamp_in_seconds = 11111111111;
+  ad_history.timestamp = 11111111111;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 22222222222;
+  ad_history.timestamp = 22222222222;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 33333333333;
+  ad_history.timestamp = 33333333333;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 44444444444;
+  ad_history.timestamp = 44444444444;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 55555555555;
+  ad_history.timestamp = 55555555555;
   expected_history.push_back(ad_history);
 
   std::deque<AdHistoryInfo> history = GetUnsortedAdsHistory();

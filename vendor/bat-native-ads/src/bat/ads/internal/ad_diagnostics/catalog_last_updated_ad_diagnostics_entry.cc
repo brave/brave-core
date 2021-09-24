@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/ad_diagnostics/catalog_last_updated_ad_diagnostics_entry.h"
 
-#include <cstdint>
-
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -30,9 +28,12 @@ std::string CatalogLastUpdatedAdDiagnosticsEntry::GetKey() const {
 }
 
 std::string CatalogLastUpdatedAdDiagnosticsEntry::GetValue() const {
-  const int64_t catalog_last_updated =
-      AdsClientHelper::Get()->GetInt64Pref(prefs::kCatalogLastUpdated);
-  const base::Time time = base::Time::FromDoubleT(catalog_last_updated);
+  const double catalog_last_updated_timestamp =
+      AdsClientHelper::Get()->GetDoublePref(prefs::kCatalogLastUpdated);
+
+  const base::Time time =
+      base::Time::FromDoubleT(catalog_last_updated_timestamp);
+
   return ConvertToString(time);
 }
 

@@ -38,8 +38,9 @@ TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentTimeWindowInSeconds) {
   // Act
 
   // Assert
-  const int64_t expected_window = 7 * (24 * base::Time::kSecondsPerHour);
-  EXPECT_EQ(expected_window, features::GetPurchaseIntentTimeWindowInSeconds());
+  const int64_t expected_time_window = 7 * (24 * base::Time::kSecondsPerHour);
+  EXPECT_EQ(expected_time_window,
+            features::GetPurchaseIntentTimeWindowInSeconds());
 }
 
 TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentResource) {

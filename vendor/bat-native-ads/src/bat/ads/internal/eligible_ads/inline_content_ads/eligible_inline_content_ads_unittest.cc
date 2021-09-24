@@ -41,8 +41,8 @@ class BatAdsEligibleInlineContentAdsTest : public UnitTestBase {
     creative_inline_content_ad.creative_instance_id = base::GenerateGUID();
     creative_inline_content_ad.creative_set_id = base::GenerateGUID();
     creative_inline_content_ad.campaign_id = base::GenerateGUID();
-    creative_inline_content_ad.start_at_timestamp = DistantPastAsTimestamp();
-    creative_inline_content_ad.end_at_timestamp = DistantFutureAsTimestamp();
+    creative_inline_content_ad.start_at = DistantPast();
+    creative_inline_content_ad.end_at = DistantFuture();
     creative_inline_content_ad.daily_cap = 1;
     creative_inline_content_ad.advertiser_id = base::GenerateGUID();
     creative_inline_content_ad.priority = 1;

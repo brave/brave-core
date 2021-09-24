@@ -489,8 +489,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return @[];
   }
-  const uint64_t from_timestamp = 0;
-  const uint64_t to_timestamp = std::numeric_limits<uint64_t>::max();
+  const double from_timestamp = std::numeric_limits<double>::min();
+  const double to_timestamp = std::numeric_limits<double>::max();
 
   const auto history = ads->GetAdsHistory(ads::AdsHistoryFilterType::kNone,
                                           ads::AdsHistorySortType::kNone,
@@ -498,13 +498,13 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
   const auto dates = [[NSMutableArray<NSDate*> alloc] init];
   for (const auto& item : history.items) {
-    const auto date =
-        [NSDate dateWithTimeIntervalSince1970:item.timestamp_in_seconds];
+    const auto date = [NSDate dateWithTimeIntervalSince1970:item.timestamp];
     [dates addObject:date];
   }
 
   return dates;
 }
+
 - (BOOL)hasViewedAdsInPreviousCycle {
   const auto calendar =
       [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
@@ -1248,7 +1248,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)recordAdEvent:(const std::string&)ad_type
      confirmationType:(const std::string&)confirmation_type
-            timestamp:(const uint64_t)timestamp {
+            timestamp:(const double)timestamp {
   if (!adEventHistory) {
     return;
   }
@@ -1256,8 +1256,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   adEventHistory->Record(ad_type, confirmation_type, timestamp);
 }
 
-- (std::vector<uint64_t>)getAdEvents:(const std::string&)ad_type
-                    confirmationType:(const std::string&)confirmation_type {
+- (std::vector<double>)getAdEvents:(const std::string&)ad_type
+                  confirmationType:(const std::string&)confirmation_type {
   if (!adEventHistory) {
     return {};
   }

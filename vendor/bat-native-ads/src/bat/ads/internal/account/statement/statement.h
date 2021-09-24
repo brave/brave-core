@@ -8,6 +8,10 @@
 
 #include <cstdint>
 
+namespace base {
+class Time;
+}  // namespace base
+
 namespace ads {
 
 class AdRewards;
@@ -18,8 +22,7 @@ class Statement final {
   explicit Statement(AdRewards* ad_rewards);
   ~Statement();
 
-  StatementInfo Get(const int64_t from_timestamp,
-                    const int64_t to_timestamp) const;
+  StatementInfo Get(const base::Time& from, const base::Time& to) const;
 
  private:
   double GetEarningsForThisMonth() const;

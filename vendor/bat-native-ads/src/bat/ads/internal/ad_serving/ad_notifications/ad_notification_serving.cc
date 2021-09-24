@@ -68,16 +68,15 @@ void AdServing::StartServingAdsAtRegularIntervals() {
 
   base::TimeDelta delay;
 
-  if (Client::Get()->GetNextAdServingInterval().is_null()) {
+  if (Client::Get()->GetServeNextAdAt().is_null()) {
     delay = base::TimeDelta::FromMinutes(2);
     const base::Time next_interval = base::Time::Now() + delay;
-    Client::Get()->SetNextAdServingInterval(next_interval);
+    Client::Get()->SetServeNextAdAt(next_interval);
   } else {
     if (ShouldServeAd()) {
       delay = base::TimeDelta::FromMinutes(1);
     } else {
-      const base::Time next_interval =
-          Client::Get()->GetNextAdServingInterval();
+      const base::Time next_interval = Client::Get()->GetServeNextAdAt();
 
       delay = next_interval - base::Time::Now();
     }
@@ -238,7 +237,7 @@ void AdServing::RetryServingAdAtNextInterval() {
 }
 
 bool AdServing::ShouldServeAd() const {
-  const base::Time next_interval = Client::Get()->GetNextAdServingInterval();
+  const base::Time next_interval = Client::Get()->GetServeNextAdAt();
   if (base::Time::Now() < next_interval) {
     return false;
   }
@@ -248,7 +247,7 @@ bool AdServing::ShouldServeAd() const {
 
 base::Time AdServing::MaybeServeAdAfter(const base::TimeDelta delay) {
   const base::Time next_interval = base::Time::Now() + delay;
-  Client::Get()->SetNextAdServingInterval(next_interval);
+  Client::Get()->SetServeNextAdAt(next_interval);
 
   return timer_.Start(
       delay, base::BindOnce(&AdServing::MaybeServeAd, base::Unretained(this)));

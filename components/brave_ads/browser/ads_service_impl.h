@@ -171,8 +171,8 @@ class AdsServiceImpl : public AdsService,
 
   void ReconcileAdRewards() override;
 
-  void GetAdsHistory(const uint64_t from_timestamp,
-                     const uint64_t to_timestamp,
+  void GetAdsHistory(const double from_timestamp,
+                     const double to_timestamp,
                      OnGetAdsHistoryCallback callback) override;
 
   void GetAccountStatement(GetAccountStatementCallback callback) override;
@@ -340,7 +340,6 @@ class AdsServiceImpl : public AdsService,
   void DisableAdsForUnsupportedCountryCodes(
       const std::string& country_code,
       const std::vector<std::string>& country_codes);
-  uint64_t MigrateTimestampToDoubleT(const uint64_t timestamp_in_seconds) const;
 
   void MaybeShowMyFirstAdNotification();
   bool ShouldShowMyFirstAdNotification();
@@ -377,9 +376,9 @@ class AdsServiceImpl : public AdsService,
 
   void RecordAdEvent(const std::string& type,
                      const std::string& confirmation_type,
-                     const uint64_t timestamp) const override;
+                     const double timestamp) const override;
 
-  std::vector<uint64_t> GetAdEvents(
+  std::vector<double> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
 

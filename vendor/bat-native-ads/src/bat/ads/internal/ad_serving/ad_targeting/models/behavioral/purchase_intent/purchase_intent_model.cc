@@ -25,16 +25,12 @@ uint16_t CalculateScoreForHistory(
     const PurchaseIntentSignalHistoryList& history) {
   uint16_t score = 0;
 
-  const int64_t time_window_in_seconds =
-      features::GetPurchaseIntentTimeWindowInSeconds();
+  const int64_t time_window = features::GetPurchaseIntentTimeWindowInSeconds();
   for (const auto& signal_segment : history) {
     const base::Time signal_decayed_time =
-        base::Time::FromDoubleT(signal_segment.timestamp_in_seconds) +
-        base::TimeDelta::FromSeconds(time_window_in_seconds);
+        signal_segment.created_at + base::TimeDelta::FromSeconds(time_window);
 
-    const base::Time now = base::Time::Now();
-
-    if (now > signal_decayed_time) {
+    if (base::Time::Now() > signal_decayed_time) {
       continue;
     }
 

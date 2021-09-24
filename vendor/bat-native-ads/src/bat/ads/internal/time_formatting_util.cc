@@ -23,7 +23,7 @@ std::string LongFriendlyDateAndTime(const base::Time& time,
                             base::UTF16ToUTF8(friendly_date_and_time).c_str());
 }
 
-std::string LongFriendlyDateAndTime(const int64_t timestamp,
+std::string LongFriendlyDateAndTime(const double timestamp,
                                     const bool use_sentence_style) {
   const base::Time time = base::Time::FromDoubleT(timestamp);
   return LongFriendlyDateAndTime(time, use_sentence_style);
@@ -51,14 +51,14 @@ std::string FriendlyDateAndTime(const base::Time& time,
                             base::UTF16ToUTF8(time_of_day).c_str());
 }
 
-std::string FriendlyDateAndTime(const int64_t timestamp,
+std::string FriendlyDateAndTime(const double timestamp,
                                 const bool use_sentence_style) {
   const base::Time time = base::Time::FromDoubleT(timestamp);
   return FriendlyDateAndTime(time, use_sentence_style);
 }
 
 std::string TimeAsTimestampString(const base::Time& time) {
-  const int64_t timestamp = static_cast<int64_t>(time.ToDoubleT());
+  const double timestamp = time.ToDoubleT();
   return base::NumberToString(timestamp);
 }
 

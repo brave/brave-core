@@ -79,8 +79,8 @@ class BatAdsAdPriorityTest : public UnitTestBase {
     creative_ad_notification.creative_instance_id = base::GenerateGUID();
     creative_ad_notification.creative_set_id = base::GenerateGUID();
     creative_ad_notification.campaign_id = base::GenerateGUID();
-    creative_ad_notification.start_at_timestamp = DistantPastAsTimestamp();
-    creative_ad_notification.end_at_timestamp = DistantFutureAsTimestamp();
+    creative_ad_notification.start_at = DistantPast();
+    creative_ad_notification.end_at = DistantFuture();
     creative_ad_notification.daily_cap = 1;
     creative_ad_notification.advertiser_id = base::GenerateGUID();
     creative_ad_notification.priority = 1;

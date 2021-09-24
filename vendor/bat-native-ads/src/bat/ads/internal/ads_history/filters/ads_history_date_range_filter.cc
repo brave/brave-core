@@ -15,15 +15,15 @@ AdsHistoryDateRangeFilter::~AdsHistoryDateRangeFilter() = default;
 
 std::deque<AdHistoryInfo> AdsHistoryDateRangeFilter::Apply(
     const std::deque<AdHistoryInfo>& history,
-    const uint64_t from_timestamp,
-    const uint64_t to_timestamp) const {
+    const base::Time& from,
+    const base::Time& to) const {
   std::deque<AdHistoryInfo> filtered_ads_history = history;
 
   const auto iter = std::remove_if(
       filtered_ads_history.begin(), filtered_ads_history.end(),
-      [from_timestamp, to_timestamp](AdHistoryInfo& ad_history) {
-        return ad_history.timestamp_in_seconds < from_timestamp ||
-               ad_history.timestamp_in_seconds > to_timestamp;
+      [&from, &to](AdHistoryInfo& ad_history) {
+        const base::Time time = base::Time::FromDoubleT(ad_history.timestamp);
+        return time < from || time > to;
       });
 
   filtered_ads_history.erase(iter, filtered_ads_history.end());

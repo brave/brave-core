@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
+#include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "wrapper.hpp"
 
@@ -20,8 +21,6 @@ namespace ads {
 
 using challenge_bypass_ristretto::BlindedToken;
 using challenge_bypass_ristretto::Token;
-
-class RefillUnblindedTokensDelegate;
 
 namespace privacy {
 class TokenGeneratorInterface;

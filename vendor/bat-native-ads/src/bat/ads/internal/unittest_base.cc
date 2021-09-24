@@ -13,6 +13,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/unittest_file_util.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -115,21 +116,20 @@ void UnitTestBase::FastForwardClockBy(const base::TimeDelta& time_delta) {
 }
 
 void UnitTestBase::FastForwardClockTo(const base::Time& time) {
-  const base::TimeDelta time_delta = time - base::Time::Now();
+  const base::TimeDelta time_delta = time - Now();
 
   FastForwardClockBy(time_delta);
 }
 
 void UnitTestBase::AdvanceClockToMidnightUTC() {
-  const base::TimeDelta time_delta = base::Time::Now().LocalMidnight() +
-                                     base::TimeDelta::FromHours(24) -
-                                     base::Time::Now();
+  const base::TimeDelta time_delta =
+      Now().LocalMidnight() + base::TimeDelta::FromHours(24) - Now();
 
   return AdvanceClock(time_delta);
 }
 
 void UnitTestBase::AdvanceClock(const base::Time& time) {
-  const base::TimeDelta time_delta = time - base::Time::Now();
+  const base::TimeDelta time_delta = time - Now();
 
   return AdvanceClock(time_delta);
 }
