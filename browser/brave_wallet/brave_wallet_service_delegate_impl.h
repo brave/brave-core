@@ -18,7 +18,9 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
+namespace value_store {
 class ValueStore;
+}
 
 namespace content {
 class BrowserContext;
