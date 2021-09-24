@@ -348,7 +348,7 @@ interface EthTxController {
   // This returns different data depending on which network is currently selected in EthJsonRpcController
   GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
   AddObserver(pending_remote<EthTxControllerObserver> observer);
-  GetMessageToSignFromTxData(string tx_meta_id) => (bool success, string message);
+  ApproveHardwareTransaction(string tx_meta_id) => (bool success, string message);
   ProcessLedgerSignature(string tx_meta_id, string v, string r, string s) => (bool status);
 };
 

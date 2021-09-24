@@ -579,7 +579,7 @@ TEST_F(EthTxControllerUnitTest, ProcessLedgerSignatureFail) {
   ASSERT_TRUE(callback_called);
 }
 
-TEST_F(EthTxControllerUnitTest, GetMessageToSignFromTxData) {
+TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction) {
   auto tx_data =
       mojom::TxData::New("0x06", "" /* gas_price */, "" /* gas_limit */,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
@@ -595,7 +595,7 @@ TEST_F(EthTxControllerUnitTest, GetMessageToSignFromTxData) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
   callback_called = false;
-  eth_tx_controller_->GetMessageToSignFromTxData(
+  eth_tx_controller_->ApproveHardwareTransaction(
       tx_meta_id,
       base::BindLambdaForTesting([&](bool success, const std::string& result) {
         EXPECT_TRUE(success);
@@ -611,7 +611,7 @@ TEST_F(EthTxControllerUnitTest, GetMessageToSignFromTxData) {
   ASSERT_TRUE(callback_called);
 }
 
-TEST_F(EthTxControllerUnitTest, GetMessageToSignFromTxData1559) {
+TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction1559) {
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x00", "", "0x00",
                          "0x0101010101010101010101010101010101010101", "0x00",
@@ -629,7 +629,7 @@ TEST_F(EthTxControllerUnitTest, GetMessageToSignFromTxData1559) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
   callback_called = false;
-  eth_tx_controller_->GetMessageToSignFromTxData(
+  eth_tx_controller_->ApproveHardwareTransaction(
       tx_meta_id,
       base::BindLambdaForTesting([&](bool success, const std::string& result) {
         EXPECT_TRUE(success);
@@ -642,9 +642,9 @@ TEST_F(EthTxControllerUnitTest, GetMessageToSignFromTxData1559) {
   ASSERT_TRUE(callback_called);
 }
 
-TEST_F(EthTxControllerUnitTest, GetMessageToSignFromTxDataFail) {
+TEST_F(EthTxControllerUnitTest, ApproveHardwareTransactionFail) {
   bool callback_called = false;
-  eth_tx_controller_->GetMessageToSignFromTxData(
+  eth_tx_controller_->ApproveHardwareTransaction(
       std::string(),
       base::BindLambdaForTesting([&](bool success, const std::string& result) {
         EXPECT_FALSE(success);

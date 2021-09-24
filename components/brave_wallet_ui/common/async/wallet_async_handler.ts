@@ -298,7 +298,7 @@ handler.on(WalletActions.approveTransaction.getType(), async (store, txInfo: Tra
   const apiProxy = await getAPIProxy()
   const hardwareAccount = await findHardwareAccountInfo(txInfo.fromAddress)
   if (hardwareAccount && hardwareAccount.hardware) {
-    const { success, message } = await apiProxy.ethTxController.getMessageToSignFromTxData(txInfo.id)
+    const { success, message } = await apiProxy.ethTxController.approveHardwareTransaction(txInfo.id)
     if (success) {
       let deviceKeyring = await apiProxy.getKeyringsByType(hardwareAccount.hardware.vendor)
       const { v, r, s } = await deviceKeyring.signTransaction(hardwareAccount.hardware.path, message.replace('0x', ''))

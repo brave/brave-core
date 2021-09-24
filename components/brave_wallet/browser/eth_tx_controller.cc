@@ -291,9 +291,9 @@ void EthTxController::AddUnapproved1559Transaction(
   std::move(callback).Run(true, meta.id, "");
 }
 
-void EthTxController::GetMessageToSignFromTxData(
+void EthTxController::ApproveHardwareTransaction(
     const std::string& tx_meta_id,
-    GetMessageToSignFromTxDataCallback callback) {
+    ApproveHardwareTransactionCallback callback) {
   std::unique_ptr<EthTxStateManager::TxMeta> meta =
       tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {
@@ -304,18 +304,19 @@ void EthTxController::GetMessageToSignFromTxData(
   if (!meta->last_gas_price) {
     auto from = EthAddress(meta->from);
     nonce_tracker_->GetNextNonce(
-        from, base::BindOnce(&EthTxController::OnGetNextNonceForLedger,
+        from, base::BindOnce(&EthTxController::OnGetNextNonceForHardware,
                              weak_factory_.GetWeakPtr(), std::move(meta),
                              std::move(callback)));
   } else {
     uint256_t nonce = meta->tx->nonce();
-    OnGetNextNonceForLedger(std::move(meta), std::move(callback), true, nonce);
+    OnGetNextNonceForHardware(std::move(meta), std::move(callback), true,
+                              nonce);
   }
 }
 
-void EthTxController::OnGetNextNonceForLedger(
+void EthTxController::OnGetNextNonceForHardware(
     std::unique_ptr<EthTxStateManager::TxMeta> meta,
-    GetMessageToSignFromTxDataCallback callback,
+    ApproveHardwareTransactionCallback callback,
     bool success,
     uint256_t nonce) {
   if (!success) {

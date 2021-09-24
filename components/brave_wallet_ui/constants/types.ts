@@ -476,7 +476,7 @@ export interface ProcessLedgerSignatureReturnInfo {
   status: boolean
 }
 
-export interface GetMessageToSignFromTxDataReturnInfo {
+export interface ApproveHardwareTransactionReturnInfo {
   success: boolean
   message: string
 }
@@ -524,7 +524,7 @@ export interface EthTxController {
   makeERC20TransferData: (toAddress: string, amount: string) => Promise<MakeERC20TransferDataReturnInfo>
   makeERC20ApproveData: (spenderAddress: string, amount: string) => Promise<MakeERC20ApproveDataReturnInfo>
   getAllTransactionInfo: (fromAddress: string) => Promise<GetAllTransactionInfoReturnInfo>
-  getMessageToSignFromTxData: (txMetaId: string) => Promise<GetMessageToSignFromTxDataReturnInfo>
+  approveHardwareTransaction: (txMetaId: string) => Promise<ApproveHardwareTransactionReturnInfo>
   processLedgerSignature: (txMetaId: string, v: string, r: string, s: string) => Promise<ProcessLedgerSignatureReturnInfo>
 }
 
