@@ -24,6 +24,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
+#include "brave/components/brave_vpn/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -133,6 +134,14 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
       kTabsSearchShow,
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  pref_change_registrar_.Add(
+      brave_vpn::prefs::kBraveVPNShowButton,
+      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                          base::Unretained(this)));
+#endif
+
   // Show the correct value in settings on initial start
   UpdateSearchTabsButtonState();
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -170,7 +179,15 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == kTabsSearchShow) {
     UpdateSearchTabsButtonState();
+    return;
   }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  if (pref_name == brave_vpn::prefs::kBraveVPNShowButton) {
+    vpn_panel_host_.ResetBubbleManager();
+    return;
+  }
+#endif
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {

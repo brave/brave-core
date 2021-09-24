@@ -21,6 +21,8 @@ class BraveVPNPanelHost {
   BraveVPNPanelHost& operator=(const BraveVPNPanelHost&) = delete;
 
   void ShowBraveVPNPanel();
+  // Manager should be reset to use different anchor view for bubble.
+  void ResetBubbleManager();
 
  private:
   BraveBrowserView* browser_view_;
