@@ -1955,6 +1955,9 @@ until they verify, or until 90 days have passed.
     <message name="IDS_SEARCH_TOKENS" desc="Brave wallet search tokens control hint">
       Search tokens
     </message>
+    <message name="IDS_DISABLE_SHARING_HUB" desc="Menu item for disabling sharing hub.">
+      Disable Sharing Hub
+    </message>
     </messages>
   </release>
 </grit>
