@@ -183,8 +183,7 @@ static bool CustomLogHandler(int severity,
 
 - (BraveSyncAPI*)syncAPI {
   if (!_syncAPI) {
-    _syncAPI = [[BraveSyncAPI alloc]
-        initWithBrowserState:_mainBrowserState];
+    _syncAPI = [[BraveSyncAPI alloc] initWithBrowserState:_mainBrowserState];
   }
   return _syncAPI;
 }

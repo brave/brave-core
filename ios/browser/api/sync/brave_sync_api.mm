@@ -80,7 +80,7 @@
 
 @implementation BraveSyncAPI
 
-- (instancetype)initWithBrowserState:(ChromeBrowserState*) mainBrowserState {
+- (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {
   if ((self = [super init])) {
     _chromeBrowserState = mainBrowserState;
     _worker.reset(new BraveSyncWorker(_chromeBrowserState));
