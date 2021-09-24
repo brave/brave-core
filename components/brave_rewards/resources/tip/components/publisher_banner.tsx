@@ -163,14 +163,13 @@ function showUnverifiedNotice (
   publisherInfo: PublisherInfo,
   externalWalletInfo?: ExternalWalletInfo
 ) {
-  // Show the notice if the publisher is not registered, or if the publisher
-  // does not have a verified payment address
-  if (publisherInfo.status === PublisherStatus.NOT_VERIFIED ||
-      publisherInfo.status === PublisherStatus.CONNECTED) {
+  // Show the notice if the publisher is not registered.
+  if (publisherInfo.status === PublisherStatus.NOT_VERIFIED) {
     return true
   }
 
-  // If the user does not have a connected wallet, do not show the notice
+  // Do not show the notice if the publisher is registered and the user does
+  // not have a connected external wallet.
   if (!externalWalletInfo) {
     return false
   }
@@ -182,7 +181,7 @@ function showUnverifiedNotice (
   }
 
   // Show the notice if the publisher is verified and their wallet provider does
-  // not match the user's external wallet provider
+  // not match the user's external wallet provider.
   switch (publisherInfo.status) {
     case PublisherStatus.UPHOLD_VERIFIED:
       return externalWalletInfo.type !== 'uphold'
@@ -192,7 +191,7 @@ function showUnverifiedNotice (
       return externalWalletInfo.type !== 'gemini'
   }
 
-  return false
+  return true
 }
 
 function getUnverifiedNotice (
