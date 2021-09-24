@@ -1,0 +1,94 @@
+diff --git a/components/translate/core/browser/translate_manager.cc b/components/translate/core/browser/translate_manager.cc
+index a86a2f099b9188a9037f3fd8fff34dfcb1cf451f..392a772bef8fb8cdc827488eacce105fa921da0d 100644
+--- a/components/translate/core/browser/translate_manager.cc
++++ b/components/translate/core/browser/translate_manager.cc
+@@ -414,7 +414,7 @@ void TranslateManager::TranslatePage(const std::string& original_source_lang,
+   // kUnknownLanguageCode in order to send a translation request with enabling
+   // server side auto language detection.
+   std::string source_lang(original_source_lang);
+-  if (!TranslateDownloadManager::IsSupportedLanguage(source_lang))
++  if (!TranslateDownloadManager::IsSupportedSourceLanguage(source_lang))
+     source_lang = std::string(translate::kUnknownLanguageCode);
+ 
+   // Capture the translate event if we were triggered from the menu.
+@@ -544,7 +544,7 @@ void TranslateManager::PageTranslated(const std::string& source_lang,
+ 
+   if ((error_type == TranslateErrors::NONE) &&
+       source_lang != translate::kUnknownLanguageCode &&
+-      !TranslateDownloadManager::IsSupportedLanguage(source_lang)) {
++      !TranslateDownloadManager::IsSupportedSourceLanguage(source_lang)) {
+     error_type = TranslateErrors::UNSUPPORTED_LANGUAGE;
+   }
+ 
+@@ -611,7 +611,7 @@ std::string TranslateManager::GetTargetLanguage(
+       std::string lang_code =
+           TranslateDownloadManager::GetLanguageCode(lang.lang_code);
+       language::ToTranslateLanguageSynonym(&lang_code);
+-      if (TranslateDownloadManager::IsSupportedLanguage(lang_code))
++      if (TranslateDownloadManager::IsSupportedTargetLanguage(lang_code))
+         language_codes.push_back(lang_code);
+     }
+     // If some languages need to be skipped, move them to the end of the
+@@ -633,7 +633,7 @@ std::string TranslateManager::GetTargetLanguage(
+       TranslateDownloadManager::GetInstance()->application_locale());
+   // Map 'he', 'nb', 'fil' back to 'iw', 'no', 'tl'
+   language::ToTranslateLanguageSynonym(&language);
+-  if (TranslateDownloadManager::IsSupportedLanguage(language)) {
++  if (TranslateDownloadManager::IsSupportedTargetLanguage(language)) {
+     target_language_origin =
+         TranslateBrowserMetrics::TargetLanguageOrigin::kApplicationUI;
+     TranslateBrowserMetrics::ReportTranslateTargetLanguageOrigin(
+@@ -647,7 +647,7 @@ std::string TranslateManager::GetTargetLanguage(
+   prefs->GetLanguageList(&accept_languages_list);
+   for (const auto& lang : accept_languages_list) {
+     std::string lang_code = TranslateDownloadManager::GetLanguageCode(lang);
+-    if (TranslateDownloadManager::IsSupportedLanguage(lang_code)) {
++    if (TranslateDownloadManager::IsSupportedTargetLanguage(lang_code)) {
+       target_language_origin =
+           TranslateBrowserMetrics::TargetLanguageOrigin::kAcceptLanguages;
+       TranslateBrowserMetrics::ReportTranslateTargetLanguageOrigin(
+@@ -686,7 +686,7 @@ std::string TranslateManager::GetAutoTargetLanguage(
+     // Also, GetLanguageCode will take care of removing country code if any.
+     auto_target_lang =
+         TranslateDownloadManager::GetLanguageCode(auto_target_lang);
+-    if (TranslateDownloadManager::IsSupportedLanguage(auto_target_lang))
++    if (TranslateDownloadManager::IsSupportedTargetLanguage(auto_target_lang))
+       return auto_target_lang;
+   }
+   return std::string();
+@@ -946,7 +946,7 @@ void TranslateManager::FilterIsTranslatePossible(
+   // Nothing to do if either the language Chrome is in or the language of
+   // the page is not supported by the translation server.
+   if (target_lang.empty() ||
+-      !TranslateDownloadManager::IsSupportedLanguage(page_language_code)) {
++      !TranslateDownloadManager::IsSupportedSourceLanguage(page_language_code)) {
+     // This doesn't prevent *all* possible translate outcomes because some could
+     // use a different target language, making this condition only relevant to
+     // regular auto-translate/show UI.
+@@ -1089,13 +1089,13 @@ void TranslateManager::FilterForHrefTranslate(
+   // Can't honor hrefTranslate if there's no specified target or the target
+   // language isn't supported.
+   if (decision->href_translate_target.empty() ||
+-      !TranslateDownloadManager::IsSupportedLanguage(
++      !TranslateDownloadManager::IsSupportedTargetLanguage(
+           decision->href_translate_target)) {
+     decision->PreventAutoHrefTranslate();
+     decision->PreventShowingHrefTranslateUI();
+   }
+ 
+-  if (!TranslateDownloadManager::IsSupportedLanguage(page_language_code)) {
++  if (!TranslateDownloadManager::IsSupportedSourceLanguage(page_language_code)) {
+     // If the page language is unsupported or unknown, but hrefTranslate is
+     // present and the Feature is set such that translation should be attempted
+     // anyways, then as a last ditch effort assume that language detection was
+@@ -1154,8 +1154,8 @@ bool TranslateManager::IsTranslatableLanguagePair(
+     const std::string& page_language_code,
+     const std::string& target_language_code) {
+   return !target_language_code.empty() &&
+-         TranslateDownloadManager::IsSupportedLanguage(target_language_code) &&
+-         TranslateDownloadManager::IsSupportedLanguage(page_language_code) &&
++         TranslateDownloadManager::IsSupportedTargetLanguage(target_language_code) &&
++         TranslateDownloadManager::IsSupportedSourceLanguage(page_language_code) &&
+          page_language_code != target_language_code;
+ }
+ 
