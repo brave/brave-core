@@ -39,7 +39,7 @@ std::string StatementInfo::ToJson() const {
 
   // Next payment date
   dictionary.SetKey("next_payment_date",
-                    base::Value(std::to_string(next_payment_date)));
+                    base::Value(base::NumberToString(next_payment_date)));
 
   // Ads received this month
   dictionary.SetKey("ads_received_this_month",

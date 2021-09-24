@@ -70,7 +70,7 @@ std::string PurchaseIntentSignalHistoryInfo::ToJson() const {
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
   dictionary.SetKey("timestamp_in_seconds",
-                    base::Value(std::to_string(created_at.ToDoubleT())));
+                    base::Value(base::NumberToString(created_at.ToDoubleT())));
 
   dictionary.SetKey("weight", base::Value(weight));
 

@@ -33,7 +33,7 @@ void TransactionInfo::ToDictionary(base::Value* dictionary) const {
   DCHECK(dictionary);
 
   dictionary->SetKey("timestamp_in_seconds",
-                     base::Value(std::to_string(timestamp)));
+                     base::Value(base::NumberToString(timestamp)));
 
   dictionary->SetKey("estimated_redemption_value",
                      base::Value(estimated_redemption_value));
