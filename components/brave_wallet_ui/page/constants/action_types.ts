@@ -7,9 +7,7 @@ import {
   GetPriceHistoryReturnObjectInfo,
   TokenInfo,
   AssetPriceInfo,
-  AssetPriceTimeframe,
-  AccountAssetOptionType,
-  SlippagePresetObjectType
+  AssetPriceTimeframe
 } from '../../constants/types'
 
 export type CreateWalletPayloadType = {
@@ -72,17 +70,6 @@ export type SelectAssetPayloadType = {
   usdPriceInfo: AssetPriceInfo | undefined,
   btcPriceInfo: AssetPriceInfo | undefined,
   timeFrame: AssetPriceTimeframe
-}
-
-export type SwapParamsPayloadType = {
-  fromAsset: AccountAssetOptionType,
-  toAsset: AccountAssetOptionType,
-  fromAssetAmount?: string,
-  toAssetAmount?: string,
-  slippageTolerance: SlippagePresetObjectType,
-  accountAddress: string,
-  networkChainId: string,
-  full: boolean
 }
 
 export type ImportFromExternalWalletPayloadType = {

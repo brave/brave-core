@@ -73,7 +73,11 @@ export type PanelTypes =
   | 'settings'
   | 'expanded'
   | 'assets'
+  | 'signData'
   | 'connectWithSite'
+  | 'connectHardwareWallet'
+  | 'addEthereumChain'
+  | 'approveTransaction'
 
 export type NavTypes =
   | 'crypto'
@@ -177,11 +181,12 @@ export interface PanelState {
   hasInitialized: boolean
   isConnected: boolean
   connectedSiteOrigin: string
-  selectedPanel: string
+  selectedPanel: PanelTypes
   panelTitle: string
   tabId: number
   connectingAccounts: string[]
   networkPayload: EthereumChain
+  swapQuote?: SwapResponse
 }
 
 export interface PageState {
@@ -201,9 +206,9 @@ export interface PageState {
   showIsRestoring: boolean
   importError: boolean
   showAddModal: boolean
-  swapQuote?: SwapResponse
   isCryptoWalletsInstalled: boolean
   isMetaMaskInstalled: boolean
+  swapQuote?: SwapResponse
 }
 
 export interface WalletPageState {

@@ -7,7 +7,9 @@ import {
   AppObjectType,
   AccountInfo,
   TransactionInfo,
-  TokenInfo
+  TokenInfo,
+  AccountAssetOptionType,
+  SlippagePresetObjectType
 } from '../../constants/types'
 
 export type InitializedPayloadType = {
@@ -53,4 +55,15 @@ export type SetUserAssetVisiblePayloadType = {
   contractAddress: string
   chainId: string
   isVisible: boolean
+}
+
+export type SwapParamsPayloadType = {
+  fromAsset: AccountAssetOptionType,
+  toAsset: AccountAssetOptionType,
+  fromAssetAmount?: string,
+  toAssetAmount?: string,
+  slippageTolerance: SlippagePresetObjectType,
+  accountAddress: string,
+  networkChainId: string,
+  full: boolean
 }

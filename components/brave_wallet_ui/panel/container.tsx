@@ -21,7 +21,8 @@ import {
   Buy,
   SelectAsset,
   SelectAccount,
-  SelectNetwork
+  SelectNetwork,
+  Swap
 } from '../components/buy-send-swap/'
 import { AppList } from '../components/shared'
 import { filterAppList } from '../utils/filter-app-list'
@@ -47,7 +48,8 @@ import {
   BuySendSwapViewTypes,
   AccountAssetOptionType,
   EthereumChain,
-  TokenInfo
+  TokenInfo,
+  ToOrFromType
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
@@ -57,6 +59,7 @@ import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { GetNetworkInfo } from '../utils/network-utils'
 
 import { formatBalance, toWeiHex } from '../utils/format-balances'
+import useSwap from '../common/hooks/swap'
 
 type Props = {
   panel: PanelState
@@ -100,7 +103,8 @@ function Container (props: Props) {
     connectedSiteOrigin,
     panelTitle,
     selectedPanel,
-    networkPayload
+    networkPayload,
+    swapQuote
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -110,7 +114,6 @@ function Container (props: Props) {
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
-  const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(ETH)
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [toAddress, setToAddress] = React.useState('')
@@ -154,6 +157,37 @@ function Container (props: Props) {
       })
   )
 
+  const {
+    exchangeRate,
+    filteredAssetList,
+    fromAmount,
+    fromAsset,
+    isSwapButtonDisabled,
+    orderExpiration,
+    orderType,
+    slippageTolerance,
+    swapToOrFrom,
+    toAmount,
+    toAsset,
+    setFromAsset,
+    setSwapToOrFrom,
+    onToggleOrderType,
+    onSwapQuoteRefresh,
+    flipSwapAssets,
+    onSubmitSwap,
+    onSelectExpiration,
+    onSelectSlippageTolerance,
+    onSwapInputChange,
+    onFilterAssetList,
+    onSelectTransactAsset
+  } = useSwap(
+    selectedAccount,
+    selectedNetwork,
+    props.walletPanelActions.fetchPanelSwapQuote,
+    assetOptions,
+    swapQuote
+  )
+
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
   }
@@ -175,6 +209,16 @@ function Container (props: Props) {
     }
   }
 
+  const onChangeSwapView = (view: BuySendSwapViewTypes, option?: ToOrFromType) => {
+    if (view === 'assets') {
+      setShowSelectAsset(true)
+    }
+
+    if (option) {
+      setSwapToOrFrom(option)
+    }
+  }
+
   const onHideSelectAsset = () => {
     setShowSelectAsset(false)
   }
@@ -182,9 +226,12 @@ function Container (props: Props) {
   const onSelectAsset = (asset: AccountAssetOptionType) => () => {
     if (selectedPanel === 'buy') {
       setSelectedWyreAsset(asset)
+    } else if (selectedPanel === 'swap') {
+      onSelectTransactAsset(asset, swapToOrFrom)
     } else {
-      setSelectedAsset(asset)
+      setFromAsset(asset)
     }
+
     setShowSelectAsset(false)
   }
 
@@ -196,32 +243,32 @@ function Container (props: Props) {
     }
   }
 
-  const selectedAssetBalance = React.useMemo(() => {
+  const getAssetBalance = React.useCallback((asset: AccountAssetOptionType) => {
     if (!selectedAccount || !selectedAccount.tokens) {
       return '0'
     }
-    const token = selectedAccount.tokens.find((token) => token.asset.symbol === selectedAsset.asset.symbol)
+    const token = selectedAccount.tokens.find((token) => token.asset.symbol === asset.asset.symbol)
     return token ? formatBalance(token.assetBalance, token.asset.decimals) : '0'
-  }, [accounts, selectedAccount, selectedAsset])
+  }, [accounts, selectedAccount])
 
   const onSelectPresetSendAmount = (percent: number) => {
-    const amount = Number(selectedAsset.assetBalance) * percent
-    const formatedAmmount = formatBalance(amount.toString(), selectedAsset.asset.decimals)
+    const amount = Number(fromAsset.assetBalance) * percent
+    const formatedAmmount = formatBalance(amount.toString(), fromAsset.asset.decimals)
     setSendAmount(formatedAmmount)
   }
 
   const onSubmitSend = () => {
-    selectedAsset.asset.isErc20 && props.walletActions.sendERC20Transfer({
+    fromAsset.asset.isErc20 && props.walletActions.sendERC20Transfer({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWeiHex(sendAmount, selectedAsset.asset.decimals),
-      contractAddress: selectedAsset.asset.contractAddress
+      value: toWeiHex(sendAmount, fromAsset.asset.decimals),
+      contractAddress: fromAsset.asset.contractAddress
     })
 
-    !selectedAsset.asset.isErc20 && props.walletActions.sendTransaction({
+    !fromAsset.asset.isErc20 && props.walletActions.sendTransaction({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWeiHex(sendAmount, selectedAsset.asset.decimals)
+      value: toWeiHex(sendAmount, fromAsset.asset.decimals)
     })
   }
 
@@ -471,7 +518,7 @@ function Container (props: Props) {
     } else if (selectedPanel === 'send') {
       assets = sendAssetOptions
     } else {  // swap
-      assets = assetOptions
+      assets = filteredAssetList
     }
     return (
       <PanelWrapper isLonger={false}>
@@ -576,9 +623,9 @@ function Container (props: Props) {
                 onInputChange={onInputChange}
                 onSelectPresetAmount={onSelectPresetSendAmount}
                 onSubmit={onSubmitSend}
-                selectedAsset={selectedAsset}
+                selectedAsset={fromAsset}
                 selectedAssetAmount={sendAmount}
-                selectedAssetBalance={selectedAssetBalance}
+                selectedAssetBalance={getAssetBalance(fromAsset)}
                 toAddress={toAddress}
               />
             </SendWrapper>
@@ -611,6 +658,46 @@ function Container (props: Props) {
           </Panel>
         </StyledExtensionWrapper>
       </PanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'swap') {
+    return (
+        <PanelWrapper isLonger={false}>
+          <StyledExtensionWrapper>
+            <Panel
+                navAction={navigateTo}
+                title={panelTitle}
+                useSearch={false}
+            >
+              <SendWrapper>
+                <Swap
+                  fromAsset={fromAsset}
+                  toAsset={toAsset}
+                  fromAmount={fromAmount}
+                  toAmount={toAmount}
+                  exchangeRate={exchangeRate}
+                  orderType={orderType}
+                  orderExpiration={orderExpiration}
+                  slippageTolerance={slippageTolerance}
+                  isSubmitDisabled={isSwapButtonDisabled}
+                  fromAssetBalance={getAssetBalance(fromAsset)}
+                  toAssetBalance={getAssetBalance(toAsset)}
+                  onToggleOrderType={onToggleOrderType}
+                  onSelectExpiration={onSelectExpiration}
+                  onSelectSlippageTolerance={onSelectSlippageTolerance}
+                  onFlipAssets={flipSwapAssets}
+                  onSubmitSwap={onSubmitSwap}
+                  onQuoteRefresh={onSwapQuoteRefresh}
+                  onSelectPresetAmount={onSelectPresetSendAmount}
+                  onInputChange={onSwapInputChange}
+                  onFilterAssetList={onFilterAssetList}
+                  onChangeSwapView={onChangeSwapView}
+                />
+              </SendWrapper>
+            </Panel>
+          </StyledExtensionWrapper>
+        </PanelWrapper>
     )
   }
 

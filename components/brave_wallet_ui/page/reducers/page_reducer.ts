@@ -9,8 +9,7 @@ import * as Actions from '../actions/wallet_page_actions'
 import {
   PageState,
   AssetPriceTimeframe,
-  TokenInfo,
-  SwapResponse
+  TokenInfo, SwapResponse
 } from '../../constants/types'
 import {
   WalletCreatedPayloadType,
@@ -34,9 +33,9 @@ const defaultState: PageState = {
   isFetchingPriceHistory: false,
   showIsRestoring: false,
   setupStillInProgress: false,
-  swapQuote: undefined,
   isCryptoWalletsInstalled: false,
-  isMetaMaskInstalled: false
+  isMetaMaskInstalled: false,
+  swapQuote: undefined
 }
 
 const reducer = createReducer<PageState>({}, defaultState)
@@ -146,13 +145,6 @@ reducer.on(Actions.setShowAddModal, (state: PageState, payload: boolean) => {
   }
 })
 
-reducer.on(Actions.setSwapQuote, (state: PageState, payload: SwapResponse) => {
-  return {
-    ...state,
-    swapQuote: payload
-  }
-})
-
 reducer.on(Actions.setCryptoWalletsInstalled, (state: PageState, payload: boolean) => {
   return {
     ...state,
@@ -164,6 +156,13 @@ reducer.on(Actions.setMetaMaskInstalled, (state: PageState, payload: boolean) =>
   return {
     ...state,
     isMetaMaskInstalled: payload
+  }
+})
+
+reducer.on(Actions.setPageSwapQuote, (state: any, payload: SwapResponse) => {
+  return {
+    ...state,
+    swapQuote: payload
   }
 })
 

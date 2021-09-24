@@ -31,10 +31,6 @@ import {
   WalletPageState,
   AssetPriceTimeframe,
   AccountAssetOptionType,
-  OrderTypes,
-  SlippagePresetObjectType,
-  ExpirationPresetObjectType,
-  ToOrFromType,
   WalletAccountType,
   TokenInfo,
   UpdateAccountNamePayloadType,
@@ -51,16 +47,14 @@ import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { convertMojoTimeToJS } from '../utils/mojo-time'
 import { ETH, BAT } from '../options/asset-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
-import { SlippagePresetOptions } from '../options/slippage-preset-options'
-import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 import {
   HardwareWalletAccount
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 import { onConnectHardwareWallet, getBalance } from '../common/async/wallet_async_handler'
 
-import { formatBalance, toWei, toWeiHex } from '../utils/format-balances'
-import { debounce } from '../../common/debounce'
+import { formatBalance, toWeiHex } from '../utils/format-balances'
+import useSwap from '../common/hooks/swap'
 
 type Props = {
   wallet: WalletState
@@ -108,22 +102,16 @@ function Container (props: Props) {
     privateKey,
     importError,
     showAddModal,
-    swapQuote,
     isCryptoWalletsInstalled,
-    isMetaMaskInstalled
+    isMetaMaskInstalled,
+    swapQuote
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
   const [inputValue, setInputValue] = React.useState<string>('')
-  const [exchangeRate, setExchangeRate] = React.useState('')
   const [toAddress, setToAddress] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
   const [sendAmount, setSendAmount] = React.useState('')
-  const [fromAmount, setFromAmount] = React.useState('')
-  const [toAmount, setToAmount] = React.useState('')
-  const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
-  const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
-  const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
 
   const tokenOptions: TokenInfo[] = React.useMemo(() =>
@@ -163,119 +151,33 @@ function Container (props: Props) {
     })
   )
 
-  // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
-  const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(ETH)
-  const [toAsset, setToAsset] = React.useState<AccountAssetOptionType>(BAT)
-
-  React.useEffect(() => {
-    if (!swapQuote) {
-      setFromAmount('')
-      setToAmount('')
-      return
-    }
-
-    const { buyAmount, sellAmount, price } = swapQuote
-    setFromAmount(formatBalance(sellAmount, fromAsset.asset.decimals))
-    setToAmount(formatBalance(buyAmount, toAsset.asset.decimals))
-    setExchangeRate(formatBalance(price, 0))
-  }, [swapQuote])
-
-  const onSwapParamsChange = React.useCallback((
-    state: {
-      fromAmount: string,
-      toAmount: string
-    },
-    overrides: {
-      toOrFrom: ToOrFromType
-      asset?: AccountAssetOptionType
-      amount?: string
-      slippageTolerance?: SlippagePresetObjectType
-    },
-    full: boolean = false
-  ) => {
-    if (selectedWidgetTab !== 'swap') {
-      return
-    }
-
-    let fromAmountWei
-    let toAmountWei
-
-    if (overrides.toOrFrom === 'from') {
-      fromAmountWei = toWei(
-        overrides.amount ?? state.fromAmount,
-        fromAsset.asset.decimals
-      )
-    }
-
-    if (overrides.toOrFrom === 'to') {
-      toAmountWei = toWei(
-        overrides.amount ?? state.toAmount,
-        toAsset.asset.decimals
-      )
-    }
-
-    if (overrides.toOrFrom === 'to' && toAmountWei === '0') {
-      setFromAmount('')
-      return
-    }
-
-    if (overrides.toOrFrom === 'from' && fromAmountWei === '0') {
-      setToAmount('')
-      return
-    }
-
-    props.walletPageActions.fetchSwapQuote({
-      fromAsset: overrides.toOrFrom === 'from' && overrides.asset !== undefined ? overrides.asset : fromAsset,
-      fromAssetAmount: fromAmountWei,
-      toAsset: overrides.toOrFrom === 'to' && overrides.asset !== undefined ? overrides.asset : toAsset,
-      toAssetAmount: toAmountWei,
-      accountAddress: selectedAccount.address,
-      slippageTolerance: overrides.slippageTolerance ?? slippageTolerance,
-      networkChainId: selectedNetwork.chainId,
-      full
-    })
-  }, [selectedWidgetTab, selectedAccount, selectedNetwork])
-
-  const onSwapQuoteRefresh = () => onSwapParamsChange(
-    { fromAmount, toAmount },
-    { toOrFrom: 'from' }
+  const {
+    exchangeRate,
+    fromAmount,
+    fromAsset,
+    isSwapButtonDisabled,
+    orderExpiration,
+    orderType,
+    slippageTolerance,
+    toAmount,
+    toAsset,
+    onToggleOrderType,
+    onSwapQuoteRefresh,
+    onSetToAmount,
+    onSetFromAmount,
+    flipSwapAssets,
+    onSubmitSwap,
+    onSetExchangeRate,
+    onSelectExpiration,
+    onSelectSlippageTolerance,
+    onSelectTransactAsset
+  } = useSwap(
+    selectedAccount,
+    selectedNetwork,
+    props.walletPageActions.fetchPageSwapQuote,
+    assetOptions,
+    swapQuote
   )
-
-  const onSwapParamsChangeDebounced = React.useCallback(
-    // @ts-ignore
-    debounce(onSwapParamsChange, 400),
-    [onSwapParamsChange]
-  )
-
-  const isSwapButtonDisabled = () => {
-    if (!swapQuote) {
-      return true
-    }
-
-    if (toWei(toAmount, toAsset.asset.decimals) === '0') {
-      return true
-    }
-
-    return toWei(fromAmount, fromAsset.asset.decimals) === '0'
-  }
-
-  const onSelectTransactAsset = (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => {
-    if (toOrFrom === 'from') {
-      setFromAsset(asset)
-    } else {
-      setToAsset(asset)
-    }
-
-    onSwapParamsChange(
-      { fromAmount, toAmount },
-      { toOrFrom, asset }
-    )
-  }
-
-  const flipSwapAssets = () => {
-    setFromAsset(toAsset)
-    setToAsset(fromAsset)
-  }
 
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {
@@ -293,48 +195,8 @@ function Container (props: Props) {
     setBuyAmount(value)
   }
 
-  const onSetFromAmount = (value: string) => {
-    setFromAmount(value)
-    onSwapParamsChangeDebounced(
-      { fromAmount, toAmount },
-      { toOrFrom: 'from', amount: value }
-    )
-  }
-
   const onSetSendAmount = (value: string) => {
     setSendAmount(value)
-  }
-
-  const onSetToAmount = (value: string) => {
-    setToAmount(value)
-    onSwapParamsChangeDebounced(
-      { fromAmount, toAmount },
-      { toOrFrom: 'to', amount: value }
-    )
-  }
-
-  const onSetExchangeRate = (value: string) => {
-    setExchangeRate(value)
-  }
-
-  const onSelectExpiration = (expiration: ExpirationPresetObjectType) => {
-    setOrderExpiration(expiration)
-  }
-
-  const onSelectSlippageTolerance = (slippage: SlippagePresetObjectType) => {
-    setSlippageTolerance(slippage)
-    onSwapParamsChange(
-      { fromAmount, toAmount },
-      { toOrFrom: 'from', slippageTolerance: slippage }
-    )
-  }
-
-  const onToggleOrderType = () => {
-    if (orderType === 'market') {
-      setOrderType('limit')
-    } else {
-      setOrderType('market')
-    }
   }
 
   const onSelectAccount = (account: WalletAccountType) => {
@@ -487,7 +349,7 @@ function Container (props: Props) {
     const asset = userVisibleTokenOptions.find((asset) => asset.symbol === fromAsset.asset.symbol)
     const amount = Number(fromAsset.assetBalance) * percent
     const formatedAmmount = formatBalance(amount.toString(), asset?.decimals ?? 18)
-    setFromAmount(formatedAmmount)
+    onSetFromAmount(formatedAmmount)
   }
 
   const onSelectPresetSendAmount = (percent: number) => {
@@ -542,14 +404,6 @@ function Container (props: Props) {
   const onUpdateAccountName = (payload: UpdateAccountNamePayloadType): { success: boolean } => {
     const result = props.walletPageActions.updateAccountName(payload)
     return result ? { success: true } : { success: false }
-  }
-
-  const onSubmitSwap = () => {
-    onSwapParamsChange(
-      { fromAmount, toAmount },
-      { toOrFrom: 'from' },
-      true
-    )
   }
 
   const onSubmitSend = () => {
@@ -788,7 +642,7 @@ function Container (props: Props) {
             buyAssetOptions={WyreAccountAssetOptions}
             sendAssetOptions={sendAssetOptions}
             swapAssetOptions={assetOptions}
-            isSwapSubmitDisabled={isSwapButtonDisabled()}
+            isSwapSubmitDisabled={isSwapButtonDisabled}
             onSetBuyAmount={onSetBuyAmount}
             onSetToAddress={onSetToAddress}
             onSelectExpiration={onSelectExpiration}
