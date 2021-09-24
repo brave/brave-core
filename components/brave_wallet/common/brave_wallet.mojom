@@ -236,9 +236,9 @@ interface AssetRatioController {
 
 interface SwapController {
   GetPriceQuote(SwapParams params) =>
-      (bool success, SwapResponse response);
+      (bool success, SwapResponse? response, string? error_response);
   GetTransactionPayload(SwapParams params) =>
-      (bool success, SwapResponse response);
+      (bool success, SwapResponse? response, string? error_response);
 };
 
 interface EthJsonRpcControllerObserver {
