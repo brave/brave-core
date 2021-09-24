@@ -18,13 +18,12 @@ namespace features {
 extern const base::Feature kAdNotifications;
 
 bool IsAdNotificationsEnabled();
+bool CanFallbackToCustomAdNotifications();
 int AdNotificationTimeout();
 
 extern const base::Feature kCustomAdNotifications;
 
 bool IsCustomAdNotificationsEnabled();
-
-bool CanFallbackToCustomAdNotifications();
 #if !defined(OS_ANDROID)
 int AdNotificationFadeDuration();
 double AdNotificationNormalizedDisplayCoordinateX();
