@@ -43,7 +43,7 @@
     Pending contributions
   </message>
   <message name="IDS_REWARDS_WALLET_PENDING_REWARDS_TEXT" desc="">
-    <ph name="AMOUNT">$1<ex>2 BAT</ex></ph> arriving in <ph name="DAYS">$2<ex>5 Days</ex></ph>
+    <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> payout begins processing in <ph name="DAYS">$2<ex>4 days</ex></ph>
   </message>
   <message name="IDS_REWARDS_WALLET_REWARDS_FROM_ADS" desc="">
     Rewards from Ads

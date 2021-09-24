@@ -499,7 +499,8 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR_WALLET" desc="">Error creating Brave Browser BAT card</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TITLE" desc="">You need a verified wallet to log in</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TEXT" desc="">Please try again after you have completed ID verification on <ph name="CUSTODIAN">$1<ex>Uphold</ex></ph>.</message>
-      <message name="IDS_BRAVE_REWARDS_PENDING_REWARDS_MESSAGE" desc=""><ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> arriving in <ph name="DAYS">$2<ex>4 days</ex></ph></message>
+      <message name="IDS_BRAVE_REWARDS_PENDING_REWARDS_MESSAGE" desc="">Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> payout will begin processing in <ph name="DAYS">$2<ex>4 days</ex></ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_PENDING_REWARDS_NOTE" desc=""><ph name="BOLD_BEGIN">$1</ph>Note: <ph name="BOLD_END">$2</ph>It can take a few days for the payout to process and your BAT to arrive.</message>
 
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_HEADER" desc="">Choose a wallet service</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_TEXT" desc="">Select a custodial wallet partner. If you already have an account, you will be asked to log in to connect.</message>
