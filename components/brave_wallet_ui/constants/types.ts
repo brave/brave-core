@@ -476,11 +476,6 @@ export interface ProcessLedgerSignatureReturnInfo {
   status: boolean
 }
 
-export interface GetMessageToSignFromTxData1559ReturnInfo {
-  success: boolean
-  message: string
-}
-
 export interface GetMessageToSignFromTxDataReturnInfo {
   success: boolean
   message: string
