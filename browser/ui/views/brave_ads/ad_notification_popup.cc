@@ -173,8 +173,6 @@ void AdNotificationPopup::OnClick(const std::string& notification_id) {
   if (delegate) {
     delegate->OnClick();
   }
-
-  popup->ClosePopup();
 }
 
 // static
