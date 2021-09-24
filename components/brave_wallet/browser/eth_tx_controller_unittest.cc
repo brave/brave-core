@@ -76,10 +76,13 @@ class TestEthTxControllerObserver
     tx_updated_ = true;
   }
 
-  void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx) override {}
+  void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx) override {
+    tx_changed_called_ = true;
+  }
 
   bool TxUpdated() { return tx_updated_; }
-
+  bool TxObserverChanged() { return tx_changed_called_; }
+  void ResetObserverChanges() { tx_changed_called_ = false; }
   mojo::PendingRemote<brave_wallet::mojom::EthTxControllerObserver>
   GetReceiver() {
     return observer_receiver_.BindNewPipeAndPassRemote();
@@ -89,6 +92,7 @@ class TestEthTxControllerObserver
   std::string expected_gas_price_;
   std::string expected_gas_limit_;
   bool tx_updated_ = false;
+  bool tx_changed_called_ = false;
   mojo::Receiver<brave_wallet::mojom::EthTxControllerObserver>
       observer_receiver_{this};
 };
@@ -521,7 +525,8 @@ TEST_F(EthTxControllerUnitTest, ProcessLedgerSignature) {
       tx_data.Clone(), from(),
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
-
+  TestEthTxControllerObserver observer("", "");
+  eth_tx_controller_->AddObserver(observer.GetReceiver());
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
   callback_called = false;
@@ -538,6 +543,7 @@ TEST_F(EthTxControllerUnitTest, ProcessLedgerSignature) {
       }));
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
+  ASSERT_FALSE(observer.TxObserverChanged());
 }
 
 TEST_F(EthTxControllerUnitTest, ProcessLedgerSignatureFail) {
@@ -552,7 +558,8 @@ TEST_F(EthTxControllerUnitTest, ProcessLedgerSignatureFail) {
       tx_data.Clone(), from(),
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
-
+  TestEthTxControllerObserver observer("", "");
+  eth_tx_controller_->AddObserver(observer.GetReceiver());
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
   callback_called = false;
@@ -567,7 +574,8 @@ TEST_F(EthTxControllerUnitTest, ProcessLedgerSignatureFail) {
       }));
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
-
+  ASSERT_TRUE(observer.TxObserverChanged());
+  observer.ResetObserverChanges();
   callback_called = false;
   eth_tx_controller_->ProcessLedgerSignature(
       "-1", "0x00", "9ff044f89c205dd76a194f8b11f50d2eade744e", "",
@@ -577,6 +585,7 @@ TEST_F(EthTxControllerUnitTest, ProcessLedgerSignatureFail) {
       }));
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
+  ASSERT_FALSE(observer.TxObserverChanged());
 }
 
 TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction) {
@@ -594,6 +603,8 @@ TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction) {
 
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+  TestEthTxControllerObserver observer("", "");
+  eth_tx_controller_->AddObserver(observer.GetReceiver());
   callback_called = false;
   eth_tx_controller_->ApproveHardwareTransaction(
       tx_meta_id,
@@ -605,10 +616,14 @@ TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction) {
                   "000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f00"
                   "00000000000000000000000000000000000000000000003fffffffffffff"
                   "ff8205398080");
+        auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+        EXPECT_TRUE(tx_meta);
+        EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Approved);
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
+  ASSERT_TRUE(observer.TxObserverChanged());
 }
 
 TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction1559) {
@@ -628,6 +643,8 @@ TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction1559) {
 
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+  TestEthTxControllerObserver observer("", "");
+  eth_tx_controller_->AddObserver(observer.GetReceiver());
   callback_called = false;
   eth_tx_controller_->ApproveHardwareTransaction(
       tx_meta_id,
@@ -636,14 +653,21 @@ TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction1559) {
         EXPECT_EQ(
             result,
             "0x02dd04808001809401010101010101010101010101010101010101018080c0");
+        auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+        EXPECT_TRUE(tx_meta);
+        EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Approved);
+
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
+  ASSERT_TRUE(observer.TxObserverChanged());
 }
 
 TEST_F(EthTxControllerUnitTest, ApproveHardwareTransactionFail) {
   bool callback_called = false;
+  TestEthTxControllerObserver observer("", "");
+  eth_tx_controller_->AddObserver(observer.GetReceiver());
   eth_tx_controller_->ApproveHardwareTransaction(
       std::string(),
       base::BindLambdaForTesting([&](bool success, const std::string& result) {
@@ -653,6 +677,7 @@ TEST_F(EthTxControllerUnitTest, ApproveHardwareTransactionFail) {
       }));
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
+  ASSERT_FALSE(observer.TxObserverChanged());
 }
 
 }  //  namespace brave_wallet

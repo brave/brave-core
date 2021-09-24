@@ -330,7 +330,7 @@ void EthTxController::OnGetNextNonceForHardware(
   meta->tx->set_nonce(nonce);
   meta->status = mojom::TransactionStatus::Approved;
   tx_state_manager_->AddOrUpdateTx(*meta);
-
+  NotifyTransactionStatusChanged(meta.get());
   uint256_t chain_id = 0;
   if (!HexValueToUint256(rpc_controller_->GetChainId(), &chain_id)) {
     std::move(callback).Run(false, "");

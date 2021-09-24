@@ -304,8 +304,8 @@ handler.on(WalletActions.approveTransaction.getType(), async (store, txInfo: Tra
       const { v, r, s } = await deviceKeyring.signTransaction(hardwareAccount.hardware.path, message.replace('0x', ''))
       await apiProxy.ethTxController.processLedgerSignature(txInfo.id, '0x' + v, r, s)
       await refreshWalletInfo(store)
-      return
     }
+    return
   }
 
   await apiProxy.ethTxController.approveTransaction(txInfo.id)
