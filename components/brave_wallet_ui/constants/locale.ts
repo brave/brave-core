@@ -243,6 +243,8 @@ const locale = {
 
   // Sign Transaction Panel
   signTransactionTitle: 'Your signature is being requested',
+  braveWalletSignWarning: 'Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.',
+  braveWalletSignWarningTitle: 'Sign at your own risk',
   signTransactionMessageTitle: 'Message',
   signTransactionButton: 'Sign',
 

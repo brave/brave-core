@@ -9,7 +9,7 @@ export const PanelWrapper = styled.div<StyleProps>`
   align-items: center;
   justify-content: center;
   width: 320px;
-  height: ${(p) => p.isLonger ? '475px' : '400px'};
+  height: ${(p) => p.isLonger ? '500px' : '400px'};
 `
 
 export const SendWrapper = styled.div`

@@ -98,7 +98,6 @@ function Container (props: Props) {
     connectedSiteOrigin,
     panelTitle,
     selectedPanel,
-    showSignTransaction,
     networkPayload
   } = props.panel
 
@@ -291,7 +290,7 @@ function Container (props: Props) {
     // Logic here to cancel signing
   }
 
-  const onSignTransaction = () => {
+  const onSignData = () => {
     // Logic here to sign a transaction
   }
 
@@ -406,16 +405,18 @@ function Container (props: Props) {
     )
   }
 
-  if (showSignTransaction) {
+  if (selectedPanel === 'signData') {
     return (
       <PanelWrapper isLonger={true}>
         <SignContainer>
           <SignPanel
             message='Pass Sign Transaction Message Here'
             onCancel={onCancelSigning}
-            onSign={onSignTransaction}
+            onSign={onSignData}
             selectedAccount={selectedAccount}
             selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
+            // Pass a boolean here if the signing method is risky
+            showWarning={true}
           />
         </SignContainer>
       </PanelWrapper>

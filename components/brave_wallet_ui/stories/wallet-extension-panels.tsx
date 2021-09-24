@@ -184,14 +184,14 @@ _AllowAddNetwork.story = {
   name: 'Allow Add Network'
 }
 
-export const _SignTransaction = () => {
+export const _SignData = () => {
 
   const onSign = () => {
-    alert('Signed Transaction')
+    alert('Signed Data')
   }
 
   const onCancel = () => {
-    alert('Canceled Signing Transaction')
+    alert('Canceled Signing Data')
   }
 
   return (
@@ -202,12 +202,13 @@ export const _SignTransaction = () => {
         message='To avoid digital cat burglars, sign below to authenticate with CryptoKitties.'
         onCancel={onCancel}
         onSign={onSign}
+        showWarning={true}
       />
     </StyledExtensionWrapperLonger>
   )
 }
 
-_SignTransaction.story = {
+_SignData.story = {
   name: 'Sign Transaction'
 }
 

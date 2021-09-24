@@ -14,7 +14,13 @@ import {
   PanelTitle,
   MessageBox,
   MessageText,
-  ButtonRow
+  ButtonRow,
+  WarningBox,
+  WarningText,
+  WarningTitle,
+  WarningTitleRow,
+  WarningIcon,
+  LearnMoreButton
 } from './style'
 import { TabRow } from '../shared-panel-styles'
 
@@ -24,6 +30,12 @@ export interface Props {
   message: string
   onSign: () => void
   onCancel: () => void
+  showWarning: boolean
+}
+
+enum SignDataSteps {
+  SignRisk = 0,
+  SignData = 1
 }
 
 function SignPanel (props: Props) {
@@ -32,12 +44,27 @@ function SignPanel (props: Props) {
     selectedNetwork,
     message,
     onSign,
-    onCancel
+    onCancel,
+    showWarning
   } = props
-
+  const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
   const orb = React.useMemo(() => {
     return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [selectedAccount.address])
+
+  React.useMemo(() => {
+    if (showWarning) {
+      setSignStep(SignDataSteps.SignRisk)
+    }
+  }, [showWarning])
+
+  const onContinueSigning = () => {
+    setSignStep(SignDataSteps.SignData)
+  }
+
+  const onClickLearnMore = () => {
+    window.open('https://support.brave.com/hc/en-us/articles/4409513799693', '_blank')
+  }
 
   return (
     <StyledWrapper>
@@ -47,15 +74,29 @@ function SignPanel (props: Props) {
       <AccountCircle orb={orb} />
       <AccountNameText>{reduceAccountDisplayName(selectedAccount.name, 14)}</AccountNameText>
       <PanelTitle>{locale.signTransactionTitle}</PanelTitle>
-      <TabRow>
-        <PanelTab
-          isSelected={true}
-          text={locale.signTransactionMessageTitle}
-        />
-      </TabRow>
-      <MessageBox>
-        <MessageText>{message}</MessageText>
-      </MessageBox>
+      {signStep === SignDataSteps.SignRisk &&
+        <WarningBox>
+          <WarningTitleRow>
+            <WarningIcon />
+            <WarningTitle>{locale.braveWalletSignWarningTitle}</WarningTitle>
+          </WarningTitleRow>
+          <WarningText>{locale.braveWalletSignWarning}</WarningText>
+          <LearnMoreButton onClick={onClickLearnMore}>{locale.allowAddNetworkLearnMoreButton}</LearnMoreButton>
+        </WarningBox>
+      }
+      {signStep === SignDataSteps.SignData &&
+        <>
+          <TabRow>
+            <PanelTab
+              isSelected={true}
+              text={locale.signTransactionMessageTitle}
+            />
+          </TabRow>
+          <MessageBox>
+            <MessageText>{message}</MessageText>
+          </MessageBox>
+        </>
+      }
       <ButtonRow>
         <NavButton
           buttonType='secondary'
@@ -63,9 +104,9 @@ function SignPanel (props: Props) {
           onSubmit={onCancel}
         />
         <NavButton
-          buttonType='sign'
-          text={locale.signTransactionButton}
-          onSubmit={onSign}
+          buttonType={signStep === SignDataSteps.SignData ? 'sign' : 'danger'}
+          text={signStep === SignDataSteps.SignData ? locale.signTransactionButton : locale.buttonContinue}
+          onSubmit={signStep === SignDataSteps.SignRisk ? onContinueSigning : onSign}
         />
       </ButtonRow>
     </StyledWrapper>
