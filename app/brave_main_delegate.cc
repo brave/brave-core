@@ -228,6 +228,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kSignedExchangeSubresourcePrefetch.name,
     features::kSubresourceWebBundles.name,
     features::kWebOTP.name,
+    features::kTabGroupsFeedback.name,
     federated_learning::kFederatedLearningOfCohorts.name,
     federated_learning::kFlocIdComputedEventLogging.name,
     media::kLiveCaption.name,
