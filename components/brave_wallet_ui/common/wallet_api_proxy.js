@@ -13,7 +13,40 @@ import LedgerBridgeKeyring from '../common/ledgerjs/eth_ledger_bridge_keyring'
 import {
   HardwareWallet
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import TrezorKeyring from 'eth-trezor-keyring'
+
+import TrezorConnect, {
+  TRANSPORT_EVENT,
+  UI,
+  UI_EVENT,
+  DEVICE_EVENT,
+  TRANSPORT,
+  DEVICE,
+} from 'trezor-connect';
+
+// print log helper
+const printLog = data => console.log;
+
+// Initialize TrezorConnect
+TrezorConnect.init({
+  connectSrc: './assets/trezor-connect/',
+  popup: false, // render your own UI
+  webusb: false, // webusb is not supported in electron
+  debug: false, // see what's going on inside connect
+  // lazyLoad: true, // set to "false" (default) if you want to start communication with bridge on application start (and detect connected device right away)
+  // set it to "true", then trezor-connect will not be initialized until you call some TrezorConnect.method()
+  // this is useful when you don't know if you are dealing with Trezor user
+  manifest: {
+      email: 'email@developer.com',
+      appUrl: 'electron-app-boilerplate',
+  },
+})
+  .then(() => {
+      printLog('TrezorConnect is ready!');
+  })
+  .catch(error => {
+      printLog('TrezorConnect init error', `TrezorConnect init error:${error}`);
+  });
+
 
 // TODO(petemill): Convert this module to Typescript, and import
 // es-module versions of mojom bindings, e.g.
