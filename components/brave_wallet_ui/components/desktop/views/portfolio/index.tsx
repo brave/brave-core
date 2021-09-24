@@ -273,7 +273,7 @@ const Portfolio = (props: Props) => {
       ) : (
         <InfoColumn>
           <AssetRow>
-            <AssetIcon icon={selectedAsset.icon} />
+            <AssetIcon icon={selectedAsset.logo} />
             <AssetNameText>{selectedAsset.name}</AssetNameText>
           </AssetRow>
           <DetailText>{selectedAsset.name} {locale.price} ({selectedAsset.symbol})</DetailText>
@@ -354,7 +354,7 @@ const Portfolio = (props: Props) => {
               assetBalance={item.assetBalance}
               fiatBalance={item.fiatBalance}
               symbol={item.asset.symbol}
-              icon={item.asset.icon}
+              logo={item.asset.logo}
               isVisible={item.asset.visible}
             />
           )}

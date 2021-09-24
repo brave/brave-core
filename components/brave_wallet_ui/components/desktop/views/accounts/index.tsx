@@ -235,7 +235,7 @@ function Accounts (props: Props) {
               assetBalance={formatBalance(item.assetBalance, item.asset.decimals)}
               fiatBalance={item.fiatBalance}
               symbol={item.asset.symbol}
-              icon={item.asset.icon}
+              logo={item.asset.logo}
               isVisible={item.asset.visible}
             />
           )}

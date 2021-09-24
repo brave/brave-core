@@ -40,7 +40,7 @@ const AssetWatchlistItem = (props: Props) => {
   return (
     <StyledWrapper>
       <NameAndIcon>
-        <AssetIcon icon={token.icon ? token.icon : ''} />
+        <AssetIcon icon={token.logo ? token.logo : ''} />
         <AssetName>{token.name}</AssetName>
       </NameAndIcon>
       <RightSide>

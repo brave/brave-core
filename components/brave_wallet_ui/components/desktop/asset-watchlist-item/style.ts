@@ -54,7 +54,8 @@ export const AssetIcon = styled.div<StyleProps>`
   width: 40px;
   height: 40px;
   border-radius: 100%;
-  background: ${(p) => p.icon ? `url(${p.icon})` : p.theme.color.background01}};
+  background: no-repeat ${(p) => p.icon ? `url(${p.icon})` : p.theme.color.background01};
+  background-size: 40px;
   margin-right: 8px;
 `
 

@@ -109,7 +109,7 @@ export const AssetIcon = styled.div<Partial<StyleProps>>`
   width: 40px;
   height: 40px;
   border-radius: 100%;
-  background: ${(p) => p.icon ? `url(${p.icon})` : p.theme.color.background01}};
+  background: no-repeat ${(p) => p.icon ? `url(${p.icon})` : p.theme.color.background01}};
   margin-right: 12px;
 `
 

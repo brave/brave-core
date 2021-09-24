@@ -192,7 +192,7 @@ function SwapInputComponent (props: Props) {
             }
             {componentType !== 'exchange' && componentType !== 'toAddress' &&
               <AssetButton onClick={onShowSelection}>
-                <AssetIcon icon={selectedAsset?.asset.icon} />
+                <AssetIcon icon={selectedAsset?.asset.logo} />
                 <AssetTicker>{selectedAsset?.asset.symbol}</AssetTicker>
                 <CaratDownIcon />
               </AssetButton>

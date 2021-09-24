@@ -50,7 +50,7 @@ import {
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
-import { AccountAssetOptions } from '../options/asset-options'
+import { ETH, BAT } from '../options/asset-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { GetNetworkInfo } from '../utils/network-utils'
@@ -91,7 +91,8 @@ function Container (props: Props) {
     userVisibleTokensInfo,
     isWalletCreated,
     networkList,
-    transactionSpotPrices
+    transactionSpotPrices,
+    fullTokenList
   } = props.wallet
 
   const {
@@ -108,12 +109,24 @@ function Container (props: Props) {
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
-  const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
+  const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(ETH)
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [toAddress, setToAddress] = React.useState('')
   const [sendAmount, setSendAmount] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
+
+  const accountAssetOptions: AccountAssetOptionType[] = React.useMemo(() => {
+    const tokens = fullTokenList
+      .filter(token => token.symbol !== 'BAT')
+      .map(token => ({
+        asset: token,
+        assetBalance: '0',
+        fiatBalance: '0'
+      }))
+
+    return [ETH, BAT, ...tokens]
+  }, [fullTokenList])
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
@@ -432,7 +445,7 @@ function Container (props: Props) {
     } else if (selectedPanel === 'send') {
       assets = selectedAccount.tokens
     } else {  // swap
-      assets = AccountAssetOptions
+      assets = accountAssetOptions
     }
     return (
       <PanelWrapper isLonger={false}>

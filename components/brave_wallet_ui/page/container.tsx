@@ -49,7 +49,7 @@ import BackupWallet from '../stories/screens/backup-wallet'
 import { formatPrices } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { convertMojoTimeToJS } from '../utils/mojo-time'
-import { AssetOptions, AccountAssetOptions } from '../options/asset-options'
+import { ETH, BAT } from '../options/asset-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
@@ -125,9 +125,21 @@ function Container (props: Props) {
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
 
+  const accountAssetOptions: AccountAssetOptionType[] = React.useMemo(() => {
+    const tokens = fullTokenList
+      .filter(token => token.symbol !== 'BAT')
+      .map(token => ({
+        asset: token,
+        assetBalance: '0',
+        fiatBalance: '0'
+      }))
+
+    return [ETH, BAT, ...tokens]
+  }, [fullTokenList])
+
   // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
-  const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
-  const [toAsset, setToAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[1])
+  const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(ETH)
+  const [toAsset, setToAsset] = React.useState<AccountAssetOptionType>(BAT)
 
   React.useEffect(() => {
     if (!swapQuote) {
@@ -397,17 +409,11 @@ function Container (props: Props) {
 
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList = React.useMemo(() => {
-    const newListWithIcon = userVisibleTokensInfo.map((asset) => {
-      const icon = AssetOptions.find((a) => asset.symbol === a.symbol)?.icon
-      return { ...asset, icon: icon }
-    })
-    return newListWithIcon.map((asset) => {
-      return {
-        asset: asset,
-        assetBalance: fullAssetBalance(asset).toString(),
-        fiatBalance: fullAssetFiatBalance(asset).toString()
-      }
-    })
+    return userVisibleTokensInfo.map((asset) => ({
+      asset: asset,
+      assetBalance: fullAssetBalance(asset).toString(),
+      fiatBalance: fullAssetFiatBalance(asset).toString()
+    }))
   }, [userVisibleTokensInfo, accounts])
 
   const onSelectAsset = (asset: TokenInfo) => {
@@ -743,7 +749,7 @@ function Container (props: Props) {
             toAddress={toAddress}
             buyAssetOptions={WyreAccountAssetOptions}
             sendAssetOptions={selectedAccount.tokens}
-            swapAssetOptions={AccountAssetOptions}
+            swapAssetOptions={accountAssetOptions}
             isSwapSubmitDisabled={isSwapButtonDisabled()}
             onSetBuyAmount={onSetBuyAmount}
             onSetToAddress={onSetToAddress}

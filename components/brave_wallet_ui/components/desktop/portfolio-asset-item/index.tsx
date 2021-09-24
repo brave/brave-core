@@ -15,20 +15,20 @@ export interface Props {
   action?: () => void
   name: string
   symbol: string
-  icon?: string
+  logo?: string
   assetBalance: string
   fiatBalance: string
   isVisible?: boolean
 }
 
 const PortfolioAssetItem = (props: Props) => {
-  const { name, assetBalance, fiatBalance, icon, symbol, isVisible, action } = props
+  const { name, assetBalance, fiatBalance, logo, symbol, isVisible, action } = props
   return (
     <>
       {isVisible &&
         <StyledWrapper onClick={action}>
           <NameAndIcon>
-            <AssetIcon icon={icon ? icon : ''} />
+            <AssetIcon icon={logo ? logo : ''} />
             <AssetName>{name}</AssetName>
           </NameAndIcon>
           <BalanceColumn>

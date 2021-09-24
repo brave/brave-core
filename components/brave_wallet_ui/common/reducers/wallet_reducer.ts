@@ -137,9 +137,16 @@ reducer.on(WalletActions.setAllNetworks, (state: any, payload: GetAllNetworksLis
 })
 
 reducer.on(WalletActions.setAllTokensList, (state: any, payload: GetAllTokensReturnInfo) => {
+  const tokens = payload.tokens.map(
+    token => ({
+      ...token,
+      logo: `chrome://erc-token-images/${token.logo}`
+    })
+  )
+
   return {
     ...state,
-    fullTokenList: payload.tokens
+    fullTokenList: tokens
   }
 })
 
