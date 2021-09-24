@@ -193,7 +193,7 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& state) {
   writer->EndObject();
 
   writer->String("nextCheckServeAd");
-  writer->Double(static_cast<double>(state.serve_next_ad_at.ToDoubleT()));
+  writer->Double(state.serve_next_ad_at.ToDoubleT());
 
   writer->String("textClassificationProbabilitiesHistory");
   writer->StartArray();

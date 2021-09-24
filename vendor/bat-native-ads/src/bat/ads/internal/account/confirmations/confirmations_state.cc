@@ -190,9 +190,9 @@ std::string ConfirmationsState::ToJson() {
   dictionary.SetKey("catalog_issuers", std::move(catalog_issuers_dictionary));
 
   // Next token redemption date
-  dictionary.SetKey(
-      "next_token_redemption_date_in_seconds",
-      base::Value(std::to_string(next_token_redemption_date_.ToDoubleT())));
+  dictionary.SetKey("next_token_redemption_date_in_seconds",
+                    base::Value(base::NumberToString(
+                        next_token_redemption_date_.ToDoubleT())));
 
   // Confirmations
   base::Value failed_confirmations =
@@ -336,8 +336,8 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
     }
 
     confirmation_dictionary.SetKey(
-        "timestamp_in_seconds", base::Value(std::to_string(static_cast<double>(
-                                    confirmation.created_at.ToDoubleT()))));
+        "timestamp_in_seconds",
+        base::Value(base::NumberToString(confirmation.created_at.ToDoubleT())));
 
     confirmation_dictionary.SetKey("created",
                                    base::Value(confirmation.was_created));
@@ -535,7 +535,7 @@ base::Value ConfirmationsState::GetTransactionsAsDictionary(
 
     transaction_dictionary.SetKey(
         "timestamp_in_seconds",
-        base::Value(std::to_string(transaction.timestamp)));
+        base::Value(base::NumberToString(transaction.timestamp)));
 
     transaction_dictionary.SetKey(
         "estimated_redemption_value",

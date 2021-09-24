@@ -113,8 +113,9 @@ base::Value Payments::GetAsList() {
 
     dictionary.SetKey("balance", base::Value(payment.balance));
     dictionary.SetKey("month", base::Value(payment.month));
-    dictionary.SetKey("transaction_count",
-                      base::Value(std::to_string(payment.transaction_count)));
+    dictionary.SetKey(
+        "transaction_count",
+        base::Value(base::NumberToString(payment.transaction_count)));
 
     list.Append(std::move(dictionary));
   }

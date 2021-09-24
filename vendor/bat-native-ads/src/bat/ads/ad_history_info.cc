@@ -72,7 +72,7 @@ void SaveToJson(JsonWriter* writer, const AdHistoryInfo& ad_history) {
   writer->StartObject();
 
   writer->String("timestamp_in_seconds");
-  writer->Int64(ad_history.timestamp);
+  writer->Double(ad_history.timestamp);
 
   writer->String("ad_content");
   SaveToJson(writer, ad_history.ad_content);
