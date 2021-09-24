@@ -555,8 +555,9 @@ export const _ConnectHardwareWallet = () => {
     <StyledExtensionWrapper>
       <ConnectHardwareWalletPanel
         walletName='Ledger 1'
-        isConnected={false}
+        isConnected={true}
         onCancel={onCancel}
+        requestingConfirmation={true}
       />
     </StyledExtensionWrapper>
   )
