@@ -26,6 +26,7 @@ interface ServiceObserver {
   OnConnectionCreated();
   OnConnectionRemoved();
   OnConnectionStateChanged(ConnectionState state);
+  OnPurchasedStateChanged(PurchasedState state);
 };
 
 struct Region {
@@ -37,6 +38,7 @@ struct Region {
 // Browser-side handler for vpn service things
 interface ServiceHandler {
   GetConnectionState() => (ConnectionState state);
+  GetPurchasedState() => (PurchasedState state);
   AddObserver(pending_remote<ServiceObserver> observer);
   CreateVPNConnection();
   Connect();
@@ -57,4 +59,10 @@ enum ConnectionState {
   CONNECTING,
   DISCONNECTING,
   CONNECT_FAILED,
+};
+
+enum PurchasedState {
+  NOT_PURCHASED,
+  PURCHASED,
+  EXPIRED,
 };

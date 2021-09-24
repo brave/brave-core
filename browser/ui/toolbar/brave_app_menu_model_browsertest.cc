@@ -46,12 +46,14 @@ class BraveAppMenuBrowserTest : public InProcessBrowserTest {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   void SetPurchasedUserForBraveVPN(Browser* browser, bool purchased) {
     auto* service = BraveVpnServiceFactory::GetForProfile(browser->profile());
-    service->set_is_purchased_user_for_test(purchased);
-    // TODO(simonhong): Delete this explicit update call.
-    // This should be called implicitely whenever purchased state is changed.
+    auto target_state =
+        purchased ? PurchasedState::PURCHASED : PurchasedState::NOT_PURCHASED;
+    service->SetPurchasedState(target_state);
+    // Call explicitely to update vpn commands status because mojo works in
+    // async way.
     static_cast<chrome::BraveBrowserCommandController*>(
         browser->command_controller())
-        ->UpdateCommandForBraveVPN();
+        ->OnPurchasedStateChanged(target_state);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;

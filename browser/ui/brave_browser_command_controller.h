@@ -6,11 +6,18 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_
 
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_command_controller.h"
+
 #if BUILDFLAG(ENABLE_IPFS)
 #include "components/prefs/pref_change_registrar.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/brave_vpn.mojom.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #endif
 
 class BraveAppMenuBrowserTest;
@@ -19,9 +26,15 @@ class BraveBrowserCommandControllerTest;
 // This namespace is needed for a chromium_src override
 namespace chrome {
 
-class BraveBrowserCommandController : public chrome::BrowserCommandController {
+class BraveBrowserCommandController : public chrome::BrowserCommandController
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    ,
+                                      public brave_vpn::mojom::ServiceObserver
+#endif
+{
  public:
   explicit BraveBrowserCommandController(Browser* browser);
+  ~BraveBrowserCommandController() override;
 
 #if BUILDFLAG(ENABLE_TOR)
   void UpdateCommandForTor();
@@ -43,6 +56,15 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController {
   void RemoveCommandObserver(CommandObserver* observer) override;
   bool UpdateCommandEnabled(int id, bool state) override;
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  // brave_vpn::mojom::ServiceObserver overrides:
+  void OnPurchasedStateChanged(brave_vpn::mojom::PurchasedState state) override;
+  void OnConnectionStateChanged(
+      brave_vpn::mojom::ConnectionState state) override {}
+  void OnConnectionCreated() override {}
+  void OnConnectionRemoved() override {}
+#endif
+
   void InitBraveCommandState();
   void UpdateCommandForBraveRewards();
   void UpdateCommandForBraveAdblock();
@@ -58,6 +80,10 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController {
   Browser* const browser_;
 
   CommandUpdaterImpl brave_command_updater_;
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  mojo::Receiver<brave_vpn::mojom::ServiceObserver> receiver_{this};
+#endif
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserCommandController);
 };

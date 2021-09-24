@@ -26,6 +26,8 @@ class BraveVPNToggleButton : public views::ToggleButton,
   // brave_vpn::mojom::ServiceObserver overrides:
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
+  void OnPurchasedStateChanged(
+      brave_vpn::mojom::PurchasedState state) override {}
   void OnConnectionCreated() override {}
   void OnConnectionRemoved() override {}
 

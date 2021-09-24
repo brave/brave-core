@@ -24,7 +24,8 @@ class Value;
 
 class PrefService;
 
-typedef brave_vpn::mojom::ConnectionState ConnectionState;
+using ConnectionState = brave_vpn::mojom::ConnectionState;
+using PurchasedState = brave_vpn::mojom::PurchasedState;
 
 class BraveVpnServiceDesktop
     : public BraveVpnService,
@@ -41,9 +42,15 @@ class BraveVpnServiceDesktop
 
   void RemoveVPNConnnection();
 
-  bool is_connected() const { return state_ == ConnectionState::CONNECTED; }
-  bool is_purchased_user() const { return is_purchased_user_; }
-  ConnectionState connection_state() const { return state_; }
+  bool is_connected() const {
+    return connection_state_ == ConnectionState::CONNECTED;
+  }
+
+  bool is_purchased_user() const {
+    return purchased_state_ == PurchasedState::PURCHASED;
+  }
+
+  ConnectionState connection_state() const { return connection_state_; }
 
   void CheckPurchasedStatus();
   void ToggleConnection();
@@ -55,6 +62,7 @@ class BraveVpnServiceDesktop
   void AddObserver(
       mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> observer) override;
   void GetConnectionState(GetConnectionStateCallback callback) override;
+  void GetPurchasedState(GetPurchasedStateCallback callback) override;
   void Connect() override;
   void Disconnect() override;
   void CreateVPNConnection() override;
@@ -89,19 +97,17 @@ class BraveVpnServiceDesktop
   void SetDeviceRegion(const std::string& name);
   void SetFallbackDeviceRegion();
   std::string GetCurrentTimeZone();
+  void SetPurchasedState(PurchasedState state);
 
   void set_test_timezone(const std::string& timezone) {
     test_timezone_ = timezone;
-  }
-  void set_is_purchased_user_for_test(bool purchased) {
-    is_purchased_user_ = purchased;
   }
 
   PrefService* prefs_ = nullptr;
   std::vector<brave_vpn::mojom::Region> regions_;
   brave_vpn::mojom::Region device_region_;
-  ConnectionState state_ = ConnectionState::DISCONNECTED;
-  bool is_purchased_user_ = false;
+  ConnectionState connection_state_ = ConnectionState::DISCONNECTED;
+  PurchasedState purchased_state_ = PurchasedState::NOT_PURCHASED;
   base::ScopedObservation<brave_vpn::BraveVPNOSConnectionAPI,
                           brave_vpn::BraveVPNOSConnectionAPI::Observer>
       observed_{this};
