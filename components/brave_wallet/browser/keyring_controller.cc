@@ -126,7 +126,8 @@ void SerializeHardwareAccounts(const base::Value* account_value,
       derivation_path = *derivation_path_value;
 
     accounts->push_back(mojom::AccountInfo::New(
-        address, name, false, hardware_vendor == mojom::kLedgerHardwareVendor));
+        address, name, false,
+        mojom::HardwareInfo::New(derivation_path, hardware_vendor)));
   }
 }
 

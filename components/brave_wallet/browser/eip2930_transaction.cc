@@ -150,8 +150,8 @@ Eip2930Transaction::ValueToAccessList(const base::Value& value) {
   return access_list;
 }
 
-std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(
-    uint256_t chain_id) const {
+std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(uint256_t chain_id,
+                                                          bool hash) const {
   std::vector<uint8_t> result;
   result.push_back(type_);
 
@@ -169,7 +169,7 @@ std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(
 
   const std::string rlp_msg = RLPEncode(std::move(list));
   result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
-  return KeccakHash(result);
+  return hash ? KeccakHash(result) : result;
 }
 
 std::string Eip2930Transaction::GetSignedTransaction() const {

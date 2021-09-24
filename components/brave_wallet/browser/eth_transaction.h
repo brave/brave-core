@@ -51,13 +51,19 @@ class EthTransaction {
   void set_nonce(uint256_t nonce) { nonce_ = nonce; }
   void set_gas_price(uint256_t gas_price) { gas_price_ = gas_price; }
   void set_gas_limit(uint256_t gas_limit) { gas_limit_ = gas_limit; }
-
+  bool ProcessVRS(const std::string& v,
+                  const std::string& r,
+                  const std::string& s);
   bool IsToCreationAddress() const { return to_.IsEmpty(); }
 
   // return
-  // keccack(rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0])
+  // if hash == true:
+  //   keccack(rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0]))
+  // else:
+  //   rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0])
   // Support EIP-155 chain id
-  virtual std::vector<uint8_t> GetMessageToSign(uint256_t chain_id) const;
+  virtual std::vector<uint8_t> GetMessageToSign(uint256_t chain_id,
+                                                bool hash = true) const;
 
   // return rlp([nonce, gasPrice, gasLimit, to, value, data, v, r, s])
   virtual std::string GetSignedTransaction() const;

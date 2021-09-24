@@ -215,11 +215,19 @@ export interface WalletPanelState {
   panel: PanelState
 }
 
+export const kLedgerHardwareVendor = 'Ledger'
+export const kTrezorHardwareVendor = 'Trezor'
+
+export interface HardwareInfo {
+  vendor: string
+  path: string
+}
+
 export interface AccountInfo {
   address: string
   name: string
   isImported: boolean
-  isLedger: boolean
+  hardware?: HardwareInfo
 }
 
 export interface WalletInfo {
@@ -464,6 +472,15 @@ export interface ApproveTransactionReturnInfo {
   status: boolean
 }
 
+export interface ProcessLedgerSignatureReturnInfo {
+  status: boolean
+}
+
+export interface ApproveHardwareTransactionReturnInfo {
+  success: boolean
+  message: string
+}
+
 export interface RejectTransactionReturnInfo {
   status: boolean
 }
@@ -507,6 +524,8 @@ export interface EthTxController {
   makeERC20TransferData: (toAddress: string, amount: string) => Promise<MakeERC20TransferDataReturnInfo>
   makeERC20ApproveData: (spenderAddress: string, amount: string) => Promise<MakeERC20ApproveDataReturnInfo>
   getAllTransactionInfo: (fromAddress: string) => Promise<GetAllTransactionInfoReturnInfo>
+  approveHardwareTransaction: (txMetaId: string) => Promise<ApproveHardwareTransactionReturnInfo>
+  processLedgerSignature: (txMetaId: string, v: string, r: string, s: string) => Promise<ProcessLedgerSignatureReturnInfo>
 }
 
 export interface EthJsonRpcController {

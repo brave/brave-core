@@ -291,6 +291,83 @@ void EthTxController::AddUnapproved1559Transaction(
   std::move(callback).Run(true, meta.id, "");
 }
 
+void EthTxController::ApproveHardwareTransaction(
+    const std::string& tx_meta_id,
+    ApproveHardwareTransactionCallback callback) {
+  std::unique_ptr<EthTxStateManager::TxMeta> meta =
+      tx_state_manager_->GetTx(tx_meta_id);
+  if (!meta) {
+    LOG(ERROR) << "No transaction found";
+    std::move(callback).Run(false, "");
+    return;
+  }
+  if (!meta->last_gas_price) {
+    auto from = EthAddress(meta->from);
+    nonce_tracker_->GetNextNonce(
+        from, base::BindOnce(&EthTxController::OnGetNextNonceForHardware,
+                             weak_factory_.GetWeakPtr(), std::move(meta),
+                             std::move(callback)));
+  } else {
+    uint256_t nonce = meta->tx->nonce();
+    OnGetNextNonceForHardware(std::move(meta), std::move(callback), true,
+                              nonce);
+  }
+}
+
+void EthTxController::OnGetNextNonceForHardware(
+    std::unique_ptr<EthTxStateManager::TxMeta> meta,
+    ApproveHardwareTransactionCallback callback,
+    bool success,
+    uint256_t nonce) {
+  if (!success) {
+    meta->status = mojom::TransactionStatus::Error;
+    tx_state_manager_->AddOrUpdateTx(*meta);
+    NotifyTransactionStatusChanged(meta.get());
+    LOG(ERROR) << "GetNextNonce failed";
+    std::move(callback).Run(false, "");
+    return;
+  }
+  meta->tx->set_nonce(nonce);
+  meta->status = mojom::TransactionStatus::Approved;
+  tx_state_manager_->AddOrUpdateTx(*meta);
+  NotifyTransactionStatusChanged(meta.get());
+  uint256_t chain_id = 0;
+  if (!HexValueToUint256(rpc_controller_->GetChainId(), &chain_id)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto message = meta->tx->GetMessageToSign(chain_id, false);
+  auto encoded = brave_wallet::ToHex(message);
+  std::move(callback).Run(true, encoded);
+}
+
+void EthTxController::ProcessLedgerSignature(
+    const std::string& tx_meta_id,
+    const std::string& v,
+    const std::string& r,
+    const std::string& s,
+    ProcessLedgerSignatureCallback callback) {
+  std::unique_ptr<EthTxStateManager::TxMeta> meta =
+      tx_state_manager_->GetTx(tx_meta_id);
+  if (!meta) {
+    LOG(ERROR) << "No transaction found";
+    std::move(callback).Run(false);
+    return;
+  }
+  if (!meta->tx->ProcessVRS(v, r, s)) {
+    LOG(ERROR) << "Could not initialize a transaction with v,r,s";
+    meta->status = mojom::TransactionStatus::Error;
+    tx_state_manager_->AddOrUpdateTx(*meta);
+    NotifyTransactionStatusChanged(meta.get());
+    std::move(callback).Run(false);
+    return;
+  }
+  auto data = meta->tx->GetSignedTransaction();
+  PublishTransaction(tx_meta_id, data);
+  std::move(callback).Run(true);
+}
+
 void EthTxController::ApproveTransaction(const std::string& tx_meta_id,
                                          ApproveTransactionCallback callback) {
   std::unique_ptr<EthTxStateManager::TxMeta> meta =

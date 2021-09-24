@@ -142,11 +142,16 @@ struct HardwareWalletAccount {
   string hardware_vendor;
 };
 
+struct HardwareInfo {
+  string path;
+  string vendor;
+};
+
 struct AccountInfo {
   string address;
   string name;
   bool is_imported;
-  bool is_ledger;
+  HardwareInfo? hardware;
 };
 
 struct KeyringInfo {
@@ -343,6 +348,8 @@ interface EthTxController {
   // This returns different data depending on which network is currently selected in EthJsonRpcController
   GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
   AddObserver(pending_remote<EthTxControllerObserver> observer);
+  ApproveHardwareTransaction(string tx_meta_id) => (bool success, string message);
+  ProcessLedgerSignature(string tx_meta_id, string v, string r, string s) => (bool status);
 };
 
 interface BraveWalletService {
