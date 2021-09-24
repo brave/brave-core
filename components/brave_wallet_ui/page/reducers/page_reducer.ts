@@ -34,7 +34,9 @@ const defaultState: PageState = {
   isFetchingPriceHistory: false,
   showIsRestoring: false,
   setupStillInProgress: false,
-  swapQuote: undefined
+  swapQuote: undefined,
+  isCryptoWalletsInstalled: false,
+  isMetaMaskInstalled: false
 }
 
 const reducer = createReducer<PageState>({}, defaultState)
@@ -148,6 +150,20 @@ reducer.on(Actions.setSwapQuote, (state: PageState, payload: SwapResponse) => {
   return {
     ...state,
     swapQuote: payload
+  }
+})
+
+reducer.on(Actions.setCryptoWalletsInstalled, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    isCryptoWalletsInstalled: payload
+  }
+})
+
+reducer.on(Actions.setMetaMaskInstalled, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    isMetaMaskInstalled: payload
   }
 })
 

@@ -350,4 +350,8 @@ interface BraveWalletService {
   AddUserAsset(ERCToken token, string chain_id) => (bool success);
   RemoveUserAsset(string contract_address, string chain_id) => (bool success);
   SetUserAssetVisible(string contract_address, string chain_id, bool visible) => (bool success);
+  IsCryptoWalletsInstalled() => (bool installed);
+  IsMetaMaskInstalled() => (bool installed);
+  ImportFromCryptoWallets(string password, string newPassword) => (bool success);
+  ImportFromMetaMask(string password, string newPassword) => (bool success);
 };

@@ -202,6 +202,8 @@ export interface PageState {
   importError: boolean
   showAddModal: boolean
   swapQuote?: SwapResponse
+  isCryptoWalletsInstalled: boolean
+  isMetaMaskInstalled: boolean
 }
 
 export interface WalletPageState {
@@ -698,7 +700,7 @@ export enum WalletOnboardingSteps {
   OnboardingCreatePassword = 1,
   OnboardingBackupWallet = 2,
   OnboardingImportMetaMask = 3,
-  OnboardingImportBraveLegacy = 4
+  OnboardingImportCryptoWallets = 4
 }
 
 export enum WalletRoutes {

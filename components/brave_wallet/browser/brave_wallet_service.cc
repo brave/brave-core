@@ -10,6 +10,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_importer_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -86,7 +87,10 @@ base::CheckedContiguousIterator<base::Value> FindAsset(
 
 namespace brave_wallet {
 
-BraveWalletService::BraveWalletService(PrefService* prefs) : prefs_(prefs) {
+BraveWalletService::BraveWalletService(
+    std::unique_ptr<BraveWalletImporterDelegate> delegate,
+    PrefService* prefs)
+    : delegate_(std::move(delegate)), prefs_(prefs) {
   DCHECK(prefs_);
 }
 
@@ -310,6 +314,43 @@ void BraveWalletService::SetUserAssetVisible(
 
   it->SetKey("visible", base::Value(visible));
   std::move(callback).Run(true);
+}
+
+void BraveWalletService::IsCryptoWalletsInstalled(
+    IsCryptoWalletsInstalledCallback callback) {
+  if (delegate_)
+    delegate_->IsCryptoWalletsInstalled(std::move(callback));
+  else
+    std::move(callback).Run(false);
+}
+
+void BraveWalletService::IsMetaMaskInstalled(
+    IsMetaMaskInstalledCallback callback) {
+  if (delegate_)
+    delegate_->IsMetaMaskInstalled(std::move(callback));
+  else
+    std::move(callback).Run(false);
+}
+
+void BraveWalletService::ImportFromCryptoWallets(
+    const std::string& password,
+    const std::string& new_password,
+    ImportFromCryptoWalletsCallback callback) {
+  if (delegate_)
+    delegate_->ImportFromCryptoWallets(password, new_password,
+                                       std::move(callback));
+  else
+    std::move(callback).Run(false);
+}
+
+void BraveWalletService::ImportFromMetaMask(
+    const std::string& password,
+    const std::string& new_password,
+    ImportFromMetaMaskCallback callback) {
+  if (delegate_)
+    delegate_->ImportFromMetaMask(password, new_password, std::move(callback));
+  else
+    std::move(callback).Run(false);
 }
 
 }  // namespace brave_wallet

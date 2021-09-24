@@ -41,6 +41,7 @@ class BraveComponentLoader : public ComponentLoader {
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   void AddEthereumRemoteClientExtension();
   void AddEthereumRemoteClientExtensionOnStartup();
+  void UnloadEthereumRemoteClientExtension();
 #endif
   void AddWebTorrentExtension();
   void OnComponentReady(std::string extension_id,

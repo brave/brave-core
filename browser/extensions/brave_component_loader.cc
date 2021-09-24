@@ -173,6 +173,14 @@ void BraveComponentLoader::AddEthereumRemoteClientExtensionOnStartup() {
     AddEthereumRemoteClientExtension();
   }
 }
+
+void BraveComponentLoader::UnloadEthereumRemoteClientExtension() {
+  extensions::ExtensionService* service =
+      extensions::ExtensionSystem::Get(profile_)->extension_service();
+  DCHECK(service);
+  service->UnloadExtension(ethereum_remote_client_extension_id,
+                           extensions::UnloadedExtensionReason::DISABLE);
+}
 #endif
 
 void BraveComponentLoader::AddWebTorrentExtension() {

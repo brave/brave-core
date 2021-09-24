@@ -5,7 +5,11 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 
+#include <memory>
+
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_importer_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_importer_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -49,7 +53,13 @@ BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
 KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new BraveWalletService(user_prefs::UserPrefs::Get(context));
+  return new BraveWalletService(
+#if defined(OS_ANDROID)
+      std::make_unique<BraveWalletImporterDelegate>(),
+#else
+      std::make_unique<BraveWalletImporterDelegateImpl>(context),
+#endif
+      user_prefs::UserPrefs::Get(context));
 }
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(

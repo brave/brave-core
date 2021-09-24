@@ -13,6 +13,7 @@ class EthereumRemoteClientDelegateImpl : public EthereumRemoteClientDelegate {
   ~EthereumRemoteClientDelegateImpl() override;
   void MaybeLoadCryptoWalletsExtension(
       content::BrowserContext* context) override;
+  void UnloadCryptoWalletsExtension(content::BrowserContext* context) override;
 };
 
 #endif  // BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_ETHEREUM_REMOTE_CLIENT_DELEGATE_IMPL_H_
