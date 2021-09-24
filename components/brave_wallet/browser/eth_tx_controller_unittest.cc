@@ -126,6 +126,11 @@ class EthTxControllerUnitTest : public testing::Test {
                 request.url.spec(),
                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
                 "\"0x595698248593c0000\"}");
+          } else if (*method == "eth_getTransactionCount") {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+                "\"1\"}");
           }
         }));
 
@@ -568,6 +573,82 @@ TEST_F(EthTxControllerUnitTest, ProcessLedgerSignatureFail) {
       "-1", "0x00", "9ff044f89c205dd76a194f8b11f50d2eade744e", "",
       base::BindLambdaForTesting([&](bool success) {
         EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(callback_called);
+}
+
+TEST_F(EthTxControllerUnitTest, GetMessageToSignFromTxData) {
+  auto tx_data =
+      mojom::TxData::New("0x06", "" /* gas_price */, "" /* gas_limit */,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapprovedTransaction(
+      tx_data.Clone(), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  callback_called = false;
+  eth_tx_controller_->GetMessageToSignFromTxData(
+      tx_meta_id,
+      base::BindLambdaForTesting([&](bool success, const std::string& result) {
+        EXPECT_TRUE(success);
+        EXPECT_EQ(result,
+                  "0xf87780890595698248593c000082960494be862ad9abfe6f22"
+                  "bcb087716c7d89a26051f74c88016345785d8a0000b844095ea7b3000000"
+                  "000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f00"
+                  "00000000000000000000000000000000000000000000003fffffffffffff"
+                  "ff8205398080");
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(callback_called);
+}
+
+TEST_F(EthTxControllerUnitTest, GetMessageToSignFromTxData1559) {
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x00", "", "0x00",
+                         "0x0101010101010101010101010101010101010101", "0x00",
+                         std::vector<uint8_t>()),
+      "0x04", "0x0", "0x1");
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      tx_data.Clone(), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  callback_called = false;
+  eth_tx_controller_->GetMessageToSignFromTxData(
+      tx_meta_id,
+      base::BindLambdaForTesting([&](bool success, const std::string& result) {
+        EXPECT_TRUE(success);
+        EXPECT_EQ(
+            result,
+            "0x02dd04808001809401010101010101010101010101010101010101018080c0");
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(callback_called);
+}
+
+TEST_F(EthTxControllerUnitTest, GetMessageToSignFromTxDataFail) {
+  bool callback_called = false;
+  eth_tx_controller_->GetMessageToSignFromTxData(
+      std::string(),
+      base::BindLambdaForTesting([&](bool success, const std::string& result) {
+        EXPECT_FALSE(success);
+        ASSERT_TRUE(result.empty());
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
