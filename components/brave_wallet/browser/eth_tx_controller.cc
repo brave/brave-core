@@ -327,6 +327,7 @@ void EthTxController::OnGetNextNonceForLedger(
     return;
   }
   meta->tx->set_nonce(nonce);
+  meta->status = mojom::TransactionStatus::Approved;
   tx_state_manager_->AddOrUpdateTx(*meta);
 
   uint256_t chain_id = 0;
@@ -355,6 +356,9 @@ void EthTxController::ProcessLedgerSignature(
   }
   if (!meta->tx->ProcessVRS(v, r, s)) {
     LOG(ERROR) << "Could not initialize a transaction with v,r,s";
+    meta->status = mojom::TransactionStatus::Error;
+    tx_state_manager_->AddOrUpdateTx(*meta);
+    NotifyTransactionStatusChanged(meta.get());
     std::move(callback).Run(false);
     return;
   }

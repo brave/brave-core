@@ -526,6 +526,9 @@ TEST_F(EthTxControllerUnitTest, ProcessLedgerSignature) {
       "7aa705c9144742836b7fbbd0745c57f67b60df7b8d1790fe59f91ed8d2bfc11d",
       base::BindLambdaForTesting([&](bool success) {
         EXPECT_TRUE(success);
+        auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+        EXPECT_TRUE(tx_meta);
+        EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Unapproved);
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
@@ -552,6 +555,9 @@ TEST_F(EthTxControllerUnitTest, ProcessLedgerSignatureFail) {
       tx_meta_id, "0x00", "9ff044f89c205dd76a194f8b11f50d2eade744e", "",
       base::BindLambdaForTesting([&](bool success) {
         EXPECT_FALSE(success);
+        auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+        EXPECT_TRUE(tx_meta);
+        EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Error);
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
