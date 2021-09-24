@@ -262,7 +262,7 @@ void EthereumRemoteClientService::RemoveUnusedWeb3ProviderContentScripts() {
     return;
   }
   auto* registry = extensions::ExtensionRegistry::Get(context_);
-  auto provider = brave_wallet::GetDefaultWallet(prefs);
+  auto default_wallet = brave_wallet::GetDefaultWallet(prefs);
   auto* erc_extension = registry->enabled_extensions().GetByID(
       ethereum_remote_client_extension_id);
   if (erc_extension) {
@@ -283,12 +283,14 @@ void EthereumRemoteClientService::RemoveUnusedWeb3ProviderContentScripts() {
   // We can't have 2 web3 providers, we:
   // 1) Check if MetaMask content scripts are disabled, if so, enable them.
   // 2) Check if CryptoWallets content scripts are enabled, if so, disable them.
-  if (provider == brave_wallet::mojom::DefaultWallet::CryptoWallets) {
+  if (default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets) {
     if (erc_extension) {
       user_script_manager->OnExtensionLoaded(context_, erc_extension);
     }
-  } else if (provider != brave_wallet::mojom::DefaultWallet::CryptoWallets &&
-             provider != brave_wallet::mojom::DefaultWallet::BraveWallet) {
+  } else if (default_wallet !=
+                 brave_wallet::mojom::DefaultWallet::CryptoWallets &&
+             default_wallet !=
+                 brave_wallet::mojom::DefaultWallet::BraveWallet) {
     if (metamask_extension) {
       user_script_manager->OnExtensionLoaded(context_, metamask_extension);
     }
@@ -336,14 +338,12 @@ void EthereumRemoteClientService::OnExtensionUninstalled(
     extensions::UninstallReason reason) {
   if (extension->id() == metamask_extension_id) {
     PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-    auto provider = brave_wallet::GetDefaultWallet(prefs);
-    if (provider == brave_wallet::mojom::DefaultWallet::Metamask)
-      prefs->SetInteger(
-          kBraveWalletWeb3Provider,
-          static_cast<int>(
-              brave_wallet::IsNativeWalletEnabled()
-                  ? brave_wallet::mojom::DefaultWallet::BraveWallet
-                  : brave_wallet::mojom::DefaultWallet::CryptoWallets));
+    auto default_wallet = brave_wallet::GetDefaultWallet(prefs);
+    if (default_wallet == brave_wallet::mojom::DefaultWallet::Metamask)
+      brave_wallet::SetDefaultWallet(
+          prefs, brave_wallet::IsNativeWalletEnabled()
+                     ? brave_wallet::mojom::DefaultWallet::BraveWallet
+                     : brave_wallet::mojom::DefaultWallet::CryptoWallets);
     RemoveUnusedWeb3ProviderContentScripts();
   }
 }
@@ -368,8 +368,8 @@ bool EthereumRemoteClientService::IsCryptoWalletsReady() const {
 
 bool EthereumRemoteClientService::ShouldShowLazyLoadInfobar() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  auto provider = brave_wallet::GetDefaultWallet(prefs);
-  return provider == brave_wallet::mojom::DefaultWallet::CryptoWallets &&
+  auto default_wallet = brave_wallet::GetDefaultWallet(prefs);
+  return default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets &&
          !IsCryptoWalletsReady();
 }
 

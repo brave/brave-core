@@ -85,10 +85,10 @@ BraveWalletLoadUIFunction::Run() {
   // set the Dapp provider to Crypto Wallets.
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* prefs = profile->GetPrefs();
-  auto provider = ::brave_wallet::GetDefaultWallet(prefs);
+  auto default_wallet = ::brave_wallet::GetDefaultWallet(prefs);
   auto* registry = extensions::ExtensionRegistry::Get(profile);
   if (!registry->ready_extensions().Contains(metamask_extension_id) &&
-      provider != ::brave_wallet::mojom::DefaultWallet::BraveWallet) {
+      default_wallet != ::brave_wallet::mojom::DefaultWallet::BraveWallet) {
     ::brave_wallet::SetDefaultWallet(
         prefs, ::brave_wallet::mojom::DefaultWallet::CryptoWallets);
   }
@@ -180,18 +180,19 @@ BraveWalletResetWalletFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveWalletGetWeb3ProviderFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto provider = ::brave_wallet::GetDefaultWallet(profile->GetPrefs());
+  auto default_wallet = ::brave_wallet::GetDefaultWallet(profile->GetPrefs());
   std::string extension_id;
-  if (provider == ::brave_wallet::mojom::DefaultWallet::BraveWallet) {
+  if (default_wallet == ::brave_wallet::mojom::DefaultWallet::BraveWallet) {
     // This API is used so an extension can know when to prompt to
     // be the default Dapp provider. Since the new wallet is not an
     // extension at all, we can just re-use the Crypto Wallets ID.
     // We also don't want to prompt in Crypto Wallets when it's set
     // to Brave Wallet.
     extension_id = ethereum_remote_client_extension_id;
-  } else if (provider == ::brave_wallet::mojom::DefaultWallet::CryptoWallets) {
+  } else if (default_wallet ==
+             ::brave_wallet::mojom::DefaultWallet::CryptoWallets) {
     extension_id = ethereum_remote_client_extension_id;
-  } else if (provider == ::brave_wallet::mojom::DefaultWallet::Metamask) {
+  } else if (default_wallet == ::brave_wallet::mojom::DefaultWallet::Metamask) {
     extension_id = metamask_extension_id;
   }
   return RespondNow(OneArgument(base::Value(extension_id)));

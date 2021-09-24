@@ -99,7 +99,7 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest {
     return WaitForLoadStop(active_contents());
   }
 
-  brave_wallet::mojom::DefaultWallet default_wallet() {
+  brave_wallet::mojom::DefaultWallet GetDefaultWallet() {
     return brave_wallet::GetDefaultWallet(browser()->profile()->GetPrefs());
   }
 
@@ -110,14 +110,13 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
     FakeInstallMetaMask) {
   if (brave_wallet::IsNativeWalletEnabled()) {
-    browser()->profile()->GetPrefs()->SetInteger(
-        kBraveWalletWeb3Provider,
-        static_cast<int>(brave_wallet::mojom::DefaultWallet::Ask));
+    brave_wallet::SetDefaultWallet(browser()->profile()->GetPrefs(),
+                                   brave_wallet::mojom::DefaultWallet::Ask);
   }
   WaitForBraveExtensionAdded();
   AddFakeMetaMaskExtension(false);
   // Should auto select MetaMask
-  ASSERT_EQ(default_wallet(), brave_wallet::mojom::DefaultWallet::Metamask);
+  ASSERT_EQ(GetDefaultWallet(), brave_wallet::mojom::DefaultWallet::Metamask);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
@@ -127,10 +126,10 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
   RemoveFakeMetaMaskExtension();
   // Should revert back to Ask
   if (brave_wallet::IsNativeWalletEnabled()) {
-    ASSERT_EQ(default_wallet(),
+    ASSERT_EQ(GetDefaultWallet(),
               brave_wallet::mojom::DefaultWallet::BraveWallet);
   } else {
-    ASSERT_EQ(default_wallet(),
+    ASSERT_EQ(GetDefaultWallet(),
               brave_wallet::mojom::DefaultWallet::CryptoWallets);
   }
 }
@@ -147,7 +146,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
   // Then the user updates MetaMask
   AddFakeMetaMaskExtension(true);
   // It should not toggle the setting
-  ASSERT_EQ(default_wallet(),
+  ASSERT_EQ(GetDefaultWallet(),
             brave_wallet::mojom::DefaultWallet::CryptoWallets);
 }
 

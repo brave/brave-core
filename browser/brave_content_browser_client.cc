@@ -671,10 +671,10 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
   auto* prefs = user_prefs::UserPrefs::Get(browser_context);
-  brave_wallet::mojom::DefaultWallet provider =
+  brave_wallet::mojom::DefaultWallet default_wallet =
       brave_wallet::GetDefaultWallet(prefs);
   if (!brave_wallet::IsNativeWalletEnabled() ||
-      provider == brave_wallet::mojom::DefaultWallet::CryptoWallets) {
+      default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets) {
     // If the Crypto Wallets extension is loaded, then it replaces the WebUI
     auto* service =
         EthereumRemoteClientServiceFactory::GetForContext(browser_context);

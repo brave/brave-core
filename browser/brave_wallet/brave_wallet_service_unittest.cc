@@ -181,15 +181,14 @@ class BraveWalletServiceUnitTest : public testing::Test {
   }
 
   mojom::DefaultWallet GetDefaultWallet() {
+    base::RunLoop run_loop;
     mojom::DefaultWallet default_wallet;
-    bool callback_called = false;
     service_->GetDefaultWallet(
         base::BindLambdaForTesting([&](mojom::DefaultWallet v) {
-          callback_called = true;
           default_wallet = v;
+          run_loop.Quit();
         }));
-    base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(callback_called);
+    run_loop.Run();
     return default_wallet;
   }
 
