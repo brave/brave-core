@@ -8,9 +8,7 @@
 
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 
-using brave_shields::AdBlockSubscriptionDownloadManager;
-
-AdBlockSubscriptionDownloadManager::DownloadManagerGetter
+brave_shields::AdBlockSubscriptionDownloadManager::DownloadManagerGetter
 AdBlockSubscriptionDownloadManagerGetter();
 
 #endif  // BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_SUBSCRIPTION_DOWNLOAD_MANAGER_GETTER_H_
