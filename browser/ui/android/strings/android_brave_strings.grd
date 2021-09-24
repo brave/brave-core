@@ -2209,6 +2209,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PURCHASED_FAILED" desc="Brave Vpn in app purchase message">
       ERROR!!\nPurchased failed..
     </message>
+    <message name="IDS_DISABLE_SHARING_HUB" desc="Menu item for disabling sharing hub.">
+      Disable Sharing Hub
+    </message>
     </messages>
   </release>
 </grit>
