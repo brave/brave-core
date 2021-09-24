@@ -166,7 +166,7 @@ struct ReadabilityResult {
                 self.content = content
             }
             if let title = dict["title"] as? String {
-                self.title = title
+                self.title = title.htmlEntityEncodedString
             }
             if let credits = dict["byline"] as? String {
                 self.credits = credits
@@ -182,7 +182,7 @@ struct ReadabilityResult {
         let domain = object["domain"].string
         let url = object["url"].string
         let content = object["content"].string
-        let title = object["title"].string
+        let title = object["title"].string?.htmlEntityEncodedString
         let credits = object["credits"].string
 
         if domain == nil || url == nil || content == nil || title == nil || credits == nil {
