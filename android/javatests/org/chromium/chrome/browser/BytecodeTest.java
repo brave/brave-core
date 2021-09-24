@@ -46,6 +46,7 @@ import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
+import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
@@ -196,6 +197,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/theme/ThemeUtils"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/share/ShareDelegateImpl"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/share/BraveShareDelegateImpl"));
     }
 
     @Test
@@ -409,6 +412,10 @@ public class BytecodeTest {
                 WindowAndroid.class, MenuButtonCoordinator.SetFocusFunction.class, Runnable.class,
                 boolean.class, Supplier.class, ThemeColorProvider.class, Supplier.class,
                 Runnable.class, int.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/share/ShareDelegateImpl",
+                "org/chromium/chrome/browser/share/BraveShareDelegateImpl",
+                BottomSheetController.class, ActivityLifecycleDispatcher.class, Supplier.class,
+                ShareDelegateImpl.ShareSheetDelegate.class, boolean.class));
     }
 
     @Test

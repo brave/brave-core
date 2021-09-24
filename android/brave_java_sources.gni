@@ -170,6 +170,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/developer/BraveQAPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/developer/BraveRewardsDebugPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/themes/BraveRadioButtonGroupCustomHomepageThemePreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/share/BraveShareDelegateImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsMenuObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsUtils.java",

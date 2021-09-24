@@ -367,3 +367,11 @@
 -keep class org.chromium.chrome.browser.theme.ThemeUtils {
     *** getTextBoxColorForToolbarBackgroundInNonNativePage(...);
 }
+
+-keep class org.chromium.chrome.browser.share.ShareDelegateImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.share.BraveShareDelegateImpl {
+    public <init>(...);
+}

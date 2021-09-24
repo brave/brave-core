@@ -29,6 +29,12 @@
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_disable_sharing_hub"
+        android:title="@string/disable_sharing_hub"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off" />
+
     <Preference
         android:fragment="org.chromium.chrome.browser.night_mode.settings.BraveThemePreferences"
         android:key="ui_theme"

@@ -2257,6 +2257,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_GAS_LIMIT" desc="Brave crypto wallet gas limit edit box">
       Gas Limit(GWEI)
     </message>
+    <message name="IDS_DISABLE_SHARING_HUB" desc="Menu item for disabling sharing hub.">
+      Disable Sharing Hub
+    </message>
     </messages>
   </release>
 </grit>
