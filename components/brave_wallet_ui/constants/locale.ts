@@ -197,6 +197,7 @@ const locale = {
   watchListSuggestion: 'as a custtom token',
   watchListNoAsset: 'No assets named',
   watchListSearchPlaceholder: 'Search tokens or contract address',
+  watchListError: 'Failed to add custom token, please try again.',
   accountSettingsDisclaimer: 'Warning: Never disclose this key. Anyone with your private key can steal any assets held in your account.',
   accountSettingsShowKey: 'Show Key',
   accountSettingsHideKey: 'Hide Key',

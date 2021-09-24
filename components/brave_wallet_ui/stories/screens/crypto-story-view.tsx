@@ -37,7 +37,6 @@ export interface Props {
   selectedNetwork: EthereumChain
   showAddModal: boolean
   isLoading: boolean
-  userWatchList: string[]
   userAssetList: AccountAssetOptionType[]
   transactions: (TransactionListInfo | undefined)[]
   portfolioBalance: string
@@ -56,16 +55,17 @@ export interface Props {
   privateKey: string
   transactionSpotPrices: AssetPriceInfo[]
   hasImportError: boolean
+  onAddUserAsset: (token: TokenInfo) => void
+  onSetUserAssetVisible: (contractAddress: string, isVisible: boolean) => void
+  onRemoveUserAsset: (contractAddress: string) => void
   onLockWallet: () => void
   onSetImportError: (hasError: boolean) => void
-  onAddCustomToken: (tokenName: string, tokenSymbol: string, tokenContractAddress: string, tokenDecimals: number) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onDoneViewingPrivateKey: () => void
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onRemoveAccount: (address: string, hardware: boolean) => void
   fetchFullTokenList: () => void
   onSelectNetwork: (network: EthereumChain) => void
-  onUpdateVisibleTokens: (contractAddress: string, visible: boolean) => void
   onToggleAddModal: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   getBalance: (address: string) => Promise<string>
@@ -88,7 +88,6 @@ const CryptoStoryView = (props: Props) => {
     fullAssetList,
     portfolioPriceHistory,
     userAssetList,
-    userWatchList,
     selectedTimeline,
     selectedPortfolioTimeline,
     selectedAssetPriceHistory,
@@ -103,6 +102,9 @@ const CryptoStoryView = (props: Props) => {
     isLoading,
     showAddModal,
     isFetchingPortfolioPriceHistory,
+    onAddUserAsset,
+    onSetUserAssetVisible,
+    onRemoveUserAsset,
     onLockWallet,
     onShowBackup,
     onChangeTimeline,
@@ -113,7 +115,6 @@ const CryptoStoryView = (props: Props) => {
     getBalance,
     onImportAccount,
     onUpdateAccountName,
-    onUpdateVisibleTokens,
     fetchFullTokenList,
     onSelectNetwork,
     onToggleAddModal,
@@ -121,8 +122,7 @@ const CryptoStoryView = (props: Props) => {
     onViewPrivateKey,
     onDoneViewingPrivateKey,
     onImportAccountFromJson,
-    onSetImportError,
-    onAddCustomToken
+    onSetImportError
   } = props
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>()
@@ -230,8 +230,11 @@ const CryptoStoryView = (props: Props) => {
           onSelectAsset={onSelectAsset}
           onClickAddAccount={onClickAddAccount}
           onSelectNetwork={onSelectNetwork}
-          onUpdateVisibleTokens={onUpdateVisibleTokens}
           fetchFullTokenList={fetchFullTokenList}
+          addUserAssetError={false}
+          onAddUserAsset={onAddUserAsset}
+          onRemoveUserAsset={onRemoveUserAsset}
+          onSetUserAssetVisible={onSetUserAssetVisible}
           selectedAsset={selectedAsset}
           portfolioBalance={portfolioBalance}
           portfolioPriceHistory={portfolioPriceHistory}
@@ -243,9 +246,7 @@ const CryptoStoryView = (props: Props) => {
           selectedNetwork={selectedNetwork}
           fullAssetList={fullAssetList}
           userVisibleTokensInfo={userVisibleTokensInfo}
-          userWatchList={userWatchList}
           isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
-          onAddCustomToken={onAddCustomToken}
           transactionSpotPrices={transactionSpotPrices}
         />
       }

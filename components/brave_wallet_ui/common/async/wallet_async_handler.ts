@@ -9,8 +9,10 @@ import * as WalletActions from '../actions/wallet_actions'
 import {
   UnlockWalletPayloadType,
   ChainChangedEventPayloadType,
-  SetInitialVisibleTokensPayloadType,
-  InitializedPayloadType
+  InitializedPayloadType,
+  AddUserAssetPayloadType,
+  SetUserAssetVisiblePayloadType,
+  RemoveUserAssetPayloadType
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -24,9 +26,7 @@ import {
   WalletAccountType,
   ER20TransferParams
 } from '../../constants/types'
-import { AssetOptions } from '../../options/asset-options'
 import { GetNetworkInfo } from '../../utils/network-utils'
-import { InitialVisibleTokenInfo } from '../../options/initial-visible-token-info'
 import { formatBalance } from '../../utils/format-balances'
 import {
   HardwareWalletAccount,
@@ -82,22 +82,9 @@ async function refreshWalletInfo (store: Store) {
   const current = GetNetworkInfo(chainId.chainId, networkList.networks)
   store.dispatch(WalletActions.setNetwork(current))
 
-  // VisibleTokens need to be setup and returned from prefs
-  // that away we can map over the contract id's and get the token info for
-  // each visibleToken on initialization.
-  // In prefs we need to return a different list based on chainID
-  const visibleTokensPayload = ['0x0D8775F648430679A709E98d2b0Cb6250d2887EF']
-  const visibleTokensInfo = await Promise.all(visibleTokensPayload.map(async (i) => {
-    const ercTokenRegistry = (await getAPIProxy()).ercTokenRegistry
-    const info = await ercTokenRegistry.getTokenByContract(i)
-    const icon = AssetOptions.find((a) => info.token.symbol === a.symbol)?.icon ?? ''
-    return { ...info.token, icon: icon }
-  })).catch((e) => [])
-  if (visibleTokensInfo.length !== 0) {
-    store.dispatch(WalletActions.setVisibleTokensInfo(visibleTokensInfo))
-  } else {
-    store.dispatch(WalletActions.setVisibleTokensInfo(InitialVisibleTokenInfo))
-  }
+  const braveWalletService = apiProxy.braveWalletService
+  const visibleTokensInfo = await braveWalletService.getUserAssets(chainId.chainId)
+  store.dispatch(WalletActions.setVisibleTokensInfo(visibleTokensInfo.tokens))
 
   // Update ETH Balances
   const state = getWalletState(store)
@@ -200,13 +187,6 @@ handler.on(WalletActions.removeFavoriteApp.getType(), async (store, appItem: App
   await refreshWalletInfo(store)
 })
 
-handler.on(WalletActions.setInitialVisibleTokens.getType(), async (store, payload: SetInitialVisibleTokensPayloadType) => {
-  // We need a walletHandler method 'setInitialVisibleTokens' to use here
-  // to set InitialVisibleTokens list
-  // const walletHandler = (await getAPIProxy()).walletHandler
-  // await walletHandler.setInitialVisibleTokens(payload.visibleAssets)
-})
-
 handler.on(WalletActions.selectNetwork.getType(), async (store, payload: EthereumChain) => {
   const ethJsonRpcController = (await getAPIProxy()).ethJsonRpcController
   await ethJsonRpcController.setNetwork(payload.chainId)
@@ -240,10 +220,22 @@ handler.on(WalletActions.getAllTokensList.getType(), async (store) => {
   store.dispatch(WalletActions.setAllTokensList(fullList))
 })
 
-handler.on(WalletActions.updateVisibleTokens.getType(), async (store, payload: string[]) => {
-  // We need a walletHandler method 'updateVisibleTokens' to use here
-  // to update the users visibleTokens
-  store.dispatch(WalletActions.setVisibleTokens(payload))
+handler.on(WalletActions.addUserAsset.getType(), async (store, payload: AddUserAssetPayloadType) => {
+  const braveWalletService = (await getAPIProxy()).braveWalletService
+  const result = await braveWalletService.addUserAsset(payload.token, payload.chainId)
+  store.dispatch(WalletActions.addUserAssetError(!result.success))
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.removeUserAsset.getType(), async (store, payload: RemoveUserAssetPayloadType) => {
+  const braveWalletService = (await getAPIProxy()).braveWalletService
+  await braveWalletService.removeUserAsset(payload.contractAddress, payload.chainId)
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.setUserAssetVisible.getType(), async (store, payload: SetUserAssetVisiblePayloadType) => {
+  const braveWalletService = (await getAPIProxy()).braveWalletService
+  await braveWalletService.setUserAssetVisible(payload.contractAddress, payload.chainId, payload.isVisible)
   await refreshWalletInfo(store)
 })
 

@@ -236,6 +236,7 @@ function Accounts (props: Props) {
               fiatBalance={item.fiatBalance}
               symbol={item.asset.symbol}
               icon={item.asset.icon}
+              isVisible={item.asset.visible}
             />
           )}
           <SubviewSectionTitle>{locale.transactions}</SubviewSectionTitle>

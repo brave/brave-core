@@ -159,7 +159,6 @@ export interface WalletState {
   selectedNetwork: EthereumChain
   accounts: WalletAccountType[]
   transactions: TransactionListInfo[]
-  userVisibleTokens: string[]
   userVisibleTokensInfo: TokenInfo[]
   fullTokenList: TokenInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
@@ -170,6 +169,7 @@ export interface WalletState {
   selectedPortfolioTimeline: AssetPriceTimeframe
   networkList: EthereumChain[]
   transactionSpotPrices: AssetPriceInfo[]
+  addUserAssetError: boolean
 }
 
 export interface PanelState {
@@ -355,6 +355,7 @@ export interface TokenInfo {
   decimals: number
   visible?: boolean
   icon?: string
+  logo?: string
 }
 
 export interface GetTokenByContractReturnInfo {

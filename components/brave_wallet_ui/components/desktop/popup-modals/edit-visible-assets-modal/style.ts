@@ -146,3 +146,11 @@ export const ButtonRow = styled.div`
   width: 100%;
   margin-top: 12px;
 `
+
+export const ErrorText = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  color: ${(p) => p.theme.color.errorText};
+  margin-bottom: 10px;
+`

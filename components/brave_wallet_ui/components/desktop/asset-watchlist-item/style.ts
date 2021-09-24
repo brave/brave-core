@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import TrashIcon from '../../../assets/svg-icons/trash-icon.svg'
 
 interface StyleProps {
   icon: string
@@ -63,4 +64,29 @@ export const CheckboxRow = styled.div`
   justify-content: flex-end;
   flex-direction: row;
   width: 10%;
+`
+
+export const DeleteButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+`
+
+export const DeleteIcon = styled.div`
+  width: 18px;
+  height: 18px;
+  background-color: ${(p) => p.theme.color.text02};
+  -webkit-mask-image: url(${TrashIcon});
+  mask-image: url(${TrashIcon});
+`
+
+export const RightSide = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
 `

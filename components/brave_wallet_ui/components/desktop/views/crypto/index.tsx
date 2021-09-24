@@ -40,15 +40,17 @@ export interface Props {
   getBalance: (address: string) => Promise<string>
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onToggleAddModal: () => void
-  onUpdateVisibleTokens: (contractAddress: string, visible: boolean) => void
   onSelectNetwork: (network: EthereumChain) => void
   fetchFullTokenList: () => void
   onRemoveAccount: (address: string, hardware: boolean) => void
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
-  onAddCustomToken: (tokenName: string, tokenSymbol: string, tokenContractAddress: string, tokenDecimals: number) => void
   onSetImportError: (hasError: boolean) => void
+  onAddUserAsset: (token: TokenInfo) => void
+  onSetUserAssetVisible: (contractAddress: string, isVisible: boolean) => void
+  onRemoveUserAsset: (contractAddress: string) => void
+  addUserAssetError: boolean
   hasImportError: boolean
   transactionSpotPrices: AssetPriceInfo[]
   privateKey: string
@@ -67,7 +69,6 @@ export interface Props {
   portfolioBalance: string
   transactions: (TransactionListInfo | undefined)[]
   userAssetList: AccountAssetOptionType[]
-  userWatchList: string[]
   isLoading: boolean
   showAddModal: boolean
   selectedNetwork: EthereumChain
@@ -87,7 +88,6 @@ const CryptoView = (props: Props) => {
     getBalance,
     onImportAccount,
     onUpdateAccountName,
-    onUpdateVisibleTokens,
     fetchFullTokenList,
     onSelectNetwork,
     onToggleAddModal,
@@ -96,7 +96,10 @@ const CryptoView = (props: Props) => {
     onDoneViewingPrivateKey,
     onImportAccountFromJson,
     onSetImportError,
-    onAddCustomToken,
+    onAddUserAsset,
+    onSetUserAssetVisible,
+    onRemoveUserAsset,
+    addUserAssetError,
     hasImportError,
     userVisibleTokensInfo,
     transactionSpotPrices,
@@ -105,7 +108,6 @@ const CryptoView = (props: Props) => {
     fullAssetList,
     portfolioPriceHistory,
     userAssetList,
-    userWatchList,
     selectedTimeline,
     selectedPortfolioTimeline,
     selectedAssetPriceHistory,
@@ -223,8 +225,10 @@ const CryptoView = (props: Props) => {
           onSelectAsset={selectAsset}
           onClickAddAccount={onClickAddAccount}
           onSelectNetwork={onSelectNetwork}
-          onUpdateVisibleTokens={onUpdateVisibleTokens}
           fetchFullTokenList={fetchFullTokenList}
+          onAddUserAsset={onAddUserAsset}
+          onSetUserAssetVisible={onSetUserAssetVisible}
+          onRemoveUserAsset={onRemoveUserAsset}
           selectedAsset={selectedAsset}
           portfolioBalance={portfolioBalance}
           portfolioPriceHistory={portfolioPriceHistory}
@@ -236,10 +240,9 @@ const CryptoView = (props: Props) => {
           selectedNetwork={selectedNetwork}
           fullAssetList={fullAssetList}
           userVisibleTokensInfo={userVisibleTokensInfo}
-          userWatchList={userWatchList}
           isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
-          onAddCustomToken={onAddCustomToken}
           transactionSpotPrices={transactionSpotPrices}
+          addUserAssetError={addUserAssetError}
         />
       </Route>
       <Route path={WalletRoutes.AccountsSub} exact={true}>
