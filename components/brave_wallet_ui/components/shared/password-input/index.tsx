@@ -12,13 +12,14 @@ export interface Props {
   onChange: (value: string) => void
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void
   autoFocus?: boolean
+  value?: string
   placeholder: string
   hasError: boolean
   error: string
 }
 
 function OnboardingCreatePassword (props: Props) {
-  const { onChange, onKeyDown, placeholder, error, hasError, autoFocus } = props
+  const { onChange, onKeyDown, placeholder, error, hasError, autoFocus, value } = props
 
   const inputPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value)
@@ -30,6 +31,7 @@ function OnboardingCreatePassword (props: Props) {
         hasError={hasError}
         type='password'
         placeholder={placeholder}
+        value={value}
         onChange={inputPassword}
         onKeyDown={onKeyDown}
         autoFocus={autoFocus}

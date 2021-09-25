@@ -53,10 +53,10 @@ function OnboardingCreatePassword (props: Props) {
           autoFocus={true}
         />
         <PasswordInput
-          placeholder={locale.createPasswordInput2}
+          placeholder={locale.confirmPasswordInput}
           onChange={onConfirmPasswordChanged}
           onKeyDown={handleKeyDown}
-          error={locale.createPasswordError2}
+          error={locale.confirmPasswordError}
           hasError={hasConfirmPasswordError}
         />
       </InputColumn>
