@@ -31,9 +31,9 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
@@ -110,11 +110,11 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       kERCOptedIntoCryptoWallets));
 #endif
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  EXPECT_EQ(chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
-                kBraveWalletWeb3Provider),
-            static_cast<int>(brave_wallet::IsNativeWalletEnabled()
-                                 ? brave_wallet::Web3ProviderTypes::BRAVE_WALLET
-                                 : brave_wallet::Web3ProviderTypes::ASK));
+  EXPECT_EQ(brave_wallet::GetDefaultWallet(
+                chrome_test_utils::GetProfile(this)->GetPrefs()),
+            brave_wallet::IsNativeWalletEnabled()
+                ? brave_wallet::mojom::DefaultWallet::BraveWallet
+                : brave_wallet::mojom::DefaultWallet::Ask);
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kShowWalletIconOnToolbar));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(

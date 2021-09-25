@@ -153,10 +153,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #if !defined(OS_ANDROID)
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
@@ -673,10 +671,10 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
   auto* prefs = user_prefs::UserPrefs::Get(browser_context);
-  auto provider = static_cast<::brave_wallet::Web3ProviderTypes>(
-      prefs->GetInteger(kBraveWalletWeb3Provider));
+  brave_wallet::mojom::DefaultWallet default_wallet =
+      brave_wallet::GetDefaultWallet(prefs);
   if (!brave_wallet::IsNativeWalletEnabled() ||
-      provider == brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS) {
+      default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets) {
     // If the Crypto Wallets extension is loaded, then it replaces the WebUI
     auto* service =
         EthereumRemoteClientServiceFactory::GetForContext(browser_context);

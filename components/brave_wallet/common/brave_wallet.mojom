@@ -361,4 +361,14 @@ interface BraveWalletService {
   IsMetaMaskInstalled() => (bool installed);
   ImportFromCryptoWallets(string password, string newPassword) => (bool success);
   ImportFromMetaMask(string password, string newPassword) => (bool success);
+  GetDefaultWallet() => (DefaultWallet default_wallet);
+  SetDefaultWallet(DefaultWallet default_wallet);
+};
+
+enum DefaultWallet {
+  Ask,
+  None,
+  CryptoWallets,
+  Metamask,
+  BraveWallet
 };

@@ -353,4 +353,12 @@ void BraveWalletService::ImportFromMetaMask(
     std::move(callback).Run(false);
 }
 
+void BraveWalletService::GetDefaultWallet(GetDefaultWalletCallback callback) {
+  std::move(callback).Run(::brave_wallet::GetDefaultWallet(prefs_));
+}
+
+void BraveWalletService::SetDefaultWallet(mojom::DefaultWallet default_wallet) {
+  ::brave_wallet::SetDefaultWallet(prefs_, default_wallet);
+}
+
 }  // namespace brave_wallet

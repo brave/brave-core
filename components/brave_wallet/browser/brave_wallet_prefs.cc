@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -54,8 +53,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
       kBraveWalletWeb3Provider,
       static_cast<int>(brave_wallet::IsNativeWalletEnabled()
-                           ? brave_wallet::Web3ProviderTypes::BRAVE_WALLET
-                           : brave_wallet::Web3ProviderTypes::ASK));
+                           ? brave_wallet::mojom::DefaultWallet::BraveWallet
+                           : brave_wallet::mojom::DefaultWallet::Ask));
 
   registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
 
