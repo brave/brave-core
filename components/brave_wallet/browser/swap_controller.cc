@@ -142,7 +142,7 @@ void SwapController::OnGetPriceQuote(
     return;
   }
 
-  std::move(callback).Run(true, std::move(swap_response), absl::nullopt);
+  std::move(callback).Run(true, std::move(swap_response), "");
 }
 
 void SwapController::GetTransactionPayload(
@@ -172,7 +172,7 @@ void SwapController::OnGetTransactionPayload(
     return;
   }
 
-  std::move(callback).Run(true, std::move(swap_response), absl::nullopt);
+  std::move(callback).Run(true, std::move(swap_response), "");
 }
 
 }  // namespace brave_wallet
