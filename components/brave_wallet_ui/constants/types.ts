@@ -170,6 +170,7 @@ export interface WalletState {
   networkList: EthereumChain[]
   transactionSpotPrices: AssetPriceInfo[]
   addUserAssetError: boolean
+  defaultWallet: DefaultWallet
 }
 
 export interface PanelState {
@@ -584,12 +585,16 @@ export enum DefaultWallet {
   BraveWallet
 }
 
+export interface DefaultWalletReturnInfo {
+  defaultWallet: DefaultWallet
+}
+
 export interface BraveWalletService {
   getUserAssets: (chainId: string) => Promise<GetUserAssetsReturnInfo>
   addUserAsset: (token: TokenInfo, chainId: string) => Promise<AddUserAssetReturnInfo>
   removeUserAsset: (contractAddress: string, chainId: string) => Promise<RemoveUserAssetReturnInfo>
   setUserAssetVisible: (contractAddress: string, chainId: string, visible: boolean) => Promise<SetUserAssetVisibleReturnInfo>
-  getDefaultWallet: () => Promise<DefaultWallet>
+  getDefaultWallet: () => Promise<DefaultWalletReturnInfo>
   setDefaultWallet: (defaultWallet: DefaultWallet) => Promise<void>
 }
 

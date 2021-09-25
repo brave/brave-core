@@ -21,7 +21,7 @@ import {
   UpdateAccountNamePayloadType
 } from '../../constants/types'
 import { TopNavOptions } from '../../options/top-nav-options'
-import { TopTabNav, BackupWarningBanner, AddAccountModal } from '../../components/desktop'
+import { TopTabNav, WalletBanner, AddAccountModal } from '../../components/desktop'
 import { SearchBar, AppList } from '../../components/shared'
 import locale from '../../constants/locale'
 import { AppsList } from '../../options/apps-list-options'
@@ -125,6 +125,7 @@ const CryptoStoryView = (props: Props) => {
     onSetImportError
   } = props
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
+  const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>()
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
@@ -184,6 +185,15 @@ const CryptoStoryView = (props: Props) => {
     toggleNav()
   }
 
+  const onDismissDefaultWalletBanner = () => {
+    setShowDefaultWalletBanner(false)
+  }
+
+  const onClickSettings = () => {
+    // Does nothing in storybook
+    alert('Will Nav to brave://settings/wallet')
+  }
+
   return (
     <StyledWrapper>
       {!hideNav &&
@@ -195,10 +205,23 @@ const CryptoStoryView = (props: Props) => {
             hasMoreButtons={true}
             onLockWallet={onLockWallet}
           />
+          {showDefaultWalletBanner &&
+            <WalletBanner
+              description={locale.defaultWalletBanner}
+              onDismiss={onDismissDefaultWalletBanner}
+              onClick={onClickSettings}
+              bannerType='warning'
+              buttonText={locale.walletPopupSettings}
+            />
+          }
+
           {needsBackup && showBackupWarning &&
-            <BackupWarningBanner
+            <WalletBanner
+              description={locale.backupWarningText}
               onDismiss={onDismissBackupWarning}
-              onBackup={onShowBackup}
+              onClick={onShowBackup}
+              bannerType='danger'
+              buttonText={locale.backupButton}
             />
           }
         </>

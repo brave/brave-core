@@ -21,7 +21,8 @@ import {
   kMainnetChainId,
   TransactionInfo,
   TransactionStatus,
-  TransactionListInfo
+  TransactionListInfo,
+  DefaultWallet
 } from '../../constants/types'
 import {
   NewUnapprovedTxAdded,
@@ -63,7 +64,8 @@ const defaultState: WalletState = {
   selectedPortfolioTimeline: AssetPriceTimeframe.OneDay,
   networkList: [],
   transactionSpotPrices: [],
-  addUserAssetError: false
+  addUserAssetError: false,
+  defaultWallet: DefaultWallet.BraveWallet
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -314,6 +316,13 @@ reducer.on(WalletActions.addUserAssetError, (state: any, payload: boolean) => {
   return {
     ...state,
     addUserAssetError: payload
+  }
+})
+
+reducer.on(WalletActions.defaultWalletUpdated, (state: any, payload: DefaultWallet) => {
+  return {
+    ...state,
+    defaultWallet: payload
   }
 })
 

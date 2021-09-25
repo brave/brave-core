@@ -29,7 +29,8 @@ import {
   SendTransactionParams,
   ER20TransferParams,
   TransactionInfo,
-  TransactionListInfo
+  TransactionListInfo,
+  DefaultWallet
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -72,3 +73,4 @@ export const approveTransaction = createAction<TransactionInfo>('approveTransact
 export const rejectTransaction = createAction<TransactionInfo>('rejectTransaction')
 export const knownTransactionsUpdated = createAction<TransactionInfo[]>('knownTransactionsUpdated')
 export const setTransactionList = createAction<TransactionListInfo[]>('setTransactionList')
+export const defaultWalletUpdated = createAction<DefaultWallet>('defaultWalletUpdated')

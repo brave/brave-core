@@ -228,6 +228,14 @@ handler.on(WalletPageActions.fetchSwapQuote.getType(), async (store, payload: Sw
   }
 })
 
+handler.on(WalletPageActions.openWalletSettings.getType(), async (store) => {
+  chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
+})
+
 // TODO(bbondy): Remove - Example usage:
 //
 // Interacting with the token registry

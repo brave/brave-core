@@ -130,6 +130,9 @@ const locale = {
   backupButton: 'Backup',
   dismissButton: 'Dismiss',
 
+  // Default Wallet Banner
+  defaultWalletBanner: 'Brave Wallet is not currently set as your default web 3 provider. Change default wallet.',
+
   // Restore Screen
   restoreTite: 'Restore Primary Crypto Accounts',
   restoreDescription: 'Enter your recovery phrase to restore your Brave Wallet crypto account.',
