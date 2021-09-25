@@ -1755,7 +1755,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Passwords
       </message>
       <message name="IDS_SYNC_RECENT_TABS" desc="Title for preference which enables sync'ing of open tabs. [CHAR_LIMIT=32]">
-        Open tabs
+        Recent tabs
       </message>
       <message name="IDS_SYNC_SETTINGS" desc="Title for preference which enables sync'ing of settings. [CHAR_LIMIT=32]">
         Settings

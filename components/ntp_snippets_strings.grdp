@@ -45,7 +45,7 @@
   </message>
 
   <message name="IDS_NTP_RECENT_TAB_SUGGESTIONS_SECTION_HEADER" desc="Header of the recent tabs section, which is a list of recent open tabs, which are currently opened and were automatically saved for offline consumption. This list is displayed as cards on the New Tab Page. The saved version is opened only if there are problems with the data connection (e.g. slow or absent).">
-    Open tabs
+    Recent tabs
   </message>
 
   <message name="IDS_NTP_RECENT_TAB_SUGGESTIONS_SECTION_EMPTY" desc="On the New Tab Page, text of the card explaining to the user that they can expect to see recent open tabs in this area in the future, but currently this area is empty. Recent open tabs - the tabs which are currently opened and were automatically saved for offline consumption.">
