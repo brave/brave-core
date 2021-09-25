@@ -131,17 +131,18 @@ void SwapController::OnGetPriceQuote(
     const int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
-  auto swap_response = mojom::SwapResponse::New();
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, std::move(swap_response));
+    std::move(callback).Run(false, nullptr, body);
     return;
   }
+  auto swap_response = mojom::SwapResponse::New();
   if (!ParseSwapResponse(body, false, &swap_response)) {
-    std::move(callback).Run(false, std::move(swap_response));
+    std::move(callback).Run(false, nullptr,
+                            "Could not parse response body: " + body);
     return;
   }
 
-  std::move(callback).Run(true, std::move(swap_response));
+  std::move(callback).Run(true, std::move(swap_response), "");
 }
 
 void SwapController::GetTransactionPayload(
@@ -160,17 +161,18 @@ void SwapController::OnGetTransactionPayload(
     const int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
-  auto swap_response = mojom::SwapResponse::New();
   if (status < 200 || status > 299) {
-    std::move(callback).Run(false, std::move(std::move(swap_response)));
+    std::move(callback).Run(false, nullptr, body);
     return;
   }
+  auto swap_response = mojom::SwapResponse::New();
   if (!ParseSwapResponse(body, true, &swap_response)) {
-    std::move(callback).Run(false, std::move(swap_response));
+    std::move(callback).Run(false, nullptr,
+                            "Could not parse response body: " + body);
     return;
   }
 
-  std::move(callback).Run(true, std::move(swap_response));
+  std::move(callback).Run(true, std::move(swap_response), "");
 }
 
 }  // namespace brave_wallet
