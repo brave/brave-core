@@ -615,6 +615,8 @@ function Container (props: Props) {
     accounts
   ])
 
+  const hideMainComponents = (isWalletCreated && !setupStillInProgress) && !isWalletLocked && walletLocation !== WalletRoutes.Backup
+
   return (
     <WalletPageLayout>
       {/* <SideNav
@@ -667,7 +669,7 @@ function Container (props: Props) {
             />
           </Route>
           <Route path={WalletRoutes.CryptoPage} exact={true}>
-            {(isWalletCreated && !setupStillInProgress) && !isWalletLocked && walletLocation !== WalletRoutes.Backup &&
+            {hideMainComponents &&
               <CryptoView
                 onLockWallet={lockWallet}
                 needsBackup={!isWalletBackedUp}
@@ -718,7 +720,7 @@ function Container (props: Props) {
           </Route>
         </WalletSubViewLayout>
       </Switch>
-      {(isWalletCreated && !setupStillInProgress) && !isWalletLocked &&
+      {hideMainComponents &&
         <WalletWidgetStandIn>
           <BuySendSwap
             accounts={accounts}
