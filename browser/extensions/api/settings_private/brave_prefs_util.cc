@@ -27,6 +27,7 @@
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/search_engines/search_engines_pref_names.h"
+#include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
@@ -172,6 +173,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #endif
 #if BUILDFLAG(ENABLE_FTX)
   (*s_brave_allowlist)[kFTXNewTabPageShowFTX] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#endif
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  // Web discovery prefs
+  (*s_brave_allowlist)[kWebDiscoveryEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // Brave today prefs
