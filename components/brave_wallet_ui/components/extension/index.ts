@@ -15,6 +15,7 @@ import ConfirmTransactionPanel from './confirm-transaction-panel'
 import PanelTab from './panel-tab'
 import ConnectHardwareWalletPanel from './connect-hardware-wallet-panel'
 import TransactionDetailBox from './transaction-box'
+import EditGas from './edit-gas'
 import { NavButton } from './buttons'
 
 export {
@@ -35,5 +36,6 @@ export {
   ConfirmTransactionPanel,
   PanelTab,
   TransactionDetailBox,
-  ConnectHardwareWalletPanel
+  ConnectHardwareWalletPanel,
+  EditGas
 }
