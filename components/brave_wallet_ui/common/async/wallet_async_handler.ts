@@ -93,6 +93,9 @@ async function refreshWalletInfo (store: Store) {
   const current = GetNetworkInfo(chainId.chainId, networkList.networks)
   store.dispatch(WalletActions.setNetwork(current))
 
+  // Populate tokens from ERC-20 token registry.
+  store.dispatch(WalletActions.getAllTokensList())
+
   const braveWalletService = apiProxy.braveWalletService
   const visibleTokensInfo = await braveWalletService.getUserAssets(chainId.chainId)
   store.dispatch(WalletActions.setVisibleTokensInfo(visibleTokensInfo.tokens))
