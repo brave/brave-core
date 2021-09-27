@@ -38,6 +38,10 @@ class ERCTokenRegistry : public mojom::ERCTokenRegistry {
                         GetTokenBySymbolCallback callback) override;
   void GetAllTokens(GetAllTokensCallback callback) override;
   void GetBuyTokens(GetBuyTokensCallback callback) override;
+  void GetBuyUrl(const std::string& address,
+                 const std::string& symbol,
+                 const std::string& amount,
+                 GetBuyUrlCallback callback) override;
 
  protected:
   std::vector<mojom::ERCTokenPtr> erc_tokens_;

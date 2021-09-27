@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 
 namespace brave_wallet {
@@ -85,6 +86,16 @@ void ERCTokenRegistry::GetBuyTokens(GetBuyTokensCallback callback) {
     erc_buy_tokens.push_back(std::move(erc_token));
   }
   std::move(callback).Run(std::move(erc_buy_tokens));
+}
+
+void ERCTokenRegistry::GetBuyUrl(const std::string& address,
+                                 const std::string& symbol,
+                                 const std::string& amount,
+                                 GetBuyUrlCallback callback) {
+  std::string url = base::StringPrintf(kBuyUrl, address.c_str(), symbol.c_str(),
+                                       amount.c_str(), kWyreID);
+
+  std::move(callback).Run(url);
 }
 
 }  // namespace brave_wallet

@@ -46,6 +46,10 @@ static base::NoDestructor<std::vector<mojom::ERCToken>> kBuyTokens(
 
 const char kWalletBaseDirectory[] = "BraveWallet";
 const char kImageSourceHost[] = "erc-token-images";
+const char kWyreID[] = "AC_MGNVBGHPA9T";
+const char kBuyUrl[] =
+    "https://pay.sendwyre.com/?dest=ethereum:%s"
+    "&destCurrency=%s&amount=%s&accountId=%s&paymentMethod=debit-card";
 
 }  // namespace brave_wallet
 
