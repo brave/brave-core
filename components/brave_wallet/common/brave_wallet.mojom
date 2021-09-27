@@ -200,6 +200,7 @@ interface ERCTokenRegistry {
   GetTokenBySymbol(string symbol) => (ERCToken? token);
   GetAllTokens() => (array<ERCToken> tokens);
   GetBuyTokens() => (array<ERCToken> tokens);
+  GetBuyUrl(string address, string symbol, string amount) => (string url);
 };
 
 interface KeyringController {
