@@ -8,6 +8,7 @@ package org.chromium.base;
 import org.chromium.base.Log;
 
 import java.lang.Class;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -37,6 +38,7 @@ public class BraveReflectionUtil {
                 }
             }
             Method toInvoke = methodOwner.getDeclaredMethod(method, parameterTypes);
+            if (!toInvoke.isAccessible()) toInvoke.setAccessible(true);
             try {
                 return toInvoke.invoke(obj, args);
             } catch (IllegalAccessException e) {
@@ -48,6 +50,21 @@ public class BraveReflectionUtil {
             }
         } catch (NoSuchMethodException e) {
             Log.e(TAG, "Method not found: " + e);
+            assert (false);
+        }
+        return null;
+    }
+
+    public static Object getField(Class ownerClass, String fieldName, Object obj) {
+        try {
+            Field field = ownerClass.getDeclaredField(fieldName);
+            if (!field.isAccessible()) field.setAccessible(true);
+            return field.get(obj);
+        } catch (NoSuchFieldException e) {
+            Log.e(TAG, "Field not found: " + e);
+            assert (false);
+        } catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
+            Log.e(TAG, "Get field failed: " + e);
             assert (false);
         }
         return null;
