@@ -254,7 +254,8 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
         }
         
         shieldControlMapping.forEach { shield, toggle, option in
-            toggle.valueToggled = { [unowned self] on in
+            toggle.valueToggled = { [weak self] on in
+                guard let self = self else { return }
                 // Localized / per domain toggles triggered here
                 self.updateBraveShieldState(shield: shield, on: on, option: option)
                 // Wait a fraction of a second to allow DB write to complete otherwise it will not use the
