@@ -272,18 +272,21 @@ RegisterPolymerTemplateModifications({
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const languagesEl = getMenuElement(templateContent, '/languages')
     languagesEl.insertAdjacentElement('beforebegin', autofillEl)
-    // Move safety check after downloads
-    const downloadsEl = getMenuElement(templateContent, '/downloads')
-    const safetyEl = getMenuElement(templateContent, '/safetyCheck')
-    downloadsEl.insertAdjacentElement('afterend', safetyEl)
-    // Move help tips after safety check
+    // Move safety check after downloads and HelpTips after that
     const helpTipsEl = createMenuElement(
       loadTimeData.getString('braveHelpTips'),
       '/braveHelpTips',
       'brave_settings:help',
       'braveHelpTips',
     )
-    safetyEl.insertAdjacentElement('afterend', helpTipsEl)
+    const downloadsEl = getMenuElement(templateContent, '/downloads')
+    if (loadTimeData.getBoolean('enableLandingPageRedesign')) {
+      downloadsEl.insertAdjacentElement('afterend', helpTipsEl)
+    } else {
+      const safetyEl = getMenuElement(templateContent, '/safetyCheck')
+      downloadsEl.insertAdjacentElement('afterend', safetyEl)
+      safetyEl.insertAdjacentElement('afterend', helpTipsEl)
+    }
     // Allow Accessibility to be removed :-(
     const a11yEl = getMenuElement(templateContent, '/accessibility')
     a11yEl.setAttribute('hidden', '[[!pageVisibility.a11y]')
