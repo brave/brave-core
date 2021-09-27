@@ -45,7 +45,6 @@ import BackupWallet from '../stories/screens/backup-wallet'
 import { formatPrices } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { convertMojoTimeToJS } from '../utils/mojo-time'
-import { ETH, BAT } from '../options/asset-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import {
   HardwareWalletAccount
@@ -54,7 +53,7 @@ import {
 import { onConnectHardwareWallet, getBalance } from '../common/async/wallet_async_handler'
 
 import { formatBalance, toWeiHex } from '../utils/format-balances'
-import useSwap from '../common/hooks/swap'
+import { useSwap, useAssets } from '../common/hooks'
 
 type Props = {
   wallet: WalletState
@@ -78,8 +77,6 @@ function Container (props: Props) {
     selectedNetwork,
     selectedAccount,
     hasInitialized,
-    userVisibleTokensInfo,
-    fullTokenList,
     portfolioPriceHistory,
     selectedPortfolioTimeline,
     isFetchingPortfolioPriceHistory,
@@ -114,42 +111,12 @@ function Container (props: Props) {
   const [sendAmount, setSendAmount] = React.useState('')
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
 
-  const tokenOptions: TokenInfo[] = React.useMemo(() =>
-    fullTokenList.map(token => ({
-      ...token,
-      logo: `chrome://erc-token-images/${token.logo}`
-    })), [fullTokenList])
-
-  const assetOptions: AccountAssetOptionType[] = React.useMemo(() => {
-    const tokens = tokenOptions
-      .filter(token => token.symbol !== 'BAT')
-      .map(token => ({
-        asset: token,
-        assetBalance: '0',
-        fiatBalance: '0'
-      }))
-
-    return [ETH, BAT, ...tokens]
-  }, [tokenOptions])
-
-  const userVisibleTokenOptions: TokenInfo[] = React.useMemo(() =>
-    userVisibleTokensInfo.map(token => ({
-      ...token,
-      logo: `chrome://erc-token-images/${token.logo}`
-    })
-  ), [userVisibleTokensInfo])
-
-  const sendAssetOptions = selectedAccount.tokens?.map(
-    token => ({
-      ...token,
-      asset: {
-        ...token.asset,
-        logo: token.asset.symbol === 'ETH'
-          ? ETH.asset.logo
-          : `chrome://erc-token-images/${token.asset.logo}`
-      }
-    })
-  )
+  const {
+    tokenOptions,
+    assetOptions,
+    userVisibleTokenOptions,
+    sendAssetOptions
+  } = useAssets(selectedAccount, props.wallet.fullTokenList, props.wallet.userVisibleTokensInfo)
 
   const {
     exchangeRate,
