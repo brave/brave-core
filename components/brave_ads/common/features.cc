@@ -18,6 +18,12 @@ const base::Feature kCustomAdNotifications{"CustomAdNotifications",
 
 namespace {
 
+// Set to true to fallback to custom ad notifications if native notifications
+// are disabled or false to never fallback
+const char kFieldTrialParameterCanFallbackToCustomAdNotifications[] =
+    "can_fallback_to_custom_notifications";
+const bool kDefaultCanFallbackToCustomAdNotifications = false;
+
 // Ad notification timeout in seconds. Set to 0 to never time out
 const char kFieldTrialParameterAdNotificationTimeout[] =
     "ad_notification_timeout";
@@ -26,12 +32,6 @@ const int kDefaultAdNotificationTimeout = 120;
 #else
 const int kDefaultAdNotificationTimeout = 30;
 #endif
-
-// Set to true to fallback from native to custom ad notifications or false to
-// never fallback
-const char kFieldTrialParameterCanFallbackToCustomAdNotifications[] =
-    "can_fallback_to_custom_notifications";
-const bool kDefaultCanFallbackToCustomAdNotifications = false;
 
 #if !defined(OS_ANDROID)
 
@@ -105,6 +105,12 @@ bool IsAdNotificationsEnabled() {
   return base::FeatureList::IsEnabled(kAdNotifications);
 }
 
+bool CanFallbackToCustomAdNotifications() {
+  return GetFieldTrialParamByFeatureAsBool(
+      kAdNotifications, kFieldTrialParameterCanFallbackToCustomAdNotifications,
+      kDefaultCanFallbackToCustomAdNotifications);
+}
+
 int AdNotificationTimeout() {
   return GetFieldTrialParamByFeatureAsInt(
       kAdNotifications, kFieldTrialParameterAdNotificationTimeout,
@@ -113,13 +119,6 @@ int AdNotificationTimeout() {
 
 bool IsCustomAdNotificationsEnabled() {
   return base::FeatureList::IsEnabled(kCustomAdNotifications);
-}
-
-bool CanFallbackToCustomAdNotifications() {
-  return GetFieldTrialParamByFeatureAsBool(
-      kCustomAdNotifications,
-      kFieldTrialParameterCanFallbackToCustomAdNotifications,
-      kDefaultCanFallbackToCustomAdNotifications);
 }
 
 #if !defined(OS_ANDROID)
