@@ -71,7 +71,7 @@
     "description": ""
   },
   "grantCaptchaHint": {
-    "message": "Arrastra el icono del BAT hasta el destino $hint$.",
+    "message": "Arrastra el icono del BAT hasta el $hint$ de destino.",
     "description": "",
     "placeholders": {
       "hint": {

@@ -133,7 +133,7 @@
     "description": ""
   },
   "walletCompleteVerificationLink": {
-    "message": "跳到 $provider$ 完成驗證",
+    "message": "前往 $provider$ 完成驗證",
     "description": "",
     "placeholders": {
       "provider": {
@@ -142,7 +142,7 @@
     }
   },
   "walletCompleteVerificationText": {
-    "message": "請完成身份驗證以開始接受獎勵。",
+    "message": "請完成身分驗證以開始接受獎勵。",
     "description": ""
   },
   "walletDisconnected": {
@@ -183,7 +183,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ 即將於 $days$ 內抵達",
+    "message": "$amount$ 即將於 $days$ 內入帳",
     "description": "",
     "placeholders": {
       "amount": {
@@ -195,7 +195,7 @@
     }
   },
   "walletRewardsFromAds": {
-    "message": "來自廣告的獎勵",
+    "message": "廣告獎勵",
     "description": ""
   },
   "walletRewardsSummary": {
@@ -243,7 +243,7 @@
     "description": ""
   },
   "notificationAutoContributeCompletedText": {
-    "message": "您已貢獻了 $amount$。",
+    "message": "您已捐贈了 $amount$。",
     "description": "",
     "placeholders": {
       "amount": {
@@ -268,7 +268,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedText": {
-    "message": "為了確保您的帳號安全，這種情況可能會發生。點擊下方按鈕以立刻重新連線。",
+    "message": "為了確保您帳戶的安全，可能會發生這種情況。請點擊下方按鈕以立刻重新連線。",
     "description": ""
   },
   "notificationWalletDisconnectedAction": {
@@ -280,7 +280,7 @@
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "您的 $provider$ 錢包已被成功驗證，並已準備好新增與提出資金。",
+    "message": "您的 $provider$ 錢包已成功驗證，現在可以存款和提款了。",
     "description": "",
     "placeholders": {
       "provider": {
@@ -289,7 +289,7 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "授予代幣",
+    "message": "代幣授予",
     "description": ""
   },
   "notificationTokenGrantText": {
@@ -297,7 +297,7 @@
     "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "收到廣告收入",
+    "message": "已收到廣告收入",
     "description": ""
   },
   "notificationAdGrantText": {
@@ -305,7 +305,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "每月貢獻失敗",
+    "message": "每月捐款失敗",
     "description": ""
   },
   "notificationInsufficientFundsText": {
@@ -317,19 +317,19 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
-    "message": "貢獻與小費",
+    "message": "捐款與小費",
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "您的每月貢獻已處理。",
+    "message": "您的每月捐款已處理。",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {
-    "message": "待處理貢獻",
+    "message": "待處理的捐款",
     "description": ""
   },
   "notificationPublisherVerifiedText": {
-    "message": "創作者 $publisher_name$ 最近已驗證。",
+    "message": "創作者 $publisher_name$ 已於最近驗證。",
     "description": "",
     "placeholders": {
       "publisher_name": {
@@ -354,7 +354,7 @@
     "description": ""
   },
   "notificationMismatchedProviderAccountsText": {
-    "message": "看來您的 Brave Rewards 錢包已使用其他 $provider$ 帳號驗證。請使用您以前的帳號再次驗證。",
+    "message": "看起來您的 Brave Rewards 錢包已使用其他 $provider$ 的帳戶驗證。請使用您之前的帳戶重新驗證。",
     "description": "",
     "placeholders": {
       "provider": {
@@ -553,15 +553,15 @@
     }
   },
   "captchaMaxAttemptsExceededText": {
-    "message": "看來這沒用，Brave 廣告將維持暫停。如果您需要驗證碼方面的協助，請聯絡我們。",
+    "message": "看起來這沒用，Brave 廣告將維持暫停。如果您需要驗證碼方面的協助，請與我們聯絡。",
     "description": ""
   },
   "captchaMaxAttemptsExceededTitle": {
-    "message": "已超過最大嘗試次數",
+    "message": "已超過嘗試次數上限",
     "description": ""
   },
   "captchaSolvedTitle": {
-    "message": "已解決！",
+    "message": "解決了！",
     "description": ""
   },
   "captchaSolvedText": {

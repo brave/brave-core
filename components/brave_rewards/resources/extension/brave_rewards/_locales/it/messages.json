@@ -71,7 +71,7 @@
     "description": ""
   },
   "grantCaptchaHint": {
-    "message": "Trascina l’icona del BAT su $hint$.",
+    "message": "Trascina l’icona del BAT sul $hint$.",
     "description": "",
     "placeholders": {
       "hint": {
@@ -252,7 +252,7 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Backup del portafoglio",
+    "message": "Esegui il backup del portafoglio",
     "description": ""
   },
   "notificationBackupWalletText": {
@@ -289,7 +289,7 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Donazioni di token",
+    "message": "Token concessi",
     "description": ""
   },
   "notificationTokenGrantText": {

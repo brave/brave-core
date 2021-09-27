@@ -289,7 +289,7 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Belirteç bağışları",
+    "message": "Ücretsiz verilen belirteçler",
     "description": ""
   },
   "notificationTokenGrantText": {
@@ -297,11 +297,11 @@
     "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "Alınan reklam kazançları",
+    "message": "Alınan Ads kazançları",
     "description": ""
   },
   "notificationAdGrantText": {
-    "message": "Brave Gizli Reklam ödülleriniz geldi!",
+    "message": "Brave Private Ads ödülleriniz geldi!",
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {

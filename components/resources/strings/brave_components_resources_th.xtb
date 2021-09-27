@@ -559,7 +559,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7530570094705720669">การสร้างกระเป๋าสตางค์</translation>
 <translation id="1988679729106502285">หมายเหตุ:</translation>
 <translation id="7979350009208995417">ผู้สร้างคนนี้ยังไม่ได้กำหนดค่าให้รับทิปจากกระเป๋าเงินของคุณ ทิปทั้งหมดที่คุณให้จะยังคงค้างอยู่ในกระเป๋าเงินของคุณและจะดำเนินการอีกครั้งโดยอัตโนมัติตลอดช่วงเวลา 90 วัน</translation>
-<translation id="7461596279975181413">ครีเอเตอร์ Brave รายนี้ได้ผ่านการรับรองแล้ว แต่ยังไม่กำหนดค่าบัญชีของตนเพื่อรับเงินสนับสนุนจากผู้ใช้ Brave เบราว์เซอร์ของคุณจะพยายามส่งเงินสนับสนุนให้จนกว่าจะมีการยืนยันหรือจนกว่าจะครบ 90 วัน</translation>
 <translation id="3197752845651180812">การบริจาคทรอพิจารณาความร่วมมือ</translation>
 <translation id="6964891561514920613">แสดงการบริจาคที่รอพิจารณาทั้งหมด</translation>
 <translation id="4346944508027912677">รอพิจารณาจนถึง</translation>
@@ -784,14 +783,14 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5894023780213944778">กระเป๋าเงินของฉัน</translation>
 <translation id="2613359062756190460">ทิปครั้งเดียว</translation>
 <translation id="590733288489975971">Rewards จาก Ads</translation>
-<translation id="3026978804849658576">ดูรายการเดินคำสั่ง</translation>
+<translation id="3026978804849658576">ดูรายการชําระ</translation>
 <translation id="8494748383523030337">ยอดของคุณ</translation>
 <translation id="7701466644604753106">เปิด Speedreader</translation>
 <translation id="763042262431778831">ปิด Speedreader</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="1148827340205946630">ผู้ใช้ปฏิเสธคำขอ</translation>
 <translation id="2403819048476450281">พารามิเตอร์ไม่ถุกต้อง</translation>
-<translation id="9161147058107529840">พารามิเตอร์เป้าหมายเดียวที่คาดไว้</translation>
+<translation id="9161147058107529840">หนึ่งพารามิเตอร์เป้าหมายที่คาดว่าจะได้รับ</translation>
 <translation id="1875861420974447980">ใช้ Chain ID นี้อยู่ในขณะนี้</translation>
 <translation id="167698752210114155">เกิดข้อผิดพลาดภายใน</translation>
 <translation id="4641919696349069826">กำลังดำเนินการตามคำขออยู่</translation>

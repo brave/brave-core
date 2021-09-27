@@ -252,7 +252,7 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "备用钱包",
+    "message": "对钱包进行备份",
     "description": ""
   },
   "notificationBackupWalletText": {
@@ -305,7 +305,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "月供失败",
+    "message": "发送月供时失败",
     "description": ""
   },
   "notificationInsufficientFundsText": {

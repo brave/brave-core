@@ -252,7 +252,7 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Dompet cadangan",
+    "message": "Cadangkan dompet",
     "description": ""
   },
   "notificationBackupWalletText": {
@@ -297,7 +297,7 @@
     "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "Pendapatan dari iklan telah diterima",
+    "message": "Pendapatan dari Ads telah diterima",
     "description": ""
   },
   "notificationAdGrantText": {

@@ -71,7 +71,7 @@
     "description": ""
   },
   "grantCaptchaHint": {
-    "message": "Перетащите значок BAT к $hint$.",
+    "message": "Перетащите значок BAT к изображению «$hint$».",
     "description": "",
     "placeholders": {
       "hint": {
@@ -252,7 +252,7 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Резервный кошелек",
+    "message": "Копия данных кошелька",
     "description": ""
   },
   "notificationBackupWalletText": {
@@ -289,7 +289,7 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Бонусы за балл",
+    "message": "Полученные токены",
     "description": ""
   },
   "notificationTokenGrantText": {
@@ -565,7 +565,7 @@
     "description": ""
   },
   "captchaSolvedText": {
-    "message": "Показ рекламы будет возобновлен, и вы снова станете получать доход от нее. Спасибо, что помогли нам защитить Brave Rewards и объявления, связанные с конфиденциальностью.",
+    "message": "Показ рекламы будет возобновлен, и вы снова станете получать доход от нее. Спасибо, что помогаете нам защитить Brave Rewards и поддерживаете защиту конфиденциальности.",
     "description": ""
   },
   "captchaContactSupport": {

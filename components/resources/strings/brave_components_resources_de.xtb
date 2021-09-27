@@ -558,7 +558,6 @@
 <translation id="7530570094705720669">Wallet wird erstellt</translation>
 <translation id="1988679729106502285">HINWEIS:</translation>
 <translation id="7979350009208995417">Dieser Creator ist derzeit nicht konfiguriert, Trinkgelder aus deinem Wallet zu erhalten. Deine Trinkgelder verbleiben als ausstehend in deinem Wallet und es wird 90 Tage lang automatisch weiter versucht.</translation>
-<translation id="7461596279975181413">Dieser durch Brave verifizierte Urheber hat sein Konto noch nicht so konfiguriert, dass er Beiträge von Brave-Nutzern erhalten kann. Ihr Browser wird versuchen, Beiträge zu leisten, bis er sich verifiziert hat oder bis 90 Tage vergangen sind.</translation>
 <translation id="3197752845651180812">Ausstehende Beiträge</translation>
 <translation id="6964891561514920613">Alle ausstehenden Spenden anzeigen</translation>
 <translation id="4346944508027912677">Ausstehend bis</translation>
@@ -758,7 +757,7 @@
 <translation id="8914505352873092008">Zur IFPS-Einstellungsseite</translation>
 <translation id="3465468510001693544">IPFS-Diagnose</translation>
 <translation id="2527518382346359563">Zur IPFS-Diagnoseseite</translation>
-<translation id="8192016636169857406">IPFS-Dokumente</translation>
+<translation id="8192016636169857406">IPFS-Dokumentation</translation>
 <translation id="6863052043162730918">Zur IFPS-Dokumentenseite</translation>
 <translation id="3862600063748690056">IPFS-Import abgeschlossen</translation>
 <translation id="8263749381887932384">IPFS-Import teilweise abgeschlossen</translation>

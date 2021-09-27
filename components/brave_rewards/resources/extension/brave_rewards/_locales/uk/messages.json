@@ -71,7 +71,7 @@
     "description": ""
   },
   "grantCaptchaHint": {
-    "message": "Перетягніть значок BAT у мішень $hint$.",
+    "message": "Перетягніть значок BAT у мішень відповідної форми ($hint$).",
     "description": "",
     "placeholders": {
       "hint": {
@@ -252,7 +252,7 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Резервна копія гаманця",
+    "message": "Створити резервну копію гаманця",
     "description": ""
   },
   "notificationBackupWalletText": {
@@ -565,7 +565,7 @@
     "description": ""
   },
   "captchaSolvedText": {
-    "message": "Рекламні оголошення й надходження віднині відновлено. Дякуємо за те, що допомагаєте захистити «Винагороди Brave» і приватні рекламні оголошення.",
+    "message": "Рекламні оголошення й надходження віднині відновлено. Дякуємо за те, що допомагаєте захистити «Винагороди Brave» і захищені рекламні оголошення.",
     "description": ""
   },
   "captchaContactSupport": {
