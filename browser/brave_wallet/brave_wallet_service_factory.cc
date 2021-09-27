@@ -11,6 +11,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
+#include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
@@ -47,7 +48,9 @@ BraveWalletService* BraveWalletServiceFactory::GetServiceForContext(
 BraveWalletServiceFactory::BraveWalletServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveWalletService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(PermissionManagerFactory::GetInstance());
+}
 
 BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
