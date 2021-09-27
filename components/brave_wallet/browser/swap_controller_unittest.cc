@@ -29,10 +29,10 @@ void OnRequestResponse(
     bool* callback_run,
     bool expected_success,
     brave_wallet::mojom::SwapResponsePtr expected_swap_response,
-    const std::string& expected_error,
+    const absl::optional<std::string>& expected_error,
     bool success,
     brave_wallet::mojom::SwapResponsePtr swap_response,
-    const std::string& error) {
+    const absl::optional<std::string>& error) {
   EXPECT_EQ(expected_success, success);
   EXPECT_EQ(expected_swap_response, swap_response);
   EXPECT_EQ(expected_error, error);
@@ -129,7 +129,7 @@ TEST_F(SwapControllerUnitTest, GetPriceQuote) {
   swap_controller_->GetPriceQuote(
       GetCannedSwapParams(),
       base::BindOnce(&OnRequestResponse, &callback_run, true,
-                     std::move(expected_swap_response), ""));
+                     std::move(expected_swap_response), absl::nullopt));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
@@ -207,7 +207,7 @@ TEST_F(SwapControllerUnitTest, GetTransactionPayload) {
   swap_controller_->GetTransactionPayload(
       GetCannedSwapParams(),
       base::BindOnce(&OnRequestResponse, &callback_run, true,
-                     std::move(expected_swap_response), ""));
+                     std::move(expected_swap_response), absl::nullopt));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }

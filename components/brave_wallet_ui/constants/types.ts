@@ -310,7 +310,7 @@ export interface SwapResponse {
 export interface SwapResponseReturnInfo {
   success: boolean
   response: SwapResponse | undefined
-  errorResponse: string
+  errorResponse: string | undefined
 }
 
 export interface GetNetworkReturnInfo {
