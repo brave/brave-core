@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "brave/third_party/argon2/src/include/argon2.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
