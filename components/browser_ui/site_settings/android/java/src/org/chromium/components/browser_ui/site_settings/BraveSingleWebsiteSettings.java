@@ -18,10 +18,9 @@ import org.chromium.components.content_settings.ContentSettingValues;
 import org.chromium.components.content_settings.ContentSettingsType;
 import org.chromium.content_public.browser.BrowserContextHandle;
 
-
 public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) { }
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
 
     public static @Nullable String getPreferenceKey(@ContentSettingsType int type) {
         switch (type) {
@@ -29,8 +28,7 @@ public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
                 return "autoplay_permission_list";
             default:
                 return (String) BraveReflectionUtil.InvokeMethod(
-                    SingleWebsiteSettings.class, null, "getPreferenceKey",
-                    int.class, type);
+                        SingleWebsiteSettings.class, null, "getPreferenceKey", int.class, type);
         }
     }
 
@@ -41,7 +39,7 @@ public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
         setUpAutoplayPreference(preference);
         // SingleWebsiteSettings.setupContentSettingsPreferences has its own for loop
         BraveReflectionUtil.InvokeMethod(
-                    SingleWebsiteSettings.class, this, "setupContentSettingsPreferences");
+                SingleWebsiteSettings.class, this, "setupContentSettingsPreferences");
     }
 
     private void setUpAutoplayPreference(Preference preference) {
@@ -49,7 +47,8 @@ public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
                 getSiteSettingsDelegate().getBrowserContextHandle();
         @ContentSettingValues
         @Nullable
-        Website mSite = (Website) BraveReflectionUtil.getField(SingleWebsiteSettings.class, "mSite", this);
+        Website mSite =
+                (Website) BraveReflectionUtil.getField(SingleWebsiteSettings.class, "mSite", this);
         Integer currentValue =
                 mSite.getContentSetting(browserContextHandle, ContentSettingsType.AUTOPLAY);
         // In order to always show the autoplay permission, set it up with the default value if it
@@ -61,10 +60,9 @@ public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
                     : ContentSettingValues.BLOCK;
         }
         // Not possible to embargo AUTOPLAY.
-        BraveReflectionUtil.InvokeMethod(
-                    SingleWebsiteSettings.class, this, "setupContentSettingsPreference",
-                    Preference.class, preference, Integer.class, currentValue,
-                    boolean.class, false);
+        BraveReflectionUtil.InvokeMethod(SingleWebsiteSettings.class, this,
+                "setupContentSettingsPreference", Preference.class, preference, Integer.class,
+                currentValue, boolean.class, false);
     }
 
     private Context getStyledContext() {

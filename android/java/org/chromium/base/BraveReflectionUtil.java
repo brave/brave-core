@@ -8,9 +8,9 @@ package org.chromium.base;
 import org.chromium.base.Log;
 
 import java.lang.Class;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Field;
 
 public class BraveReflectionUtil {
     private static String TAG = "BraveReflectionUtil";
@@ -38,8 +38,7 @@ public class BraveReflectionUtil {
                 }
             }
             Method toInvoke = methodOwner.getDeclaredMethod(method, parameterTypes);
-            if (!toInvoke.isAccessible())
-                toInvoke.setAccessible(true);
+            if (!toInvoke.isAccessible()) toInvoke.setAccessible(true);
             try {
                 return toInvoke.invoke(obj, args);
             } catch (IllegalAccessException e) {
@@ -56,11 +55,10 @@ public class BraveReflectionUtil {
         return null;
     }
 
-    public static Object getField(Class ownerClass, String fieldName, Object obj){
+    public static Object getField(Class ownerClass, String fieldName, Object obj) {
         try {
             Field field = ownerClass.getDeclaredField(fieldName);
-            if(!field.isAccessible())
-                field.setAccessible(true);
+            if (!field.isAccessible()) field.setAccessible(true);
             return field.get(obj);
         } catch (NoSuchFieldException e) {
             Log.e(TAG, "Field not found: " + e);

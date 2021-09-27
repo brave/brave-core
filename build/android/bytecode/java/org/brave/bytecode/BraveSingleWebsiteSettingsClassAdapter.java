@@ -8,18 +8,23 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveSingleWebsiteSettingsClassAdapter extends BraveClassVisitor {
-    static String sSingleWebsiteSettingsClassName = "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings";
-    static String sBraveSingleWebsiteSettingsClassName = "org/chromium/components/browser_ui/site_settings/BraveSingleWebsiteSettings";
+    static String sSingleWebsiteSettingsClassName =
+            "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings";
+    static String sBraveSingleWebsiteSettingsClassName =
+            "org/chromium/components/browser_ui/site_settings/BraveSingleWebsiteSettings";
 
     public BraveSingleWebsiteSettingsClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
         changeSuperName(sSingleWebsiteSettingsClassName, sBraveSingleWebsiteSettingsClassName);
 
-        changeMethodOwner(sSingleWebsiteSettingsClassName, "getPreferenceKey", sBraveSingleWebsiteSettingsClassName);
-        changeMethodOwner(sSingleWebsiteSettingsClassName, "setupContentSettingsPreferences", sBraveSingleWebsiteSettingsClassName);
+        changeMethodOwner(sSingleWebsiteSettingsClassName, "getPreferenceKey",
+                sBraveSingleWebsiteSettingsClassName);
+        changeMethodOwner(sSingleWebsiteSettingsClassName, "setupContentSettingsPreferences",
+                sBraveSingleWebsiteSettingsClassName);
 
         makePublicMethod(sSingleWebsiteSettingsClassName, "setupContentSettingsPreference");
-        changeMethodOwner(sBraveSingleWebsiteSettingsClassName, "setupContentSettingsPreference", sSingleWebsiteSettingsClassName);
+        changeMethodOwner(sBraveSingleWebsiteSettingsClassName, "setupContentSettingsPreference",
+                sSingleWebsiteSettingsClassName);
     }
 }

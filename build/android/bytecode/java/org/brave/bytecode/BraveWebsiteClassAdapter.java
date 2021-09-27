@@ -9,7 +9,8 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveWebsiteClassAdapter extends BraveClassVisitor {
     static String sWebsiteClassName = "org/chromium/components/browser_ui/site_settings/Website";
-    static String sBraveWebsiteClassName = "org/chromium/components/browser_ui/site_settings/BraveWebsite";
+    static String sBraveWebsiteClassName =
+            "org/chromium/components/browser_ui/site_settings/BraveWebsite";
 
     public BraveWebsiteClassAdapter(ClassVisitor visitor) {
         super(visitor);

@@ -96,8 +96,8 @@ class BraveClassVisitor extends ClassVisitor {
             Map<String, String> types = getMapForRedirectTypeInMethod(mName, mMethod.name);
             if (types != null && types.containsKey(type)) {
                 String newType = types.get(type);
-                System.out.println("redirecting type in method " + mMethod.name
-                        + " in class " + mName + " from " + type + " to " + newType);
+                System.out.println("redirecting type in method " + mMethod.name + " in class "
+                        + mName + " from " + type + " to " + newType);
                 type = newType;
             }
             super.visitTypeInsn(opcode, type);
@@ -166,8 +166,7 @@ class BraveClassVisitor extends ClassVisitor {
                 mMakePublicMethods.entrySet()) {
             String entryClassName = entry.getKey();
             ArrayList<String> methodNames = entry.getValue();
-            return className.equals(entryClassName) &&
-                   methodNames.contains(methodName);
+            return className.equals(entryClassName) && methodNames.contains(methodName);
         }
 
         return false;
@@ -187,12 +186,10 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     private boolean shouldMakePrivateMethod(String className, String methodName) {
-        for(Map.Entry<String, ArrayList<String>> entry :
-                mMakePrivateMethods.entrySet()) {
+        for (Map.Entry<String, ArrayList<String>> entry : mMakePrivateMethods.entrySet()) {
             String entryClassName = entry.getKey();
             ArrayList<String> methodNames = entry.getValue();
-            return className.equals(entryClassName) &&
-                   methodNames.contains(methodName);
+            return className.equals(entryClassName) && methodNames.contains(methodName);
         }
 
         return false;
@@ -289,8 +286,7 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     protected void makeNonFinalClass(String className) {
-        if (!mMakeNonFinalClasses.contains(className))
-            mMakeNonFinalClasses.add(className);
+        if (!mMakeNonFinalClasses.contains(className)) mMakeNonFinalClasses.add(className);
     }
 
     private boolean shouldMakePublicInnerClass(String innerName) {
@@ -359,12 +355,11 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     private Map<String, String> getMapForRedirectTypeInMethod(String className, String methodName) {
-        for(Map.Entry<String, Map<String, Map<String, String>>> entry :
+        for (Map.Entry<String, Map<String, Map<String, String>>> entry :
                 mRedirectMethodType.entrySet()) {
             String entryClassName = entry.getKey();
             Map<String, Map<String, String>> methodNames = entry.getValue();
-            for(Map.Entry<String, Map<String, String>> entryMethod :
-                methodNames.entrySet()) {
+            for (Map.Entry<String, Map<String, String>> entryMethod : methodNames.entrySet()) {
                 String entryMethodName = entryMethod.getKey();
                 Map<String, String> typeNames = entryMethod.getValue();
                 if (className.equals(entryClassName) && entryMethodName.equals(methodName))
@@ -375,8 +370,8 @@ class BraveClassVisitor extends ClassVisitor {
         return null;
     }
 
-    protected void redirectTypeInMethod(String className,
-            String methodName, String originalTypeName, String newTypeName) {
+    protected void redirectTypeInMethod(
+            String className, String methodName, String originalTypeName, String newTypeName) {
         Map<String, Map<String, String>> methods = mRedirectMethodType.get(className);
         if (methods == null) {
             methods = new HashMap<String, Map<String, String>>();
@@ -470,8 +465,9 @@ class BraveClassVisitor extends ClassVisitor {
                 if (desc.contains(originalTypeName)) {
                     // Use literal replacement like other methods in the class
                     desc = desc.replace(originalTypeName, newTypeName);
-                    System.out.println("redirecting type in method declaration " + name + " in class "
-                            + mName + " from " + originalTypeName + " to " + newTypeName);
+                    System.out.println("redirecting type in method declaration " + name
+                            + " in class " + mName + " from " + originalTypeName + " to "
+                            + newTypeName);
                 }
             }
         }

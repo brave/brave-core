@@ -8,16 +8,15 @@ package org.chromium.components.browser_ui.site_settings;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import org.chromium.base.annotations.UsedByReflection;
-import org.chromium.base.Log;
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.Log;
+import org.chromium.base.annotations.UsedByReflection;
 import org.chromium.components.content_settings.ContentSettingsType;
 import org.chromium.content_public.browser.BrowserContextHandle;
 
 @UsedByReflection("brave_site_settings_preferences.xml")
-public class BraveSingleCategorySettings extends SiteSettingsPreferenceFragment
-        implements AddExceptionPreference.SiteAddedCallback {
-
+public class BraveSingleCategorySettings
+        extends SiteSettingsPreferenceFragment implements AddExceptionPreference.SiteAddedCallback {
     private static final String ADD_EXCEPTION_KEY = "add_exception";
 
     @Override
@@ -35,13 +34,14 @@ public class BraveSingleCategorySettings extends SiteSettingsPreferenceFragment
         BrowserContextHandle browserContextHandle =
                 getSiteSettingsDelegate().getBrowserContextHandle();
         int resource = 0;
-        SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(SingleCategorySettings.class, "mCategory", this);
+        SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(
+                SingleCategorySettings.class, "mCategory", this);
 
         if (mCategory.showSites(SiteSettingsCategory.Type.AUTOPLAY)) {
             resource = R.string.website_settings_add_site_description_autoplay;
         } else {
             return (String) BraveReflectionUtil.InvokeMethod(
-                SingleCategorySettings.class, this, "getAddExceptionDialogMessage");
+                    SingleCategorySettings.class, this, "getAddExceptionDialogMessage");
         }
         assert resource > 0;
         return getString(resource);
@@ -52,14 +52,16 @@ public class BraveSingleCategorySettings extends SiteSettingsPreferenceFragment
         BrowserContextHandle browserContextHandle =
                 getSiteSettingsDelegate().getBrowserContextHandle();
         boolean exception = false;
-        SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(SingleCategorySettings.class, "mCategory", this);
+        SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(
+                SingleCategorySettings.class, "mCategory", this);
 
         if (mCategory.showSites(SiteSettingsCategory.Type.AUTOPLAY)) {
             exception = true;
         }
         if (exception) {
-            getPreferenceScreen().addPreference(new AddExceptionPreference(getPreferenceManager().getContext(),
-                    ADD_EXCEPTION_KEY, getAddExceptionDialogMessage(), mCategory, this));
+            getPreferenceScreen().addPreference(
+                    new AddExceptionPreference(getPreferenceManager().getContext(),
+                            ADD_EXCEPTION_KEY, getAddExceptionDialogMessage(), mCategory, this));
         }
     }
 

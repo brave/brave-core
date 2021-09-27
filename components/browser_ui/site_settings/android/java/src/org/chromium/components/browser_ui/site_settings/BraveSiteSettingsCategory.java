@@ -17,7 +17,7 @@ public class BraveSiteSettingsCategory {
                 return SiteSettingsCategory.contentSettingsType(type);
         }
     }
-    
+
     public static String preferenceKey(@Type int type) {
         switch (type) {
             case Type.AUTOPLAY:

@@ -8,13 +8,15 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveWebsitePermissionsFetcherClassAdapter extends BraveClassVisitor {
-    static String sWebsitePermissionsFetcherClassName = "org/chromium/components/browser_ui/site_settings/WebsitePermissionsFetcher";
-    static String sBraveWebsitePermissionsFetcherClassName = "org/chromium/components/browser_ui/site_settings/BraveWebsitePermissionsFetcher";
+    static String sWebsitePermissionsFetcherClassName =
+            "org/chromium/components/browser_ui/site_settings/WebsitePermissionsFetcher";
+    static String sBraveWebsitePermissionsFetcherClassName =
+            "org/chromium/components/browser_ui/site_settings/BraveWebsitePermissionsFetcher";
 
     public BraveWebsitePermissionsFetcherClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeMethodOwner(
-                sWebsitePermissionsFetcherClassName, "getPermissionsType", sBraveWebsitePermissionsFetcherClassName);
+        changeMethodOwner(sWebsitePermissionsFetcherClassName, "getPermissionsType",
+                sBraveWebsitePermissionsFetcherClassName);
     }
 }

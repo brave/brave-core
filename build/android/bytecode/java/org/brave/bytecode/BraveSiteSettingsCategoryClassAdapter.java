@@ -8,13 +8,17 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveSiteSettingsCategoryClassAdapter extends BraveClassVisitor {
-    static String sSiteSettingsCategoryClassName = "org/chromium/components/browser_ui/site_settings/SiteSettingsCategory";
-    static String sBraveSiteSettingsCategoryClassName = "org/chromium/components/browser_ui/site_settings/BraveSiteSettingsCategory";
+    static String sSiteSettingsCategoryClassName =
+            "org/chromium/components/browser_ui/site_settings/SiteSettingsCategory";
+    static String sBraveSiteSettingsCategoryClassName =
+            "org/chromium/components/browser_ui/site_settings/BraveSiteSettingsCategory";
 
     public BraveSiteSettingsCategoryClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeMethodOwner(sSiteSettingsCategoryClassName, "contentSettingsType", sBraveSiteSettingsCategoryClassName);
-        changeMethodOwner(sSiteSettingsCategoryClassName, "preferenceKey", sBraveSiteSettingsCategoryClassName);
+        changeMethodOwner(sSiteSettingsCategoryClassName, "contentSettingsType",
+                sBraveSiteSettingsCategoryClassName);
+        changeMethodOwner(sSiteSettingsCategoryClassName, "preferenceKey",
+                sBraveSiteSettingsCategoryClassName);
     }
 }

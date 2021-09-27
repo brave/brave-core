@@ -8,19 +8,26 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveContentSettingsResourcesClassAdapter extends BraveClassVisitor {
-    static String sContentSettingsResourcesClassName = "org/chromium/components/browser_ui/site_settings/ContentSettingsResources";
-    static String sBraveContentSettingsResourcesClassName = "org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources";
-    static String sContentSettingsResourcesResourceItemClassName = "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem";
-    static String sBraveContentSettingsResourcesResourceItemClassName = "org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources$ResourceItem";
+    static String sContentSettingsResourcesClassName =
+            "org/chromium/components/browser_ui/site_settings/ContentSettingsResources";
+    static String sBraveContentSettingsResourcesClassName =
+            "org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources";
+    static String sContentSettingsResourcesResourceItemClassName =
+            "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem";
+    static String sBraveContentSettingsResourcesResourceItemClassName =
+            "org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources$ResourceItem";
 
     public BraveContentSettingsResourcesClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
         makePublicMethod(sContentSettingsResourcesClassName, "getResourceItem");
-        changeMethodOwner(
-                sContentSettingsResourcesClassName, "getResourceItem", sBraveContentSettingsResourcesClassName);
+        changeMethodOwner(sContentSettingsResourcesClassName, "getResourceItem",
+                sBraveContentSettingsResourcesClassName);
         makePublicInnerClass(sContentSettingsResourcesClassName, "ResourceItem");
-        redirectConstructor(sBraveContentSettingsResourcesResourceItemClassName, sContentSettingsResourcesResourceItemClassName);
-        redirectTypeInMethod(sBraveContentSettingsResourcesClassName, "getResourceItem", sBraveContentSettingsResourcesResourceItemClassName, sContentSettingsResourcesResourceItemClassName);
+        redirectConstructor(sBraveContentSettingsResourcesResourceItemClassName,
+                sContentSettingsResourcesResourceItemClassName);
+        redirectTypeInMethod(sBraveContentSettingsResourcesClassName, "getResourceItem",
+                sBraveContentSettingsResourcesResourceItemClassName,
+                sContentSettingsResourcesResourceItemClassName);
     }
 }

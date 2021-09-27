@@ -11,10 +11,10 @@ import org.chromium.components.content_settings.ContentSettingsType;
 public class BraveWebsitePermissionsFetcher {
     public static WebsitePermissionsType getPermissionsType(
             @ContentSettingsType int contentSettingsType) {
-            switch (contentSettingsType) {
-                case ContentSettingsType.AUTOPLAY:
-                    return WebsitePermissionsType.CONTENT_SETTING_EXCEPTION;
-            }
-            return WebsitePermissionsFetcher.getPermissionsType(contentSettingsType);
+        switch (contentSettingsType) {
+            case ContentSettingsType.AUTOPLAY:
+                return WebsitePermissionsType.CONTENT_SETTING_EXCEPTION;
+        }
+        return WebsitePermissionsFetcher.getPermissionsType(contentSettingsType);
     }
 }
