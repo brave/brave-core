@@ -125,8 +125,14 @@ function Container (props: Props) {
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
 
-  const accountAssetOptions: AccountAssetOptionType[] = React.useMemo(() => {
-    const tokens = fullTokenList
+  const tokenOptions: TokenInfo[] = React.useMemo(() =>
+    fullTokenList.map(token => ({
+      ...token,
+      logo: `chrome://erc-token-images/${token.logo}`
+    })), [fullTokenList])
+
+  const assetOptions: AccountAssetOptionType[] = React.useMemo(() => {
+    const tokens = tokenOptions
       .filter(token => token.symbol !== 'BAT')
       .map(token => ({
         asset: token,
@@ -135,7 +141,26 @@ function Container (props: Props) {
       }))
 
     return [ETH, BAT, ...tokens]
-  }, [fullTokenList])
+  }, [tokenOptions])
+
+  const userVisibleTokenOptions: TokenInfo[] = React.useMemo(() =>
+    userVisibleTokensInfo.map(token => ({
+      ...token,
+      logo: `chrome://erc-token-images/${token.logo}`
+    })
+  ), [userVisibleTokensInfo])
+
+  const sendAssetOptions = selectedAccount.tokens?.map(
+    token => ({
+      ...token,
+      asset: {
+        ...token.asset,
+        logo: token.asset.symbol === 'ETH'
+          ? ETH.asset.logo
+          : `chrome://erc-token-images/${token.asset.logo}`
+      }
+    })
+  )
 
   // TODO (DOUGLAS): This needs to be set up in the Reducer in a future PR
   const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(ETH)
@@ -409,12 +434,12 @@ function Container (props: Props) {
 
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList = React.useMemo(() => {
-    return userVisibleTokensInfo.map((asset) => ({
+    return userVisibleTokenOptions.map((asset) => ({
       asset: asset,
       assetBalance: fullAssetBalance(asset).toString(),
       fiatBalance: fullAssetFiatBalance(asset).toString()
     }))
-  }, [userVisibleTokensInfo, accounts])
+  }, [userVisibleTokenOptions, accounts])
 
   const onSelectAsset = (asset: TokenInfo) => {
     props.walletPageActions.selectAsset({ asset: asset, timeFrame: selectedTimeline })
@@ -458,14 +483,14 @@ function Container (props: Props) {
   }, [accounts, selectedAccount, fromAsset])
 
   const onSelectPresetFromAmount = (percent: number) => {
-    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === fromAsset.asset.symbol)
+    const asset = userVisibleTokenOptions.find((asset) => asset.symbol === fromAsset.asset.symbol)
     const amount = Number(fromAsset.assetBalance) * percent
     const formatedAmmount = formatBalance(amount.toString(), asset?.decimals ?? 18)
     setFromAmount(formatedAmmount)
   }
 
   const onSelectPresetSendAmount = (percent: number) => {
-    const asset = userVisibleTokensInfo.find((asset) => asset.symbol === fromAsset.asset.symbol)
+    const asset = userVisibleTokenOptions.find((asset) => asset.symbol === fromAsset.asset.symbol)
     const amount = Number(fromAsset.assetBalance) * percent
     const formatedAmmount = formatBalance(amount.toString(), asset?.decimals ?? 18)
     setSendAmount(formatedAmmount)
@@ -570,7 +595,13 @@ function Container (props: Props) {
   }
 
   const onAddUserAsset = (token: TokenInfo) => {
-    props.walletActions.addUserAsset({ token: token, chainId: selectedNetwork.chainId })
+    props.walletActions.addUserAsset({
+      token: {
+        ...token,
+        logo: token.logo?.replace('chrome://erc-token-images/', '')
+      },
+      chainId: selectedNetwork.chainId
+    })
   }
 
   const onRemoveUserAsset = (contractAddress: string) => {
@@ -579,7 +610,7 @@ function Container (props: Props) {
 
   React.useEffect(() => {
     // Creates a list of Accepted Portfolio Routes
-    const acceptedPortfolioRoutes = userVisibleTokensInfo.map((token) => {
+    const acceptedPortfolioRoutes = userVisibleTokenOptions.map((token) => {
       return `${WalletRoutes.Portfolio}/${token.symbol}`
     })
     // Creates a list of Accepted Account Routes
@@ -617,7 +648,7 @@ function Container (props: Props) {
     hasInitialized,
     setupStillInProgress,
     selectedAsset,
-    userVisibleTokensInfo,
+    userVisibleTokenOptions,
     accounts
   ])
 
@@ -694,7 +725,7 @@ function Container (props: Props) {
                 selectedPortfolioTimeline={selectedPortfolioTimeline}
                 transactions={transactions}
                 userAssetList={userAssetList}
-                fullAssetList={fullTokenList}
+                fullAssetList={tokenOptions}
                 onConnectHardwareWallet={onConnectHardwareWallet}
                 onCreateAccount={onCreateAccount}
                 onImportAccount={onImportAccount}
@@ -715,7 +746,7 @@ function Container (props: Props) {
                 hasImportError={importError}
                 onAddHardwareAccounts={onAddHardwareAccounts}
                 transactionSpotPrices={transactionSpotPrices}
-                userVisibleTokensInfo={userVisibleTokensInfo}
+                userVisibleTokensInfo={userVisibleTokenOptions}
                 getBalance={getBalance}
                 onAddUserAsset={onAddUserAsset}
                 onSetUserAssetVisible={onSetUserAssetVisible}
@@ -748,8 +779,8 @@ function Container (props: Props) {
             slippageTolerance={slippageTolerance}
             toAddress={toAddress}
             buyAssetOptions={WyreAccountAssetOptions}
-            sendAssetOptions={selectedAccount.tokens}
-            swapAssetOptions={accountAssetOptions}
+            sendAssetOptions={sendAssetOptions}
+            swapAssetOptions={assetOptions}
             isSwapSubmitDisabled={isSwapButtonDisabled()}
             onSetBuyAmount={onSetBuyAmount}
             onSetToAddress={onSetToAddress}

@@ -46,7 +46,8 @@ import {
   WalletAccountType,
   BuySendSwapViewTypes,
   AccountAssetOptionType,
-  EthereumChain
+  EthereumChain,
+  TokenInfo
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
@@ -116,8 +117,14 @@ function Container (props: Props) {
   const [sendAmount, setSendAmount] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
 
-  const accountAssetOptions: AccountAssetOptionType[] = React.useMemo(() => {
-    const tokens = fullTokenList
+  const tokenOptions: TokenInfo[] = React.useMemo(() =>
+    fullTokenList.map(token => ({
+      ...token,
+      logo: `chrome://erc-token-images/${token.logo}`
+    })), [fullTokenList])
+
+  const assetOptions: AccountAssetOptionType[] = React.useMemo(() => {
+    const tokens = tokenOptions
       .filter(token => token.symbol !== 'BAT')
       .map(token => ({
         asset: token,
@@ -126,7 +133,26 @@ function Container (props: Props) {
       }))
 
     return [ETH, BAT, ...tokens]
-  }, [fullTokenList])
+  }, [tokenOptions])
+
+  const userVisibleTokenOptions: TokenInfo[] = React.useMemo(() =>
+    userVisibleTokensInfo.map(token => ({
+      ...token,
+      logo: `chrome://erc-token-images/${token.logo}`
+    })
+  ), [userVisibleTokensInfo])
+
+  const sendAssetOptions = selectedAccount.tokens?.map(
+      token => ({
+        ...token,
+        asset: {
+          ...token.asset,
+          logo: token.asset.symbol === 'ETH'
+              ? ETH.asset.logo
+              : `chrome://erc-token-images/${token.asset.logo}`
+        }
+      })
+  )
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
@@ -382,7 +408,7 @@ function Container (props: Props) {
             selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             transactionInfo={selectedPendingTransaction}
             transactionSpotPrices={transactionSpotPrices}
-            visibleTokens={userVisibleTokensInfo}
+            visibleTokens={userVisibleTokenOptions}
           />
         </SignContainer>
       </PanelWrapper>
@@ -443,9 +469,9 @@ function Container (props: Props) {
     if (selectedPanel === 'buy') {
       assets = WyreAccountAssetOptions
     } else if (selectedPanel === 'send') {
-      assets = selectedAccount.tokens
+      assets = sendAssetOptions
     } else {  // swap
-      assets = accountAssetOptions
+      assets = assetOptions
     }
     return (
       <PanelWrapper isLonger={false}>
