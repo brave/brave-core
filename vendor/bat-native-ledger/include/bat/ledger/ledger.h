@@ -89,6 +89,9 @@ using PendingContributionsTotalCallback = std::function<void(double)>;
 using PendingContributionInfoListCallback =
     std::function<void(type::PendingContributionInfoList)>;
 
+using UnverifiedPublishersCallback =
+    std::function<void(std::vector<std::string>&&)>;
+
 using PublisherInfoListCallback = std::function<void(type::PublisherInfoList)>;
 
 using PublisherInfoCallback =
