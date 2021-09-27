@@ -22,6 +22,10 @@ class BravePermissionManager : public PermissionManager {
   GURL GetCanonicalOrigin(ContentSettingsType permission,
                           const GURL& requesting_origin,
                           const GURL& embedding_origin) const override;
+
+  void ResetPermissionViaContentSetting(ContentSettingsType type,
+                                        const GURL& requesting_origin,
+                                        const GURL& embedding_origin);
 };
 
 }  // namespace permissions

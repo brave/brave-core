@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "components/permissions/permission_context_base.h"
+#include "content/public/browser/browser_thread.h"
 
 namespace permissions {
 
@@ -26,6 +27,19 @@ GURL BravePermissionManager::GetCanonicalOrigin(
 
   return PermissionManager::GetCanonicalOrigin(permission, requesting_origin,
                                                embedding_origin);
+}
+
+void BravePermissionManager::ResetPermissionViaContentSetting(
+    ContentSettingsType type,
+    const GURL& requesting_origin,
+    const GURL& embedding_origin) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  PermissionContextBase* context = GetPermissionContext(type);
+  if (!context)
+    return;
+  context->ResetPermission(
+      GetCanonicalOrigin(type, requesting_origin, embedding_origin),
+      embedding_origin.GetOrigin());
 }
 
 }  // namespace permissions
