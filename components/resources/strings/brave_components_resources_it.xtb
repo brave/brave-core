@@ -559,7 +559,6 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="7530570094705720669">Creazione del wallet</translation>
 <translation id="1988679729106502285">NOTA:</translation>
 <translation id="7979350009208995417">Questo creatore non si è ancora configurato per poter ricevere mance dal tuo portafoglio. Ogni mancia che invierai rimarrà in sospeso nel tuo portafoglio e l’invio verrà ritentato in automatico per 90 giorni.</translation>
-<translation id="7461596279975181413">Questo creatore verificato di Brave non ha ancora configurato il suo account per ricevere contributi da utenti di Brave. Il tuo browser continuerà a cercare di contribuire fino a quando non verrà verificato, o fino a quando non saranno trascorsi 90 giorni.</translation>
 <translation id="3197752845651180812">Contributi in attesa</translation>
 <translation id="6964891561514920613">Mostra tutti i contributi in sospeso</translation>
 <translation id="4346944508027912677">In attesa fino a</translation>
@@ -759,7 +758,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="8914505352873092008">Vai alla pagina delle impostazioni IPFS</translation>
 <translation id="3465468510001693544">Diagnostica IPFS</translation>
 <translation id="2527518382346359563">Vai alla pagina della diagnostica IPFS</translation>
-<translation id="8192016636169857406">Documenti IPFS</translation>
+<translation id="8192016636169857406">Documentazione IPFS</translation>
 <translation id="6863052043162730918">Vai alla pagina dei documenti IPFS</translation>
 <translation id="3862600063748690056">Importazione IPFS completata</translation>
 <translation id="8263749381887932384">Importazione IPFS parzialmente completata</translation>

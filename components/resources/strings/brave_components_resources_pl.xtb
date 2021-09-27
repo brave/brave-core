@@ -558,7 +558,6 @@
 <translation id="7530570094705720669">Tworzenie portfela</translation>
 <translation id="1988679729106502285">UWAGA:</translation>
 <translation id="7979350009208995417">Ten kreator nie jest obecnie skonfigurowany do otrzymywania napiwków z portfela. Wszelkie napiwki, które zarobisz pozostaną w portfelu jako oczekujące i będą automatycznie ponawiane przez 90 dni.</translation>
-<translation id="7461596279975181413">Ten zweryfikowany twórca Brave nie ma jeszcze skonfigurowanego konta i nie może otrzymywać wkładów od użytkowników Brave. Twoja przeglądarka będzie próbowała przekazywać wkład przez 90 dni, aż twórca nie zatwierdzi konta.</translation>
 <translation id="3197752845651180812">Oczekujące wpłaty</translation>
 <translation id="6964891561514920613">Pokaż wszystkie oczekujące wpłaty</translation>
 <translation id="4346944508027912677">Oczekujące do</translation>
@@ -758,7 +757,7 @@
 <translation id="8914505352873092008">Przejdź dos trony ustawień IPFS</translation>
 <translation id="3465468510001693544">Diagnostyka IPFS</translation>
 <translation id="2527518382346359563">Przejdź do strony diagnostyki IPFS</translation>
-<translation id="8192016636169857406">Dokumenty IPFS</translation>
+<translation id="8192016636169857406">Dokumentacja IPFS</translation>
 <translation id="6863052043162730918">Przejdź do strony dokumentów IPFS</translation>
 <translation id="3862600063748690056">Import IPFS zakończony</translation>
 <translation id="8263749381887932384">Import IPFS zakończony częściowo</translation>
@@ -783,14 +782,14 @@
 <translation id="5894023780213944778">Mój portfel</translation>
 <translation id="2613359062756190460">Jednorazowe napiwki</translation>
 <translation id="590733288489975971">Nagrody z reklam</translation>
-<translation id="3026978804849658576">Wyświetl oświadczenie</translation>
+<translation id="3026978804849658576">Wyświetl zestawienie</translation>
 <translation id="8494748383523030337">Twoje saldo</translation>
 <translation id="7701466644604753106">Włącz Speedreader</translation>
 <translation id="763042262431778831">Wyłącz Speedreader</translation>
 <translation id="8488282162676695335">Portfel Brave</translation>
 <translation id="1148827340205946630">Użytkownik odrzucił żądanie.</translation>
 <translation id="2403819048476450281">Nieprawidłowe parametry</translation>
-<translation id="9161147058107529840">Oczekiwany jest pojedynczy parametr obiektu</translation>
+<translation id="9161147058107529840">Oczekiwano pojedynczego parametru obiektu</translation>
 <translation id="1875861420974447980">Ten identyfikator łańcucha jest już używany</translation>
 <translation id="167698752210114155">Wystąpił błąd wewnętrzny</translation>
 <translation id="4641919696349069826">Obecnie trwa przetwarzanie żądania</translation>

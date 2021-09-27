@@ -127,7 +127,7 @@
 <translation id="8803682034537762884">1行毎にAdblock Plusフィルター構文でフィルターが記述されています</translation>
 <translation id="4207882331679786399">フィルターリストへのサブスクライブ</translation>
 <translation id="451692060157886184">信頼できるコミュニティにより作成および管理されているリストを追加します</translation>
-<translation id="7617831480435794399">信頼するエンティティのリストにのみサブスクライブしてください。ブラウザでは入力されたURLからのリスト更新が定期的にチェックされ、IPアドレスがサーバーに表示されます。</translation>
+<translation id="7617831480435794399">信頼する事業者のリストにのみサブスクライブしてください。ブラウザでは入力されたURLを用いて定期的にリストの更新があるかチェックを行います。この時、IPアドレスが事業者のサーバーに表示されます。</translation>
 <translation id="5201560661339344083">URLを使用してフィルターリストを追加</translation>
 <translation id="7059127752542505809">URLを入力</translation>
 <translation id="2653659639078652383">送信</translation>
@@ -378,7 +378,7 @@
 <translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>注: <ph name="BOLD_END"/>チップの処理に数分かかる場合があります</translation>
 <translation id="3312470408978098625">ワンタイムチップが送信されました。</translation>
 <translation id="5096821444729034955">投稿に</translation>
-<translation id="2978223787436054634">サポートについてツイートする</translation>
+<translation id="2978223787436054634">チッピングについてツイートする</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>クイックツアー<ph name="TOUR_LINK_END"/>をご覧いただくか、<ph name="LEARN_LINK_BEGIN"/>こちら<ph name="LEARN_LINK_END"/>から詳細をご覧ください。</translation>
 <translation id="7465614181960492526">トークンを獲得して還元しよう</translation>
 <translation id="2731539192954672606">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのサイトやコンテンツクリエイターを自動的にサポートします。</translation>
@@ -561,7 +561,6 @@
 <translation id="7530570094705720669">ウォレットの作成</translation>
 <translation id="1988679729106502285">注意:</translation>
 <translation id="7979350009208995417">このクリエイターは現在、あなたのウォレットからチップを受け取る設定が完了していません。あなたが作成したチップは、あなたのウォレットに保留されたまま90日間自動的に再試行されます。</translation>
-<translation id="7461596279975181413">このBrave認定クリエーターは、Braveユーザーからの支援を受け取るためのアカウント設定を完了していません。Braveは、アカウント設定が完了するか、90日が経過するまで支援を試みます。</translation>
 <translation id="3197752845651180812">未承認の支援支払い</translation>
 <translation id="6964891561514920613">すべての未承認の支援支払いを表示</translation>
 <translation id="4346944508027912677">未処理案件と期限</translation>

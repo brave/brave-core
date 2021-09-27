@@ -558,7 +558,6 @@
 <translation id="7530570094705720669">Creating wallet</translation>
 <translation id="1988679729106502285">NOTE:</translation>
 <translation id="7979350009208995417">This creator is currently not configured to receive tips from your wallet. Any tip you make will remain pending in your wallet and retry automatically for 90 days.</translation>
-<translation id="7461596279975181413">This Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</translation>
 <translation id="3197752845651180812">Pending contributions</translation>
 <translation id="6964891561514920613">Show all pending contributions</translation>
 <translation id="4346944508027912677">Pending until</translation>

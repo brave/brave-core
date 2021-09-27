@@ -559,7 +559,6 @@
 <translation id="7530570094705720669">إنشاء محفظة</translation>
 <translation id="1988679729106502285">ملاحظة:</translation>
 <translation id="7979350009208995417">لم يجر إعداد هذا المنشئ حاليًا لتلقي إكراميات من محفظتك. كما تبقى أي إكراميات تقدمها معلقة في محفظتك وتتم إعادة المحاولة تلقائيًا لمدة 90 يومًا.</translation>
-<translation id="7461596279975181413">لم يقم مبدع Brave المُتحقق منه هذا بعد بتكوين حسابه لتلقي مساهمات من مستخدمي Brave. سيظل متصفحك يحاول المساهمة حتى التحقق، أو حتى مرور 90 يومًا.</translation>
 <translation id="3197752845651180812">المساهمات المعلقة</translation>
 <translation id="6964891561514920613">عرض جميع المساهمات المعلقة</translation>
 <translation id="4346944508027912677">معلقة حتى</translation>
@@ -791,7 +790,7 @@
 <translation id="8488282162676695335">محفظة Brave</translation>
 <translation id="1148827340205946630">رفض المستخدم الطلب</translation>
 <translation id="2403819048476450281">معايير غير صالحة</translation>
-<translation id="9161147058107529840">معيار منفرد متوقّع لعنصر.</translation>
+<translation id="9161147058107529840">Expected لم تتلقّ معيار object.</translation>
 <translation id="1875861420974447980">معرّف السلسلة هذا مستخدم حاليًّا</translation>
 <translation id="167698752210114155">حدث خطأ داخلي</translation>
 <translation id="4641919696349069826">هناك طلب قيد التقدم بالفعل</translation>

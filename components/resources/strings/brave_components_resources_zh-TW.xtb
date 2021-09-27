@@ -85,7 +85,7 @@
 <translation id="2166494527623220386">在您瀏覽器中的 Gemini 上直接交易加密貨幣。</translation>
 <translation id="7191394989411626168">透過關閉卡片，所有目前可見的卡片都會被隱藏。但您可能仍會被通知新的卡片。</translation>
 <translation id="6820526586005233839">已暫停 Brave 廣告</translation>
-<translation id="5190407395832551012">為了防止 Brave Rewards 被濫用，我們會隨機要求使用者解決驗證碼。點擊「解決」即可恢復廣告。</translation>
+<translation id="5190407395832551012">為了防止 Brave Rewards 遭到濫用，我們會隨機要求使用者解決驗證碼。點擊“「解決」”即可恢復廣告。</translation>
 <translation id="1693773514029371138">解決</translation>
 <translation id="6991128190741664836">稍後</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
@@ -122,13 +122,13 @@
 <translation id="8686201964111147748">總廣告與追蹤器封鎖數量：</translation>
 <translation id="4673764878177947707">自訂過濾器</translation>
 <translation id="8803682034537762884">一行一個，以 Adblock Plus 過濾器的語法描述</translation>
-<translation id="4207882331679786399">訂閱過濾清單</translation>
+<translation id="4207882331679786399">訂閱篩選清單</translation>
 <translation id="451692060157886184">新增由您信任的社群建立與維護的其他清單</translation>
-<translation id="7617831480435794399">僅訂閱來自您信任團體的清單。您的瀏覽器會定期從您輸入的 URL 中檢查清單更新，並將您的 IP 位置揭露給他們的伺服器。</translation>
-<translation id="5201560661339344083">透過 URL 新增過濾清單</translation>
+<translation id="7617831480435794399">僅訂閱來自您信任實體的清單。您的瀏覽器會定期從您輸入的 URL 中檢查清單更新，並將您的 IP 位址向其伺服器顯示。</translation>
+<translation id="5201560661339344083">透過 URL 新增篩選清單</translation>
 <translation id="7059127752542505809">輸入 URL</translation>
 <translation id="2653659639078652383">提交</translation>
-<translation id="8144920228804905953">過濾清單</translation>
+<translation id="8144920228804905953">篩選清單</translation>
 <translation id="9204006549413740506">上次更新</translation>
 <translation id="6745592621698551453">立即更新</translation>
 <translation id="5334844597069022743">檢視來源</translation>
@@ -507,7 +507,7 @@
 <translation id="3157931365184549694">還原</translation>
 <translation id="1797334173232638045">已固定的網站已移往以下地點：</translation>
 <translation id="6803187280799213426">您在 Brave 錢包中的資金是虛擬的所以不需要備份。您可以專門在此瀏覽器上使用。</translation>
-<translation id="5904352893156917813">如果您想要在全新安裝瀏覽器或換到新裝置時確保您所有資金的安全，同時擁有其他好處，例如存款、提款與轉帳，我們建議<ph name="LINK_BEGIN"/>驗證您的錢包<ph name="LINK_END"/>。</translation>
+<translation id="5904352893156917813">如果您想在安裝全新瀏覽器或切換至新裝置時確保您所有資金的安全，同時擁有其他優勢，例如存款、提款與轉帳，我們建議<ph name="LINK_BEGIN"/>驗證您的錢包<ph name="LINK_END"/>。</translation>
 <translation id="5717619667204259673">請確保此復原金鑰的安全。</translation>
 <translation id="4699702339303280827">如果瀏覽器或電腦發生狀況，您隨時都可以使用此金鑰來取回錢包。但務必加以保護 — 任何拿到這個金鑰的人都可以竊取您的錢包。最安全的方式可能’就是寫在一張紙上，或任何其它您記錄重要資料的地方。</translation>
 <translation id="8979401359137062629">請注意：</translation>
@@ -558,7 +558,6 @@
 <translation id="7530570094705720669">創造錢包</translation>
 <translation id="1988679729106502285">注意：</translation>
 <translation id="7979350009208995417">這個創作者還沒設定好從您的錢包中接收小費。任何您提供的小費都會先在您的錢包中處於擱置狀態，並在 90 天內重試。</translation>
-<translation id="7461596279975181413">此 Brave 驗證的創作者還沒設定好他們的帳號來接收從 Brave 使用者而來的貢獻。您的瀏覽器將會繼續試著捐款，直到他們驗證完畢，或過了90天為止。</translation>
 <translation id="3197752845651180812">預定的捐助</translation>
 <translation id="6964891561514920613">顯示所有預定的捐助</translation>
 <translation id="4346944508027912677">預定直到</translation>
@@ -648,7 +647,7 @@
 <translation id="439104575421522802">工作階段已過期</translation>
 <translation id="8558560988211507902">您的幣安存取權杖已過期。請重新連線以繼續使用小工具。</translation>
 <translation id="8120782981043104657">使用 Gemini 購買加密貨幣</translation>
-<translation id="4011891158762138243">連線至 Gemini 以檢視您的餘額並交易 45 種以上的加密貨幣。</translation>
+<translation id="4011891158762138243">連線至 Gemini 以查看您的餘額並以 45 種以上的加密貨幣進行交易。</translation>
 <translation id="7604416013180651887">連線到 Gemini</translation>
 <translation id="2349109114223854255">您的 Gemini 取用代幣已過期而無法刷新。請重新連線。</translation>
 <translation id="4848984536030986115">無法進行交易</translation>
@@ -755,11 +754,11 @@
 <translation id="62991515067726424">此內容已透過 IPFS 通訊協定載入</translation>
 <translation id="7263366446813126341">星際檔案系統 (IPFS) 是用於點對點資料儲存和傳送的公用網路。您可以深入瞭解 Brave 的整合或隨時設定 IPFS 設定。</translation>
 <translation id="3175567740517780285">IPFS 設定</translation>
-<translation id="8914505352873092008">跳到 IPFS 設定頁面</translation>
+<translation id="8914505352873092008">前往 IPFS 設定頁面</translation>
 <translation id="3465468510001693544">IPFS 診斷</translation>
-<translation id="2527518382346359563">跳到 IPFS 診斷頁面</translation>
+<translation id="2527518382346359563">前往 IPFS 診斷頁面</translation>
 <translation id="8192016636169857406">IPFS 文件</translation>
-<translation id="6863052043162730918">跳到 IPFS 文件頁面</translation>
+<translation id="6863052043162730918">前往 IPFS 文件頁面</translation>
 <translation id="3862600063748690056">IPFS 匯入完成</translation>
 <translation id="8263749381887932384">IPFS 匯入部分完成</translation>
 <translation id="2145699434318651911">IPFS 匯入失敗</translation>
@@ -776,24 +775,24 @@
 <translation id="8797999629784150206">您可隨時變更您的<ph name="SITE_PERMISSIONS"/>。<ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">網站權限</translation>
 <translation id="2659764755126740206">到我的<ph name="PROVIDER"/>帳戶</translation>
-<translation id="2389181429986654814">跳到 <ph name="PROVIDER"/> 以完成驗證</translation>
-<translation id="7793632266654336758">請完成身份驗證以開始接受獎勵。</translation>
+<translation id="2389181429986654814">前往 <ph name="PROVIDER"/> 以完成驗證</translation>
+<translation id="7793632266654336758">請完成身分驗證以開始接受獎勵。</translation>
 <translation id="3600355176618429948">預估收益</translation>
 <translation id="7577100371127227294">每月小費</translation>
 <translation id="5894023780213944778">我的錢包</translation>
 <translation id="2613359062756190460">一次性小費</translation>
-<translation id="590733288489975971">來自廣告的獎勵</translation>
-<translation id="3026978804849658576">檢視陳述</translation>
+<translation id="590733288489975971">廣告獎勵</translation>
+<translation id="3026978804849658576">檢視聲明</translation>
 <translation id="8494748383523030337">您的餘額</translation>
 <translation id="7701466644604753106">開啟 Speedreader</translation>
 <translation id="763042262431778831">關閉 Speedreader</translation>
 <translation id="8488282162676695335">Brave 錢包</translation>
-<translation id="1148827340205946630">使用者回絕了請求</translation>
+<translation id="1148827340205946630">使用者回絕了要求</translation>
 <translation id="2403819048476450281">無效的參數。</translation>
-<translation id="9161147058107529840">預期單個物件參數。</translation>
-<translation id="1875861420974447980">此鏈 ID 已使用</translation>
+<translation id="9161147058107529840">預期的單一物件參數。</translation>
+<translation id="1875861420974447980">此鏈 ID 已有人使用</translation>
 <translation id="167698752210114155">發生內部錯誤</translation>
-<translation id="4641919696349069826">請求已在進行中</translation>
+<translation id="4641919696349069826">要求已在進行中</translation>
 <translation id="3155170474926428993">Tor 啟動程式</translation>
 <translation id="3745016858329272300">一般資訊</translation>
 <translation id="4045404575593562245">Tor 控制事件</translation>

@@ -7715,8 +7715,8 @@
 <translation id="1001131747196960052">關閉無痕</translation>
 <translation id="4466778299493212338">如要清除資料，請關閉所有隱私瀏覽視窗</translation>
 <translation id="3610571162330520499">這只會影響隱私瀏覽視窗</translation>
-<translation id="1961291599064731706">隱私模式中部會儲存您造訪過的網站</translation>
-<translation id="7070305978939333489">要從您的裝置清除隱私瀏覽歷史，請關閉所有隱私分頁</translation>
+<translation id="1961291599064731706">隱私模式中不會#8217;t儲存您造訪過的網站</translation>
+<translation id="7070305978939333489">如要從您的裝置清除隱私瀏覽記錄，請關閉所有隱私分頁</translation>
 <translation id="433830930456392967">{COUNT, plural,
           =0 {在無痕視窗中開啟全部}
           =1 {在無痕視窗中開啟}
