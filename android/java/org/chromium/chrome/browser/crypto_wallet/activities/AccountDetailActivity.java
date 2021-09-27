@@ -60,8 +60,8 @@ public class AccountDetailActivity
                 startActivity(accountDetailsWithQrActivityIntent);
             }
         });
-        TextView btnEdit = findViewById(R.id.edit_btn);
-        btnEdit.setOnClickListener(new View.OnClickListener() {
+        TextView btnRename = findViewById(R.id.rename_btn);
+        btnRename.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO add action for edit

@@ -1988,9 +1988,6 @@ until they verify, or until 90 days have passed.
     <message name="IDS_DETAILS" desc="Brave wallet accounts text">
       Details
     </message>
-    <message name="IDS_EDIT" desc="Brave wallet accounts text">
-      Edit
-    </message>
     <message name="IDS_ACCOUNT_DETAILS" desc="Brave wallet accounts text">
       Account Details
     </message>

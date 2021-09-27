@@ -64,10 +64,10 @@
                 android:paddingEnd="16dp"/>
 
             <TextView
-                android:id = "@+id/edit_btn"
+                android:id = "@+id/rename_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/edit"
+                android:text="@string/rename"
                 android:textColor="@color/wallet_text_color"
                 android:background="@drawable/rounded_white_holo_bg"
                 app:drawableStartCompat="@drawable/ic_edit"

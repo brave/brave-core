@@ -24,7 +24,6 @@ import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
-import org.chromium.chrome.browser.crypto_wallet.fragments.AddAccountOnboardingDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
@@ -77,7 +76,6 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
                                 recoveryPhrasesToVerifyAdapter.getRecoveryPhraseList());
                         if (result.equals(recoveryPhraseToVerify)) {
                             onNextPage.gotoNextPage(true);
-                            showAddAccountDialog();
                         } else {
                             phraseNotMatch();
                         }
@@ -151,16 +149,6 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
                 onSelectedRecoveryPhraseSelected);
         recoveryPhrasesToVerifyAdapter.setSelectedRecoveryPhrase(true);
         selectedPhraseRecyclerView.setAdapter(recoveryPhrasesToVerifyAdapter);
-    }
-
-    private void showAddAccountDialog() {
-        AddAccountOnboardingDialogFragment addAccountOnboardingDialogFragment =
-                new AddAccountOnboardingDialogFragment();
-        addAccountOnboardingDialogFragment.setCancelable(false);
-        assert getActivity() != null;
-        addAccountOnboardingDialogFragment.show(
-                ((FragmentActivity) getActivity()).getSupportFragmentManager(),
-                "AddAccountOnboardingDialog");
     }
 
     OnRecoveryPhraseSelected onRecoveryPhraseSelected = new OnRecoveryPhraseSelected() {
