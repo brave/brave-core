@@ -37,19 +37,19 @@ class BraveWalletServiceDelegateImplUnitTest : public testing::Test {
  public:
   BraveWalletServiceDelegateImplUnitTest() = default;
 
-  void TearDown() override { importer_.reset(); }
+  void TearDown() override { delegate_.reset(); }
 
   void SetUp() override {
     keyring_controller_ =
         KeyringControllerFactory::GetControllerForContext(browser_context());
-    importer_ =
+    delegate_ =
         std::make_unique<BraveWalletServiceDelegateImpl>(browser_context());
   }
 
   ~BraveWalletServiceDelegateImplUnitTest() override = default;
 
   KeyringController* keyring_controller() { return keyring_controller_; }
-  BraveWalletServiceDelegateImpl* importer() { return importer_.get(); }
+  BraveWalletServiceDelegateImpl* importer() { return delegate_.get(); }
 
   content::BrowserContext* browser_context() { return &profile_; }
 
@@ -62,7 +62,7 @@ class BraveWalletServiceDelegateImplUnitTest : public testing::Test {
     ASSERT_NE(callback_is_called, nullptr);
     auto json = base::JSONReader::Read(json_str);
     ASSERT_TRUE(json);
-    importer_->OnGetLocalStorage(
+    delegate_->OnGetLocalStorage(
         password, new_password, base::BindLambdaForTesting([&](bool success) {
           *out_success = success;
           *callback_is_called = true;
@@ -77,7 +77,7 @@ class BraveWalletServiceDelegateImplUnitTest : public testing::Test {
 
  private:
   KeyringController* keyring_controller_;
-  std::unique_ptr<BraveWalletServiceDelegateImpl> importer_;
+  std::unique_ptr<BraveWalletServiceDelegateImpl> delegate_;
   TestingProfile profile_;
 };
 
