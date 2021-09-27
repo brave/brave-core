@@ -38,6 +38,14 @@ class UserAgentBuilderTests: XCTestCase {
         Safari/605.1.15
         """
         
+        let iOS15DesktopUA =
+        """
+        Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) \
+        AppleWebKit/605.1.15 (KHTML, like Gecko) \
+        Version/15.0 \
+        Safari/605.1.15
+        """
+        
         let iOS13 = OperatingSystemVersion(majorVersion: 13, minorVersion: 0, patchVersion: 0)
         
         XCTAssertEqual(iOS13DesktopUA,
@@ -52,11 +60,21 @@ class UserAgentBuilderTests: XCTestCase {
         
         XCTAssertEqual(iOS14DesktopUA,
                        UserAgentBuilder(device: iPhone, iOSVersion: iOS14).build(desktopMode: true),
-                       "iOS 13 desktop User Agent on iPhone doesn't match")
+                       "iOS 14 desktop User Agent on iPhone doesn't match")
         
         XCTAssertEqual(iOS14DesktopUA,
                        UserAgentBuilder(device: iPad, iOSVersion: iOS14).build(desktopMode: true),
-                       "iOS 13 desktop User Agent on iPad doesn't match")
+                       "iOS 14 desktop User Agent on iPad doesn't match")
+        
+        let iOS15 = OperatingSystemVersion(majorVersion: 15, minorVersion: 0, patchVersion: 0)
+        
+        XCTAssertEqual(iOS15DesktopUA,
+                       UserAgentBuilder(device: iPhone, iOSVersion: iOS15).build(desktopMode: true),
+                       "iOS 15 desktop User Agent on iPhone doesn't match")
+        
+        XCTAssertEqual(iOS15DesktopUA,
+                       UserAgentBuilder(device: iPad, iOSVersion: iOS15).build(desktopMode: true),
+                       "iOS 15 desktop User Agent on iPad doesn't match")
     }
     
     func testSpecificMobileUA() {
@@ -68,6 +86,34 @@ class UserAgentBuilderTests: XCTestCase {
         //
         // At the moment each iOS version has one corresponding Safari UA attached
         // so for example 13.1 and 13.3 have the same UA.
+        
+        // MARK: - iOS 15
+        let iPhone_safari_15_UA = """
+        Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+        Version/15.0 \
+        Mobile/15E148 \
+        Safari/604.1
+        """
+        
+        let iPad_safari_15_UA = """
+        Mozilla/5.0 (iPad; CPU OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+        Version/15.0 \
+        Mobile/15E148 \
+        Safari/604.1
+        """
+        
+        // MARK: - 15.0
+        
+        let ios15_0 = OperatingSystemVersion(majorVersion: 15, minorVersion: 0, patchVersion: 0)
+        
+        XCTAssertEqual(iPhone_safari_15_UA,
+                       UserAgentBuilder(device: iPhone, iOSVersion: ios15_0).build(desktopMode: false),
+                       "User agent for iOS 54.0 iPhone doesn't match.")
+        
+        XCTAssertEqual(iPad_safari_15_UA,
+                       UserAgentBuilder(device: iPad, iOSVersion: ios15_0).build(desktopMode: false),
+                       "User agent for iOS 15.0 iPad doesn't match.")
+        
         
         // MARK: - iOS 14
         let iPhone_safari_14_UA = """
@@ -146,50 +192,50 @@ class UserAgentBuilderTests: XCTestCase {
     }
     
     func testFutureProofDesktopUA() {
-        let iOS14DesktopUA =
+        let iOS15DesktopUA =
             """
             Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) \
             AppleWebKit/605.1.15 (KHTML, like Gecko) \
-            Version/14.1.1 \
+            Version/15.0 \
             Safari/605.1.15
             """
         
-        let iOS15 = OperatingSystemVersion(majorVersion: 15, minorVersion: 0, patchVersion: 0)
+        let iOS16 = OperatingSystemVersion(majorVersion: 16, minorVersion: 0, patchVersion: 0)
         
-        XCTAssertEqual(iOS14DesktopUA,
-                       UserAgentBuilder(device: iPhone, iOSVersion: iOS15).build(desktopMode: true),
-                       "iOS 14 fallback desktop User Agent on iPhone doesn't match")
+        XCTAssertEqual(iOS15DesktopUA,
+                       UserAgentBuilder(device: iPhone, iOSVersion: iOS16).build(desktopMode: true),
+                       "iOS 16 fallback desktop User Agent on iPhone doesn't match")
         
-        XCTAssertEqual(iOS14DesktopUA,
-                       UserAgentBuilder(device: iPad, iOSVersion: iOS15).build(desktopMode: true),
-                       "iOS 14 fallback desktop User Agent on iPad doesn't match")
+        XCTAssertEqual(iOS15DesktopUA,
+                       UserAgentBuilder(device: iPad, iOSVersion: iOS16).build(desktopMode: true),
+                       "iOS 16 fallback desktop User Agent on iPad doesn't match")
     }
     
     func testFutureProofMobileUA() {
         // MARK: - iPhone iOS 15
-        let ios14 = OperatingSystemVersion(majorVersion: 15, minorVersion: 0, patchVersion: 0)
+        let ios16 = OperatingSystemVersion(majorVersion: 16, minorVersion: 0, patchVersion: 0)
         let iPhone_safari_15_UA = """
-        Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/15.0 \
+        Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+        Version/16.0 \
         Mobile/15E148 \
         Safari/604.1
         """
         
         XCTAssertEqual(iPhone_safari_15_UA,
-                       UserAgentBuilder(device: iPhone, iOSVersion: ios14).build(desktopMode: false),
-                       "User agent for iOS 15.0 iPhone doesn't match.")
+                       UserAgentBuilder(device: iPhone, iOSVersion: ios16).build(desktopMode: false),
+                       "User agent for iOS 16.0 iPhone doesn't match.")
         
         // MARK: - iPad iOS 15
         let iPad_safari_15_UA = """
-        Mozilla/5.0 (iPad; CPU OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/15.0 \
+        Mozilla/5.0 (iPad; CPU OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+        Version/16.0 \
         Mobile/15E148 \
         Safari/604.1
         """
         
         XCTAssertEqual(iPad_safari_15_UA,
-                       UserAgentBuilder(device: iPad, iOSVersion: ios14).build(desktopMode: false),
-                       "User agent for iOS 15.0 iPad doesn't match.")
+                       UserAgentBuilder(device: iPad, iOSVersion: ios16).build(desktopMode: false),
+                       "User agent for iOS 16.0 iPad doesn't match.")
         
         // MARK: - iPhone iOS 14.8, non existent version(14.8)
         let ios14_8 = OperatingSystemVersion(majorVersion: 14, minorVersion: 8, patchVersion: 0)
