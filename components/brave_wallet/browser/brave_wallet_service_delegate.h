@@ -18,6 +18,8 @@ class BraveWalletServiceDelegate {
   using IsMetaMaskInstalledCallback = base::OnceCallback<void(bool)>;
   using ImportFromCryptoWalletsCallback = base::OnceCallback<void(bool)>;
   using ImportFromMetaMaskCallback = base::OnceCallback<void(bool)>;
+  using HasEthereumPermissionCallback = base::OnceCallback<void(bool, bool)>;
+  using ResetEthereumPermissionCallback = base::OnceCallback<void(bool)>;
 
   BraveWalletServiceDelegate() = default;
   BraveWalletServiceDelegate(const BraveWalletServiceDelegate&) = delete;
@@ -35,6 +37,13 @@ class BraveWalletServiceDelegate {
   virtual void ImportFromMetaMask(const std::string& password,
                                   const std::string& new_password,
                                   ImportFromMetaMaskCallback callback);
+  virtual void HasEthereumPermission(const std::string& origin,
+                                     const std::string& account,
+                                     HasEthereumPermissionCallback callback);
+  virtual void ResetEthereumPermission(
+      const std::string& origin,
+      const std::string& account,
+      ResetEthereumPermissionCallback callback);
 };
 
 }  // namespace brave_wallet

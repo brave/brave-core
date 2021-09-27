@@ -30,4 +30,18 @@ void BraveWalletServiceDelegate::ImportFromMetaMask(
   std::move(callback).Run(false);
 }
 
+void BraveWalletServiceDelegate::HasEthereumPermission(
+    const std::string& origin,
+    const std::string& account,
+    HasEthereumPermissionCallback callback) {
+  std::move(callback).Run(false, false);
+}
+
+void BraveWalletServiceDelegate::ResetEthereumPermission(
+    const std::string& origin,
+    const std::string& account,
+    ResetEthereumPermissionCallback callback) {
+  std::move(callback).Run(false);
+}
+
 }  // namespace brave_wallet

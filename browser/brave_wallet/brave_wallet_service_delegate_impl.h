@@ -49,6 +49,13 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate {
   void ImportFromMetaMask(const std::string& password,
                           const std::string& new_password,
                           ImportFromMetaMaskCallback callback) override;
+  void HasEthereumPermission(const std::string& origin,
+                             const std::string& account,
+                             HasEthereumPermissionCallback callback) override;
+  void ResetEthereumPermission(
+      const std::string& origin,
+      const std::string& account,
+      ResetEthereumPermissionCallback callback) override;
 
  private:
   friend class BraveWalletServiceDelegateImplUnitTest;

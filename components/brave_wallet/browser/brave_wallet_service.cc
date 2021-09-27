@@ -361,4 +361,21 @@ void BraveWalletService::SetDefaultWallet(mojom::DefaultWallet default_wallet) {
   ::brave_wallet::SetDefaultWallet(prefs_, default_wallet);
 }
 
+void BraveWalletService::HasEthereumPermission(
+    const std::string& origin_spec,
+    const std::string& account,
+    HasEthereumPermissionCallback callback) {
+  if (delegate_)
+    delegate_->HasEthereumPermission(origin_spec, account, std::move(callback));
+}
+
+void BraveWalletService::ResetEthereumPermission(
+    const std::string& origin_spec,
+    const std::string& account,
+    ResetEthereumPermissionCallback callback) {
+  if (delegate_)
+    delegate_->ResetEthereumPermission(origin_spec, account,
+                                       std::move(callback));
+}
+
 }  // namespace brave_wallet

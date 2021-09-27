@@ -15,6 +15,7 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
+#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/browser/api/storage/backend_task_runner.h"
 #include "extensions/browser/api/storage/storage_frontend.h"
@@ -360,6 +361,27 @@ void BraveWalletServiceDelegateImpl::EnsureConnected() {
 void BraveWalletServiceDelegateImpl::OnConnectionError() {
   keyring_controller_.reset();
   EnsureConnected();
+}
+
+void BraveWalletServiceDelegateImpl::HasEthereumPermission(
+    const std::string& origin_spec,
+    const std::string& account,
+    HasEthereumPermissionCallback callback) {
+  bool has_permission = false;
+  bool success =
+      permissions::BraveEthereumPermissionContext::HasEthereumPermission(
+          context_, origin_spec, account, &has_permission);
+  std::move(callback).Run(success, has_permission);
+}
+
+void BraveWalletServiceDelegateImpl::ResetEthereumPermission(
+    const std::string& origin_spec,
+    const std::string& account,
+    ResetEthereumPermissionCallback callback) {
+  bool success =
+      permissions::BraveEthereumPermissionContext::ResetEthereumPermission(
+          context_, origin_spec, account);
+  std::move(callback).Run(success);
 }
 
 }  // namespace brave_wallet
