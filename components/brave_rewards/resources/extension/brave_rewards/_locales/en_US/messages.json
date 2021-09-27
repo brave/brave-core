@@ -203,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ arriving in $days$",
+    "message": "$amount$ payout begins processing in $days$",
     "description": "",
     "placeholders": {
       "amount": {
