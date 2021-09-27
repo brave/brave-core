@@ -26,24 +26,12 @@
       }
   </style>
   <div class="settings-box first">
-    <div class="start">$i18n{braveWeb3ProviderDesc}</div>
-      <settings-dropdown-menu id="braveWeb3ProvidersType"
+    <div class="start">$i18n{defaultWalletDesc}</div>
+      <settings-dropdown-menu id="defaultWalletType"
                               pref="{{prefs.brave.wallet.web3_provider}}"
-                              menu-options="[[braveWeb3Providers_]]">
+                              menu-options="[[wallets_]]">
       </settings-dropdown-menu>
     </div>
-<template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
-    <settings-toggle-button id="braveWalletEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.load_on_startup}}"
-        label="$i18n{loadCryptoWalletsOnStartupDescDeprecated}">
-</template>
-<template is="dom-if" if="[[!isNativeWalletEnabled_]]" restamp>
-    <settings-toggle-button id="braveWalletEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.load_on_startup}}"
-        label="$i18n{loadCryptoWalletsOnStartupDesc}">
-</template>
 <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
     <settings-toggle-button id="showBraveWalletIconOnToolbar"
         class="cr-row"

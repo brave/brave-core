@@ -11,7 +11,6 @@ extern const char kERCEncryptedSeed[];
 // Deprecated in favor of kBraveWalletWeb3Provider
 extern const char kERCEnabledDeprecated[];
 extern const char kERCPrefVersion[];
-extern const char kERCLoadCryptoWalletsOnStartup[];
 extern const char kERCOptedIntoCryptoWallets[];
 
 #endif  // BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_PREF_NAMES_H_
