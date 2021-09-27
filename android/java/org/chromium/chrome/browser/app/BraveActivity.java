@@ -158,7 +158,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     public static final String CHANNEL_ID = "com.brave.browser";
     public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
     public static final String ANDROID_PACKAGE_NAME = "android";
-    public static final String BRAVE_BLOG_URL = "http://www.brave.com/blog";
+    public static final String BRAVE_BLOG_URL = "https://brave.com/privacy-features/";
 
     // Explicitly declare this variable to avoid build errors.
     // It will be removed in asm and parent variable will be used instead.
