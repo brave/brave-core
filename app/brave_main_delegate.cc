@@ -249,9 +249,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kDirectSockets.name,
     features::kIdleDetection.name,
     features::kNotificationTriggers.name,
-#if !defined(OS_ANDROID)
-    features::kSettingsLandingPageRedesign.name,
-#endif
     features::kSignedExchangeSubresourcePrefetch.name,
     features::kSubresourceWebBundles.name,
 #if defined(OS_ANDROID)

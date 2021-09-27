@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/settings/settings_page/main_page_mixin.js b/chrome/browser/resources/settings/settings_page/main_page_mixin.js
+index 15e912eae42db698ec1a7d8e0514d39c5863bef5..bc2c04690f8942e99faf53e8643d61c08daa7e38 100644
+--- a/chrome/browser/resources/settings/settings_page/main_page_mixin.js
++++ b/chrome/browser/resources/settings/settings_page/main_page_mixin.js
+@@ -38,7 +38,7 @@ import {MinimumRoutes, Route, Router} from '../router.js';
+ 
+   /** @type {!Route} */
+   const TOP_LEVEL_EQUIVALENT_ROUTE =
+-      loadTimeData.getBoolean('isGuest') ? guestTopLevelRoute : routes.PEOPLE;
++      loadTimeData.getBoolean('isGuest') ? guestTopLevelRoute : routes.GET_STARTED;
+ 
+   /**
+    * @param {?Route} route

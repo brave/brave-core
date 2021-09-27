@@ -102,9 +102,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kDirectSockets,
     &features::kIdleDetection,
     &features::kNotificationTriggers,
-#if !defined(OS_ANDROID)
-    &features::kSettingsLandingPageRedesign,
-#endif
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,
     &features::kWebOTP,
