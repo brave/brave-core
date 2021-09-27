@@ -233,11 +233,16 @@ RegisterPolymerTemplateModifications({
       const sectionLanguages = getSectionElement(advancedSubSectionsTemplate.content, 'languages')
       sectionLanguages.insertAdjacentElement('beforebegin', sectionAutofill)
       // Move safety check after downloads
-      const sectionDownloads = getSectionElement(advancedSubSectionsTemplate.content, 'downloads')
-      const sectionSafetyCheck = getSectionElement(actualTemplate.content, 'safetyCheck')
-      sectionDownloads.insertAdjacentElement('afterend', sectionSafetyCheck)
       // Move help tips after safety check
-      sectionSafetyCheck.insertAdjacentElement('afterend', sectionHelpTips)
+      const sectionDownloads = getSectionElement(advancedSubSectionsTemplate.content, 'downloads')
+      if (loadTimeData.getBoolean('enableLandingPageRedesign')) {
+        // Safety check is grouped under privacy, so only move Help Tips
+        sectionDownloads.insertAdjacentElement('afterend', sectionHelpTips)
+      } else {
+        const sectionSafetyCheck = getSectionElement(actualTemplate.content, 'safetyCheck')
+        sectionDownloads.insertAdjacentElement('afterend', sectionSafetyCheck)
+        sectionSafetyCheck.insertAdjacentElement('afterend', sectionHelpTips)
+      }
     }
   }
 })
