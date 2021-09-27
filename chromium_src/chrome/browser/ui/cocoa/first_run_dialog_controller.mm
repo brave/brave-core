@@ -8,6 +8,7 @@
 #include "base/i18n/rtl.h"
 #include "base/mac/scoped_nsobject.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/cocoa/key_equivalent_constants.h"
 #include "chrome/grit/chromium_strings.h"
@@ -194,8 +195,8 @@ void CenterVertically(NSView* view) {
 }
 
 - (BOOL)isStatsReportingEnabled {
-  // This dialog doesn't have stats reporting checkbox.
-  return false;
+  // Give default value because we don't provide checkbox for this option.
+  return GetDefaultPrefValueForMetricsReporting();
 }
 
 - (BOOL)isMakeDefaultBrowserEnabled {
