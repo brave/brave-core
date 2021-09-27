@@ -56,8 +56,6 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
                 overviewModeBehaviorSupplier, snackbarManager);
 
         assert mToolbarView != null : "Make sure mToolbarView is properly patched in bytecode.";
-        mToolbarView.setBackgroundColor(ApiCompatibilityUtils.getColor(
-                mToolbarView.getResources(), R.color.toolbar_background_primary));
         ChromeImageView fadingEdgeStart =
                 mToolbarView.findViewById(R.id.tab_strip_fading_edge_start);
         assert fadingEdgeStart != null : "Something has changed in upstream.";
