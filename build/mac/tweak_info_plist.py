@@ -107,9 +107,6 @@ def Main():
     # Explicitly disable profiling
     plist['SUEnableSystemProfiling'] = False
 
-    # Explicitly change notifications from banner to alert
-    plist['NSUserNotificationAlertStyle'] = 'alert'
-
     # Now that all keys have been mutated, rewrite the file.
     with tempfile.NamedTemporaryFile() as temp_info_plist:
         plistlib.writePlist(plist, temp_info_plist.name)
