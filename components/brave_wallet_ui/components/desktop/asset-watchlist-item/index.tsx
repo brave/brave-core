@@ -1,6 +1,10 @@
 import * as React from 'react'
 import { Checkbox } from 'brave-ui'
 import { TokenInfo } from '../../../constants/types'
+
+// Options
+import { ETH } from '../../../options/asset-options'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -40,7 +44,7 @@ const AssetWatchlistItem = (props: Props) => {
   return (
     <StyledWrapper>
       <NameAndIcon>
-        <AssetIcon icon={token.logo ? token.logo : ''} />
+        <AssetIcon icon={(token.symbol === 'ETH' ? ETH.asset.logo : token.logo) ?? ''} />
         <AssetName>{token.name}</AssetName>
       </NameAndIcon>
       <RightSide>

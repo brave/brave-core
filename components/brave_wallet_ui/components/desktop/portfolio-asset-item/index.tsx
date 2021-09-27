@@ -1,5 +1,8 @@
 import * as React from 'react'
 
+// Options
+import { ETH } from '../../../options/asset-options'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -28,7 +31,7 @@ const PortfolioAssetItem = (props: Props) => {
       {isVisible &&
         <StyledWrapper onClick={action}>
           <NameAndIcon>
-            <AssetIcon icon={logo ? logo : ''} />
+            <AssetIcon icon={(symbol === 'ETH' ? ETH.asset.logo : logo) ?? ''} />
             <AssetName>{name}</AssetName>
           </NameAndIcon>
           <BalanceColumn>
