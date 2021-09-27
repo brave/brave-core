@@ -5,7 +5,9 @@
 {%- if method.parameters or method.response_parameters %}:{%- endif -%}
 {%- for param in method.parameters -%}
 {%-   if not loop.first -%}{{param.name|under_to_lower_camel}}:{%- endif -%}
-({{param.kind|objc_wrapper_type}}){{param.name|under_to_lower_camel}}
+{%-   set nullable = param.kind|objc_argument_modifiers -%}
+{%-   set type = "%s%s"|format(nullable + " " if nullable, param.kind|objc_wrapper_type) -%}
+({{type}}){{param.name|under_to_lower_camel}}
 {%- if not loop.last -%}{{" "}}{%- endif -%}
 {%- endfor -%}
 {%- if method.response_parameters -%}
@@ -14,7 +16,9 @@
 {%- endif -%}
 (void (^)(
 {%- for param in method.response_parameters -%}
-{{param.kind|objc_wrapper_type}} {{param.name|under_to_lower_camel}}
+{%-   set nullable = param.kind|objc_argument_modifiers(inside_callback=True) -%}
+{%-   set type = "%s%s"|format(param.kind|objc_wrapper_type, " " + nullable if nullable) -%}
+{{type}} {{param.name|under_to_lower_camel}}
 {%- if not loop.last -%},{{" "}}{%- endif -%}
 {%- endfor -%}
 ))completion

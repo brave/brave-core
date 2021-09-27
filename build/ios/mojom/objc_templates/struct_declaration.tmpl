@@ -6,7 +6,8 @@ NS_SWIFT_NAME({{class_prefix}}.{{struct.name}})
 {%- if struct.fields|length %}
 - (instancetype)initWith
 {%-  for field in struct.fields -%}
-{%-   set type = field.kind|objc_wrapper_type -%}
+{%-   set nullable = field.kind|objc_argument_modifiers -%}
+{%-   set type = "%s%s"|format(nullable + " " if nullable, field.kind|objc_wrapper_type) -%}
 {%-   set name = field.name|objc_property_formatter -%}
 {{field.name|under_to_camel(lower_initial=not loop.first)}}:({{type}}){{name}}
 {%-  if not loop.last %} {% else %};{%- endif %}
