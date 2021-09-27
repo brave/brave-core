@@ -136,7 +136,7 @@ void BraveWalletProviderDelegateImpl::
   if (!keyring_info->is_default_keyring_created) {
     Browser* browser = chrome::FindBrowserWithWebContents(web_contents_);
     if (browser) {
-      brave::ShowBraveWallet(browser);
+      brave::ShowBraveWalletOnboarding(browser);
     } else if (g_NewSetupNeededForTestingCallback) {
       std::move(g_NewSetupNeededForTestingCallback).Run();
     }
