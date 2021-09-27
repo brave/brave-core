@@ -92,50 +92,50 @@ void BraveVpnServiceDesktop::OnRemoved(const std::string& name) {
 }
 
 void BraveVpnServiceDesktop::OnConnected(const std::string& name) {
-  if (state_ == ConnectionState::CONNECTED)
+  if (connection_state_ == ConnectionState::CONNECTED)
     return;
 
-  state_ = ConnectionState::CONNECTED;
+  connection_state_ = ConnectionState::CONNECTED;
 
   for (const auto& obs : observers_)
     obs->OnConnectionStateChanged(ConnectionState::CONNECTED);
 }
 
 void BraveVpnServiceDesktop::OnIsConnecting(const std::string& name) {
-  if (state_ == ConnectionState::CONNECTING)
+  if (connection_state_ == ConnectionState::CONNECTING)
     return;
 
-  state_ = ConnectionState::CONNECTING;
+  connection_state_ = ConnectionState::CONNECTING;
 
   for (const auto& obs : observers_)
     obs->OnConnectionStateChanged(ConnectionState::CONNECTING);
 }
 
 void BraveVpnServiceDesktop::OnConnectFailed(const std::string& name) {
-  if (state_ == ConnectionState::CONNECT_FAILED)
+  if (connection_state_ == ConnectionState::CONNECT_FAILED)
     return;
 
-  state_ = ConnectionState::CONNECT_FAILED;
+  connection_state_ = ConnectionState::CONNECT_FAILED;
 
   for (const auto& obs : observers_)
     obs->OnConnectionStateChanged(ConnectionState::CONNECT_FAILED);
 }
 
 void BraveVpnServiceDesktop::OnDisconnected(const std::string& name) {
-  if (state_ == ConnectionState::DISCONNECTED)
+  if (connection_state_ == ConnectionState::DISCONNECTED)
     return;
 
-  state_ = ConnectionState::DISCONNECTED;
+  connection_state_ = ConnectionState::DISCONNECTED;
 
   for (const auto& obs : observers_)
     obs->OnConnectionStateChanged(ConnectionState::DISCONNECTED);
 }
 
 void BraveVpnServiceDesktop::OnIsDisconnecting(const std::string& name) {
-  if (state_ == ConnectionState::DISCONNECTING)
+  if (connection_state_ == ConnectionState::DISCONNECTING)
     return;
 
-  state_ = ConnectionState::DISCONNECTING;
+  connection_state_ = ConnectionState::DISCONNECTING;
 
   for (const auto& obs : observers_)
     obs->OnConnectionStateChanged(ConnectionState::DISCONNECTING);
@@ -151,25 +151,23 @@ void BraveVpnServiceDesktop::RemoveVPNConnnection() {
 }
 
 void BraveVpnServiceDesktop::Connect() {
-  if (state_ == ConnectionState::CONNECTING)
+  if (connection_state_ == ConnectionState::CONNECTING)
     return;
 
   GetBraveVPNConnectionAPI()->Connect(GetConnectionInfo().connection_name());
 }
 
 void BraveVpnServiceDesktop::Disconnect() {
-  if (state_ == ConnectionState::DISCONNECTING)
+  if (connection_state_ == ConnectionState::DISCONNECTING)
     return;
 
   GetBraveVPNConnectionAPI()->Disconnect(GetConnectionInfo().connection_name());
 }
 
 void BraveVpnServiceDesktop::CheckPurchasedStatus() {
-  // TODO(simonhong): Should notify to observers when purchased status is
-  // changed.
   brave_vpn::BraveVPNConnectionInfo info;
   if (GetVPNCredentialsFromSwitch(&info)) {
-    is_purchased_user_ = true;
+    SetPurchasedState(PurchasedState::PURCHASED);
     CreateVPNConnection();
     return;
   }
@@ -178,8 +176,9 @@ void BraveVpnServiceDesktop::CheckPurchasedStatus() {
 }
 
 void BraveVpnServiceDesktop::ToggleConnection() {
-  const bool can_disconnect = (state_ == ConnectionState::CONNECTED ||
-                               state_ == ConnectionState::CONNECTING);
+  const bool can_disconnect =
+      (connection_state_ == ConnectionState::CONNECTED ||
+       connection_state_ == ConnectionState::CONNECTING);
   can_disconnect ? Disconnect() : Connect();
 }
 
@@ -205,7 +204,12 @@ void BraveVpnServiceDesktop::BindInterface(
 
 void BraveVpnServiceDesktop::GetConnectionState(
     GetConnectionStateCallback callback) {
-  std::move(callback).Run(state_);
+  std::move(callback).Run(connection_state_);
+}
+
+void BraveVpnServiceDesktop::GetPurchasedState(
+    GetPurchasedStateCallback callback) {
+  std::move(callback).Run(purchased_state_);
 }
 
 void BraveVpnServiceDesktop::FetchRegionData() {
@@ -414,4 +418,14 @@ void BraveVpnServiceDesktop::SetSelectedRegion(
   dict->SetStringKey(kRegionContinentKey, region_ptr->continent);
   dict->SetStringKey(kRegionNameKey, region_ptr->name);
   dict->SetStringKey(kRegionNamePrettyKey, region_ptr->name_pretty);
+}
+
+void BraveVpnServiceDesktop::SetPurchasedState(PurchasedState state) {
+  if (purchased_state_ == state)
+    return;
+
+  purchased_state_ = state;
+
+  for (const auto& obs : observers_)
+    obs->OnPurchasedStateChanged(purchased_state_);
 }

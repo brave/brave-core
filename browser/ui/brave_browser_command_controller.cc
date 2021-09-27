@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_browser_command_controller.h"
 
+#include <utility>
 #include <vector>
 
 #include "base/feature_list.h"
@@ -69,7 +70,17 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
       browser_(browser),
       brave_command_updater_(nullptr) {
   InitBraveCommandState();
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> listener;
+  receiver_.Bind(listener.InitWithNewPipeAndPassReceiver());
+  auto* vpn_service =
+      BraveVpnServiceFactory::GetForProfile(browser_->profile());
+  vpn_service->AddObserver(std::move(listener));
+#endif
 }
+
+BraveBrowserCommandController::~BraveBrowserCommandController() = default;
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
   return IsBraveCommands(id)
@@ -305,5 +316,12 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 
   return true;
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+void BraveBrowserCommandController::OnPurchasedStateChanged(
+    brave_vpn::mojom::PurchasedState state) {
+  UpdateCommandForBraveVPN();
+}
+#endif
 
 }  // namespace chrome

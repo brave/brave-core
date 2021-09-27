@@ -17,7 +17,6 @@
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
@@ -80,6 +79,7 @@
 #if defined(OS_ANDROID)
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
+#include "brave/browser/ui/brave_browser_command_controller.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #endif
