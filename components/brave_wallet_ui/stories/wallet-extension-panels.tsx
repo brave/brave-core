@@ -96,8 +96,8 @@ export const _ConfirmTransaction = () => {
     txData: {
       baseData: {
         nonce: '0x1',
-        gasPrice: '7548000000000000',
-        gasLimit: '7548000000000000',
+        gasPrice: '150',
+        gasLimit: '21000',
         to: '2',
         value: '0x15ddf09c97b0000',
         data: new Uint8Array(24)
@@ -109,7 +109,7 @@ export const _ConfirmTransaction = () => {
     txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
     txStatus: 0,
     txParams: ['address', 'ammount'],
-    txType: TransactionType.ERC20Approve
+    txType: TransactionType.ERC20Transfer
   }
 
   const onConfirmTransaction = () => {
