@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_IMPORTER_DELEGATE_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_IMPORTER_DELEGATE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_DELEGATE_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_DELEGATE_H_
 
 #include <string>
 
@@ -12,18 +12,18 @@
 
 namespace brave_wallet {
 
-class BraveWalletImporterDelegate {
+class BraveWalletServiceDelegate {
  public:
   using IsCryptoWalletsInstalledCallback = base::OnceCallback<void(bool)>;
   using IsMetaMaskInstalledCallback = base::OnceCallback<void(bool)>;
   using ImportFromCryptoWalletsCallback = base::OnceCallback<void(bool)>;
   using ImportFromMetaMaskCallback = base::OnceCallback<void(bool)>;
 
-  BraveWalletImporterDelegate() = default;
-  BraveWalletImporterDelegate(const BraveWalletImporterDelegate&) = delete;
-  BraveWalletImporterDelegate& operator=(const BraveWalletImporterDelegate&) =
+  BraveWalletServiceDelegate() = default;
+  BraveWalletServiceDelegate(const BraveWalletServiceDelegate&) = delete;
+  BraveWalletServiceDelegate& operator=(const BraveWalletServiceDelegate&) =
       delete;
-  virtual ~BraveWalletImporterDelegate() = default;
+  virtual ~BraveWalletServiceDelegate() = default;
 
   virtual void IsCryptoWalletsInstalled(
       IsCryptoWalletsInstalledCallback callback);
@@ -39,4 +39,4 @@ class BraveWalletImporterDelegate {
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_IMPORTER_DELEGATE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_DELEGATE_H_

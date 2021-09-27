@@ -10,7 +10,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_importer_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -88,7 +88,7 @@ base::CheckedContiguousIterator<base::Value> FindAsset(
 namespace brave_wallet {
 
 BraveWalletService::BraveWalletService(
-    std::unique_ptr<BraveWalletImporterDelegate> delegate,
+    std::unique_ptr<BraveWalletServiceDelegate> delegate,
     PrefService* prefs)
     : delegate_(std::move(delegate)), prefs_(prefs) {
   DCHECK(prefs_);

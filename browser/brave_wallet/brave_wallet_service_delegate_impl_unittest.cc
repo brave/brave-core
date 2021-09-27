@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/brave_wallet_importer_delegate_impl.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 
 #include <utility>
 
@@ -33,9 +33,9 @@ const char* valid_data =
     "\\\"salt\\\":\\\"z1bTZtBY33d2l6CfiFs5V/eRQLS6Qsq5UtAQOIfaIps=\\\"}\"}}}";
 }  // namespace
 
-class BraveWalletImporterDelegateImplUnitTest : public testing::Test {
+class BraveWalletServiceDelegateImplUnitTest : public testing::Test {
  public:
-  BraveWalletImporterDelegateImplUnitTest() = default;
+  BraveWalletServiceDelegateImplUnitTest() = default;
 
   void TearDown() override { importer_.reset(); }
 
@@ -43,13 +43,13 @@ class BraveWalletImporterDelegateImplUnitTest : public testing::Test {
     keyring_controller_ =
         KeyringControllerFactory::GetControllerForContext(browser_context());
     importer_ =
-        std::make_unique<BraveWalletImporterDelegateImpl>(browser_context());
+        std::make_unique<BraveWalletServiceDelegateImpl>(browser_context());
   }
 
-  ~BraveWalletImporterDelegateImplUnitTest() override = default;
+  ~BraveWalletServiceDelegateImplUnitTest() override = default;
 
   KeyringController* keyring_controller() { return keyring_controller_; }
-  BraveWalletImporterDelegateImpl* importer() { return importer_.get(); }
+  BraveWalletServiceDelegateImpl* importer() { return importer_.get(); }
 
   content::BrowserContext* browser_context() { return &profile_; }
 
@@ -77,11 +77,11 @@ class BraveWalletImporterDelegateImplUnitTest : public testing::Test {
 
  private:
   KeyringController* keyring_controller_;
-  std::unique_ptr<BraveWalletImporterDelegateImpl> importer_;
+  std::unique_ptr<BraveWalletServiceDelegateImpl> importer_;
   TestingProfile profile_;
 };
 
-TEST_F(BraveWalletImporterDelegateImplUnitTest, OnGetLocalStorageError) {
+TEST_F(BraveWalletServiceDelegateImplUnitTest, OnGetLocalStorageError) {
   bool callback_is_called = false;
   bool result = true;
   // empty password
@@ -148,7 +148,7 @@ TEST_F(BraveWalletImporterDelegateImplUnitTest, OnGetLocalStorageError) {
   EXPECT_FALSE(result);
 }
 
-TEST_F(BraveWalletImporterDelegateImplUnitTest, OnGetLocalStorage) {
+TEST_F(BraveWalletServiceDelegateImplUnitTest, OnGetLocalStorage) {
   bool callback_is_called = false;
   bool result = false;
   SimulateGetLocalStorage("brave4ever", "brave5ever", valid_data, &result,

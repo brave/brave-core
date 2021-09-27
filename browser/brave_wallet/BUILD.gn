@@ -87,8 +87,8 @@ source_set("brave_wallet_delegate") {
     ]
     if (enable_extensions) {
       sources += [
-        "brave_wallet_importer_delegate_impl.cc",
-        "brave_wallet_importer_delegate_impl.h",
+        "brave_wallet_service_delegate_impl.cc",
+        "brave_wallet_service_delegate_impl.h",
       ]
       deps += [
         "//extensions/browser",
@@ -155,7 +155,7 @@ source_set("unit_tests") {
       "//brave/components/brave_wallet/common:common_constants",
     ]
     if (enable_extensions) {
-      sources += [ "brave_wallet_importer_delegate_impl_unittest.cc" ]
+      sources += [ "brave_wallet_service_delegate_impl_unittest.cc" ]
     }
   }
 }
