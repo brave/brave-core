@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { SimpleActionCreator } from 'redux-act'
+import BigNumber from 'bignumber.js'
 
 import {
   AccountAssetOptionType,
@@ -52,10 +53,40 @@ export default function useSwap (
       return
     }
 
-    const { buyAmount, sellAmount, price } = quote
+    const { buyAmount, sellAmount, price, buyTokenToEthRate, sellTokenToEthRate } = quote
+
     setFromAmount(formatBalance(sellAmount, fromAsset.asset.decimals))
     setToAmount(formatBalance(buyAmount, toAsset.asset.decimals))
-    setExchangeRate(formatBalance(price, 0))
+
+    /**
+     * Price computation block
+     *
+     * Price returned by 0x is inverted when the user enters the amount in the
+     * To field. In such a case, we use an approximate price computed from ETH
+     * rates.
+     *
+     * Example:
+     *   let x = DAI-ETH rate
+     *   let y = BAT-ETH rate
+     *   => DAI-BAT rate = x / y
+     *
+     * If the approximate price is numerically close to the quoted price, we
+     * consider the latter. This is typically when the user modifies the amount
+     * in the From field.
+     */
+    const priceBN = new BigNumber(price)
+    const approxPriceBN = new BigNumber(buyTokenToEthRate).dividedBy(sellTokenToEthRate)
+    let bestEstimatePriceBN
+    if (approxPriceBN.div(priceBN).toFixed(0) === '1') {
+      bestEstimatePriceBN = priceBN
+    } else if (priceBN.div(approxPriceBN).toFixed(0) === '1') {
+      bestEstimatePriceBN = priceBN
+    } else {
+      bestEstimatePriceBN = approxPriceBN
+    }
+
+    const bestEstimatePrice = bestEstimatePriceBN.toFixed(4, BigNumber.ROUND_UP)
+    setExchangeRate(bestEstimatePrice)
   }, [quote])
 
   /**
