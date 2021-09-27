@@ -1,20 +1,12 @@
 diff --git a/chrome/browser/ui/translate/translate_bubble_model_impl.h b/chrome/browser/ui/translate/translate_bubble_model_impl.h
-index ff47dc427ba475e2c7b417cfb7218878e296afd6..430a2472f5fab83ea1c9e8fd77eaaf06bb0e0b93 100644
+index ff47dc427ba475e2c7b417cfb7218878e296afd6..01cfae9080274c297c886aa2a2f0ea74122f71bf 100644
 --- a/chrome/browser/ui/translate/translate_bubble_model_impl.h
 +++ b/chrome/browser/ui/translate/translate_bubble_model_impl.h
-@@ -12,6 +12,8 @@
- #include "chrome/browser/ui/translate/translate_bubble_model.h"
- #include "chrome/browser/ui/translate/translate_bubble_view_state_transition.h"
+@@ -60,6 +60,7 @@ class TranslateBubbleModelImpl : public TranslateBubbleModel {
+   void ReportUIInteraction(translate::UIInteraction ui_interaction) override;
  
-+#define TranslateUIDelegate BraveTranslateUIDelegate
-+
- namespace translate {
- class TranslateUIDelegate;
- }
-@@ -69,4 +71,6 @@ class TranslateBubbleModelImpl : public TranslateBubbleModel {
-   DISALLOW_COPY_AND_ASSIGN(TranslateBubbleModelImpl);
- };
+  private:
++  friend class BraveTranslateBubbleModelImpl;
+   std::unique_ptr<translate::TranslateUIDelegate> ui_delegate_;
+   TranslateBubbleViewStateTransition view_state_transition_;
  
-+#undef TranslateUIDelegate
-+
- #endif  // CHROME_BROWSER_UI_TRANSLATE_TRANSLATE_BUBBLE_MODEL_IMPL_H_
