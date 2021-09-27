@@ -414,4 +414,64 @@ void BraveVpnServiceDesktop::SetSelectedRegion(
   dict->SetStringKey(kRegionContinentKey, region_ptr->continent);
   dict->SetStringKey(kRegionNameKey, region_ptr->name);
   dict->SetStringKey(kRegionNamePrettyKey, region_ptr->name_pretty);
+
+  // Start hostname fetching for selected region.
+  FetchHostnamesForRegion(region_ptr->name);
+}
+
+void BraveVpnServiceDesktop::FetchHostnamesForRegion(const std::string& name) {
+  // Unretained is safe here becasue this class owns request helper.
+  GetHostnamesForRegion(
+      base::BindOnce(&BraveVpnServiceDesktop::OnFetchHostnames,
+                     base::Unretained(this), name),
+      name);
+}
+
+void BraveVpnServiceDesktop::OnFetchHostnames(const std::string& region,
+                                              const std::string& hostnames,
+                                              bool success) {
+  if (!success) {
+    // TODO(simonhong): Retry?
+    return;
+  }
+
+  absl::optional<base::Value> value = base::JSONReader::Read(hostnames);
+  if (value && value->is_list()) {
+    ParseAndCacheHostnames(region, std::move(*value));
+    return;
+  }
+
+  // TODO(simonhong): Retry?
+}
+
+void BraveVpnServiceDesktop::ParseAndCacheHostnames(
+    const std::string& region,
+    base::Value hostnames_value) {
+  DCHECK(hostnames_value.is_list());
+  if (!hostnames_value.is_list())
+    return;
+
+  constexpr char kHostnameKey[] = "hostname";
+  constexpr char kDisplayNameKey[] = "display-name";
+  constexpr char kOfflineKey[] = "offline";
+  constexpr char kCapacityScoreKey[] = "capacity-score";
+  std::vector<brave_vpn::Hostname> hostnames;
+  for (const auto& value : hostnames_value.GetList()) {
+    DCHECK(value.is_dict());
+    if (!value.is_dict())
+      continue;
+
+    const std::string* hostname_str = value.FindStringKey(kHostnameKey);
+    const std::string* display_name_str = value.FindStringKey(kDisplayNameKey);
+    absl::optional<bool> offline = value.FindBoolKey(kOfflineKey);
+    absl::optional<int> capacity_score = value.FindIntKey(kCapacityScoreKey);
+
+    if (!hostname_str || !display_name_str || !offline || !capacity_score)
+      continue;
+
+    hostnames.push_back(brave_vpn::Hostname{*hostname_str, *display_name_str,
+                                            *offline, *capacity_score});
+  }
+
+  hostnames_[region] = std::move(hostnames);
 }

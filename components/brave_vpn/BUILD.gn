@@ -40,6 +40,7 @@ static_library("brave_vpn") {
     sources += [
       "brave_vpn_connection_info.cc",
       "brave_vpn_connection_info.h",
+      "brave_vpn_data_types.h",
       "brave_vpn_os_connection_api.cc",
       "brave_vpn_os_connection_api.h",
       "brave_vpn_os_connection_api_sim.cc",

@@ -9,9 +9,11 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_vpn/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
+#include "brave/components/brave_vpn/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -67,6 +69,7 @@ class BraveVpnServiceDesktop
   friend class BraveAppMenuBrowserTest;
   friend class BraveBrowserCommandControllerTest;
   FRIEND_TEST_ALL_PREFIXES(BraveVPNTest, RegionDataTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNTest, HostnamesTest);
 
   // BraveVpnService overrides:
   void Shutdown() override;
@@ -86,6 +89,12 @@ class BraveVpnServiceDesktop
   void ParseAndCacheRegionList(base::Value region_value);
   void OnFetchTimezones(const std::string& timezones_list, bool success);
   void ParseAndCacheDefaultRegionName(base::Value timezons_value);
+  void FetchHostnamesForRegion(const std::string& name);
+  void OnFetchHostnames(const std::string& region,
+                        const std::string& hostnames,
+                        bool success);
+  void ParseAndCacheHostnames(const std::string& region,
+                              base::Value hostnames_value);
   void SetDeviceRegion(const std::string& name);
   void SetFallbackDeviceRegion();
   std::string GetCurrentTimeZone();
@@ -98,6 +107,7 @@ class BraveVpnServiceDesktop
   }
 
   PrefService* prefs_ = nullptr;
+  base::flat_map<std::string, std::vector<brave_vpn::Hostname>> hostnames_;
   std::vector<brave_vpn::mojom::Region> regions_;
   brave_vpn::mojom::Region device_region_;
   ConnectionState state_ = ConnectionState::DISCONNECTED;
