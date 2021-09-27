@@ -88,6 +88,9 @@ extension BrowserViewController: PlaylistHelperDelegate {
                 topToolbar.menuButton.removeBadge(.playlist, animated: true)
                 toolbar?.menuButton.removeBadge(.playlist, animated: true)
             case .newItem:
+                if shouldShowPlaylistURLBarButton {
+                    topToolbar.locationView.readerModeState = .unavailable
+                }
                 playlistButton.buttonState = shouldShowPlaylistURLBarButton ? .addToPlaylist : .none
                 if Preferences.Playlist.enablePlaylistMenuBadge.value {
                     topToolbar.menuButton.addBadge(.playlist, animated: true)
@@ -97,6 +100,9 @@ extension BrowserViewController: PlaylistHelperDelegate {
                     toolbar?.menuButton.removeBadge(.playlist, animated: true)
                 }
             case .existingItem:
+                if shouldShowPlaylistURLBarButton {
+                    topToolbar.locationView.readerModeState = .unavailable
+                }
                 playlistButton.buttonState = shouldShowPlaylistURLBarButton ? .addedToPlaylist : .none
                 topToolbar.menuButton.removeBadge(.playlist, animated: true)
                 toolbar?.menuButton.removeBadge(.playlist, animated: true)
