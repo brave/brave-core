@@ -84,7 +84,6 @@ struct PendingContribution {
   uint64 added_date;
   string viewing_id;
   RewardsType type;
-  ContributionProcessor processor = ContributionProcessor.NONE;
 };
 
 struct PendingContributionInfo {
@@ -101,7 +100,6 @@ struct PendingContributionInfo {
   uint64 added_date;
   string viewing_id;
   uint64 expiration_date;
-  ContributionProcessor processor = ContributionProcessor.NONE;
 };
 
 struct VisitData {

@@ -163,7 +163,6 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     contribution->publisher_key = info->publisher_key;
     contribution->amount = amount;
     contribution->type = type;
-    contribution->processor = processor;
 
     type::PendingContributionList list;
     list.push_back(std::move(contribution));
