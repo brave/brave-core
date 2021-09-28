@@ -41644,6 +41644,7 @@ var globalMessages = {
 };
 
 window.fetch = async function(url, obj,a, b, c, d, e) {
+/*
   if (url == "./data/messages/messages.json") {
     return {
       ok: true,
@@ -41709,8 +41710,6 @@ window.fetch = async function(url, obj,a, b, c, d, e) {
       text: async () => {return JSON.stringify(globalMessagesV6)}
     };
   }
-
-  
-  console.log("fetch:", url, obj, a, b, c, d, e)
-  //return origFetch(url, obj, a, b, c, d, e)
+*/
+  return sendWithPromise("sendFetchRequest", url, obj)
 };

@@ -2,6 +2,8 @@ static_library("trezor_bridge") {
   sources = [
     "trezor_bridge_ui.cc",
     "trezor_bridge_ui.h",
+    "trezor_bridge_handler.cc",
+    "trezor_bridge_handler.h",
   ]
   deps = [
     "//base",
