@@ -11,6 +11,8 @@ import { mockRegionList } from './mock-data/region-list'
 import ErrorPanel from '../components/error-panel'
 import SelectRegionList from '../components/select-region-list'
 import MainPanel from '../components/main-panel'
+import SellPanel from '../components/sell-panel'
+import SettingsPanel from '../components/settings-panel'
 
 export default {
   title: 'VPN/Panels',
@@ -61,6 +63,22 @@ export const _SelectLocation = () => {
   return (
     <S.PanelFrame>
       <SelectRegionList />
+    </S.PanelFrame>
+  )
+}
+
+export const _SellPanel = () => {
+  return (
+    <S.PanelFrame>
+      <SellPanel />
+    </S.PanelFrame>
+  )
+}
+
+export const _SettingsPanel = () => {
+  return (
+    <S.PanelFrame>
+      <SettingsPanel />
     </S.PanelFrame>
   )
 }

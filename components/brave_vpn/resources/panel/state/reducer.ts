@@ -5,7 +5,7 @@
 
 import { createReducer } from 'redux-act'
 
-import { ConnectionState, Region } from '../api/panel_browser_api'
+import { ConnectionState, Region, ProductUrls } from '../api/panel_browser_api'
 import * as Actions from './actions'
 
 type RootState = {
@@ -14,6 +14,7 @@ type RootState = {
   connectionStatus: ConnectionState
   regions?: Array<Region>
   currentRegion?: Region
+  productUrls?: ProductUrls
 }
 
 const defaultState: RootState = {
@@ -85,7 +86,8 @@ reducer.on(Actions.initialized, (state, payload): RootState => {
     ...state,
     currentRegion: payload.currentRegion,
     regions: payload.regions,
-    connectionStatus: payload.connectionStatus
+    connectionStatus: payload.connectionStatus,
+    productUrls: payload.productUrls
   }
 })
 
