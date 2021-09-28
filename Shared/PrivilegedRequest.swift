@@ -38,7 +38,7 @@ public class PrivilegedRequest: NSMutableURLRequest {
     }
 
     private static func store(url: URL) -> URL? {
-        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return nil }
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return nil }
 
         var queryItems = (components.queryItems ?? []).filter({ $0.name != PrivilegedRequest.key })
         queryItems.append(URLQueryItem(name: PrivilegedRequest.key,
@@ -49,7 +49,7 @@ public class PrivilegedRequest: NSMutableURLRequest {
     }
 
     public static func removePrivileges(url: URL) -> URL? {
-        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true),
                 let items = components.queryItems else { return url }
 
         components.queryItems = items.filter { $0.name != PrivilegedRequest.key }
