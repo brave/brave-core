@@ -90,7 +90,8 @@ function Container (props: Props) {
     selectedPortfolioTimeline,
     isFetchingPortfolioPriceHistory,
     transactionSpotPrices,
-    addUserAssetError
+    addUserAssetError,
+    defaultWallet
   } = props.wallet
 
   // Page Props
@@ -608,6 +609,10 @@ function Container (props: Props) {
     props.walletActions.removeUserAsset({ contractAddress, chainId: selectedNetwork.chainId })
   }
 
+  const onOpenWalletSettings = () => {
+    props.walletPageActions.openWalletSettings()
+  }
+
   React.useEffect(() => {
     // Creates a list of Accepted Portfolio Routes
     const acceptedPortfolioRoutes = userVisibleTokenOptions.map((token) => {
@@ -752,6 +757,8 @@ function Container (props: Props) {
                 onSetUserAssetVisible={onSetUserAssetVisible}
                 onRemoveUserAsset={onRemoveUserAsset}
                 addUserAssetError={addUserAssetError}
+                defaultWallet={defaultWallet}
+                onOpenWalletSettings={onOpenWalletSettings}
               />
             }
           </Route>

@@ -97,6 +97,8 @@ async function refreshWalletInfo (store: Store) {
   store.dispatch(WalletActions.getAllTokensList())
 
   const braveWalletService = apiProxy.braveWalletService
+  const defaultWallet = await braveWalletService.getDefaultWallet()
+  store.dispatch(WalletActions.defaultWalletUpdated(defaultWallet.defaultWallet))
   const visibleTokensInfo = await braveWalletService.getUserAssets(chainId.chainId)
   store.dispatch(WalletActions.setVisibleTokensInfo(visibleTokensInfo.tokens))
 
@@ -262,12 +264,12 @@ handler.on(WalletActions.sendTransaction.getType(), async (store, payload: SendT
   const apiProxy = await getAPIProxy()
 
   const txData = apiProxy.makeTxData(
-      '0x1' /* nonce */,
-      payload.gasPrice || '',  // Estimated by eth_tx_controller if value is ''
-      payload.gas || '',  // Estimated by eth_tx_controller if value is ''
-      payload.to,
-      payload.value,
-      payload.data || []
+    '0x1' /* nonce */,
+    payload.gasPrice || '',  // Estimated by eth_tx_controller if value is ''
+    payload.gas || '',  // Estimated by eth_tx_controller if value is ''
+    payload.to,
+    payload.value,
+    payload.data || []
   )
 
   const addResult = await apiProxy.ethTxController.addUnapprovedTransaction(txData, payload.from)

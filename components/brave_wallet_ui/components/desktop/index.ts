@@ -13,7 +13,7 @@ import AccountListItem from './account-list-item'
 import AddButton from './add-button'
 import LockScreen from './lock-screen'
 import WalletMorePopup from './wallet-more-popup'
-import BackupWarningBanner from './backup-warning-banner'
+import WalletBanner from './wallet-banner'
 import PopupModal from './popup-modals'
 import AddAccountModal from './popup-modals/add-account-modal'
 import AccountSettingsModal from './popup-modals/account-settings-modal'
@@ -54,7 +54,7 @@ export {
   OnboardingCreatePassword,
   LockScreen,
   WalletMorePopup,
-  BackupWarningBanner,
+  WalletBanner,
   OnboardingRestore,
   AccountListItem,
   PopupModal,

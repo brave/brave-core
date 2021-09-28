@@ -2,17 +2,18 @@ import styled from 'styled-components'
 
 interface StyleProps {
   buttonType: 'primary' | 'secondary'
+  bannerType: 'warning' | 'danger'
 }
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled.div<Partial<StyleProps>>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background-color: ${(p) => p.theme.color.warningBackground};
+  background-color: ${(p) => p.bannerType === 'warning' ? p.theme.color.warningBackground : p.theme.color.errorBackground};
   border-radius: 4px;
-  border: 1px solid ${(p) => p.theme.color.warningBorder};
+  border: 1px solid ${(p) => p.bannerType === 'warning' ? p.theme.color.warningBorder : p.theme.color.errorBorder};
   padding: 20px;
   margin-bottom: 14px;
  `
@@ -32,7 +33,7 @@ export const ButtonRow = styled.div`
   justify-content: center;
 `
 
-export const BannerButton = styled.button<StyleProps>`
+export const BannerButton = styled.button<Partial<StyleProps>>`
   display: flex;;
   cursor: pointer;
   outline: none;

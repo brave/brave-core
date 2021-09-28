@@ -12,10 +12,11 @@ import {
   EthereumChain,
   TokenInfo,
   UpdateAccountNamePayloadType,
-  WalletRoutes
+  WalletRoutes,
+  DefaultWallet
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
-import { TopTabNav, BackupWarningBanner, AddAccountModal } from '../../'
+import { TopTabNav, WalletBanner, AddAccountModal } from '../../'
 import locale from '../../../../constants/locale'
 import { PortfolioView, AccountsView } from '../'
 import {
@@ -50,6 +51,7 @@ export interface Props {
   onAddUserAsset: (token: TokenInfo) => void
   onSetUserAssetVisible: (contractAddress: string, isVisible: boolean) => void
   onRemoveUserAsset: (contractAddress: string) => void
+  onOpenWalletSettings: () => void
   addUserAssetError: boolean
   hasImportError: boolean
   transactionSpotPrices: AssetPriceInfo[]
@@ -73,6 +75,7 @@ export interface Props {
   showAddModal: boolean
   selectedNetwork: EthereumChain
   isFetchingPortfolioPriceHistory: boolean
+  defaultWallet: DefaultWallet
 }
 
 const CryptoView = (props: Props) => {
@@ -99,6 +102,8 @@ const CryptoView = (props: Props) => {
     onAddUserAsset,
     onSetUserAssetVisible,
     onRemoveUserAsset,
+    onOpenWalletSettings,
+    defaultWallet,
     addUserAssetError,
     hasImportError,
     userVisibleTokensInfo,
@@ -125,6 +130,7 @@ const CryptoView = (props: Props) => {
   } = props
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
+  const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>()
 
   let { category, id } = useParams<ParamsType>()
@@ -162,6 +168,10 @@ const CryptoView = (props: Props) => {
 
   const onDismissBackupWarning = () => {
     setShowBackupWarning(false)
+  }
+
+  const onDismissDefaultWalletBanner = () => {
+    setShowDefaultWalletBanner(false)
   }
 
   const onClickAddAccount = () => {
@@ -204,10 +214,22 @@ const CryptoView = (props: Props) => {
             hasMoreButtons={true}
             onLockWallet={onLockWallet}
           />
+          {defaultWallet !== DefaultWallet.BraveWallet && showDefaultWalletBanner &&
+            <WalletBanner
+              onDismiss={onDismissDefaultWalletBanner}
+              onClick={onOpenWalletSettings}
+              bannerType='warning'
+              buttonText={locale.walletPopupSettings}
+              description={locale.defaultWalletBanner}
+            />
+          }
           {needsBackup && showBackupWarning &&
-            <BackupWarningBanner
+            <WalletBanner
               onDismiss={onDismissBackupWarning}
-              onBackup={onShowBackup}
+              onClick={onShowBackup}
+              bannerType='danger'
+              buttonText={locale.backupButton}
+              description={locale.backupWarningText}
             />
           }
         </>
