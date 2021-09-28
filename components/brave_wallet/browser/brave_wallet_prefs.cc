@@ -40,6 +40,7 @@ base::Value GetDefaultUserAssets() {
   bat.SetKey("is_erc721", base::Value(false));
   bat.SetKey("decimals", base::Value(18));
   bat.SetKey("visible", base::Value(true));
+  bat.SetKey("logo", base::Value("bat.svg"));
   user_assets_dict->Append(std::move(bat));
 
   return user_assets_pref;

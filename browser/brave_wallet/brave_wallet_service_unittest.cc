@@ -113,6 +113,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     bat_token_->is_erc721 = false;
     bat_token_->decimals = 18;
     bat_token_->visible = true;
+    bat_token_->logo = "bat.svg";
   }
 
   mojom::ERCTokenPtr GetToken1() { return token1_.Clone(); }
