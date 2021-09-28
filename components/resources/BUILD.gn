@@ -96,8 +96,14 @@ repack("resources") {
       sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak" ]
     }
 
-    deps += [ "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources" ]
-    sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak" ]
+    deps += [
+      "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
+      "//brave/components/trezor_bridge/resources:generated_resources",
+    ]
+    sources += [
+      "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak",
+      "$root_gen_dir/brave/components/trezor_bridge/resources/trezor_bridge_generated.pak",
+    ]
   }
 
   if (enable_brave_vpn) {

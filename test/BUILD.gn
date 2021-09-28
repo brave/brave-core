@@ -216,6 +216,7 @@ test("brave_unit_tests") {
     "//brave/components/sync/engine:unit_tests",
     "//brave/components/tor:tor_unit_tests",
     "//brave/components/tor/buildflags",
+    "//brave/components/trezor_bridge/test:brave_trezor_bridge_unit_tests",
     "//brave/components/weekly_storage",
     "//brave/mojo/brave_ast_patcher:unit_tests",
     "//brave/net/proxy_resolution:unit_tests",
