@@ -45,7 +45,6 @@ public class BraveSingleWebsiteSettings extends SiteSettingsPreferenceFragment {
     private void setUpAutoplayPreference(Preference preference) {
         BrowserContextHandle browserContextHandle =
                 getSiteSettingsDelegate().getBrowserContextHandle();
-        @ContentSettingValues
         @Nullable
         Website mSite =
                 (Website) BraveReflectionUtil.getField(SingleWebsiteSettings.class, "mSite", this);
