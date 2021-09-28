@@ -152,15 +152,24 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, ProvidersFromPrepopulated) {
 
 // Verifies default search provider for locale
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForUSA) {
-  CheckForCountry('U', 'S', "Google");
+  CheckForCountry('U', 'S', "Brave");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForGermany) {
-  CheckForCountry('D', 'E', "Google");
+  CheckForCountry('D', 'E', "Brave");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForFrance) {
-  CheckForCountry('F', 'R', "Qwant");
+  CheckForCountry('F', 'R', "Brave");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForGreatBritain) {
+  CheckForCountry('G', 'B', "Brave");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForCanada) {
+  CheckForCountry('C', 'A', "Brave");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest,
