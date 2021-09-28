@@ -5,14 +5,17 @@
 
 import {RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js'
+import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
 
 RegisterPolymerTemplateModifications({
   'site-details': (templateContent) => {
-    const idleDetectionItem = templateContent.querySelector('[category="[[contentSettingsTypesEnum_.IDLE_DETECTION]]"]')
-    if (!idleDetectionItem) {
-      console.error(`[Brave Settings Overrides] Couldn't find idle detection item`)
-    } else {
-      idleDetectionItem.hidden = true
+    if (!loadTimeData.getBoolean('isIdleDetectionFeatureEnabled')) {
+      const idleDetectionItem = templateContent.querySelector('[category="[[contentSettingsTypesEnum_.IDLE_DETECTION]]"]')
+      if (!idleDetectionItem) {
+        console.error(`[Brave Settings Overrides] Couldn't find idle detection item`)
+      } else {
+        idleDetectionItem.hidden = true
+      }
     }
     const firstPermissionItem = templateContent.querySelector('div.list-frame > site-details-permission:nth-child(1)')
     if (!firstPermissionItem) {
