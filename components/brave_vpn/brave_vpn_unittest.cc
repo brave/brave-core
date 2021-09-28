@@ -11,6 +11,7 @@
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/features.h"
+#include "brave/components/brave_vpn/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/test/test_shared_url_loader_factory.h"
@@ -23,6 +24,7 @@ class BraveVPNTest : public testing::Test {
   }
 
   void SetUp() override {
+    brave_vpn::prefs::RegisterProfilePrefs(pref_service_.registry());
     service_ = std::make_unique<BraveVpnServiceDesktop>(
         base::MakeRefCounted<network::TestSharedURLLoaderFactory>(),
         &pref_service_);
@@ -222,4 +224,30 @@ TEST_F(BraveVPNTest, HostnamesTest) {
   // Set invalid hostnames list
   service_->OnFetchHostnames("invalid-region-b", "", false);
   EXPECT_EQ(0UL, service_->hostnames_["invalid-region-b"].size());
+}
+
+TEST_F(BraveVPNTest, LoadRegionDataFromPrefsTest) {
+  // Initially, prefs doesn't have region data.
+  EXPECT_EQ(brave_vpn::mojom::Region(), service_->device_region_);
+  EXPECT_TRUE(service_->regions_.empty());
+
+  // Set proper data to store them in prefs.
+  service_->OnFetchRegionList(GetRegionsData(), true);
+  service_->set_test_timezone("Asia/Seoul");
+  service_->OnFetchTimezones(GetTimeZonesData(), true);
+
+  // Check region data is set with above data.
+  EXPECT_FALSE(brave_vpn::mojom::Region() == service_->device_region_);
+  EXPECT_FALSE(service_->regions_.empty());
+
+  // Clear region data.
+  service_->device_region_ = brave_vpn::mojom::Region();
+  service_->regions_.clear();
+  EXPECT_EQ(brave_vpn::mojom::Region(), service_->device_region_);
+  EXPECT_TRUE(service_->regions_.empty());
+
+  // Check region data is loaded from prefs.
+  service_->LoadCachedRegionData();
+  EXPECT_FALSE(brave_vpn::mojom::Region() == service_->device_region_);
+  EXPECT_FALSE(service_->regions_.empty());
 }
