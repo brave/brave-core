@@ -17,6 +17,7 @@ interface ServiceObserver {
   onConnectionCreated?: Function
   onConnectionRemoved?: Function
   onConnectionStateChanged?: Function
+  onPurchasedStateChanged?: Function
 }
 interface StateResponse {
   state: ConnectionState

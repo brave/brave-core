@@ -4,6 +4,7 @@ import MainPanel from './components/main-panel'
 import ErrorPanel from './components/error-panel'
 import apiProxy from './vpn_panel_api_proxy.js'
 import { ConnectionState } from './types/connection_state'
+import { PurchasedState } from './types/purchased_state'
 
 function Main () {
   const [isOn, setOn] = React.useState(false)
@@ -61,7 +62,8 @@ function Main () {
         }
 
         setStatus(state)
-      }
+      },
+      onPurchasedStateChanged: (state: PurchasedState) => {/**/}
     })
 
     return () => {
