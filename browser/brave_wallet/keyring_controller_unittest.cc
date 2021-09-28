@@ -1548,6 +1548,32 @@ TEST_F(KeyringControllerUnitTest, AutoLock) {
   ASSERT_FALSE(controller.IsLocked());
   task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(6));
   ASSERT_TRUE(controller.IsLocked());
+
+  // Changing the auto lock pref should reset the timer
+  controller.Unlock(
+      "brave", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
+                              base::Unretained(this)));
+  ASSERT_FALSE(controller.IsLocked());
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(4));
+  GetPrefs()->SetInteger(kBraveWalletAutoLockMinutes, 3);
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(2));
+  EXPECT_FALSE(controller.IsLocked());
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(1));
+  EXPECT_TRUE(controller.IsLocked());
+
+  // Changing the auto lock pref should reset the timer even if higher
+  // for simplicity of logic
+  controller.Unlock(
+      "brave", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
+                              base::Unretained(this)));
+  ASSERT_FALSE(controller.IsLocked());
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(2));
+  EXPECT_FALSE(controller.IsLocked());
+  GetPrefs()->SetInteger(kBraveWalletAutoLockMinutes, 10);
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(9));
+  EXPECT_FALSE(controller.IsLocked());
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(1));
+  EXPECT_TRUE(controller.IsLocked());
 }
 
 TEST_F(KeyringControllerUnitTest, NotifyUserInteraction) {

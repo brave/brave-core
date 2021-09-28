@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "crypto/random.h"
@@ -136,6 +137,13 @@ void SerializeHardwareAccounts(const base::Value* account_value,
 KeyringController::KeyringController(PrefService* prefs) : prefs_(prefs) {
   DCHECK(prefs);
   auto_lock_timer_ = std::make_unique<base::OneShotTimer>();
+
+  pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
+  pref_change_registrar_->Init(prefs);
+  pref_change_registrar_->Add(
+      kBraveWalletAutoLockMinutes,
+      base::BindRepeating(&KeyringController::OnAutoLockPreferenceChanged,
+                          base::Unretained(this)));
 }
 
 KeyringController::~KeyringController() {
@@ -949,8 +957,11 @@ void KeyringController::ResetAutoLockTimer() {
   if (auto_lock_timer_->IsRunning()) {
     auto_lock_timer_->Reset();
   } else {
-    auto_lock_timer_->Start(FROM_HERE, base::TimeDelta::FromMinutes(5), this,
-                            &KeyringController::OnAutoLockFired);
+    size_t auto_lock_minutes =
+        (size_t)prefs_->GetInteger(kBraveWalletAutoLockMinutes);
+    auto_lock_timer_->Start(FROM_HERE,
+                            base::TimeDelta::FromMinutes(auto_lock_minutes),
+                            this, &KeyringController::OnAutoLockFired);
   }
 }
 
@@ -1127,6 +1138,11 @@ void KeyringController::NotifyAccountsChanged() {
   for (const auto& observer : observers_) {
     observer->AccountsChanged();
   }
+}
+
+void KeyringController::OnAutoLockPreferenceChanged() {
+  StopAutoLockTimer();
+  ResetAutoLockTimer();
 }
 
 }  // namespace brave_wallet

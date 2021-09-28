@@ -21,6 +21,7 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+class PrefChangeRegistrar;
 class PrefService;
 
 namespace base {
@@ -228,10 +229,12 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void NotifyAccountsChanged();
   void StopAutoLockTimer();
   void ResetAutoLockTimer();
+  void OnAutoLockPreferenceChanged();
 
   std::unique_ptr<PasswordEncryptor> encryptor_;
   std::unique_ptr<HDKeyring> default_keyring_;
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
+  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
   // TODO(darkdh): For other keyrings support
   // std::vector<std::unique_ptr<HDKeyring>> keyrings_;
