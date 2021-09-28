@@ -557,6 +557,7 @@ export interface KeyringController {
   unlock: (password: string) => Promise<UnlockReturnInfo>
   addAccount: (accountName: string) => Promise<AddAccountReturnInfo>
   getHardwareAccounts: () => Promise<{ accounts: AccountInfo[] }>
+  notifyUserInteraction: () => Promise<void>
 }
 
 export interface GetUserAssetsReturnInfo {

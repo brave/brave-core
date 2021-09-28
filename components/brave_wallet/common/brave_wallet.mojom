@@ -231,6 +231,7 @@ interface KeyringController {
   AddHardwareAccounts(array<HardwareWalletAccount> info);
   GetHardwareAccounts() => (array<AccountInfo> accounts);
   RemoveHardwareAccount(string address);
+  NotifyUserInteraction();
 };
 
 interface AssetRatioController {

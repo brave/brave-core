@@ -42,7 +42,8 @@ const char kMnemonic2[] =
 
 class KeyringControllerUnitTest : public testing::Test {
  public:
-  KeyringControllerUnitTest() {}
+  KeyringControllerUnitTest()
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~KeyringControllerUnitTest() override {}
 
   void GetBooleanCallback(bool value) { bool_value_ = value; }
@@ -76,9 +77,9 @@ class KeyringControllerUnitTest : public testing::Test {
 
   bool bool_value() { return bool_value_; }
   const std::string string_value() { return string_value_; }
+  content::BrowserTaskEnvironment task_environment_;
 
  private:
-  content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
   bool bool_value_;
   std::string string_value_;
@@ -1498,6 +1499,72 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
   ASSERT_FALSE(GetPrefs()
                    ->GetDictionary(kBraveWalletKeyrings)
                    ->FindPath("hardware.Ledger4235202380"));
+}
+
+TEST_F(KeyringControllerUnitTest, AutoLock) {
+  KeyringController controller(GetPrefs());
+  controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
+  base::RunLoop().RunUntilIdle();
+  const std::string mnemonic = controller.GetMnemonicForDefaultKeyringImpl();
+  ASSERT_FALSE(controller.IsLocked());
+
+  // Should not be locked yet after 4 minutes
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(4));
+  ASSERT_FALSE(controller.IsLocked());
+
+  // After the 5th minute, it should be locked
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(1));
+  ASSERT_TRUE(controller.IsLocked());
+  // Locking after it is auto locked won't cause a crash
+  controller.Lock();
+  ASSERT_TRUE(controller.IsLocked());
+
+  // Unlocking will reset the timer
+  controller.Unlock(
+      "brave", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
+                              base::Unretained(this)));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_FALSE(controller.IsLocked());
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
+  ASSERT_TRUE(controller.IsLocked());
+
+  // Locking before the timer fires won't cause any problems after the
+  // timer fires.
+  controller.Unlock(
+      "brave", base::BindOnce(&KeyringControllerUnitTest::GetBooleanCallback,
+                              base::Unretained(this)));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_FALSE(controller.IsLocked());
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(1));
+  controller.Lock();
+  ASSERT_TRUE(controller.IsLocked());
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(4));
+  ASSERT_TRUE(controller.IsLocked());
+
+  // Restoring keyring will auto lock too
+  controller.Reset();
+  controller.RestoreWallet(mnemonic, "brave", false,
+                           base::DoNothing::Once<bool>());
+  ASSERT_FALSE(controller.IsLocked());
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(6));
+  ASSERT_TRUE(controller.IsLocked());
+}
+
+TEST_F(KeyringControllerUnitTest, NotifyUserInteraction) {
+  KeyringController controller(GetPrefs());
+  controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
+  base::RunLoop().RunUntilIdle();
+  ASSERT_FALSE(controller.IsLocked());
+
+  // Notifying of user interaction should keep the wallet unlocked
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(4));
+  controller.NotifyUserInteraction();
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(1));
+  controller.NotifyUserInteraction();
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(4));
+  ASSERT_FALSE(controller.IsLocked());
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(1));
+  ASSERT_TRUE(controller.IsLocked());
 }
 
 }  // namespace brave_wallet

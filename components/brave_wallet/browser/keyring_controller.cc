@@ -135,9 +135,12 @@ void SerializeHardwareAccounts(const base::Value* account_value,
 
 KeyringController::KeyringController(PrefService* prefs) : prefs_(prefs) {
   DCHECK(prefs);
+  auto_lock_timer_ = std::make_unique<base::OneShotTimer>();
 }
 
-KeyringController::~KeyringController() {}
+KeyringController::~KeyringController() {
+  auto_lock_timer_.reset();
+}
 
 mojo::PendingRemote<mojom::KeyringController> KeyringController::MakeRemote() {
   mojo::PendingRemote<mojom::KeyringController> remote;
@@ -415,6 +418,7 @@ HDKeyring* KeyringController::CreateDefaultKeyring(
   for (const auto& observer : observers_) {
     observer->KeyringCreated();
   }
+  ResetAutoLockTimer();
 
   return default_keyring_.get();
 }
@@ -503,6 +507,7 @@ HDKeyring* KeyringController::RestoreDefaultKeyring(
   for (const auto& observer : observers_) {
     observer->KeyringRestored();
   }
+  ResetAutoLockTimer();
 
   return default_keyring_.get();
 }
@@ -900,6 +905,7 @@ void KeyringController::Lock() {
   for (const auto& observer : observers_) {
     observer->Locked();
   }
+  StopAutoLockTimer();
 }
 
 void KeyringController::Unlock(const std::string& password,
@@ -914,7 +920,13 @@ void KeyringController::Unlock(const std::string& password,
   for (const auto& observer : observers_) {
     observer->Unlocked();
   }
+  ResetAutoLockTimer();
+
   std::move(callback).Run(true);
+}
+
+void KeyringController::OnAutoLockFired() {
+  Lock();
 }
 
 void KeyringController::IsLocked(IsLockedCallback callback) {
@@ -922,10 +934,24 @@ void KeyringController::IsLocked(IsLockedCallback callback) {
 }
 
 void KeyringController::Reset() {
+  StopAutoLockTimer();
   encryptor_.reset();
   default_keyring_.reset();
 
   ClearProfilePrefs(prefs_);
+}
+
+void KeyringController::StopAutoLockTimer() {
+  auto_lock_timer_->Stop();
+}
+
+void KeyringController::ResetAutoLockTimer() {
+  if (auto_lock_timer_->IsRunning()) {
+    auto_lock_timer_->Reset();
+  } else {
+    auto_lock_timer_->Start(FROM_HERE, base::TimeDelta::FromMinutes(5), this,
+                            &KeyringController::OnAutoLockFired);
+  }
 }
 
 bool KeyringController::GetPrefInBytesForKeyring(const std::string& key,
@@ -1032,6 +1058,10 @@ bool KeyringController::IsDefaultKeyringCreated() {
 void KeyringController::AddObserver(
     ::mojo::PendingRemote<mojom::KeyringControllerObserver> observer) {
   observers_.Add(std::move(observer));
+}
+
+void KeyringController::NotifyUserInteraction() {
+  auto_lock_timer_->Reset();
 }
 
 void KeyringController::SetDefaultKeyringDerivedAccountName(
