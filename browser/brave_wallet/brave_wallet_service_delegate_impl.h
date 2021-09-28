@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_IMPORTER_DELEGATE_IMPL_H_
-#define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_IMPORTER_DELEGATE_IMPL_H_
+#ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_DELEGATE_IMPL_H_
+#define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_DELEGATE_IMPL_H_
 
 #include <memory>
 #include <string>
@@ -14,7 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_importer_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -30,14 +30,14 @@ class Extension;
 
 namespace brave_wallet {
 
-class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate {
+class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate {
  public:
-  explicit BraveWalletImporterDelegateImpl(content::BrowserContext* context);
-  BraveWalletImporterDelegateImpl(const BraveWalletImporterDelegateImpl&) =
+  explicit BraveWalletServiceDelegateImpl(content::BrowserContext* context);
+  BraveWalletServiceDelegateImpl(const BraveWalletServiceDelegateImpl&) =
       delete;
-  BraveWalletImporterDelegateImpl& operator=(
-      const BraveWalletImporterDelegateImpl&) = delete;
-  ~BraveWalletImporterDelegateImpl() override;
+  BraveWalletServiceDelegateImpl& operator=(
+      const BraveWalletServiceDelegateImpl&) = delete;
+  ~BraveWalletServiceDelegateImpl() override;
 
   void IsCryptoWalletsInstalled(
       IsCryptoWalletsInstalledCallback callback) override;
@@ -49,9 +49,16 @@ class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate {
   void ImportFromMetaMask(const std::string& password,
                           const std::string& new_password,
                           ImportFromMetaMaskCallback callback) override;
+  void HasEthereumPermission(const std::string& origin,
+                             const std::string& account,
+                             HasEthereumPermissionCallback callback) override;
+  void ResetEthereumPermission(
+      const std::string& origin,
+      const std::string& account,
+      ResetEthereumPermissionCallback callback) override;
 
  private:
-  friend class BraveWalletImporterDelegateImplUnitTest;
+  friend class BraveWalletServiceDelegateImplUnitTest;
   void OnCryptoWalletsLoaded(const std::string& password,
                              const std::string& new_password,
                              ImportFromCryptoWalletsCallback callback,
@@ -77,9 +84,9 @@ class BraveWalletImporterDelegateImpl : public BraveWalletImporterDelegate {
   mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
   content::BrowserContext* context_;
   scoped_refptr<extensions::Extension> extension_;
-  base::WeakPtrFactory<BraveWalletImporterDelegateImpl> weak_ptr_factory_;
+  base::WeakPtrFactory<BraveWalletServiceDelegateImpl> weak_ptr_factory_;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_IMPORTER_DELEGATE_IMPL_H_
+#endif  // BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_DELEGATE_IMPL_H_

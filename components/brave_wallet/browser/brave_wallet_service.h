@@ -21,13 +21,13 @@ class PrefService;
 
 namespace brave_wallet {
 
-class BraveWalletImporterDelegate;
+class BraveWalletServiceDelegate;
 
 class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService {
  public:
   explicit BraveWalletService(
-      std::unique_ptr<BraveWalletImporterDelegate> delegate,
+      std::unique_ptr<BraveWalletServiceDelegate> delegate,
       PrefService* prefs);
   ~BraveWalletService() override;
 
@@ -62,6 +62,13 @@ class BraveWalletService : public KeyedService,
                           ImportFromMetaMaskCallback callback) override;
   void GetDefaultWallet(GetDefaultWalletCallback callback) override;
   void SetDefaultWallet(mojom::DefaultWallet default_wallet) override;
+  void HasEthereumPermission(const std::string& origin,
+                             const std::string& account,
+                             HasEthereumPermissionCallback callback) override;
+  void ResetEthereumPermission(
+      const std::string& origin,
+      const std::string& account,
+      ResetEthereumPermissionCallback callback) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
@@ -70,7 +77,7 @@ class BraveWalletService : public KeyedService,
       const std::string& contract_address,
       const std::string& chain_id);
 
-  std::unique_ptr<BraveWalletImporterDelegate> delegate_;
+  std::unique_ptr<BraveWalletServiceDelegate> delegate_;
   PrefService* prefs_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
 };

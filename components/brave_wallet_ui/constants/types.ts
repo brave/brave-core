@@ -588,6 +588,15 @@ export interface DefaultWalletReturnInfo {
   defaultWallet: DefaultWallet
 }
 
+export interface HasEthereumPermissionReturnInfo {
+  success: boolean
+  hasPermission: boolean
+}
+
+export interface ResetEthereumPermissionReturnInfo {
+  success: boolean
+}
+
 export interface BraveWalletService {
   getUserAssets: (chainId: string) => Promise<GetUserAssetsReturnInfo>
   addUserAsset: (token: TokenInfo, chainId: string) => Promise<AddUserAssetReturnInfo>
@@ -595,6 +604,8 @@ export interface BraveWalletService {
   setUserAssetVisible: (contractAddress: string, chainId: string, visible: boolean) => Promise<SetUserAssetVisibleReturnInfo>
   getDefaultWallet: () => Promise<DefaultWalletReturnInfo>
   setDefaultWallet: (defaultWallet: DefaultWallet) => Promise<void>
+  hasEthereumPermission: (origin: string, account: string) => Promise<HasEthereumPermissionReturnInfo>
+  resetEthereumPermission: (origin: string, account: string) => Promise<ResetEthereumPermissionReturnInfo>
 }
 
 export interface RecoveryObject {

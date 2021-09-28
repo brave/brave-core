@@ -10,7 +10,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_importer_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -88,7 +88,7 @@ base::CheckedContiguousIterator<base::Value> FindAsset(
 namespace brave_wallet {
 
 BraveWalletService::BraveWalletService(
-    std::unique_ptr<BraveWalletImporterDelegate> delegate,
+    std::unique_ptr<BraveWalletServiceDelegate> delegate,
     PrefService* prefs)
     : delegate_(std::move(delegate)), prefs_(prefs) {
   DCHECK(prefs_);
@@ -359,6 +359,23 @@ void BraveWalletService::GetDefaultWallet(GetDefaultWalletCallback callback) {
 
 void BraveWalletService::SetDefaultWallet(mojom::DefaultWallet default_wallet) {
   ::brave_wallet::SetDefaultWallet(prefs_, default_wallet);
+}
+
+void BraveWalletService::HasEthereumPermission(
+    const std::string& origin_spec,
+    const std::string& account,
+    HasEthereumPermissionCallback callback) {
+  if (delegate_)
+    delegate_->HasEthereumPermission(origin_spec, account, std::move(callback));
+}
+
+void BraveWalletService::ResetEthereumPermission(
+    const std::string& origin_spec,
+    const std::string& account,
+    ResetEthereumPermissionCallback callback) {
+  if (delegate_)
+    delegate_->ResetEthereumPermission(origin_spec, account,
+                                       std::move(callback));
 }
 
 }  // namespace brave_wallet

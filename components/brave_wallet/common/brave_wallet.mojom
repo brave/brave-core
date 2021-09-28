@@ -364,6 +364,8 @@ interface BraveWalletService {
   ImportFromMetaMask(string password, string newPassword) => (bool success);
   GetDefaultWallet() => (DefaultWallet default_wallet);
   SetDefaultWallet(DefaultWallet default_wallet);
+  HasEthereumPermission(string origin, string account) => (bool success, bool has_permission);
+  ResetEthereumPermission(string origin, string account) => (bool success);
 };
 
 enum DefaultWallet {

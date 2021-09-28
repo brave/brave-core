@@ -6,8 +6,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
 #include "base/test/bind.h"
-#include "brave/browser/brave_wallet/brave_wallet_importer_delegate_impl.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_importer_delegate.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -61,9 +61,9 @@ class BraveWalletServiceUnitTest : public testing::Test {
     profile_ = builder.Build();
     service_.reset(new BraveWalletService(
 #if defined(OS_ANDROID)
-        std::make_unique<BraveWalletImporterDelegate>(),
+        std::make_unique<BraveWalletServiceDelegate>(),
 #else
-        std::make_unique<BraveWalletImporterDelegateImpl>(profile_.get()),
+        std::make_unique<BraveWalletServiceDelegateImpl>(profile_.get()),
 #endif
         GetPrefs()));
 

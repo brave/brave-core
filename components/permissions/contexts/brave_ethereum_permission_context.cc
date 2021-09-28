@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
+#include "brave/components/permissions/brave_permission_manager.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_manager.h"
@@ -218,6 +219,58 @@ void BraveEthereumPermissionContext::GetAllowedAccounts(
   }
 
   std::move(callback).Run(true, allowed_accounts);
+}
+
+// static
+bool BraveEthereumPermissionContext::HasEthereumPermission(
+    content::BrowserContext* context,
+    const std::string& origin_spec,
+    const std::string& account,
+    bool* has_permission) {
+  CHECK(has_permission);
+  *has_permission = false;
+  auto* permission_manager =
+      reinterpret_cast<permissions::BravePermissionManager*>(
+          permissions::PermissionsClient::Get()->GetPermissionManager(context));
+  if (!permission_manager)
+    return false;
+
+  GURL origin_wallet_address;
+  if (!brave_wallet::GetSubRequestOrigin(GURL(origin_spec).GetOrigin(), account,
+                                         &origin_wallet_address)) {
+    return false;
+  }
+
+  permissions::PermissionResult result =
+      permission_manager->GetPermissionStatus(
+          ContentSettingsType::BRAVE_ETHEREUM, origin_wallet_address,
+          origin_wallet_address);
+
+  *has_permission = result.content_setting == CONTENT_SETTING_ALLOW;
+  return true;
+}
+
+// static
+bool BraveEthereumPermissionContext::ResetEthereumPermission(
+    content::BrowserContext* context,
+    const std::string& origin_spec,
+    const std::string& account) {
+  auto* permission_manager =
+      reinterpret_cast<permissions::BravePermissionManager*>(
+          permissions::PermissionsClient::Get()->GetPermissionManager(context));
+  if (!permission_manager)
+    return false;
+
+  GURL origin_wallet_address;
+  if (!brave_wallet::GetSubRequestOrigin(GURL(origin_spec).GetOrigin(), account,
+                                         &origin_wallet_address)) {
+    return false;
+  }
+
+  permission_manager->ResetPermissionViaContentSetting(
+      ContentSettingsType::BRAVE_ETHEREUM, origin_wallet_address,
+      origin_wallet_address);
+  return true;
 }
 
 }  // namespace permissions

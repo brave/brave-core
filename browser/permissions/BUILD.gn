@@ -44,9 +44,13 @@ source_set("unit_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "permission_lifetime_manager_unittest.cc" ]
+  sources = [
+    "brave_ethereum_permission_context_unittest.cc",
+    "permission_lifetime_manager_unittest.cc",
+  ]
 
   deps = [
+    "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//chrome/browser",
     "//chrome/test:test_support",
     "//components/content_settings/core/browser",

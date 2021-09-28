@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "brave/components/brave_wallet/browser/brave_wallet_importer_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
@@ -42,7 +42,7 @@ BraveWalletServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
   std::unique_ptr<BraveWalletService> controller(
-      new BraveWalletService(std::make_unique<BraveWalletImporterDelegate>(),
+      new BraveWalletService(std::make_unique<BraveWalletServiceDelegate>(),
                              browser_state->GetPrefs()));
   return controller;
 }
