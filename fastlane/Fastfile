@@ -60,7 +60,10 @@ platform :ios do
   lane :beta do |options|
     overrideParams = {
       scheme: "Beta",
-      export_method: "app-store"
+      export_method: "app-store",
+      export_options: {
+        manageAppVersionAndBuildNumber: false
+      }
     }
     testflight_build({overrideParams: overrideParams})
   end
@@ -70,7 +73,10 @@ platform :ios do
 
     overrideParams = {
       scheme: "Dev",
-      export_method: "app-store"
+      export_method: "app-store",
+      export_options: {
+        manageAppVersionAndBuildNumber: false
+      }
     }
     testflight_build({overrideParams: overrideParams})
   end
@@ -85,7 +91,8 @@ platform :ios do
           "com.brave.ios.browser" => "Brave iOS",
           "com.brave.ios.browser.ShareExtension" => "Brave iOS Share Extension",
           "com.brave.ios.browser.BrowserIntents" => "Brave iOS Intents Extension"
-        }
+        },
+        manageAppVersionAndBuildNumber: false
       },
     }
     testflight_build({overrideParams: overrideParams})
@@ -119,7 +126,8 @@ platform :ios do
           "com.brave.ios.enterprise.Browser" => "BraveEnt",
           "com.brave.ios.enterprise.Browser.ShareExtension" => "Ent-ShareTo",
           "com.brave.ios.enterprise.Browser.BrowserIntents" => "BraveEnt Browser Intents"
-        }
+        },
+        manageAppVersionAndBuildNumber: false
       },
       xcargs: "-allowProvisioningUpdates BRAVE_API_KEY=\"#{ENV['BRAVE_STATS_API_KEY']}\" BRAVE_VERSION=\"#{git_branch}\" GENERATED_BUILD_ID=\"#{get_build_number_repository}\" BRAVE_SERVICES_KEY=\"#{ENV['BRAVE_SERVICES_KEY']}\""
     )
