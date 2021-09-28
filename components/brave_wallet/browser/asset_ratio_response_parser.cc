@@ -68,7 +68,8 @@ bool ParseAssetPrice(const std::string& json,
     const base::Value* from_asset_value =
         payload_dict->FindDictPath(from_asset);
     const base::DictionaryValue* from_asset_dict;
-    if (!from_asset_value->GetAsDictionary(&from_asset_dict)) {
+    if (!from_asset_value ||
+        !from_asset_value->GetAsDictionary(&from_asset_dict)) {
       return false;
     }
 

@@ -11,6 +11,7 @@ source_set("brave_wallet_unit_tests") {
   testonly = true
   if (brave_wallet_enabled) {
     sources = [
+      "//brave/components/brave_wallet/browser/asset_ratio_controller_unittest.cc",
       "//brave/components/brave_wallet/browser/asset_ratio_response_parser_unittest.cc",
       "//brave/components/brave_wallet/browser/brave_wallet_types_unittest.cc",
       "//brave/components/brave_wallet/browser/brave_wallet_utils_unittest.cc",
