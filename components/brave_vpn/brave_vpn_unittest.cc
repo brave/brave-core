@@ -135,6 +135,41 @@ class BraveVPNTest : public testing::Test {
       ])";
   }
 
+  std::string GetHostnamesData() {
+    return R"([
+        {
+          "hostname": "host-1.brave.com",
+          "display-name": "host-1",
+          "offline": false,
+          "capacity-score": 0
+        },
+        {
+          "hostname": "host-2.brave.com",
+          "display-name": "host-2",
+          "offline": false,
+          "capacity-score": 1
+        },
+        {
+          "hostname": "host-3.brave.com",
+          "display-name": "Singapore",
+          "offline": false,
+          "capacity-score": 0
+        },
+        {
+          "hostname": "host-4.brave.com",
+          "display-name": "host-4",
+          "offline": false,
+          "capacity-score": 0
+        },
+        {
+          "hostname": "host-5.brave.com",
+          "display-name": "host-5",
+          "offline": false,
+          "capacity-score": 1
+        }
+      ])";
+  }
+
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<BraveVpnServiceDesktop> service_;
@@ -170,4 +205,14 @@ TEST_F(BraveVPNTest, RegionDataTest) {
   service_->set_test_timezone("Invalid");
   service_->OnFetchTimezones(GetTimeZonesData(), true);
   EXPECT_EQ(service_->regions_[0], service_->device_region_);
+}
+
+TEST_F(BraveVPNTest, HostnamesTest) {
+  // Set valid hostnames list
+  service_->OnFetchHostnames("region-a", GetHostnamesData(), true);
+  EXPECT_EQ(5UL, service_->hostnames_["region-a"].size());
+
+  // Set invalid hostnames list
+  service_->OnFetchHostnames("invalid-region-b", "", false);
+  EXPECT_EQ(0UL, service_->hostnames_["invalid-region-b"].size());
 }
