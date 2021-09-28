@@ -11,6 +11,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/scoped_observation.h"
+#include "base/timer/timer.h"
 #include "brave/components/brave_vpn/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/brave_vpn_data_types.h"
@@ -127,6 +128,7 @@ class BraveVpnServiceDesktop
       observed_{this};
   mojo::ReceiverSet<brave_vpn::mojom::ServiceHandler> receivers_;
   mojo::RemoteSet<brave_vpn::mojom::ServiceObserver> observers_;
+  base::RepeatingTimer region_data_update_timer_;
   std::string test_timezone_;
 };
 

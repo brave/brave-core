@@ -70,6 +70,11 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
   LoadCachedRegionData();
   FetchRegionData();
   CheckPurchasedStatus();
+
+  constexpr int kRegionDataUpdateIntervalInHours = 5;
+  region_data_update_timer_.Start(
+      FROM_HERE, base::TimeDelta::FromHours(kRegionDataUpdateIntervalInHours),
+      this, &BraveVpnServiceDesktop::FetchRegionData);
 }
 
 BraveVpnServiceDesktop::~BraveVpnServiceDesktop() = default;
