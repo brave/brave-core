@@ -1,0 +1,12 @@
+static_library("trezor_bridge") {
+  sources = [
+    "trezor_bridge_handler.cc",
+    "trezor_bridge_handler.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/resources:static_resources",
+    "//brave/components/resources:strings_grit",
+    "//content/public/browser",
+  ]
+}

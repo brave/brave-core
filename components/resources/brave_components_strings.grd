@@ -1032,6 +1032,7 @@
       <part file="decentralized_dns_strings.grdp" />
       <part file="domain_block_strings.grdp" />
       <part file="ipfs_strings.grdp" />
+      <part file="trezor_bridge_strings.grdp" />
       <part file="permissions_strings.grdp" />
       <part file="rewards_strings.grdp" />
       <part file="speedreader_strings.grdp" />

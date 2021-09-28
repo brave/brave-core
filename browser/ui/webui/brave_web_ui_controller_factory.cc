@@ -14,6 +14,7 @@
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #include "brave/browser/ui/webui/brave_tip_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/trezor_bridge_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/common/brave_features.h"
 #include "brave/common/pref_names.h"
@@ -86,6 +87,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new IPFSUI(web_ui, url.host());
 #endif  // BUILDFLAG(ENABLE_IPFS)
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
+  } else if (host == kBraveTrezorBridgeHost) {
+    return new TrezorBridgeUI(web_ui, url.host());
   } else if (host == kWalletPageHost) {
     if (brave_wallet::IsNativeWalletEnabled()) {
       auto default_wallet = brave_wallet::GetDefaultWallet(profile->GetPrefs());
@@ -146,6 +149,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
       url.host_piece() == kWalletPanelHost ||
       url.host_piece() == kWalletPageHost ||
+      url.host_piece() == kBraveTrezorBridgeHost ||
 #endif
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost ||
