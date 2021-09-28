@@ -97,7 +97,6 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
                          ImportFromCryptoWalletsCallback callback,
                          std::unique_ptr<base::DictionaryValue> dict);
 
-  bool IsLegacyCryptoWallets() const;
   bool IsCryptoWalletsInstalledInternal() const;
   const extensions::Extension* GetCryptoWallets();
   const extensions::Extension* GetMetaMask();
