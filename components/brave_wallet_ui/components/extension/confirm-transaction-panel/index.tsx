@@ -13,7 +13,7 @@ import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import locale from '../../../constants/locale'
 import { formatBalance, formatGasFee, formatFiatGasFee, formatFiatBalance } from '../../../utils/format-balances'
-import { NavButton, PanelTab, TransactionDetailBox } from '../'
+import { NavButton, PanelTab, TransactionDetailBox, EditGas } from '../'
 
 // Styled Components
 import {
@@ -77,6 +77,7 @@ function ConfirmTransactionPanel (props: Props) {
   } = props
 
   const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
+  const [isEditing, setIsEditing] = React.useState<boolean>(false)
 
   const findTokenInfo = (contractAddress: string) => {
     return visibleTokens.find((account) => account.contractAddress.toLowerCase() === contractAddress.toLowerCase())
@@ -173,112 +174,135 @@ function ConfirmTransactionPanel (props: Props) {
     return create({ seed: transaction.sendTo.toLowerCase(), size: 8, scale: 10 }).toDataURL()
   }, [transactionInfo])
 
+  const onToggleEditGas = () => {
+    setIsEditing(!isEditing)
+  }
+
+  const onSaveGasPrice = () => {
+    // Logic here to save gas prices
+  }
+
   return (
-    <StyledWrapper>
-      <TopRow>
-        <NetworkText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</NetworkText>
-        {transactionInfo.txType === TransactionType.ERC20Approve &&
-          <AddressAndOrb>
-            <AddressText>{reduceAddress(transaction.sendTo)}</AddressText>
-            <AccountCircle orb={toOrb} />
-          </AddressAndOrb>
-        }
-      </TopRow>
-      {transactionInfo.txType === TransactionType.ERC20Approve ? (
-        <>
-          <FavIcon src={`chrome://favicon/size/64@1x/${siteURL}`} />
-          <URLText>{siteURL}</URLText>
-          <PanelTitle>{locale.allowSpendTitle} {transaction.symbol}?</PanelTitle>
-          {/* Will need to allow parameterized locales by introducing the "t" helper. For ex: {t(locale.allowSpendDescription, [spendPayload.erc20Token.symbol])}*/}
-          <Description>{locale.allowSpendDescriptionFirstHalf}{transaction.symbol}{locale.allowSpendDescriptionSecondHalf}</Description>
-        </>
+    <>
+      {isEditing ? (
+        <EditGas
+          transactionInfo={transactionInfo}
+          onCancel={onToggleEditGas}
+          networkSpotPrice={findSpotPrice(selectedNetwork.symbol.toLowerCase())?.price ?? ''}
+          selectedNetwork={selectedNetwork}
+          onSave={onSaveGasPrice}
+        />
       ) : (
-        <>
-          <AccountCircleWrapper>
-            <FromCircle orb={fromOrb} />
-            <ToCircle orb={toOrb} />
-          </AccountCircleWrapper>
-          <FromToRow>
-            <AccountNameText>{reduceAccountDisplayName(findAccountName(transactionInfo.fromAddress) ?? '', 11)}</AccountNameText>
-            <ArrowIcon />
-            <AccountNameText>{reduceAddress(transaction.sendTo)}</AccountNameText>
-          </FromToRow>
-          <TransactionTypeText>{locale.send}</TransactionTypeText>
-          <TransactionAmmountBig>{transaction.sendAmount} {transaction.symbol}</TransactionAmmountBig>
-          <TransactionFiatAmountBig>${transaction.sendFiatAmount}</TransactionFiatAmountBig>
-        </>
-      )}
-      <TabRow>
-        <PanelTab
-          isSelected={selectedTab === 'transaction'}
-          onSubmit={onSelectTab('transaction')}
-          text='Transaction'
-        />
-        <PanelTab
-          isSelected={selectedTab === 'details'}
-          onSubmit={onSelectTab('details')}
-          text='Details'
-        />
-      </TabRow>
-      <MessageBox isDetails={selectedTab === 'details'} isApprove={transactionInfo.txType === 2}>
-        {selectedTab === 'transaction' ? (
-          <>
+        <StyledWrapper>
+          <TopRow>
+            <NetworkText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</NetworkText>
             {transactionInfo.txType === TransactionType.ERC20Approve &&
-              <>
-                <MessageBoxRow>
-                  <TransactionTitle>{locale.allowSpendTransactionFee}</TransactionTitle>
-                  <EditButton>{locale.allowSpendEditButton}</EditButton>
-                </MessageBoxRow>
-                <FiatRow>
-                  <TransactionTypeText>{transaction.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
-                </FiatRow>
-                <FiatRow>
-                  <TransactionText>${transaction.gasFiatAmount}</TransactionText>
-                </FiatRow>
-              </>
+              <AddressAndOrb>
+                <AddressText>{reduceAddress(transaction.sendTo)}</AddressText>
+                <AccountCircle orb={toOrb} />
+              </AddressAndOrb>
             }
-            {transactionInfo.txType !== TransactionType.ERC20Approve &&
+          </TopRow>
+          {transactionInfo.txType === TransactionType.ERC20Approve ? (
+            <>
+              <FavIcon src={`chrome://favicon/size/64@1x/${siteURL}`} />
+              <URLText>{siteURL}</URLText>
+              <PanelTitle>{locale.allowSpendTitle} {transaction.symbol}?</PanelTitle>
+              {/* Will need to allow parameterized locales by introducing the "t" helper. For ex: {t(locale.allowSpendDescription, [spendPayload.erc20Token.symbol])}*/}
+              <Description>{locale.allowSpendDescriptionFirstHalf}{transaction.symbol}{locale.allowSpendDescriptionSecondHalf}</Description>
+            </>
+          ) : (
+            <>
+              <AccountCircleWrapper>
+                <FromCircle orb={fromOrb} />
+                <ToCircle orb={toOrb} />
+              </AccountCircleWrapper>
+              <FromToRow>
+                <AccountNameText>{reduceAccountDisplayName(findAccountName(transactionInfo.fromAddress) ?? '', 11)}</AccountNameText>
+                <ArrowIcon />
+                <AccountNameText>{reduceAddress(transaction.sendTo)}</AccountNameText>
+              </FromToRow>
+              <TransactionTypeText>{locale.send}</TransactionTypeText>
+              <TransactionAmmountBig>{transaction.sendAmount} {transaction.symbol}</TransactionAmmountBig>
+              <TransactionFiatAmountBig>${transaction.sendFiatAmount}</TransactionFiatAmountBig>
+            </>
+          )}
+          <TabRow>
+            <PanelTab
+              isSelected={selectedTab === 'transaction'}
+              onSubmit={onSelectTab('transaction')}
+              text='Transaction'
+            />
+            <PanelTab
+              isSelected={selectedTab === 'details'}
+              onSubmit={onSelectTab('details')}
+              text='Details'
+            />
+          </TabRow>
+          <MessageBox isDetails={selectedTab === 'details'} isApprove={transactionInfo.txType === TransactionType.ERC20Approve}>
+            {selectedTab === 'transaction' ? (
               <>
-                <SectionRow>
-                  <TransactionTitle>{locale.confirmTransactionGasFee}</TransactionTitle>
-                  <SectionRightColumn>
-                    <EditButton>{locale.allowSpendEditButton}</EditButton>
-                    <TransactionTypeText>{transaction.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
-                    <TransactionText>${transaction.gasFiatAmount}</TransactionText>
-                  </SectionRightColumn>
-                </SectionRow>
-                <Divider />
-                <SectionRow>
-                  <TransactionTitle>{locale.confirmTransactionTotal}</TransactionTitle>
-                  <SectionRightColumn>
-                    <TransactionText>{locale.confirmTransactionAmountGas}</TransactionText>
-                    <GrandTotalText>{transaction.sendAmount} {transaction.symbol} + {transaction.gasAmount} {selectedNetwork.symbol}</GrandTotalText>
-                    <TransactionText>${transaction.grandTotalFiatAmount.toFixed(2)}</TransactionText>
-                  </SectionRightColumn>
-                </SectionRow>
+                {transactionInfo.txType === TransactionType.ERC20Approve &&
+                  <>
+                    <MessageBoxRow>
+                      <TransactionTitle>{locale.allowSpendTransactionFee}</TransactionTitle>
+                      {/* Disabled until wired up to the API*/}
+                      <EditButton disabled={true} onClick={onToggleEditGas} >{locale.allowSpendEditButton}</EditButton>
+                    </MessageBoxRow>
+                    <FiatRow>
+                      <TransactionTypeText>{transaction.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
+                    </FiatRow>
+                    <FiatRow>
+                      <TransactionText>${transaction.gasFiatAmount}</TransactionText>
+                    </FiatRow>
+                  </>
+                }
+                {transactionInfo.txType !== TransactionType.ERC20Approve &&
+                  <>
+                    <SectionRow>
+                      <TransactionTitle>{locale.confirmTransactionGasFee}</TransactionTitle>
+                      <SectionRightColumn>
+                        {/* Disabled until wired up to the API*/}
+                        <EditButton disabled={true} onClick={onToggleEditGas}>{locale.allowSpendEditButton}</EditButton>
+                        <TransactionTypeText>{transaction.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
+                        <TransactionText>${transaction.gasFiatAmount}</TransactionText>
+                      </SectionRightColumn>
+                    </SectionRow>
+                    <Divider />
+                    <SectionRow>
+                      <TransactionTitle>{locale.confirmTransactionTotal}</TransactionTitle>
+                      <SectionRightColumn>
+                        <TransactionText>{locale.confirmTransactionAmountGas}</TransactionText>
+                        <GrandTotalText>{transaction.sendAmount} {transaction.symbol} + {transaction.gasAmount} {selectedNetwork.symbol}</GrandTotalText>
+                        <TransactionText>${transaction.grandTotalFiatAmount.toFixed(2)}</TransactionText>
+                      </SectionRightColumn>
+                    </SectionRow>
+                  </>
+                }
               </>
-            }
-          </>
-        ) : (
-          <TransactionDetailBox
-            hasNoData={transaction.hasNoData}
-            transactionInfo={transactionInfo}
-          />
-        )}
-      </MessageBox>
-      <ButtonRow>
-        <NavButton
-          buttonType='reject'
-          text={locale.allowSpendRejectButton}
-          onSubmit={onReject}
-        />
-        <NavButton
-          buttonType='confirm'
-          text={locale.allowSpendConfirmButton}
-          onSubmit={onConfirm}
-        />
-      </ButtonRow>
-    </StyledWrapper>
+            ) : (
+              <TransactionDetailBox
+                hasNoData={transaction.hasNoData}
+                transactionInfo={transactionInfo}
+              />
+            )}
+          </MessageBox>
+          <ButtonRow>
+            <NavButton
+              buttonType='reject'
+              text={locale.allowSpendRejectButton}
+              onSubmit={onReject}
+            />
+            <NavButton
+              buttonType='confirm'
+              text={locale.allowSpendConfirmButton}
+              onSubmit={onConfirm}
+            />
+          </ButtonRow>
+        </StyledWrapper>
+      )}
+    </>
+
   )
 }
 

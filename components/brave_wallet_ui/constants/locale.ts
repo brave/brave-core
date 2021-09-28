@@ -327,7 +327,25 @@ const locale = {
   transactionReceived: 'received',
   transactionExplorerMissing: 'No block explorer url defined.',
   transactionExplorer: 'View on Block Explorer',
-  transactionPlaceholder: 'Transactions will appear here'
+  transactionPlaceholder: 'Transactions will appear here',
+
+  // Edit Gas
+  braveWalletEditGasTitle1: 'Max priority fee',
+  braveWalletEditGasTitle2: 'Edit gas',
+  braveWalletEditGasDescription: 'While not a guarantee, miners will likely prioritize your transaction earlier if you pay a higher fee.',
+  braveWalletEditGasLow: 'Low',
+  braveWalletEditGasOptimal: 'Optimal',
+  braveWalletEditGasHigh: 'High',
+  braveWalletEditGasAmountLimit: 'Gas amount limit',
+  braveWalletEditGasPerGasPrice: 'Per-gas price (Gwei)',
+  braveWalletEditGasPerTipLimit: 'Per-gas tip limit (Gwei)',
+  braveWalletEditGasPerPriceLimit: 'Per-gas price limit (Gwei)',
+  braveWalletEditGasMaxFee: 'Max fee',
+  braveWalletEditGasMaximumFee: 'Maximum fee',
+  braveWalletEditGasBaseFee: 'Current base fee',
+  braveWalletEditGasGwei: 'Gwei',
+  braveWalletEditGasSetCustom: 'Set custom',
+  braveWalletEditGasSetSuggested: 'Set suggested'
 }
 
 export default locale
