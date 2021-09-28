@@ -1,0 +1,11 @@
+static_library("trezor_bridge") {
+  sources = [
+    "trezor_bridge_ui.cc",
+    "trezor_bridge_ui.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/resources:static_resources",
+    "//content/public/browser",
+  ]
+}

@@ -557,6 +557,7 @@ source_set("ui") {
       "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
       "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",
       "//brave/components/resources:strings_grit",
+      "//brave/components/trezor_bridge",
       "//components/permissions",
     ]
   }

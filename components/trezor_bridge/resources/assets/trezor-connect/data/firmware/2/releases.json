@@ -1,0 +1,159 @@
+[
+	{
+		"required": false,
+		"version": [2, 3, 0],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 0, 8],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.3.0.bin",
+		"url_bitcoinonly": "data/firmware/2/trezor-2.3.0-bitcoinonly.bin",
+		"fingerprint": "212929f63fe1393e2ff57e06537a38cff281e3cfb3a4e17235079e2f08871e6c",
+		"fingerprint_bitcoinonly": "bddc0fd3b52fd32d94b776048f62b3d03dcb6ab90140e482a042a2863093115f",
+		"changelog": "* Introduce Wipe code\n* Introduce SD card protection\n* Introduce passphrase cache\n* U2F UX improvements\n* Security fixes"
+	},
+	{
+		"required": false,
+		"version": [2, 1, 8],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 0, 8],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.1.8.bin",
+		"url_bitcoinonly": "data/firmware/2/trezor-2.1.8-bitcoinonly.bin",
+		"fingerprint": "8a5fa12132651b6e33344fd025d0d90885f5cc1c342427ebcea4f0ae98b50d8c",
+		"fingerprint_bitcoinonly": "ec752e9fa99a29979497e093b32bdb2b592783e2b48c87d8f6f0c18c73cd3022",
+		"changelog": "* Support Tezos 005-BABYLON hardfork\n* Show XPUBs in GetAddress for multisig\n* Security improvements"
+	},
+	{
+		"required": false,
+		"version": [2, 1, 7],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 0, 8],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.1.7.bin",
+		"url_bitcoinonly": "data/firmware/2/trezor-2.1.7-bitcoinonly.bin",
+		"fingerprint": "acf1b4c6fec3624a8fc53f9130ff53d690c3fa1c134bd4ca3e58ee7b5a0441d8",
+		"fingerprint_bitcoinonly": "fd92ac173a2cf93cc07ced3287e07800ed10466dc38c0c7240d9b20c689dd1d1",
+		"changelog": "* Super Shamir (with Groups)\n* FIDO2 support with credential management\n* Fix low memory issue"
+	},
+	{
+		"required": false,
+		"version": [2, 1, 6],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 0, 8],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.1.6.bin",
+		"url_bitcoinonly": "data/firmware/2/trezor-2.1.6-bitcoinonly.bin",
+		"fingerprint": "e2032ad84108a85d4014d477b955b9181a1a56e6f222ef21bb7d47b503a02f0b",
+		"fingerprint_bitcoinonly": "4e7f0f95d71631159b9e873f36a812c93a10eca1fad5f38c78ae7fbe4c1f6ed4",
+		"changelog": "* Super Shamir (with Groups)\n* FIDO2 support with credential management"
+	},
+	{
+		"required": false,
+		"version": [2, 1, 5],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 1, 0],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.1.5.bin",
+		"url_bitcoinonly": "data/firmware/2/trezor-2.1.5-bitcoinonly.bin",
+		"fingerprint": "40e4bfaf3c5ec77872c1aaaac085aafcc443f60279ca2bb38d29c669233fdf62",
+		"fingerprint_bitcoinonly": "9de90d9f8ca12506f3b9a4cbe7616294144d965d67daa3a03bfe6c0b74a44843",
+		"changelog": "* Fix for sluggish U2F authentication when using Shamir\n* Fix UI for Shamir with 33 words\n* Fix Wanchain signing"
+	},
+	{
+		"required": false,
+		"version": [2, 1, 4],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 1, 0],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.1.4.bin",
+		"fingerprint": "820611a92605b1ccc612b9bf8550617aec6962bd2484fcb6ae4792bc498654e4",
+		"changelog": "* Shamir Backup with Recovery persistence\n* Touchscreen freeze fix\n* Fix display of non-divisible OMNI amounts"
+	},
+	{
+		"required": false,
+		"version": [2, 1, 1],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 0, 5],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.1.1.bin",
+		"fingerprint": "1b3166a878658fcd2ff82c7ac9a2587da544fd105f678cc7b4d41cba5a8d4c01",
+		"changelog": "* Hotfix for touchscreen freeze\n* Don't rotate the screen via swipe gesture\n* Set screen rotation via user setting\n* More strict path validations\n* Display non-zero locktime values\n* EOS support\n* Monero UI fixes\n* Speed and memory optimizations"
+	},
+	{
+		"required": false,
+		"version": [2, 1, 0],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 0, 5],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.1.0.bin",
+		"tags": ["security"],
+		"fingerprint": "bb5b0308807b45d41d1e2ab66a468152997ad69a01099789d8a35e464cde999f",
+		"changelog": "* Security improvements\n* Upgraded to new storage format\n* Ripple, Stellar, Cardano and NEM fixes\n* New coins: ATS, AXE, FLO, GIN, KMD, NIX,\n  PIVX, REOSC, XPM, XSN, ZCL\n* New ETH tokens"
+	},
+	{
+		"required": false,
+		"version": [2, 0, 10],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 0, 5],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.0.10.bin",
+		"fingerprint": "fcaa6ee206c2c121eb2d45d065d66f0879f14be45c244d4acf908be1de22275e",
+		"changelog": "* Fix Monero payment ID computation\n* Fix issue with touch screen and flickering\n* Add support for OMNI layer: OMNI/MAID/USDT\n* Add support for new coins: BTX, CPC, GAME, RVN\n* Add support for new Ethereum tokens"
+	},
+	{
+		"required": false,
+		"version": [2, 0, 9],
+		"bootloader_version": [2, 0, 0],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 0, 5],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.0.9.bin",
+		"fingerprint": "87be93d6966e7a9eff78dc7b434d1a138ec8d1ee0300882d16f90b606f3a806b",
+		"changelog": "* Small Monero and Segwit bugfixes"
+	},
+	{
+		"required": false,
+		"version": [2, 0, 8],
+		"bootloader_version": [2, 0, 0],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 0, 5],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.0.8.bin",
+		"fingerprint": "642b6215bda981f8eacafee34dbee5cdeee7d47d49f605bbe2828a8d9b79813d",
+		"changelog": "* Monero support\n* Cardano support\n* Stellar support\n* Ripple support\n* Tezos support\n* Decred support\n* Groestlcoin support\n* Zencash support\n* Zcash sapling hardfork support\n* Implemented seedless setup"
+	},
+	{
+		"required": false,
+		"version": [2, 0, 7],
+		"bootloader_version": [2, 0, 0],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 0, 5],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.0.7.bin",
+		"fingerprint": "f3a42e640e526fba6574fafa520fc7d97ef9f557d24da24d9a2ea4176a4c4164",
+		"changelog": "* Bitcoin Cash cashaddr support\n* Zcash Overwinter hardfork support\n* NEM support\n* Lisk support\n* Show warning on home screen if PIN is not set\n* Support for new coins:\n  - Bitcoin Private, Fujicoin, Vertcoin, Viacoin, Zcoin\n* Support for new Ethereum networks:\n  - EOS Classic, Ethereum Social, Ellaism, Callisto, EtherGem, Wanchain\n* Support for 500+ new Ethereum tokens",
+		"notes": "https://blog.trezor.io/june-updates-trezor-devices-one-modelt-wallet-zcash-cashaddr-doge-8d98c2a73036"
+	},
+	{
+		"required": false,
+		"version": [2, 0, 6],
+		"bootloader_version": [2, 0, 0],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 0, 5],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.0.6.bin",
+		"fingerprint": "4eccabf2fd7e121ed0da657c064a65c5694402497e60ea2ac2dcf1e118db9cc6",
+		"changelog": "* Fix layout for Ethereum transactions\n* Fix public key generation for SSH and GPG\n* Add special characters to passphrase keyboard"
+	},
+	{
+		"required": true,
+		"version": [2, 0, 5],
+		"bootloader_version": [2, 0, 0],
+		"min_bridge_version": [2, 0, 7],
+		"min_firmware_version": [2, 0, 5],
+		"min_bootloader_version": [2, 0, 0],
+		"url": "data/firmware/2/trezor-2.0.5.bin",
+		"fingerprint": "851172eab96c07bf9efb43771cb0fd14dc0320a68de047132c7bd787a1ad64e9",
+		"changelog": "* First public release"
+	}
+]

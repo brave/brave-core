@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/trezor_bridge/trezor_bridge_ui.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
@@ -76,7 +77,9 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
   Profile* profile = Profile::FromBrowserContext(
       web_ui->GetWebContents()->GetBrowserContext());
-  if (host == kAdblockHost) {
+  if (host == kBraveTrezorBridgeHost) {
+    return new TrezorBridgeUI(web_ui, url.host());
+  } else if (host == kAdblockHost) {
     return new BraveAdblockUI(web_ui, url.host());
   } else if (host == kWebcompatReporterHost) {
     return new WebcompatReporterUI(web_ui, url.host());
@@ -146,6 +149,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
       url.host_piece() == kWalletPanelHost ||
       url.host_piece() == kWalletPageHost ||
+      url.host_piece() == kBraveTrezorBridgeHost ||
 #endif
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost ||

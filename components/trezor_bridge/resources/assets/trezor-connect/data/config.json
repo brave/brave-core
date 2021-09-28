@@ -1,0 +1,135 @@
+{
+    "webusb": [
+        { "vendorId": "0x534c", "productId": "0x0001" },
+        { "vendorId": "0x1209", "productId": "0x53c0" },
+        { "vendorId": "0x1209", "productId": "0x53c1" }
+    ],
+    "whitelist": [
+        { "origin": "chrome-extension://imloifkgjagghnncjkhggdhalmcnfklk", "priority": 1 },
+        { "origin": "chrome-extension://niebkpllfhmpfbffbfifagfgoamhpflf", "priority": 1 },
+        { "origin": "file://", "priority": 2 },
+        { "origin": "trezor.io", "priority": 0 },
+        { "origin": "sldev.cz", "priority": 0 },
+        { "origin": "localhost", "priority": 0 }
+    ],
+    "management": [
+        { "origin": "trezor.io" },
+        { "origin": "sldev.cz" },
+        { "origin": "localhost" }
+    ],
+    "knownHosts": [
+        { "origin": "imloifkgjagghnncjkhggdhalmcnfklk", "label": "Trezor Password Manager (Develop)", "icon": "./data/icons/tpm.jpg" },
+        { "origin": "niebkpllfhmpfbffbfifagfgoamhpflf", "label": "Trezor Password Manager" },
+        { "origin": "trezor-connect@trezor.io", "label": "Trezor Connect FF Extension" },
+        { "origin": "efbfhenfhihgdcmnfdkhaphjdnopihlf", "label": "Trezor Connect Chrome Extension", "icon": "./data/icons/metamask.svg" },
+        { "origin": "mnpfhpndmjholfdlhpkjfmjkgppmodaf", "label": "MetaMask", "icon": "./data/icons/metamask.svg" },
+        { "origin": "webextension@metamask.io", "label": "MetaMask", "icon": "./data/icons/metamask.svg" },
+        { "origin": "file://", "label": " " }
+    ],
+    "resources": {
+        "bridge": "./data/bridge/latest.txt"
+    },
+    "assets": [
+        {
+            "name": "coins",
+            "url": "./data/coins.json"
+        },
+        {
+            "name": "bridge",
+            "url": "./data/bridge/releases.json"
+        },
+        {
+            "name": "firmware-t1",
+            "url": "./data/firmware/1/releases.json"
+        },
+        {
+            "name": "firmware-t2",
+            "url": "./data/firmware/2/releases.json"
+        }
+    ],
+    "messages": [
+        {
+            "name": "v6",
+            "range": {
+                "min": ["1.0.0", "2.0.0"],
+                "max": ["1.7.3", "2.0.10"]
+            },
+            "json": "./data/messages/messages-v6.json"
+        },
+        {
+            "name": "v7",
+            "range": {
+                "min": ["1.7.4", "2.1.0"],
+                "max": ["1.8.1", "2.1.1"]
+            },
+            "json": "./data/messages/messages-v7.json"
+        },
+        {
+            "name": "v8",
+            "range": {
+                "min": ["1.8.2", "2.1.2"],
+                "max": ["1.8.9", "2.2.9"]
+            },
+            "json": "./data/messages/messages-v8.json"
+        },
+        {
+            "name": "default",
+            "range": {
+                "min": ["1.9.0", "2.3.0"]
+            },
+            "json": "./data/messages/messages.json"
+        }
+    ],
+    "supportedBrowsers": {
+        "chrome": {
+            "version": 59,
+            "download": "https://www.google.com/chrome/",
+            "update": "https://support.google.com/chrome/answer/95414"
+        },
+        "chromium": {
+            "version": 59,
+            "download": "https://www.chromium.org/",
+            "update": "https://www.chromium.org/"
+        },
+        "electron": {
+            "version": 0,
+            "download": "https://www.electronjs.org/",
+            "update": "https://www.electronjs.org/"
+        },
+        "firefox": {
+            "version": 54,
+            "download": "https://www.mozilla.org/en-US/firefox/new/",
+            "update": "https://support.mozilla.org/en-US/kb/update-firefox-latest-version"
+        }
+    },
+    "supportedFirmware": [
+        {
+            "coin": ["xrp", "txrp"],
+            "excludedMethods": ["getAccountInfo"],
+            "min": ["0", "2.1.0"],
+            "comment": ["Since firmware 2.1.0 there is a new protobuf field 'destination_tag' in RippleSignTx"]
+        },
+        {
+            "excludedMethods": [
+                "rippleGetAddress",
+                "rippleSignTransaction"
+            ],
+            "min": ["0", "2.1.0"],
+            "comment": ["Since firmware 2.1.0 there is a new protobuf field 'destination_tag' in RippleSignTx"]
+        },
+        {
+            "excludedMethods": [
+                "cardanoSignTransaction"
+            ],
+            "min": ["0", "2.1.0"],
+            "comment": ["Since firmware 2.1.0 there is a new protobuf field 'protocol_magic' in CardanoSignTx"]
+        },
+        {
+            "excludedMethods": [
+                "tezosSignTransaction"
+            ],
+            "min": ["0", "2.1.8"],
+            "comment": ["Since 2.1.8 there are new protobuf fields in tezos transaction (Babylon fork)"]
+        }
+    ]
+}

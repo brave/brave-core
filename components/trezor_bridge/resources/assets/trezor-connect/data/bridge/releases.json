@@ -1,0 +1,41 @@
+[
+	{
+		"version": [2, 0, 27],
+		"directory": "bridge/{version}/",
+		"packages": [
+			{
+				"platform": ["deb64"],
+				"name": "Linux 64-bit (deb)",
+				"url": "trezor-bridge_{version}_amd64.deb"
+			},
+			{
+				"platform": ["rpm64"],
+				"name": "Linux 64-bit (rpm)",
+				"url": "trezor-bridge-{version}-1.x86_64.rpm"
+			},
+			{
+				"platform": ["deb32"],
+				"name": "Linux 32-bit (deb)",
+				"url": "trezor-bridge_{version}_i386.deb"
+			},
+			{
+				"platform": ["rpm32"],
+				"name": "Linux 32-bit (rpm)",
+				"url": "trezor-bridge-{version}-1.i386.rpm"
+			},
+			{
+				"platform": ["mac"],
+				"name": "Mac OS X",
+				"url": "trezor-bridge-{version}.pkg",
+				"signature": "trezor-bridge-{version}.pkg.asc"
+			},
+			{
+				"platform": ["win32", "win64"],
+				"name": "Windows",
+				"url": "trezor-bridge-{version}-win32-install.exe",
+				"signature": "trezor-bridge-{version}-win32-install.exe.asc"
+			}
+		],
+		"changelog": "* Fix Certificate issue on Windows"
+	}
+]

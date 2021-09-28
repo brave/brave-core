@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+
+  <include name="IDR_TREZOR_BRIDGE_HTML" file="../trezor_bridge/resources/index.html"  type="BINDATA" />
+  <include name="IDR_TREZOR_BRIDGE_HTML_BRAVE_JS" file="../trezor_bridge/resources/brave.js" type="BINDATA" />
+  <include name="IDR_TREZOR_BRIDGE_HTML_MAIN_JS" file="../trezor_bridge/resources/main.d598eca52e4331ccfdcb.js" type="BINDATA" />
+  <include name="IDR_TREZOR_BRIDGE_HTML_IFRAME" file="../trezor_bridge/resources/assets/trezor-connect/iframe.html" flattenhtml="true" type="BINDATA" />
+  <include name="IDR_TREZOR_BRIDGE_HTML_IFRAME_JS" file="../trezor_bridge/resources/assets/trezor-connect/js/iframe.24e81bebce2daadbca5c.js"  type="BINDATA"  />
+  <include name="IDR_TREZOR_BRIDGE_HTML_IFRAME_BRAVE_JS" file="../trezor_bridge/resources/assets/trezor-connect/js/brave.js"  type="BINDATA"  />
+  <include name="IDR_TREZOR_BRIDGE_HTML_IFRAME_WORKER_BLOCKBOOK" file="../trezor_bridge/resources/assets/trezor-connect/workers/blockbook-worker.7b7e96fe49afeaf40fd2.js" type="BINDATA" />
+  <include name="IDR_TREZOR_BRIDGE_HTML_IFRAME_WORKER_RIPPLE" file="../trezor_bridge/resources/assets/trezor-connect/workers/ripple-worker.909828998a247167a2b5.js" type="BINDATA" />
+  <include name="IDR_TREZOR_BRIDGE_HTML_IFRAME_WORKER_SHARED" file="../trezor_bridge/resources/assets/trezor-connect/workers/shared-connection-worker.36c366be58ccbe52d6ce.js" type="BINDATA" />
+</grit-part>
