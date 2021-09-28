@@ -4,6 +4,7 @@ include_rules = [
   "+ios/chrome/common",
   "+brave/ios/app",
   "+brave/ios/browser",
+  "+components/component_updater/component_updater_switches.h",
   "+components/sync/driver",
   "+components/sync/base",
   "+components/browser_sync",

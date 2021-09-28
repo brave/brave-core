@@ -11,7 +11,9 @@
 #include "base/compiler_specific.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
@@ -19,6 +21,7 @@
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/brave_web_client.h"
+#include "brave/ios/browser/component_updater/component_updater_utils.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "ios/chrome/app/startup/provider_registration.h"
@@ -52,11 +55,12 @@ static BraveCoreLogHandler _Nullable _logHandler = nil;
 
 @implementation BraveCoreMain
 
-- (instancetype)init {
-  return [self initWithSyncServiceURL:@""];
+- (instancetype)initWithUserAgent:(NSString*)userAgent {
+  return [self initWithUserAgent:userAgent syncServiceURL:@""];
 }
 
-- (instancetype)initWithSyncServiceURL:(NSString*)syncServiceURL {
+- (instancetype)initWithUserAgent:(NSString*)userAgent
+                   syncServiceURL:(NSString*)syncServiceURL {
   if ((self = [super init])) {
     [[NSNotificationCenter defaultCenter]
         addObserver:self
@@ -78,6 +82,7 @@ static BraveCoreLogHandler _Nullable _logHandler = nil;
     [ProviderRegistration registerProviders];
 
     _webClient.reset(new BraveWebClient());
+    _webClient->SetUserAgent(base::SysNSStringToUTF8(userAgent));
     web::SetWebClient(_webClient.get());
 
     _delegate.reset(new BraveMainDelegate());
@@ -87,6 +92,8 @@ static BraveCoreLogHandler _Nullable _logHandler = nil;
     _webMain = std::make_unique<web::WebMain>(std::move(params));
 
     ios::GetChromeBrowserProvider().Initialize();
+
+    [self registerComponentsForUpdate];
 
     ios::ChromeBrowserStateManager* browserStateManager =
         GetApplicationContext()->GetChromeBrowserStateManager();
@@ -117,16 +124,24 @@ static BraveCoreLogHandler _Nullable _logHandler = nil;
   [StartupTasks scheduleDeferredBrowserStateInitialization:_mainBrowserState];
 }
 
+- (void)registerComponentsForUpdate {
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()
+      ->RegisterOnDemandUpdateCallback(
+          base::BindRepeating(&component_updater::BraveOnDemandUpdate));
+
+  component_updater::ComponentUpdateService* cus =
+      GetApplicationContext()->GetComponentUpdateService();
+  DCHECK(cus);
+
+  brave_wallet::RegisterWalletDataFilesComponent(cus);
+}
+
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   _mainBrowserState = nullptr;
   _webMain.reset();
   _delegate.reset();
   _webClient.reset();
-}
-
-- (void)setUserAgent:(NSString*)userAgent {
-  _webClient->SetUserAgent(base::SysNSStringToUTF8(userAgent));
 }
 
 + (void)setLogHandler:(BraveCoreLogHandler)logHandler {
