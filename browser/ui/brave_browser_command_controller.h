@@ -16,8 +16,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/brave_vpn.mojom.h"
-#include "mojo/public/cpp/bindings/receiver.h"
+#include "brave/components/brave_vpn/brave_vpn_service_observer.h"
 #endif
 
 class BraveAppMenuBrowserTest;
@@ -29,7 +28,7 @@ namespace chrome {
 class BraveBrowserCommandController : public chrome::BrowserCommandController
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     ,
-                                      public brave_vpn::mojom::ServiceObserver
+                                      public BraveVPNServiceObserver
 #endif
 {
  public:
@@ -57,12 +56,8 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   bool UpdateCommandEnabled(int id, bool state) override;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  // brave_vpn::mojom::ServiceObserver overrides:
+  // BraveVPNServiceObserver overrides:
   void OnPurchasedStateChanged(brave_vpn::mojom::PurchasedState state) override;
-  void OnConnectionStateChanged(
-      brave_vpn::mojom::ConnectionState state) override {}
-  void OnConnectionCreated() override {}
-  void OnConnectionRemoved() override {}
 #endif
 
   void InitBraveCommandState();
@@ -80,10 +75,6 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   Browser* const browser_;
 
   CommandUpdaterImpl brave_command_updater_;
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  mojo::Receiver<brave_vpn::mojom::ServiceObserver> receiver_{this};
-#endif
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserCommandController);
 };
