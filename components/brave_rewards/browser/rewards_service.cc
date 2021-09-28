@@ -43,6 +43,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kUserHasClaimedGrant, false);
   registry->RegisterTimePref(prefs::kAddFundsNotification, base::Time());
   registry->RegisterBooleanPref(prefs::kEnabled, false);
+  registry->RegisterTimePref(prefs::kEnabledTimestamp, base::Time());
   registry->RegisterDictionaryPref(prefs::kExternalWallets);
   registry->RegisterUint64Pref(prefs::kServerPublisherListStamp, 0ull);
   registry->RegisterStringPref(prefs::kUpholdAnonAddress, "");

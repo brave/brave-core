@@ -433,12 +433,14 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   }
 
   if (key == prefs::kAutoContributeEnabled || key == ads::prefs::kEnabled) {
-    if (IsRewardsEnabled()) {
+    bool rewards_enabled = IsRewardsEnabled();
+    if (rewards_enabled) {
       RecordBackendP3AStats();
     } else {
       p3a::RecordRewardsDisabledForSomeMetrics();
       p3a::RecordWalletState({.wallet_created = true});
     }
+    p3a::RecordRewardsEnabledDuration(profile_->GetPrefs(), rewards_enabled);
   }
 }
 
@@ -857,6 +859,7 @@ void RewardsServiceImpl::OnLedgerInitialized(ledger::type::Result result) {
   } else {
     p3a::RecordRewardsDisabledForSomeMetrics();
   }
+  p3a::RecordRewardsEnabledDuration(profile_->GetPrefs(), IsRewardsEnabled());
 
   GetBraveWallet(
       base::BindOnce(&RewardsServiceImpl::OnGetBraveWalletForP3A, AsWeakPtr()));
