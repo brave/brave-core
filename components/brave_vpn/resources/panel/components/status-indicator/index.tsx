@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as S from './style'
 import locale from '../../constants/locale'
-import { ConnectionState } from '../../types/connection_state'
+import { ConnectionState } from '../../api/panel_browser_api'
 import { LoaderIcon } from 'brave-ui/components/icons'
 interface Props {
   status: ConnectionState

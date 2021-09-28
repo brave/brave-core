@@ -1,4 +1,5 @@
 const locale = {
+  connectLabel: 'Connect',
   connectedLabel: 'Connected',
   disconnectedLabel: 'Disconnected',
   connectingLabel: 'Connecting',

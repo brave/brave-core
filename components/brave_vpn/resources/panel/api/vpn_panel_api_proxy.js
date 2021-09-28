@@ -63,6 +63,18 @@ export default class VpnPanelApiProxyImpl {
     return this.vpnService.disconnect();
   }
 
+  getAllRegions() {
+    return this.vpnService.getAllRegions();
+  }
+
+  getSelectedRegion() {
+    return this.vpnService.getSelectedRegion();
+  }
+
+  setSelectedRegion(region) {
+    return this.vpnService.setSelectedRegion(region);
+  }
+
   addVPNObserver(obj) {
     const serviceObserverReceiver = new braveVpn.mojom.ServiceObserverReceiver(obj)
     this.vpnService.addObserver(serviceObserverReceiver.$.bindNewPipeAndPassRemote())

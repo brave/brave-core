@@ -18,7 +18,7 @@ export const PanelHeader = styled.section`
 `
 
 export const PanelContent = styled.section`
-  padding: 0 0 25px 0;
+  padding: 0 0 24px 0;
 `
 
 export const RegionList = styled.div`
@@ -64,5 +64,15 @@ export const BackButton = styled.button`
 
   svg > path {
     fill: ${(p) => p.theme.color.interactive05}
+  }
+`
+
+export const ActionArea = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  padding: 18px 18px 0 18px;
+
+  button {
+    width: 100%;
   }
 `

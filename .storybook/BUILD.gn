@@ -10,5 +10,8 @@ group("storybook") {
   # Explicitly defined here so that even when those targets
   # are disabled in a regular brave build due to build flags,
   # they will be generated before storybook is compiled.
-  deps = [ "//ui/webui/resources/js:cr.m" ]
+  deps = [
+    "//brave/components/brave_vpn:mojom_js",
+    "//ui/webui/resources/js:cr.m",
+  ]
 }
