@@ -12,6 +12,7 @@ include_rules = [
   "+content/public/common",
   "+content/public/test",
   "+components/autofill/core/common",
+  "+components/component_updater/component_updater_switches.h",
   "+components/embedder_support/switches.h",
   "+components/federated_learning/features/features.h",
   "+components/feed/feed_feature_list.h",

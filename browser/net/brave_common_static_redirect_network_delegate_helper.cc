@@ -7,66 +7,16 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
-#include "base/command_line.h"
-#include "base/feature_list.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/common/network_constants.h"
-#include "brave/components/brave_component_updater/browser/features.h"
-#include "brave/components/brave_component_updater/browser/switches.h"
-#include "components/component_updater/component_updater_url_constants.h"
-#include "extensions/buildflags/buildflags.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/net_errors.h"
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "extensions/common/extension_urls.h"
-#endif
-
 namespace brave {
 
-const char kUpdaterTestingEndpoint[] = "test.updater.com";
-
 namespace {
-
-bool g_updater_url_host_for_testing_ = false;
-
-std::string GetUpdateURLHost() {
-  if (g_updater_url_host_for_testing_)
-    return kUpdaterTestingEndpoint;
-
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  if (!command_line.HasSwitch(brave_component_updater::kUseGoUpdateDev) &&
-      !base::FeatureList::IsEnabled(
-          brave_component_updater::kUseDevUpdaterUrl)) {
-    return UPDATER_PROD_ENDPOINT;
-  }
-  return UPDATER_DEV_ENDPOINT;
-}
-
-// Update server checks happen from the profile context for admin policy
-// installed extensions. Update server checks happen from the system context for
-// normal update operations.
-bool IsUpdaterURL(const GURL& gurl) {
-  static std::vector<URLPattern> updater_patterns(
-      {URLPattern(URLPattern::SCHEME_HTTPS,
-                  std::string(component_updater::kUpdaterJSONDefaultUrl) + "*"),
-       URLPattern(
-           URLPattern::SCHEME_HTTP,
-           std::string(component_updater::kUpdaterJSONFallbackUrl) + "*"),
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-       URLPattern(
-           URLPattern::SCHEME_HTTPS,
-           std::string(extension_urls::kChromeWebstoreUpdateURL) + "*")
-#endif
-  });
-  return std::any_of(
-      updater_patterns.begin(), updater_patterns.end(),
-      [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
-}
 
 bool RewriteBugReportingURL(const GURL& request_url, GURL* new_url) {
   GURL url("https://github.com/brave/brave-browser/issues/new");
@@ -94,10 +44,6 @@ bool RewriteBugReportingURL(const GURL& request_url, GURL* new_url) {
 
 }  // namespace
 
-void SetUpdateURLHostForTesting(bool testing) {
-  g_updater_url_host_for_testing_ = testing;
-}
-
 int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
@@ -123,15 +69,6 @@ int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
   static URLPattern bugsChromium_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
       "*://bugs.chromium.org/p/chromium/issues/entry?*");
-
-  if (IsUpdaterURL(request_url)) {
-    auto update_host = GetUpdateURLHost();
-    if (!update_host.empty()) {
-      replacements.SetQueryStr(request_url.query_piece());
-      *new_url = GURL(update_host).ReplaceComponents(replacements);
-    }
-    return net::OK;
-  }
 
   if (chromecast_pattern.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");

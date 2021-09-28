@@ -120,10 +120,7 @@ source_set("extensions") {
       "ethereum_remote_client_util.cc",
       "ethereum_remote_client_util.h",
     ]
-    configs += [
-      ":infura_config",
-      ":brave_services_config",
-    ]
+    configs += [ ":infura_config" ]
     deps += [
       "//brave/browser/ethereum_remote_client",
       "//brave/components/brave_wallet/browser",
@@ -225,10 +222,6 @@ group("resources") {
       "//brave/components/brave_webtorrent:static_resources",
     ]
   }
-}
-
-config("brave_services_config") {
-  defines = [ "BRAVE_SERVICES_KEY=\"$brave_services_key\"" ]
 }
 
 config("infura_config") {

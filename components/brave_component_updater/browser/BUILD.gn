@@ -1,17 +1,5 @@
 import("//extensions/buildflags/buildflags.gni")
 
-declare_args() {
-  updater_dev_endpoint = ""
-  updater_prod_endpoint = ""
-}
-
-config("updater_config") {
-  defines = [
-    "UPDATER_DEV_ENDPOINT=\"$updater_dev_endpoint\"",
-    "UPDATER_PROD_ENDPOINT=\"$updater_prod_endpoint\"",
-  ]
-}
-
 static_library("browser") {
   sources = [
     "brave_component.cc",
@@ -29,7 +17,6 @@ static_library("browser") {
     "switches.h",
   ]
 
-  public_configs = [ ":updater_config" ]
   deps = [
     "//base",
     "//components/component_updater:component_updater",

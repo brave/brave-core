@@ -85,17 +85,7 @@ IN_PROC_BROWSER_TEST_F(BraveServiceKeyNetworkDelegateBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveServiceKeyNetworkDelegateBrowserTest,
                        IncludesBraveServiceKey) {
-  GURL target =
-      https_server().GetURL(GURL(UPDATER_DEV_ENDPOINT).host(), "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
-  EXPECT_TRUE(header_result());
-
-  target =
-      https_server().GetURL(GURL(UPDATER_PROD_ENDPOINT).host(), "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
-  EXPECT_TRUE(header_result());
-
-  target = https_server().GetURL(kExtensionUpdaterDomain, "/index.html");
+  GURL target = https_server().GetURL(kExtensionUpdaterDomain, "/index.html");
   ui_test_utils::NavigateToURL(browser(), target);
   EXPECT_TRUE(header_result());
 }
