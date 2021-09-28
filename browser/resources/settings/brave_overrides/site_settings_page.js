@@ -45,6 +45,12 @@ RegisterPolymerComponentReplacement(
         if (!lists_.permissionsAdvanced) {
           console.error('[Brave Settings Overrides] did not get lists_.permissionsAdvanced data')
         } else {
+          let indexForIdleDetection = lists_.permissionsAdvanced.findIndex(item => item.id === ContentSettingsTypes.IDLE_DETECTION)
+          if (indexForIdleDetection === -1) {
+            console.error('Could not find idle detection site settings item')
+          } else {
+            lists_.permissionsAdvanced.splice(indexForIdleDetection, 1)
+          }
           let indexForAutoplay = lists_.permissionsAdvanced.findIndex(item => item.id === ContentSettingsTypes.AUTOMATIC_DOWNLOADS)
           if (indexForAutoplay === -1) {
             console.error('Could not find automatic downloads site settings item')

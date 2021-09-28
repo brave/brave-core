@@ -12,6 +12,12 @@ RegisterPolymerTemplateModifications({
     if (!pages) {
       console.error(`[Brave Settings Overrides] Couldn't find privacy_page #pages`)
     } else {
+      const idleDetection = templateContent.querySelector('[route-path="/content/idleDetection"]')
+      if (!idleDetection) {
+        console.error(`[Brave Settings Overrides] Couldn't find idle detection template`)
+      } else {
+        idleDetection.content.firstElementChild.hidden = true
+      }
       pages.insertAdjacentHTML('beforeend', `
         <template is="dom-if" route-path="/content/autoplay" no-search>
           <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsCategoryAutoplay')}">
