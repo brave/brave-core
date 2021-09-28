@@ -17,6 +17,7 @@
 
 // Exposed for tests.
 constexpr char kDefaultSearchEngineMetric[] = "Brave.Search.DefaultEngine.4";
+constexpr char kSwitchSearchEngineMetric[] = "Brave.Search.SwitchEngine";
 
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
@@ -31,6 +32,18 @@ enum class SearchEngineP3A {
   kEcosia,
   kBrave,
   kMaxValue = kBrave,
+};
+
+enum class SearchEngineSwitchP3A {
+  kNoSwitch,
+  kBraveToGoogle,
+  kBraveToDDG,
+  kBraveToOther,
+  kGoogleToBrave,
+  kDDGToBrave,
+  kOtherToBrave,
+  kOtherToOther,
+  kMaxValue = kOtherToOther,
 };
 
 class SearchEngineTrackerFactory : public BrowserContextKeyedServiceFactory {
@@ -69,8 +82,11 @@ class SearchEngineTracker : public KeyedService,
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
       observer_{this};
 
+  void RecordSwitchP3A(const GURL& url);
+
   // Keeping this to check for changes in |OnTemplateURLServiceChanged|.
   GURL default_search_url_;
+  GURL previous_search_url_;
 
   TemplateURLService* template_url_service_;
 };
