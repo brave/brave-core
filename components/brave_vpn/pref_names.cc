@@ -13,6 +13,8 @@ namespace prefs {
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kBraveVPNShowButton, true);
   registry->RegisterDictionaryPref(kBraveVPNSelectedRegion);
+  registry->RegisterListPref(kBraveVPNRegionList);
+  registry->RegisterDictionaryPref(kBraveVPNDeviceRegion);
 }
 
 }  // namespace prefs

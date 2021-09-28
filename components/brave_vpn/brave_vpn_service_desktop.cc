@@ -28,7 +28,7 @@ constexpr char kBraveVPNEntryName[] = "BraveVPN";
 
 constexpr char kRegionContinentKey[] = "continent";
 constexpr char kRegionNameKey[] = "name";
-constexpr char kRegionNamePrettyKey[] = "name_pretty";
+constexpr char kRegionNamePrettyKey[] = "name-pretty";
 
 bool GetVPNCredentialsFromSwitch(brave_vpn::BraveVPNConnectionInfo* info) {
   DCHECK(info);
@@ -67,6 +67,7 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
   GetBraveVPNConnectionAPI()->set_target_vpn_entry_name(kBraveVPNEntryName);
   GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
 
+  LoadCachedRegionData();
   FetchRegionData();
   CheckPurchasedStatus();
 }
@@ -218,57 +219,77 @@ void BraveVpnServiceDesktop::FetchRegionData() {
                                      base::Unretained(this)));
 }
 
+void BraveVpnServiceDesktop::LoadCachedRegionData() {
+  auto* preference =
+      prefs_->FindPreference(brave_vpn::prefs::kBraveVPNRegionList);
+  if (preference && !preference->IsDefaultValue())
+    ParseAndCacheRegionList(preference->GetValue()->Clone());
+
+  preference = prefs_->FindPreference(brave_vpn::prefs::kBraveVPNDeviceRegion);
+  if (preference && !preference->IsDefaultValue()) {
+    auto* region_value = preference->GetValue();
+    const std::string* continent =
+        region_value->FindStringKey(kRegionContinentKey);
+    const std::string* name = region_value->FindStringKey(kRegionNameKey);
+    const std::string* name_pretty =
+        region_value->FindStringKey(kRegionNamePrettyKey);
+    if (continent && name && name_pretty) {
+      device_region_.continent = *continent;
+      device_region_.name = *name;
+      device_region_.name_pretty = *name_pretty;
+    }
+  }
+}
+
 void BraveVpnServiceDesktop::OnFetchRegionList(const std::string& region_list,
                                                bool success) {
   if (!success) {
     // TODO(simonhong): Re-try?
+    VLOG(2) << "Failed to get region list";
     return;
   }
 
-  std::string json_string = "{\"response\": " + region_list + "}";
-  absl::optional<base::Value> value = base::JSONReader::Read(json_string);
-  if (value && value->is_dict()) {
-    ParseAndCacheRegionList(std::move(*value));
-    return;
+  absl::optional<base::Value> value = base::JSONReader::Read(region_list);
+  if (value && value->is_list()) {
+    prefs_->Set(brave_vpn::prefs::kBraveVPNRegionList, *value);
+
+    if (ParseAndCacheRegionList(std::move(*value))) {
+      // Fetch timezones list to determine default region of this device.
+      GetTimezonesForRegions(base::BindOnce(
+          &BraveVpnServiceDesktop::OnFetchTimezones, base::Unretained(this)));
+      return;
+    }
   }
 
   // TODO(simonhong): Re-try?
 }
 
-void BraveVpnServiceDesktop::ParseAndCacheRegionList(base::Value region_value) {
-  base::Value* region_list_value = region_value.FindKey("response");
-  DCHECK(region_list_value && region_list_value->is_list());
-
-  if (!region_list_value || !region_list_value->is_list())
-    return;
+bool BraveVpnServiceDesktop::ParseAndCacheRegionList(base::Value region_value) {
+  DCHECK(region_value.is_list());
+  if (!region_value.is_list())
+    return false;
 
   regions_.clear();
-  for (const auto& value : region_list_value->GetList()) {
+  for (const auto& value : region_value.GetList()) {
     DCHECK(value.is_dict());
     if (!value.is_dict())
       continue;
 
     brave_vpn::mojom::Region region;
-    if (auto* continent = value.FindStringKey("continent"))
+    if (auto* continent = value.FindStringKey(kRegionContinentKey))
       region.continent = *continent;
-    if (auto* name = value.FindStringKey("name"))
+    if (auto* name = value.FindStringKey(kRegionNameKey))
       region.name = *name;
-    if (auto* name_pretty = value.FindStringKey("name-pretty"))
+    if (auto* name_pretty = value.FindStringKey(kRegionNamePrettyKey))
       region.name_pretty = *name_pretty;
 
     regions_.push_back(region);
   }
 
-  // If we can't get region list, we can't determine device region.
   if (regions_.empty())
-    return;
+    return false;
 
-  // Make sure device_region_ is not set twice.
-  DCHECK(device_region_.name.empty());
-
-  // Fetch timezones list to determine default region of this device.
-  GetTimezonesForRegions(base::BindOnce(
-      &BraveVpnServiceDesktop::OnFetchTimezones, base::Unretained(this)));
+  return true;
 }
 
 void BraveVpnServiceDesktop::OnFetchTimezones(const std::string& timezones_list,
@@ -280,10 +301,9 @@ void BraveVpnServiceDesktop::OnFetchTimezones(const std::string& timezones_list,
     return;
   }
 
-  std::string json_string = "{\"response\": " + timezones_list + "}";
-  absl::optional<base::Value> value = base::JSONReader::Read(json_string);
-  if (value && value->is_dict()) {
-    ParseAndCacheDefaultRegionName(std::move(*value));
+  absl::optional<base::Value> value = base::JSONReader::Read(timezones_list);
+  if (value && value->is_list()) {
+    ParseAndCacheDeviceRegionName(std::move(*value));
     return;
   }
 
@@ -291,12 +311,11 @@ void BraveVpnServiceDesktop::OnFetchTimezones(const std::string& timezones_list,
   SetFallbackDeviceRegion();
 }
 
-void BraveVpnServiceDesktop::ParseAndCacheDefaultRegionName(
+void BraveVpnServiceDesktop::ParseAndCacheDeviceRegionName(
     base::Value timezones_value) {
-  base::Value* timezones_list_value = timezones_value.FindKey("response");
-  DCHECK(timezones_list_value && timezones_list_value->is_list());
+  DCHECK(timezones_value.is_list());
 
-  if (!timezones_list_value || !timezones_list_value->is_list()) {
+  if (!timezones_value.is_list()) {
     SetFallbackDeviceRegion();
     return;
   }
@@ -307,7 +326,7 @@ void BraveVpnServiceDesktop::ParseAndCacheDefaultRegionName(
     return;
   }
 
-  for (const auto& timezones : timezones_list_value->GetList()) {
+  for (const auto& timezones : timezones_value.GetList()) {
     DCHECK(timezones.is_dict());
     if (!timezones.is_dict())
       continue;
@@ -336,13 +355,11 @@ void BraveVpnServiceDesktop::ParseAndCacheDefaultRegionName(
 }
 
 void BraveVpnServiceDesktop::SetDeviceRegion(const std::string& name) {
-  DCHECK(device_region_.name.empty());
-
   auto it =
       std::find_if(regions_.begin(), regions_.end(),
                    [&name](const auto& region) { return region.name == name; });
   if (it != regions_.end()) {
-    device_region_ = *it;
+    SetDeviceRegion(*it);
   }
 }
 
@@ -352,7 +369,18 @@ void BraveVpnServiceDesktop::SetFallbackDeviceRegion() {
   if (regions_.empty())
     return;
 
-  device_region_ = regions_[0];
+  SetDeviceRegion(regions_[0]);
+}
+
+void BraveVpnServiceDesktop::SetDeviceRegion(
+    const brave_vpn::mojom::Region& region) {
+  device_region_ = region;
+
+  DictionaryPrefUpdate update(prefs_, brave_vpn::prefs::kBraveVPNDeviceRegion);
+  base::Value* dict = update.Get();
+  dict->SetStringKey(kRegionContinentKey, device_region_.continent);
+  dict->SetStringKey(kRegionNameKey, device_region_.name);
+  dict->SetStringKey(kRegionNamePrettyKey, device_region_.name_pretty);
 }
 
 std::string BraveVpnServiceDesktop::GetCurrentTimeZone() {

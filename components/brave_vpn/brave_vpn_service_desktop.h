@@ -78,6 +78,7 @@ class BraveVpnServiceDesktop
   friend class BraveBrowserCommandControllerTest;
   FRIEND_TEST_ALL_PREFIXES(BraveVPNTest, RegionDataTest);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNTest, HostnamesTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNTest, LoadRegionDataFromPrefsTest);
 
   // BraveVpnService overrides:
   void Shutdown() override;
@@ -92,11 +93,12 @@ class BraveVpnServiceDesktop
   void OnIsDisconnecting(const std::string& name) override;
 
   brave_vpn::BraveVPNConnectionInfo GetConnectionInfo();
+  void LoadCachedRegionData();
   void FetchRegionData();
   void OnFetchRegionList(const std::string& region_list, bool success);
-  void ParseAndCacheRegionList(base::Value region_value);
+  bool ParseAndCacheRegionList(base::Value region_value);
   void OnFetchTimezones(const std::string& timezones_list, bool success);
-  void ParseAndCacheDefaultRegionName(base::Value timezons_value);
+  void ParseAndCacheDeviceRegionName(base::Value timezons_value);
   void FetchHostnamesForRegion(const std::string& name);
   void OnFetchHostnames(const std::string& region,
                         const std::string& hostnames,
@@ -105,6 +107,8 @@ class BraveVpnServiceDesktop
                               base::Value hostnames_value);
   void SetDeviceRegion(const std::string& name);
   void SetFallbackDeviceRegion();
+  void SetDeviceRegion(const brave_vpn::mojom::Region& region);
+
   std::string GetCurrentTimeZone();
   void SetPurchasedState(PurchasedState state);
 
