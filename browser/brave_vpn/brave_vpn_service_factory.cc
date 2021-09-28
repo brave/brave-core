@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -29,6 +30,9 @@ BraveVpnServiceFactory* BraveVpnServiceFactory::GetInstance() {
 // static
 BraveVpnServiceDesktop* BraveVpnServiceFactory::GetForProfile(
     Profile* profile) {
+  if (!brave_vpn::IsBraveVPNEnabled())
+    return nullptr;
+
   return static_cast<BraveVpnServiceDesktop*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }

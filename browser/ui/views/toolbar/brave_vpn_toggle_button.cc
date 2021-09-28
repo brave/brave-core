@@ -18,6 +18,7 @@
 BraveVPNToggleButton::BraveVPNToggleButton(Browser* browser)
     : browser_(browser),
       service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
+  DCHECK(service_);
   mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> listener;
   receiver_.Bind(listener.InitWithNewPipeAndPassReceiver());
   service_->AddObserver(std::move(listener));

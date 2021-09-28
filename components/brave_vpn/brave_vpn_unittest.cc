@@ -7,7 +7,9 @@
 
 #include "base/feature_list.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/features.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -16,6 +18,10 @@
 
 class BraveVPNTest : public testing::Test {
  public:
+  BraveVPNTest() {
+    scoped_feature_list_.InitAndEnableFeature(brave_vpn::features::kBraveVPN);
+  }
+
   void SetUp() override {
     service_ = std::make_unique<BraveVpnServiceDesktop>(
         base::MakeRefCounted<network::TestSharedURLLoaderFactory>(),
@@ -170,13 +176,14 @@ class BraveVPNTest : public testing::Test {
       ])";
   }
 
+  base::test::ScopedFeatureList scoped_feature_list_;
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<BraveVpnServiceDesktop> service_;
 };
 
-TEST_F(BraveVPNTest, FeatureTest) {
-  EXPECT_FALSE(base::FeatureList::IsEnabled(brave_vpn::features::kBraveVPN));
+TEST(BraveVPNFeatureTest, FeatureTest) {
+  EXPECT_FALSE(brave_vpn::IsBraveVPNEnabled());
 }
 
 TEST_F(BraveVPNTest, RegionDataTest) {

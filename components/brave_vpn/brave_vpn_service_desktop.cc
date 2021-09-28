@@ -16,6 +16,7 @@
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
 #include "base/values.h"
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/brave_vpn/switches.h"
 #include "components/prefs/pref_service.h"
@@ -62,6 +63,8 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* prefs)
     : BraveVpnService(url_loader_factory), prefs_(prefs) {
+  DCHECK(brave_vpn::IsBraveVPNEnabled());
+
   observed_.Observe(GetBraveVPNConnectionAPI());
 
   GetBraveVPNConnectionAPI()->set_target_vpn_entry_name(kBraveVPNEntryName);
