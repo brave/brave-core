@@ -7,6 +7,7 @@
 
 package org.chromium.chrome.browser.vpn;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
 
+@TargetApi(Build.VERSION_CODES.R)
 public class BraveVpnProfileUtils {
     public static final int BRAVE_VPN_PROFILE_REQUEST_CODE = 36;
 

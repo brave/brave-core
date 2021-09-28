@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.notifications.retention;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -74,6 +75,7 @@ public class RetentionNotificationUtil {
         return mNotificationMap.get(notificationType);
     }
 
+    @SuppressLint("NotificationTrampoline")
     public static Notification getNotification(
             Context context, String notificationType, String notificationText) {
         RetentionNotification retentionNotification = getNotificationObject(notificationType);
