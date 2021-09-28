@@ -20,6 +20,7 @@ interface Props {
 export function PendingRewardsView (props: Props) {
   const { getString } = React.useContext(LocaleContext)
 
+  console.log('FOOBAR.3')
   const estimatedPendingDays = getDaysUntilRewardsPayment(props.nextPaymentDate)
 
   return (

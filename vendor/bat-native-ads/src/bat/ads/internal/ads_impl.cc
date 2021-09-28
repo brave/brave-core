@@ -404,12 +404,15 @@ void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
   StatementInfo statement;
 
   if (!IsInitialized() || !ShouldRewardUser()) {
+    BLOG(0, "FOOBAR.A");
     callback(/* success */ false, statement);
     return;
   }
 
   const base::Time distant_past;
   const base::Time now = base::Time::Now();
+
+  BLOG(0, "FOOBAR.B");
 
   statement = account_->GetStatement(distant_past, now);
 

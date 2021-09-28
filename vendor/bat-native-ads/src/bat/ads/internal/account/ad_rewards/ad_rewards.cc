@@ -138,8 +138,20 @@ double AdRewards::GetEarningsForMonth(const base::Time& time) const {
 
 double AdRewards::GetUnclearedEarningsForThisMonth() const {
   const base::Time now = base::Time::Now();
+  BLOG(0, "FOOBAR.now: " << now);
+  BLOG(0, "FOOBAR.now.timestamp: " << now.ToDoubleT());
+
   base::Time::Exploded exploded;
   now.LocalExplode(&exploded);
+
+  BLOG(0, "FOOBAR.exploded:");
+  BLOG(0, "  year: " << exploded.year);
+  BLOG(0, "  month: " << exploded.month);
+  BLOG(0, "  day_of_week: " << exploded.day_of_week);
+  BLOG(0, "  day_of_month: " << exploded.day_of_month);
+  BLOG(0, "  hour: " << exploded.hour);
+  BLOG(0, "  minute: " << exploded.minute);
+  BLOG(0, "  millisecond: " << exploded.millisecond);
 
   exploded.day_of_month = 1;
   exploded.hour = 0;

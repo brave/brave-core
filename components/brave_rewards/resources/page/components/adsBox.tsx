@@ -417,6 +417,7 @@ class AdsBox extends React.Component<Props, State> {
     const rows = this.getGroupedAdsHistory(historyEntries, savedOnly)
     const tokenString = getLocale('tokens')
 
+    console.log('FOOBAR.2')
     const estimatedPendingDays = getDaysUntilRewardsPayment(nextPaymentDate)
 
     return (

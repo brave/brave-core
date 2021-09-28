@@ -164,6 +164,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
       return null
     }
 
+    console.log('FOOBAR.1')
     const days = getDaysUntilRewardsPayment(nextPaymentDate)
     if (!days) {
       return null
