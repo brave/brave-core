@@ -23,6 +23,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/l10n/browser/locale_helper.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/chrome_extension_function_details.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -44,6 +45,13 @@ using brave_rewards::RewardsServiceFactory;
 
 namespace extensions {
 namespace api {
+
+BraveRewardsGetLocaleFunction::~BraveRewardsGetLocaleFunction() {}
+
+ExtensionFunction::ResponseAction BraveRewardsGetLocaleFunction::Run() {
+  std::string locale = brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  return RespondNow(OneArgument(base::Value(std::move(locale))));
+}
 
 BraveRewardsOpenBrowserActionUIFunction::
 ~BraveRewardsOpenBrowserActionUIFunction() {

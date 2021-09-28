@@ -10,6 +10,7 @@ import '../brave_default_extensions_page/brave_default_extensions_page.m.js'
 import '../brave_help_tips_page/brave_help_tips_page.m.js'
 import '../brave_ipfs_page/brave_ipfs_page.m.js'
 import '../brave_new_tab_page/brave_new_tab_page.m.js'
+import '../brave_rewards_page/brave_rewards_page.js'
 import '../brave_search_engines_page/brave_search_engines_page.m.js'
 import '../brave_sync_page/brave_sync_page.js'
 import '../brave_wallet_page/brave_wallet_page.m.js'
@@ -136,7 +137,6 @@ RegisterPolymerTemplateModifications({
         'settings-brave-sync-page',
         {}
       ))
-
       const sectionShields = document.createElement('template')
       sectionShields.setAttribute('is', 'dom-if')
       sectionShields.setAttribute('restamp', true)
@@ -145,6 +145,18 @@ RegisterPolymerTemplateModifications({
         'shields',
         'braveShieldsTitle',
         'settings-default-brave-shields-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
+      const sectionRewards = document.createElement('template')
+      sectionRewards.setAttribute('is', 'dom-if')
+      sectionRewards.setAttribute('restamp', true)
+      sectionRewards.setAttribute('if', '[[showPage_(pageVisibility.rewards)]]')
+      sectionRewards.content.appendChild(createSectionElement(
+        'rewards',
+        'braveRewards',
+        'settings-brave-rewards-page',
         {
           prefs: '{{prefs}}'
         }
@@ -194,8 +206,10 @@ RegisterPolymerTemplateModifications({
       sectionAppearance.insertAdjacentElement('afterend', sectionNewTab)
       // Insert shields
       sectionNewTab.insertAdjacentElement('afterend', sectionShields)
+      // Insert Rewards
+      sectionShields.insertAdjacentElement('afterend', sectionRewards)
       // Insert Social Blocking
-      sectionShields.insertAdjacentElement('afterend', sectionSocialBlocking)
+      sectionRewards.insertAdjacentElement('afterend', sectionSocialBlocking)
       // Move privacy section to after social blocking
       const sectionPrivacy = getSectionElement(actualTemplate.content, 'privacy')
       sectionSocialBlocking.insertAdjacentElement('afterend', sectionPrivacy)

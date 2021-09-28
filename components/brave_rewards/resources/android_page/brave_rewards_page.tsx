@@ -161,6 +161,10 @@ function initialized (result: number) {
   getActions().onInitialized(result)
 }
 
+function onPrefChanged (key: string) {
+  getActions().onPrefChanged(key)
+}
+
 // Expose functions to Page Handlers.
 // TODO(petemill): Use event listeners instead.
 // @ts-ignore
@@ -191,7 +195,8 @@ window.brave_rewards = {
   reconcileComplete,
   onlyAnonWallet,
   unblindedTokensReady,
-  initialized
+  initialized,
+  onPrefChanged
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

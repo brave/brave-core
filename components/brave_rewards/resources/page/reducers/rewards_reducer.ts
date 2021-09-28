@@ -489,6 +489,13 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.restartBrowser')
       break
     }
+    case types.ON_PREF_CHANGED: {
+      chrome.send('brave_rewards.getEnabledInlineTippingPlatforms')
+      chrome.send('brave_rewards.getContributionAmount')
+      chrome.send('brave_rewards.getAutoContributeProperties')
+      chrome.send('brave_rewards.getAdsData')
+      break
+    }
   }
 
   return state
