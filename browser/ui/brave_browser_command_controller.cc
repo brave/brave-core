@@ -72,11 +72,13 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
   InitBraveCommandState();
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> listener;
-  receiver_.Bind(listener.InitWithNewPipeAndPassReceiver());
-  auto* vpn_service =
-      BraveVpnServiceFactory::GetForProfile(browser_->profile());
-  vpn_service->AddObserver(std::move(listener));
+  if (brave_vpn::IsBraveVPNEnabled()) {
+    mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> listener;
+    receiver_.Bind(listener.InitWithNewPipeAndPassReceiver());
+    if (auto* vpn_service =
+            BraveVpnServiceFactory::GetForProfile(browser_->profile()))
+      vpn_service->AddObserver(std::move(listener));
+  }
 #endif
 }
 
@@ -217,11 +219,13 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
   UpdateCommandEnabled(IDC_ABOUT_BRAVE_VPN, true);
   UpdateCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN, true);
 
-  auto* vpn_service =
-      BraveVpnServiceFactory::GetForProfile(browser_->profile());
-  // Only show vpn sub menu for purchased user.
-  UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, vpn_service->is_purchased_user());
-  UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN, vpn_service->is_purchased_user());
+  if (auto* vpn_service =
+          BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
+    // Only show vpn sub menu for purchased user.
+    UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, vpn_service->is_purchased_user());
+    UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN,
+                         vpn_service->is_purchased_user());
+  }
 #endif
 }
 
