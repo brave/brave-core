@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { ExternalWallet, ExternalWalletProvider } from '../../shared/lib/external_wallet'
+import { GrantInfo } from '../../shared/lib/grant_info'
 import { PublisherPlatform } from '../../shared/lib/publisher_platform'
 import { ExternalWalletAction, RewardsSummaryData } from '../../shared/components/wallet_card'
 import { Notification, NotificationAction } from '../../shared/components/notifications'
@@ -31,13 +32,6 @@ export interface PublisherInfo {
 }
 
 export type GrantCaptchaStatus = 'pending' | 'passed' | 'failed' | 'error'
-
-export interface GrantInfo {
-  id: string
-  source: 'ads' | 'ugp'
-  amount: number
-  expiresAt: number | null
-}
 
 export interface GrantCaptchaInfo {
   id: string

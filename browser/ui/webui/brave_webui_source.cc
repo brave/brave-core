@@ -198,6 +198,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "geminiWidgetDesc", IDS_BRAVE_NEW_TAB_GEMINI_WIDGET_DESC },
         { "cardsToggleTitle", IDS_BRAVE_NEW_TAB_CARDS_TITLE },
         { "cardsToggleDesc", IDS_BRAVE_NEW_TAB_CARDS_DESC },
+        { "editCardsTitle", IDS_EDIT_CARDS_TITLE },
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
         { "cryptoDotComWidgetDesc", IDS_BRAVE_NEW_TAB_CRYPTO_DOT_COM_WIDGET_DESC },              // NOLINT
 #endif
@@ -252,30 +253,30 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "braveTalkPromptAction", IDS_BRAVE_TALK_PROMPT_ACTION },
 
         // Rewards widget
-        { "rewardsWidgetBat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },
+        { "rewardsAdGrantText", IDS_REWARDS_WIDGET_AD_GRANT_TEXT },
+        { "rewardsAdGrantTitle", IDS_REWARDS_WIDGET_AD_GRANT_TITLE },
+        { "rewardsBraveRewards", IDS_REWARDS_WIDGET_BRAVE_REWARDS },
+        { "rewardsClaimEarnings", IDS_REWARDS_WIDGET_CLAIM_EARNINGS },
+        { "rewardsClaimTokens", IDS_REWARDS_WIDGET_CLAIM_TOKENS },
+        { "rewardsEarning", IDS_REWARDS_WIDGET_EARNING },
+        { "rewardsEarningInfoText", IDS_REWARDS_WIDGET_EARNING_INFO_TEXT },
+        { "rewardsExchangeValueNote", IDS_REWARDS_WIDGET_EXCHANGE_VALUE_NOTE },
+        { "rewardsGiving", IDS_REWARDS_WIDGET_GIVING },
+        { "rewardsLearnMore", IDS_REWARDS_WIDGET_LEARN_MORE },
+        { "rewardsOptInHeader", IDS_REWARDS_WIDGET_OPT_IN_HEADER },
+        { "rewardsOptInTerms", IDS_BRAVE_REWARDS_ONBOARDING_TERMS },
+        { "rewardsOptInText", IDS_REWARDS_WIDGET_OPT_IN_TEXT },
+        { "rewardsPendingPayoutMessage", IDS_BRAVE_REWARDS_PENDING_REWARDS_MESSAGE },  // NOLINT
+        { "rewardsProgress", IDS_REWARDS_WIDGET_PROGRESS },
+        { "rewardsSettings", IDS_REWARDS_WIDGET_SETTINGS },
+        { "rewardsSponsoredImageEarningText", IDS_REWARDS_WIDGET_SPONSORED_IMAGE_EARNING_TEXT },  // NOLINT
+        { "rewardsSponsoredImageOptInText", IDS_REWARDS_WIDGET_SPONSORED_IMAGE_OPT_IN_TEXT },  // NOLINT
+        { "rewardsStartUsingRewards", IDS_REWARDS_WIDGET_START_USING_REWARDS },
+        { "rewardsTokenBalance", IDS_REWARDS_WIDGET_TOKEN_BALANCE },
+        { "rewardsTokenGrantText", IDS_REWARDS_WIDGET_TOKEN_GRANT_TEXT },
+        { "rewardsTokenGrantTitle", IDS_REWARDS_WIDGET_TOKEN_GRANT_TITLE },
         { "rewardsWidgetBraveRewards", IDS_BRAVE_UI_BRAVE_REWARDS },
-        { "rewardsWidgetTurnOnAds", IDS_BRAVE_UI_TURN_ON_ADS },
-        { "rewardsWidgetTurnOnText", IDS_BRAVE_UI_TURN_ON_TEXT },
-        { "rewardsWidgetTurnOnTitle", IDS_BRAVE_UI_TURN_ON_TITLE },
-        { "rewardsWidgetClaimMyRewards", IDS_REWARDS_WIDGET_CLAIM_MY_REWARDS },
-        { "rewardsWidgetAboutRewards", IDS_REWARDS_WIDGET_ABOUT_REWARDS },
-        { "rewardsWidgetServiceText", IDS_REWARDS_WIDGET_SERVICE_TEXT },
-        { "rewardsWidgetEstimatedEarnings", IDS_REWARDS_WIDGET_ESTIMATED_EARNINGS },      // NOLINT
-        { "rewardsWidgetMonthlyTips", IDS_REWARDS_WIDGET_MONTHLY_TIPS },
-        { "rewardsWidgetEnableBrandedWallpaperTitle", IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_TITLE },  // NOLINT
-        { "rewardsWidgetEnableBrandedWallpaperSubTitle", IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_SUBTITLE },            // NOLINT
-        { "rewardsWidgetAdsNotSupported", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION },    // NOLINT
-        { "rewardsWidgetNotificationTitle", IDS_REWARDS_WIDGET_NOTIFICATION_TITLE },      // NOLINT
-        { "rewardsWidgetNotificationTextAds", IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_ADS }, // NOLINT
-        { "rewardsWidgetNotificationTextUGP", IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_UGP },  // NOLINT
-        { "rewardsWidgetBrandedNotificationTitle", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_TITLE },      // NOLINT
-        { "rewardsWidgetBrandedNotificationDescription", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_DESCRIPTION }, // NOLINT
-        { "rewardsWidgetBrandedNotificationHideAction", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_HIDE_ACTION }, // NOLINT
-        { "editCardsTitle", IDS_EDIT_CARDS_TITLE },
-        { "tosAndPp", IDS_REWARDS_WIDGET_TOS_AND_PP},     // NOLINT
-        { "rewardsWidgetStartUsing", IDS_REWARDS_WIDGET_START_USING},     // NOLINT
-        { "pendingRewardsMessage", IDS_BRAVE_REWARDS_PENDING_REWARDS_MESSAGE },
-        { "pendingRewardsNote", IDS_BRAVE_REWARDS_PENDING_REWARDS_NOTE },
+
         // Brave Talk  Widget
         { "braveTalkWidgetTitle", IDS_BRAVE_TALK_WIDGET_TITLE },
         { "braveTalkWidgetWelcomeTitle", IDS_BRAVE_TALK_WIDGET_WELCOME_TITLE },

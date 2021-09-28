@@ -5,6 +5,7 @@
 import { Store } from 'webext-redux'
 
 import { Notification } from '../../shared/components/notifications'
+import { GrantInfo } from '../../shared/lib/grant_info'
 import { RewardsSummaryData } from '../../shared/components/wallet_card'
 import { mapNotification } from './notification_adapter'
 
@@ -18,7 +19,6 @@ import {
 import {
   EarningsInfo,
   ExchangeInfo,
-  GrantInfo,
   Options,
   PublisherInfo,
   Settings
@@ -202,11 +202,12 @@ let grantsUpdatedCallbacks: GrantsUpdatedCallback[] = []
 chrome.braveRewards.onPromotions.addListener((result, promotions) => {
   const grants: GrantInfo[] = []
   for (const obj of promotions) {
-    const source = obj.type === 1 ? 'ads' : 'ugp'
+    const type = obj.type === 1 ? 'ads' : 'ugp'
     grants.push({
       id: obj.promotionId,
-      source,
+      type,
       amount: obj.amount,
+      createdAt: obj.createdAt * 1000 || null,
       expiresAt: obj.expiresAt * 1000 || null
     })
   }

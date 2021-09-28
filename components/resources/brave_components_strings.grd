@@ -842,9 +842,6 @@
       <message name="IDS_BRAVE_UI_TOKEN_GRANTS" desc="">Token Grants</message>
       <message name="IDS_BRAVE_UI_QR_CODE_LOADING" desc="">Loading image...</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
-      <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">Start using Rewards</message>
-      <message name="IDS_BRAVE_UI_TURN_ON_TEXT" desc="">Earn tokens by viewing Brave Private Ads and support content creators automatically.</message>
-      <message name="IDS_BRAVE_UI_TURN_ON_TITLE" desc="">Earn tokens and give back</message>
       <message name="IDS_BRAVE_UI_TYPE" desc="">Type</message>
       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="">Brave Verified Publisher</message>
       <message name="IDS_BRAVE_UI_VIEW_MONTHLY" desc="">View Monthly Statement for Details</message>
@@ -898,48 +895,7 @@
       <message name="IDS_BRAVE_UI_UPHOLD_PROMO_EQUITIES_INFO" desc="">Invest as little as &#36;1 in popular stocks and exchange traded funds such as AAPL, TSLA or AMZN</message>
 
       <!-- Rewards New Tab Widget resources -->
-      <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">
-        <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about Brave Rewards
-      </message>
-      <message name="IDS_REWARDS_WIDGET_SERVICE_TEXT"
-        desc="Small-print for enabling Brave Rewards on the New Tab Page"
-      >
-        By clicking Start using Brave Rewards, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
-      </message>
-      <message name="IDS_REWARDS_WIDGET_ESTIMATED_EARNINGS" desc="">Estimated earnings so far this month</message>
-      <message name="IDS_REWARDS_WIDGET_MONTHLY_TIPS" desc="">Tips and contributions this month</message>
-      <message name="IDS_REWARDS_WIDGET_CLAIM_MY_REWARDS" desc="">Claim my Rewards</message>
-      <message name="IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_TITLE"
-        desc="Title for prompt to enable Brave Rewards when a Branded Wallpaper is currently being displayed"
-      >
-
-        Earn rewards for viewing this sponsored background image.
-      </message>
-      <message name="IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_SUBTITLE"
-        desc="Description for prompt to enable Brave Rewards when a Branded Wallpaper is currently being displayed"
-      >
-        Turn on Brave Private Ads to claim your share. You can also choose to <ph name="LINK_BEGIN">$1</ph>hide sponsored images<ph name="LINK_END">$2</ph>.
-      </message>
-      <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TITLE" desc="">Way to Go!</message>
-      <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_ADS" desc="">Your rewards from Ads are here</message>
-      <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_UGP" desc="">You have a UGP grant from Brave.</message>
-      <message name="IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_TITLE"
-        desc="Title for notification that the user is seeing a branded wallpaper and they are getting paid for it"
-      >
-        You’re getting paid to view this background image.
-      </message>
-      <message name="IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_DESCRIPTION"
-        desc="Description for notification that the user is seeing a branded wallpaper and they are getting paid for it"
-      >
-        <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about sponsored images in Brave Rewards.
-      </message>
-      <message name="IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_HIDE_ACTION"
-        desc="Action for notification that the user is seeing a branded wallpaper and they are getting paid for it"
-      >
-        Hide sponsored images
-      </message>
       <message name="IDS_EDIT_CARDS_TITLE" desc="">Edit Cards</message>
-      <message name="IDS_REWARDS_WIDGET_TOS_AND_PP" desc="">By clicking [[title]], you agree to the <ph name="BEGIN_LINK1">$1</ph>Terms of Service<ph name="END_LINK1">$2</ph> and <ph name="BEGIN_LINK2">$3</ph>Privacy Policy<ph name="END_LINK2">$4</ph>.</message>
       <message name="IDS_REWARDS_WIDGET_START_USING" desc="">Start using Brave Rewards</message>
       <message name="IDS_BRAVE_TALK_WIDGET_TITLE" desc="">Brave Talk</message>
       <message name="IDS_BRAVE_TALK_WIDGET_WELCOME_TITLE" desc="">Start a private video call with your friends and colleagues.</message>

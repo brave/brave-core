@@ -139,6 +139,7 @@ declare namespace NewTab {
   }
 
   export interface RewardsWidgetState {
+    rewardsEnabled: boolean
     adsSupported?: boolean
     balance: RewardsBalance
     adsAccountStatement: AdsAccountStatement
@@ -247,6 +248,8 @@ declare namespace NewTab {
   export interface Promotion {
     type: PromotionTypes
     promotionId: string
+    createdAt: number
+    amount: number
   }
 
   export interface RewardsBalance {

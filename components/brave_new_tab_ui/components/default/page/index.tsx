@@ -213,6 +213,8 @@ export const GridItemCredits = styled('section')`
 `
 
 export const GridItemBrandedLogo = styled(GridItemCredits)`
+  position: relative;
+
   --ntp-grid-item-credits-left-margin-narrow: 0;
   --ntp-grid-item-credits-bottom-margin-wide: -8px;
   --ntp-grid-item-credits-left-margin-wide: 22px;
@@ -227,6 +229,13 @@ export const GridItemBrandedLogo = styled(GridItemCredits)`
       left: 0;
     }
   }
+`
+
+export const BrandedWallpaperNotification = styled('div')`
+  position: absolute;
+  bottom: 100%;
+  left: 34px;
+  width: 248px;
 `
 
 export const GridItemNavigation = styled('section')`

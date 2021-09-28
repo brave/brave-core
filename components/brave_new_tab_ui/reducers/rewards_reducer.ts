@@ -74,7 +74,9 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         const updatedPromotions = state.rewardsState.promotions
         updatedPromotions.push({
           promotionId: promotion.promotionId,
-          type: promotion.type
+          type: promotion.type,
+          createdAt: promotion.createdAt,
+          amount: promotion.amount
         })
 
         state.rewardsState.promotions = updatedPromotions
@@ -114,6 +116,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         ...state,
         rewardsState: {
           ...state.rewardsState,
+          rewardsEnabled: preInitialRewardsDataPayload.rewardsEnabled,
           enabledAds: preInitialRewardsDataPayload.enabledAds,
           adsSupported: preInitialRewardsDataPayload.adsSupported
         }
@@ -146,6 +149,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         ...state,
         rewardsState: {
           ...state.rewardsState,
+          rewardsEnabled: false,
           enabledAds: false
         }
       }
