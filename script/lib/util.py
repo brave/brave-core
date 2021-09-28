@@ -170,9 +170,14 @@ def execute(argv, env=os.environ):
     if is_verbose_mode():
         print(' '.join(argv))
     try:
-        process = subprocess.Popen(
-          argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-          universal_newlines=True)
+        if sys.version_info.major == 2:
+            process = subprocess.Popen(
+                argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                universal_newlines=True)
+        else:
+            process = subprocess.Popen(
+                argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                encoding='utf-8', universal_newlines=True)
         stdout, stderr = process.communicate()
         if is_verbose_mode():
             print(stdout)
