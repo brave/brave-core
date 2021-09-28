@@ -515,6 +515,14 @@ export interface GetAllTransactionInfoReturnInfo {
   transactionInfos: TransactionInfo[]
 }
 
+export interface GetSelectedAccountReturnInfo {
+  selectedACcount: string | undefined
+}
+
+export interface SetSelectedAccountReturnInfo {
+  success: boolean
+}
+
 export interface EthTxController {
   addUnapprovedTransaction: (txData: TxData, from: string) => Promise<AddUnapprovedTransactionReturnInfo>
   addUnapproved1559Transaction: (txData: TxData1559, from: string) => (AddUnapproved1559TransactionReturnInfo)
@@ -558,6 +566,8 @@ export interface KeyringController {
   addAccount: (accountName: string) => Promise<AddAccountReturnInfo>
   getHardwareAccounts: () => Promise<{ accounts: AccountInfo[] }>
   notifyUserInteraction: () => Promise<void>
+  getSelectedAccount: () => Promise<GetSelectedAccountReturnInfo>
+  setSelectedAccount: (address: string) => Promise<SetSelectedAccountReturnInfo>
 }
 
 export interface GetUserAssetsReturnInfo {

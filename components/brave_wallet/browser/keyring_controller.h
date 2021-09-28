@@ -153,6 +153,9 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void AddObserver(::mojo::PendingRemote<mojom::KeyringControllerObserver>
                        observer) override;
   void NotifyUserInteraction() override;
+  void GetSelectedAccount(GetSelectedAccountCallback callback) override;
+  void SetSelectedAccount(const std::string& address,
+                          SetSelectedAccountCallback callback) override;
 
   /* TODO(darkdh): For other keyrings support
   void DeleteKeyring(size_t index);
@@ -186,11 +189,13 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                            SetDefaultKeyringDerivedAccountMeta);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, RestoreLegacyBraveWallet);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AutoLock);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, SetSelectedAccount);
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxControllerUnitTest;
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
   void OnAutoLockFired();
+  std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync();
 
   // Address will be returned when success
   absl::optional<std::string> ImportAccountForDefaultKeyring(

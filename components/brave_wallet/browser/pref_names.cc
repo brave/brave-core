@@ -17,6 +17,7 @@ const char kBraveWalletCurrentChainId[] =
 const char kBraveWalletKeyrings[] = "brave.wallet.keyrings";
 const char kBraveWalletUserAssets[] = "brave.wallet.user_assets";
 const char kBraveWalletAutoLockMinutes[] = "brave.wallet.auto_lock_minutes";
+const char kBraveWalletSelectedAccount[] = "brave.wallet.selected_account";
 
 // DEPRECATED
 const char kBraveWalletPasswordEncryptorSalt[] =

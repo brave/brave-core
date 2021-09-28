@@ -232,6 +232,8 @@ interface KeyringController {
   GetHardwareAccounts() => (array<AccountInfo> accounts);
   RemoveHardwareAccount(string address);
   NotifyUserInteraction();
+  GetSelectedAccount() => (string? address);
+  SetSelectedAccount(string address) => (bool success);
 };
 
 interface AssetRatioController {

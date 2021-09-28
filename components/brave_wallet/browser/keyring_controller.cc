@@ -11,6 +11,7 @@
 #include "base/hash/hash.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/value_iterators.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -800,14 +801,13 @@ std::vector<mojom::AccountInfoPtr> KeyringController::GetAccountInfosForKeyring(
   return result;
 }
 
-void KeyringController::GetHardwareAccounts(
-    GetHardwareAccountsCallback callback) {
+std::vector<mojom::AccountInfoPtr>
+KeyringController::GetHardwareAccountsSync() {
   std::vector<mojom::AccountInfoPtr> accounts;
   base::Value hardware_keyrings(base::Value::Type::DICTIONARY);
   const base::Value* value = GetPrefForHardwareKeyringUpdate(prefs_);
   if (!value) {
-    std::move(callback).Run({});
-    return;
+    return {};
   }
 
   for (const auto hw_keyring : value->DictItems()) {
@@ -818,7 +818,12 @@ void KeyringController::GetHardwareAccounts(
     SerializeHardwareAccounts(account_value, &accounts);
   }
 
-  std::move(callback).Run(std::move(accounts));
+  return accounts;
+}
+
+void KeyringController::GetHardwareAccounts(
+    GetHardwareAccountsCallback callback) {
+  std::move(callback).Run(GetHardwareAccountsSync());
 }
 
 // static
@@ -1073,6 +1078,43 @@ void KeyringController::AddObserver(
 
 void KeyringController::NotifyUserInteraction() {
   auto_lock_timer_->Reset();
+}
+
+void KeyringController::GetSelectedAccount(
+    GetSelectedAccountCallback callback) {
+  std::string address = prefs_->GetString(kBraveWalletSelectedAccount);
+  if (address.empty()) {
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+  std::move(callback).Run(address);
+}
+
+void KeyringController::SetSelectedAccount(
+    const std::string& address,
+    SetSelectedAccountCallback callback) {
+  std::vector<mojom::AccountInfoPtr> infos =
+      GetAccountInfosForKeyring(kDefaultKeyringId);
+
+  // Check for matching default and imported account
+  for (const mojom::AccountInfoPtr& info : infos) {
+    if (base::EqualsCaseInsensitiveASCII(info->address, address)) {
+      prefs_->SetString(kBraveWalletSelectedAccount, address);
+      std::move(callback).Run(true);
+      return;
+    }
+  }
+
+  auto hardware_account_info_ptrs = GetHardwareAccountsSync();
+  for (const mojom::AccountInfoPtr& info : hardware_account_info_ptrs) {
+    if (base::EqualsCaseInsensitiveASCII(info->address, address)) {
+      prefs_->SetString(kBraveWalletSelectedAccount, address);
+      std::move(callback).Run(true);
+      return;
+    }
+  }
+
+  std::move(callback).Run(false);
 }
 
 void KeyringController::SetDefaultKeyringDerivedAccountName(
