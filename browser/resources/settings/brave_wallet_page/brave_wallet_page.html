@@ -32,14 +32,30 @@
                               menu-options="[[wallets_]]">
       </settings-dropdown-menu>
     </div>
-<template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
-    <settings-toggle-button id="showBraveWalletIconOnToolbar"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.show_wallet_icon_on_toolbar}}"
-        label="$i18n{showBravewalletIconOnToolbar}">
-</template>
-
-    </settings-toggle-button>
+    <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
+      <settings-toggle-button id="showBraveWalletIconOnToolbar"
+          class="cr-row"
+          pref="{{prefs.brave.wallet.show_wallet_icon_on_toolbar}}"
+          label="$i18n{showBravewalletIconOnToolbar}">
+      </settings-toggle-button>
+    </template>
+    <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
+    <div class="settings-box">
+      <div class="flex cr-padded-text">
+        <div>$i18n{autoLockMinutes}</div>
+        <div class="secondary">$i18n{autoLockMinutesDesc}</div>
+      </div>
+      <cr-input
+          id="walletAutoLockMinutes" type="number"
+          class="flex-container"
+          value="$i18n{autoLockMinutesValue}"
+          on-change="onChangeAutoLockMinutes_"
+          min="1"
+          max="10080"
+      >
+      </cr-input>
+    </div>
+    </template>
   </template>
   <script src="brave_wallet_page.js"></script>
 </dom-module>

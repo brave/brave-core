@@ -68,6 +68,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                brave_wallet::mojom::kMainnetChainId);
   registry->RegisterDictionaryPref(kBraveWalletUserAssets,
                                    GetDefaultUserAssets());
+  registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes, 5);
 }
 
 void RegisterProfilePrefsForMigration(
@@ -88,6 +89,7 @@ void ClearProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletTransactions);
   prefs->ClearPref(kBraveWalletUserAssets);
   prefs->ClearPref(kBraveWalletKeyrings);
+  prefs->ClearPref(kBraveWalletAutoLockMinutes);
 }
 
 }  // namespace brave_wallet
