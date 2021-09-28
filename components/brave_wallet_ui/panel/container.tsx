@@ -46,11 +46,12 @@ import {
   WalletAccountType,
   BuySendSwapViewTypes,
   AccountAssetOptionType,
-  EthereumChain
+  EthereumChain,
+  TokenInfo
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
-import { AccountAssetOptions } from '../options/asset-options'
+import { ETH, BAT } from '../options/asset-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { GetNetworkInfo } from '../utils/network-utils'
@@ -91,7 +92,8 @@ function Container (props: Props) {
     userVisibleTokensInfo,
     isWalletCreated,
     networkList,
-    transactionSpotPrices
+    transactionSpotPrices,
+    fullTokenList
   } = props.wallet
 
   const {
@@ -108,12 +110,49 @@ function Container (props: Props) {
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
-  const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
+  const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(ETH)
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [toAddress, setToAddress] = React.useState('')
   const [sendAmount, setSendAmount] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
+
+  const tokenOptions: TokenInfo[] = React.useMemo(() =>
+    fullTokenList.map(token => ({
+      ...token,
+      logo: `chrome://erc-token-images/${token.logo}`
+    })), [fullTokenList])
+
+  const assetOptions: AccountAssetOptionType[] = React.useMemo(() => {
+    const tokens = tokenOptions
+      .filter(token => token.symbol !== 'BAT')
+      .map(token => ({
+        asset: token,
+        assetBalance: '0',
+        fiatBalance: '0'
+      }))
+
+    return [ETH, BAT, ...tokens]
+  }, [tokenOptions])
+
+  const userVisibleTokenOptions: TokenInfo[] = React.useMemo(() =>
+    userVisibleTokensInfo.map(token => ({
+      ...token,
+      logo: `chrome://erc-token-images/${token.logo}`
+    })
+  ), [userVisibleTokensInfo])
+
+  const sendAssetOptions = selectedAccount.tokens?.map(
+      token => ({
+        ...token,
+        asset: {
+          ...token.asset,
+          logo: token.asset.symbol === 'ETH'
+              ? ETH.asset.logo
+              : `chrome://erc-token-images/${token.asset.logo}`
+        }
+      })
+  )
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
@@ -369,7 +408,7 @@ function Container (props: Props) {
             selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             transactionInfo={selectedPendingTransaction}
             transactionSpotPrices={transactionSpotPrices}
-            visibleTokens={userVisibleTokensInfo}
+            visibleTokens={userVisibleTokenOptions}
           />
         </SignContainer>
       </PanelWrapper>
@@ -430,9 +469,9 @@ function Container (props: Props) {
     if (selectedPanel === 'buy') {
       assets = WyreAccountAssetOptions
     } else if (selectedPanel === 'send') {
-      assets = selectedAccount.tokens
+      assets = sendAssetOptions
     } else {  // swap
-      assets = AccountAssetOptions
+      assets = assetOptions
     }
     return (
       <PanelWrapper isLonger={false}>

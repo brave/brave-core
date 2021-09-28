@@ -44,7 +44,7 @@ export const AssetBalance = styled.span`
 export const AssetIcon = styled.div<StyleProps>`
   width: 24px;
   height: 24px;
-  background: ${(p) => `url(${p.icon})`};
+  background: no-repeat ${(p) => `url(${p.icon})`};
   margin-right: 8px;
   background-size: 100%;
 `

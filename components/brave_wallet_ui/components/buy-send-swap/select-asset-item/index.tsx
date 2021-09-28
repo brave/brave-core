@@ -21,7 +21,7 @@ function SelectAssetItem (props: Props) {
 
   return (
     <StyledWrapper onClick={onSelectAsset}>
-      <AssetIcon icon={asset.asset.icon} />
+      <AssetIcon icon={asset.asset.logo} />
       <AssetAndBalance>
         <AssetName>{asset.asset.name}</AssetName>
         <AssetBalance>{formatBalance(asset.assetBalance, asset.asset.decimals)} {asset.asset.symbol}</AssetBalance>

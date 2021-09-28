@@ -19,7 +19,7 @@ export interface AssetOptionType {
   id: string
   name: string
   symbol: string
-  icon: string
+  logo: string
 }
 
 export interface UserAssetOptionType {
@@ -363,7 +363,6 @@ export interface TokenInfo {
   symbol: string
   decimals: number
   visible?: boolean
-  icon?: string
   logo?: string
 }
 
