@@ -1,13 +1,12 @@
 diff --git a/components/translate/core/browser/translate_language_list.h b/components/translate/core/browser/translate_language_list.h
-index 4d72652467c9269946ccb751775bcee6499c5115..49bbb529626a1517a283f6af8a9398064f444986 100644
+index 4d72652467c9269946ccb751775bcee6499c5115..0a71c36b03b0f26a4305276d9b5d5fff06f5e528 100644
 --- a/components/translate/core/browser/translate_language_list.h
 +++ b/components/translate/core/browser/translate_language_list.h
-@@ -74,7 +74,7 @@ class TranslateLanguageList {
-   // static const values shared with our browser tests.
+@@ -75,6 +75,7 @@ class TranslateLanguageList {
    static const char kTargetLanguagesKey[];
  
-- private:
-+ protected:
+  private:
++  friend class BraveTranslateLanguageList;
    FRIEND_TEST_ALL_PREFIXES(TranslateLanguageListTest, IsSupportedLanguage);
    FRIEND_TEST_ALL_PREFIXES(TranslateLanguageListTest, SetSupportedLanguages);
    FRIEND_TEST_ALL_PREFIXES(TranslateLanguageListTest, TranslateLanguageUrl);
