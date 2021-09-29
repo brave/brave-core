@@ -36,15 +36,6 @@
         android:title="@string/host"/>
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:key="server_location"
-        android:title="@string/location"/>
-
-    <!-- <ListPreference
-        android:key="server_change_location"
-        android:title="@string/change_location"
-        android:summary="%1$s" /> -->
-
-    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveVpnServerSelectionPreferences"
         android:key="server_change_location"
         android:title="@string/change_location"/>
