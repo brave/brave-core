@@ -6,8 +6,6 @@ import("//testing/test.gni")
 assert(brave_wallet_enabled)
 
 source_set("brave_wallet") {
-  check_includes = false
-
   sources = [
     "asset_ratio_controller_factory.cc",
     "asset_ratio_controller_factory.h",
@@ -59,7 +57,7 @@ source_set("brave_wallet") {
 }
 
 source_set("brave_wallet_delegate") {
-  sources = []
+  sources = [ "brave_wallet_service_delegate_helper.cc" ]
   deps = [
     "//brave/components/brave_wallet/browser",
     "//content/public/browser",

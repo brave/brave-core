@@ -6,9 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_DELEGATE_H_
 
+#include <memory>
 #include <string>
 
 #include "base/callback.h"
+
+namespace content {
+class BrowserContext;
+}
 
 namespace brave_wallet {
 
@@ -44,6 +49,9 @@ class BraveWalletServiceDelegate {
       const std::string& origin,
       const std::string& account,
       ResetEthereumPermissionCallback callback);
+
+  static std::unique_ptr<BraveWalletServiceDelegate> Create(
+      content::BrowserContext* browser_context);
 };
 
 }  // namespace brave_wallet
