@@ -281,7 +281,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 BraveVpnPrefUtils.setPurchaseExpiry(purchaseExpiry);
                 BraveVpnPrefUtils.setSubscriptionPurchase(true);
                 if (!mIsVerification) {
-                    BraveVpnProfileUtils.getInstance(BraveActivity.this).startStopVpn();
+                    BraveVpnProfileUtils.getInstance().startStopVpn(BraveActivity.this);
                 } else {
                     mIsVerification = false;
                 }
@@ -298,10 +298,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         BraveVpnPrefUtils.setProductId("");
         BraveVpnPrefUtils.setPurchaseExpiry(0L);
         BraveVpnPrefUtils.setSubscriptionPurchase(false);
-        if (BraveVpnProfileUtils.getInstance(BraveActivity.this).isVPNConnected()) {
-            BraveVpnProfileUtils.getInstance(BraveActivity.this).stopVpn();
+        if (BraveVpnProfileUtils.getInstance().isVPNConnected(BraveActivity.this)) {
+            BraveVpnProfileUtils.getInstance().stopVpn(BraveActivity.this);
         }
-        BraveVpnProfileUtils.getInstance(BraveActivity.this).deleteVpnProfile();
+        BraveVpnProfileUtils.getInstance().deleteVpnProfile(BraveActivity.this);
         Toast.makeText(BraveActivity.this, R.string.purchase_token_verification_failed,
                      Toast.LENGTH_LONG)
                 .show();
@@ -916,7 +916,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (resultCode == RESULT_OK
                 && requestCode == BraveVpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            BraveVpnProfileUtils.getInstance(BraveActivity.this).startVpn();
+            BraveVpnProfileUtils.getInstance().startVpn(BraveActivity.this);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

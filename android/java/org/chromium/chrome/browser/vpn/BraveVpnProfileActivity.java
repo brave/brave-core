@@ -111,7 +111,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         if (resultCode == RESULT_OK
                 && requestCode == BraveVpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            BraveVpnProfileUtils.getInstance(BraveVpnProfileActivity.this).startVpn();
+            BraveVpnProfileUtils.getInstance().startVpn(BraveVpnProfileActivity.this);
             BraveVpnConfirmDialogFragment braveVpnConfirmDialogFragment =
                     new BraveVpnConfirmDialogFragment();
             braveVpnConfirmDialogFragment.setCancelable(false);
