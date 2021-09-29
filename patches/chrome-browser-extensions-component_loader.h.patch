@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/component_loader.h b/chrome/browser/extensions/component_loader.h
-index 8501173a80acd56f5d02b94ed6f3a2046bc806de..c8d494de7f60e93ab9583115c686d55dd70a73e3 100644
+index 0a196e89092c0c54720e9abb40ddac7384e7d3e4..9fed35f97973c3934e2baef73724efe854241ff3 100644
 --- a/chrome/browser/extensions/component_loader.h
 +++ b/chrome/browser/extensions/component_loader.h
 @@ -85,7 +85,7 @@ class ComponentLoader {
@@ -19,7 +19,7 @@ index 8501173a80acd56f5d02b94ed6f3a2046bc806de..c8d494de7f60e93ab9583115c686d55d
    FRIEND_TEST_ALL_PREFIXES(ComponentLoaderTest, ParseManifest);
  
    // Information about a registered component extension.
-@@ -176,6 +177,7 @@ class ComponentLoader {
+@@ -177,6 +178,7 @@ class ComponentLoader {
    void AddDefaultComponentExtensionsWithBackgroundPagesForKioskMode();
  
  #if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
