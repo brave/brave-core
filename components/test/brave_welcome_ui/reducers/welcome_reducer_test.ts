@@ -23,10 +23,7 @@ describe('welcomeReducer', () => {
     })
     it('calls storage.load() when initial state is undefined', () => {
       const assertion = welcomeReducer(undefined, actions.closeTabRequested())
-      expect(assertion).toEqual({
-        searchProviders: [],
-        browserProfiles: []
-      })
+      expect(assertion).toEqual(storage.defaultState)
       expect(spy).toBeCalled()
       expect(spy.mock.calls[0][1]).toBe(undefined)
     })
@@ -125,11 +122,7 @@ describe('welcomeReducer', () => {
         type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
         payload: mockSearchProviders
       })
-      const expected = {
-        ...mockState,
-        searchProviders: mockSearchProviders
-      }
-      expect(result).toEqual(expected)
+      expect(result.searchProviders).toEqual(mockSearchProviders)
     })
 
     describe('with the region', () => {
@@ -167,7 +160,7 @@ describe('welcomeReducer', () => {
         expect(spy).toBeCalledWith('countryString')
       })
 
-      describe('when user is in US/Canada', () => {
+      describe('when user is in US/Canada/approved regions', () => {
         it('should NOT filter out the Brave engine', () => {
           const result = welcomeReducer(mockState, {
             type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
@@ -177,9 +170,9 @@ describe('welcomeReducer', () => {
         })
       })
 
-      describe('when user is NOT in US/Canada', () => {
+      describe('when user is NOT in US/Canada/approved regions', () => {
         beforeEach(() => {
-          countryString = 'GB'
+          countryString = 'CN'
         })
         afterEach(() => {
           countryString = 'US'
