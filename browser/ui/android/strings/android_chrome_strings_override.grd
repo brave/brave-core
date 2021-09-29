@@ -116,6 +116,12 @@ CHAR_LIMIT guidelines:
       <message name="IDS_NOTIFICATION_CATEGORY_INCOGNITO" desc="Label for notification that indicates Private mode is active, within a list of notification categories. [CHAR_LIMIT=32]">
         Private
       </message>
+      <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_TITLE" desc="Title for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism.">
+        Lock Private tabs when you leave Brave
+      </message>
+      <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_SUMMARY_ANDROID_SETTING_ON" desc="Summary for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism. This summary is shown to the user when the screen lock setting is on in the device.">
+        Use screen lock to see open Private tabs
+      </message>
       <message name="IDS_USAGE_AND_CRASH_REPORTS_SUMMARY" desc="Description for 'Help improve Brave's features and performance' preference.">
         Automatically sends crash reports to Brave
       </message>
