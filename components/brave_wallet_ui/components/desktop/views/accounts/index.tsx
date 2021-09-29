@@ -12,7 +12,7 @@ import {
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import { create } from 'ethereum-blockies'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
 import { formatBalance } from '../../../../utils/format-balances'
 
 // Styled Components
@@ -154,11 +154,11 @@ function Accounts (props: Props) {
       {!selectedAccount ? (
         <>
           <PrimaryRow>
-            <SectionTitle>{locale.accountsPrimary}</SectionTitle>
+            <SectionTitle>{getLocale('braveWalletAccountsPrimary')}</SectionTitle>
             <ButtonsRow>
               <BackupButton onClick={onClickBackup}>
                 <BackupIcon />
-                <BackupButtonText>{locale.backupButton}</BackupButtonText>
+                <BackupButtonText>{getLocale('braveWalletBackupButton')}</BackupButtonText>
               </BackupButton>
               <Button onClick={onClickSettings}>
                 <SettingsIcon />
@@ -176,8 +176,8 @@ function Accounts (props: Props) {
               />
             )}
           </PrimaryListContainer>
-          <SectionTitle>{locale.accountsSecondary}</SectionTitle>
-          <DisclaimerText>{locale.accountsSecondaryDisclaimer}</DisclaimerText>
+          <SectionTitle>{getLocale('braveWalletAccountsSecondary')}</SectionTitle>
+          <DisclaimerText>{getLocale('braveWalletAccountsSecondaryDisclaimer')}</DisclaimerText>
           <SubDivider />
           <SecondaryListContainer isHardwareWallet={false}>
             {secondaryAccounts.map((account) =>
@@ -206,7 +206,7 @@ function Accounts (props: Props) {
           <AddButton
             buttonType='secondary'
             onSubmit={onClickAddAccount}
-            text={locale.addAccount}
+            text={getLocale('braveWalletAddAccount')}
           />
         </>
       ) : (
@@ -215,7 +215,7 @@ function Accounts (props: Props) {
             <WalletInfoLeftSide>
               <AccountCircle orb={orb} />
               <WalletName>{selectedAccount.name}</WalletName>
-              <Tooltip text={locale.toolTipCopyToClipboard}>
+              <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
                 <WalletAddress onClick={onCopyToClipboard}>{reduceAddress(selectedAccount.address)}</WalletAddress>
               </Tooltip>
               <Button onClick={onShowEditModal}>
@@ -226,7 +226,7 @@ function Accounts (props: Props) {
               <EditIcon />
             </Button>
           </WalletInfoRow>
-          <SubviewSectionTitle>{locale.accountsAssets}</SubviewSectionTitle>
+          <SubviewSectionTitle>{getLocale('braveWalletAccountsAssets')}</SubviewSectionTitle>
           <SubDivider />
           {selectedAccount.tokens.map((item) =>
             <PortfolioAssetItem
@@ -239,7 +239,7 @@ function Accounts (props: Props) {
               isVisible={item.asset.visible}
             />
           )}
-          <SubviewSectionTitle>{locale.transactions}</SubviewSectionTitle>
+          <SubviewSectionTitle>{getLocale('braveWalletTransactions')}</SubviewSectionTitle>
           <SubDivider />
           {transactionList.length !== 0 ? (
             <>
@@ -256,14 +256,14 @@ function Accounts (props: Props) {
             </>
           ) : (
             <TransactionPlaceholderContainer>
-              <TransactionPlaceholderText>{locale.transactionPlaceholder}</TransactionPlaceholderText>
+              <TransactionPlaceholderText>{getLocale('braveWalletTransactionPlaceholder')}</TransactionPlaceholderText>
             </TransactionPlaceholderContainer>
           )}
         </>
       )}
       {showEditModal && selectedAccount &&
         <AccountSettingsModal
-          title={locale.account}
+          title={getLocale('braveWalletAccount')}
           account={selectedAccount}
           onClose={onCloseEditModal}
           onUpdateAccountName={onUpdateAccountName}

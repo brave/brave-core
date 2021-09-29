@@ -6,7 +6,7 @@ import {
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   StyledWrapper
@@ -66,7 +66,7 @@ function Send (props: Props) {
       <NavButton
         disabled={false}
         buttonType='primary'
-        text={locale.send}
+        text={getLocale('braveWalletSend')}
         onSubmit={onSubmit}
       />
     </StyledWrapper>

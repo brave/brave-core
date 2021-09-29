@@ -8,7 +8,7 @@ import {
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   StyledWrapper,
@@ -59,14 +59,14 @@ function Buy (props: Props) {
         />
       ) : (
         <FaucetWrapper>
-          <FaucetTitle>{locale.buyTitle}</FaucetTitle>
-          <FaucetDescription>{locale.buyDescription} {networkName}</FaucetDescription>
+          <FaucetTitle>{getLocale('braveWalletBuyTitle')}</FaucetTitle>
+          <FaucetDescription>{getLocale('braveWalletBuyDescription')} {networkName}</FaucetDescription>
         </FaucetWrapper>
       )}
       <NavButton
         disabled={false}
         buttonType='primary'
-        text={selectedNetwork.chainId === kMainnetChainId ? locale.buyWyreButton : locale.buyFaucetButton}
+        text={selectedNetwork.chainId === kMainnetChainId ? getLocale('braveWalletBuyWyreButton') : getLocale('braveWalletBuyFaucetButton')}
         onSubmit={onSubmit}
       />
     </StyledWrapper>

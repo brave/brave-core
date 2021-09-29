@@ -10,7 +10,7 @@ import {
 } from './style'
 import { PasswordInput } from '../../shared'
 import { NavButton } from '../../extension'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 
 export interface Props {
   onSubmit: () => void
@@ -34,24 +34,24 @@ function LockScreen (props: Props) {
       <IconBackground>
         <PageIcon />
       </IconBackground>
-      <Title>{locale.lockScreenTitle}</Title>
+      <Title>{getLocale('braveWalletLockScreenTitle')}</Title>
       <InputColumn>
         <PasswordInput
-          placeholder={locale.createPasswordInput}
+          placeholder={getLocale('braveWalletCreatePasswordInput')}
           onChange={onPasswordChanged}
           onKeyDown={handleKeyDown}
-          error={locale.lockScreenError}
+          error={getLocale('braveWalletLockScreenError')}
           hasError={hasPasswordError}
           autoFocus={true}
         />
       </InputColumn>
       <NavButton
         buttonType='primary'
-        text={locale.lockScreenButton}
+        text={getLocale('braveWalletLockScreenButton')}
         onSubmit={onSubmit}
         disabled={disabled}
       />
-      <RestoreButton onClick={onShowRestore}>{locale.welcomeRestoreButton}</RestoreButton>
+      <RestoreButton onClick={onShowRestore}>{getLocale('braveWalletWelcomeRestoreButton')}</RestoreButton>
     </StyledWrapper>
   )
 }

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import locale from '../../../constants/locale'
 // Styled Components
 import {
   StyledWrapper,
@@ -7,7 +6,7 @@ import {
   BannerButton,
   ButtonRow
 } from './style'
-
+import { getLocale } from '../../../../common/locale'
 export interface Props {
   onClick: () => void
   onDismiss: () => void
@@ -24,7 +23,7 @@ const WalletBanner = (props: Props) => {
       <WarningText>{description}</WarningText>
       <ButtonRow>
         <BannerButton onClick={onClick} buttonType='primary'>{buttonText}</BannerButton>
-        <BannerButton onClick={onDismiss} buttonType='secondary'>{locale.dismissButton}</BannerButton>
+        <BannerButton onClick={onDismiss} buttonType='secondary'>{getLocale('braveWalletDismissButton')}</BannerButton>
       </ButtonRow>
     </StyledWrapper>
   )

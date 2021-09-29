@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import locale from '../../../../../constants/locale'
+import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
 
 // Styled Components
@@ -48,10 +48,10 @@ export default function (props: Props) {
 
   const getErrorMessage = (error: any) => {
     if (error.statusCode && error.statusCode === 27404) {
-      return locale.connectHardwareInfo3
+      return getLocale('braveWalletConnectHardwareInfo3')
     }
     if (!error || !error.message) {
-      return locale.unknownInternalError
+      return getLocale('braveWalletUnknownInternalError')
     }
     return error.message
   }
@@ -128,7 +128,7 @@ export default function (props: Props) {
 
   return (
     <>
-      <HardwareTitle>{locale.connectHardwareTitle}</HardwareTitle>
+      <HardwareTitle>{getLocale('braveWalletConnectHardwareTitle')}</HardwareTitle>
       <HardwareButtonRow>
         <HardwareButton onClick={onSelectLedger} isSelected={selectedHardwareWallet === kLedgerHardwareVendor}>
           <LedgerIcon />
@@ -141,21 +141,21 @@ export default function (props: Props) {
         <InfoIcon />
         <HardwareInfoColumn>
           <DisclaimerText>
-            {locale.connectHardwareInfo1} {selectedHardwareWallet} {locale.connectHardwareInfo2}
+            {getLocale('braveWalletConnectHardwareInfo1')} {selectedHardwareWallet} {getLocale('braveWalletConnectHardwareInfo2')}
           </DisclaimerText>
-          <DisclaimerText>{locale.connectHardwareInfo3}</DisclaimerText>
+          <DisclaimerText>{getLocale('braveWalletConnectHardwareInfo3')}</DisclaimerText>
         </HardwareInfoColumn>
       </HardwareInfoRow>
       {connectionError !== '' &&
-              <ErrorText>{connectionError}</ErrorText>
-            }
+        <ErrorText>{connectionError}</ErrorText>
+      }
 
       {isConnecting ? (
         <ConnectingButton>
-          <ConnectingButtonText>{locale.connectingHardwareWallet}</ConnectingButtonText>
+          <ConnectingButtonText>{getLocale('braveWalletConnectingHardwareWallet')}</ConnectingButtonText>
         </ConnectingButton>
       ) : (
-        <NavButton onSubmit={onSubmit} text={locale.addAccountConnect} buttonType='primary' />
+        <NavButton onSubmit={onSubmit} text={getLocale('braveWalletAddAccountConnect')} buttonType='primary' />
       )}
     </>
   )

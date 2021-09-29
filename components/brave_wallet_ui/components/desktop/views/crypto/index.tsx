@@ -17,7 +17,7 @@ import {
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
 import { PortfolioView, AccountsView } from '../'
 import {
   HardwareWalletAccount,
@@ -208,7 +208,7 @@ const CryptoView = (props: Props) => {
       {!hideNav &&
         <>
           <TopTabNav
-            tabList={TopNavOptions}
+            tabList={TopNavOptions()}
             selectedTab={category}
             onSubmit={tabTo}
             hasMoreButtons={true}
@@ -219,8 +219,8 @@ const CryptoView = (props: Props) => {
               onDismiss={onDismissDefaultWalletBanner}
               onClick={onOpenWalletSettings}
               bannerType='warning'
-              buttonText={locale.walletPopupSettings}
-              description={locale.defaultWalletBanner}
+              buttonText={getLocale('braveWalletWalletPopupSettings')}
+              description={getLocale('braveWalletDefaultWalletBanner')}
             />
           }
           {needsBackup && showBackupWarning &&
@@ -228,8 +228,8 @@ const CryptoView = (props: Props) => {
               onDismiss={onDismissBackupWarning}
               onClick={onShowBackup}
               bannerType='danger'
-              buttonText={locale.backupButton}
-              description={locale.backupWarningText}
+              buttonText={getLocale('braveWalletBackupButton')}
+              description={getLocale('braveWalletBackupWarningText')}
             />
           }
         </>
@@ -291,7 +291,7 @@ const CryptoView = (props: Props) => {
       {showAddModal &&
         <AddAccountModal
           accounts={accounts}
-          title={locale.addAccount}
+          title={getLocale('braveWalletAddAccount')}
           onClose={onCloseAddModal}
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { AppObjectType, AppsListType } from '../../../constants/types'
 import { NavButton } from '../../extension/'
 import { AppListItem } from '../'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   StyledWrapper,
@@ -50,7 +50,7 @@ export default class AppList extends React.PureComponent<Props> {
                 toggleFavorite={this.toggleFavorite(item)}
               />
             )}
-            {option.category !== locale.searchCategory &&
+            {option.category !== getLocale('braveWalletSearchCategory') &&
               <ButtonRow>
                 <NavButton
                   disabled={false}

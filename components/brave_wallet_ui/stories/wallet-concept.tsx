@@ -27,7 +27,7 @@ import {
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
 import CryptoStoryView from './screens/crypto-story-view'
-
+import './locale'
 // import { NavOptions } from '../options/side-nav-options'
 import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
@@ -41,7 +41,7 @@ import { PriceHistoryMockData } from './mock-data/price-history-data'
 import { mockUserWalletPreferences } from './mock-data/user-wallet-preferences'
 import { formatPrices } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
-import locale from '../constants/locale'
+import { getLocale } from '../../common/locale'
 import {
   HardwareWalletAccount,
   HardwareWalletConnectOpts
@@ -357,7 +357,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     const newList = list.map((wallet) => {
       const walletInfo = accountInfo(wallet)
       const id = walletInfo ? walletInfo.id : ''
-      const name = walletInfo ? walletInfo.name : locale.account
+      const name = walletInfo ? walletInfo.name : getLocale('braveWalletAccount')
       return {
         id: id,
         name: name,

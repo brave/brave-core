@@ -3,7 +3,7 @@ import { AccountAssetOptionType, OrderTypes, SlippagePresetObjectType, Expiratio
 import { AmountPresetOptions } from '../../../options/amount-preset-options'
 import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../../options/expiration-preset-options'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 
 // Styled Components
 import {
@@ -110,20 +110,20 @@ function SwapInputComponent (props: Props) {
   const getTitle = () => {
     switch (componentType) {
       case 'fromAmount':
-        return locale.swapFrom
+        return getLocale('braveWalletSwapFrom')
       case 'toAmount':
         if (orderType === 'market') {
-          return `${locale.swapTo} (${locale.swapEstimate})`
+          return `${getLocale('braveWalletSwapTo')} (${getLocale('braveWalletSwapEstimate')})`
         } else {
-          return locale.swapTo
+          return getLocale('braveWalletSwapTo')
         }
       case 'buyAmount':
-        return locale.buy
+        return getLocale('braveWalletBuy')
       case 'exchange':
         if (orderType === 'market') {
-          return `${locale.swapMarket} ${locale.swapPriceIn} ${selectedAsset?.asset.symbol}`
+          return `${getLocale('braveWalletSwapMarket')} ${getLocale('braveWalletSwapPriceIn')} ${selectedAsset?.asset.symbol}`
         } else {
-          return `${locale.swapPriceIn} ${selectedAsset?.asset.symbol}`
+          return `${getLocale('braveWalletSwapPriceIn')} ${selectedAsset?.asset.symbol}`
         }
       case 'selector':
         if (orderType === 'market') {
@@ -132,7 +132,7 @@ function SwapInputComponent (props: Props) {
           return 'Expires in'
         }
       case 'toAddress':
-        return locale.swapTo
+        return getLocale('braveWalletSwapTo')
     }
   }
 
@@ -159,7 +159,7 @@ function SwapInputComponent (props: Props) {
             */}
 
             {componentType !== 'exchange' && componentType !== 'toAddress' && componentType !== 'buyAmount' &&
-              <FromBalanceText>{locale.balance}: {selectedAssetBalance}</FromBalanceText>
+              <FromBalanceText>{getLocale('braveWalletBalance')}: {selectedAssetBalance}</FromBalanceText>
             }
             {componentType === 'toAddress' &&
               <PasteButton onClick={onPaste}>
@@ -200,7 +200,7 @@ function SwapInputComponent (props: Props) {
           </Row>
           {componentType === 'fromAmount' &&
             <PresetRow>
-              {AmountPresetOptions.map((preset) =>
+              {AmountPresetOptions().map((preset) =>
                 <PresetButton
                   key={preset.id}
                   onClick={setPresetAmmountValue(preset.id)}

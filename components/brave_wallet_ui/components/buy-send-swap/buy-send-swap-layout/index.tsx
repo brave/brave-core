@@ -3,7 +3,7 @@ import { BuySendSwapTypes, EthereumChain } from '../../../constants/types'
 import { BuySendSwapOptions } from '../../../options/buy-send-swap-options'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import Tooltip from '../buy-send-swap-tooltip'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   StyledWrapper,
@@ -38,11 +38,11 @@ function BuySendSwapLayout (props: Props) {
   return (
     <StyledWrapper>
       <ButtonRow>
-        {BuySendSwapOptions.map((option) =>
+        {BuySendSwapOptions().map((option) =>
           <Tooltip
             isDisabled={isBuyDisabled && option.id === 'buy' || isSwapDisabled && option.id === 'swap'}
             key={option.id}
-            text={`${reduceNetworkDisplayName(selectedNetwork.chainName)} ${locale.bssToolTip}`}
+            text={`${reduceNetworkDisplayName(selectedNetwork.chainName)} ${getLocale('braveWalletBssToolTip')}`}
           >
             <TabButton
               isSelected={selectedTab === option.id}

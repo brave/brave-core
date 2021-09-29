@@ -2,7 +2,7 @@ import * as React from 'react'
 import { create } from 'ethereum-blockies'
 import { WalletAccountType, EthereumChain } from '../../../constants/types'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 import { NavButton, PanelTab } from '../'
 // Styled Components
 import {
@@ -73,15 +73,15 @@ function SignPanel (props: Props) {
       </TopRow>
       <AccountCircle orb={orb} />
       <AccountNameText>{reduceAccountDisplayName(selectedAccount.name, 14)}</AccountNameText>
-      <PanelTitle>{locale.signTransactionTitle}</PanelTitle>
+      <PanelTitle>{getLocale('braveWalletSignTransactionTitle')}</PanelTitle>
       {signStep === SignDataSteps.SignRisk &&
         <WarningBox>
           <WarningTitleRow>
             <WarningIcon />
-            <WarningTitle>{locale.braveWalletSignWarningTitle}</WarningTitle>
+            <WarningTitle>{getLocale('braveWalletSignWarningTitle')}</WarningTitle>
           </WarningTitleRow>
-          <WarningText>{locale.braveWalletSignWarning}</WarningText>
-          <LearnMoreButton onClick={onClickLearnMore}>{locale.allowAddNetworkLearnMoreButton}</LearnMoreButton>
+          <WarningText>{getLocale('braveWalletSignWarning')}</WarningText>
+          <LearnMoreButton onClick={onClickLearnMore}>{getLocale('braveWalletAllowAddNetworkLearnMoreButton')}</LearnMoreButton>
         </WarningBox>
       }
       {signStep === SignDataSteps.SignData &&
@@ -89,7 +89,7 @@ function SignPanel (props: Props) {
           <TabRow>
             <PanelTab
               isSelected={true}
-              text={locale.signTransactionMessageTitle}
+              text={getLocale('braveWalletSignTransactionMessageTitle')}
             />
           </TabRow>
           <MessageBox>
@@ -100,12 +100,12 @@ function SignPanel (props: Props) {
       <ButtonRow>
         <NavButton
           buttonType='secondary'
-          text={locale.backupButtonCancel}
+          text={getLocale('braveWalletBackupButtonCancel')}
           onSubmit={onCancel}
         />
         <NavButton
           buttonType={signStep === SignDataSteps.SignData ? 'sign' : 'danger'}
-          text={signStep === SignDataSteps.SignData ? locale.signTransactionButton : locale.buttonContinue}
+          text={signStep === SignDataSteps.SignData ? getLocale('braveWalletSignTransactionButton') : getLocale('braveWalletButtonContinue')}
           onSubmit={signStep === SignDataSteps.SignRisk ? onContinueSigning : onSign}
         />
       </ButtonRow>

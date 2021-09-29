@@ -4,7 +4,7 @@ import { AddAccountNavOptions } from '../../../../options/add-account-nav-option
 import { Select } from 'brave-ui/components'
 import { PopupModal, TopTabNav } from '../..'
 import { NavButton } from '../../../extension'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
 
 // Styled Components
 import {
@@ -49,7 +49,7 @@ const AddAccountModal = (props: Props) => {
     onImportAccountFromJson,
     onSetImportError
   } = props
-  const suggestedAccountName = `${locale.account} ${accounts.length + 1}`
+  const suggestedAccountName = `${getLocale('braveWalletAccount')} ${accounts.length + 1}`
   const [tab, setTab] = React.useState<AddAccountNavTypes>('create')
   const [importOption, setImportOption] = React.useState<string>('key')
   const [file, setFile] = React.useState<HTMLInputElement['files']>()
@@ -158,7 +158,7 @@ const AddAccountModal = (props: Props) => {
   return (
     <PopupModal title={title} onClose={onClickClose}>
       <TopTabNav
-        tabList={AddAccountNavOptions}
+        tabList={AddAccountNavOptions()}
         onSubmit={onChangeTab}
         selectedTab={tab}
       />
@@ -167,7 +167,7 @@ const AddAccountModal = (props: Props) => {
         {tab === 'import' &&
           <>
             <DisclaimerWrapper>
-              <DisclaimerText>{locale.importAccountDisclaimer}</DisclaimerText>
+              <DisclaimerText>{getLocale('braveWalletImportAccountDisclaimer')}</DisclaimerText>
             </DisclaimerWrapper>
             <SelectWrapper>
               <Select
@@ -175,27 +175,27 @@ const AddAccountModal = (props: Props) => {
                 onChange={onImportOptionChange}
               >
                 <div data-value='key'>
-                  {locale.importAccountKey}
+                  {getLocale('braveWalletImportAccountKey')}
                 </div>
                 <div data-value='file'>
-                  {locale.importAccountFile}
+                  {getLocale('braveWalletImportAccountFile')}
                 </div>
               </Select>
             </SelectWrapper>
             {importError &&
-              <ErrorText>{locale.importAccountError}</ErrorText>
+              <ErrorText>{getLocale('braveWalletImportAccountError')}</ErrorText>
             }
             {importOption === 'key' ? (
               <Input
-                placeholder={locale.importAccountPlaceholder}
+                placeholder={getLocale('braveWalletImportAccountPlaceholder')}
                 onChange={handlePrivateKeyChanged}
                 type='password'
               />
             ) : (
               <>
                 <ImportRow>
-                  <ImportButton htmlFor='recoverFile'>{locale.importAccountUploadButton}</ImportButton>
-                  <DisclaimerText>{file ? reduceFileName(file[0].name) : locale.importAccountUploadPlaceholder}</DisclaimerText>
+                  <ImportButton htmlFor='recoverFile'>{getLocale('braveWalletImportAccountUploadButton')}</ImportButton>
+                  <DisclaimerText>{file ? reduceFileName(file[0].name) : getLocale('braveWalletImportAccountUploadPlaceholder')}</DisclaimerText>
                 </ImportRow>
                 <input
                   type='file'
@@ -205,7 +205,7 @@ const AddAccountModal = (props: Props) => {
                   onChange={onFileUpload}
                 />
                 <Input
-                  placeholder={`Origin ${locale.createPasswordInput}`}
+                  placeholder={`Origin ${getLocale('braveWalletCreatePasswordInput')}`}
                   onChange={handlePasswordChanged}
                   type='password'
                 />
@@ -217,7 +217,7 @@ const AddAccountModal = (props: Props) => {
           <>
             <Input
               value={accountName}
-              placeholder={locale.addAccountPlaceholder}
+              placeholder={getLocale('braveWalletAddAccountPlaceholder')}
               onKeyDown={handleKeyDown}
               onChange={handleAccountNameChanged}
             />
@@ -226,14 +226,14 @@ const AddAccountModal = (props: Props) => {
               disabled={isDisabled}
               text={
                 tab === 'create' ?
-                  `${locale.addAccountCreate} ${locale.account}`
-                  : locale.addAccountImport
+                  `${getLocale('braveWalletAddAccountCreate')} ${getLocale('braveWalletAccount')}`
+                  : getLocale('braveWalletAddAccountImport')
               }
               buttonType='primary'
             />
           </>
         }
-        {tab === 'hardware' && <HardwareWalletConnect onConnectHardwareWallet={onConnectHardwareWallet} onAddHardwareAccounts={onAddHardwareAccounts} getBalance={getBalance}/>}
+        {tab === 'hardware' && <HardwareWalletConnect onConnectHardwareWallet={onConnectHardwareWallet} onAddHardwareAccounts={onAddHardwareAccounts} getBalance={getBalance} />}
       </StyledWrapper>
     </PopupModal>
   )

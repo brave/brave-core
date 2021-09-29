@@ -1,5 +1,5 @@
 import * as React from 'react'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 import { TransactionInfo, EthereumChain } from '../../../constants/types'
 import { NavButton, Panel } from '../'
 import { formatFiatBalance, formatBalance } from '../../../utils/format-balances'
@@ -101,17 +101,17 @@ const EditGas = (props: Props) => {
   return (
     <Panel
       navAction={onCancel}
-      title={isEIP1559 ? locale.braveWalletEditGasTitle1 : locale.braveWalletEditGasTitle2}
+      title={isEIP1559 ? getLocale('braveWalletEditGasTitle1') : getLocale('braveWalletEditGasTitle2')}
     >
       <StyledWrapper>
         {isEIP1559 &&
-          <Description>{locale.braveWalletEditGasDescription}</Description>
+          <Description>{getLocale('braveWalletEditGasDescription')}</Description>
         }
         {(maxPriorityPanel !== MaxPriorityPanels.setSuggested || !isEIP1559) &&
           <FormColumn>
             {!isEIP1559 &&
               <>
-                <InputLabel>{locale.braveWalletEditGasPerGasPrice}</InputLabel>
+                <InputLabel>{getLocale('braveWalletEditGasPerGasPrice')}</InputLabel>
                 <Input
                   placeholder='0'
                   type='number'
@@ -122,12 +122,12 @@ const EditGas = (props: Props) => {
             }
             {maxPriorityPanel === MaxPriorityPanels.setCustom &&
               <CurrentBaseRow>
-                <CurrentBaseText>{locale.braveWalletEditGasBaseFee}</CurrentBaseText>
+                <CurrentBaseText>{getLocale('braveWalletEditGasBaseFee')}</CurrentBaseText>
                 {/* Will determine what values to set here when the API is ready */}
-                <CurrentBaseText>150 {locale.braveWalletEditGasGwei}</CurrentBaseText>
+                <CurrentBaseText>150 {getLocale('braveWalletEditGasGwei')}</CurrentBaseText>
               </CurrentBaseRow>
             }
-            <InputLabel>{locale.braveWalletEditGasAmountLimit}</InputLabel>
+            <InputLabel>{getLocale('braveWalletEditGasLimit')}</InputLabel>
             <Input
               placeholder='0'
               type='number'
@@ -136,14 +136,14 @@ const EditGas = (props: Props) => {
             />
             {isEIP1559 &&
               <>
-                <InputLabel>{locale.braveWalletEditGasPerTipLimit}</InputLabel>
+                <InputLabel>{getLocale('braveWalletEditGasPerTipLimit')}</InputLabel>
                 <Input
                   placeholder='0'
                   type='number'
                   value={gasTipAmountLimit}
                   onChange={handleGasTipAmountLimitInputChanged}
                 />
-                <InputLabel>{locale.braveWalletEditGasPerPriceLimit}</InputLabel>
+                <InputLabel>{getLocale('braveWalletEditGasPerPriceLimit')}</InputLabel>
                 <Input
                   placeholder='0'
                   type='number'
@@ -154,7 +154,7 @@ const EditGas = (props: Props) => {
             }
             {maxPriorityPanel === MaxPriorityPanels.setCustom &&
               <MaximumFeeRow>
-                <MaximumFeeText>{locale.braveWalletEditGasMaximumFee}</MaximumFeeText>
+                <MaximumFeeText>{getLocale('braveWalletEditGasMaximumFee')}</MaximumFeeText>
                 {/* Will determine what values to set here when the API is ready */}
                 <MaximumFeeText>~$0.24 USD (315,000 Gwei)</MaximumFeeText>
               </MaximumFeeRow>
@@ -163,7 +163,7 @@ const EditGas = (props: Props) => {
         }
         {isEIP1559 && maxPriorityPanel === MaxPriorityPanels.setSuggested &&
           <SliderWrapper>
-            <SliderLabel>{locale.braveWalletEditGasMaxFee}:</SliderLabel>
+            <SliderLabel>{getLocale('braveWalletEditGasMaxFee')}:</SliderLabel>
             <SliderValue>
               ~${formatFiatBalance(suggestedMaxPriorityFee, selectedNetwork.decimals, networkSpotPrice)}
               {` `}USD ({formatBalance(suggestedMaxPriorityFee, selectedNetwork.decimals)}
@@ -176,18 +176,18 @@ const EditGas = (props: Props) => {
               onChange={handleSliderChange}
             />
             <SliderLabelRow>
-              <SliderLabel>{locale.braveWalletEditGasLow}</SliderLabel>
-              <SliderLabel>{locale.braveWalletEditGasOptimal}</SliderLabel>
-              <SliderLabel>{locale.braveWalletEditGasHigh}</SliderLabel>
+              <SliderLabel>{getLocale('braveWalletEditGasLow')}</SliderLabel>
+              <SliderLabel>{getLocale('braveWalletEditGasOptimal')}</SliderLabel>
+              <SliderLabel>{getLocale('braveWalletEditGasHigh')}</SliderLabel>
             </SliderLabelRow>
           </SliderWrapper>
         }
         <ButtonRow>
           <NavButton
             buttonType='secondary'
-            text={!isEIP1559 ? locale.backupButtonCancel
-              : maxPriorityPanel === MaxPriorityPanels.setCustom ? locale.braveWalletEditGasSetSuggested
-                : locale.braveWalletEditGasSetCustom
+            text={!isEIP1559 ? getLocale('braveWalletBackupButtonCancel')
+              : maxPriorityPanel === MaxPriorityPanels.setCustom ? getLocale('braveWalletEditGasSetSuggested')
+                : getLocale('braveWalletEditGasSetCustom')
 
             }
             onSubmit={
@@ -197,7 +197,7 @@ const EditGas = (props: Props) => {
           />
           <NavButton
             buttonType='primary'
-            text={locale.accountSettingsSave}
+            text={getLocale('braveWalletAccountSettingsSave')}
             onSubmit={onSave}
           />
         </ButtonRow>
