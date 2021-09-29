@@ -29,8 +29,7 @@ public class BraveVpnProfileUtils {
     private VpnManager mVpnManager;
 
     public static BraveVpnProfileUtils getInstance() {
-        if (sBraveVpnProfileUtils == null)
-            sBraveVpnProfileUtils = new BraveVpnProfileUtils();
+        if (sBraveVpnProfileUtils == null) sBraveVpnProfileUtils = new BraveVpnProfileUtils();
         return sBraveVpnProfileUtils;
     }
 

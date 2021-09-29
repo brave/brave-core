@@ -66,8 +66,8 @@ public abstract class BraveVpnParentActivity
                 BraveVpnPrefUtils.setProductId("");
                 BraveVpnPrefUtils.setPurchaseExpiry(0L);
                 BraveVpnPrefUtils.setSubscriptionPurchase(false);
-                if (BraveVpnProfileUtils.getInstance()
-                                .isVPNConnected(BraveVpnParentActivity.this)) {
+                if (BraveVpnProfileUtils.getInstance().isVPNConnected(
+                            BraveVpnParentActivity.this)) {
                     BraveVpnProfileUtils.getInstance().stopVpn(BraveVpnParentActivity.this);
                 }
                 BraveVpnProfileUtils.getInstance().deleteVpnProfile(BraveVpnParentActivity.this);
@@ -102,8 +102,8 @@ public abstract class BraveVpnParentActivity
                 BraveVpnPrefUtils.setProductId("");
                 BraveVpnPrefUtils.setPurchaseExpiry(0L);
                 BraveVpnPrefUtils.setSubscriptionPurchase(false);
-                if (BraveVpnProfileUtils.getInstance()
-                                .isVPNConnected(BraveVpnParentActivity.this)) {
+                if (BraveVpnProfileUtils.getInstance().isVPNConnected(
+                            BraveVpnParentActivity.this)) {
                     BraveVpnProfileUtils.getInstance().stopVpn(BraveVpnParentActivity.this);
                 }
                 BraveVpnProfileUtils.getInstance().deleteVpnProfile(BraveVpnParentActivity.this);
@@ -175,9 +175,8 @@ public abstract class BraveVpnParentActivity
             Pair<String, String> profileCredentials =
                     BraveVpnUtils.getProfileCredentials(jsonProfileCredentials);
             BraveVpnPrefUtils.setHostname(mHostname);
-            BraveVpnProfileUtils.getInstance()
-                    .createVpnProfile(BraveVpnParentActivity.this, mHostname,
-                            profileCredentials.first, profileCredentials.second);
+            BraveVpnProfileUtils.getInstance().createVpnProfile(BraveVpnParentActivity.this,
+                    mHostname, profileCredentials.first, profileCredentials.second);
             BraveVpnPrefUtils.setPurchaseToken(mPurchaseToken);
             BraveVpnPrefUtils.setProductId(mProductId);
             mPurchaseToken = "";

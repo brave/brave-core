@@ -240,8 +240,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                             public void run() {
                                 if (mVpnSwitch != null)
                                     mVpnSwitch.setChecked(
-                                            BraveVpnProfileUtils.getInstance()
-                                                    .isVPNConnected(getActivity()));
+                                            BraveVpnProfileUtils.getInstance().isVPNConnected(
+                                                    getActivity()));
                                 updateSummaries();
                             }
                         });
@@ -258,8 +258,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                             public void run() {
                                 if (mVpnSwitch != null)
                                     mVpnSwitch.setChecked(
-                                            BraveVpnProfileUtils.getInstance()
-                                                    .isVPNConnected(getActivity()));
+                                            BraveVpnProfileUtils.getInstance().isVPNConnected(
+                                                    getActivity()));
                             }
                         });
                     }
@@ -388,9 +388,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 BraveVpnProfileUtils.getInstance().stopVpn(getActivity());
             }
             try {
-                BraveVpnProfileUtils.getInstance()
-                        .createVpnProfile(getActivity(), mHostname, profileCredentials.first,
-                                profileCredentials.second);
+                BraveVpnProfileUtils.getInstance().createVpnProfile(getActivity(), mHostname,
+                        profileCredentials.first, profileCredentials.second);
                 BraveVpnPrefUtils.setPurchaseToken(mPurchaseToken);
                 BraveVpnPrefUtils.setProductId(mProductId);
                 updateSummaries();
