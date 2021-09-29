@@ -42,7 +42,6 @@ public class InAppPurchaseWrapper {
     public static final String NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
     private static InAppPurchaseWrapper sInAppPurchaseWrapper;
     private BillingClient mBillingClient;
-    private Context mContext;
 
     private final Map<String, SkuDetails> mSkusWithSkuDetails = new HashMap<>();
 
@@ -60,10 +59,9 @@ public class InAppPurchaseWrapper {
     }
 
     public void startBillingServiceConnection(Context context) {
-        this.mContext = context;
         mBillingClient = BillingClient.newBuilder(context)
                                  .enablePendingPurchases()
-                                 .setListener(purchasesUpdatedListener)
+                                 .setListener(getPurchasesUpdatedListener(context))
                                  .build();
 
         connectToBillingService();
@@ -105,15 +103,15 @@ public class InAppPurchaseWrapper {
                 mBillingClient.launchBillingFlow(activity, billingFlowParams).getResponseCode();
     }
 
-    public void processPurchases(List<Purchase> purchases) {
+    public void processPurchases(Context context, List<Purchase> purchases) {
         for (Purchase purchase : purchases) {
             if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-                acknowledgePurchase(purchase);
+                acknowledgePurchase(context, purchase);
             }
         }
     }
 
-    private void acknowledgePurchase(Purchase purchase) {
+    private void acknowledgePurchase(Context context, Purchase purchase) {
         AcknowledgePurchaseParams acknowledgePurchaseParams =
                 AcknowledgePurchaseParams.newBuilder()
                         .setPurchaseToken(purchase.getPurchaseToken())
@@ -122,14 +120,14 @@ public class InAppPurchaseWrapper {
             mBillingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
                 if (billingResult.getResponseCode() == OK) {
                     BraveVpnPrefUtils.setSubscriptionPurchase(true);
-                    BraveVpnUtils.openBraveVpnProfileActivity(mContext);
-                    Toast.makeText(mContext,
-                                 mContext.getResources().getString(R.string.subscription_consumed),
+                    BraveVpnUtils.openBraveVpnProfileActivity(context);
+                    Toast.makeText(context,
+                                 context.getResources().getString(R.string.subscription_consumed),
                                  Toast.LENGTH_SHORT)
                             .show();
                 } else {
-                    Toast.makeText(mContext,
-                                 mContext.getResources().getString(R.string.fail_to_aknowledge)
+                    Toast.makeText(context,
+                                 context.getResources().getString(R.string.fail_to_aknowledge)
                                          + billingResult,
                                  Toast.LENGTH_SHORT)
                             .show();
@@ -140,12 +138,13 @@ public class InAppPurchaseWrapper {
         }
     }
 
-    PurchasesUpdatedListener purchasesUpdatedListener = (billingResult, purchases) -> {
+    private PurchasesUpdatedListener getPurchasesUpdatedListener(Context context) {
+        return (billingResult, purchases) -> {
         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-            if (purchases != null) processPurchases(purchases);
+            if (purchases != null) processPurchases(context, purchases);
         } else if (billingResult.getResponseCode()
                 == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-            Toast.makeText(mContext, mContext.getResources().getString(R.string.already_subscribed),
+            Toast.makeText(context, context.getResources().getString(R.string.already_subscribed),
                          Toast.LENGTH_SHORT)
                     .show();
         } else if (billingResult.getResponseCode()
@@ -153,16 +152,17 @@ public class InAppPurchaseWrapper {
             connectToBillingService();
         } else if (billingResult.getResponseCode()
                 == BillingClient.BillingResponseCode.USER_CANCELED) {
-            Toast.makeText(mContext,
-                         mContext.getResources().getString(R.string.error_caused_by_user),
+            Toast.makeText(context,
+                         context.getResources().getString(R.string.error_caused_by_user),
                          Toast.LENGTH_SHORT)
                     .show();
         } else {
-            Toast.makeText(mContext, mContext.getResources().getString(R.string.purchased_failed),
+            Toast.makeText(context, context.getResources().getString(R.string.purchased_failed),
                          Toast.LENGTH_SHORT)
                     .show();
         }
     };
+    }
 
     BillingClientStateListener billingClientStateListener = new BillingClientStateListener() {
         @Override

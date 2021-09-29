@@ -126,7 +126,7 @@ public abstract class BraveVpnParentActivity
     @Override
     public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
         if (isSuccess) {
-            InAppPurchaseWrapper.getInstance().processPurchases(
+            InAppPurchaseWrapper.getInstance().processPurchases(BraveVpnParentActivity.this,
                     InAppPurchaseWrapper.getInstance().queryPurchases());
             this.mSubscriberCredential = subscriberCredential;
             BraveVpnNativeWorker.getInstance().getTimezonesForRegions();
