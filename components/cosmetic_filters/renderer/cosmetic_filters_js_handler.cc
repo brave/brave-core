@@ -9,6 +9,7 @@
 
 #include "base/bind.h"
 #include "base/json/json_writer.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
@@ -316,6 +317,8 @@ bool CosmeticFiltersJSHandler::ProcessURL(const GURL& url,
   if (!content_settings->IsCosmeticFilteringEnabled(url_)) {
     return false;
   }
+
+  SCOPED_UMA_HISTOGRAM_TIMER_MICROS("Brave.CosmeticFilters.ProcessURL");
 
   enabled_1st_party_cf_ =
       content_settings->IsFirstPartyCosmeticFilteringEnabled(url_);
