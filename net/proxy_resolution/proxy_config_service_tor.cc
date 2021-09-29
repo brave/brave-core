@@ -19,6 +19,7 @@
 #include "base/values.h"
 #include "crypto/random.h"
 #include "net/base/network_isolation_key.h"
+#include "net/base/proxy_string_util.h"
 #include "net/base/schemeful_site.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
@@ -111,7 +112,7 @@ ProxyConfigServiceTor::~ProxyConfigServiceTor() {}
 
 void ProxyConfigServiceTor::UpdateProxyURI(const std::string& uri) {
   ProxyServer proxy_server =
-      ProxyServer::FromURI(uri, ProxyServer::SCHEME_SOCKS5);
+      net::ProxyUriToProxyServer(uri, ProxyServer::SCHEME_SOCKS5);
   DCHECK(proxy_server.is_valid());
   proxy_server_ = proxy_server;
 
@@ -177,8 +178,8 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
   // Adding username & password to global sock://127.0.0.1:[port] config
   // without actually modifying it when resolving proxy for each url.
   const std::string username = CircuitIsolationKey(url);
-  const std::string& proxy_uri =
-      config.value().proxy_rules().single_proxies.Get().ToURI();
+  const std::string& proxy_uri = net::ProxyServerToProxyUri(
+      config.value().proxy_rules().single_proxies.Get());
   HostPortPair host_port_pair =
       config.value().proxy_rules().single_proxies.Get().host_port_pair();
 
@@ -222,7 +223,8 @@ ProxyConfigServiceTor::GetLatestProxyConfig(
 
   ProxyConfig proxy_config;
   proxy_config.proxy_rules().bypass_rules.AddRulesToSubtractImplicit();
-  proxy_config.proxy_rules().ParseFromString(proxy_server_.ToURI());
+  proxy_config.proxy_rules().ParseFromString(
+      net::ProxyServerToProxyUri(proxy_server_));
   *config =
       net::ProxyConfigWithAnnotation(proxy_config, kTorProxyTrafficAnnotation);
 
