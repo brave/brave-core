@@ -41,6 +41,7 @@ public class BravePrivacySettingsTest {
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
     private static final String PREF_PRIVACY_SANDBOX = "privacy_sandbox";
     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
+    private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
 
     private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 20;
 
@@ -70,6 +71,7 @@ public class BravePrivacySettingsTest {
         checkPreferenceExists(PREF_HTTPS_FIRST_MODE);
         checkPreferenceExists(PREF_SAFE_BROWSING);
         checkPreferenceExists(PREF_SECURE_DNS);
+        checkPreferenceExists(PREF_INCOGNITO_LOCK);
 
         checkPreferenceRemoved(PREF_NETWORK_PREDICTIONS);
         checkPreferenceRemoved(PREF_SYNC_AND_SERVICES_LINK);
