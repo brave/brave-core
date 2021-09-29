@@ -6468,6 +6468,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_GENERATE_PASSWORD_BUTTON_TITLE" desc="Text for the button used to generate a password.">
           Suggest strong password
         </message>
+        <message name="IDS_PASSWORD_GENERATION_DIALOG_DESCRIPTION" desc="Text for password generation dialog, explaining that the password will be saved in Brave sync chain.">
+          Password will be saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>. You won’t have to remember it.
+        </message>
         <message name="IDS_CONFIRM_USERNAME_DIALOG_TITLE" desc="The title of the confirm username dialog." formatter_data="android_java">
           Confirm your username
         </message>
@@ -11514,7 +11517,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Search your screen with Brave Lens
     </message>
     <message name="IDS_LENS_REGION_SEARCH_EXPERIMENT_DESCRIPTION" desc="Description for Lens Region Search experiment">
-      Right click and select “Search part of the page with Brave Lens” to search any region of the site to learn more about the visual content you see while you browse and shop on the web.
+      Right click and select “Search images with Brave Lens” to search any region of the site to learn more about the visual content you see while you browse and shop on the web.
     </message>
     <!-- Lens Region Search bubble dialog -->
     <message name="IDS_LENS_REGION_SEARCH_BUBBLE_TEXT" desc="Text that is shown in the Lens Region Search education bubble when starting the feature. Informs the user to drag over the screen to select a region to search with Brave Lens.">
