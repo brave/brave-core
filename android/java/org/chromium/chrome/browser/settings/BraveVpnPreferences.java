@@ -85,10 +85,10 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                     mVpnSwitch.setChecked(
                             BraveVpnProfileUtils.getInstance().isVPNConnected(getActivity()));
                 }
-                if (BraveVpnProfileUtils.getInstance(getActivity()).isVPNConnected()) {
+                if (BraveVpnProfileUtils.getInstance().isVPNConnected(getActivity())) {
                     BraveVpnUtils.showProgressDialog(
                             getActivity(), getResources().getString(R.string.vpn_disconnect_text));
-                    BraveVpnProfileUtils.getInstance(getActivity()).stopVpn();
+                    BraveVpnProfileUtils.getInstance().stopVpn(getActivity());
                 } else {
                     BraveVpnUtils.showProgressDialog(
                             getActivity(), getResources().getString(R.string.vpn_connect_text));
