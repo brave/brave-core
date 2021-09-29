@@ -48,6 +48,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
     private static final String PREF_PRIVACY_SANDBOX = "privacy_sandbox";
     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
+    private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
 
     // brave Prefs
     private static final String PREF_BRAVE_SHIELDS_GLOBALS_SECTION =
@@ -96,9 +97,9 @@ public class BravePrivacySettings extends PrivacySettings {
             PREF_SOCIAL_BLOCKING_GOOGLE, PREF_SOCIAL_BLOCKING_FACEBOOK,
             PREF_SOCIAL_BLOCKING_TWITTER, PREF_SOCIAL_BLOCKING_LINKEDIN,
             PREF_OTHER_PRIVACY_SETTINGS_SECTION, // other section
-            PREF_WEBRTC_POLICY, PREF_SAFE_BROWSING, PREF_CAN_MAKE_PAYMENT, PREF_UNSTOPPABLE_DOMAINS,
-            PREF_ETH_NAMED_SERVICE, PREF_IPFS_GATEWAY, PREF_SECURE_DNS, PREF_DO_NOT_TRACK,
-            PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A, PREF_SEND_CRASH_REPORTS,
+            PREF_WEBRTC_POLICY, PREF_SAFE_BROWSING, PREF_INCOGNITO_LOCK, PREF_CAN_MAKE_PAYMENT,
+            PREF_UNSTOPPABLE_DOMAINS, PREF_ETH_NAMED_SERVICE, PREF_IPFS_GATEWAY, PREF_SECURE_DNS,
+            PREF_DO_NOT_TRACK, PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A, PREF_SEND_CRASH_REPORTS,
             PREF_BRAVE_STATS_USAGE_PING, PREF_SEARCH_SUGGESTIONS, PREF_AUTOCOMPLETE_TOP_SITES,
             PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES, PREF_USAGE_STATS, PREF_PRIVACY_SANDBOX};
 
@@ -221,7 +222,7 @@ public class BravePrivacySettings extends PrivacySettings {
         removePreferenceIfPresent(PREF_NETWORK_PREDICTIONS);
         removePreferenceIfPresent(PREF_PRIVACY_SANDBOX);
 
-        updatePreferences();
+        updateBravePreferences();
     }
 
     // used for displaying BraveDialogPreference
@@ -373,7 +374,7 @@ public class BravePrivacySettings extends PrivacySettings {
         return true;
     }
 
-    private void updatePreferences() {
+    private void updateBravePreferences() {
         for (int i = 0; i < NEW_PRIVACY_PREFERENCE_ORDER.length; i++) {
             if (findPreference(NEW_PRIVACY_PREFERENCE_ORDER[i]) != null) {
                 findPreference(NEW_PRIVACY_PREFERENCE_ORDER[i]).setOrder(i);
