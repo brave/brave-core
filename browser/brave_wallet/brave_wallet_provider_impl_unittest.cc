@@ -332,7 +332,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559Transaction) {
           mojom::TxData::New("0x00", "", "0x00",
                              "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                              "0x00", std::vector<uint8_t>()),
-          "0x04", "0x0", "0x0"),
+          "0x04", "0x0", "0x0", nullptr),
       from(),
       base::BindLambdaForTesting([&](bool success, const std::string& id,
                                      const std::string& error_message) {
@@ -377,7 +377,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559TransactionError) {
           mojom::TxData::New("0x00", "0x01", "0x00",
                              "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                              "0x00", std::vector<uint8_t>()),
-          "0x04", "0x0", "0x0"),
+          "0x04", "0x0", "0x0", nullptr),
       from(),
       base::BindLambdaForTesting([&](bool success, const std::string& id,
                                      const std::string& error_message) {
@@ -401,7 +401,7 @@ TEST_F(BraveWalletProviderImplUnitTest,
           mojom::TxData::New("0x00", "", "0x00",
                              "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                              "0x00", std::vector<uint8_t>()),
-          "0x04", "0x0", "0x0"),
+          "0x04", "0x0", "0x0", nullptr),
       "0xbe862ad9abfe6f22bcb087716c7d89a26051f74d",
       base::BindLambdaForTesting([&](bool success, const std::string& id,
                                      const std::string& error_message) {

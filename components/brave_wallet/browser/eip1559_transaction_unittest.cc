@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -12,6 +14,18 @@
 
 namespace brave_wallet {
 
+namespace {
+
+mojom::GasEstimation1559Ptr GetMojomGasEstimation() {
+  return mojom::GasEstimation1559::New(
+      "0x3b9aca00" /* Hex of 1 * 1e9 */, "0xaf16b1600" /* Hex of 47 * 1e9 */,
+      "0x77359400" /* Hex of 2 * 1e9 */, "0xb2d05e000" /* Hex of 48 * 1e9 */,
+      "0xb2d05e00" /* Hex of 3 * 1e9 */, "0xb68a0aa00" /* Hex of 49 * 1e9 */,
+      "0xad8075b7a" /* Hex of 46574033786 */);
+}
+
+}  // namespace
+
 TEST(Eip1559TransactionUnitTest, GetMessageToSign) {
   std::vector<uint8_t> data;
   EXPECT_TRUE(base::HexStringToBytes("010200", &data));
@@ -20,7 +34,7 @@ TEST(Eip1559TransactionUnitTest, GetMessageToSign) {
           mojom::TxData::New("0x00", "0x00", "0x00",
                              "0x0101010101010101010101010101010101010101",
                              "0x00", data),
-          "0x04", "0x0", "0x0"));
+          "0x04", "0x0", "0x0", nullptr));
   ASSERT_EQ(tx.type(), 2);
   auto* access_list = tx.access_list();
   Eip2930Transaction::AccessListItem item;
@@ -108,8 +122,8 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransaction) {
             mojom::TxData::New(cases[i].nonce, "0x00", cases[i].gas_limit,
                                "0x000000000000000000000000000000000000aaaa",
                                cases[i].value, std::vector<uint8_t>()),
-            "0x04", cases[i].max_priority_fee_per_gas,
-            cases[i].max_fee_per_gas));
+            "0x04", cases[i].max_priority_fee_per_gas, cases[i].max_fee_per_gas,
+            nullptr));
 
     int recid;
     const std::vector<uint8_t> signature =
@@ -125,7 +139,7 @@ TEST(Eip1559TransactionUnitTest, GetUpfrontCost) {
           mojom::TxData::New("0x00", "0x00", "0x64",
                              "0x0101010101010101010101010101010101010101",
                              "0x06", std::vector<uint8_t>()),
-          "0x04", "0x8", "0xA"));
+          "0x04", "0x8", "0xA", nullptr));
   EXPECT_EQ(tx.GetUpfrontCost(), uint256_t(806));
   EXPECT_EQ(tx.GetUpfrontCost(0), uint256_t(806));
   EXPECT_EQ(tx.GetUpfrontCost(4), uint256_t(1006));
@@ -137,8 +151,10 @@ TEST(Eip1559TransactionUnitTest, Serialization) {
           mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                              "0x3535353535353535353535353535353535353535",
                              "0xde0b6b3a7640000", std::vector<uint8_t>()),
-          "0x15BE", "0x7B", "0x1C8"));
+          "0x15BE", "0x7B", "0x1C8", GetMojomGasEstimation()));
+
   auto* access_list = tx.access_list();
+
   Eip2930Transaction::AccessListItem item_a;
   item_a.address.fill(0x0a);
   Eip2930Transaction::AccessedStorageKey storage_key_0;
@@ -157,7 +173,7 @@ TEST(Eip1559TransactionUnitTest, FromTxData) {
       mojom::TxData::New("0x01", "0x3E8", "0x989680",
                          "0x3535353535353535353535353535353535353535", "0x2A",
                          std::vector<uint8_t>{1}),
-      "0x15BE", "0x7B", "0x1C8"));
+      "0x15BE", "0x7B", "0x1C8", GetMojomGasEstimation()));
   ASSERT_TRUE(tx);
   EXPECT_EQ(tx->nonce(), uint256_t(1));
   EXPECT_EQ(tx->gas_price(), uint256_t(1000));
@@ -169,6 +185,18 @@ TEST(Eip1559TransactionUnitTest, FromTxData) {
   EXPECT_EQ(tx->chain_id(), uint256_t(5566));
   EXPECT_EQ(tx->max_priority_fee_per_gas(), uint256_t(123));
   EXPECT_EQ(tx->max_fee_per_gas(), uint256_t(456));
+  EXPECT_EQ(tx->gas_estimation().slow_max_priority_fee_per_gas, uint256_t(1e9));
+  EXPECT_EQ(tx->gas_estimation().avg_max_priority_fee_per_gas,
+            uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx->gas_estimation().fast_max_priority_fee_per_gas,
+            uint256_t(3) * uint256_t(1e9));
+  EXPECT_EQ(tx->gas_estimation().slow_max_fee_per_gas,
+            uint256_t(47) * uint256_t(1e9));
+  EXPECT_EQ(tx->gas_estimation().avg_max_fee_per_gas,
+            uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx->gas_estimation().fast_max_fee_per_gas,
+            uint256_t(49) * uint256_t(1e9));
+  EXPECT_EQ(tx->gas_estimation().base_fee_per_gas, uint256_t(46574033786ULL));
 
   // Make sure nonce, chain id, and the max priority fee fields must all have
   // fields when strict is true
@@ -176,22 +204,22 @@ TEST(Eip1559TransactionUnitTest, FromTxData) {
       mojom::TxData::New("", "0x3E8", "0x989680",
                          "0x3535353535353535353535353535353535353535", "0x2A",
                          std::vector<uint8_t>{1}),
-      "0x15BE", "0x7B", "0x1C8")));
+      "0x15BE", "0x7B", "0x1C8", nullptr)));
   EXPECT_FALSE(Eip1559Transaction::FromTxData(mojom::TxData1559::New(
       mojom::TxData::New("0x1", "0x3E8", "0x989680",
                          "0x3535353535353535353535353535353535353535", "0x2A",
                          std::vector<uint8_t>{1}),
-      "", "0x7B", "0x1C8")));
+      "", "0x7B", "0x1C8", nullptr)));
   EXPECT_FALSE(Eip1559Transaction::FromTxData(mojom::TxData1559::New(
       mojom::TxData::New("0x1", "0x3E8", "0x989680",
                          "0x3535353535353535353535353535353535353535", "0x2A",
                          std::vector<uint8_t>{1}),
-      "0x15BE", "", "0x1C8")));
+      "0x15BE", "", "0x1C8", nullptr)));
   EXPECT_FALSE(Eip1559Transaction::FromTxData(mojom::TxData1559::New(
       mojom::TxData::New("0x1", "0x3E8", "0x989680",
                          "0x3535353535353535353535353535353535353535", "0x2A",
                          std::vector<uint8_t>{1}),
-      "0x15BE", "0x7B", "")));
+      "0x15BE", "0x7B", "", nullptr)));
 
   // But missing data is allowed when strict is false
   tx = Eip1559Transaction::FromTxData(
@@ -199,13 +227,17 @@ TEST(Eip1559TransactionUnitTest, FromTxData) {
           mojom::TxData::New("", "0x3E8", "",
                              "0x3535353535353535353535353535353535353535", "",
                              std::vector<uint8_t>{1}),
-          "", "0x7B", "0x1C8"),
+          "", "0x7B", "0x1C8", nullptr),
       false);
   ASSERT_TRUE(tx);
   // Unspecified value defaults to 0
   EXPECT_EQ(tx->nonce(), uint256_t(0));
   EXPECT_EQ(tx->gas_limit(), uint256_t(0));
   EXPECT_EQ(tx->value(), uint256_t(0));
+
+  // Unspecified gas estimation will be default values.
+  EXPECT_EQ(tx->gas_estimation(), Eip1559Transaction::GasEstimation());
+
   // you can still get at other data that is specified
   EXPECT_EQ(tx->gas_price(), uint256_t(1000));
   EXPECT_EQ(tx->chain_id(), uint256_t(0));
@@ -218,7 +250,7 @@ TEST(Eip1559TransactionUnitTest, FromTxData) {
           mojom::TxData::New("", "0x3E8", "",
                              "0x3535353535353535353535353535353535353535", "",
                              std::vector<uint8_t>{1}),
-          "0x15BE", "", ""),
+          "0x15BE", "", "", nullptr),
       false);
   ASSERT_TRUE(tx);
   // Unspecified value defaults to 0
@@ -230,6 +262,67 @@ TEST(Eip1559TransactionUnitTest, FromTxData) {
   // you can still get at other data that is specified
   EXPECT_EQ(tx->gas_price(), uint256_t(1000));
   EXPECT_EQ(tx->chain_id(), uint256_t(5566));
+
+  // Default gas estimation values (0) will be used if any fields in gas
+  // estimation struct is missing regardless of the value of strict.
+  auto missing_fields_gas_estimation = GetMojomGasEstimation();
+  missing_fields_gas_estimation->avg_max_priority_fee_per_gas = "";
+
+  tx = Eip1559Transaction::FromTxData(mojom::TxData1559::New(
+      mojom::TxData::New("0x01", "0x3E8", "0x989680",
+                         "0x3535353535353535353535353535353535353535", "0x2A",
+                         std::vector<uint8_t>{1}),
+      "0x15BE", "0x7B", "0x1C8", missing_fields_gas_estimation.Clone()));
+  EXPECT_EQ(tx->gas_estimation(), Eip1559Transaction::GasEstimation());
+
+  tx = Eip1559Transaction::FromTxData(
+      mojom::TxData1559::New(
+          mojom::TxData::New("0x01", "0x3E8", "0x989680",
+                             "0x3535353535353535353535353535353535353535",
+                             "0x2A", std::vector<uint8_t>{1}),
+          "0x15BE", "0x7B", "0x1C8", missing_fields_gas_estimation.Clone()),
+      false);
+  EXPECT_EQ(tx->gas_estimation(), Eip1559Transaction::GasEstimation());
+}
+
+TEST(Eip1559TransactionUnitTest, GasEstimationFromMojomGasEstimation1559) {
+  auto estimation =
+      Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+          GetMojomGasEstimation());
+  EXPECT_TRUE(estimation);
+  EXPECT_EQ(estimation->slow_max_priority_fee_per_gas, uint256_t(1e9));
+  EXPECT_EQ(estimation->avg_max_priority_fee_per_gas,
+            uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(estimation->fast_max_priority_fee_per_gas,
+            uint256_t(3) * uint256_t(1e9));
+  EXPECT_EQ(estimation->slow_max_fee_per_gas, uint256_t(47) * uint256_t(1e9));
+  EXPECT_EQ(estimation->avg_max_fee_per_gas, uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(estimation->fast_max_fee_per_gas, uint256_t(49) * uint256_t(1e9));
+  EXPECT_EQ(estimation->base_fee_per_gas, uint256_t(46574033786ULL));
+
+  auto mojom_gas_estimation = GetMojomGasEstimation();
+  mojom_gas_estimation->slow_max_priority_fee_per_gas = "123";
+  EXPECT_FALSE(Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+      std::move(mojom_gas_estimation)));
+
+  mojom_gas_estimation = GetMojomGasEstimation();
+  mojom_gas_estimation->avg_max_priority_fee_per_gas = "";
+  EXPECT_FALSE(Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+      std::move(mojom_gas_estimation)));
+}
+
+TEST(Eip1559TransactionUnitTest, GasEstimationToMojomGasEstimation1559) {
+  Eip1559Transaction::GasEstimation estimation;
+  estimation.slow_max_priority_fee_per_gas = uint256_t(1e9);
+  estimation.avg_max_priority_fee_per_gas = uint256_t(2) * uint256_t(1e9);
+  estimation.fast_max_priority_fee_per_gas = uint256_t(3) * uint256_t(1e9);
+  estimation.slow_max_fee_per_gas = uint256_t(47) * uint256_t(1e9);
+  estimation.avg_max_fee_per_gas = uint256_t(48) * uint256_t(1e9);
+  estimation.fast_max_fee_per_gas = uint256_t(49) * uint256_t(1e9);
+  estimation.base_fee_per_gas = uint256_t(46574033786ULL);
+  EXPECT_EQ(
+      Eip1559Transaction::GasEstimation::ToMojomGasEstimation1559(estimation),
+      GetMojomGasEstimation());
 }
 
 }  // namespace brave_wallet

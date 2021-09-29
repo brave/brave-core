@@ -15,6 +15,26 @@ namespace brave_wallet {
 
 class Eip1559Transaction : public Eip2930Transaction {
  public:
+  struct GasEstimation {
+    GasEstimation() = default;
+    ~GasEstimation() = default;
+    GasEstimation(const GasEstimation&) = default;
+    bool operator==(const GasEstimation&) const;
+
+    static absl::optional<GasEstimation> FromMojomGasEstimation1559(
+        mojom::GasEstimation1559Ptr gas_estimation);
+    static mojom::GasEstimation1559Ptr ToMojomGasEstimation1559(
+        GasEstimation gas_estimation);
+
+    uint256_t slow_max_priority_fee_per_gas = 0;
+    uint256_t avg_max_priority_fee_per_gas = 0;
+    uint256_t fast_max_priority_fee_per_gas = 0;
+    uint256_t slow_max_fee_per_gas = 0;
+    uint256_t avg_max_fee_per_gas = 0;
+    uint256_t fast_max_fee_per_gas = 0;
+    uint256_t base_fee_per_gas = 0;
+  };
+
   Eip1559Transaction();
   Eip1559Transaction(const Eip1559Transaction&);
   ~Eip1559Transaction() override;
@@ -29,6 +49,17 @@ class Eip1559Transaction : public Eip2930Transaction {
     return max_priority_fee_per_gas_;
   }
   uint256_t max_fee_per_gas() const { return max_fee_per_gas_; }
+  GasEstimation gas_estimation() const { return gas_estimation_; }
+
+  void set_max_fee_per_gas(uint256_t max_fee_per_gas) {
+    max_fee_per_gas_ = max_fee_per_gas;
+  }
+  void set_max_priority_fee_per_gas(uint256_t max_priority_fee_per_gas) {
+    max_priority_fee_per_gas_ = max_priority_fee_per_gas;
+  }
+  void set_gas_estimation(GasEstimation estimation) {
+    gas_estimation_ = estimation;
+  }
 
   // keccak256(0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas,
   // gasLimit, destination, value, data, access_list]))
@@ -53,10 +84,14 @@ class Eip1559Transaction : public Eip2930Transaction {
                      const std::vector<uint8_t>& data,
                      uint256_t chain_id,
                      uint256_t max_priority_fee_per_gas,
-                     uint256_t max_fee_per_gas);
+                     uint256_t max_fee_per_gas,
+                     GasEstimation gas_estimation);
 
   uint256_t max_priority_fee_per_gas_;
   uint256_t max_fee_per_gas_;
+
+  // Gas estimation result
+  GasEstimation gas_estimation_;
 };
 
 }  // namespace brave_wallet

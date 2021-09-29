@@ -144,7 +144,15 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
               mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                                  "0x3535353535353535353535353535353535353535",
                                  "0x0de0b6b3a7640000", std::vector<uint8_t>()),
-              "0x3", "0x1E", "0x32")));
+              "0x3", "0x1E", "0x32",
+              mojom::GasEstimation1559::New(
+                  "0x3b9aca00" /* Hex of 1 * 1e9 */,
+                  "0xaf16b1600" /* Hex of 47 * 1e9 */,
+                  "0x77359400" /* Hex of 2 * 1e9 */,
+                  "0xb2d05e000" /* Hex of 48 * 1e9 */,
+                  "0xb2d05e00" /* Hex of 3 * 1e9 */,
+                  "0xb68a0aa00" /* Hex of 49 * 1e9 */,
+                  "0xad8075b7a" /* Hex of 46574033786 */))));
   EthTxStateManager::TxMeta meta2(std::move(tx2));
   base::Value value2 = EthTxStateManager::TxMetaToValue(meta2);
   auto meta_from_value2 = EthTxStateManager::ValueToTxMeta(value2);
@@ -419,21 +427,22 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   EthTxStateManager::TxMeta meta(std::move(tx));
   mojom::TransactionInfoPtr ti =
       EthTxStateManager::TxMetaToTransactionInfo(meta);
-  ASSERT_EQ(ti->id, meta.id);
-  ASSERT_EQ(ti->from_address, meta.from.ToHex());
-  ASSERT_EQ(ti->tx_hash, meta.tx_hash);
-  ASSERT_EQ(ti->tx_status, meta.status);
-  ASSERT_EQ(ti->tx_data->base_data->nonce, Uint256ValueToHex(meta.tx->nonce()));
-  ASSERT_EQ(ti->tx_data->base_data->gas_price,
+  EXPECT_EQ(ti->id, meta.id);
+  EXPECT_EQ(ti->from_address, meta.from.ToHex());
+  EXPECT_EQ(ti->tx_hash, meta.tx_hash);
+  EXPECT_EQ(ti->tx_status, meta.status);
+  EXPECT_EQ(ti->tx_data->base_data->nonce, Uint256ValueToHex(meta.tx->nonce()));
+  EXPECT_EQ(ti->tx_data->base_data->gas_price,
             Uint256ValueToHex(meta.tx->gas_price()));
-  ASSERT_EQ(ti->tx_data->base_data->gas_limit,
+  EXPECT_EQ(ti->tx_data->base_data->gas_limit,
             Uint256ValueToHex(meta.tx->gas_limit()));
-  ASSERT_EQ(ti->tx_data->base_data->to, meta.tx->to().ToHex());
-  ASSERT_EQ(ti->tx_data->base_data->value, Uint256ValueToHex(meta.tx->value()));
-  ASSERT_EQ(ti->tx_data->base_data->data, meta.tx->data());
-  ASSERT_EQ(ti->tx_data->chain_id, "");
-  ASSERT_EQ(ti->tx_data->max_priority_fee_per_gas, "");
-  ASSERT_EQ(ti->tx_data->max_fee_per_gas, "");
+  EXPECT_EQ(ti->tx_data->base_data->to, meta.tx->to().ToHex());
+  EXPECT_EQ(ti->tx_data->base_data->value, Uint256ValueToHex(meta.tx->value()));
+  EXPECT_EQ(ti->tx_data->base_data->data, meta.tx->data());
+  EXPECT_EQ(ti->tx_data->chain_id, "");
+  EXPECT_EQ(ti->tx_data->max_priority_fee_per_gas, "");
+  EXPECT_EQ(ti->tx_data->max_fee_per_gas, "");
+  EXPECT_FALSE(ti->tx_data->gas_estimation);
 
   // type 1
   std::unique_ptr<Eip2930Transaction> tx1 =
@@ -452,24 +461,25 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   EthTxStateManager::TxMeta meta1(std::move(tx1));
   mojom::TransactionInfoPtr ti1 =
       EthTxStateManager::TxMetaToTransactionInfo(meta1);
-  ASSERT_EQ(ti1->id, meta1.id);
-  ASSERT_EQ(ti1->from_address, meta1.from.ToHex());
-  ASSERT_EQ(ti1->tx_hash, meta1.tx_hash);
-  ASSERT_EQ(ti1->tx_status, meta1.status);
-  ASSERT_EQ(ti1->tx_data->base_data->nonce,
+  EXPECT_EQ(ti1->id, meta1.id);
+  EXPECT_EQ(ti1->from_address, meta1.from.ToHex());
+  EXPECT_EQ(ti1->tx_hash, meta1.tx_hash);
+  EXPECT_EQ(ti1->tx_status, meta1.status);
+  EXPECT_EQ(ti1->tx_data->base_data->nonce,
             Uint256ValueToHex(meta1.tx->nonce()));
-  ASSERT_EQ(ti1->tx_data->base_data->gas_price,
+  EXPECT_EQ(ti1->tx_data->base_data->gas_price,
             Uint256ValueToHex(meta1.tx->gas_price()));
-  ASSERT_EQ(ti1->tx_data->base_data->gas_limit,
+  EXPECT_EQ(ti1->tx_data->base_data->gas_limit,
             Uint256ValueToHex(meta1.tx->gas_limit()));
-  ASSERT_EQ(ti1->tx_data->base_data->to, meta1.tx->to().ToHex());
-  ASSERT_EQ(ti1->tx_data->base_data->value,
+  EXPECT_EQ(ti1->tx_data->base_data->to, meta1.tx->to().ToHex());
+  EXPECT_EQ(ti1->tx_data->base_data->value,
             Uint256ValueToHex(meta1.tx->value()));
-  ASSERT_EQ(ti1->tx_data->base_data->data, meta1.tx->data());
+  EXPECT_EQ(ti1->tx_data->base_data->data, meta1.tx->data());
   auto* tx2930 = reinterpret_cast<Eip2930Transaction*>(meta1.tx.get());
-  ASSERT_EQ(ti1->tx_data->chain_id, Uint256ValueToHex(tx2930->chain_id()));
-  ASSERT_EQ(ti1->tx_data->max_priority_fee_per_gas, "");
-  ASSERT_EQ(ti1->tx_data->max_fee_per_gas, "");
+  EXPECT_EQ(ti1->tx_data->chain_id, Uint256ValueToHex(tx2930->chain_id()));
+  EXPECT_EQ(ti1->tx_data->max_priority_fee_per_gas, "");
+  EXPECT_EQ(ti1->tx_data->max_fee_per_gas, "");
+  EXPECT_FALSE(ti1->tx_data->gas_estimation);
 
   // type2
   std::unique_ptr<Eip1559Transaction> tx2 =
@@ -478,30 +488,56 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
               mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                                  "0x3535353535353535353535353535353535353535",
                                  "0x0de0b6b3a7640000", std::vector<uint8_t>()),
-              "0x3", "0x1E", "0x32")));
+              "0x3", "0x1E", "0x32",
+              mojom::GasEstimation1559::New(
+                  "0x3b9aca00" /* Hex of 1 * 1e9 */,
+                  "0xaf16b1600" /* Hex of 47 * 1e9 */,
+                  "0x77359400" /* Hex of 2 * 1e9 */,
+                  "0xb2d05e000" /* Hex of 48 * 1e9 */,
+                  "0xb2d05e00" /* Hex of 3 * 1e9 */,
+                  "0xb68a0aa00" /* Hex of 49 * 1e9 */,
+                  "0xad8075b7a" /* Hex of 46574033786 */))));
   EthTxStateManager::TxMeta meta2(std::move(tx2));
   mojom::TransactionInfoPtr ti2 =
       EthTxStateManager::TxMetaToTransactionInfo(meta2);
-  ASSERT_EQ(ti2->id, meta2.id);
-  ASSERT_EQ(ti2->from_address, meta2.from.ToHex());
-  ASSERT_EQ(ti2->tx_hash, meta2.tx_hash);
-  ASSERT_EQ(ti2->tx_status, meta2.status);
-  ASSERT_EQ(ti2->tx_data->base_data->nonce,
+  EXPECT_EQ(ti2->id, meta2.id);
+  EXPECT_EQ(ti2->from_address, meta2.from.ToHex());
+  EXPECT_EQ(ti2->tx_hash, meta2.tx_hash);
+  EXPECT_EQ(ti2->tx_status, meta2.status);
+  EXPECT_EQ(ti2->tx_data->base_data->nonce,
             Uint256ValueToHex(meta2.tx->nonce()));
-  ASSERT_EQ(ti2->tx_data->base_data->gas_price,
+  EXPECT_EQ(ti2->tx_data->base_data->gas_price,
             Uint256ValueToHex(meta2.tx->gas_price()));
-  ASSERT_EQ(ti2->tx_data->base_data->gas_limit,
+  EXPECT_EQ(ti2->tx_data->base_data->gas_limit,
             Uint256ValueToHex(meta2.tx->gas_limit()));
-  ASSERT_EQ(ti2->tx_data->base_data->to, meta2.tx->to().ToHex());
-  ASSERT_EQ(ti2->tx_data->base_data->value,
+  EXPECT_EQ(ti2->tx_data->base_data->to, meta2.tx->to().ToHex());
+  EXPECT_EQ(ti2->tx_data->base_data->value,
             Uint256ValueToHex(meta2.tx->value()));
-  ASSERT_EQ(ti2->tx_data->base_data->data, meta2.tx->data());
+  EXPECT_EQ(ti2->tx_data->base_data->data, meta2.tx->data());
   auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(meta2.tx.get());
-  ASSERT_EQ(ti2->tx_data->chain_id, Uint256ValueToHex(tx1559->chain_id()));
-  ASSERT_EQ(ti2->tx_data->max_priority_fee_per_gas,
+  EXPECT_EQ(ti2->tx_data->chain_id, Uint256ValueToHex(tx1559->chain_id()));
+  EXPECT_EQ(ti2->tx_data->max_priority_fee_per_gas,
             Uint256ValueToHex(tx1559->max_priority_fee_per_gas()));
-  ASSERT_EQ(ti2->tx_data->max_fee_per_gas,
+  EXPECT_EQ(ti2->tx_data->max_fee_per_gas,
             Uint256ValueToHex(tx1559->max_fee_per_gas()));
+  ASSERT_TRUE(ti2->tx_data->gas_estimation);
+  EXPECT_EQ(ti2->tx_data->gas_estimation->slow_max_priority_fee_per_gas,
+            Uint256ValueToHex(
+                tx1559->gas_estimation().slow_max_priority_fee_per_gas));
+  EXPECT_EQ(
+      ti2->tx_data->gas_estimation->avg_max_priority_fee_per_gas,
+      Uint256ValueToHex(tx1559->gas_estimation().avg_max_priority_fee_per_gas));
+  EXPECT_EQ(ti2->tx_data->gas_estimation->fast_max_priority_fee_per_gas,
+            Uint256ValueToHex(
+                tx1559->gas_estimation().fast_max_priority_fee_per_gas));
+  EXPECT_EQ(ti2->tx_data->gas_estimation->slow_max_fee_per_gas,
+            Uint256ValueToHex(tx1559->gas_estimation().slow_max_fee_per_gas));
+  EXPECT_EQ(ti2->tx_data->gas_estimation->avg_max_fee_per_gas,
+            Uint256ValueToHex(tx1559->gas_estimation().avg_max_fee_per_gas));
+  EXPECT_EQ(ti2->tx_data->gas_estimation->fast_max_fee_per_gas,
+            Uint256ValueToHex(tx1559->gas_estimation().fast_max_fee_per_gas));
+  EXPECT_EQ(ti2->tx_data->gas_estimation->base_fee_per_gas,
+            Uint256ValueToHex(tx1559->gas_estimation().base_fee_per_gas));
 }
 
 }  // namespace brave_wallet
