@@ -13,7 +13,6 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/themes/theme_properties.h"
-#include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/themes/theme_properties.h"
@@ -59,10 +58,7 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
       browser_(browser),
       service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
   DCHECK(service_);
-
-  mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> listener;
-  receiver_.Bind(listener.InitWithNewPipeAndPassReceiver());
-  service_->AddObserver(std::move(listener));
+  Observe(service_);
 
   // Replace ToolbarButton's highlight path generator.
   views::HighlightPathGenerator::Install(

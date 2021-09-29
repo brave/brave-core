@@ -47,6 +47,8 @@ static_library("brave_vpn") {
       "brave_vpn_os_connection_api_sim.h",
       "brave_vpn_service_desktop.cc",
       "brave_vpn_service_desktop.h",
+      "brave_vpn_service_observer.cc",
+      "brave_vpn_service_observer.h",
       "switches.h",
     ]
 

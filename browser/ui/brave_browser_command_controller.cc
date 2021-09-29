@@ -70,15 +70,8 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
       browser_(browser),
       brave_command_updater_(nullptr) {
   InitBraveCommandState();
-
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (brave_vpn::IsBraveVPNEnabled()) {
-    mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> listener;
-    receiver_.Bind(listener.InitWithNewPipeAndPassReceiver());
-    if (auto* vpn_service =
-            BraveVpnServiceFactory::GetForProfile(browser_->profile()))
-      vpn_service->AddObserver(std::move(listener));
-  }
+  Observe(BraveVpnServiceFactory::GetForProfile(browser_->profile()));
 #endif
 }
 
