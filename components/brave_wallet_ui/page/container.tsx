@@ -53,7 +53,7 @@ import {
 import { onConnectHardwareWallet, getBalance } from '../common/async/wallet_async_handler'
 
 import { formatBalance, toWeiHex } from '../utils/format-balances'
-import { useSwap, useAssets } from '../common/hooks'
+import { useSwap, useAssets, useTimeout } from '../common/hooks'
 import { stripERC20TokenImageURL } from '../utils/string-utils'
 
 type Props = {
@@ -111,6 +111,11 @@ function Container (props: Props) {
   const [buyAmount, setBuyAmount] = React.useState('')
   const [sendAmount, setSendAmount] = React.useState('')
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
+
+  const notifyUserInteraction = () => {
+    props.walletActions.notifyUserInteraction()
+  }
+  useTimeout(notifyUserInteraction, isWalletLocked)
 
   const {
     tokenOptions,
