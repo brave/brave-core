@@ -31,10 +31,10 @@ base::Time GetYMDAsDate(const base::StringPiece& ymd);
 std::string GetAPIKey();
 
 enum : uint8_t {
-  IsInactiveUser = 0,
-  IsDailyUser = (1 << 0),
-  IsWeeklyUser = (1 << 1),
-  IsMonthlyUser = (1 << 2),
+  kIsInactiveUser = 0,
+  kIsDailyUser = (1 << 0),
+  kIsWeeklyUser = (1 << 1),
+  kIsMonthlyUser = (1 << 2),
 };
 
 uint8_t UsageBitstringFromTimestamp(const base::Time& time,

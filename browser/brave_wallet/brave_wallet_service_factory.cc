@@ -7,8 +7,6 @@
 
 #include <memory>
 
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
@@ -54,18 +52,13 @@ BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
 KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  auto* wallet_service = new BraveWalletService(
+  return new BraveWalletService(
 #if defined(OS_ANDROID)
       std::make_unique<BraveWalletServiceDelegate>(),
 #else
       std::make_unique<BraveWalletServiceDelegateImpl>(context),
 #endif
       user_prefs::UserPrefs::Get(context));
-
-  // g_brave_browser_process may be null in unit tests.
-  if (g_brave_browser_process)
-    g_brave_browser_process->brave_stats_updater()->AddObserver(wallet_service);
-  return wallet_service;
 }
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(

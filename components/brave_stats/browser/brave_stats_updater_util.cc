@@ -106,18 +106,18 @@ uint8_t UsageBitstringFromTimestamp(const base::Time& time,
                                     const base::Time& now) {
   base::Time::Exploded target_exploded;
   time.LocalExplode(&target_exploded);
-  uint8_t enabled_bitset = IsInactiveUser;
+  uint8_t enabled_bitset = kIsInactiveUser;
 
   base::Time yesterday = now - base::TimeDelta::FromDays(1);
   base::Time::Exploded yesterday_exploded;
   yesterday.LocalExplode(&yesterday_exploded);
   if (yesterday_exploded.year == target_exploded.year) {
     if (yesterday_exploded.month == target_exploded.month) {
-      enabled_bitset |= IsMonthlyUser;
+      enabled_bitset |= kIsMonthlyUser;
       if (GetIsoWeekNumber(time) == GetIsoWeekNumber(yesterday)) {
-        enabled_bitset |= IsWeeklyUser;
+        enabled_bitset |= kIsWeeklyUser;
         if (yesterday_exploded.day_of_month == target_exploded.day_of_month) {
-          enabled_bitset |= IsDailyUser;
+          enabled_bitset |= kIsDailyUser;
         }
       }
     }

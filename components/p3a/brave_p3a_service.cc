@@ -93,12 +93,10 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Sync.Status.2",
     "Brave.Sync.ProgressTokenEverReset",
     "Brave.Uptime.BrowserOpenMinutes",
-    "Brave.Welcome.InteractionStatus",
-
-    // Wallet
     "Brave.Wallet.UsageDaily",
     "Brave.Wallet.UsageWeekly",
     "Brave.Wallet.UsageMonthly",
+    "Brave.Welcome.InteractionStatus",
 
     // IPFS
     "Brave.IPFS.IPFSCompanionInstalled",

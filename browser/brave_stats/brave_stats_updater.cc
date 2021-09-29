@@ -140,14 +140,6 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
 
 BraveStatsUpdater::~BraveStatsUpdater() {}
 
-void BraveStatsUpdater::AddObserver(BraveStatsUpdaterObserver* observer) {
-  observers_.AddObserver(observer);
-}
-
-void BraveStatsUpdater::RemoveObserver(BraveStatsUpdaterObserver* observer) {
-  observers_.RemoveObserver(observer);
-}
-
 void BraveStatsUpdater::OnProfileAdded(Profile* profile) {
   if (profile == ProfileManager::GetPrimaryUserProfile()) {
     g_browser_process->profile_manager()->RemoveObserver(this);
@@ -262,10 +254,6 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
 
   // In case the first call was blocked by our timer.
   (void)MaybeDoThresholdPing(0);
-
-  // Notify observers
-  for (auto& obs : observers_)
-    obs.OnStatsPingFired();
 
   // Log the full URL of the stats ping.
   VLOG(1) << "Brave stats ping, url: " << final_url.spec();
