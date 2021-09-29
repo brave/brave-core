@@ -7,17 +7,9 @@
 
 #include "../../../../net/base/url_util.h"
 
-#include "base/strings/string_piece_forward.h"
 #include "net/base/net_export.h"
 
 namespace net {
-
-NET_EXPORT bool ParseAuthHostAndPort(
-    base::StringPiece input,
-    std::string* username,
-    std::string* password,
-    std::string* host,
-    int* port);
 
 // Convert this URL into an encoded storage domain string, which is used
 // to identify a particular storage domain uniquely in a BrowserContext.
