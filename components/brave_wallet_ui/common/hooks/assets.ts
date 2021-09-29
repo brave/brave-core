@@ -47,7 +47,7 @@ export default function useAssets (
     [userVisibleTokensInfo]
   )
 
-  const sendAssetOptions = selectedAccount.tokens?.map((token) => ({
+  const sendAssetOptions = selectedAccount?.tokens?.map((token) => ({
     ...token,
     asset: {
       ...token.asset,
