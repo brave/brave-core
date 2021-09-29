@@ -12,7 +12,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
-constexpr char kVpnHost[] = "housekeeping.sudosecuritygroup.com";
+constexpr char kVpnHost[] = "connect-api.guardianapp.com";
 
 constexpr char kAllServerRegions[] = "api/v1/servers/all-server-regions";
 constexpr char kTimezonesForRegions[] =
