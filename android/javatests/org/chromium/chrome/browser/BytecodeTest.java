@@ -419,7 +419,7 @@ public class BytecodeTest {
                 StatusBarColorController.class, AppMenuDelegate.class,
                 ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
                 Supplier.class, TabContentManager.class, TabCreatorManager.class,
-                OneshotSupplier.class, SnackbarManager.class, JankTracker.class));
+                OneshotSupplier.class, SnackbarManager.class, JankTracker.class, Supplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
