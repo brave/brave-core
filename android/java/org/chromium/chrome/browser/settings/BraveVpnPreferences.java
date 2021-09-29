@@ -48,7 +48,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     public static final String PREF_SUBSCRIPTION_STATUS = "subscription_status";
     public static final String PREF_SUBSCRIPTION_EXPIRES = "subscription_expires";
     public static final String PREF_SERVER_HOST = "server_host";
-    public static final String PREF_SERVER_LOCATION = "server_location";
+    public static final String PREF_SERVER_CHANGE_LOCATION = "server_change_location";
     public static final String PREF_SUPPORT_TECHNICAL = "support_technical";
     public static final String PREF_SUPPORT_VPN = "support_vpn";
     public static final String PREF_SERVER_RESET_CONFIGURATION = "server_reset_configuration";
@@ -64,7 +64,6 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     private ChromeBasePreference mSubscriptionStatus;
     private ChromeBasePreference mSubscriptionExpires;
     private ChromeBasePreference mServerHost;
-    private ChromeBasePreference mServerLocation;
     private String mSubscriberCredential;
     private String mHostname;
     private String mPurchaseToken = "";
@@ -104,7 +103,6 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         mSubscriptionExpires = (ChromeBasePreference) findPreference(PREF_SUBSCRIPTION_EXPIRES);
 
         mServerHost = (ChromeBasePreference) findPreference(PREF_SERVER_HOST);
-        mServerLocation = (ChromeBasePreference) findPreference(PREF_SERVER_LOCATION);
 
         findPreference(PREF_SUPPORT_TECHNICAL)
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -206,7 +204,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 break;
             }
         }
-        updateSummary(PREF_SERVER_LOCATION, serverLocation);
+        updateSummary(PREF_SERVER_CHANGE_LOCATION, serverLocation);
         updateSummary(PREF_SERVER_HOST, BraveVpnPrefUtils.getHostname());
         if (!BraveVpnPrefUtils.getProductId().isEmpty()) {
             updateSummary(PREF_SUBSCRIPTION_STATUS,
