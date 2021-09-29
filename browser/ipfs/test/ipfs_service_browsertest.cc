@@ -947,6 +947,21 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, TopLevelAutoRedirectsOn) {
   EXPECT_EQ(contents->GetURL().host(), gateway.host());
 }
 
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
+                       TopLevelAutoRedirectsOnWithQuery) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
+                          base::Unretained(this)));
+  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  GURL gateway = GetURL("b.com", "/");
+  SetIPFSDefaultGatewayForTest(gateway);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), GetURL("a.com", "/simple.html?abc=123xyz&other=qwerty")));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(contents->GetURL().query(), "abc=123xyz&other=qwerty");
+}
+
 IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, TopLevelAutoRedirectsOff) {
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
