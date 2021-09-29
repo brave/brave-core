@@ -27,6 +27,8 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "v8/include/v8.h"
 
+#include "base/metrics/histogram_macros.h"
+
 namespace {
 
 static base::NoDestructor<std::vector<std::string>> g_vetted_search_engines(
@@ -320,7 +322,10 @@ bool CosmeticFiltersJSHandler::ProcessURL(const GURL& url) {
       content_settings->IsFirstPartyCosmeticFilteringEnabled(url_);
 
   base::Value result;
-  cosmetic_filters_resources_->UrlCosmeticResources(url_.spec(), &result);
+  {
+    SCOPED_UMA_HISTOGRAM_TIMER_MICROS("CosmeticFiltersJSHandler.UrlCosmeticResourcesSync");
+    cosmetic_filters_resources_->UrlCosmeticResources(url_.spec(), &result);
+  }
   resources_dict_ = base::DictionaryValue::From(
       base::Value::ToUniquePtrValue(std::move(result)));
 
