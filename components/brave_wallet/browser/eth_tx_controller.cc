@@ -13,6 +13,7 @@
 #include "base/bind.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
@@ -103,12 +104,14 @@ bool EthTxController::ValidateTxData1559(const mojom::TxData1559Ptr& tx_data,
 EthTxController::EthTxController(
     EthJsonRpcController* rpc_controller,
     KeyringController* keyring_controller,
+    AssetRatioController* asset_ratio_controller,
     std::unique_ptr<EthTxStateManager> tx_state_manager,
     std::unique_ptr<EthNonceTracker> nonce_tracker,
     std::unique_ptr<EthPendingTxTracker> pending_tx_tracker,
     PrefService* prefs)
     : rpc_controller_(rpc_controller),
       keyring_controller_(keyring_controller),
+      asset_ratio_controller_(asset_ratio_controller),
       tx_state_manager_(std::move(tx_state_manager)),
       nonce_tracker_(std::move(nonce_tracker)),
       pending_tx_tracker_(std::move(pending_tx_tracker)),
@@ -173,33 +176,63 @@ void EthTxController::AddUnapprovedTransaction(
     if (!tx_ptr->gas_price())
       tx_ptr->set_gas_price(kDefaultSendEthGasPrice);
 
-    const std::string new_gas_price = Uint256ValueToHex(tx_ptr->gas_price());
+    const std::string new_gas_limit = Uint256ValueToHex(tx_ptr->gas_limit());
     ContinueAddUnapprovedTransaction(from, std::move(tx_ptr),
-                                     std::move(callback), true, new_gas_price);
+                                     std::move(callback), true, new_gas_limit);
     return;
   }
 
-  if (!tx_ptr->gas_limit()) {
+  if (!tx_ptr->gas_price()) {
+    rpc_controller_->GetGasPrice(base::BindOnce(
+        &EthTxController::OnGetGasPrice, weak_factory_.GetWeakPtr(), from,
+        tx_data->to, tx_data->value, ToHex(tx_data->data), tx_data->gas_limit,
+        std::move(tx_ptr), std::move(callback)));
+  } else if (!tx_ptr->gas_limit()) {
     rpc_controller_->GetEstimateGas(
         from, tx_data->to, "" /* gas */, "" /* gas_price */, tx_data->value,
         ToHex(tx_data->data),
-        base::BindOnce(&EthTxController::OnGetEstimateGas,
-                       weak_factory_.GetWeakPtr(), from, tx_data->gas_price,
-                       std::move(tx_ptr), std::move(callback)));
-  } else if (!tx_ptr->gas_price()) {
-    rpc_controller_->GetGasPrice(
         base::BindOnce(&EthTxController::ContinueAddUnapprovedTransaction,
                        weak_factory_.GetWeakPtr(), from, std::move(tx_ptr),
                        std::move(callback)));
   } else {
     ContinueAddUnapprovedTransaction(
-        from, std::move(tx_ptr), std::move(callback), true, tx_data->gas_price);
+        from, std::move(tx_ptr), std::move(callback), true, tx_data->gas_limit);
   }
 }
 
-void EthTxController::OnGetEstimateGas(
+void EthTxController::OnGetGasPrice(const std::string& from,
+                                    const std::string& to,
+                                    const std::string& value,
+                                    const std::string& data,
+                                    const std::string& gas_limit,
+                                    std::unique_ptr<EthTransaction> tx,
+                                    AddUnapprovedTransactionCallback callback,
+                                    bool success,
+                                    const std::string& result) {
+  uint256_t gas_price;
+  if (!success || !HexValueToUint256(result, &gas_price)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_PRICE_FAILED));
+    return;
+  }
+  tx->set_gas_price(gas_price);
+
+  if (!tx->gas_limit()) {
+    rpc_controller_->GetEstimateGas(
+        from, to, "" /* gas */, "" /* gas_price */, value, data,
+        base::BindOnce(&EthTxController::ContinueAddUnapprovedTransaction,
+                       weak_factory_.GetWeakPtr(), from, std::move(tx),
+                       std::move(callback)));
+  } else {
+    ContinueAddUnapprovedTransaction(from, std::move(tx), std::move(callback),
+                                     true, gas_limit);
+  }
+}
+
+void EthTxController::ContinueAddUnapprovedTransaction(
     const std::string& from,
-    const std::string& gas_price,
     std::unique_ptr<EthTransaction> tx,
     AddUnapprovedTransactionCallback callback,
     bool success,
@@ -213,32 +246,6 @@ void EthTxController::OnGetEstimateGas(
     return;
   }
   tx->set_gas_limit(gas_limit);
-
-  if (!tx->gas_price()) {
-    rpc_controller_->GetGasPrice(base::BindOnce(
-        &EthTxController::ContinueAddUnapprovedTransaction,
-        weak_factory_.GetWeakPtr(), from, std::move(tx), std::move(callback)));
-  } else {
-    ContinueAddUnapprovedTransaction(from, std::move(tx), std::move(callback),
-                                     true, gas_price);
-  }
-}
-
-void EthTxController::ContinueAddUnapprovedTransaction(
-    const std::string& from,
-    std::unique_ptr<EthTransaction> tx,
-    AddUnapprovedTransactionCallback callback,
-    bool success,
-    const std::string& result) {
-  uint256_t gas_price;
-  if (!success || !HexValueToUint256(result, &gas_price)) {
-    std::move(callback).Run(
-        false, "",
-        l10n_util::GetStringUTF8(
-            IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_PRICE_FAILED));
-    return;
-  }
-  tx->set_gas_price(gas_price);
 
   EthTxStateManager::TxMeta meta(std::move(tx));
   meta.id = EthTxStateManager::GenerateMetaID();
@@ -277,18 +284,62 @@ void EthTxController::AddUnapproved1559Transaction(
             IDS_WALLET_ETH_SEND_TRANSACTION_CONVERT_TX_DATA));
     return;
   }
-  EthTxStateManager::TxMeta meta(std::make_unique<Eip1559Transaction>(*tx));
-  meta.id = EthTxStateManager::GenerateMetaID();
-  meta.from = EthAddress::FromHex(from);
-  meta.created_time = base::Time::Now();
-  meta.status = mojom::TransactionStatus::Unapproved;
-  tx_state_manager_->AddOrUpdateTx(meta);
 
-  for (const auto& observer : observers_)
-    observer->OnNewUnapprovedTx(
-        EthTxStateManager::TxMetaToTransactionInfo(meta));
+  auto tx_ptr = std::make_unique<Eip1559Transaction>(*tx);
 
-  std::move(callback).Run(true, meta.id, "");
+  if (!tx_ptr->max_priority_fee_per_gas() || !tx_ptr->max_fee_per_gas()) {
+    asset_ratio_controller_->GetGasOracle(base::BindOnce(
+        &EthTxController::OnGetGasOracle, weak_factory_.GetWeakPtr(), from,
+        tx_data->base_data->to, tx_data->base_data->value,
+        ToHex(tx_data->base_data->data), tx_data->base_data->gas_limit,
+        std::move(tx_ptr), std::move(callback)));
+  } else if (!tx->gas_limit()) {
+    rpc_controller_->GetEstimateGas(
+        from, tx_data->base_data->to, "" /* gas */, "" /* gas_price */,
+        tx_data->base_data->value, ToHex(tx_data->base_data->data),
+        base::BindOnce(&EthTxController::ContinueAddUnapprovedTransaction,
+                       weak_factory_.GetWeakPtr(), from, std::move(tx_ptr),
+                       std::move(callback)));
+  } else {
+    ContinueAddUnapprovedTransaction(from, std::move(tx_ptr),
+                                     std::move(callback), true,
+                                     tx_data->base_data->gas_limit);
+  }
+}
+
+void EthTxController::OnGetGasOracle(
+    const std::string& from,
+    const std::string& to,
+    const std::string& value,
+    const std::string& data,
+    const std::string& gas_limit,
+    std::unique_ptr<Eip1559Transaction> tx,
+    AddUnapprovedTransactionCallback callback,
+    mojom::GasEstimation1559Ptr gas_estimation) {
+  auto estimation =
+      Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+          std::move(gas_estimation));
+  if (!estimation) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_ESTIMATION_FAILED));
+    return;
+  }
+  tx->set_gas_estimation(estimation.value());
+  tx->set_max_fee_per_gas(estimation->avg_max_fee_per_gas);
+  tx->set_max_priority_fee_per_gas(estimation->avg_max_priority_fee_per_gas);
+
+  if (!tx->gas_limit()) {
+    rpc_controller_->GetEstimateGas(
+        from, to, "" /* gas */, "" /* gas_price */, value, data,
+        base::BindOnce(&EthTxController::ContinueAddUnapprovedTransaction,
+                       weak_factory_.GetWeakPtr(), from, std::move(tx),
+                       std::move(callback)));
+  } else {
+    ContinueAddUnapprovedTransaction(from, std::move(tx), std::move(callback),
+                                     true, gas_limit);
+  }
 }
 
 void EthTxController::ApproveHardwareTransaction(

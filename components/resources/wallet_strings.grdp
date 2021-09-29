@@ -27,6 +27,7 @@
     <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_PRICE_FAILED" desc="Failed to get gas price">Failed to get the gas price for the transaction</message>
     <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_LIMIT_FAILED" desc="Failed to get gas limit">Failed to get the gas limit for the transaction</message>
     <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_TX_TYPE_FAILED" desc="Failed to get tx type">Failed to get the type for the transaction</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_ESTIMATION_FAILED" desc="Failed to get gas estimation">Failed to get the gas estimation for EIP-1559 transaction</message>
     <message name="IDS_BRAVE_WALLET_DEFI_CATEGORY" desc="Defi apps title">Defi apps</message>
     <message name="IDS_BRAVE_WALLET_NFT_CATEGORY" desc="NFT marketplace title">NFT marketplaces</message>
     <message name="IDS_BRAVE_WALLET_SEARCH_CATEGORY" desc="Filter apps placeholder">Search results</message>

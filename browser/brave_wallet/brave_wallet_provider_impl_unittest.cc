@@ -329,10 +329,10 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559Transaction) {
   NavigateAndAddEthereumPermission();
   provider()->AddUnapproved1559Transaction(
       mojom::TxData1559::New(
-          mojom::TxData::New("0x00", "", "0x00",
+          mojom::TxData::New("0x00", "", "0x1",
                              "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                              "0x00", std::vector<uint8_t>()),
-          "0x04", "0x0", "0x0", nullptr),
+          "0x04", "0x1", "0x1", nullptr),
       from(),
       base::BindLambdaForTesting([&](bool success, const std::string& id,
                                      const std::string& error_message) {
