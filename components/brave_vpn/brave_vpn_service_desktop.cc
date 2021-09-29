@@ -404,11 +404,6 @@ std::string BraveVpnServiceDesktop::GetCurrentTimeZone() {
 }
 
 void BraveVpnServiceDesktop::GetAllRegions(GetAllRegionsCallback callback) {
-  if (regions_.empty()) {
-    // TODO(simonhong): Handle this situation.
-    return;
-  }
-
   std::vector<brave_vpn::mojom::RegionPtr> regions;
   for (const auto& region : regions_) {
     regions.push_back(region.Clone());
