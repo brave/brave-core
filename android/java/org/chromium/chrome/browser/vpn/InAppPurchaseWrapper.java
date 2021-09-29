@@ -140,28 +140,29 @@ public class InAppPurchaseWrapper {
 
     private PurchasesUpdatedListener getPurchasesUpdatedListener(Context context) {
         return (billingResult, purchases) -> {
-        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-            if (purchases != null) processPurchases(context, purchases);
-        } else if (billingResult.getResponseCode()
-                == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-            Toast.makeText(context, context.getResources().getString(R.string.already_subscribed),
-                         Toast.LENGTH_SHORT)
-                    .show();
-        } else if (billingResult.getResponseCode()
-                == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED) {
-            connectToBillingService();
-        } else if (billingResult.getResponseCode()
-                == BillingClient.BillingResponseCode.USER_CANCELED) {
-            Toast.makeText(context,
-                         context.getResources().getString(R.string.error_caused_by_user),
-                         Toast.LENGTH_SHORT)
-                    .show();
-        } else {
-            Toast.makeText(context, context.getResources().getString(R.string.purchased_failed),
-                         Toast.LENGTH_SHORT)
-                    .show();
-        }
-    };
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                if (purchases != null) processPurchases(context, purchases);
+            } else if (billingResult.getResponseCode()
+                    == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+                Toast.makeText(context,
+                             context.getResources().getString(R.string.already_subscribed),
+                             Toast.LENGTH_SHORT)
+                        .show();
+            } else if (billingResult.getResponseCode()
+                    == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED) {
+                connectToBillingService();
+            } else if (billingResult.getResponseCode()
+                    == BillingClient.BillingResponseCode.USER_CANCELED) {
+                Toast.makeText(context,
+                             context.getResources().getString(R.string.error_caused_by_user),
+                             Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                Toast.makeText(context, context.getResources().getString(R.string.purchased_failed),
+                             Toast.LENGTH_SHORT)
+                        .show();
+            }
+        };
     }
 
     BillingClientStateListener billingClientStateListener = new BillingClientStateListener() {

@@ -338,8 +338,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     @Override
     public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
         if (isSuccess) {
-            InAppPurchaseWrapper.getInstance().processPurchases(getActivity(),
-                    InAppPurchaseWrapper.getInstance().queryPurchases());
+            InAppPurchaseWrapper.getInstance().processPurchases(
+                    getActivity(), InAppPurchaseWrapper.getInstance().queryPurchases());
             this.mSubscriberCredential = subscriberCredential;
             BraveVpnNativeWorker.getInstance().getTimezonesForRegions();
         } else {
