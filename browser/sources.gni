@@ -234,13 +234,16 @@ if (is_android) {
     "//brave/browser/sync/brave_sync_devices_android.h",
   ]
 
+  if (brave_wallet_enabled) {
+    brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources
+  }
+
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",
     "//brave/build/android:jni_headers",
     "//chrome/android:jni_headers",
     "//components/sync_device_info",
   ]
-  brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources
 } else {
   brave_chrome_browser_sources += [
     "//brave/browser/p3a/p3a_core_metrics.cc",
