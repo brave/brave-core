@@ -48,42 +48,145 @@ export const name = styled.div`
 `
 
 export const status = styled.div`
-  font-weight: normal;
+  font-weight: 600;
   font-size: 12px;
-  line-height: 14px;
+  line-height: 18px;
   margin-top: 7px;
   color: var(--brave-palette-neutral700);
-
-  .icon {
-    height: 13px;
-    width: auto;
-    vertical-align: middle;
-    margin-bottom: 2px;
-    margin-right: 4px;
-  }
+  display: flex;
 
   .brave-theme-dark & {
     color: var(--brave-palette-grey400);
   }
 `
 
-export const refreshStatus = styled.span`
-  display: inline-block;
-  border-left: solid 1px var(--brave-palette-neutral200);
-  padding-left: 4px;
-  margin-left: 5px;
+export const statusIndicator = styled.div`
+  position: relative;
+  border: 1px solid var(--brave-palette-neutral200);
+  border-radius: 48px;
+  padding: 3px 10px;
+
+  .icon {
+    color: var(--brave-palette-grey200);
+    height: 13px;
+    width: auto;
+    vertical-align: middle;
+    margin-bottom: 1px;
+    margin-right: 4px;
+
+    .brave-theme-dark & {
+      color: #343A40;
+    }
+  }
+
+  &.registered {
+    border-color: var(--brave-palette-grey500);
+
+    .icon {
+      color: var(--brave-color-brandBatInteracting);
+    }
+  }
+
+  .brave-theme-dark & {
+    border-color: var(--brave-palette-grey800);
+  }
+
+  &:hover {
+    border-color: var(--brave-color-brandBatInteracting);
+    cursor: default;
+
+    .pending-bubble {
+      display: initial;
+    }
+  }
+
+  .pending-bubble {
+    position: absolute;
+    left: -49px;
+    top: 100%;
+    width: 318px;
+    z-index: 1;
+    padding-top: 8px;
+    display: none;
+  }
+`
+
+export const pendingBubble = styled.div`
+  position: relative;
+  background: var(--brave-palette-white);
+  box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.26);
+  border-radius: 6px;
+  padding: 14px 20px;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    background: inherit;
+    width: 18px;
+    height: 18px;
+    left: 109px;
+    top: -8px;
+    transform: rotate(45deg);
+  }
+
+  a {
+    color: var(--brave-color-brandBat);
+    font-weight: 600;
+    margin-left: 3px;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .brave-theme-dark & {
+    background: var(--brave-palette-grey800);
+
+    a {
+      color: var(--brave-palette-blurple400);
+    }
+  }
+`
+
+export const pendingBubbleHeader = styled.div`
+  font-weight: 600;
+  color: var(--brave-palette-neutral900);
+
+  .brave-theme-dark & {
+    color: var(--brave-palette-grey000);
+  }
+`
+
+export const pendingBubbleText = styled.div`
+  margin-top: 3px;
+  color: var(--brave-palette-neutral600);
+
+  .brave-theme-dark & {
+    color: var(--brave-palette-grey500);
+  }
+`
+
+export const refreshStatus = styled.div`
+  padding-left: 10px;
+  padding-top: 4px;
 
   .icon {
     height: 13px;
     width: auto;
-    margin-bottom: 2px;
-    margin-left: 2px;
+    margin-left: 35px;
+    margin-top: 2px;
     color: var(--brave-color-brandBat);
   }
 
   button {
     ${mixins.buttonReset}
     color: var(--brave-color-brandBatInteracting);
+    font-weight: 600;
     cursor: pointer;
 
     &:hover {
@@ -96,22 +199,6 @@ export const refreshStatus = styled.span`
 
     button {
       color: var(--brave-palette-blurple300);
-    }
-  }
-`
-
-export const verified = styled.span`
-  .icon {
-    color: var(--brave-color-brandBatInteracting);
-  }
-`
-
-export const unverified = styled.span`
-  .icon {
-    color: var(--brave-palette-grey200);
-
-    .brave-theme-dark & {
-      color: #343A40;
     }
   }
 `
@@ -192,8 +279,8 @@ export const tipAction = styled.div`
     line-height: 20px;
     cursor: pointer;
 
-    &:active {
-      background: var(--brave-palette-blurple400);
+    &:hover {
+      background: var(--brave-palette-blurple600);
     }
   }
 `

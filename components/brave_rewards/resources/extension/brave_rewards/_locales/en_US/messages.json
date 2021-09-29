@@ -19,6 +19,26 @@
     "message": "Refresh Status",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Any tip you make will remain pending in your wallet and retry automatically for 90 days. $link_begin$Learn more$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "This creator is not signed up yet.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "This creator is currently not configured to receive tips from your wallet.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ on $platform$",
     "placeholders": {
