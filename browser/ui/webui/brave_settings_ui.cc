@@ -28,6 +28,7 @@
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/content_features.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
@@ -84,6 +85,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   NavigationBarDataProvider::Initialize(html_source);
   if (auto* service = ViewCounterServiceFactory::GetForProfile(profile))
     service->InitializeWebUIDataSource(html_source);
+  html_source->AddBoolean(
+      "isIdleDetectionFeatureEnabled",
+      base::FeatureList::IsEnabled(features::kIdleDetection));
 #if BUILDFLAG(ENABLE_SIDEBAR)
   // TODO(simonhong): Remove this when sidebar is shipped by default in all
   // channels.

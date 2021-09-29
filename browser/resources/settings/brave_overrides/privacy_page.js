@@ -5,6 +5,7 @@
 
 import {RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js'
+import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
 
 RegisterPolymerTemplateModifications({
   'settings-privacy-page': (templateContent) => {
@@ -12,6 +13,14 @@ RegisterPolymerTemplateModifications({
     if (!pages) {
       console.error(`[Brave Settings Overrides] Couldn't find privacy_page #pages`)
     } else {
+      if (!loadTimeData.getBoolean('isIdleDetectionFeatureEnabled')) {
+        const idleDetection = templateContent.querySelector('[route-path="/content/idleDetection"]')
+        if (!idleDetection) {
+          console.error(`[Brave Settings Overrides] Couldn't find idle detection template`)
+        } else {
+          idleDetection.content.firstElementChild.hidden = true
+        }
+      }
       pages.insertAdjacentHTML('beforeend', `
         <template is="dom-if" route-path="/content/autoplay" no-search>
           <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsCategoryAutoplay')}">
