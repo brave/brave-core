@@ -173,6 +173,7 @@ declare namespace chrome.braveRewards {
 
   const getPrefs: (callback: (prefs: RewardsPrefs) => void) => void
   const updatePrefs: (prefs: Partial<RewardsPrefs>) => void
+  const requestAdsEnabledPopupClosed: (adsEnabled: boolean) => void
 }
 
 declare namespace chrome.binance {
