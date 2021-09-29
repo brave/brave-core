@@ -10,6 +10,7 @@
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -19,6 +20,10 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
 
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
@@ -247,6 +252,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"defaultWalletDesc", IDS_SETTINGS_DEFAULT_WALLET_DESC},
     {"showBravewalletIconOnToolbar",
      IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR},
+    {"autoLockMinutes", IDS_SETTINGS_AUTO_LOCK_MINUTES},
+    {"autoLockMinutesDesc", IDS_SETTINGS_AUTO_LOCK_MINUTES_DESC},
     {"googleLoginForExtensionsDesc", IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS},
     {"hangoutsEnabledDesc", IDS_SETTINGS_HANGOUTS_ENABLED_DESC},
     {"mediaRouterEnabledDesc", IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC},
@@ -341,6 +348,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
               GURL(extension_urls::GetWebstoreExtensionsCategoryURL()),
               g_browser_process->GetApplicationLocale())
               .spec()));
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  html_source->AddString("autoLockMinutesValue",
+                         std::to_string(profile->GetPrefs()->GetInteger(
+                             kBraveWalletAutoLockMinutes)));
+#endif
   html_source->AddString(
       "ipfsStorageMaxValue",
       std::to_string(profile->GetPrefs()->GetInteger(kIpfsStorageMax)));

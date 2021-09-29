@@ -21,7 +21,12 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+class PrefChangeRegistrar;
 class PrefService;
+
+namespace base {
+class OneShotTimer;
+}
 
 namespace brave_wallet {
 
@@ -147,6 +152,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
 
   void AddObserver(::mojo::PendingRemote<mojom::KeyringControllerObserver>
                        observer) override;
+  void NotifyUserInteraction() override;
 
   /* TODO(darkdh): For other keyrings support
   void DeleteKeyring(size_t index);
@@ -179,10 +185,12 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
                            SetDefaultKeyringDerivedAccountMeta);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, RestoreLegacyBraveWallet);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AutoLock);
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxControllerUnitTest;
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
+  void OnAutoLockFired();
 
   // Address will be returned when success
   absl::optional<std::string> ImportAccountForDefaultKeyring(
@@ -219,9 +227,14 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   HDKeyring* ResumeDefaultKeyring(const std::string& password);
 
   void NotifyAccountsChanged();
+  void StopAutoLockTimer();
+  void ResetAutoLockTimer();
+  void OnAutoLockPreferenceChanged();
 
   std::unique_ptr<PasswordEncryptor> encryptor_;
   std::unique_ptr<HDKeyring> default_keyring_;
+  std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
+  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
   // TODO(darkdh): For other keyrings support
   // std::vector<std::unique_ptr<HDKeyring>> keyrings_;
