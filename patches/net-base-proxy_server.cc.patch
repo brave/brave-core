@@ -1,29 +1,20 @@
 diff --git a/net/base/proxy_server.cc b/net/base/proxy_server.cc
-index 5b65299892604fc4ca29b9c797b9d8c342d0c9e2..fda194477387af2ae744f2c97818023c59c09250 100644
+index 3b09f37a48ab37290180053d9cf86af0f28a5433..14d052793f545c8596e45d38626255dac8c03ce9 100644
 --- a/net/base/proxy_server.cc
 +++ b/net/base/proxy_server.cc
-@@ -209,10 +209,13 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(
-   HostPortPair host_port_pair;
+@@ -60,6 +60,7 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(Scheme scheme,
+ ProxyServer ProxyServer::FromSchemeHostAndPort(Scheme scheme,
+                                                base::StringPiece host,
+                                                absl::optional<uint16_t> port) {
++  BRAVE_PROXY_SERVER_FROM_SCHEME_HOST_AND_PORT_EXTRACT_AUTH_INFO
+   // Create INVALID proxies directly using `ProxyServer()`.
+   DCHECK_NE(scheme, SCHEME_INVALID);
  
-   if (scheme != SCHEME_INVALID && scheme != SCHEME_DIRECT) {
-+    std::string username;
-+    std::string password;
-     std::string host;
-     int port = -1;
-     // If the scheme has a host/port, parse it.
--    bool ok = ParseHostAndPort(host_and_port, &host, &port);
-+    bool ok = ParseAuthHostAndPort(host_and_port, &username, &password,
-+                                   &host, &port);
-     if (!ok)
-       return ProxyServer();  // Invalid -- failed parsing <host>[":"<port>]
+@@ -96,6 +97,7 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(Scheme scheme,
+   // A uint16_t port is always valid and canonicalized.
+   uint16_t fixed_port = port.value_or(GetDefaultPortForScheme(scheme));
  
-@@ -220,7 +223,8 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(
-     if (port == -1)
-       port = GetDefaultPortForScheme(scheme);
++  BRAVE_PROXY_SERVER_FROM_SCHEME_HOST_AND_PORT_RETURN_HOST_PORT_PAIR
+   return ProxyServer(scheme, HostPortPair(unbracketed_host, fixed_port));
+ }
  
--    host_port_pair = HostPortPair(host, static_cast<uint16_t>(port));
-+    host_port_pair = HostPortPair(username, password, host,
-+                                  static_cast<uint16_t>(port));
-   }
- 
-   return ProxyServer(scheme, host_port_pair);
