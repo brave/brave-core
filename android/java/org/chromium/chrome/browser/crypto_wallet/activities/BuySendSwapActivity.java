@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,6 +38,7 @@ import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSpinnerAdapter;
+import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
@@ -165,9 +165,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         Spinner spinner = findViewById(R.id.network_spinner);
         spinner.setOnItemSelectedListener(this);
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, Utils.getNetworksList(this));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(this,
+                Utils.getNetworksList(this), Utils.getNetworksAbbrevList(this));
         spinner.setAdapter(dataAdapter);
 
         onInitialLayoutInflationComplete();

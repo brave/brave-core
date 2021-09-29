@@ -1868,22 +1868,37 @@ until they verify, or until 90 days have passed.
       Account recovery failed. Please try again.
     </message>
     <message name="IDS_MAINNET" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Mainnet
+      Ethereum Mainnet
     </message>
     <message name="IDS_RINKEBY" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Rinkeby
+      Rinkeby Test Network
     </message>
     <message name="IDS_ROPSTEN" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Ropsten
+      Ropsten Test Network
     </message>
     <message name="IDS_GOERLI" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Goerli
+      Goerli Test Network
     </message>
     <message name="IDS_KOVAN" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Kovan
+      Kovan Test Network
     </message>
     <message name="IDS_LOCALHOST" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Localhost
+    </message>
+    <message name="IDS_MAINNET_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Mainnet
+    </message>
+    <message name="IDS_RINKEBY_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Rinkeby
+    </message>
+    <message name="IDS_ROPSTEN_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Ropsten
+    </message>
+    <message name="IDS_GOERLI_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Goerli
+    </message>
+    <message name="IDS_KOVAN_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Kovan
     </message>
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Market Price in ETH
