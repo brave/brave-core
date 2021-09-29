@@ -1,8 +1,8 @@
 diff --git a/src/wasm/module-compiler.cc b/src/wasm/module-compiler.cc
-index ea714cbe4c58673b5663ab93b37d1adefe43b813..303270059deab54a6d59eaad92109678496da8ee 100644
+index e49f2caa0e67553c4b7d5f370d2364f79c29289f..2d66102c1f5f96552031a2d61dc9f8046e389634 100644
 --- a/src/wasm/module-compiler.cc
 +++ b/src/wasm/module-compiler.cc
-@@ -3052,13 +3052,13 @@ void CompilationStateImpl::InitializeCompilationProgressAfterDeserialization(
+@@ -3045,13 +3045,13 @@ void CompilationStateImpl::InitializeCompilationProgressAfterDeserialization(
      }
      compilation_progress_.assign(module->num_declared_functions,
                                   kProgressAfterDeserialization);
