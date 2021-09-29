@@ -111,7 +111,7 @@ function Onboarding (props: Props) {
     if (onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask) {
       onImportMetaMask(importPassword, confirmedPassword)
     } else {
-      onImportCryptoWallets(password, confirmedPassword)
+      onImportCryptoWallets(importPassword, confirmedPassword)
     }
   }
   const onUseSamePassword = (selected: boolean) => {
