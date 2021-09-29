@@ -9,8 +9,6 @@ package org.chromium.chrome.browser.vpn;
 
 import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
 
-import android.util.Pair;
-
 import com.android.billingclient.api.Purchase;
 
 import org.chromium.base.Log;
@@ -19,6 +17,7 @@ import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.BraveVpnProfileCredentials;
 import org.chromium.chrome.browser.vpn.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
@@ -174,11 +173,13 @@ public abstract class BraveVpnParentActivity
     @Override
     public void onGetProfileCredentials(String jsonProfileCredentials, boolean isSuccess) {
         if (isSuccess) {
-            Pair<String, String> profileCredentials =
+            BraveVpnProfileCredentials braveVpnProfileCredentials =
                     BraveVpnUtils.getProfileCredentials(jsonProfileCredentials);
             BraveVpnPrefUtils.setHostname(mHostname);
-            BraveVpnProfileUtils.getInstance().createVpnProfile(BraveVpnParentActivity.this,
-                    mHostname, profileCredentials.first, profileCredentials.second);
+            BraveVpnProfileUtils.getInstance()
+                    .createVpnProfile(BraveVpnParentActivity.this, mHostname,
+                            braveVpnProfileCredentials.getUsername(),
+                            braveVpnProfileCredentials.getPassword());
             BraveVpnPrefUtils.setPurchaseToken(mPurchaseToken);
             BraveVpnPrefUtils.setProductId(mProductId);
             mPurchaseToken = "";

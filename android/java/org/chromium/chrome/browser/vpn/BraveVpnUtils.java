@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Pair;
 
 import androidx.core.app.NotificationCompat;
 
@@ -28,6 +27,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnProfileActivity;
+import org.chromium.chrome.browser.vpn.BraveVpnProfileCredentials;
 import org.chromium.chrome.browser.vpn.BraveVpnServerRegion;
 
 import java.util.ArrayList;
@@ -127,11 +127,14 @@ public class BraveVpnUtils {
         return "";
     }
 
-    public static Pair<String, String> getProfileCredentials(String jsonProfileCredentials) {
+    public static BraveVpnProfileCredentials getProfileCredentials(String jsonProfileCredentials) {
         try {
             JSONObject profileCredentials = new JSONObject(jsonProfileCredentials);
-            return new Pair<>(profileCredentials.getString("eap-username"),
-                    profileCredentials.getString("eap-password"));
+            BraveVpnProfileCredentials braveVpnProfileCredentials =
+                    new BraveVpnProfileCredentials(profileCredentials.getString("api-auth-token"),
+                            profileCredentials.getString("eap-username"),
+                            profileCredentials.getString("eap-password"));
+            return braveVpnProfileCredentials;
         } catch (JSONException e) {
             Log.e("BraveVPN", "BraveVpnUtils -> getProfileCredentials JSONException error " + e);
         }

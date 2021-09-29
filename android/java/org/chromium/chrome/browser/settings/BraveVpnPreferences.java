@@ -14,7 +14,6 @@ import android.net.NetworkRequest;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
@@ -27,6 +26,7 @@ import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.BraveVpnProfileCredentials;
 import org.chromium.chrome.browser.vpn.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.BraveVpnUtils;
@@ -383,15 +383,17 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     @Override
     public void onGetProfileCredentials(String jsonProfileCredentials, boolean isSuccess) {
         if (isSuccess) {
-            Pair<String, String> profileCredentials =
+            BraveVpnProfileCredentials braveVpnProfileCredentials =
                     BraveVpnUtils.getProfileCredentials(jsonProfileCredentials);
             BraveVpnPrefUtils.setHostname(mHostname);
             if (BraveVpnProfileUtils.getInstance().isVPNConnected(getActivity())) {
                 BraveVpnProfileUtils.getInstance().stopVpn(getActivity());
             }
             try {
-                BraveVpnProfileUtils.getInstance().createVpnProfile(getActivity(), mHostname,
-                        profileCredentials.first, profileCredentials.second);
+                BraveVpnProfileUtils.getInstance()
+                        .createVpnProfile(getActivity(), mHostname,
+                                braveVpnProfileCredentials.getUsername(),
+                                braveVpnProfileCredentials.getPassword());
                 BraveVpnPrefUtils.setPurchaseToken(mPurchaseToken);
                 BraveVpnPrefUtils.setProductId(mProductId);
                 updateSummaries();
