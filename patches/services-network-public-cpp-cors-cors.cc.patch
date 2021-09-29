@@ -1,8 +1,8 @@
 diff --git a/services/network/public/cpp/cors/cors.cc b/services/network/public/cpp/cors/cors.cc
-index 1edb83c3fe67b5918875a028738c531401f7a3b7..efec4756ad0262a3a6ef580fc2892ca66e2c27f3 100644
+index 7e9683d2649a497b9946fd4b5548fcad09990b6c..608729b3b6334ab227f2c0c111ecb4e8ca0e1af0 100644
 --- a/services/network/public/cpp/cors/cors.cc
 +++ b/services/network/public/cpp/cors/cors.cc
-@@ -344,6 +344,7 @@ bool IsCorsSafelistedHeader(const std::string& name, const std::string& value) {
+@@ -342,6 +342,7 @@ bool IsCorsSafelistedHeader(const std::string& name, const std::string& value) {
        // was introduced to enable safely experimenting with sending a reduced
        // user agent string in the `User-Agent` header.
        "sec-ch-ua-reduced",
