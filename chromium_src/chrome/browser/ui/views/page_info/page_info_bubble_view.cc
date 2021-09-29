@@ -9,8 +9,6 @@
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/views/page_info/page_info_view_factory.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -50,34 +48,31 @@ void PageInfoBubbleView::BraveAddIPFSButtons(PageInfoBubbleView* ui) {
       CreateButton(IDR_BRAVE_IPFS_LOGO, IDS_PAGE_INFO_IPFS_SETTINGS_BUTTON_TEXT,
                    IDS_PAGE_INFO_IPFS_SETTINGS_BUTTON_TOOLTIP_TEXT,
                    base::BindRepeating(
-                       [](Profile* profile) {
-                         chrome::AddTabAt(
-                             chrome::FindLastActiveWithProfile(profile),
-                             GURL(ipfs::kIPFSSettingsURL), -1, true);
+                       [](PageInfoBubbleView* view) {
+                         view->ui_delegate_->AddIPFSTabForURL(
+                             GURL(ipfs::kIPFSSettingsURL));
                        },
-                       profile_)),
+                       base::Unretained(this))),
       0);
   site_settings_view_->AddChildViewAt(
       CreateButton(
           IDR_BRAVE_IPFS_LOGO, IDS_PAGE_INFO_IPFS_DIAGNOSTICS_BUTTON_TEXT,
           IDS_PAGE_INFO_IPFS_DIAGNOSTICS_BUTTON_TOOLTIP_TEXT,
           base::BindRepeating(
-              [](Profile* profile) {
-                chrome::AddTabAt(chrome::FindLastActiveWithProfile(profile),
-                                 GURL(kIPFSWebUIURL), -1, true);
+              [](PageInfoBubbleView* view) {
+                view->ui_delegate_->AddIPFSTabForURL(GURL(kIPFSWebUIURL));
               },
-              profile_)),
+              base::Unretained(this))),
       0);
   site_settings_view_->AddChildViewAt(
       CreateButton(IDR_BRAVE_IPFS_LOGO, IDS_PAGE_INFO_IPFS_DOCS_BUTTON_TEXT,
                    IDS_PAGE_INFO_IPFS_DOCS_BUTTON_TEXT_TOOLTIP_TEXT,
                    base::BindRepeating(
-                       [](Profile* profile) {
-                         chrome::AddTabAt(
-                             chrome::FindLastActiveWithProfile(profile),
-                             GURL(kIPFSDocsURL), -1, true);
+                       [](PageInfoBubbleView* view) {
+                         view->ui_delegate_->AddIPFSTabForURL(
+                             GURL(kIPFSDocsURL));
                        },
-                       profile_)),
+                       base::Unretained(this))),
       0);
 
   Layout();
