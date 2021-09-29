@@ -165,8 +165,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         Spinner spinner = findViewById(R.id.network_spinner);
         spinner.setOnItemSelectedListener(this);
         // Creating adapter for spinner
-        NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(this,
-                Utils.getNetworksList(this), Utils.getNetworksAbbrevList(this));
+        NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(
+                this, Utils.getNetworksList(this), Utils.getNetworksAbbrevList(this));
         spinner.setAdapter(dataAdapter);
 
         onInitialLayoutInflationComplete();

@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.SpinnerAdapter;
 import android.widget.ImageView;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import org.chromium.chrome.R;
@@ -23,8 +23,8 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
     String[] networkShortNames;
     LayoutInflater inflater;
 
-    public NetworkSpinnerAdapter(Context applicationContext, String[] networkNames,
-            String[] networkShortNames) {
+    public NetworkSpinnerAdapter(
+            Context applicationContext, String[] networkNames, String[] networkShortNames) {
         assert networkNames.length == networkShortNames.length;
         this.context = applicationContext;
         this.networkNames = networkNames;

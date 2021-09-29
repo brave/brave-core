@@ -120,8 +120,7 @@ public class PortfolioFragment
 
         // Creating adapter for spinner
         NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(getActivity(),
-                Utils.getNetworksList(getActivity()),
-                Utils.getNetworksAbbrevList(getActivity()));
+                Utils.getNetworksList(getActivity()), Utils.getNetworksAbbrevList(getActivity()));
         mSpinner.setAdapter(dataAdapter);
 
         return view;
