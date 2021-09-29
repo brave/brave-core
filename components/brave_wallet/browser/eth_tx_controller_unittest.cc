@@ -75,12 +75,17 @@ mojom::GasEstimation1559Ptr GetMojomGasEstimation() {
 class TestEthTxControllerObserver
     : public brave_wallet::mojom::EthTxControllerObserver {
  public:
-  TestEthTxControllerObserver(const std::string& expected_gas_price,
-                              const std::string& expected_gas_limit,
-                              mojom::TransactionStatus expected_status =
-                                  mojom::TransactionStatus::Unapproved)
+  TestEthTxControllerObserver(
+      const std::string& expected_gas_price,
+      const std::string& expected_gas_limit,
+      const std::string& expected_max_priority_fee_per_gas = "",
+      const std::string& expected_max_fee_per_gas = "",
+      mojom::TransactionStatus expected_status =
+          mojom::TransactionStatus::Unapproved)
       : expected_gas_price_(expected_gas_price),
         expected_gas_limit_(expected_gas_limit),
+        expected_max_priority_fee_per_gas_(expected_max_priority_fee_per_gas),
+        expected_max_fee_per_gas_(expected_max_fee_per_gas),
         expected_status_(expected_status) {}
 
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx) override {}
@@ -90,6 +95,10 @@ class TestEthTxControllerObserver
               base::ToLowerASCII(expected_gas_price_));
     EXPECT_EQ(tx->tx_data->base_data->gas_limit,
               base::ToLowerASCII(expected_gas_limit_));
+    EXPECT_EQ(tx->tx_data->max_priority_fee_per_gas,
+              base::ToLowerASCII(expected_max_priority_fee_per_gas_));
+    EXPECT_EQ(tx->tx_data->max_fee_per_gas,
+              base::ToLowerASCII(expected_max_fee_per_gas_));
     tx_updated_ = true;
   }
 
@@ -112,6 +121,8 @@ class TestEthTxControllerObserver
  private:
   std::string expected_gas_price_;
   std::string expected_gas_limit_;
+  std::string expected_max_priority_fee_per_gas_;
+  std::string expected_max_fee_per_gas_;
   bool tx_updated_ = false;
   bool tx_status_changed_ = false;
   mojom::TransactionStatus expected_status_;
@@ -599,7 +610,8 @@ TEST_F(EthTxControllerUnitTest, ProcessLedgerSignatureFail) {
       tx_data.Clone(), from(),
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
-  TestEthTxControllerObserver observer("", "", mojom::TransactionStatus::Error);
+  TestEthTxControllerObserver observer("", "", "", "",
+                                       mojom::TransactionStatus::Error);
   eth_tx_controller_->AddObserver(observer.GetReceiver());
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
@@ -644,7 +656,7 @@ TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction) {
 
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
-  TestEthTxControllerObserver observer("", "",
+  TestEthTxControllerObserver observer("", "", "", "",
                                        mojom::TransactionStatus::Approved);
   eth_tx_controller_->AddObserver(observer.GetReceiver());
   callback_called = false;
@@ -685,7 +697,7 @@ TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction1559) {
 
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
-  TestEthTxControllerObserver observer("", "",
+  TestEthTxControllerObserver observer("", "", "", "",
                                        mojom::TransactionStatus::Approved);
   eth_tx_controller_->AddObserver(observer.GetReceiver());
   callback_called = false;
@@ -846,6 +858,124 @@ TEST_F(EthTxControllerUnitTest,
   EXPECT_EQ(tx1559->gas_estimation(),
             Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
                 GetMojomGasEstimation()));
+}
+
+TEST_F(EthTxControllerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", "",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", std::vector<uint8_t>()),
+      "0x04", "", "", nullptr);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  // Gas limit should be filled by requesting eth_estimateGas.
+  uint256_t gas_limit_value;
+  EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
+  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+
+  // Gas fee and estimation should be filled by gas oracle.
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(),
+            Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+                GetMojomGasEstimation()));
+
+  // Fail if transaction is not found.
+  callback_called = false;
+  eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
+      "not_exist", "0x1", "0x2", "0x3",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Fail if passing an empty gas limit.
+  callback_called = false;
+  eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
+      tx_meta_id, "", "0x2", "0x3",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Fail if passing an empty max_priority_fee_per_gas.
+  callback_called = false;
+  eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
+      tx_meta_id, "0x1", "", "0x3",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Fail if passing an empty max_fee_per_gas.
+  callback_called = false;
+  eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
+      tx_meta_id, "0x1", "0x2", "",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  const std::string update_max_priority_fee_per_gas_hex_string = "0x3344";
+  const std::string update_max_fee_per_gas_hex_string = "0x5566";
+  const std::string update_gas_limit_hex_string = "0xFDE8";
+
+  uint256_t update_max_priority_fee_per_gas;
+  EXPECT_TRUE(HexValueToUint256(update_max_priority_fee_per_gas_hex_string,
+                                &update_max_priority_fee_per_gas));
+  uint256_t update_max_fee_per_gas;
+  EXPECT_TRUE(HexValueToUint256(update_max_fee_per_gas_hex_string,
+                                &update_max_fee_per_gas));
+  uint256_t update_gas_limit;
+  EXPECT_TRUE(
+      HexValueToUint256(update_gas_limit_hex_string, &update_gas_limit));
+
+  TestEthTxControllerObserver observer(
+      "0x0", update_gas_limit_hex_string,
+      update_max_priority_fee_per_gas_hex_string,
+      update_max_fee_per_gas_hex_string);
+  eth_tx_controller_->AddObserver(observer.GetReceiver());
+
+  callback_called = false;
+  eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
+      tx_meta_id, update_max_priority_fee_per_gas_hex_string,
+      update_max_fee_per_gas_hex_string, update_gas_limit_hex_string,
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_TRUE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(observer.TxUpdated());
+
+  // Get the updated TX.
+  tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->tx->gas_limit(), update_gas_limit);
+  tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(),
+            update_max_priority_fee_per_gas);
+  EXPECT_EQ(tx1559->max_fee_per_gas(), update_max_fee_per_gas);
 }
 
 }  //  namespace brave_wallet

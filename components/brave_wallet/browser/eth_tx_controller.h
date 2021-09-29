@@ -67,11 +67,19 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
                             MakeERC20ApproveDataCallback) override;
   void GetAllTransactionInfo(const std::string& from,
                              GetAllTransactionInfoCallback) override;
+
   void SetGasPriceAndLimitForUnapprovedTransaction(
       const std::string& tx_meta_id,
       const std::string& gas_price,
       const std::string& gas_limit,
       SetGasPriceAndLimitForUnapprovedTransactionCallback callback) override;
+  void SetGasFeeAndLimitForUnapprovedTransaction(
+      const std::string& tx_meta_id,
+      const std::string& max_priority_fee_per_gas,
+      const std::string& max_fee_per_gas,
+      const std::string& gas_limit,
+      SetGasFeeAndLimitForUnapprovedTransactionCallback callback) override;
+
   void ApproveHardwareTransaction(
       const std::string& tx_meta_id,
       ApproveHardwareTransactionCallback callback) override;
@@ -80,6 +88,7 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
                               const std::string& r,
                               const std::string& s,
                               ProcessLedgerSignatureCallback callback) override;
+
   void AddObserver(
       ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) override;
 

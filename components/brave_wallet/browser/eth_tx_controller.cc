@@ -669,6 +669,51 @@ void EthTxController::SetGasPriceAndLimitForUnapprovedTransaction(
   std::move(callback).Run(true);
 }
 
+void EthTxController::SetGasFeeAndLimitForUnapprovedTransaction(
+    const std::string& tx_meta_id,
+    const std::string& max_priority_fee_per_gas,
+    const std::string& max_fee_per_gas,
+    const std::string& gas_limit,
+    SetGasFeeAndLimitForUnapprovedTransactionCallback callback) {
+  if (max_priority_fee_per_gas.empty() || max_fee_per_gas.empty() ||
+      gas_limit.empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  std::unique_ptr<EthTxStateManager::TxMeta> tx_meta =
+      tx_state_manager_->GetTx(tx_meta_id);
+  if (!tx_meta || tx_meta->status != mojom::TransactionStatus::Unapproved) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+
+  uint256_t value;
+  if (!HexValueToUint256(max_priority_fee_per_gas, &value)) {
+    std::move(callback).Run(false);
+    return;
+  }
+  tx1559->set_max_priority_fee_per_gas(value);
+
+  if (!HexValueToUint256(max_fee_per_gas, &value)) {
+    std::move(callback).Run(false);
+    return;
+  }
+  tx1559->set_max_fee_per_gas(value);
+
+  if (!HexValueToUint256(gas_limit, &value)) {
+    std::move(callback).Run(false);
+    return;
+  }
+  tx1559->set_gas_limit(value);
+
+  tx_state_manager_->AddOrUpdateTx(*tx_meta);
+  NotifyUnapprovedTxUpdated(tx_meta.get());
+  std::move(callback).Run(true);
+}
+
 std::unique_ptr<EthTxStateManager::TxMeta> EthTxController::GetTxForTesting(
     const std::string& tx_meta_id) {
   return tx_state_manager_->GetTx(tx_meta_id);
