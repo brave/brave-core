@@ -10,6 +10,7 @@ import * as WalletActions from '../../common/actions/wallet_actions'
 import { TransactionStatusChanged } from '../../common/constants/action_types'
 import { WalletPanelState, PanelState, WalletState, TransactionStatus } from '../../constants/types'
 import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload, EthereumChainRequestPayload } from '../constants/action_types'
+import { fetchSwapQuoteFactory } from '../../common/async/wallet_async_handler'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -192,5 +193,7 @@ handler.on(WalletActions.transactionStatusChanged.getType(), async (store, paylo
     }
   }
 })
+
+handler.on(PanelActions.fetchPanelSwapQuote.getType(), fetchSwapQuoteFactory(PanelActions.setPanelSwapQuote))
 
 export default handler.middleware

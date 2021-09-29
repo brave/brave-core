@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
+import { SimpleActionCreator } from 'redux-act'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
 import {
@@ -12,7 +13,8 @@ import {
   InitializedPayloadType,
   AddUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
-  RemoveUserAssetPayloadType
+  RemoveUserAssetPayloadType,
+  SwapParamsPayloadType
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -24,14 +26,17 @@ import {
   SendTransactionParams,
   TransactionInfo,
   WalletAccountType,
-  ER20TransferParams
+  ER20TransferParams,
+  SwapResponse
 } from '../../constants/types'
 import { GetNetworkInfo } from '../../utils/network-utils'
-import { formatBalance } from '../../utils/format-balances'
+import { formatBalance, toWeiHex } from '../../utils/format-balances'
 import {
   HardwareWalletAccount,
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
+import getSwapConfig from '../../constants/swap.config'
+import { hexStrToNumberArray } from '../../utils/hex-utils'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -339,6 +344,67 @@ export const getBalance = (address: string): Promise<string> => {
     const balance = await controller.getBalance(address)
     resolve(formatBalance(balance.balance, 18))
   })
+}
+
+// fetchSwapQuoteFactory creates a handler function that can be used with
+// both panel and page actions.
+export const fetchSwapQuoteFactory = (
+  setSwapQuote: SimpleActionCreator<SwapResponse>
+) => async (store: Store, payload: SwapParamsPayloadType) => {
+  const swapController = (await getAPIProxy()).swapController
+
+  const {
+    fromAsset,
+    fromAssetAmount,
+    toAsset,
+    toAssetAmount,
+    accountAddress,
+    slippageTolerance,
+    full
+  } = payload
+
+  const config = getSwapConfig(payload.networkChainId)
+
+  const swapParams = {
+    takerAddress: accountAddress,
+    sellAmount: fromAssetAmount || '',
+    buyAmount: toAssetAmount || '',
+    buyToken: toAsset.asset.contractAddress || toAsset.asset.symbol,
+    sellToken: fromAsset.asset.contractAddress || fromAsset.asset.symbol,
+    buyTokenPercentageFee: config.buyTokenPercentageFee,
+    slippagePercentage: slippageTolerance.slippage / 100,
+    feeRecipient: config.feeRecipient,
+    gasPrice: ''
+  }
+
+  const quote = await (
+      full ? swapController.getTransactionPayload(swapParams) : swapController.getPriceQuote(swapParams)
+  )
+
+  if (quote.success && quote.response) {
+    await store.dispatch(setSwapQuote(quote.response))
+
+    if (full) {
+      const {
+        to,
+        data,
+        value,
+        estimatedGas,
+        gasPrice
+      } = quote.response
+
+      const params = {
+        from: accountAddress,
+        to,
+        value: toWeiHex(value, 0),
+        gas: toWeiHex(estimatedGas, 0),
+        gasPrice: toWeiHex(gasPrice, 0),
+        data: hexStrToNumberArray(data)
+      }
+
+      store.dispatch(WalletActions.sendTransaction(params))
+    }
+  }
 }
 
 export default handler.middleware
