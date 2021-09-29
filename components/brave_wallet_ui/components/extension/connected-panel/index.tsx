@@ -34,7 +34,7 @@ import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { WalletAccountType, PanelTypes, EthereumChain, BuySupportedChains, SwapSupportedChains } from '../../../constants/types'
 import { create, background } from 'ethereum-blockies'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 
 export interface Props {
   selectedAccount: WalletAccountType
@@ -101,7 +101,7 @@ const ConnectedPanel = (props: Props) => {
         <StatusRow>
           <OvalButton onClick={connectAction}>
             {isConnected && <BigCheckMark />}
-            <OvalButtonText>{isConnected ? locale.panelConnected : locale.panelNotConnected}</OvalButtonText>
+            <OvalButtonText>{isConnected ? getLocale('braveWalletPanelConnected') : getLocale('braveWalletPanelNotConnected')}</OvalButtonText>
           </OvalButton>
           <OvalButton onClick={navigate('networks')}>
             <OvalButtonText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
@@ -113,7 +113,7 @@ const ConnectedPanel = (props: Props) => {
             <SwitchIcon />
           </AccountCircle>
           <AccountNameText>{reduceAccountDisplayName(selectedAccount.name, 14)}</AccountNameText>
-          <Tooltip text={locale.toolTipCopyToClipboard}>
+          <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
             <AccountAddressText onClick={onCopyToClipboard}>{reduceAddress(selectedAccount.address)}</AccountAddressText>
           </Tooltip>
         </BalanceColumn>

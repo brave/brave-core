@@ -4,7 +4,7 @@ import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { create } from 'ethereum-blockies'
 import { Tooltip } from '../../shared'
 import { WalletAccountType } from '../../../constants/types'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 
 // Styled Components
 import {
@@ -65,7 +65,7 @@ function AccountListItem (props: Props) {
             {isHardwareWallet && <HardwareIcon />}
             <AccountName onClick={onSelectAccount}>{account.name}</AccountName>
           </AccountNameRow>
-          <Tooltip text={locale.toolTipCopyToClipboard}>
+          <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
             <AccountAddress onClick={onCopyToClipboard}>{reduceAddress(account.address)}</AccountAddress>
           </Tooltip>
         </AccountAndAddress>

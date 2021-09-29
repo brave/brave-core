@@ -12,7 +12,7 @@ import {
   TokenInfo,
   AssetPriceInfo
 } from '../../../constants/types'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 
 // Styled Components
 import {
@@ -144,7 +144,7 @@ const PortfolioTransactionItem = (props: Props) => {
       const url = `${exporerURL}/tx/${transaction.txHash}`
       window.open(url, '_blank')
     } else {
-      alert(locale.transactionExplorerMissing)
+      alert(getLocale('braveWalletTransactionExplorerMissing'))
     }
   }
 
@@ -156,7 +156,7 @@ const PortfolioTransactionItem = (props: Props) => {
         <DetailColumn>
           <DetailRow>
             <DetailTextLight>{account?.name}</DetailTextLight>
-            <DetailTextDark>{account?.address.toLowerCase() === transaction?.fromAddress.toLowerCase() ? locale.transactionSent : locale.transactionReceived}</DetailTextDark>
+            <DetailTextDark>{account?.address.toLowerCase() === transaction?.fromAddress.toLowerCase() ? getLocale('braveWalletTransactionSent') : getLocale('braveWalletTransactionReceived')}</DetailTextDark>
             <DetailTextDarkBold>{/*We need to return a Transaction Time Stamp to display date info here*/}</DetailTextDarkBold>
           </DetailRow>
           <DetailRow>

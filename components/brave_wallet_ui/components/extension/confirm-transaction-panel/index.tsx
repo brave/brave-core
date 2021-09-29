@@ -11,7 +11,7 @@ import {
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 import { formatBalance, formatGasFee, formatFiatGasFee, formatFiatBalance } from '../../../utils/format-balances'
 import { NavButton, PanelTab, TransactionDetailBox, EditGas } from '../'
 
@@ -207,9 +207,9 @@ function ConfirmTransactionPanel (props: Props) {
             <>
               <FavIcon src={`chrome://favicon/size/64@1x/${siteURL}`} />
               <URLText>{siteURL}</URLText>
-              <PanelTitle>{locale.allowSpendTitle} {transaction.symbol}?</PanelTitle>
+              <PanelTitle>{getLocale('braveWalletAllowSpendTitle')} {transaction.symbol}?</PanelTitle>
               {/* Will need to allow parameterized locales by introducing the "t" helper. For ex: {t(locale.allowSpendDescription, [spendPayload.erc20Token.symbol])}*/}
-              <Description>{locale.allowSpendDescriptionFirstHalf}{transaction.symbol}{locale.allowSpendDescriptionSecondHalf}</Description>
+              <Description>{getLocale('braveWalletAllowSpendDescriptionFirstHalf')}{transaction.symbol}{getLocale('braveWalletAllowSpendDescriptionSecondHalf')}</Description>
             </>
           ) : (
             <>
@@ -222,7 +222,7 @@ function ConfirmTransactionPanel (props: Props) {
                 <ArrowIcon />
                 <AccountNameText>{reduceAddress(transaction.sendTo)}</AccountNameText>
               </FromToRow>
-              <TransactionTypeText>{locale.send}</TransactionTypeText>
+              <TransactionTypeText>{getLocale('braveWalletSend')}</TransactionTypeText>
               <TransactionAmmountBig>{transaction.sendAmount} {transaction.symbol}</TransactionAmmountBig>
               <TransactionFiatAmountBig>${transaction.sendFiatAmount}</TransactionFiatAmountBig>
             </>
@@ -245,9 +245,9 @@ function ConfirmTransactionPanel (props: Props) {
                 {transactionInfo.txType === TransactionType.ERC20Approve &&
                   <>
                     <MessageBoxRow>
-                      <TransactionTitle>{locale.allowSpendTransactionFee}</TransactionTitle>
+                      <TransactionTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionTitle>
                       {/* Disabled until wired up to the API*/}
-                      <EditButton disabled={true} onClick={onToggleEditGas} >{locale.allowSpendEditButton}</EditButton>
+                      <EditButton disabled={true} onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
                     </MessageBoxRow>
                     <FiatRow>
                       <TransactionTypeText>{transaction.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
@@ -260,19 +260,19 @@ function ConfirmTransactionPanel (props: Props) {
                 {transactionInfo.txType !== TransactionType.ERC20Approve &&
                   <>
                     <SectionRow>
-                      <TransactionTitle>{locale.confirmTransactionGasFee}</TransactionTitle>
+                      <TransactionTitle>{getLocale('braveWalletConfirmTransactionGasFee')}</TransactionTitle>
                       <SectionRightColumn>
                         {/* Disabled until wired up to the API*/}
-                        <EditButton disabled={true} onClick={onToggleEditGas}>{locale.allowSpendEditButton}</EditButton>
+                        <EditButton disabled={true} onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
                         <TransactionTypeText>{transaction.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
                         <TransactionText>${transaction.gasFiatAmount}</TransactionText>
                       </SectionRightColumn>
                     </SectionRow>
                     <Divider />
                     <SectionRow>
-                      <TransactionTitle>{locale.confirmTransactionTotal}</TransactionTitle>
+                      <TransactionTitle>{getLocale('braveWalletConfirmTransactionTotal')}</TransactionTitle>
                       <SectionRightColumn>
-                        <TransactionText>{locale.confirmTransactionAmountGas}</TransactionText>
+                        <TransactionText>{getLocale('braveWalletConfirmTransactionAmountGas')}</TransactionText>
                         <GrandTotalText>{transaction.sendAmount} {transaction.symbol} + {transaction.gasAmount} {selectedNetwork.symbol}</GrandTotalText>
                         <TransactionText>${transaction.grandTotalFiatAmount.toFixed(2)}</TransactionText>
                       </SectionRightColumn>
@@ -290,12 +290,12 @@ function ConfirmTransactionPanel (props: Props) {
           <ButtonRow>
             <NavButton
               buttonType='reject'
-              text={locale.allowSpendRejectButton}
+              text={getLocale('braveWalletAllowSpendRejectButton')}
               onSubmit={onReject}
             />
             <NavButton
               buttonType='confirm'
-              text={locale.allowSpendConfirmButton}
+              text={getLocale('braveWalletAllowSpendConfirmButton')}
               onSubmit={onConfirm}
             />
           </ButtonRow>

@@ -6,7 +6,7 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { create } from 'ethereum-blockies'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { Tooltip } from '../../shared'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   StyledWrapper,
@@ -52,7 +52,7 @@ function SwapHeader (props: Props) {
         <AccountCircle onClick={onShowAccounts} orb={orb}>
           <SwitchIcon />
         </AccountCircle>
-        <Tooltip text={locale.toolTipCopyToClipboard}>
+        <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
           <AccountAndAddress onClick={onCopyToClipboard}>
             <AccountName>{reduceAccountDisplayName(selectedAccount.name, 11)}</AccountName>
             <AccountAddress>{reduceAddress(selectedAccount.address)}</AccountAddress>

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { UserAccountType } from '../../../constants/types'
 import { SearchBar, SelectAccount } from '../../shared'
 import Header from '../../buy-send-swap/select-header'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   SelectWrapper,
@@ -36,8 +36,8 @@ function SelectAccountWithHeader (props: Props) {
 
   return (
     <SelectWrapper>
-      <Header title={locale.selectAccount} onBack={onBack} />
-      <SearchBar placeholder={locale.searchAccount} action={filterAccountList} />
+      <Header title={getLocale('braveWalletSelectAccount')} onBack={onBack} />
+      <SearchBar placeholder={getLocale('braveWalletSearchAccount')} action={filterAccountList} />
       <SelectScrollSearchContainer>
         <SelectAccount
           accounts={filteredAccountList}

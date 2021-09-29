@@ -8,7 +8,7 @@ import {
   ExpandIcon
 } from './style'
 import { WalletMorePopup } from '../../desktop'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 
 export interface Props {
   onExpand: () => void
@@ -23,7 +23,7 @@ const ConnectedHeader = (props: Props) => {
   return (
     <HeaderWrapper>
       <ExpandIcon onClick={onExpand} />
-      <HeaderTitle>{locale.panelTitle}</HeaderTitle>
+      <HeaderTitle>{getLocale('braveWalletPanelTitle')}</HeaderTitle>
       <ActionIcon onClick={onClickMore} />
       {showMore &&
         <WalletMorePopup

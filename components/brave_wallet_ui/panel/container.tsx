@@ -320,7 +320,7 @@ function Container (props: Props) {
   }
 
   const filterList = (event: any) => {
-    filterAppList(event, AppsList, setFilteredAppsList)
+    filterAppList(event, AppsList(), setFilteredAppsList)
   }
 
   const onSelectAccount = (account: WalletAccountType) => () => {
@@ -385,7 +385,7 @@ function Container (props: Props) {
 
   if (!isWalletCreated) {
     return (
-      <PanelWrapper isLonger={false}>
+      <PanelWrapper isLonger={true}>
         <StyledExtensionWrapper>
           <WelcomePanel onRestore={onRestore} onSetup={onSetup} />
         </StyledExtensionWrapper>

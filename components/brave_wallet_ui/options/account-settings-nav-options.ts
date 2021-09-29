@@ -1,13 +1,13 @@
 import { TopTabNavObjectType } from '../constants/types'
-import locale from '../constants/locale'
+import { getLocale } from '../../common/locale'
 
-export const AccountSettingsNavOptions: TopTabNavObjectType[] = [
+export const AccountSettingsNavOptions = (): TopTabNavObjectType[] => [
   {
     id: 'details',
-    name: locale.accountSettingsDetails
+    name: getLocale('braveWalletAccountSettingsDetails')
   },
   {
     id: 'privateKey',
-    name: locale.accountSettingsPrivateKey
+    name: getLocale('braveWalletAccountSettingsPrivateKey')
   }
 ]

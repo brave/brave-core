@@ -9,7 +9,7 @@ import {
   TopRow,
   CloseButton
 } from './style'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 import { PanelTypes } from '../../../constants/types'
 
 export interface Props {
@@ -35,7 +35,7 @@ export default class PanelHeader extends React.PureComponent<Props> {
         </TopRow>
         {useSearch &&
           <SearchBar
-            placeholder={locale.searchText}
+            placeholder={getLocale('braveWalletSearchText')}
             action={searchAction}
           />
         }

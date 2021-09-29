@@ -16,7 +16,7 @@ import {
   HardwareWalletDerivationPathsMapping
 } from './types'
 import { reduceAddress } from '../../../../../utils/reduce-address'
-import locale from '../../../../../constants/locale'
+import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
 import { SearchBar } from '../../../../shared'
 import { DisclaimerText } from '../style'
@@ -94,9 +94,9 @@ export default function (props: Props) {
         </Select>
       </SelectWrapper>
       <DisclaimerWrapper>
-        <DisclaimerText>{locale.switchHDPathTextHardwareWallet}</DisclaimerText>
+        <DisclaimerText>{getLocale('braveWalletSwitchHDPathTextHardwareWallet')}</DisclaimerText>
       </DisclaimerWrapper>
-      <SearchBar placeholder={locale.searchScannedAccounts} action={filterAccountList} />
+      <SearchBar placeholder={getLocale('braveWalletSearchScannedAccounts')} action={filterAccountList} />
       <HardwareWalletAccountsList>
         {filteredAccountList.map((account) => {
           const { selectedDerivationPaths } = props
@@ -118,8 +118,8 @@ export default function (props: Props) {
         })}
       </HardwareWalletAccountsList>
       <ButtonsContainer>
-        <NavButton onSubmit={onLoadMore} text={locale.loadMoreAccountsHardwareWallet} buttonType='primary' />
-        <NavButton onSubmit={onAddAccounts} text={locale.addCheckedAccountsHardwareWallet} buttonType='primary' />
+        <NavButton onSubmit={onLoadMore} text={getLocale('braveWalletLoadMoreAccountsHardwareWallet')} buttonType='primary' />
+        <NavButton onSubmit={onAddAccounts} text={getLocale('braveWalletAddCheckedAccountsHardwareWallet')} buttonType='primary' />
       </ButtonsContainer>
     </>
   )

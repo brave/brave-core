@@ -1,5 +1,5 @@
 import * as React from 'react'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 import PanelTooltip from '../panel-tooltip'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 
@@ -35,24 +35,24 @@ function ConnectedBottomNav (props: Props) {
         <PanelTooltip
           position='right'
           isDisabled={isBuyDisabled}
-          text={`${reduceNetworkDisplayName(selectedNetwork.chainName)} ${locale.bssToolTip}`}
+          text={`${reduceNetworkDisplayName(selectedNetwork.chainName)} ${getLocale('braveWalletBssToolTip')}`}
         >
           <NavButton disabled={isBuyDisabled} onClick={navigate('buy')}>
-            <NavButtonText disabled={isBuyDisabled}>{locale.buy}</NavButtonText>
+            <NavButtonText disabled={isBuyDisabled}>{getLocale('braveWalletBuy')}</NavButtonText>
           </NavButton>
         </PanelTooltip>
         <NavDivider />
         <NavButton onClick={navigate('send')}>
-          <NavButtonText>{locale.send}</NavButtonText>
+          <NavButtonText>{getLocale('braveWalletSend')}</NavButtonText>
         </NavButton>
         <NavDivider />
         <PanelTooltip
           position='left'
           isDisabled={isSwapDisabled}
-          text={`${reduceNetworkDisplayName(selectedNetwork.chainName)} ${locale.bssToolTip}`}
+          text={`${reduceNetworkDisplayName(selectedNetwork.chainName)} ${getLocale('braveWalletBssToolTip')}`}
         >
           <NavButton disabled={isSwapDisabled} onClick={navigate('swap')}>
-            <NavButtonText disabled={isSwapDisabled}>{locale.swap}</NavButtonText>
+            <NavButtonText disabled={isSwapDisabled}>{getLocale('braveWalletSwap')}</NavButtonText>
           </NavButton>
         </PanelTooltip>
         {/* <NavDivider /> */}

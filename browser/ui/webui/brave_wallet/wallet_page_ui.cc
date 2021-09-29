@@ -42,10 +42,7 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(kWalletPageHost);
 
-  static constexpr webui::LocalizedString kStrings[] = {
-      {"braveWallet", IDS_BRAVE_WALLET},
-  };
-  source->AddLocalizedStrings(kStrings);
+  source->AddLocalizedStrings(brave_wallet::kLocalizedStrings);
   NavigationBarDataProvider::Initialize(source);
   webui::SetupWebUIDataSource(
       source,

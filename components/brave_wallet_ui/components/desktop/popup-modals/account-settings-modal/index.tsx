@@ -16,7 +16,7 @@ import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import { NavButton } from '../../../extension'
 import { Tooltip } from '../../../shared'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
 
 // Styled Components
 import {
@@ -139,7 +139,7 @@ const AddAccountModal = (props: Props) => {
     <PopupModal title={title} onClose={onClickClose}>
       {!hideNav &&
         <TopTabNav
-          tabList={AccountSettingsNavOptions}
+          tabList={AccountSettingsNavOptions()}
           onSubmit={changeTab}
           selectedTab={tab}
         />
@@ -149,27 +149,27 @@ const AddAccountModal = (props: Props) => {
           <>
             <Input
               value={accountName}
-              placeholder={locale.addAccountPlaceholder}
+              placeholder={getLocale('braveWalletAddAccountPlaceholder')}
               onChange={handleAccountNameChanged}
             />
             {updateError &&
-              <ErrorText>{locale.accountSettingsUpdateError}</ErrorText>
+              <ErrorText>{getLocale('braveWalletAccountSettingsUpdateError')}</ErrorText>
             }
             <QRCodeWrapper src={qrCode} />
-            <Tooltip text={locale.toolTipCopyToClipboard}>
+            <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
               <AddressButton onClick={onCopyToClipboard}>{reduceAddress(account.address)}<CopyIcon /></AddressButton>
             </Tooltip>
             <ButtonRow>
               <NavButton
                 onSubmit={onSubmitUpdateName}
                 disabled={!accountName}
-                text={locale.accountSettingsSave}
+                text={getLocale('braveWalletAccountSettingsSave')}
                 buttonType='secondary'
               />
               {account?.accountType === 'Secondary' &&
                 <NavButton
                   onSubmit={removeAccount}
-                  text={locale.accountSettingsRemove}
+                  text={getLocale('braveWalletAccountSettingsRemove')}
                   buttonType='danger'
                 />
               }
@@ -179,17 +179,17 @@ const AddAccountModal = (props: Props) => {
         {tab === 'privateKey' &&
           <PrivateKeyWrapper>
             <WarningWrapper>
-              <WarningText>{locale.accountSettingsDisclaimer}</WarningText>
+              <WarningText>{getLocale('braveWalletAccountSettingsDisclaimer')}</WarningText>
             </WarningWrapper>
             {showPrivateKey &&
-              <Tooltip text={locale.toolTipCopyToClipboard}>
+              <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
                 <PrivateKeyBubble onClick={onCopyPrivateKey}>{privateKey}</PrivateKeyBubble>
               </Tooltip>
             }
             <ButtonWrapper>
               <NavButton
                 onSubmit={showPrivateKey === false ? onShowPrivateKey : onHidePrivateKey}
-                text={showPrivateKey === false ? locale.accountSettingsShowKey : locale.accountSettingsHideKey}
+                text={showPrivateKey === false ? getLocale('braveWalletAccountSettingsShowKey') : getLocale('braveWalletAccountSettingsHideKey')}
                 buttonType='primary'
               />
             </ButtonWrapper>

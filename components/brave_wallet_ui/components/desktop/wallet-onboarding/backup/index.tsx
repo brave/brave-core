@@ -10,7 +10,7 @@ import {
   SkipButton
 } from './style'
 import { NavButton } from '../../../extension'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
 import { Checkbox } from 'brave-ui'
 
 export interface Props {
@@ -29,15 +29,15 @@ function OnboardingRecovery (props: Props) {
       <IconBackground>
         <PageIcon />
       </IconBackground>
-      <Title>{locale.backupIntroTitle}</Title>
-      <Description>{locale.backupIntroDescription}</Description>
+      <Title>{getLocale('braveWalletBackupIntroTitle')}</Title>
+      <Description>{getLocale('braveWalletBackupIntroDescription')}</Description>
       <TermsRow>
         <Checkbox value={{ backupTerms: isBackupTermsAccepted }} onChange={onSubmitTerms}>
-          <div data-key='backupTerms'>{locale.backupIntroTerms}</div>
+          <div data-key='backupTerms'>{getLocale('braveWalletBackupIntroTerms')}</div>
         </Checkbox>
       </TermsRow>
-      <NavButton disabled={!isBackupTermsAccepted} buttonType='primary' text={locale.buttonContinue} onSubmit={onSubmit} />
-      <SkipButton onClick={onCancel}>{isOnboarding ? locale.backupButtonSkip : locale.backupButtonCancel}</SkipButton>
+      <NavButton disabled={!isBackupTermsAccepted} buttonType='primary' text={getLocale('braveWalletButtonContinue')} onSubmit={onSubmit} />
+      <SkipButton onClick={onCancel}>{isOnboarding ? getLocale('braveWalletBackupButtonSkip') : getLocale('braveWalletBackupButtonCancel')}</SkipButton>
     </StyledWrapper>
   )
 }

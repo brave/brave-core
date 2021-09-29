@@ -5,7 +5,7 @@ import SelectAssetItem from '../select-asset-item'
 import { AccountAssetOptionType } from '../../../constants/types'
 import { SearchBar } from '../../shared'
 import Header from '../select-header'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   SelectWrapper,
@@ -47,8 +47,8 @@ function SelectAsset (props: Props) {
 
   return (
     <SelectWrapper>
-      <Header title={locale.selectAsset} onBack={onBack} />
-      <SearchBar placeholder={locale.searchAsset} action={filterAssetList} />
+      <Header title={getLocale('braveWalletSelectAsset')} onBack={onBack} />
+      <SearchBar placeholder={getLocale('braveWalletSearchAsset')} action={filterAssetList} />
       <SelectScrollSearchContainer>
         {
           filteredAssetList.map((asset: AccountAssetOptionType) =>
