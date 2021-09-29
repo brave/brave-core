@@ -1,3 +1,11 @@
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("mojom") {
+  sources = [ "brave_ads_host.mojom" ]
+
+  deps = [ "//mojo/public/mojom/base" ]
+}
+
 static_library("common") {
   sources = [
     "features.cc",
