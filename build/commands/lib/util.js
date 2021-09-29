@@ -385,8 +385,10 @@ const util = {
       const androidTouchtoFillResDest = path.join(config.srcDir, 'chrome', 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
       const androidToolbarResSource = path.join(config.braveCoreDir, 'browser', 'ui', 'android', 'toolbar', 'java', 'res')
       const androidToolbarResDest = path.join(config.srcDir, 'chrome', 'browser', 'ui', 'android', 'toolbar', 'java', 'res')
-      const androidComponentsResSource = path.join(config.braveCoreDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
-      const androidComponentsResDest = path.join(config.srcDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
+      const androidComponentsWidgetResSource = path.join(config.braveCoreDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
+      const androidComponentsWidgetResDest = path.join(config.srcDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
+      const androidComponentsStylesResSource = path.join(config.braveCoreDir, 'components', 'browser_ui', 'styles', 'android', 'java', 'res')
+      const androidComponentsStylesResDest = path.join(config.srcDir, 'components', 'browser_ui', 'styles', 'android', 'java', 'res')
       const androidSafeBrowsingResSource = path.join(config.braveCoreDir, 'browser', 'safe_browsing', 'android', 'java', 'res')
       const androidSafeBrowsingResDest = path.join(config.srcDir, 'chrome', 'browser', 'safe_browsing', 'android', 'java', 'res')
 
@@ -399,7 +401,8 @@ const util = {
         [androidContentPublicResSource]: [androidContentPublicResDest],
         [androidTouchtoFillResSource]: [androidTouchtoFillResDest],
         [androidToolbarResSource]: [androidToolbarResDest],
-        [androidComponentsResSource]: [androidComponentsResDest],
+        [androidComponentsWidgetResSource]: [androidComponentsWidgetResDest],
+        [androidComponentsStylesResSource]: [androidComponentsStylesResDest],
         [androidSafeBrowsingResSource]: [androidSafeBrowsingResDest]
       }
 
