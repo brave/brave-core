@@ -1,0 +1,19 @@
+source_set("renderer") {
+  sources = [
+    "brave_ads_js_handler.cc",
+    "brave_ads_js_handler.h",
+    "brave_ads_render_frame_observer.cc",
+    "brave_ads_render_frame_observer.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_ads/common:mojom",
+    "//content/public/renderer",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//v8",
+  ]
+}
