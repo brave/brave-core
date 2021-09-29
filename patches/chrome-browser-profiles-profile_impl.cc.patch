@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/profiles/profile_impl.cc b/chrome/browser/profiles/profile_impl.cc
-index 52d23e27761f69041489b814090bd88272252b68..0538dfe15a1688a1792ab874ba620d7de768c638 100644
+index 50c668d419f7116f4f73ee73aa9da7986dab6bdc..eaa0417d481621f4cba1c0611db5781c9db94cd9 100644
 --- a/chrome/browser/profiles/profile_impl.cc
 +++ b/chrome/browser/profiles/profile_impl.cc
 @@ -388,7 +388,7 @@ std::unique_ptr<Profile> Profile::CreateProfile(const base::FilePath& path,
      NOTREACHED();
    }
-
+ 
 -  std::unique_ptr<Profile> profile = base::WrapUnique(new ProfileImpl(
 +  std::unique_ptr<Profile> profile = base::WrapUnique(new BraveProfileImpl(
        path, delegate, create_mode, creation_time, io_task_runner));
