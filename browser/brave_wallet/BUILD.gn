@@ -38,16 +38,6 @@ source_set("brave_wallet") {
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
   ]
-  if (is_android) {
-    sources += [
-      "./android/asset_ratio_controller_factory_android.cc",
-      "./android/erc_token_registry_factory_android.cc",
-      "./android/eth_json_rpc_controller_factory_android.cc",
-      "./android/eth_tx_controller_factory_android.cc",
-      "./android/keyring_controller_factory_android.cc",
-    ]
-    deps += [ "//brave/build/android:jni_headers" ]
-  }
   if (enable_extensions) {
     deps += [
       "//brave/browser/extensions",
