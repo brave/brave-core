@@ -54,6 +54,7 @@ import { onConnectHardwareWallet, getBalance } from '../common/async/wallet_asyn
 
 import { formatBalance, toWeiHex } from '../utils/format-balances'
 import { useSwap, useAssets } from '../common/hooks'
+import { stripERC20TokenImageURL } from '../utils/string-utils'
 
 type Props = {
   wallet: WalletState
@@ -420,7 +421,7 @@ function Container (props: Props) {
     props.walletActions.addUserAsset({
       token: {
         ...token,
-        logo: token.logo?.replace('chrome://erc-token-images/', '')
+        logo: stripERC20TokenImageURL(token.logo)
       },
       chainId: selectedNetwork.chainId
     })
