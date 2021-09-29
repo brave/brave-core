@@ -81,14 +81,17 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         mVpnSwitch.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                BraveVpnUtils.showProgressDialog(getActivity());
                 if (mVpnSwitch != null) {
                     mVpnSwitch.setChecked(
                             BraveVpnProfileUtils.getInstance(getActivity()).isVPNConnected());
                 }
                 if (BraveVpnProfileUtils.getInstance(getActivity()).isVPNConnected()) {
+                    BraveVpnUtils.showProgressDialog(
+                            getActivity(), getResources().getString(R.string.vpn_disconnect_text));
                     BraveVpnProfileUtils.getInstance(getActivity()).stopVpn();
                 } else {
+                    BraveVpnUtils.showProgressDialog(
+                            getActivity(), getResources().getString(R.string.vpn_connect_text));
                     if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
                         verifyPurchase(true);
                     } else {
@@ -177,7 +180,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         super.onResume();
         if (BraveVpnUtils.mIsServerLocationChanged) {
             BraveVpnUtils.mIsServerLocationChanged = false;
-            BraveVpnUtils.showProgressDialog(getActivity());
+            BraveVpnUtils.showProgressDialog(
+                    getActivity(), getResources().getString(R.string.vpn_connect_text));
             verifyPurchase(false);
         } else {
             BraveVpnUtils.dismissProgressDialog();
