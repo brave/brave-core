@@ -6,9 +6,6 @@ import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
-# Refer to the keyed API spec for more details about the Brave Services Key
-defines = brave_service_key_defines
-
 source_set("net") {
   # Remove when https://github.com/brave/brave-browser/issues/10659 is resolved
   check_includes = false

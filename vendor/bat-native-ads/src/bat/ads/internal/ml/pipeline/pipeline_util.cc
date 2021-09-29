@@ -10,15 +10,21 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "base/values.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/ml_aliases.h"
 #include "bat/ads/internal/ml/ml_transformation_util.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
+#include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
+#include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
+#include "bat/ads/internal/ml/transformation/normalization_transformation.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace ml {
 namespace pipeline {
+
+namespace {
 
 absl::optional<TransformationVector> ParsePipelineTransformations(
     base::Value* transformations_value) {
@@ -167,6 +173,8 @@ absl::optional<model::Linear> ParsePipelineClassifier(
       model::Linear(weights, specified_biases);
   return linear_model;
 }
+
+}  // namespace
 
 absl::optional<PipelineInfo> ParsePipelineJSON(const std::string& json) {
   absl::optional<base::Value> root = base::JSONReader::Read(json);

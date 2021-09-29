@@ -9,7 +9,7 @@ import { PendingRewardsView } from './pending_rewards_view'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 
-import * as styles from './rewards_summary.style'
+import * as style from './rewards_summary.style'
 
 const monthFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'long',
@@ -17,30 +17,32 @@ const monthFormatter = new Intl.DateTimeFormat(undefined, {
 })
 
 export interface RewardsSummaryData {
-  grantClaims: number
   adEarnings: number
   autoContributions: number
   oneTimeTips: number
   monthlyTips: number
+  pendingTips: number
 }
 
 interface Props {
   data: RewardsSummaryData
+  hideAdEarnings: boolean
   earningsLastMonth: number
-  nextPaymentDate: Date
+  nextPaymentDate: number
   exchangeRate: number
   exchangeCurrency?: string
+  onViewPendingTips?: () => void
 }
 
 export function RewardsSummary (props: Props) {
   const { getString } = React.useContext(LocaleContext)
   const { data } = props
 
-  function renderRow (message: string, amount: number) {
+  function renderRow (amount: number, message: string, key: string) {
     return (
       <tr>
         <td>{getString(message)}</td>
-        <td className='amount'>
+        <td className='amount' data-test-id={`rewards-summary-${key}`}>
           <TokenAmount
             minimumFractionDigits={2}
             amount={amount}
@@ -57,32 +59,59 @@ export function RewardsSummary (props: Props) {
     )
   }
 
+  function renderPendingTips () {
+    if (!data.pendingTips || !props.onViewPendingTips) {
+      return null
+    }
+
+    return (
+      <style.pendingTips>
+        <style.pendingAmount>
+          <TokenAmount minimumFractionDigits={2} amount={data.pendingTips} />
+        </style.pendingAmount>
+        <style.pendingText>
+          {getString('walletPendingContributions')}
+        </style.pendingText>
+        <style.pendingAction>
+          <button onClick={props.onViewPendingTips}>
+            {getString('walletSeeAll')}
+          </button>
+        </style.pendingAction>
+      </style.pendingTips>
+    )
+  }
+
   return (
-    <styles.root>
-      <styles.header>
+    <style.root>
+      <style.header>
         <div>{getString('walletRewardsSummary')}</div>
         <div>{monthFormatter.format(Date.now())}</div>
-      </styles.header>
-      <styles.body>
-        <styles.dataTable>
+      </style.header>
+      <style.body>
+        {renderPendingTips()}
+        <style.dataTable>
           <table>
-            <thead>
-              <tr><th colSpan={3}>{getString('walletHistory')}</th></tr>
-            </thead>
             <tbody>
-            {renderRow('walletTotalGrantsClaimed', data.grantClaims)}
-            {renderRow('walletRewardsFromAds', data.adEarnings)}
-            {renderRow('walletAutoContribute', data.autoContributions)}
-            {renderRow('walletOneTimeTips', data.oneTimeTips)}
-            {renderRow('walletMonthlyTips', data.monthlyTips)}
+              {
+                // Ad earnings may be hidden to account for the fact that
+                // earnings are directly transfered to users that have linked
+                // external wallets, and the client may not have knowledge of
+                // those transfer amounts. In such a case, displaying zero would
+                // be misleading.
+                !props.hideAdEarnings &&
+                  renderRow(data.adEarnings, 'walletRewardsFromAds', 'ads')
+              }
+              {renderRow(-data.autoContributions, 'walletAutoContribute', 'ac')}
+              {renderRow(-data.oneTimeTips, 'walletOneTimeTips', 'one-time')}
+              {renderRow(-data.monthlyTips, 'walletMonthlyTips', 'monthly')}
             </tbody>
           </table>
-        </styles.dataTable>
+        </style.dataTable>
         <PendingRewardsView
           amount={props.earningsLastMonth}
           nextPaymentDate={props.nextPaymentDate}
         />
-      </styles.body>
-    </styles.root>
+      </style.body>
+    </style.root>
   )
 }

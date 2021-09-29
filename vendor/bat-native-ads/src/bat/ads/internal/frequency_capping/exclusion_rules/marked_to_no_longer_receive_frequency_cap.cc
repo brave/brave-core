@@ -5,13 +5,8 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_to_no_longer_receive_frequency_cap.h"
 
-#include <algorithm>
-
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/client/client.h"
-#include "bat/ads/internal/client/preferences/filtered_category_info.h"
+#include "bat/ads/internal/segments/segments_util.h"
 
 namespace ads {
 
@@ -35,18 +30,12 @@ bool MarkedToNoLongerReceiveFrequencyCap::ShouldExclude(
   return false;
 }
 
-std::string MarkedToNoLongerReceiveFrequencyCap::get_last_message() const {
+std::string MarkedToNoLongerReceiveFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
 bool MarkedToNoLongerReceiveFrequencyCap::DoesRespectCap(
     const CreativeAdInfo& ad) {
-  const FilteredCategoryList filtered_categories =
-      Client::Get()->get_filtered_categories();
-  if (filtered_categories.empty()) {
-    return true;
-  }
-
   if (ShouldFilterSegment(ad.segment)) {
     return false;
   }

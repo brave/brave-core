@@ -16,10 +16,16 @@
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
+#include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
+#include "brave/components/brave_vpn/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/brave_browser.h"
@@ -128,6 +134,14 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
       kTabsSearchShow,
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  pref_change_registrar_.Add(
+      brave_vpn::prefs::kBraveVPNShowButton,
+      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                          base::Unretained(this)));
+#endif
+
   // Show the correct value in settings on initial start
   UpdateSearchTabsButtonState();
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -165,7 +179,15 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == kTabsSearchShow) {
     UpdateSearchTabsButtonState();
+    return;
   }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  if (pref_name == brave_vpn::prefs::kBraveVPNShowButton) {
+    vpn_panel_host_.ResetBubbleManager();
+    return;
+  }
+#endif
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
@@ -199,6 +221,24 @@ ContentsLayoutManager* BraveBrowserView::GetContentsLayoutManager() const {
   return BrowserView::GetContentsLayoutManager();
 }
 #endif
+
+void BraveBrowserView::ShowBraveVPNBubble() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  vpn_panel_host_.ShowBraveVPNPanel();
+#endif
+}
+
+views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  auto* vpn_button =
+      static_cast<BraveToolbarView*>(toolbar())->brave_vpn_button();
+  if (vpn_button->GetVisible())
+    return vpn_button;
+  return toolbar()->app_menu_button();
+#else
+  return nullptr;
+#endif
+}
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
   BookmarkButton* button =
@@ -297,6 +337,11 @@ views::View* BraveBrowserView::GetWalletButtonAnchorView() {
 void BraveBrowserView::CreateWalletBubble() {
   DCHECK(GetWalletButton());
   GetWalletButton()->ShowWalletBubble();
+}
+
+void BraveBrowserView::CreateApproveWalletBubble() {
+  DCHECK(GetWalletButton());
+  GetWalletButton()->ShowApproveWalletBubble();
 }
 
 void BraveBrowserView::CloseWalletBubble() {

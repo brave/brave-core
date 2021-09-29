@@ -5,10 +5,8 @@
 
 #include "bat/ads/internal/catalog/catalog_util.h"
 
-#include <algorithm>
-#include <cstdint>
-
 #include "base/time/time.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/pref_names.h"
@@ -26,39 +24,17 @@ bool DoesCatalogExist() {
 bool HasCatalogExpired() {
   const base::Time now = base::Time::Now();
 
-  const int64_t catalog_last_updated =
-      AdsClientHelper::Get()->GetInt64Pref(prefs::kCatalogLastUpdated);
+  const double catalog_last_updated_timestamp =
+      AdsClientHelper::Get()->GetDoublePref(prefs::kCatalogLastUpdated);
 
-  const base::Time time = base::Time::FromDoubleT(catalog_last_updated);
+  const base::Time time =
+      base::Time::FromDoubleT(catalog_last_updated_timestamp);
 
   if (now < time + base::TimeDelta::FromDays(kCatalogLifespanInDays)) {
     return false;
   }
 
   return true;
-}
-
-SegmentList GetSegments(const Catalog& catalog) {
-  SegmentList segments;
-
-  const CatalogCampaignList catalog_campaigns = catalog.GetCampaigns();
-  for (const auto& catalog_campaign : catalog_campaigns) {
-    CatalogCreativeSetList catalog_creative_sets =
-        catalog_campaign.creative_sets;
-    for (const auto& catalog_creative_set : catalog_creative_sets) {
-      CatalogSegmentList catalog_segments = catalog_creative_set.segments;
-      for (const auto& catalog_segment : catalog_segments) {
-        segments.push_back(catalog_segment.name);
-      }
-    }
-  }
-
-  // Remove duplicates
-  std::sort(segments.begin(), segments.end());
-  const auto iter = std::unique(segments.begin(), segments.end());
-  segments.erase(iter, segments.end());
-
-  return segments;
 }
 
 }  // namespace ads

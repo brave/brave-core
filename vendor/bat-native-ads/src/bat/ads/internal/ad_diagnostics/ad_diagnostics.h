@@ -9,14 +9,16 @@
 #include <memory>
 
 #include "base/containers/flat_map.h"
-#include "bat/ads/ads.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry.h"
+#include "bat/ads/ads_aliases.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry_types.h"
 
 namespace base {
 class Value;
 }
 
 namespace ads {
+
+class AdDiagnosticsEntry;
 
 class AdDiagnostics final {
  public:

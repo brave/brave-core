@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.feed;
 
 import android.app.Activity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 
@@ -51,13 +52,14 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             PrivacyPreferencesManagerImpl privacyPreferencesManager,
             @NonNull Supplier<Toolbar> toolbarSupplier,
             FeedLaunchReliabilityLoggingState launchReliabilityLoggingState,
-            @Nullable FeedSwipeRefreshLayout swipeRefreshLayout, boolean overScrollDisabled) {
+            @Nullable FeedSwipeRefreshLayout swipeRefreshLayout, boolean overScrollDisabled,
+            @Nullable ViewGroup viewportView) {
         super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader,
                 sectionHeaderView, showDarkBackground, delegate, pageNavigationDelegate, profile,
                 isPlaceholderShownInitially, bottomSheetController, shareDelegateSupplier,
                 externalScrollableContainerDelegate, launchOrigin, privacyPreferencesManager,
                 toolbarSupplier, launchReliabilityLoggingState, swipeRefreshLayout,
-                overScrollDisabled);
+                overScrollDisabled, viewportView);
     }
 
     @Override

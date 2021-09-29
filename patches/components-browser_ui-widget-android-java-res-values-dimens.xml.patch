@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/widget/android/java/res/values/dimens.xml b/components/browser_ui/widget/android/java/res/values/dimens.xml
-index 19b1cdc5576988473782340b246283e07b89ccf2..932e9757267fabafee90bad6ba469b5e120ac28c 100644
+index 42489b70d88c8557528fd4d5c36a81e1f9013fce..1974490a020f5f4c29c0448e8ddefdacff697098 100644
 --- a/components/browser_ui/widget/android/java/res/values/dimens.xml
 +++ b/components/browser_ui/widget/android/java/res/values/dimens.xml
 @@ -65,7 +65,7 @@
@@ -8,6 +8,6 @@ index 19b1cdc5576988473782340b246283e07b89ccf2..932e9757267fabafee90bad6ba469b5e
           24dp is needed to completely round the corners. -->
 -    <dimen name="modern_toolbar_background_corner_radius">24dp</dimen>
 +    <dimen name="modern_toolbar_background_corner_radius">8dp</dimen>
+     <dimen name="toolbar_text_box_elevation">@dimen/default_elevation_2</dimen>
  
      <!-- Promo cards dimensions -->
-     <dimen name="promo_image_size">24dp</dimen>

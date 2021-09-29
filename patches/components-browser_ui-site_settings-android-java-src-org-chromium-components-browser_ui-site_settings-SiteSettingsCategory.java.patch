@@ -1,0 +1,26 @@
+diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
+index 5c0f84d697b29..0944d227e28c5 100644
+--- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
++++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
+@@ -42,7 +42,7 @@ public class SiteSettingsCategory {
+             Type.CLIPBOARD, Type.COOKIES, Type.IDLE_DETECTION, Type.DEVICE_LOCATION,
+             Type.JAVASCRIPT, Type.MICROPHONE, Type.NFC, Type.NOTIFICATIONS, Type.POPUPS,
+             Type.PROTECTED_MEDIA, Type.SENSORS, Type.SOUND, Type.USB, Type.VIRTUAL_REALITY,
+-            Type.USE_STORAGE})
++            Type.USE_STORAGE, Type.AUTOPLAY})
+     @Retention(RetentionPolicy.SOURCE)
+     public @interface Type {
+         // All updates here must also be reflected in {@link #preferenceKey(int)
+@@ -70,10 +70,11 @@ public class SiteSettingsCategory {
+         int BLUETOOTH = 20;
+         int VIRTUAL_REALITY = 21;
+         int USE_STORAGE = 22;
++        int AUTOPLAY = 23;
+         /**
+          * Number of handled categories used for calculating array sizes.
+          */
+-        int NUM_ENTRIES = 23;
++        int NUM_ENTRIES = 24;
+     }
+ 
+     private final BrowserContextHandle mBrowserContextHandle;

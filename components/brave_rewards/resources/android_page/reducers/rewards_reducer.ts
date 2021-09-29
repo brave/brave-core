@@ -65,6 +65,10 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
+      if (action.payload.result === 0) { // type::Result::LEDGER_OK
+        chrome.send('brave_rewards.fetchBalance')
+      }
+
       state.externalWallet = action.payload.wallet
       break
     }

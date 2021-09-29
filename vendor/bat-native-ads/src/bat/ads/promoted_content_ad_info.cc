@@ -10,8 +10,6 @@
 
 namespace ads {
 
-struct ConfirmationType;
-
 PromotedContentAdInfo::PromotedContentAdInfo() = default;
 
 PromotedContentAdInfo::PromotedContentAdInfo(

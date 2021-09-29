@@ -13,6 +13,11 @@
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 
 class ChromeBrowserState;
+class KeyedService;
+
+namespace web {
+class BrowserState;
+}  // namespace web
 
 namespace brave_wallet {
 
@@ -35,8 +40,12 @@ class AssetRatioControllerFactory : public BrowserStateKeyedServiceFactory {
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       web::BrowserState* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
+  web::BrowserState* GetBrowserStateToUse(
+      web::BrowserState* context) const override;
 
-  DISALLOW_COPY_AND_ASSIGN(AssetRatioControllerFactory);
+  AssetRatioControllerFactory(const AssetRatioControllerFactory&) = delete;
+  AssetRatioControllerFactory& operator=(const AssetRatioControllerFactory&) =
+      delete;
 };
 
 }  // namespace brave_wallet

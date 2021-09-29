@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/statement/statement.h"
 
+#include "base/check.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/statement_info.h"
@@ -17,9 +18,9 @@ Statement::Statement(AdRewards* ad_rewards) : ad_rewards_(ad_rewards) {
 
 Statement::~Statement() = default;
 
-StatementInfo Statement::Get(const int64_t from_timestamp,
-                             const int64_t to_timestamp) const {
-  DCHECK(to_timestamp >= from_timestamp);
+StatementInfo Statement::Get(const base::Time& from,
+                             const base::Time& to) const {
+  DCHECK(to >= from);
 
   StatementInfo statement;
 
@@ -28,12 +29,9 @@ StatementInfo Statement::Get(const int64_t from_timestamp,
   statement.ads_received_this_month = GetAdsReceivedThisMonth();
 
   statement.earnings_this_month = GetEarningsForThisMonth();
-
   statement.earnings_last_month = GetEarningsForLastMonth();
 
-  statement.cleared_transactions =
-      transactions::GetCleared(from_timestamp, to_timestamp);
-
+  statement.cleared_transactions = transactions::GetCleared(from, to);
   statement.uncleared_transactions = transactions::GetUncleared();
 
   return statement;
@@ -48,7 +46,7 @@ double Statement::GetEarningsForThisMonth() const {
 double Statement::GetEarningsForLastMonth() const {
   const base::Time now = base::Time::Now();
   base::Time::Exploded exploded;
-  now.UTCExplode(&exploded);
+  now.LocalExplode(&exploded);
 
   exploded.month--;
   if (exploded.month < 1) {
@@ -59,7 +57,7 @@ double Statement::GetEarningsForLastMonth() const {
   exploded.day_of_month = 1;
 
   base::Time last_month;
-  const bool success = base::Time::FromUTCExploded(exploded, &last_month);
+  const bool success = base::Time::FromLocalExploded(exploded, &last_month);
   DCHECK(success);
 
   return ad_rewards_->GetEarningsForMonth(last_month);

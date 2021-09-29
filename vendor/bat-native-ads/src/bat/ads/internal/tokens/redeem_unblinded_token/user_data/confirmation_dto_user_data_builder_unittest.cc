@@ -5,10 +5,12 @@
 
 #include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_dto_user_data_builder.h"
 
+#include <memory>
 #include <string>
 
 #include "bat/ads/internal/database/tables/conversion_queue_database_table.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -160,9 +162,9 @@ TEST_F(BatAdsConfirmationDtoUserDataTest, BuildWithConversion) {
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-  info.timestamp = Now();
   info.conversion_id = "smartbrownfoxes42";
   info.advertiser_public_key = "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
+  info.confirm_at = Now();
   conversion_queue_items.push_back(info);
 
   Save(conversion_queue_items);

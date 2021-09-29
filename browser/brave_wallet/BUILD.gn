@@ -1,5 +1,7 @@
+import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
+import("//testing/test.gni")
 
 assert(brave_wallet_enabled)
 
@@ -11,6 +13,10 @@ source_set("brave_wallet") {
     "asset_ratio_controller_factory.h",
     "brave_wallet_context_utils.cc",
     "brave_wallet_context_utils.h",
+    "brave_wallet_service_factory.cc",
+    "brave_wallet_service_factory.h",
+    "erc_token_images_source.cc",
+    "erc_token_images_source.h",
     "eth_tx_controller_factory.cc",
     "eth_tx_controller_factory.h",
     "keyring_controller_factory.cc",
@@ -24,17 +30,21 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/factory",
     "//chrome/browser/profiles:profiles",
     "//components/keyed_service/content:content",
     "//components/user_prefs",
     "//content/public/browser",
     "//extensions/buildflags",
     "//services/network/public/cpp",
+    "//third_party/abseil-cpp:absl",
   ]
   if (is_android) {
     sources += [
       "./android/asset_ratio_controller_factory_android.cc",
       "./android/erc_token_registry_factory_android.cc",
+      "./android/eth_json_rpc_controller_factory_android.cc",
+      "./android/eth_tx_controller_factory_android.cc",
       "./android/keyring_controller_factory_android.cc",
     ]
     deps += [ "//brave/build/android:jni_headers" ]
@@ -66,11 +76,31 @@ source_set("brave_wallet_delegate") {
     ]
     deps += [
       "//brave/browser/brave_wallet",
+      "//brave/browser/brave_wallet:tab_helper",
+      "//brave/browser/ethereum_remote_client/buildflags",
+      "//brave/browser/ui",
       "//brave/components/brave_wallet/common:mojom",
+      "//chrome/browser/ui",
       "//components/content_settings/core/common",
       "//components/permissions",
       "//mojo/public/cpp/bindings",
     ]
+    if (enable_extensions) {
+      sources += [
+        "brave_wallet_service_delegate_impl.cc",
+        "brave_wallet_service_delegate_impl.h",
+      ]
+      deps += [
+        "//extensions/browser",
+        "//extensions/common",
+      ]
+      if (ethereum_remote_client_enabled) {
+        deps += [
+          "//brave/browser/ethereum_remote_client",
+          "//brave/browser/ethereum_remote_client:browser",
+        ]
+      }
+    }
   }
 }
 
@@ -90,5 +120,42 @@ source_set("tab_helper") {
 
   if (!is_android && !is_ios) {
     deps += [ "//brave/browser/ui/brave_wallet" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "brave_wallet_service_unittest.cc",
+    "brave_wallet_tab_helper_unittest.cc",
+    "erc_token_images_source_unittest.cc",
+    "eth_nonce_tracker_unittest.cc",
+    "eth_pending_tx_tracker_unittest.cc",
+    "eth_tx_state_manager_unittest.cc",
+    "keyring_controller_unittest.cc",
+  ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/browser/brave_wallet",
+    "//brave/browser/brave_wallet:tab_helper",
+    "//brave/common",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:ethereum_permission_utils",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+  if (!is_android && !is_ios) {
+    sources += [ "brave_wallet_provider_impl_unittest.cc" ]
+    deps += [
+      ":brave_wallet_delegate",
+      "//brave/components/brave_wallet/common:common_constants",
+    ]
+    if (enable_extensions) {
+      sources += [ "brave_wallet_service_delegate_impl_unittest.cc" ]
+    }
   }
 }

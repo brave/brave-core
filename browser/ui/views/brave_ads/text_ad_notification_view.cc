@@ -155,8 +155,6 @@ views::View* TextAdNotificationView::CreateBodyView(
 
 views::Label* TextAdNotificationView::CreateBodyLabel(
     const AdNotification& ad_notification) {
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
-
   const std::u16string body = ad_notification.body();
 
   views::Label* label = new views::Label(body);
@@ -165,8 +163,6 @@ views::Label* TextAdNotificationView::CreateBodyLabel(
                                 kBodyFontWeight);
   label->SetFontList(font_list);
 
-  label->SetEnabledColor(should_use_dark_colors ? kDarkModeBodyColor
-                                                : kLightModeBodyColor);
   label->SetBackgroundColor(SK_ColorTRANSPARENT);
 
   label->SetHorizontalAlignment(kBodyHorizontalAlignment);

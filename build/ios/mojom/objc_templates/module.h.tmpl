@@ -26,6 +26,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+{# Constants #}
+{%- for const in constants %}
+{%-   set name = const.name|objc_enum_formatter -%}
+OBJC_EXPORT {{const.kind|objc_wrapper_type}} const {{class_prefix}}{{name}} NS_SWIFT_NAME({{class_prefix}}.{{name}});
+{% endfor -%}
+
 {# Define a namespace class for Swift types to use #}
 OBJC_EXPORT
 NS_SWIFT_NAME({{class_prefix}})

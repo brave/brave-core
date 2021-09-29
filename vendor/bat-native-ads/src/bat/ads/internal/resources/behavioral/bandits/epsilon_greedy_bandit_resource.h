@@ -8,7 +8,7 @@
 
 #include "bat/ads/internal/resources/resource.h"
 
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 
 namespace ads {
 
@@ -16,10 +16,9 @@ class Catalog;
 
 namespace resource {
 
-class EpsilonGreedyBandit : public Resource<SegmentList> {
+class EpsilonGreedyBandit final : public Resource<SegmentList> {
  public:
   EpsilonGreedyBandit();
-
   ~EpsilonGreedyBandit() override;
 
   bool IsInitialized() const override;

@@ -20,6 +20,8 @@
 #error "This file requires ARC support."
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+
 {%- for struct in structs %}
 {%    include "private_struct_declaration.tmpl" %}
 {%- endfor %}
@@ -31,5 +33,7 @@
 {%- for interface in interface_bridges %}
 {%    include "private_interface_bridge_declaration.tmpl" %}
 {%- endfor %}
+
+NS_ASSUME_NONNULL_END
 
 #endif  // {{header_guard}}

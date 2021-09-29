@@ -8,12 +8,17 @@
 #include <deque>
 #include <memory>
 
+#include "base/time/time.h"
+#include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_notification_info.h"
+#include "bat/ads/ads_history_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads_history/ads_history_util.h"
 #include "bat/ads/internal/ads_history/filters/ads_history_date_range_filter.h"
+#include "bat/ads/internal/ads_history/filters/ads_history_filter.h"
 #include "bat/ads/internal/ads_history/filters/ads_history_filter_factory.h"
+#include "bat/ads/internal/ads_history/sorts/ads_history_sort.h"
 #include "bat/ads/internal/ads_history/sorts/ads_history_sort_factory.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/new_tab_page_ad_info.h"
@@ -22,16 +27,15 @@
 namespace ads {
 namespace history {
 
-AdsHistoryInfo Get(const AdsHistoryInfo::FilterType filter_type,
-                   const AdsHistoryInfo::SortType sort_type,
-                   const uint64_t from_timestamp,
-                   const uint64_t to_timestamp) {
+AdsHistoryInfo Get(const AdsHistoryFilterType filter_type,
+                   const AdsHistorySortType sort_type,
+                   const base::Time& from,
+                   const base::Time& to) {
   std::deque<AdHistoryInfo> ads_history = Client::Get()->GetAdsHistory();
 
   const auto date_range_filter = std::make_unique<AdsHistoryDateRangeFilter>();
   if (date_range_filter) {
-    ads_history =
-        date_range_filter->Apply(ads_history, from_timestamp, to_timestamp);
+    ads_history = date_range_filter->Apply(ads_history, from, to);
   }
 
   const auto filter = AdsHistoryFilterFactory::Build(filter_type);

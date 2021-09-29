@@ -24,7 +24,7 @@ bool AdsPerHourFrequencyCap::ShouldAllow() {
     return true;
   }
 
-  const std::deque<uint64_t> history =
+  const std::deque<base::Time> history =
       GetAdEvents(AdType::kAdNotification, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
@@ -35,13 +35,14 @@ bool AdsPerHourFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string AdsPerHourFrequencyCap::get_last_message() const {
+std::string AdsPerHourFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
 bool AdsPerHourFrequencyCap::DoesRespectCap(
-    const std::deque<uint64_t>& history) {
-  const uint64_t time_constraint = base::Time::kSecondsPerHour;
+    const std::deque<base::Time>& history) {
+  const base::TimeDelta time_constraint =
+      base::TimeDelta::FromSeconds(base::Time::kSecondsPerHour);
 
   const uint64_t cap = settings::GetAdsPerHour();
   if (cap == 0) {

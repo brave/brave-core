@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_ETHEREUM_PERMISSION_PROMPT_IMPL_H_
 #define BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_ETHEREUM_PERMISSION_PROMPT_IMPL_H_
 
+#include "base/time/time.h"
 #include "components/permissions/permission_prompt.h"
 
 class Browser;

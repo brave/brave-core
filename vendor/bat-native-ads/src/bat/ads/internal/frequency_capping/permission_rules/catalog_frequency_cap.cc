@@ -6,10 +6,8 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/catalog_frequency_cap.h"
 
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 
 namespace ads {
 
@@ -21,7 +19,7 @@ bool CatalogFrequencyCap::ShouldAllow() {
   return DoesRespectCap();
 }
 
-std::string CatalogFrequencyCap::get_last_message() const {
+std::string CatalogFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
@@ -37,7 +35,7 @@ bool CatalogFrequencyCap::DoesRespectCap() {
   }
 
   const CatalogIssuersInfo catalog_issuers =
-      ConfirmationsState::Get()->get_catalog_issuers();
+      ConfirmationsState::Get()->GetCatalogIssuers();
   if (!catalog_issuers.IsValid()) {
     last_message_ = "Invalid catalog issuers";
     return false;

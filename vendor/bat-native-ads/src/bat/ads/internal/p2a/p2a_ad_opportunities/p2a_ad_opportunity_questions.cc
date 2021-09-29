@@ -7,7 +7,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
+#include "bat/ads/internal/segments/segments_util.h"
 #include "bat/ads/internal/string_util.h"
 
 namespace ads {
@@ -18,10 +18,10 @@ constexpr char kQuestionPrefix[] = "Brave.P2A.AdOpportunitiesPerSegment.";
 }  // namespace
 
 std::vector<std::string> CreateAdOpportunityQuestions(
-    const std::vector<std::string>& segments) {
+    const SegmentList& segments) {
   std::vector<std::string> questions;
 
-  std::vector<std::string> parent_segments = GetParentSegments(segments);
+  const std::vector<std::string> parent_segments = GetParentSegments(segments);
 
   for (auto& segment : parent_segments) {
     std::string stripped_segment = StripNonAlphaNumericCharacters(segment);

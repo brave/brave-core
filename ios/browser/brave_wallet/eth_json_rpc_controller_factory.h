@@ -13,13 +13,23 @@
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 
 class ChromeBrowserState;
+class KeyedService;
+
+namespace web {
+class BrowserState;
+}  // namespace web
 
 namespace brave_wallet {
+
+class EthJsonRpcController;
 
 class EthJsonRpcControllerFactory : public BrowserStateKeyedServiceFactory {
  public:
   // Creates the service if it doesn't exist already for |browser_state|.
   static mojom::EthJsonRpcController* GetForBrowserState(
+      ChromeBrowserState* browser_state);
+
+  static EthJsonRpcController* GetControllerForBrowserState(
       ChromeBrowserState* browser_state);
 
   static EthJsonRpcControllerFactory* GetInstance();
@@ -35,8 +45,12 @@ class EthJsonRpcControllerFactory : public BrowserStateKeyedServiceFactory {
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       web::BrowserState* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
+  web::BrowserState* GetBrowserStateToUse(
+      web::BrowserState* context) const override;
 
-  DISALLOW_COPY_AND_ASSIGN(EthJsonRpcControllerFactory);
+  EthJsonRpcControllerFactory(const EthJsonRpcControllerFactory&) = delete;
+  EthJsonRpcControllerFactory& operator=(const EthJsonRpcControllerFactory&) =
+      delete;
 };
 
 }  // namespace brave_wallet

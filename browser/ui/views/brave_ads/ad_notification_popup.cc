@@ -14,6 +14,7 @@
 #include "brave/browser/ui/views/brave_ads/ad_notification_view.h"
 #include "brave/browser/ui/views/brave_ads/ad_notification_view_factory.h"
 #include "brave/browser/ui/views/brave_ads/bounds_util.h"
+#include "brave/browser/ui/views/brave_ads/color_util.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -47,12 +48,10 @@ namespace {
 
 // TODO(https://github.com/brave/brave-browser/issues/14957): Decouple
 // AdNotificationPopup management to NotificationPopupCollection
-std::map<std::string, AdNotificationPopup*> g_ad_notification_popups;
+std::map<std::string, AdNotificationPopup* /* NOT OWNED */>
+    g_ad_notification_popups;
 
 bool g_disable_fade_in_animation_for_testing = false;
-
-constexpr SkColor kLightModeBackgroundColor = SkColorSetRGB(0xed, 0xf0, 0xf2);
-constexpr SkColor kDarkModeBackgroundColor = SkColorSetRGB(0x20, 0x23, 0x27);
 
 constexpr SkColor kLightModeBorderColor = SkColorSetRGB(0xd5, 0xdb, 0xe2);
 constexpr SkColor kDarkModeBorderColor = SkColorSetRGB(0x3f, 0x41, 0x45);
@@ -80,6 +79,32 @@ class DefaultPopupInstanceFactory
     return new AdNotificationPopup(profile, ad_notification);
   }
 };
+
+SkColor GetLightModeBackgroundColor() {
+  return SkColorSetRGB(0xed, 0xf0, 0xf2);
+}
+
+SkColor GetDarkModeBackgroundColor() {
+  const std::string color_param =
+      features::AdNotificationDarkModeBackgroundColor();
+
+  SkColor bg_color;
+  if (!RgbStringToSkColor(color_param, &bg_color)) {
+    NOTREACHED();
+    return SkColorSetRGB(0x20, 0x23, 0x27);
+  }
+
+  return bg_color;
+}
+
+void AdjustBoundsAndSnapToFitWorkAreaForWidget(views::Widget* widget) {
+  DCHECK(widget);
+
+  gfx::Rect bounds = widget->GetWindowBoundsInScreen();
+  const gfx::NativeView native_view = widget->GetNativeView();
+  AdjustBoundsAndSnapToFitWorkAreaForNativeView(native_view, &bounds);
+  widget->SetBounds(bounds);
+}
 
 }  // namespace
 
@@ -256,8 +281,9 @@ void AdNotificationPopup::OnPaintBackground(gfx::Canvas* canvas) {
   // Draw background
   cc::PaintFlags background_flags;
   background_flags.setAntiAlias(true);
-  background_flags.setColor(should_use_dark_colors ? kDarkModeBackgroundColor
-                                                   : kLightModeBackgroundColor);
+  background_flags.setColor(should_use_dark_colors
+                                ? GetDarkModeBackgroundColor()
+                                : GetLightModeBackgroundColor());
   canvas->DrawRoundRect(bounds, kCornerRadius, background_flags);
 }
 
@@ -267,21 +293,14 @@ void AdNotificationPopup::OnThemeChanged() {
   SchedulePaint();
 }
 
-void AdNotificationPopup::OnWidgetCreated(views::Widget* widget) {
-  DCHECK(widget);
-
-  gfx::Rect bounds = widget->GetWindowBoundsInScreen();
-  const gfx::NativeView native_view = widget->GetNativeView();
-  AdjustBoundsToFitWorkAreaForNativeView(&bounds, native_view);
-
-  widget->SetBounds(bounds);
-}
-
 void AdNotificationPopup::OnWidgetDestroyed(views::Widget* widget) {
   DCHECK(widget);
 
   const std::string notification_id = ad_notification_.id();
   DCHECK(!notification_id.empty());
+
+  // Note: The pointed-to AdNotificationPopup members are deallocated by their
+  // containing Widgets
   g_ad_notification_popups.erase(notification_id);
 
   DCHECK(widget_observation_.IsObservingSource(widget));
@@ -428,10 +447,7 @@ void AdNotificationPopup::RecomputeAlignment() {
     return;
   }
 
-  gfx::Rect bounds = GetWidget()->GetWindowBoundsInScreen();
-  const gfx::NativeView native_view = GetWidget()->GetNativeView();
-  AdjustBoundsToFitWorkAreaForNativeView(&bounds, native_view);
-  GetWidget()->SetBounds(bounds);
+  AdjustBoundsAndSnapToFitWorkAreaForWidget(GetWidget());
 }
 
 const gfx::ShadowDetails& AdNotificationPopup::GetShadowDetails() const {
@@ -455,6 +471,7 @@ void AdNotificationPopup::CreateWidgetView() {
   if (!g_disable_fade_in_animation_for_testing) {
     widget->SetOpacity(0.0);
   }
+  AdjustBoundsAndSnapToFitWorkAreaForWidget(widget);
   widget->ShowInactive();
 }
 

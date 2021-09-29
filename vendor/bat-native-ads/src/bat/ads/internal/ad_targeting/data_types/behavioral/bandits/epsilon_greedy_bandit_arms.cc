@@ -7,11 +7,12 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/string_number_conversions.h"
+#include "base/notreached.h"
 #include "base/values.h"
-#include "bat/ads/internal/logging.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace ad_targeting {
@@ -61,7 +62,7 @@ EpsilonGreedyBanditArmMap GetArmsFromDictionary(
     return arms;
   }
 
-  for (const auto& value : dictionary->DictItems()) {
+  for (const auto value : dictionary->DictItems()) {
     if (!value.second.is_dict()) {
       NOTREACHED();
       continue;
@@ -126,8 +127,6 @@ std::string EpsilonGreedyBanditArms::ToJson(
 
   return json;
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 }  // namespace ad_targeting
 }  // namespace ads

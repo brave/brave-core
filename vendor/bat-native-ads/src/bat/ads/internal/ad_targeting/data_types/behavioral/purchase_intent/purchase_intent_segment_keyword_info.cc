@@ -5,14 +5,13 @@
 
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_segment_keyword_info.h"
 
-#include <vector>
-
 namespace ads {
+namespace ad_targeting {
 
 PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo() = default;
 
 PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo(
-    const std::vector<std::string>& segments,
+    const SegmentList& segments,
     const std::string& keywords)
     : segments(segments), keywords(keywords) {}
 
@@ -21,4 +20,5 @@ PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo(
 
 PurchaseIntentSegmentKeywordInfo::~PurchaseIntentSegmentKeywordInfo() = default;
 
+}  // namespace ad_targeting
 }  // namespace ads

@@ -32,6 +32,8 @@ class WalletBubbleManagerDelegate {
   virtual void CloseBubble() = 0;
   virtual bool IsShowingBubble() = 0;
   virtual bool IsBubbleClosedForTesting() = 0;
+  virtual content::WebContents* GetWebContentsForTesting() = 0;
+  virtual void CloseOnDeactivate(bool close) = 0;
 
  protected:
   WalletBubbleManagerDelegate() = default;

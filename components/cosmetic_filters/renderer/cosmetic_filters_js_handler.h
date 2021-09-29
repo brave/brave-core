@@ -49,17 +49,21 @@ class CosmeticFiltersJSHandler {
   bool EnsureConnected();
   void OnRemoteDisconnect();
 
+  // Injects content_cosmetic bundle (if needed) and calls the entry point.
+  void ExecuteObservingBundleEntryPoint();
+
   void CreateWorkerObject(v8::Isolate* isolate, v8::Local<v8::Context> context);
 
   // A function to be called from JS
   void HiddenClassIdSelectors(const std::string& input);
 
-  void OnShouldDoCosmeticFiltering(base::OnceClosure callback,
-                                   bool enabled,
-                                   bool first_party_enabled);
-  void OnUrlCosmeticResources(base::OnceClosure callback, base::Value result);
+  void OnUrlCosmeticResources(base::OnceClosure callback,
+                              bool enabled,
+                              bool first_party_enabled,
+                              base::Value result);
   void CSSRulesRoutine(base::DictionaryValue* resources_dict);
   void OnHiddenClassIdSelectors(base::Value result);
+  bool OnIsFirstParty(const std::string& url_string);
 
   content::RenderFrame* render_frame_;
   mojo::Remote<cosmetic_filters::mojom::CosmeticFiltersResources>
@@ -69,6 +73,10 @@ class CosmeticFiltersJSHandler {
   std::vector<std::string> exceptions_;
   GURL url_;
   std::unique_ptr<base::DictionaryValue> resources_dict_;
+
+  // True if the content_cosmetic.bundle.js has injected in the current frame.
+  bool bundle_injected_ = false;
+
   base::WeakPtrFactory<CosmeticFiltersJSHandler> weak_ptr_factory_{this};
 };
 

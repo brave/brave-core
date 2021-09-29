@@ -7,13 +7,12 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_PREFERENCES_FLAGGED_AD_INFO_H_
 
 #include <string>
-#include <vector>
 
 namespace ads {
 
-struct FlaggedAdInfo {
+struct FlaggedAdInfo final {
   FlaggedAdInfo();
-  FlaggedAdInfo(const FlaggedAdInfo& ad);
+  FlaggedAdInfo(const FlaggedAdInfo& info);
   ~FlaggedAdInfo();
 
   std::string ToJson() const;
@@ -22,8 +21,6 @@ struct FlaggedAdInfo {
   std::string creative_instance_id;
   std::string creative_set_id;
 };
-
-using FlaggedAdList = std::vector<FlaggedAdInfo>;
 
 }  // namespace ads
 

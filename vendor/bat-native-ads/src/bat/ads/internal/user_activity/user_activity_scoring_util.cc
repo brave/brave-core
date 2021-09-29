@@ -9,17 +9,17 @@
 #include "bat/ads/internal/user_activity/user_activity.h"
 #include "bat/ads/internal/user_activity/user_activity_event_info.h"
 #include "bat/ads/internal/user_activity/user_activity_scoring.h"
-#include "bat/ads/internal/user_activity/user_activity_trigger_info.h"
+#include "bat/ads/internal/user_activity/user_activity_trigger_info_aliases.h"
 #include "bat/ads/internal/user_activity/user_activity_util.h"
 
 namespace ads {
 
 bool WasUserActive() {
-  const UserActivityTriggers triggers =
+  const UserActivityTriggerList triggers =
       ToUserActivityTriggers(features::user_activity::GetTriggers());
 
   const base::TimeDelta time_window = features::user_activity::GetTimeWindow();
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(time_window);
 
   const double score = GetUserActivityScore(triggers, events);

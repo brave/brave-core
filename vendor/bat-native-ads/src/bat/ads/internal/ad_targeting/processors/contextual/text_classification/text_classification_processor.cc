@@ -5,9 +5,11 @@
 
 #include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h"
 
+#include "base/check.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
+#include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 
 namespace ads {
 namespace ad_targeting {

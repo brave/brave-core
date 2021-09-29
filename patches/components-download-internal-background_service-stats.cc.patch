@@ -1,0 +1,12 @@
+diff --git a/components/download/internal/background_service/stats.cc b/components/download/internal/background_service/stats.cc
+index 45ebdddd00cdbbf2f2d44e4ecd3564c202de5ac2..200e9bd7a41b1bd2fc6c4bcf92fb31d7c8580d10 100644
+--- a/components/download/internal/background_service/stats.cc
++++ b/components/download/internal/background_service/stats.cc
+@@ -76,6 +76,7 @@ std::string ClientToHistogramSuffix(DownloadClient client) {
+       return "PluginVmImage";
+     case DownloadClient::OPTIMIZATION_GUIDE_PREDICTION_MODELS:
+       return "OptimizationGuidePredictionModels";
++    BRAVE_CLIENT_TO_HISTOGRAM_SUFFIX
+     case DownloadClient::BOUNDARY:
+       NOTREACHED();
+       break;

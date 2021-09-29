@@ -7,24 +7,31 @@
 
 #include <cstdint>
 
+#include "base/check.h"
 #include "base/rand_util.h"
+#include "base/time/time.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ad_delivery/ad_notifications/ad_notification_delivery.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_builder.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_permission_rules.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications.h"
+#include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/p2a/p2a_ad_opportunities/p2a_ad_opportunity.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/segments/segments_util.h"
 #include "bat/ads/internal/settings/settings.h"
 #include "bat/ads/internal/time_formatting_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace ad_notifications {
@@ -35,18 +42,10 @@ constexpr base::TimeDelta kRetryServingAdAtNextInterval =
 }  // namespace
 
 AdServing::AdServing(
-    AdTargeting* ad_targeting,
     ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
     resource::AntiTargeting* anti_targeting_resource)
-    : ad_targeting_(ad_targeting),
-      subdivision_targeting_(subdivision_targeting),
-      anti_targeting_resource_(anti_targeting_resource),
-      eligible_ads_(std::make_unique<EligibleAds>(subdivision_targeting,
-                                                  anti_targeting_resource)) {
-  DCHECK(ad_targeting_);
-  DCHECK(subdivision_targeting_);
-  DCHECK(anti_targeting_resource_);
-}
+    : eligible_ads_(std::make_unique<EligibleAds>(subdivision_targeting,
+                                                  anti_targeting_resource)) {}
 
 AdServing::~AdServing() = default;
 
@@ -69,16 +68,15 @@ void AdServing::StartServingAdsAtRegularIntervals() {
 
   base::TimeDelta delay;
 
-  if (Client::Get()->GetNextAdServingInterval().is_null()) {
+  if (Client::Get()->GetServeNextAdAt().is_null()) {
     delay = base::TimeDelta::FromMinutes(2);
     const base::Time next_interval = base::Time::Now() + delay;
-    Client::Get()->SetNextAdServingInterval(next_interval);
+    Client::Get()->SetServeNextAdAt(next_interval);
   } else {
     if (ShouldServeAd()) {
       delay = base::TimeDelta::FromMinutes(1);
     } else {
-      const base::Time next_interval =
-          Client::Get()->GetNextAdServingInterval();
+      const base::Time next_interval = Client::Get()->GetServeNextAdAt();
 
       delay = next_interval - base::Time::Now();
     }
@@ -106,36 +104,87 @@ void AdServing::MaybeServeAd() {
     return;
   }
 
-  const SegmentList segments = ad_targeting_->GetSegments();
+  // TODO(https://github.com/brave/brave-browser/issues/17542): Refactor Brave
+  // ads serving
+  const int ad_serving_version = features::GetAdServingVersion();
+  BLOG(1, "Ad serving version " << ad_serving_version);
 
-  DCHECK(eligible_ads_);
-  eligible_ads_->GetForSegments(
-      segments,
-      [=](const bool was_allowed, const CreativeAdNotificationList& ads) {
+  switch (ad_serving_version) {
+    case 1: {
+      MaybeServeAdV1();
+      break;
+    }
+
+    case 2: {
+      MaybeServeAdV2();
+      break;
+    }
+
+    default: {
+      NOTREACHED() << "Ad serving version is not supported";
+      break;
+    }
+  }
+}
+
+void AdServing::MaybeServeAdV1() {
+  const ad_targeting::UserModelInfo user_model = ad_targeting::BuildUserModel();
+
+  eligible_ads_->Get(user_model, [=](const bool was_allowed,
+                                     const CreativeAdNotificationList& ads) {
+    if (was_allowed) {
+      const SegmentList segments =
+          ad_targeting::GetTopParentChildSegments(user_model);
+      p2a::RecordAdOpportunityForSegments(AdType::kAdNotification, segments);
+    }
+
+    if (ads.empty()) {
+      BLOG(1, "Ad notification not served: No eligible ads found");
+      FailedToServeAd();
+      return;
+    }
+
+    BLOG(1, "Found " << ads.size() << " eligible ads");
+
+    const int rand = base::RandInt(0, ads.size() - 1);
+    const CreativeAdNotificationInfo ad = ads.at(rand);
+
+    if (!ServeAd(ad)) {
+      BLOG(1, "Failed to serve ad notification");
+      FailedToServeAd();
+      return;
+    }
+
+    BLOG(1, "Served ad notification");
+    ServedAd(ad);
+  });
+}
+
+void AdServing::MaybeServeAdV2() {
+  const ad_targeting::UserModelInfo user_model = ad_targeting::BuildUserModel();
+
+  eligible_ads_->GetV2(
+      user_model, [=](const bool was_allowed,
+                      const absl::optional<CreativeAdNotificationInfo>& ad) {
         if (was_allowed) {
           p2a::RecordAdOpportunityForSegments(AdType::kAdNotification,
-                                              segments);
+                                              user_model.interest_segments);
         }
 
-        if (ads.empty()) {
+        if (!ad) {
           BLOG(1, "Ad notification not served: No eligible ads found");
           FailedToServeAd();
           return;
         }
 
-        BLOG(1, "Found " << ads.size() << " eligible ads");
-
-        const int rand = base::RandInt(0, ads.size() - 1);
-        const CreativeAdNotificationInfo ad = ads.at(rand);
-
-        if (!ServeAd(ad)) {
+        if (!ServeAd(ad.value())) {
           BLOG(1, "Failed to serve ad notification");
           FailedToServeAd();
           return;
         }
 
         BLOG(1, "Served ad notification");
-        ServedAd(ad);
+        ServedAd(ad.value());
       });
 }
 
@@ -188,7 +237,7 @@ void AdServing::RetryServingAdAtNextInterval() {
 }
 
 bool AdServing::ShouldServeAd() const {
-  const base::Time next_interval = Client::Get()->GetNextAdServingInterval();
+  const base::Time next_interval = Client::Get()->GetServeNextAdAt();
   if (base::Time::Now() < next_interval) {
     return false;
   }
@@ -198,7 +247,7 @@ bool AdServing::ShouldServeAd() const {
 
 base::Time AdServing::MaybeServeAdAfter(const base::TimeDelta delay) {
   const base::Time next_interval = base::Time::Now() + delay;
-  Client::Get()->SetNextAdServingInterval(next_interval);
+  Client::Get()->SetServeNextAdAt(next_interval);
 
   return timer_.Start(
       delay, base::BindOnce(&AdServing::MaybeServeAd, base::Unretained(this)));

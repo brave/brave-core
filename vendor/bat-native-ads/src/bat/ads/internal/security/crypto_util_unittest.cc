@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/security/crypto_util.h"
 
+#include <cstdint>
+
 #include "base/base64.h"
 #include "bat/ads/internal/security/key_pair_info.h"
 #include "testing/gtest/include/gtest/gtest.h"

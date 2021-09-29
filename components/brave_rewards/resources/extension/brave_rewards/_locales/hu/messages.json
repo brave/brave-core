@@ -1,677 +1,382 @@
 {
-  "braveRewards": {
-    "message": "Brave jutalmak",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "Összefoglalás",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "Kezdjen pénzt keresni most!",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "Adomány",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "Csatlakozási jutalmak",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "Nem ellenőrzött alkotó",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "Keress pénzt hirdetések nézésével, és továbbítsd támogatásként kedvenc tartalomkészítőidnek.",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "Ellenőrzött alkotó",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "Mostantól tokeneket szerezhetsz adatvédelmet betartó hirdetések nézésével.",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "Frissítési állapot",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "Mostantól pontokat szerezhet magánéletét tiszteletben tartó reklámok megnézésével.",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "Nézze meg hogy mit fejlesztettek",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "További információ",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "A Brave Jutalmak egy nagyobb fejlesztésen esett át",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "Készülj fel a következő internetre.",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "Az ön tárcája",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "Adományok",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "Részletek",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "on": {
-    "message": "bekapcsolva",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "Ellenőrzött Brave alkotó",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "Figyelem",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "Havi hozzájárulás",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "Automatikus Hozzájárulással",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "Küldj egy adományt...",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "Borravalók engedélyezése",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "a következő részére:",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "Jutalmak összefoglalója",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "Április",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "Augusztus",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "December",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "Február",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "Január",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "Július",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "Június",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "Március",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "Május",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "November",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "Október",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "Szeptember",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "$currency$ jóváírások",
-    "description": "Title for grant notification",
+  "platformPublisherTitle": {
+    "message": "$name$ itt: $platform$",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "Beváltott zseton adományok ",
-    "description": "Title for grant section in wallet summary"
+  "attention": {
+    "message": "Figyelem",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "Jövedelem hirdetésekből",
-    "description": "Title for ads section in wallet summary"
+  "sendTip": {
+    "message": "Küldjön borravalót",
+    "description": ""
   },
-  "rewardsContribute": {
-    "message": "Automatikus támogatás",
-    "description": "Title for auto contribute section in wallet summary"
+  "includeInAutoContribute": {
+    "message": "Automatikus Hozzájárulással",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "Egyszeri adományok",
-    "description": "Title for one-time tips section in wallet summary"
-  },
-  "expiresOn": {
-    "message": "lejárat dátuma",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
-  },
-  "recurringDonations": {
-    "message": "Havi hozzájárulások",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "Kikapcsolva",
-    "description": "Label used in toggle indicating that toggle is off"
+  "monthlyContribution": {
+    "message": "Havi hozzájárulás",
+    "description": ""
   },
   "ok": {
-    "message": "rendben",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "Most már elkezdhet pénzt gyűjteni hirdetések megtekintésével.",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "Brave hirdetések",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "Automatikus támogatás",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "$amount$ $currency$ hozzájárulást adott",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "Egy adomány vár rád.",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "Biztonsági mentés készítése",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "Pénztárca biztonsági mentése",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "Készíts biztonsági másolatot Brave pénztárcádról.",
-    "description": "Description for backup wallet notification"
-  },
-  "upholdBATNotAllowedForUserLearnMore": {
-    "message": "További információ",
-    "description": "Notification button text to learn more about why BAT is not allowed for user"
-  },
-  "upholdBATNotAllowedForUserTitle": {
-    "message": "Hiba: BAT nem elérhető",
-    "description": "Title for BAT not allowed for user notification"
-  },
-  "upholdBATNotAllowedForUserNotification": {
-    "message": "Az Upholdban a BAT egyelőre nem támogatott az Ön régiójában.",
-    "description": "Description for BAT not allowed for user notification"
-  },
-  "upholdBlockedUserLearnMore": {
-    "message": "További információ",
-    "description": "Notification button text to learn more about the blocked user status"
-  },
-  "upholdBlockedUserTitle": {
-    "message": "Hiba: zárolt fiók",
-    "description": "Title for blocked user notification"
-  },
-  "upholdBlockedUserNotification": {
-    "message": "Uphold-fiókja jelenleg zárolva van.",
-    "description": "Description for blocked user notification"
-  },
-  "upholdPendingUserLearnMore": {
-    "message": "További információ",
-    "description": "Notification button text to learn more about the pending user status"
-  },
-  "upholdPendingUserTitle": {
-    "message": "Hiba: függőben lévő fiók",
-    "description": "Title for pending user notification"
-  },
-  "upholdPendingUserNotification": {
-    "message": "Uphold-fiókja továbbra is függőben van.",
-    "description": "Description for pending user notification"
-  },
-  "upholdRestrictedUserLearnMore": {
-    "message": "További információ",
-    "description": "Notification button text to learn more about the restricted user status"
-  },
-  "upholdRestrictedUserTitle": {
-    "message": "Hiba: korlátozott fiók",
-    "description": "Title for restricted user notification"
-  },
-  "upholdRestrictedUserNotification": {
-    "message": "Uphold-fiókja jelenleg korlátozva van.",
-    "description": "Description for restricted user notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "További információ",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Eszközhatár elérve",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Pénztárcád nem ellenőrizhető, mert elérted a maximális ellenőrzött eszközhatárt.",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "Brave Jutalmak fiókja letétre vár.",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "Nincs fedezet",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "Pénztárca létrehozása",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "Hiba történt a hozzájárulásod feldolgozása során.",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "A tervezett havi fizetését és az automatikus hozzájárulást nem lehet kifizetni fedezethiány miatt. 30 nap múlva újrapróbáljuk.",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "Nem lehetett elküldeni a borravalót. Próbálja újra később.",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "Még nincsenek tevékenységek...",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "Húzd a BAT ikont a ",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "Bizonyítsd, hogy ember vagy!",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "cél.",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "Hmm... Nem egészen. Próbáld újra.",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "Igénylés",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "Ingyenes zseton adomány",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "Adomány Lejárati Dátuma",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
     "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "A Brave Jutalmak problémába ütközött. Próbáld újra később.",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "Hoppá, valami hiba történt. Próbáld újra később.",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "Frissítési állapot",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "Még nem igazolt",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "Ez az alkotó még nem regisztrált, hogy hozzájárulásokat fogadjon a pénztárcádból. Minden borravaló, amit küldesz, a pénztárcádban marad függő állapotban, és annak feldolgozása többször automatikusan meg lesz kísérelve 90 napig.",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "Bővebb információk.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "Ön meghatározott {{reservedAmount}} {{currency}} összeget olyan alkotók számára, akik még nem iratkoztak fel illetményre. Böngészője mindaddig próbálkozik a hozzájárulással, amíg nem igazolják magukat, vagy amíg 90 nap el nem telik.",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "Bővebb információk.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "Kikapcsolva",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "Beállítások.",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "Jelenleg semmilyen Jutalom előnyeit nem élvezed böngészés közben. Kapcsold be újra a Jutalmakat.",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "A Brave Jutalom",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "Pénztárcakészítés nem sikerült",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "Újrapróbálás",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "Források hozzáadása",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "Jutalmak beállítások",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "Ads jutalmaid megérkeztek!",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "és",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "Szerezzen jutalmat a böngészésért!",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "Keressen az adatvédelmet tiszteletben tartó hirdetések megtekintésével, és továbbítsa kedvenc tartalomkészítőinek.",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "Brave jutalmak engedélyezése",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "Adatvédelmi szabályzat",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "A „Brave Jutalmak Engedélyezése\" gombra kattintva jelzi, hogy elolvasta és elfogadja a ",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "Szolgáltatási feltételek",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "Üdvözöljük újra!",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "A havi hozzájárulásait továbbítottuk!",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "Közreműködés és jattok",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": "Ha rákattintasz a \"Csatlakozás a jutalmazási rendszerhez\" gombra, azzal jelzed, hogy elolvastad és elfogadtad ezt:",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "BAT",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "turnOnAds": {
-    "message": "Hirdetések bekapcsolása",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "reklámokból begyűjtve:",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "Támogasd ezt a Tweet-et",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "Adomány",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "Adj borravalót erre a bejegyzésre",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "Adomány",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "Borravaló küldése",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "Adomány",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "$name$ alkotó nemrég ellenőrizve",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "Függőben lévő borravalóid vannak, mivel nincs elegendő fedezet",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "Függő hozzájárulás",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "Szerencséd van!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "$currency$ jóváírása úton van.",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "Ingyenes zseton adomány",
-    "description": "Token title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "Hirdetési jutalmat kapott!",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "Jutalma úton van Brave Rewards pénztárcájához.",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "A jutalom összege",
-    "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "ellenőrizd",
-    "description": "CTA in the footer to verify"
-  },
-  "walletButtonDisconnected":  {
-    "message": "Nincs kapcsolat",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "Ellenőrizd a pénztárcát",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "Pénztárca ellenőrizve",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "Ugrás a(z) $provider$ fiókomra",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "Brave Jutalmak kapcsolat bontása",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "Ellenőrzött",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "Pénztárcád ellenőrizve lett!",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "Gratulálunk! $name$ pénztárcád ellenőrzése sikerült, és készen áll a pénz feltöltésére és kivevésére.",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "Hoppá. Pénztárcádat nem lehet elérni.",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "Semmi gond. Ez előfordulhat különféle biztonsági okokból. A pénztárca újbóli csatlakoztatása megoldja ezt a problémát.",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "Ez a Brave Igazolt Alkotó még nem állította be fiókjában, hogy a Brave Felhasználók hozzájárulásait fogadhassa. Amíg ezt el nem végzi, minden általad küldött borravaló a tárcádban marad.",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "Komplett pénztárca ellenőrzés",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "Beállítás...",
-    "description": "Button text for setting monthly contribution"
+    "message": "Beállítás",
+    "description": ""
   },
-  "tokens":  {
-    "message": "tokenek",
-    "description": "Standard tokens text"
-  },
-  "point":  {
-    "message": "Pont",
-    "description": "BAT Point text"
-  },
-  "token":  {
-    "message": "Token",
-    "description": "BAT Token text"
-  },
-  "tokenGrants":  {
-    "message": "Tokenadományok",
-    "description": "BAT Tokens Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "Szia $name$!",
-    "description": "Greetings for external wallet popup",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
-      }
-    }
-  },
-  "cancel":  {
-    "message": "Elvetés",
-    "description": "Text for cancel button"
-  },
-  "changeAmount":  {
+  "changeAmount": {
     "message": "Összeg módosítása",
-    "description": "Button text for changing monthly contribution amount"
+    "description": ""
   },
-  "login":  {
-    "message": "Bejelentkezés",
-    "description": "Text for login button"
+  "cancel": {
+    "message": "Elvetés",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "Ellenőrzött pénztárcával hatékonyabban kezelheted alapjaidat.",
-    "description": "Text for login button"
+  "grantCaptchaTitle": {
+    "message": "Erősítse meg, hogy valós személy",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "Uphold-fiók létrehozásához legalább $amount$ BAT szükséges. Ha már van hitelesített Uphold-fiókja, lépjen tovább a bejelentkezésre.",
-    "description": "Text for login button",
+  "grantCaptchaFailedTitle": {
+    "message": "Hmm... Nem egészen. Próbáld újra.",
+    "description": ""
+  },
+  "grantCaptchaHint": {
+    "message": "Húzza a BAT ikont a(z) $hint$ célpontra.",
+    "description": "",
     "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "walletConnected":  {
-    "message": "Kapcsolódva",
-    "description": "Status button that tells user that he is connected"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "Szerencséd van!",
+    "description": ""
   },
-  "walletPending":  {
-    "message": "Várakozó",
-    "description": "Status button that tells user that he is currently pending"
+  "grantCaptchaPassedTextUGP": {
+    "message": "Zseton adományod úton van.",
+    "description": ""
   },
-  "walletVerificationNote3":  {
-    "message": "Megjegyzés: Tranzakcióidat látni fogja a(z) $provider$, ha egyszer engedélyezted; például látni fogja a címzettet és a borravalóid összegét.",
-    "description": "Displayed in login modal for external wallet providers",
+  "grantCaptchaAmountUGP": {
+    "message": "Ingyenes zseton adomány",
+    "description": ""
+  },
+  "grantCaptchaPassedTitleAds": {
+    "message": "Hirdetési jutalmat kapott!",
+    "description": ""
+  },
+  "grantCaptchaPassedTextAds": {
+    "message": "Jutalma úton van Brave Rewards pénztárcájához.",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "A jutalom összege",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "Adomány Lejárati Dátuma",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "Hoppá, valami hiba történt. Próbáld újra később.",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "A Brave Jutalmak problémába ütközött. Próbáld újra később.",
+    "description": ""
+  },
+  "walletAccountLink": {
+    "message": "Ugrás a(z) $provider$ fiókomra",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "Pénz hozzáadása",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "Automatikus támogatás",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "Ugrás ide: $provider$ az ellenőrzés befejezéséhez",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Fejezze be a személyazonosságod igazolását, hogy jutalmakban részesülhessen",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "Nincs kapcsolat",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "Brave Jutalmak kapcsolat bontása",
+    "description": ""
+  },
+  "walletEstimatedEarnings": {
+    "message": "Becsült bevételek",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "Jelentkezzen be a(z) $provider$ fiókjába",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "Havi juttatások",
+    "description": ""
+  },
+  "walletMyWallet": {
+    "message": "Saját pénztárcám",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "Egyszeri adományok",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "Várakozó",
+    "description": ""
+  },
+  "walletPendingRewardsText": {
+    "message": "$amount$ érkezik ekkor: $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "days": {
+        "content": "$2"
+      }
+    }
+  },
+  "walletRewardsFromAds": {
+    "message": "Jutalmak az Ads révén",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "Jutalmak összefoglalója",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "Ellenőrzött",
+    "description": ""
+  },
+  "walletVerify": {
+    "message": "Ellenőrizd a pénztárcát",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "Az ön egyenlege",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "Pénz hozzáadása",
+    "description": ""
+  },
+  "notificationLearnMore": {
+    "message": "További információ",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "Újracsatlakozás",
+    "description": ""
+  },
+  "notificationClaim": {
+    "message": "Igénylés",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "Nincs fedezet",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "Brave Jutalmak fiókja letétre vár.",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "Automatikus támogatás",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "Ennyit adtál: $amount$.",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "Pénztárca biztonsági mentése",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Készíts biztonsági másolatot Brave pénztárcádról.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Biztonsági mentés",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "A pénztárcája ki van jelentkezve",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "Ez azért lehet, hogy biztonságban tudjuk a fiókját. Kattintson az újracsatlakozáshoz.",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "Újracsatlakozás",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "Pénztárcád ellenőrizve lett!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "A(z) $provider$ pénztárca ellenőrzése sikerült, és készen áll a pénz feltöltésére és kivételére.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "Tokenadományok",
+    "description": ""
+  },
+  "notificationTokenGrantText": {
+    "message": "Egy adomány vár rád.",
+    "description": ""
+  },
+  "notificationAdGrantTitle": {
+    "message": "Kapott bevételek az Ads-ből",
+    "description": ""
+  },
+  "notificationAdGrantText": {
+    "message": "A Brave Private Ads jutalmaid megérkeztek!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Havi hozzájárulás sikertelen",
+    "description": ""
+  },
+  "notificationInsufficientFundsText": {
+    "message": "A tervezett havi fizetését és az automatikus hozzájárulást nem lehet kifizetni fedezethiány miatt. 30 nap múlva újrapróbáljuk.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "Hiba történt a hozzájárulásod feldolgozása során.",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "Hozzájárulások és borravalók",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "A havi hozzájárulásaidat feldolgoztuk.",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "Függő hozzájárulás",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "$publisher_name$ alkotó nemrég ellenőrizve.",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "Nincs fedezet",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "Függőben lévő borravalóid vannak, mivel nincs elegendő fedezet",
+    "description": ""
+  },
+  "notificationWalletLinkingFailedTitle": {
+    "message": "Pénztárca hozzákapcsolása nem sikerült",
+    "description": ""
+  },
+  "notificationDeviceLimitReachedText": {
+    "message": "Pénztárcád nem ellenőrizhető, mert elérted a maximális ellenőrzött eszközhatárt.",
+    "description": ""
+  },
+  "notificationMismatchedProviderAccountsText": {
+    "message": "Úgy tűnik, hogy a Brave Rewards pénztárcáját már egy másik fióknál ellenőrizték: $provider$ Próbálja meg újra ellenőrizni a korábbi fiókkal.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationUpholdBatNotSupportedText": {
+    "message": "Az Upholdban a BAT egyelőre nem támogatott az Ön régiójában.",
+    "description": ""
+  },
+  "notificationUpholdUserBlockedText": {
+    "message": "Uphold-fiókja jelenleg zárolva van.",
+    "description": ""
+  },
+  "notificationUpholdUserPendingText": {
+    "message": "Uphold-fiókja továbbra is függőben van.",
+    "description": ""
+  },
+  "notificationUpholdUserRestrictedText": {
+    "message": "Uphold-fiókja jelenleg korlátozva van.",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "Szerezzen tokeneket és adjon vissza",
@@ -846,5 +551,29 @@
         "content": "$2"
       }
     }
+  },
+  "captchaMaxAttemptsExceededText": {
+    "message": "Úgy tűnik, ez nem működik, a Brave reklámok tovább szünetelnek. Lépjen velünk kapcsolatba, ha segítségre van szüksége a CAPTCHA megoldásával kapcsolatban.",
+    "description": ""
+  },
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "Maximum próbálkozási kísérlet túllépve",
+    "description": ""
+  },
+  "captchaSolvedTitle": {
+    "message": "Megoldva!",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "Az Ads és a bevételek visszaállnak. Köszönjük, hogy segít megvédeni a Brave Rewards-ot és az adatvédelmi beállításokhoz igazodó reklámokat.",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "Lépjen kapcsolatba az ügyfélszolgálattal",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "Elvetés",
+    "description": ""
   }
 }

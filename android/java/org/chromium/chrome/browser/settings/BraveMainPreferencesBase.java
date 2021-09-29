@@ -19,7 +19,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
@@ -33,6 +32,8 @@ import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.settings.BraveStatsPreferences;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -55,6 +56,8 @@ public class BraveMainPreferencesBase
     private static final String PREF_ABOUT_SECTION = "about_section";
 
     // prefs
+
+    private static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
     private static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
     private static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";
     private static final String PREF_BACKGROUND_VIDEO_PLAYBACK = "background_video_playback";
@@ -74,6 +77,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_ABOUT_CHROME = "about_chrome";
     private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
     private static final String PREF_BRAVE_REWARDS = "brave_rewards";
+    private static final String PREF_BRAVE_VPN = "brave_vpn";
     private static final String PREF_HOMEPAGE = "homepage";
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
     private static final String PREF_LANGUAGES = "languages";
@@ -167,10 +171,22 @@ public class BraveMainPreferencesBase
     private void rearrangePreferenceOrders() {
         int firstSectionOrder = 0;
 
-        findPreference(PREF_FEATURES_SECTION).setOrder(firstSectionOrder);
+        if (BraveVpnPrefUtils.shouldShowCallout() && !BraveVpnPrefUtils.isSubscriptionPurchase()
+                && BraveVpnUtils.isBraveVpnFeatureEnable()) {
+            findPreference(PREF_BRAVE_VPN_CALLOUT).setOrder(firstSectionOrder);
+        } else {
+            removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
+        }
+
+        findPreference(PREF_FEATURES_SECTION).setOrder(++firstSectionOrder);
 
         findPreference(PREF_SHIELDS_AND_PRIVACY).setOrder(++firstSectionOrder);
         findPreference(PREF_BRAVE_REWARDS).setOrder(++firstSectionOrder);
+        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
+            findPreference(PREF_BRAVE_VPN).setOrder(++firstSectionOrder);
+        } else {
+            removePreferenceIfPresent(PREF_BRAVE_VPN);
+        }
 
         int generalOrder = firstSectionOrder;
         findPreference(PREF_GENERAL_SECTION).setOrder(++generalOrder);

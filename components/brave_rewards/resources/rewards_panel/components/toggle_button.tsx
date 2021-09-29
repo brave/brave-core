@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 
-import * as styles from './toggle_button.style'
+import * as style from './toggle_button.style'
 
 interface Props {
   checked: boolean
@@ -17,10 +17,10 @@ export function ToggleButton (props: Props) {
   }
 
   return (
-    <styles.root>
+    <style.root>
       <button onClick={toggleChecked}>
-        <styles.handle className={props.checked ? 'checked' : ''} />
+        <style.handle className={props.checked ? 'checked' : ''} />
       </button>
-    </styles.root>
+    </style.root>
   )
 }

@@ -54,6 +54,18 @@ bool URLReadableHintExtractor::HasHints(const GURL& url) {
   return false;
 }
 
+bool PageStateIsDistilled(DistillState state) {
+  return state == DistillState::kReaderMode ||
+         state == DistillState::kSpeedreaderMode;
+}
+
+bool PageWantsDistill(DistillState state) {
+  return state == DistillState::kReaderMode ||
+         state == DistillState::kSpeedreaderMode ||
+         state == DistillState::kReaderModePending ||
+         state == DistillState::kSpeedreaderModePending;
+}
+
 void SetEnabledForSite(HostContentSettingsMap* map,
                        const GURL& url,
                        bool enable) {

@@ -1,5 +1,9 @@
 import * as React from 'react'
 import { Checkbox } from 'brave-ui'
+import { TokenInfo } from '../../../constants/types'
+
+// Options
+import { ETH } from '../../../options/asset-options'
 
 // Styled Components
 import {
@@ -7,43 +11,52 @@ import {
   AssetName,
   NameAndIcon,
   AssetIcon,
-  Balance,
-  CheckboxRow
+  DeleteButton,
+  DeleteIcon,
+  RightSide
 } from './style'
 
 export interface Props {
-  onSelectAsset: (key: string, selected: boolean) => void
+  onSelectAsset: (key: string, selected: boolean, token: TokenInfo, isCustom: boolean) => void
+  onRemoveAsset: (token: TokenInfo) => void
+  isCustom: boolean
   isSelected: boolean
-  id: string
-  name: string
-  symbol: string
-  icon?: string
-  assetBalance: string
+  token: TokenInfo
 }
 
 const AssetWatchlistItem = (props: Props) => {
   const {
-    name,
-    assetBalance,
-    icon,
-    symbol,
-    id,
     onSelectAsset,
+    onRemoveAsset,
+    isCustom,
+    token,
     isSelected
   } = props
+
+  const onCheck = (key: string, selected: boolean) => {
+    onSelectAsset(key, selected, token, isCustom)
+  }
+
+  const onClickRemoveAsset = () => {
+    onRemoveAsset(token)
+  }
 
   return (
     <StyledWrapper>
       <NameAndIcon>
-        <AssetIcon icon={icon ? icon : ''} />
-        <AssetName>{name}</AssetName>
+        <AssetIcon icon={(token.symbol === 'ETH' ? ETH.asset.logo : token.logo) ?? ''} />
+        <AssetName>{token.name}</AssetName>
       </NameAndIcon>
-      <Balance>{Number(assetBalance).toFixed(6)} {symbol}</Balance>
-      <CheckboxRow>
-        <Checkbox value={{ [id]: isSelected }} onChange={onSelectAsset}>
-          <div data-key={id} />
+      <RightSide>
+        {isCustom &&
+          <DeleteButton onClick={onClickRemoveAsset}>
+            <DeleteIcon />
+          </DeleteButton>
+        }
+        <Checkbox value={{ [token.contractAddress]: isSelected }} onChange={onCheck}>
+          <div data-key={token.contractAddress} />
         </Checkbox>
-      </CheckboxRow>
+      </RightSide>
     </StyledWrapper>
   )
 }

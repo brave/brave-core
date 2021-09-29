@@ -7,7 +7,6 @@
 
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/time_util.h"
 
@@ -46,7 +45,7 @@ bool DaypartFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string DaypartFrequencyCap::get_last_message() const {
+std::string DaypartFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

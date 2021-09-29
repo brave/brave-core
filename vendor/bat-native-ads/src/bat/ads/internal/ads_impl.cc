@@ -7,15 +7,19 @@
 
 #include <utility>
 
+#include "base/check.h"
+#include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_client.h"
+#include "bat/ads/ads_history_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics.h"
 #include "bat/ads/internal/ad_diagnostics/last_unidle_timestamp_ad_diagnostics_entry.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
@@ -23,7 +27,7 @@
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
+#include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h"
@@ -39,6 +43,7 @@
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/database/database_initialize.h"
 #include "bat/ads/internal/features/features.h"
@@ -52,6 +57,7 @@
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "bat/ads/internal/resources/conversions/conversions_resource.h"
 #include "bat/ads/internal/resources/country_components.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting_info.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/resources/language_components.h"
 #include "bat/ads/internal/search_engine/search_providers.h"
@@ -66,12 +72,12 @@
 #include "bat/ads/pref_names.h"
 #include "bat/ads/promoted_content_ad_info.h"
 #include "bat/ads/statement_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
 AdsImpl::AdsImpl(AdsClient* ads_client)
     : ads_client_helper_(std::make_unique<AdsClientHelper>(ads_client)),
-      ad_diagnostics_(std::make_unique<AdDiagnostics>()),
       token_generator_(std::make_unique<privacy::TokenGenerator>()) {
   set(token_generator_.get());
 }
@@ -89,8 +95,7 @@ AdsImpl::~AdsImpl() {
   promoted_content_ad_->RemoveObserver(this);
 }
 
-void AdsImpl::set_for_testing(
-    privacy::TokenGeneratorInterface* token_generator) {
+void AdsImpl::SetForTesting(privacy::TokenGeneratorInterface* token_generator) {
   DCHECK(token_generator);
 
   token_generator_.release();
@@ -381,16 +386,18 @@ void AdsImpl::ReconcileAdRewards() {
   account_->Reconcile();
 }
 
-AdsHistoryInfo AdsImpl::GetAdsHistory(
-    const AdsHistoryInfo::FilterType filter_type,
-    const AdsHistoryInfo::SortType sort_type,
-    const uint64_t from_timestamp,
-    const uint64_t to_timestamp) {
+AdsHistoryInfo AdsImpl::GetAdsHistory(const AdsHistoryFilterType filter_type,
+                                      const AdsHistorySortType sort_type,
+                                      const double from_timestamp,
+                                      const double to_timestamp) {
   if (!IsInitialized()) {
     return {};
   }
 
-  return history::Get(filter_type, sort_type, from_timestamp, to_timestamp);
+  const base::Time from = base::Time::FromDoubleT(from_timestamp);
+  const base::Time to = base::Time::FromDoubleT(to_timestamp);
+
+  return history::Get(filter_type, sort_type, from, to);
 }
 
 void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
@@ -401,10 +408,10 @@ void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
     return;
   }
 
-  const int64_t to_timestamp =
-      static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  const base::Time distant_past;
+  const base::Time now = base::Time::Now();
 
-  statement = account_->GetStatement(0, to_timestamp);
+  statement = account_->GetStatement(distant_past, now);
 
   callback(/* success */ true, statement);
 }
@@ -413,41 +420,41 @@ void AdsImpl::GetAdDiagnostics(GetAdDiagnosticsCallback callback) {
   AdDiagnostics::Get()->GetAdDiagnostics(std::move(callback));
 }
 
-AdContentInfo::LikeAction AdsImpl::ToggleAdThumbUp(
+AdContentActionType AdsImpl::ToggleAdThumbUp(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const AdContentInfo::LikeAction& action) {
+    const AdContentActionType& action) {
   auto like_action = Client::Get()->ToggleAdThumbUp(creative_instance_id,
                                                     creative_set_id, action);
-  if (like_action == AdContentInfo::LikeAction::kThumbsUp) {
+  if (like_action == AdContentActionType::kThumbsUp) {
     account_->Deposit(creative_instance_id, ConfirmationType::kUpvoted);
   }
 
   return like_action;
 }
 
-AdContentInfo::LikeAction AdsImpl::ToggleAdThumbDown(
+AdContentActionType AdsImpl::ToggleAdThumbDown(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const AdContentInfo::LikeAction& action) {
+    const AdContentActionType& action) {
   auto like_action = Client::Get()->ToggleAdThumbDown(creative_instance_id,
                                                       creative_set_id, action);
-  if (like_action == AdContentInfo::LikeAction::kThumbsDown) {
+  if (like_action == AdContentActionType::kThumbsDown) {
     account_->Deposit(creative_instance_id, ConfirmationType::kDownvoted);
   }
 
   return like_action;
 }
 
-CategoryContentInfo::OptAction AdsImpl::ToggleAdOptInAction(
+CategoryContentActionType AdsImpl::ToggleAdOptInAction(
     const std::string& category,
-    const CategoryContentInfo::OptAction& action) {
+    const CategoryContentActionType& action) {
   return Client::Get()->ToggleAdOptInAction(category, action);
 }
 
-CategoryContentInfo::OptAction AdsImpl::ToggleAdOptOutAction(
+CategoryContentActionType AdsImpl::ToggleAdOptOutAction(
     const std::string& category,
-    const CategoryContentInfo::OptAction& action) {
+    const CategoryContentActionType& action) {
   return Client::Get()->ToggleAdOptOutAction(category, action);
 }
 
@@ -475,6 +482,8 @@ bool AdsImpl::ToggleFlagAd(const std::string& creative_instance_id,
 void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   DCHECK(token_generator);
 
+  ad_diagnostics_ = std::make_unique<AdDiagnostics>();
+
   account_ = std::make_unique<Account>(token_generator_.get());
   account_->AddObserver(this);
 
@@ -498,13 +507,11 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
 
   conversions_resource_ = std::make_unique<resource::Conversions>();
 
-  ad_targeting_ = std::make_unique<AdTargeting>();
   subdivision_targeting_ =
       std::make_unique<ad_targeting::geographic::SubdivisionTargeting>();
 
   ad_notification_serving_ = std::make_unique<ad_notifications::AdServing>(
-      ad_targeting_.get(), subdivision_targeting_.get(),
-      anti_targeting_resource_.get());
+      subdivision_targeting_.get(), anti_targeting_resource_.get());
   ad_notification_serving_->AddObserver(this);
   ad_notification_ = std::make_unique<AdNotification>();
   ad_notification_->AddObserver(this);
@@ -517,8 +524,7 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   ad_transfer_->AddObserver(this);
 
   inline_content_ad_serving_ = std::make_unique<inline_content_ads::AdServing>(
-      ad_targeting_.get(), subdivision_targeting_.get(),
-      anti_targeting_resource_.get());
+      subdivision_targeting_.get(), anti_targeting_resource_.get());
   inline_content_ad_serving_->AddObserver(this);
   inline_content_ad_ = std::make_unique<InlineContentAd>();
   inline_content_ad_->AddObserver(this);

@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 
 #include "bat/ads/internal/ml/ml_transformation_util.h"
+#include "bat/ads/internal/ml/transformation/transformation.h"
 
 namespace ads {
 namespace ml {
@@ -13,12 +14,12 @@ namespace pipeline {
 
 PipelineInfo::PipelineInfo() = default;
 
-PipelineInfo::PipelineInfo(const PipelineInfo& pinfo) {
-  version = pinfo.version;
-  timestamp = pinfo.timestamp;
-  locale = pinfo.locale;
-  linear_model = pinfo.linear_model;
-  transformations = GetTransformationVectorDeepCopy(pinfo.transformations);
+PipelineInfo::PipelineInfo(const PipelineInfo& info) {
+  version = info.version;
+  timestamp = info.timestamp;
+  locale = info.locale;
+  linear_model = info.linear_model;
+  transformations = GetTransformationVectorDeepCopy(info.transformations);
 }
 
 PipelineInfo::~PipelineInfo() = default;

@@ -15,7 +15,24 @@
   }
   return self;
 }
-
+{% if struct.fields|length %}
+- (instancetype)initWith
+{%-  for field in struct.fields -%}
+{%-   set type = field.kind|objc_wrapper_type -%}
+{%-   set name = field.name|objc_property_formatter -%}
+{{field.name|under_to_camel(lower_initial=not loop.first)}}:({{type}}){{name}}
+{%-  if not loop.last %} {% endif %}
+{%-  endfor %}
+{
+  if ((self = [super init])) {
+{%- for field in struct.fields %}
+{%-   set name = field.name|objc_property_formatter %}
+    self.{{name}} = {{name}};
+{%- endfor %}
+  }
+  return self;
+}
+{% endif %}
 - (id)copyWithZone:(nullable NSZone *)zone
 {
   auto copy = [[{{objc_class_name}} alloc] init];

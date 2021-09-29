@@ -6,19 +6,15 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_DATABASE_MIGRATION_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_DATABASE_MIGRATION_H_
 
-#include "bat/ads/ads_client.h"
+#include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
-class DatabaseUtil;
-
 namespace database {
 
-class Migration {
+class Migration final {
  public:
   Migration();
-
   ~Migration();
 
   void FromVersion(const int from_version, ResultCallback callback);

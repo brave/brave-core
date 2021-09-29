@@ -1,11 +1,11 @@
 import * as React from 'react'
 import {
-  AssetOptionType,
+  AccountAssetOptionType,
   BuySendSwapViewTypes,
-  Network,
-  UserAccountType
+  UserAccountType,
+  EthereumChain
 } from '../../../constants/types'
-import { NetworkOptions } from '../../../options/network-options'
+
 import {
   SelectAccount,
   SelectNetwork,
@@ -20,10 +20,11 @@ import {
 export interface Props {
   selectedView: BuySendSwapViewTypes
   accounts: UserAccountType[]
-  assetOptions: AssetOptionType[]
+  networkList: EthereumChain[]
+  assetOptions: AccountAssetOptionType[]
   onClickSelectAccount: (account: UserAccountType) => () => void
-  onClickSelectNetwork: (network: Network) => () => void
-  onSelectedAsset: (account: AssetOptionType) => () => void
+  onClickSelectNetwork: (network: EthereumChain) => () => void
+  onSelectedAsset: (account: AccountAssetOptionType) => () => void
   goBack: () => void
 }
 
@@ -31,6 +32,7 @@ function SelectHeader (props: Props) {
   const {
     selectedView,
     accounts,
+    networkList,
     assetOptions,
     onClickSelectAccount,
     goBack,
@@ -56,7 +58,7 @@ function SelectHeader (props: Props) {
       }
       {selectedView === 'networks' &&
         <SelectNetwork
-          networks={NetworkOptions}
+          networks={networkList}
           onSelectNetwork={onClickSelectNetwork}
           onBack={goBack}
         />

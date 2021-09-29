@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">Evita que los rastreadores y anuncios se carguen y muestren en las páginas web.</translation>
 <translation id="1680858055899097121">No recuperar las pestañas al abrir una nueva sesión de navegación</translation>
 <translation id="7142548388914389999">Permitir análisis de productos que preservan la privacidad (P3A)</translation>
-<translation id="5469408008145872264">Esta información completamente anonimizada ayuda a Brave a calcular el uso general de ciertas funciones y a mejorarlo para usted.</translation>
+<translation id="4272190451231642425">Enviar automáticamente informes de errores</translation>
+<translation id="2239766974964486304">Los informes de errores ayudan a Brave a mejorar la estabilidad de los productos para todos los usuarios.</translation>
 <translation id="7977176350719484850">Datos\nahorrados est.</translation>
 <translation id="9008534313521214777">Tiempo ahorrado estimado</translation>
 <translation id="6572660632052512096">Modo de escritorio</translation>
@@ -240,7 +241,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="723054503945711909">Cuando creas una cuenta con Uphold, Brave Software Inc. no procesa ni almacena la información personal que les proporcionas, así como tampoco accede a esta.</translation>
 <translation id="3699674790322420653">Completar verificación de billetera</translation>
 <translation id="2193391216824305230">Billetera de usuario</translation>
-<translation id="7591798679868259510">Ir a mi cuenta de Uphold</translation>
+<translation id="6585020831163574892">Ve a tu cuenta de Uphold</translation>
 <translation id="9200453331904391567">Desconectar de Recompensas Brave</translation>
 <translation id="6239274080752256452">Retirar fondos</translation>
 <translation id="8874184842967597500">No conectado</translation>
@@ -469,7 +470,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="1078265935778232285">Te damos la bienvenida a Brave</translation>
 <translation id="6824713633331856331">Ayúdanos a aprender de forma anónima</translation>
 <translation id="6116685031674149112">Brave protege tu privacidad y\nagradece tu consentimiento en cuanto a lo siguiente:</translation>
-<translation id="3971666849661839619">Ayuda a mejorar Brave al enviar informes sobre fallos y, de forma completamente anónima, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Ayuda a mejorar Brave enviando <ph name="PRIVATE_PRODUCT_ANALYSIS"/> de forma totalmente anónima</translation>
 <translation id="6478996494082389936">análisis de productos privados.</translation>
 <translation id="5187052478998910855">¿Necesitas actualizarte en cuanto a Rewards?</translation>
 <translation id="8622329973403382303">¡Haz un recorrido rápido para repasar cómo funciona y pasar a la historia como una estrella de Rewards!</translation>
@@ -552,14 +553,38 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="1144810021918451336">No te protege frente a sitios web, descargas o extensiones peligrosos.</translation>
 <translation id="745115390910697838">Las frases no coincidieron. Inténtalo de nuevo.</translation>
 <translation id="2360588547830602174">La recuperación de la cuenta ha fallado. Inténtalo de nuevo.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Precio del mercado en ETH</translation>
+<translation id="5593852897152820572">Precio en ETH</translation>
 <translation id="6748108480210050150">De</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
 <translation id="8654192805213365413">75 %</translation>
 <translation id="6159566011642056819">Para (estimación)</translation>
+<translation id="6998989275928107238">A</translation>
+<translation id="6664416064035847539">dirección o URL</translation>
 <translation id="59223531494896848">Límite</translation>
 <translation id="3567988240819868195">Mercado</translation>
 <translation id="632241521608275119">Tolerancia de deslizamiento</translation>
+<translation id="4500473291496079954">Caduca en</translation>
+<translation id="1987317783729300807">Cuentas</translation>
+<translation id="3535654229833214438">Transacciones</translation>
+<translation id="4636930964841734540">Información</translation>
+<translation id="6284218950354553099">Envía a Brave pings de uso diario automáticamente</translation>
+<translation id="5288333155754958121">Estos pings privados y anónimos le permiten a Brave calcular los usuarios activos.</translation>
+<translation id="3819257035322786455">Copia de seguridad</translation>
+<translation id="4608713693379664295">Cuentas principales de criptomonedas</translation>
+<translation id="4003821417160006384">Cuentas secundarias</translation>
+<translation id="8094541587800369158">Estas cuentas pueden usarse con DApps de Web3 y pueden aparecer en tu cartera. Sin embargo, no pueden restaurarse con una frase de recuperación de la copia de seguridad de tu cuenta principal. Activa Brave Sync para restaurar automáticamente las cuentas secundarias.</translation>
+<translation id="6725413948756358325">Nombre de la cuenta</translation>
+<translation id="6062431965141524986">Puedes crear una cuenta secundaria importando tu clave privada.</translation>
+<translation id="3952797765659730604">Introduce, pega o importa tu archivo de cadena de clave privada o JSON.</translation>
+<translation id="569068482611873351">Importar...</translation>
+<translation id="1940465339426637378">Activos</translation>
+<translation id="4522570452068850558">Detalles</translation>
+<translation id="9065203028668620118">Editar</translation>
+<translation id="3995184924764722477">Detalles de la cuenta</translation>
+<translation id="8967036623785635603">Editar activos visibles</translation>
+<translation id="5050890334032852465">Guardar lista de seguimiento de la cuenta</translation>
+<translation id="7755766175599167100">Buscar tokens</translation>
+<translation id="3835223348537121988">Saldo:</translation>
 </translationbundle>

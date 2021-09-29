@@ -88,6 +88,9 @@ void BatLedgerImpl::GetAutoContributeProperties(
     GetAutoContributePropertiesCallback callback) {
   ledger::type::AutoContributePropertiesPtr props =
       ledger_->GetAutoContributeProperties();
+  if (!props) {
+    props = ledger::type::AutoContributeProperties::New();
+  }
   std::move(callback).Run(std::move(props));
 }
 

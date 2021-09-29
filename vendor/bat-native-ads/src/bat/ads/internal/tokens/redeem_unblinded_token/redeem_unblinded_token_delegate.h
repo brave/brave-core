@@ -6,10 +6,13 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_DELEGATE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_DELEGATE_H_
 
-#include "bat/ads/internal/account/confirmations/confirmation_info.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
-
 namespace ads {
+
+struct ConfirmationInfo;
+
+namespace privacy {
+struct UnblindedTokenInfo;
+}  // namespace privacy
 
 class RedeemUnblindedTokenDelegate {
  public:

@@ -5,8 +5,10 @@
 
 #include "bat/ads/internal/ads_history/filters/ads_history_date_range_filter.h"
 
-#include <limits>
-
+#include "bat/ads/ad_history_info.h"
+#include "bat/ads/ads_history_info.h"
+#include "bat/ads/internal/unittest_time_util.h"
+#include "bat/ads/internal/unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -19,15 +21,15 @@ std::deque<AdHistoryInfo> GetAdsHistory() {
   std::deque<AdHistoryInfo> history;
 
   AdHistoryInfo ad_history;
-  ad_history.timestamp_in_seconds = 33333333333;
+  ad_history.timestamp = 33333333333;
   history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 44444444444;
+  ad_history.timestamp = 44444444444;
   history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 22222222222;
+  ad_history.timestamp = 22222222222;
   history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 66666666666;
+  ad_history.timestamp = 66666666666;
   history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 55555555555;
+  ad_history.timestamp = 55555555555;
   history.push_back(ad_history);
 
   return history;
@@ -40,22 +42,22 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   // Arrange
   std::deque<AdHistoryInfo> history = GetAdsHistory();
 
-  const uint64_t from_timestamp = 44444444444;
-  const uint64_t to_timestamp = std::numeric_limits<uint64_t>::max();
+  const base::Time from_time = TimestampToTime(44444444444);
+  const base::Time to_time = MaxTime();
 
   // Act
   AdsHistoryDateRangeFilter filter;
-  history = filter.Apply(history, from_timestamp, to_timestamp);
+  history = filter.Apply(history, from_time, to_time);
 
   // Assert
   std::deque<AdHistoryInfo> expected_history;
 
   AdHistoryInfo ad_history;
-  ad_history.timestamp_in_seconds = 44444444444;
+  ad_history.timestamp = 44444444444;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 66666666666;
+  ad_history.timestamp = 66666666666;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 55555555555;
+  ad_history.timestamp = 55555555555;
   expected_history.push_back(ad_history);
 
   EXPECT_EQ(expected_history, history);
@@ -66,12 +68,12 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   // Arrange
   std::deque<AdHistoryInfo> history = GetAdsHistory();
 
-  const uint64_t from_timestamp = 77777777777;
-  const uint64_t to_timestamp = std::numeric_limits<uint64_t>::max();
+  const base::Time from_time = TimestampToTime(77777777777);
+  const base::Time to_time = MaxTime();
 
   // Act
   AdsHistoryDateRangeFilter filter;
-  history = filter.Apply(history, from_timestamp, to_timestamp);
+  history = filter.Apply(history, from_time, to_time);
 
   // Assert
   const std::deque<AdHistoryInfo> expected_history = {};
@@ -84,21 +86,21 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   // Arrange
   std::deque<AdHistoryInfo> history = GetAdsHistory();
 
-  const uint64_t from_timestamp = std::numeric_limits<uint64_t>::min();
-  const uint64_t to_timestamp = 44444444444;
+  const base::Time from_time = MinTime();
+  const base::Time to_time = TimestampToTime(44444444444);
 
   // Act
   AdsHistoryDateRangeFilter filter;
-  history = filter.Apply(history, from_timestamp, to_timestamp);
+  history = filter.Apply(history, from_time, to_time);
 
   // Assert
   std::deque<AdHistoryInfo> expected_history;
   AdHistoryInfo ad_history;
-  ad_history.timestamp_in_seconds = 33333333333;
+  ad_history.timestamp = 33333333333;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 44444444444;
+  ad_history.timestamp = 44444444444;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 22222222222;
+  ad_history.timestamp = 22222222222;
   expected_history.push_back(ad_history);
 
   EXPECT_EQ(expected_history, history);
@@ -109,12 +111,12 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   // Arrange
   std::deque<AdHistoryInfo> history = GetAdsHistory();
 
-  const uint64_t from_timestamp = std::numeric_limits<uint64_t>::min();
-  const uint64_t to_timestamp = 11111111111;
+  const base::Time from_time = MinTime();
+  const base::Time to_time = TimestampToTime(11111111111);
 
   // Act
   AdsHistoryDateRangeFilter filter;
-  history = filter.Apply(history, from_timestamp, to_timestamp);
+  history = filter.Apply(history, from_time, to_time);
 
   // Assert
   const std::deque<AdHistoryInfo> expected_history = {};
@@ -127,25 +129,25 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   // Arrange
   std::deque<AdHistoryInfo> history = GetAdsHistory();
 
-  const uint64_t from_timestamp = std::numeric_limits<uint64_t>::min();
-  const uint64_t to_timestamp = std::numeric_limits<uint64_t>::max();
+  const base::Time from_time = MinTime();
+  const base::Time to_time = MaxTime();
 
   // Act
   AdsHistoryDateRangeFilter filter;
-  history = filter.Apply(history, from_timestamp, to_timestamp);
+  history = filter.Apply(history, from_time, to_time);
 
   // Assert
   std::deque<AdHistoryInfo> expected_history;
   AdHistoryInfo ad_history;
-  ad_history.timestamp_in_seconds = 33333333333;
+  ad_history.timestamp = 33333333333;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 44444444444;
+  ad_history.timestamp = 44444444444;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 22222222222;
+  ad_history.timestamp = 22222222222;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 66666666666;
+  ad_history.timestamp = 66666666666;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 55555555555;
+  ad_history.timestamp = 55555555555;
   expected_history.push_back(ad_history);
 
   EXPECT_EQ(expected_history, history);
@@ -156,12 +158,12 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   // Arrange
   std::deque<AdHistoryInfo> history = GetAdsHistory();
 
-  const uint64_t from_timestamp = std::numeric_limits<uint64_t>::max();
-  const uint64_t to_timestamp = std::numeric_limits<uint64_t>::min();
+  const base::Time from_time = MaxTime();
+  const base::Time to_time = MinTime();
 
   // Act
   AdsHistoryDateRangeFilter filter;
-  history = filter.Apply(history, from_timestamp, to_timestamp);
+  history = filter.Apply(history, from_time, to_time);
 
   // Assert
   const std::deque<AdHistoryInfo> expected_history = {};
@@ -173,12 +175,12 @@ TEST(BatAdsHistoryDateRangeFilterTest, FilterEmptyHistory) {
   // Arrange
   std::deque<AdHistoryInfo> history;
 
-  const uint64_t from_timestamp = std::numeric_limits<uint64_t>::min();
-  const uint64_t to_timestamp = std::numeric_limits<uint64_t>::max();
+  const base::Time from_time = TimestampToTime(44444444444);
+  const base::Time to_time = MaxTime();
 
   // Act
   AdsHistoryDateRangeFilter filter;
-  history = filter.Apply(history, from_timestamp, to_timestamp);
+  history = filter.Apply(history, from_time, to_time);
 
   // Assert
   const std::deque<AdHistoryInfo> expected_history = {};

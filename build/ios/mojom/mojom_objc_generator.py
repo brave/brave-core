@@ -319,10 +319,13 @@ class Generator(generator.Generator):
             "objc_property_formatter": self._ObjCPropertyFormatter,
             "objc_method_name_formatter": self._ObjCMethodNameFormatter,
             "objc_enum_formatter": self._ObjCEnumFormatter,
+            "objc_argument_modifiers": self._GetObjCArgumentModifiers,
             "cpp_to_objc_assign": self._CppToObjCAssign,
+            "const_objc_assign": self._ConstObjCAssign,
             "objc_to_cpp_assign": self._ObjCToCppAssign,
             "expected_cpp_param_type": self._GetExpectedCppParamType,
             "cpp_namespace_from_kind": CppNamespaceFromKind,
+            "under_to_camel": UnderToCamel,
             "under_to_lower_camel": UnderToLowerCamel,
             "interface_remote_sets": self._GetInterfaceRemoteSets,
         }
@@ -353,6 +356,8 @@ class Generator(generator.Generator):
         should_pass_param_by_value = (not mojom.IsReferenceKind(kind)) or is_move_only_kind(kind)
         typemap = MojoTypemapForKind(kind, False)
         typestring = typemap.ExpectedCppType()
+        if mojom.IsNullableKind(kind) and not mojom.IsStructKind(kind):
+            typestring = "absl::optional<%s>" % typestring
         return typestring if should_pass_param_by_value else "const %s&" % typestring
 
     def _GetObjCPropertyModifiers(self, kind):
@@ -386,6 +391,11 @@ class Generator(generator.Generator):
     def _GetObjCWrapperType(self, kind, objectType=False):
         typemap = MojoTypemapForKind(kind, objectType)
         return typemap.ObjCWrappedType()
+
+    def _GetObjCArgumentModifiers(self, kind, inside_callback=False):
+        if mojom.IsNullableKind(kind):
+            return "nullable" if not inside_callback else "_Nullable"
+        return ""
 
     def _ObjCPropertyFormatter(self, value):
         """ snake case to camel case, and replaces reserved names """
@@ -427,13 +437,31 @@ class Generator(generator.Generator):
         typemap = MojoTypemapForKind(kind)
         if typemap is None:
             raise Exception("No typemap found for the given kind: %s" % kind)
-        return typemap.ObjCToCpp(accessor)
+        cpp_assign = typemap.ObjCToCpp(accessor)
+        if mojom.IsNullableKind(kind):
+            if mojom.IsStructKind(kind):
+                cpp_assign = "%s ? %s : nullptr" % (accessor, cpp_assign)
+            else:
+                cpp_assign = "%s ? absl::make_optional(%s) : absl::nullopt" % (accessor, cpp_assign)
+        return cpp_assign
 
     def _CppToObjCAssign(self, field, obj=None):
         kind = field.kind
         accessor = "%s%s" % (obj + "." if obj else "", field.name)
         typemap = MojoTypemapForKind(kind)
+        if mojom.IsNullableKind(kind):
+            value_accessor = accessor if mojom.IsStructKind(kind) else "%s.value()" % accessor
+            return "%s ? %s : nil" % (accessor, typemap.CppToObjC(value_accessor))
         return typemap.CppToObjC(accessor)
+
+    def _ConstObjCAssign(self, constant):
+        kind = constant.kind
+        # Obj-C only supports a handful of constant types
+        if mojom.IsStringKind(kind):
+            return '@%s' % constant.value # string constant value come with quotes already
+        if kind in _kind_to_nsnumber_getter:
+            return constant.value
+        raise Exception("Obj-C constant cannot be generated for the given kind: %s" % kind)
 
     def _GetJinjaExports(self):
         all_structs = [item for item in self.module.structs if item.name not in self.excludedTypes]
@@ -474,6 +502,7 @@ class Generator(generator.Generator):
             "class_prefix": ObjCPrefixFromModule(self.module),
             "structs": all_structs,
             "unions": self.module.unions,
+            "constants": self.module.constants
         }
 
     @UseJinja("module.h.tmpl")

@@ -12,6 +12,7 @@ namespace prefs {
 
 extern const char kDefaultSearchProviderByExtension[];
 extern const char kAddOpenSearchEngines[];
+extern const char kBraveDefaultSearchVersion[];
 
 }  // namespace prefs
 

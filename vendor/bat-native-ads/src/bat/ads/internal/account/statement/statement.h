@@ -8,21 +8,21 @@
 
 #include <cstdint>
 
-#include "base/time/time.h"
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
 class AdRewards;
 struct StatementInfo;
 
-class Statement {
+class Statement final {
  public:
   explicit Statement(AdRewards* ad_rewards);
-
   ~Statement();
 
-  StatementInfo Get(const int64_t from_timestamp,
-                    const int64_t to_timestamp) const;
+  StatementInfo Get(const base::Time& from, const base::Time& to) const;
 
  private:
   double GetEarningsForThisMonth() const;

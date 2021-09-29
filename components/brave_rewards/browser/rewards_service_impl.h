@@ -41,6 +41,10 @@
 #include "brave/components/safetynet/safetynet_check.h"
 #endif
 
+#if BUILDFLAG(ENABLE_GREASELION)
+#include "brave/components/greaselion/browser/greaselion_service.h"
+#endif
+
 namespace base {
 class OneShotTimer;
 class RepeatingTimer;
@@ -60,12 +64,6 @@ class DB;
 namespace network {
 class SimpleURLLoader;
 }  // namespace network
-
-#if BUILDFLAG(ENABLE_GREASELION)
-namespace greaselion {
-class GreaselionService;
-}  // namespace greaselion
-#endif
 
 class Profile;
 class RewardsFlagBrowserTest;
@@ -96,6 +94,9 @@ using StopLedgerCallback = base::OnceCallback<void(ledger::type::Result)>;
 
 class RewardsServiceImpl : public RewardsService,
                            public ledger::LedgerClient,
+#if BUILDFLAG(ENABLE_GREASELION)
+                           public greaselion::GreaselionService::Observer,
+#endif
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
  public:
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -218,13 +219,10 @@ class RewardsServiceImpl : public RewardsService,
       RefreshPublisherCallback callback) override;
   void OnAdsEnabled(bool ads_enabled) override;
 
-  void OnSaveRecurringTip(
-      SaveRecurringTipCallback callback,
-      const ledger::type::Result result);
-  void SaveRecurringTip(
-      const std::string& publisher_key,
-      const double amount,
-      SaveRecurringTipCallback callback) override;
+  void OnSaveRecurringTip(OnTipCallback callback, ledger::type::Result result);
+  void SaveRecurringTip(const std::string& publisher_key,
+                        double amount,
+                        OnTipCallback callback) override;
 
   const RewardsNotificationService::RewardsNotificationsMap&
     GetAllNotifications() override;
@@ -280,10 +278,10 @@ class RewardsServiceImpl : public RewardsService,
       const bool recurring,
       ledger::type::PublisherInfoPtr publisher) override;
 
-  void OnTip(
-      const std::string& publisher_key,
-      const double amount,
-      const bool recurring) override;
+  void OnTip(const std::string& publisher_key,
+             double amount,
+             bool recurring,
+             OnTipCallback callback) override;
 
   void SetPublisherMinVisitTime(int duration_in_seconds) const override;
 
@@ -361,6 +359,13 @@ class RewardsServiceImpl : public RewardsService,
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
+#if BUILDFLAG(ENABLE_GREASELION)
+  void EnableGreaseLion();
+
+  // GreaselionService::Observer:
+  void OnRulesReady(greaselion::GreaselionService* greaselion_service) override;
+#endif
+
   void OnConnectionClosed(const ledger::type::Result result);
 
   void InitPrefChangeRegistrar();
@@ -370,8 +375,6 @@ class RewardsServiceImpl : public RewardsService,
   void CheckPreferences();
 
   void StartLedgerProcessIfNecessary();
-
-  void EnableGreaseLion();
 
   void OnStopLedger(
       StopLedgerCallback callback,

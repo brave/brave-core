@@ -12,7 +12,9 @@
 
 namespace ads {
 
-class AdsHistoryAscendingSort : public AdsHistorySort {
+struct AdHistoryInfo;
+
+class AdsHistoryAscendingSort final : public AdsHistorySort {
  public:
   AdsHistoryAscendingSort();
   ~AdsHistoryAscendingSort() override;

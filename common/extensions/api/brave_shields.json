@@ -74,73 +74,6 @@
         "parameters": []
       },
       {
-        "name": "urlCosmeticResources",
-        "type": "function",
-        "description": "Get a cosmetic adblocking stylesheet, generic style exceptions, script injections, and whether or not a generichide rule was present, all specific for the given URL",
-        "parameters": [
-          {
-            "name": "url",
-            "type": "string"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "urlSpecificResources",
-                "type": "object",
-                "properties": {
-                  "hide_selectors": {"type": "array", "items": {"type": "string"}, "description": "URL-specific CSS selectors that should be hidden from the page if they are determined to not include 1st party content"},
-                  "style_selectors": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}}, "description": "URL-specific CSS selectors that should be restyled, with their associated CSS style rules"},
-                  "exceptions": {"type": "array", "items": {"type": "string"}, "description": "URL-specific overrides for generic cosmetic blocking selectors"},
-                  "injected_script": {"type": "string", "description": "A script to inject as the page is loading"},
-                  "force_hide_selectors": {"type": "array", "items": {"type": "string"}, "description": "URL-specific CSS selectors that should be hidden from the page"},
-                  "generichide": {"type": "boolean", "description": "Indicates whether or not the URL matched a generichide exception rule"}
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "hiddenClassIdSelectors",
-        "type": "function",
-        "description": "Get a stylesheet of generic rules that may apply to the given set of classes and ids without any of the given excepted selectors",
-        "parameters": [
-          {
-            "name": "classes",
-            "type": "array",
-            "items": {"type": "string"}
-          },
-          {
-            "name": "ids",
-            "type": "array",
-            "items": {"type": "string"}
-          },
-          {
-            "name": "exceptions",
-            "type": "array",
-            "items": {"type": "string"}
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "selectors",
-                "type": "array",
-                "items": {"type": "string"}
-              },
-              {
-                "name": "forceHideSelectors",
-                "type": "array",
-                "items": {"type": "string"}
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "addSiteCosmeticFilter",
         "type": "function",
         "description": "Saves an element to hide on a page by creating a new filter of the form `host##cssSelector` in the custom filters of brave://adblock",
@@ -178,27 +111,6 @@
             "parameters": [
               {
                 "name": "enabled",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "shouldDoCosmeticFiltering",
-        "type": "function",
-        "description": "Determine whether or not to do cosmetic filtering on the given url",
-        "parameters": [
-          {
-            "name": "url",
-            "type": "string"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "doCosmeticFiltering",
                 "type": "boolean"
               }
             ]

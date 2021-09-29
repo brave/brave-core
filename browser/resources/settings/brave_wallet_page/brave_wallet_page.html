@@ -26,32 +26,36 @@
       }
   </style>
   <div class="settings-box first">
-    <div class="start">$i18n{braveWeb3ProviderDesc}</div>
-      <settings-dropdown-menu id="braveWeb3ProvidersType"
+    <div class="start">$i18n{defaultWalletDesc}</div>
+      <settings-dropdown-menu id="defaultWalletType"
                               pref="{{prefs.brave.wallet.web3_provider}}"
-                              menu-options="[[braveWeb3Providers_]]">
+                              menu-options="[[wallets_]]">
       </settings-dropdown-menu>
     </div>
-<template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
-    <settings-toggle-button id="braveWalletEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.load_on_startup}}"
-        label="$i18n{loadCryptoWalletsOnStartupDescDeprecated}">
-</template>
-<template is="dom-if" if="[[!isNativeWalletEnabled_]]" restamp>
-    <settings-toggle-button id="braveWalletEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.load_on_startup}}"
-        label="$i18n{loadCryptoWalletsOnStartupDesc}">
-</template>
-<template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
-    <settings-toggle-button id="showBraveWalletIconOnToolbar"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.show_wallet_icon_on_toolbar}}"
-        label="$i18n{showBravewalletIconOnToolbar}">
-</template>
-
-    </settings-toggle-button>
+    <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
+      <settings-toggle-button id="showBraveWalletIconOnToolbar"
+          class="cr-row"
+          pref="{{prefs.brave.wallet.show_wallet_icon_on_toolbar}}"
+          label="$i18n{showBravewalletIconOnToolbar}">
+      </settings-toggle-button>
+    </template>
+    <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
+    <div class="settings-box">
+      <div class="flex cr-padded-text">
+        <div>$i18n{autoLockMinutes}</div>
+        <div class="secondary">$i18n{autoLockMinutesDesc}</div>
+      </div>
+      <cr-input
+          id="walletAutoLockMinutes" type="number"
+          class="flex-container"
+          value="$i18n{autoLockMinutesValue}"
+          on-change="onChangeAutoLockMinutes_"
+          min="1"
+          max="10080"
+      >
+      </cr-input>
+    </div>
+    </template>
   </template>
   <script src="brave_wallet_page.js"></script>
 </dom-module>

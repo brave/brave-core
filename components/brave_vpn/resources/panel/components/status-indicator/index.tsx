@@ -1,18 +1,25 @@
 import * as React from 'react'
 import * as S from './style'
 import locale from '../../constants/locale'
+import { ConnectionState } from '../../types/connection_state'
+import { LoaderIcon } from 'brave-ui/components/icons'
 interface Props {
-  isConnected: boolean
+  status: ConnectionState
 }
 
 function StatusIndicator (props: Props) {
   return (
     <S.Box>
-      <S.Indicator isActive={props.isConnected} />
+      {props.status === ConnectionState.CONNECTED && <S.ActiveIndicator />}
+      {props.status === ConnectionState.CONNECTING && <S.Loader><LoaderIcon /></S.Loader>}
+      {props.status === ConnectionState.DISCONNECTING && <S.Loader><LoaderIcon /></S.Loader>}
+      {props.status === ConnectionState.DISCONNECTED && <S.InActiveIndicator />}
       <S.Text>
-        {props.isConnected
-          ? locale.connectedText
-          : locale.disconnectedText}
+        {props.status === ConnectionState.CONNECTED && locale.connectedLabel}
+        {props.status === ConnectionState.CONNECTING && `${locale.connectingLabel}...`}
+        {props.status === ConnectionState.DISCONNECTING && `${locale.disconnectingLabel}...`}
+        {props.status === ConnectionState.DISCONNECTED && locale.disconnectedLabel}
+        {props.status === ConnectionState.CONNECT_FAILED && locale.connectionFailedLabel}
       </S.Text>
     </S.Box>
   )

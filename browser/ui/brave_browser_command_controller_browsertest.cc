@@ -5,8 +5,10 @@
 
 #include <memory>
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -27,8 +29,68 @@
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
-using BraveBrowserCommandControllerTest = InProcessBrowserTest;
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/features.h"
+#endif
 
+class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
+ public:
+  BraveBrowserCommandControllerTest() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    scoped_feature_list_.InitAndEnableFeature(brave_vpn::features::kBraveVPN);
+#endif
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  void SetPurchasedUserForBraveVPN(Browser* browser, bool purchased) {
+    auto* service = BraveVpnServiceFactory::GetForProfile(browser->profile());
+    auto target_state =
+        purchased ? PurchasedState::PURCHASED : PurchasedState::NOT_PURCHASED;
+    service->SetPurchasedState(target_state);
+    // Call explicitely to update vpn commands status because mojo works in
+    // async way.
+    static_cast<chrome::BraveBrowserCommandController*>(
+        browser->command_controller())
+        ->OnPurchasedStateChanged(target_state);
+  }
+
+  void CheckBraveVPNCommands(Browser* browser) {
+    // Only IDC_BRAVE_VPN_MENU command is changed based on purchased state.
+    auto* command_controller = browser->command_controller();
+    SetPurchasedUserForBraveVPN(browser, false);
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+    EXPECT_TRUE(command_controller->IsCommandEnabled(
+        IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON));
+    EXPECT_TRUE(
+        command_controller->IsCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK));
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ABOUT_BRAVE_VPN));
+    EXPECT_TRUE(
+        command_controller->IsCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN));
+
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_TOGGLE_BRAVE_VPN));
+
+    SetPurchasedUserForBraveVPN(browser, true);
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+    EXPECT_TRUE(command_controller->IsCommandEnabled(
+        IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON));
+    EXPECT_TRUE(
+        command_controller->IsCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK));
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ABOUT_BRAVE_VPN));
+    EXPECT_TRUE(
+        command_controller->IsCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN));
+
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_BRAVE_VPN));
+  }
+
+  base::test::ScopedFeatureList scoped_feature_list_;
+#endif
+};
+
+// Regular window
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsEnableTest) {
   // Test normal browser's brave commands status.
@@ -48,6 +110,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  CheckBraveVPNCommands(browser());
+#endif
+
   if (switches::IsSyncAllowedByFlag())
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
   else
@@ -63,10 +129,13 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+}
 
-  // Create private browser and test its brave commands status.
+// Create private browser and test its brave commands status.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       BraveCommandsEnableTestPrivateWindow) {
   auto* private_browser = CreateIncognitoBrowser();
-  command_controller = private_browser->command_controller();
+  auto* command_controller = private_browser->command_controller();
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
 
@@ -75,6 +144,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  CheckBraveVPNCommands(private_browser);
 #endif
 
   if (switches::IsSyncAllowedByFlag())
@@ -90,8 +163,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+}
 
-  // Create guest browser and test its brave commands status.
+// Create guest browser and test its brave commands status.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       BraveCommandsEnableTestGuestWindow) {
   ui_test_utils::BrowserChangeObserver browser_creation_observer(
       nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
   profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
@@ -99,7 +175,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   Browser* guest_browser = browser_creation_observer.Wait();
   DCHECK(guest_browser);
   EXPECT_TRUE(guest_browser->profile()->IsGuestSession());
-  command_controller = guest_browser->command_controller();
+  auto* command_controller = guest_browser->command_controller();
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
@@ -109,6 +185,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  CheckBraveVPNCommands(guest_browser);
 #endif
 
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
@@ -121,16 +201,19 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+}
 
+// Launch tor window and check its command status.
 #if BUILDFLAG(ENABLE_TOR)
-  // Launch tor window and check its command status.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       BraveCommandsEnableTestPrivateTorWindow) {
   ui_test_utils::BrowserChangeObserver tor_browser_creation_observer(
       nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
   brave::NewOffTheRecordWindowTor(browser());
   Browser* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);
   EXPECT_TRUE(tor_browser->profile()->IsTor());
-  command_controller = tor_browser->command_controller();
+  auto* command_controller = tor_browser->command_controller();
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
@@ -144,6 +227,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
   else
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  CheckBraveVPNCommands(tor_browser);
+#endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
@@ -161,5 +248,5 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
-#endif
 }
+#endif

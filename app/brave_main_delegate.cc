@@ -18,6 +18,8 @@
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/resource_bundle_helper.h"
+#include "brave/components/brave_component_updater/browser/features.h"
+#include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
@@ -29,6 +31,7 @@
 #include "chrome/common/chrome_switches.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/component_updater/component_updater_switches.h"
 #include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/embedder_support/switches.h"
 #include "components/federated_learning/features/features.h"
@@ -58,14 +61,34 @@
 #include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
 #include "components/signin/public/base/account_consistency_method.h"
 #else
+#include "chrome/browser/browser_features.h"
 #include "chrome/browser/ui/profile_picker.h"
 #endif
 
 namespace {
+
+const char kBraveOriginTrialsPublicKey[] =
+    "bYUKPJoPnCxeNvu72j4EmPuK7tr1PAC7SHh8ld9Mw3E=,"
+    "fMS4mpO6buLQ/QMd+zJmxzty/VQ6B1EUZqoCU04zoRU=";
+
 // staging "https://sync-v2.bravesoftware.com/v2" can be overriden by
 // switches::kSyncServiceURL manually
 const char kBraveSyncServiceStagingURL[] =
     "https://sync-v2.bravesoftware.com/v2";
+
+const char kDummyUrl[] = "https://no-thanks.invalid";
+
+std::string GetUpdateURLHost() {
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (!command_line.HasSwitch(brave_component_updater::kUseGoUpdateDev) &&
+      !base::FeatureList::IsEnabled(
+          brave_component_updater::kUseDevUpdaterUrl)) {
+    return UPDATER_PROD_ENDPOINT;
+  }
+  return UPDATER_DEV_ENDPOINT;
+}
+
 }  // namespace
 
 #if !defined(CHROME_MULTIPLE_DLL_BROWSER)
@@ -78,12 +101,6 @@ base::LazyInstance<BraveContentUtilityClient>::DestructorAtExit
 base::LazyInstance<BraveContentBrowserClient>::DestructorAtExit
     g_brave_content_browser_client = LAZY_INSTANCE_INITIALIZER;
 #endif
-
-const char kBraveOriginTrialsPublicKey[] =
-    "bYUKPJoPnCxeNvu72j4EmPuK7tr1PAC7SHh8ld9Mw3E=,"
-    "fMS4mpO6buLQ/QMd+zJmxzty/VQ6B1EUZqoCU04zoRU=";
-
-const char kDummyUrl[] = "https://no-thanks.invalid";
 
 BraveMainDelegate::BraveMainDelegate() : ChromeMainDelegate() {}
 
@@ -164,6 +181,12 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitch(switches::kEnableDomDistiller);
   command_line.AppendSwitch(switches::kNoPings);
 
+  std::string update_url = GetUpdateURLHost();
+  if (!update_url.empty()) {
+    std::string source = "url-source=" + update_url;
+    command_line.AppendSwitchASCII(switches::kComponentUpdater, source.c_str());
+  }
+
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
           embedder_support::kOriginTrialPublicKey)) {
     command_line.AppendSwitchASCII(embedder_support::kOriginTrialPublicKey,
@@ -207,21 +230,27 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   std::unordered_set<const char*> disabled_features = {
     autofill::features::kAutofillEnableAccountWalletStorage.name,
     autofill::features::kAutofillServerCommunication.name,
+    blink::features::kConversionMeasurement.name,
     blink::features::kFledgeInterestGroupAPI.name,
     blink::features::kFledgeInterestGroups.name,
     blink::features::kHandwritingRecognitionWebPlatformApiFinch.name,
     blink::features::kInterestCohortAPIOriginTrial.name,
     blink::features::kInterestCohortFeaturePolicy.name,
+    blink::features::kLangClientHintHeader.name,
+    blink::features::kNavigatorPluginsFixed.name,
     blink::features::kTextFragmentAnchor.name,
+#if !defined(OS_ANDROID)
+    features::kCopyLinkToText.name,
+#endif
     features::kDirectSockets.name,
     features::kIdleDetection.name,
-    features::kLangClientHintHeader.name,
     features::kNotificationTriggers.name,
     features::kPrivacySandboxSettings.name,
     features::kSignedExchangePrefetchCacheForNavigations.name,
     features::kSignedExchangeSubresourcePrefetch.name,
     features::kSubresourceWebBundles.name,
     features::kWebOTP.name,
+    features::kTabGroupsFeedback.name,
     federated_learning::kFederatedLearningOfCohorts.name,
     federated_learning::kFlocIdComputedEventLogging.name,
     media::kLiveCaption.name,

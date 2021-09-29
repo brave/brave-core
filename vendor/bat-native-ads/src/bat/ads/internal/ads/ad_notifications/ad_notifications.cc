@@ -6,20 +6,21 @@
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
 
 #include <functional>
-#include <memory>
 #include <utility>
 
+#include "base/check_op.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
-#include "bat/ads/ad_notification_info.h"
+#include "base/values.h"
 #include "bat/ads/ad_type.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/pref_names.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 #if defined(OS_ANDROID)
 #include "base/android/build_info.h"
@@ -193,10 +194,10 @@ void AdNotifications::RemoveAllAfterReboot() {
 
     const AdEventInfo ad_event = ad_events.front();
 
-    const base::Time boot_time = base::Time::Now() - base::SysInfo::Uptime();
-    const int64_t boot_timestamp = boot_time.ToDoubleT();
+    const base::Time system_uptime =
+        base::Time::Now() - base::SysInfo::Uptime();
 
-    if (ad_event.timestamp <= boot_timestamp) {
+    if (ad_event.created_at <= system_uptime) {
       RemoveAll();
     }
   });

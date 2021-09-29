@@ -27,6 +27,7 @@ class BraveTabMenuModel : public TabMenuModel {
   };
 
   BraveTabMenuModel(ui::SimpleMenuModel::Delegate* delegate,
+                    TabMenuModelDelegate* tab_menu_model_delegate,
                     TabStripModel* tab_strip_model,
                     int index);
   ~BraveTabMenuModel() override;

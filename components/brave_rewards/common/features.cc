@@ -12,7 +12,7 @@ namespace features {
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
 const base::Feature kGeminiFeature{"BraveRewardsGemini",
-                                   base::FEATURE_DISABLED_BY_DEFAULT};
+                                   base::FEATURE_ENABLED_BY_DEFAULT};
 #endif
 
 const base::Feature kVerboseLoggingFeature{"BraveRewardsVerboseLogging",

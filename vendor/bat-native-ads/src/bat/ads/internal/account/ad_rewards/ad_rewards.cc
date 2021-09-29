@@ -8,16 +8,20 @@
 #include <functional>
 #include <utility>
 
+#include "base/check.h"
 #include "base/time/time.h"
+#include "base/values.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/ad_rewards/payments/payments.h"
 #include "bat/ads/internal/account/ad_rewards/payments/payments_url_request_builder.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/logging_util.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/pref_names.h"
-#include "bat/ads/transaction_info.h"
 #include "net/http/http_status_code.h"
 
 namespace ads {
@@ -27,13 +31,13 @@ namespace {
 const int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
 
 double CalculateEarningsForTransactions(const TransactionList& transactions,
-                                        const int64_t from_timestamp,
-                                        const int64_t to_timestamp) {
+                                        const base::Time& from_time,
+                                        const base::Time& to_time) {
   double earnings = 0.0;
 
   for (const auto& transaction : transactions) {
-    if (transaction.timestamp < from_timestamp ||
-        transaction.timestamp > to_timestamp) {
+    const base::Time time = base::Time::FromDoubleT(transaction.timestamp);
+    if (time < from_time || time > to_time) {
       continue;
     }
 
@@ -50,10 +54,8 @@ AdRewards::AdRewards() : payments_(std::make_unique<Payments>()) {
       AdsClientHelper::Get()->GetDoublePref(prefs::kUnreconciledTransactions);
 }
 
-AdRewards::~AdRewards() = default;
-
-void AdRewards::set_delegate(AdRewardsDelegate* delegate) {
-  delegate_ = delegate;
+AdRewards::~AdRewards() {
+  delegate_ = nullptr;
 }
 
 void AdRewards::MaybeReconcile(const WalletInfo& wallet) {
@@ -71,16 +73,16 @@ void AdRewards::MaybeReconcile(const WalletInfo& wallet) {
   Reconcile();
 }
 
-uint64_t AdRewards::GetNextPaymentDate() const {
+double AdRewards::GetNextPaymentDate() const {
   const base::Time now = base::Time::Now();
 
   const base::Time next_token_redemption_date =
-      ConfirmationsState::Get()->get_next_token_redemption_date();
+      ConfirmationsState::Get()->GetNextTokenRedemptionDate();
 
   const base::Time next_payment_date =
       payments_->CalculateNextPaymentDate(now, next_token_redemption_date);
 
-  return static_cast<uint64_t>(next_payment_date.ToDoubleT());
+  return next_payment_date.ToDoubleT();
 }
 
 uint64_t AdRewards::GetAdsReceivedThisMonth() const {
@@ -90,7 +92,7 @@ uint64_t AdRewards::GetAdsReceivedThisMonth() const {
 
 uint64_t AdRewards::GetAdsReceivedForMonth(const base::Time& time) const {
   const TransactionList transactions =
-      ConfirmationsState::Get()->get_transactions();
+      ConfirmationsState::Get()->GetTransactions();
 
   uint64_t ads_received_this_month = 0;
 
@@ -99,7 +101,7 @@ uint64_t AdRewards::GetAdsReceivedForMonth(const base::Time& time) const {
 
   for (const auto& transaction : transactions) {
     if (transaction.timestamp == 0) {
-      // Workaround for Windows crash when passing 0 to UTCExplode
+      // Workaround for Windows crash when passing 0 to LocalExplode
       continue;
     }
 
@@ -137,7 +139,7 @@ double AdRewards::GetEarningsForMonth(const base::Time& time) const {
 double AdRewards::GetUnclearedEarningsForThisMonth() const {
   const base::Time now = base::Time::Now();
   base::Time::Exploded exploded;
-  now.UTCExplode(&exploded);
+  now.LocalExplode(&exploded);
 
   exploded.day_of_month = 1;
   exploded.hour = 0;
@@ -145,27 +147,24 @@ double AdRewards::GetUnclearedEarningsForThisMonth() const {
   exploded.second = 0;
 
   base::Time from_time;
-  const bool success = base::Time::FromUTCExploded(exploded, &from_time);
+  const bool success = base::Time::FromLocalExploded(exploded, &from_time);
   DCHECK(success);
 
-  const int64_t from_timestamp = static_cast<int64_t>(from_time.ToDoubleT());
-
-  const int64_t to_timestamp =
-      static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  const base::Time to_time = base::Time::Now();
 
   const TransactionList uncleared_transactions = transactions::GetUncleared();
 
-  return CalculateEarningsForTransactions(uncleared_transactions,
-                                          from_timestamp, to_timestamp);
+  return CalculateEarningsForTransactions(uncleared_transactions, from_time,
+                                          to_time);
 }
 
 void AdRewards::AppendUnreconciledTransactions(
     const TransactionList& transactions) {
-  const int64_t to_timestamp =
-      static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  const base::Time from_time = base::Time();
+  const base::Time to_time = base::Time::Now();
 
   unreconciled_transactions_ +=
-      CalculateEarningsForTransactions(transactions, 0, to_timestamp);
+      CalculateEarningsForTransactions(transactions, from_time, to_time);
 
   AdsClientHelper::Get()->SetDoublePref(prefs::kUnreconciledTransactions,
                                         unreconciled_transactions_);
@@ -229,10 +228,10 @@ void AdRewards::GetPayments() {
 
   PaymentsUrlRequestBuilder url_request_builder(wallet_);
   mojom::UrlRequestPtr url_request = url_request_builder.Build();
-  BLOG(5, UrlRequestToString(url_request));
+  BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  auto callback =
+  const auto callback =
       std::bind(&AdRewards::OnGetPayments, this, std::placeholders::_1);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }

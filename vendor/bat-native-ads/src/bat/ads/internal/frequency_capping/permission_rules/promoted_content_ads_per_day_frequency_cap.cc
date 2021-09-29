@@ -19,7 +19,7 @@ PromotedContentAdsPerDayFrequencyCap::~PromotedContentAdsPerDayFrequencyCap() =
     default;
 
 bool PromotedContentAdsPerDayFrequencyCap::ShouldAllow() {
-  const std::deque<uint64_t> history =
+  const std::deque<base::Time> history =
       GetAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
@@ -31,14 +31,14 @@ bool PromotedContentAdsPerDayFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string PromotedContentAdsPerDayFrequencyCap::get_last_message() const {
+std::string PromotedContentAdsPerDayFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
 bool PromotedContentAdsPerDayFrequencyCap::DoesRespectCap(
-    const std::deque<uint64_t>& history) {
-  const uint64_t time_constraint =
-      base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
+    const std::deque<base::Time>& history) {
+  const base::TimeDelta time_constraint = base::TimeDelta::FromSeconds(
+      base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
 
   const uint64_t cap = features::GetMaximumPromotedContentAdsPerDay();
 

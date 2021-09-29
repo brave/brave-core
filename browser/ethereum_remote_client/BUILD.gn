@@ -3,7 +3,6 @@ import("//brave/build/config.gni")
 import("//brave/components/brave_wallet/browser/config.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
-import("//extensions/buildflags/buildflags.gni")
 
 # ethereum_remote_client_enabled requires brave_wallet_enabled
 assert(brave_wallet_enabled)
@@ -28,20 +27,17 @@ source_set("ethereum_remote_client") {
     "//base",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
     "//crypto",
-    "//extensions/buildflags",
+    "//extensions/browser",
     "//services/network/public/cpp",
     "//url",
   ]
-
-  if (enable_extensions) {
-    deps += [ "//extensions/browser" ]
-  }
 }
 
 source_set("browser") {
@@ -58,7 +54,6 @@ source_set("browser") {
     "//chrome/browser/profiles",
     "//components/keyed_service/content",
     "//extensions/browser",
-    "//extensions/buildflags",
   ]
 }
 

@@ -49,6 +49,7 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
   ASSERT_FALSE(token_list[0]->is_erc20);
   ASSERT_TRUE(token_list[0]->is_erc721);
   ASSERT_EQ(token_list[0]->symbol, "CK");
+  ASSERT_EQ(token_list[0]->logo, "CryptoKitties-Kitty-13733.svg");
   ASSERT_EQ(token_list[0]->decimals, 0);
 
   ASSERT_EQ(token_list[1]->name, "Basic Attention Token");
@@ -57,6 +58,7 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
   ASSERT_TRUE(token_list[1]->is_erc20);
   ASSERT_FALSE(token_list[1]->is_erc721);
   ASSERT_EQ(token_list[1]->symbol, "BAT");
+  ASSERT_EQ(token_list[1]->logo, "bat.svg");
   ASSERT_EQ(token_list[1]->decimals, 18);
 
   ASSERT_EQ(token_list[2]->name, "Uniswap");
@@ -65,6 +67,7 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
   ASSERT_TRUE(token_list[2]->is_erc20);
   ASSERT_FALSE(token_list[2]->is_erc721);
   ASSERT_EQ(token_list[2]->symbol, "UNI");
+  ASSERT_EQ(token_list[2]->logo, "uni.svg");
   ASSERT_EQ(token_list[2]->decimals, 18);
 
   token_list.clear();

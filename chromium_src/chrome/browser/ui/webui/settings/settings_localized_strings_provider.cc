@@ -9,6 +9,8 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -17,6 +19,11 @@
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
 
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
@@ -107,6 +114,15 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ENABLED_DESC},
     {"appearanceSettingsSidebarDisabledDesc",
      IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_DISABLED_DESC},
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    {"showBraveVPNButton", IDS_SETTINGS_SHOW_VPN_BUTTON},
+    {"showBraveVPNButtonSubLabel", IDS_SETTINGS_SHOW_VPN_BUTTON_SUB_LABEL},
+#endif
+  // Search settings
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+    {"braveWebDiscoveryLabel", IDS_SETTINGS_WEB_DISCOVERY_LABEL},
+    {"braveWebDiscoverySubLabel", IDS_SETTINGS_WEB_DISCOVERY_SUBLABEL},
 #endif
     {"mruCyclingSettingLabel", IDS_SETTINGS_BRAVE_MRU_CYCLING_LABEL},
     {"speedreaderSettingLabel", IDS_SETTINGS_SPEEDREADER_LABEL},
@@ -233,15 +249,14 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"onExitPageTitle", IDS_SETTINGS_BRAVE_ON_EXIT},
     {"braveDefaultExtensions", IDS_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_TITLE},
     {"webTorrentEnabledDesc", IDS_SETTINGS_WEBTORRENT_ENABLED_DESC},
-    {"braveWeb3ProviderDesc", IDS_SETTINGS_BRAVE_WEB3_PROVIDER_DESC},
-    {"loadCryptoWalletsOnStartupDesc",
-     IDS_SETTINGS_LOAD_CRYPTO_WALLETS_ON_STARTUP},
-    {"loadCryptoWalletsOnStartupDescDeprecated",
-     IDS_SETTINGS_LOAD_CRYPTO_WALLETS_ON_STARTUP_DEPRECATED},
+    {"defaultWalletDesc", IDS_SETTINGS_DEFAULT_WALLET_DESC},
     {"showBravewalletIconOnToolbar",
      IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR},
+    {"autoLockMinutes", IDS_SETTINGS_AUTO_LOCK_MINUTES},
+    {"autoLockMinutesDesc", IDS_SETTINGS_AUTO_LOCK_MINUTES_DESC},
     {"googleLoginForExtensionsDesc", IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS},
     {"hangoutsEnabledDesc", IDS_SETTINGS_HANGOUTS_ENABLED_DESC},
+    {"mediaRouterEnabledDesc", IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC},
     {"resolveUnstoppableDomainsDesc",
      IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_DESC},
     {"resolveENSDesc", IDS_SETTINGS_RESOLVE_ENS_DESC},
@@ -256,6 +271,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"changeIpfsStorageMaxLabel", IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_LABEL},
     {"changeIpfsStorageMaxDesc", IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_DESC},
     {"ipfsErrorInvalidAddress", IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS},
+    {"ipfsErrorInvalidAddressOrigin",
+     IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS_ORIGIN_ISOLATION},
     {"ipfsAutoFallbackToGatewayLabel",
      IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_LABEL},
     {"ipfsAutoFallbackToGatewayDesc",
@@ -320,6 +337,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
   html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);
+#endif
   html_source->AddString("speedreaderLearnMoreURL", kSpeedreaderLearnMoreUrl);
   html_source->AddString(
       "getMoreExtensionsUrl",
@@ -328,6 +348,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
               GURL(extension_urls::GetWebstoreExtensionsCategoryURL()),
               g_browser_process->GetApplicationLocale())
               .spec()));
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  html_source->AddString("autoLockMinutesValue",
+                         std::to_string(profile->GetPrefs()->GetInteger(
+                             kBraveWalletAutoLockMinutes)));
+#endif
   html_source->AddString(
       "ipfsStorageMaxValue",
       std::to_string(profile->GetPrefs()->GetInteger(kIpfsStorageMax)));

@@ -8,17 +8,14 @@
 
 #include <cstdint>
 #include <string>
-#include <vector>
 
 namespace ads {
 
-struct PaymentInfo {
+struct PaymentInfo final {
   double balance = 0.0;
   std::string month;
   uint64_t transaction_count = 0;
 };
-
-using PaymentList = std::vector<PaymentInfo>;
 
 }  // namespace ads
 

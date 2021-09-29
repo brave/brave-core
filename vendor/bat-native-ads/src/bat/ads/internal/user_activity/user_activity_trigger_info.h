@@ -7,11 +7,10 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_ACTIVITY_USER_ACTIVITY_TRIGGER_INFO_H_
 
 #include <string>
-#include <vector>
 
 namespace ads {
 
-struct UserActivityTriggerInfo {
+struct UserActivityTriggerInfo final {
   UserActivityTriggerInfo();
   UserActivityTriggerInfo(const UserActivityTriggerInfo& info);
   ~UserActivityTriggerInfo();
@@ -22,8 +21,6 @@ struct UserActivityTriggerInfo {
   std::string event_sequence;
   double score = 0.0;
 };
-
-using UserActivityTriggers = std::vector<UserActivityTriggerInfo>;
 
 }  // namespace ads
 

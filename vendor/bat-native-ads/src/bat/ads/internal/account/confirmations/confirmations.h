@@ -9,26 +9,31 @@
 #include <memory>
 #include <string>
 
-#include "base/values.h"
-#include "bat/ads/ads.h"
+#include "base/observer_list.h"
 #include "bat/ads/internal/account/confirmations/confirmations_observer.h"
-#include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/timer.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
+
+namespace base {
+class DictionaryValue;
+}  // namespace base
 
 namespace ads {
 
 class AdRewards;
+class ConfirmationType;
 class ConfirmationsState;
 class RedeemUnblindedToken;
 struct CatalogIssuersInfo;
-struct UnblindedTokenInfo;
 
-class Confirmations : public RedeemUnblindedTokenDelegate {
+namespace privacy {
+class TokenGeneratorInterface;
+}  // namespace privacy
+
+class Confirmations final : public RedeemUnblindedTokenDelegate {
  public:
   Confirmations(privacy::TokenGeneratorInterface* token_generator,
                 AdRewards* ad_rewards);
-
   ~Confirmations() override;
 
   void AddObserver(ConfirmationsObserver* observer);
@@ -36,8 +41,8 @@ class Confirmations : public RedeemUnblindedTokenDelegate {
 
   void SetCatalogIssuers(const CatalogIssuersInfo& catalog_issuers);
 
-  void ConfirmAd(const std::string& creative_instance_id,
-                 const ConfirmationType& confirmation_type);
+  void Confirm(const std::string& creative_instance_id,
+               const ConfirmationType& confirmation_type);
 
   void RetryAfterDelay();
 
@@ -61,12 +66,12 @@ class Confirmations : public RedeemUnblindedTokenDelegate {
   void RemoveFromRetryQueue(const ConfirmationInfo& confirmation);
   void Retry();
 
-  void NotifyConfirmAd(const double estimated_redemption_value,
-                       const ConfirmationInfo& confirmation) const;
+  void NotifyDidConfirm(const double estimated_redemption_value,
+                        const ConfirmationInfo& confirmation) const;
 
-  void NotifyConfirmAdFailed(const ConfirmationInfo& confirmation) const;
+  void NotifyFailedToConfirm(const ConfirmationInfo& confirmation) const;
 
-  // RedeemUnblindedTokenDelegate implementation
+  // RedeemUnblindedTokenDelegate:
   void OnDidSendConfirmation(const ConfirmationInfo& confirmation) override;
 
   void OnDidRedeemUnblindedToken(

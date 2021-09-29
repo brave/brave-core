@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Storitev Brave Rewards</translation>
 <translation id="7942180974165298215">Blokiranje oglasov Brave Ad Block</translation>
 <translation id="4615489450165434530">Prijavite nedelujočo spletno stran</translation>
+<translation id="1209739344687072997">Prijavite nedelujočo spletno stran</translation>
 <translation id="6406506848690869874">Sinhronizacija</translation>
 <translation id="1544192797660353713">Denarnica</translation>
-<translation id="2445484935443597917">Ustvarite nov profil</translation>
-<translation id="2666990579225592931">Odprite okno za goste</translation>
+<translation id="2445484935443597917">Ustvari nov profil</translation>
+<translation id="744341768939279100">Ustvarite nov profil</translation>
+<translation id="2666990579225592931">Odpri okno načina za goste</translation>
+<translation id="4986483413015198747">Odprite okno za goste</translation>
 <translation id="8275068909952022340">Več…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ni dovoljena v brskalniku Brave.</translation>
 <translation id="6786747875388722282">Razširitve</translation>
@@ -45,10 +48,12 @@
 <translation id="5802665280774361839">Pokaži samodokončanje v naslovni vrstici.</translation>
 <translation id="597020512043916976">V samoizpolnjenih predlogih prikaži najbolj priljubljena spletna mesta</translation>
 <translation id="264150068416846820">V samoizpolnjenih predlogih prikaži spletna mesta, ki jih predlaga Brave</translation>
-<translation id="5529693968082667490">Gumb Prikaži zavihke za iskanje</translation>
+<translation id="5529693968082667490">Prikaži gumb za iskanje po zavihkih</translation>
 <translation id="6414370348346025511">Standardna zaščita je vklopljena.</translation>
 <translation id="814018970995616154">Preveri URL-je na seznamu nevarnih spletnih mest, shranjenih v programu Brave.</translation>
 <translation id="1144810021918451336">Pred nevarnimi spletnimi mesti, prenosi in razširitvami vam ne nudi zaščite.</translation>
+<translation id="6285118765755298263">Indeksiraj druge iskalnike</translation>
+<translation id="919715748352669592">Samodejno indeksira spletna mesta, ki sledijo specifikacijam OpenSearch.</translation>
 <translation id="7781069478569868053">Stran na novem zavihku</translation>
 <translation id="1988804048511540801">Prikaže se stran novega zavihka</translation>
 <translation id="2970343821770026391">Nadzorna plošča</translation>
@@ -76,6 +81,7 @@
 <translation id="7895302206188277628">Izbrana vsebina</translation>
 <translation id="3654831858282189202">Objavi s ključem IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Uvozi izbrano besedilo v IPFS</translation>
 <translation id="6925604404524625582">Uvozi in kopiraj povezavo do posnetka IPFS</translation>
 <translation id="1434416574322382019">Novo zasebno okno v brskalniku Tor</translation>
 <translation id="4703780849509456860">Odpri povezavo v zasebnem oknu v brskalniku Tor</translation>
@@ -191,7 +197,7 @@
 <translation id="1834467296210148203">Pokaži ikono Brave Wallet v orodni vrstici</translation>
 <translation id="6864914031231797928">Dovoli Googlovo prijavo za razširitve</translation>
 <translation id="5927916530277631319">Način za reševanje neustavljivih domen</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Preberite si več<ph name="END_LINK"/> o zasebnosti DNS preko HTTPS in Ethereum.</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/> o vprašanjih zasebnosti DNS prek HTTPS in Ethereuma.</translation>
 <translation id="5248318250177143470">Metoda za razrešitev imenske storitve Ethereum (ENS)</translation>
 <translation id="7024553202001112871">Nastavite IPNS ključe</translation>
 <translation id="951216659045543447">Vsebino podpišite z ustreznim zasebnim ključem in jo objavite v IPNS</translation>
@@ -205,7 +211,6 @@
 <translation id="6476061084931271248">Znova zaženite vozlišče, da uveljavite spremembe</translation>
 <translation id="3754226427671882382">Znova zaženite vozlišče</translation>
 <translation id="949667118776341807">Obrnite</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">To ime ni veljavno</translation>
 <translation id="6758961763875471084">Spremenite seznam omrežnih vrstnikov</translation>
 <translation id="1295874070797049002">Izvozi ključ</translation>
@@ -213,7 +218,7 @@
 <translation id="1534091531114892221">Nastavite opis vrstnikov ipfs</translation>
 <translation id="8996633027318264334">Ali res želite izbrisati <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Vozlišče se ni zagnalo</translation>
-<translation id="616058968889448209">Napaka pri zagonu storitve IPFS, več informacij je na voljo na strani za diagnostiko <ph name="BEGIN_LINK"/><ph name="END_LINK"/></translation>
+<translation id="616058968889448209">Napaka pri zagonu storitve IPFS, več informacij je na voljo na <ph name="BEGIN_LINK"/>diagnostični strani<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Uvoz '<ph name="KEY_NAME"/>' ni uspešen</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' izvoz ključa ni uspel</translation>
 <translation id="8275038454117074363">Uvoz</translation>
@@ -223,7 +228,7 @@
 <translation id="1327977588028644528">Prehod</translation>
 <translation id="80225669816651290">Lokalno vozlišče</translation>
 <translation id="4927734062756955434">Naslov javnega prehoda IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Preberite si več<ph name="END_LINK_MPL"/> o zasebnosti lokalnega vozlišča in prehoda IPFS.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Več o tem<ph name="END_LINK_MPL"/> o zasebnosti lokalnih vozlišč in prehodov IPFS.</translation>
 <translation id="8425213833346101688">Spremeni</translation>
 <translation id="557281710253742286">Nastavite prehod IPFS</translation>
 <translation id="8571837315037233299">Naslov prehoda</translation>
@@ -237,7 +242,7 @@
 <translation id="8655170717758778983">Če je mogoče, samodejno preusmerite na strani IPFS prek DNSLink</translation>
 <translation id="2233724520223030977">Če je mogoče, samodejno uporabi DNSLink za navigacijo do različice spletnega mesta IPFS</translation>
 <translation id="6554397389149987360">Uporabi komponento Hangouts za omogočanje skupne rabe zaslona in drugih funkcij v brskalniku.</translation>
-<translation id="1765684547504191670">Uporablja komponento Media Router, da omogoči Chromecast v brskalniku.</translation>
+<translation id="7878791177459550035">Predstavnostni usmerjevalnik omogoča funkcijo oddajanja v brskalniku.</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
 <translation id="7179921470347911571">Znova zaženite zdaj</translation>
 <translation id="8068526464562249859">Uporablja razširitev IPFS Companion za izboljšano podporo IPFS v programu Brave, vključno z dostopom do pogostih nalog IPFS iz vrstice brskalnika.</translation>
@@ -307,6 +312,7 @@
 <translation id="6873781976650514089">ta nastavitev</translation>
 <translation id="6040143037577758943">Zapri</translation>
 <translation id="5600566490506283344">Obvestilo Brave Ad</translation>
+<translation id="1516554614404600536">Namig o orodju Brave</translation>
 <translation id="4877147287319222750">Dodaj v stransko vrstico</translation>
 <translation id="4233010476457917696">Pokaži stransko vrstico</translation>
 <translation id="5404213409401164238">Pokaži stransko vrstico</translation>
@@ -347,6 +353,23 @@
 Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kako prenesete in oblikujete<ph name="END_LINK_BUILD_INSTRUCTIONS"/> specifično <ph name="BEGIN_LINK_SOURCE_CODE"/>izvorno kodo, uporabljeno za ustvarjanje te kopije<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Dodaj vse zavihke med zaznamke ...</translation>
 <translation id="2336228925368920074">Dodaj vse zavihke med zaznamke ...</translation>
+<translation id="4235920711083356755">Pokaži gumb VPN</translation>
+<translation id="4070612712151038707">V orodni vrstici prikaže gumb VPN</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Predstavitev Brave VPN</translation>
+<translation id="4378551569595875038">Povezovanje ...</translation>
+<translation id="3368922792935385530">Povezano</translation>
+<translation id="1536754031901697553">Prekinjanje povezave ...</translation>
+<translation id="8030169304546394654">Prekinjeno</translation>
+<translation id="1863950594388384201">Pokaži gumb VPN v orodni vrstici</translation>
+<translation id="5187139277471084437">Skrij gumb VPN v orodni vrstici</translation>
+<translation id="8041089156583427627">Pošlji povratne informacije</translation>
+<translation id="4049186905514157504">Upravljaj moj načrt</translation>
+<translation id="7570585565843385325">Pokaži gumb VPN v orodni vrstici</translation>
+<translation id="5310426188697803101">Skrij gumb VPN v orodni vrstici</translation>
+<translation id="945522503751344254">Pošlji povratne informacije</translation>
+<translation id="3015685033234401792">Upravljaj moj načrt</translation>
 <translation id="796831669370432378">Če želite strani dodati med zaznamke, kliknite gumb za zaznamke v naslovni vrstici</translation>
 <translation id="4989337484121655457">Potreben je popoln dostop do diska</translation>
 <translation id="8025559074845816210">Brave potrebuje popoln dostop do diska, če želite uvoziti svoje zaznamke iz brskalnika Safari.</translation>

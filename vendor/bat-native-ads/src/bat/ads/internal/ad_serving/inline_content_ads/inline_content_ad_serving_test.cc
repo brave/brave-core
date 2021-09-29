@@ -6,12 +6,13 @@
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving.h"
 
 #include "base/guid.h"
+#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_builder.h"
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "net/http/http_status_code.h"
 
@@ -22,12 +23,10 @@ namespace ads {
 class BatAdsInlineContentAdServingTest : public UnitTestBase {
  protected:
   BatAdsInlineContentAdServingTest()
-      : ad_targeting_(std::make_unique<AdTargeting>()),
-        subdivision_targeting_(
+      : subdivision_targeting_(
             std::make_unique<ad_targeting::geographic::SubdivisionTargeting>()),
         anti_targeting_resource_(std::make_unique<resource::AntiTargeting>()),
         ad_serving_(std::make_unique<inline_content_ads::AdServing>(
-            ad_targeting_.get(),
             subdivision_targeting_.get(),
             anti_targeting_resource_.get())),
         database_table_(
@@ -59,8 +58,8 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
     creative_inline_content_ad.creative_instance_id = base::GenerateGUID();
     creative_inline_content_ad.creative_set_id = base::GenerateGUID();
     creative_inline_content_ad.campaign_id = base::GenerateGUID();
-    creative_inline_content_ad.start_at_timestamp = DistantPastAsTimestamp();
-    creative_inline_content_ad.end_at_timestamp = DistantFutureAsTimestamp();
+    creative_inline_content_ad.start_at = DistantPast();
+    creative_inline_content_ad.end_at = DistantFuture();
     creative_inline_content_ad.daily_cap = 1;
     creative_inline_content_ad.advertiser_id = base::GenerateGUID();
     creative_inline_content_ad.priority = 1;
@@ -69,6 +68,7 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
     creative_inline_content_ad.per_week = 1;
     creative_inline_content_ad.per_month = 1;
     creative_inline_content_ad.total_max = 1;
+    creative_inline_content_ad.value = 1.0;
     creative_inline_content_ad.segment = "untargeted";
     creative_inline_content_ad.geo_targets = {"US"};
     creative_inline_content_ad.target_url = "https://brave.com";
@@ -88,7 +88,6 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
                           [](const bool success) { ASSERT_TRUE(success); });
   }
 
-  std::unique_ptr<AdTargeting> ad_targeting_;
   std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
       subdivision_targeting_;
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;

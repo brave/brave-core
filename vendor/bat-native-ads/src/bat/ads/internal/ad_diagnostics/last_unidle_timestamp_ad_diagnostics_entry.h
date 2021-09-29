@@ -13,7 +13,7 @@
 
 namespace ads {
 
-class LastUnIdleTimestampAdDiagnosticsEntry : public AdDiagnosticsEntry {
+class LastUnIdleTimestampAdDiagnosticsEntry final : public AdDiagnosticsEntry {
  public:
   LastUnIdleTimestampAdDiagnosticsEntry();
   LastUnIdleTimestampAdDiagnosticsEntry(

@@ -7,6 +7,7 @@
 
 #include "base/values.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
+#include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/pref_names.h"
@@ -98,6 +99,10 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   dark_mode::RegisterBraveDarkModeLocalStatePrefs(registry);
 
   registry->RegisterBooleanPref(kDefaultBrowserPromptEnabled, true);
+#endif
+
+#if BUILDFLAG(ENABLE_CRASH_DIALOG)
+  registry->RegisterBooleanPref(kDontAskForCrashReporting, false);
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)

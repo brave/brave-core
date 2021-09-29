@@ -18,9 +18,15 @@
 #include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
 #include "bat/ads/ad_event_history.h"
+#include "bat/ads/ad_history_info.h"
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_history_info.h"
 #include "bat/ads/database.h"
+#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/statement_info.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave_ads.h"
@@ -196,12 +202,6 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
 + (BOOL)isSupportedLocale:(NSString*)locale {
   return ads::IsSupportedLocale(base::SysNSStringToUTF8(locale));
-}
-
-+ (BOOL)isNewlySupportedLocale:(NSString*)locale {
-  // TODO(khickinson): Add support for last schema version, however for the MVP
-  // we can safely pass 0 as all locales are newly supported
-  return ads::IsNewlySupportedLocale(base::SysNSStringToUTF8(locale), 0);
 }
 
 + (BOOL)isCurrentLocaleSupported {
@@ -489,22 +489,22 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return @[];
   }
-  const uint64_t from_timestamp = 0;
-  const uint64_t to_timestamp = std::numeric_limits<uint64_t>::max();
+  const double from_timestamp = std::numeric_limits<double>::min();
+  const double to_timestamp = std::numeric_limits<double>::max();
 
-  const auto history = ads->GetAdsHistory(
-      ads::AdsHistoryInfo::FilterType::kNone,
-      ads::AdsHistoryInfo::SortType::kNone, from_timestamp, to_timestamp);
+  const auto history = ads->GetAdsHistory(ads::AdsHistoryFilterType::kNone,
+                                          ads::AdsHistorySortType::kNone,
+                                          from_timestamp, to_timestamp);
 
   const auto dates = [[NSMutableArray<NSDate*> alloc] init];
   for (const auto& item : history.items) {
-    const auto date =
-        [NSDate dateWithTimeIntervalSince1970:item.timestamp_in_seconds];
+    const auto date = [NSDate dateWithTimeIntervalSince1970:item.timestamp];
     [dates addObject:date];
   }
 
   return dates;
 }
+
 - (BOOL)hasViewedAdsInPreviousCycle {
   const auto calendar =
       [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
@@ -667,7 +667,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->GetAccountStatement(^(bool success, ads::StatementInfo list) {
+  ads->GetAccountStatement(^(const bool success,
+                             const ads::StatementInfo& list) {
     if (!success) {
       completion(0, 0, nil);
       return;
@@ -690,7 +691,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   }
   ads->ToggleAdThumbUp(base::SysNSStringToUTF8(creativeInstanceId),
                        base::SysNSStringToUTF8(creativeSetID),
-                       ads::AdContentInfo::LikeAction::kThumbsUp);
+                       ads::AdContentActionType::kThumbsUp);
 }
 
 - (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId
@@ -700,7 +701,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   }
   ads->ToggleAdThumbDown(base::SysNSStringToUTF8(creativeInstanceId),
                          base::SysNSStringToUTF8(creativeSetID),
-                         ads::AdContentInfo::LikeAction::kThumbsDown);
+                         ads::AdContentActionType::kThumbsDown);
 }
 
 #pragma mark - Configuration
@@ -1145,6 +1146,21 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   callback(/* success */ false, "");
 }
 
+- (void)clearScheduledCaptcha {
+  // Adaptive captcha not supported on iOS
+}
+
+- (void)getScheduledCaptcha:(const std::string&)payment_id
+                   callback:(ads::GetScheduledCaptchaCallback)callback {
+  // Adaptive captcha not supported on iOS
+  std::move(callback).Run("");
+}
+
+- (void)showScheduledCaptchaNotification:(const std::string&)payment_id
+                               captchaId:(const std::string&)captcha_id {
+  // Adaptive captcha not supported on iOS
+}
+
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
@@ -1232,7 +1248,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 - (void)recordAdEvent:(const std::string&)ad_type
      confirmationType:(const std::string&)confirmation_type
-            timestamp:(const uint64_t)timestamp {
+            timestamp:(const double)timestamp {
   if (!adEventHistory) {
     return;
   }
@@ -1240,8 +1256,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   adEventHistory->Record(ad_type, confirmation_type, timestamp);
 }
 
-- (std::vector<uint64_t>)getAdEvents:(const std::string&)ad_type
-                    confirmationType:(const std::string&)confirmation_type {
+- (std::vector<double>)getAdEvents:(const std::string&)ad_type
+                  confirmationType:(const std::string&)confirmation_type {
   if (!adEventHistory) {
     return {};
   }

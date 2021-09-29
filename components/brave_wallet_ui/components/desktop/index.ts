@@ -13,12 +13,14 @@ import AccountListItem from './account-list-item'
 import AddButton from './add-button'
 import LockScreen from './lock-screen'
 import WalletMorePopup from './wallet-more-popup'
-import BackupWarningBanner from './backup-warning-banner'
+import WalletBanner from './wallet-banner'
 import PopupModal from './popup-modals'
 import AddAccountModal from './popup-modals/add-account-modal'
 import AccountSettingsModal from './popup-modals/account-settings-modal'
+import EditVisibleAssetsModal from './popup-modals/edit-visible-assets-modal'
 import AssetWatchlistItem from './asset-watchlist-item'
 import SelectNetworkDropdown from './select-network-dropdown'
+import TransactionPopup from './transaction-popup'
 import { CryptoView, PortfolioView } from './views'
 import {
   OnboardingWelcome,
@@ -26,7 +28,8 @@ import {
   OnboardingRecovery,
   OnboardingVerify,
   OnboardingCreatePassword,
-  OnboardingRestore
+  OnboardingRestore,
+  OnboardingImportMetaMaskOrLegacy
 } from './wallet-onboarding'
 
 export {
@@ -51,12 +54,15 @@ export {
   OnboardingCreatePassword,
   LockScreen,
   WalletMorePopup,
-  BackupWarningBanner,
+  WalletBanner,
   OnboardingRestore,
   AccountListItem,
   PopupModal,
   AddAccountModal,
   AccountSettingsModal,
   AssetWatchlistItem,
-  SelectNetworkDropdown
+  SelectNetworkDropdown,
+  EditVisibleAssetsModal,
+  OnboardingImportMetaMaskOrLegacy,
+  TransactionPopup
 }

@@ -21,6 +21,8 @@ bool ParseEthGetTransactionReceipt(const std::string& json,
                                    TransactionReceipt* receipt);
 bool ParseEthSendRawTransaction(const std::string& json, std::string* tx_hash);
 bool ParseEthCall(const std::string& json, std::string* result);
+bool ParseEthEstimateGas(const std::string& json, std::string* result);
+bool ParseEthGasPrice(const std::string& json, std::string* result);
 
 }  // namespace brave_wallet
 

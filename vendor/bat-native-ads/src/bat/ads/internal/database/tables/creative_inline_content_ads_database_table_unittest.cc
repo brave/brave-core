@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -50,14 +51,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.start_at_timestamp = DistantPastAsTimestamp();
-  info_1.end_at_timestamp = DistantFutureAsTimestamp();
+  info_1.start_at = DistantPast();
+  info_1.end_at = DistantFuture();
   info_1.daily_cap = 1;
   info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info_1.priority = 2;
   info_1.per_day = 3;
   info_1.total_max = 4;
-  info_1.segment = "Food & Drink";
+  info_1.value = 1.0;
+  info_1.segment = "food & drink";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
   info_1.target_url = "https://brave.com/1";
@@ -73,14 +75,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
   info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
   info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.start_at_timestamp = DistantPastAsTimestamp();
-  info_2.end_at_timestamp = DistantFutureAsTimestamp();
+  info_2.start_at = DistantPast();
+  info_2.end_at = DistantFuture();
   info_2.daily_cap = 5;
   info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
   info_2.priority = 6;
   info_2.per_day = 7;
   info_2.total_max = 8;
-  info_2.segment = "Technology & Computing-Software";
+  info_2.value = 1.0;
+  info_2.segment = "technology & computing-software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
   info_2.target_url = "https://brave.com/2";
@@ -121,14 +124,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.start_at_timestamp = DistantPastAsTimestamp();
-  info_1.end_at_timestamp = DistantFutureAsTimestamp();
+  info_1.start_at = DistantPast();
+  info_1.end_at = DistantFuture();
   info_1.daily_cap = 1;
   info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info_1.priority = 2;
   info_1.per_day = 3;
   info_1.total_max = 4;
-  info_1.segment = "Food & Drink";
+  info_1.value = 1.0;
+  info_1.segment = "food & drink";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
   info_1.target_url = "https://brave.com/1";
@@ -144,14 +148,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
   info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
   info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.start_at_timestamp = DistantPastAsTimestamp();
-  info_2.end_at_timestamp = DistantFutureAsTimestamp();
+  info_2.start_at = DistantPast();
+  info_2.end_at = DistantFuture();
   info_2.daily_cap = 5;
   info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
   info_2.priority = 6;
   info_2.per_day = 7;
   info_2.total_max = 8;
-  info_2.segment = "Technology & Computing-Software";
+  info_2.value = 1.0;
+  info_2.segment = "technology & computing-software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
   info_2.target_url = "https://brave.com/2";
@@ -167,13 +172,14 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_3.creative_instance_id = "a1ac44c2-675f-43e6-ab6d-500614cafe63";
   info_3.creative_set_id = "5800049f-cee5-4bcb-90c7-85246d5f5e7c";
   info_3.campaign_id = "3d62eca2-324a-4161-a0c5-7d9f29d10ab0";
-  info_3.start_at_timestamp = DistantPastAsTimestamp();
-  info_3.end_at_timestamp = DistantFutureAsTimestamp();
+  info_3.start_at = DistantPast();
+  info_3.end_at = DistantFuture();
   info_3.daily_cap = 1;
   info_3.advertiser_id = "9a11b60f-e29d-4446-8d1f-318311e36e0a";
   info_3.priority = 2;
   info_3.per_day = 3;
   info_3.total_max = 4;
+  info_3.value = 1.0;
   info_3.segment = "Finance-Banking";
   info_3.dayparts.push_back(daypart_info);
   info_3.geo_targets = {"US"};
@@ -213,14 +219,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info.start_at_timestamp = DistantPastAsTimestamp();
-  info.end_at_timestamp = DistantFutureAsTimestamp();
+  info.start_at = DistantPast();
+  info.end_at = DistantFuture();
   info.daily_cap = 1;
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info.priority = 2;
   info.per_day = 3;
   info.total_max = 4;
-  info.segment = "Food & Drink";
+  info.value = 1.0;
+  info.segment = "food & drink";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
   info.target_url = "https://brave.com";
@@ -251,7 +258,8 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
       });
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest, GetForSegments) {
+TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+       GetForSegmentsAndDimensions) {
   // Arrange
 
   CreativeInlineContentAdList creative_inline_content_ads;
@@ -261,14 +269,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest, GetForSegments) {
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.start_at_timestamp = DistantPastAsTimestamp();
-  info_1.end_at_timestamp = DistantFutureAsTimestamp();
+  info_1.start_at = DistantPast();
+  info_1.end_at = DistantFuture();
   info_1.daily_cap = 1;
   info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info_1.priority = 2;
   info_1.per_day = 3;
   info_1.total_max = 4;
-  info_1.segment = "Food & Drink";
+  info_1.value = 1.0;
+  info_1.segment = "food & drink";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
   info_1.target_url = "https://brave.com/1";
@@ -284,14 +293,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest, GetForSegments) {
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
   info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
   info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.start_at_timestamp = DistantPastAsTimestamp();
-  info_2.end_at_timestamp = DistantFutureAsTimestamp();
+  info_2.start_at = DistantPast();
+  info_2.end_at = DistantFuture();
   info_2.daily_cap = 5;
   info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
   info_2.priority = 6;
   info_2.per_day = 7;
   info_2.total_max = 8;
-  info_2.segment = "Technology & Computing-Software";
+  info_2.value = 1.0;
+  info_2.segment = "technology & computing-software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
   info_2.target_url = "https://brave.com/2";
@@ -331,14 +341,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info.start_at_timestamp = DistantPastAsTimestamp();
-  info.end_at_timestamp = DistantFutureAsTimestamp();
+  info.start_at = DistantPast();
+  info.end_at = DistantFuture();
   info.daily_cap = 1;
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info.priority = 2;
   info.per_day = 3;
   info.total_max = 4;
-  info.segment = "Food & Drink";
+  info.value = 1.0;
+  info.segment = "food & drink";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
   info.target_url = "https://brave.com";
@@ -365,7 +376,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
       [&expected_creative_inline_content_ad](
           const bool success, const std::string& creative_instance_id,
           const CreativeInlineContentAdInfo& creative_inline_content_ad) {
-        EXPECT_TRUE(success);
+        ASSERT_TRUE(success);
         EXPECT_EQ(expected_creative_inline_content_ad,
                   creative_inline_content_ad);
       });
@@ -381,14 +392,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info.start_at_timestamp = DistantPastAsTimestamp();
-  info.end_at_timestamp = DistantFutureAsTimestamp();
+  info.start_at = DistantPast();
+  info.end_at = DistantFuture();
   info.daily_cap = 1;
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info.priority = 2;
   info.per_day = 3;
   info.total_max = 4;
-  info.segment = "Food & Drink";
+  info.value = 1.0;
+  info.segment = "food & drink";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
   info.target_url = "https://brave.com";
@@ -426,14 +438,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info.start_at_timestamp = DistantPastAsTimestamp();
-  info.end_at_timestamp = DistantFutureAsTimestamp();
+  info.start_at = DistantPast();
+  info.end_at = DistantFuture();
   info.daily_cap = 1;
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info.priority = 2;
   info.per_day = 3;
   info.total_max = 4;
-  info.segment = "Food & Drink";
+  info.value = 1.0;
+  info.segment = "food & drink";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
   info.target_url = "https://brave.com";
@@ -454,7 +467,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
 
   const SegmentList segments = {};
 
-  database_table_->GetForSegments(
+  database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
       [&expected_creative_inline_content_ads](
           const bool success, const SegmentList& segments,
@@ -475,14 +488,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info.start_at_timestamp = DistantPastAsTimestamp();
-  info.end_at_timestamp = DistantFutureAsTimestamp();
+  info.start_at = DistantPast();
+  info.end_at = DistantFuture();
   info.daily_cap = 1;
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info.priority = 2;
   info.per_day = 3;
   info.total_max = 4;
-  info.segment = "Food & Drink";
+  info.value = 1.0;
+  info.segment = "food & drink";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
   info.target_url = "https://brave.com";
@@ -501,9 +515,9 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   // Assert
   const CreativeInlineContentAdList expected_creative_inline_content_ads = {};
 
-  const SegmentList segments = {"Technology & Computing"};
+  const SegmentList segments = {"technology & computing"};
 
-  database_table_->GetForSegments(
+  database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
       [&expected_creative_inline_content_ads](
           const bool success, const SegmentList& segments,
@@ -524,14 +538,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.start_at_timestamp = DistantPastAsTimestamp();
-  info_1.end_at_timestamp = DistantFutureAsTimestamp();
+  info_1.start_at = DistantPast();
+  info_1.end_at = DistantFuture();
   info_1.daily_cap = 1;
   info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info_1.priority = 2;
   info_1.per_day = 3;
   info_1.total_max = 4;
-  info_1.segment = "Food & Drink";
+  info_1.value = 1.0;
+  info_1.segment = "food & drink";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
   info_1.target_url = "https://brave.com/1";
@@ -547,14 +562,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
   info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
   info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.start_at_timestamp = DistantPastAsTimestamp();
-  info_2.end_at_timestamp = DistantFutureAsTimestamp();
+  info_2.start_at = DistantPast();
+  info_2.end_at = DistantFuture();
   info_2.daily_cap = 5;
   info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
   info_2.priority = 6;
   info_2.per_day = 7;
   info_2.total_max = 8;
-  info_2.segment = "Technology & Computing-Software";
+  info_2.value = 1.0;
+  info_2.segment = "technology & computing-software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
   info_2.target_url = "https://brave.com/2";
@@ -570,13 +586,14 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_3.creative_instance_id = "a1ac44c2-675f-43e6-ab6d-500614cafe63";
   info_3.creative_set_id = "5800049f-cee5-4bcb-90c7-85246d5f5e7c";
   info_3.campaign_id = "3d62eca2-324a-4161-a0c5-7d9f29d10ab0";
-  info_3.start_at_timestamp = DistantPastAsTimestamp();
-  info_3.end_at_timestamp = DistantFutureAsTimestamp();
+  info_3.start_at = DistantPast();
+  info_3.end_at = DistantFuture();
   info_3.daily_cap = 1;
   info_3.advertiser_id = "9a11b60f-e29d-4446-8d1f-318311e36e0a";
   info_3.priority = 2;
   info_3.per_day = 3;
   info_3.total_max = 4;
+  info_3.value = 1.0;
   info_3.segment = "Finance-Banking";
   info_3.dayparts.push_back(daypart_info);
   info_3.geo_targets = {"US"};
@@ -598,10 +615,10 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   expected_creative_inline_content_ads.push_back(info_1);
   expected_creative_inline_content_ads.push_back(info_2);
 
-  const SegmentList segments = {"Technology & Computing-Software",
-                                "Food & Drink"};
+  const SegmentList segments = {"technology & computing-software",
+                                "food & drink"};
 
-  database_table_->GetForSegments(
+  database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
       [&expected_creative_inline_content_ads](
           const bool success, const SegmentList& segments,
@@ -622,14 +639,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.start_at_timestamp = DistantPastAsTimestamp();
-  info_1.end_at_timestamp = NowAsTimestamp();
+  info_1.start_at = DistantPast();
+  info_1.end_at = Now();
   info_1.daily_cap = 1;
   info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info_1.priority = 2;
   info_1.per_day = 3;
   info_1.total_max = 4;
-  info_1.segment = "Food & Drink";
+  info_1.value = 1.0;
+  info_1.segment = "food & drink";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
   info_1.target_url = "https://brave.com/1";
@@ -645,14 +663,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
   info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
   info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.start_at_timestamp = DistantPastAsTimestamp();
-  info_2.end_at_timestamp = DistantFutureAsTimestamp();
+  info_2.start_at = DistantPast();
+  info_2.end_at = DistantFuture();
   info_2.daily_cap = 5;
   info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
   info_2.priority = 6;
   info_2.per_day = 7;
   info_2.total_max = 8;
-  info_2.segment = "Food & Drink";
+  info_2.value = 1.0;
+  info_2.segment = "food & drink";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
   info_2.target_url = "https://brave.com/2";
@@ -673,9 +692,9 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   CreativeInlineContentAdList expected_creative_inline_content_ads;
   expected_creative_inline_content_ads.push_back(info_2);
 
-  const SegmentList segments = {"Food & Drink"};
+  const SegmentList segments = {"food & drink"};
 
-  database_table_->GetForSegments(
+  database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
       [&expected_creative_inline_content_ads](
           const bool success, const SegmentList& segments,
@@ -696,14 +715,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.start_at_timestamp = DistantPastAsTimestamp();
-  info_1.end_at_timestamp = DistantFutureAsTimestamp();
+  info_1.start_at = DistantPast();
+  info_1.end_at = DistantFuture();
   info_1.daily_cap = 1;
   info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info_1.priority = 2;
   info_1.per_day = 3;
   info_1.total_max = 4;
-  info_1.segment = "Food & Drink";
+  info_1.value = 1.0;
+  info_1.segment = "food & drink";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = {"US"};
   info_1.target_url = "https://brave.com/1";
@@ -719,14 +739,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
   info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
   info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.start_at_timestamp = DistantPastAsTimestamp();
-  info_2.end_at_timestamp = DistantFutureAsTimestamp();
+  info_2.start_at = DistantPast();
+  info_2.end_at = DistantFuture();
   info_2.daily_cap = 5;
   info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
   info_2.priority = 6;
   info_2.per_day = 7;
   info_2.total_max = 8;
-  info_2.segment = "Technology & Computing-Software";
+  info_2.value = 1.0;
+  info_2.segment = "technology & computing-software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = {"US"};
   info_2.target_url = "https://brave.com/2";
@@ -748,7 +769,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
 
   const SegmentList segments = {"FoOd & DrInK"};
 
-  database_table_->GetForSegments(
+  database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
       [&expected_creative_inline_content_ads](
           const bool success, const SegmentList& segments,
@@ -763,7 +784,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest, TableName) {
   // Arrange
 
   // Act
-  const std::string table_name = database_table_->get_table_name();
+  const std::string table_name = database_table_->GetTableName();
 
   // Assert
   const std::string expected_table_name = "creative_inline_content_ads";

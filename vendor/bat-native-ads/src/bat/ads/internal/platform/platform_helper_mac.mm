@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/platform/platform_helper_mac.h"
 
+#include "base/memory/singleton.h"
+
 namespace ads {
 
 PlatformHelperMac::PlatformHelperMac() = default;

@@ -51,6 +51,11 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx2.GetMessageToSign(1))),
             "f97c73fdca079da7652dbc61a46cd5aeef804008e057be3e712c43eac389aaf0");
 
+  EXPECT_EQ(
+      base::ToLowerASCII(base::HexEncode(tx2.GetMessageToSign(1, false))),
+      "eb0b85051f4d5c0082520894656e929d6fc0cac52d3d9526d288fe02dcd56fbd872386f"
+      "26fc1000080018080");
+
   // EIP 155 test vectors
   const struct {
     const char* nonce;
@@ -217,6 +222,86 @@ TEST(EthTransactionUnitTest, GetUpFrontCost) {
       "0x00", "0x3E8", "0x989680", "0x3535353535353535353535353535353535353535",
       "0x2A", std::vector<uint8_t>()));
   EXPECT_EQ(tx.GetUpfrontCost(), uint256_t(10000000042));
+}
+
+TEST(EthTransactionUnitTest, FromTxData) {
+  auto tx = EthTransaction::FromTxData(mojom::TxData::New(
+      "0x01", "0x3E8", "0x989680", "0x3535353535353535353535353535353535353535",
+      "0x2A", std::vector<uint8_t>{1}));
+  ASSERT_TRUE(tx);
+  EXPECT_EQ(tx->nonce(), uint256_t(1));
+  EXPECT_EQ(tx->gas_price(), uint256_t(1000));
+  EXPECT_EQ(tx->gas_limit(), uint256_t(10000000));
+  EXPECT_EQ(tx->to(),
+            EthAddress::FromHex("0x3535353535353535353535353535353535353535"));
+  EXPECT_EQ(tx->value(), uint256_t(42));
+  EXPECT_EQ(tx->data(), std::vector<uint8_t>{1});
+
+  // Missing values should not parse correctly
+  EXPECT_FALSE(EthTransaction::FromTxData(mojom::TxData::New(
+      "", "0x3E8", "0x989680", "0x3535353535353535353535353535353535353535",
+      "0x2A", std::vector<uint8_t>{1})));
+  EXPECT_FALSE(EthTransaction::FromTxData(mojom::TxData::New(
+      "0x01", "", "0x989680", "0x3535353535353535353535353535353535353535",
+      "0x2A", std::vector<uint8_t>{1})));
+  EXPECT_FALSE(EthTransaction::FromTxData(mojom::TxData::New(
+      "0x01", "0x3E8", "", "0x3535353535353535353535353535353535353535", "0x2A",
+      std::vector<uint8_t>{1})));
+  EXPECT_FALSE(EthTransaction::FromTxData(mojom::TxData::New(
+      "0x01", "0x3E8", "0x989680", "0x3535353535353535353535353535353535353535",
+      "", std::vector<uint8_t>{1})));
+
+  // But missing data is allowed when strict is false
+  tx = EthTransaction::FromTxData(
+      mojom::TxData::New("", "0x3E8", "",
+                         "0x3535353535353535353535353535353535353535", "",
+                         std::vector<uint8_t>{1}),
+      false);
+  ASSERT_TRUE(tx);
+  // Unspecified value defaults to 0
+  EXPECT_EQ(tx->nonce(), uint256_t(0));
+  EXPECT_EQ(tx->gas_limit(), uint256_t(0));
+  EXPECT_EQ(tx->value(), uint256_t(0));
+  // you can still get at other data that is specified
+  EXPECT_EQ(tx->gas_price(), uint256_t(1000));
+
+  // And try for missing gas_price too since the last test didn't try that
+  tx = EthTransaction::FromTxData(
+      mojom::TxData::New("0x1", "", "0x989680",
+                         "0x3535353535353535353535353535353535353535", "0x2A",
+                         std::vector<uint8_t>{1}),
+      false);
+  ASSERT_TRUE(tx);
+  // Unspecified value defaults to 0
+  EXPECT_EQ(tx->gas_price(), uint256_t(0));
+  // you can still get at other data that is specified
+  EXPECT_EQ(tx->nonce(), uint256_t(1));
+  EXPECT_EQ(tx->value(), uint256_t(42));
+  EXPECT_EQ(tx->gas_limit(), uint256_t(10000000));
+}
+
+TEST(EthTransactionUnitTest, ProcessVRS) {
+  EthTransaction tx;
+  ASSERT_FALSE(tx.ProcessVRS("", "", ""));
+  ASSERT_FALSE(tx.ProcessVRS("00", "aefrwr", "342fds"));
+  EXPECT_EQ(tx.v(), (uint256_t)0);
+  ASSERT_TRUE(tx.r().empty());
+  ASSERT_TRUE(tx.s().empty());
+
+  std::string r =
+      "93b9121e82df014428924df439ff044f89c205dd76a194f8b11f50d2eade744e";
+  std::string s =
+      "7aa705c9144742836b7fbbd0745c57f67b60df7b8d1790fe59f91ed8d2bfc11d";
+  ASSERT_TRUE(tx.ProcessVRS("0x00", r, s));
+  EXPECT_EQ(tx.v(), (uint256_t)0);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.r())), r);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.s())), s);
+
+  EXPECT_EQ(
+      tx.GetSignedTransaction(),
+      "0xf84980808080808080a093b9121e82df014428924df439ff044f89c205dd76a194f8b1"
+      "1f50d2eade744ea07aa705c9144742836b7fbbd0745c57f67b60df7b8d1790fe59f91ed8"
+      "d2bfc11d");
 }
 
 }  // namespace brave_wallet

@@ -35,6 +35,7 @@
 #define DEFAULT_PHONE_BOOK NULL
 
 constexpr char kConnectionsCommand[] = "connections";
+constexpr char kCheckConnectionCommand[] = "check-connection";
 constexpr char kDevicesCommand[] = "devices";
 constexpr char kEntriesCommand[] = "entries";
 constexpr char kCreateCommand[] = "create";
@@ -46,6 +47,8 @@ constexpr char kVPNName[] = "vpn_name";
 constexpr char kUserName[] = "user_name";
 constexpr char kPassword[] = "password";
 
+using brave_vpn::internal::CheckConnection;
+using brave_vpn::internal::CheckConnectionResult;
 using brave_vpn::internal::ConnectEntry;
 using brave_vpn::internal::CreateEntry;
 using brave_vpn::internal::DisconnectEntry;
@@ -679,12 +682,28 @@ int main(int argc, char* argv[]) {
     LOG(ERROR) << "usage: vpntool.exe [--connections] [--devices] [--entries] "
                   "[--connect --vpn_name=xxx] [--disconnect --vpn_name=xxx] "
                   "[--create --vpn_name=xxx --host_name=xxx user_name=xxx "
-                  "password=xxx] [--remove --vpn_name=xxx]";
+                  "password=xxx] [--remove --vpn_name=xxx] [--check-connection "
+                  "--vpn_name=xxx]";
     return 0;
   }
 
   if (command_line->HasSwitch(kConnectionsCommand))
     PrintConnections();
+
+  if (command_line->HasSwitch(kCheckConnectionCommand)) {
+    const std::wstring vpn_name = command_line->GetSwitchValueNative(kVPNName);
+    if (vpn_name.empty()) {
+      LOG(ERROR) << "missing parameters for has-connection!";
+      LOG(ERROR) << "usage: vpntool.exe --has-connection --vpn_name=entry_name";
+      return 0;
+    }
+
+    if (CheckConnection(vpn_name) == CheckConnectionResult::CONNECTED) {
+      wprintf(L"\tFound %s connection", vpn_name.c_str());
+    } else {
+      wprintf(L"\tNot found %s connection", vpn_name.c_str());
+    }
+  }
 
   if (command_line->HasSwitch(kDevicesCommand))
     PrintDevices();

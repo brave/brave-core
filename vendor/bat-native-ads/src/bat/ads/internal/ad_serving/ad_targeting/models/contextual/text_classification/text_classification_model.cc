@@ -7,8 +7,6 @@
 
 #include <string>
 
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_values.h"
 #include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_aliases.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
@@ -20,8 +18,6 @@ namespace model {
 
 namespace {
 
-const int kTopSegmentCount = 3;
-
 SegmentProbabilitiesMap GetSegmentProbabilities(
     const TextClassificationProbabilitiesList&
         text_classification_probabilities) {
@@ -30,9 +26,6 @@ SegmentProbabilitiesMap GetSegmentProbabilities(
   for (const auto& probabilities : text_classification_probabilities) {
     for (const auto& probability : probabilities) {
       const std::string segment = probability.first;
-      if (ShouldFilterSegment(segment)) {
-        continue;
-      }
 
       const double page_score = probability.second;
 
@@ -49,19 +42,19 @@ SegmentProbabilitiesMap GetSegmentProbabilities(
   return segment_probabilities;
 }
 
-SegmentProbabilitiesList GetTopSegmentProbabilities(
-    const SegmentProbabilitiesMap& segment_probabilities,
-    const int count) {
-  SegmentProbabilitiesList top_segment_probabilities(count);
+SegmentProbabilitiesList ToSortedSegmentProbabilitiesList(
+    const SegmentProbabilitiesMap& segment_probabilities) {
+  const int count = segment_probabilities.size();
+  SegmentProbabilitiesList list(count);
 
   std::partial_sort_copy(
-      segment_probabilities.begin(), segment_probabilities.end(),
-      top_segment_probabilities.begin(), top_segment_probabilities.end(),
+      segment_probabilities.begin(), segment_probabilities.end(), list.begin(),
+      list.end(),
       [](const SegmentProbabilityPair& lhs, const SegmentProbabilityPair& rhs) {
         return lhs.second > rhs.second;
       });
 
-  return top_segment_probabilities;
+  return list;
 }
 
 SegmentList ToSegmentList(
@@ -92,16 +85,16 @@ SegmentList TextClassification::GetSegments() const {
     BLOG(1, "No text classification probabilities found for " << locale
                                                               << " locale");
 
-    return {kUntargeted};
+    return {};
   }
 
   const SegmentProbabilitiesMap segment_probabilities =
       GetSegmentProbabilities(probabilities);
 
-  const SegmentProbabilitiesList top_segment_probabilities =
-      GetTopSegmentProbabilities(segment_probabilities, kTopSegmentCount);
+  const SegmentProbabilitiesList sorted_segment_probabilities =
+      ToSortedSegmentProbabilitiesList(segment_probabilities);
 
-  return ToSegmentList(top_segment_probabilities);
+  return ToSegmentList(sorted_segment_probabilities);
 }
 
 }  // namespace model

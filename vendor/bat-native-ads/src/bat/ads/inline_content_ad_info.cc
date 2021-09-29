@@ -5,12 +5,11 @@
 
 #include "bat/ads/inline_content_ad_info.h"
 
+#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
-
-struct ConfirmationType;
 
 InlineContentAdInfo::InlineContentAdInfo() = default;
 

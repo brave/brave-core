@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Recompense Brave</translation>
 <translation id="7942180974165298215">Blocare reclame Brave</translation>
 <translation id="4615489450165434530">Raportați un site nefuncțional</translation>
+<translation id="1209739344687072997">Raportați un site nefuncțional</translation>
 <translation id="6406506848690869874">Sincronizare</translation>
 <translation id="1544192797660353713">Portofel</translation>
-<translation id="2445484935443597917">Creați un profil nou</translation>
-<translation id="2666990579225592931">Deschideți o fereastră pentru vizitatori</translation>
+<translation id="2445484935443597917">Creează un profil nou</translation>
+<translation id="744341768939279100">Creați un profil nou</translation>
+<translation id="2666990579225592931">Deschide o fereastră pentru invitați</translation>
+<translation id="4986483413015198747">Deschideți o fereastră pentru vizitatori</translation>
 <translation id="8275068909952022340">Mai multe…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID extensie "<ph name="EXTENSION_ID"/>") nu este permis în Brave.</translation>
 <translation id="6786747875388722282">Extensii</translation>
@@ -45,10 +48,12 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="5802665280774361839">Afișează completarea automată în bara de adrese</translation>
 <translation id="597020512043916976">Afișează principalele site-uri în sugestiile de completare automată</translation>
 <translation id="264150068416846820">Afișare site-uri sugerate de Brave în sugestiile de completare automată</translation>
-<translation id="5529693968082667490">Afișați butonul de căutare file</translation>
+<translation id="5529693968082667490">Afișează butonul de căutare file</translation>
 <translation id="6414370348346025511">Protecția standard este pornită.</translation>
 <translation id="814018970995616154">Verifică URL într-o listă de siteuri nesigure stocată în Brave.</translation>
 <translation id="1144810021918451336">Nu te protejează de siteurile, descărcările și extensiile periculoase.</translation>
+<translation id="6285118765755298263">Indexare alte motoare de căutare</translation>
+<translation id="919715748352669592">Indexează automat site-urile care respectă specificațiile OpenSearch.</translation>
 <translation id="7781069478569868053">Pagină filă nouă</translation>
 <translation id="1988804048511540801">Pagina nouă arată</translation>
 <translation id="2970343821770026391">Tablou de bord</translation>
@@ -97,7 +102,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="6303294677342628402">Scuturi</translation>
 <translation id="7133511168130368997">Blocați trackerele și reclamele care vă urmăresc pe întregul web.</translation>
 <translation id="2761825942249694703">Acestea sunt setările implicite pentru scuturi. Ele se aplică tuturor site-urilor în afară de cazul în care modificați ceva în panoul Scuturi de pe un anumit site. Modificarea acestora nu va afecta setările existente per site.</translation>
-<translation id="1485394570478670912">Aceasta va bloca majoritatea reclamelor de pe site-uri, dar nu și reclamele private Brave — acelea sunt controlate în</translation>
+<translation id="1485394570478670912">Această setare va bloca majoritatea reclamelor de pe site-uri, dar nu și Brave Private Ads, care sunt controlate în</translation>
 <translation id="6388201778088078932">setări.</translation>
 <translation id="9185018653595759199">Blocare pe rețelele de socializare</translation>
 <translation id="7390783310074170337">Vizualizare implicită</translation>
@@ -191,7 +196,6 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1834467296210148203">Afișați pictograma Brave Wallet în bara de instrumente</translation>
 <translation id="6864914031231797928">Permite conectarea cu contul Google pentru extensii</translation>
 <translation id="5927916530277631319">Metodă pentru a rezolva domeniile Unstoppable</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/> despre detaliile de considerațiile privind confidențialitatea DNS prin HTTPS și Ethereum.</translation>
 <translation id="5248318250177143470">Metodă pentru a rezolva Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Configurați-vă cheile IPNS</translation>
 <translation id="951216659045543447">Semnați conținutul cu cheiaprivată corespunzătoare și publicați-l pe IPNS</translation>
@@ -205,7 +209,6 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="6476061084931271248">Reporniți nodul pentru a aplica modificările</translation>
 <translation id="3754226427671882382">Reporniți nodul</translation>
 <translation id="949667118776341807">Rotire</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Această denumire nu este validă</translation>
 <translation id="6758961763875471084">Modificați lista de perechi</translation>
 <translation id="1295874070797049002">Exportare cheie</translation>
@@ -223,7 +226,6 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nod local</translation>
 <translation id="4927734062756955434">Adresa ieșirii publice IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Aflați mai multe<ph name="END_LINK_MPL"/> despre nodul IPFS local și despre detaliile de confidențialitate ale gateway-ului.</translation>
 <translation id="8425213833346101688">Modifică</translation>
 <translation id="557281710253742286">Configurează ieșirea IPFS</translation>
 <translation id="8571837315037233299">Adresa de ieșire</translation>
@@ -237,7 +239,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8655170717758778983">Redirecționați automat către paginile IPFS prin DNSLink atunci când este posibil</translation>
 <translation id="2233724520223030977">Folosește automat DNSLink pentru a naviga către o versiune IPFS a unui website atunci când este posibil</translation>
 <translation id="6554397389149987360">Utilizează componenta Hangouts pentru activarea partajării ecranului și alte funcții din browser.</translation>
-<translation id="1765684547504191670">Folosește componenta Media Router pentru a activa Chromecast în browser.</translation>
+<translation id="7878791177459550035">Router-ul media activează funcția de proiecție în browser.</translation>
 <translation id="9156965752763025780">Modificările dvs. vor intra în vigoare următoarea dată când reporniți Brave.</translation>
 <translation id="7179921470347911571">Relansare acum</translation>
 <translation id="8068526464562249859">Folosește extensia IPFS Companion pentru suport IPFS îmbunătățit în Brave, inclusiv acces la sarcinile IPFS obișnuite din bara de browser.</translation>
@@ -307,6 +309,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="6873781976650514089">această setare</translation>
 <translation id="6040143037577758943">Închide</translation>
 <translation id="5600566490506283344">Notificare Brave Ad</translation>
+<translation id="1516554614404600536">Sfat Brave</translation>
 <translation id="4877147287319222750">Adăugați în bara laterală</translation>
 <translation id="4233010476457917696">Afișați bara laterală</translation>
 <translation id="5404213409401164238">Afișați bara laterală</translation>
@@ -347,6 +350,23 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
         Puteți citi <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instrucțiuni privind modul în care să descărcați și să construiți pentru dvs.<ph name="END_LINK_BUILD_INSTRUCTIONS"/> exact <ph name="BEGIN_LINK_SOURCE_CODE"/>codul-sursă folosit la crearea acestei copii<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Marchează toate filele...</translation>
 <translation id="2336228925368920074">Marchează toate filele...</translation>
+<translation id="4235920711083356755">Afișează butonul VPN</translation>
+<translation id="4070612712151038707">Afișează butonul VPN în bara de instrumente</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">VPN Brave</translation>
+<translation id="2345974803401546682">Despre modulul VPN Brave</translation>
+<translation id="4378551569595875038">Se stabilește conexiunea...</translation>
+<translation id="3368922792935385530">Conectat</translation>
+<translation id="1536754031901697553">Se deconectează...</translation>
+<translation id="8030169304546394654">Deconectat</translation>
+<translation id="1863950594388384201">Afișează butonul VPN în bara de instrumente</translation>
+<translation id="5187139277471084437">Ascunde butonul VPN în bara de instrumente</translation>
+<translation id="8041089156583427627">Trimiteți feedback</translation>
+<translation id="4049186905514157504">Gestionează Planul meu</translation>
+<translation id="7570585565843385325">Afișează butonul VPN în bara de instrumente</translation>
+<translation id="5310426188697803101">Ascunde butonul VPN în bara de instrumente</translation>
+<translation id="945522503751344254">Trimite feedback</translation>
+<translation id="3015685033234401792">Gestionează planul meu</translation>
 <translation id="796831669370432378">Pentru a adăuga un marcaj, apăsați butonul de marcare de lângă bara de adrese</translation>
 <translation id="4989337484121655457">Este necesar Accesul deplin la disc</translation>
 <translation id="8025559074845816210">Brave are nevoie de Acces deplin la disk pentru a importa Marcajele dvs. din Safari.</translation>

@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 export const root = styled.div`
   background: linear-gradient(125.83deg, #392DD1 0%, #A91B78 99.09%);
-  border-radius: 16px;
+  border-radius: 14px;
   font-family: var(--brave-font-heading);
   color: var(--brave-palette-white);
 `
@@ -20,6 +20,7 @@ export const overview = styled.div`
 
 export const balancePanel = styled.div`
   flex: 1 1 50%;
+  padding-right: 5px;
 `
 
 export const rewardsBalance = styled.div`
@@ -54,6 +55,7 @@ export const exchangeAmount = styled.div`
 
 export const earningsPanel = styled.div`
   flex: 1 1 50%;
+  padding-left: 5px;
 `
 
 export const dateRange = styled.div`
@@ -74,21 +76,28 @@ export const summaryBox = styled.div`
   padding: 0 17px 16px;
 `
 
-export const addFunds = styled.div`
-  margin-left: 13px;
-  margin-bottom: 24px;
+export const summaryActions = styled.div`
+  margin: 0 9px 24px 13px;
+  display: flex;
+  justify-content: space-between;
 
   button {
     font-weight: 600;
     font-size: 13px;
     line-height: 20px;
     padding: 6px 18px;
-    background: rgba(255, 255, 255, 0.24);
     border-radius: 48px;
     border: none;
+    background: transparent;
     cursor: pointer;
+  }
+`
 
-    &:active {
+export const addFunds = styled.div`
+  button {
+    background: rgba(255, 255, 255, 0.24);
+
+    &:hover {
       background: rgba(255, 255, 255, 0.30);
     }
   }
@@ -102,8 +111,22 @@ export const addFunds = styled.div`
   }
 `
 
+export const viewStatement = styled.div`
+  button {
+    padding: 6px 13px;
+  }
+
+  .icon {
+    width: 15px;
+    height: auto;
+    vertical-align: middle;
+    margin-right: 6px;
+    margin-bottom: 2px;
+  }
+`
+
 export const pendingBox = styled.div`
   margin-top: 17px;
-  border-radius: 0 0 16px 16px;
+  border-radius: 0 0 14px 14px;
   overflow: hidden;
 `

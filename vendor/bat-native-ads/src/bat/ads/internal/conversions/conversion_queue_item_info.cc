@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 
-#include <cstdint>
+#include "bat/ads/internal/number_util.h"
 
 namespace ads {
 
@@ -24,8 +24,7 @@ bool ConversionQueueItemInfo::operator==(
          advertiser_id == rhs.advertiser_id &&
          conversion_id == rhs.conversion_id &&
          advertiser_public_key == rhs.advertiser_public_key &&
-         static_cast<int64_t>(timestamp.ToDoubleT()) ==
-             static_cast<int64_t>(rhs.timestamp.ToDoubleT());
+         DoubleEquals(confirm_at.ToDoubleT(), rhs.confirm_at.ToDoubleT());
 }
 
 bool ConversionQueueItemInfo::operator!=(
@@ -38,7 +37,7 @@ bool ConversionQueueItemInfo::IsValid() const {
   // from |ad_conversions.json| to |database.sqlite| and conversion_id will be
   // empty for non verifiable conversions
   if (creative_set_id.empty() || creative_instance_id.empty() ||
-      timestamp.is_null()) {
+      confirm_at.is_null()) {
     return false;
   }
 

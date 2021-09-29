@@ -6,10 +6,12 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:orderingFromXml="false">
-
+    <org.chromium.chrome.browser.settings.VpnCalloutPreference
+            android:key="pref_vpn_callout"
+            android:order="0"/>
     <PreferenceCategory
         android:key="features_section"
-        android:order="0"
+        android:order="1"
         android:title="@string/prefs_section_features"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.privacy.BravePrivacySettings"
@@ -23,18 +25,18 @@
         android:order="2"
         android:icon="@drawable/ic_rewards"
         android:title="@string/brave_ui_brave_rewards"/>
-<!--     <org.chromium.components.browser_ui.settings.ChromeBasePreference
+    <!-- <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveRewardsPreferences"
         android:key="brave_today"
         android:icon="@drawable/btn_bat"
         android:order="3"
-        android:title="@string/brave_today"/>
+        android:title="@string/brave_today"/> -->
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.settings.BraveRewardsPreferences"
+        android:fragment="org.chromium.chrome.browser.settings.BraveVpnPreferences"
         android:key="brave_vpn"
-        android:icon="@drawable/btn_bat"
+        android:icon="@drawable/ic_vpn"
         android:order="4"
-        android:title="@string/brave_vpn"/>  -->
+        android:title="@string/brave_firewall_vpn"/> 
     <PreferenceCategory
         android:key="general_section"
         android:order="5"

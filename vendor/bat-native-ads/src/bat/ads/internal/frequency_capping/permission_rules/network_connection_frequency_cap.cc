@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/network_connection_frequency_cap.h"
 
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
@@ -29,7 +30,7 @@ bool NetworkConnectionFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string NetworkConnectionFrequencyCap::get_last_message() const {
+std::string NetworkConnectionFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

@@ -8,15 +8,15 @@
 
 #include <memory>
 
-#include "bat/ads/ads_history_info.h"
-#include "bat/ads/internal/ads_history/sorts/ads_history_sort.h"
+#include "bat/ads/ads_history_sort_types.h"
 
 namespace ads {
 
-class AdsHistorySortFactory {
+class AdsHistorySort;
+
+class AdsHistorySortFactory final {
  public:
-  static std::unique_ptr<AdsHistorySort> Build(
-      const AdsHistoryInfo::SortType type);
+  static std::unique_ptr<AdsHistorySort> Build(const AdsHistorySortType type);
 };
 
 }  // namespace ads

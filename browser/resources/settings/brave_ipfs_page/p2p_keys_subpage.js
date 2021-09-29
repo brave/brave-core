@@ -63,7 +63,7 @@ Polymer({
   },
 
   browserProxy_: null,
-
+  actionItemName : String,
   /** @override */
   created: function() {
     this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance();
@@ -164,6 +164,7 @@ Polymer({
 
   onAddKeyDialogClosed_: function() {
     this.showAddp2pKeyDialog_ = false
+    this.actionItemName = ""
     this.updateKeys();
   },
 
@@ -177,30 +178,33 @@ Polymer({
 
   onKeyDeleteTapped_: function(event) {
     this.$$('cr-action-menu').close();
-    let name_to_remove = event.model.item.name
+    let name_to_remove = this.actionItemName
     var message = this.i18n('ipfsDeleteKeyConfirmation', name_to_remove)
     if (!window.confirm(message))
       return
-    this.browserProxy_.removeIpnsKey(name).then(removed_name => {
+    this.browserProxy_.removeIpnsKey(name_to_remove).then(removed_name => {
       if (!removed_name)
         return;
-      if (removed_name === name) {
+      if (removed_name === name_to_remove) {
         this.updateKeys()
         return;
       }
     });
+    this.actionItemName = ""
   },
   
   onExportTap_: function(event) {
+    let name_to_export = this.actionItemName
     this.$$('cr-action-menu').close();
-    let name_to_export = event.model.item.name
     this.browserProxy_.exportIPNSKey(name_to_export);
+    this.actionItemName = ""
   },
   
   onKeyMenuTapped_: function(event) {
+    this.actionItemName = event.model.item.name
     const actionMenu =
         /** @type {!CrActionMenuElement} */ (this.$$('#key-menu').get());
-    actionMenu.showAt(assert(this.$$('#key-dots')));
+    actionMenu.showAt(event.target);
   }
 });
 })();

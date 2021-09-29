@@ -13,7 +13,7 @@ export const StyledWrapper = styled.div`
   box-sizing: border-box;
   border-radius: 12px;
   padding: 8px;
-  --selected-color: p.theme.palette.white;
+  --selected-color: ${p => p.theme.palette.white};
   @media (prefers-color-scheme: dark) {
     --selected-color: ${p => p.theme.color.background02};
   }

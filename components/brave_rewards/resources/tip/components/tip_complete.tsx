@@ -8,7 +8,7 @@ import { TwitterColorIcon } from 'brave-ui/components/icons'
 
 import { TipKind } from '../lib/interfaces'
 import { HostContext } from '../lib/host_context'
-import { LocaleContext } from '../../shared/lib/locale_context'
+import { formatMessage, LocaleContext } from '../../shared/lib/locale_context'
 
 import { TokenAmount } from '../../shared/components/token_amount'
 
@@ -108,6 +108,18 @@ export function TipComplete (props: Props) {
           <style.table>
             {getSummaryTable()}
           </style.table>
+          {
+            props.tipKind === 'one-time' &&
+              <style.delayNote>
+                {
+                  formatMessage(getString('tipDelayNote'), {
+                    tags: {
+                      $1: (content) => <strong key='label'>{content}</strong>
+                    }
+                  })
+                }
+              </style.delayNote>
+          }
         </style.main>
         <style.share>
           <button onClick={onShareClick}>

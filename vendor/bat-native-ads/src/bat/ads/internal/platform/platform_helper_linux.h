@@ -10,9 +10,14 @@
 
 #include "bat/ads/internal/platform/platform_helper.h"
 
+namespace base {
+template <typename T>
+struct DefaultSingletonTraits;
+}  // namespace base
+
 namespace ads {
 
-class PlatformHelperLinux : public PlatformHelper {
+class PlatformHelperLinux final : public PlatformHelper {
  public:
   PlatformHelperLinux(const PlatformHelperLinux&) = delete;
   PlatformHelperLinux& operator=(const PlatformHelperLinux&) = delete;

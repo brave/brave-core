@@ -9,19 +9,16 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/ad_history_info.h"
 #include "bat/ads/export.h"
 
 namespace ads {
 
-struct ADS_EXPORT AdsHistoryInfo {
+struct AdHistoryInfo;
+
+struct ADS_EXPORT AdsHistoryInfo final {
   AdsHistoryInfo();
   AdsHistoryInfo(const AdsHistoryInfo& info);
   ~AdsHistoryInfo();
-
-  enum class FilterType { kNone = 0, kConfirmationType };
-
-  enum class SortType { kNone = 0, kAscendingOrder, kDescendingOrder };
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);

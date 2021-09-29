@@ -1,15 +1,23 @@
 import("//brave/components/common/typescript.gni")
 
 group("brave_rewards") {
-  deps = [
-    ":brave_rewards_panel",
-  ]
+  deps = [ ":brave_rewards_panel" ]
 }
 
 transpile_web_ui("brave_rewards_panel") {
   entry_points = [
-    ["brave_rewards_panel", rebase_path("brave_rewards_panel.tsx")],
-    ["brave_rewards_panel_background", rebase_path("background.ts")],
+    [
+      "adaptive_captcha_panel",
+      rebase_path("adaptive_captcha_panel.tsx"),
+    ],
+    [
+      "brave_rewards_panel",
+      rebase_path("brave_rewards_panel.tsx"),
+    ],
+    [
+      "brave_rewards_panel_background",
+      rebase_path("background.ts"),
+    ],
   ]
 
   resource_name = "brave_rewards_panel"

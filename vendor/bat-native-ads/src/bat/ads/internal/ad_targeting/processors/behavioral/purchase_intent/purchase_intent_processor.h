@@ -9,19 +9,26 @@
 #include <cstdint>
 #include <string>
 
-#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_info.h"
 #include "bat/ads/internal/ad_targeting/processors/processor.h"
-#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 #include "url/gurl.h"
 
 namespace ads {
+
+namespace resource {
+class PurchaseIntent;
+}  // namespace resource
+
 namespace ad_targeting {
+
+struct PurchaseIntentSignalInfo;
+struct PurchaseIntentSiteInfo;
+
 namespace processor {
 
-class PurchaseIntent : public Processor<GURL> {
+class PurchaseIntent final : public Processor<GURL> {
  public:
   explicit PurchaseIntent(resource::PurchaseIntent* resource);
-
   ~PurchaseIntent() override;
 
   void Process(const GURL& url) override;

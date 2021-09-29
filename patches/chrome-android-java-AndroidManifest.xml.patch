@@ -1,10 +1,10 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 563055a2311f4ac4888eb18b21bf90b2f1d0358e..5d2ec4d4cd6aeeeb4af390f8d96d2821d76ad311 100644
+index 934324202e0577e9c925363fbec67a91bb3deb42..ebfae463ffd506b1bd8cfef82902a86d3d81f1ad 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
-@@ -56,7 +56,9 @@ by a child template that "extends" this file.
-     <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_ADMIN"/>
-     {% endif %}
+@@ -59,7 +59,9 @@ by a child template that "extends" this file.
+     <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_SCAN"
+                             android:usesPermissionFlags="neverForLocation"/>
  
 +<!--
      <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS"/>
@@ -12,7 +12,7 @@ index 563055a2311f4ac4888eb18b21bf90b2f1d0358e..5d2ec4d4cd6aeeeb4af390f8d96d2821
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
  
-@@ -64,18 +66,26 @@ by a child template that "extends" this file.
+@@ -67,18 +69,26 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
      <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -39,7 +39,7 @@ index 563055a2311f4ac4888eb18b21bf90b2f1d0358e..5d2ec4d4cd6aeeeb4af390f8d96d2821
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
-@@ -121,7 +131,9 @@ by a child template that "extends" this file.
+@@ -124,7 +134,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -49,7 +49,7 @@ index 563055a2311f4ac4888eb18b21bf90b2f1d0358e..5d2ec4d4cd6aeeeb4af390f8d96d2821
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -168,6 +180,7 @@ by a child template that "extends" this file.
+@@ -171,6 +183,7 @@ by a child template that "extends" this file.
      <!-- Set android:largeHeap to "true" to allow more than the default
           Java heap limit (32Mb on Nexus S, 48Mb on Xoom). -->
        <application android:name="{% block application_name %}org.chromium.chrome.browser.base.SplitChromeApplication{% endblock %}"
@@ -57,7 +57,15 @@ index 563055a2311f4ac4888eb18b21bf90b2f1d0358e..5d2ec4d4cd6aeeeb4af390f8d96d2821
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -1190,6 +1203,7 @@ by a child template that "extends" this file.
+@@ -331,6 +344,7 @@ by a child template that "extends" this file.
+                 <action android:name="android.web.action.APP_ATTRIBUTION" />
+                 <category android:name="android.intent.category.DEFAULT" />
+             </intent-filter>
++            <intent-filter><action android:name="android.intent.action.SEND" /><category android:name="android.intent.category.DEFAULT" /><data android:mimeType="text/plain" /><data android:mimeType="multipart/related" /><data android:mimeType="message/rfc822" /></intent-filter>
+             <meta-data android:name="android.app.searchable"
+                 android:resource="@xml/searchable" />
+         </activity-alias>
+@@ -1212,6 +1226,7 @@ by a child template that "extends" this file.
              android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" >
          </activity>
  
@@ -65,7 +73,7 @@ index 563055a2311f4ac4888eb18b21bf90b2f1d0358e..5d2ec4d4cd6aeeeb4af390f8d96d2821
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1268,6 +1282,7 @@ by a child template that "extends" this file.
+@@ -1290,6 +1305,7 @@ by a child template that "extends" this file.
        <!-- ARCore APK integration -->
        <!-- This tag indicates that this application optionally uses ARCore. -->
        <meta-data android:name="com.google.ar.core" android:value="optional" />

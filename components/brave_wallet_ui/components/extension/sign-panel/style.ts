@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Action from '../assets/actions.svg'
+import WaringTriangle from '../../../assets/svg-icons/warning-triangle.svg'
 
 interface StyleProps {
   orb: string
@@ -78,16 +78,6 @@ export const MessageBox = styled.div`
   margin-bottom: 14px;
 `
 
-export const MessageTitle = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
-  font-weight: 600;
-  margin-bottom: 5px;
-`
-
 export const MessageText = styled.span`
   font-family: Poppins;
   font-size: 12px;
@@ -106,16 +96,66 @@ export const ButtonRow = styled.div`
   margin-bottom: 14px;
 `
 
-export const MoreButton = styled.button`
+export const WarningBox = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: 255px;
+  padding: 10px;
+  margin-bottom: 14px;
+  background-color: ${(p) => p.theme.color.errorBackground}
+`
+
+export const WarningTitleRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  margin-bottom: 8px;
+`
+
+export const WarningTitle = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: ${(p) => p.theme.color.errorText};
+`
+
+export const WarningText = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  color: ${(p) => p.theme.color.errorText};
+`
+
+export const WarningIcon = styled.div`
+  width: 18px;
+  height: 18px;
+  mask-size: 100%;
+  background-color: ${(p) => p.theme.color.errorIcon};
+  -webkit-mask-image: url(${WaringTriangle});
+  mask-image: url(${WaringTriangle});
+  margin-right: 6px;
+`
+
+export const LearnMoreButton = styled.button`
+  font-family: Poppins;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.interactive05};
+  background: none;
   cursor: pointer;
-  width: 20px;
-  height: 20px;
-  background-color: ${(p) => p.theme.color.text03};
-  -webkit-mask-image: url(${Action});
-  mask-image: url(${Action});
   outline: none;
   border: none;
+  margin: 0px;
+  padding: 0px;
 `

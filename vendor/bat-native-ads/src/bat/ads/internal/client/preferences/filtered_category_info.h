@@ -7,13 +7,12 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_PREFERENCES_FILTERED_CATEGORY_INFO_H_
 
 #include <string>
-#include <vector>
 
 namespace ads {
 
-struct FilteredCategoryInfo {
+struct FilteredCategoryInfo final {
   FilteredCategoryInfo();
-  FilteredCategoryInfo(const FilteredCategoryInfo& category);
+  FilteredCategoryInfo(const FilteredCategoryInfo& info);
   ~FilteredCategoryInfo();
 
   std::string ToJson() const;
@@ -21,8 +20,6 @@ struct FilteredCategoryInfo {
 
   std::string name;
 };
-
-using FilteredCategoryList = std::vector<FilteredCategoryInfo>;
 
 }  // namespace ads
 

@@ -6,6 +6,7 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/do_not_disturb_frequency_cap.h"
 
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -81,8 +82,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest,
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(base::Time::Now().LocalMidnight() +
-               base::TimeDelta::FromHours(24) - base::Time::Now());
+  AdvanceClock(Now().LocalMidnight() + base::TimeDelta::FromHours(24) - Now());
 
   // Act
   {
@@ -135,8 +135,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest, AlwaysAllowAdForIOS) {
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(base::Time::Now().LocalMidnight() +
-               base::TimeDelta::FromHours(24) - base::Time::Now());
+  AdvanceClock(Now().LocalMidnight() + base::TimeDelta::FromHours(24) - Now());
 
   // Act
   {
@@ -166,8 +165,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest, AlwaysAllowAdForMacOS) {
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(base::Time::Now().LocalMidnight() +
-               base::TimeDelta::FromHours(24) - base::Time::Now());
+  AdvanceClock(Now().LocalMidnight() + base::TimeDelta::FromHours(24) - Now());
 
   // Act
   {
@@ -197,8 +195,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest, AlwaysAllowAdForWindows) {
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(base::Time::Now().LocalMidnight() +
-               base::TimeDelta::FromHours(24) - base::Time::Now());
+  AdvanceClock(Now().LocalMidnight() + base::TimeDelta::FromHours(24) - Now());
 
   // Act
   {
@@ -228,8 +225,7 @@ TEST_F(BatAdsDoNotDisturbFrequencyCapTest, AlwaysAllowAdForLinux) {
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(base::Time::Now().LocalMidnight() +
-               base::TimeDelta::FromHours(24) - base::Time::Now());
+  AdvanceClock(Now().LocalMidnight() + base::TimeDelta::FromHours(24) - Now());
 
   // Act
   {

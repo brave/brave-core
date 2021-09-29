@@ -5,14 +5,11 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h"
 
-#include <cstdint>
 #include <deque>
 
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
@@ -36,17 +33,16 @@ bool DailyCapFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string DailyCapFrequencyCap::get_last_message() const {
+std::string DailyCapFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
 bool DailyCapFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
                                           const CreativeAdInfo& ad) {
-  const std::deque<uint64_t> history =
-      GetTimestampHistoryForAdEvents(ad_events);
+  const std::deque<base::Time> history = GetHistoryForAdEvents(ad_events);
 
-  const uint64_t time_constraint =
-      base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
+  const base::TimeDelta time_constraint = base::TimeDelta::FromSeconds(
+      base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
                                                        ad.daily_cap);

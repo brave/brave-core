@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Ad Block</translation>
 <translation id="4615489450165434530">รายงานเว็บไซต์เสียหาย</translation>
+<translation id="1209739344687072997">รายงานเว็บไซต์เสียหาย</translation>
 <translation id="6406506848690869874">ซิงค์</translation>
 <translation id="1544192797660353713">วอลเล็ท</translation>
 <translation id="2445484935443597917">สร้างโปรไฟล์ใหม่</translation>
-<translation id="2666990579225592931">เปิดหน้าต่างแขก</translation>
+<translation id="744341768939279100">สร้างโปรไฟล์ใหม่</translation>
+<translation id="2666990579225592931">เปิดหน้าต่างผู้มาเยือน</translation>
+<translation id="4986483413015198747">เปิดหน้าต่างแขก</translation>
 <translation id="8275068909952022340">เพิ่มเติม…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (การระบุชื่อสกุลแฟ้ม "<ph name="EXTENSION_ID"/>") ไม่ได้รับอนุญาตในโปรแกรมของเบรฟ (Brave)</translation>
 <translation id="6786747875388722282">ส่วนขยาย</translation>
@@ -45,10 +48,12 @@
 <translation id="5802665280774361839">แสดงรายการที่ดำเนินการอัตโนมัติในแถบแอดเดรส</translation>
 <translation id="597020512043916976">แสดงเว็บยอดนิยมในช่องแนะนำกรอกอัตโนมัติ</translation>
 <translation id="264150068416846820">แสดงเว็บที่แนะนำของ Brave ในช่องแนะนำแบบกรอกอัตโนมัติ</translation>
-<translation id="5529693968082667490">แสดงปุ่มแท็บค้นหา</translation>
+<translation id="5529693968082667490">แสดงปุ่มค้นหาแท็บ</translation>
 <translation id="6414370348346025511">การป้องกันมาตรฐานเปิดทำงาน</translation>
 <translation id="814018970995616154">ตรวจสอบ URL ที่มีรายชื่อเว็บไซต์ที่ไม่ปลอดภัยเก็บไว้ใน Brave</translation>
 <translation id="1144810021918451336">ไม่ป้องกันคุณจากเว็บไซต์ การดาวน์โหลด และส่วนขยายที่เป็นอันตราย</translation>
+<translation id="6285118765755298263">จัดทำดัชนีเครื่องมือค้นหาอื่นๆ</translation>
+<translation id="919715748352669592">จัดทำดัชนีเว็บไซต์ที่เป็นไปตามข้อกำหนดของ OpenSearch โดยอัตโนมัติ</translation>
 <translation id="7781069478569868053">หน้าแท็บใหม่</translation>
 <translation id="1988804048511540801">การแสดงหน้าแท็บใหม่</translation>
 <translation id="2970343821770026391">แดชบอร์ด</translation>
@@ -191,7 +196,6 @@
 <translation id="1834467296210148203">แสดงไอคอน Brave Wallet บนแถบเครื่องมือ</translation>
 <translation id="6864914031231797928">อนุญาตการล็อกอินด้วย Google สำหรับส่วนขยาย</translation>
 <translation id="5927916530277631319">วิธีการแปลงที่อยู่ของ Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/> เกี่ยวกับ DNS ตลอดจนการพิจารณาความเป็นส่วนตัวของ HTTPS และ Ethereum</translation>
 <translation id="5248318250177143470">วิธีการแปลงที่อยู่ของ Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">ตั้งค่าคีย์ IPNS ของคุณ</translation>
 <translation id="951216659045543447">ลงชื่อเนื้อหาโดยใช้คีย์ส่วนตัวที่เกี่ยวข้องและเผยแพร่ไปยัง IPNS</translation>
@@ -205,7 +209,6 @@
 <translation id="6476061084931271248">รีสตาร์ทโหนดเพื่อใช้การเปลี่ยนแปลง</translation>
 <translation id="3754226427671882382">รีสตาร์ทโหนด</translation>
 <translation id="949667118776341807">หมุน</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">ชื่อนี้ไม่ถูกต้อง</translation>
 <translation id="6758961763875471084">แก้ไขรายการเพียร์</translation>
 <translation id="1295874070797049002">ส่งออกคีย์</translation>
@@ -213,7 +216,7 @@
 <translation id="1534091531114892221">ตั้งค่าคำอธิบายเพียร์ IPFS</translation>
 <translation id="8996633027318264334">คุณแน่ใจว่าต้องการลบ <ph name="KEY_NAME"/> ใช่หรือไม่</translation>
 <translation id="910215077892371264">โหนดไม่ได้เปิดใช้งาน</translation>
-<translation id="616058968889448209">เกิดข้อผิดพลาดในการเปิดใช้งานบริการ IPFS สามารถดูข้อมูลเพิ่มเติมได้ที่<ph name="BEGIN_LINK"/>หน้าการวินิจฉัย<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">เกิดข้อผิดพลาดในการเปิดใช้บริการ IPFS กรุณาดูข้อมูลเพิ่มเติมได้ที่ <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">การนำเข้าคีย์ '<ph name="KEY_NAME"/>' ล้มเหลว</translation>
 <translation id="3364053282600191535">ส่งออกคีย์ '<ph name="KEY_NAME"/>' ล้มเหลว</translation>
 <translation id="8275038454117074363">นำเข้า</translation>
@@ -223,7 +226,7 @@
 <translation id="1327977588028644528">เกตเวย์</translation>
 <translation id="80225669816651290">โหนดภายใน</translation>
 <translation id="4927734062756955434">ที่อยู่เกตเวย์ IPFS สาธารณะ</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>เรียนรู้เพิ่มเติม<ph name="END_LINK_MPL"/> เกี่ยวกับการพิจารณาความเป็นส่วนตัวของโหนดภายใน IPFS และเกตเวย์</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>เรียนรู้เพิ่มเติม<ph name="END_LINK_MPL"/> เกี่ยวกับข้อควรพิจารณาเกี่ยวกับความเป็นส่วนตัวของโหนดภายใน IPFS และเกตเวย์</translation>
 <translation id="8425213833346101688">เปลี่ยน</translation>
 <translation id="557281710253742286">ตั้งค่าเกตเวย์ IPFS</translation>
 <translation id="8571837315037233299">ที่อยู่เกตเวย์</translation>
@@ -237,7 +240,7 @@
 <translation id="8655170717758778983">เปลี่ยนเส้นทางไปยังหน้า IPFS ผ่าน DNSLink โดยอัตโนมัติทุกครั้งที่ทำได้</translation>
 <translation id="2233724520223030977">ใช้ DNSLink โดยอัตโนมัติเพื่อนำทางไปยังเวอร์ชัน IPFS ของเว็บไซต์ทุกครั้งที่ทำได้</translation>
 <translation id="6554397389149987360">ใช้ส่วนประกอบ Hangouts เพื่อเปิดใช้งานการแชร์หน้าจอและฟีเจอร์อื่น ๆ ในเบราว์เซอร์</translation>
-<translation id="1765684547504191670">ใช้คอมโพเนนต์ Media Router เพื่อเปิดใช้งาน Chromecast ในเบราว์เซอร์</translation>
+<translation id="7878791177459550035">เราเตอร์สื่อจะเปิดใช้งานฟีเจอร์การส่งภาพในเบราว์เซอร์</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
 <translation id="8068526464562249859">ใช้ส่วนขยาย IPFS Companion เพื่อยกระดับการรองรับ IPFS ใน Brave รวมถึงการเข้าถึงงาน IPFS ทั่วไปจากแถบเบราว์เซอร์ของคุณ</translation>
@@ -307,6 +310,7 @@
 <translation id="6873781976650514089">การตั้งค่านี้</translation>
 <translation id="6040143037577758943">ปิด</translation>
 <translation id="5600566490506283344">การแจ้งเตือน Brave Ad</translation>
+<translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4877147287319222750">เพิ่มลงในแถบด้านข้าง</translation>
 <translation id="4233010476457917696">แสดงแถบด้านข้าง</translation>
 <translation id="5404213409401164238">แสดงแถบด้านข้าง</translation>
@@ -347,6 +351,23 @@
         คุณสามารถอ่าน <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>คำแนะนำวิธีดาวน์โหลดและสร้าง<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>ซอร์ซโค้ดที่ใช้สร้างสำเนานี้<ph name="END_LINK_SOURCE_CODE"/>ด้วยตัวเองได้</translation>
 <translation id="4474155171896946103">บุ๊กมาร์กแท็บทั้งหมด...</translation>
 <translation id="2336228925368920074">บุ๊กมาร์กแท็บทั้งหมด...</translation>
+<translation id="4235920711083356755">แสดงปุ่ม VPN</translation>
+<translation id="4070612712151038707">แสดงปุ่ม VPN ในแถบเครื่องมือ</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">เกี่ยวกับ Brave VPN</translation>
+<translation id="4378551569595875038">กำลังเชื่อมต่อ...</translation>
+<translation id="3368922792935385530">เชื่อมต่อแล้ว</translation>
+<translation id="1536754031901697553">กำลังยกเลิกการเชื่อมต่อ...</translation>
+<translation id="8030169304546394654">ไม่ได้เชื่อมต่อ</translation>
+<translation id="1863950594388384201">แสดงปุ่ม VPN ในแถบเครื่องมือ</translation>
+<translation id="5187139277471084437">ซ่อนปุ่ม VPN ในแถบเครื่องมือ</translation>
+<translation id="8041089156583427627">ส่งความคิดเห็น</translation>
+<translation id="4049186905514157504">จัดการการสมัครสมาชิกของฉัน</translation>
+<translation id="7570585565843385325">แสดงปุ่ม VPN ในแถบเครื่องมือ</translation>
+<translation id="5310426188697803101">ซ่อนปุ่ม VPN ในแถบเครื่องมือ</translation>
+<translation id="945522503751344254">ส่งความคิดเห็น</translation>
+<translation id="3015685033234401792">จัดการแผนของฉัน</translation>
 <translation id="796831669370432378">หากต้องการเพิ่มบุ๊กมาร์ก ให้คลิกปุ่มบุ๊กมาร์กที่อยู่ถัดจากแถบที่อยู่</translation>
 <translation id="4989337484121655457">จำเป็นต้องให้สิทธิ์เข้าถึงดิสก์ทั้งหมด</translation>
 <translation id="8025559074845816210">Brave จำเป็นต้องได้รับสิทธิ์เข้าถึงดิสก์ทั้งหมดเพื่อนำเข้าบุ๊กมาร์กจาก Safari</translation>

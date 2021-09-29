@@ -12,6 +12,7 @@ export const StyledWrapper = styled.div`
   flex-direction: row;
   width: 100%;
   margin: 10px 0px;
+  position: relative;
 `
 
 export const NameAndIcon = styled.div`

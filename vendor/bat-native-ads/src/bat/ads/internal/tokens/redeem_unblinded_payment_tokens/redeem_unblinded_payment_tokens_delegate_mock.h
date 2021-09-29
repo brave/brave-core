@@ -6,9 +6,12 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_DELEGATE_MOCK_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_DELEGATE_MOCK_H_
 
-#include "base/time/time.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
@@ -16,7 +19,6 @@ class RedeemUnblindedPaymentTokensDelegateMock
     : public RedeemUnblindedPaymentTokensDelegate {
  public:
   RedeemUnblindedPaymentTokensDelegateMock();
-
   ~RedeemUnblindedPaymentTokensDelegateMock() override;
 
   RedeemUnblindedPaymentTokensDelegateMock(

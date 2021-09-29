@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index e04fcc294cfc07d03f7e7c22eaeb3d2a14e15c25..847f982210c5780d12033a9dfe046d848154f38c 100644
+index db85413cdc25fe981976c72c68a143240b36a71b..766ed626913d9363880185a097f28b5d2759e591 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
-@@ -385,6 +385,7 @@ void Tab::Layout() {
+@@ -384,6 +384,7 @@ void Tab::Layout() {
      int title_right = contents_rect.right();
      if (showing_alert_indicator_) {
        title_right = alert_indicator_->x() - after_title_padding;

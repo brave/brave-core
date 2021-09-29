@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_COMMON_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_COMMON_FEATURES_H_
 
+#include <string>
+
 #include "build/build_config.h"
 
 namespace base {
@@ -18,15 +20,15 @@ namespace features {
 extern const base::Feature kAdNotifications;
 
 bool IsAdNotificationsEnabled();
+bool CanFallbackToCustomAdNotifications();
 int AdNotificationTimeout();
 
 extern const base::Feature kCustomAdNotifications;
 
 bool IsCustomAdNotificationsEnabled();
-
-bool CanFallbackToCustomAdNotifications();
 #if !defined(OS_ANDROID)
 int AdNotificationFadeDuration();
+std::string AdNotificationDarkModeBackgroundColor();
 double AdNotificationNormalizedDisplayCoordinateX();
 int AdNotificationInsetX();
 double AdNotificationNormalizedDisplayCoordinateY();

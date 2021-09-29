@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/allow_notifications_frequency_cap.h"
 
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 
@@ -23,7 +24,7 @@ bool AllowNotificationsFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string AllowNotificationsFrequencyCap::get_last_message() const {
+std::string AllowNotificationsFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

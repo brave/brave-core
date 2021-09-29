@@ -48,6 +48,16 @@ std::vector<std::string> HDKeyring::GetAccounts() const {
   return addresses;
 }
 
+absl::optional<size_t> HDKeyring::GetAccountIndex(
+    const std::string& address) const {
+  for (size_t i = 0; i < accounts_.size(); ++i) {
+    if (GetAddress(i) == address) {
+      return i;
+    }
+  }
+  return absl::nullopt;
+}
+
 size_t HDKeyring::GetAccountsNumber() const {
   return accounts_.size();
 }
@@ -56,8 +66,7 @@ void HDKeyring::RemoveAccount() {
   accounts_.pop_back();
 }
 
-std::string HDKeyring::AddImportedAccount(
-    const std::vector<uint8_t>& private_key) {
+std::string HDKeyring::ImportAccount(const std::vector<uint8_t>& private_key) {
   std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(private_key);
   if (!hd_key)
     return std::string();

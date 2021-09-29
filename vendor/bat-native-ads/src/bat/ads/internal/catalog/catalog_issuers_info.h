@@ -8,13 +8,20 @@
 
 #include <string>
 
-#include "base/values.h"
 #include "bat/ads/internal/catalog/catalog_issuer_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+
+namespace absl {
+template <typename T>
+class optional;
+}  // namespace absl
+
+namespace base {
+class Value;
+}  // namespace base
 
 namespace ads {
 
-struct CatalogIssuersInfo {
+struct CatalogIssuersInfo final {
   CatalogIssuersInfo();
   CatalogIssuersInfo(const CatalogIssuersInfo& info);
   ~CatalogIssuersInfo();

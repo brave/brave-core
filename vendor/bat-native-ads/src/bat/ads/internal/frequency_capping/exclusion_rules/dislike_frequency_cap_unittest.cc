@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/dislike_frequency_cap.h"
 
+#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 
@@ -42,7 +43,7 @@ TEST_F(BatAdsDislikeFrequencyCapTest, DoNotAllowAd) {
   ad.creative_set_id = kCreativeSetId;
 
   Client::Get()->ToggleAdThumbDown(ad.creative_instance_id, ad.creative_set_id,
-                                   AdContentInfo::LikeAction::kNeutral);
+                                   AdContentActionType::kNeutral);
 
   // Act
   DislikeFrequencyCap frequency_cap;

@@ -7,25 +7,22 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_NEW_TAB_PAGE_AD_INFO_H_
 
 #include <string>
-#include <vector>
 
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 
 namespace ads {
 
-struct CreativeNewTabPageAdInfo : CreativeAdInfo {
+struct CreativeNewTabPageAdInfo final : CreativeAdInfo {
   CreativeNewTabPageAdInfo();
+  CreativeNewTabPageAdInfo(const CreativeNewTabPageAdInfo& info);
   ~CreativeNewTabPageAdInfo();
 
   bool operator==(const CreativeNewTabPageAdInfo& rhs) const;
-
   bool operator!=(const CreativeNewTabPageAdInfo& rhs) const;
 
   std::string company_name;
   std::string alt;
 };
-
-using CreativeNewTabPageAdList = std::vector<CreativeNewTabPageAdInfo>;
 
 }  // namespace ads
 

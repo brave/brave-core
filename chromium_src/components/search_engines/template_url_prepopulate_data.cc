@@ -12,9 +12,9 @@
 #include "base/no_destructor.h"
 #include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/country_codes/country_codes.h"
+#include "components/search_engines/search_engines_pref_names.h"
 
 #define GetDataVersion GetDataVersion_ChromiumImpl
 #if defined(OS_ANDROID)
@@ -364,8 +364,8 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
     return t_urls;
 
   int version = kBraveCurrentDataVersion;
-  if (prefs && prefs->HasPrefPath(kBraveDefaultSearchVersion)) {
-    version = prefs->GetInteger(kBraveDefaultSearchVersion);
+  if (prefs && prefs->HasPrefPath(prefs::kBraveDefaultSearchVersion)) {
+    version = prefs->GetInteger(prefs::kBraveDefaultSearchVersion);
   }
 
   return GetBravePrepopulatedEnginesForCountryID(

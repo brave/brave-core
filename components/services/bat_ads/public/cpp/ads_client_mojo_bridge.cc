@@ -10,11 +10,12 @@
 #include <memory>
 #include <utility>
 
-#include "bat/ads/ads.h"
 #include "base/bind.h"
 #include "base/callback.h"
 #include "base/containers/flat_map.h"
 #include "base/logging.h"
+#include "bat/ads/ad_notification_info.h"
+#include "bat/ads/ads.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -89,7 +90,7 @@ void AdsClientMojoBridge::ShouldShowNotifications(
 
 bool AdsClientMojoBridge::GetAdEvents(const std::string& ad_type,
                                       const std::string& confirmation_type,
-                                      std::vector<uint64_t>* out_ad_events) {
+                                      std::vector<double>* out_ad_events) {
   DCHECK(out_ad_events);
   *out_ad_events = ads_client_->GetAdEvents(ad_type, confirmation_type);
   return true;
@@ -113,6 +114,22 @@ void AdsClientMojoBridge::LoadResourceForId(
     const std::string& id,
     LoadResourceForIdCallback callback) {
   std::move(callback).Run(ads_client_->LoadResourceForId(id));
+}
+
+void AdsClientMojoBridge::ClearScheduledCaptcha() {
+  ads_client_->ClearScheduledCaptcha();
+}
+
+void AdsClientMojoBridge::GetScheduledCaptcha(
+    const std::string& payment_id,
+    GetScheduledCaptchaCallback callback) {
+  ads_client_->GetScheduledCaptcha(payment_id, std::move(callback));
+}
+
+void AdsClientMojoBridge::ShowScheduledCaptchaNotification(
+    const std::string& payment_id,
+    const std::string& captcha_id) {
+  ads_client_->ShowScheduledCaptchaNotification(payment_id, captcha_id);
 }
 
 void AdsClientMojoBridge::Log(
@@ -265,7 +282,7 @@ void AdsClientMojoBridge::CloseNotification(
 
 void AdsClientMojoBridge::RecordAdEvent(const std::string& ad_type,
                                         const std::string& confirmation_type,
-                                        const uint64_t timestamp) {
+                                        const double timestamp) {
   ads_client_->RecordAdEvent(ad_type, confirmation_type, timestamp);
 }
 

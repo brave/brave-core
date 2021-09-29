@@ -29,7 +29,6 @@ class ERCTokenRegistry : public mojom::ERCTokenRegistry {
   mojo::PendingRemote<mojom::ERCTokenRegistry> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::ERCTokenRegistry> receiver);
 
-  bool ParseERCTokens(const std::string& token_list);
   void UpdateTokenList(std::vector<mojom::ERCTokenPtr> erc_tokens);
 
   // ERCTokenRegistry interface methods
@@ -38,6 +37,11 @@ class ERCTokenRegistry : public mojom::ERCTokenRegistry {
   void GetTokenBySymbol(const std::string& symbol,
                         GetTokenBySymbolCallback callback) override;
   void GetAllTokens(GetAllTokensCallback callback) override;
+  void GetBuyTokens(GetBuyTokensCallback callback) override;
+  void GetBuyUrl(const std::string& address,
+                 const std::string& symbol,
+                 const std::string& amount,
+                 GetBuyUrlCallback callback) override;
 
  protected:
   std::vector<mojom::ERCTokenPtr> erc_tokens_;

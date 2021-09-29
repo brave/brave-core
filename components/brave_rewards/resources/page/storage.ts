@@ -128,7 +128,7 @@ export const debouncedSave = debounce((data: Rewards.State) => {
   if (data) {
     window.localStorage.setItem(keyName, JSON.stringify(cleanData(data)))
   }
-}, 50)
+}, 150)
 
 export const save = (data: Rewards.State) => {
   window.localStorage.setItem(keyName, JSON.stringify(cleanData(data)))

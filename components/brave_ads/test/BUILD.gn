@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/build/config.gni")
+import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//build/config/sanitizers/sanitizers.gni")
 import("//testing/test.gni")
 
@@ -20,15 +21,21 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/account/ad_rewards/payments/payments_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/account/statement/statement_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_diagnostics/ad_diagnostics_test.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_events/ad_event_unittest_util.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_events/ad_event_unittest_util.h",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_events/ad_event_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_pacing/ad_pacing_test.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_priority/ad_priority_test.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving_test.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_unittest_util.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_unittest_util.h",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_serving/ad_targeting/models/contextual/text_classification/text_classification_model_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving_test.cc",
-    "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_targeting/ad_targeting_segment_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_targeting/ad_targeting_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_targeting/ad_targeting_user_model_builder_unittest_util.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_targeting/ad_targeting_user_model_builder_unittest_util.h",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor_unittest.cc",
@@ -42,6 +49,10 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ads_history/sorts/ads_history_sort_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/base64_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/browser_manager/browser_manager_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/bundle/creative_ad_notification_unittest_util.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/bundle/creative_ad_notification_unittest_util.h",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/bundle/creative_ad_unittest_util.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/bundle/creative_ad_unittest_util.h",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/catalog/catalog_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/catalog/catalog_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/container_util_unittest.cc",
@@ -70,7 +81,12 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/database/tables/segments_database_table_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_issue_17199_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/eligible_ads/eligible_ads_features_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/eligible_ads/eligible_ads_features_util_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/eligible_ads/eligible_ads_predictor_util_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/eligible_ads/eligible_ads_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/eligible_ads/sample_ads_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/features/ad_rewards/ad_rewards_features_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/features/ad_serving/ad_serving_features_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/features/anti_targeting/anti_targeting_features_unittest.cc",
@@ -120,7 +136,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/idle_time_unittest.cc",
-    "//brave/vendor/bat-native-ads/src/bat/ads/internal/legacy_migration/legacy_migration_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/locale/country_code_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/locale/subdivision_code_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/data/text_data_unittest.cc",
@@ -153,10 +168,12 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/resources/frequency_capping/anti_targeting_resource_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/security/conversions/conversions_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/security/crypto_util_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/segments/segments_json_reader_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/segments/segments_json_writer_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/segments/segments_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/ads_serve_server_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/ads_server_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/confirmations_server_util_unittest.cc",
-    "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/rewards_server_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/via_header_util_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/settings/settings_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/string_util_unittest.cc",
@@ -183,6 +200,12 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/tokens/refill_unblinded_tokens/request_signed_tokens_url_request_builder_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_base.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_base.h",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_file_util.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_file_util.h",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_tag_parser_util.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_tag_parser_util.h",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_time_util.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_time_util.h",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_util.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_util.h",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/url_util_unittest.cc",
@@ -197,6 +220,7 @@ source_set("brave_ads_unit_tests") {
     "//base/test:test_support",
     "//brave/browser",
     "//brave/browser/brave_ads",
+    "//brave/components/brave_adaptive_captcha/buildflags",
     "//brave/components/brave_ads/browser:browser",
     "//brave/components/brave_ads/browser:testutil",
     "//brave/components/brave_rewards/browser:browser",
@@ -212,6 +236,10 @@ source_set("brave_ads_unit_tests") {
     "//components/prefs:prefs",
     "//content/test:test_support",
   ]
+
+  if (brave_adaptive_captcha_enabled) {
+    deps += [ "//brave/components/brave_adaptive_captcha" ]
+  }
 
   data = [ "//brave/vendor/bat-native-ads/data/" ]
 

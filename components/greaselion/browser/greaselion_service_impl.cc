@@ -34,6 +34,7 @@
 #include "chrome/browser/extensions/extension_service.h"
 #include "components/version_info/version_info.h"
 #include "crypto/sha2.h"
+#include "extensions/browser/computed_hashes.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/api/content_scripts.h"
@@ -51,6 +52,13 @@ using extensions::mojom::ManifestLocation;
 namespace {
 
 constexpr char kRunAtDocumentStart[] = "document_start";
+
+bool ShouldComputeHashesForResource(
+    const base::FilePath& relative_resource_path) {
+  std::vector<base::FilePath::StringType> components;
+  relative_resource_path.GetComponents(&components);
+  return !components.empty() && components[0] != extensions::kMetadataFolder;
+}
 
 // Wraps a Greaselion rule in a component. The component is stored as
 // an unpacked extension in the user data dir. Returns a valid
@@ -185,6 +193,19 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
     return absl::nullopt;
   }
 
+  // Calculate and write computed hashes.
+  absl::optional<extensions::ComputedHashes::Data> computed_hashes_data =
+      extensions::ComputedHashes::Compute(
+          extension->path(),
+          extension_misc::kContentVerificationDefaultBlockSize,
+          extensions::IsCancelledCallback(),
+          base::BindRepeating(&ShouldComputeHashesForResource));
+  if (computed_hashes_data) {
+    extensions::ComputedHashes(std::move(*computed_hashes_data))
+        .WriteToFile(
+            extensions::file_util::GetComputedHashesPath(extension->path()));
+  }
+
   // Take ownership of this temporary directory so it's deleted when
   // the service exits
   return std::make_pair(extension, std::move(temp_dir));
@@ -212,6 +233,7 @@ GreaselionServiceImpl::GreaselionServiceImpl(
       browser_version_(
           version_info::GetBraveVersionWithoutChromiumMajorVersion()),
       weak_factory_(this) {
+  download_service_->AddObserver(this);
   extension_registry_->AddObserver(this);
   for (int i = FIRST_FEATURE; i != LAST_FEATURE; i++)
     state_[static_cast<GreaselionFeature>(i)] = false;
@@ -220,6 +242,7 @@ GreaselionServiceImpl::GreaselionServiceImpl(
 }
 
 GreaselionServiceImpl::~GreaselionServiceImpl() {
+  download_service_->RemoveObserver(this);
   extension_registry_->RemoveObserver(this);
 }
 
@@ -346,11 +369,12 @@ void GreaselionServiceImpl::OnExtensionUnloaded(
   }
 }
 
-void GreaselionServiceImpl::AddObserver(Observer* observer) {
+void GreaselionServiceImpl::AddObserver(GreaselionService::Observer* observer) {
   observers_.AddObserver(observer);
 }
 
-void GreaselionServiceImpl::RemoveObserver(Observer* observer) {
+void GreaselionServiceImpl::RemoveObserver(
+    GreaselionService::Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
@@ -361,9 +385,16 @@ void GreaselionServiceImpl::MaybeNotifyObservers() {
       update_pending_ = false;
       UpdateInstalledExtensions();
     } else {
-      for (Observer& observer : observers_)
+      for (auto& observer : observers_)
         observer.OnExtensionsReady(this, all_rules_installed_successfully_);
     }
+  }
+}
+
+void GreaselionServiceImpl::OnRulesReady(
+    GreaselionDownloadService* download_service) {
+  for (auto& observer : observers_) {
+    observer.OnRulesReady(this);
   }
 }
 

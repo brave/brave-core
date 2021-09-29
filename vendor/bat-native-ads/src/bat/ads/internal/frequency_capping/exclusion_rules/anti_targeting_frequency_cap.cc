@@ -9,7 +9,6 @@
 #include <memory>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/url_util.h"
 
@@ -53,7 +52,7 @@ bool AntiTargetingFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string AntiTargetingFrequencyCap::get_last_message() const {
+std::string AntiTargetingFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

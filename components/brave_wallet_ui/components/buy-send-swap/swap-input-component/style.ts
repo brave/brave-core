@@ -44,7 +44,7 @@ export const AssetButton = styled.button`
 export const AssetIcon = styled.div<Partial<StyleProps>>`
   width: 24px;
   height: 24px;
-  background: ${(p) => `url(${p.icon})`};
+  background: no-repeat ${(p) => `url(${p.icon})`};
   margin-right: 8px;
   margin-left: 4px;
   background-size: 100%;

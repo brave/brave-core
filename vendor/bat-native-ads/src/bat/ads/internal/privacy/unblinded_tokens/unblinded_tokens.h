@@ -6,16 +6,20 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_UNBLINDED_TOKENS_UNBLINDED_TOKENS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_UNBLINDED_TOKENS_UNBLINDED_TOKENS_H_
 
-#include "base/values.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info_aliases.h"
+
+namespace base {
+class Value;
+}  // namespace base
 
 namespace ads {
 namespace privacy {
 
-class UnblindedTokens {
+struct UnblindedTokenInfo;
+
+class UnblindedTokens final {
  public:
   UnblindedTokens();
-
   ~UnblindedTokens();
 
   UnblindedTokenInfo GetToken() const;

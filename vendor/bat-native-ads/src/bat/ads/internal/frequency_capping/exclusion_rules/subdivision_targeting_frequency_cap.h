@@ -8,12 +8,10 @@
 
 #include <string>
 
-#include "bat/ads/ad_info.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
-
-struct CreativeAdInfo;
 
 namespace ad_targeting {
 namespace geographic {
@@ -21,11 +19,11 @@ class SubdivisionTargeting;
 }  // namespace geographic
 }  // namespace ad_targeting
 
-class SubdivisionTargetingFrequencyCap : public ExclusionRule<CreativeAdInfo> {
+class SubdivisionTargetingFrequencyCap final
+    : public ExclusionRule<CreativeAdInfo> {
  public:
   SubdivisionTargetingFrequencyCap(
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting);
-
   ~SubdivisionTargetingFrequencyCap() override;
 
   SubdivisionTargetingFrequencyCap(const SubdivisionTargetingFrequencyCap&) =
@@ -35,7 +33,7 @@ class SubdivisionTargetingFrequencyCap : public ExclusionRule<CreativeAdInfo> {
 
   bool ShouldExclude(const CreativeAdInfo& ad) override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   ad_targeting::geographic::SubdivisionTargeting*

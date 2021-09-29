@@ -9,6 +9,7 @@
 
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_file_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -41,7 +42,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   ASSERT_TRUE(catalog.FromJson(json));
 
   // Act
-  resource::EpsilonGreedyBandit resource;
+  EpsilonGreedyBandit resource;
   resource.LoadFromCatalog(catalog);
 
   // Assert
@@ -56,7 +57,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   ASSERT_FALSE(catalog.FromJson("INVALID_CATALOG"));
 
   // Act
-  resource::EpsilonGreedyBandit resource;
+  EpsilonGreedyBandit resource;
   resource.LoadFromCatalog(catalog);
 
   // Assert
@@ -69,7 +70,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   // Arrange
 
   // Act
-  resource::EpsilonGreedyBandit resource;
+  EpsilonGreedyBandit resource;
 
   // Assert
   const bool is_initialized = resource.IsInitialized();

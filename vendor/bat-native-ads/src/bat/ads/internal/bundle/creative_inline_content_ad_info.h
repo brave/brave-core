@@ -7,19 +7,17 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_INLINE_CONTENT_AD_INFO_H_
 
 #include <string>
-#include <vector>
 
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 
 namespace ads {
 
-struct CreativeInlineContentAdInfo : CreativeAdInfo {
+struct CreativeInlineContentAdInfo final : CreativeAdInfo {
   CreativeInlineContentAdInfo();
   CreativeInlineContentAdInfo(const CreativeInlineContentAdInfo& info);
   ~CreativeInlineContentAdInfo();
 
   bool operator==(const CreativeInlineContentAdInfo& rhs) const;
-
   bool operator!=(const CreativeInlineContentAdInfo& rhs) const;
 
   std::string title;
@@ -28,8 +26,6 @@ struct CreativeInlineContentAdInfo : CreativeAdInfo {
   std::string dimensions;
   std::string cta_text;
 };
-
-using CreativeInlineContentAdList = std::vector<CreativeInlineContentAdInfo>;
 
 }  // namespace ads
 

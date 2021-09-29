@@ -14,7 +14,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/logging.h"
+#include "base/check.h"
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
 #include "rapidjson/schema.h"
@@ -31,7 +31,6 @@ struct AdsHistoryInfo;
 struct CategoryContentInfo;
 struct ClientInfo;
 struct NewTabPageAdInfo;
-struct PurchaseIntentSignalHistoryInfo;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
@@ -43,8 +42,6 @@ void SaveToJson(JsonWriter* writer, const AdsHistoryInfo& info);
 void SaveToJson(JsonWriter* writer, const CategoryContentInfo& info);
 void SaveToJson(JsonWriter* writer, const ClientInfo& state);
 void SaveToJson(JsonWriter* writer, const NewTabPageAdInfo& info);
-void SaveToJson(JsonWriter* writer,
-                const PurchaseIntentSignalHistoryInfo& info);
 
 template <typename T>
 void SaveToJson(const T& t, std::string* json) {
@@ -75,7 +72,7 @@ bool LoadFromJson(T* t,
 
 namespace helper {
 
-class JSON {
+class JSON final {
  public:
   static bool Validate(rapidjson::Document* document,
                        const std::string& json_schema);

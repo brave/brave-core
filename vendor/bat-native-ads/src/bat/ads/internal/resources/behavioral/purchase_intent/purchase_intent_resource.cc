@@ -8,10 +8,12 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 #include "bat/ads/internal/logging.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace resource {
@@ -56,14 +58,14 @@ void PurchaseIntent::Load() {
       });
 }
 
-PurchaseIntentInfo PurchaseIntent::get() const {
+ad_targeting::PurchaseIntentInfo PurchaseIntent::get() const {
   return purchase_intent_;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 bool PurchaseIntent::FromJson(const std::string& json) {
-  PurchaseIntentInfo purchase_intent;
+  ad_targeting::PurchaseIntentInfo purchase_intent;
 
   absl::optional<base::Value> root = base::JSONReader::Read(json);
   if (!root) {
@@ -124,7 +126,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
 
   for (base::DictionaryValue::Iterator it(*dict2); !it.IsAtEnd();
        it.Advance()) {
-    PurchaseIntentSegmentKeywordInfo info;
+    ad_targeting::PurchaseIntentSegmentKeywordInfo info;
     info.keywords = it.key();
     for (const auto& segment_ix : it.value().GetList()) {
       info.segments.push_back(segments.at(segment_ix.GetInt()));
@@ -152,7 +154,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
   }
 
   for (base::DictionaryValue::Iterator it(*dict); !it.IsAtEnd(); it.Advance()) {
-    PurchaseIntentFunnelKeywordInfo info;
+    ad_targeting::PurchaseIntentFunnelKeywordInfo info;
     info.keywords = it.key();
     info.weight = it.value().GetInt();
     purchase_intent.funnel_keywords.push_back(info);
@@ -205,7 +207,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
     }
 
     for (const auto& site : site_list->GetList()) {
-      PurchaseIntentSiteInfo info;
+      ad_targeting::PurchaseIntentSiteInfo info;
       info.segments = site_segments;
       info.url_netloc = site.GetString();
       info.weight = 1;

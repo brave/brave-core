@@ -1045,8 +1045,7 @@ TEST_P(GetAnonFunds, Paths) {
       .WillByDefault(Return(fetch_old_balance));
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
-      .WillByDefault(
-          Return(FakeEncryption::Base64EncryptString(input_rewards_wallet)));
+      .WillByDefault(Return(input_rewards_wallet));
 
   uphold_->GenerateWallet([&](type::Result result) {
     ASSERT_EQ(result, expected_result);
@@ -1240,8 +1239,7 @@ TEST_P(LinkWallet, Paths) {
       .WillByDefault(Return(fetch_old_balance));
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
-      .WillByDefault(
-          Return(FakeEncryption::Base64EncryptString(input_rewards_wallet)));
+      .WillByDefault(Return(input_rewards_wallet));
 
   uphold_->GenerateWallet(
       [&](type::Result result) { ASSERT_EQ(result, expected_result); });
@@ -1265,12 +1263,12 @@ using DisconnectWalletParamType = std::tuple<
     absl::optional<type::WalletStatus>  // expected status
 >;
 
-struct DisconnectWallet : UpholdTest,
-                          WithParamInterface<DisconnectWalletParamType> {};
+struct DisconnectUpholdWallet : UpholdTest,
+                                WithParamInterface<DisconnectWalletParamType> {};  // NOLINT
 
 INSTANTIATE_TEST_SUITE_P(
   UpholdTest,
-  DisconnectWallet,
+  DisconnectUpholdWallet,
   Values(
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (NOT_CONNECTED)
@@ -1359,8 +1357,8 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
-      type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      type::Result::LEDGER_ERROR,
+      type::WalletStatus::DISCONNECTED_VERIFIED
     },
     // NOLINTNEXTLINE
     DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (PENDING)
@@ -1396,7 +1394,7 @@ INSTANTIATE_TEST_SUITE_P(
 );
 // clang-format on
 
-TEST_P(DisconnectWallet, Paths) {
+TEST_P(DisconnectUpholdWallet, Paths) {
   const auto& params = GetParam();
   std::string uphold_wallet = std::get<1>(params);
   const auto& input_rewards_wallet = std::get<2>(params);
@@ -1415,8 +1413,7 @@ TEST_P(DisconnectWallet, Paths) {
       });
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
-      .WillByDefault(
-          Return(FakeEncryption::Base64EncryptString(input_rewards_wallet)));
+      .WillByDefault(Return(input_rewards_wallet));
 
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(

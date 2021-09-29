@@ -20,6 +20,7 @@ if (is_android) {
 
     public_deps = [
       "//extensions/common:common_constants",
+
       # Upstream bug: common_constants (above) has a dep on
       # //components/services/app_service/public/mojom, which should have a dep
       # on //ui/gfx/image/mojom, but doesn't, so we have to include it directly.
@@ -28,8 +29,8 @@ if (is_android) {
   }
 } else {
   group("common") {
-   if (!is_ios) {
-      deps = [ "//extensions/common" ]
+    if (!is_ios) {
+      public_deps = [ "//extensions/common" ]
     }
   }
 }

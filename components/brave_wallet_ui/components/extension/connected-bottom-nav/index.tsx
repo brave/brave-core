@@ -1,48 +1,68 @@
 import * as React from 'react'
+import locale from '../../../constants/locale'
+import PanelTooltip from '../panel-tooltip'
+import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 
 // Styled Components
 import {
   StyledWrapper,
-  AppsIcon,
+  // AppsIcon,
   NavButton,
   NavButtonText,
   NavDivider,
   NavOutline
 } from './style'
 
-import { PanelTypes } from '../../../constants/types'
+import { PanelTypes, EthereumChain } from '../../../constants/types'
 
 export interface Props {
-  action: (path: PanelTypes) => void
+  onNavigate: (path: PanelTypes) => void
+  isSwapDisabled: boolean
+  isBuyDisabled: boolean
+  selectedNetwork: EthereumChain
 }
 
-export default class ConnectedBottomNav extends React.PureComponent<Props> {
+function ConnectedBottomNav (props: Props) {
+  const { onNavigate, isSwapDisabled, isBuyDisabled, selectedNetwork } = props
 
-  navigate = (path: PanelTypes) => () => {
-    this.props.action(path)
+  const navigate = (path: PanelTypes) => () => {
+    onNavigate(path)
   }
 
-  render () {
-    return (
-      <StyledWrapper>
-        <NavOutline>
-          <NavButton onClick={this.navigate('buy')}>
-            <NavButtonText>Buy</NavButtonText>
+  return (
+    <StyledWrapper>
+      <NavOutline>
+        <PanelTooltip
+          position='right'
+          isDisabled={isBuyDisabled}
+          text={`${reduceNetworkDisplayName(selectedNetwork.chainName)} ${locale.bssToolTip}`}
+        >
+          <NavButton disabled={isBuyDisabled} onClick={navigate('buy')}>
+            <NavButtonText disabled={isBuyDisabled}>{locale.buy}</NavButtonText>
           </NavButton>
-          <NavDivider />
-          <NavButton onClick={this.navigate('send')}>
-            <NavButtonText>Send</NavButtonText>
+        </PanelTooltip>
+        <NavDivider />
+        <NavButton onClick={navigate('send')}>
+          <NavButtonText>{locale.send}</NavButtonText>
+        </NavButton>
+        <NavDivider />
+        <PanelTooltip
+          position='left'
+          isDisabled={isSwapDisabled}
+          text={`${reduceNetworkDisplayName(selectedNetwork.chainName)} ${locale.bssToolTip}`}
+        >
+          <NavButton disabled={isSwapDisabled} onClick={navigate('swap')}>
+            <NavButtonText disabled={isSwapDisabled}>{locale.swap}</NavButtonText>
           </NavButton>
-          <NavDivider />
-          <NavButton onClick={this.navigate('swap')}>
-            <NavButtonText>Swap</NavButtonText>
-          </NavButton>
-          <NavDivider />
-          <NavButton onClick={this.navigate('apps')}>
-            <AppsIcon />
-          </NavButton>
-        </NavOutline>
-      </StyledWrapper>
-    )
-  }
+        </PanelTooltip>
+        {/* <NavDivider /> */}
+        {/*Temp commented out for MVP*/}
+        {/* <NavButton onClick={navigate('apps')}>
+          <AppsIcon />
+        </NavButton> */}
+      </NavOutline>
+    </StyledWrapper>
+  )
 }
+
+export default ConnectedBottomNav

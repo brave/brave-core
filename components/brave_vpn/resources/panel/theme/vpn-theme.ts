@@ -5,6 +5,6 @@
 
 export default interface IThemeVPN {
   color: {
-    outlineColor: string
+    panelBackground: string
   }
 }

@@ -6,20 +6,24 @@
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens.h"
 
 #include <memory>
+#include <utility>
 
 #include "bat/ads/internal/account/wallet/wallet.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate_mock.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 using ::testing::_;
 using ::testing::InSequence;
+using ::testing::Invoke;
 using ::testing::NiceMock;
 using ::testing::Return;
 
@@ -151,6 +155,16 @@ class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
             )"}}}};
   }
 
+  void MaybeExpectCallToGetScheduledCaptcha() {
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+    EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+        .WillOnce(Invoke([](const std::string& payment_id,
+                            GetScheduledCaptchaCallback callback) {
+          std::move(callback).Run("");
+        }));
+#endif
+  }
+
   std::unique_ptr<privacy::TokenGeneratorMock> token_generator_mock_;
   std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
   std::unique_ptr<RefillUnblindedTokensDelegateMock>
@@ -166,7 +180,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -185,12 +199,61 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
+  MaybeExpectCallToGetScheduledCaptcha();
+
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
   EXPECT_EQ(50, get_unblinded_tokens()->Count());
 }
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
+  // Arrange
+  const URLEndpoints endpoints = GetValidUrlRequestEndPoints();
+  MockUrlRequest(ads_client_mock_, endpoints);
+
+  const std::vector<Token> tokens = GetTokens();
+  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+
+  CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
+
+  // Act
+  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+              OnDidRefillUnblindedTokens())
+      .Times(0);
+
+  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+              OnFailedToRefillUnblindedTokens())
+      .Times(0);
+
+  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+              OnWillRetryRefillingUnblindedTokens())
+      .Times(0);
+
+  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+              OnDidRetryRefillingUnblindedTokens())
+      .Times(0);
+
+  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+              OnCaptchaRequiredToRefillUnblindedTokens("captcha-id"))
+      .Times(1);
+
+  EXPECT_CALL(*ads_client_mock_, GetScheduledCaptcha(_, _))
+      .WillOnce(Invoke([](const std::string& payment_id,
+                          GetScheduledCaptchaCallback callback) {
+        std::move(callback).Run("captcha-id");
+      }));
+
+  const WalletInfo wallet = GetWallet();
+  refill_unblinded_tokens_->MaybeRefill(wallet);
+
+  // Assert
+  EXPECT_EQ(0, get_unblinded_tokens()->Count());
+}
+#endif
 
 TEST_F(BatAdsRefillUnblindedTokensTest, CatalogIssuersPublicKeyMismatch) {
   // Arrange
@@ -206,7 +269,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, CatalogIssuersPublicKeyMismatch) {
   catalog_issuer.name = "1.23BAT";
   catalog_issuer.public_key = "JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=";
   catalog_issuers.issuers = {catalog_issuer};
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -224,6 +287,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest, CatalogIssuersPublicKeyMismatch) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  MaybeExpectCallToGetScheduledCaptcha();
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -364,10 +429,12 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   InSequence seq;
+
+  MaybeExpectCallToGetScheduledCaptcha();
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens())
@@ -380,6 +447,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(1);
+
+  MaybeExpectCallToGetScheduledCaptcha();
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens())
@@ -406,7 +475,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -424,6 +493,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  MaybeExpectCallToGetScheduledCaptcha();
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -515,10 +586,12 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   InSequence seq;
+
+  MaybeExpectCallToGetScheduledCaptcha();
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens())
@@ -565,7 +638,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -583,6 +656,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  MaybeExpectCallToGetScheduledCaptcha();
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -667,7 +742,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -685,6 +760,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  MaybeExpectCallToGetScheduledCaptcha();
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -769,7 +846,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -787,6 +864,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  MaybeExpectCallToGetScheduledCaptcha();
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -820,7 +899,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -838,6 +917,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  MaybeExpectCallToGetScheduledCaptcha();
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -923,7 +1004,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -941,6 +1022,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  MaybeExpectCallToGetScheduledCaptcha();
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -962,7 +1045,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, VerifyAndUnblindInvalidTokens) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -980,6 +1063,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest, VerifyAndUnblindInvalidTokens) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  MaybeExpectCallToGetScheduledCaptcha();
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -1118,7 +1203,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -1136,6 +1221,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
+
+  MaybeExpectCallToGetScheduledCaptcha();
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);

@@ -25,6 +25,7 @@
 <translation id="6248988683584659830">શોધ સેટિંગ્સ</translation>
 <translation id="3368922792935385530">કનેક્ટેડ</translation>
 <translation id="2653659639078652383">સબમિટ કરો</translation>
+<translation id="6745592621698551453">હવે અપડેટ કરો</translation>
 <translation id="3958088479270651626">બુકમાર્ક્સ અને સેટિંગ્સ આયાત કરો</translation>
 <translation id="8275038454117074363">આયાત કરો</translation>
 <translation id="1201402288615127009">આગલું</translation>
@@ -56,24 +57,14 @@
 <translation id="8874184842967597500">કનેક્ટેડ નથી</translation>
 <translation id="3248185426436836442">બાકી</translation>
 <translation id="8281886186245836920">છોડો</translation>
-<translation id="4918086044614829423">સ્વીકારો</translation>
 <translation id="1036277985068412734">ભંડોળ ઉમેરો</translation>
 <translation id="3587482841069643663">બધા</translation>
 <translation id="2631006050119455616">સાચવ્યો</translation>
 <translation id="3819257035322786455">બેકઅપ</translation>
-<translation id="4281844954008187215">સેવાની શરતો</translation>
-<translation id="7530570094705720669">વૉલેટ બનાવી રહ્યા છીએ</translation>
 <translation id="13853865024308201">દાવો</translation>
 <translation id="6896758677409633944">કૉપિ કરો</translation>
 <translation id="3866249974567520381">વર્ણન</translation>
-<translation id="4522570452068850558">વિગતો</translation>
-<translation id="5860033963881614850">બંધ</translation>
-<translation id="245015745140252435">ટીપની રકમ</translation>
 <translation id="298067735430872465">જાહેરાતો દ્વારા કમાણી</translation>
-<translation id="2104073734684466851">અનુદાનો</translation>
-<translation id="7335371657242627509">આપમેળે-ફાળામાં સામેલ કરો</translation>
-<translation id="1864111464094315414">લૉગિન</translation>
-<translation id="3250511771491660127">આને માસિક બનાવો</translation>
 <translation id="606865182719489911">નિ:શુલ્ક ટોકન અનુદાન ઉપલબ્ધ છે.</translation>
 <translation id="3453206261112715431">નિ:શુલ્ક ટોકન અનુદાન</translation>
 <translation id="1166682575529520472">માસિક</translation>
@@ -89,7 +80,7 @@
 <translation id="8772672608371898774">Brave ચકાસાયેલ પ્રકાશક</translation>
 <translation id="1910721550319506122">સ્વાગત છે!</translation>
 <translation id="3780605330121608425">તમારું વૉલેટ</translation>
-<translation id="4292832015778676417">જાહેરાતો દ્વારા કમાયા</translation>
+<translation id="7530570094705720669">વૉલેટ બનાવી રહ્યા છીએ</translation>
 <translation id="1963227389609234879">બધું દૂર કરો</translation>
 <translation id="923467487918828349">બધું બતાવો</translation>
 <translation id="2356070529366658676">કહો</translation>
@@ -103,4 +94,5 @@
 <translation id="1974060860693918893">વિગતવાર</translation>
 <translation id="3340978935015468852">સેટિંગ્સ</translation>
 <translation id="572392919096807438">મારો નિર્ણય યાદ રાખો</translation>
+<translation id="7577100371127227294">માસિક ટીપ</translation>
 </translationbundle>

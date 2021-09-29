@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api_mac.h"
 
-#import <Foundation/Foundation.h>
 #import <NetworkExtension/NetworkExtension.h>
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/mac/bundle_locations.h"
 #include "base/mac/foundation_util.h"
+#include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
 
 // Referenced GuardianConnect implementation.
@@ -137,8 +137,16 @@ BraveVPNOSConnectionAPI* BraveVPNOSConnectionAPI::GetInstance() {
   return s_manager.get();
 }
 
-BraveVPNOSConnectionAPIMac::BraveVPNOSConnectionAPIMac() = default;
-BraveVPNOSConnectionAPIMac::~BraveVPNOSConnectionAPIMac() = default;
+BraveVPNOSConnectionAPIMac::BraveVPNOSConnectionAPIMac() {
+  ObserveVPNConnectionChange();
+}
+
+BraveVPNOSConnectionAPIMac::~BraveVPNOSConnectionAPIMac() {
+  if (vpn_observer_) {
+    [[NSNotificationCenter defaultCenter] removeObserver:vpn_observer_];
+    vpn_observer_ = nil;
+  }
+}
 
 void BraveVPNOSConnectionAPIMac::CreateVPNConnection(
     const BraveVPNConnectionInfo& info) {
@@ -223,10 +231,6 @@ void BraveVPNOSConnectionAPIMac::Connect(const std::string& name) {
                  << base::SysNSStringToUTF8([start_error localizedDescription]);
       return;
     }
-
-    VLOG(2) << "Successfully connected";
-    for (Observer& obs : observers_)
-      obs.OnConnected(std::string());
   }];
 }
 
@@ -240,15 +244,61 @@ void BraveVPNOSConnectionAPIMac::Disconnect(const std::string& name) {
     }
 
     NEVPNStatus current_status = [[vpn_manager connection] status];
-    if (current_status != NEVPNStatusConnected) {
-      VLOG(2) << "Disconnect - Not connected";
+    if (current_status == NEVPNStatusDisconnecting ||
+        current_status == NEVPNStatusDisconnected) {
+      VLOG(2) << "Don't need to ask disconnect: " << current_status;
       return;
     }
 
     [[vpn_manager connection] stopVPNTunnel];
-    for (Observer& obs : observers_)
-      obs.OnDisconnected(std::string());
   }];
+}
+
+void BraveVPNOSConnectionAPIMac::CheckConnection(const std::string& name) {
+  NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
+  [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
+    if (error) {
+      LOG(ERROR) << "Connect - loadFromPrefs error: "
+                 << base::SysNSStringToUTF8([error localizedDescription]);
+      return;
+    }
+
+    NEVPNStatus current_status = [[vpn_manager connection] status];
+    VLOG(2) << "CheckConnection: " << current_status;
+    switch (current_status) {
+      case NEVPNStatusConnected:
+        for (Observer& obs : observers_)
+          obs.OnConnected(name);
+        break;
+      case NEVPNStatusConnecting:
+      case NEVPNStatusReasserting:
+        for (Observer& obs : observers_)
+          obs.OnIsConnecting(name);
+        break;
+      case NEVPNStatusDisconnected:
+      case NEVPNStatusInvalid:
+        for (Observer& obs : observers_)
+          obs.OnDisconnected(name);
+        break;
+      case NEVPNStatusDisconnecting:
+        for (Observer& obs : observers_)
+          obs.OnIsDisconnecting(name);
+        break;
+      default:
+        break;
+    }
+  }];
+}
+
+void BraveVPNOSConnectionAPIMac::ObserveVPNConnectionChange() {
+  vpn_observer_ = [[NSNotificationCenter defaultCenter]
+      addObserverForName:NEVPNStatusDidChangeNotification
+                  object:nil
+                   queue:nil
+              usingBlock:^(NSNotification* notification) {
+                VLOG(2) << "Received VPN connection status change notification";
+                CheckConnection(std::string());
+              }];
 }
 
 }  // namespace brave_vpn

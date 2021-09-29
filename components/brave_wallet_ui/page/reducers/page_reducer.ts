@@ -9,18 +9,21 @@ import * as Actions from '../actions/wallet_page_actions'
 import {
   PageState,
   AssetPriceTimeframe,
-  TokenInfo
+  TokenInfo, SwapResponse
 } from '../../constants/types'
 import {
   WalletCreatedPayloadType,
   RecoveryWordsAvailablePayloadType,
+  PrivateKeyAvailablePayloadType,
   SelectAssetPayloadType
 } from '../constants/action_types'
 
 const defaultState: PageState = {
   hasInitialized: false,
+  showAddModal: false,
   showRecoveryPhrase: false,
   invalidMnemonic: false,
+  importError: false,
   selectedTimeline: AssetPriceTimeframe.OneDay,
   selectedAsset: undefined,
   selectedUSDAssetPrice: undefined,
@@ -29,7 +32,10 @@ const defaultState: PageState = {
   portfolioPriceHistory: [],
   isFetchingPriceHistory: false,
   showIsRestoring: false,
-  setupStillInProgress: false
+  setupStillInProgress: false,
+  isCryptoWalletsInstalled: false,
+  isMetaMaskInstalled: false,
+  swapQuote: undefined
 }
 
 const reducer = createReducer<PageState>({}, defaultState)
@@ -47,6 +53,19 @@ reducer.on(Actions.recoveryWordsAvailable, (state: PageState, payload: RecoveryW
     ...state,
     mnemonic: payload.mnemonic
   }
+})
+
+reducer.on(Actions.privateKeyAvailable, (state: PageState, payload: PrivateKeyAvailablePayloadType) => {
+  return {
+    ...state,
+    privateKey: payload.privateKey
+  }
+})
+
+reducer.on(Actions.doneViewingPrivateKey, (state: PageState) => {
+  const newState = { ...state }
+  delete newState.privateKey
+  return newState
 })
 
 reducer.on(Actions.walletSetupComplete, (state: PageState) => {
@@ -109,6 +128,41 @@ reducer.on(Actions.setShowIsRestoring, (state: PageState, payload: boolean) => {
   return {
     ...state,
     showIsRestoring: payload
+  }
+})
+
+reducer.on(Actions.setImportError, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    importError: payload
+  }
+})
+
+reducer.on(Actions.setShowAddModal, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    showAddModal: payload
+  }
+})
+
+reducer.on(Actions.setCryptoWalletsInstalled, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    isCryptoWalletsInstalled: payload
+  }
+})
+
+reducer.on(Actions.setMetaMaskInstalled, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    isMetaMaskInstalled: payload
+  }
+})
+
+reducer.on(Actions.setPageSwapQuote, (state: any, payload: SwapResponse) => {
+  return {
+    ...state,
+    swapQuote: payload
   }
 })
 

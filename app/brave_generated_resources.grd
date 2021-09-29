@@ -795,17 +795,17 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_METAMASK" desc="Select control value for which web3 provider to use">
         MetaMask
       </message>
-      <message name="IDS_SETTINGS_BRAVE_WEB3_PROVIDER_DESC" desc="The description for Brave web3 provider select control in settings">
-        Ethereum provider for using Dapps
-      </message>
-      <message name="IDS_SETTINGS_LOAD_CRYPTO_WALLETS_ON_STARTUP" desc="The description for always loading the Crypto Wallets extension on startup">
-        Load Crypto Wallets on startup
-      </message>
-      <message name="IDS_SETTINGS_LOAD_CRYPTO_WALLETS_ON_STARTUP_DEPRECATED" desc="The description for always loading the Crypto Wallets extension on startup">
-        Load deprecated Crypto Wallets extension on startup
+      <message name="IDS_SETTINGS_DEFAULT_WALLET_DESC" desc="The default cryptocurrency wallet">
+        Default cryptocurrency wallet
       </message>
       <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for showing the Brave wallet panel icon on the toolbar">
         Show Brave Wallet icon on toolbar
+      </message>
+      <message name="IDS_SETTINGS_AUTO_LOCK_MINUTES" desc="The title for the amount of minutes it takes for the Brave Wallet to automatically lock">
+        Automatically lock Brave Wallet
+      </message>
+      <message name="IDS_SETTINGS_AUTO_LOCK_MINUTES_DESC" desc="The description for the amount of minutes it takes for the Brave Wallet to automatically lock">
+        The number of minutes to wait until the Brave Wallet is automatically locked
       </message>
       <message name="IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS" desc="Label for a switch control which allows Google login for extension">
         Allow Google login for extensions
@@ -856,7 +856,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Rotate
       </message>
       <message name="IDS_SETTINGS_ADD_PEER_DIALOG_PLACEHOLDER" desc="The placholder of the dialog to add new peer on IPFS Settings page">
-        /ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2
+        /ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2
       </message>
       <message name="IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_ERROR" desc="The error message for the add peer dialog on IPFS Settings page if the peer name is not valid">
         This name is not valid
@@ -939,6 +939,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS" desc="The error message used when user input an invalid gateway address">
         Invalid gateway address
       </message>
+      <message name="IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS_ORIGIN_ISOLATION" desc="The error message used when user input an invalid gateway address without origin isolation">
+        Only a valid IPFS gateway with Origin isolation enabled can be used in Brave
+      </message>
       <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_LABEL" desc="The text label for IPFS public gateway fallback switch">
         IPFS public gateway fallback
       </message>
@@ -959,6 +962,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
      <message name="IDS_SETTINGS_HANGOUTS_ENABLED_DESC" desc="The description for Hangouts switch in settings">
         Uses Hangouts component to enable screen sharing and other features in the browser.
+      </message>
+     <message name="IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC" desc="The description for media router switch in settings">
+        Media router enables cast feature in the browser.
       </message>
      <message name="IDS_SETTINGS_RESTART_NOTICE" desc="Notifies the user that they need to relaunch Brave">
         Your changes will take effect the next time you relaunch Brave.
@@ -1164,6 +1170,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_CANCEL_BUTTON_LABEL" desc="The text for cancel button">
           Block
         </message>
+        <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_DONT_ASK_TEXT" desc="The text for disabling dialog checkbox">
+          Don't ask again
+        </message>
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_CONTENT_TEXT" desc="The contents for crash report ask dialog">
           Send crash reports automatically so Brave can prevent this issue from happening again?
         </message>
@@ -1187,6 +1196,14 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_BRAVE_ADS_AD_NOTIFICATION_ACCESSIBLE_NAME" desc="Text to be spoken when an ad notification is shown">
         Brave Ad Notification
+      </message>
+
+      <!-- Brave Search -->
+      <message name="IDS_SETTINGS_WEB_DISCOVERY_LABEL" desc="Description that shows settings for toggle Web Discovery">
+        Web Discovery Project
+      </message>
+      <message name="IDS_SETTINGS_WEB_DISCOVERY_SUBLABEL" desc="Description that shows under main toggle setting for Web Discovery">
+        Contribute some anonymous search &amp; browsing data to refine Brave Search.
       </message>
 
       <!-- Brave Tooltips -->
@@ -1289,6 +1306,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM" desc="Description that shows under main toggle setting for P3A">
         This completely anonymised info helps Brave estimate the overall usage of certain features and make them better for you.
       </message>
+
       <!-- Web3 detection -->
       <message name="IDS_BRAVE_CRYPTO_WALLETS_LAZY_LOAD_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
         Would you like to start Crypto Wallets for Ethereum support?
@@ -1350,9 +1368,63 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         </message>
       </if>
       <!-- Brave VPN -->
-      <message name="IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT" desc="Text for vpn button in toolbar.">
-        VPN
-      </message>
+      <if expr="enable_brave_vpn">
+        <message name="IDS_SETTINGS_SHOW_VPN_BUTTON" desc="The label for showing vpn button in the toolbar">
+          Show VPN button
+        </message>
+        <message name="IDS_SETTINGS_SHOW_VPN_BUTTON_SUB_LABEL" desc="The sub label for vpn button setting">
+            Shows the VPN button in the toolbar
+        </message>
+        <message name="IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT" desc="Text for vpn button in toolbar.">
+          VPN
+        </message>
+        <message name="IDS_BRAVE_VPN_MENU" desc="The Brave VPN item (app menu)">
+          Brave VPN
+        </message>
+        <message name="IDS_BRAVE_VPN_ABOUT_VPN_MENU_ITEM" desc="The menu item for showing about vpn">
+          About Brave VPN
+        </message>
+        <message name="IDS_BRAVE_VPN_STATUS_LABEL_CONNECTING" desc="The text for vpn status label in connecting">
+          Connecting...
+        </message>
+        <message name="IDS_BRAVE_VPN_STATUS_LABEL_CONNECTED" desc="The text for vpn status label in connected">
+          Connected
+        </message>
+        <message name="IDS_BRAVE_VPN_STATUS_LABEL_DISCONNECTING" desc="The text for vpn status label in disconnecting">
+          Disconnecting...
+        </message>
+        <message name="IDS_BRAVE_VPN_STATUS_LABEL_DISCONNECTED" desc="The text for vpn status label in disconnected">
+          Disconnected
+        </message>
+        <if expr="use_titlecase">
+          <message name="IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM" desc="The menu item for showing vpn button in toolbar">
+            Show VPN Button in Toolbar
+          </message>
+          <message name="IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM" desc="The menu item for hiding vpn button in toolbar">
+            Hide VPN Button in Toolbar
+          </message>
+          <message name="IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM" desc="The menu item for sending feedback">
+            Send Feedback
+          </message>
+          <message name="IDS_BRAVE_VPN_MANAGE_MY_PLAN_MENU_ITEM" desc="The menu item for managing my vpn plan">
+            Manage My Plan
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+          <message name="IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM" desc="The menu item for showing vpn button in toolbar">
+            Show VPN button in toolbar
+          </message>
+          <message name="IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM" desc="The menu item for hiding vpn button in toolbar">
+            Hide VPN button in toolbar
+          </message>
+          <message name="IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM" desc="The menu item for sending feedback">
+            Send feedback
+          </message>
+          <message name="IDS_BRAVE_VPN_MANAGE_MY_PLAN_MENU_ITEM" desc="The menu item for managing my vpn plan">
+            Manage my plan
+          </message>
+        </if>
+      </if>
       <message name="IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST" desc="">
         To add a bookmark, click the bookmark button next to the address bar
       </message>

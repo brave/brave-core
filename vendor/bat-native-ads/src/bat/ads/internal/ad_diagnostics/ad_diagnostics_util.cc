@@ -7,11 +7,12 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/i18n/time_formatting.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

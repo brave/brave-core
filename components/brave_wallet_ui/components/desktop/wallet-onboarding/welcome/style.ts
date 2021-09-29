@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import WelcomeIcon from '../../../../assets/svg-icons/graphic-wallet-welcome.svg'
+import MMIcon from '../../../../assets/svg-icons/meta-mask-icon.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -56,4 +57,38 @@ export const RestoreButton = styled.button`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
   margin-top: 12px;
+  margin-bottom: 28px;
+`
+
+export const Divider = styled.div`
+  width: 180px;
+  height: 2px;
+  background-color: ${(p) => p.theme.color.divider01};
+  margin-bottom: 32px;
+`
+
+export const ImportButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 40px;
+  padding: 10px 22px;
+  outline: none;
+  background-color: transparent;
+  border: 1px solid ${(p) => p.theme.color.interactive08};
+`
+
+export const ImportButtonText = styled.span`
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+  color: ${(p) => p.theme.color.interactive07};
+`
+
+export const MetaMaskIcon = styled.div`
+  width: 27px;
+  height: 27px;
+  background: url(${MMIcon});
+  margin-right: 4px;
 `

@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/values.h"
 #include "bat/ads/internal/features/features.h"
 
 namespace ads {

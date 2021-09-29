@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/bookmarks/bookmarks.html b/chrome/browser/resources/bookmarks/bookmarks.html
-index fbaec388ddf82ae379e3abf66b5f4bb6069ead7b..5ff892de2f6074b1a24a099b5a3fecc186ca8593 100644
+index 251e3cb3f0f88067b7d6557dc3128c59dab6e3cb..e1f87a889cf4d4610f9538a6ef2deaf17dec8976 100644
 --- a/chrome/browser/resources/bookmarks/bookmarks.html
 +++ b/chrome/browser/resources/bookmarks/bookmarks.html
-@@ -29,6 +29,7 @@
+@@ -30,6 +30,7 @@
        height: var(--md-toolbar-height);
      }
    </style>

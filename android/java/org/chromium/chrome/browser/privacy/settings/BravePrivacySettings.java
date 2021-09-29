@@ -17,10 +17,12 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
+import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.privacy.settings.PrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveDialogPreference;
@@ -45,6 +47,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_SYNC_AND_SERVICES_LINK = "sync_and_services_link";
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
     private static final String PREF_PRIVACY_SANDBOX = "privacy_sandbox";
+    private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
 
     // brave Prefs
     private static final String PREF_BRAVE_SHIELDS_GLOBALS_SECTION =
@@ -63,6 +66,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     private static final String PREF_HTTPS_EVERYWHERE = "https_everywhere";
     private static final String PREF_SEND_P3A = "send_p3a_analytics";
+    private static final String PREF_SEND_CRASH_REPORTS = "send_crash_reports";
     private static final String PREF_BRAVE_STATS_USAGE_PING = "brave_stats_usage_ping";
     private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
     private static final String PREF_AUTOCOMPLETE_TOP_SITES = "autocomplete_top_sites";
@@ -74,6 +78,8 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_WEBRTC_POLICY = "webrtc_policy";
     private static final String PREF_UNSTOPPABLE_DOMAINS = "unstoppable_domains";
     private static final String PREF_ETH_NAMED_SERVICE = "ens";
+    private static final String PREF_HTTPS_ONLY_MODE_ENABLED_SAVED_STATE =
+            "https_only_mode_enabled_saved_state";
 
     public static final String PREF_BLOCK_TRACKERS_ADS = "block_trackers_ads";
     private static final String PREF_BLOCK_CROSS_SITE_COOKIES = "block_cross_site_cookies";
@@ -82,8 +88,8 @@ public class BravePrivacySettings extends PrivacySettings {
 
     private static final String[] NEW_PRIVACY_PREFERENCE_ORDER = {
             PREF_BRAVE_SHIELDS_GLOBALS_SECTION, //  shields globals  section
-            PREF_SHIELDS_SUMMARY, PREF_BLOCK_TRACKERS_ADS, PREF_HTTPSE, PREF_BLOCK_SCRIPTS,
-            PREF_BLOCK_CROSS_SITE_COOKIES, PREF_FINGERPRINTING_PROTECTION,
+            PREF_SHIELDS_SUMMARY, PREF_BLOCK_TRACKERS_ADS, PREF_HTTPSE, PREF_HTTPS_FIRST_MODE,
+            PREF_BLOCK_SCRIPTS, PREF_BLOCK_CROSS_SITE_COOKIES, PREF_FINGERPRINTING_PROTECTION,
             PREF_CLEAR_DATA_SECTION, //  clear data automatically  section
             PREF_CLEAR_ON_EXIT, PREF_CLEAR_BROWSING_DATA,
             PREF_BRAVE_SOCIAL_BLOCKING_SECTION, // social blocking section
@@ -92,8 +98,8 @@ public class BravePrivacySettings extends PrivacySettings {
             PREF_OTHER_PRIVACY_SETTINGS_SECTION, // other section
             PREF_WEBRTC_POLICY, PREF_SAFE_BROWSING, PREF_CAN_MAKE_PAYMENT, PREF_UNSTOPPABLE_DOMAINS,
             PREF_ETH_NAMED_SERVICE, PREF_IPFS_GATEWAY, PREF_SECURE_DNS, PREF_DO_NOT_TRACK,
-            PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A, PREF_BRAVE_STATS_USAGE_PING,
-            PREF_SEARCH_SUGGESTIONS, PREF_AUTOCOMPLETE_TOP_SITES,
+            PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A, PREF_SEND_CRASH_REPORTS,
+            PREF_BRAVE_STATS_USAGE_PING, PREF_SEARCH_SUGGESTIONS, PREF_AUTOCOMPLETE_TOP_SITES,
             PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES, PREF_USAGE_STATS, PREF_PRIVACY_SANDBOX};
 
     private final int STRICT = 0;
@@ -101,6 +107,8 @@ public class BravePrivacySettings extends PrivacySettings {
     private final int ALLOW = 2;
 
     private final PrefService mPrefServiceBridge = UserPrefs.get(Profile.getLastUsedRegularProfile());
+    private final PrivacyPreferencesManagerImpl mPrivacyPrefManager =
+            PrivacyPreferencesManagerImpl.getInstance();
     private final ChromeManagedPreferenceDelegate mManagedPreferenceDelegate =
             createManagedPreferenceDelegate();
     private ChromeSwitchPreference mSearchSuggestions;
@@ -110,10 +118,12 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mAutocompleteTopSites;
     private ChromeSwitchPreference mAutocompleteBraveSuggestedSites;
     private ChromeSwitchPreference mHttpsePref;
+    private ChromeSwitchPreference mHttpsFirstModePref;
     private BraveDialogPreference mFingerprintingProtectionPref;
     private ChromeSwitchPreference mBlockScriptsPref;
     private ChromeSwitchPreference mCloseTabsOnExitPref;
     private ChromeSwitchPreference mSendP3A;
+    private ChromeSwitchPreference mSendCrashReports;
     private ChromeSwitchPreference mBraveStatsUsagePing;
     private ChromeSwitchPreference mIpfsGatewayPref;
     private PreferenceCategory mSocialBlockingCategory;
@@ -137,6 +147,9 @@ public class BravePrivacySettings extends PrivacySettings {
 
         mHttpsePref = (ChromeSwitchPreference) findPreference(PREF_HTTPSE);
         mHttpsePref.setOnPreferenceChangeListener(this);
+
+        mHttpsFirstModePref = (ChromeSwitchPreference) findPreference(PREF_HTTPS_FIRST_MODE);
+        mHttpsFirstModePref.setVisible(mHttpsePref.isChecked());
 
         mCanMakePayment = (ChromeSwitchPreference) findPreference(PREF_CAN_MAKE_PAYMENT);
         mCanMakePayment.setOnPreferenceChangeListener(this);
@@ -170,6 +183,8 @@ public class BravePrivacySettings extends PrivacySettings {
         mSendP3A = (ChromeSwitchPreference) findPreference(PREF_SEND_P3A);
         mSendP3A.setOnPreferenceChangeListener(this);
 
+        mSendCrashReports = (ChromeSwitchPreference) findPreference(PREF_SEND_CRASH_REPORTS);
+        mSendCrashReports.setOnPreferenceChangeListener(this);
         mBraveStatsUsagePing = (ChromeSwitchPreference) findPreference(PREF_BRAVE_STATS_USAGE_PING);
         mBraveStatsUsagePing.setOnPreferenceChangeListener(this);
 
@@ -231,7 +246,25 @@ public class BravePrivacySettings extends PrivacySettings {
         SharedPreferences.Editor sharedPreferencesEditor =
                 ContextUtils.getAppSharedPreferences().edit();
         if (PREF_HTTPSE.equals(key)) {
-            BravePrefServiceBridge.getInstance().setHTTPSEEnabled((boolean) newValue);
+            boolean newValueBool = (boolean) newValue;
+            BravePrefServiceBridge.getInstance().setHTTPSEEnabled(newValueBool);
+            mHttpsFirstModePref.setVisible(newValueBool);
+            if (newValueBool) {
+                // Restore state of HTTPS_ONLY_MODE.
+                UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        .setBoolean(Pref.HTTPS_ONLY_MODE_ENABLED,
+                                ContextUtils.getAppSharedPreferences().getBoolean(
+                                        PREF_HTTPS_ONLY_MODE_ENABLED_SAVED_STATE, false));
+                mHttpsFirstModePref.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                                       .getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
+            } else {
+                // Save state for HTTPS_ONLY_MODE and disable it.
+                sharedPreferencesEditor.putBoolean(PREF_HTTPS_ONLY_MODE_ENABLED_SAVED_STATE,
+                        UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                .getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
+                UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        .setBoolean(Pref.HTTPS_ONLY_MODE_ENABLED, newValueBool);
+            }
         } else if (PREF_IPFS_GATEWAY.equals(key)) {
             BravePrefServiceBridge.getInstance().setIpfsGatewayEnabled((boolean) newValue);
         } else if (PREF_FINGERPRINTING_PROTECTION.equals(key)) {
@@ -286,6 +319,8 @@ public class BravePrivacySettings extends PrivacySettings {
             sharedPreferencesEditor.putBoolean(PREF_CLOSE_TABS_ON_EXIT, (boolean) newValue);
         } else if (PREF_SEND_P3A.equals(key)) {
             BravePrefServiceBridge.getInstance().setP3AEnabled((boolean) newValue);
+        } else if (PREF_SEND_CRASH_REPORTS.equals(key)) {
+            UmaSessionStats.changeMetricsReportingConsent((boolean) newValue);
         } else if (PREF_BRAVE_STATS_USAGE_PING.equals(key)) {
             BravePrefServiceBridge.getInstance().setStatsReportingEnabled((boolean) newValue);
         } else if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
@@ -420,6 +455,8 @@ public class BravePrivacySettings extends PrivacySettings {
         } else {
             getPreferenceScreen().removePreference(mSendP3A);
         }
+
+        mSendCrashReports.setChecked(mPrivacyPrefManager.isUsageAndCrashReportingPermittedByUser());
 
         mBraveStatsUsagePing.setChecked(
                 BravePrefServiceBridge.getInstance().getStatsReportingEnabled());

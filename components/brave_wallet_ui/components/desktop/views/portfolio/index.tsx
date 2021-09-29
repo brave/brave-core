@@ -3,13 +3,15 @@ import * as React from 'react'
 // Constants
 import {
   PriceDataObjectType,
-  RPCTransactionType,
+  TransactionListInfo,
   AssetPriceInfo,
   WalletAccountType,
   AssetPriceTimeframe,
-  Network,
   AccountAssetOptionType,
-  TokenInfo
+  TokenInfo,
+  EthereumChain,
+  TransactionInfo,
+  TransactionType
 } from '../../../../constants/types'
 import locale from '../../../../constants/locale'
 
@@ -30,7 +32,7 @@ import {
   PortfolioAccountItem,
   PortfolioTransactionItem,
   SelectNetworkDropdown,
-  AccountSettingsModal
+  EditVisibleAssetsModal
 } from '../../'
 
 // Styled Components
@@ -52,7 +54,11 @@ import {
   PercentBubble,
   PercentText,
   ArrowIcon,
-  BalanceRow
+  BalanceRow,
+  EmptyTransactionContainer,
+  TransactionPlaceholderText,
+  AssetBalanceDisplay,
+  DividerRow
 } from './style'
 
 export interface Props {
@@ -60,10 +66,14 @@ export interface Props {
   onChangeTimeline: (path: AssetPriceTimeframe) => void
   onSelectAsset: (asset: TokenInfo | undefined) => void
   onClickAddAccount: () => void
-  onUpdateVisibleTokens: (list: string[]) => void
   fetchFullTokenList: () => void
-  onSelectNetwork: (network: Network) => void
-  selectedNetwork: Network
+  onSelectNetwork: (network: EthereumChain) => void
+  onAddUserAsset: (token: TokenInfo) => void
+  onSetUserAssetVisible: (contractAddress: string, isVisible: boolean) => void
+  onRemoveUserAsset: (contractAddress: string) => void
+  addUserAssetError: boolean
+  selectedNetwork: EthereumChain
+  networkList: EthereumChain[]
   userAssetList: AccountAssetOptionType[]
   accounts: WalletAccountType[]
   selectedTimeline: AssetPriceTimeframe
@@ -74,11 +84,12 @@ export interface Props {
   selectedAssetPriceHistory: PriceDataObjectType[]
   portfolioPriceHistory: PriceDataObjectType[]
   portfolioBalance: string
-  transactions: (RPCTransactionType | undefined)[]
+  transactions: (TransactionListInfo | undefined)[]
   isLoading: boolean
   fullAssetList: TokenInfo[]
-  userWatchList: string[]
+  userVisibleTokensInfo: TokenInfo[]
   isFetchingPortfolioPriceHistory: boolean
+  transactionSpotPrices: AssetPriceInfo[]
 }
 
 const Portfolio = (props: Props) => {
@@ -88,11 +99,14 @@ const Portfolio = (props: Props) => {
     onSelectAsset,
     onClickAddAccount,
     onSelectNetwork,
-    onUpdateVisibleTokens,
     fetchFullTokenList,
+    onAddUserAsset,
+    onSetUserAssetVisible,
+    onRemoveUserAsset,
+    addUserAssetError,
+    userVisibleTokensInfo,
     selectedNetwork,
     fullAssetList,
-    userWatchList,
     portfolioPriceHistory,
     selectedAssetPriceHistory,
     selectedUSDAssetPrice,
@@ -100,12 +114,14 @@ const Portfolio = (props: Props) => {
     selectedTimeline,
     selectedPortfolioTimeline,
     accounts,
+    networkList,
     selectedAsset,
     portfolioBalance,
     transactions,
     userAssetList,
     isLoading,
-    isFetchingPortfolioPriceHistory
+    isFetchingPortfolioPriceHistory,
+    transactionSpotPrices
   } = props
 
   const [filteredAssetList, setfilteredAssetList] = React.useState<AccountAssetOptionType[]>(userAssetList)
@@ -144,10 +160,6 @@ const Portfolio = (props: Props) => {
     }
   }
 
-  const moreDetails = () => {
-    alert('Will Show More Details Popover!!')
-  }
-
   const selectAsset = (asset: TokenInfo) => () => {
     onSelectAsset(asset)
     toggleNav()
@@ -175,7 +187,7 @@ const Portfolio = (props: Props) => {
     }
   }
 
-  const onClickSelectNetwork = (network: Network) => () => {
+  const onClickSelectNetwork = (network: EthereumChain) => () => {
     onSelectNetwork(network)
     toggleShowNetworkDropdown()
   }
@@ -203,6 +215,34 @@ const Portfolio = (props: Props) => {
     return (found) ? formatBalance(found.assetBalance, found.asset.decimals) : '0'
   }
 
+  const priceHistory = React.useMemo(() => {
+    if (parseFloat(portfolioBalance) === 0) {
+      return []
+    } else {
+      return portfolioHistory
+    }
+  }, [portfolioHistory, portfolioBalance])
+
+  const selectedAssetTransactions = React.useMemo((): TransactionInfo[] => {
+    const list = transactions.map((account) => {
+      return account?.transactions
+    })
+    const combinedList = [].concat.apply([], list)
+    if (selectedAsset?.symbol === selectedNetwork.symbol) {
+      return combinedList.filter((tx: TransactionInfo) => tx.txType === TransactionType.ETHSend || tx.txType === TransactionType.ERC20Approve)
+    } else {
+      return combinedList.filter((tx: TransactionInfo) => tx.txData.baseData.to.toLowerCase() === selectedAsset?.contractAddress.toLowerCase())
+    }
+  }, [selectedAsset, transactions])
+
+  const findAccount = (address: string): WalletAccountType | undefined => {
+    return accounts.find((account) => address.toLowerCase() === account.address.toLowerCase())
+  }
+
+  const fullAssetBalances = React.useMemo(() => {
+    return filteredAssetList.find((asset) => asset.asset.contractAddress.toLowerCase() === selectedAsset?.contractAddress.toLowerCase())
+  }, [filteredAssetList, selectedAsset])
+
   return (
     <StyledWrapper onClick={onHideNetworkDropdown}>
       <TopRow>
@@ -214,6 +254,7 @@ const Portfolio = (props: Props) => {
           )}
           <SelectNetworkDropdown
             onClick={toggleShowNetworkDropdown}
+            networkList={networkList}
             showNetworkDropDown={showNetworkDropdown}
             selectedNetwork={selectedNetwork}
             onSelectNetwork={onClickSelectNetwork}
@@ -232,7 +273,7 @@ const Portfolio = (props: Props) => {
       ) : (
         <InfoColumn>
           <AssetRow>
-            <AssetIcon icon={selectedAsset.icon} />
+            <AssetIcon icon={selectedAsset.logo} />
             <AssetNameText>{selectedAsset.name}</AssetNameText>
           </AssetRow>
           <DetailText>{selectedAsset.name} {locale.price} ({selectedAsset.symbol})</DetailText>
@@ -249,24 +290,27 @@ const Portfolio = (props: Props) => {
       <LineChart
         isDown={selectedAsset && selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false}
         isAsset={!!selectedAsset}
-        priceData={selectedAsset ? selectedAssetPriceHistory : portfolioHistory}
+        priceData={selectedAsset ? selectedAssetPriceHistory : priceHistory}
         onUpdateBalance={onUpdateBalance}
         isLoading={selectedAsset ? isLoading : parseFloat(portfolioBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
         isDisabled={selectedAsset ? false : parseFloat(portfolioBalance) === 0}
       />
       {selectedAsset &&
         <>
-          <DividerText>{locale.accounts}</DividerText>
+          <DividerRow>
+            <DividerText>{locale.accounts}</DividerText>
+            <AssetBalanceDisplay>${fullAssetBalances?.fiatBalance} ({formatPrices(Number(fullAssetBalances?.assetBalance))} {selectedAsset.symbol})</AssetBalanceDisplay>
+          </DividerRow>
           <SubDivider />
           {accounts.map((account) =>
             <PortfolioAccountItem
               key={account.address}
-              action={moreDetails}
               assetTicker={selectedAsset.symbol}
               name={account.name}
               address={account.address}
               fiatBalance={getFiatBalance(account, selectedAsset)}
               assetBalance={getAssetBalance(account, selectedAsset)}
+              selectedNetwork={selectedNetwork}
             />
           )}
           <ButtonRow>
@@ -278,16 +322,25 @@ const Portfolio = (props: Props) => {
           </ButtonRow>
           <DividerText>{locale.transactions}</DividerText>
           <SubDivider />
-          {transactions?.map((transaction) =>
-            <PortfolioTransactionItem
-              action={moreDetails}
-              key={transaction?.hash}
-              amount={transaction?.amount ? transaction.amount : 0}
-              from={transaction?.from ? transaction.from : ''}
-              to={transaction?.to ? transaction.to : ''}
-              ticker={selectedAsset.symbol}
-            />
+          {selectedAssetTransactions.length !== 0 ? (
+            <>
+              {selectedAssetTransactions.map((transaction: TransactionInfo) =>
+                <PortfolioTransactionItem
+                  key={transaction.id}
+                  selectedNetwork={selectedNetwork}
+                  transaction={transaction}
+                  account={findAccount(transaction.fromAddress)}
+                  transactionSpotPrices={transactionSpotPrices}
+                  visibleTokens={userVisibleTokensInfo}
+                />
+              )}
+            </>
+          ) : (
+            <EmptyTransactionContainer>
+              <TransactionPlaceholderText>{locale.transactionPlaceholder}</TransactionPlaceholderText>
+            </EmptyTransactionContainer>
           )}
+
         </>
       }
       {!selectedAsset &&
@@ -301,7 +354,8 @@ const Portfolio = (props: Props) => {
               assetBalance={item.assetBalance}
               fiatBalance={item.fiatBalance}
               symbol={item.asset.symbol}
-              icon={item.asset.icon}
+              logo={item.asset.logo}
+              isVisible={item.asset.visible}
             />
           )}
           <ButtonRow>
@@ -314,15 +368,14 @@ const Portfolio = (props: Props) => {
         </>
       }
       {showVisibleAssetsModal &&
-        <AccountSettingsModal
+        <EditVisibleAssetsModal
           fullAssetList={fullAssetList}
+          userVisibleTokensInfo={userVisibleTokensInfo}
+          addUserAssetError={addUserAssetError}
           onClose={toggleShowVisibleAssetModal}
-          userWatchList={userWatchList}
-          onUpdateVisibleTokens={onUpdateVisibleTokens}
-          title={locale.accountsEditVisibleAssets}
-          userAssetList={userAssetList}
-          hideNav={true}
-          tab='watchlist'
+          onAddUserAsset={onAddUserAsset}
+          onSetUserAssetVisible={onSetUserAssetVisible}
+          onRemoveUserAsset={onRemoveUserAsset}
         />
       }
     </StyledWrapper>

@@ -8,6 +8,7 @@
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/database/database_version.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -44,7 +45,7 @@ class BatAdsDatabaseMigrationTest : public UnitTestBase,
     ad_event.creative_set_id = "93af82a4-f929-4eb2-8af9-f5f2cafc3ed0";
     ad_event.creative_instance_id = "59b43768-40ad-4d3e-8a04-61431a75cd24";
     ad_event.advertiser_id = "46afa495-cf5b-405b-94de-25cff55f05e7";
-    ad_event.timestamp = NowAsTimestamp();
+    ad_event.created_at = Now();
 
     return ad_event;
   }

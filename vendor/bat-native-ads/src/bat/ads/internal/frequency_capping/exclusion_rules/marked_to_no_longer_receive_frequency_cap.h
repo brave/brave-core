@@ -8,17 +8,15 @@
 
 #include <string>
 
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
 
-struct CreativeAdInfo;
-
-class MarkedToNoLongerReceiveFrequencyCap
+class MarkedToNoLongerReceiveFrequencyCap final
     : public ExclusionRule<CreativeAdInfo> {
  public:
   MarkedToNoLongerReceiveFrequencyCap();
-
   ~MarkedToNoLongerReceiveFrequencyCap() override;
 
   MarkedToNoLongerReceiveFrequencyCap(
@@ -28,7 +26,7 @@ class MarkedToNoLongerReceiveFrequencyCap
 
   bool ShouldExclude(const CreativeAdInfo& ad) override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   std::string last_message_;

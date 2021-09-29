@@ -11,9 +11,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
@@ -41,15 +39,15 @@ bool PerHourFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string PerHourFrequencyCap::get_last_message() const {
+std::string PerHourFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
 bool PerHourFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
-  const std::deque<uint64_t> history =
-      GetTimestampHistoryForAdEvents(ad_events);
+  const std::deque<base::Time> history = GetHistoryForAdEvents(ad_events);
 
-  const uint64_t time_constraint = base::Time::kSecondsPerHour;
+  const base::TimeDelta time_constraint =
+      base::TimeDelta::FromSeconds(base::Time::kSecondsPerHour);
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
                                                        kPerHourFrequencyCap);

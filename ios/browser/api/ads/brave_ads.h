@@ -42,10 +42,6 @@ OBJC_EXPORT
 /// locale identifier, i.e. "en_US"
 + (BOOL)isSupportedLocale:(NSString*)locale;
 
-/// Whether or not a given locale is newly supported. The locale should be a
-/// standard locale identifier, i.e. "en_US"
-+ (BOOL)isNewlySupportedLocale:(NSString*)locale;
-
 /// Whether or not the users current locale (by `NSLocale`) is supported
 + (BOOL)isCurrentLocaleSupported;
 

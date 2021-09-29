@@ -12,17 +12,17 @@
 namespace ads {
 
 std::unique_ptr<AdsHistorySort> AdsHistorySortFactory::Build(
-    const AdsHistoryInfo::SortType type) {
+    const AdsHistorySortType type) {
   switch (type) {
-    case AdsHistoryInfo::SortType::kNone: {
+    case AdsHistorySortType::kNone: {
       return nullptr;
     }
 
-    case AdsHistoryInfo::SortType::kAscendingOrder: {
+    case AdsHistorySortType::kAscendingOrder: {
       return std::make_unique<AdsHistoryAscendingSort>();
     }
 
-    case AdsHistoryInfo::SortType::kDescendingOrder: {
+    case AdsHistorySortType::kDescendingOrder: {
       return std::make_unique<AdsHistoryDescendingSort>();
     }
   }

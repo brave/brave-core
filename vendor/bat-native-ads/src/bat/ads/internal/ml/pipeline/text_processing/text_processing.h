@@ -12,7 +12,6 @@
 
 #include "bat/ads/internal/ml/ml_aliases.h"
 #include "bat/ads/internal/ml/model/linear/linear.h"
-#include "bat/ads/internal/ml/transformation/transformation.h"
 
 namespace ads {
 namespace ml {
@@ -20,17 +19,14 @@ namespace pipeline {
 
 struct PipelineInfo;
 
-class TextProcessing {
+class TextProcessing final {
  public:
   static TextProcessing* CreateInstance();
 
   TextProcessing();
-
   TextProcessing(const TextProcessing& pipeline);
-
   TextProcessing(const TransformationVector& transformations,
                  const model::Linear& linear_model);
-
   ~TextProcessing();
 
   bool IsInitialized() const;

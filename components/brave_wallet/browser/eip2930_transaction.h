@@ -38,7 +38,8 @@ class Eip2930Transaction : public EthTransaction {
   bool operator==(const Eip2930Transaction&) const;
 
   static absl::optional<Eip2930Transaction> FromTxData(const mojom::TxDataPtr&,
-                                                       uint256_t chain_id);
+                                                       uint256_t chain_id,
+                                                       bool strict = true);
   static absl::optional<Eip2930Transaction> FromValue(const base::Value& value);
 
   static std::vector<base::Value> AccessListToValue(const AccessList&);
@@ -50,7 +51,8 @@ class Eip2930Transaction : public EthTransaction {
 
   // keccak256(0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
   // accessList]))
-  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id = 0) const override;
+  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id = 0,
+                                        bool hash = true) const override;
 
   // 0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
   // accessList, signatureYParity, signatureR, signatureS])

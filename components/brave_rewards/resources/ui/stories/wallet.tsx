@@ -7,19 +7,17 @@ import * as React from 'react'
 import { object, text, select, boolean, number } from '@storybook/addon-knobs'
 
 // Components
-import { WalletSummary, WalletEmpty, WalletPanel, WalletSummarySlider, WalletWrapper } from '../components'
+import { WalletSummary, WalletEmpty, WalletWrapper } from '../components'
 import { AlertWallet, WalletState } from '../components/walletWrapper'
 import { WalletAddIcon, WalletImportIcon } from 'brave-ui/components/icons'
 import { WalletInfoHeader } from '../components/mobile'
-
-const favicon = require('./img/brave-favicon.png')
 
 const doNothing = () => {
   console.log('nothing')
 }
 
 export default {
-  title: 'Rewards/Wallet/Desktop',
+  title: 'Rewards/Wallet 1.0',
   parameters: {
     layout: 'centered'
   }
@@ -102,42 +100,6 @@ export const summary = () => {
         reservedAmount={number('Reserved amount', 52)}
         reservedMoreLink={'https://brave.com'}
         onSeeAllReserved={doNothing}
-      />
-    </div>
-  )
-}
-
-export const panel = () => {
-  return (
-    <div style={{ width: '373px', background: '#fff' }}>
-      <WalletPanel
-        id={'wallet-panel'}
-        platform={select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit', vimeo: 'vimeo', github: 'github' }, 'youtube')}
-        publisherImg={favicon}
-        publisherName={'Jonathan Doe'}
-        monthlyAmount={'10.000'}
-        isVerified={boolean('Verified', true)}
-        tipsEnabled={boolean('Tips Enabled', true)}
-        includeInAuto={boolean('Include in monthly', true)}
-        acEnabled={boolean('AC enabled?', true)}
-        attentionScore={'15'}
-        onToggleTips={doNothing}
-        setMonthlyAction={doNothing}
-        cancelMonthlyAction={doNothing}
-        donationAction={doNothing}
-        onIncludeInAuto={doNothing}
-        showUnVerified={boolean('Show unverified content', true)}
-        onRefreshPublisher={doNothing}
-      />
-    </div>
-  )
-}
-
-export const summarySlider = () => {
-  return (
-    <div style={{ width: '373px', padding: '0 25px' }}>
-      <WalletSummarySlider
-        id={'summary-slider'}
       />
     </div>
   )

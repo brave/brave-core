@@ -6,10 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CREATIVE_ADS_DATABASE_TABLE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CREATIVE_ADS_DATABASE_TABLE_H_
 
+#include <functional>
 #include <string>
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/bundle/creative_ad_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -18,10 +19,9 @@ namespace ads {
 namespace database {
 namespace table {
 
-class CreativeAds : public Table {
+class CreativeAds final : public Table {
  public:
   CreativeAds();
-
   ~CreativeAds() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,
@@ -29,7 +29,7 @@ class CreativeAds : public Table {
 
   void Delete(ResultCallback callback);
 
-  std::string get_table_name() const override;
+  std::string GetTableName() const override;
 
   void Migrate(mojom::DBTransaction* transaction,
                const int to_version) override;
@@ -41,8 +41,8 @@ class CreativeAds : public Table {
   std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const CreativeAdList& creative_ads);
 
-  void CreateTableV15(mojom::DBTransaction* transaction);
-  void MigrateToV15(mojom::DBTransaction* transaction);
+  void CreateTableV16(mojom::DBTransaction* transaction);
+  void MigrateToV16(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

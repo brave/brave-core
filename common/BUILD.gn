@@ -67,7 +67,10 @@ source_set("pref_names") {
     "pref_names.h",
   ]
 
-  deps = [ "//components/gcm_driver:gcm_buildflags" ]
+  deps = [
+    "//components/gcm_driver:gcm_buildflags",
+    "//extensions/buildflags:buildflags",
+  ]
 }
 
 source_set("switches") {
@@ -130,6 +133,8 @@ source_set("common") {
     sources += [
       "extensions/brave_extensions_api_provider.cc",
       "extensions/brave_extensions_api_provider.h",
+      "extensions/brave_extensions_client.cc",
+      "extensions/brave_extensions_client.h",
       "extensions/whitelist.cc",
       "extensions/whitelist.h",
     ]
@@ -182,21 +187,6 @@ config("constants_configs") {
   defines = []
   if (is_mac) {
     defines += [ "BRAVE_PRODUCT_STRING=\"$chrome_product_full_name\"" ]
-  }
-}
-
-source_set("unit_tests") {
-  testonly = true
-
-  if (!is_ios) {
-    sources = [ "brave_paths_unittest.cc" ]
-
-    deps = [
-      "//base",
-      "//brave/common",
-      "//chrome/common",
-      "//testing/gtest",
-    ]
   }
 }
 

@@ -6,7 +6,6 @@
 #include "bat/ads/internal/server/confirmations_server_util.h"
 
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -34,18 +33,6 @@ TEST(BatAdsConfirmationsServerUtilTest, Staging) {
 
   // Assert
   const std::string expected_host = "https://ads-serve.bravesoftware.com";
-  EXPECT_EQ(expected_host, host);
-}
-
-TEST(BatAdsConfirmationsServerUtilTest, Development) {
-  // Arrange
-  SetEnvironment(mojom::Environment::kDevelopment);
-
-  // Act
-  const std::string host = confirmations::server::GetHost();
-
-  // Assert
-  const std::string expected_host = "https://ads-serve.brave.software";
   EXPECT_EQ(expected_host, host);
 }
 

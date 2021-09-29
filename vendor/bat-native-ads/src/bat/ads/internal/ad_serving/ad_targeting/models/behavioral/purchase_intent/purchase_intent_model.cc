@@ -10,7 +10,7 @@
 #include <string>
 #include <utility>
 
-#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model_values.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model_constants.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
@@ -25,16 +25,12 @@ uint16_t CalculateScoreForHistory(
     const PurchaseIntentSignalHistoryList& history) {
   uint16_t score = 0;
 
-  const int64_t time_window_in_seconds =
-      features::GetPurchaseIntentTimeWindowInSeconds();
+  const int64_t time_window = features::GetPurchaseIntentTimeWindowInSeconds();
   for (const auto& signal_segment : history) {
     const base::Time signal_decayed_time =
-        base::Time::FromDoubleT(signal_segment.timestamp_in_seconds) +
-        base::TimeDelta::FromSeconds(time_window_in_seconds);
+        signal_segment.created_at + base::TimeDelta::FromSeconds(time_window);
 
-    const base::Time now = base::Time::Now();
-
-    if (now > signal_decayed_time) {
+    if (base::Time::Now() > signal_decayed_time) {
       continue;
     }
 

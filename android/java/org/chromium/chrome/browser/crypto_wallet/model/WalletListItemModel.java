@@ -5,12 +5,15 @@
 
 package org.chromium.chrome.browser.crypto_wallet.model;
 
+import org.chromium.brave_wallet.mojom.ErcToken;
+
 public class WalletListItemModel {
     private int icon;
     private String title;
     private String subTitle;
     private String text1;
     private String text2;
+    private ErcToken mErcToken;
 
     public WalletListItemModel(
             int icon, String title, String subTitle, String text1, String text2) {
@@ -19,6 +22,14 @@ public class WalletListItemModel {
         this.subTitle = subTitle;
         this.text1 = text1;
         this.text2 = text2;
+    }
+
+    public void setErcToken(ErcToken ercToken) {
+        mErcToken = ercToken;
+    }
+
+    public ErcToken getErcToken() {
+        return mErcToken;
     }
 
     public int getIcon() {

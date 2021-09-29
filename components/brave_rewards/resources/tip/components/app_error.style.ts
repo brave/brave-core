@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 import unknownErrorImage from '../assets/unknown_error.svg'
 import serverErrorImage from '../assets/server_error.svg'
+import tippingErrorImage from '../assets/tipping_error.svg'
 
 export const root = styled.div`
   text-align: center;
@@ -25,10 +26,17 @@ export const graphic = styled.div`
     background-image: url(${serverErrorImage});
     background-size: auto 77px;
   }
+
+  &.tipping-error {
+    background-image: url(${tippingErrorImage});
+    background-size: auto 77px;
+  }
 `
 
 export const heading = styled.div`
   padding-top: 21px;
+  padding-left: 25px;
+  padding-right: 25px;
   font-weight: 600;
   font-size: 18px;
   line-height: 27px;

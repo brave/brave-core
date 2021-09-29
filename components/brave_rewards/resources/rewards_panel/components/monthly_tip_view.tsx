@@ -9,7 +9,7 @@ import { PublisherInfo } from '../lib/interfaces'
 import { TokenAmount } from '../../shared/components/token_amount'
 import { CaretIcon } from '../../shared/components/icons/caret_icon'
 
-import * as styles from './monthly_tip_view.style'
+import * as style from './monthly_tip_view.style'
 
 interface Props {
   publisherInfo: PublisherInfo
@@ -23,17 +23,18 @@ export function MonthlyTipView (props: Props) {
 
   const { monthlyContribution } = props.publisherInfo
 
-  function cancelLink (evt: React.UIEvent) {
-    evt.preventDefault()
-  }
-
   if (monthlyContribution <= 0) {
     return (
-      <styles.root>
-        <styles.setBox onClick={cancelLink}>
-          <a href='#' onClick={props.onUpdateClick}>{getString('set')}</a>
-        </styles.setBox>
-      </styles.root>
+      <style.root>
+        <style.setBox>
+          <button
+            onClick={props.onUpdateClick}
+            data-test-id='set-monthly-tip-button'
+          >
+            {getString('set')}
+          </button>
+        </style.setBox>
+      </style.root>
     )
   }
 
@@ -42,35 +43,44 @@ export function MonthlyTipView (props: Props) {
   }
 
   return (
-    <styles.root>
-      <styles.amountBox>
-        <styles.amount>
-          <button onClick={toggleActionBubble}>
+    <style.root>
+      <style.amountBox>
+        <style.amount>
+          <button
+            onClick={toggleActionBubble}
+            data-test-id='monthly-tip-actions-button'
+          >
             <TokenAmount
               amount={monthlyContribution}
               minimumFractionDigits={0}
             /> <CaretIcon direction='down' />
           </button>
-        </styles.amount>
+        </style.amount>
         {
           showActions &&
-            <styles.actionBubble onClick={cancelLink}>
-              <styles.actionBubbleContent>
-                <styles.action>
-                  <a href='#' onClick={props.onUpdateClick}>
+            <style.actionBubble>
+              <style.actionBubbleContent>
+                <style.action>
+                  <button
+                    onClick={props.onUpdateClick}
+                    data-test-id='change-monthly-tip-button'
+                  >
                     {getString('changeAmount')}
-                  </a>
-                </styles.action>
-                <styles.action>
-                  <a href='#' onClick={props.onCancelClick}>
+                  </button>
+                </style.action>
+                <style.action>
+                  <button
+                    onClick={props.onCancelClick}
+                    data-test-id='cancel-monthly-tip-button'
+                  >
                     {getString('cancel')}
-                  </a>
-                </styles.action>
-                <styles.backdrop onClick={toggleActionBubble} />
-              </styles.actionBubbleContent>
-            </styles.actionBubble>
+                  </button>
+                </style.action>
+                <style.backdrop onClick={toggleActionBubble} />
+              </style.actionBubbleContent>
+            </style.actionBubble>
         }
-      </styles.amountBox>
-    </styles.root>
+      </style.amountBox>
+    </style.root>
   )
 }

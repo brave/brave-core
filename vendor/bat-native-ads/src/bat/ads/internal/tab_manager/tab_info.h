@@ -11,7 +11,7 @@
 
 namespace ads {
 
-struct TabInfo {
+struct TabInfo final {
   TabInfo();
   TabInfo(const TabInfo& info);
   ~TabInfo();

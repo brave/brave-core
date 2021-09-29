@@ -32,13 +32,17 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPI {
   void RemoveVPNConnection(const std::string& name) override;
   void Connect(const std::string& name) override;
   void Disconnect(const std::string& name) override;
+  void CheckConnection(const std::string& name) override;
 
  private:
   void OnCreated(const std::string& name, bool success);
   void OnConnected(const std::string& name, bool success);
+  void OnIsConnecting(const std::string& name);
   void OnDisconnected(const std::string& name, bool success);
+  void OnIsDisconnecting(const std::string& name);
   void OnRemoved(const std::string& name, bool success);
 
+  bool disconnect_requested_ = false;
   base::WeakPtrFactory<BraveVPNOSConnectionAPISim> weak_factory_{this};
 };
 

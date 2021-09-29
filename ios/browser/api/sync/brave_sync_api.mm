@@ -80,20 +80,9 @@
 
 @implementation BraveSyncAPI
 
-+ (instancetype)sharedSyncAPI {
-  static BraveSyncAPI* instance = nil;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    instance = [[BraveSyncAPI alloc] init];
-  });
-  return instance;
-}
-
-- (instancetype)init {
+- (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {
   if ((self = [super init])) {
-    ios::ChromeBrowserStateManager* browserStateManager =
-        GetApplicationContext()->GetChromeBrowserStateManager();
-    _chromeBrowserState = browserStateManager->GetLastUsedBrowserState();
+    _chromeBrowserState = mainBrowserState;
     _worker.reset(new BraveSyncWorker(_chromeBrowserState));
   }
   return self;

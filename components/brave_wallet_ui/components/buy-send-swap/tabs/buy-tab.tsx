@@ -1,11 +1,10 @@
 import * as React from 'react'
 import {
   UserAccountType,
-  AssetOptionType,
+  AccountAssetOptionType,
   BuySendSwapViewTypes,
-  Network
+  EthereumChain
 } from '../../../constants/types'
-import { WyreAssetOptions } from '../../../options/wyre-asset-options'
 import {
   AccountsAssetsNetworks,
   Header,
@@ -14,12 +13,14 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
-  selectedNetwork: Network
+  networkList: EthereumChain[]
+  selectedNetwork: EthereumChain
   selectedAccount: UserAccountType
+  assetOptions: AccountAssetOptionType[]
   buyAmount: string
   showHeader?: boolean
-  onSubmit: (asset: AssetOptionType) => void
-  onSelectNetwork: (network: Network) => void
+  onSubmit: (asset: AccountAssetOptionType) => void
+  onSelectNetwork: (network: EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
 }
@@ -27,23 +28,25 @@ export interface Props {
 function BuyTab (props: Props) {
   const {
     accounts,
+    networkList,
     selectedNetwork,
     selectedAccount,
     buyAmount,
     showHeader,
+    assetOptions,
     onSubmit,
     onSelectNetwork,
     onSelectAccount,
     onSetBuyAmount
   } = props
   const [buyView, setBuyView] = React.useState<BuySendSwapViewTypes>('buy')
-  const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>(WyreAssetOptions[0])
+  const [selectedAsset, setSelectedAsset] = React.useState<AccountAssetOptionType>(assetOptions[0])
 
   const onChangeBuyView = (view: BuySendSwapViewTypes) => {
     setBuyView(view)
   }
 
-  const onClickSelectNetwork = (network: Network) => () => {
+  const onClickSelectNetwork = (network: EthereumChain) => () => {
     onSelectNetwork(network)
     setBuyView('buy')
   }
@@ -53,7 +56,7 @@ function BuyTab (props: Props) {
     setBuyView('buy')
   }
 
-  const onSelectedAsset = (asset: AssetOptionType) => () => {
+  const onSelectedAsset = (asset: AccountAssetOptionType) => () => {
     setSelectedAsset(asset)
     setBuyView('buy')
   }
@@ -88,14 +91,16 @@ function BuyTab (props: Props) {
             onChangeBuyView={onChangeBuyView}
             onInputChange={onInputChange}
             onSubmit={onSubmitBuy}
+            networkList={networkList}
           />
         </>
       }
       {buyView !== 'buy' &&
         <AccountsAssetsNetworks
           accounts={accounts}
+          networkList={networkList}
           goBack={goBack}
-          assetOptions={WyreAssetOptions}
+          assetOptions={assetOptions}
           onClickSelectAccount={onClickSelectAccount}
           onClickSelectNetwork={onClickSelectNetwork}
           onSelectedAsset={onSelectedAsset}

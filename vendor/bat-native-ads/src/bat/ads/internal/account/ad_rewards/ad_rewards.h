@@ -8,31 +8,36 @@
 
 #include <cstdint>
 #include <memory>
-#include <string>
 
-#include "base/time/time.h"
-#include "base/values.h"
+#include "base/check_op.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/transaction_info.h"
+#include "bat/ads/transaction_info_aliases.h"
+
+namespace base {
+class Time;
+class Value;
+}  // namespace base
 
 namespace ads {
 
 class Payments;
 
-class AdRewards {
+class AdRewards final {
  public:
   AdRewards();
-
   ~AdRewards();
 
-  void set_delegate(AdRewardsDelegate* delegate);
+  void set_delegate(AdRewardsDelegate* delegate) {
+    DCHECK_EQ(delegate_, nullptr);
+    delegate_ = delegate;
+  }
 
   void MaybeReconcile(const WalletInfo& wallet);
 
-  uint64_t GetNextPaymentDate() const;
+  double GetNextPaymentDate() const;
 
   uint64_t GetAdsReceivedThisMonth() const;
   uint64_t GetAdsReceivedForMonth(const base::Time& time) const;

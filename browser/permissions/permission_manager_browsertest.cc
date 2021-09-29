@@ -163,10 +163,10 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   // Check sub-requests are created as expected.
   EXPECT_EQ(permission_request_manager->Requests().size(), addresses.size());
   for (size_t i = 0; i < permission_request_manager->Requests().size(); i++) {
-    EXPECT_EQ(permission_request_manager->Requests()[i]->GetRequestType(),
+    EXPECT_EQ(permission_request_manager->Requests()[i]->request_type(),
               RequestType::kBraveEthereum);
     EXPECT_EQ(sub_request_origins[i],
-              permission_request_manager->Requests()[i]->GetOrigin());
+              permission_request_manager->Requests()[i]->requesting_origin());
   }
 
   // Test dismissing request.
@@ -194,10 +194,10 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   // Check sub-requests are created as expected.
   EXPECT_EQ(permission_request_manager->Requests().size(), addresses.size());
   for (size_t i = 0; i < permission_request_manager->Requests().size(); i++) {
-    EXPECT_EQ(permission_request_manager->Requests()[i]->GetRequestType(),
+    EXPECT_EQ(permission_request_manager->Requests()[i]->request_type(),
               RequestType::kBraveEthereum);
     EXPECT_EQ(sub_request_origins[i],
-              permission_request_manager->Requests()[i]->GetOrigin());
+              permission_request_manager->Requests()[i]->requesting_origin());
   }
 
   // Test accepting request with one of the address.
@@ -257,11 +257,14 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   // Check sub-requests are created as expected.
   EXPECT_EQ(permission_request_manager->Requests().size(), addresses.size());
   for (size_t i = 0; i < permission_request_manager->Requests().size(); i++) {
-    EXPECT_EQ(permission_request_manager->Requests()[i]->GetRequestType(),
+    EXPECT_EQ(permission_request_manager->Requests()[i]->request_type(),
               RequestType::kBraveEthereum);
     EXPECT_EQ(sub_request_origins[i],
-              permission_request_manager->Requests()[i]->GetOrigin());
+              permission_request_manager->Requests()[i]->requesting_origin());
   }
+
+  // Remove the observer before closing the tab.
+  observer.reset();
 
   // Close tab with active request pending.
   content::WebContentsDestroyedWatcher tab_destroyed_watcher(web_contents());

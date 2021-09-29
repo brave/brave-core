@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/timer/timer.h"
+
 namespace ads {
 
 BackoffTimer::BackoffTimer() {
@@ -15,9 +17,9 @@ BackoffTimer::BackoffTimer() {
 
 BackoffTimer::~BackoffTimer() = default;
 
-void BackoffTimer::set_timer_for_testing(
+void BackoffTimer::SetTimerForTesting(
     std::unique_ptr<base::OneShotTimer> timer) {
-  timer_.set_timer_for_testing(std::move(timer));
+  timer_.SetTimerForTesting(std::move(timer));
 }
 
 base::Time BackoffTimer::Start(const base::TimeDelta& delay,
@@ -50,17 +52,14 @@ bool BackoffTimer::Stop() {
   return timer_.Stop();
 }
 
-void BackoffTimer::set_max_backoff_delay(const base::TimeDelta& max_delay) {
-  max_backoff_delay_ = max_delay;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 base::TimeDelta BackoffTimer::CalculateDelay(const base::TimeDelta& delay) {
-  int64_t delay_as_int64 = static_cast<int64_t>(delay.InSeconds());
-  delay_as_int64 <<= backoff_count_++;
+  int64_t delay_in_seconds = delay.InSeconds();
+  delay_in_seconds <<= backoff_count_++;
 
-  base::TimeDelta backoff_delay = base::TimeDelta::FromSeconds(delay_as_int64);
+  base::TimeDelta backoff_delay =
+      base::TimeDelta::FromSeconds(delay_in_seconds);
   if (backoff_delay > max_backoff_delay_) {
     backoff_delay = max_backoff_delay_;
   }

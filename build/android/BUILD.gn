@@ -8,7 +8,7 @@ action("sign_app") {
   _jarsigner = "//third_party/jdk/current/bin/jarsigner"
   _zipalign = "$android_sdk_build_tools/zipalign"
 
-  deps = [ "//brave/app/android:create_dist_zips" ]
+  deps = [ "//brave:create_symbols_dist" ]
 
   if (target_cpu == "arm64" || target_cpu == "x64") {
     if (target_android_output_format == "aab") {
@@ -193,6 +193,8 @@ generate_jni("jni_headers") {
     sources += [
       "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioControllerFactory.java",
       "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/ERCTokenRegistryFactory.java",
+      "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/EthJsonRpcControllerFactory.java",
+      "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/EthTxControllerFactory.java",
       "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/KeyringControllerFactory.java",
     ]
   }

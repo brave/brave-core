@@ -19,9 +19,9 @@
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_delegate.h"
 #include "brave/browser/ethereum_remote_client/pref_names.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -32,13 +32,10 @@
 #include "crypto/hkdf.h"
 #include "crypto/random.h"
 #include "crypto/symmetric_key.h"
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/browser/unloaded_extension_reason.h"
 #include "extensions/browser/user_script_manager.h"
-#endif
 
 EthereumRemoteClientService::EthereumRemoteClientService(
     content::BrowserContext* context,
@@ -59,10 +56,8 @@ EthereumRemoteClientService::EthereumRemoteClientService(
   // In case any web3 providers have already loaded content scripts at
   // this point.
   RemoveUnusedWeb3ProviderContentScripts();
-#if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_registry_observer_.Observe(
       extensions::ExtensionRegistry::Get(context));
-#endif
 }
 
 EthereumRemoteClientService::~EthereumRemoteClientService() {}
@@ -176,10 +171,8 @@ void EthereumRemoteClientService::SaveToPrefs(PrefService* prefs,
 }
 
 void EthereumRemoteClientService::ResetCryptoWallets() {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
   extensions::ExtensionPrefs::Get(context_)->DeleteExtensionPrefs(
       ethereum_remote_client_extension_id);
-#endif
 }
 
 // Generates a random 32 byte root seed and stores it in prefs
@@ -262,7 +255,6 @@ void EthereumRemoteClientService::RemoveUnusedWeb3ProviderContentScripts() {
 // We don't use ExtensionRegistryObserver and simply access the private methods
 // OnExtensionLoaded()/OnExtensionUnloaded() from UserScriptLoader instead since
 // we only want to load/unload the content scripts and not the extension.
-#if BUILDFLAG(ENABLE_EXTENSIONS)
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   auto* user_script_manager =
       extensions::ExtensionSystem::Get(context_)->user_script_manager();
@@ -270,9 +262,7 @@ void EthereumRemoteClientService::RemoveUnusedWeb3ProviderContentScripts() {
     return;
   }
   auto* registry = extensions::ExtensionRegistry::Get(context_);
-  auto provider = static_cast<brave_wallet::Web3ProviderTypes>(
-      prefs->GetInteger(kBraveWalletWeb3Provider));
-
+  auto default_wallet = brave_wallet::GetDefaultWallet(prefs);
   auto* erc_extension = registry->enabled_extensions().GetByID(
       ethereum_remote_client_extension_id);
   if (erc_extension) {
@@ -293,37 +283,37 @@ void EthereumRemoteClientService::RemoveUnusedWeb3ProviderContentScripts() {
   // We can't have 2 web3 providers, we:
   // 1) Check if MetaMask content scripts are disabled, if so, enable them.
   // 2) Check if CryptoWallets content scripts are enabled, if so, disable them.
-  if (provider == brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS) {
+  if (default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets) {
     if (erc_extension) {
       user_script_manager->OnExtensionLoaded(context_, erc_extension);
     }
-  } else if (provider != brave_wallet::Web3ProviderTypes::NONE) {
+  } else if (default_wallet !=
+                 brave_wallet::mojom::DefaultWallet::CryptoWallets &&
+             default_wallet !=
+                 brave_wallet::mojom::DefaultWallet::BraveWallet) {
     if (metamask_extension) {
       user_script_manager->OnExtensionLoaded(context_, metamask_extension);
     }
   }
-#endif
 }
 
 void EthereumRemoteClientService::OnPreferenceChanged() {
   RemoveUnusedWeb3ProviderContentScripts();
 }
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
 void EthereumRemoteClientService::OnExtensionInstalled(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
     bool is_update) {
   if (extension->id() == metamask_extension_id && !is_update) {
     PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-    prefs->SetInteger(
-        kBraveWalletWeb3Provider,
-        static_cast<int>(brave_wallet::Web3ProviderTypes::METAMASK));
+    brave_wallet::SetDefaultWallet(
+        prefs, brave_wallet::mojom::DefaultWallet::Metamask);
     RemoveUnusedWeb3ProviderContentScripts();
   }
 }
 
-void EthereumRemoteClientService::OnExtensionLoaded(
+void EthereumRemoteClientService::OnExtensionReady(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension) {
   if (extension->id() == metamask_extension_id ||
@@ -348,15 +338,12 @@ void EthereumRemoteClientService::OnExtensionUninstalled(
     extensions::UninstallReason reason) {
   if (extension->id() == metamask_extension_id) {
     PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-    auto provider = static_cast<brave_wallet::Web3ProviderTypes>(
-        prefs->GetInteger(kBraveWalletWeb3Provider));
-    if (provider == brave_wallet::Web3ProviderTypes::METAMASK)
-      prefs->SetInteger(
-          kBraveWalletWeb3Provider,
-          static_cast<int>(
-              brave_wallet::IsNativeWalletEnabled()
-                  ? brave_wallet::Web3ProviderTypes::BRAVE_WALLET
-                  : brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS));
+    auto default_wallet = brave_wallet::GetDefaultWallet(prefs);
+    if (default_wallet == brave_wallet::mojom::DefaultWallet::Metamask)
+      brave_wallet::SetDefaultWallet(
+          prefs, brave_wallet::IsNativeWalletEnabled()
+                     ? brave_wallet::mojom::DefaultWallet::BraveWallet
+                     : brave_wallet::mojom::DefaultWallet::CryptoWallets);
     RemoveUnusedWeb3ProviderContentScripts();
   }
 }
@@ -366,36 +353,32 @@ void EthereumRemoteClientService::CryptoWalletsExtensionReady() {
     std::move(load_ui_callback_).Run();
   }
 }
-#endif
 
-bool EthereumRemoteClientService::IsCryptoWalletsSetup() const {
+bool EthereumRemoteClientService::IsLegacyCryptoWalletsSetup() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   return prefs->HasPrefPath(kERCAES256GCMSivNonce) &&
          prefs->HasPrefPath(kERCEncryptedSeed);
 }
 
 bool EthereumRemoteClientService::IsCryptoWalletsReady() const {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
   auto* registry = extensions::ExtensionRegistry::Get(context_);
   return registry->ready_extensions().Contains(
       ethereum_remote_client_extension_id);
-#else
-  return true;
-#endif
 }
 
 bool EthereumRemoteClientService::ShouldShowLazyLoadInfobar() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  auto provider = static_cast<brave_wallet::Web3ProviderTypes>(
-      prefs->GetInteger(kBraveWalletWeb3Provider));
-  return provider == brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS &&
+  auto default_wallet = brave_wallet::GetDefaultWallet(prefs);
+  return default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets &&
          !IsCryptoWalletsReady();
 }
 
 void EthereumRemoteClientService::MaybeLoadCryptoWalletsExtension(
     LoadUICallback callback) {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
   load_ui_callback_ = std::move(callback);
   ethereum_remote_client_delegate_->MaybeLoadCryptoWalletsExtension(context_);
-#endif
+}
+
+void EthereumRemoteClientService::UnloadCryptoWalletsExtension() {
+  ethereum_remote_client_delegate_->UnloadCryptoWalletsExtension(context_);
 }

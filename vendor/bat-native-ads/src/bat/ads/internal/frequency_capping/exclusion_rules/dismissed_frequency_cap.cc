@@ -5,11 +5,8 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/dismissed_frequency_cap.h"
 
-#include <cstdint>
-
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 
 namespace ads {
@@ -33,7 +30,7 @@ bool DismissedFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string DismissedFrequencyCap::get_last_message() const {
+std::string DismissedFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
@@ -60,21 +57,20 @@ bool DismissedFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
 AdEventList DismissedFrequencyCap::FilterAdEvents(
     const AdEventList& ad_events,
     const CreativeAdInfo& ad) const {
-  const int64_t now = static_cast<int64_t>(base::Time::Now().ToDoubleT());
-
-  const int64_t time_constraint =
-      features::frequency_capping::ExcludeAdIfDismissedWithinTimeWindow()
-          .InSeconds();
-
   AdEventList filtered_ad_events = ad_events;
 
-  const auto iter =
-      std::remove_if(filtered_ad_events.begin(), filtered_ad_events.end(),
-                     [&ad, now, time_constraint](const AdEventInfo& ad_event) {
-                       return ad_event.type != AdType::kAdNotification ||
-                              ad_event.campaign_id != ad.campaign_id ||
-                              now - ad_event.timestamp >= time_constraint;
-                     });
+  const base::Time now = base::Time::Now();
+
+  const base::TimeDelta time_constraint =
+      features::frequency_capping::ExcludeAdIfDismissedWithinTimeWindow();
+
+  const auto iter = std::remove_if(
+      filtered_ad_events.begin(), filtered_ad_events.end(),
+      [&ad, &now, &time_constraint](const AdEventInfo& ad_event) {
+        return ad_event.type != AdType::kAdNotification ||
+               ad_event.campaign_id != ad.campaign_id ||
+               now - ad_event.created_at >= time_constraint;
+      });
 
   filtered_ad_events.erase(iter, filtered_ad_events.end());
 

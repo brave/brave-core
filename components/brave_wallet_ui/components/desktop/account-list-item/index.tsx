@@ -16,7 +16,9 @@ import {
   AccountCircle,
   RightSide,
   HardwareIcon,
-  AccountNameRow
+  AccountNameRow,
+  DeleteButton,
+  DeleteIcon
 } from './style'
 
 export interface Props {
@@ -24,13 +26,15 @@ export interface Props {
   onClick: (account: WalletAccountType) => void
   account: WalletAccountType
   isHardwareWallet: boolean
+  onRemoveAccount: (address: string, hardware: boolean) => void
 }
 
 function AccountListItem (props: Props) {
   const {
     account,
     isHardwareWallet,
-    onClick
+    onClick,
+    onRemoveAccount
   } = props
 
   const onCopyToClipboard = async () => {
@@ -42,8 +46,15 @@ function AccountListItem (props: Props) {
   }
 
   const orb = React.useMemo(() => {
-    return create({ seed: account.address, size: 8, scale: 16 }).toDataURL()
+    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [account.address])
+
+  const removeAccount = () => {
+    let confirmAction = confirm(`Are you sure to remove ${account.name}?`)
+    if (confirmAction) {
+      onRemoveAccount(account.address, isHardwareWallet)
+    }
+  }
 
   return (
     <StyledWrapper>
@@ -60,9 +71,11 @@ function AccountListItem (props: Props) {
         </AccountAndAddress>
       </NameAndIcon>
       <RightSide>
-        {/* <DeleteButton onClick={onDelete}>
-          <DeleteIcon />
-        </DeleteButton> */}
+        {(account.accountType === 'Secondary' || account.accountType === 'Ledger') &&
+          <DeleteButton onClick={removeAccount}>
+            <DeleteIcon />
+          </DeleteButton>
+        }
       </RightSide>
     </StyledWrapper>
   )

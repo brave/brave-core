@@ -79,19 +79,18 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
 #include "url/url_canon_stdstring.h"
 #include "url/url_util.h"
 
-#if BUILDFLAG(ENABLE_GREASELION)
-#include "brave/components/greaselion/browser/greaselion_service.h"
-#endif
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #endif
+
 using net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES;
 
 namespace brave_rewards {
@@ -100,10 +99,10 @@ static const unsigned int kRetriesCountOnNetworkChange = 1;
 
 namespace {
 
-const int kDiagnosticLogMaxVerboseLevel = 6;
-const int kDiagnosticLogKeepNumLines = 20000;
-const int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
-const char pref_prefix[] = "brave.rewards";
+constexpr int kDiagnosticLogMaxVerboseLevel = 6;
+constexpr int kDiagnosticLogKeepNumLines = 20000;
+constexpr int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
+constexpr char pref_prefix[] = "brave.rewards";
 
 std::string URLMethodToRequestType(ledger::type::UrlMethod method) {
   switch (method) {
@@ -338,10 +337,23 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 
   if (base::FeatureList::IsEnabled(features::kVerboseLoggingFeature))
     persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
+
+#if BUILDFLAG(ENABLE_GREASELION)
+  if (greaselion_service_) {
+    greaselion_service_->AddObserver(this);
+  }
+#endif
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+#if BUILDFLAG(ENABLE_GREASELION)
+  if (greaselion_service_) {
+    greaselion_service_->RemoveObserver(this);
+  }
+#endif
+
   if (ledger_database_) {
     file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
   }
@@ -379,7 +391,6 @@ void RewardsServiceImpl::Init(
 
   CheckPreferences();
   InitPrefChangeRegistrar();
-  EnableGreaseLion();
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
@@ -1371,8 +1382,8 @@ void RewardsServiceImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
   bat_ledger_->GetReconcileStamp(std::move(callback));
 }
 
-void RewardsServiceImpl::EnableGreaseLion() {
 #if BUILDFLAG(ENABLE_GREASELION)
+void RewardsServiceImpl::EnableGreaseLion() {
   if (!greaselion_service_) {
     return;
   }
@@ -1397,8 +1408,13 @@ void RewardsServiceImpl::EnableGreaseLion() {
       greaselion::GITHUB_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled) &&
           !hide_button);
-#endif
 }
+
+void RewardsServiceImpl::OnRulesReady(
+    greaselion::GreaselionService* greaselion_service) {
+  EnableGreaseLion();
+}
+#endif
 
 void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
   BLOG(1, "Shutting down ledger process");
@@ -1727,11 +1743,13 @@ void RewardsServiceImpl::OnFetchBalanceForEnableRewards(
 }
 
 void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
-  #if BUILDFLAG(ENABLE_GREASELION)
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::ADS,
-      profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
-  #endif
+#if BUILDFLAG(ENABLE_GREASELION)
+  if (greaselion_service_) {
+    greaselion_service_->SetFeatureEnabled(
+        greaselion::ADS,
+        profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
+  }
+#endif
 
   for (auto& observer : observers_) {
     observer.OnAdsEnabled(this, ads_enabled);
@@ -1916,22 +1934,19 @@ void RewardsServiceImpl::OnPublisherBanner(
   std::move(callback).Run(std::move(banner));
 }
 
-void RewardsServiceImpl::OnSaveRecurringTip(
-    SaveRecurringTipCallback callback,
-    const ledger::type::Result result) {
-  bool success = result == ledger::type::Result::LEDGER_OK;
-
+void RewardsServiceImpl::OnSaveRecurringTip(OnTipCallback callback,
+                                            ledger::type::Result result) {
   for (auto& observer : observers_) {
-    observer.OnRecurringTipSaved(this, success);
+    observer.OnRecurringTipSaved(this,
+                                 result == ledger::type::Result::LEDGER_OK);
   }
 
-  std::move(callback).Run(success);
+  std::move(callback).Run(result);
 }
 
-void RewardsServiceImpl::SaveRecurringTip(
-    const std::string& publisher_key,
-    const double amount,
-    SaveRecurringTipCallback callback) {
+void RewardsServiceImpl::SaveRecurringTip(const std::string& publisher_key,
+                                          double amount,
+                                          OnTipCallback callback) {
   if (!Connected()) {
     return;
   }
@@ -1942,10 +1957,8 @@ void RewardsServiceImpl::SaveRecurringTip(
   info->created_at = GetCurrentTimestamp();
 
   bat_ledger_->SaveRecurringTip(
-      std::move(info),
-      base::BindOnce(&RewardsServiceImpl::OnSaveRecurringTip,
-                     AsWeakPtr(),
-                     std::move(callback)));
+      std::move(info), base::BindOnce(&RewardsServiceImpl::OnSaveRecurringTip,
+                                      AsWeakPtr(), std::move(callback)));
 }
 
 void RewardsServiceImpl::OnMediaInlineInfoSaved(
@@ -2487,23 +2500,22 @@ void RewardsServiceImpl::OnTipPublisherSaved(
     return;
   }
 
-  OnTip(publisher_key, amount, recurring);
+  OnTip(publisher_key, amount, recurring, base::DoNothing());
 }
 
-void RewardsServiceImpl::OnTip(
-    const std::string& publisher_key,
-    const double amount,
-    const bool recurring) {
+void RewardsServiceImpl::OnTip(const std::string& publisher_key,
+                               double amount,
+                               bool recurring,
+                               OnTipCallback callback) {
   if (!Connected()) {
     return;
   }
 
   if (recurring) {
-    SaveRecurringTip(publisher_key, amount, base::DoNothing());
-    return;
+    return SaveRecurringTip(publisher_key, amount, std::move(callback));
   }
 
-  bat_ledger_->OneTimeTip(publisher_key, amount, base::DoNothing());
+  bat_ledger_->OneTimeTip(publisher_key, amount, std::move(callback));
 }
 
 bool RewardsServiceImpl::Connected() const {
@@ -2815,7 +2827,7 @@ std::string RewardsServiceImpl::GetLegacyWallet() {
   auto* dict = profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
 
   std::string json;
-  for (const auto& it : dict->DictItems()) {
+  for (auto it : dict->DictItems()) {
     base::JSONWriter::Write(std::move(it.second), &json);
   }
 

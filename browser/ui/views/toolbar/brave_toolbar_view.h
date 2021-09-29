@@ -7,9 +7,14 @@
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 
 #include "base/scoped_observation.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/prefs/pref_member.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+class BraveVPNButton;
+#endif
 
 class BookmarkButton;
 class WalletButton;
@@ -22,6 +27,12 @@ class BraveToolbarView : public ToolbarView,
 
   BookmarkButton* bookmark_button() const { return bookmark_; }
   WalletButton* wallet_button() const { return wallet_; }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  BraveVPNButton* brave_vpn_button() const { return brave_vpn_; }
+  void OnVPNButtonVisibilityChanged();
+#endif
+
   void Init() override;
   void Layout() override;
   void Update(content::WebContents* tab) override;
@@ -47,6 +58,11 @@ class BraveToolbarView : public ToolbarView,
   BooleanPrefMember edit_bookmarks_enabled_;
 
   WalletButton* wallet_ = nullptr;
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  BraveVPNButton* brave_vpn_ = nullptr;
+  BooleanPrefMember show_brave_vpn_button_;
+#endif
 
   BooleanPrefMember location_bar_is_wide_;
   // Whether this toolbar has been initialized.

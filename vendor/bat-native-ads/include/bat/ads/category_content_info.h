@@ -8,11 +8,12 @@
 
 #include <string>
 
+#include "bat/ads/category_content_action_types.h"
 #include "bat/ads/export.h"
 
 namespace ads {
 
-struct ADS_EXPORT CategoryContentInfo {
+struct ADS_EXPORT CategoryContentInfo final {
   CategoryContentInfo();
   CategoryContentInfo(const CategoryContentInfo& info);
   ~CategoryContentInfo();
@@ -20,13 +21,11 @@ struct ADS_EXPORT CategoryContentInfo {
   bool operator==(const CategoryContentInfo& rhs) const;
   bool operator!=(const CategoryContentInfo& rhs) const;
 
-  enum class OptAction { kNone = 0, kOptIn, kOptOut };
-
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 
   std::string category;
-  OptAction opt_action = OptAction::kNone;
+  CategoryContentActionType opt_action = CategoryContentActionType::kNone;
 };
 
 }  // namespace ads

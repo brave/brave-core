@@ -126,7 +126,7 @@ pipeline {
                     ]
 
                     currentBuild.result = build(job: PIPELINE_NAME, parameters: params, propagate: false).result
-                    if (env.OTHER_PR_NUMBER) {
+                    if (env.OTHER_PR_NUMBER && PLATFORM != 'pre-init') {
                         build(job: OTHER_REPO + '-build-pr-' + PLATFORM + '/PR-' + env.OTHER_PR_NUMBER, parameters: [string(name: 'BUILD_STATUS', value: currentBuild.result)], propagate: false)
                     }
                 }

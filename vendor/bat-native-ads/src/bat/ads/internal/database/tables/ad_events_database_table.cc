@@ -5,11 +5,11 @@
 
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 
-#include <functional>
 #include <utility>
 
+#include "base/check.h"
 #include "base/strings/stringprintf.h"
-#include "base/time/time.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
@@ -53,7 +53,7 @@ void AdEvents::GetIf(const std::string& condition,
       "FROM %s AS ae "
       "WHERE %s "
       "ORDER BY timestamp DESC ",
-      get_table_name().c_str(), condition.c_str());
+      GetTableName().c_str(), condition.c_str());
 
   RunTransaction(query, callback);
 }
@@ -71,7 +71,7 @@ void AdEvents::GetAll(GetAdEventsCallback callback) {
       "ae.timestamp "
       "FROM %s AS ae "
       "ORDER BY timestamp DESC",
-      get_table_name().c_str());
+      GetTableName().c_str());
 
   RunTransaction(query, callback);
 }
@@ -84,7 +84,7 @@ void AdEvents::PurgeExpired(ResultCallback callback) {
       "AND creative_set_id NOT IN "
       "(SELECT creative_set_id from creative_ad_conversions) "
       "AND DATETIME('now') >= DATETIME(timestamp, 'unixepoch', '+3 month')",
-      get_table_name().c_str());
+      GetTableName().c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;
@@ -108,8 +108,8 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
       "AND confirmation_type IN (SELECT confirmation_type from %s "
       "WHERE confirmation_type = 'served') "
       "AND type = '%s'",
-      get_table_name().c_str(), get_table_name().c_str(),
-      get_table_name().c_str(), ad_type_as_string.c_str());
+      GetTableName().c_str(), GetTableName().c_str(), GetTableName().c_str(),
+      ad_type_as_string.c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;
@@ -123,7 +123,7 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
-std::string AdEvents::get_table_name() const {
+std::string AdEvents::GetTableName() const {
   return kTableName;
 }
 
@@ -164,7 +164,7 @@ void AdEvents::RunTransaction(const std::string& query,
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
-      mojom::DBCommand::RecordBindingType::INT64_TYPE    // timestamp
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE   // created_at
   };
 
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
@@ -205,7 +205,7 @@ int AdEvents::BindParameters(mojom::DBCommand* command,
     BindString(command, index++, ad_event.creative_set_id);
     BindString(command, index++, ad_event.creative_instance_id);
     BindString(command, index++, ad_event.advertiser_id);
-    BindInt64(command, index++, ad_event.timestamp);
+    BindDouble(command, index++, ad_event.created_at.ToDoubleT());
 
     count++;
   }
@@ -229,7 +229,7 @@ std::string AdEvents::BuildInsertOrUpdateQuery(mojom::DBCommand* command,
       "creative_instance_id, "
       "advertiser_id, "
       "timestamp) VALUES %s",
-      get_table_name().c_str(),
+      GetTableName().c_str(),
       BuildBindingParameterPlaceholders(8, count).c_str());
 }
 
@@ -262,7 +262,7 @@ AdEventInfo AdEvents::GetFromRecord(mojom::DBRecord* record) const {
   info.creative_set_id = ColumnString(record, 4);
   info.creative_instance_id = ColumnString(record, 5);
   info.advertiser_id = ColumnString(record, 6);
-  info.timestamp = ColumnInt64(record, 7);
+  info.created_at = base::Time::FromDoubleT(ColumnDouble(record, 7));
 
   return info;
 }

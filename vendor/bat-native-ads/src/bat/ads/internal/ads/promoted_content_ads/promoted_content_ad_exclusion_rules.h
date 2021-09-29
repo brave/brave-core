@@ -6,7 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_EXCLUSION_RULES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_EXCLUSION_RULES_H_
 
-#include "bat/ads/internal/ad_events/ad_event_info.h"
+#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 
 namespace ads {
 
@@ -15,10 +15,9 @@ struct AdInfo;
 namespace promoted_content_ads {
 namespace frequency_capping {
 
-class ExclusionRules {
+class ExclusionRules final {
  public:
   explicit ExclusionRules(const AdEventList& ad_events);
-
   ~ExclusionRules();
 
   bool ShouldExcludeAd(const AdInfo& ad) const;

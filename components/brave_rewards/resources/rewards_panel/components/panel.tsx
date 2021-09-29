@@ -7,9 +7,10 @@ import * as React from 'react'
 import { HostContext, useHostListener } from '../lib/host_context'
 import { WalletCard } from '../../shared/components/wallet_card'
 import { NavBar } from './navbar'
+import { PanelOverlays } from './panel_overlays'
 import { PublisherCard } from './publisher_card'
 
-import * as styles from './panel.style'
+import * as style from './panel.style'
 
 type ActiveView = 'tip' | 'summary'
 
@@ -40,7 +41,7 @@ export function Panel () {
   })
 
   return (
-    <styles.root>
+    <style.root data-test-id='rewards-panel'>
       <WalletCard
         balance={balance}
         externalWallet={externalWallet}
@@ -60,6 +61,7 @@ export function Panel () {
         onActiveViewChange={setActiveView}
         onSettingsClick={host.openRewardsSettings}
       />
-    </styles.root>
+      <PanelOverlays />
+    </style.root>
   )
 }

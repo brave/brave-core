@@ -8,11 +8,14 @@
 
 #include <string>
 
-#include "base/memory/singleton.h"
+#include "bat/ads/internal/platform/platform_helper_types.h"
+
+namespace base {
+template <typename T>
+struct DefaultSingletonTraits;
+}  // namespace base
 
 namespace ads {
-
-enum class PlatformType { kUnknown, kAndroid, kIOS, kLinux, kMacOS, kWindows };
 
 class PlatformHelper {
  public:
@@ -21,7 +24,7 @@ class PlatformHelper {
 
   static PlatformHelper* GetInstance();
 
-  void set_for_testing(PlatformHelper* platform_helper);
+  void SetForTesting(PlatformHelper* platform_helper);
 
   virtual bool IsMobile() const;
   virtual std::string GetPlatformName() const;

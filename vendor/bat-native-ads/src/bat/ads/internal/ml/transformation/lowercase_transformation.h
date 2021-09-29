@@ -8,16 +8,16 @@
 
 #include <memory>
 
-#include "bat/ads/internal/ml/data/data.h"
 #include "bat/ads/internal/ml/transformation/transformation.h"
 
 namespace ads {
 namespace ml {
 
-class LowercaseTransformation : public Transformation {
+class Data;
+
+class LowercaseTransformation final : public Transformation {
  public:
   LowercaseTransformation();
-
   ~LowercaseTransformation() override;
 
   std::unique_ptr<Data> Apply(

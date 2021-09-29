@@ -7,13 +7,27 @@
 
 #include <utility>
 
+#include "base/files/file_path.h"
+#include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
+#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/browser/brave_wallet/rpc_controller_factory.h"
+#include "brave/browser/brave_wallet/swap_controller_factory.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/erc_token_registry.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/eth_tx_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/swap_controller.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
-#include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
@@ -21,23 +35,6 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/webui/web_ui_util.h"
-
-#include "brave/browser/brave_wallet/rpc_controller_factory.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
-
-#include "brave/browser/brave_wallet/swap_controller_factory.h"
-#include "brave/components/brave_wallet/browser/swap_controller.h"
-
-#include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
-
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
-
-#include "brave/components/brave_wallet/browser/erc_token_registry.h"
-
-#include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
-#include "brave/components/brave_wallet/browser/eth_tx_controller.h"
 
 WalletPageUI::WalletPageUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui,
@@ -54,12 +51,9 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
       source,
       base::make_span(kBraveWalletPageGenerated, kBraveWalletPageGeneratedSize),
       IDR_WALLET_PAGE_HTML);
-  content::WebUIDataSource::Add(web_ui->GetWebContents()->GetBrowserContext(),
-                                source);
-  Profile* profile = Profile::FromWebUI(web_ui);
-  content::URLDataSource::Add(
-      profile, std::make_unique<FaviconSource>(
-                   profile, chrome::FaviconUrlFormat::kFavicon2));
+  auto* profile = Profile::FromWebUI(web_ui);
+  content::WebUIDataSource::Add(profile, source);
+  brave_wallet::AddERCTokenImageSource(profile);
 }
 
 WalletPageUI::~WalletPageUI() = default;
@@ -87,7 +81,9 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::ERCTokenRegistry>
         erc_token_registry_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::EthTxController>
-        eth_tx_controller_receiver) {
+        eth_tx_controller_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
+        brave_wallet_service_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -131,5 +127,11 @@ void WalletPageUI::CreatePageHandler(
       brave_wallet::EthTxControllerFactory::GetControllerForContext(profile);
   if (eth_tx_controller) {
     eth_tx_controller->Bind(std::move(eth_tx_controller_receiver));
+  }
+
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
+  if (brave_wallet_service) {
+    brave_wallet_service->Bind(std::move(brave_wallet_service_receiver));
   }
 }

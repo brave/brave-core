@@ -6,7 +6,9 @@
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/statement_info.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -42,7 +44,7 @@ TEST_F(BatAdsAdRewardsIntegrationTest,
 
   InitializeAds();
 
-  AdvanceClock(TimeFromDateString("1 April 2021"));
+  AdvanceClock(TimeFromUTCString("23 April 2021"));
 
   // Act
   GetAds()->GetAccountStatement(
@@ -51,7 +53,7 @@ TEST_F(BatAdsAdRewardsIntegrationTest,
 
         StatementInfo expected_statement;
         expected_statement.next_payment_date =
-            TimestampFromDateString("5 May 2021");
+            UTCTimeStringToTimestamp("5 May 2021");
 
         // Calculated from earnings in April configured in
         // |data/test/confirmations.json|
@@ -85,7 +87,7 @@ TEST_F(BatAdsAdRewardsIntegrationTest,
 
   InitializeAds();
 
-  AdvanceClock(TimeFromDateString("1 April 2021"));
+  AdvanceClock(TimeFromUTCString("21 April 2021"));
 
   // Act
   GetAds()->GetAccountStatement(
@@ -94,7 +96,7 @@ TEST_F(BatAdsAdRewardsIntegrationTest,
 
         StatementInfo expected_statement;
         expected_statement.next_payment_date =
-            TimestampFromDateString("5 May 2021");
+            UTCTimeStringToTimestamp("5 May 2021");
 
         // Calculated from earnings in April configured in
         // |data/test/confirmations.json|
@@ -128,7 +130,7 @@ TEST_F(BatAdsAdRewardsIntegrationTest,
 
   InitializeAds();
 
-  AdvanceClock(TimeFromDateString("1 April 2021"));
+  AdvanceClock(TimeFromUTCString("10 April 2021"));
 
   // Act
   GetAds()->GetAccountStatement(
@@ -137,7 +139,7 @@ TEST_F(BatAdsAdRewardsIntegrationTest,
 
         StatementInfo expected_statement;
         expected_statement.next_payment_date =
-            TimestampFromDateString("5 May 2021");
+            UTCTimeStringToTimestamp("5 May 2021");
 
         // Calculated from earnings in April configured in
         // |data/test/confirmations.json|
@@ -175,7 +177,7 @@ TEST_F(BatAdsAdRewardsIntegrationTest, GetAdRewardsForMultipleBalances) {
 
   InitializeAds();
 
-  AdvanceClock(TimeFromDateString("19 May 2021"));
+  AdvanceClock(TimeFromUTCString("19 May 2021"));
 
   // Act
   GetAds()->GetAccountStatement(
@@ -184,7 +186,7 @@ TEST_F(BatAdsAdRewardsIntegrationTest, GetAdRewardsForMultipleBalances) {
 
         StatementInfo expected_statement;
         expected_statement.next_payment_date =
-            TimestampFromDateString("5 June 2021");
+            UTCTimeStringToTimestamp("5 June 2021");
 
         // Calculated from the above payment balance for May
         expected_statement.earnings_this_month = 19.64;
@@ -209,7 +211,7 @@ TEST_F(BatAdsAdRewardsIntegrationTest,
 
   InitializeAds();
 
-  AdvanceClock(TimeFromDateString("1 April 2021"));
+  AdvanceClock(TimeFromUTCString("14 April 2021"));
 
   // Act
   GetAds()->GetAccountStatement(
@@ -218,7 +220,7 @@ TEST_F(BatAdsAdRewardsIntegrationTest,
 
         StatementInfo expected_statement;
         expected_statement.next_payment_date =
-            TimestampFromDateString("5 May 2021");
+            UTCTimeStringToTimestamp("5 May 2021");
 
         // Calculated from earnings in April configured in
         // |data/test/confirmations.json|

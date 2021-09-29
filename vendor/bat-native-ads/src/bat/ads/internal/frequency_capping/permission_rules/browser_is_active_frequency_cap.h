@@ -12,10 +12,9 @@
 
 namespace ads {
 
-class BrowserIsActiveFrequencyCap : public PermissionRule {
+class BrowserIsActiveFrequencyCap final : public PermissionRule {
  public:
   BrowserIsActiveFrequencyCap();
-
   ~BrowserIsActiveFrequencyCap() override;
 
   BrowserIsActiveFrequencyCap(const BrowserIsActiveFrequencyCap&) = delete;
@@ -24,7 +23,7 @@ class BrowserIsActiveFrequencyCap : public PermissionRule {
 
   bool ShouldAllow() override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   std::string last_message_;

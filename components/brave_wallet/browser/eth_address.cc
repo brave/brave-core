@@ -69,11 +69,16 @@ std::string EthAddress::ToHex() const {
   return ::brave_wallet::ToHex(input);
 }
 
-std::string EthAddress::ToChecksumAddress(uint8_t eip1191_chaincode) const {
+std::string EthAddress::ToChecksumAddress(uint256_t eip1191_chaincode) const {
   std::string result = "0x";
   std::string input;
-  if (eip1191_chaincode && eip1191_chaincode != 1) {
-    input += base::NumberToString(eip1191_chaincode) + "0x";
+
+  if (eip1191_chaincode == static_cast<uint256_t>(30) ||
+      eip1191_chaincode == static_cast<uint256_t>(31)) {
+    // TODO(jocelyn): We will need to revise this if there are supported chains
+    // with ID larger than uint64_t.
+    input +=
+        base::NumberToString(static_cast<uint64_t>(eip1191_chaincode)) + "0x";
   }
 
   input += std::string(ToHex().data() + 2);

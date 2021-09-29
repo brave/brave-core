@@ -29,7 +29,7 @@ bool BrowserIsActiveFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string BrowserIsActiveFrequencyCap::get_last_message() const {
+std::string BrowserIsActiveFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

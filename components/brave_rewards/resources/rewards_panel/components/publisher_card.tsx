@@ -5,16 +5,18 @@
 import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
+import { getPublisherPlatformName } from '../../shared/lib/publisher_platform'
 import { HostContext, useHostListener } from '../lib/host_context'
 import { MonthlyTipAction } from '../lib/interfaces'
+import { NewTabLink } from '../../shared/components/new_tab_link'
 import { ToggleButton } from './toggle_button'
 import { MonthlyTipView } from './monthly_tip_view'
-import { NewTabLink } from '../../shared/components/new_tab_link'
 import { VerifiedIcon } from './icons/verified_icon'
+import { LoadingIcon } from '../../shared/components/icons/loading_icon'
 
-import * as styles from './publisher_card.style'
+import * as style from './publisher_card.style'
 
-const unverifiedLearnMoreURL = 'https://brave.com/faq/#unclaimed-funds'
+const pendingTipsURL = 'https://brave.com/faq/#unclaimed-funds'
 
 export function PublisherCard () {
   const { getString } = React.useContext(LocaleContext)
@@ -22,87 +24,107 @@ export function PublisherCard () {
 
   const [publisherInfo, setPublisherInfo] =
     React.useState(host.state.publisherInfo)
-  const [hidePublisherUnverifiedNote, setHidePublisherUnverifiedNote] =
-    React.useState(host.state.hidePublisherUnverifiedNote)
+  const [publisherRefreshing, setPublisherRefreshing] =
+    React.useState(host.state.publisherRefreshing)
   const [externalWallet, setExternalWallet] =
     React.useState(host.state.externalWallet)
+  const [settings, setSettings] = React.useState(host.state.settings)
+
+  const [showPublisherLoading, setShowPublisherLoading] = React.useState(false)
 
   useHostListener(host, (state) => {
     setPublisherInfo(state.publisherInfo)
-    setHidePublisherUnverifiedNote(host.state.hidePublisherUnverifiedNote)
+    setPublisherRefreshing(state.publisherRefreshing)
     setExternalWallet(state.externalWallet)
+    setSettings(host.state.settings)
   })
 
   if (!publisherInfo) {
     return null
   }
 
-  function renderStatusMessage () {
+  function shouldRenderPendingBubble () {
+    if (!publisherInfo) {
+      return false
+    }
+
+    const { registered, supportedWalletProviders } = publisherInfo
+
+    // Show the bubble if the publisher is not registered.
+    if (!registered) {
+      return true
+    }
+
+    // Do not show the bubble if the publisher is registered and the user does
+    // not have an external wallet.
+    if (!externalWallet) {
+      return false
+    }
+
+    // Do not show the bubble if the publisher has a wallet provider address
+    // that matches the user's wallet provider.
+    if (supportedWalletProviders.includes(externalWallet.provider)) {
+      return false
+    }
+
+    return true
+  }
+
+  function renderPendingBubble () {
+    if (!publisherInfo || !shouldRenderPendingBubble()) {
+      return null
+    }
+
+    return (
+      <style.pendingBubble>
+        <style.pendingBubbleHeader>
+          {
+            getString(publisherInfo.registered
+              ? 'pendingTipTitleRegistered'
+              : 'pendingTipTitle')
+          }
+        </style.pendingBubbleHeader>
+        <style.pendingBubbleText>
+          {
+            formatMessage(getString('pendingTipText'), {
+              tags: {
+                $1: content => (
+                  <NewTabLink key='link' href={pendingTipsURL}>
+                    {content}
+                  </NewTabLink>
+                )
+              }
+            })
+          }
+        </style.pendingBubbleText>
+      </style.pendingBubble>
+    )
+  }
+
+  function renderStatusIndicator () {
     if (!publisherInfo) {
       return null
     }
 
-    if (publisherInfo.registered) {
-      return (
-        <styles.verified>
-          <VerifiedIcon />{getString('verifiedCreator')}
-        </styles.verified>
-      )
-    }
+    const { registered } = publisherInfo
 
     return (
-      <styles.unverified>
-        <VerifiedIcon />{getString('unverifiedCreator')}
-      </styles.unverified>
+      <style.statusIndicator className={registered ? 'registered' : ''}>
+        <VerifiedIcon />
+        {getString(registered ? 'verifiedCreator' : 'unverifiedCreator')}
+        <div className='pending-bubble'>
+          {renderPendingBubble()}
+        </div>
+      </style.statusIndicator>
     )
   }
 
-  function renderUnverifiedNote () {
-    if (!publisherInfo || hidePublisherUnverifiedNote) {
-      return null
-    }
+  function onRefreshClick () {
+    // Show the publisher loading state for a minimum amount of time in order
+    // to indicate activity to the user.
+    setShowPublisherLoading(true)
+    setTimeout(() => { setShowPublisherLoading(false) }, 500)
 
-    const walletProviderNotSupported =
-      externalWallet &&
-      !publisherInfo.supportedWalletProviders.includes(externalWallet.provider)
-
-    if (!publisherInfo.registered || walletProviderNotSupported) {
-      const noteText = getString(walletProviderNotSupported
-        ? 'providerNotSupportedNote'
-        : 'unverifiedNote')
-
-      return (
-        <styles.unverifiedNote>
-          <strong>{getString('note')}:</strong>&nbsp;
-          {noteText}&nbsp;
-          {
-            formatMessage(getString('unverifiedLinks'), {
-              tags: {
-                $1: (content) =>
-                  <NewTabLink href={unverifiedLearnMoreURL} key='learn-more'>
-                    {content}
-                  </NewTabLink>,
-                $3: (content) =>
-                  <a href='#' key='hide' onClick={hideVerifiedNote}>
-                    {content}
-                  </a>
-              }
-            })
-          }
-        </styles.unverifiedNote>
-      )
-    }
-
-    return null
-  }
-
-  function hideVerifiedNote (evt: React.UIEvent) {
-    evt.preventDefault()
-    host.hidePublisherUnverifiedNote()
-  }
-
-  function onRefreshClick (evt: React.UIEvent) {
-    evt.preventDefault()
     host.refreshPublisherStatus()
   }
 
@@ -112,45 +134,69 @@ export function PublisherCard () {
     }
   }
 
+  function getPublisherName () {
+    if (!publisherInfo) {
+      return null
+    }
+
+    if (publisherInfo.platform) {
+      return formatMessage(getString('platformPublisherTitle'), [
+        publisherInfo.name,
+        getPublisherPlatformName(publisherInfo.platform)
+      ])
+    }
+
+    return publisherInfo.name
+  }
+
   return (
-    <styles.root>
-      <styles.heading>
+    <style.root>
+      <style.heading>
         {
           publisherInfo.icon &&
-            <styles.icon>
+            <style.icon>
               <img src={publisherInfo.icon} />
-            </styles.icon>
+            </style.icon>
         }
-        <styles.name>
-          {publisherInfo.name}
-          <styles.status>
-            {renderStatusMessage()}
-            <styles.refreshStatus>
-              <a href='#' onClick={onRefreshClick}>
-                {getString('refreshStatus')}
-              </a>
-            </styles.refreshStatus>
-          </styles.status>
-        </styles.name>
-      </styles.heading>
-      {renderUnverifiedNote()}
-      <styles.attention>
-        <div>{getString('attention')}</div>
-        <div className='value'>
-          {(publisherInfo.attentionScore * 100).toFixed(0)}%
-        </div>
-      </styles.attention>
-      <styles.contribution>
-        <styles.autoContribution>
-          <div>{getString('includeInAutoContribute')}</div>
-          <div>
-            <ToggleButton
-              checked={publisherInfo.autoContributeEnabled}
-              onChange={host.setIncludeInAutoContribute}
-            />
-          </div>
-        </styles.autoContribution>
-        <styles.monthlyContribution>
+        <style.name>
+          {getPublisherName()}
+          <style.status>
+            {renderStatusIndicator()}
+            <style.refreshStatus>
+              {
+                publisherRefreshing || showPublisherLoading
+                  ? <LoadingIcon />
+                  : <button onClick={onRefreshClick}>
+                      {getString('refreshStatus')}
+                    </button>
+              }
+            </style.refreshStatus>
+          </style.status>
+        </style.name>
+      </style.heading>
+      {
+        settings.autoContributeEnabled &&
+          <style.attention data-test-id='attention-score-text'>
+            <div>{getString('attention')}</div>
+            <div className='value'>
+              {(publisherInfo.attentionScore * 100).toFixed(0)}%
+            </div>
+          </style.attention>
+      }
+      <style.contribution>
+        {
+          settings.autoContributeEnabled &&
+            <style.autoContribution>
+              <div>{getString('includeInAutoContribute')}</div>
+              <div>
+                <ToggleButton
+                  checked={publisherInfo.autoContributeEnabled}
+                  onChange={host.setIncludeInAutoContribute}
+                />
+              </div>
+            </style.autoContribution>
+        }
+        <style.monthlyContribution>
           <div>{getString('monthlyContribution')}</div>
           <div>
             <MonthlyTipView
@@ -159,13 +205,13 @@ export function PublisherCard () {
               onCancelClick={monthlyTipHandler('cancel')}
             />
           </div>
-        </styles.monthlyContribution>
-      </styles.contribution>
-      <styles.tipAction>
-        <button>
+        </style.monthlyContribution>
+      </style.contribution>
+      <style.tipAction>
+        <button data-test-id='tip-button' onClick={host.sendTip}>
           {getString('sendTip')}
         </button>
-      </styles.tipAction>
-    </styles.root>
+      </style.tipAction>
+    </style.root>
   )
 }

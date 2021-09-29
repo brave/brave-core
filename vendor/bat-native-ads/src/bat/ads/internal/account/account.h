@@ -6,16 +6,20 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 
-#include <cstdint>
 #include <memory>
 #include <string>
 
+#include "base/observer_list.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate.h"
 #include "bat/ads/internal/account/confirmations/confirmations_observer.h"
-#include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info_aliases.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
-#include "bat/ads/transaction_info.h"
+#include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
@@ -26,16 +30,19 @@ class RedeemUnblindedPaymentTokens;
 class RefillUnblindedTokens;
 class Statement;
 class Wallet;
-struct CatalogIssuersInfo;
 struct StatementInfo;
 struct WalletInfo;
 
-class Account : public AdRewardsDelegate,
-                public ConfirmationsObserver,
-                public RedeemUnblindedPaymentTokensDelegate {
+namespace privacy {
+class TokenGeneratorInterface;
+}  // namespace privacy
+
+class Account final : public AdRewardsDelegate,
+                      public ConfirmationsObserver,
+                      public RedeemUnblindedPaymentTokensDelegate,
+                      public RefillUnblindedTokensDelegate {
  public:
   explicit Account(privacy::TokenGeneratorInterface* token_generator);
-
   ~Account() override;
 
   void AddObserver(AccountObserver* observer);
@@ -50,8 +57,8 @@ class Account : public AdRewardsDelegate,
   void Deposit(const std::string& creative_instance_id,
                const ConfirmationType& confirmation_type);
 
-  StatementInfo GetStatement(const int64_t from_timestamp,
-                             const int64_t to_timestamp) const;
+  StatementInfo GetStatement(const base::Time& from,
+                             const base::Time& to) const;
 
   void Reconcile();
 
@@ -61,8 +68,6 @@ class Account : public AdRewardsDelegate,
 
  private:
   base::ObserverList<AccountObserver> observers_;
-
-  privacy::TokenGeneratorInterface* token_generator_;  // NOT_OWNED
 
   std::unique_ptr<AdRewards> ad_rewards_;
   std::unique_ptr<Confirmations> confirmations_;
@@ -81,19 +86,24 @@ class Account : public AdRewardsDelegate,
       const CatalogIssuersInfo& catalog_issuers) const;
   void NotifyStatementOfAccountsDidChange() const;
 
-  // AdRewardsDelegate implementation
+  // AdRewardsDelegate:
   void OnDidReconcileAdRewards() override;
 
-  // ConfirmationsObserver implementation
-  void OnConfirmAd(const double estimated_redemption_value,
-                   const ConfirmationInfo& confirmation) override;
-  void OnConfirmAdFailed(const ConfirmationInfo& confirmation) override;
+  // ConfirmationsObserver:
+  void OnDidConfirm(const double estimated_redemption_value,
+                    const ConfirmationInfo& confirmation) override;
+  void OnFailedToConfirm(const ConfirmationInfo& confirmation) override;
 
-  // RedeemUnblindedPaymentTokensDelegate implementation
+  // RedeemUnblindedPaymentTokensDelegate:
   void OnDidRedeemUnblindedPaymentTokens(
       const privacy::UnblindedTokenList unblinded_tokens) override;
   void OnFailedToRedeemUnblindedPaymentTokens() override;
   void OnDidRetryRedeemingUnblindedPaymentTokens() override;
+
+  // RedeemUnblindedTokensDelegate:
+  void OnDidRefillUnblindedTokens() override;
+  void OnCaptchaRequiredToRefillUnblindedTokens(
+      const std::string& captcha_id) override;
 };
 
 }  // namespace ads

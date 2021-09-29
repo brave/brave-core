@@ -17,7 +17,6 @@ namespace privacy {
 class TokenGeneratorMock : public TokenGenerator {
  public:
   TokenGeneratorMock();
-
   ~TokenGeneratorMock() override;
 
   MOCK_METHOD(std::vector<Token>, Generate, (const int count), (const));

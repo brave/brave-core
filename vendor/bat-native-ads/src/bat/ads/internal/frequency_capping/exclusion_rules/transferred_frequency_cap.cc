@@ -9,8 +9,6 @@
 #include <deque>
 
 #include "base/strings/stringprintf.h"
-#include "base/time/time.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 
@@ -39,17 +37,15 @@ bool TransferredFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string TransferredFrequencyCap::get_last_message() const {
+std::string TransferredFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
 bool TransferredFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
-  const std::deque<uint64_t> history =
-      GetTimestampHistoryForAdEvents(ad_events);
+  const std::deque<base::Time> history = GetHistoryForAdEvents(ad_events);
 
-  const int64_t time_constraint =
-      features::frequency_capping::ExcludeAdIfTransferredWithinTimeWindow()
-          .InSeconds();
+  const base::TimeDelta time_constraint =
+      features::frequency_capping::ExcludeAdIfTransferredWithinTimeWindow();
 
   return DoesHistoryRespectCapForRollingTimeConstraint(
       history, time_constraint, kTransferredFrequencyCap);

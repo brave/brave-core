@@ -19,7 +19,6 @@ namespace ads {
 class AdsClientMock : public AdsClient {
  public:
   AdsClientMock();
-
   ~AdsClientMock() override;
 
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
@@ -40,12 +39,11 @@ class AdsClientMock : public AdsClient {
   MOCK_CONST_METHOD3(RecordAdEvent,
                      void(const std::string& type,
                           const std::string& confirmation_type,
-                          const uint64_t timestamp));
+                          const double timestamp));
 
-  MOCK_CONST_METHOD2(
-      GetAdEvents,
-      std::vector<uint64_t>(const std::string& ad_type,
-                            const std::string& confirmation_type));
+  MOCK_CONST_METHOD2(GetAdEvents,
+                     std::vector<double>(const std::string& ad_type,
+                                         const std::string& confirmation_type));
 
   MOCK_CONST_METHOD0(ResetAdEvents, void());
 
@@ -71,6 +69,16 @@ class AdsClientMock : public AdsClient {
                     GetBrowsingHistoryCallback callback));
 
   MOCK_METHOD1(LoadResourceForId, std::string(const std::string& id));
+
+  MOCK_METHOD0(ClearScheduledCaptcha, void());
+
+  MOCK_METHOD2(GetScheduledCaptcha,
+               void(const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback));
+
+  MOCK_METHOD2(ShowScheduledCaptchaNotification,
+               void(const std::string& payment_id,
+                    const std::string& captcha_id));
 
   MOCK_METHOD2(RunDBTransaction,
                void(mojom::DBTransactionPtr, RunDBTransactionCallback));

@@ -19,6 +19,13 @@ module.exports = async ({ config, mode }) => {
   })
   config.resolve.alias = {
     ...config.resolve.alias,
+    // Put mojom-generated output (either copied from real generated
+    // output or manually create modules exporting expected types) so
+    // that storybook UI may use them. This is preferred to be copied here so that
+    // 1. Storybook can be compiled without the browser being compiled,
+    // and 2. To act as a snapshot.
+    'gen': path.resolve(__dirname, 'gen-mock'),
+    // If stories include calls to chromium code, the functions should be mocked.
     'chrome://resources': path.resolve(__dirname, 'chrome-resources-mock'),
     'brave-ui': path.resolve(__dirname, '../node_modules/brave-ui/src'),
     // Force same styled-components module for brave-core and brave-ui

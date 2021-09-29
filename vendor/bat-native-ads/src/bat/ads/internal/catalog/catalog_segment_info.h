@@ -7,11 +7,10 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_SEGMENT_INFO_H_
 
 #include <string>
-#include <vector>
 
 namespace ads {
 
-struct CatalogSegmentInfo {
+struct CatalogSegmentInfo final {
   CatalogSegmentInfo();
   CatalogSegmentInfo(const CatalogSegmentInfo& info);
   ~CatalogSegmentInfo();
@@ -22,8 +21,6 @@ struct CatalogSegmentInfo {
   std::string code;
   std::string name;
 };
-
-using CatalogSegmentList = std::vector<CatalogSegmentInfo>;
 
 }  // namespace ads
 

@@ -6,10 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONTAINER_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONTAINER_UTIL_H_
 
+#include <algorithm>
 #include <deque>
 #include <vector>
 
-#include "bat/ads/internal/logging.h"
+#include "base/check_op.h"
 
 namespace ads {
 
@@ -35,7 +36,7 @@ std::vector<std::vector<T>> SplitVector(const std::vector<T>& elements,
   auto begin = elements.begin();
   const auto end = elements.end();
   while (begin != end) {
-    auto next =
+    const auto next =
         std::distance(begin, end) >= chunk_size ? begin + chunk_size : end;
 
     result.emplace_back(begin, next);
@@ -75,6 +76,18 @@ bool CompareAsSets(const T& c1, const T& c2) {
   }
 
   return true;
+}
+
+template <typename T>
+std::vector<T> SetIntersection(std::vector<T> lhs, std::vector<T> rhs) {
+  std::sort(lhs.begin(), lhs.end());
+  std::sort(rhs.begin(), rhs.end());
+
+  std::vector<T> intersection;
+  std::set_intersection(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(),
+                        std::back_inserter(intersection));
+
+  return intersection;
 }
 
 }  // namespace ads

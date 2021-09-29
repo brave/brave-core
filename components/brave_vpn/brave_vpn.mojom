@@ -22,11 +22,47 @@ interface PanelHandler {
   CloseUI();
 };
 
+interface ServiceObserver {
+  OnConnectionCreated();
+  OnConnectionRemoved();
+  OnConnectionStateChanged(ConnectionState state);
+  OnPurchasedStateChanged(PurchasedState state);
+};
+
+struct Region {
+  string continent;
+  string name;
+  string name_pretty;
+};
+
 // Browser-side handler for vpn service things
 interface ServiceHandler {
-  GetIsConnected() => (bool is_connected);
+  GetConnectionState() => (ConnectionState state);
+  GetPurchasedState() => (PurchasedState state);
+  AddObserver(pending_remote<ServiceObserver> observer);
+  CreateVPNConnection();
+  Connect();
+  Disconnect();
+  GetAllRegions() => (array<Region> regions);
+  GetDeviceRegion() => (Region device_region);
+  GetSelectedRegion() => (Region current_region);
+  SetSelectedRegion(Region region);
 };
 
 // WebUI-side handler for requests from the browser.
 interface Page {
+};
+
+enum ConnectionState {
+  CONNECTED,
+  DISCONNECTED,
+  CONNECTING,
+  DISCONNECTING,
+  CONNECT_FAILED,
+};
+
+enum PurchasedState {
+  NOT_PURCHASED,
+  PURCHASED,
+  EXPIRED,
 };

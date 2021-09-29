@@ -26,6 +26,7 @@ import {
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { WalletAccountType } from '../../../constants/types'
+import locale from '../../../constants/locale'
 
 export interface Props {
   siteURL: string
@@ -37,81 +38,82 @@ export interface Props {
   selectedAccounts: WalletAccountType[]
   isReady: boolean
 }
-
-export default class ConnectWithSite extends React.PureComponent<Props> {
-  checkIsSelected = (account: WalletAccountType) => {
-    return this.props.selectedAccounts.some((a) => a.id === account.id)
+function ConnectWithSite (props: Props) {
+  const {
+    primaryAction,
+    secondaryAction,
+    removeAccount,
+    selectAccount,
+    siteURL,
+    accounts,
+    isReady,
+    selectedAccounts
+  } = props
+  const checkIsSelected = (account: WalletAccountType) => {
+    return selectedAccounts.some((a) => a.id === account.id)
   }
 
-  createAccountList = () => {
-    const list = this.props.selectedAccounts.map((a) => {
+  const createAccountList = () => {
+    const list = selectedAccounts.map((a) => {
       return reduceAddress(a.address)
     })
     return list.join(', ')
   }
 
-  toggleSelected = (account: WalletAccountType) => () => {
-    if (this.checkIsSelected(account)) {
-      this.props.removeAccount(account)
+  const toggleSelected = (account: WalletAccountType) => () => {
+    if (checkIsSelected(account)) {
+      removeAccount(account)
     } else {
-      this.props.selectAccount(account)
+      selectAccount(account)
     }
   }
 
-  render () {
-    const {
-      primaryAction,
-      secondaryAction,
-      siteURL,
-      accounts,
-      isReady,
-      selectedAccounts
-    } = this.props
-    return (
-      <StyledWrapper>
-        <ConnectHeader url={siteURL} />
-        <MiddleWrapper>
-          {isReady ? (
-            <AccountListWrapper>
-              <Details>{this.createAccountList()}</Details>
-            </AccountListWrapper>
-          ) : (
-            <Details>Select accounts(s)</Details>
-          )}
-          {!isReady ? (
-            <SelectAddressContainer>
-              <NewAccountTitle>New Account</NewAccountTitle>
-              <DividerLine />
-              <SelectAddressScrollContainer>
-                {accounts.map((account) => (
-                  <SelectAddress
-                    action={this.toggleSelected(account)}
-                    key={account.id}
-                    account={account}
-                    isSelected={this.checkIsSelected(account)}
-                  />
-                ))}
-              </SelectAddressScrollContainer>
-              <DividerLine />
-            </SelectAddressContainer>
-          ) : (
-            <ConfirmTextRow>
-              <ConfirmIcon />
-              <ConfirmTextColumn>
-                <ConfirmText>View the addressess of your</ConfirmText>
-                <ConfirmText>permitted accounts (required)</ConfirmText>
-              </ConfirmTextColumn>
-            </ConfirmTextRow>
-          )}
-        </MiddleWrapper>
-        <ConnectBottomNav
-          primaryText={isReady ? 'Connect' : 'Next'}
-          secondaryText={isReady ? 'Back' : 'Cancel'}
-          primaryAction={primaryAction}
-          secondaryAction={secondaryAction}
-          disabled={selectedAccounts.length === 0}
-        />
-      </StyledWrapper>
-    )
-  }
+  return (
+    <StyledWrapper>
+      <ConnectHeader url={siteURL} />
+      <MiddleWrapper>
+        {isReady ? (
+          <AccountListWrapper>
+            <Details>{createAccountList()}</Details>
+          </AccountListWrapper>
+        ) : (
+          <Details>{locale.connectWithSiteTitle}</Details>
+        )}
+        {!isReady ? (
+          <SelectAddressContainer>
+            <NewAccountTitle>{locale.accounts}</NewAccountTitle>
+            <DividerLine />
+            <SelectAddressScrollContainer>
+              {accounts.map((account) => (
+                <SelectAddress
+                  action={toggleSelected(account)}
+                  key={account.id}
+                  account={account}
+                  isSelected={checkIsSelected(account)}
+                />
+              ))}
+            </SelectAddressScrollContainer>
+            <DividerLine />
+          </SelectAddressContainer>
+        ) : (
+          <ConfirmTextRow>
+            <ConfirmIcon />
+            <ConfirmTextColumn>
+              <ConfirmText>{locale.connectWithSiteDescription1}</ConfirmText>
+              <ConfirmText>{locale.connectWithSiteDescription2}</ConfirmText>
+            </ConfirmTextColumn>
+          </ConfirmTextRow>
+        )}
+      </MiddleWrapper>
+      <ConnectBottomNav
+        primaryText={isReady ? locale.addAccountConnect : locale.connectWithSiteNext}
+        secondaryText={isReady ? locale.back : locale.backupButtonCancel}
+        primaryAction={primaryAction}
+        secondaryAction={secondaryAction}
+        disabled={selectedAccounts.length === 0}
+      />
+    </StyledWrapper>
+  )
 }
+
+export default ConnectWithSite

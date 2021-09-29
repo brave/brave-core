@@ -10,18 +10,21 @@
 #include <string>
 
 namespace ads {
+namespace ad_targeting {
 
-struct PurchaseIntentFunnelKeywordInfo {
+struct PurchaseIntentFunnelKeywordInfo final {
  public:
   PurchaseIntentFunnelKeywordInfo();
   PurchaseIntentFunnelKeywordInfo(const std::string& keywords,
                                   const uint16_t weight);
+  PurchaseIntentFunnelKeywordInfo(const PurchaseIntentFunnelKeywordInfo& info);
   ~PurchaseIntentFunnelKeywordInfo();
 
   std::string keywords;
   uint16_t weight = 0;
 };
 
+}  // namespace ad_targeting
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_FUNNEL_KEYWORD_INFO_H_

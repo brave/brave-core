@@ -36,6 +36,7 @@ import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -49,15 +50,23 @@ public class EditVisibleAssetsBottomSheetDialogFragment
     public static final String TAG_FRAGMENT =
             EditVisibleAssetsBottomSheetDialogFragment.class.getName();
     private WalletCoinAdapter walletCoinAdapter;
+    private WalletCoinAdapter.AdapterType mType;
 
-    public static EditVisibleAssetsBottomSheetDialogFragment newInstance() {
-        return new EditVisibleAssetsBottomSheetDialogFragment();
+    public static EditVisibleAssetsBottomSheetDialogFragment newInstance(
+            WalletCoinAdapter.AdapterType type) {
+        return new EditVisibleAssetsBottomSheetDialogFragment(type);
+    }
+
+    private EditVisibleAssetsBottomSheetDialogFragment(WalletCoinAdapter.AdapterType type) {
+        mType = type;
     }
 
     private ErcTokenRegistry getErcTokenRegistry() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getErcTokenRegistry();
+        } else if (activity instanceof BuySendSwapActivity) {
+            return ((BuySendSwapActivity) activity).getErcTokenRegistry();
         }
 
         return null;
@@ -126,61 +135,78 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         ViewParent parent = view.getParent();
         ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         Button saveAssets = view.findViewById(R.id.saveAssets);
-        saveAssets.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View clickView) {
-                if (walletCoinAdapter != null) {
-                    // TODO(sergz): Save selected assets walletCoinAdapter.getCheckedAssets()
+        if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
+            saveAssets.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View clickView) {
+                    if (walletCoinAdapter != null) {
+                        // TODO(sergz): Save selected assets walletCoinAdapter.getCheckedAssets()
+                    }
+                    dismiss();
                 }
-                dismiss();
-            }
-        });
+            });
+        } else {
+            saveAssets.setVisibility(View.GONE);
+        }
 
         ErcTokenRegistry ercTokenRegistry = getErcTokenRegistry();
         if (ercTokenRegistry != null) {
-            ercTokenRegistry.getAllTokens(tokens -> {
-                setUpAssetsList(view, tokens);
-                SearchView searchView = (SearchView) view.findViewById(R.id.searchView);
-                searchView.setQueryHint(getText(R.string.search_tokens));
-                searchView.setIconified(false);
-                searchView.clearFocus();
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        if (walletCoinAdapter != null) {
-                            walletCoinAdapter.filter(query);
-                        }
-
-                        return true;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        if (walletCoinAdapter != null) {
-                            walletCoinAdapter.filter(newText);
-                        }
-
-                        return true;
-                    }
-                });
-            });
+            if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST
+                    || mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST) {
+                ercTokenRegistry.getAllTokens(tokens -> { setUpAssetsList(view, tokens); });
+            } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
+                ercTokenRegistry.getBuyTokens(tokens -> { setUpAssetsList(view, tokens); });
+            }
         }
     }
 
     private void setUpAssetsList(View view, ErcToken[] tokens) {
         RecyclerView rvAssets = view.findViewById(R.id.rvAssets);
-        walletCoinAdapter =
-                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST);
+        walletCoinAdapter = new WalletCoinAdapter(mType);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+        // Add ETH as a first item always
+        ErcToken eth = new ErcToken();
+        eth.name = "Ethereum";
+        eth.symbol = "ETH";
+        eth.contractAddress = "";
+        WalletListItemModel itemModelEth =
+                new WalletListItemModel(R.drawable.ic_eth, eth.name, eth.symbol, "", "");
+        itemModelEth.setErcToken(eth);
+        walletListItemModelList.add(itemModelEth);
         for (int i = 0; i < tokens.length; i++) {
-            walletListItemModelList.add(new WalletListItemModel(
-                    R.drawable.ic_eth, tokens[i].name, tokens[i].symbol, "", ""));
+            WalletListItemModel itemModel = new WalletListItemModel(
+                    R.drawable.ic_eth, tokens[i].name, tokens[i].symbol, "", "");
+            itemModel.setErcToken(tokens[i]);
+            walletListItemModelList.add(itemModel);
         }
         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
         walletCoinAdapter.setOnWalletListItemClick(this);
         walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
         rvAssets.setAdapter(walletCoinAdapter);
         rvAssets.setLayoutManager(new LinearLayoutManager(getActivity()));
+        SearchView searchView = (SearchView) view.findViewById(R.id.searchView);
+        searchView.setQueryHint(getText(R.string.search_tokens));
+        searchView.setIconified(false);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (walletCoinAdapter != null) {
+                    walletCoinAdapter.filter(query);
+                }
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (walletCoinAdapter != null) {
+                    walletCoinAdapter.filter(newText);
+                }
+
+                return true;
+            }
+        });
     }
 
     @Override
@@ -189,5 +215,17 @@ public class EditVisibleAssetsBottomSheetDialogFragment
     }
 
     @Override
-    public void onAssetClick() {}
+    public void onAssetClick() {
+        if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
+                || mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
+            List<WalletListItemModel> checkedAssets = walletCoinAdapter.getCheckedAssets();
+            Activity activity = getActivity();
+            if (activity instanceof BuySendSwapActivity && checkedAssets.size() > 0) {
+                ((BuySendSwapActivity) activity)
+                        .updateBuySendAsset(checkedAssets.get(0).getSubTitle(),
+                                checkedAssets.get(0).getErcToken());
+            }
+        }
+        dismiss();
+    }
 }

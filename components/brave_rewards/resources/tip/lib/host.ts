@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { addWebUIListener } from '../../../../common/cr'
+import { addWebUIListener } from 'chrome://resources/js/cr.m'
 import { loadTimeData } from '../../../../common/loadTimeData'
 import { OnboardingCompletedStore } from '../../shared/lib/onboarding_completed_store'
 
@@ -89,6 +89,19 @@ export function createHost (): Host {
 
     externalWalletUpdated (externalWalletInfo: ExternalWalletInfo) {
       stateManager.update({ externalWalletInfo })
+    },
+
+    tipProcessed (amount: number) {
+      stateManager.update({
+        tipProcessed: true,
+        tipAmount: amount
+      })
+    },
+
+    tipFailed () {
+      stateManager.update({
+        hostError: { type: 'ERR_TIP_FAILED' }
+      })
     },
 
     publisherBannerUpdated (publisherInfo: PublisherInfo) {
@@ -235,10 +248,16 @@ export function createHost (): Host {
         kind === 'monthly' ? true : false
       ])
 
-      stateManager.update({
-        tipProcessed: true,
-        tipAmount: amount
-      })
+      // Gemini currently has up to a 10-minute delay on the balance
+      // actually being moved from the user's account.
+      // If the tipping banner doesn't hear back within 3 seconds,
+      // we consider the transaction as non-errored and show the success UI.
+      setTimeout(() => {
+        stateManager.update({
+          tipProcessed: true,
+          tipAmount: amount
+        })
+      }, 3000)
     },
 
     shareTip (target: ShareTarget) {

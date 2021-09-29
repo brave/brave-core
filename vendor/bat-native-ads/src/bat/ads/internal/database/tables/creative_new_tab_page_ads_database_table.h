@@ -8,38 +8,31 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
-#include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
+#include "base/check_op.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/bundle/creative_new_tab_page_ad_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
-#include "bat/ads/internal/database/tables/campaigns_database_table.h"
-#include "bat/ads/internal/database/tables/creative_ads_database_table.h"
-#include "bat/ads/internal/database/tables/dayparts_database_table.h"
-#include "bat/ads/internal/database/tables/geo_targets_database_table.h"
-#include "bat/ads/internal/database/tables/segments_database_table.h"
+#include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table_aliases.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
-using GetCreativeNewTabPageAdCallback =
-    std::function<void(const bool,
-                       const std::string& creative_instance_id,
-                       const CreativeNewTabPageAdInfo&)>;
-
-using GetCreativeNewTabPageAdsCallback =
-    std::function<void(const bool,
-                       const std::vector<std::string>&,
-                       const CreativeNewTabPageAdList&)>;
+struct CreativeNewTabPageAdInfo;
 
 namespace database {
 namespace table {
 
-class CreativeNewTabPageAds : public Table {
+class Campaigns;
+class CreativeAds;
+class Dayparts;
+class GeoTargets;
+class Segments;
+
+class CreativeNewTabPageAds final : public Table {
  public:
   CreativeNewTabPageAds();
-
   ~CreativeNewTabPageAds() override;
 
   void Save(const CreativeNewTabPageAdList& creative_new_tab_page_ads,
@@ -55,9 +48,13 @@ class CreativeNewTabPageAds : public Table {
 
   void GetAll(GetCreativeNewTabPageAdsCallback callback);
 
-  void set_batch_size(const int batch_size);
+  void set_batch_size(const int batch_size) {
+    DCHECK_GT(batch_size, 0);
 
-  std::string get_table_name() const override;
+    batch_size_ = batch_size;
+  }
+
+  std::string GetTableName() const override;
 
   void Migrate(mojom::DBTransaction* transaction,
                const int to_version) override;
@@ -87,8 +84,8 @@ class CreativeNewTabPageAds : public Table {
 
   CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecord* record) const;
 
-  void CreateTableV15(mojom::DBTransaction* transaction);
-  void MigrateToV15(mojom::DBTransaction* transaction);
+  void CreateTableV16(mojom::DBTransaction* transaction);
+  void MigrateToV16(mojom::DBTransaction* transaction);
 
   int batch_size_;
 

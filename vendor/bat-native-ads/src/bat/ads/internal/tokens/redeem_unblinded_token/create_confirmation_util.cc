@@ -5,16 +5,15 @@
 
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 
-#include <memory>
-#include <utility>
-
 #include "base/base64url.h"
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/notreached.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 
 namespace ads {

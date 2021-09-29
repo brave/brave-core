@@ -4,7 +4,6 @@ import {
   // SideNav,
   WalletPageLayout,
   WalletSubViewLayout,
-  CryptoView,
   LockScreen,
   OnboardingRestore
 } from '../components/desktop'
@@ -12,7 +11,7 @@ import {
   NavTypes,
   AssetPriceTimeframe,
   PriceDataObjectType,
-  AssetOptionType,
+  AccountAssetOptionType,
   AssetPriceInfo,
   RPCResponseType,
   OrderTypes,
@@ -20,15 +19,18 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  Network,
-  TokenInfo
+  EthereumChain,
+  TokenInfo,
+  TransactionListInfo,
+  BuySendSwapTypes
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
-import * as Result from '../common/types/result'
+import CryptoStoryView from './screens/crypto-story-view'
 
 // import { NavOptions } from '../options/side-nav-options'
-import { AssetOptions, NewAssetOptions } from '../options/asset-options'
+import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
+import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { SlippagePresetOptions } from '../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../options/expiration-preset-options'
 import BuySendSwap from './screens/buy-send-swap'
@@ -44,6 +46,7 @@ import {
   HardwareWalletAccount,
   HardwareWalletConnectOpts
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
+import { mockNetworks } from './mock-data/mock-networks'
 export default {
   title: 'Wallet/Desktop',
   argTypes: {
@@ -52,8 +55,156 @@ export default {
   }
 }
 
+const transactionDummyData: TransactionListInfo[] = [
+  {
+    account: mockUserAccounts[0],
+    transactions: [
+      {
+        fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+        txData: {
+          baseData: {
+            data: new Uint8Array(24),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec50000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: ''
+        },
+        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+        txStatus: 3,
+        txArgs: [],
+        txParams: [],
+        txType: 0
+      },
+      {
+        fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
+        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+        txData: {
+          baseData: {
+            data: new Uint8Array(24),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: ''
+        },
+        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+        txStatus: 4,
+        txArgs: [],
+        txParams: [],
+        txType: 0
+      },
+      {
+        fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+        txData: {
+          baseData: {
+            data: new Uint8Array(24),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: ''
+        },
+        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+        txStatus: 2,
+        txArgs: [],
+        txParams: [],
+        txType: 0
+      },
+      {
+        fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+        txData: {
+          baseData: {
+            data: new Uint8Array(24),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: ''
+        },
+        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+        txStatus: 1,
+        txArgs: [],
+        txParams: [],
+        txType: 0
+      }
+    ]
+  },
+  {
+    account: mockUserAccounts[1],
+    transactions: [
+      {
+        fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
+        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+        txData: {
+          baseData: {
+            data: new Uint8Array(24),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: ''
+        },
+        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+        txStatus: 0,
+        txArgs: [],
+        txParams: [],
+        txType: 0
+      },
+      {
+        fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
+        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+        txData: {
+          baseData: {
+            data: new Uint8Array(24),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: ''
+        },
+        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+        txStatus: 5,
+        txArgs: [],
+        txParams: [],
+        txType: 0
+      }
+    ]
+  }
+]
+
 export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boolean }) => {
-  const { onboarding, locked } = args
+  const {
+    onboarding,
+    locked
+  } = args
   const [view] = React.useState<NavTypes>('crypto')
   const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(onboarding)
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
@@ -65,11 +216,11 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedTimeline, setSelectedTimeline] = React.useState<AssetPriceTimeframe>(AssetPriceTimeframe.OneDay)
   const [selectedAssetPriceHistory, setSelectedAssetPriceHistory] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
   const [selectedAsset, setSelectedAsset] = React.useState<TokenInfo>()
-  const [selectedNetwork, setSelectedNetwork] = React.useState<Network>(Network.Mainnet)
+  const [selectedNetwork, setSelectedNetwork] = React.useState<EthereumChain>(mockNetworks[0])
   const [selectedAccount, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
-  const [fromAsset, setFromAsset] = React.useState<AssetOptionType>(AssetOptions[0])
-  const [toAsset, setToAsset] = React.useState<AssetOptionType>(AssetOptions[1])
+  const [fromAsset, setFromAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[0])
+  const [toAsset, setToAsset] = React.useState<AccountAssetOptionType>(AccountAssetOptions[1])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   const [exchangeRate, setExchangeRate] = React.useState('0.0027533')
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
@@ -80,6 +231,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [fromAmount, setFromAmount] = React.useState('')
   const [toAmount, setToAmount] = React.useState('')
   const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
+  const [importError, setImportError] = React.useState<boolean>(false)
+  const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
 
   const onToggleRestore = () => {
     setIsRestoring(!isRestoring)
@@ -121,8 +274,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setInputValue(value)
   }
 
-  const onUpdateAccountName = () => {
-    alert('Will update account name')
+  const onUpdateAccountName = (): { success: boolean } => {
+    return { success: true }
   }
 
   const onShowBackup = () => {
@@ -133,7 +286,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setShowBackup(false)
   }
 
-  const onRestore = (phrase: string, password: string) => {
+  const onRestore = (phrase: string, password: string, isLegacy: boolean) => {
     if (JSON.stringify(phrase.split(' ')) === JSON.stringify(recoveryPhrase)) {
       completeWalletSetup(true)
     } else {
@@ -219,17 +372,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     return newList
   }, [selectedAsset, mockRPCResponse])
 
-  // This returns a list of transactions from all accounts filtered by selected asset
-  const transactions = React.useMemo(() => {
-    const response = mockRPCResponse
-    const transactionList = response.map((account) => {
-      const id = selectedAsset?.symbol ?? ''
-      return account.transactions.find((item) => item.assetId === id)
-    })
-    const removedEmptyTransactions = transactionList.filter(x => x)
-    return removedEmptyTransactions
-  }, [selectedAsset])
-
   // This will scrape all of the user's accounts and combine the balances for a single asset
   const scrapedFullAssetBalance = (asset: TokenInfo) => {
     const response = mockRPCResponse
@@ -310,22 +452,26 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   }
 
   const onImportAccount = (name: string, key: string) => {
-    alert(`Account Name: ${name}, Private Key: ${key}`)
+    // doesnt do anything in storybook
+  }
+
+  const onImportAccountFromJson = (name: string, password: string, json: string) => {
+    // doesnt do anything in storybook
   }
 
   const onToggleAddModal = () => {
     setShowAddModal(!showAddModal)
   }
 
-  const onSelectNetwork = (network: Network) => {
+  const onSelectNetwork = (network: EthereumChain) => {
     setSelectedNetwork(network)
   }
 
-  const onUpdateWatchList = () => {
-    alert('Will update Watchlist')
+  const onSetUserAssetVisible = () => {
+    alert('Will make a custom asset visible')
   }
 
-  const onSelectTransactAsset = (asset: AssetOptionType, toOrFrom: ToOrFromType) => {
+  const onSelectTransactAsset = (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {
       setFromAsset(asset)
     } else {
@@ -338,11 +484,15 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setToAsset(fromAsset)
   }
 
-  const onSubmitBuy = (asset: AssetOptionType) => {
-    const url = BuyAssetUrl(selectedNetwork, asset, selectedAccount, buyAmount)
+  const onSubmitBuy = (asset: AccountAssetOptionType) => {
+    const url = BuyAssetUrl(mockNetworks[0].chainId, asset, selectedAccount, buyAmount)
     if (url) {
       window.open(url, '_blank')
     }
+  }
+
+  const onSwapQuoteRefresh = () => {
+    console.log('Refreshing swap quote')
   }
 
   const onSubmitSwap = () => {
@@ -426,19 +576,61 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setToAddress(value)
   }
 
-  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Result.Type<HardwareWalletAccount[]> => {
+  const onRemoveAccount = () => {
+    alert('Will Remove Account')
+  }
+
+  const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<HardwareWalletAccount[]> => {
     const makeDerivationPath = (index: number): string => `m/44'/60'/${index}'/0/0`
 
-    return Array.from({ length: opts.stopIndex - opts.startIndex }, (_, i) => ({
-      address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-      derivationPath: makeDerivationPath(i + opts.startIndex),
-      balance: '0.012345',
-      ticker: 'ETH'
-    }))
+    return new Promise((resolve) => {
+      resolve(Array.from({ length: opts.stopIndex - opts.startIndex }, (_, i) => ({
+        address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+        derivationPath: makeDerivationPath(i + opts.startIndex),
+        name: 'Ledger 1',
+        hardwareVendor: 'Ledger'
+      })))
+    })
+  }
+
+  const getBalance = (address: string): Promise<string> => {
+    return new Promise(async (resolve) => {
+      resolve('0')
+    })
+  }
+
+  const onImportWallet = (password: string) => {
+    if (password !== 'password') {
+      setImportError(true)
+    }
+  }
+
+  const onAddHardwareAccounts = (accounts: HardwareWalletAccount[]) => {
+    console.log(accounts)
   }
 
   const fetchFullTokenList = () => {
     // Doesnt fetch anything in storybook
+  }
+
+  const onViewPrivateKey = () => {
+    // Doesnt do anything in storybook
+  }
+
+  const onDoneViewingPrivateKey = () => {
+    // Doesnt do anything in storybook
+  }
+
+  const onSetImportError = (hasError: boolean) => {
+    setImportError(hasError)
+  }
+
+  const onAddUserAsset = () => {
+    alert('Will Add a Token')
+  }
+
+  const onRemoveUserAsset = () => {
+    alert('Will Remove a Token')
   }
 
   return (
@@ -460,10 +652,16 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             {needsOnboarding ?
               (
                 <Onboarding
+                  hasImportError={importError}
                   recoveryPhrase={recoveryPhrase}
                   onSubmit={completeWalletSetup}
                   onPasswordProvided={passwordProvided}
                   onShowRestore={onToggleRestore}
+                  braveLegacyWalletDetected={true}
+                  metaMaskWalletDetected={true}
+                  onImportMetaMask={onImportWallet}
+                  onImportCryptoWallets={onImportWallet}
+                  onSetImportError={onSetImportError}
                 />
               ) : (
                 <>
@@ -487,7 +685,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               recoveryPhrase={recoveryPhrase}
                             />
                           ) : (
-                            <CryptoView
+                            <CryptoStoryView
                               onLockWallet={lockWallet}
                               needsBackup={needsBackup}
                               onShowBackup={onShowBackup}
@@ -500,24 +698,37 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onSelectAsset={onSelectAsset}
                               portfolioPriceHistory={selectedAssetPriceHistory}
                               portfolioBalance={scrapedFullPortfolioBalance()}
-                              transactions={transactions}
+                              transactions={transactionDummyData}
                               selectedUSDAssetPrice={selectedUSDAssetPrice}
                               selectedBTCAssetPrice={selectedBTCAssetPrice}
                               userAssetList={userAssetList}
                               onCreateAccount={onCreateAccount}
                               onImportAccount={onImportAccount}
                               onConnectHardwareWallet={onConnectHardwareWallet}
+                              onAddHardwareAccounts={onAddHardwareAccounts}
+                              getBalance={getBalance}
                               isLoading={false}
                               showAddModal={showAddModal}
                               onToggleAddModal={onToggleAddModal}
                               onUpdateAccountName={onUpdateAccountName}
-                              onUpdateVisibleTokens={onUpdateWatchList}
                               fetchFullTokenList={fetchFullTokenList}
-                              userWatchList={['1']}
                               selectedNetwork={selectedNetwork}
                               onSelectNetwork={onSelectNetwork}
                               isFetchingPortfolioPriceHistory={false}
                               selectedPortfolioTimeline={selectedTimeline}
+                              onRemoveAccount={onRemoveAccount}
+                              privateKey='gf65a4g6a54fg6a54fg6ad4fa5df65a4d6ff54a6sdf'
+                              onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+                              onViewPrivateKey={onViewPrivateKey}
+                              networkList={mockNetworks}
+                              onImportAccountFromJson={onImportAccountFromJson}
+                              hasImportError={importError}
+                              onSetImportError={onSetImportError}
+                              onAddUserAsset={onAddUserAsset}
+                              onSetUserAssetVisible={onSetUserAssetVisible}
+                              onRemoveUserAsset={onRemoveUserAsset}
+                              transactionSpotPrices={[]}
+                              userVisibleTokensInfo={[]}
                             />
                           )}
                         </>
@@ -546,6 +757,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             accounts={mockUserAccounts}
             selectedNetwork={selectedNetwork}
             selectedAccount={selectedAccount}
+            selectedTab={selectedWidgetTab}
             buyAmount={buyAmount}
             sendAmount={sendAmount}
             fromAmount={fromAmount}
@@ -553,6 +765,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             fromAssetBalance={fromAssetBalance}
             toAssetBalance={toAssetBalance}
             toAddress={toAddress}
+            isSwapSubmitDisabled={false}
             onSubmitBuy={onSubmitBuy}
             onSetBuyAmount={onSetBuyAmount}
             onSetSendAmount={onSetSendAmount}
@@ -571,6 +784,12 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             onSelectSlippageTolerance={onSelectSlippageTolerance}
             onSelectPresetFromAmount={onSelectPresetFromAmount}
             onSelectPresetSendAmount={onSelectPresetSendAmount}
+            onSelectTab={setSelectedWidgetTab}
+            buyAssetOptions={WyreAccountAssetOptions}
+            sendAssetOptions={AccountAssetOptions}
+            swapAssetOptions={AccountAssetOptions}
+            networkList={mockNetworks}
+            onSwapQuoteRefresh={onSwapQuoteRefresh}
           />
         </WalletWidgetStandIn>
       }

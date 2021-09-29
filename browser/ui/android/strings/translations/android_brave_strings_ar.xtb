@@ -18,7 +18,7 @@
 <translation id="5345505584130165588">طرق حماية Brave &amp; الخصوصية</translation>
 <translation id="4692623383562244444">محركات البحث</translation>
 <translation id="1468415711258933398">علامة تبويب قياسية</translation>
-<translation id="3377025655491224618">علامة تبويب للتصفح المتخفي</translation>
+<translation id="3377025655491224618">علامة تبويب خاصة</translation>
 <translation id="9148058034647219655">إنهاء</translation>
 <translation id="4022987104439075738">بوابة IPFS</translation>
 <translation id="2688519859165248360">يسمح بالانتقال إلى موارد IPFS من خلال بوابة IPFS</translation>
@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">تحجب المتتبعات &amp; والإعلانات من تحميل صفحات الويب وعرضها</translation>
 <translation id="1680858055899097121">لا تواصل استخدام علامات التبويب بين جلسات التصفح</translation>
 <translation id="7142548388914389999">السماح بتحليلات المنتج التي تحافظ على الخصوصية (P3A)</translation>
-<translation id="5469408008145872264">تتيح هذه المعلومات المُجهولة تمامًا فقط لمتصفح Brave تقدير الاستخدام الكلي لبعض الميزات، وتحسين تجربتك.</translation>
+<translation id="4272190451231642425">إرسال تقارير الأعطال تلقائيًّا</translation>
+<translation id="2239766974964486304">تقارير الأعطال تساعد Brave على تحسين استقرار المنتج لكل المستخدمين.</translation>
 <translation id="7977176350719484850">البيانات التقديرية المحفوظة</translation>
 <translation id="9008534313521214777">الوقت المقدر\nالذي تم توفيره</translation>
 <translation id="6572660632052512096">نمط سطح المكتب</translation>
@@ -248,7 +249,7 @@
 <translation id="723054503945711909">لا تقوم شركة Brave Software Inc بمعالجة أو تخزين أو الوصول إلى أي من المعلومات الشخصية التي تقدمها إلى Uphold عند إنشاء حساب معهم.</translation>
 <translation id="3699674790322420653">أكمل التحقق من المحفظة</translation>
 <translation id="2193391216824305230">محفظة المستخدم</translation>
-<translation id="7591798679868259510">الانتقال إلى حساب Uphold الخاص بي</translation>
+<translation id="6585020831163574892">انتقل إلى حساب Uphold الخاص بك</translation>
 <translation id="9200453331904391567">قطع الاتصال بـ Brave Rewards</translation>
 <translation id="6239274080752256452">سحب رصيد</translation>
 <translation id="8874184842967597500">غير متصل</translation>
@@ -478,7 +479,7 @@
 <translation id="1078265935778232285">مرحباً بك في متصفح Brave</translation>
 <translation id="6824713633331856331">ساعدنا على التعلم بشكل مجهول</translation>
 <translation id="6116685031674149112">يحمي Brave خصوصيتك \n ويقدر موافقتك على ما يلي:</translation>
-<translation id="3971666849661839619">ساعد في تحسين Brave عن طريق إرسال تقارير الأعطال وإخفاء هويتها تماماً <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">ساعد في تحسين Brave عن طريق إرسال <ph name="PRIVATE_PRODUCT_ANALYSIS"/>مخفية الهوية بالكامل</translation>
 <translation id="6478996494082389936">تحليلات المنتج الخاص.</translation>
 <translation id="5187052478998910855">هل تحتاج إلى تذكير بـ Rewards؟</translation>
 <translation id="8622329973403382303">قم بجولة سريعة للتعرف على الطريقة التي تعمل بها لتدخل التاريخ كنجم Rewards لامع!</translation>
@@ -561,14 +562,38 @@
 <translation id="1144810021918451336">لا يحميك من مواقع الويب والتنزيلات والإضافات الخطيرة.</translation>
 <translation id="745115390910697838">العبارات غير متطابقة، يرجى المحاولة مرة أخرى.</translation>
 <translation id="2360588547830602174">فشل استرداد الحساب، حاول مرة أخرى.</translation>
-<translation id="1530109021798294736">الشبكة Mainnet الرئيسية</translation>
 <translation id="990936698620790924">سعر السوق في ETH</translation>
+<translation id="5593852897152820572">السعر في ETH</translation>
 <translation id="6748108480210050150">من</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">إلى (مقدرًا)</translation>
+<translation id="6998989275928107238">إلى</translation>
+<translation id="6664416064035847539">العنوان أو عنوان URL</translation>
 <translation id="59223531494896848">الحد</translation>
 <translation id="3567988240819868195">السوق</translation>
 <translation id="632241521608275119">تحمُّل الانزلاق</translation>
+<translation id="4500473291496079954">ينتهي في</translation>
+<translation id="1987317783729300807">الحسابات</translation>
+<translation id="3535654229833214438">المعاملات</translation>
+<translation id="4636930964841734540">معلومات</translation>
+<translation id="6284218950354553099">الإرسال التلقائي لأداة البينج للاستخدام اليومي إلى Brave</translation>
+<translation id="5288333155754958121">يتيح هذا أمر البينج المجهول والخاص لـ Brave تقدير المستخدمين النشطين.</translation>
+<translation id="3819257035322786455">الاحتفاظ بنسخة احتياطية</translation>
+<translation id="4608713693379664295">حسابات التشفير الأساسية</translation>
+<translation id="4003821417160006384">الحسابات الثانوية</translation>
+<translation id="8094541587800369158">يمكن استخدام هذه الحسابات باستخدام web 3 dapps ويمكن عرضها في محفظتك، ومع ذلك، لا يمكن استعادتها من خلال عبارة الاسترداد من النسخة الاحتياطية لحسابك الأساسي. قم بتمكين حسابات Brave Sync لاستعادة الحسابات الثانوية تلقائيًا.</translation>
+<translation id="6725413948756358325">اسم الحساب</translation>
+<translation id="6062431965141524986">يمكنك إنشاء حساب ثانوي باستيراد مفتاحك الخاص.</translation>
+<translation id="3952797765659730604">أدخل أو الصق أو استورد ملف سلسلة المفتاح الخاص أو JSON.</translation>
+<translation id="569068482611873351">استيراد...</translation>
+<translation id="1940465339426637378">الأصول</translation>
+<translation id="4522570452068850558">التفاصيل</translation>
+<translation id="9065203028668620118">تعديل</translation>
+<translation id="3995184924764722477">تفاصيل الحساب</translation>
+<translation id="8967036623785635603">تحرير الأصول المرئية</translation>
+<translation id="5050890334032852465">حفظ قائمة مراقبة الحساب</translation>
+<translation id="7755766175599167100">البحث عن الرموز المميزة</translation>
+<translation id="3835223348537121988">الرصيد:</translation>
 </translationbundle>

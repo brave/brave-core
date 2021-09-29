@@ -161,6 +161,8 @@ source_set("ui") {
       "views/tabs/brave_tab_strip.h",
       "views/toolbar/bookmark_button.cc",
       "views/toolbar/bookmark_button.h",
+      "views/toolbar/brave_app_menu.cc",
+      "views/toolbar/brave_app_menu.h",
     ]
 
     if (use_aura) {
@@ -254,6 +256,7 @@ source_set("ui") {
     "//brave/components/brave_rewards/resources:internals_generated_resources",
     "//brave/components/brave_rewards/resources:page_generated_resources",
     "//brave/components/brave_rewards/resources:tip_generated_resources",
+    "//brave/components/brave_search/common",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_vpn/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
@@ -290,6 +293,7 @@ source_set("ui") {
     "//content/public/common",
     "//services/network/public/cpp",
     "//skia",
+    "//third_party/abseil-cpp:absl",
     "//ui/accessibility",
     "//ui/base",
     "//ui/gfx",
@@ -298,7 +302,10 @@ source_set("ui") {
   ]
 
   if (toolkit_views) {
-    deps += [ "//brave/browser/ui/views/brave_ads" ]
+    deps += [
+      "//brave/browser/ui/views/brave_ads",
+      "//brave/browser/ui/views/brave_tooltips",
+    ]
   }
 
   # This is no longer compiled into Chromium on Android, but we still
@@ -476,6 +483,8 @@ source_set("ui") {
 
   if (enable_brave_vpn && !is_android) {
     sources += [
+      "toolbar/brave_vpn_menu_model.cc",
+      "toolbar/brave_vpn_menu_model.h",
       "webui/brave_vpn/vpn_panel_handler.cc",
       "webui/brave_vpn/vpn_panel_handler.h",
       "webui/brave_vpn/vpn_panel_ui.cc",
@@ -491,8 +500,14 @@ source_set("ui") {
 
     if (toolkit_views) {
       sources += [
+        "views/brave_vpn_panel_host.cc",
+        "views/brave_vpn_panel_host.h",
         "views/toolbar/brave_vpn_button.cc",
         "views/toolbar/brave_vpn_button.h",
+        "views/toolbar/brave_vpn_status_label.cc",
+        "views/toolbar/brave_vpn_status_label.h",
+        "views/toolbar/brave_vpn_toggle_button.cc",
+        "views/toolbar/brave_vpn_toggle_button.h",
       ]
     }
   }
@@ -522,6 +537,10 @@ source_set("ui") {
       "views/toolbar/wallet_button.h",
       "wallet_bubble_manager_delegate_impl.cc",
       "wallet_bubble_manager_delegate_impl.h",
+      "webui/brave_wallet/page_handler/wallet_page_handler.cc",
+      "webui/brave_wallet/page_handler/wallet_page_handler.h",
+      "webui/brave_wallet/wallet_common_ui.cc",
+      "webui/brave_wallet/wallet_common_ui.h",
       "webui/brave_wallet/wallet_page_ui.cc",
       "webui/brave_wallet/wallet_page_ui.h",
       "webui/brave_wallet/wallet_panel_ui.cc",
@@ -531,7 +550,6 @@ source_set("ui") {
       "//brave/browser/brave_wallet:tab_helper",
       "//brave/browser/ui/brave_wallet",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
-      "//brave/browser/ui/webui/brave_wallet/page_handler",
       "//brave/browser/ui/webui/brave_wallet/panel_handler",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",

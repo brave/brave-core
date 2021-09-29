@@ -8,8 +8,8 @@
 #include <map>
 #include <string>
 
-#include "bat/ads/ads_history_info.h"
-#include "bat/ads/internal/logging.h"
+#include "base/notreached.h"
+#include "bat/ads/ad_history_info.h"
 
 namespace ads {
 

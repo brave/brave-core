@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/platform/platform_helper_linux.h"
 
+#include "base/memory/singleton.h"
+
 namespace ads {
 
 PlatformHelperLinux::PlatformHelperLinux() = default;

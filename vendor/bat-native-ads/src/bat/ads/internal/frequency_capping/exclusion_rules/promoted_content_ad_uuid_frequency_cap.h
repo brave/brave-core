@@ -8,17 +8,15 @@
 
 #include <string>
 
-#include "bat/ads/internal/ad_events/ad_event_info.h"
+#include "bat/ads/ad_info.h"
+#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
 
-struct AdInfo;
-
-class PromotedContentAdUuidFrequencyCap : public ExclusionRule<AdInfo> {
+class PromotedContentAdUuidFrequencyCap final : public ExclusionRule<AdInfo> {
  public:
   explicit PromotedContentAdUuidFrequencyCap(const AdEventList& ad_events);
-
   ~PromotedContentAdUuidFrequencyCap() override;
 
   PromotedContentAdUuidFrequencyCap(const PromotedContentAdUuidFrequencyCap&) =
@@ -28,7 +26,7 @@ class PromotedContentAdUuidFrequencyCap : public ExclusionRule<AdInfo> {
 
   bool ShouldExclude(const AdInfo& ad) override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   AdEventList ad_events_;

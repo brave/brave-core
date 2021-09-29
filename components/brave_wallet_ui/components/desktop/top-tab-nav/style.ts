@@ -6,21 +6,18 @@ export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   margin-bottom: 20px;
 `
 
 export const MoreRow = styled.div`
+  flex: 1;
   display: flex;
-  width: 100%;
   align-items: flex-end;
   justify-content: center;
   flex-direction: column;
-  outline: none;
   padding: 10px 0px 0px 0px;
-  border: none;
-  background: none;
 `
 
 export const Line = styled.div`

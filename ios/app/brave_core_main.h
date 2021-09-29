@@ -10,10 +10,9 @@
 
 @class BraveBookmarksAPI;
 @class BraveHistoryAPI;
+@class BraveSyncAPI;
 @class BraveSyncProfileServiceIOS;
-@protocol BraveWalletKeyringController;
-@protocol BraveWalletAssetRatioController;
-@protocol BraveWalletEthJsonRpcController;
+@protocol BraveWalletERCTokenRegistry;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,31 +25,26 @@ typedef bool (^BraveCoreLogHandler)(int severity,
 OBJC_EXPORT
 @interface BraveCoreMain : NSObject
 
-@property(nullable, nonatomic, readonly) BraveBookmarksAPI* bookmarksAPI;
+@property(nonatomic, readonly) BraveBookmarksAPI* bookmarksAPI;
 
-@property(nullable, nonatomic, readonly) BraveHistoryAPI* historyAPI;
+@property(nonatomic, readonly) BraveHistoryAPI* historyAPI;
 
-@property(nullable, nonatomic, readonly)
-    BraveSyncProfileServiceIOS* syncProfileService;
+@property(nonatomic, readonly) BraveSyncAPI* syncAPI;
+
+@property(nonatomic, readonly) BraveSyncProfileServiceIOS* syncProfileService;
 
 + (void)setLogHandler:(nullable BraveCoreLogHandler)logHandler;
 
-- (instancetype)init;
+- (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithSyncServiceURL:(NSString*)syncServiceURL;
+- (instancetype)initWithUserAgent:(NSString*)userAgent;
+
+- (instancetype)initWithUserAgent:(NSString*)userAgent
+                   syncServiceURL:(NSString*)syncServiceURL;
 
 - (void)scheduleLowPriorityStartupTasks;
 
-- (void)setUserAgent:(NSString*)userAgent;
-
-@property(nonatomic, readonly) id<BraveWalletKeyringController>
-    keyringController;
-
-@property(nonatomic, readonly) id<BraveWalletAssetRatioController>
-    assetRatioController;
-
-@property(nonatomic, readonly) id<BraveWalletEthJsonRpcController>
-    ethJsonRpcController;
+@property(class, readonly) id<BraveWalletERCTokenRegistry> ercTokenRegistry;
 
 @end
 

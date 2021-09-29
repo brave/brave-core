@@ -5,6 +5,7 @@
 
 import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/binance/sources.gni")
+import("//brave/browser/brave_adaptive_captcha/sources.gni")
 import("//brave/browser/brave_rewards/sources.gni")
 import("//brave/browser/brave_shields/sources.gni")
 import("//brave/browser/brave_stats/sources.gni")
@@ -12,6 +13,7 @@ import("//brave/browser/brave_vpn/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
 import("//brave/browser/component_updater/sources.gni")
 import("//brave/browser/crypto_dot_com/sources.gni")
+import("//brave/browser/debounce/sources.gni")
 import("//brave/browser/decentralized_dns/sources.gni")
 import("//brave/browser/download/sources.gni")
 import("//brave/browser/ephemeral_storage/sources.gni")
@@ -28,6 +30,7 @@ import("//brave/browser/themes/sources.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -107,6 +110,7 @@ brave_chrome_browser_deps = [
   "//brave/common:pref_names",
   "//brave/common:switches",
   "//brave/components/binance/browser/buildflags",
+  "//brave/components/brave_adaptive_captcha/buildflags",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/common",
   "//brave/components/brave_federated_learning",
@@ -122,6 +126,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_sync:network_time_helper",
   "//brave/components/brave_sync:prefs",
   "//brave/components/brave_talk",
+  "//brave/components/brave_vpn/buildflags",
   "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/brave_wayback_machine:buildflags",
   "//brave/components/brave_webtorrent/browser/buildflags",
@@ -212,6 +217,10 @@ if (brave_wallet_enabled) {
   ]
 }
 
+if (enable_brave_vpn) {
+  brave_chrome_browser_deps += [ "//brave/components/brave_vpn" ]
+}
+
 if (ethereum_remote_client_enabled) {
   brave_chrome_browser_deps +=
       [ "//brave/browser/ethereum_remote_client:browser" ]
@@ -244,6 +253,10 @@ if (is_android) {
     "//brave/components/weekly_storage",
     "//components/infobars/content",
   ]
+}
+
+if (brave_adaptive_captcha_enabled) {
+  brave_chrome_browser_deps += [ "//brave/browser/brave_ads/tooltips" ]
 }
 
 if (enable_sidebar) {
@@ -288,6 +301,7 @@ if (enable_widevine) {
   ]
   brave_chrome_browser_deps += [
     "//brave/browser/widevine",
+    "//brave/browser/widevine:constants",
     "//brave/components/brave_drm",
   ]
 }
@@ -324,6 +338,7 @@ brave_chrome_browser_defines = []
 
 brave_chrome_browser_sources += brave_browser_autocomplete_sources
 brave_chrome_browser_sources += brave_browser_binance_sources
+brave_chrome_browser_sources += brave_browser_brave_adaptive_captcha_sources
 brave_chrome_browser_sources += brave_browser_brave_vpn_sources
 brave_chrome_browser_sources += brave_browser_brave_rewards_sources
 brave_chrome_browser_sources += brave_browser_brave_shields_sources
@@ -331,6 +346,7 @@ brave_chrome_browser_sources += brave_browser_brave_stats_updater_sources
 brave_chrome_browser_sources += brave_browser_browsing_data_sources
 brave_chrome_browser_sources += brave_browser_component_updater_sources
 brave_chrome_browser_sources += brave_browser_crypto_dot_com_sources
+brave_chrome_browser_sources += brave_browser_debounce_sources
 brave_chrome_browser_sources += brave_browser_decentralized_dns_sources
 brave_chrome_browser_sources += brave_browser_download_sources
 brave_chrome_browser_sources += brave_browser_ephemeral_storage_sources
@@ -346,6 +362,7 @@ brave_chrome_browser_sources += brave_browser_themes_sources
 
 brave_chrome_browser_deps += brave_browser_autocomplete_deps
 brave_chrome_browser_deps += brave_browser_binance_deps
+brave_chrome_browser_deps += brave_browser_brave_adaptive_captcha_deps
 brave_chrome_browser_deps += brave_browser_brave_vpn_deps
 brave_chrome_browser_deps += brave_browser_brave_rewards_deps
 brave_chrome_browser_deps += brave_browser_brave_shields_deps
@@ -353,6 +370,7 @@ brave_chrome_browser_deps += brave_browser_brave_stats_updater_deps
 brave_chrome_browser_deps += brave_browser_browsing_data_deps
 brave_chrome_browser_deps += brave_browser_component_updater_deps
 brave_chrome_browser_deps += brave_browser_crypto_dot_com_deps
+brave_chrome_browser_deps += brave_browser_debounce_deps
 brave_chrome_browser_deps += brave_browser_decentralized_dns_deps
 brave_chrome_browser_deps += brave_browser_download_deps
 brave_chrome_browser_deps += brave_browser_ephemeral_storage_deps

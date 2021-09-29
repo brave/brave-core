@@ -1,8 +1,8 @@
 diff --git a/components/translate/core/browser/BUILD.gn b/components/translate/core/browser/BUILD.gn
-index c9415a06f38e7120244ea91ddb0cb87bdba2fa3f..c55f49c5e239b2fd19fffecd64bf7a4795cce09d 100644
+index ebf718409b2eab70d889addbf828d3ab646dc1fb..f3fbc4fb5bb4ff7532fff3f5751dce10139220a1 100644
 --- a/components/translate/core/browser/BUILD.gn
 +++ b/components/translate/core/browser/BUILD.gn
-@@ -86,6 +86,7 @@ static_library("browser") {
+@@ -85,6 +85,7 @@ static_library("browser") {
      ]
      deps += [ "//components/infobars/core" ]
    }

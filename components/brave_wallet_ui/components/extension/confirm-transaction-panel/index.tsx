@@ -1,11 +1,19 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
-import { WalletAccountType, Network, TransactionPanelPayload } from '../../../constants/types'
+import {
+  WalletAccountType,
+  EthereumChain,
+  TransactionInfo,
+  TransactionType,
+  AssetPriceInfo,
+  TokenInfo
+} from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
-import { NetworkOptions } from '../../../options/network-options'
+import { reduceNetworkDisplayName } from '../../../utils/network-utils'
+import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import locale from '../../../constants/locale'
-import { formatBalance, formatFiatBalance } from '../../../utils/format-balances'
-import { NavButton } from '../'
+import { formatBalance, formatGasFee, formatFiatGasFee, formatFiatBalance } from '../../../utils/format-balances'
+import { NavButton, PanelTab, TransactionDetailBox, EditGas } from '../'
 
 // Styled Components
 import {
@@ -23,48 +31,79 @@ import {
   TransactionTypeText,
   TransactionText,
   ButtonRow,
-  MoreButton,
   AccountCircleWrapper,
   ArrowIcon,
   FromToRow,
   Divider,
   SectionRow,
   SectionRightColumn,
-  EditButton
+  EditButton,
+  MessageBoxRow,
+  FiatRow,
+  FavIcon,
+  URLText
 } from './style'
 
+import {
+  TabRow,
+  Description,
+  PanelTitle,
+  AccountCircle,
+  AddressAndOrb,
+  AddressText
+} from '../shared-panel-styles'
+
+export type confirmPanelTabs = 'transaction' | 'details'
+
 export interface Props {
-  selectedAccount: WalletAccountType
-  transactionPayload: TransactionPanelPayload
-  selectedNetwork: Network
+  accounts: WalletAccountType[]
+  visibleTokens: TokenInfo[]
+  transactionInfo: TransactionInfo
+  selectedNetwork: EthereumChain
+  transactionSpotPrices: AssetPriceInfo[]
   onConfirm: () => void
   onReject: () => void
-  onClickMore: () => void
 }
 
 function ConfirmTransactionPanel (props: Props) {
   const {
-    selectedAccount,
+    accounts,
     selectedNetwork,
-    transactionPayload,
+    transactionInfo,
+    visibleTokens,
+    transactionSpotPrices,
     onConfirm,
-    onReject,
-    onClickMore
+    onReject
   } = props
 
-  const fromOrb = React.useMemo(() => {
-    return create({ seed: selectedAccount.address, size: 8, scale: 16 }).toDataURL()
-  }, [selectedAccount.address])
+  const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
+  const [isEditing, setIsEditing] = React.useState<boolean>(false)
 
-  const toOrb = React.useMemo(() => {
-    return create({ seed: transactionPayload.toAddress, size: 8, scale: 10 }).toDataURL()
-  }, [transactionPayload])
+  const findTokenInfo = (contractAddress: string) => {
+    return visibleTokens.find((account) => account.contractAddress.toLowerCase() === contractAddress.toLowerCase())
+  }
 
-  const formatedAmounts = React.useMemo(() => {
-    const sendAmount = formatBalance(transactionPayload.transactionAmount, transactionPayload.erc20Token.decimals)
-    const sendFiatAmount = formatFiatBalance(transactionPayload.transactionAmount, transactionPayload.erc20Token.decimals, transactionPayload.tokenPrice)
-    const gasAmount = formatBalance(transactionPayload.transactionGas, 18)
-    const gasFiatAmount = formatFiatBalance(transactionPayload.transactionGas, 18, transactionPayload.ethPrice)
+  const findSpotPrice = (symbol: string) => {
+    return transactionSpotPrices.find((token) => token.fromAsset.toLowerCase() === symbol.toLowerCase())
+  }
+
+  // Will remove this hardcoded value once we know
+  // where the site info will be coming from.
+  const siteURL = 'https://app.compound.finance'
+
+  const getTransactionPriceDisplayInfo = (
+    gasPrice: string,
+    gasLimit: string,
+    network: EthereumChain,
+    networkPrice: string,
+    sendValue: string,
+    sendDecimals: number,
+    sendPrice: string
+  ) => {
+    const sendAmount = formatBalance(sendValue, sendDecimals)
+    const sendFiatAmount = formatFiatBalance(sendValue, sendDecimals, sendPrice)
+    const gasAmount = formatGasFee(gasPrice, gasLimit, network.decimals)
+    const gasFiatAmount = formatFiatGasFee(gasAmount, networkPrice)
     const grandTotalFiatAmount = Number(sendFiatAmount) + Number(gasFiatAmount)
     return {
       sendAmount,
@@ -73,58 +112,197 @@ function ConfirmTransactionPanel (props: Props) {
       gasFiatAmount,
       grandTotalFiatAmount
     }
-  }, [transactionPayload])
+  }
+
+  const transaction = React.useMemo(() => {
+    const { txType, txArgs } = transactionInfo
+    const { baseData } = transactionInfo.txData
+    const { gasPrice, gasLimit, value, data, to } = baseData
+    const networkPrice = findSpotPrice(selectedNetwork.symbol)?.price ?? ''
+    const ERC20Token = findTokenInfo(to)
+    const ERC20TokenDecimals = ERC20Token?.decimals ?? 18
+    const ERC20TokenPrice = findSpotPrice(ERC20Token?.symbol ?? '')?.price ?? ''
+    const hasNoData = data.length === 0
+    if (txType === TransactionType.ERC20Transfer || txType === TransactionType.ERC20Approve) {
+      const priceInfo = getTransactionPriceDisplayInfo(
+        gasPrice,
+        gasLimit,
+        selectedNetwork,
+        networkPrice,
+        txArgs[1],
+        ERC20TokenDecimals,
+        ERC20TokenPrice
+      )
+      return {
+        sendTo: txArgs[0],
+        symbol: ERC20Token?.symbol ?? '',
+        hasNoData,
+        ...priceInfo
+      }
+    } else {
+      const priceInfo = getTransactionPriceDisplayInfo(
+        gasPrice,
+        gasLimit,
+        selectedNetwork,
+        networkPrice,
+        value,
+        selectedNetwork.decimals,
+        networkPrice
+      )
+      return {
+        sendTo: to,
+        symbol: selectedNetwork.symbol,
+        hasNoData,
+        ...priceInfo
+      }
+    }
+  }, [transactionInfo, transactionSpotPrices])
+
+  const onSelectTab = (tab: confirmPanelTabs) => () => {
+    setSelectedTab(tab)
+  }
+
+  const findAccountName = (address: string) => {
+    return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
+  }
+
+  const fromOrb = React.useMemo(() => {
+    return create({ seed: transactionInfo.fromAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [transactionInfo])
+
+  const toOrb = React.useMemo(() => {
+    return create({ seed: transaction.sendTo.toLowerCase(), size: 8, scale: 10 }).toDataURL()
+  }, [transactionInfo])
+
+  const onToggleEditGas = () => {
+    setIsEditing(!isEditing)
+  }
+
+  const onSaveGasPrice = () => {
+    // Logic here to save gas prices
+  }
 
   return (
-    <StyledWrapper>
-      <TopRow>
-        <NetworkText>{NetworkOptions[selectedNetwork].abbr}</NetworkText>
-        <MoreButton onClick={onClickMore} />
-      </TopRow>
-      <AccountCircleWrapper>
-        <FromCircle orb={fromOrb} />
-        <ToCircle orb={toOrb} />
-      </AccountCircleWrapper>
-      <FromToRow>
-        <AccountNameText>{selectedAccount.name}</AccountNameText>
-        <ArrowIcon />
-        <AccountNameText>{reduceAddress(transactionPayload.toAddress)}</AccountNameText>
-      </FromToRow>
-      <TransactionTypeText>{locale.confrimTransactionBid}</TransactionTypeText>
-      <TransactionAmmountBig>{formatedAmounts.sendAmount} {transactionPayload.erc20Token.symbol}</TransactionAmmountBig>
-      <TransactionFiatAmountBig>${formatedAmounts.sendFiatAmount}</TransactionFiatAmountBig>
-      <MessageBox>
-        <SectionRow>
-          <TransactionTitle>{locale.confirmTransactionGasFee}</TransactionTitle>
-          <SectionRightColumn>
-            <EditButton>{locale.allowSpendEditButton}</EditButton>
-            <TransactionTypeText>{formatedAmounts.gasAmount} ETH</TransactionTypeText>
-            <TransactionText>${formatedAmounts.gasFiatAmount}</TransactionText>
-          </SectionRightColumn>
-        </SectionRow>
-        <Divider />
-        <SectionRow>
-          <TransactionTitle>{locale.confirmTransactionTotal}</TransactionTitle>
-          <SectionRightColumn>
-            <TransactionText>{locale.confirmTransactionAmountGas}</TransactionText>
-            <GrandTotalText>{formatedAmounts.sendAmount} {transactionPayload.erc20Token.symbol} + {formatedAmounts.gasAmount} ETH</GrandTotalText>
-            <TransactionText>${formatedAmounts.grandTotalFiatAmount}</TransactionText>
-          </SectionRightColumn>
-        </SectionRow>
-      </MessageBox>
-      <ButtonRow>
-        <NavButton
-          buttonType='reject'
-          text={locale.allowSpendRejectButton}
-          onSubmit={onReject}
+    <>
+      {isEditing ? (
+        <EditGas
+          transactionInfo={transactionInfo}
+          onCancel={onToggleEditGas}
+          networkSpotPrice={findSpotPrice(selectedNetwork.symbol.toLowerCase())?.price ?? ''}
+          selectedNetwork={selectedNetwork}
+          onSave={onSaveGasPrice}
         />
-        <NavButton
-          buttonType='confirm'
-          text={locale.allowSpendConfirmButton}
-          onSubmit={onConfirm}
-        />
-      </ButtonRow>
-    </StyledWrapper>
+      ) : (
+        <StyledWrapper>
+          <TopRow>
+            <NetworkText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</NetworkText>
+            {transactionInfo.txType === TransactionType.ERC20Approve &&
+              <AddressAndOrb>
+                <AddressText>{reduceAddress(transaction.sendTo)}</AddressText>
+                <AccountCircle orb={toOrb} />
+              </AddressAndOrb>
+            }
+          </TopRow>
+          {transactionInfo.txType === TransactionType.ERC20Approve ? (
+            <>
+              <FavIcon src={`chrome://favicon/size/64@1x/${siteURL}`} />
+              <URLText>{siteURL}</URLText>
+              <PanelTitle>{locale.allowSpendTitle} {transaction.symbol}?</PanelTitle>
+              {/* Will need to allow parameterized locales by introducing the "t" helper. For ex: {t(locale.allowSpendDescription, [spendPayload.erc20Token.symbol])}*/}
+              <Description>{locale.allowSpendDescriptionFirstHalf}{transaction.symbol}{locale.allowSpendDescriptionSecondHalf}</Description>
+            </>
+          ) : (
+            <>
+              <AccountCircleWrapper>
+                <FromCircle orb={fromOrb} />
+                <ToCircle orb={toOrb} />
+              </AccountCircleWrapper>
+              <FromToRow>
+                <AccountNameText>{reduceAccountDisplayName(findAccountName(transactionInfo.fromAddress) ?? '', 11)}</AccountNameText>
+                <ArrowIcon />
+                <AccountNameText>{reduceAddress(transaction.sendTo)}</AccountNameText>
+              </FromToRow>
+              <TransactionTypeText>{locale.send}</TransactionTypeText>
+              <TransactionAmmountBig>{transaction.sendAmount} {transaction.symbol}</TransactionAmmountBig>
+              <TransactionFiatAmountBig>${transaction.sendFiatAmount}</TransactionFiatAmountBig>
+            </>
+          )}
+          <TabRow>
+            <PanelTab
+              isSelected={selectedTab === 'transaction'}
+              onSubmit={onSelectTab('transaction')}
+              text='Transaction'
+            />
+            <PanelTab
+              isSelected={selectedTab === 'details'}
+              onSubmit={onSelectTab('details')}
+              text='Details'
+            />
+          </TabRow>
+          <MessageBox isDetails={selectedTab === 'details'} isApprove={transactionInfo.txType === TransactionType.ERC20Approve}>
+            {selectedTab === 'transaction' ? (
+              <>
+                {transactionInfo.txType === TransactionType.ERC20Approve &&
+                  <>
+                    <MessageBoxRow>
+                      <TransactionTitle>{locale.allowSpendTransactionFee}</TransactionTitle>
+                      {/* Disabled until wired up to the API*/}
+                      <EditButton disabled={true} onClick={onToggleEditGas} >{locale.allowSpendEditButton}</EditButton>
+                    </MessageBoxRow>
+                    <FiatRow>
+                      <TransactionTypeText>{transaction.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
+                    </FiatRow>
+                    <FiatRow>
+                      <TransactionText>${transaction.gasFiatAmount}</TransactionText>
+                    </FiatRow>
+                  </>
+                }
+                {transactionInfo.txType !== TransactionType.ERC20Approve &&
+                  <>
+                    <SectionRow>
+                      <TransactionTitle>{locale.confirmTransactionGasFee}</TransactionTitle>
+                      <SectionRightColumn>
+                        {/* Disabled until wired up to the API*/}
+                        <EditButton disabled={true} onClick={onToggleEditGas}>{locale.allowSpendEditButton}</EditButton>
+                        <TransactionTypeText>{transaction.gasAmount} {selectedNetwork.symbol}</TransactionTypeText>
+                        <TransactionText>${transaction.gasFiatAmount}</TransactionText>
+                      </SectionRightColumn>
+                    </SectionRow>
+                    <Divider />
+                    <SectionRow>
+                      <TransactionTitle>{locale.confirmTransactionTotal}</TransactionTitle>
+                      <SectionRightColumn>
+                        <TransactionText>{locale.confirmTransactionAmountGas}</TransactionText>
+                        <GrandTotalText>{transaction.sendAmount} {transaction.symbol} + {transaction.gasAmount} {selectedNetwork.symbol}</GrandTotalText>
+                        <TransactionText>${transaction.grandTotalFiatAmount.toFixed(2)}</TransactionText>
+                      </SectionRightColumn>
+                    </SectionRow>
+                  </>
+                }
+              </>
+            ) : (
+              <TransactionDetailBox
+                hasNoData={transaction.hasNoData}
+                transactionInfo={transactionInfo}
+              />
+            )}
+          </MessageBox>
+          <ButtonRow>
+            <NavButton
+              buttonType='reject'
+              text={locale.allowSpendRejectButton}
+              onSubmit={onReject}
+            />
+            <NavButton
+              buttonType='confirm'
+              text={locale.allowSpendConfirmButton}
+              onSubmit={onConfirm}
+            />
+          </ButtonRow>
+        </StyledWrapper>
+      )}
+    </>
+
   )
 }
 

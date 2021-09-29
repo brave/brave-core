@@ -42,44 +42,31 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
   std::vector<brave_wallet::mojom::AssetPricePtr> prices;
   ASSERT_TRUE(ParseAssetPrice(json, {"bat", "link"}, {"btc", "usd"}, &prices));
   ASSERT_EQ(prices.size(), 4UL);
-  ASSERT_EQ(prices[0]->from_asset, "bat");
-  ASSERT_EQ(prices[0]->to_asset, "btc");
-  ASSERT_EQ(prices[0]->price, "0.00001732");
-  ASSERT_EQ(prices[0]->asset_timeframe_change, "8.021672460190562");
+  EXPECT_EQ(prices[0]->from_asset, "bat");
+  EXPECT_EQ(prices[0]->to_asset, "btc");
+  EXPECT_EQ(prices[0]->price, "0.00001732");
+  EXPECT_EQ(prices[0]->asset_timeframe_change, "8.021672460190562");
 
-  ASSERT_EQ(prices[1]->from_asset, "bat");
-  ASSERT_EQ(prices[1]->to_asset, "usd");
-  ASSERT_EQ(prices[1]->price, "0.55393");
-  ASSERT_EQ(prices[1]->asset_timeframe_change, "9.523443444373276");
+  EXPECT_EQ(prices[1]->from_asset, "bat");
+  EXPECT_EQ(prices[1]->to_asset, "usd");
+  EXPECT_EQ(prices[1]->price, "0.55393");
+  EXPECT_EQ(prices[1]->asset_timeframe_change, "9.523443444373276");
 
-  ASSERT_EQ(prices[2]->from_asset, "link");
-  ASSERT_EQ(prices[2]->to_asset, "btc");
-  ASSERT_EQ(prices[2]->price, "0.00261901");
-  ASSERT_EQ(prices[2]->asset_timeframe_change, "0.5871625385632929");
+  EXPECT_EQ(prices[2]->from_asset, "link");
+  EXPECT_EQ(prices[2]->to_asset, "btc");
+  EXPECT_EQ(prices[2]->price, "0.00261901");
+  EXPECT_EQ(prices[2]->asset_timeframe_change, "0.5871625385632929");
 
-  ASSERT_EQ(prices[3]->from_asset, "link");
-  ASSERT_EQ(prices[3]->to_asset, "usd");
-  ASSERT_EQ(prices[3]->price, "83.77");
-  ASSERT_EQ(prices[3]->asset_timeframe_change, "1.7646208048244043");
+  EXPECT_EQ(prices[3]->from_asset, "link");
+  EXPECT_EQ(prices[3]->to_asset, "usd");
+  EXPECT_EQ(prices[3]->price, "83.77");
+  EXPECT_EQ(prices[3]->asset_timeframe_change, "1.7646208048244043");
 
-  /*
-  ASSERT_EQ(price, "0.694503");
-  // 2 value responses happen now for the alias and the full name
-  // We always parse only the first.
-  json =
-      R"({"payload":{"basic-attention-token":{"usd":0.694504},"bat":{"usd":0.529011}}})";
-  ASSERT_TRUE(ParseAssetPrice(json, &price));
-  ASSERT_EQ(price, "0.694504");
-  // Invalid input
-  json = R"({"payload":{"basic-attention-token": 3}})";
-  ASSERT_FALSE(ParseAssetPrice(json, &price));
-  json = "3";
-  ASSERT_FALSE(ParseAssetPrice(json, &price));
-  json = "[3]";
-  ASSERT_FALSE(ParseAssetPrice(json, &price));
-  json = "";
-  ASSERT_FALSE(ParseAssetPrice(json, &price));
-  */
+  // Unexpected json for inputs
+  EXPECT_FALSE(
+      ParseAssetPrice(json, {"A1", "A2", "A3"}, {"B1", "B2", "B3"}, &prices));
+  EXPECT_FALSE(ParseAssetPrice(json, {"A1"}, {"B1", "B2"}, &prices));
+  EXPECT_FALSE(ParseAssetPrice(json, {"A1", "A2"}, {"B1"}, &prices));
 }
 
 TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
@@ -97,30 +84,30 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
   std::vector<brave_wallet::mojom::AssetTimePricePtr> values;
   ASSERT_TRUE(ParseAssetPriceHistory(json, &values));
   ASSERT_EQ(values.size(), 2UL);
-  ASSERT_EQ(values[0]->price, "0.8201346624954003");
+  EXPECT_EQ(values[0]->price, "0.8201346624954003");
   base::Time date = base::Time::FromJsTime(values[0]->date.InMilliseconds());
   base::Time::Exploded exploded_time;
   date.UTCExplode(&exploded_time);
-  ASSERT_EQ(exploded_time.year, 2021);
-  ASSERT_EQ(exploded_time.month, 6);
-  ASSERT_EQ(exploded_time.day_of_month, 3);
+  EXPECT_EQ(exploded_time.year, 2021);
+  EXPECT_EQ(exploded_time.month, 6);
+  EXPECT_EQ(exploded_time.day_of_month, 3);
 
-  ASSERT_EQ(values[1]->price, "0.8096978545029869");
+  EXPECT_EQ(values[1]->price, "0.8096978545029869");
   base::Time date1 = base::Time::FromJsTime(values[1]->date.InMilliseconds());
   date1.UTCExplode(&exploded_time);
-  ASSERT_EQ(exploded_time.year, 2021);
-  ASSERT_EQ(exploded_time.month, 6);
-  ASSERT_EQ(exploded_time.day_of_month, 3);
+  EXPECT_EQ(exploded_time.year, 2021);
+  EXPECT_EQ(exploded_time.month, 6);
+  EXPECT_EQ(exploded_time.day_of_month, 3);
 
   // Invalid input
   json = R"({"market_caps": []})";
-  ASSERT_FALSE(ParseAssetPriceHistory(json, &values));
+  EXPECT_FALSE(ParseAssetPriceHistory(json, &values));
   json = "3";
-  ASSERT_FALSE(ParseAssetPriceHistory(json, &values));
+  EXPECT_FALSE(ParseAssetPriceHistory(json, &values));
   json = "[3]";
-  ASSERT_FALSE(ParseAssetPriceHistory(json, &values));
+  EXPECT_FALSE(ParseAssetPriceHistory(json, &values));
   json = "";
-  ASSERT_FALSE(ParseAssetPriceHistory(json, &values));
+  EXPECT_FALSE(ParseAssetPriceHistory(json, &values));
 }
 
 }  // namespace brave_wallet

@@ -14,6 +14,7 @@ namespace features {
 extern const base::Feature kAdServing;
 
 bool IsAdServingEnabled();
+int GetAdServingVersion();
 
 int GetDefaultAdNotificationsPerHour();
 int GetMaximumAdNotificationsPerDay();

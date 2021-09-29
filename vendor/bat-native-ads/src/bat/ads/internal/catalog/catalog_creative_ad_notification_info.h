@@ -6,14 +6,12 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_CREATIVE_AD_NOTIFICATION_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_CREATIVE_AD_NOTIFICATION_INFO_H_
 
-#include <vector>
-
 #include "bat/ads/internal/catalog/catalog_ad_notification_payload_info.h"
 #include "bat/ads/internal/catalog/catalog_creative_info.h"
 
 namespace ads {
 
-struct CatalogCreativeAdNotificationInfo : CatalogCreativeInfo {
+struct CatalogCreativeAdNotificationInfo final : CatalogCreativeInfo {
   CatalogCreativeAdNotificationInfo();
   CatalogCreativeAdNotificationInfo(
       const CatalogCreativeAdNotificationInfo& info);
@@ -24,9 +22,6 @@ struct CatalogCreativeAdNotificationInfo : CatalogCreativeInfo {
 
   CatalogAdNotificationPayloadInfo payload;
 };
-
-using CatalogCreativeAdNotificationList =
-    std::vector<CatalogCreativeAdNotificationInfo>;
 
 }  // namespace ads
 

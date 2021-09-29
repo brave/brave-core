@@ -96,14 +96,24 @@ export const _Onboarding = () => {
     console.log('Would Show Restore Page')
   }
 
+  const onSetImportError = (hasError: boolean) => {
+    // Does nothing here
+  }
+
   return (
     <WalletPageLayout>
       <WalletSubViewLayout>
         <Onboarding
+          hasImportError={false}
           recoveryPhrase={recoveryPhrase}
           onSubmit={complete}
           onPasswordProvided={passwordProvided}
           onShowRestore={onShowRestor}
+          braveLegacyWalletDetected={true}
+          metaMaskWalletDetected={true}
+          onImportMetaMask={complete}
+          onImportCryptoWallets={complete}
+          onSetImportError={onSetImportError}
         />
       </WalletSubViewLayout>
     </WalletPageLayout>

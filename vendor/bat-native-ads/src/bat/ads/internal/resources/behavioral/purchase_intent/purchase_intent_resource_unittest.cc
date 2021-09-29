@@ -22,7 +22,7 @@ class BatAdsPurchaseIntentResourceTest : public UnitTestBase {
 
 TEST_F(BatAdsPurchaseIntentResourceTest, Load) {
   // Arrange
-  resource::PurchaseIntent resource;
+  PurchaseIntent resource;
 
   // Act
   resource.Load();

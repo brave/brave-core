@@ -7,28 +7,16 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_H_
 
 #include <cstdint>
-#include <functional>
-#include <memory>
 #include <string>
 #include <vector>
 
-#include "bat/ads/ad_notification_info.h"
+#include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
-using ResultCallback = std::function<void(const bool)>;
-
-using LoadCallback = std::function<void(const bool, const std::string&)>;
-
-using UrlRequestCallback = std::function<void(const mojom::UrlResponse&)>;
-
-using RunDBTransactionCallback =
-    std::function<void(mojom::DBCommandResponsePtr)>;
-
-using GetBrowsingHistoryCallback =
-    std::function<void(const std::vector<std::string>&)>;
+struct AdNotificationInfo;
 
 class ADS_EXPORT AdsClient {
  public:
@@ -62,10 +50,10 @@ class ADS_EXPORT AdsClient {
   // specified |timestamp|
   virtual void RecordAdEvent(const std::string& ad_type,
                              const std::string& confirmation_type,
-                             const uint64_t timestamp) const = 0;
+                             const double timestamp) const = 0;
 
   // Get a list of ad events for the specified |ad_type| and |confirmation_type|
-  virtual std::vector<uint64_t> GetAdEvents(
+  virtual std::vector<double> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const = 0;
 
@@ -104,6 +92,22 @@ class ADS_EXPORT AdsClient {
 
   // Should return the resource for given |id|
   virtual std::string LoadResourceForId(const std::string& id) = 0;
+
+  // Clears the currently scheduled captcha, if any
+  virtual void ClearScheduledCaptcha() = 0;
+
+  // Retrieves the captcha scheduled for the given |payment_id|, if
+  // any. If there is a scheduled captcha that the user must solve in
+  // order to proceed, |callback| will return the captcha id;
+  // otherwise, |callback| will return the empty string.
+  virtual void GetScheduledCaptcha(const std::string& payment_id,
+                                   GetScheduledCaptchaCallback callback) = 0;
+
+  // Show a notification indicating that a scheduled captcha with the given
+  // |captcha_id| must be solved to resume Ads for the given |payment_id|
+  virtual void ShowScheduledCaptchaNotification(
+      const std::string& payment_id,
+      const std::string& captcha_id) = 0;
 
   // Run database transaction. The callback takes one argument -
   // |mojom::DBCommandResponsePtr|

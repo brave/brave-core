@@ -15,15 +15,13 @@
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "sql/database.h"
-#include "sql/init_status.h"
 #include "sql/meta_table.h"
 
 namespace ads {
 
-class ADS_EXPORT Database {
+class ADS_EXPORT Database final {
  public:
   explicit Database(const base::FilePath& path);
-
   ~Database();
 
   Database(const Database&) = delete;

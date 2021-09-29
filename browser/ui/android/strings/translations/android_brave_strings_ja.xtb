@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">トラッカーや広告の読み込みやウェブページでの表示を防ぎます</translation>
 <translation id="1680858055899097121">セッション間でタブを保持しない</translation>
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
-<translation id="5469408008145872264">この完全に匿名化された情報は、Braveが特定の機能の全体的な使用状況を推定し、ユーザーエクスペリエンスを向上するために役立ちます。</translation>
+<translation id="4272190451231642425">クラッシュレポートを自動送信する</translation>
+<translation id="2239766974964486304">クラッシュレポートにより、すべてのユーザーのBrave製品の安定性を向上できます。</translation>
 <translation id="7977176350719484850">節約できた\n通信量 (推定)</translation>
 <translation id="9008534313521214777">節約できた\n時間(推定)</translation>
 <translation id="6572660632052512096">デスクトップモード</translation>
@@ -249,7 +250,7 @@
 <translation id="723054503945711909">Brave Software Inc.は、あなたがUpholdのアカウントを開設する際にUpholdに提供する個人情報の処理、保存、アクセスを行いません。</translation>
 <translation id="3699674790322420653">ウォレットの検証を完了</translation>
 <translation id="2193391216824305230">ユーザーウォレット</translation>
-<translation id="7591798679868259510">Upholdのアカウントに移動</translation>
+<translation id="6585020831163574892">Upholdアカウントを開く</translation>
 <translation id="9200453331904391567">Brave Rewardとの接続を解除する</translation>
 <translation id="6239274080752256452">資金を引き出す</translation>
 <translation id="8874184842967597500">未接続</translation>
@@ -444,7 +445,7 @@
 <translation id="7712287524451429139">クリエイターへの支援がもっと簡単に</translation>
 <translation id="105037569026952831">クリエイターは、私たちが「アテンション」として測定するあなたのエンゲージメントに基づいて、トークンの寄付を自動的に受け取ります。</translation>
 <translation id="5323267338679539010">チップでお礼を言おう</translation>
-<translation id="6730444165801605682">ティッピングとは、心から気に入っているコンテンツやクリエイターを個人的に応援したり、サポートしたりする1つの方法です。 チップを受けよう！</translation>
+<translation id="6730444165801605682">ティッピングとは、心から気に入っているコンテンツやクリエイターを個人的に応援したり、サポートしたりする1つの方法です。ぜひ ティッピングを行いましょう！</translation>
 <translation id="7509452925943421624">トークンで何ができますか？</translation>
 <translation id="5876169128756792273">トークンはクリエイターをサポートする以外にも使用できます。加盟店が参加すると、デジタルコンテンツやその他の商品を購入することができます。</translation>
 <translation id="1402530520078693620">最後に、基本設定を設定しましょう</translation>
@@ -457,7 +458,7 @@
 <translation id="3895246934788932488">Brave Rewardsを使用することで、あなたは自分のプライバシーを保護し、ウェブを誰にとってもより良い場所にするお手伝いをしています。そして、それは素晴らしいことです！</translation>
 <translation id="5705882733397021510">戻る</translation>
 <translation id="3985567919248057638">簡単な説明動画を見る</translation>
-<translation id="2434574859640694129">最初の広告の支払いを受け取ったら、戻ってきてこのクリエイターにチップを渡すことができます！</translation>
+<translation id="2434574859640694129">最初の広告の支払いを受け取ったら、ここからこのクリエイターにチップを渡すことができます！</translation>
 <translation id="207242986925259074">クイックリフレッシャーツアー</translation>
 <translation id="8342862030112839977">初めて報酬が支払われる日付:</translation>
 <translation id="3769645103175790584">閲覧中にトークンを獲得し、クリエイターの素晴らしいコンテンツに対して報酬を与えます。<ph name="QUICK_TOUR"/>。</translation>
@@ -479,13 +480,12 @@
 <translation id="1078265935778232285">Braveブラウザへようこそ</translation>
 <translation id="6824713633331856331">匿名での学習にご協力ください</translation>
 <translation id="6116685031674149112">Braveはあなたのプライバシーを保護し、以下へのあなたの同意に感謝します：</translation>
-<translation id="3971666849661839619">クラッシュレポートと完全に匿名化された
-<ph name="PRIVATE_PRODUCT_ANALYSIS"/>を送信することで、Braveの改善にご協力ください</translation>
-<translation id="6478996494082389936">プライベート製品分析。</translation>
+<translation id="4394483075076204916">完全に匿名化された<ph name="PRIVATE_PRODUCT_ANALYSIS"/>を送信して、Braveの改善にご協力ください</translation>
+<translation id="6478996494082389936">プライバシーを保護した製品分析</translation>
 <translation id="5187052478998910855">Rewardsについておさらいが必要ですか？</translation>
-<translation id="8622329973403382303">クイックツアーをご覧になり、Rewardsロックスターとして歴史に名を残すための仕組みについてブラッシュアップしてください！</translation>
+<translation id="8622329973403382303">クイックツアーをご覧になり、Rewardsの達人として歴史に名を残すための仕組みをマスターしてください！</translation>
 <translation id="8401711613788729448">あなたのプライバシーを保護するためにBraveですべてのリンクを開く</translation>
-<translation id="3184805785843994538">「Brave Shields（ブレイブ・シールド）」は、トラッカー＆広告をブロックし、データを保存し、あなたが訪問するすべてのサイトで時間を節約します。</translation>
+<translation id="3184805785843994538">「Brave Shields」は、トラッカーと広告をブロックし、データ通信量を節約し、あなたが訪問するすべてのサイトで時間を節約します。</translation>
 <translation id="8722651357687610395">Braveをデフォルトに設定</translation>
 <translation id="3479552764303398839">後で</translation>
 <translation id="4956847150856741762">1</translation>
@@ -563,14 +563,38 @@
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
 <translation id="745115390910697838">フレーズが一致しません。もう一度お試しください。</translation>
 <translation id="2360588547830602174">アカウントの復元に失敗しました。もう一度お試しください。</translation>
-<translation id="1530109021798294736">メインネット</translation>
 <translation id="990936698620790924">市場価格 (ETH)</translation>
+<translation id="5593852897152820572">ETH価格</translation>
 <translation id="6748108480210050150">送信元</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">最大 (推定)</translation>
+<translation id="6998989275928107238">送信先</translation>
+<translation id="6664416064035847539">アドレスまたはURL</translation>
 <translation id="59223531494896848">リミット</translation>
 <translation id="3567988240819868195">市場</translation>
 <translation id="632241521608275119">価格変動の許容値</translation>
+<translation id="4500473291496079954">有効期限:</translation>
+<translation id="1987317783729300807">アカウント</translation>
+<translation id="3535654229833214438">取引</translation>
+<translation id="4636930964841734540">情報</translation>
+<translation id="6284218950354553099">毎日の使用状況のpingをBraveに自動送信する</translation>
+<translation id="5288333155754958121">この匿名かつプライベートなPingにより、Braveはアクティブユーザーを推定することができます。</translation>
+<translation id="3819257035322786455">バックアップ</translation>
+<translation id="4608713693379664295">プライマリ仮想通貨アカウント</translation>
+<translation id="4003821417160006384">セカンダリアカウント</translation>
+<translation id="8094541587800369158">これらのアカウントは、ウェブ上の3つの分散型アプリケーションで使用し、ポートフォリオに表示することが可能ですが、プライマリアカウントのバックアップからリカバリフレーズを使用して復元できる必要があります。セカンダリアカウントを自動的に復元するには、Brave Syncアカウントを有効にします。</translation>
+<translation id="6725413948756358325">アカウント名</translation>
+<translation id="6062431965141524986">プライベートキーをインポートして、セカンダリアカウントを作成できます。</translation>
+<translation id="3952797765659730604">プライベートキーの文字列ファイルまたはJSONを入力、貼り付け、またはインポートします。</translation>
+<translation id="569068482611873351">インポート…</translation>
+<translation id="1940465339426637378">アセット</translation>
+<translation id="4522570452068850558">詳細</translation>
+<translation id="9065203028668620118">編集</translation>
+<translation id="3995184924764722477">アカウント詳細</translation>
+<translation id="8967036623785635603">公開アセットの編集</translation>
+<translation id="5050890334032852465">アカウントのウォッチリストを保存</translation>
+<translation id="7755766175599167100">トークンの検索</translation>
+<translation id="3835223348537121988">残高:</translation>
 </translationbundle>

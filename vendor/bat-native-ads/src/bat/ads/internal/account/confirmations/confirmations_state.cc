@@ -5,17 +5,21 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 
-#include <cstdint>
 #include <utility>
 
+#include "base/check_op.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/values.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/legacy_migration/legacy_migration_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 
 namespace ads {
@@ -113,28 +117,28 @@ void ConfirmationsState::Save() {
       });
 }
 
-CatalogIssuersInfo ConfirmationsState::get_catalog_issuers() const {
+CatalogIssuersInfo ConfirmationsState::GetCatalogIssuers() const {
   return catalog_issuers_;
 }
 
-void ConfirmationsState::set_catalog_issuers(
+void ConfirmationsState::SetCatalogIssuers(
     const CatalogIssuersInfo& catalog_issuers) {
   DCHECK(is_initialized_);
   catalog_issuers_ = catalog_issuers;
 }
 
-ConfirmationList ConfirmationsState::get_failed_confirmations() const {
+ConfirmationList ConfirmationsState::GetFailedConfirmations() const {
   DCHECK(is_initialized_);
   return failed_confirmations_;
 }
 
-void ConfirmationsState::append_failed_confirmation(
+void ConfirmationsState::AppendFailedConfirmation(
     const ConfirmationInfo& confirmation) {
   DCHECK(is_initialized_);
   failed_confirmations_.push_back(confirmation);
 }
 
-bool ConfirmationsState::remove_failed_confirmation(
+bool ConfirmationsState::RemoveFailedConfirmation(
     const ConfirmationInfo& confirmation) {
   DCHECK(is_initialized_);
 
@@ -153,36 +157,27 @@ bool ConfirmationsState::remove_failed_confirmation(
   return true;
 }
 
-TransactionList ConfirmationsState::get_transactions() const {
+TransactionList ConfirmationsState::GetTransactions() const {
   DCHECK(is_initialized_);
   return transactions_;
 }
 
-void ConfirmationsState::add_transaction(const TransactionInfo& transaction) {
+void ConfirmationsState::AppendTransaction(const TransactionInfo& transaction) {
   DCHECK(is_initialized_);
+#if !defined(OS_IOS)
   transactions_.push_back(transaction);
+#endif
 }
 
-base::Time ConfirmationsState::get_next_token_redemption_date() const {
+base::Time ConfirmationsState::GetNextTokenRedemptionDate() const {
   DCHECK(is_initialized_);
   return next_token_redemption_date_;
 }
 
-void ConfirmationsState::set_next_token_redemption_date(
+void ConfirmationsState::SetNextTokenRedemptionDate(
     const base::Time& next_token_redemption_date) {
   DCHECK(is_initialized_);
   next_token_redemption_date_ = next_token_redemption_date;
-}
-
-privacy::UnblindedTokens* ConfirmationsState::get_unblinded_tokens() const {
-  DCHECK(is_initialized_);
-  return unblinded_tokens_.get();
-}
-
-privacy::UnblindedTokens* ConfirmationsState::get_unblinded_payment_tokens()
-    const {
-  DCHECK(is_initialized_);
-  return unblinded_payment_tokens_.get();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -196,8 +191,8 @@ std::string ConfirmationsState::ToJson() {
 
   // Next token redemption date
   dictionary.SetKey("next_token_redemption_date_in_seconds",
-                    base::Value(std::to_string(static_cast<uint64_t>(
-                        next_token_redemption_date_.ToDoubleT()))));
+                    base::Value(base::NumberToString(
+                        next_token_redemption_date_.ToDoubleT())));
 
   // Confirmations
   base::Value failed_confirmations =
@@ -342,10 +337,10 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
 
     confirmation_dictionary.SetKey(
         "timestamp_in_seconds",
-        base::Value(std::to_string(confirmation.timestamp)));
+        base::Value(base::NumberToString(confirmation.created_at.ToDoubleT())));
 
     confirmation_dictionary.SetKey("created",
-                                   base::Value(confirmation.created));
+                                   base::Value(confirmation.was_created));
 
     list.Append(std::move(confirmation_dictionary));
   }
@@ -491,17 +486,18 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
     const std::string* timestamp =
         confirmation_dictionary->FindStringKey("timestamp_in_seconds");
     if (timestamp) {
-      int64_t timestamp_as_int64;
-      if (!base::StringToInt64(*timestamp, &timestamp_as_int64)) {
+      double timestamp_as_double;
+      if (!base::StringToDouble(*timestamp, &timestamp_as_double)) {
         continue;
       }
-      confirmation.timestamp = timestamp_as_int64;
+
+      confirmation.created_at = base::Time::FromDoubleT(timestamp_as_double);
     }
 
     // Created
     absl::optional<bool> created =
         confirmation_dictionary->FindBoolKey("created");
-    confirmation.created = created.value_or(true);
+    confirmation.was_created = created.value_or(true);
 
     new_failed_confirmations.push_back(confirmation);
   }
@@ -539,7 +535,7 @@ base::Value ConfirmationsState::GetTransactionsAsDictionary(
 
     transaction_dictionary.SetKey(
         "timestamp_in_seconds",
-        base::Value(std::to_string(transaction.timestamp)));
+        base::Value(base::NumberToString(transaction.timestamp)));
 
     transaction_dictionary.SetKey(
         "estimated_redemption_value",
@@ -585,16 +581,12 @@ bool ConfirmationsState::GetTransactionsFromDictionary(
     const std::string* timestamp =
         transaction_dictionary->FindStringKey("timestamp_in_seconds");
     if (timestamp) {
-      int64_t timestamp_as_int64;
-      if (!base::StringToInt64(*timestamp, &timestamp_as_int64)) {
+      if (!base::StringToDouble(*timestamp, &transaction.timestamp)) {
         continue;
       }
-
-      transaction.timestamp = MigrateTimestampToDoubleT(timestamp_as_int64);
     } else {
       // timestamp missing, fallback to default
-      transaction.timestamp =
-          static_cast<int64_t>(base::Time::Now().ToDoubleT());
+      transaction.timestamp = base::Time::Now().ToDoubleT();
     }
 
     // Estimated redemption value
@@ -626,6 +618,7 @@ bool ConfirmationsState::GetTransactionsFromDictionary(
 
 bool ConfirmationsState::ParseTransactionsFromDictionary(
     base::DictionaryValue* dictionary) {
+#if !defined(OS_IOS)
   DCHECK(dictionary);
 
   base::Value* transactions_dictionary =
@@ -637,6 +630,7 @@ bool ConfirmationsState::ParseTransactionsFromDictionary(
   if (!GetTransactionsFromDictionary(transactions_dictionary, &transactions_)) {
     return false;
   }
+#endif
 
   return true;
 }
@@ -651,12 +645,12 @@ bool ConfirmationsState::ParseNextTokenRedemptionDateFromDictionary(
     return false;
   }
 
-  uint64_t value_as_uint64;
-  if (!base::StringToUint64(*value, &value_as_uint64)) {
+  double value_as_double;
+  if (!base::StringToDouble(*value, &value_as_double)) {
     return false;
   }
 
-  next_token_redemption_date_ = base::Time::FromDoubleT(value_as_uint64);
+  next_token_redemption_date_ = base::Time::FromDoubleT(value_as_double);
 
   return true;
 }

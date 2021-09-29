@@ -11,8 +11,8 @@ export const root = styled.div`
   color: var(--brave-palette-neutral600);
   font-size: 14px;
   line-height: 18px;
-  margin-top: 15px;
-  padding: 25px 30px;
+  margin-top: 13px;
+  padding: 24px 30px;
   display: flex;
 
   button {
@@ -29,6 +29,11 @@ export const root = styled.div`
 
     &:active {
       color: var(--brave-color-brandBatInteracting);
+    }
+
+    &[disabled] {
+      cursor: default;
+      color: inherit;
     }
   }
 
@@ -50,11 +55,15 @@ export const root = styled.div`
     color: #999EA2;
 
     button:hover {
-      color: var(--brave-palette-grey000);
+      color: var(--brave-palette-grey100);
     }
 
     .selected button {
       color: var(--brave-palette-blurple400);
+    }
+
+    button[disabled] {
+      color: inherit;
     }
   }
 `

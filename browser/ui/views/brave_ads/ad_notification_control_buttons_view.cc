@@ -48,6 +48,12 @@ AdNotificationControlButtonsView::AdNotificationControlButtonsView(
 
 AdNotificationControlButtonsView::~AdNotificationControlButtonsView() = default;
 
+void AdNotificationControlButtonsView::OnThemeChanged() {
+  View::OnThemeChanged();
+
+  UpdateContent();
+}
+
 void AdNotificationControlButtonsView::UpdateContent() {
   UpdateInfoButton();
   UpdateCloseButton();
@@ -77,8 +83,6 @@ void AdNotificationControlButtonsView::CreateView() {
 void AdNotificationControlButtonsView::CreateInfoButton() {
   DCHECK(!info_button_);
   info_button_ = AddChildView(std::make_unique<PaddedImageView>());
-
-  UpdateInfoButton();
 }
 
 void AdNotificationControlButtonsView::UpdateInfoButton() {
@@ -99,8 +103,6 @@ void AdNotificationControlButtonsView::CreateCloseButton() {
 
   close_button_->SetAccessibleName(
       l10n_util::GetStringUTF16(IDS_BRAVE_ADS_AD_NOTIFICATION_CLOSE_BUTTON));
-
-  UpdateCloseButton();
 }
 
 void AdNotificationControlButtonsView::UpdateCloseButton() {

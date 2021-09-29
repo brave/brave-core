@@ -12,10 +12,9 @@
 
 namespace ads {
 
-class MediaFrequencyCap : public PermissionRule {
+class MediaFrequencyCap final : public PermissionRule {
  public:
   MediaFrequencyCap();
-
   ~MediaFrequencyCap() override;
 
   MediaFrequencyCap(const MediaFrequencyCap&) = delete;
@@ -23,7 +22,7 @@ class MediaFrequencyCap : public PermissionRule {
 
   bool ShouldAllow() override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   std::string last_message_;

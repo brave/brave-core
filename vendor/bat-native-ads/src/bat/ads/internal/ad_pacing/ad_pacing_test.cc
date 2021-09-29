@@ -5,11 +5,11 @@
 
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
 #include "net/http/http_status_code.h"
@@ -72,8 +72,8 @@ class BatAdsAdPacingTest : public UnitTestBase {
         "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
     creative_ad_notification.campaign_id =
         "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-    creative_ad_notification.start_at_timestamp = DistantPastAsTimestamp();
-    creative_ad_notification.end_at_timestamp = DistantFutureAsTimestamp();
+    creative_ad_notification.start_at = DistantPast();
+    creative_ad_notification.end_at = DistantFuture();
     creative_ad_notification.daily_cap = 1;
     creative_ad_notification.advertiser_id =
         "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
@@ -83,6 +83,7 @@ class BatAdsAdPacingTest : public UnitTestBase {
     creative_ad_notification.per_week = 4;
     creative_ad_notification.per_month = 5;
     creative_ad_notification.total_max = 6;
+    creative_ad_notification.value = 1.0;
     creative_ad_notification.segment = "untargeted";
     creative_ad_notification.geo_targets = {"US"};
     creative_ad_notification.target_url = "https://brave.com/1";
@@ -103,8 +104,8 @@ class BatAdsAdPacingTest : public UnitTestBase {
         "5800049f-cee5-4bcb-90c7-85246d5f5e7c";
     creative_ad_notification.campaign_id =
         "3d62eca2-324a-4161-a0c5-7d9f29d10ab0";
-    creative_ad_notification.start_at_timestamp = DistantPastAsTimestamp();
-    creative_ad_notification.end_at_timestamp = DistantFutureAsTimestamp();
+    creative_ad_notification.start_at = DistantPast();
+    creative_ad_notification.end_at = DistantFuture();
     creative_ad_notification.daily_cap = 1;
     creative_ad_notification.advertiser_id =
         "9a11b60f-e29d-4446-8d1f-318311e36e0a";
@@ -114,6 +115,7 @@ class BatAdsAdPacingTest : public UnitTestBase {
     creative_ad_notification.per_week = 4;
     creative_ad_notification.per_month = 5;
     creative_ad_notification.total_max = 6;
+    creative_ad_notification.value = 1.0;
     creative_ad_notification.segment = "untargeted";
     creative_ad_notification.geo_targets = {"US"};
     creative_ad_notification.target_url = "https://brave.com/2";
@@ -129,11 +131,10 @@ class BatAdsAdPacingTest : public UnitTestBase {
     for (int i = 0; i < iterations; i++) {
       ResetFrequencyCaps(AdType::kAdNotification);
 
-      AdTargeting ad_targeting;
       ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
       resource::AntiTargeting anti_targeting_resource;
-      ad_notifications::AdServing ad_serving(
-          &ad_targeting, &subdivision_targeting, &anti_targeting_resource);
+      ad_notifications::AdServing ad_serving(&subdivision_targeting,
+                                             &anti_targeting_resource);
 
       ad_serving.MaybeServeAd();
     }
@@ -151,10 +152,10 @@ TEST_F(BatAdsAdPacingTest, PacingDisableDelivery) {
   // Arrange
   CreativeAdNotificationList creative_ad_notifications;
 
-  CreativeAdNotificationInfo creative_ad_notification_1 =
+  CreativeAdNotificationInfo creative_ad_notification =
       GetCreativeAdNotification1();
-  creative_ad_notification_1.ptr = 0.0;
-  creative_ad_notifications.push_back(creative_ad_notification_1);
+  creative_ad_notification.ptr = 0.0;
+  creative_ad_notifications.push_back(creative_ad_notification);
 
   Save(creative_ad_notifications);
 
@@ -171,10 +172,10 @@ TEST_F(BatAdsAdPacingTest, NoPacing) {
   // Arrange
   CreativeAdNotificationList creative_ad_notifications;
 
-  CreativeAdNotificationInfo creative_ad_notification_1 =
+  CreativeAdNotificationInfo creative_ad_notification =
       GetCreativeAdNotification1();
-  creative_ad_notification_1.ptr = 1.0;
-  creative_ad_notifications.push_back(creative_ad_notification_1);
+  creative_ad_notification.ptr = 1.0;
+  creative_ad_notifications.push_back(creative_ad_notification);
 
   Save(creative_ad_notifications);
 
@@ -191,18 +192,18 @@ TEST_F(BatAdsAdPacingTest, SimplePacing) {
   // Arrange
   CreativeAdNotificationList creative_ad_notifications;
 
-  CreativeAdNotificationInfo creative_ad_notification_1 =
+  CreativeAdNotificationInfo creative_ad_notification =
       GetCreativeAdNotification1();
-  creative_ad_notification_1.ptr = 0.2;
-  creative_ad_notifications.push_back(creative_ad_notification_1);
+  creative_ad_notification.ptr = 0.2;
+  creative_ad_notifications.push_back(creative_ad_notification);
 
   Save(creative_ad_notifications);
 
   // Act
   int iterations = 1000;
   EXPECT_CALL(*ads_client_mock_, ShowNotification(_))
-      .Times(Between(iterations * creative_ad_notification_1.ptr * 0.8,
-                     iterations * creative_ad_notification_1.ptr * 1.2));
+      .Times(Between(iterations * creative_ad_notification.ptr * 0.8,
+                     iterations * creative_ad_notification.ptr * 1.2));
 
   ServeAdForIterations(iterations);
 

@@ -7,7 +7,7 @@ export const AccountSettingsNavOptions: TopTabNavObjectType[] = [
     name: locale.accountSettingsDetails
   },
   {
-    id: 'watchlist',
-    name: locale.accountSettingsWatchlist
+    id: 'privateKey',
+    name: locale.accountSettingsPrivateKey
   }
 ]

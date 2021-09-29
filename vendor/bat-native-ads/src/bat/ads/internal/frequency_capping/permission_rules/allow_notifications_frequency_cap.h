@@ -12,10 +12,9 @@
 
 namespace ads {
 
-class AllowNotificationsFrequencyCap : public PermissionRule {
+class AllowNotificationsFrequencyCap final : public PermissionRule {
  public:
   AllowNotificationsFrequencyCap();
-
   ~AllowNotificationsFrequencyCap() override;
 
   AllowNotificationsFrequencyCap(const AllowNotificationsFrequencyCap&) =
@@ -25,7 +24,7 @@ class AllowNotificationsFrequencyCap : public PermissionRule {
 
   bool ShouldAllow() override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   std::string last_message_;

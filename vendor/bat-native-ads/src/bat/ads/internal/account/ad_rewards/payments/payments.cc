@@ -7,15 +7,20 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
+#include "base/time/time.h"
+#include "base/values.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/ad_rewards/ad_rewards_features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/number_util.h"
 #include "bat/ads/pref_names.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace ads {
@@ -108,8 +113,9 @@ base::Value Payments::GetAsList() {
 
     dictionary.SetKey("balance", base::Value(payment.balance));
     dictionary.SetKey("month", base::Value(payment.month));
-    dictionary.SetKey("transaction_count",
-                      base::Value(std::to_string(payment.transaction_count)));
+    dictionary.SetKey(
+        "transaction_count",
+        base::Value(base::NumberToString(payment.transaction_count)));
 
     list.Append(std::move(dictionary));
   }
@@ -176,10 +182,6 @@ base::Time Payments::CalculateNextPaymentDate(
   next_payment_date_exploded.month = month;
   next_payment_date_exploded.day_of_month =
       features::GetAdRewardsNextPaymentDay();
-  next_payment_date_exploded.hour = 23;
-  next_payment_date_exploded.minute = 59;
-  next_payment_date_exploded.second = 59;
-  next_payment_date_exploded.millisecond = 999;
 
   base::Time next_payment_date;
   const bool success = base::Time::FromUTCExploded(next_payment_date_exploded,
@@ -346,7 +348,7 @@ PaymentInfo Payments::GetPaymentForTransactionMonth(
 
 std::string Payments::GetTransactionMonth(const base::Time& time) const {
   base::Time::Exploded time_exploded;
-  time.UTCExplode(&time_exploded);
+  time.LocalExplode(&time_exploded);
 
   return GetFormattedTransactionMonth(time_exploded.year, time_exploded.month);
 }
@@ -354,7 +356,7 @@ std::string Payments::GetTransactionMonth(const base::Time& time) const {
 std::string Payments::GetPreviousTransactionMonth(
     const base::Time& time) const {
   base::Time::Exploded time_exploded;
-  time.UTCExplode(&time_exploded);
+  time.LocalExplode(&time_exploded);
 
   time_exploded.month--;
   if (time_exploded.month < 1) {

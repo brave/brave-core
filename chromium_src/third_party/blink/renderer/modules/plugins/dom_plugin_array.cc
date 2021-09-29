@@ -103,11 +103,14 @@ void FarblePlugins(DOMPluginArray* owner,
           BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("PLUGIN_1_DESCRIPTION", 32),
           0, false);
+      Vector<String> fake_plugin_extensions_1{
+          BraveSessionCache::From(*(frame->DomWindow()))
+              .GenerateRandomString("PLUGIN_1_EXTENSION", 3)};
       auto* fake_mime_info_1 = MakeGarbageCollected<MimeClassInfo>(
           "",
           BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("MIME_1_DESCRIPTION", 32),
-          *fake_plugin_info_1);
+          *fake_plugin_info_1, fake_plugin_extensions_1);
       fake_plugin_info_1->AddMimeType(fake_mime_info_1);
       auto* fake_dom_plugin_1 = MakeGarbageCollected<DOMPlugin>(
           frame->DomWindow(), *fake_plugin_info_1);
@@ -121,11 +124,14 @@ void FarblePlugins(DOMPluginArray* owner,
           BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("PLUGIN_2_DESCRIPTION", 31),
           0, false);
+      Vector<String> fake_plugin_extensions_2{
+          BraveSessionCache::From(*(frame->DomWindow()))
+              .GenerateRandomString("PLUGIN_2_EXTENSION", 3)};
       auto* fake_mime_info_2 = MakeGarbageCollected<MimeClassInfo>(
           "",
           BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("MIME_2_DESCRIPTION", 32),
-          *fake_plugin_info_2);
+          *fake_plugin_info_2, fake_plugin_extensions_2);
       fake_plugin_info_2->AddMimeType(fake_mime_info_2);
       auto* fake_dom_plugin_2 = MakeGarbageCollected<DOMPlugin>(
           frame->DomWindow(), *fake_plugin_info_2);

@@ -8,10 +8,11 @@
 #include <functional>
 #include <utility>
 
+#include "base/check.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_migration.h"
 #include "bat/ads/internal/database/database_version.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 namespace database {
@@ -33,10 +34,6 @@ void Initialize::CreateOrOpen(ResultCallback callback) {
   AdsClientHelper::Get()->RunDBTransaction(
       std::move(transaction), std::bind(&Initialize::OnCreateOrOpen, this,
                                         std::placeholders::_1, callback));
-}
-
-std::string Initialize::get_last_message() const {
-  return last_message_;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

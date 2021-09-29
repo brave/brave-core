@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
 <translation id="7942180974165298215">Brave विज्ञापन ब्लॉक किया गया</translation>
 <translation id="4615489450165434530">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
+<translation id="1209739344687072997">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
 <translation id="6406506848690869874">सिंक</translation>
 <translation id="1544192797660353713">वॉलेट</translation>
 <translation id="2445484935443597917">नई प्रोफ़ाइल बनाएं</translation>
-<translation id="2666990579225592931">गेस्ट विंडो खोलें</translation>
+<translation id="744341768939279100">नई प्रोफ़ाइल बनाएं</translation>
+<translation id="2666990579225592931">मेहमान विंडो खोलें</translation>
+<translation id="4986483413015198747">गेस्ट विंडो खोलें</translation>
 <translation id="8275068909952022340">और…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") की Brave में अनुमति नहीं है।</translation>
 <translation id="6786747875388722282">एक्सटेंशन</translation>
@@ -77,10 +80,12 @@ Binance
 <translation id="5802665280774361839">पता बार में ऑटोकम्पलीट दिखाएँ</translation>
 <translation id="597020512043916976">ऑटोकम्पलीट सुझावों में शीर्ष साइटें दिखाएँ</translation>
 <translation id="264150068416846820">ऑटोकम्पलीट सुझावों में Brave द्वारा सुझाए गए साइट दिखाएँ</translation>
-<translation id="5529693968082667490">सर्च टैब बटन दिखाएँ</translation>
+<translation id="5529693968082667490">टैब सर्च बटन दिखाएं</translation>
 <translation id="6414370348346025511">सामान्य सुरक्षा शरू है।</translation>
 <translation id="814018970995616154">Brave में संग्रहीत असुरक्षित साइटों की सूची के साथ URL की जाँच करता है।</translation>
 <translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
+<translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
+<translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
 <translation id="7781069478569868053">नया टैब पेज</translation>
 <translation id="1988804048511540801">नया टैब पेज दिखाता है</translation>
 <translation id="2970343821770026391">डैशबोर्ड</translation>
@@ -222,7 +227,6 @@ Binance
 <translation id="1834467296210148203">टूलबार पर Brave वॉलेट आइकन दिखाएं</translation>
 <translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
 <translation id="5927916530277631319">Unstoppable डोमेन को हल करने की विधि</translation>
-<translation id="8412057160793088103">HTTPS और Ethereum गोपनीयता विचारों पर DNS के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
 <translation id="5248318250177143470">Ethereum नाम सेवा (ENS) को हल करने की विधि</translation>
 <translation id="951216659045543447">संबंधित निजी की द्वारा कंटेंट पर साइन करें और इसे IPNS पर प्रकाशित करें</translation>
 <translation id="7611728475758612204">प्रकाशन के लिए उपलब्ध की</translation>
@@ -236,7 +240,7 @@ Binance
 <translation id="3946479342297227860">की हटाएँ</translation>
 <translation id="8996633027318264334">क्या आप वाकई <ph name="KEY_NAME"/> हटाना चाहते हैं?</translation>
 <translation id="910215077892371264">नोड लांच नहीं किया गया</translation>
-<translation id="616058968889448209">IPFS सेवा लॉन्च गड़बड़ी, पर अधिक जानकारी उपलब्ध है।<ph name="BEGIN_LINK"/>निदान पेज<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">IPFS सर्विस लांच एरर, <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/> पर अधिक जानकारी उपलब्ध है.</translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
 <translation id="8275038454117074363">आयात करें</translation>
@@ -246,7 +250,6 @@ Binance
 <translation id="1327977588028644528">गेटवे</translation>
 <translation id="80225669816651290">लोकल नोड</translation>
 <translation id="4927734062756955434">IPFS पब्लिक गेटवे पता</translation>
-<translation id="3399481770463167943">IPFS स्थानीय नोड और गेटवे गोपनीयता विचारों के बारे में <ph name="BEGIN_LINK_MPL"/>और जानें<ph name="END_LINK_MPL"/> about IPFS local node and gateway privacy considerations.</translation>
 <translation id="8425213833346101688">बदलें</translation>
 <translation id="557281710253742286">IPFS गेटवे सेट करें</translation>
 <translation id="8571837315037233299">गेटवे पता</translation>
@@ -260,7 +263,7 @@ Binance
 <translation id="8655170717758778983">जब संभव हो तो DNSLink के माध्यम से IPFS पृष्ठों पर स्वचालित रूप से रीडायरेक्ट करें</translation>
 <translation id="2233724520223030977">जब भी संभव हो, वेबसाइट के IPFS संस्करण में नेविगेट करने के लिए DNSLink का स्वचालित रूप से उपयोग करता है</translation>
 <translation id="6554397389149987360">ब्राउज़र में स्क्रीन साझा करने और अन्य सुविधाओं के लिए हैंगऑउट के घटकों का उपयोग करें।</translation>
-<translation id="1765684547504191670">ब्राउज़र में क्रोमकास्ट को सक्रीय करने के लिए मीडिया राउटर घटक का उपयोग करता है।</translation>
+<translation id="7878791177459550035">मीडिया राउटर ब्राउज़र में कास्ट फीचर इनेबल करता है.</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
 <translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
 <translation id="8068526464562249859">आपके ब्राउज़र बार से सामान्य IPFS टास्क एक्सेस करने सहित Brave में बेहतर IPFS समर्थन के लिए IPFS Companion एक्सटेंशन का उपयोग करता है।</translation>
@@ -330,6 +333,7 @@ Binance
 <translation id="6873781976650514089">यह सेटिंग</translation>
 <translation id="6040143037577758943">बंद करें</translation>
 <translation id="5600566490506283344">Brave विज्ञापन नोटिफ़िकेशन</translation>
+<translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4877147287319222750">साइडबार में जोड़ें</translation>
 <translation id="4233010476457917696">साइडबार दिखाएं</translation>
 <translation id="5404213409401164238">साइडबार दिखाएं</translation>
@@ -364,6 +368,23 @@ Binance
 आप इस प्रतिलिपि<ph name="BEGIN_LINK_SOURCE_CODE"/> को बनाने के लिए उपयोग किए गए विशिष्ट <ph name="END_LINK_SOURCE_CODE"/>सोर्स कोड को डाउनलोड करने और स्वयं के लिए निर्माण करने के<ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/> निर्देश <ph name="END_LINK_BUILD_INSTRUCTIONS"/>पढ़ सकते हैं।</translation>
 <translation id="4474155171896946103">सभी टैब बुकमार्क करें...</translation>
 <translation id="2336228925368920074">सभी टैब बुकमार्क करें...</translation>
+<translation id="4235920711083356755">VPN बटन दिखाएं</translation>
+<translation id="4070612712151038707">टूलबार में VPN बटन दिखाता है</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Brave VPN के बारे में</translation>
+<translation id="4378551569595875038">कनेक्ट हो रहा है...</translation>
+<translation id="3368922792935385530">कनेक्टेड</translation>
+<translation id="1536754031901697553">डिसकनेक्ट हो रहा है...</translation>
+<translation id="8030169304546394654">डिसकनेक्ट करें</translation>
+<translation id="1863950594388384201">टूलबार में VPN बटन दिखाएं</translation>
+<translation id="5187139277471084437">टूलबार में VPN बटन छुपाएं</translation>
+<translation id="8041089156583427627">सुझाव भेजें</translation>
+<translation id="4049186905514157504">मेरा प्लान मैनेज करें</translation>
+<translation id="7570585565843385325">टूलबार में VPN बटन दिखाएं</translation>
+<translation id="5310426188697803101">टूलबार में VPN बटन छुपाएं</translation>
+<translation id="945522503751344254">फ़ीडबैक दें</translation>
+<translation id="3015685033234401792">मेरा प्लान मैनेज करें</translation>
 <translation id="796831669370432378">बुकमार्क जोड़ने के लिए, एड्रेस बार के आगे बुकमार्क बटन पर क्लिक करें</translation>
 <translation id="4989337484121655457">पूर्ण डिस्क एक्सेस की आवश्यकता है</translation>
 <translation id="8025559074845816210">आपके बुकमार्क को Safari से इम्पोर्ट करने के लिए Brave को पुरे डिस्क के एक्सेस के आवश्यकता है।</translation>

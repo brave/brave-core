@@ -7,8 +7,10 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
-import { WalletPanelState, PanelState } from '../../constants/types'
-import { AccountPayloadType, ShowConnectToSitePayload } from '../constants/action_types'
+import { TransactionStatusChanged } from '../../common/constants/action_types'
+import { WalletPanelState, PanelState, WalletState, TransactionStatus } from '../../constants/types'
+import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload, EthereumChainRequestPayload } from '../constants/action_types'
+import { fetchSwapQuoteFactory } from '../../common/async/wallet_async_handler'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -24,10 +26,22 @@ function getPanelState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): PanelSt
   return (store.getState() as WalletPanelState).panel
 }
 
+function getWalletState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): WalletState {
+  return (store.getState() as WalletPanelState).wallet
+}
+
 async function refreshWalletInfo (store: Store) {
   const walletHandler = (await getAPIProxy()).walletHandler
   const result = await walletHandler.getWalletInfo()
   store.dispatch(WalletActions.initialized(result))
+}
+
+async function getPendingChainRequest () {
+  const ethJsonRpcController = (await getAPIProxy()).ethJsonRpcController
+  const chains = (await ethJsonRpcController.getPendingChainRequests()).networks
+  if (chains && chains.length) {
+    return chains[0]
+  }
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {
@@ -44,12 +58,23 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
   // Parse webUI URL, dispatch showConnectToSite action if needed.
   // TODO(jocelyn): Extract ConnectToSite UI pieces out from panel UI.
   const url = new URL(window.location.href)
-
   if (url.hash === '#connectWithSite') {
     const tabId = Number(url.searchParams.get('tabId')) || -1
     const accounts = url.searchParams.getAll('addr') || []
     const origin = url.searchParams.get('origin') || ''
     store.dispatch(PanelActions.showConnectToSite({ tabId, accounts, origin }))
+    return
+  } else {
+    const chain = await getPendingChainRequest()
+    if (chain) {
+      store.dispatch(PanelActions.addEthereumChain({ chain }))
+      return
+    }
+  }
+  if (url.hash === '#approveTransaction') {
+    // When this panel is explicitly selected we close the panel
+    // UI after all transactions are approved or rejected.
+    store.dispatch(PanelActions.showApproveTransaction())
     return
   }
 
@@ -88,6 +113,34 @@ handler.on(PanelActions.showConnectToSite.getType(), async (store, payload: Show
   apiProxy.showUI()
 })
 
+handler.on(PanelActions.showApproveTransaction.getType(), async (store, payload: ShowConnectToSitePayload) => {
+  store.dispatch(PanelActions.navigateTo('approveTransaction'))
+  const apiProxy = await getAPIProxy()
+  apiProxy.showUI()
+})
+
+handler.on(PanelActions.addEthereumChain.getType(), async (store, payload: EthereumChainPayload) => {
+  store.dispatch(PanelActions.navigateTo('addEthereumChain'))
+  const apiProxy = await getAPIProxy()
+  apiProxy.showUI()
+})
+
+handler.on(PanelActions.addEthereumChainRequestCompleted.getType(), async (store: any, payload: EthereumChainRequestPayload) => {
+  const apiProxy = await getAPIProxy()
+  const ethJsonRpcController = apiProxy.ethJsonRpcController
+  ethJsonRpcController.addEthereumChainRequestCompleted(payload.chainId, payload.approved)
+  const chain = await getPendingChainRequest()
+  if (chain) {
+    store.dispatch(PanelActions.addEthereumChain({ chain }))
+    return
+  }
+  apiProxy.closeUI()
+})
+
+handler.on(PanelActions.showApproveTransaction.getType(), async (store) => {
+  store.dispatch(PanelActions.navigateTo('approveTransaction'))
+})
+
 handler.on(PanelActions.setupWallet.getType(), async (store) => {
   chrome.tabs.create({ url: 'chrome://wallet' }, () => {
     if (chrome.runtime.lastError) {
@@ -97,7 +150,7 @@ handler.on(PanelActions.setupWallet.getType(), async (store) => {
 })
 
 handler.on(PanelActions.expandWallet.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet' }, () => {
+  chrome.tabs.create({ url: 'chrome://wallet/crypto' }, () => {
     if (chrome.runtime.lastError) {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
@@ -105,15 +158,15 @@ handler.on(PanelActions.expandWallet.getType(), async (store) => {
 })
 
 handler.on(PanelActions.openWalletApps.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet#apps' }, () => {
+  chrome.tabs.create({ url: 'chrome://wallet/crypto/apps' }, () => {
     if (chrome.runtime.lastError) {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
   })
 })
 
-handler.on(PanelActions.restoreWallet.getType(), async (store) => {
-  chrome.tabs.create({ url: 'chrome://wallet#restore' }, () => {
+handler.on(PanelActions.expandRestoreWallet.getType(), async (store) => {
+  chrome.tabs.create({ url: 'chrome://wallet/crypto/restore-wallet' }, () => {
     if (chrome.runtime.lastError) {
       console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
@@ -127,5 +180,20 @@ handler.on(PanelActions.openWalletSettings.getType(), async (store) => {
     }
   })
 })
+
+handler.on(WalletActions.transactionStatusChanged.getType(), async (store, payload: TransactionStatusChanged) => {
+  const state = getPanelState(store)
+  const walletState = getWalletState(store)
+  if (payload.txInfo.txStatus === TransactionStatus.Submitted ||
+    payload.txInfo.txStatus === TransactionStatus.Rejected ||
+    payload.txInfo.txStatus === TransactionStatus.Approved) {
+    if (state.selectedPanel === 'approveTransaction' && walletState.pendingTransactions.length === 0) {
+      const apiProxy = await getAPIProxy()
+      apiProxy.closeUI()
+    }
+  }
+})
+
+handler.on(PanelActions.fetchPanelSwapQuote.getType(), fetchSwapQuoteFactory(PanelActions.setPanelSwapQuote))
 
 export default handler.middleware

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 
+#include "base/time/time.h"
 #include "bat/ads/internal/features/features_util.h"
 
 namespace ads {

@@ -8,8 +8,8 @@
 #include <cstdint>
 
 #include "base/strings/stringprintf.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/pref_names.h"
 
@@ -51,7 +51,7 @@ bool ConversionFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string ConversionFrequencyCap::get_last_message() const {
+std::string ConversionFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

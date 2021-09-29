@@ -1,9 +1,10 @@
 import styled from 'styled-components'
-import Action from '../assets/actions.svg'
 import { ArrowRightIcon } from 'brave-ui/components/icons'
 
 interface StyleProps {
   orb: string
+  isDetails: boolean
+  isApprove: boolean
 }
 
 export const StyledWrapper = styled.div`
@@ -35,7 +36,7 @@ export const AccountCircleWrapper = styled.div`
   margin-bottom: 10px;
 `
 
-export const FromCircle = styled.div<StyleProps>`
+export const FromCircle = styled.div<Partial<StyleProps>>`
   width: 54px;
   height: 54px;
   border-radius: 100%;
@@ -43,7 +44,7 @@ export const FromCircle = styled.div<StyleProps>`
   background-size: cover;
 `
 
-export const ToCircle = styled.div<StyleProps>`
+export const ToCircle = styled.div<Partial<StyleProps>>`
   width: 32px;
   height: 32px;
   border-radius: 100%;
@@ -88,18 +89,21 @@ export const TransactionFiatAmountBig = styled.span`
   margin-bottom: 10px;
 `
 
-export const MessageBox = styled.div`
+export const MessageBox = styled.div<Partial<StyleProps>>`
   display: flex;
   align-items: flex-start;
-  justify-content: space-evenly;
+  justify-content: ${(p) => p.isDetails || p.isApprove ? 'flex-start' : 'space-evenly'};
   flex-direction: column;
   border: 1px solid ${(p) => p.theme.color.divider01};
   box-sizing: border-box;
   border-radius: 4px;
   width: 255px;
-  height: 140px;
-  padding: 4px 14px;
+  height: ${(p) => p.isApprove ? '120px' : '140px'};
+  padding: ${(p) => p.isDetails ? '14px' : '4px 14px'};
   margin-bottom: 14px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
 `
 
 export const TransactionTitle = styled.span`
@@ -127,20 +131,6 @@ export const ButtonRow = styled.div`
   flex-direction: row;
   width: 100%;
   margin-bottom: 14px;
-`
-
-export const MoreButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  background-color: ${(p) => p.theme.color.text03};
-  -webkit-mask-image: url(${Action});
-  mask-image: url(${Action});
-  outline: none;
-  border: none;
 `
 
 export const FromToRow = styled.div`
@@ -216,4 +206,41 @@ export const GrandTotalText = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
   font-weight: 600;
+`
+
+export const MessageBoxRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  padding-top: 6px;
+`
+
+export const FiatRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+  width: 100%;
+`
+
+export const URLText = styled.span`
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: 0.01em;
+  margin-bottom: 6px;
+  color: ${(p) => p.theme.color.text02};
+`
+
+export const FavIcon = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 5px;
+  background-color: ${(p) => p.theme.palette.grey200};
+  margin-bottom: 7px;
 `

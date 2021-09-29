@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_client.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
@@ -43,8 +44,8 @@ class BatAdsClientMojoBridge
 
   void RecordAdEvent(const std::string& ad_type,
                      const std::string& confirmation_type,
-                     const uint64_t timestamp) const override;
-  std::vector<uint64_t> GetAdEvents(
+                     const double timestamp) const override;
+  std::vector<double> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
   void ResetAdEvents() const override;
@@ -74,6 +75,13 @@ class BatAdsClientMojoBridge
 
   std::string LoadResourceForId(
       const std::string& id) override;
+
+  void ClearScheduledCaptcha() override;
+  void GetScheduledCaptcha(const std::string& payment_id,
+                           ads::GetScheduledCaptchaCallback callback) override;
+
+  void ShowScheduledCaptchaNotification(const std::string& payment_id,
+                                        const std::string& captcha_id) override;
 
   void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                         ads::RunDBTransactionCallback callback) override;

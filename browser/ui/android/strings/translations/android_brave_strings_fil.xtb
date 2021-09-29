@@ -18,7 +18,7 @@
 <translation id="5345505584130165588">Brave shields at privacy</translation>
 <translation id="4692623383562244444">Mga search engine</translation>
 <translation id="1468415711258933398">Karaniwang Tab</translation>
-<translation id="3377025655491224618">Tab na Incognito</translation>
+<translation id="3377025655491224618">Pribadong Tab</translation>
 <translation id="9148058034647219655">Lumabas</translation>
 <translation id="4022987104439075738">IPFS Gateway</translation>
 <translation id="2688519859165248360">Nagbibigay-daan sa pag-navigate sa mga resource ng IPFS sa pamamagitan ng IPFS Gateway</translation>
@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">Hadlangan ang trackers at ads na mag-load at lumabas sa mga webpage</translation>
 <translation id="1680858055899097121">Huwag magpapanatili ng mga tab sa sesyon ng pag-browse</translation>
 <translation id="7142548388914389999">Payagan ang privacy-preserving product analytics (P3A)</translation>
-<translation id="5469408008145872264">Ang impormasyong ito na ganap na anonymized ay nakakatulong sa Brave na tantyahin ang pangkalahatang paggamit ng mga partikular na feature at mapaganda pa ang mga ito para sa iyo.</translation>
+<translation id="4272190451231642425">Awtomatikong magpadala ng mga ulat ng pag-crash</translation>
+<translation id="2239766974964486304">Nakakatulong sa Brave ang mga ulat ng pag-crash na mapahusay ang stability ng produkto para sa lahat ng user.</translation>
 <translation id="7977176350719484850">Tinatantyang Natipid na\nData</translation>
 <translation id="9008534313521214777">Tinatantyang Oras na\nNatipid</translation>
 <translation id="6572660632052512096">Desktop Mode</translation>
@@ -249,7 +250,7 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="723054503945711909">Hindi pinoproseso, sino-store, o ina-access ng Brave Software Inc. ang anuman sa personal na impormasyon na ibinigay mo sa Uphold noong gumawa ka ng account sa kanila.</translation>
 <translation id="3699674790322420653">Kumpletuhin ang pag-verify ng wallet</translation>
 <translation id="2193391216824305230">Wallet ng User</translation>
-<translation id="7591798679868259510">Pumunta sa aking Uphold account</translation>
+<translation id="6585020831163574892">Pumunta sa iyong Uphold account</translation>
 <translation id="9200453331904391567">Idiskonekta mula sa Mga Reward ng Brave</translation>
 <translation id="6239274080752256452">Mag-withdraw ng Mga Pondo</translation>
 <translation id="8874184842967597500">Hindi nakakonekta</translation>
@@ -478,7 +479,7 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="1078265935778232285">Welcome sa Brave Browser</translation>
 <translation id="6824713633331856331">Anonymous kaming tulungang matuto</translation>
 <translation id="6116685031674149112">Pinoprotektahan ng Brave ang iyong privacy at\nnagpapasalamat ito sa pahintulot mo sa mga sumusunod:</translation>
-<translation id="3971666849661839619">Tumulong na mapahusay ang Brave sa pamamagitan ng pagpapadala ng mga ulat sa pag-crash at ganap na anonymous na, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Tumulong na mapahusay ang Brave sa pamamagitan ng pagpapadala ng mga ganap na anonymous na <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">pribadong pagsusuri ng produkto.</translation>
 <translation id="5187052478998910855">Kailangan ng refresher sa Rewards?</translation>
 <translation id="8622329973403382303">Mabilis na matuto tungkol sa kung paano ito gumagana para maalala bilang nangunguna sa Rewards!</translation>
@@ -561,14 +562,38 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="1144810021918451336">Hindi ka pinoprotektahan laban sa mga mapanganib na website, pag-download, at extension.</translation>
 <translation id="745115390910697838">Hindi nagtutugma ang mga parirala. Pakisubukan ulit.</translation>
 <translation id="2360588547830602174">Hindi na-recover ang account. Pakisubukan ulit.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Market Price na ETH</translation>
+<translation id="5593852897152820572">Presyo sa ETH</translation>
 <translation id="6748108480210050150">Mula sa</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">Patungong (estimate)</translation>
+<translation id="6998989275928107238">Para sa</translation>
+<translation id="6664416064035847539">address o url</translation>
 <translation id="59223531494896848">Limitasyon</translation>
 <translation id="3567988240819868195">Market</translation>
 <translation id="632241521608275119">Slippage tolerance</translation>
+<translation id="4500473291496079954">Mag-e-expire sa loob ng</translation>
+<translation id="1987317783729300807">Mga Account</translation>
+<translation id="3535654229833214438">Mga transaksyon</translation>
+<translation id="4636930964841734540">Impormasyon</translation>
+<translation id="6284218950354553099">Awtomatikong ipadala sa Brave ang ping ng araw-araw na paggamit</translation>
+<translation id="5288333155754958121">Nagbibigay-daan sa Brave ang anonymous na pribadong ping na ito na matantiya ang mga aktibong user.</translation>
+<translation id="3819257035322786455">Backup</translation>
+<translation id="4608713693379664295">Mga Pangunahing Crypto Account</translation>
+<translation id="4003821417160006384">Mga Pangalawang Account</translation>
+<translation id="8094541587800369158">Ang mga account na ito ay magagamit sa mga web 3 dapp at maipapakita sa iyong portfolio, ngunit hindi mare-restore ang mga ito sa pamamagitan ng parirala sa pag-recover mula sa backup ng pangunahing account mo. I-enable ang Pag-sync ng mga account sa Brave para awtomatikong i-restore ang mga pangalawang account.</translation>
+<translation id="6725413948756358325">Pangalan ng Account</translation>
+<translation id="6062431965141524986">Makakagawa ka ng pangalawang account sa pamamagitan ng pag-import ng iyong pribadong key.</translation>
+<translation id="3952797765659730604">Ilagay, i-paste, o i-import ang iyong pribadong key string file o JSON.</translation>
+<translation id="569068482611873351">I-import...</translation>
+<translation id="1940465339426637378">Mga Asset</translation>
+<translation id="4522570452068850558">Mga Detalye</translation>
+<translation id="9065203028668620118">I-edit</translation>
+<translation id="3995184924764722477">Mga Detalye ng Account</translation>
+<translation id="8967036623785635603">I-edit ang mga nakikitang asset</translation>
+<translation id="5050890334032852465">I-save ang watchlist ng account</translation>
+<translation id="7755766175599167100">Mga token ng paghahanap</translation>
+<translation id="3835223348537121988">Balanse:</translation>
 </translationbundle>

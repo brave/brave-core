@@ -48,7 +48,6 @@ static ALTER_TO_DIV_EXCEPTIONS: [&LocalName; 3] = [
     &local_name!("section"),
     &local_name!("p"),
 ];
-static LOADABLE_IMG_SUFFIX: [&str; 4] = [".jpg", ".jpeg", ".png", ".webp"];
 static PRESENTATIONAL_ATTRIBUTES: [&LocalName; 12] = [
     &local_name!("align"),
     &local_name!("background"),
@@ -142,33 +141,42 @@ bitflags::bitflags! {
         const NONE = 0;
     }
 }
+
+/// Checks if a url looks like an image. Ignores url params.
+fn url_suffix_is_img(src: &str) -> bool {
+    static LOADABLE_IMG_SUFFIX: [&str; 4] = [".jpg", ".jpeg", ".png", ".webp"];
+
+    if LOADABLE_IMG_SUFFIX
+        .iter()
+        .any(|suffix| src.ends_with(suffix))
+    {
+        return true;
+    }
+
+    // Try again with URL params stripped
+    let is_loadable_path = |src: &str| match Url::parse(src) {
+        Ok(url) => LOADABLE_IMG_SUFFIX
+            .iter()
+            .any(|suffix| url.path().ends_with(suffix)),
+        _ => false,
+    };
+    if src.starts_with('/') {
+        is_loadable_path(format!("data:{}", src).as_str())
+    } else {
+        is_loadable_path(src)
+    }
+}
+
 /// Returns true if the image src loads without JavaScript logic. Some sites like Kotaku and The
 /// Atlantic try and get fancy with this. Our simple heuristic is to check if src is set something
 /// reasonable or srcset is set at all. Some things we've seen in the wild are srcset being left
 /// out in favor of data-srcset, and src being base64 encoded.
 #[inline]
-fn img_is_loaded(data: &ElementData) -> ImageLoadedMask {
+fn img_loaded_mask(data: &ElementData) -> ImageLoadedMask {
     let mut mask: ImageLoadedMask = ImageLoadedMask::NONE;
     if let Some(src) = data.attributes.borrow().get(local_name!("src")) {
-        for suffix in LOADABLE_IMG_SUFFIX.iter() {
-            if src.ends_with(suffix) {
-                mask |= ImageLoadedMask::SRC;
-                break;
-            }
-        }
-        if !mask.contains(ImageLoadedMask::SRC) {
-            // Try parsing the URL to ignore url params
-            match Url::parse(src) {
-                Ok(url) => {
-                    for suffix in LOADABLE_IMG_SUFFIX.iter() {
-                        if url.path().ends_with(suffix) {
-                            mask |= ImageLoadedMask::SRC;
-                            break;
-                        }
-                    }
-                }
-                _ => (),
-            }
+        if url_suffix_is_img(&src) {
+            mask |= ImageLoadedMask::SRC;
         }
     }
 
@@ -176,11 +184,70 @@ fn img_is_loaded(data: &ElementData) -> ImageLoadedMask {
         .attributes
         .borrow()
         .get(local_name!("srcset"))
-        .is_some()
+        .map(|srcset| is_valid_srcset(&srcset))
+        .unwrap_or(false)
     {
         mask |= ImageLoadedMask::SRCSET;
     }
     mask
+}
+
+#[derive(Debug, PartialEq)]
+pub enum ImageCandidateError {
+    InvalidURL,
+    URLFailedImageHeuristic,
+    InvalidPixelDensityDescriptor,
+    InvalidWidthDescriptor,
+}
+
+impl From<url::ParseError> for ImageCandidateError {
+    fn from(_err: url::ParseError) -> Self {
+        ImageCandidateError::InvalidURL
+    }
+}
+
+impl From<std::num::ParseFloatError> for ImageCandidateError {
+    fn from(_err: std::num::ParseFloatError) -> Self {
+        ImageCandidateError::InvalidPixelDensityDescriptor
+    }
+}
+
+impl From<std::num::ParseIntError> for ImageCandidateError {
+    fn from(_err: std::num::ParseIntError) -> Self {
+        ImageCandidateError::InvalidWidthDescriptor
+    }
+}
+
+#[inline]
+fn is_valid_srcset(srcset: &str) -> bool {
+    srcset
+        .split(',')
+        .all(|candidate| validate_image_candidate_string(candidate).is_ok())
+}
+
+/// We roughly follow the guidelines at https://html.spec.whatwg.org/multipage/urls-and-fetching.html#valid-non-empty-url
+/// while also denying urls that don't look like images.
+fn validate_image_candidate_string(candidate: &str) -> Result<(), ImageCandidateError> {
+    let c = candidate.trim();
+    // Extract url and descriptor separately
+    let (url, descriptor) = if let Some(offset) = c.find(|c: char| c.is_ascii_whitespace()) {
+        (&c[..offset], Some(c[offset..].trim_start()))
+    } else {
+        (c, None)
+    };
+
+    if !url_suffix_is_img(&url) {
+        return Err(ImageCandidateError::URLFailedImageHeuristic);
+    }
+
+    if let Some(descriptor) = descriptor {
+        if descriptor.ends_with('x') {
+            descriptor[..descriptor.len() - 1].parse::<f64>()?;
+        } else if descriptor.ends_with('w') {
+            descriptor[..descriptor.len() - 1].parse::<u64>()?;
+        }
+    }
+    Ok(())
 }
 
 /// Contains metadata about how to load a lazy loaded image.
@@ -211,10 +278,7 @@ fn try_lazy_img(
             }
         }
         if !mask.contains(ImageLoadedMask::SRC) {
-            if LOADABLE_IMG_SUFFIX
-                .iter()
-                .any(|suffix| value.value.ends_with(suffix))
-            {
+            if url_suffix_is_img(&value.value) {
                 mask |= ImageLoadedMask::SRC;
                 lazy_srcs.push(LazyImage {
                     local: local_name!("src"),
@@ -359,19 +423,21 @@ fn get_inner_img_from_noscript(handle: &Handle) -> Option<Handle> {
 /// Unwrap a <noscript><img src=".."/></noscript> element to just be an img element. Sites like
 /// Medium and BBC wrap img elements in a noscript on page load, and do this same process in
 /// Javascript.
-fn unwrap_noscript(
-    handle: &Handle,
-    useless_nodes: &mut Vec<Handle>,
-    new_children: &mut Vec<Handle>,
-) {
+fn unwrap_noscript(handle: &Handle, useless_nodes: &mut Vec<Handle>) -> Option<Handle> {
     if let Some(img) = get_inner_img_from_noscript(handle) {
-        new_children.push(img);
         for sibling in handle.preceding_siblings().elements() {
             if dom::is_single_image(&sibling.as_node()) {
                 useless_nodes.push(sibling.as_node().clone());
             }
         }
+        for sibling in handle.following_siblings().elements() {
+            if dom::is_single_image(&sibling.as_node()) {
+                useless_nodes.push(sibling.as_node().clone());
+            }
+        }
+        return Some(img);
     }
+    None
 }
 
 /// Normalizes the dom by replacing tags we aren't interested in, to reduce the
@@ -425,7 +491,6 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
         }
     }
     let mut useless_nodes = vec![];
-    let mut new_children = vec![];
     let mut paragraph_nodes = vec![];
     let mut brs = vec![];
     for child in handle.children() {
@@ -448,7 +513,9 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
                     }
                 }
                 if data.name.local == local_name!("noscript") {
-                    unwrap_noscript(&child, &mut useless_nodes, &mut new_children);
+                    if let Some(unwrapped) = unwrap_noscript(&child, &mut useless_nodes) {
+                        dom.append_before_sibling(&child, NodeOrText::AppendNode(unwrapped));
+                    }
                 } else if !pending_removal && data.name.local == local_name!("div") {
                     // This is handling for sites like mobile.slate.com, where every paragraph
                     // element is wrapped in a single div. Since this can confuse the scoring
@@ -474,9 +541,6 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
             }
             _ => (),
         }
-    }
-    for node in new_children.iter() {
-        dom.append(&handle, NodeOrText::AppendNode(node.clone()));
     }
     for node in useless_nodes.iter() {
         dom.remove_from_parent(node);
@@ -903,7 +967,9 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                     false
                 }
                 local_name!("img") => {
-                    let mask = img_is_loaded(data);
+                    let mask = img_loaded_mask(data);
+                    // TODO(keur): We should maybe dom::clean_attr if src or srcset is presest
+                    // but they are not in the mask. Means they are invalid.
                     let (mask, lazy_srcs) = try_lazy_img(data, mask);
                     if mask == ImageLoadedMask::NONE {
                         true
@@ -1041,7 +1107,7 @@ mod tests {
         let handle = dom::parse_inner(input).unwrap();
         let elem = handle.as_element().unwrap();
         assert_eq!(elem.name.local, local_name!("img"));
-        assert_eq!(img_is_loaded(elem), ImageLoadedMask::NONE);
+        assert_eq!(img_loaded_mask(elem), ImageLoadedMask::NONE);
         let (mask, _) = try_lazy_img(elem, ImageLoadedMask::NONE);
         assert_eq!(mask, ImageLoadedMask::SRCSET);
     }
@@ -1057,7 +1123,7 @@ mod tests {
         let handle = dom::parse_inner(input).unwrap();
         let elem = handle.as_element().unwrap();
         assert_eq!(elem.name.local, local_name!("img"));
-        assert_eq!(img_is_loaded(elem), ImageLoadedMask::SRC);
+        assert_eq!(img_loaded_mask(elem), ImageLoadedMask::SRC);
     }
 
     #[test]
@@ -1069,8 +1135,35 @@ mod tests {
         "#;
         let handle = dom::parse_inner(input).unwrap();
         let elem = handle.as_element().unwrap();
-        assert_eq!(img_is_loaded(elem), ImageLoadedMask::SRC);
+        assert_eq!(img_loaded_mask(elem), ImageLoadedMask::SRC);
         let (mask, _) = try_lazy_img(elem, ImageLoadedMask::NONE);
         assert!(mask.is_all());
+    }
+
+    #[test]
+    fn test_validate_image_candidate_string() {
+        // Example based off https://github.com/brave/brave-browser/issues/18280
+        assert_eq!(
+            ImageCandidateError::URLFailedImageHeuristic,
+            validate_image_candidate_string("data:image/svg+xml,%3Csvg%20xmlns%3D").unwrap_err()
+        );
+        assert!(
+            validate_image_candidate_string("https://cdn.theatlantic.com/imgf/original.jpg")
+                .is_ok()
+        );
+        assert!(validate_image_candidate_string("image-480w.jpg      480w").is_ok());
+        assert!(validate_image_candidate_string("image-480w.jpg      480w").is_ok());
+        assert!(validate_image_candidate_string(
+            "/content/dam/news/2017/11/16/a08.jpeg?imwidth=480 480w"
+        )
+        .is_ok());
+        assert!(validate_image_candidate_string("https://i.guim.co.uk/img/media/603fd890c17afa94c6fd0e41f87875be104b811a/38_0_4848_2912/master/4848.jpg?width=160&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=fc5a4d4e165ba28ea00817f416bae258 160w").is_ok());
+    }
+
+    #[test]
+    fn test_is_srcset() {
+        assert!(is_valid_srcset(
+            "https://test.com/original.jpg, https://test.com/original.jpg 2x"
+        ));
     }
 }

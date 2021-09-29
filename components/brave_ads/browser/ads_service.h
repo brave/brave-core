@@ -12,6 +12,7 @@
 #include "base/callback_forward.h"
 #include "base/macros.h"
 #include "base/observer_list.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "build/build_config.h"
@@ -53,11 +54,8 @@ using OnToggleFlagAdCallback =
 using OnGetInlineContentAdCallback = base::OnceCallback<
     void(const bool, const std::string&, const base::DictionaryValue&)>;
 
-using GetAccountStatementCallback = base::OnceCallback<void(const bool,
-                                                            const int64_t,
-                                                            const int,
-                                                            const double,
-                                                            const double)>;
+using GetAccountStatementCallback = base::OnceCallback<
+    void(const bool, const double, const int, const double, const double)>;
 
 using GetAdDiagnosticsCallback =
     base::OnceCallback<void(const bool, const std::string&)>;
@@ -74,7 +72,6 @@ class AdsService : public KeyedService {
   void RemoveObserver(AdsServiceObserver* observer);
 
   virtual bool IsSupportedLocale() const = 0;
-  virtual bool IsNewlySupportedLocale() = 0;
 
   virtual bool IsEnabled() const = 0;
   virtual void SetEnabled(const bool is_enabled) = 0;
@@ -91,6 +88,12 @@ class AdsService : public KeyedService {
   virtual std::string GetAutoDetectedAdsSubdivisionTargetingCode() const = 0;
   virtual void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  virtual void ShowScheduledCaptcha(const std::string& payment_id,
+                                    const std::string& captcha_id) = 0;
+  virtual void SnoozeScheduledCaptcha() = 0;
+#endif
 
   virtual void OnShowAdNotification(const std::string& notification_id) = 0;
   virtual void OnCloseAdNotification(const std::string& notification_id,
@@ -144,8 +147,8 @@ class AdsService : public KeyedService {
 
   virtual void ReconcileAdRewards() = 0;
 
-  virtual void GetAdsHistory(const uint64_t from_timestamp,
-                             const uint64_t to_timestamp,
+  virtual void GetAdsHistory(const double from_timestamp,
+                             const double to_timestamp,
                              OnGetAdsHistoryCallback callback) = 0;
 
   virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;

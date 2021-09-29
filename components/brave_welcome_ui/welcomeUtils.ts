@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { Dispatch } from 'redux'
-import { sendWithPromise } from '../common/cr'
+import { sendWithPromise } from 'chrome://resources/js/cr.m'
 import {
   getSearchEngineProvidersSuccess,
   getBrowserProfilesSuccess
@@ -37,7 +37,7 @@ export const getValidBrowserProfiles = (browserProfiles: Array<Welcome.BrowserPr
 
 export const getBrowserProfiles = () =>
   async (dispatch: Dispatch) => {
-    const response = await sendWithPromise<Array<Welcome.BrowserProfile>>('initializeImportDialog')
+    const response: Array<Welcome.BrowserProfile> = await sendWithPromise('initializeImportDialog')
     const filteredProfiles = getValidBrowserProfiles(response)
     dispatch(getBrowserProfilesSuccess(filteredProfiles))
   }

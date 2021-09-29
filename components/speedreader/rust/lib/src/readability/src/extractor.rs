@@ -1,4 +1,4 @@
-use crate::{dom, scorer, util};
+use crate::{dom, nlp, scorer, util};
 use chrono::DateTime;
 use html5ever::parse_document;
 use html5ever::tendril::TendrilSink;
@@ -153,13 +153,13 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
                     | "weibo:article:description"
                     | "weibo:webpage:description"
                     | "twitter:description" => {
-                        meta_tags.description = Some(
-                            content
-                                .find(". ")
-                                .map(|pos| &content[..pos])
-                                .unwrap_or(content)
-                                .to_string(),
-                        );
+                        if let Some(ref desc) = meta_tags.description {
+                            if content.chars().count() < desc.chars().count() {
+                                meta_tags.description = Some(content.to_string());
+                            }
+                        } else {
+                            meta_tags.description = Some(content.to_string());
+                        }
                     }
                     "dc:creator" | "dcterm:creator" | "author" => {
                         meta_tags.author = Some(content.to_string());
@@ -195,24 +195,15 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
         }
     }
 
-    // Clean title of html encoded attributes
+    // HTML decode title, author, and description
     if !meta.title.is_empty() {
-        if let Some(ref inner) = dom::parse_inner(&meta.title) {
-            let title = dom::extract_text_from_node(inner, true, true);
-            if !title.is_empty() {
-                meta.title = title;
-            }
-        }
+        meta.title = dom::html_decode(&meta.title).unwrap_or(meta.title);
     }
-
-    // Clean description of html encoded attributes
+    if let Some(ref author) = meta.author {
+        meta.author = dom::html_decode(author).or(meta.author);
+    }
     if let Some(ref description) = meta.description {
-        if let Some(ref inner) = dom::parse_inner(description) {
-            let desc = dom::extract_text_from_node(inner, true, true);
-            if !desc.is_empty() {
-                meta.description = Some(desc);
-            }
-        }
+        meta.description = dom::html_decode(description).or(meta.description);
     }
 
     meta
@@ -277,7 +268,17 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         }
         // Add in the description
         if let Some(ref text) = meta.description {
-            let description = dom::create_element_simple(dom, "p", "subhead metadata", Some(text));
+            let slice_offset = if text.chars().count() > 200 {
+                nlp::first_sentence_boundary(text).unwrap_or_else(|| text.len())
+            } else {
+                text.len()
+            };
+            let description = dom::create_element_simple(
+                dom,
+                "p",
+                "subhead metadata",
+                Some(&text[..slice_offset]),
+            );
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(description));
         }
 
@@ -562,6 +563,21 @@ mod tests {
     }
 
     #[test]
+    fn test_byline_html_decode() {
+        let input = r#"
+        <head>
+        <meta property="author" content="Geek&#039;s Guide to the Galaxy"/>
+        </head>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let meta = preprocess(&mut cursor).unwrap().meta;
+        assert_eq!(
+            "Geek's Guide to the Galaxy",
+            meta.author.expect("No author extracted"),
+        );
+    }
+
+    #[test]
     fn unwrap_noscript_img_simple() {
         let input = r#"
         <body>
@@ -587,6 +603,7 @@ mod tests {
 
     #[test]
     fn unwrap_noscript_img_delete_preceding() {
+        // Based on https://www.bbc.com/news/world-australia-56307356
         let input = r#"
         <body>
           <img src="https://example.com/image.png">
@@ -598,6 +615,32 @@ mod tests {
         <html><head></head>
         <body>
           <img src="https://example.com/image.png">
+        </body>
+        </html>"#;
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    #[test]
+    fn unwrap_noscript_img_delete_following() {
+        // Based on https://www.dutchnews.nl/features/2021/08/the-region-revolutionising-the-dutch-diet/
+        let input = r#"
+        <body>
+          <noscript>
+            <img src="https://example.com/image.png">
+          </noscript>
+          <img src="https://example.com/image.png">
+          <p>This is the image caption</p>
+        </body>"#;
+        let expected = r#"
+        <html><head></head>
+        <body>
+          <img src="https://example.com/image.png">
+          <p>This is the image caption</p>
         </body>
         </html>"#;
         let mut cursor = Cursor::new(input);

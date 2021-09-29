@@ -13,21 +13,37 @@ interface Props {
   hostError: HostError
 }
 
+function getErrorKey (type: string) {
+  switch (type) {
+    case 'ERR_FETCH_BALANCE':
+      return 'errorServerConnection'
+    case 'ERR_TIP_FAILED':
+      return 'errorTipFailed'
+    default:
+      return 'errorHasOccurred'
+  }
+}
+
+function getClassName (type: string) {
+  switch (type) {
+    case 'ERR_FETCH_BALANCE':
+      return 'server-error'
+    case 'ERR_TIP_FAILED':
+      return 'tipping-error'
+    default:
+      return ''
+  }
+}
+
 export function AppError (props: Props) {
   const { hostError } = props
   const locale = React.useContext(LocaleContext)
 
-  const isConnectionError = hostError.type === 'ERR_FETCH_BALANCE'
-
   return (
     <style.root>
-      <style.graphic className={isConnectionError ? 'server-error' : ''} />
+      <style.graphic className={getClassName(hostError.type)} />
       <style.heading>
-        {
-          locale.getString(isConnectionError
-            ? 'errorServerConnection'
-            : 'errorHasOccurred')
-        }
+        {locale.getString(getErrorKey(hostError.type))}
       </style.heading>
       <style.message>
         {locale.getString('errorTryAgain')}

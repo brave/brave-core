@@ -81,7 +81,7 @@ bool AdNotificationView::OnMouseDragged(const ui::MouseEvent& event) {
   const std::string id = ad_notification_.id();
   gfx::Rect bounds = AdNotificationPopup::GetBounds(id) + movement;
   const gfx::NativeView native_view = GetWidget()->GetNativeView();
-  AdjustBoundsToFitWorkAreaForNativeView(&bounds, native_view);
+  AdjustBoundsAndSnapToFitWorkAreaForNativeView(native_view, &bounds);
   GetWidget()->SetBounds(bounds);
 
   return true;

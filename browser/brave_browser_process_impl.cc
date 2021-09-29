@@ -10,13 +10,13 @@
 #include "base/bind.h"
 #include "base/path_service.h"
 #include "base/task/post_task.h"
+#include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
@@ -27,8 +27,11 @@
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_sync/network_time_helper.h"
+#include "brave/components/debounce/browser/debounce_component_installer.h"
+#include "brave/components/debounce/common/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
@@ -45,11 +48,6 @@
 #include "content/public/browser/child_process_security_policy.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-
-#if BUILDFLAG(ENABLE_SYSTEM_NOTIFICATIONS)
-#include "chrome/browser/notifications/notification_platform_bridge.h"
-#include "brave/browser/notifications/brave_notification_platform_bridge.h"
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -81,13 +79,14 @@
 #if defined(OS_ANDROID)
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
+#include "brave/browser/ui/brave_browser_command_controller.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #endif
 
 using brave_component_updater::BraveComponent;
-using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::NTPBackgroundImagesService;
+using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 
 namespace {
 
@@ -135,8 +134,8 @@ void BraveBrowserProcessImpl::Init() {
   content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
       ipfs::kIPNSScheme);
 #endif
-  brave_component_updater::BraveOnDemandUpdater::GetInstance()->
-      RegisterOnDemandUpdateCallback(
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()
+      ->RegisterOnDemandUpdateCallback(
           base::BindRepeating(&component_updater::BraveOnDemandUpdate));
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(
@@ -184,22 +183,27 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion_download_service();
 #endif
+  debounce_component_installer();
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader_rewriter_service();
 #endif
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
 
-  brave_sync::NetworkTimeHelper::GetInstance()
-    ->SetNetworkTimeTracker(g_browser_process->network_time_tracker());
+  brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
+      g_browser_process->network_time_tracker());
 }
 
 brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
-  if (ad_block_service_)
-    return ad_block_service_.get();
-
-  ad_block_service_ =
-      brave_shields::AdBlockServiceFactory(brave_component_updater_delegate());
+  if (!ad_block_service_) {
+    ad_block_service_ = std::make_unique<brave_shields::AdBlockService>(
+        brave_component_updater_delegate(),
+        std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
+            brave_component_updater_delegate(),
+            AdBlockSubscriptionDownloadManagerGetter(),
+            profile_manager()->user_data_dir().Append(
+                profile_manager()->GetInitialProfileDir())));
+  }
   return ad_block_service_.get();
 }
 
@@ -251,6 +255,18 @@ BraveBrowserProcessImpl::greaselion_download_service() {
 }
 #endif
 
+debounce::DebounceComponentInstaller*
+BraveBrowserProcessImpl::debounce_component_installer() {
+  if (!base::FeatureList::IsEnabled(debounce::features::kBraveDebounce))
+    return nullptr;
+  if (!debounce_component_installer_) {
+    debounce_component_installer_ =
+        std::make_unique<debounce::DebounceComponentInstaller>(
+            local_data_files_service());
+  }
+  return debounce_component_installer_.get();
+}
+
 brave_shields::HTTPSEverywhereService*
 BraveBrowserProcessImpl::https_everywhere_service() {
   if (!https_everywhere_service_)
@@ -279,8 +295,7 @@ void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
 }
 
 #if BUILDFLAG(ENABLE_TOR)
-tor::BraveTorClientUpdater*
-BraveBrowserProcessImpl::tor_client_updater() {
+tor::BraveTorClientUpdater* BraveBrowserProcessImpl::tor_client_updater() {
   if (tor_client_updater_)
     return tor_client_updater_.get();
 
@@ -296,7 +311,8 @@ void BraveBrowserProcessImpl::OnTorEnabledChanged() {
   // Update all browsers' tor command status.
   for (Browser* browser : *BrowserList::GetInstance()) {
     static_cast<chrome::BraveBrowserCommandController*>(
-        browser->command_controller())->UpdateCommandForTor();
+        browser->command_controller())
+        ->UpdateCommandForTor();
   }
 }
 #endif
@@ -358,27 +374,7 @@ void BraveBrowserProcessImpl::CreateProfileManager() {
 
 NotificationPlatformBridge*
 BraveBrowserProcessImpl::notification_platform_bridge() {
-#if !defined(OS_MAC)
   return BrowserProcessImpl::notification_platform_bridge();
-#else
-#if BUILDFLAG(ENABLE_SYSTEM_NOTIFICATIONS)
-  if (!created_notification_bridge_)
-    CreateNotificationPlatformBridge();
-  return notification_bridge_.get();
-#else
-  return nullptr;
-#endif
-#endif
-}
-
-void BraveBrowserProcessImpl::CreateNotificationPlatformBridge() {
-#if defined(OS_MAC)
-#if BUILDFLAG(ENABLE_SYSTEM_NOTIFICATIONS)
-  DCHECK(!notification_bridge_);
-  notification_bridge_ = BraveNotificationPlatformBridge::Create();
-  created_notification_bridge_ = true;
-#endif
-#endif
 }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -394,8 +390,7 @@ BraveBrowserProcessImpl::speedreader_rewriter_service() {
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 #if BUILDFLAG(ENABLE_IPFS)
-ipfs::BraveIpfsClientUpdater*
-BraveBrowserProcessImpl::ipfs_client_updater() {
+ipfs::BraveIpfsClientUpdater* BraveBrowserProcessImpl::ipfs_client_updater() {
   if (ipfs_client_updater_)
     return ipfs_client_updater_.get();
 

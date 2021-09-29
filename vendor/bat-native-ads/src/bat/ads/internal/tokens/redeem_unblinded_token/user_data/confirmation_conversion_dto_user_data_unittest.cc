@@ -7,7 +7,9 @@
 
 #include <string>
 
+#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -62,7 +64,7 @@ TEST_F(BatAdsConfirmationConversionDtoUserDataTest, GetInvalidConversion) {
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info.conversion_id = "";
   info.advertiser_public_key = "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-  info.timestamp = Now();
+  info.confirm_at = Now();
 
   // Act
   const base::DictionaryValue user_data = dto::user_data::GetConversion(info);
@@ -83,7 +85,7 @@ TEST_F(BatAdsConfirmationConversionDtoUserDataTest, GetValidConversion) {
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info.conversion_id = "smartbrownfoxes42";
   info.advertiser_public_key = "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-  info.timestamp = Now();
+  info.confirm_at = Now();
 
   // Act
   const base::DictionaryValue user_data = dto::user_data::GetConversion(info);

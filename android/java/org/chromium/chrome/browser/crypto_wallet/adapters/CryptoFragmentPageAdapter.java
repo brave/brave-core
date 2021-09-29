@@ -5,12 +5,15 @@
 
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
+import android.app.Activity;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.AccountsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.PortfolioFragment;
 
@@ -19,10 +22,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
-    private final List<String> titles =
-            new ArrayList<>(Arrays.asList("Portfolio", "Apps", "Accounts"));
-    public CryptoFragmentPageAdapter(FragmentManager fm) {
+    private List<String> mTitles;
+
+    public CryptoFragmentPageAdapter(FragmentManager fm, Activity activity) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        mTitles = new ArrayList<>(Arrays.asList(activity.getText(R.string.portfolio).toString(),
+                activity.getText(R.string.apps).toString(),
+                activity.getText(R.string.accounts).toString()));
     }
 
     @NonNull
@@ -37,12 +43,12 @@ public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return titles.size();
+        return mTitles.size();
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return titles.get(position);
+        return mTitles.get(position);
     }
 }

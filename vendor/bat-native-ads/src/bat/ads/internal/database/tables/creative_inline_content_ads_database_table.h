@@ -8,38 +8,31 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
-#include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
+#include "base/check_op.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/bundle/creative_inline_content_ad_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
-#include "bat/ads/internal/database/tables/campaigns_database_table.h"
-#include "bat/ads/internal/database/tables/creative_ads_database_table.h"
-#include "bat/ads/internal/database/tables/dayparts_database_table.h"
-#include "bat/ads/internal/database/tables/geo_targets_database_table.h"
-#include "bat/ads/internal/database/tables/segments_database_table.h"
+#include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table_aliases.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
-using GetCreativeInlineContentAdCallback =
-    std::function<void(const bool success,
-                       const std::string& creative_instance_id,
-                       const CreativeInlineContentAdInfo& ad)>;
-
-using GetCreativeInlineContentAdsCallback =
-    std::function<void(const bool success,
-                       const SegmentList& segments,
-                       const CreativeInlineContentAdList& ads)>;
+struct CreativeInlineContentAdInfo;
 
 namespace database {
 namespace table {
 
-class CreativeInlineContentAds : public Table {
+class Campaigns;
+class CreativeAds;
+class Dayparts;
+class GeoTargets;
+class Segments;
+
+class CreativeInlineContentAds final : public Table {
  public:
   CreativeInlineContentAds();
-
   ~CreativeInlineContentAds() override;
 
   void Save(const CreativeInlineContentAdList& creative_inline_content_ads,
@@ -50,15 +43,24 @@ class CreativeInlineContentAds : public Table {
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
                                 GetCreativeInlineContentAdCallback callback);
 
-  void GetForSegments(const SegmentList& segments,
-                      const std::string& dimensions,
-                      GetCreativeInlineContentAdsCallback callback);
+  void GetForSegmentsAndDimensions(
+      const SegmentList& segments,
+      const std::string& dimensions,
+      GetCreativeInlineContentAdsCallback callback);
+
+  void GetForDimensions(
+      const std::string& dimensions,
+      GetCreativeInlineContentAdsForDimensionsCallback callback);
 
   void GetAll(GetCreativeInlineContentAdsCallback callback);
 
-  void set_batch_size(const int batch_size);
+  void set_batch_size(const int batch_size) {
+    DCHECK_GT(batch_size, 0);
 
-  std::string get_table_name() const override;
+    batch_size_ = batch_size;
+  }
+
+  std::string GetTableName() const override;
 
   void Migrate(mojom::DBTransaction* transaction,
                const int to_version) override;
@@ -80,17 +82,22 @@ class CreativeInlineContentAds : public Table {
                                   const std::string& creative_instance_id,
                                   GetCreativeInlineContentAdCallback callback);
 
-  void OnGetForSegments(mojom::DBCommandResponsePtr response,
-                        const SegmentList& segments,
-                        GetCreativeInlineContentAdsCallback callback);
+  void OnGetForSegmentsAndDimensions(
+      mojom::DBCommandResponsePtr response,
+      const SegmentList& segments,
+      GetCreativeInlineContentAdsCallback callback);
+
+  void OnGetForDimensions(
+      mojom::DBCommandResponsePtr response,
+      GetCreativeInlineContentAdsForDimensionsCallback callback);
 
   void OnGetAll(mojom::DBCommandResponsePtr response,
                 GetCreativeInlineContentAdsCallback callback);
 
   CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecord* record) const;
 
-  void CreateTableV15(mojom::DBTransaction* transaction);
-  void MigrateToV15(mojom::DBTransaction* transaction);
+  void CreateTableV16(mojom::DBTransaction* transaction);
+  void MigrateToV16(mojom::DBTransaction* transaction);
 
   int batch_size_;
 

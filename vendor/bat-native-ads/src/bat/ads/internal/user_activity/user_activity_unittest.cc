@@ -6,6 +6,7 @@
 #include "bat/ads/internal/user_activity/user_activity.h"
 
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -37,15 +38,15 @@ TEST_F(BatAdsUserActivityTest, RecordLaunchedBrowserEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -59,15 +60,15 @@ TEST_F(BatAdsUserActivityTest, RecordBrowserDidBecomeActiveEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -81,15 +82,15 @@ TEST_F(BatAdsUserActivityTest, RecordBrowserDidEnterBackgroundEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -104,15 +105,15 @@ TEST_F(BatAdsUserActivityTest,
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -126,15 +127,15 @@ TEST_F(BatAdsUserActivityTest, RecordClickedBookmarkEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -148,15 +149,15 @@ TEST_F(BatAdsUserActivityTest, RecordClickedHomePageButtonEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -169,15 +170,15 @@ TEST_F(BatAdsUserActivityTest, RecordClickedLinkEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -191,15 +192,15 @@ TEST_F(BatAdsUserActivityTest, RecordClickedReloadButtonEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -212,15 +213,15 @@ TEST_F(BatAdsUserActivityTest, RecordClosedTabEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -234,15 +235,15 @@ TEST_F(BatAdsUserActivityTest, RecordFocusedOnExistingTabEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -256,15 +257,15 @@ TEST_F(BatAdsUserActivityTest, RecordGeneratedKeywordEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -278,15 +279,15 @@ TEST_F(BatAdsUserActivityTest, RecordNewNavigationEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -300,15 +301,15 @@ TEST_F(BatAdsUserActivityTest, RecordOpenedLinkFromExternalApplicationEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -321,15 +322,15 @@ TEST_F(BatAdsUserActivityTest, RecordOpenedNewTabEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -342,15 +343,15 @@ TEST_F(BatAdsUserActivityTest, RecordPlayedMediaEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -364,15 +365,15 @@ TEST_F(BatAdsUserActivityTest, RecordStoppedPlayingMediaEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -386,15 +387,15 @@ TEST_F(BatAdsUserActivityTest, RecordSubmittedFormEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -407,15 +408,15 @@ TEST_F(BatAdsUserActivityTest, RecordTabUpdatedEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -429,15 +430,15 @@ TEST_F(BatAdsUserActivityTest, RecordTypedAndSelectedNonUrlEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -452,15 +453,15 @@ TEST_F(BatAdsUserActivityTest,
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -473,15 +474,15 @@ TEST_F(BatAdsUserActivityTest, RecordTypedUrlEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -495,15 +496,15 @@ TEST_F(BatAdsUserActivityTest, RecordUsedAddressBarEvent) {
   // Act
   UserActivity::Get()->RecordEvent(event_type);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = event_type;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -537,7 +538,7 @@ TEST_F(BatAdsUserActivityTest, GetHistoryForTimeWindow) {
 
   AdvanceClock(base::TimeDelta::FromHours(1));
 
-  const base::Time time = base::Time::Now();
+  const base::Time time = Now();
 
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTabUpdated);
   UserActivity::Get()->RecordEvent(
@@ -550,28 +551,28 @@ TEST_F(BatAdsUserActivityTest, GetHistoryForTimeWindow) {
   AdvanceClock(base::TimeDelta::FromHours(1));
 
   // Act
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kTabUpdated;
-  event.time = time;
+  event.created_at = time;
   expected_events.push_back(event);
   event.type = UserActivityEventType::kTypedAndSelectedNonUrl;
-  event.time = time;
+  event.created_at = time;
   expected_events.push_back(event);
   event.type =
       UserActivityEventType::kTypedKeywordOtherThanDefaultSearchProvider;
-  event.time = time;
+  event.created_at = time;
   expected_events.push_back(event);
   event.type = UserActivityEventType::kTypedUrl;
-  event.time = time;
+  event.created_at = time;
   expected_events.push_back(event);
   event.type = UserActivityEventType::kUsedAddressBar;
-  event.time = time;
+  event.created_at = time;
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -587,22 +588,22 @@ TEST_F(BatAdsUserActivityTest, MaximumHistoryEntries) {
   // Act
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
 
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(
           base::TimeDelta::FromHours(1));
 
   // Assert
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
 
   for (int i = 0; i < kMaximumHistoryEntries - 1; i++) {
     event.type = event_type;
-    event.time = base::Time::Now();
+    event.created_at = Now();
     expected_events.push_back(event);
   }
 
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);

@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 29a00096249be307d05b9d46ec6b4663a054cf32..1343c8a933b64ad887dfd137087f60a3ef409aca 100644
+index 2f256b5c415d929755b2572f68ca5c6a6802f014..50133e4346799f7cc240440ff3be696fe5344443 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -406,6 +406,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
-         if (mCurrentLocationBarColor == color) return;
+@@ -408,6 +408,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          mCurrentLocationBarColor = color;
+         // TODO(https://crbug.com/1239289): Change back to #setTint once our min API level is 23.
          mLocationBarBackground.setColorFilter(color, PorterDuff.Mode.SRC_IN);
 +        BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
      }
  
      /**
-@@ -523,6 +524,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -525,6 +526,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
                          EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
@@ -18,19 +18,21 @@ index 29a00096249be307d05b9d46ec6b4663a054cf32..1343c8a933b64ad887dfd137087f60a3
      }
  
      @Override
-@@ -692,6 +694,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
-      * @return The right bounds of the location bar after accounting for any visible left buttons.
+@@ -699,7 +701,8 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+      * @return The right bounds of the location bar after accounting for any visible right buttons.
       */
      private int getBoundsAfterAccountingForRightButtons() {
-+        if (true) return Math.max(mToolbarSidePadding, BraveToolbarLayout.class.cast(this).getBoundsAfterAccountingForRightButtonsImpl(mToolbarButtonsContainer));
+-        if (mStartSurfaceScrollFraction == 1.0f) return mToolbarSidePadding;
++      if (true) return Math.max(mToolbarSidePadding, BraveToolbarLayout.class.cast(this).getBoundsAfterAccountingForRightButtonsImpl(mToolbarButtonsContainer));
++      if (mStartSurfaceScrollFraction == 1.0f) return mToolbarSidePadding;
          return Math.max(mToolbarSidePadding, mToolbarButtonsContainer.getMeasuredWidth());
      }
  
-@@ -2130,6 +2133,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -2119,6 +2122,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }
-+        BraveToolbarLayout.class.cast(this).populateUrlAnimatorSetImpl(showExpandedState, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, animators);
++        BraveToolbarLayout.class.cast(this).populateUrlAnimatorSetImpl(hasFocus, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, animators);
          mUrlFocusLayoutAnimator = new AnimatorSet();
          mUrlFocusLayoutAnimator.playTogether(animators);
  

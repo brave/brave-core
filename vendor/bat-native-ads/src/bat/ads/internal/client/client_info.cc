@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/client/client_info.h"
 
-#include "base/time/time.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
 
@@ -13,7 +12,7 @@ namespace ads {
 
 ClientInfo::ClientInfo() = default;
 
-ClientInfo::ClientInfo(const ClientInfo& state) = default;
+ClientInfo::ClientInfo(const ClientInfo& info) = default;
 
 ClientInfo::~ClientInfo() = default;
 
@@ -41,12 +40,12 @@ bool ClientInfo::FromJson(const std::string& json) {
     }
   }
 
+#if !defined(OS_IOS)
   if (document.HasMember("adsShownHistory")) {
     for (const auto& ad_shown : document["adsShownHistory"].GetArray()) {
-      // adsShownHistory used to be an array of timestamps, so if
-      // that's what we have here don't import them and we'll just
-      // start fresh.
-      if (ad_shown.IsUint64()) {
+      // adsShownHistory used to be an array of timestamps, so if that's what we
+      // have here don't import them and we'll just start fresh.
+      if (ad_shown.IsInt64()) {
         continue;
       }
       AdHistoryInfo ad_history;
@@ -57,15 +56,16 @@ bool ClientInfo::FromJson(const std::string& json) {
       }
     }
   }
+#endif
 
   if (document.HasMember("purchaseIntentSignalHistory")) {
     for (const auto& segment_history :
          document["purchaseIntentSignalHistory"].GetObject()) {
       std::string segment = segment_history.name.GetString();
-      std::deque<PurchaseIntentSignalHistoryInfo> histories;
+      std::deque<ad_targeting::PurchaseIntentSignalHistoryInfo> histories;
       for (const auto& segment_history_item :
            segment_history.value.GetArray()) {
-        PurchaseIntentSignalHistoryInfo history;
+        ad_targeting::PurchaseIntentSignalHistoryInfo history;
         rapidjson::StringBuffer buffer;
         rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
         if (segment_history_item.Accept(writer) &&
@@ -106,14 +106,14 @@ bool ClientInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("nextCheckServeAd")) {
-    next_ad_serving_interval_timestamp =
-        document["nextCheckServeAd"].GetUint64();
+    const double timestamp = document["nextCheckServeAd"].GetDouble();
+    serve_next_ad_at = base::Time::FromDoubleT(timestamp);
   }
 
   if (document.HasMember("textClassificationProbabilitiesHistory")) {
     for (const auto& probabilities :
          document["textClassificationProbabilitiesHistory"].GetArray()) {
-      TextClassificationProbabilitiesMap new_probabilities;
+      ad_targeting::TextClassificationProbabilitiesMap new_probabilities;
 
       for (const auto& probability :
            probabilities["textClassificationProbabilities"].GetArray()) {
@@ -154,7 +154,7 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& state) {
 
     writer->StartArray();
     for (const auto& segment_history_item : segment_history.second) {
-      SaveToJson(writer, segment_history_item);
+      writer->String(segment_history_item.ToJson().c_str());
     }
     writer->EndArray();
   }
@@ -193,7 +193,7 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& state) {
   writer->EndObject();
 
   writer->String("nextCheckServeAd");
-  writer->Uint64(state.next_ad_serving_interval_timestamp);
+  writer->Double(state.serve_next_ad_at.ToDoubleT());
 
   writer->String("textClassificationProbabilitiesHistory");
   writer->StartArray();

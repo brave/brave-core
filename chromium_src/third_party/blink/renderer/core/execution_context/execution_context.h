@@ -18,11 +18,8 @@ class WebContentSettingsClient;
 
 using blink::ExecutionContext;
 using blink::GarbageCollected;
-using blink::HeapObjectHeader;
 using blink::MakeGarbageCollected;
 using blink::Supplement;
-using blink::TraceDescriptor;
-using blink::TraceTrait;
 
 namespace brave {
 

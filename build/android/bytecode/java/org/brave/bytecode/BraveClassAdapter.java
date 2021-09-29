@@ -16,11 +16,13 @@ public class BraveClassAdapter {
         chain = new BraveBottomControlsCoordinatorClassAdapter(chain);
         chain = new BraveBottomControlsMediatorClassAdapter(chain);
         chain = new BraveCommandLineInitUtilClassAdapter(chain);
+        chain = new BraveContentSettingsResourcesClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
         chain = new BraveFreIntentCreatorClassAdapter(chain);
         chain = new BraveHomepageManagerClassAdapter(chain);
         chain = new BraveIncognitoToggleTabLayoutClassAdapter(chain);
+        chain = new BraveIntentHandlerClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
         chain = new BraveLayoutManagerChromeClassAdapter(chain);
         chain = new BraveMainPreferenceBaseClassAdapter(chain);
@@ -36,18 +38,24 @@ public class BraveClassAdapter {
         chain = new BraveQueryTileSectionClassAdapter(chain);
         chain = new BraveSearchEngineAdapterClassAdapter(chain);
         chain = new BraveSettingsLauncherImplClassAdapter(chain);
+        chain = new BraveShareDelegateImplClassAdapter(chain);
         chain = new BraveSingleCategorySettingsClassAdapter(chain);
+        chain = new BraveSingleWebsiteSettingsClassAdapter(chain);
+        chain = new BraveSiteSettingsCategoryClassAdapter(chain);
         chain = new BraveSiteSettingsDelegateClassAdapter(chain);
         chain = new BraveStatusMediatorClassAdapter(chain);
-        chain = new BraveTabbedActivityClassAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTCoordinatorPhoneClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTPhoneClassAdapter(chain);
         chain = new BraveTabUiFeatureUtilitiesClassAdapter(chain);
+        chain = new BraveTabbedActivityClassAdapter(chain);
+        chain = new BraveThemeUtilsClassAdapter(chain);
         chain = new BraveTileViewClassAdapter(chain);
         chain = new BraveToolbarLayoutClassAdapter(chain);
         chain = new BraveToolbarManagerClassAdapter(chain);
         chain = new BraveTopToolbarCoordinatorClassAdapter(chain);
+        chain = new BraveWebsiteClassAdapter(chain);
+        chain = new BraveWebsitePermissionsFetcherClassAdapter(chain);
         return chain;
     }
 }

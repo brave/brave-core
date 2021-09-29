@@ -7,6 +7,7 @@
 
 #include "base/path_service.h"
 #include "brave/browser/brave_drm_tab_helper.h"
+#include "brave/browser/widevine/constants.h"
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/common/brave_paths.h"
@@ -181,10 +182,9 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   content::RunAllTasksUntilIdle();
 
   WidevinePermissionRequest::is_test_ = true;
-  GetBraveDrmTabHelper()->OnEvent(
-      component_updater::ComponentUpdateService::Observer
-          ::Events::COMPONENT_UPDATED,
-      BraveDrmTabHelper::kWidevineComponentId);
+  GetBraveDrmTabHelper()->OnEvent(component_updater::ComponentUpdateService::
+                                      Observer ::Events::COMPONENT_UPDATED,
+                                  kWidevineComponentId);
   content::RunAllTasksUntilIdle();
 
   // Check two permission bubble are created.

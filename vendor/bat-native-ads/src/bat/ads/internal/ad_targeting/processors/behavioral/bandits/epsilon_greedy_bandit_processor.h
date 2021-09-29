@@ -9,19 +9,16 @@
 #include <cstdint>
 #include <string>
 
-#include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/ad_targeting/processors/processor.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace ad_targeting {
 namespace processor {
 
-class EpsilonGreedyBandit : public Processor<BanditFeedbackInfo> {
+class EpsilonGreedyBandit final : public Processor<BanditFeedbackInfo> {
  public:
   EpsilonGreedyBandit();
-
   ~EpsilonGreedyBandit() override;
 
   void Process(const BanditFeedbackInfo& feedback) override;

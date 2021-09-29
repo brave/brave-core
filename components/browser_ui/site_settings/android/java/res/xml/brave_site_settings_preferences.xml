@@ -18,4 +18,7 @@
         android:icon="@drawable/settings_play_yt_video_in_browser"
         android:title="@string/settings_play_yt_video_in_browser_title"
         app:iconTint="@color/default_icon_color" />
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.components.browser_ui.site_settings.SingleCategorySettings"
+        android:key="autoplay" />
 </PreferenceScreen>

@@ -1,5 +1,13 @@
 {
   "extends": "./tsconfig",
+  "compilerOptions": {
+    // Remove all previous path mappings -
+    // we want to explictly remove our dev-time list so that
+    // we don't mistakenly resolve to a different build configuration,
+    // hiding an error or a timing issue with the dev's
+    // current build configuration.
+    "paths": {}
+  },
   "include": [
     "./components/definitions/*",
     "./components/brave_extension/extension/brave_extension/types/**/*"

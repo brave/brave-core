@@ -17,6 +17,12 @@
 #error "This file requires ARC support."
 #endif
 
+{# Constants #}
+{%- for const in constants %}
+{%-   set name = const.name|objc_enum_formatter %}
+{{const.kind|objc_wrapper_type}} const {{class_prefix}}{{name}} = {{const|const_objc_assign}};
+{% endfor %}
+
 @implementation _{{class_prefix}}
 @end
 

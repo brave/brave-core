@@ -9,6 +9,7 @@
 #include "bat/ads/internal/database/tables/conversion_queue_database_table.h"
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -50,7 +51,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
             "80ec0ddb-8dbb-4009-8192-1528faa411ae";
         conversion_queue_item.conversion_id =
             "425fb519-f6c0-407f-98f6-cfff8f2b1ec7";
-        conversion_queue_item.timestamp = base::Time::FromDoubleT(1627581449);
+        conversion_queue_item.confirm_at = TimestampToTime(1627581449);
 
         ConversionQueueItemList expected_conversion_queue_items;
         expected_conversion_queue_items.push_back(conversion_queue_item);
@@ -65,7 +66,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
   // Arrange
   database::table::Conversions database_table;
 
-  AdvanceClock(TimeFromDateString("28 July 2021"));
+  AdvanceClock(TimeFromUTCString("28 July 2021"));
 
   // Act
   database_table.GetAll([](const bool success,
@@ -510,7 +511,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
         30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
         30, 30, 30, 30, 30, 30, 30, 30, 30};
 
-    const std::vector<int64_t> expiry_timestamps = {
+    const std::vector<double> expiry_timestamps = {
         1627631040, 1627585140, 1627585140, 1633572000, 1627668000, 1628270400,
         1627790340, 1627619580, 1627577940, 1627577940, 1627577940, 1627577940,
         1627577940, 1627577940, 1627658160, 1627658160, 1627658160, 1627658160,
@@ -553,7 +554,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
       expected_conversion.type = types.at(i);
       expected_conversion.url_pattern = url_patterns.at(i);
       expected_conversion.observation_window = observation_windows.at(i);
-      expected_conversion.expiry_timestamp = expiry_timestamps.at(i);
+      expected_conversion.expire_at = TimestampToTime(expiry_timestamps.at(i));
       expected_conversions.push_back(expected_conversion);
     }
 

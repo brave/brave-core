@@ -19,9 +19,7 @@ import {
 } from '../../ui/components'
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 
-import { ArrivingSoon } from './style'
-import { MoneyBagIcon } from '../../shared/components/icons/money_bag_icon'
-import { formatMessage } from '../../shared/lib/locale_context'
+import { ArrivingSoonMessage } from './arriving_soon_message'
 import { getDaysUntilRewardsPayment } from '../../shared/lib/pending_rewards'
 
 // Utils
@@ -439,17 +437,10 @@ class AdsBox extends React.Component<Props, State> {
         >
           {
             earningsLastMonth > 0 && estimatedPendingDays &&
-              <ArrivingSoon>
-                <MoneyBagIcon />
-                {
-                  formatMessage(getLocale('pendingRewardsMessage'), [
-                    <span className='amount' key='amount'>
-                      +{earningsLastMonth} BAT
-                    </span>,
-                    estimatedPendingDays
-                  ])
-                }
-              </ArrivingSoon>
+              <ArrivingSoonMessage
+                earningsLastMonth={earningsLastMonth}
+                estimatedPendingDays={estimatedPendingDays}
+              />
           }
           <List title={getLocale('adsCurrentEarnings')}>
             <Tokens

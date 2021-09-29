@@ -5,7 +5,9 @@
 
 #include "bat/ads/transaction_info.h"
 
+#include "base/check.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/values.h"
 #include "bat/ads/internal/number_util.h"
 
 namespace ads {
@@ -17,7 +19,7 @@ TransactionInfo::TransactionInfo(const TransactionInfo& info) = default;
 TransactionInfo::~TransactionInfo() = default;
 
 bool TransactionInfo::operator==(const TransactionInfo& rhs) const {
-  return timestamp == rhs.timestamp &&
+  return DoubleEquals(timestamp, rhs.timestamp) &&
          DoubleEquals(estimated_redemption_value,
                       rhs.estimated_redemption_value) &&
          confirmation_type == rhs.confirmation_type;
@@ -31,7 +33,7 @@ void TransactionInfo::ToDictionary(base::Value* dictionary) const {
   DCHECK(dictionary);
 
   dictionary->SetKey("timestamp_in_seconds",
-                     base::Value(std::to_string(timestamp)));
+                     base::Value(base::NumberToString(timestamp)));
 
   dictionary->SetKey("estimated_redemption_value",
                      base::Value(estimated_redemption_value));
@@ -46,7 +48,7 @@ void TransactionInfo::FromDictionary(base::DictionaryValue* dictionary) {
   const std::string* timestamp_value =
       dictionary->FindStringKey("timestamp_in_seconds");
   if (timestamp_value) {
-    base::StringToInt64(*timestamp_value, &timestamp);
+    base::StringToDouble(*timestamp_value, &timestamp);
   }
 
   // Estimated redemption value

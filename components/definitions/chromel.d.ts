@@ -153,6 +153,13 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (result: RewardsExtension.Result) => void) => void
   }
   const isInitialized: (callback: (initialized: boolean) => void) => {}
+
+  function getScheduledCaptchaInfo (
+    callback: (scheduledCaptcha: RewardsExtension.ScheduledCaptcha) => void
+  ): void
+
+  function updateScheduledCaptchaResult (result: boolean): void
+
   const shouldShowOnboarding: (callback: (showOnboarding: boolean) => void) => {}
 
   function enableRewards (): void
@@ -309,7 +316,6 @@ declare namespace chrome.braveShields {
   const allowScriptsOnce: any
   const setBraveShieldsEnabledAsync: any
   const getBraveShieldsEnabledAsync: any
-  const shouldDoCosmeticFilteringAsync: any
   const setCosmeticFilteringControlTypeAsync: any
   const isFirstPartyCosmeticFilteringEnabledAsync: any
   const setAdControlTypeAsync: any
@@ -325,16 +331,6 @@ declare namespace chrome.braveShields {
   const onShieldsPanelShown: any
   const reportBrokenSite: any
 
-  interface UrlSpecificResources {
-    hide_selectors: string[]
-    style_selectors: any
-    exceptions: string[]
-    injected_script: string
-    force_hide_selectors: string[]
-    generichide: boolean
-  }
-  const urlCosmeticResources: (url: string, callback: (resources: UrlSpecificResources) => void) => void
-  const hiddenClassIdSelectors: (classes: string[], ids: string[], exceptions: string[], callback: (selectors: string[], forceHideSelectors: string[]) => void) => void
   const addSiteCosmeticFilter: (origin: string, cssSelector: string) => void
   const openFilterManagementPage: () => void
 
@@ -345,10 +341,8 @@ declare namespace chrome.braveShields {
 }
 
 declare namespace chrome.braveWallet {
-  const promptToEnableWallet: (tabId: number | undefined) => void
   const ready: () => void
-  const shouldCheckForDapps: (callback: (dappDetection: boolean) => void) => void
-  const shouldPromptForSetup: (callback: (dappDetection: boolean) => void) => void
+  const shouldPromptForSetup: (callback: (shouldPrompt: boolean) => void) => void
   const loadUI: (callback: () => void) => void
   const isNativeWalletEnabled: (callback: (enabled: boolean) => void) => void
   const notifyWalletUnlock: () => void

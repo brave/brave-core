@@ -13,12 +13,9 @@
 
 namespace ads {
 
-struct CreativeAdInfo;
-
-class DaypartFrequencyCap : public ExclusionRule<CreativeAdInfo> {
+class DaypartFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   DaypartFrequencyCap();
-
   ~DaypartFrequencyCap() override;
 
   DaypartFrequencyCap(const DaypartFrequencyCap&) = delete;
@@ -26,7 +23,7 @@ class DaypartFrequencyCap : public ExclusionRule<CreativeAdInfo> {
 
   bool ShouldExclude(const CreativeAdInfo& ad) override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   std::string last_message_;

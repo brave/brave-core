@@ -6,7 +6,9 @@
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/statement_info.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -59,7 +61,7 @@ TEST_F(BatAdsAdRewardsIssue17412IntegrationTest, GetAdRewards) {
 
   InitializeAds();
 
-  AdvanceClock(TimeFromDateString("8 August 2021"));
+  AdvanceClock(TimeFromUTCString("8 August 2021"));
 
   // Act
   GetAds()->GetAccountStatement(
@@ -68,7 +70,7 @@ TEST_F(BatAdsAdRewardsIssue17412IntegrationTest, GetAdRewards) {
 
         StatementInfo expected_statement;
         expected_statement.next_payment_date =
-            TimestampFromDateString("5 September 2021");
+            UTCTimeStringToTimestamp("5 September 2021");
 
         // Calculated from earnings in April configured in
         // |data/test/confirmations.json|

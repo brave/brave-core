@@ -18,7 +18,7 @@
 <translation id="5345505584130165588">Escudos y privacidad de Brave</translation>
 <translation id="4692623383562244444">Motores de búsqueda</translation>
 <translation id="1468415711258933398">Pestaña Estándar</translation>
-<translation id="3377025655491224618">Pestaña Privada</translation>
+<translation id="3377025655491224618">Pestaña privada</translation>
 <translation id="9148058034647219655">Salir</translation>
 <translation id="4022987104439075738">Puerta de enlace IPFS</translation>
 <translation id="2688519859165248360">Permite la navegación hacia recursos IPFS mediante una puerta de enlace IPFS</translation>
@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">Impide la carga y presencia de rastreadores y anuncios en las páginas web</translation>
 <translation id="1680858055899097121">No guardar las pestañas entre sesiones de navegación</translation>
 <translation id="7142548388914389999">Permitir estadísticas de productos que preservan la privacidad (P3A)</translation>
-<translation id="5469408008145872264">Esta información plenamente anonimizada permite a Brave calcular el uso general de ciertas funciones y mejorar sus prestaciones.</translation>
+<translation id="4272190451231642425">Envía informes de errores automáticamente</translation>
+<translation id="2239766974964486304">Los informes de errores permiten que Brave mejore la estabilidad de sus productos para todos los usuarios.</translation>
 <translation id="7977176350719484850">Est. de datos\nahorrados</translation>
 <translation id="9008534313521214777">Estimación de tiempo ahorrado</translation>
 <translation id="6572660632052512096">Modo Escritorio</translation>
@@ -251,7 +252,7 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="723054503945711909">Brave Software Inc. no procesa, almacena o accede a ninguna información personal que hayas proporcionado a Uphold al crear una cuenta con ellos.</translation>
 <translation id="3699674790322420653">Completa la verificación de tu monedero</translation>
 <translation id="2193391216824305230">Monedero del usuario</translation>
-<translation id="7591798679868259510">Ir a mi cuenta Uphold</translation>
+<translation id="6585020831163574892">Ve a tu cuenta de Uphold</translation>
 <translation id="9200453331904391567">Desconectar de Brave Rewards</translation>
 <translation id="6239274080752256452">Retirar fondos</translation>
 <translation id="8874184842967597500">No conectado</translation>
@@ -271,7 +272,7 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="717952606991220586">¡Vaya!, algo ha ido mal. Por favor, inténtalo de nuevo más tarde.</translation>
 <translation id="2524310205387880526">Calificar a Brave</translation>
 <translation id="987264212798334818">General</translation>
-<translation id="1116694919640316211">Acerca</translation>
+<translation id="1116694919640316211">Acerca de</translation>
 <translation id="6680650203439190394">Valorar</translation>
 <translation id="2635089463885398597">¿Cómo calificarías tu experiencia con Brave?</translation>
 <translation id="141901961143729572">Comparte tu opinión</translation>
@@ -327,6 +328,7 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="5617673581653540121">Tu conexión está ahora cifrada.</translation>
 <translation id="4055107796760496928">Siempre que esté disponible, Brave se encarga de cambiar a una conexión segura de forma automática.</translation>
 <translation id="8869714780588464835">Comparte la noticia</translation>
+<translation id="7427391215172269363">Todos los días ahorro datos navegando por la web con Brave.</translation>
 <translation id="5372054974373489308">¡1000 rastreadores y anuncios bloqueados!</translation>
 <translation id="2338952568654182692">¡5000 rastreadores y anuncios bloqueados!</translation>
 <translation id="5289711064670408815">¡10 000 rastreadores y anuncios bloqueados!</translation>
@@ -480,7 +482,7 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="1078265935778232285">Bienvenido a Brave Browser</translation>
 <translation id="6824713633331856331">Ayúdanos de forma anónima a aprender</translation>
 <translation id="6116685031674149112">Brave protege tu privacidad y\nagradece tu consentimiento para lo siguiente:</translation>
-<translation id="3971666849661839619">Ayuda a mejorar Brave enviando informes de errores totalmente anonimizados, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Ayuda a mejorar Brave enviando de forma totalmente anonimizada <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
 <translation id="6478996494082389936">análisis privados de productos.</translation>
 <translation id="5187052478998910855">¿Necesitas hacer un repaso de las Rewards?</translation>
 <translation id="8622329973403382303">Haz un recorrido rápido para hacer un repaso de cómo funciona y pasar a la historia como la estrella de los premios.</translation>
@@ -563,14 +565,38 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="1144810021918451336">No protege contra extensiones, descargas ni sitios web peligrosos.</translation>
 <translation id="745115390910697838">Las frases no coinciden. Inténtalo de nuevo.</translation>
 <translation id="2360588547830602174">Error al recuperar la cuenta. Inténtalo de nuevo.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Precio del mercado en ETH</translation>
+<translation id="5593852897152820572">Precio en ETH</translation>
 <translation id="6748108480210050150">De:</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
 <translation id="8654192805213365413">75 %</translation>
-<translation id="6159566011642056819">Para (estimación)</translation>
+<translation id="6159566011642056819">A (estimación)</translation>
+<translation id="6998989275928107238">Para</translation>
+<translation id="6664416064035847539">dirección o URL</translation>
 <translation id="59223531494896848">Límite</translation>
 <translation id="3567988240819868195">Mercado</translation>
 <translation id="632241521608275119">Tolerancia de deslizamiento</translation>
+<translation id="4500473291496079954">Caduca dentro de</translation>
+<translation id="1987317783729300807">Cuentas</translation>
+<translation id="3535654229833214438">Transacciones</translation>
+<translation id="4636930964841734540">Información</translation>
+<translation id="6284218950354553099">Enviar automáticamente el ping de uso diario a Brave</translation>
+<translation id="5288333155754958121">Este ping privado y anónimo permite a Brave calcular el número de usuarios activos.</translation>
+<translation id="3819257035322786455">Copia de seguridad</translation>
+<translation id="4608713693379664295">Principales cuentas de criptomonedas</translation>
+<translation id="4003821417160006384">Cuentas secundarias</translation>
+<translation id="8094541587800369158">Estas cuentas pueden usarse con aplicaciones descentralizadas de Web 3 y aparecer en tu cartera. Sin embargo, no pueden restaurarse con una frase de recuperación desde la copia de seguridad de tu cuenta principal. Habilita Brave Sync para restaurar automáticamente las cuentas secundarias.</translation>
+<translation id="6725413948756358325">Nombre de la cuenta</translation>
+<translation id="6062431965141524986">Puedes crear una cuenta secundaria importando tu clave privada.</translation>
+<translation id="3952797765659730604">Introduce, pega o importa el archivo o JSON que contenga la cadena de tu clave privada.</translation>
+<translation id="569068482611873351">Importar…</translation>
+<translation id="1940465339426637378">Activos</translation>
+<translation id="4522570452068850558">Detalles</translation>
+<translation id="9065203028668620118">Editar</translation>
+<translation id="3995184924764722477">Detalles de la cuenta</translation>
+<translation id="8967036623785635603">Editar activos visibles</translation>
+<translation id="5050890334032852465">Guardar la lista de seguimiento de la cuenta</translation>
+<translation id="7755766175599167100">Buscar tokens</translation>
+<translation id="3835223348537121988">Saldo:</translation>
 </translationbundle>

@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "base/check.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -18,9 +20,9 @@ bool ShouldAllow(PermissionRule* permission_rule) {
     return true;
   }
 
-  const std::string reason = permission_rule->get_last_message();
-  if (!reason.empty()) {
-    BLOG(2, reason);
+  const std::string last_message = permission_rule->GetLastMessage();
+  if (!last_message.empty()) {
+    BLOG(2, last_message);
   }
 
   return false;

@@ -5,7 +5,10 @@
 
 #include "bat/ads/internal/catalog/catalog_util.h"
 
+#include "bat/ads/ads_client.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/pref_names.h"
 
@@ -44,8 +47,8 @@ TEST_F(BatAdsCatalogUtilTest, CatalogDoesNotExist) {
 
 TEST_F(BatAdsCatalogUtilTest, CatalogHasExpired) {
   // Arrange
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kCatalogLastUpdated,
-                                       NowAsTimestamp());
+  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
+                                        NowAsTimestamp());
 
   // Act
   AdvanceClock(base::TimeDelta::FromDays(1));
@@ -57,8 +60,8 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasExpired) {
 
 TEST_F(BatAdsCatalogUtilTest, CatalogHasNotExpired) {
   // Arrange
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kCatalogLastUpdated,
-                                       NowAsTimestamp());
+  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
+                                        NowAsTimestamp());
 
   // Act
   AdvanceClock(base::TimeDelta::FromDays(1) - base::TimeDelta::FromSeconds(1));

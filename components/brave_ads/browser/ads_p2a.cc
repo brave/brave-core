@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 
-#include <cstdint>
 #include <map>
 #include <string>
 
@@ -17,6 +16,7 @@
 #include "components/prefs/pref_service.h"
 
 namespace brave_ads {
+
 namespace {
 
 constexpr const char* kP2AQuestionNameList[] = {

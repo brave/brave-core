@@ -8,6 +8,7 @@
 
 #include "build/build_config.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "extensions/buildflags/buildflags.h"
 
 extern const char kAdsBlocked[];
 extern const char kTrackersBlocked[];
@@ -73,6 +74,12 @@ extern const char kBraveShieldsSettingsVersion[];
 extern const char kBinanceAccessToken[];
 extern const char kBinanceRefreshToken[];
 extern const char kDefaultBrowserPromptEnabled[];
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+// Web discovery project
+extern const char kWebDiscoveryEnabled[];
+#endif
+
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 extern const char kBraveGCMChannelStatus[];
 #endif
@@ -89,7 +96,7 @@ extern const char kSafetynetStatus[];
 #endif
 
 extern const char kDefaultBrowserLaunchingCount[];
-extern const char kBraveDefaultSearchVersion[];
 extern const char kTabsSearchShow[];
+extern const char kDontAskForCrashReporting[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

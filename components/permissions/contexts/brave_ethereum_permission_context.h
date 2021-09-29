@@ -62,6 +62,14 @@ class BraveEthereumPermissionContext : public PermissionContextBase {
       const std::vector<std::string>& addresses,
       base::OnceCallback<void(bool, const std::vector<std::string>&)> callback);
 
+  static bool HasEthereumPermission(content::BrowserContext* context,
+                                    const std::string& origin_spec,
+                                    const std::string& account,
+                                    bool* has_permission);
+  static bool ResetEthereumPermission(content::BrowserContext* context,
+                                      const std::string& origin_spec,
+                                      const std::string& account);
+
  protected:
   bool IsRestrictedToSecureOrigins() const override;
 

@@ -49,6 +49,7 @@ export const getUIMessages = (): Record<string, string> => {
     'donateMonthly',
     'donateNow',
     'earningsAds',
+    'earningsViewDepositHistory',
     'enableRewards',
     'enableTips',
     'expiresOn',
@@ -140,6 +141,7 @@ export const getUIMessages = (): Record<string, string> => {
     'walletButtonVerified',
     'walletGoToVerifyPage',
     'walletGoToProvider',
+    'walletLogInWithProvider',
     'walletDisconnect',
     'walletVerified',
     'cancel',
@@ -148,7 +150,8 @@ export const getUIMessages = (): Record<string, string> => {
     'loginMessageTitle',
     'loginMessageText',
     'walletPending',
-    'walletConnected'
+    'walletConnected',
+    'walletDisconnected'
   ]
 
   let translations = {}

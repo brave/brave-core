@@ -11,6 +11,7 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace api_request_helper {
 
@@ -54,6 +55,7 @@ void APIRequestHelper::Request(
       auto_retry_on_network_change
           ? network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE
           : network::SimpleURLLoader::RetryMode::RETRY_NEVER);
+  url_loader->SetAllowHttpErrorResults(true);
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),

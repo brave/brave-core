@@ -6,15 +6,14 @@
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 
 #include <algorithm>
-#include <utility>
-#include <vector>
 
-#include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
+#include "base/notreached.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/segments/segments_util.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {

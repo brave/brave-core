@@ -17,7 +17,7 @@ class ExclusionRule {
 
   virtual bool ShouldExclude(const T&) = 0;
 
-  virtual std::string get_last_message() const = 0;
+  virtual std::string GetLastMessage() const = 0;
 };
 
 }  // namespace ads

@@ -18,8 +18,8 @@
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #endif
 
 BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
@@ -91,9 +91,9 @@ void BraveRendererUpdater::UpdateRenderer(
         renderer_configuration) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   bool use_brave_web3_provider =
-      (static_cast<brave_wallet::Web3ProviderTypes>(
+      (static_cast<brave_wallet::mojom::DefaultWallet>(
            brave_wallet_web3_provider_.GetValue()) ==
-       brave_wallet::Web3ProviderTypes::BRAVE_WALLET) &&
+       brave_wallet::mojom::DefaultWallet::BraveWallet) &&
       brave_wallet::IsAllowedForContext(profile_);
 
   (*renderer_configuration)

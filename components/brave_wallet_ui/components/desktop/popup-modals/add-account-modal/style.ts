@@ -111,3 +111,11 @@ export const ImportButton = styled.label`
   margin-right: 10px;
   color: ${(p) => p.theme.color.interactive07};
 `
+
+export const ErrorText = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  color: ${(p) => p.theme.color.errorText};
+  margin-bottom: 10px;
+`

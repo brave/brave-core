@@ -12,10 +12,9 @@
 
 namespace ads {
 
-class DoNotDisturbFrequencyCap : public PermissionRule {
+class DoNotDisturbFrequencyCap final : public PermissionRule {
  public:
   DoNotDisturbFrequencyCap();
-
   ~DoNotDisturbFrequencyCap() override;
 
   DoNotDisturbFrequencyCap(const DoNotDisturbFrequencyCap&) = delete;
@@ -23,7 +22,7 @@ class DoNotDisturbFrequencyCap : public PermissionRule {
 
   bool ShouldAllow() override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   std::string last_message_;

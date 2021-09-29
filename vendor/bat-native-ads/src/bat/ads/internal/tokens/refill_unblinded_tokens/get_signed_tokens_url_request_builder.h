@@ -14,11 +14,10 @@
 
 namespace ads {
 
-class GetSignedTokensUrlRequestBuilder : UrlRequestBuilder {
+class GetSignedTokensUrlRequestBuilder final : UrlRequestBuilder {
  public:
   GetSignedTokensUrlRequestBuilder(const WalletInfo& wallet,
                                    const std::string& nonce);
-
   ~GetSignedTokensUrlRequestBuilder() override;
 
   mojom::UrlRequestPtr Build() override;

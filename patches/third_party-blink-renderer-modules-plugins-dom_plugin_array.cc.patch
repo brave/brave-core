@@ -1,16 +1,16 @@
 diff --git a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
-index 53c24628f1d406375413ab2d78272383594b4d57..458bfb2ff359e5e6b1bd8c667443a78409ec75e0 100644
+index af14f519bae5db2e8b09af4b8bd270e8ded1cf76..ffb57031c5c6a1ba38195fd510baaa0fe93f3ae2 100644
 --- a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
 +++ b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
-@@ -138,6 +138,7 @@ void DOMPluginArray::UpdatePluginData() {
-     dom_plugins_.clear();
+@@ -196,6 +196,7 @@ void DOMPluginArray::UpdatePluginData() {
+     }
      return;
    }
 +  BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__RESET_PLUGIN_DATA
    PluginData* data = GetPluginData();
    if (!data) {
      dom_plugins_.clear();
-@@ -159,6 +160,7 @@ void DOMPluginArray::UpdatePluginData() {
+@@ -217,6 +218,7 @@ void DOMPluginArray::UpdatePluginData() {
        }
      }
    }

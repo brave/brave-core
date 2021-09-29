@@ -6,6 +6,8 @@
 #include "brave/browser/ui/browser_commands.h"
 
 #include "base/files/file_path.h"
+#include "brave/common/pref_names.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -36,6 +38,10 @@
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/tor_profile_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/pref_names.h"
 #endif
 
 using content::WebContents;
@@ -83,7 +89,7 @@ void OpenGuestProfile() {
 
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  using DistillState = speedreader::SpeedreaderTabHelper::DistillState;
+  using DistillState = speedreader::DistillState;
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
   if (contents) {
     auto* tab_helper =
@@ -111,9 +117,29 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 }
 
+void ShowBraveVPNBubble(Browser* browser) {
+  // Ask to browser view.
+  static_cast<BraveBrowserWindow*>(browser->window())->ShowBraveVPNBubble();
+}
+
+void ToggleBraveVPNButton(Browser* browser) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  auto* prefs = browser->profile()->GetPrefs();
+  const bool show = prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
+  prefs->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, !show);
+#endif
+}
+
 void ShowWalletBubble(Browser* browser) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && defined(TOOLKIT_VIEWS)
   static_cast<BraveBrowserView*>(browser->window())->CreateWalletBubble();
+#endif
+}
+
+void ShowApproveWalletBubble(Browser* browser) {
+#if BUILDFLAG(BRAVE_WALLET_ENABLED) && defined(TOOLKIT_VIEWS)
+  static_cast<BraveBrowserView*>(browser->window())
+      ->CreateApproveWalletBubble();
 #endif
 }
 

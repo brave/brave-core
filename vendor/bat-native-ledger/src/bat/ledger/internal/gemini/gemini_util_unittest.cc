@@ -134,6 +134,18 @@ TEST_F(GeminiUtilTest, GetWithdrawUrl) {
   ASSERT_EQ(result, GEMINI_OAUTH_STAGING_URL "/transfer/withdraw");
 }
 
+TEST_F(GeminiUtilTest, GetActivityUrl) {
+  // production
+  ledger::_environment = type::Environment::PRODUCTION;
+  std::string result = gemini::GetActivityUrl();
+  ASSERT_EQ(result, GEMINI_OAUTH_URL "/balances");
+
+  // staging
+  ledger::_environment = type::Environment::STAGING;
+  result = gemini::GetActivityUrl();
+  ASSERT_EQ(result, GEMINI_OAUTH_STAGING_URL "/balances");
+}
+
 TEST_F(GeminiUtilTest, GetWallet) {
   // no wallet
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletGemini))

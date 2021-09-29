@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_MAC_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_MAC_H_
 
+#import <Foundation/Foundation.h>
 #include <string>
 
 #include "base/no_destructor.h"
@@ -32,7 +33,10 @@ class BraveVPNOSConnectionAPIMac : public BraveVPNOSConnectionAPI {
   void RemoveVPNConnection(const std::string& name) override;
   void Connect(const std::string& name) override;
   void Disconnect(const std::string& name) override;
+  void CheckConnection(const std::string& name) override;
+  void ObserveVPNConnectionChange();
 
+  id vpn_observer_ = nil;
   BraveVPNConnectionInfo info_;
 };
 

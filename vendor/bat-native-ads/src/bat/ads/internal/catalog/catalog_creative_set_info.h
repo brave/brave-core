@@ -7,19 +7,18 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_CREATIVE_SET_INFO_H_
 
 #include <string>
-#include <vector>
 
-#include "bat/ads/internal/catalog/catalog_creative_ad_notification_info.h"
-#include "bat/ads/internal/catalog/catalog_creative_inline_content_ad_info.h"
-#include "bat/ads/internal/catalog/catalog_creative_new_tab_page_ad_info.h"
-#include "bat/ads/internal/catalog/catalog_creative_promoted_content_ad_info.h"
-#include "bat/ads/internal/catalog/catalog_os_info.h"
-#include "bat/ads/internal/catalog/catalog_segment_info.h"
-#include "bat/ads/internal/conversions/conversion_info.h"
+#include "bat/ads/internal/catalog/catalog_creative_ad_notification_info_aliases.h"
+#include "bat/ads/internal/catalog/catalog_creative_inline_content_ad_info_aliases.h"
+#include "bat/ads/internal/catalog/catalog_creative_new_tab_page_ad_info_aliases.h"
+#include "bat/ads/internal/catalog/catalog_creative_promoted_content_ad_info_aliases.h"
+#include "bat/ads/internal/catalog/catalog_os_info_aliases.h"
+#include "bat/ads/internal/catalog/catalog_segment_info_aliases.h"
+#include "bat/ads/internal/conversions/conversion_info_aliases.h"
 
 namespace ads {
 
-struct CatalogCreativeSetInfo {
+struct CatalogCreativeSetInfo final {
   CatalogCreativeSetInfo();
   CatalogCreativeSetInfo(const CatalogCreativeSetInfo& info);
   ~CatalogCreativeSetInfo();
@@ -32,6 +31,7 @@ struct CatalogCreativeSetInfo {
   unsigned int per_week = 0;
   unsigned int per_month = 0;
   unsigned int total_max = 0;
+  double value = 0.0;
   std::string split_test_group;
   CatalogSegmentList segments;
   CatalogOsList oses;
@@ -41,8 +41,6 @@ struct CatalogCreativeSetInfo {
   CatalogCreativePromotedContentAdList creative_promoted_content_ads;
   ConversionList conversions;
 };
-
-using CatalogCreativeSetList = std::vector<CatalogCreativeSetInfo>;
 
 }  // namespace ads
 

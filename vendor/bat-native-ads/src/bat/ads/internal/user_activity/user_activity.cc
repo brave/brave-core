@@ -5,15 +5,18 @@
 
 #include "bat/ads/internal/user_activity/user_activity.h"
 
-#include <cstdint>
 #include <string>
 
+#include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/time/time.h"
 #include "bat/ads/internal/features/user_activity/user_activity_features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/user_activity/page_transition_util.h"
 #include "bat/ads/internal/user_activity/user_activity_scoring.h"
+#include "bat/ads/internal/user_activity/user_activity_trigger_info_aliases.h"
 #include "bat/ads/internal/user_activity/user_activity_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -22,11 +25,11 @@ namespace {
 UserActivity* g_user_activity = nullptr;
 
 void LogEvent(const UserActivityEventType event_type) {
-  const UserActivityTriggers triggers =
+  const UserActivityTriggerList triggers =
       ToUserActivityTriggers(features::user_activity::GetTriggers());
 
   const base::TimeDelta time_window = features::user_activity::GetTimeWindow();
-  const UserActivityEvents events =
+  const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(time_window);
 
   const double score = GetUserActivityScore(triggers, events);
@@ -67,7 +70,7 @@ bool UserActivity::HasInstance() {
 void UserActivity::RecordEvent(const UserActivityEventType event_type) {
   UserActivityEventInfo user_activity_event;
   user_activity_event.type = event_type;
-  user_activity_event.time = base::Time::Now();
+  user_activity_event.created_at = base::Time::Now();
 
   history_.push_back(user_activity_event);
 
@@ -115,16 +118,16 @@ void UserActivity::RecordEventForPageTransitionFromInt(const int32_t type) {
   RecordEventForPageTransition(page_transition_type);
 }
 
-UserActivityEvents UserActivity::GetHistoryForTimeWindow(
+UserActivityEventList UserActivity::GetHistoryForTimeWindow(
     const base::TimeDelta time_window) const {
-  UserActivityEvents filtered_history = history_;
+  UserActivityEventList filtered_history = history_;
 
   const base::Time time = base::Time::Now() - time_window;
 
   const auto iter =
       std::remove_if(filtered_history.begin(), filtered_history.end(),
                      [&time](const UserActivityEventInfo& event) {
-                       return event.time < time;
+                       return event.created_at < time;
                      });
 
   filtered_history.erase(iter, filtered_history.end());

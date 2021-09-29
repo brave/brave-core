@@ -28,11 +28,23 @@
 // }
 //
 // Success code:
-// HTTP_OK (200)
+// HTTP_OK (200):
+//   SUCCESS
 //
 // Error codes:
+// HTTP_BAD_REQUEST (400):
+//   INVALID_AMOUNT
+//   INVALID_MEMO
 // HTTP_UNAUTHORIZED (401)
-// HTTP_NOT_FOUND (404)
+// HTTP_NOT_FOUND (404):
+//   NOT_FOUND
+// HTTP_CONFLICT (409):
+//   LOCKED_BY_QUICK_DEPOSIT
+//   NO_INV
+//   NOT_ALLOWED_TO_RECV
+//   NOT_ALLOWED_TO_SEND
+//   SESSION_SEND_LIMIT
+//   SESSION_TIME_OUT
 //
 // Response body:
 // {

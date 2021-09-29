@@ -19,11 +19,13 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
+class PrefChangeRegistrar;
 class PrefService;
 
-namespace user_prefs {
-class PrefRegistrySyncable;
+namespace base {
+class OneShotTimer;
 }
 
 namespace brave_wallet {
@@ -31,17 +33,13 @@ namespace brave_wallet {
 class HDKeyring;
 class EthTransaction;
 class KeyringControllerUnitTest;
+class BraveWalletProviderImplUnitTest;
 
 // This class is not thread-safe and should have single owner
 class KeyringController : public KeyedService, public mojom::KeyringController {
  public:
   explicit KeyringController(PrefService* prefs);
   ~KeyringController() override;
-
-  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
-
-  static void RegisterProfilePrefsForMigration(
-      user_prefs::PrefRegistrySyncable* registry);
 
   static void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
@@ -51,6 +49,10 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   static const base::Value* GetPrefForKeyring(PrefService* prefs,
                                               const std::string& key,
                                               const std::string& id);
+  static base::Value* GetPrefForHardwareKeyringUpdate(PrefService* prefs);
+  static base::Value* GetPrefForKeyringUpdate(PrefService* prefs,
+                                              const std::string& key,
+                                              const std::string& id);
   // If keyring dicionary for id doesn't exist, it will be created.
   static void SetPrefForKeyring(PrefService* prefs,
                                 const std::string& key,
@@ -58,13 +60,20 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                                 const std::string& id);
 
   // Account path will be used as key in kAccountMetas
-  static void SetAccountNameForKeyring(PrefService* prefs,
-                                       const std::string& account_path,
-                                       const std::string& name,
-                                       const std::string& id);
+  static void SetAccountMetaForKeyring(
+      PrefService* prefs,
+      const std::string& account_path,
+      const absl::optional<std::string> name,
+      const absl::optional<std::string> address,
+      const std::string& id);
+
   static std::string GetAccountNameForKeyring(PrefService* prefs,
                                               const std::string& account_path,
                                               const std::string& id);
+  static std::string GetAccountAddressForKeyring(
+      PrefService* prefs,
+      const std::string& account_path,
+      const std::string& id);
 
   static std::string GetAccountPathByIndex(size_t index);
 
@@ -94,15 +103,27 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                     CreateWalletCallback callback) override;
   void RestoreWallet(const std::string& mnemonic,
                      const std::string& password,
+                     bool is_legacy_brave_wallet,
                      RestoreWalletCallback callback) override;
   void Unlock(const std::string& password, UnlockCallback callback) override;
   void Lock() override;
   void IsLocked(IsLockedCallback callback) override;
   void AddAccount(const std::string& account_name,
                   AddAccountCallback callback) override;
-  void AddImportedAccount(const std::string& account_name,
-                          const std::string& private_key,
-                          AddImportedAccountCallback callback) override;
+  void GetPrivateKeyForDefaultKeyringAccount(
+      const std::string& address,
+      GetPrivateKeyForDefaultKeyringAccountCallback callback) override;
+  void ImportAccount(const std::string& account_name,
+                     const std::string& private_key,
+                     ImportAccountCallback callback) override;
+  void ImportAccountFromJson(const std::string& account_name,
+                             const std::string& password,
+                             const std::string& json,
+                             ImportAccountCallback callback) override;
+  void AddHardwareAccounts(
+      std::vector<mojom::HardwareWalletAccountPtr> info) override;
+  void GetHardwareAccounts(GetHardwareAccountsCallback callback) override;
+  void RemoveHardwareAccount(const std::string& address) override;
   void GetPrivateKeyForImportedAccount(
       const std::string& address,
       GetPrivateKeyForImportedAccountCallback callback) override;
@@ -112,6 +133,14 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void NotifyWalletBackupComplete() override;
   void GetDefaultKeyringInfo(GetDefaultKeyringInfoCallback callback) override;
   void Reset() override;
+  void SetDefaultKeyringDerivedAccountName(
+      const std::string& address,
+      const std::string& name,
+      SetDefaultKeyringDerivedAccountNameCallback callback) override;
+  void SetDefaultKeyringImportedAccountName(
+      const std::string& address,
+      const std::string& name,
+      SetDefaultKeyringImportedAccountNameCallback callback) override;
 
   bool IsDefaultKeyringCreated();
 
@@ -123,6 +152,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
 
   void AddObserver(::mojo::PendingRemote<mojom::KeyringControllerObserver>
                        observer) override;
+  void NotifyUserInteraction() override;
 
   /* TODO(darkdh): For other keyrings support
   void DeleteKeyring(size_t index);
@@ -150,8 +180,22 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, CreateAndRestoreWallet);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AddAccount);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, ImportedAccounts);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
+                           GetPrivateKeyForDefaultKeyringAccount);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest,
+                           SetDefaultKeyringDerivedAccountMeta);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, RestoreLegacyBraveWallet);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AutoLock);
+  friend class BraveWalletProviderImplUnitTest;
+  friend class EthTxControllerUnitTest;
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
+  void OnAutoLockFired();
+
+  // Address will be returned when success
+  absl::optional<std::string> ImportAccountForDefaultKeyring(
+      const std::string& account_name,
+      const std::vector<uint8_t>& private_key);
 
   size_t GetAccountMetasNumberForKeyring(const std::string& id);
 
@@ -169,19 +213,28 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   std::vector<uint8_t> GetOrCreateNonceForKeyring(const std::string& id);
   bool CreateEncryptorForKeyring(const std::string& password,
                                  const std::string& id);
-  bool CreateDefaultKeyringInternal(const std::string& mnemonic);
+  bool CreateDefaultKeyringInternal(const std::string& mnemonic,
+                                    bool is_legacy_brave_wallet);
 
   // Currently only support one default keyring, `CreateDefaultKeyring` and
   // `RestoreDefaultKeyring` will overwrite existing one if success
   HDKeyring* CreateDefaultKeyring(const std::string& password);
   // Restore default keyring from backup seed phrase
   HDKeyring* RestoreDefaultKeyring(const std::string& mnemonic,
-                                   const std::string& password);
+                                   const std::string& password,
+                                   bool is_legacy_brave_wallet);
   // It's used to reconstruct same default keyring between browser relaunch
   HDKeyring* ResumeDefaultKeyring(const std::string& password);
 
+  void NotifyAccountsChanged();
+  void StopAutoLockTimer();
+  void ResetAutoLockTimer();
+  void OnAutoLockPreferenceChanged();
+
   std::unique_ptr<PasswordEncryptor> encryptor_;
   std::unique_ptr<HDKeyring> default_keyring_;
+  std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
+  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
   // TODO(darkdh): For other keyrings support
   // std::vector<std::unique_ptr<HDKeyring>> keyrings_;

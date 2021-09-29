@@ -69,7 +69,7 @@ bool ParseTokenList(const std::string& json,
     return false;
   }
 
-  for (const auto& erc_token_value_pair : response_dict->DictItems()) {
+  for (const auto erc_token_value_pair : response_dict->DictItems()) {
     auto erc_token = brave_wallet::mojom::ERCToken::New();
     erc_token->contract_address = erc_token_value_pair.first;
     const base::DictionaryValue* erc_token_value;
@@ -95,6 +95,7 @@ bool ParseTokenList(const std::string& json,
     if (!ParseResultFromDict(erc_token_value, "name", &erc_token->name)) {
       return false;
     }
+    ParseResultFromDict(erc_token_value, "logo", &erc_token->logo);
 
     absl::optional<int> decimals_opt = erc_token_value->FindIntKey("decimals");
     if (decimals_opt)

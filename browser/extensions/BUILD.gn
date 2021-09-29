@@ -1,5 +1,6 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/config.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -74,6 +75,7 @@ source_set("extensions") {
     "//brave/components/brave_shields/common",
     "//brave/components/brave_talk",
     "//brave/components/brave_today/browser",
+    "//brave/components/brave_vpn/buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",
@@ -118,10 +120,7 @@ source_set("extensions") {
       "ethereum_remote_client_util.cc",
       "ethereum_remote_client_util.h",
     ]
-    configs += [
-      ":infura_config",
-      ":brave_services_config",
-    ]
+    configs += [ ":infura_config" ]
     deps += [
       "//brave/browser/ethereum_remote_client",
       "//brave/components/brave_wallet/browser",
@@ -204,6 +203,10 @@ source_set("extensions") {
       "//extensions/common:common_constants",
     ]
   }
+
+  if (brave_adaptive_captcha_enabled) {
+    deps += [ "//brave/components/brave_adaptive_captcha" ]
+  }
 }
 
 group("resources") {
@@ -219,10 +222,6 @@ group("resources") {
       "//brave/components/brave_webtorrent:static_resources",
     ]
   }
-}
-
-config("brave_services_config") {
-  defines = [ "BRAVE_SERVICES_KEY=\"$brave_services_key\"" ]
 }
 
 config("infura_config") {

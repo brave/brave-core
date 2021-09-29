@@ -83,7 +83,7 @@
           "segments": [
             {
               "code": "yNl0N-ers2",
-              "name": "Technology & Computing"
+              "name": "technology & computing"
             }
           ],
           "oses": [
@@ -102,7 +102,7 @@
           "perWeek": 6,
           "perMonth": 7,
           "totalMax": 100,
-          "value": "value"
+          "value": "1.0"
         }
       ],
       "dayParts": [
@@ -162,7 +162,7 @@
           "segments": [
             {
               "code": "yNl0N-ers2",
-              "name": "Technology & Computing"
+              "name": "technology & computing"
             }
           ],
           "oses": [
@@ -176,7 +176,7 @@
           "perWeek": 6,
           "perMonth": 7,
           "totalMax": 100,
-          "value": "value"
+          "value": "1.0"
         }
       ],
       "dayParts": [
@@ -217,7 +217,7 @@
           "segments": [
             {
               "code": "yNl0N-ers2",
-              "name": "Food & Drink"
+              "name": "food & drink"
             }
           ],
           "oses": [
@@ -236,7 +236,7 @@
           "perWeek": 6,
           "perMonth": 7,
           "totalMax": 100,
-          "value": "value"
+          "value": "1.0"
         }
       ],
       "dayParts": [

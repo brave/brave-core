@@ -10,17 +10,20 @@
 #include <deque>
 #include <string>
 
-#include "base/values.h"
-#include "bat/ads/ads.h"
+#include "bat/ads/ad_notification_info.h"
+#include "bat/ads/ads_aliases.h"
+
+namespace base {
+class DictionaryValue;
+class ListValue;
+class Value;
+}  // namespace base
 
 namespace ads {
 
-struct AdNotificationInfo;
-
-class AdNotifications {
+class AdNotifications final {
  public:
   AdNotifications();
-
   ~AdNotifications();
 
   static AdNotifications* Get();

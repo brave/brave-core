@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 #include "bat/ads/internal/logging.h"
 
@@ -21,9 +22,9 @@ bool ShouldExclude(const T& ad, ExclusionRule<T>* exclusion_rule) {
     return false;
   }
 
-  const std::string reason = exclusion_rule->get_last_message();
-  if (!reason.empty()) {
-    BLOG(2, reason);
+  const std::string last_message = exclusion_rule->GetLastMessage();
+  if (!last_message.empty()) {
+    BLOG(2, last_message);
   }
 
   return true;

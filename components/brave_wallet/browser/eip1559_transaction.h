@@ -21,7 +21,8 @@ class Eip1559Transaction : public Eip2930Transaction {
   bool operator==(const Eip1559Transaction&) const;
 
   static absl::optional<Eip1559Transaction> FromTxData(
-      const mojom::TxData1559Ptr& tx_data);
+      const mojom::TxData1559Ptr& tx_data,
+      bool strict = true);
   static absl::optional<Eip1559Transaction> FromValue(const base::Value& value);
 
   uint256_t max_priority_fee_per_gas() const {
@@ -31,7 +32,8 @@ class Eip1559Transaction : public Eip2930Transaction {
 
   // keccak256(0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas,
   // gasLimit, destination, value, data, access_list]))
-  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id = 0) const override;
+  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id = 0,
+                                        bool hash = true) const override;
 
   // 0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit,
   // destination, value, data, accessList, signatureYParity, signatureR,

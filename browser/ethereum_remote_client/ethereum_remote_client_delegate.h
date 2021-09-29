@@ -15,6 +15,8 @@ class EthereumRemoteClientDelegate {
   virtual ~EthereumRemoteClientDelegate() = default;
   virtual void MaybeLoadCryptoWalletsExtension(
       content::BrowserContext* context) = 0;
+  virtual void UnloadCryptoWalletsExtension(
+      content::BrowserContext* context) = 0;
 };
 
 #endif  // BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_ETHEREUM_REMOTE_CLIENT_DELEGATE_H_

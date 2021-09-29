@@ -2,12 +2,14 @@ import * as React from 'react'
 import {
   BuySendSwapTypes,
   UserAccountType,
-  AssetOptionType,
+  AccountAssetOptionType,
   OrderTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  Network
+  EthereumChain,
+  BuySupportedChains,
+  SwapSupportedChains
 } from '../../constants/types'
 import Swap from '../../components/buy-send-swap/tabs/swap-tab'
 import Send from '../../components/buy-send-swap/tabs/send-tab'
@@ -18,11 +20,13 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
+  networkList: EthereumChain[]
   orderType: OrderTypes
-  swapToAsset: AssetOptionType
-  swapFromAsset: AssetOptionType
-  selectedNetwork: Network
+  swapToAsset: AccountAssetOptionType
+  swapFromAsset: AccountAssetOptionType
+  selectedNetwork: EthereumChain
   selectedAccount: UserAccountType
+  selectedTab: BuySendSwapTypes
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
   orderExpiration: ExpirationPresetObjectType
@@ -33,14 +37,18 @@ export interface Props {
   fromAssetBalance: string
   toAssetBalance: string
   toAddress: string
-  onSubmitBuy: (asset: AssetOptionType) => void
+  buyAssetOptions: AccountAssetOptionType[]
+  sendAssetOptions: AccountAssetOptionType[]
+  swapAssetOptions: AccountAssetOptionType[]
+  isSwapSubmitDisabled: boolean
+  onSubmitBuy: (asset: AccountAssetOptionType) => void
   onSubmitSend: () => void
   onSubmitSwap: () => void
   flipSwapAssets: () => void
-  onSelectNetwork: (network: Network) => void
+  onSelectNetwork: (network: EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
-  onSelectAsset: (asset: AssetOptionType, toOrFrom: ToOrFromType) => void
+  onSelectAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
   onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
   onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
   onSetExchangeRate: (value: string) => void
@@ -51,16 +59,20 @@ export interface Props {
   onSetToAmount: (value: string) => void
   onSelectPresetFromAmount: (percent: number) => void
   onSelectPresetSendAmount: (percent: number) => void
+  onSelectTab: (tab: BuySendSwapTypes) => void
+  onSwapQuoteRefresh: () => void
 }
 
 function BuySendSwap (props: Props) {
   const {
     accounts,
+    networkList,
     orderType,
     swapToAsset,
     swapFromAsset,
     selectedNetwork,
     selectedAccount,
+    selectedTab,
     exchangeRate,
     slippageTolerance,
     orderExpiration,
@@ -71,6 +83,10 @@ function BuySendSwap (props: Props) {
     fromAssetBalance,
     toAssetBalance,
     toAddress,
+    buyAssetOptions,
+    sendAssetOptions,
+    swapAssetOptions,
+    isSwapSubmitDisabled,
     onSubmitBuy,
     onSubmitSend,
     onSubmitSwap,
@@ -88,19 +104,44 @@ function BuySendSwap (props: Props) {
     onSetToAddress,
     onSetToAmount,
     onSelectPresetFromAmount,
-    onSelectPresetSendAmount
+    onSelectPresetSendAmount,
+    onSelectTab,
+    onSwapQuoteRefresh
   } = props
-  const [selectedTab, setSelectedTab] = React.useState<BuySendSwapTypes>('buy')
+
+  React.useMemo(() => {
+    if (selectedTab === 'buy' && !BuySupportedChains.includes(selectedNetwork.chainId)) {
+      onSelectTab('send')
+    }
+    if (selectedTab === 'swap' && !SwapSupportedChains.includes(selectedNetwork.chainId)) {
+      onSelectTab('send')
+    }
+  }, [selectedNetwork, selectedTab, BuySupportedChains])
+
+  const isBuyDisabled = React.useMemo(() => {
+    return !BuySupportedChains.includes(selectedNetwork.chainId)
+  }, [BuySupportedChains, selectedNetwork])
+
+  const isSwapDisabled = React.useMemo(() => {
+    return !SwapSupportedChains.includes(selectedNetwork.chainId)
+  }, [SwapSupportedChains, selectedNetwork])
 
   const changeTab = (tab: BuySendSwapTypes) => () => {
-    setSelectedTab(tab)
+    onSelectTab(tab)
   }
 
   return (
-    <Layout selectedTab={selectedTab} onChangeTab={changeTab}>
+    <Layout
+      selectedNetwork={selectedNetwork}
+      isBuyDisabled={isBuyDisabled}
+      isSwapDisabled={isSwapDisabled}
+      selectedTab={selectedTab}
+      onChangeTab={changeTab}
+    >
       {selectedTab === 'swap' &&
         <Swap
           accounts={accounts}
+          networkList={networkList}
           orderType={orderType}
           swapToAsset={swapToAsset}
           swapFromAsset={swapFromAsset}
@@ -113,6 +154,7 @@ function BuySendSwap (props: Props) {
           toAmount={toAmount}
           fromAssetBalance={fromAssetBalance}
           toAssetBalance={toAssetBalance}
+          isSubmitDisabled={isSwapSubmitDisabled}
           onSubmitSwap={onSubmitSwap}
           flipSwapAssets={flipSwapAssets}
           onSelectNetwork={onSelectNetwork}
@@ -125,11 +167,14 @@ function BuySendSwap (props: Props) {
           onSetFromAmount={onSetFromAmount}
           onSetToAmount={onSetToAmount}
           onSelectPresetAmount={onSelectPresetFromAmount}
+          assetOptions={swapAssetOptions}
+          onQuoteRefresh={onSwapQuoteRefresh}
         />
       }
       {selectedTab === 'send' &&
         <Send
           accounts={accounts}
+          networkList={networkList}
           selectedAssetAmount={sendAmount}
           selectedAssetBalance={fromAssetBalance}
           toAddress={toAddress}
@@ -144,11 +189,13 @@ function BuySendSwap (props: Props) {
           selectedNetwork={selectedNetwork}
           selectedAsset={swapFromAsset}
           showHeader={true}
+          assetOptions={sendAssetOptions}
         />
       }
       {selectedTab === 'buy' &&
         <Buy
           accounts={accounts}
+          networkList={networkList}
           buyAmount={buyAmount}
           onSelectAccount={onSelectAccount}
           onSelectNetwork={onSelectNetwork}
@@ -157,6 +204,7 @@ function BuySendSwap (props: Props) {
           selectedAccount={selectedAccount}
           selectedNetwork={selectedNetwork}
           showHeader={true}
+          assetOptions={buyAssetOptions}
         />
       }
     </Layout>

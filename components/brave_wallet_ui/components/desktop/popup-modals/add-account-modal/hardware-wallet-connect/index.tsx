@@ -2,7 +2,6 @@ import * as React from 'react'
 
 import locale from '../../../../../constants/locale'
 import { NavButton } from '../../../../extension'
-import * as Result from '../../../../../common/types/result'
 
 // Styled Components
 import { DisclaimerText, InfoIcon } from '../style'
@@ -15,22 +14,30 @@ import {
   HardwareInfoRow,
   HardwareTitle,
   LedgerIcon,
-  TrezorIcon
+  TrezorIcon,
+  ErrorText
 } from './style'
 
 // Custom types
-import { HardwareWallet, HardwareWalletAccount, HardwareWalletConnectOpts, LedgerDerivationPaths } from './types'
+import { HardwareWalletAccount, HardwareWalletConnectOpts, LedgerDerivationPaths } from './types'
+
+import {
+  kLedgerHardwareVendor,
+  kTrezorHardwareVendor
+} from '../../../../../constants/types'
 
 import HardwareWalletAccountsList from './accounts-list'
 
 export interface Props {
-  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Result.Type<HardwareWalletAccount[]>
+  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
+  onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
+  getBalance: (address: string) => Promise<string>
 }
 
 const derivationBatch = 4
 
 export default function (props: Props) {
-  const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareWallet>(HardwareWallet.Ledger)
+  const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<string>(kLedgerHardwareVendor)
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
   const [accounts, setAccounts] = React.useState<Array<HardwareWalletAccount>>([])
   const [selectedDerivationPaths, setSelectedDerivationPaths] = React.useState<string[]>([])
@@ -39,35 +46,62 @@ export default function (props: Props) {
     LedgerDerivationPaths.LedgerLive.toString()
   )
 
-  const onConnectHardwareWallet = (hardware: HardwareWallet) => {
+  const getErrorMessage = (error: any) => {
+    if (error.statusCode && error.statusCode === 27404) {
+      return locale.connectHardwareInfo3
+    }
+    if (!error || !error.message) {
+      return locale.unknownInternalError
+    }
+    return error.message
+  }
+
+  const onSelectedDerivationScheme = (scheme: string) => {
+    setSelectedDerivationScheme(scheme)
+    setAccounts([])
+    props.onConnectHardwareWallet({
+      hardware: selectedHardwareWallet,
+      startIndex: 0,
+      stopIndex: derivationBatch,
+      scheme: scheme
+    }).then((result) => {
+      setAccounts(result)
+    }).catch((error) => {
+      setConnectionError(getErrorMessage(error))
+    })
+  }
+  const onConnectHardwareWallet = (hardware: string) => {
     setIsConnecting(true)
 
-    const result = props.onConnectHardwareWallet({
+    props.onConnectHardwareWallet({
       hardware,
       startIndex: accounts.length,
-      stopIndex: accounts.length + derivationBatch
-    })
-
-    if (Result.isError(result)) {
-      setConnectionError(result.message)
-    } else {
+      stopIndex: accounts.length + derivationBatch,
+      scheme: selectedDerivationScheme
+    }).then((result) => {
       setAccounts([...accounts, ...result])
-    }
-
-    setIsConnecting(false)
+      setIsConnecting(false)
+    }).catch((error) => {
+      setConnectionError(getErrorMessage(error))
+      setIsConnecting(false)
+    })
   }
 
   const onAddAccounts = () => {
-    // TODO: create view-only hardware wallet accounts for each item in derivationPaths.
-    console.log(`Add accounts:`, selectedDerivationPaths)
+    const selectedAccounts = accounts.filter(o => selectedDerivationPaths.includes(o.derivationPath))
+    props.onAddHardwareAccounts(selectedAccounts)
+  }
+
+  const getBalance = (address: string) => {
+    return props.getBalance(address)
   }
 
   const onSelectLedger = () => {
-    setSelectedHardwareWallet(HardwareWallet.Ledger)
+    setSelectedHardwareWallet(kLedgerHardwareVendor)
   }
 
   const onSelectTrezor = () => {
-    setSelectedHardwareWallet(HardwareWallet.Trezor)
+    setSelectedHardwareWallet(kTrezorHardwareVendor)
   }
 
   const onSubmit = () => onConnectHardwareWallet(selectedHardwareWallet)
@@ -85,8 +119,9 @@ export default function (props: Props) {
         selectedDerivationPaths={selectedDerivationPaths}
         setSelectedDerivationPaths={setSelectedDerivationPaths}
         selectedDerivationScheme={selectedDerivationScheme}
-        setSelectedDerivationScheme={setSelectedDerivationScheme}
+        setSelectedDerivationScheme={onSelectedDerivationScheme}
         onAddAccounts={onAddAccounts}
+        getBalance={getBalance}
       />
     )
   }
@@ -95,10 +130,10 @@ export default function (props: Props) {
     <>
       <HardwareTitle>{locale.connectHardwareTitle}</HardwareTitle>
       <HardwareButtonRow>
-        <HardwareButton onClick={onSelectLedger} isSelected={selectedHardwareWallet === HardwareWallet.Ledger}>
+        <HardwareButton onClick={onSelectLedger} isSelected={selectedHardwareWallet === kLedgerHardwareVendor}>
           <LedgerIcon />
         </HardwareButton>
-        <HardwareButton onClick={onSelectTrezor} isSelected={selectedHardwareWallet === HardwareWallet.Trezor}>
+        <HardwareButton onClick={onSelectTrezor} isSelected={selectedHardwareWallet === kTrezorHardwareVendor}>
           <TrezorIcon />
         </HardwareButton>
       </HardwareButtonRow>
@@ -111,6 +146,9 @@ export default function (props: Props) {
           <DisclaimerText>{locale.connectHardwareInfo3}</DisclaimerText>
         </HardwareInfoColumn>
       </HardwareInfoRow>
+      {connectionError !== '' &&
+              <ErrorText>{connectionError}</ErrorText>
+            }
 
       {isConnecting ? (
         <ConnectingButton>

@@ -9,6 +9,7 @@
 #include <functional>
 #include <vector>
 
+#include "base/check.h"
 #include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
@@ -17,6 +18,7 @@
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
+#include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/privacy_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
@@ -42,9 +44,7 @@ Confirmations::Confirmations(privacy::TokenGeneratorInterface* token_generator,
   redeem_unblinded_token_->set_delegate(this);
 }
 
-Confirmations::~Confirmations() {
-  redeem_unblinded_token_->set_delegate(nullptr);
-}
+Confirmations::~Confirmations() = default;
 
 void Confirmations::AddObserver(ConfirmationsObserver* observer) {
   DCHECK(observer);
@@ -68,13 +68,13 @@ void Confirmations::SetCatalogIssuers(
   }
 
   const CatalogIssuersInfo current_catalog_issuers =
-      ConfirmationsState::Get()->get_catalog_issuers();
+      ConfirmationsState::Get()->GetCatalogIssuers();
 
   const bool public_key_was_rotated =
       !current_catalog_issuers.public_key.empty() &&
       current_catalog_issuers.public_key != catalog_issuers.public_key;
 
-  ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
+  ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   if (public_key_was_rotated) {
     ConfirmationsState::Get()->get_unblinded_tokens()->RemoveAllTokens();
@@ -83,10 +83,10 @@ void Confirmations::SetCatalogIssuers(
   ConfirmationsState::Get()->Save();
 }
 
-void Confirmations::ConfirmAd(const std::string& creative_instance_id,
-                              const ConfirmationType& confirmation_type) {
+void Confirmations::Confirm(const std::string& creative_instance_id,
+                            const ConfirmationType& confirmation_type) {
   BLOG(1, "Confirming " << std::string(confirmation_type)
-                        << " ad for creative instance id "
+                        << " for creative instance id "
                         << creative_instance_id);
 
   dto::user_data::Build(
@@ -125,7 +125,7 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   confirmation.id = base::GenerateGUID();
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = confirmation_type;
-  confirmation.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  confirmation.created_at = base::Time::Now();
 
   if (ShouldRewardUser() &&
       !ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
@@ -177,7 +177,7 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
 }
 
 void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
-  ConfirmationsState::Get()->append_failed_confirmation(confirmation);
+  ConfirmationsState::Get()->AppendFailedConfirmation(confirmation);
   ConfirmationsState::Get()->Save();
 
   BLOG(1, "Added confirmation id " << confirmation.id
@@ -189,7 +189,7 @@ void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
 }
 
 void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
-  if (!ConfirmationsState::Get()->remove_failed_confirmation(confirmation)) {
+  if (!ConfirmationsState::Get()->RemoveFailedConfirmation(confirmation)) {
     BLOG(0, "Failed to remove confirmation id "
                 << confirmation.id << ", creative instance id "
                 << confirmation.creative_instance_id << " and "
@@ -212,7 +212,7 @@ void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
 
 void Confirmations::Retry() {
   ConfirmationList failed_confirmations =
-      ConfirmationsState::Get()->get_failed_confirmations();
+      ConfirmationsState::Get()->GetFailedConfirmations();
   if (failed_confirmations.empty()) {
     BLOG(1, "No failed confirmations to retry");
     return;
@@ -254,7 +254,7 @@ void Confirmations::OnDidRedeemUnblindedToken(
   ConfirmationsState::Get()->Save();
 
   const CatalogIssuersInfo catalog_issuers =
-      ConfirmationsState::Get()->get_catalog_issuers();
+      ConfirmationsState::Get()->GetCatalogIssuers();
 
   const absl::optional<double> estimated_redemption_value =
       catalog_issuers.GetEstimatedRedemptionValue(
@@ -272,7 +272,7 @@ void Confirmations::OnDidRedeemUnblindedToken(
            << ConfirmationsState::Get()->get_unblinded_payment_tokens()->Count()
            << " unblinded payment tokens");
 
-  NotifyConfirmAd(*estimated_redemption_value, confirmation);
+  NotifyDidConfirm(*estimated_redemption_value, confirmation);
 }
 
 void Confirmations::OnFailedToRedeemUnblindedToken(
@@ -284,28 +284,28 @@ void Confirmations::OnFailedToRedeemUnblindedToken(
               << std::string(confirmation.type));
 
   if (should_retry) {
-    if (!confirmation.created) {
+    if (!confirmation.was_created) {
       CreateNewConfirmationAndAppendToRetryQueue(confirmation);
     } else {
       AppendToRetryQueue(confirmation);
     }
   }
 
-  NotifyConfirmAdFailed(confirmation);
+  NotifyFailedToConfirm(confirmation);
 }
 
-void Confirmations::NotifyConfirmAd(
+void Confirmations::NotifyDidConfirm(
     const double estimated_redemption_value,
     const ConfirmationInfo& confirmation) const {
   for (ConfirmationsObserver& observer : observers_) {
-    observer.OnConfirmAd(estimated_redemption_value, confirmation);
+    observer.OnDidConfirm(estimated_redemption_value, confirmation);
   }
 }
 
-void Confirmations::NotifyConfirmAdFailed(
+void Confirmations::NotifyFailedToConfirm(
     const ConfirmationInfo& confirmation) const {
   for (ConfirmationsObserver& observer : observers_) {
-    observer.OnConfirmAdFailed(confirmation);
+    observer.OnFailedToConfirm(confirmation);
   }
 }
 

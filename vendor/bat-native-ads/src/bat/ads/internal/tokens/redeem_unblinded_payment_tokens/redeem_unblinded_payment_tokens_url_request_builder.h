@@ -9,20 +9,26 @@
 #include <string>
 #include <vector>
 
-#include "base/values.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info_aliases.h"
 #include "bat/ads/internal/server/url_request_builder.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
+namespace base {
+class Value;
+}  // namespace base
+
 namespace ads {
 
-class RedeemUnblindedPaymentTokensUrlRequestBuilder : UrlRequestBuilder {
+namespace privacy {
+struct UnblindedTokenInfo;
+}  // namespace privacy
+
+class RedeemUnblindedPaymentTokensUrlRequestBuilder final : UrlRequestBuilder {
  public:
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
       const WalletInfo& wallet,
       const privacy::UnblindedTokenList& unblinded_tokens);
-
   ~RedeemUnblindedPaymentTokensUrlRequestBuilder() override;
 
   mojom::UrlRequestPtr Build() override;

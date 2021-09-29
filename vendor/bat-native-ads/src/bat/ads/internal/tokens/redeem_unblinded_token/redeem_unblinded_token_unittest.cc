@@ -6,12 +6,14 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token.h"
 
 #include <memory>
+#include <string>
 
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate_mock.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "net/http/http_status_code.h"
 
@@ -62,7 +64,7 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
 
     confirmation.type = ConfirmationType::kViewed;
 
-    if (!ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
+    if (!get_unblinded_tokens()->IsEmpty()) {
       const privacy::UnblindedTokenInfo unblinded_token =
           get_unblinded_tokens()->GetToken();
       get_unblinded_tokens()->RemoveToken(unblinded_token);
@@ -81,9 +83,9 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
       confirmation.credential = CreateCredential(unblinded_token, payload);
     }
 
-    confirmation.timestamp = 1587127747;
+    confirmation.created_at = TimestampToTime(1587127747);
 
-    confirmation.created = false;
+    confirmation.was_created = false;
 
     return confirmation;
   }
@@ -135,7 +137,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedToken) {
 
   // Act
   ConfirmationInfo expected_confirmation = confirmation;
-  expected_confirmation.created = true;
+  expected_confirmation.was_created = true;
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidRedeemUnblindedToken(expected_confirmation, _))
@@ -177,7 +179,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RetryRedeemingUnblindedToken) {
   SetUnblindedTokens();
 
   ConfirmationInfo confirmation = GetConfirmationInfo();
-  confirmation.created = true;
+  confirmation.was_created = true;
 
   // Act
   ConfirmationInfo expected_confirmation = confirmation;
@@ -215,7 +217,7 @@ TEST_F(
 
   // Act
   ConfirmationInfo expected_confirmation = confirmation;
-  expected_confirmation.created = false;  // Should retry with new confirmation
+  expected_confirmation.was_created = false;
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidRedeemUnblindedToken(_, _))
@@ -250,7 +252,7 @@ TEST_F(
 
   // Act
   ConfirmationInfo expected_confirmation = confirmation;
-  expected_confirmation.created = true;  // Should retry with same confirmation
+  expected_confirmation.was_created = true;
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidRedeemUnblindedToken(_, _))

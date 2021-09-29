@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 
-#include "bat/ads/internal/ads_client_helper.h"
+#include "base/check_op.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

@@ -4,6 +4,7 @@ source_set("widevine") {
   # Remove when https://github.com/brave/brave-browser/issues/10644 is resolved
   check_includes = false
   deps = [
+    ":constants",
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/common:pref_names",
@@ -31,6 +32,10 @@ source_set("widevine") {
   ]
 }
 
+source_set("constants") {
+  sources = [ "constants.h" ]
+}
+
 source_set("unittest") {
   testonly = true
   if (enable_widevine && !is_android) {
@@ -53,6 +58,7 @@ source_set("browser_tests") {
     ]
 
     deps = [
+      ":constants",
       ":widevine",
       "//base",
       "//brave/browser",

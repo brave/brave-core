@@ -6,7 +6,10 @@
 import {
   AppObjectType,
   AccountInfo,
-  TransactionStatus
+  TransactionInfo,
+  TokenInfo,
+  AccountAssetOptionType,
+  SlippagePresetObjectType
 } from '../../constants/types'
 
 export type InitializedPayloadType = {
@@ -22,19 +25,45 @@ export type UnlockWalletPayloadType = {
   password: string
 }
 
-export type SetInitialVisibleTokensPayloadType = {
-  visibleAssets: string[]
-}
-
 export type ChainChangedEventPayloadType = {
   chainId: string
 }
 
 export type NewUnapprovedTxAdded = {
-  txMetaId: string
+  txInfo: TransactionInfo
+}
+
+export type UnapprovedTxUpdated = {
+  txInfo: TransactionInfo
 }
 
 export type TransactionStatusChanged = {
-  txMetaId: string
-  txStatus: TransactionStatus
+  txInfo: TransactionInfo
+}
+
+export type AddUserAssetPayloadType = {
+  token: TokenInfo
+  chainId: string
+}
+
+export type RemoveUserAssetPayloadType = {
+  contractAddress: string
+  chainId: string
+}
+
+export type SetUserAssetVisiblePayloadType = {
+  contractAddress: string
+  chainId: string
+  isVisible: boolean
+}
+
+export type SwapParamsPayloadType = {
+  fromAsset: AccountAssetOptionType,
+  toAsset: AccountAssetOptionType,
+  fromAssetAmount?: string,
+  toAssetAmount?: string,
+  slippageTolerance: SlippagePresetObjectType,
+  accountAddress: string,
+  networkChainId: string,
+  full: boolean
 }

@@ -383,14 +383,17 @@ this text is countedthis text is counted
         "#;
         let mut cursor = Cursor::new(input);
         let features = collect_statistics_for_test(&mut cursor).unwrap();
-        // 40 from first <p>, 286 = 40 * 6 from the block, 5 newlines
-        // 326 = 40 + 286
-        assert_eq!(326, features.moz_score_all_linear);
-        // 23.2361 = sqrt(40) + sqrt(286)
-        assert_approx_eq!(23.2361, features.moz_score_all_sqrt, 1e-4);
-        // 2.4495 = sqrt(286 - 280)
-        // Note, the first <p> is ignored since it has len < 280
-        assert_approx_eq!(2.4495, features.moz_score, 1e-4);
+        // 40 from first <p>, 40 * 7 for lines in second <p>, 6 new lines.
+        assert_eq!(40 + 40 * 7 + 6, features.moz_score_all_linear);
+        // Square root the <p> nodes separately
+        assert_approx_eq!(
+            40.0_f64.sqrt() + ((40 * 7 + 6) as f64).sqrt(),
+            features.moz_score_all_sqrt,
+            1e-4
+        );
+        // Note, the first <p> is ignored since it has len < 140
+        // First <p> node is ignored, second <p> score normalized to <p> len.
+        assert_approx_eq!(((286 - 140) as f64).sqrt(), features.moz_score, 1e-4);
     }
 
     #[test]

@@ -55,7 +55,7 @@ Eip2930Transaction::Eip2930Transaction(uint256_t nonce,
       chain_id_(chain_id) {
   type_ = 1;
 }
-Eip2930Transaction::Eip2930Transaction() {
+Eip2930Transaction::Eip2930Transaction() : chain_id_(0) {
   type_ = 1;
 }
 Eip2930Transaction::~Eip2930Transaction() = default;
@@ -69,9 +69,10 @@ bool Eip2930Transaction::operator==(const Eip2930Transaction& tx) const {
 // static
 absl::optional<Eip2930Transaction> Eip2930Transaction::FromTxData(
     const mojom::TxDataPtr& tx_data,
-    uint256_t chain_id) {
+    uint256_t chain_id,
+    bool strict) {
   absl::optional<EthTransaction> legacy_tx =
-      EthTransaction::FromTxData(tx_data);
+      EthTransaction::FromTxData(tx_data, strict);
   if (!legacy_tx)
     return absl::nullopt;
   return Eip2930Transaction(legacy_tx->nonce(), legacy_tx->gas_price(),
@@ -149,8 +150,8 @@ Eip2930Transaction::ValueToAccessList(const base::Value& value) {
   return access_list;
 }
 
-std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(
-    uint256_t chain_id) const {
+std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(uint256_t chain_id,
+                                                          bool hash) const {
   std::vector<uint8_t> result;
   result.push_back(type_);
 
@@ -168,7 +169,7 @@ std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(
 
   const std::string rlp_msg = RLPEncode(std::move(list));
   result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
-  return KeccakHash(result);
+  return hash ? KeccakHash(result) : result;
 }
 
 std::string Eip2930Transaction::GetSignedTransaction() const {

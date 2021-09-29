@@ -18,6 +18,7 @@
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -42,6 +43,10 @@
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/components/brave_wallet/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -84,6 +89,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   // channels.
   html_source->AddBoolean("isSidebarFeatureEnabled",
                           sidebar::CanUseSidebar(profile));
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  html_source->AddBoolean("isBraveVPNEnabled", brave_vpn::IsBraveVPNEnabled());
 #endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // TODO(keur): Remove this when Speedreader feature enabled by default.

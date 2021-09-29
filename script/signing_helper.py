@@ -124,11 +124,6 @@ def AddBravePartsForSigning(parts, config):
     parts['helper-app'].options = (CodeSignOptions.RESTRICT
                                    + CodeSignOptions.KILL
                                    + CodeSignOptions.HARDENED_RUNTIME)
-    # Alerts helper is not being distributed with Chrome yet and, because it
-    # uses the same identifier as the current Alerts service, the signing fails.
-    # For now we can set a different identifier and then remove this change once
-    # the helper starts being bundled into the distribution.
-    parts['helper-alerts'].identifier = '{}.helper.alerts'.format(config.base_bundle_id)
 
     return parts
 

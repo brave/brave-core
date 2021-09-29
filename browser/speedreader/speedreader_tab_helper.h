@@ -6,10 +6,14 @@
 #ifndef BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 #define BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 
+#include "base/memory/weak_ptr.h"
+#include "brave/components/speedreader/speedreader_result_delegate.h"
+#include "brave/components/speedreader/speedreader_util.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
 namespace content {
+class NavigationEntry;
 class NavigationHandle;
 class WebContents;
 }  // namespace content
@@ -21,44 +25,15 @@ class SpeedreaderBubbleView;
 // Determines if speedreader should be active for a given top-level navigation.
 class SpeedreaderTabHelper
     : public content::WebContentsObserver,
-      public content::WebContentsUserData<SpeedreaderTabHelper> {
+      public content::WebContentsUserData<SpeedreaderTabHelper>,
+      public SpeedreaderResultDelegate {
  public:
-  enum class DistillState {
-    // Used as an initialization state
-    kUnknown,
-
-    // The web contents is not distilled
-    kNone,
-
-    // Reader mode state that can only be reached when Speedreader is disabled
-    // The Speedreader icon will pop up in the address bar, and the user clicks
-    // it. It runs Speedreader is "Single Shot Mode".  The Speedreader throttle
-    // is created for the following request, then deactivated.
-    //
-    // The first time a user activates reader mode on a page, a bubble drops
-    // down asking them to enable the Speedreader feature for automatic
-    // distillation.
-    kReaderMode,
-
-    // Speedreader is enabled and the page was automatically distilled.
-    kSpeedreaderMode,
-
-    // Speedreader is enabled, but the page was blacklisted by the user.
-    kSpeedreaderOnDisabledPage,
-
-    // Speedreader is disabled, the URL passes the heuristic.
-    kPageProbablyReadable,
-  };
-
-  static bool PageStateIsDistilled(DistillState state) {
-    return state == DistillState::kReaderMode ||
-           state == DistillState::kSpeedreaderMode;
-  }
-
   ~SpeedreaderTabHelper() override;
 
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
+
+  base::WeakPtr<SpeedreaderTabHelper> GetWeakPtr();
 
   // Returns |true| if Speedreader is turned on for all sites.
   bool IsSpeedreaderEnabled() const;
@@ -106,6 +81,7 @@ class SpeedreaderTabHelper
   // committed to the WebContents.
   bool IsEnabledForSite(const GURL& url);
 
+  bool MaybeUpdateCachedState(content::NavigationHandle* handle);
   void UpdateActiveState(content::NavigationHandle* handle);
   void SetNextRequestState(DistillState state);
 
@@ -114,11 +90,17 @@ class SpeedreaderTabHelper
       content::NavigationHandle* navigation_handle) override;
   void DidRedirectNavigation(
       content::NavigationHandle* navigation_handle) override;
+  void DidStopLoading() override;
+
+  // SpeedreaderResultDelegate:
+  void OnDistillComplete() override;
 
   bool single_shot_next_request_ =
       false;  // run speedreader once on next page load
   DistillState distill_state_ = DistillState::kNone;
   SpeedreaderBubbleView* speedreader_bubble_ = nullptr;
+
+  base::WeakPtrFactory<SpeedreaderTabHelper> weak_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

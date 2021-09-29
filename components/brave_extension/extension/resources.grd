@@ -28,6 +28,27 @@
       <include name="IDR_BRAVE_EXTENSION_BRAVELIZER_JS" file="brave_extension/assets/bravelizer.css" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_PICKER_HTML" file="brave_extension/elementPicker.html" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_PICKER_JS" file="brave_extension/elementPicker.js" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_CONTENT_SCRIPT_BUNDLE"
+               resource_path="brave_extension/bundles/web-discovery-content-script.bundle.js"
+               file="../../brave/vendor/web-discovery-project/build/core/content-script.bundle.js"
+               use_base_dir="false"
+               type="BINDATA" />
+      <!-- WDP extension expects these file paths relative to the extension root -->
+      <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_ASMJS_BUNDLE"
+               resource_path="brave_extension/modules/hpnv2/worker.asmjs.bundle.js"
+               file="../../brave/vendor/web-discovery-project/build/hpnv2/worker.asmjs.bundle.js"
+               use_base_dir="false"
+               type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_WASM_BUNDLE"
+               resource_path="brave_extension/modules/hpnv2/worker.wasm.bundle.js"
+               file="../../brave/vendor/web-discovery-project/build/hpnv2/worker.wasm.bundle.js"
+               use_base_dir="false"
+               type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_STAR_WASM"
+               resource_path="brave_extension/star.wasm"
+               file="../../brave/vendor/web-discovery-project/build/star.wasm"
+               use_base_dir="false"
+               type="BINDATA" />
     </includes>
   </release>
 </grit>

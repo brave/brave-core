@@ -4,10 +4,13 @@
 <translation id="3333887201479867589">Brave রিওয়ার্ডস</translation>
 <translation id="7942180974165298215">Brave বিজ্ঞাপন অবরুদ্ধকারক</translation>
 <translation id="4615489450165434530">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
+<translation id="1209739344687072997">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
 <translation id="6406506848690869874">সিঙ্ক করুন</translation>
 <translation id="1544192797660353713">ওয়ালেট</translation>
 <translation id="2445484935443597917">একটি নতুন প্রোফাইল তৈরি করুন</translation>
-<translation id="2666990579225592931">অতিথি উইন্ডো খুলুন</translation>
+<translation id="744341768939279100">একটি নতুন প্রোফাইল তৈরি করুন</translation>
+<translation id="2666990579225592931">গেস্ট উইন্ডো খুলুন</translation>
+<translation id="4986483413015198747">অতিথি উইন্ডো খুলুন</translation>
 <translation id="8275068909952022340">অনেক…</translation>
 <translation id="120759863357279975">Brave-এ <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")এর অনুমতি দেওয়া হয় না।</translation>
 <translation id="6786747875388722282">এক্সটেনশনগুলি</translation>
@@ -45,10 +48,12 @@
 <translation id="5802665280774361839">ঠিকানা বারে স্বতঃসম্পূর্ণ দেখান</translation>
 <translation id="597020512043916976">স্বয়ংক্রিয়ভাবে সম্পূর্ণ পরামর্শগুলিতে শীর্ষ সাইটগুলি দেখান</translation>
 <translation id="264150068416846820">স্বয়ংক্রিয়ভাবে সম্পূর্ণ পরামর্শগুলিতে ব্রেভ কর্তৃক প্রস্তাবিত সাইটগুলি দেখান</translation>
-<translation id="5529693968082667490">অনুসন্ধান ট্যাবগুলির বোতাম দেখান</translation>
+<translation id="5529693968082667490">ট্যাব সার্চ বাটন দেখান</translation>
 <translation id="6414370348346025511">স্ট্যান্ডার্ড সুরক্ষা চালু আছে।</translation>
 <translation id="814018970995616154">Brave এ সঞ্চিত অনিরাপদ সাইটগুলির একটি তালিকার সাথে URLগুলি পরীক্ষা করুন।</translation>
 <translation id="1144810021918451336">আপনাকে বিপজ্জনক ওয়েবসাইট, ডাউনলোড, এবঙ্গ এক্সটেনশনগুলি থেকে রক্ষা করে না।</translation>
+<translation id="6285118765755298263">অন্যান্য সার্চ ইঞ্জিনকে ইনডেক্স করুন</translation>
+<translation id="919715748352669592">OpenSearch স্পেসিফিকেশন অনুসরণ করে এমন ওয়েবসাইটগুলিকে স্বয়ংক্রিয়ভাবে ইনডেক্স করে।</translation>
 <translation id="7781069478569868053">নতুন ট্যাব পৃষ্ঠা</translation>
 <translation id="1988804048511540801">নতুন ট্যাব পেজ দেখায়</translation>
 <translation id="2970343821770026391">ড্যাশবোর্ড</translation>
@@ -98,7 +103,7 @@
 <translation id="6303294677342628402">শিল্ড</translation>
 <translation id="7133511168130368997">ওয়েবে আপনাকে অনুসরণ করে এমন ট্র্যাকার এবং বিজ্ঞাপনগুলিকে ব্লক করুন।</translation>
 <translation id="2761825942249694703">ডিফল্ট শীল্ড সেটিংস। একটি নির্দিষ্ট সাইটে শীল্ডস প্যানেলে আপনি কিছু পরিবর্তন না করা পর্যন্ত সেগুলি সমস্ত ওয়েবসাইটে প্রযোজ্য। এগুলির পরিবর্তন আপনার বিদ্যমান পার-সাইট সেটিংসকে ক্ষতিগ্রস্ত করবে না।</translation>
-<translation id="1485394570478670912">এটি ওয়েবসাইটগুলিতে বেশিরভাগ বিজ্ঞাপনকে ব্লক করবে, Brave ব্যক্তিগত বিজ্ঞাপনগুলিকে নয় — সেগুলি নিয়ন্ত্রিত এখানে</translation>
+<translation id="1485394570478670912">এটি ওয়েবসাইটগুলিতে বেশিরভাগ বিজ্ঞাপনকে ব্লক করবে, Brave Private Ads-কে নয় — সেগুলি নিয়ন্ত্রিত এখানে</translation>
 <translation id="6388201778088078932">সেটিংস।</translation>
 <translation id="9185018653595759199">সামাজিক মিডিয়া রোধক</translation>
 <translation id="7390783310074170337">ডিফল্ট ভিউ</translation>
@@ -192,7 +197,6 @@
 <translation id="1834467296210148203">টুলবারে Brave ওয়ালেট আইকন দেখান</translation>
 <translation id="6864914031231797928">এক্সটেনশনগুলির জন্য Google লগইন এর অনুমতি দিন</translation>
 <translation id="5927916530277631319">অপ্রতিরোধ্য ডোমেইনগুলোর সমস্যা সমাধানের উপায়</translation>
-<translation id="8412057160793088103">HTTPS এ DNS এবং ইথেরিয়াম গোপনীয়তার বিবেচ্য বিষয়গুলি সম্পর্কে <ph name="BEGIN_LINK"/>আরো জানুন<ph name="END_LINK"/>।</translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) সমাধানের উপায়</translation>
 <translation id="7024553202001112871">আপনার IPNS কিগুলি সেট করুন</translation>
 <translation id="951216659045543447">সংশ্লিষ্ট প্রাইভেট কি ব্যবহার করে বিষয়টি সই করে IPNS-এ পাবলিশ করুন</translation>
@@ -206,7 +210,6 @@
 <translation id="6476061084931271248">পরিবর্তনগুলি প্রয়োগ করার জন্য নোড রিস্টার্ট করুন</translation>
 <translation id="3754226427671882382">নোড রিস্টার্ট করুন</translation>
 <translation id="949667118776341807">ঘোরান</translation>
-<translation id="635013291822406289">/ip4/46.21.210.45/tcp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">এই নামটি বৈধ নয়</translation>
 <translation id="6758961763875471084">পীয়ার তালিকা সম্পাদনা করুন</translation>
 <translation id="1295874070797049002">কী রপ্তানী করুন</translation>
@@ -224,7 +227,6 @@
 <translation id="1327977588028644528">গেটওয়ে</translation>
 <translation id="80225669816651290">স্থানীয় নোড</translation>
 <translation id="4927734062756955434">IPFS পাবলিক গেটওয়ে ঠিকানা</translation>
-<translation id="3399481770463167943">IPFS স্থানীয় নোড এবং গেটওয়ে গোপনীয়তার বিবেচ্য বিষয়গুলি সম্পর্কে <ph name="BEGIN_LINK_MPL"/>আরো জানুন<ph name="END_LINK_MPL"/>।</translation>
 <translation id="8425213833346101688">পরিবর্তন</translation>
 <translation id="557281710253742286">IPFS গেটওয়ে সেট করুন</translation>
 <translation id="8571837315037233299">গেটওয়ের ঠিকানা</translation>
@@ -238,7 +240,7 @@
 <translation id="8655170717758778983">যখন সম্ভব DNSLink এর মাধ্যমে IPFS পেজগুলোতে স্বয়ংক্রিয়ভাবে পুনঃনির্দেশ (রিডাইরেক্ট) করুন</translation>
 <translation id="2233724520223030977">কোন ওয়েবসাইটের IPFS সংস্করণে নিয়ে যেতে যখনই সম্ভব স্বয়ংক্রিয়ভাবে DNSLink ব্যবহার করে</translation>
 <translation id="6554397389149987360">ব্রাউজারে স্ক্রিন শেয়ারিং এবং অন্যান্য বৈশিষ্ট্য সক্ষম করতে Hangouts উপাদানগুলি ব্যবহার করে।</translation>
-<translation id="1765684547504191670">ব্রাউজারে Chromecast সক্ষম করতে মিডিয়া রাউটার উপাদান ব্যবহার করে।</translation>
+<translation id="7878791177459550035">মিডিয়া রাউটার ব্রাউজারটিতে কাস্টের বৈশিষ্ট্য সক্রিয় করেছে।</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
 <translation id="7179921470347911571">এখনই রিলঞ্চ করুন</translation>
 <translation id="8068526464562249859">আপনার ব্রাউজার বার থেকে সাধারণ IPFS কার্যগুলিতে অ্যাক্সেস সহ ব্র্যাভে উন্নত IPFS সমর্থনের জন্য IPFS কমপেনিয়ান এক্সটেনশন ব্যবহার করে।</translation>
@@ -308,6 +310,7 @@
 <translation id="6873781976650514089">এই সেটিংটি</translation>
 <translation id="6040143037577758943">বন্ধ</translation>
 <translation id="5600566490506283344">Brave অ্যাড বিজ্ঞপ্তি</translation>
+<translation id="1516554614404600536">Brave টুলটিপ</translation>
 <translation id="4877147287319222750">সাইডবারে যোগ করুন</translation>
 <translation id="4233010476457917696">সাইডবার দেখান</translation>
 <translation id="5404213409401164238">সাইডবার দেখান</translation>
@@ -348,6 +351,23 @@
 আপনি <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>নিজের জন্য কিভাবে ডাউনলোড ও গঠন করতে হয় সে সংক্রান্ত নির্দেশনাটি পড়তে পারেন<ph name="END_LINK_BUILD_INSTRUCTIONS"/> সুনির্দিষ্ট <ph name="BEGIN_LINK_SOURCE_CODE"/>সোর্স কোড ব্যবহার করা হয়েছে এই কপিটি তৈরি করতে<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">সব কটি ট্যাব বুকমার্ক করুন...</translation>
 <translation id="2336228925368920074">সকল ট্যাব বুকমার্ক করুন...</translation>
+<translation id="4235920711083356755">VPN বোতাম দেখান</translation>
+<translation id="4070612712151038707">টুলবারে VPN বোতামটি দেখায়</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Brave VPN সম্পর্কে</translation>
+<translation id="4378551569595875038">সংযুক্ত হচ্ছে...</translation>
+<translation id="3368922792935385530">সংযুক্ত</translation>
+<translation id="1536754031901697553">ডিসকানেক্ট করা হচ্ছে...</translation>
+<translation id="8030169304546394654">সংযোগবিচ্ছিন্ন</translation>
+<translation id="1863950594388384201">টুলবারে VPN বোতাম দেখান</translation>
+<translation id="5187139277471084437">টুলবারে VPN বোতাম লুকোন</translation>
+<translation id="8041089156583427627">প্রতিক্রিয়া পাঠান</translation>
+<translation id="4049186905514157504">আমার প্ল্যান নিয়ন্ত্রণ করুন</translation>
+<translation id="7570585565843385325">টুলবারে VPN বোতাম দেখান</translation>
+<translation id="5310426188697803101">টুলবারে VPN বোতাম লুকোন</translation>
+<translation id="945522503751344254">মতামত জানান</translation>
+<translation id="3015685033234401792">আমার প্ল্যান নিয়ন্ত্রণ করুন</translation>
 <translation id="796831669370432378">একটি বুকমার্ক যোগ করতে, ঠিকানার বারের ঠিক পরে বুকমার্ক বোতামটি ক্লিক করুন</translation>
 <translation id="4989337484121655457">সম্পূর্ণ ডিস্ক-এর ব্যবহার-যোগ্যতা প্রয়োজন</translation>
 <translation id="8025559074845816210">Safari থেকে আপনার বুকমার্কগুলি আমদানি করতে ব্রেভ-এর সম্পূর্ণ ডিস্ক-এর ব্যবহার-যোগ্যতা প্রয়োজন।</translation>

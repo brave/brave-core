@@ -87,6 +87,11 @@ const char kOtherBookmarksMigrated[] = "brave.other_bookmarks_migrated";
 const char kBraveShieldsSettingsVersion[] = "brave.shields_settings_version";
 const char kDefaultBrowserPromptEnabled[] =
     "brave.default_browser_prompt_enabled";
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+const char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
+#endif
+
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 const char kBraveGCMChannelStatus[] = "brave.gcm.channel_status";
 #endif
@@ -94,6 +99,7 @@ const char kImportDialogExtensions[] = "import_dialog_extensions";
 const char kImportDialogPayments[] = "import_dialog_payments";
 const char kMRUCyclingEnabled[] = "brave.mru_cycling_enabled";
 const char kTabsSearchShow[] = "brave.tabs_search_show";
+const char kDontAskForCrashReporting[] = "brave.dont_ask_for_crash_reporting";
 
 #if defined(OS_ANDROID)
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";
@@ -107,7 +113,6 @@ const char kSafetynetStatus[] = "safetynet.status";
 
 const char kDefaultBrowserLaunchingCount[] =
     "brave.default_browser.launching_count";
-const char kBraveDefaultSearchVersion[] = "brave.search.default_version";
 
 // deprecated
 const char kBraveThemeType[] = "brave.theme.type";

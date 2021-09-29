@@ -5,7 +5,11 @@
 
 #include "bat/ads/internal/catalog/catalog.h"
 
+#include <cstdint>
+
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_file_util.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -35,7 +39,7 @@ class BatAdsCatalogTest : public UnitTestBase {
 
     CatalogSegmentInfo catalog_segment;
     catalog_segment.code = "yNl0N-ers2";
-    catalog_segment.name = "Technology & Computing";
+    catalog_segment.name = "technology & computing";
     catalog_segments.push_back(catalog_segment);
 
     // OSes
@@ -134,6 +138,11 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_inline_content_ad.payload.title = "Inline Content 1";
     catalog_creative_inline_content_ad.payload.description =
         "Test Inline Content Ad Campaign 1";
+    catalog_creative_inline_content_ad.payload.image_url =
+        "https://www.brave.com/1/image.png";
+    catalog_creative_inline_content_ad.payload.dimensions = "200x100";
+    catalog_creative_inline_content_ad.payload.cta_text =
+        "Call to Action Text 1";
     catalog_creative_inline_content_ad.payload.target_url =
         "https://brave.com/1/inline_content_ad";
     catalog_creative_inline_content_ads.push_back(
@@ -147,7 +156,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     conversion.type = "postview";
     conversion.url_pattern = "https://www.brave.com/1/*";
     conversion.observation_window = 30;
-    conversion.expiry_timestamp = 4105036799;
+    conversion.expire_at = TimestampToTime(4105036799);
     conversions.push_back(conversion);
 
     // Creative Sets
@@ -161,6 +170,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_set.per_month = 7;
     catalog_creative_set.split_test_group = "GroupB";
     catalog_creative_set.total_max = 100;
+    catalog_creative_set.value = 0.05;
     catalog_creative_set.segments = catalog_segments;
     catalog_creative_set.oses = catalog_oses;
     catalog_creative_set.creative_ad_notifications =
@@ -314,6 +324,11 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_inline_content_ad.payload.title = "Inline Content 2";
     catalog_creative_inline_content_ad.payload.description =
         "Test Inline Content Ad Campaign 2";
+    catalog_creative_inline_content_ad.payload.image_url =
+        "https://www.brave.com/2/image.png";
+    catalog_creative_inline_content_ad.payload.dimensions = "100x200";
+    catalog_creative_inline_content_ad.payload.cta_text =
+        "Call to Action Text 2";
     catalog_creative_inline_content_ad.payload.target_url =
         "https://brave.com/2/inline_content_ad";
     catalog_creative_inline_content_ads.push_back(
@@ -328,7 +343,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     conversion.url_pattern = "https://www.brave.com/2/*";
     conversion.observation_window = 7;
     conversion.advertiser_public_key = "";
-    conversion.expiry_timestamp = 4103049599;
+    conversion.expire_at = TimestampToTime(4103049599);
     conversions.push_back(conversion);
 
     // Creative Sets
@@ -341,6 +356,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_set.per_week = 11;
     catalog_creative_set.per_month = 12;
     catalog_creative_set.total_max = 1000;
+    catalog_creative_set.value = 0.1;
     catalog_creative_set.segments = catalog_segments;
     catalog_creative_set.oses = catalog_oses;
     catalog_creative_set.creative_ad_notifications =
@@ -349,6 +365,8 @@ class BatAdsCatalogTest : public UnitTestBase {
         catalog_creative_new_tab_page_ads;
     catalog_creative_set.creative_promoted_content_ads =
         catalog_creative_promoted_content_ads;
+    catalog_creative_set.creative_inline_content_ads =
+        catalog_creative_inline_content_ads;
     catalog_creative_set.conversions = conversions;
     catalog_creative_sets.push_back(catalog_creative_set);
 

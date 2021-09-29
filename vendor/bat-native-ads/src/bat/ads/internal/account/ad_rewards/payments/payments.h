@@ -9,16 +9,22 @@
 #include <cstdint>
 #include <string>
 
-#include "base/time/time.h"
-#include "base/values.h"
-#include "bat/ads/internal/account/ad_rewards/payments/payment_info.h"
+#include "bat/ads/internal/account/ad_rewards/payments/payment_info_aliases.h"
+
+namespace base {
+class DictionaryValue;
+class ListValue;
+class Time;
+class Value;
+}  // namespace base
 
 namespace ads {
 
-class Payments {
+struct PaymentInfo;
+
+class Payments final {
  public:
   Payments();
-
   ~Payments();
 
   bool SetFromJson(const std::string& json);

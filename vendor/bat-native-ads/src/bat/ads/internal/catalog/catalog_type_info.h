@@ -11,7 +11,7 @@
 
 namespace ads {
 
-struct CatalogTypeInfo {
+struct CatalogTypeInfo final {
   CatalogTypeInfo();
   CatalogTypeInfo(const CatalogTypeInfo& info);
   ~CatalogTypeInfo();

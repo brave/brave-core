@@ -27,6 +27,11 @@ declare namespace RewardsExtension {
     rewardsPanelData: State
   }
 
+  interface ScheduledCaptcha {
+    url: string
+    maxAttemptsExceeded: boolean
+  }
+
   export enum PublisherStatus {
     NOT_VERIFIED = 0,
     CONNECTED = 1,
@@ -108,6 +113,7 @@ declare namespace RewardsExtension {
     result: number
     promotionId: string
     captchaImage: string
+    captchaId: string
     hint: string
   }
 
@@ -144,7 +150,7 @@ declare namespace RewardsExtension {
   }
 
   interface RecurringTips {
-    recurringTips: Record<string, number>[]
+    recurringTips: ({ publisherKey: string, amount: number })[]
   }
 
   interface PublisherBanner {
@@ -188,5 +194,6 @@ declare namespace RewardsExtension {
     userName: string
     accountUrl: string
     loginUrl: string
+    activityUrl: string
   }
 }

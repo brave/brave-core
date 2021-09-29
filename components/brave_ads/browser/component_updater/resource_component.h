@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_info.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 

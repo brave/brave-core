@@ -59,24 +59,64 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
   void MakeERC20TransferData(const std::string& to_address,
                              const std::string& amount,
                              MakeERC20TransferDataCallback) override;
+  void MakeERC20ApproveData(const std::string& to_address,
+                            const std::string& amount,
+                            MakeERC20ApproveDataCallback) override;
   void GetAllTransactionInfo(const std::string& from,
                              GetAllTransactionInfoCallback) override;
-
+  void SetGasPriceAndLimitForUnapprovedTransaction(
+      const std::string& tx_meta_id,
+      const std::string& gas_price,
+      const std::string& gas_limit,
+      SetGasPriceAndLimitForUnapprovedTransactionCallback callback) override;
+  void ApproveHardwareTransaction(
+      const std::string& tx_meta_id,
+      ApproveHardwareTransactionCallback callback) override;
+  void ProcessLedgerSignature(const std::string& tx_meta_id,
+                              const std::string& v,
+                              const std::string& r,
+                              const std::string& s,
+                              ProcessLedgerSignatureCallback callback) override;
   void AddObserver(
       ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) override;
 
+  static bool ValidateTxData(const mojom::TxDataPtr& tx_data,
+                             std::string* error);
+  static bool ValidateTxData1559(const mojom::TxData1559Ptr& tx_data,
+                                 std::string* error);
+  std::unique_ptr<EthTxStateManager::TxMeta> GetTxForTesting(
+      const std::string& tx_meta_id);
+
  private:
   void NotifyTransactionStatusChanged(EthTxStateManager::TxMeta* meta);
+  void NotifyUnapprovedTxUpdated(EthTxStateManager::TxMeta* meta);
   void OnConnectionError();
   void OnGetNextNonce(std::unique_ptr<EthTxStateManager::TxMeta> meta,
                       uint256_t chain_id,
                       bool success,
                       uint256_t nonce);
+  void OnGetNextNonceForHardware(
+      std::unique_ptr<EthTxStateManager::TxMeta> meta,
+      ApproveHardwareTransactionCallback callback,
+      bool success,
+      uint256_t nonce);
   void PublishTransaction(const std::string& tx_meta_id,
                           const std::string& signed_transaction);
   void OnPublishTransaction(std::string tx_meta_id,
                             bool status,
                             const std::string& tx_hash);
+  void OnGetEstimateGas(const std::string& from,
+                        const std::string& gas_price,
+                        std::unique_ptr<EthTransaction> tx,
+                        AddUnapprovedTransactionCallback callback,
+                        bool success,
+                        const std::string& result);
+  void ContinueAddUnapprovedTransaction(
+      const std::string& from,
+      std::unique_ptr<EthTransaction> tx,
+      AddUnapprovedTransactionCallback callback,
+      bool success,
+      const std::string& result);
 
   EthJsonRpcController* rpc_controller_;   // NOT OWNED
   KeyringController* keyring_controller_;  // NOT OWNED

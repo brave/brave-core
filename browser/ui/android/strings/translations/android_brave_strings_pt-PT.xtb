@@ -36,7 +36,8 @@
 <translation id="2448893613530489637">Impede o carregamento de rastreadores &amp; anúncios e sua apresentação nas páginas Web</translation>
 <translation id="1680858055899097121">Não manter separadores entre sessões de navegação</translation>
 <translation id="7142548388914389999">Permitir análises de produtos que preservam a privacidade (P3A)</translation>
-<translation id="5469408008145872264">Esta informação completamente anónima permite que o Brave estime e melhore a utilização geral de certas funcionalidades.</translation>
+<translation id="4272190451231642425">Enviar relatórios de falha automaticamente</translation>
+<translation id="2239766974964486304">Os relatórios de falha ajudam o Brave a melhorar a estabilidade dos produtos para todos os utilizadores.</translation>
 <translation id="7977176350719484850">Est. dados\npoupados</translation>
 <translation id="9008534313521214777">Estimativa Tempo\nEconomizado</translation>
 <translation id="6572660632052512096">Modo desktop</translation>
@@ -69,12 +70,14 @@
 <translation id="8537217141725709400">Ganhe <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="5870330605209713397">pela visualização de anúncios que respeitam a privacidade e apoiam os seus sites e criadores preferidos por defeito.</translation>
+<translation id="5302488867897327287">Ao tocar em Começar a usar as Recompensas do Brave, concorda com os</translation>
 <translation id="4281844954008187215">termos de serviço</translation>
 <translation id="6871397658902960384">Iniciar navegação</translation>
 <translation id="454386012157232640">Não vi um anúncio</translation>
 <translation id="1448877943847791441">O Brave irá mostrar o seu primeiro anúncio dentro de</translation>
 <translation id="4410793187232041318">Irá agora ganhar tokens da Brave Ads.</translation>
 <translation id="6511854390690723657">Este é o seu primeiro anúncio Brave. Toque para ficar a saber mais.</translation>
+<translation id="2070991379950719711">Começar a usar Recompensas Brave</translation>
 <translation id="48520986898237073">Continuar para a wallet (carteira)</translation>
 <translation id="3570367516044491911">Definir como navegador predefinido</translation>
 <translation id="19715420010996093">Selecione o Navegador Brave e clique em 'Sempre'</translation>
@@ -229,7 +232,6 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="8522669544471808198">Mostrar imagens de fundo</translation>
 <translation id="3870475560794762985">Mostrar imagens patrocinadas</translation>
 <translation id="8297488609722895137">Foto de <ph name="PHOTO_BY"/></translation>
-<translation id="2070991379950719711">Comece a usar o Brave Rewards</translation>
 <translation id="4761229094276239865">Ao clicar em Começar a usar o Brave Rewards, concorda com os <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Seja pago para ver esta imagem de fundo.</translation>
 <translation id="7136586167396205364">Ocultar imagens patrocinadas</translation>
@@ -249,7 +251,7 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="723054503945711909">Brave Software Inc. não processa, armazena ou acede a qualquer informação pessoal por si fornecida à Uphold aquando da abertura de conta.</translation>
 <translation id="3699674790322420653">Verificação da wallet concluída</translation>
 <translation id="2193391216824305230">Wallet do utilizador</translation>
-<translation id="7591798679868259510">Aceder à minha conta Upload</translation>
+<translation id="6585020831163574892">Aceda à sua conta Uphold</translation>
 <translation id="9200453331904391567">Desligar de «Recompensas Brave»</translation>
 <translation id="6239274080752256452">Retirar Fundos</translation>
 <translation id="8874184842967597500">Sem ligação</translation>
@@ -478,7 +480,7 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="1078265935778232285">Bem-vindo ao Brave Browser</translation>
 <translation id="6824713633331856331">Ajude-nos a aprender anonimamente</translation>
 <translation id="6116685031674149112">O Brave protege a sua privacidade e\nagradece o seu consentimento para o seguinte:</translation>
-<translation id="3971666849661839619">Ajude a melhorar o Brave ao enviar relatórios de falhas e de forma completamente anónima, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="4394483075076204916">Ajude a melhorar o Brave ao enviar <ph name="PRIVATE_PRODUCT_ANALYSIS"/> de forma completamente anónima</translation>
 <translation id="6478996494082389936">análises privadas de produtos.</translation>
 <translation id="5187052478998910855">Precisa ser atualizado quanto ao Rewards?</translation>
 <translation id="8622329973403382303">Proceda a uma viagem rápida para rever como funciona e entrar para a história como uma estrela rock do Rewards!</translation>
@@ -561,14 +563,38 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="1144810021918451336">Não o protege contra websites, transferências e extensões perigosos.</translation>
 <translation id="745115390910697838">As frases não correspondem. Tente de novo, por favor.</translation>
 <translation id="2360588547830602174">Falha na recuperação da conta. Tente de novo, por favor.</translation>
-<translation id="1530109021798294736">Mainnet</translation>
 <translation id="990936698620790924">Preço de mercado em ETH</translation>
+<translation id="5593852897152820572">Preço em ETH</translation>
 <translation id="6748108480210050150">De</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
 <translation id="8654192805213365413">75%</translation>
 <translation id="6159566011642056819">Para (estimativa)</translation>
+<translation id="6998989275928107238">Para</translation>
+<translation id="6664416064035847539">endereço ou url</translation>
 <translation id="59223531494896848">Limite</translation>
 <translation id="3567988240819868195">Mercado</translation>
 <translation id="632241521608275119">Tolerância de desvio</translation>
+<translation id="4500473291496079954">Expira em</translation>
+<translation id="1987317783729300807">Contas</translation>
+<translation id="3535654229833214438">Transações</translation>
+<translation id="4636930964841734540">Informações</translation>
+<translation id="6284218950354553099">Enviar automaticamente ping de utilização diária para a Brave</translation>
+<translation id="5288333155754958121">Este ping anónimo e privado permite que o Brave estime os utilizadores ativos.</translation>
+<translation id="3819257035322786455">Cópia de segurança</translation>
+<translation id="4608713693379664295">Principais contas crypto</translation>
+<translation id="4003821417160006384">Contas secundárias</translation>
+<translation id="8094541587800369158">Estas contas podem ser usadas com DApps de Web3 e podem ser vistas na sua carteira. No entanto, não podem ser restauradas através da fase de recuperação da cópia de segurança da sua conta principal. Ative a sincronização de contas Brave para restaurar automaticamente as contas secundárias.</translation>
+<translation id="6725413948756358325">Nome da conta</translation>
+<translation id="6062431965141524986">Pode criar uma conta secundária ao importar a sua chave privada.</translation>
+<translation id="3952797765659730604">Introduza, cole ou importe o seu ficheiro de cadeia de chave privada ou JSON.</translation>
+<translation id="569068482611873351">Importar...</translation>
+<translation id="1940465339426637378">Ativos</translation>
+<translation id="4522570452068850558">Detalhes</translation>
+<translation id="9065203028668620118">Editar</translation>
+<translation id="3995184924764722477">Detalhes da conta</translation>
+<translation id="8967036623785635603">Editar ativos visíveis</translation>
+<translation id="5050890334032852465">Guardar lista de observação da conta</translation>
+<translation id="7755766175599167100">Procurar tokens</translation>
+<translation id="3835223348537121988">Saldo:</translation>
 </translationbundle>

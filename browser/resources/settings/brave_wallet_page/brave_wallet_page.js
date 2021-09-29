@@ -1,6 +1,8 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import {PrefsBehavior} from '../prefs/prefs_behavior.js';
  
 (function() {
 'use strict';
@@ -14,6 +16,7 @@ Polymer({
 
   behaviors: [
     WebUIListenerBehavior,
+    PrefsBehavior,
   ],
 
   properties: {
@@ -32,15 +35,24 @@ Polymer({
   ready: function() {
     this.onBraveWalletEnabledChange_ = this.onBraveWalletEnabledChange_.bind(this)
     this.browserProxy_.getWeb3ProviderList().then(list => {
-      this.braveWeb3Providers_ = JSON.parse(list)
+      this.wallets_ = JSON.parse(list)
     });
     this.browserProxy_.isNativeWalletEnabled().then(val => {
       this.isNativeWalletEnabled_ = val;
     });
+    this.onChangeAutoLockMinutes_ = this.onChangeAutoLockMinutes_.bind(this)
   },
 
   onBraveWalletEnabledChange_: function() {
     this.browserProxy_.setBraveWalletEnabled(this.$.braveWalletEnabled.checked);
+  },
+
+  onChangeAutoLockMinutes_: function() {
+    let value = Number(this.$.walletAutoLockMinutes.value)
+    if (Number.isNaN(value) || value < 1 || value > 10080) {
+      return
+    }
+    this.setPrefValue('brave.wallet.auto_lock_minutes', value)
   },
 });
 })();

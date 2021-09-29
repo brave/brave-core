@@ -17,7 +17,7 @@ AdsPerDayFrequencyCap::AdsPerDayFrequencyCap() = default;
 AdsPerDayFrequencyCap::~AdsPerDayFrequencyCap() = default;
 
 bool AdsPerDayFrequencyCap::ShouldAllow() {
-  const std::deque<uint64_t> history =
+  const std::deque<base::Time> history =
       GetAdEvents(AdType::kAdNotification, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
@@ -28,14 +28,14 @@ bool AdsPerDayFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string AdsPerDayFrequencyCap::get_last_message() const {
+std::string AdsPerDayFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
 bool AdsPerDayFrequencyCap::DoesRespectCap(
-    const std::deque<uint64_t>& history) {
-  const uint64_t time_constraint =
-      base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
+    const std::deque<base::Time>& history) {
+  const base::TimeDelta time_constraint = base::TimeDelta::FromSeconds(
+      base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
 
   const uint64_t cap = features::GetMaximumAdNotificationsPerDay();
 

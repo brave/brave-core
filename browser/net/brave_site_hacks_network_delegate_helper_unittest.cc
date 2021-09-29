@@ -17,64 +17,12 @@
 
 using brave::ResponseCallback;
 
-TEST(BraveSiteHacksNetworkDelegateHelperTest, UAWhitelistedTest) {
-  const std::vector<const GURL> urls(
-      {GURL("https://duckduckgo.com"), GURL("https://duckduckgo.com/something"),
-       GURL("https://netflix.com"), GURL("https://netflix.com/something"),
-       GURL("https://a.duckduckgo.com"),
-       GURL("https://a.netflix.com"),
-       GURL("https://a.duckduckgo.com/something"),
-       GURL("https://a.netflix.com/something")});
-  for (const auto& url : urls) {
-    net::HttpRequestHeaders headers;
-    headers.SetHeader(kUserAgentHeader,
-                      "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 "
-                      "(KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36");
-    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-    int rc = brave::OnBeforeStartTransaction_SiteHacksWork(
-        &headers, ResponseCallback(), brave_request_info);
-    std::string user_agent;
-    headers.GetHeader(kUserAgentHeader, &user_agent);
-    EXPECT_EQ(rc, net::OK);
-    EXPECT_EQ(user_agent,
-              "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 "
-              "(KHTML, like Gecko) Brave Chrome/33.0.1750.117 Safari/537.36");
-  }
-}
-
-TEST(BraveSiteHacksNetworkDelegateHelperTest, ChangeUAOnlyOnce) {
-  const GURL whitelisted_url("https://netflix.com/");
-  net::HttpRequestHeaders headers;
-  headers.SetHeader(kUserAgentHeader,
-                    "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 "
-                    "(KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36");
-  auto brave_request_info =
-      std::make_shared<brave::BraveRequestInfo>(whitelisted_url);
-
-  // Check once.
-  int rc = brave::OnBeforeStartTransaction_SiteHacksWork(
-      &headers, ResponseCallback(), brave_request_info);
-  std::string user_agent;
-  headers.GetHeader(kUserAgentHeader, &user_agent);
-  EXPECT_EQ(rc, net::OK);
-  EXPECT_EQ(user_agent,
-            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Brave Chrome/33.0.1750.117 Safari/537.36");
-
-  // Check twice.
-  rc = brave::OnBeforeStartTransaction_SiteHacksWork(
-      &headers, ResponseCallback(), brave_request_info);
-  headers.GetHeader(kUserAgentHeader, &user_agent);
-  EXPECT_EQ(rc, net::OK);
-  EXPECT_EQ(user_agent,
-            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Brave Chrome/33.0.1750.117 Safari/537.36");
-}
-
 TEST(BraveSiteHacksNetworkDelegateHelperTest, NOTUAWhitelistedTest) {
-  const std::vector<const GURL> urls({GURL("https://brianbondy.com"),
-                                      GURL("https://bravecombo.com"),
-                                      GURL("https://brave.example.com")});
+  const std::vector<const GURL> urls(
+      {GURL("https://brianbondy.com"), GURL("https://bravecombo.com"),
+       GURL("https://brave.example.com"),
+       GURL("https://a.netflix.com/something"),
+       GURL("https://a.duckduckgo.com/something")});
   for (const auto& url : urls) {
     net::HttpRequestHeaders headers;
     headers.SetHeader(kUserAgentHeader,

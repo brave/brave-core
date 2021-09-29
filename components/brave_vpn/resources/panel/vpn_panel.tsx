@@ -9,28 +9,17 @@ import { render } from 'react-dom'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import vpnDarkTheme from './theme/vpn-dark'
 import vpnLightTheme from './theme/vpn-light'
-import Main from './components/main'
+import Container from './container'
 import { PanelWrapper } from './style'
 import apiProxy from './vpn_panel_api_proxy.js'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
+
   React.useEffect(() => {
     chrome.braveTheme.getBraveThemeType(setInitialThemeType)
-
-    const visibilityChangedListener = () => {
-      if (document.visibilityState === 'visible') {
-        apiProxy.getInstance().showUI()
-      }
-    }
-    document.addEventListener('visibilitychange',
-    visibilityChangedListener)
-
-    return () => {
-      document.removeEventListener('visibilitychange',
-      visibilityChangedListener)
-    }
   }, [])
+
   return (
     <React.Fragment>
       {initialThemeType &&
@@ -40,7 +29,7 @@ function App () {
           light={vpnLightTheme}
         >
           <PanelWrapper>
-            <Main />
+            <Container />
           </PanelWrapper>
         </BraveCoreThemeProvider>
       }
@@ -50,7 +39,10 @@ function App () {
 
 function initialize () {
   render(<App />, document.getElementById('mountPoint'),
-  () => apiProxy.getInstance().showUI())
+  () => {
+    apiProxy.getInstance().showUI()
+    apiProxy.getInstance().createVPNConnection()
+  })
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

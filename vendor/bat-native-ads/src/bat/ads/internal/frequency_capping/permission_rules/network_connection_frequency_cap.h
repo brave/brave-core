@@ -12,10 +12,9 @@
 
 namespace ads {
 
-class NetworkConnectionFrequencyCap : public PermissionRule {
+class NetworkConnectionFrequencyCap final : public PermissionRule {
  public:
   NetworkConnectionFrequencyCap();
-
   ~NetworkConnectionFrequencyCap() override;
 
   NetworkConnectionFrequencyCap(const NetworkConnectionFrequencyCap&) = delete;
@@ -24,7 +23,7 @@ class NetworkConnectionFrequencyCap : public PermissionRule {
 
   bool ShouldAllow() override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   std::string last_message_;

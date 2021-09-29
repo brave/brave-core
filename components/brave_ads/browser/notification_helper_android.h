@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_NOTIFICATION_HELPER_ANDROID_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_NOTIFICATION_HELPER_ANDROID_H_
 
-#include "base/memory/weak_ptr.h"
-
 #include "brave/components/brave_ads/browser/notification_helper.h"
+
+#include "base/memory/weak_ptr.h"
 
 namespace brave_ads {
 
@@ -28,19 +28,12 @@ class NotificationHelperAndroid
   NotificationHelperAndroid();
   ~NotificationHelperAndroid() override;
 
-  // |foreground_channel|: foreground or background channel
-  bool IsBraveAdsNotificationChannelEnabled(bool foreground_channel) const;
-
-  int GetOperatingSystemVersion() const;
-
-  // NotificationHelper impl
-  bool ShouldShowNotifications() override;
-
+  // NotificationHelper:
   bool CanShowNativeNotifications() override;
 
-  bool ShowMyFirstAdNotification() override;
-
   bool CanShowBackgroundNotifications() const override;
+
+  bool ShowMyFirstAdNotification() override;
 };
 
 }  // namespace brave_ads

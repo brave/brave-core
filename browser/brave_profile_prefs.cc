@@ -16,6 +16,7 @@
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
@@ -24,6 +25,7 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -48,10 +50,15 @@
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
+#include "components/search_engines/search_engines_pref_names.h"
 #include "components/signin/public/base/signin_pref_names.h"
 #include "components/sync/base/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
@@ -66,7 +73,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
@@ -122,6 +129,10 @@
 using extensions::FeatureSwitch;
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/pref_names.h"
+#endif
+
 namespace brave {
 
 void RegisterProfilePrefsForMigration(
@@ -136,7 +147,7 @@ void RegisterProfilePrefsForMigration(
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  brave_wallet::KeyringController::RegisterProfilePrefsForMigration(registry);
+  brave_wallet::RegisterProfilePrefsForMigration(registry);
 #endif
 
   // Restore "Other Bookmarks" migration
@@ -165,6 +176,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kTabsSearchShow, true);
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  brave_vpn::prefs::RegisterProfilePrefs(registry);
+#endif
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
   // We don't need to display "don't ask widevine prompt option" in settings
@@ -206,6 +221,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);
 #endif
 
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  brave_adaptive_captcha::BraveAdaptiveCaptchaService::RegisterProfilePrefs(
+      registry);
+#endif
+
 #if defined(OS_ANDROID)
   registry->RegisterBooleanPref(kDesktopModeEnabled, false);
   registry->RegisterBooleanPref(kPlayYTVideoInBrowserEnabled, true);
@@ -220,7 +240,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(feed::prefs::kArticlesListVisible,
                                 base::Value(false));
   // Translate is not available on Android
-  registry->SetDefaultPrefValue(prefs::kOfferTranslateEnabled,
+  registry->SetDefaultPrefValue(translate::prefs::kOfferTranslateEnabled,
                                 base::Value(false));
   // Explicitly disable safe browsing extended reporting by default in case they
   // change it in upstream.
@@ -312,13 +332,12 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(kERCPrefVersion, 0);
   registry->RegisterStringPref(kERCAES256GCMSivNonce, "");
   registry->RegisterStringPref(kERCEncryptedSeed, "");
-  registry->RegisterBooleanPref(kERCLoadCryptoWalletsOnStartup, false);
   registry->RegisterBooleanPref(kERCOptedIntoCryptoWallets, false);
 #endif
 
   // Brave Wallet
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  brave_wallet::KeyringController::RegisterProfilePrefs(registry);
+  brave_wallet::RegisterProfilePrefs(registry);
 #endif
 
   // Brave Search
@@ -352,8 +371,13 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Default search engine version
   registry->RegisterIntegerPref(
-      kBraveDefaultSearchVersion,
+      prefs::kBraveDefaultSearchVersion,
       TemplateURLPrepopulateData::kBraveCurrentDataVersion);
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  // Web discovery extension, default false
+  registry->RegisterBooleanPref(kWebDiscoveryEnabled, false);
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderService::RegisterProfilePrefs(registry);
@@ -390,6 +414,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 base::Value(true));
   RegisterDefaultBraveBrowserPromptPrefs(registry);
 #endif
+
+  registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(false));
 
   RegisterProfilePrefsForMigration(registry);
 }

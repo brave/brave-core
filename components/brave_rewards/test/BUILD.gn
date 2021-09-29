@@ -32,6 +32,7 @@ source_set("brave_rewards_unit_tests") {
     "//brave/vendor/bat-native-rapidjson",
     "//chrome/browser:browser",
     "//chrome/browser/profiles:profile",
+    "//chrome/test:test_support",
     "//content/test:test_support",
     "//net:net",
     "//ui/base:base",

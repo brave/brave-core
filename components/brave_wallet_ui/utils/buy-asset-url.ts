@@ -1,21 +1,26 @@
-import { Network, AssetOptionType, UserAccountType } from '../constants/types'
-import { NetworkOptions } from '../options/network-options'
+import { AccountAssetOptionType,
+         UserAccountType,
+         kMainnetChainId,
+         kRopstenChainId,
+         kKovanChainId,
+         kRinkebyChainId,
+         kGoerliChainId } from '../constants/types'
 
 const wyreID = 'AC_MGNVBGHPA9T'
 
-export function BuyAssetUrl (network: Network, asset: AssetOptionType, account: UserAccountType, buyAmount: string) {
-  switch (network) {
-    case Network.Mainnet:
-      return `https://pay.sendwyre.com/?dest=ethereum:${account.address}&destCurrency=${asset.symbol}&amount=${buyAmount}&accountId=${wyreID}&paymentMethod=debit-card`
-    case Network.Ropsten:
+export function BuyAssetUrl (networkChainId: string, asset: AccountAssetOptionType, account: UserAccountType, buyAmount: string) {
+  switch (networkChainId) {
+    case kMainnetChainId:
+      return `https://pay.sendwyre.com/?dest=ethereum:${account.address}&destCurrency=${asset.asset.symbol}&amount=${buyAmount}&accountId=${wyreID}&paymentMethod=debit-card`
+    case kRopstenChainId:
       return 'https://faucet.metamask.io/'
-    case Network.Kovan:
+    case kKovanChainId:
       return 'https://github.com/kovan-testnet/faucet'
-    case Network.Rinkeby:
+    case kRinkebyChainId:
       return 'https://www.rinkeby.io/'
-    case Network.Goerli:
+    case kGoerliChainId:
       return 'https://goerli-faucet.slock.it/'
     default:
-      throw new Error(`Unknown cryptocurrency exchange or faucet: "${NetworkOptions[network].name}"`)
+      return ''
   }
 }

@@ -43,11 +43,14 @@ Polymer({
      * @private
      */
     gatewayUrl_: String,
+
+    invalidAddressMessage_: String
   },
   browserProxy_: null,
   /** @override */
   created: function() {
     this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance();
+    this.invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddress')
   },
 
   /** @override */
@@ -65,7 +68,7 @@ Polymer({
       this.isSubmitButtonEnabled_ = false;
       return;
     }
-
+    this.invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddress')
     let url;
     try {
       url = new URL(url_.trim());
@@ -90,6 +93,8 @@ Polymer({
       if (success) {
         this.setPrefValue('brave.ipfs.public_gateway_address', this.gatewayUrl_);
         this.fire('close');
+      } else {
+        this.invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddressOrigin')
       }
     });
   },

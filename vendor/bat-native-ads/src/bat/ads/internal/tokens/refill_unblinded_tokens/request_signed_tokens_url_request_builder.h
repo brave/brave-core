@@ -18,11 +18,10 @@ namespace ads {
 
 using challenge_bypass_ristretto::BlindedToken;
 
-class RequestSignedTokensUrlRequestBuilder : UrlRequestBuilder {
+class RequestSignedTokensUrlRequestBuilder final : UrlRequestBuilder {
  public:
   RequestSignedTokensUrlRequestBuilder(const WalletInfo& wallet,
                                        const std::vector<BlindedToken>& tokens);
-
   ~RequestSignedTokensUrlRequestBuilder() override;
 
   mojom::UrlRequestPtr Build() override;

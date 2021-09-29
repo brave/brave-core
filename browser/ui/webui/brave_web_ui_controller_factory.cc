@@ -39,6 +39,7 @@
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
@@ -87,6 +88,9 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
   } else if (host == kWalletPageHost) {
     if (brave_wallet::IsNativeWalletEnabled()) {
+      auto default_wallet = brave_wallet::GetDefaultWallet(profile->GetPrefs());
+      if (default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets)
+        return new EthereumRemoteClientUI(web_ui, url.host());
       return new WalletPageUI(web_ui);
     }
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

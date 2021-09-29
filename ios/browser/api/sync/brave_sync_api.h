@@ -14,10 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @interface BraveSyncAPI : NSObject
 
-@property(class, readonly, strong)
-    BraveSyncAPI* sharedSyncAPI NS_SWIFT_NAME(shared);
 @property(nonatomic) bool syncEnabled;
 @property(nonatomic, readonly) bool isSyncFeatureActive;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 - (void)resetSync;
 

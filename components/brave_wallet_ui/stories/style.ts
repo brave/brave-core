@@ -12,6 +12,18 @@ export const StyledExtensionWrapper = styled.div`
   height: 400px;
 `
 
+export const StyledExtensionWrapperLonger = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #F8F9FA;
+  border-radius: 4px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+  width: 320px;
+  height: 500px;
+`
+
 export const ChildComponentWrapper = styled.div`
   flex: 1;
   display: flex;
@@ -44,6 +56,16 @@ export const SignContainer = styled.div`
   position: relative;
   box-sizing: border-box;
   background-color: ${(p) => p.theme.color.background01};
+`
+
+export const ConnectWithSiteWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: ${(p) => p.theme.color.background01};
+  width: 320px;
+  height: 100%;
 `
 
 export const ScrollContainer = styled.div`

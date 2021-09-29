@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import {
   GetPriceHistoryReturnObjectInfo,
   TokenInfo,
@@ -17,17 +18,46 @@ export type AddAccountPayloadType = {
   accountName: string
 }
 
+export type ImportAccountPayloadType = {
+  accountName: string,
+  privateKey: string
+}
+
+export type ImportAccountFromJsonPayloadType = {
+  accountName: string,
+  password: string,
+  json: string
+}
+
+export type RemoveImportedAccountPayloadType = {
+  address: string
+}
+
+export type RemoveHardwareAccountPayloadType = {
+  address: string
+}
+
 export type RestoreWalletPayloadType = {
   mnemonic: string,
-  password: string
+  password: string,
+  isLegacy: boolean
 }
 
 export type WalletCreatedPayloadType = {
   mnemonic: string
 }
 
+export type ViewPrivateKeyPayloadType = {
+  isDefault: boolean
+  address: string
+}
+
 export type RecoveryWordsAvailablePayloadType = {
   mnemonic: string
+}
+
+export type PrivateKeyAvailablePayloadType = {
+  privateKey: string
 }
 
 export type UpdateSelectedAssetType = {
@@ -40,4 +70,9 @@ export type SelectAssetPayloadType = {
   usdPriceInfo: AssetPriceInfo | undefined,
   btcPriceInfo: AssetPriceInfo | undefined,
   timeFrame: AssetPriceTimeframe
+}
+
+export type ImportFromExternalWalletPayloadType = {
+  password: string,
+  newPassword: string
 }

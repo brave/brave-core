@@ -8,16 +8,14 @@
 
 #include <string>
 
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
 
-struct CreativeAdInfo;
-
 class SplitTestFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
   SplitTestFrequencyCap();
-
   ~SplitTestFrequencyCap() override;
 
   SplitTestFrequencyCap(const SplitTestFrequencyCap&) = delete;
@@ -25,7 +23,7 @@ class SplitTestFrequencyCap : public ExclusionRule<CreativeAdInfo> {
 
   bool ShouldExclude(const CreativeAdInfo& ad) override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   std::string last_message_;

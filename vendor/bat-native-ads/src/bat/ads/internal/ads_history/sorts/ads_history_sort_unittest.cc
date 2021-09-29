@@ -5,6 +5,10 @@
 
 #include "bat/ads/internal/ads_history/sorts/ads_history_sort_factory.h"
 
+#include "bat/ads/ad_history_info.h"
+#include "bat/ads/ads_history_info.h"
+#include "bat/ads/ads_history_sort_types.h"
+#include "bat/ads/internal/ads_history/sorts/ads_history_sort.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -17,15 +21,15 @@ std::deque<AdHistoryInfo> GetUnsortedAdsHistory() {
   std::deque<AdHistoryInfo> ads_history;
 
   AdHistoryInfo ad_history;
-  ad_history.timestamp_in_seconds = 22222222222;
+  ad_history.timestamp = 22222222222;
   ads_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 33333333333;
+  ad_history.timestamp = 33333333333;
   ads_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 11111111111;
+  ad_history.timestamp = 11111111111;
   ads_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 55555555555;
+  ad_history.timestamp = 55555555555;
   ads_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 44444444444;
+  ad_history.timestamp = 44444444444;
   ads_history.push_back(ad_history);
 
   return ads_history;
@@ -37,8 +41,7 @@ TEST(BatAdsAdsHistorySortTest, NoSortOrder) {
   // Arrange
 
   // Act
-  const auto sort =
-      AdsHistorySortFactory::Build(AdsHistoryInfo::SortType::kNone);
+  const auto sort = AdsHistorySortFactory::Build(AdsHistorySortType::kNone);
 
   // Assert
   EXPECT_EQ(nullptr, sort);
@@ -47,7 +50,7 @@ TEST(BatAdsAdsHistorySortTest, NoSortOrder) {
 TEST(BatAdsAdsHistorySortTest, DescendingSortOrder) {
   // Arrange
   const auto sort =
-      AdsHistorySortFactory::Build(AdsHistoryInfo::SortType::kDescendingOrder);
+      AdsHistorySortFactory::Build(AdsHistorySortType::kDescendingOrder);
 
   std::deque<AdHistoryInfo> history = GetUnsortedAdsHistory();
 
@@ -57,15 +60,15 @@ TEST(BatAdsAdsHistorySortTest, DescendingSortOrder) {
   // Assert
   std::deque<AdHistoryInfo> expected_history;
   AdHistoryInfo ad_history;
-  ad_history.timestamp_in_seconds = 55555555555;
+  ad_history.timestamp = 55555555555;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 44444444444;
+  ad_history.timestamp = 44444444444;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 33333333333;
+  ad_history.timestamp = 33333333333;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 22222222222;
+  ad_history.timestamp = 22222222222;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 11111111111;
+  ad_history.timestamp = 11111111111;
   expected_history.push_back(ad_history);
 
   EXPECT_EQ(expected_history, history);
@@ -74,7 +77,7 @@ TEST(BatAdsAdsHistorySortTest, DescendingSortOrder) {
 TEST(BatAdsAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
   // Arrange
   const auto sort =
-      AdsHistorySortFactory::Build(AdsHistoryInfo::SortType::kDescendingOrder);
+      AdsHistorySortFactory::Build(AdsHistorySortType::kDescendingOrder);
 
   std::deque<AdHistoryInfo> history = {};
 
@@ -90,19 +93,19 @@ TEST(BatAdsAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
 TEST(BatAdsAdsHistorySortTest, AscendingSortOrder) {
   // Arrange
   const auto sort =
-      AdsHistorySortFactory::Build(AdsHistoryInfo::SortType::kAscendingOrder);
+      AdsHistorySortFactory::Build(AdsHistorySortType::kAscendingOrder);
 
   std::deque<AdHistoryInfo> expected_history;
   AdHistoryInfo ad_history;
-  ad_history.timestamp_in_seconds = 11111111111;
+  ad_history.timestamp = 11111111111;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 22222222222;
+  ad_history.timestamp = 22222222222;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 33333333333;
+  ad_history.timestamp = 33333333333;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 44444444444;
+  ad_history.timestamp = 44444444444;
   expected_history.push_back(ad_history);
-  ad_history.timestamp_in_seconds = 55555555555;
+  ad_history.timestamp = 55555555555;
   expected_history.push_back(ad_history);
 
   std::deque<AdHistoryInfo> history = GetUnsortedAdsHistory();
@@ -117,7 +120,7 @@ TEST(BatAdsAdsHistorySortTest, AscendingSortOrder) {
 TEST(BatAdsAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
   // Arrange
   const auto sort =
-      AdsHistorySortFactory::Build(AdsHistoryInfo::SortType::kAscendingOrder);
+      AdsHistorySortFactory::Build(AdsHistorySortType::kAscendingOrder);
 
   std::deque<AdHistoryInfo> expected_history;
   std::deque<AdHistoryInfo> history;

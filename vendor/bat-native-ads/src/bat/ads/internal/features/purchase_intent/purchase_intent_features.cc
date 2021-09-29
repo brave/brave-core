@@ -6,7 +6,7 @@
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 
 #include "base/metrics/field_trial_params.h"
-#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model_values.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model_constants.h"
 
 namespace ads {
 namespace features {

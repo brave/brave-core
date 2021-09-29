@@ -12,7 +12,6 @@ include_rules = [
   "+chrome/common",
   "+chrome/grit",
   "+chrome/installer/util",
-  "+chrome/services/mac_notifications/public/cpp",
   "+chrome/test",
   "+content/browser/service_worker",
   "+content/public/browser",

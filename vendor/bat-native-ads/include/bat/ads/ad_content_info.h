@@ -8,13 +8,14 @@
 
 #include <string>
 
+#include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/export.h"
 
 namespace ads {
 
-struct ADS_EXPORT AdContentInfo {
+struct ADS_EXPORT AdContentInfo final {
   AdContentInfo();
   AdContentInfo(const AdContentInfo& info);
   ~AdContentInfo();
@@ -25,8 +26,6 @@ struct ADS_EXPORT AdContentInfo {
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 
-  enum class LikeAction { kNeutral = 0, kThumbsUp, kThumbsDown };
-
   AdType type = AdType::kUndefined;
   std::string uuid;
   std::string creative_instance_id;
@@ -36,7 +35,7 @@ struct ADS_EXPORT AdContentInfo {
   std::string brand_info;
   std::string brand_display_url;
   std::string brand_url;
-  LikeAction like_action = LikeAction::kNeutral;
+  AdContentActionType like_action = AdContentActionType::kNeutral;
   ConfirmationType ad_action = ConfirmationType::kUndefined;
   bool saved_ad = false;
   bool flagged_ad = false;

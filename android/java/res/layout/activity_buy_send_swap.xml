@@ -2,7 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="HardcodedText"
+    tools:ignore="HardcodedText,Autofill,LabelFor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/wallet_bg"
@@ -27,56 +27,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/ic_eth_24"
-                    android:layout_marginEnd="8dp"
-                    android:contentDescription="@null" />
-
-                <LinearLayout
+                <Spinner
+                    android:id="@+id/accounts_spinner"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:orientation="vertical">
+                    android:layout_weight="3" />
 
-                    <TextView
-                        android:id="@+id/account_name_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/wallet_text_color"
-                        android:textSize="14sp"/>
-
-                    <TextView
-                        android:id="@+id/account_value_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/wallet_secondary_text_color"
-                        android:textSize="12sp"/>
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/asset_network_text"
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:id="@+id/network_spinner"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:textSize="12sp"
                     android:textColor="@color/wallet_text_color"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/mainnet"
+                    android:prompt="@string/mainnet"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                    android:background="@drawable/rounded_white_holo_bg"
-                    app:drawableEndCompat="@drawable/ic_circle_down"
-                    android:drawablePadding="8dp"
-                    android:layout_marginEnd="20dp"/>
+                    android:paddingBottom="2dp" />
 
             </LinearLayout>
 
@@ -127,6 +96,7 @@
                       android:id="@+id/from_value_text"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
+                      android:inputType="text"
                       android:textColor="@color/wallet_text_color"
                       android:textSize="20sp"/>
 
@@ -277,6 +247,7 @@
                     android:id="@+id/to_value_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:textColor="@color/wallet_text_color"
                     android:textSize="20sp"/>
 
@@ -396,6 +367,7 @@
                     android:id="@+id/limit_price_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:visibility="gone"
                     android:hint="0"
                     android:textColor="@color/wallet_text_color"

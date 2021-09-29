@@ -7,6 +7,7 @@
 
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/rand_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 
 namespace brave_vpn {
@@ -34,12 +35,42 @@ void BraveVPNOSConnectionAPISim::UpdateVPNConnection(
 }
 
 void BraveVPNOSConnectionAPISim::Connect(const std::string& name) {
+  disconnect_requested_ = false;
+
+  // Determine connection success randomly.
+  const bool success = base::RandInt(0, 9) > 3;
+  // Simulate connection success
+  if (success) {
+    base::SequencedTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnIsConnecting,
+                                  weak_factory_.GetWeakPtr(), name));
+
+    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&BraveVPNOSConnectionAPISim::OnConnected,
+                       weak_factory_.GetWeakPtr(), name, true),
+        base::TimeDelta::FromSeconds(1));
+    return;
+  }
+
+  // Simulate connection failure
   base::SequencedTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnConnected,
-                                weak_factory_.GetWeakPtr(), name, true));
+      FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnIsConnecting,
+                                weak_factory_.GetWeakPtr(), name));
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&BraveVPNOSConnectionAPISim::OnConnected,
+                     weak_factory_.GetWeakPtr(), name, false),
+      base::TimeDelta::FromSeconds(1));
 }
 
 void BraveVPNOSConnectionAPISim::Disconnect(const std::string& name) {
+  disconnect_requested_ = true;
+
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnIsDisconnecting,
+                                weak_factory_.GetWeakPtr(), name));
+
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnDisconnected,
                                 weak_factory_.GetWeakPtr(), name, true));
@@ -49,6 +80,10 @@ void BraveVPNOSConnectionAPISim::RemoveVPNConnection(const std::string& name) {
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(&BraveVPNOSConnectionAPISim::OnRemoved,
                                 weak_factory_.GetWeakPtr(), name, true));
+}
+
+void BraveVPNOSConnectionAPISim::CheckConnection(const std::string& name) {
+  // Do nothing.
 }
 
 void BraveVPNOSConnectionAPISim::OnCreated(const std::string& name,
@@ -62,11 +97,19 @@ void BraveVPNOSConnectionAPISim::OnCreated(const std::string& name,
 
 void BraveVPNOSConnectionAPISim::OnConnected(const std::string& name,
                                              bool success) {
-  if (!success)
+  // Cancelling connecting request simulation.
+  if (disconnect_requested_) {
+    disconnect_requested_ = false;
     return;
+  }
 
   for (Observer& obs : observers_)
-    obs.OnConnected(name);
+    success ? obs.OnConnected(name) : obs.OnConnectFailed(name);
+}
+
+void BraveVPNOSConnectionAPISim::OnIsConnecting(const std::string& name) {
+  for (Observer& obs : observers_)
+    obs.OnIsConnecting(name);
 }
 
 void BraveVPNOSConnectionAPISim::OnDisconnected(const std::string& name,
@@ -76,6 +119,11 @@ void BraveVPNOSConnectionAPISim::OnDisconnected(const std::string& name,
 
   for (Observer& obs : observers_)
     obs.OnDisconnected(name);
+}
+
+void BraveVPNOSConnectionAPISim::OnIsDisconnecting(const std::string& name) {
+  for (Observer& obs : observers_)
+    obs.OnIsDisconnecting(name);
 }
 
 void BraveVPNOSConnectionAPISim::OnRemoved(const std::string& name,

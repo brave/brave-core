@@ -23,6 +23,9 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -35,7 +38,6 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "extensions/test/extension_test_message_listener.h"
@@ -73,7 +75,6 @@ using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
-using content::BrowserThread;
 
 void AdBlockServiceTest::SetUpOnMainThread() {
   ExtensionBrowserTest::SetUpOnMainThread();
@@ -98,7 +99,13 @@ HostContentSettingsMap* AdBlockServiceTest::content_settings() {
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
     const std::string& rules,
     const std::string& resources) {
-  g_brave_browser_process->ad_block_service()->ResetForTest(rules, resources);
+  brave_shields::AdBlockService* ad_block_service =
+      g_brave_browser_process->ad_block_service();
+  ad_block_service->GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&brave_shields::AdBlockService::ResetForTest,
+                     base::Unretained(ad_block_service), rules, resources));
+  WaitForAdBlockServiceThreads();
 }
 
 void AdBlockServiceTest::AssertTagExists(const std::string& tag,
@@ -157,24 +164,23 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
           kRegionalAdBlockComponentTest64PublicKey);
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
-  const std::vector<adblock::FilterList> regional_catalog = {
-      adblock::FilterList(
-          uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
-          "EasyList Liste FR", {"fr"},
-          "https://forums.lanik.us/viewforum.php?f=91",
-          "emaecjinaegfkoklcdafkiocjhoeilao",
-          "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsbqIWuMS7r2OPXCsIPbbLG1H"
-          "/"
-          "d3NM9uzCMscw7R9ZV3TwhygvMOpZrNp4Y4hImy2H+HE0OniCqzuOAaq7+"
-          "SHXcdHwItvLK"
-          "tnRmeWgdqxgEdzJ8rZMWnfi+dODTbA4QvxI6itU5of8trDFbLzFqgnEOBk8ZxtjM/"
-          "M5v3"
-          "UeYh+EYHSEyHnDSJKbKevlXC931xlbdca0q0Ps3Ln6w/pJFByGbOh212mD/"
-          "PvwS6jIH3L"
-          "YjrMVUMefKC/ywn/AAdnwM5mGirm1NflQCJQOpTjIhbRIXBlACfV/"
-          "hwI1lqfKbFnyr4aP"
-          "Odg3JcOZZVoyi+ko3rKG3vH9JPWEy24Ys9A3SYpTwIDAQAB",
-          "Removes advertisements from French websites")};
+  std::vector<adblock::FilterList> regional_catalog;
+  regional_catalog.push_back(adblock::FilterList(
+      uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
+      "EasyList Liste FR", {"fr"}, "https://forums.lanik.us/viewforum.php?f=91",
+      "emaecjinaegfkoklcdafkiocjhoeilao",
+      "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsbqIWuMS7r2OPXCsIPbbLG1H"
+      "/"
+      "d3NM9uzCMscw7R9ZV3TwhygvMOpZrNp4Y4hImy2H+HE0OniCqzuOAaq7+"
+      "SHXcdHwItvLK"
+      "tnRmeWgdqxgEdzJ8rZMWnfi+dODTbA4QvxI6itU5of8trDFbLzFqgnEOBk8ZxtjM/"
+      "M5v3"
+      "UeYh+EYHSEyHnDSJKbKevlXC931xlbdca0q0Ps3Ln6w/pJFByGbOh212mD/"
+      "PvwS6jIH3L"
+      "YjrMVUMefKC/ywn/AAdnwM5mGirm1NflQCJQOpTjIhbRIXBlACfV/"
+      "hwI1lqfKbFnyr4aP"
+      "Odg3JcOZZVoyi+ko3rKG3vH9JPWEy24Ys9A3SYpTwIDAQAB",
+      "Removes advertisements from French websites"));
   g_brave_browser_process->ad_block_regional_service_manager()
       ->SetRegionalCatalog(regional_catalog);
   const extensions::Extension* ad_block_extension =
@@ -209,13 +215,24 @@ bool AdBlockServiceTest::StartAdBlockRegionalServices() {
   return true;
 }
 
+void AdBlockServiceTest::SetSubscriptionIntervals() {
+  auto initial_delay = base::TimeDelta::FromSeconds(2);
+  auto retry_interval = base::TimeDelta::FromSeconds(2);
+
+  auto* ad_block_service = g_brave_browser_process->ad_block_service();
+  auto* subscription_service_manager =
+      ad_block_service->subscription_service_manager();
+
+  ASSERT_TRUE(ad_block_service->IsInitialized());
+
+  subscription_service_manager->SetUpdateIntervalsForTesting(&initial_delay,
+                                                             &retry_interval);
+}
+
 void AdBlockServiceTest::WaitForAdBlockServiceThreads() {
   scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
       g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
   ASSERT_TRUE(tr_helper->Run());
-  scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
-      base::CreateSingleThreadTaskRunner({BrowserThread::IO}).get()));
-  ASSERT_TRUE(io_helper->Run());
 }
 
 void AdBlockServiceTest::WaitForBraveExtensionShieldsDataReady() {
@@ -270,6 +287,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // filters.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByCustomBlocker) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  UpdateAdBlockInstanceWithRules("");
+
   ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
                   ->UpdateCustomFilters("*ad_banner.png"));
 
@@ -278,7 +299,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByCustomBlocker) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents,
+  EXPECT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_banner.png')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
@@ -288,6 +309,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByCustomBlocker) {
 // the custom filters, and make sure it is not blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultBlockCustomException) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+
   UpdateAdBlockInstanceWithRules("*ad_banner.png");
   ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
                   ->UpdateCustomFilters("@@ad_banner.png"));
@@ -297,7 +321,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultBlockCustomException) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents,
+  EXPECT_EQ(true, EvalJs(contents,
                          "setExpectations(1, 0, 0, 0);"
                          "addImage('ad_banner.png')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
@@ -636,6 +660,238 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 #define MAYBE_CnameCloakedRequestsCanBeExcepted \
   CnameCloakedRequestsCanBeExcepted
 #endif
+
+// A test observer that allows blocking waits for the
+// AdBlockSubscriptionServiceManager to update the status of any registered
+// subscriptions.
+class TestAdBlockSubscriptionServiceManagerObserver
+    : public brave_shields::AdBlockSubscriptionServiceManagerObserver {
+ public:
+  // Constructs a TestAdBlockSubscriptionServiceManagerObserver which will
+  // observe |sub_service_manager| for updates to the status of any registered
+  // subscriptions.
+  TestAdBlockSubscriptionServiceManagerObserver(
+      brave_shields::AdBlockSubscriptionServiceManager* sub_service_manager)
+      : sub_service_manager_(sub_service_manager) {
+    sub_service_manager_->AddObserver(this);
+  }
+  ~TestAdBlockSubscriptionServiceManagerObserver() override {
+    sub_service_manager_->RemoveObserver(this);
+  }
+
+  TestAdBlockSubscriptionServiceManagerObserver(
+      const TestAdBlockSubscriptionServiceManagerObserver& other) = delete;
+  TestAdBlockSubscriptionServiceManagerObserver& operator=(
+      const TestAdBlockSubscriptionServiceManagerObserver& other) = delete;
+
+  // Waits for the notification from the subscription service manager to happen.
+  void Wait() { run_loop_.Run(); }
+
+ private:
+  void OnServiceUpdateEvent() override { run_loop_.Quit(); }
+
+  base::RunLoop run_loop_;
+  brave_shields::AdBlockSubscriptionServiceManager* sub_service_manager_;
+};
+
+// This test fails intermittently on Windows; see
+// https://github.com/brave/brave-browser/issues/17849
+#if defined(OS_WIN)
+#define MAYBE_SubscribeToCustomSubscription \
+  DISABLED_SubscribeToCustomSubscription
+#else
+#define MAYBE_SubscribeToCustomSubscription SubscribeToCustomSubscription
+#endif
+
+// Make sure a list added as a custom subscription works correctly
+// The download in this test fails intermittently with a network error code,
+// although it doesn't seem to occur in real usage.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       MAYBE_SubscribeToCustomSubscription) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  GURL subscription_url =
+      embedded_test_server()->GetURL("lists.com", "/list.txt");
+  GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
+  GURL resource_url = embedded_test_server()->GetURL("b.com", "/logo.png");
+
+  SetSubscriptionIntervals();
+
+  auto* sub_service_manager = g_brave_browser_process->ad_block_service()
+                                  ->subscription_service_manager();
+
+  ASSERT_EQ(sub_service_manager->GetSubscriptions().size(), 0ULL);
+
+  // Create a new subscription
+  sub_service_manager->CreateSubscription(subscription_url);
+
+  // Ensure the subscription is registered correctly
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
+    ASSERT_EQ(subscriptions[0].last_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].enabled, true);
+  }
+
+  // Ensure that the subscription gets update attempts, and ultimately is
+  // successfully updated. It may fail initially due to the download service
+  // not being initialized in time, but this is an expected side effect of
+  // using the download service.
+  base::Time first_successful_update = base::Time();
+  while (first_successful_update == base::Time()) {
+    // Wait for the subscription to be updated using an observer
+    TestAdBlockSubscriptionServiceManagerObserver sub_observer(
+        sub_service_manager);
+    sub_observer.Wait();
+    WaitForAdBlockServiceThreads();
+
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
+    ASSERT_NE(subscriptions[0].last_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].enabled, true);
+
+    if (subscriptions[0].last_successful_update_attempt ==
+        subscriptions[0].last_update_attempt) {
+      first_successful_update = subscriptions[0].last_successful_update_attempt;
+    }
+  }
+
+  // Make sure the list is applied during browsing
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(true,
+            EvalJs(contents, base::StringPrintf("setExpectations(0, 0, 0, 1);"
+                                                "xhr('%s')",
+                                                resource_url.spec().c_str())));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  // Disable the list and ensure it is no longer applied
+  sub_service_manager->EnableSubscription(subscription_url, false);
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
+    ASSERT_NE(subscriptions[0].last_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].last_successful_update_attempt,
+              subscriptions[0].last_update_attempt);
+    ASSERT_EQ(subscriptions[0].enabled, false);
+  }
+
+  EXPECT_EQ(true,
+            EvalJs(contents, base::StringPrintf("setExpectations(0, 0, 1, 1);"
+                                                "xhr('%s')",
+                                                resource_url.spec().c_str())));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  // Refresh the subscription and ensure that it gets updated
+  TestAdBlockSubscriptionServiceManagerObserver sub_observer(
+      sub_service_manager);
+  sub_service_manager->RefreshSubscription(subscription_url, true);
+  sub_observer.Wait();
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
+    ASSERT_GT(subscriptions[0].last_update_attempt, first_successful_update);
+    ASSERT_EQ(subscriptions[0].last_successful_update_attempt,
+              subscriptions[0].last_update_attempt);
+    ASSERT_EQ(subscriptions[0].enabled, false);
+  }
+
+  // Remove the list and ensure it is completely gone
+  sub_service_manager->DeleteSubscription(subscription_url);
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 0ULL);
+  }
+}
+
+// Make sure the state of a list that cannot be fetched is as expected
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeTo404List) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  GURL subscription_url =
+      embedded_test_server()->GetURL("lists.com", "/this/list/does/not/exist");
+  GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
+  GURL resource_url = embedded_test_server()->GetURL("b.com", "/logo.png");
+
+  auto* sub_service_manager = g_brave_browser_process->ad_block_service()
+                                  ->subscription_service_manager();
+
+  ASSERT_EQ(sub_service_manager->GetSubscriptions().size(), 0ULL);
+
+  // Register an observer for the subscription service manager
+  TestAdBlockSubscriptionServiceManagerObserver sub_observer(
+      sub_service_manager);
+
+  // Create a new subscription
+  sub_service_manager->CreateSubscription(subscription_url);
+
+  // Ensure the subscription is registered correctly
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
+    ASSERT_EQ(subscriptions[0].last_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].enabled, true);
+  }
+
+  // Wait for the subscription to be updated for the first time
+  sub_observer.Wait();
+
+  // Ensure that the status of the subscription has been updated accordingly
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
+    ASSERT_NE(subscriptions[0].last_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].enabled, true);
+  }
+}
+
+// Make sure that a list cannot be subscribed to twice
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToListUrlTwice) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  GURL subscription_url =
+      embedded_test_server()->GetURL("lists.com", "/this/list/does/not/exist");
+  GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
+  GURL resource_url = embedded_test_server()->GetURL("b.com", "/logo.png");
+
+  auto* sub_service_manager = g_brave_browser_process->ad_block_service()
+                                  ->subscription_service_manager();
+
+  ASSERT_EQ(sub_service_manager->GetSubscriptions().size(), 0ULL);
+
+  // Register an observer for the subscription service manager
+  TestAdBlockSubscriptionServiceManagerObserver sub_observer(
+      sub_service_manager);
+
+  // Create a new subscription
+  sub_service_manager->CreateSubscription(subscription_url);
+
+  // Ensure the subscription is registered correctly
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].subscription_url, subscription_url);
+    ASSERT_EQ(subscriptions[0].last_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].enabled, true);
+  }
+
+  // Create a subscription with the same URL again
+  sub_service_manager->CreateSubscription(subscription_url);
+
+  // Ensure there's still only the original subscription
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+  }
+}
 
 // Make sure that CNAME cloaked network requests get blocked correctly and
 // issue the correct number of DNS resolutions
@@ -1456,22 +1712,38 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
 }
 
 // Test cosmetic filtering ignores content determined to be 1st party
-// This is disabled due to https://github.com/brave/brave-browser/issues/13882
-#define MAYBE_CosmeticFilteringProtect1p DISABLED_CosmeticFilteringProtect1p
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_CosmeticFilteringProtect1p) {
-  UpdateAdBlockInstanceWithRules("b.com##.fpsponsored\n");
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
+  UpdateAdBlockInstanceWithRules(
+      "appspot.com##.fpsponsored\n"
+      "appspot.com##.fpsponsored1\n"
+      "appspot.com##.fpsponsored2\n"
+      "appspot.com##.fpsponsored3\n"
+      "appspot.com##.fpsponsored4\n");
 
   WaitForBraveExtensionShieldsDataReady();
 
-  GURL tab_url =
-      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  // *.appspot.com is used here to check the eTLD logic.
+  // It's a private suffix from https://publicsuffix.org/list/
+  GURL tab_url = embedded_test_server()->GetURL("test.lion.appspot.com",
+                                                "/cosmetic_filtering.html");
   ui_test_utils::NavigateToURL(browser(), tab_url);
 
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents,
-                         "checkSelector('.fpsponsored', 'display', 'block')"));
+  EXPECT_EQ(true,
+            EvalJs(contents,
+                   "checkSelector('#relative-url-div', 'display', 'block')"));
+  EXPECT_EQ(true,
+            EvalJs(contents,
+                   "checkSelector('#same-origin-div', 'display', 'block')"));
+  EXPECT_EQ(
+      true,
+      EvalJs(contents, "checkSelector('#subdomain-div', 'display', 'block')"));
+  EXPECT_EQ(true, EvalJs(contents,
+                         "checkSelector('#same-etld', 'display', 'block')"));
+  EXPECT_EQ(true, EvalJs(contents,
+                         "checkSelector('#another-etld', 'display', 'none')"));
 }
 
 // Test cosmetic filtering bypasses 1st party checks when toggled

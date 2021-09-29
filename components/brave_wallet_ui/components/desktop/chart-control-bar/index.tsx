@@ -5,8 +5,7 @@ import { ChartTimelineObjectType, AssetPriceTimeframe } from '../../../constants
 import {
   StyledWrapper,
   ButtonText,
-  StyledButton,
-  Dot
+  StyledButton
 } from './style'
 
 export interface Props {
@@ -27,7 +26,6 @@ export default class ChartControlBar extends React.PureComponent<Props, {}> {
       <StyledWrapper>
         {timelineOptions.map((t) =>
           <StyledButton key={t.id} onClick={this.onTimeSelect(t.id)} isSelected={selectedTimeline === t.id}>
-            {t.id === 0 && <Dot isSelected={selectedTimeline === t.id} />}
             <ButtonText isSelected={selectedTimeline === t.id}>{t.name}</ButtonText>
           </StyledButton>
         )}

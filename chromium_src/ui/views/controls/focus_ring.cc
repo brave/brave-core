@@ -3,14 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "base/no_destructor.h"
-// include this header so that setStyle redefine doesn't flow to cc::PaintFlags
-#include "cc/paint/paint_flags.h"
 #include "ui/gfx/color_palette.h"
-#include "ui/gfx/skia_util.h"
-
-// include header first so that GetNativeTheme redefine doesn't flow to View
-#include "ui/views/controls/focus_ring.h"
+#include "ui/native_theme/native_theme.h"
 
 // Override the Focus Ring's color.
 // In Chromium, this is specified via platform-specfic native theme,
@@ -19,6 +13,11 @@
 // platform-specific, or common versions, and we only want to override a single
 // color, we use this micro-theme for the FocusRingView.
 namespace {
+
+ui::NativeTheme::ColorId ColorIdForValidity(bool valid) {
+  return valid ? ui::NativeTheme::kColorId_FocusedBorderColor
+               : ui::NativeTheme::kColorId_AlertSeverityHigh;
+}
 
 class FocusRingTheme {
  public:
@@ -47,11 +46,17 @@ FocusRingTheme& GetFocusRingTheme() {
 
 }  // namespace
 
-#define setStyle                                                           \
-  setColor(color_.value_or(                                                \
-      GetFocusRingTheme().GetSystemColor(ColorIdForValidity(!invalid_)))); \
-  paint.setStyle
-
 #include "../../../../../ui/views/controls/focus_ring.cc"
 
-#undef setStyle
+namespace views {
+
+SkColor FocusRing::GetColor(View* focus_ring, bool valid) {
+  // To avoid unused GetColor() in anonymous ns error.
+  if (true) {
+    return GetFocusRingTheme().GetSystemColor(ColorIdForValidity(valid));
+  } else {
+    return ::views::GetColor(focus_ring, valid);
+  }
+}
+
+}  // namespace views

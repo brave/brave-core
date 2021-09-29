@@ -8,8 +8,6 @@
 #include <cstdint>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/ad_info.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
@@ -37,7 +35,7 @@ bool NewTabPageAdUuidFrequencyCap::ShouldExclude(const AdInfo& ad) {
   return false;
 }
 
-std::string NewTabPageAdUuidFrequencyCap::get_last_message() const {
+std::string NewTabPageAdUuidFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

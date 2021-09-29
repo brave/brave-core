@@ -10,21 +10,27 @@
 #include <string>
 
 #include "base/time/time.h"
-#include "base/values.h"
-#include "bat/ads/ads.h"
-#include "bat/ads/internal/account/confirmations/confirmation_info.h"
+#include "bat/ads/ads_aliases.h"
+#include "bat/ads/internal/account/confirmations/confirmation_info_aliases.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
-#include "bat/ads/transaction_info.h"
+#include "bat/ads/transaction_info_aliases.h"
+
+namespace base {
+class DictionaryValue;
+class Value;
+}  // namespace base
 
 namespace ads {
 
 class AdRewards;
 
-class ConfirmationsState {
+namespace privacy {
+class UnblindedTokens;
+}  // namespace privacy
+
+class ConfirmationsState final {
  public:
   explicit ConfirmationsState(AdRewards* ad_rewards);
-
   ~ConfirmationsState();
 
   static ConfirmationsState* Get();
@@ -36,25 +42,30 @@ class ConfirmationsState {
   void Load();
   void Save();
 
-  CatalogIssuersInfo get_catalog_issuers() const;
-  void set_catalog_issuers(const CatalogIssuersInfo& catalog_issuers);
+  CatalogIssuersInfo GetCatalogIssuers() const;
+  void SetCatalogIssuers(const CatalogIssuersInfo& catalog_issuers);
 
-  ConfirmationList get_failed_confirmations() const;
-  void append_failed_confirmation(const ConfirmationInfo& confirmation);
-  bool remove_failed_confirmation(const ConfirmationInfo& confirmation);
+  ConfirmationList GetFailedConfirmations() const;
+  void AppendFailedConfirmation(const ConfirmationInfo& confirmation);
+  bool RemoveFailedConfirmation(const ConfirmationInfo& confirmation);
   void reset_failed_confirmations() { failed_confirmations_ = {}; }
 
-  TransactionList get_transactions() const;
-  void add_transaction(const TransactionInfo& transaction);
+  TransactionList GetTransactions() const;
+  void AppendTransaction(const TransactionInfo& transaction);
   void reset_transactions() { transactions_ = {}; }
 
-  base::Time get_next_token_redemption_date() const;
-  void set_next_token_redemption_date(
-      const base::Time& next_token_redemption_date);
+  base::Time GetNextTokenRedemptionDate() const;
+  void SetNextTokenRedemptionDate(const base::Time& next_token_redemption_date);
 
-  privacy::UnblindedTokens* get_unblinded_tokens() const;
+  privacy::UnblindedTokens* get_unblinded_tokens() const {
+    DCHECK(is_initialized_);
+    return unblinded_tokens_.get();
+  }
 
-  privacy::UnblindedTokens* get_unblinded_payment_tokens() const;
+  privacy::UnblindedTokens* get_unblinded_payment_tokens() const {
+    DCHECK(is_initialized_);
+    return unblinded_payment_tokens_.get();
+  }
 
  private:
   bool is_initialized_ = false;

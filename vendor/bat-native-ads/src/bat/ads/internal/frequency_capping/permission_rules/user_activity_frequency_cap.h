@@ -12,10 +12,9 @@
 
 namespace ads {
 
-class UserActivityFrequencyCap : public PermissionRule {
+class UserActivityFrequencyCap final : public PermissionRule {
  public:
   UserActivityFrequencyCap();
-
   ~UserActivityFrequencyCap() override;
 
   UserActivityFrequencyCap(const UserActivityFrequencyCap&) = delete;
@@ -23,7 +22,7 @@ class UserActivityFrequencyCap : public PermissionRule {
 
   bool ShouldAllow() override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   std::string last_message_;

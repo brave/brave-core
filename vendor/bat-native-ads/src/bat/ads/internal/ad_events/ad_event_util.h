@@ -6,13 +6,30 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_AD_EVENT_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_AD_EVENT_UTIL_H_
 
-#include "bat/ads/internal/ad_events/ad_event_info.h"
+#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
+
+namespace absl {
+template <typename T>
+class optional;
+}  // namespace absl
+
+namespace base {
+class Time;
+}
 
 namespace ads {
 
 struct AdInfo;
+struct CreativeAdInfo;
 
 bool HasFiredAdViewedEvent(const AdInfo& ad, const AdEventList& ad_events);
+
+absl::optional<base::Time> GetLastSeenAdTime(const AdEventList& ad_events,
+                                             const CreativeAdInfo& creative_ad);
+
+absl::optional<base::Time> GetLastSeenAdvertiserTime(
+    const AdEventList& ad_events,
+    const CreativeAdInfo& creative_ad);
 
 }  // namespace ads
 

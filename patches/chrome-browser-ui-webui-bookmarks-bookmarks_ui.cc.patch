@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-index 2009c2b66f1b2d5b9e13d10ba0bb1b92c189372b..fcb16b0a2806144fb0bd37b20b93a25d96253c52 100644
+index 54fe2e48cde408898820773ba74e4c9185de98c8..847c0d2874271bd852589e0a0fe38a9be4d19729 100644
 --- a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
 +++ b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-@@ -129,6 +129,7 @@ content::WebUIDataSource* CreateBookmarksUIHTMLSource(Profile* profile) {
-   for (const auto& str : kStrings)
-     AddLocalizedString(source, str.name, str.id);
+@@ -135,6 +135,7 @@ content::WebUIDataSource* CreateBookmarksUIHTMLSource(Profile* profile) {
+                         ? "enable-branding-update"
+                         : "");
  
 +  BRAVE_CREATE_BOOKMARKS_UI_HTML_SOURCE
    return source;

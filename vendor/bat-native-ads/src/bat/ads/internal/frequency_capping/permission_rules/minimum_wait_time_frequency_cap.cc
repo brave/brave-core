@@ -28,7 +28,7 @@ bool MinimumWaitTimeFrequencyCap::ShouldAllow() {
     return true;
   }
 
-  const std::deque<uint64_t> history =
+  const std::deque<base::Time> history =
       GetAdEvents(AdType::kAdNotification, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
@@ -39,18 +39,19 @@ bool MinimumWaitTimeFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string MinimumWaitTimeFrequencyCap::get_last_message() const {
+std::string MinimumWaitTimeFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
 bool MinimumWaitTimeFrequencyCap::DoesRespectCap(
-    const std::deque<uint64_t>& history) {
+    const std::deque<base::Time>& history) {
   const uint64_t ads_per_hour = settings::GetAdsPerHour();
   if (ads_per_hour == 0) {
     return false;
   }
 
-  const uint64_t time_constraint = base::Time::kSecondsPerHour / ads_per_hour;
+  const base::TimeDelta time_constraint =
+      base::TimeDelta::FromSeconds(base::Time::kSecondsPerHour / ads_per_hour);
 
   return DoesHistoryRespectCapForRollingTimeConstraint(
       history, time_constraint, kMinimumWaitTimeFrequencyCap);

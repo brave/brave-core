@@ -1,15 +1,14 @@
 import * as React from 'react'
 import {
   UserAccountType,
-  AssetOptionType,
+  AccountAssetOptionType,
   OrderTypes,
   BuySendSwapViewTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  Network
+  EthereumChain
 } from '../../../constants/types'
-import { AssetOptions } from '../../../options/asset-options'
 import {
   AccountsAssetsNetworks,
   Header,
@@ -18,10 +17,11 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
+  networkList: EthereumChain[]
   orderType: OrderTypes
-  swapToAsset: AssetOptionType
-  swapFromAsset: AssetOptionType
-  selectedNetwork: Network
+  swapToAsset: AccountAssetOptionType
+  swapFromAsset: AccountAssetOptionType
+  selectedNetwork: EthereumChain
   selectedAccount: UserAccountType
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
@@ -30,23 +30,27 @@ export interface Props {
   toAmount: string
   fromAssetBalance: string
   toAssetBalance: string
+  assetOptions: AccountAssetOptionType[]
+  isSubmitDisabled: boolean
   onSubmitSwap: () => void
   flipSwapAssets: () => void
-  onSelectNetwork: (network: Network) => void
+  onSelectNetwork: (network: EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
-  onSelectSwapAsset: (asset: AssetOptionType, toOrFrom: ToOrFromType) => void
+  onSelectSwapAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
   onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
   onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
   onSetExchangeRate: (value: string) => void
   onSetFromAmount: (value: string) => void
   onSetToAmount: (value: string) => void
   onSelectPresetAmount: (percent: number) => void
+  onQuoteRefresh: () => void
 }
 
 function SwapTab (props: Props) {
   const {
     accounts,
+    networkList,
     orderType,
     swapToAsset,
     swapFromAsset,
@@ -59,6 +63,8 @@ function SwapTab (props: Props) {
     toAmount,
     fromAssetBalance,
     toAssetBalance,
+    assetOptions,
+    isSubmitDisabled,
     onSubmitSwap,
     flipSwapAssets,
     onSelectNetwork,
@@ -70,11 +76,12 @@ function SwapTab (props: Props) {
     onSetExchangeRate,
     onSetFromAmount,
     onSetToAmount,
-    onSelectPresetAmount
+    onSelectPresetAmount,
+    onQuoteRefresh
   } = props
   const [swapView, setSwapView] = React.useState<BuySendSwapViewTypes>('swap')
   const [isSelectingAsset, setIsSelectingAsset] = React.useState<ToOrFromType>('from')
-  const [filteredAssetList, setFilteredAssetList] = React.useState<AssetOptionType[]>(AssetOptions)
+  const [filteredAssetList, setFilteredAssetList] = React.useState<AccountAssetOptionType[]>(assetOptions)
 
   const onChangeSwapView = (view: BuySendSwapViewTypes, option?: ToOrFromType) => {
     if (option) {
@@ -85,7 +92,7 @@ function SwapTab (props: Props) {
     }
   }
 
-  const onClickSelectNetwork = (network: Network) => () => {
+  const onClickSelectNetwork = (network: EthereumChain) => () => {
     onSelectNetwork(network)
     setSwapView('swap')
   }
@@ -95,13 +102,13 @@ function SwapTab (props: Props) {
     setSwapView('swap')
   }
 
-  const onSelectAsset = (asset: AssetOptionType) => () => {
+  const onSelectAsset = (asset: AccountAssetOptionType) => () => {
     onSelectSwapAsset(asset, isSelectingAsset)
     setSwapView('swap')
   }
 
-  const onFilterAssetList = (asset: AssetOptionType) => {
-    const newList = AssetOptions.filter((assets) => assets !== asset)
+  const onFilterAssetList = (asset: AccountAssetOptionType) => {
+    const newList = assetOptions.filter((assets) => assets !== asset)
     setFilteredAssetList(newList)
   }
 
@@ -139,6 +146,7 @@ function SwapTab (props: Props) {
             exchangeRate={exchangeRate}
             slippageTolerance={slippageTolerance}
             orderExpiration={orderExpiration}
+            isSubmitDisabled={isSubmitDisabled}
             onInputChange={onInputChange}
             onFlipAssets={flipSwapAssets}
             onSubmitSwap={onSubmitSwap}
@@ -150,12 +158,14 @@ function SwapTab (props: Props) {
             onFilterAssetList={onFilterAssetList}
             fromAssetBalance={fromAssetBalance}
             toAssetBalance={toAssetBalance}
+            onQuoteRefresh={onQuoteRefresh}
           />
         </>
       }
       {swapView !== 'send' &&
         <AccountsAssetsNetworks
           accounts={accounts}
+          networkList={networkList}
           goBack={goBack}
           assetOptions={filteredAssetList}
           onClickSelectAccount={onClickSelectAccount}

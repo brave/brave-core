@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {
-  AssetOptionType,
+  AccountAssetOptionType,
   OrderTypes,
   BuySendSwapViewTypes,
   SlippagePresetObjectType,
@@ -17,8 +17,8 @@ import {
 } from './style'
 
 export interface Props {
-  toAsset: AssetOptionType
-  fromAsset: AssetOptionType
+  toAsset: AccountAssetOptionType
+  fromAsset: AccountAssetOptionType
   fromAmount: string
   toAmount: string
   exchangeRate: string
@@ -27,6 +27,7 @@ export interface Props {
   orderType: OrderTypes
   fromAssetBalance: string
   toAssetBalance: string
+  isSubmitDisabled: boolean
   onToggleOrderType: () => void
   onFlipAssets: () => void
   onSubmitSwap: () => void
@@ -35,7 +36,8 @@ export interface Props {
   onSelectPresetAmount: (percent: number) => void
   onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
   onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
-  onFilterAssetList: (asset: AssetOptionType) => void
+  onFilterAssetList: (asset: AccountAssetOptionType) => void
+  onQuoteRefresh: () => void
 }
 
 function Swap (props: Props) {
@@ -50,6 +52,7 @@ function Swap (props: Props) {
     orderExpiration,
     fromAssetBalance,
     toAssetBalance,
+    isSubmitDisabled,
     onToggleOrderType,
     onInputChange,
     onSelectPresetAmount,
@@ -58,7 +61,8 @@ function Swap (props: Props) {
     onFlipAssets,
     onSubmitSwap,
     onChangeSwapView,
-    onFilterAssetList
+    onFilterAssetList,
+    onQuoteRefresh
   } = props
 
   const onShowAssetTo = () => {
@@ -104,6 +108,7 @@ function Swap (props: Props) {
         selectedAssetInputAmount={exchangeRate}
         inputName='rate'
         selectedAsset={fromAsset}
+        onRefresh={onQuoteRefresh}
       />
       <SwapInputComponent
         componentType='selector'
@@ -114,7 +119,7 @@ function Swap (props: Props) {
         orderExpiration={orderExpiration}
       />
       <NavButton
-        disabled={false}
+        disabled={isSubmitDisabled}
         buttonType='primary'
         text='Swap'
         onSubmit={onSubmitSwap}

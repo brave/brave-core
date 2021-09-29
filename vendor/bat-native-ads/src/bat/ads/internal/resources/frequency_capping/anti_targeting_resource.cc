@@ -5,14 +5,15 @@
 
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 
-#include <utility>
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/anti_targeting/anti_targeting_features.h"
 #include "bat/ads/internal/logging.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace resource {

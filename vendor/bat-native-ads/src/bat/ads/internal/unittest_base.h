@@ -11,16 +11,13 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
-#include "base/time/time.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
-#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/database/database_initialize.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
@@ -29,12 +26,16 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+namespace base {
+class Time;
+class TimeDelta;
+}  // namespace base
+
 namespace ads {
 
 class UnitTestBase : public testing::Test {
  public:
   UnitTestBase();
-
   ~UnitTestBase() override;
 
   UnitTestBase(const UnitTestBase&) = delete;

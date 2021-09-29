@@ -7,6 +7,8 @@
 
 #include <algorithm>
 
+#include "bat/ads/ad_history_info.h"
+
 namespace ads {
 
 AdsHistoryAscendingSort::AdsHistoryAscendingSort() = default;
@@ -18,8 +20,8 @@ std::deque<AdHistoryInfo> AdsHistoryAscendingSort::Apply(
   auto sorted_history = history;
 
   std::sort(sorted_history.begin(), sorted_history.end(),
-            [](const AdHistoryInfo& a, const AdHistoryInfo& b) {
-              return a.timestamp_in_seconds < b.timestamp_in_seconds;
+            [](const AdHistoryInfo& lhs, const AdHistoryInfo& rhs) {
+              return lhs.timestamp < rhs.timestamp;
             });
 
   return sorted_history;

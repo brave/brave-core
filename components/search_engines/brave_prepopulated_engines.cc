@@ -56,6 +56,7 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
           engine.alternate_urls,
           engine.alternate_urls_size,
           engine.type,
+          engine.preconnect_to_search_url,
           id > 0 ? id : engine.id};
 }
 
@@ -79,6 +80,7 @@ const PrepopulatedEngine duckduckgo = {
     NULL,
     0,
     SEARCH_ENGINE_DUCKDUCKGO,
+    NULL,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
 };
 
@@ -117,6 +119,7 @@ const PrepopulatedEngine duckduckgo_lite = {
     NULL,
     0,
     SEARCH_ENGINE_DUCKDUCKGO,
+    NULL,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
 };
 #endif
@@ -153,6 +156,7 @@ const PrepopulatedEngine qwant = {
     NULL,
     0,
     SEARCH_ENGINE_QWANT,
+    NULL,
     PREPOPULATED_ENGINE_ID_QWANT,
 };
 
@@ -176,6 +180,7 @@ const PrepopulatedEngine startpage = {
     NULL,
     0,
     SEARCH_ENGINE_OTHER,
+    NULL,
     PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
 
@@ -217,6 +222,7 @@ const PrepopulatedEngine brave_search = {
     NULL,
     0,
     SEARCH_ENGINE_OTHER,
+    NULL,
     PREPOPULATED_ENGINE_ID_BRAVE,
 };
 

@@ -37,6 +37,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/pref_names.h"
 #endif
 
 namespace {
@@ -170,13 +171,24 @@ void BraveToolbarView::Init() {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNEnabled()) {
-    AddChildViewAt(std::make_unique<BraveVPNButton>(profile),
-                   GetIndexOf(GetAppMenuButton()) - 1);
+    show_brave_vpn_button_.Init(
+        brave_vpn::prefs::kBraveVPNShowButton, profile->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::OnVPNButtonVisibilityChanged,
+                            base::Unretained(this)));
+    brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(browser()),
+                                GetIndexOf(GetAppMenuButton()) - 1);
+    brave_vpn_->SetVisible(show_brave_vpn_button_.GetValue());
   }
 #endif
 
   brave_initialized_ = true;
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+void BraveToolbarView::OnVPNButtonVisibilityChanged() {
+  brave_vpn_->SetVisible(show_brave_vpn_button_.GetValue());
+}
+#endif
 
 void BraveToolbarView::OnEditBookmarksEnabledChanged() {
   DCHECK_EQ(DisplayMode::NORMAL, display_mode_);

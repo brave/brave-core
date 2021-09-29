@@ -5,7 +5,8 @@
 
 #include "bat/ads/internal/features/features.h"
 
-#include "base/strings/string_number_conversions.h"
+#include <string>
+
 #include "bat/ads/internal/features/ad_rewards/ad_rewards_features.h"
 #include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"

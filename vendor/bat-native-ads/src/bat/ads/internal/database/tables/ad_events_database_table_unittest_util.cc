@@ -5,8 +5,10 @@
 
 #include "bat/ads/internal/database/tables/ad_events_database_table_unittest_util.h"
 
+#include <functional>
 #include <utility>
 
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_table_util.h"
 #include "bat/ads/internal/database/database_util.h"

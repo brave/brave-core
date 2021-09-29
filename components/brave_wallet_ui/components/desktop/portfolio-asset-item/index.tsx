@@ -1,5 +1,8 @@
 import * as React from 'react'
 
+// Options
+import { ETH } from '../../../options/asset-options'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -15,24 +18,29 @@ export interface Props {
   action?: () => void
   name: string
   symbol: string
-  icon?: string
+  logo?: string
   assetBalance: string
   fiatBalance: string
+  isVisible?: boolean
 }
 
 const PortfolioAssetItem = (props: Props) => {
-  const { name, assetBalance, fiatBalance, icon, symbol, action } = props
+  const { name, assetBalance, fiatBalance, logo, symbol, isVisible, action } = props
   return (
-    <StyledWrapper onClick={action}>
-      <NameAndIcon>
-        <AssetIcon icon={icon ? icon : ''} />
-        <AssetName>{name}</AssetName>
-      </NameAndIcon>
-      <BalanceColumn>
-        <FiatBalanceText>${formatPrices(Number(fiatBalance))}</FiatBalanceText>
-        <AssetBalanceText>{Number(assetBalance).toFixed(4)} {symbol}</AssetBalanceText>
-      </BalanceColumn>
-    </StyledWrapper>
+    <>
+      {isVisible &&
+        <StyledWrapper onClick={action}>
+          <NameAndIcon>
+            <AssetIcon icon={(symbol === 'ETH' ? ETH.asset.logo : logo) ?? ''} />
+            <AssetName>{name}</AssetName>
+          </NameAndIcon>
+          <BalanceColumn>
+            <FiatBalanceText>${formatPrices(Number(fiatBalance))}</FiatBalanceText>
+            <AssetBalanceText>{Number(assetBalance).toFixed(4)} {symbol}</AssetBalanceText>
+          </BalanceColumn>
+        </StyledWrapper>
+      }
+    </>
   )
 }
 

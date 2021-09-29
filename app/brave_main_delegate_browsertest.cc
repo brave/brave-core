@@ -9,6 +9,7 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/component_updater/component_updater_switches.h"
 #include "components/embedder_support/switches.h"
 #include "components/federated_learning/features/features.h"
 #include "components/language/core/common/language_experiments.h"
@@ -31,6 +32,7 @@
 #if defined(OS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
+#include "chrome/browser/browser_features.h"
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -48,6 +50,15 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest,
       switches::kDisableDomainReliability));
   EXPECT_FALSE(domain_reliability::DomainReliabilityServiceFactory::
                    ShouldCreateService());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest,
+                       ComponentUpdaterReplacement) {
+  EXPECT_TRUE(base::CommandLine::ForCurrentProcess()->HasSwitch(
+      switches::kComponentUpdater));
+  EXPECT_EQ(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+                switches::kComponentUpdater),
+            "url-source=" UPDATER_PROD_ENDPOINT);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
@@ -70,30 +81,35 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
-      &autofill::features::kAutofillEnableAccountWalletStorage,
-      &autofill::features::kAutofillServerCommunication,
-      &blink::features::kFledgeInterestGroupAPI,
-      &blink::features::kFledgeInterestGroups,
-      &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
-      &blink::features::kInterestCohortAPIOriginTrial,
-      &blink::features::kInterestCohortFeaturePolicy,
-      &blink::features::kTextFragmentAnchor,
-      &features::kDirectSockets,
-      &features::kIdleDetection,
-      &features::kLangClientHintHeader,
-      &features::kNotificationTriggers,
-      &features::kPrivacySandboxSettings,
-      &features::kSignedExchangePrefetchCacheForNavigations,
-      &features::kSignedExchangeSubresourcePrefetch,
-      &features::kSubresourceWebBundles,
-      &features::kWebOTP,
-      &federated_learning::kFederatedLearningOfCohorts,
-      &federated_learning::kFlocIdComputedEventLogging,
-      &media::kLiveCaption,
-      &net::features::kFirstPartySets,
-      &network::features::kTrustTokens,
-      &network_time::kNetworkTimeServiceQuerying,
-      &reading_list::switches::kReadLater,
+    &autofill::features::kAutofillEnableAccountWalletStorage,
+    &autofill::features::kAutofillServerCommunication,
+    &blink::features::kConversionMeasurement,
+    &blink::features::kFledgeInterestGroupAPI,
+    &blink::features::kFledgeInterestGroups,
+    &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
+    &blink::features::kInterestCohortAPIOriginTrial,
+    &blink::features::kInterestCohortFeaturePolicy,
+    &blink::features::kLangClientHintHeader,
+    &blink::features::kNavigatorPluginsFixed,
+    &blink::features::kTextFragmentAnchor,
+#if !defined(OS_ANDROID)
+    &features::kCopyLinkToText,
+#endif
+    &features::kDirectSockets,
+    &features::kIdleDetection,
+    &features::kNotificationTriggers,
+    &features::kPrivacySandboxSettings,
+    &features::kSignedExchangePrefetchCacheForNavigations,
+    &features::kSignedExchangeSubresourcePrefetch,
+    &features::kSubresourceWebBundles,
+    &features::kWebOTP,
+    &federated_learning::kFederatedLearningOfCohorts,
+    &federated_learning::kFlocIdComputedEventLogging,
+    &media::kLiveCaption,
+    &net::features::kFirstPartySets,
+    &network::features::kTrustTokens,
+    &network_time::kNetworkTimeServiceQuerying,
+    &reading_list::switches::kReadLater,
   };
 
   for (const auto* feature : disabled_features)

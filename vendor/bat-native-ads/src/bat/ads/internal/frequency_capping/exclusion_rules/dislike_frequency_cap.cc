@@ -6,7 +6,6 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/dislike_frequency_cap.h"
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/client/preferences/filtered_ad_info.h"
 
@@ -28,12 +27,12 @@ bool DislikeFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string DislikeFrequencyCap::get_last_message() const {
+std::string DislikeFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
 bool DislikeFrequencyCap::DoesRespectCap(const CreativeAdInfo& ad) {
-  const FilteredAdList filtered_ads = Client::Get()->get_filtered_ads();
+  const FilteredAdList filtered_ads = Client::Get()->GetFilteredAds();
   if (filtered_ads.empty()) {
     return true;
   }

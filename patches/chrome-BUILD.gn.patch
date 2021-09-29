@@ -1,8 +1,8 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index a512d736c1d603680cc0e5bfb42afbd70a799f9a..1870a96f1f4b00bb68c86962715fbad9fdd60ad5 100644
+index c25d483469dbc2580f12340daefb85f085b4e127..a78f9112b8948f2ee2583980af034df22d4dee05 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -163,6 +163,7 @@ if (!is_android && !is_mac) {
+@@ -164,6 +164,7 @@ if (!is_android && !is_mac) {
          "common/crash_keys.cc",
          "common/crash_keys.h",
        ]
@@ -10,7 +10,7 @@ index a512d736c1d603680cc0e5bfb42afbd70a799f9a..1870a96f1f4b00bb68c86962715fbad9
  
        deps += [
          ":chrome_dll",
-@@ -440,11 +441,12 @@ if (is_win) {
+@@ -436,11 +437,12 @@ if (is_win) {
        args += [ "--keystone=0" ]
      }
    }
@@ -24,7 +24,7 @@ index a512d736c1d603680cc0e5bfb42afbd70a799f9a..1870a96f1f4b00bb68c86962715fbad9
      extra_substitutions = [
        "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
        "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -462,6 +464,7 @@ if (is_win) {
+@@ -458,6 +460,7 @@ if (is_win) {
        "//chrome/common:buildflags",
        "//chrome/common:version_header",
      ]
@@ -32,7 +32,7 @@ index a512d736c1d603680cc0e5bfb42afbd70a799f9a..1870a96f1f4b00bb68c86962715fbad9
  
      if (enable_stripping) {
        # At link time, preserve the global symbols specified in the .exports
-@@ -534,7 +537,7 @@ if (is_win) {
+@@ -530,7 +533,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -41,7 +41,7 @@ index a512d736c1d603680cc0e5bfb42afbd70a799f9a..1870a96f1f4b00bb68c86962715fbad9
            "-v",
            chrome_version_full,
            "-g",
-@@ -608,6 +611,7 @@ if (is_win) {
+@@ -604,6 +607,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
        public_deps += [ ":chrome_framework_widevine_signature" ]
@@ -49,7 +49,7 @@ index a512d736c1d603680cc0e5bfb42afbd70a799f9a..1870a96f1f4b00bb68c86962715fbad9
      }
    }
  
-@@ -640,9 +644,11 @@ if (is_win) {
+@@ -636,9 +640,11 @@ if (is_win) {
        "--scm=0",
      ]
    }
@@ -61,15 +61,15 @@ index a512d736c1d603680cc0e5bfb42afbd70a799f9a..1870a96f1f4b00bb68c86962715fbad9
      if (is_chrome_branded) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
-@@ -669,6 +675,7 @@ if (is_win) {
+@@ -663,6 +669,7 @@ if (is_win) {
+         info_plist_target = invoker.info_plist_target
+       } else {
          info_plist_target = ":chrome_helper_plist"
++        info_plist_target = ":brave_helper_plist"
        }
  
-+      info_plist_target = ":brave_helper_plist"
        extra_substitutions = [
-         "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
-         "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -1142,6 +1149,7 @@ if (is_win) {
+@@ -1137,6 +1144,7 @@ if (is_win) {
      if (is_chrome_branded) {
        bundle_deps += [ ":preinstalled_apps" ]
      }
@@ -77,7 +77,7 @@ index a512d736c1d603680cc0e5bfb42afbd70a799f9a..1870a96f1f4b00bb68c86962715fbad9
  
      ldflags = [
        "-compatibility_version",
-@@ -1325,6 +1333,7 @@ if (is_win) {
+@@ -1316,6 +1324,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -85,7 +85,7 @@ index a512d736c1d603680cc0e5bfb42afbd70a799f9a..1870a96f1f4b00bb68c86962715fbad9
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1429,12 +1438,13 @@ group("child_dependencies") {
+@@ -1424,12 +1433,13 @@ group("child_dependencies") {
        # this is OK because all of content is linked into one library.
        "//content/browser",
      ]
@@ -100,7 +100,7 @@ index a512d736c1d603680cc0e5bfb42afbd70a799f9a..1870a96f1f4b00bb68c86962715fbad9
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1488,6 +1498,7 @@ group("resources") {
+@@ -1483,6 +1493,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",

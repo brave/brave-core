@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/strings/stringprintf.h"
@@ -78,6 +79,15 @@ std::string TimeFrameKeyToString(
   return timeframe_key;
 }
 
+std::vector<std::string> VectorToLowerCase(const std::vector<std::string>& v) {
+  std::vector<std::string> v_lower(v.size());
+  std::transform(v.begin(), v.end(), v_lower.begin(),
+                 [](const std::string& from) -> std::string {
+                   return base::ToLowerASCII(from);
+                 });
+  return v_lower;
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -139,12 +149,14 @@ void AssetRatioController::GetPrice(
     const std::vector<std::string>& to_assets,
     brave_wallet::mojom::AssetPriceTimeframe timeframe,
     GetPriceCallback callback) {
+  std::vector<std::string> from_assets_lower = VectorToLowerCase(from_assets);
+  std::vector<std::string> to_assets_lower = VectorToLowerCase(to_assets);
   auto internal_callback = base::BindOnce(
       &AssetRatioController::OnGetPrice, weak_ptr_factory_.GetWeakPtr(),
-      from_assets, to_assets, std::move(callback));
-  api_request_helper_.Request("GET",
-                              GetPriceURL(from_assets, to_assets, timeframe),
-                              "", "", true, std::move(internal_callback));
+      from_assets_lower, to_assets_lower, std::move(callback));
+  api_request_helper_.Request(
+      "GET", GetPriceURL(from_assets_lower, to_assets_lower, timeframe), "", "",
+      true, std::move(internal_callback));
 }
 
 void AssetRatioController::OnGetPrice(
@@ -171,11 +183,12 @@ void AssetRatioController::GetPriceHistory(
     const std::string& asset,
     brave_wallet::mojom::AssetPriceTimeframe timeframe,
     GetPriceHistoryCallback callback) {
+  std::string asset_lower = base::ToLowerASCII(asset);
   auto internal_callback =
       base::BindOnce(&AssetRatioController::OnGetPriceHistory,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_.Request("GET", GetPriceHistoryURL(asset, timeframe), "",
-                              "", true, std::move(internal_callback));
+  api_request_helper_.Request("GET", GetPriceHistoryURL(asset_lower, timeframe),
+                              "", "", true, std::move(internal_callback));
 }
 
 void AssetRatioController::OnGetPriceHistory(

@@ -23,7 +23,7 @@ bool UserActivityFrequencyCap::ShouldAllow() {
   return true;
 }
 
-std::string UserActivityFrequencyCap::get_last_message() const {
+std::string UserActivityFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 

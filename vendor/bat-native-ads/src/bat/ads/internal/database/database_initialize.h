@@ -8,22 +8,21 @@
 
 #include <string>
 
-#include "bat/ads/ads_client.h"
+#include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 namespace database {
 
-class Initialize {
+class Initialize final {
  public:
   Initialize();
-
   ~Initialize();
 
   void CreateOrOpen(ResultCallback callback);
 
-  std::string get_last_message() const;
+  std::string get_last_message() const { return last_message_; }
 
  private:
   void OnCreateOrOpen(mojom::DBCommandResponsePtr response,

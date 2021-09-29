@@ -128,14 +128,23 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
                               ledger::ResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
     if (const auto uphold_wallet = ledger_->uphold()->GetWallet()) {
-      if (uphold_wallet->status != type::WalletStatus::PENDING &&
-          uphold_wallet->status != type::WalletStatus::VERIFIED) {
-        BLOG(0, "Wallet status should have been either PENDING or VERIFIED!");
-      } else {
-        DCHECK(!uphold_wallet->token.empty());
-        DCHECK(uphold_wallet->status == type::WalletStatus::PENDING
-                   ? uphold_wallet->address.empty()
-                   : !uphold_wallet->address.empty());
+      switch (uphold_wallet->status) {
+        case type::WalletStatus::DISCONNECTED_VERIFIED:
+          DCHECK(uphold_wallet->token.empty());
+          DCHECK(uphold_wallet->address.empty());
+          break;
+        case type::WalletStatus::PENDING:
+          DCHECK(!uphold_wallet->token.empty());
+          DCHECK(uphold_wallet->address.empty());
+          break;
+        case type::WalletStatus::VERIFIED:
+          DCHECK(!uphold_wallet->token.empty());
+          DCHECK(!uphold_wallet->address.empty());
+          break;
+        default:
+          BLOG(0,
+               "Wallet status should have been either DISCONNECTED_VERIFIED, "
+               "PENDING, or VERIFIED!");
       }
     } else {
       BLOG(0, "Uphold wallet is null!");
@@ -151,7 +160,9 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
               return callback(type::Result::LEDGER_ERROR);
             }
 
-            if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
+            if (uphold_wallet->status ==
+                    type::WalletStatus::DISCONNECTED_VERIFIED ||
+                uphold_wallet->status == type::WalletStatus::VERIFIED) {
               BLOG(0, "Wallet unlinking failed!");
               return callback(result);
             }
@@ -230,11 +241,10 @@ void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
 }
 
 type::BraveWalletPtr Wallet::GetWallet(bool create) {
-  auto json = ledger_->state()->GetEncryptedString(state::kWalletBrave);
-  if (!json)
-    return nullptr;
+  const std::string json =
+      ledger_->ledger_client()->GetStringState(state::kWalletBrave);
 
-  if (json->empty()) {
+  if (json.empty()) {
     if (create) {
       auto wallet = type::BraveWallet::New();
       wallet->recovery_seed = util::Security::GenerateSeed();
@@ -245,7 +255,7 @@ type::BraveWalletPtr Wallet::GetWallet(bool create) {
     return nullptr;
   }
 
-  absl::optional<base::Value> value = base::JSONReader::Read(*json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     BLOG(0, "Parsing of brave wallet failed");
     return nullptr;
@@ -303,8 +313,7 @@ bool Wallet::SetWallet(type::BraveWalletPtr wallet) {
   std::string json;
   base::JSONWriter::Write(new_wallet, &json);
 
-  if (!ledger_->state()->SetEncryptedString(state::kWalletBrave, json))
-    return false;
+  ledger_->ledger_client()->SetStringState(state::kWalletBrave, json);
 
   ledger_->database()->SaveEventLog(state::kRecoverySeed, event_string);
 

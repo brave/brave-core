@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AssetOptionType, OrderTypes, SlippagePresetObjectType, ExpirationPresetObjectType } from '../../../constants/types'
+import { AccountAssetOptionType, OrderTypes, SlippagePresetObjectType, ExpirationPresetObjectType } from '../../../constants/types'
 import { AmountPresetOptions } from '../../../options/amount-preset-options'
 import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../../options/expiration-preset-options'
@@ -9,7 +9,6 @@ import locale from '../../../constants/locale'
 import {
   RefreshButton,
   RefreshIcon,
-  MarketLimitButton,
   FromBalanceText,
   AssetIcon,
   AssetButton,
@@ -38,7 +37,7 @@ export type BuySendSwapInputType =
 export interface Props {
   componentType: BuySendSwapInputType
   selectedAssetBalance?: string
-  selectedAsset?: AssetOptionType
+  selectedAsset?: AccountAssetOptionType
   selectedAssetInputAmount?: string
   toAddress?: string
   inputName?: string
@@ -72,7 +71,6 @@ function SwapInputComponent (props: Props) {
     onSelectPresetAmount,
     onSelectSlippageTolerance,
     onSelectExpiration,
-    onToggleOrderType,
     onShowSelection
   } = props
   const [spin, setSpin] = React.useState<number>(0)
@@ -123,9 +121,9 @@ function SwapInputComponent (props: Props) {
         return locale.buy
       case 'exchange':
         if (orderType === 'market') {
-          return `${locale.swapMarket} ${locale.swapPriceIn} ${selectedAsset?.symbol}`
+          return `${locale.swapMarket} ${locale.swapPriceIn} ${selectedAsset?.asset.symbol}`
         } else {
-          return `${locale.swapPriceIn} ${selectedAsset?.symbol}`
+          return `${locale.swapPriceIn} ${selectedAsset?.asset.symbol}`
         }
       case 'selector':
         if (orderType === 'market') {
@@ -154,9 +152,12 @@ function SwapInputComponent (props: Props) {
         <>
           <Row>
             <FromBalanceText componentType={componentType}>{getTitle()}</FromBalanceText>
-            {componentType === 'exchange' &&
-              <MarketLimitButton onClick={onToggleOrderType}>{orderType === 'market' ? locale.swapLimit : locale.swapMarket}</MarketLimitButton>
-            }
+
+            {/* Limit orders on Swap are currently disabled.
+              componentType === 'exchange' &&
+                <MarketLimitButton onClick={onToggleOrderType}>{orderType === 'market' ? locale.swapLimit : locale.swapMarket}</MarketLimitButton>
+            */}
+
             {componentType !== 'exchange' && componentType !== 'toAddress' && componentType !== 'buyAmount' &&
               <FromBalanceText>{locale.balance}: {selectedAssetBalance}</FromBalanceText>
             }
@@ -191,8 +192,8 @@ function SwapInputComponent (props: Props) {
             }
             {componentType !== 'exchange' && componentType !== 'toAddress' &&
               <AssetButton onClick={onShowSelection}>
-                <AssetIcon icon={selectedAsset?.icon} />
-                <AssetTicker>{selectedAsset?.symbol}</AssetTicker>
+                <AssetIcon icon={selectedAsset?.asset.logo} />
+                <AssetTicker>{selectedAsset?.asset.symbol}</AssetTicker>
                 <CaratDownIcon />
               </AssetButton>
             }

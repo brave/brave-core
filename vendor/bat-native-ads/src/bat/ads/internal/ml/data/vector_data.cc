@@ -15,34 +15,16 @@ namespace {
 const double kMinimumVectorLength = 1e-7;
 }  // namespace
 
-VectorData::VectorData() : Data(DataType::VECTOR_DATA) {}
+VectorData::VectorData() : Data(DataType::kVector) {}
 
 VectorData::VectorData(const VectorData& vector_data)
-    : Data(DataType::VECTOR_DATA) {
+    : Data(DataType::kVector) {
   dimension_count_ = vector_data.GetDimensionCount();
   data_ = vector_data.GetRawData();
-}
-
-VectorData& VectorData::operator=(const VectorData& vector_data) {
-  dimension_count_ = vector_data.GetDimensionCount();
-  data_ = vector_data.GetRawData();
-  return *this;
-}
-
-VectorData::~VectorData() = default;
-
-VectorData::VectorData(const int dimension_count,
-                       const std::map<uint32_t, double>& data)
-    : Data(DataType::VECTOR_DATA) {
-  dimension_count_ = dimension_count;
-  data_.reserve(dimension_count_);
-  for (auto iter = data.begin(); iter != data.end(); iter++) {
-    data_.push_back(SparseVectorElement(iter->first, iter->second));
-  }
 }
 
 VectorData::VectorData(const std::vector<double>& data)
-    : Data(DataType::VECTOR_DATA) {
+    : Data(DataType::kVector) {
   dimension_count_ = static_cast<int>(data.size());
   data_.resize(dimension_count_);
   for (int i = 0; i < dimension_count_; ++i) {
@@ -50,25 +32,22 @@ VectorData::VectorData(const std::vector<double>& data)
   }
 }
 
-void VectorData::Normalize() {
-  const double vector_length = sqrt(std::accumulate(
-      data_.begin(), data_.end(), 0.0,
-      [](const double& lhs, const SparseVectorElement& rhs) -> double {
-        return lhs + rhs.second * rhs.second;
-      }));
-  if (vector_length > kMinimumVectorLength) {
-    for (size_t i = 0; i < data_.size(); ++i) {
-      data_[i].second /= vector_length;
-    }
+VectorData::VectorData(const int dimension_count,
+                       const std::map<uint32_t, double>& data)
+    : Data(DataType::kVector) {
+  dimension_count_ = dimension_count;
+  data_.reserve(dimension_count_);
+  for (auto iter = data.begin(); iter != data.end(); iter++) {
+    data_.push_back(SparseVectorElement(iter->first, iter->second));
   }
 }
 
-int VectorData::GetDimensionCount() const {
-  return dimension_count_;
-}
+VectorData::~VectorData() = default;
 
-std::vector<SparseVectorElement> VectorData::GetRawData() const {
-  return data_;
+VectorData& VectorData::operator=(const VectorData& vector_data) {
+  dimension_count_ = vector_data.GetDimensionCount();
+  data_ = vector_data.GetRawData();
+  return *this;
 }
 
 double operator*(const VectorData& lhs, const VectorData& rhs) {
@@ -98,6 +77,27 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
   }
 
   return dot_product;
+}
+
+void VectorData::Normalize() {
+  const double vector_length = sqrt(std::accumulate(
+      data_.begin(), data_.end(), 0.0,
+      [](const double& lhs, const SparseVectorElement& rhs) -> double {
+        return lhs + rhs.second * rhs.second;
+      }));
+  if (vector_length > kMinimumVectorLength) {
+    for (size_t i = 0; i < data_.size(); ++i) {
+      data_[i].second /= vector_length;
+    }
+  }
+}
+
+int VectorData::GetDimensionCount() const {
+  return dimension_count_;
+}
+
+std::vector<SparseVectorElement> VectorData::GetRawData() const {
+  return data_;
 }
 
 }  // namespace ml

@@ -84,8 +84,12 @@
 <translation id="1531133232292396145">Торгуйте криптовалютами на Binance безпосередньо зі свого браузера.</translation>
 <translation id="2166494527623220386">Торгуйте криптовалютами на Gemini безпосередньо зі свого браузера.</translation>
 <translation id="7191394989411626168">Після відключення Карток усі наразі видимі картки буде приховано. Однак, ви все ще зможете отримувати повідомлення про нові картки.</translation>
+<translation id="6820526586005233839">Роботу Brave Ads призупинено</translation>
+<translation id="5190407395832551012">Шоб захистити функцію «Винагороди Brave» від загроз, ми час від часу просимо користувачів пройти тест капча. Натисніть “Пройти тест капча”, щоб відновити роботу рекламних оголошень.</translation>
+<translation id="1693773514029371138">Пройти тест капча</translation>
+<translation id="6991128190741664836">Пізніше</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="5655621391922317800">Криптогаманці</translation>
+<translation id="1544192797660353713">Гаманець</translation>
 <translation id="8820817407110198400">Закладки</translation>
 <translation id="1644574205037202324">Історія</translation>
 <translation id="6165508094623778733">Дізнатись більше</translation>
@@ -118,10 +122,20 @@
 <translation id="8686201964111147748">Загальна кількість заблокованих реклам та відстежувачів:</translation>
 <translation id="4673764878177947707">Фільтри споживача</translation>
 <translation id="8803682034537762884">По одному на рядок, фільтр описано у синтаксисі фільтру Adblock Plus</translation>
+<translation id="4207882331679786399">Підпишіться, щоб фільтрувати списки</translation>
+<translation id="451692060157886184">Додавайте додаткові списки, створені спільнотою, якій ви довіряєте,  й керовані нею</translation>
+<translation id="7617831480435794399">Підписуйтеся лише на списки від тих компаній, яким довіряєте. Ваш браузер буде час від часу перевіряти наявність оновлень списків з указаної вами URL-адреси, повідомляючи вашу IP-адресу вашому серверу.</translation>
+<translation id="5201560661339344083">Додати фільтрування списку за URL-параметрами</translation>
+<translation id="7059127752542505809">Увести URL-адресу</translation>
+<translation id="2653659639078652383">Надіслати</translation>
+<translation id="8144920228804905953">Фільтрувати список</translation>
+<translation id="9204006549413740506">Дата останнього оновлення</translation>
+<translation id="6745592621698551453">Оновити зараз</translation>
+<translation id="5334844597069022743">Переглянути джерело</translation>
+<translation id="4720556299488643018">Скасувати підписку</translation>
 <translation id="1209739344687072997">Повідомити про зламаний сайт</translation>
 <translation id="8510478288840333677">Повідомте розробникам Brave, що цей сайт погано працює із Щитами:</translation>
 <translation id="6013164422534859494">Примітка: адресу цього сайту буде передано разом із версією вашого Brave та IP-адресою (котра не збережеться).</translation>
-<translation id="2653659639078652383">Надіслати</translation>
 <translation id="5299848999918506028">Дякуємо!</translation>
 <translation id="76550953340008122">Дякуємо за повідомлення розробникам Brave щодо проблеми із цим сайтом. Ми постараємося її виправити!</translation>
 <translation id="2974339193389078578">Створімо новий Інтернет разом з Brave</translation>
@@ -175,7 +189,6 @@
 <translation id="4176463684765177261">Вимкнено</translation>
 <translation id="8283001340969131076">Вибачте, при спробі відключити ваш аккаунт <ph name="PROVIDER"/> сталася помилка. Спробуйте ще раз через деякий час.</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="3390542282753297856">Пристрій офлайн, будь ласка, спробуйте пізніше.</translation>
 <translation id="4684554059837592728">Місячний платіж</translation>
 <translation id="2846354907189538">Дата наступного внеску</translation>
 <translation id="1397381065858030856">Переглянуті сайти</translation>
@@ -184,7 +197,6 @@
 <translation id="5012991400231464322">Щомісячні внески</translation>
 <translation id="2084351799622920487">Налаштуйте періодичні щомісячні внески, щоб підтримувати сайти безперервно.</translation>
 <translation id="8150772404570015166">Жодних щомісячних внесків ще не заплановано.</translation>
-<translation id="7282750337612291256">Ваші щомісячні внески будуть надсилатися кожні 30 днів.</translation>
 <translation id="1617202384704994799">Незабаром.</translation>
 <translation id="2241248417273918295">Заробіток виплачується кожного місяця.</translation>
 <translation id="68906705461077250">Встановіть бажану частоту, щоб збільшити або зменшити заробіток.</translation>
@@ -213,15 +225,11 @@
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="3920963435109110161">Платіть на місці, коли знаходите коштовності.</translation>
-<translation id="3642432959491988696">Якщо вам сподобалось, дайте людям знати за допомогою швидкого твіту.</translation>
 <translation id="4875485795191140618">Ваш ключ гаманця успішно верифіковано та завантажено.</translation>
 <translation id="1083279119532577005">Гаманець відновлено!</translation>
 <translation id="7841456038054167122">Будь ласка, введіть ключі ще раз або спробуйте інші.</translation>
 <translation id="1911900517212490188">Введений ключ відновлення більше не підтримується. Будь ласка, зайдіть <ph name="BEGIN_LINK"/>сюди<ph name="END_LINK"/>, щоб отримати новий ключ.</translation>
-<translation id="2195074481553016770">Майже готово…</translation>
 <translation id="5254740304961202261">Доведіть, що ви людина!</translation>
-<translation id="2187043784382239974">Гмммм, ще не все...</translation>
 <translation id="7510166204621526816">Сервер Brave Rewards не відповідає. Ми полагодимо його так швидко, як зможемо.</translation>
 <translation id="2323069945529668668">Йой!</translation>
 <translation id="717952606991220586">Отакої, щось пішло не так. Будь ласка, спробуйте ще раз пізніше.</translation>
@@ -234,6 +242,8 @@
 <translation id="3082557070674409251">Натиснуто</translation>
 <translation id="7119308337584989771">Закрито</translation>
 <translation id="6805660603861526473">Переглянуто</translation>
+<translation id="1501075228659004450">Схоже, що ваш гаманець Brave Rewards уже було верифіковано за допомогою іншого акаунту <ph name="PROVIDER"/>. Спробуйте пройти верифікацію знову, використовуючи попередній акаунт.</translation>
+<translation id="5111921830714291902">Помилка: інший акаунт</translation>
 <translation id="2359865110462963929">Наразі BAT не підтримується у вашому регіоні. Будь ласка, слідкуйте за оновленнями <ph name="BEGIN_LINK"/>тут<ph name="END_LINK"/>.</translation>
 <translation id="1737873393693460829">Активуючи [[title]], ви погоджуєтесь із <ph name="BEGIN_LINK1"/>Умовами використання<ph name="END_LINK1"/> та <ph name="BEGIN_LINK2"/>Політикою конфіденційності<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Помилка при створенні картки Brave Browser BAT</translation>
@@ -253,6 +263,7 @@
 <translation id="2359808026110333948">Продовжити</translation>
 <translation id="5112354605357157725">Продовжте, щоб увійти</translation>
 <translation id="1280764044837262633">Постачальник <ph name="PROVIDER"/> вимагає мати мінімальний баланс в розмірі <ph name="AMOUNT"/> BAT для створення облікового запису. Якщо ви підключили обліковий запис раніше,</translation>
+<translation id="752216563428219524">Оголошення не ініціалізовано, оновіть сторінку.</translation>
 <translation id="7422678632904904341">Сума:</translation>
 <translation id="6969783933307596818">Автоматично оновлювати щоп'ять секунд</translation>
 <translation id="5025866799968038247">Інформація про баланс</translation>
@@ -313,6 +324,7 @@
 <translation id="2152423226436243241">Робити внески автоматично</translation>
 <translation id="2927922949538312364">Одноразова винагорода</translation>
 <translation id="3164105678355419142">Постійна винагорода</translation>
+<translation id="916115051162298064">Діагностика рекламних оголошень</translation>
 <translation id="7806880412350961625">Журнали подій</translation>
 <translation id="4309915981827077375">Загальна інформація</translation>
 <translation id="3662406032239313663">Журнали</translation>
@@ -351,6 +363,7 @@
 <translation id="4371618764691059036">Місячний внесок було надіслано.</translation>
 <translation id="6356822617569064293">Дата наступного внеску:</translation>
 <translation id="3593485149443019592">Недостатньо токенів. <ph name="LINK_BEGIN"/>Додайте кошти<ph name="LINK_END"/>.</translation>
+<translation id="3586352807094428968">Brave збирає 5 % від суми чайових як комісію за обробку.</translation>
 <translation id="207268487070188114">Одноразові чайові</translation>
 <translation id="69861679024013299">Розмір одноразових чайових:</translation>
 <translation id="3669086939205397942">Зачекайте, ви ще не можете давати чайові</translation>
@@ -359,6 +372,7 @@
 <translation id="5531915212947569943">Шкода, що ви нас залишаєте…</translation>
 <translation id="1420756770787071946">Підтримати цього творця</translation>
 <translation id="3271043362279673449">Дякуємо за підтримку!</translation>
+<translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Примітка. <ph name="BOLD_END"/>Обробка чайових може зайняти кілька хвилин</translation>
 <translation id="3312470408978098625">Ваші одноразові чайові надіслано.</translation>
 <translation id="5096821444729034955">за їхній допис</translation>
 <translation id="2978223787436054634">Напишіть твіт про вашу підтримку</translation>
@@ -405,14 +419,13 @@
 <translation id="7258399883616914635">Виконавши верифікацію гаманця і прив’язавши його до облікового запису bitFlyer, ви зможете зберігати зароблені за допомогою Винагород Brave токени і керувати ними в більш простий спосіб.</translation>
 <translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Дізнайтеся детальніше<ph name="LINK_END"/>, як зв’язати браузер Brave з вашим обліковим записом bitFlyer.</translation>
 <translation id="5094577350232361255">про</translation>
-<translation id="4918086044614829423">Прийняти</translation>
 <translation id="5916290544882167205">Brave Software. Brave - це зареєстрований знак для товарів та послуг Brave Software. Назви сайтів можуть бути торговими марками або зареєстрованими знаками для товарів та послуг власника сайту.</translation>
 <translation id="9026369588205476247">З метою захисту вашої конфіденційності цю виписку винагород Brave не буде збережено, записано чи зареєстровано ніде, крім вашого пристрою (цього комп'ютера). Її не можна буде витягнути з Brave у випадку втрати даних на вашому пристрої.</translation>
 <translation id="1036277985068412734">додати кошти</translation>
 <translation id="3587482841069643663">Все</translation>
 <translation id="4241224519481557898">Категорія</translation>
 <translation id="3080423471207781945">Максимальна кількість реклами, отриманої за годину:</translation>
-<translation id="2631006050119455616">Збережено</translation>
+<translation id="7847825746023377505">Немає оголошень, переглянутих за останні <ph name="TOTAL_DAYS"/> дн.</translation>
 <translation id="7902420836933072528">Реклама, яку ви отримали за останні кілька днів ([[totalDays]]).</translation>
 <translation id="8863685593846905344">Історія Реклами</translation>
 <translation id="2777306694585938662">Отримана винагорода за рекламу</translation>
@@ -420,80 +433,35 @@
 <translation id="2111256234277361810">Позначити як Неналежне ✓</translation>
 <translation id="8988332871810963281">На даний момент немає історії Реклами Brave</translation>
 <translation id="5345727496083327478">Ви більше не отримуватимете реклами з цієї категорії</translation>
-<translation id="2827387977307390755">Дозволити підказки щодо</translation>
+<translation id="2631006050119455616">Збережено</translation>
 <translation id="3819257035322786455">Резервне копіювання</translation>
-<translation id="1312977698678162065">Отримуйте гроші за перегляд цікавої реклами з повагою до вашої конфіденційності.</translation>
-<translation id="4396256076373444156">Збирайте бали, переглядаючи доречні реклами, що поважають вашу конфіденційність.</translation>
-<translation id="2975780980638932742">Brave Ads уже тут!</translation>
-<translation id="3361548743396744457">Підтримайте свої улюблені сайти просто переглядаючи їх – або дайте сайту грошей у будь-який час.</translation>
 <translation id="6976444672879155794">Автоматична пожертва ([[processor]])</translation>
-<translation id="4493850495402472953">та</translation>
 <translation id="8804164990146287819">Політика конфіденційності</translation>
-<translation id="4281844954008187215">Умови надання послуг</translation>
-<translation id="8819542691525488940">Натискаючи ‘Приєднатися!’, ви підтверджуєте, що прочитали та погоджуєтеся з</translation>
-<translation id="8071424789698327147">Натискаючи ‘Yes, I'm Ready!’, ви підтверджуєте, що прочитали та приймаєте</translation>
-<translation id="7530570094705720669">Створюємо гаманець</translation>
-<translation id="2105596359439030979">Ваша увага має ціну. Заробляйте, переглядаючи рекламу, що поважає вашу приватність, а потім платіть зароблене улюбленим авторам вмісту, щоб підтримати їх.</translation>
-<translation id="516395624550019162">Приєднатися!</translation>
-<translation id="529572070778367192">Отримуйте винагороду за перегляд сайтів!</translation>
-<translation id="128450776206759934">Як це працює...</translation>
-<translation id="3825698830825612308">Перевірені дописувачі Brave</translation>
 <translation id="7262285991915892790">Перетягніть іконку BAT до</translation>
 <translation id="7656781188259414093">ціль.</translation>
 <translation id="1555514580945108302">Гмм… Не зовсім. Спробуйте ще раз.</translation>
 <translation id="13853865024308201">Запитати</translation>
-<translation id="2044726255549756807">Вихідний залишок</translation>
 <translation id="1767561995429774671">Зробити внесок</translation>
-<translation id="2030909064203578811">Перерахування автоматичного внеску</translation>
 <translation id="6896758677409633944">Копіювати</translation>
-<translation id="5867910966685447703">Наразі ви надсилаєте [[currentDonation]] BAT цьому сайту щомісяця.</translation>
 <translation id="4932733599132424254">Дата</translation>
-<translation id="1366855498335432549">Депозит</translation>
 <translation id="3552003743293281224">Внески</translation>
 <translation id="3866249974567520381">Опис</translation>
-<translation id="4522570452068850558">Деталі</translation>
-<translation id="5860033963881614850">Вимкнено</translation>
-<translation id="2039417478970545937">Налаштування.</translation>
-<translation id="1651355182880886661">На даний момент ви не отримуєте жодних бонусів Винагород під час перегляду. Увімкніть Винагороди знову</translation>
 <translation id="8605272644314973683">Винагороди Brave -  це</translation>
 <translation id="2157162992285072267">Перетягніть цей логотип на</translation>
 <translation id="4805054577224376281">ціль</translation>
 <translation id="1346059596910821859">Відрахування</translation>
-<translation id="245015745140252435">Розмір відрахування</translation>
-<translation id="3520817231440482449">Платити цьому сайту щомісяця</translation>
-<translation id="1827184134638345603">Відправити чайові…</translation>
 <translation id="6045860799501892362">Встановити щомісячний внесок</translation>
-<translation id="8003573781961874199">Завантажити як PDF</translation>
 <translation id="298067735430872465">Заробітки від реклами</translation>
 <translation id="2266556115441975588">Прийшли ваші винагороди від реклами!</translation>
 <translation id="8764029012618014430">Увімкнути підказки</translation>
 <translation id="3412655388715513818">Виключити цей сайт</translation>
 <translation id="418343137736963579">Усього сайтів, які ви виключили з автоматичного внеску:</translation>
-<translation id="1759104587873258696">строк дії закінчується</translation>
 <translation id="6149218349077925111">для</translation>
 <translation id="8802504113265057166">Кошти ([[currency]]), не використані до закінчення терміну дії, буде автоматично повернуто до Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Дата закінчення дії гранта</translation>
-<translation id="2104073734684466851">Пожертвування</translation>
 <translation id="6476729769006815569">Вітаємо, [[name]]!</translation>
 <translation id="1389143276807887637">імпортувати</translation>
-<translation id="7335371657242627509">Включити в автоматичний внесок</translation>
-<translation id="1864111464094315414">Вхід</translation>
-<translation id="4556504723624686474">Верифікація гаманця дозволить вам більш ефективно керувати власними коштами.</translation>
-<translation id="5461792966682693675">Для створення облікового запису Uphold, вам потрібно мати принаймні <ph name="AMOUNT"/> BAT. Якщо ви вже маєте верифікований обліковий запис Uphold, виконайте вхід у систему.</translation>
-<translation id="3250511771491660127">Повторювати щомісяця</translation>
-<translation id="6028954173739504682">Керуйте гаманцем</translation>
-<translation id="7886389832052393750">Кві</translation>
-<translation id="4736221692378411923">Серпень</translation>
-<translation id="158493514907962286">Грудень</translation>
-<translation id="7322388933135261569">Лютий</translation>
-<translation id="501473567976723023">Січень</translation>
-<translation id="1969092762068865084">Липень</translation>
-<translation id="7532613204005497612">Червень</translation>
-<translation id="8808582214901541005">Березень</translation>
-<translation id="1828385960365606039">Травень</translation>
-<translation id="9115913704608474258">Листопад</translation>
-<translation id="7828956995407538686">Жовтень</translation>
-<translation id="5502713021410870035">Вересень</translation>
+<translation id="1038407494348068191">Керуйте своїм гаманцем</translation>
 <translation id="5737831580668469027">Щомісячні внески!</translation>
 <translation id="606865182719489911">Доступні безкоштовні токени</translation>
 <translation id="2487641031722095938">Сьогодні ваш щасливий день!</translation>
@@ -504,19 +472,15 @@
 <translation id="8304661078305276044">Винагороди за рекламу</translation>
 <translation id="1770001816413426741">Період винагород</translation>
 <translation id="2280319752798785157">Щомісячний внесок</translation>
-<translation id="5736183007277264868">На даний момент не доступно жодних пожертвувань з токенів.</translation>
 <translation id="8307851765167460403">Немає даних…</translation>
-<translation id="8589748782214271192">Ні, дякую</translation>
 <translation id="3630697955794050612">вимкнути</translation>
 <translation id="4921250468871504777">ОК</translation>
 <translation id="7866482334467279021">увімкнути</translation>
 <translation id="1166682575529520472">Щомісяця</translation>
 <translation id="1378730109637014435">Одноразово</translation>
 <translation id="9182287025588539628">Одноразові Відрахування</translation>
-<translation id="6381574025952123568">Вхідний залишок</translation>
 <translation id="156591572855748524">30-денна історія реклами</translation>
 <translation id="4923459931733593730">Платіж</translation>
-<translation id="6104680658798556671">Платіж не зроблено.</translation>
 <translation id="3138528956349114724">Закріплені сайти</translation>
 <translation id="2337632028350283479">Ось як працюють щомісячні внески:</translation>
 <translation id="6457273203091513039">Щомісячні внески не входять до вашого Автоматичного платежу. Вони йдуть окремо.</translation>
@@ -532,9 +496,6 @@
 <translation id="2770577461149798369">Гаманець Gemini</translation>
 <translation id="8108350286444475334">Гаманець Uphold</translation>
 <translation id="6977372887576114613">Внесені BAT</translation>
-<translation id="3173528272490482456">Готові почати?</translation>
-<translation id="913775524828049259">Так, я готовий</translation>
-<translation id="108052542935515756">Ви можете почати з</translation>
 <translation id="194625454574835815">Ключ відновлення</translation>
 <translation id="6354568176665589146">Періодично</translation>
 <translation id="2799223571221894425">Перезапустити</translation>
@@ -546,33 +507,23 @@
 <translation id="3157931365184549694">Відновити</translation>
 <translation id="1797334173232638045">Закріплені сайти було переміщено до</translation>
 <translation id="6803187280799213426">Кошти у вашому гаманці Brave віртуальні і не потребують резервного копіювання. Ви можете витрачати їх виключно на цей вебпереглядач.</translation>
-<translation id="5290348443732633227">Якщо ви хотіли б убезпечити усі свої кошти на випадок чистого встановлення вебпереглядача або переходу на новий пристрій і маєте інші переваги (наприклад, додавання, виведення та переведення коштів), тоді ми радимо</translation>
-<translation id="467041382895390784">підключення до перевіреного <ph name="PROVIDER"/> гаманця.</translation>
+<translation id="5904352893156917813">Якщо ви хотіли б захистити свої кошти на випадок переустановлення браузера без збереження налаштувань або переходу на новий пристрій і отримати інші переваги (наприклад додавання, виведення й переведення коштів), то ми радимо <ph name="LINK_BEGIN"/>верифікувати ваш гаманець<ph name="LINK_END"/>..</translation>
 <translation id="5717619667204259673">Зберігайте ключ відновлення у надійному місці.</translation>
 <translation id="4699702339303280827">Ви завжди зможете використати цей ключ, щоб отримати назад ваш гаманець, якщо щось станеться з вашим браузером або комп'ютером. Але подбайте про його безпеку— будь-хто, хто матиме цей ключ, зможе вкрасти ваш гаманець. Напевно’, найбезпечніше буде записати його на аркуші паперу або в іншому місці, де ви зберігаєте важливу інформацію.</translation>
 <translation id="8979401359137062629">Візьміть до уваги:</translation>
 <translation id="7934806082615382155">Частина коштів може бути отримана від Brave і не включатися в резервну копію, оскільки в цьому немає потреби. Ви можете витрачати їх виключно на цей вебпереглядач.</translation>
 <translation id="7354412786785889047">Ви можете підтримати автора цього вмісту, відправивши винагороду. Це подяка за створення чудового вмісту. Перевірені автори отримують плату за винагороди у перший тиждень кожного календарного місяця.</translation>
-<translation id="972846019534552366">Ви також можете налаштувати щомісячний внесок на панелі Винагород Brave.</translation>
 <translation id="3074127054582480056">Увага</translation>
-<translation id="5010112177773747965">без вашої згоди.</translation>
-<translation id="7147673045905733351">Сьогодні Brave вітає вас у новому Інтернеті.</translation>
-<translation id="1350763070659630336">Там, де ваш час цінується, ваші персональні дані зберігаються в таємниці і ви справді отримуєте оплату за вашу увагу.</translation>
-<translation id="880341991877949255">У своєму старому браузері, ви платили за те, щоб користуватись інтернетом, приділяючи вашу цінну увагу рекламі. Ви витрачали ваш цінний час, завантажуючи рекламні технології, що втручались у ваше життя та передавали ваші цінні персональні дані рекламодавцям — без вашої згоди.</translation>
 <translation id="5830306739231399614">На жаль, поки що немає токенів.</translation>
 <translation id="7359258898775969374">3 способи поповнення гаманця:</translation>
 <translation id="8087614920008846901">Ви можете додати кошти.</translation>
 <translation id="996024295464837691">Ви можете заробляти токени, переглядаючи рекламу.</translation>
 <translation id="8014425282125849700">Час від часу Brave пропонуватиме вам безкоштовні токени. Пильнуйте за такими сповіщеннями!</translation>
-<translation id="1370034647041840967">Заробляйте токени за свою увагу до реклами та платіть творцям контенту, які вам подобаються!</translation>
 <translation id="4919888432594361029">Вносьте, виводьте та керуйте коштами на <ph name="PROVIDER"/>.</translation>
-<translation id="3092054349246483285">Ваш гаманець Brave працює на <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Винагороди Brave створені на базі основного токена уваги. Детальніше про ОТУ</translation>
 <translation id="7823359893981882407">тут</translation>
 <translation id="3034163433136515805">Переглянути QR-код</translation>
 <translation id="1640793619390890218">для користувачів Rewards на iOS, що передають BAT.</translation>
-<translation id="4483635855837696643">Відновіть свій гаманець</translation>
-<translation id="459721429458957031">Використайте ключ відновлення, щоб відновити гаманець.</translation>
 <translation id="4600052736217630789">Відновлення за допомогою ключа відновлення призведе до заміни вашого поточного гаманця. Перед відновленням обов’язково зніміть усі кошти або зробіть резервну копію гаманця.</translation>
 <translation id="3267911153934785912">Уведіть ключ відновлення або</translation>
 <translation id="1209382772199769572">Перед заміною створіть резервну копію свого гаманця.  Інакше ви втратите кошти у розмірі [[funds]] з вашого поточного гаманця.</translation>
@@ -583,19 +534,13 @@
 <translation id="3494964159182650590">Підсумок винагород</translation>
 <translation id="1738658589626889850">Зберегти як файл</translation>
 <translation id="2913994227901456490">Дивитись усі об’єкти ([[numItems]])</translation>
-<translation id="3010479539542250179">Дивитись усі сайти ([[numSites]])</translation>
 <translation id="1549705559752367917">Надіслати чайові</translation>
 <translation id="3536298624341433814">Надіслати моє відрахування</translation>
 <translation id="8428213095426709021">Налаштування</translation>
 <translation id="1792148354504719133">сайт</translation>
 <translation id="5944430251223015324">сайти</translation>
 <translation id="6432779622695508363">Підказка на вподобайках</translation>
-<translation id="8424370624815730676">Основний токен уваги (ОТУ)</translation>
-<translation id="4588241643143931775">Біткоін (BTC)</translation>
-<translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="8746837129291133068">Лайткоін (LTC)</translation>
 <translation id="6367285596431004439">Отримано грант з токенів</translation>
-<translation id="3043542281656021374">Бал</translation>
 <translation id="5015443703424816075">Токен</translation>
 <translation id="1634828734222219955">Усього</translation>
 <translation id="1726566769229204312">Гранти з токенів</translation>
@@ -603,31 +548,16 @@
 <translation id="3535654229833214438">Транзакції</translation>
 <translation id="244362569344671266">Заробляйте токени, переглядаючи приватні рекламні оголошення Brave, та автоматично підтримуйте улюблені сайти та творців контенту.</translation>
 <translation id="3903419925307046908">Заробляйте і витрачайте токени</translation>
-<translation id="8987812599455325915">Це увімкне як рекламу так і автоматичні внески. Ви можете вмикати і вимикати їх кожен окремо у будь який час.</translation>
-<translation id="1485484147452131556">Активні винагороди</translation>
 <translation id="8772672608371898774">Перевірений дописувач Brave</translation>
 <translation id="5050370287908180130">Дивитись щомісячну декларацію для подробиць</translation>
 <translation id="8615803647903750175">Активність гаманця</translation>
-<translation id="2620624773940447728">Адреса гаманця</translation>
 <translation id="4989277977420164514">баланс гаманця</translation>
-<translation id="1083771727630442739">Не вдалось створити гаманець</translation>
-<translation id="9146039192200831719">Будь ласка, перевірте ваш інтернет зв'язок.</translation>
 <translation id="1910721550319506122">Ласкаво просимо!</translation>
-<translation id="4452279058754488731">Розпочати заробляти зараз!</translation>
-<translation id="5595664624688492034">Приєднуйтеся до винагород</translation>
-<translation id="3315406658665721926">Тепер ви можете заробляти токени, переглядаючи рекламу, що поважає приватність. Вико</translation>
-<translation id="8787500234852052352">Отримуйте оплату за перегляд реклами і перенаправляйте її вашим улюбленим творцям контенту.</translation>
-<translation id="4282161221635140902">Тепер ви можете заробляти бали за перегляд конфіденційної реклами.</translation>
-<translation id="318487899513214296">Подивіться, що вдосконалено</translation>
-<translation id="4083384190339959182">Велике оновлення платежів Brave.</translation>
-<translation id="5395851053710553429">Приготуйтесь до наступного інтернету.</translation>
-<translation id="63956545637156715">Чому саме винагороди Brave?</translation>
 <translation id="3780605330121608425">Ваш гаманець</translation>
 <translation id="6727483290601442544">Переглянути деталі</translation>
+<translation id="7530570094705720669">Створюємо гаманець</translation>
 <translation id="1988679729106502285">ЗАУВАЖТЕ:</translation>
 <translation id="7979350009208995417">Наразі налаштування цього автора не дають можливості отримувати чайові з вашого гаманця. Усі чайові, які ви заробите, залишаться у вашому гаманці, а спробу оплати буде автоматично повторено через 90 днів.</translation>
-<translation id="7461596279975181413">Цей Перевірений Творець Brave ще не налаштував свій обліковий запис для отримання внесків від користувачів Brave. Ваш браузер намагатиметься зробити внесок до завершення налаштувань або поки не мине 90 днів.</translation>
-<translation id="4292832015778676417">зароблено за рекламні оголошення</translation>
 <translation id="3197752845651180812">Внески, що очікуються</translation>
 <translation id="6964891561514920613">Показати всі внески, що очікуються</translation>
 <translation id="4346944508027912677">Очікується до</translation>
@@ -639,17 +569,15 @@
 <translation id="4862817811647633830">сайти з автопідтримки.</translation>
 <translation id="923467487918828349">Показати всі</translation>
 <translation id="5113531205597573951">Переглянуті сайти</translation>
-<translation id="4560448935659791043">Ви заробили Ads Reward!</translation>
-<translation id="4947094120398792493">Ваша Нагорода прямує до вашого гаманця Brave Rewards.</translation>
-<translation id="39734939514946950">Сума вашої винагороди</translation>
-<translation id="2151535059686617995">Це’ ваш щасливий день!</translation>
-<translation id="6436689611575806470">Ваш грант на суму [[currency]] обробляється.</translation>
-<translation id="7512440811010447157">верифікувати</translation>
 <translation id="8267327690882073581">Верифікувати гаманець</translation>
 <translation id="543510923939676996">Гаманець підтверджено</translation>
-<translation id="2659764755126740206">Перейти у мій обліковий запис <ph name="PROVIDER"/></translation>
+<translation id="2445110450361135194">Перейти до облікового запису <ph name="PROVIDER"/></translation>
+<translation id="4244985009709452836">Увійти до облікового запису <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Завершити підтвердження гаманця</translation>
 <translation id="9200453331904391567">Від'єднатись від Винагород Brave</translation>
+<translation id="3656941797339037856">Прив’яжіть Rewards до Gemini!</translation>
+<translation id="671838195432136371">Gemini дозволяє вам легко продавати, зберігати й заробляти 3,49 % APY* на ваших BAT. Нові користувачі Gemini за посиланням отримують 5 безкоштовних BAT!</translation>
+<translation id="9136976526700181750">* Gemini Earn APY станом на 15 серпня 2021 р.</translation>
 <translation id="7404779623219601861">Отримати BAT за Подарункові картки</translation>
 <translation id="6215565499749144110">З Мережею TAP ви можете отримати свої BAT за подарункові картки популярного іменного бренду.</translation>
 <translation id="6915065518766963119">* Потрібна підтверджувальна верифікація</translation>
@@ -684,6 +612,7 @@
 <translation id="907179430004809517">Ні, дякую</translation>
 <translation id="5005595188773471616">Вартість активу (BTC)</translation>
 <translation id="5445249883546575080">BTC</translation>
+<translation id="1366855498335432549">Внести депозит</translation>
 <translation id="6861530353669876440">Торгувати</translation>
 <translation id="6941688859692009361">Допомога.</translation>
 <translation id="271200872751201315">Введено невірні дані.</translation>
@@ -717,8 +646,8 @@
 <translation id="2956070106555335453">Звід</translation>
 <translation id="439104575421522802">Термін дії сеансу сплив</translation>
 <translation id="8558560988211507902">Термін дії вашого токена доступу до Binance сплив. Будь ласка, під'єднайтесь, щоб продовжити користування віджетом.</translation>
-<translation id="1543656153506416324">Купуйте та торгуйте з Gemini</translation>
-<translation id="8960333903621861280">Активуйте підключення до Gemini, щоб переглянути баланс вашого рахунку Gemini та торгувати криптовалютами.</translation>
+<translation id="8120782981043104657">Купуйте криптовалюту з Gemini</translation>
+<translation id="4011891158762138243">Активуйте підключення до Gemini, щоб переглядати свій баланс і торгувати понад 45 криптовалютами.</translation>
 <translation id="7604416013180651887">Під'єднатися до Gemini</translation>
 <translation id="2349109114223854255">Термін дії вашого токена Gemini сплинув і його неможливо оновити. Будь ласка, під'єднайтеся повторно.</translation>
 <translation id="4848984536030986115">Неможливо виконати угоду</translation>
@@ -734,6 +663,7 @@
 <translation id="1833248467354516560">Ціна одиниці</translation>
 <translation id="4763179765154524864">Усього витрачено</translation>
 <translation id="8851480289992540512">Усього отримано</translation>
+<translation id="824449983246282560">У вас немає залишків на рахунку. Відвідайте Gemini, щоб поповнити його.</translation>
 <translation id="8624961452383848703">Я хочу обміняти…</translation>
 <translation id="616639131065447379">Ласкаво просимо до Криптогаманців Brave</translation>
 <translation id="1740464057879304704">Криптогаманці дозволяють вам працювати з криптовалютою та відповідними активами в Brave. Криптогаманці підтримують токени Ethereum, такі як ETH та BAT, а також колекційні матеріали, та дозволяють вам працювати з Ðпрограмами та іншими смарт-контрактами. Все це призначене для людей, які знайомі з Ethereum та іншими блокчейн-системами — або хочуть цьому навчитися.</translation>
@@ -823,6 +753,12 @@
 <translation id="4499666752625407848">Під час оновлення сталася помилка.</translation>
 <translation id="62991515067726424">Цей уміст було завантажено за допомогою протоколу  IPFS</translation>
 <translation id="7263366446813126341">Файлова система InterPlanetary (IPFS) — це загальнодоступна мережа для однорангового зберігання та надсилання даних. Ви можете дізнатися більше про інтеграцію у Brave або налаштувати систему IPFS будь-якої миті.</translation>
+<translation id="3175567740517780285">Налаштування IPFS</translation>
+<translation id="8914505352873092008">Перейти на сторінку налаштувань IPFS</translation>
+<translation id="3465468510001693544">Діагностика IPFS</translation>
+<translation id="2527518382346359563">Перейти на сторінку діагностики IPFS</translation>
+<translation id="8192016636169857406">Документи IPFS</translation>
+<translation id="6863052043162730918">Перейти на сторінку документації IPFS</translation>
 <translation id="3862600063748690056">Імпорт IPFS завершено</translation>
 <translation id="8263749381887932384">Частковий імпорт IPFS завершено</translation>
 <translation id="2145699434318651911">Не вдалося імпортувати IPFS</translation>
@@ -838,10 +774,25 @@
 <translation id="6318437367327684789">назавжди</translation>
 <translation id="8797999629784150206">Ви можете змінити ваші <ph name="SITE_PERMISSIONS"/> у будь-який час. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">дозволи сайту</translation>
+<translation id="2659764755126740206">Перейти у мій обліковий запис <ph name="PROVIDER"/></translation>
+<translation id="2389181429986654814">Перейдіть до <ph name="PROVIDER"/>, щоб завершити перевірку</translation>
+<translation id="7793632266654336758">Виконайте підтвердження особи й почніть отримувати винагороди.</translation>
+<translation id="3600355176618429948">Розрахункова сума надходжень</translation>
+<translation id="7577100371127227294">Щомісячні відрахування</translation>
+<translation id="5894023780213944778">Мій гаманець</translation>
+<translation id="2613359062756190460">Разові чайові</translation>
+<translation id="590733288489975971">Винагороди за рекламні оголошення</translation>
+<translation id="3026978804849658576">Переглянути виписку</translation>
+<translation id="8494748383523030337">Ваш баланс</translation>
 <translation id="7701466644604753106">УВІМКНУТИ Speedreader</translation>
 <translation id="763042262431778831">ВИМКНУТИ Speedreader</translation>
-<translation id="1544192797660353713">Гаманець</translation>
 <translation id="8488282162676695335">Гаманець Brave</translation>
+<translation id="1148827340205946630">Користувач відхилив запит.</translation>
+<translation id="2403819048476450281">Недійсні параметри.</translation>
+<translation id="9161147058107529840">Очікуваний одиничний, параметр об’єкта.</translation>
+<translation id="1875861420974447980">Цей ідентифікатор Chain ID наразі використовується</translation>
+<translation id="167698752210114155">Сталася внутрішня помилка</translation>
+<translation id="4641919696349069826">Запит уже надіслано</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Загальна інформація</translation>
 <translation id="4045404575593562245">Події управління Tor</translation>

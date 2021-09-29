@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
-import { WalletAccountType, Network } from '../../../constants/types'
-import { NetworkOptions } from '../../../options/network-options'
+import { WalletAccountType, EthereumChain } from '../../../constants/types'
+import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import locale from '../../../constants/locale'
-import { NavButton } from '../'
+import { NavButton, PanelTab } from '../'
 // Styled Components
 import {
   StyledWrapper,
@@ -13,19 +13,29 @@ import {
   NetworkText,
   PanelTitle,
   MessageBox,
-  MessageTitle,
   MessageText,
   ButtonRow,
-  MoreButton
+  WarningBox,
+  WarningText,
+  WarningTitle,
+  WarningTitleRow,
+  WarningIcon,
+  LearnMoreButton
 } from './style'
+import { TabRow } from '../shared-panel-styles'
 
 export interface Props {
   selectedAccount: WalletAccountType
-  selectedNetwork: Network
+  selectedNetwork: EthereumChain
   message: string
   onSign: () => void
   onCancel: () => void
-  onClickMore: () => void
+  showWarning: boolean
+}
+
+enum SignDataSteps {
+  SignRisk = 0,
+  SignData = 1
 }
 
 function SignPanel (props: Props) {
@@ -35,26 +45,58 @@ function SignPanel (props: Props) {
     message,
     onSign,
     onCancel,
-    onClickMore
+    showWarning
   } = props
-
+  const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
   const orb = React.useMemo(() => {
-    return create({ seed: selectedAccount.address, size: 8, scale: 16 }).toDataURL()
+    return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [selectedAccount.address])
+
+  React.useMemo(() => {
+    if (showWarning) {
+      setSignStep(SignDataSteps.SignRisk)
+    }
+  }, [showWarning])
+
+  const onContinueSigning = () => {
+    setSignStep(SignDataSteps.SignData)
+  }
+
+  const onClickLearnMore = () => {
+    window.open('https://support.brave.com/hc/en-us/articles/4409513799693', '_blank')
+  }
 
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{NetworkOptions[selectedNetwork].abbr}</NetworkText>
-        <MoreButton onClick={onClickMore} />
+        <NetworkText>{selectedNetwork.chainName}</NetworkText>
       </TopRow>
       <AccountCircle orb={orb} />
-      <AccountNameText>{selectedAccount.name}</AccountNameText>
+      <AccountNameText>{reduceAccountDisplayName(selectedAccount.name, 14)}</AccountNameText>
       <PanelTitle>{locale.signTransactionTitle}</PanelTitle>
-      <MessageBox>
-        <MessageTitle>{locale.signTransactionMessageTitle}</MessageTitle>
-        <MessageText>{message}</MessageText>
-      </MessageBox>
+      {signStep === SignDataSteps.SignRisk &&
+        <WarningBox>
+          <WarningTitleRow>
+            <WarningIcon />
+            <WarningTitle>{locale.braveWalletSignWarningTitle}</WarningTitle>
+          </WarningTitleRow>
+          <WarningText>{locale.braveWalletSignWarning}</WarningText>
+          <LearnMoreButton onClick={onClickLearnMore}>{locale.allowAddNetworkLearnMoreButton}</LearnMoreButton>
+        </WarningBox>
+      }
+      {signStep === SignDataSteps.SignData &&
+        <>
+          <TabRow>
+            <PanelTab
+              isSelected={true}
+              text={locale.signTransactionMessageTitle}
+            />
+          </TabRow>
+          <MessageBox>
+            <MessageText>{message}</MessageText>
+          </MessageBox>
+        </>
+      }
       <ButtonRow>
         <NavButton
           buttonType='secondary'
@@ -62,9 +104,9 @@ function SignPanel (props: Props) {
           onSubmit={onCancel}
         />
         <NavButton
-          buttonType='sign'
-          text={locale.signTransactionButton}
-          onSubmit={onSign}
+          buttonType={signStep === SignDataSteps.SignData ? 'sign' : 'danger'}
+          text={signStep === SignDataSteps.SignData ? locale.signTransactionButton : locale.buttonContinue}
+          onSubmit={signStep === SignDataSteps.SignRisk ? onContinueSigning : onSign}
         />
       </ButtonRow>
     </StyledWrapper>

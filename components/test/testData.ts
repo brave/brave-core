@@ -219,9 +219,6 @@ export const getMockChrome = () => {
       getBraveShieldsEnabledAsync: function (url: string) {
         return Promise.resolve(false)
       },
-      shouldDoCosmeticFilteringAsync: function (url: string) {
-        return Promise.resolve(true)
-      },
       getAdControlTypeAsync: function (url: string) {
         return Promise.resolve('block')
       },
@@ -343,7 +340,6 @@ export const window = () => {
 }
 
 export const initialState = deepFreeze({
-  dappDetection: {},
   runtime: {},
   shieldsPanel: {
     currentWindowId: -1,

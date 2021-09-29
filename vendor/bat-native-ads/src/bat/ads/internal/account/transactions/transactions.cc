@@ -7,23 +7,23 @@
 
 #include <string>
 
+#include "base/notreached.h"
+#include "base/time/time.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 
 namespace ads {
 namespace transactions {
 
-TransactionList GetCleared(const int64_t from_timestamp,
-                           const int64_t to_timestamp) {
-  TransactionList transactions = ConfirmationsState::Get()->get_transactions();
+TransactionList GetCleared(const base::Time& from, const base::Time& to) {
+  TransactionList transactions = ConfirmationsState::Get()->GetTransactions();
 
   const auto iter = std::remove_if(
       transactions.begin(), transactions.end(),
-      [from_timestamp, to_timestamp](TransactionInfo& transaction) {
-        return transaction.timestamp < from_timestamp ||
-               transaction.timestamp > to_timestamp;
+      [&from, &to](const TransactionInfo& transaction) {
+        const base::Time time = base::Time::FromDoubleT(transaction.timestamp);
+        return time < from || time > to;
       });
 
   transactions.erase(iter, transactions.end());
@@ -42,7 +42,7 @@ TransactionList GetUncleared() {
 
   // Uncleared transactions are always at the end of the transaction history
   const TransactionList transactions =
-      ConfirmationsState::Get()->get_transactions();
+      ConfirmationsState::Get()->GetTransactions();
 
   if (transactions.size() < count) {
     // There are fewer transactions than unblinded payment tokens which is
@@ -59,7 +59,7 @@ TransactionList GetUncleared() {
 
 uint64_t GetCountForMonth(const base::Time& time) {
   const TransactionList transactions =
-      ConfirmationsState::Get()->get_transactions();
+      ConfirmationsState::Get()->GetTransactions();
 
   uint64_t count = 0;
 
@@ -68,7 +68,7 @@ uint64_t GetCountForMonth(const base::Time& time) {
 
   for (const auto& transaction : transactions) {
     if (transaction.timestamp == 0) {
-      // Workaround for Windows crash when passing 0 to UTCExplode
+      // Workaround for Windows crash when passing 0 to LocalExplode
       continue;
     }
 
@@ -94,11 +94,11 @@ void Add(const double estimated_redemption_value,
          const ConfirmationInfo& confirmation) {
   TransactionInfo transaction;
 
-  transaction.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  transaction.timestamp = base::Time::Now().ToDoubleT();
   transaction.estimated_redemption_value = estimated_redemption_value;
   transaction.confirmation_type = std::string(confirmation.type);
 
-  ConfirmationsState::Get()->add_transaction(transaction);
+  ConfirmationsState::Get()->AppendTransaction(transaction);
   ConfirmationsState::Get()->Save();
 }
 

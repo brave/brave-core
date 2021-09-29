@@ -6,12 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_CONVERSIONS_CONVERSION_ID_PATTERN_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_CONVERSIONS_CONVERSION_ID_PATTERN_INFO_H_
 
-#include <map>
 #include <string>
 
 namespace ads {
 
-struct ConversionIdPatternInfo {
+struct ConversionIdPatternInfo final {
   ConversionIdPatternInfo();
   ConversionIdPatternInfo(const ConversionIdPatternInfo& info);
   ~ConversionIdPatternInfo();
@@ -23,8 +22,6 @@ struct ConversionIdPatternInfo {
   std::string url_pattern;
   std::string search_in;
 };
-
-using ConversionIdPatternMap = std::map<std::string, ConversionIdPatternInfo>;
 
 }  // namespace ads
 

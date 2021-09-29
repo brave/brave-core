@@ -12,7 +12,7 @@ using std::placeholders::_1;
 
 namespace {
 
-const int kCurrentVersionNumber = 10;
+const int kCurrentVersionNumber = 11;
 
 }  // namespace
 
@@ -30,8 +30,10 @@ StateMigration::StateMigration(LedgerImpl* ledger)
       v8_(std::make_unique<StateMigrationV8>(ledger)),
       v9_(std::make_unique<StateMigrationV9>()),
       v10_(std::make_unique<StateMigrationV10>(ledger)),
+      v11_(std::make_unique<StateMigrationV11>(ledger)),
       ledger_(ledger) {
-  DCHECK(v1_ && v2_ && v3_ && v4_ && v5_ && v6_ && v7_ && v8_ && v9_ && v10_);
+  DCHECK(v1_ && v2_ && v3_ && v4_ && v5_ && v6_ && v7_ && v8_ && v9_ && v10_ &&
+         v11_);
 }
 
 StateMigration::~StateMigration() = default;
@@ -115,6 +117,10 @@ void StateMigration::Migrate(ledger::ResultCallback callback) {
     }
     case 10: {
       v10_->Migrate(migrate_callback);
+      return;
+    }
+    case 11: {
+      v11_->Migrate(migrate_callback);
       return;
     }
   }

@@ -6,16 +6,18 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_TRANSACTION_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_TRANSACTION_INFO_H_
 
-#include <cstdint>
 #include <string>
-#include <vector>
 
-#include "base/values.h"
 #include "bat/ads/export.h"
+
+namespace base {
+class DictionaryValue;
+class Value;
+}  // namespace base
 
 namespace ads {
 
-struct ADS_EXPORT TransactionInfo {
+struct ADS_EXPORT TransactionInfo final {
   TransactionInfo();
   TransactionInfo(const TransactionInfo& info);
   ~TransactionInfo();
@@ -23,7 +25,7 @@ struct ADS_EXPORT TransactionInfo {
   bool operator==(const TransactionInfo& rhs) const;
   bool operator!=(const TransactionInfo& rhs) const;
 
-  int64_t timestamp = 0;
+  double timestamp = 0.0;
   double estimated_redemption_value = 0.0;
   std::string confirmation_type;
 
@@ -31,8 +33,6 @@ struct ADS_EXPORT TransactionInfo {
 
   void FromDictionary(base::DictionaryValue* dictionary);
 };
-
-using TransactionList = std::vector<TransactionInfo>;
 
 }  // namespace ads
 

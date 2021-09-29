@@ -7,25 +7,22 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_NOTIFICATION_INFO_H_
 
 #include <string>
-#include <vector>
 
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 
 namespace ads {
 
-struct CreativeAdNotificationInfo : CreativeAdInfo {
+struct CreativeAdNotificationInfo final : CreativeAdInfo {
   CreativeAdNotificationInfo();
+  explicit CreativeAdNotificationInfo(const CreativeAdInfo& creative_ad);
   ~CreativeAdNotificationInfo();
 
   bool operator==(const CreativeAdNotificationInfo& rhs) const;
-
   bool operator!=(const CreativeAdNotificationInfo& rhs) const;
 
   std::string title;
   std::string body;
 };
-
-using CreativeAdNotificationList = std::vector<CreativeAdNotificationInfo>;
 
 }  // namespace ads
 

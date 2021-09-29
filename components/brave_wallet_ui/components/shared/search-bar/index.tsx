@@ -10,15 +10,17 @@ import {
 export interface Props {
   placeholder: string
   action?: (event: any) => void | undefined
+  value?: string
 }
 
 export default class SearchBar extends React.PureComponent<Props> {
   render () {
-    const { placeholder, action } = this.props
+    const { placeholder, action, value } = this.props
     return (
       <StyledWrapper>
         <SearchIcon />
         <SearchInput
+          value={value}
           placeholder={placeholder}
           onChange={action}
         />

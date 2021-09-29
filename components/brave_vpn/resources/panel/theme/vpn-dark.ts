@@ -6,17 +6,14 @@
 import ITheme from 'brave-ui/theme/theme-interface'
 import IThemeVPN from './vpn-theme'
 import defaultDarkTheme from 'brave-ui/theme/brave-dark'
-import colors from 'brave-ui/theme/colors'
 
-const walletDarkTheme: ITheme & IThemeVPN = {
+const vpnDarkTheme: ITheme & IThemeVPN = {
   ...defaultDarkTheme,
   name: 'VPN Dark',
   color: {
     ...defaultDarkTheme.color,
-    text: colors.white,
-    panelBackground: colors.grey900,
-    outlineColor: 'rgba(255,255,255,0.5)'
+    panelBackground: 'linear-gradient(180deg, #1E2029 59.48%, #332C60 100%)'
   }
 }
 
-export default walletDarkTheme
+export default vpnDarkTheme

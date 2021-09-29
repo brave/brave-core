@@ -5,11 +5,12 @@
 
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
 
-#include <functional>
 #include <utility>
 
+#include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
@@ -56,8 +57,7 @@ void Conversions::GetAll(GetConversionsCallback callback) {
       "ac.expiry_timestamp "
       "FROM %s AS ac "
       "WHERE %s < expiry_timestamp",
-      get_table_name().c_str(),
-      TimeAsTimestampString(base::Time::Now()).c_str());
+      GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
@@ -68,9 +68,9 @@ void Conversions::GetAll(GetConversionsCallback callback) {
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // type
       mojom::DBCommand::RecordBindingType::STRING_TYPE,  // url_pattern
       mojom::DBCommand::RecordBindingType::
-          STRING_TYPE,                                 // advertiser_public_key
-      mojom::DBCommand::RecordBindingType::INT_TYPE,   // observation_window
-      mojom::DBCommand::RecordBindingType::INT64_TYPE  // expiry_timestamp
+          STRING_TYPE,                                  // advertiser_public_key
+      mojom::DBCommand::RecordBindingType::INT_TYPE,    // observation_window
+      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE  // expire_at
   };
 
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
@@ -87,8 +87,7 @@ void Conversions::PurgeExpired(ResultCallback callback) {
   const std::string query = base::StringPrintf(
       "DELETE FROM %s "
       "WHERE %s >= expiry_timestamp",
-      get_table_name().c_str(),
-      TimeAsTimestampString(base::Time::Now()).c_str());
+      GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;
@@ -101,7 +100,7 @@ void Conversions::PurgeExpired(ResultCallback callback) {
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
-std::string Conversions::get_table_name() const {
+std::string Conversions::GetTableName() const {
   return kTableName;
 }
 
@@ -156,7 +155,7 @@ int Conversions::BindParameters(mojom::DBCommand* command,
     BindString(command, index++, conversion.url_pattern);
     BindString(command, index++, conversion.advertiser_public_key);
     BindInt(command, index++, conversion.observation_window);
-    BindInt64(command, index++, conversion.expiry_timestamp);
+    BindDouble(command, index++, conversion.expire_at.ToDoubleT());
 
     count++;
   }
@@ -179,7 +178,7 @@ std::string Conversions::BuildInsertOrUpdateQuery(
       "advertiser_public_key, "
       "observation_window, "
       "expiry_timestamp) VALUES %s",
-      get_table_name().c_str(),
+      GetTableName().c_str(),
       BuildBindingParameterPlaceholders(6, count).c_str());
 }
 
@@ -211,7 +210,7 @@ ConversionInfo Conversions::GetConversionFromRecord(
   info.url_pattern = ColumnString(record, 2);
   info.advertiser_public_key = ColumnString(record, 3);
   info.observation_window = ColumnInt(record, 4);
-  info.expiry_timestamp = ColumnInt64(record, 5);
+  info.expire_at = base::Time::FromDoubleT(ColumnDouble(record, 5));
 
   return info;
 }
@@ -254,19 +253,19 @@ void Conversions::MigrateToV1(mojom::DBTransaction* transaction) {
 void Conversions::MigrateToV10(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  util::Rename(transaction, "ad_conversions", get_table_name());
+  util::Rename(transaction, "ad_conversions", GetTableName());
 
   const std::string query = base::StringPrintf(
       "ALTER TABLE %s "
       "ADD COLUMN advertiser_public_key TEXT",
-      get_table_name().c_str());
+      GetTableName().c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = query;
   transaction->commands.push_back(std::move(command));
 
-  util::CreateIndex(transaction, get_table_name(), "creative_set_id");
+  util::CreateIndex(transaction, GetTableName(), "creative_set_id");
 }
 
 }  // namespace table

@@ -8,11 +8,12 @@ package org.chromium.chrome.browser;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.test.filters.SmallTest;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.Preference;
+import androidx.test.filters.SmallTest;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -46,6 +47,7 @@ import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
+import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
@@ -70,9 +72,14 @@ import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
+import org.chromium.components.browser_ui.site_settings.ContentSettingException;
+import org.chromium.components.browser_ui.site_settings.PermissionInfo;
+import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
+import org.chromium.components.browser_ui.site_settings.Website;
+import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
-import org.chromium.components.embedder_support.browser_context.BrowserContextHandle;
 import org.chromium.components.permissions.PermissionDialogController;
+import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.PropertyModel;
@@ -195,6 +202,11 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/theme/ThemeUtils"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/share/ShareDelegateImpl"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/share/BraveShareDelegateImpl"));
+        Assert.assertTrue(classExists(
+                "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"));
     }
 
     @Test
@@ -293,6 +305,34 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator",
                         "isReliabilityLoggingEnabled", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/theme/ThemeUtils",
+                "getTextBoxColorForToolbarBackgroundInNonNativePage", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/WebsitePermissionsFetcher",
+                "getPermissionsType", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                "onOptionsItemSelected", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                "getAddExceptionDialogMessage", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                "resetList", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
+                "getResourceItem", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                "getPreferenceKey", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                "setupContentSettingsPreferences", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                "setupContentSettingsPreference", false, null));
+        Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
+                "setContentSetting", false, null));
     }
 
     @Test
@@ -301,6 +341,47 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ChromeTabbedActivity",
                 "hideOverview", true, void.class));
 
+        // Check for method type declaration changes here
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources",
+                "getResourceItem", true,
+                getClassForPath(
+                        "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
+                int.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
+                "getResourceItem", true,
+                getClassForPath(
+                        "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
+                int.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                "getAddExceptionDialogMessage", true, String.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                "resetList", true, void.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                "getPreferenceKey", true, String.class, int.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                "setupContentSettingsPreferences", true, void.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                "setupContentSettingsPreference", true, void.class, Preference.class, Integer.class,
+                boolean.class));
+        Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
+                "getPermissionInfo", true, PermissionInfo.class, int.class));
+        Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
+                "getContentSettingException", true, ContentSettingException.class, int.class));
+        Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
+                "getAddress", true, WebsiteAddress.class));
+        Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
+                "setContentSettingException", true, void.class, int.class,
+                ContentSettingException.class));
+        Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
+                "setContentSetting", true, void.class, BrowserContextHandle.class, int.class,
+                int.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -406,6 +487,10 @@ public class BytecodeTest {
                 WindowAndroid.class, MenuButtonCoordinator.SetFocusFunction.class, Runnable.class,
                 boolean.class, Supplier.class, ThemeColorProvider.class, Supplier.class,
                 Runnable.class, int.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/share/ShareDelegateImpl",
+                "org/chromium/chrome/browser/share/BraveShareDelegateImpl",
+                BottomSheetController.class, ActivityLifecycleDispatcher.class, Supplier.class,
+                ShareDelegateImpl.ShareSheetDelegate.class, boolean.class));
     }
 
     @Test
@@ -547,6 +632,12 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
                 "mSearchEngineAdapter"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                "mCategory", true, SiteSettingsCategory.class));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings", "mSite",
+                true, Website.class));
     }
 
     @Test
@@ -586,6 +677,14 @@ public class BytecodeTest {
         Assert.assertTrue(checkSuperName(
                 "org/chromium/chrome/browser/compositor/layouts/LayoutManagerChromePhone",
                 "org/chromium/chrome/browser/compositor/layouts/BraveLayoutManagerChrome"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                "org/chromium/components/browser_ui/site_settings/BraveSingleCategorySettings"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                "org/chromium/components/browser_ui/site_settings/BraveSingleWebsiteSettings"));
+        Assert.assertTrue(checkSuperName("org/chromium/components/browser_ui/site_settings/Website",
+                "org/chromium/components/browser_ui/site_settings/BraveWebsite"));
     }
 
     private boolean classExists(String className) {
@@ -626,13 +725,21 @@ public class BytecodeTest {
     }
 
     private boolean fieldExists(String className, String fieldName) {
+        return fieldExists(className, fieldName, false, null);
+    }
+
+    private boolean fieldExists(
+            String className, String fieldName, Boolean checkTypes, Class<?> fieldType) {
         Class c = getClassForPath(className);
         if (c == null) {
             return false;
         }
         for (Field f : c.getDeclaredFields()) {
             if (f.getName().equals(fieldName)) {
-                return true;
+                if (checkTypes) {
+                    if (fieldType != null && f.getType().equals(fieldType)) return true;
+                } else
+                    return true;
             }
         }
         return false;

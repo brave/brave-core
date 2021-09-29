@@ -9,6 +9,9 @@ namespace ads {
 
 CreativePromotedContentAdInfo::CreativePromotedContentAdInfo() = default;
 
+CreativePromotedContentAdInfo::CreativePromotedContentAdInfo(
+    const CreativePromotedContentAdInfo& info) = default;
+
 CreativePromotedContentAdInfo::~CreativePromotedContentAdInfo() = default;
 
 bool CreativePromotedContentAdInfo::operator==(

@@ -17,10 +17,9 @@ namespace ads {
 namespace ad_targeting {
 namespace geographic {
 
-class SubdivisionTargeting {
+class SubdivisionTargeting final {
  public:
   SubdivisionTargeting();
-
   ~SubdivisionTargeting();
 
   bool ShouldAllowForLocale(const std::string& locale) const;

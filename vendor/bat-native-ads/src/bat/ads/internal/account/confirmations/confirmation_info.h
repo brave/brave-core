@@ -6,10 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_INFO_H_
 
-#include <cstdint>
 #include <string>
-#include <vector>
 
+#include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 #include "wrapper.hpp"
@@ -19,7 +18,7 @@ namespace ads {
 using challenge_bypass_ristretto::BlindedToken;
 using challenge_bypass_ristretto::Token;
 
-struct ConfirmationInfo {
+struct ConfirmationInfo final {
   ConfirmationInfo();
   ConfirmationInfo(const ConfirmationInfo& info);
   ~ConfirmationInfo();
@@ -37,11 +36,9 @@ struct ConfirmationInfo {
   BlindedToken blinded_payment_token;
   std::string credential;
   std::string user_data;
-  int64_t timestamp = 0;
-  bool created = false;
+  base::Time created_at;
+  bool was_created = false;
 };
-
-using ConfirmationList = std::vector<ConfirmationInfo>;
 
 }  // namespace ads
 

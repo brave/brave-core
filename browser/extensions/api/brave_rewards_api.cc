@@ -19,6 +19,7 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_rewards.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
@@ -29,6 +30,11 @@
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#endif
 
 using brave_ads::AdsService;
 using brave_ads::AdsServiceFactory;
@@ -745,12 +751,10 @@ BraveRewardsSaveRecurringTipFunction::Run() {
   return RespondLater();
 }
 
-void BraveRewardsSaveRecurringTipFunction::OnSaveRecurringTip(bool success) {
-  if (!success) {
-    Respond(Error("Failed to save"));
-    return;
-  }
-  Respond(NoArguments());
+void BraveRewardsSaveRecurringTipFunction::OnSaveRecurringTip(
+    ledger::type::Result result) {
+  Respond(result == ledger::type::Result::LEDGER_OK ? NoArguments()
+                                                    : Error("Failed to save"));
 }
 
 BraveRewardsRemoveRecurringTipFunction::
@@ -1041,6 +1045,7 @@ void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
   data.SetStringKey("userName", wallet->user_name);
   data.SetStringKey("accountUrl", wallet->account_url);
   data.SetStringKey("loginUrl", wallet->login_url);
+  data.SetStringKey("activityUrl", wallet->activity_url);
 
   Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(data)));
 }
@@ -1103,7 +1108,7 @@ BraveRewardsGetAdsAccountStatementFunction::Run() {
 
 void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
     const bool success,
-    const int64_t next_payment_date,
+    const double next_payment_date,
     const int ads_received_this_month,
     const double earnings_this_month,
     const double earnings_last_month) {
@@ -1187,6 +1192,65 @@ BraveRewardsShouldShowOnboardingFunction::Run() {
 
   const bool should_show = rewards_service->ShouldShowOnboarding();
   return RespondNow(OneArgument(base::Value(should_show)));
+}
+
+BraveRewardsGetScheduledCaptchaInfoFunction::
+    ~BraveRewardsGetScheduledCaptchaInfoFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetScheduledCaptchaInfoFunction::Run() {
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto* brave_adaptive_captcha_service =
+      brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
+          profile);
+  if (!brave_adaptive_captcha_service) {
+    return RespondNow(
+        Error("Adaptive captcha service called from incognito or unsupported "
+              "profile"));
+  }
+
+  std::string url;
+  bool max_attempts_exceeded = false;
+  brave_adaptive_captcha_service->GetScheduledCaptchaInfo(
+      &url, &max_attempts_exceeded);
+
+  base::DictionaryValue dict;
+  dict.SetString("url", url);
+  dict.SetBoolean("maxAttemptsExceeded", max_attempts_exceeded);
+
+  return RespondNow(OneArgument(std::move(dict)));
+#else
+  return RespondNow(Error("Adaptive captcha not supported"));
+#endif
+}
+
+BraveRewardsUpdateScheduledCaptchaResultFunction::
+    ~BraveRewardsUpdateScheduledCaptchaResultFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  auto params(
+      brave_rewards::UpdateScheduledCaptchaResult::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto* brave_adaptive_captcha_service =
+      brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
+          profile);
+  if (!brave_adaptive_captcha_service) {
+    return RespondNow(
+        Error("Adaptive captcha service called from incognito or unsupported "
+              "profile"));
+  }
+
+  brave_adaptive_captcha_service->UpdateScheduledCaptchaResult(params->result);
+
+  return RespondNow(NoArguments());
+#else
+  return RespondNow(Error("Adaptive captcha not supported"));
+#endif
 }
 
 BraveRewardsEnableRewardsFunction::~BraveRewardsEnableRewardsFunction() =

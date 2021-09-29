@@ -68,7 +68,7 @@
               }
             },
             {
-              "creativeInstanceId": "532943cb-b564-456f-9328-3eb7f7b79cb9",
+              "creativeInstanceId": "60001aa5-9368-45d2-81fc-e69887d278c5",
               "type": {
                 "code": "promoted_content_all_v1",
                 "name": "promoted_content",
@@ -76,7 +76,7 @@
                 "version": 1
               },
               "payload": {
-                "feed": "https://brave.com/3",
+                "feed": "https://brave.com/1/promoted_content_ad",
                 "title": "Promoted Content 1",
                 "domain": "Domain 1",
                 "category": "Category 1",
@@ -106,7 +106,7 @@
           "segments": [
             {
               "code": "yNl0N-ers2",
-              "name": "Technology & Computing"
+              "name": "technology & computing"
             }
           ],
           "oses": [

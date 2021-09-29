@@ -8,18 +8,15 @@
 
 #include <string>
 
-#include "bat/ads/internal/ad_events/ad_event_info.h"
+#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
 
-struct CreativeAdInfo;
-
-class PerMonthFrequencyCap : public ExclusionRule<CreativeAdInfo> {
+class PerMonthFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
  public:
   explicit PerMonthFrequencyCap(const AdEventList& ad_events);
-
   ~PerMonthFrequencyCap() override;
 
   PerMonthFrequencyCap(const PerMonthFrequencyCap&) = delete;
@@ -27,7 +24,7 @@ class PerMonthFrequencyCap : public ExclusionRule<CreativeAdInfo> {
 
   bool ShouldExclude(const CreativeAdInfo& ad) override;
 
-  std::string get_last_message() const override;
+  std::string GetLastMessage() const override;
 
  private:
   AdEventList ad_events_;

@@ -7,15 +7,14 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_CAMPAIGN_INFO_H_
 
 #include <string>
-#include <vector>
 
-#include "bat/ads/internal/catalog/catalog_creative_set_info.h"
-#include "bat/ads/internal/catalog/catalog_daypart_info.h"
-#include "bat/ads/internal/catalog/catalog_geo_target_info.h"
+#include "bat/ads/internal/catalog/catalog_creative_set_info_aliases.h"
+#include "bat/ads/internal/catalog/catalog_daypart_info_aliases.h"
+#include "bat/ads/internal/catalog/catalog_geo_target_info_aliases.h"
 
 namespace ads {
 
-struct CatalogCampaignInfo {
+struct CatalogCampaignInfo final {
   CatalogCampaignInfo();
   CatalogCampaignInfo(const CatalogCampaignInfo& info);
   ~CatalogCampaignInfo();
@@ -34,8 +33,6 @@ struct CatalogCampaignInfo {
   CatalogDaypartList dayparts;
   CatalogGeoTargetList geo_targets;
 };
-
-using CatalogCampaignList = std::vector<CatalogCampaignInfo>;
 
 }  // namespace ads
 

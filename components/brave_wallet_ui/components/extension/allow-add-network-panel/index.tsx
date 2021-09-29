@@ -1,10 +1,9 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
-import { Network, AddNetworkReturnPayload } from '../../../constants/types'
+import { EthereumChain } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
-import { NetworkOptions } from '../../../options/network-options'
 import locale from '../../../constants/locale'
-import { NavButton } from '../'
+import { NavButton, PanelTab } from '../'
 
 // Styled Components
 import {
@@ -15,7 +14,8 @@ import {
   ButtonRow,
   FavIcon,
   URLText,
-  NetworkDetail
+  NetworkDetail,
+  TabRow
 } from './style'
 
 import {
@@ -30,49 +30,85 @@ import {
   TopRow
 } from '../shared-panel-styles'
 
+export type tabs = 'network' | 'details'
+
 export interface Props {
-  selectedNetwork: Network
+  networkPayload: EthereumChain
   onCancel: () => void
   onApprove: () => void
-  networkPayload: AddNetworkReturnPayload
+  onLearnMore: () => void
 }
 
 function AllowAddNetworkPanel (props: Props) {
   const {
-    selectedNetwork,
     networkPayload,
     onCancel,
-    onApprove
+    onApprove,
+    onLearnMore
   } = props
+  const rpcUrl = networkPayload.rpcUrls ? (new URL(networkPayload.rpcUrls[0])).hostname : ''
+  const blockUrl = networkPayload.blockExplorerUrls ? networkPayload.blockExplorerUrls[0] : ''
 
+  const [selectedTab, setSelectedTab] = React.useState<tabs>('network')
   const orb = React.useMemo(() => {
-    return create({ seed: networkPayload.contractAddress, size: 8, scale: 16 }).toDataURL()
-  }, [networkPayload.contractAddress])
+    return create({ seed: rpcUrl, size: 8, scale: 16 }).toDataURL()
+  }, [rpcUrl])
+
+  const onSelectTab = (tab: tabs) => () => {
+    setSelectedTab(tab)
+  }
 
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{NetworkOptions[selectedNetwork].abbr}</NetworkText>
+        <NetworkText>{networkPayload.chainName}</NetworkText>
         <AddressAndOrb>
-          <AddressText>{reduceAddress(networkPayload.contractAddress)}</AddressText>
+          <AddressText>{reduceAddress(rpcUrl)}</AddressText>
           <AccountCircle orb={orb} />
         </AddressAndOrb>
       </TopRow>
       <CenterColumn>
-        <FavIcon src={`chrome://favicon/size/64@1x/${networkPayload.siteUrl}`} />
-        <URLText>{networkPayload.siteUrl}</URLText>
+        <FavIcon src='' />
+        <URLText>{rpcUrl}</URLText>
         <PanelTitle>{locale.allowAddNetworkTitle}</PanelTitle>
-        <Description>{locale.allowAddNetworkDescription} <DetailsButton>{locale.allowAddNetworkLearnMoreButton}</DetailsButton></Description>
+        <Description>{locale.allowAddNetworkDescription} <DetailsButton onClick={onLearnMore}>{locale.allowAddNetworkLearnMoreButton}</DetailsButton></Description>
+        <TabRow>
+          <PanelTab
+            isSelected={selectedTab === 'network'}
+            onSubmit={onSelectTab('network')}
+            text='Network'
+          />
+          <PanelTab
+            isSelected={selectedTab === 'details'}
+            onSubmit={onSelectTab('details')}
+            text='Details'
+          />
+        </TabRow>
         <MessageBox>
           <MessageBoxColumn>
             <NetworkTitle>{locale.allowAddNetworkName}</NetworkTitle>
-            <NetworkDetail>{networkPayload.chainInfo.name}</NetworkDetail>
+            <NetworkDetail>{networkPayload.chainName}</NetworkDetail>
           </MessageBoxColumn>
           <MessageBoxColumn>
             <NetworkTitle>{locale.allowAddNetworkUrl}</NetworkTitle>
-            <NetworkDetail>{networkPayload.chainInfo.url}</NetworkDetail>
+            <NetworkDetail>{rpcUrl}</NetworkDetail>
           </MessageBoxColumn>
-          <DetailsButton>{locale.allowAddNetworkDetailsButton}</DetailsButton>
+          {selectedTab === 'details' &&
+            <>
+              <MessageBoxColumn>
+                <NetworkTitle>{locale.allowAddNetworkChainID}</NetworkTitle>
+                <NetworkDetail>{networkPayload.chainId}</NetworkDetail>
+              </MessageBoxColumn>
+              <MessageBoxColumn>
+                <NetworkTitle>{locale.allowAddNetworkCurrencySymbol}</NetworkTitle>
+                <NetworkDetail>{networkPayload.symbol}</NetworkDetail>
+              </MessageBoxColumn>
+              <MessageBoxColumn>
+                <NetworkTitle>{locale.allowAddNetworkExplorer}</NetworkTitle>
+                <NetworkDetail>{blockUrl}</NetworkDetail>
+              </MessageBoxColumn>
+            </>
+          }
         </MessageBox>
       </CenterColumn>
       <ButtonRow>

@@ -64,12 +64,6 @@ public class BraveSigninManager implements SigninManager {
     public void signin(CoreAccountInfo accountInfo, @Nullable SignInCallback callback) {}
 
     @Override
-    public void removeSignInAllowedObserver(SignInAllowedObserver observer) {}
-
-    @Override
-    public void addSignInAllowedObserver(SignInAllowedObserver observer) {}
-
-    @Override
     public void removeSignInStateObserver(SignInStateObserver observer) {}
 
     @Override

@@ -43,6 +43,8 @@ std::string GetWithdrawUrl();
 
 std::string GetAccountUrl();
 
+std::string GetActivityUrl();
+
 type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
 
 }  // namespace bitflyer

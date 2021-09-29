@@ -8,9 +8,16 @@ package org.chromium.components.browser_ui.site_settings;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import org.chromium.components.browser_ui.site_settings.SiteSettingsPreferenceFragment;
+import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.Log;
+import org.chromium.base.annotations.UsedByReflection;
+import org.chromium.components.content_settings.ContentSettingsType;
+import org.chromium.content_public.browser.BrowserContextHandle;
 
-public class BraveSingleCategorySettings extends SiteSettingsPreferenceFragment {
+@UsedByReflection("brave_site_settings_preferences.xml")
+public class BraveSingleCategorySettings
+        extends SiteSettingsPreferenceFragment implements AddExceptionPreference.SiteAddedCallback {
+    private static final String ADD_EXCEPTION_KEY = "add_exception";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) { }
@@ -21,5 +28,45 @@ public class BraveSingleCategorySettings extends SiteSettingsPreferenceFragment 
             getSiteSettingsDelegate().closeButton();
         }
 		return super.onOptionsItemSelected(item);
+    }
+
+    public String getAddExceptionDialogMessage() {
+        BrowserContextHandle browserContextHandle =
+                getSiteSettingsDelegate().getBrowserContextHandle();
+        int resource = 0;
+        SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(
+                SingleCategorySettings.class, "mCategory", this);
+
+        if (mCategory.showSites(SiteSettingsCategory.Type.AUTOPLAY)) {
+            resource = R.string.website_settings_add_site_description_autoplay;
+        } else {
+            return (String) BraveReflectionUtil.InvokeMethod(
+                    SingleCategorySettings.class, this, "getAddExceptionDialogMessage");
+        }
+        assert resource > 0;
+        return getString(resource);
+    }
+
+    public void resetList() {
+        BraveReflectionUtil.InvokeMethod(SingleCategorySettings.class, this, "resetList");
+        BrowserContextHandle browserContextHandle =
+                getSiteSettingsDelegate().getBrowserContextHandle();
+        boolean exception = false;
+        SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(
+                SingleCategorySettings.class, "mCategory", this);
+
+        if (mCategory.showSites(SiteSettingsCategory.Type.AUTOPLAY)) {
+            exception = true;
+        }
+        if (exception) {
+            getPreferenceScreen().addPreference(
+                    new AddExceptionPreference(getPreferenceManager().getContext(),
+                            ADD_EXCEPTION_KEY, getAddExceptionDialogMessage(), mCategory, this));
+        }
+    }
+
+    @Override
+    public void onAddSite(String primaryPattern, String secondaryPattern) {
+        assert (false);
     }
 }

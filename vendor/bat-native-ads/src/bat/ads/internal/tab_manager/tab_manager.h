@@ -10,16 +10,18 @@
 #include <map>
 #include <string>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "bat/ads/internal/tab_manager/tab_info.h"
+
+namespace absl {
+template <typename T>
+class optional;
+}  // namespace absl
 
 namespace ads {
 
-struct TabInfo;
-
-class TabManager {
+class TabManager final {
  public:
   TabManager();
-
   ~TabManager();
 
   TabManager(const TabManager&) = delete;

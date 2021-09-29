@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/observer_list.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -15,10 +16,9 @@ namespace ads {
 
 struct AdNotificationInfo;
 
-class AdNotification : public AdNotificationObserver {
+class AdNotification final : public AdNotificationObserver {
  public:
   AdNotification();
-
   ~AdNotification() override;
 
   void AddObserver(AdNotificationObserver* observer);

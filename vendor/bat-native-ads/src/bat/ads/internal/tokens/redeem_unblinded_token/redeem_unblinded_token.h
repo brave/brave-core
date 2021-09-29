@@ -6,27 +6,27 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_H_
 
-#include <string>
-
+#include "base/check_op.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
-class ConfirmationType;
 struct ConfirmationInfo;
 
 namespace privacy {
 struct UnblindedTokenInfo;
 }  // namespace privacy
 
-class RedeemUnblindedToken {
+class RedeemUnblindedToken final {
  public:
   RedeemUnblindedToken();
-
   ~RedeemUnblindedToken();
 
-  void set_delegate(RedeemUnblindedTokenDelegate* delegate);
+  void set_delegate(RedeemUnblindedTokenDelegate* delegate) {
+    DCHECK_EQ(delegate_, nullptr);
+    delegate_ = delegate;
+  }
 
   void Redeem(const ConfirmationInfo& confirmation);
 
@@ -34,6 +34,9 @@ class RedeemUnblindedToken {
   void CreateConfirmation(const ConfirmationInfo& confirmation);
   void OnCreateConfirmation(const mojom::UrlResponse& url_response,
                             const ConfirmationInfo& confirmation);
+
+  void RequestIssuers(const ConfirmationInfo& confirmation);
+  void OnRequestIssuers(const ConfirmationInfo& confirmation);
 
   void FetchPaymentToken(const ConfirmationInfo& confirmation);
   void OnFetchPaymentToken(const mojom::UrlResponse& url_response,
