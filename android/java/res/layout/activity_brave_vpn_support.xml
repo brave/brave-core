@@ -52,7 +52,7 @@
             android:layout_marginEnd="16dp"
             android:padding="16dp"
             android:textSize="16sp"
-            android:text="@string/app_version" />
+            android:text="@string/app_receipt" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/app_version_switch"

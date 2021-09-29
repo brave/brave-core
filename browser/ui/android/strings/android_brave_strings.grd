@@ -2146,6 +2146,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_APP_VERSION" desc="Brave Vpn support text">
       App Version
     </message>
+    <message name="IDS_APP_RECEIPT" desc="Brave Vpn support text">
+      App Receipt
+    </message>
     <message name="IDS_TIMEZONE" desc="Brave Vpn support text">
       Timezone
     </message>
