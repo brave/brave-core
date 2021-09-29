@@ -70,6 +70,12 @@ int OnHeadersReceived_IPFSRedirectWork(
       !ctx->request_url.DomainIs(ctx->ipfs_gateway_url.host())) {
     GURL::Replacements replacements;
     replacements.SetPathStr(ipfs_path);
+
+    if (ctx->request_url.has_query()) {
+      GURL request_url = ctx->request_url;
+      replacements.SetQueryStr(request_url.query_piece());
+    }
+
     GURL new_url = ctx->ipfs_gateway_url.ReplaceComponents(replacements);
 
     *override_response_headers =
