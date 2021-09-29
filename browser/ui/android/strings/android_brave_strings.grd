@@ -2113,11 +2113,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_HOST" desc="Brave VPN settings section text">
       Host
     </message>
-    <message name="IDS_LOCATION" desc="Brave VPN settings section text">
-      Location
-    </message>
     <message name="IDS_CHANGE_LOCATION" desc="Brave VPN settings section text">
-      Change Location
+      Location
     </message>
     <message name="IDS_RESET_CONFIGURATION" desc="Brave VPN settings section text">
       Reset Configuration
@@ -2194,8 +2191,11 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_AUTOMATIC" desc="Brave Vpn default server location text">
       Automatic
     </message>
-    <message name="IDS_VPN_LOADING_TEXT" desc="Brave Vpn loading text">
-      Loading. Please wait...
+    <message name="IDS_VPN_CONNECT_TEXT" desc="Brave Vpn loading text">
+      Connecting to your server. Should only take a moment...
+    </message>
+    <message name="IDS_VPN_DISCONNECT_TEXT" desc="Brave Vpn loading text">
+      Disconnecting from your server. Should only take a moment...
     </message>
     <message name="IDS_SUBSCRIPTION_CONSUMED" desc="Brave Vpn in app purchase message">
       Subscription successfully consumed
