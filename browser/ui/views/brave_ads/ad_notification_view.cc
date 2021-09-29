@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "brave/browser/ui/brave_ads/ad_notification_delegate.h"
+#include "brave/browser/ui/brave_ads/ad_notification_popup_handler.h"
 #include "brave/browser/ui/views/brave_ads/ad_notification_popup.h"
 #include "brave/browser/ui/views/brave_ads/bounds_util.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -43,8 +45,7 @@ void AdNotificationView::OnCloseButtonPressed() {
 
   is_closing_ = true;
 
-  const std::string id = ad_notification_.id();
-  AdNotificationPopup::Close(id, /* by_user */ true);
+  AdNotificationPopupHandler::Close(ad_notification_.id(), /* by_user */ true);
 }
 
 void AdNotificationView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
@@ -78,11 +79,7 @@ bool AdNotificationView::OnMouseDragged(const ui::MouseEvent& event) {
     return false;
   }
 
-  const std::string id = ad_notification_.id();
-  gfx::Rect bounds = AdNotificationPopup::GetBounds(id) + movement;
-  const gfx::NativeView native_view = GetWidget()->GetNativeView();
-  AdjustBoundsAndSnapToFitWorkAreaForNativeView(native_view, &bounds);
-  GetWidget()->SetBounds(bounds);
+  AdNotificationPopupHandler::Move(ad_notification_.id(), movement);
 
   return true;
 }
@@ -97,8 +94,11 @@ void AdNotificationView::OnMouseReleased(const ui::MouseEvent& event) {
     return;
   }
 
-  const std::string id = ad_notification_.id();
-  AdNotificationPopup::OnClick(id);
+  AdNotificationDelegate* delegate = ad_notification_.delegate();
+  if (delegate) {
+    // This call will eventually lead to AdNotificationPopupHandler::Close call.
+    delegate->OnClick();
+  }
 
   View::OnMouseReleased(event);
 }
