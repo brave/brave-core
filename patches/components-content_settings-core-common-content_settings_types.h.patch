@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index a5fdcea454b96d8c5083d8d80acec1664bc0166b..cb11c1a36d493225a55f9f47b1d2fc25e863f4c7 100644
+index 03716cb3d9006f446670ead7b2cefda345848867..3cbbc70ac524a2e5a1ce9fc87ed6f3f2fb194af6 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -288,6 +288,7 @@ enum class ContentSettingsType : int32_t {
-   // web content.
-   AUTO_DARK_WEB_CONTENT,
+@@ -292,6 +292,7 @@ enum class ContentSettingsType : int32_t {
+   // site instead of the mobile one.
+   REQUEST_DESKTOP_SITE,
  
 +  BRAVE_CONTENT_SETTINGS_TYPES_LIST,
    NUM_TYPES,
