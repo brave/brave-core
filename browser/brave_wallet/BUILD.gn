@@ -30,10 +30,11 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/factory",
     "//chrome/browser/profiles:profiles",
-    "//components/keyed_service/content:content",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
     "//components/user_prefs",
     "//content/public/browser",
-    "//extensions/buildflags",
+    "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
   ]
