@@ -21,6 +21,7 @@
 #include "components/breadcrumbs/core/breadcrumb_manager.h"
 #include "components/breadcrumbs/core/breadcrumb_persistent_storage_manager.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/component_updater/timer_update_scheduler.h"
 #include "components/gcm_driver/gcm_driver.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
@@ -36,6 +37,7 @@
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager_impl.h"
 #include "ios/chrome/browser/chrome_paths.h"
+#include "ios/chrome/browser/component_updater/ios_component_updater_configurator.h"
 #import "ios/chrome/browser/crash_report/breadcrumbs/application_breadcrumbs_logger_ios.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/ios_chrome_io_thread.h"
@@ -262,16 +264,15 @@ gcm::GCMDriver* ApplicationContextImpl::GetGCMDriver() {
 component_updater::ComponentUpdateService*
 ApplicationContextImpl::GetComponentUpdateService() {
   DCHECK(thread_checker_.CalledOnValidThread());
-  // if (!component_updater_) {
-  //   // Creating the component updater does not do anything, components need to
-  //   // be registered and Start() needs to be called.
-  //   component_updater_ = component_updater::ComponentUpdateServiceFactory(
-  //       component_updater::MakeIOSComponentUpdaterConfigurator(
-  //           base::CommandLine::ForCurrentProcess()),
-  //       std::make_unique<component_updater::TimerUpdateScheduler>());
-  // }
-  // return component_updater_.get();
-  return nullptr;
+  if (!component_updater_) {
+    // Creating the component updater does not do anything, components need to
+    // be registered and Start() needs to be called.
+    component_updater_ = component_updater::ComponentUpdateServiceFactory(
+        component_updater::MakeIOSComponentUpdaterConfigurator(
+            base::CommandLine::ForCurrentProcess()),
+        std::make_unique<component_updater::TimerUpdateScheduler>());
+  }
+  return component_updater_.get();
 }
 
 SafeBrowsingService* ApplicationContextImpl::GetSafeBrowsingService() {
