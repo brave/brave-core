@@ -241,6 +241,11 @@ interface AssetRatioController {
       (bool success, array<AssetPrice> values);
   GetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
       (bool success, array<AssetTimePrice> values);
+
+  // Gas estimation APIs
+  GetEstimatedTime(string gas_price /* decimal string in wei */) =>
+      (bool success, string seconds);
+  GetGasOracle() => (GasEstimation1559? estimation);
 };
 
 interface SwapController {
@@ -262,6 +267,16 @@ struct TxData {
   string to;
   string value;
   array<uint8> data;
+};
+
+struct GasEstimation1559 {
+  string slow_max_priority_fee_per_gas;
+  string slow_max_fee_per_gas;
+  string avg_max_priority_fee_per_gas;
+  string avg_max_fee_per_gas;
+  string fast_max_priority_fee_per_gas;
+  string fast_max_fee_per_gas;
+  string base_fee_per_gas;
 };
 
 struct TxData1559 {
