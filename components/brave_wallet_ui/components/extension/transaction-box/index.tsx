@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { TransactionInfo, TransactionType } from '../../../constants/types'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 import {
   CodeSnippet,
   CodeSnippetText,
@@ -22,13 +22,13 @@ const TransactionDetailBox = (props: Props) => {
       {hasNoData ? (
         <CodeSnippet>
           <code>
-            <CodeSnippetText>{locale.confirmTransactionNoData}</CodeSnippetText>
+            <CodeSnippetText>{getLocale('braveWalletConfirmTransactionNoData')}</CodeSnippetText>
           </code>
         </CodeSnippet>
       ) : (
         <>
           <DetailRow>
-            <TransactionText>{locale.transactionDetailBoxFunction}:</TransactionText>
+            <TransactionText>{getLocale('braveWalletTransactionDetailBoxFunction')}:</TransactionText>
             <DetailText>{TransactionType[txType]}</DetailText>
           </DetailRow>
           {txParams.map((data, i) =>

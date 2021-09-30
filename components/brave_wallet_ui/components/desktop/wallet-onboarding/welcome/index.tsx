@@ -12,7 +12,7 @@ import {
   MetaMaskIcon
 } from './style'
 import { NavButton } from '../../../extension'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
 
 export interface Props {
   onSetup: () => void
@@ -26,16 +26,16 @@ function OnboardingWelcome (props: Props) {
   return (
     <StyledWrapper>
       <PageIcon />
-      <Title>{locale.welcomeTitle}</Title>
-      <Description>{locale.welcomeDescription}</Description>
-      <NavButton buttonType='primary' text={locale.welcomeButton} onSubmit={onSetup} />
-      <RestoreButton onClick={onRestore}>{locale.welcomeRestoreButton}</RestoreButton>
+      <Title>{getLocale('braveWalletWelcomeTitle')}</Title>
+      <Description>{getLocale('braveWalletWelcomeDescription')}</Description>
+      <NavButton buttonType='primary' text={getLocale('braveWalletWelcomeButton')} onSubmit={onSetup} />
+      <RestoreButton onClick={onRestore}>{getLocale('braveWalletWelcomeRestoreButton')}</RestoreButton>
       {metaMaskWalletDetected &&
         <>
           <Divider />
           <ImportButton onClick={onClickImportMetaMask}>
             <MetaMaskIcon />
-            <ImportButtonText>{locale.importMetaMaskTitle}</ImportButtonText>
+            <ImportButtonText>{getLocale('braveWalletImportMetaMaskTitle')}</ImportButtonText>
           </ImportButton>
         </>
       }

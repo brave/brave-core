@@ -1,5 +1,5 @@
 import * as React from 'react'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 
 // Styled Components
 import { StyledWrapper, FavIcon, URLText, PanelTitle } from './style'
@@ -14,7 +14,7 @@ function ConnectHeader (props: Props) {
     <StyledWrapper>
       <FavIcon src={`chrome://favicon/size/64@1x/${url}`} />
       <URLText>{url}</URLText>
-      <PanelTitle>{locale.connectWithSiteHeaderTitle}</PanelTitle>
+      <PanelTitle>{getLocale('braveWalletConnectWithSiteHeaderTitle')}</PanelTitle>
     </StyledWrapper>
   )
 }

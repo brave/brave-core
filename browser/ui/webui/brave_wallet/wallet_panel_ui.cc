@@ -17,6 +17,7 @@
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
@@ -62,10 +63,7 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(kWalletPanelHost);
 
-  static constexpr webui::LocalizedString kStrings[] = {
-      {"braveWallet", IDS_BRAVE_WALLET},
-  };
-  source->AddLocalizedStrings(kStrings);
+  source->AddLocalizedStrings(brave_wallet::kLocalizedStrings);
   webui::SetupWebUIDataSource(source,
                               base::make_span(kBraveWalletPanelGenerated,
                                               kBraveWalletPanelGeneratedSize),

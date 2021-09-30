@@ -6,6 +6,7 @@ import { NavOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
 import { ChartTimelineOptions } from '../options/chart-timeline-options'
 import Onboarding from './screens/onboarding'
+import './locale'
 import {
   recoveryPhrase
 } from './mock-data/user-accounts'
@@ -27,7 +28,7 @@ export const _DesktopSideNav = () => {
   return (
     <DesktopComponentWrapper>
       <SideNav
-        navList={NavOptions}
+        navList={NavOptions()}
         selectedButton={selectedButton}
         onSubmit={navigateTo}
       />
@@ -49,7 +50,7 @@ export const _DesktopTopTabNav = () => {
   return (
     <DesktopComponentWrapperRow>
       <TopTabNav
-        tabList={TopNavOptions}
+        tabList={TopNavOptions()}
         selectedTab={selectedTab}
         onSubmit={navigateTo}
       />
@@ -72,7 +73,7 @@ export const _LineChartControls = () => {
       <ChartControlBar
         onSubmit={changeTimline}
         selectedTimeline={selectedTimeline}
-        timelineOptions={ChartTimelineOptions}
+        timelineOptions={ChartTimelineOptions()}
       />
     </DesktopComponentWrapper>
   )

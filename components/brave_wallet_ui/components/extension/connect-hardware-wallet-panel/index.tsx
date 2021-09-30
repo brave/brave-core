@@ -11,7 +11,7 @@ import {
   ConnectionRow
 } from './style'
 import { NavButton } from '..'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 
 export interface Props {
   onCancel: () => void
@@ -31,13 +31,13 @@ function ConnectHardwareWalletPanel (props: Props) {
     <StyledWrapper>
       <ConnectionRow>
         <Indicator isConnected={isConnected} />
-        <Description>{walletName} {isConnected ? locale.connectHardwarePanelConnected : locale.connectHardwarePanelDisconnected}</Description>
+        <Description>{walletName} {isConnected ? getLocale('braveWalletConnectHardwarePanelConnected') : getLocale('braveWalletConnectHardwarePanelDisconnected')}</Description>
       </ConnectionRow>
-      <Title>{requestingConfirmation ? locale.connectHardwarePanelConfirmation : locale.connectHardwarePanelConnect} {walletName}</Title>
-      <InstructionsButton onClick={onClickInstructions}>{locale.connectHardwarePanelInstructions}</InstructionsButton>
+      <Title>{requestingConfirmation ? getLocale('braveWalletConnectHardwarePanelConfirmation') : getLocale('braveWalletConnectHardwarePanelConnect')} {walletName}</Title>
+      <InstructionsButton onClick={onClickInstructions}>{getLocale('braveWalletConnectHardwarePanelInstructions')}</InstructionsButton>
       <PageIcon />
       <ButtonWrapper>
-        <NavButton buttonType='secondary' text={locale.backupButtonCancel} onSubmit={onCancel} />
+        <NavButton buttonType='secondary' text={getLocale('braveWalletBackupButtonCancel')} onSubmit={onCancel} />
       </ButtonWrapper>
     </StyledWrapper>
   )

@@ -6,8 +6,6 @@ import("//testing/test.gni")
 assert(brave_wallet_enabled)
 
 source_set("brave_wallet") {
-  check_includes = false
-
   sources = [
     "asset_ratio_controller_factory.cc",
     "asset_ratio_controller_factory.h",
@@ -32,23 +30,14 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/factory",
     "//chrome/browser/profiles:profiles",
-    "//components/keyed_service/content:content",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
     "//components/user_prefs",
     "//content/public/browser",
-    "//extensions/buildflags",
+    "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
   ]
-  if (is_android) {
-    sources += [
-      "./android/asset_ratio_controller_factory_android.cc",
-      "./android/erc_token_registry_factory_android.cc",
-      "./android/eth_json_rpc_controller_factory_android.cc",
-      "./android/eth_tx_controller_factory_android.cc",
-      "./android/keyring_controller_factory_android.cc",
-    ]
-    deps += [ "//brave/build/android:jni_headers" ]
-  }
   if (enable_extensions) {
     deps += [
       "//brave/browser/extensions",
@@ -59,7 +48,7 @@ source_set("brave_wallet") {
 }
 
 source_set("brave_wallet_delegate") {
-  sources = []
+  sources = [ "brave_wallet_service_delegate_helper.cc" ]
   deps = [
     "//brave/components/brave_wallet/browser",
     "//content/public/browser",

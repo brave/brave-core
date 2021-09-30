@@ -6,7 +6,8 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-
+import { initLocale } from 'brave-ui'
+import { loadTimeData } from '../../common/loadTimeData'
 import Container from './container'
 import * as WalletActions from '../common/actions/wallet_actions'
 import store from './store'
@@ -42,6 +43,7 @@ function App () {
 }
 
 function initialize () {
+  initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize())
   render(<App />, document.getElementById('root'))
 }

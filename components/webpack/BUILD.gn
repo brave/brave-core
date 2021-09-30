@@ -1,0 +1,14 @@
+action("generate_tsconfig") {
+  script = "//brave/script/generate-tsconfig.py"
+  deps = [
+    # Ensure chrome://resources/js file and typescript definitions are
+    # generated
+    "//ui/webui/resources:library",
+  ]
+  inputs = [
+    "gen-tsconfig.js",
+    "path-map.js",
+  ]
+  outputs = [ "$root_gen_dir/tsconfig-webpack.json" ]
+  args = [ "--root_gen_dir=" + rebase_path(root_gen_dir) ]
+}

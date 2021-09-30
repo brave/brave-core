@@ -237,10 +237,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
-            BraveVpnUtils.showProgressDialog(BraveActivity.this);
             if (BraveVpnProfileUtils.getInstance(BraveActivity.this).isVPNConnected()) {
+                BraveVpnUtils.showProgressDialog(
+                        BraveActivity.this, getResources().getString(R.string.vpn_disconnect_text));
                 BraveVpnProfileUtils.getInstance(BraveActivity.this).stopVpn();
             } else {
+                BraveVpnUtils.showProgressDialog(
+                        BraveActivity.this, getResources().getString(R.string.vpn_connect_text));
                 if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
                     verifySubscription();
                 } else {

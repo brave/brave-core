@@ -10,6 +10,7 @@ import("//brave/browser/brave_rewards/sources.gni")
 import("//brave/browser/brave_shields/sources.gni")
 import("//brave/browser/brave_stats/sources.gni")
 import("//brave/browser/brave_vpn/sources.gni")
+import("//brave/browser/brave_wallet/android/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
 import("//brave/browser/component_updater/sources.gni")
 import("//brave/browser/crypto_dot_com/sources.gni")
@@ -125,7 +126,6 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_sync:features",
   "//brave/components/brave_sync:network_time_helper",
   "//brave/components/brave_sync:prefs",
-  "//brave/components/brave_talk",
   "//brave/components/brave_vpn/buildflags",
   "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/brave_wayback_machine:buildflags",
@@ -232,6 +232,10 @@ if (is_android) {
     "//brave/browser/sync/brave_sync_devices_android.cc",
     "//brave/browser/sync/brave_sync_devices_android.h",
   ]
+
+  if (brave_wallet_enabled) {
+    brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources
+  }
 
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",

@@ -1,33 +1,33 @@
 import { ChartTimelineObjectType } from '../constants/types'
-import locale from '../constants/locale'
+import { getLocale } from '../../common/locale'
 
-export const ChartTimelineOptions: ChartTimelineObjectType[] = [
+export const ChartTimelineOptions = (): ChartTimelineObjectType[] => [
   {
-    name: locale.chartLive,
+    name: getLocale('braveWalletChartLive'),
     id: 0
   },
   {
-    name: locale.chartOneDay,
+    name: getLocale('braveWalletChartOneDay'),
     id: 1
   },
   {
-    name: locale.chartOneWeek,
+    name: getLocale('braveWalletChartOneWeek'),
     id: 2
   },
   {
-    name: locale.chartOneMonth,
+    name: getLocale('braveWalletChartOneMonth'),
     id: 3
   },
   {
-    name: locale.chartThreeMonths,
+    name: getLocale('braveWalletChartThreeMonths'),
     id: 4
   },
   {
-    name: locale.chartOneYear,
+    name: getLocale('braveWalletChartOneYear'),
     id: 5
   },
   {
-    name: locale.chartAllTime,
+    name: getLocale('braveWalletChartAllTime'),
     id: 6
   }
 ]

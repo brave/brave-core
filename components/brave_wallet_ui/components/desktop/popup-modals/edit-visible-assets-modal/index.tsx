@@ -8,7 +8,7 @@ import {
 } from '../..'
 import { NavButton } from '../../../extension'
 import { SearchBar } from '../../../shared'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
 
 // Styled Components
 import {
@@ -202,7 +202,7 @@ const EditVisibleAssetsModal = (props: Props) => {
   }, [tokenContractAddress, fullAssetList])
 
   return (
-    <PopupModal title={showAddCustomToken ? locale.watchlistAddCustomAsset : locale.accountsEditVisibleAssets} onClose={onClose}>
+    <PopupModal title={showAddCustomToken ? getLocale('braveWalletWatchlistAddCustomAsset') : getLocale('braveWalletAccountsEditVisibleAssets')} onClose={onClose}>
       {showAddCustomToken &&
         <Divider />
       }
@@ -215,24 +215,24 @@ const EditVisibleAssetsModal = (props: Props) => {
           <>
             {showAddCustomToken ? (
               <FormWrapper>
-                <InputLabel>{locale.watchListTokenName}</InputLabel>
+                <InputLabel>{getLocale('braveWalletWatchListTokenName')}</InputLabel>
                 <Input
                   value={tokenName}
                   onChange={handleTokenNameChanged}
                   disabled={isDisabled}
                 />
-                <InputLabel>{locale.watchListTokenAddress}</InputLabel>
+                <InputLabel>{getLocale('braveWalletWatchListTokenAddress')}</InputLabel>
                 <Input
                   value={tokenContractAddress}
                   onChange={handleTokenAddressChanged}
                 />
-                <InputLabel>{locale.watchListTokenSymbol}</InputLabel>
+                <InputLabel>{getLocale('braveWalletWatchListTokenSymbol')}</InputLabel>
                 <Input
                   value={tokenSymbol}
                   onChange={handleTokenSymbolChanged}
                   disabled={isDisabled}
                 />
-                <InputLabel>{locale.watchListTokenDecimals}</InputLabel>
+                <InputLabel>{getLocale('braveWalletWatchListTokenDecimals')}</InputLabel>
                 <Input
                   value={tokenDecimals}
                   onChange={handleTokenDecimalsChanged}
@@ -240,17 +240,17 @@ const EditVisibleAssetsModal = (props: Props) => {
                   type='number'
                 />
                 {hasError &&
-                  <ErrorText>{locale.watchListError}</ErrorText>
+                  <ErrorText>{getLocale('braveWalletWatchListError')}</ErrorText>
                 }
                 <ButtonRow>
                   <NavButton
                     onSubmit={onClickCancel}
-                    text={locale.backupButtonCancel}
+                    text={getLocale('braveWalletBackupButtonCancel')}
                     buttonType='secondary'
                   />
                   <NavButton
                     onSubmit={onClickAddCustomToken}
-                    text={locale.watchListAdd}
+                    text={getLocale('braveWalletWatchListAdd')}
                     buttonType='primary'
                     disabled={
                       tokenName === ''
@@ -266,7 +266,7 @@ const EditVisibleAssetsModal = (props: Props) => {
               <>
                 <SearchBar
                   value={searchValue}
-                  placeholder={locale.watchListSearchPlaceholder}
+                  placeholder={getLocale('braveWalletWatchListSearchPlaceholder')}
                   action={filterWatchlist}
                 />
                 <WatchlistScrollContainer>
@@ -284,9 +284,9 @@ const EditVisibleAssetsModal = (props: Props) => {
                     {filteredTokenList.length === 0 &&
                       <NoAssetRow>
                         {searchValue.toLowerCase().startsWith('0x') ? (
-                          <NoAssetButton onClick={onClickSuggestAdd}>{locale.watchListAdd} {searchValue} {locale.watchListSuggestion}</NoAssetButton>
+                          <NoAssetButton onClick={onClickSuggestAdd}>{getLocale('braveWalletWatchListAdd')} {searchValue} {getLocale('braveWalletWatchListSuggestion')}</NoAssetButton>
                         ) : (
-                          <NoAssetText>{locale.watchListNoAsset} {searchValue}</NoAssetText>
+                          <NoAssetText>{getLocale('braveWalletWatchListNoAsset')} {searchValue}</NoAssetText>
                         )}
                       </NoAssetRow>
                     }
@@ -294,7 +294,7 @@ const EditVisibleAssetsModal = (props: Props) => {
                 </WatchlistScrollContainer>
                 <NavButton
                   onSubmit={toggleShowAddCustomToken}
-                  text={locale.watchlistAddCustomAsset}
+                  text={getLocale('braveWalletWatchlistAddCustomAsset')}
                   buttonType='primary'
                 />
               </>

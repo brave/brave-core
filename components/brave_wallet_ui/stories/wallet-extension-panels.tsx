@@ -43,7 +43,7 @@ import {
 } from './style'
 import { mockNetworks } from './mock-data/mock-networks'
 import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
-
+import './locale'
 export default {
   title: 'Wallet/Extension/Panels',
   parameters: {
@@ -275,9 +275,9 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     accounts[0]
   )
   const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
-    AppsList[0].appList[0]
+    AppsList()[0].appList[0]
   ])
-  const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
+  const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const [selectedNetwork, setSelectedNetwork] = React.useState<EthereumChain>(mockNetworks[0])
@@ -377,7 +377,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }
 
   const filterList = (event: any) => {
-    filterAppList(event, AppsList, setFilteredAppsList)
+    filterAppList(event, AppsList(), setFilteredAppsList)
   }
 
   const unlockWallet = () => {
@@ -535,9 +535,9 @@ export const _SetupWallet = () => {
   }
 
   return (
-    <StyledExtensionWrapper>
+    <StyledExtensionWrapperLonger>
       <WelcomePanel onRestore={onRestore} onSetup={onSetup} />
-    </StyledExtensionWrapper>
+    </StyledExtensionWrapperLonger>
   )
 }
 
