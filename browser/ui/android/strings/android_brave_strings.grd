@@ -2305,6 +2305,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_INCORRECT_PASSWORD_ERROR" desc="Brave Wallet incorrect password error text">
       Incorrect password
     </message>
+    <message name="IDS_CHOOSE_A_FILE" desc="Brave wallet accounts text">
+      Choose a file
+    </message>
     </messages>
   </release>
 </grit>

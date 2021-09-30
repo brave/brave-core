@@ -45,7 +45,6 @@ import java.util.List;
 
 public class AssetDetailActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, OnWalletListItemClick {
-    private static final int ACCOUNT_REQUEST_CODE = 2;
     private SmoothLineChartEquallySpaced chartES;
     private AssetRatioController mAssetRatioController;
     private KeyringController mKeyringController;
@@ -156,9 +155,9 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
                     for (AccountInfo accountInfo : accountInfos) {
-                        Log.e("NTP", "Account name : " + accountInfo.name);
-                        walletListItemModelList.add(new WalletListItemModel(R.drawable.ic_eth,
-                                accountInfo.name, accountInfo.address, null, null));
+                        walletListItemModelList.add(
+                                new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
+                                        accountInfo.address, null, null, accountInfo.isImported));
                     }
                     if (walletCoinAdapter != null) {
                         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
@@ -234,9 +233,11 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     public void onAccountClick(WalletListItemModel walletListItemModel) {
         Intent accountDetailActivityIntent =
                 new Intent(AssetDetailActivity.this, AccountDetailActivity.class);
-        accountDetailActivityIntent.putExtra("name", walletListItemModel.getTitle());
-        accountDetailActivityIntent.putExtra("address", walletListItemModel.getSubTitle());
-        startActivityForResult(accountDetailActivityIntent, ACCOUNT_REQUEST_CODE);
+        accountDetailActivityIntent.putExtra(Utils.NAME, walletListItemModel.getTitle());
+        accountDetailActivityIntent.putExtra(Utils.ADDRESS, walletListItemModel.getSubTitle());
+        accountDetailActivityIntent.putExtra(
+                Utils.ISIMPORTED, walletListItemModel.getIsImportedAccount());
+        startActivityForResult(accountDetailActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
     }
 
     @Override
@@ -258,7 +259,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == ACCOUNT_REQUEST_CODE) {
+        if (requestCode == Utils.ACCOUNT_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 setUpAccountList();
             }

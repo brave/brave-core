@@ -29,17 +29,18 @@ import java.util.List;
 
 public class AccountDetailActivity
         extends AsyncInitializationActivity implements OnWalletListItemClick {
-    private static final int UPDATE_ACCOUNT_REQUEST_CODE = 2;
     private String mAddress;
     private String mName;
+    private boolean mIsImported;
     private TextView mAccountText;
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_account_detail);
 
         if (getIntent() != null) {
-            mAddress = getIntent().getStringExtra("address");
-            mName = getIntent().getStringExtra("name");
+            mAddress = getIntent().getStringExtra(Utils.ADDRESS);
+            mName = getIntent().getStringExtra(Utils.NAME);
+            mIsImported = getIntent().getBooleanExtra(Utils.ISIMPORTED, false);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -51,7 +52,7 @@ public class AccountDetailActivity
         mAccountText.setText(mName);
 
         TextView accountValueText = findViewById(R.id.account_value_text);
-        accountValueText.setText(mAddress);
+        accountValueText.setText(Utils.stripAccountAddress(mAddress));
 
         TextView btnDetails = findViewById(R.id.details_btn);
         btnDetails.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +60,8 @@ public class AccountDetailActivity
             public void onClick(View v) {
                 Intent accountDetailsWithQrActivityIntent =
                         new Intent(AccountDetailActivity.this, AccountDetailsWithQrActivity.class);
-                accountDetailsWithQrActivityIntent.putExtra("address", mAddress);
-                accountDetailsWithQrActivityIntent.putExtra("name", mName);
+                accountDetailsWithQrActivityIntent.putExtra(Utils.ADDRESS, mAddress);
+                accountDetailsWithQrActivityIntent.putExtra(Utils.NAME, mName);
                 startActivity(accountDetailsWithQrActivityIntent);
             }
         });
@@ -70,9 +71,10 @@ public class AccountDetailActivity
             public void onClick(View v) {
                 Intent addAccountActivityIntent =
                         new Intent(AccountDetailActivity.this, AddAccountActivity.class);
-                addAccountActivityIntent.putExtra("address", mAddress);
-                addAccountActivityIntent.putExtra("name", mName);
-                startActivityForResult(addAccountActivityIntent, UPDATE_ACCOUNT_REQUEST_CODE);
+                addAccountActivityIntent.putExtra(Utils.ADDRESS, mAddress);
+                addAccountActivityIntent.putExtra(Utils.NAME, mName);
+                addAccountActivityIntent.putExtra(Utils.ISIMPORTED, mIsImported);
+                startActivityForResult(addAccountActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
             }
         });
 
@@ -146,9 +148,9 @@ public class AccountDetailActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == UPDATE_ACCOUNT_REQUEST_CODE) {
+        if (requestCode == Utils.ACCOUNT_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK && data != null) {
-                mName = data.getStringExtra("name");
+                mName = data.getStringExtra(Utils.NAME);
                 if (mAccountText != null) {
                     mAccountText.setText(mName);
                 }
