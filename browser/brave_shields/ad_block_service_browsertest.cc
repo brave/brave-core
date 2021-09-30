@@ -247,6 +247,10 @@ void AdBlockServiceTest::ShieldsDown(const GURL& url) {
   brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
 }
 
+void AdBlockServiceTest::LoadDAT(const base::FilePath path) {
+  g_brave_browser_process->ad_block_service()->GetDATFileData(path);
+}
+
 // Load a page with an ad image, and make sure it is blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
@@ -1509,6 +1513,58 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
                                  "setExpectations(0, 0, 1, 0);"
                                  "xhr_expect_content('%s', '%s');",
                                  resource_url.spec().c_str(), noopjs.c_str())));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+// A redirection should only be applied if there's also a matching blocking
+// rule.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectWithoutBlockIsNoop) {
+  // The DAT for this test contains the following rules:
+  //   .js?block=true
+  //   js_mock_me.js$redirect-rule=noopjs
+  // At the time of this test's writing, `redirect-rule` parsing is currently
+  // not supported by the engine, but it should work correctly when the CRX
+  // packager eventually begins shipping DATs that include them.
+  base::FilePath test_data_dir;
+  GetTestDataDir(&test_data_dir);
+  LoadDAT(test_data_dir.AppendASCII("adblock-data")
+              .AppendASCII("redirect-rule.dat"));
+  g_brave_browser_process->ad_block_service()->AddResources(R"([{
+        "name": "noop.js",
+        "aliases": ["noopjs"],
+        "kind": {
+          "mime":"application/javascript"
+        },
+        "content": "KGZ1bmN0aW9uKCkgewogICAgJ3VzZSBzdHJpY3QnOwp9KSgpOwo="
+      }])");
+  WaitForAdBlockServiceThreads();
+
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  const GURL url =
+      embedded_test_server()->GetURL("example.com", kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  const std::string noopjs = "(function() {\\n    \\'use strict\\';\\n})();\\n";
+  const GURL resource_url_1 = embedded_test_server()->GetURL(
+      "example.com", "/js_mock_me.js?block=true");
+  ASSERT_EQ(true, EvalJs(contents,
+                         base::StringPrintf("setExpectations(0, 0, 1, 0);"
+                                            "xhr_expect_content('%s', '%s');",
+                                            resource_url_1.spec().c_str(),
+                                            noopjs.c_str())));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  const std::string actual_content = "testing\\n";
+  const GURL resource_url_2 =
+      embedded_test_server()->GetURL("example.com", "/js_mock_me.js");
+  ASSERT_EQ(true, EvalJs(contents,
+                         base::StringPrintf("setExpectations(0, 0, 2, 0);"
+                                            "xhr_expect_content('%s', '%s');",
+                                            resource_url_2.spec().c_str(),
+                                            actual_content.c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 

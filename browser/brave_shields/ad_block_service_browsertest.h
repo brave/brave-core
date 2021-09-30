@@ -39,6 +39,7 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
   void WaitForAdBlockServiceThreads();
   void WaitForBraveExtensionShieldsDataReady();
   void ShieldsDown(const GURL& url);
+  void LoadDAT(base::FilePath path);
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_SERVICE_BROWSERTEST_H_
