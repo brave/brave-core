@@ -296,7 +296,9 @@ void BindSkuSdkImpl(
   auto* profile = Profile::FromBrowserContext(context);
   if (brave::IsRegularProfile(profile)) {
     mojo::MakeSelfOwnedReceiver(
-        std::make_unique<brave_rewards::SkusSdkImpl>(profile->GetPrefs()),
+        std::make_unique<brave_rewards::SkusSdkImpl>(
+            profile->GetPrefs(), context->GetDefaultStoragePartition()
+                                     ->GetURLLoaderFactoryForBrowserProcess()),
         std::move(receiver));
   } else {
     // TODO - finish me
