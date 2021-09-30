@@ -246,19 +246,17 @@ void BraveWalletServiceDelegateImpl::OnGetLocalStorage(
   const base::Value* argon_params_value =
       dict->FindPath("data.KeyringController.argonParams");
   if (argon_params_value) {
+    if (!argon_params_value->is_dict()) {
+      VLOG(0) << "data.KeyringController.argonParams is not dict";
+      std::move(callback).Run(false);
+      return;
+    }
     auto hash_len = argon_params_value->FindIntKey("hashLen");
     auto mem = argon_params_value->FindIntKey("mem");
     auto time = argon_params_value->FindIntKey("time");
     auto type = argon_params_value->FindIntKey("type");
     if (!hash_len || !mem || !time) {
       VLOG(0) << "missing hashLen, mem, time or type in argonParams";
-      std::move(callback).Run(false);
-      return;
-    }
-    const std::string* salt_str =
-        dict->FindStringPath("data.KeyringController.salt");
-    if (!salt_str) {
-      VLOG(0) << "missing data.KeyringController.salt";
       std::move(callback).Run(false);
       return;
     }
@@ -269,13 +267,22 @@ void BraveWalletServiceDelegateImpl::OnGetLocalStorage(
       return;
     }
 
+    const std::string* salt_str =
+        dict->FindStringPath("data.KeyringController.salt");
+    if (!salt_str) {
+      VLOG(0) << "missing data.KeyringController.salt";
+      std::move(callback).Run(false);
+      return;
+    }
+
     // We need to count characters here because js implemenation forcibly utf8
     // decode random bytes
     // (https://github.com/brave/KeyringController/blob/0769514cea07e85ae190f30765d0a301c631c56b/index.js#L91)
-    // and causes 0xEFBFBD which is � (code point 0xFFFD) to be inserted and
-    // replace the original byte when it is not a valid unicode encoding.
-    // When we pass salt to argon2, argon2 decides salt size by salt.length
-    // which would be 32 because it counts character length not bytes size
+    // and causes 0xEFBFBD which is � (code point 0xFFFD) to be // NOLINT
+    // inserted and replace the original byte when it is not a valid unicode
+    // encoding. When we pass salt to argon2, argon2 decides salt size by
+    // salt.length which would be 32 because it counts character length not
+    // bytes size
     // https://github.com/urbit/argon2-wasm/blob/c9e73723cebe3d76cf286f5c7709b64edb25c684/index.js#L73
     size_t character_count = 0;
     for (int32_t i = 0; i < (int32_t)salt_str->size(); ++i) {
@@ -304,8 +311,8 @@ void BraveWalletServiceDelegateImpl::OnGetLocalStorage(
     }
 
     // We need to go through whole buffer trying to see if there is an invalid
-    // unicdoe encoding and replace it with � (code point 0xFFFD) becasue js
-    // implementation forcibly utf8 decode sub_key
+    // unicdoe encoding and replace it with � (code point 0xFFFD) // NOLINT
+    // because js implementation forcibly utf8 decode sub_key
     // https://github.com/brave/KeyringController/blob/0769514cea07e85ae190f30765d0a301c631c56b/index.js#L547
     for (int32_t i = 0; i < (int32_t)sub_key.size(); ++i) {
       uint32_t code_point;
