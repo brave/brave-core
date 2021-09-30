@@ -15,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -36,6 +35,7 @@ import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -119,9 +119,8 @@ public class PortfolioFragment
         });
 
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, Utils.getNetworksList(getActivity()));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(getActivity(),
+                Utils.getNetworksList(getActivity()), Utils.getNetworksAbbrevList(getActivity()));
         mSpinner.setAdapter(dataAdapter);
 
         return view;
