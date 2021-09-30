@@ -53,7 +53,12 @@ export function ExternalWalletView (props: Props) {
       return (
         <style.verifyWallet>
           <button className='connect' onClick={actionHandler('verify')} >
-            {getString('walletVerify')}<ArrowCircleIcon />
+            <style.buttonText>
+              {getString('walletVerify')}
+            </style.buttonText>
+            <style.buttonIcons>
+              <ArrowCircleIcon />
+            </style.buttonIcons>
           </button>
         </style.verifyWallet>
       )
@@ -62,19 +67,23 @@ export function ExternalWalletView (props: Props) {
     return (
       <style.bubbleAction>
         <button onClick={toggleBubble} className={showBubble ? 'pressed' : ''}>
-          {
-            getString(externalWallet.status === 'disconnected'
-              ? 'walletDisconnected'
-              : 'walletMyWallet')
-          }
-          <span className='provider'><ProviderIcon /></span>
-          {
-            externalWallet.status === 'pending' &&
-              <span className='status'><PendingIcon /></span>
-          }
-          <span className='caret'>
-            <CaretIcon direction='down' />
-          </span>
+          <style.buttonText>
+            {
+              getString(externalWallet.status === 'disconnected'
+                ? 'walletDisconnected'
+                : 'walletMyWallet')
+            }
+          </style.buttonText>
+          <style.buttonIcons>
+            <span className='provider'><ProviderIcon /></span>
+            {
+              externalWallet.status === 'pending' &&
+                <span className='status'><PendingIcon /></span>
+            }
+            <span className='caret'>
+              <CaretIcon direction='down' />
+            </span>
+          </style.buttonIcons>
         </button>
       </style.bubbleAction>
     )

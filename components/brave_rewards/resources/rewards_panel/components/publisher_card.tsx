@@ -110,10 +110,12 @@ export function PublisherCard () {
 
     return (
       <style.statusIndicator className={registered ? 'registered' : ''}>
-        <VerifiedIcon />
-        {getString(registered ? 'verifiedCreator' : 'unverifiedCreator')}
-        <div className='pending-bubble'>
-          {renderPendingBubble()}
+        <div><VerifiedIcon /></div>
+        <div>
+          {getString(registered ? 'verifiedCreator' : 'unverifiedCreator')}
+          <div className='pending-bubble'>
+            {renderPendingBubble()}
+          </div>
         </div>
       </style.statusIndicator>
     )
