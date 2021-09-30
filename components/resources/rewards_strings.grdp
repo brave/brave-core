@@ -39,6 +39,9 @@
   <message name="IDS_REWARDS_WALLET_PENDING" desc="">
     Pending
   </message>
+  <message name="IDS_REWARDS_WALLET_PENDING_CONTRIBUTIONS" desc="">
+    Pending contributions
+  </message>
   <message name="IDS_REWARDS_WALLET_PENDING_REWARDS_TEXT" desc="">
     <ph name="AMOUNT">$1<ex>2 BAT</ex></ph> arriving in <ph name="DAYS">$2<ex>5 Days</ex></ph>
   </message>
@@ -47,6 +50,9 @@
   </message>
   <message name="IDS_REWARDS_WALLET_REWARDS_SUMMARY" desc="">
     Rewards Summary
+  </message>
+  <message name="IDS_REWARDS_WALLET_SEE_ALL" desc="">
+    See all
   </message>
   <message name="IDS_REWARDS_WALLET_VIEW_STATEMENT" desc="">
     View statement
