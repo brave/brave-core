@@ -9,8 +9,6 @@
 #include <string>
 
 #include "base/environment.h"
-#include "base/feature_list.h"
-#include "brave/components/brave_talk/features.h"
 #include "chrome/browser/profiles/profile.h"
 
 namespace extensions {
@@ -23,10 +21,7 @@ ExtensionFunction::ResponseAction BraveTalkIsSupportedFunction::Run() {
     return RespondNow(Error("Not available in Tor profile"));
   }
 
-  bool is_supported =
-      base::FeatureList::IsEnabled(brave_talk::features::kBraveTalk);
-
-  return RespondNow(OneArgument(base::Value(is_supported)));
+  return RespondNow(OneArgument(base::Value(true)));
 }
 
 }  // namespace api

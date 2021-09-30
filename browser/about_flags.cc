@@ -14,7 +14,6 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/features.h"
-#include "brave/components/brave_talk/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/debounce/common/features.h"
@@ -194,12 +193,6 @@ constexpr char kBraveSuperReferralName[] = "Enable Brave Super Referral";
 constexpr char kBraveSuperReferralDescription[] =
     "Use custom theme for Brave Super Referral";
 
-constexpr char kBraveTalkName[] = "Enable Brave Talk";
-constexpr char kBraveTalkDescription[] =
-    "Enables the Brave Talk integration on the new tab page. You can "
-    "use Brave Talk to start a private video call with your friends "
-    "and colleagues.";
-
 constexpr char kNativeBraveWalletName[] =
     "Enable experimental Brave native wallet";
 constexpr char kNativeBraveWalletDescription[] =
@@ -370,11 +363,6 @@ constexpr char kUseDevUpdaterUrlDescription[] =
      flag_descriptions::kBraveAdsCustomNotificationsDescription,            \
      kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_ads::features::kCustomAdNotifications)},      \
-    {"brave-talk",                                                          \
-     flag_descriptions::kBraveTalkName,                                     \
-     flag_descriptions::kBraveTalkDescription,                              \
-     kOsDesktop,                                                            \
-     FEATURE_VALUE_TYPE(brave_talk::features::kBraveTalk)},                 \
     {"brave-sync-v2",                                                       \
       flag_descriptions::kBraveSyncName,                                    \
       flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \

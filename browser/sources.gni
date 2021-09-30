@@ -126,7 +126,6 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_sync:features",
   "//brave/components/brave_sync:network_time_helper",
   "//brave/components/brave_sync:prefs",
-  "//brave/components/brave_talk",
   "//brave/components/brave_vpn/buildflags",
   "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/brave_wayback_machine:buildflags",
