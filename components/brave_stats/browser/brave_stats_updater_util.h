@@ -37,8 +37,9 @@ enum : uint8_t {
   kIsMonthlyUser = (1 << 2),
 };
 
-uint8_t UsageBitstringFromTimestamp(const base::Time& time,
-                                    const base::Time& now = base::Time::Now());
+uint8_t UsageBitstringFromTimestamp(
+    const base::Time& time,
+    const base::Time& reference = base::Time::Now());
 
 }  // namespace brave_stats
 

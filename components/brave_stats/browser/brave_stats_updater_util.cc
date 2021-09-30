@@ -91,8 +91,9 @@ std::string GetAPIKey() {
 // This is a helper method for dealing with timestamps set by other services in
 // the browser. This method makes the assumption that enabling the service
 // required a user interaction, and thus the uasge ping for the current day has
-// already fired. All calculations for daily, weekly, and monthly are made using
-// yesterday's timestamp as reference.
+// already fired. All calculations for daily, weekly, and monthly can use a
+// caller-specified timestamp as a reference, to accomodate non-reactive
+// services (stats_updater).
 //
 // The method returns a bitstring with the following values according to the
 // timestamp. All unannotated fields are unused.
@@ -103,20 +104,19 @@ std::string GetAPIKey() {
 //        ||______ Weekly
 //        |_______ Monthly
 uint8_t UsageBitstringFromTimestamp(const base::Time& time,
-                                    const base::Time& now) {
+                                    const base::Time& reference) {
   base::Time::Exploded target_exploded;
   time.LocalExplode(&target_exploded);
   uint8_t enabled_bitset = kIsInactiveUser;
 
-  base::Time yesterday = now - base::TimeDelta::FromDays(1);
-  base::Time::Exploded yesterday_exploded;
-  yesterday.LocalExplode(&yesterday_exploded);
-  if (yesterday_exploded.year == target_exploded.year) {
-    if (yesterday_exploded.month == target_exploded.month) {
+  base::Time::Exploded reference_exploded;
+  reference.LocalExplode(&reference_exploded);
+  if (reference_exploded.year == target_exploded.year) {
+    if (reference_exploded.month == target_exploded.month) {
       enabled_bitset |= kIsMonthlyUser;
-      if (GetIsoWeekNumber(time) == GetIsoWeekNumber(yesterday)) {
+      if (GetIsoWeekNumber(time) == GetIsoWeekNumber(reference)) {
         enabled_bitset |= kIsWeeklyUser;
-        if (yesterday_exploded.day_of_month == target_exploded.day_of_month) {
+        if (reference_exploded.day_of_month == target_exploded.day_of_month) {
           enabled_bitset |= kIsDailyUser;
         }
       }

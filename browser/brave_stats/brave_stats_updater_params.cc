@@ -106,7 +106,7 @@ std::string BraveStatsUpdaterParams::GetWalletEnabledParam() const {
   base::Time wallet_last_unlocked =
       profile_pref_service_->GetTime(kBraveWalletLastUnlockTime);
   uint8_t usage_bitset =
-      UsageBitstringFromTimestamp(wallet_last_unlocked, GetCurrentTimeNow());
+      UsageBitstringFromTimestamp(wallet_last_unlocked, GetReferenceTime());
   return std::to_string(usage_bitset);
 }
 
@@ -173,6 +173,10 @@ int BraveStatsUpdaterParams::GetCurrentMonth() const {
 
 int BraveStatsUpdaterParams::GetCurrentISOWeekNumber() const {
   return GetIsoWeekNumber(GetCurrentTimeNow());
+}
+
+base::Time BraveStatsUpdaterParams::GetReferenceTime() const {
+  return GetCurrentTimeNow() - base::TimeDelta::FromDays(1);
 }
 
 base::Time BraveStatsUpdaterParams::GetCurrentTimeNow() const {

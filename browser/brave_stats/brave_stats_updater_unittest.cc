@@ -493,7 +493,7 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringDaily) {
   // Note: daily implies weekly and monthly
   EXPECT_EQ(0b111, brave_stats::UsageBitstringFromTimestamp(
                        last_used_timestamp,
-                       brave_stats_updater_params.GetCurrentTimeNow()));
+                       brave_stats_updater_params.GetReferenceTime()));
 }
 
 TEST_F(BraveStatsUpdaterTest, UsageBitstringWeekly) {
@@ -510,7 +510,7 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringWeekly) {
   // Note: Weekly implies monthly
   EXPECT_EQ(0b110, brave_stats::UsageBitstringFromTimestamp(
                        last_used_timestamp,
-                       brave_stats_updater_params.GetCurrentTimeNow()));
+                       brave_stats_updater_params.GetReferenceTime()));
 }
 
 TEST_F(BraveStatsUpdaterTest, UsageBitstringMonthly) {
@@ -526,7 +526,7 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringMonthly) {
       kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(0b100, brave_stats::UsageBitstringFromTimestamp(
                        last_used_timestamp,
-                       brave_stats_updater_params.GetCurrentTimeNow()));
+                       brave_stats_updater_params.GetReferenceTime()));
 }
 
 TEST_F(BraveStatsUpdaterTest, UsageBitstringInactive) {
@@ -542,5 +542,5 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringInactive) {
       kToday, kThisWeek, kThisMonth);
   EXPECT_EQ(0b000, brave_stats::UsageBitstringFromTimestamp(
                        last_used_timestamp,
-                       brave_stats_updater_params.GetCurrentTimeNow()));
+                       brave_stats_updater_params.GetReferenceTime()));
 }

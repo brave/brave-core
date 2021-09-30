@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/gtest_prod_util.h"
+#include "base/time/time.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -73,6 +74,8 @@ class BraveWalletService : public KeyedService,
       const std::string& account,
       ResetEthereumPermissionCallback callback) override;
 
+  void RecordWalletUsage(base::Time wallet_last_used);
+
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
 
@@ -80,7 +83,6 @@ class BraveWalletService : public KeyedService,
       const std::string& contract_address,
       const std::string& chain_id);
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
-  void RecordWalletUsage();
   void OnP3ATimerFired();
 
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;

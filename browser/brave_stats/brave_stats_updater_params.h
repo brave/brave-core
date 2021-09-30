@@ -82,7 +82,14 @@ class BraveStatsUpdaterParams {
   std::string GetLastMondayAsYMD() const;
   int GetCurrentMonth() const;
   int GetCurrentISOWeekNumber() const;
+
+  // Returns the current time, allows override from tests
   base::Time GetCurrentTimeNow() const;
+
+  // Gets the previous day, since that is the most recent time another stats
+  // ping could have fired.
+  base::Time GetReferenceTime() const;
+
   bool ShouldForceFirstRun() const;
 
   static void SetCurrentTimeForTest(const base::Time& current_time);

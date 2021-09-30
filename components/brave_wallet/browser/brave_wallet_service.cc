@@ -66,7 +66,10 @@
 //
 namespace {
 
-constexpr int kRefreshP3AFrequencyHours = 6;
+constexpr char kBraveWalletDailyHistogramName[] = "Brave.Wallet.UsageDaily";
+constexpr char kBraveWalletWeeklyHistogramName[] = "Brave.Wallet.UsageWeekly";
+constexpr char kBraveWalletMonthlyHistogramName[] = "Brave.Wallet.UsageMonthly";
+constexpr int kRefreshP3AFrequencyHours = 3;
 
 base::CheckedContiguousIterator<base::Value> FindAsset(
     base::Value* user_assets_list,
@@ -104,6 +107,7 @@ BraveWalletService::BraveWalletService(
   p3a_periodic_timer_.Start(
       FROM_HERE, base::TimeDelta::FromHours(kRefreshP3AFrequencyHours), this,
       &BraveWalletService::OnP3ATimerFired);
+  OnP3ATimerFired();  // Also call on startup
 }
 
 BraveWalletService::~BraveWalletService() = default;
@@ -428,26 +432,27 @@ void BraveWalletService::MigrateUserAssetEthContractAddress(
 }
 
 void BraveWalletService::OnP3ATimerFired() {
-  RecordWalletUsage();
+  base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
+  RecordWalletUsage(wallet_last_used);
 }
 
 void BraveWalletService::OnWalletUnlockPreferenceChanged(
     const std::string& pref_name) {
-  RecordWalletUsage();
+  base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
+  RecordWalletUsage(wallet_last_used);
 }
 
-void BraveWalletService::RecordWalletUsage() {
-  base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
+void BraveWalletService::RecordWalletUsage(base::Time wallet_last_used) {
   uint8_t usage = brave_stats::UsageBitstringFromTimestamp(wallet_last_used);
 
   bool daily = !!(usage & brave_stats::kIsDailyUser);
-  UMA_HISTOGRAM_BOOLEAN("Brave.Wallet.UsageDaily", daily);
+  UMA_HISTOGRAM_BOOLEAN(kBraveWalletDailyHistogramName, daily);
 
   bool weekly = !!(usage & brave_stats::kIsWeeklyUser);
-  UMA_HISTOGRAM_BOOLEAN("Brave.Wallet.UsageWeekly", weekly);
+  UMA_HISTOGRAM_BOOLEAN(kBraveWalletWeeklyHistogramName, weekly);
 
   bool monthly = !!(usage & brave_stats::kIsMonthlyUser);
-  UMA_HISTOGRAM_BOOLEAN("Brave.Wallet.UsageMonthly", monthly);
+  UMA_HISTOGRAM_BOOLEAN(kBraveWalletMonthlyHistogramName, monthly);
 }
 
 }  // namespace brave_wallet
