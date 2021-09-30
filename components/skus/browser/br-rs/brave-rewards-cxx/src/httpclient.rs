@@ -81,6 +81,17 @@ impl HTTPClient for NativeClient {
         .await
     }
 
+    fn schedule_wakeup(delay_ms: u64) {
+        ffi::shim_scheduleWakeup(delay_ms, || {
+            debug!("woke up!");
+            LOCAL_POOL.with(|pool| {
+                if let Ok(mut pool) = pool.try_borrow_mut() {
+                    pool.run_until_stalled();
+                }
+            });
+        })
+    }
+
     fn get_cookie(_key: &str) -> Option<String> {
         unimplemented!();
     }
