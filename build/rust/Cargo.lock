@@ -4,33 +4,6 @@ version = 3
 
 [[package]]
 name = "adblock"
-version = "0.2.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3cc54cae2d948c473685efaff6e0aa3b4d53b3085602adc330e0663d90bbd2de"
-dependencies = [
- "addr",
- "base64 0.10.1",
- "bitflags",
- "flate2",
- "hashbrown 0.6.3",
- "idna 0.2.3",
- "itertools 0.8.2",
- "lazy_static",
- "lifeguard",
- "matches",
- "once_cell",
- "percent-encoding 2.1.0",
- "psl",
- "regex",
- "rmp-serde 0.13.7",
- "seahash",
- "serde",
- "twoway",
- "url 2.2.2",
-]
-
-[[package]]
-name = "adblock"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1dc2f3210fea0de53cf918e360bbb3c000c9e7999c3d0663ac11ec67e05a793b"
