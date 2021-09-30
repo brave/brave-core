@@ -378,7 +378,7 @@ export const fetchSwapQuoteFactory = (
   }
 
   const quote = await (
-      full ? swapController.getTransactionPayload(swapParams) : swapController.getPriceQuote(swapParams)
+    full ? swapController.getTransactionPayload(swapParams) : swapController.getPriceQuote(swapParams)
   )
 
   if (quote.success && quote.response) {
@@ -406,6 +406,11 @@ export const fetchSwapQuoteFactory = (
     }
   }
 }
+
+handler.on(WalletActions.notifyUserInteraction.getType(), async (store) => {
+  const keyringController = (await getAPIProxy()).keyringController
+  await keyringController.notifyUserInteraction()
+})
 
 export default handler.middleware
 
