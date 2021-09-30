@@ -128,14 +128,6 @@ public class Utils {
         activity.startActivity(addAccountActivityIntent);
     }
 
-    public static void openAccountDetailActivity(Activity activity, String name, String address) {
-        assert activity != null;
-        Intent accountDetailActivityIntent = new Intent(activity, AccountDetailActivity.class);
-        accountDetailActivityIntent.putExtra("name", name);
-        accountDetailActivityIntent.putExtra("address", address);
-        activity.startActivity(accountDetailActivityIntent);
-    }
-
     public static String[] getNetworksList(Activity activity) {
         List<String> categories = new ArrayList<String>();
         categories.add(activity.getText(R.string.mainnet).toString());

@@ -1810,6 +1810,9 @@ until they verify, or until 90 days have passed.
     <message name="IDS_ADD_ACCOUNT" desc="Brave Wallet account dialog button text">
       Add Account
     </message>
+    <message name="IDS_UPDATE_ACCOUNT" desc="Brave Wallet account dialog button text">
+      Update Account
+    </message>
     <message name="IDS_RECOVERY_PHRASE_ITEM_TEXT" desc="Brave Wallet onboarding text">
       <ph name="NUMBER">%1$s</ph>. <ph name="RECOVERY_PHRASE">%2$s</ph>
     </message>
@@ -2289,6 +2292,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_EDIT" desc="Brave wallet accounts text">
       Edit
+    </message>
+    <message name="IDS_UPDATE" desc="Brave wallet accounts text">
+      Update
+    </message>
+    <message name="IDS_ACCOUNT_UPDATE_FAILED" desc="Brave Wallet account update error text">
+      Account update failed.
+    </message>
+    <message name="IDS_ACCOUNT_NAME_EMPTY_ERROR" desc="Brave Wallet empty account error text">
+      Account name can't be empty.
+    </message>
+    <message name="IDS_INCORRECT_PASSWORD_ERROR" desc="Brave Wallet incorrect password error text">
+      Incorrect password
     </message>
     </messages>
   </release>

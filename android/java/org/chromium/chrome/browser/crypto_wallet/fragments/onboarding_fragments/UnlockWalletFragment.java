@@ -60,7 +60,7 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
                             onNextPage.gotoNextPage(true);
                         }
                     } else {
-                        unlockWalletPassword.setError(getString(R.string.password_error));
+                        unlockWalletPassword.setError(getString(R.string.incorrect_password_error));
                     }
                 });
             }

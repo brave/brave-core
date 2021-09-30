@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -27,15 +29,17 @@ import java.util.List;
 
 public class AccountDetailActivity
         extends AsyncInitializationActivity implements OnWalletListItemClick {
-    private String address;
-    private String name;
+    private static final int UPDATE_ACCOUNT_REQUEST_CODE = 2;
+    private String mAddress;
+    private String mName;
+    private TextView mAccountText;
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_account_detail);
 
         if (getIntent() != null) {
-            address = getIntent().getStringExtra("address");
-            name = getIntent().getStringExtra("name");
+            mAddress = getIntent().getStringExtra("address");
+            mName = getIntent().getStringExtra("name");
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -43,11 +47,11 @@ public class AccountDetailActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
 
-        TextView accountText = findViewById(R.id.account_text);
-        accountText.setText(name);
+        mAccountText = findViewById(R.id.account_text);
+        mAccountText.setText(mName);
 
         TextView accountValueText = findViewById(R.id.account_value_text);
-        accountValueText.setText(address);
+        accountValueText.setText(mAddress);
 
         TextView btnDetails = findViewById(R.id.details_btn);
         btnDetails.setOnClickListener(new View.OnClickListener() {
@@ -55,8 +59,8 @@ public class AccountDetailActivity
             public void onClick(View v) {
                 Intent accountDetailsWithQrActivityIntent =
                         new Intent(AccountDetailActivity.this, AccountDetailsWithQrActivity.class);
-                accountDetailsWithQrActivityIntent.putExtra("address", address);
-                accountDetailsWithQrActivityIntent.putExtra("name", name);
+                accountDetailsWithQrActivityIntent.putExtra("address", mAddress);
+                accountDetailsWithQrActivityIntent.putExtra("name", mName);
                 startActivity(accountDetailsWithQrActivityIntent);
             }
         });
@@ -64,7 +68,11 @@ public class AccountDetailActivity
         btnRename.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO add action for edit
+                Intent addAccountActivityIntent =
+                        new Intent(AccountDetailActivity.this, AddAccountActivity.class);
+                addAccountActivityIntent.putExtra("address", mAddress);
+                addAccountActivityIntent.putExtra("name", mName);
+                startActivityForResult(addAccountActivityIntent, UPDATE_ACCOUNT_REQUEST_CODE);
             }
         });
 
@@ -108,6 +116,8 @@ public class AccountDetailActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_OK, returnIntent);
                 finish();
                 return true;
         }
@@ -131,4 +141,25 @@ public class AccountDetailActivity
 
     @Override
     public void onTransactionClick() {}
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == UPDATE_ACCOUNT_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                mName = data.getStringExtra("name");
+                if (mAccountText != null) {
+                    mAccountText.setText(mName);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+    }
 }

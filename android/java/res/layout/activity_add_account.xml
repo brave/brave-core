@@ -51,6 +51,7 @@
             android:textColorHint="@color/wallet_edittext_outline_color" />
 
         <TextView
+            android:id="@+id/import_account_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -61,6 +62,7 @@
             android:textSize="14sp" />
 
         <LinearLayout
+            android:id="@+id/import_account_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

@@ -23,6 +23,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -112,8 +113,10 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
 
     @Override
     public void onAccountClick(WalletListItemModel walletListItemModel) {
-        Utils.openAccountDetailActivity(
-                getActivity(), walletListItemModel.getTitle(), walletListItemModel.getSubTitle());
+        Intent accountDetailActivityIntent = new Intent(getActivity(), AccountDetailActivity.class);
+        accountDetailActivityIntent.putExtra("name", walletListItemModel.getTitle());
+        accountDetailActivityIntent.putExtra("address", walletListItemModel.getSubTitle());
+        startActivityForResult(accountDetailActivityIntent, ACCOUNT_REQUEST_CODE);
     }
 
     @Override
