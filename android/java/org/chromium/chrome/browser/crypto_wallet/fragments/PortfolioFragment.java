@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
-import static org.chromium.chrome.browser.crypto_wallet.util.Utils.fromHexWei;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,9 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,13 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.base.Log;
-import org.chromium.base.task.PostTask;
-import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
-import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
@@ -41,19 +31,13 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.content_public.browser.UiThreadTaskTraits;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class PortfolioFragment
         extends Fragment implements OnWalletListItemClick, AdapterView.OnItemSelectedListener {
-    private static String TAG = "PortfolioFragment";
-    private Spinner mSpinner;
-    private TextView mBalance;
+    Spinner mSpinner;
 
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
@@ -100,23 +84,7 @@ public class PortfolioFragment
         });
 
         mSpinner = view.findViewById(R.id.spinner);
-        // class PortfolioFragment in fact is used both for Portfolio and Apps
-        // screens, see CryptoFragmentPageAdapter.getItem.
-        // Without post task with delay it happens that when 2nd instance is
-        // created, then 1st instance onItemSelected is triggered with
-        // position=0. That makes onItemSelected to switch network, but the
-        // actual displayed value of spinner's item on 1st instance remains
-        // unchanged.
-        PostTask.postDelayedTask(UiThreadTaskTraits.DEFAULT,
-                () -> { mSpinner.setOnItemSelectedListener(this); }, 500);
-
-        mBalance = view.findViewById(R.id.balance);
-        mBalance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UpdatePortfolio();
-            }
-        });
+        mSpinner.setOnItemSelectedListener(this);
 
         // Creating adapter for spinner
         NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(getActivity(),
@@ -129,10 +97,8 @@ public class PortfolioFragment
     private void updateNetwork() {
         EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
         if (ethJsonRpcController != null) {
-            ethJsonRpcController.getChainId(chain_id -> {
-                mSpinner.setSelection(getIndexOf(mSpinner, chain_id));
-                UpdatePortfolio();
-            });
+            ethJsonRpcController.getChainId(
+                    chain_id -> { mSpinner.setSelection(getIndexOf(mSpinner, chain_id)); });
         }
     }
 
@@ -159,7 +125,6 @@ public class PortfolioFragment
         EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
         if (ethJsonRpcController != null) {
             ethJsonRpcController.setNetwork(Utils.getNetworkConst(getActivity(), item));
-            UpdatePortfolio();
         }
     }
 
@@ -203,105 +168,5 @@ public class PortfolioFragment
     @Override
     public void onAssetClick() {
         Utils.openAssetDetailsActivity(getActivity());
-    }
-
-    private AssetRatioController getAssetRatioController() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getAssetRatioController();
-        }
-
-        return null;
-    }
-
-    private KeyringController getKeyringController() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringController();
-        }
-
-        return null;
-    }
-
-    // Helper for async EthJsonRpcController.getBalance
-    class GetBalanceResponseContext implements EthJsonRpcController.GetBalanceResponse {
-        public CompletableFuture<Void> future;
-        public Boolean success;
-        public String balance;
-
-        public GetBalanceResponseContext() {
-            future = new CompletableFuture<>();
-        }
-
-        @Override
-        public void call(Boolean success, String balance) {
-            this.success = success;
-            this.balance = balance;
-            future.complete(null);
-        }
-    }
-
-    private void UpdatePortfolio() {
-        AssetRatioController assetRatioController = getAssetRatioController();
-        assert assetRatioController != null : "assetRatioController is null";
-
-        // Get Ethereum price in USD
-        assetRatioController.getPrice(new String[] {"eth"}, new String[] {"usd"},
-                AssetPriceTimeframe.LIVE, (success, assetPrices) -> {
-                    if (success && assetPrices.length == 1 && assetPrices[0].fromAsset.equals("eth")
-                            && assetPrices[0].toAsset.equals("usd")) {
-                        Double usdPerEth;
-                        try {
-                            usdPerEth = Double.parseDouble(assetPrices[0].price);
-                        } catch (NullPointerException | NumberFormatException ex) {
-                            Log.e(TAG, "Cannot parse " + assetPrices[0].price + ", " + ex);
-                            return;
-                        }
-
-                        // Get all accounts
-                        KeyringController keyringController = getKeyringController();
-                        assert keyringController != null : "keyringController is null";
-                        keyringController.getDefaultKeyringInfo(keyringInfo -> {
-                            if (keyringInfo != null) {
-                                AccountInfo[] accountInfos = keyringInfo.accountInfos;
-                                EthJsonRpcController rpcController = getEthJsonRpcController();
-                                assert rpcController != null : "rpcController is null";
-                                ArrayList<GetBalanceResponseContext> contexts =
-                                        new ArrayList<GetBalanceResponseContext>();
-                                for (AccountInfo accountInfo : accountInfos) {
-                                    GetBalanceResponseContext context =
-                                            new GetBalanceResponseContext();
-                                    contexts.add(context);
-                                    rpcController.getBalance(accountInfo.address, context);
-                                }
-
-                                CompletableFuture<Void>[] futureArr = (CompletableFuture<
-                                        Void>[]) new CompletableFuture[accountInfos.length];
-                                for (int i = 0; i < contexts.size(); ++i) {
-                                    futureArr[i] = contexts.get(i).future;
-                                }
-                                CompletableFuture<Void> all = CompletableFuture.allOf(futureArr);
-
-                                all.thenRunAsync(() -> {
-                                    Double fiatSum = 0.0d;
-                                    for (GetBalanceResponseContext context : contexts) {
-                                        fiatSum += ((context.success)
-                                                        ? (fromHexWei(context.balance) * usdPerEth)
-                                                        : 0.0d);
-                                    }
-                                    final String fiatSumString = String.format("$%,.2f", fiatSum);
-                                    PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
-                                        mBalance.setText(fiatSumString);
-                                        mBalance.invalidate();
-                                    });
-                                });
-                            } else {
-                                Log.e(TAG, "Wrong keyring info");
-                            }
-                        });
-                    } else {
-                        Log.e(TAG, "Wrong response from AssetRatioController");
-                    }
-                });
     }
 }

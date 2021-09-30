@@ -73,6 +73,29 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                         getResources().getString(R.string.retype_password_error));
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    final BiometricPrompt.AuthenticationCallback
+                            authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
+                        private void onNextPage() {
+                            // Go to next Page
+                            goToTheNextPage();
+                        }
+
+                        @Override
+                        public void onAuthenticationSucceeded(
+                                BiometricPrompt.AuthenticationResult result) {
+                            super.onAuthenticationSucceeded(result);
+                            onNextPage();
+                        }
+
+                        @Override
+                        public void onAuthenticationError(int errorCode, CharSequence errString) {
+                            super.onAuthenticationError(errorCode, errString);
+
+                            // Even though we have an error, we still let to proceed
+                            Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
+                            onNextPage();
+                        }
+                    };
                     showFingerprintDialog(authenticationCallback);
                 } else {
                     goToTheNextPage();
@@ -111,28 +134,4 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                 .build()
                 .authenticate(new CancellationSignal(), executor, authenticationCallback);
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    BiometricPrompt.AuthenticationCallback
-            authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
-        private void onNextPage() {
-            // Go to next Page
-            goToTheNextPage();
-        }
-
-        @Override
-        public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
-            super.onAuthenticationSucceeded(result);
-            onNextPage();
-        }
-
-        @Override
-        public void onAuthenticationError(int errorCode, CharSequence errString) {
-            super.onAuthenticationError(errorCode, errString);
-
-            // Even though we have an error, we still let to proceed
-            Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
-            onNextPage();
-        }
-    };
 }
