@@ -16,6 +16,11 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }  // namespace user_prefs
 
+namespace network {
+class SharedURLLoaderFactory;
+class SimpleURLLoader;
+}  // namespace network
+
 namespace brave_rewards {
 
 class SkusSdkImpl final : public skus::mojom::SkusSdk {
@@ -25,7 +30,10 @@ class SkusSdkImpl final : public skus::mojom::SkusSdk {
   SkusSdkImpl(const SkusSdkImpl&) = delete;
   SkusSdkImpl& operator=(const SkusSdkImpl&) = delete;
 
-  SkusSdkImpl(PrefService* prefs);
+  SkusSdkImpl(
+      PrefService* prefs,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  ~SkusSdkImpl() override;
 
   void RefreshOrder(const std::string& order_id,
                     RefreshOrderCallback callback) override;
@@ -34,6 +42,7 @@ class SkusSdkImpl final : public skus::mojom::SkusSdk {
   // TODO: re-implement when setting preferences
   // private:
   //  PrefService* prefs_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 };
 
 }  // namespace brave_rewards
