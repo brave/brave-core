@@ -60,12 +60,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
     service_.reset(new BraveWalletService(
-#if defined(OS_ANDROID)
-        std::make_unique<BraveWalletServiceDelegate>(),
-#else
-        std::make_unique<BraveWalletServiceDelegateImpl>(profile_.get()),
-#endif
-        GetPrefs()));
+        BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs()));
 
     auto* registry = ERCTokenRegistry::GetInstance();
     std::vector<mojom::ERCTokenPtr> input_erc_tokens;
