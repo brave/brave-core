@@ -9,6 +9,7 @@
 
 #include "base/environment.h"
 #include "base/json/json_writer.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/skus/browser/br-rs/brave-rewards-cxx/src/wrapper.hpp"
 #include "brave/components/skus/browser/pref_names.h"
@@ -174,11 +175,23 @@ void SkusSdkFetcher::OnFetchComplete(
 
 namespace brave_rewards {
 
+void OnScheduleWakeup(rust::cxxbridge1::Fn<void()> done) {
+  done();
+}
+
+void shim_scheduleWakeup(::std::uint64_t delay_ms,
+                         rust::cxxbridge1::Fn<void()> done) {
+  LOG(ERROR) << "shim_scheduleWakeup " << delay_ms;
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE, base::BindOnce(&OnScheduleWakeup, std::move(done)),
+      base::TimeDelta::FromMilliseconds(5000 + delay_ms));
+}
+
 void shim_executeRequest(
     const brave_rewards::HttpRequest& req,
     rust::cxxbridge1::Fn<
         void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
-             brave_rewards::HttpResponse)> callback,
+             brave_rewards::HttpResponse)> done,
     rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx) {
   fetcher = make_unique<SkusSdkFetcher>(g_SkusSdk->url_loader_factory_);
   fetcher->BeginFetch(req, std::move(done), std::move(ctx));
