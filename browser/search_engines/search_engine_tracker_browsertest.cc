@@ -39,8 +39,7 @@ testing::AssertionResult VerifyTemplateURLServiceLoad(
   return testing::AssertionFailure() << "TemplateURLService isn't loaded";
 }
 
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
-                       DefaultSearchEngineP3A) {
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
   // Check that the metric is reported on startup.
   histogram_tester_->ExpectUniqueSample(kDefaultSearchEngineMetric,
                                         SearchEngineP3A::kGoogle, 1);
