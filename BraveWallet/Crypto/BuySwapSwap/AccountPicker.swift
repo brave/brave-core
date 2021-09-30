@@ -8,7 +8,7 @@ import BraveCore
 
 struct AccountPicker: View {
   @ObservedObject var keyringStore: KeyringStore
-  @ObservedObject var networkStore: EthNetworkStore
+  @ObservedObject var networkStore: NetworkStore
   @Binding var account: BraveWallet.AccountInfo
   
   @State private var isPresentingPicker: Bool = false

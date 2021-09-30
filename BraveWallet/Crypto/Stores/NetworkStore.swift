@@ -10,7 +10,7 @@ import SwiftUI
 /// An interface that helps you interact with a eth json-rpc controller
 ///
 /// This wraps a EthJsonRpcController that you would obtain through BraveCore and makes it observable
-public class EthNetworkStore: ObservableObject {
+public class NetworkStore: ObservableObject {
   @Published private(set) var ethereumChains: [BraveWallet.EthereumChain] = []
   @Published private(set) var selectedChainId: String = BraveWallet.MainnetChainId
   
@@ -26,8 +26,8 @@ public class EthNetworkStore: ObservableObject {
   
   private let controller: BraveWalletEthJsonRpcController
   
-  public init(ethJsonRpcController: BraveWalletEthJsonRpcController) {
-    controller = ethJsonRpcController
+  public init(rpcController: BraveWalletEthJsonRpcController) {
+    controller = rpcController
     controller.allNetworks { chains in
       self.ethereumChains = chains
     }
@@ -40,7 +40,7 @@ public class EthNetworkStore: ObservableObject {
   }
 }
 
-extension EthNetworkStore: BraveWalletEthJsonRpcControllerObserver {
+extension NetworkStore: BraveWalletEthJsonRpcControllerObserver {
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
     
   }

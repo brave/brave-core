@@ -11,16 +11,19 @@ import Introspect
 import BraveUI
 
 public struct CryptoView: View {
+  var walletStore: WalletStore
   @ObservedObject var keyringStore: KeyringStore
-  @ObservedObject var networkStore: EthNetworkStore
   
   // in iOS 15, PresentationMode will be available in SwiftUI hosted by UIHostingController
   // but for now we'll have to manage this ourselves
   var dismissAction: (() -> Void)?
   
-  public init(keyringStore: KeyringStore, networkStore: EthNetworkStore) {
+  public init(
+    walletStore: WalletStore,
+    keyringStore: KeyringStore
+  ) {
+    self.walletStore = walletStore
     self.keyringStore = keyringStore
-    self.networkStore = networkStore
   }
   
   private enum VisibleScreen: Equatable {
@@ -58,8 +61,7 @@ public struct CryptoView: View {
         UIKitController(
           UINavigationController(
             rootViewController: CryptoPagesViewController(
-              keyringStore: keyringStore,
-              networkStore: networkStore
+              walletStore: walletStore
             )
           )
         )

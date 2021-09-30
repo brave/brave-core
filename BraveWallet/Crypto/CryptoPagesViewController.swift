@@ -11,16 +11,11 @@ import PanModal
 import BraveUI
 
 class CryptoPagesViewController: TabbedPageViewController {
-  private let keyringStore: KeyringStore
-  private let networkStore: EthNetworkStore
+  private let walletStore: WalletStore
   private let swapButton = SwapButton()
   
-  init(
-    keyringStore: KeyringStore,
-    networkStore: EthNetworkStore
-  ) {
-    self.keyringStore = keyringStore
-    self.networkStore = networkStore
+  init(walletStore: WalletStore) {
+    self.walletStore = walletStore
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -65,10 +60,10 @@ class CryptoPagesViewController: TabbedPageViewController {
     }
     
     pages = [
-      UIHostingController(rootView: PortfolioView(keyringStore: keyringStore, networkStore: networkStore)).then {
+      UIHostingController(rootView: PortfolioView(keyringStore: walletStore.keyringStore, networkStore: walletStore.networkStore, portfolioStore: walletStore.portfolioStore)).then {
         $0.title = "Portfolio" // NSLocalizedString
       },
-      UIHostingController(rootView: AccountsView(keyringStore: keyringStore)).then {
+      UIHostingController(rootView: AccountsView(keyringStore: walletStore.keyringStore)).then {
         $0.title = "Accounts" // NSLocalizedString
       }
     ]
@@ -88,7 +83,7 @@ class CryptoPagesViewController: TabbedPageViewController {
   }
   
   @objc private func presentSearch() {
-    let controller = UIHostingController(rootView: AssetSearchView(tokenRegistry: TestTokenRegistry()))
+    let controller = UIHostingController(rootView: AssetSearchView(tokenRegistry: BraveCoreMain.ercTokenRegistry))
     present(controller, animated: true)
   }
   
@@ -108,8 +103,8 @@ class CryptoPagesViewController: TabbedPageViewController {
         case .swap:
           let controller = UIHostingController(
             rootView: SwapCryptoView(
-              keyringStore: self.keyringStore,
-              ethNetworkStore: self.networkStore
+              keyringStore: self.walletStore.keyringStore,
+              ethNetworkStore: self.walletStore.networkStore
             )
           )
           self.dismiss(animated: true) {

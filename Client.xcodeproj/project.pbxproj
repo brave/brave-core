@@ -230,7 +230,7 @@
 		271F689526EBD27E00AA2A50 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 271F685526EBD27C00AA2A50 /* Preview Assets.xcassets */; };
 		271F689626EBD27E00AA2A50 /* SwapCryptoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685826EBD27D00AA2A50 /* SwapCryptoView.swift */; };
 		271F689726EBD27E00AA2A50 /* CryptoPagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685926EBD27D00AA2A50 /* CryptoPagesViewController.swift */; };
-		271F689826EBD27E00AA2A50 /* EthNetworkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685B26EBD27D00AA2A50 /* EthNetworkStore.swift */; };
+		271F689826EBD27E00AA2A50 /* NetworkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685B26EBD27D00AA2A50 /* NetworkStore.swift */; };
 		271F689926EBD27E00AA2A50 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685C26EBD27D00AA2A50 /* Address.swift */; };
 		271F689A26EBD27E00AA2A50 /* KeyringStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685D26EBD27D00AA2A50 /* KeyringStore.swift */; };
 		271F689B26EBD27E00AA2A50 /* CryptoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685E26EBD27D00AA2A50 /* CryptoView.swift */; };
@@ -339,6 +339,7 @@
 		276A791024476FD200AC9446 /* StatsSectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A790F24476FD200AC9446 /* StatsSectionProvider.swift */; };
 		276E7A3C22F21DBE00939424 /* RewardsReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276E7A3B22F21DBE00939424 /* RewardsReporting.swift */; };
 		277046C22684CD2A001CB097 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = 277046C12684CD2A001CB097 /* PanModal */; };
+		277190EA2702512900DC81D5 /* TestStores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277190E92702512900DC81D5 /* TestStores.swift */; };
 		277223722469B4FB0059A7EB /* FaviconFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277223712469B4FB0059A7EB /* FaviconFetcher.swift */; };
 		277223762469E7290059A7EB /* LargeFaviconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277223752469E7290059A7EB /* LargeFaviconView.swift */; };
 		27733E5826977EC40086799A /* PasscodeMigrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27733E5726977EC40086799A /* PasscodeMigrationView.swift */; };
@@ -463,6 +464,9 @@
 		27DCB9EC263764EF0067EF4A /* TabTrayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DCB9EB263764EF0067EF4A /* TabTrayCell.swift */; };
 		27DCB9EE263765430067EF4A /* TabTrayToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DCB9ED263765430067EF4A /* TabTrayToolbar.swift */; };
 		27DDE85926FBE09A00A70C3A /* AccountPrivateKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DDE85826FBE09A00A70C3A /* AccountPrivateKeyView.swift */; };
+		27DDE88626FD2BC400A70C3A /* PortfolioStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DDE88526FD2BC400A70C3A /* PortfolioStore.swift */; };
+		27DDE88826FD2D8B00A70C3A /* WalletStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DDE88726FD2D8B00A70C3A /* WalletStore.swift */; };
+		27DDE88A26FE1A7700A70C3A /* TestBraveWalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DDE88926FE1A7700A70C3A /* TestBraveWalletService.swift */; };
 		27E0652624CB69C700134946 /* brave-today-welcome-graphic.json in Resources */ = {isa = PBXBuildFile; fileRef = 27E0652524CB69C700134946 /* brave-today-welcome-graphic.json */; };
 		27E0652824CB6AE300134946 /* BraveNewsErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0652724CB6AE300134946 /* BraveNewsErrorView.swift */; };
 		27EA04C2249D4336004F5D2E /* FeedCardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EA04C1249D4336004F5D2E /* FeedCardContent.swift */; };
@@ -1769,7 +1773,7 @@
 		271F685526EBD27C00AA2A50 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		271F685826EBD27D00AA2A50 /* SwapCryptoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapCryptoView.swift; sourceTree = "<group>"; };
 		271F685926EBD27D00AA2A50 /* CryptoPagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoPagesViewController.swift; sourceTree = "<group>"; };
-		271F685B26EBD27D00AA2A50 /* EthNetworkStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EthNetworkStore.swift; sourceTree = "<group>"; };
+		271F685B26EBD27D00AA2A50 /* NetworkStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkStore.swift; sourceTree = "<group>"; };
 		271F685C26EBD27D00AA2A50 /* Address.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		271F685D26EBD27D00AA2A50 /* KeyringStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyringStore.swift; sourceTree = "<group>"; };
 		271F685E26EBD27D00AA2A50 /* CryptoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoView.swift; sourceTree = "<group>"; };
@@ -1867,6 +1871,7 @@
 		276A790F24476FD200AC9446 /* StatsSectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSectionProvider.swift; sourceTree = "<group>"; };
 		276E7A2E22F21A7700939424 /* RewardsReporting.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = RewardsReporting.js; sourceTree = "<group>"; };
 		276E7A3B22F21DBE00939424 /* RewardsReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsReporting.swift; sourceTree = "<group>"; };
+		277190E92702512900DC81D5 /* TestStores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStores.swift; sourceTree = "<group>"; };
 		277223712469B4FB0059A7EB /* FaviconFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaviconFetcher.swift; sourceTree = "<group>"; };
 		277223752469E7290059A7EB /* LargeFaviconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeFaviconView.swift; sourceTree = "<group>"; };
 		27733E5726977EC40086799A /* PasscodeMigrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeMigrationView.swift; sourceTree = "<group>"; };
@@ -2058,7 +2063,6 @@
 		27B3DDCF24AE83710006A7ED /* FeedSourceOverride.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSourceOverride.swift; sourceTree = "<group>"; };
 		27B3DDD424AF98EA0006A7ED /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
 		27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MaterialComponents.xcframework; path = "node_modules/brave-core-ios/MaterialComponents.xcframework"; sourceTree = "<group>"; };
-		27B68DD725C48EE9002D0826 /* BraveRewards.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraveRewards.xcframework; path = "node_modules/brave-core-ios/BraveRewards.xcframework"; sourceTree = "<group>"; };
 		27B68E9325C8911D002D0826 /* BraveNewsAddSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveNewsAddSourceViewController.swift; sourceTree = "<group>"; };
 		27C22A8F26409FF200419FC7 /* WindowProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowProtection.swift; sourceTree = "<group>"; };
 		27C461DD211B76500088A441 /* ShieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsView.swift; sourceTree = "<group>"; };
@@ -2078,6 +2082,9 @@
 		27DCB9EB263764EF0067EF4A /* TabTrayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTrayCell.swift; sourceTree = "<group>"; };
 		27DCB9ED263765430067EF4A /* TabTrayToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTrayToolbar.swift; sourceTree = "<group>"; };
 		27DDE85826FBE09A00A70C3A /* AccountPrivateKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPrivateKeyView.swift; sourceTree = "<group>"; };
+		27DDE88526FD2BC400A70C3A /* PortfolioStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioStore.swift; sourceTree = "<group>"; };
+		27DDE88726FD2D8B00A70C3A /* WalletStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletStore.swift; sourceTree = "<group>"; };
+		27DDE88926FE1A7700A70C3A /* TestBraveWalletService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestBraveWalletService.swift; sourceTree = "<group>"; };
 		27E0652524CB69C700134946 /* brave-today-welcome-graphic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "brave-today-welcome-graphic.json"; sourceTree = "<group>"; };
 		27E0652724CB6AE300134946 /* BraveNewsErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveNewsErrorView.swift; sourceTree = "<group>"; };
 		27EA04C1249D4336004F5D2E /* FeedCardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCardContent.swift; sourceTree = "<group>"; };
@@ -3567,8 +3574,11 @@
 		271F685026EBD27C00AA2A50 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				277190E92702512900DC81D5 /* TestStores.swift */,
+				27DDE88926FE1A7700A70C3A /* TestBraveWalletService.swift */,
 				271F685126EBD27C00AA2A50 /* TestEthRpcController.swift */,
 				271F685226EBD27C00AA2A50 /* TestKeyringController.swift */,
+				271F686226EBD27D00AA2A50 /* TestTokenRegistry.swift */,
 				271F685326EBD27C00AA2A50 /* TestContent.swift */,
 				271F685426EBD27C00AA2A50 /* PreviewModifiers.swift */,
 				271F685526EBD27C00AA2A50 /* Preview Assets.xcassets */,
@@ -3607,9 +3617,11 @@
 		271F685A26EBD27D00AA2A50 /* Stores */ = {
 			isa = PBXGroup;
 			children = (
-				271F685B26EBD27D00AA2A50 /* EthNetworkStore.swift */,
 				271F685C26EBD27D00AA2A50 /* Address.swift */,
+				27DDE88726FD2D8B00A70C3A /* WalletStore.swift */,
+				271F685B26EBD27D00AA2A50 /* NetworkStore.swift */,
 				271F685D26EBD27D00AA2A50 /* KeyringStore.swift */,
+				27DDE88526FD2BC400A70C3A /* PortfolioStore.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -3618,7 +3630,6 @@
 			isa = PBXGroup;
 			children = (
 				271F686126EBD27D00AA2A50 /* AssetSearchView.swift */,
-				271F686226EBD27D00AA2A50 /* TestTokenRegistry.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -5311,7 +5322,6 @@
 			isa = PBXGroup;
 			children = (
 				27AD20C226851C5400889AA7 /* BraveCore.xcframework */,
-				27B68DD725C48EE9002D0826 /* BraveRewards.xcframework */,
 				27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */,
 				0A1DF485244A2ECB00541FE4 /* NetworkExtension.framework */,
 				0A6AC4E824484FBC003D1ED7 /* StoreKit.framework */,
@@ -7296,20 +7306,24 @@
 				271F689326EBD27E00AA2A50 /* TestContent.swift in Sources */,
 				275034E326EF9E6A00CF4C8A /* WalletSettingsView.swift in Sources */,
 				271F689B26EBD27E00AA2A50 /* CryptoView.swift in Sources */,
-				271F689826EBD27E00AA2A50 /* EthNetworkStore.swift in Sources */,
+				271F689826EBD27E00AA2A50 /* NetworkStore.swift in Sources */,
 				271F68AD26EBD27E00AA2A50 /* VerifyRecoveryPhraseView.swift in Sources */,
 				271F689626EBD27E00AA2A50 /* SwapCryptoView.swift in Sources */,
 				271F689426EBD27E00AA2A50 /* PreviewModifiers.swift in Sources */,
 				271F68A826EBD27E00AA2A50 /* PortfolioViewController.swift in Sources */,
+				277190EA2702512900DC81D5 /* TestStores.swift in Sources */,
 				271F68BD26EBD27E00AA2A50 /* Blockies.swift in Sources */,
 				271F689E26EBD27E00AA2A50 /* TestTokenRegistry.swift in Sources */,
+				27DDE88626FD2BC400A70C3A /* PortfolioStore.swift in Sources */,
 				271F68B126EBD27E00AA2A50 /* EnableBiometricsView.swift in Sources */,
 				271F68BF26EBD27E00AA2A50 /* DateRangeView.swift in Sources */,
 				271F68B226EBD27E00AA2A50 /* RestoreWalletView.swift in Sources */,
+				27DDE88A26FE1A7700A70C3A /* TestBraveWalletService.swift in Sources */,
 				271F68F826EBE92900AA2A50 /* WalletHostingViewController.swift in Sources */,
 				271F68A326EBD27E00AA2A50 /* AccountView.swift in Sources */,
 				271F68B526EBD27E00AA2A50 /* TabbedPageViewController.swift in Sources */,
 				271F68AF26EBD27E00AA2A50 /* SetupCryptoView.swift in Sources */,
+				27DDE88826FD2D8B00A70C3A /* WalletStore.swift in Sources */,
 				271F689C26EBD27E00AA2A50 /* NetworkPicker.swift in Sources */,
 				271F68A626EBD27E00AA2A50 /* PortfolioAssetView.swift in Sources */,
 				271F68A226EBD27E00AA2A50 /* AddAccountView.swift in Sources */,

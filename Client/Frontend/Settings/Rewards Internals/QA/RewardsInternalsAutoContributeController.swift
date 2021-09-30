@@ -67,8 +67,12 @@ class RewardsInternalsAutoContributeController: UITableViewController {
         switch indexPath.section {
         case 0:
             cell.textLabel?.text = "Next Contribution Date"
-            let date = Date(timeIntervalSince1970: TimeInterval(ledger.autoContributeProperties.reconcileStamp))
-            cell.detailTextLabel?.text = dateFormatter.string(from: date)
+            if let reconcileStamp = ledger.autoContributeProperties?.reconcileStamp {
+                let date = Date(timeIntervalSince1970: TimeInterval(reconcileStamp))
+                cell.detailTextLabel?.text = dateFormatter.string(from: date)
+            } else {
+                cell.detailTextLabel?.text = "–"
+            }
             return cell
         case 1:
             guard let publisher = publishers[safe: indexPath.item] else { return cell }
