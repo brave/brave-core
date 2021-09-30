@@ -21,7 +21,8 @@ struct Candle: DataPoint, Equatable {
 
 struct PortfolioView: View {
   @ObservedObject var keyringStore: KeyringStore
-  @ObservedObject var networkStore: EthNetworkStore
+  @ObservedObject var networkStore: NetworkStore
+  @ObservedObject var portfolioStore: PortfolioStore
   
   @State private var dismissedBackupBannerThisSession: Bool = false
   @State private var isPresentingBackup: Bool = false
@@ -50,7 +51,8 @@ struct PortfolioView: View {
       }
       BalanceHeaderView(
         balance: "$12,453.17",
-        networkStore: networkStore
+        networkStore: networkStore,
+        selectedDateRange: $portfolioStore.timeframe
       )
     }
   }
@@ -66,8 +68,15 @@ struct PortfolioView: View {
       Section(
         header: WalletListHeaderView(title: Text("Assets"))
       ) {
-        PortfolioAssetView(image: .init(), title: "Ethereum", symbol: "ETH", amount: "$10,810.03", quantity: "8")
-        PortfolioAssetView(image: .init(), title: "Basic Attention Token", symbol: "BAT", amount: "$4,510.03", quantity: "500")
+        ForEach(portfolioStore.userVisibleAssets) { asset in
+          PortfolioAssetView(
+            image: .init(),
+            title: asset.token.name,
+            symbol: asset.token.symbol,
+            amount: asset.balance,
+            quantity: asset.price
+          )
+        }
         Button(action: { }) {
           Text("Edit Visible Assets")
             .multilineTextAlignment(.center)
@@ -78,17 +87,19 @@ struct PortfolioView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
+    .animation(.default, value: portfolioStore.userVisibleAssets)
     .listStyle(InsetGroupedListStyle())
   }
 }
 
 struct BalanceHeaderView: View {
   var balance: String
-  @ObservedObject var networkStore: EthNetworkStore
+  @ObservedObject var networkStore: NetworkStore
+  @Binding var selectedDateRange: BraveWallet.AssetPriceTimeframe
   
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-  @State private var selectedDateRange: BraveWallet.AssetPriceTimeframe = .oneDay
+  
   @State private var selectedCandle: Candle?
   
   var data: [Candle] {
@@ -183,8 +194,12 @@ struct BalanceHeaderView: View {
 struct PortfolioViewController_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      PortfolioView(keyringStore: .previewStore, networkStore: .previewStore)
-        .navigationBarTitleDisplayMode(.inline)
+      PortfolioView(
+        keyringStore: WalletStore.previewStore.keyringStore,
+        networkStore: WalletStore.previewStore.networkStore,
+        portfolioStore: WalletStore.previewStore.portfolioStore
+      )
+      .navigationBarTitleDisplayMode(.inline)
     }
       .previewColorSchemes()
   }

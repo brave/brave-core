@@ -6,22 +6,11 @@
 import Foundation
 import BraveCore
 
-extension KeyringStore {
-  static var previewStore: KeyringStore {
-    .init(keyringController: TestKeyringController())
-  }
-  static var previewStoreWithWalletCreated: KeyringStore {
-    let store = KeyringStore(keyringController: TestKeyringController())
-    store.createWallet(password: "password")
-    return store
-  }
-}
-
 /// A test keyring controller which can be passed to a ``CryptoKeyringStore`` that implements some basic
 /// keyring functionality for the use of SwiftUI Previews.
 ///
 /// - note: Do not use this directly, use ``CryptoKeyringStore.previewStore``
-private class TestKeyringController: NSObject, BraveWalletKeyringController {
+class TestKeyringController: NSObject, BraveWalletKeyringController {
   private let keyring: BraveWallet.KeyringInfo = .init()
   private var privateKeys: [String: String] = [:]
   private var password = ""

@@ -62,11 +62,6 @@ struct AssetSearchView: View {
       }
       .navigationBarTitleDisplayMode(.inline)
       .navigationTitle("Search") // NSLocalizedString
-      .onAppear {
-        tokenRegistry.allTokens { tokens in
-          self.allTokens = tokens
-        }
-      }
       .listStyle(InsetGroupedListStyle())
       .introspectViewController { vc in
         // TODO: In iOS 15, use `searchable`
@@ -87,6 +82,11 @@ struct AssetSearchView: View {
       }
     }
     .navigationViewStyle(StackNavigationViewStyle())
+    .onAppear {
+      tokenRegistry.allTokens { tokens in
+        self.allTokens = tokens
+      }
+    }
   }
 }
 

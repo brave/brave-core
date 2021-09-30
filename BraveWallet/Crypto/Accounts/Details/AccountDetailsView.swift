@@ -7,7 +7,9 @@ import UIKit
 import SwiftUI
 import BraveCore
 import CoreImage
-import CoreImage.CIFilterBuiltins // swiftlint:disable:this duplicate_imports
+// For some reason SwiftLint thinks this is a duplicate import
+// swiftlint:disable:next duplicate_imports
+import CoreImage.CIFilterBuiltins
 
 struct AccountDetailsView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -49,7 +51,7 @@ struct AccountDetailsView: View {
               .foregroundColor(Color(.bravePrimary))
           )
         ) {
-          TextField("Account 2", text: $name) // NSLocalizedString
+          TextField("Enter account name", text: $name) // NSLocalizedString
             .introspectTextField { tf in
               if editMode && !isFieldFocused && !tf.isFirstResponder {
                 isFieldFocused = tf.becomeFirstResponder()
@@ -84,12 +86,6 @@ struct AccountDetailsView: View {
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
-      .onAppear {
-        if name.isEmpty {
-          // Setup TextField state binding
-          name = account.name
-        }
-      }
       .listStyle(InsetGroupedListStyle())
       .navigationTitle("Account Details") // NSLocalizedString
       .navigationBarTitleDisplayMode(.inline)
@@ -105,6 +101,15 @@ struct AccountDetailsView: View {
             Text("Done") // NSLocalizedString
               .foregroundColor(Color(.braveOrange))
           }
+        }
+      }
+    }
+    .onAppear {
+      if name.isEmpty {
+        // Wait until next runloop pass to fix bug where body isn't recomputed based on state change
+        DispatchQueue.main.async {
+          // Setup TextField state binding
+          name = account.name
         }
       }
     }

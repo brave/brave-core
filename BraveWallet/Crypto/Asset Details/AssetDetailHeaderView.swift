@@ -10,7 +10,7 @@ import BraveUI
 
 struct AssetDetailHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
-  @ObservedObject var networkStore: EthNetworkStore
+  @ObservedObject var networkStore: NetworkStore
   var currency: Currency
   
   @Environment(\.sizeCategory) private var sizeCategory

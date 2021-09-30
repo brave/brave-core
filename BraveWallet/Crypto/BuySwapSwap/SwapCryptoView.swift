@@ -63,7 +63,7 @@ struct ShortcutAmountGrid: View {
 
 struct SwapCryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
-  @ObservedObject var ethNetworkStore: EthNetworkStore
+  @ObservedObject var ethNetworkStore: NetworkStore
   
   @State private var fromQuantity: String = ""
   @State private var toQuantity: String = ""

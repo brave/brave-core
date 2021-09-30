@@ -6,17 +6,11 @@
 import Foundation
 import BraveCore
 
-extension EthNetworkStore {
-  static var previewStore: EthNetworkStore {
-    .init(ethJsonRpcController: TestEthJsonRpcController())
-  }
-}
-
-/// A test eth json controller which can be passed to a ``EthNetworkStore`` that implements some basic
+/// A test eth json controller which can be passed to a ``NetworkStore`` that implements some basic
 /// functionality for the use of SwiftUI Previews.
 ///
-/// - note: Do not use this directly, use ``EthNetworkStore.previewStore``
-private class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
+/// - note: Do not use this directly, use ``NetworkStore.previewStore``
+class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
   private var chainId: String = BraveWallet.MainnetChainId
   private var networks: [BraveWallet.EthereumChain] = [.mainnet, .rinkeby, .ropsten]
   private var networkURL: URL?

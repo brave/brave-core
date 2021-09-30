@@ -9,6 +9,7 @@ import BraveUI
 import Shared
 import Data
 import BraveWallet
+import BraveCore
 
 private let log = Logger.browserLogger
 
@@ -49,13 +50,30 @@ extension BrowserViewController {
             }
             if #available(iOS 14.0, *) {
                 MenuItemButton(icon: #imageLiteral(resourceName: "menu-crypto").template, title: "Wallet") { [unowned self] in // NSLocalizedString
-                    guard let braveCoreMain = (UIApplication.shared.delegate as? AppDelegate)?.braveCore else {
+                    let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
+                    guard
+                        let keyringController = BraveWallet.KeyringControllerFactory.get(privateMode: privateMode),
+                        let rpcController = BraveWallet.EthJsonRpcControllerFactory.get(privateMode: privateMode),
+                        let assetRatioController = BraveWallet.AssetRatioControllerFactory.get(privateMode: privateMode),
+                        let walletService = BraveWallet.ServiceFactory.get(privateMode: privateMode),
+                        let swapController = BraveWallet.SwapControllerFactory.get(privateMode: privateMode),
+                        let txController = BraveWallet.EthTxControllerFactory.get(privateMode: privateMode)
+                    else {
+                        log.error("Failed to load wallet. One or more services were unavailable")
                         return
                     }
-                    let vc = WalletHostingViewController(
-                        keyringStore: .init(keyringController: braveCoreMain.keyringController),
-                        networkStore: .init(ethJsonRpcController: braveCoreMain.ethJsonRpcController)
+                    
+                    let walletStore = WalletStore(
+                        keyringController: keyringController,
+                        rpcController: rpcController,
+                        walletService: walletService,
+                        assetRatioController: assetRatioController,
+                        swapController: swapController,
+                        tokenRegistry: BraveCoreMain.ercTokenRegistry,
+                        transactionController: txController
                     )
+                    
+                    let vc = WalletHostingViewController(walletStore: walletStore)
                     self.dismiss(animated: true) {
                         self.present(vc, animated: true)
                     }

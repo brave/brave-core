@@ -5,18 +5,16 @@
 
 import Foundation
 import SwiftUI
+import BraveCore
 
 /// The initial wallet controller to present when the user wants to view their wallet
 public class WalletHostingViewController: UIHostingController<CryptoView> {
   
-  public init(
-    keyringStore: KeyringStore,
-    networkStore: EthNetworkStore
-  ) {
+  public init(walletStore: WalletStore) {
     super.init(
       rootView: CryptoView(
-        keyringStore: keyringStore,
-        networkStore: networkStore
+        walletStore: walletStore,
+        keyringStore: walletStore.keyringStore
       )
     )
     rootView.dismissAction = { [unowned self] in

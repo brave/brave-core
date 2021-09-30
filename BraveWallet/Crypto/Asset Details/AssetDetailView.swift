@@ -11,7 +11,7 @@ import BraveUI
 
 struct AssetDetailView: View {
   @ObservedObject var keyringStore: KeyringStore
-  @ObservedObject var networkStore: EthNetworkStore
+  @ObservedObject var networkStore: NetworkStore
   
   var body: some View {
     List {

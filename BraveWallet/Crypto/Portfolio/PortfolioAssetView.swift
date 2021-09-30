@@ -31,7 +31,7 @@ struct PortfolioAssetView: View {
       }
       Spacer()
       VStack(alignment: .trailing) {
-        Text(amount)
+        Text(amount.isEmpty ? "0.0" : amount)
         Text("\(quantity) \(symbol)")
       }
       .font(.footnote)
