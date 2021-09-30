@@ -86,6 +86,7 @@ impl HTTPClient for NativeClient {
             debug!("woke up!");
             LOCAL_POOL.with(|pool| {
                 if let Ok(mut pool) = pool.try_borrow_mut() {
+                    debug!("INSIDE LET OK!");
                     pool.run_until_stalled();
                 }
             });

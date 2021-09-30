@@ -1047,6 +1047,17 @@ void brave_rewards$cxxbridge1$shim_executeRequest$done$1(::brave_rewards::HttpRo
 void brave_rewards$cxxbridge1$shim_executeRequest$done$0(::rust::Box<::brave_rewards::HttpRoundtripContext> arg0, ::brave_rewards::HttpResponse resp, void *extern$) noexcept {
   brave_rewards$cxxbridge1$shim_executeRequest$done$1(arg0.into_raw(), resp, extern$);
 }
+
+void brave_rewards$cxxbridge1$shim_scheduleWakeup(::std::uint64_t delay_ms, ::rust::Fn<void()> done) noexcept {
+  void (*shim_scheduleWakeup$)(::std::uint64_t, ::rust::Fn<void()>) = ::brave_rewards::shim_scheduleWakeup;
+  shim_scheduleWakeup$(delay_ms, done);
+}
+
+void brave_rewards$cxxbridge1$shim_scheduleWakeup$done$1(void *) noexcept;
+
+void brave_rewards$cxxbridge1$shim_scheduleWakeup$done$0(void *extern$) noexcept {
+  brave_rewards$cxxbridge1$shim_scheduleWakeup$done$1(extern$);
+}
 } // extern "C"
 
 ::std::size_t HttpRoundtripContext::layout::size() noexcept {
