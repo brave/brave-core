@@ -10,6 +10,7 @@ import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLE
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
 
 import android.app.SearchManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -94,6 +95,13 @@ public class BraveWalletActivity
         setSupportActionBar(toolbar);
 
         swapButton = findViewById(R.id.swap_button);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            // For Android 7 and above use vector images for send/swap button.
+            // For Android 5 and 6 it is a bitmap specified in activity_brave_wallet.xml.
+            swapButton.setImageResource(R.drawable.ic_swap_icon);
+            swapButton.setBackgroundResource(R.drawable.ic_swap_bg);
+        }
+
         swapButton.setOnClickListener(v -> {
             SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
                     SwapBottomSheetDialogFragment.newInstance();
