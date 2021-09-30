@@ -2287,6 +2287,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_DISABLE_SHARING_HUB" desc="Menu item for disabling sharing hub.">
       Disable Sharing Hub
     </message>
+    <message name="IDS_EDIT" desc="Brave wallet accounts text">
+      Edit
+    </message>
     </messages>
   </release>
 </grit>
