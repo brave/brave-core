@@ -72,6 +72,8 @@ mod ffi {
             ctx: Box<HttpRoundtripContext>,
         );
 
+        fn shim_scheduleWakeup(delay_ms: u64, done: fn());
+
         type RefreshOrderCallbackState;
         type RefreshOrderCallback = crate::RefreshOrderCallback;
     }
