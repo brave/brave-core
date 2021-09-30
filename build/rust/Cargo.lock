@@ -241,7 +241,7 @@ dependencies = [
 [[package]]
 name = "brave-rewards"
 version = "0.1.0"
-source = "git+ssh://git@github.com/brave-intl/br-rs?branch=skus#ee45288f976ea0f5ff03480555d212505052a10d"
+source = "git+ssh://git@github.com/brave-intl/br-rs?branch=skus#d7ac37c4a1f239405c9eee4fc913220dc654b93d"
 dependencies = [
  "async-trait 0.1.51 (registry+https://github.com/rust-lang/crates.io-index)",
  "base64 0.9.3",

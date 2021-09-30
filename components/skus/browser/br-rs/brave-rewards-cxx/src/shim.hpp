@@ -22,5 +22,13 @@ namespace brave_rewards {
       rust::cxxbridge1::Str order
   );
 
-  void shim_executeRequest(const brave_rewards::HttpRequest&, rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>, brave_rewards::HttpResponse)>, rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>);
+  void shim_scheduleWakeup(::std::uint64_t delay_ms,
+                           rust::cxxbridge1::Fn<void()> done);
+
+  void shim_executeRequest(
+      const brave_rewards::HttpRequest& req,
+      rust::cxxbridge1::Fn<
+          void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
+               brave_rewards::HttpResponse)> done,
+      rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx);
 }
