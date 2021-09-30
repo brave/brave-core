@@ -3,9 +3,9 @@ import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import Refresh from '../../../assets/svg-icons/refresh-icon.svg'
 import ClipboardIcon from '../../../assets/svg-icons/clipboard-icon.svg'
 import { BuySendSwapInputType } from './index'
+import { AssetIconProps, AssetIconFactory } from '../../shared/style'
 
 interface StyleProps {
-  icon: string | undefined
   componentType: BuySendSwapInputType
   spin: number
   hasError: boolean
@@ -41,14 +41,16 @@ export const AssetButton = styled.button`
   margin: 0px;
 `
 
-export const AssetIcon = styled.div<Partial<StyleProps>>`
-  width: 24px;
-  height: 24px;
-  background: no-repeat ${(p) => `url(${p.icon})`};
-  margin-right: 8px;
-  margin-left: 4px;
-  background-size: 100%;
-`
+// Construct styled-component using JS object instead of string, for editor
+// support with custom AssetIconFactory.
+//
+// Ref: https://styled-components.com/docs/advanced#style-objects
+export const AssetIcon = AssetIconFactory<AssetIconProps>({
+  width: '24px',
+  height: '24px',
+  marginRight: '8px',
+  marginLeft: '4px'
+})
 
 export const AssetTicker = styled.span`
   font-family: Poppins;
