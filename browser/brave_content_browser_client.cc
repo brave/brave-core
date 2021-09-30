@@ -28,6 +28,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
+#include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/browser/brave_search_default_host_private.h"
@@ -181,6 +182,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #endif
 
+#if defined(OS_ANDROID)
+#include "brave/browser/brave_ads/brave_ads_host_android.h"
+#elif BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/brave_ads/brave_ads_host.h"
+#endif  // defined(OS_ANDROID)
+
 namespace {
 
 bool HandleURLReverseOverrideRewrite(GURL* url,
@@ -214,6 +221,24 @@ void BindCosmeticFiltersResources(
       std::make_unique<cosmetic_filters::CosmeticFiltersResources>(
           settings_map, g_brave_browser_process->ad_block_service()),
       std::move(receiver));
+}
+
+void BindBraveAdsHost(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_ads::mojom::BraveAdsHost> receiver) {
+#if defined(OS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
+  auto* context = frame_host->GetBrowserContext();
+  auto* profile = Profile::FromBrowserContext(context);
+
+  mojo::MakeSelfOwnedReceiver(
+#if defined(OS_ANDROID)
+      std::make_unique<brave_ads::BraveAdsHostAndroid>(
+#elif BUILDFLAG(ENABLE_EXTENSIONS)
+      std::make_unique<brave_ads::BraveAdsHost>(
+#endif  // defined(OS_ANDROID)
+          profile),
+      std::move(receiver));
+#endif  // defined(OS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
 }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -388,6 +413,12 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     map->Add<brave_search::mojom::BraveSearchDefault>(
         base::BindRepeating(&BindBraveSearchDefaultHost));
   }
+
+  if (brave_ads::features::IsRequestAdsEnabledApiEnabled()) {
+    map->Add<brave_ads::mojom::BraveAdsHost>(
+        base::BindRepeating(&BindBraveAdsHost));
+  }
+
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (brave_wallet::IsNativeWalletEnabled()) {
     map->Add<brave_wallet::mojom::BraveWalletProvider>(

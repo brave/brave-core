@@ -35,6 +35,10 @@ double AdNotificationNormalizedDisplayCoordinateY();
 int AdNotificationInsetY();
 #endif  // !defined(OS_ANDROID)
 
+extern const base::Feature kRequestAdsEnabledApi;
+
+bool IsRequestAdsEnabledApiEnabled();
+
 }  // namespace features
 }  // namespace brave_ads
 

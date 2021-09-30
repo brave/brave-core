@@ -1336,5 +1336,25 @@ ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+BraveRewardsRequestAdsEnabledPopupClosedFunction::
+    ~BraveRewardsRequestAdsEnabledPopupClosedFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsRequestAdsEnabledPopupClosedFunction::Run() {
+  auto params(
+      brave_rewards::RequestAdsEnabledPopupClosed::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
+
+  if (rewards_service) {
+    rewards_service->RequestAdsEnabledPopupClosed(params->ads_enabled);
+  }
+
+  return RespondNow(NoArguments());
+}
+
 }  // namespace api
 }  // namespace extensions

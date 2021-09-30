@@ -589,6 +589,7 @@ if (!is_android) {
     sources = [
       "//brave/app/brave_main_delegate_browsertest.cc",
       "//brave/app/brave_main_delegate_runtime_flags_browsertest.cc",
+      "//brave/browser/brave_ads/request_ads_enabled_api_browsertest.cc",
       "//brave/browser/brave_content_browser_client_browsertest.cc",
       "//brave/browser/brave_prefs_browsertest.cc",
       "//brave/browser/brave_resources_browsertest.cc",

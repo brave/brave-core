@@ -506,6 +506,18 @@ class BraveRewardsUpdatePrefsFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsRequestAdsEnabledPopupClosedFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.requestAdsEnabledPopupClosed",
+                             UNKNOWN)
+
+ protected:
+  ~BraveRewardsRequestAdsEnabledPopupClosedFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

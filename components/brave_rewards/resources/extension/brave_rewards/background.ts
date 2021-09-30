@@ -63,3 +63,21 @@ chrome.runtime.onMessageExternal.addListener(
         break
     }
   })
+
+chrome.runtime.onConnect.addListener(function (port) {
+  if (port.name === 'request-enable-rewards-panel') {
+    let adsEnabled = false
+    port.onMessage.addListener(function () {
+      // Ignore any calls made after the first one
+      if (!adsEnabled) {
+        adsEnabled = true
+        chrome.braveRewards.requestAdsEnabledPopupClosed(true)
+      }
+    })
+    port.onDisconnect.addListener(function () {
+      if (!adsEnabled) {
+        chrome.braveRewards.requestAdsEnabledPopupClosed(false)
+      }
+    })
+  }
+})
