@@ -7,18 +7,34 @@
 
 #include <vector>
 
+#include "base/environment.h"
+#include "base/json/json_writer.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/skus/browser/br-rs/brave-rewards-cxx/src/wrapper.hpp"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "net/base/load_flags.h"
+#include "net/base/privacy_mode.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/fetch_api.mojom-shared.h"
+#include "url/gurl.h"
 
 using namespace std;
 using namespace rust::cxxbridge1;
 using namespace brave_rewards;
 
-namespace brave_rewards {
+namespace {
 
-// TODO: hack code - remove me
+// TODO: fix me. I set a completely arbitrary size!
+const int kMaxResponseSize = 1000000;  // 1Mb
+
+SkusSdkImpl* g_SkusSdk = NULL;
+
+// START: hack code - remove me
 // rust::String's std::string operator gave linker errors :(
 // .c_str() not usable because function itself isn't const
 // .data is not terminating string
@@ -40,61 +56,132 @@ std::string ruststr_2_stdstring(rust::cxxbridge1::Str in) {
   }
   return out;
 }
-std::string RewardsResult_2_stdstring(RewardsResult in) {
-  switch (in) {
-    case RewardsResult::Ok:
-      return "OK";
-    case RewardsResult::PointDecompressionError:
-      return "An error occured when converting from a `CompressedRistretto` to "
-             "a `RistrettoPoint`";
-    case RewardsResult::ScalarFormatError:
-      return "An error occured when interpretting bytes as a scalar";
-    case RewardsResult::BytesLengthError:
-      return "An error in the length of bytes handed to a constructor.";
-    case RewardsResult::VerifyError:
-      return "Verification failed";
-    case RewardsResult::LengthMismatchError:
-      return "Inputs differed in length";
-    case RewardsResult::DecodingError:
-      return "Decoding failed";
+// END: hack code - remove me
+
+class SkusSdkFetcher {
+ public:
+  explicit SkusSdkFetcher(scoped_refptr<network::SharedURLLoaderFactory>);
+  ~SkusSdkFetcher();
+
+  void BeginFetch(
+      const brave_rewards::HttpRequest& req,
+      rust::cxxbridge1::Fn<
+          void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
+               brave_rewards::HttpResponse)> callback,
+      rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx);
+
+ private:
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  std::unique_ptr<network::SimpleURLLoader> sku_sdk_loader_;
+
+  const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag() {
+    static const net::NetworkTrafficAnnotationTag
+        network_traffic_annotation_tag =
+            net::DefineNetworkTrafficAnnotation("sku_sdk_execute_request", R"(
+        semantics {
+          sender: "Brave SKU SDK"
+          description:
+            "Call the SKU SDK implementation provided by the caller"
+          trigger:
+            "Any Brave webpage using SKU SDK where window.brave.sku.*"
+            "methods are called; ex: fetch_order / fetch_order_credentials"
+          data: "JSON data comprising an order."
+          destination: OTHER
+          destination_other: "Brave developers"
+        }
+        policy {
+          cookies_allowed: NO
+        })");
+    return network_traffic_annotation_tag;
   }
-  return "NULL";
+
+  void OnFetchComplete(
+      rust::cxxbridge1::Fn<
+          void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
+               brave_rewards::HttpResponse)> callback,
+      rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx,
+      std::unique_ptr<std::string> response_body);
+};
+
+unique_ptr<SkusSdkFetcher> fetcher;
+
+SkusSdkFetcher::SkusSdkFetcher(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : url_loader_factory_(url_loader_factory) {}
+
+SkusSdkFetcher::~SkusSdkFetcher() {}
+
+void SkusSdkFetcher::BeginFetch(
+    const brave_rewards::HttpRequest& req,
+    rust::cxxbridge1::Fn<
+        void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
+             brave_rewards::HttpResponse)> callback,
+    rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx) {
+  auto resource_request = std::make_unique<network::ResourceRequest>();
+  resource_request->url = GURL(ruststring_2_stdstring(req.url));
+  resource_request->method = ruststring_2_stdstring(req.method).c_str();
+  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  // No cache read, always download from the network.
+  resource_request->load_flags =
+      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
+
+  for (size_t i = 0; i < req.headers.size(); i++) {
+    resource_request->headers.AddHeaderFromString(
+        ruststring_2_stdstring(req.headers[i]));
+  }
+
+  sku_sdk_loader_ = network::SimpleURLLoader::Create(
+      std::move(resource_request), GetNetworkTrafficAnnotationTag());
+
+  sku_sdk_loader_->DownloadToString(
+      url_loader_factory_.get(),
+      base::BindOnce(&SkusSdkFetcher::OnFetchComplete, base::Unretained(this),
+                     std::move(callback), std::move(ctx)),
+      kMaxResponseSize);
 }
 
-void shim_executeRequest(
-    const brave_rewards::HttpRequest& req,
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>, brave_rewards::HttpResponse)> callback,
-    rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx
-  ) {
-  LOG(ERROR) << "shim_executeRequest\n"
-             << "url=" << ruststring_2_stdstring(req.url)
-             << "\nmethod=" << ruststring_2_stdstring(req.method)
-             << "\nheaders=";
-  for (size_t i = 0; i < req.headers.size(); i++) {
-    LOG(ERROR) << i << ") \"" << ruststring_2_stdstring(req.headers[i]) << "\"";
+void SkusSdkFetcher::OnFetchComplete(
+      rust::cxxbridge1::Fn<
+          void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
+               brave_rewards::HttpResponse)> callback,
+      rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx,
+      std::unique_ptr<std::string> response_body) {
+  if (!response_body) {
+    std::vector<uint8_t> body_bytes;
+    brave_rewards::HttpResponse resp = {
+        RewardsResult::DecodingError,
+        500,
+        {},
+        body_bytes,
+    };
+    callback(std::move(ctx), resp);
+    return;
   }
-  std::string body2 = "";
-  for (size_t i = 0; i < req.body.size(); i++) {
-    body2 += (char)req.body[i];
-  }
-  LOG(ERROR) << "body=" << body2;
 
-  // TODO: call out to req.url w/ headers
-  // using SimpleUrlLoader
-
-  // START - demo code from examples/main.cpp
-  std::string body = "{\"id\":\"b788a168-1136-411f-9546-43a372a2e3ed\",\"createdAt\":\"2021-08-17T21:35:48.658623Z\",\"currency\":\"USD\",\"updatedAt\":\"2021-08-17T21:36:06.174288Z\",\"totalPrice\":\"7\",\"merchantId\":\"brave.com\",\"location\":\"talk.brave.software\",\"status\":\"paid\",\"items\":[{\"id\":\"eac1b09f-2228-4f91-a970-a22b229bb994\",\"orderId\":\"b788a168-1136-411f-9546-43a372a2e3ed\",\"sku\":\"brave-talk-premium\",\"createdAt\":\"2021-08-17T21:35:48.658623Z\",\"updatedAt\":\"2021-08-17T21:35:48.658623Z\",\"currency\":\"USD\",\"quantity\":1,\"price\":\"7\",\"subtotal\":\"7\",\"location\":\"talk.brave.software\",\"description\":\"Premium access to Brave Talk\",\"credentialType\":\"time-limited\",\"validFor\":null,\"metadata\":{\"stripe_cancel_uri\":\"https://account.brave.software/plans/?intent=checkout\",\"stripe_item_id\":\"price_1J84oMHof20bphG6NBAT2vor\",\"stripe_product_id\":\"prod_Jlc224hFvAMvEp\",\"stripe_success_uri\":\"https://account.brave.software/account/?intent=provision\"}}],\"allowedPaymentMethods\":[\"stripe\"],\"metadata\":{\"stripeSubscriptionId\":\"sub_K3hLyRFkjj3mYs\"},\"lastPaidAt\":\"2021-08-17T21:36:06.174938Z\",\"expiresAt\":\"2021-09-17T08:05:09.176138Z\",\"validFor\":2629743001200000}";
-  std::vector<uint8_t> body_bytes (body.begin(), body.end());
+  std::vector<uint8_t> body_bytes(response_body->begin(), response_body->end());
 
   brave_rewards::HttpResponse resp = {
-    RewardsResult::Ok,
-    200,
-    {"foo:bar"},
-    body_bytes,
+      RewardsResult::Ok,
+      200,
+      {},
+      body_bytes,
   };
 
   callback(std::move(ctx), resp);
-  // END - demo code from examples/main.cpp
+}
+
+}  // namespace
+
+namespace brave_rewards {
+
+void shim_executeRequest(
+    const brave_rewards::HttpRequest& req,
+    rust::cxxbridge1::Fn<
+        void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
+             brave_rewards::HttpResponse)> callback,
+    rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx) {
+  fetcher = make_unique<SkusSdkFetcher>(g_SkusSdk->url_loader_factory_);
+  fetcher->BeginFetch(req, std::move(done), std::move(ctx));
 }
 
 // static
@@ -104,18 +191,22 @@ void SkusSdkImpl::RegisterProfilePrefs(
   registry->RegisterStringPref(prefs::kSkusVPNCredential, "");
 }
 
-SkusSdkImpl::SkusSdkImpl(PrefService* prefs) {}
+SkusSdkImpl::SkusSdkImpl(
+    PrefService* prefs,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : url_loader_factory_(url_loader_factory) {
+  g_SkusSdk = this;
+}
+
 // TODO: re-implement when setting preferences
 // SkusSdkImpl::SkusSdkImpl(PrefService* prefs) : prefs_(prefs) {}
+
+SkusSdkImpl::~SkusSdkImpl() {}
 
 void on_refresh_order(RefreshOrderCallbackState* callback_state,
                       RewardsResult result,
                       rust::cxxbridge1::Str order) {
   std::string order_str = ruststr_2_stdstring(order);
-
-  LOG(ERROR) << "on_refresh_order\nresult=" << RewardsResult_2_stdstring(result)
-             << "\norder=" << order_str;
-
   if (callback_state->cb) {
     std::move(callback_state->cb).Run(order_str);
   }
@@ -124,8 +215,8 @@ void on_refresh_order(RefreshOrderCallbackState* callback_state,
 
 void SkusSdkImpl::RefreshOrder(const std::string& order_id,
                                RefreshOrderCallback callback) {
+  // TODO: properly set environment (local/dev/staging/prod)
   Box<CppSDK> sdk = initialize_sdk("local");
-  LOG(ERROR) << "rewards sdk initialized";
 
   std::unique_ptr<RefreshOrderCallbackState> cbs(new RefreshOrderCallbackState);
   cbs->cb = std::move(callback);
