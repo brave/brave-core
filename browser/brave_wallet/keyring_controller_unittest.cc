@@ -75,6 +75,85 @@ class KeyringControllerUnitTest : public testing::Test {
     return value->GetString();
   }
 
+  static absl::optional<std::string> GetSelectedAccount(
+      KeyringController* controller) {
+    absl::optional<std::string> account;
+    base::RunLoop run_loop;
+    controller->GetSelectedAccount(
+        base::BindLambdaForTesting([&](const absl::optional<std::string>& v) {
+          account = v;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return account;
+  }
+
+  static bool SetSelectedAccount(KeyringController* controller,
+                                 const std::string& account) {
+    bool success = false;
+    base::RunLoop run_loop;
+    controller->SetSelectedAccount(account,
+                                   base::BindLambdaForTesting([&](bool v) {
+                                     success = v;
+                                     run_loop.Quit();
+                                   }));
+    run_loop.Run();
+    return success;
+  }
+
+  static absl::optional<std::string> ImportAccount(
+      KeyringController* controller,
+      const std::string& name,
+      const std::string& private_key) {
+    absl::optional<std::string> account;
+    base::RunLoop run_loop;
+    controller->ImportAccount(
+        name, private_key,
+        base::BindLambdaForTesting(
+            [&](bool success, const std::string& address) {
+              if (success) {
+                account = address;
+              }
+            }));
+    return account;
+  }
+
+  static absl::optional<std::string> CreateWallet(KeyringController* controller,
+                                                  const std::string& password) {
+    std::string mnemonic;
+    base::RunLoop run_loop;
+    controller->CreateWallet(
+        password, base::BindLambdaForTesting([&](const std::string& v) {
+          mnemonic = v;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return mnemonic;
+  }
+
+  static void AddHardwareAccount(
+      KeyringController* controller,
+      std::vector<mojom::HardwareWalletAccountPtr> new_accounts) {
+    controller->AddHardwareAccounts(std::move(new_accounts));
+  }
+
+  static bool Unlock(KeyringController* controller,
+                     const std::string& password) {
+    bool success = false;
+    base::RunLoop run_loop;
+    controller->Unlock(password, base::BindLambdaForTesting([&](bool v) {
+                         success = v;
+                         run_loop.Quit();
+                       }));
+    run_loop.Run();
+    return success;
+  }
+
+  static bool Lock(KeyringController* controller) {
+    controller->Lock();
+    return controller->IsLocked();
+  }
+
   bool bool_value() { return bool_value_; }
   const std::string string_value() { return string_value_; }
   content::BrowserTaskEnvironment task_environment_;
@@ -1578,8 +1657,7 @@ TEST_F(KeyringControllerUnitTest, AutoLock) {
 
 TEST_F(KeyringControllerUnitTest, NotifyUserInteraction) {
   KeyringController controller(GetPrefs());
-  controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
-  base::RunLoop().RunUntilIdle();
+  CreateWallet(&controller, "brave");
   ASSERT_FALSE(controller.IsLocked());
 
   // Notifying of user interaction should keep the wallet unlocked
@@ -1591,6 +1669,50 @@ TEST_F(KeyringControllerUnitTest, NotifyUserInteraction) {
   ASSERT_FALSE(controller.IsLocked());
   task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(1));
   ASSERT_TRUE(controller.IsLocked());
+}
+
+TEST_F(KeyringControllerUnitTest, SetSelectedAccount) {
+  KeyringController controller(GetPrefs());
+  CreateWallet(&controller, "brave");
+
+  std::string first_account = controller.default_keyring_->GetAddress(0);
+  controller.AddAccountForDefaultKeyring("Who does number 2 work for");
+  std::string second_account = controller.default_keyring_->GetAddress(1);
+
+  // This does not depend on being locked
+  EXPECT_TRUE(Lock(&controller));
+
+  // No account set as the default
+  EXPECT_EQ(absl::nullopt, GetSelectedAccount(&controller));
+
+  // Setting account to a valid address works
+  EXPECT_TRUE(SetSelectedAccount(&controller, second_account));
+  EXPECT_EQ(second_account, GetSelectedAccount(&controller));
+
+  // Setting account to a non-existing account doesn't work
+  EXPECT_FALSE(SetSelectedAccount(
+      &controller, "0xf83C3cBfF68086F276DD4f87A82DF73B57b21559"));
+  EXPECT_EQ(second_account, GetSelectedAccount(&controller));
+
+  // Can import only when unlocked.
+  // Then check that the account can be set to an imported account.
+  EXPECT_TRUE(Unlock(&controller, "brave"));
+  absl::optional<std::string> imported_account = ImportAccount(
+      &controller, "Best Evil Son",
+      "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5");
+  ASSERT_TRUE(imported_account.has_value());
+  EXPECT_TRUE(Lock(&controller));
+  EXPECT_TRUE(SetSelectedAccount(&controller, *imported_account));
+  EXPECT_EQ(*imported_account, GetSelectedAccount(&controller));
+
+  // Can set hardware account
+  std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
+  std::string hardware_account = "0x1111111111111111111111111111111111111111";
+  new_accounts.push_back(mojom::HardwareWalletAccount::New(
+      hardware_account, "m/44'/60'/1'/0/0", "name 1", "Ledger"));
+  AddHardwareAccount(&controller, std::move(new_accounts));
+  EXPECT_TRUE(SetSelectedAccount(&controller, hardware_account));
+  EXPECT_EQ(hardware_account, GetSelectedAccount(&controller));
 }
 
 }  // namespace brave_wallet
