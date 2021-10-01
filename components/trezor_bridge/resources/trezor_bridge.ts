@@ -7,20 +7,6 @@ import { sendWithPromise } from 'chrome://resources/js/cr.m'
 
 // Hooks to trick some checks inside TrezorConnect to use webextension env.
 function setupBraveHooks () {
-  if (!window.chrome) {
-    window.chrome = Object({})
-  }
-  if (!window.chrome.runtime) {
-    window.chrome.runtime = Object({})
-  }
-  if (!window.chrome.runtime.id) {
-    window.chrome.runtime.id = ''
-  }
-  if (!window.chrome.runtime.onConnect) {
-    window.chrome.runtime.onConnect = Object({
-      addListener: () => undefined
-    })
-  }
   // @ts-ignore
   window.sendWithPromise = sendWithPromise
 }
@@ -60,7 +46,7 @@ TrezorConnect.init({
     email: 'support@brave.com',
     appUrl: 'web-ui-boilerplate'
   },
-  env: 'webextension'
+  env: 'web'
 }).then(() => {
   console.log('TrezorConnect is ready!')
   TrezorConnect.getPublicKey({

@@ -103,8 +103,9 @@ void TrezorBridgeHandler::RegisterMessages() {
 void TrezorBridgeHandler::HandleFetchRequest(const base::ListValue* args) {
   std::string url;
   CHECK(args->GetString(1, &url));
-  if (trezor_data_resources.contains(url)) {
-    auto resource_id = trezor_data_resources.at(url);
+  auto path = url.substr(0, url.find("?"));
+  if (trezor_data_resources.contains(path)) {
+    auto resource_id = trezor_data_resources.at(path);
     const ui::ResourceBundle& resource_bundle =
         ui::ResourceBundle::GetSharedInstance();
     const std::string& resource_text =

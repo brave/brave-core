@@ -19,21 +19,6 @@ pack_web_resources("generated_resources") {
   resource_name = "trezor_bridge"
   output_dir = "$root_gen_dir/brave/components/trezor_bridge/resources"
   deps = [
-    ":data",
     ":trezor_bridge_ui",
   ]
-}
-
-node_data_dir = "//brave/node_modules/trezor-connect/data"
-
-copy("data") {
-  visibility = [ ":*" ]
-  sources = [
-    "$node_data_dir/bridge",
-    "$node_data_dir/coins.json",
-    "$node_data_dir/config.json",
-    "$node_data_dir/firmware",
-    "$node_data_dir/messages",
-  ]
-  outputs = [ "$root_gen_dir/brave/components/trezor_bridge/resources/data/{{source_file_part}}" ]
 }
