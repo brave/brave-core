@@ -1,5 +1,13 @@
 # Changelog
 
+
+## [1.31.1](https://github.com/brave/brave-ios/releases/tag/v1.31.1)
+
+- Updated user agent for devices running iOS 15. ([#4230](https://github.com/brave/brave-ios/issues/4230))
+- Fixed "Create PDF" action button in menu. ([#4193](https://github.com/brave/brave-ios/issues/4193))
+- Fixed app freeze on iOS 13 devices when setting focus on the URL bar. ([#4200](https://github.com/brave/brave-ios/issues/4200))
+- Fixed reader mode bug where wrong content is shown when reader mode is enabled. ([#4208](https://github.com/brave/brave-ios/issues/4208))
+
 ## [1.31](https://github.com/brave/brave-ios/releases/tag/v1.31)
 
 - Added auto-play settings for sites to auto-play video/audio. ([#1738](https://github.com/brave/brave-ios/issues/1738))
