@@ -21,11 +21,13 @@
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "crypto/random.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/l10n/l10n_util.h"
 
 /* kBraveWalletKeyrings structure
  *
@@ -86,8 +88,6 @@ const size_t kSaltSize = 32;
 const size_t kNonceSize = 12;
 const char kRootPath[] = "m/44'/60'/0'/0";
 const char kDefaultKeyringId[] = "default";
-// TODO(darkdh): use resource string
-const char kFirstAccountName[] = "Account 1";
 const char kPasswordEncryptorSalt[] = "password_encryptor_salt";
 const char kPasswordEncryptorNonce[] = "password_encryptor_nonce";
 const char kEncryptedMnemonic[] = "encrypted_mnemonic";
@@ -104,6 +104,11 @@ const char kHardwareDerivationPath[] = "derivation_path";
 
 static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
   return base::as_bytes(base::make_span(sp));
+}
+
+std::string GetAccountName(size_t number) {
+  return l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_NUMBERED_ACCOUNT_NAME,
+                                   base::NumberToString16(number));
 }
 
 void SerializeHardwareAccounts(const base::Value* account_value,
@@ -202,7 +207,7 @@ void KeyringController::MigrateObsoleteProfilePrefs(PrefService* prefs) {
       // This shouldn't happen but we will reset account to default state as
       // fail-safe
       SetAccountMetaForKeyring(prefs, GetAccountPathByIndex(0),
-                               kFirstAccountName, "", kDefaultKeyringId);
+                               GetAccountName(1), "", kDefaultKeyringId);
     }
     prefs->ClearPref(kBraveWalletDefaultKeyringAccountNum);
     prefs->ClearPref(kBraveWalletAccountNames);
@@ -545,7 +550,7 @@ void KeyringController::CreateWallet(const std::string& password,
                                      CreateWalletCallback callback) {
   auto* keyring = CreateDefaultKeyring(password);
   if (keyring) {
-    AddAccountForDefaultKeyring(kFirstAccountName);
+    AddAccountForDefaultKeyring(GetAccountName(1));
   }
 
   std::move(callback).Run(GetMnemonicForDefaultKeyringImpl());
@@ -558,7 +563,7 @@ void KeyringController::RestoreWallet(const std::string& mnemonic,
   auto* keyring =
       RestoreDefaultKeyring(mnemonic, password, is_legacy_brave_wallet);
   if (keyring && !keyring->GetAccountsNumber()) {
-    AddAccountForDefaultKeyring(kFirstAccountName);
+    AddAccountForDefaultKeyring(GetAccountName(1));
   }
   // TODO(darkdh): add account discovery mechanism
 
@@ -908,8 +913,7 @@ void KeyringController::SignTransactionByDefaultKeyring(
 void KeyringController::AddAccountsWithDefaultName(size_t number) {
   size_t current_num = default_keyring_->GetAccountsNumber();
   for (size_t i = current_num + 1; i <= current_num + number; ++i) {
-    const std::string account_name = "Account " + base::NumberToString(i);
-    AddAccountForDefaultKeyring(account_name);
+    AddAccountForDefaultKeyring(GetAccountName(i));
   }
 }
 
