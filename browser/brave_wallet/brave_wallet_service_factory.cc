@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -46,14 +47,18 @@ BraveWalletService* BraveWalletServiceFactory::GetServiceForContext(
 BraveWalletServiceFactory::BraveWalletServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveWalletService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(brave_wallet::KeyringControllerFactory::GetInstance());
+}
 
 BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
 KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new BraveWalletService(BraveWalletServiceDelegate::Create(context),
-                                user_prefs::UserPrefs::Get(context));
+  return new BraveWalletService(
+      BraveWalletServiceDelegate::Create(context),
+      KeyringControllerFactory::GetControllerForContext(context),
+      user_prefs::UserPrefs::Get(context));
 }
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(

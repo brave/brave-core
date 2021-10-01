@@ -8,9 +8,11 @@
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/time/time.h"
+#include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
+#include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/prefs/browser_prefs.h"
@@ -62,8 +64,11 @@ class BraveWalletServiceUnitTest : public testing::Test {
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
     histogram_tester_.reset(new base::HistogramTester);
+    keyring_controller_ =
+        KeyringControllerFactory::GetControllerForContext(profile_.get());
     service_.reset(new BraveWalletService(
-        BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs()));
+        BraveWalletServiceDelegate::Create(profile_.get()), keyring_controller_,
+        GetPrefs()));
 
     auto* registry = ERCTokenRegistry::GetInstance();
     std::vector<mojom::ERCTokenPtr> input_erc_tokens;
@@ -191,10 +196,49 @@ class BraveWalletServiceUnitTest : public testing::Test {
     return default_wallet;
   }
 
+  void CheckPasswordAndMnemonic(const std::string& new_password,
+                                const std::string& in_mnemonic,
+                                bool* valid_password,
+                                bool* valid_mnemonic) {
+    ASSERT_NE(valid_password, nullptr);
+    ASSERT_NE(valid_mnemonic, nullptr);
+
+    keyring_controller_->Lock();
+    // Check new password
+    base::RunLoop run_loop;
+    keyring_controller_->Unlock(new_password,
+                                base::BindLambdaForTesting([&](bool success) {
+                                  *valid_password = success;
+                                  run_loop.Quit();
+                                }));
+    run_loop.Run();
+
+    base::RunLoop run_loop2;
+    keyring_controller_->GetMnemonicForDefaultKeyring(
+        base::BindLambdaForTesting([&](const std::string& mnemonic) {
+          *valid_mnemonic = (mnemonic == in_mnemonic);
+          run_loop2.Quit();
+        }));
+    run_loop2.Run();
+  }
+
+  void CheckFirstAddress(const std::string& address, bool* valid_address) {
+    ASSERT_NE(valid_address, nullptr);
+
+    base::RunLoop run_loop;
+    keyring_controller_->GetDefaultKeyringInfo(
+        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+          *valid_address = (keyring_info->account_infos[0]->address == address);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   std::unique_ptr<BraveWalletService> service_;
+  KeyringController* keyring_controller_;
   mojom::ERCTokenPtr token1_;
   mojom::ERCTokenPtr token2_;
   mojom::ERCTokenPtr eth_token_;
@@ -672,6 +716,74 @@ TEST_F(BraveWalletServiceUnitTest, RecordWalletHistogram) {
                                        2);
   histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, false,
                                        2);
+}
+
+TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
+  const char* new_password = "brave1234!";
+  {
+    base::RunLoop run_loop;
+    service_->OnGetImportInfo(new_password,
+                              base::BindLambdaForTesting([&](bool success) {
+                                EXPECT_FALSE(success);
+                                run_loop.Quit();
+                              }),
+                              false, BraveWalletServiceDelegate::ImportInfo());
+    run_loop.Run();
+  }
+
+  const char* valid_mnemonic =
+      "drip caution abandon festival order clown oven regular absorb evidence "
+      "crew where";
+  {
+    base::RunLoop run_loop;
+    service_->OnGetImportInfo(
+        new_password, base::BindLambdaForTesting([&](bool success) {
+          EXPECT_TRUE(success);
+          run_loop.Quit();
+        }),
+        true, BraveWalletServiceDelegate::ImportInfo({valid_mnemonic, false}));
+    run_loop.Run();
+    bool is_valid_password = false;
+    bool is_valid_mnemonic = false;
+    CheckPasswordAndMnemonic(new_password, valid_mnemonic, &is_valid_password,
+                             &is_valid_mnemonic);
+    EXPECT_TRUE(is_valid_password);
+    EXPECT_TRUE(is_valid_mnemonic);
+
+    bool is_valid_address = false;
+    CheckFirstAddress("0x084DCb94038af1715963F149079cE011C4B22961",
+                      &is_valid_address);
+    EXPECT_TRUE(is_valid_address);
+  }
+
+  const char* valid_legacy_mnemonic =
+      "cushion pitch impact album daring marine much annual budget social "
+      "clarify "
+      "balance rose almost area busy among bring hidden bind later capable "
+      "pulp "
+      "laundry";
+  {
+    base::RunLoop run_loop;
+    service_->OnGetImportInfo(
+        new_password, base::BindLambdaForTesting([&](bool success) {
+          EXPECT_TRUE(success);
+          run_loop.Quit();
+        }),
+        true,
+        BraveWalletServiceDelegate::ImportInfo({valid_legacy_mnemonic, true}));
+    run_loop.Run();
+    bool is_valid_password = false;
+    bool is_valid_mnemonic = false;
+    CheckPasswordAndMnemonic(new_password, valid_legacy_mnemonic,
+                             &is_valid_password, &is_valid_mnemonic);
+    EXPECT_TRUE(is_valid_password);
+    EXPECT_TRUE(is_valid_mnemonic);
+
+    bool is_valid_address = false;
+    CheckFirstAddress("0xea3C17c81E3baC3472d163b2c8b12ddDAa027874",
+                      &is_valid_address);
+    EXPECT_TRUE(is_valid_address);
+  }
 }
 
 }  // namespace brave_wallet

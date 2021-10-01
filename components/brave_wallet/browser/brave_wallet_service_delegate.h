@@ -20,10 +20,14 @@ namespace brave_wallet {
 
 class BraveWalletServiceDelegate {
  public:
+  struct ImportInfo {
+    std::string mnemonic;
+    bool is_legacy_crypto_wallets;
+  };
+
   using IsCryptoWalletsInstalledCallback = base::OnceCallback<void(bool)>;
   using IsMetaMaskInstalledCallback = base::OnceCallback<void(bool)>;
-  using ImportFromCryptoWalletsCallback = base::OnceCallback<void(bool)>;
-  using ImportFromMetaMaskCallback = base::OnceCallback<void(bool)>;
+  using GetImportInfoCallback = base::OnceCallback<void(bool, ImportInfo)>;
   using HasEthereumPermissionCallback = base::OnceCallback<void(bool, bool)>;
   using ResetEthereumPermissionCallback = base::OnceCallback<void(bool)>;
   using GetActiveOriginCallback = base::OnceCallback<void(const std::string&)>;
@@ -44,13 +48,10 @@ class BraveWalletServiceDelegate {
   virtual void IsCryptoWalletsInstalled(
       IsCryptoWalletsInstalledCallback callback);
   virtual void IsMetaMaskInstalled(IsMetaMaskInstalledCallback callback);
-  virtual void ImportFromCryptoWallets(
-      const std::string& password,
-      const std::string& new_password,
-      ImportFromCryptoWalletsCallback callback);
-  virtual void ImportFromMetaMask(const std::string& password,
-                                  const std::string& new_password,
-                                  ImportFromMetaMaskCallback callback);
+  virtual void GetImportInfoFromCryptoWallets(const std::string& password,
+                                              GetImportInfoCallback callback);
+  virtual void GetImportInfoFromMetaMask(const std::string& password,
+                                         GetImportInfoCallback callback);
   virtual void HasEthereumPermission(const std::string& origin,
                                      const std::string& account,
                                      HasEthereumPermissionCallback callback);

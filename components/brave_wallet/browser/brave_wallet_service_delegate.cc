@@ -19,18 +19,16 @@ void BraveWalletServiceDelegate::IsMetaMaskInstalled(
   std::move(callback).Run(false);
 }
 
-void BraveWalletServiceDelegate::ImportFromCryptoWallets(
+void BraveWalletServiceDelegate::GetImportInfoFromCryptoWallets(
     const std::string& password,
-    const std::string& new_password,
-    ImportFromCryptoWalletsCallback callback) {
-  std::move(callback).Run(false);
+    GetImportInfoCallback callback) {
+  std::move(callback).Run(false, ImportInfo());
 }
 
-void BraveWalletServiceDelegate::ImportFromMetaMask(
+void BraveWalletServiceDelegate::GetImportInfoFromMetaMask(
     const std::string& password,
-    const std::string& new_password,
-    ImportFromMetaMaskCallback callback) {
-  std::move(callback).Run(false);
+    GetImportInfoCallback callback) {
+  std::move(callback).Run(false, ImportInfo());
 }
 
 void BraveWalletServiceDelegate::HasEthereumPermission(
