@@ -204,22 +204,8 @@ std::string ParseEstimatedTime(const std::string& json) {
     return "";
   }
 
-  auto* payload = response_dict->FindKey("payload");
-  if (!payload) {
-    return "";
-  }
-
-  const base::DictionaryValue* payload_dict;
-  if (!payload->GetAsDictionary(&payload_dict)) {
-    return "";
-  }
-
-  const std::string* result = payload->FindStringKey("result");
-  if (!result) {
-    return "";
-  }
-
-  return *result;
+  const std::string* result = response_dict->FindStringPath("payload.result");
+  return result ? *result : "";
 }
 
 brave_wallet::mojom::GasEstimation1559Ptr ParseGasOracle(
@@ -255,23 +241,8 @@ brave_wallet::mojom::GasEstimation1559Ptr ParseGasOracle(
     return nullptr;
   }
 
-  auto* payload = response_dict->FindKey("payload");
-  if (!payload) {
-    return nullptr;
-  }
-
-  const base::DictionaryValue* payload_dict;
-  if (!payload->GetAsDictionary(&payload_dict)) {
-    return nullptr;
-  }
-
-  auto* result = payload->FindKey("result");
-  if (!result) {
-    return nullptr;
-  }
-
-  const base::DictionaryValue* result_dict;
-  if (!result->GetAsDictionary(&result_dict)) {
+  auto* result = response_dict->FindPath("payload.result");
+  if (!result || !result->is_dict()) {
     return nullptr;
   }
 
