@@ -100,7 +100,8 @@ function Container (props: Props) {
     panelTitle,
     selectedPanel,
     networkPayload,
-    swapQuote
+    swapQuote,
+    swapError
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -131,6 +132,7 @@ function Container (props: Props) {
     orderExpiration,
     orderType,
     slippageTolerance,
+    swapValidationError,
     swapToOrFrom,
     toAmount,
     toAsset,
@@ -150,7 +152,8 @@ function Container (props: Props) {
     selectedNetwork,
     props.walletPanelActions.fetchPanelSwapQuote,
     assetOptions,
-    swapQuote
+    swapQuote,
+    swapError
   )
 
   const getSelectedAccountBalance = useBalance(selectedAccount)
@@ -642,6 +645,7 @@ function Container (props: Props) {
                   orderExpiration={orderExpiration}
                   slippageTolerance={slippageTolerance}
                   isSubmitDisabled={isSwapButtonDisabled}
+                  validationError={swapValidationError}
                   fromAssetBalance={fromAssetBalance}
                   toAssetBalance={toAssetBalance}
                   onToggleOrderType={onToggleOrderType}

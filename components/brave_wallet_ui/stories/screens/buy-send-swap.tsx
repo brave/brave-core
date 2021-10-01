@@ -9,7 +9,8 @@ import {
   ToOrFromType,
   EthereumChain,
   BuySupportedChains,
-  SwapSupportedChains
+  SwapSupportedChains,
+  SwapValidationErrorType
 } from '../../constants/types'
 import Swap from '../../components/buy-send-swap/tabs/swap-tab'
 import Send from '../../components/buy-send-swap/tabs/send-tab'
@@ -29,6 +30,7 @@ export interface Props {
   selectedTab: BuySendSwapTypes
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
+  swapValidationError?: SwapValidationErrorType
   orderExpiration: ExpirationPresetObjectType
   buyAmount: string
   sendAmount: string
@@ -86,6 +88,7 @@ function BuySendSwap (props: Props) {
     buyAssetOptions,
     sendAssetOptions,
     swapAssetOptions,
+    swapValidationError,
     isSwapSubmitDisabled,
     onSubmitBuy,
     onSubmitSend,
@@ -155,6 +158,7 @@ function BuySendSwap (props: Props) {
           fromAssetBalance={fromAssetBalance}
           toAssetBalance={toAssetBalance}
           isSubmitDisabled={isSwapSubmitDisabled}
+          validationError={swapValidationError}
           onSubmitSwap={onSubmitSwap}
           flipSwapAssets={flipSwapAssets}
           onSelectNetwork={onSelectNetwork}

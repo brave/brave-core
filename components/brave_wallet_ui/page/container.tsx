@@ -102,7 +102,8 @@ function Container (props: Props) {
     showAddModal,
     isCryptoWalletsInstalled,
     isMetaMaskInstalled,
-    swapQuote
+    swapQuote,
+    swapError
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
@@ -132,6 +133,7 @@ function Container (props: Props) {
     orderExpiration,
     orderType,
     slippageTolerance,
+    swapValidationError,
     toAmount,
     toAsset,
     onToggleOrderType,
@@ -149,7 +151,8 @@ function Container (props: Props) {
     selectedNetwork,
     props.walletPageActions.fetchPageSwapQuote,
     assetOptions,
-    swapQuote
+    swapQuote,
+    swapError
   )
 
   const getSelectedAccountBalance = useBalance(selectedAccount)
@@ -606,6 +609,7 @@ function Container (props: Props) {
             toAssetBalance='0'
             orderExpiration={orderExpiration}
             slippageTolerance={slippageTolerance}
+            swapValidationError={swapValidationError}
             toAddress={toAddress}
             buyAssetOptions={WyreAccountAssetOptions}
             sendAssetOptions={sendAssetOptions}

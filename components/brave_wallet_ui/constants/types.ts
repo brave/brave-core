@@ -187,6 +187,7 @@ export interface PanelState {
   connectingAccounts: string[]
   networkPayload: EthereumChain
   swapQuote?: SwapResponse
+  swapError?: SwapErrorResponse
 }
 
 export interface PageState {
@@ -209,6 +210,7 @@ export interface PageState {
   isCryptoWalletsInstalled: boolean
   isMetaMaskInstalled: boolean
   swapQuote?: SwapResponse
+  swapError?: SwapErrorResponse
 }
 
 export interface WalletPageState {
@@ -313,11 +315,24 @@ export interface SwapResponse {
   buyTokenToEthRate: string
 }
 
+export interface SwapErrorResponse {
+  code: number,
+  reason: string,
+  validationErrors: { field: string, code: number, reason: string }[]
+}
+
 export interface SwapResponseReturnInfo {
   success: boolean
-  response: SwapResponse | undefined
-  errorResponse: string | undefined
+  response?: SwapResponse
+  errorResponse?: string
 }
+
+export type SwapValidationErrorType =
+  | 'insufficientBalance'
+  | 'insufficientEthBalance'
+  | 'insufficientAllowance'
+  | 'insufficientLiquidity'
+  | 'unknownError'
 
 export interface GetNetworkReturnInfo {
   network: EthereumChain

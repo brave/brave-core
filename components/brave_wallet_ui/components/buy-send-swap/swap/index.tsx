@@ -5,7 +5,8 @@ import {
   BuySendSwapViewTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
-  ToOrFromType
+  ToOrFromType,
+  SwapValidationErrorType
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
@@ -28,6 +29,7 @@ export interface Props {
   fromAssetBalance: string
   toAssetBalance: string
   isSubmitDisabled: boolean
+  validationError?: SwapValidationErrorType
   onToggleOrderType: () => void
   onFlipAssets: () => void
   onSubmitSwap: () => void
@@ -53,6 +55,7 @@ function Swap (props: Props) {
     fromAssetBalance,
     toAssetBalance,
     isSubmitDisabled,
+    validationError,
     onToggleOrderType,
     onInputChange,
     onSelectPresetAmount,
@@ -75,6 +78,30 @@ function Swap (props: Props) {
     onFilterAssetList(toAsset)
   }
 
+  const submitText = React.useMemo(() => {
+    if (validationError === 'insufficientBalance') {
+      return 'Insufficient balance'
+    }
+
+    if (validationError === 'insufficientEthBalance') {
+      return 'Insufficient funds for gas'
+    }
+
+    if (validationError === 'insufficientAllowance') {
+      return `Activate ${fromAsset.asset.symbol}`
+    }
+
+    if (validationError === 'insufficientLiquidity') {
+      return 'Insufficient liquidity'
+    }
+
+    if (validationError === 'unknownError') {
+      return 'Unknown error'
+    }
+
+    return 'Swap'
+  }, [validationError])
+
   return (
     <StyledWrapper>
       <SwapInputComponent
@@ -86,6 +113,7 @@ function Swap (props: Props) {
         selectedAssetBalance={fromAssetBalance}
         selectedAsset={fromAsset}
         onShowSelection={onShowAssetFrom}
+        validationError={validationError}
       />
       <ArrowButton onClick={onFlipAssets}>
         <ArrowDownIcon />
@@ -121,7 +149,7 @@ function Swap (props: Props) {
       <NavButton
         disabled={isSubmitDisabled}
         buttonType='primary'
-        text='Swap'
+        text={submitText}
         onSubmit={onSubmitSwap}
       />
     </StyledWrapper>
