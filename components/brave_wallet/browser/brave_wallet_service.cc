@@ -22,7 +22,7 @@
 //    "mainnet": {  // network_id
 //      [
 //        {
-//          "contract_address": "eth",
+//          "contract_address": "",
 //          "name": "Ethereum",
 //          "symbol": "ETH",
 //          "is_erc20": false,
@@ -65,13 +65,12 @@
 namespace {
 
 base::CheckedContiguousIterator<base::Value> FindAsset(
-    base::Value* user_assets_dict,
+    base::Value* user_assets_list,
     const std::string& contract_address) {
-  DCHECK(user_assets_dict && user_assets_dict->is_list() &&
-         !contract_address.empty());
+  DCHECK(user_assets_list && user_assets_list->is_list());
 
   auto iter = std::find_if(
-      user_assets_dict->GetList().begin(), user_assets_dict->GetList().end(),
+      user_assets_list->GetList().begin(), user_assets_list->GetList().end(),
       [&](const base::Value& value) {
         if (!value.is_dict()) {
           return false;
@@ -111,6 +110,10 @@ void BraveWalletService::Bind(
 absl::optional<std::string> BraveWalletService::GetChecksumAddress(
     const std::string& contract_address,
     const std::string& chain_id) {
+  if (contract_address.empty()) {
+    return "";
+  }
+
   const auto eth_addr = EthAddress::FromHex(contract_address);
   if (eth_addr.IsEmpty()) {
     return absl::nullopt;
@@ -210,7 +213,12 @@ void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
     std::move(callback).Run(false);
     return;
   }
+
   const std::string checksum_address = optional_checksum_address.value();
+  if (checksum_address.empty() && base::ToLowerASCII(token->symbol) != "eth") {
+    std::move(callback).Run(false);
+    return;
+  }
 
   const std::string network_id = GetNetworkId(prefs_, chain_id);
   if (network_id.empty()) {
@@ -221,14 +229,14 @@ void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
   DictionaryPrefUpdate update(prefs_, kBraveWalletUserAssets);
   base::DictionaryValue* user_assets_pref = update.Get();
 
-  base::Value* user_assets_dict = user_assets_pref->FindKey(network_id);
-  if (!user_assets_dict) {
-    user_assets_dict = user_assets_pref->SetKey(
+  base::Value* user_assets_list = user_assets_pref->FindKey(network_id);
+  if (!user_assets_list) {
+    user_assets_list = user_assets_pref->SetKey(
         network_id, base::Value(base::Value::Type::LIST));
   }
 
-  auto it = FindAsset(user_assets_dict, checksum_address);
-  if (it != user_assets_dict->GetList().end()) {
+  auto it = FindAsset(user_assets_list, checksum_address);
+  if (it != user_assets_list->GetList().end()) {
     std::move(callback).Run(false);
     return;
   }
@@ -243,7 +251,7 @@ void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
   value.SetKey("decimals", base::Value(token->decimals));
   value.SetKey("visible", base::Value(true));
 
-  user_assets_dict->Append(std::move(value));
+  user_assets_list->Append(std::move(value));
   std::move(callback).Run(true);
 }
 
@@ -267,14 +275,14 @@ void BraveWalletService::RemoveUserAsset(const std::string& contract_address,
   DictionaryPrefUpdate update(prefs_, kBraveWalletUserAssets);
   base::DictionaryValue* user_assets_pref = update.Get();
 
-  base::Value* user_assets_dict = user_assets_pref->FindKey(network_id);
-  if (!user_assets_dict) {
+  base::Value* user_assets_list = user_assets_pref->FindKey(network_id);
+  if (!user_assets_list) {
     std::move(callback).Run(false);
     return;
   }
 
-  user_assets_dict->EraseListIter(
-      FindAsset(user_assets_dict, checksum_address));
+  user_assets_list->EraseListIter(
+      FindAsset(user_assets_list, checksum_address));
   std::move(callback).Run(true);
 }
 
@@ -300,14 +308,14 @@ void BraveWalletService::SetUserAssetVisible(
   DictionaryPrefUpdate update(prefs_, kBraveWalletUserAssets);
   base::DictionaryValue* user_assets_pref = update.Get();
 
-  base::Value* user_assets_dict = user_assets_pref->FindKey(network_id);
-  if (!user_assets_dict) {
+  base::Value* user_assets_list = user_assets_pref->FindKey(network_id);
+  if (!user_assets_list) {
     std::move(callback).Run(false);
     return;
   }
 
-  auto it = FindAsset(user_assets_dict, checksum_address);
-  if (it == user_assets_dict->GetList().end()) {
+  auto it = FindAsset(user_assets_list, checksum_address);
+  if (it == user_assets_list->GetList().end()) {
     std::move(callback).Run(false);
     return;
   }
@@ -376,6 +384,34 @@ void BraveWalletService::ResetEthereumPermission(
   if (delegate_)
     delegate_->ResetEthereumPermission(origin_spec, account,
                                        std::move(callback));
+}
+
+// static
+void BraveWalletService::MigrateUserAssetEthContractAddress(
+    PrefService* prefs) {
+  if (prefs->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated))
+    return;
+
+  DictionaryPrefUpdate update(prefs, kBraveWalletUserAssets);
+  base::DictionaryValue* user_assets_pref = update.Get();
+
+  for (auto user_asset_list : user_assets_pref->DictItems()) {
+    auto it = FindAsset(&user_asset_list.second, "eth");
+    if (it == user_asset_list.second.GetList().end())
+      continue;
+
+    base::DictionaryValue* asset = nullptr;
+    if (it->GetAsDictionary(&asset)) {
+      const std::string* contract_address =
+          asset->FindStringKey("contract_address");
+      if (contract_address && *contract_address == "eth") {
+        asset->SetStringKey("contract_address", "");
+        break;
+      }
+    }
+  }
+
+  prefs->SetBoolean(kBraveWalletUserAssetEthContractAddressMigrated, true);
 }
 
 }  // namespace brave_wallet

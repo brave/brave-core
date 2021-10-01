@@ -9,6 +9,7 @@ import {
 import { NavButton } from '../../../extension'
 import { SearchBar } from '../../../shared'
 import { getLocale } from '../../../../../common/locale'
+import { ETH } from '../../../../options/initial-visible-token-info'
 
 // Styled Components
 import {
@@ -89,7 +90,8 @@ const EditVisibleAssetsModal = (props: Props) => {
 
   const tokenList = React.useMemo(() => {
     const visibleContracts = userVisibleTokensInfo.map((token) => token.contractAddress)
-    const notVisibleList = fullAssetList.filter((token) => !visibleContracts.includes(token.contractAddress))
+    const fullList = visibleContracts.includes('') ? fullAssetList : [ETH, ...fullAssetList]
+    const notVisibleList = fullList.filter((token) => !visibleContracts.includes(token.contractAddress))
     return [...userVisibleTokensInfo, ...notVisibleList]
   }, [fullAssetList, userVisibleTokensInfo])
 

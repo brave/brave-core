@@ -37,6 +37,8 @@ class BraveWalletService : public KeyedService,
   mojo::PendingRemote<mojom::BraveWalletService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BraveWalletService> receiver);
 
+  static void MigrateUserAssetEthContractAddress(PrefService* prefs);
+
   // mojom::BraveWalletService:
   void GetUserAssets(const std::string& chain_id,
                      GetUserAssetsCallback callback) override;
