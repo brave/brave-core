@@ -75,6 +75,8 @@ class BraveWalletProviderImpl final
   void ChainChangedEvent(const std::string& chain_id) override;
   void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
                                           const std::string& error) override;
+  void OnIsEip1559Changed(const std::string& chain_id,
+                          bool is_eip1559) override {}
 
   void OnAddEthereumChain(const std::string& chain_id, bool accepted);
   void OnChainApprovalResult(const std::string& chain_id,

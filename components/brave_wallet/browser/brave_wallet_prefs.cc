@@ -71,6 +71,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                    GetDefaultUserAssets());
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes, 5);
   registry->RegisterStringPref(kBraveWalletSelectedAccount, "");
+  registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 }
 
 void RegisterProfilePrefsForMigration(

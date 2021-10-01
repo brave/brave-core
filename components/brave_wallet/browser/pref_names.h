@@ -18,6 +18,7 @@ extern const char kBraveWalletUserAssets[];
 extern const char kBraveWalletUserAssetEthContractAddressMigrated[];
 extern const char kBraveWalletAutoLockMinutes[];
 extern const char kBraveWalletSelectedAccount[];
+extern const char kSupportEip1559OnLocalhostChain[];
 
 // DEPRECATED
 extern const char kBraveWalletPasswordEncryptorSalt[];

@@ -145,6 +145,10 @@ class EthJsonRpcController : public KeyedService,
       base::OnceCallback<void(bool status, const std::string& result)>;
   void GetGasPrice(GetGasPriceCallback callback);
 
+  using GetIsEip1559Callback =
+      base::OnceCallback<void(bool success, bool is_eip1559)>;
+  void GetIsEip1559(GetIsEip1559Callback callback);
+
  private:
   void FireNetworkChanged();
   void FirePendingRequestCompleted(const std::string& chain_id,
@@ -215,6 +219,16 @@ class EthJsonRpcController : public KeyedService,
                      int status,
                      const std::string& body,
                      const base::flat_map<std::string, std::string>& headers);
+
+  void OnGetIsEip1559(GetIsEip1559Callback callback,
+                      int status,
+                      const std::string& body,
+                      const base::flat_map<std::string, std::string>& headers);
+
+  void MaybeUpdateIsEip1559(const std::string& chain_id);
+  void UpdateIsEip1559(const std::string& chain_id,
+                       bool success,
+                       bool is_eip1559);
 
   api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;

@@ -86,7 +86,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      {},
      "ETH",
      "Ethereum",
-     18},
+     18,
+     true},
     {brave_wallet::mojom::kRinkebyChainId,
      "Rinkeby Test Network",
      {"https://rinkeby.etherscan.io"},
@@ -94,7 +95,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      {},
      "ETH",
      "Ethereum",
-     18},
+     18,
+     true},
     {brave_wallet::mojom::kRopstenChainId,
      "Ropsten Test Network",
      {"https://ropsten.etherscan.io"},
@@ -102,7 +104,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      {},
      "ETH",
      "Ethereum",
-     18},
+     18,
+     true},
     {brave_wallet::mojom::kGoerliChainId,
      "Goerli Test Network",
      {"https://goerli.etherscan.io"},
@@ -110,7 +113,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      {},
      "ETH",
      "Ethereum",
-     18},
+     18,
+     true},
     {brave_wallet::mojom::kKovanChainId,
      "Kovan Test Network",
      {"https://kovan.etherscan.io"},
@@ -118,7 +122,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      {},
      "ETH",
      "Ethereum",
-     18},
+     18,
+     true},
     {brave_wallet::mojom::kLocalhostChainId,
      "Localhost",
      {kGanacheLocalhostURL},
@@ -126,7 +131,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      {kGanacheLocalhostURL},
      "ETH",
      "Ethereum",
-     18}};
+     18,
+     false}};
 
 const base::flat_map<std::string, std::string> kInfuraSubdomains = {
     {brave_wallet::mojom::kMainnetChainId, "mainnet"},
@@ -161,11 +167,15 @@ GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id) {
 
 }  // namespace
 
-mojom::EthereumChainPtr GetKnownChain(const std::string& chain_id) {
+mojom::EthereumChainPtr GetKnownChain(PrefService* prefs,
+                                      const std::string& chain_id) {
   for (const auto& network : kKnownNetworks) {
     if (network.chain_id != chain_id)
       continue;
+
     auto result = network.Clone();
+    if (chain_id == brave_wallet::mojom::kLocalhostChainId)
+      result->is_eip1559 = prefs->GetBoolean(kSupportEip1559OnLocalhostChain);
     if (result->rpc_urls.empty())
       result->rpc_urls.push_back(GetInfuraURLForKnownChainId(chain_id));
     return result;
@@ -198,7 +208,8 @@ bool IsNativeWalletEnabled() {
       brave_wallet::features::kNativeBraveWalletFeature);
 }
 
-const std::vector<brave_wallet::mojom::EthereumChain> GetAllKnownNetworks() {
+const std::vector<brave_wallet::mojom::EthereumChain>
+GetAllKnownNetworksForTesting() {
   std::vector<brave_wallet::mojom::EthereumChain> result;
   result.assign(kKnownNetworks, std::end(kKnownNetworks));
   return result;
@@ -687,14 +698,15 @@ absl::optional<TransactionReceipt> ValueToTransactionReceipt(
   return tx_receipt;
 }
 
-void GetAllKnownChains(std::vector<mojom::EthereumChainPtr>* chains) {
+void GetAllKnownChains(PrefService* prefs,
+                       std::vector<mojom::EthereumChainPtr>* chains) {
   for (const auto& network : kKnownNetworks) {
-    chains->push_back(GetKnownChain(network.chain_id));
+    chains->push_back(GetKnownChain(prefs, network.chain_id));
   }
 }
 
 GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id) {
-  mojom::EthereumChainPtr known_network = GetKnownChain(chain_id);
+  mojom::EthereumChainPtr known_network = GetKnownChain(prefs, chain_id);
   if (!known_network)
     return GetCustomChainURL(prefs, chain_id);
 
@@ -706,7 +718,7 @@ GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id) {
 
 void GetAllChains(PrefService* prefs,
                   std::vector<mojom::EthereumChainPtr>* result) {
-  GetAllKnownChains(result);
+  GetAllKnownChains(prefs, result);
   GetAllCustomChains(prefs, result);
 }
 
@@ -718,7 +730,7 @@ std::string GetNetworkId(PrefService* prefs, const std::string& chain_id) {
     return subdomain;
   // Separate check for localhost in known networks as it is predefined
   // but doesnt have infura subdomain.
-  mojom::EthereumChainPtr known_network = GetKnownChain(chain_id);
+  mojom::EthereumChainPtr known_network = GetKnownChain(prefs, chain_id);
   if (known_network) {
     if (known_network->rpc_urls.size())
       return GURL(known_network->rpc_urls.front()).spec();

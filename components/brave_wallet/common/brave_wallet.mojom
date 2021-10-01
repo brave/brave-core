@@ -265,6 +265,7 @@ interface SwapController {
 interface EthJsonRpcControllerObserver {
   ChainChangedEvent(string chain_id);
   OnAddEthereumChainRequestCompleted(string chain_id, string error);
+  OnIsEip1559Changed(string chain_id, bool is_eip1559);
 };
 
 struct TxData {
@@ -310,6 +311,7 @@ struct EthereumChain {
   string symbol;
   string symbol_name;
   int32 decimals;
+  bool is_eip1559;
 };
 
 interface EthJsonRpcController {

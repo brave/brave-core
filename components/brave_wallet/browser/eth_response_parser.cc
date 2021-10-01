@@ -14,6 +14,26 @@
 
 namespace {
 
+bool ParseSingleStringResult(const std::string& json, std::string* result) {
+  DCHECK(result);
+
+  base::Value result_v;
+  if (!brave_wallet::ParseResult(json, &result_v))
+    return false;
+
+  const std::string* result_str = result_v.GetIfString();
+  if (!result_str)
+    return false;
+
+  *result = *result_str;
+
+  return true;
+}
+
+}  // namespace
+
+namespace brave_wallet {
+
 bool ParseResult(const std::string& json, base::Value* result) {
   DCHECK(result);
   base::JSONReader::ValueWithError value_with_error =
@@ -38,26 +58,6 @@ bool ParseResult(const std::string& json, base::Value* result) {
 
   return true;
 }
-
-bool ParseSingleStringResult(const std::string& json, std::string* result) {
-  DCHECK(result);
-
-  base::Value result_v;
-  if (!ParseResult(json, &result_v))
-    return false;
-
-  const std::string* result_str = result_v.GetIfString();
-  if (!result_str)
-    return false;
-
-  *result = *result_str;
-
-  return true;
-}
-
-}  // namespace
-
-namespace brave_wallet {
 
 bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num) {
   std::string block_num_str;
