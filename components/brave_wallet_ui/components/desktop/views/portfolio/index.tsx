@@ -199,7 +199,7 @@ const Portfolio = (props: Props) => {
   }
 
   const toggleShowVisibleAssetModal = () => {
-    if (!showVisibleAssetsModal) {
+    if (fullAssetList.length === 0) {
       fetchFullTokenList()
     }
     setShowVisibleAssetsModal(!showVisibleAssetsModal)

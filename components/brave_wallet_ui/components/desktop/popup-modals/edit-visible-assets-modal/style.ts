@@ -138,6 +138,14 @@ export const Input = styled.input`
   }
 `
 
+export const TopRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+`
+
 export const ButtonRow = styled.div`
   display: flex;
   flex-direction: row;

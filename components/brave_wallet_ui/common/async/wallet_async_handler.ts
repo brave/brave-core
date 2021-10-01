@@ -97,9 +97,12 @@ async function refreshWalletInfo (store: Store) {
   const chainId = await ethJsonRpcController.getChainId()
   const current = GetNetworkInfo(chainId.chainId, networkList.networks)
   store.dispatch(WalletActions.setNetwork(current))
+  const state = getWalletState(store)
 
   // Populate tokens from ERC-20 token registry.
-  store.dispatch(WalletActions.getAllTokensList())
+  if (state.fullTokenList.length === 0) {
+    store.dispatch(WalletActions.getAllTokensList())
+  }
 
   const braveWalletService = apiProxy.braveWalletService
   const defaultWallet = await braveWalletService.getDefaultWallet()
@@ -108,7 +111,6 @@ async function refreshWalletInfo (store: Store) {
   store.dispatch(WalletActions.setVisibleTokensInfo(visibleTokensInfo.tokens))
 
   // Update ETH Balances
-  const state = getWalletState(store)
   const getEthPrice = await assetPriceController.getPrice(['eth'], ['usd'], state.selectedPortfolioTimeline)
   const ethPrice = getEthPrice.success ? getEthPrice.values.find((i) => i.toAsset === 'usd')?.price ?? '0' : '0'
   const getBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {
@@ -122,21 +124,30 @@ async function refreshWalletInfo (store: Store) {
   store.dispatch(WalletActions.ethBalancesUpdated(balancesAndPrice))
 
   // Update Token Balances
-  const tokenInfos = state.userVisibleTokensInfo
-  const tokenSymbols = tokenInfos.map((token) => {
-    return token.symbol.toLowerCase()
-  })
-  const getTokenPrices = await assetPriceController.getPrice(tokenSymbols, ['usd'], state.selectedPortfolioTimeline)
-  const getERCTokenBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {
-    return Promise.all(tokenInfos.map(async (token) => {
-      return ethJsonRpcController.getERC20TokenBalance(token.contractAddress, account.address)
+  const tokenInfos = visibleTokensInfo.tokens
+  if (tokenInfos) {
+    const getTokenPrices = await Promise.all(tokenInfos.map(async (token) => {
+      const emptyPrice = {
+        assetTimeframeChange: '0',
+        fromAsset: token.symbol,
+        price: '0',
+        toAsset: 'usd'
+      }
+      const price = await assetPriceController.getPrice([token.symbol.toLowerCase()], ['usd'], state.selectedPortfolioTimeline)
+      return price.success ? price.values[0] : emptyPrice
     }))
-  }))
-  const tokenBalancesAndPrices = {
-    balances: getERCTokenBalanceReturnInfos,
-    prices: getTokenPrices
+    const getERCTokenBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {
+      return Promise.all(tokenInfos.map(async (token) => {
+        return ethJsonRpcController.getERC20TokenBalance(token.contractAddress, account.address)
+      }))
+    }))
+    const tokenBalancesAndPrices = {
+      balances: getERCTokenBalanceReturnInfos,
+      prices: { success: true, values: getTokenPrices }
+    }
+    store.dispatch(WalletActions.tokenBalancesUpdated(tokenBalancesAndPrices))
   }
-  store.dispatch(WalletActions.tokenBalancesUpdated(tokenBalancesAndPrices))
+
   await getTokenPriceHistory(store)
 
   const getTransactions = await Promise.all(state.accounts.map(async (account) => {
@@ -378,7 +389,7 @@ export const fetchSwapQuoteFactory = (
   }
 
   const quote = await (
-      full ? swapController.getTransactionPayload(swapParams) : swapController.getPriceQuote(swapParams)
+    full ? swapController.getTransactionPayload(swapParams) : swapController.getPriceQuote(swapParams)
   )
 
   if (quote.success && quote.response) {

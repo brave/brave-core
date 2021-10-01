@@ -24,7 +24,8 @@ import {
   Input,
   Divider,
   ButtonRow,
-  ErrorText
+  ErrorText,
+  TopRow
 } from './style'
 
 export interface Props {
@@ -93,8 +94,12 @@ const EditVisibleAssetsModal = (props: Props) => {
     return [...userVisibleTokensInfo, ...notVisibleList]
   }, [fullAssetList, userVisibleTokensInfo])
 
-  React.useMemo(() => {
-    setFilteredTokenList(tokenList)
+  React.useEffect(() => {
+    // Added this timeout to throttle setting the list
+    // to allow the modal to appear instantly
+    setTimeout(function () {
+      setFilteredTokenList(tokenList)
+    }, 500)
     if (!addUserAssetError) {
       setShowAddCustomToken(false)
     }
@@ -105,7 +110,9 @@ const EditVisibleAssetsModal = (props: Props) => {
   const filterWatchlist = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const search = event.target.value
     if (search === '') {
-      setFilteredTokenList(tokenList)
+      setTimeout(function () {
+        setFilteredTokenList(tokenList)
+      }, 100)
     } else {
       const filteredList = tokenList.filter((item) => {
         return (
@@ -207,7 +214,7 @@ const EditVisibleAssetsModal = (props: Props) => {
         <Divider />
       }
       <StyledWrapper>
-        {fullAssetList.length === 0 || isLoading ? (
+        {(filteredTokenList.length === 0 && searchValue === '') || isLoading ? (
           <LoadingWrapper>
             <LoadIcon />
           </LoadingWrapper>
@@ -269,6 +276,13 @@ const EditVisibleAssetsModal = (props: Props) => {
                   placeholder={getLocale('braveWalletWatchListSearchPlaceholder')}
                   action={filterWatchlist}
                 />
+                {!searchValue.toLowerCase().startsWith('0x') &&
+                  <TopRow>
+                    <NoAssetButton onClick={toggleShowAddCustomToken}>
+                      {getLocale('braveWalletWatchlistAddCustomAsset')}
+                    </NoAssetButton>
+                  </TopRow>
+                }
                 <WatchlistScrollContainer>
                   <>
                     {filteredTokenList.map((token) =>
@@ -293,8 +307,8 @@ const EditVisibleAssetsModal = (props: Props) => {
                   </>
                 </WatchlistScrollContainer>
                 <NavButton
-                  onSubmit={toggleShowAddCustomToken}
-                  text={getLocale('braveWalletWatchlistAddCustomAsset')}
+                  onSubmit={onClose}
+                  text={getLocale('braveWalletWatchListDoneButton')}
                   buttonType='primary'
                 />
               </>
