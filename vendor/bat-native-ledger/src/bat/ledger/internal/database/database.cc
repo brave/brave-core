@@ -349,6 +349,11 @@ void Database::GetPendingContributions(
   pending_contribution_->GetAllRecords(callback);
 }
 
+void Database::GetUnverifiedPublishersForPendingContributions(
+    ledger::UnverifiedPublishersCallback callback) {
+  pending_contribution_->GetUnverifiedPublishers(std::move(callback));
+}
+
 void Database::RemovePendingContribution(
     const uint64_t id,
     ledger::ResultCallback callback) {

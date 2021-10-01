@@ -23,11 +23,24 @@ Unverified::Unverified(LedgerImpl* ledger) :
 Unverified::~Unverified() = default;
 
 void Unverified::Contribute() {
-  ledger_->wallet()->FetchBalance(
-      std::bind(&Unverified::OnContributeUnverifiedBalance,
-                this,
-                _1,
-                _2));
+  ledger_->database()->GetUnverifiedPublishersForPendingContributions(
+      std::bind(&Unverified::FetchInfoForUnverifiedPublishers, this, _1));
+}
+
+void Unverified::FetchInfoForUnverifiedPublishers(
+    std::vector<std::string>&& publisher_keys) {
+  if (!publisher_keys.empty()) {
+    const auto publisher_key = std::move(publisher_keys.back());
+    ledger_->publisher()->FetchServerPublisherInfo(
+        publisher_key, [this, publisher_keys = std::move(publisher_keys)](
+                           type::ServerPublisherInfoPtr) mutable {
+          publisher_keys.pop_back();
+          FetchInfoForUnverifiedPublishers(std::move(publisher_keys));
+        });
+  } else {
+    ledger_->wallet()->FetchBalance(
+        std::bind(&Unverified::OnContributeUnverifiedBalance, this, _1, _2));
+  }
 }
 
 void Unverified::OnContributeUnverifiedBalance(

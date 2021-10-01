@@ -306,6 +306,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                        ZeroBalanceWalletClaimNotCalled_Gemini) {
   response_->SetVerifiedWallet(true);
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_rewards::prefs::kFetchOldBalance, false);
   rewards_browsertest_util::StartProcess(rewards_service_);
   contribution_->SetUpGeminiWallet(rewards_service_, 50.0);
 
@@ -316,7 +318,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
                            ledger::type::ExternalWalletPtr wallet) {
     auto requests = response_->GetRequests();
     EXPECT_EQ(result, ledger::type::Result::LEDGER_OK);
-    EXPECT_FALSE(requests.empty());
 
     // Should not attempt to call /v2/wallet/UUID/claim endpoint
     // since by default the wallet should contain 0 `user_funds`

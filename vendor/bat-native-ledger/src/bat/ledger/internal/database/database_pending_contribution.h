@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_DATABASE_PENDING_CONTRIBUTION_H_
-#define BRAVELEDGER_DATABASE_DATABASE_PENDING_CONTRIBUTION_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_PENDING_CONTRIBUTION_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_PENDING_CONTRIBUTION_H_
 
 #include <stdint.h>
 
@@ -28,6 +28,8 @@ class DatabasePendingContribution: public DatabaseTable {
 
   void GetAllRecords(ledger::PendingContributionInfoListCallback callback);
 
+  void GetUnverifiedPublishers(ledger::UnverifiedPublishersCallback callback);
+
   void DeleteRecord(const uint64_t id, ledger::ResultCallback callback);
 
   void DeleteAllRecords(ledger::ResultCallback callback);
@@ -40,9 +42,12 @@ class DatabasePendingContribution: public DatabaseTable {
   void OnGetAllRecords(
       type::DBCommandResponsePtr response,
       ledger::PendingContributionInfoListCallback callback);
+
+  void OnGetUnverifiedPublishers(type::DBCommandResponsePtr response,
+                                 ledger::UnverifiedPublishersCallback callback);
 };
 
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_DATABASE_PENDING_CONTRIBUTION_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_PENDING_CONTRIBUTION_H_
