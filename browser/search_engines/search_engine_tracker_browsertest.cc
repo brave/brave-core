@@ -27,18 +27,6 @@ class SearchEngineProviderP3ATest : public InProcessBrowserTest {
   std::unique_ptr<base::HistogramTester> histogram_tester_;
 };
 
-testing::AssertionResult VerifyTemplateURLServiceLoad(
-    TemplateURLService* service) {
-  if (service->loaded()) {
-    return testing::AssertionSuccess();
-  }
-  search_test_utils::WaitForTemplateURLServiceToLoad(service);
-  if (service->loaded()) {
-    return testing::AssertionSuccess();
-  }
-  return testing::AssertionFailure() << "TemplateURLService isn't loaded";
-}
-
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
   // Check that the metric is reported on startup.
   histogram_tester_->ExpectUniqueSample(kDefaultSearchEngineMetric,
@@ -46,9 +34,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
 
   auto* service =
       TemplateURLServiceFactory::GetForProfile(browser()->profile());
-
-  // Make sure the service is initialized.
-  EXPECT_TRUE(VerifyTemplateURLServiceLoad(service));
+  search_test_utils::WaitForTemplateURLServiceToLoad(service);
 
   // Check that changing the default engine triggers emitting of a new value.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
