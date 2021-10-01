@@ -60,10 +60,11 @@ class BraveLanguageMap {
   int GetSize() const { return to_core_index_.size(); }
 
  private:
-  std::map<int, int> to_core_index_, to_ui_index_;
+  std::map<int, int> to_core_index_;
+  std::map<int, int> to_ui_index_;
 };
 
-BraveTranslateBubbleModelImpl::BraveTranslateBubbleModelImpl(
+TranslateBubbleModelImpl::TranslateBubbleModelImpl(
     translate::TranslateStep step,
     std::unique_ptr<translate::TranslateUIDelegate> ui_delegate)
     : ChromiumTranslateBubbleModelImpl(step, std::move(ui_delegate)) {
@@ -79,44 +80,44 @@ BraveTranslateBubbleModelImpl::BraveTranslateBubbleModelImpl(
   }
 }
 
-BraveTranslateBubbleModelImpl::~BraveTranslateBubbleModelImpl() = default;
+TranslateBubbleModelImpl::~TranslateBubbleModelImpl() = default;
 
-int BraveTranslateBubbleModelImpl::GetNumberOfSourceLanguages() const {
+int TranslateBubbleModelImpl::GetNumberOfSourceLanguages() const {
   return source_language_map_->GetSize();
 }
 
-int BraveTranslateBubbleModelImpl::GetNumberOfTargetLanguages() const {
+int TranslateBubbleModelImpl::GetNumberOfTargetLanguages() const {
   return target_language_map_->GetSize();
 }
 
-std::u16string BraveTranslateBubbleModelImpl::GetSourceLanguageNameAt(
+std::u16string TranslateBubbleModelImpl::GetSourceLanguageNameAt(
     int index) const {
   return ui_delegate_->GetLanguageNameAt(
       source_language_map_->ToCoreIndex(index));
 }
 
-std::u16string BraveTranslateBubbleModelImpl::GetTargetLanguageNameAt(
+std::u16string TranslateBubbleModelImpl::GetTargetLanguageNameAt(
     int index) const {
   return ui_delegate_->GetLanguageNameAt(
       target_language_map_->ToCoreIndex(index));
 }
 
-int BraveTranslateBubbleModelImpl::GetSourceLanguageIndex() const {
+int TranslateBubbleModelImpl::GetSourceLanguageIndex() const {
   return source_language_map_->ToUiIndex(
       ui_delegate_->GetSourceLanguageIndex());
 }
 
-int BraveTranslateBubbleModelImpl::GetTargetLanguageIndex() const {
+int TranslateBubbleModelImpl::GetTargetLanguageIndex() const {
   return target_language_map_->ToUiIndex(
       ui_delegate_->GetTargetLanguageIndex());
 }
 
-void BraveTranslateBubbleModelImpl::UpdateSourceLanguageIndex(int index) {
+void TranslateBubbleModelImpl::UpdateSourceLanguageIndex(int index) {
   ui_delegate_->UpdateSourceLanguageIndex(
       source_language_map_->ToCoreIndex(index));
 }
 
-void BraveTranslateBubbleModelImpl::UpdateTargetLanguageIndex(int index) {
+void TranslateBubbleModelImpl::UpdateTargetLanguageIndex(int index) {
   ui_delegate_->UpdateTargetLanguageIndex(
       target_language_map_->ToCoreIndex(index));
 }

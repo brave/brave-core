@@ -6,18 +6,23 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TRANSLATE_TRANSLATE_BUBBLE_MODEL_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TRANSLATE_TRANSLATE_BUBBLE_MODEL_IMPL_H_
 
+class TranslateBubbleModelImpl;
+using BraveTranslateBubbleModelImpl = TranslateBubbleModelImpl;
+
 #define TranslateBubbleModelImpl ChromiumTranslateBubbleModelImpl
+#define translate_executed_ translate_executed_; friend BraveTranslateBubbleModelImpl
 #include "../../../../../../../chrome/browser/ui/translate/translate_bubble_model_impl.h"
+#undef translate_executed_
 #undef TranslateBubbleModelImpl
 
 class BraveLanguageMap;
-class BraveTranslateBubbleModelImpl : public ChromiumTranslateBubbleModelImpl {
+class TranslateBubbleModelImpl : public ChromiumTranslateBubbleModelImpl {
  public:
-  BraveTranslateBubbleModelImpl(
+  TranslateBubbleModelImpl(
       translate::TranslateStep step,
       std::unique_ptr<translate::TranslateUIDelegate> ui_delegate);
 
-  ~BraveTranslateBubbleModelImpl() override;
+  ~TranslateBubbleModelImpl() override;
 
   int GetNumberOfSourceLanguages() const override;
   int GetNumberOfTargetLanguages() const override;
@@ -29,9 +34,8 @@ class BraveTranslateBubbleModelImpl : public ChromiumTranslateBubbleModelImpl {
   void UpdateTargetLanguageIndex(int index) override;
 
  private:
-  std::unique_ptr<BraveLanguageMap> source_language_map_, target_language_map_;
+  std::unique_ptr<BraveLanguageMap> source_language_map_;
+  std::unique_ptr<BraveLanguageMap> target_language_map_;
 };
-
-using TranslateBubbleModelImpl = BraveTranslateBubbleModelImpl;
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TRANSLATE_TRANSLATE_BUBBLE_MODEL_IMPL_H_
