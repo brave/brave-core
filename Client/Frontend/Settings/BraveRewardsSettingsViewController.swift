@@ -102,11 +102,12 @@ class BraveRewardsSettingsViewController: TableViewController {
         }
         
         if let ledger = rewards.ledger {
-            ledger.rewardsInternalInfo { info in
+            ledger.rewardsInternalInfo { [weak self] info in
                 if let info = info, !info.paymentId.isEmpty {
-                    self.dataSource.sections += [
+                    self?.dataSource.sections += [
                         Section(rows: [
                             Row(text: Strings.RewardsInternals.title, selection: {
+                                guard let self = self else { return }
                                 let controller = RewardsInternalsViewController(ledger: ledger, legacyLedger: self.legacyWallet)
                                 self.navigationController?.pushViewController(controller, animated: true)
                             }, accessory: .disclosureIndicator)

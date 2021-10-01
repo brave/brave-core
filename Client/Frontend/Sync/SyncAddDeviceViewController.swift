@@ -62,19 +62,18 @@ class SyncAddDeviceViewController: SyncViewController {
     }
 
     private var clipboardClearTimer: Timer?
-    
-    // Pass in doneHandler here
-    convenience init(title: String, type: DeviceType) {
-        self.init()
+    private let syncAPI: BraveSyncAPI
+
+    init(title: String, type: DeviceType, syncAPI: BraveSyncAPI) {
+        self.syncAPI = syncAPI
+        super.init(nibName: nil, bundle: nil)
+        
         pageTitle = title
         deviceType = type
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -99,12 +98,12 @@ class SyncAddDeviceViewController: SyncViewController {
         containerView.layer.cornerCurve = .continuous
         containerView.layer.masksToBounds = true
 
-        if !BraveSyncAPI.shared.isInSyncGroup {
+        if !syncAPI.isInSyncGroup {
             showInitializationError()
             return
         }
         
-        qrCodeView = SyncQRCodeView(syncApi: BraveSyncAPI.shared)
+        qrCodeView = SyncQRCodeView(syncApi: syncAPI)
         containerView.addSubview(qrCodeView!)
         qrCodeView?.snp.makeConstraints { make in
             make.top.bottom.equalTo(0).inset(22)
@@ -112,13 +111,13 @@ class SyncAddDeviceViewController: SyncViewController {
             make.size.equalTo(barcodeSize)
         }
         
-        self.codewordsView.text = BraveSyncAPI.shared.getSyncCode()
+        self.codewordsView.text = syncAPI.getSyncCode()
         self.setupVisuals()
     }
     
     private func showInitializationError() {
         present(SyncAlerts.initializationError, animated: true) {
-            BraveSyncAPI.shared.leaveSyncGroup()
+            self.syncAPI.leaveSyncGroup()
         }
     }
     

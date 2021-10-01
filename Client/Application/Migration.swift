@@ -13,14 +13,23 @@ private let log = Logger.browserLogger
 
 class Migration {
     
-    private(set) public static var braveCoreSyncObjectsMigrator: BraveCoreMigrator?
-
+    private(set) public var braveCoreSyncObjectsMigrator: BraveCoreMigrator?
+    private let bookmarksAPI: BraveBookmarksAPI
+    private let historyAPI: BraveHistoryAPI
+    private let syncAPI: BraveSyncAPI
+    
+    public init(bookmarksAPI: BraveBookmarksAPI, historyAPI: BraveHistoryAPI, syncAPI: BraveSyncAPI) {
+        self.bookmarksAPI = bookmarksAPI
+        self.historyAPI = historyAPI
+        self.syncAPI = syncAPI
+    }
+    
     public static var isChromiumMigrationCompleted: Bool {
         return Preferences.Chromium.syncV2BookmarksMigrationCompleted.value &&
             Preferences.Chromium.syncV2HistoryMigrationCompleted.value
     }
     
-    static func launchMigrations(keyPrefix: String) {
+    func launchMigrations(keyPrefix: String) {
         Preferences.migratePreferences(keyPrefix: keyPrefix)
         
         if !Preferences.Migration.documentsDirectoryCleanupCompleted.value {
@@ -29,8 +38,10 @@ class Migration {
         }
         
         // `.migrate` is called in `BrowserViewController.viewDidLoad()`
-        if !isChromiumMigrationCompleted {
-            braveCoreSyncObjectsMigrator = BraveCoreMigrator()
+        if !Migration.isChromiumMigrationCompleted {
+            braveCoreSyncObjectsMigrator = BraveCoreMigrator(bookmarksAPI: bookmarksAPI,
+                                                             historyAPI: historyAPI,
+                                                             syncAPI: syncAPI)
         }
         
         if !Preferences.Migration.playlistV1FileSettingsLocationCompleted.value {
@@ -52,16 +63,7 @@ class Migration {
         )
     }
     
-    @objc private func enableUserSelectedTypesForSync() {
-        guard BraveSyncAPI.shared.isInSyncGroup else {
-            log.info("Sync is not active")
-            return
-        }
-        
-        BraveSyncAPI.shared.enableSyncTypes()
-    }
-    
-    static func moveDatabaseToApplicationDirectory() {
+    func moveDatabaseToApplicationDirectory() {
         if Preferences.Database.DocumentToSupportDirectoryMigration.completed.value {
             // Migration has been done in some regard, so drop out.
             return
@@ -83,9 +85,18 @@ class Migration {
         Preferences.Database.DocumentToSupportDirectoryMigration.previousAttemptedVersion.value = AppInfo.appVersion
     }
     
+    @objc private func enableUserSelectedTypesForSync() {
+        guard syncAPI.isInSyncGroup else {
+            log.info("Sync is not active")
+            return
+        }
+        
+        syncAPI.enableSyncTypes()
+    }
+    
     /// Adblock files don't have to be moved, they now have a new directory and will be downloaded there.
     /// Downloads folder was nefer used before, it's a leftover from FF.
-    private static func documentsDirectoryCleanup() {
+    private func documentsDirectoryCleanup() {
         FileManager.default.removeFolder(withName: "abp-data", location: .documentDirectory)
         FileManager.default.removeFolder(withName: "https-everywhere-data", location: .documentDirectory)
         
@@ -94,7 +105,7 @@ class Migration {
                                      destinationLocation: .applicationSupportDirectory)
     }
     
-    private static func movePlaylistV1Items() {
+    private func movePlaylistV1Items() {
         // If moving the file fails, we'll never bother trying again.
         // It doesn't hurt and the user can easily delete it themselves.
         defer {

@@ -33,8 +33,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     var rootViewController: UIViewController!
     weak var profile: Profile?
     var tabManager: TabManager!
-    var braveCore = BraveCoreMain()
-
+    
+    let braveCore = BraveCoreMain()
+    var migration: Migration?
+    
     weak var application: UIApplication?
     var launchOptions: [AnyHashable: Any]?
 
@@ -83,14 +85,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         }
         
         braveCore.setUserAgent(UserAgent.mobile)
-
+        migration = Migration(bookmarksAPI: braveCore.bookmarksAPI,
+                              historyAPI: braveCore.historyAPI,
+                              syncAPI: braveCore.syncAPI)
+        
         AdBlockStats.shared.startLoading()
         HttpsEverywhereStats.shared.startLoading()
         
         updateShortcutItems(application)
         
         // Must happen before passcode check, otherwise may unnecessarily reset keychain
-        Migration.moveDatabaseToApplicationDirectory()
+        migration?.moveDatabaseToApplicationDirectory()
         
         // Passcode checking, must happen on immediate launch
         if !DataController.shared.storeExists() {
@@ -130,7 +135,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         let profile = getProfile(application)
         let profilePrefix = profile.prefs.getBranchPrefix()
-        Migration.launchMigrations(keyPrefix: profilePrefix)
+        migration?.launchMigrations(keyPrefix: profilePrefix)
         
         setUpWebServer(profile)
         
@@ -178,6 +183,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             tabManager: self.tabManager,
             historyAPI: braveCore.historyAPI,
             bookmarkAPI: braveCore.bookmarksAPI,
+            syncAPI: braveCore.syncAPI,
+            migration: migration,
             crashedLastSession: crashedLastSession)
         browserViewController.edgesForExtendedLayout = []
 
@@ -213,7 +220,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         SKPaymentQueue.default().remove(iapObserver)
         
         // Clean up BraveCore
-        BraveSyncAPI.removeAllObservers()
+        braveCore.syncAPI.removeAllObservers()
     }
 
     /**

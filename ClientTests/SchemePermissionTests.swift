@@ -64,14 +64,21 @@ class SchemePermissionTests: XCTestCase {
             return
         }
         
-        historyAPI = appDelegate.braveCore.historyAPI
         bookmarksAPI = appDelegate.braveCore.bookmarksAPI
+        historyAPI = appDelegate.braveCore.historyAPI
+        syncAPI = appDelegate.braveCore.syncAPI
+        
+        let migration = Migration(bookmarksAPI: bookmarksAPI,
+                              historyAPI: historyAPI,
+                              syncAPI: syncAPI)
         
         subject = BrowserViewController(
             profile: profile,
             tabManager: tabManager,
             historyAPI: historyAPI,
             bookmarkAPI: bookmarksAPI,
+            syncAPI: syncAPI,
+            migration: migration,
             crashedLastSession: false)
     }
     
@@ -121,4 +128,5 @@ class SchemePermissionTests: XCTestCase {
     private var imageStore: DiskImageStore!
     private var historyAPI: BraveHistoryAPI!
     private var bookmarksAPI: BraveBookmarksAPI!
+    private var syncAPI: BraveSyncAPI!
 }
