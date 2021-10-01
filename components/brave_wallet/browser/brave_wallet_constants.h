@@ -390,8 +390,16 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletEditGasBaseFee", IDS_BRAVE_WALLET_EDIT_GAS_BASE_FEE},
     {"braveWalletEditGasGwei", IDS_BRAVE_WALLET_EDIT_GAS_GWEI},
     {"braveWalletEditGasSetCustom", IDS_BRAVE_WALLET_EDIT_GAS_SET_CUSTOM},
-    {"braveWalletEditGasSetSuggested",
-     IDS_BRAVE_WALLET_EDIT_GAS_SET_SUGGESTED}};
+    {"braveWalletEditGasSetSuggested", IDS_BRAVE_WALLET_EDIT_GAS_SET_SUGGESTED},
+    {"braveWalletSwapInsufficientBalance",
+     IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_BALANCE},
+    {"braveWalletSwapInsufficientEthBalance",
+     IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_ETH_BALANCE},
+    {"braveWalletSwapInsufficientLiquidity",
+     IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_LIQUIDITY},
+    {"braveWalletSwapInsufficientAllowance",
+     IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_ALLOWANCE},
+    {"braveWalletSwapUnknownError", IDS_BRAVE_WALLET_SWAP_UNKNOWN_ERROR}};
 
 }  // namespace brave_wallet
 

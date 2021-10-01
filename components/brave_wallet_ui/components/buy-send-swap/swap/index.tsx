@@ -1,4 +1,6 @@
 import * as React from 'react'
+
+import { getLocale } from '../../../../common/locale'
 import {
   AccountAssetOptionType,
   OrderTypes,
@@ -10,6 +12,7 @@ import {
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -80,26 +83,27 @@ function Swap (props: Props) {
 
   const submitText = React.useMemo(() => {
     if (validationError === 'insufficientBalance') {
-      return 'Insufficient balance'
+      return getLocale('braveWalletSwapInsufficientBalance')
     }
 
     if (validationError === 'insufficientEthBalance') {
-      return 'Insufficient funds for gas'
+      return getLocale('braveWalletSwapInsufficientEthBalance')
     }
 
     if (validationError === 'insufficientAllowance') {
-      return `Activate ${fromAsset.asset.symbol}`
+      return getLocale('braveWalletSwapInsufficientAllowance')
+        .replace('$1', fromAsset.asset.symbol)
     }
 
     if (validationError === 'insufficientLiquidity') {
-      return 'Insufficient liquidity'
+      return getLocale('braveWalletSwapInsufficientLiquidity')
     }
 
     if (validationError === 'unknownError') {
-      return 'Unknown error'
+      return getLocale('braveWalletSwapUnknownError')
     }
 
-    return 'Swap'
+    return getLocale('braveWalletSwap')
   }, [validationError])
 
   return (

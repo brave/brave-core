@@ -233,6 +233,11 @@ provideStrings({
   braveWalletSwapMarket: 'Market',
   braveWalletSwapLimit: 'Limit',
   braveWalletSwapPriceIn: 'Price in',
+  braveWalletSwapInsufficientBalance: 'Insufficient balance',
+  braveWalletSwapInsufficientEthBalance: 'Insufficient funds for gas',
+  braveWalletSwapInsufficientLiquidity: 'Insufficient liquidity',
+  braveWalletSwapInsufficientAllowance: 'Activate token',
+  braveWalletSwapUnknownError: 'Unknown error',
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',
