@@ -537,7 +537,16 @@ source_set("ui") {
 
     deps += [ "//brave/components/tor/resources:internals_generated_resources" ]
   }
-
+  if (brave_wallet_enabled && !is_ios) {
+    sources += [
+      "webui/brave_wallet/trezor_bridge_ui.cc",
+      "webui/brave_wallet/trezor_bridge_ui.h",
+    ]
+    deps += [
+      "//brave/components/trezor_bridge",
+      "//brave/components/trezor_bridge/resources:generated_resources",
+    ]
+  }
   if (brave_wallet_enabled && !is_android && !is_ios) {
     sources += [
       "views/permission_bubble/ethereum_permission_prompt_impl.cc",
@@ -548,8 +557,6 @@ source_set("ui") {
       "wallet_bubble_manager_delegate_impl.h",
       "webui/brave_wallet/page_handler/wallet_page_handler.cc",
       "webui/brave_wallet/page_handler/wallet_page_handler.h",
-      "webui/brave_wallet/trezor_bridge_ui.cc",
-      "webui/brave_wallet/trezor_bridge_ui.h",
       "webui/brave_wallet/wallet_common_ui.cc",
       "webui/brave_wallet/wallet_common_ui.h",
       "webui/brave_wallet/wallet_page_ui.cc",
@@ -568,8 +575,6 @@ source_set("ui") {
       "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
       "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",
       "//brave/components/resources:strings_grit",
-      "//brave/components/trezor_bridge",
-      "//brave/components/trezor_bridge/resources:generated_resources",
       "//components/permissions",
     ]
   }

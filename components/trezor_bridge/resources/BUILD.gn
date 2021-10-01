@@ -1,4 +1,12 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
+
+assert(brave_wallet_enabled)
 
 transpile_web_ui("trezor_bridge_ui") {
   entry_points = [
@@ -18,7 +26,5 @@ transpile_web_ui("trezor_bridge_ui") {
 pack_web_resources("generated_resources") {
   resource_name = "trezor_bridge"
   output_dir = "$root_gen_dir/brave/components/trezor_bridge/resources"
-  deps = [
-    ":trezor_bridge_ui",
-  ]
+  deps = [ ":trezor_bridge_ui" ]
 }

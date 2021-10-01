@@ -1,3 +1,12 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(brave_wallet_enabled)
+
 static_library("trezor_bridge") {
   sources = [
     "trezor_bridge_handler.cc",
@@ -8,14 +17,11 @@ static_library("trezor_bridge") {
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings_grit",
     "//content/public/browser",
-    ":copy_trezor_data"
   ]
 }
 
-node_data_dir = "//brave/node_modules/trezor-connect/data"
-
 copy("copy_trezor_data") {
-  visibility = [ ":*" ]
+  node_data_dir = "//brave/node_modules/trezor-connect/data"
   sources = [
     "$node_data_dir/bridge",
     "$node_data_dir/coins.json",
