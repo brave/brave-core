@@ -18,7 +18,7 @@ class TestTokenRegistry: BraveWalletERCTokenRegistry {
     .init(contractAddress: "0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85", name: "Ethereum Name Service", logo: "", isErc20: false, isErc721: true, symbol: "ENS", decimals: 1, visible: true)
   ]
   
-  func token(byContract contract: String, completion: @escaping (BraveWallet.ERCToken) -> Void) {
+  func token(byContract contract: String, completion: @escaping (BraveWallet.ERCToken?) -> Void) {
     if let token = testTokens.first(where: { $0.contractAddress == contract }) {
       completion(token)
       return
@@ -26,7 +26,7 @@ class TestTokenRegistry: BraveWalletERCTokenRegistry {
     completion(.init())
   }
   
-  func token(bySymbol symbol: String, completion: @escaping (BraveWallet.ERCToken) -> Void) {
+  func token(bySymbol symbol: String, completion: @escaping (BraveWallet.ERCToken?) -> Void) {
     if let token = testTokens.first(where: { $0.symbol == symbol }) {
       completion(token)
       return
@@ -40,5 +40,9 @@ class TestTokenRegistry: BraveWalletERCTokenRegistry {
   
   func buyTokens(_ completion: @escaping ([BraveWallet.ERCToken]) -> Void) {
     completion(testTokens)
+  }
+  
+  func buyUrl(_ address: String, symbol: String, amount: String, completion: @escaping (String) -> Void) {
+    
   }
 }

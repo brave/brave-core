@@ -58,15 +58,21 @@ class TestAssetRatioController: BraveWalletAssetRatioController {
 }
 
 class TestSwapController: BraveWalletSwapController {
-  func priceQuote(_ params: BraveWallet.SwapParams, completion: @escaping (Bool, BraveWallet.SwapResponse) -> Void) {
-    completion(false, .init())
+  func transactionPayload(_ params: BraveWallet.SwapParams, completion: @escaping (Bool, BraveWallet.SwapResponse?, String?) -> Void) {
+    completion(false, nil, nil)
   }
-  func transactionPayload(_ params: BraveWallet.SwapParams, completion: @escaping (Bool, BraveWallet.SwapResponse) -> Void) {
-    completion(false, .init())
+  func priceQuote(_ params: BraveWallet.SwapParams, completion: @escaping (Bool, BraveWallet.SwapResponse?, String?) -> Void) {
+    completion(false, nil, nil)
   }
 }
 
 class TestEthTxController: BraveWalletEthTxController {
+  func approveHardwareTransaction(_ txMetaId: String, completion: @escaping (Bool, String) -> Void) {
+  }
+  
+  func processLedgerSignature(_ txMetaId: String, v: String, r: String, s: String, completion: @escaping (Bool) -> Void) {
+  }
+  
   func addUnapprovedTransaction(_ txData: BraveWallet.TxData, from: String, completion: @escaping (Bool, String, String) -> Void) {
   }
   
