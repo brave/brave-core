@@ -79,6 +79,8 @@ static_library("browser") {
     "swap_controller.h",
     "swap_response_parser.cc",
     "swap_response_parser.h",
+    "trezor_bridge_controller.cc",
+    "trezor_bridge_controller.h",
     "wallet_data_files_installer.cc",
     "wallet_data_files_installer.h",
   ]

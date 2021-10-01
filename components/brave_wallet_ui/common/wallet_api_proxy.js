@@ -10,8 +10,9 @@ import 'gen/mojo/public/mojom/base/time.mojom-lite.js';
 import 'gen/brave/components/brave_wallet/common/brave_wallet.mojom-lite.js'
 import * as WalletActions from '../common/actions/wallet_actions'
 import LedgerBridgeKeyring from '../common/ledgerjs/eth_ledger_bridge_keyring'
+import TrezorBridgeKeyring from '../common/trezor/trezor_bridge_keyring'
 import {
-  kLedgerHardwareVendor
+  kLedgerHardwareVendor, kTrezorHardwareVendor
 } from '../constants/types'
 
 // TODO(petemill): Convert this module to Typescript, and import
@@ -40,7 +41,10 @@ export default class WalletApiProxy {
     this.ethTxController = new braveWallet.mojom.EthTxControllerRemote();
     /** @type {!braveWallet.mojom.BraveWalletServiceRemote} */
     this.braveWalletService = new braveWallet.mojom.BraveWalletServiceRemote();
+    /** @type {!braveWallet.mojom.TrezorBridgeController} */
+    this.trezorBridgeController = new braveWallet.mojom.TrezorBridgeControllerRemote();
     this.ledgerHardwareKeyring = new LedgerBridgeKeyring();
+    this.trezorHardwareKeyring = new TrezorBridgeKeyring(this.trezorBridgeController);
   }
 
   addEthJsonRpcControllerObserver(store) {
@@ -65,9 +69,11 @@ export default class WalletApiProxy {
     return txData
   }
 
-  getKeyringsByType(type) {
+  async getKeyringsByType (type) {
     if (type == kLedgerHardwareVendor) {
       return this.ledgerHardwareKeyring;
+    } else if (type == kTrezorHardwareVendor) {
+      return this.trezorHardwareKeyring;
     }
     return this.keyringController;
   }

@@ -635,6 +635,15 @@ export interface SetUserAssetVisibleReturnInfo {
   success: boolean
 }
 
+export interface TrezorBridgeUnlockReturnInfo {
+  success: boolean
+}
+
+export interface TrezorBridgeGetAddressReturnInfo {
+  success: boolean,
+  address: string
+}
+
 export enum DefaultWallet {
   Ask,
   None,
@@ -665,6 +674,11 @@ export interface BraveWalletService {
   setDefaultWallet: (defaultWallet: DefaultWallet) => Promise<void>
   hasEthereumPermission: (origin: string, account: string) => Promise<HasEthereumPermissionReturnInfo>
   resetEthereumPermission: (origin: string, account: string) => Promise<ResetEthereumPermissionReturnInfo>
+}
+
+export interface TrezorBridgeController {
+  unlock: () => Promise<TrezorBridgeUnlockReturnInfo>
+  getAddress: (path: string) => Promise<TrezorBridgeGetAddressReturnInfo>
 }
 
 export interface RecoveryObject {

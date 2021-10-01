@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
+#include "brave/components/brave_wallet/browser/trezor_bridge_controller.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "components/grit/brave_components_strings.h"
@@ -25,6 +26,7 @@ namespace brave_wallet {
 BraveWalletProviderImpl::BraveWalletProviderImpl(
     mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
     mojo::PendingRemote<mojom::EthTxController> tx_controller,
+    mojo::PendingRemote<mojom::TrezorBridgeController> trezor_controller,
     std::unique_ptr<BraveWalletProviderDelegate> delegate,
     PrefService* prefs)
     : delegate_(std::move(delegate)), prefs_(prefs), weak_factory_(this) {
@@ -32,6 +34,9 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
   rpc_controller_.Bind(std::move(rpc_controller));
   DCHECK(rpc_controller_);
   rpc_controller_.set_disconnect_handler(base::BindOnce(
+      &BraveWalletProviderImpl::OnConnectionError, weak_factory_.GetWeakPtr()));
+  trezor_controller_.Bind(std::move(trezor_controller));
+  trezor_controller_.set_disconnect_handler(base::BindOnce(
       &BraveWalletProviderImpl::OnConnectionError, weak_factory_.GetWeakPtr()));
 
   DCHECK(tx_controller);
@@ -318,6 +323,7 @@ void BraveWalletProviderImpl::ChainChangedEvent(const std::string& chain_id) {
 void BraveWalletProviderImpl::OnConnectionError() {
   rpc_controller_.reset();
   tx_controller_.reset();
+  trezor_controller_.reset();
   observer_receiver_.reset();
 }
 

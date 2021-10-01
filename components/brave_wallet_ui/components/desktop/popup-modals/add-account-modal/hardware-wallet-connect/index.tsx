@@ -19,7 +19,7 @@ import {
 } from './style'
 
 // Custom types
-import { HardwareWalletAccount, HardwareWalletConnectOpts, LedgerDerivationPaths } from './types'
+import { HardwareWalletAccount, HardwareWalletConnectOpts, LedgerDerivationPaths, HardwareWalletDerivationPathsMapping } from './types'
 
 import {
   kLedgerHardwareVendor,
@@ -72,7 +72,6 @@ export default function (props: Props) {
   }
   const onConnectHardwareWallet = (hardware: string) => {
     setIsConnecting(true)
-
     props.onConnectHardwareWallet({
       hardware,
       startIndex: accounts.length,
@@ -96,12 +95,18 @@ export default function (props: Props) {
     return props.getBalance(address)
   }
 
+  const selectVendor = (vendor: string) => {
+    const derivationPathsEnum = HardwareWalletDerivationPathsMapping[vendor]
+    setSelectedDerivationScheme(Object.values(derivationPathsEnum)[0] as string)
+    setSelectedHardwareWallet(vendor)
+  }
+
   const onSelectLedger = () => {
-    setSelectedHardwareWallet(kLedgerHardwareVendor)
+    selectVendor(kLedgerHardwareVendor)
   }
 
   const onSelectTrezor = () => {
-    setSelectedHardwareWallet(kTrezorHardwareVendor)
+    selectVendor(kTrezorHardwareVendor)
   }
 
   const onSubmit = () => onConnectHardwareWallet(selectedHardwareWallet)

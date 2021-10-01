@@ -14,6 +14,7 @@
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/browser/brave_wallet/swap_controller_factory.h"
+#include "brave/browser/brave_wallet/trezor_bridge_controller_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/common/webui_url_constants.h"
@@ -25,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/swap_controller.h"
+#include "brave/components/brave_wallet/browser/trezor_bridge_controller.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/webui_util.h"
@@ -80,7 +82,9 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::EthTxController>
         eth_tx_controller_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
-        brave_wallet_service_receiver) {
+        brave_wallet_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::TrezorBridgeController>
+        trezor_controller_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -130,5 +134,11 @@ void WalletPageUI::CreatePageHandler(
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
   if (brave_wallet_service) {
     brave_wallet_service->Bind(std::move(brave_wallet_service_receiver));
+  }
+  auto* trezor_controller =
+      brave_wallet::TrezorBridgeControllerFactory::GetControllerForContext(
+          profile);
+  if (trezor_controller) {
+    trezor_controller->Bind(std::move(trezor_controller_receiver));
   }
 }

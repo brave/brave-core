@@ -24,6 +24,7 @@ namespace brave_wallet {
 
 class BraveWalletProviderDelegate;
 class EthJsonRpcController;
+class TrezorBridgeController;
 
 class BraveWalletProviderImpl final
     : public mojom::BraveWalletProvider,
@@ -34,6 +35,7 @@ class BraveWalletProviderImpl final
   BraveWalletProviderImpl(
       mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
       mojo::PendingRemote<mojom::EthTxController> tx_controller,
+      mojo::PendingRemote<mojom::TrezorBridgeController> trezor_controller,
       std::unique_ptr<BraveWalletProviderDelegate> delegate,
       PrefService* prefs);
   ~BraveWalletProviderImpl() override;
@@ -108,6 +110,8 @@ class BraveWalletProviderImpl final
   mojo::Remote<mojom::EventsListener> events_listener_;
   mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
   mojo::Remote<mojom::EthTxController> tx_controller_;
+  mojo::Remote<mojom::TrezorBridgeController> trezor_controller_;
+
   base::flat_map<std::string, AddEthereumChainCallback> chain_callbacks_;
   mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
   PrefService* prefs_ = nullptr;

@@ -36,7 +36,8 @@ interface PanelHandlerFactory {
                      pending_receiver<KeyringController> keyring_controller,
                      pending_receiver<ERCTokenRegistry> erc_token_registry,
                      pending_receiver<EthTxController> eth_tx_controller,
-                     pending_receiver<BraveWalletService> brave_wallet_service);
+                     pending_receiver<BraveWalletService> brave_wallet_service,
+                     pending_receiver<TrezorBridgeController> trezor_bridge_controller);
 };
 
 interface PageHandlerFactory {
@@ -50,7 +51,8 @@ interface PageHandlerFactory {
                     pending_receiver<KeyringController> keyring_controller,
                     pending_receiver<ERCTokenRegistry> erc_token_registry,
                     pending_receiver<EthTxController> eth_tx_controller,
-                    pending_receiver<BraveWalletService> brave_wallet_service);
+                    pending_receiver<BraveWalletService> brave_wallet_service,
+                    pending_receiver<TrezorBridgeController> trezor_bridge_controller);
 
 };
 
@@ -394,4 +396,9 @@ enum DefaultWallet {
   CryptoWallets,
   Metamask,
   BraveWallet
+};
+
+interface TrezorBridgeController {
+  Unlock() => (bool success);
+  GetAddress(string path) => (bool success, string address);
 };

@@ -23,6 +23,8 @@ source_set("brave_wallet") {
     "rpc_controller_factory.h",
     "swap_controller_factory.cc",
     "swap_controller_factory.h",
+    "trezor_bridge_controller_factory.cc",
+    "trezor_bridge_controller_factory.h",
   ]
   deps = [
     "//brave/browser/profiles:util",
