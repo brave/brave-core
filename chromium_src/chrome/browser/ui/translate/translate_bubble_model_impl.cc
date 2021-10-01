@@ -28,11 +28,9 @@ class BraveLanguageMap {
   BraveLanguageMap(const translate::TranslateUIDelegate* ui_delegate,
                    base::RepeatingCallback<bool(const std::string&)> filter) {
     int ui_index = 0;
-    std::string langs;
     for (size_t core_index = 0;
          core_index < ui_delegate->GetNumberOfLanguages(); ++core_index) {
       const auto lang = ui_delegate->GetLanguageCodeAt(core_index);
-      langs += " " + lang;
       if (!filter.Run(lang))
         continue;
       to_core_index_[ui_index] = core_index;
