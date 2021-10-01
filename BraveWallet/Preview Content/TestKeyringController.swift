@@ -17,6 +17,7 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
   // Not a real phrase, has a duplicated word for testing
   private let mnemonic = "pass entire pelican lock repair desert entire cactus actress remain gossip rail"
   private var observers: NSHashTable<BraveWalletKeyringControllerObserver> = .weakObjects()
+  private var selectedAccount: BraveWallet.AccountInfo?
   
   func add(_ observer: BraveWalletKeyringControllerObserver) {
     observers.add(observer)
@@ -70,7 +71,9 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
     keyring.isDefaultKeyringCreated = true
     keyring.isLocked = false
     self.password = password
-    addAccount("Account 1") { _ in }
+    addAccount("Account 1") { [self] _ in
+      selectedAccount = keyring.accountInfos.first
+    }
     observers.allObjects.forEach {
       $0.keyringCreated()
     }
@@ -243,5 +246,22 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
   
   func removeHardwareAccount(_ address: String) {
     // Hardware wallets not supported on iOS
+  }
+  
+  func notifyUserInteraction() {
+    // Test keyring will not auto-lock
+  }
+  
+  func selectedAccount(_ completion: @escaping (String?) -> Void) {
+    completion(selectedAccount?.address)
+  }
+  
+  func setSelectedAccount(_ address: String, completion: @escaping (Bool) -> Void) {
+    guard let account = keyring.accountInfos.first(where: { $0.address == address }) else {
+      completion(false)
+      return
+    }
+    selectedAccount = account
+    completion(true)
   }
 }

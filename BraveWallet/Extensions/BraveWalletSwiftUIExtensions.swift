@@ -12,7 +12,7 @@ extension BraveWallet.AccountInfo: Identifiable {
     address
   }
   public var isPrimary: Bool {
-    !isImported && !isLedger
+    !isImported
   }
 }
 

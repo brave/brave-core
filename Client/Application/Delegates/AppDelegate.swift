@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     weak var profile: Profile?
     var tabManager: TabManager!
     
-    let braveCore = BraveCoreMain()
+    let braveCore = BraveCoreMain(userAgent: UserAgent.mobile)
     var migration: Migration?
     
     weak var application: UIApplication?
@@ -84,7 +84,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             return true
         }
         
-        braveCore.setUserAgent(UserAgent.mobile)
         migration = Migration(bookmarksAPI: braveCore.bookmarksAPI,
                               historyAPI: braveCore.historyAPI,
                               syncAPI: braveCore.syncAPI)

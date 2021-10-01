@@ -46,4 +46,20 @@ class TestBraveWalletService: BraveWalletBraveWalletService {
   func `import`(fromMetaMask password: String, newPassword: String, completion: @escaping (Bool) -> Void) {
     completion(false)
   }
+  
+  func defaultWallet(_ completion: @escaping (BraveWallet.DefaultWallet) -> Void) {
+    completion(.braveWallet)
+  }
+  
+  func setDefaultWallet(_ defaultWallet: BraveWallet.DefaultWallet) {
+    
+  }
+  
+  func hasEthereumPermission(_ origin: String, account: String, completion: @escaping (Bool, Bool) -> Void) {
+    completion(false, false)
+  }
+  
+  func resetEthereumPermission(_ origin: String, account: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
 }
