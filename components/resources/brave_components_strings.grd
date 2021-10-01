@@ -488,19 +488,29 @@
         I just tipped <ph name="NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
       </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_HASHTAG" desc="">TipWithBrave</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR" desc="">Sorry there was a problem processing your request, please try again.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_CLICK" desc="">Clicked</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_DISMISS" desc="">Dismissed</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_LANDED" desc="">Clicked</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_VIEW" desc="">Viewed</message>
+
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_CLOSE" desc="">Close</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_DEVICE_LIMIT_REACHED_TEXT" desc="">Your wallet cannot be verified because you've reached the maximum verified device limit.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_DEVICE_LIMIT_REACHED_TITLE" desc="">Error: Device limit reached</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR" desc="">Sorry there was a problem processing your request, please try again.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TITLE" desc="">Error: You need a verified wallet to log in</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TEXT" desc="">Please try again after you have completed ID verification on <ph name="PROVIDER">$1<ex>Uphold</ex></ph>.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TEXT" desc="">Hmm, it looks like your Brave Rewards wallet has already been verified with another <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account. Please try verifying again using your previous account.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_MISMATCHED_PROVIDER_ACCOUNTS_TITLE" desc="">Error: Different account</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_NOT_ALLOWED" desc="">BAT is not currently supported in your region. Please refer <ph name="BEGIN_LINK">$1</ph>here<ph name="END_LINK">$2</ph> for updates.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BAT_NOT_ALLOWED_TEXT" desc="">BAT is not yet supported in your region on Uphold.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BAT_NOT_ALLOWED_TITLE" desc="">Error: BAT unavailable</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BLOCKED_USER_TEXT" desc="">Your account at Uphold is currently blocked.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BLOCKED_USER_TITLE" desc="">Error: Blocked account</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_PENDING_USER_TEXT" desc="">Your account at Uphold is still pending.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_PENDING_USER_TITLE" desc="">Error: Pending account</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_RESTRICTED_USER_TEXT" desc="">Your account at Uphold is currently restricted.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_RESTRICTED_USER_TITLE" desc="">Error: Restricted account</message>
+
       <message name="IDS_BRAVE_REWARDS_LOCAL_TOS_AND_PP" desc="">By turning on [[title]], you agree to the <ph name="BEGIN_LINK1">$1</ph>Terms of Service<ph name="END_LINK1">$2</ph> and <ph name="BEGIN_LINK2">$3</ph>Privacy Policy<ph name="END_LINK2">$4</ph>.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_CLOSE" desc="">Close</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR_WALLET" desc="">Error creating Brave Browser BAT card</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TITLE" desc="">You need a verified wallet to log in</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_KYC_REQUIRED_TEXT" desc="">Please try again after you have completed ID verification on <ph name="CUSTODIAN">$1<ex>Uphold</ex></ph>.</message>
       <message name="IDS_BRAVE_REWARDS_PENDING_REWARDS_MESSAGE" desc="">Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> payout will begin processing in <ph name="DAYS">$2<ex>4 days</ex></ph>.</message>
       <message name="IDS_BRAVE_REWARDS_PENDING_REWARDS_NOTE" desc=""><ph name="BOLD_BEGIN">$1</ph>Note: <ph name="BOLD_END">$2</ph>It can take a few days for the payout to process and your BAT to arrive.</message>
 

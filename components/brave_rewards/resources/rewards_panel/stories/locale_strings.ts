@@ -41,7 +41,6 @@ export const localeStrings = {
   grantCaptchaErrorText: 'Brave Rewards is having an issue. Please try again later.',
 
   notificationAddFunds: 'Add Funds',
-  notificationLearnMore: 'Learn More',
   notificationReconnect: 'Reconnect',
   notificationClaim: 'Claim',
   notificationAddFundsTitle: 'Insufficient Funds',
@@ -68,12 +67,5 @@ export const localeStrings = {
   notificationPublisherVerifiedTitle: 'Pending contribution',
   notificationPublisherVerifiedText: 'Creator $1 recently verified.',
   notificationPendingTipFailedTitle: 'Insufficient funds',
-  notificationPendingTipFailedText: 'You have pending tips due to insufficient funds',
-  notificationWalletLinkingFailedTitle: 'Wallet linking failed',
-  notificationDeviceLimitReachedText: 'Your wallet cannot be verified because you\'ve reached the maximum verified device limit.',
-  notificationMismatchedProviderAccountsText: 'It looks like your Brave Rewards wallet has already been verified with another $1 account. Please try verifying again using your previous account.',
-  notificationUpholdBatNotSupportedText: 'BAT is not yet supported in your region on Uphold.',
-  notificationUpholdUserBlockedText: 'Your account at Uphold is currently blocked.',
-  notificationUpholdUserPendingText: 'Your account at Uphold is still pending.',
-  notificationUpholdUserRestrictedText: 'Your account at Uphold is currently restricted.'
+  notificationPendingTipFailedText: 'You have pending tips due to insufficient funds'
 }

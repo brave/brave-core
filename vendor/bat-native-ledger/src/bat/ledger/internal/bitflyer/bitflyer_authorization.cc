@@ -187,25 +187,21 @@ void BitflyerAuthorization::OnClaimWallet(
                                  (!wallet_ptr->address.empty() ? "/" : "") +
                                  wallet_ptr->address.substr(0, 5);
 
-  if (result == type::Result::ALREADY_EXISTS) {
+  if (result == type::Result::DEVICE_LIMIT_REACHED) {
     BLOG(0, "Wallet linking limit reached!");
-
-    ledger_->ledger_client()->ShowNotification(
-        ledger::notifications::kWalletDeviceLimitReached, {},
-        [](type::Result) {});
 
     ledger_->database()->SaveEventLog(log::kDeviceLimitReached, event_text);
 
-    return callback(type::Result::ALREADY_EXISTS, {});
+    return callback(type::Result::DEVICE_LIMIT_REACHED, {});
   }
 
-  if (result == type::Result::TOO_MANY_RESULTS) {
+  if (result == type::Result::MISMATCHED_PROVIDER_ACCOUNTS) {
     BLOG(0, "Mismatched bitFlyer accounts!");
 
     ledger_->database()->SaveEventLog(log::kMismatchedProviderAccounts,
                                       event_text);
 
-    return callback(type::Result::TOO_MANY_RESULTS, {});
+    return callback(type::Result::MISMATCHED_PROVIDER_ACCOUNTS, {});
   }
 
   if (result != type::Result::LEDGER_OK) {

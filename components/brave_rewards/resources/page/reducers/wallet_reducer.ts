@@ -158,8 +158,38 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     case types.ON_EXTERNAL_WALLET: {
       state = { ...state }
 
-      if (action.payload.result === 24) { // on ledger::type::Result::EXPIRED_TOKEN
+      if (action.payload.result === 24) { // type::Result::EXPIRED_TOKEN
         chrome.send('brave_rewards.getExternalWallet')
+        break
+      }
+
+      if (action.payload.result === 25) { // type::Result::UPHOLD_BAT_NOT_ALLOWED
+        state.ui.modalRedirect = 'upholdBATNotAllowedModal'
+        break
+      }
+
+      if (action.payload.result === 36) { // type::Result::DEVICE_LIMIT_REACHED
+        state.ui.modalRedirect = 'deviceLimitReachedModal'
+        break
+      }
+
+      if (action.payload.result === 37) { // type::Result::MISMATCHED_PROVIDER_ACCOUNTS
+        state.ui.modalRedirect = 'mismatchedProviderAccountsModal'
+        break
+      }
+
+      if (action.payload.result === 38) { // type::Result::UPHOLD_BLOCKED_USER
+        state.ui.modalRedirect = 'upholdBlockedUserModal'
+        break
+      }
+
+      if (action.payload.result === 39) { // type::Result::UPHOLD_PENDING_USER
+        state.ui.modalRedirect = 'upholdPendingUserModal'
+        break
+      }
+
+      if (action.payload.result === 40) { // type::Result::UPHOLD_RESTRICTED_USER
+        state.ui.modalRedirect = 'upholdRestrictedUserModal'
         break
       }
 

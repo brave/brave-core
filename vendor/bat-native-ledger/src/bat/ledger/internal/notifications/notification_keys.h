@@ -9,9 +9,6 @@
 namespace ledger {
 namespace notifications {
 
-const char kWalletDeviceLimitReached[] = "wallet_device_limit_reached";
-const char kWalletMismatchedProviderAccounts[] =
-    "wallet_mismatched_provider_accounts";
 const char kWalletDisconnected[] = "wallet_disconnected";
 const char kWalletNewVerified[] = "wallet_new_verified";
 

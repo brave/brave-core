@@ -8,18 +8,20 @@ import {
   StyledTitle,
   StyledLoader,
   StyledError,
+  StyledLink,
   StyledButton
 } from './style'
 import Modal from 'brave-ui/components/popupModals/modal/index'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import { Button } from 'brave-ui/components'
-import { splitStringForTag } from '../../../../../common/locale'
+import { getLocale, splitStringForTag } from '../../../../../common/locale'
 
 export interface Props {
   id?: string
   errorText?: string
   buttonText?: string
   titleText?: string
+  learnMore?: string
   walletType?: string
   displayCloseButton?: boolean
   onClick?: () => void
@@ -42,7 +44,7 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, errorText, titleText, walletType, displayCloseButton, onClose } = this.props
+    const { id, errorText, titleText, learnMore, walletType, displayCloseButton, onClose } = this.props
     let tags = null
     if (errorText && errorText.includes('$1')) {
       tags = splitStringForTag(errorText)
@@ -77,13 +79,18 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
                 : errorText
               }
               </p>
+              {
+                learnMore &&
+                  <StyledLink href={learnMore} target='_blank' rel='noopener noreferrer'>
+                    {getLocale('learnMore')}
+                  </StyledLink>
+              }
               {this.getButton()}
             </StyledError>
             : <StyledLoader>
               <LoaderIcon />
             </StyledLoader>
           }
-
         </StyledWrapper>
       </Modal>
     )

@@ -121,7 +121,7 @@ type::Result PostClaimUphold::CheckStatusCode(const int status_code) const {
 
   if (status_code == net::HTTP_FORBIDDEN) {
     BLOG(0, "Forbidden");
-    return type::Result::TOO_MANY_RESULTS;
+    return type::Result::MISMATCHED_PROVIDER_ACCOUNTS;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
@@ -131,7 +131,7 @@ type::Result PostClaimUphold::CheckStatusCode(const int status_code) const {
 
   if (status_code == net::HTTP_CONFLICT) {
     BLOG(0, "Conflict");
-    return type::Result::ALREADY_EXISTS;
+    return type::Result::DEVICE_LIMIT_REACHED;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
