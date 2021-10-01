@@ -36,6 +36,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #endif
 
@@ -67,6 +68,7 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   brave_wallet::KeyringController::MigrateObsoleteProfilePrefs(
       profile->GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(profile->GetPrefs());
 #endif
 
   // Added 04/2021

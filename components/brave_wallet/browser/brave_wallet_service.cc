@@ -381,4 +381,32 @@ void BraveWalletService::ResetEthereumPermission(
                                        std::move(callback));
 }
 
+// static
+void BraveWalletService::MigrateUserAssetEthContractAddress(
+    PrefService* prefs) {
+  if (prefs->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated))
+    return;
+
+  DictionaryPrefUpdate update(prefs, kBraveWalletUserAssets);
+  base::DictionaryValue* user_assets_pref = update.Get();
+
+  for (auto user_asset_list : user_assets_pref->DictItems()) {
+    auto it = FindAsset(&user_asset_list.second, "eth");
+    if (it == user_asset_list.second.GetList().end())
+      continue;
+
+    base::DictionaryValue* asset = nullptr;
+    if (it->GetAsDictionary(&asset)) {
+      const std::string* contract_address =
+          asset->FindStringKey("contract_address");
+      if (contract_address && *contract_address == "eth") {
+        asset->SetStringKey("contract_address", "");
+        break;
+      }
+    }
+  }
+
+  prefs->SetBoolean(kBraveWalletUserAssetEthContractAddressMigrated, true);
+}
+
 }  // namespace brave_wallet

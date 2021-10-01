@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -81,6 +82,10 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterIntegerPref(kBraveWalletDefaultKeyringAccountNum, 0);
   registry->RegisterBooleanPref(kBraveWalletBackupComplete, false);
   registry->RegisterListPref(kBraveWalletAccountNames);
+
+  // Added 10/2021
+  registry->RegisterBooleanPref(kBraveWalletUserAssetEthContractAddressMigrated,
+                                false);
 }
 
 void ClearProfilePrefs(PrefService* prefs) {
@@ -91,6 +96,12 @@ void ClearProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletUserAssets);
   prefs->ClearPref(kBraveWalletKeyrings);
   prefs->ClearPref(kBraveWalletAutoLockMinutes);
+}
+
+void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+  // Added 10/2021 for migrating the contract address for eth in user asset
+  // list from 'eth' to an empty string.
+  BraveWalletService::MigrateUserAssetEthContractAddress(prefs);
 }
 
 }  // namespace brave_wallet
