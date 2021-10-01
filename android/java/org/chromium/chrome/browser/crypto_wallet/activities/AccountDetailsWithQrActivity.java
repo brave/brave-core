@@ -34,16 +34,16 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
 
     private ImageView qrCodeImage;
 
-    private String address;
-    private String name;
+    private String mAddress;
+    private String mName;
 
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_account_details_with_qr);
 
         if (getIntent() != null) {
-            address = getIntent().getStringExtra("address");
-            name = getIntent().getStringExtra("name");
+            mAddress = getIntent().getStringExtra(Utils.ADDRESS);
+            mName = getIntent().getStringExtra(Utils.NAME);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -52,10 +52,10 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
         getSupportActionBar().setTitle(getResources().getString(R.string.account_details));
 
         qrCodeImage = findViewById(R.id.qr_code_image);
-        fillQrCode(address);
+        fillQrCode(mAddress);
 
         TextView accountValueText = findViewById(R.id.account_value_text);
-        accountValueText.setText(address);
+        accountValueText.setText(Utils.stripAccountAddress(mAddress));
 
         ImageView accountCopyImage = findViewById(R.id.account_copy_image);
         accountCopyImage.setOnClickListener(v
@@ -63,7 +63,7 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
                         AccountDetailsWithQrActivity.this, accountValueText.getText().toString()));
 
         EditText accountNameText = findViewById(R.id.account_name_text);
-        accountNameText.setText(name);
+        accountNameText.setText(mName);
         accountNameText.setEnabled(false);
 
         onInitialLayoutInflationComplete();

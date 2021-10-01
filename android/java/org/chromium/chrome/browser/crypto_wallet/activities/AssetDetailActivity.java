@@ -6,6 +6,8 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -27,6 +29,7 @@ import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
@@ -152,9 +155,9 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
                     for (AccountInfo accountInfo : accountInfos) {
-                        Log.e("NTP", "Account name : " + accountInfo.name);
-                        walletListItemModelList.add(new WalletListItemModel(R.drawable.ic_eth,
-                                accountInfo.name, accountInfo.address, null, null));
+                        walletListItemModelList.add(
+                                new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
+                                        accountInfo.address, null, null, accountInfo.isImported));
                     }
                     if (walletCoinAdapter != null) {
                         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
@@ -228,8 +231,13 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
     @Override
     public void onAccountClick(WalletListItemModel walletListItemModel) {
-        Utils.openAccountDetailActivity(AssetDetailActivity.this, walletListItemModel.getTitle(),
-                walletListItemModel.getSubTitle());
+        Intent accountDetailActivityIntent =
+                new Intent(AssetDetailActivity.this, AccountDetailActivity.class);
+        accountDetailActivityIntent.putExtra(Utils.NAME, walletListItemModel.getTitle());
+        accountDetailActivityIntent.putExtra(Utils.ADDRESS, walletListItemModel.getSubTitle());
+        accountDetailActivityIntent.putExtra(
+                Utils.ISIMPORTED, walletListItemModel.getIsImportedAccount());
+        startActivityForResult(accountDetailActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
     }
 
     @Override
@@ -245,5 +253,16 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
     public KeyringController getKeyringController() {
         return mKeyringController;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Utils.ACCOUNT_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                setUpAccountList();
+            }
+        }
     }
 }
